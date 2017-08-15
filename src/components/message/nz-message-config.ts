@@ -1,0 +1,24 @@
+import { InjectionToken } from '@angular/core';
+
+export class NzMessageConfig {
+  // For all messages as default config (can override when dynamically created)
+  nzDuration?: number;
+  nzPauseOnHover?: boolean;
+  nzAnimate?: boolean;
+  // For message container only
+  nzMaxStack?: number;
+}
+
+export const NZ_MESSAGE_DEFAULT_CONFIG = new InjectionToken<NzMessageConfig>('NZ_MESSAGE_DEFAULT_CONFIG');
+
+export const NZ_MESSAGE_CONFIG = new InjectionToken<NzMessageConfig>('NZ_MESSAGE_CONFIG');
+
+export const NZ_MESSAGE_DEFAULT_CONFIG_PROVIDER = {
+  provide: NZ_MESSAGE_DEFAULT_CONFIG,
+  useValue: {
+    nzDuration             : 1500,
+    nzAnimate              : true,
+    nzPauseOnHover         : true,
+    nzMaxStack             : 7,
+  }
+};

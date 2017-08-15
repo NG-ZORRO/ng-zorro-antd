@@ -1,0 +1,327 @@
+<article>
+
+  <section class="markdown">
+    <h1>Table 表格</h1>
+    <section class="markdown"><p>展示行列数据。</p>
+      <h2 id="何时使用"><span>何时使用</span>
+        <!-- <a class="anchor">#</a> -->
+      </h2>
+      <ul>
+        <li><p>当有大量结构化的数据需要展现时；</p></li>
+        <li><p>当需要对数据进行排序、搜索、分页、自定义操作等复杂行为时。</p></li>
+      </ul>
+    </section>
+    <h2>代码演示<i class="code-box-expand-trigger anticon anticon-appstore" title="展开全部代码"></i></h2>
+  </section>
+
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="24">
+      <nz-code-box [nzTitle]="'简单'" id="components-table-demo-basic" [nzCode]="NzDemoTableBasicCode">
+        <nz-demo-table-basic demo></nz-demo-table-basic>
+        <div intro>
+          <p>简单的表格，最后一列是各种操作。 </p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'简单排序'" id="components-table-demo-sort" [nzCode]="NzDemoTableSortCode">
+        <nz-demo-table-sort demo></nz-demo-table-sort>
+        <div intro>
+          <p>对年龄进行排序</p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'可选择'" id="components-table-demo-selection" [nzCode]="NzDemoTableSelectionCode">
+        <nz-demo-table-selection demo></nz-demo-table-selection>
+        <div intro>
+          <p>第一列是联动的选择框。 </p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'选择和操作'" id="components-table-demo-selection-and-operation" [nzCode]="NzDemoTableSelectionAndOperationCode">
+        <nz-demo-table-selection-and-operation demo></nz-demo-table-selection-and-operation>
+        <div intro>
+          <p>选择后进行操作，完成后清空选择。</p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'选择框属性'" id="components-table-demo-selection-props" [nzCode]="NzDemoTableSelectionPropsCode">
+        <nz-demo-table-selection-props demo></nz-demo-table-selection-props>
+        <div intro>
+          <p>配置选择框的默认属性。</p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'分页'" id="components-table-demo-paging" [nzCode]="NzDemoTablePagingCode">
+        <nz-demo-table-paging demo></nz-demo-table-paging>
+        <div intro>
+          <p>数据项较多时显示分页。</p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'远程加载数据'" id="components-table-demo-ajax" [nzCode]="NzDemoTableAjaxCode">
+        <nz-demo-table-ajax demo></nz-demo-table-ajax>
+        <div intro>
+          <p>这个例子通过简单的 ajax 读取方式，演示了如何从服务端读取并展现数据，具有筛选、排序等功能以及页面 loading 效果。开发者可以自行接入其他数据处理方式。</p>
+          <p><strong>注意，此示例使用
+            <a href="https://randomuser.me">模拟接口</a>
+            ，展示数据可能不准确，请打开网络面板查看请求。</strong></p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'不显示分页'" id="components-table-demo-nopagination" [nzCode]="NzDemoTableNoPaginationCode">
+        <nz-demo-table-nopagination demo></nz-demo-table-nopagination>
+        <div intro>
+          <p>传入 nzIsPagination 为 false 即可。此时表格将完整显示 nzDataSource 内的数据，不进行任何分页。</p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'动态控制表格属性'" id="components-table-demo-size" [nzCode]="NzDemoTableSizeCode">
+        <nz-demo-table-size demo></nz-demo-table-size>
+        <div intro>
+          <p>选择不同配置组合查看效果。
+          </p>
+        </div>
+      </nz-code-box>
+    </div>
+  </div>
+  <section class="markdown api-container">
+    <h2 id="API"><span>API</span>
+      <!-- <a class="anchor">#</a> -->
+    </h2>
+    <h3><span>nz-table</span>
+      <!-- <a class="anchor">#</a> -->
+    </h3>
+    <table>
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>说明</th>
+          <th>类型</th>
+          <th>默认值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>nzAjaxData</td>
+          <td>远程异步数据，与nzDataSource二选一</td>
+          <td>Array</td>
+          <td>[]</td>
+        </tr>
+        <tr>
+          <td>nzDataSource</td>
+          <td>同步数据，与nzAjaxData二选一</td>
+          <td>Array</td>
+          <td>[]</td>
+        </tr>
+        <tr>
+          <td>nzDataChange</td>
+          <td>当前分页数据回调，返回当前分页数据的内容</td>
+          <td>Func</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>#模板引用变量</td>
+          <td>模板引用变量可以自由命名，经过分页之后的数据可以通过<code>模板引用变量.data</code>获取，最后通过*ngFor的方式渲染在table中，关于模板引用变量的知识可以参考<a href="https://angular.cn/guide/template-syntax#ref-vars" target="_blank">这里</a></td>
+          <td>NzTableComponent</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>nzTotal</td>
+          <td>数据总量，用于与nzAjaxData共同使用</td>
+          <td>Number</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>nzPageIndex</td>
+          <td>当前页码，可双向绑定</td>
+          <td>Number</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>nzPageIndexChange</td>
+          <td>当前页码变化回调</td>
+          <td>Func</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>nzPageSize</td>
+          <td>每页数量，可双向绑定</td>
+          <td>Number</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>nzPageSizeChange</td>
+          <td>每页数量变化回调</td>
+          <td>Func</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>nzPageIndexChangeClick</td>
+          <td>用户点击页码事件回调</td>
+          <td>Func</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>nzBordered</td>
+          <td>是否显示边框</td>
+          <td>Boolean</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>nzSize</td>
+          <td>table大小</td>
+          <td>'small'|'middle'|'default'</td>
+          <td>'default'</td>
+        </tr>
+        <tr>
+          <td>nzCustomNoResult</td>
+          <td>是否自定义无数据时内容</td>
+          <td>Boolean</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>[noResult]</td>
+          <td>无数据时内容</td>
+          <td>ng-content</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>nzShowFooter</td>
+          <td>是否显示表脚</td>
+          <td>Boolean</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>[nz-table-footer]</td>
+          <td>表脚内容</td>
+          <td>ng-content</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>nzShowTitle</td>
+          <td>是否显示表头</td>
+          <td>Boolean</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>[nz-table-table]</td>
+          <td>表头内容</td>
+          <td>ng-content</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>nzIsPagination</td>
+          <td>是否分页</td>
+          <td>Boolean</td>
+          <td>true</td>
+        </tr>
+        <tr>
+          <td>nzLoading</td>
+          <td>是否显示加载中</td>
+          <td>Boolean</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>nzShowSizeChanger</td>
+          <td>是否显示pagination中改变页数</td>
+          <td>Boolean</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>nzShowQuickJumper</td>
+          <td>是否显示pagination中快速跳转</td>
+          <td>Boolean</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>nzShowTotal</td>
+          <td>是否显示总数据量</td>
+          <td>Boolean</td>
+          <td>false</td>
+        </tr>
+
+      </tbody>
+    </table>
+    <h3><span>nz-table-sort</span>
+      <!-- <a class="anchor">#</a> -->
+    </h3>
+    <p>嵌入th中显示排序状态</p>
+    <table>
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>说明</th>
+          <th>类型</th>
+          <th>默认值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>nzValue</td>
+          <td>当前排序状态，可双向绑定</td>
+          <td>'ascend'|'descend'|null</td>
+          <td>null</td>
+        </tr>
+        <tr>
+          <td>nzValueChange</td>
+          <td>当前排序状态改变回调</td>
+          <td>Func</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3><span>[nz-thead]</span>
+      <!-- <a class="anchor">#</a> -->
+    </h3>
+    <p>标定thead</p>
+    <h3><span>[nz-th]</span>
+      <!-- <a class="anchor">#</a> -->
+    </h3>
+    <p>标定th</p>
+    <table>
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>说明</th>
+          <th>类型</th>
+          <th>默认值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>nzCheckbox</td>
+          <td>是否有checkbox出现在当前th上</td>
+          <td>Boolean</td>
+          <td>false</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3><span>[nz-table-body]</span>
+      <!-- <a class="anchor">#</a> -->
+    </h3>
+    <p>标定tbody</p>
+    <h3><span>[nz-tbody-tr]</span>
+      <!-- <a class="anchor">#</a> -->
+    </h3>
+    <p>标定tbody中tr</p>
+    <h3><span>[nz-td]</span>
+      <!-- <a class="anchor">#</a> -->
+    </h3>
+    <p>标定td</p>
+    <table>
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>说明</th>
+          <th>类型</th>
+          <th>默认值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>nzCheckbox</td>
+          <td>是否有checkbox出现在当前td上</td>
+          <td>Boolean</td>
+          <td>false</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3><span>[nz-table-divider]</span>
+      <!-- <a class="anchor">#</a> -->
+    </h3>
+    <p>用于td中分隔数据</p>
+  </section>
+
+</article>
