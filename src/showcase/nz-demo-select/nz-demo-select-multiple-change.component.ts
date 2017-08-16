@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Jsonp, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'nz-demo-select-multiple-change',

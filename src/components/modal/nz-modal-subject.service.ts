@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Subject';
 
 /* modal的事件枚举 */
 const enum modalEvent {
