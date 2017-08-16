@@ -12,7 +12,7 @@ export class NzCarouselContentDirective {
   top = null;
   fadeMode = false;
 
-  @HostBinding('class.slick-slide') true;
+  @HostBinding('class.slick-slide') _nzSlickSlide = true;
 
   @HostBinding('class.slick-active')
   get setActiveClass() {

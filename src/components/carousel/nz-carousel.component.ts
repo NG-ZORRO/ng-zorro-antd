@@ -44,7 +44,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   @Input() nzDots = true;
   @Input() nzEffect = 'scrollx';
   @Input() @HostBinding('class.ant-carousel-vertical') nzVertical = false;
-  @HostBinding('class.ant-carousel') true;
+  @HostBinding('class.ant-carousel') _nzCarousel = true;
 
   constructor(public hostElement: ElementRef, private _renderer: Renderer2) {
   }
