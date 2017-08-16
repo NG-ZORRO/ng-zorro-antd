@@ -173,6 +173,12 @@ export const ROUTER_LIST = {
       'name'    : 'Data Display',
       'children': [
         {
+          'label'       : 'Avatar',
+          'path'        : 'components/avatar',
+          'loadChildren': './nz-demo-avatar/nz-demo-avatar.module#NzDemoAvatarModule',
+          'zh'          : '头像'
+        },
+        {
           'label'       : 'Badge',
           'path'        : 'components/badge',
           'loadChildren': './nz-demo-badge/nz-demo-badge.module#NzDemoBadgeModule',
@@ -489,6 +495,10 @@ export const DEMO_ROUTES = [
   {
     'path'        : 'other/back-top',
     'loadChildren': './nz-demo-back-top/nz-demo-back-top.module#NzDemoBackTopModule'
+  },
+  {
+    'path'        : 'components/avatar',
+    'loadChildren': './nz-demo-avatar/nz-demo-avatar.module#NzDemoAvatarModule'
   }
 ];
 

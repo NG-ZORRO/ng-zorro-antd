@@ -49,6 +49,7 @@ import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzAffixModule } from './affix/nz-affix.module';
 import { NzBackTopModule } from './back-top/nz-back-top.module';
 import { NzAnchorModule } from './anchor/nz-anchor.module';
+import { NzAvatarModule } from './avatar/nz-avatar.module';
 
 // Services
 import { NzNotificationService } from './notification/nz-notification.service';
@@ -104,6 +105,7 @@ export { NzToolTipModule } from './tooltip/nz-tooltip.module';
 export { NzAffixModule } from './affix/nz-affix.module';
 export { NzBackTopModule } from './back-top/nz-back-top.module';
 export { NzAnchorModule } from './anchor/nz-anchor.module';
+export { NzAvatarModule } from './avatar/nz-avatar.module';
 
 // Services
 export { NzNotificationService } from './notification/nz-notification.service';
@@ -163,7 +165,8 @@ export { NZ_NOTIFICATION_CONFIG } from './notification/nz-notification-config';
     NzToolTipModule,
     NzAffixModule,
     NzBackTopModule,
-    NzAnchorModule
+    NzAnchorModule,
+    NzAvatarModule
   ]
 })
 export class NgZorroAntdModule {
