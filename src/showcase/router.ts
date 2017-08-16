@@ -55,6 +55,12 @@ export const ROUTER_LIST = {
       'name'    : 'Navigation',
       'children': [
         {
+          'label'       : 'Affix',
+          'path'        : 'components/affix',
+          'loadChildren': './nz-demo-affix/nz-demo-affix.module#NzDemoAffixModule',
+          'zh'          : '固钉'
+        },
+        {
           'label'       : 'Breadcrumb',
           'path'        : 'components/breadcrumb',
           'loadChildren': './nz-demo-breadcrumb/nz-demo-breadcrumb.module#NzDemoBreadCrumbModule',
@@ -280,6 +286,23 @@ export const ROUTER_LIST = {
           'zh'          : '加载中'
         }
       ]
+    },
+    {
+      'name'    : 'Other',
+      'children': [
+        {
+          'label'       : 'Anchor',
+          'path'        : 'other/anchor',
+          'loadChildren': './nz-demo-anchor/nz-demo-anchor.module#NzDemoAnchorModule',
+          'zh'          : '锚点'
+        },
+        {
+          'label'       : 'BackTop',
+          'path'        : 'other/back-top',
+          'loadChildren': './nz-demo-back-top/nz-demo-back-top.module#NzDemoBackTopModule',
+          'zh'          : '回到顶部'
+        }
+      ]
     }
   ]
 };
@@ -454,6 +477,18 @@ export const DEMO_ROUTES = [
   {
     'path'        : 'components/spin',
     'loadChildren': './nz-demo-spin/nz-demo-spin.module#NzDemoSpinModule'
+  },
+  {
+    'path'        : 'components/affix',
+    'loadChildren': './nz-demo-affix/nz-demo-affix.module#NzDemoAffixModule'
+  },
+  {
+    'path'        : 'other/anchor',
+    'loadChildren': './nz-demo-anchor/nz-demo-anchor.module#NzDemoAnchorModule'
+  },
+  {
+    'path'        : 'other/back-top',
+    'loadChildren': './nz-demo-back-top/nz-demo-back-top.module#NzDemoBackTopModule'
   }
 ];
 
