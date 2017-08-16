@@ -55,4 +55,5 @@ $ npm start
 
 ## Contributing
 
+We welcome all contributions. Please read our [CONTRIBUTING.md](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md) first.
 You can submit any ideas as [pull request](https://github.com/NG-ZORRO/ng-zorro-antd/pulls)，or as [GitHub issues](https://github.com/NG-ZORRO/ng-zorro-antd/issues)。
