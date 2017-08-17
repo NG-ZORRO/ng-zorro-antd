@@ -208,7 +208,7 @@ export class NzPaginationComponent {
     if (value > this._lastIndex || value < this._firstIndex) {
       return;
     }
-    this._current = value;
+    this._current = Number(value);
     this._buildIndexes();
   };
 
