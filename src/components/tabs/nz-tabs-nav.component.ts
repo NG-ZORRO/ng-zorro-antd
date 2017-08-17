@@ -93,7 +93,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   @ViewChild(NzTabsInkBarDirective) _inkBar: NzTabsInkBarDirective;
   @ViewChild('tabListContainer') _tabListContainer: ElementRef;
   @ViewChild('tabList') _tabList: ElementRef;
-  @HostBinding('class.ant-tabs-bar') true;
+  @HostBinding('class.ant-tabs-bar') _nzTabsBar = true;
   @Input() nzShowPagination = true;
 
   @Input()

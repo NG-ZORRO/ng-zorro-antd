@@ -208,7 +208,7 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   @Input() nzDisabled = false;
   @ViewChild('trigger') trigger;
   @ViewChild(NzTimePickerInnerComponent) timePickerInner: NzTimePickerInnerComponent;
-  @HostBinding('class.ant-calendar-picker') true;
+  @HostBinding('class.ant-calendar-picker') _nzCalendarPicker = true;
 
   _setTriggerWidth(): void {
     this._triggerWidth = this.trigger.nativeElement.getBoundingClientRect().width;

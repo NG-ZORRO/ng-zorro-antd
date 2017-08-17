@@ -5,5 +5,5 @@ import { Directive, HostBinding } from '@angular/core';
 })
 
 export class NzTbodyDirective {
-  @HostBinding(`class.ant-table-tbody`) true;
+  @HostBinding(`class.ant-table-tbody`) _nzTableTbody = true;
 }
