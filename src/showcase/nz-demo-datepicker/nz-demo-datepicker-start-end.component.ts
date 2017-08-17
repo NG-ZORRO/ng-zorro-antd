@@ -45,8 +45,8 @@ export class NzDemoDatePickerStartEndComponent implements OnInit {
   get _endTime() {
     return {
       nzHideDisabledOptions: true,
-      nzDisabledHours  : () => {
-        return this._isSameDay ? this.newArray(0, this._startDate.getHours())   : [];
+      nzDisabledHours: () => {
+        return this._isSameDay ? this.newArray(0, this._startDate.getHours()) : [];
       },
       nzDisabledMinutes: (h) => {
         if (this._isSameDay && h === this._startDate.getHours()) {
