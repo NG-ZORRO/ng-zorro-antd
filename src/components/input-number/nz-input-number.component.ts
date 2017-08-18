@@ -43,6 +43,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         [disabled]="nzDisabled"
         [(ngModel)]="nzValue"
         (ngModelChange)="_userInputChange()"
+        (keypress)="_onKeyPress($event)"
         [attr.min]="nzMin"
         [attr.max]="nzMax"
         [attr.step]="_step"
@@ -183,6 +184,24 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     } else if (this._inputNumber.nativeElement.value < this.nzMin) {
       this._inputNumber.nativeElement.value = this.nzMin;
       this.onChange(this.nzMin);
+    }
+  }
+  /**
+   * limit integer, decimal input
+   */
+  _onKeyPress($event) {
+    let value = this._inputNumber.nativeElement.value;
+    let decimalStep = this.nzStep.toString().indexOf('.') !== -1 ? true : false;
+    if ($event.keyCode === 46) {
+      if (value.indexOf('.') !== -1 || !decimalStep) {
+        $event.returnValue = false;
+      }
+    } else if ($event.keyCode === 45) {
+      if (this.nzMin >= 0 || (value.indexOf('-') !== -1 && value.lastIndexOf('-') >= 0)) {
+        $event.returnValue = false;
+      }
+    } else if ($event.keyCode < 48 || $event.keyCode > 57) {
+      $event.returnValue = false;
     }
   }
 
