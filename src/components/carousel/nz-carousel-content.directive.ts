@@ -1,7 +1,9 @@
 import {
   Directive,
-  HostBinding
+  HostBinding,
+  ElementRef
 } from '@angular/core';
+
 @Directive({
   selector: '[nz-carousel-content]',
 })
@@ -10,7 +12,9 @@ export class NzCarouselContentDirective {
   isActive = false;
   left = null;
   top = null;
-  fadeMode = false;
+  fadeMode = false
+  nativeElement: HTMLElement;
+
 
   @HostBinding('class.slick-slide') _nzSlickSlide = true;
 
@@ -46,6 +50,10 @@ export class NzCarouselContentDirective {
     if (this.fadeMode) {
       return this.isActive ? 1 : 0;
     }
+  }
+
+  constructor(private _el: ElementRef) {
+    this.nativeElement = this._el.nativeElement;
   }
 
 }

@@ -37,7 +37,14 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   activeIndex = 0;
   transform = 'translate3d(0px, 0px, 0px)';
   interval;
-  @ContentChildren(NzCarouselContentDirective) slideContents;
+  slideContents;
+
+  @ContentChildren(NzCarouselContentDirective)
+  set _slideContents(value) {
+    this.slideContents = value;
+    this.renderContent();
+  }
+
   @ViewChild('slickList') slickList: ElementRef;
   @ViewChild('slickTrack') slickTrack: ElementRef;
   @Input() nzAutoPlay = false;
@@ -67,8 +74,14 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    this.renderContent();
+  }
+
+  renderContent() {
     setTimeout(_ => {
-      this.slideContents.first.isActive = true;
+      if (this.slideContents.first) {
+        this.slideContents.first.isActive = true;
+      }
       this.slideContents.forEach((content, i) => {
         content.width = this.hostElement.nativeElement.offsetWidth;
         if (this.nzEffect === 'fade') {
@@ -83,14 +96,21 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
       if (this.nzAutoPlay) {
         this.createInterval();
       }
-      this._renderer.setStyle(this.slickList.nativeElement, 'height', `${this.hostElement.nativeElement.offsetHeight}px`);
+
       if (this.nzVertical) {
+        this._renderer.removeStyle(this.slickList.nativeElement, 'height');
+        if (this.slideContents.first) {
+          this._renderer.setStyle(this.slickList.nativeElement, 'height', `${this.slideContents.first.nativeElement.offsetHeight}px`);
+        }
+        this._renderer.removeStyle(this.slickTrack.nativeElement, 'height');
         this._renderer.setStyle(this.slickTrack.nativeElement, 'height', `${this.slideContents.length * this.hostElement.nativeElement.offsetHeight}px`);
       } else {
+        this._renderer.removeStyle(this.slickList.nativeElement, 'height');
+        this._renderer.setStyle(this.slickList.nativeElement, 'height', `${this.hostElement.nativeElement.offsetHeight}px`);
+        this._renderer.removeStyle(this.slickTrack.nativeElement, 'width');
         this._renderer.setStyle(this.slickTrack.nativeElement, 'width', `${this.slideContents.length * this.hostElement.nativeElement.offsetWidth}px`);
       }
     })
-
   }
 
   createInterval() {
