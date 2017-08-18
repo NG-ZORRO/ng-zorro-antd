@@ -1,0 +1,78 @@
+<article>
+  <section class="markdown"><h1>Affix 固钉</h1>
+    <section class="markdown"><p>将页面元素钉在可视范围。</p>
+      <h2 id="何时使用"><span>何时使用</span>
+        <a class="affix">#</a>
+      </h2>
+      <p>当内容区域比较长，需要滚动页面时，这部分内容对应的操作或者导航需要在滚动范围内始终展现。常用于侧边菜单和按钮组合。</p>
+      <p>页面可视范围过小时，慎用此功能以免遮挡页面内容。</p>
+    </section>
+    <h2 id="代码演示">代码演示<i class="code-box-expand-trigger anticon anticon-appstore" title="展开全部代码"></i></h2>
+  </section>
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="12" id="components-affix-demo-basic">
+      <nz-code-box [nzTitle]="'基本'" [nzCode]="NzDemoAffixBasicCode">
+        <nz-demo-affix-basic demo></nz-demo-affix-basic>
+        <div intro>
+          <p>最简单的用法。</p>
+        </div>
+      </nz-code-box>
+    </div>
+    <div nz-col [nzSpan]="12" id="components-affix-demo-fixed">
+      <nz-code-box [nzTitle]="'固定状态改变的回调'" [nzCode]="NzDemoAffixFixedCode">
+        <nz-demo-affix-fixed demo></nz-demo-affix-fixed>
+        <div intro>
+          <p>可以获得是否固定的状态。</p>
+        </div>
+      </nz-code-box>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="12" id="components-affix-demo-container">
+      <nz-code-box [nzTitle]="'滚动容器'" [nzCode]="NzDemoAffixContainerCode">
+        <nz-demo-affix-container demo></nz-demo-affix-container>
+        <div intro>
+          <p>用 <code>target</code> 设置 <code>nz-affix</code> 需要监听其滚动事件的元素，默认为 <code>window</code>。</p>
+        </div>
+      </nz-code-box>
+    </div>
+  </div>
+  <section class="markdown api-container">
+    <h2 id="API"><span>API</span>
+      <a class="affix">#</a>
+    </h2>
+    <h3 id="API-Affix"><span>nz-affix</span>
+      <a class="affix">#</a>
+    </h3>
+    <table>
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>说明</th>
+          <th>类型</th>
+          <th>默认值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>nzOffsetTop</td>
+          <td>距离窗口顶部达到指定偏移量后触发</td>
+          <td>number</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>nzTarget</td>
+          <td>设置需要监听其滚动事件的元素，值为一个返回对应 DOM 元素的函数</td>
+          <td>Element</td>
+          <td><code>window</code></td>
+        </tr>
+        <tr>
+          <td>nzChange</td>
+          <td>固定状态改变时触发的回调函数</td>
+          <td>function</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</article>

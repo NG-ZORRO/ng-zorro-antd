@@ -55,6 +55,12 @@ export const ROUTER_LIST = {
       'name'    : 'Navigation',
       'children': [
         {
+          'label'       : 'Affix',
+          'path'        : 'components/affix',
+          'loadChildren': './nz-demo-affix/nz-demo-affix.module#NzDemoAffixModule',
+          'zh'          : '固钉'
+        },
+        {
           'label'       : 'Breadcrumb',
           'path'        : 'components/breadcrumb',
           'loadChildren': './nz-demo-breadcrumb/nz-demo-breadcrumb.module#NzDemoBreadCrumbModule',
@@ -465,6 +471,10 @@ export const DEMO_ROUTES = [
   {
     'path'        : 'components/spin',
     'loadChildren': './nz-demo-spin/nz-demo-spin.module#NzDemoSpinModule'
+  },
+  {
+    'path'        : 'components/affix',
+    'loadChildren': './nz-demo-affix/nz-demo-affix.module#NzDemoAffixModule'
   },
   {
     'path'        : 'other/back-top',
