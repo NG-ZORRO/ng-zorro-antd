@@ -280,6 +280,17 @@ export const ROUTER_LIST = {
           'zh'          : '加载中'
         }
       ]
+    },
+    {
+      'name'    : 'Other',
+      'children': [
+        {
+          'label'       : 'BackTop',
+          'path'        : 'other/back-top',
+          'loadChildren': './nz-demo-back-top/nz-demo-back-top.module#NzDemoBackTopModule',
+          'zh'          : '回到顶部'
+        }
+      ]
     }
   ]
 };
@@ -454,6 +465,10 @@ export const DEMO_ROUTES = [
   {
     'path'        : 'components/spin',
     'loadChildren': './nz-demo-spin/nz-demo-spin.module#NzDemoSpinModule'
+  },
+  {
+    'path'        : 'other/back-top',
+    'loadChildren': './nz-demo-back-top/nz-demo-back-top.module#NzDemoBackTopModule'
   }
 ];
 

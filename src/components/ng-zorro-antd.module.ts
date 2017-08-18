@@ -46,6 +46,7 @@ import { NzCardModule } from './card/nz-card.module';
 import { NzCollapseModule } from './collapse/nz-collapse.module';
 import { NzTimelineModule } from './timeline/nz-timeline.module';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
+import { NzBackTopModule } from './back-top/nz-back-top.module';
 
 // Services
 import { NzNotificationService } from './notification/nz-notification.service';
@@ -98,6 +99,7 @@ export { NzCardModule } from './card/nz-card.module';
 export { NzCollapseModule } from './collapse/nz-collapse.module';
 export { NzTimelineModule } from './timeline/nz-timeline.module';
 export { NzToolTipModule } from './tooltip/nz-tooltip.module';
+export { NzBackTopModule } from './back-top/nz-back-top.module';
 
 // Services
 export { NzNotificationService } from './notification/nz-notification.service';
@@ -154,7 +156,8 @@ export { NZ_NOTIFICATION_CONFIG } from './notification/nz-notification-config';
     NzCardModule,
     NzCollapseModule,
     NzTimelineModule,
-    NzToolTipModule
+    NzToolTipModule,
+    NzBackTopModule
   ]
 })
 export class NgZorroAntdModule {
