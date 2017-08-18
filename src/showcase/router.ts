@@ -291,6 +291,12 @@ export const ROUTER_LIST = {
       'name'    : 'Other',
       'children': [
         {
+          'label'       : 'Anchor',
+          'path'        : 'other/anchor',
+          'loadChildren': './nz-demo-anchor/nz-demo-anchor.module#NzDemoAnchorModule',
+          'zh'          : '锚点'
+        },
+        {
           'label'       : 'BackTop',
           'path'        : 'other/back-top',
           'loadChildren': './nz-demo-back-top/nz-demo-back-top.module#NzDemoBackTopModule',
@@ -479,6 +485,10 @@ export const DEMO_ROUTES = [
   {
     'path'        : 'other/back-top',
     'loadChildren': './nz-demo-back-top/nz-demo-back-top.module#NzDemoBackTopModule'
+  },
+  {
+    'path'        : 'other/anchor',
+    'loadChildren': './nz-demo-anchor/nz-demo-anchor.module#NzDemoAnchorModule'
   }
 ];
 
