@@ -65,7 +65,7 @@ import { Component, OnInit } from '@angular/core';
   ]
 })
 export class NzDemoLayoutSideComponent implements OnInit {
-  isCollapsed = false;
+  isCollapsed = true;
 
   constructor() {
   }
