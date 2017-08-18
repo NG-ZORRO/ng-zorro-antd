@@ -50,7 +50,7 @@ import { Subject } from 'rxjs/Rx';
 
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   isInDropDown = false;
-  level = 0;
+  level = 1;
   _$mouseSubject = new Subject();
   @ContentChildren(NzSubMenuComponent) subMenus;
   @Input() nzOpen = false;
@@ -135,7 +135,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     this.isInDropDown = this.nzMenuComponent.isInDropDown;
     if (this.subMenus.length && (this.nzMenuComponent.nzMode === 'inline')) {
-      this.subMenus.forEach(menu => {
+      this.subMenus.filter(x => x !== this).forEach(menu => {
         setTimeout(_ => {
           menu.level = this.level + 1;
         });
