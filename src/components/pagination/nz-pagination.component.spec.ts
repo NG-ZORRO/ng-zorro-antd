@@ -1,19 +1,19 @@
 /* tslint:disable:no-unused-variable */
-import {async, ComponentFixture, TestBed, ComponentFixtureAutoDetect} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, ComponentFixtureAutoDetect, fakeAsync, tick } from '@angular/core/testing';
 import {
   Component,
   ViewChild
 } from '@angular/core';
-import {By} from '@angular/platform-browser';
-import {NzPaginationModule} from './nz-pagination.module';
-import {NzPaginationComponent} from './nz-pagination.component';
+import { By } from '@angular/platform-browser';
+import { NzPaginationModule } from './nz-pagination.module';
+import { NzPaginationComponent } from './nz-pagination.component';
 
 describe('NzPaginationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NzPaginationModule],
-      declarations: [TestPaginationBasic, TestPaginationChanger, TestPaginationSimple, TestPaginationShowTotal],
-      providers: []
+      imports     : [ NzPaginationModule ],
+      declarations: [ TestPaginationBasic, TestPaginationChanger, TestPaginationSimple, TestPaginationShowTotal ],
+      providers   : []
     }).compileComponents();
   }));
   describe('for nz-pagination', () => {
@@ -22,14 +22,14 @@ describe('NzPaginationComponent', () => {
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
-      expect(debugElement.nativeElement.querySelector('.ant-pagination-prev').classList.contains('ant-pagination-item-active')).toBe(true);
+      expect(debugElement.nativeElement.querySelector('.ant-pagination-prev').classList.contains('ant-pagination-item-active')).toBe(false);
       expect(debugElement.nativeElement.querySelector('.ant-pagination-prev').classList.contains('ant-pagination-disabled')).toBe(true);
       expect(debugElement.nativeElement.querySelectorAll('.ant-pagination-item').length).toBe(5);
 
       testComponent._nzPageIndex = 5;
       testComponent._nzTotal = 50;
       fixture.detectChanges();
-      expect(debugElement.nativeElement.querySelector('.ant-pagination-next').classList.contains('ant-pagination-item-active')).toBe(true);
+      expect(debugElement.nativeElement.querySelector('.ant-pagination-next').classList.contains('ant-pagination-item-active')).toBe(false);
       expect(debugElement.nativeElement.querySelector('.ant-pagination-next').classList.contains('ant-pagination-disabled')).toBe(true);
 
       testComponent._nzPageIndex = 3;
@@ -97,34 +97,44 @@ describe('NzPaginationComponent', () => {
       fixture.detectChanges();
       expect(debugElement.nativeElement.querySelector('.ant-pagination-total-text')).toBeDefined();
     });
+    it('correct disabled style when reach first and last pageIndex', () => {
+      const fixture = TestBed.createComponent(TestPaginationShowTotal);
+      const testComponent = fixture.debugElement.componentInstance;
+      const debugElement = fixture.debugElement.query(By.directive(NzPaginationComponent));
+      fixture.detectChanges();
+      expect(debugElement.nativeElement.querySelector('.ant-pagination-prev').className).toEqual('ant-pagination-prev ant-pagination-disabled');
+      testComponent.pageSize = 4;
+      fixture.detectChanges();
+      expect(debugElement.nativeElement.querySelector('.ant-pagination-next').className).toEqual('ant-pagination-next ant-pagination-disabled');
+    });
+
   });
 
-});
-@Component({
-  selector: 'nz-test-pagination-basic',
-  template: `
-    <nz-pagination [nzPageIndex]="_nzPageIndex" [nzTotal]="_nzTotal" ></nz-pagination>
-  `
-})
-class TestPaginationBasic {
-  _nzPageIndex = 1;
-  _nzTotal = 50;
-  // _nzSize = '';
-}
+  @Component({
+    selector: 'nz-test-pagination-basic',
+    template: `
+      <nz-pagination [nzPageIndex]="_nzPageIndex" [nzTotal]="_nzTotal"></nz-pagination>
+    `
+  })
+  class TestPaginationBasic {
+    _nzPageIndex = 1;
+    _nzTotal = 50;
+    // _nzSize = '';
+  }
 
 
-@Component({
-  selector: 'nz-test-pagination-changer',
-  template: `
-    <nz-pagination [nzPageIndex]="_nzPageIndex" [nzTotal]="_nzTotal" nzShowSizeChanger
-                   [nzPageSize]="_nzPageSize" [nzSize]="_nzSize"></nz-pagination>`
-})
-class TestPaginationChanger {
-  _nzPageIndex = 3;
-  _nzTotal = 500;
-  _nzPageSize = 40;
-  _nzSize = '';
-}
+  @Component({
+    selector: 'nz-test-pagination-changer',
+    template: `
+      <nz-pagination [nzPageIndex]="_nzPageIndex" [nzTotal]="_nzTotal" nzShowSizeChanger
+        [nzPageSize]="_nzPageSize" [nzSize]="_nzSize"></nz-pagination>`
+  })
+  class TestPaginationChanger {
+    _nzPageIndex = 3;
+    _nzTotal = 500;
+    _nzPageSize = 40;
+    _nzSize = '';
+  }
 
 // @Component({
 //   selector: 'nz-demo-pagination-quick-jumper',
@@ -137,20 +147,23 @@ class TestPaginationChanger {
 //   _nzSize = '';
 // }
 
-@Component({
-  selector: 'nz-test-pagination-simple',
-  template: `
-    <nz-pagination [nzPageIndex]="2" [nzTotal]="50" nzSimple></nz-pagination>`,
-  styles  : []
-})
-class TestPaginationSimple {
-}
+  @Component({
+    selector: 'nz-test-pagination-simple',
+    template: `
+      <nz-pagination [nzPageIndex]="2" [nzTotal]="50" nzSimple></nz-pagination>`,
+    styles  : []
+  })
+  class TestPaginationSimple {
+  }
 
-@Component({
-  selector: 'nz-test-pagination-total',
-  template: `
-    <nz-pagination [nzPageIndex]="1" [nzTotal]="80" nzShowTotal [nzPageSize]="20"></nz-pagination>`,
-  styles  : []
+  @Component({
+    selector: 'nz-test-pagination-total',
+    template: `
+      <nz-pagination [nzPageIndex]="pageSize" [nzTotal]="80" nzShowTotal [nzPageSize]="20"></nz-pagination>`,
+    styles  : []
+  })
+  class TestPaginationShowTotal {
+    pageSize = 1;
+  }
+
 })
-class TestPaginationShowTotal {
-}
