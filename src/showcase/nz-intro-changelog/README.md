@@ -9,7 +9,7 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
-## 0.5.0-rc.1
+## 0.5.0-rc.2
 `2017-08-19`
 
 ### Features
