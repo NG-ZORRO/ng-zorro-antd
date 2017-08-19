@@ -4,7 +4,7 @@ import { Directive, ElementRef, HostBinding, Input } from '@angular/core';
   selector: '[nz-tab-label]'
 })
 export class NzTabLabelDirective {
-  @HostBinding('class.ant-tabs-tab') true;
+  @HostBinding('class.ant-tabs-tab') _nzTabsTab = true;
 
   @Input() @HostBinding('class.ant-tabs-tab-disabled') disabled = false;
 

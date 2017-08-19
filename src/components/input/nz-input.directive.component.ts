@@ -28,7 +28,7 @@ export class NzInputDirectiveComponent {
     this.size = { large: 'lg', small: 'sm' }[ value ];
   }
 
-  @HostBinding(`class.ant-input`) true;
+  @HostBinding(`class.ant-input`) _nzInput = true;
 
 
   @HostBinding(`class.ant-input-lg`)

@@ -5,5 +5,5 @@ import { Directive, HostBinding } from '@angular/core';
 })
 
 export class NzFormExtraDirective {
-  @HostBinding(`class.ant-form-extra`) true;
+  @HostBinding(`class.ant-form-extra`) _nzFormExtra = true;
 }

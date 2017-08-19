@@ -5,6 +5,7 @@ import {
   AfterViewInit,
   HostListener,
   ChangeDetectorRef,
+  Renderer2,
   Optional,
   ElementRef
 } from '@angular/core';
@@ -14,8 +15,8 @@ import { NzSubMenuComponent } from './nz-submenu.component';
 export const PADDING_BASE = 24;
 
 @Component({
-  selector     : '[nz-menu-item]',
-  template     : `
+  selector: '[nz-menu-item]',
+  template: `
     <ng-content></ng-content>`,
 })
 
@@ -23,8 +24,22 @@ export class NzMenuItemComponent implements AfterViewInit {
   level = 0;
   padding = null;
   isInDropDown = false;
+  selected = false;
   @Input() nzDisable = false;
-  @Input() nzSelected = false;
+
+  @Input()
+  set nzSelected(value: boolean) {
+    this.selected = value;
+    if (value) {
+      this._renderer.addClass(this.hostElement.nativeElement, 'ant-menu-item-selected')
+    } else {
+      this._renderer.removeClass(this.hostElement.nativeElement, 'ant-menu-item-selected')
+    }
+  }
+
+  get nzSelected() {
+    return this.selected;
+  }
 
   /** clear all item selected status except this */
   @HostListener('click', [ '$event' ])
@@ -51,11 +66,6 @@ export class NzMenuItemComponent implements AfterViewInit {
     return this.isInDropDown && this.nzDisable;
   }
 
-  @HostBinding('class.ant-menu-item-selected')
-  get setMenuSelectedClass() {
-    return this.nzSelected;
-  }
-
   @HostBinding('class.ant-menu-item-disabled')
   get setMenuDisableClass() {
     return (!this.isInDropDown) && this.nzDisable;
@@ -80,7 +90,7 @@ export class NzMenuItemComponent implements AfterViewInit {
     }
   }
 
-  constructor(public cd: ChangeDetectorRef, private nzMenuComponent: NzMenuComponent, @Optional() public nzSubMenuComponent: NzSubMenuComponent, private hostElement: ElementRef) {
+  constructor(private _renderer: Renderer2, public cd: ChangeDetectorRef, private nzMenuComponent: NzMenuComponent, @Optional() public nzSubMenuComponent: NzSubMenuComponent, private hostElement: ElementRef) {
     this.nzMenuComponent.menuItems.push(this);
     /** store origin padding in padding */
     if (this.hostElement.nativeElement.style[ 'padding-left' ]) {

@@ -9,6 +9,7 @@ import {
   EventEmitter,
   AfterViewInit
 } from '@angular/core';
+import { debounceTime } from 'rxjs/operator/debounceTime';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 import { NzDropDownComponent } from './nz-dropdown.component';
@@ -74,7 +75,7 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
   @ViewChild(NzDropDownDirective) _nzOrigin;
 
   ngOnInit() {
-    this._$mouseSubject.debounceTime(300).subscribe((data: boolean) => {
+    debounceTime.call(this._$mouseSubject, 300).subscribe((data: boolean) => {
       if (this.nzDisable) {
         return;
       }

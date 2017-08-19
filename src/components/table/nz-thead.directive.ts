@@ -4,7 +4,7 @@ import { Directive, HostBinding } from '@angular/core';
 })
 
 export class NzTheadDirective {
-  @HostBinding(`class.ant-table-thead`) true;
+  @HostBinding(`class.ant-table-thead`) _nzTableThead = true;
 
   constructor() {
 
