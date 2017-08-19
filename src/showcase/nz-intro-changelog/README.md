@@ -1,38 +1,6 @@
 更新日志
 ===
-
-#### 发布周期
-
-* 每周末会进行日常 bugfix 更新。（如果有紧急的 bugfix，则任何时候都可发布）
-* 每月发布一个带有新特性的向下兼容的版本。
-* 含有破坏性更新和新特性，不在发布周期内。
-
-更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
-
-## 0.5.0-rc.1
-`2017-08-19`
-
-### Features
-* `Input`组件增加`nzBlur`和`nzFocs`事件 [#73](https://github.com/NG-ZORRO/ng-zorro-antd/issues/73) [@giscafer](https://github.com/giscafer)
-
-### Bug Fixes
-* 修复`Steps`组件在`Tabs`组件中使用时的样式BUG [#83](https://github.com/NG-ZORRO/ng-zorro-antd/issues/83)
-* 修复`Pagination`上一页和下一页样式BUG [#17](https://github.com/NG-ZORRO/ng-zorro-antd/issues/17)
-* 修复`Menu`组件在懒加载模块中与`routerLinkActive`冲突的BUG [#52](https://github.com/NG-ZORRO/ng-zorro-antd/issues/52)
-* 修复`Menu`组件在`Layout`收起状态下样式错误的BUG [#35](https://github.com/NG-ZORRO/ng-zorro-antd/issues/35) [#74](https://github.com/NG-ZORRO/ng-zorro-antd/issues/74)
-* 修复`Timeline`组件使用`ngFor`渲染时的BUG [#66](https://github.com/NG-ZORRO/ng-zorro-antd/issues/66) [@SangKa](https://github.com/SangKa)
-* 修复`Carousel`组件内容动态改变时的BUG [#56](https://github.com/NG-ZORRO/ng-zorro-antd/issues/56)
-* 修复`Pagination`中快速跳转时首页和尾页不会高亮的BUG [#37](https://github.com/NG-ZORRO/ng-zorro-antd/issues/37) [@HsuanXyz](https://github.com/HsuanXyz)
-* 修复安装时`package.json`文件定义导致的Angular版本冲突问题 [#23](https://github.com/NG-ZORRO/ng-zorro-antd/issues/23)
-* 修正文档中多处错误 [@SangKa](https://github.com/SangKa)
-
-### Performance Improvements
-* 修改了`rxjs`的引入方式 [#29](https://github.com/NG-ZORRO/ng-zorro-antd/pull/29) [@trotyl](https://github.com/trotyl)
-
-### Other
-* 修正了`HostBinding`的使用方式 [#19](https://github.com/NG-ZORRO/ng-zorro-antd/pull/19) [@trotyl](https://github.com/trotyl)
-
-## 0.5.0-rc.0
+# 0.5.0-rc.0
 `2017-08-15`
 
 ### Features
