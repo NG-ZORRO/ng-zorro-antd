@@ -9,7 +9,8 @@ import {
   Output,
   EventEmitter, AfterViewInit
 } from '@angular/core';
-import { Subject } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Subject';
+import { debounceTime } from 'rxjs/operator/debounceTime';
 import { NzMenuComponent } from '../menu/nz-menu.component';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzDropDownDirective } from './nz-dropdown.directive';
@@ -120,7 +121,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this._$mouseSubject.debounceTime(300).subscribe((data: boolean) => {
+    debounceTime.call(this._$mouseSubject, 300).subscribe((data: boolean) => {
       this.nzVisible = data;
       if (this.nzVisible) {
         if (!this._triggerWidth) {
