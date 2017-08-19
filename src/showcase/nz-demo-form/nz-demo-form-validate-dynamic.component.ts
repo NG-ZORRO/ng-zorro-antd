@@ -6,7 +6,7 @@ import {
   FormControl,
   Validators
 } from '@angular/forms';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'nz-demo-form-validate-dynamic',

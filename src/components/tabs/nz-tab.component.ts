@@ -33,7 +33,7 @@ export class NzTabComponent implements OnDestroy, OnInit {
   @Output() nzClick = new EventEmitter();
   @Output() nzDeselect = new EventEmitter();
   @ContentChild('nzTabHeading') _tabHeading: TemplateRef<any>;
-  @HostBinding('class.ant-tabs-tabpane') true;
+  @HostBinding('class.ant-tabs-tabpane') _nzTabsTabpane = true;
   @ViewChild(TemplateRef) _content: TemplateRef<any>;
 
   get content(): TemplateRef<any> | null {

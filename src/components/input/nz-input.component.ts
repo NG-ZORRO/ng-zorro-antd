@@ -28,6 +28,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     <ng-template [ngIf]="nzType!='textarea'">
       <input
         (blur)="_emitBlur($event)"
+        (focus)="_emitFocus($event)"
         [attr.id]="nzId"
         [disabled]="nzDisabled"
         [attr.type]="nzType"
@@ -40,6 +41,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     <ng-template [ngIf]="nzType=='textarea'">
       <textarea
         (blur)="_emitBlur($event)"
+        (focus)="_emitFocus($event)"
         [attr.id]="nzId"
         #inputTextarea
         [disabled]="nzDisabled"
@@ -100,6 +102,7 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
   }
 
   @Output() nzBlur: EventEmitter<MouseEvent> = new EventEmitter();
+  @Output() nzFocus: EventEmitter<MouseEvent> = new EventEmitter();
   @ContentChild('addOnBefore') _addOnContentBefore: TemplateRef<any>;
   @ContentChild('addOnAfter') _addOnContentAfter: TemplateRef<any>;
 
@@ -134,6 +137,10 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
 
   _emitBlur($event) {
     this.nzBlur.emit($event);
+  }
+
+  _emitFocus($event) {
+    this.nzFocus.emit($event);
   }
 
   constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {

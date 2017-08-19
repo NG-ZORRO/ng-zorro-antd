@@ -5,5 +5,5 @@ import { Directive, HostBinding } from '@angular/core';
 })
 
 export class NzTableDividerDirective {
-  @HostBinding(`class.ant-divider`) true;
+  @HostBinding(`class.ant-divider`) _nzDivider = true;
 }

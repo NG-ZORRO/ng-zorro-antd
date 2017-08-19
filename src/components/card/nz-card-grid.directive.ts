@@ -4,5 +4,5 @@ import { Directive, HostBinding } from '@angular/core';
   selector: '[nz-card-grid]'
 })
 export class NzCardGridDirective {
-  @HostBinding('class.ant-card-grid') true;
+  @HostBinding('class.ant-card-grid') _nzCardGrid = true;
 }

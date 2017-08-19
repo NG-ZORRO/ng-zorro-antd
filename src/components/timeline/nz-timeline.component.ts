@@ -43,9 +43,11 @@ export class NzTimelineComponent implements OnInit, AfterContentInit {
   }
 
   ngAfterContentInit() {
-    if (this._listOfTimeline && this._listOfTimeline.length) {
-      const listArray = this._listOfTimeline.toArray();
-      listArray[ listArray.length - 1 ]._lastItem = true;
-    }
+    setTimeout(_ => {
+      if (this._listOfTimeline && this._listOfTimeline.length) {
+        const listArray = this._listOfTimeline.toArray();
+        listArray[ listArray.length - 1 ]._lastItem = true;
+      }
+    });
   }
 }

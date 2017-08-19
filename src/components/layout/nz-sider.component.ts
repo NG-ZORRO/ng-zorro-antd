@@ -57,7 +57,7 @@ export class NzSiderComponent {
   }
 
   @Output() nzCollapsedChange = new EventEmitter();
-  @HostBinding('class.ant-layout-sider') true;
+  @HostBinding('class.ant-layout-sider') _nzLayoutSider = true;
 
   @HostBinding('class.ant-layout-sider-zero-width')
   get setZeroClass() {

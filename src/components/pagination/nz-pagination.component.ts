@@ -36,8 +36,7 @@ import {
         title="上一页"
         class="ant-pagination-prev"
         (click)="_jumpPage(_current-1)"
-        [class.ant-pagination-disabled]="_isFirstIndex"
-        [class.ant-pagination-item-active]="_isFirstIndex">
+        [class.ant-pagination-disabled]="_isFirstIndex">
         <a></a>
       </li>
       <li
@@ -81,8 +80,7 @@ import {
         title="下一页"
         class="ant-pagination-next"
         (click)="_jumpPage(_current+1)"
-        [class.ant-pagination-disabled]="_isLastIndex"
-        [class.ant-pagination-item-active]="_isLastIndex">
+        [class.ant-pagination-disabled]="_isLastIndex">
         <a></a>
       </li>
       <div class="ant-pagination-options">
