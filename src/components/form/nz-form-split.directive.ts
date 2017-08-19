@@ -5,5 +5,5 @@ import { Directive, HostBinding } from '@angular/core';
 })
 
 export class NzFormSplitDirective {
-  @HostBinding(`class.ant-form-split`) true;
+  @HostBinding(`class.ant-form-split`) _nzFormSplit = true;
 }

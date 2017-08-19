@@ -4,7 +4,8 @@ import {
 } from '@angular/core';
 import { style, animate, state, transition, trigger } from '@angular/animations';
 import { NzMenuComponent } from './nz-menu.component';
-import { Subject } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Subject';
+import { debounceTime } from 'rxjs/operator/debounceTime';
 
 @Component({
   selector  : '[nz-submenu]',
@@ -50,7 +51,7 @@ import { Subject } from 'rxjs/Rx';
 
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   isInDropDown = false;
-  level = 0;
+  level = 1;
   _$mouseSubject = new Subject();
   @ContentChildren(NzSubMenuComponent) subMenus;
   @Input() nzOpen = false;
@@ -135,7 +136,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     this.isInDropDown = this.nzMenuComponent.isInDropDown;
     if (this.subMenus.length && (this.nzMenuComponent.nzMode === 'inline')) {
-      this.subMenus.forEach(menu => {
+      this.subMenus.filter(x => x !== this).forEach(menu => {
         setTimeout(_ => {
           menu.level = this.level + 1;
         });
@@ -144,7 +145,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this._$mouseSubject.debounceTime(300).subscribe((data: boolean) => {
+    debounceTime.call(this._$mouseSubject, 300).subscribe((data: boolean) => {
       this.nzOpen = data;
     });
   }

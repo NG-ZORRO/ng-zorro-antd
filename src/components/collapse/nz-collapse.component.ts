@@ -46,7 +46,7 @@ export class NzCollapseComponent {
   _el;
   _active: boolean;
 
-  @HostBinding('class.ant-collapse-item') true;
+  @HostBinding('class.ant-collapse-item') _nzCollapseItem = true;
 
   @Input() nzTitle: string;
   @Input()

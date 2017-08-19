@@ -57,5 +57,5 @@ export class NzCardComponent {
   @ContentChild('title') title: TemplateRef<any>;
   @ContentChild('extra') extra: TemplateRef<any>;
   @ContentChild('body') body: TemplateRef<any>;
-  @HostBinding('class.ant-card') true;
+  @HostBinding('class.ant-card') _nzCard = true;
 }

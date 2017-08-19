@@ -17,7 +17,7 @@ import {
 })
 export class NzBreadCrumbComponent {
   @Input() nzSeparator = '/';
-  @HostBinding('class.ant-breadcrumb') true;
+  @HostBinding('class.ant-breadcrumb') _nzBreadcrumb = true;
 
   constructor() {
   }

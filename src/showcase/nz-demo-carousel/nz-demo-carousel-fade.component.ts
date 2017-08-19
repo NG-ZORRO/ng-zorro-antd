@@ -3,10 +3,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'nz-demo-carousel-fade',
   template: `
     <nz-carousel [nzEffect]="'fade'">
-      <div nz-carousel-content><h3>1</h3></div>
-      <div nz-carousel-content><h3>2</h3></div>
-      <div nz-carousel-content><h3>3</h3></div>
-      <div nz-carousel-content><h3>4</h3></div>
+      <div nz-carousel-content *ngFor="let index of array"><h3>{{index}}</h3></div>
     </nz-carousel>`,
   styles  : [
       `:host ::ng-deep .ant-carousel .slick-slide {
@@ -24,10 +21,13 @@ import { Component, OnInit } from '@angular/core';
   ]
 })
 export class NzDemoCarouselFadeComponent implements OnInit {
-
+  array = [];
   constructor() {
   }
 
   ngOnInit() {
+    setTimeout(_ => {
+      this.array = [ 1, 2, 3, 4 ];
+    }, 500)
   }
 }

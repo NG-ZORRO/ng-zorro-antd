@@ -7,7 +7,7 @@ import { Directive, HostBinding } from '@angular/core';
 export class NzFormItemDirective {
   _withHelp = 0;
 
-  @HostBinding(`class.ant-form-item`) true;
+  @HostBinding(`class.ant-form-item`) _nzFormItem = true;
 
   enableHelp() {
     this._withHelp++;

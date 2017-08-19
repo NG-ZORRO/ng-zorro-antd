@@ -13,8 +13,17 @@ import {
   forwardRef,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { RxChain } from '@angular/cdk'
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { merge } from 'rxjs/observable/merge';
+import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
+import { _do as doOperator } from 'rxjs/operator/do';
+import { filter as filterOperator } from 'rxjs/operator/filter';
+import { map } from 'rxjs/operator/map';
+import { pluck } from 'rxjs/operator/pluck';
+import { takeUntil } from 'rxjs/operator/takeUntil';
 import { NzSliderService } from './nz-slider.service';
 import { Marks, MarksArray } from './nz-slider-marks.component';
 
@@ -365,32 +374,32 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     [ mouse, touch ].forEach(source => {
       const { start, move, end, pluckKey, filter = () => true } = source;
       // start
-      source.startPlucked$ = Observable
-        .fromEvent(sliderDOM, start)
-        .filter(<any>filter)
-        .do(this.utils.pauseEvent)
-        .pluck(...pluckKey)
-        .map((position: number) => this.findClosestValue(position));
+      source.startPlucked$ = (RxChain.from(fromEvent(sliderDOM, start)) as RxChain<any>)
+        .call(filterOperator, filter)
+        .call(doOperator, this.utils.pauseEvent)
+        .call(pluck, ...pluckKey)
+        .call(map, (position: number) => this.findClosestValue(position))
+        .result();
       // end
-      source.end$ = Observable.fromEvent(document, end);
+      source.end$ = fromEvent(document, end);
       // resolve move
-      source.moveResolved$ = Observable
-        .fromEvent(document, move)
-        .filter(<any>filter)
-        .do(this.utils.pauseEvent)
-        .pluck(...pluckKey)
-        .distinctUntilChanged()
-        .map((position: number) => this.findClosestValue(position))
-        .distinctUntilChanged()
-        .takeUntil(source.end$);
+      source.moveResolved$ = (RxChain.from(fromEvent(document, move)) as RxChain<any>)
+        .call(filterOperator, filter)
+        .call(doOperator, this.utils.pauseEvent)
+        .call(pluck, ...pluckKey)
+        .call(distinctUntilChanged)
+        .call(map, (position: number) => this.findClosestValue(position))
+        .call(distinctUntilChanged)
+        .call(takeUntil, source.end$)
+        .result();
       // merge to become moving
       // source.move$ = source.startPlucked$.mergeMapTo(source.moveResolved$);
     });
     // merge mouse and touch observables
-    this.dragstart$ = Observable.merge(mouse.startPlucked$, touch.startPlucked$);
+    this.dragstart$ = merge(mouse.startPlucked$, touch.startPlucked$);
     // this.dragmove$ = Observable.merge(mouse.move$, touch.move$);
-    this.dragmove$ = Observable.merge(mouse.moveResolved$, touch.moveResolved$);
-    this.dragend$ = Observable.merge(mouse.end$, touch.end$);
+    this.dragmove$ = merge(mouse.moveResolved$, touch.moveResolved$);
+    this.dragend$ = merge(mouse.end$, touch.end$);
   }
 
   subscribeDrag(periods = [ 'start', 'move', 'end' ]) {

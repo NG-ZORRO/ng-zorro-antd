@@ -14,5 +14,5 @@ import {
 })
 
 export class NzMenuGroupComponent {
-  @HostBinding('class.ant-menu-item-group') true;
+  @HostBinding('class.ant-menu-item-group') _nzMenuItemGroup = true;
 }

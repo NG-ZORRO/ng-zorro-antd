@@ -170,10 +170,12 @@ export class NzStepComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     if (this._last) {
-      this.nzStepConnectService.lastElementSizeEvent.next({
-        count: this.erf.nativeElement.parentElement.childElementCount,
-        width: this.erf.nativeElement.firstElementChild.offsetWidth
-      });
+      setTimeout(_ => {
+        this.nzStepConnectService.lastElementSizeEvent.next({
+          count: this.erf.nativeElement.parentElement.childElementCount,
+          width: this.erf.nativeElement.firstElementChild.offsetWidth
+        });
+      })
     }
   }
 

@@ -5,5 +5,5 @@ import { Directive, HostBinding } from '@angular/core';
 })
 
 export class NzFormTextDirective {
-  @HostBinding(`class.ant-form-text`) true;
+  @HostBinding(`class.ant-form-text`) _nzFormText = true;
 }
