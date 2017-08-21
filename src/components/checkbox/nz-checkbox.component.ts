@@ -109,6 +109,6 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit() {
-    this._render.setAttribute(this._el, 'class', `${this._prefixCls}-wrapper`);
+    this._render.addClass(this._el, `${this._prefixCls}-wrapper`);
   }
 }
