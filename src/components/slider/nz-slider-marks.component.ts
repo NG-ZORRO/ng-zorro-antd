@@ -25,7 +25,7 @@ export class NzSliderMarksComponent implements OnInit, OnChanges {
 
   attrs; // points for inner use
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: any) {
     if (changes.nzLowerBound || changes.nzUpperBound) {
       this.togglePointActive();
     }

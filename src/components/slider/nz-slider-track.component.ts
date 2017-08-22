@@ -20,7 +20,7 @@ export class NzSliderTrackComponent implements OnChanges {
 
   style: any = {};
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: any) {
     const { nzOffset, nzLength, nzIncluded, nzVertical, style } = this;
     if (changes.nzIncluded) {
       style.visibility = nzIncluded ? 'visible' : 'hidden';

@@ -53,7 +53,7 @@ export class NzBadgeComponent implements OnInit {
   @Input() nzOverflowCount = 99;
 
   @Input()
-  set nzShowZero(value: boolean | string) {
+  set nzShowZero(value: any) {
     if (value === '') {
       this._showZero = true;
     } else {
@@ -61,7 +61,7 @@ export class NzBadgeComponent implements OnInit {
     }
   }
 
-  get nzShowZero() {
+  get nzShowZero(): boolean {
     return this._showZero;
   }
 

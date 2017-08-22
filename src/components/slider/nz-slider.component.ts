@@ -106,7 +106,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   @Output() nzOnAfterChange = new EventEmitter<SliderValue>();
 
   @Input()
-  set nzVertical(value: boolean | string) {
+  set nzVertical(value: any) {
     if (value === '') {
       this._vertical = true;
     } else {
@@ -119,7 +119,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   @Input()
-  set nzRange(value: boolean | string) {
+  set nzRange(value: any) {
     if (value === '') {
       this._range = true;
     } else {

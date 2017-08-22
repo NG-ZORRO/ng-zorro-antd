@@ -20,7 +20,7 @@ export class NzFormControlComponent {
   @HostBinding(`class.ant-form-item-control-wrapper`) _nzFormItemControlWrapper = true;
 
   @Input()
-  set nzHasFeedback(value: boolean|string) {
+  set nzHasFeedback(value: any) {
     if (value === '') {
       this._hasFeedback = true;
     } else {

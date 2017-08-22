@@ -26,7 +26,7 @@ export type NzButtonSize = 'small' | 'large' | 'default' ;
 export class NzButtonComponent implements AfterContentInit {
   _el: HTMLElement;
   nativeElement: HTMLElement;
-  _iconElement: HTMLElement;
+  _iconElement: Element;
   _type: NzButtonType;
   _shape: NzButtonShape;
   _size: NzButtonSize;

@@ -119,7 +119,7 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   _checkDisabled = () => {
     this._disabledUp = !((this.nzValue + this.nzStep) <= this.nzMax);
     this._disabledDown = !((this.nzValue - this.nzStep) >= this.nzMin);
-  }
+  };
 
   _numberUp($event) {
     $event.preventDefault();

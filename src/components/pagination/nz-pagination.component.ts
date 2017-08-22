@@ -126,7 +126,7 @@ export class NzPaginationComponent {
   _simple = false;
 
   @Input()
-  set nzShowSizeChanger(value: boolean|string) {
+  set nzShowSizeChanger(value: any) {
     if (value === '') {
       this._showSizeChanger = true;
     } else {
@@ -140,7 +140,7 @@ export class NzPaginationComponent {
 
 
   @Input()
-  set nzShowQuickJumper(value: boolean|string) {
+  set nzShowQuickJumper(value: any) {
     if (value === '') {
       this._showQuickJumper = true;
     } else {
@@ -154,7 +154,7 @@ export class NzPaginationComponent {
 
 
   @Input()
-  set nzShowTotal(value: boolean|string) {
+  set nzShowTotal(value: any) {
     if (value === '') {
       this._showTotal = true;
     } else {
@@ -167,7 +167,7 @@ export class NzPaginationComponent {
   }
 
   @Input()
-  set nzSimple(value: boolean|string) {
+  set nzSimple(value: any) {
     if (value === '') {
       this._simple = true;
     } else {

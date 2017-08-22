@@ -24,7 +24,7 @@ export class NzSliderStepComponent implements OnInit, OnChanges {
 
   attrs;
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: any) {
     if (changes.nzLowerBound || changes.nzUpperBound) {
       this.togglePointActive();
     }
