@@ -17,7 +17,10 @@ import { DOCUMENT } from '@angular/common';
         </div>
         <ng-content select="[intro]"></ng-content>
         <nz-tooltip [nzTitle]="nzExpanded?'收起代码':'展开代码'">
-          <img nz-tooltip alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/NBjNKmzFsnATotIWoZmP.svg" class="collapse" (click)="nzExpanded=!nzExpanded">
+          <span class="code-expand-icon" nz-tooltip (click)="nzExpanded=!nzExpanded">
+            <img alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/wSAkBuJFbdxsosKKpqyq.svg" [class.code-expand-icon-show]="nzExpanded" [class.code-expand-icon-hide]="!nzExpanded">
+            <img alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/OpROPHYqWmrMDBFMZtKF.svg" [class.code-expand-icon-show]="!nzExpanded" [class.code-expand-icon-hide]="nzExpanded">
+          </span>
         </nz-tooltip>
       </section>
       <section class="highlight-wrapper" [ngClass]="{'highlight-wrapper-expand':nzExpanded}">

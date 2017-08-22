@@ -2,6 +2,7 @@ import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { ROUTER_LIST } from './router';
+
 @Component({
   selector     : 'app-root',
   encapsulation: ViewEncapsulation.None,
@@ -43,6 +44,7 @@ export class AppComponent implements OnInit {
         if (this.router.url !== '/' + this.searchComponent) {
           this.searchComponent = null;
         }
+        window.scrollTo(0, 0);
       }
     });
   }
