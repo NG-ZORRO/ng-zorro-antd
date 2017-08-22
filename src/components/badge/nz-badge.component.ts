@@ -61,7 +61,7 @@ export class NzBadgeComponent implements OnInit {
     }
   }
 
-  get nzShowZero(): boolean {
+  get nzShowZero() {
     return this._showZero;
   }
 
