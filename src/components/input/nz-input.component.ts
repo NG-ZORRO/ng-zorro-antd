@@ -137,6 +137,7 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
 
   _emitBlur($event) {
     this.nzBlur.emit($event);
+    this.onTouched();
   }
 
   _emitFocus($event) {
