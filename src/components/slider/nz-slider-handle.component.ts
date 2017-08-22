@@ -40,7 +40,7 @@ export class NzSliderHandleComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
 
-  ngOnChanges(changes: any) {
+  ngOnChanges(changes: SimpleChanges) {
     if (changes.nzOffset) {
       this._updateStyle();
     }
