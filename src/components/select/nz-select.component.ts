@@ -185,7 +185,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   @Input() nzMaxMultiple = Infinity;
 
   @Input()
-  set nzAllowClear(value: any) {
+  set nzAllowClear(value: boolean | string) {
     if (value === '') {
       this._allowClear = true;
     } else {
@@ -198,7 +198,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   }
 
   @Input()
-  set nzKeepUnListOptions(value: any) {
+  set nzKeepUnListOptions(value: boolean | string) {
     if (value === '') {
       this._keepUnListOptions = true;
     } else {

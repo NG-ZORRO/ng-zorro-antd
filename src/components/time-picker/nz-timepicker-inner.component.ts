@@ -141,7 +141,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
   @ViewChild('secondListInstance') _secondListInstance;
 
   @Input()
-  set nzHideDisabledOptions(value: any) {
+  set nzHideDisabledOptions(value: boolean | string) {
     if (value === '') {
       this._hideDisabledOptions = true;
     } else {

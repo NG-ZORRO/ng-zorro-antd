@@ -37,7 +37,7 @@ export class NzStepsComponent implements OnInit, OnDestroy {
   @Input() nzSize: 'default' | 'small';
 
   @Input()
-  set nzProgressDot(value: any) {
+  set nzProgressDot(value: boolean | string) {
     if (value === '') {
       this._progressDot = true;
     } else {

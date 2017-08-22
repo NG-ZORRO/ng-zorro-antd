@@ -44,7 +44,7 @@ export class NzSiderComponent {
   _collapsible = false;
 
   @Input()
-  set nzCollapsible(value: any) {
+  set nzCollapsible(value: boolean | string) {
     if (value === '') {
       this._collapsible = true;
     } else {
