@@ -1,12 +1,28 @@
-import { NgModule } from '@angular/core';
+import { NgModule, OnDestroy, ComponentRef, ComponentFactoryResolver, Inject, Optional, Injector, APP_INITIALIZER } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { NzRootComponent } from './nz-root.component';
-import { CommonModule } from '@angular/common';
+import { NzRootStyleComponent } from './nz-root-style.component';
+import { NZ_ROOT_CONFIG, createNzRootInitializer } from './nz-root-config';
 
 @NgModule({
-  exports     : [ NzRootComponent ],
-  declarations: [ NzRootComponent ],
-  imports     : [ CommonModule ]
+  exports         : [ NzRootComponent ],
+  declarations    : [ NzRootComponent, NzRootStyleComponent ],
+  imports         : [ CommonModule ],
+  entryComponents : [ NzRootStyleComponent ],
+  providers       : [
+    { provide: APP_INITIALIZER, multi: true, useFactory: createNzRootInitializer, deps: [DOCUMENT, [new Optional(), NZ_ROOT_CONFIG]] },
+  ],
 })
+export class NzRootModule implements OnDestroy {
+  private styleHostComponent: ComponentRef<NzRootStyleComponent>;
 
-export class NzRootModule {
+  constructor(@Inject(DOCUMENT) _document: Document, injector: Injector, resolver: ComponentFactoryResolver) {
+    const componentFactory = resolver.resolveComponentFactory(NzRootStyleComponent);
+    const div = _document.createElement('div');
+    this.styleHostComponent = componentFactory.create(injector, null, div);
+  }
+
+  ngOnDestroy() {
+    this.styleHostComponent.destroy();
+  }
 }
