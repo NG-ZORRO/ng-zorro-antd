@@ -223,15 +223,19 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   }
 
 
-  get nzValue(): Date {
+  get nzValue(): Date | String {
     return this._value || new Date();
   };
 
-  set nzValue(value: Date) {
+  set nzValue(value: Date | String) {
     if (this._value === value) {
       return;
     }
-    this._value = value;
+    if (typeof value === 'string' && !isNaN(new Date(value).getTime())) {
+        this._value =  new Date(value) ;
+    }else {
+      this._value = value;
+    }
     this._selectedMonth = moment(this.nzValue).month();
     this._selectedYear = moment(this.nzValue).year();
     this._selectedDate = moment(this.nzValue).date();
