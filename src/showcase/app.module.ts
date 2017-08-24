@@ -19,7 +19,7 @@ import { NzHighlightModule } from './share/nz-highlight/nz-highlight.module';
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
-    NgZorroAntdModule.forRoot(),
+    NgZorroAntdModule.forRoot({ extraFontName: 'anticon', extraFontUrl: './assets/fonts/iconfont' }),
     NzCodeBoxModule,
     NzHighlightModule,
     RouterModule.forRoot(routes, { useHash: true, preloadingStrategy: PreloadAllModules })

@@ -67,18 +67,14 @@ import { AppComponent } from './app.component';
 export class AppModule { }
 
 ```
-这样就成功在全局引入了 ng-zorro-antd
+这样就成功在全局引入了 ng-zorro-antd。
 
+> `NgZorroAntdModule.forRoot()` 方法能够接受一个可选的配置对象，用于引入外部的字体文件，类型为 `{ extraFontName: string, extraFontUrl: string }`。
 
 用下面的代码替换 `/src/app/app.component.html`
 
-> **注意**：务必要引入 `nz-root` 根组件， `nz-root` 必须放置在根component `(app.component.html)` 中，而不是替换 `app-root` ，根组件只能引入一次，所有 ng-zorro组件都应该包裹在下面，否则部分组件将不能正常工作
-
 ```html
-<!--引入根组件-->
-<nz-root>
-  <button nz-button [nzType]="'primary'">测试按钮</button>
-</nz-root>
+<button nz-button [nzType]="'primary'">测试按钮</button>
 ```
 [查看](#/components/button)最简单的Button效果
 

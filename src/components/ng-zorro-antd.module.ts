@@ -53,6 +53,9 @@ import { NzMessageService } from './message/nz-message.service';
 import { NzModalService } from './modal/nz-modal.service';
 import { NzModalSubject } from './modal/nz-modal-subject.service';
 
+// Tokens (eg. global services' config)
+import { NZ_ROOT_CONFIG, NzRootConfig } from './root/nz-root-config'
+
 // ---------------------------------------------------------
 // | Exports
 // ---------------------------------------------------------
@@ -108,6 +111,7 @@ export { NzModalSubject } from './modal/nz-modal-subject.service';
 // Tokens (eg. global services' config)
 export { NZ_MESSAGE_CONFIG } from './message/nz-message-config';
 export { NZ_NOTIFICATION_CONFIG } from './notification/nz-notification-config';
+export { NZ_ROOT_CONFIG, NzRootConfig } from './root/nz-root-config';
 
 // ---------------------------------------------------------
 // | Root module
@@ -159,13 +163,14 @@ export { NZ_NOTIFICATION_CONFIG } from './notification/nz-notification-config';
 })
 export class NgZorroAntdModule {
 
-  static forRoot(): ModuleWithProviders {
+  static forRoot(options?: NzRootConfig): ModuleWithProviders {
     return {
       ngModule: NgZorroAntdModule,
       providers: [
         // Services
         NzNotificationService,
-        NzMessageService
+        NzMessageService,
+        { provide: NZ_ROOT_CONFIG, useValue: options },
       ]
     };
   }
