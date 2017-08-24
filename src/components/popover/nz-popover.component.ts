@@ -23,8 +23,8 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
       (detach)="hide()"
       (positionChange)="onPositionChange($event)"
       [positions]="_positions"
-      [open]="nzVisible">
-      <div class="ant-popover" [ngClass]="_classMap" [ngStyle]="nzOverlayStyle" [@fadeAnimation]="''+nzVisible"
+      [open]="visible$ | async">
+      <div class="ant-popover" [ngClass]="_classMap" [ngStyle]="nzOverlayStyle" [@fadeAnimation]="''+(visible$ | async)"
         (@fadeAnimation.done)="_afterVisibilityAnimation($event)">
         <div class="ant-popover-content">
           <div class="ant-popover-arrow"></div>

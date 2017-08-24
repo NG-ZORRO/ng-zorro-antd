@@ -11,6 +11,8 @@ import {
   ContentChild,
   ViewChild
 } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 import { NzTooltipDirective } from './nz-tooltip.directive';
 import {
   AnimationEvent,
@@ -39,8 +41,8 @@ import { POSITION_MAP, DEFAULT_4_POSITIONS } from '../core/overlay/overlay-posit
       (detach)="hide()"
       (positionChange)="onPositionChange($event)"
       [positions]="_positions"
-      [open]="nzVisible">
-      <div class="ant-tooltip" [ngClass]="_classMap" [ngStyle]="nzOverlayStyle" [@fadeAnimation]="''+nzVisible"
+      [open]="visible$ | async">
+      <div class="ant-tooltip" [ngClass]="_classMap" [ngStyle]="nzOverlayStyle" [@fadeAnimation]="''+(visible$ | async)"
         (@fadeAnimation.done)="_afterVisibilityAnimation($event)">
         <div class="ant-tooltip-content">
           <div class="ant-tooltip-arrow"></div>
@@ -70,15 +72,18 @@ export class NzToolTipComponent implements AfterViewInit {
 
   @Input()
   set nzVisible(value) {
-    this._visible = value;
-    if (this._visible !== value) {
+    if (this.visibleSource.value !== value) {
+      this.visibleSource.next(value);
       this.nzVisibleChange.emit(value);
     }
   };
 
   get nzVisible() {
-    return this._visible;
+    return this.visibleSource.value;
   }
+  
+  visibleSource = new BehaviorSubject<boolean>(false);
+  visible$ = this.visibleSource.asObservable();
 
   @Input()
   set nzTrigger(value) {
@@ -96,7 +101,6 @@ export class NzToolTipComponent implements AfterViewInit {
   _placement = 'top';
   _trigger = 'hover';
   _hasBackdrop = false;
-  _visible = false;
 
   @Input()
   get nzPlacement() {
@@ -130,12 +134,12 @@ export class NzToolTipComponent implements AfterViewInit {
   }
 
   show(): void {
-    this._visible = true;
+    this.nzVisible = true;
     this.nzOrigin.isTooltipOpen = true;
   }
 
   hide(): void {
-    this._visible = false;
+    this.nzVisible = false;
     this.nzOrigin.isTooltipOpen = false;
   }
 

@@ -9,6 +9,7 @@ import {
 import { NzPopconfirmDirective } from './nz-popconfirm.directive';
 import { FadeAnimation } from '../core/animation/fade-animations';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
+
 @Component({
   selector     : 'nz-popconfirm',
   encapsulation: ViewEncapsulation.None,
@@ -25,8 +26,8 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
       (detach)="hide()"
       (positionChange)="onPositionChange($event)"
       [positions]="_positions"
-      [open]="nzVisible">
-      <div class="ant-popover" [ngClass]="_classMap" [ngStyle]="nzOverlayStyle" [@fadeAnimation]="''+nzVisible"
+      [open]="visible$ | async">
+      <div class="ant-popover" [ngClass]="_classMap" [ngStyle]="nzOverlayStyle" [@fadeAnimation]="''+(visible$ | async)"
         (@fadeAnimation.done)="_afterVisibilityAnimation($event)">
         <div class="ant-popover-content">
           <div class="ant-popover-arrow"></div>
@@ -81,7 +82,7 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
 
   show(): void {
     if (!this._condition) {
-      this._visible = true;
+      this.nzVisible = true;
     } else {
       this.onConfirm();
     }

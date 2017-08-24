@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 @Component({
   selector     : 'nz-demo-tooltip',
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl  : './nz-demo-tooltip.html',
   styleUrls    : [
     './nz-demo-tooltip.less',
