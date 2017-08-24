@@ -579,7 +579,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     }
 
     /** TODO: cause pre & next key selection not work */
-    if (updateActiveFilter) {
+    if (updateActiveFilter && !this._selectedOption) {
       this._activeFilterOption = this._filterOptions[ 0 ];
     }
   }
