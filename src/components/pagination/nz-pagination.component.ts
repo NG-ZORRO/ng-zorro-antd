@@ -284,6 +284,7 @@ export class NzPaginationComponent {
       this.nzPageIndex = index;
     }
     this.nzPageIndexClickChange.emit(this.nzPageIndex);
+    this.nzPageIndexChange.emit(this.nzPageIndex);
   }
 
   get _isLastIndex() {

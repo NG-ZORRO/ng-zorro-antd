@@ -45,6 +45,16 @@ describe('NzPaginationComponent', () => {
       expect(debugElement.nativeElement.querySelectorAll('.ant-pagination-item').length).toBe(6);
       expect(debugElement.nativeElement.querySelector('.ant-pagination-jump-next')).toBeDefined();
     });
+    it('correct double binding', () => {
+      const fixture = TestBed.createComponent(TestPaginationBasic);
+      const testComponent = fixture.debugElement.componentInstance;
+      const debugElement = fixture.debugElement.query(By.directive(NzPaginationComponent));
+      testComponent._nzTotal = 50;
+      fixture.detectChanges();
+      debugElement.nativeElement.querySelector('.ant-pagination-item:nth-child(4)').click();
+      fixture.detectChanges();
+      expect(testComponent._nzPageIndex).toBe(3);
+    });
 
     it('change each page to display the entry', () => {
       const fixture = TestBed.createComponent(TestPaginationChanger);
@@ -113,7 +123,7 @@ describe('NzPaginationComponent', () => {
   @Component({
     selector: 'nz-test-pagination-basic',
     template: `
-      <nz-pagination [nzPageIndex]="_nzPageIndex" [nzTotal]="_nzTotal"></nz-pagination>
+      <nz-pagination [(nzPageIndex)]="_nzPageIndex" [nzTotal]="_nzTotal"></nz-pagination>
     `
   })
   class TestPaginationBasic {

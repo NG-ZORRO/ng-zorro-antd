@@ -127,7 +127,6 @@ export class NzTableComponent implements AfterViewInit {
   };
 
   pageChangeClick(value) {
-    this.nzPageIndex = value;
     this.nzPageIndexChangeClick.emit(value);
   }
 
