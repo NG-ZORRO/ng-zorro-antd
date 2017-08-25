@@ -492,7 +492,11 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     if (this._value === value) {
       return;
     }
-    this._value = value;
+    if ((value === null) && this.nzMultiple) {
+      this._value = [];
+    } else {
+      this._value = value;
+    }
     if (!this.nzMultiple) {
       if (value === null) {
         this._selectedOption = null;
@@ -506,6 +510,8 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
         } else {
           this.updateSelectedOption(value, true);
         }
+      } else if (value === null) {
+        this.clearAllSelectedOption();
       }
 
     }
