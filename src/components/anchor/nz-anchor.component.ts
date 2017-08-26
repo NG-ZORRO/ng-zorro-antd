@@ -12,7 +12,11 @@ import {
   Inject
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-import { Observable } from 'rxjs/Observable';
+// import { Observable } from 'rxjs/Observable';
+import { RxChain } from '@angular/cdk';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { throttleTime } from 'rxjs/operator/throttleTime';
+import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
 import { Subscription } from 'rxjs/Subscription';
 
 import { NzScrollService } from "../core/scroll/nz-scroll.service";
@@ -104,7 +108,7 @@ export class NzAnchorComponent {
 
     let linkNode = (maxSection.comp.el.nativeElement as HTMLDivElement).querySelector('.ant-anchor-link-title') as HTMLElement;
     this.ball.nativeElement.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
-    console.log(linkNode, linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5);
+    // console.log(linkNode, linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5);
 
     this.nzScroll.emit(maxSection.comp);
   }
@@ -120,9 +124,9 @@ export class NzAnchorComponent {
     setTimeout(() => {
       this.handleScroll();
     }, 500);
-    this.scroll$ = Observable.fromEvent(this.getTarget(), 'scroll')
-      .throttleTime(50)
-      .distinctUntilChanged()
+    this.scroll$ = (RxChain.from(fromEvent(this.getTarget(), 'scroll')) as RxChain<any>)
+      .call(throttleTime, 50)
+      .call(distinctUntilChanged)
       .subscribe(e => {
         this.handleScroll();
       });
