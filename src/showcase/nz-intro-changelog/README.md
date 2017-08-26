@@ -9,6 +9,25 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.5.0-rc.3
+`2017-08-26`
+
+### Features
+* `nz-root`不再作为必须项引入，提供了[新的方法](https://ng.ant.design/#/components/icon)配置本地字体文件，原有`nz-root`的使用方式继续兼容，但不建议继续使用 [#34](https://github.com/NG-ZORRO/ng-zorro-antd/issues/34) [@trotyl](https://github.com/trotyl)
+* 增加`BackTop`,`Anchor`,`Affix`,`Avatar`四个组件 [#88](https://github.com/NG-ZORRO/ng-zorro-antd/pull/88) [@cipchk](https://github.com/cipchk)
+
+### Bug Fixes
+* 修复`checkbox`class名称丢失的问题 [#104](https://github.com/NG-ZORRO/ng-zorro-antd/issues/104) [@cipchk](https://github.com/cipchk)
+* 修复`input`中`touched`事件触发的问题 [#65](https://github.com/NG-ZORRO/ng-zorro-antd/issues/65) [#117](https://github.com/NG-ZORRO/ng-zorro-antd/issues/117)
+* 修复`select`中激活`option`样式的问题 [#139](https://github.com/NG-ZORRO/ng-zorro-antd/issues/139) [@SangKa](https://github.com/SangKa)
+* 修复`pgaination`中`nzPageIndex`双向绑定的问题 [#107](https://github.com/NG-ZORRO/ng-zorro-antd/issues/107)
+* 修复`select`在`multiple`情况下表单中reset时的问题 [#128](https://github.com/NG-ZORRO/ng-zorro-antd/issues/128)
+* 修复`input`的`disable`情况下样式未生效的问题 [#103](https://github.com/NG-ZORRO/ng-zorro-antd/issues/103) [@cipchk](https://github.com/cipchk)
+* 修复`carousel`中自动播放的问题 [#161](https://github.com/NG-ZORRO/ng-zorro-antd/issues/161)
+
+### Doc
+* 文档页面切换路由时自动滚动至顶部 [#26](https://github.com/NG-ZORRO/ng-zorro-antd/issues/26)
+
 ## 0.5.0-rc.2
 `2017-08-19`
 

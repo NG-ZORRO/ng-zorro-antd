@@ -18,7 +18,7 @@ NG-ZORRO [![GitHub stars](https://img.shields.io/github/stars/NG-ZORRO/ng-zorro-
 
 ## 版本
 
-- [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+- [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg)](https://www.npmjs.org/package/ng-zorro-antd)
 
 ## 支持环境
 

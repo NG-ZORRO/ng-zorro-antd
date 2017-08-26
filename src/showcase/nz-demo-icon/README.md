@@ -21,11 +21,21 @@
 
 ## 本地部署
 
-图标默认托管在 [iconfont.cn](http://iconfont.cn)，默认公网可访问。如需本地部署，可以下载<a href="./assets/download/fonts.zip">iconfont</a>文件,解压后放在 `assets/fonts`或其他公网可访问的文件夹下，通过定义`nz-root`的 `nzExtraFontName`和 `nzExtraFontUrl`来自定义图标文件地址
+图标默认托管在 [iconfont.cn](http://iconfont.cn)，默认公网可访问。如需本地部署，可以下载<a href="./assets/download/fonts.zip">iconfont</a>文件,解压后放在 `assets/fonts`或其他公网可访问的文件夹下
 
-```html
-<nz-root [nzExtraFontName]="'anticon'" [nzExtraFontUrl]="'./assets/fonts/iconfont'">
-</nz-root>
+> `NgZorroAntdModule.forRoot()` 方法能够接受一个可选的配置对象，用于引入外部的字体文件，类型为 `{ extraFontName: string, extraFontUrl: string }`。
+
+例如
+```typescript
+@NgModule({
+  ...
+  imports: [
+    ...
+    NgZorroAntdModule.forRoot({ extraFontName: 'anticon', extraFontUrl: './assets/fonts/iconfont' })
+    ...
+  ]
+  ...
+})
 ```
 ## 图标列表
 

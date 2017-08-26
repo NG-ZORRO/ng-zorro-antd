@@ -40,7 +40,7 @@ $ npm install ng-zorro-antd --save
 
 直接用下面的代码替换 `/src/app/app.module.ts` 的内容
 
-> **注意**：在根 module 中使用 `NgZorroAntdModule.forRoot()`，在子 module 中使用 `NgZorroAntdModule` 即可
+> **注意**：在根 module 中需要使用 `NgZorroAntdModule.forRoot()`，在子 module 需要使用 `NgZorroAntdModule` 
 
 ```typescript
 import { BrowserModule } from '@angular/platform-browser';

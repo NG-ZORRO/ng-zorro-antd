@@ -6,7 +6,7 @@
 
 # NG-ZORRO
 [![Build Status](https://travis-ci.org/NG-ZORRO/ng-zorro-antd.svg?branch=master)](https://travis-ci.org/NG-ZORRO/ng-zorro-antd)
-[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg)](https://www.npmjs.org/package/ng-zorro-antd)
 [![Gitter](https://badges.gitter.im/ng-zorro/ng-zorro-antd.svg)](https://gitter.im/ng-zorro/ng-zorro-antd?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 An enterprise-class UI components based on Ant Design and Angular.
