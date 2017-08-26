@@ -58,7 +58,9 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
 
   setActive(content, i) {
     this.clearInterval();
-    this.createInterval();
+    if (this.nzAutoPlay) {
+      this.createInterval();
+    }
     this.activeIndex = i;
     if (this.nzEffect !== 'fade') {
       if (!this.nzVertical) {
