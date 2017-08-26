@@ -14,9 +14,9 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
-  selector     : 'nz-input',
+  selector: 'nz-input',
   encapsulation: ViewEncapsulation.None,
-  template     : `
+  template: `
     <span class="ant-input-group-addon" *ngIf="_addOnContentBefore">
       <ng-template [ngTemplateOutlet]="_addOnContentBefore">
       </ng-template>
@@ -34,7 +34,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         [attr.type]="nzType"
         class="ant-input"
         [class.ant-input-search]="nzType==='search'"
-        [ngClass]="_prefixCls+'-'+_size"
+        [ngClass]="_classMap"
         [attr.placeholder]="nzPlaceHolder"
         [(ngModel)]="nzValue">
     </ng-template>
@@ -49,6 +49,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         [attr.rows]="nzRows"
         [attr.cols]="nzCols"
         class="ant-input"
+        [ngClass]="_classMap"
         [attr.placeholder]="nzPlaceHolder"
         [(ngModel)]="nzValue"></textarea>
     </ng-template>
@@ -61,14 +62,14 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       <ng-template [ngTemplateOutlet]="_addOnContentAfter">
       </ng-template>
     </span>`,
-  providers    : [
+  providers: [
     {
-      provide    : NG_VALUE_ACCESSOR,
+      provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzInputComponent),
-      multi      : true
+      multi: true
     }
   ],
-  styleUrls    : [
+  styleUrls: [
     './style/index.less',
     './style/patch.less'
   ]
@@ -80,6 +81,8 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
   _size = 'default';
   _prefixCls = 'ant-input';
   _composing = false;
+  _classMap;
+  _disabled = false;
 
   // ngModel Access
   onChange: any = Function.prototype;
@@ -90,7 +93,6 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
   @Input() nzId: string;
   @Input() nzRows: number;
   @Input() nzCols: number;
-  @Input() nzDisabled: boolean;
 
   @Input()
   get nzSize(): string {
@@ -99,6 +101,16 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
 
   set nzSize(value: string) {
     this._size = { large: 'lg', small: 'sm' }[ value ];
+  }
+
+  @Input()
+  get nzDisabled(): boolean {
+    return this._disabled;
+  };
+
+  set nzDisabled(value: boolean) {
+    this._disabled = value;
+    this.setClassMap();
   }
 
   @Output() nzBlur: EventEmitter<MouseEvent> = new EventEmitter();
@@ -142,6 +154,13 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
 
   _emitFocus($event) {
     this.nzFocus.emit($event);
+  }
+
+  setClassMap(): void {
+    this._classMap = {
+      [this._prefixCls+'-'+this._size]: true,
+      [`${this._prefixCls}-disabled`]: this._disabled
+    };
   }
 
   constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
