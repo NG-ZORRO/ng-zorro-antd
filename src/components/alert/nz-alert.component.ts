@@ -1,6 +1,3 @@
-/**
- * @author MoXun
- */
 import {
   Component,
   ViewEncapsulation,

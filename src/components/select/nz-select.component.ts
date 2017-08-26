@@ -318,7 +318,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     if (!this._isTags) {
       this.forceUpdateSelectedOption(this._value);
     }
-  }
+  };
 
   /** nz-option remove or tags remove */
   removeOption(option) {
@@ -417,7 +417,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
       $event.preventDefault();
       $event.stopPropagation();
     }
-  }
+  };
 
   /** select multiple option */
   selectMultipleOption(option, $event?) {
@@ -637,7 +637,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     });
     this._classList.forEach(_className => {
       this._renderer.addClass(this._el, _className);
-    })
+    });
     this._selectionClassMap = {
       [this._selectionPrefixCls]               : true,
       [`${this._selectionPrefixCls}--single`]  : !this.nzMultiple,
