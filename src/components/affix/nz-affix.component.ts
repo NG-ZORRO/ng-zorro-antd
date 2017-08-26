@@ -11,7 +11,11 @@ import {
   ElementRef,
   HostBinding
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+// import { Observable } from 'rxjs/Observable';
+import { RxChain } from '@angular/cdk';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { throttleTime } from 'rxjs/operator/throttleTime';
+import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
 import { Subscription } from 'rxjs/Subscription';
 
 import { NzScrollService } from "../core/scroll/nz-scroll.service";
@@ -95,18 +99,18 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   private registerScrollEvent() {
     this.removeListen();
     this.reCalculate().process();
-    this.scroll$ = Observable.fromEvent(this.getTarget(), 'scroll')
-      .throttleTime(50)
-      .distinctUntilChanged()
+    this.scroll$ = (RxChain.from(fromEvent(this.getTarget(), 'scroll')) as RxChain<any>)
+      .call(throttleTime, 50)
+      .call(distinctUntilChanged)
       .subscribe(e => {
         this.process();
       });
 
     if (this.getTarget() !== window) {
       // 当 window 滚动位发生变动时，需要重新计算滚动容器
-      this.scrollWinInTarget$ = Observable.fromEvent(window, 'scroll')
-        .throttleTime(50)
-        .distinctUntilChanged()
+      this.scrollWinInTarget$ = (RxChain.from(fromEvent(window, 'scroll')) as RxChain<any>)
+        .call(throttleTime, 50)
+        .call(distinctUntilChanged)
         .subscribe(e => {
           this.orgOffset = null;
           this.fixed = false;

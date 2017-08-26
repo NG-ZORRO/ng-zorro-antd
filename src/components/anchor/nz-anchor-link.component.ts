@@ -47,6 +47,6 @@ export class NzAnchorLinkComponent {
     e.preventDefault();
     e.stopPropagation();
     this._anchorComp.scrollTo(this);
-    return false;
+    // return false;
   }
 }

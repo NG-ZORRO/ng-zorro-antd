@@ -17,7 +17,11 @@ import {
   transition,
   animate
 } from '@angular/animations';
-import { Observable } from 'rxjs/Observable';
+// import { Observable } from 'rxjs/Observable';
+import { RxChain } from '@angular/cdk';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { throttleTime } from 'rxjs/operator/throttleTime';
+import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
 import { Subscription } from 'rxjs/Subscription';
 
 import { NzScrollService } from "../core/scroll/nz-scroll.service";
@@ -95,9 +99,9 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
   private registerScrollEvent() {
     this.removeListen();
     this.handleScroll();
-    this.scroll$ = Observable.fromEvent(this.getTarget(), 'scroll')
-      .throttleTime(50)
-      .distinctUntilChanged()
+    this.scroll$ = (RxChain.from(fromEvent(this.getTarget(), 'scroll')) as RxChain<any>)
+      .call(throttleTime, 50)
+      .call(distinctUntilChanged)
       .subscribe(e => {
         this.handleScroll();
       });
