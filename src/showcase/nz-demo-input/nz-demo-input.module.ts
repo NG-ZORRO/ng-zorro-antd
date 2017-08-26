@@ -15,10 +15,20 @@ import { NzCodeBoxModule } from '../share/nz-codebox/nz-codebox.module';
 import { NgZorroAntdModule } from '../../../index.showcase';
 
 import { NzDemoInputRoutingModule } from './nz-demo-input.routing.module';
+import { NzDemoInputDisabledComponent } from "./nz-demo-input-disabled.component";
 
 @NgModule({
-  imports     : [ NzDemoInputRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule ],
-  declarations: [ NzDemoInputComponent, NzDemoInputBasicComponent, NzDemoInputSizeComponent, NzDemoInputAddOnComponent, NzDemoInputGroupComponent, NzDemoInputSearchComponent, NzDemoInputTextareaComponent, NzDemoInputAffixComponent ]
+  imports: [NzDemoInputRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule],
+  declarations: [
+    NzDemoInputComponent,
+    NzDemoInputBasicComponent,
+    NzDemoInputSizeComponent,
+    NzDemoInputAddOnComponent,
+    NzDemoInputGroupComponent,
+    NzDemoInputSearchComponent,
+    NzDemoInputTextareaComponent,
+    NzDemoInputDisabledComponent,
+    NzDemoInputAffixComponent]
 })
 
 export class NzDemoInputModule {
