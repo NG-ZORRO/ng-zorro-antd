@@ -6,7 +6,7 @@ import { NzMessageContainerComponent } from './nz-message-container.component';
 
 export class NzMessageBaseService<ContainerClass extends NzMessageContainerComponent<any>, MessageData> {
   protected _counter = 0; // Id counter for messages
-  protected _container: ContainerClass;
+  protected _container;
 
   constructor(floaterService: FloaterService, containerClass: Type<ContainerClass>, private _idPrefix: string = '') {
     this._container = floaterService.persistAttachComponent(containerClass);

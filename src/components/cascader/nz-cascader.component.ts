@@ -31,7 +31,6 @@ import {
 const ESC = 27;
 
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
-import { ConnectionPositionPair } from '../core/overlay';
 
 function noop(): void { }
 

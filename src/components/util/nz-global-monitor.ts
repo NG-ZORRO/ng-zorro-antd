@@ -28,7 +28,7 @@ export class NzGlobalMonitorService {
       this.lastClickPos = {
         x: e.clientX,
         y: e.clientY
-      }
+      };
       this._navItemSource.emit('documentClick');
     });
   }

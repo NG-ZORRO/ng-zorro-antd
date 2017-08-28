@@ -22,7 +22,7 @@ import {
 } from './floater-props';
 import { Overlay } from '../overlay';
 
-Injectable()
+@Injectable()
 
 export class FloaterService {
 
