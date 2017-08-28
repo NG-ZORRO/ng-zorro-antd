@@ -22,8 +22,7 @@ import {
 } from './floater-props';
 import { Overlay } from '../overlay';
 
-Injectable()
-
+@Injectable()
 export class FloaterService {
 
   constructor(private _overlay: Overlay, @Inject(DOCUMENT) private _document: Document) {
