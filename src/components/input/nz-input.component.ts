@@ -190,4 +190,8 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
   registerOnTouched(fn: () => {}): void {
     this.onTouched = fn;
   }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.nzDisabled = isDisabled;
+  }
 }
