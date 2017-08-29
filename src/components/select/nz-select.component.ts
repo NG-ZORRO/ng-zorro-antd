@@ -702,6 +702,10 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     this.onTouched = fn;
   }
 
+  setDisabledState(isDisabled: boolean): void {
+    this.nzDisabled = isDisabled;
+  }
+
   constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
     this._el = this._elementRef.nativeElement;
   }
