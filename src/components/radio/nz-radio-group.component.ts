@@ -109,8 +109,13 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
     this.onTouched = fn;
   }
 
+  setDisabledState(isDisabled: boolean): void {
+    this.radios.forEach((radio) => {
+      radio.nzDisabled = isDisabled;
+    });
+  }
+
   ngOnInit() {
     this._render.setElementClass(this._el, `${this._prefixCls}`, true);
-
   }
 }
