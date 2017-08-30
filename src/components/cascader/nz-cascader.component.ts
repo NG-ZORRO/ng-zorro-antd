@@ -1008,6 +1008,16 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
     this.onTouched = fn;
   }
 
+  setDisabledState(isDisabled: boolean): void {
+    if (isDisabled) {
+      this._closeMenu();
+      this._addHostClass(`${this._prefixCls}-picker-disabled`);
+    } else {
+      this._removeHostClass(`${this._prefixCls}-picker-disabled`);
+    }
+    this.nzDisabled = isDisabled;
+  }
+
   ngOnInit() {
     // 设置第一列
     if (this.nzOptions && this.nzOptions.length) {
