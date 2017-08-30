@@ -68,6 +68,10 @@ export class NzCheckboxGroupComponent implements OnInit, AfterContentInit, Contr
     this.onTouched = fn;
   }
 
+  setDisabledState(isDisabled: boolean): void {
+    this.nzDisabled = isDisabled;
+  }
+
   ngOnInit() {
   }
 }
