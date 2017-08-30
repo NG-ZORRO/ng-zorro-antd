@@ -400,4 +400,9 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   registerOnTouched(fn: () => {}): void {
     this.onTouched = fn;
   }
+
+  setDisabledState(isDisabled: boolean): void {
+    this._closeCalendar();
+    this.nzDisabled = isDisabled;
+  }
 }
