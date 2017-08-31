@@ -9,6 +9,25 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.5.0-rc.4
+`2017-08-31`
+
+### Features
+* 	`Tooltip`,`Popconfirm`,`Popover`组件支持 OnPush [#143](https://github.com/NG-ZORRO/ng-zorro-antd/pull/143) [@csyszf](https://github.com/csyszf)
+*   `Modal` 提供了 `open`,`close`,`setConfirmLoading`的新方法 [@giscafer](https://github.com/giscafer)
+
+### Bug Fixes
+* 	指定了 `@angular/cdk` 版本，修复因`@angular/cdk`不兼容升级导致的问题
+* 	`Pagination` 修复了 `nzPageIndexChange` 事件在部分情况下不触发的问题 [#189](https://github.com/NG-ZORRO/ng-zorro-antd/pull/189)	[@SangKa](https://github.com/SangKa)
+
+### Refactor
+*	  `Dropdown` 中优化了`rxjs`的使用方式 [#148](https://github.com/NG-ZORRO/ng-zorro-antd/pull/148) [@Brooooooklyn](https://github.com/Brooooooklyn)
+*   `Calendar` 不再使用 ngOutletContext [#200](https://github.com/NG-ZORRO/ng-zorro-antd/pull/200)  [@chunghha](https://github.com/chunghha)
+
+### Doc
+* 	修正`Form`样例说明中`nz-demo-form-dynamic` [#186](https://github.com/NG-ZORRO/ng-zorro-antd/pull/186)  [@thegatheringstorm](https://github.com/thegatheringstorm)
+* 	修正`Datapicker`样例中事件范围的禁止选择范围 [#102](https://github.com/NG-ZORRO/ng-zorro-antd/pull/102) [@HsuanXyz](https://github.com/HsuanXyz)
+
 ## 0.5.0-rc.3
 `2017-08-26`
 
@@ -17,12 +36,12 @@
 * 增加`BackTop`,`Anchor`,`Affix`,`Avatar`四个组件 [#88](https://github.com/NG-ZORRO/ng-zorro-antd/pull/88) [@cipchk](https://github.com/cipchk)
 
 ### Bug Fixes
-* 修复`checkbox`class名称丢失的问题 [#104](https://github.com/NG-ZORRO/ng-zorro-antd/issues/104) [@cipchk](https://github.com/cipchk)
+* 修复`checkbox`class名称丢失的问题 [#104](https://github.com/NG-ZORRO/ng-zorro-antd/issues/104)  [@giscafer](https://github.com/giscafer)
 * 修复`input`中`touched`事件触发的问题 [#65](https://github.com/NG-ZORRO/ng-zorro-antd/issues/65) [#117](https://github.com/NG-ZORRO/ng-zorro-antd/issues/117)
 * 修复`select`中激活`option`样式的问题 [#139](https://github.com/NG-ZORRO/ng-zorro-antd/issues/139) [@SangKa](https://github.com/SangKa)
 * 修复`pgaination`中`nzPageIndex`双向绑定的问题 [#107](https://github.com/NG-ZORRO/ng-zorro-antd/issues/107)
 * 修复`select`在`multiple`情况下表单中reset时的问题 [#128](https://github.com/NG-ZORRO/ng-zorro-antd/issues/128)
-* 修复`input`的`disable`情况下样式未生效的问题 [#103](https://github.com/NG-ZORRO/ng-zorro-antd/issues/103) [@cipchk](https://github.com/cipchk)
+* 修复`input`的`disable`情况下样式未生效的问题 [#103](https://github.com/NG-ZORRO/ng-zorro-antd/issues/103) [@giscafer](https://github.com/giscafer)
 * 修复`carousel`中自动播放的问题 [#161](https://github.com/NG-ZORRO/ng-zorro-antd/issues/161)
 
 ### Doc
