@@ -122,7 +122,7 @@ export interface WeekInterface {
                         <ng-template
                           *ngIf="dateCell"
                           [ngTemplateOutlet]="dateCell"
-                          [ngOutletContext]="{ $implicit: day}">
+                          [ngTemplateOutletContext]="{ $implicit: day}">
                         </ng-template>
                       </div>
                     </div>
@@ -165,7 +165,7 @@ export interface WeekInterface {
                         <ng-template
                           *ngIf="monthCell"
                           [ngTemplateOutlet]="monthCell"
-                          [ngOutletContext]="{ $implicit: month}">
+                          [ngTemplateOutletContext]="{ $implicit: month}">
                         </ng-template>
                       </div>
                     </div>
