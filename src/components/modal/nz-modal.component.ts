@@ -292,6 +292,18 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  setConfirmLoading(loading: boolean): void {
+    this.nzConfirmLoading = loading;
+  }
+
+  open(): void {
+    this.nzVisible = true;
+  }
+
+  close(): void {
+    this.nzVisible = false;
+  }
+
   clickOk(e): void {
     if (this.nzOnOk) {
       this.nzOnOk.emit(e);
