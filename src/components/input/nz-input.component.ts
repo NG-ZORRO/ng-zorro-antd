@@ -101,6 +101,7 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
 
   set nzSize(value: string) {
     this._size = { large: 'lg', small: 'sm' }[ value ];
+    this.setClassMap();
   }
 
   @Input()
