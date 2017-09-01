@@ -5,8 +5,12 @@ import {
   ElementRef,
   AfterViewInit,
   EventEmitter,
-  Output
+  Output,
+  ContentChild,
+  ChangeDetectorRef,
+  TemplateRef, OnInit
 } from '@angular/core';
+import { measureScrollbar } from '../util/mesureScrollBar';
 
 @Component({
   selector     : 'nz-table',
@@ -19,6 +23,8 @@ import {
         <div>
           <div
             class="ant-table"
+            [class.ant-table-fixed-header]="nzScroll"
+            [class.ant-table-scroll-position-left]="nzScroll"
             [class.ant-table-bordered]="nzBordered"
             [class.ant-table-large]="(nzSize!=='middle')&&(nzSize!=='small')"
             [class.ant-table-middle]="nzSize=='middle'"
@@ -27,36 +33,49 @@ import {
               <ng-content select="[nz-table-title]"></ng-content>
             </div>
             <div class="ant-table-content">
-              <div class="ant-table-body">
-                <table>
-                  <ng-content></ng-content>
-                </table>
-              </div>
-              <div class="ant-table-placeholder" *ngIf="data.length==0 && !nzCustomNoResult">
-                <span>没有数据</span>
-              </div>
-              <div class="ant-table-placeholder" *ngIf="data.length==0 && nzCustomNoResult">
-                <ng-content select="[noResult]"></ng-content>
-              </div>
-              <div class="ant-table-footer" *ngIf="nzShowFooter">
-                <ng-content select="[nz-table-footer]"></ng-content>
+              <div [class.ant-table-scroll]="nzScroll">
+                <div class="ant-table-header" [ngStyle]="_headerBottomStyle" *ngIf="nzScroll">
+                  <table>
+                    <colgroup>
+                      <col *ngFor="let th of ths" [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth">
+                    </colgroup>
+                    <ng-template [ngTemplateOutlet]="fixedHeader"></ng-template>
+                  </table>
+                </div>
+                <div class="ant-table-body" [style.maxHeight.px]="nzScroll?.y" [style.overflowY]="nzScroll?.y?'scroll':''">
+                  <table>
+                    <colgroup>
+                      <col [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth" *ngFor="let th of ths">
+                    </colgroup>
+                    <ng-content></ng-content>
+                  </table>
+                </div>
+                <div class="ant-table-placeholder" *ngIf="data.length==0 && !nzCustomNoResult">
+                  <span>没有数据</span>
+                </div>
+                <div class="ant-table-placeholder" *ngIf="data.length==0 && nzCustomNoResult">
+                  <ng-content select="[noResult]"></ng-content>
+                </div>
+                <div class="ant-table-footer" *ngIf="nzShowFooter">
+                  <ng-content select="[nz-table-footer]"></ng-content>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <nz-pagination
+          *ngIf="nzIsPagination&&data.length"
+          class="ant-table-pagination"
+          [nzShowSizeChanger]="nzShowSizeChanger"
+          [nzShowQuickJumper]="nzShowQuickJumper"
+          [nzShowTotal]="nzShowTotal"
+          [nzSize]="(nzSize=='middle'||nzSize=='small')?'small':''"
+          [(nzPageSize)]="nzPageSize"
+          [nzTotal]="nzTotal"
+          [(nzPageIndex)]="nzPageIndex"
+          (nzPageIndexClickChange)="pageChangeClick($event)">
+        </nz-pagination>
       </nz-spin>
-      <nz-pagination
-        *ngIf="nzIsPagination&&data.length"
-        class="ant-table-pagination"
-        [nzShowSizeChanger]="nzShowSizeChanger"
-        [nzShowQuickJumper]="nzShowQuickJumper"
-        [nzShowTotal]="nzShowTotal"
-        [nzSize]="(nzSize=='middle'||nzSize=='small')?'small':''"
-        [(nzPageSize)]="nzPageSize"
-        [nzTotal]="nzTotal"
-        [(nzPageIndex)]="nzPageIndex"
-        (nzPageIndexClickChange)="pageChangeClick($event)">
-      </nz-pagination>
     </div>
   `,
   styleUrls    : [
@@ -64,16 +83,19 @@ import {
     './style/patch.less'
   ]
 })
-export class NzTableComponent implements AfterViewInit {
+export class NzTableComponent implements AfterViewInit, OnInit {
   /** public data for ngFor tr */
   data = [];
+  _scroll;
   _el: HTMLElement;
+  _headerBottomStyle;
   _current = 1;
   _total: number;
   _pageSize = 10;
   _dataSet = [];
   _isInit = false;
   _isAjax = false;
+  ths = [];
   @Output() nzPageSizeChange: EventEmitter<any> = new EventEmitter();
   @Output() nzPageIndexChange: EventEmitter<any> = new EventEmitter();
   @Output() nzDataChange: EventEmitter<any> = new EventEmitter();
@@ -88,6 +110,17 @@ export class NzTableComponent implements AfterViewInit {
   @Input() nzShowTotal = false;
   @Input() nzShowFooter = false;
   @Input() nzShowTitle = false;
+  @ContentChild('nzFixedHeader') fixedHeader: TemplateRef<any>;
+
+  @Input()
+  set nzScroll(value) {
+    this._scroll = value;
+    this._cd.detectChanges();
+  }
+
+  get nzScroll() {
+    return this._scroll;
+  }
 
   /** async data */
   @Input()
@@ -172,7 +205,15 @@ export class NzTableComponent implements AfterViewInit {
     }
   }
 
-  constructor(private _elementRef: ElementRef) {
+  ngOnInit() {
+    const scrollbarWidth = measureScrollbar();
+    this._headerBottomStyle = {
+      marginBottom : `-${scrollbarWidth}px`,
+      paddingBottom: `0px`
+    }
+  }
+
+  constructor(private _elementRef: ElementRef, private _cd: ChangeDetectorRef) {
     this._el = this._elementRef.nativeElement;
   }
 

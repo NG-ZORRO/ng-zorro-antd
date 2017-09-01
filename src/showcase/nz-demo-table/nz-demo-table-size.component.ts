@@ -55,6 +55,14 @@ import { Component, OnInit } from '@angular/core';
         </div>
         <div nz-row nz-form-item>
           <div nz-form-label>
+            <label>Fixed Header</label>
+          </div>
+          <div nz-form-control>
+            <nz-switch [(ngModel)]="_fixHeader" [ngModelOptions]="{standalone: true}"></nz-switch>
+          </div>
+        </div>
+        <div nz-row nz-form-item>
+          <div nz-form-label>
             <label>Size</label>
           </div>
           <div nz-form-control>
@@ -75,6 +83,7 @@ import { Component, OnInit } from '@angular/core';
     </div>
     <nz-table
       #nzTable
+      [nzScroll]="_fixHeader?{ y: 240 }:null"
       [nzDataSource]="_dataSet"
       [nzPageSize]="10"
       [nzBordered]="_bordered"
@@ -84,14 +93,16 @@ import { Component, OnInit } from '@angular/core';
       [nzShowTitle]="_title"
       [nzSize]="_size">
       <span nz-table-title>Here is Title</span>
-      <thead nz-thead *ngIf="_header">
-        <tr>
-          <th nz-th><span>Name</span></th>
-          <th nz-th><span>Age</span></th>
-          <th nz-th><span>Address</span></th>
-          <th nz-th><span>Action</span></th>
-        </tr>
-      </thead>
+      <ng-template #nzFixedHeader [ngIf]="_header&&!_fixHeader">
+        <thead nz-thead>
+          <tr>
+            <th nz-th [nzWidth]="'150px'"><span>Name</span></th>
+            <th nz-th [nzWidth]="'70px'"><span>Age</span></th>
+            <th nz-th [nzWidth]="'360px'"><span>Address</span></th>
+            <th nz-th><span>Action</span></th>
+          </tr>
+        </thead>
+      </ng-template>
       <tbody nz-tbody>
         <tr nz-tbody-tr *ngFor="let data of nzTable.data">
           <td nz-td>{{data.name}}</td>
@@ -130,6 +141,7 @@ import { Component, OnInit } from '@angular/core';
       .components-table-demo-control-bar {
         margin-bottom: 10px;
       }
+
       .components-table-demo-control-bar ::ng-deep .ant-form-item {
         margin-right: 16px;
         margin-bottom: 8px;
@@ -139,12 +151,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NzDemoTableSizeComponent implements OnInit {
   _dataSet = [];
-  _bordered = false;
+  _bordered = true;
   _loading = false;
   _pagination = true;
   _header = true;
   _title = true;
   _footer = true;
+  _fixHeader = false;
   _size = 'small';
 
   constructor() {

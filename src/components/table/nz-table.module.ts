@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { NzTableComponent } from './nz-table.component';
 import { NzThDirective } from './nz-th.directive';
 import { NzTdDirective } from './nz-td.directive';
+import { NzTableFilterComponent } from './nz-table-filter.component';
 import { NzTheadDirective } from './nz-thead.directive';
 import { NzTbodyDirective } from './nz-tbody.directive';
 import { NzTbodyTrDirective } from './nz-tbody-tr.directive';
@@ -13,8 +14,8 @@ import { NzPaginationModule } from '../pagination/nz-pagination.module';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [ NzTableComponent, NzThDirective, NzTdDirective, NzTheadDirective, NzTbodyDirective, NzTbodyTrDirective, NzTableDividerDirective, NzTableSortComponent ],
-  exports     : [ NzTableComponent, NzThDirective, NzTdDirective, NzTheadDirective, NzTbodyDirective, NzTbodyTrDirective, NzTableDividerDirective, NzTableSortComponent ],
+  declarations: [ NzTableFilterComponent, NzTableComponent, NzThDirective, NzTdDirective, NzTheadDirective, NzTbodyDirective, NzTbodyTrDirective, NzTableDividerDirective, NzTableSortComponent ],
+  exports     : [ NzTableFilterComponent, NzTableComponent, NzThDirective, NzTdDirective, NzTheadDirective, NzTbodyDirective, NzTbodyTrDirective, NzTableDividerDirective, NzTableSortComponent ],
   imports     : [ CommonModule, NzPaginationModule, NzSpinModule ]
 })
 
