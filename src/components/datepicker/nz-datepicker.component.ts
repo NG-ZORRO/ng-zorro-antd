@@ -187,6 +187,7 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   _dropDownPosition = 'bottom';
   _triggerWidth = 0;
   _value = null;
+  _disabled = false;
   _today = new Date();
   _selectedMonth = moment(this.nzValue).month();
   _selectedYear = moment(this.nzValue).year();
@@ -205,10 +206,19 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   @Input() nzPlaceHolder = '请选择日期';
   @Input() nzFormat = 'YYYY-MM-DD';
   @Input() nzSize = '';
-  @Input() nzDisabled = false;
   @ViewChild('trigger') trigger;
   @ViewChild(NzTimePickerInnerComponent) timePickerInner: NzTimePickerInnerComponent;
   @HostBinding('class.ant-calendar-picker') _nzCalendarPicker = true;
+
+  @Input()
+  get nzDisabled(): boolean {
+    return this._disabled;
+  };
+
+  set nzDisabled(value: boolean) {
+    this._disabled = value;
+    this._closeCalendar();
+  }
 
   _setTriggerWidth(): void {
     this._triggerWidth = this.trigger.nativeElement.getBoundingClientRect().width;
@@ -402,7 +412,6 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this._closeCalendar();
     this.nzDisabled = isDisabled;
   }
 }
