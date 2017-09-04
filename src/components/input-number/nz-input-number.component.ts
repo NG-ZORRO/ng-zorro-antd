@@ -165,8 +165,8 @@ export class NzInputNumberComponent implements ControlValueAccessor {
       this.onChange(this.nzMin);
     } else {
       this._value = value;
-      this._checkDisabled();
     }
+    this._checkDisabled();
   }
 
   _userInputChange() {
