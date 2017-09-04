@@ -35,10 +35,10 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       </a>
     </div>
     <div
-      #inputWrapper
       class="ant-input-number-input-wrap">
       <input class="ant-input-number-input"
         #inputNumber
+        (blur)="onBlur()"
         [placeholder]="nzPlaceHolder"
         [disabled]="nzDisabled"
         [(ngModel)]="nzValue"
@@ -73,7 +73,6 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   onChange: any = Function.prototype;
   onTouched: any = Function.prototype;
   @ViewChild('inputNumber') _inputNumber: ElementRef;
-  @ViewChild('inputWrapper') _inputWrapper: ElementRef;
 
   @Input() nzPlaceHolder = '';
   @Input() nzMin: number = -Infinity;
@@ -109,11 +108,8 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     this._precisionFactor = Math.pow(10, this._precisionStep);
   }
 
-  @HostListener('document:click', [ '$event.target' ])
-  onClick(target) {
-    if (target && !this._inputWrapper.nativeElement.contains(target)) {
-      this._offClick();
-    }
+  onBlur() {
+    this._correctValue();
   }
 
   _checkDisabled = () => {
@@ -173,7 +169,7 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     this.onChange(this.nzValue);
   }
 
-  _offClick() {
+  _correctValue() {
     if (this._value === undefined) {
       return;
     }
