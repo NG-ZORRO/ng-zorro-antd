@@ -108,6 +108,10 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor {
     this.onTouched = fn;
   }
 
+  setDisabledState(isDisabled: boolean): void {
+    this.nzDisabled = isDisabled;
+  }
+
   ngOnInit() {
     this._render.addClass(this._el, `${this._prefixCls}-wrapper`);
   }

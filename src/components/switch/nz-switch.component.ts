@@ -104,6 +104,10 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
     this.onTouched = fn;
   }
 
+  setDisabledState(isDisabled: boolean): void {
+    this.nzDisabled = isDisabled;
+  }
+
   ngOnInit() {
     this.setClassMap();
   }

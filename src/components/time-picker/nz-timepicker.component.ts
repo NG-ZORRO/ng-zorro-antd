@@ -205,4 +205,9 @@ export class NzTimePickerComponent extends NzTimePickerInnerComponent {
     }
     this._open = false;
   }
+
+  setDisabledState(isDisabled: boolean): void {
+    this._closeCalendar();
+    this.nzDisabled = isDisabled;
+  }
 }
