@@ -289,6 +289,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
 
   set nzDisabled(value: boolean) {
     this._disabled = value;
+    this.closeDropDown();
     this.setClassMap();
   }
 

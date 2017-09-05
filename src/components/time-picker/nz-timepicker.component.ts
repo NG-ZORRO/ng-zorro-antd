@@ -2,7 +2,8 @@ import {
   Component,
   ViewEncapsulation,
   forwardRef,
-  ViewChild
+  ViewChild,
+  Input
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
@@ -137,11 +138,22 @@ import { ConnectionPositionPair } from '../core/overlay';
   ]
 })
 export class NzTimePickerComponent extends NzTimePickerInnerComponent {
+  _disabled = false;
   _dropDownPosition = 'bottom';
   _triggerWidth = 0;
   _positions: ConnectionPositionPair[] = [ ...DEFAULT_DATEPICKER_POSITIONS ];
 
   @ViewChild('trigger') trigger;
+
+  @Input()
+  get nzDisabled(): boolean {
+    return this._disabled;
+  };
+
+  set nzDisabled(value: boolean) {
+    this._disabled = value;
+    this._closeCalendar();
+  }
 
   _setTriggerWidth(): void {
     this._triggerWidth = this.trigger.nativeElement.getBoundingClientRect().width;
@@ -207,7 +219,6 @@ export class NzTimePickerComponent extends NzTimePickerInnerComponent {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this._closeCalendar();
     this.nzDisabled = isDisabled;
   }
 }
