@@ -143,7 +143,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   _startSubscribe(observable$: Observable<boolean>) {
-    this._subscription = observable$
+    this._subscription = debounceTime.call(observable$, 300)
       .subscribe(this._onVisibleChange)
   }
 
@@ -182,12 +182,10 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
         return () => dispose();
       });
     }
-    const observable$ = debounceTime.call(
-      merge(
-        mouse$,
-        this.nzVisibleChange.asObservable()
-      )
-      , 300);
+    const observable$ = merge(
+      mouse$,
+      this.nzVisibleChange.asObservable()
+    );
     this._startSubscribe(observable$);
   }
 
