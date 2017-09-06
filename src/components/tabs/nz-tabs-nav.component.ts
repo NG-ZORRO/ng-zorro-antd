@@ -23,10 +23,11 @@ import { NzTabLabelDirective } from './nz-tab-label.directive';
 
 const EXAGGERATED_OVERSCROLL = 64;
 export type ScrollDirection = 'after' | 'before';
-import { auditTime, startWith } from '@angular/cdk';
 import { of as observableOf } from 'rxjs/observable/of';
 import { merge } from 'rxjs/observable/merge';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { auditTime } from 'rxjs/operator/auditTime';
+import { startWith } from 'rxjs/operator/startWith';
 
 /** duplicated defined https://github.com/angular/angular-cli/issues/2034 **/
 export type NzTabPositionMode = 'horizontal' | 'vertical';
