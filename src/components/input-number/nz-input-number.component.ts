@@ -4,7 +4,6 @@ import {
   Input,
   ElementRef,
   Renderer2,
-  HostListener,
   ViewChild,
   HostBinding,
   forwardRef
@@ -19,7 +18,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     <div class="ant-input-number-handler-wrap">
       <a class="ant-input-number-handler ant-input-number-handler-up"
         [ngClass]="{'ant-input-number-handler-up-disabled':_disabledUp}"
-        (mousedown)="_numberUp($event)">
+        (click)="_numberUp($event)">
         <span
           class="ant-input-number-handler-up-inner"
           (click)="$event.preventDefault();"></span>
@@ -27,7 +26,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       <a
         class="ant-input-number-handler ant-input-number-handler-down"
         [ngClass]="{'ant-input-number-handler-down-disabled':_disabledDown}"
-        (mousedown)="_numberDown($event)">
+        (click)="_numberDown($event)">
         <span
           class="ant-input-number-handler-down-inner"
           (click)="$event.preventDefault();">
@@ -35,13 +34,13 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       </a>
     </div>
     <div
-      #inputWrapper
       class="ant-input-number-input-wrap">
       <input class="ant-input-number-input"
         #inputNumber
+        (blur)="_checkValue()"
         [placeholder]="nzPlaceHolder"
         [disabled]="nzDisabled"
-        [(ngModel)]="nzValue"
+        [(ngModel)]="_displayValue"
         (ngModelChange)="_userInputChange()"
         [attr.min]="nzMin"
         [attr.max]="nzMax"
@@ -64,16 +63,16 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   _value: number;
   _size = 'default';
   _prefixCls = 'ant-input-number';
-  _disabledUp = false;
-  _disabledDown = false;
   _step = 1;
   _precisionStep = 0;
   _precisionFactor = 1;
+  _displayValue;
+  _disabledUp = false;
+  _disabledDown = false;
   // ngModel Access
   onChange: any = Function.prototype;
   onTouched: any = Function.prototype;
   @ViewChild('inputNumber') _inputNumber: ElementRef;
-  @ViewChild('inputWrapper') _inputWrapper: ElementRef;
 
   @Input() nzPlaceHolder = '';
   @Input() nzMin: number = -Infinity;
@@ -109,30 +108,15 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     this._precisionFactor = Math.pow(10, this._precisionStep);
   }
 
-  @HostListener('document:click', [ '$event.target' ])
-  onClick(target) {
-    if (target && !this._inputWrapper.nativeElement.contains(target)) {
-      this._offClick();
-    }
-  }
-
-  _checkDisabled = () => {
-    this._disabledUp = !((this.nzValue + this.nzStep) <= this.nzMax);
-    this._disabledDown = !((this.nzValue - this.nzStep) >= this.nzMin);
-  }
-
   _numberUp($event) {
     $event.preventDefault();
     $event.stopPropagation();
     if (this.nzValue === undefined) {
       this.nzValue = this.nzMin || 0;
     }
-    this._checkDisabled();
     if (!this._disabledUp) {
       this.nzValue = this.toPrecisionAsStep((this._precisionFactor * this.nzValue + this._precisionFactor * this.nzStep) / this._precisionFactor);
     }
-    this._checkDisabled();
-    this._userInputChange();
   }
 
   _numberDown($event) {
@@ -141,12 +125,9 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     if (this.nzValue === undefined) {
       this.nzValue = this.nzMin || 0;
     }
-    this._checkDisabled();
     if (!this._disabledDown) {
       this.nzValue = this.toPrecisionAsStep((this._precisionFactor * this.nzValue - this._precisionFactor * this.nzStep) / this._precisionFactor);
     }
-    this._checkDisabled();
-    this._userInputChange();
   }
 
   get nzValue(): number {
@@ -157,33 +138,37 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     if (this._value === value) {
       return;
     }
-    if (value > this.nzMax) {
-      this._value = this.nzMax;
-      this.onChange(this.nzMax);
-    } else if (value < this.nzMin) {
-      this._value = this.nzMin;
-      this.onChange(this.nzMin);
-    } else {
-      this._value = value;
-      this._checkDisabled();
-    }
+    this._value = this._getBoundValue(value);
+    this._displayValue = this._value;
+    this._inputNumber.nativeElement.value = this._value;
+    this.onChange(this._value);
+    this._disabledUp = (this.nzValue !== undefined) && !((this.nzValue + this.nzStep) <= this.nzMax);
+    this._disabledDown = (this.nzValue !== undefined) && !((this.nzValue - this.nzStep) >= this.nzMin);
   }
 
   _userInputChange() {
-    this.onChange(this.nzValue);
+    const numberValue = +this._displayValue;
+    if (this._isNumber(numberValue) && (numberValue <= this.nzMax) && (numberValue >= this.nzMin)) {
+      this.nzValue = numberValue;
+    }
   }
 
-  _offClick() {
-    if (this._value === undefined) {
-      return;
+  _checkValue() {
+    this._displayValue = this.nzValue;
+  }
+
+  _getBoundValue(value) {
+    if (value > this.nzMax) {
+      return this.nzMax;
+    } else if (value < this.nzMin) {
+      return this.nzMin;
+    } else {
+      return value;
     }
-    if (this._inputNumber.nativeElement.value > this.nzMax) {
-      this._inputNumber.nativeElement.value = this.nzMax;
-      this.onChange(this.nzMax);
-    } else if (this._inputNumber.nativeElement.value < this.nzMin) {
-      this._inputNumber.nativeElement.value = this.nzMin;
-      this.onChange(this.nzMin);
-    }
+  }
+
+  _isNumber(value) {
+    return !isNaN(value) && isFinite(value)
   }
 
   toPrecisionAsStep(num) {
