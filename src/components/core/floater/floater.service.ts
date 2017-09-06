@@ -7,7 +7,7 @@ import {
   Optional,
   SkipSelf
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/platform-browser';
 import { ComponentType } from '@angular/cdk';
 import {
   Floater
