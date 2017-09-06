@@ -339,6 +339,10 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     this.onTouched = fn;
   }
 
+  setDisabledState(isDisabled: boolean): void {
+    this.nzDisabled = isDisabled;
+  }
+
   constructor(public _cdr: ChangeDetectorRef) {
   }
 

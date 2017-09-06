@@ -442,8 +442,10 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
 
   /** clear the input box and selected options */
   _clearSelection(event: Event): void {
-    event.preventDefault();
-    event.stopPropagation();
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
 
     this._displayLabel = '';
     this._displayLabelIsTemplate = false;
@@ -1008,6 +1010,16 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
     this.onTouched = fn;
   }
 
+  setDisabledState(isDisabled: boolean): void {
+    if (isDisabled) {
+      this._closeMenu();
+      this._addHostClass(`${this._prefixCls}-picker-disabled`);
+    } else {
+      this._removeHostClass(`${this._prefixCls}-picker-disabled`);
+    }
+    this.nzDisabled = isDisabled;
+  }
+
   ngOnInit() {
     // 设置第一列
     if (this.nzOptions && this.nzOptions.length) {
@@ -1029,6 +1041,16 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
         this._addHostClass(`${this._prefixCls}-picker-disabled`);
       } else {
         this._removeHostClass(`${this._prefixCls}-picker-disabled`);
+      }
+    }
+
+    const nzOptions = changes['nzOptions'];
+    if (nzOptions && !nzOptions.isFirstChange()) {
+      this._nzColumns.splice(0);
+      const newOptions: CascaderOption[] = nzOptions.currentValue;
+      if (newOptions && newOptions.length) {
+        this._nzColumns.push(newOptions);
+        this._clearSelection(null);
       }
     }
   }

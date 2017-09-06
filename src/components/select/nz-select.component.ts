@@ -289,6 +289,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
 
   set nzDisabled(value: boolean) {
     this._disabled = value;
+    this.closeDropDown();
     this.setClassMap();
   }
 
@@ -700,6 +701,10 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
 
   registerOnTouched(fn: () => {}): void {
     this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.nzDisabled = isDisabled;
   }
 
   constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {

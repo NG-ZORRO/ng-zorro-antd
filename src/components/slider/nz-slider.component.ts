@@ -217,6 +217,12 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   registerOnTouched(fn) {
   }
 
+  setDisabledState(isDisabled: boolean): void {
+    this.nzDisabled = isDisabled;
+    this.toggleDragDisabled(isDisabled);
+    this.setClassMap();
+  }
+
   // |--------------------------------------------------------------------------------------------
   // | Lifecycle hooks
   // |--------------------------------------------------------------------------------------------
