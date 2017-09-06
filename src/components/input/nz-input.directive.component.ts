@@ -18,6 +18,7 @@ import {
 export class NzInputDirectiveComponent {
   size = 'default';
   nativeElement: HTMLElement;
+  _readonly = false;
   @HostBinding(`class.ant-input-disabled`) _disabled = false;
 
   @Input()
@@ -41,6 +42,20 @@ export class NzInputDirectiveComponent {
       this._render.removeAttribute(this.nativeElement, 'disabled');
     }
     this._disabled = value;
+  }
+
+  @Input()
+  get nzReadonly(): boolean {
+    return this._readonly;
+  };
+
+  set nzReadonly(value: boolean) {
+    if (value) {
+      this._render.setAttribute(this.nativeElement, 'readonly', '');
+    } else {
+      this._render.removeAttribute(this.nativeElement, 'readonly');
+    }
+    this._readonly = value;
   }
 
   @HostBinding(`class.ant-input`) _nzInput = true;

@@ -31,6 +31,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         (focus)="_emitFocus($event)"
         [attr.id]="nzId"
         [disabled]="nzDisabled"
+        [readonly]="nzReadonly"
         [attr.type]="nzType"
         class="ant-input"
         [class.ant-input-search]="nzType==='search'"
@@ -45,6 +46,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         [attr.id]="nzId"
         #inputTextarea
         [disabled]="nzDisabled"
+        [readonly]="nzReadonly"
         type="textarea"
         [attr.rows]="nzRows"
         [attr.cols]="nzCols"
@@ -83,6 +85,7 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
   _composing = false;
   _classMap;
   _disabled = false;
+  _readonly = false;
 
   // ngModel Access
   onChange: any = Function.prototype;
@@ -112,6 +115,15 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
   set nzDisabled(value: boolean) {
     this._disabled = value;
     this.setClassMap();
+  }
+
+  @Input()
+  get nzReadonly(): boolean {
+    return this._readonly;
+  };
+
+  set nzReadonly(value: boolean) {
+    this._readonly = value;
   }
 
   @Output() nzBlur: EventEmitter<MouseEvent> = new EventEmitter();
