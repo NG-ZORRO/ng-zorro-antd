@@ -9,7 +9,6 @@ import {
   EventEmitter,
   AfterViewInit
 } from '@angular/core';
-import { debounceTime } from 'rxjs/operator/debounceTime';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 import { NzDropDownComponent } from './nz-dropdown.component';
