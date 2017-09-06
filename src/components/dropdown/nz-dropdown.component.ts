@@ -26,13 +26,13 @@ import { ConnectionPositionPair } from '../core/overlay';
 export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 
 @Component({
-  selector     : 'nz-dropdown',
-  encapsulation: ViewEncapsulation.None,
-  animations   : [
+  selector       : 'nz-dropdown',
+  encapsulation  : ViewEncapsulation.None,
+  animations     : [
     DropDownAnimation
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template     : `
+  template       : `
     <div>
       <ng-content></ng-content>
     </div>
@@ -53,16 +53,21 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
         (mouseleave)="_onMouseLeaveEvent($event)"
         [style.minWidth.px]="_triggerWidth"
         (click)="_clickDropDown($event)">
-        <ng-content select="[nz-menu]"></ng-content>
+        <div [class.ant-table-filter-dropdown]="hasFilterButton">
+          <ng-content select="[nz-menu]"></ng-content>
+          <ng-content select="[nz-table-filter]"></ng-content>
+        </div>
+        <ng-content select="[nz-dropdown-custom]"></ng-content>
       </div>
     </ng-template>`,
-  styleUrls    : [
+  styleUrls      : [
     './style/index.less',
     './style/patch.less'
   ]
 })
 
 export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
+  hasFilterButton = false;
   _triggerWidth = 0;
   _placement: NzPlacement = 'bottomLeft';
   _dropDownPosition: 'top' | 'bottom' = 'bottom';
@@ -143,7 +148,9 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this._nzMenu.setDropDown(true);
+    if (this._nzMenu) {
+      this._nzMenu.setDropDown(true);
+    }
   }
 
   ngOnDestroy() {
@@ -180,7 +187,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
         mouse$,
         this.nzVisibleChange.asObservable()
       )
-    , 300);
+      , 300);
     this._startSubscribe(observable$);
   }
 
