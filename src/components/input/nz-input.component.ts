@@ -9,9 +9,18 @@ import {
   EventEmitter,
   ContentChild,
   forwardRef,
-  AfterContentInit, HostListener
+  AfterContentInit,
+  HostListener,
+  AfterViewInit,
+  ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import calculateNodeHeight from '../util/calculate-node-height';
+
+export interface AutoSizeType {
+  minRows?: number;
+  maxRows?: number;
+}
 
 @Component({
   selector     : 'nz-input',
@@ -43,6 +52,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       <textarea
         (blur)="_emitBlur($event)"
         (focus)="_emitFocus($event)"
+        (input)="textareaOnChange($event)"
         [attr.id]="nzId"
         #inputTextarea
         [disabled]="nzDisabled"
@@ -76,7 +86,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     './style/patch.less'
   ]
 })
-export class NzInputComponent implements AfterContentInit, ControlValueAccessor {
+export class NzInputComponent implements AfterContentInit, ControlValueAccessor, AfterViewInit {
 
   _el: HTMLElement;
   _value: string;
@@ -86,6 +96,7 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
   _classMap;
   _disabled = false;
   _readonly = false;
+  _autosize: boolean | AutoSizeType = false;
 
   // ngModel Access
   onChange: any = Function.prototype;
@@ -126,8 +137,25 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
     this._readonly = value;
   }
 
+  @Input()
+  get nzAutosize() {
+    return this._autosize;
+  }
+
+  set nzAutosize(value: string | boolean | AutoSizeType) {
+    if (value === '') {
+      this._autosize = true;
+    } else {
+      this._autosize = value;
+    }
+    if (this._autosize) {
+      this.nzRows = 1;
+    }
+  }
+
   @Output() nzBlur: EventEmitter<MouseEvent> = new EventEmitter();
   @Output() nzFocus: EventEmitter<MouseEvent> = new EventEmitter();
+  @ViewChild('inputTextarea') textAreaRef: ElementRef;
   @ContentChild('addOnBefore') _addOnContentBefore: TemplateRef<any>;
   @ContentChild('addOnAfter') _addOnContentAfter: TemplateRef<any>;
 
@@ -176,6 +204,23 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
     };
   }
 
+  resizeTextarea() {
+    const textAreaRef =  this.textAreaRef.nativeElement;
+    // eliminate jitter
+    textAreaRef.style.height = 'auto';
+    const maxRows = this.nzAutosize ? (this.nzAutosize as AutoSizeType).maxRows || null : null;
+    const minRows = this.nzAutosize ? (this.nzAutosize as AutoSizeType).minRows || null : null;
+    const textareaStyles = calculateNodeHeight(textAreaRef, false, minRows, maxRows);
+    textAreaRef.style.height = `${textareaStyles.height}px`;
+    textAreaRef.style.overflowY = textareaStyles.overflowY;
+  }
+
+  textareaOnChange() {
+    if (this.nzType === 'textarea' && this.nzAutosize) {
+      this.resizeTextarea();
+    }
+  }
+
   constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
     this._el = this._elementRef.nativeElement;
   }
@@ -191,6 +236,11 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
     }
   }
 
+  ngAfterViewInit() {
+    if (this.nzType === 'textarea' && this.nzAutosize) {
+      setTimeout(() => this.resizeTextarea(), 0)
+    }
+  }
 
   writeValue(value: any): void {
     this.nzValue = value;
