@@ -13,7 +13,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzTimePickerInnerComponent } from '../time-picker/nz-timepicker-inner.component';
 import { DEFAULT_DATEPICKER_POSITIONS } from '../core/overlay/overlay-position-map';
-import { ConnectionPositionPair } from '../core/overlay';
+import { ConnectionPositionPair } from '../core/overlay/index';
 
 @Component({
   selector     : 'nz-datepicker',

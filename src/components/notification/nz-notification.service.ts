@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { FloaterService } from '../core/floater';
+import { FloaterService } from '../core/floater/index';
 import { NzNotificationData, NzNotificationDataFilled } from './nz-notification.definitions';
 import { NzMessageBaseService } from '../message/nz-message.service';
 import { NzMessageDataOptions } from '../message/nz-message.definitions';
