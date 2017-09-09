@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { NzDemoTableBasicComponent } from './nz-demo-table-basic.component';
+import { NzDemoTableExpandComponent } from './nz-demo-table-expand.component';
+import { NzDemoTableExpandTreeComponent } from './nz-demo-table-expand-tree.component';
 import { NzDemoTableEditComponent } from './nz-demo-table-edit.component';
 import { NzDemoTableFixedHeaderComponent } from './nz-demo-table-fixed-header.component';
 import { NzDemoTableColspanRowspanComponent } from './nz-demo-table-colspan-rowspan.component';
@@ -24,7 +26,7 @@ import { NzDemoTableRoutingModule } from './nz-demo-table.routing.module';
 
 @NgModule({
   imports     : [ NzDemoTableRoutingModule, FormsModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule ],
-  declarations: [ NzDemoTableCustomFilterComponent, NzDemoTableEditComponent, NzDemoTableComponent, NzDemoTableFixedHeaderComponent, NzDemoTableColspanRowspanComponent, NzDemoTableBasicComponent, NzDemoTableResetFilterComponent, NzDemoTableSelectionComponent, NzDemoTableSelectionAndOperationComponent, NzDemoTableSelectionPropsComponent, NzDemoTablePagingComponent, NzDemoTableAjaxComponent, NzDemoTableNoPaginationComponent, NzDemoTableSizeComponent ]
+  declarations: [ NzDemoTableExpandTreeComponent, NzDemoTableExpandComponent, NzDemoTableCustomFilterComponent, NzDemoTableEditComponent, NzDemoTableComponent, NzDemoTableFixedHeaderComponent, NzDemoTableColspanRowspanComponent, NzDemoTableBasicComponent, NzDemoTableResetFilterComponent, NzDemoTableSelectionComponent, NzDemoTableSelectionAndOperationComponent, NzDemoTableSelectionPropsComponent, NzDemoTablePagingComponent, NzDemoTableAjaxComponent, NzDemoTableNoPaginationComponent, NzDemoTableSizeComponent ]
 })
 
 export class NzDemoTableModule {
