@@ -145,7 +145,6 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
     this.onChange(this._value);
   }
 
-
   get nzValue(): any {
     return this._value;
   };
@@ -193,7 +192,8 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor 
 
 
   writeValue(value: any): void {
-    this.nzValue = value;
+    // this.nzValue = value; // [NOTE] nzValue will trigger the onChange which leads to a new "VIEW -> MODEL updating"
+    this._value = value;
   }
 
   registerOnChange(fn: (_: any) => {}): void {

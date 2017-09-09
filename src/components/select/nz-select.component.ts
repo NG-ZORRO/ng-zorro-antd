@@ -404,10 +404,12 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   }
 
   /** cancel select multiple option */
-  unSelectMultipleOption = (option, $event?) => {
+  unSelectMultipleOption = (option, $event?, emitChange = true) => {
     this._operatingMultipleOption = option;
     this._selectedOptions.delete(option);
-    this.emitMultipleOptions();
+    if (emitChange) {
+      this.emitMultipleOptions();
+    }
 
     // 对Tag进行特殊处理
     if (this._isTags && (this._options.indexOf(option) !== -1) && (this._tagsOptions.indexOf(option) !== -1)) {
@@ -490,37 +492,12 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   };
 
   set nzValue(value: Array<string> | string) {
-    if (this._value === value) {
-      return;
-    }
-    if ((value === null) && this.nzMultiple) {
-      this._value = [];
-    } else {
-      this._value = value;
-    }
-    if (!this.nzMultiple) {
-      if (value === null) {
-        this._selectedOption = null;
-      } else {
-        this.updateSelectedOption(value);
-      }
-    } else {
-      if (value) {
-        if (value.length === 0) {
-          this.clearAllSelectedOption();
-        } else {
-          this.updateSelectedOption(value, true);
-        }
-      } else if (value === null) {
-        this.clearAllSelectedOption();
-      }
-
-    }
+    this._updateValue(value);
   }
 
-  clearAllSelectedOption() {
+  clearAllSelectedOption(emitChange = true) {
     this._selectedOptions.forEach(item => {
-      this.unSelectMultipleOption(item);
+      this.unSelectMultipleOption(item, null, emitChange);
     });
   }
 
@@ -692,7 +669,8 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   }
 
   writeValue(value: any): void {
-    this.nzValue = value;
+    // this.nzValue = value;
+    this._updateValue(value, false);
   }
 
   registerOnChange(fn: (_: any) => {}): void {
@@ -731,6 +709,33 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     } else {
       this.updateFilterOption(false);
     }
+  }
 
+  private _updateValue(value: string[] | string, emitChange = true) {
+    if (this._value === value) {
+      return;
+    }
+    if ((value === null) && this.nzMultiple) {
+      this._value = [];
+    } else {
+      this._value = value;
+    }
+    if (!this.nzMultiple) {
+      if (value === null) {
+        this._selectedOption = null;
+      } else {
+        this.updateSelectedOption(value);
+      }
+    } else {
+      if (value) {
+        if (value.length === 0) {
+          this.clearAllSelectedOption(emitChange);
+        } else {
+          this.updateSelectedOption(value, true);
+        }
+      } else if (value === null) {
+        this.clearAllSelectedOption(emitChange);
+      }
+    }
   }
 }

@@ -162,16 +162,16 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   // |--------------------------------------------------------------------------------------------
 
   setValue(val: SliderValue, isWriteValue: boolean = false) {
-    if (isWriteValue) { // [ngModel-writeValue]: Formatting before setting value, always update current value, but trigger onValueChange ONLY when the "formatted value" equals "input value"
+    if (isWriteValue) { // [ngModel-writeValue]: Formatting before setting value, always update current value, but trigger onValueChange ONLY when the "formatted value" not equals "input value"
       this.value = this.formatValue(val);
       this.log(`[ngModel:setValue/writeValue]Update track & handles`);
       this.updateTrackAndHandles();
-      if (!this.isValueEqual(this.value, val)) {
-        this.log(`[ngModel:setValue/writeValue]onValueChange`, val);
-        if (this.onValueChange) { // NOTE: onValueChange will be unavailable when writeValue() called at the first time
-          this.onValueChange(this.value);
-        }
-      }
+      // if (!this.isValueEqual(this.value, val)) {
+      //   this.log(`[ngModel:setValue/writeValue]onValueChange`, val);
+      //   if (this.onValueChange) { // NOTE: onValueChange will be unavailable when writeValue() called at the first time
+      //     this.onValueChange(this.value);
+      //   }
+      // }
     } else { // [Normal]: setting value, ONLY check changed, then update and trigger onValueChange
       if (!this.isValueEqual(this.value, val)) {
         this.value = val;
@@ -566,10 +566,10 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
   // print debug info
   log(...messages: Array<any>) {
-    if (this.nzDebugId !== null) {
+    // if (this.nzDebugId !== null) {
       const args = [ `[nz-slider][#${this.nzDebugId}] ` ].concat(Array.prototype.slice.call(arguments));
       console.log.apply(null, args);
-    }
+    // }
   }
 
   // Show one handle's tooltip and hide others'
