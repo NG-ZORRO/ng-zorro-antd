@@ -18,7 +18,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       <span [ngClass]="_innerPrefixCls"></span>
       <input type="checkbox"
         [ngClass]="_inputPrefixCls"
-        [(ngModel)]="nzChecked"
+        [ngModel]="nzChecked"
         (focus)="nzFocus()"
         (blur)="nzBlur()">
     </span>
@@ -52,11 +52,6 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor {
   get nzChecked(): boolean {
     return this._checked;
   };
-
-  set nzChecked(value: boolean) {
-    this.updateValue(value);
-  }
-
 
   @HostListener('click', [ '$event' ])
   onClick(e) {
