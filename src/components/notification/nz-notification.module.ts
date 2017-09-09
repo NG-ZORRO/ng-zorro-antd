@@ -3,7 +3,7 @@ import { NZ_NOTIFICATION_DEFAULT_CONFIG_PROVIDER } from './nz-notification-confi
 import { NzNotificationContainerComponent } from './nz-notification-container.component';
 import { NzNotificationComponent } from './nz-notification.component';
 import { CommonModule } from '@angular/common';
-import { FloaterModule } from '../core/floater';
+import { FloaterModule } from '../core/floater/index';
 
 const providers = [
   NZ_NOTIFICATION_DEFAULT_CONFIG_PROVIDER

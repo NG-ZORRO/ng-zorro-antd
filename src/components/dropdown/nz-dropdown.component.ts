@@ -21,7 +21,7 @@ import { NzMenuComponent } from '../menu/nz-menu.component';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 import { POSITION_MAP, DEFAULT_DROPDOWN_POSITIONS } from '../core/overlay/overlay-position-map';
-import { ConnectionPositionPair } from '../core/overlay';
+import { ConnectionPositionPair } from '../core/overlay/index';
 
 export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 

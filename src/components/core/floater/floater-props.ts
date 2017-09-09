@@ -14,7 +14,7 @@ import {
   PositionStrategy,
   ConnectedOverlayPositionChange,
   ScrollStrategy
-} from '../overlay';
+} from '../overlay/index';
 import { ComponentType, Directionality } from '@angular/cdk';
 import { Subscription } from 'rxjs/Subscription';
 

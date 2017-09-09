@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./publish/src",
+    "baseUrl": "./",
+    "declaration": true,
+    "importHelpers": true,
+    "module": "es2015",
+    "sourceMap": false,
+    "target": "es2015",
+    "types": [
+      "node"
+    ]
+  },
+  "files": [
+    "./src/__gen_components/ng-zorro-antd.module.ts"
+  ],
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": true,
+    "strictMetadataEmit": true,
+    "flatModuleOutFile": "index.js",
+    "flatModuleId": "ng-zorro-antd",
+    "skipTemplateCodegen": true
+  }
+}

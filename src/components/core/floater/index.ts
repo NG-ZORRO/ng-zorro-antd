@@ -1,5 +1,5 @@
 import { NgModule, Provider } from '@angular/core';
-import { OverlayModule } from '../overlay';
+import { OverlayModule } from '../overlay/index';
 import { FLOATER_SERVICE_PROVIDER } from './floater.service';
 
 const providers: Provider[] = [

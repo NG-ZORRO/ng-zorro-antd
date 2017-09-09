@@ -20,7 +20,7 @@ import {
   PositionStrategyOptions,
   PositionStrategyType,
 } from './floater-props';
-import { Overlay } from '../overlay';
+import { Overlay } from '../overlay/index';
 
 Injectable()
 

@@ -1,5 +1,5 @@
 import { Injectable, ComponentRef, Type } from '@angular/core';
-import { FloaterService } from '../core/floater';
+import { FloaterService } from '../core/floater/index';
 import { NzMessageConfig } from './nz-message-config';
 import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 import { NzMessageContainerComponent } from './nz-message-container.component';
