@@ -29,6 +29,7 @@ import { ConnectionPositionPair } from '../core/overlay/index';
       #trigger>
       <input
         nz-input
+        (blur)="onTouched()"
         [class.ant-input-disabled]="nzDisabled"
         [attr.placeholder]="nzPlaceHolder"
         [disabled]="nzDisabled"
@@ -37,7 +38,7 @@ import { ConnectionPositionPair } from '../core/overlay/index';
         [value]="_value|nzDate:nzFormat">
       <i class="ant-calendar-picker-clear anticon anticon-cross-circle"
         *ngIf="_showClearIcon"
-        (click)="_clearValue($event)">
+        (click)="onTouched();_clearValue($event)">
       </i>
       <span class="ant-calendar-picker-icon"></span>
     </span>

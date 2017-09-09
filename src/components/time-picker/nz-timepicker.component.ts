@@ -30,6 +30,7 @@ import { ConnectionPositionPair } from '../core/overlay/index';
         class="ant-time-picker-input"
         [attr.placeholder]="nzPlaceHolder"
         (click)="_openCalendar()"
+        (blur)="onTouched()"
         [value]="_value|nzDate:_format">
       <span class="ant-time-picker-icon"></span>
     </span>
