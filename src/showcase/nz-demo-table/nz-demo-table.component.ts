@@ -10,6 +10,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class NzDemoTableComponent implements OnInit {
   NzDemoTableBasicCode = require('!!raw-loader!./nz-demo-table-basic.component');
+  NzDemoTableExpandCode = require('!!raw-loader!./nz-demo-table-expand.component');
+  NzDemoTableExpandTreeCode = require('!!raw-loader!./nz-demo-table-expand-tree.component');
   NzDemoTableEditCode = require('!!raw-loader!./nz-demo-table-edit.component');
   NzDemoTableFixedHeaderCode = require('!!raw-loader!./nz-demo-table-fixed-header.component');
   NzDemoTableColspanRowspanCode = require('!!raw-loader!./nz-demo-table-colspan-rowspan.component');

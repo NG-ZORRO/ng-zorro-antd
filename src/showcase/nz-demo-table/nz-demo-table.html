@@ -43,14 +43,20 @@
         <nz-demo-table-reset-filter demo></nz-demo-table-reset-filter>
         <div intro>
           <p>使用受控属性对筛选和排序状态进行控制。</p>
-          <p>nzTable可以像<a href="http://www.w3school.com.cn/tags/tag_table.asp" target="_blank">HTML table 标签</a>一样自定义表头和内容，通过配合 <code>nz-table-sort</code>与 <code>nz-table-filter</code>可以方便的自定义筛选和排序功能。</p>
+          <p>nzTable可以像
+            <a href="http://www.w3school.com.cn/tags/tag_table.asp" target="_blank">HTML table 标签</a>
+            一样自定义表头和内容，通过配合 <code>nz-table-sort</code>与 <code>nz-table-filter</code>可以方便的自定义筛选和排序功能。
+          </p>
         </div>
       </nz-code-box>
       <nz-code-box [nzTitle]="'自定义筛选菜单'" id="components-table-demo-custom-filter" [nzCode]="NzDemoTableCustomFilterCode">
         <nz-demo-table-custom-filter demo></nz-demo-table-custom-filter>
         <div intro>
           <p>通过 <code>nz-dropdown</code>的 <code>nz-dropdown-custom</code>属性自定义筛选菜单</p>
-          <p>nzTable可以像<a href="http://www.w3school.com.cn/tags/tag_table.asp" target="_blank">HTML table 标签</a>一样自定义表头和内容。</p>
+          <p>nzTable可以像
+            <a href="http://www.w3school.com.cn/tags/tag_table.asp" target="_blank">HTML table 标签</a>
+            一样自定义表头和内容。
+          </p>
         </div>
       </nz-code-box>
       <nz-code-box [nzTitle]="'分页'" id="components-table-demo-paging" [nzCode]="NzDemoTablePagingCode">
@@ -68,10 +74,25 @@
             ，展示数据可能不准确，请打开网络面板查看请求。</strong></p>
         </div>
       </nz-code-box>
+      <nz-code-box [nzTitle]="'可展开'" id="components-table-demo-expand" [nzCode]="NzDemoTableExpandCode">
+        <nz-demo-table-expand demo></nz-demo-table-expand>
+        <div intro>
+          <p>当表格内容较多不能一次性完全展示时。</p>
+        </div>
+      </nz-code-box>
       <nz-code-box [nzTitle]="'表格行/列合并'" id="components-table-demo-colspan-rowspan" [nzCode]="NzDemoTableColspanRowspanCode">
         <nz-demo-table-colspan-rowspan demo></nz-demo-table-colspan-rowspan>
         <div intro>
-          <p>nzTable可以像<a href="http://www.w3school.com.cn/tags/tag_table.asp" target="_blank">HTML table 标签</a>一样使用 <code>rowspan</code>和 <code>colspan</code>标签</p>
+          <p>nzTable可以像
+            <a href="http://www.w3school.com.cn/tags/tag_table.asp" target="_blank">HTML table 标签</a>
+            一样使用 <code>rowspan</code>和 <code>colspan</code>标签
+          </p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'树形数据展示'" id="components-table-demo-expand-tree" [nzCode]="NzDemoTableExpandTreeCode">
+        <nz-demo-table-expand-tree demo></nz-demo-table-expand-tree>
+        <div intro>
+          <p>表格支持树形数据的展示，可以通过设置 <code>nzLevel</code> 以控制每一层的缩进宽度。</p>
         </div>
       </nz-code-box>
       <nz-code-box [nzTitle]="'固定表头'" id="components-table-demo-fixed-header" [nzCode]="NzDemoTableFixedHeaderCode">
@@ -137,7 +158,9 @@
         </tr>
         <tr>
           <td>#模板引用变量</td>
-          <td>模板引用变量可以自由命名，经过分页之后的数据可以通过<code>模板引用变量.data</code>获取，最后通过*ngFor的方式渲染在table中，关于模板引用变量的知识可以参考<a href="https://angular.cn/guide/template-syntax#ref-vars" target="_blank">这里</a></td>
+          <td>模板引用变量可以自由命名，经过分页之后的数据可以通过<code>模板引用变量.data</code>获取，最后通过*ngFor的方式渲染在table中，关于模板引用变量的知识可以参考
+            <a href="https://angular.cn/guide/template-syntax#ref-vars" target="_blank">这里</a>
+          </td>
           <td>NzTableComponent</td>
           <td>-</td>
         </tr>
@@ -320,6 +343,12 @@
           <td>false</td>
         </tr>
         <tr>
+          <td>nzExpand</td>
+          <td>是否是展开按钮列</td>
+          <td>Boolean</td>
+          <td>false</td>
+        </tr>
+        <tr>
           <td>nzWidth</td>
           <td>当前列的宽度</td>
           <td>String</td>
@@ -352,11 +381,68 @@
           <td>Boolean</td>
           <td>false</td>
         </tr>
+        <tr>
+          <td>nzExpand</td>
+          <td>是否是展开按钮列</td>
+          <td>Boolean</td>
+          <td>false</td>
+        </tr>
       </tbody>
     </table>
     <h3><span>[nz-table-divider]</span>
     </h3>
     <p>用于td中分隔数据</p>
+    <h3>
+      <span>nz-row-indent</span>
+    </h3>
+    <p>与树形数据展示配合使用</p>
+    <table>
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>说明</th>
+          <th>类型</th>
+          <th>默认值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>nzIndentSize</td>
+          <td>控制每一层的缩进宽度</td>
+          <td>Number</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>
+      <span>nz-row-expand-icon</span>
+    </h3>
+    <p>与可展开和树形数据展示配合使用</p>
+    <table>
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>说明</th>
+          <th>类型</th>
+          <th>默认值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>nzExpand</td>
+          <td>标识是否展开，可双向绑定</td>
+          <td>Boolean</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>nzShowExpand</td>
+          <td>是否展示展开按钮</td>
+          <td>Boolean</td>
+          <td>false</td>
+        </tr>
+      </tbody>
+    </table>
+
   </section>
 
 </article>
