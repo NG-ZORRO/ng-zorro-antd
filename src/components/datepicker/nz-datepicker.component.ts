@@ -30,9 +30,8 @@ import { ConnectionPositionPair } from '../core/overlay/index';
       <input
         nz-input
         (blur)="onTouched()"
-        [class.ant-input-disabled]="nzDisabled"
         [attr.placeholder]="nzPlaceHolder"
-        [disabled]="nzDisabled"
+        [nzDisabled]="nzDisabled"
         [nzSize]="nzSize"
         class="ant-calendar-picker-input"
         [value]="_value|nzDate:nzFormat">
