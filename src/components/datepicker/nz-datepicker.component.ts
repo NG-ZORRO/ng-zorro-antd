@@ -238,16 +238,7 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   };
 
   set nzValue(value: Date) {
-    if (this._value === value) {
-      return;
-    }
-    this._value = value;
-    this._selectedMonth = moment(this.nzValue).month();
-    this._selectedYear = moment(this.nzValue).year();
-    this._selectedDate = moment(this.nzValue).date();
-    this._showYear = moment(this.nzValue).year();
-    this._showMonth = moment(this.nzValue).month();
-    this._startDecade = Math.floor(this._showYear / 10) * 10;
+    this._updateValue(value);
   };
 
   _changeTime($event) {
@@ -400,7 +391,8 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(value: any): void {
-    this.nzValue = value;
+    // this.nzValue = value;
+    this._updateValue(value);
   }
 
   registerOnChange(fn: (_: any) => {}): void {
@@ -413,5 +405,18 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
+  }
+
+  private _updateValue(value: any) {
+    if (this._value === value) {
+      return;
+    }
+    this._value = value;
+    this._selectedMonth = moment(this.nzValue).month();
+    this._selectedYear = moment(this.nzValue).year();
+    this._selectedDate = moment(this.nzValue).date();
+    this._showYear = moment(this.nzValue).year();
+    this._showMonth = moment(this.nzValue).month();
+    this._startDecade = Math.floor(this._showYear / 10) * 10;
   }
 }

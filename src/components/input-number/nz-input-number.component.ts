@@ -135,15 +135,7 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   };
 
   set nzValue(value: number) {
-    if (this._value === value) {
-      return;
-    }
-    this._value = this._getBoundValue(value);
-    this._displayValue = this._value;
-    this._inputNumber.nativeElement.value = this._value;
-    this.onChange(this._value);
-    this._disabledUp = (this.nzValue !== undefined) && !((this.nzValue + this.nzStep) <= this.nzMax);
-    this._disabledDown = (this.nzValue !== undefined) && !((this.nzValue - this.nzStep) >= this.nzMin);
+    this._updateValue(value);
   }
 
   _userInputChange() {
@@ -184,7 +176,8 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   }
 
   writeValue(value: any): void {
-    this.nzValue = value;
+    // this.nzValue = value;
+    this._updateValue(value, false);
   }
 
   registerOnChange(fn: (_: any) => {}): void {
@@ -197,5 +190,19 @@ export class NzInputNumberComponent implements ControlValueAccessor {
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
+  }
+
+  private _updateValue(value: number, emitChange = true) {
+    if (this._value === value) {
+      return;
+    }
+    this._value = this._getBoundValue(value);
+    this._displayValue = this._value;
+    this._inputNumber.nativeElement.value = this._value;
+    if (emitChange) {
+      this.onChange(this._value);
+    }
+    this._disabledUp = (this.nzValue !== undefined) && !((this.nzValue + this.nzStep) <= this.nzMax);
+    this._disabledDown = (this.nzValue !== undefined) && !((this.nzValue - this.nzStep) >= this.nzMin);
   }
 }
