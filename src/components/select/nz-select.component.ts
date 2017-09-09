@@ -79,6 +79,7 @@ import { TagAnimation } from '../core/animation/tag-animations';
                 [(ngModel)]="_searchText"
                 (ngModelChange)="updateFilterOption();onSearchChange($event);"
                 (keydown)="updateWidth(searchInput,_searchText)"
+                (blur)="onTouched()"
                 #searchInput>
               <span class="ant-select-search__field__mirror"></span></div>
           </li>
@@ -93,6 +94,7 @@ import { TagAnimation } from '../core/animation/tag-animations';
           <div class="ant-select-search__field__wrap">
             <input
               class="ant-select-search__field"
+              (blur)="onTouched()"
               (compositionstart)="compositionStart()"
               (compositionend)="compositionEnd()"
               [(ngModel)]="_searchText"
@@ -103,7 +105,7 @@ import { TagAnimation } from '../core/animation/tag-animations';
         </div>
       </div>
       <span
-        (click)="clearSelect($event)"
+        (click)="onTouched();clearSelect($event)"
         class="ant-select-selection__clear"
         style="-webkit-user-select: none;"
         *ngIf="_selectedOption?.nzLabel&&nzAllowClear&&!nzMultiple">
@@ -591,6 +593,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     if (!this.nzOpen) {
       return;
     }
+    this.onTouched();
     if (this.nzMultiple) {
       this._renderer.removeStyle(this.searchInputElementRef.nativeElement, 'width');
     }

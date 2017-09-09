@@ -20,7 +20,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         [ngClass]="_inputPrefixCls"
         [ngModel]="nzChecked"
         (focus)="nzFocus()"
-        (blur)="nzBlur()">
+        (blur)="onTouched();nzBlur()">
     </span>
     <ng-content></ng-content>
   `,

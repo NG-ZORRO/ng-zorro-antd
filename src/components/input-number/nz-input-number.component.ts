@@ -37,7 +37,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       class="ant-input-number-input-wrap">
       <input class="ant-input-number-input"
         #inputNumber
-        (blur)="_checkValue()"
+        (blur)="onTouched();_checkValue()"
         [placeholder]="nzPlaceHolder"
         [disabled]="nzDisabled"
         [(ngModel)]="_displayValue"
