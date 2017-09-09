@@ -23,6 +23,12 @@
           <p>垂直菜单，子菜单内嵌在菜单区域。</p>
         </div>
       </nz-code-box>
+      <nz-code-box [nzTitle]="'缩起内嵌菜单'" id="components-menu-demo-collapsed" [nzCode]="NzDemoMenuCollapsedCode">
+        <nz-demo-menu-collapsed demo></nz-demo-menu-collapsed>
+        <div intro>
+          <p>内嵌菜单可以被缩起/展开。</p>
+        </div>
+      </nz-code-box>
       <nz-code-box [nzTitle]="'只展开当前父级菜单'" id="components-menu-demo-expand" [nzCode]="NzDemoMenuExpandCode">
         <nz-demo-menu-expand demo></nz-demo-menu-expand>
         <div intro>
@@ -80,6 +86,13 @@
           <td>string: <code>vertical</code> <code>horizontal</code> <code>inline</code></td>
           <td></td>
           <td><code>vertical</code></td>
+        </tr>
+        <tr>
+          <td>nzInlineCollapsed</td>
+          <td>控制内嵌菜单的缩起/展开。</td>
+          <td>Boolean</td>
+          <td></td>
+          <td><code>false</code></td>
         </tr>
         <tr>
           <td>nzClickActive</td>

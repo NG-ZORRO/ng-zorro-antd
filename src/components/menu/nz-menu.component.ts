@@ -25,9 +25,35 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
   subMenus = [];
   /** view init flat */
   isInit = false;
+  /** temporary mode */
+  _tempMode: NzMode;
+  /** opened index of array */
+  _subMenusOpenIndex = [];
+  /** nzInlineCollapsed */
+  _nzInlineCollapsed = false;
+
   @Input() nzMode: NzMode = 'vertical';
   @Input() nzTheme: 'light' | 'dark' = 'light';
   @Input() nzClickActive = true;
+  @Input()
+  get nzInlineCollapsed(): boolean {
+    return this._nzInlineCollapsed;
+  }
+  set nzInlineCollapsed(state: boolean) {
+    this._nzInlineCollapsed = state;
+    if (!this.isInit) {
+      return
+    }
+    if (this._nzInlineCollapsed) {
+      this.hideSubMenus();
+      // after the animation is over
+      setTimeout(() => this.nzMode = 'vertical', 150)
+    } else {
+      this.reductionSubMenus();
+      this.nzMode = this._tempMode;
+    }
+
+  }
 
   /** define host class */
   @HostBinding('class.ant-dropdown-menu')
@@ -78,6 +104,11 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
     return (!this.isInDropDown) && (this.nzMode === 'inline');
   }
 
+  @HostBinding('class.ant-menu-inline-collapsed')
+  get setMenuInlineCollapsedClass() {
+    return (!this.isInDropDown) && (this.nzMode !== 'horizontal') && this.nzInlineCollapsed;
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
       if (propName === 'nzMode') {
@@ -93,11 +124,27 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.isInit = true;
+    this._tempMode = this.nzMode;
   }
 
   /** trigger when menu item clicked */
   clearAllSelected() {
     this.menuItems.forEach(menu => menu.nzSelected = false);
+  }
+
+  hideSubMenus() {
+    this._subMenusOpenIndex = [];
+    this.subMenus.forEach((submenu, index) => {
+      if (submenu.nzOpen) {
+        this._subMenusOpenIndex.push(index)
+      }
+      submenu.nzOpen = false;
+    });
+  }
+
+  reductionSubMenus() {
+    this._subMenusOpenIndex.forEach(i => this.subMenus[i].nzOpen = true);
+    this._subMenusOpenIndex = [];
   }
 
   /** api for dropdown or navigation to set isInDropDown status */

@@ -11,6 +11,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 export class NzDemoMenuComponent implements OnInit {
   NzDemoMenuBasicCode = require('!!raw-loader!./nz-demo-menu-basic.component');
   NzDemoMenuInlineCode = require('!!raw-loader!./nz-demo-menu-inline.component');
+  NzDemoMenuCollapsedCode = require('!!raw-loader!./nz-demo-menu-collapsed.component');
   NzDemoMenuExpandCode = require('!!raw-loader!./nz-demo-menu-expand.component');
   NzDemoMenuThemeCode = require('!!raw-loader!./nz-demo-menu-theme.component');
   NzDemoMenuVerticalCode = require('!!raw-loader!./nz-demo-menu-vertical.component');
