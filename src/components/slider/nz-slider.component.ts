@@ -566,10 +566,10 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
   // print debug info
   log(...messages: Array<any>) {
-    // if (this.nzDebugId !== null) {
+    if (this.nzDebugId !== null) {
       const args = [ `[nz-slider][#${this.nzDebugId}] ` ].concat(Array.prototype.slice.call(arguments));
       console.log.apply(null, args);
-    // }
+    }
   }
 
   // Show one handle's tooltip and hide others'
