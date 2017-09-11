@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpRequest } from '@angular/common/http';
 import { HttpHeaders, HttpParams, HttpEventType, HttpResponse } from '@angular/common/http';
 import { UidService } from './uid/uid.service';
-import attrAccept from 'attr-accept';
+import attrAccept from './util/attr-accept';
 
 @Component({
     selector: 'nz-basic-upload',
