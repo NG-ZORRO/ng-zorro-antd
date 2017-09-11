@@ -108,7 +108,8 @@ import {
       </div>
     </ul>`,
   styleUrls    : [
-    './style/index.less'
+    './style/index.less',
+    './style/patch.less'
   ]
 })
 export class NzPaginationComponent {
