@@ -10,7 +10,13 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class NzDemoTableComponent implements OnInit {
   NzDemoTableBasicCode = require('!!raw-loader!./nz-demo-table-basic.component');
-  NzDemoTableSortCode = require('!!raw-loader!./nz-demo-table-sort.component');
+  NzDemoTableExpandCode = require('!!raw-loader!./nz-demo-table-expand.component');
+  NzDemoTableExpandTreeCode = require('!!raw-loader!./nz-demo-table-expand-tree.component');
+  NzDemoTableEditCode = require('!!raw-loader!./nz-demo-table-edit.component');
+  NzDemoTableFixedHeaderCode = require('!!raw-loader!./nz-demo-table-fixed-header.component');
+  NzDemoTableColspanRowspanCode = require('!!raw-loader!./nz-demo-table-colspan-rowspan.component');
+  NzDemoTableResetFilterCode = require('!!raw-loader!./nz-demo-table-reset-filter.component');
+  NzDemoTableCustomFilterCode = require('!!raw-loader!./nz-demo-table-custom-filter.component');
   NzDemoTableSelectionCode = require('!!raw-loader!./nz-demo-table-selection.component');
   NzDemoTableSelectionAndOperationCode = require('!!raw-loader!./nz-demo-table-selection-and-operation.component');
   NzDemoTableSelectionPropsCode = require('!!raw-loader!./nz-demo-table-selection-props.component');

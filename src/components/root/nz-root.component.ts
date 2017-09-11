@@ -5,7 +5,7 @@ import {
   Inject,
   Optional,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/platform-browser';
 import { NZ_ROOT_CONFIG, NzRootConfig, createNzRootInitializer} from './nz-root-config';
 
 @Component({

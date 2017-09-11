@@ -31,9 +31,9 @@ export class NzMenuItemComponent implements AfterViewInit {
   set nzSelected(value: boolean) {
     this.selected = value;
     if (value) {
-      this._renderer.addClass(this.hostElement.nativeElement, 'ant-menu-item-selected')
+      this._renderer.addClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected')
     } else {
-      this._renderer.removeClass(this.hostElement.nativeElement, 'ant-menu-item-selected')
+      this._renderer.removeClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected')
     }
   }
 

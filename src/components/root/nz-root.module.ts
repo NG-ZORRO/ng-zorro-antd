@@ -1,5 +1,6 @@
 import { NgModule, OnDestroy, ComponentRef, ComponentFactoryResolver, Inject, Optional, Injector, APP_INITIALIZER } from '@angular/core';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { DOCUMENT } from '@angular/platform-browser';
 import { NzRootComponent } from './nz-root.component';
 import { NzRootStyleComponent } from './nz-root-style.component';
 import { NZ_ROOT_CONFIG, createNzRootInitializer } from './nz-root-config';

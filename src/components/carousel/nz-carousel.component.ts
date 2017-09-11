@@ -107,8 +107,6 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
         this._renderer.removeStyle(this.slickTrack.nativeElement, 'height');
         this._renderer.setStyle(this.slickTrack.nativeElement, 'height', `${this.slideContents.length * this.hostElement.nativeElement.offsetHeight}px`);
       } else {
-        this._renderer.removeStyle(this.slickList.nativeElement, 'height');
-        this._renderer.setStyle(this.slickList.nativeElement, 'height', `${this.hostElement.nativeElement.offsetHeight}px`);
         this._renderer.removeStyle(this.slickTrack.nativeElement, 'width');
         this._renderer.setStyle(this.slickTrack.nativeElement, 'width', `${this.slideContents.length * this.hostElement.nativeElement.offsetWidth}px`);
       }

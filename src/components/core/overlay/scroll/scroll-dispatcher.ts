@@ -13,7 +13,7 @@ import {Subject} from 'rxjs/Subject';
 import {Subscription} from 'rxjs/Subscription';
 import {fromEvent} from 'rxjs/observable/fromEvent';
 import {merge} from 'rxjs/observable/merge';
-import {auditTime} from '@angular/cdk';
+import {auditTime} from 'rxjs/operator/auditTime';
 
 
 /** Time in ms to throttle the scrolling events by default. */

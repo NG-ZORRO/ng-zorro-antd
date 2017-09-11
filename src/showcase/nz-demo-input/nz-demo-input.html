@@ -31,6 +31,12 @@
           <p>带有搜索按钮的输入框。</p>
         </div>
       </nz-code-box>
+      <nz-code-box [nzTitle]="'适应文本高度的文本域'" id="components-input-demo-textarea-auot-size" [nzCode]="NzDemoInputTextareaAutoSizeCode">
+        <nz-demo-input-textarea-auot-size demo></nz-demo-input-textarea-auot-size>
+        <div intro>
+          <p><code>nzAutosize</code> 属性适用于 <code>textarea</code> 节点，并且只有高度会自动变化。另外 <code>nzAutosize</code>  可以设定为一个对象，指定最小行数和最大行数。</p>
+        </div>
+      </nz-code-box>
       <nz-code-box [nzTitle]="'前缀与后缀'" id="components-input-demo-affix" [nzCode]="NzDemoInputAffixCode">
         <nz-demo-input-affix demo></nz-demo-input-affix>
         <div intro>
@@ -103,6 +109,12 @@
           <td>false</td>
         </tr>
         <tr>
+          <td>nzReadonly</td>
+          <td>是否只读状态，默认为 false</td>
+          <td>bool</td>
+          <td>false</td>
+        </tr>
+        <tr>
           <td>nzBlur</td>
           <td>失去焦点回调</td>
           <td>EventEmitter</td>
@@ -138,6 +150,28 @@
           <td>ng-template</td>
           <td>-</td>
         </tr>
+      </tbody>
+    </table>
+    <h4 id="Input.TextArea"><span>nz-input[type=textarea]</span>
+      <!-- <a class="anchor">#</a> -->
+    </h4>
+    <p>当 <code>nzType="textarea"</code> 时，特有的API</p>
+    <table>
+      <thead>
+      <tr>
+        <th>参数</th>
+        <th>说明</th>
+        <th>类型</th>
+        <th>默认值</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nzAutosize</td>
+        <td>自适应内容高度，可设置为 true|false 或对象：<code>{{'{ minRows: 2, maxRows: 6 }'}}</code></td>
+        <td>Boolean|Object</td>
+        <td><code>false</code></td>
+      </tr>
       </tbody>
     </table>
     <h4 id="Input.Group"><span>nz-input-group</span>

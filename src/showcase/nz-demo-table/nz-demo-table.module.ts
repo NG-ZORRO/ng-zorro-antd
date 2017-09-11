@@ -3,7 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { NzDemoTableBasicComponent } from './nz-demo-table-basic.component';
-import { NzDemoTableSortComponent } from './nz-demo-table-sort.component';
+import { NzDemoTableExpandComponent } from './nz-demo-table-expand.component';
+import { NzDemoTableExpandTreeComponent } from './nz-demo-table-expand-tree.component';
+import { NzDemoTableEditComponent } from './nz-demo-table-edit.component';
+import { NzDemoTableFixedHeaderComponent } from './nz-demo-table-fixed-header.component';
+import { NzDemoTableColspanRowspanComponent } from './nz-demo-table-colspan-rowspan.component';
+import { NzDemoTableResetFilterComponent } from './nz-demo-table-reset-filter.component';
+import { NzDemoTableCustomFilterComponent } from './nz-demo-table-custom-filter.component';
 import { NzDemoTableSelectionComponent } from './nz-demo-table-selection.component';
 import { NzDemoTableSelectionAndOperationComponent } from './nz-demo-table-selection-and-operation.component';
 import { NzDemoTableSelectionPropsComponent } from './nz-demo-table-selection-props.component';
@@ -20,7 +26,7 @@ import { NzDemoTableRoutingModule } from './nz-demo-table.routing.module';
 
 @NgModule({
   imports     : [ NzDemoTableRoutingModule, FormsModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule ],
-  declarations: [ NzDemoTableComponent, NzDemoTableBasicComponent, NzDemoTableSortComponent, NzDemoTableSelectionComponent, NzDemoTableSelectionAndOperationComponent, NzDemoTableSelectionPropsComponent, NzDemoTablePagingComponent, NzDemoTableAjaxComponent, NzDemoTableNoPaginationComponent, NzDemoTableSizeComponent ]
+  declarations: [ NzDemoTableExpandTreeComponent, NzDemoTableExpandComponent, NzDemoTableCustomFilterComponent, NzDemoTableEditComponent, NzDemoTableComponent, NzDemoTableFixedHeaderComponent, NzDemoTableColspanRowspanComponent, NzDemoTableBasicComponent, NzDemoTableResetFilterComponent, NzDemoTableSelectionComponent, NzDemoTableSelectionAndOperationComponent, NzDemoTableSelectionPropsComponent, NzDemoTablePagingComponent, NzDemoTableAjaxComponent, NzDemoTableNoPaginationComponent, NzDemoTableSizeComponent ]
 })
 
 export class NzDemoTableModule {

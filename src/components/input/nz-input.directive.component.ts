@@ -6,6 +6,7 @@ import {
   ElementRef,
   Input
 } from '@angular/core';
+import { AutoSizeType } from './nz-input.component';
 
 @Component({
   selector     : '[nz-input]',
@@ -18,6 +19,8 @@ import {
 export class NzInputDirectiveComponent {
   size = 'default';
   nativeElement: HTMLElement;
+  _readonly = false;
+  _autosize: boolean | AutoSizeType = false;
   @HostBinding(`class.ant-input-disabled`) _disabled = false;
 
   @Input()
@@ -41,6 +44,39 @@ export class NzInputDirectiveComponent {
       this._render.removeAttribute(this.nativeElement, 'disabled');
     }
     this._disabled = value;
+  }
+
+  @Input()
+  get nzReadonly(): boolean {
+    return this._readonly;
+  };
+
+  set nzReadonly(value: boolean) {
+    if (value) {
+      this._render.setAttribute(this.nativeElement, 'readonly', '');
+    } else {
+      this._render.removeAttribute(this.nativeElement, 'readonly');
+    }
+    this._readonly = value;
+  }
+
+  @Input()
+  get nzAutosize() {
+    return this._autosize;
+  }
+
+  set nzAutosize(value: string | boolean | AutoSizeType) {
+    if (value === '') {
+      this._autosize = true;
+    } else {
+      this._autosize = value;
+    }
+
+    if (this._autosize) {
+      this._render.setAttribute(this.nativeElement, 'autosize', '');
+    } else {
+      this._render.removeAttribute(this.nativeElement, 'autosize');
+    }
   }
 
   @HostBinding(`class.ant-input`) _nzInput = true;
