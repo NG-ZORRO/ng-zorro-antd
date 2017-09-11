@@ -65,12 +65,8 @@ export class NzInputDirectiveComponent {
     return this._autosize;
   }
 
-  set nzAutosize(value: string | boolean | AutoSizeType) {
-    if (value === '') {
-      this._autosize = true;
-    } else {
-      this._autosize = value;
-    }
+  set nzAutosize(value: boolean | AutoSizeType) {
+    this._autosize = value;
 
     if (this._autosize) {
       this._render.setAttribute(this.nativeElement, 'autosize', '');
