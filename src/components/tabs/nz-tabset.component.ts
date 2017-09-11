@@ -17,8 +17,8 @@ import {
 } from '@angular/core';
 import { NzTabComponent } from './nz-tab.component';
 import { NzTabsNavComponent } from './nz-tabs-nav.component';
-import { map } from '@angular/cdk';
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operator/map';
 
 export interface NzAnimatedInterface {
   inkBar: boolean,

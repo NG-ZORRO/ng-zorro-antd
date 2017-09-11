@@ -91,6 +91,7 @@ export class NzRadioComponent implements OnInit {
   nzBlur() {
     this._focused = false;
     this.setClassMap();
+    this._nzRadioGroup.onTouched();
   }
 
   setClassMap(): void {

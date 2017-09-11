@@ -10,7 +10,7 @@ import * as moment from 'moment';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzTimePickerInnerComponent } from './nz-timepicker-inner.component';
 import { DEFAULT_DATEPICKER_POSITIONS } from '../core/overlay/overlay-position-map';
-import { ConnectionPositionPair } from '../core/overlay';
+import { ConnectionPositionPair } from '../core/overlay/index';
 
 @Component({
   selector     : 'nz-timepicker',
@@ -30,6 +30,7 @@ import { ConnectionPositionPair } from '../core/overlay';
         class="ant-time-picker-input"
         [attr.placeholder]="nzPlaceHolder"
         (click)="_openCalendar()"
+        (blur)="onTouched()"
         [value]="_value|nzDate:_format">
       <span class="ant-time-picker-icon"></span>
     </span>

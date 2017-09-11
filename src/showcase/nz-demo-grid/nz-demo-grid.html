@@ -138,6 +138,17 @@
           </p>
         </div>
       </nz-code-box>
+      <nz-code-box [nzTitle]="'其他属性的响应式'" id="components-grid-demo-responsive-more" [nzCode]="NzDemoGridResponsiveMoreCode">
+        <nz-demo-grid-responsive-more demo></nz-demo-grid-responsive-more>
+        <div intro>
+          <p>
+            <code>span</code>  <code>pull</code> <code>push</code> <code>offset</code> <code>order</code> 属性可以通过内嵌到 <code>nzXs</code> <code>nzSm</code> <code>nzMd</code> <code>nzLg</code> <code>nzXl</code> 属性中来使用。
+          </p>
+          <p>
+            其中 <code>[nzXs]="6"</code> 相当于 <code>nzXs={{'{'}}{{'{'}} span: 6 {{'}'}}{{'}'}}</code>
+          </p>
+        </div>
+      </nz-code-box>
       <nz-code-box [nzTitle]="'栅格配置器'" id="components-grid-demo-gutter-config" [nzCode]="NzDemoGridGutterConfigCode">
         <nz-demo-grid-gutter-config demo></nz-demo-grid-gutter-config>
         <div intro>
@@ -237,31 +248,31 @@
         <tr>
           <td>nzXs</td>
           <td><code>&lt;768px</code> 响应式栅格，可为栅格数或一个包含其他属性的对象</td>
-          <td>Number</td>
+          <td>Number|Object</td>
           <td>-</td>
         </tr>
         <tr>
           <td>nzSm</td>
           <td><code>≥768px</code> 响应式栅格，可为栅格数或一个包含其他属性的对象</td>
-          <td>Number</td>
+          <td>Number|Object</td>
           <td>-</td>
         </tr>
         <tr>
           <td>nzMd</td>
           <td><code>≥992px</code> 响应式栅格，可为栅格数或一个包含其他属性的对象</td>
-          <td>Number</td>
+          <td>Number|Object</td>
           <td>-</td>
         </tr>
         <tr>
           <td>nzLg</td>
           <td><code>≥1200px</code> 响应式栅格，可为栅格数或一个包含其他属性的对象</td>
-          <td>Number</td>
+          <td>Number|Object</td>
           <td>-</td>
         </tr>
         <tr>
           <td>nzXl</td>
           <td><code>≥1600px</code> 响应式栅格，可为栅格数或一个包含其他属性的对象</td>
-          <td>Number</td>
+          <td>Number|Object</td>
           <td>-</td>
         </tr>
       </tbody>

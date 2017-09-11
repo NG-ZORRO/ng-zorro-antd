@@ -6,7 +6,7 @@ import { NzTimePickerModule } from '../time-picker/nz-timepicker.module';
 import { NzUtilModule } from '../util/nz-util.module';
 import { NzCalendarModule } from '../calendar/nz-calendar.module';
 import { FormsModule } from '@angular/forms';
-import { OverlayModule } from '../core/overlay';
+import { OverlayModule } from '../core/overlay/index';
 
 @NgModule({
   imports     : [ CommonModule, NzTimePickerModule, NzUtilModule, NzInputModule, NzCalendarModule, FormsModule, OverlayModule ],

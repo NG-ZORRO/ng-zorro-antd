@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { NzDemoMenuBasicComponent } from './nz-demo-menu-basic.component';
 import { NzDemoMenuInlineComponent } from './nz-demo-menu-inline.component';
+import { NzDemoMenuCollapsedComponent } from './nz-demo-menu-collapsed.component';
 import { NzDemoMenuExpandComponent } from './nz-demo-menu-expand.component';
 import { NzDemoMenuVerticalComponent } from './nz-demo-menu-vertical.component';
 import { NzDemoMenuThemeComponent } from './nz-demo-menu-theme.component';
@@ -25,6 +26,7 @@ import { NzDemoMenuRoutingModule } from './nz-demo-menu.routing.module';
     NzDemoMenuComponent,
     NzDemoMenuBasicComponent,
     NzDemoMenuInlineComponent,
+    NzDemoMenuCollapsedComponent,
     NzDemoMenuExpandComponent,
     NzDemoMenuVerticalComponent,
     NzDemoMenuThemeComponent,

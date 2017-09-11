@@ -16,6 +16,7 @@ export class NzDemoInputComponent implements OnInit {
   NzDemoInputGroupCode = require('!!raw-loader!./nz-demo-input-group.component');
   NzDemoInputSearchCode = require('!!raw-loader!./nz-demo-input-search.component');
   NzDemoInputTextareaCode = require('!!raw-loader!./nz-demo-input-textarea.component');
+  NzDemoInputTextareaAutoSizeCode = require('!!raw-loader!./nz-demo-input-textarea-auot-size.component');
   NzDemoInputAffixCode = require('!!raw-loader!./nz-demo-input-affix.component');
 
   constructor() {
