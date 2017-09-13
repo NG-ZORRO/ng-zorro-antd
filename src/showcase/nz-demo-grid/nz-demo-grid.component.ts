@@ -18,6 +18,7 @@ export class NzDemoGridComponent implements OnInit {
   NzDemoGridFlexAlignCode = require('!!raw-loader!./nz-demo-grid-flex-align.component');
   NzDemoGridFlexOrderCode = require('!!raw-loader!./nz-demo-grid-flex-order.component');
   NzDemoGridResponsiveCode = require('!!raw-loader!./nz-demo-grid-responsive.component');
+  NzDemoGridResponsiveMoreCode = require('!!raw-loader!./nz-demo-grid-responsive-more.component');
 
   constructor() {
   }

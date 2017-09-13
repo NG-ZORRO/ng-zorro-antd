@@ -1,17 +1,17 @@
 /* tslint:disable:no-unused-variable */
-import {async, ComponentFixture, TestBed, ComponentFixtureAutoDetect} from '@angular/core/testing';
-import {Component, DebugElement} from '@angular/core';
-import {By} from '@angular/platform-browser';
-import {NzGridModule} from './nz-grid.module';
-import {NzRowComponent} from './nz-row.component';
-import {NzColDirective} from './nz-col.directive';
+import { async, ComponentFixture, TestBed, ComponentFixtureAutoDetect } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { NzGridModule } from './nz-grid.module';
+import { NzRowComponent } from './nz-row.component';
+import { NzColDirective } from './nz-col.directive';
 
 describe('NzGrid', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NzGridModule],
-      declarations: [GridListWithoutCols, GridListWithoutRows, TestSpan, TestOffset, TestPushPull, TestColResponsive, TestGutter, TestTypeFlex, TestTypeFlexOrder]
+      imports     : [ NzGridModule ],
+      declarations: [ GridListWithoutCols, GridListWithoutRows, TestSpan, TestOffset, TestPushPull, TestColResponsive, TestGutter, TestTypeFlex, TestTypeFlexOrder, TestTypeEmbedded ]
     }).compileComponents();
   }));
   describe('for cols', () => {
@@ -145,7 +145,7 @@ describe('NzGrid', () => {
       const debugElement_col = fixture.debugElement.query(By.directive(NzColDirective));
 
       // window.resizeTo(800, 600);
-      testComponent._col1 = {xs: 2, xm: 4, md: 6, lg: 8, xl: 10};
+      testComponent._col1 = { xs: 2, xm: 4, md: 6, lg: 8, xl: 10 };
       fixture.detectChanges();
       expect(debugElement_col.nativeElement.classList.contains('ant-col-xs-2')).toBe(true);
       expect(debugElement_col.nativeElement.classList.contains('ant-col-sm-4')).toBe(true);
@@ -153,7 +153,7 @@ describe('NzGrid', () => {
       expect(debugElement_col.nativeElement.classList.contains('ant-col-lg-8')).toBe(true);
       expect(debugElement_col.nativeElement.classList.contains('ant-col-xl-10')).toBe(true);
 
-      testComponent._col1 = {xs: 'custom_string', xm: 4, md: 6, lg: 8, xl: 10};
+      testComponent._col1 = { xs: 'custom_string', xm: 4, md: 6, lg: 8, xl: 10 };
       expect(() => {
         fixture.detectChanges()
       }).not.toThrow();
@@ -191,9 +191,17 @@ describe('NzGrid', () => {
       const testComponentResponsive = fixtureResponsive.debugElement.componentInstance;
       const debugElement_col_responsive = fixtureResponsive.debugElement.query(By.directive(NzColDirective));
       debugElement_col_responsive.nativeElement.classList.add('custom-class');
-      testComponentResponsive._col1 = {xs: 2, xm: 4, md: 6, lg: 8, xl: 10};
+      testComponentResponsive._col1 = { xs: 2, xm: 4, md: 6, lg: 8, xl: 10 };
       fixtureResponsive.detectChanges();
       expect(debugElement_col_responsive.nativeElement.classList.contains('custom-class')).toBe(true);
+    });
+    it('should embedded style work', () => {
+      const fixtureSpan = TestBed.createComponent(TestTypeEmbedded);
+      const debugElement_embedded_span = fixtureSpan.debugElement.query(By.directive(NzColDirective));
+      fixtureSpan.detectChanges();
+      const className = 'ant-col-xs-1 ant-col-xs-pull-1 ant-col-xs-push-1 ant-col-xs-offset-1 ant-col-xs-order-1 ant-col-sm-1 ant-col-sm-pull-1 ant-col-sm-push-1 ant-col-sm-offset-1 ant-col-sm-order-1 ant-col-md-1 ant-col-md-pull-1 ant-col-md-push-1 ant-col-md-offset-1 ant-col-md-order-1 ant-col-lg-1 ant-col-lg-pull-1 ant-col-lg-push-1 ant-col-lg-offset-1 ant-col-lg-order-1 ant-col-xl-1 ant-col-xl-pull-1 ant-col-xl-push-1 ant-col-xl-offset-1 ant-col-xl-order-1';
+      expect(debugElement_embedded_span.nativeElement.className === className).toBe(true);
+
     });
   });
 
@@ -311,13 +319,16 @@ describe('NzGrid', () => {
 function getStyle(el: DebugElement, prop: string): string {
   return getComputedStyle(el.nativeElement).getPropertyValue(prop);
 }
+
 /** Test component that contains an nzGrid. */
-@Component({template: '<div nz-row></div>'})
+@Component({ template: '<div nz-row></div>' })
 class GridListWithoutCols {
 }
-@Component({template: '<div nz-col></div>'})
+
+@Component({ template: '<div nz-col></div>' })
 class GridListWithoutRows {
 }
+
 @Component({
   selector: 'test-span',
   template: `
@@ -334,6 +345,7 @@ class GridListWithoutRows {
 class TestSpan {
   _span = 5;
 }
+
 @Component({
   selector: 'test-offset',
   template: `
@@ -353,6 +365,7 @@ class TestOffset {
   _span2 = 12;
   _offset2 = 8;
 }
+
 @Component({
   selector: 'test-push-pull',
   template: `
@@ -368,6 +381,7 @@ class TestPushPull {
   _push = 6;
   _pull = 18;
 }
+
 @Component({
   selector: 'test-col-responsive',
   template: `
@@ -378,7 +392,7 @@ class TestPushPull {
     </div>`,
 })
 class TestColResponsive {
-  _col1 = {xs: 2, xm: 4, md: 6, lg: 8, xl: 10};
+  _col1 = { xs: 2, xm: 4, md: 6, lg: 8, xl: 10 };
 }
 
 @Component({
@@ -400,6 +414,7 @@ class TestGutter {
   _span = 6;
   _gutter = 16;
 }
+
 @Component({
   selector: 'test-type-flex',
   template: `
@@ -421,6 +436,7 @@ class TestTypeFlex {
   _justify = 'start';
   _align = 'top'
 }
+
 @Component({
   selector: 'test-type-flex',
   template: `
@@ -438,4 +454,21 @@ class TestTypeFlexOrder {
   _type = 'flex';
   _order1 = 1;
   _order2 = 2
+}
+
+@Component({
+  selector: 'test-type-embedded',
+  template: `
+    <div nz-row [nzType]="'flex'">
+      <div
+        nz-col
+        [nzXs]="{ span: 1, offset: 1,push:1, order:1,pull:1 }"
+        [nzSm]="{ span: 1, offset: 1,push:1, order:1,pull:1 }"
+        [nzMd]="{ span: 1, offset: 1,push:1, order:1,pull:1 }"
+        [nzLg]="{ span: 1, offset: 1,push:1, order:1,pull:1 }"
+        [nzXl]="{ span: 1, offset: 1,push:1, order:1,pull:1 }"></div>
+    </div>
+  `
+})
+class TestTypeEmbedded {
 }

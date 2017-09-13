@@ -21,7 +21,7 @@ import { FadeAnimation } from '../core/animation/fade-animations';
 import {
   ConnectionPositionPair,
   ConnectedOverlayDirective
-} from '../core/overlay';
+} from '../core/overlay/index';
 import { POSITION_MAP, DEFAULT_4_POSITIONS } from '../core/overlay/overlay-position-map';
 
 @Component({

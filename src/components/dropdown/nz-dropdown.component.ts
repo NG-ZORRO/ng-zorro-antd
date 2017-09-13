@@ -21,7 +21,7 @@ import { NzMenuComponent } from '../menu/nz-menu.component';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 import { POSITION_MAP, DEFAULT_DROPDOWN_POSITIONS } from '../core/overlay/overlay-position-map';
-import { ConnectionPositionPair } from '../core/overlay';
+import { ConnectionPositionPair } from '../core/overlay/index';
 
 export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 
@@ -143,7 +143,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   _startSubscribe(observable$: Observable<boolean>) {
-    this._subscription = observable$
+    this._subscription = debounceTime.call(observable$, 300)
       .subscribe(this._onVisibleChange)
   }
 
@@ -182,12 +182,10 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
         return () => dispose();
       });
     }
-    const observable$ = debounceTime.call(
-      merge(
-        mouse$,
-        this.nzVisibleChange.asObservable()
-      )
-      , 300);
+    const observable$ = merge(
+      mouse$,
+      this.nzVisibleChange.asObservable()
+    );
     this._startSubscribe(observable$);
   }
 

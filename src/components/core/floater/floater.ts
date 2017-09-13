@@ -6,7 +6,7 @@ import {
   OverlayOrigin,
   ConnectedPositionStrategy,
   PositionStrategy
-} from '../overlay';
+} from '../overlay/index';
 import {
   TemplatePortal,
   ComponentPortal,
