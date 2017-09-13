@@ -25,10 +25,10 @@ interface Position {
 }
 
 @Component({
-  selector     : 'nz-modal',
-  viewProviders: [ NzModalSubject ],
+  selector: 'nz-modal',
+  viewProviders: [NzModalSubject],
   encapsulation: ViewEncapsulation.None,
-  template     : `
+  template: `
     <div [ngClass]="_customClass">
       <div [ngClass]="_maskClassMap"
         [style.zIndex]="_zIndex"></div>
@@ -74,7 +74,7 @@ interface Position {
       </div>
     </div>
   `,
-  styleUrls    : [
+  styleUrls: [
     './style/index.less'
   ]
 })
@@ -89,6 +89,7 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
   _width = '520px';
   _zIndex = 1000;
   _maskClosable = true;
+  _escClosable = true;
   _title = '';
   _titleTpl: TemplateRef<any>;
   _content = '';
@@ -213,6 +214,11 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   @Input()
+  set nzEscClosable(value: boolean) {
+    this._escClosable = value;
+  }
+
+  @Input()
   set nzStyle(value: Object) {
     this._style = value;
   }
@@ -237,9 +243,11 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
   @Output()
   nzOnCancel: EventEmitter<any> = new EventEmitter();
 
-  @HostListener('keydown.esc', [ '$event' ])
+  @HostListener('keydown.esc', ['$event'])
   onEsc(e): void {
-    this.clickCancel(e);
+    if (this._escClosable) {
+      this.clickCancel(e);
+    }
   }
 
   setStyles(origin?): void {
@@ -247,26 +255,26 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
     const transformOrigin = origin ? `${origin.x - el.offsetLeft}px ${origin.y - el.offsetTop}px 0px` : '';
 
     this._bodyStyleMap = Object.assign({
-      'width'           : this._width,
+      'width': this._width,
       'transform-origin': transformOrigin
     }, this._style);
   }
 
   setClassMap(): void {
     this._maskClassMap = {
-      [`${this._prefixCls}-mask`]       : true,
+      [`${this._prefixCls}-mask`]: true,
       [`${this._prefixCls}-mask-hidden`]: !this._visible && !this._animationStatus,
-      'fade-enter'                      : this._animationStatus === 'enter',
-      'fade-enter-active'               : this._animationStatus === 'enter',
-      'fade-leave'                      : this._animationStatus === 'leave',
-      'fade-leave-active'               : this._animationStatus === 'leave'
+      'fade-enter': this._animationStatus === 'enter',
+      'fade-enter-active': this._animationStatus === 'enter',
+      'fade-leave': this._animationStatus === 'leave',
+      'fade-leave-active': this._animationStatus === 'leave'
     };
 
     this._bodyClassMap = {
-      [this._prefixCls]  : true,
-      'zoom-enter'       : this._animationStatus === 'enter',
+      [this._prefixCls]: true,
+      'zoom-enter': this._animationStatus === 'enter',
       'zoom-enter-active': this._animationStatus === 'enter',
-      'zoom-leave'       : this._animationStatus === 'leave',
+      'zoom-leave': this._animationStatus === 'leave',
       'zoom-leave-active': this._animationStatus === 'leave'
     };
   }
@@ -319,7 +327,7 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   constructor(public subject: NzModalSubject,
-              private _vcr: ViewContainerRef) {
+    private _vcr: ViewContainerRef) {
     this.subject.modalId = this.modalId;
   }
 

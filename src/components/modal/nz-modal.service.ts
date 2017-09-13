@@ -27,6 +27,7 @@ export interface ConfigInterface {
   class?: string;
   closable?: boolean;
   maskClosable?: boolean;
+  escClosable?: boolean;
   wrapClassName?: string;
   footer?: TemplateRef<any> | boolean;
   onOk?: Function;
@@ -42,7 +43,7 @@ export class NzModalService {
   _confirmCompFactory: ComponentFactory<NzConfirmComponent>;
 
   constructor(private _appRef: ApplicationRef,
-              private _cfr: ComponentFactoryResolver) {
+    private _cfr: ComponentFactoryResolver) {
     this._modalCompFactory = this._cfr.resolveComponentFactory(NzModalComponent);
     this._confirmCompFactory = this._cfr.resolveComponentFactory(NzConfirmComponent);
   }
@@ -65,6 +66,7 @@ export class NzModalService {
       'onCancel',
       'closable',
       'maskClosable',
+      'escClosable',
       'wrapClassName',
       'iconType',
       'confirmType',
@@ -73,19 +75,19 @@ export class NzModalService {
 
     config = Object.assign(options, config);
     optionalParams.forEach(key => {
-      if (config[ key ] !== undefined) {
+      if (config[key] !== undefined) {
         const modalKey = 'nz' + key.replace(/^\w{1}/, (a) => {
           return a.toLocaleUpperCase();
         });
-        props[ modalKey ] = config[ key ];
+        props[modalKey] = config[key];
       }
     });
 
-    props[ 'onOk' ] = this._getConfirmCb(props[ 'nzOnOk' ]);
-    props[ 'onCancel' ] = this._getConfirmCb(props[ 'nzOnCancel' ]);
+    props['onOk'] = this._getConfirmCb(props['nzOnOk']);
+    props['onCancel'] = this._getConfirmCb(props['nzOnCancel']);
     // 在service模式下，不需要nzOnOk，防止触发this.nzOnOk.emit(e);
-    delete props[ 'nzOnOk' ];
-    delete props[ 'nzOnCancel' ];
+    delete props['nzOnOk'];
+    delete props['nzOnCancel'];
     return props;
   }
 
@@ -113,19 +115,19 @@ export class NzModalService {
     let instance: any;
     let subject: any;
 
-    if (props[ 'nzContent' ] instanceof Type) {
-      customComponentFactory = this._cfr.resolveComponentFactory(props[ 'nzContent' ]);
+    if (props['nzContent'] instanceof Type) {
+      customComponentFactory = this._cfr.resolveComponentFactory(props['nzContent']);
       // 将编译出来的ngmodule中的用户component的factory作为modal内容存入
-      props[ 'nzContent' ] = customComponentFactory;
+      props['nzContent'] = customComponentFactory;
     }
 
     compRef = this._appRef.bootstrap(factory);
     instance = compRef.instance;
     subject = instance.subject;
 
-    [ 'onOk', 'onCancel' ].forEach((eventType: string) => {
+    ['onOk', 'onCancel'].forEach((eventType: string) => {
       subject.on(eventType, () => {
-        const eventHandler = props[ eventType ];
+        const eventHandler = props[eventType];
         if (eventHandler) {
           eventHandler(() => {
             instance.nzVisible = false;
@@ -176,7 +178,7 @@ export class NzModalService {
   info(props: ConfigInterface): NzModalSubject {
     const config = Object.assign({}, {
       confirmType: 'info',
-      iconType   : 'info-circle'
+      iconType: 'info-circle'
     }, props);
     return this._openConfirm(config);
   }
@@ -187,7 +189,7 @@ export class NzModalService {
   success(props: ConfigInterface): NzModalSubject {
     const config = Object.assign({
       confirmType: 'success',
-      iconType   : 'check-circle'
+      iconType: 'check-circle'
     }, props);
     return this._openConfirm(config);
   }
@@ -198,7 +200,7 @@ export class NzModalService {
   error(props: ConfigInterface): NzModalSubject {
     const config = Object.assign({
       confirmType: 'error',
-      iconType   : 'cross-circle'
+      iconType: 'cross-circle'
     }, props);
     return this._openConfirm(config);
   }
@@ -209,7 +211,7 @@ export class NzModalService {
   warning(props: ConfigInterface): NzModalSubject {
     const config = Object.assign({
       confirmType: 'warning',
-      iconType   : 'exclamation-circle'
+      iconType: 'exclamation-circle'
     }, props);
     return this._openConfirm(config);
   }
@@ -220,8 +222,8 @@ export class NzModalService {
   confirm(props: ConfigInterface): NzModalSubject {
     const config = Object.assign({
       confirmType: 'confirm',
-      okText     : '确 定',
-      cancelText : '取 消'
+      okText: '确 定',
+      cancelText: '取 消'
     }, props);
     return this._openConfirm(config);
   }
