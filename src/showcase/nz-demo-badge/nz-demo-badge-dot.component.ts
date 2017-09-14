@@ -3,11 +3,11 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-badge-dot',
   template: `
-    <nz-badge nzDot>
+    <nz-badge [nzDot]="true">
       <ng-template #content><i class="anticon anticon-notification"></i></ng-template>
     </nz-badge>
 
-    <nz-badge nzDot>
+    <nz-badge [nzDot]="true">
       <ng-template #content>
         <a>一个链接</a>
       </ng-template>
