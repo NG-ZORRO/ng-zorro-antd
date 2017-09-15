@@ -24,7 +24,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NzDemoSelectBasicComponent implements OnInit {
   options = [];
-  test = 1;
   selectedOption;
 
   constructor() {
