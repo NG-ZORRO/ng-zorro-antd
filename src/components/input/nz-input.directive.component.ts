@@ -66,10 +66,10 @@ export class NzInputDirectiveComponent {
   }
 
   set nzAutosize(value: string | boolean | AutoSizeType) {
-    if (value === '') {
+    if (typeof value === 'string') {
       this._autosize = true;
     } else {
-      this._autosize = value;
+      this._autosize = <boolean | AutoSizeType>value;
     }
 
     if (this._autosize) {
