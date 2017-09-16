@@ -16,15 +16,16 @@
 * `Menu`支持子菜单选中时，父级菜单高亮显示 [#264](https://github.com/NG-ZORRO/ng-zorro-antd/pull/264) [HsuanXyz](https://github.com/HsuanXyz)
 
 ### Bug Fixes
-* `Pagination`修复`nzPageIndexChange`事件被多次触发 [281](https://github.com/NG-ZORRO/ng-zorro-antd/pull/281) [HsuanXyz](https://github.com/HsuanXyz)
-* `Pagination`修复鼠标双击时，分页文本被选中的情况 [268](https://github.com/NG-ZORRO/ng-zorro-antd/pull/268) [HsuanXyz](https://github.com/HsuanXyz)
-* `Input`修复类型错误提示 [283](https://github.com/NG-ZORRO/ng-zorro-antd/pull/283) [deart1mer](https://github.com/deart1mer)
-* `Datepicker`修复年选择框范围错误 [301](https://github.com/NG-ZORRO/ng-zorro-antd/pull/301) [giscafer](https://github.com/giscafer)
-* `Layout`修复手机下响应式布局行为不一致 [299](https://github.com/NG-ZORRO/ng-zorro-antd/pull/299)
+* `Pagination`修复`nzPageIndexChange`事件被多次触发 [#281](https://github.com/NG-ZORRO/ng-zorro-antd/pull/281) [HsuanXyz](https://github.com/HsuanXyz)
+* `Pagination`修复鼠标双击时，分页文本被选中的情况 [#268](https://github.com/NG-ZORRO/ng-zorro-antd/pull/268) [HsuanXyz](https://github.com/HsuanXyz)
+* `Input`修复类型错误提示 [#283](https://github.com/NG-ZORRO/ng-zorro-antd/pull/283) [deart1mer](https://github.com/deart1mer)
+* `Datepicker`修复年选择框范围错误 [#301](https://github.com/NG-ZORRO/ng-zorro-antd/pull/301) [giscafer](https://github.com/giscafer)
+* `Layout`修复手机下响应式布局行为不一致 [#299](https://github.com/NG-ZORRO/ng-zorro-antd/pull/299)
 
 ### Docs
-* `DEMO:Badge`参数使用错误 [297](https://github.com/NG-ZORRO/ng-zorro-antd/pull/297) [HsuanXyz](https://github.com/HsuanXyz)
-* `DEMO:Select`移除未使用的变量 [308](https://github.com/NG-ZORRO/ng-zorro-antd/pull/308) [tigercosmos](https://github.com/tigercosmos)
+* `DEMO:Badge`参数使用错误 [#297](https://github.com/NG-ZORRO/ng-zorro-antd/pull/297) [HsuanXyz](https://github.com/HsuanXyz)
+* `DEMO:Select`移除未使用的变量 [#308](https://github.com/NG-ZORRO/ng-zorro-antd/pull/308) [tigercosmos](https://github.com/tigercosmos)
+* `DEMO:Select`增加nzShowSearch的说明 [#279](https://github.com/NG-ZORRO/ng-zorro-antd/pull/279) [SangKa.Z](https://github.com/SangKa)
 
 ## 0.5.0
 `2017-09-09`
