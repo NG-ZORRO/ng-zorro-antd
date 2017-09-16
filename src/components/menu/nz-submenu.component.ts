@@ -57,6 +57,13 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() nzOpen = false;
   @Output() nzOpenChange: EventEmitter<boolean> = new EventEmitter();
 
+  get subItemSelected(): boolean {
+    return !!this.nzMenuComponent.menuItems.find(e => e.selected && e.nzSubMenuComponent === this);
+  }
+  get submenuSelected(): boolean {
+    return !!this.subMenus._results.find(e => e !== this && e.subItemSelected)
+  }
+
   clickSubMenuTitle() {
     if ((this.nzMenuComponent.nzMode === 'inline') || (!this.isInDropDown)) {
       this.nzOpen = !this.nzOpen;
@@ -106,10 +113,14 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.isInDropDown && (this.nzMenuComponent.nzMode === 'horizontal');
   }
 
-
   @HostBinding('class.ant-menu-submenu')
   get setMenuSubmenuClass() {
     return !this.isInDropDown;
+  }
+
+  @HostBinding('class.ant-menu-submenu-selected')
+  get setMenuSubmenuSelectedClass() {
+    return this.submenuSelected || this.subItemSelected;
   }
 
   @HostBinding('class.ant-menu-submenu-vertical')
