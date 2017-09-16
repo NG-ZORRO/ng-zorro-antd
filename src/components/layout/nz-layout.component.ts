@@ -13,14 +13,12 @@ import { Component, HostBinding, ViewEncapsulation, Input } from '@angular/core'
 })
 
 export class NzLayoutComponent {
-  @Input() isFullscreen = false;
-
-  @HostBinding('class.ant-layout-has-sider') hasSider = false;
 
   @HostBinding('class.ant-layout-is-fullscreen')
-  get fullscreen(){
-    return this.isFullscreen;
-  }
+  @Input()
+  isFullscreen = false;
+
+  @HostBinding('class.ant-layout-has-sider') hasSider = false;
 
   @HostBinding('class.ant-layout') _nzLayout = true;
 }
