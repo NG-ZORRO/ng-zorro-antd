@@ -228,7 +228,6 @@ export class NzPaginationComponent {
   get nzTotal(): number {
     return this._total;
   };
-  
   set nzTotal(value: number) {
     if (value === this._total) {
       return;
@@ -248,7 +247,6 @@ export class NzPaginationComponent {
   get nzOptions(): number[] {
     return this._options;
   }
-  
   _pageSizeChange($event) {
     this.nzPageSize = $event;
     this.nzPageSizeChange.emit($event);
