@@ -19,10 +19,10 @@ interface Position {
 }
 
 @Component({
-  selector     : 'nz-confirm',
-  viewProviders: [ NzModalSubject ],
+  selector: 'nz-confirm',
+  viewProviders: [NzModalSubject],
   encapsulation: ViewEncapsulation.None,
-  template     : `
+  template: `
     <div [ngClass]="_customClass">
       <div [ngClass]="_maskClassMap"
         [style.zIndex]="_zIndex"></div>
@@ -67,7 +67,7 @@ interface Position {
       </div>
     </div>
   `,
-  styleUrls    : [
+  styleUrls: [
     './style/index.less'
   ]
 })
@@ -85,6 +85,7 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
   _titleTpl: TemplateRef<any>;
   _content = '';
   _maskClosable = true;
+  _escClosable = true;
   _contentTpl: TemplateRef<any>;
   _okText = '知道了';
   _cancelText = '';
@@ -161,6 +162,11 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
   }
 
   @Input()
+  set nzEscClosable(value: boolean) {
+    this._escClosable = value;
+  }
+
+  @Input()
   set nzOkText(value: string) {
     this._okText = value;
   }
@@ -189,12 +195,14 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
     this._confirmLoading = value;
   }
 
-  @HostListener('keydown.esc', [ '$event' ])
+  @HostListener('keydown.esc', ['$event'])
   onEsc(e): void {
-    this.subject.next('onCancel');
+    if (this._escClosable) {
+      this.subject.next('onCancel');
+    }
   }
 
-  @HostListener('keydown.enter', [ '$event' ])
+  @HostListener('keydown.enter', ['$event'])
   onEnter(e): void {
     this.subject.next('onOk');
   }
@@ -204,29 +212,29 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
     const transformOrigin = origin ? `${origin.x - el.offsetLeft}px ${origin.y - el.offsetTop}px 0px` : '';
 
     this._bodyStyleMap = {
-      'width'           : this._width,
+      'width': this._width,
       'transform-origin': transformOrigin
     };
   }
 
   setClassMap(): void {
     this._maskClassMap = {
-      [`${this._prefixCls}-mask`]       : true,
+      [`${this._prefixCls}-mask`]: true,
       [`${this._prefixCls}-mask-hidden`]: !this._visible && !this._animationStatus,
-      'fade-enter'                      : this._animationStatus === 'enter',
-      'fade-enter-active'               : this._animationStatus === 'enter',
-      'fade-leave'                      : this._animationStatus === 'leave',
-      'fade-leave-active'               : this._animationStatus === 'leave'
+      'fade-enter': this._animationStatus === 'enter',
+      'fade-enter-active': this._animationStatus === 'enter',
+      'fade-leave': this._animationStatus === 'leave',
+      'fade-leave-active': this._animationStatus === 'leave'
     };
 
     this._bodyClassMap = {
-      [this._prefixCls]       : true,
+      [this._prefixCls]: true,
       [this._prefixConfirmCls]: true,
-      [this._typeCls]         : true,
-      'zoom-enter'            : this._animationStatus === 'enter',
-      'zoom-enter-active'     : this._animationStatus === 'enter',
-      'zoom-leave'            : this._animationStatus === 'leave',
-      'zoom-leave-active'     : this._animationStatus === 'leave'
+      [this._typeCls]: true,
+      'zoom-enter': this._animationStatus === 'enter',
+      'zoom-enter-active': this._animationStatus === 'enter',
+      'zoom-leave': this._animationStatus === 'leave',
+      'zoom-leave-active': this._animationStatus === 'leave'
     };
   }
 

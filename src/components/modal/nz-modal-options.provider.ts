@@ -68,13 +68,15 @@ export class BaseOptions {
    */
   public onCancel: Function;
 
+  public maskClosable = true;
+  public escClosable = true;
+
 }
 
 @Injectable()
 export class ModalOptions extends BaseOptions {
 
   public closable = true;
-  public maskClosable = true;
   public wrapClassName: string;
   public footer: TemplateRef<any> | boolean;
   public componentParams: Object;
