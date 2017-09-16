@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { NzDemoLayoutBasicComponent } from './nz-demo-layout-basic.component';
+import { NzDemoLayoutIsFullScreenComponent } from './nz-demo-layout-is-fullscreen.component';
 import { NzDemoLayoutTopComponent } from './nz-demo-layout-top.component';
 import { NzDemoLayoutTopSideComponent } from './nz-demo-layout-top-side.component';
 import { NzDemoLayoutTopSide2Component } from './nz-demo-layout-top-side-2.component';
@@ -25,6 +26,7 @@ import { NzDemoLayoutRoutingModule } from './nz-demo-layout.routing.module';
   declarations: [
     NzDemoLayoutComponent,
     NzDemoLayoutBasicComponent,
+    NzDemoLayoutIsFullScreenComponent,
     NzDemoLayoutTopComponent,
     NzDemoLayoutTopSide2Component,
     NzDemoLayoutTopSideComponent,

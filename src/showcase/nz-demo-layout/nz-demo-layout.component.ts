@@ -16,6 +16,7 @@ export class NzDemoLayoutComponent implements OnInit {
   NzDemoLayoutSideCode = require('!!raw-loader!./nz-demo-layout-side.component');
   NzDemoLayoutTriggerCode = require('!!raw-loader!./nz-demo-layout-trigger.component');
   NzDemoLayoutResponsiveCode = require('!!raw-loader!./nz-demo-layout-responsive.component');
+  NzDemoLayoutIsFullScreenCode = require('!!raw-loader!./nz-demo-layout-is-fullscreen.component');
 
   constructor() {
   }

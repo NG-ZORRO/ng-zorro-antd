@@ -1,4 +1,4 @@
-import { Component, HostBinding, ViewEncapsulation } from '@angular/core';
+import { Component, HostBinding, ViewEncapsulation, Input } from '@angular/core';
 
 @Component({
   selector     : 'nz-layout',
@@ -13,6 +13,11 @@ import { Component, HostBinding, ViewEncapsulation } from '@angular/core';
 })
 
 export class NzLayoutComponent {
+
+  @HostBinding('class.ant-layout-is-fullscreen')
+  @Input()
+  isFullscreen = false;
+
   @HostBinding('class.ant-layout-has-sider') hasSider = false;
 
   @HostBinding('class.ant-layout') _nzLayout = true;
