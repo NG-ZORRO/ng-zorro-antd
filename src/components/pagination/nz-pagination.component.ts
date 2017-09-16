@@ -228,7 +228,7 @@ export class NzPaginationComponent {
   get nzTotal(): number {
     return this._total;
   };
-
+  
   set nzTotal(value: number) {
     if (value === this._total) {
       return;
@@ -237,15 +237,18 @@ export class NzPaginationComponent {
     this._buildIndexes();
 
   }
+
   @Input()
-  set nzOptions(options:number[]){
-    if(options != null || options.length > 0){
+  set nzOptions(options: number[]) {
+    if (options && options.length > 0) {
       this._options = options;
     }
   }
-  get nzOptions():number[]{
+
+  get nzOptions(): number[] {
     return this._options;
   }
+  
   _pageSizeChange($event) {
     this.nzPageSize = $event;
     this.nzPageSizeChange.emit($event);
