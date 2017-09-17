@@ -43,20 +43,6 @@ if (format === 'es') {
   })
 }
 
-function fixMoment() {
-  return {
-    name: 'fix-moment-import',
-    transform(content) {
-      if (!content.includes(`import * as moment from 'moment'`)) { return }
-
-      return content.replace(
-          `import * as moment from 'moment'`,
-          `import moment from 'moment'`
-      )
-    },
-  }
-}
-
 let input
 let file
 
@@ -81,7 +67,7 @@ export default {
   },
   exports: 'named',
   name: 'ngZorro.antd',
-  plugins: [fixMoment(), resolve()],
+  plugins: [resolve()],
   external: Object.keys(globals),
   globals,
 }

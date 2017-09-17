@@ -8,7 +8,7 @@ import {
   ViewChild,
   HostBinding, OnInit
 } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzTimePickerInnerComponent } from '../time-picker/nz-timepicker-inner.component';

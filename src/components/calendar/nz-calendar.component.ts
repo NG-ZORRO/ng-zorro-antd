@@ -10,7 +10,7 @@ import {
   EventEmitter, HostBinding
 } from '@angular/core';
 
-import * as moment from 'moment';
+import moment from 'moment';
 import { Moment } from 'moment';
 import 'moment/locale/zh-cn';
 
