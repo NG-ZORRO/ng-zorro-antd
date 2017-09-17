@@ -1,6 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
     "module": "es2015",

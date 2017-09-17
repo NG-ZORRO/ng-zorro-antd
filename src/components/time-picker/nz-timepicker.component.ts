@@ -6,7 +6,7 @@ import {
   Input
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzTimePickerInnerComponent } from './nz-timepicker-inner.component';
 import { DEFAULT_DATEPICKER_POSITIONS } from '../core/overlay/overlay-position-map';
