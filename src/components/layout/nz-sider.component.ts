@@ -29,11 +29,11 @@ export type NzBreakPoinit = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 export class NzSiderComponent {
   _dimensionMap = {
-    xl: 1600,
-    lg: 1200,
-    md: 992,
-    sm: 768,
-    xs: 480,
+    xl: '1600px',
+    lg: '1200px',
+    md: '992px',
+    sm: '768px',
+    xs: '480px',
   };
   _below = false;
   @Input() nzWidth = '200';
@@ -44,7 +44,7 @@ export class NzSiderComponent {
   _collapsible = false;
 
   @Input()
-  set nzCollapsible(value: boolean|string) {
+  set nzCollapsible(value: boolean | string) {
     if (value === '') {
       this._collapsible = true;
     } else {
@@ -85,15 +85,10 @@ export class NzSiderComponent {
   @HostListener('window:resize', [ '$event' ])
   onWindowResize(e) {
     if (this.nzBreakpoint) {
-      if (window.innerWidth < this._dimensionMap[ this.nzBreakpoint ]) {
-        this._below = true;
-        this.nzCollapsed = true;
-        this.nzCollapsedChange.emit(true);
-      } else {
-        this._below = false;
-        this.nzCollapsed = false;
-        this.nzCollapsedChange.emit(false);
-      }
+      const matchBelow = window.matchMedia(`(max-width: ${this._dimensionMap[ this.nzBreakpoint ]})`).matches;
+      this._below = matchBelow;
+      this.nzCollapsed = matchBelow;
+      this.nzCollapsedChange.emit(matchBelow);
     }
   }
 
@@ -106,6 +101,19 @@ export class NzSiderComponent {
   constructor(@Optional() @Host() private nzLayoutComponent: NzLayoutComponent) {
     if (this.nzLayoutComponent) {
       this.nzLayoutComponent.hasSider = true;
+    }
+    if (typeof window !== 'undefined') {
+      const matchMediaPolyfill = (mediaQuery: string): MediaQueryList => {
+        return {
+          media: mediaQuery,
+          matches: false,
+          addListener() {
+          },
+          removeListener() {
+          },
+        };
+      };
+      window.matchMedia = window.matchMedia || matchMediaPolyfill;
     }
   }
 

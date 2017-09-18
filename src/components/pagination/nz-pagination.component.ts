@@ -108,7 +108,8 @@ import {
       </div>
     </ul>`,
   styleUrls    : [
-    './style/index.less'
+    './style/index.less',
+    './style/patch.less'
   ]
 })
 export class NzPaginationComponent {
@@ -281,6 +282,10 @@ export class NzPaginationComponent {
   }
 
   _jumpPage(index) {
+    if (index === this._firstIndex - 1 || index === this._lastIndex +  1 || index === this.nzPageIndex) {
+      return ;
+    }
+
     if (index < this._firstIndex) {
       this.nzPageIndex = this._firstIndex;
     } else if (index > this._lastIndex) {

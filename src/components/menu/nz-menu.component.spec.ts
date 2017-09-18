@@ -188,6 +188,26 @@ describe('NzMenuComponent', () => {
       // const debugElement4 = fixture.debugElement.query(By.directive(NzSubMenuComponent));
       // expect(debugElement4.nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
     })
+
+    it('should apply class based on sub-items select state', () => {
+      const fixture = TestBed.createComponent(TestMenuSubMenu);
+      const testComponent = fixture.debugElement.componentInstance;
+      const debugElement = fixture.debugElement.query(By.directive(NzSubMenuComponent));
+      expect(debugElement).toBeDefined();
+
+      testComponent._mode = 'vertical';
+      testComponent.selectOne = false;
+      fixture.detectChanges();
+      const debugElement1 = fixture.debugElement.query(By.directive(NzSubMenuComponent));
+      expect(debugElement1.nativeElement.classList.contains('ant-menu-submenu-selected')).toBe(false);
+
+      testComponent._mode = 'vertical';
+      testComponent.selectOne = true;
+      fixture.detectChanges();
+      const debugElement2 = fixture.debugElement.query(By.directive(NzSubMenuComponent));
+      expect(debugElement2.nativeElement.classList.contains('ant-menu-submenu-selected')).toBe(true);
+
+    })
   });
 });
 
@@ -238,7 +258,7 @@ class TestMenuTheme {
       <li nz-submenu [(nzOpen)]="isOpenOne" (nzOpenChange)="openChange('one')">
         <span title><i class="anticon anticon-mail"></i> Navigation One</span>
         <ul>
-          <li nz-menu-item>Option 1</li>
+          <li nz-menu-item [nzSelected]="selectOne">Option 1</li>
         </ul>
       </li>
       <li nz-submenu [(nzOpen)]="isOpenTwo" (nzOpenChange)="openChange('Two')">
@@ -255,6 +275,7 @@ class TestMenuSubMenu {
   isTestOpen = true;
   isOpenOne = false;
   isOpenTwo = false;
+  selectOne = false;
 
   openChange(value) {
     if (!this.isTestOpen) {
