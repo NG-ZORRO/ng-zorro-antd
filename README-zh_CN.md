@@ -21,7 +21,7 @@
 
 ## 支持环境
 
-* 现代浏览器和 IE9 以上（需要 [polyfills](https://angular.cn/guide/browser-support)）。
+* 现代浏览器和 IE9 以上（需要 [polyfills](https://v2.angular.cn/docs/ts/latest/guide/browser-support.html)）。
 
 ## 兼容版本
 

@@ -8,9 +8,10 @@ import {
   Output,
   ContentChild,
   ChangeDetectorRef,
-  TemplateRef, OnInit
+  TemplateRef, OnInit, ContentChildren, QueryList
 } from '@angular/core';
 import { measureScrollbar } from '../util/mesureScrollBar';
+import { NzThDirective } from './nz-th.directive';
 
 @Component({
   selector     : 'nz-table',
@@ -110,7 +111,13 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   @Input() nzShowTotal = false;
   @Input() nzShowFooter = false;
   @Input() nzShowTitle = false;
+  @Input() nzIsPageIndexReset = true;
   @ContentChild('nzFixedHeader') fixedHeader: TemplateRef<any>;
+
+  @ContentChildren(NzThDirective, { descendants: true })
+  set setThs(value: QueryList<NzThDirective>) {
+    this.ths = value.toArray();
+  }
 
   @Input()
   set nzScroll(value) {
@@ -195,7 +202,12 @@ export class NzTableComponent implements AfterViewInit, OnInit {
     if (!this._isAjax) {
       if (this.nzIsPagination) {
         if (forceRefresh) {
-          this.nzPageIndex = 1;
+          if (this.nzIsPageIndexReset) {
+            this.nzPageIndex = 1;
+          } else {
+            const maxPageIndex = Math.ceil(this._dataSet.length / this.nzPageSize);
+            this.nzPageIndex = this.nzPageIndex > maxPageIndex ? maxPageIndex : this.nzPageIndex;
+          }
         }
         this.data = this._dataSet.slice((this.nzPageIndex - 1) * this.nzPageSize, this.nzPageIndex * this.nzPageSize);
       } else {

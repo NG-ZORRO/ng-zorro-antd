@@ -3,7 +3,11 @@
     [headers]="headers"
     [multiple]="multiple"
     [withCredentials]="withCredentials"
-    [supportServerRender]="supportServerRender"
     [beforeUpload]="beforeUpload"
+    (onStart)="handleStart($event)"
+    (onProgress)="handleProgress($event)"
+    (onSuccess)="handleSuccess($event)"
+    (onError)="handleError($event)"
+    #basicUpload
 >
 </nz-basic-upload>

@@ -319,7 +319,11 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   addOption = (option) => {
     this._options.push(option);
     if (!this._isTags) {
-      this.forceUpdateSelectedOption(this._value);
+      if (option.nzValue) {
+        this.updateSelectedOption(this._value);
+      } else {
+        this.forceUpdateSelectedOption(this._value);
+      }
     }
   }
 
@@ -454,12 +458,12 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
 
   /** update selected option when add remove option etc */
   updateSelectedOption(currentModelValue, triggerByNgModel = false) {
-    if (currentModelValue === null || currentModelValue === undefined) {
+    if (currentModelValue == null) {
       return;
     }
     if (this.nzMultiple) {
       const selectedOptions = this._options.filter((item) => {
-        return ((item !== null) && (item !== undefined)) && (currentModelValue.indexOf(item.nzValue) !== -1);
+        return (item != null) && (currentModelValue.indexOf(item.nzValue) !== -1);
       });
       if ((this.nzKeepUnListOptions || this.nzTags) && (!triggerByNgModel)) {
         selectedOptions.forEach(option => {
@@ -476,7 +480,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
 
     } else {
       const selectedOption = this._options.filter((item) => {
-        return (item !== null) && (item.nzValue === currentModelValue);
+        return (item != null) && (item.nzValue === currentModelValue);
       });
       this.chooseOption(selectedOption[ 0 ]);
     }
@@ -672,7 +676,6 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   }
 
   writeValue(value: any): void {
-    // this.nzValue = value;
     this._updateValue(value, false);
   }
 
@@ -718,13 +721,13 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     if (this._value === value) {
       return;
     }
-    if ((value === null) && this.nzMultiple) {
+    if ((value == null) && this.nzMultiple) {
       this._value = [];
     } else {
       this._value = value;
     }
     if (!this.nzMultiple) {
-      if (value === null) {
+      if (value == null) {
         this._selectedOption = null;
       } else {
         this.updateSelectedOption(value);
@@ -736,7 +739,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
         } else {
           this.updateSelectedOption(value, true);
         }
-      } else if (value === null) {
+      } else if (value == null) {
         this.clearAllSelectedOption(emitChange);
       }
     }

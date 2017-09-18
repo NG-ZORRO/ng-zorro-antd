@@ -1,4 +1,4 @@
-<article>
+﻿<article>
 
   <section class="markdown">
     <h1>Table 表格</h1>
@@ -159,7 +159,7 @@
         <tr>
           <td>#模板引用变量</td>
           <td>模板引用变量可以自由命名，经过分页之后的数据可以通过<code>模板引用变量.data</code>获取，最后通过*ngFor的方式渲染在table中，关于模板引用变量的知识可以参考
-            <a href="https://angular.cn/guide/template-syntax#ref-vars" target="_blank">这里</a>
+            <a href="https://v2.angular.cn/docs/ts/latest/guide/template-syntax.html#!#ref-vars" target="_blank">这里</a>
           </td>
           <td>NzTableComponent</td>
           <td>-</td>
@@ -290,7 +290,12 @@
           <td>Boolean</td>
           <td>false</td>
         </tr>
-
+        <tr>
+          <td>nzIsPageIndexReset</td>
+          <td>数据变更后是否保留在数据变更前的页码</td>
+          <td>Boolean</td>
+          <td>true</td>
+        </tr>
       </tbody>
     </table>
     <h3><span>nz-table-sort</span>
@@ -350,7 +355,7 @@
         </tr>
         <tr>
           <td>nzWidth</td>
-          <td>当前列的宽度</td>
+          <td>当前列的宽度，暂时不支持合并列宽度</td>
           <td>String</td>
           <td>-</td>
         </tr>

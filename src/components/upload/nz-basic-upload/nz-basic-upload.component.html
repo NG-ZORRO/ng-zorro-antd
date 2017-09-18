@@ -1,6 +1,9 @@
+<div (click)="onClick($event)">
 <input
+    #input
+    class="ant-input-prefix"
     type="file"
     (change)="onChange($event)"
-    placeholder="Upload"
     [multiple]="multiple"
 >
+</div>

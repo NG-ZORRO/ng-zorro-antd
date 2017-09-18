@@ -12,7 +12,6 @@ import {
   Inject
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-// import { Observable } from 'rxjs/Observable';
 import { RxChain } from '@angular/cdk';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { throttleTime } from 'rxjs/operator/throttleTime';
@@ -108,7 +107,6 @@ export class NzAnchorComponent {
 
     let linkNode = (maxSection.comp.el.nativeElement as HTMLDivElement).querySelector('.ant-anchor-link-title') as HTMLElement;
     this.ball.nativeElement.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
-    // console.log(linkNode, linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5);
 
     this.nzScroll.emit(maxSection.comp);
   }
@@ -149,9 +147,6 @@ export class NzAnchorComponent {
       this.animating = false;
       this.handleScroll();
     });
-
-    if (!location.href.includes('#'))
-      history.pushState(null, '', linkComp.nzHref);
   }
 
   ngOnDestroy(): void {

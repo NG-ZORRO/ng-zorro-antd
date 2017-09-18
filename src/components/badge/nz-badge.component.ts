@@ -30,7 +30,30 @@ import {
       ])
     ])
   ],
-  template     : `<ng-template *ngIf="content" [ngTemplateOutlet]="content"></ng-template><span class="ant-badge-status-dot ant-badge-status-{{nzStatus}}" *ngIf="nzStatus"></span><span class="ant-badge-status-text" *ngIf="nzText">{{nzText}}</span><sup [@enterLeave] [ngStyle]="nzStyle" *ngIf="(nzDot)||(nzCount>0)||((nzCount==0)&&nzShowZero)" data-show="true" class="ant-scroll-number" [class.ant-badge-count]="!nzDot" [class.ant-badge-dot]="nzDot"><ng-template ngFor let-number [ngForOf]="maxNumberArray" let-i="index"><span *ngIf="nzCount<=nzOverflowCount" class="ant-scroll-number-only" [style.transform]="'translateY('+((-countArray[i]*100))+'%)'"><ng-template [ngIf]="(!nzDot)&&(countArray[i]!=null)"><p *ngFor="let p of countSingleArray" [class.current]="p==countArray[i]">{{p}}</p></ng-template></span></ng-template><ng-template [ngIf]="nzCount>nzOverflowCount">{{nzOverflowCount}}+</ng-template></sup>`,
+  template     : `
+    <ng-template *ngIf="content" [ngTemplateOutlet]="content"></ng-template>
+    <span class="ant-badge-status-dot ant-badge-status-{{nzStatus}}" *ngIf="nzStatus"></span>
+    <span class="ant-badge-status-text" *ngIf="nzText">{{nzText}}</span>
+    <sup [@enterLeave]
+         [ngStyle]="nzStyle"
+         *ngIf="(nzDot)||(nzCount>0)||((nzCount==0)&&nzShowZero)"
+         data-show="true"
+         class="ant-scroll-number"
+         [class.ant-badge-count]="!nzDot"
+         [class.ant-badge-dot]="nzDot">
+      <ng-template ngFor
+                   [ngForOf]="maxNumberArray"
+                   let-number
+                   let-i="index"><span *ngIf="nzCount<=nzOverflowCount"
+                                       class="ant-scroll-number-only"
+                                       [style.transform]="'translateY('+((-countArray[i]*100))+'%)'">
+        <ng-template [ngIf]="(!nzDot)&&(countArray[i]!=null)">
+          <p *ngFor="let p of countSingleArray" [class.current]="p==countArray[i]">{{p}}</p>
+        </ng-template>
+        </span></ng-template>
+      <ng-template [ngIf]="nzCount>nzOverflowCount">{{nzOverflowCount}}+</ng-template>
+    </sup>
+  `,
   styleUrls    : [
     './style/index.less',
     './style/patch.less'

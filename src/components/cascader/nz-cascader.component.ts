@@ -37,7 +37,7 @@ function noop(): void { }
 
 function toArray(value: any): any[] {
   let ret = value;
-  if (value === undefined) {
+  if (value === undefined || value === null) {
       ret = [];
   } else if (!Array.isArray(value)) {
       ret = [value];
@@ -762,6 +762,11 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
       }, (reason: any) => {
         option.isLeaf = true;
       });
+    } else {
+      // clicking leaf node will remove any children columns
+      if (index < this._nzColumns.length - 1) {
+        this._nzColumns = this._nzColumns.slice(0, index + 1);
+      }
     }
 
     // 生成显示
@@ -982,10 +987,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
    * @Override (From ControlValueAccessor interface)
    */
   writeValue(value: any): void {
-    if (value == null) {
-      return;
-    }
-
     const array: any[] = [];
     toArray(value).forEach((v: any, index: number) => {
       if (typeof v !== 'object') {

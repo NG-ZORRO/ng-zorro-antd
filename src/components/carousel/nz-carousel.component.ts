@@ -57,7 +57,6 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   }
 
   setActive(content, i) {
-    this.clearInterval();
     if (this.nzAutoPlay) {
       this.createInterval();
     }
@@ -114,6 +113,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   }
 
   createInterval() {
+    this.clearInterval();
     this.interval = setInterval(_ => {
       if (this.activeIndex < this.slideContents.length - 1) {
         this.activeIndex++;

@@ -1,4 +1,5 @@
 import resolve from 'rollup-plugin-node-resolve'
+import replace from 'rollup-plugin-replace'
 
 const format = process.env.ROLLUP_FORMAT || 'es'
 
@@ -43,20 +44,6 @@ if (format === 'es') {
   })
 }
 
-function fixMoment() {
-  return {
-    name: 'fix-moment-import',
-    transform(content) {
-      if (!content.includes(`import * as moment from 'moment'`)) { return }
-
-      return content.replace(
-          `import * as moment from 'moment'`,
-          `import moment from 'moment'`
-      )
-    },
-  }
-}
-
 let input
 let file
 
@@ -81,7 +68,7 @@ export default {
   },
   exports: 'named',
   name: 'ngZorro.antd',
-  plugins: [fixMoment(), resolve()],
+  plugins: [replace({ "import * as moment": "import moment" }), resolve()],
   external: Object.keys(globals),
   globals,
 }

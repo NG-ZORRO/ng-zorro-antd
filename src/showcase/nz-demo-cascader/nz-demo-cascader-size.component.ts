@@ -11,6 +11,10 @@ const options = [{
       label: 'West Lake',
       isLeaf: true
     }],
+  }, {
+    value: 'ningbo',
+    label: 'Ningbo',
+    isLeaf: true
   }],
 }, {
   value: 'jiangsu',
@@ -33,14 +37,14 @@ const options = [{
     <nz-cascader
       [nzSize]="'large'"
       [nzOptions]="_options"
-      [(ngModel)]="_value"
+      [(ngModel)]="_value1"
       (ngModelChange)="_console($event)"
       (nzChange)="_console($event)">
     </nz-cascader>
     <br><br>
     <nz-cascader
       [nzOptions]="_options"
-      [(ngModel)]="_value"
+      [(ngModel)]="_value2"
       (ngModelChange)="_console($event)"
       (nzChange)="_console($event)">
     </nz-cascader>
@@ -48,7 +52,7 @@ const options = [{
     <nz-cascader
       [nzSize]="'small'"
       [nzOptions]="_options"
-      [(ngModel)]="_value"
+      [(ngModel)]="_value3"
       (ngModelChange)="_console($event)"
       (nzChange)="_console($event)">
     </nz-cascader>
@@ -59,7 +63,9 @@ export class NzDemoCascaderSizeComponent implements OnInit {
   /** init data */
   _options = options;
 
-  _value: any[] = null;
+  _value1: any[] = null;
+  _value2: any[] = null;
+  _value3: any[] = null;
 
   _console(value) {
     console.log(value);

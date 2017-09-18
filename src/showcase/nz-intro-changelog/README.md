@@ -9,8 +9,32 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.5.2
+`2017-09-23`
+### Features
+* `Modal` 增加 `showConfirmLoading` 选项改变点击确认按钮时的loading状态 [#340](https://github.com/NG-ZORRO/ng-zorro-antd/pull/340) [@Alche](https://github.com/AlcheXie)
+* `Table` 增加确定数据变更后是否保留在数据变更前的页码的选项 `nzIsPageIndexReset` [#348](https://github.com/NG-ZORRO/ng-zorro-antd/pull/348) [#359](https://github.com/NG-ZORRO/ng-zorro-antd/pull/359) [@Alche](https://github.com/AlcheXie)
+* `Select` 增加在 `ngModel` 在 `undefined` 时的重置逻辑 [#363](https://github.com/NG-ZORRO/ng-zorro-antd/pull/363) 
+
+### Bug Fixes
+* `Menu`修复在特定情况下的 `ExpressionChangedAfterItHasBeenCheckedError` 问题 [#368](https://github.com/NG-ZORRO/ng-zorro-antd/pull/368)
+* `Select` 修复在 `Form` 表单 `inline` 状态的对齐问题 [#362](https://github.com/NG-ZORRO/ng-zorro-antd/pull/362)
+* `Carousel` 修复在 `nzAutoPlay` 下的播放问题 [#347](https://github.com/NG-ZORRO/ng-zorro-antd/pull/347) [@Bin](https://github.com/soulhat)
+* `Cascader` 修复 `label` 显示及在 `ReactiveForm` 下重置的问题 [#335](https://github.com/NG-ZORRO/ng-zorro-antd/pull/335) [#336](https://github.com/NG-ZORRO/ng-zorro-antd/pull/336) [#356](https://github.com/NG-ZORRO/ng-zorro-antd/pull/356) [@fbchen](https://github.com/fbchen)
+* `Select` 修复在同步加载数据情况的显示问题 [#338](https://github.com/NG-ZORRO/ng-zorro-antd/pull/338) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `Table` 修复 `nzWidth` 与 `*ngIf` 结合使用时宽度错位的问题 [#349](https://github.com/NG-ZORRO/ng-zorro-antd/pull/349)
+* `Anchor` 修复点击时url改变的问题 [#343](https://github.com/NG-ZORRO/ng-zorro-antd/pull/343) [@卡色](https://github.com/cipchk)
+* 修改 `moment`的打包方式 [#331](https://github.com/NG-ZORRO/ng-zorro-antd/pull/331) [@LinBo len](https://github.com/LinBoLen)
+
+### Docs
+* 修正文档中Angular官网的教程地址 [#325](https://github.com/NG-ZORRO/ng-zorro-antd/pull/325) [@JuniorTour](https://github.com/JuniorTour)
+* 增加 plunker的在线运行模板[#357](https://github.com/NG-ZORRO/ng-zorro-antd/pull/357) [@Trotyl Yu](https://github.com/trotyl)
+
+### Other
+* `Badge` 格式化了template代码 [#314](https://github.com/NG-ZORRO/ng-zorro-antd/pull/314) [@Hsuan Lee](https://github.com/HsuanXyz)
+
 ## 0.5.1
-`2017-9-16`
+`2017-09-16`
 
 ### Features
 * `Menu`支持子菜单选中时，父级菜单高亮显示 [#264](https://github.com/NG-ZORRO/ng-zorro-antd/pull/264) [HsuanXyz](https://github.com/HsuanXyz)
