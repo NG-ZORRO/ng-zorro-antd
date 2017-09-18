@@ -65,6 +65,12 @@
           <p>用于多行输入，指定 <code>nzType</code> 为一个特殊的 <code>textarea</code>。</p>
         </div>
       </nz-code-box>
+      <nz-code-box [nzTitle]="'指令风格'" id="components-input-demo-directive" [nzCode]="NzDemoInputDirectiveCode">
+        <nz-demo-input-directive demo></nz-demo-input-directive>
+        <div intro>
+          <p>nz-input 指令更适合模板驱动表单</p>
+        </div>
+      </nz-code-box>
     </div>
   </div>
   <section class="markdown api-container">
@@ -149,6 +155,46 @@
           <td>带有后缀图标的 input</td>
           <td>ng-template</td>
           <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="InputDirective"><span>nz-input 指令</span>
+      <!-- <a class="anchor">#</a> -->
+    </h3>
+    <p>nz-input 指令更适合模板驱动表单，具体见demo。</p>
+    <table>
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>说明</th>
+          <th>类型</th>
+          <th>默认值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>nzSize</td>
+          <td>控件大小，默认值为 default 。注：标准表单内的输入框大小限制为 large。</td>
+          <td>'large'|'default'|'small'</td>
+          <td>'default'</td>
+        </tr>
+        <tr>
+          <td>nzDisabled</td>
+          <td>是否禁用状态，默认为 false</td>
+          <td>bool</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>nzReadonly</td>
+          <td>是否只读状态，默认为 false</td>
+          <td>bool</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>nzAutosize</td>
+          <td><code>textarea</code>多行文本域的有效自适应内容高度，可设置为 true|false 或对象：<code>{{'{ minRows: 2, maxRows: 6 }'}}</code></td>
+          <td>Boolean|Object</td>
+          <td><code>false</code></td>
         </tr>
       </tbody>
     </table>
