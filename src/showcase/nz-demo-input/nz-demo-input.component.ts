@@ -18,6 +18,7 @@ export class NzDemoInputComponent implements OnInit {
   NzDemoInputTextareaCode = require('!!raw-loader!./nz-demo-input-textarea.component');
   NzDemoInputTextareaAutoSizeCode = require('!!raw-loader!./nz-demo-input-textarea-auot-size.component');
   NzDemoInputAffixCode = require('!!raw-loader!./nz-demo-input-affix.component');
+  NzDemoInputDirectiveCode = require('!!raw-loader!./nz-demo-input-directive.component');
 
   constructor() {
   }

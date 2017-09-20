@@ -149,9 +149,6 @@ export class NzAnchorComponent {
       this.animating = false;
       this.handleScroll();
     });
-
-    if (!location.href.includes('#'))
-      history.pushState(null, '', linkComp.nzHref);
   }
 
   ngOnDestroy(): void {
