@@ -22,7 +22,7 @@ An enterprise-class UI components based on Ant Design and Angular.
 
 ## Environment Support
 
-* Modern browsers and Internet Explorer 9+（with [polyfills](https://angular.cn/guide/browser-support)）。
+* Modern browsers and Internet Explorer 9+（with [polyfills](https://v2.angular.io/docs/ts/latest/guide/browser-support.html)）。
 
 ## Angular Version Support
 
