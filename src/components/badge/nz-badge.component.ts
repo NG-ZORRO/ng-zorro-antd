@@ -41,15 +41,16 @@ import {
          class="ant-scroll-number"
          [class.ant-badge-count]="!nzDot"
          [class.ant-badge-dot]="nzDot">
-      <ng-template ngFor let-number [ngForOf]="maxNumberArray" let-i="index">
-        <span *ngIf="nzCount<=nzOverflowCount"
-              class="ant-scroll-number-only"
-              [style.transform]="'translateY('+((-countArray[i]*100))+'%)'">
-          <ng-template [ngIf]="(!nzDot)&&(countArray[i]!=null)">
-            <p *ngFor="let p of countSingleArray" [class.current]="p==countArray[i]">{{p}}</p>
-          </ng-template>
-        </span>
-      </ng-template>
+      <ng-template ngFor
+                   [ngForOf]="maxNumberArray"
+                   let-number
+                   let-i="index"><span *ngIf="nzCount<=nzOverflowCount"
+                                       class="ant-scroll-number-only"
+                                       [style.transform]="'translateY('+((-countArray[i]*100))+'%)'">
+        <ng-template [ngIf]="(!nzDot)&&(countArray[i]!=null)">
+          <p *ngFor="let p of countSingleArray" [class.current]="p==countArray[i]">{{p}}</p>
+        </ng-template>
+        </span></ng-template>
       <ng-template [ngIf]="nzCount>nzOverflowCount">{{nzOverflowCount}}+</ng-template>
     </sup>
   `,
