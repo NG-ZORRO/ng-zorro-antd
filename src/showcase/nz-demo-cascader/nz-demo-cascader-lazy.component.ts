@@ -12,6 +12,10 @@ const cities = {
   zhejiang: [{
     value: 'hangzhou',
     label: 'Hangzhou',
+  }, {
+    value: 'ningbo',
+    label: 'Ningbo',
+    isLeaf: true
   }],
   jiangsu: [{
     value: 'nanjing',

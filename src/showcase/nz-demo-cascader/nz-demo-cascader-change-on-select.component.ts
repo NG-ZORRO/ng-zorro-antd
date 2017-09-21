@@ -11,6 +11,10 @@ const options = [{
       label: 'West Lake',
       isLeaf: true
     }],
+  }, {
+    value: 'ningbo',
+    label: 'Ningbo',
+    isLeaf: true
   }],
 }, {
   value: 'jiangsu',
