@@ -2,7 +2,8 @@ import {
   Component,
   ViewEncapsulation,
   Input,
-  OnDestroy
+  OnDestroy,
+  OnInit
 } from '@angular/core';
 
 import { NzSelectComponent } from './nz-select.component';
@@ -15,7 +16,8 @@ import { NzSelectComponent } from './nz-select.component';
   `,
   styleUrls    : []
 })
-export class NzOptionComponent implements OnDestroy {
+export class NzOptionComponent implements OnDestroy, OnInit {
+
   _value: string;
   _label: string;
   _disabled = false;
@@ -54,6 +56,9 @@ export class NzOptionComponent implements OnDestroy {
   }
 
   constructor(private _nzSelect: NzSelectComponent) {
+  }
+
+  ngOnInit(): void {
     this._nzSelect.addOption(this);
   }
 

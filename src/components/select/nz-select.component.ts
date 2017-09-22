@@ -319,7 +319,11 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   addOption = (option) => {
     this._options.push(option);
     if (!this._isTags) {
-      this.forceUpdateSelectedOption(this._value);
+      if (option.nzValue) {
+        this.updateSelectedOption(this._value);
+      } else {
+        this.forceUpdateSelectedOption(this._value);
+      }
     }
   }
 
@@ -672,7 +676,6 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   }
 
   writeValue(value: any): void {
-    // this.nzValue = value;
     this._updateValue(value, false);
   }
 
