@@ -111,6 +111,7 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   @Input() nzShowTotal = false;
   @Input() nzShowFooter = false;
   @Input() nzShowTitle = false;
+  @Input() nzIsPageIndexReset = true;
   @ContentChild('nzFixedHeader') fixedHeader: TemplateRef<any>;
 
   @ContentChildren(NzThDirective, { descendants: true })
@@ -201,7 +202,12 @@ export class NzTableComponent implements AfterViewInit, OnInit {
     if (!this._isAjax) {
       if (this.nzIsPagination) {
         if (forceRefresh) {
-          this.nzPageIndex = 1;
+          if (this.nzIsPageIndexReset) {
+            this.nzPageIndex = 1;
+          } else {
+            const maxPageIndex = Math.ceil(this._dataSet.length / this.nzPageSize);
+            this.nzPageIndex = this.nzPageIndex > maxPageIndex ? maxPageIndex : this.nzPageIndex;
+          }
         }
         this.data = this._dataSet.slice((this.nzPageIndex - 1) * this.nzPageSize, this.nzPageIndex * this.nzPageSize);
       } else {
