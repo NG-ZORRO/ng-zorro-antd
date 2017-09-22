@@ -12,6 +12,10 @@ const options = [{
       code: 752100,
       isLeaf: true
     }],
+  }, {
+    value: 'ningbo',
+    label: 'Ningbo',
+    isLeaf: true
   }],
 }, {
   value: 'jiangsu',
