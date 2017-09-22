@@ -8,9 +8,10 @@ import {
   Output,
   ContentChild,
   ChangeDetectorRef,
-  TemplateRef, OnInit
+  TemplateRef, OnInit, ContentChildren, QueryList
 } from '@angular/core';
 import { measureScrollbar } from '../util/mesureScrollBar';
+import { NzThDirective } from './nz-th.directive';
 
 @Component({
   selector     : 'nz-table',
@@ -111,6 +112,11 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   @Input() nzShowFooter = false;
   @Input() nzShowTitle = false;
   @ContentChild('nzFixedHeader') fixedHeader: TemplateRef<any>;
+
+  @ContentChildren(NzThDirective, { descendants: true })
+  set setThs(value: QueryList<NzThDirective>) {
+    this.ths = value.toArray();
+  }
 
   @Input()
   set nzScroll(value) {
