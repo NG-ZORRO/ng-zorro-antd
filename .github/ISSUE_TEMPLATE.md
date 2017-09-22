@@ -27,7 +27,8 @@
 
 ## Minimal reproduction of the problem with instructions
 <!--
-For bug reports please provide the *STEPS TO REPRODUCE* 
+For bug reports please provide the *STEPS TO REPRODUCE* and if possible a *MINIMAL DEMO* of the problem via
+https://plnkr.co or similar (you can use this template as a starting point: http://plnkr.co/edit/tpl:sKWy62).
 -->
 
 ## What is the motivation / use case for changing the behavior?
