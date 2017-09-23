@@ -140,7 +140,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   constructor(public nzMenuComponent: NzMenuComponent, public cd: ChangeDetectorRef) {
-    this.nzMenuComponent.hasSubMenu = true;
+    this.nzMenuComponent.setHasSubMenu(true);
     this.nzMenuComponent.subMenus.push(this);
   }
 
