@@ -35,10 +35,12 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
   @Input() nzMode: NzMode = 'vertical';
   @Input() nzTheme: 'light' | 'dark' = 'light';
   @Input() nzClickActive = true;
+
   @Input()
   get nzInlineCollapsed(): boolean {
     return this._nzInlineCollapsed;
   }
+
   set nzInlineCollapsed(state: boolean) {
     this._nzInlineCollapsed = state;
     if (!this.isInit) {
@@ -143,7 +145,7 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
   }
 
   reductionSubMenus() {
-    this._subMenusOpenIndex.forEach(i => this.subMenus[i].nzOpen = true);
+    this._subMenusOpenIndex.forEach(i => this.subMenus[ i ].nzOpen = true);
     this._subMenusOpenIndex = [];
   }
 
@@ -154,5 +156,11 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
       this.menuItems.forEach(menu => menu.isInDropDown = value);
       this.subMenus.forEach(subMenu => subMenu.isInDropDown = value);
     });
+  }
+
+  setHasSubMenu(value: boolean) {
+    setTimeout(_ => {
+      this.hasSubMenu = value;
+    })
   }
 }
