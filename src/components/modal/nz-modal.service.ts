@@ -29,6 +29,7 @@ export interface ConfigInterface {
   maskClosable?: boolean;
   wrapClassName?: string;
   footer?: TemplateRef<any> | boolean;
+  showConfirmLoading?: boolean;
   onOk?: Function;
   onCancel?: Function;
   componentParams?: Object;
@@ -81,7 +82,8 @@ export class NzModalService {
       }
     });
 
-    props[ 'onOk' ] = this._getConfirmCb(props[ 'nzOnOk' ]);
+    const isShowConfirmLoading = !!config[ 'showConfirmLoading' ];
+    props[ 'onOk' ] = this._getConfirmCb(props[ 'nzOnOk' ], isShowConfirmLoading);
     props[ 'onCancel' ] = this._getConfirmCb(props[ 'nzOnCancel' ]);
     // 在service模式下，不需要nzOnOk，防止触发this.nzOnOk.emit(e);
     delete props[ 'nzOnOk' ];
@@ -89,8 +91,11 @@ export class NzModalService {
     return props;
   }
 
-  _getConfirmCb(fn?: Function): Function {
-    return (_close) => {
+  _getConfirmCb(fn?: Function, isShowConfirmLoading: boolean = false): Function {
+    return (_close, _instance) => {
+      if (isShowConfirmLoading) {
+        _instance.nzConfirmLoading = true;
+      }
       if (fn) {
         const ret = fn();
         if (!ret) {
@@ -132,7 +137,7 @@ export class NzModalService {
             setTimeout(() => {
               compRef.destroy();
             }, 200);
-          });
+          }, instance);
         }
       });
     });
