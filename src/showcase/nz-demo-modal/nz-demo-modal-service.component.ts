@@ -49,6 +49,7 @@ export class NzDemoModalServiceComponent {
       title   : '对话框标题',
       content : '纯文本内容，点确认 1 秒后关闭',
       closable: false,
+      showConfirmLoading: true,
       onOk() {
         return new Promise((resolve) => {
           setTimeout(resolve, 1000);

@@ -16,6 +16,7 @@ export class NzDemoConfirmAsyncComponent {
     this.confirmServ.confirm({
       title  : '您是否确认要删除这项内容',
       content: '点确认 1 秒后关闭',
+      showConfirmLoading: true,
       onOk() {
         return new Promise((resolve) => {
           setTimeout(resolve, 1000);
