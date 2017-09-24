@@ -1,0 +1,13 @@
+<nz-basic-upload
+    [action]="action"
+    [headers]="headers"
+    [multiple]="multiple"
+    [withCredentials]="withCredentials"
+    [beforeUpload]="beforeUpload"
+    (onStart)="handleStart($event)"
+    (onProgress)="handleProgress($event)"
+    (onSuccess)="handleSuccess($event)"
+    (onError)="handleError($event)"
+    #basicUpload
+>
+</nz-basic-upload>
