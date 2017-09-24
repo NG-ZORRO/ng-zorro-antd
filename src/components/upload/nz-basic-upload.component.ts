@@ -14,10 +14,8 @@ import { attrAccept } from './utils';
 export class NzBasicUploadComponent implements OnInit {
 
     _classMap;
-    _prefixCls = 'nz-upload';
+    _prefixCls = 'ant-upload';
     _reqs = {};
-
-    // data: { [key: string]: string } | ((file: File) => { string: string }) = {};
 
     @Input() accept: string;
     @Input() action: string;
@@ -44,11 +42,13 @@ export class NzBasicUploadComponent implements OnInit {
 
     constructor(private uidService: UidService) { }
 
-    ngOnInit() { }
+    ngOnInit() {
+        this.setClassMap();
+    }
 
     setClassMap(): void {
         this._classMap = {
-            [this._prefixCls]: true,
+            [`${this._prefixCls}-basic`]: true
         };
     }
 

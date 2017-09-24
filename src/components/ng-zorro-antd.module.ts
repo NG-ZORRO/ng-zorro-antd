@@ -50,6 +50,7 @@ import { NzBackTopModule } from './back-top/nz-back-top.module';
 import { NzAffixModule } from './affix/nz-affix.module';
 import { NzAnchorModule } from './anchor/nz-anchor.module';
 import { NzAvatarModule } from './avatar/nz-avatar.module';
+import { NzUploadModule } from './upload/nz-upload.module';
 
 // Services
 import { NzNotificationService } from './notification/nz-notification.service';
@@ -68,7 +69,7 @@ import { NZ_ROOT_CONFIG, NzRootConfig } from './root/nz-root-config'
 export { NzGridModule } from './grid/nz-grid.module';
 export { NzButtonModule } from './button/nz-button.module';
 export { NzAlertModule } from './alert/nz-alert.module';
-export { NzBadgeModule } from  './badge/nz-badge.module';
+export { NzBadgeModule } from './badge/nz-badge.module';
 export { NzCalendarModule } from './calendar/nz-calendar.module';
 export { NzCascaderModule } from './cascader/nz-cascader.module';
 export { NzCheckboxModule } from './checkbox/nz-checkbox.module';
@@ -109,6 +110,7 @@ export { NzBackTopModule } from './back-top/nz-back-top.module';
 export { NzAffixModule } from './affix/nz-affix.module';
 export { NzAnchorModule } from './anchor/nz-anchor.module';
 export { NzAvatarModule } from './avatar/nz-avatar.module';
+export { NzUploadModule } from './upload/nz-upload.module';
 
 // Services
 export { NzNotificationService } from './notification/nz-notification.service';
@@ -170,7 +172,8 @@ export { NZ_ROOT_CONFIG, NzRootConfig } from './root/nz-root-config';
     NzBackTopModule,
     NzAffixModule,
     NzAnchorModule,
-    NzAvatarModule
+    NzAvatarModule,
+    NzUploadModule
   ]
 })
 export class NgZorroAntdModule {

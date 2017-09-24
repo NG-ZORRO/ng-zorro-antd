@@ -1,4 +1,4 @@
-<div (click)="onClick($event)">
+<div [ngClass]="_classMap" (click)="onClick($event)">
 <input
     #input
     class="ant-input-prefix"
@@ -6,4 +6,5 @@
     (change)="onChange($event)"
     [multiple]="multiple"
 >
+<ng-content></ng-content>
 </div>

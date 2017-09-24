@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
-import { NzBasicUploadComponent} from './nz-basic-upload.component'
+import { getFileItem, removeFileItem } from './utils';
+import { NzBasicUploadComponent } from './nz-basic-upload.component';
 import { UidService } from './uid/uid.service';
 
 @Component({
@@ -8,7 +9,6 @@ import { UidService } from './uid/uid.service';
     templateUrl: './nz-upload.component.html',
 })
 export class NzUploadComponent implements OnInit {
-    _fileMap = new Map();
 
     @Input() action: string;
     @Input() accept: string;
@@ -29,9 +29,9 @@ export class NzUploadComponent implements OnInit {
     @ViewChild('basicUpload') basicUpload: ElementRef;
 
     constructor(private elementRef: ElementRef, private uidService: UidService) {
-        this.fileList.forEach(file => {
+        this.fileList = this.fileList.map(file => {
             file.uid = uidService.getUid;
-            this._fileMap.set(file.uid, this.processedRawFile(file));
+            return this.processedRawFile(file);
         });
     }
 
@@ -44,80 +44,83 @@ export class NzUploadComponent implements OnInit {
     }
 
     handleStart(file) {
-        this._fileMap.set(file.uid, this.processedRawFile(file));
-        const fileMap = this._fileMap;
+        this.fileList.push(this.processedRawFile(file));
+        const fileList = this.fileList;
 
         if (this.onChange) {
-            this.onChange({
-                file,
-                fileMap
-            });
+            this.onChange({ file: this.processedRawFile(file), fileList });
         }
     }
 
     handleProgress({ event, file }) {
         const percent = Math.round(100 * event.loaded / event.total);
-        this._fileMap.get(file.uid).status = 'uploading';
-        this._fileMap.get(file.uid).percent = percent;
-        const fileMap = this._fileMap;
+        this.fileList[this.fileList.indexOf(file)].status = 'uploading';
+        this.fileList[this.fileList.indexOf(file)].percent = percent;
+
+        const fileList = this.fileList;
+
         if (this.onProgress) {
-            this.onProgress(event, file, fileMap);
+            this.onProgress({ event, file, fileList });
         }
+        console.log(fileList);
 
         if (this.onChange) {
             this.onChange({
                 event,
                 file,
-                fileMap
+                fileList
             });
         }
-        console.log(this._fileMap.get(file.uid));
+
     }
 
     handleSuccess({ ret, file, xhr }) {
-        this._fileMap.get(file.uid).status = 'success';
-        const fileMap = this._fileMap;
+        this.fileList[this.fileList.indexOf(file)].status = 'success';
+        const fileList = this.fileList;
         if (this.onSuccess) {
-            this.onSuccess(ret, file, fileMap);
+            this.onSuccess(ret, file, fileList);
         }
 
         if (this.onChange) {
             this.onChange({
                 file,
-                fileMap
+                fileList
             });
         }
     }
 
     handleRemove(file) {
         this.abort(file);
-        this._fileMap.delete(file.uid);
-        const fileMap = this._fileMap;
+        this.fileList.splice(this.fileList.indexOf(file), 1);
+
+        const fileList = this.fileList;
         if (this.onRemove) {
-            this.onRemove(file, fileMap);
+            this.onRemove(file, fileList);
         }
 
         // TODO:this behavior isn't correct
         if (this.onChange) {
             this.onChange({
                 file,
-                fileMap
+                fileList
             });
         }
     }
 
     handleError({ err, ret, file }) {
-        const fileMap = this._fileMap;
+
         // removed
         if (!file) {
             return;
         }
-        this._fileMap.get(file.uid).error = err;
-        this._fileMap.get(file.uid).response = ret;
-        this._fileMap.get(file.uid).status = 'error';
+        this.fileList[this.fileList.indexOf(file)].error = err;
+        this.fileList[this.fileList.indexOf(file)].response = ret;
+        this.fileList[this.fileList.indexOf(file)].status = 'error';
+
+        const fileList = this.fileList;
         this.onChange({
-            file: this._fileMap.get(file.uid),
-            fileMap,
+            file,
+            fileList
         });
     }
 
