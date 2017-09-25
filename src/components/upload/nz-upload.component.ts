@@ -118,10 +118,12 @@ export class NzUploadComponent implements OnInit {
         this.fileList[this.fileList.indexOf(file)].status = 'error';
 
         const fileList = this.fileList;
-        this.onChange({
-            file,
-            fileList
-        });
+        if (this.onChange) {
+            this.onChange({
+                file,
+                fileList
+            });
+        }
     }
 
     abort(file) {
