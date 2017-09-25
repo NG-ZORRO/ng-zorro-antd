@@ -15,7 +15,7 @@ import {Component, OnInit} from '@angular/core';
         [nzLabel]="option.label"
         [nzValue]="option"
         [nzOffSet]="option.offset"
-        >
+        >  
       </nz-option>
     </nz-select>
   `,
