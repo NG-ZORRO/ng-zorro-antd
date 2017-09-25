@@ -43,6 +43,10 @@ export class NzUploadComponent implements OnInit {
         return rawFile;
     }
 
+    setFileList(file, key, value) {
+        this.fileList[this.fileList.indexOf(file)][key] = value;
+    }
+
     handleStart(file) {
         this.fileList.push(this.processedRawFile(file));
         const fileList = this.fileList;
@@ -54,8 +58,8 @@ export class NzUploadComponent implements OnInit {
 
     handleProgress({ event, file }) {
         const percent = Math.round(100 * event.loaded / event.total);
-        this.fileList[this.fileList.indexOf(file)].status = 'uploading';
-        this.fileList[this.fileList.indexOf(file)].percent = percent;
+        this.setFileList(file, 'status', 'uploading');
+        this.setFileList(file, 'percent', percent);
 
         const fileList = this.fileList;
 
@@ -75,7 +79,8 @@ export class NzUploadComponent implements OnInit {
     }
 
     handleSuccess({ ret, file, xhr }) {
-        this.fileList[this.fileList.indexOf(file)].status = 'success';
+        this.setFileList(file, 'status', 'success');
+
         const fileList = this.fileList;
         if (this.onSuccess) {
             this.onSuccess(ret, file, fileList);
@@ -113,9 +118,9 @@ export class NzUploadComponent implements OnInit {
         if (!file) {
             return;
         }
-        this.fileList[this.fileList.indexOf(file)].error = err;
-        this.fileList[this.fileList.indexOf(file)].response = ret;
-        this.fileList[this.fileList.indexOf(file)].status = 'error';
+        this.setFileList(file, 'error', err);
+        this.setFileList(file, 'response', ret);
+        this.setFileList(file, 'status', 'error');
 
         const fileList = this.fileList;
         if (this.onChange) {
