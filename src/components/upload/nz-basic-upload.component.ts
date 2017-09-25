@@ -8,7 +8,8 @@ import { attrAccept } from './utils';
     providers: [UidService],
     templateUrl: './nz-basic-upload.component.html',
     styleUrls: [
-        './style/index.less'
+        './style/index.less',
+        './style/patch.less'
     ]
 })
 export class NzBasicUploadComponent implements OnInit {
@@ -48,7 +49,7 @@ export class NzBasicUploadComponent implements OnInit {
 
     setClassMap(): void {
         this._classMap = {
-            [`${this._prefixCls}-basic`]: true
+            [`${this._prefixCls}`]: true
         };
     }
 
