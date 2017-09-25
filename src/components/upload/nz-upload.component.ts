@@ -13,6 +13,7 @@ export class NzUploadComponent implements OnInit {
     @Input() action: string;
     @Input() accept: string;
     @Input() autoUpload = true;
+    @Input() data: any;
     @Input() diasble = false;
     @Input() fileList = [];
     @Input() headers: string | { [name: string]: string | string[] };
@@ -37,13 +38,13 @@ export class NzUploadComponent implements OnInit {
 
     ngOnInit() { }
 
-    processedRawFile(rawFile) {
+    private processedRawFile(rawFile) {
         rawFile.status = 'ready';
         rawFile.percent = 0;
         return rawFile;
     }
 
-    setFileList(file, key, value) {
+    private setFileList(file, key, value) {
         this.fileList[this.fileList.indexOf(file)][key] = value;
     }
 

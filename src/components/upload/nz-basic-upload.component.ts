@@ -21,15 +21,14 @@ export class NzBasicUploadComponent implements OnInit {
     @Input() accept: string;
     @Input() action: string;
     @Input() autoUpload = true;
+    @Input() beforeUpload: (file: File, files: FileList) => boolean | Promise<any> = null;
+    @Input() customRequest: any;
+    @Input() data: any;
     @Input() disabled = false;
     @Input() headers: string | { [name: string]: string | string[] } = {};
     @Input() multiple = false;
     @Input() name: string;
     @Input() withCredentials = false;
-
-    @Input() beforeUpload: (file: File, files: FileList) => boolean | Promise<any> = null;
-    @Input() customRequest: any;
-    @Input() data: any;
 
     @Output() onError = new EventEmitter<any>();
     @Output() onProgress = new EventEmitter<any>();
