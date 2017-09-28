@@ -17,6 +17,7 @@ import {
   ViewChild,
   forwardRef
 } from '@angular/core';
+import { DOWN_ARROW, ENTER, TAB } from '@angular/cdk';
 import { NzOptionComponent } from './nz-option.component';
 import { NzOptionPipe } from './nz-option.pipe';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -39,6 +40,7 @@ import { TagAnimation } from '../core/animation/tag-animations';
   ],
   template     : `
     <div
+      tabindex="0"
       #trigger
       nz-overlay-origin
       #origin="nzOverlayOrigin"
@@ -116,7 +118,7 @@ import { TagAnimation } from '../core/animation/tag-animations';
       hasBackdrop
       [origin]="origin"
       (backdropClick)="closeDropDown()"
-      (detach)="closeDropDown()"
+      (detach)="closeDropDown();"
       (positionChange)="onPositionChange($event)"
       [width]="_triggerWidth"
       [open]="_isOpen">
@@ -508,9 +510,10 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   }
 
   handleKeyEnterEvent(event) {
-    /** when composing end */
-    if (!this._composing) {
+      /** when composing end */
+    if (!this._composing && this._isOpen) {
       event.preventDefault();
+      event.stopPropagation();
       this.updateFilterOption(false);
       this.clickOption(this._activeFilterOption);
     }
@@ -584,6 +587,28 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     e.preventDefault();
     if (!this._disabled) {
       this.nzOpen = !this.nzOpen;
+      if (this.nzShowSearch) {
+        /** wait for search display */
+        setTimeout(_ => {
+          this.searchInputElementRef.nativeElement.focus();
+        });
+      }
+    }
+  }
+
+  @HostListener('keydown', [ '$event' ])
+  onKeyDown(e) {
+    const keyCode = e.keyCode;
+    if (keyCode === TAB && this.nzOpen) {
+      this.nzOpen = false;
+      return;
+    }
+    if ( (keyCode !== DOWN_ARROW && keyCode !== ENTER) || this.nzOpen) {
+      return;
+    }
+    e.preventDefault();
+    if (!this._disabled) {
+      this.nzOpen = true;
       if (this.nzShowSearch) {
         /** wait for search display */
         setTimeout(_ => {
