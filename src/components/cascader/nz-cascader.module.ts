@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { NzCascaderComponent } from './nz-cascader.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { OverlayModule } from '../core/overlay/index';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { NzInputModule } from '../input/nz-input.module';
 
 @NgModule({

@@ -10,7 +10,7 @@ import * as moment from 'moment';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzTimePickerInnerComponent } from './nz-timepicker-inner.component';
 import { DEFAULT_DATEPICKER_POSITIONS } from '../core/overlay/overlay-position-map';
-import { ConnectionPositionPair } from '../core/overlay/index';
+import { ConnectionPositionPair } from '@angular/cdk/overlay';
 
 @Component({
   selector     : 'nz-timepicker',
@@ -23,7 +23,7 @@ import { ConnectionPositionPair } from '../core/overlay/index';
       class="ant-time-picker"
       [class.ant-time-picker-large]="nzSize=='large'"
       [class.ant-time-picker-small]="nzSize=='small'"
-      nz-overlay-origin #origin="nzOverlayOrigin"
+      cdkOverlayOrigin #origin="cdkOverlayOrigin"
       #trigger>
       <input
         [disabled]="nzDisabled"
@@ -35,14 +35,15 @@ import { ConnectionPositionPair } from '../core/overlay/index';
       <span class="ant-time-picker-icon"></span>
     </span>
     <ng-template
-      nz-connected-overlay
-      hasBackdrop
-      [positions]="_positions"
-      [origin]="origin"
+      cdkConnectedOverlay
+      cdkConnectedOverlayHasBackdrop
+      [cdkConnectedOverlayPositions]="_positions"
+      [cdkConnectedOverlayOrigin]="origin"
       (backdropClick)="_closeCalendar()"
       (detach)="_closeCalendar()"
       (positionChange)="onPositionChange($event)"
-      [open]="_open">
+      [cdkConnectedOverlayOpen]="_open"
+    >
       <div class="ant-time-picker-panel"
         [class.top]="_dropDownPosition==='top'"
         [class.bottom]="_dropDownPosition==='bottom'"

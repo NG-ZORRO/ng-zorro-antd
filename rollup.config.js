@@ -1,5 +1,6 @@
-import resolve from 'rollup-plugin-node-resolve'
-import replace from 'rollup-plugin-replace'
+import resolve from 'rollup-plugin-node-resolve';
+import replace from 'rollup-plugin-replace';
+import commonjs from 'rollup-plugin-commonjs';
 
 const format = process.env.ROLLUP_FORMAT || 'es'
 
@@ -68,7 +69,11 @@ export default {
   },
   exports: 'named',
   name: 'ngZorro.antd',
-  plugins: [replace({ "import * as moment": "import moment" }), resolve()],
+  plugins: [
+    replace({ "import * as moment": "import moment" }),
+    resolve(),
+    commonjs(), // For rxjs currently
+  ],
   external: Object.keys(globals),
   globals,
 }

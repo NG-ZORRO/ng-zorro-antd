@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { FloaterService } from '../core/floater/index';
+import { Overlay } from '@angular/cdk/overlay';
 import { NzNotificationData, NzNotificationDataFilled } from './nz-notification.definitions';
 import { NzMessageBaseService } from '../message/nz-message.service';
 import { NzMessageDataOptions } from '../message/nz-message.definitions';
@@ -8,8 +8,8 @@ import { NzNotificationContainerComponent } from './nz-notification-container.co
 @Injectable()
 export class NzNotificationService extends NzMessageBaseService<NzNotificationContainerComponent, NzNotificationData> {
 
-  constructor(floaterService: FloaterService) {
-    super(floaterService, NzNotificationContainerComponent, 'notification-');
+  constructor(overlay: Overlay) {
+    super(overlay, NzNotificationContainerComponent, 'notification-');
   }
 
   // Shortcut methods
