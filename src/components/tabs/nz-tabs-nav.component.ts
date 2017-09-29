@@ -16,7 +16,7 @@ import {
   ContentChild,
   HostBinding
 } from '@angular/core';
-import { Directionality, Direction } from '@angular/cdk';
+import { Directionality, Direction } from '@angular/cdk/bidi';
 import { Subscription } from 'rxjs/Subscription';
 import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
 import { NzTabLabelDirective } from './nz-tab-label.directive';

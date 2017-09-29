@@ -18,13 +18,13 @@ import {
   animate
 } from '@angular/animations';
 // import { Observable } from 'rxjs/Observable';
-import { RxChain } from '@angular/cdk';
+import { RxChain } from '@angular/cdk/rxjs';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { throttleTime } from 'rxjs/operator/throttleTime';
 import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
 import { Subscription } from 'rxjs/Subscription';
 
-import { NzScrollService } from "../core/scroll/nz-scroll.service";
+import { NzScrollService } from '../core/scroll/nz-scroll.service';
 
 @Component({
   selector: 'nz-back-top',

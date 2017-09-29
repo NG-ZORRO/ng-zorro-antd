@@ -21,7 +21,7 @@ import { FadeAnimation } from '../core/animation/fade-animations';
 import {
   ConnectionPositionPair,
   ConnectedOverlayDirective
-} from '../core/overlay/index';
+} from '@angular/cdk/overlay';
 import { POSITION_MAP, DEFAULT_4_POSITIONS } from '../core/overlay/overlay-position-map';
 
 @Component({
@@ -33,15 +33,15 @@ import { POSITION_MAP, DEFAULT_4_POSITIONS } from '../core/overlay/overlay-posit
   template     : `
     <ng-content></ng-content>
     <ng-template
-      #overlay="nzConnectedOverlay"
-      nz-connected-overlay
-      [origin]="nzOrigin"
-      [hasBackdrop]="_hasBackdrop"
+      #overlay="cdkConnectedOverlay"
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOrigin]="nzOrigin"
+      [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
       (backdropClick)="hide()"
       (detach)="hide()"
       (positionChange)="onPositionChange($event)"
-      [positions]="_positions"
-      [open]="visible$ | async">
+      [cdkConnectedOverlayPositions]="_positions"
+      [cdkConnectedOverlayOpen]="visible$ | async">
       <div class="ant-tooltip" [ngClass]="_classMap" [ngStyle]="nzOverlayStyle" [@fadeAnimation]="''+(visible$ | async)"
         (@fadeAnimation.done)="_afterVisibilityAnimation($event)">
         <div class="ant-tooltip-content">
@@ -81,7 +81,7 @@ export class NzToolTipComponent implements AfterViewInit {
   get nzVisible() {
     return this.visibleSource.value;
   }
-  
+
   visibleSource = new BehaviorSubject<boolean>(false);
   visible$ = this.visibleSource.asObservable();
 

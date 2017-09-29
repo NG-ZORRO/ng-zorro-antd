@@ -17,7 +17,7 @@ import {
   ViewChild,
   forwardRef
 } from '@angular/core';
-import { DOWN_ARROW, ENTER, TAB } from '@angular/cdk';
+import { DOWN_ARROW, ENTER, TAB } from '@angular/cdk/keycodes';
 import { NzOptionComponent } from './nz-option.component';
 import { NzOptionPipe } from './nz-option.pipe';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -42,8 +42,8 @@ import { TagAnimation } from '../core/animation/tag-animations';
     <div
       tabindex="0"
       #trigger
-      nz-overlay-origin
-      #origin="nzOverlayOrigin"
+      cdkOverlayOrigin
+      #origin="cdkOverlayOrigin"
       [ngClass]="_selectionClassMap"
       (keydown.Enter)="handleKeyEnterEvent($event)"
       (keydown.Backspace)="handleKeyBackspaceEvent($event)"
@@ -114,14 +114,15 @@ import { TagAnimation } from '../core/animation/tag-animations';
       </span>
       <span class="ant-select-arrow"><b></b></span></div>
     <ng-template
-      nz-connected-overlay
-      hasBackdrop
-      [origin]="origin"
+      cdkConnectedOverlay
+      cdkConnectedOverlayHasBackdrop
+      [cdkConnectedOverlayOrigin]="origin"
       (backdropClick)="closeDropDown()"
       (detach)="closeDropDown();"
       (positionChange)="onPositionChange($event)"
-      [width]="_triggerWidth"
-      [open]="_isOpen">
+      [cdkConnectedOverlayWidth]="_triggerWidth"
+      [cdkConnectedOverlayOpen]="_isOpen"
+    >
       <div
         [ngClass]="_dropDownClassMap" [@dropDownAnimation]="_dropDownPosition">
         <div style="overflow: auto;">
