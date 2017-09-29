@@ -206,6 +206,7 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   @Input() nzPlaceHolder = '请选择日期';
   @Input() nzFormat = 'YYYY-MM-DD';
   @Input() nzSize = '';
+  @Input() nzMode: 'day' | 'month' = 'day';
   @ViewChild('trigger') trigger;
   @ViewChild(NzTimePickerInnerComponent) timePickerInner: NzTimePickerInnerComponent;
   @HostBinding('class.ant-calendar-picker') _nzCalendarPicker = true;
@@ -281,7 +282,7 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   _setShowYear(year, $event) {
     $event.stopPropagation();
     this._showYear = year;
-    this._mode = 'year';
+    this._mode = this.nzMode === 'day' ? 'year' : 'month';
   }
 
   _preDecade() {
@@ -318,15 +319,20 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   }
 
   _clickMonth(month) {
-    this._showMonth = month.index;
-    this._mode = 'year';
+    if (this.nzMode === 'month') {
+      this._closeCalendar();
+      this.nzValue = moment(this.nzValue).year(this._showYear).month(month.index).toDate();
+    } else {
+      this._showMonth = month.index;
+      this._mode = 'year';
+    }
   }
 
   _openCalendar() {
     if (this.nzDisabled) {
       return;
     }
-    this._mode = 'year';
+    this._mode = this.nzMode === 'day' ? 'year' : 'month';
     this._open = true;
     this._setTriggerWidth();
   }
