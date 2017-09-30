@@ -19,6 +19,16 @@ import { debounceTime } from 'rxjs/operator/debounceTime';
         style({ opacity: '0' }),
         animate(150, style({ opacity: 1 }))
       ])
+    ]),
+    trigger('expandAnimation', [
+      transition('expand => void', [
+        style({ height: '*', overflow: 'hidden' }),
+        animate(150, style({ height: 0 }))
+      ]),
+      transition('void => expand', [
+        style({ height: 0, overflow: 'hidden' }),
+        animate(150, style({ height: '*' }))
+      ])
     ])
   ],
   template  : `
@@ -34,6 +44,7 @@ import { debounceTime } from 'rxjs/operator/debounceTime';
     <ul
       [class.ant-dropdown-menu]="isInDropDown"
       [@fadeAnimation]
+      [@expandAnimation]="expandState"
       [class.ant-menu]="!isInDropDown"
       [class.ant-dropdown-menu-vertical]="isInDropDown"
       [class.ant-menu-vertical]="(!isInDropDown)&&(nzMenuComponent.nzMode!=='inline')"
@@ -62,6 +73,13 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   get submenuSelected(): boolean {
     return !!this.subMenus._results.find(e => e !== this && e.subItemSelected)
+  }
+
+  get expandState() {
+    if (this.nzOpen && this.nzMenuComponent.nzMode !== 'vertical') {
+      return 'expand';
+    }
+    return null;
   }
 
   clickSubMenuTitle() {
