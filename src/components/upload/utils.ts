@@ -31,17 +31,3 @@ export function attrAccept(file, acceptedFiles) {
     }
     return true;
 }
-
-export function getFileItem(file, fileList) {
-    const matchKey = file.uid !== undefined ? 'uid' : 'name';
-    return fileList.filter(item => item[matchKey] === file[matchKey])[0];
-}
-
-export function removeFileItem(file, fileList) {
-    const matchKey = file.uid !== undefined ? 'uid' : 'name';
-    const removed = fileList.filter(item => item[matchKey] !== file[matchKey]);
-    if (removed.length === fileList.length) {
-        return null;
-    }
-    return removed;
-}

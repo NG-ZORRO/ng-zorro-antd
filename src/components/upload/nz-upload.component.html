@@ -1,5 +1,9 @@
+<div [ngClass]="_classMap">
 <nz-basic-upload
+    [accept]="accept"
     [action]="action"
+    [data]="data"
+    [disabled]="disabled"
     [headers]="headers"
     [multiple]="multiple"
     [withCredentials]="withCredentials"
@@ -12,3 +16,4 @@
 >
 <ng-content></ng-content>
 </nz-basic-upload>
+</div>

@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
-import { getFileItem, removeFileItem } from './utils';
 import { NzBasicUploadComponent } from './nz-basic-upload.component';
 import { UidService } from './uid/uid.service';
 
@@ -10,13 +9,17 @@ import { UidService } from './uid/uid.service';
 })
 export class NzUploadComponent implements OnInit {
 
+    _classMap;
+    _prefixCls = 'ant-upload';
+
     @Input() action: string;
     @Input() accept: string;
     @Input() autoUpload = true;
     @Input() data: any;
-    @Input() diasble = false;
+    @Input() disabled = false;
     @Input() fileList = [];
     @Input() headers: string | { [name: string]: string | string[] };
+    @Input() listType = 'text';
     @Input() multiple = false;
     @Input() withCredentials: boolean;
 
@@ -37,6 +40,14 @@ export class NzUploadComponent implements OnInit {
     }
 
     ngOnInit() { }
+
+    setClassMap(): void {
+        this._classMap = {
+            [`${this._prefixCls}-select`]: true,
+            [`${this._prefixCls}-select-${this.listType}`]: true,
+            [`${this._prefixCls}-disabled`]: this.disabled,
+        };
+    }
 
     private processedRawFile(rawFile) {
         rawFile.status = 'ready';

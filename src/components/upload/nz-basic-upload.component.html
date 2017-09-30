@@ -1,10 +1,11 @@
-<div [ngClass]="_classMap" (click)="onClick($event)">
+<span [ngClass]="_classMap" (click)="onClick($event)" role="button">
 <input
     #input
+    [accept]="accept"
     class="ant-input-prefix"
     type="file"
     (change)="onChange($event)"
     [multiple]="multiple"
 >
 <ng-content></ng-content>
-</div>
+</span>

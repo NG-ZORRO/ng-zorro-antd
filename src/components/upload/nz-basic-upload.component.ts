@@ -48,7 +48,8 @@ export class NzBasicUploadComponent implements OnInit {
 
     setClassMap(): void {
         this._classMap = {
-            [`${this._prefixCls}`]: true
+            [`${this._prefixCls}`]: true,
+            [`${this._prefixCls}-disabled`]: this.disabled,
         };
     }
 
