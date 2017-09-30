@@ -9,6 +9,23 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.5.3
+`2017-09-30`
+
+### Features
+* `DatePicker` 支持了选择月份的功能 [#397](https://github.com/NG-ZORRO/ng-zorro-antd/pull/397) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `Select` 支持Tab聚焦并可以使用回车和向下键展开 [#389](https://github.com/NG-ZORRO/ng-zorro-antd/pull/389) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `Menu` 增加了 `Horizontal` 和 `Inline` 模式下的高度动画 [#330](https://github.com/NG-ZORRO/ng-zorro-antd/pull/330) [@刘晓军](https://github.com/Maroon1)
+* `Collapse` 支持自定义头部内容 [#383](https://github.com/NG-ZORRO/ng-zorro-antd/pull/383) [@SangKa.Z](https://github.com/SangKa)
+* 在发布包中导出了全部 `Component` 便于引用 [#404](https://github.com/NG-ZORRO/ng-zorro-antd/pull/404)
+
+### Bug Fixes
+* `Table` 修复了 `nzIsPageIndexReset` 选项的问题 [#372](https://github.com/NG-ZORRO/ng-zorro-antd/pull/372) [#373](https://github.com/NG-ZORRO/ng-zorro-antd/pull/373) Alche
+* 修复了官方网站的性能问题 [#403](https://github.com/NG-ZORRO/ng-zorro-antd/pull/403)
+
+### Docs
+* 增加了对 `Input` 中 `nzPlaceHolder` 的使用说明 [#379](https://github.com/NG-ZORRO/ng-zorro-antd/pull/379) [@Liu, An-Chi](https://github.com/tigercosmos)
+
 ## 0.5.2
 `2017-09-23`
 ### Features
