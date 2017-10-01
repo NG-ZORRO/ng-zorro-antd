@@ -6,11 +6,7 @@ import { attrAccept } from './utils';
 @Component({
     selector: 'nz-basic-upload',
     providers: [UidService],
-    templateUrl: './nz-basic-upload.component.html',
-    styleUrls: [
-        './style/index.less',
-        './style/patch.less'
-    ]
+    templateUrl: './nz-basic-upload.component.html'
 })
 export class NzBasicUploadComponent implements OnInit {
 

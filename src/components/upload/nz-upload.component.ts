@@ -1,11 +1,16 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import { NzBasicUploadComponent } from './nz-basic-upload.component';
+import { NzUploadListComponent } from './nz-upload-list.component';
 import { UidService } from './uid/uid.service';
 
 @Component({
     selector: 'nz-upload',
     providers: [UidService],
     templateUrl: './nz-upload.component.html',
+    styleUrls: [
+        './style/index.less',
+        './style/patch.less'
+    ]
 })
 export class NzUploadComponent implements OnInit {
 
@@ -26,6 +31,7 @@ export class NzUploadComponent implements OnInit {
     @Input() onChange: Function;
     @Input() onError: Function;
     @Input() onProgress: Function;
+    @Input() onPreview: Function;
     @Input() onRemove: Function;
     @Input() onStart: Function;
     @Input() onSuccess: Function;
@@ -39,7 +45,9 @@ export class NzUploadComponent implements OnInit {
         });
     }
 
-    ngOnInit() { }
+    ngOnInit() {
+        this.setClassMap();
+    }
 
     setClassMap(): void {
         this._classMap = {

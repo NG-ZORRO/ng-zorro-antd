@@ -1,0 +1,23 @@
+<ng-template
+*ngIf="file.url; else urlElseBlock"
+>
+<a
+    [href]="file.url"
+    target="_blank"
+    rel="noopener noreferrer"
+    (click)="onPreview.emit(file)"
+    [title]="file.name"
+    nz-tooltip
+>
+    {{file.name}}
+</a>
+</ng-template>
+<ng-template #urlElseBlock>
+<span
+    (click)="onPreview.emit(file)"
+    [title]="file.name"
+    nz-tooltip
+>
+    {{file.name}}
+</span>
+</ng-template>

@@ -1,3 +1,4 @@
+<span>
 <div [ngClass]="_classMap">
 <nz-basic-upload
     [accept]="accept"
@@ -17,3 +18,8 @@
 <ng-content></ng-content>
 </nz-basic-upload>
 </div>
+<nz-upload-list
+    [onPreview]="onPreview"
+    [fileList]="fileList"
+></nz-upload-list>
+</span>
