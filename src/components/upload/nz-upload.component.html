@@ -19,6 +19,7 @@
 </nz-basic-upload>
 </div>
 <nz-upload-list
+    *ngIf="showUploadList"
     [onPreview]="onPreview"
     [fileList]="fileList"
 ></nz-upload-list>

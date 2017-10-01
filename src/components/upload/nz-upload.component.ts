@@ -26,6 +26,7 @@ export class NzUploadComponent implements OnInit {
     @Input() headers: string | { [name: string]: string | string[] };
     @Input() listType = 'text';
     @Input() multiple = false;
+    @Input() showUploadList = true;
     @Input() withCredentials: boolean;
 
     @Input() onChange: Function;
