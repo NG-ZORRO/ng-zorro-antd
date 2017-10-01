@@ -3,6 +3,7 @@
 <nz-basic-upload
     [accept]="accept"
     [action]="action"
+    [customRequest]="customRequest"
     [data]="data"
     [disabled]="disabled"
     [headers]="headers"
@@ -22,5 +23,6 @@
     *ngIf="showUploadList"
     [onPreview]="onPreview"
     [fileList]="fileList"
+    [listType]="listType"
 ></nz-upload-list>
 </span>

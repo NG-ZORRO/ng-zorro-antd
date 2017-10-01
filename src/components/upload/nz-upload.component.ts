@@ -20,6 +20,7 @@ export class NzUploadComponent implements OnInit {
     @Input() action: string;
     @Input() accept: string;
     @Input() autoUpload = true;
+    @Input() customRequest: any = null;
     @Input() data: any;
     @Input() disabled = false;
     @Input() fileList = [];
