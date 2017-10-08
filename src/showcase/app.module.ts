@@ -10,6 +10,9 @@ import { NgZorroAntdModule, NZ_MESSAGE_CONFIG, NZ_NOTIFICATION_CONFIG } from '..
 import { NzCodeBoxModule } from './share/nz-codebox/nz-codebox.module';
 import { NzHighlightModule } from './share/nz-highlight/nz-highlight.module';
 
+import { NZ_LOGGER_STATE } from '../../index.showcase';
+import { NZ_LOCALE, enUS } from '../../index.showcase';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,8 +28,10 @@ import { NzHighlightModule } from './share/nz-highlight/nz-highlight.module';
     RouterModule.forRoot(routes, { useHash: true, preloadingStrategy: PreloadAllModules })
   ],
   providers   : [
+    { provide: NZ_LOGGER_STATE, useValue: true },
     { provide: NZ_MESSAGE_CONFIG, useValue: { nzDuration: 3000 } },
     { provide: NZ_NOTIFICATION_CONFIG, useValue: { nzTop: '20px' } },
+    { provide: NZ_LOCALE, useValue: enUS },
     Title,
   ],
   bootstrap   : [ AppComponent ]

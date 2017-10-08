@@ -12,6 +12,7 @@ import {
 
 import { NzModalSubject } from './nz-modal-subject.service';
 import nzGlobalMonitor from '../util/nz-global-monitor';
+import { NzLocaleService } from '../locale';
 
 interface Position {
   x: number;
@@ -86,7 +87,7 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
   _content = '';
   _maskClosable = true;
   _contentTpl: TemplateRef<any>;
-  _okText = '知道了';
+  _okText = this._locale.translate('Modal.understood');
   _cancelText = '';
   _animationStatus = '';
   _confirmLoading = false;
@@ -252,7 +253,7 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
   }
 
 
-  constructor(public subject: NzModalSubject) {
+  constructor(public subject: NzModalSubject, private _locale: NzLocaleService) {
   }
 
   // 通过createComponent方法创建component时，ngOnInit不会被触发

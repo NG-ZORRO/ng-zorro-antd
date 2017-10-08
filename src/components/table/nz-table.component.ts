@@ -52,7 +52,7 @@ import { NzThDirective } from './nz-th.directive';
                   </table>
                 </div>
                 <div class="ant-table-placeholder" *ngIf="data.length==0 && !nzCustomNoResult">
-                  <span>没有数据</span>
+                  <span>{{ 'Table.emptyText' | nzTranslate }}</span>
                 </div>
                 <div class="ant-table-placeholder" *ngIf="data.length==0 && nzCustomNoResult">
                   <ng-content select="[noResult]"></ng-content>

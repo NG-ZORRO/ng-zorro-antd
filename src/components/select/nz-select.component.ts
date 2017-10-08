@@ -15,7 +15,8 @@ import {
   ElementRef,
   Renderer2,
   ViewChild,
-  forwardRef
+  forwardRef,
+  Inject,
 } from '@angular/core';
 import { DOWN_ARROW, ENTER, TAB } from '@angular/cdk/keycodes';
 import { NzOptionComponent } from './nz-option.component';
@@ -23,6 +24,7 @@ import { NzOptionPipe } from './nz-option.pipe';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { TagAnimation } from '../core/animation/tag-animations';
+import { NzLocaleService } from '../locale';
 
 @Component({
   selector     : 'nz-select',
@@ -156,7 +158,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   _size: string;
   _value: Array<string> | string;
   _placeholder = 'Placeholder';
-  _notFoundContent = 'Not found';
+  _notFoundContent = this._locale.translate('Select.notFoundContent');
   _isOpen = false;
   _disabled = false;
   _showSearch = false;
@@ -717,7 +719,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     this.nzDisabled = isDisabled;
   }
 
-  constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
+  constructor(private _elementRef: ElementRef, private _renderer: Renderer2, private _locale: NzLocaleService) {
     this._el = this._elementRef.nativeElement;
   }
 

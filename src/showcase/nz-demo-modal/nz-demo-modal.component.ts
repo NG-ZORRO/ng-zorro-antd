@@ -3,7 +3,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
 @Component({
   selector     : 'nz-demo-modal',
   encapsulation: ViewEncapsulation.None,
-  templateUrl  : './nz-demo-modal.html'
+  templateUrl  : './nz-demo-modal.html',
 })
 export class NzDemoModalComponent {
   NzDemoModalBasicCode = require('!!raw-loader!./nz-demo-modal-basic.component');

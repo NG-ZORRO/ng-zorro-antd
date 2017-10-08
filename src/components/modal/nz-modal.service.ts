@@ -12,6 +12,7 @@ import { NzModalComponent } from './nz-modal.component';
 import { NzConfirmComponent } from './nz-confirm.component';
 import { ModalOptions, ConfirmOptions } from './nz-modal-options.provider';
 import { NzModalSubject } from './nz-modal-subject.service';
+import { NzLocaleService } from '../locale';
 
 export interface ConfigInterface {
   type?: string;
@@ -43,7 +44,8 @@ export class NzModalService {
   _confirmCompFactory: ComponentFactory<NzConfirmComponent>;
 
   constructor(private _appRef: ApplicationRef,
-              private _cfr: ComponentFactoryResolver) {
+              private _cfr: ComponentFactoryResolver,
+              private _locale: NzLocaleService) {
     this._modalCompFactory = this._cfr.resolveComponentFactory(NzModalComponent);
     this._confirmCompFactory = this._cfr.resolveComponentFactory(NzConfirmComponent);
   }
@@ -225,8 +227,8 @@ export class NzModalService {
   confirm(props: ConfigInterface): NzModalSubject {
     const config = Object.assign({
       confirmType: 'confirm',
-      okText     : '确 定',
-      cancelText : '取 消'
+      okText     : this._locale.translate('Modal.okText'),
+      cancelText : this._locale.translate('Modal.cancelText')
     }, props);
     return this._openConfirm(config);
   }

@@ -14,6 +14,7 @@ import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzTimePickerInnerComponent } from '../time-picker/nz-timepicker-inner.component';
 import { DEFAULT_DATEPICKER_POSITIONS } from '../core/overlay/overlay-position-map';
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
+import { NzLocaleService } from '../locale';
 
 @Component({
   selector     : 'nz-datepicker',
@@ -64,36 +65,36 @@ import { ConnectionPositionPair } from '@angular/cdk/overlay';
                 #dateBox
                 (blur)="_blurInput(dateBox)">
             </div>
-            <a class="ant-calendar-clear-btn" title="清除"></a>
+            <a class="ant-calendar-clear-btn" title="{{ 'DateTime.clear' | nzTranslate }}"></a>
           </div>
           <div class="ant-calendar-date-panel">
             <div class="ant-calendar-header">
               <div style="position: relative;" *ngIf="_mode!='time'">
-                <a class="ant-calendar-prev-year-btn" title="上一年" (click)="_preYear()"></a>
-                <a class="ant-calendar-prev-month-btn" title="上个月" (click)="_preMonth()"></a>
+                <a class="ant-calendar-prev-year-btn" title="{{ 'DateTime.prevYear' | nzTranslate }}" (click)="_preYear()"></a>
+                <a class="ant-calendar-prev-month-btn" title="{{ 'DateTime.prevMonth' | nzTranslate }}" (click)="_preMonth()"></a>
                 <span class="ant-calendar-ym-select">
-                <a class="ant-calendar-month-select" title="选择月份" (click)="_changeMonthView()">{{_showMonth + 1}}月</a>
-                <a class="ant-calendar-year-select" title="选择年份" (click)="_changeDecadeView($event)">{{_showYear}}年</a>
+                <a class="ant-calendar-month-select" title="{{ 'DateTime.chooseMonth' | nzTranslate }}" (click)="_changeMonthView()">{{ 'DateTime.nMonth' | nzTranslate: { num: _showMonth + 1 } }}</a>
+                <a class="ant-calendar-year-select" title="{{ 'DateTime.chooseYear' | nzTranslate }}" (click)="_changeDecadeView($event)">{{ 'DateTime.nYear' | nzTranslate: { num: _showYear } }}</a>
                 </span>
-                <a class="ant-calendar-next-month-btn" title="下个月" (click)="_nextMonth()"></a>
-                <a class="ant-calendar-next-year-btn" title="下一年" (click)="_nextYear()"></a>
+                <a class="ant-calendar-next-month-btn" title="{{ 'DateTime.nextMonth' | nzTranslate }}" (click)="_nextMonth()"></a>
+                <a class="ant-calendar-next-year-btn" title="{{ 'DateTime.nextYear' | nzTranslate }}" (click)="_nextYear()"></a>
               </div>
               <div style="position: relative;" *ngIf="_mode=='time'">
                 <span class="ant-calendar-my-select">
-                  <a class="ant-calendar-year-select" title="Choose a month">{{_selectedYear}}年</a>
-                  <a class="ant-calendar-month-select" title="Choose a month">{{_showMonth + 1}}月</a>
-                  <a class="ant-calendar-day-select">{{_selectedDate}}日</a>
+                  <a class="ant-calendar-year-select" title="Choose a month">{{ 'DateTime.nYear' | nzTranslate: { num: _selectedYear } }}</a>
+                  <a class="ant-calendar-month-select" title="Choose a month">{{ 'DateTime.nMonth' | nzTranslate: { num: _showMonth + 1 } }}</a>
+                  <a class="ant-calendar-day-select">{{ 'DateTime.nDay' | nzTranslate: { num: _selectedDate } }}</a>
                 </span>
               </div>
               <div class="ant-calendar-month-panel" *ngIf="_mode=='month'">
                 <div>
                   <div class="ant-calendar-month-panel-header">
-                    <a class="ant-calendar-month-panel-prev-year-btn" title="上一年" (click)="_preYear()"></a>
-                    <a class="ant-calendar-month-panel-year-select" title="选择年份" (click)="_changeDecadeView($event)">
+                    <a class="ant-calendar-month-panel-prev-year-btn" title="{{ 'DateTime.prevYear' | nzTranslate }}" (click)="_preYear()"></a>
+                    <a class="ant-calendar-month-panel-year-select" title="{{ 'DateTime.chooseYear' | nzTranslate }}" (click)="_changeDecadeView($event)">
                       <span class="ant-calendar-month-panel-year-select-content">{{_showYear}}</span>
                       <span class="ant-calendar-month-panel-year-select-arrow">x</span>
                     </a>
-                    <a class="ant-calendar-month-panel-next-year-btn" title="下一年" (click)="_nextYear()"></a>
+                    <a class="ant-calendar-month-panel-next-year-btn" title="{{ 'DateTime.nextYear' | nzTranslate }}" (click)="_nextYear()"></a>
                   </div>
                   <div class="ant-calendar-month-panel-body">
                     <nz-calendar
@@ -115,12 +116,12 @@ import { ConnectionPositionPair } from '@angular/cdk/overlay';
               <div class="ant-calendar-year-panel" *ngIf="_mode=='decade'">
                 <div>
                   <div class="ant-calendar-year-panel-header">
-                    <a class="ant-calendar-year-panel-prev-decade-btn" title="上一年代" (click)="_preDecade()"></a>
-                    <a class="ant-calendar-year-panel-decade-select" title="选择年代">
+                    <a class="ant-calendar-year-panel-prev-decade-btn" title="{{ 'DateTime.prevDecade' | nzTranslate }}" (click)="_preDecade()"></a>
+                    <a class="ant-calendar-year-panel-decade-select" title="{{ 'DateTime.chooseDecade' | nzTranslate }}">
                       <span class="ant-calendar-year-panel-decade-select-content">{{_startDecade}}-{{_startDecade + 9}}</span>
                       <span class="ant-calendar-year-panel-decade-select-arrow">x</span>
                     </a>
-                    <a class="ant-calendar-year-panel-next-decade-btn" title="下一年代" (click)="_nextDecade()"></a>
+                    <a class="ant-calendar-year-panel-next-decade-btn" title="{{ 'DateTime.nextDecade' | nzTranslate }}" (click)="_nextDecade()"></a>
                   </div>
                   <div class="ant-calendar-year-panel-body">
                     <table class="ant-calendar-year-panel-table" cellspacing="0" role="grid">
@@ -145,7 +146,7 @@ import { ConnectionPositionPair } from '@angular/cdk/overlay';
               </div>
             </div>
             <nz-timepicker-inner
-              [nzPlaceHolder]="nzShowTime&&nzShowTime.nzPlaceHolder||'请选择时间'"
+              [nzPlaceHolder]="nzShowTime && nzShowTime.nzPlaceHolder || ('DateTime.chooseTimePlease' | nzTranslate)"
               [nzFormat]="nzShowTime&&nzShowTime.nzFormat||'HH:mm:ss'"
               [nzDisabled]="nzShowTime&&nzShowTime.nzDisabled||false"
               [nzDisabledHours]="nzShowTime&&nzShowTime.nzDisabledHours||null"
@@ -159,10 +160,10 @@ import { ConnectionPositionPair } from '@angular/cdk/overlay';
             </div>
             <div class="ant-calendar-footer ant-calendar-footer-show-ok">
                 <span class="ant-calendar-footer-btn">
-                  <a class="ant-calendar-today-btn " [attr.title]="_today|nzDate:nzFormat" (click)="_changeToToday()">{{nzShowTime ? '此刻' : '今天'}}</a>
-                  <a class="ant-calendar-time-picker-btn" (click)="_changeTimeView($event)" *ngIf="(_mode != 'time')&&nzShowTime">选择时间</a>
-                  <a class="ant-calendar-time-picker-btn" (click)="_changeYearView($event)" *ngIf="(_mode == 'time')&&nzShowTime">选择日期</a>
-                  <a class="ant-calendar-ok-btn" *ngIf="nzShowTime" (click)="_closeCalendar()">确 定</a>
+                  <a class="ant-calendar-today-btn " [attr.title]="_today|nzDate:nzFormat" (click)="_changeToToday()">{{ (nzShowTime ? 'DateTime.thisMoment' : 'DateTime.today') | nzTranslate }}</a>
+                  <a class="ant-calendar-time-picker-btn" (click)="_changeTimeView($event)" *ngIf="(_mode != 'time')&&nzShowTime">{{ 'DateTime.chooseTime' | nzTranslate }}</a>
+                  <a class="ant-calendar-time-picker-btn" (click)="_changeYearView($event)" *ngIf="(_mode == 'time')&&nzShowTime">{{ 'DateTime.chooseDate' | nzTranslate }}</a>
+                  <a class="ant-calendar-ok-btn" *ngIf="nzShowTime" (click)="_closeCalendar()">{{ 'DateTime.ok' | nzTranslate }}</a>
                 </span>
             </div>
           </div>
@@ -204,7 +205,7 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   @Input() nzDisabledDate;
   @Input() nzAllowClear = true;
   @Input() nzShowTime: any = null;
-  @Input() nzPlaceHolder = '请选择日期';
+  @Input() nzPlaceHolder = this._locale.translate('DateTime.chooseDatePlease');
   @Input() nzFormat = 'YYYY-MM-DD';
   @Input() nzSize = '';
   @Input() nzMode: 'day' | 'month' = 'day';
@@ -390,7 +391,7 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
     this._yearPanel[ 3 ].push('end');
   }
 
-  constructor(private _elementRef: ElementRef, private _cdr: ChangeDetectorRef) {
+  constructor(private _elementRef: ElementRef, private _cdr: ChangeDetectorRef, private _locale: NzLocaleService) {
     this._el = this._elementRef.nativeElement;
   }
 
