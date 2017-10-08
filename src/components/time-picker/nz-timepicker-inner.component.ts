@@ -10,6 +10,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
+import { NzLocaleService } from '../locale';
 
 export interface TimeUnitInterface {
   index: number;
@@ -153,7 +154,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     return this._hideDisabledOptions;
   }
 
-  @Input() nzPlaceHolder = '请选择时间';
+  @Input() nzPlaceHolder = this._locale.translate('DateTime.chooseTimePlease');
   @Input() nzSize: 'small' | 'large' | 'default' = 'default';
   @Input() nzDisabledHours;
   @Input() nzDisabledMinutes;
@@ -343,7 +344,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     this.nzDisabled = isDisabled;
   }
 
-  constructor(public _cdr: ChangeDetectorRef) {
+  constructor(public _cdr: ChangeDetectorRef, private _locale: NzLocaleService) {
   }
 
   ngOnInit() {

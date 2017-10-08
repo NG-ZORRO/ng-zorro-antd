@@ -12,7 +12,8 @@ import {
 
 import * as moment from 'moment';
 import { Moment } from 'moment';
-import 'moment/locale/zh-cn';
+// import 'moment/locale/zh-cn';
+import { NzLocaleService } from '../locale';
 
 export interface MonthInterface {
   index: number;
@@ -207,7 +208,7 @@ export class NzCalendarComponent implements OnInit {
   _showMonth = moment(new Date()).month();
   _showYear = moment(new Date()).year();
   _value: Date = new Date();
-  _locale = 'zh-cn';
+  _locale = this._localeService.getLocale().locale;
   @ContentChild('dateCell') dateCell: TemplateRef<any>;
   @ContentChild('monthCell') monthCell: TemplateRef<any>;
 
@@ -372,7 +373,7 @@ export class NzCalendarComponent implements OnInit {
     return listOfYears;
   };
 
-  constructor(private _elementRef: ElementRef) {
+  constructor(private _elementRef: ElementRef, private _localeService: NzLocaleService) {
     this._el = this._elementRef.nativeElement;
   }
 

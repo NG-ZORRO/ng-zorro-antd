@@ -7,9 +7,10 @@ import { NzUtilModule } from '../util/nz-util.module';
 import { NzCalendarModule } from '../calendar/nz-calendar.module';
 import { FormsModule } from '@angular/forms';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { NzLocaleModule } from '../locale';
 
 @NgModule({
-  imports     : [ CommonModule, NzTimePickerModule, NzUtilModule, NzInputModule, NzCalendarModule, FormsModule, OverlayModule ],
+  imports     : [ CommonModule, NzTimePickerModule, NzUtilModule, NzInputModule, NzCalendarModule, FormsModule, OverlayModule, NzLocaleModule ],
   declarations: [ NzDatePickerComponent ],
   exports     : [ NzDatePickerComponent ]
 })

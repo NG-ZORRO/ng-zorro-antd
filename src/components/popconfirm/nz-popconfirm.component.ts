@@ -4,11 +4,14 @@ import {
   Input,
   Output,
   EventEmitter,
-  ContentChild
+  ContentChild,
+  Renderer2,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { NzPopconfirmDirective } from './nz-popconfirm.directive';
 import { FadeAnimation } from '../core/animation/fade-animations';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
+import { NzLocaleService } from '../locale';
 
 @Component({
   selector     : 'nz-popconfirm',
@@ -64,8 +67,8 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
   _hasBackdrop = true;
   _condition = false;
   @Input() nzContent;
-  @Input() nzOkText = '确定';
-  @Input() nzCancelText = '取消';
+  @Input() nzOkText = this._locale.translate('Modal.okText');
+  @Input() nzCancelText = this._locale.translate('Modal.cancelText');
 
   @Input() set nzCondition(value) {
     this._condition = value;
@@ -79,6 +82,9 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
   @Output() nzOnConfirm: EventEmitter<any> = new EventEmitter();
   @ContentChild(NzPopconfirmDirective) nzOrigin;
 
+  constructor(renderer: Renderer2, cdr: ChangeDetectorRef, private _locale: NzLocaleService) {
+    super(renderer, cdr);
+  }
 
   show(): void {
     if (!this._condition) {

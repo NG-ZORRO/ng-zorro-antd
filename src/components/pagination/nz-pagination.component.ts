@@ -13,7 +13,7 @@ import {
   template     : `
     <ul class="ant-pagination ant-pagination-simple" *ngIf="nzSimple">
       <li
-        title="上一页"
+        title="{{ 'Pagination.prevPage' | nzTranslate }}"
         class="ant-pagination-prev"
         (click)="_jumpPage(_current-1)"
         [class.ant-pagination-disabled]="_isFirstIndex">
@@ -23,7 +23,7 @@ import {
         <input [ngModel]="nzPageIndex" (ngModelChange)="_nzPageIndexChange($event)" size="3"><span class="ant-pagination-slash">／</span>{{_lastIndex}}
       </li>
       <li
-        title="下一页"
+        title="{{ 'Pagination.nextPage' | nzTranslate }}"
         class="ant-pagination-next"
         (click)="_jumpPage(_current+1)"
         [class.ant-pagination-disabled]="_isLastIndex">
@@ -31,23 +31,23 @@ import {
       </li>
     </ul>
     <ul *ngIf="!nzSimple" class="ant-pagination" [class.mini]="nzSize=='small'">
-      <span class="ant-pagination-total-text" *ngIf="nzShowTotal">共 {{_total}} 条</span>
+      <span class="ant-pagination-total-text" *ngIf="nzShowTotal">{{ 'Pagination.totalItems' | nzTranslate: { total: _total } }}</span>
       <li
-        title="上一页"
+        title="{{ 'Pagination.prevPage' | nzTranslate }}"
         class="ant-pagination-prev"
         (click)="_jumpPage(_current-1)"
         [class.ant-pagination-disabled]="_isFirstIndex">
         <a></a>
       </li>
       <li
-        title="第一页"
+        title="{{ 'Pagination.firstPage' | nzTranslate }}"
         class="ant-pagination-item"
         (click)="_jumpPage(_firstIndex)"
         [class.ant-pagination-item-active]="_isFirstIndex">
         <a>{{_firstIndex}}</a>
       </li>
       <li
-        [attr.title]="'向前 '+_roundPageSize+' 页'"
+        [attr.title]="'Pagination.forwardPage' | nzTranslate: { num: _roundPageSize }"
         (click)="_jumpBefore(_pageSize)"
         class="ant-pagination-jump-prev"
         *ngIf="(_lastIndex >9)&&(_current-3>_firstIndex)">
@@ -62,14 +62,14 @@ import {
         <a>{{page.index}}</a>
       </li>
       <li
-        [attr.title]="'向后 '+_roundPageSize+' 页'"
+        [attr.title]="'Pagination.backwardPage' | nzTranslate: { num: _roundPageSize }"
         (click)="_jumpAfter(_pageSize)"
         class="ant-pagination-jump-next"
         *ngIf="(_lastIndex >9)&&(_current+3<_lastIndex)">
         <a></a>
       </li>
       <li
-        [attr.title]="'最后一页: '+_lastIndex"
+        [attr.title]="'Pagination.lastPage' | nzTranslate: { page: _lastIndex }"
         class="ant-pagination-item"
         (click)="_jumpPage(_lastIndex)"
         *ngIf="(_lastIndex>0)&&(_lastIndex!==_firstIndex)"
@@ -77,7 +77,7 @@ import {
         <a>{{_lastIndex}}</a>
       </li>
       <li
-        title="下一页"
+        title="{{ 'Pagination.nextPage' | nzTranslate }}"
         class="ant-pagination-next"
         (click)="_jumpPage(_current+1)"
         [class.ant-pagination-disabled]="_isLastIndex">
@@ -92,18 +92,18 @@ import {
           (ngModelChange)="_pageSizeChange($event)">
           <nz-option
             *ngFor="let option of _options"
-            [nzLabel]="option+ '条/页'"
+            [nzLabel]="'Pagination.itemsPerPage' | nzTranslate: { num: option }"
             [nzValue]="option">
           </nz-option>
           <nz-option
             *ngIf="_options.indexOf(nzPageSize)==-1"
-            [nzLabel]="nzPageSize+ '条/页'"
+            [nzLabel]="'Pagination.itemsPerPage' | nzTranslate: { num: nzPageSize }"
             [nzValue]="nzPageSize">
           </nz-option>
         </nz-select>
         <div class="ant-pagination-options-quick-jumper"
           *ngIf="nzShowQuickJumper">
-          跳至<input [ngModel]="nzPageIndex" (ngModelChange)="_nzPageIndexChange($event)">页
+          {{ 'Pagination.jumpTo' | nzTranslate }}<input [ngModel]="nzPageIndex" (ngModelChange)="_nzPageIndexChange($event)">{{ 'Pagination.page' | nzTranslate }}
         </div>
       </div>
     </ul>`,

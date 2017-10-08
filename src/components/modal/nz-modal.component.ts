@@ -13,11 +13,13 @@ import {
   ComponentFactory,
   AfterViewInit,
   ViewContainerRef,
-  ComponentRef
+  ComponentRef,
+  Inject,
 } from '@angular/core';
 
 import { NzModalSubject } from './nz-modal-subject.service';
 import nzGlobalMonitor from '../util/nz-global-monitor';
+import { NzLocaleService } from '../locale';
 
 interface Position {
   x: number;
@@ -94,8 +96,8 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
   _content = '';
   _contentTpl: TemplateRef<any>;
   _footerTpl: TemplateRef<any>;
-  _okText = '确 定';
-  _cancelText = '取 消';
+  _okText = this._locale.translate('Modal.okText');
+  _cancelText = this._locale.translate('Modal.cancelText');
   _style: any = {};
   _wrapClass = `${this._prefixCls}-wrap`;
   _customClass = '';
@@ -319,7 +321,8 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   constructor(public subject: NzModalSubject,
-              private _vcr: ViewContainerRef) {
+              private _vcr: ViewContainerRef,
+              private _locale: NzLocaleService) {
     this.subject.modalId = this.modalId;
   }
 

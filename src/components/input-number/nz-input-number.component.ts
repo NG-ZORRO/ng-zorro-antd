@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { TAB } from '@angular/cdk';
+import { TAB } from '@angular/cdk/keycodes';
 
 @Component({
   selector     : 'nz-input-number',

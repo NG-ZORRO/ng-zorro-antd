@@ -57,7 +57,7 @@ import { ConnectionPositionPair } from '@angular/cdk/overlay';
               [value]="_value|nzDate:_format"
               (blur)="_manualChangeInput(inputTimeInstance)"
               (keydown.Enter)="_manualChangeInput(inputTimeInstance)">
-            <a class="ant-time-picker-panel-clear-btn" title="清除" (click)="_clearValue()"></a>
+            <a class="ant-time-picker-panel-clear-btn" title="{{ 'DateTime.clear' | nzTranslate }}" (click)="_clearValue()"></a>
           </div>
           <div class="ant-time-picker-panel-combobox">
             <div class="ant-time-picker-panel-select"
