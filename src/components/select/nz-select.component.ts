@@ -486,7 +486,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
       });
       // selectedOption not exist
       if (selectedOption.length) {
-        this.chooseOption(selectedOption.length ? selectedOption[ 0 ] : null);
+        this.chooseOption(selectedOption[ 0 ]);
       }else {
         this._selectedOption = null;
       }
