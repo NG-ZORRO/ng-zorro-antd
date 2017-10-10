@@ -484,7 +484,12 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
       const selectedOption = this._options.filter((item) => {
         return (item != null) && (item.nzValue === currentModelValue);
       });
-      this.chooseOption(selectedOption[ 0 ]);
+      // selectedOption not exist
+      if (selectedOption.length) {
+        this.chooseOption(selectedOption.length ? selectedOption[ 0 ] : null);
+      }else {
+        this._selectedOption = null;
+      }
     }
   }
 
