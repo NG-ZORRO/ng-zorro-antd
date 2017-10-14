@@ -322,6 +322,7 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
     if (this.nzMode === 'month') {
       this._closeCalendar();
       this.nzValue = moment(this.nzValue).year(this._showYear).month(month.index).toDate();
+      this.onChange(this._value);
     } else {
       this._showMonth = month.index;
       this._mode = 'year';
