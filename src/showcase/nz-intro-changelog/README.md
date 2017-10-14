@@ -9,6 +9,19 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.5.4
+`2017-10-14`
+
+### Features
+* `InputNumber` 增加对 `nzBlur`, `nzFocus` 属性（事件）的支持 [406](https://github.com/NG-ZORRO/ng-zorro-antd/pull/406) [@Hsuan Lee](https://github.com/HsuanXyz)
+
+### Bug Fixes
+* `DatePicker` 修复了当`nzMode`置为`month`时没有改变`ngModel`值的问题 [#421](https://github.com/NG-ZORRO/ng-zorro-antd/pull/421) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `Modal` 修复了当弹出框显示后切换路由时，body滚动条没有恢复显示的问题 [#415](https://github.com/NG-ZORRO/ng-zorro-antd/pull/415) [@Hsuan Lee](https://github.com/HsuanXyz)
+
+### Docs
+* 修正`Modal`文档中`nzClickHide`的默认值 [408](https://github.com/NG-ZORRO/ng-zorro-antd/pull/408) [@zverbeta](https://github.com/zverbeta)
+
 ## 0.5.3
 `2017-09-30`
 
