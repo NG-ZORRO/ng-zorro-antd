@@ -16,10 +16,10 @@ export class NzDemoConfirmBasicComponent {
     this.confirmServ.confirm({
       title  : '您是否确认要删除这项内容',
       content: '<b>一些解释</b>',
-      onOk() {
+      onOk: () => {
         console.log('确定');
       },
-      onCancel() {
+      onCancel: () => {
       }
     });
   }

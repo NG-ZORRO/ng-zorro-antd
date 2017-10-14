@@ -50,12 +50,12 @@ export class NzDemoModalServiceComponent {
       content : '纯文本内容，点确认 1 秒后关闭',
       closable: false,
       showConfirmLoading: true,
-      onOk() {
+      onOk: () => {
         return new Promise((resolve) => {
           setTimeout(resolve, 1000);
         });
       },
-      onCancel() {
+      onCancel: () => {
       }
     });
   }
@@ -66,7 +66,7 @@ export class NzDemoModalServiceComponent {
       content     : contentTpl,
       footer      : footerTpl,
       maskClosable: false,
-      onOk() {
+      onOk: () => {
         console.log('Click ok');
       }
     });
@@ -76,9 +76,9 @@ export class NzDemoModalServiceComponent {
     const subscription = this.modalService.open({
       title          : '对话框标题',
       content        : NzModalCustomizeComponent,
-      onOk() {
+      onOk: () => {
       },
-      onCancel() {
+      onCancel: () => {
         console.log('Click cancel');
       },
       footer         : false,
