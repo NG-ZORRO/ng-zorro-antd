@@ -262,6 +262,9 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this._visible) {
+      nzGlobalMonitor.setDocumentOverflowHidden(false);
+    }
     this.subject.next('onDestroy');
     this.subject.unsubscribe();
     this.subject = null;

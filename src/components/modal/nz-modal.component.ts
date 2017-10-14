@@ -336,6 +336,9 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
+    if (this._visible) {
+      nzGlobalMonitor.setDocumentOverflowHidden(false);
+    }
     this.subject.next('onDestroy');
     this.subject.unsubscribe();
     this.subject = null;
