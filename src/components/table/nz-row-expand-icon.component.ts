@@ -13,17 +13,22 @@ import {
 })
 export class NzRowExpandIconComponent {
   @Input() nzExpand = false;
-  @Input() @HostBinding('class.ant-table-row-spaced') nzShowExpand = false;
+  @Input() nzShowExpand = true;
   @Output() nzExpandChange = new EventEmitter();
+
+  @HostBinding('class.ant-table-row-spaced')
+  get hidden() {
+    return !this.nzShowExpand;
+  }
 
   @HostBinding(`class.ant-table-row-expanded`)
   get expanded() {
-    return this.nzExpand && !this.nzShowExpand;
+    return this.nzShowExpand && this.nzExpand;
   }
 
   @HostBinding(`class.ant-table-row-collapsed`)
   get collapsed() {
-    return !this.nzExpand && !this.nzShowExpand;
+    return this.nzShowExpand && !this.nzExpand;
   }
 
   @HostBinding(`class.ant-table-row-expand-icon`) _expandIcon = true;
