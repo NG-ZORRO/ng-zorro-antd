@@ -1,0 +1,52 @@
+<article>
+  <section class="markdown"><h1>Upload 上传</h1>
+    <section class="markdown"><p>文件选择上传和拖拽上传控件。</p>
+      <h1>Has Bug!!</h1>
+      <h2 id="何时使用"><span>何时使用</span>
+        <!-- <a class="anchor">#</a> -->
+      </h2>
+      <p>上传是将信息（网页、文字、图片、视频等）通过网页或者上传工具发布到远程服务器上的过程。</p>
+      <ul>
+        <li>当需要上传一个或一些文件时。</li>
+        <li>当需要展现上传的进度时。</li>
+        <li>当需要使用拖拽交互时。</li>
+      </ul>
+
+    </section>
+    <h2>代码演示<i class="code-box-expand-trigger anticon anticon-appstore" title="展开全部代码"></i></h2>
+  </section>
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="12">
+      <nz-code-box [nzTitle]="'点击上传'" id="components-upload-demo-basic" [nzCode]="NzDemoUploadBasicCode">
+        <nz-demo-upload-basic demo></nz-demo-upload-basic>
+        <div intro>
+          <p>经典款式，用户点击按钮弹出文件选择框。</p>
+        </div>
+      </nz-code-box>
+    </div>
+    <div nz-col [nzSpan]="12">
+      <nz-code-box [nzTitle]="'照片墙'" id="components-upload-demo-pictureswall" [nzCode]="NzDemoUploadPictureswallCode">
+        <nz-demo-upload-pictureswall demo></nz-demo-upload-pictureswall>
+        <div intro>
+          <p>用户可以上传图片并在列表中显示缩略图。当上传照片数到达限制后，上传按钮消失。</p>
+        </div>
+      </nz-code-box>
+    </div>
+  </div>
+  <section class="markdown api-container">
+    <h2 id="API"><span>API</span>
+      <!-- <a class="anchor">#</a> -->
+    </h2>
+    Hasn't been finished.
+    参见
+    <a href="https://ant.design/components/upload-cn/#components-upload-demo-basic">
+      AntDesign
+    </a>
+
+    Hasn't been supported:
+    <ul>
+      <li>fileList(受控)</li>
+      <li>supportServerRender</li>
+    </ul>
+  </section>
+</article>

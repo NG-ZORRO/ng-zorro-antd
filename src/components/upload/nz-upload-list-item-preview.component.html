@@ -1,4 +1,4 @@
-<ng-template
+<div
 *ngIf="file.url; else urlElseBlock"
 >
 <a
@@ -11,9 +11,10 @@
 >
     {{file.name}}
 </a>
-</ng-template>
+</div>
 <ng-template #urlElseBlock>
 <span
+    [ngClass]="_prefixCls+'-list-item-name'"
     (click)="onPreview.emit(file)"
     [title]="file.name"
     nz-tooltip

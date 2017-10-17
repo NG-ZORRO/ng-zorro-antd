@@ -1,15 +1,16 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
-  selector: 'nz-upload-list-item-icon-and-preview',
-  templateUrl: './nz-upload-list-item-icon-and-preview.component.html',
+  selector: 'nz-upload-list-item-icon',
+  templateUrl: './nz-upload-list-item-icon.component.html',
   styleUrls: [
     './style/index.less',
     './style/patch.less'
   ]
 })
-export class NzUploadListItemIconAndPreviewComponent implements OnInit {
+export class NzUploadListItemIconComponent implements OnInit {
 
+  _prefixCls = 'ant-upload';
   _locale = {
     uploading: '文件上传中',
     removeFile: '删除文件',
@@ -19,10 +20,13 @@ export class NzUploadListItemIconAndPreviewComponent implements OnInit {
 
   @Input() file;
   @Input() listType;
+
   @Output() onPreview = new EventEmitter<any>();
 
-  constructor() { }
+  constructor() {
+  }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
 }

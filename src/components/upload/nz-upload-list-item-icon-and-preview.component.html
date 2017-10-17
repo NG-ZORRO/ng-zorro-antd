@@ -3,7 +3,10 @@
         *ngSwitchCase="'error'"
         [nzTitle]="(file.error && file.error.statusText) || _locale.uploadError"
     >
-        <i class="anticon anticon-paper-clip" nz-tooltip></i>
+        <nz-upload-list-item-icon
+          [file]="file"
+          [listType]="listType"
+        ></nz-upload-list-item-icon>
         <nz-upload-list-item-preview
             [file]="file"
             (onPreview)="onPreview.emit(file)"
@@ -12,12 +15,10 @@
 
     </nz-tooltip>
     <span *ngSwitchDefault >
-        <div
-            [ngSwitch]="file.status"
-        >
-            <i *ngSwitchCase="'uploading'" class="anticon anticon-loading anticon-spin" nz-tooltip></i>
-            <i *ngSwitchDefault class="anticon anticon-paper-clip" nz-tooltip></i>
-        </div>
+        <nz-upload-list-item-icon
+          [file]="file"
+          [listType]="listType"
+        ></nz-upload-list-item-icon>
         <nz-upload-list-item-preview
             [file]="file"
             (onPreview)="onPreview.emit(file)"
