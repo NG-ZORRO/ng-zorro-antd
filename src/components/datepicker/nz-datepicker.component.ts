@@ -188,6 +188,7 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   _triggerWidth = 0;
   _value = null;
   _disabled = false;
+  _disabledDate;
   _today = new Date();
   _selectedMonth = moment(this.nzValue).month();
   _selectedYear = moment(this.nzValue).year();
@@ -200,7 +201,6 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   // ngModel Access
   onChange: any = Function.prototype;
   onTouched: any = Function.prototype;
-  @Input() nzDisabledDate;
   @Input() nzAllowClear = true;
   @Input() nzShowTime: any = null;
   @Input() nzPlaceHolder = '请选择日期';
@@ -219,6 +219,18 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   set nzDisabled(value: boolean) {
     this._disabled = value;
     this._closeCalendar();
+  }
+
+  @Input()
+  get nzDisabledDate(): Function {
+    if (this._mode === 'month' && this.nzMode === 'day') {
+      return;
+    }
+    return this._disabledDate;
+  };
+
+  set nzDisabledDate(value: Function) {
+    this._disabledDate = value;
   }
 
   _setTriggerWidth(): void {
