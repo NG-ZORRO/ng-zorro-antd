@@ -83,11 +83,12 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
       }
     }
     this.nzVisible = visible;
+    this.nzVisibleChange.emit(this.nzVisible);
     this._changeDetector.markForCheck();
   }
 
   /** rewrite afterViewInit hook */
   ngAfterViewInit() {
-    this._startSubscribe(this.nzVisibleChange.asObservable());
+    this._startSubscribe(this._visibleChange);
   }
 }
