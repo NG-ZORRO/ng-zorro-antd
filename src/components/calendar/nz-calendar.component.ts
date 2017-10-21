@@ -17,6 +17,7 @@ import 'moment/locale/zh-cn';
 export interface MonthInterface {
   index: number;
   name: string;
+  year: number;
   isCurrentMonth: boolean;
   isSelectedMonth: boolean;
 }
@@ -333,6 +334,7 @@ export class NzCalendarComponent implements OnInit {
       months.push({
         index          : i,
         name           : this._listOfMonthName[ i ],
+        year           : date.year(),
         isCurrentMonth : moment(new Date()).month() === i && date.isSame(new Date(), 'year'),
         isSelectedMonth: this._showMonth === i
       });
