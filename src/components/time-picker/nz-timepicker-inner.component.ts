@@ -10,7 +10,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
-import { NzLocaleService } from '../locale';
+import { NzLocaleService } from '../locale/index';
 
 export interface TimeUnitInterface {
   index: number;

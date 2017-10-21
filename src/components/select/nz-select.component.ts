@@ -24,7 +24,7 @@ import { NzOptionPipe } from './nz-option.pipe';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { TagAnimation } from '../core/animation/tag-animations';
-import { NzLocaleService } from '../locale';
+import { NzLocaleService } from '../locale/index';
 
 @Component({
   selector     : 'nz-select',

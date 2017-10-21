@@ -13,7 +13,7 @@ import {
 import * as moment from 'moment';
 import { Moment } from 'moment';
 // import 'moment/locale/zh-cn';
-import { NzLocaleService } from '../locale';
+import { NzLocaleService } from '../locale/index';
 
 export interface MonthInterface {
   index: number;

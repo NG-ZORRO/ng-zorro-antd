@@ -7,7 +7,7 @@ import { NzUtilModule } from '../util/nz-util.module';
 import { NzCalendarModule } from '../calendar/nz-calendar.module';
 import { FormsModule } from '@angular/forms';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { NzLocaleModule } from '../locale';
+import { NzLocaleModule } from '../locale/index';
 
 @NgModule({
   imports     : [ CommonModule, NzTimePickerModule, NzUtilModule, NzInputModule, NzCalendarModule, FormsModule, OverlayModule, NzLocaleModule ],

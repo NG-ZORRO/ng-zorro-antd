@@ -1,5 +1,5 @@
 import { Injectable, Inject, Provider, Optional, SkipSelf } from '@angular/core';
-import { LoggerService } from '../util/logger';
+import { LoggerService } from '../util/logger/index';
 import { NZ_LOCALE } from './nz-locale.token';
 import { NzLocale } from './nz-locale.class';
 

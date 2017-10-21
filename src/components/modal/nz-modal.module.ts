@@ -6,7 +6,7 @@ import { NzConfirmComponent } from './nz-confirm.component';
 import { NzModalService } from './nz-modal.service';
 import { NzModalSubject } from './nz-modal-subject.service';
 
-import { NzLocaleModule } from '../locale';
+import { NzLocaleModule } from '../locale/index';
 import { NzButtonModule } from '../button/nz-button.module';
 
 @NgModule({

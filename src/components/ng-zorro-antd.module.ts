@@ -6,8 +6,8 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
 // Modules
-import { LoggerModule } from './util/logger';
-import { NzLocaleModule } from './locale';
+import { LoggerModule } from './util/logger/index';
+import { NzLocaleModule } from './locale/index';
 // import { NzLocaleProviderModule } from './locale-provider';
 import { NzGridModule } from './grid/nz-grid.module';
 import { NzButtonModule } from './button/nz-button.module';
@@ -68,10 +68,10 @@ import { NZ_ROOT_CONFIG, NzRootConfig } from './root/nz-root-config'
 // ---------------------------------------------------------
 
 // Mixes
-export * from './locale';
+export * from './locale/index';
 // export { NZ_DEFAULT_LOCALE } from './locale-provider';
 // export * from './locale-provider/locale';
-export { NZ_LOGGER_STATE } from './util/logger';
+export { NZ_LOGGER_STATE } from './util/logger/index';
 
 // Modules
 export { NzGridModule } from './grid/nz-grid.module';
