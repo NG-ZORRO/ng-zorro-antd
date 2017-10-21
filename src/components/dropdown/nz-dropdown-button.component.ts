@@ -82,8 +82,10 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
         this._setTriggerWidth();
       }
     }
-    this.nzVisible = visible;
-    this.nzVisibleChange.emit(this.nzVisible);
+    if (this.nzVisible !== visible) {
+      this.nzVisible = visible;
+      this.nzVisibleChange.emit(this.nzVisible);
+    }
     this._changeDetector.markForCheck();
   }
 
