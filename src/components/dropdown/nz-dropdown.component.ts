@@ -125,7 +125,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   _clickDropDown($event) {
     $event.stopPropagation();
     if (this.nzClickHide) {
-      this.nzVisible = false;
+      this._hide();
     }
   }
 
@@ -139,8 +139,10 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
         this._setTriggerWidth();
       }
     }
-    this.nzVisible = visible;
-    this.nzVisibleChange.emit(this.nzVisible);
+    if (this.nzVisible !== visible) {
+      this.nzVisible = visible;
+      this.nzVisibleChange.emit(this.nzVisible);
+    }
     this._changeDetector.markForCheck();
   }
 
