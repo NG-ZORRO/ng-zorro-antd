@@ -154,7 +154,9 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    this._subscription.unsubscribe();
+    if (this._subscription) {
+      this._subscription.unsubscribe();
+    }
   }
 
   ngAfterViewInit() {
