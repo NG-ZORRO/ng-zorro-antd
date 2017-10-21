@@ -1,6 +1,6 @@
 NG-ZORRO [![GitHub stars](https://img.shields.io/github/stars/NG-ZORRO/ng-zorro-antd.svg?style=social&label=Star)](https://github.com/NG-ZORRO/ng-zorro-antd)
 ===
-这里是 Ant Design 的 Angular`^4.4.3` 实现，开发和服务于企业级后台产品。
+这里是 Ant Design 的 Angular`^4.4.4` 实现，开发和服务于企业级后台产品。
 
 <div class="pic-plus">
   <img width="150" src="./assets/img/antd.svg">
@@ -26,7 +26,7 @@ NG-ZORRO [![GitHub stars](https://img.shields.io/github/stars/NG-ZORRO/ng-zorro-
 
 ## 兼容版本
 
-* 当前支持 Angular`^4.4.3` 版本
+* 当前支持 Angular`^4.4.4` 版本
 
 
 ## 安装
