@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "setup": "mkdir -p lib/ng-zorro-antd && rsync -av --exclude=\".*\" ../../publish/ lib/ng-zorro-antd",
+    "setup": "bash ../../setup-shared-libs.sh ./lib",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -15,26 +15,25 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^4.2.4",
-    "@angular/cdk": "2.0.0-beta.8",
-    "@angular/common": "^4.2.4",
-    "@angular/compiler": "^4.2.4",
-    "@angular/core": "^4.2.4",
-    "@angular/forms": "^4.2.4",
-    "@angular/http": "^4.2.4",
-    "@angular/platform-browser": "^4.2.4",
-    "@angular/platform-browser-dynamic": "^4.2.4",
-    "@angular/router": "^4.2.4",
-    "core-js": "^2.4.1",
-    "moment": "^2.18.1",
+    "@angular/animations": "file:lib/@angular/animations",
+    "@angular/cdk": "file:lib/@angular/cdk",
+    "@angular/common": "file:lib/@angular/common",
+    "@angular/compiler": "file:lib/@angular/compiler",
+    "@angular/core": "file:lib/@angular/core",
+    "@angular/forms": "file:lib/@angular/forms",
+    "@angular/http": "file:lib/@angular/http",
+    "@angular/platform-browser": "file:lib/@angular/platform-browser",
+    "@angular/platform-browser-dynamic": "file:lib/@angular/platform-browser-dynamic",
+    "@angular/router": "file:lib/@angular/router",
+    "core-js": "file:lib/core-js",
+    "moment": "file:lib/moment",
     "ng-zorro-antd": "file:lib/ng-zorro-antd",
-    "rxjs": "^5.4.2",
-    "zone.js": "^0.8.14"
+    "rxjs": "file:lib/rxjs",
+    "zone.js": "file:lib/zone.js"
   },
   "devDependencies": {
-    "@angular/cli": "1.3.2",
-    "@angular/compiler-cli": "^4.2.4",
-    "@angular/language-service": "^4.2.4",
-    "typescript": "~2.3.3"
+    "@angular/cli": "file:lib/@angular/cli",
+    "@angular/compiler-cli": "file:lib/@angular/compiler-cli",
+    "typescript": "file:lib/typescript"
   }
 }
