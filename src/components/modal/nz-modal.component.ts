@@ -19,7 +19,7 @@ import {
 
 import { NzModalSubject } from './nz-modal-subject.service';
 import nzGlobalMonitor from '../util/nz-global-monitor';
-import { NzLocaleService } from '../locale';
+import { NzLocaleService } from '../locale/index';
 
 interface Position {
   x: number;

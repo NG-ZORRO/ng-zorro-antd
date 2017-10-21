@@ -12,7 +12,7 @@ import { NzModalComponent } from './nz-modal.component';
 import { NzConfirmComponent } from './nz-confirm.component';
 import { ModalOptions, ConfirmOptions } from './nz-modal-options.provider';
 import { NzModalSubject } from './nz-modal-subject.service';
-import { NzLocaleService } from '../locale';
+import { NzLocaleService } from '../locale/index';
 
 export interface ConfigInterface {
   type?: string;

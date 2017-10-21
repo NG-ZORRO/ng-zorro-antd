@@ -14,7 +14,7 @@ import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzTimePickerInnerComponent } from '../time-picker/nz-timepicker-inner.component';
 import { DEFAULT_DATEPICKER_POSITIONS } from '../core/overlay/overlay-position-map';
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
-import { NzLocaleService } from '../locale';
+import { NzLocaleService } from '../locale/index';
 
 @Component({
   selector     : 'nz-datepicker',

@@ -13,7 +13,7 @@ import { NzTableDividerDirective } from './nz-table-divider.directive';
 import { NzTableSortComponent } from './nz-table-sort.component';
 import { NzSpinModule } from '../spin/nz-spin.module';
 import { NzPaginationModule } from '../pagination/nz-pagination.module';
-import { NzLocaleModule } from '../locale';
+import { NzLocaleModule } from '../locale/index';
 
 @NgModule({
   declarations: [ NzRowIndentComponent, NzRowExpandIconComponent, NzTableFilterComponent, NzTableComponent, NzThDirective, NzTdDirective, NzTheadDirective, NzTbodyDirective, NzTbodyTrDirective, NzTableDividerDirective, NzTableSortComponent ],

@@ -11,7 +11,7 @@ import {
 import { NzPopconfirmDirective } from './nz-popconfirm.directive';
 import { FadeAnimation } from '../core/animation/fade-animations';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
-import { NzLocaleService } from '../locale';
+import { NzLocaleService } from '../locale/index';
 
 @Component({
   selector     : 'nz-popconfirm',

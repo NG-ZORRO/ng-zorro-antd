@@ -5,7 +5,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { NzSelectComponent } from './nz-select.component';
 import { NzOptionComponent } from './nz-option.component';
 import { NzOptionPipe } from './nz-option.pipe';
-import { NzLocaleModule } from '../locale';
+import { NzLocaleModule } from '../locale/index';
 
 @NgModule({
   imports     : [ CommonModule, FormsModule, OverlayModule, NzLocaleModule ],
