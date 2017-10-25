@@ -2,6 +2,7 @@ import { Injectable, Inject, Provider, Optional, SkipSelf } from '@angular/core'
 import { LoggerService } from '../util/logger/index';
 import { NZ_LOCALE } from './nz-locale.token';
 import { NzLocale } from './nz-locale.class';
+import * as moment from 'moment';
 
 @Injectable()
 export class NzLocaleService {
@@ -25,7 +26,13 @@ export class NzLocaleService {
     return path;
   }
 
+  /**
+   * Set/Change current locale globally throughout the WHOLE application
+   * [NOTE] If called at runtime, rendered interface may not change along with the locale change (because this do not trigger another render schedule)
+   * @param locale The translating letters
+   */
   setLocale(locale: NzLocale) {
+    moment.locale(locale.locale);
     this._locale = locale;
   }
 

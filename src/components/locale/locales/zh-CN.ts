@@ -1,12 +1,7 @@
 import { NzLocale } from '../nz-locale.class';
-import * as moment from 'moment';
-
-const LOCALE = 'zh-CN';
-
-moment.locale(LOCALE);
 
 export const zhCN: NzLocale = {
-  locale: LOCALE,
+  locale: 'zh-CN',
 
   Pagination: {
     itemsPerPage: '%num% 条/页',

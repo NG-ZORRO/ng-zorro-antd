@@ -1,12 +1,7 @@
 import { NzLocale } from '../nz-locale.class';
-import * as moment from 'moment';
-
-const LOCALE = 'en-US';
-
-moment.locale(LOCALE);
 
 export const enUS: NzLocale = {
-  locale: LOCALE,
+  locale: 'en-US',
 
   Pagination: {
     itemsPerPage: '%num% / page',
