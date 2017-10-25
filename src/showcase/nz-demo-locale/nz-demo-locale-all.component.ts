@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as moment from 'moment';
 import { zhCN, enUS, NzModalService, NzLocaleService } from '../../../index.showcase';
 
 @Component({
@@ -38,7 +37,6 @@ export class NzDemoLocaleAllComponent implements OnInit {
   set locale(locale) {
     this._locale = locale;
     /* Switch locale manually (DEMO ONLY) */
-    moment.locale(locale.locale);
     this._localeService.setLocale(locale);
   }
 
