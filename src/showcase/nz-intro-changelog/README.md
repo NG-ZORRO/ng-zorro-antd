@@ -9,6 +9,27 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.6.0-rc.1
+`2017-10-28`
+
+### Build
+* 增加 `rollup` 中对部分 `rxjs` 操作符的支持
+* 修复 `ngc` 不支持 `import from 'FOLDER_NAME'` 的方式
+* 移除 `ci` 配置中多余的 `npm install`
+
+### Features
+* 新增国际化支持（通过 `Locale` 模块实现）
+
+### Docs
+* 增加 `国际化` 文案及使用介绍
+* 增加 `Locale` 模块的具体使用方法，以及语言切换的代码演示
+
+### BREAKING CHANGES
+* `Table` 修复 `nzShowExpand` 值的语义表示错误（原默认值将改变）
+* 依赖 `@angular/cdk` 版本升级至 `2.0.0-beta.12`（大部分模块的使用方式改变）
+* 依赖 `angular` 版本升级至 `^4.4.4`
+* 依赖 `@angular/cli` 版本升级至 `1.4.7`
+
 ## 0.5.5
 `2017-10-21`
 
