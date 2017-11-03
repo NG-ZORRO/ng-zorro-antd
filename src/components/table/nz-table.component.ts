@@ -36,15 +36,20 @@ import { NzThDirective } from './nz-th.directive';
             <div class="ant-table-content">
               <div [class.ant-table-scroll]="nzScroll">
                 <div class="ant-table-header" [ngStyle]="_headerBottomStyle" *ngIf="nzScroll">
-                  <table>
+                  <table [style.width.px]="nzScroll?.x">
                     <colgroup>
                       <col *ngFor="let th of ths" [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth">
                     </colgroup>
                     <ng-template [ngTemplateOutlet]="fixedHeader"></ng-template>
                   </table>
                 </div>
-                <div class="ant-table-body" [style.maxHeight.px]="nzScroll?.y" [style.overflowY]="nzScroll?.y?'scroll':''">
-                  <table>
+                <div
+                (scroll)="scrollTable($event)"
+                class="ant-table-body"
+                [style.maxHeight.px]="nzScroll?.y"
+                [style.overflowY]="nzScroll?.y?'scroll':''"
+                [style.overflowX]="nzScroll?.x?'scroll':''">
+                  <table [style.width.px]="nzScroll?.x">
                     <colgroup>
                       <col [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth" *ngFor="let th of ths">
                     </colgroup>
@@ -220,7 +225,7 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   ngOnInit() {
     const scrollbarWidth = measureScrollbar();
     this._headerBottomStyle = {
-      marginBottom : `-${scrollbarWidth}px`,
+      marginBottom : `0px`,
       paddingBottom: `0px`
     }
   }
@@ -231,6 +236,14 @@ export class NzTableComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     this._isInit = true;
+  }
+
+  scrollTable ($event) {
+    if (this.nzScroll != null &&  this.nzScroll.x != null) {
+      const body = <any>event.currentTarget;
+      const head = body.parentElement.getElementsByClassName('ant-table-header')[0];
+      head.scrollLeft = body.scrollLeft;
+    }
   }
 }
 
