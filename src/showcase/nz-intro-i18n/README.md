@@ -7,7 +7,7 @@
 `ng-zorro`提供了一个配置型token `NZ_LOCALE` 用于全局配置国际化文案。
 
 ```ts
-import { NZ_LOCALE, enUS } from '../../index.showcase';
+import { NZ_LOCALE, enUS } from 'ng-zorro-antd';
 
 @NgModule({
   ...
