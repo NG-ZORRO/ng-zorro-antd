@@ -31,6 +31,8 @@ import { NzScrollService } from '../core/scroll/nz-scroll.service';
 })
 export class NzAffixComponent implements OnInit, OnDestroy {
 
+  private didScroll = false;
+  private scrollTime: any = null;
   private scroll$: Subscription = null;
   private scrollWinInTarget$: Subscription = null;
   private target: Element = null;
@@ -92,6 +94,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   }
 
   private removeListen() {
+    if (this.scrollTime) clearTimeout(this.scrollTime);
     if (this.scroll$) this.scroll$.unsubscribe();
     if (this.scrollWinInTarget$) this.scrollWinInTarget$.unsubscribe();
   }
@@ -99,12 +102,14 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   private registerScrollEvent() {
     this.removeListen();
     this.reCalculate().process();
-    this.scroll$ = (RxChain.from(fromEvent(this.getTarget(), 'scroll')) as RxChain<any>)
-      .call(throttleTime, 50)
-      .call(distinctUntilChanged)
-      .subscribe(e => {
+    this.scrollTime = setInterval(() => {
+      if (this.didScroll) {
+        this.didScroll = false;
         this.process();
-      });
+      }
+    }, 100);
+    this.scroll$ = (RxChain.from(fromEvent(this.getTarget(), 'scroll')) as RxChain<any>)
+      .subscribe(() => this.didScroll = true);
 
     if (this.getTarget() !== window) {
       // 当 window 滚动位发生变动时，需要重新计算滚动容器
