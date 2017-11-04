@@ -22,7 +22,7 @@ import { NzMenuComponent } from '../menu/nz-menu.component';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 import { POSITION_MAP, DEFAULT_DROPDOWN_POSITIONS } from '../core/overlay/overlay-position-map';
-import { ConnectionPositionPair } from '../core/overlay/index';
+import { ConnectionPositionPair } from '@angular/cdk/overlay';
 
 export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 
@@ -38,14 +38,15 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
       <ng-content></ng-content>
     </div>
     <ng-template
-      nz-connected-overlay
-      [hasBackdrop]="_hasBackdrop"
-      [positions]="_positions"
-      [origin]="_nzOrigin"
+      cdkConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
+      [cdkConnectedOverlayPositions]="_positions"
+      [cdkConnectedOverlayOrigin]="_nzOrigin"
       (backdropClick)="_hide()"
-      [minWidth]="_triggerWidth"
+      [cdkConnectedOverlayMinWidth]="_triggerWidth"
       (positionChange)="_onPositionChange($event)"
-      [open]="nzVisible">
+      [cdkConnectedOverlayOpen]="nzVisible"
+    >
       <div
         class="{{'ant-dropdown ant-dropdown-placement-'+nzPlacement}}"
         [@dropDownAnimation]="_dropDownPosition"

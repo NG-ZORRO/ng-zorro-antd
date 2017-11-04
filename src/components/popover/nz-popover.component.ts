@@ -16,14 +16,14 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
   template     : `
     <ng-content></ng-content>
     <ng-template
-      nz-connected-overlay
-      [origin]="nzOrigin"
-      [hasBackdrop]="_hasBackdrop"
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOrigin]="nzOrigin"
+      [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
       (backdropClick)="hide()"
       (detach)="hide()"
       (positionChange)="onPositionChange($event)"
-      [positions]="_positions"
-      [open]="visible$ | async">
+      [cdkConnectedOverlayPositions]="_positions"
+      [cdkConnectedOverlayOpen]="visible$ | async">
       <div class="ant-popover" [ngClass]="_classMap" [ngStyle]="nzOverlayStyle" [@fadeAnimation]="''+(visible$ | async)"
         (@fadeAnimation.done)="_afterVisibilityAnimation($event)">
         <div class="ant-popover-content">

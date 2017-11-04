@@ -1,5 +1,6 @@
 import { Injectable, ComponentRef, Type } from '@angular/core';
-import { FloaterService } from '../core/floater/index';
+import { Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
 import { NzMessageConfig } from './nz-message-config';
 import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 import { NzMessageContainerComponent } from './nz-message-container.component';
@@ -8,8 +9,8 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
   protected _counter = 0; // Id counter for messages
   protected _container: ContainerClass;
 
-  constructor(floaterService: FloaterService, containerClass: Type<ContainerClass>, private _idPrefix: string = '') {
-    this._container = floaterService.persistAttachComponent(containerClass);
+  constructor(overlay: Overlay, containerClass: Type<ContainerClass>, private _idPrefix: string = '') {
+    this._container = overlay.create().attach(new ComponentPortal(containerClass)).instance;
   }
 
   remove(messageId?: string): void {
@@ -39,8 +40,8 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
 @Injectable()
 export class NzMessageService extends NzMessageBaseService<NzMessageContainerComponent<NzMessageConfig>, NzMessageData> {
 
-  constructor(floaterService: FloaterService) {
-    super(floaterService, NzMessageContainerComponent, 'message-');
+  constructor(overlay: Overlay) {
+    super(overlay, NzMessageContainerComponent, 'message-');
   }
 
   // Shortcut methods

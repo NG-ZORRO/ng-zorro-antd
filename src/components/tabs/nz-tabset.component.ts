@@ -49,7 +49,7 @@ export type NzTabType = 'line' | 'card';
         [nzHideBar]="nzHide"
         [selectedIndex]="nzSelectedIndex">
         <ng-template #tabBarExtraContent>
-          <ng-template [ngTemplateOutlet]="nzTabBarExtraContent"></ng-template>
+          <ng-template [ngTemplateOutlet]="nzTabBarExtraTemplate || nzTabBarExtraContent"></ng-template>
         </ng-template>
         <div
           nz-tab-label
@@ -90,6 +90,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
   _selectedIndex: number | null = null;
   _isViewInit = false;
   _tabs: Array<NzTabComponent> = [];
+  @Input() nzTabBarExtraTemplate: TemplateRef<any>;
   @ContentChild('nzTabBarExtraContent') nzTabBarExtraContent: TemplateRef<any>;
   @ViewChild('tabNav') _tabNav: NzTabsNavComponent;
   @ViewChild('tabContent') _tabContent: ElementRef;

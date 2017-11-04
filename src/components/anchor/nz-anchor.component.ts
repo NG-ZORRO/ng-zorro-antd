@@ -12,14 +12,14 @@ import {
   Inject
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-import { RxChain } from '@angular/cdk';
+import { RxChain } from '@angular/cdk/rxjs';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { throttleTime } from 'rxjs/operator/throttleTime';
 import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
 import { Subscription } from 'rxjs/Subscription';
 
-import { NzScrollService } from "../core/scroll/nz-scroll.service";
-import { NzAnchorLinkComponent } from "./nz-anchor-link.component";
+import { NzScrollService } from '../core/scroll/nz-scroll.service';
+import { NzAnchorLinkComponent } from './nz-anchor-link.component';
 
 type Section = {
   comp: NzAnchorLinkComponent,

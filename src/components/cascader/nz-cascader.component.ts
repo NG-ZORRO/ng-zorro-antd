@@ -27,11 +27,11 @@ import {
   UP_ARROW,
   DOWN_ARROW,
   ENTER,
-} from '@angular/cdk';
+} from '@angular/cdk/keycodes';
 const ESC = 27;
 
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
-import { ConnectionPositionPair } from '../core/overlay/index';
+import { ConnectionPositionPair } from '@angular/cdk/overlay';
 
 function noop(): void { }
 
@@ -85,8 +85,8 @@ export interface CascaderOption {
   ],
   template       : `
     <div
-      nz-overlay-origin
-      #origin="nzOverlayOrigin"
+      cdkOverlayOrigin
+      #origin="cdkOverlayOrigin"
       #trigger
     >
       <div *ngIf="nzShowInput">
@@ -122,13 +122,13 @@ export interface CascaderOption {
       <ng-content></ng-content>
     </div>
     <ng-template
-      nz-connected-overlay
-      hasBackdrop
-      [origin]="origin"
+      cdkConnectedOverlay
+      cdkConnectedOverlayHasBackdrop
+      [cdkConnectedOverlayOrigin]="origin"
       (backdropClick)="_closeMenu()"
       (detach)="_closeMenu()"
       (positionChange)="onPositionChange($event)"
-      [open]="_popupVisible"
+      [cdkConnectedOverlayOpen]="_popupVisible"
     >
       <div #menu
         [ngClass]="_menuCls"

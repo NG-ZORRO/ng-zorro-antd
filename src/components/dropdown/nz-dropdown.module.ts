@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { OverlayModule } from '../core/overlay/index';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { NzButtonModule } from '../button/nz-button.module';
 
 import { NzDropDownComponent } from './nz-dropdown.component';

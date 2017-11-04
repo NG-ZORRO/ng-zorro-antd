@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NzTableComponent } from './nz-table.component';
 import { NzThDirective } from './nz-th.directive';
 import { NzTdDirective } from './nz-td.directive';
@@ -11,14 +12,13 @@ import { NzTbodyTrDirective } from './nz-tbody-tr.directive';
 import { NzTableDividerDirective } from './nz-table-divider.directive';
 import { NzTableSortComponent } from './nz-table-sort.component';
 import { NzSpinModule } from '../spin/nz-spin.module';
-
 import { NzPaginationModule } from '../pagination/nz-pagination.module';
-import { CommonModule } from '@angular/common';
+import { NzLocaleModule } from '../locale/index';
 
 @NgModule({
   declarations: [ NzRowIndentComponent, NzRowExpandIconComponent, NzTableFilterComponent, NzTableComponent, NzThDirective, NzTdDirective, NzTheadDirective, NzTbodyDirective, NzTbodyTrDirective, NzTableDividerDirective, NzTableSortComponent ],
   exports     : [ NzRowIndentComponent, NzRowExpandIconComponent, NzTableFilterComponent, NzTableComponent, NzThDirective, NzTdDirective, NzTheadDirective, NzTbodyDirective, NzTbodyTrDirective, NzTableDividerDirective, NzTableSortComponent ],
-  imports     : [ CommonModule, NzPaginationModule, NzSpinModule ]
+  imports     : [ CommonModule, NzPaginationModule, NzSpinModule, NzLocaleModule ]
 })
 
 export class NzTableModule {

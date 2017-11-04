@@ -40,15 +40,16 @@ import { NzDropDownComponent } from './nz-dropdown.component';
         <i class="anticon anticon-down"></i></button>
     </div>
     <ng-template
-      nz-connected-overlay
-      [hasBackdrop]="_hasBackdrop"
-      [positions]="_positions"
-      [origin]="_nzOrigin"
+      cdkConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
+      [cdkConnectedOverlayPositions]="_positions"
+      [cdkConnectedOverlayOrigin]="_nzOrigin"
       (backdropClick)="_hide()"
       (detach)="_hide()"
-      [minWidth]="_triggerWidth"
+      [cdkConnectedOverlayMinWidth]="_triggerWidth"
       (positionChange)="_onPositionChange($event)"
-      [open]="nzVisible">
+      [cdkConnectedOverlayOpen]="nzVisible"
+    >
       <div
         class="{{'ant-dropdown ant-dropdown-placement-'+nzPlacement}}"
         [@dropDownAnimation]="_dropDownPosition"
