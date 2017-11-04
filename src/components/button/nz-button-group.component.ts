@@ -16,6 +16,10 @@ export class NzButtonGroupComponent implements AfterContentInit {
   _size: NzButtonGroupSize;
   _prefixCls = 'ant-btn-group';
   _sizeMap = { large: 'lg', small: 'sm' };
+  _classMap = {
+    [this._prefixCls]                                     : true,
+    [`${this._prefixCls}-${this._sizeMap[ this.nzSize ]}`]: this._sizeMap[ this.nzSize ]
+  };
   @ViewChild('groupWrapper') _groupWrapper: ElementRef;
 
   @Input()
@@ -25,14 +29,12 @@ export class NzButtonGroupComponent implements AfterContentInit {
 
   set nzSize(value: NzButtonGroupSize) {
     this._size = value;
-  }
-
-  get _classMap() {
-    return {
+    this._classMap = {
       [this._prefixCls]                                     : true,
       [`${this._prefixCls}-${this._sizeMap[ this.nzSize ]}`]: this._sizeMap[ this.nzSize ]
-    }
-  };
+    };
+  }
+
 
   constructor() {
   }

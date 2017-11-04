@@ -6,7 +6,7 @@ import {
   ElementRef,
   Renderer2,
   HostListener,
-  forwardRef
+  forwardRef, OnChanges
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -35,7 +35,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     './style/index.less'
   ]
 })
-export class NzCheckboxComponent implements OnInit, ControlValueAccessor {
+export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChanges {
   _el: HTMLElement;
   _prefixCls = 'ant-checkbox';
   _innerPrefixCls = `${this._prefixCls}-inner`;
@@ -47,6 +47,13 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor {
   onTouched: any = Function.prototype;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
+  _classMap = {
+    [this._prefixCls]                   : true,
+    [`${this._prefixCls}-checked`]      : this._checked && (!this.nzIndeterminate),
+    [`${this._prefixCls}-focused`]      : this._focused,
+    [`${this._prefixCls}-disabled`]     : this.nzDisabled,
+    [`${this._prefixCls}-indeterminate`]: this.nzIndeterminate,
+  };
 
   @Input()
   get nzChecked(): boolean {
@@ -67,6 +74,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor {
     }
     this.onChange(value);
     this._checked = value;
+    this.updateClassMap();
   }
 
   nzFocus() {
@@ -77,22 +85,13 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor {
     this._focused = false;
   }
 
-  get _classMap() {
-    return {
-      [this._prefixCls]                   : true,
-      [`${this._prefixCls}-checked`]      : this._checked && (!this.nzIndeterminate),
-      [`${this._prefixCls}-focused`]      : this._focused,
-      [`${this._prefixCls}-disabled`]     : this.nzDisabled,
-      [`${this._prefixCls}-indeterminate`]: this.nzIndeterminate,
-    }
-  }
-
   constructor(private _elementRef: ElementRef, private _render: Renderer2) {
     this._el = this._elementRef.nativeElement;
   }
 
   writeValue(value: any): void {
     this._checked = value;
+    this.updateClassMap();
   }
 
   registerOnChange(fn: (_: any) => {}): void {
@@ -107,7 +106,22 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor {
     this.nzDisabled = isDisabled;
   }
 
+  updateClassMap() {
+    this._classMap = {
+      [this._prefixCls]                   : true,
+      [`${this._prefixCls}-checked`]      : this._checked && (!this.nzIndeterminate),
+      [`${this._prefixCls}-focused`]      : this._focused,
+      [`${this._prefixCls}-disabled`]     : this.nzDisabled,
+      [`${this._prefixCls}-indeterminate`]: this.nzIndeterminate,
+    }
+  }
+
   ngOnInit() {
     this._render.addClass(this._el, `${this._prefixCls}-wrapper`);
+    this.updateClassMap();
+  }
+
+  ngOnChanges() {
+    this.updateClassMap();
   }
 }
