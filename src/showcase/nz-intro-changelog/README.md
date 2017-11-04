@@ -9,6 +9,26 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.6.0-rc.3
+`2017-11-04`
+
+### Bug Fixes
+* 修复 `Tabs` 组件中重复渲染 `nzTabBarExtraContent` 的问题 [#489](https://github.com/NG-ZORRO/ng-zorro-antd/pull/489) [@Hsuan Lee](https://github.com/HsuanXyz)
+* 修复 `Pagination` 组件中 `nzPageIndexClickChange` 被错误触发的问题 [#486](https://github.com/NG-ZORRO/ng-zorro-antd/pull/486) [@Hsuan Lee](https://github.com/HsuanXyz)
+* 修复 `Affix` 锚点滚动时的问题 [#490](https://github.com/NG-ZORRO/ng-zorro-antd/pull/490) [@卡色](https://github.com/cipchk)
+
+### Features
+* `DatePicker` 在 `month` 模式下支持 `nzDisabledDate` 属性 [#451](https://github.com/NG-ZORRO/ng-zorro-antd/pull/451) [@Hsuan Lee](https://github.com/HsuanXyz)
+
+### Build
+* 修复 `rollup` 中的配置 [#509](https://github.com/NG-ZORRO/ng-zorro-antd/pull/509)
+* 同步集成测试中的依赖版本 [#469](https://github.com/NG-ZORRO/ng-zorro-antd/pull/469) [@Trotyl Yu](https://github.com/trotyl)
+
+### Performance
+* 减少部分组件的不必要的样式更新 [#528](https://github.com/NG-ZORRO/ng-zorro-antd/pull/528)
+* 统一所有组件的request animation polyfill
+
+
 ## 0.6.0-rc.2
 `2017-10-28`
 

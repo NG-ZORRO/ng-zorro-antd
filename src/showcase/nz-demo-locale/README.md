@@ -5,7 +5,7 @@
 `ng-zorro`中采用全局配置方式来设置当前所使用的语言（默认将采用中文`zh-CN`），只需要在您应用的根模块（如:`AppModule`）中按如下配置即可 __全局生效__。
 
 ```typescript
-import { NZ_LOCALE, enUS } from '../../index.showcase';
+import { NZ_LOCALE, enUS } from 'ng-zorro-antd';
 
 @NgModule({
   ...
