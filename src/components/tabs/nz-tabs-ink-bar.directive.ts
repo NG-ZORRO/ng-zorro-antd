@@ -1,4 +1,5 @@
 import { Directive, Renderer2, ElementRef, NgZone, HostBinding, Input } from '@angular/core';
+import { reqAnimFrame } from '../core/polyfill/request-animation';
 
 export type NzTabPositionMode = 'horizontal' | 'vertical';
 
@@ -20,7 +21,7 @@ export class NzTabsInkBarDirective {
     this.show();
 
     this._ngZone.runOutsideAngular(() => {
-      requestAnimationFrame(() => {
+      reqAnimFrame(() => {
         /** when horizontal remove height style and add transfrom left **/
         if (this.nzPositionMode === 'horizontal') {
           this._renderer.removeStyle(this._elementRef.nativeElement, 'height');
