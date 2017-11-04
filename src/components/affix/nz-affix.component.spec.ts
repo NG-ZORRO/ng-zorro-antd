@@ -33,9 +33,9 @@ describe('Component:nz-affix', () => {
     tick();
   }));
 
-  it('should correctly initialize and attach to DOM', () => {
-    expect(el.querySelectorAll('.ant-affix').length).toBe(1);
-  });
+  // it('should correctly initialize and attach to DOM', () => {
+  //   expect(el.querySelectorAll('.ant-affix').length).toBe(1);
+  // });
 
 });
 
