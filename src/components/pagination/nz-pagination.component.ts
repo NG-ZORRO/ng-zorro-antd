@@ -254,7 +254,8 @@ export class NzPaginationComponent {
   _buildIndexes() {
     this._lastIndex = Math.ceil(this._total / this._pageSize);
     if (this._current > this._lastIndex) {
-      this._jumpPage(this._lastIndex);
+      this.nzPageIndex = this._lastIndex;
+      this.nzPageIndexChange.emit(this.nzPageIndex);
     }
     const tmpPages = [];
     if (this._lastIndex <= 9) {
