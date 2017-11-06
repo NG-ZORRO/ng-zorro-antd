@@ -13,6 +13,13 @@
 
 [README in English](README.md)
 
+## 文件
+关于展示案例和 API 的说明都在官方[网站]上。(https://ng.ant.design).
+
+旧版本文件:
+- [0.6.x(当前）](https://ng.ant.design)
+- [0.5.x](https://ng.ant.design/version/0.5.x/)
+
 ## 特性
 
 - 提炼自企业级中后台产品的交互语言和视觉风格，定期与Ant Design React版本保持更新一致。
