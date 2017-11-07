@@ -5,6 +5,8 @@ import { Component, OnInit } from '@angular/core';
     <nz-tooltip [nzTitle]="'prompt text'">
       <span nz-tooltip>Tooltip will show when mouse enter.</span>
     </nz-tooltip>
+    <br>
+    <a nz-tooltip="Most simple prompt text" href="#">Most simple way to trigger a tooltip!</a>
   `,
   styles  : []
 })
