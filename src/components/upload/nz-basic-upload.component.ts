@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UidService } from './uid/uid.service';
 import defaultRequest from './request';
 import { attrAccept } from './utils';
@@ -8,8 +8,8 @@ import { attrAccept } from './utils';
     providers: [UidService],
     templateUrl: './nz-basic-upload.component.html',
     styleUrls: [
-      './style/index.less',
-      './style/patch.less'
+        './style/index.less',
+        './style/patch.less'
     ]
 })
 export class NzBasicUploadComponent implements OnInit {

@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'nz-upload-list-item-icon',
@@ -6,7 +6,8 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
   styleUrls: [
     './style/index.less',
     './style/patch.less'
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None,
 })
 export class NzUploadListItemIconComponent implements OnInit {
 

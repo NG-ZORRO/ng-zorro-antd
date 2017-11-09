@@ -1,22 +1,19 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 
 @Component({
     selector: 'nz-upload-list',
     templateUrl: './nz-upload-list.component.html',
-    styleUrls: [
-      './style/index.less',
-      './style/patch.less'
-    ]
+    encapsulation: ViewEncapsulation.None,
+
 })
 export class NzUploadListComponent implements OnInit {
 
-    _classMap;
     _prefixCls = 'ant-upload';
     _locale = {
-      uploading: '文件上传中',
-      removeFile: '删除文件',
-      uploadError: '上传错误',
-      previewFile: '预览文件',
+        uploading: '文件上传中',
+        removeFile: '删除文件',
+        uploadError: '上传错误',
+        previewFile: '预览文件',
     };
 
     @Input() fileList = [];
@@ -34,12 +31,6 @@ export class NzUploadListComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        this.setClassMap();
-    }
-
-    setClassMap(): void {
-        this._classMap = {
-        };
     }
 
     trackByFiles(index: number, file: any): any { return file.uid; }
