@@ -13,7 +13,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { merge } from 'rxjs/observable/merge';
-import { debounceTime } from 'rxjs/operator/debounceTime';
+import { debounceTime } from 'rxjs/operators/debounceTime';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
@@ -79,7 +79,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzClickHide = true;
   @Input() nzVisible = false;
-  @Output() _visibleChange = new Subject();
+  @Output() _visibleChange = new Subject<boolean>();
   @Output() nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
 
   @Input()
@@ -148,7 +148,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   _startSubscribe(observable$: Observable<boolean>) {
-    this._subscription = debounceTime.call(observable$, 300)
+    this._subscription = observable$.pipe(debounceTime(300))
       .subscribe(this._onVisibleChange)
   }
 

@@ -1,7 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-const { AotPlugin } = require('@ngtools/webpack')
+const { AngularCompilerPlugin } = require('@ngtools/webpack')
 const { PurifyPlugin } = require('@angular-devkit/build-optimizer')
 
 function packageSort(packages) {
@@ -49,7 +49,7 @@ module.exports = {
     extensions: ['.js', '.ts'],
   },
   plugins: [
-    new AotPlugin({
+    new AngularCompilerPlugin({
       tsConfigPath: path.resolve(__dirname, 'src/tsconfig.app.json'),
       entryModule: path.resolve(__dirname, 'src/app/app.module#AppModule'),
     }),

@@ -21,10 +21,7 @@ import { NzCollapseComponent } from './nz-collapse.component';
 
 
 export class NzCollapsesetComponent {
-  /**
-   * all child collapse
-   * @type {Array}
-   */
+  // all child collapse
   panels: Array<NzCollapseComponent> = [];
 
   @Input() nzAccordion = false;

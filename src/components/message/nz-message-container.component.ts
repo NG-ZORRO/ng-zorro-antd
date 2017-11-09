@@ -14,13 +14,13 @@ import { NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG, NzMessageConfig } from '.
     './style/index.less'
   ]
 })
-export class NzMessageContainerComponent<Config extends NzMessageConfig> implements OnInit {
+export class NzMessageContainerComponent implements OnInit {
   messages: NzMessageDataFilled[] = [];
-  config: Config;
+  config: NzMessageConfig;
 
-  constructor(@Optional() @Inject(NZ_MESSAGE_DEFAULT_CONFIG) defaultConfig: Config,
-              @Optional() @Inject(NZ_MESSAGE_CONFIG) config: Config) {
-    this.config = Object.assign({}, defaultConfig, config) as Config;
+  constructor(@Optional() @Inject(NZ_MESSAGE_DEFAULT_CONFIG) defaultConfig: NzMessageConfig,
+              @Optional() @Inject(NZ_MESSAGE_CONFIG) config: NzMessageConfig) {
+    this.config = Object.assign({}, defaultConfig, config) as NzMessageConfig;
   }
 
   ngOnInit() { }

@@ -15,7 +15,7 @@ function easeInOutCubic(t: number, b: number, c: number, d: number) {
 @Injectable()
 export class NzScrollService {
 
-  constructor(@Inject(DOCUMENT) private doc: Document) {
+  constructor(@Inject(DOCUMENT) private doc: any) {
   }
 
   /** 设置 `el` 滚动条位置 */
@@ -65,10 +65,10 @@ export class NzScrollService {
   /**
    * 使用动画形式将 `el` 滚动至某位置
    *
-   * @param {(Element | Window)} containerEl 容器，默认 `window`
-   * @param {number} [targetTopValue=0] 滚动至目标 `top` 值，默认：0，相当于顶部
-   * @param {Function} [easing] 动作算法，默认：`easeInOutCubic`
-   * @param {Function} [callback] 动画结束后回调
+   * @param containerEl 容器，默认 `window`
+   * @param targetTopValue 滚动至目标 `top` 值，默认：0，相当于顶部
+   * @param easing 动作算法，默认：`easeInOutCubic`
+   * @param callback 动画结束后回调
    */
   scrollTo(containerEl: Element | Window, targetTopValue: number = 0, easing?: Function, callback?: Function) {
     if (!containerEl) containerEl = window;
