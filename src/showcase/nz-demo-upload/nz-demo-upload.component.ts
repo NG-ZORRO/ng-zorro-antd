@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  selector     : 'nz-demo-upload',
-  templateUrl  : './nz-demo-upload.html',
+  selector: 'nz-demo-upload',
+  templateUrl: './nz-demo-upload.html',
   encapsulation: ViewEncapsulation.None,
-  styleUrls    : []
+  styleUrls: ['./nz-demo-upload.less']
 })
 export class NzDemoUploadComponent implements OnInit {
   NzDemoUploadBasicCode = require('!!raw-loader!./nz-demo-upload-basic.component');

@@ -1,7 +1,7 @@
-import {Component, OnInit, Input, ElementRef, ViewChild} from '@angular/core';
-import {NzBasicUploadComponent} from './nz-basic-upload.component';
-import {NzUploadListComponent} from './nz-upload-list.component';
-import {UidService} from './uid/uid.service';
+import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { NzBasicUploadComponent } from './nz-basic-upload.component';
+import { NzUploadListComponent } from './nz-upload-list.component';
+import { UidService } from './uid/uid.service';
 
 @Component({
   selector: 'nz-upload',
@@ -54,6 +54,7 @@ export class NzUploadComponent implements OnInit {
 
   setClassMap(): void {
     this._classMap = {
+      ['ant-upload']: true,
       [`${this._prefixCls}-select`]: true,
       [`${this._prefixCls}-select-${this.listType}`]: true,
       [`${this._prefixCls}-disabled`]: this.disabled,
@@ -81,11 +82,11 @@ export class NzUploadComponent implements OnInit {
     const fileList = this.fileList;
 
     if (this.onChange) {
-      this.onChange({file: this.processedRawFile(file), fileList});
+      this.onChange({ file: this.processedRawFile(file), fileList });
     }
   }
 
-  handleProgress({event, file}) {
+  handleProgress({ event, file }) {
     const percent = Math.round(100 * event.loaded / event.total);
     this.setFileList(file, 'status', 'uploading');
     this.setFileList(file, 'percent', percent);
@@ -93,9 +94,8 @@ export class NzUploadComponent implements OnInit {
     const fileList = this.fileList;
 
     if (this.onProgress) {
-      this.onProgress({event, file, fileList});
+      this.onProgress({ event, file, fileList });
     }
-    console.log(fileList);
 
     if (this.onChange) {
       this.onChange({
@@ -107,7 +107,7 @@ export class NzUploadComponent implements OnInit {
 
   }
 
-  handleSuccess({ret, file, xhr}) {
+  handleSuccess({ ret, file, xhr }) {
     this.setFileList(file, 'status', 'done');
     if (this.listType === 'picture' || this.listType === 'picture-card') {
       this.previewFile(file, (previewDataUrl) => {
@@ -148,7 +148,7 @@ export class NzUploadComponent implements OnInit {
     }
   }
 
-  handleError({err, ret, file}) {
+  handleError({ err, ret, file }) {
 
     // removed
     if (!file) {

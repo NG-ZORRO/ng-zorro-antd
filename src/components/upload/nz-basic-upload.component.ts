@@ -10,7 +10,8 @@ import { attrAccept } from './utils';
     styleUrls: [
         './style/index.less',
         './style/patch.less'
-    ]
+    ],
+    encapsulation: ViewEncapsulation.None
 })
 export class NzBasicUploadComponent implements OnInit {
 
@@ -61,7 +62,6 @@ export class NzBasicUploadComponent implements OnInit {
 
     uploadFiles(files: FileList) {
         const postFiles = Array.prototype.slice.call(files);
-        console.log('Start Upload Files');
 
         postFiles.forEach((file) => {
             file.uid = this.uidService.getUid();
@@ -70,8 +70,6 @@ export class NzBasicUploadComponent implements OnInit {
                 this.upload(file, postFiles);
             }
         });
-
-        console.log('End Upload Files');
     }
 
     upload(file, fileList) {

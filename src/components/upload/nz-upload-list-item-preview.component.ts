@@ -12,6 +12,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } fro
 export class NzUploadListItemPreviewComponent implements OnInit {
   _prefixCls = 'ant-upload';
   @Input() file;
+  @Input() listType = 'text';
 
   @Output() onPreview = new EventEmitter<any>();
 

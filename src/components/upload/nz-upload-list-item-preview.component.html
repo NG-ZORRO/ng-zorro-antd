@@ -1,5 +1,5 @@
 <div
-*ngIf="file.url; else urlElseBlock"
+*ngIf="file.url&&listType=='text'; else urlElseBlock"
 >
 <a
     [href]="file.url"

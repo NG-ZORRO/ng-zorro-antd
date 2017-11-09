@@ -36,15 +36,12 @@ export class NzUploadListComponent implements OnInit {
     trackByFiles(index: number, file: any): any { return file.uid; }
 
     handlePreview = (file) => {
-        console.log('handlePreview');
-        console.log(file);
         if (this.onPreview) {
             return this.onPreview(file);
         }
     }
 
     handleClose = (file) => {
-        console.log('handleClose');
         this.onRemove.emit(file);
     }
 

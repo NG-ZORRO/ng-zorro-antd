@@ -43,7 +43,7 @@
         #listTypeElseBlock
         *ngIf="showRemoveIcon"
         class="anticon anticon-cross"
-        title="_locale.removeFile"
+        [title]="_locale.removeFile"
         (click)="handleClose(file)"
     ></i>
 
