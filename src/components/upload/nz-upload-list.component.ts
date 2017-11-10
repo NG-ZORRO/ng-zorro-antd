@@ -4,6 +4,9 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } fro
     selector: 'nz-upload-list',
     templateUrl: './nz-upload-list.component.html',
     encapsulation: ViewEncapsulation.None,
+    styleUrls: [
+        './style/index.less'
+      ],
 
 })
 export class NzUploadListComponent implements OnInit {

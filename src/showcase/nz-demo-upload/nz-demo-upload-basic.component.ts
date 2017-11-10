@@ -5,21 +5,17 @@ import { Component, OnInit } from '@angular/core';
   template: `
         <nz-upload
           [nzAction]="action"
-          [nzHeaders]="headers"
           [nzOnChange]="onChange"
         >
-          <button nz-button [nzType]="'primary'">
-            <span>Click to Upload</span>
+          <button nz-button [nzType]="'default'">
+            <i class="anticon anticon-upload"></i><span>Click to Upload</span>
           </button>
         </nz-upload>
     `,
   styles  : [],
 })
 export class NzDemoUploadBasicComponent implements OnInit {
-  action = 'http://localhost:3000/posts';
-  headers = {
-    authorization: 'authorization-text',
-  };
+  action = '//jsonplaceholder.typicode.com/posts/';
   constructor() {
   }
 

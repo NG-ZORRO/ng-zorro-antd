@@ -26,7 +26,7 @@ import {Component, OnInit} from '@angular/core';
   styles: []
 })
 export class NzDemoUploadPictureswallComponent implements OnInit {
-  action = 'http://localhost:3000/posts';
+  action = '//jsonplaceholder.typicode.com/posts/';
   listType = 'picture-card';
   previewVisible = false;
   previewImage = '';

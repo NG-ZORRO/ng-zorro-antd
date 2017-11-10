@@ -4,8 +4,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } fro
   selector: 'nz-upload-list-item-preview',
   templateUrl: './nz-upload-list-item-preview.component.html',
   styleUrls: [
-    './style/index.less',
-    './style/patch.less'
+    './style/index.less'
   ],
   encapsulation: ViewEncapsulation.None,
 })

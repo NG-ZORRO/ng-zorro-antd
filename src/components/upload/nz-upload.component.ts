@@ -8,8 +8,7 @@ import { UidService } from './uid/uid.service';
   providers: [UidService],
   templateUrl: './nz-upload.component.html',
   styleUrls: [
-    './style/index.less',
-    './style/patch.less'
+    './style/index.less'
   ],
   encapsulation: ViewEncapsulation.None,
 })

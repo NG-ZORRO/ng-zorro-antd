@@ -8,8 +8,7 @@ import { attrAccept } from './utils';
     providers: [UidService],
     templateUrl: './nz-basic-upload.component.html',
     styleUrls: [
-        './style/index.less',
-        './style/patch.less'
+        './style/index.less'
     ],
     encapsulation: ViewEncapsulation.None
 })
