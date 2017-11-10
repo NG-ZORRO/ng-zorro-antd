@@ -5,9 +5,9 @@ import {Component, OnInit} from '@angular/core';
   template: `
      <div class="clearfix">
         <nz-upload
-          [action]="action"
-          [fileList]="fileList"
-          [listType]="listType"
+          [nzAction]="action"
+          [nzFileList]="fileList"
+          [nzListType]="listType"
           [onPreview]="handlePreview"
           [onChange]="handleChange"
         >

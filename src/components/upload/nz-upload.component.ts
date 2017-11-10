@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NzBasicUploadComponent } from './nz-basic-upload.component';
 import { NzUploadListComponent } from './nz-upload-list.component';
 import { UidService } from './uid/uid.service';
@@ -10,26 +10,27 @@ import { UidService } from './uid/uid.service';
   styleUrls: [
     './style/index.less',
     './style/patch.less'
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None,
 })
 export class NzUploadComponent implements OnInit {
 
   _classMap;
   _prefixCls = 'ant-upload';
 
-  @Input() action: string;
-  @Input() accept: string;
-  @Input() autoUpload = true;
-  @Input() customRequest: any = null;
-  @Input() data: any;
-  @Input() disabled = false;
-  @Input() fileList = [];
-  @Input() headers: string | { [name: string]: string | string[] };
-  @Input() listType = 'text';
-  @Input() multiple = false;
-  @Input() showUploadList = true;
-  @Input() type = 'select';
-  @Input() withCredentials: boolean;
+  @Input() nzAction: string;
+  @Input() nzAccept: string;
+  @Input() nzAutoUpload = true;
+  @Input() nzCustomRequest: any = null;
+  @Input() nzData: any;
+  @Input() nzDisabled = false;
+  @Input() nzFileList = [];
+  @Input() nzHeaders: string | { [name: string]: string | string[] };
+  @Input() nzListType = 'text';
+  @Input() nzMultiple = false;
+  @Input() nzShowUploadList = true;
+  @Input() nzType = 'select';
+  @Input() nzWithCredentials: boolean;
 
   @Input() onChange: Function;
   @Input() onError: Function;
@@ -42,7 +43,7 @@ export class NzUploadComponent implements OnInit {
   @ViewChild(NzBasicUploadComponent) basicUpload: NzBasicUploadComponent;
 
   constructor(private elementRef: ElementRef, private uidService: UidService) {
-    this.fileList = this.fileList.map(file => {
+    this.nzFileList = this.nzFileList.map(file => {
       file.uid = uidService.getUid;
       return this.processedRawFile(file);
     });
@@ -56,8 +57,8 @@ export class NzUploadComponent implements OnInit {
     this._classMap = {
       ['ant-upload']: true,
       [`${this._prefixCls}-select`]: true,
-      [`${this._prefixCls}-select-${this.listType}`]: true,
-      [`${this._prefixCls}-disabled`]: this.disabled,
+      [`${this._prefixCls}-select-${this.nzListType}`]: true,
+      [`${this._prefixCls}-disabled`]: this.nzDisabled,
     };
   }
 
@@ -74,12 +75,12 @@ export class NzUploadComponent implements OnInit {
   }
 
   private setFileList(file, key, value) {
-    this.fileList[this.fileList.indexOf(file)][key] = value;
+    this.nzFileList[this.nzFileList.indexOf(file)][key] = value;
   }
 
   handleStart(file) {
-    this.fileList.push(this.processedRawFile(file));
-    const fileList = this.fileList;
+    this.nzFileList.push(this.processedRawFile(file));
+    const fileList = this.nzFileList;
 
     if (this.onChange) {
       this.onChange({ file: this.processedRawFile(file), fileList });
@@ -91,7 +92,7 @@ export class NzUploadComponent implements OnInit {
     this.setFileList(file, 'status', 'uploading');
     this.setFileList(file, 'percent', percent);
 
-    const fileList = this.fileList;
+    const fileList = this.nzFileList;
 
     if (this.onProgress) {
       this.onProgress({ event, file, fileList });
@@ -109,13 +110,13 @@ export class NzUploadComponent implements OnInit {
 
   handleSuccess({ ret, file, xhr }) {
     this.setFileList(file, 'status', 'done');
-    if (this.listType === 'picture' || this.listType === 'picture-card') {
+    if (this.nzListType === 'picture' || this.nzListType === 'picture-card') {
       this.previewFile(file, (previewDataUrl) => {
         this.setFileList(file, 'thumbUrl', previewDataUrl);
       });
     }
 
-    const fileList = this.fileList;
+    const fileList = this.nzFileList;
     if (this.onSuccess) {
       this.onSuccess(ret, file, fileList);
     }
@@ -132,9 +133,9 @@ export class NzUploadComponent implements OnInit {
     if (file.status === 'uploading') {
       this.abort(file);
     }
-    this.fileList.splice(this.fileList.indexOf(file), 1);
+    this.nzFileList.splice(this.nzFileList.indexOf(file), 1);
 
-    const fileList = this.fileList;
+    const fileList = this.nzFileList;
     if (this.onRemove) {
       this.onRemove(file, fileList);
     }
@@ -158,7 +159,7 @@ export class NzUploadComponent implements OnInit {
     this.setFileList(file, 'response', ret);
     this.setFileList(file, 'status', 'error');
 
-    const fileList = this.fileList;
+    const fileList = this.nzFileList;
     if (this.onChange) {
       this.onChange({
         file,

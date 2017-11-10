@@ -4,8 +4,8 @@ import { Component, OnInit } from '@angular/core';
   selector: 'nz-demo-upload-basic',
   template: `
         <nz-upload
-          [action]="action"
-          [headers]="headers"
+          [nzAction]="action"
+          [nzHeaders]="headers"
           [onChange]="onChange"
         >
           <button nz-button [nzType]="'primary'">

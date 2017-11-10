@@ -1,14 +1,14 @@
 <span>
 <div [ngClass]="_classMap">
 <nz-basic-upload
-    [accept]="accept"
-    [action]="action"
-    [customRequest]="customRequest"
-    [data]="data"
-    [disabled]="disabled"
-    [headers]="headers"
-    [multiple]="multiple"
-    [withCredentials]="withCredentials"
+    [accept]="nzAccept"
+    [action]="nzAction"
+    [customRequest]="nzCustomRequest"
+    [data]="nzData"
+    [disabled]="nzDisabled"
+    [headers]="nzHeaders"
+    [multiple]="nzMultiple"
+    [withCredentials]="nzWithCredentials"
     [beforeUpload]="beforeUpload"
     (onStart)="handleStart($event)"
     (onProgress)="handleProgress($event)"
@@ -20,10 +20,10 @@
 </nz-basic-upload>
 </div>
 <nz-upload-list
-    *ngIf="showUploadList"
+    *ngIf="nzShowUploadList"
     [onPreview]="onPreview"
     (onRemove)="handleRemove($event)"
-    [fileList]="fileList"
-    [listType]="listType"
+    [fileList]="nzFileList"
+    [listType]="nzListType"
 ></nz-upload-list>
 </span>
