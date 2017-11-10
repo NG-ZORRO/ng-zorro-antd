@@ -32,13 +32,13 @@ export class NzUploadComponent implements OnInit {
   @Input() nzType = 'select';
   @Input() nzWithCredentials: boolean;
 
-  @Input() onChange: Function;
-  @Input() onError: Function;
-  @Input() onProgress: Function;
-  @Input() onPreview: Function;
-  @Input() onRemove: Function;
-  @Input() onStart: Function;
-  @Input() onSuccess: Function;
+  @Input() nzOnChange: Function;
+  @Input() nzOnError: Function;
+  @Input() nzOnProgress: Function;
+  @Input() nzOnPreview: Function;
+  @Input() nzOnRemove: Function;
+  @Input() nzOnStart: Function;
+  @Input() nzOnSuccess: Function;
 
   @ViewChild(NzBasicUploadComponent) basicUpload: NzBasicUploadComponent;
 
@@ -82,8 +82,8 @@ export class NzUploadComponent implements OnInit {
     this.nzFileList.push(this.processedRawFile(file));
     const fileList = this.nzFileList;
 
-    if (this.onChange) {
-      this.onChange({ file: this.processedRawFile(file), fileList });
+    if (this.nzOnChange) {
+      this.nzOnChange({ file: this.processedRawFile(file), fileList });
     }
   }
 
@@ -94,12 +94,12 @@ export class NzUploadComponent implements OnInit {
 
     const fileList = this.nzFileList;
 
-    if (this.onProgress) {
-      this.onProgress({ event, file, fileList });
+    if (this.nzOnProgress) {
+      this.nzOnProgress({ event, file, fileList });
     }
 
-    if (this.onChange) {
-      this.onChange({
+    if (this.nzOnChange) {
+      this.nzOnChange({
         event,
         file,
         fileList
@@ -117,12 +117,12 @@ export class NzUploadComponent implements OnInit {
     }
 
     const fileList = this.nzFileList;
-    if (this.onSuccess) {
-      this.onSuccess(ret, file, fileList);
+    if (this.nzOnSuccess) {
+      this.nzOnSuccess(ret, file, fileList);
     }
 
-    if (this.onChange) {
-      this.onChange({
+    if (this.nzOnChange) {
+      this.nzOnChange({
         file,
         fileList
       });
@@ -136,13 +136,13 @@ export class NzUploadComponent implements OnInit {
     this.nzFileList.splice(this.nzFileList.indexOf(file), 1);
 
     const fileList = this.nzFileList;
-    if (this.onRemove) {
-      this.onRemove(file, fileList);
+    if (this.nzOnRemove) {
+      this.nzOnRemove(file, fileList);
     }
 
     // TODO:this behavior isn't correct
-    if (this.onChange) {
-      this.onChange({
+    if (this.nzOnChange) {
+      this.nzOnChange({
         file,
         fileList
       });
@@ -160,8 +160,8 @@ export class NzUploadComponent implements OnInit {
     this.setFileList(file, 'status', 'error');
 
     const fileList = this.nzFileList;
-    if (this.onChange) {
-      this.onChange({
+    if (this.nzOnChange) {
+      this.nzOnChange({
         file,
         fileList
       });

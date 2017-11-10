@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
         <nz-upload
           [nzAction]="action"
           [nzHeaders]="headers"
-          [onChange]="onChange"
+          [nzOnChange]="onChange"
         >
           <button nz-button [nzType]="'primary'">
             <span>Click to Upload</span>

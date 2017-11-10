@@ -21,7 +21,7 @@
 </div>
 <nz-upload-list
     *ngIf="nzShowUploadList"
-    [onPreview]="onPreview"
+    [onPreview]="nzOnPreview"
     (onRemove)="handleRemove($event)"
     [fileList]="nzFileList"
     [listType]="nzListType"

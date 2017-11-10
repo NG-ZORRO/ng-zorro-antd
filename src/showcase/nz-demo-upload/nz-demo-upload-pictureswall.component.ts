@@ -8,8 +8,8 @@ import {Component, OnInit} from '@angular/core';
           [nzAction]="action"
           [nzFileList]="fileList"
           [nzListType]="listType"
-          [onPreview]="handlePreview"
-          [onChange]="handleChange"
+          [nzOnPreview]="handlePreview"
+          [nzOnChange]="handleChange"
         >
         <div *ngIf="fileList.length < 3" >
           <i class="anticon anticon-plus"></i>
