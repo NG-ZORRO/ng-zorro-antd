@@ -29,3 +29,4 @@ before_script:
 script:
 - npm run test
 - npm run integration
+- cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
