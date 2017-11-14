@@ -133,6 +133,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
   _showSecond = this._format.indexOf('ss') > -1;
   _width = ( +this._showHour + +this._showMinute + +this._showSecond) * 56 + 1 + 'px';
   _hideDisabledOptions = false;
+  _nzDisabledHours: Function;
   // ngModel Access
   onChange: any = Function.prototype;
   onTouched: any = Function.prototype;
@@ -157,7 +158,17 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
 
   @Input() nzPlaceHolder = this._locale.translate('DateTime.chooseTimePlease');
   @Input() nzSize: 'small' | 'large' | 'default' = 'default';
-  @Input() nzDisabledHours;
+
+  @Input()
+  set nzDisabledHours(fun: Function) {
+    this._nzDisabledHours = fun;
+    this._buildHours();
+  }
+
+  get nzDisabledHours(): Function {
+    return this._nzDisabledHours;
+  }
+
   @Input() nzDisabledMinutes;
   @Input() nzDisabledSeconds;
   @Input() nzDisabled = false;
