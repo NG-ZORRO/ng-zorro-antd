@@ -29,7 +29,7 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
         <div class="ant-popover-content">
           <div class="ant-popover-arrow"></div>
           <div class="ant-popover-inner">
-            <div class="ant-popover-title">{{nzTitle}}</div>
+            <div class="ant-popover-title" *ngIf="nzTitle" [innerHTML]="nzTitle"></div>
             <div class="ant-popover-inner-content">
               <span *ngIf="!nzTemplate">{{nzContent}}</span>
               <ng-template

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { NzDemoStepsComponent } from './nz-demo-steps.component';
 import { NzDemoStepsBasicComponent } from './nz-demo-steps-basic.component';
@@ -19,6 +20,7 @@ import { NgZorroAntdModule } from '../../../index.showcase';
 
 @NgModule({
   imports     : [
+    FormsModule,
     CommonModule,
     NzCodeBoxModule,
     NgZorroAntdModule,

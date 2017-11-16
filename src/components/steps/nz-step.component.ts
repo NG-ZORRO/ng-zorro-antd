@@ -39,8 +39,10 @@ import { Subscription } from 'rxjs/Subscription';
         </div>
       </div>
       <div class="ant-steps-main">
-        <div class="ant-steps-title">{{nzTitle}}</div>
-        <div class="ant-steps-description">{{nzDescription}}</div>
+        <div class="ant-steps-title" [innerHTML]="nzTitle"></div>
+        <div class="ant-steps-description">
+          <ng-container *ngIf="_description; else _descriptionTpl">{{ _description }}</ng-container>
+        </div>
       </div>
     </div>
   `,
@@ -78,7 +80,15 @@ export class NzStepComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() nzTitle: string;
 
-  @Input() nzDescription: string;
+  _description = '';
+  _descriptionTpl: TemplateRef<any>;
+  @Input()
+  set nzDescription(value: string | TemplateRef<any>) {
+    if (value instanceof TemplateRef)
+        this._descriptionTpl = value;
+    else
+        this._description = value;
+  }
 
   get _current() {
     return this._currentIndex;
