@@ -12,7 +12,7 @@ import {NzMenuGroupComponent} from './nz-menu-group.component';
 import {NzMenuItemComponent} from './nz-menu-item.component';
 import {NzMenuComponent} from './nz-menu.component';
 import {NzSubMenuComponent} from './nz-submenu.component';
-import {OverlayContainer} from '../core/overlay/overlay-container';
+// import {OverlayContainer} from '../core/overlay/overlay-container';
 
 describe('NzMenuComponent', () => {
   beforeEach(async(() => {

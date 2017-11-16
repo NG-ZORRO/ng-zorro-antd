@@ -52,7 +52,7 @@ import { NzThDirective } from './nz-th.directive';
                   </table>
                 </div>
                 <div class="ant-table-placeholder" *ngIf="data.length==0 && !nzCustomNoResult">
-                  <span>没有数据</span>
+                  <span>{{ 'Table.emptyText' | nzTranslate }}</span>
                 </div>
                 <div class="ant-table-placeholder" *ngIf="data.length==0 && nzCustomNoResult">
                   <ng-content select="[noResult]"></ng-content>
@@ -206,7 +206,7 @@ export class NzTableComponent implements AfterViewInit, OnInit {
             this.nzPageIndex = 1;
           } else {
             const maxPageIndex = Math.ceil(this._dataSet.length / this.nzPageSize);
-            this.nzPageIndex = this.nzPageIndex > maxPageIndex ? maxPageIndex : this.nzPageIndex;
+            this.nzPageIndex = !this.nzPageIndex ? 1 : (this.nzPageIndex > maxPageIndex ? maxPageIndex : this.nzPageIndex);
           }
         }
         this.data = this._dataSet.slice((this.nzPageIndex - 1) * this.nzPageSize, this.nzPageIndex * this.nzPageSize);

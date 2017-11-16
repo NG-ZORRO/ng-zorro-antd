@@ -2,7 +2,9 @@ import {
   Component,
   ViewEncapsulation,
   Input,
+  Output,
   ElementRef,
+  EventEmitter,
   Renderer2,
   ViewChild,
   HostBinding,
@@ -10,15 +12,18 @@ import {
 } from '@angular/core';
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { TAB } from '@angular/cdk/keycodes';
 
 @Component({
   selector     : 'nz-input-number',
   encapsulation: ViewEncapsulation.None,
   template     : `
-    <div class="ant-input-number-handler-wrap">
+    <div class="ant-input-number-handler-wrap"
+         (mouseover)="_mouseInside = true"
+         (mouseout)="_mouseInside = false">
       <a class="ant-input-number-handler ant-input-number-handler-up"
-        [ngClass]="{'ant-input-number-handler-up-disabled':_disabledUp}"
-        (click)="_numberUp($event)">
+         [ngClass]="{'ant-input-number-handler-up-disabled':_disabledUp}"
+         (click)="_numberUp($event)">
         <span
           class="ant-input-number-handler-up-inner"
           (click)="$event.preventDefault();"></span>
@@ -36,16 +41,18 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     <div
       class="ant-input-number-input-wrap">
       <input class="ant-input-number-input"
-        #inputNumber
-        (blur)="onTouched();_checkValue()"
-        [placeholder]="nzPlaceHolder"
-        [disabled]="nzDisabled"
-        [(ngModel)]="_displayValue"
-        (ngModelChange)="_userInputChange()"
-        [attr.min]="nzMin"
-        [attr.max]="nzMax"
-        [attr.step]="_step"
-        autocomplete="off">
+             #inputNumber
+             [placeholder]="nzPlaceHolder"
+             [disabled]="nzDisabled"
+             [(ngModel)]="_displayValue"
+             (blur)="_emitBlur($event)"
+             (focus)="_emitFocus($event)"
+             (keydown)="_emitKeydown($event)"
+             (ngModelChange)="_userInputChange()"
+             [attr.min]="nzMin"
+             [attr.max]="nzMax"
+             [attr.step]="_step"
+             autocomplete="off">
     </div>`,
   providers    : [
     {
@@ -69,6 +76,8 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   _displayValue;
   _disabledUp = false;
   _disabledDown = false;
+  _focused = false;
+  _mouseInside = false;
   // ngModel Access
   onChange: any = Function.prototype;
   onTouched: any = Function.prototype;
@@ -108,9 +117,13 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     this._precisionFactor = Math.pow(10, this._precisionStep);
   }
 
+  @Output() nzBlur: EventEmitter<MouseEvent> = new EventEmitter();
+  @Output() nzFocus: EventEmitter<MouseEvent> = new EventEmitter();
+
   _numberUp($event) {
     $event.preventDefault();
     $event.stopPropagation();
+    this._inputNumber.nativeElement.focus();
     if (this.nzValue === undefined) {
       this.nzValue = this.nzMin || 0;
     }
@@ -122,6 +135,7 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   _numberDown($event) {
     $event.preventDefault();
     $event.stopPropagation();
+    this._inputNumber.nativeElement.focus();
     if (this.nzValue === undefined) {
       this.nzValue = this.nzMin || 0;
     }
@@ -136,6 +150,31 @@ export class NzInputNumberComponent implements ControlValueAccessor {
 
   set nzValue(value: number) {
     this._updateValue(value);
+  }
+
+  _emitBlur($event) {
+    // avoid unnecessary events
+    if (this._focused && !this._mouseInside) {
+      this._checkValue();
+      this._focused = false;
+      this.nzBlur.emit($event);
+    }
+    this.onTouched();
+  }
+
+  _emitFocus($event) {
+    // avoid unnecessary events
+    if (!this._focused) {
+      this._focused = true;
+      this.nzFocus.emit($event);
+    }
+  }
+
+  _emitKeydown($event) {
+    if ($event.keyCode === TAB && this._focused) {
+      this._focused = false;
+      this.nzBlur.emit($event);
+    }
   }
 
   _userInputChange() {

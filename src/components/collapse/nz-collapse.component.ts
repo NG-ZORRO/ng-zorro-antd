@@ -18,7 +18,12 @@ import { NzCollapsesetComponent } from './nz-collapseset.component'
   template     : `
     <div class="ant-collapse-header" [attr.aria-expanded]="_active" (click)="clickHeader($event)" role="tab">
       <i class="arrow"></i>
-      {{ nzTitle }}
+      <ng-template [ngIf]="nzTitle">
+        {{ nzTitle }}
+      </ng-template>
+      <ng-template [ngIf]="!nzTitle">
+        <ng-content select="[collapse-title]"></ng-content>
+      </ng-template>
     </div>
     <div class="ant-collapse-content" [@collapseState]="_active?'active':'inactive'">
       <div class="ant-collapse-content-box">

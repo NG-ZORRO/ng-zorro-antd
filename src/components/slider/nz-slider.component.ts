@@ -13,17 +13,16 @@ import {
   forwardRef,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { RxChain } from '@angular/cdk'
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { merge } from 'rxjs/observable/merge';
-import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
-import { _do as doOperator } from 'rxjs/operator/do';
-import { filter as filterOperator } from 'rxjs/operator/filter';
-import { map } from 'rxjs/operator/map';
-import { pluck } from 'rxjs/operator/pluck';
-import { takeUntil } from 'rxjs/operator/takeUntil';
+import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
+import { tap } from 'rxjs/operators/tap';
+import { map } from 'rxjs/operators/map';
+import { pluck } from 'rxjs/operators/pluck';
+import { takeUntil } from 'rxjs/operators/takeUntil';
+import { filter } from 'rxjs/operators/filter';
 import { NzSliderService } from './nz-slider.service';
 import { Marks, MarksArray } from './nz-slider-marks.component';
 
@@ -378,26 +377,26 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       };
     // make observables
     [ mouse, touch ].forEach(source => {
-      const { start, move, end, pluckKey, filter = () => true } = source;
+      const { start, move, end, pluckKey, filterFunc = ((value: any, index: number) => true) as any } = source;
       // start
-      source.startPlucked$ = (RxChain.from(fromEvent(sliderDOM, start)) as RxChain<any>)
-        .call(filterOperator, filter)
-        .call(doOperator, this.utils.pauseEvent)
-        .call(pluck, ...pluckKey)
-        .call(map, (position: number) => this.findClosestValue(position))
-        .result();
+      source.startPlucked$ = fromEvent(sliderDOM, start).pipe(
+        filter(filterFunc),
+        tap(this.utils.pauseEvent),
+        pluck(...pluckKey),
+        map((position: number) => this.findClosestValue(position))
+      );
       // end
       source.end$ = fromEvent(document, end);
       // resolve move
-      source.moveResolved$ = (RxChain.from(fromEvent(document, move)) as RxChain<any>)
-        .call(filterOperator, filter)
-        .call(doOperator, this.utils.pauseEvent)
-        .call(pluck, ...pluckKey)
-        .call(distinctUntilChanged)
-        .call(map, (position: number) => this.findClosestValue(position))
-        .call(distinctUntilChanged)
-        .call(takeUntil, source.end$)
-        .result();
+      source.moveResolved$ = fromEvent(document, move).pipe(
+        filter(filterFunc),
+        tap(this.utils.pauseEvent),
+        pluck(...pluckKey),
+        distinctUntilChanged(),
+        map((position: number) => this.findClosestValue(position)),
+        distinctUntilChanged(),
+        takeUntil(source.end$),
+      );
       // merge to become moving
       // source.move$ = source.startPlucked$.mergeMapTo(source.moveResolved$);
     });
@@ -476,8 +475,8 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       points = (nzMarks === null ? [] : Object.keys(nzMarks).map(parseFloat)) as Array<any>;
     // push closest step
     if (nzStep !== null && !nzDots) {
-      const closest = Math.round(val / nzStep) * nzStep;
-      points.push(closest);
+      const closestOne = Math.round(val / nzStep) * nzStep;
+      points.push(closestOne);
     }
     // calculate gaps
     const gaps = points.map(point => Math.abs(val - point));

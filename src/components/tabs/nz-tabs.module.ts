@@ -6,13 +6,13 @@ import { NzTabsNavComponent } from './nz-tabs-nav.component';
 import { NzTabBodyComponent } from './nz-tab-body.component';
 import { NzTabLabelDirective } from './nz-tab-label.directive';
 import { CommonModule } from '@angular/common';
-import { PortalModule } from '@angular/cdk';
-import { ObserveContentModule } from '@angular/cdk';
+// import { PortalModule } from '@angular/cdk/portal';
+import { ObserversModule } from '@angular/cdk/observers';
 
 @NgModule({
   declarations: [ NzTabComponent, NzTabSetComponent, NzTabsNavComponent, NzTabLabelDirective, NzTabsInkBarDirective, NzTabBodyComponent ],
   exports     : [ NzTabComponent, NzTabSetComponent, NzTabsNavComponent, NzTabLabelDirective, NzTabsInkBarDirective, NzTabBodyComponent ],
-  imports     : [ CommonModule, PortalModule, ObserveContentModule ]
+  imports     : [ CommonModule, ObserversModule ]
 })
 
 export class NzTabsModule {

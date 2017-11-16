@@ -15,13 +15,16 @@ import {
   ElementRef,
   Renderer2,
   ViewChild,
-  forwardRef
+  forwardRef,
+  Inject,
 } from '@angular/core';
+import { DOWN_ARROW, ENTER, TAB } from '@angular/cdk/keycodes';
 import { NzOptionComponent } from './nz-option.component';
 import { NzOptionPipe } from './nz-option.pipe';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { TagAnimation } from '../core/animation/tag-animations';
+import { NzLocaleService } from '../locale/index';
 
 @Component({
   selector     : 'nz-select',
@@ -39,9 +42,10 @@ import { TagAnimation } from '../core/animation/tag-animations';
   ],
   template     : `
     <div
+      tabindex="0"
       #trigger
-      nz-overlay-origin
-      #origin="nzOverlayOrigin"
+      cdkOverlayOrigin
+      #origin="cdkOverlayOrigin"
       [ngClass]="_selectionClassMap"
       (keydown.Enter)="handleKeyEnterEvent($event)"
       (keydown.Backspace)="handleKeyBackspaceEvent($event)"
@@ -79,6 +83,7 @@ import { TagAnimation } from '../core/animation/tag-animations';
                 [(ngModel)]="_searchText"
                 (ngModelChange)="updateFilterOption();onSearchChange($event);"
                 (keydown)="updateWidth(searchInput,_searchText)"
+                (input)="updateWidth(searchInput,_searchText)"
                 (blur)="onTouched()"
                 #searchInput>
               <span class="ant-select-search__field__mirror"></span></div>
@@ -112,14 +117,15 @@ import { TagAnimation } from '../core/animation/tag-animations';
       </span>
       <span class="ant-select-arrow"><b></b></span></div>
     <ng-template
-      nz-connected-overlay
-      hasBackdrop
-      [origin]="origin"
+      cdkConnectedOverlay
+      cdkConnectedOverlayHasBackdrop
+      [cdkConnectedOverlayOrigin]="origin"
       (backdropClick)="closeDropDown()"
-      (detach)="closeDropDown()"
+      (detach)="closeDropDown();"
       (positionChange)="onPositionChange($event)"
-      [width]="_triggerWidth"
-      [open]="_isOpen">
+      [cdkConnectedOverlayWidth]="_triggerWidth"
+      [cdkConnectedOverlayOpen]="_isOpen"
+    >
       <div
         [ngClass]="_dropDownClassMap" [@dropDownAnimation]="_dropDownPosition">
         <div style="overflow: auto;">
@@ -153,7 +159,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   _size: string;
   _value: Array<string> | string;
   _placeholder = 'Placeholder';
-  _notFoundContent = 'Not found';
+  _notFoundContent = this._locale.translate('Select.notFoundContent');
   _isOpen = false;
   _disabled = false;
   _showSearch = false;
@@ -508,9 +514,10 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   }
 
   handleKeyEnterEvent(event) {
-    /** when composing end */
-    if (!this._composing) {
+      /** when composing end */
+    if (!this._composing && this._isOpen) {
       event.preventDefault();
+      event.stopPropagation();
       this.updateFilterOption(false);
       this.clickOption(this._activeFilterOption);
     }
@@ -584,6 +591,28 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     e.preventDefault();
     if (!this._disabled) {
       this.nzOpen = !this.nzOpen;
+      if (this.nzShowSearch) {
+        /** wait for search display */
+        setTimeout(_ => {
+          this.searchInputElementRef.nativeElement.focus();
+        });
+      }
+    }
+  }
+
+  @HostListener('keydown', [ '$event' ])
+  onKeyDown(e) {
+    const keyCode = e.keyCode;
+    if (keyCode === TAB && this.nzOpen) {
+      this.nzOpen = false;
+      return;
+    }
+    if ( (keyCode !== DOWN_ARROW && keyCode !== ENTER) || this.nzOpen) {
+      return;
+    }
+    e.preventDefault();
+    if (!this._disabled) {
+      this.nzOpen = true;
       if (this.nzShowSearch) {
         /** wait for search display */
         setTimeout(_ => {
@@ -691,7 +720,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     this.nzDisabled = isDisabled;
   }
 
-  constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
+  constructor(private _elementRef: ElementRef, private _renderer: Renderer2, private _locale: NzLocaleService) {
     this._el = this._elementRef.nativeElement;
   }
 

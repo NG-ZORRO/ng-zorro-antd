@@ -6,6 +6,7 @@ import { NzConfirmComponent } from './nz-confirm.component';
 import { NzModalService } from './nz-modal.service';
 import { NzModalSubject } from './nz-modal-subject.service';
 
+import { NzLocaleModule } from '../locale/index';
 import { NzButtonModule } from '../button/nz-button.module';
 
 @NgModule({
@@ -13,7 +14,7 @@ import { NzButtonModule } from '../button/nz-button.module';
   providers      : [ NzModalSubject, NzModalService ],
   declarations   : [ NzModalComponent, NzConfirmComponent ],
   exports        : [ NzModalComponent, NzConfirmComponent ],
-  imports        : [ CommonModule, NzButtonModule ]
+  imports        : [ CommonModule, NzLocaleModule, NzButtonModule ]
 })
 
 export class NzModalModule {

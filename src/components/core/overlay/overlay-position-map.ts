@@ -1,4 +1,4 @@
-import { ConnectionPositionPair } from './index';
+import { ConnectionPositionPair } from '@angular/cdk/overlay';
 
 export const POSITION_MAP = {
   'top'         : {

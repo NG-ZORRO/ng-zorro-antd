@@ -12,13 +12,16 @@ import {
 
 import * as moment from 'moment';
 import { Moment } from 'moment';
-import 'moment/locale/zh-cn';
+// import 'moment/locale/zh-cn';
+import { NzLocaleService } from '../locale/index';
 
 export interface MonthInterface {
   index: number;
   name: string;
+  year: number;
   isCurrentMonth: boolean;
   isSelectedMonth: boolean;
+  disabled: boolean;
 }
 
 export type QuartersType = Array<MonthInterface>;
@@ -177,6 +180,7 @@ export interface WeekInterface {
                     [attr.title]="month.name"
                     class="ant-calendar-month-panel-cell"
                     [class.ant-calendar-month-panel-selected-cell]="month.isSelectedMonth"
+                    [class.ant-calendar-month-panel-cell-disabled]="month.disabled"
                     [class.ant-calendar-month-panel-current-cell]="month.isCurrentMonth">
                     <div class="ant-calendar-month-panel-month" (click)="_clickMonth($event,month)">
                       {{month.name}}
@@ -206,7 +210,7 @@ export class NzCalendarComponent implements OnInit {
   _showMonth = moment(new Date()).month();
   _showYear = moment(new Date()).year();
   _value: Date = new Date();
-  _locale = 'zh-cn';
+  _locale = this._localeService.getLocale().locale;
   @ContentChild('dateCell') dateCell: TemplateRef<any>;
   @ContentChild('monthCell') monthCell: TemplateRef<any>;
 
@@ -284,6 +288,9 @@ export class NzCalendarComponent implements OnInit {
   _clickMonth($event, month) {
     $event.preventDefault();
     $event.stopPropagation();
+    if (month.disabled) {
+      return;
+    }
     this.nzClickMonth.emit(month);
   };
 
@@ -333,8 +340,10 @@ export class NzCalendarComponent implements OnInit {
       months.push({
         index          : i,
         name           : this._listOfMonthName[ i ],
+        year           : date.year(),
         isCurrentMonth : moment(new Date()).month() === i && date.isSame(new Date(), 'year'),
-        isSelectedMonth: this._showMonth === i
+        isSelectedMonth: this._showMonth === i,
+        disabled       : this.nzDisabledDate && this.nzDisabledDate(date.month(i).toDate())
       });
       if ((i + 1) % 3 === 0) {
         quarters.push(months);
@@ -370,7 +379,7 @@ export class NzCalendarComponent implements OnInit {
     return listOfYears;
   };
 
-  constructor(private _elementRef: ElementRef) {
+  constructor(private _elementRef: ElementRef, private _localeService: NzLocaleService) {
     this._el = this._elementRef.nativeElement;
   }
 

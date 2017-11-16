@@ -62,7 +62,7 @@
       <nz-code-box [nzTitle]="'文本域'" id="components-input-demo-textarea" [nzCode]="NzDemoInputTextareaCode">
         <nz-demo-input-textarea demo></nz-demo-input-textarea>
         <div intro>
-          <p>用于多行输入，指定 <code>nzType</code> 为一个特殊的 <code>textarea</code>。</p>
+          <p>用于多行输入，指定 <code>nzType</code> 为一个特殊的 <code>textarea</code>。可以用 <code>nzRows</code> 或是 <code>nzAutosize</code> 来控制框的高度。</p>
         </div>
       </nz-code-box>
     </div>
@@ -95,6 +95,12 @@
           <td>【必须】声明 input 类型，同原生 input 标签的 type 属性。另外提供 <code>nzType="textarea"</code>。</td>
           <td>String</td>
           <td>'text'</td>
+        </tr>
+        <tr>
+          <td>nzPlaceHolder</td>
+          <td>在文字框中显示提示讯息</td>
+          <td>String</td>
+          <td>无</td>
         </tr>
         <tr>
           <td>nzSize</td>
@@ -158,20 +164,26 @@
     <p>当 <code>nzType="textarea"</code> 时，特有的API</p>
     <table>
       <thead>
-      <tr>
-        <th>参数</th>
-        <th>说明</th>
-        <th>类型</th>
-        <th>默认值</th>
-      </tr>
+        <tr>
+          <th>参数</th>
+          <th>说明</th>
+          <th>类型</th>
+          <th>默认值</th>
+        </tr>
       </thead>
       <tbody>
-      <tr>
-        <td>nzAutosize</td>
-        <td>自适应内容高度，可设置为 true|false 或对象：<code>{{'{ minRows: 2, maxRows: 6 }'}}</code></td>
-        <td>Boolean|Object</td>
-        <td><code>false</code></td>
-      </tr>
+        <tr>
+          <td>nzAutosize</td>
+          <td>自适应内容高度，可设置为 true|false 或对象：<code>{{'{ minRows: 2, maxRows: 6 }'}}</code></td>
+          <td>Boolean|Object</td>
+          <td><code>false</code></td>
+        </tr>
+        <tr>
+          <td>nzRows</td>
+          <td>控制固定框的行数</td>
+          <td>String</td>
+          <td>无</td>
+        </tr>
       </tbody>
     </table>
     <h4 id="Input.Group"><span>nz-input-group</span>

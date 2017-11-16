@@ -17,7 +17,7 @@ import { Component, OnInit } from '@angular/core';
             <tr nz-tbody-tr *ngIf="(item.parent&&item.parent.expand)||!(item.parent)">
               <td nz-td>
                 <nz-row-indent [nzIndentSize]="item.level"></nz-row-indent>
-                <nz-row-expand-icon [(nzExpand)]="item.expand" (nzExpandChange)="collapse(expandDataCache[data.key],item,$event)" [nzShowExpand]="!item.children"></nz-row-expand-icon>
+                <nz-row-expand-icon [(nzExpand)]="item.expand" (nzExpandChange)="collapse(expandDataCache[data.key],item,$event)" [nzShowExpand]="!!item.children"></nz-row-expand-icon>
                 {{item.name}}
               </td>
               <td nz-td>{{item.age}}</td>

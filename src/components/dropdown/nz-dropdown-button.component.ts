@@ -40,15 +40,16 @@ import { NzDropDownComponent } from './nz-dropdown.component';
         <i class="anticon anticon-down"></i></button>
     </div>
     <ng-template
-      nz-connected-overlay
-      [hasBackdrop]="_hasBackdrop"
-      [positions]="_positions"
-      [origin]="_nzOrigin"
+      cdkConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
+      [cdkConnectedOverlayPositions]="_positions"
+      [cdkConnectedOverlayOrigin]="_nzOrigin"
       (backdropClick)="_hide()"
       (detach)="_hide()"
-      [minWidth]="_triggerWidth"
+      [cdkConnectedOverlayMinWidth]="_triggerWidth"
       (positionChange)="_onPositionChange($event)"
-      [open]="nzVisible">
+      [cdkConnectedOverlayOpen]="nzVisible"
+    >
       <div
         class="{{'ant-dropdown ant-dropdown-placement-'+nzPlacement}}"
         [@dropDownAnimation]="_dropDownPosition"
@@ -82,12 +83,15 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
         this._setTriggerWidth();
       }
     }
-    this.nzVisible = visible;
+    if (this.nzVisible !== visible) {
+      this.nzVisible = visible;
+      this.nzVisibleChange.emit(this.nzVisible);
+    }
     this._changeDetector.markForCheck();
   }
 
   /** rewrite afterViewInit hook */
   ngAfterViewInit() {
-    this._startSubscribe(this.nzVisibleChange.asObservable());
+    this._startSubscribe(this._visibleChange);
   }
 }

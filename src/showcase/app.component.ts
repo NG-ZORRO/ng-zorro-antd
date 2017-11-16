@@ -15,15 +15,27 @@ export class AppComponent implements OnInit {
   routerList = ROUTER_LIST;
   componentList = [];
   searchComponent = null;
+  versionList = [
+    '0.5.x',
+    '0.6.0'
+  ];
+  currentVersion = '0.6.0';
 
   constructor(private router: Router, private title: Title) {
 
   }
 
-  navigateTo(url) {
+  navigateToPage(url) {
     if (url) {
-      console.log(url);
       this.router.navigateByUrl(url);
+    }
+  }
+
+  navigateToVersion(version) {
+    if (version !== this.currentVersion) {
+      window.location.href = window.location.origin + `/version/` + version;
+    } else {
+      window.location.href = window.location.origin;
     }
   }
 

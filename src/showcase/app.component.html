@@ -9,10 +9,16 @@
       </div>
       <div nz-col [nzXs]="'0'" [nzSm]="'16'" [nzMd]="'16'" [nzLg]="'20'" class="nav nav-hide">
         <div id="search-box">
-          <nz-select [nzPlaceHolder]="'搜索组件...'" [nzMode]="'combobox'" [(ngModel)]="searchComponent" (ngModelChange)="navigateTo($event)">
+          <nz-select [nzPlaceHolder]="'搜索组件...'" [nzMode]="'combobox'" [(ngModel)]="searchComponent" (ngModelChange)="navigateToPage($event)">
             <nz-option [nzValue]="component.path" [nzLabel]="component.label+' - '+component.zh" *ngFor="let component of componentList"></nz-option>
           </nz-select>
         </div>
+        <div class="version">
+          <nz-select [nzPlaceHolder]="'搜索组件...'" [nzSize]="'small'" [ngModel]="currentVersion" (ngModelChange)="navigateToVersion($event)">
+            <nz-option [nzValue]="version" [nzLabel]="version" *ngFor="let version of versionList"></nz-option>
+          </nz-select>
+        </div>
+
         <ul nz-menu [nzMode]="'horizontal'" id="nav">
           <li nz-menu-item [nzSelected]="true">
             <a routerLink="/docs/angular/introduce"><span>组件</span></a>

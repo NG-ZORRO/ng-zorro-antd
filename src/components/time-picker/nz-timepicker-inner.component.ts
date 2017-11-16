@@ -10,6 +10,8 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
+import { NzLocaleService } from '../locale/index';
+import { reqAnimFrame } from '../core/polyfill/request-animation';
 
 export interface TimeUnitInterface {
   index: number;
@@ -131,6 +133,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
   _showSecond = this._format.indexOf('ss') > -1;
   _width = ( +this._showHour + +this._showMinute + +this._showSecond) * 56 + 1 + 'px';
   _hideDisabledOptions = false;
+  _nzDisabledHours: Function;
   // ngModel Access
   onChange: any = Function.prototype;
   onTouched: any = Function.prototype;
@@ -153,9 +156,19 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     return this._hideDisabledOptions;
   }
 
-  @Input() nzPlaceHolder = '请选择时间';
+  @Input() nzPlaceHolder = this._locale.translate('DateTime.chooseTimePlease');
   @Input() nzSize: 'small' | 'large' | 'default' = 'default';
-  @Input() nzDisabledHours;
+
+  @Input()
+  set nzDisabledHours(fun: Function) {
+    this._nzDisabledHours = fun;
+    this._buildHours();
+  }
+
+  get nzDisabledHours(): Function {
+    return this._nzDisabledHours;
+  }
+
   @Input() nzDisabledMinutes;
   @Input() nzDisabledSeconds;
   @Input() nzDisabled = false;
@@ -195,9 +208,6 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
 
   // got from rc-timepicker
   scrollTo(element, to, duration) {
-    const requestAnimationFrame = window.requestAnimationFrame || function requestAnimationFrameTimeout() {
-      return setTimeout(arguments[ 0 ], 10);
-    };
     if (duration <= 0) {
       element.scrollTop = to;
       return;
@@ -205,7 +215,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     const difference = to - element.scrollTop;
     const perTick = difference / duration * 10;
 
-    requestAnimationFrame(() => {
+    reqAnimFrame(() => {
       element.scrollTop = element.scrollTop + perTick;
       if (element.scrollTop === to) {
         return;
@@ -343,7 +353,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     this.nzDisabled = isDisabled;
   }
 
-  constructor(public _cdr: ChangeDetectorRef) {
+  constructor(public _cdr: ChangeDetectorRef, private _locale: NzLocaleService) {
   }
 
   ngOnInit() {

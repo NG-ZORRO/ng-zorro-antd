@@ -1,9 +1,9 @@
 /**
- * Global styles for all components (NOTE: antd's global style is at components/style)
+ * Global styles for all components (WANT antd's global style? SEE at components/style)
  */
 
-// For all overlays (SEE ./core/overlay)
-.nz-overlay-container {
+////// Override all cdk overlays (SEE @angular/cdk/overlay)
+.cdk-overlay-container {
   pointer-events: none;
   top: 0;
   left: 0;
@@ -13,7 +13,7 @@
   z-index: 1000;
 }
 
-.nz-overlay-backdrop {
+.cdk-overlay-backdrop {
   top: 0;
   bottom: 0;
   left: 0;
@@ -26,7 +26,7 @@
   z-index: 1000;
 }
 
-.nz-overlay-pane {
+.cdk-overlay-pane {
   position: absolute;
   pointer-events: auto;
   z-index: 1000;

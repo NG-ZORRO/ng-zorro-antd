@@ -16,7 +16,7 @@ import {
   ContentChild,
   HostBinding
 } from '@angular/core';
-import { Directionality, Direction } from '@angular/cdk';
+import { Directionality, Direction } from '@angular/cdk/bidi';
 import { Subscription } from 'rxjs/Subscription';
 import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
 import { NzTabLabelDirective } from './nz-tab-label.directive';
@@ -26,8 +26,8 @@ export type ScrollDirection = 'after' | 'before';
 import { of as observableOf } from 'rxjs/observable/of';
 import { merge } from 'rxjs/observable/merge';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { auditTime } from 'rxjs/operator/auditTime';
-import { startWith } from 'rxjs/operator/startWith';
+import { auditTime } from 'rxjs/operators/auditTime';
+import { startWith } from 'rxjs/operators/startWith';
 
 /** duplicated defined https://github.com/angular/angular-cli/issues/2034 **/
 export type NzTabPositionMode = 'horizontal' | 'vertical';
@@ -168,10 +168,9 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     this._realignInkBar = this._ngZone.runOutsideAngular(() => {
       const dirChange = this._dir ? this._dir.change : observableOf(null);
       const resize = typeof window !== 'undefined' ?
-        auditTime.call(fromEvent(window, 'resize'), 10) :
+        fromEvent(window, 'resize').pipe(auditTime(10)) :
         observableOf(null);
-
-      return startWith.call(merge(dirChange, resize), null).subscribe(() => {
+      return merge(dirChange, resize).pipe(startWith(null)).subscribe(() => {
         if (this.nzShowPagination) {
           this._updatePagination();
         }

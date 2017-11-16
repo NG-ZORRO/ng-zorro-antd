@@ -69,7 +69,7 @@ export class NzMessageComponent implements OnInit, OnDestroy {
   private _eraseTimingStart: number;
   private _eraseTTL: number; // Time to live
 
-  constructor(private _messageContainer: NzMessageContainerComponent<NzMessageConfig>) { }
+  constructor(private _messageContainer: NzMessageContainerComponent) { }
 
   ngOnInit() {
     this._options = this.nzMessage.options;

@@ -18,7 +18,7 @@ import {
 import { NzTabComponent } from './nz-tab.component';
 import { NzTabsNavComponent } from './nz-tabs-nav.component';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operator/map';
+import { map } from 'rxjs/operators/map';
 
 export interface NzAnimatedInterface {
   inkBar: boolean,
@@ -49,7 +49,7 @@ export type NzTabType = 'line' | 'card';
         [nzHideBar]="nzHide"
         [selectedIndex]="nzSelectedIndex">
         <ng-template #tabBarExtraContent>
-          <ng-template [ngTemplateOutlet]="nzTabBarExtraContent"></ng-template>
+          <ng-template [ngTemplateOutlet]="nzTabBarExtraTemplate || nzTabBarExtraContent"></ng-template>
         </ng-template>
         <div
           nz-tab-label
@@ -90,6 +90,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
   _selectedIndex: number | null = null;
   _isViewInit = false;
   _tabs: Array<NzTabComponent> = [];
+  @Input() nzTabBarExtraTemplate: TemplateRef<any>;
   @ContentChild('nzTabBarExtraContent') nzTabBarExtraContent: TemplateRef<any>;
   @ViewChild('tabNav') _tabNav: NzTabsNavComponent;
   @ViewChild('tabContent') _tabContent: ElementRef;
@@ -109,7 +110,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
 
   @Output()
   get nzSelectedIndexChange(): Observable<number> {
-    return map.call(this.nzSelectChange, event => event.index);
+    return this.nzSelectChange.pipe(map(event => event.index));
   }
 
   @Output() nzSelectChange: EventEmitter<NzTabChangeEvent> = new EventEmitter<NzTabChangeEvent>(true);

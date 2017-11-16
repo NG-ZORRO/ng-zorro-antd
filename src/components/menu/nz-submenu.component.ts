@@ -5,17 +5,25 @@ import {
 import { style, animate, state, transition, trigger } from '@angular/animations';
 import { NzMenuComponent } from './nz-menu.component';
 import { Subject } from 'rxjs/Subject';
-import { debounceTime } from 'rxjs/operator/debounceTime';
+import { debounceTime } from 'rxjs/operators/debounceTime';
 
 @Component({
   selector  : '[nz-submenu]',
   animations: [
-    trigger('fadeAnimation', [
-      state('*', style({ opacity: 1 })),
-      transition('* => void', [
-        animate(150, style({ opacity: 0, display: 'none' }))
+    trigger('expandAnimation', [
+      state('fade', style({ opacity: 1 })),
+      transition('expand => void', [
+        style({ height: '*', overflow: 'hidden' }),
+        animate(150, style({ height: 0 }))
       ]),
-      transition('void => *', [
+      transition('void => expand', [
+        style({ height: 0, overflow: 'hidden' }),
+        animate(150, style({ height: '*' }))
+      ]),
+      transition('fade => void', [
+        animate(150, style({ opacity: 0 }))
+      ]),
+      transition('void => fade', [
         style({ opacity: '0' }),
         animate(150, style({ opacity: 1 }))
       ])
@@ -33,7 +41,7 @@ import { debounceTime } from 'rxjs/operator/debounceTime';
     </div>
     <ul
       [class.ant-dropdown-menu]="isInDropDown"
-      [@fadeAnimation]
+      [@expandAnimation]="expandState"
       [class.ant-menu]="!isInDropDown"
       [class.ant-dropdown-menu-vertical]="isInDropDown"
       [class.ant-menu-vertical]="(!isInDropDown)&&(nzMenuComponent.nzMode!=='inline')"
@@ -60,12 +68,22 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   get subItemSelected(): boolean {
     return !!this.nzMenuComponent.menuItems.find(e => e.selected && e.nzSubMenuComponent === this);
   }
+
   get submenuSelected(): boolean {
     return !!this.subMenus._results.find(e => e !== this && e.subItemSelected)
   }
 
+  get expandState() {
+    if (this.nzOpen && this.nzMenuComponent.nzMode === 'inline') {
+      return 'expand';
+    } else if (this.nzOpen && this.nzMenuComponent.nzMode !== 'inline') {
+      return 'fade'
+    }
+    return null;
+  }
+
   clickSubMenuTitle() {
-    if ((this.nzMenuComponent.nzMode === 'inline') || (!this.isInDropDown)) {
+    if ((this.nzMenuComponent.nzMode === 'inline') && (!this.isInDropDown)) {
       this.nzOpen = !this.nzOpen;
       this.nzOpenChange.emit(this.nzOpen);
     }
@@ -156,8 +174,11 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    debounceTime.call(this._$mouseSubject, 300).subscribe((data: boolean) => {
-      this.nzOpen = data;
+    this._$mouseSubject.pipe(debounceTime(300)).subscribe((data: boolean) => {
+      if (this.nzOpen !== data) {
+        this.nzOpen = data;
+        this.nzOpenChange.emit(this.nzOpen);
+      }
     });
   }
 

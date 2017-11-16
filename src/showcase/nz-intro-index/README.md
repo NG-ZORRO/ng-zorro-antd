@@ -1,6 +1,8 @@
 NG-ZORRO [![GitHub stars](https://img.shields.io/github/stars/NG-ZORRO/ng-zorro-antd.svg?style=social&label=Star)](https://github.com/NG-ZORRO/ng-zorro-antd)
 ===
-这里是 Ant Design 的 Angular`^4.0.0` 实现，开发和服务于企业级后台产品。
+这里是 Ant Design 的 Angular`^5.0.0` 实现，开发和服务于企业级后台产品。
+
+如果要您使用的是 Angular `4.x` 版本，请使用 `0.5.x` 版本的 [NG-ZORRO](http://ng.ant.design/version/0.5.x)
 
 <div class="pic-plus">
   <img width="150" src="./assets/img/antd.svg">
@@ -26,7 +28,7 @@ NG-ZORRO [![GitHub stars](https://img.shields.io/github/stars/NG-ZORRO/ng-zorro-
 
 ## 兼容版本
 
-* 当前支持 Angular`^4.0.0` 版本
+* 当前支持 Angular `^5.0.0` 版本（`5.0.0`以下推荐使用`ng-zorro-antd`的`0.5.x`版本）
 
 
 ## 安装
@@ -45,6 +47,11 @@ $ npm install ng-zorro-antd --save
 我们推荐官方的 `@angular/cli` 工具链辅助进行开发
 
 如果你想了解更多CLI工具链的功能和命令，建议访问 [Angular CLI](https://github.com/angular/angular-cli) 了解更多
+
+
+## 历史版本入口
+
+- [0.5.x](http://ng.ant.design/version/0.5.x)
 
 
 ## 链接

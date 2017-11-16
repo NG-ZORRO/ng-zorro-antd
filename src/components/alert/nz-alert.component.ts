@@ -1,12 +1,9 @@
-/**
- * @author MoXun
- */
 import {
   Component,
   ViewEncapsulation,
   Input,
   Output,
-  EventEmitter
+  EventEmitter, OnChanges, OnInit
 } from '@angular/core';
 import { FadeAnimation } from '../core/animation/fade-animations';
 
@@ -56,8 +53,9 @@ import { FadeAnimation } from '../core/animation/fade-animations';
   ]
 })
 
-export class NzAlertComponent {
+export class NzAlertComponent implements OnChanges {
   _display = true;
+  antAlert = 'ant-alert';
   @Input() nzType = 'info';
   @Input() nzBanner = false;
   @Input() nzCloseable = false;
@@ -66,21 +64,27 @@ export class NzAlertComponent {
   @Input() nzCloseText: string;
   @Input() nzMessage: string;
   @Output() nzOnClose: EventEmitter<boolean> = new EventEmitter();
-
-  get _classMap() {
-    const antAlert = 'ant-alert';
-    return {
-      [`${antAlert}`]                 : true,
-      [`${antAlert}-${this.nzType}`]  : true,
-      [`${antAlert}-no-icon`]         : !this.nzShowIcon,
-      [`${antAlert}-banner`]          : this.nzBanner,
-      [`${antAlert}-with-description`]: !!this.nzDescription
-    };
-  }
+  _classMap = {
+    [`${this.antAlert}`]                 : true,
+    [`${this.antAlert}-${this.nzType}`]  : true,
+    [`${this.antAlert}-no-icon`]         : !this.nzShowIcon,
+    [`${this.antAlert}-banner`]          : this.nzBanner,
+    [`${this.antAlert}-with-description`]: !!this.nzDescription
+  };
 
   closeAlert(): void {
     this._display = false;
     this.nzOnClose.emit(true);
+  }
+
+  ngOnChanges() {
+    this._classMap = {
+      [`${this.antAlert}`]                 : true,
+      [`${this.antAlert}-${this.nzType}`]  : true,
+      [`${this.antAlert}-no-icon`]         : !this.nzShowIcon,
+      [`${this.antAlert}-banner`]          : this.nzBanner,
+      [`${this.antAlert}-with-description`]: !!this.nzDescription
+    };
   }
 
   constructor() {
