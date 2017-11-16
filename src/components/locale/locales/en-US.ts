@@ -52,4 +52,12 @@ export const enUS: NzLocale = {
   Select: {
     notFoundContent: 'Not Found',
   },
+
+  Transfer: {
+    titles: ',',
+    notFoundContent: 'Not Found',
+    searchPlaceholder: 'Search here',
+    itemUnit: 'item',
+    itemsUnit: 'items',
+  }
 };
