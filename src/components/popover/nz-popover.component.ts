@@ -1,10 +1,8 @@
 import {
   Component,
   ViewEncapsulation,
-  Input,
-  ContentChild
+  Input
 } from '@angular/core';
-import { NzPopoverDirective } from './nz-popover.directive';
 import { FadeAnimation } from '../core/animation/fade-animations';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 @Component({
@@ -17,7 +15,7 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
     <ng-content></ng-content>
     <ng-template
       cdkConnectedOverlay
-      [cdkConnectedOverlayOrigin]="nzOrigin"
+      [cdkConnectedOverlayOrigin]="overlayOrigin"
       [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
       (backdropClick)="hide()"
       (detach)="hide()"
@@ -49,5 +47,4 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 export class NzPopoverComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';
   @Input() nzContent;
-  @ContentChild(NzPopoverDirective) nzOrigin;
 }

@@ -4,7 +4,6 @@ import {
   Input,
   TemplateRef,
   Output,
-  Renderer2,
   EventEmitter,
   AfterViewInit,
   ChangeDetectorRef,
@@ -13,12 +12,12 @@ import {
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { NzTooltipDirective } from './nz-tooltip.directive';
 import {
   AnimationEvent,
 } from '@angular/animations';
 import { FadeAnimation } from '../core/animation/fade-animations';
 import {
+  OverlayOrigin,
   ConnectionPositionPair,
   ConnectedOverlayDirective
 } from '@angular/cdk/overlay';
@@ -35,7 +34,7 @@ import { POSITION_MAP, DEFAULT_4_POSITIONS } from '../core/overlay/overlay-posit
     <ng-template
       #overlay="cdkConnectedOverlay"
       cdkConnectedOverlay
-      [cdkConnectedOverlayOrigin]="nzOrigin"
+      [cdkConnectedOverlayOrigin]="overlayOrigin"
       [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
       (backdropClick)="hide()"
       (detach)="hide()"
@@ -61,14 +60,15 @@ import { POSITION_MAP, DEFAULT_4_POSITIONS } from '../core/overlay/overlay-posit
     './style/patch.less'
   ]
 })
-export class NzToolTipComponent implements AfterViewInit {
+export class NzToolTipComponent {
   @Input() nzTitle: string;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle = {};
   @Output() nzVisibleChange: EventEmitter<any> = new EventEmitter();
-  @ContentChild(NzTooltipDirective) nzOrigin;
   @ContentChild('nzTemplate') nzTemplate: TemplateRef<any>;
   @ViewChild('overlay') overlay: ConnectedOverlayDirective;
+
+  protected overlayOrigin: OverlayOrigin;
 
   @Input()
   set nzVisible(value) {
@@ -90,7 +90,6 @@ export class NzToolTipComponent implements AfterViewInit {
     this._trigger = value;
     this._hasBackdrop = this._trigger === 'click';
   }
-
   get nzTrigger() {
     return this._trigger;
   }
@@ -135,12 +134,10 @@ export class NzToolTipComponent implements AfterViewInit {
 
   show(): void {
     this.nzVisible = true;
-    this.nzOrigin.isTooltipOpen = true;
   }
 
   hide(): void {
     this.nzVisible = false;
-    this.nzOrigin.isTooltipOpen = false;
   }
 
   _afterVisibilityAnimation(e: AnimationEvent): void {
@@ -159,22 +156,9 @@ export class NzToolTipComponent implements AfterViewInit {
     };
   }
 
-  constructor(private _renderer: Renderer2, private _cdr: ChangeDetectorRef) {
+  setOverlayOrigin(origin: OverlayOrigin) {
+    this.overlayOrigin = origin;
   }
 
-  ngAfterViewInit() {
-    if (this._trigger === 'hover') {
-      this._renderer.listen(this.nzOrigin.elementRef.nativeElement, 'mouseenter', () => this.show());
-      this._renderer.listen(this.nzOrigin.elementRef.nativeElement, 'mouseleave', () => this.hide());
-    } else if (this._trigger === 'focus') {
-      this._renderer.listen(this.nzOrigin.elementRef.nativeElement, 'focus', () => this.show());
-      this._renderer.listen(this.nzOrigin.elementRef.nativeElement, 'blur', () => this.hide());
-    } else if (this._trigger === 'click') {
-      this._renderer.listen(this.nzOrigin.elementRef.nativeElement, 'click', (e) => {
-        e.preventDefault();
-        this.show()
-      });
-    }
-
-  }
+  constructor(private _cdr: ChangeDetectorRef) { }
 }

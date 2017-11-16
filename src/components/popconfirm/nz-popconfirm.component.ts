@@ -4,11 +4,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  ContentChild,
-  Renderer2,
   ChangeDetectorRef,
 } from '@angular/core';
-import { NzPopconfirmDirective } from './nz-popconfirm.directive';
 import { FadeAnimation } from '../core/animation/fade-animations';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 import { NzLocaleService } from '../locale/index';
@@ -23,7 +20,7 @@ import { NzLocaleService } from '../locale/index';
     <ng-content></ng-content>
     <ng-template
       cdkConnectedOverlay
-      [cdkConnectedOverlayOrigin]="nzOrigin"
+      [cdkConnectedOverlayOrigin]="overlayOrigin"
       [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
       (backdropClick)="hide()"
       (detach)="hide()"
@@ -80,10 +77,9 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
 
   @Output() nzOnCancel: EventEmitter<any> = new EventEmitter();
   @Output() nzOnConfirm: EventEmitter<any> = new EventEmitter();
-  @ContentChild(NzPopconfirmDirective) nzOrigin;
 
-  constructor(renderer: Renderer2, cdr: ChangeDetectorRef, private _locale: NzLocaleService) {
-    super(renderer, cdr);
+  constructor(cdr: ChangeDetectorRef, private _locale: NzLocaleService) {
+    super(cdr);
   }
 
   show(): void {
