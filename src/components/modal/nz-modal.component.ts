@@ -241,7 +241,9 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @HostListener('keydown.esc', [ '$event' ])
   onEsc(e): void {
-    this.clickCancel(e);
+    if (this._maskClosable) {
+      this.clickCancel(e);
+    }
   }
 
   setStyles(origin?): void {
