@@ -83,7 +83,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   clickSubMenuTitle() {
-    if ((this.nzMenuComponent.nzMode === 'inline') || (!this.isInDropDown)) {
+    if ((this.nzMenuComponent.nzMode === 'inline') && (!this.isInDropDown)) {
       this.nzOpen = !this.nzOpen;
       this.nzOpenChange.emit(this.nzOpen);
     }
