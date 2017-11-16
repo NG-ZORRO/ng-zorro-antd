@@ -18,7 +18,7 @@ import {
 import { NzTabComponent } from './nz-tab.component';
 import { NzTabsNavComponent } from './nz-tabs-nav.component';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operator/map';
+import { map } from 'rxjs/operators/map';
 
 export interface NzAnimatedInterface {
   inkBar: boolean,
@@ -110,7 +110,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
 
   @Output()
   get nzSelectedIndexChange(): Observable<number> {
-    return map.call(this.nzSelectChange, event => event.index);
+    return this.nzSelectChange.pipe(map(event => event.index));
   }
 
   @Output() nzSelectChange: EventEmitter<NzTabChangeEvent> = new EventEmitter<NzTabChangeEvent>(true);

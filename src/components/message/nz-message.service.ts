@@ -1,11 +1,10 @@
-import { Injectable, ComponentRef, Type } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { NzMessageConfig } from './nz-message-config';
 import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 import { NzMessageContainerComponent } from './nz-message-container.component';
 
-export class NzMessageBaseService<ContainerClass extends NzMessageContainerComponent<any>, MessageData> {
+export class NzMessageBaseService<ContainerClass extends NzMessageContainerComponent, MessageData> {
   protected _counter = 0; // Id counter for messages
   protected _container: ContainerClass;
 
@@ -38,7 +37,7 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
 }
 
 @Injectable()
-export class NzMessageService extends NzMessageBaseService<NzMessageContainerComponent<NzMessageConfig>, NzMessageData> {
+export class NzMessageService extends NzMessageBaseService<NzMessageContainerComponent, NzMessageData> {
 
   constructor(overlay: Overlay) {
     super(overlay, NzMessageContainerComponent, 'message-');
