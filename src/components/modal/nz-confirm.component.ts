@@ -192,7 +192,9 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
 
   @HostListener('keydown.esc', [ '$event' ])
   onEsc(e): void {
-    this.subject.next('onCancel');
+    if (this._maskClosable) {
+      this.subject.next('onCancel');
+    }
   }
 
   @HostListener('keydown.enter', [ '$event' ])
