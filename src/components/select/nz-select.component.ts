@@ -83,6 +83,7 @@ import { NzLocaleService } from '../locale/index';
                 [(ngModel)]="_searchText"
                 (ngModelChange)="updateFilterOption();onSearchChange($event);"
                 (keydown)="updateWidth(searchInput,_searchText)"
+                (input)="updateWidth(searchInput,_searchText)"
                 (blur)="onTouched()"
                 #searchInput>
               <span class="ant-select-search__field__mirror"></span></div>
