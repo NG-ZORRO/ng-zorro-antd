@@ -5,7 +5,7 @@ import {
   Inject,
   Optional,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 import { NZ_ROOT_CONFIG, NzRootConfig, createNzRootInitializer} from './nz-root-config';
 
 @Component({
@@ -21,7 +21,7 @@ export class NzRootComponent implements OnInit {
   @Input() nzExtraFontUrl: string;
 
   constructor(
-    @Inject(DOCUMENT) private _document: Document,
+    @Inject(DOCUMENT) private _document: any,
     // Cannot use type annotation here due to https://github.com/angular/angular-cli/issues/2034
     // Should be revisited after AOT being made the only option
     @Inject(NZ_ROOT_CONFIG) @Optional() private options: any | undefined,

@@ -14,7 +14,7 @@ import { NzMessageContainerComponent } from '../message/nz-message-container.com
     './style/index.less'
   ]
 })
-export class NzNotificationContainerComponent extends NzMessageContainerComponent<NzNotificationConfig> {
+export class NzNotificationContainerComponent extends NzMessageContainerComponent {
 
   constructor(@Optional() @Inject(NZ_NOTIFICATION_DEFAULT_CONFIG) defaultConfig: NzNotificationConfig,
               @Optional() @Inject(NZ_NOTIFICATION_CONFIG) config: NzNotificationConfig) {
