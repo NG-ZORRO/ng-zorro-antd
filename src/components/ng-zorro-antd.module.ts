@@ -53,6 +53,7 @@ import { NzBackTopModule } from './back-top/nz-back-top.module';
 import { NzAffixModule } from './affix/nz-affix.module';
 import { NzAnchorModule } from './anchor/nz-anchor.module';
 import { NzAvatarModule } from './avatar/nz-avatar.module';
+import { NzTransferModule } from './transfer/nz-transfer.module';
 
 // Services
 import { NzNotificationService } from './notification/nz-notification.service';
@@ -118,6 +119,7 @@ export { NzBackTopModule } from './back-top/nz-back-top.module';
 export { NzAffixModule } from './affix/nz-affix.module';
 export { NzAnchorModule } from './anchor/nz-anchor.module';
 export { NzAvatarModule } from './avatar/nz-avatar.module';
+export { NzTransferModule } from './transfer/nz-transfer.module';
 
 // Components
 export { NzRowComponent } from './grid/nz-row.component';
@@ -222,6 +224,7 @@ export { NzAffixComponent } from './affix/nz-affix.component';
 export { NzAnchorLinkComponent } from './anchor/nz-anchor-link.component';
 export { NzAnchorComponent } from './anchor/nz-anchor.component';
 export { NzAvatarComponent } from './avatar/nz-avatar.component';
+export { NzTransferComponent } from './transfer/nz-transfer.component';
 
 // Services
 export { NzNotificationService } from './notification/nz-notification.service';
@@ -286,7 +289,8 @@ export { NZ_ROOT_CONFIG, NzRootConfig } from './root/nz-root-config';
     NzBackTopModule,
     NzAffixModule,
     NzAnchorModule,
-    NzAvatarModule
+    NzAvatarModule,
+    NzTransferModule
   ]
 })
 export class NgZorroAntdModule {

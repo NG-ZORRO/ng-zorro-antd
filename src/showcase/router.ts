@@ -171,6 +171,12 @@ export const ROUTER_LIST = {
           'path'        : 'components/time-picker',
           // 'loadChildren': './nz-demo-timepicker/nz-demo-timepicker.module#NzDemoTimePickerModule',
           'zh'          : '时间选择框'
+        },
+        {
+          'label'       : 'Transfer',
+          'path'        : 'components/transfer',
+          // 'loadChildren': './nz-demo-timepicker/nz-demo-timepicker.module#NzDemoTimePickerModule',
+          'zh'          : '穿梭框'
         }
       ]
     },
@@ -426,6 +432,10 @@ export const DEMO_ROUTES = [
   {
     'path'        : 'components/time-picker',
     'loadChildren': './nz-demo-timepicker/nz-demo-timepicker.module#NzDemoTimePickerModule'
+  },
+  {
+    'path'        : 'components/transfer',
+    'loadChildren': './nz-demo-transfer/nz-demo-transfer.module#NzDemoTransferModule'
   },
   {
     'path'        : 'components/badge',
