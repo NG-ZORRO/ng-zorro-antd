@@ -1,0 +1,192 @@
+<article>
+  <section class="markdown"><h1>Transfer 穿梭框</h1>
+    <section class="markdown"><p>双栏穿梭选择框。</p>
+      <h2 id="何时使用"><span>何时使用</span>
+        <a  class="anchor">#</a>
+      </h2>
+      <p>用直观的方式在两栏中移动元素，完成选择行为。</p>
+      <p>选择一个或以上的选项后，点击对应的方向键，可以把选中的选项移动到另一栏。 其中，左边一栏为<code>source</code>，右边一栏为<code>target</code>，API 的设计也反映了这两个概念。</p>
+    </section>
+    <h2>代码演示<i class="code-box-expand-trigger anticon anticon-appstore" title="展开全部代码"></i></h2>
+  </section>
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="24">
+      <nz-code-box [nzTitle]="'基本用法'" id="components-transfer-demo-basic" [nzCode]="NzDemoTransferBasicCode">
+        <nz-demo-transfer-basic demo></nz-demo-transfer-basic>
+        <div intro>
+          <p>最基本的用法，展示了<code>nzDataSource</code>、每行的渲染函数 <code>render</code> 以及回调函数<code>nzSelectChange</code><code>nzChange</code>的用法。</p>
+        </div>
+      </nz-code-box>
+    </div>
+    <div nz-col [nzSpan]="24">
+      <nz-code-box [nzTitle]="'带搜索框'" id="components-transfer-demo-search" [nzCode]="NzDemoTransferSearchCode">
+        <nz-demo-transfer-search demo></nz-demo-transfer-search>
+        <div intro>
+          <p>带搜索框的穿梭框，可以自定义搜索函数。</p>
+        </div>
+      </nz-code-box>
+    </div>
+    <div nz-col [nzSpan]="24">
+      <nz-code-box [nzTitle]="'高级用法'" id="components-transfer-demo-advanced" [nzCode]="NzDemoTransferAdvancedCode">
+        <nz-demo-transfer-advanced demo></nz-demo-transfer-advanced>
+        <div intro>
+          <p>穿梭框高级用法，可配置操作文案，可定制宽高，可对底部进行自定义渲染。</p>
+        </div>
+      </nz-code-box>
+    </div>
+    <div nz-col [nzSpan]="24">
+      <nz-code-box [nzTitle]="'自定义渲染行数据'" id="components-transfer-demo-custom-item" [nzCode]="NzDemoTransferCustomItemCode">
+        <nz-demo-transfer-custom-item demo></nz-demo-transfer-custom-item>
+        <div intro>
+          <p>自定义渲染每一个 Transfer Item，可用于渲染复杂数据。</p>
+        </div>
+      </nz-code-box>
+    </div>
+  </div>
+  <section class="markdown api-container">
+    <h2 id="API"><span>API</span>
+      <!-- <a class="anchor">#</a> -->
+    </h2>
+    <table>
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>说明</th>
+          <th>类型</th>
+          <th>默认值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>nzDataSource</td>
+          <td>数据源，其中若数据属性<code>direction: 'right'</code>将会被渲染到右边一栏中</td>
+          <td>TransferItem[]</td>
+          <td>[]</td>
+        </tr>
+        <tr>
+          <td>nzTitles</td>
+          <td>标题集合，顺序从左至右</td>
+          <td>string[]</td>
+          <td>['', '']</td>
+        </tr>
+        <tr>
+          <td>nzOperations</td>
+          <td>操作文案集合，顺序从下至上</td>
+          <td>string[]</td>
+          <td>'>', '<'</td>
+        </tr>
+        <tr>
+          <td>nzListStyle</td>
+          <td>两个穿梭框的自定义样式，以<code>ngStyle</code>写法标题</td>
+          <td>object</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>nzItemUnit</td>
+          <td>单数单位</td>
+          <td>string</td>
+          <td>项目</td>
+        </tr>
+        <tr>
+          <td>nzItemsUnit</td>
+          <td>复数单位</td>
+          <td>string</td>
+          <td>项目</td>
+        </tr>
+        <tr>
+          <td>#render</td>
+          <td>每行数据渲染模板，见示例</td>
+          <td>TemplateRef</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>#footer</td>
+          <td>底部渲染模板，见示例</td>
+          <td>TemplateRef</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>nzShowSearch</td>
+          <td>是否显示搜索框</td>
+          <td>boolean</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>nzFilterOption</td>
+          <td>接收<code>inputValue</code><code>option</code> 两个参数，当 <code>option</code> 符合筛选条件时，应返回 <code>true</code>，反之则返回 <code>false</code>。</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>nzSearchPlaceholder</td>
+          <td>搜索框的默认值</td>
+          <td>请输入搜索内容</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>nzNotFoundContent</td>
+          <td>当列表为空时显示的内容</td>
+          <td>列表为空</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>(nzChange)</td>
+          <td>选项在两栏之间转移时的回调函数</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>(nzSearchChange)</td>
+          <td>搜索框内容时改变时的回调函数</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>(nzSelectChange)</td>
+          <td>选中项发生改变时的回调函数</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="TransferItem"><span>TransferItem</span>
+      <!-- <a class="anchor">#</a> -->
+    </h2>
+    <table>
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>说明</th>
+          <th>类型</th>
+          <th>默认值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>title</td>
+          <td>标题，用于显示及搜索关键字判断</td>
+          <td>string</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>direction</td>
+          <td>指定数据方向，若指定<code>right</code>为右栏，其他情况为左栏</td>
+          <td><code>left</code><code>right</code></td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>disabled</td>
+          <td>指定checkbox为不可用状态</td>
+          <td>boolean</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>checked</td>
+          <td>指定checkbox为选中状态</td>
+          <td>boolean</td>
+          <td>false</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</article>
