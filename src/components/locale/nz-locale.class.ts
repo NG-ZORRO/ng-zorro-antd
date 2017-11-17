@@ -50,4 +50,12 @@ export class NzLocale {
   Select: {
     notFoundContent: string;
   };
+
+  Transfer: {
+    titles: string,
+    notFoundContent: string,
+    searchPlaceholder: string,
+    itemUnit: string,
+    itemsUnit: string,
+  };
 }

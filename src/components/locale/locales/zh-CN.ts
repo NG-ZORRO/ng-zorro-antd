@@ -52,4 +52,12 @@ export const zhCN: NzLocale = {
   Select: {
     notFoundContent: '无法找到',
   },
+
+  Transfer: {
+    titles: ',',
+    notFoundContent: '无匹配结果',
+    searchPlaceholder: '请输入',
+    itemUnit: '项目',
+    itemsUnit: '项目',
+  }
 };
