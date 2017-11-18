@@ -26,7 +26,7 @@ An enterprise-class UI components based on Ant Design and Angular.
 
 ## Angular Version Support
 
-* Angular`^4.4.4`
+* Angular`^5.0.0`
 
 
 ## Install

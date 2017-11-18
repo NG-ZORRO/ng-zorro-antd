@@ -68,7 +68,7 @@ export class NzToolTipComponent {
   @ContentChild('nzTemplate') nzTemplate: TemplateRef<any>;
   @ViewChild('overlay') overlay: ConnectedOverlayDirective;
 
-  protected overlayOrigin: OverlayOrigin;
+  overlayOrigin: OverlayOrigin;
 
   @Input()
   set nzVisible(value) {
