@@ -9,7 +9,7 @@
 [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg)](https://www.npmjs.org/package/ng-zorro-antd)
 [![Gitter](https://badges.gitter.im/ng-zorro/ng-zorro-antd.svg)](https://gitter.im/ng-zorro/ng-zorro-antd?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-这里是 Ant Design 的 Angular 4.0 实现，开发和服务于企业级后台产品。
+这里是 Ant Design 的 Angular 5.0 实现，开发和服务于企业级后台产品。
 
 [README in English](README.md)
 
@@ -25,7 +25,7 @@
 
 ## 兼容版本
 
-当前支持Angular`^4.4.4`版本
+当前支持Angular`^5.0.0`版本
 
 
 ## 安装
