@@ -9,6 +9,30 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.6.0
+`2017-11-17`
+
+### BREAK CHANGES
+
+* 兼容 `Angular 5.0` 版本，`Angular 4.x` 版本请使用 `0.5.5` 版本的 `NG-ZORRO`  [#552](https://github.com/NG-ZORRO/ng-zorro-antd/pull/552) 
+
+### Features
+
+* 新增 `Transfer` 组件 [#578](https://github.com/NG-ZORRO/ng-zorro-antd/pull/578) [@卡色](https://github.com/cipchk)
+* `Tooltip` 支持 `Directive` 用法 [#545](https://github.com/NG-ZORRO/ng-zorro-antd/pull/545)
+* `Modal` 支持 `Esc` 键关闭选项 [#567](https://github.com/NG-ZORRO/ng-zorro-antd/pull/567) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `TimePicker` 支持 `nzDisabledHours` 动态调整 [#568](https://github.com/NG-ZORRO/ng-zorro-antd/pull/568) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `Steps` 的 `nzDescription` 选项支持传入 `Template` [#556](https://github.com/NG-ZORRO/ng-zorro-antd/pull/556) [@卡色](https://github.com/cipchk) 
+
+### Bug Fixes
+* Hover 后立刻点击 `Menu` 时不再隐藏二级菜单 [#576](https://github.com/NG-ZORRO/ng-zorro-antd/pull/576)
+* 修复 `Select` 在多选状态下粘贴时宽度不会改变的问题 [#575](https://github.com/NG-ZORRO/ng-zorro-antd/pull/575)
+* 修复 `Popover` `Title`无数据时仍然显示的问题 [#556](https://github.com/NG-ZORRO/ng-zorro-antd/pull/556) [@卡色](https://github.com/cipchk)
+
+### Docs
+* 增加ISSUE助手功能，未按要求书写的ISSUE将会被关闭 [#565](https://github.com/NG-ZORRO/ng-zorro-antd/pull/565) 
+* 在文档页面增加版本切换功能 [#577](https://github.com/NG-ZORRO/ng-zorro-antd/pull/577)
+
 ## 0.6.0-rc.3
 `2017-11-04`
 
