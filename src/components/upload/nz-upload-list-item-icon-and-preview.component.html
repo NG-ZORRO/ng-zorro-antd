@@ -1,29 +1,29 @@
-<div [ngSwitch]="file.status">
+<div [ngSwitch]="nzFile.status">
     <nz-tooltip
         *ngSwitchCase="'error'"
-        [nzTitle]="(file.error && file.error.statusText) || _uploadErrorText"
+        [nzTitle]="(nzFile.error && nzFile.error.statusText) || _uploadErrorText"
     >
         <nz-upload-list-item-icon
-          [file]="file"
-          [listType]="listType"
+          [nzFile]="nzFile"
+          [nzListType]="nzListType"
           nz-tooltip
         ></nz-upload-list-item-icon>
         <nz-upload-list-item-preview
-            [file]="file"
-            (onPreview)="onPreview.emit(file)"
+            [nzFile]="nzFile"
+            (nzOnPreview)="nzOnPreview.emit(nzFile)"
         >
         </nz-upload-list-item-preview>
 
     </nz-tooltip>
     <span *ngSwitchDefault >
         <nz-upload-list-item-icon
-          [file]="file"
-          [listType]="listType"
+          [nzFile]="nzFile"
+          [nzListType]="nzListType"
         ></nz-upload-list-item-icon>
         <nz-upload-list-item-preview
-            [file]="file"
-            [listType]="listType"
-            (onPreview)="onPreview.emit(file)"
+            [nzFile]="nzFile"
+            [nzListType]="nzListType"
+            (nzOnPreview)="nzOnPreview.emit(nzFile)"
         >
         </nz-upload-list-item-preview>
     </span>

@@ -1,11 +1,11 @@
 <div
-  *ngIf="(listType === 'picture' || listType === 'picture-card'); else listTypeElseBlock"
+  *ngIf="(nzListType === 'picture' || nzListType === 'picture-card'); else listTypeElseBlock"
 >
 
   <div
-    *ngIf="file.status === 'uploading' || (!file.thumbUrl && !file.url); else fileStatusElseBlock"
+    *ngIf="nzFile.status === 'uploading' || (!nzFile.thumbUrl && !nzFile.url); else fileStatusElseBlock"
   >
-    <div [ngSwitch]="listType">
+    <div [ngSwitch]="nzListType">
       <div
         *ngSwitchCase="'picture-card'"
         [ngClass]="_prefixCls+'-list-item-uploading-text'"
@@ -22,19 +22,19 @@
   <ng-template #fileStatusElseBlock>
     <a
       [ngClass]="_prefixCls+'-list-item-thumbnail'"
-      (click)="onPreview.emit(file)"
-      [href]="file.url || file.thumbUrl"
+      (click)="onPreview.emit(nzFile)"
+      [href]="nzFile.url || nzFile.thumbUrl"
       target="_blank"
       rel="noopener noreferrer"
     >
-      <img [src]="file.thumbUrl || file.url" [alt]="file.name" />
+      <img [src]="nzFile.thumbUrl || nzFile.url" [alt]="nzFile.name" />
     </a>
   </ng-template>
 
 </div>
 
 <ng-template #listTypeElseBlock>
-  <div [ngSwitch]="file.status">
+  <div [ngSwitch]="nzFile.status">
     <i *ngSwitchCase="'uploading'" class="anticon anticon-loading anticon-spin" nz-tooltip></i>
     <i *ngSwitchDefault class="anticon anticon-paper-clip" nz-tooltip></i>
   </div>

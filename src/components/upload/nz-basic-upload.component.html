@@ -1,11 +1,11 @@
 <span [ngClass]="_classMap" (click)="onClick($event)" role="button" style="padding: 20px;">
 <input
     #input
-    [accept]="accept"
+    [accept]="nzAccept"
     style="display:none"
     type="file"
     (change)="onChange($event)"
-    [multiple]="multiple"
+    [multiple]="nzMultiple"
 >
 <ng-content></ng-content>
 </span>

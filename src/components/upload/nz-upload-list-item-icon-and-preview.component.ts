@@ -12,9 +12,9 @@ import { NzLocaleService } from '../locale/index';
 export class NzUploadListItemIconAndPreviewComponent implements OnInit {
 
 
-  @Input() file;
-  @Input() listType;
-  @Output() onPreview = new EventEmitter<any>();
+  @Input() nzFile;
+  @Input() nzListType;
+  @Output() nzOnPreview = new EventEmitter<any>();
 
   _uploadErrorText = this._locale.translate('Upload.uploadError');
 

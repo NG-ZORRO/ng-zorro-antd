@@ -7,9 +7,9 @@
 >
     <div [ngClass]="_prefixCls+'-list-item-info'">
         <nz-upload-list-item-icon-and-preview
-            [file]="file"
-            [listType]="listType"
-            (onPreview)="handlePreview(file)"
+            [nzFile]="file"
+            [nzListType]="listType"
+            (nzOnPreview)="handlePreview(file)"
         >
         </nz-upload-list-item-icon-and-preview>
     </div>

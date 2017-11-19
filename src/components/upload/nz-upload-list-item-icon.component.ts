@@ -13,10 +13,9 @@ export class NzUploadListItemIconComponent implements OnInit {
 
   _prefixCls = 'ant-upload';
 
-  @Input() file;
-  @Input() listType;
-
-  @Output() onPreview = new EventEmitter<any>();
+  @Input() nzFile;
+  @Input() nzListType;
+  @Output() nzOnPreview = new EventEmitter<any>();
 
   _uploadingText = this._locale.translate('Upload.uploading');
 

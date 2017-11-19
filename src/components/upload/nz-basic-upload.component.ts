@@ -18,23 +18,23 @@ export class NzBasicUploadComponent implements OnInit {
     _prefixCls = 'ant-upload';
     _reqs = {};
 
-    @Input() accept: string;
-    @Input() action: string;
-    @Input() autoUpload = true;
-    @Input() beforeUpload: (file: File, files: FileList) => boolean | Promise<any> = null;
-    @Input() customRequest: any;
-    @Input() data: any;
-    @Input() disabled = false;
-    @Input() headers: string | { [name: string]: string | string[] } = {};
-    @Input() multiple = false;
+    @Input() nzAction: string;
+    @Input() nzAccept: string;
+    @Input() nzAutoUpload = true;
+    @Input() nzBeforeUpload: (file: File, files: FileList) => boolean | Promise<any> = null;
+    @Input() nzCustomRequest: any = null;
+    @Input() nzData: any;
+    @Input() nzDisabled = false;
+    @Input() nzHeaders: string | { [name: string]: string | string[] };
+    @Input() nzMultiple = false;
     @Input() name: string;
-    @Input() withCredentials = false;
+    @Input() nzWithCredentials = false;
 
-    @Output() onError = new EventEmitter<any>();
-    @Output() onProgress = new EventEmitter<any>();
-    @Output() onRemove = new EventEmitter<any>();
-    @Output() onStart = new EventEmitter<any>();
-    @Output() onSuccess = new EventEmitter<any>();
+    @Output() nzOnError = new EventEmitter<any>();
+    @Output() nzOnProgress = new EventEmitter<any>();
+    @Output() nzOnRemove = new EventEmitter<any>();
+    @Output() nzOnStart = new EventEmitter<any>();
+    @Output() nzOnSuccess = new EventEmitter<any>();
 
     @ViewChild('input') inputElement: ElementRef;
 
@@ -49,7 +49,7 @@ export class NzBasicUploadComponent implements OnInit {
     setClassMap(): void {
         this._classMap = {
             [`${this._prefixCls}`]: true,
-            [`${this._prefixCls}-disabled`]: this.disabled,
+            [`${this._prefixCls}-disabled`]: this.nzDisabled,
         };
     }
 
@@ -64,18 +64,18 @@ export class NzBasicUploadComponent implements OnInit {
 
         postFiles.forEach((file) => {
             file.uid = this.uidService.getUid();
-            this.onStart.emit(file);
-            if (this.autoUpload) {
+            this.nzOnStart.emit(file);
+            if (this.nzAutoUpload) {
                 this.upload(file, postFiles);
             }
         });
     }
 
     upload(file, fileList) {
-        if (!this.beforeUpload) {
+        if (!this.nzBeforeUpload) {
             this.post(file);
         } else {
-            const before = this.beforeUpload(file, fileList);
+            const before = this.nzBeforeUpload(file, fileList);
             if (before instanceof Promise && before && before.then) {
                 before.then((processedFile) => {
                     const processedFileType = Object.prototype.toString.call(processedFile);
@@ -107,41 +107,41 @@ export class NzBasicUploadComponent implements OnInit {
     }
 
     post(file) {
-        const { onProgress, accept, onSuccess } = this;
+        const { nzOnProgress, nzAccept, nzOnSuccess } = this;
         const { uid } = file;
-        if (!attrAccept(file, accept)) {
+        if (!attrAccept(file, nzAccept)) {
             return;
         }
-        const request = this.customRequest || defaultRequest;
+        const request = this.nzCustomRequest || defaultRequest;
 
-        if (typeof this.data === 'function') {
-            this.data = this.data(file);
+        if (typeof this.nzData === 'function') {
+            this.nzData = this.nzData(file);
         }
 
 
         this._reqs[uid] = request({
-            action: this.action,
+            action: this.nzAction,
             filename: this.name,
             file,
-            data: this.data,
-            headers: this.headers,
-            withCredentials: this.withCredentials,
-            onProgress: onProgress ? event => {
-                this.onProgress.emit({ event, file });
+            data: this.nzData,
+            headers: this.nzHeaders,
+            withCredentials: this.nzWithCredentials,
+            onProgress: nzOnProgress ? event => {
+                this.nzOnProgress.emit({ event, file });
             } : null,
             onSuccess: (ret, xhr) => {
                 delete this._reqs[uid];
-                this.onSuccess.emit({ ret, file, xhr });
+                this.nzOnSuccess.emit({ ret, file, xhr });
             },
             onError: (err, ret) => {
                 delete this._reqs[uid];
-                this.onError.emit({ err, ret, file });
+                this.nzOnError.emit({ err, ret, file });
             },
         });
     }
 
     onClick(ev) {
-        if (!this.disabled) {
+        if (!this.nzDisabled) {
             this.inputElement.nativeElement.value = null;
             this.inputElement.nativeElement.click();
         }

@@ -1,24 +1,24 @@
 <div
-*ngIf="file.url&&listType=='text'; else urlElseBlock"
+*ngIf="nzFile.url&&nzListType=='text'; else urlElseBlock"
 >
 <a
-    [href]="file.url"
+    [href]="nzFile.url"
     target="_blank"
     rel="noopener noreferrer"
-    (click)="onPreview.emit(file)"
-    [title]="file.name"
+    (click)="nzOnPreview.emit(nzFile)"
+    [title]="nzFile.name"
     nz-tooltip
 >
-    {{file.name}}
+    {{nzFile.name}}
 </a>
 </div>
 <ng-template #urlElseBlock>
 <span
     [ngClass]="_prefixCls+'-list-item-name'"
-    (click)="onPreview.emit(file)"
-    [title]="file.name"
+    (click)="nzOnPreview.emit(nzFile)"
+    [title]="nzFile.name"
     nz-tooltip
 >
-    {{file.name}}
+    {{nzFile.name}}
 </span>
 </ng-template>
