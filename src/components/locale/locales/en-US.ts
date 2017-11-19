@@ -53,6 +53,13 @@ export const enUS: NzLocale = {
     notFoundContent: 'Not Found',
   },
 
+  Upload: {
+    uploading: 'Uploading...',
+    removeFile: 'Remove file',
+    uploadError: 'Upload error',
+    previewFile: 'Preview file',
+  },
+
   Transfer: {
     titles: ',',
     notFoundContent: 'Not Found',

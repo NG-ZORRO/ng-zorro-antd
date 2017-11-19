@@ -21,21 +21,21 @@
             *ngIf="showPreviewIcon && !(file.url || file.thumbUrl)"
             [ngStyle]="{pointerEvents: 'none',opacity: 0.5}"
             (click)="handlePreview(file)"
-            [title]="_locale.previewFile"
+            [title]="_previewFileText"
         >
             <i class="anticon anticon-eye-o"></i>
         </a>
         <a
           *ngIf="showPreviewIcon && (file.url || file.thumbUrl)"
           (click)="handlePreview(file)"
-          [title]="_locale.previewFile"
+          [title]="_previewFileText"
         >
             <i class="anticon anticon-eye-o"></i>
         </a>
 
         <i
             class="anticon anticon-delete"
-            [title]="_locale.removeFile"
+            [title]="_removeFileText"
             (click)="handleClose(file)"
         ></i>
     </span>
@@ -43,7 +43,7 @@
         #listTypeElseBlock
         *ngIf="showRemoveIcon"
         class="anticon anticon-cross"
-        [title]="_locale.removeFile"
+        [title]="_removeFileText"
         (click)="handleClose(file)"
     ></i>
 

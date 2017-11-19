@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { NzLocaleService } from '../locale/index';
 
 @Component({
   selector: 'nz-upload-list-item-icon-and-preview',
@@ -10,18 +11,14 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } fro
 })
 export class NzUploadListItemIconAndPreviewComponent implements OnInit {
 
-  _locale = {
-    uploading: '文件上传中',
-    removeFile: '删除文件',
-    uploadError: '上传错误',
-    previewFile: '预览文件',
-  };
 
   @Input() file;
   @Input() listType;
   @Output() onPreview = new EventEmitter<any>();
 
-  constructor() { }
+  _uploadErrorText = this._locale.translate('Upload.uploadError');
+
+  constructor(private _locale: NzLocaleService) { }
 
   ngOnInit() { }
 

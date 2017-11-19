@@ -1,7 +1,7 @@
 <div [ngSwitch]="file.status">
     <nz-tooltip
         *ngSwitchCase="'error'"
-        [nzTitle]="(file.error && file.error.statusText) || _locale.uploadError"
+        [nzTitle]="(file.error && file.error.statusText) || _uploadErrorText"
     >
         <nz-upload-list-item-icon
           [file]="file"

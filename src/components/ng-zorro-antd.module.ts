@@ -292,7 +292,7 @@ export { NZ_ROOT_CONFIG, NzRootConfig } from './root/nz-root-config';
     NzAffixModule,
     NzAnchorModule,
     NzAvatarModule,
-    NzUploadModule
+    NzUploadModule,
     NzTransferModule
   ]
 })
