@@ -181,6 +181,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   _mode;
   _keepUnListOptions = false;
   _allowClear = false;
+  _panelStyle: any;
   // ngModel Access
   onChange: any = Function.prototype;
   onTouched: any = Function.prototype;
@@ -191,6 +192,15 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   @Output() nzOpenChange: EventEmitter<any> = new EventEmitter();
   @Input() nzFilter = true;
   @Input() nzMaxMultiple = Infinity;
+
+  @Input()
+  set nzPanelStyle(value: string) {
+    this._panelStyle = value;
+  }
+
+  get nzPanelStyle() {
+    return this._panelStyle
+  }
 
   @Input()
   set nzAllowClear(value: boolean | string) {
@@ -514,7 +524,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   }
 
   handleKeyEnterEvent(event) {
-      /** when composing end */
+    /** when composing end */
     if (!this._composing && this._isOpen) {
       event.preventDefault();
       event.stopPropagation();
@@ -666,7 +676,8 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
       [`${this._dropDownPrefixCls}--single`]             : !this.nzMultiple,
       [`${this._dropDownPrefixCls}--multiple`]           : this.nzMultiple,
       [`${this._dropDownPrefixCls}-placement-bottomLeft`]: this._dropDownPosition === 'bottom',
-      [`${this._dropDownPrefixCls}-placement-topLeft`]   : this._dropDownPosition === 'top'
+      [`${this._dropDownPrefixCls}-placement-topLeft`]   : this._dropDownPosition === 'top',
+      [this.nzPanelStyle]                                : true
     };
   }
 
