@@ -35,7 +35,7 @@ import { NzThDirective } from './nz-th.directive';
             </div>
             <div class="ant-table-content">
               <div [class.ant-table-scroll]="nzScroll">
-                <div class="ant-table-header" [ngStyle]="_headerBottomStyle" *ngIf="nzScroll">
+                <div class="ant-table-header" *ngIf="nzScroll">
                   <table [style.width.px]="nzScroll?.x">
                     <colgroup>
                       <col *ngFor="let th of ths" [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth">
@@ -94,7 +94,6 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   data = [];
   _scroll;
   _el: HTMLElement;
-  _headerBottomStyle;
   _current = 1;
   _total: number;
   _pageSize = 10;
@@ -223,11 +222,6 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
-    const scrollbarWidth = measureScrollbar();
-    this._headerBottomStyle = {
-      marginBottom : `0px`,
-      paddingBottom: `0px`
-    }
   }
 
   constructor(private _elementRef: ElementRef, private _cd: ChangeDetectorRef) {
@@ -238,7 +232,7 @@ export class NzTableComponent implements AfterViewInit, OnInit {
     this._isInit = true;
   }
 
-  scrollTable ($event) {
+  scrollTable (event) {
     if (this.nzScroll != null &&  this.nzScroll.x != null) {
       const body = <any>event.currentTarget;
       const head = body.parentElement.getElementsByClassName('ant-table-header')[0];
