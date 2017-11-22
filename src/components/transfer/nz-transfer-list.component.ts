@@ -6,9 +6,9 @@ import { TransferItem } from './item';
     selector: 'nz-transfer-list',
     template: `
     <div class="ant-transfer-list-header">
-        <label nz-checkbox [(ngModel)]="stat.checkAll" (ngModelChange)="onHandleSelectAll()"
+        <label nz-checkbox [(ngModel)]="stat.checkAll" (ngModelChange)="onHandleSelectAll($event)"
             [nzIndeterminate]="stat.checkHalf"></label><span class="ant-transfer-list-header-selected">
-            <span>{{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount}} {{_list.length > 1 ? itemsUnit : itemUnit}}</span>
+            <span>{{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount}} {{dataSource.length > 1 ? itemsUnit : itemUnit}}</span>
             <span *ngIf="titleText" class="ant-transfer-list-header-title">{{titleText}}</span>
         </span>
     </div>
@@ -22,7 +22,7 @@ import { TransferItem } from './item';
                 [value]="filter"></nz-transfer-search>
         </div>
         <ul class="ant-transfer-list-content">
-            <ng-container *ngFor="let item of _list">
+            <ng-container *ngFor="let item of dataSource">
                 <li *ngIf="!item._hiden" (click)="_handleSelect(item)" class="ant-transfer-list-content-item">
                     <label nz-checkbox [ngModel]="item.checked" [nzDisabled]="item.disabled">
                         <span>
@@ -42,19 +42,12 @@ import { TransferItem } from './item';
 })
 export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
 
-    // private
-    _list: TransferItem[] = [];
-
     // region: fields
 
     @Input() direction = '';
     @Input() titleText = '';
 
-    @Input()
-    set dataSource(list: TransferItem[]) {
-      this._list = list;
-      this.updateCheckStatus();
-    }
+    @Input() dataSource: TransferItem[] = [];
 
     @Input() itemUnit = '';
     @Input() itemsUnit = '';
@@ -94,6 +87,7 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
     // endregion
 
     // region: select all
+
     stat = {
       checkAll: false,
       checkHalf: false,
@@ -101,21 +95,23 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
       shownCount: 0
     };
 
-    onHandleSelectAll() {
-      this._list.forEach(item => {
-        if (!item.disabled) {
-          item.checked = this.stat.checkAll;
+    onHandleSelectAll(status: boolean) {
+      this.dataSource.forEach(item => {
+        if (!item.disabled && !item._hiden) {
+          item.checked = status;
         }
       });
-      this.updateCheckStatus();
 
-      this.handleSelectAll.emit(this.stat.checkAll);
+      // ngModelChange 事件内对状态的变更会无效，因此使用延迟改变执行顺序
+      setTimeout(() => this.updateCheckStatus());
+
+      this.handleSelectAll.emit(status);
     }
 
     private updateCheckStatus() {
-      const validCount = this._list.filter(w => !w.disabled).length;
-      this.stat.checkCount = this._list.filter(w => w.checked && !w.disabled).length;
-      this.stat.shownCount = this._list.filter(w => !w._hiden).length;
+      const validCount = this.dataSource.filter(w => !w.disabled).length;
+      this.stat.checkCount = this.dataSource.filter(w => w.checked && !w.disabled).length;
+      this.stat.shownCount = this.dataSource.filter(w => !w._hiden).length;
       this.stat.checkAll = validCount > 0 && validCount === this.stat.checkCount;
       this.stat.checkHalf = this.stat.checkCount > 0 && !this.stat.checkAll;
     }
@@ -125,10 +121,11 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
     // region: search
 
     handleFilter(value: string) {
-      this._list.forEach(item => {
+      this.filter = value;
+      this.dataSource.forEach(item => {
         item._hiden = value.length > 0 && !this.matchFilter(value, item);
       });
-      this.stat.shownCount = this._list.filter(w => !w._hiden).length;
+      this.stat.shownCount = this.dataSource.filter(w => !w._hiden).length;
       this.filterChange.emit({ direction: this.direction, value });
     }
 
@@ -161,7 +158,7 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
     }
 
     ngDoCheck(): void {
-      const change = this._listDiffer.diff(this._list);
+      const change = this._listDiffer.diff(this.dataSource);
       if (change) {
         this.updateCheckStatus();
       }
