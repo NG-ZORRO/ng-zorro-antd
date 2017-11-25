@@ -472,8 +472,10 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
         return (item != null) && (currentModelValue.indexOf(item.nzValue) !== -1);
       });
       if ((this.nzKeepUnListOptions || this.nzTags) && (!triggerByNgModel)) {
+        const _selectedOptions = Array.from(this._selectedOptions);
         selectedOptions.forEach(option => {
-          if (!this._selectedOptions.has(option)) {
+          const _exist = _selectedOptions.some(item => item._value === option._value);
+          if (!_exist) {
             this._selectedOptions.add(option);
           }
         });
@@ -514,7 +516,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   }
 
   handleKeyEnterEvent(event) {
-      /** when composing end */
+    /** when composing end */
     if (!this._composing && this._isOpen) {
       event.preventDefault();
       event.stopPropagation();
@@ -607,7 +609,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
       this.nzOpen = false;
       return;
     }
-    if ( (keyCode !== DOWN_ARROW && keyCode !== ENTER) || this.nzOpen) {
+    if ((keyCode !== DOWN_ARROW && keyCode !== ENTER) || this.nzOpen) {
       return;
     }
     e.preventDefault();
