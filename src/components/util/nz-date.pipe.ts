@@ -7,7 +7,7 @@ export class NzDatePipe implements PipeTransform {
     if (moment(value).isValid()) {
       return moment(value).format(formatString);
     } else {
-      return 'Invalid Date';
+      return '';
     }
   }
 }
