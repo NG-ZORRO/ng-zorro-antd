@@ -9,6 +9,17 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.6.1
+`2017-11-26`
+
+### Features
+* `DatePicker` 支持了全部 `momentjs` 的时间格式 [#593](https://github.com/NG-ZORRO/ng-zorro-antd/pull/593) [@JuniorTour](https://github.com/JuniorTour)
+
+### Bug Fixes
+* `DatePicker` 修复 `nzDisabledDate` 对 `Today` 按钮不生效的问题 [#611](https://github.com/NG-ZORRO/ng-zorro-antd/pull/611)
+* `Select` 修复选项重复的问题 [#609](https://github.com/NG-ZORRO/ng-zorro-antd/pull/609)
+* `Transfer` 修复全选的问题 [#602](https://github.com/NG-ZORRO/ng-zorro-antd/pull/602) [@卡色](https://github.com/cipchk)
+
 ## 0.6.0
 `2017-11-17`
 
