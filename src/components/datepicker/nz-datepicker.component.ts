@@ -73,17 +73,17 @@ import { NzLocaleService } from '../locale/index';
                 <a class="ant-calendar-prev-year-btn" title="{{ 'DateTime.prevYear' | nzTranslate }}" (click)="_preYear()"></a>
                 <a class="ant-calendar-prev-month-btn" title="{{ 'DateTime.prevMonth' | nzTranslate }}" (click)="_preMonth()"></a>
                 <span class="ant-calendar-ym-select">
-                <a class="ant-calendar-month-select" title="{{ 'DateTime.chooseMonth' | nzTranslate }}" (click)="_changeMonthView()">{{ 'DateTime.nMonth' | nzTranslate: { num: _showMonth + 1 } }}</a>
-                <a class="ant-calendar-year-select" title="{{ 'DateTime.chooseYear' | nzTranslate }}" (click)="_changeDecadeView($event)">{{ 'DateTime.nYear' | nzTranslate: { num: _showYear } }}</a>
+                <a class="ant-calendar-month-select" title="{{ 'DateTime.chooseMonth' | nzTranslate }}" (click)="_changeMonthView()">{{ 'DateTime.nMonth' | nzTranslate: {num: _showMonth + 1} }}</a>
+                <a class="ant-calendar-year-select" title="{{ 'DateTime.chooseYear' | nzTranslate }}" (click)="_changeDecadeView($event)">{{ 'DateTime.nYear' | nzTranslate: {num: _showYear} }}</a>
                 </span>
                 <a class="ant-calendar-next-month-btn" title="{{ 'DateTime.nextMonth' | nzTranslate }}" (click)="_nextMonth()"></a>
                 <a class="ant-calendar-next-year-btn" title="{{ 'DateTime.nextYear' | nzTranslate }}" (click)="_nextYear()"></a>
               </div>
               <div style="position: relative;" *ngIf="_mode=='time'">
                 <span class="ant-calendar-my-select">
-                  <a class="ant-calendar-year-select" title="Choose a month">{{ 'DateTime.nYear' | nzTranslate: { num: _selectedYear } }}</a>
-                  <a class="ant-calendar-month-select" title="Choose a month">{{ 'DateTime.nMonth' | nzTranslate: { num: _showMonth + 1 } }}</a>
-                  <a class="ant-calendar-day-select">{{ 'DateTime.nDay' | nzTranslate: { num: _selectedDate } }}</a>
+                  <a class="ant-calendar-year-select" title="Choose a month">{{ 'DateTime.nYear' | nzTranslate: {num: _selectedYear} }}</a>
+                  <a class="ant-calendar-month-select" title="Choose a month">{{ 'DateTime.nMonth' | nzTranslate: {num: _showMonth + 1} }}</a>
+                  <a class="ant-calendar-day-select">{{ 'DateTime.nDay' | nzTranslate: {num: _selectedDate} }}</a>
                 </span>
               </div>
               <div class="ant-calendar-month-panel" *ngIf="_mode=='month'">
@@ -160,7 +160,7 @@ import { NzLocaleService } from '../locale/index';
             </div>
             <div class="ant-calendar-footer ant-calendar-footer-show-ok">
                 <span class="ant-calendar-footer-btn">
-                  <a class="ant-calendar-today-btn " [attr.title]="_today|nzDate:nzFormat" (click)="_changeToToday()">{{ (nzShowTime ? 'DateTime.thisMoment' : 'DateTime.today') | nzTranslate }}</a>
+                  <a class="ant-calendar-today-btn" [class.ant-calendar-today-btn-disabled]="_disabledToday" [attr.title]="_today|nzDate:nzFormat" (click)="_changeToToday()">{{ (nzShowTime ? 'DateTime.thisMoment' : 'DateTime.today') | nzTranslate }}</a>
                   <a class="ant-calendar-time-picker-btn" (click)="_changeTimeView($event)" *ngIf="(_mode != 'time')&&nzShowTime">{{ 'DateTime.chooseTime' | nzTranslate }}</a>
                   <a class="ant-calendar-time-picker-btn" (click)="_changeYearView($event)" *ngIf="(_mode == 'time')&&nzShowTime">{{ 'DateTime.chooseDate' | nzTranslate }}</a>
                   <a class="ant-calendar-ok-btn" *ngIf="nzShowTime" (click)="_closeCalendar()">{{ 'DateTime.ok' | nzTranslate }}</a>
@@ -233,6 +233,15 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
 
   set nzDisabledDate(value: Function) {
     this._disabledDate = value;
+  }
+
+
+  get _disabledToday() {
+    if (this._disabledDate) {
+      return this._disabledDate(new Date());
+    } else {
+      return false;
+    }
   }
 
   _setTriggerWidth(): void {
@@ -315,9 +324,11 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   }
 
   _changeToToday() {
-    this.nzValue = new Date();
-    this.onChange(this._value);
-    this._closeCalendar();
+    if (!this._disabledToday) {
+      this.nzValue = new Date();
+      this.onChange(this._value);
+      this._closeCalendar();
+    }
   }
 
   _clickDay(day) {
