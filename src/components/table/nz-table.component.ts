@@ -68,6 +68,7 @@ import { NzThDirective } from './nz-th.directive';
           *ngIf="nzIsPagination&&data.length"
           class="ant-table-pagination"
           [nzShowSizeChanger]="nzShowSizeChanger"
+          [nzPageSizeSelectorValues]="nzPageSizeSelectorValues"
           [nzShowQuickJumper]="nzShowQuickJumper"
           [nzShowTotal]="nzShowTotal"
           [nzSize]="(nzSize=='middle'||nzSize=='small')?'small':''"
@@ -112,6 +113,8 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   @Input() nzShowFooter = false;
   @Input() nzShowTitle = false;
   @Input() nzIsPageIndexReset = true;
+  /** page size changer select values */
+  @Input() nzPageSizeSelectorValues = [10, 20, 30, 40, 50];
   @ContentChild('nzFixedHeader') fixedHeader: TemplateRef<any>;
 
   @ContentChildren(NzThDirective, { descendants: true })

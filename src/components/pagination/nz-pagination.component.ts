@@ -194,6 +194,14 @@ export class NzPaginationComponent {
     this._jumpPage(this._current + Math.round(pageSize / 2));
   }
 
+  /** page size changer select values */
+  @Input()
+  set nzPageSizeSelectorValues(value: any) {
+    if (value) {
+      this._options = value;
+    }
+  }
+
 
   @Input()
   get nzPageIndex(): number {
