@@ -113,7 +113,7 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   @Input() nzShowFooter = false;
   @Input() nzShowTitle = false;
   @Input() nzIsPageIndexReset = true;
-  // page size changer select values.
+  /** page size changer select values */
   @Input() nzPageSizeSelectorValues = [10, 20, 30, 40, 50];
   @ContentChild('nzFixedHeader') fixedHeader: TemplateRef<any>;
 
