@@ -250,10 +250,12 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    const { nzDisabled } = changes;
+    const { nzDisabled, nzMarks } = changes;
     if (nzDisabled && !nzDisabled.firstChange) {
       this.toggleDragDisabled(nzDisabled.currentValue);
       this.setClassMap();
+    } else if (nzMarks && !nzMarks.firstChange) {
+      this.marksArray = this.nzMarks ? this.toMarksArray(this.nzMarks) : null;
     }
   }
 
