@@ -9,6 +9,15 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.6.2
+`2017-11-29`
+
+### Features
+* `Steps` 支持动态数据更新 [#629](https://github.com/NG-ZORRO/ng-zorro-antd/pull/629)
+* `Slider` 支持 `nzMarks`属性动态更新 [#636](https://github.com/NG-ZORRO/ng-zorro-antd/pull/636)
+* `Table` 和 `Pagination` 支持自定义分页下拉数据 [#608](https://github.com/NG-ZORRO/ng-zorro-antd/pull/608) [@hllinc](https://github.com/hllinc)
+
+
 ## 0.6.1
 `2017-11-26`
 
