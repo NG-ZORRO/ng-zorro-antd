@@ -14,6 +14,7 @@ import { Component } from '@angular/core';
       <h4>step=null || dots=true</h4>
       <nz-slider [nzMarks]="marks" [nzStep]="null" [nzDefaultValue]="37"></nz-slider>
       <nz-slider [nzMarks]="marks" [nzDots]="true" [nzDefaultValue]="37"></nz-slider>
+      Change nzMarks dynamically: <button nz-button (click)="changeMarks()">Change nzMarks</button>
     </div>
   `,
   styles  : [ `
@@ -28,7 +29,7 @@ import { Component } from '@angular/core';
 })
 export class NzDemoSliderMarkComponent {
 
-  marks = {
+  marks: any = {
     0  : '0°C',
     26 : '26°C',
     37 : '37°C',
@@ -39,5 +40,12 @@ export class NzDemoSliderMarkComponent {
       label: '<strong>100°C</strong>',
     }
   };
+
+  changeMarks() {
+    this.marks = {
+      20: '20%',
+      99: '99%',
+    };
+  }
 
 }

@@ -14,11 +14,11 @@ export class NzSliderMarksComponent implements OnInit, OnChanges {
   // Dynamic properties
   @Input() nzLowerBound: number = null;
   @Input() nzUpperBound: number = null;
+  @Input() nzMarksArray: MarksArray;
 
   // Static properties
   @Input() nzClassName: string;
   @Input() nzVertical: boolean; // Required
-  @Input() nzMarksArray: MarksArray; // Required
   @Input() nzMin: number; // Required
   @Input() nzMax: number; // Required
   @Input() nzIncluded: boolean;
@@ -26,13 +26,22 @@ export class NzSliderMarksComponent implements OnInit, OnChanges {
   attrs; // points for inner use
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.nzLowerBound || changes.nzUpperBound) {
+    if (changes.nzMarksArray) {
+      this.buildAttrs();
+    }
+    if (changes.nzMarksArray || changes.nzLowerBound || changes.nzUpperBound) {
       this.togglePointActive();
     }
   }
 
-  ngOnInit() {
-    const { nzVertical, nzClassName, nzMarksArray, nzMin, nzMax, nzLowerBound, nzUpperBound } = this;
+  ngOnInit() {}
+
+  trackById(index: number, attr) {
+    return attr.id;
+  }
+
+  buildAttrs() {
+    const { nzVertical, nzClassName, nzMarksArray, nzMin, nzMax } = this;
     const range = nzMax - nzMin;
     this.attrs = nzMarksArray.map(mark => {
       const { value, offset, config } = mark;
@@ -72,11 +81,6 @@ export class NzSliderMarksComponent implements OnInit, OnChanges {
         label  : label
       };
     }); // END - map
-    this.togglePointActive();
-  }
-
-  trackById(index: number, attr) {
-    return attr.id;
   }
 
   togglePointActive() {
