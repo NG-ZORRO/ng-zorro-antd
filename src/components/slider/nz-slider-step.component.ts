@@ -15,22 +15,31 @@ export class NzSliderStepComponent implements OnInit, OnChanges {
   // Dynamic properties
   @Input() nzLowerBound: number = null;
   @Input() nzUpperBound: number = null;
+  @Input() nzMarksArray: any[];
 
   // Static properties
   @Input() nzPrefixCls: string;
   @Input() nzVertical: boolean;
-  @Input() nzMarksArray: any[];
   @Input() nzIncluded: boolean;
 
   attrs;
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.nzLowerBound || changes.nzUpperBound) {
+    if (changes.nzMarksArray) {
+      this.buildAttrs();
+    }
+    if (changes.nzMarksArray || changes.nzLowerBound || changes.nzUpperBound) {
       this.togglePointActive();
     }
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  trackById(index: number, attr) {
+    return attr.id;
+  }
+
+  buildAttrs() {
     const orient = this.nzVertical ? 'bottom' : 'left', prefixCls = this.nzPrefixCls;
     this.attrs = this.nzMarksArray.map(mark => {
       const { value, offset } = mark;
@@ -47,11 +56,6 @@ export class NzSliderStepComponent implements OnInit, OnChanges {
         }
       };
     });
-    this.togglePointActive();
-  }
-
-  trackById(index: number, attr) {
-    return attr.id;
   }
 
   togglePointActive() {
