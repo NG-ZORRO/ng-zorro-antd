@@ -17,9 +17,9 @@ export class AppComponent implements OnInit {
   searchComponent = null;
   versionList = [
     '0.5.x',
-    '0.6.0'
+    '0.6.x'
   ];
-  currentVersion = '0.6.0';
+  currentVersion = '0.6.x';
 
   constructor(private router: Router, private title: Title) {
 
