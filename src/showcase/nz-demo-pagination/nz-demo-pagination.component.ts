@@ -16,7 +16,7 @@ export class NzDemoPaginationComponent implements OnInit {
   NzDemoPaginationMiniCode = require('!!raw-loader!./nz-demo-pagination-mini.component');
   NzDemoPaginationSimpleCode = require('!!raw-loader!./nz-demo-pagination-simple.component');
   NzDemoPaginationTotalCode = require('!!raw-loader!./nz-demo-pagination-total.component');
-
+  NzDemoPaginationOptionsCode = require('!!raw-loader!./nz-demo-pagination-options.component');
   constructor() {
   }
 
