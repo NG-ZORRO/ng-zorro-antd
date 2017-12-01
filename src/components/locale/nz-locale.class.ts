@@ -33,6 +33,8 @@ export class NzLocale {
     chooseDate: string;
     chooseTimePlease: string;
     chooseDatePlease: string;
+    chooseStartDatePlease: string;
+    chooseEndDatePlease: string;
     thisMoment: string;
     today: string;
     ok: string;

@@ -14,3 +14,27 @@ nz-datepicker {
     top: -2px;
   }
 }
+
+.ant-input > .@{calendar-prefix-cls}-range-picker-input {
+  background-color: transparent;
+  border: 0;
+  height: 99%;
+  outline: 0;
+  width: 43%;
+  text-align: center;
+  vertical-align: top;
+  .placeholder();
+
+  &[disabled] {
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    border: 0;
+    box-shadow: none;
+  }
+}
+
+.@{calendar-prefix-cls}-time-picker-body {
+  height: 247px;
+}

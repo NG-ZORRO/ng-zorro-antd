@@ -8,11 +8,12 @@ import { NzLocaleModule } from '../locale/index';
 import { NzTimePickerModule } from '../time-picker/nz-timepicker.module';
 import { NzUtilModule } from '../util/nz-util.module';
 import { NzDatePickerComponent } from './nz-datepicker.component';
+import { NzRangePickerComponent } from './nz-rangepicker.component';
 
 @NgModule({
   imports     : [ CommonModule, NzTimePickerModule, NzUtilModule, NzInputModule, NzCalendarModule, FormsModule, OverlayModule, NzLocaleModule ],
-  declarations: [ NzDatePickerComponent ],
-  exports     : [ NzDatePickerComponent ]
+  declarations: [ NzDatePickerComponent, NzRangePickerComponent ],
+  exports     : [ NzDatePickerComponent, NzRangePickerComponent ]
 })
 export class NzDatePickerModule {
 }

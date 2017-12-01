@@ -34,6 +34,8 @@ export const zhCN: NzLocale = {
     chooseDate: '选择日期',
     chooseTimePlease: '请选择时间',
     chooseDatePlease: '请选择日期',
+    chooseStartDatePlease: '开始日期',
+    chooseEndDatePlease: '结束日期',
     thisMoment: '此刻',
     today: '今天',
     ok: '确 定',

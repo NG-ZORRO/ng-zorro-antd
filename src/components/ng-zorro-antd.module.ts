@@ -134,6 +134,7 @@ export { NzCascaderComponent } from './cascader/nz-cascader.component';
 export { NzCheckboxGroupComponent } from './checkbox/nz-checkbox-group.component';
 export { NzCheckboxComponent } from './checkbox/nz-checkbox.component';
 export { NzDatePickerComponent } from './datepicker/nz-datepicker.component';
+export { NzRangePickerComponent } from './datepicker/nz-rangepicker.component';
 export { NzFormControlComponent } from './form/nz-form-control.component';
 export { NzFormExplainComponent } from './form/nz-form-explain.directive';
 export { NzFormExtraDirective } from './form/nz-form-extra.directive';
