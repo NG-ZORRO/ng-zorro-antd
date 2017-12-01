@@ -13,6 +13,9 @@
     "release": "npm run generate && ng build --prod && npm run helper",
     "test": "node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng test --single-run --code-coverage",
     "integration": "npm run generate && bash ./integration-test.sh",
+    "integration-cli": "npm run generate && cd integration/angular-cli && npm run integration",
+    "integration-webpack": "npm run generate && cd integration/webpack && npm run integration",
+    "integration-rollup": "npm run generate && cd integration/rollup && npm run integration",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

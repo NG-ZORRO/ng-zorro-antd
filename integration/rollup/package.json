@@ -15,7 +15,7 @@
     "e2e": "echo \"Error: no e2e... minimal project\" && exit 1",
     "prengc": "npm run clean",
     "ngc": "ngc -p src/tsconfig.app.json",
-    "preintegration": "npm run setup && npm install",
+    "preintegration": "npm run setup && npm install --ignore-scripts",
     "integration": "npm run build"
   },
   "private": true,
@@ -42,7 +42,7 @@
     "http-server": "^0.10.0",
     "rimraf": "^2.6.1",
     "rollup": "^0.49.2",
-    "rollup-plugin-angular-optimizer": "^0.1.0",
+    "rollup-plugin-angular-optimizer": "^0.2.0",
     "rollup-plugin-commonjs": "^8.2.0",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-uglify": "^2.0.1",
