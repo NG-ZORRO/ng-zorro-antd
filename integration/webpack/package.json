@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test... minimal project\" && exit 1",
     "lint": "echo \"Error: no lint... minimal project\" && exit 1",
     "e2e": "echo \"Error: no e2e... minimal project\" && exit 1",
-    "preintegration": "npm run setup && npm install",
+    "preintegration": "npm run setup && npm install --ignore-scripts",
     "integration": "npm run build"
   },
   "private": true,
