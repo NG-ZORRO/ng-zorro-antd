@@ -7,11 +7,12 @@ import { NzFormItemDirective } from './nz-form-item.directive';
   template     : `
     <ng-content></ng-content>
   `,
-  styles       : []
+  styles       : [],
+  host: {
+    '[class.ant-form-explain]': 'true'
+  }
 })
 export class NzFormExplainComponent implements OnDestroy, OnInit {
-  @HostBinding(`class.ant-form-explain`) _nzFormExplain = true;
-
   constructor(private _nzFormItem: NzFormItemDirective) {
   }
 

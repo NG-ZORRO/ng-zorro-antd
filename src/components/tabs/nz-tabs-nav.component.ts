@@ -58,7 +58,11 @@ export type NzTabPositionMode = 'horizontal' | 'vertical';
           </div>
         </div>
       </div>
-    </div>`
+    </div>
+  `,
+  host: {
+    '[class.ant-tabs-bar]': 'true'
+  }
 })
 export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit {
   private _animated = true;
@@ -115,7 +119,6 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   @ViewChild(NzTabsInkBarDirective) _inkBar: NzTabsInkBarDirective;
   @ViewChild('tabListContainer') _tabListContainer: ElementRef;
   @ViewChild('tabList') _tabList: ElementRef;
-  @HostBinding('class.ant-tabs-bar') _nzTabsBar = true;
 
   @Input()
   set nzShowPagination(value: boolean) {

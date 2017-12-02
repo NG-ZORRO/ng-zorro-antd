@@ -45,7 +45,10 @@ import { toBoolean } from '../util/convert';
       transition('inactive => active', animate('150ms ease-in')),
       transition('active => inactive', animate('150ms ease-out'))
     ])
-  ]
+  ],
+  host: {
+    '[class.ant-collapse-item]': 'true'
+  }
 })
 
 export class NzCollapseComponent {
@@ -53,8 +56,6 @@ export class NzCollapseComponent {
   _active = false;
 
   _el;
-
-  @HostBinding('class.ant-collapse-item') _nzCollapseItem = true;
 
   @Input() nzTitle: string;
 

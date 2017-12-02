@@ -1,9 +1,10 @@
 import { Directive, HostBinding } from '@angular/core';
 
 @Directive({
-  selector: '[nz-tbody]'
+  selector: '[nz-tbody]',
+  host: {
+    '[class.ant-table-tbody]': 'true'
+  }
 })
 
-export class NzTbodyDirective {
-  @HostBinding(`class.ant-table-tbody`) _nzTableTbody = true;
-}
+export class NzTbodyDirective { }

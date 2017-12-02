@@ -49,7 +49,10 @@ import { toBoolean } from '../util/convert';
   styleUrls    : [
     './style/index.less',
     './style/patch.less'
-  ]
+  ],
+  host: {
+    '[class.ant-card]': 'true'
+  }
 })
 export class NzCardComponent {
   private _borderd = true;
@@ -69,7 +72,6 @@ export class NzCardComponent {
   @ContentChild('title') title: TemplateRef<any>;
   @ContentChild('extra') extra: TemplateRef<any>;
   @ContentChild('body') body: TemplateRef<any>;
-  @HostBinding('class.ant-card') _nzCard = true;
 
   @Input()
   set nzLoading(value: boolean) {
