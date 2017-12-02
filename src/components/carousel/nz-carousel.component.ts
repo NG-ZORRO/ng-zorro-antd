@@ -7,8 +7,11 @@ import {
   Renderer2,
   OnDestroy,
   Input,
+  Output,
   ElementRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  EventEmitter,
+  HostListener
 } from '@angular/core';
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 
@@ -38,7 +41,8 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   transform = 'translate3d(0px, 0px, 0px)';
   interval;
   slideContents;
-
+  _autoPlaySpeed = 3000;
+  _mouseHover = false;
   @ContentChildren(NzCarouselContentDirective)
   set _slideContents(value) {
     this.slideContents = value;
@@ -47,19 +51,57 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('slickList') slickList: ElementRef;
   @ViewChild('slickTrack') slickTrack: ElementRef;
+  @HostBinding('class.ant-carousel') _nzCarousel = true;
+  @Input() @HostBinding('class.ant-carousel-vertical') nzVertical = false;
   @Input() nzAutoPlay = false;
+  @Input() nzPauseOnHover = true;
   @Input() nzDots = true;
   @Input() nzEffect = 'scrollx';
-  @Input() @HostBinding('class.ant-carousel-vertical') nzVertical = false;
-  @HostBinding('class.ant-carousel') _nzCarousel = true;
+  @Output() nzAfterChange: EventEmitter<number> = new EventEmitter();
+  @Output() nzBeforeChange: EventEmitter<{form: number; to: number}> = new EventEmitter();
+  @Input()
+  get nzAutoPlaySpeed(): number {
+    return this._autoPlaySpeed;
+  }
+
+  set nzAutoPlaySpeed(speed: number) {
+    // css transition speed is 500ms
+    this._autoPlaySpeed = Math.max(speed, 500);
+  }
+
+  @HostListener('mouseenter')
+  _onMouseenter() {
+    this._mouseHover = true;
+    if (this.nzAutoPlay && this.nzPauseOnHover) {
+      this.clearInterval();
+    }
+  }
+
+  @HostListener('mouseleave')
+  _onMouseleave() {
+    this._mouseHover = false;
+    if (!this.interval && this.nzAutoPlay) {
+      this.createInterval();
+    }
+  }
+
+  get _nextIndex(): number {
+    return this.activeIndex < this.slideContents.length - 1 ? (this.activeIndex + 1) : 0;
+  }
+
+  get _prevIndex(): number {
+    return this.activeIndex > 0 ? (this.activeIndex - 1) : (this.slideContents.length - 1)
+  }
 
   constructor(public hostElement: ElementRef, private _renderer: Renderer2) {
   }
 
   setActive(content, i) {
-    if (this.nzAutoPlay) {
+    if ((this.nzAutoPlay && !this.nzPauseOnHover) || (this.nzAutoPlay && !this._mouseHover)) {
       this.createInterval();
     }
+    const beforeIndex = this.slideContents.toArray().findIndex(slide => slide.isActive);
+    this.nzBeforeChange.emit({ form: beforeIndex, to: i });
     this.activeIndex = i;
     if (this.nzEffect !== 'fade') {
       if (!this.nzVertical) {
@@ -68,10 +110,9 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
         this.transform = `translate3d(0px, ${-this.activeIndex * this.hostElement.nativeElement.offsetHeight}px, 0px)`;
       }
     }
-    this.slideContents.forEach(slide => {
-      slide.isActive = false;
-    });
+    this.slideContents.forEach(slide => slide.isActive = false);
     content.isActive = true;
+    this.nzAfterChange.emit(i);
   }
 
   ngAfterViewInit() {
@@ -115,19 +156,28 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   createInterval() {
     this.clearInterval();
     this.interval = setInterval(_ => {
-      if (this.activeIndex < this.slideContents.length - 1) {
-        this.activeIndex++;
-      } else {
-        this.activeIndex = 0;
-      }
-      this.setActive(this.slideContents.toArray()[ this.activeIndex ], this.activeIndex);
-    }, 3000);
+      this.setActive(this.slideContents.toArray()[this._nextIndex], this._nextIndex);
+    }, this.nzAutoPlaySpeed);
   }
 
   clearInterval() {
     if (this.interval) {
       clearInterval(this.interval);
       this.interval = null;
+    }
+  }
+
+  public nzSlickNext() {
+    this.setActive(this.slideContents.toArray()[this._nextIndex], this._nextIndex);
+  }
+
+  public nzSlickPrev() {
+    this.setActive(this.slideContents.toArray()[this._prevIndex], this._prevIndex);
+  }
+
+  public nzSlickGoTo(index: number) {
+    if (index >= 0 && index <= this.slideContents.length - 1) {
+      this.setActive(this.slideContents.toArray()[index], index);
     }
   }
 
