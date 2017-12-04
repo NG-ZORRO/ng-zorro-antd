@@ -35,16 +35,21 @@ import { NzThDirective } from './nz-th.directive';
             </div>
             <div class="ant-table-content">
               <div [class.ant-table-scroll]="nzScroll">
-                <div class="ant-table-header" [ngStyle]="_headerBottomStyle" *ngIf="nzScroll">
-                  <table>
+                <div class="ant-table-header" *ngIf="nzScroll">
+                  <table [style.width.px]="nzScroll?.x">
                     <colgroup>
                       <col *ngFor="let th of ths" [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth">
                     </colgroup>
                     <ng-template [ngTemplateOutlet]="fixedHeader"></ng-template>
                   </table>
                 </div>
-                <div class="ant-table-body" [style.maxHeight.px]="nzScroll?.y" [style.overflowY]="nzScroll?.y?'scroll':''">
-                  <table>
+                <div
+                (scroll)="scrollTable($event)"
+                class="ant-table-body"
+                [style.maxHeight.px]="nzScroll?.y"
+                [style.overflowY]="nzScroll?.y?'scroll':''"
+                [style.overflowX]="nzScroll?.x?'scroll':''">
+                  <table [style.width.px]="nzScroll?.x">
                     <colgroup>
                       <col [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth" *ngFor="let th of ths">
                     </colgroup>
@@ -90,7 +95,6 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   data = [];
   _scroll;
   _el: HTMLElement;
-  _headerBottomStyle;
   _current = 1;
   _total: number;
   _pageSize = 10;
@@ -221,11 +225,6 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
-    const scrollbarWidth = measureScrollbar();
-    this._headerBottomStyle = {
-      marginBottom : `-${scrollbarWidth}px`,
-      paddingBottom: `0px`
-    }
   }
 
   constructor(private _elementRef: ElementRef, private _cd: ChangeDetectorRef) {
@@ -234,6 +233,14 @@ export class NzTableComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     this._isInit = true;
+  }
+
+  scrollTable (event) {
+    if (this.nzScroll != null &&  this.nzScroll.x != null) {
+      const body = <any>event.currentTarget;
+      const head = body.parentElement.getElementsByClassName('ant-table-header')[0];
+      head.scrollLeft = body.scrollLeft;
+    }
   }
 }
 
