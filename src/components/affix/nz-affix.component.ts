@@ -7,7 +7,8 @@ import {
   Output,
   OnDestroy,
   ViewChild,
-  ElementRef
+  ElementRef,
+  AfterViewInit
 } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
@@ -28,7 +29,7 @@ import { NzScrollService } from '../core/scroll/nz-scroll.service';
     './style/patch.less'
   ]
 })
-export class NzAffixComponent implements OnInit, OnDestroy {
+export class NzAffixComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private didScroll = false;
   private scrollTime: any = null;
@@ -60,6 +61,11 @@ export class NzAffixComponent implements OnInit, OnDestroy {
     if (!this.scroll$) {
       this.registerScrollEvent();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.orgOffset = null;
+    this.fixed = false;
   }
 
   private getTarget(): Element | Window {
