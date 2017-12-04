@@ -63,11 +63,11 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
 
   addRadio(radio: NzRadioComponent | NzRadioButtonComponent) {
     this.radios.push(radio);
+    radio.nzChecked = radio.nzValue === this._value
   }
 
   selectRadio(radio: NzRadioComponent | NzRadioButtonComponent) {
     this.updateValue(radio.nzValue);
-    this.onChange(radio.nzValue);
   }
 
   updateValue(value: any) {
@@ -75,6 +75,7 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
       return;
     }
     this._value = value;
+    this.onChange(value);
     this.radios.forEach((item) => {
       item.nzChecked = item.nzValue === this._value;
     });
