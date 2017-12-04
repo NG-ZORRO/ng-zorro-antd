@@ -5,7 +5,7 @@ import {
   Input,
   ElementRef,
   AfterContentInit,
-  Renderer,
+  Renderer2,
   HostBinding,
   forwardRef
 } from '@angular/core';
@@ -82,7 +82,7 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
   }
 
 
-  constructor(private _elementRef: ElementRef, private _render: Renderer) {
+  constructor(private _elementRef: ElementRef, private _render: Renderer2) {
     this._el = this._elementRef.nativeElement;
   }
 
@@ -117,6 +117,6 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
   }
 
   ngOnInit() {
-    this._render.setElementClass(this._el, `${this._prefixCls}`, true);
+    this._render.addClass(this._el, `${this._prefixCls}`);
   }
 }
