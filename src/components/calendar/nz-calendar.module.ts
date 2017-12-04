@@ -11,9 +11,5 @@ import { NzLocaleModule } from '../locale/index';
   declarations: [ NzCalendarComponent ],
   exports     : [ NzCalendarComponent ]
 })
-
 export class NzCalendarModule {
 }
-
-
-

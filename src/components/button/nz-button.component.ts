@@ -7,6 +7,7 @@ import {
   AfterContentInit,
   Renderer2
 } from '@angular/core';
+import { toBoolean } from '../util/convert';
 
 export type NzButtonType = 'primary' | 'dashed' | 'danger';
 export type NzButtonShape = 'circle' | null ;
@@ -24,6 +25,8 @@ export type NzButtonSize = 'small' | 'large' | 'default' ;
   ]
 })
 export class NzButtonComponent implements AfterContentInit {
+  private _ghost = false;
+  private _loading = false;
   _el: HTMLElement;
   nativeElement: HTMLElement;
   _iconElement: HTMLElement;
@@ -32,15 +35,13 @@ export class NzButtonComponent implements AfterContentInit {
   _size: NzButtonSize;
   _classList: Array<string> = [];
   _iconOnly = false;
-  _loading = false;
   _clicked = false;
-  _ghost = false;
   _prefixCls = 'ant-btn';
   _sizeMap = { large: 'lg', small: 'sm' };
 
   @Input()
   set nzGhost(value: boolean) {
-    this._ghost = value;
+    this._ghost = toBoolean(value);
     this._setClassMap();
   }
 
@@ -51,7 +52,7 @@ export class NzButtonComponent implements AfterContentInit {
   @Input()
   get nzType(): NzButtonType {
     return this._type;
-  };
+  }
 
   set nzType(value: NzButtonType) {
     this._type = value;
@@ -61,7 +62,7 @@ export class NzButtonComponent implements AfterContentInit {
   @Input()
   get nzShape(): NzButtonShape {
     return this._shape;
-  };
+  }
 
   set nzShape(value: NzButtonShape) {
     this._shape = value;
@@ -76,18 +77,18 @@ export class NzButtonComponent implements AfterContentInit {
 
   get nzSize(): NzButtonSize {
     return this._size;
-  };
+  }
 
   @Input()
   set nzLoading(value: boolean) {
-    this._loading = value;
+    this._loading = toBoolean(value);
     this._setClassMap();
     this._setIconDisplay(value);
   }
 
   get nzLoading(): boolean {
     return this._loading;
-  };
+  }
 
   /** toggle button clicked animation */
   @HostListener('click')
@@ -98,7 +99,7 @@ export class NzButtonComponent implements AfterContentInit {
       this._clicked = false;
       this._setClassMap();
     }, 300);
-  };
+  }
 
 
   _setIconDisplay(value: boolean) {

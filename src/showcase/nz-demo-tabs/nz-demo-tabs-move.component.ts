@@ -38,15 +38,12 @@ export class NzDemoTabsMoveComponent implements OnInit {
     console.log(args);
   }
 
-  constructor() {
-  }
-
   ngOnInit() {
     for (let i = 0; i < 11; i++) {
       this.tabs.push({
         name   : `Tab ${i}`,
         content: `Content of tab ${i}`
-      })
+      });
     }
   }
 }

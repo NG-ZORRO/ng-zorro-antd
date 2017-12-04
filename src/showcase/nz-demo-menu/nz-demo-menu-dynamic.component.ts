@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-menu-dynamic',
   template: `
@@ -51,12 +51,6 @@ import { Component, OnInit } from '@angular/core';
     </ul>`,
   styles  : []
 })
-export class NzDemoMenuDynamicComponent implements OnInit {
+export class NzDemoMenuDynamicComponent {
   mode = false;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

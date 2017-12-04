@@ -11,6 +11,7 @@ import {
   TemplateRef, OnInit, ContentChildren, QueryList
 } from '@angular/core';
 import { measureScrollbar } from '../util/mesureScrollBar';
+import { toBoolean } from '../util/convert';
 import { NzThDirective } from './nz-th.directive';
 
 @Component({
@@ -86,6 +87,17 @@ import { NzThDirective } from './nz-th.directive';
   ]
 })
 export class NzTableComponent implements AfterViewInit, OnInit {
+  private _bordered = false;
+  private _customNoResult = false;
+  private _isPageIndexReset = true;
+  private _isPagination = true;
+  private _loading = false;
+  private _showSizeChanger = false;
+  private _showQuickJumper = false;
+  private _showTotal = false;
+  private _showFooter = false;
+  private _showTitle = false;
+
   /** public data for ngFor tr */
   data = [];
   _scroll;
@@ -102,17 +114,98 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   @Output() nzPageIndexChange: EventEmitter<any> = new EventEmitter();
   @Output() nzDataChange: EventEmitter<any> = new EventEmitter();
   @Output() nzPageIndexChangeClick: EventEmitter<any> = new EventEmitter();
-  @Input() nzBordered = false;
   @Input() nzSize: string;
-  @Input() nzCustomNoResult = false;
-  @Input() nzIsPagination = true;
-  @Input() nzLoading = false;
-  @Input() nzShowSizeChanger = false;
-  @Input() nzShowQuickJumper = false;
-  @Input() nzShowTotal = false;
-  @Input() nzShowFooter = false;
-  @Input() nzShowTitle = false;
-  @Input() nzIsPageIndexReset = true;
+
+  @Input()
+  set nzBordered(value: boolean) {
+    this._bordered = toBoolean(value);
+  }
+
+  get nzBordered(): boolean {
+    return this._bordered;
+  }
+
+  @Input()
+  set nzCustomNoResult(value: boolean) {
+    this._customNoResult = toBoolean(value);
+  }
+
+  get nzCustomNoResult(): boolean {
+    return this._customNoResult;
+  }
+
+  @Input()
+  set nzIsPagination(value: boolean) {
+    this._isPagination = toBoolean(value);
+  }
+
+  get nzIsPagination(): boolean {
+    return this._isPagination;
+  }
+
+  @Input()
+  set nzLoading(value: boolean) {
+    this._loading = toBoolean(value);
+  }
+
+  get nzLoading(): boolean {
+    return this._loading;
+  }
+
+  @Input()
+  set nzShowSizeChanger(value: boolean) {
+    this._showSizeChanger = toBoolean(value);
+  }
+
+  get nzShowSizeChanger(): boolean {
+    return this._showSizeChanger;
+  }
+
+  @Input()
+  set nzShowQuickJumper(value: boolean) {
+    this._showQuickJumper = toBoolean(value);
+  }
+
+  get nzShowQuickJumper(): boolean {
+    return this._showQuickJumper;
+  }
+
+  @Input()
+  set nzShowTotal(value: boolean) {
+    this._showTotal = toBoolean(value);
+  }
+
+  get nzShowTotal(): boolean {
+    return this._showTotal;
+  }
+
+  @Input()
+  set nzShowFooter(value: boolean) {
+    this._showFooter = toBoolean(value);
+  }
+
+  get nzShowFooter(): boolean {
+    return this._showFooter;
+  }
+
+  @Input()
+  set nzShowTitle(value: boolean) {
+    this._showTitle = toBoolean(value);
+  }
+
+  get nzShowTitle(): boolean {
+    return this._showTitle;
+  }
+
+  @Input()
+  set nzIsPageIndexReset(value: boolean) {
+    this._isPageIndexReset = toBoolean(value);
+  }
+
+  get nzIsPageIndexReset(): boolean {
+    return this._isPageIndexReset;
+  }
+
   /** page size changer select values */
   @Input() nzPageSizeSelectorValues = [10, 20, 30, 40, 50];
   @ContentChild('nzFixedHeader') fixedHeader: TemplateRef<any>;
@@ -134,32 +227,28 @@ export class NzTableComponent implements AfterViewInit, OnInit {
 
   /** async data */
   @Input()
-  get nzAjaxData() {
-    return this.data;
-  }
-
   set nzAjaxData(data) {
     this._isAjax = true;
     this.data = data;
   }
 
-  /** sync data */
-  @Input()
-  get nzDataSource() {
-    return this._dataSet;
+  get nzAjaxData() {
+    return this.data;
   }
 
+  /** sync data */
+  @Input()
   set nzDataSource(value) {
     this._dataSet = value;
     this.nzTotal = this._dataSet.length;
     this._generateData(true);
   }
 
-  @Input()
-  get nzPageIndex() {
-    return this._current;
-  };
+  get nzDataSource() {
+    return this._dataSet;
+  }
 
+  @Input()
   set nzPageIndex(value: number) {
     if (this._current === value) {
       return;
@@ -167,17 +256,17 @@ export class NzTableComponent implements AfterViewInit, OnInit {
     this._current = value;
     this._generateData();
     this.nzPageIndexChange.emit(this.nzPageIndex);
-  };
+  }
+
+  get nzPageIndex() {
+    return this._current;
+  }
 
   pageChangeClick(value) {
     this.nzPageIndexChangeClick.emit(value);
   }
 
   @Input()
-  get nzPageSize() {
-    return this._pageSize;
-  };
-
   set nzPageSize(value: number) {
     if (this._pageSize === value) {
       return;
@@ -187,18 +276,22 @@ export class NzTableComponent implements AfterViewInit, OnInit {
     if (this._isInit) {
       this.nzPageSizeChange.emit(value);
     }
-  };
+  }
+
+  get nzPageSize() {
+    return this._pageSize;
+  }
 
   @Input()
-  get nzTotal() {
-    return this._total;
-  };
-
   set nzTotal(value: number) {
     if (this._total === value) {
       return;
     }
     this._total = value;
+  }
+
+  get nzTotal() {
+    return this._total;
   }
 
   _generateData(forceRefresh = false) {
@@ -236,4 +329,3 @@ export class NzTableComponent implements AfterViewInit, OnInit {
     this._isInit = true;
   }
 }
-

@@ -6,7 +6,4 @@ import { Component } from '@angular/core';
 })
 export class NzIntroChangelogComponent {
   _markdownCode = require('!!raw-loader!./README.md');
-
-  constructor() {
-  }
 }

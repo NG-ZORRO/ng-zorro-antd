@@ -10,6 +10,5 @@ import { FormsModule } from '@angular/forms';
   exports     : [ NzInputComponent, NzInputGroupComponent, NzInputDirectiveComponent ],
   imports     : [ CommonModule, FormsModule ]
 })
-
 export class NzInputModule {
 }

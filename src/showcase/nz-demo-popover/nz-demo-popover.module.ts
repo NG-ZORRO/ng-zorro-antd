@@ -15,7 +15,6 @@ import { NzDemoPopoverRoutingModule } from './nz-demo-popover.routing.module';
   imports     : [ NzDemoPopoverRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule ],
   declarations: [ NzDemoPopoverBasicComponent, NzDemoPopoverLocationComponent, NzDemoPopoverTriggerComponent, NzDemoPopoverClickHideComponent, NzDemoPopoverComponent ]
 })
-
 export class NzDemoPopoverModule {
 
 }

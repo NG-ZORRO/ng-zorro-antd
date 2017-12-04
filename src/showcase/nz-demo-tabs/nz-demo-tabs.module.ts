@@ -37,7 +37,6 @@ import { NzDemoTabsRoutingModule } from './nz-demo-tabs.routing.module';
     NzDemoTabsOperationComponent
   ]
 })
-
 export class NzDemoTabsModule {
 
 }

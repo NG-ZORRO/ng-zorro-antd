@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-collapse',
@@ -8,18 +8,10 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-collapse.less'
   ]
 })
-export class NzDemoCollapseComponent implements OnInit {
+export class NzDemoCollapseComponent {
   NzDemoCollapseBasicCode = require('!!raw-loader!./nz-demo-collapse-basic.component');
   NzDemoCollapseNestCode = require('!!raw-loader!./nz-demo-collapse-nest.component');
   NzDemoCollapseAccordionCode = require('!!raw-loader!./nz-demo-collapse-accordion.component');
   NzDemoCollapseBorderCode = require('!!raw-loader!./nz-demo-collapse-border.component');
   NzDemoCollapseCustomCode = require('!!raw-loader!./nz-demo-collapse-custom.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-
-

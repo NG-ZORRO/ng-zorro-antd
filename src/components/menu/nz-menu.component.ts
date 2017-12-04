@@ -1,6 +1,9 @@
 import {
   Component, ViewEncapsulation, HostBinding, Input, OnChanges, SimpleChanges, AfterViewInit
 } from '@angular/core';
+import { toBoolean } from '../util/convert';
+import { NzMenuItemComponent } from './nz-menu-item.component';
+import { NzSubMenuComponent } from './nz-submenu.component';
 
 export type NzMode = 'vertical' | 'horizontal' | 'inline';
 
@@ -15,38 +18,44 @@ export type NzMode = 'vertical' | 'horizontal' | 'inline';
 })
 
 export class NzMenuComponent implements OnChanges, AfterViewInit {
+  private _clickActive = true;
+  private _inlineCollapsed = false;
+
   /** set when has submenu component */
   hasSubMenu = false;
   /** set when in dropdown component */
   isInDropDown = false;
   /** collection of menu item */
-  menuItems = [];
+  menuItems: NzMenuItemComponent[] = [];
   /** collection of sub menu */
-  subMenus = [];
+  subMenus: NzSubMenuComponent[] = [];
   /** view init flat */
   isInit = false;
   /** temporary mode */
   _tempMode: NzMode;
   /** opened index of array */
   _subMenusOpenIndex = [];
-  /** nzInlineCollapsed */
-  _nzInlineCollapsed = false;
 
   @Input() nzMode: NzMode = 'vertical';
   @Input() nzTheme: 'light' | 'dark' = 'light';
-  @Input() nzClickActive = true;
 
   @Input()
-  get nzInlineCollapsed(): boolean {
-    return this._nzInlineCollapsed;
+  set nzClickActive(value: boolean) {
+    this._clickActive = toBoolean(value);
   }
 
-  set nzInlineCollapsed(state: boolean) {
-    this._nzInlineCollapsed = state;
+  get nzClickActive(): boolean {
+    return this._clickActive;
+  }
+
+  @Input()
+  set nzInlineCollapsed(value: boolean) {
+    const state = toBoolean(value);
+    this._inlineCollapsed = state;
     if (!this.isInit) {
       return
     }
-    if (this._nzInlineCollapsed) {
+    if (this._inlineCollapsed) {
       this.hideSubMenus();
       // after the animation is over
       setTimeout(() => this.nzMode = 'vertical', 150)
@@ -55,6 +64,10 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
       this.nzMode = this._tempMode;
     }
 
+  }
+
+  get nzInlineCollapsed(): boolean {
+    return this._inlineCollapsed;
   }
 
   /** define host class */
@@ -138,7 +151,7 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
     this._subMenusOpenIndex = [];
     this.subMenus.forEach((submenu, index) => {
       if (submenu.nzOpen) {
-        this._subMenusOpenIndex.push(index)
+        this._subMenusOpenIndex.push(index);
       }
       submenu.nzOpen = false;
     });
@@ -161,6 +174,6 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
   setHasSubMenu(value: boolean) {
     setTimeout(_ => {
       this.hasSubMenu = value;
-    })
+    });
   }
 }

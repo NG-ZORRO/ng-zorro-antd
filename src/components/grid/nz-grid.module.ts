@@ -9,6 +9,5 @@ import { CommonModule } from '@angular/common';
   exports     : [ NzRowComponent, NzColDirective, NzColComponent ],
   imports     : [ CommonModule ]
 })
-
 export class NzGridModule {
 }

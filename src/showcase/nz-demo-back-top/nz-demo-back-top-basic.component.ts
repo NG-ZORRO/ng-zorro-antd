@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-back-top-basic',
@@ -14,11 +14,4 @@ import { Component, OnInit } from '@angular/core';
   }
   `]
 })
-
-export class NzDemoBackTopBasicComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoBackTopBasicComponent { }

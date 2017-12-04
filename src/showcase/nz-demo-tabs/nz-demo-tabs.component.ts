@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-tabs',
@@ -8,7 +8,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
     './nz-demo-tabs.less',
   ]
 })
-export class NzDemoTabsComponent implements OnInit {
+export class NzDemoTabsComponent {
   NzDemoTabsBasicCode = require('!!raw-loader!./nz-demo-tabs-basic.component');
   NzDemoTabsPositionCode = require('!!raw-loader!./nz-demo-tabs-position.component');
   NzDemoTabsCardCode = require('!!raw-loader!./nz-demo-tabs-card.component');
@@ -18,10 +18,4 @@ export class NzDemoTabsComponent implements OnInit {
   NzDemoTabsMiniCode = require('!!raw-loader!./nz-demo-tabs-mini.component');
   NzDemoTabsExtraCode = require('!!raw-loader!./nz-demo-tabs-extra.component');
   NzDemoTabsOperationCode = require('!!raw-loader!./nz-demo-tabs-operation.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

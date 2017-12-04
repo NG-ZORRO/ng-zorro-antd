@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-rate-text',
@@ -8,13 +8,6 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoRateTextComponent implements OnInit {
+export class NzDemoRateTextComponent {
   value = 3;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

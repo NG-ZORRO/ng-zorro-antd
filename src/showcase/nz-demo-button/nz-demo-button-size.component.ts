@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-button-size',
@@ -31,12 +31,6 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoButtonSizeComponent implements OnInit {
+export class NzDemoButtonSizeComponent {
   size = 'default';
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

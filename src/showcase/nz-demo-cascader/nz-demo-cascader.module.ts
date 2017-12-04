@@ -34,7 +34,6 @@ import { NzDemoCascaderRoutingModule } from './nz-demo-cascader.routing.module';
     NzDemoCascaderReactiveFormComponent
   ]
 })
-
 export class NzDemoCascaderModule {
 
 }

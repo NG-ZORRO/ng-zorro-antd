@@ -29,13 +29,10 @@ export class NzDemoTabsBasicComponent implements OnInit {
     }
   ];
 
-  constructor() {
-  }
-
   ngOnInit() {
     setTimeout(_ => {
       this.tabs[ 0 ].content = 'Change Content';
-    }, 10000)
+    }, 10000);
   }
 }
 

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-card-inner',
   template: `
-    <nz-card [nzNoHovering]="true">
+    <nz-card nzNoHovering>
       <ng-template #title>卡片标题</ng-template>
       <ng-template #body>
         <div nz-card-grid [ngStyle]="gridStyle">卡片内容</div>
@@ -18,11 +18,9 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoCardInnerComponent implements OnInit {
+export class NzDemoCardInnerComponent {
   gridStyle = {
     width: '25%',
     textAlign: 'center',
   };
-  ngOnInit() {
-  }
 }

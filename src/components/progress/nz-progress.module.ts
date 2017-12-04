@@ -7,6 +7,5 @@ import {CommonModule} from '@angular/common';
   declarations: [NzProgressComponent],
   imports     : [CommonModule]
 })
-
 export class NzProgressModule {
 }

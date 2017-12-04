@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-badge-myceil',
@@ -38,13 +38,4 @@ import { Component, OnInit } from '@angular/core';
     }
   ` ]
 })
-
-export class NzDemoBadgeMyCeilComponent implements OnInit {
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
-
+export class NzDemoBadgeMyCeilComponent { }

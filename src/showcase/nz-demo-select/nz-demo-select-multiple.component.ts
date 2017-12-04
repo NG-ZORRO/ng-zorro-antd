@@ -22,9 +22,6 @@ export class NzDemoSelectMultipleComponent implements OnInit {
   searchOptions;
   selectedMultipleOption;
 
-  constructor() {
-  }
-
   ngOnInit() {
     /*模拟服务器异步加载*/
     this.selectedMultipleOption = [ 'tom', 'jack' ];

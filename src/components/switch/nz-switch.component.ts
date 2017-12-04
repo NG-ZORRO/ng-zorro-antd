@@ -7,6 +7,7 @@ import {
   forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-switch',
@@ -35,35 +36,35 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class NzSwitchComponent implements OnInit, ControlValueAccessor {
+  private _disabled = false;
   _prefixCls = 'ant-switch';
   _innerPrefixCls = `${this._prefixCls}-inner`;
   _classMap;
   _size: string;
   _checked = false;
-  _disabled = false;
 
   // ngModel Access
   onChange: any = Function.prototype;
   onTouched: any = Function.prototype;
 
   @Input()
-  get nzSize(): string {
-    return this._size;
-  };
-
   set nzSize(value: string) {
     this._size = value;
     this.setClassMap();
   }
 
+  get nzSize(): string {
+    return this._size;
+  }
+
   @Input()
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
+    this.setClassMap();
+  }
+
   get nzDisabled(): boolean {
     return this._disabled;
-  };
-
-  set nzDisabled(value: boolean) {
-    this._disabled = value;
-    this.setClassMap();
   }
 
   @HostListener('click', [ '$event' ])

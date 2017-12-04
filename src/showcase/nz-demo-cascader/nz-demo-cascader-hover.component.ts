@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 const options = [{
   value: 'zhejiang',
@@ -43,7 +43,7 @@ const options = [{
     </nz-cascader>`,
   styles  : []
 })
-export class NzDemoCascaderHoverComponent implements OnInit {
+export class NzDemoCascaderHoverComponent {
   /** init data */
   _options = options;
 
@@ -51,12 +51,6 @@ export class NzDemoCascaderHoverComponent implements OnInit {
 
   _console(value) {
     console.log(value);
-  }
-
-  constructor() {
-  }
-
-  ngOnInit() {
   }
 }
 

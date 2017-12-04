@@ -35,7 +35,6 @@ import { NzDemoButtonRoutingModule } from './nz-demo-button.routing.module';
     NzDemoButtonMultipleComponent
   ]
 })
-
 export class NzDemoButtonModule {
 
 }

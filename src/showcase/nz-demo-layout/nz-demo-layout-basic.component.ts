@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-layout-basic',
@@ -65,10 +65,4 @@ import { Component, OnInit } from '@angular/core';
     }
   ` ]
 })
-export class NzDemoLayoutBasicComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoLayoutBasicComponent { }

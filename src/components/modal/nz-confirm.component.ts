@@ -12,6 +12,7 @@ import {
 
 import { NzModalSubject } from './nz-modal-subject.service';
 import nzGlobalMonitor from '../util/nz-global-monitor';
+import { toBoolean } from '../util/convert';
 import { NzLocaleService } from '../locale/index';
 
 interface Position {
@@ -73,38 +74,36 @@ interface Position {
   ]
 })
 export class NzConfirmComponent implements OnInit, OnDestroy {
+  private _maskClosable = true;
+  _confirmLoading = false;
+  _visible = false;
+
   _prefixCls = 'ant-modal';
   _prefixConfirmCls = 'ant-confirm';
   _maskClassMap;
   _bodyClassMap;
   _bodyStyleMap;
-  _visible = false;
   _width = '416px';
   _zIndex = 1000;
   _iconTypeCls = 'anticon anticon-question-circle';
   _title = '';
   _titleTpl: TemplateRef<any>;
   _content = '';
-  _maskClosable = true;
   _contentTpl: TemplateRef<any>;
   _okText = this._locale.translate('Modal.understood');
   _cancelText = '';
   _animationStatus = '';
-  _confirmLoading = false;
   _customClass = '';
   _typeCls = `${this._prefixConfirmCls}-confirm`;
   @ViewChild('confirm_content') private contentEl: ElementRef;
 
   @Input()
-  public get nzVisible(): boolean {
-    return this._visible;
-  };
-
-  public set nzVisible(value: boolean) {
-    if (this._visible === value) {
+  set nzVisible(value: boolean) {
+    const visible = toBoolean(value);
+    if (this._visible === visible) {
       return;
     }
-    if (value) {
+    if (visible) {
       this.anmiateFade('enter');
       this.subject.next('onShow');
       // 每次触发点击事件的时候，通过全局监听的类，记录下点击的位置，计算动画的origin
@@ -118,9 +117,13 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
       this.anmiateFade('leave');
       this.subject.next('onHide');
     }
-    this._visible = value;
+    this._visible = visible;
     // 设置全局的overflow样式
-    nzGlobalMonitor.setDocumentOverflowHidden(value);
+    nzGlobalMonitor.setDocumentOverflowHidden(visible);
+  }
+
+  get nzVisible(): boolean {
+    return this._visible;
   }
 
   @Input()
@@ -158,7 +161,7 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
 
   @Input()
   set nzMaskClosable(value: boolean) {
-    this._maskClosable = value;
+    this._maskClosable = toBoolean(value);
   }
 
   @Input()
@@ -187,7 +190,7 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
 
   @Input()
   set nzConfirmLoading(value: boolean) {
-    this._confirmLoading = value;
+    this._confirmLoading = toBoolean(value);
   }
 
   @HostListener('keydown.esc', [ '$event' ])

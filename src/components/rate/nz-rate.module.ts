@@ -7,6 +7,5 @@ import { CommonModule } from '@angular/common';
   declarations: [ NzRateComponent ],
   imports     : [ CommonModule ]
 })
-
 export class NzRateModule {
 }

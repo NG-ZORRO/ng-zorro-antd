@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewEncapsulation, OnChanges, SimpleChanges, ViewChild, HostListener } from '@angular/core';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
+import { toBoolean } from '../util/convert';
 import { NzSliderComponent } from './nz-slider.component';
 
 @Component({
@@ -12,7 +13,7 @@ import { NzSliderComponent } from './nz-slider.component';
     <div *ngIf="nzTipFormatter === null" [class]="nzClassName" [ngStyle]="style"></div>
   `
 })
-export class NzSliderHandleComponent implements OnInit, OnChanges {
+export class NzSliderHandleComponent implements OnChanges {
 
   // Static properties
   @Input() nzClassName: string;
@@ -20,7 +21,8 @@ export class NzSliderHandleComponent implements OnInit, OnChanges {
   @Input() nzOffset: number;
   @Input() nzValue: number; // [For tooltip]
   @Input() nzTipFormatter: Function; // [For tooltip]
-  @Input() set nzActive(show: boolean) { // [For tooltip]
+  @Input() set nzActive(value: boolean) { // [For tooltip]
+    const show = toBoolean(value);
     if (this.tooltip) {
       if (show) {
         this.tooltip.show()
@@ -36,9 +38,6 @@ export class NzSliderHandleComponent implements OnInit, OnChanges {
   style: any = {};
 
   constructor(private _slider: NzSliderComponent) { }
-
-  ngOnInit() {
-  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.nzOffset) {

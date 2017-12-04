@@ -7,6 +7,5 @@ import { CommonModule } from '@angular/common';
   exports     : [ NzCarouselComponent, NzCarouselContentDirective ],
   imports     : [ CommonModule ]
 })
-
 export class NzCarouselModule {
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-timepicker-hide-options',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
     <nz-timepicker [(ngModel)]="_date" nzHideDisabledOptions [nzDisabledHours]="disabledHours" [nzDisabledMinutes]="disabledMinutes"></nz-timepicker>`,
   styles  : []
 })
-export class NzDemoTimePickerHideOptionsComponent implements OnInit {
+export class NzDemoTimePickerHideOptionsComponent {
   _date = null;
   newArray = (start, end) => {
     const result = [];
@@ -29,11 +29,4 @@ export class NzDemoTimePickerHideOptionsComponent implements OnInit {
     }
     return [];
   };
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

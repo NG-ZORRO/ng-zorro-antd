@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 const provinces = [{
   value: 'zhejiang',
@@ -48,18 +48,12 @@ const scenicspots = {
     </nz-cascader>`,
   styles  : []
 })
-export class NzDemoCascaderLazyComponent implements OnInit {
+export class NzDemoCascaderLazyComponent {
 
   _value: any[] = null;
 
   _console(value) {
     console.log(value);
-  }
-
-  constructor() {
-  }
-
-  ngOnInit() {
   }
 
   /** load data async */

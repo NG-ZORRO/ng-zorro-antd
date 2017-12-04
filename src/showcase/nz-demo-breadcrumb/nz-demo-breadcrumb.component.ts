@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-breadcrumb',
@@ -8,15 +8,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-breadcrumb.less'
   ]
 })
-export class NzDemoBreadCrumbComponent implements OnInit {
+export class NzDemoBreadCrumbComponent {
   NzDemoBreadCrumbBasicCode = require('!!raw-loader!./nz-demo-breadcrumb-basic.component');
   NzDemoBreadCrumbIconCode = require('!!raw-loader!./nz-demo-breadcrumb-icon.component');
   NzDemoBreadCrumbSeparatorCode = require('!!raw-loader!./nz-demo-breadcrumb-separator.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

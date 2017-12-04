@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-form',
@@ -8,7 +8,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-form.less',
   ]
 })
-export class NzDemoFormComponent implements OnInit {
+export class NzDemoFormComponent {
   NzDemoFormInlineCode = require('!!raw-loader!./nz-demo-form-inline.component');
   NzDemoFormLayoutCode = require('!!raw-loader!./nz-demo-form-layout.component');
   NzDemoFormHorizontalCode = require('!!raw-loader!./nz-demo-form-horizontal.component');
@@ -18,10 +18,4 @@ export class NzDemoFormComponent implements OnInit {
   NzDemoFormAdvancedCode = require('!!raw-loader!./nz-demo-form-advanced.component');
   NzDemoFormDynamicCode = require('!!raw-loader!./nz-demo-form-dynamic.component');
   NzDemoFormLoginCode = require('!!raw-loader!./nz-demo-form-login.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

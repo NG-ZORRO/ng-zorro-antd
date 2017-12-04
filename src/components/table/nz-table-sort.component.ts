@@ -26,7 +26,7 @@ import { NzThDirective } from './nz-th.directive';
     './style/index.less'
   ]
 })
-export class NzTableSortComponent implements OnInit {
+export class NzTableSortComponent {
   _value = null;
   @Output() nzValueChange: EventEmitter<any> = new EventEmitter();
 
@@ -60,8 +60,5 @@ export class NzTableSortComponent implements OnInit {
   }
 
   constructor(@Host() @Optional() private nzThDirective: NzThDirective, private _renderer: Renderer2) {
-  }
-
-  ngOnInit() {
   }
 }

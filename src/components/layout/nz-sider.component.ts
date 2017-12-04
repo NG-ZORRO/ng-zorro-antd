@@ -10,6 +10,7 @@ import {
   EventEmitter
 } from '@angular/core';
 import { NzLayoutComponent } from './nz-layout.component';
+import { toBoolean } from '../util/convert';
 
 export type NzBreakPoinit = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
@@ -26,8 +27,11 @@ export type NzBreakPoinit = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     </div>
   `
 })
-
 export class NzSiderComponent {
+  private _collapsed = false;
+  private _collapsible = false;
+  private _trigger = true;
+
   _dimensionMap = {
     xl: '1600px',
     lg: '1200px',
@@ -37,23 +41,35 @@ export class NzSiderComponent {
   };
   _below = false;
   @Input() nzWidth = '200';
-  @Input() nzTrigger = true;
   @Input() nzCollapsedWidth = 64;
   @Input() nzBreakpoint: NzBreakPoinit;
-  @Input() @HostBinding('class.ant-layout-sider-collapsed') nzCollapsed = false;
-  _collapsible = false;
 
   @Input()
-  set nzCollapsible(value: boolean | string) {
-    if (value === '') {
-      this._collapsible = true;
-    } else {
-      this._collapsible = value as boolean;
-    }
+  set nzTrigger(value: boolean) {
+    this._trigger = toBoolean(value);
+  }
+
+  get nzTrigger() {
+    return this._trigger;
+  }
+
+  @Input()
+  set nzCollapsible(value: boolean) {
+    this._collapsible = toBoolean(value);
   }
 
   get nzCollapsible() {
     return this._collapsible;
+  }
+
+  @Input()
+  @HostBinding('class.ant-layout-sider-collapsed')
+  set nzCollapsed(value: boolean) {
+    this._collapsed = toBoolean(value);
+  }
+
+  get nzCollapsed() {
+    return this._collapsed;
   }
 
   @Output() nzCollapsedChange = new EventEmitter();

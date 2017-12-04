@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-badge-standalones',
@@ -13,8 +13,7 @@ import { Component, OnInit } from '@angular/core';
     }
   ` ]
 })
-
-export class NzDemoBadgeStandAlonesComponent implements OnInit {
+export class NzDemoBadgeStandAlonesComponent {
 
   style1 = {};
 
@@ -25,11 +24,4 @@ export class NzDemoBadgeStandAlonesComponent implements OnInit {
   style3 = {
     backgroundColor: '#87d068'
   };
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

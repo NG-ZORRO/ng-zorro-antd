@@ -10,6 +10,5 @@ import { FormsModule } from '@angular/forms';
   exports     : [ NzRadioComponent, NzRadioButtonComponent, NzRadioGroupComponent ],
   declarations: [ NzRadioComponent, NzRadioButtonComponent, NzRadioGroupComponent ]
 })
-
 export class NzRadioModule {
 }

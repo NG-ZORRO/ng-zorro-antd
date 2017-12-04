@@ -23,7 +23,6 @@ import { NzDemoGridRoutingModule } from './nz-demo-grid.routing.module';
   imports     : [ NzDemoGridRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule ],
   declarations: [ NzDemoGridResponsiveMoreComponent, NzDemoGridGutterConfigComponent, NzDemoGridFlexOrderComponent, NzDemoGridBasicComponent, NzDemoGridGutterComponent, NzDemoGridOffsetComponent, NzDemoGridSortComponent, NzDemoGridFlexComponent, NzDemoGridFlexAlignComponent, NzDemoGridResponsiveComponent, NzDemoGridComponent ]
 })
-
 export class NzDemoGridModule {
 
 }

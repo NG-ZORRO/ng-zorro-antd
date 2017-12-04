@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-pagination',
@@ -8,7 +8,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-pagination.less',
   ]
 })
-export class NzDemoPaginationComponent implements OnInit {
+export class NzDemoPaginationComponent {
   NzDemoPaginationBasicCode = require('!!raw-loader!./nz-demo-pagination-basic.component');
   NzDemoPaginationMoreCode = require('!!raw-loader!./nz-demo-pagination-more.component');
   NzDemoPaginationChangerCode = require('!!raw-loader!./nz-demo-pagination-changer.component');
@@ -16,10 +16,4 @@ export class NzDemoPaginationComponent implements OnInit {
   NzDemoPaginationMiniCode = require('!!raw-loader!./nz-demo-pagination-mini.component');
   NzDemoPaginationSimpleCode = require('!!raw-loader!./nz-demo-pagination-simple.component');
   NzDemoPaginationTotalCode = require('!!raw-loader!./nz-demo-pagination-total.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

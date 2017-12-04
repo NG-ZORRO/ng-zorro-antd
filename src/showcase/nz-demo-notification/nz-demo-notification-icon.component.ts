@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NzNotificationService} from '../../../index.showcase';
 
 @Component({
@@ -11,14 +11,11 @@ import {NzNotificationService} from '../../../index.showcase';
 `,
   styles    : []
 })
-export class NzDemoNotificationIconComponent implements OnInit {
+export class NzDemoNotificationIconComponent {
   createNotification = (type) => {
     this._notification.create(type, '这是标题', '这是提示框的文案这是提示框示框的文案这是提示是提示框的文案这是提示框的文案');
   };
   constructor(private _notification: NzNotificationService) {
-  }
-
-  ngOnInit() {
   }
 }
 

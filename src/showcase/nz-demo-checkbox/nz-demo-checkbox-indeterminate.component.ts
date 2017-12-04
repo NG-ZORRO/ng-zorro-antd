@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-checkbox-indeterminate',
@@ -13,7 +13,7 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoCheckboxIndeterminateComponent implements OnInit {
+export class NzDemoCheckboxIndeterminateComponent {
   allChecked = false;
   indeterminate = true;
   checkOptionsOne = [
@@ -42,11 +42,4 @@ export class NzDemoCheckboxIndeterminateComponent implements OnInit {
       this.indeterminate = true;
     }
   }
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

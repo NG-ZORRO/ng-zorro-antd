@@ -20,7 +20,6 @@ import { NzLocaleModule } from '../locale/index';
   exports     : [ NzRowIndentComponent, NzRowExpandIconComponent, NzTableFilterComponent, NzTableComponent, NzThDirective, NzTdDirective, NzTheadDirective, NzTbodyDirective, NzTbodyTrDirective, NzTableDividerDirective, NzTableSortComponent ],
   imports     : [ CommonModule, NzPaginationModule, NzSpinModule, NzLocaleModule ]
 })
-
 export class NzTableModule {
 }
 

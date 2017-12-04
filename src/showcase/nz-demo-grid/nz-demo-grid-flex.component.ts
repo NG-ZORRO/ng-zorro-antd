@@ -82,11 +82,4 @@ import { Component, OnInit } from '@angular/core';
     </div>`,
   styles  : []
 })
-export class NzDemoGridFlexComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
-
+export class NzDemoGridFlexComponent { }

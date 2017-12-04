@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   <nz-badge [nzCount]="5" style="margin-right: 24px;">
     <ng-template #content><nz-avatar nzIcon="user" [nzShape]="'square'"></nz-avatar></ng-template>
   </nz-badge>
-  <nz-badge [nzDot]="true">
+  <nz-badge nzDot>
     <ng-template #content><nz-avatar nzIcon="user" [nzShape]="'square'"></nz-avatar></ng-template>
   </nz-badge>
   `
