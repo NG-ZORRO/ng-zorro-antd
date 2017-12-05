@@ -12,7 +12,7 @@ import {
   EventEmitter
 } from '@angular/core';
 import { TagAnimation } from '../core/animation/tag-animations';
-
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector       : 'nz-tag',
@@ -35,12 +35,21 @@ import { TagAnimation } from '../core/animation/tag-animations';
     './style/patch.less'
   ]
 })
-export class NzTagComponent implements OnInit, AfterViewInit {
+export class NzTagComponent implements AfterViewInit {
+  private _closable = false;
+
   _prefixCls = 'ant-tag';
   _closed = false;
 
   /** Whether tag is closable */
-  @Input() nzClosable = false;
+  @Input()
+  set nzClosable(value: boolean) {
+    this._closable = toBoolean(value);
+  }
+
+  get nzClosable(): boolean {
+    return this._closable;
+  }
 
   /** The tag color */
   @Input() nzColor: string;
@@ -97,9 +106,6 @@ export class NzTagComponent implements OnInit, AfterViewInit {
     private _elementRef: ElementRef,
     private _render: Renderer2) {
 
-  }
-
-  ngOnInit() {
   }
 
   ngAfterViewInit(): void {

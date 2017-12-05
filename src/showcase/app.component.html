@@ -20,7 +20,7 @@
         </div>
 
         <ul nz-menu [nzMode]="'horizontal'" id="nav">
-          <li nz-menu-item [nzSelected]="true">
+          <li nz-menu-item nzSelected>
             <a routerLink="/docs/angular/introduce"><span>组件</span></a>
           </li>
         </ul>
@@ -34,7 +34,7 @@
           <li *ngFor="let intro of routerList.intro" nz-menu-item routerLinkActive="ant-menu-item-selected" style="padding-left: 24px;">
             <a routerLink="{{intro.path}}">{{intro.label}}</a>
           </li>
-          <li nz-submenu [nzOpen]="true">
+          <li nz-submenu nzOpen>
             <span title><h4>Components</h4></span>
             <ul>
               <li nz-menu-group *ngFor="let group of routerList.components">

@@ -19,7 +19,7 @@ export class NzDemoConfirmDestroyComponent {
     });
 
     setTimeout(() => modal.destroy(), 1000);
-  }
+  };
 
   constructor(private confirmServ: NzModalService) {}
 }

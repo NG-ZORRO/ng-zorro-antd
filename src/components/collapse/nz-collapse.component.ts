@@ -11,7 +11,8 @@ import {
   animate,
   transition
 } from '@angular/animations';
-import { NzCollapsesetComponent } from './nz-collapseset.component'
+import { NzCollapsesetComponent } from './nz-collapseset.component';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-collapse',
@@ -48,28 +49,38 @@ import { NzCollapsesetComponent } from './nz-collapseset.component'
 })
 
 export class NzCollapseComponent {
+  private _disabled = false;
+  _active = false;
+
   _el;
-  _active: boolean;
 
   @HostBinding('class.ant-collapse-item') _nzCollapseItem = true;
 
   @Input() nzTitle: string;
+
   @Input()
   @HostBinding('class.ant-collapse-item-disabled')
-  nzDisabled = false;
-
-  @Input()
-  get nzActive(): boolean {
-    return this._active;
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
   }
 
-  set nzActive(active: boolean) {
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
+
+  @Input()
+  set nzActive(value: boolean) {
+    const active = toBoolean(value);
     if (this._active === active) {
       return;
     }
     if (!this.nzDisabled) {
       this._active = active;
     }
+  }
+
+  get nzActive(): boolean {
+    return this._active;
   }
 
   clickHeader($event) {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-datepicker-formatter',
@@ -8,13 +8,7 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoDatePickerFormatterComponent implements OnInit {
+export class NzDemoDatePickerFormatterComponent {
   _date = new Date();
   _month = new Date();
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzTimePickerInnerComponent } from './nz-timepicker-inner.component';
 import { DEFAULT_DATEPICKER_POSITIONS } from '../core/overlay/overlay-position-map';
+import { toBoolean } from '../util/convert';
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
 
 @Component({
@@ -140,7 +141,7 @@ import { ConnectionPositionPair } from '@angular/cdk/overlay';
   ]
 })
 export class NzTimePickerComponent extends NzTimePickerInnerComponent {
-  _disabled = false;
+  private _timePickerDisabled = false;
   _dropDownPosition = 'bottom';
   _triggerWidth = 0;
   _positions: ConnectionPositionPair[] = [ ...DEFAULT_DATEPICKER_POSITIONS ];
@@ -148,13 +149,13 @@ export class NzTimePickerComponent extends NzTimePickerInnerComponent {
   @ViewChild('trigger') trigger;
 
   @Input()
-  get nzDisabled(): boolean {
-    return this._disabled;
-  };
-
   set nzDisabled(value: boolean) {
-    this._disabled = value;
+    this._timePickerDisabled = toBoolean(value);
     this._closeCalendar();
+  }
+
+  get nzDisabled(): boolean {
+    return this._timePickerDisabled;
   }
 
   _setTriggerWidth(): void {

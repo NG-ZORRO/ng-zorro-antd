@@ -13,6 +13,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzTimePickerInnerComponent } from '../time-picker/nz-timepicker-inner.component';
 import { DEFAULT_DATEPICKER_POSITIONS } from '../core/overlay/overlay-position-map';
+import { toBoolean } from '../util/convert';
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
 import { NzLocaleService } from '../locale/index';
 
@@ -108,7 +109,7 @@ import { NzLocaleService } from '../locale/index';
                       [nzMode]="'month'"
                       [nzFullScreen]="false"
                       [nzShowHeader]="false"
-                      [nzDatePicker]="true">
+                      nzDatePicker>
                     </nz-calendar>
                   </div>
                 </div>
@@ -156,7 +157,7 @@ import { NzLocaleService } from '../locale/index';
               [ngModel]="_value" (ngModelChange)="_changeTime($event)"
               *ngIf="nzShowTime&&(_mode == 'time')"></nz-timepicker-inner>
             <div class="ant-calendar-calendar-body">
-              <nz-calendar [nzClearTime]="!nzShowTime" [nzDisabledDate]="nzDisabledDate" (nzClickDay)="_clickDay($event)" [nzShowMonth]="_showMonth" [nzShowYear]="_showYear" [nzValue]="_value" (nzClickMonth)="_clickMonth($event)" [nzMode]="'year'" [nzFullScreen]="false" [nzShowHeader]="false" [nzDatePicker]="true"></nz-calendar>
+              <nz-calendar [nzClearTime]="!nzShowTime" [nzDisabledDate]="nzDisabledDate" (nzClickDay)="_clickDay($event)" [nzShowMonth]="_showMonth" [nzShowYear]="_showYear" [nzValue]="_value" (nzClickMonth)="_clickMonth($event)" [nzMode]="'year'" [nzFullScreen]="false" [nzShowHeader]="false" nzDatePicker></nz-calendar>
             </div>
             <div class="ant-calendar-footer ant-calendar-footer-show-ok">
                 <span class="ant-calendar-footer-btn">
@@ -183,13 +184,14 @@ import { NzLocaleService } from '../locale/index';
   ]
 })
 export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
+  private _allowClear = true;
+  private _disabled = false;
   _el: HTMLElement;
   _open = false;
   _mode = 'year';
   _dropDownPosition = 'bottom';
   _triggerWidth = 0;
   _value = null;
-  _disabled = false;
   _disabledDate;
   _today = new Date();
   _selectedMonth = moment(this.nzValue).month();
@@ -203,7 +205,6 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   // ngModel Access
   onChange: any = Function.prototype;
   onTouched: any = Function.prototype;
-  @Input() nzAllowClear = true;
   @Input() nzShowTime: any = null;
   @Input() nzPlaceHolder = this._locale.translate('DateTime.chooseDatePlease');
   @Input() nzFormat = 'YYYY-MM-DD';
@@ -214,27 +215,35 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   @HostBinding('class.ant-calendar-picker') _nzCalendarPicker = true;
 
   @Input()
-  get nzDisabled(): boolean {
-    return this._disabled;
-  };
+  set nzAllowClear(value: boolean) {
+    this._allowClear = toBoolean(value);
+  }
 
-  set nzDisabled(value: boolean) {
-    this._disabled = value;
-    this._closeCalendar();
+  get nzAllowClear(): boolean {
+    return this._allowClear;
   }
 
   @Input()
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
+    this._closeCalendar();
+  }
+
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
+
+  @Input()
+  set nzDisabledDate(value: Function) {
+    this._disabledDate = value;
+  }
+
   get nzDisabledDate(): Function {
     if (this._mode === 'month' && this.nzMode === 'day') {
       return;
     }
     return this._disabledDate;
-  };
-
-  set nzDisabledDate(value: Function) {
-    this._disabledDate = value;
   }
-
 
   get _disabledToday() {
     if (this._disabledDate) {
@@ -259,11 +268,11 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
 
   get nzValue(): Date {
     return this._value || new Date();
-  };
+  }
 
   set nzValue(value: Date) {
     this._updateValue(value);
-  };
+  }
 
   _changeTime($event) {
     this._value = $event;

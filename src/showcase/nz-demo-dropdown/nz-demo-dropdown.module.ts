@@ -35,7 +35,6 @@ import { NzDemoDropDownRoutingModule } from './nz-demo-dropdown.routing.module';
     NzDemoDropDownButtonComponent
   ]
 })
-
 export class NzDemoDropDownModule {
 
 }

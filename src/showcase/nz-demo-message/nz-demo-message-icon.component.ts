@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NzMessageService} from '../../../index.showcase';
 
 @Component({
@@ -10,14 +10,11 @@ import {NzMessageService} from '../../../index.showcase';
 `,
   styles    : []
 })
-export class NzDemoMessageIconComponent implements OnInit {
+export class NzDemoMessageIconComponent {
   createMessage = (type, text) => {
     this._message.create(type, `这是一条${text}提示`);
   };
   constructor(private _message: NzMessageService) {
-  }
-
-  ngOnInit() {
   }
 }
 

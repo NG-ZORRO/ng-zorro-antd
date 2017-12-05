@@ -26,10 +26,4 @@ import { Component, OnInit } from '@angular/core';
     </nz-popover>
   `
 })
-export class NzDemoPopoverTriggerComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  };
-}
+export class NzDemoPopoverTriggerComponent { }

@@ -8,6 +8,7 @@ import {
   ViewChild,
   Renderer2
 } from '@angular/core';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-spin',
@@ -27,23 +28,32 @@ import {
   ]
 })
 export class NzSpinComponent implements AfterContentInit {
-  @Input() nzSpinning = true;
+  private _spinning = true;
   _tip: string;
 
   @Input()
+  set nzTip(value) {
+    this._tip = value || '加载中...';
+  }
+
   get nzTip() {
     return this._tip;
   }
 
-  set nzTip(value) {
-    this._tip = value || '加载中...';
+  @Input()
+  set nzSpinning(value: boolean) {
+    this._spinning = toBoolean(value);
+  }
+
+  get nzSpinning() {
+    return this._spinning;
   }
 
   @ViewChild('ref')
   _ref;
 
   @HostBinding('class.ant-spin-nested-loading')
-  private get isNested() {
+  get isNested() {
     return this.nzSpinning && (this._ref.nativeElement.childNodes.length !== 0);
   }
 
@@ -51,12 +61,12 @@ export class NzSpinComponent implements AfterContentInit {
   _size: string;
 
   @Input()
-  get nzSize() {
-    return this._size;
-  }
-
   set nzSize(value) {
     this._size = { large: 'lg', small: 'sm' }[ value ];
+  }
+
+  get nzSize() {
+    return this._size;
   }
 
   constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {

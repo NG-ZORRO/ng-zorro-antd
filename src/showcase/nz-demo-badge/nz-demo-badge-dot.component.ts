@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-badge-dot',
   template: `
-    <nz-badge [nzDot]="true">
+    <nz-badge nzDot>
       <ng-template #content><i class="anticon anticon-notification"></i></ng-template>
     </nz-badge>
 
-    <nz-badge [nzDot]="true">
+    <nz-badge nzDot>
       <ng-template #content>
         <a>一个链接</a>
       </ng-template>
@@ -28,13 +28,5 @@ import { Component, OnInit } from '@angular/core';
     }
   ` ]
 })
-
-export class NzDemoBadgeDotComponent implements OnInit {
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoBadgeDotComponent { }
 

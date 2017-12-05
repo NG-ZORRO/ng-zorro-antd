@@ -15,7 +15,6 @@ import { NzDemoAffixRoutingModule } from './nz-demo-affix.routing.module';
   declarations: [ NzDemoAffixComponent, NzDemoAffixBasicComponent, NzDemoAffixFixedComponent, NzDemoAffixContainerComponent ],
   imports     : [ NzDemoAffixRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule ]
 })
-
 export class NzDemoAffixModule {
 
 }

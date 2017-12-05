@@ -8,6 +8,5 @@ import { CommonModule } from '@angular/common';
   exports     : [ NzTimelineItemComponent, NzTimelineComponent ],
   imports     : [ CommonModule ]
 })
-
 export class NzTimelineModule {
 }

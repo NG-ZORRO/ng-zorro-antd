@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-menu-vertical',
   template: `
@@ -47,10 +47,4 @@ import { Component, OnInit } from '@angular/core';
     </ul>`,
   styles  : []
 })
-export class NzDemoMenuVerticalComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoMenuVerticalComponent { }

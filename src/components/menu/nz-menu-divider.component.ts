@@ -5,7 +5,6 @@ import { Component, HostBinding } from '@angular/core';
   template     : `
     <ng-content></ng-content>`,
 })
-
 export class NzMenuDividerComponent {
   @HostBinding('class.ant-dropdown-menu-item-divider') _nzDropdownMenuItemDivider = true;
 }

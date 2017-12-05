@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-table',
@@ -8,7 +8,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-table.less',
   ]
 })
-export class NzDemoTableComponent implements OnInit {
+export class NzDemoTableComponent {
   NzDemoTableBasicCode = require('!!raw-loader!./nz-demo-table-basic.component');
   NzDemoTableExpandCode = require('!!raw-loader!./nz-demo-table-expand.component');
   NzDemoTableExpandTreeCode = require('!!raw-loader!./nz-demo-table-expand-tree.component');
@@ -24,10 +24,4 @@ export class NzDemoTableComponent implements OnInit {
   NzDemoTableAjaxCode = require('!!raw-loader!./nz-demo-table-ajax.component');
   NzDemoTableNoPaginationCode = require('!!raw-loader!./nz-demo-table-nopagination.component');
   NzDemoTableSizeCode = require('!!raw-loader!./nz-demo-table-size.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

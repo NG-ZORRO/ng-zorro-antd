@@ -7,6 +7,5 @@ import { CommonModule } from '@angular/common';
   declarations: [ NzSpinComponent ],
   imports     : [ CommonModule ]
 })
-
 export class NzSpinModule {
 }

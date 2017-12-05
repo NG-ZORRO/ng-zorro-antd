@@ -25,7 +25,6 @@ import { NzDemoModalRoutingModule } from './nz-demo-modal.routing.module';
   declarations   : [ NzDemoModalComponent, NzDemoModalBasicComponent, NzDemoModalCustomizeComponent, NzDemoModalAsyncComponent, NzDemoConfirmBasicComponent, NzDemoConfirmAsyncComponent, NzDemoConfirmInfoComponent, NzDemoModalLocaleComponent, NzDemoModalStyleComponent, NzDemoConfirmDestroyComponent, NzDemoModalServiceComponent, NzModalCustomizeComponent ],
   entryComponents: [ NzModalCustomizeComponent ]
 })
-
 export class NzDemoModalModule {
 
 }

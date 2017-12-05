@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-switch-basic',
@@ -6,13 +6,6 @@ import { Component, OnInit } from '@angular/core';
     <nz-switch [(ngModel)]="switchValue"></nz-switch>`,
   styles  : []
 })
-export class NzDemoSwitchBasicComponent implements OnInit {
+export class NzDemoSwitchBasicComponent {
   switchValue = false;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

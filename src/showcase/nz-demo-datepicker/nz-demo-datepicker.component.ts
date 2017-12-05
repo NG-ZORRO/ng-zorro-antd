@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-datepicker',
@@ -8,7 +8,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-datepicker.less',
   ]
 })
-export class NzDemoDatePickerComponent implements OnInit {
+export class NzDemoDatePickerComponent {
   NzDemoDatePickerBasicCode = require('!!raw-loader!./nz-demo-datepicker-basic.component');
   NzDemoDatePickerFormatterCode = require('!!raw-loader!./nz-demo-datepicker-formatter.component');
   NzDemoDatePickerSizeCode = require('!!raw-loader!./nz-demo-datepicker-size.component');
@@ -16,10 +16,4 @@ export class NzDemoDatePickerComponent implements OnInit {
   NzDemoDatePickerTimeCode = require('!!raw-loader!./nz-demo-datepicker-time.component');
   NzDemoDatePickerDisableDateCode = require('!!raw-loader!./nz-demo-datepicker-disable-date.component');
   NzDemoDatePickerStartEndCode = require('!!raw-loader!./nz-demo-datepicker-start-end.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

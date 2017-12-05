@@ -15,6 +15,5 @@ import { FormsModule } from '@angular/forms';
     NzCheckboxGroupComponent
   ]
 })
-
 export class NzCheckboxModule {
 }

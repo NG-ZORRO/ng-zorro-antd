@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-slider-marks',
@@ -10,6 +11,8 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges, ViewEncapsulation }
   `
 })
 export class NzSliderMarksComponent implements OnInit, OnChanges {
+  private _vertical = false;
+  private _included = false;
 
   // Dynamic properties
   @Input() nzLowerBound: number = null;
@@ -18,10 +21,26 @@ export class NzSliderMarksComponent implements OnInit, OnChanges {
 
   // Static properties
   @Input() nzClassName: string;
-  @Input() nzVertical: boolean; // Required
   @Input() nzMin: number; // Required
   @Input() nzMax: number; // Required
-  @Input() nzIncluded: boolean;
+
+  @Input()
+  set nzVertical(value: boolean) { // Required
+    this._vertical = toBoolean(value);
+  }
+
+  get nzVertical(): boolean {
+    return this._vertical;
+  }
+
+  @Input()
+  set nzIncluded(value: boolean) {
+    this._included = toBoolean(value);
+  }
+
+  get nzIncluded(): boolean {
+    return this._included;
+  }
 
   attrs; // points for inner use
 

@@ -22,6 +22,7 @@ import { NzMenuComponent } from '../menu/nz-menu.component';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 import { POSITION_MAP, DEFAULT_DROPDOWN_POSITIONS } from '../core/overlay/overlay-position-map';
+import { toBoolean } from '../util/convert';
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
 
 export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
@@ -68,6 +69,8 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
 })
 
 export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
+  private _clickHide = true;
+  private _visible = false;
   hasFilterButton = false;
   _triggerWidth = 0;
   _placement: NzPlacement = 'bottomLeft';
@@ -77,17 +80,33 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   @ContentChild(NzDropDownDirective) _nzOrigin;
   @ContentChild(NzMenuComponent) _nzMenu;
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
-  @Input() nzClickHide = true;
-  @Input() nzVisible = false;
   @Output() _visibleChange = new Subject<boolean>();
   @Output() nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
+
+  @Input()
+  set nzClickHide(value: boolean) {
+    this._clickHide = toBoolean(value);
+  }
+
+  get nzClickHide(): boolean {
+    return this._clickHide;
+  }
+
+  @Input()
+  set nzVisible(value: boolean) {
+    this._visible = toBoolean(value);
+  }
+
+  get nzVisible(): boolean {
+    return this._visible;
+  }
 
   @Input()
   set nzPlacement(value: NzPlacement) {
     this._placement = value;
     this._dropDownPosition = (this.nzPlacement.indexOf('top') !== -1) ? 'top' : 'bottom';
     this._positions.unshift(POSITION_MAP[ this._placement ] as ConnectionPositionPair);
-  };
+  }
 
   get nzPlacement(): NzPlacement {
     return this._placement;

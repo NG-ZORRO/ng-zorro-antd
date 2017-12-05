@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-calendar',
@@ -8,15 +8,9 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-calendar.less',
   ]
 })
-export class NzDemoCalendarComponent implements OnInit {
+export class NzDemoCalendarComponent {
   NzDemoCalendarBasicCode = require('!!raw-loader!./nz-demo-calendar-basic.component');
   NzDemoCalendarLocaleCode = require('!!raw-loader!./nz-demo-calendar-locale.component');
   NzDemoCalendarCardCode = require('!!raw-loader!./nz-demo-calendar-card.component');
   NzDemoCalendarContentCode = require('!!raw-loader!./nz-demo-calendar-content.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

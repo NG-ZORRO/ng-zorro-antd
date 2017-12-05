@@ -9,6 +9,7 @@ import {
   forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-checkbox-group',
@@ -34,15 +35,24 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     './style/index.less'
   ]
 })
-export class NzCheckboxGroupComponent implements OnInit, AfterContentInit, ControlValueAccessor {
+export class NzCheckboxGroupComponent implements ControlValueAccessor {
+  private _disabled = false;
   _el: HTMLElement;
   _options: Array<any>;
   _prefixCls = 'ant-checkbox-group';
   // ngModel Access
   onChange: any = Function.prototype;
   onTouched: any = Function.prototype;
-  @Input() nzDisabled = false;
   @Input() nzType: string;
+
+  @Input()
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
+  }
+
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
 
   _optionChange() {
     this.onChange(this._options);
@@ -51,9 +61,6 @@ export class NzCheckboxGroupComponent implements OnInit, AfterContentInit, Contr
   constructor(private _elementRef: ElementRef, private _render: Renderer) {
     this._el = this._elementRef.nativeElement;
     this._render.setElementClass(this._el, `${this._prefixCls}`, true);
-  }
-
-  ngAfterContentInit() {
   }
 
   writeValue(value: any): void {
@@ -70,8 +77,5 @@ export class NzCheckboxGroupComponent implements OnInit, AfterContentInit, Contr
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
-  }
-
-  ngOnInit() {
   }
 }

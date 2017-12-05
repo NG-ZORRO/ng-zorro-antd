@@ -12,14 +12,14 @@ export class NzOptionPipe implements PipeTransform {
       if (_options.length) {
         return _options;
       } else {
-        return <NzOptionComponent[]>[ {
+        return [ {
           nzValue   : value.value,
           _value    : value.value,
           nzDisabled: value.disabled,
           _disabled : value.disabled,
           nzLabel   : value.notFoundContent,
           _label    : value.notFoundContent,
-        } ]
+        } as any as NzOptionComponent ]
       }
     } else {
       return options;

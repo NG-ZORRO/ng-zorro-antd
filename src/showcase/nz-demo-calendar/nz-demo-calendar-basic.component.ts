@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-calendar-basic',
@@ -6,11 +6,4 @@ import { Component, OnInit } from '@angular/core';
     <nz-calendar [nzLocale]="'zh-cn'"></nz-calendar>`,
   styles  : []
 })
-export class NzDemoCalendarBasicComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
-
+export class NzDemoCalendarBasicComponent { }

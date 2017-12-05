@@ -11,6 +11,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-carousel',
@@ -34,6 +35,9 @@ import { NzCarouselContentDirective } from './nz-carousel-content.directive';
   ]
 })
 export class NzCarouselComponent implements AfterViewInit, OnDestroy {
+  private _autoPlay = false;
+  private _dots = true;
+  private _vertical = false;
   activeIndex = 0;
   transform = 'translate3d(0px, 0px, 0px)';
   interval;
@@ -47,11 +51,36 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('slickList') slickList: ElementRef;
   @ViewChild('slickTrack') slickTrack: ElementRef;
-  @Input() nzAutoPlay = false;
-  @Input() nzDots = true;
   @Input() nzEffect = 'scrollx';
-  @Input() @HostBinding('class.ant-carousel-vertical') nzVertical = false;
   @HostBinding('class.ant-carousel') _nzCarousel = true;
+
+  @Input()
+  set nzDots(value: boolean) {
+    this._dots = toBoolean(value);
+  }
+
+  get nzDots(): boolean {
+    return this._dots;
+  }
+
+  @Input()
+  set nzAutoPlay(value: boolean) {
+    this._autoPlay = toBoolean(value);
+  }
+
+  get nzAutoPlay(): boolean {
+    return this._autoPlay;
+  }
+
+  @Input()
+  @HostBinding('class.ant-carousel-vertical')
+  set nzVertical(value: boolean) {
+    this._vertical = toBoolean(value);
+  }
+
+  get nzVertical(): boolean {
+    return this._vertical;
+  }
 
   constructor(public hostElement: ElementRef, private _renderer: Renderer2) {
   }
@@ -109,7 +138,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
         this._renderer.removeStyle(this.slickTrack.nativeElement, 'width');
         this._renderer.setStyle(this.slickTrack.nativeElement, 'width', `${this.slideContents.length * this.hostElement.nativeElement.offsetWidth}px`);
       }
-    })
+    });
   }
 
   createInterval() {

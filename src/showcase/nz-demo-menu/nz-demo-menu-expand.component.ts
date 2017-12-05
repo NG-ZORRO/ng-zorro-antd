@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-menu-expand',
   template: `
@@ -47,7 +47,7 @@ import { Component, OnInit } from '@angular/core';
     </ul>`,
   styles  : []
 })
-export class NzDemoMenuExpandComponent implements OnInit {
+export class NzDemoMenuExpandComponent {
   isOpenOne = true;
   isOpenTwo = false;
   isOpenThree = false;
@@ -64,11 +64,5 @@ export class NzDemoMenuExpandComponent implements OnInit {
       this.isOpenTwo = false;
     }
 
-  }
-
-  constructor() {
-  }
-
-  ngOnInit() {
   }
 }

@@ -59,7 +59,7 @@ import {
           <label for="phoneNumber" nz-form-item-required>Phone Number</label>
         </div>
         <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('phoneNumber')">
-          <nz-input-group [nzSize]="'large'" [nzCompact]="true">
+          <nz-input-group [nzSize]="'large'" nzCompact>
             <nz-select formControlName="phoneNumberPrefix" style="width: 25%;">
               <nz-option [nzLabel]="'+86'" [nzValue]="'+86'"></nz-option>
               <nz-option [nzLabel]="'+87'" [nzValue]="'+87'"></nz-option>

@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed, ComponentFixtureAutoDetect } from '@angular/core/testing';
-import { Component, DebugElement } from '@angular/core';
+import { async, fakeAsync, tick, ComponentFixture, TestBed, ComponentFixtureAutoDetect } from '@angular/core/testing';
+import { Component, DebugElement, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NzButtonModule } from './nz-button.module';
 import { NzButtonComponent } from './nz-button.component';
@@ -123,13 +123,12 @@ describe('NzButton', () => {
       expect(buttonDebugElement.nativeElement.classList.contains('custom-class')).toBe(true);
     });
 
-    it('should handle a click on the button', () => {
+    it('should handle a click on the button', fakeAsync(() => {
       buttonDebugElement.nativeElement.click();
       expect(testComponent.isLoading).toBe(true);
-      setTimeout(_ => {
-        expect(testComponent.isLoading).toBe(false);
-      }, 5000);
-    });
+      tick(5000);
+      expect(testComponent.isLoading).toBe(false);
+    }));
   });
 
   describe('NzButton with disabled', () => {
@@ -183,6 +182,35 @@ describe('NzButton', () => {
       expect(groupDebugElement.nativeElement.firstElementChild.classList.contains('ant-btn-group-lg')).toBe(false);
       expect(groupDebugElement.nativeElement.firstElementChild.classList.contains('ant-btn-group-sm')).toBe(false);
     });
+  });
+
+  describe('NzButton with literal boolean attributes', () => {
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports     : [ NzButtonModule ],
+        declarations: [ TestAppLiteral ],
+        providers   : []
+      }).compileComponents();
+    }));
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(TestAppLiteral);
+      testComponent = fixture.debugElement.componentInstance;
+    });
+
+    it('should treat empty attibutes as truthy', async(() => {
+      fixture.detectChanges();
+      const component = testComponent as TestAppLiteral;
+      expect(component.truthyButton.nzLoading).toBe(true);
+      expect(component.truthyButton.nzGhost).toBe(true);
+    }));
+
+    it('should treat non-exist attributes as falsy', async(() => {
+      fixture.detectChanges();
+      const component = testComponent as TestAppLiteral;
+      expect(component.falsyButton.nzLoading).toBe(false);
+      expect(component.falsyButton.nzGhost).toBe(false);
+    }));
   });
 
 });
@@ -261,4 +289,14 @@ class TestAppGroup {
   size = 'small';
 }
 
-
+@Component({
+  selector: 'test-app-literal',
+  template: `
+    <button #truthy nz-button nzLoading nzGhost>Truthy</button>
+    <button #falsy nz-button>Falsy</button>
+  `
+})
+class TestAppLiteral {
+  @ViewChild('truthy') truthyButton: NzButtonComponent
+  @ViewChild('falsy') falsyButton: NzButtonComponent
+}

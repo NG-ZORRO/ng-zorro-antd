@@ -160,9 +160,6 @@ export class NzDemoTableSizeComponent implements OnInit {
   _fixHeader = false;
   _size = 'small';
 
-  constructor() {
-  }
-
   ngOnInit() {
     for (let i = 1; i <= 10; i++) {
       this._dataSet.push({

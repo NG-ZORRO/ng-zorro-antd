@@ -17,7 +17,6 @@ import { NzDemoCalendarRoutingModule } from './nz-demo-calendar.routing.module';
   imports     : [ NzDemoCalendarRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule ],
   declarations: [ NzDemoCalendarComponent, NzDemoCalendarBasicComponent, NzDemoCalendarCardComponent, NzDemoCalendarLocaleComponent, NzDemoCalendarContentComponent ]
 })
-
 export class NzDemoCalendarModule {
 
 }

@@ -18,16 +18,17 @@ import {
 } from '@angular/core';
 import { Directionality, Direction } from '@angular/cdk/bidi';
 import { Subscription } from 'rxjs/Subscription';
-import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
-import { NzTabLabelDirective } from './nz-tab-label.directive';
-
-const EXAGGERATED_OVERSCROLL = 64;
-export type ScrollDirection = 'after' | 'before';
 import { of as observableOf } from 'rxjs/observable/of';
 import { merge } from 'rxjs/observable/merge';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { auditTime } from 'rxjs/operators/auditTime';
 import { startWith } from 'rxjs/operators/startWith';
+import { toBoolean } from '../util/convert';
+import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
+import { NzTabLabelDirective } from './nz-tab-label.directive';
+
+const EXAGGERATED_OVERSCROLL = 64;
+export type ScrollDirection = 'after' | 'before';
 
 /** duplicated defined https://github.com/angular/angular-cli/issues/2034 **/
 export type NzTabPositionMode = 'horizontal' | 'vertical';
@@ -60,6 +61,10 @@ export type NzTabPositionMode = 'horizontal' | 'vertical';
     </div>`
 })
 export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit {
+  private _animated = true;
+  private _hideBar = false;
+  private _showPagination = true;
+
   _showPaginationControls = false;
   _disableScrollAfter = true;
   _disableScrollBefore = true;
@@ -70,10 +75,26 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   _scrollDistanceChanged: boolean;
   _selectedIndex = 0;
   _tabPositionMode: NzTabPositionMode = 'horizontal';
-  @Input() nzAnimated = true;
-  @Input() nzHideBar = false;
   @Input() nzSize = 'default';
   _type = 'line';
+
+  @Input()
+  set nzAnimated(value: boolean) {
+    this._animated = toBoolean(value);
+  }
+
+  get nzAnimated(): boolean {
+    return this._animated;
+  }
+
+  @Input()
+  set nzHideBar(value: boolean) {
+    this._hideBar = toBoolean(value);
+  }
+
+  get nzHideBar(): boolean {
+    return this._hideBar;
+  }
 
   @Input()
   set nzType(value) {
@@ -95,7 +116,15 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   @ViewChild('tabListContainer') _tabListContainer: ElementRef;
   @ViewChild('tabList') _tabList: ElementRef;
   @HostBinding('class.ant-tabs-bar') _nzTabsBar = true;
-  @Input() nzShowPagination = true;
+
+  @Input()
+  set nzShowPagination(value: boolean) {
+    this._showPagination = toBoolean(value);
+  }
+
+  get nzShowPagination(): boolean {
+    return this._showPagination;
+  }
 
   @Input()
   set nzPositionMode(value: NzTabPositionMode) {
@@ -111,14 +140,14 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   }
 
   @Input()
-  get selectedIndex(): number {
-    return this._selectedIndex;
-  }
-
   set selectedIndex(value: number) {
     this._selectedIndexChanged = this._selectedIndex !== value;
 
     this._selectedIndex = value;
+  }
+
+  get selectedIndex(): number {
+    return this._selectedIndex;
   }
 
   constructor(public _elementRef: ElementRef,

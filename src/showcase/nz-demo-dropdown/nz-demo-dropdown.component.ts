@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-dropdown',
@@ -8,7 +8,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-dropdown.less'
   ]
 })
-export class NzDemoDropDownComponent implements OnInit {
+export class NzDemoDropDownComponent {
   NzDemoDropDownBasicCode = require('!!raw-loader!./nz-demo-dropdown-basic.component');
   NzDemoDropDownOtherCode = require('!!raw-loader!./nz-demo-dropdown-other.component');
   NzDemoDropDownTriggerCode = require('!!raw-loader!./nz-demo-dropdown-trigger.component');
@@ -17,11 +17,5 @@ export class NzDemoDropDownComponent implements OnInit {
   NzDemoDropDownClickCode = require('!!raw-loader!./nz-demo-dropdown-click.component');
   NzDemoDropDownHideCode = require('!!raw-loader!./nz-demo-dropdown-hide.component');
   NzDemoDropDownButtonCode = require('!!raw-loader!./nz-demo-dropdown-button.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
 

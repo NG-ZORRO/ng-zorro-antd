@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-dropdown-trigger',
   template: `
@@ -14,14 +14,8 @@ import { Component, OnInit } from '@angular/core';
     </nz-dropdown>`,
   styles  : []
 })
-export class NzDemoDropDownTriggerComponent implements OnInit {
+export class NzDemoDropDownTriggerComponent {
   log(data) {
     console.log(data);
-  }
-
-  constructor() {
-  }
-
-  ngOnInit() {
   }
 }

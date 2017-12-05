@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { NzMenuComponent } from './nz-menu.component';
 import { NzSubMenuComponent } from './nz-submenu.component';
+import { toBoolean } from '../util/convert';
 
 export const PADDING_BASE = 24;
 
@@ -19,18 +20,27 @@ export const PADDING_BASE = 24;
   template: `
     <ng-content></ng-content>`,
 })
-
 export class NzMenuItemComponent implements AfterViewInit {
+  private _disabled = false;
+  private _selected = false;
+
   level = 0;
   padding = null;
   isInDropDown = false;
-  selected = false;
-  @Input() nzDisable = false;
+
+  @Input()
+  set nzDisable(value: boolean) {
+    this._disabled = toBoolean(value);
+  }
+
+  get nzDisable() {
+    return this._disabled;
+  }
 
   @Input()
   set nzSelected(value: boolean) {
-    this.selected = value;
-    if (value) {
+    this._selected = toBoolean(value);
+    if (this._selected) {
       this._renderer.addClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected')
     } else {
       this._renderer.removeClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected')
@@ -38,7 +48,7 @@ export class NzMenuItemComponent implements AfterViewInit {
   }
 
   get nzSelected() {
-    return this.selected;
+    return this._selected;
   }
 
   /** clear all item selected status except this */

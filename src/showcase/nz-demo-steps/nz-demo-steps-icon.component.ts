@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-steps-icon',
@@ -27,10 +27,4 @@ import { Component, OnInit } from '@angular/core';
     </nz-steps>
   `
 })
-export class NzDemoStepsIconComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoStepsIconComponent { }

@@ -33,7 +33,6 @@ import { NzDemoCardRoutingModule } from './nz-demo-card.routing.module';
     NzDemoCardInnerComponent
   ]
 })
-
 export class NzDemoCardModule {
 
 }

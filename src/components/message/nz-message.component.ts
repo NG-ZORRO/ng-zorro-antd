@@ -15,6 +15,7 @@ import {
   transition,
   animate
 } from '@angular/animations';
+
 @Component({
   selector     : 'nz-message',
   encapsulation: ViewEncapsulation.None,

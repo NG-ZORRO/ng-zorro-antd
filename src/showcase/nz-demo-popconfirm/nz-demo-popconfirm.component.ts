@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-popconfirm',
@@ -7,15 +7,9 @@ import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@
   templateUrl  : './nz-demo-popconfirm.html'
 })
 
-export class NzDemoPopconfirmComponent implements OnInit {
+export class NzDemoPopconfirmComponent {
   NzDemoPopconfirmBasicCode = require('!!raw-loader!./nz-demo-popconfirm-basic.component');
   NzDemoPopconfirmLocalCode = require('!!raw-loader!./nz-demo-popconfirm-locale.component');
   NzDemoPopconfirmLocationCode = require('!!raw-loader!./nz-demo-popconfirm-location.component');
   NzDemoPopconfirmKickCode = require('!!raw-loader!./nz-demo-popconfirm-kick.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

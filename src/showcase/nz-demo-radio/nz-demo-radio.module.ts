@@ -16,7 +16,6 @@ import { NzDemoRadioRoutingModule } from './nz-demo-radio.routing.module';
   imports     : [ NzDemoRadioRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule ],
   declarations: [ NzDemoRadioGroupComponent, NzDemoRadioButtonGroupComponent, NzDemoRadioButtonGroupSizeComponent, NzDemoRadioGroupDisabledComponent, NzDemoRadioComponent ]
 })
-
 export class NzDemoRadioModule {
 
 }

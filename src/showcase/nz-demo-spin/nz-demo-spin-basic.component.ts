@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-spin-basic',
@@ -6,11 +6,4 @@ import { Component, OnInit } from '@angular/core';
     <nz-spin></nz-spin>`,
   styles  : []
 })
-export class NzDemoSpinBasicComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
-
+export class NzDemoSpinBasicComponent { }

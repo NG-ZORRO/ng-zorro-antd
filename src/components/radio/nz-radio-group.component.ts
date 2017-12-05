@@ -44,21 +44,21 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
   radios: (NzRadioComponent | NzRadioButtonComponent)[] = [];
 
   @Input()
-  get nzSize(): string {
-    return this._size;
-  };
-
   set nzSize(value: string) {
     this._size = value;
   }
 
+  get nzSize(): string {
+    return this._size;
+  }
+
   @HostBinding('class.ant-radio-group-large') get isLarge() {
     return this._size === 'large';
-  };
+  }
 
   @HostBinding('class.ant-radio-group-small') get isSmall() {
     return this._size === 'small';
-  };
+  }
 
 
   addRadio(radio: NzRadioComponent | NzRadioButtonComponent) {

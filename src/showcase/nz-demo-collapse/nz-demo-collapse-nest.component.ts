@@ -19,7 +19,7 @@ import {Component, OnInit} from '@angular/core';
   `,
   styles: []
 })
-export class NzDemoCollapseNestComponent implements OnInit {
+export class NzDemoCollapseNestComponent {
   panels = [
     {
       active: true,
@@ -47,11 +47,4 @@ export class NzDemoCollapseNestComponent implements OnInit {
       name: 'This is panel header 3'
     }
   ];
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

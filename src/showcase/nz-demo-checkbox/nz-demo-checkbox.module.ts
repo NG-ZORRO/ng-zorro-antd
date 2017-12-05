@@ -16,7 +16,6 @@ import { NzDemoCheckboxRoutingModule } from './nz-demo-checkbox.routing.module';
   imports     : [ NzDemoCheckboxRoutingModule, CommonModule, FormsModule, NzCodeBoxModule, NgZorroAntdModule ],
   declarations: [ NzDemoCheckboxComponent, NzDemoCheckboxBasicComponent, NzDemoCheckboxDisabledComponent, NzDemoCheckboxControllerComponent, NzDemoCheckboxGroupComponent, NzDemoCheckboxIndeterminateComponent ]
 })
-
 export class NzDemoCheckboxModule {
 
 }

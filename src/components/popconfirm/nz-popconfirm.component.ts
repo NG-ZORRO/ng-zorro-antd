@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { FadeAnimation } from '../core/animation/fade-animations';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
+import { toBoolean } from '../util/convert';
 import { NzLocaleService } from '../locale/index';
 
 @Component({
@@ -59,16 +60,16 @@ import { NzLocaleService } from '../locale/index';
   ]
 })
 export class NzPopconfirmComponent extends NzToolTipComponent {
+  private _condition = false;
   _prefix = 'ant-popover-placement';
   _trigger = 'click';
-  _hasBackdrop = true;
-  _condition = false;
   @Input() nzContent;
   @Input() nzOkText = this._locale.translate('Modal.okText');
   @Input() nzCancelText = this._locale.translate('Modal.cancelText');
 
-  @Input() set nzCondition(value) {
-    this._condition = value;
+  @Input()
+  set nzCondition(value: boolean) {
+    this._condition = toBoolean(value);
   }
 
   get nzCondition() {

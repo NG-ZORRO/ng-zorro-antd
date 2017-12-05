@@ -1,6 +1,7 @@
 // tslint:disable:member-ordering
 import { Component, ViewEncapsulation, Input, Output, ContentChild, TemplateRef, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { NzLocaleService } from '../locale/index';
+import { toBoolean } from '../util/convert';
 import { TransferItem } from './item';
 
 @Component({
@@ -56,6 +57,7 @@ import { TransferItem } from './item';
   }
 })
 export class NzTransferComponent implements OnChanges {
+  private _showSearch = false;
 
   leftFilter = '';
   rightFilter = '';
@@ -72,7 +74,15 @@ export class NzTransferComponent implements OnChanges {
   @ContentChild('footer') footer: TemplateRef<any>;
 
   // search
-  @Input() nzShowSearch = false;
+  @Input()
+  set nzShowSearch(value: boolean) {
+    this._showSearch = toBoolean(value);
+  }
+
+  get nzShowSearch(): boolean {
+    return this._showSearch;
+  }
+
   @Input() nzFilterOption: (inputValue: any, item: any) => boolean;
   @Input() nzSearchPlaceholder = this._locale.translate('Transfer.searchPlaceholder');
   @Input() nzNotFoundContent = this._locale.translate('Transfer.notFoundContent');

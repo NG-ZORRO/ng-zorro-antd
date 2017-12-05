@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, TemplateRef} from '@angular/core';
+import {Component, ViewChild, TemplateRef} from '@angular/core';
 
 const options = [{
   value: 'zhejiang',
@@ -54,7 +54,7 @@ const options = [{
     </ng-template>`,
   styles  : []
 })
-export class NzDemoCascaderCustomRenderComponent implements OnInit {
+export class NzDemoCascaderCustomRenderComponent {
   /** init data */
   _options = options;
 
@@ -64,12 +64,6 @@ export class NzDemoCascaderCustomRenderComponent implements OnInit {
 
   _console(value) {
     console.log(value);
-  }
-
-  constructor() {
-  }
-
-  ngOnInit() {
   }
 
   get _displayRender(): Function {
@@ -85,6 +79,4 @@ export class NzDemoCascaderCustomRenderComponent implements OnInit {
     e.stopPropagation();
     console.log('clicked', label, option);
   }
-
 }
-
