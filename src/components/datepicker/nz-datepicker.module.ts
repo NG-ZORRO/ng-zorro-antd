@@ -14,6 +14,5 @@ import { NzLocaleModule } from '../locale/index';
   declarations: [ NzDatePickerComponent ],
   exports     : [ NzDatePickerComponent ]
 })
-
 export class NzDatePickerModule {
 }

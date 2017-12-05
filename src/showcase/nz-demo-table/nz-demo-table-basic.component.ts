@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-table-basic',
@@ -48,7 +48,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-table>`,
   styles  : []
 })
-export class NzDemoTableBasicComponent implements OnInit {
+export class NzDemoTableBasicComponent {
   data = [
     {
       key    : '1',
@@ -67,11 +67,5 @@ export class NzDemoTableBasicComponent implements OnInit {
       address: 'Sidney No. 1 Lake Park',
     }
   ];
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
 

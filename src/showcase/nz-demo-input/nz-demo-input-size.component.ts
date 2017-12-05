@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-input-size',
@@ -18,13 +18,6 @@ import { Component, OnInit } from '@angular/core';
     `
   ]
 })
-export class NzDemoInputSizeComponent implements OnInit {
+export class NzDemoInputSizeComponent {
   inputValue: string;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

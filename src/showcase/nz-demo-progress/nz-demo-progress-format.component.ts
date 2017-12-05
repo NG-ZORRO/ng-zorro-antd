@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'nz-demo-progress-format',
@@ -8,14 +8,7 @@ import {Component, OnInit} from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoProgressFormatComponent implements OnInit {
+export class NzDemoProgressFormatComponent {
   _formatOne = percent => `${percent} Days`;
   _formatTwo = percent => `Done`;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

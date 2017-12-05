@@ -4,6 +4,7 @@ import {
   Input
 } from '@angular/core';
 import { NzCollapseComponent } from './nz-collapse.component';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-collapseset',
@@ -18,15 +19,29 @@ import { NzCollapseComponent } from './nz-collapse.component';
     './style/patch.less'
   ]
 })
-
-
 export class NzCollapsesetComponent {
+  private _accordion = false;
+  private _bordered = true;
   // all child collapse
   panels: Array<NzCollapseComponent> = [];
 
-  @Input() nzAccordion = false;
+  @Input()
+  set nzAccordion(value: boolean) {
+    this._accordion = toBoolean(value);
+  }
 
-  @Input() nzBordered = true;
+  get nzAccordion(): boolean {
+    return this._accordion;
+  }
+
+  @Input()
+  set nzBordered(value: boolean) {
+    this._bordered = toBoolean(value);
+  }
+
+  get nzBordered(): boolean {
+    return this._bordered;
+  }
 
   nzClick(collapse) {
     if (this.nzAccordion) {
@@ -41,8 +56,5 @@ export class NzCollapsesetComponent {
 
   addTab(collapse: NzCollapseComponent) {
     this.panels.push(collapse);
-  }
-
-  constructor() {
   }
 }

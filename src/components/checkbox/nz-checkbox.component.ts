@@ -9,6 +9,7 @@ import {
   forwardRef, OnChanges
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : '[nz-checkbox]',
@@ -36,6 +37,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChanges {
+  private _disabled = false;
+  private _indeterminate = false;
   _el: HTMLElement;
   _prefixCls = 'ant-checkbox';
   _innerPrefixCls = `${this._prefixCls}-inner`;
@@ -45,8 +48,25 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   // ngModel Access
   onChange: any = Function.prototype;
   onTouched: any = Function.prototype;
-  @Input() nzDisabled = false;
-  @Input() nzIndeterminate = false;
+
+  @Input()
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
+  }
+
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
+
+  @Input()
+  set nzIndeterminate(value: boolean) {
+    this._indeterminate = toBoolean(value);
+  }
+
+  get nzIndeterminate(): boolean {
+    return this._indeterminate;
+  }
+
   _classMap = {
     [this._prefixCls]                   : true,
     [`${this._prefixCls}-checked`]      : this._checked && (!this.nzIndeterminate),
@@ -58,7 +78,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   @Input()
   get nzChecked(): boolean {
     return this._checked;
-  };
+  }
 
   @HostListener('click', [ '$event' ])
   onClick(e) {

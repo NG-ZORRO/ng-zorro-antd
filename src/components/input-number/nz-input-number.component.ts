@@ -13,6 +13,7 @@ import {
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TAB } from '@angular/cdk/keycodes';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-input-number',
@@ -66,6 +67,7 @@ import { TAB } from '@angular/cdk/keycodes';
   ]
 })
 export class NzInputNumberComponent implements ControlValueAccessor {
+  private _disabled = false;
   _el: HTMLElement;
   _value: number;
   _size = 'default';
@@ -87,24 +89,28 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   @Input() nzMin: number = -Infinity;
   @Input() nzMax: number = Infinity;
 
-  @Input() @HostBinding('class.ant-input-number-disabled') nzDisabled = false;
+  @Input()
+  @HostBinding('class.ant-input-number-disabled')
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
+  }
+
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
 
   @Input()
-  get nzSize(): string {
-    return this._size;
-  };
-
   set nzSize(value: string) {
     this._renderer.removeClass(this._el, `${this._prefixCls}-${this._size}`);
     this._size = { large: 'lg', small: 'sm' }[ value ];
     this._renderer.addClass(this._el, `${this._prefixCls}-${this._size}`);
   }
 
-  @Input()
-  get nzStep(): number {
-    return this._step;
+  get nzSize(): string {
+    return this._size;
   }
 
+  @Input()
   set nzStep(value: number) {
     this._step = value;
     const stepString = value.toString();
@@ -115,6 +121,10 @@ export class NzInputNumberComponent implements ControlValueAccessor {
       this._precisionStep = stepString.length - stepString.indexOf('.') - 1;
     }
     this._precisionFactor = Math.pow(10, this._precisionStep);
+  }
+
+  get nzStep(): number {
+    return this._step;
   }
 
   @Output() nzBlur: EventEmitter<MouseEvent> = new EventEmitter();
@@ -146,7 +156,7 @@ export class NzInputNumberComponent implements ControlValueAccessor {
 
   get nzValue(): number {
     return this._value;
-  };
+  }
 
   set nzValue(value: number) {
     this._updateValue(value);

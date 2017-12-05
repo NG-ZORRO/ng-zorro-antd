@@ -23,17 +23,11 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoRadioGroupDisabledComponent implements OnInit {
+export class NzDemoRadioGroupDisabledComponent {
   radioValue = 'A';
   isDisabled = true;
   toggleDisabled = () => {
     this.isDisabled = !this.isDisabled;
   };
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
 

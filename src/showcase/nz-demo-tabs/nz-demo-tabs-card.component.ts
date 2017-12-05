@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-tabs-card',
@@ -13,7 +13,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-tabset>`,
   styles  : []
 })
-export class NzDemoTabsCardComponent implements OnInit {
+export class NzDemoTabsCardComponent {
   tabs = [
     {
       index: 1
@@ -25,11 +25,5 @@ export class NzDemoTabsCardComponent implements OnInit {
       index: 3
     }
   ];
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
 

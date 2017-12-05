@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-tabs-extra',
@@ -16,7 +16,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-tabset>`,
   styles  : []
 })
-export class NzDemoTabsExtraComponent implements OnInit {
+export class NzDemoTabsExtraComponent {
   tabs = [
     {
       index: 1
@@ -28,11 +28,4 @@ export class NzDemoTabsExtraComponent implements OnInit {
       index: 3
     }
   ];
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

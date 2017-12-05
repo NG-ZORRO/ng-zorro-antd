@@ -33,7 +33,6 @@ import { NzDemoMenuRoutingModule } from './nz-demo-menu.routing.module';
     NzDemoMenuDynamicComponent
   ]
 })
-
 export class NzDemoMenuModule {
 
 }

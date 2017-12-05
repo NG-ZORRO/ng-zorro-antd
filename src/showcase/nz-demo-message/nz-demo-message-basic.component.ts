@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NzMessageService} from '../../../index.showcase';
 
 @Component({
@@ -8,12 +8,9 @@ import {NzMessageService} from '../../../index.showcase';
 `,
   styles    : []
 })
-export class NzDemoMessageBasicComponent implements OnInit {
+export class NzDemoMessageBasicComponent {
 
   constructor(private _message: NzMessageService) {
-  }
-
-  ngOnInit() {
   }
 
   createBasicMessage() {

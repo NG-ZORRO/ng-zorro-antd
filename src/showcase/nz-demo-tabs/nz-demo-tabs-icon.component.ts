@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-tabs-icon',
@@ -14,7 +14,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-tabset>`,
   styles  : []
 })
-export class NzDemoTabsIconComponent implements OnInit {
+export class NzDemoTabsIconComponent {
   tabs = [
     {
       active: true,
@@ -27,11 +27,4 @@ export class NzDemoTabsIconComponent implements OnInit {
       icon  : 'anticon anticon-android'
     }
   ];
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

@@ -25,7 +25,7 @@ export class NzButtonGroupComponent implements AfterContentInit {
   @Input()
   get nzSize(): NzButtonGroupSize {
     return this._size;
-  };
+  }
 
   set nzSize(value: NzButtonGroupSize) {
     this._size = value;
@@ -33,10 +33,6 @@ export class NzButtonGroupComponent implements AfterContentInit {
       [this._prefixCls]                                     : true,
       [`${this._prefixCls}-${this._sizeMap[ this.nzSize ]}`]: this._sizeMap[ this.nzSize ]
     };
-  }
-
-
-  constructor() {
   }
 
   ngAfterContentInit() {

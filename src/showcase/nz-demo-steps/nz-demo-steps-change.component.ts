@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NzMessageService } from '../../../index.showcase';
 
 @Component({
@@ -41,7 +41,7 @@ import { NzMessageService } from '../../../index.showcase';
     `
   ]
 })
-export class NzDemoStepsChangeComponent implements OnInit {
+export class NzDemoStepsChangeComponent {
   current = 0;
 
   index = 'First-content';
@@ -81,8 +81,5 @@ export class NzDemoStepsChangeComponent implements OnInit {
   }
 
   constructor(private _message: NzMessageService) {
-  }
-
-  ngOnInit() {
   }
 }

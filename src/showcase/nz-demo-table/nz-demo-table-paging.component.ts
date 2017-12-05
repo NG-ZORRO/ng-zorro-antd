@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-paging',
   template: `
-    <nz-table #nzTable [nzDataSource]="_dataSet" [nzPageSize]="10" [nzShowSizeChanger]="true">
+    <nz-table #nzTable [nzDataSource]="_dataSet" [nzPageSize]="10" nzShowSizeChanger>
       <thead nz-thead>
         <tr>
           <th nz-th><span>Name</span></th>
@@ -25,9 +25,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NzDemoTablePagingComponent implements OnInit {
   _dataSet = [];
-
-  constructor() {
-  }
 
   ngOnInit() {
     for (let i = 0; i < 46; i++) {

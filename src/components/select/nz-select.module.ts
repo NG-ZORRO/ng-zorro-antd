@@ -12,8 +12,5 @@ import { NzLocaleModule } from '../locale/index';
   declarations: [ NzOptionPipe, NzOptionComponent, NzSelectComponent ],
   exports     : [ NzOptionPipe, NzOptionComponent, NzSelectComponent ]
 })
-
 export class NzSelectModule {
 }
-
-

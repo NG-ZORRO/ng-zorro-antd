@@ -11,6 +11,5 @@ import { NzLocaleModule } from '../locale/index';
   declarations: [ NzTimePickerComponent, NzTimePickerInnerComponent ],
   exports     : [ NzTimePickerComponent, NzTimePickerInnerComponent ]
 })
-
 export class NzTimePickerModule {
 }

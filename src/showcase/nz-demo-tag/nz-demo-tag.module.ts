@@ -25,7 +25,6 @@ import { NzDemoTagRoutingModule } from './nz-demo-tag.routing.module';
     NzDemoTagCheckableComponent, NzDemoMyTagComponent
   ]
 })
-
 export class NzDemoTagModule {
 
 }

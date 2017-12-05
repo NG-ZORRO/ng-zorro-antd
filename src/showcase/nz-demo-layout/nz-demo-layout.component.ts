@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-layout',
@@ -8,7 +8,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-layout.less'
   ]
 })
-export class NzDemoLayoutComponent implements OnInit {
+export class NzDemoLayoutComponent {
   NzDemoLayoutBasicCode = require('!!raw-loader!./nz-demo-layout-basic.component');
   NzDemoLayoutTopCode = require('!!raw-loader!./nz-demo-layout-top.component');
   NzDemoLayoutTopSide2Code = require('!!raw-loader!./nz-demo-layout-top-side-2.component');
@@ -16,11 +16,4 @@ export class NzDemoLayoutComponent implements OnInit {
   NzDemoLayoutSideCode = require('!!raw-loader!./nz-demo-layout-side.component');
   NzDemoLayoutTriggerCode = require('!!raw-loader!./nz-demo-layout-trigger.component');
   NzDemoLayoutResponsiveCode = require('!!raw-loader!./nz-demo-layout-responsive.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

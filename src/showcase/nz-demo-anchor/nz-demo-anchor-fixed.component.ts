@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-anchor-fixed',
@@ -23,5 +23,4 @@ import { Component, OnInit } from '@angular/core';
     `
   ]
 })
-
 export class NzDemoAnchorFixedComponent { }

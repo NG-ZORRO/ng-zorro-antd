@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-layout-top-side',
@@ -67,11 +67,4 @@ import { Component, OnInit } from '@angular/core';
     }`
   ]
 })
-export class NzDemoLayoutTopSideComponent implements OnInit {
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoLayoutTopSideComponent { }

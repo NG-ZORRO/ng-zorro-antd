@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-badge-status',
@@ -33,13 +33,4 @@ import { Component, OnInit } from '@angular/core';
     }
   ` ]
 })
-
-export class NzDemoBadgeStatusComponent implements OnInit {
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
-
+export class NzDemoBadgeStatusComponent { }

@@ -11,6 +11,5 @@ import { CommonModule } from '@angular/common';
   exports     : [ NzLayoutComponent, NzHeaderComponent, NzContentComponent, NzFooterComponent, NzSiderComponent ],
   imports     : [ CommonModule ]
 })
-
 export class NzLayoutModule {
 }

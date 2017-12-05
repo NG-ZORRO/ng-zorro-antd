@@ -19,7 +19,6 @@ import { NzDemoProgressRoutingModule } from './nz-demo-progress.routing.module';
   imports     : [ FormsModule, NzDemoProgressRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule ],
   declarations: [ NzDemoProgressBasicComponent, NzDemoProgressCircleComponent, NzDemoProgressLineMiniComponent, NzDemoProgressCircleMiniComponent, NzDemoProgressCircleDynamicComponent, NzDemoProgressLineDynamicComponent, NzDemoProgressFormatComponent, NzDemoProgressComponent ]
 })
-
 export class NzDemoProgressModule {
 
 }

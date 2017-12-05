@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-layout-trigger',
@@ -78,12 +78,6 @@ import { Component, OnInit } from '@angular/core';
     `
   ]
 })
-export class NzDemoLayoutTriggerComponent implements OnInit {
+export class NzDemoLayoutTriggerComponent {
   isCollapsed = false;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

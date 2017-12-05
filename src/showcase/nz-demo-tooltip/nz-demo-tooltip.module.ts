@@ -15,7 +15,6 @@ import { NzDemoTooltipRoutingModule } from './nz-demo-tooltip.routing.module';
   imports     : [ NzDemoTooltipRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule ],
   declarations: [ NzDemoTooltipBasicComponent, NzDemoTooltipComponent, NzDemoTooltipPositionComponent, NzDemoTooltipTemplateComponent ]
 })
-
 export class NzDemoTooltipModule {
 
 }

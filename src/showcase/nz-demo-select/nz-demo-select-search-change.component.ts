@@ -14,7 +14,7 @@ import 'rxjs/add/operator/map';
       [(ngModel)]="selectedOption"
       (nzSearchChange)="searchChange($event)"
       [nzNotFoundContent]="'无法找到'"
-      [nzShowSearch]="true">
+      nzShowSearch>
       <nz-option
         *ngFor="let option of searchOptions"
         [nzLabel]="option[0]"
@@ -24,7 +24,7 @@ import 'rxjs/add/operator/map';
   `,
   styles  : []
 })
-export class NzDemoSelectSearchChangeComponent implements OnInit {
+export class NzDemoSelectSearchChangeComponent {
   selectedOption;
   searchOptions = [];
 
@@ -37,8 +37,4 @@ export class NzDemoSelectSearchChangeComponent implements OnInit {
       this.searchOptions = data.result;
     });
   }
-
-  ngOnInit() {
-  }
 }
-

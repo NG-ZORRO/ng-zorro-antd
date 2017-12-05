@@ -14,6 +14,7 @@ import {
   HostListener
 } from '@angular/core';
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-carousel',
@@ -34,9 +35,16 @@ import { NzCarouselContentDirective } from './nz-carousel-content.directive';
   styleUrls    : [
     './style/index.less',
     './style/patch.less'
-  ]
+  ],
+  host: {
+    '[class.ant-carousel]': 'true'
+  }
 })
 export class NzCarouselComponent implements AfterViewInit, OnDestroy {
+  private _autoPlay = false;
+  private _dots = true;
+  private _vertical = false;
+  private _pauseOnHover = true;
   activeIndex = 0;
   transform = 'translate3d(0px, 0px, 0px)';
   interval;
@@ -52,10 +60,6 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   @ViewChild('slickList') slickList: ElementRef;
   @ViewChild('slickTrack') slickTrack: ElementRef;
   @HostBinding('class.ant-carousel') _nzCarousel = true;
-  @Input() @HostBinding('class.ant-carousel-vertical') nzVertical = false;
-  @Input() nzAutoPlay = false;
-  @Input() nzPauseOnHover = true;
-  @Input() nzDots = true;
   @Input() nzEffect = 'scrollx';
   @Output() nzAfterChange: EventEmitter<number> = new EventEmitter();
   @Output() nzBeforeChange: EventEmitter<{form: number; to: number}> = new EventEmitter();
@@ -91,6 +95,43 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
 
   get _prevIndex(): number {
     return this.activeIndex > 0 ? (this.activeIndex - 1) : (this.slideContents.length - 1)
+  }
+
+  @Input()
+  set nzPauseOnHover(value: boolean) {
+    this._pauseOnHover = toBoolean(value);
+  }
+
+  get nzPauseOnHover(): boolean {
+    return this._pauseOnHover;
+  }
+
+  @Input()
+  set nzDots(value: boolean) {
+    this._dots = toBoolean(value);
+  }
+
+  get nzDots(): boolean {
+    return this._dots;
+  }
+
+  @Input()
+  set nzAutoPlay(value: boolean) {
+    this._autoPlay = toBoolean(value);
+  }
+
+  get nzAutoPlay(): boolean {
+    return this._autoPlay;
+  }
+
+  @Input()
+  @HostBinding('class.ant-carousel-vertical')
+  set nzVertical(value: boolean) {
+    this._vertical = toBoolean(value);
+  }
+
+  get nzVertical(): boolean {
+    return this._vertical;
   }
 
   constructor(public hostElement: ElementRef, private _renderer: Renderer2) {
@@ -150,7 +191,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
         this._renderer.removeStyle(this.slickTrack.nativeElement, 'width');
         this._renderer.setStyle(this.slickTrack.nativeElement, 'width', `${this.slideContents.length * this.hostElement.nativeElement.offsetWidth}px`);
       }
-    })
+    });
   }
 
   createInterval() {

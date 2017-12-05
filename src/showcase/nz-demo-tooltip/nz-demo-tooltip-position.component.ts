@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+
 @Component({
   selector: 'nz-demo-tooltip-position',
   template: `
@@ -62,7 +63,4 @@ import { Component, OnInit } from '@angular/core';
     }`
   ]
 })
-export class NzDemoTooltipPositionComponent implements OnInit {
-  ngOnInit() {
-  }
-}
+export class NzDemoTooltipPositionComponent { }

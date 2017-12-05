@@ -15,7 +15,6 @@ import { NzDemoTransferCustomItemComponent } from './nz-demo-transfer-custom-ite
   imports     : [ NzDemoTransferRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule ],
   declarations: [ NzDemoTransferComponent, NzDemoTransferBasicComponent, NzDemoTransferSearchComponent, NzDemoTransferAdvancedComponent, NzDemoTransferCustomItemComponent ]
 })
-
 export class NzDemoTransferModule {
 
 }

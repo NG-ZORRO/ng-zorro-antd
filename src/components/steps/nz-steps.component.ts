@@ -9,6 +9,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { NzStepComponent } from './nz-step.component';
+import { toBoolean } from '../util/convert';
 
 export type NzDirection = 'horizontal' | 'vertical';
 
@@ -25,10 +26,10 @@ export type NzDirection = 'horizontal' | 'vertical';
   ]
 })
 export class NzStepsComponent implements OnInit, OnDestroy, AfterViewInit {
+  private _progressDot = false;
   _status = 'process';
   _current = 0;
   _stepsClassMap: Object;
-  _progressDot = false;
   _afterViewInit = false;
   _direction: NzDirection = 'horizontal';
   _stepsChanges;
@@ -47,18 +48,14 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() nzSize: 'default' | 'small';
 
   @Input()
-  set nzProgressDot(value: boolean | string) {
-    if (value === '') {
-      this._progressDot = true as boolean;
-    } else {
-      this._progressDot = value as boolean;
-    }
+  set nzProgressDot(value: boolean) {
+    this._progressDot = toBoolean(value);
     this.updateChildrenSteps();
     this.setDirectionClass();
   }
 
-  get nzProgressDot() {
-    return this._progressDot as boolean | string;
+  get nzProgressDot(): boolean {
+    return this._progressDot;
   }
 
   @Input()
@@ -114,9 +111,6 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterViewInit {
         step.initClassMap();
       })
     });
-  }
-
-  constructor() {
   }
 
   ngOnInit() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-input-number-digit',
@@ -7,13 +7,6 @@ import { Component, OnInit } from '@angular/core';
 
   styles: []
 })
-export class NzDemoInputNumberDigitComponent implements OnInit {
+export class NzDemoInputNumberDigitComponent {
   demoValue: number;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

@@ -31,6 +31,7 @@ import {
 const ESC = 27;
 
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
+import { toBoolean } from '../util/convert';
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
 
 function noop(): void { }
@@ -164,6 +165,13 @@ export interface CascaderOption {
   ]
 })
 export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit, ControlValueAccessor {
+  private _allowClear = true;
+  private _disabled = false;
+  private _enableCache = true;
+  private _showArrow = true;
+  private _showInput = true;
+  private _showSearch = false;
+  private _changeOnSelect = false;
   _el: HTMLElement;
   _prefixCls = 'ant-cascader';
   _inputPrefixCls = 'ant-input';
@@ -208,7 +216,14 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
   onTouched: any = Function.prototype;
 
   /** Whether is disabled */
-  @Input() nzDisabled = false;
+  @Input()
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
+  }
+
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
 
   /** Input size, one of `large` `default` `small` */
   @Input() nzSize: 'large' | 'default' | 'small' = 'default';
@@ -217,19 +232,47 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
   @Input() nzPlaceHolder = 'Please select';
 
   /** Whether show input box. Defaults to `true`. */
-  @Input() nzShowInput = true;
+  @Input()
+  set nzShowInput(value: boolean) {
+    this._showInput = toBoolean(value);
+  }
+
+  get nzShowInput(): boolean {
+    return this._showInput;
+  }
 
   /** Whether can search. Defaults to `false`. */
-  @Input() nzShowSearch = false;
+  @Input()
+  set nzShowSearch(value: boolean) {
+    this._showSearch = toBoolean(value);
+  }
+
+  get nzShowSearch(): boolean {
+    return this._showSearch;
+  }
 
   /** Whether allow clear. Defaults to `true`. */
-  @Input() nzAllowClear = true;
+  @Input()
+  set nzAllowClear(value: boolean) {
+    this._allowClear = toBoolean(value);
+  }
+
+  get nzAllowClear(): boolean {
+    return this._allowClear;
+  }
 
   /** Hover text for the clear icon */
   @Input() nzClearText = 'Clear';
 
   /** Whether to show arrow */
-  @Input() nzShowArrow = true;
+  @Input()
+  set nzShowArrow(value: boolean) {
+    this._showArrow = toBoolean(value);
+  }
+
+  get nzShowArrow(): boolean {
+    return this._showArrow;
+  }
 
   /** Specify content to show when no result matches. */
   @Input() nzNotFoundContent = 'Not Found';
@@ -244,13 +287,27 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
   @Input() nzOptions: CascaderOption[];
 
   /** Whether cache children when they were loaded asych */
-  @Input() nzEnableCache = true;
+  @Input()
+  set nzEnableCache(value: boolean) {
+    this._enableCache = toBoolean(value);
+  }
+
+  get nzEnableCache(): boolean {
+    return this._enableCache;
+  }
 
   /** Expand column item when click or hover, one of 'click' 'hover' */
   @Input() nzExpandTrigger: CascaderExpandTrigger = 'click';
 
   /** Change value on each selection if set to true */
-  @Input() nzChangeOnSelect = false;
+  @Input()
+  set nzChangeOnSelect(value: boolean) {
+    this._changeOnSelect = toBoolean(value);
+  }
+
+  get nzChangeOnSelect(): boolean {
+    return this._changeOnSelect;
+  }
 
   /** Change value on selection only if this function returns `true` */
   @Input() nzChangeOn: (option: CascaderOption, level: number) => boolean;

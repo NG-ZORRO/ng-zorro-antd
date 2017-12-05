@@ -20,7 +20,7 @@ export class NzGlobalMonitorService {
 
   setDocumentOverflowHidden(status: Boolean) {
     document.body.style.overflow = status ? 'hidden' : '';
-  };
+  }
 
   _observeGlobalEvents() {
     // 监听document的点击事件，记录点击坐标，并抛出 documentClick 事件

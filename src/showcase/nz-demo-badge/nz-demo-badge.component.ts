@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-badge',
@@ -6,7 +6,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   templateUrl  : './nz-demo-badge.html'
 })
 
-export class NzDemoBadgeComponent implements OnInit {
+export class NzDemoBadgeComponent {
   NzDemoBadgeBasicCode = require('!!raw-loader!./nz-demo-badge-basic.component');
   NzDemoBadgeStandAlonesCode = require('!!raw-loader!./nz-demo-badge-standalones.component');
   NzDemoBadgeClickAbleCode = require('!!raw-loader!./nz-demo-badge-clickable.component');
@@ -14,10 +14,4 @@ export class NzDemoBadgeComponent implements OnInit {
   NzDemoBadgeAnimateCode = require('!!raw-loader!./nz-demo-badge-animate.component');
   NzDemoBadgeMyCeilCode = require('!!raw-loader!./nz-demo-badge-myceil.component');
   NzDemoBadgeStatusCode = require('!!raw-loader!./nz-demo-badge-status.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

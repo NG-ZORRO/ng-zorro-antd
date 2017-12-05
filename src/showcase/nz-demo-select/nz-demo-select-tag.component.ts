@@ -5,11 +5,11 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <nz-select
       style="width: 400px;"
-      [nzTags]="true"
+      nzTags
       [nzPlaceHolder]="'请选择人员'"
       [(ngModel)]="selectedMultipleOption"
       [nzNotFoundContent]="'无法找到'"
-      [nzShowSearch]="true">
+      nzShowSearch>
       <nz-option
         *ngFor="let option of searchOptions"
         [nzLabel]="option.label"
@@ -26,9 +26,6 @@ export class NzDemoSelectTagComponent implements OnInit {
     { value: 'tom', label: '汤姆' }
   ];
   selectedMultipleOption = [ this.searchOptions[ 0 ] ];
-
-  constructor() {
-  }
 
   ngOnInit() {
     setTimeout(_ => {

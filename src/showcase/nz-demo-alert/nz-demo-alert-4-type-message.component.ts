@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-alert-4-type-message',
@@ -20,11 +20,4 @@ import { Component, OnInit } from '@angular/core';
     </nz-alert>
   `
 })
-
-export class NzDemoAlert4TypeMessageComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoAlert4TypeMessageComponent { }

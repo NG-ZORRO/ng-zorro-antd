@@ -15,7 +15,6 @@ import { NzDemoAnchorRoutingModule } from './nz-demo-anchor.routing.module';
   declarations: [ NzDemoAnchorComponent, NzDemoAnchorBasicComponent, NzDemoAnchorFixedComponent ],
   imports     : [ NzDemoAnchorRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule ]
 })
-
 export class NzDemoAnchorModule {
 
 }

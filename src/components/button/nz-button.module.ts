@@ -8,6 +8,5 @@ import { CommonModule } from '@angular/common';
   exports     : [ NzButtonComponent, NzButtonGroupComponent ],
   imports     : [ CommonModule ]
 })
-
 export class NzButtonModule {
 }

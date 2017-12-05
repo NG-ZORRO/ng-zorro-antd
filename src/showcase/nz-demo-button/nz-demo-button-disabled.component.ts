@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-button-disabled',
@@ -17,10 +17,10 @@ import { Component, OnInit } from '@angular/core';
       <span>Default(disabled)</span>
     </button>
     <br>
-    <button nz-button [nzGhost]="true">
+    <button nz-button nzGhost>
       <span>Ghost</span>
     </button>
-    <button nz-button [nzGhost]="true" disabled>
+    <button nz-button nzGhost disabled>
       <span>Ghost(disabled)</span>
     </button>
     <br>
@@ -32,10 +32,4 @@ import { Component, OnInit } from '@angular/core';
     </button>`,
   styles  : []
 })
-export class NzDemoButtonDisabledComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoButtonDisabledComponent { }

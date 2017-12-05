@@ -14,7 +14,7 @@ import { NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG, NzMessageConfig } from '.
     './style/index.less'
   ]
 })
-export class NzMessageContainerComponent implements OnInit {
+export class NzMessageContainerComponent {
   messages: NzMessageDataFilled[] = [];
   config: NzMessageConfig;
 
@@ -22,8 +22,6 @@ export class NzMessageContainerComponent implements OnInit {
               @Optional() @Inject(NZ_MESSAGE_CONFIG) config: NzMessageConfig) {
     this.config = Object.assign({}, defaultConfig, config) as NzMessageConfig;
   }
-
-  ngOnInit() { }
 
   // Create a new message
   createMessage(message: NzMessageDataFilled): void {

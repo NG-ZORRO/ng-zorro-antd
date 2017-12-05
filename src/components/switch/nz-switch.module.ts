@@ -7,6 +7,5 @@ import { CommonModule } from '@angular/common';
   declarations: [ NzSwitchComponent ],
   imports     : [ CommonModule ]
 })
-
 export class NzSwitchModule {
 }

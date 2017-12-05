@@ -19,6 +19,7 @@ import { NzTabComponent } from './nz-tab.component';
 import { NzTabsNavComponent } from './nz-tabs-nav.component';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
+import { toBoolean } from '../util/convert';
 
 export interface NzAnimatedInterface {
   inkBar: boolean,
@@ -121,10 +122,6 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
   tabs: Array<NzTabComponent> = [];
 
   @Input()
-  get nzTabPosition() {
-    return this._tabPosition;
-  };
-
   set nzTabPosition(value) {
     if (this._tabPosition === value) {
       return;
@@ -139,11 +136,11 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
     this._setClassMap();
   }
 
-  @Input()
-  get nzType(): NzTabType {
-    return this._type;
+  get nzTabPosition() {
+    return this._tabPosition;
   }
 
+  @Input()
   set nzType(value: NzTabType) {
     if (this._type === value) {
       return;
@@ -153,6 +150,10 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
       this.nzAnimated = false;
     }
     this._setClassMap();
+  }
+
+  get nzType(): NzTabType {
+    return this._type;
   }
 
   _setPosition(value) {

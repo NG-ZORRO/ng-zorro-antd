@@ -18,7 +18,6 @@ import { NzDemoTimePickerRoutingModule } from './nz-demo-timepicker.routing.modu
   imports     : [ NzDemoTimePickerRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule ],
   declarations: [ NzDemoTimePickerComponent, NzDemoTimePickerBasicComponent, NzDemoTimePickerChangeComponent, NzDemoTimePickerSizeComponent, NzDemoTimePickerWithoutSecondsComponent, NzDemoTimePickerDisabledComponent, NzDemoTimePickerDisabledOptionsComponent, NzDemoTimePickerHideOptionsComponent ],
 })
-
 export class NzDemoTimePickerModule {
 
 }

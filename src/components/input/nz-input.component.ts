@@ -16,6 +16,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import calculateNodeHeight from '../util/calculate-node-height';
+import { toBoolean } from '../util/convert';
 
 export interface AutoSizeType {
   minRows?: number;
@@ -87,6 +88,8 @@ export interface AutoSizeType {
   ]
 })
 export class NzInputComponent implements AfterContentInit, ControlValueAccessor, AfterViewInit {
+  private _disabled = false;
+  private _readonly = false;
 
   _el: HTMLElement;
   _value: string;
@@ -94,8 +97,6 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor,
   _prefixCls = 'ant-input';
   _composing = false;
   _classMap;
-  _disabled = false;
-  _readonly = false;
   _autosize: boolean | AutoSizeType = false;
 
   // ngModel Access
@@ -109,39 +110,35 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor,
   @Input() nzCols: number;
 
   @Input()
-  get nzSize(): string {
-    return this._size;
-  };
-
   set nzSize(value: string) {
     this._size = { large: 'lg', small: 'sm' }[ value ];
     this.setClassMap();
   }
 
-  @Input()
-  get nzDisabled(): boolean {
-    return this._disabled;
-  };
+  get nzSize(): string {
+    return this._size;
+  }
 
+  @Input()
   set nzDisabled(value: boolean) {
-    this._disabled = value;
+    this._disabled = toBoolean(value);
     this.setClassMap();
   }
 
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
+
   @Input()
+  set nzReadonly(value: boolean) {
+    this._readonly = toBoolean(value);
+  }
+
   get nzReadonly(): boolean {
     return this._readonly;
-  };
-
-  set nzReadonly(value: boolean) {
-    this._readonly = value;
   }
 
   @Input()
-  get nzAutosize() {
-    return this._autosize;
-  }
-
   set nzAutosize(value: string | boolean | AutoSizeType) {
     if (typeof value === 'string') {
       this._autosize = true;
@@ -151,6 +148,10 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor,
     if (this._autosize) {
       this.nzRows = 1;
     }
+  }
+
+  get nzAutosize() {
+    return this._autosize;
   }
 
   @Output() nzBlur: EventEmitter<MouseEvent> = new EventEmitter();
@@ -175,7 +176,7 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor,
 
   get nzValue(): any {
     return this._value;
-  };
+  }
 
   set nzValue(value: any) {
     if ((this._value === value) || (((this._value === undefined) || (this._value === null)) && ((value === undefined) || (value === null)))) {
