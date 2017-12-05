@@ -1,4 +1,5 @@
 import { Component, OnChanges, SimpleChanges, Input, ViewEncapsulation } from '@angular/core';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-slider-track',
@@ -8,6 +9,8 @@ import { Component, OnChanges, SimpleChanges, Input, ViewEncapsulation } from '@
   `
 })
 export class NzSliderTrackComponent implements OnChanges {
+  private _vertical = false;
+  private _included = false;
 
   // Dynamic properties
   @Input() nzOffset;
@@ -15,8 +18,24 @@ export class NzSliderTrackComponent implements OnChanges {
 
   // Static properties
   @Input() nzClassName;
-  @Input() nzVertical;
-  @Input() nzIncluded;
+
+  @Input()
+  set nzVertical(value: boolean) { // Required
+    this._vertical = toBoolean(value);
+  }
+
+  get nzVertical(): boolean {
+    return this._vertical;
+  }
+
+  @Input()
+  set nzIncluded(value: boolean) {
+    this._included = toBoolean(value);
+  }
+
+  get nzIncluded(): boolean {
+    return this._included;
+  }
 
   style: any = {};
 

@@ -68,7 +68,7 @@ import { Component, OnInit } from '@angular/core';
     `
   ]
 })
-export class NzDemoTableCustomFilterComponent implements OnInit {
+export class NzDemoTableCustomFilterComponent {
   searchValue = '';
   filterAddressArray = [
     { name: 'London', value: false },
@@ -139,11 +139,4 @@ export class NzDemoTableCustomFilterComponent implements OnInit {
     });
     this.search();
   }
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

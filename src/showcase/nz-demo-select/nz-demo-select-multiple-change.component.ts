@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Jsonp, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -23,7 +23,7 @@ import 'rxjs/add/operator/map';
   `,
   styles  : []
 })
-export class NzDemoSelectMultipleChangeComponent implements OnInit {
+export class NzDemoSelectMultipleChangeComponent {
   searchOptions;
   selectedMultipleOption = [];
 
@@ -36,8 +36,4 @@ export class NzDemoSelectMultipleChangeComponent implements OnInit {
       this.searchOptions = data.result;
     });
   }
-
-  ngOnInit() {
-  }
 }
-

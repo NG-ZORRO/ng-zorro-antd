@@ -11,7 +11,6 @@ import {NzDemoTimelineComponent} from './nz-demo-timeline.component';
   ])],
   exports: [RouterModule]
 })
-
 export class NzDemoTimelineRoutingModule {
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-tabs-disabled',
@@ -14,7 +14,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-tabset>`,
   styles  : []
 })
-export class NzDemoTabsDisabledComponent implements OnInit {
+export class NzDemoTabsDisabledComponent {
   selectedIndex = 0;
   tabs = [
     {
@@ -30,11 +30,5 @@ export class NzDemoTabsDisabledComponent implements OnInit {
       disabled: false
     }
   ];
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
 

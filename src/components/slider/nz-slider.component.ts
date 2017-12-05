@@ -23,6 +23,7 @@ import { map } from 'rxjs/operators/map';
 import { pluck } from 'rxjs/operators/pluck';
 import { takeUntil } from 'rxjs/operators/takeUntil';
 import { filter } from 'rxjs/operators/filter';
+import { toBoolean } from '../util/convert';
 import { NzSliderService } from './nz-slider.service';
 import { Marks, MarksArray } from './nz-slider-marks.component';
 
@@ -91,26 +92,27 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   @Input() nzDebugId: number | string = null; // set this id will print debug informations to console
 
   // Dynamic property settings
-  @Input() nzDisabled = false;
+  @Input()
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
+  }
+
+  get nzDisabled() {
+    return this._disabled;
+  }
 
   // Static configurations (properties that can only specify once)
   @Input() nzStep = 1;
   @Input() nzMarks: Marks = null;
-  @Input() nzDots = false;
   @Input() nzMin = 0;
   @Input() nzMax = 100;
-  @Input() nzIncluded = true;
   @Input() nzDefaultValue: SliderValue = null;
   @Input() nzTipFormatter: Function;
   @Output() nzOnAfterChange = new EventEmitter<SliderValue>();
 
   @Input()
-  set nzVertical(value: boolean | string) {
-    if (value === '') {
-      this._vertical = true;
-    } else {
-      this._vertical = value as boolean;
-    }
+  set nzVertical(value: boolean) {
+    this._vertical = toBoolean(value);
   }
 
   get nzVertical() {
@@ -118,23 +120,42 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   @Input()
-  set nzRange(value: boolean | string) {
-    if (value === '') {
-      this._range = true;
-    } else {
-      this._range = value as boolean;
-    }
+  set nzRange(value: boolean) {
+    this._range = toBoolean(value);
   }
 
   get nzRange() {
     return this._range;
   }
 
+  @Input()
+  set nzDots(value: boolean) {
+    this._dots = toBoolean(value);
+  }
+
+  get nzDots() {
+    return this._dots;
+  }
+
+  @Input()
+  set nzIncluded(value: boolean) {
+    this._included = toBoolean(value);
+  }
+
+  get nzIncluded() {
+    return this._included;
+  }
+
+
   // Inside properties
-  _range = false;
-  _vertical = false;
+  private _disabled = false;
+  private _dots = false;
+  private _included = true;
+  private _range = false;
+  private _vertical = false;
+
   value: SliderValue = null; // CORE value state
-  @ViewChild('slider') private slider: ElementRef;
+  @ViewChild('slider') slider: ElementRef;
   sliderDOM: any;
   cacheSliderStart: number = null;
   cacheSliderLength: number = null;

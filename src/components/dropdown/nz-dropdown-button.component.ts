@@ -10,6 +10,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
+import { toBoolean } from '../util/convert';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 import { NzDropDownComponent } from './nz-dropdown.component';
 
@@ -24,7 +25,7 @@ import { NzDropDownComponent } from './nz-dropdown.component';
       <button
         type="button"
         nz-button
-        [disabled]="nzDisable"
+        [disabled]="nzDisabled"
         [nzType]="nzType"
         [nzSize]="nzSize"
         (click)="nzClick.emit($event)">
@@ -33,7 +34,7 @@ import { NzDropDownComponent } from './nz-dropdown.component';
         [nzSize]="nzSize"
         nz-button type="button"
         class="ant-dropdown-trigger"
-        [disabled]="nzDisable"
+        [disabled]="nzDisabled"
         (click)="_onClickEvent()"
         (mouseenter)="_onMouseEnterEvent($event)"
         (mouseleave)="_onMouseLeaveEvent($event)">
@@ -67,15 +68,24 @@ import { NzDropDownComponent } from './nz-dropdown.component';
 })
 
 export class NzDropDownButtonComponent extends NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
-  @Input() nzDisable = false;
+  _disabled = false;
   @Input() nzSize = 'default';
   @Input() nzType = 'default';
   @ViewChild('content') content;
   @Output() nzClick = new EventEmitter();
   @ViewChild(NzDropDownDirective) _nzOrigin;
 
+  @Input()
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
+  }
+
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
+
   _onVisibleChange = (visible: boolean) => {
-    if (this.nzDisable) {
+    if (this.nzDisabled) {
       return;
     }
     if (visible) {

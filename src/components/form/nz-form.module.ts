@@ -17,6 +17,5 @@ import { CommonModule } from '@angular/common';
   exports     : [ NzFormExtraDirective, NzFormLabelDirective, NzFormComponent, NzFormItemDirective, NzFormControlComponent, NzFormExplainComponent, NzFormTextDirective, NzFormSplitDirective, NzFormItemRequiredDirective ],
   imports     : [ CommonModule ]
 })
-
 export class NzFormModule {
 }

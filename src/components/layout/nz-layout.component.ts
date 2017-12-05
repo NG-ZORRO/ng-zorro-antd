@@ -11,7 +11,6 @@ import { Component, HostBinding, ViewEncapsulation } from '@angular/core';
     './style/patch.less'
   ]
 })
-
 export class NzLayoutComponent {
   @HostBinding('class.ant-layout-has-sider') hasSider = false;
 

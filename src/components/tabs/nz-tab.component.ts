@@ -9,6 +9,7 @@ import {
   Input,
   ViewChild, OnDestroy, OnInit
 } from '@angular/core';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector: 'nz-tab',
@@ -20,13 +21,18 @@ import {
   styles  : []
 })
 export class NzTabComponent implements OnDestroy, OnInit {
+  private disabled = false;
+
   position: number | null = null;
   origin: number | null = null;
-  disabled = false;
 
   @Input()
-  set nzDisabled(value) {
-    this.disabled = value;
+  set nzDisabled(value: boolean) {
+    this.disabled = toBoolean(value);
+  }
+
+  get nzDisabled(): boolean {
+    return this.disabled;
   }
 
   @Output() nzSelect = new EventEmitter();

@@ -159,7 +159,7 @@ export class NzDemoFormValidateDynamicComponent implements OnInit {
       passwordConfirmation: [ '', [ this.passwordConfirmationValidator ] ],
       comment             : [ '', [ Validators.required ] ]
     });
-  };
+  }
 
   ngOnInit() {
   }

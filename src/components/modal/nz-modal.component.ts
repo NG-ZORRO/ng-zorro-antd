@@ -19,6 +19,7 @@ import {
 
 import { NzModalSubject } from './nz-modal-subject.service';
 import nzGlobalMonitor from '../util/nz-global-monitor';
+import { toBoolean } from '../util/convert';
 import { NzLocaleService } from '../locale/index';
 
 interface Position {
@@ -81,16 +82,17 @@ interface Position {
   ]
 })
 export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
+  private _confirmLoading = false;
+  private _maskClosable = true;
+  _footerHide = false;
+  _closable = true;
+  _visible = false;
   _prefixCls = 'ant-modal';
   _maskClassMap;
   _bodyClassMap;
   _bodyStyleMap;
-  _visible = false;
-  _confirmLoading = false;
-  _closable = true;
   _width = '520px';
   _zIndex = 1000;
-  _maskClosable = true;
   _title = '';
   _titleTpl: TemplateRef<any>;
   _content = '';
@@ -104,22 +106,17 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
   _animationStatus = '';
   _bodyComponent: ComponentFactory<any>;
   _componentParams: Object = {};
-  _footerHide = false;
   modalId = `nzModal${nzGlobalMonitor.getGlobalCount()}`;
   @ViewChild('modal_content') contentEl: ElementRef;
   @ViewChild('modal_component', { read: ViewContainerRef }) bodyEl: ViewContainerRef;
 
   @Input()
-  get nzVisible(): boolean {
-    return this._visible;
-  };
-
   set nzVisible(value: boolean) {
-    // debugger
-    if (this._visible === value) {
+    const visible = toBoolean(value);
+    if (this._visible === visible) {
       return;
     }
-    if (value) {
+    if (visible) {
       this.anmiateFade('enter');
       this.subject.next('onShow');
       // 每次触发点击事件的时候，通过全局监听的类，记录下点击的位置，计算动画的origin
@@ -133,20 +130,24 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
       this.anmiateFade('leave');
       this.subject.next('onHide');
     }
-    this._visible = value;
+    this._visible = visible;
     this.nzVisibleChange.emit(this._visible);
     // 设置全局的overflow样式
-    nzGlobalMonitor.setDocumentOverflowHidden(value);
+    nzGlobalMonitor.setDocumentOverflowHidden(visible);
+  }
+
+  get nzVisible(): boolean {
+    return this._visible;
   }
 
   @Input()
   set nzConfirmLoading(value: boolean) {
-    this._confirmLoading = value;
+    this._confirmLoading = toBoolean(value);
   }
 
   @Input()
   set nzClosable(value: boolean) {
-    this._closable = value;
+    this._closable = toBoolean(value);
   }
 
   @Input()
@@ -195,7 +196,7 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
     if (value instanceof TemplateRef) {
       this._footerTpl = value;
     } else {
-      this._footerHide = !value;
+      this._footerHide = !toBoolean(value);
     }
   }
 
@@ -211,7 +212,7 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input()
   set nzMaskClosable(value: boolean) {
-    this._maskClosable = value;
+    this._maskClosable = toBoolean(value);
   }
 
   @Input()

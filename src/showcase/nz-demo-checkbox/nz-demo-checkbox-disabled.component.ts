@@ -1,20 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-checkbox-disabled',
   template: `
-    <label nz-checkbox [nzDisabled]="true" [ngModel]="false">
+    <label nz-checkbox nzDisabled [ngModel]="false">
     </label>
     <br>
-    <label nz-checkbox [nzDisabled]="true" [ngModel]="true">
+    <label nz-checkbox nzDisabled [ngModel]="true">
     </label>`,
   styles  : []
 })
-export class NzDemoCheckboxDisabledComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoCheckboxDisabledComponent { }
 

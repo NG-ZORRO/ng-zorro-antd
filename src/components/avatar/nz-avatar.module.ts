@@ -7,6 +7,5 @@ import { NzAvatarComponent } from './nz-avatar.component';
   exports     : [ NzAvatarComponent ],
   imports     : [ CommonModule ]
 })
-
 export class NzAvatarModule {
 }

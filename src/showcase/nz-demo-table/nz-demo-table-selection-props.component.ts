@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-table-selection-props',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
     <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="10" (nzDataChange)="_displayDataChange($event)">
       <thead nz-thead>
         <tr>
-          <th nz-th [nzCheckbox]="true">
+          <th nz-th nzCheckbox>
             <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
             </label>
           </th>
@@ -17,7 +17,7 @@ import { Component, OnInit } from '@angular/core';
       </thead>
       <tbody nz-tbody>
         <tr nz-tbody-tr *ngFor="let data of nzTable.data">
-          <td nz-td [nzCheckbox]="true">
+          <td nz-td nzCheckbox>
             <label nz-checkbox [nzDisabled]="data.disabled" [(ngModel)]="data.checked" (ngModelChange)="_refreshStatus($event)">
             </label>
           </td>
@@ -31,7 +31,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-table>`,
   styles  : []
 })
-export class NzDemoTableSelectionPropsComponent implements OnInit {
+export class NzDemoTableSelectionPropsComponent {
   _allChecked = false;
   _indeterminate = false;
   _displayData = [];
@@ -56,14 +56,14 @@ export class NzDemoTableSelectionPropsComponent implements OnInit {
   _displayDataChange($event) {
     this._displayData = $event;
     this._refreshStatus();
-  };
+  }
 
   _refreshStatus() {
     const allChecked = this._displayData.every(value => value.disabled || value.checked);
     const allUnChecked = this._displayData.every(value => value.disabled || !value.checked);
     this._allChecked = allChecked;
     this._indeterminate = (!allChecked) && (!allUnChecked);
-  };
+  }
 
   _checkAll(value) {
     if (value) {
@@ -76,13 +76,5 @@ export class NzDemoTableSelectionPropsComponent implements OnInit {
       this._displayData.forEach(data => data.checked = false);
     }
     this._refreshStatus();
-  };
-
-
-  constructor() {
-  }
-
-  ngOnInit() {
   }
 }
-

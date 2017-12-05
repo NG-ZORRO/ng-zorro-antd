@@ -18,7 +18,6 @@ import { NzDemoPaginationRoutingModule } from './nz-demo-pagination.routing.modu
   imports     : [ NzDemoPaginationRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule ],
   declarations: [ NzDemoPaginationBasicComponent, NzDemoPaginationMoreComponent, NzDemoPaginationChangerComponent, NzDemoPaginationJumpComponent, NzDemoPaginationMiniComponent, NzDemoPaginationSimpleComponent, NzDemoPaginationTotalComponent, NzDemoPaginationComponent ]
 })
-
 export class NzDemoPaginationModule {
 
 }

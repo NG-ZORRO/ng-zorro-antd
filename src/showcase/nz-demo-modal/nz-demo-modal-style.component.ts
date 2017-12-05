@@ -46,32 +46,29 @@ export class NzDemoModalStyleComponent {
 
   showModalTop = () => {
     this.isVisibleTop = true;
-  }
+  };
 
   showModalMiddle = () => {
     this.isVisibleMiddle = true;
-  }
+  };
 
   handleOkTop = (e) => {
     console.log('点击了确定');
     this.isVisibleTop = false;
-  }
+  };
 
   handleCancelTop = (e) => {
     console.log(e);
     this.isVisibleTop = false;
-  }
+  };
 
   handleOkMiddle = (e) => {
     console.log('点击了确定');
     this.isVisibleMiddle = false;
-  }
+  };
 
   handleCancelMiddle = (e) => {
     console.log(e);
     this.isVisibleMiddle = false;
-  }
-
-  constructor() {
-  }
+  };
 }

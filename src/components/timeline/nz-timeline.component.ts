@@ -26,15 +26,11 @@ import { NzTimelineItemComponent } from './nz-timeline-item.component';
     </ul>`,
   styleUrls    : [ './style/index.less' ]
 })
-
 export class NzTimelineComponent implements OnInit, AfterContentInit {
   _isPending = false;
   items: Array<NzTimelineItemComponent> = [];
   @ContentChildren(NzTimelineItemComponent) _listOfTimeline: QueryList<NzTimelineItemComponent>;
   @ContentChild('pending') _pendingContent: TemplateRef<any>;
-
-  constructor() {
-  }
 
   ngOnInit() {
     if (this._pendingContent) {

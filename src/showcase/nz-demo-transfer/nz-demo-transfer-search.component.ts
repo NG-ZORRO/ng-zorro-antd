@@ -6,7 +6,7 @@ import { NzMessageService } from '../../../index.showcase';
   template: `
   <nz-transfer
       [nzDataSource]="list"
-      [nzShowSearch]="true"
+      nzShowSearch
       [nzFilterOption]="filterOption"
       (nzSearchChange)="search($event)"
       (nzSelectChange)="select($event)"

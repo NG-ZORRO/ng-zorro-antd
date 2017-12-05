@@ -16,6 +16,7 @@ import {
   AnimationEvent,
 } from '@angular/animations';
 import { FadeAnimation } from '../core/animation/fade-animations';
+import { toBoolean } from '../util/convert';
 import {
   OverlayOrigin,
   ConnectionPositionPair,
@@ -61,22 +62,25 @@ import { POSITION_MAP, DEFAULT_4_POSITIONS } from '../core/overlay/overlay-posit
   ]
 })
 export class NzToolTipComponent {
+  _hasBackdrop = false;
+
   @Input() nzTitle: string;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle = {};
-  @Output() nzVisibleChange: EventEmitter<any> = new EventEmitter();
+  @Output() nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
   @ContentChild('nzTemplate') nzTemplate: TemplateRef<any>;
   @ViewChild('overlay') overlay: ConnectedOverlayDirective;
 
   overlayOrigin: OverlayOrigin;
 
   @Input()
-  set nzVisible(value) {
-    if (this.visibleSource.value !== value) {
-      this.visibleSource.next(value);
-      this.nzVisibleChange.emit(value);
+  set nzVisible(value: boolean) {
+    const visible = toBoolean(value);
+    if (this.visibleSource.value !== visible) {
+      this.visibleSource.next(visible);
+      this.nzVisibleChange.emit(visible);
     }
-  };
+  }
 
   get nzVisible() {
     return this.visibleSource.value;
@@ -99,18 +103,17 @@ export class NzToolTipComponent {
   _classMap = {};
   _placement = 'top';
   _trigger = 'hover';
-  _hasBackdrop = false;
 
   @Input()
-  get nzPlacement() {
-    return this._placement;
-  }
-
   set nzPlacement(value) {
     if (value !== this._placement) {
       this._placement = value;
       this._positions.unshift(POSITION_MAP[ this.nzPlacement ] as ConnectionPositionPair);
     }
+  }
+
+  get nzPlacement() {
+    return this._placement;
   }
 
   // Manually force updating current overlay's position

@@ -15,7 +15,6 @@ export class NzCarouselContentDirective {
   fadeMode = false
   nativeElement: HTMLElement;
 
-
   @HostBinding('class.slick-slide') _nzSlickSlide = true;
 
   @HostBinding('class.slick-active')

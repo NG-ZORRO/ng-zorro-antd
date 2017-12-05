@@ -6,6 +6,7 @@ import {
   forwardRef,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-rate',
@@ -35,6 +36,10 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class NzRateComponent implements OnInit, ControlValueAccessor {
+  private _hasHalf = false;
+  private _allowHalf = false;
+  private _disabled = false;
+
   _prefixCls = 'ant-rate';
   _innerPrefixCls = `${this._prefixCls}-star`;
   _classMap;
@@ -42,9 +47,6 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
   _count = 5;
   _value = 0;
   _hoverValue = 0; // 鼠标悬浮时的星数，为正整数，和_hasHalf配合使用
-  _hasHalf = false;
-  _allowHalf = false;
-  _disabled = false;
   _floatReg: any = /^\d+(\.\d+)?$/;
 
   // ngModel Access
@@ -57,12 +59,8 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
   }
 
   @Input()
-  set nzAllowHalf(value: boolean | string) {
-    if (value === '') {
-      this._allowHalf = true;
-    } else {
-      this._allowHalf = value as boolean;
-    }
+  set nzAllowHalf(value: boolean) {
+    this._allowHalf = toBoolean(value);
   }
 
   @Input()
@@ -77,7 +75,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
 
   get nzValue(): number {
     return this._value;
-  };
+  }
 
   set nzValue(value: number) {
     if (this._value === value) {
@@ -93,7 +91,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
 
   @Input()
   set nzDisabled(value: boolean) {
-    this._disabled = value;
+    this._disabled = toBoolean(value);
     this.setClassMap();
   }
 

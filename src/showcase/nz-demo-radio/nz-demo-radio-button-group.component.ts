@@ -24,7 +24,7 @@ import { Component, OnInit } from '@angular/core';
         <label nz-radio-button [nzValue]="'A'">
           <span>Hangzhou</span>
         </label>
-        <label nz-radio-button [nzValue]="'B'" [nzDisabled]="true">
+        <label nz-radio-button [nzValue]="'B'" nzDisabled>
           <span>Shanghai</span>
         </label>
         <label nz-radio-button [nzValue]="'C'">
@@ -37,16 +37,16 @@ import { Component, OnInit } from '@angular/core';
     </div>
     <div style="margin-top:16px;">
       <nz-radio-group [(ngModel)]="radioValue">
-        <label nz-radio-button [nzValue]="'A'" [nzDisabled]="true">
+        <label nz-radio-button [nzValue]="'A'" nzDisabled>
           <span>Hangzhou</span>
         </label>
-        <label nz-radio-button [nzValue]="'B'" [nzDisabled]="true">
+        <label nz-radio-button [nzValue]="'B'" nzDisabled>
           <span>Shanghai</span>
         </label>
-        <label nz-radio-button [nzValue]="'C'" [nzDisabled]="true">
+        <label nz-radio-button [nzValue]="'C'" nzDisabled>
           <span>Beijing</span>
         </label>
-        <label nz-radio-button [nzValue]="'D'" [nzDisabled]="true">
+        <label nz-radio-button [nzValue]="'D'" nzDisabled>
           <span>Chengdu</span>
         </label>
       </nz-radio-group>
@@ -54,13 +54,6 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoRadioButtonGroupComponent implements OnInit {
+export class NzDemoRadioButtonGroupComponent {
   radioValue = 'A';
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

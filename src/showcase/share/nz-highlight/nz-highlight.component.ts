@@ -16,7 +16,7 @@ export class NzHighlightComponent implements OnInit, AfterViewInit {
   @Input()
   get nzCode() {
     return this._code || '';
-  };
+  }
 
   set nzCode(value) {
     this._code = value.replace('../../../index.showcase', 'ng-zorro-antd');

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-input-textarea-auot-size',
@@ -10,18 +10,11 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoInputTextareaAutoSizeComponent implements OnInit {
+export class NzDemoInputTextareaAutoSizeComponent {
   inputValueOne: string;
   inputValueTwo: string;
   autosize = {
     minRows: 2,
     maxRows: 6
   };
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

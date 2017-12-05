@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-dropdown-hide',
@@ -15,12 +15,6 @@ import { Component, OnInit } from '@angular/core';
     </nz-dropdown>`,
   styles  : []
 })
-export class NzDemoDropDownHideComponent implements OnInit {
+export class NzDemoDropDownHideComponent {
   visible = false;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

@@ -6,6 +6,7 @@ import { style, animate, state, transition, trigger } from '@angular/animations'
 import { NzMenuComponent } from './nz-menu.component';
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operators/debounceTime';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector  : '[nz-submenu]',
@@ -58,26 +59,35 @@ import { debounceTime } from 'rxjs/operators/debounceTime';
 })
 
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
+  private _open = false;
   isInDropDown = false;
   level = 1;
   _$mouseSubject = new Subject();
   @ContentChildren(NzSubMenuComponent) subMenus;
-  @Input() nzOpen = false;
   @Output() nzOpenChange: EventEmitter<boolean> = new EventEmitter();
 
+  @Input()
+  set nzOpen(value: boolean) {
+    this._open = toBoolean(value);
+  }
+
+  get nzOpen(): boolean {
+    return this._open;
+  }
+
   get subItemSelected(): boolean {
-    return !!this.nzMenuComponent.menuItems.find(e => e.selected && e.nzSubMenuComponent === this);
+    return !!this.nzMenuComponent.menuItems.find(e => e.nzSelected && e.nzSubMenuComponent === this);
   }
 
   get submenuSelected(): boolean {
-    return !!this.subMenus._results.find(e => e !== this && e.subItemSelected)
+    return !!this.subMenus._results.find(e => e !== this && e.subItemSelected);
   }
 
   get expandState() {
     if (this.nzOpen && this.nzMenuComponent.nzMode === 'inline') {
       return 'expand';
     } else if (this.nzOpen && this.nzMenuComponent.nzMode !== 'inline') {
-      return 'fade'
+      return 'fade';
     }
     return null;
   }

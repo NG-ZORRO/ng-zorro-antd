@@ -9,7 +9,6 @@ import { NzFormItemDirective } from './nz-form-item.directive';
   `,
   styles       : []
 })
-
 export class NzFormExplainComponent implements OnDestroy, OnInit {
   @HostBinding(`class.ant-form-explain`) _nzFormExplain = true;
 

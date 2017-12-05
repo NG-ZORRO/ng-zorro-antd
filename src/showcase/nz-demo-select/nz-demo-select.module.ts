@@ -20,7 +20,6 @@ import { NzDemoSelectRoutingModule } from './nz-demo-select.routing.module';
   imports     : [ NzDemoSelectRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule, JsonpModule ],
   declarations: [ NzDemoSelectBasicComponent, NzDemoSelectSizeComponent, NzDemoSelectSearchComponent, NzDemoSelectMultipleComponent, NzDemoSelectTagComponent, NzDemoSelectComponent, NzDemoSelectSearchChangeComponent, NzDemoSelectMultipleChangeComponent ],
 })
-
 export class NzDemoSelectModule {
 
 }

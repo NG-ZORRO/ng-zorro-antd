@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NzMessageService} from '../../../index.showcase';
 
 @Component({
@@ -8,7 +8,7 @@ import {NzMessageService} from '../../../index.showcase';
 `,
   styles    : []
 })
-export class NzDemoMessageLoadingComponent implements OnInit {
+export class NzDemoMessageLoadingComponent {
   _id;
   createBasicMessage = () => {
     this._id = this._message.loading('正在执行中', { nzDuration: 0 }).messageId;
@@ -17,9 +17,6 @@ export class NzDemoMessageLoadingComponent implements OnInit {
     }, 2500)
   };
   constructor(private _message: NzMessageService) {
-  }
-
-  ngOnInit() {
   }
 }
 

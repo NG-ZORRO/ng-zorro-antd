@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-table-nopagination',
@@ -21,7 +21,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-table>`,
   styles  : []
 })
-export class NzDemoTableNoPaginationComponent implements OnInit {
+export class NzDemoTableNoPaginationComponent {
   data = [ {
     key    : '1',
     name   : 'John Brown',
@@ -38,11 +38,4 @@ export class NzDemoTableNoPaginationComponent implements OnInit {
     age    : 32,
     address: 'Sidney No. 1 Lake Park',
   } ];
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

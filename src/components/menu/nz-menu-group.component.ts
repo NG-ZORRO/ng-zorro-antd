@@ -12,7 +12,6 @@ import {
       <ng-content></ng-content>
     </ul>`,
 })
-
 export class NzMenuGroupComponent {
   @HostBinding('class.ant-menu-item-group') _nzMenuItemGroup = true;
 }

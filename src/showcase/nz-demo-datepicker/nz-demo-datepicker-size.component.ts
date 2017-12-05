@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-datepicker-size',
@@ -8,13 +8,6 @@ import { Component, OnInit } from '@angular/core';
     <nz-datepicker [(ngModel)]="_date" [nzSize]="'small'" [nzPlaceHolder]="'Select date'"></nz-datepicker>`,
   styles  : []
 })
-export class NzDemoDatePickerSizeComponent implements OnInit {
+export class NzDemoDatePickerSizeComponent {
   _date = null;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

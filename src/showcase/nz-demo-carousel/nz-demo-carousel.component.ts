@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-carousel',
@@ -8,16 +8,9 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-carousel.less'
   ]
 })
-export class NzDemoCarouselComponent implements OnInit {
+export class NzDemoCarouselComponent {
   NzDemoCarouselBasicCode = require('!!raw-loader!./nz-demo-carousel-basic.component');
   NzDemoCarouselVerticalCode = require('!!raw-loader!./nz-demo-carousel-vertical.component');
   NzDemoCarouselFadeCode = require('!!raw-loader!./nz-demo-carousel-fade.component');
   NzDemoCarouselAutoCode = require('!!raw-loader!./nz-demo-carousel-auto.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

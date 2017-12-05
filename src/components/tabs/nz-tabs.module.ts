@@ -14,6 +14,5 @@ import { ObserversModule } from '@angular/cdk/observers';
   exports     : [ NzTabComponent, NzTabSetComponent, NzTabsNavComponent, NzTabLabelDirective, NzTabsInkBarDirective, NzTabBodyComponent ],
   imports     : [ CommonModule, ObserversModule ]
 })
-
 export class NzTabsModule {
 }

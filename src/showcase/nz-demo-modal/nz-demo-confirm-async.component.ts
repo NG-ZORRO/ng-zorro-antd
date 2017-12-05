@@ -25,7 +25,7 @@ export class NzDemoConfirmAsyncComponent {
       onCancel() {
       }
     });
-  }
+  };
 
   constructor(private confirmServ: NzModalService) {
   }

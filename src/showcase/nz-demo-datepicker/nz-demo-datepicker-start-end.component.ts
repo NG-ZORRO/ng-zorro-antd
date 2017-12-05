@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import * as moment from 'moment';
 
 @Component({
   selector: 'nz-demo-datepicker-start-end',
   template: `
-    <nz-datepicker style="width: 40%;" (ngModelChange)="_startDate=$event;_startValueChange()" [ngModel]="_startDate" [nzDisabledDate]="_disabledStartDate" [nzShowTime]="true" [nzFormat]="'YYYY-MM-DD HH:mm:ss'" [nzPlaceHolder]="'Start date'"></nz-datepicker>
+    <nz-datepicker style="width: 40%;" (ngModelChange)="_startDate=$event;_startValueChange()" [ngModel]="_startDate" [nzDisabledDate]="_disabledStartDate" nzShowTime [nzFormat]="'YYYY-MM-DD HH:mm:ss'" [nzPlaceHolder]="'Start date'"></nz-datepicker>
     <nz-datepicker style="width: 40%;" (ngModelChange)="_endDate=$event;_endValueChange()" [ngModel]="_endDate" [nzDisabledDate]="_disabledEndDate" [nzShowTime]="_endTime" [nzFormat]="'YYYY-MM-DD HH:mm:ss'" [nzPlaceHolder]="'End date'"></nz-datepicker>`,
   styles  : []
 })
-export class NzDemoDatePickerStartEndComponent implements OnInit {
+export class NzDemoDatePickerStartEndComponent {
   _startDate = null;
   _endDate = null;
   newArray = (len) => {
@@ -63,11 +63,4 @@ export class NzDemoDatePickerStartEndComponent implements OnInit {
       }
     }
   }
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

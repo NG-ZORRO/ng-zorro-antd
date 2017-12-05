@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
+
 @Component({
   selector: 'nz-demo-timeline-basic',
   template: `
@@ -10,11 +11,4 @@ import {Component, OnInit} from '@angular/core';
     </nz-timeline>`,
   styles: []
 })
-
-export class NzDemoTimelineBasicComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoTimelineBasicComponent { }
