@@ -537,7 +537,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     if (this._isOpen) {
       $event.preventDefault();
       $event.stopPropagation();
-      this._activeFilterOption = this.nextOption(this._activeFilterOption, this._filterOptions);
+      this._activeFilterOption = this.nextOption(this._activeFilterOption, this._filterOptions.filter(w => !w._disabled));
       this.scrollToActive();
     }
   }
@@ -546,7 +546,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     if (this._isOpen) {
       $event.preventDefault();
       $event.stopPropagation();
-      this._activeFilterOption = this.preOption(this._activeFilterOption, this._filterOptions);
+      this._activeFilterOption = this.preOption(this._activeFilterOption, this._filterOptions.filter(w => !w._disabled));
       this.scrollToActive();
     }
   }
