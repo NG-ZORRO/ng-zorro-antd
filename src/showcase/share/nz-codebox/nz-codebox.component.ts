@@ -49,7 +49,7 @@ export class NzCodeBoxComponent implements OnInit {
   @Input()
   get nzCode(): string {
     return this._code;
-  };
+  }
 
   set nzCode(value: string) {
     this._code = value;

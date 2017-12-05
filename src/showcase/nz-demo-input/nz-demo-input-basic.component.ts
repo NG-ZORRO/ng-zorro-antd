@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-input-basic',
@@ -8,17 +8,10 @@ import { Component, OnInit } from '@angular/core';
 
   styles: []
 })
-export class NzDemoInputBasicComponent implements OnInit {
+export class NzDemoInputBasicComponent {
   inputValue: string;
 
   _console(value) {
     console.log(value);
   }
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-menu-basic',
   template: `
     <ul nz-menu [nzMode]="'horizontal'">
       <li nz-menu-item><i class="anticon anticon-mail"></i> Navigation One</li>
-      <li nz-menu-item [nzDisable]="true"><i class="anticon anticon-appstore"></i> Navigation Two</li>
+      <li nz-menu-item nzDisabled><i class="anticon anticon-appstore"></i> Navigation Two</li>
       <li nz-submenu>
         <span title><i class="anticon anticon-setting"></i> Navigation Three - Submenu</span>
         <ul>
@@ -28,10 +28,4 @@ import { Component, OnInit } from '@angular/core';
     </ul>`,
   styles  : []
 })
-export class NzDemoMenuBasicComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoMenuBasicComponent { }

@@ -5,6 +5,7 @@ import {
   Output,
   EventEmitter, OnChanges, OnInit
 } from '@angular/core';
+import { toBoolean } from '../util/convert';
 import { FadeAnimation } from '../core/animation/fade-animations';
 
 @Component({
@@ -52,18 +53,45 @@ import { FadeAnimation } from '../core/animation/fade-animations';
     './style/patch.less'
   ]
 })
-
 export class NzAlertComponent implements OnChanges {
+  private _banner = false;
+  private _closeable = false;
+  private _showIcon = false;
   _display = true;
   antAlert = 'ant-alert';
   @Input() nzType = 'info';
-  @Input() nzBanner = false;
-  @Input() nzCloseable = false;
   @Input() nzDescription: string;
-  @Input() nzShowIcon = false;
   @Input() nzCloseText: string;
   @Input() nzMessage: string;
   @Output() nzOnClose: EventEmitter<boolean> = new EventEmitter();
+
+  @Input()
+  set nzBanner(value: boolean) {
+    this._banner = toBoolean(value);
+  }
+
+  get nzBanner(): boolean {
+    return this._banner;
+  }
+
+  @Input()
+  set nzCloseable(value: boolean) {
+    this._closeable = toBoolean(value);
+  }
+
+  get nzCloseable(): boolean {
+    return this._closeable;
+  }
+
+  @Input()
+  set nzShowIcon(value: boolean) {
+    this._showIcon = toBoolean(value);
+  }
+
+  get nzShowIcon(): boolean {
+    return this._showIcon;
+  }
+
   _classMap = {
     [`${this.antAlert}`]                 : true,
     [`${this.antAlert}-${this.nzType}`]  : true,
@@ -86,8 +114,4 @@ export class NzAlertComponent implements OnChanges {
       [`${this.antAlert}-with-description`]: !!this.nzDescription
     };
   }
-
-  constructor() {
-  }
-
 }

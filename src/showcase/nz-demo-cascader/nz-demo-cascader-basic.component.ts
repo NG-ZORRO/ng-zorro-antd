@@ -91,9 +91,6 @@ export class NzDemoCascaderBasicComponent implements OnInit {
     console.log(value);
   }
 
-  constructor() {
-  }
-
   ngOnInit() {
     // let's set nzOptions in a asynchronous  way
     setTimeout(() => {

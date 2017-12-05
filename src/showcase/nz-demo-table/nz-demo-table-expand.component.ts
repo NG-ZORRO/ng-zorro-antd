@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-table-expand',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
     <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="10">
       <thead nz-thead>
         <tr>
-          <th nz-th [nzExpand]="true"></th>
+          <th nz-th nzExpand></th>
           <th nz-th><span>Name</span></th>
           <th nz-th><span>Age</span></th>
           <th nz-th><span>Address</span></th>
@@ -16,7 +16,7 @@ import { Component, OnInit } from '@angular/core';
       <tbody nz-tbody>
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr nz-tbody-tr>
-            <td nz-td [nzExpand]="true">
+            <td nz-td nzExpand>
               <nz-row-expand-icon [(nzExpand)]="data.expand"></nz-row-expand-icon>
             </td>
             <td nz-td>{{data.name}}</td>
@@ -39,7 +39,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-table>`,
   styles  : []
 })
-export class NzDemoTableExpandComponent implements OnInit {
+export class NzDemoTableExpandComponent {
   data = [
     {
       name       : 'John Brown',
@@ -63,11 +63,4 @@ export class NzDemoTableExpandComponent implements OnInit {
       description: 'My name is Joe Black, I am 32 years old, living in Sidney No. 1 Lake Park.'
     },
   ];
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

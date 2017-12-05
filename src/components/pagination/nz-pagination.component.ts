@@ -6,6 +6,7 @@ import {
   EventEmitter,
   Output
 } from '@angular/core';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-pagination',
@@ -113,6 +114,10 @@ import {
   ]
 })
 export class NzPaginationComponent {
+  private _showSizeChanger = false;
+  private _showTotal = false;
+  private _showQuickJumper = false;
+  private _simple = false;
   _el: HTMLElement;
   _current = 1;
   _total: number;
@@ -121,46 +126,28 @@ export class NzPaginationComponent {
   _lastIndex = Infinity;
   _pages = [];
   _options = [ 10, 20, 30, 40, 50 ];
-  _showSizeChanger = false;
-  _showQuickJumper = false;
-  _showTotal = false;
-  _simple = false;
 
   @Input()
-  set nzShowSizeChanger(value: boolean|string) {
-    if (value === '') {
-      this._showSizeChanger = true;
-    } else {
-      this._showSizeChanger = value as boolean;
-    }
+  set nzShowSizeChanger(value: boolean) {
+    this._showSizeChanger = toBoolean(value);
   }
 
-  get nzShowSizeChanger() {
+  get nzShowSizeChanger(): boolean {
     return this._showSizeChanger;
   }
 
-
   @Input()
-  set nzShowQuickJumper(value: boolean|string) {
-    if (value === '') {
-      this._showQuickJumper = true;
-    } else {
-      this._showQuickJumper = value as boolean;
-    }
+  set nzShowQuickJumper(value: boolean) {
+    this._showQuickJumper = toBoolean(value);
   }
 
   get nzShowQuickJumper() {
     return this._showQuickJumper;
   }
 
-
   @Input()
-  set nzShowTotal(value: boolean|string) {
-    if (value === '') {
-      this._showTotal = true;
-    } else {
-      this._showTotal = value as boolean;
-    }
+  set nzShowTotal(value: boolean) {
+      this._showTotal = toBoolean(value);
   }
 
   get nzShowTotal() {
@@ -168,12 +155,8 @@ export class NzPaginationComponent {
   }
 
   @Input()
-  set nzSimple(value: boolean|string) {
-    if (value === '') {
-      this._simple = true;
-    } else {
-      this._simple = value as boolean;
-    }
+  set nzSimple(value: boolean) {
+    this._simple = toBoolean(value);
   }
 
   get nzSimple() {
@@ -202,12 +185,7 @@ export class NzPaginationComponent {
     }
   }
 
-
   @Input()
-  get nzPageIndex(): number {
-    return this._current;
-  };
-
   set nzPageIndex(value: number) {
     if (this._current === value) {
       return;
@@ -217,13 +195,13 @@ export class NzPaginationComponent {
     }
     this._current = Number(value);
     this._buildIndexes();
-  };
+  }
+
+  get nzPageIndex(): number {
+    return this._current;
+  }
 
   @Input()
-  get nzPageSize(): number {
-    return this._pageSize;
-  };
-
   set nzPageSize(value: number) {
     if (value === this._pageSize) {
       return;
@@ -231,20 +209,23 @@ export class NzPaginationComponent {
     this._pageSize = value;
     this.nzPageIndexChange.emit(this.nzPageIndex);
     this._buildIndexes();
-  };
+  }
+
+  get nzPageSize(): number {
+    return this._pageSize;
+  }
 
   @Input()
-  get nzTotal(): number {
-    return this._total;
-  };
-
   set nzTotal(value: number) {
     if (value === this._total) {
       return;
     }
     this._total = value;
     this._buildIndexes();
+  }
 
+  get nzTotal(): number {
+    return this._total;
   }
 
 

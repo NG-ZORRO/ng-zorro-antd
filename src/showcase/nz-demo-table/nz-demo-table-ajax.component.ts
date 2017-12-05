@@ -31,7 +31,7 @@ import { Component, OnInit } from '@angular/core';
   template : `
     <nz-table #nzTable
       [nzAjaxData]="_dataSet"
-      [nzShowSizeChanger]="true"
+      nzShowSizeChanger
       [nzLoading]="_loading"
       [nzTotal]="_total"
       [(nzPageIndex)]="_current"
@@ -114,7 +114,7 @@ export class NzDemoTableAjaxComponent implements OnInit {
       this._total = 200;
       this._dataSet = data.results;
     })
-  };
+  }
 
   ngOnInit() {
     this.refreshData();

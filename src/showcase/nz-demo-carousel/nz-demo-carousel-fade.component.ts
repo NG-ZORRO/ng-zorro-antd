@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 @Component({
   selector: 'nz-demo-carousel-fade',
   template: `
@@ -22,12 +23,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NzDemoCarouselFadeComponent implements OnInit {
   array = [];
-  constructor() {
-  }
 
   ngOnInit() {
     setTimeout(_ => {
       this.array = [ 1, 2, 3, 4 ];
-    }, 500)
+    }, 500);
   }
 }

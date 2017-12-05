@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-progress',
@@ -8,7 +8,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-progress.less',
   ]
 })
-export class NzDemoProgressComponent implements OnInit {
+export class NzDemoProgressComponent {
   NzDemoProgressBasicCode = require('!!raw-loader!./nz-demo-progress-basic.component');
   NzDemoProgressCircleCode = require('!!raw-loader!./nz-demo-progress-circle.component');
   NzDemoProgressLineMiniCode = require('!!raw-loader!./nz-demo-progress-line-mini.component');
@@ -16,10 +16,4 @@ export class NzDemoProgressComponent implements OnInit {
   NzDemoProgressCircleDynamicCode = require('!!raw-loader!./nz-demo-progress-circle-dynamic.component');
   NzDemoProgressLineDynamicCode = require('!!raw-loader!./nz-demo-progress-line-dynamic.component');
   NzDemoProgressFormatCode = require('!!raw-loader!./nz-demo-progress-format.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

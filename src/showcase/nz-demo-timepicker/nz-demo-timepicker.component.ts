@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-timepicker',
@@ -8,7 +8,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-timepicker.less',
   ]
 })
-export class NzDemoTimePickerComponent implements OnInit {
+export class NzDemoTimePickerComponent {
   NzDemoTimePickerBasicCode = require('!!raw-loader!./nz-demo-timepicker-basic.component');
   NzDemoTimePickerChangeCode = require('!!raw-loader!./nz-demo-timepicker-change.component');
   NzDemoTimePickerSizeCode = require('!!raw-loader!./nz-demo-timepicker-size.component');
@@ -16,10 +16,4 @@ export class NzDemoTimePickerComponent implements OnInit {
   NzDemoTimePickerDisabledCode = require('!!raw-loader!./nz-demo-timepicker-disabled.component');
   NzDemoTimePickerDisabledOptionsCode = require('!!raw-loader!./nz-demo-timepicker-disabled-options.component');
   NzDemoTimePickerHideOptionsCode = require('!!raw-loader!./nz-demo-timepicker-hide-options.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

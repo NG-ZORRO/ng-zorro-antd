@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'nz-demo-progress-circle-dynamic',
@@ -10,7 +10,7 @@ import {Component, OnInit} from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoProgressCircleDynamicComponent implements OnInit {
+export class NzDemoProgressCircleDynamicComponent {
   _percent = 0;
 
   increase() {
@@ -25,12 +25,6 @@ export class NzDemoProgressCircleDynamicComponent implements OnInit {
     if (this._percent < 0) {
       this._percent = 0;
     }
-  }
-
-  constructor() {
-  }
-
-  ngOnInit() {
   }
 }
 

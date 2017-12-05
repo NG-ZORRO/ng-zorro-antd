@@ -55,7 +55,7 @@ export class NzDemoLocaleAllComponent implements OnInit {
         <nz-pagination [nzPageIndex]="3" [nzTotal]="500" nzShowSizeChanger [nzPageSize]="40"></nz-pagination>
       </div>
       <div class="example">
-        <nz-select style="width: 200px;" nzAllowClear [nzShowSearch]="true">
+        <nz-select style="width: 200px;" nzAllowClear nzShowSearch>
           <nz-option [nzLabel]="'wilson'" [nzValue]="'wilson'"></nz-option>
           <nz-option [nzLabel]="'lucy'" [nzValue]="'lucy'"></nz-option>
         </nz-select>

@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
       nzAllowClear
       [nzPlaceHolder]="'Select a person'"
       [(ngModel)]="selectedOption"
-      [nzShowSearch]="true">
+      nzShowSearch>
       <nz-option
         *ngFor="let option of searchOptions"
         [nzLabel]="option.label"
@@ -21,7 +21,7 @@ import { Component, OnInit } from '@angular/core';
       nzAllowClear
       [nzPlaceHolder]="'Select a person'"
       [(ngModel)]="selectedOption"
-      [nzShowSearch]="true">
+      nzShowSearch>
       <nz-option
         *ngFor="let option of searchOptions"
         [nzLabel]="option.label"
@@ -35,9 +35,6 @@ import { Component, OnInit } from '@angular/core';
 export class NzDemoSelectSearchComponent implements OnInit {
   selectedOption;
   searchOptions;
-
-  constructor() {
-  }
 
   ngOnInit() {
     /*模拟服务器异步加载*/

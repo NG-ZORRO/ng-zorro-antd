@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {Component, ViewChild, ElementRef} from '@angular/core';
 import { NzInputDirectiveComponent } from '../../components/input/nz-input.directive.component';
 
 @Component({
@@ -20,7 +20,7 @@ import { NzInputDirectiveComponent } from '../../components/input/nz-input.direc
   `,
   styles  : []
 })
-export class NzDemoTagControlComponent implements OnInit {
+export class NzDemoTagControlComponent {
 
   public tags = ['Unremovable', 'Tag 2', 'Tag 3'];
   public inputVisible = false;
@@ -50,11 +50,4 @@ export class NzDemoTagControlComponent implements OnInit {
     this.inputValue = '';
     this.inputVisible = false;
   }
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

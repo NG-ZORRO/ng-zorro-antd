@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NzMessageService} from '../../../index.showcase';
 
 @Component({
@@ -8,14 +8,11 @@ import {NzMessageService} from '../../../index.showcase';
 `,
   styles    : []
 })
-export class NzDemoMessageDurationComponent implements OnInit {
+export class NzDemoMessageDurationComponent {
   createBasicMessage = () => {
     this._message.success('这是一条成功的提示,并将于10秒后消失', {nzDuration: 10000});
   };
   constructor(private _message: NzMessageService) {
-  }
-
-  ngOnInit() {
   }
 }
 

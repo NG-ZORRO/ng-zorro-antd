@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-input',
@@ -8,7 +8,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-input.less',
   ]
 })
-export class NzDemoInputComponent implements OnInit {
+export class NzDemoInputComponent {
   test;
   NzDemoInputBasicCode = require('!!raw-loader!./nz-demo-input-basic.component');
   NzDemoInputSizeCode = require('!!raw-loader!./nz-demo-input-size.component');
@@ -18,10 +18,4 @@ export class NzDemoInputComponent implements OnInit {
   NzDemoInputTextareaCode = require('!!raw-loader!./nz-demo-input-textarea.component');
   NzDemoInputTextareaAutoSizeCode = require('!!raw-loader!./nz-demo-input-textarea-auot-size.component');
   NzDemoInputAffixCode = require('!!raw-loader!./nz-demo-input-affix.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

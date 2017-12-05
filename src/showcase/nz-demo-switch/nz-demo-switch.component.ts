@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-switch',
@@ -8,15 +8,9 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-switch.less',
   ]
 })
-export class NzDemoSwitchComponent implements OnInit {
+export class NzDemoSwitchComponent {
   NzDemoSwitchBasicCode = require('!!raw-loader!./nz-demo-switch-basic.component');
   NzDemoSwitchDisabledCode = require('!!raw-loader!./nz-demo-switch-disabled.component');
   NzDemoSwitchSizeCode = require('!!raw-loader!./nz-demo-switch-size.component');
   NzDemoSwitchTextCode = require('!!raw-loader!./nz-demo-switch-text.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

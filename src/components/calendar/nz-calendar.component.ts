@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import { Moment } from 'moment';
 // import 'moment/locale/zh-cn';
 import { NzLocaleService } from '../locale/index';
+import { toBoolean } from '../util/convert';
 
 export interface MonthInterface {
   index: number;
@@ -199,6 +200,11 @@ export interface WeekInterface {
   ]
 })
 export class NzCalendarComponent implements OnInit {
+  private _clearTime = true;
+  private _datePicker = false;
+  private _fullScreen = true;
+  private _showHeader = true;
+
   _el: HTMLElement;
   _weeksCalendar: Array<WeekInterface> = [];
   _quartersCalendar: Array<QuartersType> = [];
@@ -217,17 +223,39 @@ export class NzCalendarComponent implements OnInit {
   @Output() nzClickDay: EventEmitter<any> = new EventEmitter();
   @Output() nzClickMonth: EventEmitter<any> = new EventEmitter();
   @Input() nzClearTime = true;
-  @Input() @HostBinding('class.ant-patch-full-height') nzDatePicker = false;
   @Input() nzMode = 'year';
-  @Input() nzFullScreen = true;
-  @Input() nzShowHeader = true;
+
+  @Input()
+  set nzFullScreen(value: boolean) {
+    this._fullScreen = toBoolean(value);
+  }
+
+  get nzFullScreen(): boolean {
+    return this._fullScreen;
+  }
+
+  @Input()
+  set nzShowHeader(value: boolean) {
+    this._showHeader = toBoolean(value);
+  }
+
+  get nzShowHeader(): boolean {
+    return this._showHeader;
+  }
+
   @Input() nzDisabledDate: Function;
 
   @Input()
-  get nzValue(): Date {
-    return this._value || new Date();
+  @HostBinding('class.ant-patch-full-height')
+  set nzDatePicker(value: boolean) {
+    this._datePicker = toBoolean(value);
   }
 
+  get nzDatePicker(): boolean {
+    return this._datePicker;
+  }
+
+  @Input()
   set nzValue(value: Date) {
     if (this._value === value) {
       return;
@@ -238,34 +266,38 @@ export class NzCalendarComponent implements OnInit {
     this._buildCalendar();
   }
 
-  @Input()
-  get nzShowYear() {
-    return this._showYear;
+  get nzValue(): Date {
+    return this._value || new Date();
   }
 
+  @Input()
   set nzShowYear(value) {
     this._showYear = value;
     this._buildCalendar();
   }
 
-  @Input()
-  get nzShowMonth() {
-    return this._showMonth;
+  get nzShowYear() {
+    return this._showYear;
   }
 
+  @Input()
   set nzShowMonth(value) {
     this._showMonth = value;
     this._buildCalendar();
   }
 
-  @Input()
-  get nzLocale(): string {
-    return this._locale;
+  get nzShowMonth() {
+    return this._showMonth;
   }
 
+  @Input()
   set nzLocale(value: string) {
     this._locale = value;
     moment.locale(this._locale);
+  }
+
+  get nzLocale(): string {
+    return this._locale;
   }
 
   _removeTime(date) {
@@ -274,7 +306,7 @@ export class NzCalendarComponent implements OnInit {
     } else {
       return date;
     }
-  };
+  }
 
   _clickDay($event, day) {
     $event.preventDefault();
@@ -283,7 +315,7 @@ export class NzCalendarComponent implements OnInit {
       return;
     }
     this.nzClickDay.emit(day);
-  };
+  }
 
   _clickMonth($event, month) {
     $event.preventDefault();
@@ -292,7 +324,7 @@ export class NzCalendarComponent implements OnInit {
       return;
     }
     this.nzClickMonth.emit(month);
-  };
+  }
 
   _buildMonth(d: Moment): Array<WeekInterface> {
     const weeks: Array<WeekInterface> = [];
@@ -310,7 +342,7 @@ export class NzCalendarComponent implements OnInit {
       monthIndex = date.month();
     }
     return weeks;
-  };
+  }
 
   _buildWeek(date: Moment, month: Moment): Array<DayInterface> {
     const days: Array<DayInterface> = [];
@@ -331,7 +363,7 @@ export class NzCalendarComponent implements OnInit {
       date.add(1, 'd');
     }
     return days;
-  };
+  }
 
   _buildYears(date: Moment) {
     const quarters = [];
@@ -351,7 +383,7 @@ export class NzCalendarComponent implements OnInit {
       }
     }
     return quarters;
-  };
+  }
 
   _buildCalendar() {
     moment.locale(this._locale);
@@ -369,7 +401,7 @@ export class NzCalendarComponent implements OnInit {
     const date = moment(this.nzValue).year(this._showYear).month(this._showMonth);
     this._weeksCalendar = this._buildMonth(date);
     this._quartersCalendar = this._buildYears(date);
-  };
+  }
 
   _generateYears(year) {
     const listOfYears = [];
@@ -377,7 +409,7 @@ export class NzCalendarComponent implements OnInit {
       listOfYears.push(i - 10 + year);
     }
     return listOfYears;
-  };
+  }
 
   constructor(private _elementRef: ElementRef, private _localeService: NzLocaleService) {
     this._el = this._elementRef.nativeElement;

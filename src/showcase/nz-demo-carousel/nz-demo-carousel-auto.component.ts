@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-carousel-auto',
   template: `
-    <nz-carousel [nzAutoPlay]="true">
+    <nz-carousel nzAutoPlay>
       <div nz-carousel-content *ngFor="let index of array"><h3>{{index}}</h3></div>
     </nz-carousel>`,
   styles  : [
@@ -25,12 +25,9 @@ import { Component, OnInit } from '@angular/core';
 export class NzDemoCarouselAutoComponent implements OnInit {
   array = [ 1 ];
 
-  constructor() {
-  }
-
   ngOnInit() {
     setTimeout(_ => {
       this.array = [ 1, 2, 3, 4 ];
-    }, 500)
+    }, 500);
   }
 }

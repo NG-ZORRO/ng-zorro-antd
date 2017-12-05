@@ -21,7 +21,6 @@ export type NzType = 'flex' | null;
     './style/index.less'
   ]
 })
-
 export class NzRowComponent implements OnInit {
   _classList: Array<string> = [];
   _el: HTMLElement;
@@ -64,7 +63,7 @@ export class NzRowComponent implements OnInit {
   @Input()
   get nzGutter(): number {
     return this._gutter;
-  };
+  }
 
   set nzGutter(value: number) {
     this._gutter = value;

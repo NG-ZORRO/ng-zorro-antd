@@ -15,6 +15,8 @@ import {
   animate
 } from '@angular/animations';
 
+import { toBoolean } from '../util/convert';
+
 @Component({
   selector     : 'nz-badge',
   encapsulation: ViewEncapsulation.None,
@@ -60,7 +62,8 @@ import {
   ]
 })
 export class NzBadgeComponent implements OnInit {
-  _showZero = false;
+  private _showDot = false;
+  private _showZero = false;
   count: number;
   maxNumberArray;
   countArray = [];
@@ -76,19 +79,23 @@ export class NzBadgeComponent implements OnInit {
   @Input() nzOverflowCount = 99;
 
   @Input()
-  set nzShowZero(value: boolean | string) {
-    if (value === '') {
-      this._showZero = true;
-    } else {
-      this._showZero = value as boolean;
-    }
+  set nzShowZero(value: boolean) {
+    this._showZero = toBoolean(value);
   }
 
-  get nzShowZero() {
+  get nzShowZero(): boolean {
     return this._showZero;
   }
 
-  @Input() nzDot = false;
+  @Input()
+  set nzDot(value: boolean) {
+    this._showDot = toBoolean(value);
+  }
+
+  get nzDot(): boolean {
+    return this._showDot;
+  }
+
   @Input() nzText: string;
   @Input() nzStyle;
   @Input() @HostBinding('class.ant-badge-status') nzStatus: string;

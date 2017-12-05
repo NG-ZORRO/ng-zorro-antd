@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-badge-animate',
@@ -45,17 +45,10 @@ import { Component, OnInit } from '@angular/core';
     }
   ` ]
 })
-
-export class NzDemoBadgeAnimateComponent implements OnInit {
+export class NzDemoBadgeAnimateComponent {
 
   count = 5;
   dot = true;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 
   addCount(): void {
     this.count++;
@@ -69,4 +62,3 @@ export class NzDemoBadgeAnimateComponent implements OnInit {
     this.dot = !this.dot;
   }
 }
-

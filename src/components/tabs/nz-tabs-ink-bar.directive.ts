@@ -1,5 +1,6 @@
 import { Directive, Renderer2, ElementRef, NgZone, HostBinding, Input } from '@angular/core';
 import { reqAnimFrame } from '../core/polyfill/request-animation';
+import { toBoolean } from '../util/convert';
 
 export type NzTabPositionMode = 'horizontal' | 'vertical';
 
@@ -7,8 +8,19 @@ export type NzTabPositionMode = 'horizontal' | 'vertical';
   selector: '[nz-tabs-ink-bar]',
 })
 export class NzTabsInkBarDirective {
-  @HostBinding('class.ant-tabs-ink-bar') _nzTabsInkBar = true
-  @Input() @HostBinding('class.ant-tabs-ink-bar-animated') nzAnimated: boolean;
+  private _animated = false;
+
+  @HostBinding('class.ant-tabs-ink-bar') _nzTabsInkBar = true;
+
+  @Input()
+  @HostBinding('class.ant-tabs-ink-bar-animated')
+  set nzAnimated(value: boolean) {
+    this._animated = toBoolean(value);
+  }
+
+  get nzAnimated(): boolean {
+    return this._animated;
+  }
 
   @Input() nzPositionMode: NzTabPositionMode = 'horizontal';
 

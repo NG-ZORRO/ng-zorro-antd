@@ -26,7 +26,6 @@ import {
     </li>`,
   styleUrls    : []
 })
-
 export class NzTimelineItemComponent implements OnInit {
   itemHeadClass = { 'ant-timeline-item-head-blue': true };
   _color = 'blue';
@@ -35,10 +34,6 @@ export class NzTimelineItemComponent implements OnInit {
   @ContentChild('custom') _customContent: TemplateRef<any>;
 
   @Input()
-  get nzColor() {
-    return this._color;
-  }
-
   set nzColor(color: string) {
     this._color = color;
     if (color === 'green') {
@@ -50,9 +45,9 @@ export class NzTimelineItemComponent implements OnInit {
     }
   }
 
-  constructor() {
+  get nzColor() {
+    return this._color;
   }
-
 
   ngOnInit() {
     if (this._customContent) {

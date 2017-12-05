@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import { DropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzLocaleService } from '../locale/index';
 import { reqAnimFrame } from '../core/polyfill/request-animation';
+import { toBoolean } from '../util/convert';
 
 export interface TimeUnitInterface {
   index: number;
@@ -117,6 +118,8 @@ export interface TimeUnitInterface {
   ]
 })
 export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor {
+  private _disabled = false;
+  private _hideDisabledOptions = false;
   _now = new Date();
   _el: HTMLElement;
   _open = false;
@@ -132,7 +135,6 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
   _showMinute = this._format.indexOf('mm') > -1;
   _showSecond = this._format.indexOf('ss') > -1;
   _width = ( +this._showHour + +this._showMinute + +this._showSecond) * 56 + 1 + 'px';
-  _hideDisabledOptions = false;
   _nzDisabledHours: Function;
   // ngModel Access
   onChange: any = Function.prototype;
@@ -144,15 +146,11 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
   @ViewChild('secondListInstance') _secondListInstance;
 
   @Input()
-  set nzHideDisabledOptions(value: boolean | string) {
-    if (value === '') {
-      this._hideDisabledOptions = true;
-    } else {
-      this._hideDisabledOptions = value as boolean;
-    }
+  set nzHideDisabledOptions(value: boolean) {
+    this._hideDisabledOptions = toBoolean(value);
   }
 
-  get nzHideDisabledOptions() {
+  get nzHideDisabledOptions(): boolean {
     return this._hideDisabledOptions;
   }
 
@@ -171,13 +169,17 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
 
   @Input() nzDisabledMinutes;
   @Input() nzDisabledSeconds;
-  @Input() nzDisabled = false;
 
   @Input()
-  get nzFormat() {
-    return this._format;
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
   }
 
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
+
+  @Input()
   set nzFormat(value) {
     this._format = value;
     this._showHour = this._format.indexOf('HH') > -1;
@@ -186,9 +188,13 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     this._width = ( +this._showHour + +this._showMinute + +this._showSecond) * 56 + 1 + 'px';
   }
 
+  get nzFormat() {
+    return this._format;
+  }
+
   get nzValue(): Date {
     return this._value || this._now;
-  };
+  }
 
   set nzValue(value: Date) {
     if (this._value === value) {
@@ -198,7 +204,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     this._selectedHour = moment(this.nzValue).hours();
     this._selectedMinute = moment(this.nzValue).minutes();
     this._selectedSecond = moment(this.nzValue).seconds();
-  };
+  }
 
   _scrollToSelected(instance, index, duration = 0, unit) {
     const _transIndex = this._translateIndex(index, unit);
@@ -222,7 +228,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
       }
       this.scrollTo(element, to, duration - 10);
     });
-  };
+  }
 
   _selectHour(instance, index, disabled) {
     if (disabled) {

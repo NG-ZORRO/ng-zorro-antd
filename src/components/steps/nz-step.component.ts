@@ -111,7 +111,7 @@ export class NzStepComponent implements AfterViewInit {
       }
     }
     this.initClassMap();
-  };
+  }
 
   initClassMap() {
     this.stepStatusClass = {

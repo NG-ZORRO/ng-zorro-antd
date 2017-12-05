@@ -1,4 +1,5 @@
 import { Component, HostBinding, Input } from '@angular/core';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector: '[nz-form-control]',
@@ -14,18 +15,13 @@ import { Component, HostBinding, Input } from '@angular/core';
   `,
   styles  : []
 })
-
 export class NzFormControlComponent {
-  _hasFeedback = false;
+  private _hasFeedback = false;
   @HostBinding(`class.ant-form-item-control-wrapper`) _nzFormItemControlWrapper = true;
 
   @Input()
-  set nzHasFeedback(value: boolean|string) {
-    if (value === '') {
-      this._hasFeedback = true;
-    } else {
-      this._hasFeedback = value as boolean;
-    }
+  set nzHasFeedback(value: boolean) {
+    this._hasFeedback = toBoolean(value);
   }
 
   get nzHasFeedback() {
@@ -36,11 +32,11 @@ export class NzFormControlComponent {
 
   get isWarning(): boolean {
     return this._isDirtyAndError('warning');
-  };
+  }
 
   get isValidate(): boolean {
     return this._isDirtyAndError('validating') || this.nzValidateStatus === 'pending' || this.nzValidateStatus && this.nzValidateStatus.dirty && this.nzValidateStatus.pending;
-  };
+  }
 
   get isError(): boolean {
     return this._isDirtyAndError('error')
@@ -49,20 +45,17 @@ export class NzFormControlComponent {
       || this._isDirtyAndError('email')
       || this._isDirtyAndError('maxlength')
       || this._isDirtyAndError('minlength')
-  };
+  }
 
   get isSuccess(): boolean {
     return this.nzValidateStatus === 'success' || this.nzValidateStatus && this.nzValidateStatus.dirty && this.nzValidateStatus.valid;
-  };
+  }
 
   get hasFeedBack(): boolean {
     return this.nzHasFeedback as boolean;
-  };
+  }
 
   _isDirtyAndError(name) {
     return this.nzValidateStatus === name || this.nzValidateStatus && this.nzValidateStatus.dirty && this.nzValidateStatus.hasError && this.nzValidateStatus.hasError(name)
-  }
-
-  constructor() {
   }
 }

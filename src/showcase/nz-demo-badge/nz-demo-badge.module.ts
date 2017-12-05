@@ -20,7 +20,6 @@ import { NzDemoBadgeRoutingModule } from './nz-demo-badge.routing.module';
   imports     : [ NzDemoBadgeRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule ],
   declarations: [ NzDemoBadgeComponent, NzDemoBadgeComponent, NzDemoBadgeBasicComponent, NzDemoBadgeStandAlonesComponent, NzDemoBadgeOverFlowComponent, NzDemoBadgeClickAbleComponent, NzDemoBadgeDotComponent, NzDemoBadgeAnimateComponent, NzDemoBadgeMyCeilComponent, NzDemoBadgeStatusComponent ]
 })
-
 export class NzDemoBadgeModule {
 
 }

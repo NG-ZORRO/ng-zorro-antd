@@ -12,6 +12,7 @@ import {
   EventEmitter
 } from '@angular/core';
 import { TagAnimation } from '../core/animation/tag-animations';
+import { toBoolean } from '../util/convert';
 
 
 @Component({
@@ -35,15 +36,32 @@ import { TagAnimation } from '../core/animation/tag-animations';
     './style/patch.less'
   ]
 })
-export class NzCheckableTagComponent implements OnInit, AfterViewInit {
+export class NzCheckableTagComponent implements AfterViewInit {
+  private _checked = false;
+  private _closable = false;
+
   _prefixCls = 'ant-tag';
   _closed = false;
 
   /** Whether tag is checked */
-  @Input() nzChecked = false;
+  @Input()
+  set nzChecked(value: boolean) {
+    this._checked = toBoolean(value);
+  }
+
+  get nzChecked(): boolean {
+    return this._checked;
+  }
 
   /** Whether tag is closable */
-  @Input() nzClosable = false;
+  @Input()
+  set nzClosable(value: boolean) {
+    this._closable = toBoolean(value);
+  }
+
+  get nzClosable(): boolean {
+    return this._closable;
+  }
 
   /** The tag color */
   @Input() nzColor: string;
@@ -112,9 +130,6 @@ export class NzCheckableTagComponent implements OnInit, AfterViewInit {
     private _elementRef: ElementRef,
     private _render: Renderer2) {
 
-  }
-
-  ngOnInit() {
   }
 
   ngAfterViewInit(): void {

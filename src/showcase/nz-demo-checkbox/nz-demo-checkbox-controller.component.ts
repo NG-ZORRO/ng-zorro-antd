@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-checkbox-controller',
@@ -19,7 +19,7 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoCheckboxControllerComponent implements OnInit {
+export class NzDemoCheckboxControllerComponent {
   isCheckedButton = true;
   isDisabledButton = false;
   checkButton = () => {
@@ -28,11 +28,4 @@ export class NzDemoCheckboxControllerComponent implements OnInit {
   disableButton = () => {
     this.isDisabledButton = !this.isDisabledButton;
   };
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

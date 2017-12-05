@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-card',
@@ -8,7 +8,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-card.less'
   ]
 })
-export class NzDemoCardComponent implements OnInit {
+export class NzDemoCardComponent {
   NzDemoCardBasicCode = require('!!raw-loader!./nz-demo-card-basic.component');
   NzDemoCardBorderCode = require('!!raw-loader!./nz-demo-card-border.component');
   NzDemoCardSimpleCode = require('!!raw-loader!./nz-demo-card-simple.component');
@@ -16,10 +16,4 @@ export class NzDemoCardComponent implements OnInit {
   NzDemoCardGridCode = require('!!raw-loader!./nz-demo-card-grid.component');
   NzDemoCardLoadingCode = require('!!raw-loader!./nz-demo-card-loading.component');
   NzDemoCardInnerCode = require('!!raw-loader!./nz-demo-card-inner.component');
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

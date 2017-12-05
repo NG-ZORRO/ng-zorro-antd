@@ -17,7 +17,7 @@ export abstract class EmbeddedProperty {
   pull: number;
   push: number;
   offset: number;
-  order: number
+  order: number;
 }
 
 @Component({
@@ -27,7 +27,6 @@ export abstract class EmbeddedProperty {
   `,
   styles  : []
 })
-
 export class NzColComponent implements OnInit, OnChanges {
   _classList: Array<string> = [];
   _el: HTMLElement;

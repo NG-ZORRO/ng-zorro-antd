@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 const tagsFromServer = ['Movie', 'Books', 'Music', 'Sports'];
 
@@ -13,7 +13,7 @@ const tagsFromServer = ['Movie', 'Books', 'Music', 'Sports'];
   `,
   styles  : []
 })
-export class NzDemoTagHotTagsComponent implements OnInit {
+export class NzDemoTagHotTagsComponent {
 
   public hotTags = tagsFromServer;
   public selectedTags = [];
@@ -26,11 +26,4 @@ export class NzDemoTagHotTagsComponent implements OnInit {
     }
     console.log('You are interested in: ', this.selectedTags);
   }
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

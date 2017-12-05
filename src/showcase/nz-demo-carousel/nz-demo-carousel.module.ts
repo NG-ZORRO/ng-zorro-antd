@@ -27,7 +27,6 @@ import { NzDemoCarouselRoutingModule } from './nz-demo-carousel.routing.module';
     NzDemoCarouselAutoComponent
   ]
 })
-
 export class NzDemoCarouselModule {
 
 }

@@ -16,7 +16,6 @@ import { NzDemoNotificationRoutingModule } from './nz-demo-notification.routing.
   imports     : [ NzDemoNotificationRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule ],
   declarations: [ NzDemoNotificationBasicComponent, NzDemoNotificationDurationComponent, NzDemoNotificationIconComponent, NzDemoNotificationHtmlComponent, NzDemoNotificationComponent ]
 })
-
 export class NzDemoNotificationModule {
 
 }

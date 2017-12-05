@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-input-add-on',
@@ -33,13 +33,6 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoInputAddOnComponent implements OnInit {
+export class NzDemoInputAddOnComponent {
   siteName = 'mysite';
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

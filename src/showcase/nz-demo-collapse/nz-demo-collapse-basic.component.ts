@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'nz-demo-collapse-basic',
@@ -12,7 +12,7 @@ import {Component, OnInit} from '@angular/core';
   `,
   styles: []
 })
-export class NzDemoCollapseBasicComponent implements OnInit {
+export class NzDemoCollapseBasicComponent {
   panels = [
     {
       active: true,
@@ -36,11 +36,4 @@ export class NzDemoCollapseBasicComponent implements OnInit {
       name: 'This is panel header 3'
     }
   ];
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

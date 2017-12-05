@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-alert-icon-close',
@@ -7,11 +7,4 @@ import { Component, OnInit } from '@angular/core';
     </nz-alert>
   `
 })
-
-export class NzDemoAlertIconCloseComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoAlertIconCloseComponent { }

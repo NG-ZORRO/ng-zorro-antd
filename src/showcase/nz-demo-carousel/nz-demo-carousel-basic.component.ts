@@ -25,12 +25,9 @@ import { Component, OnInit } from '@angular/core';
 export class NzDemoCarouselBasicComponent implements OnInit {
   array = [ 1, 2, 3 ];
 
-  constructor() {
-  }
-
   ngOnInit() {
     setTimeout(_ => {
       this.array = [ 1, 2, 3, 4 ];
-    }, 500)
+    }, 500);
   }
 }

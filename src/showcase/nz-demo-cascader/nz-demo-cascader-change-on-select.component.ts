@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 const options = [{
   value: 'zhejiang',
@@ -35,7 +35,7 @@ const options = [{
   selector: 'nz-demo-cascader-change-on-select',
   template: `
     <nz-cascader
-      [nzChangeOnSelect]="true"
+      nzChangeOnSelect
       [nzOptions]="_options"
       [(ngModel)]="_value"
       (ngModelChange)="_console($event)"
@@ -43,7 +43,7 @@ const options = [{
     </nz-cascader>`,
   styles  : []
 })
-export class NzDemoCascaderChangeOnSelectComponent implements OnInit {
+export class NzDemoCascaderChangeOnSelectComponent {
   /** init data */
   _options = options;
 
@@ -52,11 +52,4 @@ export class NzDemoCascaderChangeOnSelectComponent implements OnInit {
   _console(value) {
     console.log(value);
   }
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

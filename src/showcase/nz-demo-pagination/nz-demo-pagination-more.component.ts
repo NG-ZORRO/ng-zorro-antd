@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-pagination-more',
@@ -6,11 +6,4 @@ import { Component, OnInit } from '@angular/core';
     <nz-pagination [nzPageIndex]="1" [nzTotal]="500"></nz-pagination>`,
   styles  : []
 })
-export class NzDemoPaginationMoreComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
-
+export class NzDemoPaginationMoreComponent { }

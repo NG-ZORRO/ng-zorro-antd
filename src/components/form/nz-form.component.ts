@@ -11,7 +11,6 @@ import { Component, Input, OnInit, ElementRef, ViewEncapsulation, Renderer2 } fr
     './style/patch.less'
   ]
 })
-
 export class NzFormComponent implements OnInit {
   _classList: Array<string> = [];
   _el: HTMLElement;

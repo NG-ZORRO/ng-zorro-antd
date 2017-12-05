@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-dropdown-basic',
   template: `
@@ -20,10 +20,4 @@ import { Component, OnInit } from '@angular/core';
     </nz-dropdown>`,
   styles  : []
 })
-export class NzDemoDropDownBasicComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoDropDownBasicComponent { }

@@ -25,7 +25,6 @@ import { NzDemoBreadCrumbRoutingModule } from './nz-demo-breadcrumb.routing.modu
     NzDemoBreadCrumbSeparatorComponent
   ]
 })
-
 export class NzDemoBreadCrumbModule {
 
 }

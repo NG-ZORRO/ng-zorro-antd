@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 
 import { NzRadioGroupComponent } from './nz-radio-group.component';
+import { toBoolean } from '../util/convert';
 
 
 @Component({
@@ -27,32 +28,32 @@ import { NzRadioGroupComponent } from './nz-radio-group.component';
   ]
 })
 export class NzRadioComponent implements OnInit {
+  private _checked = false;
+  private _disabled = false;
+  private _focused = false;
   _el: HTMLElement;
   _classMap;
   _value: string;
   _prefixCls = 'ant-radio';
   _innerPrefixCls = `${this._prefixCls}-inner`;
   _inputPrefixCls = `${this._prefixCls}-input`;
-  _checked = false;
-  _focused = false;
-  _disabled = false;
 
   @Input()
   @HostBinding('class.ant-radio-wrapper-checked')
   set nzChecked(value: boolean) {
-    this._checked = value;
+    this._checked = toBoolean(value);
     this.setClassMap();
   }
 
   get nzChecked(): boolean {
     return this._checked;
-  };
+  }
 
 
   @Input()
   get nzValue(): string {
     return this._value;
-  };
+  }
 
   set nzValue(value: string) {
     if (this._value === value) {
@@ -64,13 +65,13 @@ export class NzRadioComponent implements OnInit {
 
   @Input()
   @HostBinding('class.ant-radio-wrapper-disabled')
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
+    this.setClassMap();
+  }
+
   get nzDisabled(): boolean {
     return this._disabled;
-  };
-
-  set nzDisabled(value: boolean) {
-    this._disabled = value;
-    this.setClassMap();
   }
 
   @HostListener('click', [ '$event' ])

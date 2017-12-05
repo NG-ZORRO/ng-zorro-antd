@@ -20,7 +20,6 @@ import { NzDemoDatePickerRoutingModule } from './nz-demo-datepicker.routing.modu
   imports     : [ NzDemoDatePickerRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule ],
   declarations: [ NzDemoDatePickerComponent, NzDemoDatePickerBasicComponent, NzDemoDatePickerFormatterComponent, NzDemoDatePickerSizeComponent, NzDemoDatePickerDisabledComponent, NzDemoDatePickerTimeComponent, NzDemoDatePickerDisableDateComponent, NzDemoDatePickerStartEndComponent ]
 })
-
 export class NzDemoDatePickerModule {
 
 }

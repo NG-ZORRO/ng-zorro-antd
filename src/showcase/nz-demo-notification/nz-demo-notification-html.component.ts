@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NzNotificationService} from '../../../index.showcase';
 
 @Component({
@@ -8,14 +8,11 @@ import {NzNotificationService} from '../../../index.showcase';
 `,
   styles    : []
 })
-export class NzDemoNotificationHtmlComponent implements OnInit {
+export class NzDemoNotificationHtmlComponent {
   createBasicNotification = () => {
     this._notification.html('<strong>自定义通知栏内HTML</strong><br><p>HTML</p>');
   };
   constructor(private _notification: NzNotificationService) {
-  }
-
-  ngOnInit() {
   }
 }
 

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'nz-demo-my-tag',
@@ -28,12 +28,4 @@ export class NzDemoMyTagComponent {
   `,
   styles  : []
 })
-export class NzDemoTagCheckableComponent implements OnInit {
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
-
+export class NzDemoTagCheckableComponent { }

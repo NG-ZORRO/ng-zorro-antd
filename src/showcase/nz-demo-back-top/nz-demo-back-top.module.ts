@@ -16,7 +16,6 @@ import { NzDemoBackTopRoutingModule } from './nz-demo-back-top.routing.module';
   declarations: [ NzDemoBackTopComponent, NzDemoBackTopBasicComponent, NzDemoBackTopCustomComponent, NzDemoBackTopTargetComponent ],
   imports     : [ NzDemoBackTopRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule ]
 })
-
 export class NzDemoBackTopModule {
 
 }

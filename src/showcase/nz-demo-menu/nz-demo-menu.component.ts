@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-menu',
@@ -8,7 +8,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-menu.less'
   ]
 })
-export class NzDemoMenuComponent implements OnInit {
+export class NzDemoMenuComponent {
   NzDemoMenuBasicCode = require('!!raw-loader!./nz-demo-menu-basic.component');
   NzDemoMenuInlineCode = require('!!raw-loader!./nz-demo-menu-inline.component');
   NzDemoMenuCollapsedCode = require('!!raw-loader!./nz-demo-menu-collapsed.component');
@@ -16,11 +16,4 @@ export class NzDemoMenuComponent implements OnInit {
   NzDemoMenuThemeCode = require('!!raw-loader!./nz-demo-menu-theme.component');
   NzDemoMenuVerticalCode = require('!!raw-loader!./nz-demo-menu-vertical.component');
   NzDemoMenuDynamicCode = require('!!raw-loader!./nz-demo-menu-dynamic.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

@@ -14,6 +14,5 @@ import { FormsModule } from '@angular/forms';
     NzTagComponent, NzCheckableTagComponent
   ]
 })
-
 export class NzTagModule {
 }
