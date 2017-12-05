@@ -136,6 +136,7 @@ import { NzLocaleService } from '../locale/index';
               [class.ant-select-dropdown-menu-item-active]="option.nzValue == _activeFilterOption?.nzValue"
               [class.ant-select-dropdown-menu-item-selected]="(option.nzValue==(_selectedOption?.nzValue))||(isInSet(_selectedOptions,option))"
               class="ant-select-dropdown-menu-item"
+              [style.padding-left.px]="option.nzOffSet"
               (click)="clickOption(option,$event)">
               {{option.nzLabel}}
             </li>

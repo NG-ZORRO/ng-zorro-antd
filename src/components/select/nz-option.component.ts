@@ -21,6 +21,19 @@ export class NzOptionComponent implements OnDestroy, OnInit {
   _value: string;
   _label: string;
   _disabled = false;
+  _offset: number;
+
+  @Input()
+  get nzOffSet(): number {
+    return this._offset;
+  }
+
+  set nzOffSet(value: number) {
+    if (this._offset === value) {
+      return;
+    }
+    this._offset = value;
+  }
 
   @Input()
   get nzValue(): string {

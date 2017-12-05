@@ -14,11 +14,12 @@ import { NzDemoSelectComponent } from './nz-demo-select.component';
 import { NzCodeBoxModule } from '../share/nz-codebox/nz-codebox.module';
 import { NgZorroAntdModule } from '../../../index.showcase';
 
-import { NzDemoSelectRoutingModule } from './nz-demo-select.routing.module';
+import {NzDemoSelectRoutingModule} from './nz-demo-select.routing.module';
+import {NzDemoSelectOptionClassComponent} from './nz-demo-select-option-offset.component';
 
 @NgModule({
-  imports     : [ NzDemoSelectRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule, JsonpModule ],
-  declarations: [ NzDemoSelectBasicComponent, NzDemoSelectSizeComponent, NzDemoSelectSearchComponent, NzDemoSelectMultipleComponent, NzDemoSelectTagComponent, NzDemoSelectComponent, NzDemoSelectSearchChangeComponent, NzDemoSelectMultipleChangeComponent ],
+  imports: [NzDemoSelectRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule, JsonpModule],
+  declarations: [NzDemoSelectBasicComponent, NzDemoSelectSizeComponent, NzDemoSelectSearchComponent, NzDemoSelectMultipleComponent, NzDemoSelectTagComponent, NzDemoSelectComponent, NzDemoSelectSearchChangeComponent, NzDemoSelectMultipleChangeComponent, NzDemoSelectOptionClassComponent],
 })
 
 export class NzDemoSelectModule {

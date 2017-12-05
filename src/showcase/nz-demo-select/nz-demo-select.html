@@ -54,6 +54,12 @@
           <p>多选搜索框和远程数据结合，注意此时需要保留未列在当前选项中但已被加入多选框中的数据，需要添加 <code>nzKeepUnListOptions</code>属性</p>
         </div>
       </nz-code-box>
+      <nz-code-box [nzTitle]="'Option偏移量'" id="components-nz-demo-select-option-offset" [nzCode]="NzDemoSelectOptionOffSetComponentCode">
+        <nz-demo-select-option-class demo></nz-demo-select-option-class>
+        <div intro>
+          <p>为option项添加偏移量,显示类似分组的效果,其偏移量可根据业务自动计算（可计算出多层级显示，模拟tree）。需要otpion添加<code>nzOffSet</code>属性。</p>
+        </div>
+      </nz-code-box>
     </div>
   </div>
   <section class="markdown api-container">
@@ -184,6 +190,12 @@
           <td>是否禁用</td>
           <td>Boolean</td>
           <td>false</td>
+        </tr>
+        <tr>
+          <td>nzOffSet</td>
+          <td>向右偏移量，可根据实际业务计算（可计算出多层级显示，模拟tree）</td>
+          <td>Number</td>
+          <td>0</td>
         </tr>
       </tbody>
     </table>

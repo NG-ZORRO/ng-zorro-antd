@@ -15,6 +15,7 @@ export class NzDemoSelectComponent implements OnInit {
   NzDemoSelectMultipleChangeCode = require('!!raw-loader!./nz-demo-select-multiple-change.component');
   NzDemoSelectTagCode = require('!!raw-loader!./nz-demo-select-tag.component');
   NzDemoSelectSearchChangeCode = require('!!raw-loader!./nz-demo-select-search-change.component');
+  NzDemoSelectOptionOffSetComponentCode= require('!!raw-loader!./nz-demo-select-option-offset.component');
 
   constructor() {
   }
