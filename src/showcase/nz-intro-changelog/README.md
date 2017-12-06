@@ -9,6 +9,32 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.6.3
+`2017-12-07`
+
+### BREAK CHANGES
+* `DropDownButton` 用 `nzDisabled` 取代 `nzDisable` [#459](https://github.com/NG-ZORRO/ng-zorro-antd/pull/459) [@Trotyl Yu](https://github.com/trotyl)
+
+### Features
+* `Select` 支持 `option` 直接渲染 `ng-template` 内容 [#689](https://github.com/NG-ZORRO/ng-zorro-antd/pull/689)
+* `Carousel` 支持更多 API [#688](https://github.com/NG-ZORRO/ng-zorro-antd/pull/688) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `Select` 支持下拉滚动到底部事件 `nzScrollToBottom`，用于滚动加载 [#678](https://github.com/NG-ZORRO/ng-zorro-antd/pull/678)
+* 打包版本支持 `sourcemaps` [#666](https://github.com/NG-ZORRO/ng-zorro-antd/pull/666) [@Trotyl Yu](https://github.com/trotyl)
+* 国际化支持土耳其语 [#634](https://github.com/NG-ZORRO/ng-zorro-antd/pull/634) [@Emrullah TUNCAY](https://github.com/etuncay)
+* 国际化支持繁体中文 [#687](https://github.com/NG-ZORRO/ng-zorro-antd/pull/687)
+* 所有 `boolean` 类型的属性支持直接以 `attribute` 方式使用 [#459](https://github.com/NG-ZORRO/ng-zorro-antd/pull/459) [@Trotyl Yu](https://github.com/trotyl)
+
+### Bug Fixes
+* `Radio` 修复动态改变选项时的问题 [#677](https://github.com/NG-ZORRO/ng-zorro-antd/pull/677) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `Select` 修复 `disabled` 选项可以使用方向键选中的问题 [#675](https://github.com/NG-ZORRO/ng-zorro-antd/pull/675) [@卡色](https://github.com/cipchk)
+* `Affix` 修复位置问题 [#672](https://github.com/NG-ZORRO/ng-zorro-antd/pull/672) [@卡色](https://github.com/cipchk)
+
+### Refactor
+* 重构所有静态 `className` 绑定的方式 [#664](https://github.com/NG-ZORRO/ng-zorro-antd/pull/664) [@Trotyl Yu](https://github.com/trotyl)
+
+### CI
+* 并行加速CI测试 [#655](https://github.com/NG-ZORRO/ng-zorro-antd/pull/655) [@Trotyl Yu](https://github.com/trotyl)
+
 ## 0.6.2
 `2017-11-29`
 
