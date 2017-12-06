@@ -106,10 +106,10 @@ export class NzRadioComponent implements OnInit {
 
   constructor(private _elementRef: ElementRef, public _renderer: Renderer2, public _nzRadioGroup: NzRadioGroupComponent) {
     this._el = this._elementRef.nativeElement;
-    this._nzRadioGroup.addRadio(this);
   }
 
   ngOnInit() {
+    this._nzRadioGroup.addRadio(this);
     this._renderer.addClass(this._el, `${this._prefixCls}-wrapper`);
     this.setClassMap();
   }

@@ -5,7 +5,7 @@ import {
   Input,
   ElementRef,
   AfterContentInit,
-  Renderer,
+  Renderer2,
   HostBinding,
   forwardRef
 } from '@angular/core';
@@ -63,11 +63,11 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
 
   addRadio(radio: NzRadioComponent | NzRadioButtonComponent) {
     this.radios.push(radio);
+    radio.nzChecked = radio.nzValue === this._value
   }
 
   selectRadio(radio: NzRadioComponent | NzRadioButtonComponent) {
     this.updateValue(radio.nzValue);
-    this.onChange(radio.nzValue);
   }
 
   updateValue(value: any) {
@@ -75,13 +75,14 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
       return;
     }
     this._value = value;
+    this.onChange(value);
     this.radios.forEach((item) => {
       item.nzChecked = item.nzValue === this._value;
     });
   }
 
 
-  constructor(private _elementRef: ElementRef, private _render: Renderer) {
+  constructor(private _elementRef: ElementRef, private _render: Renderer2) {
     this._el = this._elementRef.nativeElement;
   }
 
@@ -116,6 +117,6 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
   }
 
   ngOnInit() {
-    this._render.setElementClass(this._el, `${this._prefixCls}`, true);
+    this._render.addClass(this._el, `${this._prefixCls}`);
   }
 }
