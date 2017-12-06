@@ -35,7 +35,10 @@ import { toBoolean } from '../util/convert';
   styleUrls    : [
     './style/index.less',
     './style/patch.less'
-  ]
+  ],
+  host: {
+    '[class.ant-carousel]': 'true'
+  }
 })
 export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   private _autoPlay = false;

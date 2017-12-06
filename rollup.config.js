@@ -1,8 +1,9 @@
 import resolve from 'rollup-plugin-node-resolve';
 import replace from 'rollup-plugin-replace';
-// import commonjs from 'rollup-plugin-commonjs';
+import uglify from 'rollup-plugin-uglify';
+import sourcemaps from 'rollup-plugin-sourcemaps';
 
-const format = process.env.ROLLUP_FORMAT || 'es';
+const target = process.env.ROLLUP_TARGET || 'esm';
 
 let globals = {
   '@angular/animations': 'ng.animations',
@@ -113,43 +114,28 @@ let globals = {
   'rxjs/operators/tap': 'Rx.Observable.prototype',
 };
 
-if (format === 'es') {
-  globals = Object.assign(globals, {
-    'tslib': 'tslib',
-  });
-}
+let plugins = [
+  sourcemaps(),
+  replace({ "import * as moment": "import moment" }),
+  resolve(),
+];
 
-let input;
-let file;
-
-switch (format) {
-  case 'es':
-    input = './publish/src/index.js';
-    file = './publish/esm15/index.js';
+switch (target) {
+  case 'esm':
+    Object.assign(globals, {
+      'tslib': 'tslib',
+    });
     break;
-  case 'umd':
-    input = './publish/esm5/index.js';
-    file = './publish/bundles/ng-zorro-antd.umd.js';
+  case 'mumd':
+    plugins.push(uglify());
     break;
-  default:
-    throw new Error(`format ${format} is not supported`);
 }
 
 export default {
-  input,
-  output: {
-    file,
-    format,
-  },
   exports: 'named',
   name: 'ngZorro.antd',
-  plugins: [
-    replace({ "import * as moment": "import moment" }),
-    resolve(),
-    // commonjs({
-    //   include: 'node_modules/rxjs/operator/*'
-    // }), // Resolve: Error: 'xxx' is not exported by xxx, see: https://github.com/rollup/rollup/wiki/Troubleshooting#name-is-not-exported-by-module
-  ],
+  plugins,
   external: Object.keys(globals),
   globals,
+  sourceMap: true,
 }

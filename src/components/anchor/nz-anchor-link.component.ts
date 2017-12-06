@@ -20,7 +20,10 @@ import { NzAnchorComponent } from './nz-anchor.component';
       <ng-template *ngIf="nzTemplate" [ngTemplateOutlet]="nzTemplate"></ng-template>
     </a>
     <ng-content></ng-content>
-  `
+  `,
+  host: {
+    '[class.ant-anchor-link]': 'true'
+  }
 })
 export class NzAnchorLinkComponent {
 
@@ -29,8 +32,6 @@ export class NzAnchorLinkComponent {
   @Input() nzTitle: string;
 
   @ContentChild('nzTemplate') nzTemplate: TemplateRef<any>;
-
-  @HostBinding('class.ant-anchor-link') _nzAnchorLink = true;
 
   @HostBinding('class.ant-anchor-link-active') active: boolean = false;
 

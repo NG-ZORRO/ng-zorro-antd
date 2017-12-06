@@ -15,7 +15,10 @@ import { toBoolean } from '../util/convert';
   template     : ``,
   styleUrls    : [
     './style/index.less'
-  ]
+  ],
+  host: {
+    '[class.ant-input]': 'true'
+  }
 })
 export class NzInputDirectiveComponent {
   private _disabled = false;
@@ -83,9 +86,6 @@ export class NzInputDirectiveComponent {
   get nzAutosize() {
     return this._autosize;
   }
-
-  @HostBinding(`class.ant-input`) _nzInput = true;
-
 
   @HostBinding(`class.ant-input-lg`)
   get setLgClass(): boolean {

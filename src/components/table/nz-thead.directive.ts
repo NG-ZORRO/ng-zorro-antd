@@ -1,8 +1,9 @@
 import { Directive, HostBinding } from '@angular/core';
 
 @Directive({
-  selector: '[nz-thead]'
+  selector: '[nz-thead]',
+  host: {
+    '[class.ant-table-thead]': 'true'
+  }
 })
-export class NzTheadDirective {
-  @HostBinding(`class.ant-table-thead`) _nzTableThead = true;
-}
+export class NzTheadDirective { }

@@ -181,7 +181,10 @@ import { NzLocaleService } from '../locale/index';
   styleUrls    : [
     './style/index.less',
     './style/patch.less'
-  ]
+  ],
+  host: {
+    '[class.ant-calendar-picker]': 'true'
+  }
 })
 export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   private _allowClear = true;
@@ -212,7 +215,6 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   @Input() nzMode: 'day' | 'month' = 'day';
   @ViewChild('trigger') trigger;
   @ViewChild(NzTimePickerInnerComponent) timePickerInner: NzTimePickerInnerComponent;
-  @HostBinding('class.ant-calendar-picker') _nzCalendarPicker = true;
 
   @Input()
   set nzAllowClear(value: boolean) {
