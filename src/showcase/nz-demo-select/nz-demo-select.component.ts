@@ -9,6 +9,8 @@ import {Component, ViewEncapsulation} from '@angular/core';
 })
 export class NzDemoSelectComponent {
   NzDemoSelectBasicCode = require('!!raw-loader!./nz-demo-select-basic.component');
+  NzDemoSelectTemplateCode = require('!!raw-loader!./nz-demo-select-template.component');
+  NzDemoSelectPaginationCode = require('!!raw-loader!./nz-demo-select-pagination.component');
   NzDemoSelectSizeCode = require('!!raw-loader!./nz-demo-select-size.component');
   NzDemoSelectSearchCode = require('!!raw-loader!./nz-demo-select-search.component');
   NzDemoSelectMultipleCode = require('!!raw-loader!./nz-demo-select-multiple.component');

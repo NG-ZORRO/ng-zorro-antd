@@ -3,7 +3,8 @@ import {
   ViewEncapsulation,
   Input,
   OnDestroy,
-  OnInit
+  OnInit,
+  ContentChild
 } from '@angular/core';
 
 import { NzSelectComponent } from './nz-select.component';
@@ -22,6 +23,7 @@ export class NzOptionComponent implements OnDestroy, OnInit {
 
   _value: string;
   _label: string;
+  @ContentChild('nzOptionTemplate') nzOptionTemplate;
 
   @Input()
   set nzValue(value: string) {
