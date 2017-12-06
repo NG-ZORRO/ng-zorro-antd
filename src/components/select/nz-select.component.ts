@@ -130,7 +130,7 @@ import { NzLocaleService } from '../locale/index';
       <div
         [ngClass]="_dropDownClassMap" [@dropDownAnimation]="_dropDownPosition">
         <div style="overflow: auto;">
-          <ul class="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root" #dropdownUl>
+          <ul class="ant-select-dropdown-menu ant-select-dropdown-menu-vertical ant-select-dropdown-menu-root" #dropdownUl (scroll)="dropDownScroll(dropdownUl)">
             <li
               *ngFor="let option of _filterOptions"
               [class.ant-select-dropdown-menu-item-disabled]="option.nzDisabled"
@@ -190,6 +190,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   @ViewChild('dropdownUl') dropdownUl: ElementRef;
   @Output() nzSearchChange: EventEmitter<any> = new EventEmitter();
   @Output() nzOpenChange: EventEmitter<any> = new EventEmitter();
+  @Output() nzScrollToBottom: EventEmitter<any> = new EventEmitter();
   @Input() nzFilter = true;
   @Input() nzMaxMultiple = Infinity;
 
@@ -309,6 +310,11 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     this._isOpen = isOpen;
     this.nzOpenChange.emit(this._isOpen);
     this.setClassMap();
+    if (this._isOpen) {
+      setTimeout(() => {
+        this.checkDropDownScroll();
+      });
+    }
   }
 
   get nzOpen(): boolean {
@@ -714,6 +720,18 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
+  }
+
+  dropDownScroll(ul) {
+    if (ul && (ul.scrollHeight - ul.scrollTop === ul.clientHeight)) {
+      this.nzScrollToBottom.emit(true);
+    }
+  }
+
+  checkDropDownScroll() {
+    if (this.dropdownUl && (this.dropdownUl.nativeElement.scrollHeight === this.dropdownUl.nativeElement.clientHeight)) {
+      this.nzScrollToBottom.emit(true);
+    }
   }
 
   constructor(private _elementRef: ElementRef, private _renderer: Renderer2, private _locale: NzLocaleService) {
