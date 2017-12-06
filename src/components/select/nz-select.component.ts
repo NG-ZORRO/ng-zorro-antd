@@ -138,7 +138,13 @@ import { NzLocaleService } from '../locale/index';
               [class.ant-select-dropdown-menu-item-selected]="(option.nzValue==(_selectedOption?.nzValue))||(isInSet(_selectedOptions,option))"
               class="ant-select-dropdown-menu-item"
               (click)="clickOption(option,$event)">
-              {{option.nzLabel}}
+              <ng-template
+                *ngIf="option.nzOptionTemplate"
+                [ngTemplateOutlet]="option.nzOptionTemplate">
+              </ng-template>
+              <ng-template [ngIf]="!option.nzOptionTemplate">
+                {{option.nzLabel}}
+              </ng-template>
             </li>
           </ul>
         </div>
