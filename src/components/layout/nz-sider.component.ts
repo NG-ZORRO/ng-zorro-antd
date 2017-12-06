@@ -25,7 +25,10 @@ export type NzBreakPoinit = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     <div class="ant-layout-sider-trigger" *ngIf="_isSiderTrgger" (click)="toggleCollapse()">
       <i class="anticon" [class.anticon-left]="!nzCollapsed" [class.anticon-right]="nzCollapsed"></i>
     </div>
-  `
+  `,
+  host: {
+    '[class.ant-layout-sider]': 'true'
+  }
 })
 export class NzSiderComponent {
   private _collapsed = false;
@@ -73,7 +76,6 @@ export class NzSiderComponent {
   }
 
   @Output() nzCollapsedChange = new EventEmitter();
-  @HostBinding('class.ant-layout-sider') _nzLayoutSider = true;
 
   @HostBinding('class.ant-layout-sider-zero-width')
   get setZeroClass() {

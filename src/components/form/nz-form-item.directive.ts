@@ -1,12 +1,13 @@
 import { Directive, HostBinding } from '@angular/core';
 
 @Directive({
-  selector: '[nz-form-item]'
+  selector: '[nz-form-item]',
+  host: {
+    '[class.ant-form-item]': 'true'
+  }
 })
 export class NzFormItemDirective {
   _withHelp = 0;
-
-  @HostBinding(`class.ant-form-item`) _nzFormItem = true;
 
   enableHelp() {
     this._withHelp++;

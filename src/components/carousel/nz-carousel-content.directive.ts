@@ -6,6 +6,9 @@ import {
 
 @Directive({
   selector: '[nz-carousel-content]',
+  host: {
+    '[class.slick-slide]': 'true'
+  }
 })
 export class NzCarouselContentDirective {
   width = 0;
@@ -14,8 +17,6 @@ export class NzCarouselContentDirective {
   top = null;
   fadeMode = false
   nativeElement: HTMLElement;
-
-  @HostBinding('class.slick-slide') _nzSlickSlide = true;
 
   @HostBinding('class.slick-active')
   get setActiveClass() {

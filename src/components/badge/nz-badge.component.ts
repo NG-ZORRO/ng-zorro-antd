@@ -59,7 +59,10 @@ import { toBoolean } from '../util/convert';
   styleUrls    : [
     './style/index.less',
     './style/patch.less'
-  ]
+  ],
+  host: {
+    '[class.ant-badge]': 'true'
+  }
 })
 export class NzBadgeComponent implements OnInit {
   private _showDot = false;
@@ -69,7 +72,6 @@ export class NzBadgeComponent implements OnInit {
   countArray = [];
   countSingleArray = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
   @ContentChild('content') content: TemplateRef<any>;
-  @HostBinding('class.ant-badge') _nzBadge = true;
 
   @HostBinding('class.ant-badge-not-a-wrapper')
   get setNoWrapper() {
