@@ -32,7 +32,10 @@ import { toBoolean } from '../util/convert';
   styleUrls    : [
     './style/index.less',
     './style/patch.less'
-  ]
+  ],
+  host: {
+    '[class.ant-carousel]': 'true'
+  }
 })
 export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   private _autoPlay = false;
@@ -52,7 +55,6 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   @ViewChild('slickList') slickList: ElementRef;
   @ViewChild('slickTrack') slickTrack: ElementRef;
   @Input() nzEffect = 'scrollx';
-  @HostBinding('class.ant-carousel') _nzCarousel = true;
 
   @Input()
   set nzDots(value: boolean) {

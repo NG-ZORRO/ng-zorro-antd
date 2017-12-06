@@ -18,7 +18,10 @@ import { toBoolean } from '../util/convert';
       <ng-content></ng-content>
     </ng-template>
   `,
-  styles  : []
+  styles  : [],
+  host: {
+    '[class.ant-tabs-tabpane]': 'true'
+  }
 })
 export class NzTabComponent implements OnDestroy, OnInit {
   private disabled = false;
@@ -39,7 +42,6 @@ export class NzTabComponent implements OnDestroy, OnInit {
   @Output() nzClick = new EventEmitter();
   @Output() nzDeselect = new EventEmitter();
   @ContentChild('nzTabHeading') _tabHeading: TemplateRef<any>;
-  @HostBinding('class.ant-tabs-tabpane') _nzTabsTabpane = true;
   @ViewChild(TemplateRef) _content: TemplateRef<any>;
 
   get content(): TemplateRef<any> | null {

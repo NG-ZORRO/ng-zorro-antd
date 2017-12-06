@@ -10,7 +10,10 @@ import { toBoolean } from '../util/convert';
 
 @Component({
   selector: 'nz-row-expand-icon',
-  template: ``
+  template: ``,
+  host: {
+    '[class.ant-table-row-expand-icon]': 'true'
+  }
 })
 export class NzRowExpandIconComponent {
   private _expand = false;
@@ -50,9 +53,6 @@ export class NzRowExpandIconComponent {
   get collapsed() {
     return this.nzShowExpand && !this.nzExpand;
   }
-
-  @HostBinding(`class.ant-table-row-expand-icon`) _expandIcon = true;
-
 
   @HostListener('click')
   onClick() {

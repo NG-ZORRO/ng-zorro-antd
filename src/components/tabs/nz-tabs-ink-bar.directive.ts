@@ -6,11 +6,12 @@ export type NzTabPositionMode = 'horizontal' | 'vertical';
 
 @Directive({
   selector: '[nz-tabs-ink-bar]',
+  host: {
+    '[class.ant-tabs-ink-bar]': 'true'
+  }
 })
 export class NzTabsInkBarDirective {
   private _animated = false;
-
-  @HostBinding('class.ant-tabs-ink-bar') _nzTabsInkBar = true;
 
   @Input()
   @HostBinding('class.ant-tabs-ink-bar-animated')

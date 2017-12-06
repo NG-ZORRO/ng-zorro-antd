@@ -13,11 +13,13 @@ import { toBoolean } from '../util/convert';
       <ng-content></ng-content>
     </div>
   `,
-  styles  : []
+  styles  : [],
+  host: {
+    '[class.ant-form-item-control-wrapper]': 'true'
+  }
 })
 export class NzFormControlComponent {
   private _hasFeedback = false;
-  @HostBinding(`class.ant-form-item-control-wrapper`) _nzFormItemControlWrapper = true;
 
   @Input()
   set nzHasFeedback(value: boolean) {
