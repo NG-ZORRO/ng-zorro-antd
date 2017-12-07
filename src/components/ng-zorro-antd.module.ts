@@ -3,66 +3,66 @@
 // ---------------------------------------------------------
 
 // Common of angular
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 
 // Modules
-import { LoggerModule } from './util/logger/index';
-import { NzLocaleModule } from './locale/index';
-// import { NzLocaleProviderModule } from './locale-provider';
-import { NzGridModule } from './grid/nz-grid.module';
-import { NzButtonModule } from './button/nz-button.module';
+import { NzAffixModule } from './affix/nz-affix.module';
 import { NzAlertModule } from './alert/nz-alert.module';
+import { NzAnchorModule } from './anchor/nz-anchor.module';
+import { NzAvatarModule } from './avatar/nz-avatar.module';
+import { NzBackTopModule } from './back-top/nz-back-top.module';
 import { NzBadgeModule } from './badge/nz-badge.module';
+import { NzBreadCrumbModule } from './breadcrumb/nz-breadcrumb.module';
+import { NzButtonModule } from './button/nz-button.module';
 import { NzCalendarModule } from './calendar/nz-calendar.module';
+import { NzCardModule } from './card/nz-card.module';
+import { NzCarouselModule } from './carousel/nz-carousel.module';
 import { NzCascaderModule } from './cascader/nz-cascader.module';
 import { NzCheckboxModule } from './checkbox/nz-checkbox.module';
+import { NzCollapseModule } from './collapse/nz-collapse.module';
 import { NzDatePickerModule } from './datepicker/nz-datepicker.module';
+import { NzDropDownModule } from './dropdown/nz-dropdown.module';
 import { NzFormModule } from './form/nz-form.module';
-import { NzInputModule } from './input/nz-input.module';
+import { NzGridModule } from './grid/nz-grid.module';
 import { NzInputNumberModule } from './input-number/nz-input-number.module';
+import { NzInputModule } from './input/nz-input.module';
+import { NzLayoutModule } from './layout/nz-layout.module';
+import { NzLocaleModule } from './locale/index';
+// import { NzLocaleProviderModule } from './locale-provider';
+import { NzMenuModule } from './menu/nz-menu.module';
 import { NzMessageModule } from './message/nz-message.module';
 import { NzModalModule } from './modal/nz-modal.module';
 import { NzNotificationModule } from './notification/nz-notification.module';
 import { NzPaginationModule } from './pagination/nz-pagination.module';
 import { NzPopconfirmModule } from './popconfirm/nz-popconfirm.module';
 import { NzPopoverModule } from './popover/nz-popover.module';
+import { NzProgressModule } from './progress/nz-progress.module';
 import { NzRadioModule } from './radio/nz-radio.module';
 import { NzRateModule } from './rate/nz-rate.module';
+import { NzRootModule } from './root/nz-root.module';
 import { NzSelectModule } from './select/nz-select.module';
-import { NzSpinModule } from './spin/nz-spin.module';
 import { NzSliderModule } from './slider/nz-slider.module';
+import { NzSpinModule } from './spin/nz-spin.module';
+import { NzStepsModule } from './steps/nz-steps.module';
 import { NzSwitchModule } from './switch/nz-switch.module';
 import { NzTableModule } from './table/nz-table.module';
 import { NzTabsModule } from './tabs/nz-tabs.module';
 import { NzTagModule } from './tag/nz-tag.module';
 import { NzTimePickerModule } from './time-picker/nz-timepicker.module';
-import { NzUtilModule } from './util/nz-util.module';
-import { NzProgressModule } from './progress/nz-progress.module';
-import { NzStepsModule } from './steps/nz-steps.module';
-import { NzDropDownModule } from './dropdown/nz-dropdown.module';
-import { NzMenuModule } from './menu/nz-menu.module';
-import { NzBreadCrumbModule } from './breadcrumb/nz-breadcrumb.module';
-import { NzLayoutModule } from './layout/nz-layout.module';
-import { NzRootModule } from './root/nz-root.module';
-import { NzCarouselModule } from './carousel/nz-carousel.module';
-import { NzCardModule } from './card/nz-card.module';
-import { NzCollapseModule } from './collapse/nz-collapse.module';
 import { NzTimelineModule } from './timeline/nz-timeline.module';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
-import { NzBackTopModule } from './back-top/nz-back-top.module';
-import { NzAffixModule } from './affix/nz-affix.module';
-import { NzAnchorModule } from './anchor/nz-anchor.module';
-import { NzAvatarModule } from './avatar/nz-avatar.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
+import { LoggerModule } from './util/logger/index';
+import { NzUtilModule } from './util/nz-util.module';
 
 // Services
-import { NzNotificationService } from './notification/nz-notification.service';
 import { NzMessageService } from './message/nz-message.service';
-import { NzModalService } from './modal/nz-modal.service';
 import { NzModalSubject } from './modal/nz-modal-subject.service';
+import { NzModalService } from './modal/nz-modal.service';
+import { NzNotificationService } from './notification/nz-notification.service';
 
 // Tokens (eg. global services' config)
-import { NZ_ROOT_CONFIG, NzRootConfig } from './root/nz-root-config'
+import { NzRootConfig, NZ_ROOT_CONFIG } from './root/nz-root-config';
 
 // ---------------------------------------------------------
 // | Exports

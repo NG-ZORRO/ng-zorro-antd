@@ -61,7 +61,7 @@ export class NzCodeBoxComponent implements OnInit {
       setTimeout(() => {
         this._copied = false;
       }, 1000);
-    })
+    });
   }
 
   copy(value: string): Promise<string> {

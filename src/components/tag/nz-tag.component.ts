@@ -1,24 +1,25 @@
+import { AnimationEvent } from '@angular/animations';
 import {
-  Component,
-  OnInit,
   AfterViewInit,
-  ViewEncapsulation,
-  Input,
+  Component,
   ElementRef,
-  Renderer2,
-  HostListener,
+  EventEmitter,
   HostBinding,
+  HostListener,
+  Input,
+  OnInit,
   Output,
-  EventEmitter
+  Renderer2,
+  ViewEncapsulation,
 } from '@angular/core';
-import { TagAnimation } from '../core/animation/tag-animations';
+import { tagAnimation } from '../core/animation/tag-animations';
 import { toBoolean } from '../util/convert';
 
 @Component({
   selector       : 'nz-tag',
   encapsulation: ViewEncapsulation.None,
   animations   : [
-    TagAnimation
+    tagAnimation
   ],
   template       : `
     <span *ngIf="!_closed"
@@ -57,11 +58,12 @@ export class NzTagComponent implements AfterViewInit {
   /** Event: emit before close */
   @Output() nzBeforeClose = new EventEmitter<Event>();
 
+  // TODO: AnimationEvent is not subclass of Event, but all payloads should be unified
   /** Event: emit after close */
-  @Output() nzClose = new EventEmitter<Event>();
+  @Output() nzClose = new EventEmitter<AnimationEvent>();
 
-
-  @HostBinding('attr.data-show') get _dataShow(): boolean {
+  @HostBinding('attr.data-show')
+  get _dataShow(): boolean {
     return !this._closed;
   }
 
@@ -70,13 +72,13 @@ export class NzTagComponent implements AfterViewInit {
     return (this.nzColor && !isPresetColor) ? this.nzColor : null;
   }
 
-  _afterClose(event: any): void {
+  _afterClose(event: AnimationEvent): void {
     if (this._closed) {
       this.nzClose.emit(event);
     }
   }
 
-  get _tagCls(): any {
+  get _tagCls(): object {
     const isPresetColor = this._isPresetColor(this.nzColor);
     return {
       [this._prefixCls]                       : true,
@@ -100,7 +102,6 @@ export class NzTagComponent implements AfterViewInit {
   _isPresetColor(color: string): boolean {
     return /^(pink|red|yellow|orange|cyan|green|blue|purple)(-inverse)?$/.test(color);
   }
-
 
   constructor(
     private _elementRef: ElementRef,

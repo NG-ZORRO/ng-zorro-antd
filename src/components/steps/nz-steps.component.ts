@@ -1,15 +1,15 @@
 import {
+  AfterViewInit,
   Component,
-  OnInit,
-  Input,
-  ViewEncapsulation,
-  OnDestroy,
   ContentChildren,
+  Input,
+  OnDestroy,
+  OnInit,
   QueryList,
-  AfterViewInit
+  ViewEncapsulation,
 } from '@angular/core';
-import { NzStepComponent } from './nz-step.component';
 import { toBoolean } from '../util/convert';
+import { NzStepComponent } from './nz-step.component';
 
 export type NzDirection = 'horizontal' | 'vertical';
 
@@ -29,7 +29,7 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterViewInit {
   private _progressDot = false;
   _status = 'process';
   _current = 0;
-  _stepsClassMap: Object;
+  _stepsClassMap: object;
   _afterViewInit = false;
   _direction: NzDirection = 'horizontal';
   _stepsChanges;
@@ -64,7 +64,7 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.updateChildrenSteps();
   }
 
-  get nzStatus() {
+  get nzStatus(): string {
     return this._status;
   }
 
@@ -78,8 +78,7 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterViewInit {
     return this._current;
   }
 
-
-  setDirectionClass() {
+  setDirectionClass(): void {
     this._stepsClassMap = {
       [`ant-steps-${this.nzDirection}`]      : true,
       [`ant-steps-label-${this.nzDirection}`]: true,
@@ -88,8 +87,7 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
 
-
-  updateChildrenSteps() {
+  updateChildrenSteps(): void {
     setTimeout(() => {
       this.steps.toArray().forEach((step, index, arr) => {
         step._outStatus = this.nzStatus;
@@ -109,22 +107,22 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterViewInit {
           step._status = this.nzStatus;
         }
         step.initClassMap();
-      })
+      });
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.setDirectionClass();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this._stepsChanges) {
       this._stepsChanges.unsubscribe();
       this._stepsChanges = null;
     }
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     setTimeout(() => {
       this._afterViewInit = true;
     });
@@ -132,7 +130,7 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.steps) {
       this._stepsChanges = this.steps.changes.subscribe(() => {
         this.updateChildrenSteps();
-      })
+      });
     }
   }
 }

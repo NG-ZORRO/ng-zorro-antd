@@ -1,4 +1,13 @@
-import { Component, ViewEncapsulation, Renderer2, ElementRef, Input, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  Renderer2,
+  SimpleChanges,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 
 export type NzAvatarShape = 'square' | 'circle';
 export type NzAvatarSize = 'small' | 'large' | 'default';
@@ -9,7 +18,7 @@ export type NzAvatarSize = 'small' | 'large' | 'default';
   template: `
   <i class="anticon anticon-{{nzIcon}}" *ngIf="nzIcon && _hasIcon"></i>
   <img [src]="nzSrc" *ngIf="nzSrc && _isSrcExist" (error)="_imgError($event)"/>
-  <span class="ant-avatar-string" #textEl [ngStyle]="_textStyles" *ngIf="nzText && _hasText">{{nzText}}</span>
+  <span class="ant-avatar-string" #textEl [ngStyle]="_textStyles" *ngIf="nzText && _hasText">{{ nzText }}</span>
   `,
   styleUrls: [
     './style/index.less',
@@ -41,10 +50,10 @@ export class NzAvatarComponent implements OnChanges {
 
   @Input() nzIcon: string;
 
-  _setClassMap() {
+  _setClassMap(): this {
     this._classList.forEach(_className => {
       this._renderer.removeClass(this._el, _className);
-    })
+    });
     this._classList = [
       this._sizeMap[this.nzSize] && `${this._prefixCls}-${this._sizeMap[this.nzSize]}`,
       this.nzShape && `${this._prefixCls}-${this.nzShape}`,
@@ -59,7 +68,7 @@ export class NzAvatarComponent implements OnChanges {
     return this;
   }
 
-  _imgError() {
+  _imgError(): void {
     this._isSrcExist = false;
     // TODO(i): need force remove [nzSrc] if broken image?
     this._hasIcon = false;
@@ -72,7 +81,7 @@ export class NzAvatarComponent implements OnChanges {
     this._setClassMap()._notifyCalc();
   }
 
-  private _calcStringSize() {
+  private _calcStringSize(): void {
     if (!this._hasText) return;
 
     const el = this._textEl && this._textEl.nativeElement;
@@ -93,7 +102,7 @@ export class NzAvatarComponent implements OnChanges {
     }
   }
 
-  private _notifyCalc() {
+  private _notifyCalc(): this {
     // If use ngAfterViewChecked, always demands more computations, so......
     setTimeout(() => {
       this._calcStringSize();

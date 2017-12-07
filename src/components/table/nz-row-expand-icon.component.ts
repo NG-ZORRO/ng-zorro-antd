@@ -1,10 +1,10 @@
 import {
   Component,
+  EventEmitter,
+  HostBinding,
+  HostListener,
   Input,
   Output,
-  HostListener,
-  HostBinding,
-  EventEmitter,
 } from '@angular/core';
 import { toBoolean } from '../util/convert';
 
@@ -40,22 +40,22 @@ export class NzRowExpandIconComponent {
   }
 
   @HostBinding('class.ant-table-row-spaced')
-  get hidden() {
+  get hidden(): boolean {
     return !this.nzShowExpand;
   }
 
   @HostBinding(`class.ant-table-row-expanded`)
-  get expanded() {
+  get expanded(): boolean {
     return this.nzShowExpand && this.nzExpand;
   }
 
   @HostBinding(`class.ant-table-row-collapsed`)
-  get collapsed() {
+  get collapsed(): boolean {
     return this.nzShowExpand && !this.nzExpand;
   }
 
   @HostListener('click')
-  onClick() {
+  onClick(): void {
     this.nzExpand = !this.nzExpand;
     this.nzExpandChange.emit(this.nzExpand);
   }

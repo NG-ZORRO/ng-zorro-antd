@@ -1,14 +1,14 @@
 import {
   Component,
-  ViewEncapsulation,
+  ContentChild,
   Input,
   OnDestroy,
   OnInit,
-  ContentChild
+  ViewEncapsulation,
 } from '@angular/core';
 
-import { NzSelectComponent } from './nz-select.component';
 import { toBoolean } from '../util/convert';
+import { NzSelectComponent } from './nz-select.component';
 
 @Component({
   selector     : 'nz-option',
@@ -65,7 +65,7 @@ export class NzOptionComponent implements OnDestroy, OnInit {
     this._nzSelect.addOption(this);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this._nzSelect.removeOption(this);
   }
 }

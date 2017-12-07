@@ -29,9 +29,9 @@ const SIZING_STYLE = [
 ];
 
 const computedStyleCache = {};
-let hiddenTextarea;
+let hiddenTextarea: HTMLTextAreaElement;
 
-function calculateNodeStyling(node, useCache = false) {
+function calculateNodeStyling(node: Element, useCache: boolean = false): { sizingStyle: string, paddingSize: number, borderSize: number, boxSizing: string} {
   const nodeRef = (
     node.getAttribute('id') ||
     node.getAttribute('data-reactid') ||
@@ -78,12 +78,13 @@ function calculateNodeStyling(node, useCache = false) {
   return nodeInfo;
 }
 
+// TODO: reconsider function name, it's not general
 export default function calculateNodeHeight(
-  uiTextNode,
-  useCache = false,
+  uiTextNode: HTMLTextAreaElement,
+  useCache: boolean = false,
   minRows: number | null = null,
   maxRows: number | null = null,
-) {
+): { height: number, minHeight: number, maxHeight: number, overflowY: string } {
   if (!hiddenTextarea) {
     hiddenTextarea = document.createElement('textarea');
     document.body.appendChild(hiddenTextarea);
@@ -113,7 +114,7 @@ export default function calculateNodeHeight(
   let minHeight = -Infinity;
   let maxHeight = Infinity;
   let height = hiddenTextarea.scrollHeight;
-  let overflowY;
+  let overflowY: string;
 
   if (boxSizing === 'border-box') {
     // border-box: add border, since height = content + padding + border

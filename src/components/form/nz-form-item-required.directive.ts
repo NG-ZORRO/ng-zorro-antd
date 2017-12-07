@@ -5,7 +5,7 @@ import { toBoolean } from '../util/convert';
   selector: '[nz-form-item-required]'
 })
 export class NzFormItemRequiredDirective {
-  private _required = true
+  private _required = true;
 
   @Input()
   @HostBinding(`class.ant-form-item-required`)

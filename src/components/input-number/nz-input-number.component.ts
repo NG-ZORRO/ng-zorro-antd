@@ -1,18 +1,18 @@
+import { TAB } from '@angular/cdk/keycodes';
 import {
+  forwardRef,
   Component,
-  ViewEncapsulation,
-  Input,
-  Output,
   ElementRef,
   EventEmitter,
+  HostBinding,
+  Input,
+  Output,
   Renderer2,
   ViewChild,
-  HostBinding,
-  forwardRef
+  ViewEncapsulation,
 } from '@angular/core';
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { TAB } from '@angular/cdk/keycodes';
 import { toBoolean } from '../util/convert';
 
 @Component({
@@ -81,8 +81,8 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   _focused = false;
   _mouseInside = false;
   // ngModel Access
-  onChange: any = Function.prototype;
-  onTouched: any = Function.prototype;
+  onChange: (value: number) => void = () => null;
+  onTouched: () => void = () => null;
   @ViewChild('inputNumber') _inputNumber: ElementRef;
 
   @Input() nzPlaceHolder = '';
@@ -127,10 +127,11 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     return this._step;
   }
 
-  @Output() nzBlur: EventEmitter<MouseEvent> = new EventEmitter();
-  @Output() nzFocus: EventEmitter<MouseEvent> = new EventEmitter();
+  // TODO: should reconsider the payload
+  @Output() nzBlur: EventEmitter<FocusEvent | KeyboardEvent> = new EventEmitter();
+  @Output() nzFocus: EventEmitter<FocusEvent> = new EventEmitter();
 
-  _numberUp($event) {
+  _numberUp($event: MouseEvent): void {
     $event.preventDefault();
     $event.stopPropagation();
     this._inputNumber.nativeElement.focus();
@@ -142,7 +143,7 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     }
   }
 
-  _numberDown($event) {
+  _numberDown($event: MouseEvent): void {
     $event.preventDefault();
     $event.stopPropagation();
     this._inputNumber.nativeElement.focus();
@@ -162,7 +163,7 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     this._updateValue(value);
   }
 
-  _emitBlur($event) {
+  _emitBlur($event: FocusEvent): void {
     // avoid unnecessary events
     if (this._focused && !this._mouseInside) {
       this._checkValue();
@@ -172,7 +173,7 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     this.onTouched();
   }
 
-  _emitFocus($event) {
+  _emitFocus($event: FocusEvent): void {
     // avoid unnecessary events
     if (!this._focused) {
       this._focused = true;
@@ -180,25 +181,25 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     }
   }
 
-  _emitKeydown($event) {
+  _emitKeydown($event: KeyboardEvent): void {
     if ($event.keyCode === TAB && this._focused) {
       this._focused = false;
       this.nzBlur.emit($event);
     }
   }
 
-  _userInputChange() {
+  _userInputChange(): void {
     const numberValue = +this._displayValue;
     if (this._isNumber(numberValue) && (numberValue <= this.nzMax) && (numberValue >= this.nzMin)) {
       this.nzValue = numberValue;
     }
   }
 
-  _checkValue() {
+  _checkValue(): void {
     this._displayValue = this.nzValue;
   }
 
-  _getBoundValue(value) {
+  _getBoundValue(value: number): number {
     if (value > this.nzMax) {
       return this.nzMax;
     } else if (value < this.nzMin) {
@@ -208,12 +209,14 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     }
   }
 
-  _isNumber(value) {
-    return !isNaN(value) && isFinite(value)
+  _isNumber(value: number): boolean {
+    return !isNaN(value) && isFinite(value);
   }
 
-  toPrecisionAsStep(num) {
-    if (isNaN(num) || num === '') {
+  // TODO: normalize value type on @Input
+  toPrecisionAsStep(num: number): number {
+    const input = num as number | string;
+    if (isNaN(num) || input === '') {
       return num;
     }
     return Number(Number(num).toFixed(this._precisionStep));
@@ -224,16 +227,16 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     this._renderer.addClass(this._el, `${this._prefixCls}`);
   }
 
-  writeValue(value: any): void {
+  writeValue(value: number): void {
     // this.nzValue = value;
     this._updateValue(value, false);
   }
 
-  registerOnChange(fn: (_: any) => {}): void {
+  registerOnChange(fn: (_: number) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => {}): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -241,7 +244,7 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     this.nzDisabled = isDisabled;
   }
 
-  private _updateValue(value: number, emitChange = true) {
+  private _updateValue(value: number, emitChange: boolean = true): void {
     if (this._value === value) {
       return;
     }

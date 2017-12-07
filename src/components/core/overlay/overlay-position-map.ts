@@ -1,6 +1,6 @@
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
 
-export const POSITION_MAP = {
+export const POSITION_MAP: { [key: string]: ConnectionPositionPair } = {
   'top'         : {
     originX : 'center',
     originY : 'top',
@@ -85,9 +85,12 @@ export const POSITION_MAP = {
     overlayX: 'end',
     overlayY: 'bottom',
   },
-};
-export const DEFAULT_4_POSITIONS = _objectValues([ POSITION_MAP[ 'top' ], POSITION_MAP[ 'right' ], POSITION_MAP[ 'bottom' ], POSITION_MAP[ 'left' ] ]);
-export const DEFAULT_DROPDOWN_POSITIONS = _objectValues([ POSITION_MAP[ 'bottomLeft' ], POSITION_MAP[ 'topLeft' ] ]);
+} as { } as { [key: string]: ConnectionPositionPair };
+
+// TODO: The whole logic does not make sense here, _objectValues just returns a copy of original array
+export const DEFAULT_4_POSITIONS = _objectValues([ POSITION_MAP.top, POSITION_MAP.right, POSITION_MAP.bottom, POSITION_MAP.left]);
+export const DEFAULT_DROPDOWN_POSITIONS = _objectValues([ POSITION_MAP.bottomLeft, POSITION_MAP.topLeft ]);
+
 export const DEFAULT_DATEPICKER_POSITIONS = [
   {
     originX : 'start',
@@ -103,10 +106,10 @@ export const DEFAULT_DATEPICKER_POSITIONS = [
   }
 ] as ConnectionPositionPair[];
 
-function arrayMap(array, iteratee) {
+function arrayMap<T, S>(array: T[], iteratee: (item: T, index: number, arr: T[]) => S): S[] {
   let index = -1;
-  const length = array == null ? 0 : array.length,
-        result = Array(length);
+  const length = array == null ? 0 : array.length;
+  const result = Array(length);
 
   while (++index < length) {
     result[ index ] = iteratee(array[ index ], index, array);
@@ -114,12 +117,12 @@ function arrayMap(array, iteratee) {
   return result;
 }
 
-function baseValues(object, props) {
-  return arrayMap(props, function (key) {
+function baseValues<T>(object: { [key: string]: T } | T[], props: string[]): T[] {
+  return arrayMap(props,  (key) => {
     return object[ key ];
   });
 }
 
-function _objectValues(object) {
+function _objectValues<T>(object: { [key: string]: T } | T[]): T[] {
   return object == null ? [] : baseValues(object, Object.keys(object));
 }

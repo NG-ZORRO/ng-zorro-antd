@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
 import { NzBreadCrumbItemComponent } from './nz-breadcrumb-item.component';
+import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
 
 @NgModule({
   imports     : [ CommonModule ],

@@ -9,11 +9,11 @@ import { Directive, HostBinding } from '@angular/core';
 export class NzFormItemDirective {
   _withHelp = 0;
 
-  enableHelp() {
+  enableHelp(): void {
     this._withHelp++;
   }
 
-  disableHelp() {
+  disableHelp(): void {
     this._withHelp--;
   }
 

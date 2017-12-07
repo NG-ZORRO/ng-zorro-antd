@@ -1,17 +1,17 @@
 import {
-  Component,
-  HostBinding,
-  Input,
   AfterViewInit,
-  HostListener,
   ChangeDetectorRef,
-  Renderer2,
+  Component,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Input,
   Optional,
-  ElementRef
+  Renderer2,
 } from '@angular/core';
+import { toBoolean } from '../util/convert';
 import { NzMenuComponent } from './nz-menu.component';
 import { NzSubMenuComponent } from './nz-submenu.component';
-import { toBoolean } from '../util/convert';
 
 export const PADDING_BASE = 24;
 
@@ -28,12 +28,13 @@ export class NzMenuItemComponent implements AfterViewInit {
   padding = null;
   isInDropDown = false;
 
+  // TODO: should be nzDisabled for consistency
   @Input()
   set nzDisable(value: boolean) {
     this._disabled = toBoolean(value);
   }
 
-  get nzDisable() {
+  get nzDisable(): boolean {
     return this._disabled;
   }
 
@@ -41,19 +42,20 @@ export class NzMenuItemComponent implements AfterViewInit {
   set nzSelected(value: boolean) {
     this._selected = toBoolean(value);
     if (this._selected) {
-      this._renderer.addClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected')
+      this._renderer.addClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected');
     } else {
-      this._renderer.removeClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected')
+      this._renderer.removeClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected');
     }
   }
 
-  get nzSelected() {
+  get nzSelected(): boolean {
     return this._selected;
   }
 
   /** clear all item selected status except this */
+  // TODO: the $event param should be removed if not require
   @HostListener('click', [ '$event' ])
-  _onClickItem() {
+  _onClickItem(): void {
     if (this.nzMenuComponent.nzClickActive && (!this.nzDisable)) {
       this.nzMenuComponent.clearAllSelected();
       this.nzSelected = true;
@@ -62,27 +64,27 @@ export class NzMenuItemComponent implements AfterViewInit {
 
   /** define host class */
   @HostBinding('class.ant-dropdown-menu-item')
-  get _isInDropDownClass() {
+  get _isInDropDownClass(): boolean {
     return this.isInDropDown;
   }
 
   @HostBinding('class.ant-menu-item')
-  get _isNotInDropDownClass() {
+  get _isNotInDropDownClass(): boolean {
     return !this.isInDropDown;
   }
 
   @HostBinding('class.ant-dropdown-menu-item-disabled')
-  get setDropDownDisableClass() {
+  get setDropDownDisableClass(): boolean {
     return this.isInDropDown && this.nzDisable;
   }
 
   @HostBinding('class.ant-menu-item-disabled')
-  get setMenuDisableClass() {
+  get setMenuDisableClass(): boolean {
     return (!this.isInDropDown) && this.nzDisable;
   }
 
   @HostBinding('style.padding-left.px')
-  get setPaddingLeft() {
+  get setPaddingLeft(): number {
     if (this.nzSubMenuComponent) {
       /** if in sub menu component */
       if (this.nzSubMenuComponent.nzMenuComponent.nzMode === 'inline') {
@@ -108,7 +110,7 @@ export class NzMenuItemComponent implements AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     setTimeout(_ => {
       this.isInDropDown = this.nzMenuComponent.isInDropDown;
     });

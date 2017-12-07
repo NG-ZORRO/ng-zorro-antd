@@ -1,7 +1,7 @@
 import {
   Component,
-  Input,
   HostBinding,
+  Input,
 } from '@angular/core';
 
 @Component({
@@ -15,10 +15,7 @@ export class NzRowIndentComponent {
   @Input() nzIndentSize;
 
   @HostBinding(`style.paddingLeft.px`)
-  get paddingLeft() {
+  get paddingLeft(): number {
     return this.nzIndentSize * 20;
-  }
-
-  constructor() {
   }
 }

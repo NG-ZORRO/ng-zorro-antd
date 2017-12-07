@@ -1,3 +1,4 @@
+/* tslint:disable:variable-name */
 export class NzLocale {
   locale: string; // Present of this locale's lang code
 

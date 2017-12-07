@@ -1,13 +1,13 @@
 import {
   animate,
-  AnimationTriggerMetadata,
   state,
   style,
   transition,
   trigger,
+  AnimationTriggerMetadata,
 } from '@angular/animations';
 
-export const FadeAnimation: AnimationTriggerMetadata =  trigger('fadeAnimation', [
+export const fadeAnimation: AnimationTriggerMetadata =  trigger('fadeAnimation', [
   state('void', style({ opacity: 0 })),
   state('true', style({ opacity: 1 })),
   state('false', style({ opacity: 0 })),

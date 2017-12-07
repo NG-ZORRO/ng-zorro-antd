@@ -1,12 +1,13 @@
+/* tslint:disable:no-any */
 import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  Input,
-  ElementRef,
+  forwardRef,
   AfterContentInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
   Renderer,
-  forwardRef
+  ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { toBoolean } from '../util/convert';
@@ -22,7 +23,7 @@ import { toBoolean } from '../util/convert';
       [nzDisabled]="option.disabled||nzDisabled"
       [(ngModel)]="option.checked"
       (ngModelChange)="_optionChange()">
-      <span>{{option.label}}</span>
+      <span>{{ option.label }}</span>
     </label>`,
   providers    : [
     {
@@ -38,7 +39,7 @@ import { toBoolean } from '../util/convert';
 export class NzCheckboxGroupComponent implements ControlValueAccessor {
   private _disabled = false;
   _el: HTMLElement;
-  _options: Array<any>;
+  _options: any[];
   _prefixCls = 'ant-checkbox-group';
   // ngModel Access
   onChange: any = Function.prototype;
@@ -54,7 +55,7 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor {
     return this._disabled;
   }
 
-  _optionChange() {
+  _optionChange(): void {
     this.onChange(this._options);
   }
 

@@ -1,29 +1,29 @@
 /** code from https://github.com/angular/material2 */
 
 import {
-  Component,
-  OnInit,
-  Output,
-  ElementRef,
-  ViewEncapsulation,
-  Input,
   AfterContentChecked,
   AfterViewInit,
-  EventEmitter,
-  Renderer2,
+  Component,
   ContentChild,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Renderer2,
   TemplateRef,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
-import { NzTabComponent } from './nz-tab.component';
-import { NzTabsNavComponent } from './nz-tabs-nav.component';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
 import { toBoolean } from '../util/convert';
+import { NzTabComponent } from './nz-tab.component';
+import { NzTabsNavComponent } from './nz-tabs-nav.component';
 
 export interface NzAnimatedInterface {
-  inkBar: boolean,
-  tabPane: boolean
+  inkBar: boolean;
+  tabPane: boolean;
 }
 
 export class NzTabChangeEvent {
@@ -90,9 +90,9 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
   _indexToSelect: number | null = 0;
   _selectedIndex: number | null = null;
   _isViewInit = false;
-  _tabs: Array<NzTabComponent> = [];
-  @Input() nzTabBarExtraTemplate: TemplateRef<any>;
-  @ContentChild('nzTabBarExtraContent') nzTabBarExtraContent: TemplateRef<any>;
+  _tabs: NzTabComponent[] = [];
+  @Input() nzTabBarExtraTemplate: TemplateRef<void>;
+  @ContentChild('nzTabBarExtraContent') nzTabBarExtraContent: TemplateRef<void>;
   @ViewChild('tabNav') _tabNav: NzTabsNavComponent;
   @ViewChild('tabContent') _tabContent: ElementRef;
   @ViewChild('hostContent') _hostContent: ElementRef;
@@ -116,19 +116,18 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
 
   @Output() nzSelectChange: EventEmitter<NzTabChangeEvent> = new EventEmitter<NzTabChangeEvent>(true);
 
-
   @Input() nzSize = 'default';
   _type: NzTabType = 'line';
-  tabs: Array<NzTabComponent> = [];
+  tabs: NzTabComponent[] = [];
 
   @Input()
-  set nzTabPosition(value) {
+  set nzTabPosition(value: NzTabPosition) {
     if (this._tabPosition === value) {
       return;
     }
     this._tabPosition = value;
     if ((this._tabPosition === 'top') || (this._tabPosition === 'bottom')) {
-      this._tabPositionMode = 'horizontal'
+      this._tabPositionMode = 'horizontal';
     } else {
       this._tabPositionMode = 'vertical';
     }
@@ -136,7 +135,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
     this._setClassMap();
   }
 
-  get nzTabPosition() {
+  get nzTabPosition(): NzTabPosition {
     return this._tabPosition;
   }
 
@@ -156,7 +155,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
     return this._type;
   }
 
-  _setPosition(value) {
+  _setPosition(value: NzTabPosition): void {
     if (this._isViewInit) {
       if (value === 'bottom') {
         this._renderer.insertBefore(this._hostContent.nativeElement, this._tabContent.nativeElement, this._tabNav._elementRef.nativeElement);
@@ -172,18 +171,18 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
       [this._prefixCls]                          : true,
       [`${this._prefixCls}-vertical`]            : (this._tabPosition === 'left') || (this._tabPosition === 'right'),
       [`${this._prefixCls}-${this._tabPosition}`]: this._tabPosition,
-      [`${this._prefixCls}-no-animation`]        : (this.nzAnimated === false) || ((<NzAnimatedInterface>this.nzAnimated).tabPane === false),
+      [`${this._prefixCls}-no-animation`]        : (this.nzAnimated === false) || ((this.nzAnimated as NzAnimatedInterface).tabPane === false),
       [`${this._prefixCls}-${this._type}`]       : this._type,
       [`${this._prefixCls}-mini`]                : (this.nzSize === 'small')
     };
   }
 
-  clickLabel(index) {
+  clickLabel(index: number): void {
     this.nzSelectedIndex = index;
     this._tabs[ index ].nzClick.emit();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._setClassMap();
   }
 
@@ -212,13 +211,13 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
     this._selectedIndex = indexToSelect;
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this._isViewInit = true;
     this._setPosition(this._tabPosition);
   }
 
   private _createChangeEvent(index: number): NzTabChangeEvent {
-    const event = new NzTabChangeEvent;
+    const event = new NzTabChangeEvent();
     event.index = index;
     if (this._tabs && this._tabs.length) {
       event.tab = this._tabs[ index ];
@@ -232,12 +231,12 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
     return event;
   }
 
-  get inkBarAnimated() {
-    return (this.nzAnimated === true) || ((<NzAnimatedInterface>this.nzAnimated).inkBar === true);
+  get inkBarAnimated(): boolean {
+    return (this.nzAnimated === true) || ((this.nzAnimated as NzAnimatedInterface).inkBar === true);
   }
 
-  get tabPaneAnimated() {
-    return (this.nzAnimated === true) || ((<NzAnimatedInterface>this.nzAnimated).tabPane === true);
+  get tabPaneAnimated(): boolean {
+    return (this.nzAnimated === true) || ((this.nzAnimated as NzAnimatedInterface).tabPane === true);
   }
 
   constructor(private _renderer: Renderer2) {

@@ -1,29 +1,29 @@
+import { ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
-  Component,
-  ViewEncapsulation,
-  OnInit,
-  OnDestroy,
-  Input,
-  Renderer2,
-  ContentChild,
-  Output,
-  EventEmitter,
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Component,
+  ContentChild,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewEncapsulation,
 } from '@angular/core';
-import { merge } from 'rxjs/observable/merge';
-import { debounceTime } from 'rxjs/operators/debounceTime';
 import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { Observer } from 'rxjs/Observer'
+import { merge } from 'rxjs/observable/merge';
+import { debounceTime } from 'rxjs/operators/debounceTime';
+import { dropDownAnimation } from '../core/animation/dropdown-animations';
+import { DEFAULT_DROPDOWN_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position-map';
 import { NzMenuComponent } from '../menu/nz-menu.component';
-import { DropDownAnimation } from '../core/animation/dropdown-animations';
-import { NzDropDownDirective } from './nz-dropdown.directive';
-import { POSITION_MAP, DEFAULT_DROPDOWN_POSITIONS } from '../core/overlay/overlay-position-map';
 import { toBoolean } from '../util/convert';
-import { ConnectionPositionPair } from '@angular/cdk/overlay';
+import { NzDropDownDirective } from './nz-dropdown.directive';
 
 export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 
@@ -31,7 +31,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
   selector       : 'nz-dropdown',
   encapsulation  : ViewEncapsulation.None,
   animations     : [
-    DropDownAnimation
+    dropDownAnimation
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template       : `
@@ -74,7 +74,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   hasFilterButton = false;
   _triggerWidth = 0;
   _placement: NzPlacement = 'bottomLeft';
-  _dropDownPosition: 'top' | 'bottom' = 'bottom';
+  _dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   _positions: ConnectionPositionPair[] = [ ...DEFAULT_DROPDOWN_POSITIONS ];
   _subscription: Subscription;
   @ContentChild(NzDropDownDirective) _nzOrigin;
@@ -112,37 +112,37 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
     return this._placement;
   }
 
-  _onClickEvent() {
+  _onClickEvent(): void {
     if (this.nzTrigger === 'click') {
       this._show();
     }
   }
 
-  _onMouseEnterEvent(e) {
+  _onMouseEnterEvent(e: MouseEvent): void {
     if (this.nzTrigger === 'hover') {
       this._show();
     }
   }
 
-  _onMouseLeaveEvent(e) {
+  _onMouseLeaveEvent(e: MouseEvent): void {
     if (this.nzTrigger === 'hover') {
       this._hide();
     }
   }
 
-  _hide() {
+  _hide(): void {
     this._visibleChange.next(false);
   }
 
-  _show() {
+  _show(): void {
     this._visibleChange.next(true);
   }
 
-  _onPositionChange(position) {
+  _onPositionChange(position: ConnectedOverlayPositionChange): void {
     this._dropDownPosition = position.connectionPair.originY;
   }
 
-  _clickDropDown($event) {
+  _clickDropDown($event: MouseEvent): void {
     $event.stopPropagation();
     if (this.nzClickHide) {
       this._hide();
@@ -166,25 +166,25 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
     this._changeDetector.markForCheck();
   }
 
-  _startSubscribe(observable$: Observable<boolean>) {
+  _startSubscribe(observable$: Observable<boolean>): void {
     this._subscription = observable$.pipe(debounceTime(300))
-      .subscribe(this._onVisibleChange)
+      .subscribe(this._onVisibleChange);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this._nzMenu) {
       this._nzMenu.setDropDown(true);
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this._subscription) {
       this._subscription.unsubscribe();
     }
   }
 
-  ngAfterViewInit() {
-    let mouse$: Observable<boolean>
+  ngAfterViewInit(): void {
+    let mouse$: Observable<boolean>;
     if (this.nzTrigger === 'hover') {
       mouse$ = Observable.create((observer: Observer<boolean>) => {
         const disposeMouseEnter = this._renderer.listen(this._nzOrigin.elementRef.nativeElement, 'mouseenter', () => {
@@ -196,7 +196,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
         return () => {
           disposeMouseEnter();
           disposeMouseLeave();
-        }
+        };
       });
     }
     if (this.nzTrigger === 'click') {
@@ -215,7 +215,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
     this._startSubscribe(observable$);
   }
 
-  get _hasBackdrop() {
+  get _hasBackdrop(): boolean {
     return this.nzTrigger === 'click';
   }
 

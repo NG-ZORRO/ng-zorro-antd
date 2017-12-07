@@ -16,7 +16,7 @@
     "integration-cli": "npm run generate && cd integration/angular-cli && npm run integration",
     "integration-webpack": "npm run generate && cd integration/webpack && npm run integration",
     "integration-rollup": "npm run generate && cd integration/rollup && npm run integration",
-    "lint": "ng lint",
+    "lint": "tslint -c tslint.json 'src/components/**/*.ts'",
     "e2e": "ng e2e"
   },
   "main": "./bundles/antd.umd.js",

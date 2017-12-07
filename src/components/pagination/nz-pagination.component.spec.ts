@@ -1,24 +1,24 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed, ComponentFixtureAutoDetect, fakeAsync, tick } from '@angular/core/testing';
 import {
   Component,
   ViewChild
 } from '@angular/core';
+import { async, fakeAsync, tick, ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzPaginationModule } from './nz-pagination.module';
 import { NzPaginationComponent } from './nz-pagination.component';
+import { NzPaginationModule } from './nz-pagination.module';
 
 describe('NzPaginationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports     : [ NzPaginationModule ],
-      declarations: [ TestPaginationBasic, TestPaginationChanger, TestPaginationSimple, TestPaginationShowTotal ],
+      declarations: [ TestPaginationBasicComponent, TestPaginationChangerComponent, TestPaginationSimpleComponent, TestPaginationShowTotalComponent ],
       providers   : []
     }).compileComponents();
   }));
   describe('for nz-pagination', () => {
     it('the correct pages are displayed and the previous page is disabled or not disabled', () => {
-      const fixture = TestBed.createComponent(TestPaginationBasic);
+      const fixture = TestBed.createComponent(TestPaginationBasicComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
@@ -46,7 +46,7 @@ describe('NzPaginationComponent', () => {
       expect(debugElement.nativeElement.querySelector('.ant-pagination-jump-next')).toBeDefined();
     });
     it('correct double binding', () => {
-      const fixture = TestBed.createComponent(TestPaginationBasic);
+      const fixture = TestBed.createComponent(TestPaginationBasicComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzPaginationComponent));
       testComponent._nzTotal = 50;
@@ -57,7 +57,7 @@ describe('NzPaginationComponent', () => {
     });
 
     it('change each page to display the entry', () => {
-      const fixture = TestBed.createComponent(TestPaginationChanger);
+      const fixture = TestBed.createComponent(TestPaginationChangerComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
@@ -70,7 +70,7 @@ describe('NzPaginationComponent', () => {
     });
 
     it('mini version shows normal', () => {
-      const fixture = TestBed.createComponent(TestPaginationChanger);
+      const fixture = TestBed.createComponent(TestPaginationChangerComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzPaginationComponent));
       testComponent._nzSize = '';
@@ -95,20 +95,20 @@ describe('NzPaginationComponent', () => {
     // });
 
     it('simply flip the page', () => {
-      const fixture = TestBed.createComponent(TestPaginationSimple);
+      const fixture = TestBed.createComponent(TestPaginationSimpleComponent);
       const debugElement = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
       expect(debugElement.nativeElement.querySelector('.ant-pagination').classList.contains('ant-pagination-simple')).toBe(true);
     });
 
     it('show how much data is available by setting nzShowTotal.', () => {
-      const fixture = TestBed.createComponent(TestPaginationShowTotal);
+      const fixture = TestBed.createComponent(TestPaginationShowTotalComponent);
       const debugElement = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
       expect(debugElement.nativeElement.querySelector('.ant-pagination-total-text')).toBeDefined();
     });
     it('correct disabled style when reach first and last pageIndex', () => {
-      const fixture = TestBed.createComponent(TestPaginationShowTotal);
+      const fixture = TestBed.createComponent(TestPaginationShowTotalComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
@@ -126,12 +126,11 @@ describe('NzPaginationComponent', () => {
       <nz-pagination [(nzPageIndex)]="_nzPageIndex" [nzTotal]="_nzTotal"></nz-pagination>
     `
   })
-  class TestPaginationBasic {
+  class TestPaginationBasicComponent {
     _nzPageIndex = 1;
     _nzTotal = 50;
     // _nzSize = '';
   }
-
 
   @Component({
     selector: 'nz-test-pagination-changer',
@@ -139,7 +138,7 @@ describe('NzPaginationComponent', () => {
       <nz-pagination [nzPageIndex]="_nzPageIndex" [nzTotal]="_nzTotal" nzShowSizeChanger
         [nzPageSize]="_nzPageSize" [nzSize]="_nzSize"></nz-pagination>`
   })
-  class TestPaginationChanger {
+  class TestPaginationChangerComponent {
     _nzPageIndex = 3;
     _nzTotal = 500;
     _nzPageSize = 40;
@@ -163,7 +162,7 @@ describe('NzPaginationComponent', () => {
       <nz-pagination [nzPageIndex]="2" [nzTotal]="50" nzSimple></nz-pagination>`,
     styles  : []
   })
-  class TestPaginationSimple {
+  class TestPaginationSimpleComponent {
   }
 
   @Component({
@@ -172,8 +171,8 @@ describe('NzPaginationComponent', () => {
       <nz-pagination [nzPageIndex]="pageSize" [nzTotal]="80" nzShowTotal [nzPageSize]="20"></nz-pagination>`,
     styles  : []
   })
-  class TestPaginationShowTotal {
+  class TestPaginationShowTotalComponent {
     pageSize = 1;
   }
 
-})
+});

@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { NzButtonModule } from '../button/nz-button.module';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
+import { NzButtonModule } from '../button/nz-button.module';
+import { NzMenuModule } from '../menu/nz-menu.module';
+import { NzDropDownButtonComponent } from './nz-dropdown-button.component';
 import { NzDropDownComponent } from './nz-dropdown.component';
 import { NzDropDownDirective } from './nz-dropdown.directive';
-import { NzDropDownButtonComponent } from './nz-dropdown-button.component';
-import { NzMenuModule } from '../menu/nz-menu.module';
 
 @NgModule({
   imports     : [ CommonModule, OverlayModule, FormsModule, NzButtonModule, NzMenuModule ],

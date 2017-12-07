@@ -26,7 +26,7 @@ export class NzFormControlComponent {
     this._hasFeedback = toBoolean(value);
   }
 
-  get nzHasFeedback() {
+  get nzHasFeedback(): boolean {
     return this._hasFeedback;
   }
 
@@ -46,7 +46,7 @@ export class NzFormControlComponent {
       || this._isDirtyAndError('pattern')
       || this._isDirtyAndError('email')
       || this._isDirtyAndError('maxlength')
-      || this._isDirtyAndError('minlength')
+      || this._isDirtyAndError('minlength');
   }
 
   get isSuccess(): boolean {
@@ -54,10 +54,10 @@ export class NzFormControlComponent {
   }
 
   get hasFeedBack(): boolean {
-    return this.nzHasFeedback as boolean;
+    return this.nzHasFeedback;
   }
 
-  _isDirtyAndError(name) {
-    return this.nzValidateStatus === name || this.nzValidateStatus && this.nzValidateStatus.dirty && this.nzValidateStatus.hasError && this.nzValidateStatus.hasError(name)
+  _isDirtyAndError(name: string): boolean {
+    return this.nzValidateStatus === name || this.nzValidateStatus && this.nzValidateStatus.dirty && this.nzValidateStatus.hasError && this.nzValidateStatus.hasError(name);
   }
 }

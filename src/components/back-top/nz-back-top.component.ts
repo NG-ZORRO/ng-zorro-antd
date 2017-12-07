@@ -1,26 +1,27 @@
 import {
   Component,
-  ViewEncapsulation,
-  OnInit,
-  Input,
-  TemplateRef,
+  ContentChild,
   EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
   Output,
   Renderer2,
-  OnDestroy,
-  ContentChild
+  TemplateRef,
+  ViewEncapsulation,
 } from '@angular/core';
 
 import {
-  trigger,
+  animate,
   style,
   transition,
-  animate
+  trigger,
 } from '@angular/animations';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { throttleTime } from 'rxjs/operators/throttleTime';
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
+
 import { Subscription } from 'rxjs/Subscription';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
+import { throttleTime } from 'rxjs/operators/throttleTime';
 
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
 
@@ -59,7 +60,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
 
   _display: boolean = false;
 
-  @ContentChild('nzTemplate') nzTemplate: TemplateRef<any>;
+  @ContentChild('nzTemplate') nzTemplate: TemplateRef<void>;
 
   @Input() nzVisibilityHeight: number = 400;
 
@@ -78,24 +79,24 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
     if (!this.scroll$) this.registerScrollEvent();
   }
 
-  clickBackTop() {
+  clickBackTop(): void {
     this.scrollSrv.scrollTo(this.getTarget(), 0);
     this.nzClick.emit(true);
   }
 
-  private getTarget() {
+  private getTarget(): HTMLElement | Window {
     return this.target || window;
   }
 
-  private handleScroll() {
+  private handleScroll(): void {
     this._display = this.scrollSrv.getScroll(this.getTarget()) > this.nzVisibilityHeight;
   }
 
-  private removeListen() {
+  private removeListen(): void {
     if (this.scroll$) this.scroll$.unsubscribe();
   }
 
-  private registerScrollEvent() {
+  private registerScrollEvent(): void {
     this.removeListen();
     this.handleScroll();
     this.scroll$ = fromEvent(this.getTarget(), 'scroll').pipe(throttleTime(50), distinctUntilChanged())

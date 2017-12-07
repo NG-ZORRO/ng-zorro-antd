@@ -1,8 +1,9 @@
-import { ComponentFactoryResolver, Injector, ComponentRef, ComponentFactory, APP_INITIALIZER } from '@angular/core';
-import { async, inject, TestBed } from '@angular/core/testing';
+/* tslint:disable:no-any */
 import { DOCUMENT } from '@angular/common';
+import { APP_INITIALIZER, ComponentFactory, ComponentFactoryResolver, ComponentRef, Injector } from '@angular/core';
+import { async, inject, TestBed } from '@angular/core/testing';
+import { NzRootConfig, NZ_ROOT_CONFIG } from './nz-root-config';
 import { NzRootComponent } from './nz-root.component';
-import { NZ_ROOT_CONFIG, NzRootConfig } from './nz-root-config';
 
 describe('NzRootComponent', () => {
   let component: NzRootComponent;
