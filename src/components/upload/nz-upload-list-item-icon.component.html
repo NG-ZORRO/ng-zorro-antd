@@ -1,0 +1,41 @@
+<div
+  *ngIf="(nzListType === 'picture' || nzListType === 'picture-card'); else listTypeElseBlock"
+>
+
+  <div
+    *ngIf="nzFile.status === 'uploading' || (!nzFile.thumbUrl && !nzFile.url); else fileStatusElseBlock"
+  >
+    <div [ngSwitch]="nzListType">
+      <div
+        *ngSwitchCase="'picture-card'"
+        [ngClass]="_prefixCls+'-list-item-uploading-text'"
+      >
+        {{_uploadingText}}
+      </div>
+      <i
+        *ngSwitchDefault
+        [ngClass]="_prefixCls+'-list-item-thumbnail'"
+        class="anticon anticon-picture"
+      ></i>
+    </div>
+  </div>
+  <ng-template #fileStatusElseBlock>
+    <a
+      [ngClass]="_prefixCls+'-list-item-thumbnail'"
+      (click)="onPreview.emit(nzFile)"
+      [href]="nzFile.url || nzFile.thumbUrl"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img [src]="nzFile.thumbUrl || nzFile.url" [alt]="nzFile.name" />
+    </a>
+  </ng-template>
+
+</div>
+
+<ng-template #listTypeElseBlock>
+  <div [ngSwitch]="nzFile.status">
+    <i *ngSwitchCase="'uploading'" class="anticon anticon-loading anticon-spin"></i>
+    <i *ngSwitchDefault class="anticon anticon-paper-clip"></i>
+  </div>
+</ng-template>

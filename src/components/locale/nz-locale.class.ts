@@ -51,6 +51,13 @@ export class NzLocale {
     notFoundContent: string;
   };
 
+  Upload: {
+    uploading: string;
+    removeFile: string;
+    uploadError: string;
+    previewFile: string;
+  };
+
   Transfer: {
     titles: string,
     notFoundContent: string,

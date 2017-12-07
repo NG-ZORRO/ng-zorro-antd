@@ -1,0 +1,29 @@
+<span>
+<div [ngClass]="_classMap">
+<nz-basic-upload
+    [nzAccept]="nzAccept"
+    [nzAction]="nzAction"
+    [nzCustomRequest]="nzCustomRequest"
+    [nzData]="nzData"
+    [nzDisabled]="nzDisabled"
+    [nzHeaders]="nzHeaders"
+    [nzMultiple]="nzMultiple"
+    [nzWithCredentials]="nzWithCredentials"
+    [nzBeforeUpload]="beforeUpload"
+    (nzOnStart)="handleStart($event)"
+    (nzOnProgress)="handleProgress($event)"
+    (nzOnSuccess)="handleSuccess($event)"
+    (nzOnError)="handleError($event)"
+    #basicUpload
+>
+<ng-content></ng-content>
+</nz-basic-upload>
+</div>
+<nz-upload-list
+    *ngIf="nzShowUploadList"
+    [onPreview]="nzOnPreview"
+    (onRemove)="handleRemove($event)"
+    [fileList]="nzFileList"
+    [listType]="nzListType"
+></nz-upload-list>
+</span>

@@ -173,6 +173,12 @@ export const ROUTER_LIST = {
           'zh'          : '时间选择框'
         },
         {
+          'label'       : 'Upload',
+          'path'        : 'components/upload',
+          'loadChildren': './nz-demo-upload/nz-demo-upload.module#NzDemoUploadModule',
+          'zh'          : '上传'
+        },
+        {
           'label'       : 'Transfer',
           'path'        : 'components/transfer',
           // 'loadChildren': './nz-demo-timepicker/nz-demo-timepicker.module#NzDemoTimePickerModule',
@@ -524,6 +530,14 @@ export const DEMO_ROUTES = [
   {
     'path'        : 'other/anchor',
     'loadChildren': './nz-demo-anchor/nz-demo-anchor.module#NzDemoAnchorModule'
+  },
+  {
+    'path'        : 'components/avatar',
+    'loadChildren': './nz-demo-avatar/nz-demo-avatar.module#NzDemoAvatarModule'
+  },
+  {
+    'path'        : 'components/upload',
+    'loadChildren': './nz-demo-upload/nz-demo-upload.module#NzDemoUploadModule'
   },
   {
     'path'        : 'other/locale',

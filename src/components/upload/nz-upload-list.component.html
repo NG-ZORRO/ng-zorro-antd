@@ -1,0 +1,62 @@
+<div
+  [ngClass]="[_prefixCls+'-list',_prefixCls+'-list-'+listType]"
+>
+<div
+    *ngFor="let file of fileList;trackBy: trackByFiles"
+    [ngClass]="[_prefixCls+'-list-item',_prefixCls+'-list-item-'+file.status]"
+>
+    <div [ngClass]="_prefixCls+'-list-item-info'">
+        <nz-upload-list-item-icon-and-preview
+            [nzFile]="file"
+            [nzListType]="listType"
+            (nzOnPreview)="handlePreview(file)"
+        >
+        </nz-upload-list-item-icon-and-preview>
+    </div>
+    <span
+        *ngIf="listType === 'picture-card' && file.status !== 'uploading'; else listTypeElseBlock"
+        [ngClass]="_prefixCls+'-list-item-actions'"
+    >
+        <a
+            *ngIf="showPreviewIcon && !(file.url || file.thumbUrl)"
+            [ngStyle]="{pointerEvents: 'none',opacity: 0.5}"
+            (click)="handlePreview(file)"
+            [title]="_previewFileText"
+        >
+            <i class="anticon anticon-eye-o"></i>
+        </a>
+        <a
+          *ngIf="showPreviewIcon && (file.url || file.thumbUrl)"
+          (click)="handlePreview(file)"
+          [title]="_previewFileText"
+        >
+            <i class="anticon anticon-eye-o"></i>
+        </a>
+
+        <i
+            class="anticon anticon-delete"
+            [title]="_removeFileText"
+            (click)="handleClose(file)"
+        ></i>
+    </span>
+    <i
+        #listTypeElseBlock
+        *ngIf="showRemoveIcon"
+        class="anticon anticon-cross"
+        [title]="_removeFileText"
+        (click)="handleClose(file)"
+    ></i>
+
+    <div [ngClass]="_prefixCls+'-list-item-progress'" key="progress" *ngIf="file.status === 'uploading'">
+        <nz-progress
+            [ngModel]="file.percent"
+            [nzType]="'line'"
+            [nzStrokeWidth]="progressAttr.strokeWidth"
+            [nzShowInfo]="progressAttr.showInfo"
+        >
+        </nz-progress>
+    </div>
+
+
+</div>
+</div>
