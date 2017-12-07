@@ -10,7 +10,7 @@ import {
   template: `
     <form nz-form [nzLayout]="'inline'" [formGroup]="validateForm" (ngSubmit)="_submitForm()">
       <div nz-form-item>
-        <div nz-form-control [nzValidateStatus]="validateForm.controls.userName">
+        <div nz-form-control>
           <nz-input formControlName="userName" [nzPlaceHolder]="'Username'" [nzSize]="'large'">
             <ng-template #prefix>
               <i class="anticon anticon-user"></i>
@@ -20,7 +20,7 @@ import {
         </div>
       </div>
       <div nz-form-item>
-        <div nz-form-control [nzValidateStatus]="validateForm.controls.password">
+        <div nz-form-control>
           <nz-input formControlName="password" [nzType]="'password'" [nzPlaceHolder]="'Password'" [nzSize]="'large'">
             <ng-template #prefix>
               <i class="anticon anticon-lock"></i>

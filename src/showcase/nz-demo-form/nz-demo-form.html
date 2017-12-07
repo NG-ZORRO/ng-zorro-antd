@@ -85,7 +85,7 @@
         <div intro>
           <p>我们为表单控件定义了三种校验状态，你可以不使用<code>Reactive Form</code>的异步返回数据，而直接定义表单的返回状态，定义<code>&lt;nz-form-control&gt;</code>的<code>nzValidateStatus</code> 输入即可。
           </p>
-          <p><code>nzValidateStatus</code>可选择状态有'success', 'warning', 'error', 'validating'四种。</p>
+          <p> <code>nzValidateStatus</code> 可选择状态有'success', 'warning', 'error', 'validating'四种。</p>
           <p>另外为输入框添加反馈图标，添加 <code>&lt;nz-form-control&gt;</code> 的 <code>nzHasFeedback</code> 属性即可。</p>
           <p><strong>注意</strong>: 反馈图标只对 <code>&lt;nz-input/&gt;</code> 有效。</p>
         </div>
@@ -96,7 +96,7 @@
           <div intro>
             <p>当使用
               <a href="https://v2.angular.cn/docs/ts/latest/cookbook/form-validation.html#!#reactive">响应式表单(Reactive Form)</a>
-              时，将<code>&lt;nz-form-control&gt;</code>的<code>nzValidateStatus</code> 属性定义为当前<code>formControlName</code>名称，
+              时，<code>&lt;nz-form-control&gt;</code> 的 <code>nzValidateStatus</code> 会自动从 <code>NgControl</code> 中获取数据，也可以手动指定特定的 <code>NgControl</code>
             </p>
             <p>组件将表单校验函数的校验过程和异步返回的结果显示对应的<code>error | validating(pending) | warning | success</code>状态，具体使用方式建议参照本demo
             </p>
@@ -165,8 +165,8 @@
         </tr>
         <tr>
           <td>nzValidateStatus</td>
-          <td>校验状态，属性定义为当前<code>formControl</code>名称可以根据异步返回数据自动显示，也可手动定义 可选：'success' 'warning' 'error' 'validating'</td>
-          <td>formControl|string</td>
+          <td>校验状态，当定义为 <code>NgControl</code> 时可以根据异步返回数据自动显示，也可手动定义为string 可选：'success' 'warning' 'error' 'validating'</td>
+          <td>NgControl|string</td>
           <td>-</td>
         </tr>
       </tbody>

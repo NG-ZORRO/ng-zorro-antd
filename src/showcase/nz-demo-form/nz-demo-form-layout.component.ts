@@ -31,7 +31,7 @@ import {
         <div nz-form-label nz-col [nzSpan]="isHorizontal?4:false">
           <label>Username</label>
         </div>
-        <div nz-form-control nz-col [nzSpan]="isHorizontal?14:false" [nzValidateStatus]="validateForm.controls.userName">
+        <div nz-form-control nz-col [nzSpan]="isHorizontal?14:false">
           <nz-input formControlName="userName" [nzPlaceHolder]="'Username'" [nzSize]="'large'">
           </nz-input>
           <div nz-form-explain *ngIf="validateForm.controls.userName.dirty&&validateForm.controls.userName.hasError('required')">Please input your username!</div>
@@ -41,7 +41,7 @@ import {
         <div nz-form-label nz-col [nzSpan]="isHorizontal?4:false">
           <label>Password</label>
         </div>
-        <div nz-form-control nz-col [nzSpan]="isHorizontal?14:false" [nzValidateStatus]="validateForm.controls.password">
+        <div nz-form-control nz-col [nzSpan]="isHorizontal?14:false">
           <nz-input formControlName="password" [nzType]="'password'" [nzPlaceHolder]="'Password'" [nzSize]="'large'">
           </nz-input>
           <div nz-form-explain *ngIf="validateForm.controls.password.dirty&&validateForm.controls.password.hasError('required')">Please input your Password!</div>
