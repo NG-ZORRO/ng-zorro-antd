@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { NzStepsComponent } from './nz-steps.component';
 import { NzStepComponent } from './nz-step.component';
+import { NzStepsComponent } from './nz-steps.component';
 
 @NgModule({
   imports     : [ CommonModule ],

@@ -1,17 +1,20 @@
 import {
-  Component,
-  ViewEncapsulation,
-  Input,
-  ElementRef,
   AfterViewInit,
-  EventEmitter,
-  Output,
-  ContentChild,
   ChangeDetectorRef,
-  TemplateRef, OnInit, ContentChildren, QueryList
+  Component,
+  ContentChild,
+  ContentChildren,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  QueryList,
+  TemplateRef,
+  ViewEncapsulation,
 } from '@angular/core';
-import { measureScrollbar } from '../util/mesureScrollBar';
 import { toBoolean } from '../util/convert';
+import { measureScrollbar } from '../util/mesureScrollBar';
 import { NzThDirective } from './nz-th.directive';
 
 @Component({
@@ -99,21 +102,25 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   private _showTitle = false;
 
   /** public data for ngFor tr */
-  data = [];
-  _scroll;
+  // TODO: the data cannot be type-checked in current design
+  /* tslint:disable-next-line:no-any */
+  data: any[] = [];
+  _scroll: { y: number };
   _el: HTMLElement;
   _headerBottomStyle;
   _current = 1;
   _total: number;
   _pageSize = 10;
-  _dataSet = [];
+  /* tslint:disable-next-line:no-any */
+  _dataSet: any[] = [];
   _isInit = false;
   _isAjax = false;
   ths = [];
-  @Output() nzPageSizeChange: EventEmitter<any> = new EventEmitter();
-  @Output() nzPageIndexChange: EventEmitter<any> = new EventEmitter();
-  @Output() nzDataChange: EventEmitter<any> = new EventEmitter();
-  @Output() nzPageIndexChangeClick: EventEmitter<any> = new EventEmitter();
+  @Output() nzPageSizeChange: EventEmitter<number> = new EventEmitter();
+  @Output() nzPageIndexChange: EventEmitter<number> = new EventEmitter();
+  /* tslint:disable-next-line:no-any */
+  @Output() nzDataChange: EventEmitter<any[]> = new EventEmitter();
+  @Output() nzPageIndexChangeClick: EventEmitter<number> = new EventEmitter();
   @Input() nzSize: string;
 
   @Input()
@@ -208,7 +215,7 @@ export class NzTableComponent implements AfterViewInit, OnInit {
 
   /** page size changer select values */
   @Input() nzPageSizeSelectorValues = [10, 20, 30, 40, 50];
-  @ContentChild('nzFixedHeader') fixedHeader: TemplateRef<any>;
+  @ContentChild('nzFixedHeader') fixedHeader: TemplateRef<void>;
 
   @ContentChildren(NzThDirective, { descendants: true })
   set setThs(value: QueryList<NzThDirective>) {
@@ -216,35 +223,39 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   }
 
   @Input()
-  set nzScroll(value) {
+  set nzScroll(value: { y: number }) {
     this._scroll = value;
     this._cd.detectChanges();
   }
 
-  get nzScroll() {
+  get nzScroll(): { y: number } {
     return this._scroll;
   }
 
   /** async data */
   @Input()
-  set nzAjaxData(data) {
+  /* tslint:disable-next-line:no-any */
+  set nzAjaxData(data: any[]) {
     this._isAjax = true;
     this.data = data;
   }
 
-  get nzAjaxData() {
+  /* tslint:disable-next-line:no-any */
+  get nzAjaxData(): any[] {
     return this.data;
   }
 
   /** sync data */
   @Input()
-  set nzDataSource(value) {
+  /* tslint:disable-next-line:no-any */
+  set nzDataSource(value: any[]) {
     this._dataSet = value;
     this.nzTotal = this._dataSet.length;
     this._generateData(true);
   }
 
-  get nzDataSource() {
+  /* tslint:disable-next-line:no-any */
+  get nzDataSource(): any[] {
     return this._dataSet;
   }
 
@@ -258,11 +269,11 @@ export class NzTableComponent implements AfterViewInit, OnInit {
     this.nzPageIndexChange.emit(this.nzPageIndex);
   }
 
-  get nzPageIndex() {
+  get nzPageIndex(): number {
     return this._current;
   }
 
-  pageChangeClick(value) {
+  pageChangeClick(value: number): void {
     this.nzPageIndexChangeClick.emit(value);
   }
 
@@ -278,7 +289,7 @@ export class NzTableComponent implements AfterViewInit, OnInit {
     }
   }
 
-  get nzPageSize() {
+  get nzPageSize(): number {
     return this._pageSize;
   }
 
@@ -290,11 +301,11 @@ export class NzTableComponent implements AfterViewInit, OnInit {
     this._total = value;
   }
 
-  get nzTotal() {
+  get nzTotal(): number {
     return this._total;
   }
 
-  _generateData(forceRefresh = false) {
+  _generateData(forceRefresh: boolean = false): void {
     if (!this._isAjax) {
       if (this.nzIsPagination) {
         if (forceRefresh) {
@@ -313,19 +324,19 @@ export class NzTableComponent implements AfterViewInit, OnInit {
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     const scrollbarWidth = measureScrollbar();
     this._headerBottomStyle = {
       marginBottom : `-${scrollbarWidth}px`,
       paddingBottom: `0px`
-    }
+    };
   }
 
   constructor(private _elementRef: ElementRef, private _cd: ChangeDetectorRef) {
     this._el = this._elementRef.nativeElement;
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this._isInit = true;
   }
 }

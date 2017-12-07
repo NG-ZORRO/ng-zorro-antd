@@ -1,8 +1,8 @@
 import {
   Component,
-  Input,
-  HostBinding,
   ContentChild,
+  HostBinding,
+  Input,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -69,9 +69,9 @@ export class NzCardComponent {
     return this._borderd;
   }
 
-  @ContentChild('title') title: TemplateRef<any>;
-  @ContentChild('extra') extra: TemplateRef<any>;
-  @ContentChild('body') body: TemplateRef<any>;
+  @ContentChild('title') title: TemplateRef<void>;
+  @ContentChild('extra') extra: TemplateRef<void>;
+  @ContentChild('body') body: TemplateRef<void>;
 
   @Input()
   set nzLoading(value: boolean) {

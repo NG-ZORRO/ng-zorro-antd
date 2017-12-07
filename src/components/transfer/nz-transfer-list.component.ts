@@ -1,5 +1,5 @@
 // tslint:disable:member-ordering
-import { Component, Input, ContentChild, TemplateRef, Renderer2, ElementRef, OnChanges, SimpleChanges, Output, EventEmitter, OnInit, DoCheck, IterableDiffers, IterableDiffer } from '@angular/core';
+import { Component, ContentChild, DoCheck, ElementRef, EventEmitter, Input, IterableDiffer, IterableDiffers, OnChanges, OnInit, Output, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { toBoolean } from '../util/convert';
 import { TransferItem } from './item';
 
@@ -9,8 +9,8 @@ import { TransferItem } from './item';
     <div class="ant-transfer-list-header">
       <label nz-checkbox [(ngModel)]="stat.checkAll" (ngModelChange)="onHandleSelectAll($event)"
         [nzIndeterminate]="stat.checkHalf"></label><span class="ant-transfer-list-header-selected">
-        <span>{{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount}} {{dataSource.length > 1 ? itemsUnit : itemUnit}}</span>
-        <span *ngIf="titleText" class="ant-transfer-list-header-title">{{titleText}}</span>
+        <span>{{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ dataSource.length > 1 ? itemsUnit : itemUnit }}</span>
+        <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
       </span>
     </div>
     <div class="{{showSearch ? 'ant-transfer-list-body ant-transfer-list-body-with-search' : 'ant-transfer-list-body'}}"
@@ -27,14 +27,14 @@ import { TransferItem } from './item';
           <li *ngIf="!item._hiden" (click)="_handleSelect(item)" class="ant-transfer-list-content-item">
             <label nz-checkbox [ngModel]="item.checked" [nzDisabled]="item.disabled">
               <span>
-                <ng-container *ngIf="!render; else renderContainer">{{item.title}}</ng-container>
+                <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
                 <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
               </span>
             </label>
           </li>
         </ng-container>
       </ul>
-      <div class="ant-transfer-list-body-not-found">{{notFoundContent}}</div>
+      <div class="ant-transfer-list-body-not-found">{{ notFoundContent }}</div>
     </div>
     <div *ngIf="footer" class="ant-transfer-list-footer">
         <ng-template [ngTemplateOutlet]="footer" [ngTemplateOutletContext]="{ $implicit: direction }"></ng-template>
@@ -66,15 +66,15 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
 
   @Input() searchPlaceholder: string;
   @Input() notFoundContent: string;
-  @Input() filterOption: (inputValue: any, item: any) => boolean;
+  @Input() filterOption: (inputValue: string, item: TransferItem) => boolean;
 
-  @Input() render: TemplateRef<any>;
-  @Input() footer: TemplateRef<any>;
+  @Input() render: TemplateRef<void>;
+  @Input() footer: TemplateRef<void>;
 
   // events
   @Output() handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() handleSelect: EventEmitter<any> = new EventEmitter<any>();
-  @Output() filterChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() handleSelect: EventEmitter<TransferItem> = new EventEmitter();
+  @Output() filterChange: EventEmitter<{ direction: string, value: string }> = new EventEmitter();
 
   // endregion
 
@@ -83,7 +83,7 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
   _prefixCls = 'ant-transfer-list';
   _classList: string[] = [];
 
-  _setClassMap() {
+  _setClassMap(): void {
     this._classList.forEach(cls => this._renderer.removeClass(this._el.nativeElement, cls));
 
     this._classList = [
@@ -105,7 +105,7 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
     shownCount: 0
   };
 
-  onHandleSelectAll(status: boolean) {
+  onHandleSelectAll(status: boolean): void {
     this.dataSource.forEach(item => {
       if (!item.disabled && !item._hiden) {
         item.checked = status;
@@ -118,7 +118,7 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
     this.handleSelectAll.emit(status);
   }
 
-  private updateCheckStatus() {
+  private updateCheckStatus(): void {
     const validCount = this.dataSource.filter(w => !w.disabled).length;
     this.stat.checkCount = this.dataSource.filter(w => w.checked && !w.disabled).length;
     this.stat.shownCount = this.dataSource.filter(w => !w._hiden).length;
@@ -130,7 +130,7 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
 
   // region: search
 
-  handleFilter(value: string) {
+  handleFilter(value: string): void {
     this.filter = value;
     this.dataSource.forEach(item => {
       item._hiden = value.length > 0 && !this.matchFilter(value, item);
@@ -139,11 +139,11 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
     this.filterChange.emit({ direction: this.direction, value });
   }
 
-  handleClear() {
+  handleClear(): void {
     this.handleFilter('');
   }
 
-  private matchFilter(text: string, item: TransferItem) {
+  private matchFilter(text: string, item: TransferItem): boolean {
     if (this.filterOption) {
       return this.filterOption(text, item);
     }
@@ -163,7 +163,7 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._setClassMap();
   }
 
@@ -174,7 +174,7 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
     }
   }
 
-  _handleSelect(item: TransferItem) {
+  _handleSelect(item: TransferItem): void {
     if (item.disabled) {
       return;
     }

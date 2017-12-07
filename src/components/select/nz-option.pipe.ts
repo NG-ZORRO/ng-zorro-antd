@@ -1,9 +1,11 @@
+/* tslint:disable:no-any */
 import { Pipe, PipeTransform } from '@angular/core';
-import { NzOptionComponent } from './nz-option.component'
+import { NzOptionComponent } from './nz-option.component';
 
 @Pipe({ name: 'nzOptionPipe' })
 export class NzOptionPipe implements PipeTransform {
-  transform(options: NzOptionComponent[], value: any) {
+  // TODO: enable type checking for this method
+  transform(options: NzOptionComponent[], value: any): any {
     if (value.searchText) {
       let _options = options.filter(option => option.nzLabel && (option.nzLabel.toLowerCase().indexOf(value.searchText.toLowerCase()) !== -1));
       if (value.tags) {
@@ -19,7 +21,8 @@ export class NzOptionPipe implements PipeTransform {
           _disabled : value.disabled,
           nzLabel   : value.notFoundContent,
           _label    : value.notFoundContent,
-        } as any as NzOptionComponent ]
+        } as any as NzOptionComponent
+      ];
       }
     } else {
       return options;

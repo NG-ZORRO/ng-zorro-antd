@@ -1,19 +1,19 @@
 import {
   Component,
-  HostListener,
-  OnInit,
-  ViewEncapsulation,
-  Input,
   ElementRef,
-  ViewChild,
+  HostListener,
+  Input,
   OnDestroy,
-  TemplateRef
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 
-import { NzModalSubject } from './nz-modal-subject.service';
-import nzGlobalMonitor from '../util/nz-global-monitor';
-import { toBoolean } from '../util/convert';
 import { NzLocaleService } from '../locale/index';
+import { toBoolean } from '../util/convert';
+import nzGlobalMonitor from '../util/nz-global-monitor';
+import { NzModalSubject } from './nz-modal-subject.service';
 
 interface Position {
   x: number;
@@ -87,9 +87,9 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
   _zIndex = 1000;
   _iconTypeCls = 'anticon anticon-question-circle';
   _title = '';
-  _titleTpl: TemplateRef<any>;
+  _titleTpl: TemplateRef<void>;
   _content = '';
-  _contentTpl: TemplateRef<any>;
+  _contentTpl: TemplateRef<void>;
   _okText = this._locale.translate('Modal.understood');
   _cancelText = '';
   _animationStatus = '';
@@ -127,7 +127,7 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
   }
 
   @Input()
-  set nzWidth(value: any) {
+  set nzWidth(value: number | string) {
     this._width = typeof value === 'number' ? value + 'px' : value;
   }
 
@@ -137,25 +137,26 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
   }
 
   @Input()
-  set nzZIndex(value: any) {
+  set nzZIndex(value: number) {
     this._zIndex = value;
   }
 
   @Input()
-  set nzTitle(value: string | TemplateRef<any>) {
+  set nzTitle(value: string | TemplateRef<void>) {
+    // TODO: should guard for string instead, all types are theoretically structural
     if (value instanceof TemplateRef) {
       this._titleTpl = value;
     } else {
-      this._title = <string>value;
+      this._title = value;
     }
   }
 
   @Input()
-  set nzContent(value: string | TemplateRef<any>) {
+  set nzContent(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
       this._contentTpl = value;
     } else {
-      this._content = <string>value;
+      this._content = value;
     }
   }
 
@@ -194,18 +195,18 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('keydown.esc', [ '$event' ])
-  onEsc(e): void {
+  onEsc(e: KeyboardEvent): void {
     if (this._maskClosable) {
       this.subject.next('onCancel');
     }
   }
 
   @HostListener('keydown.enter', [ '$event' ])
-  onEnter(e): void {
+  onEnter(e: KeyboardEvent): void {
     this.subject.next('onOk');
   }
 
-  setStyles(origin?): void {
+  setStyles(origin?: { x: number, y: number }): void {
     const el = this.contentEl.nativeElement;
     const transformOrigin = origin ? `${origin.x - el.offsetLeft}px ${origin.y - el.offsetTop}px 0px` : '';
 
@@ -236,7 +237,7 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
     };
   }
 
-  anmiateFade(status): void {
+  anmiateFade(status: string): void {
     this._animationStatus = status;
     this.setClassMap();
     setTimeout(_ => {
@@ -251,23 +252,22 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
     }, 200);
   }
 
-  closeFromMask(e): void {
-    if (this._maskClosable && e.target.getAttribute('role') === 'dialog') {
+  closeFromMask(e: MouseEvent): void {
+    if (this._maskClosable && (e.target as HTMLElement).getAttribute('role') === 'dialog') {
       this.subject.next('onCancel');
     }
   }
-
 
   constructor(public subject: NzModalSubject, private _locale: NzLocaleService) {
   }
 
   // 通过createComponent方法创建component时，ngOnInit不会被触发
-  ngOnInit() {
+  ngOnInit(): void {
     this.setClassMap();
     this.setStyles();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this._visible) {
       nzGlobalMonitor.setDocumentOverflowHidden(false);
     }

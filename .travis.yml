@@ -10,6 +10,7 @@ branches:
 env:
   - TASK=build
   - TASK=test
+  - TASK=lint
   - TASK=integration-cli
   - TASK=integration-webpack
   - TASK=integration-rollup

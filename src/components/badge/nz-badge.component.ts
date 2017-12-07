@@ -1,18 +1,18 @@
 import {
   Component,
-  OnInit,
-  ViewEncapsulation,
-  Input,
-  HostBinding,
   ContentChild,
-  TemplateRef
+  HostBinding,
+  Input,
+  OnInit,
+  TemplateRef,
+  ViewEncapsulation,
 } from '@angular/core';
 
 import {
-  trigger,
+  animate,
   style,
   transition,
-  animate
+  trigger,
 } from '@angular/animations';
 
 import { toBoolean } from '../util/convert';
@@ -35,7 +35,7 @@ import { toBoolean } from '../util/convert';
   template     : `
     <ng-template *ngIf="content" [ngTemplateOutlet]="content"></ng-template>
     <span class="ant-badge-status-dot ant-badge-status-{{nzStatus}}" *ngIf="nzStatus"></span>
-    <span class="ant-badge-status-text" *ngIf="nzText">{{nzText}}</span>
+    <span class="ant-badge-status-text" *ngIf="nzText">{{ nzText }}</span>
     <sup [@enterLeave]
          [ngStyle]="nzStyle"
          *ngIf="(nzDot)||(nzCount>0)||((nzCount==0)&&nzShowZero)"
@@ -53,7 +53,7 @@ import { toBoolean } from '../util/convert';
           <p *ngFor="let p of countSingleArray" [class.current]="p==countArray[i]">{{p}}</p>
         </ng-template>
         </span></ng-template>
-      <ng-template [ngIf]="nzCount>nzOverflowCount">{{nzOverflowCount}}+</ng-template>
+      <ng-template [ngIf]="nzCount>nzOverflowCount">{{ nzOverflowCount }}+</ng-template>
     </sup>
   `,
   styleUrls    : [
@@ -71,10 +71,10 @@ export class NzBadgeComponent implements OnInit {
   maxNumberArray;
   countArray = [];
   countSingleArray = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
-  @ContentChild('content') content: TemplateRef<any>;
+  @ContentChild('content') content: TemplateRef<void>;
 
   @HostBinding('class.ant-badge-not-a-wrapper')
-  get setNoWrapper() {
+  get setNoWrapper(): boolean {
     return !this.content;
   }
 
@@ -103,7 +103,7 @@ export class NzBadgeComponent implements OnInit {
   @Input() @HostBinding('class.ant-badge-status') nzStatus: string;
 
   @Input()
-  set nzCount(value) {
+  set nzCount(value: number) {
     if (value < 0) {
       this.count = 0;
     } else {
@@ -112,14 +112,11 @@ export class NzBadgeComponent implements OnInit {
     this.countArray = this.count.toString().split('');
   }
 
-  get nzCount() {
+  get nzCount(): number {
     return this.count;
   }
 
-  constructor() {
-  }
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.maxNumberArray = this.nzOverflowCount.toString().split('');
   }
 }

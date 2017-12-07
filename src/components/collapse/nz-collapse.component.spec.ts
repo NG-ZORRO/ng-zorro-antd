@@ -1,11 +1,10 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {NzCollapsesetComponent} from './nz-collapseset.component';
-import {NzCollapseComponent} from './nz-collapse.component';
+import { NzCollapseComponent } from './nz-collapse.component';
+import { NzCollapsesetComponent } from './nz-collapseset.component';
 
 describe('My First Test', () => {
-  it('should get "Hello Taobao"', () => {
-  });
+  it('should get "Hello Taobao"', () => null);
 });
 
 describe('NzCollapsesetComponent', () => {

@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation, AfterContentInit, ElementRef, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 
 export type NzButtonGroupSize = 'small' | 'large' | 'default' ;
 
@@ -35,12 +35,12 @@ export class NzButtonGroupComponent implements AfterContentInit {
     };
   }
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     /** trim text node between button */
     Array.from(this._groupWrapper.nativeElement.childNodes).forEach((node: HTMLElement) => {
       if (node.nodeType === 3) {
         this._groupWrapper.nativeElement.removeChild(node);
       }
-    })
+    });
   }
 }

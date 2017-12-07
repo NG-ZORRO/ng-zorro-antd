@@ -1,27 +1,28 @@
+import { DOCUMENT } from '@angular/common';
 import {
   Component,
-  ViewEncapsulation,
-  Input,
+  ElementRef,
   EventEmitter,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
   Output,
   Renderer2,
-  OnDestroy,
   ViewChild,
-  ElementRef,
-  Inject, OnInit
+  ViewEncapsulation,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { throttleTime } from 'rxjs/operators/throttleTime';
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 import { Subscription } from 'rxjs/Subscription';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
+import { throttleTime } from 'rxjs/operators/throttleTime';
 
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
 import { NzAnchorLinkComponent } from './nz-anchor-link.component';
 
 interface Section {
-  comp: NzAnchorLinkComponent,
-  top: number
+  comp: NzAnchorLinkComponent;
+  top: number;
 }
 
 @Component({
@@ -48,6 +49,7 @@ export class NzAnchorComponent implements OnDestroy, OnInit {
   private scroll$: Subscription = null;
   private target: Element = null;
   private animating = false;
+  private doc: Document;
 
   @ViewChild('container')
   private container: ElementRef;
@@ -70,7 +72,9 @@ export class NzAnchorComponent implements OnDestroy, OnInit {
 
   @Output() nzScroll: EventEmitter<NzAnchorLinkComponent> = new EventEmitter();
 
-  constructor(private scrollSrv: NzScrollService, private _renderer: Renderer2, @Inject(DOCUMENT) private doc: any) {
+  /* tslint:disable-next-line:no-any */
+  constructor(private scrollSrv: NzScrollService, private _renderer: Renderer2, @Inject(DOCUMENT) doc: any) {
+    this.doc = doc;
   }
 
   ngOnInit(): void {
@@ -83,7 +87,7 @@ export class NzAnchorComponent implements OnDestroy, OnInit {
     return this.target || window;
   }
 
-  private handleScroll() {
+  private handleScroll(): void {
     if (this.animating) {
       return;
     }
@@ -97,7 +101,7 @@ export class NzAnchorComponent implements OnDestroy, OnInit {
         sections.push({
           top,
           comp
-        })
+        });
       }
     });
 
@@ -115,13 +119,13 @@ export class NzAnchorComponent implements OnDestroy, OnInit {
     this.nzScroll.emit(maxSection.comp);
   }
 
-  private removeListen() {
+  private removeListen(): void {
     if (this.scroll$) {
       this.scroll$.unsubscribe();
     }
   }
 
-  private registerScrollEvent() {
+  private registerScrollEvent(): void {
     this.removeListen();
     // 由于页面刷新时滚动条位置的记忆
     // 倒置在dom未渲染完成，导致计算不正确（500ms用于延后执行解决）
@@ -134,12 +138,12 @@ export class NzAnchorComponent implements OnDestroy, OnInit {
       });
   }
 
-  add(linkComp: NzAnchorLinkComponent) {
+  add(linkComp: NzAnchorLinkComponent): void {
     this.links.push(linkComp);
   }
 
   /** 设置滚动条至 `linkComp` 所处位置 */
-  scrollTo(linkComp: NzAnchorLinkComponent) {
+  scrollTo(linkComp: NzAnchorLinkComponent): void {
     const el = this.doc.querySelector(linkComp.nzHref);
     if (!el) {
       return;

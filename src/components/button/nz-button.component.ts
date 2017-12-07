@@ -1,11 +1,11 @@
 import {
+  AfterContentInit,
   Component,
-  ViewEncapsulation,
-  Input,
   ElementRef,
   HostListener,
-  AfterContentInit,
-  Renderer2
+  Input,
+  Renderer2,
+  ViewEncapsulation,
 } from '@angular/core';
 import { toBoolean } from '../util/convert';
 
@@ -33,7 +33,7 @@ export class NzButtonComponent implements AfterContentInit {
   _type: NzButtonType;
   _shape: NzButtonShape;
   _size: NzButtonSize;
-  _classList: Array<string> = [];
+  _classList: string[] = [];
   _iconOnly = false;
   _clicked = false;
   _prefixCls = 'ant-btn';
@@ -92,7 +92,7 @@ export class NzButtonComponent implements AfterContentInit {
 
   /** toggle button clicked animation */
   @HostListener('click')
-  _onClick() {
+  _onClick(): void {
     this._clicked = true;
     this._setClassMap();
     setTimeout(() => {
@@ -101,20 +101,18 @@ export class NzButtonComponent implements AfterContentInit {
     }, 300);
   }
 
-
-  _setIconDisplay(value: boolean) {
+  _setIconDisplay(value: boolean): void {
     const innerI = this._iconElement;
     if (innerI) {
       this._renderer.setStyle(innerI, 'display', value ? 'none' : 'inline-block');
     }
   }
 
-
   /** temp solution since no method add classMap to host https://github.com/angular/angular/issues/7289 */
   _setClassMap(): void {
     this._classList.forEach(_className => {
       this._renderer.removeClass(this._el, _className);
-    })
+    });
     this._classList = [
       this.nzType && `${this._prefixCls}-${this.nzType}`,
       this.nzShape && `${this._prefixCls}-${this.nzShape}`,
@@ -128,7 +126,7 @@ export class NzButtonComponent implements AfterContentInit {
     });
     this._classList.forEach(_className => {
       this._renderer.addClass(this._el, _className);
-    })
+    });
   }
 
   constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
@@ -137,7 +135,7 @@ export class NzButtonComponent implements AfterContentInit {
     this._renderer.addClass(this._el, this._prefixCls);
   }
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     this._iconElement = this._innerIElement;
     /** check if host children only has i element */
     if (this._iconElement && this._el.children.length === 1 && (this._iconElement.isEqualNode(this._el.children[ 0 ]))) {
@@ -147,7 +145,7 @@ export class NzButtonComponent implements AfterContentInit {
     this._setIconDisplay(this.nzLoading);
   }
 
-  get _innerIElement() {
+  get _innerIElement(): HTMLElement {
     return this._el.querySelector('i');
   }
 }

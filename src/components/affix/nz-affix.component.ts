@@ -1,19 +1,19 @@
 import {
+  AfterViewInit,
   Component,
-  ViewEncapsulation,
-  OnInit,
-  Input,
-  EventEmitter,
-  Output,
-  OnDestroy,
-  ViewChild,
   ElementRef,
-  AfterViewInit
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
-import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-import { throttleTime } from 'rxjs/operators/throttleTime';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
+import { throttleTime } from 'rxjs/operators/throttleTime';
 
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
 
@@ -32,7 +32,7 @@ import { NzScrollService } from '../core/scroll/nz-scroll.service';
 export class NzAffixComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private didScroll = false;
-  private scrollTime: any = null;
+  private scrollTime: number = null;
   private scroll$: Subscription = null;
   private scrollWinInTarget$: Subscription = null;
   private target: Element = null;
@@ -54,8 +54,7 @@ export class NzAffixComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Output() nzChange: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private scrollSrv: NzScrollService, private _el: ElementRef) {
-  }
+  constructor(private scrollSrv: NzScrollService, private _el: ElementRef) { }
 
   ngOnInit(): void {
     if (!this.scroll$) {
@@ -72,7 +71,7 @@ export class NzAffixComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.target || window;
   }
 
-  private reCalculate() {
+  private reCalculate(): this {
     const elOffset = this.scrollSrv.getOffset(this._el.nativeElement);
     this.orgOffset = {
       top : elOffset.top + this.scrollSrv.getScroll(this.getTarget()),
@@ -82,7 +81,7 @@ export class NzAffixComponent implements OnInit, OnDestroy, AfterViewInit {
     return this;
   }
 
-  private process() {
+  private process(): void {
     if (!this.orgOffset) {
       this.reCalculate();
     }
@@ -105,7 +104,7 @@ export class NzAffixComponent implements OnInit, OnDestroy, AfterViewInit {
     this.nzChange.emit(hasFixed);
   }
 
-  private removeListen() {
+  private removeListen(): void {
     if (this.scrollTime) {
       clearTimeout(this.scrollTime);
     }
@@ -117,10 +116,10 @@ export class NzAffixComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  private registerScrollEvent() {
+  private registerScrollEvent(): void {
     this.removeListen();
     this.reCalculate().process();
-    this.scrollTime = setInterval(() => {
+    this.scrollTime = window.setInterval(() => {
       if (this.didScroll) {
         this.didScroll = false;
         this.process();

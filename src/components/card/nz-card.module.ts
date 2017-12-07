@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { NzCardComponent } from './nz-card.component';
 import { NzCardGridDirective } from './nz-card-grid.directive';
+import { NzCardComponent } from './nz-card.component';
 
 @NgModule({
   imports     : [ CommonModule ],

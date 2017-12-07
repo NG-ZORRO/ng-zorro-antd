@@ -7,8 +7,8 @@ export interface NzRootConfig {
 
 export const NZ_ROOT_CONFIG = new InjectionToken<NzRootConfig>('NzRootConfig');
 
-export function createNzRootInitializer(document: Document, options?: NzRootConfig) {
-  return function nzRootInitializer() {
+export function createNzRootInitializer(document: Document, options?: NzRootConfig): () => void {
+  return function nzRootInitializer(): void {
     if (options) {
       const style = document.createElement('style');
       style.innerHTML = `
@@ -28,5 +28,5 @@ export function createNzRootInitializer(document: Document, options?: NzRootConf
       `;
       document.head.appendChild(style);
     }
-  }
+  };
 }

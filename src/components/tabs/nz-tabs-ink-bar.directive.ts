@@ -1,4 +1,4 @@
-import { Directive, Renderer2, ElementRef, NgZone, HostBinding, Input } from '@angular/core';
+import { Directive, ElementRef, HostBinding, Input, NgZone, Renderer2 } from '@angular/core';
 import { reqAnimFrame } from '../core/polyfill/request-animation';
 import { toBoolean } from '../util/convert';
 
@@ -30,7 +30,7 @@ export class NzTabsInkBarDirective {
               private _ngZone: NgZone) {
   }
 
-  alignToElement(element: HTMLElement) {
+  alignToElement(element: HTMLElement): void {
     this.show();
 
     this._ngZone.runOutsideAngular(() => {
@@ -58,7 +58,7 @@ export class NzTabsInkBarDirective {
     this._renderer.setStyle(this._elementRef.nativeElement, 'visibility', 'visible');
   }
 
-  setDisplay(value): void {
+  setDisplay(value: string): void {
     this._renderer.setStyle(this._elementRef.nativeElement, 'display', value);
   }
 

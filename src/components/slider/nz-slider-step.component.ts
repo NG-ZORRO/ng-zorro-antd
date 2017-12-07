@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { NzSliderMarksComponent, Marks } from './nz-slider-marks.component';
+import { Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { toBoolean } from '../util/convert';
+import { Marks, MarksArray, NzSliderMarksComponent } from './nz-slider-marks.component';
 
 @Component({
   selector     : 'nz-slider-step',
@@ -11,14 +11,14 @@ import { toBoolean } from '../util/convert';
     </div>
   `
 })
-export class NzSliderStepComponent implements OnInit, OnChanges {
+export class NzSliderStepComponent implements OnChanges {
   private _vertical = false;
   private _included = false;
 
   // Dynamic properties
   @Input() nzLowerBound: number = null;
   @Input() nzUpperBound: number = null;
-  @Input() nzMarksArray: any[];
+  @Input() nzMarksArray: MarksArray;
 
   // Static properties
   @Input() nzPrefixCls: string;
@@ -41,9 +41,10 @@ export class NzSliderStepComponent implements OnInit, OnChanges {
     return this._included;
   }
 
-  attrs;
+  // TODO: using named interface
+  attrs: Array<{ id: number, value: number, offset: number, classes: { [key: string]: boolean }, style: object }>;
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzMarksArray) {
       this.buildAttrs();
     }
@@ -52,20 +53,19 @@ export class NzSliderStepComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit() {}
-
-  trackById(index: number, attr) {
+  trackById(index: number, attr: { id: number, value: number, offset: number, classes: { [key: string]: boolean }, style: object }): number {
     return attr.id;
   }
 
-  buildAttrs() {
-    const orient = this.nzVertical ? 'bottom' : 'left', prefixCls = this.nzPrefixCls;
+  buildAttrs(): void {
+    const orient = this.nzVertical ? 'bottom' : 'left';
+    const prefixCls = this.nzPrefixCls;
     this.attrs = this.nzMarksArray.map(mark => {
       const { value, offset } = mark;
       return {
         id     : value,
-        value  : value,
-        offset : offset,
+        value,
+        offset,
         style  : {
           [orient]: `${offset}%`
         },
@@ -77,15 +77,13 @@ export class NzSliderStepComponent implements OnInit, OnChanges {
     });
   }
 
-  togglePointActive() {
-    const { nzPrefixCls, attrs, nzLowerBound, nzUpperBound, nzIncluded } = this;
-    if (attrs && nzLowerBound !== null && nzUpperBound !== null) {
-      attrs.forEach(attr => {
-        const
-          value    = attr.value,
-          isActive = (!nzIncluded && value === nzUpperBound) ||
-            (nzIncluded && value <= nzUpperBound && value >= nzLowerBound);
-        attr.classes[ `${nzPrefixCls}-dot-active` ] = isActive;
+  togglePointActive(): void {
+    if (this.attrs && this.nzLowerBound !== null && this.nzUpperBound !== null) {
+      this.attrs.forEach(attr => {
+        const value    = attr.value;
+        const isActive = (!this.nzIncluded && value === this.nzUpperBound) ||
+            (this.nzIncluded && value <= this.nzUpperBound && value >= this.nzLowerBound);
+        attr.classes[ `${this.nzPrefixCls}-dot-active` ] = isActive;
       });
     }
   }

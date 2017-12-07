@@ -1,30 +1,30 @@
 /* tslint:disable:no-unused-variable */
-import { async, fakeAsync, tick, ComponentFixture, TestBed, ComponentFixtureAutoDetect } from '@angular/core/testing';
 import { Component, DebugElement, ViewChild } from '@angular/core';
+import { async, fakeAsync, tick, ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzButtonModule } from './nz-button.module';
-import { NzButtonComponent } from './nz-button.component';
 import { NzButtonGroupComponent } from './nz-button-group.component';
+import { NzButtonComponent } from './nz-button.component';
+import { NzButtonModule } from './nz-button.module';
 
 describe('NzButton', () => {
   let testComponent;
   let fixture;
   let buttonDebugElement;
-  let fixtureGroup: ComponentFixture<TestAppGroup>;
+  let fixtureGroup: ComponentFixture<TestAppGroupComponent>;
   let groupDebugElement: DebugElement;
   let groupInstance: NzButtonGroupComponent;
-  let testComponentGroup: TestAppGroup;
+  let testComponentGroup: TestAppGroupComponent;
   describe('NzButton without disabled', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzButtonModule ],
-        declarations: [ TestApp ],
+        declarations: [ TestAppComponent ],
         providers   : []
       }).compileComponents();
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(TestApp);
+      fixture = TestBed.createComponent(TestAppComponent);
       testComponent = fixture.debugElement.componentInstance;
       buttonDebugElement = fixture.debugElement.query(By.css('button'));
     });
@@ -135,13 +135,13 @@ describe('NzButton', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzButtonModule ],
-        declarations: [ TestAppDisabled ],
+        declarations: [ TestAppDisabledComponent ],
         providers   : []
       }).compileComponents();
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(TestAppDisabled);
+      fixture = TestBed.createComponent(TestAppDisabledComponent);
       testComponent = fixture.debugElement.componentInstance;
       buttonDebugElement = fixture.debugElement.query(By.css('button'));
     });
@@ -156,13 +156,13 @@ describe('NzButton', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzButtonModule ],
-        declarations: [ TestAppGroup ],
+        declarations: [ TestAppGroupComponent ],
         providers   : []
       }).compileComponents();
     }));
 
     beforeEach(() => {
-      fixtureGroup = TestBed.createComponent(TestAppGroup);
+      fixtureGroup = TestBed.createComponent(TestAppGroupComponent);
       testComponentGroup = fixtureGroup.debugElement.componentInstance;
       groupDebugElement = fixtureGroup.debugElement.query(By.directive(NzButtonGroupComponent));
     });
@@ -188,26 +188,26 @@ describe('NzButton', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzButtonModule ],
-        declarations: [ TestAppLiteral ],
+        declarations: [ TestAppLiteralComponent ],
         providers   : []
       }).compileComponents();
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(TestAppLiteral);
+      fixture = TestBed.createComponent(TestAppLiteralComponent);
       testComponent = fixture.debugElement.componentInstance;
     });
 
     it('should treat empty attibutes as truthy', async(() => {
       fixture.detectChanges();
-      const component = testComponent as TestAppLiteral;
+      const component = testComponent as TestAppLiteralComponent;
       expect(component.truthyButton.nzLoading).toBe(true);
       expect(component.truthyButton.nzGhost).toBe(true);
     }));
 
     it('should treat non-exist attributes as falsy', async(() => {
       fixture.detectChanges();
-      const component = testComponent as TestAppLiteral;
+      const component = testComponent as TestAppLiteralComponent;
       expect(component.falsyButton.nzLoading).toBe(false);
       expect(component.falsyButton.nzGhost).toBe(false);
     }));
@@ -238,7 +238,7 @@ describe('NzButton', () => {
     </div>
   `
 })
-class TestApp {
+class TestAppComponent {
   type = 'primary';
   size = 'default';
   shape = 'circle';
@@ -250,9 +250,8 @@ class TestApp {
     setTimeout(_ => {
       this.isLoading = false;
     }, 5000);
-  };
+  }
 }
-
 
 @Component({
   selector: 'test-app-disabled',
@@ -262,19 +261,17 @@ class TestApp {
     </button>
   `
 })
-class TestAppDisabled {
+class TestAppDisabledComponent {
   type = 'primary';
   isLoading = false;
-
 
   clickButton = (value) => {
     this.isLoading = true;
     setTimeout(_ => {
       this.isLoading = false;
     }, 5000);
-  };
+  }
 }
-
 
 @Component({
   selector: 'test-app-group',
@@ -285,7 +282,7 @@ class TestAppDisabled {
     </nz-button-group>
   `
 })
-class TestAppGroup {
+class TestAppGroupComponent {
   size = 'small';
 }
 
@@ -296,7 +293,7 @@ class TestAppGroup {
     <button #falsy nz-button>Falsy</button>
   `
 })
-class TestAppLiteral {
-  @ViewChild('truthy') truthyButton: NzButtonComponent
-  @ViewChild('falsy') falsyButton: NzButtonComponent
+class TestAppLiteralComponent {
+  @ViewChild('truthy') truthyButton: NzButtonComponent;
+  @ViewChild('falsy') falsyButton: NzButtonComponent;
 }

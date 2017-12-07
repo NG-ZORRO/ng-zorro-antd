@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { toBoolean } from '../util/convert';
 
 @Component({
@@ -10,7 +10,7 @@ import { toBoolean } from '../util/convert';
     </div>
   `
 })
-export class NzSliderMarksComponent implements OnInit, OnChanges {
+export class NzSliderMarksComponent implements OnChanges {
   private _vertical = false;
   private _included = false;
 
@@ -42,9 +42,10 @@ export class NzSliderMarksComponent implements OnInit, OnChanges {
     return this._included;
   }
 
-  attrs; // points for inner use
+  // TODO: using named interface
+  attrs: Array<{ id: number, value: number, offset: number, classes: { [key: string]: boolean }, style: object, label: Mark }>; // points for inner use
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzMarksArray) {
       this.buildAttrs();
     }
@@ -53,33 +54,30 @@ export class NzSliderMarksComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit() {}
-
-  trackById(index: number, attr) {
+  trackById(index: number, attr: { id: number, value: number, offset: number, classes: { [key: string]: boolean }, style: object, label: Mark }): number {
     return attr.id;
   }
 
-  buildAttrs() {
-    const { nzVertical, nzClassName, nzMarksArray, nzMin, nzMax } = this;
-    const range = nzMax - nzMin;
-    this.attrs = nzMarksArray.map(mark => {
+  buildAttrs(): void {
+    const range = this.nzMax - this.nzMin;
+    this.attrs = this.nzMarksArray.map(mark => {
       const { value, offset, config } = mark;
       // calc styles
-      let label = config, style;
-      if (nzVertical) {
+      let label = config;
+      let style: object;
+      if (this.nzVertical) {
         style = {
           marginBottom: '-50%',
-          bottom      : `${(value - nzMin) / range * 100}%`
+          bottom      : `${(value - this.nzMin) / range * 100}%`
         };
       } else {
-        const
-          marksCount = nzMarksArray.length,
-          unit       = 100 / (marksCount - 1),
-          markWidth  = unit * 0.9;
+        const marksCount = this.nzMarksArray.length;
+        const unit       = 100 / (marksCount - 1);
+        const markWidth  = unit * 0.9;
         style = {
           width     : `${markWidth}%`,
           marginLeft: `${-markWidth / 2}%`,
-          left      : `${(value - nzMin) / range * 100}%`
+          left      : `${(value - this.nzMin) / range * 100}%`
         };
       }
       // custom configuration
@@ -91,26 +89,24 @@ export class NzSliderMarksComponent implements OnInit, OnChanges {
       }
       return {
         id     : value,
-        value  : value,
-        offset : offset,
+        value,
+        offset,
         classes: {
-          [`${nzClassName}-text`]: true
+          [`${this.nzClassName}-text`]: true
         },
-        style  : style,
-        label  : label
+        style,
+        label
       };
     }); // END - map
   }
 
-  togglePointActive() {
-    const { nzClassName, attrs, nzLowerBound, nzUpperBound, nzIncluded } = this;
-    if (attrs && nzLowerBound !== null && nzUpperBound !== null) {
-      attrs.forEach(attr => {
-        const
-          value    = attr.value,
-          isActive = (!nzIncluded && value === nzUpperBound) ||
-            (nzIncluded && value <= nzUpperBound && value >= nzLowerBound);
-        attr.classes[ `${nzClassName}-text-active` ] = isActive;
+  togglePointActive(): void {
+    if (this.attrs && this.nzLowerBound !== null && this.nzUpperBound !== null) {
+      this.attrs.forEach(attr => {
+        const value    = attr.value;
+        const isActive = (!this.nzIncluded && value === this.nzUpperBound) ||
+            (this.nzIncluded && value <= this.nzUpperBound && value >= this.nzLowerBound);
+        attr.classes[ `${this.nzClassName}-text-active` ] = isActive;
       });
     }
   }
@@ -120,7 +116,7 @@ export class NzSliderMarksComponent implements OnInit, OnChanges {
 // DEFINITIONS
 
 export type Mark = string | {
-  style: Object;
+  style: object;
   label: string;
 };
 
@@ -128,7 +124,8 @@ export class Marks {
   number: Mark;
 }
 
-export class MarksArray extends Array<any> {
+// TODO: extends Array could cause unexpected behavior when targeting es5 or below
+export class MarksArray extends Array<{ value: number, offset: number, config: Mark }> {
   [index: number]: {
     value: number;
     offset: number;

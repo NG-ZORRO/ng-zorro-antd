@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { NzRowComponent } from './nz-row.component';
-import { NzColDirective } from './nz-col.directive';
-import { NzColComponent } from './nz-col.component';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { NzColComponent } from './nz-col.component';
+import { NzColDirective } from './nz-col.directive';
+import { NzRowComponent } from './nz-row.component';
 
 @NgModule({
   declarations: [ NzRowComponent, NzColDirective, NzColComponent ],

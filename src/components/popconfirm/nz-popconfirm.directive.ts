@@ -1,12 +1,12 @@
 import {
+  ComponentFactoryResolver,
   Directive,
   ElementRef,
+  Renderer2,
   ViewContainerRef,
-  ComponentFactoryResolver,
-  Renderer2
 } from '@angular/core';
-import { NzPopconfirmComponent } from './nz-popconfirm.component';
 import { NzTooltipDirective } from '../tooltip/nz-tooltip.directive';
+import { NzPopconfirmComponent } from './nz-popconfirm.component';
 
 @Directive({
   selector: '[nz-popconfirm]',

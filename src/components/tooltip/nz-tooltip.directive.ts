@@ -1,14 +1,14 @@
 import {
-  Directive,
-  Input,
-  SimpleChanges,
   AfterViewInit,
-  ViewContainerRef,
   ComponentFactoryResolver,
+  Directive,
   ElementRef,
   HostBinding,
+  Input,
   Optional,
-  Renderer2
+  Renderer2,
+  SimpleChanges,
+  ViewContainerRef,
 } from '@angular/core';
 import { NzToolTipComponent } from './nz-tooltip.component';
 
@@ -25,7 +25,7 @@ export class NzTooltipDirective implements AfterViewInit {
     }
   }
 
-  get nzTitle() {
+  get nzTitle(): string {
     return this.tooltip.nzTitle;
   }
 
@@ -40,17 +40,18 @@ export class NzTooltipDirective implements AfterViewInit {
       private resolver: ComponentFactoryResolver,
       private renderer: Renderer2,
       @Optional() tooltip: NzToolTipComponent) {
+    let normalizedTooltip: NzToolTipComponent = tooltip;
     // Support faster tooltip mode: <a nz-tooltip="xxx"></a>. [NOTE] Used only under NzTooltipDirective currently.
-    if (!tooltip) {
+    if (!normalizedTooltip) {
       const factory = this.resolver.resolveComponentFactory(NzToolTipComponent);
-      tooltip = this.hostView.createComponent(factory).instance;
+      normalizedTooltip = this.hostView.createComponent(factory).instance;
       this.isDynamicTooltip = true;
     }
-    tooltip.setOverlayOrigin(this);
-    this.tooltip = tooltip;
+    normalizedTooltip.setOverlayOrigin(this);
+    this.tooltip = normalizedTooltip;
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     if (this.tooltip.nzTrigger === 'hover') {
       this.renderer.listen(this.elementRef.nativeElement, 'mouseenter', () => this.show());
       this.renderer.listen(this.elementRef.nativeElement, 'mouseleave', () => this.hide());
@@ -60,17 +61,17 @@ export class NzTooltipDirective implements AfterViewInit {
     } else if (this.tooltip.nzTrigger === 'click') {
       this.renderer.listen(this.elementRef.nativeElement, 'click', (e) => {
         e.preventDefault();
-        this.show()
+        this.show();
       });
     }
   }
 
-  private show() {
+  private show(): void {
     this.tooltip.show();
     this.isTooltipOpen = true;
   }
 
-  private hide() {
+  private hide(): void {
     this.tooltip.hide();
     this.isTooltipOpen = false;
   }

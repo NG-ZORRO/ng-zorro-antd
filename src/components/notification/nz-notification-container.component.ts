@@ -1,6 +1,6 @@
-import { Optional, Inject, Component, ViewEncapsulation } from '@angular/core';
-import { NZ_NOTIFICATION_DEFAULT_CONFIG, NZ_NOTIFICATION_CONFIG, NzNotificationConfig } from './nz-notification-config';
+import { Component, Inject, Optional, ViewEncapsulation } from '@angular/core';
 import { NzMessageContainerComponent } from '../message/nz-message-container.component';
+import { NzNotificationConfig, NZ_NOTIFICATION_CONFIG, NZ_NOTIFICATION_DEFAULT_CONFIG } from './nz-notification-config';
 
 @Component({
   selector     : 'nz-notification-container',

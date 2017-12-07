@@ -1,17 +1,16 @@
 import {
   Component,
-  OnInit,
-  ViewEncapsulation,
-  Input,
   ElementRef,
-  Renderer2,
+  HostBinding,
   HostListener,
-  HostBinding
+  Input,
+  OnInit,
+  Renderer2,
+  ViewEncapsulation,
 } from '@angular/core';
 
-import { NzRadioGroupComponent } from './nz-radio-group.component';
 import { toBoolean } from '../util/convert';
-
+import { NzRadioGroupComponent } from './nz-radio-group.component';
 
 @Component({
   selector     : '[nz-radio]',
@@ -49,7 +48,6 @@ export class NzRadioComponent implements OnInit {
     return this._checked;
   }
 
-
   @Input()
   get nzValue(): string {
     return this._value;
@@ -61,7 +59,6 @@ export class NzRadioComponent implements OnInit {
     }
     this._value = value;
   }
-
 
   @Input()
   @HostBinding('class.ant-radio-wrapper-disabled')
@@ -75,7 +72,7 @@ export class NzRadioComponent implements OnInit {
   }
 
   @HostListener('click', [ '$event' ])
-  onClick(e) {
+  onClick(e: MouseEvent): void {
     e.preventDefault();
     if (!this._disabled) {
       this._checked = true;
@@ -84,12 +81,12 @@ export class NzRadioComponent implements OnInit {
     }
   }
 
-  nzFocus() {
+  nzFocus(): void {
     this._focused = true;
     this.setClassMap();
   }
 
-  nzBlur() {
+  nzBlur(): void {
     this._focused = false;
     this.setClassMap();
     this._nzRadioGroup.onTouched();
@@ -108,7 +105,7 @@ export class NzRadioComponent implements OnInit {
     this._el = this._elementRef.nativeElement;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._nzRadioGroup.addRadio(this);
     this._renderer.addClass(this._el, `${this._prefixCls}-wrapper`);
     this.setClassMap();

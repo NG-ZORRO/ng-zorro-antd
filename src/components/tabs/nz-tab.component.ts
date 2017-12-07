@@ -1,15 +1,17 @@
-import { NzTabSetComponent } from './nz-tabset.component';
 import {
   Component,
-  HostBinding,
   ContentChild,
-  Output,
   EventEmitter,
-  TemplateRef,
+  HostBinding,
   Input,
-  ViewChild, OnDestroy, OnInit
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { toBoolean } from '../util/convert';
+import { NzTabSetComponent } from './nz-tabset.component';
 
 @Component({
   selector: 'nz-tab',
@@ -41,21 +43,21 @@ export class NzTabComponent implements OnDestroy, OnInit {
   @Output() nzSelect = new EventEmitter();
   @Output() nzClick = new EventEmitter();
   @Output() nzDeselect = new EventEmitter();
-  @ContentChild('nzTabHeading') _tabHeading: TemplateRef<any>;
-  @ViewChild(TemplateRef) _content: TemplateRef<any>;
+  @ContentChild('nzTabHeading') _tabHeading: TemplateRef<void>;
+  @ViewChild(TemplateRef) _content: TemplateRef<void>;
 
-  get content(): TemplateRef<any> | null {
+  get content(): TemplateRef<void> | null {
     return this._content;
   }
 
   constructor(private nzTabSetComponent: NzTabSetComponent) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.nzTabSetComponent._tabs.push(this);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.nzTabSetComponent._tabs.splice(this.nzTabSetComponent._tabs.indexOf(this), 1);
   }
 
