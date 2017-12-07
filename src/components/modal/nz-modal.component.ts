@@ -1,26 +1,26 @@
 import {
-  Component,
-  HostListener,
-  OnInit,
-  ViewEncapsulation,
-  Input,
-  Output,
-  EventEmitter,
-  ElementRef,
-  ViewChild,
-  OnDestroy,
-  TemplateRef,
-  ComponentFactory,
   AfterViewInit,
-  ViewContainerRef,
+  Component,
+  ComponentFactory,
   ComponentRef,
+  ElementRef,
+  EventEmitter,
+  HostListener,
   Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
+  ViewEncapsulation,
 } from '@angular/core';
 
-import { NzModalSubject } from './nz-modal-subject.service';
-import nzGlobalMonitor from '../util/nz-global-monitor';
-import { toBoolean } from '../util/convert';
 import { NzLocaleService } from '../locale/index';
+import { toBoolean } from '../util/convert';
+import nzGlobalMonitor from '../util/nz-global-monitor';
+import { NzModalSubject } from './nz-modal-subject.service';
 
 interface Position {
   x: number;
@@ -94,18 +94,18 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
   _width = '520px';
   _zIndex = 1000;
   _title = '';
-  _titleTpl: TemplateRef<any>;
+  _titleTpl: TemplateRef<void>;
   _content = '';
-  _contentTpl: TemplateRef<any>;
-  _footerTpl: TemplateRef<any>;
+  _contentTpl: TemplateRef<void>;
+  _footerTpl: TemplateRef<void>;
   _okText = this._locale.translate('Modal.okText');
   _cancelText = this._locale.translate('Modal.cancelText');
-  _style: any = {};
+  _style: object = {};
   _wrapClass = `${this._prefixCls}-wrap`;
   _customClass = '';
   _animationStatus = '';
-  _bodyComponent: ComponentFactory<any>;
-  _componentParams: Object = {};
+  _bodyComponent: ComponentFactory<void>;
+  _componentParams: object = {};
   modalId = `nzModal${nzGlobalMonitor.getGlobalCount()}`;
   @ViewChild('modal_content') contentEl: ElementRef;
   @ViewChild('modal_component', { read: ViewContainerRef }) bodyEl: ViewContainerRef;
@@ -156,30 +156,31 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   @Input()
-  set nzWidth(value: any) {
+  set nzWidth(value: string | number) {
     this._width = typeof value === 'number' ? value + 'px' : value;
   }
 
   @Input()
-  set nzZIndex(value: any) {
+  set nzZIndex(value: number) {
     this._zIndex = value;
   }
 
   @Input()
-  set nzTitle(value: string | TemplateRef<any>) {
+  set nzTitle(value: string | TemplateRef<void>) {
+    // TODO: should guard for string instead, all types are theoretically structural
     if (value instanceof TemplateRef) {
       this._titleTpl = value;
     } else {
-      this._title = <string>value;
+      this._title = value;
     }
   }
 
   @Input()
-  set nzContent(value: string | TemplateRef<any> | ComponentFactory<any>) {
+  set nzContent(value: string | TemplateRef<void> | ComponentFactory<void>) {
     if (value instanceof ComponentFactory) {
       // 如果容器对象已存在，则直接渲染，如果不存在，则设置到_bodyComponent，在ngAfterViewInit中执行
       if (this.bodyEl) {
-        const compRef: ComponentRef<any> = this.bodyEl.createComponent(value, null, this._vcr.injector);
+        const compRef: ComponentRef<void> = this.bodyEl.createComponent(value, null, this._vcr.injector);
         Object.assign(compRef.instance, this._componentParams);
       } else {
         this._bodyComponent = value;
@@ -187,12 +188,12 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
     } else if (value instanceof TemplateRef) {
       this._contentTpl = value;
     } else {
-      this._content = <string>value;
+      this._content = value;
     }
   }
 
   @Input()
-  set nzFooter(value: TemplateRef<any> | boolean) {
+  set nzFooter(value: TemplateRef<void> | boolean) {
     if (value instanceof TemplateRef) {
       this._footerTpl = value;
     } else {
@@ -216,7 +217,7 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   @Input()
-  set nzStyle(value: Object) {
+  set nzStyle(value: object) {
     this._style = value;
   }
 
@@ -228,33 +229,37 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   @Input()
-  set nzComponentParams(value: Object) {
+  set nzComponentParams(value: object) {
     this._componentParams = value;
   }
 
-
   @Output()
-  nzVisibleChange: EventEmitter<any> = new EventEmitter();
+  nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
   @Output()
-  nzOnOk: EventEmitter<any> = new EventEmitter();
+  nzOnOk: EventEmitter<MouseEvent> = new EventEmitter();
+  // TODO: reconsider the payload type
   @Output()
-  nzOnCancel: EventEmitter<any> = new EventEmitter();
+  nzOnCancel: EventEmitter<MouseEvent | KeyboardEvent> = new EventEmitter();
 
   @HostListener('keydown.esc', [ '$event' ])
-  onEsc(e): void {
+  onEsc(e: KeyboardEvent): void {
     if (this._maskClosable) {
       this.clickCancel(e);
     }
   }
 
-  setStyles(origin?): void {
+  setStyles(origin?: { x: number, y: number }): void {
     const el = this.contentEl.nativeElement;
     const transformOrigin = origin ? `${origin.x - el.offsetLeft}px ${origin.y - el.offsetTop}px 0px` : '';
 
-    this._bodyStyleMap = Object.assign({
-      'width'           : this._width,
-      'transform-origin': transformOrigin
-    }, this._style);
+    // TODO: spread on literal has been disallow on latest proposal
+    this._bodyStyleMap = {
+      ...{
+        'width'           : this._width,
+        'transform-origin': transformOrigin
+      },
+      ...this._style
+    };
   }
 
   setClassMap(): void {
@@ -276,7 +281,7 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
 
-  anmiateFade(status): void {
+  anmiateFade(status: string): void {
     this._animationStatus = status;
     this.setClassMap();
     setTimeout(_ => {
@@ -291,8 +296,8 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
     }, 200);
   }
 
-  closeFromMask(e): void {
-    if (this._maskClosable && e.target.getAttribute('role') === 'dialog') {
+  closeFromMask(e: MouseEvent): void {
+    if (this._maskClosable && (e.target as HTMLElement).getAttribute('role') === 'dialog') {
       this.clickCancel(e);
     }
   }
@@ -309,7 +314,7 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
     this.nzVisible = false;
   }
 
-  clickOk(e): void {
+  clickOk(e: MouseEvent): void {
     if (this.nzOnOk) {
       this.nzOnOk.emit(e);
     } else {
@@ -318,7 +323,7 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subject.next('onOk');
   }
 
-  clickCancel(e): void {
+  clickCancel(e: MouseEvent | KeyboardEvent): void {
     this.nzOnCancel.emit(e);
     this.subject.next('onCancel');
   }
@@ -329,19 +334,19 @@ export class NzModalComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subject.modalId = this.modalId;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.setClassMap();
     this.setStyles();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     if (this._bodyComponent) {
-      const compRef: ComponentRef<any> = this.bodyEl.createComponent(this._bodyComponent, null, this._vcr.injector);
+      const compRef: ComponentRef<void> = this.bodyEl.createComponent(this._bodyComponent, null, this._vcr.injector);
       Object.assign(compRef.instance, this._componentParams);
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this._visible) {
       nzGlobalMonitor.setDocumentOverflowHidden(false);
     }

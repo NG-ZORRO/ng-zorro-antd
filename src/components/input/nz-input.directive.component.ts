@@ -1,13 +1,13 @@
 import {
   Component,
-  HostBinding,
-  ViewEncapsulation,
-  Renderer2,
   ElementRef,
-  Input
+  HostBinding,
+  Input,
+  Renderer2,
+  ViewEncapsulation,
 } from '@angular/core';
-import { AutoSizeType } from './nz-input.component';
 import { toBoolean } from '../util/convert';
+import { AutoSizeType } from './nz-input.component';
 
 @Component({
   selector     : '[nz-input]',
@@ -73,7 +73,7 @@ export class NzInputDirectiveComponent {
     if (typeof value === 'string') {
       this._autosize = true;
     } else {
-      this._autosize = <boolean | AutoSizeType>value;
+      this._autosize = value;
     }
 
     if (this._autosize) {
@@ -83,7 +83,7 @@ export class NzInputDirectiveComponent {
     }
   }
 
-  get nzAutosize() {
+  get nzAutosize(): string | boolean | AutoSizeType {
     return this._autosize;
   }
 
@@ -91,7 +91,6 @@ export class NzInputDirectiveComponent {
   get setLgClass(): boolean {
     return this.size === 'lg';
   }
-
 
   @HostBinding(`class.ant-input-sm`)
   get setSmClass(): boolean {

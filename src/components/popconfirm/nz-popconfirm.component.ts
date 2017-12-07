@@ -1,21 +1,21 @@
 import {
+  ChangeDetectorRef,
   Component,
-  ViewEncapsulation,
+  EventEmitter,
   Input,
   Output,
-  EventEmitter,
-  ChangeDetectorRef,
+  ViewEncapsulation,
 } from '@angular/core';
-import { FadeAnimation } from '../core/animation/fade-animations';
+import { fadeAnimation } from '../core/animation/fade-animations';
+import { NzLocaleService } from '../locale/index';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 import { toBoolean } from '../util/convert';
-import { NzLocaleService } from '../locale/index';
 
 @Component({
   selector     : 'nz-popconfirm',
   encapsulation: ViewEncapsulation.None,
   animations   : [
-    FadeAnimation
+    fadeAnimation
   ],
   template     : `
     <ng-content></ng-content>
@@ -37,12 +37,12 @@ import { NzLocaleService } from '../locale/index';
               <div class="ant-popover-inner-content">
                 <div class="ant-popover-message" *ngIf="!nzTemplate">
                   <i class="anticon anticon-exclamation-circle"></i>
-                  <div class="ant-popover-message-title">{{nzTitle}}</div>
+                  <div class="ant-popover-message-title">{{ nzTitle }}</div>
                 </div>
                 <div class="ant-popover-buttons" *ngIf="!nzTemplate">
-                  <button nz-button [nzSize]="'small'" (click)="onCancel()"><span>{{nzCancelText}}</span></button>
+                  <button nz-button [nzSize]="'small'" (click)="onCancel()"><span>{{ nzCancelText }}</span></button>
                   <button nz-button [nzSize]="'small'" [nzType]="'primary'" (click)="onConfirm()">
-                    <span>{{nzOkText}}</span></button>
+                    <span>{{ nzOkText }}</span></button>
                 </div>
                 <ng-template
                   *ngIf="nzTemplate"
@@ -72,12 +72,12 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
     this._condition = toBoolean(value);
   }
 
-  get nzCondition() {
+  get nzCondition(): boolean {
     return this._condition;
   }
 
-  @Output() nzOnCancel: EventEmitter<any> = new EventEmitter();
-  @Output() nzOnConfirm: EventEmitter<any> = new EventEmitter();
+  @Output() nzOnCancel: EventEmitter<void> = new EventEmitter();
+  @Output() nzOnConfirm: EventEmitter<void> = new EventEmitter();
 
   constructor(cdr: ChangeDetectorRef, private _locale: NzLocaleService) {
     super(cdr);
@@ -91,12 +91,12 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
     }
   }
 
-  onCancel() {
+  onCancel(): void {
     this.nzOnCancel.emit();
     this.nzVisible = false;
   }
 
-  onConfirm() {
+  onConfirm(): void {
     this.nzOnConfirm.emit();
     this.nzVisible = false;
   }

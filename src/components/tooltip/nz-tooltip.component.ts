@@ -1,34 +1,35 @@
 import {
-  Component,
-  ViewEncapsulation,
-  Input,
-  TemplateRef,
-  Output,
-  EventEmitter,
+  AnimationEvent,
+} from '@angular/animations';
+import {
+  ConnectedOverlayDirective,
+  ConnectedOverlayPositionChange,
+  ConnectionPositionPair,
+  OverlayOrigin,
+} from '@angular/cdk/overlay';
+import {
   AfterViewInit,
   ChangeDetectorRef,
+  Component,
   ContentChild,
-  ViewChild
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import {
-  AnimationEvent,
-} from '@angular/animations';
-import { FadeAnimation } from '../core/animation/fade-animations';
+import { fadeAnimation } from '../core/animation/fade-animations';
+import { DEFAULT_4_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position-map';
 import { toBoolean } from '../util/convert';
-import {
-  OverlayOrigin,
-  ConnectionPositionPair,
-  ConnectedOverlayDirective
-} from '@angular/cdk/overlay';
-import { POSITION_MAP, DEFAULT_4_POSITIONS } from '../core/overlay/overlay-position-map';
 
 @Component({
   selector     : 'nz-tooltip',
   encapsulation: ViewEncapsulation.None,
   animations   : [
-    FadeAnimation
+    fadeAnimation
   ],
   template     : `
     <ng-content></ng-content>
@@ -47,7 +48,7 @@ import { POSITION_MAP, DEFAULT_4_POSITIONS } from '../core/overlay/overlay-posit
         <div class="ant-tooltip-content">
           <div class="ant-tooltip-arrow"></div>
           <div class="ant-tooltip-inner">
-            <span *ngIf="!nzTemplate">{{nzTitle}}</span>
+            <span *ngIf="!nzTemplate">{{ nzTitle }}</span>
             <ng-template
               *ngIf="nzTemplate"
               [ngTemplateOutlet]="nzTemplate">
@@ -68,7 +69,7 @@ export class NzToolTipComponent {
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle = {};
   @Output() nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
-  @ContentChild('nzTemplate') nzTemplate: TemplateRef<any>;
+  @ContentChild('nzTemplate') nzTemplate: TemplateRef<void>;
   @ViewChild('overlay') overlay: ConnectedOverlayDirective;
 
   overlayOrigin: OverlayOrigin;
@@ -82,7 +83,7 @@ export class NzToolTipComponent {
     }
   }
 
-  get nzVisible() {
+  get nzVisible(): boolean {
     return this.visibleSource.value;
   }
 
@@ -90,11 +91,11 @@ export class NzToolTipComponent {
   visible$ = this.visibleSource.asObservable();
 
   @Input()
-  set nzTrigger(value) {
+  set nzTrigger(value: string) {
     this._trigger = value;
     this._hasBackdrop = this._trigger === 'click';
   }
-  get nzTrigger() {
+  get nzTrigger(): string {
     return this._trigger;
   }
 
@@ -105,25 +106,25 @@ export class NzToolTipComponent {
   _trigger = 'hover';
 
   @Input()
-  set nzPlacement(value) {
+  set nzPlacement(value: string) {
     if (value !== this._placement) {
       this._placement = value;
       this._positions.unshift(POSITION_MAP[ this.nzPlacement ] as ConnectionPositionPair);
     }
   }
 
-  get nzPlacement() {
+  get nzPlacement(): string {
     return this._placement;
   }
 
   // Manually force updating current overlay's position
-  updatePosition() {
+  updatePosition(): void {
     if (this.overlay && this.overlay.overlayRef) {
       this.overlay.overlayRef.updatePosition();
     }
   }
 
-  onPositionChange($event) {
+  onPositionChange($event: ConnectedOverlayPositionChange): void {
     for (const key in POSITION_MAP) {
       if (JSON.stringify($event.connectionPair) === JSON.stringify(POSITION_MAP[ key ])) {
         this.nzPlacement = key;
@@ -152,14 +153,14 @@ export class NzToolTipComponent {
     }
   }
 
-  setClassMap() {
+  setClassMap(): void {
     this._classMap = {
       [this.nzOverlayClassName]             : true,
       [`${this._prefix}-${this._placement}`]: true
     };
   }
 
-  setOverlayOrigin(origin: OverlayOrigin) {
+  setOverlayOrigin(origin: OverlayOrigin): void {
     this.overlayOrigin = origin;
   }
 

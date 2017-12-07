@@ -1,18 +1,19 @@
 import {
-  Component,
-  Input,
-  ElementRef,
-  Host, HostBinding
-} from '@angular/core';
-import {
-  trigger,
+  animate,
   state,
   style,
-  animate,
-  transition
+  transition,
+  trigger,
 } from '@angular/animations';
-import { NzCollapsesetComponent } from './nz-collapseset.component';
+import {
+  Component,
+  ElementRef,
+  Host,
+  HostBinding,
+  Input,
+} from '@angular/core';
 import { toBoolean } from '../util/convert';
+import { NzCollapsesetComponent } from './nz-collapseset.component';
 
 @Component({
   selector     : 'nz-collapse',
@@ -84,7 +85,7 @@ export class NzCollapseComponent {
     return this._active;
   }
 
-  clickHeader($event) {
+  clickHeader($event: MouseEvent): void {
     this.nzActive = !this.nzActive;
     /** trigger host collapseSet click event */
     this._collapseSet.nzClick(this);

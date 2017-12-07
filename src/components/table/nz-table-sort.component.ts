@@ -1,11 +1,13 @@
 import {
   Component,
-  ViewEncapsulation,
-  Input,
-  Output,
+  EventEmitter,
   Host,
+  Input,
+  OnInit,
   Optional,
-  EventEmitter, OnInit, Renderer2
+  Output,
+  Renderer2,
+  ViewEncapsulation,
 } from '@angular/core';
 import { NzThDirective } from './nz-th.directive';
 
@@ -27,15 +29,15 @@ import { NzThDirective } from './nz-th.directive';
   ]
 })
 export class NzTableSortComponent {
-  _value = null;
-  @Output() nzValueChange: EventEmitter<any> = new EventEmitter();
+  _value: string = null;
+  @Output() nzValueChange: EventEmitter<string> = new EventEmitter();
 
   @Input()
-  get nzValue() {
+  get nzValue(): string {
     return this._value;
   }
 
-  set nzValue(value) {
+  set nzValue(value: string) {
     this._value = value;
     if ((this._value !== 'ascend') && (this._value !== 'descend')) {
       if (this.nzThDirective) {
@@ -44,7 +46,7 @@ export class NzTableSortComponent {
     }
   }
 
-  _setValue(value) {
+  _setValue(value: string): void {
     if (this.nzValue === value) {
       this.nzValue = null;
       if (this.nzThDirective) {

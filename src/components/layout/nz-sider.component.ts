@@ -1,16 +1,16 @@
 import {
   Component,
+  EventEmitter,
+  Host,
   HostBinding,
   HostListener,
-  Optional,
-  Host,
   Input,
-  ViewEncapsulation,
+  Optional,
   Output,
-  EventEmitter
+  ViewEncapsulation,
 } from '@angular/core';
-import { NzLayoutComponent } from './nz-layout.component';
 import { toBoolean } from '../util/convert';
+import { NzLayoutComponent } from './nz-layout.component';
 
 export type NzBreakPoinit = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
@@ -52,7 +52,7 @@ export class NzSiderComponent {
     this._trigger = toBoolean(value);
   }
 
-  get nzTrigger() {
+  get nzTrigger(): boolean {
     return this._trigger;
   }
 
@@ -61,7 +61,7 @@ export class NzSiderComponent {
     this._collapsible = toBoolean(value);
   }
 
-  get nzCollapsible() {
+  get nzCollapsible(): boolean {
     return this._collapsible;
   }
 
@@ -71,19 +71,19 @@ export class NzSiderComponent {
     this._collapsed = toBoolean(value);
   }
 
-  get nzCollapsed() {
+  get nzCollapsed(): boolean {
     return this._collapsed;
   }
 
   @Output() nzCollapsedChange = new EventEmitter();
 
   @HostBinding('class.ant-layout-sider-zero-width')
-  get setZeroClass() {
+  get setZeroClass(): boolean {
     return this.nzCollapsed && (this.nzCollapsedWidth === 0);
   }
 
   @HostBinding('style.flex')
-  get setFlex() {
+  get setFlex(): string {
     if (this.nzCollapsed) {
       return `0 0 ${this.nzCollapsedWidth}px`;
     } else {
@@ -91,8 +91,9 @@ export class NzSiderComponent {
     }
   }
 
+  // TODO: unify the type of nzCollapsedWidth and nzWidth
   @HostBinding('style.width.px')
-  get setWidth() {
+  get setWidth(): number | string {
     if (this.nzCollapsed) {
       return this.nzCollapsedWidth;
     } else {
@@ -101,7 +102,7 @@ export class NzSiderComponent {
   }
 
   @HostListener('window:resize', [ '$event' ])
-  onWindowResize(e) {
+  onWindowResize(e: UIEvent): void {
     if (this.nzBreakpoint) {
       const matchBelow = window.matchMedia(`(max-width: ${this._dimensionMap[ this.nzBreakpoint ]})`).matches;
       this._below = matchBelow;
@@ -110,11 +111,10 @@ export class NzSiderComponent {
     }
   }
 
-  toggleCollapse() {
+  toggleCollapse(): void {
     this.nzCollapsed = !this.nzCollapsed;
     this.nzCollapsedChange.emit(this.nzCollapsed);
   }
-
 
   constructor(@Optional() @Host() private nzLayoutComponent: NzLayoutComponent) {
     if (this.nzLayoutComponent) {
@@ -125,21 +125,19 @@ export class NzSiderComponent {
         return {
           media: mediaQuery,
           matches: false,
-          addListener() {
-          },
-          removeListener() {
-          },
+          addListener(): void { },
+          removeListener(): void { },
         };
       };
       window.matchMedia = window.matchMedia || matchMediaPolyfill;
     }
   }
 
-  get _isZeroTrigger() {
+  get _isZeroTrigger(): boolean {
     return this.nzCollapsible && this.nzTrigger && (this.nzCollapsedWidth === 0) && ((this.nzBreakpoint && this._below) || (!this.nzBreakpoint));
   }
 
-  get _isSiderTrgger() {
+  get _isSiderTrgger(): boolean {
     return this.nzCollapsible && this.nzTrigger && (this.nzCollapsedWidth !== 0);
   }
 }

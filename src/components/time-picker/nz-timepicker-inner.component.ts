@@ -1,17 +1,17 @@
 import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
+  forwardRef,
   ChangeDetectorRef,
+  Component,
   Input,
+  OnInit,
   ViewChild,
-  forwardRef
+  ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
-import { DropDownAnimation } from '../core/animation/dropdown-animations';
-import { NzLocaleService } from '../locale/index';
+import { dropDownAnimation } from '../core/animation/dropdown-animations';
 import { reqAnimFrame } from '../core/polyfill/request-animation';
+import { NzLocaleService } from '../locale/index';
 import { toBoolean } from '../util/convert';
 
 export interface TimeUnitInterface {
@@ -51,7 +51,7 @@ export interface TimeUnitInterface {
                    [class.ant-time-picker-panel-select-option-selected]="_hour.index===_selectedHour"
                    [class.ant-time-picker-panel-select-option-disabled]="_hour.disabled"
                    (click)="_selectHour(hourListInstance,_hour.index,_hour.disabled)">
-                   {{_hour.name}}
+                   {{ _hour.name }}
                  </li>
               </ng-template>
             </ul>
@@ -72,7 +72,7 @@ export interface TimeUnitInterface {
                    [class.ant-time-picker-panel-select-option-selected]="_minute.index===_selectedMinute"
                    [class.ant-time-picker-panel-select-option-disabled]="_minute.disabled"
                    (click)="_selectMinute(minuteListInstance,_minute.index,_minute.disabled)">
-                   {{_minute.name}}
+                   {{ _minute.name }}
                  </li>
               </ng-template>
             </ul>
@@ -93,7 +93,7 @@ export interface TimeUnitInterface {
                    [class.ant-time-picker-panel-select-option-selected]="_second.index===_selectedSecond"
                    [class.ant-time-picker-panel-select-option-disabled]="_second.disabled"
                    (click)="_selectSecond(secondListInstance,_second.index,_second.disabled)">
-                   {{_second.name}}
+                   {{ _second.name }}
                  </li>
               </ng-template>
             </ul>
@@ -103,7 +103,7 @@ export interface TimeUnitInterface {
       </div>
     </span>`,
   animations   : [
-    DropDownAnimation
+    dropDownAnimation
   ],
   providers    : [
     {
@@ -123,9 +123,9 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
   _now = new Date();
   _el: HTMLElement;
   _open = false;
-  _hourList: Array<TimeUnitInterface> = [];
-  _minuteList: Array<TimeUnitInterface> = [];
-  _secondList: Array<TimeUnitInterface> = [];
+  _hourList: TimeUnitInterface[] = [];
+  _minuteList: TimeUnitInterface[] = [];
+  _secondList: TimeUnitInterface[] = [];
   _value = null;
   _selectedHour = moment(this._now).hours();
   _selectedMinute = moment(this._now).minutes();
@@ -134,11 +134,11 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
   _showHour = this._format.indexOf('HH') > -1;
   _showMinute = this._format.indexOf('mm') > -1;
   _showSecond = this._format.indexOf('ss') > -1;
-  _width = ( +this._showHour + +this._showMinute + +this._showSecond) * 56 + 1 + 'px';
-  _nzDisabledHours: Function;
+  _width = `${( +this._showHour + +this._showMinute + +this._showSecond) * 56 + 1 }px`;
+  _nzDisabledHours: () => number[];
   // ngModel Access
-  onChange: any = Function.prototype;
-  onTouched: any = Function.prototype;
+  onChange: (value: Date) => void = () => null;
+  onTouched: () => void = () => null;
 
   @ViewChild('hourListInstance') _hourListInstance;
   @ViewChild('minuteListInstance') _minuteListInstance;
@@ -158,17 +158,17 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
   @Input() nzSize: 'small' | 'large' | 'default' = 'default';
 
   @Input()
-  set nzDisabledHours(fun: Function) {
+  set nzDisabledHours(fun: () => number[]) {
     this._nzDisabledHours = fun;
     this._buildHours();
   }
 
-  get nzDisabledHours(): Function {
+  get nzDisabledHours(): () => number[] {
     return this._nzDisabledHours;
   }
 
-  @Input() nzDisabledMinutes;
-  @Input() nzDisabledSeconds;
+  @Input() nzDisabledMinutes: (hour: number) => number[];
+  @Input() nzDisabledSeconds: (hour: number, minute: number) => number[];
 
   @Input()
   set nzDisabled(value: boolean) {
@@ -180,15 +180,15 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
   }
 
   @Input()
-  set nzFormat(value) {
+  set nzFormat(value: string) {
     this._format = value;
     this._showHour = this._format.indexOf('HH') > -1;
     this._showMinute = this._format.indexOf('mm') > -1;
     this._showSecond = this._format.indexOf('ss') > -1;
-    this._width = ( +this._showHour + +this._showMinute + +this._showSecond) * 56 + 1 + 'px';
+    this._width = `${( +this._showHour + +this._showMinute + +this._showSecond) * 56 + 1 }px`;
   }
 
-  get nzFormat() {
+  get nzFormat(): string {
     return this._format;
   }
 
@@ -206,14 +206,14 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     this._selectedSecond = moment(this.nzValue).seconds();
   }
 
-  _scrollToSelected(instance, index, duration = 0, unit) {
+  _scrollToSelected(instance: HTMLElement, index: number, duration: number = 0, unit: string): void {
     const _transIndex = this._translateIndex(index, unit);
-    const currentOption = instance.children[ 0 ].children[ _transIndex ] || instance.children[ 0 ].children[ 0 ];
+    const currentOption = (instance.children[ 0 ].children[ _transIndex ] || instance.children[ 0 ].children[ 0 ]) as HTMLElement;
     this.scrollTo(instance, currentOption.offsetTop, duration);
   }
 
   // got from rc-timepicker
-  scrollTo(element, to, duration) {
+  scrollTo(element: HTMLElement, to: number, duration: number): void {
     if (duration <= 0) {
       element.scrollTop = to;
       return;
@@ -230,7 +230,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     });
   }
 
-  _selectHour(instance, index, disabled) {
+  _selectHour(instance: HTMLElement, index: number, disabled: boolean): void {
     if (disabled) {
       return;
     }
@@ -242,7 +242,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     this._buildSeconds();
   }
 
-  _selectMinute(instance, index, disabled) {
+  _selectMinute(instance: HTMLElement, index: number, disabled: boolean): void {
     if (disabled) {
       return;
     }
@@ -253,7 +253,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     this._buildSeconds();
   }
 
-  _selectSecond(instance, index, disabled) {
+  _selectSecond(instance: HTMLElement, index: number, disabled: boolean): void {
     if (disabled) {
       return;
     }
@@ -263,7 +263,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     this.onChange(this._value);
   }
 
-  _translateIndex(index, unit) {
+  _translateIndex(index: number, unit: string): number {
     if (!this.nzHideDisabledOptions) {
       return index;
     }
@@ -279,7 +279,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     }
   }
 
-  _calcIndex(array, index) {
+  _calcIndex(array: number[], index: number): number {
     if (array && array.length) {
       return index - array.reduce((pre, value) => {
         return pre + (value < index ? 1 : 0);
@@ -289,7 +289,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     }
   }
 
-  _initPosition() {
+  _initPosition(): void {
     this._selectedHour = moment(this.nzValue).hours();
     this._selectedMinute = moment(this.nzValue).minutes();
     this._selectedSecond = moment(this.nzValue).seconds();
@@ -304,13 +304,13 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     }
   }
 
-  _buildTime() {
+  _buildTime(): void {
     this._buildHours();
     this._buildMinutes();
     this._buildSeconds();
   }
 
-  _buildHours() {
+  _buildHours(): void {
     this._hourList = [];
     for (let i = 0; i <= 23; i++) {
       this._hourList.push({
@@ -321,7 +321,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     }
   }
 
-  _buildMinutes() {
+  _buildMinutes(): void {
     this._minuteList = [];
     for (let i = 0; i <= 59; i++) {
       this._minuteList.push({
@@ -332,7 +332,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     }
   }
 
-  _buildSeconds() {
+  _buildSeconds(): void {
     this._secondList = [];
     for (let i = 0; i <= 59; i++) {
       this._secondList.push({
@@ -343,15 +343,15 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
     }
   }
 
-  writeValue(value: any): void {
+  writeValue(value: Date): void {
     this.nzValue = value;
   }
 
-  registerOnChange(fn: (_: any) => {}): void {
+  registerOnChange(fn: (_: Date) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => {}): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -362,7 +362,7 @@ export class NzTimePickerInnerComponent implements OnInit, ControlValueAccessor 
   constructor(public _cdr: ChangeDetectorRef, private _locale: NzLocaleService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._buildTime();
   }
 }

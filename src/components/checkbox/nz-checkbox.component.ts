@@ -1,12 +1,14 @@
+/* tslint:disable:no-any */
 import {
+  forwardRef,
   Component,
-  OnInit,
-  ViewEncapsulation,
-  Input,
   ElementRef,
-  Renderer2,
   HostListener,
-  forwardRef, OnChanges
+  Input,
+  OnChanges,
+  OnInit,
+  Renderer2,
+  ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { toBoolean } from '../util/convert';
@@ -81,14 +83,14 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   }
 
   @HostListener('click', [ '$event' ])
-  onClick(e) {
+  onClick(e: MouseEvent): void {
     e.preventDefault();
     if (!this.nzDisabled) {
       this.updateValue(!this._checked);
     }
   }
 
-  updateValue(value) {
+  updateValue(value: boolean): void {
     if (value === this._checked) {
       return;
     }
@@ -97,11 +99,11 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
     this.updateClassMap();
   }
 
-  nzFocus() {
+  nzFocus(): void {
     this._focused = true;
   }
 
-  nzBlur() {
+  nzBlur(): void {
     this._focused = false;
   }
 
@@ -126,22 +128,22 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
     this.nzDisabled = isDisabled;
   }
 
-  updateClassMap() {
+  updateClassMap(): void {
     this._classMap = {
       [this._prefixCls]                   : true,
       [`${this._prefixCls}-checked`]      : this._checked && (!this.nzIndeterminate),
       [`${this._prefixCls}-focused`]      : this._focused,
       [`${this._prefixCls}-disabled`]     : this.nzDisabled,
       [`${this._prefixCls}-indeterminate`]: this.nzIndeterminate,
-    }
+    };
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._render.addClass(this._el, `${this._prefixCls}-wrapper`);
     this.updateClassMap();
   }
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     this.updateClassMap();
   }
 }

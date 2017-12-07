@@ -1,25 +1,30 @@
-import { Injectable, Inject, Provider, SkipSelf, Optional } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, Optional, Provider, SkipSelf } from '@angular/core';
 import { reqAnimFrame } from '../polyfill/request-animation';
 
-function easeInOutCubic(t: number, b: number, c: number, d: number) {
+export type EasyingFn = (t: number, b: number, c: number, d: number) => number;
+
+function easeInOutCubic(t: number, b: number, c: number, d: number): number {
   const cc = c - b;
-  t /= d / 2;
-  if (t < 1) {
-    return cc / 2 * t * t * t + b;
+  let tt = t / (d / 2);
+  if (tt < 1) {
+    return cc / 2 * tt * tt * tt + b;
   } else {
-    return cc / 2 * ((t -= 2) * t * t + 2) + b;
+    return cc / 2 * ((tt -= 2) * tt * tt + 2) + b;
   }
 }
 
 @Injectable()
 export class NzScrollService {
+  private doc: Document;
 
-  constructor(@Inject(DOCUMENT) private doc: any) {
+  /* tslint:disable-next-line:no-any */
+  constructor(@Inject(DOCUMENT) doc: any) {
+    this.doc = doc;
   }
 
   /** 设置 `el` 滚动条位置 */
-  setScrollTop(el: Element | Window, topValue: number = 0) {
+  setScrollTop(el: Element | Window, topValue: number = 0): void {
     if (el === window) {
       this.doc.body.scrollTop = topValue;
       this.doc.documentElement.scrollTop = topValue;
@@ -30,7 +35,7 @@ export class NzScrollService {
 
   /** 获取 `el` 相对于视窗距离 */
   getOffset(el: Element): { top: number, left: number } {
-    let ret = {
+    const ret = {
       top : 0,
       left: 0
     };
@@ -51,14 +56,14 @@ export class NzScrollService {
 
   /** 获取 `el` 滚动条位置 */
   getScroll(el?: Element | Window, top: boolean = true): number {
-    if (!el) el = window;
+    const target = el ? el : window;
     const prop = top ? 'pageYOffset' : 'pageXOffset';
     const method = top ? 'scrollTop' : 'scrollLeft';
-    const isWindow = el === window;
-    let ret = isWindow ? el[ prop ] : el[ method ];
-    if (isWindow && typeof ret !== 'number')
+    const isWindow = target === window;
+    let ret = isWindow ? target[ prop ] : target[ method ];
+    if (isWindow && typeof ret !== 'number') {
       ret = this.doc.documentElement[ method ];
-
+    }
     return ret;
   }
 
@@ -70,14 +75,19 @@ export class NzScrollService {
    * @param easing 动作算法，默认：`easeInOutCubic`
    * @param callback 动画结束后回调
    */
-  scrollTo(containerEl: Element | Window, targetTopValue: number = 0, easing?: Function, callback?: Function) {
-    if (!containerEl) containerEl = window;
-    const scrollTop = this.getScroll(containerEl);
+  scrollTo(
+    containerEl: Element | Window,
+    targetTopValue: number = 0,
+    easing?: EasyingFn,
+    callback?: () => void
+  ): void {
+    const target = containerEl ? containerEl : window;
+    const scrollTop = this.getScroll(target);
     const startTime = Date.now();
     const frameFunc = () => {
       const timestamp = Date.now();
       const time = timestamp - startTime;
-      this.setScrollTop(containerEl, (easing || easeInOutCubic)(time, scrollTop, targetTopValue, 450));
+      this.setScrollTop(target, (easing || easeInOutCubic)(time, scrollTop, targetTopValue, 450));
       if (time < 450) {
         reqAnimFrame(frameFunc);
       } else {
@@ -87,10 +97,9 @@ export class NzScrollService {
     reqAnimFrame(frameFunc);
   }
 
-
 }
 
-export function SCROLL_SERVICE_PROVIDER_FACTORY(doc, scrollService) {
+export function SCROLL_SERVICE_PROVIDER_FACTORY(doc: Document, scrollService: NzScrollService): NzScrollService {
   return scrollService || new NzScrollService(doc);
 }
 

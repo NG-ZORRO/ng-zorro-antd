@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'nz-transfer-search',
@@ -23,11 +23,11 @@ export class NzTransferSearchComponent {
 
   // endregion
 
-  _handle() {
+  _handle(): void {
     this.valueChanged.emit(this.value);
   }
 
-  _clear() {
+  _clear(): void {
     this.value = '';
     this.valueClear.emit();
   }

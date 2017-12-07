@@ -1,20 +1,21 @@
 import {
+  AfterViewInit,
   Component,
   ContentChildren,
-  ViewChild,
-  HostBinding,
-  AfterViewInit,
-  Renderer2,
-  OnDestroy,
-  Input,
-  Output,
   ElementRef,
-  ViewEncapsulation,
   EventEmitter,
-  HostListener
+  HostBinding,
+  HostListener,
+  Input,
+  OnDestroy,
+  Output,
+  QueryList,
+  Renderer2,
+  ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
-import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 import { toBoolean } from '../util/convert';
+import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 
 @Component({
   selector     : 'nz-carousel',
@@ -48,11 +49,11 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   activeIndex = 0;
   transform = 'translate3d(0px, 0px, 0px)';
   interval;
-  slideContents;
+  slideContents: QueryList<NzCarouselContentDirective>;
   _autoPlaySpeed = 3000;
   _mouseHover = false;
   @ContentChildren(NzCarouselContentDirective)
-  set _slideContents(value) {
+  set _slideContents(value: QueryList<NzCarouselContentDirective>) {
     this.slideContents = value;
     this.renderContent();
   }
@@ -74,7 +75,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   }
 
   @HostListener('mouseenter')
-  _onMouseenter() {
+  _onMouseenter(): void {
     this._mouseHover = true;
     if (this.nzAutoPlay && this.nzPauseOnHover) {
       this.clearInterval();
@@ -82,7 +83,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   }
 
   @HostListener('mouseleave')
-  _onMouseleave() {
+  _onMouseleave(): void {
     this._mouseHover = false;
     if (!this.interval && this.nzAutoPlay) {
       this.createInterval();
@@ -94,7 +95,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   }
 
   get _prevIndex(): number {
-    return this.activeIndex > 0 ? (this.activeIndex - 1) : (this.slideContents.length - 1)
+    return this.activeIndex > 0 ? (this.activeIndex - 1) : (this.slideContents.length - 1);
   }
 
   @Input()
@@ -137,7 +138,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   constructor(public hostElement: ElementRef, private _renderer: Renderer2) {
   }
 
-  setActive(content, i) {
+  setActive(content: NzCarouselContentDirective, i: number): void {
     if ((this.nzAutoPlay && !this.nzPauseOnHover) || (this.nzAutoPlay && this.nzPauseOnHover && !this._mouseHover)) {
       this.createInterval();
     }
@@ -156,11 +157,11 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
     this.nzAfterChange.emit(i);
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.renderContent();
   }
 
-  renderContent() {
+  renderContent(): void {
     setTimeout(_ => {
       if (this.slideContents.first) {
         this.slideContents.first.isActive = true;
@@ -194,35 +195,35 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  createInterval() {
+  createInterval(): void {
     this.clearInterval();
     this.interval = setInterval(_ => {
       this.setActive(this.slideContents.toArray()[this._nextIndex], this._nextIndex);
     }, this.nzAutoPlaySpeed);
   }
 
-  clearInterval() {
+  clearInterval(): void {
     if (this.interval) {
       clearInterval(this.interval);
       this.interval = null;
     }
   }
 
-  public nzSlickNext() {
+  nzSlickNext(): void {
     this.setActive(this.slideContents.toArray()[this._nextIndex], this._nextIndex);
   }
 
-  public nzSlickPrev() {
+  nzSlickPrev(): void {
     this.setActive(this.slideContents.toArray()[this._prevIndex], this._prevIndex);
   }
 
-  public nzSlickGoTo(index: number) {
+  nzSlickGoTo(index: number): void {
     if (index >= 0 && index <= this.slideContents.length - 1) {
       this.setActive(this.slideContents.toArray()[index], index);
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.clearInterval();
   }
 

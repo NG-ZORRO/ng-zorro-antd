@@ -1,7 +1,8 @@
-import { ComponentFactoryResolver, Injector, ComponentRef, ComponentFactory, APP_INITIALIZER } from '@angular/core';
+/* tslint:disable:no-any ban-types */
+import { APP_INITIALIZER, ComponentFactory, ComponentFactoryResolver, ComponentRef, Injector } from '@angular/core';
 import { async, inject, TestBed } from '@angular/core/testing';
-import { NzRootModule } from './nz-root.module';
 import { NzRootStyleComponent } from './nz-root-style.component';
+import { NzRootModule } from './nz-root.module';
 
 describe('NzRootModule', () => {
   let ngModule: NzRootModule;
@@ -40,7 +41,7 @@ describe('NzRootModule', () => {
     ngModule.ngOnDestroy();
 
     expect(mockComponentRef.destroy).toHaveBeenCalled();
-  })
+  });
 });
 
 describe('NzRootModule with Angular integration', () => {

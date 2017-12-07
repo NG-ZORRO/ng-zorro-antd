@@ -1,5 +1,5 @@
 import {
-  Component, ViewEncapsulation, HostBinding, Input, OnChanges, SimpleChanges, AfterViewInit
+  AfterViewInit, Component, HostBinding, Input, OnChanges, SimpleChanges, ViewEncapsulation
 } from '@angular/core';
 import { toBoolean } from '../util/convert';
 import { NzMenuItemComponent } from './nz-menu-item.component';
@@ -53,12 +53,12 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
     const state = toBoolean(value);
     this._inlineCollapsed = state;
     if (!this.isInit) {
-      return
+      return;
     }
     if (this._inlineCollapsed) {
       this.hideSubMenus();
       // after the animation is over
-      setTimeout(() => this.nzMode = 'vertical', 150)
+      setTimeout(() => this.nzMode = 'vertical', 150);
     } else {
       this.reductionSubMenus();
       this.nzMode = this._tempMode;
@@ -74,57 +74,57 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
   @HostBinding('class.ant-dropdown-menu')
   @HostBinding('class.ant-menu-dropdown-vertical')
   @HostBinding('class.ant-dropdown-menu-root')
-  get _isInDropDownClass() {
+  get _isInDropDownClass(): boolean {
     return this.isInDropDown;
   }
 
   @HostBinding('class.ant-menu')
   @HostBinding('class.ant-menu-root')
-  get _isNotInDropDownClass() {
+  get _isNotInDropDownClass(): boolean {
     return !this.isInDropDown;
   }
 
   @HostBinding('class.ant-dropdown-menu-light')
-  get setDropDownThemeLightClass() {
+  get setDropDownThemeLightClass(): boolean {
     return this.isInDropDown && (this.nzTheme === 'light');
   }
 
   @HostBinding('class.ant-dropdown-menu-dark')
-  get setDropDownThemeDarkClass() {
+  get setDropDownThemeDarkClass(): boolean {
     return this.isInDropDown && (this.nzTheme === 'dark');
   }
 
   @HostBinding('class.ant-menu-light')
-  get setMenuThemeLightClass() {
+  get setMenuThemeLightClass(): boolean {
     return (!this.isInDropDown) && (this.nzTheme === 'light');
   }
 
   @HostBinding('class.ant-menu-dark')
-  get setMenuThemeDarkClass() {
+  get setMenuThemeDarkClass(): boolean {
     return (!this.isInDropDown) && (this.nzTheme === 'dark');
   }
 
   @HostBinding('class.ant-menu-vertical')
-  get setMenuVerticalClass() {
+  get setMenuVerticalClass(): boolean {
     return (!this.isInDropDown) && (this.nzMode === 'vertical');
   }
 
   @HostBinding('class.ant-menu-horizontal')
-  get setMenuHorizontalClass() {
+  get setMenuHorizontalClass(): boolean {
     return (!this.isInDropDown) && (this.nzMode === 'horizontal');
   }
 
   @HostBinding('class.ant-menu-inline')
-  get setMenuInlineClass() {
+  get setMenuInlineClass(): boolean {
     return (!this.isInDropDown) && (this.nzMode === 'inline');
   }
 
   @HostBinding('class.ant-menu-inline-collapsed')
-  get setMenuInlineCollapsedClass() {
+  get setMenuInlineCollapsedClass(): boolean {
     return (!this.isInDropDown) && (this.nzMode !== 'horizontal') && this.nzInlineCollapsed;
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     for (const propName in changes) {
       if (propName === 'nzMode') {
         if (this.isInit) {
@@ -137,17 +137,17 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.isInit = true;
     this._tempMode = this.nzMode;
   }
 
   /** trigger when menu item clicked */
-  clearAllSelected() {
+  clearAllSelected(): void {
     this.menuItems.forEach(menu => menu.nzSelected = false);
   }
 
-  hideSubMenus() {
+  hideSubMenus(): void {
     this._subMenusOpenIndex = [];
     this.subMenus.forEach((submenu, index) => {
       if (submenu.nzOpen) {
@@ -157,13 +157,13 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
     });
   }
 
-  reductionSubMenus() {
+  reductionSubMenus(): void {
     this._subMenusOpenIndex.forEach(i => this.subMenus[ i ].nzOpen = true);
     this._subMenusOpenIndex = [];
   }
 
   /** api for dropdown or navigation to set isInDropDown status */
-  setDropDown(value: boolean) {
+  setDropDown(value: boolean): void {
     setTimeout(_ => {
       this.isInDropDown = value;
       this.menuItems.forEach(menu => menu.isInDropDown = value);
@@ -171,7 +171,7 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
     });
   }
 
-  setHasSubMenu(value: boolean) {
+  setHasSubMenu(value: boolean): void {
     setTimeout(_ => {
       this.hasSubMenu = value;
     });

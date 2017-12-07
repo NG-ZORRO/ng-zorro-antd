@@ -1,4 +1,4 @@
-import { Component, OnChanges, SimpleChanges, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { toBoolean } from '../util/convert';
 
 @Component({
@@ -37,20 +37,19 @@ export class NzSliderTrackComponent implements OnChanges {
     return this._included;
   }
 
-  style: any = {};
+  style: { bottom?: string, height?: string, left?: string, width?: string, visibility?: string } = {};
 
-  ngOnChanges(changes: SimpleChanges) {
-    const { nzOffset, nzLength, nzIncluded, nzVertical, style } = this;
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzIncluded) {
-      style.visibility = nzIncluded ? 'visible' : 'hidden';
+      this.style.visibility = this.nzIncluded ? 'visible' : 'hidden';
     }
     if (changes.nzVertical || changes.nzOffset || changes.nzLength) {
-      if (nzVertical) {
-        style.bottom = `${nzOffset}%`;
-        style.height = `${nzLength}%`;
+      if (this.nzVertical) {
+        this.style.bottom = `${this.nzOffset}%`;
+        this.style.height = `${this.nzLength}%`;
       } else {
-        style.left = `${nzOffset}%`;
-        style.width = `${nzLength}%`;
+        this.style.left = `${this.nzOffset}%`;
+        this.style.width = `${this.nzLength}%`;
       }
     }
   }

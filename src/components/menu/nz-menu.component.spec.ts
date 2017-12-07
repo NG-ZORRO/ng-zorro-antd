@@ -1,30 +1,30 @@
-/* tslint:disable:no-unused-variable */
-import {async, ComponentFixture, TestBed, ComponentFixtureAutoDetect} from '@angular/core/testing';
+/* tslint:disable:no-unused-variable variable-name */
 import {
   Component,
   ViewChild
 } from '@angular/core';
-import {By} from '@angular/platform-browser';
-import {NzMenuModule} from './nz-menu.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {NzMenuDividerComponent} from './nz-menu-divider.component';
-import {NzMenuGroupComponent} from './nz-menu-group.component';
-import {NzMenuItemComponent} from './nz-menu-item.component';
-import {NzMenuComponent} from './nz-menu.component';
-import {NzSubMenuComponent} from './nz-submenu.component';
+import { async, ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NzMenuDividerComponent } from './nz-menu-divider.component';
+import { NzMenuGroupComponent } from './nz-menu-group.component';
+import { NzMenuItemComponent } from './nz-menu-item.component';
+import { NzMenuComponent } from './nz-menu.component';
+import { NzMenuModule } from './nz-menu.module';
+import { NzSubMenuComponent } from './nz-submenu.component';
 // import {OverlayContainer} from '../core/overlay/overlay-container';
 
 describe('NzMenuComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NzMenuModule, BrowserAnimationsModule],
-      declarations: [TestMenu, TestMenuTheme, TestMenuSubMenu],
+      declarations: [TestMenuComponent, TestMenuThemeComponent, TestMenuSubMenuComponent],
       providers: []
     }).compileComponents();
   }));
   describe('for nz-menu', () => {
     it('should apply class based on nzMode attribute', () => {
-      const fixture = TestBed.createComponent(TestMenu);
+      const fixture = TestBed.createComponent(TestMenuComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzMenuComponent));
 
@@ -49,9 +49,10 @@ describe('NzMenuComponent', () => {
       testComponent._mode = 'custom_string';
       fixture.detectChanges();
       expect(debugElement.nativeElement.classList.contains('ant-menu-custom_string')).toBe(false);
-    })
+    });
+
     it('should apply class based on nzTheme attribute', () => {
-      const fixture = TestBed.createComponent(TestMenuTheme);
+      const fixture = TestBed.createComponent(TestMenuThemeComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzMenuComponent));
 
@@ -71,9 +72,10 @@ describe('NzMenuComponent', () => {
       testComponent._theme = 'blue';
       fixture.detectChanges();
       expect(debugElement.nativeElement.classList.contains('ant-menu-blue')).toBe(false);
-    })
+    });
+
     it('nz-menu-item should apply class "ant-menu-item-selected" when nzClickActive=true', () => {
-      const fixture = TestBed.createComponent(TestMenuTheme);
+      const fixture = TestBed.createComponent(TestMenuThemeComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement2 = fixture.debugElement.query(By.directive(NzSubMenuComponent));
       testComponent._mode = 'inline';
@@ -85,9 +87,10 @@ describe('NzMenuComponent', () => {
       debugElementItem1.nativeElement.click();
       fixture.detectChanges();
       expect(debugElementItem1.nativeElement.classList.contains('ant-menu-item-selected')).toBe(true);
-    })
+    });
+
     it('nz-menu-item should not apply class "ant-menu-item-selected" when nzClickActive=false', () => {
-      const fixture = TestBed.createComponent(TestMenuTheme);
+      const fixture = TestBed.createComponent(TestMenuThemeComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzSubMenuComponent));
       testComponent._mode = 'inline';
@@ -98,9 +101,10 @@ describe('NzMenuComponent', () => {
       debugElementItem2.nativeElement.click();
       fixture.detectChanges();
       expect(debugElementItem2.nativeElement.classList.contains('ant-menu-item-selected')).toBe(false);
-    })
+    });
+
     it('should should not clear previous defined classes', () => {
-      const fixture = TestBed.createComponent(TestMenu);
+      const fixture = TestBed.createComponent(TestMenuComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzMenuComponent));
 
@@ -111,7 +115,7 @@ describe('NzMenuComponent', () => {
       fixture.detectChanges();
       expect(debugElement.nativeElement.classList.contains('custom-class')).toBe(true);
       expect(debugElement.nativeElement.classList.contains('customClass1')).toBe(true);
-    })
+    });
 
     // it('should close the menu when a click occurs outside the menu', () => {
     //   const fixture = TestBed.createComponent(TestMenuOther);
@@ -145,9 +149,10 @@ describe('NzMenuComponent', () => {
     //   expect(debugElementItem2.nativeElement.classList.contains('ant-menu-item')).toBe(false);
     // })
   });
+
   describe('for nz-submenu', () => {
     it('should apply class based on nzOpen attribute', () => {
-      const fixture = TestBed.createComponent(TestMenuSubMenu);
+      const fixture = TestBed.createComponent(TestMenuSubMenuComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzSubMenuComponent));
       expect(debugElement).toBeDefined();
@@ -187,10 +192,10 @@ describe('NzMenuComponent', () => {
       // fixture.detectChanges();
       // const debugElement4 = fixture.debugElement.query(By.directive(NzSubMenuComponent));
       // expect(debugElement4.nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
-    })
+    });
 
     it('should apply class based on sub-items select state', () => {
-      const fixture = TestBed.createComponent(TestMenuSubMenu);
+      const fixture = TestBed.createComponent(TestMenuSubMenuComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzSubMenuComponent));
       expect(debugElement).toBeDefined();
@@ -207,7 +212,7 @@ describe('NzMenuComponent', () => {
       const debugElement2 = fixture.debugElement.query(By.directive(NzSubMenuComponent));
       expect(debugElement2.nativeElement.classList.contains('ant-menu-submenu-selected')).toBe(true);
 
-    })
+    });
   });
 });
 
@@ -221,7 +226,7 @@ describe('NzMenuComponent', () => {
     </ul>
   `
 })
-class TestMenu {
+class TestMenuComponent {
   _mode = 'vertical';
   _customClass = {customClass1: false};
 }
@@ -244,7 +249,7 @@ class TestMenu {
     </ul>
   `
 })
-class TestMenuTheme {
+class TestMenuThemeComponent {
   _mode = 'vertical';
   _theme = 'dark';
   _clickActive = true;
@@ -270,14 +275,14 @@ class TestMenuTheme {
     </ul>
   `
 })
-class TestMenuSubMenu {
+class TestMenuSubMenuComponent {
   _mode = 'inline';
   isTestOpen = true;
   isOpenOne = false;
   isOpenTwo = false;
   selectOne = false;
 
-  openChange(value) {
+  openChange(value: string): void {
     if (!this.isTestOpen) {
       if (value === 'one') {
         this.isOpenTwo = false;

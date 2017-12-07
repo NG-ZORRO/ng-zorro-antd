@@ -1,6 +1,7 @@
 import {
   Injectable,
-  TemplateRef
+  TemplateRef,
+  Type,
 } from '@angular/core';
 
 export class BaseOptions {
@@ -8,12 +9,12 @@ export class BaseOptions {
   /**
    * The modal display status
    */
-  public visible = false;
+  visible = false;
 
   /**
    * The modal title
    */
-  public title: string | TemplateRef<any>;
+  title: string | TemplateRef<void>;
 
   /**
    * The modal content
@@ -30,61 +31,59 @@ export class BaseOptions {
    * Then pass customTemplate to the mwlConfirm directive like so `[content]="customTemplate"`
    *
    */
-  public content: any;
-  public class: string;
+  content: string | TemplateRef<void> | Type<void>;
+  class: string;
 
   /**
    * The modal width
    */
-  public width: string | number;
+  width: string | number;
 
   /**
    * The modal zIndex
    */
-  public zIndex: number;
+  zIndex: number;
 
   /**
    * The modal ok button text
    */
-  public okText: string;
+  okText: string;
 
   /**
    * The modal cancel button text
    */
-  public cancelText: string;
+  cancelText: string;
 
   /**
    * A custom CSS style to be added to the modal
    */
-  public style: Object;
+  style: object;
 
   /**
    * The modal ok button handler
    */
-  public onOk: Function;
+  onOk: () => void;
 
   /**
    * The modal cancel button handler
    */
-  public onCancel: Function;
+  onCancel: () => void;
 
 }
 
-@Injectable()
 export class ModalOptions extends BaseOptions {
 
-  public closable = true;
-  public maskClosable = true;
-  public wrapClassName: string;
-  public footer: TemplateRef<any> | boolean;
-  public componentParams: Object;
+  closable = true;
+  maskClosable = true;
+  wrapClassName: string;
+  footer: TemplateRef<void> | boolean;
+  componentParams: object;
 
 }
 
-@Injectable()
 export class ConfirmOptions extends BaseOptions {
 
-  public iconType: string;
-  public confirmType: string;
+  iconType: string;
+  confirmType: string;
 
 }

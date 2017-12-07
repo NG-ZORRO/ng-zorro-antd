@@ -1,24 +1,24 @@
 import {
+  AfterViewInit,
   Component,
-  ViewEncapsulation,
-  OnInit,
-  OnDestroy,
-  Input,
-  ViewChild,
-  Output,
   EventEmitter,
-  AfterViewInit
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
-import { DropDownAnimation } from '../core/animation/dropdown-animations';
+import { dropDownAnimation } from '../core/animation/dropdown-animations';
 import { toBoolean } from '../util/convert';
-import { NzDropDownDirective } from './nz-dropdown.directive';
 import { NzDropDownComponent } from './nz-dropdown.component';
+import { NzDropDownDirective } from './nz-dropdown.directive';
 
 @Component({
   selector     : 'nz-dropdown-button',
   encapsulation: ViewEncapsulation.None,
   animations   : [
-    DropDownAnimation
+    dropDownAnimation
   ],
   template     : `
     <div class="ant-btn-group ant-dropdown-button" nz-dropdown>
@@ -101,7 +101,7 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
   }
 
   /** rewrite afterViewInit hook */
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this._startSubscribe(this._visibleChange);
   }
 }

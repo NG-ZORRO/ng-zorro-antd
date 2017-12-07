@@ -1,11 +1,11 @@
 import {
   Component,
-  OnInit,
-  ViewEncapsulation,
-  Input,
   ElementRef,
+  HostBinding,
+  Input,
+  OnInit,
   Renderer2,
-  HostBinding
+  ViewEncapsulation,
 } from '@angular/core';
 import { toBoolean } from '../util/convert';
 

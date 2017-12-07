@@ -1,8 +1,8 @@
 import {
   Directive,
-  Input,
   ElementRef,
   HostBinding,
+  Input,
 } from '@angular/core';
 import { toBoolean } from '../util/convert';
 

@@ -1,19 +1,20 @@
 /* tslint:disable:no-unused-variable */
-import {async, ComponentFixture, TestBed, ComponentFixtureAutoDetect} from '@angular/core/testing';
-import {Component, DebugElement} from '@angular/core';
-import {By} from '@angular/platform-browser';
-import {NzBreadCrumbModule} from './nz-breadcrumb.module';
-import {NzBreadCrumbComponent} from './nz-breadcrumb.component';
-import {NzBreadCrumbItemComponent} from './nz-breadcrumb-item.component';
+import { Component, DebugElement } from '@angular/core';
+import { async, ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { NzBreadCrumbItemComponent } from './nz-breadcrumb-item.component';
+import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
+import { NzBreadCrumbModule } from './nz-breadcrumb.module';
 
 describe('NzBreadCrumb', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NzBreadCrumbModule],
-      declarations: [WithoutBreadCrumb, WithoutBreadCrumbItem, TestBreadCrumb, TestSeparator],
+      declarations: [WithoutBreadCrumbComponent, WithoutBreadCrumbItemComponent, TestBreadCrumbComponent, TestSeparatorComponent],
       providers: []
     }).compileComponents();
   }));
+
   describe('for BreadCrumb', () => {
     // it('should throw error if BreadCrumb is not defined', () => {
     //   const fixture = TestBed.createComponent(WithoutBreadCrumb);
@@ -21,7 +22,7 @@ describe('NzBreadCrumb', () => {
     // });
 
     it('should apply class if BreadCrumb is defined', () => {
-      const fixture = TestBed.createComponent(TestBreadCrumb);
+      const fixture = TestBed.createComponent(TestBreadCrumbComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
 
@@ -31,16 +32,17 @@ describe('NzBreadCrumb', () => {
 
       testComponent._custormString = '';
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
 
       testComponent._custormString = null;
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
     });
+
     it('should should not clear previous defined classes', () => {
-      const fixture = TestBed.createComponent(TestBreadCrumb);
+      const fixture = TestBed.createComponent(TestBreadCrumbComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
 
@@ -53,17 +55,17 @@ describe('NzBreadCrumb', () => {
 
       testComponent._custormString = '';
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
 
       testComponent._custormString = null;
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
     });
 
     it('should apply class based on separator attribute ', () => {
-      const fixture = TestBed.createComponent(TestSeparator);
+      const fixture = TestBed.createComponent(TestSeparatorComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
 
@@ -78,17 +80,18 @@ describe('NzBreadCrumb', () => {
 
       testComponent._separator = '<a href="">custorm_string';
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
-    })
-  })
+    });
+  });
+
   describe('for BreadCrumbItem', () => {
     // it('should throw error if BreadCrumbItem is not defined', () => {
     //   const fixture = TestBed.createComponent(WithoutBreadCrumbItem);
     //   expect(() => fixture.detectChanges()).not.toThrow();
     // });
     it('should Custom text content', () => {
-      const fixture = TestBed.createComponent(TestBreadCrumb);
+      const fixture = TestBed.createComponent(TestBreadCrumbComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement = fixture.debugElement.query(By.directive(NzBreadCrumbItemComponent));
 
@@ -99,18 +102,19 @@ describe('NzBreadCrumb', () => {
 
       testComponent._custormString = '<a href="">custom text content';
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
     });
-  })
+  });
 });
+
 @Component({
   selector: 'test-without-breadcrumb-item',
   template: `
     <nz-breadcrumb></nz-breadcrumb>
   `,
 })
-class WithoutBreadCrumbItem {
+class WithoutBreadCrumbItemComponent {
 }
 
 @Component({
@@ -121,24 +125,26 @@ class WithoutBreadCrumbItem {
     </nz-breadcrumb-item>
   `,
 })
-class WithoutBreadCrumb {
+class WithoutBreadCrumbComponent {
 }
+
 @Component({
   selector: 'test-breadcrumb',
   template: `
     <nz-breadcrumb>
       <nz-breadcrumb-item>
-        {{_custormString}}
+        {{ _custormString }}
       </nz-breadcrumb-item>
       <nz-breadcrumb-item>
-        {{_custormString}}
+        {{ _custormString }}
       </nz-breadcrumb-item>
     </nz-breadcrumb>
   `
 })
-class TestBreadCrumb {
+class TestBreadCrumbComponent {
   _custormString = 'Home';
 }
+
 @Component({
   selector: 'test-separator',
   template: `
@@ -152,6 +158,6 @@ class TestBreadCrumb {
     </nz-breadcrumb>
   `
 })
-class TestSeparator {
+class TestSeparatorComponent {
   _separator = '>';
 }

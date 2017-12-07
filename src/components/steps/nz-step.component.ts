@@ -1,15 +1,15 @@
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
-  Input,
-  ViewEncapsulation,
-  ElementRef,
-  Renderer2,
   ContentChild,
-  ViewChild,
+  ElementRef,
+  Input,
+  Renderer2,
   TemplateRef,
-  ChangeDetectorRef, AfterViewInit
+  ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
-
 
 @Component({
   selector     : 'nz-step',
@@ -24,7 +24,7 @@ import {
           <ng-template [ngIf]="!_processDot">
             <span class="ant-steps-icon anticon anticon-check" *ngIf="_status === 'finish' && !nzIcon"></span>
             <span class="ant-steps-icon anticon anticon-cross" *ngIf="_status === 'error'"></span>
-            <span class="ant-steps-icon" *ngIf="(_status === 'process' || _status === 'wait') && !nzIcon">{{index + 1}}</span>
+            <span class="ant-steps-icon" *ngIf="(_status === 'process' || _status === 'wait') && !nzIcon">{{ index + 1 }}</span>
             <span class="ant-steps-icon" *ngIf="nzIcon">
             <ng-template [ngTemplateOutlet]="nzIcon"></ng-template>
           </span>
@@ -62,28 +62,28 @@ export class NzStepComponent implements AfterViewInit {
   _outStatus = 'process';
   index = 0;
   stepStatusClass;
-  @ContentChild('nzIcon') nzIcon: TemplateRef<any>;
+  @ContentChild('nzIcon') nzIcon: TemplateRef<void>;
   @ViewChild('stepsTail') _stepsTail: ElementRef;
   @ViewChild('stepsHead') _stepsHead: ElementRef;
   @ViewChild('stepsMain') _stepsMain: ElementRef;
 
   @Input()
-  set nzStatus(status) {
+  set nzStatus(status: string) {
     this._status = status;
     this._ifCustomStatus = true;
   }
 
-  get nzStatus() {
+  get nzStatus(): string {
     return this._status;
   }
 
   @Input() nzTitle: string;
 
   _description = '';
-  _descriptionTpl: TemplateRef<any>;
+  _descriptionTpl: TemplateRef<void>;
 
   @Input()
-  set nzDescription(value: string | TemplateRef<any>) {
+  set nzDescription(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
       this._descriptionTpl = value;
     } else {
@@ -91,11 +91,11 @@ export class NzStepComponent implements AfterViewInit {
     }
   }
 
-  get _current() {
+  get _current(): number {
     return this._currentIndex;
   }
 
-  set _current(current) {
+  set _current(current: number) {
     this._currentIndex = current;
     if (!this._ifCustomStatus) {
       if (current > this.index) {
@@ -113,7 +113,7 @@ export class NzStepComponent implements AfterViewInit {
     this.initClassMap();
   }
 
-  initClassMap() {
+  initClassMap(): void {
     this.stepStatusClass = {
       ['ant-steps-item']          : true,
       [`ant-steps-status-wait`]   : this._status === 'wait',
@@ -133,7 +133,7 @@ export class NzStepComponent implements AfterViewInit {
     }
   }
 
-  updateLastWidth() {
+  updateLastWidth(): void {
     let width = this._stepsHead.nativeElement.offsetWidth + this._stepsMain.nativeElement.offsetWidth;
     /** remove left padding if not first**/
     if (!this._first) {
@@ -152,7 +152,7 @@ export class NzStepComponent implements AfterViewInit {
     this._el = erf.nativeElement;
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     if (!this._last) {
       this.updateLastWidth();
     }

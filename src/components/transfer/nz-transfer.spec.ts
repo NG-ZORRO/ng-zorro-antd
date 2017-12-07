@@ -1,12 +1,13 @@
-// tslint:disable
-import { Component, ViewChild, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed, ComponentFixtureAutoDetect, async, fakeAsync, tick } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+// tslint:disable:
+import { Component, DebugElement, ViewChild } from '@angular/core';
+import { async, fakeAsync, tick, ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NzTransferComponent } from './nz-transfer.component';
-import { NzTransferModule } from '../ng-zorro-antd.module';
-import { NzButtonModule } from '../button/nz-button.module';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NzButtonModule } from '../button/nz-button.module';
+import { NzTransferModule } from '../ng-zorro-antd.module';
+import { TransferItem } from './item';
+import { NzTransferComponent } from './nz-transfer.component';
 
 const DEFAULT = `
   <nz-transfer
@@ -51,10 +52,11 @@ function getListItemElemens(el: HTMLElement, count: number = 2, direction: 'left
   const find = el.querySelectorAll(`[data-direction="${direction}"] .ant-transfer-list-content-item`);
   const ret: HTMLLIElement[] = [];
   for (let i = 0, len = find.length; i < len; i++) {
-    if (count > i)
+    if (count > i) {
       ret.push(find[i] as HTMLLIElement);
-    else
+    } else {
       break;
+    }
   }
   return ret;
 }
@@ -65,7 +67,7 @@ describe('NzTransferModule', () => {
   let dl: DebugElement;
   let el: HTMLElement;
 
-  function createTestModule(html) {
+  function createTestModule(html: string): void {
     TestBed.configureTestingModule({
       declarations: [TestTransferComponent],
       imports: [NzTransferModule, FormsModule, NzButtonModule, NoopAnimationsModule],
@@ -183,13 +185,13 @@ class TestTransferComponent {
   nzShowSearch = false;
   nzSearchPlaceholder = 'nzSearchPlaceholder';
   nzNotFoundContent = 'nzNotFoundContent';
-  nzFilterOption(inputValue, option) {
+  nzFilterOption(inputValue: string, option: TransferItem): boolean {
     console.log(inputValue, option);
     return option.description.indexOf(inputValue) > -1;
   }
 
-  select() {}
-  change() {}
-  search() {}
-  reload() {}
+  select(): void { }
+  change(): void { }
+  search(): void { }
+  reload(): void { }
 }

@@ -1,31 +1,31 @@
 /** code from https://github.com/angular/material2 */
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
-  Component,
-  ElementRef,
   AfterContentChecked,
-  ContentChildren,
-  ViewEncapsulation,
-  Input,
   AfterContentInit,
+  Component,
+  ContentChild,
+  ContentChildren,
+  ElementRef,
+  HostBinding,
+  Input,
+  NgZone,
   Optional,
   QueryList,
-  NgZone,
   Renderer2,
-  ViewChild,
   TemplateRef,
-  ContentChild,
-  HostBinding
+  ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
-import { Directionality, Direction } from '@angular/cdk/bidi';
 import { Subscription } from 'rxjs/Subscription';
-import { of as observableOf } from 'rxjs/observable/of';
-import { merge } from 'rxjs/observable/merge';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { merge } from 'rxjs/observable/merge';
+import { of as observableOf } from 'rxjs/observable/of';
 import { auditTime } from 'rxjs/operators/auditTime';
 import { startWith } from 'rxjs/operators/startWith';
 import { toBoolean } from '../util/convert';
-import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
 import { NzTabLabelDirective } from './nz-tab-label.directive';
+import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
 
 const EXAGGERATED_OVERSCROLL = 64;
 export type ScrollDirection = 'after' | 'before';
@@ -101,7 +101,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   }
 
   @Input()
-  set nzType(value) {
+  set nzType(value: string) {
     this._type = value;
     if (this._type !== 'line') {
       this._inkBar.setDisplay('none');
@@ -110,11 +110,11 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     }
   }
 
-  get nzType() {
+  get nzType(): string {
     return this._type;
   }
 
-  @ContentChild('tabBarExtraContent') _tabBarExtraContent: TemplateRef<any>;
+  @ContentChild('tabBarExtraContent') _tabBarExtraContent: TemplateRef<void>;
   @ContentChildren(NzTabLabelDirective) _labelWrappers: QueryList<NzTabLabelDirective>;
   @ViewChild(NzTabsInkBarDirective) _inkBar: NzTabsInkBarDirective;
   @ViewChild('tabListContainer') _tabListContainer: ElementRef;
@@ -159,14 +159,14 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
               @Optional() private _dir: Directionality) {
   }
 
-  _onContentChanges() {
+  _onContentChanges(): void {
     if (this.nzShowPagination) {
       this._updatePagination();
     }
     this._alignInkBarToSelectedTab();
   }
 
-  _scrollHeader(scrollDir: ScrollDirection) {
+  _scrollHeader(scrollDir: ScrollDirection): void {
 
     // Move the scroll distance one-third the length of the tab list's viewport.
     this.scrollDistance += (scrollDir === 'before' ? -1 : 1) * this.viewWidthHeightPix / 3;
@@ -196,7 +196,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     }
   }
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     this._realignInkBar = this._ngZone.runOutsideAngular(() => {
       const dirChange = this._dir ? this._dir.change : observableOf(null);
       const resize = typeof window !== 'undefined' ?
@@ -211,7 +211,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     });
   }
 
-  _updateTabScrollPosition() {
+  _updateTabScrollPosition(): void {
     const scrollDistance = this.scrollDistance;
     if (this.nzPositionMode === 'horizontal') {
       const translateX = this._getLayoutDirection() === 'ltr' ? -scrollDistance : scrollDistance;
@@ -223,13 +223,13 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     }
   }
 
-  _updatePagination() {
+  _updatePagination(): void {
     this._checkPaginationEnabled();
     this._checkScrollingControls();
     this._updateTabScrollPosition();
   }
 
-  _checkPaginationEnabled() {
+  _checkPaginationEnabled(): void {
     this._showPaginationControls =
       this.tabListScrollWidthHeightPix > this.elementRefOffSetWidthHeight;
 
@@ -238,7 +238,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     }
   }
 
-  _scrollToLabel(labelIndex: number) {
+  _scrollToLabel(labelIndex: number): void {
     const selectedLabel = this._labelWrappers
       ? this._labelWrappers.toArray()[ labelIndex ]
       : null;
@@ -249,7 +249,8 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
 
     // The view length is the visible width of the tab labels.
 
-    let labelBeforePos: number, labelAfterPos: number;
+    let labelBeforePos: number;
+    let labelAfterPos: number;
     if (this.nzPositionMode === 'horizontal') {
       if (this._getLayoutDirection() === 'ltr') {
         labelBeforePos = selectedLabel.getOffsetLeft();
@@ -274,7 +275,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     }
   }
 
-  _checkScrollingControls() {
+  _checkScrollingControls(): void {
     // Check if the pagination arrows should be activated.
     this._disableScrollBefore = this.scrollDistance === 0;
     this._disableScrollAfter = this.scrollDistance === this._getMaxScrollDistance();
@@ -306,7 +307,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     return this._scrollDistance;
   }
 
-  get viewWidthHeightPix() {
+  get viewWidthHeightPix(): number {
     let PAGINATION_PIX = 0;
     if (this._showPaginationControls) {
       PAGINATION_PIX = 64;
@@ -318,7 +319,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     }
   }
 
-  get tabListScrollWidthHeightPix() {
+  get tabListScrollWidthHeightPix(): number {
     if (this.nzPositionMode === 'horizontal') {
       return this._tabList.nativeElement.scrollWidth;
     } else {
@@ -326,7 +327,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     }
   }
 
-  get elementRefOffSetWidthHeight() {
+  get elementRefOffSetWidthHeight(): number {
     if (this.nzPositionMode === 'horizontal') {
       return this._elementRef.nativeElement.offsetWidth;
     } else {

@@ -1,10 +1,10 @@
 import {
+  forwardRef,
   Component,
+  HostListener,
+  Input,
   OnInit,
   ViewEncapsulation,
-  Input,
-  HostListener,
-  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { toBoolean } from '../util/convert';
@@ -44,8 +44,8 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
   _checked = false;
 
   // ngModel Access
-  onChange: any = Function.prototype;
-  onTouched: any = Function.prototype;
+  onChange: (value: boolean) => void = () => null;
+  onTouched: () => void = () => null;
 
   @Input()
   set nzSize(value: string) {
@@ -68,7 +68,7 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
   }
 
   @HostListener('click', [ '$event' ])
-  onClick(e) {
+  onClick(e: MouseEvent): void {
     e.preventDefault();
     if (!this._disabled) {
       this.updateValue(!this._checked);
@@ -76,7 +76,7 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  updateValue(value: any) {
+  updateValue(value: boolean): void {
     if (this._checked === value) {
       return;
     }
@@ -93,15 +93,15 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
     };
   }
 
-  writeValue(value: any): void {
+  writeValue(value: boolean): void {
     this.updateValue(value);
   }
 
-  registerOnChange(fn: (_: any) => {}): void {
+  registerOnChange(fn: (_: boolean) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => {}): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -109,7 +109,7 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
     this.nzDisabled = isDisabled;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.setClassMap();
   }
 }

@@ -1,17 +1,19 @@
 import {
   Component,
-  ViewEncapsulation,
+  EventEmitter,
   Input,
+  OnChanges,
+  OnInit,
   Output,
-  EventEmitter, OnChanges, OnInit
+  ViewEncapsulation,
 } from '@angular/core';
+import { fadeAnimation } from '../core/animation/fade-animations';
 import { toBoolean } from '../util/convert';
-import { FadeAnimation } from '../core/animation/fade-animations';
 
 @Component({
   selector     : 'nz-alert',
   encapsulation: ViewEncapsulation.None,
-  animations   : [ FadeAnimation ],
+  animations   : [ fadeAnimation ],
   template     : `
     <div [ngClass]="_classMap" *ngIf="_display" [@fadeAnimation]>
       <i
@@ -29,13 +31,13 @@ import { FadeAnimation } from '../core/animation/fade-animations';
         [class.anticon-exclamation-circle]="nzType==='warning'"
         *ngIf="nzShowIcon&&!nzDescription"></i>
       <ng-template [ngIf]="nzMessage">
-        <span class="ant-alert-message">{{nzMessage}}</span>
+        <span class="ant-alert-message">{{ nzMessage }}</span>
       </ng-template>
       <ng-template [ngIf]="!nzMessage">
         <ng-content select="[alert-body]"></ng-content>
       </ng-template>
       <ng-template [ngIf]="nzDescription">
-        <span class="ant-alert-description">{{nzDescription}}</span>
+        <span class="ant-alert-description">{{ nzDescription }}</span>
       </ng-template>
       <ng-template [ngIf]="!nzDescription">
         <ng-content select="alert-description"></ng-content>
@@ -44,7 +46,7 @@ import { FadeAnimation } from '../core/animation/fade-animations';
         <a *ngIf="nzCloseable" (click)="closeAlert($event)" class="ant-alert-close-icon">
           <i class="anticon anticon-cross"></i>
         </a>
-        <a *ngIf="nzCloseText" class="ant-alert-close-icon" (click)="closeAlert()">{{nzCloseText}}</a>
+        <a *ngIf="nzCloseText" class="ant-alert-close-icon" (click)="closeAlert()">{{ nzCloseText }}</a>
       </ng-template>
     </div>
   `,
@@ -105,7 +107,7 @@ export class NzAlertComponent implements OnChanges {
     this.nzOnClose.emit(true);
   }
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     this._classMap = {
       [`${this.antAlert}`]                 : true,
       [`${this.antAlert}-${this.nzType}`]  : true,

@@ -1,9 +1,10 @@
-import { Injectable, Type } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
+import { Injectable, Type } from '@angular/core';
 import { NzMessageContainerComponent } from './nz-message-container.component';
+import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
+// TODO: remove MessageData generic type as it has no contributon in typing
 export class NzMessageBaseService<ContainerClass extends NzMessageContainerComponent, MessageData> {
   protected _counter = 0; // Id counter for messages
   protected _container: ContainerClass;
@@ -20,12 +21,13 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
     }
   }
 
-  createMessage(message: MessageData, options?: NzMessageDataOptions): NzMessageDataFilled {
-    const resultMessage: NzMessageDataFilled = Object.assign(message, {
+  createMessage(message: object, options?: NzMessageDataOptions): NzMessageDataFilled {
+    // TODO: spread on literal has been disallow on latest proposal
+    const resultMessage: NzMessageDataFilled = { ...message, ...{
       messageId: this._generateMessageId(),
-      options: options,
+      options,
       createdAt: new Date()
-    });
+    }};
     this._container.createMessage(resultMessage);
 
     return resultMessage;
@@ -44,32 +46,32 @@ export class NzMessageService extends NzMessageBaseService<NzMessageContainerCom
   }
 
   // Shortcut methods
-  success(content: string, options?: NzMessageDataOptions) {
-    return this.createMessage({ type: 'success', content: content }, options);
+  success(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+    return this.createMessage({ type: 'success', content }, options);
   }
 
-  error(content: string, options?: NzMessageDataOptions) {
-    return this.createMessage({ type: 'error', content: content }, options);
+  error(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+    return this.createMessage({ type: 'error', content }, options);
   }
 
-  info(content: string, options?: NzMessageDataOptions) {
-    return this.createMessage({ type: 'info', content: content }, options);
+  info(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+    return this.createMessage({ type: 'info', content }, options);
   }
 
-  warning(content: string, options?: NzMessageDataOptions) {
-    return this.createMessage({ type: 'warning', content: content }, options);
+  warning(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+    return this.createMessage({ type: 'warning', content }, options);
   }
 
-  loading(content: string, options?: NzMessageDataOptions) {
-    return this.createMessage({ type: 'loading', content: content }, options);
+  loading(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+    return this.createMessage({ type: 'loading', content }, options);
   }
 
-  create(type: string, content: string, options?: NzMessageDataOptions) {
-    return this.createMessage({ type: type as any, content: content }, options);
+  create(type: string, content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+    return this.createMessage({ type, content }, options);
   }
 
   // For content with html
-  html(html: string, options?: NzMessageDataOptions) {
-    return this.createMessage({ html: html }, options);
+  html(html: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+    return this.createMessage({ html }, options);
   }
 }

@@ -1,11 +1,12 @@
 import {
+  AfterContentInit,
   Component,
-  OnInit,
   ContentChild,
-  ViewEncapsulation,
   ContentChildren,
+  OnInit,
   QueryList,
-  AfterContentInit, TemplateRef
+  TemplateRef,
+  ViewEncapsulation,
 } from '@angular/core';
 import { NzTimelineItemComponent } from './nz-timeline-item.component';
 
@@ -28,17 +29,17 @@ import { NzTimelineItemComponent } from './nz-timeline-item.component';
 })
 export class NzTimelineComponent implements OnInit, AfterContentInit {
   _isPending = false;
-  items: Array<NzTimelineItemComponent> = [];
+  items: NzTimelineItemComponent[] = [];
   @ContentChildren(NzTimelineItemComponent) _listOfTimeline: QueryList<NzTimelineItemComponent>;
-  @ContentChild('pending') _pendingContent: TemplateRef<any>;
+  @ContentChild('pending') _pendingContent: TemplateRef<void>;
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this._pendingContent) {
       this._isPending = true;
     }
   }
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     setTimeout(_ => {
       if (this._listOfTimeline && this._listOfTimeline.length) {
         const listArray = this._listOfTimeline.toArray();
