@@ -68,4 +68,8 @@ export class NzOptionComponent implements OnDestroy, OnInit {
   ngOnDestroy(): void {
     this._nzSelect.removeOption(this);
   }
+
+  ngOnChanges(): void {
+    this._nzSelect.updateOption(this);
+  }
 }

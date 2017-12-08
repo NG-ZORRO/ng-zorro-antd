@@ -345,6 +345,18 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     }
   }
 
+  updateOption = (option) => {
+    this._options = [];
+    this._options.push(option);
+    if (!this._isTags) {
+      if (option.nzValue) {
+        this.updateSelectedOption(this._value);
+      } else {
+        this.forceUpdateSelectedOption(this._value);
+      }
+    }
+  }
+
   /** nz-option remove or tags remove */
   removeOption(option: NzOptionComponent): void {
     this._options.splice(this._options.indexOf(option), 1);
