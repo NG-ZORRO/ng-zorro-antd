@@ -1,4 +1,5 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, ContentChild, Input } from '@angular/core';
+import { NgControl } from '@angular/forms';
 import { toBoolean } from '../util/convert';
 
 @Component({
@@ -14,12 +15,14 @@ import { toBoolean } from '../util/convert';
     </div>
   `,
   styles  : [],
-  host: {
+  host    : {
     '[class.ant-form-item-control-wrapper]': 'true'
   }
 })
 export class NzFormControlComponent {
   private _hasFeedback = false;
+  private _validateStatus: string | NgControl;
+  @ContentChild(NgControl) ngControl: NgControl;
 
   @Input()
   set nzHasFeedback(value: boolean) {
@@ -30,34 +33,32 @@ export class NzFormControlComponent {
     return this._hasFeedback;
   }
 
-  @Input() nzValidateStatus;
+  @Input()
+  set nzValidateStatus(value: string | NgControl) {
+    this._validateStatus = value;
+  }
+
+  get nzValidateStatus(): string | NgControl {
+    return this._validateStatus || this.ngControl;
+  }
 
   get isWarning(): boolean {
-    return this._isDirtyAndError('warning');
+    return this.nzValidateStatus === 'warning' || this.nzValidateStatus && (this.nzValidateStatus as NgControl).dirty && (this.nzValidateStatus as NgControl).hasError && (this.nzValidateStatus as NgControl).hasError('warning');
   }
 
   get isValidate(): boolean {
-    return this._isDirtyAndError('validating') || this.nzValidateStatus === 'pending' || this.nzValidateStatus && this.nzValidateStatus.dirty && this.nzValidateStatus.pending;
+    return this.nzValidateStatus === 'validating' || this.nzValidateStatus === 'pending' || this.nzValidateStatus && (this.nzValidateStatus as NgControl).dirty && (this.nzValidateStatus as NgControl).pending;
   }
 
   get isError(): boolean {
-    return this._isDirtyAndError('error')
-      || this._isDirtyAndError('required')
-      || this._isDirtyAndError('pattern')
-      || this._isDirtyAndError('email')
-      || this._isDirtyAndError('maxlength')
-      || this._isDirtyAndError('minlength');
+    return this.nzValidateStatus === 'error' || this.nzValidateStatus && (this.nzValidateStatus as NgControl).dirty && (this.nzValidateStatus as NgControl).errors && (this.nzValidateStatus as NgControl).hasError && !(this.nzValidateStatus as NgControl).hasError('warning');
   }
 
   get isSuccess(): boolean {
-    return this.nzValidateStatus === 'success' || this.nzValidateStatus && this.nzValidateStatus.dirty && this.nzValidateStatus.valid;
+    return this.nzValidateStatus === 'success' || this.nzValidateStatus && (this.nzValidateStatus as NgControl).dirty && (this.nzValidateStatus as NgControl).valid;
   }
 
   get hasFeedBack(): boolean {
     return this.nzHasFeedback;
-  }
-
-  _isDirtyAndError(name: string): boolean {
-    return this.nzValidateStatus === name || this.nzValidateStatus && this.nzValidateStatus.dirty && this.nzValidateStatus.hasError && this.nzValidateStatus.hasError(name);
   }
 }
