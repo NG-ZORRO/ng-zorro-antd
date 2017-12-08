@@ -45,7 +45,7 @@ import { Component, OnInit } from '@angular/core';
             <nz-table-sort (nzValueChange)="sort($event)"></nz-table-sort>
           </th>
           <th nz-th>
-            <span>Age</span>
+            <span>Gender</span>
             <nz-dropdown [nzTrigger]="'click'">
               <i class="anticon anticon-filter" nz-dropdown></i>
               <ul nz-menu>
