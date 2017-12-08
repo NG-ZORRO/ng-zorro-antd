@@ -55,6 +55,7 @@ export class NzScrollService {
   }
 
   /** 获取 `el` 滚动条位置 */
+  // TODO: remove '| Window' as the fallback already happens here
   getScroll(el?: Element | Window, top: boolean = true): number {
     const target = el ? el : window;
     const prop = top ? 'pageYOffset' : 'pageXOffset';
