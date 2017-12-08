@@ -47,9 +47,8 @@ describe('NzGrid', () => {
       testComponent._span = 0;
       fixture.detectChanges();
       const col_width2 = parseFloat(getStyle(debugElement_col, 'width'));
-      const row_width2 = parseFloat(getStyle(debugElement_row, 'width'));
-      expect(col_width2).toEqual(row_width2); // toEqual
-      expect(debugElement_col.nativeElement.classList.contains('ant-col-0')).toBe(false);
+      expect(col_width2).toEqual(NaN); // toEqual
+      expect(debugElement_col.nativeElement.classList.contains('ant-col-0')).toBe(true);
 
       testComponent._span = 1 / 3;
       expect(() => {
@@ -78,18 +77,18 @@ describe('NzGrid', () => {
       fixture.detectChanges();
       expect(debugElement_col.nativeElement.classList.contains('ant-col-offset-16')).toBe(true);
 
-      testComponent._offset = 0;
+      testComponent._offset1 = 0;
       testComponent._span1 = 8;
       expect(() => {
         fixture.detectChanges();
       }).not.toThrow();
-      expect(debugElement_col.nativeElement.classList.contains('ant-col-offset-0')).toBe(false);
+      expect(debugElement_col.nativeElement.classList.contains('ant-col-offset-0')).toBe(true);
 
       testComponent._offset1 = 24;
       testComponent._span1 = 8;
       fixture.detectChanges();
 
-      testComponent._offset = 100;
+      testComponent._offset1 = 100;
       testComponent._span1 = 8;
       expect(() => {
         fixture.detectChanges();
@@ -101,17 +100,17 @@ describe('NzGrid', () => {
         fixture.detectChanges();
       }).not.toThrow();
 
-      testComponent._offset = 4 / 7;
+      testComponent._offset1 = 4 / 7;
       expect(() => {
         fixture.detectChanges();
       }).not.toThrow();
 
-      testComponent._offset = -100;
+      testComponent._offset1 = -100;
       expect(() => {
         fixture.detectChanges();
       }).not.toThrow();
 
-      testComponent._offset = 'custorm_string';
+      testComponent._offset1 = 'custorm_string';
       expect(() => {
         fixture.detectChanges();
       }).not.toThrow();
@@ -200,7 +199,7 @@ describe('NzGrid', () => {
       const debugElement_embedded_span = fixtureSpan.debugElement.query(By.directive(NzColDirective));
       fixtureSpan.detectChanges();
       /* tslint:disable-next-line:max-line-length */
-      const className = 'ant-col-xs-1 ant-col-xs-pull-1 ant-col-xs-push-1 ant-col-xs-offset-1 ant-col-xs-order-1 ant-col-sm-1 ant-col-sm-pull-1 ant-col-sm-push-1 ant-col-sm-offset-1 ant-col-sm-order-1 ant-col-md-1 ant-col-md-pull-1 ant-col-md-push-1 ant-col-md-offset-1 ant-col-md-order-1 ant-col-lg-1 ant-col-lg-pull-1 ant-col-lg-push-1 ant-col-lg-offset-1 ant-col-lg-order-1 ant-col-xl-1 ant-col-xl-pull-1 ant-col-xl-push-1 ant-col-xl-offset-1 ant-col-xl-order-1';
+      const className = 'ant-col-xs-1 ant-col-xs-pull-1 ant-col-xs-push-1 ant-col-xs-offset-1 ant-col-xs-order-1 ant-col-sm-1 ant-col-sm-pull-1 ant-col-sm-push-1 ant-col-sm-offset-1 ant-col-sm-order-1 ant-col-md-1 ant-col-md-pull-1 ant-col-md-push-1 ant-col-md-offset-1 ant-col-md-order-1 ant-col-lg-0 ant-col-lg-pull-1 ant-col-lg-push-1 ant-col-lg-offset-1 ant-col-lg-order-1 ant-col-xl-1 ant-col-xl-pull-1 ant-col-xl-push-1 ant-col-xl-offset-1 ant-col-xl-order-1';
       expect(debugElement_embedded_span.nativeElement.className === className).toBe(true);
 
     });
@@ -466,7 +465,7 @@ class TestTypeFlexOrderComponent {
         [nzXs]="{ span: 1, offset: 1,push:1, order:1,pull:1 }"
         [nzSm]="{ span: 1, offset: 1,push:1, order:1,pull:1 }"
         [nzMd]="{ span: 1, offset: 1,push:1, order:1,pull:1 }"
-        [nzLg]="{ span: 1, offset: 1,push:1, order:1,pull:1 }"
+        [nzLg]="{ span: 0, offset: 1,push:1, order:1,pull:1 }"
         [nzXl]="{ span: 1, offset: 1,push:1, order:1,pull:1 }"></div>
     </div>
   `
