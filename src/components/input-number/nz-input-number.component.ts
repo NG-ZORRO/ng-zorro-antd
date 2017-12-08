@@ -183,6 +183,7 @@ export class NzInputNumberComponent implements ControlValueAccessor {
 
   _emitKeydown($event: KeyboardEvent): void {
     if ($event.keyCode === TAB && this._focused) {
+      this._checkValue();
       this._focused = false;
       this.nzBlur.emit($event);
     }
