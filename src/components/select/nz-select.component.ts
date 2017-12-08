@@ -54,6 +54,11 @@ import { NzOptionPipe } from './nz-option.pipe';
       (keydown.ArrowUp)="handleKeyUpEvent($event)"
       (keydown.ArrowDown)="handleKeyDownEvent($event)">
       <div class="ant-select-selection__rendered" *ngIf="!nzShowSearch">
+        <div class="ant-select-selection__placeholder">
+          <ng-template [ngIf]="!_selectedOption">
+            {{ nzPlaceHolder }}
+          </ng-template>
+        </div>
         <div class="ant-select-selection-selected-value">
           {{ _selectedOption?.nzLabel }}
         </div>
@@ -173,7 +178,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   _selectionPrefixCls = `${this._prefixCls}-selection`;
   _size: string;
   _value: string[] | string;
-  _placeholder = 'Placeholder';
+  _placeholder = 'placeholder';
   _notFoundContent = this._locale.translate('Select.notFoundContent');
   _searchText = '';
   _triggerWidth = 0;
