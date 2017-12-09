@@ -20,6 +20,7 @@ import { toBoolean } from '../util/convert';
   template     : `
     <ng-content></ng-content>
     <ng-template
+      #overlay="cdkConnectedOverlay"
       cdkConnectedOverlay
       [cdkConnectedOverlayOrigin]="overlayOrigin"
       [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"

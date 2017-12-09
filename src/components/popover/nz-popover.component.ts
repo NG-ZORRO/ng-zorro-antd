@@ -14,6 +14,7 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
   template     : `
     <ng-content></ng-content>
     <ng-template
+      #overlay="cdkConnectedOverlay"
       cdkConnectedOverlay
       [cdkConnectedOverlayOrigin]="overlayOrigin"
       [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"

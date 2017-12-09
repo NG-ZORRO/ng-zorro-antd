@@ -33,6 +33,7 @@ export class NzTooltipDirective implements AfterViewInit {
 
   private tooltip: NzToolTipComponent;
   private isDynamicTooltip = false; // Indicate whether current tooltip is dynamic created
+  private smoothTimer; // Timer for hiding smoothly
 
   constructor(
       public elementRef: ElementRef,
@@ -53,8 +54,16 @@ export class NzTooltipDirective implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.tooltip.nzTrigger === 'hover') {
-      this.renderer.listen(this.elementRef.nativeElement, 'mouseenter', () => this.show());
-      this.renderer.listen(this.elementRef.nativeElement, 'mouseleave', () => this.hide());
+      let overlayElement;
+      this.renderer.listen(this.elementRef.nativeElement, 'mouseenter', () => this.showSmoothly());
+      this.renderer.listen(this.elementRef.nativeElement, 'mouseleave', () => {
+        this.hideSmoothly();
+        if (!overlayElement) { // NOTE: we bind events under "mouseleave" due to the overlayRef is only created after the overlay was completely shown up
+          overlayElement = this.tooltip.overlay.overlayRef.overlayElement;
+          this.renderer.listen(overlayElement, 'mouseenter', () => this.showSmoothly());
+          this.renderer.listen(overlayElement, 'mouseleave', () => this.hideSmoothly());
+        }
+      });
     } else if (this.tooltip.nzTrigger === 'focus') {
       this.renderer.listen(this.elementRef.nativeElement, 'focus', () => this.show());
       this.renderer.listen(this.elementRef.nativeElement, 'blur', () => this.hide());
@@ -74,5 +83,20 @@ export class NzTooltipDirective implements AfterViewInit {
   private hide(): void {
     this.tooltip.hide();
     this.isTooltipOpen = false;
+  }
+
+  private showSmoothly(): void {
+    if (this.smoothTimer) {
+      clearTimeout(this.smoothTimer);
+    } else {
+      this.show();
+    }
+  }
+
+  private hideSmoothly(): void {
+    this.smoothTimer = setTimeout(() => {
+      this.smoothTimer = null;
+      this.hide();
+    }, 50);
   }
 }
