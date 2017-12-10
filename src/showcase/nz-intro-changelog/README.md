@@ -9,6 +9,24 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.6.4
+`2017-12-10`
+
+### Features
+* `Form` 支持默认`nzValidateStatus`并支持更多错误状态 [#696](https://github.com/NG-ZORRO/ng-zorro-antd/pull/696)
+* `Select` 支持所有场景下无值时显示Placeholder内容 [#703](https://github.com/NG-ZORRO/ng-zorro-antd/pull/703)
+* `Grid` 支持0值布局 [#704](https://github.com/NG-ZORRO/ng-zorro-antd/pull/704)
+* `Tooltip / Popover / Popconfirm` 支持鼠标移入悬浮框内，支持当悬浮框内容为空时不显示 [#714](https://github.com/NG-ZORRO/ng-zorro-antd/pull/714)
+
+### Bug Fixes
+* `InputNumber` 修复使用tab键后未触发脏值检查的问题 [#706](https://github.com/NG-ZORRO/ng-zorro-antd/pull/706)
+
+### Refactor
+* 修正语法书写以符合新的tslint规范 [#691](https://github.com/NG-ZORRO/ng-zorro-antd/pull/691) [@Trotyl Yu](https://github.com/trotyl)
+
+### Docs
+* 修正单词文案 [#694](https://github.com/NG-ZORRO/ng-zorro-antd/pull/694) [@chunghha](https://github.com/chunghha)
+
 ## 0.6.3
 `2017-12-07`
 
