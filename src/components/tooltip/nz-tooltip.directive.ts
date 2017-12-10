@@ -19,14 +19,11 @@ export class NzTooltipDirective implements AfterViewInit {
   // [NOTE] Here hard coded, and nzTitle used only under NzTooltipDirective currently.
   // The inherited class such as NzPopconfirmDirective should override this property if want using this property.
   @Input('nz-tooltip')
+  get nzTitle(): string { return this.tooltip.nzTitle; }
   set nzTitle(title: string) {
     if (this.isDynamicTooltip) {
       this.tooltip.nzTitle = title;
     }
-  }
-
-  get nzTitle(): string {
-    return this.tooltip.nzTitle;
   }
 
   @HostBinding('class.ant-tooltip-open') isTooltipOpen;
@@ -41,15 +38,15 @@ export class NzTooltipDirective implements AfterViewInit {
       private resolver: ComponentFactoryResolver,
       private renderer: Renderer2,
       @Optional() tooltip: NzToolTipComponent) {
-    let normalizedTooltip: NzToolTipComponent = tooltip;
+
+    this.tooltip = tooltip;
     // Support faster tooltip mode: <a nz-tooltip="xxx"></a>. [NOTE] Used only under NzTooltipDirective currently.
-    if (!normalizedTooltip) {
+    if (!this.tooltip) {
       const factory = this.resolver.resolveComponentFactory(NzToolTipComponent);
-      normalizedTooltip = this.hostView.createComponent(factory).instance;
+      this.tooltip = this.hostView.createComponent(factory).instance;
       this.isDynamicTooltip = true;
     }
-    normalizedTooltip.setOverlayOrigin(this);
-    this.tooltip = normalizedTooltip;
+    this.tooltip.setOverlayOrigin(this);
   }
 
   ngAfterViewInit(): void {
@@ -58,7 +55,7 @@ export class NzTooltipDirective implements AfterViewInit {
       this.renderer.listen(this.elementRef.nativeElement, 'mouseenter', () => this.showSmoothly());
       this.renderer.listen(this.elementRef.nativeElement, 'mouseleave', () => {
         this.hideSmoothly();
-        if (!overlayElement) { // NOTE: we bind events under "mouseleave" due to the overlayRef is only created after the overlay was completely shown up
+        if (this.tooltip.overlay.overlayRef && !overlayElement) { // NOTE: we bind events under "mouseleave" due to the overlayRef is only created after the overlay was completely shown up
           overlayElement = this.tooltip.overlay.overlayRef.overlayElement;
           this.renderer.listen(overlayElement, 'mouseenter', () => this.showSmoothly());
           this.renderer.listen(overlayElement, 'mouseleave', () => this.hideSmoothly());

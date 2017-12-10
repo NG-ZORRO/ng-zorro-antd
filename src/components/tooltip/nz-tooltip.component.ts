@@ -137,7 +137,9 @@ export class NzToolTipComponent {
   }
 
   show(): void {
-    this.nzVisible = true;
+    if (!this.isContentEmpty()) {
+      this.nzVisible = true;
+    }
   }
 
   hide(): void {
@@ -165,4 +167,9 @@ export class NzToolTipComponent {
   }
 
   constructor(private _cdr: ChangeDetectorRef) { }
+
+  private isContentEmpty(): boolean {
+    // return this.nzTemplate ? !(this.nzTemplate.elementRef.nativeElement as HTMLElement).hasChildNodes() : this.nzTitle === '';
+    return this.nzTemplate ? false : (this.nzTitle === '' || this.nzTitle == null); // Pity, can't detect whether nzTemplate is empty due to can't get it's content before shown up
+  }
 }
