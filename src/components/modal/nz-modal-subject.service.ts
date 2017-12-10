@@ -13,7 +13,7 @@ const enum modalEvent {
 }
 
 @Injectable()
-export class NzModalSubject extends Subject<string> {
+export class NzModalSubject extends Subject<string | object> {
   modalId: string;
   eventsQueue = {};
 

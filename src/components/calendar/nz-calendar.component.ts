@@ -212,7 +212,7 @@ export class NzCalendarComponent implements OnInit {
   _quartersCalendar: QuartersType[] = [];
   _listOfWeekName: string[] = [];
   _listOfMonthName: string[] = [];
-  _listOfYearName: string[] = [];
+  _listOfYearName: number[] = [];
   _yearUnit = '年';
   _monthUnit = '月';
   _showMonth = moment(new Date()).month();
@@ -397,7 +397,7 @@ export class NzCalendarComponent implements OnInit {
         this._monthUnit = moment.duration(4, 'week').humanize().split(' ')[ 1 ][ 0 ].toUpperCase() + moment.duration(4, 'week').humanize().split(' ')[ 1 ].slice(1, moment.duration(4, 'week').humanize().split(' ')[ 1 ].length);
       } catch (e) { }
     }
-    this._listOfYearName = this._generateYears(this._showYear).map(x => `${x}`);
+    this._listOfYearName = this._generateYears(this._showYear);
     this._listOfWeekName = moment.weekdaysMin();
     this._listOfMonthName = moment.months();
     const date = moment(this.nzValue).year(this._showYear).month(this._showMonth);
