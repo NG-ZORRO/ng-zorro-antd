@@ -9,6 +9,13 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.6.5
+`2017-12-10`
+
+### Bug Fixes
+* 修复 `Modal` 类型兼容问题 [#722](https://github.com/NG-ZORRO/ng-zorro-antd/pull/722)
+* 修复 `i18n` 替换问题 [#722](https://github.com/NG-ZORRO/ng-zorro-antd/pull/722)
+
 ## 0.6.4
 `2017-12-10`
 
