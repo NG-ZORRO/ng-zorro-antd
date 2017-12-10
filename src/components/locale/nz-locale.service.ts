@@ -18,12 +18,12 @@ export class NzLocaleService {
   translate(path: string, data?: any): string {
     this._logger.debug(`[NzLocaleService] Translating(${this._locale.locale}): ${path}`);
     const content = this._getObjectPath(this._locale, path);
-    let res = content;
     if (typeof content === 'string') {
+      let res = content;
       if (data) {
         Object.keys(data).forEach((key) => res = content.replace(new RegExp(`%${key}%`, 'g'), data[key]));
       }
-      return content;
+      return res;
     }
     return path;
   }
