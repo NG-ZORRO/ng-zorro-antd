@@ -17,11 +17,10 @@ export class NzLocaleService {
   // TODO: cache more deeply paths for performance
   translate(path: string, data?: any): string {
     this._logger.debug(`[NzLocaleService] Translating(${this._locale.locale}): ${path}`);
-    const content = this._getObjectPath(this._locale, path);
-    let res = content;
+    let content = this._getObjectPath(this._locale, path) as string;
     if (typeof content === 'string') {
       if (data) {
-        Object.keys(data).forEach((key) => res = content.replace(new RegExp(`%${key}%`, 'g'), data[key]));
+        Object.keys(data).forEach((key) => content = content.replace(new RegExp(`%${key}%`, 'g'), data[key]));
       }
       return content;
     }
