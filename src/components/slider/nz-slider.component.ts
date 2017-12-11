@@ -551,7 +551,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
         (value as number[]).map(val => this.utils.correctNumLimit(val, this.nzMin, this.nzMax)) :
         this.utils.correctNumLimit(value as number, this.nzMin, this.nzMax);
     }
-    return value;
+    return res;
   }
 
   // check if value is valid and throw error if value-type/range not match
