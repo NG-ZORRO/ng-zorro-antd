@@ -20,11 +20,11 @@ import { toBoolean } from '../util/convert';
   encapsulation: ViewEncapsulation.None,
   template     : `
     <div class="ant-input-number-handler-wrap"
-         (mouseover)="_mouseInside = true"
-         (mouseout)="_mouseInside = false">
+      (mouseover)="_mouseInside = true"
+      (mouseout)="_mouseInside = false">
       <a class="ant-input-number-handler ant-input-number-handler-up"
-         [ngClass]="{'ant-input-number-handler-up-disabled':_disabledUp}"
-         (click)="_numberUp($event)">
+        [ngClass]="{'ant-input-number-handler-up-disabled':_disabledUp}"
+        (click)="_numberUp($event)">
         <span
           class="ant-input-number-handler-up-inner"
           (click)="$event.preventDefault();"></span>
@@ -42,18 +42,17 @@ import { toBoolean } from '../util/convert';
     <div
       class="ant-input-number-input-wrap">
       <input class="ant-input-number-input"
-             #inputNumber
-             [placeholder]="nzPlaceHolder"
-             [disabled]="nzDisabled"
-             [(ngModel)]="_displayValue"
-             (blur)="_emitBlur($event)"
-             (focus)="_emitFocus($event)"
-             (keydown)="_emitKeydown($event)"
-             (ngModelChange)="_userInputChange()"
-             [attr.min]="nzMin"
-             [attr.max]="nzMax"
-             [attr.step]="_step"
-             autocomplete="off">
+        #inputNumber
+        [placeholder]="nzPlaceHolder"
+        [disabled]="nzDisabled"
+        [(ngModel)]="_displayValue"
+        (blur)="_emitBlur($event)"
+        (focus)="_emitFocus($event)"
+        (keydown)="_emitKeyDown($event)"
+        [attr.min]="nzMin"
+        [attr.max]="nzMax"
+        [attr.step]="_step"
+        autocomplete="off">
     </div>`,
   providers    : [
     {
@@ -181,7 +180,7 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     }
   }
 
-  _emitKeydown($event: KeyboardEvent): void {
+  _emitKeyDown($event: KeyboardEvent): void {
     if ($event.keyCode === TAB && this._focused) {
       this._checkValue();
       this._focused = false;
@@ -189,14 +188,11 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     }
   }
 
-  _userInputChange(): void {
+  _checkValue(): void {
     const numberValue = +this._displayValue;
-    if (this._isNumber(numberValue) && (numberValue <= this.nzMax) && (numberValue >= this.nzMin)) {
+    if (this._isNumber(numberValue)) {
       this.nzValue = numberValue;
     }
-  }
-
-  _checkValue(): void {
     this._displayValue = this.nzValue;
   }
 
