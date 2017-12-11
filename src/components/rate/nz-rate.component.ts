@@ -160,8 +160,8 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
     };
   }
 
-  writeValue(value: number): void {
-    this.nzValue = value;
+  writeValue(value: number | null): void {
+    this.nzValue = value || 0;
   }
 
   registerOnChange(fn: (_: number) => void): void {
