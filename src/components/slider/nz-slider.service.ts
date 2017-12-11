@@ -32,7 +32,7 @@ export class NzSliderService {
     let res = +num;
     if (isNaN(res)) { return min; }
     if (num < min) { res = min; } else if (num > max) { res = max; }
-    return num;
+    return res;
   }
 
   /**
