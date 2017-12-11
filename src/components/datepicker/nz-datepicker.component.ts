@@ -191,6 +191,7 @@ import { toBoolean } from '../util/convert';
 export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   private _allowClear = true;
   private _disabled = false;
+  private _showTime: Partial<NzTimePickerInnerComponent> = null;
   _el: HTMLElement;
   _open = false;
   _mode = 'year';
@@ -210,13 +211,25 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   // ngModel Access
   onChange: (value: Date) => void = () => null;
   onTouched: () => void = () => null;
-  @Input() nzShowTime = null;
   @Input() nzPlaceHolder = this._locale.translate('DateTime.chooseDatePlease');
   @Input() nzFormat = 'YYYY-MM-DD';
   @Input() nzSize = '';
   @Input() nzMode: 'day' | 'month' = 'day';
   @ViewChild('trigger') trigger;
   @ViewChild(NzTimePickerInnerComponent) timePickerInner: NzTimePickerInnerComponent;
+
+  @Input()
+  set nzShowTime(value: Partial<NzTimePickerInnerComponent>) {
+    if (typeof value === 'string' || typeof value === 'boolean') {
+      this._showTime = toBoolean(value) ? {} : null;
+    } else {
+      this._showTime = value;
+    }
+  }
+
+  get nzShowTime(): Partial<NzTimePickerInnerComponent> {
+    return this._showTime;
+  }
 
   @Input()
   set nzAllowClear(value: boolean) {
