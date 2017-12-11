@@ -82,7 +82,7 @@ export class NzDemoLocaleAllComponent implements OnInit {
           <a nz-popconfirm>Click to confirm</a>
         </nz-popconfirm>
       </div>
-      <nz-calendar [nzFullScreen]="false" style="width: 319px; border: 1px solid #d9d9d9; borderRadius: 4px;"></nz-calendar>
+      <nz-calendar [nzFullScreen]="false" style="width: 319px; border: 1px solid #d9d9d9; border-radius: 4px;"></nz-calendar>
       <div class="example">
         <nz-table #nzTable [nzDataSource]="[]">
           <thead nz-thead>
