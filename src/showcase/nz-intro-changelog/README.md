@@ -9,6 +9,16 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.6.6
+`2017-12-11`
+
+### Bug Fixes
+* 修复 `Slider` 拖拽的问题 [#732]((https://github.com/NG-ZORRO/ng-zorro-antd/pull/732)
+* 修复 `Rate` 点击失效的问题 [#728]((https://github.com/NG-ZORRO/ng-zorro-antd/pull/728)
+* 修复 `DatePicker` 时间选择的问题 [#726]((https://github.com/NG-ZORRO/ng-zorro-antd/pull/726)
+* 修复 `InputNumber` 超出边界值的问题 [#731]((https://github.com/NG-ZORRO/ng-zorro-antd/pull/731)
+
+
 ## 0.6.5
 `2017-12-10`
 
