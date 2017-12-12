@@ -399,7 +399,7 @@ export class NzCalendarComponent implements OnInit {
     }
     this._listOfYearName = this._generateYears(this._showYear);
     this._listOfWeekName = moment.weekdaysMin();
-    this._listOfMonthName = moment.months();
+    this._listOfMonthName = moment.monthsShort();
     const date = moment(this.nzValue).year(this._showYear).month(this._showMonth);
     this._weeksCalendar = this._buildMonth(date);
     this._quartersCalendar = this._buildYears(date);
