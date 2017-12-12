@@ -47,7 +47,7 @@
         (click)="handleClose(file)"
     ></i>
 
-    <div [ngClass]="_prefixCls+'-list-item-progress'" key="progress" *ngIf="file.status !== 'done'">
+    <div [ngClass]="_prefixCls+'-list-item-progress'" key="progress" *ngIf="file.status === 'uploading'">
         <nz-progress
             [ngModel]="file.percent"
             [nzType]="'line'"
