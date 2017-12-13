@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-card-flex',
   template: `
@@ -33,9 +33,6 @@ import { Component, OnInit } from '@angular/core';
       }`
   ]
 })
-export class NzDemoCardFlexComponent implements OnInit {
+export class NzDemoCardFlexComponent {
   bodyStyle = { padding: 0 };
-
-  ngOnInit() {
-  }
 }

@@ -3,9 +3,9 @@ import * as moment from 'moment';
 
 @Pipe({ name: 'nzDate' })
 export class NzDatePipe implements PipeTransform {
-  transform(value: Date, formatString: string): string {
-    if (value) {
-      return moment(+value).format(formatString);
+  transform(value: Date | number | string, formatString: string): string {
+    if (moment(value).isValid()) {
+      return moment(value).format(formatString);
     } else {
       return '';
     }

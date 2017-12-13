@@ -23,7 +23,6 @@ import { NzDemoFormRoutingModule } from './nz-demo-form.routing.module';
   imports     : [ NzDemoFormRoutingModule, CommonModule, ReactiveFormsModule, FormsModule, NzCodeBoxModule, NgZorroAntdModule ],
   declarations: [ NzDemoFormLayoutComponent, NzDemoFormDynamicComponent, NzDemoFormLoginComponent, NzDemoFormComponent, NzDemoFormInlineComponent, NzDemoFormHorizontalComponent, NzDemoFormMixComponent, NzDemoFormValidateComponent, NzDemoFormValidateDynamicComponent, NzDemoFormAdvancedComponent ]
 })
-
 export class NzDemoFormModule {
 
 }

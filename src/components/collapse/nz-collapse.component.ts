@@ -1,17 +1,19 @@
 import {
-  Component,
-  Input,
-  ElementRef,
-  Host, HostBinding
-} from '@angular/core';
-import {
-  trigger,
+  animate,
   state,
   style,
-  animate,
-  transition
+  transition,
+  trigger,
 } from '@angular/animations';
-import { NzCollapsesetComponent } from './nz-collapseset.component'
+import {
+  Component,
+  ElementRef,
+  Host,
+  HostBinding,
+  Input,
+} from '@angular/core';
+import { toBoolean } from '../util/convert';
+import { NzCollapsesetComponent } from './nz-collapseset.component';
 
 @Component({
   selector     : 'nz-collapse',
@@ -44,26 +46,33 @@ import { NzCollapsesetComponent } from './nz-collapseset.component'
       transition('inactive => active', animate('150ms ease-in')),
       transition('active => inactive', animate('150ms ease-out'))
     ])
-  ]
+  ],
+  host: {
+    '[class.ant-collapse-item]': 'true'
+  }
 })
 
 export class NzCollapseComponent {
-  _el;
-  _active: boolean;
+  private _disabled = false;
+  _active = false;
 
-  @HostBinding('class.ant-collapse-item') _nzCollapseItem = true;
+  _el;
 
   @Input() nzTitle: string;
+
   @Input()
   @HostBinding('class.ant-collapse-item-disabled')
-  nzDisabled = false;
-
-  @Input()
-  get nzActive(): boolean {
-    return this._active;
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
   }
 
-  set nzActive(active: boolean) {
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
+
+  @Input()
+  set nzActive(value: boolean) {
+    const active = toBoolean(value);
     if (this._active === active) {
       return;
     }
@@ -72,7 +81,11 @@ export class NzCollapseComponent {
     }
   }
 
-  clickHeader($event) {
+  get nzActive(): boolean {
+    return this._active;
+  }
+
+  clickHeader($event: MouseEvent): void {
     this.nzActive = !this.nzActive;
     /** trigger host collapseSet click event */
     this._collapseSet.nzClick(this);

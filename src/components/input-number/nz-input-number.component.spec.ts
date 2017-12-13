@@ -1,10 +1,10 @@
 /* tslint:disable:no-unused-variable */
-import { async, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Component } from '@angular/core';
+import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NzInputNumberModule } from './nz-input-number.module';
 import { NzInputNumberComponent } from './nz-input-number.component';
+import { NzInputNumberModule } from './nz-input-number.module';
 
 describe('NzInputNumber', () => {
   let testComponent;
@@ -103,7 +103,6 @@ export class NzInputNumberComponentIntSpecComponent {
   initValue = 1;
   size = 'default';
 }
-
 
 @Component({
   selector: 'nz-input-number-component-digit-spec',

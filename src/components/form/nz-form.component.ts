@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ElementRef, ViewEncapsulation, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : '[nz-form]',
@@ -11,9 +11,8 @@ import { Component, Input, OnInit, ElementRef, ViewEncapsulation, Renderer2 } fr
     './style/patch.less'
   ]
 })
-
 export class NzFormComponent implements OnInit {
-  _classList: Array<string> = [];
+  _classList: string[] = [];
   _el: HTMLElement;
   _prefixCls = 'ant-form';
 
@@ -21,7 +20,7 @@ export class NzFormComponent implements OnInit {
   @Input() nzType = 'horizontal';
 
   @Input()
-  set nzLayout(value) {
+  set nzLayout(value: string) {
     this.nzType = value;
     this.setClassMap();
   }
@@ -37,14 +36,14 @@ export class NzFormComponent implements OnInit {
     });
     this._classList.forEach(_className => {
       this._renderer.addClass(this._el, _className);
-    })
+    });
   }
 
   constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
     this._el = this._elementRef.nativeElement;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.setClassMap();
   }
 }

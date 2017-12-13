@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-grid-flex-align',
@@ -52,11 +52,4 @@ import { Component, OnInit } from '@angular/core';
     </div>`,
   styles  : []
 })
-export class NzDemoGridFlexAlignComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
-
+export class NzDemoGridFlexAlignComponent { }

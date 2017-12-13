@@ -1,19 +1,21 @@
 import {
   Component,
-  OnInit,
-  ViewEncapsulation,
-  Input,
-  HostBinding,
   ContentChild,
-  TemplateRef
+  HostBinding,
+  Input,
+  OnInit,
+  TemplateRef,
+  ViewEncapsulation,
 } from '@angular/core';
 
 import {
-  trigger,
+  animate,
   style,
   transition,
-  animate
+  trigger,
 } from '@angular/animations';
+
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-badge',
@@ -33,7 +35,7 @@ import {
   template     : `
     <ng-template *ngIf="content" [ngTemplateOutlet]="content"></ng-template>
     <span class="ant-badge-status-dot ant-badge-status-{{nzStatus}}" *ngIf="nzStatus"></span>
-    <span class="ant-badge-status-text" *ngIf="nzText">{{nzText}}</span>
+    <span class="ant-badge-status-text" *ngIf="nzText">{{ nzText }}</span>
     <sup [@enterLeave]
          [ngStyle]="nzStyle"
          *ngIf="(nzDot)||(nzCount>0)||((nzCount==0)&&nzShowZero)"
@@ -48,53 +50,60 @@ import {
                                        class="ant-scroll-number-only"
                                        [style.transform]="'translateY('+((-countArray[i]*100))+'%)'">
         <ng-template [ngIf]="(!nzDot)&&(countArray[i]!=null)">
-          <p *ngFor="let p of countSingleArray" [class.current]="p==countArray[i]">{{p}}</p>
+          <p *ngFor="let p of countSingleArray" [class.current]="p==countArray[i]">{{ p }}</p>
         </ng-template>
         </span></ng-template>
-      <ng-template [ngIf]="nzCount>nzOverflowCount">{{nzOverflowCount}}+</ng-template>
+      <ng-template [ngIf]="nzCount>nzOverflowCount">{{ nzOverflowCount }}+</ng-template>
     </sup>
   `,
   styleUrls    : [
     './style/index.less',
     './style/patch.less'
-  ]
+  ],
+  host: {
+    '[class.ant-badge]': 'true'
+  }
 })
 export class NzBadgeComponent implements OnInit {
-  _showZero = false;
+  private _showDot = false;
+  private _showZero = false;
   count: number;
   maxNumberArray;
   countArray = [];
   countSingleArray = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
-  @ContentChild('content') content: TemplateRef<any>;
-  @HostBinding('class.ant-badge') _nzBadge = true;
+  @ContentChild('content') content: TemplateRef<void>;
 
   @HostBinding('class.ant-badge-not-a-wrapper')
-  get setNoWrapper() {
+  get setNoWrapper(): boolean {
     return !this.content;
   }
 
   @Input() nzOverflowCount = 99;
 
   @Input()
-  set nzShowZero(value: boolean | string) {
-    if (value === '') {
-      this._showZero = true;
-    } else {
-      this._showZero = value as boolean;
-    }
+  set nzShowZero(value: boolean) {
+    this._showZero = toBoolean(value);
   }
 
-  get nzShowZero() {
+  get nzShowZero(): boolean {
     return this._showZero;
   }
 
-  @Input() nzDot = false;
+  @Input()
+  set nzDot(value: boolean) {
+    this._showDot = toBoolean(value);
+  }
+
+  get nzDot(): boolean {
+    return this._showDot;
+  }
+
   @Input() nzText: string;
   @Input() nzStyle;
   @Input() @HostBinding('class.ant-badge-status') nzStatus: string;
 
   @Input()
-  set nzCount(value) {
+  set nzCount(value: number) {
     if (value < 0) {
       this.count = 0;
     } else {
@@ -103,14 +112,11 @@ export class NzBadgeComponent implements OnInit {
     this.countArray = this.count.toString().split('');
   }
 
-  get nzCount() {
+  get nzCount(): number {
     return this.count;
   }
 
-  constructor() {
-  }
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.maxNumberArray = this.nzOverflowCount.toString().split('');
   }
 }

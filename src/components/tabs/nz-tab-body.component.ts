@@ -1,8 +1,8 @@
 import {
   Component,
-  ViewEncapsulation,
+  Input,
   TemplateRef,
-  Input
+  ViewEncapsulation,
 } from '@angular/core';
 
 @Component({
@@ -13,5 +13,5 @@ import {
   `,
 })
 export class NzTabBodyComponent {
-  @Input() content: TemplateRef<any>;
+  @Input() content: TemplateRef<void>;
 }

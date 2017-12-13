@@ -71,9 +71,6 @@ export class NzDemoTableEditComponent implements OnInit {
     this.editRow = null;
   }
 
-  constructor() {
-  }
-
   ngOnInit() {
     this.data.forEach(item => {
       this.tempEditObject[ item.key ] = {};

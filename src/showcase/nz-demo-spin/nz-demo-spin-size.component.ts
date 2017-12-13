@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-spin-size',
@@ -13,11 +13,4 @@ import { Component, OnInit } from '@angular/core';
     `
   ]
 })
-export class NzDemoSpinSizeComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
-
+export class NzDemoSpinSizeComponent { }

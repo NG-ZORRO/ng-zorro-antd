@@ -1,11 +1,12 @@
 import {
+  forwardRef,
   Component,
+  Input,
   OnInit,
   ViewEncapsulation,
-  Input,
-  forwardRef,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-rate',
@@ -35,21 +36,23 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class NzRateComponent implements OnInit, ControlValueAccessor {
+  private _hasHalf = false;
+  private _allowHalf = false;
+  private _disabled = false;
+
   _prefixCls = 'ant-rate';
   _innerPrefixCls = `${this._prefixCls}-star`;
   _classMap;
-  _starArray: Array<any> = new Array();
+  _starArray: number[] = [];
   _count = 5;
   _value = 0;
   _hoverValue = 0; // 鼠标悬浮时的星数，为正整数，和_hasHalf配合使用
-  _hasHalf = false;
-  _allowHalf = false;
-  _disabled = false;
-  _floatReg: any = /^\d+(\.\d+)?$/;
+  // TODO: What's this for? It will match all number values
+  _floatReg: RegExp = /^\d+(\.\d+)?$/;
 
   // ngModel Access
-  onChange: any = Function.prototype;
-  onTouched: any = Function.prototype;
+  onChange: (value: number) => void = () => null;
+  onTouched: () => void = () => null;
 
   @Input()
   set nzCount(value: number) {
@@ -57,18 +60,15 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
   }
 
   @Input()
-  set nzAllowHalf(value: boolean | string) {
-    if (value === '') {
-      this._allowHalf = true;
-    } else {
-      this._allowHalf = value as boolean;
-    }
+  set nzAllowHalf(value: boolean) {
+    this._allowHalf = toBoolean(value);
   }
 
   @Input()
-  set nzDefaultValue(value: number) {
+  set nzDefaultValue(input: number) {
+    let value = input;
     this._value = value;
-    if (this._floatReg.test(value)) {
+    if (this._floatReg.test(value.toString())) {
       value += 0.5;
       this._hasHalf = true;
     }
@@ -77,14 +77,15 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
 
   get nzValue(): number {
     return this._value;
-  };
+  }
 
-  set nzValue(value: number) {
+  set nzValue(input: number) {
+    let value = input;
     if (this._value === value) {
       return;
     }
     this._value = value;
-    if (this._floatReg.test(value)) {
+    if (this._floatReg.test(value.toString())) {
       value += 0.5;
       this._hasHalf = true;
     }
@@ -93,7 +94,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
 
   @Input()
   set nzDisabled(value: boolean) {
-    this._disabled = value;
+    this._disabled = toBoolean(value);
     this.setClassMap();
   }
 
@@ -111,7 +112,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  _clickRate(e, index, isFull): void {
+  _clickRate(e: MouseEvent, index: number, isFull: boolean): void {
     e.stopPropagation();
     if (this._disabled) {
       return;
@@ -124,7 +125,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
     this.onChange(this._value);
   }
 
-  _hoverRate(e, index, isFull): void {
+  _hoverRate(e: MouseEvent, index: number, isFull: boolean): void {
     e.stopPropagation();
     if (this._disabled) {
       return;
@@ -139,17 +140,17 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
     this._hasHalf = isHalf;
   }
 
-  _leaveRate(e): void {
+  _leaveRate(e: MouseEvent): void {
     e.stopPropagation();
     let oldVal = this._value;
-    if (this._floatReg.test(oldVal)) {
+    if (this._floatReg.test(oldVal.toString())) {
       oldVal += 0.5;
       this._hasHalf = true;
     }
     this._hoverValue = oldVal;
   }
 
-  setClasses(i): any {
+  setClasses(i: number): object {
     return {
       [this._innerPrefixCls]            : true,
       [`${this._innerPrefixCls}-full`]  : (i + 1 < this._hoverValue) || (!this._hasHalf) && (i + 1 === this._hoverValue),
@@ -159,15 +160,15 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
     };
   }
 
-  writeValue(value: any): void {
-    this.nzValue = value;
+  writeValue(value: number | null): void {
+    this.nzValue = value || 0;
   }
 
-  registerOnChange(fn: (_: any) => {}): void {
+  registerOnChange(fn: (_: number) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => {}): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -175,7 +176,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
     this.nzDisabled = isDisabled;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.setClassMap();
     this.setChildrenClassMap();
   }

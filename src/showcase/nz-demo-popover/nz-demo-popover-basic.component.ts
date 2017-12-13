@@ -15,11 +15,4 @@ import {
     </nz-popover>
   `
 })
-export class NzDemoPopoverBasicComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  };
-
-}
+export class NzDemoPopoverBasicComponent { }

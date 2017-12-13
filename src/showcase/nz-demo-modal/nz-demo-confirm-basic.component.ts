@@ -22,7 +22,7 @@ export class NzDemoConfirmBasicComponent {
       onCancel() {
       }
     });
-  }
+  };
 
   constructor(private confirmServ: NzModalService) {
   }

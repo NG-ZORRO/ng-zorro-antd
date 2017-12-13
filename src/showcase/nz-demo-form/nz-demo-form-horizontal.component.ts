@@ -14,7 +14,7 @@ import {
         <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
           <label for="email" nz-form-item-required>E-mail</label>
         </div>
-        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('email')">
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
           <nz-input [nzSize]="'large'" formControlName="email" [nzId]="'email'"></nz-input>
           <div nz-form-explain *ngIf="getFormControl('email').dirty&&getFormControl('email').hasError('email')">The input is not valid E-mail!</div>
         </div>
@@ -23,7 +23,7 @@ import {
         <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
           <label for="password" nz-form-item-required>Password</label>
         </div>
-        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('password')">
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
           <nz-input [nzSize]="'large'" formControlName="password" [nzType]="'password'" [nzId]="'password'" (ngModelChange)="updateConfirmValidator()"></nz-input>
           <div nz-form-explain *ngIf="getFormControl('password').dirty&&getFormControl('password').hasError('required')">Please input your password!</div>
         </div>
@@ -32,7 +32,7 @@ import {
         <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
           <label for="checkPassword" nz-form-item-required>Confirm Password</label>
         </div>
-        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('checkPassword')">
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
           <nz-input [nzSize]="'large'" formControlName="checkPassword" [nzType]="'password'" [nzId]="'checkPassword'"></nz-input>
           <div nz-form-explain *ngIf="getFormControl('checkPassword').dirty&&getFormControl('checkPassword').hasError('required')">Please confirm your password!</div>
           <div nz-form-explain *ngIf="getFormControl('checkPassword').dirty&&getFormControl('checkPassword').hasError('confirm')">Two passwords that you enter is inconsistent!</div>
@@ -49,7 +49,7 @@ import {
             </span>
           </label>
         </div>
-        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('nickname')">
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
           <nz-input [nzSize]="'large'" formControlName="nickname" [nzId]="'nickname'"></nz-input>
           <div nz-form-explain *ngIf="getFormControl('nickname').dirty&&getFormControl('nickname').hasError('required')">Please input your nickname!</div>
         </div>
@@ -58,8 +58,8 @@ import {
         <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
           <label for="phoneNumber" nz-form-item-required>Phone Number</label>
         </div>
-        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('phoneNumber')">
-          <nz-input-group [nzSize]="'large'" [nzCompact]="true">
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="validateForm.controls['phoneNumber']">
+          <nz-input-group [nzSize]="'large'" nzCompact>
             <nz-select formControlName="phoneNumberPrefix" style="width: 25%;">
               <nz-option [nzLabel]="'+86'" [nzValue]="'+86'"></nz-option>
               <nz-option [nzLabel]="'+87'" [nzValue]="'+87'"></nz-option>
@@ -73,7 +73,7 @@ import {
         <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
           <label for="website" nz-form-item-required>Website</label>
         </div>
-        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('website')">
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
           <nz-input [nzSize]="'large'" formControlName="website" [nzId]="'website'"></nz-input>
           <div nz-form-explain *ngIf="getFormControl('website').dirty&&getFormControl('website').hasError('required')">Please input website!</div>
         </div>
@@ -82,7 +82,7 @@ import {
         <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
           <label for="captcha" nz-form-item-required>Captcha</label>
         </div>
-        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" [nzValidateStatus]="getFormControl('captcha')">
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
           <div nz-row [nzGutter]="8">
             <div nz-col [nzSpan]="12">
               <nz-input [nzSize]="'large'" formControlName="captcha" [nzId]="'captcha'"></nz-input>

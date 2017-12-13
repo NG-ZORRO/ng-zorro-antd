@@ -1,29 +1,28 @@
 import {
+  ChangeDetectorRef,
   Component,
-  ViewEncapsulation,
+  EventEmitter,
   Input,
   Output,
-  EventEmitter,
-  ContentChild,
-  Renderer2,
-  ChangeDetectorRef,
+  ViewEncapsulation,
 } from '@angular/core';
-import { NzPopconfirmDirective } from './nz-popconfirm.directive';
-import { FadeAnimation } from '../core/animation/fade-animations';
-import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
+import { fadeAnimation } from '../core/animation/fade-animations';
 import { NzLocaleService } from '../locale/index';
+import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-popconfirm',
   encapsulation: ViewEncapsulation.None,
   animations   : [
-    FadeAnimation
+    fadeAnimation
   ],
   template     : `
     <ng-content></ng-content>
     <ng-template
+      #overlay="cdkConnectedOverlay"
       cdkConnectedOverlay
-      [cdkConnectedOverlayOrigin]="nzOrigin"
+      [cdkConnectedOverlayOrigin]="overlayOrigin"
       [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
       (backdropClick)="hide()"
       (detach)="hide()"
@@ -39,12 +38,12 @@ import { NzLocaleService } from '../locale/index';
               <div class="ant-popover-inner-content">
                 <div class="ant-popover-message" *ngIf="!nzTemplate">
                   <i class="anticon anticon-exclamation-circle"></i>
-                  <div class="ant-popover-message-title">{{nzTitle}}</div>
+                  <div class="ant-popover-message-title">{{ nzTitle }}</div>
                 </div>
                 <div class="ant-popover-buttons" *ngIf="!nzTemplate">
-                  <button nz-button [nzSize]="'small'" (click)="onCancel()"><span>{{nzCancelText}}</span></button>
+                  <button nz-button [nzSize]="'small'" (click)="onCancel()"><span>{{ nzCancelText }}</span></button>
                   <button nz-button [nzSize]="'small'" [nzType]="'primary'" (click)="onConfirm()">
-                    <span>{{nzOkText}}</span></button>
+                    <span>{{ nzOkText }}</span></button>
                 </div>
                 <ng-template
                   *ngIf="nzTemplate"
@@ -62,28 +61,27 @@ import { NzLocaleService } from '../locale/index';
   ]
 })
 export class NzPopconfirmComponent extends NzToolTipComponent {
+  private _condition = false;
   _prefix = 'ant-popover-placement';
   _trigger = 'click';
-  _hasBackdrop = true;
-  _condition = false;
   @Input() nzContent;
   @Input() nzOkText = this._locale.translate('Modal.okText');
   @Input() nzCancelText = this._locale.translate('Modal.cancelText');
 
-  @Input() set nzCondition(value) {
-    this._condition = value;
+  @Input()
+  set nzCondition(value: boolean) {
+    this._condition = toBoolean(value);
   }
 
-  get nzCondition() {
+  get nzCondition(): boolean {
     return this._condition;
   }
 
-  @Output() nzOnCancel: EventEmitter<any> = new EventEmitter();
-  @Output() nzOnConfirm: EventEmitter<any> = new EventEmitter();
-  @ContentChild(NzPopconfirmDirective) nzOrigin;
+  @Output() nzOnCancel: EventEmitter<void> = new EventEmitter();
+  @Output() nzOnConfirm: EventEmitter<void> = new EventEmitter();
 
-  constructor(renderer: Renderer2, cdr: ChangeDetectorRef, private _locale: NzLocaleService) {
-    super(renderer, cdr);
+  constructor(cdr: ChangeDetectorRef, private _locale: NzLocaleService) {
+    super(cdr);
   }
 
   show(): void {
@@ -94,12 +92,12 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
     }
   }
 
-  onCancel() {
+  onCancel(): void {
     this.nzOnCancel.emit();
     this.nzVisible = false;
   }
 
-  onConfirm() {
+  onConfirm(): void {
     this.nzOnConfirm.emit();
     this.nzVisible = false;
   }

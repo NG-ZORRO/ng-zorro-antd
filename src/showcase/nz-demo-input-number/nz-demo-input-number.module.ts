@@ -17,7 +17,6 @@ import { NzDemoInputNumberRoutingModule } from './nz-demo-input-number.routing.m
   imports     : [ NzDemoInputNumberRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule ],
   declarations: [ NzDemoInputNumberBasicComponent, NzDemoInputNumberSizeComponent, NzDemoInputNumberDisabledComponent, NzDemoInputNumberDigitComponent, NzDemoInputNumberComponent ]
 })
-
 export class NzDemoInputNumberModule {
 
 }

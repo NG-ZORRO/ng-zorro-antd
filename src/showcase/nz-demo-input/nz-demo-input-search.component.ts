@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-input-search',
@@ -8,13 +8,6 @@ import { Component, OnInit } from '@angular/core';
 
   styles: []
 })
-export class NzDemoInputSearchComponent implements OnInit {
+export class NzDemoInputSearchComponent {
   _value: string;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

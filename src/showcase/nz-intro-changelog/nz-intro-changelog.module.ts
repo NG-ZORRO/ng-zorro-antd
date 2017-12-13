@@ -9,7 +9,6 @@ import { NzIntroChangeLogRoutingModule } from './nz-intro-changelog.routing.modu
   imports     : [ CommonModule, NzHighlightModule, NzIntroChangeLogRoutingModule, NzMarkdownModule ],
   declarations: [ NzIntroChangelogComponent ]
 })
-
 export class NzIntroChangeLogModule {
 
 }

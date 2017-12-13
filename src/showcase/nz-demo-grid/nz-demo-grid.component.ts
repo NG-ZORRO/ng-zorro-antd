@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-grid',
@@ -8,7 +8,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-grid.less',
   ]
 })
-export class NzDemoGridComponent implements OnInit {
+export class NzDemoGridComponent {
   NzDemoGridBasicCode = require('!!raw-loader!./nz-demo-grid-basic.component');
   NzDemoGridGutterCode = require('!!raw-loader!./nz-demo-grid-gutter.component');
   NzDemoGridGutterConfigCode = require('!!raw-loader!./nz-demo-grid-gutter-config.component');
@@ -19,11 +19,4 @@ export class NzDemoGridComponent implements OnInit {
   NzDemoGridFlexOrderCode = require('!!raw-loader!./nz-demo-grid-flex-order.component');
   NzDemoGridResponsiveCode = require('!!raw-loader!./nz-demo-grid-responsive.component');
   NzDemoGridResponsiveMoreCode = require('!!raw-loader!./nz-demo-grid-responsive-more.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

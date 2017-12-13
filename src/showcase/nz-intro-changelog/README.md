@@ -9,6 +9,131 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.6.6
+`2017-12-11`
+
+### Bug Fixes
+* 修复 `Slider` 拖拽的问题 [#732]((https://github.com/NG-ZORRO/ng-zorro-antd/pull/732)
+* 修复 `Rate` 点击失效的问题 [#728]((https://github.com/NG-ZORRO/ng-zorro-antd/pull/728)
+* 修复 `DatePicker` 时间选择的问题 [#726]((https://github.com/NG-ZORRO/ng-zorro-antd/pull/726)
+* 修复 `InputNumber` 超出边界值的问题 [#731]((https://github.com/NG-ZORRO/ng-zorro-antd/pull/731)
+
+
+## 0.6.5
+`2017-12-10`
+
+### Bug Fixes
+* 修复 `Modal` 类型兼容问题 [#722](https://github.com/NG-ZORRO/ng-zorro-antd/pull/722)
+* 修复 `i18n` 替换问题 [#722](https://github.com/NG-ZORRO/ng-zorro-antd/pull/722)
+
+## 0.6.4
+`2017-12-10`
+
+### Features
+* `Form` 支持默认`nzValidateStatus`并支持更多错误状态 [#696](https://github.com/NG-ZORRO/ng-zorro-antd/pull/696)
+* `Select` 支持所有场景下无值时显示Placeholder内容 [#703](https://github.com/NG-ZORRO/ng-zorro-antd/pull/703)
+* `Grid` 支持0值布局 [#704](https://github.com/NG-ZORRO/ng-zorro-antd/pull/704)
+* `Tooltip / Popover / Popconfirm` 支持鼠标移入悬浮框内，支持当悬浮框内容为空时不显示 [#714](https://github.com/NG-ZORRO/ng-zorro-antd/pull/714)
+
+### Bug Fixes
+* `InputNumber` 修复使用tab键后未触发脏值检查的问题 [#706](https://github.com/NG-ZORRO/ng-zorro-antd/pull/706)
+
+### Refactor
+* 修正语法书写以符合新的tslint规范 [#691](https://github.com/NG-ZORRO/ng-zorro-antd/pull/691) [@Trotyl Yu](https://github.com/trotyl)
+
+### Docs
+* 修正单词文案 [#694](https://github.com/NG-ZORRO/ng-zorro-antd/pull/694) [@chunghha](https://github.com/chunghha)
+
+## 0.6.3
+`2017-12-07`
+
+### BREAK CHANGES
+* `DropDownButton` 用 `nzDisabled` 取代 `nzDisable` [#459](https://github.com/NG-ZORRO/ng-zorro-antd/pull/459) [@Trotyl Yu](https://github.com/trotyl)
+
+### Features
+* `Select` 支持 `option` 直接渲染 `ng-template` 内容 [#689](https://github.com/NG-ZORRO/ng-zorro-antd/pull/689)
+* `Carousel` 支持更多 API [#688](https://github.com/NG-ZORRO/ng-zorro-antd/pull/688) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `Select` 支持下拉滚动到底部事件 `nzScrollToBottom`，用于滚动加载 [#678](https://github.com/NG-ZORRO/ng-zorro-antd/pull/678)
+* 打包版本支持 `sourcemaps` [#666](https://github.com/NG-ZORRO/ng-zorro-antd/pull/666) [@Trotyl Yu](https://github.com/trotyl)
+* 国际化支持土耳其语 [#634](https://github.com/NG-ZORRO/ng-zorro-antd/pull/634) [@Emrullah TUNCAY](https://github.com/etuncay)
+* 国际化支持繁体中文 [#687](https://github.com/NG-ZORRO/ng-zorro-antd/pull/687)
+* 所有 `boolean` 类型的属性支持直接以 `attribute` 方式使用 [#459](https://github.com/NG-ZORRO/ng-zorro-antd/pull/459) [@Trotyl Yu](https://github.com/trotyl)
+
+### Bug Fixes
+* `Radio` 修复动态改变选项时的问题 [#677](https://github.com/NG-ZORRO/ng-zorro-antd/pull/677) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `Select` 修复 `disabled` 选项可以使用方向键选中的问题 [#675](https://github.com/NG-ZORRO/ng-zorro-antd/pull/675) [@卡色](https://github.com/cipchk)
+* `Affix` 修复位置问题 [#672](https://github.com/NG-ZORRO/ng-zorro-antd/pull/672) [@卡色](https://github.com/cipchk)
+
+### Refactor
+* 重构所有静态 `className` 绑定的方式 [#664](https://github.com/NG-ZORRO/ng-zorro-antd/pull/664) [@Trotyl Yu](https://github.com/trotyl)
+
+### CI
+* 并行加速CI测试 [#655](https://github.com/NG-ZORRO/ng-zorro-antd/pull/655) [@Trotyl Yu](https://github.com/trotyl)
+
+## 0.6.2
+`2017-11-29`
+
+### Features
+* `Steps` 支持动态数据更新 [#629](https://github.com/NG-ZORRO/ng-zorro-antd/pull/629)
+* `Slider` 支持 `nzMarks`属性动态更新 [#636](https://github.com/NG-ZORRO/ng-zorro-antd/pull/636)
+* `Table` 和 `Pagination` 支持自定义分页下拉数据 [#608](https://github.com/NG-ZORRO/ng-zorro-antd/pull/608) [@hllinc](https://github.com/hllinc)
+
+
+## 0.6.1
+`2017-11-26`
+
+### Features
+* `DatePicker` 支持了全部 `momentjs` 的时间格式 [#593](https://github.com/NG-ZORRO/ng-zorro-antd/pull/593) [@JuniorTour](https://github.com/JuniorTour)
+
+### Bug Fixes
+* `DatePicker` 修复 `nzDisabledDate` 对 `Today` 按钮不生效的问题 [#611](https://github.com/NG-ZORRO/ng-zorro-antd/pull/611)
+* `Select` 修复选项重复的问题 [#609](https://github.com/NG-ZORRO/ng-zorro-antd/pull/609)
+* `Transfer` 修复全选的问题 [#602](https://github.com/NG-ZORRO/ng-zorro-antd/pull/602) [@卡色](https://github.com/cipchk)
+
+## 0.6.0
+`2017-11-17`
+
+### BREAK CHANGES
+
+* 兼容 `Angular 5.0` 版本，`Angular 4.x` 版本请使用 `0.5.5` 版本的 `NG-ZORRO`  [#552](https://github.com/NG-ZORRO/ng-zorro-antd/pull/552) 
+
+### Features
+
+* 新增 `Transfer` 组件 [#578](https://github.com/NG-ZORRO/ng-zorro-antd/pull/578) [@卡色](https://github.com/cipchk)
+* `Tooltip` 支持 `Directive` 用法 [#545](https://github.com/NG-ZORRO/ng-zorro-antd/pull/545)
+* `Modal` 支持 `Esc` 键关闭选项 [#567](https://github.com/NG-ZORRO/ng-zorro-antd/pull/567) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `TimePicker` 支持 `nzDisabledHours` 动态调整 [#568](https://github.com/NG-ZORRO/ng-zorro-antd/pull/568) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `Steps` 的 `nzDescription` 选项支持传入 `Template` [#556](https://github.com/NG-ZORRO/ng-zorro-antd/pull/556) [@卡色](https://github.com/cipchk) 
+
+### Bug Fixes
+* Hover 后立刻点击 `Menu` 时不再隐藏二级菜单 [#576](https://github.com/NG-ZORRO/ng-zorro-antd/pull/576)
+* 修复 `Select` 在多选状态下粘贴时宽度不会改变的问题 [#575](https://github.com/NG-ZORRO/ng-zorro-antd/pull/575)
+* 修复 `Popover` `Title`无数据时仍然显示的问题 [#556](https://github.com/NG-ZORRO/ng-zorro-antd/pull/556) [@卡色](https://github.com/cipchk)
+
+### Docs
+* 增加ISSUE助手功能，未按要求书写的ISSUE将会被关闭 [#565](https://github.com/NG-ZORRO/ng-zorro-antd/pull/565) 
+* 在文档页面增加版本切换功能 [#577](https://github.com/NG-ZORRO/ng-zorro-antd/pull/577)
+
+## 0.6.0-rc.3
+`2017-11-04`
+
+### Bug Fixes
+* 修复 `Tabs` 组件中重复渲染 `nzTabBarExtraContent` 的问题 [#489](https://github.com/NG-ZORRO/ng-zorro-antd/pull/489) [@Hsuan Lee](https://github.com/HsuanXyz)
+* 修复 `Pagination` 组件中 `nzPageIndexClickChange` 被错误触发的问题 [#486](https://github.com/NG-ZORRO/ng-zorro-antd/pull/486) [@Hsuan Lee](https://github.com/HsuanXyz)
+* 修复 `Affix` 锚点滚动时的问题 [#490](https://github.com/NG-ZORRO/ng-zorro-antd/pull/490) [@卡色](https://github.com/cipchk)
+
+### Features
+* `DatePicker` 在 `month` 模式下支持 `nzDisabledDate` 属性 [#451](https://github.com/NG-ZORRO/ng-zorro-antd/pull/451) [@Hsuan Lee](https://github.com/HsuanXyz)
+
+### Build
+* 修复 `rollup` 中的配置 [#509](https://github.com/NG-ZORRO/ng-zorro-antd/pull/509)
+* 同步集成测试中的依赖版本 [#469](https://github.com/NG-ZORRO/ng-zorro-antd/pull/469) [@Trotyl Yu](https://github.com/trotyl)
+
+### Performance
+* 减少部分组件的不必要的样式更新 [#528](https://github.com/NG-ZORRO/ng-zorro-antd/pull/528)
+* 统一所有组件的request animation polyfill
+
+
 ## 0.6.0-rc.2
 `2017-10-28`
 

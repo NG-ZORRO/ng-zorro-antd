@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-grid-offset',
@@ -27,11 +27,4 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoGridOffsetComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
-
+export class NzDemoGridOffsetComponent { }

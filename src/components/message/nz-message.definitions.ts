@@ -10,7 +10,8 @@ export interface NzMessageData {
   html?: string;
 
   // For string content
-  type?: 'success' | 'info' | 'warning' | 'error' | 'loading' | any;
+  // TODO: remove the literal parts as it's widened anyway
+  type?: 'success' | 'info' | 'warning' | 'error' | 'loading' | string;
   content?: string;
 }
 

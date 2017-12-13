@@ -67,10 +67,4 @@ import { Component, OnInit } from '@angular/core';
     </nz-button-group>`,
   styles  : []
 })
-export class NzDemoButtonGroupComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoButtonGroupComponent{ }

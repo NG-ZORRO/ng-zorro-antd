@@ -18,7 +18,6 @@ import { NzDemoSpinRoutingModule } from './nz-demo-spin.routing.module';
   imports     : [ NzDemoSpinRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule ],
   declarations: [ NzDemoSpinBasicComponent, NzDemoSpinInsideComponent, NzDemoSpinSizeComponent, NzDemoSpinTipComponent, NzDemoSpinNestedComponent, NzDemoSpinComponent ]
 })
-
 export class NzDemoSpinModule {
 
 }

@@ -1,3 +1,4 @@
+/* tslint:disable:no-any */
 import { createNzRootInitializer, NzRootConfig } from './nz-root-config';
 
 describe('NzRootConfig', () => {

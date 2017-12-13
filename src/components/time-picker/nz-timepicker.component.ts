@@ -1,22 +1,23 @@
+import { ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
-  Component,
-  ViewEncapsulation,
   forwardRef,
+  Component,
+  Input,
   ViewChild,
-  Input
+  ViewEncapsulation,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
-import { DropDownAnimation } from '../core/animation/dropdown-animations';
-import { NzTimePickerInnerComponent } from './nz-timepicker-inner.component';
+import { dropDownAnimation } from '../core/animation/dropdown-animations';
 import { DEFAULT_DATEPICKER_POSITIONS } from '../core/overlay/overlay-position-map';
-import { ConnectionPositionPair } from '@angular/cdk/overlay';
+import { toBoolean } from '../util/convert';
+import { NzTimePickerInnerComponent } from './nz-timepicker-inner.component';
 
 @Component({
   selector     : 'nz-timepicker',
   encapsulation: ViewEncapsulation.None,
   animations   : [
-    DropDownAnimation
+    dropDownAnimation
   ],
   template     : `
     <span
@@ -75,7 +76,7 @@ import { ConnectionPositionPair } from '@angular/cdk/overlay';
                     [ngClass]="_hour.name"
                     *ngIf="!(nzHideDisabledOptions&&_hour.disabled)"
                     (click)="_selectHour(hourListInstance,_hour.index,_hour.disabled)">
-                    {{_hour.name}}
+                    {{ _hour.name }}
                   </li>
                 </ng-template>
               </ul>
@@ -97,7 +98,7 @@ import { ConnectionPositionPair } from '@angular/cdk/overlay';
                     [class.ant-time-picker-panel-select-option-selected]="_minute.index===_selectedMinute"
                     [class.ant-time-picker-panel-select-option-disabled]="_minute.disabled"
                     (click)="_selectMinute(minuteListInstance,_minute.index,_minute.disabled)">
-                    {{_minute.name}}
+                    {{ _minute.name }}
                   </li>
                 </ng-template>
               </ul>
@@ -118,7 +119,7 @@ import { ConnectionPositionPair } from '@angular/cdk/overlay';
                     [class.ant-time-picker-panel-select-option-disabled]="_second.disabled"
                     *ngIf="!(nzHideDisabledOptions&&_second.disabled)"
                     (click)="_selectSecond(secondListInstance,_second.index,_second.disabled)">
-                    {{_second.name}}
+                    {{ _second.name }}
                   </li>
                 </ng-template>
               </ul>
@@ -140,7 +141,7 @@ import { ConnectionPositionPair } from '@angular/cdk/overlay';
   ]
 })
 export class NzTimePickerComponent extends NzTimePickerInnerComponent {
-  _disabled = false;
+  private _timePickerDisabled = false;
   _dropDownPosition = 'bottom';
   _triggerWidth = 0;
   _positions: ConnectionPositionPair[] = [ ...DEFAULT_DATEPICKER_POSITIONS ];
@@ -148,20 +149,20 @@ export class NzTimePickerComponent extends NzTimePickerInnerComponent {
   @ViewChild('trigger') trigger;
 
   @Input()
-  get nzDisabled(): boolean {
-    return this._disabled;
-  };
-
   set nzDisabled(value: boolean) {
-    this._disabled = value;
+    this._timePickerDisabled = toBoolean(value);
     this._closeCalendar();
+  }
+
+  get nzDisabled(): boolean {
+    return this._timePickerDisabled;
   }
 
   _setTriggerWidth(): void {
     this._triggerWidth = this.trigger.nativeElement.getBoundingClientRect().width;
   }
 
-  onPositionChange(position) {
+  onPositionChange(position: ConnectedOverlayPositionChange): void {
     const _position = position.connectionPair.originY === 'bottom' ? 'top' : 'bottom';
     if (this._dropDownPosition !== _position) {
       this._dropDownPosition = _position;
@@ -169,7 +170,7 @@ export class NzTimePickerComponent extends NzTimePickerInnerComponent {
     }
   }
 
-  _manualChangeInput(box) {
+  _manualChangeInput(box: HTMLInputElement): void {
     const _tempMoment = moment(box.value, this._format);
     if (Date.parse(_tempMoment.toDate().toString())) {
       this.nzValue = new Date((moment(this._value).hour(_tempMoment.hour()).minute(_tempMoment.minute()).second(_tempMoment.second())).toDate().getTime());
@@ -178,25 +179,25 @@ export class NzTimePickerComponent extends NzTimePickerInnerComponent {
     // this._closeCalendar();
   }
 
-  _overHour() {
+  _overHour(): void {
     const _start = this._format.indexOf('HH');
     const _end = _start + 2;
     this._inputTimeInstance.nativeElement.setSelectionRange(_start, _end);
   }
 
-  _overMinute() {
+  _overMinute(): void {
     const _start = this._format.indexOf('mm');
     const _end = _start + 2;
     this._inputTimeInstance.nativeElement.setSelectionRange(_start, _end);
   }
 
-  _overSecond() {
+  _overSecond(): void {
     const _start = this._format.indexOf('ss');
     const _end = _start + 2;
     this._inputTimeInstance.nativeElement.setSelectionRange(_start, _end);
   }
 
-  _clearValue() {
+  _clearValue(): void {
     this.nzValue = null;
     this._selectedHour = null;
     this._selectedMinute = null;
@@ -204,7 +205,7 @@ export class NzTimePickerComponent extends NzTimePickerInnerComponent {
     this._selectedSecond = null;
   }
 
-  _openCalendar() {
+  _openCalendar(): void {
     this._open = true;
     this._setTriggerWidth();
     setTimeout(_ => {
@@ -213,7 +214,7 @@ export class NzTimePickerComponent extends NzTimePickerInnerComponent {
     });
   }
 
-  _closeCalendar() {
+  _closeCalendar(): void {
     if (!this._open) {
       return;
     }

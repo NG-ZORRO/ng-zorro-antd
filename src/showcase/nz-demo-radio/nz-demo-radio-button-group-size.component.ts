@@ -54,13 +54,7 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoRadioButtonGroupSizeComponent implements OnInit {
+export class NzDemoRadioButtonGroupSizeComponent {
   radioValue = 'A';
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
 

@@ -20,6 +20,5 @@ import {NzDemoTimelineCustomComponent} from './nz-demo-timeline-custom.component
     NzDemoTimelinePendingComponent,
     NzDemoTimelineCustomComponent]
 })
-
 export class NzDemoTimelineModule {
 }

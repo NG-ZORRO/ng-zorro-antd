@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-button-type',
@@ -17,11 +17,4 @@ import { Component, OnInit } from '@angular/core';
     </button>`,
   styles  : []
 })
-export class NzDemoButtonTypeComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
-
+export class NzDemoButtonTypeComponent { }

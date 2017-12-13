@@ -1,52 +1,52 @@
 import {
   Directive,
+  ElementRef,
   HostBinding,
-  ElementRef
 } from '@angular/core';
 
 @Directive({
   selector: '[nz-carousel-content]',
+  host: {
+    '[class.slick-slide]': 'true'
+  }
 })
 export class NzCarouselContentDirective {
   width = 0;
   isActive = false;
-  left = null;
-  top = null;
-  fadeMode = false
+  left: number = null;
+  top: number = null;
+  fadeMode = false;
   nativeElement: HTMLElement;
 
-
-  @HostBinding('class.slick-slide') _nzSlickSlide = true;
-
   @HostBinding('class.slick-active')
-  get setActiveClass() {
+  get setActiveClass(): boolean {
     return this.isActive === true;
   }
 
   @HostBinding('style.width.px')
-  get setWidth() {
+  get setWidth(): number {
     return this.width;
   }
 
   @HostBinding('style.left.px')
-  get setLeft() {
+  get setLeft(): number {
     return this.left;
   }
 
   @HostBinding('style.top.px')
-  get setTop() {
+  get setTop(): number {
     return this.top;
   }
 
   @HostBinding('style.position')
-  get setPosition() {
+  get setPosition(): string {
     if (this.fadeMode) {
       return 'relative';
     }
   }
 
   @HostBinding('style.opacity')
-  get setOpacity() {
+  get setOpacity(): number {
     if (this.fadeMode) {
       return this.isActive ? 1 : 0;
     }

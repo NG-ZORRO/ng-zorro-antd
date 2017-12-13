@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-input-textarea',
@@ -6,13 +6,6 @@ import { Component, OnInit } from '@angular/core';
     <nz-input [(ngModel)]="inputValue" [nzType]="'textarea'" [nzRows]="'4'" [nzPlaceHolder]="''"></nz-input>`,
   styles  : []
 })
-export class NzDemoInputTextareaComponent implements OnInit {
+export class NzDemoInputTextareaComponent {
   inputValue: string;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

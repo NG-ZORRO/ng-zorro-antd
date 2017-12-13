@@ -33,7 +33,6 @@ import { NzDemoLayoutRoutingModule } from './nz-demo-layout.routing.module';
     NzDemoLayoutResponsiveComponent
   ]
 })
-
 export class NzDemoLayoutModule {
 
 }

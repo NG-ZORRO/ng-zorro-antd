@@ -4,9 +4,9 @@ import { Component, HostBinding } from '@angular/core';
   selector     : 'nz-header',
   template     : `
     <ng-content></ng-content>
-  `
+  `,
+  host: {
+    '[class.ant-layout-header]': 'true'
+  }
 })
-
-export class NzHeaderComponent {
-  @HostBinding('class.ant-layout-header') _nzLayoutHeader = true;
-}
+export class NzHeaderComponent { }

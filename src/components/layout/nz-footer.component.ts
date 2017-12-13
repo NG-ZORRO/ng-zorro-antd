@@ -5,9 +5,9 @@ import { Component, HostBinding, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   template     : `
     <ng-content></ng-content>
-  `
+  `,
+  host: {
+    '[class.ant-layout-footer]': 'true'
+  }
 })
-
-export class NzFooterComponent {
-  @HostBinding('class.ant-layout-footer') _nzLayoutFooter = true;
-}
+export class NzFooterComponent { }

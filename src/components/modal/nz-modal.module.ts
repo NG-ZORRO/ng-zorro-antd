@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { NzModalComponent } from './nz-modal.component';
-import { NzConfirmComponent } from './nz-confirm.component';
-import { NzModalService } from './nz-modal.service';
-import { NzModalSubject } from './nz-modal-subject.service';
-
-import { NzLocaleModule } from '../locale/index';
 import { NzButtonModule } from '../button/nz-button.module';
+import { NzLocaleModule } from '../locale/index';
+
+import { NzConfirmComponent } from './nz-confirm.component';
+import { NzModalSubject } from './nz-modal-subject.service';
+import { NzModalComponent } from './nz-modal.component';
+import { NzModalService } from './nz-modal.service';
 
 @NgModule({
   entryComponents: [ NzModalComponent, NzConfirmComponent ],

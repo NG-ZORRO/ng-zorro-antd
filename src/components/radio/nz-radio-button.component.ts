@@ -1,11 +1,12 @@
 import {
   Component,
+  HostBinding,
+  Input,
   OnInit,
   ViewEncapsulation,
-  Input,
-  HostBinding,
 } from '@angular/core';
 
+import { toBoolean } from '../util/convert';
 import { NzRadioComponent } from './nz-radio.component';
 
 @Component({
@@ -23,29 +24,31 @@ import { NzRadioComponent } from './nz-radio.component';
   ]
 })
 export class NzRadioButtonComponent extends NzRadioComponent implements OnInit {
+  private _radioButtonDisabled = false;
+  private _radioButtonChecked = false;
   _prefixCls = 'ant-radio-button';
   _innerPrefixCls = `${this._prefixCls}-inner`;
   _inputPrefixCls = `${this._prefixCls}-input`;
 
   @Input()
   @HostBinding('class.ant-radio-button-wrapper-disabled')
-  get nzDisabled(): boolean {
-    return this._disabled;
-  };
-
   set nzDisabled(value: boolean) {
-    this._disabled = value;
+    this._radioButtonDisabled = toBoolean(value);
     this.setClassMap();
+  }
+
+  get nzDisabled(): boolean {
+    return this._radioButtonDisabled;
   }
 
   @Input()
   @HostBinding('class.ant-radio-button-wrapper-checked')
-  get nzChecked(): boolean {
-    return this._checked;
-  };
-
   set nzChecked(value: boolean) {
-    this._checked = value;
+    this._radioButtonChecked = toBoolean(value);
     this.setClassMap();
+  }
+
+  get nzChecked(): boolean {
+    return this._radioButtonChecked;
   }
 }

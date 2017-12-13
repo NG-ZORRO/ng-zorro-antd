@@ -1,3 +1,4 @@
+/* tslint:disable:variable-name */
 export class NzLocale {
   locale: string; // Present of this locale's lang code
 
@@ -49,5 +50,13 @@ export class NzLocale {
 
   Select: {
     notFoundContent: string;
+  };
+
+  Transfer: {
+    titles: string,
+    notFoundContent: string,
+    searchPlaceholder: string,
+    itemUnit: string,
+    itemsUnit: string,
   };
 }

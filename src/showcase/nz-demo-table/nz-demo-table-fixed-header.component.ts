@@ -26,9 +26,6 @@ import { Component, OnInit } from '@angular/core';
 export class NzDemoTableFixedHeaderComponent implements OnInit {
   data = [];
 
-  constructor() {
-  }
-
   ngOnInit() {
     for (let i = 0; i < 100; i++) {
       this.data.push({

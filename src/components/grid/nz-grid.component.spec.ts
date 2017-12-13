@@ -1,27 +1,27 @@
-/* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed, ComponentFixtureAutoDetect } from '@angular/core/testing';
+/* tslint:disable:no-unused-variable variable-name */
 import { Component, DebugElement } from '@angular/core';
+import { async, ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NzColDirective } from './nz-col.directive';
 import { NzGridModule } from './nz-grid.module';
 import { NzRowComponent } from './nz-row.component';
-import { NzColDirective } from './nz-col.directive';
 
 describe('NzGrid', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports     : [ NzGridModule ],
-      declarations: [ GridListWithoutCols, GridListWithoutRows, TestSpan, TestOffset, TestPushPull, TestColResponsive, TestGutter, TestTypeFlex, TestTypeFlexOrder, TestTypeEmbedded ]
+      declarations: [ GridListWithoutColsComponent, GridListWithoutRowsComponent, TestSpanComponent, TestOffsetComponent, TestPushPullComponent, TestColResponsiveComponent, TestGutterComponent, TestTypeFlexComponent, TestTypeFlexOrderComponent, TestTypeEmbeddedComponent ]
     }).compileComponents();
   }));
   describe('for cols', () => {
     it('should throw error if cols is not defined', () => {
-      const fixture = TestBed.createComponent(GridListWithoutCols);
+      const fixture = TestBed.createComponent(GridListWithoutColsComponent);
       expect(() => fixture.detectChanges()).not.toThrow();
     });
 
     it('should apply class based on span attribute', () => {
-      const fixture = TestBed.createComponent(TestSpan);
+      const fixture = TestBed.createComponent(TestSpanComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement_col = fixture.debugElement.query(By.directive(NzColDirective));
       const debugElement_row = fixture.debugElement.query(By.directive(NzRowComponent));
@@ -47,29 +47,28 @@ describe('NzGrid', () => {
       testComponent._span = 0;
       fixture.detectChanges();
       const col_width2 = parseFloat(getStyle(debugElement_col, 'width'));
-      const row_width2 = parseFloat(getStyle(debugElement_row, 'width'));
-      expect(col_width2).toEqual(row_width2); // toEqual
-      expect(debugElement_col.nativeElement.classList.contains('ant-col-0')).toBe(false);
+      expect(col_width2).toEqual(NaN); // toEqual
+      expect(debugElement_col.nativeElement.classList.contains('ant-col-0')).toBe(true);
 
       testComponent._span = 1 / 3;
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
 
       testComponent._span = -31;
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
 
       testComponent._span = 'custom_string';
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
 
     });
 
     it('should apply class based on offset attribute', () => {
-      const fixture = TestBed.createComponent(TestOffset);
+      const fixture = TestBed.createComponent(TestOffsetComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement_col = fixture.debugElement.query(By.directive(NzColDirective));
 
@@ -78,47 +77,47 @@ describe('NzGrid', () => {
       fixture.detectChanges();
       expect(debugElement_col.nativeElement.classList.contains('ant-col-offset-16')).toBe(true);
 
-      testComponent._offset = 0;
+      testComponent._offset1 = 0;
       testComponent._span1 = 8;
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
-      expect(debugElement_col.nativeElement.classList.contains('ant-col-offset-0')).toBe(false);
+      expect(debugElement_col.nativeElement.classList.contains('ant-col-offset-0')).toBe(true);
 
       testComponent._offset1 = 24;
       testComponent._span1 = 8;
       fixture.detectChanges();
 
-      testComponent._offset = 100;
+      testComponent._offset1 = 100;
       testComponent._span1 = 8;
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
 
       testComponent._offset1 = 8;
       testComponent._span1 = 100;
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
 
-      testComponent._offset = 4 / 7;
+      testComponent._offset1 = 4 / 7;
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
 
-      testComponent._offset = -100;
+      testComponent._offset1 = -100;
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
 
-      testComponent._offset = 'custorm_string';
+      testComponent._offset1 = 'custorm_string';
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
     });
 
     it('should apply class based on push|pull attribute', () => {
-      const fixture = TestBed.createComponent(TestPushPull);
+      const fixture = TestBed.createComponent(TestPushPullComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement_col = fixture.debugElement.query(By.directive(NzColDirective));
 
@@ -135,12 +134,12 @@ describe('NzGrid', () => {
       testComponent._span2 = 18;
       testComponent._pull = 'custorm_string';
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
     });
 
     it('should apply class based on responsive attribute', () => {
-      const fixture = TestBed.createComponent(TestColResponsive);
+      const fixture = TestBed.createComponent(TestColResponsiveComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement_col = fixture.debugElement.query(By.directive(NzColDirective));
 
@@ -155,12 +154,12 @@ describe('NzGrid', () => {
 
       testComponent._col1 = { xs: 'custom_string', xm: 4, md: 6, lg: 8, xl: 10 };
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
     });
 
     it('should should not clear previous defined classes', () => {
-      const fixtureSpan = TestBed.createComponent(TestSpan);
+      const fixtureSpan = TestBed.createComponent(TestSpanComponent);
       const testComponentSpan = fixtureSpan.debugElement.componentInstance;
       const debugElement_col_span = fixtureSpan.debugElement.query(By.directive(NzColDirective));
       debugElement_col_span.nativeElement.classList.add('custom-class');
@@ -168,7 +167,7 @@ describe('NzGrid', () => {
       fixtureSpan.detectChanges();
       expect(debugElement_col_span.nativeElement.classList.contains('custom-class')).toBe(true);
 
-      const fixtureOffset = TestBed.createComponent(TestOffset);
+      const fixtureOffset = TestBed.createComponent(TestOffsetComponent);
       const testComponentOffset = fixtureOffset.debugElement.componentInstance;
       const debugElement_col_offset = fixtureOffset.debugElement.query(By.directive(NzColDirective));
       debugElement_col_offset.nativeElement.classList.add('custom-class');
@@ -177,7 +176,7 @@ describe('NzGrid', () => {
       fixtureOffset.detectChanges();
       expect(debugElement_col_offset.nativeElement.classList.contains('custom-class')).toBe(true);
 
-      const fixturePushPull = TestBed.createComponent(TestPushPull);
+      const fixturePushPull = TestBed.createComponent(TestPushPullComponent);
       const testComponentPush = fixturePushPull.debugElement.componentInstance;
       const debugElement_col_push = fixturePushPull.debugElement.query(By.directive(NzColDirective));
       debugElement_col_push.nativeElement.classList.add('custom-class');
@@ -187,7 +186,7 @@ describe('NzGrid', () => {
       fixturePushPull.detectChanges();
       expect(debugElement_col_push.nativeElement.classList.contains('custom-class')).toBe(true);
 
-      const fixtureResponsive = TestBed.createComponent(TestColResponsive);
+      const fixtureResponsive = TestBed.createComponent(TestColResponsiveComponent);
       const testComponentResponsive = fixtureResponsive.debugElement.componentInstance;
       const debugElement_col_responsive = fixtureResponsive.debugElement.query(By.directive(NzColDirective));
       debugElement_col_responsive.nativeElement.classList.add('custom-class');
@@ -196,10 +195,11 @@ describe('NzGrid', () => {
       expect(debugElement_col_responsive.nativeElement.classList.contains('custom-class')).toBe(true);
     });
     it('should embedded style work', () => {
-      const fixtureSpan = TestBed.createComponent(TestTypeEmbedded);
+      const fixtureSpan = TestBed.createComponent(TestTypeEmbeddedComponent);
       const debugElement_embedded_span = fixtureSpan.debugElement.query(By.directive(NzColDirective));
       fixtureSpan.detectChanges();
-      const className = 'ant-col-xs-1 ant-col-xs-pull-1 ant-col-xs-push-1 ant-col-xs-offset-1 ant-col-xs-order-1 ant-col-sm-1 ant-col-sm-pull-1 ant-col-sm-push-1 ant-col-sm-offset-1 ant-col-sm-order-1 ant-col-md-1 ant-col-md-pull-1 ant-col-md-push-1 ant-col-md-offset-1 ant-col-md-order-1 ant-col-lg-1 ant-col-lg-pull-1 ant-col-lg-push-1 ant-col-lg-offset-1 ant-col-lg-order-1 ant-col-xl-1 ant-col-xl-pull-1 ant-col-xl-push-1 ant-col-xl-offset-1 ant-col-xl-order-1';
+      /* tslint:disable-next-line:max-line-length */
+      const className = 'ant-col-xs-1 ant-col-xs-pull-1 ant-col-xs-push-1 ant-col-xs-offset-1 ant-col-xs-order-1 ant-col-sm-1 ant-col-sm-pull-1 ant-col-sm-push-1 ant-col-sm-offset-1 ant-col-sm-order-1 ant-col-md-1 ant-col-md-pull-1 ant-col-md-push-1 ant-col-md-offset-1 ant-col-md-order-1 ant-col-lg-0 ant-col-lg-pull-1 ant-col-lg-push-1 ant-col-lg-offset-1 ant-col-lg-order-1 ant-col-xl-1 ant-col-xl-pull-1 ant-col-xl-push-1 ant-col-xl-offset-1 ant-col-xl-order-1';
       expect(debugElement_embedded_span.nativeElement.className === className).toBe(true);
 
     });
@@ -207,14 +207,14 @@ describe('NzGrid', () => {
 
   describe('for rows', () => {
     it('should throw error if rows is not defined', () => {
-      const fixture = TestBed.createComponent(GridListWithoutRows);
+      const fixture = TestBed.createComponent(GridListWithoutRowsComponent);
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
     });
 
     it('should apply class based on gutter attribute', () => {
-      const fixture = TestBed.createComponent(TestGutter);
+      const fixture = TestBed.createComponent(TestGutterComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement_row = fixture.debugElement.query(By.directive(NzRowComponent));
       const debugElement_col = fixture.debugElement.query(By.directive(NzColDirective));
@@ -243,17 +243,17 @@ describe('NzGrid', () => {
 
       testComponent._gutter = -16;
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
 
       testComponent._gutter = 'custorm_string';
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
-    })
+    });
 
     it('should apply class based on type|justify|align attribute', () => {
-      const fixture = TestBed.createComponent(TestTypeFlex);
+      const fixture = TestBed.createComponent(TestTypeFlexComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement_row = fixture.debugElement.query(By.directive(NzRowComponent));
       const debugElement_col = fixture.debugElement.query(By.directive(NzColDirective));
@@ -274,7 +274,7 @@ describe('NzGrid', () => {
 
       testComponent._justify = 'custorm_string';
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
 
       testComponent._type = '';
@@ -291,7 +291,7 @@ describe('NzGrid', () => {
     });
 
     it('should apply class based on order attribute', () => {
-      const fixture = TestBed.createComponent(TestTypeFlexOrder);
+      const fixture = TestBed.createComponent(TestTypeFlexOrderComponent);
       const testComponent = fixture.debugElement.componentInstance;
       const debugElement_row = fixture.debugElement.query(By.directive(NzRowComponent));
       const debugElement_col = fixture.debugElement.query(By.directive(NzColDirective));
@@ -310,10 +310,10 @@ describe('NzGrid', () => {
       testComponent._order1 = -2;
       testComponent._order2 = -1;
       expect(() => {
-        fixture.detectChanges()
+        fixture.detectChanges();
       }).not.toThrow();
     });
-  })
+  });
 });
 
 function getStyle(el: DebugElement, prop: string): string {
@@ -322,11 +322,11 @@ function getStyle(el: DebugElement, prop: string): string {
 
 /** Test component that contains an nzGrid. */
 @Component({ template: '<div nz-row></div>' })
-class GridListWithoutCols {
+class GridListWithoutColsComponent {
 }
 
 @Component({ template: '<div nz-col></div>' })
-class GridListWithoutRows {
+class GridListWithoutRowsComponent {
 }
 
 @Component({
@@ -334,15 +334,15 @@ class GridListWithoutRows {
   template: `
     <div nz-row>
       <div nz-col style="background-color: #0e639c" [nzSpan]="_span">
-        col-{{_span}}
+        col-{{ _span }}
       </div>
       <div nz-col style="background-color: #00a0e9" [nzSpan]="_span">
-        col-{{_span}}
+        col-{{ _span }}
       </div>
     </div>
   `
 })
-class TestSpan {
+class TestSpanComponent {
   _span = 5;
 }
 
@@ -351,15 +351,15 @@ class TestSpan {
   template: `
     <div nz-row>
       <div nz-col [nzSpan]="_span1" [nzOffset]="_offset1" style="background-color: #0e639c">
-        col-{{_span1}}-{{_offset1}}
+        col-{{ _span1 }}-{{ _offset1 }}
       </div>
       <div nz-col [nzSpan]="_span2" [nzOffset]="_offset2" style="background-color: #00a0e9">
-        col-{{_span2}}-{{_offset2}}
+        col-{{ _span2 }}-{{ _offset2 }}
       </div>
     </div>
   `
 })
-class TestOffset {
+class TestOffsetComponent {
   _span1 = 12;
   _offset1 = 8;
   _span2 = 12;
@@ -371,12 +371,12 @@ class TestOffset {
   template: `
     <div nz-row>
       <div nz-col [nzSpan]="_span1" [nzPush]="_push" [nzPull]="_pull" style="background-color: #0e639c">
-        col-{{_span1}} col-push-{{_push}}-{{_pull}}
+        col-{{ _span1 }} col-push-{{ _push }}-{{ _pull }}
       </div>
     </div>
   `
 })
-class TestPushPull {
+class TestPushPullComponent {
   _span1 = 18;
   _push = 6;
   _pull = 18;
@@ -391,7 +391,7 @@ class TestPushPull {
       </div>
     </div>`,
 })
-class TestColResponsive {
+class TestColResponsiveComponent {
   _col1 = { xs: 2, xm: 4, md: 6, lg: 8, xl: 10 };
 }
 
@@ -401,16 +401,16 @@ class TestColResponsive {
     <div style="margin:20px;">
       <div nz-row [nzGutter]="_gutter">
         <div nz-col [nzSpan]="_span">
-          <div style="background-color: #0e639c">col-{{_span}}</div>
+          <div style="background-color: #0e639c">col-{{ _span }}</div>
         </div>
         <div nz-col [nzSpan]="_span">
-          <div style="background-color: #00a0e9">col-{{_span}}</div>
+          <div style="background-color: #00a0e9">col-{{ _span }}</div>
         </div>
       </div>
     </div>
   `
 })
-class TestGutter {
+class TestGutterComponent {
   _span = 6;
   _gutter = 16;
 }
@@ -431,10 +431,10 @@ class TestGutter {
     </div>
   `
 })
-class TestTypeFlex {
+class TestTypeFlexComponent {
   _type = 'flex';
   _justify = 'start';
-  _align = 'top'
+  _align = 'top';
 }
 
 @Component({
@@ -442,18 +442,18 @@ class TestTypeFlex {
   template: `
     <div nz-row [nzType]="_type">
       <div nz-col [nzSpan]="6" [nzOrder]="_order1" style="background-color: #00a854">
-        NO1 : col-order-{{_order1}}
+        NO1 : col-order-{{ _order1 }}
       </div>
       <div nz-col [nzSpan]="6" [nzOrder]="_order2" style="background-color: #00a0e9">
-        NO2 : col-order-{{_order2}}
+        NO2 : col-order-{{ _order2 }}
       </div>
     </div>
   `
 })
-class TestTypeFlexOrder {
+class TestTypeFlexOrderComponent {
   _type = 'flex';
   _order1 = 1;
-  _order2 = 2
+  _order2 = 2;
 }
 
 @Component({
@@ -465,10 +465,10 @@ class TestTypeFlexOrder {
         [nzXs]="{ span: 1, offset: 1,push:1, order:1,pull:1 }"
         [nzSm]="{ span: 1, offset: 1,push:1, order:1,pull:1 }"
         [nzMd]="{ span: 1, offset: 1,push:1, order:1,pull:1 }"
-        [nzLg]="{ span: 1, offset: 1,push:1, order:1,pull:1 }"
+        [nzLg]="{ span: 0, offset: 1,push:1, order:1,pull:1 }"
         [nzXl]="{ span: 1, offset: 1,push:1, order:1,pull:1 }"></div>
     </div>
   `
 })
-class TestTypeEmbedded {
+class TestTypeEmbeddedComponent {
 }

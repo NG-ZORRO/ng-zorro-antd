@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-switch-disabled',
@@ -9,17 +9,10 @@ import { Component, OnInit } from '@angular/core';
     </div>`,
   styles  : []
 })
-export class NzDemoSwitchDisabledComponent implements OnInit {
+export class NzDemoSwitchDisabledComponent {
   switchValue = false;
   isDisabled = true;
   toggleDisabled = () => {
     this.isDisabled = !this.isDisabled;
   }
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

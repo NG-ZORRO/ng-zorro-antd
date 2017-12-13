@@ -1,11 +1,12 @@
 import {
   Component,
-  ViewEncapsulation,
-  Input,
   ElementRef,
   EventEmitter,
-  Output
+  Input,
+  Output,
+  ViewEncapsulation,
 } from '@angular/core';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-pagination',
@@ -20,7 +21,7 @@ import {
         <a></a>
       </li>
       <li [attr.title]="_current+'/'+_lastIndex" class="ant-pagination-simple-pager">
-        <input [ngModel]="nzPageIndex" (ngModelChange)="_nzPageIndexChange($event)" size="3"><span class="ant-pagination-slash">／</span>{{_lastIndex}}
+        <input [ngModel]="nzPageIndex" (ngModelChange)="_nzPageIndexChange($event)" size="3"><span class="ant-pagination-slash">／</span>{{ _lastIndex }}
       </li>
       <li
         title="{{ 'Pagination.nextPage' | nzTranslate }}"
@@ -44,7 +45,7 @@ import {
         class="ant-pagination-item"
         (click)="_jumpPage(_firstIndex)"
         [class.ant-pagination-item-active]="_isFirstIndex">
-        <a>{{_firstIndex}}</a>
+        <a>{{ _firstIndex }}</a>
       </li>
       <li
         [attr.title]="'Pagination.forwardPage' | nzTranslate: { num: _roundPageSize }"
@@ -59,7 +60,7 @@ import {
         class="ant-pagination-item"
         (click)="_jumpPage(page.index)"
         [class.ant-pagination-item-active]="_current==page.index">
-        <a>{{page.index}}</a>
+        <a>{{ page.index }}</a>
       </li>
       <li
         [attr.title]="'Pagination.backwardPage' | nzTranslate: { num: _roundPageSize }"
@@ -74,7 +75,7 @@ import {
         (click)="_jumpPage(_lastIndex)"
         *ngIf="(_lastIndex>0)&&(_lastIndex!==_firstIndex)"
         [class.ant-pagination-item-active]="_isLastIndex">
-        <a>{{_lastIndex}}</a>
+        <a>{{ _lastIndex }}</a>
       </li>
       <li
         title="{{ 'Pagination.nextPage' | nzTranslate }}"
@@ -113,6 +114,10 @@ import {
   ]
 })
 export class NzPaginationComponent {
+  private _showSizeChanger = false;
+  private _showTotal = false;
+  private _showQuickJumper = false;
+  private _simple = false;
   _el: HTMLElement;
   _current = 1;
   _total: number;
@@ -121,62 +126,40 @@ export class NzPaginationComponent {
   _lastIndex = Infinity;
   _pages = [];
   _options = [ 10, 20, 30, 40, 50 ];
-  _showSizeChanger = false;
-  _showQuickJumper = false;
-  _showTotal = false;
-  _simple = false;
 
   @Input()
-  set nzShowSizeChanger(value: boolean|string) {
-    if (value === '') {
-      this._showSizeChanger = true;
-    } else {
-      this._showSizeChanger = value as boolean;
-    }
+  set nzShowSizeChanger(value: boolean) {
+    this._showSizeChanger = toBoolean(value);
   }
 
-  get nzShowSizeChanger() {
+  get nzShowSizeChanger(): boolean {
     return this._showSizeChanger;
   }
 
-
   @Input()
-  set nzShowQuickJumper(value: boolean|string) {
-    if (value === '') {
-      this._showQuickJumper = true;
-    } else {
-      this._showQuickJumper = value as boolean;
-    }
+  set nzShowQuickJumper(value: boolean) {
+    this._showQuickJumper = toBoolean(value);
   }
 
-  get nzShowQuickJumper() {
+  get nzShowQuickJumper(): boolean {
     return this._showQuickJumper;
   }
 
-
   @Input()
-  set nzShowTotal(value: boolean|string) {
-    if (value === '') {
-      this._showTotal = true;
-    } else {
-      this._showTotal = value as boolean;
-    }
+  set nzShowTotal(value: boolean) {
+      this._showTotal = toBoolean(value);
   }
 
-  get nzShowTotal() {
+  get nzShowTotal(): boolean {
     return this._showTotal;
   }
 
   @Input()
-  set nzSimple(value: boolean|string) {
-    if (value === '') {
-      this._simple = true;
-    } else {
-      this._simple = value as boolean;
-    }
+  set nzSimple(value: boolean) {
+    this._simple = toBoolean(value);
   }
 
-  get nzSimple() {
+  get nzSimple(): boolean {
     return this._simple;
   }
 
@@ -186,20 +169,23 @@ export class NzPaginationComponent {
   @Output() nzPageIndexChange: EventEmitter<number> = new EventEmitter();
   @Output() nzPageIndexClickChange: EventEmitter<number> = new EventEmitter();
 
-  _jumpBefore(pageSize) {
+  _jumpBefore(pageSize: number): void {
     this._jumpPage(this._current - Math.round(pageSize / 2));
   }
 
-  _jumpAfter(pageSize) {
+  _jumpAfter(pageSize: number): void {
     this._jumpPage(this._current + Math.round(pageSize / 2));
   }
 
+  /** page size changer select values */
+  @Input()
+  set nzPageSizeSelectorValues(value: number[]) {
+    if (value) {
+      this._options = value;
+    }
+  }
 
   @Input()
-  get nzPageIndex(): number {
-    return this._current;
-  };
-
   set nzPageIndex(value: number) {
     if (this._current === value) {
       return;
@@ -209,13 +195,13 @@ export class NzPaginationComponent {
     }
     this._current = Number(value);
     this._buildIndexes();
-  };
+  }
+
+  get nzPageIndex(): number {
+    return this._current;
+  }
 
   @Input()
-  get nzPageSize(): number {
-    return this._pageSize;
-  };
-
   set nzPageSize(value: number) {
     if (value === this._pageSize) {
       return;
@@ -223,38 +209,41 @@ export class NzPaginationComponent {
     this._pageSize = value;
     this.nzPageIndexChange.emit(this.nzPageIndex);
     this._buildIndexes();
-  };
+  }
+
+  get nzPageSize(): number {
+    return this._pageSize;
+  }
 
   @Input()
-  get nzTotal(): number {
-    return this._total;
-  };
-
   set nzTotal(value: number) {
     if (value === this._total) {
       return;
     }
     this._total = value;
     this._buildIndexes();
-
   }
 
+  get nzTotal(): number {
+    return this._total;
+  }
 
-  _pageSizeChange($event) {
+  _pageSizeChange($event: number): void {
     this.nzPageSize = $event;
     this.nzPageSizeChange.emit($event);
   }
 
-  _nzPageIndexChange($event) {
+  _nzPageIndexChange($event: number): void {
     this.nzPageIndex = $event;
     this.nzPageIndexChange.emit(this.nzPageIndex);
   }
 
   /** generate indexes list */
-  _buildIndexes() {
+  _buildIndexes(): void {
     this._lastIndex = Math.ceil(this._total / this._pageSize);
     if (this._current > this._lastIndex) {
-      this._jumpPage(this._lastIndex);
+      this.nzPageIndex = this._lastIndex;
+      this.nzPageIndexChange.emit(this.nzPageIndex);
     }
     const tmpPages = [];
     if (this._lastIndex <= 9) {
@@ -281,7 +270,7 @@ export class NzPaginationComponent {
     this._pages = tmpPages;
   }
 
-  _jumpPage(index) {
+  _jumpPage(index: number): void {
     if (index === this._firstIndex - 1 || index === this._lastIndex +  1 || index === this.nzPageIndex) {
       return ;
     }
@@ -297,15 +286,15 @@ export class NzPaginationComponent {
     this.nzPageIndexChange.emit(this.nzPageIndex);
   }
 
-  get _isLastIndex() {
+  get _isLastIndex(): boolean {
     return this._current === this._lastIndex;
   }
 
-  get _isFirstIndex() {
+  get _isFirstIndex(): boolean {
     return this._current === this._firstIndex;
   }
 
-  get _roundPageSize() {
+  get _roundPageSize(): number {
     return Math.round(this._pageSize / 2);
   }
 

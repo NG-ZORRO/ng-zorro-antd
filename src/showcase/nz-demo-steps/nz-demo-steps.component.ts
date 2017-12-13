@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 
 @Component({
@@ -6,7 +6,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   templateUrl  : './index.html'
 })
-export class NzDemoStepsComponent implements OnInit {
+export class NzDemoStepsComponent {
   NzDemoStepsBasicCode = require('!!raw-loader!./nz-demo-steps-basic.component');
   NzDemoStepsDottedCode = require('!!raw-loader!./nz-demo-steps-dotted.component');
   NzDemoStepsChangeCode = require('!!raw-loader!./nz-demo-steps-change.component');
@@ -15,10 +15,4 @@ export class NzDemoStepsComponent implements OnInit {
   NzDemoStepsMiniCode = require('!!raw-loader!./nz-demo-steps-mini.component');
   NzDemoStepsVerticalCode = require('!!raw-loader!./nz-demo-steps-vertical.component');
   NzDemoStepsVerticalMiniCode = require('!!raw-loader!./nz-demo-steps-vertical-mini.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

@@ -20,7 +20,6 @@ import { NzDemoAlertRoutingModule } from './nz-demo-alert.routing.module';
   declarations: [ NzDemoAlertComponent, NzDemoAlertBasicComponent, NzDemoAlert4TypeComponent, NzDemoAlertCloseableComponent, NzDemoAlert4TypeMessageComponent, NzDemoAlertIconCloseComponent, NzDemoAlertSelfCloseComponent, NzDemoAlertIconComponent ],
   imports     : [ NzDemoAlertRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule ]
 })
-
 export class NzDemoAlertModule {
 
 }

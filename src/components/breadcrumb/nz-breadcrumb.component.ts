@@ -13,13 +13,11 @@ import {
   styleUrls    : [
     './style/index.less',
     './style/patch.less'
-  ]
+  ],
+  host: {
+    '[class.ant-breadcrumb]': 'true'
+  }
 })
 export class NzBreadCrumbComponent {
   @Input() nzSeparator = '/';
-  @HostBinding('class.ant-breadcrumb') _nzBreadcrumb = true;
-
-  constructor() {
-  }
-
 }

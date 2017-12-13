@@ -14,7 +14,7 @@ import {
       <div nz-form-label nz-col [nzSpan]="4" *ngIf="i==0">
         <label [attr.for]="control.controlInstance">Passengers</label>
       </div>
-      <div nz-form-control nz-col [nzSpan]="20" [nzOffset]="i==0?0:4" [nzValidateStatus]="getFormControl(control.controlInstance)">
+      <div nz-form-control nz-col [nzSpan]="20" [nzOffset]="i==0?0:4">
         <nz-input
           style="width: 60%; margin-right:8px;"
           [nzSize]="'large'"

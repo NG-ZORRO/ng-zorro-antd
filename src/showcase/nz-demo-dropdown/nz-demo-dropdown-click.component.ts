@@ -15,10 +15,4 @@ import { Component, OnInit } from '@angular/core';
     </nz-dropdown>`,
   styles  : []
 })
-export class NzDemoDropDownClickComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoDropDownClickComponent { }

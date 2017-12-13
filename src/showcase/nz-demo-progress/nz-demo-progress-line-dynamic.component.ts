@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'nz-demo-progress-line-dynamic',
@@ -10,7 +10,7 @@ import {Component, OnInit} from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoProgressLineDynamicComponent implements OnInit {
+export class NzDemoProgressLineDynamicComponent {
   _percent = 0;
 
   increase() {
@@ -26,11 +26,4 @@ export class NzDemoProgressLineDynamicComponent implements OnInit {
       this._percent = 0;
     }
   }
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

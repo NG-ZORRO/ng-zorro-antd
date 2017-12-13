@@ -1,12 +1,13 @@
 import {
+  forwardRef,
   Component,
+  HostListener,
+  Input,
   OnInit,
   ViewEncapsulation,
-  Input,
-  HostListener,
-  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-switch',
@@ -35,39 +36,39 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class NzSwitchComponent implements OnInit, ControlValueAccessor {
+  private _disabled = false;
   _prefixCls = 'ant-switch';
   _innerPrefixCls = `${this._prefixCls}-inner`;
   _classMap;
   _size: string;
   _checked = false;
-  _disabled = false;
 
   // ngModel Access
-  onChange: any = Function.prototype;
-  onTouched: any = Function.prototype;
+  onChange: (value: boolean) => void = () => null;
+  onTouched: () => void = () => null;
 
   @Input()
-  get nzSize(): string {
-    return this._size;
-  };
-
   set nzSize(value: string) {
     this._size = value;
     this.setClassMap();
   }
 
-  @Input()
-  get nzDisabled(): boolean {
-    return this._disabled;
-  };
+  get nzSize(): string {
+    return this._size;
+  }
 
+  @Input()
   set nzDisabled(value: boolean) {
-    this._disabled = value;
+    this._disabled = toBoolean(value);
     this.setClassMap();
   }
 
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
+
   @HostListener('click', [ '$event' ])
-  onClick(e) {
+  onClick(e: MouseEvent): void {
     e.preventDefault();
     if (!this._disabled) {
       this.updateValue(!this._checked);
@@ -75,7 +76,7 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  updateValue(value: any) {
+  updateValue(value: boolean): void {
     if (this._checked === value) {
       return;
     }
@@ -92,15 +93,15 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
     };
   }
 
-  writeValue(value: any): void {
+  writeValue(value: boolean): void {
     this.updateValue(value);
   }
 
-  registerOnChange(fn: (_: any) => {}): void {
+  registerOnChange(fn: (_: boolean) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => {}): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -108,7 +109,7 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
     this.nzDisabled = isDisabled;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.setClassMap();
   }
 }

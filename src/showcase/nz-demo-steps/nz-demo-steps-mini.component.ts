@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-steps-mini',
@@ -10,13 +10,6 @@ import { Component, OnInit } from '@angular/core';
     </nz-steps>
   `
 })
-export class NzDemoStepsMiniComponent implements OnInit {
+export class NzDemoStepsMiniComponent {
   current = 1;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

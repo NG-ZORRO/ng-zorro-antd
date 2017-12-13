@@ -1,11 +1,12 @@
 import {
   Component,
-  HostBinding,
-  ViewEncapsulation,
-  Renderer2,
   ElementRef,
-  Input
+  HostBinding,
+  Input,
+  Renderer2,
+  ViewEncapsulation,
 } from '@angular/core';
+import { toBoolean } from '../util/convert';
 import { AutoSizeType } from './nz-input.component';
 
 @Component({
@@ -14,62 +15,65 @@ import { AutoSizeType } from './nz-input.component';
   template     : ``,
   styleUrls    : [
     './style/index.less'
-  ]
+  ],
+  host: {
+    '[class.ant-input]': 'true'
+  }
 })
 export class NzInputDirectiveComponent {
+  private _disabled = false;
+  private _readonly = false;
+
   size = 'default';
   nativeElement: HTMLElement;
-  _readonly = false;
   _autosize: boolean | AutoSizeType = false;
-  @HostBinding(`class.ant-input-disabled`) _disabled = false;
 
   @Input()
   get nzSize(): string {
     return this.size;
-  };
+  }
 
   set nzSize(value: string) {
     this.size = { large: 'lg', small: 'sm' }[ value ];
   }
 
   @Input()
-  get nzDisabled(): boolean {
-    return this._disabled;
-  };
-
+  @HostBinding(`class.ant-input-disabled`)
   set nzDisabled(value: boolean) {
-    if (value) {
+    const disabled = toBoolean(value);
+    if (disabled) {
       this._render.setAttribute(this.nativeElement, 'disabled', '');
     } else {
       this._render.removeAttribute(this.nativeElement, 'disabled');
     }
-    this._disabled = value;
+    this._disabled = disabled;
+  }
+
+  get nzDisabled(): boolean {
+    return this._disabled;
   }
 
   @Input()
-  get nzReadonly(): boolean {
-    return this._readonly;
-  };
-
   set nzReadonly(value: boolean) {
-    if (value) {
+    const readonly = toBoolean(value);
+    if (readonly) {
       this._render.setAttribute(this.nativeElement, 'readonly', '');
     } else {
       this._render.removeAttribute(this.nativeElement, 'readonly');
     }
-    this._readonly = value;
+    this._readonly = readonly;
+  }
+
+  get nzReadonly(): boolean {
+    return this._readonly;
   }
 
   @Input()
-  get nzAutosize() {
-    return this._autosize;
-  }
-
   set nzAutosize(value: string | boolean | AutoSizeType) {
     if (typeof value === 'string') {
       this._autosize = true;
     } else {
-      this._autosize = <boolean | AutoSizeType>value;
+      this._autosize = value;
     }
 
     if (this._autosize) {
@@ -79,19 +83,19 @@ export class NzInputDirectiveComponent {
     }
   }
 
-  @HostBinding(`class.ant-input`) _nzInput = true;
-
+  get nzAutosize(): string | boolean | AutoSizeType {
+    return this._autosize;
+  }
 
   @HostBinding(`class.ant-input-lg`)
   get setLgClass(): boolean {
     return this.size === 'lg';
-  };
-
+  }
 
   @HostBinding(`class.ant-input-sm`)
   get setSmClass(): boolean {
     return this.size === 'sm';
-  };
+  }
 
   constructor(private _elementRef: ElementRef,
               private _render: Renderer2) {

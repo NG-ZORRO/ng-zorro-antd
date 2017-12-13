@@ -14,13 +14,9 @@ import { Component, OnInit } from '@angular/core';
 export class NzDemoGridFlexOrderComponent implements OnInit {
   orderList = [ 1, 2, 3, 4 ];
 
-  constructor() {
-  }
-
   ngOnInit() {
     setTimeout(_ => {
       this.orderList = [ ...this.orderList.reverse() ];
     }, 10000)
   }
 }
-

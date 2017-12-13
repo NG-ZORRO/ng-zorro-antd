@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 const options = [{
   value: 'zhejiang',
@@ -47,7 +47,7 @@ const options = [{
     </nz-cascader>`,
   styles  : []
 })
-export class NzDemoCascaderCustomTriggerComponent implements OnInit {
+export class NzDemoCascaderCustomTriggerComponent {
   /** init data */
   _options = options;
 
@@ -61,12 +61,6 @@ export class NzDemoCascaderCustomTriggerComponent implements OnInit {
 
   onSelectionChange(selectedOptions: any[]): void {
     this._text = selectedOptions.map(o => o.label).join(', ');
-  }
-
-  constructor() {
-  }
-
-  ngOnInit() {
   }
 }
 

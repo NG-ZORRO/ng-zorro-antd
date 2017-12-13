@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-table-colspan-rowspan',
   template: `
-    <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="10" [nzBordered]="true">
+    <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="10" nzBordered>
       <thead nz-thead>
         <tr>
           <th nz-th><span>Name</span></th>
@@ -26,7 +26,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-table>`,
   styles  : []
 })
-export class NzDemoTableColspanRowspanComponent implements OnInit {
+export class NzDemoTableColspanRowspanComponent {
   data = [ {
     key    : '1',
     name   : 'John Brown',
@@ -63,11 +63,4 @@ export class NzDemoTableColspanRowspanComponent implements OnInit {
     phone  : 18900010002,
     address: 'Dublin No. 2 Lake Park',
   } ];
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

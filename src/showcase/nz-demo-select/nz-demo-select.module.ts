@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { JsonpModule } from '@angular/http';
 
 import { NzDemoSelectBasicComponent } from './nz-demo-select-basic.component';
+import { NzDemoSelectTemplateComponent } from './nz-demo-select-template.component';
+import { NzDemoSelectPaginationComponent } from './nz-demo-select-pagination.component';
 import { NzDemoSelectSizeComponent } from './nz-demo-select-size.component';
 import { NzDemoSelectSearchComponent } from './nz-demo-select-search.component';
 import { NzDemoSelectSearchChangeComponent } from './nz-demo-select-search-change.component';
@@ -18,9 +20,8 @@ import { NzDemoSelectRoutingModule } from './nz-demo-select.routing.module';
 
 @NgModule({
   imports     : [ NzDemoSelectRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule, JsonpModule ],
-  declarations: [ NzDemoSelectBasicComponent, NzDemoSelectSizeComponent, NzDemoSelectSearchComponent, NzDemoSelectMultipleComponent, NzDemoSelectTagComponent, NzDemoSelectComponent, NzDemoSelectSearchChangeComponent, NzDemoSelectMultipleChangeComponent ],
+  declarations: [ NzDemoSelectTemplateComponent, NzDemoSelectPaginationComponent, NzDemoSelectBasicComponent, NzDemoSelectSizeComponent, NzDemoSelectSearchComponent, NzDemoSelectMultipleComponent, NzDemoSelectTagComponent, NzDemoSelectComponent, NzDemoSelectSearchChangeComponent, NzDemoSelectMultipleChangeComponent ],
 })
-
 export class NzDemoSelectModule {
 
 }

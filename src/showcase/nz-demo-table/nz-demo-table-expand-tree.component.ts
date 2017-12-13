@@ -123,9 +123,6 @@ export class NzDemoTableExpandTreeComponent implements OnInit {
     }
   }
 
-  constructor() {
-  }
-
   ngOnInit() {
     this.data.forEach(item => {
       this.expandDataCache[ item.key ] = this.convertTreeToList(item);

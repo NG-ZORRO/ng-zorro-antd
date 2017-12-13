@@ -20,7 +20,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-select>
     <br>
     <br>
-    <nz-select style="width: 200px;" [(ngModel)]="single" [nzSize]="size" [nzShowSearch]="true">
+    <nz-select style="width: 200px;" [(ngModel)]="single" [nzSize]="size" nzShowSearch>
       <nz-option
         *ngFor="let option of options"
         [nzLabel]="option.label"

@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-card-loading',
   template: `
-    <nz-card style="width:34%;" [nzLoading]="true">
+    <nz-card style="width:34%;" nzLoading>
       <ng-template #title>
         Card title
       </ng-template>
@@ -13,7 +13,4 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoCardLoadingComponent implements OnInit {
-  ngOnInit() {
-  }
-}
+export class NzDemoCardLoadingComponent { }

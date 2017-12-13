@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
     <nz-table #nzTable [nzDataSource]="_dataSet" [nzPageSize]="10" (nzDataChange)="_displayDataChange($event)" (nzPageIndexChange)="_refreshStatus()" (nzPageSizeChange)="_refreshStatus()">
       <thead nz-thead>
         <tr>
-          <th nz-th [nzCheckbox]="true">
+          <th nz-th nzCheckbox>
             <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
             </label>
           </th>
@@ -21,7 +21,7 @@ import { Component, OnInit } from '@angular/core';
       </thead>
       <tbody nz-tbody>
         <tr nz-tbody-tr *ngFor="let data of nzTable.data">
-          <td nz-td [nzCheckbox]="true">
+          <td nz-td nzCheckbox>
             <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="_refreshStatus($event)">
             </label>
           </td>
@@ -44,7 +44,7 @@ export class NzDemoTableSelectionAndOperationComponent implements OnInit {
 
   _displayDataChange($event) {
     this._displayData = $event;
-  };
+  }
 
   _refreshStatus() {
     const allChecked = this._displayData.every(value => value.checked === true);
@@ -53,7 +53,7 @@ export class NzDemoTableSelectionAndOperationComponent implements OnInit {
     this._indeterminate = (!allChecked) && (!allUnChecked);
     this._disabledButton = !this._dataSet.some(value => value.checked);
     this._checkedNumber = this._dataSet.filter(value => value.checked).length;
-  };
+  }
 
   _checkAll(value) {
     if (value) {
@@ -62,7 +62,7 @@ export class NzDemoTableSelectionAndOperationComponent implements OnInit {
       this._displayData.forEach(data => data.checked = false);
     }
     this._refreshStatus();
-  };
+  }
 
   _operateData() {
     this._operating = true;
@@ -71,9 +71,6 @@ export class NzDemoTableSelectionAndOperationComponent implements OnInit {
       this._refreshStatus();
       this._operating = false;
     }, 1000);
-  };
-
-  constructor() {
   }
 
   ngOnInit() {

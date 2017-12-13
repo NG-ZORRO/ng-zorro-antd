@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { NzSelectModule } from '../select/nz-select.module';
-import { NzPaginationComponent } from './nz-pagination.component';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzLocaleModule } from '../locale/index';
+import { NzSelectModule } from '../select/nz-select.module';
+import { NzPaginationComponent } from './nz-pagination.component';
 
 @NgModule({
   declarations: [ NzPaginationComponent ],

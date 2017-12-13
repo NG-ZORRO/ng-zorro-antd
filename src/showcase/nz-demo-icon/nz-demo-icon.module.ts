@@ -14,7 +14,6 @@ import { NgZorroAntdModule } from '../../../index.showcase';
   imports     : [ NzDemoIconRoutingModule, NzMarkdownModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule ],
   declarations: [ NzDemoIconComponent, NzIconCopyDirective ]
 })
-
 export class NzDemoIconModule {
 
 }

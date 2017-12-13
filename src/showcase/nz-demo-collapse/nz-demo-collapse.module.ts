@@ -28,7 +28,6 @@ import { NzDemoCollapseRoutingModule } from './nz-demo-collapse.routing.module';
     NzDemoCollapseCustomComponent
   ]
 })
-
 export class NzDemoCollapseModule {
 
 }

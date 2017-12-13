@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+
 @Component({
   selector     : 'nz-demo-tooltip',
   encapsulation: ViewEncapsulation.None,
@@ -8,15 +9,8 @@ import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@
     './nz-demo-tooltip.less',
   ]
 })
-export class NzDemoTooltipComponent implements OnInit {
+export class NzDemoTooltipComponent {
   NzDemoTooltipBasicCode = require('!!raw-loader!./nz-demo-tooltip-basic.component');
   NzDemoTooltipPositionCode = require('!!raw-loader!./nz-demo-tooltip-position.component');
   NzDemoTooltipTemplateCode = require('!!raw-loader!./nz-demo-tooltip-template.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

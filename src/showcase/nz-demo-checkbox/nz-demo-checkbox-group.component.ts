@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-checkbox-group',
@@ -13,7 +13,7 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoCheckboxGroupComponent implements OnInit {
+export class NzDemoCheckboxGroupComponent {
   checkOptionsOne = [
     { label: 'Apple', value: 'Apple', checked: true },
     { label: 'Pear', value: 'Pear' },
@@ -33,11 +33,4 @@ export class NzDemoCheckboxGroupComponent implements OnInit {
   _log(value) {
     console.log(value);
   }
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

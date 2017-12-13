@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-card-border',
   template: `
@@ -21,7 +21,4 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoCardBorderComponent implements OnInit {
-  ngOnInit() {
-  }
-}
+export class NzDemoCardBorderComponent { }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-menu-collapsed',
@@ -52,14 +52,8 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoMenuCollapsedComponent implements OnInit {
+export class NzDemoMenuCollapsedComponent {
   isCollapsed = false;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 
   toggleCollapsed() {
     this.isCollapsed = !this.isCollapsed;

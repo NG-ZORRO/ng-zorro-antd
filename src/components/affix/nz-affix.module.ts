@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
+import { SCROLL_SERVICE_PROVIDER } from '../core/scroll/nz-scroll.service';
 import { NzAffixComponent } from './nz-affix.component';
-import { SCROLL_SERVICE_PROVIDER } from "../core/scroll/nz-scroll.service";
 
 @NgModule({
   declarations: [ NzAffixComponent ],
@@ -12,4 +12,3 @@ import { SCROLL_SERVICE_PROVIDER } from "../core/scroll/nz-scroll.service";
 })
 export class NzAffixModule {
 }
-

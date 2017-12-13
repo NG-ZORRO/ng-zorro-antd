@@ -1,9 +1,9 @@
 import { Directive, HostBinding } from '@angular/core';
 
 @Directive({
-  selector: '[nz-form-label]'
+  selector: '[nz-form-label]',
+  host: {
+    '[class.ant-form-item-label]': 'true'
+  }
 })
-
-export class NzFormLabelDirective {
-  @HostBinding(`class.ant-form-item-label`) _nzFormItemLabel = true;
-}
+export class NzFormLabelDirective { }

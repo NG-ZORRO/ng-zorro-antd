@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 const options = [{
   value: 'zhejiang',
@@ -42,7 +42,7 @@ const options = [{
     </nz-cascader>`,
   styles  : []
 })
-export class NzDemoCascaderDefaultValueComponent implements OnInit {
+export class NzDemoCascaderDefaultValueComponent {
   /** init data */
   _options = options;
 
@@ -61,12 +61,6 @@ export class NzDemoCascaderDefaultValueComponent implements OnInit {
 
   _console(value) {
     console.log(value);
-  }
-
-  constructor() {
-  }
-
-  ngOnInit() {
   }
 }
 

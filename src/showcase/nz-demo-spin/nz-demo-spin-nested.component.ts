@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-spin-nested',
@@ -11,13 +11,6 @@ import { Component, OnInit } from '@angular/core';
     <nz-switch [(ngModel)]="_isSpinning"></nz-switch>`,
   styles  : []
 })
-export class NzDemoSpinNestedComponent implements OnInit {
+export class NzDemoSpinNestedComponent {
   _isSpinning = false;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

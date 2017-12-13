@@ -7,6 +7,14 @@ branches:
   only:
   - master
 
+env:
+  - TASK=build
+  - TASK=test
+  - TASK=lint
+  - TASK=integration-cli
+  - TASK=integration-webpack
+  - TASK=integration-rollup
+
 addons:
 apt:
   sources:
@@ -21,11 +29,12 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 before_script:
-- npm install -g @angular/cli
-- npm install -g karma
-- ng build
+  - npm install -g @angular/cli
+  - npm install -g karma
 
 script:
-- npm run test
-- npm run integration
-- cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
+  - npm run $TASK
+  - |
+    if [ "$TASK" = "test" ]; then 
+      cat ./coverage/lcov.info | ./node_modules/.bin/coveralls 
+    fi

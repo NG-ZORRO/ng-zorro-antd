@@ -22,7 +22,7 @@ function enableProdMode() {
 
 
 export default {
-  input: './out-tsc/app/main.js',
+  input: './out-tsc/app/src/main.js',
   output: {
     file: './dist/main.bundle.js',
     format: 'iife',

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-breadcrumb-basic',
@@ -19,10 +19,4 @@ import { Component, OnInit } from '@angular/core';
     </nz-breadcrumb>`,
   styles  : []
 })
-export class NzDemoBreadCrumbBasicComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoBreadCrumbBasicComponent { }

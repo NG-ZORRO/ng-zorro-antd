@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-dropdown-other',
@@ -15,15 +15,9 @@ import { Component, OnInit } from '@angular/core';
           <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item</a>
         </li>
         <li nz-menu-divider></li>
-        <li nz-menu-item [nzDisable]="true">3rd menu item（disabled）</li>
+        <li nz-menu-item nzDisable>3rd menu item（disabled）</li>
       </ul>
     </nz-dropdown>`,
   styles  : []
 })
-export class NzDemoDropDownOtherComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class NzDemoDropDownOtherComponent { }
