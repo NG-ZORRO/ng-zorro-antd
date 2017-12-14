@@ -21,6 +21,12 @@
           <p>点击按钮切换可用状态。</p>
         </div>
       </nz-code-box>
+      <nz-code-box [nzTitle]="'格式化展示'" id="components-input-number-formatter" [nzCode]="NzDemoInputNumberFormatterCode">
+        <nz-demo-input-number-formatter demo></nz-demo-input-number-formatter>
+        <div intro>
+          <p>通过 <code>nzFormatter</code> 格式化数字，以展示具有具体含义的数据，往往需要配合 <code>nzParser</code> 一起使用。</p>
+        </div>
+      </nz-code-box>
     </div>
     <div nz-col [nzSpan]="12">
       <nz-code-box [nzTitle]="'三种大小'" id="components-input-number-demo-size" [nzCode]="NzDemoInputNumberSizeCode">
@@ -106,6 +112,18 @@
           <td>获取焦点回调</td>
           <td>EventEmitter</td>
           <td>无</td>
+        </tr>
+        <tr>
+          <td>nzFormatter</td>
+          <td>指定输入框展示值的格式</td>
+          <td>function(value: number | string): string</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>nzParser</td>
+          <td>指定从 nzFormatter 里转换回数字的方式，和 nzFormatter 搭配使用</td>
+          <td>function( string): number</td>
+          <td>-</td>
         </tr>
       </tbody>
     </table>
