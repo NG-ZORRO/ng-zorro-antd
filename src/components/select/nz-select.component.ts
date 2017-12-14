@@ -471,7 +471,8 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
       return;
     }
     const arrayOptions = Array.from(this._selectedOptions);
-    this.onChange(arrayOptions.map(item => item.nzValue));
+    this._value = arrayOptions.map(item => item.nzValue);
+    this.onChange(this._value);
   }
 
   /** update selected option when add remove option etc */
