@@ -87,6 +87,8 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   @Input() nzPlaceHolder = '';
   @Input() nzMin: number = -Infinity;
   @Input() nzMax: number = Infinity;
+  @Input() nzFormatter = (value) => value;
+  @Input() nzParser = (value) => value;
 
   @Input()
   @HostBinding('class.ant-input-number-disabled')
@@ -189,11 +191,13 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   }
 
   _checkValue(): void {
-    const numberValue = +this._displayValue;
+    const numberValue = +this.nzParser(this._displayValue);
     if (this._isNumber(numberValue)) {
       this.nzValue = numberValue;
+    } else {
+      this._displayValue = this.nzFormatter(this._value);
+      this._inputNumber.nativeElement.value = this.nzFormatter(this._value);
     }
-    this._displayValue = this.nzValue;
   }
 
   _getBoundValue(value: number): number {
@@ -225,7 +229,6 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   }
 
   writeValue(value: number): void {
-    // this.nzValue = value;
     this._updateValue(value, false);
   }
 
@@ -242,13 +245,11 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   }
 
   private _updateValue(value: number, emitChange: boolean = true): void {
-    if (this._value === value) {
-      return;
-    }
+    const cacheValue = this._value;
     this._value = this._getBoundValue(value);
-    this._displayValue = this._value;
-    this._inputNumber.nativeElement.value = this._value;
-    if (emitChange) {
+    this._displayValue = this.nzFormatter(this._value);
+    this._inputNumber.nativeElement.value = this.nzFormatter(this._value);
+    if (emitChange && (value !== cacheValue)) {
       this.onChange(this._value);
     }
     this._disabledUp = (this.nzValue !== undefined) && !((this.nzValue + this.nzStep) <= this.nzMax);
