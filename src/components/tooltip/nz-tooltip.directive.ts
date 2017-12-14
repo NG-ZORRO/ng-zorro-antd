@@ -30,7 +30,7 @@ export class NzTooltipDirective implements AfterViewInit {
 
   private tooltip: NzToolTipComponent;
   private isDynamicTooltip = false; // Indicate whether current tooltip is dynamic created
-  private smoothTimer; // Timer for hiding smoothly
+  private delayTimer; // Timer for delay enter/leave
 
   constructor(
       public elementRef: ElementRef,
@@ -52,13 +52,13 @@ export class NzTooltipDirective implements AfterViewInit {
   ngAfterViewInit(): void {
     if (this.tooltip.nzTrigger === 'hover') {
       let overlayElement;
-      this.renderer.listen(this.elementRef.nativeElement, 'mouseenter', () => this.showSmoothly());
+      this.renderer.listen(this.elementRef.nativeElement, 'mouseenter', () => this.delayEnterLeave(true, true, this.tooltip.nzMouseEnterDelay));
       this.renderer.listen(this.elementRef.nativeElement, 'mouseleave', () => {
-        this.hideSmoothly();
+        this.delayEnterLeave(true, false, this.tooltip.nzMouseLeaveDelay);
         if (this.tooltip.overlay.overlayRef && !overlayElement) { // NOTE: we bind events under "mouseleave" due to the overlayRef is only created after the overlay was completely shown up
           overlayElement = this.tooltip.overlay.overlayRef.overlayElement;
-          this.renderer.listen(overlayElement, 'mouseenter', () => this.showSmoothly());
-          this.renderer.listen(overlayElement, 'mouseleave', () => this.hideSmoothly());
+          this.renderer.listen(overlayElement, 'mouseenter', () => this.delayEnterLeave(false, true));
+          this.renderer.listen(overlayElement, 'mouseleave', () => this.delayEnterLeave(false, false));
         }
       });
     } else if (this.tooltip.nzTrigger === 'focus') {
@@ -82,18 +82,17 @@ export class NzTooltipDirective implements AfterViewInit {
     this.isTooltipOpen = false;
   }
 
-  private showSmoothly(): void {
-    if (this.smoothTimer) {
-      clearTimeout(this.smoothTimer);
+  private delayEnterLeave(isOrigin: boolean, isEnter: boolean, delay: number = -1): void {
+    if (this.delayTimer) { // Clear timer during the delay time
+      window.clearTimeout(this.delayTimer);
+      this.delayTimer = null;
+    } else if (delay > 0) {
+      this.delayTimer = window.setTimeout(() => {
+        this.delayTimer = null;
+        isEnter ? this.show() : this.hide();
+      }, delay * 1000);
     } else {
-      this.show();
+      isEnter && isOrigin ? this.show() : this.hide(); // [Compatible] The "isOrigin" is used due to the tooltip will not hide immediately (may caused by the fade-out animation)
     }
-  }
-
-  private hideSmoothly(): void {
-    this.smoothTimer = setTimeout(() => {
-      this.smoothTimer = null;
-      this.hide();
-    }, 50);
   }
 }
