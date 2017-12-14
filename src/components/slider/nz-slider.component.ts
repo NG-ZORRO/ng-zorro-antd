@@ -556,13 +556,13 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
   // check if value is valid and throw error if value-type/range not match
   checkValidValue(value: SliderValue): boolean {
-    let parsedValue: number;
     const range = this.nzRange;
     if (value === null || value === undefined) {
       return false;
     } // it's an invalid value, just return
     const isArray = Array.isArray(value);
     if (!Array.isArray(value)) {
+      let parsedValue: number =  value;
       if (typeof value !== 'number') {
         parsedValue = parseFloat(value);
       }
