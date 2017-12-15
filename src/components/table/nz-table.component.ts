@@ -328,7 +328,7 @@ export class NzTableComponent implements AfterViewInit, OnInit {
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
   constructor(private _elementRef: ElementRef, private _cd: ChangeDetectorRef) {
@@ -339,9 +339,9 @@ export class NzTableComponent implements AfterViewInit, OnInit {
     this._isInit = true;
   }
 
-  scrollTable (event) {
+  scrollTable (event: Event): void {
     if (this.nzScroll != null &&  this.nzScroll.x != null) {
-      const body = <any>event.currentTarget;
+      const body = event.currentTarget as HTMLDivElement;
       const head = body.parentElement.getElementsByClassName('ant-table-header')[0];
       head.scrollLeft = body.scrollLeft;
     }
