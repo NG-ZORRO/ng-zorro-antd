@@ -227,12 +227,12 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   }
 
   @Input()
-  set nzScroll(value: { y: number }) {
+  set nzScroll(value: { y: number, x: number }) {
     this._scroll = value;
     this._cd.detectChanges();
   }
 
-  get nzScroll(): { y: number } {
+  get nzScroll(): { y: number, x: number } {
     return this._scroll;
   }
 
