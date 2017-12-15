@@ -110,7 +110,7 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   // TODO: the data cannot be type-checked in current design
   /* tslint:disable-next-line:no-any */
   data: any[] = [];
-  _scroll: { y: number };
+  _scroll: { x: number, y: number };
   _el: HTMLElement;
   _current = 1;
   _total: number;
