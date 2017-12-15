@@ -9,14 +9,27 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.6.7
+`2017-12-15`
+
+### Features
+* `InputNumber` 支持 `formatter` 与 `parser` 属性，可以自定义显示数据 [#740](https://github.com/NG-ZORRO/ng-zorro-antd/pull/740)
+* `Tooltip` `Popover` `Popconfirm` 支持 `nzMouseEnterDelay` `nzMouseLeaveDelay` 属性 [#758](https://github.com/NG-ZORRO/ng-zorro-antd/pull/758) 
+
+### Bug Fixes
+* `Select` 修复 `option` 发生改变时内部 `value` 没有变化的问题  [#754](https://github.com/NG-ZORRO/ng-zorro-antd/pull/754)
+* `Slider` 修复 `ngModel` 改变时没有生效的问题 [#743](https://github.com/NG-ZORRO/ng-zorro-antd/pull/743)
+* `DatePicker` 修复设置 `nzDisabledDate` 后仍可手动输入数据的问题 [#738](https://github.com/NG-ZORRO/ng-zorro-antd/pull/738)
+* `Calendar` 修复月份显示问题 [#737](https://github.com/NG-ZORRO/ng-zorro-antd/pull/737) [@Hsuan Lee](https://github.com/HsuanXyz)
+
 ## 0.6.6
 `2017-12-11`
 
 ### Bug Fixes
-* 修复 `Slider` 拖拽的问题 [#732]((https://github.com/NG-ZORRO/ng-zorro-antd/pull/732)
-* 修复 `Rate` 点击失效的问题 [#728]((https://github.com/NG-ZORRO/ng-zorro-antd/pull/728)
-* 修复 `DatePicker` 时间选择的问题 [#726]((https://github.com/NG-ZORRO/ng-zorro-antd/pull/726)
-* 修复 `InputNumber` 超出边界值的问题 [#731]((https://github.com/NG-ZORRO/ng-zorro-antd/pull/731)
+* 修复 `Slider` 拖拽的问题 [#732](https://github.com/NG-ZORRO/ng-zorro-antd/pull/732)
+* 修复 `Rate` 点击失效的问题 [#728](https://github.com/NG-ZORRO/ng-zorro-antd/pull/728)
+* 修复 `DatePicker` 时间选择的问题 [#726](https://github.com/NG-ZORRO/ng-zorro-antd/pull/726)
+* 修复 `InputNumber` 超出边界值的问题 [#731](https://github.com/NG-ZORRO/ng-zorro-antd/pull/731)
 
 
 ## 0.6.5
