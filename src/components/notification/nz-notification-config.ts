@@ -16,7 +16,7 @@ export const NZ_NOTIFICATION_DEFAULT_CONFIG_PROVIDER = {
     nzTop                  : '24px',
     nzRight                : '0px',
     nzDuration             : 4500,
-    nzMaxStack             : 7,
+    nzMaxStack             : 1,
     nzPauseOnHover         : true,
     nzAnimate              : true
   }
