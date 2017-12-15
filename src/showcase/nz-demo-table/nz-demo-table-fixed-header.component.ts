@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-fixed-header',
   template: `
-    <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="50" [nzScroll]="{ y: 240 }">
+    <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="50" [nzScroll]="{ x: 1920, y: 240 }">
       <ng-template #nzFixedHeader>
         <thead nz-thead>
           <tr>
