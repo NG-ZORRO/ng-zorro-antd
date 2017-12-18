@@ -3,7 +3,6 @@ import {
   EventEmitter,
   Host,
   Input,
-  OnInit,
   Optional,
   Output,
   Renderer2,
@@ -39,9 +38,11 @@ export class NzTableSortComponent {
 
   set nzValue(value: string) {
     this._value = value;
-    if ((this._value !== 'ascend') && (this._value !== 'descend')) {
-      if (this.nzThDirective) {
+    if (this.nzThDirective) {
+      if ((this._value !== 'ascend') && (this._value !== 'descend')) {
         this._renderer.removeClass(this.nzThDirective._el, 'ant-table-column-sort');
+      } else {
+        this._renderer.addClass(this.nzThDirective._el, 'ant-table-column-sort');
       }
     }
   }
@@ -49,14 +50,8 @@ export class NzTableSortComponent {
   _setValue(value: string): void {
     if (this.nzValue === value) {
       this.nzValue = null;
-      if (this.nzThDirective) {
-        this._renderer.removeClass(this.nzThDirective._el, 'ant-table-column-sort');
-      }
     } else {
       this.nzValue = value;
-      if (this.nzThDirective) {
-        this._renderer.addClass(this.nzThDirective._el, 'ant-table-column-sort');
-      }
     }
     this.nzValueChange.emit(this.nzValue);
   }
