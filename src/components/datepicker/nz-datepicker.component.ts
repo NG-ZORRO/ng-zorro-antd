@@ -4,7 +4,6 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  HostBinding,
   Input,
   OnInit,
   ViewChild,
@@ -196,7 +195,6 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   _open = false;
   _mode = 'year';
   _dropDownPosition = 'bottom';
-  _triggerWidth = 0;
   _value: Date = null;
   _disabledDate;
   _today = new Date();
@@ -268,10 +266,6 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
     } else {
       return false;
     }
-  }
-
-  _setTriggerWidth(): void {
-    this._triggerWidth = this.trigger.nativeElement.getBoundingClientRect().width;
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
@@ -385,7 +379,6 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
     }
     this._mode = this.nzMode === 'day' ? 'year' : 'month';
     this._open = true;
-    this._setTriggerWidth();
   }
 
   _closeCalendar(): void {
