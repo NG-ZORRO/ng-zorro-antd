@@ -13,11 +13,13 @@ const enum modalEvent {
 }
 
 @Injectable()
-export class NzModalSubject extends Subject<string | object> {
+/* tslint:disable-next-line:no-any */
+export class NzModalSubject extends Subject<any> {
   modalId: string;
   eventsQueue = {};
 
-  destroy(type: string = 'onCancel'): void {
+  /* tslint:disable-next-line:no-any */
+  destroy(type: any = 'onCancel'): void {
     if (!this.isStopped && !this.closed) {
       this.next(type);
     }
