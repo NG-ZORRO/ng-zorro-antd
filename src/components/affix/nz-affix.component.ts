@@ -4,9 +4,12 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChange,
+  SimpleChanges,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -29,13 +32,13 @@ import { NzScrollService } from '../core/scroll/nz-scroll.service';
     './style/patch.less'
   ]
 })
-export class NzAffixComponent implements OnInit, OnDestroy, AfterViewInit {
+export class NzAffixComponent implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
   private didScroll = false;
   private scrollTime: number = null;
   private scroll$: Subscription = null;
   private scrollWinInTarget$: Subscription = null;
-  private target: Element = null;
+
   @ViewChild('wrap') private wrap: ElementRef;
   // 缓存固定状态
   private fixed = false;
@@ -43,10 +46,7 @@ export class NzAffixComponent implements OnInit, OnDestroy, AfterViewInit {
   private orgOffset: { top: number, left: number };
 
   @Input()
-  set nzTarget(el: Element) {
-    this.target = el;
-    this.registerScrollEvent();
-  }
+  nzTarget: Element;
 
   @Input() nzOffsetTop = 0;
 
@@ -56,8 +56,14 @@ export class NzAffixComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(private scrollSrv: NzScrollService, private _el: ElementRef) { }
 
+  ngOnChanges(changes: { [P in keyof this]?: SimpleChange } & SimpleChanges): void {
+    if (changes.nzTarget) {
+      this.registerScrollEvent();
+    }
+  }
+
   ngOnInit(): void {
-    if (!this.scroll$) {
+    if (!this.nzTarget) {
       this.registerScrollEvent();
     }
   }
@@ -67,15 +73,11 @@ export class NzAffixComponent implements OnInit, OnDestroy, AfterViewInit {
     this.fixed = false;
   }
 
-  private getTarget(): Element | Window {
-    return this.target || window;
-  }
-
   private reCalculate(): this {
     const elOffset = this.scrollSrv.getOffset(this._el.nativeElement);
     this.orgOffset = {
-      top : elOffset.top + this.scrollSrv.getScroll(this.getTarget()),
-      left: elOffset.left + this.scrollSrv.getScroll(this.getTarget(), false)
+      top : elOffset.top + this.scrollSrv.getScroll(this.nzTarget),
+      left: elOffset.left + this.scrollSrv.getScroll(this.nzTarget, false)
     };
 
     return this;
@@ -85,8 +87,8 @@ export class NzAffixComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.orgOffset) {
       this.reCalculate();
     }
-    const containerScrollTop = this.scrollSrv.getScroll(this.getTarget());
-    const fixTop = this.getTarget() === window ? 0 : this.scrollSrv.getOffset(this.getTarget() as Element).top;
+    const containerScrollTop = this.scrollSrv.getScroll(this.nzTarget);
+    const fixTop = this.nzTarget ? this.scrollSrv.getOffset(this.nzTarget).top : 0;
     const hasFixed = this.orgOffset.top - fixTop - containerScrollTop - this.nzOffsetTop <= 0;
     if (this.fixed === hasFixed) {
       return;
@@ -119,16 +121,17 @@ export class NzAffixComponent implements OnInit, OnDestroy, AfterViewInit {
   private registerScrollEvent(): void {
     this.removeListen();
     this.reCalculate().process();
+    // TODO: should refactor this logic
     this.scrollTime = window.setInterval(() => {
       if (this.didScroll) {
         this.didScroll = false;
         this.process();
       }
     }, 100);
-    this.scroll$ = fromEvent(this.getTarget(), 'scroll')
+    this.scroll$ = fromEvent(this.nzTarget || window, 'scroll')
       .subscribe(() => this.didScroll = true);
 
-    if (this.getTarget() !== window) {
+    if (this.nzTarget) {
       // 当 window 滚动位发生变动时，需要重新计算滚动容器
       this.scrollWinInTarget$ = fromEvent(window, 'scroll').pipe(throttleTime(50), distinctUntilChanged())
         .subscribe(e => {
