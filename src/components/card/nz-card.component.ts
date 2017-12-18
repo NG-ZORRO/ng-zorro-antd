@@ -18,11 +18,11 @@ import { toBoolean } from '../util/convert';
           [ngTemplateOutlet]="title">
         </ng-template>
       </h3>
-    </div>
-    <div class="ant-card-extra" *ngIf="extra">
-      <ng-template
-        [ngTemplateOutlet]="extra">
-      </ng-template>
+      <div class="ant-card-extra" *ngIf="extra">
+        <ng-template
+          [ngTemplateOutlet]="extra">
+        </ng-template>
+      </div>
     </div>
     <div class="ant-card-body">
       <ng-template
