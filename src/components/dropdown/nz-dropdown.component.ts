@@ -1,4 +1,4 @@
-import { ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -11,7 +11,8 @@ import {
   OnInit,
   Output,
   Renderer2,
-  ViewEncapsulation,
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
@@ -82,6 +83,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Output() _visibleChange = new Subject<boolean>();
   @Output() nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
+  @ViewChild(CdkConnectedOverlay) _cdkOverlay: CdkConnectedOverlay;
 
   @Input()
   set nzClickHide(value: boolean) {
@@ -151,13 +153,17 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
 
   _setTriggerWidth(): void {
     this._triggerWidth = this._nzOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+    /** should remove after https://github.com/angular/material2/pull/8765 merged **/
+    if (this._cdkOverlay && this._cdkOverlay.overlayRef) {
+      this._cdkOverlay.overlayRef.updateSize({
+        minWidth: this._triggerWidth
+      });
+    }
   }
 
   _onVisibleChange = (visible: boolean) => {
     if (visible) {
-      if (!this._triggerWidth) {
-        this._setTriggerWidth();
-      }
+      this._setTriggerWidth();
     }
     if (this.nzVisible !== visible) {
       this.nzVisible = visible;

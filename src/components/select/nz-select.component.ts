@@ -3,7 +3,7 @@
  * TODO: rebuild latter
  */
 import { DOWN_ARROW, ENTER, TAB } from '@angular/cdk/keycodes';
-import { ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import {
   forwardRef,
   AfterContentChecked,
@@ -12,7 +12,6 @@ import {
   ElementRef,
   EventEmitter,
   HostListener,
-  Inject,
   Input,
   OnInit,
   Output,
@@ -164,12 +163,12 @@ import { NzOptionPipe } from './nz-option.pipe';
 export class NzSelectComponent implements OnInit, AfterContentInit, AfterContentChecked, ControlValueAccessor {
   private _allowClear = false;
   private _disabled = false;
-  _isOpen = false;
   private _isTags = false;
   private _isMultiple = false;
   private _keepUnListOptions = false;
   private _showSearch = false;
   _el: HTMLElement;
+  _isOpen = false;
   _prefixCls = 'ant-select';
   _classList: string[] = [];
   _dropDownClassMap;
@@ -205,6 +204,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   @Output() nzScrollToBottom: EventEmitter<boolean> = new EventEmitter();
   @Input() nzFilter = true;
   @Input() nzMaxMultiple = Infinity;
+  @ViewChild(CdkConnectedOverlay) _cdkOverlay: CdkConnectedOverlay;
 
   @Input()
   set nzAllowClear(value: boolean) {
@@ -315,9 +315,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
     }
     if (isOpen) {
       this.scrollToActive();
-      if (!this._triggerWidth) {
-        this._setTriggerWidth();
-      }
+      this._setTriggerWidth();
     }
     this._isOpen = isOpen;
     this.nzOpenChange.emit(this._isOpen);
@@ -694,7 +692,8 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
           // TODO: scrollIntoViewIfNeeded is not a standard API, why doing so?
           /* tslint:disable-next-line:no-any */
           (scrollPane as any).scrollIntoViewIfNeeded(false);
-        } catch (e) { }
+        } catch (e) {
+        }
       }
     });
   }
@@ -712,6 +711,12 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
 
   _setTriggerWidth(): void {
     this._triggerWidth = this._getTriggerRect().width;
+    /** should remove after after https://github.com/angular/material2/pull/8765 merged **/
+    if (this._cdkOverlay && this._cdkOverlay.overlayRef) {
+      this._cdkOverlay.overlayRef.updateSize({
+        width: this._triggerWidth
+      });
+    }
   }
 
   _getTriggerRect(): ClientRect {

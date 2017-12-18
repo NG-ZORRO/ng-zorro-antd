@@ -143,7 +143,6 @@ import { NzTimePickerInnerComponent } from './nz-timepicker-inner.component';
 export class NzTimePickerComponent extends NzTimePickerInnerComponent {
   private _timePickerDisabled = false;
   _dropDownPosition = 'bottom';
-  _triggerWidth = 0;
   _positions: ConnectionPositionPair[] = [ ...DEFAULT_DATEPICKER_POSITIONS ];
 
   @ViewChild('trigger') trigger;
@@ -156,10 +155,6 @@ export class NzTimePickerComponent extends NzTimePickerInnerComponent {
 
   get nzDisabled(): boolean {
     return this._timePickerDisabled;
-  }
-
-  _setTriggerWidth(): void {
-    this._triggerWidth = this.trigger.nativeElement.getBoundingClientRect().width;
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
@@ -207,7 +202,6 @@ export class NzTimePickerComponent extends NzTimePickerInnerComponent {
 
   _openCalendar(): void {
     this._open = true;
-    this._setTriggerWidth();
     setTimeout(_ => {
       this._initPosition();
       this._inputTimeInstance.nativeElement.setSelectionRange(0, 8);
