@@ -15,11 +15,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { merge } from 'rxjs/observable/merge';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 import { debounceTime } from 'rxjs/operators/debounceTime';
+import { mapTo } from 'rxjs/operators/mapTo';
+import { merge } from 'rxjs/operators/merge';
 import { dropDownAnimation } from '../core/animation/dropdown-animations';
 import { DEFAULT_DROPDOWN_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position-map';
 import { NzMenuComponent } from '../menu/nz-menu.component';
@@ -173,7 +174,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   _startSubscribe(observable$: Observable<boolean>): void {
-    this._subscription = observable$.pipe(debounceTime(300))
+    this._subscription = observable$.pipe(debounceTime(50))
       .subscribe(this._onVisibleChange);
   }
 
@@ -192,32 +193,17 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit(): void {
     let mouse$: Observable<boolean>;
     if (this.nzTrigger === 'hover') {
-      mouse$ = Observable.create((observer: Observer<boolean>) => {
-        const disposeMouseEnter = this._renderer.listen(this._nzOrigin.elementRef.nativeElement, 'mouseenter', () => {
-          observer.next(true);
-        });
-        const disposeMouseLeave = this._renderer.listen(this._nzOrigin.elementRef.nativeElement, 'mouseleave', () => {
-          observer.next(false);
-        });
-        return () => {
-          disposeMouseEnter();
-          disposeMouseLeave();
-        };
-      });
+      const mouseEnterOrigin$ = fromEvent(this._nzOrigin.elementRef.nativeElement, 'mouseenter').pipe(mapTo(true));
+      const mouseLeaveOrigin$ = fromEvent(this._nzOrigin.elementRef.nativeElement, 'mouseleave').pipe(mapTo(false));
+      mouse$ = mouseEnterOrigin$.pipe(merge(mouseLeaveOrigin$));
     }
     if (this.nzTrigger === 'click') {
-      mouse$ = Observable.create((observer: Observer<boolean>) => {
-        const dispose = this._renderer.listen(this._nzOrigin.elementRef.nativeElement, 'click', (e) => {
-          e.preventDefault();
-          observer.next(true);
-        });
-        return () => dispose();
+      mouse$ = fromEvent(this._nzOrigin.elementRef.nativeElement, 'click').pipe(mapTo(true));
+      this._renderer.listen(this._nzOrigin.elementRef.nativeElement, 'click', (e) => {
+        e.preventDefault();
       });
     }
-    const observable$ = merge(
-      mouse$,
-      this._visibleChange
-    );
+    const observable$ = mouse$.pipe(merge(this._visibleChange));
     this._startSubscribe(observable$);
   }
 

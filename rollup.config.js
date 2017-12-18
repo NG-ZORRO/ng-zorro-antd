@@ -105,6 +105,8 @@ let globals = {
   'rxjs/operators/finally': 'Rx.Observable.prototype',
   'rxjs/operators/first': 'Rx.Observable.prototype',
   'rxjs/operators/map': 'Rx.Observable.prototype',
+  'rxjs/operators/mapTo': 'Rx.Observable.prototype',
+  'rxjs/operators/merge': 'Rx.Observable.prototype',
   'rxjs/operators/pluck': 'Rx.Observable.prototype',
   'rxjs/operators/share': 'Rx.Observable.prototype',
   'rxjs/operators/startWith': 'Rx.Observable.prototype',
