@@ -12,13 +12,13 @@ import { toBoolean } from '../util/convert';
   selector     : 'nz-pagination',
   encapsulation: ViewEncapsulation.None,
   template     : `
-    <ul class="ant-pagination ant-pagination-simple" *ngIf="nzSimple">
+    <ul [class.ant-table-pagination]="nzInTable" class="ant-pagination ant-pagination-simple" *ngIf="nzSimple">
       <li
         title="{{ 'Pagination.prevPage' | nzTranslate }}"
         class="ant-pagination-prev"
         (click)="_jumpPage(_current-1)"
         [class.ant-pagination-disabled]="_isFirstIndex">
-        <a></a>
+        <a class="ant-pagination-item-link"></a>
       </li>
       <li [attr.title]="_current+'/'+_lastIndex" class="ant-pagination-simple-pager">
         <input [ngModel]="nzPageIndex" (ngModelChange)="_nzPageIndexChange($event)" size="3"><span class="ant-pagination-slash">／</span>{{ _lastIndex }}
@@ -28,17 +28,17 @@ import { toBoolean } from '../util/convert';
         class="ant-pagination-next"
         (click)="_jumpPage(_current+1)"
         [class.ant-pagination-disabled]="_isLastIndex">
-        <a></a>
+        <a class="ant-pagination-item-link"></a>
       </li>
     </ul>
-    <ul *ngIf="!nzSimple" class="ant-pagination" [class.mini]="nzSize=='small'">
+    <ul [class.ant-table-pagination]="nzInTable" *ngIf="!nzSimple" class="ant-pagination" [class.mini]="nzSize=='small'">
       <span class="ant-pagination-total-text" *ngIf="nzShowTotal">{{ 'Pagination.totalItems' | nzTranslate: { total: _total } }}</span>
       <li
         title="{{ 'Pagination.prevPage' | nzTranslate }}"
         class="ant-pagination-prev"
         (click)="_jumpPage(_current-1)"
         [class.ant-pagination-disabled]="_isFirstIndex">
-        <a></a>
+        <a class="ant-pagination-item-link"></a>
       </li>
       <li
         title="{{ 'Pagination.firstPage' | nzTranslate }}"
@@ -82,7 +82,7 @@ import { toBoolean } from '../util/convert';
         class="ant-pagination-next"
         (click)="_jumpPage(_current+1)"
         [class.ant-pagination-disabled]="_isLastIndex">
-        <a></a>
+        <a class="ant-pagination-item-link"></a>
       </li>
       <div class="ant-pagination-options">
         <nz-select
@@ -126,6 +126,8 @@ export class NzPaginationComponent {
   _lastIndex = Infinity;
   _pages = [];
   _options = [ 10, 20, 30, 40, 50 ];
+
+  @Input() nzInTable = false;
 
   @Input()
   set nzShowSizeChanger(value: boolean) {
