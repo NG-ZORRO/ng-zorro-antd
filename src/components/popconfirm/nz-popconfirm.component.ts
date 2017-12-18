@@ -64,6 +64,7 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
   private _condition = false;
   _prefix = 'ant-popover-placement';
   _trigger = 'click';
+  _hasBackdrop = true;
   @Input() nzContent;
   @Input() nzOkText = this._locale.translate('Modal.okText');
   @Input() nzCancelText = this._locale.translate('Modal.cancelText');
