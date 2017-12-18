@@ -14,7 +14,7 @@
 
   &:not(&-no-hovering):hover {
     box-shadow: @box-shadow-base;
-    border-color: transparent;
+    border-color: @shadow-color;
   }
 
   &-bordered {
@@ -28,23 +28,28 @@
     border-bottom: @border-width-base @border-style-base @border-color-split;
     padding: 0 @card-padding-base;
     border-radius: @border-radius-sm @border-radius-sm 0 0;
+    .clearfix;
+    margin-bottom: -1px; // Fix card grid overflow bug: https://gw.alipayobjects.com/zos/rmsportal/XonYxBikwpgbqIQBeuhk.png
+    display: flex;
 
     &-title {
       font-size: @font-size-lg;
-      display: inline-block;
       text-overflow: ellipsis;
-      width: 100%;
+      max-width: 100%;
       overflow: hidden;
       white-space: nowrap;
       color: @card-head-color;
       font-weight: 500;
+      display: inline-block;
+      flex: 1;
     }
   }
 
   &-extra {
-    position: absolute;
-    right: @card-padding-base;
-    top: 14px;
+    float: right;
+    text-align: right;
+    // https://stackoverflow.com/a/22429853/3040605
+    margin-left: auto;
   }
 
   &-body {
@@ -52,34 +57,15 @@
     .clearfix;
   }
 
-  &-loading &-body {
-    user-select: none;
-    padding: 0;
-  }
-
-  &-loading-content {
-    padding: @card-padding-base;
-  }
-
-  &-loading-block {
-    display: inline-block;
-    margin: 5px 1% 0;
-    height: 14px;
-    border-radius: @border-radius-sm;
-    background: linear-gradient(90deg, rgba(207, 216, 220, .2), rgba(207, 216, 220, .4), rgba(207, 216, 220, .2));
-    animation: card-loading 1.4s ease infinite;
-    background-size: 600% 600%;
-  }
-
   &-contain-grid &-body {
-    margin: -0.5px;
+    margin: -1px 0 0 -1px;
     padding: 0;
   }
 
   &-grid {
     border-radius: 0;
     border: 0;
-    box-shadow: 0 0 0 0.5px @border-color-split, 0 0 0 0.5px @border-color-split inset;
+    box-shadow: 1px 0 0 0 @border-color-split, 0 1px 0 0 @border-color-split, 1px 1px 0 0 @border-color-split, 1px 0 0 0 @border-color-split inset, 0 1px 0 0 @border-color-split inset;
     width: 33.33%;
     float: left;
     padding: @card-padding-base;
@@ -110,6 +96,25 @@
 
   &-padding-transition &-extra {
     transition: right .3s;
+  }
+
+  &-loading &-body {
+    user-select: none;
+    padding: 0;
+  }
+
+  &-loading-content {
+    padding: @card-padding-base;
+  }
+
+  &-loading-block {
+    display: inline-block;
+    margin: 5px 1% 0;
+    height: 14px;
+    border-radius: @border-radius-sm;
+    background: linear-gradient(90deg, rgba(207, 216, 220, .2), rgba(207, 216, 220, .4), rgba(207, 216, 220, .2));
+    animation: card-loading 1.4s ease infinite;
+    background-size: 600% 600%;
   }
 }
 

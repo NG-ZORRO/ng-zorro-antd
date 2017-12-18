@@ -7,6 +7,7 @@
 
 @form-prefix-cls: ~"@{ant-prefix}-form";
 @form-component-height: @input-height-lg;
+@form-feedback-icon-size: 14px;
 
 .reset-form();
 
@@ -70,13 +71,13 @@ input[type="checkbox"] {
   vertical-align: top;
 
   // nested FormItem
-  & > &,
-  & :not(.@{form-prefix-cls}) > & {
+  &-control > &:last-child,
+  & [class^="@{ant-prefix}-col-"] > &:only-child {
     margin-bottom: -@form-item-margin-bottom;
   }
 
   &-control {
-    line-height: @form-component-height;
+    line-height: @form-component-height - 0.0001px; // https://github.com/ant-design/ant-design/issues/8220
     position: relative;
     .clearfix;
   }
@@ -162,15 +163,23 @@ form {
 
     .@{ant-prefix}-cascader-picker {
       &-arrow {
-        padding-right: 36px;
+        margin-right: 21px;
       }
       &-clear {
         right: 28px;
       }
     }
 
+    // Fix issue: https://github.com/ant-design/ant-design/issues/7854
+    .@{ant-prefix}-input-search {
+      .@{ant-prefix}-input-suffix {
+        right: 28px;
+      }
+    }
+
     // Fix issue: https://github.com/ant-design/ant-design/issues/4783
-    .@{ant-prefix}-calendar-picker {
+    .@{ant-prefix}-calendar-picker,
+    .@{ant-prefix}-time-picker {
       &-icon,
       &-clear {
         right: 28px;
@@ -218,7 +227,6 @@ form {
   }
 
   .@{ant-prefix}-input-number {
-    margin-top: -1px;
     margin-right: 8px;
   }
 
@@ -242,6 +250,20 @@ form {
   .@{ant-prefix}-input-group-addon .@{ant-prefix}-cascader-picker {
     &:only-child {
       display: inline-block;
+    }
+  }
+
+  // fix input with addon position. https://github.com/ant-design/ant-design/issues/8243
+  .@{ant-prefix}-input-group-wrapper {
+    position: relative;
+    top: (@input-height-lg - @input-height-base) / 2;
+
+    &.@{ant-prefix}-input-group-wrapper-lg {
+      top: 0;
+    }
+
+    &.@{ant-prefix}-input-group-wrapper-sm {
+      top: (@input-height-lg - @input-height-sm) / 2;
     }
   }
 }
@@ -276,7 +298,8 @@ form {
 // Form layout
 //== Vertical Form
 .make-vertical-layout() {
-  padding: 0 0 8px;
+  padding: @form-vertical-label-padding;
+  margin: @form-vertical-label-margin;
   display: block;
   text-align: left;
   line-height: @line-height-base;
@@ -361,7 +384,7 @@ form {
     .square(@input-height-lg);
     line-height: @input-height-lg;
     text-align: center;
-    font-size: @font-size-lg;
+    font-size: @form-feedback-icon-size;
     animation: zoomIn .3s @ease-out-back;
     .iconfont-font("");
     z-index: 1;
@@ -414,6 +437,7 @@ form {
 
   // arrow and icon
   .@{ant-prefix}-calendar-picker-icon:after,
+  .@{ant-prefix}-time-picker-icon:after,
   .@{ant-prefix}-picker-icon:after,
   .@{ant-prefix}-select-arrow,
   .@{ant-prefix}-cascader-picker-arrow {
@@ -431,6 +455,10 @@ form {
     &:not([disabled]):hover {
       border-color: @warning-color;
     }
+  }
+
+  .@{ant-prefix}-cascader-picker:focus .@{ant-prefix}-cascader-input {
+    .active(@warning-color);
   }
 }
 
@@ -462,6 +490,7 @@ form {
 
   // arrow and icon
   .@{ant-prefix}-calendar-picker-icon:after,
+  .@{ant-prefix}-time-picker-icon:after,
   .@{ant-prefix}-picker-icon:after,
   .@{ant-prefix}-select-arrow,
   .@{ant-prefix}-cascader-picker-arrow {
@@ -487,10 +516,14 @@ form {
         border-color: @error-color;
       }
     }
-    &.@{ant-prefix}-mention-active .@{ant-prefix}-mention-editor,
+    &.@{ant-prefix}-mention-active:not([disabled]) .@{ant-prefix}-mention-editor,
     .@{ant-prefix}-mention-editor:not([disabled]):focus {
       .active(@error-color);
     }
+  }
+
+  .@{ant-prefix}-cascader-picker:focus .@{ant-prefix}-cascader-input {
+    .active(@error-color);
   }
 }
 

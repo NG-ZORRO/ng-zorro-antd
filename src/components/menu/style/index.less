@@ -2,7 +2,6 @@
 @import "../../style/mixins/index";
 
 @menu-prefix-cls: ~"@{ant-prefix}-menu";
-@menu-collapsed-width: 64px;
 
 // default theme
 .@{menu-prefix-cls} {
@@ -15,7 +14,7 @@
   color: @text-color;
   background: @component-background;
   line-height: 46px;
-  transition: background .3s @ease-in-out, width .15s @ease-in-out;
+  transition: background .3s, width .2s;
 
   &-hidden {
     display: none;
@@ -29,8 +28,9 @@
   &-item-group-title {
     color: @text-color-secondary;
     font-size: @font-size-base;
-    line-height: 1.5;
+    line-height: @line-height-base;
     padding: 8px 16px;
+    transition: all .3s;
   }
 
   &-item,
@@ -177,39 +177,6 @@
         transition: transform .15s @ease-in-out, opacity .15s @ease-in-out;
         opacity: 1;
         transform: scaleY(1);
-      }
-    }
-  }
-
-  &-vertical&-inline-collapsed,
-  &-inline-collapsed {
-    width: @menu-collapsed-width;
-    > .@{menu-prefix-cls}-item,
-    > .@{menu-prefix-cls}-submenu > .@{menu-prefix-cls}-submenu-title {
-      left: 0;
-      text-overflow: clip;
-      padding: 0 (@menu-collapsed-width - 16px) / 2;
-      &:after {
-        display: none;
-      }
-      .@{iconfont-css-prefix} {
-        font-size: 16px;
-        line-height: 42px;
-        margin: 0;
-        + span {
-          max-width: 0;
-          display: inline-block;
-          opacity: 0;
-        }
-      }
-    }
-    &-tooltip {
-      pointer-events: none;
-      .@{iconfont-css-prefix} {
-        display: none;
-      }
-      a {
-        color: @text-color-dark;
       }
     }
   }
@@ -368,6 +335,48 @@
     }
   }
 
+  &-inline-collapsed {
+    width: @menu-collapsed-width;
+
+    > .@{menu-prefix-cls}-item,
+    > .@{menu-prefix-cls}-item-group > .@{menu-prefix-cls}-item-group-list > .@{menu-prefix-cls}-item,
+    > .@{menu-prefix-cls}-submenu > .@{menu-prefix-cls}-submenu-title {
+      left: 0;
+      text-overflow: clip;
+      padding: 0 (@menu-collapsed-width - 16px) / 2 !important;
+      &:after {
+        display: none;
+      }
+      .@{iconfont-css-prefix} {
+        font-size: 16px;
+        line-height: 42px;
+        margin: 0;
+        + span {
+          max-width: 0;
+          display: inline-block;
+          opacity: 0;
+        }
+      }
+    }
+    &-tooltip {
+      pointer-events: none;
+      .@{iconfont-css-prefix} {
+        display: none;
+      }
+      a {
+        color: @text-color-dark;
+      }
+    }
+
+    .@{menu-prefix-cls}-item-group-title {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+  }
+
   &-item-group-list {
     .@{menu-prefix-cls}-item,
     .@{menu-prefix-cls}-submenu-title {
@@ -473,7 +482,6 @@
   &-dark &-submenu-active,
   &-dark:not(&-inline) &-submenu-open,
   &-dark &-submenu-selected,
-  &-dark &-submenu:hover,
   &-dark &-submenu-title:hover {
     background-color: transparent;
     color: #fff;

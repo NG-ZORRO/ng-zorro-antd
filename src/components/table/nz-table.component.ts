@@ -70,7 +70,7 @@ import { NzThDirective } from './nz-th.directive';
         </div>
         <nz-pagination
           *ngIf="nzIsPagination&&data.length"
-          class="ant-table-pagination"
+          [nzInTable]="true"
           [nzShowSizeChanger]="nzShowSizeChanger"
           [nzPageSizeSelectorValues]="nzPageSizeSelectorValues"
           [nzShowQuickJumper]="nzShowQuickJumper"

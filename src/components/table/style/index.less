@@ -43,7 +43,7 @@
       margin-left: 4px;
       font-size: @font-size-base;
       cursor: pointer;
-      color: #aaa;
+      color: #999;
       transition: all .3s;
       width: 14px;
 
@@ -161,6 +161,9 @@
     text-align: center;
     min-width: 62px;
     width: 62px;
+    .@{ant-prefix}-radio-wrapper {
+      margin-right: 0;
+    }
   }
 
   &-expand-icon-th,
@@ -202,7 +205,7 @@
   }
 
   &-middle {
-    .@{table-prefix-cls}-thead > tr > th:not(.@{table-prefix-cls}-selection-column),
+    .@{table-prefix-cls}-thead > tr > th,
     .@{table-prefix-cls}-tbody > tr > td {
       padding: 10px 8px;
     }
@@ -254,7 +257,7 @@
 
     .@{table-prefix-cls}-title,
     .@{table-prefix-cls}-footer,
-    .@{table-prefix-cls}-thead > tr > th:not(.@{table-prefix-cls}-selection-column) {
+    .@{table-prefix-cls}-thead > tr > th {
       padding: 10px 8px;
     }
 
@@ -265,9 +268,6 @@
 
     .@{table-prefix-cls}-header {
       background: @component-background;
-      table {
-        border-bottom: @border-width-base @border-style-base @border-color-split;
-      }
     }
 
     .@{table-prefix-cls}-placeholder,
@@ -301,7 +301,6 @@
     margin-left: 4px;
     display: inline-block;
     width: 14px;
-    height: 14px;
     vertical-align: middle;
     text-align: center;
 
@@ -310,6 +309,7 @@
       line-height: 4px;
       display: block;
       width: 14px;
+      height: 6px;
       cursor: pointer;
       &:hover .@{iconfont-css-prefix} {
         color: @text-color;
@@ -341,12 +341,10 @@
     .@{iconfont-css-prefix}-caret-up,
     .@{iconfont-css-prefix}-caret-down {
       .iconfont-size-under-12px(8px);
-      line-height: 6px;
-      height: 6px;
-      color: #aaa;
-      &:before {
-        -moz-transform-origin: 53% 50%; /* fix firefox position */
-      }
+      line-height: 4px;
+      height: 4px;
+      color: #999;
+      transition: all .3s;
     }
   }
 
@@ -437,12 +435,13 @@
     text-align: center;
     font-size: @font-size-base;
     color: @text-color-secondary;
+    z-index: 1;
     .@{iconfont-css-prefix} {
       margin-right: 4px;
     }
   }
 
-  &-pagination {
+  &-pagination.@{ant-prefix}-pagination {
     margin: 16px 0;
     float: right;
   }
@@ -466,7 +465,7 @@
       }
 
       &-item > label + span {
-        padding: 0;
+        padding-right: 0;
       }
 
       &-sub {
@@ -521,7 +520,7 @@
     }
 
     .@{iconfont-css-prefix}-down {
-      color: #aaa;
+      color: #999;
       transition: all .3s;
     }
 
@@ -534,7 +533,7 @@
       box-shadow: @box-shadow-base;
 
       .@{ant-prefix}-action-down {
-        color: #aaa;
+        color: #999;
       }
     }
 
@@ -617,12 +616,6 @@
 
   &-fixed-header &-scroll &-header {
     overflow: scroll;
-    padding-bottom: 20px;
-    margin-bottom: -20px;
-  }
-
-  /* fix firefox scrollbar bug */
-  &-fixed-header&-empty &-scroll &-body {
     padding-bottom: 20px;
     margin-bottom: -20px;
   }

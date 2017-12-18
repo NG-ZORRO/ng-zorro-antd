@@ -36,17 +36,19 @@
   }
 
   &-circle-path {
-    stroke: @process-default-color;
+    stroke: @progress-default-color;
+    animation: ~"@{ant-prefix}-progress-appear" .3s;
   }
 
   &-bg {
     border-radius: 100px;
-    background-color: @process-default-color;
+    background-color: @progress-default-color;
     transition: all .4s @ease-out-circ 0s;
     position: relative;
   }
 
   &-text {
+    word-break: normal;
     width: 2em;
     text-align: left;
     font-size: 1em;
@@ -129,6 +131,15 @@
     .@{progress-prefix-cls}-text {
       color: @success-color;
     }
+  }
+}
+
+@keyframes ~"@{ant-prefix}-progress-appear" {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 

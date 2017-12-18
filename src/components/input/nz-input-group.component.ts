@@ -1,11 +1,11 @@
 import {
+  AfterContentInit,
   Component,
   ElementRef,
   HostBinding,
   Input,
-  OnInit,
   Renderer2,
-  ViewEncapsulation,
+  ViewEncapsulation
 } from '@angular/core';
 import { toBoolean } from '../util/convert';
 
@@ -19,7 +19,7 @@ import { toBoolean } from '../util/convert';
     './style/index.less'
   ]
 })
-export class NzInputGroupComponent {
+export class NzInputGroupComponent implements AfterContentInit {
   private _compat = false;
 
   _el: HTMLElement;
@@ -50,5 +50,14 @@ export class NzInputGroupComponent {
   constructor(private _elementRef: ElementRef, private _render: Renderer2) {
     this._el = this._elementRef.nativeElement;
     this._render.addClass(this._el, `${this._prefixCls}-group`);
+  }
+
+  ngAfterContentInit(): void {
+    /** trim text node between button */
+    Array.from(this._el.childNodes).forEach((node: HTMLElement) => {
+      if (node.nodeType === 3) {
+        this._el.removeChild(node);
+      }
+    });
   }
 }
