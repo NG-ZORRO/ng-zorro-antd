@@ -9,6 +9,22 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.6.8
+`2017-12-21`
+
+### Features
+* 与 Ant Design 2.13.11 交互及样式同步 [#777](https://github.com/NG-ZORRO/ng-zorro-antd/pull/777) 
+
+### Bug Fixes
+* `Popconfirm` 修复点击背景弹出框不消失的问题 [#786](https://github.com/NG-ZORRO/ng-zorro-antd/pull/786)
+* `Modal` 修复部分类型错误 [#784](https://github.com/NG-ZORRO/ng-zorro-antd/pull/784)
+* `Table` 修复初始排序时样式问题 [#781](https://github.com/NG-ZORRO/ng-zorro-antd/pull/781)
+* 修复所有下拉框宽度修改后未同步的问题 [#780](https://github.com/NG-ZORRO/ng-zorro-antd/pull/780)
+
+### Other
+* 加速 `Dropdown` 组件的动画效果 [#783](https://github.com/NG-ZORRO/ng-zorro-antd/pull/783)
+* 对 `Affix` 进行了优化  [#708](https://github.com/NG-ZORRO/ng-zorro-antd/pull/708) [@Trotyl Yu](https://github.com/trotyl)
+
 ## 0.6.7
 `2017-12-15`
 
