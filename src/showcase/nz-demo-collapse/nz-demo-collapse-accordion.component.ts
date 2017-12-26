@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'nz-demo-collapse-accordion',
   template: `
-    <nz-collapseset [nzAccordion]="true">
+    <nz-collapseset nzAccordion>
       <nz-collapse *ngFor="let panel of panels" [nzTitle]="panel.name" [nzActive]="panel.active">
         <p>{{panel.name}} 的内容</p>
       </nz-collapse>
@@ -11,7 +11,7 @@ import {Component, OnInit} from '@angular/core';
   `,
   styles: []
 })
-export class NzDemoCollapseAccordionComponent implements OnInit {
+export class NzDemoCollapseAccordionComponent {
   panels = [
     {
       active: true,
@@ -32,11 +32,4 @@ export class NzDemoCollapseAccordionComponent implements OnInit {
       name: 'This is panel header 3'
     }
   ];
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

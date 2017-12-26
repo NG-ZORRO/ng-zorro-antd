@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-menu-theme',
   template: `
@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
     <br>
     <br>
     <ul nz-menu [nzMode]="'inline'" style="width: 240px;" [nzTheme]="theme?'dark':'light'">
-      <li nz-submenu [nzOpen]="true">
+      <li nz-submenu nzOpen>
         <span title><i class="anticon anticon-mail"></i> Navigation One</span>
         <ul>
           <li nz-menu-group>
@@ -53,12 +53,6 @@ import { Component, OnInit } from '@angular/core';
     </ul>`,
   styles  : []
 })
-export class NzDemoMenuThemeComponent implements OnInit {
+export class NzDemoMenuThemeComponent {
   theme = true;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

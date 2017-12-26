@@ -21,7 +21,6 @@ import { NzDemoInputRoutingModule } from './nz-demo-input.routing.module';
   imports     : [ NzDemoInputRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule ],
   declarations: [ NzDemoInputComponent, NzDemoInputBasicComponent, NzDemoInputSizeComponent, NzDemoInputAddOnComponent, NzDemoInputGroupComponent, NzDemoInputSearchComponent, NzDemoInputTextareaComponent, NzDemoInputTextareaAutoSizeComponent, NzDemoInputAffixComponent ]
 })
-
 export class NzDemoInputModule {
 
 }

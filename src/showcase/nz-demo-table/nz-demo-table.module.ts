@@ -28,7 +28,6 @@ import { NzDemoTableRoutingModule } from './nz-demo-table.routing.module';
   imports     : [ NzDemoTableRoutingModule, FormsModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule ],
   declarations: [ NzDemoTableExpandTreeComponent, NzDemoTableExpandComponent, NzDemoTableCustomFilterComponent, NzDemoTableEditComponent, NzDemoTableComponent, NzDemoTableFixedHeaderComponent, NzDemoTableColspanRowspanComponent, NzDemoTableBasicComponent, NzDemoTableResetFilterComponent, NzDemoTableSelectionComponent, NzDemoTableSelectionAndOperationComponent, NzDemoTableSelectionPropsComponent, NzDemoTablePagingComponent, NzDemoTableAjaxComponent, NzDemoTableNoPaginationComponent, NzDemoTableSizeComponent ]
 })
-
 export class NzDemoTableModule {
 
 }

@@ -1,30 +1,31 @@
 import {
+  AfterViewInit,
   Component,
-  ViewEncapsulation,
-  OnInit,
-  OnDestroy,
-  Input,
-  ViewChild,
-  Output,
   EventEmitter,
-  AfterViewInit
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
-import { DropDownAnimation } from '../core/animation/dropdown-animations';
-import { NzDropDownDirective } from './nz-dropdown.directive';
+import { dropDownAnimation } from '../core/animation/dropdown-animations';
+import { toBoolean } from '../util/convert';
 import { NzDropDownComponent } from './nz-dropdown.component';
+import { NzDropDownDirective } from './nz-dropdown.directive';
 
 @Component({
   selector     : 'nz-dropdown-button',
   encapsulation: ViewEncapsulation.None,
   animations   : [
-    DropDownAnimation
+    dropDownAnimation
   ],
   template     : `
     <div class="ant-btn-group ant-dropdown-button" nz-dropdown>
       <button
         type="button"
         nz-button
-        [disabled]="nzDisable"
+        [disabled]="nzDisabled"
         [nzType]="nzType"
         [nzSize]="nzSize"
         (click)="nzClick.emit($event)">
@@ -33,7 +34,7 @@ import { NzDropDownComponent } from './nz-dropdown.component';
         [nzSize]="nzSize"
         nz-button type="button"
         class="ant-dropdown-trigger"
-        [disabled]="nzDisable"
+        [disabled]="nzDisabled"
         (click)="_onClickEvent()"
         (mouseenter)="_onMouseEnterEvent($event)"
         (mouseleave)="_onMouseLeaveEvent($event)">
@@ -67,21 +68,28 @@ import { NzDropDownComponent } from './nz-dropdown.component';
 })
 
 export class NzDropDownButtonComponent extends NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
-  @Input() nzDisable = false;
+  _disabled = false;
   @Input() nzSize = 'default';
   @Input() nzType = 'default';
   @ViewChild('content') content;
   @Output() nzClick = new EventEmitter();
   @ViewChild(NzDropDownDirective) _nzOrigin;
 
+  @Input()
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
+  }
+
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
+
   _onVisibleChange = (visible: boolean) => {
-    if (this.nzDisable) {
+    if (this.nzDisabled) {
       return;
     }
     if (visible) {
-      if (!this._triggerWidth) {
-        this._setTriggerWidth();
-      }
+      this._setTriggerWidth();
     }
     if (this.nzVisible !== visible) {
       this.nzVisible = visible;
@@ -91,7 +99,7 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
   }
 
   /** rewrite afterViewInit hook */
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this._startSubscribe(this._visibleChange);
   }
 }

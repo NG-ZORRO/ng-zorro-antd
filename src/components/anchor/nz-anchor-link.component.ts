@@ -1,12 +1,12 @@
 import {
   Component,
-  ViewEncapsulation,
-  Input,
-  TemplateRef,
   ContentChild,
+  ElementRef,
   HostBinding,
   HostListener,
-  ElementRef
+  Input,
+  TemplateRef,
+  ViewEncapsulation,
 } from '@angular/core';
 
 import { NzAnchorComponent } from './nz-anchor.component';
@@ -16,11 +16,14 @@ import { NzAnchorComponent } from './nz-anchor.component';
   encapsulation: ViewEncapsulation.None,
   template: `
     <a (click)="goToClick($event)" href="{{nzHref}}" class="ant-anchor-link-title">
-      <span *ngIf="!nzTemplate">{{nzTitle}}</span>
+      <span *ngIf="!nzTemplate">{{ nzTitle }}</span>
       <ng-template *ngIf="nzTemplate" [ngTemplateOutlet]="nzTemplate"></ng-template>
     </a>
     <ng-content></ng-content>
-  `
+  `,
+  host: {
+    '[class.ant-anchor-link]': 'true'
+  }
 })
 export class NzAnchorLinkComponent {
 
@@ -28,14 +31,12 @@ export class NzAnchorLinkComponent {
 
   @Input() nzTitle: string;
 
-  @ContentChild('nzTemplate') nzTemplate: TemplateRef<any>;
-
-  @HostBinding('class.ant-anchor-link') _nzAnchorLink = true;
+  @ContentChild('nzTemplate') nzTemplate: TemplateRef<void>;
 
   @HostBinding('class.ant-anchor-link-active') active: boolean = false;
 
   @HostListener('click')
-  _onClick() {
+  _onClick(): void {
     this._anchorComp.scrollTo(this);
   }
 
@@ -43,7 +44,7 @@ export class NzAnchorLinkComponent {
     this._anchorComp.add(this);
   }
 
-  goToClick(e: Event) {
+  goToClick(e: Event): void {
     e.preventDefault();
     e.stopPropagation();
     this._anchorComp.scrollTo(this);

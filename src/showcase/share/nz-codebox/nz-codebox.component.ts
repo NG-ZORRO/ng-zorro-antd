@@ -49,7 +49,7 @@ export class NzCodeBoxComponent implements OnInit {
   @Input()
   get nzCode(): string {
     return this._code;
-  };
+  }
 
   set nzCode(value: string) {
     this._code = value;
@@ -61,7 +61,7 @@ export class NzCodeBoxComponent implements OnInit {
       setTimeout(() => {
         this._copied = false;
       }, 1000);
-    })
+    });
   }
 
   copy(value: string): Promise<string> {

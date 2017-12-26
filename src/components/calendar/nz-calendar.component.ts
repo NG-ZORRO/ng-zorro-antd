@@ -1,19 +1,22 @@
+/* tslint:disable:no-duplicate-imports max-line-length */
 import {
   Component,
-  OnInit,
-  ViewEncapsulation,
-  Input,
-  ElementRef,
-  Output,
   ContentChild,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnInit,
+  Output,
   TemplateRef,
-  EventEmitter, HostBinding
+  ViewEncapsulation,
 } from '@angular/core';
 
 import * as moment from 'moment';
 import { Moment } from 'moment';
 // import 'moment/locale/zh-cn';
 import { NzLocaleService } from '../locale/index';
+import { toBoolean } from '../util/convert';
 
 export interface MonthInterface {
   index: number;
@@ -24,7 +27,7 @@ export interface MonthInterface {
   disabled: boolean;
 }
 
-export type QuartersType = Array<MonthInterface>;
+export type QuartersType = MonthInterface[];
 
 export interface DayInterface {
   number: number;
@@ -40,7 +43,7 @@ export interface DayInterface {
 }
 
 export interface WeekInterface {
-  days: Array<DayInterface>
+  days: DayInterface[];
 }
 
 @Component({
@@ -75,9 +78,9 @@ export interface WeekInterface {
         </nz-select>
         <nz-radio-group [(ngModel)]="nzMode">
           <label nz-radio-button [nzValue]="'year'">
-            <span>{{_yearUnit}}</span>
+            <span>{{ _yearUnit }}</span>
           </label><label nz-radio-button [nzValue]="'month'">
-          <span>{{_monthUnit}}</span>
+          <span>{{ _monthUnit }}</span>
         </label>
         </nz-radio-group>
       </div>
@@ -101,7 +104,7 @@ export interface WeekInterface {
                   *ngFor="let _min of _listOfWeekName"
                   [class.ant-fullcalendar-column-header]="!nzDatePicker"
                   [class.ant-calendar-column-header]="nzDatePicker">
-                  <span class="ant-fullcalendar-column-header-inner">{{_min}}</span>
+                  <span class="ant-fullcalendar-column-header-inner">{{ _min }}</span>
                 </th>
               </tr>
             </thead>
@@ -120,7 +123,7 @@ export interface WeekInterface {
                     [class.ant-fullcalendar-selected-day]="day.isSelectedDay"
                     [class.ant-fullcalendar-today]="day.isCurrentDay">
                     <div class="ant-fullcalendar-date">
-                      <div class="ant-fullcalendar-value" (click)="_clickDay($event,day)">{{day.number}}</div>
+                      <div class="ant-fullcalendar-value" (click)="_clickDay($event,day)">{{ day.number }}</div>
                       <div class="ant-fullcalendar-content">
                         <ng-template
                           *ngIf="dateCell"
@@ -143,7 +146,7 @@ export interface WeekInterface {
                     [class.ant-calendar-next-month-btn-day]="day.isNextMonth"
                     [class.ant-calendar-selected-day]="day.isSelectedDay"
                     [class.ant-calendar-today]="day.isCurrentDay">
-                    <div class="ant-calendar-date" (click)="_clickDay($event,day)">{{day.number}}</div>
+                    <div class="ant-calendar-date" (click)="_clickDay($event,day)">{{ day.number }}</div>
                   </td>
                 </ng-template>
               </tr>
@@ -163,7 +166,7 @@ export interface WeekInterface {
                     [class.ant-fullcalendar-month-panel-selected-cell]="month.isSelectedMonth"
                     [class.ant-fullcalendar-month-panel-current-cell]="month.isCurrentMonth">
                     <div class="ant-fullcalendar-month">
-                      <div class="ant-fullcalendar-value" (click)="_clickMonth($event,month)">{{month.name}}</div>
+                      <div class="ant-fullcalendar-value" (click)="_clickMonth($event,month)">{{ month.name }}</div>
                       <div class="ant-fullcalendar-content">
                         <ng-template
                           *ngIf="monthCell"
@@ -183,7 +186,7 @@ export interface WeekInterface {
                     [class.ant-calendar-month-panel-cell-disabled]="month.disabled"
                     [class.ant-calendar-month-panel-current-cell]="month.isCurrentMonth">
                     <div class="ant-calendar-month-panel-month" (click)="_clickMonth($event,month)">
-                      {{month.name}}
+                      {{ month.name }}
                     </div>
                   </td>
                 </ng-template>
@@ -199,35 +202,62 @@ export interface WeekInterface {
   ]
 })
 export class NzCalendarComponent implements OnInit {
+  private _clearTime = true;
+  private _datePicker = false;
+  private _fullScreen = true;
+  private _showHeader = true;
+
   _el: HTMLElement;
-  _weeksCalendar: Array<WeekInterface> = [];
-  _quartersCalendar: Array<QuartersType> = [];
-  _listOfWeekName: Array<string> = [];
-  _listOfMonthName: Array<string> = [];
-  _listOfYearName: Array<string> = [];
+  _weeksCalendar: WeekInterface[] = [];
+  _quartersCalendar: QuartersType[] = [];
+  _listOfWeekName: string[] = [];
+  _listOfMonthName: string[] = [];
+  _listOfYearName: number[] = [];
   _yearUnit = '年';
   _monthUnit = '月';
   _showMonth = moment(new Date()).month();
   _showYear = moment(new Date()).year();
   _value: Date = new Date();
   _locale = this._localeService.getLocale().locale;
-  @ContentChild('dateCell') dateCell: TemplateRef<any>;
-  @ContentChild('monthCell') monthCell: TemplateRef<any>;
+  @ContentChild('dateCell') dateCell: TemplateRef<void>;
+  @ContentChild('monthCell') monthCell: TemplateRef<void>;
 
-  @Output() nzClickDay: EventEmitter<any> = new EventEmitter();
-  @Output() nzClickMonth: EventEmitter<any> = new EventEmitter();
+  @Output() nzClickDay: EventEmitter<DayInterface> = new EventEmitter();
+  @Output() nzClickMonth: EventEmitter<MonthInterface> = new EventEmitter();
   @Input() nzClearTime = true;
-  @Input() @HostBinding('class.ant-patch-full-height') nzDatePicker = false;
   @Input() nzMode = 'year';
-  @Input() nzFullScreen = true;
-  @Input() nzShowHeader = true;
-  @Input() nzDisabledDate: Function;
 
   @Input()
-  get nzValue(): Date {
-    return this._value || new Date();
+  set nzFullScreen(value: boolean) {
+    this._fullScreen = toBoolean(value);
   }
 
+  get nzFullScreen(): boolean {
+    return this._fullScreen;
+  }
+
+  @Input()
+  set nzShowHeader(value: boolean) {
+    this._showHeader = toBoolean(value);
+  }
+
+  get nzShowHeader(): boolean {
+    return this._showHeader;
+  }
+
+  @Input() nzDisabledDate: (date: Date) => boolean = () => false;
+
+  @Input()
+  @HostBinding('class.ant-patch-full-height')
+  set nzDatePicker(value: boolean) {
+    this._datePicker = toBoolean(value);
+  }
+
+  get nzDatePicker(): boolean {
+    return this._datePicker;
+  }
+
+  @Input()
   set nzValue(value: Date) {
     if (this._value === value) {
       return;
@@ -238,64 +268,68 @@ export class NzCalendarComponent implements OnInit {
     this._buildCalendar();
   }
 
-  @Input()
-  get nzShowYear() {
-    return this._showYear;
+  get nzValue(): Date {
+    return this._value || new Date();
   }
 
-  set nzShowYear(value) {
+  @Input()
+  set nzShowYear(value: number) {
     this._showYear = value;
     this._buildCalendar();
   }
 
-  @Input()
-  get nzShowMonth() {
-    return this._showMonth;
+  get nzShowYear(): number {
+    return this._showYear;
   }
 
-  set nzShowMonth(value) {
+  @Input()
+  set nzShowMonth(value: number) {
     this._showMonth = value;
     this._buildCalendar();
   }
 
-  @Input()
-  get nzLocale(): string {
-    return this._locale;
+  get nzShowMonth(): number {
+    return this._showMonth;
   }
 
+  @Input()
   set nzLocale(value: string) {
     this._locale = value;
     moment.locale(this._locale);
   }
 
-  _removeTime(date) {
+  get nzLocale(): string {
+    return this._locale;
+  }
+
+  _removeTime(date: Moment): Moment {
     if (this.nzClearTime) {
       return date.hour(0).minute(0).second(0).millisecond(0);
     } else {
       return date;
     }
-  };
+  }
 
-  _clickDay($event, day) {
+  _clickDay($event: MouseEvent, day: DayInterface): void {
     $event.preventDefault();
     $event.stopPropagation();
     if (day.disabled) {
       return;
     }
     this.nzClickDay.emit(day);
-  };
+  }
 
-  _clickMonth($event, month) {
+  _clickMonth($event: MouseEvent, month: MonthInterface): void {
     $event.preventDefault();
     $event.stopPropagation();
     if (month.disabled) {
       return;
     }
     this.nzClickMonth.emit(month);
-  };
+  }
 
-  _buildMonth(d: Moment): Array<WeekInterface> {
-    const weeks: Array<WeekInterface> = [];
+  _buildMonth(d: Moment): WeekInterface[] {
+    const weeks: WeekInterface[] = [];
     const _rawDate = this._removeTime(d);
     const start = _rawDate.clone().date(1).day(0);
     const month = _rawDate.clone();
@@ -310,10 +344,11 @@ export class NzCalendarComponent implements OnInit {
       monthIndex = date.month();
     }
     return weeks;
-  };
+  }
 
-  _buildWeek(date: Moment, month: Moment): Array<DayInterface> {
-    const days: Array<DayInterface> = [];
+  _buildWeek(firstDate: Moment, month: Moment): DayInterface[] {
+    let date = firstDate;
+    const days: DayInterface[] = [];
     for (let i = 0; i < 7; i++) {
       days.push({
         number       : date.date(),
@@ -322,7 +357,7 @@ export class NzCalendarComponent implements OnInit {
         isCurrentDay : date.isSame(new Date(), 'day'),
         isSelectedDay: date.isSame(this.nzValue, 'day'),
         title        : date.format('YYYY-MM-DD'),
-        date         : date,
+        date,
         disabled     : this.nzDisabledDate && this.nzDisabledDate(date.toDate()),
         firstDisabled: this.nzDisabledDate && this.nzDisabledDate(date.toDate()) && (date.day() === 0 || (date.day() !== 0 && this.nzDisabledDate && !this.nzDisabledDate(date.clone().subtract(1, 'day').toDate()))),
         lastDisabled : this.nzDisabledDate && this.nzDisabledDate(date.toDate()) && (date.day() === 6 || (date.day() !== 6 && this.nzDisabledDate && !this.nzDisabledDate(date.clone().add(1, 'day').toDate())))
@@ -331,11 +366,11 @@ export class NzCalendarComponent implements OnInit {
       date.add(1, 'd');
     }
     return days;
-  };
+  }
 
-  _buildYears(date: Moment) {
-    const quarters = [];
-    let months: Array<MonthInterface> = [];
+  _buildYears(date: Moment): MonthInterface[][] {
+    const quarters: MonthInterface[][] = [];
+    let months: MonthInterface[] = [];
     for (let i = 0; i < 12; i++) {
       months.push({
         index          : i,
@@ -351,39 +386,38 @@ export class NzCalendarComponent implements OnInit {
       }
     }
     return quarters;
-  };
+  }
 
-  _buildCalendar() {
+  _buildCalendar(): void {
     moment.locale(this._locale);
     /** TODO replace with real i18n*/
     if (this._locale !== 'zh-cn') {
       try {
         this._yearUnit = moment.duration(12, 'month').humanize().split(' ')[ 1 ][ 0 ].toUpperCase() + moment.duration(12, 'month').humanize().split(' ')[ 1 ].slice(1, moment.duration(12, 'month').humanize().split(' ')[ 1 ].length);
         this._monthUnit = moment.duration(4, 'week').humanize().split(' ')[ 1 ][ 0 ].toUpperCase() + moment.duration(4, 'week').humanize().split(' ')[ 1 ].slice(1, moment.duration(4, 'week').humanize().split(' ')[ 1 ].length);
-      } catch (e) {
-      }
+      } catch (e) { }
     }
     this._listOfYearName = this._generateYears(this._showYear);
     this._listOfWeekName = moment.weekdaysMin();
-    this._listOfMonthName = moment.months();
+    this._listOfMonthName = moment.monthsShort();
     const date = moment(this.nzValue).year(this._showYear).month(this._showMonth);
     this._weeksCalendar = this._buildMonth(date);
     this._quartersCalendar = this._buildYears(date);
-  };
+  }
 
-  _generateYears(year) {
-    const listOfYears = [];
+  _generateYears(year: number): number[] {
+    const listOfYears: number[] = [];
     for (const i of Array.from(Array(20).keys())) {
       listOfYears.push(i - 10 + year);
     }
     return listOfYears;
-  };
+  }
 
   constructor(private _elementRef: ElementRef, private _localeService: NzLocaleService) {
     this._el = this._elementRef.nativeElement;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._buildCalendar();
   }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-message',
@@ -8,15 +8,9 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
     './nz-demo-message.less',
   ]
 })
-export class NzDemoMessageComponent implements OnInit {
+export class NzDemoMessageComponent {
   NzDemoMessageBasicCode = require('!!raw-loader!./nz-demo-message-basic.component');
   NzDemoMessageDurationCode = require('!!raw-loader!./nz-demo-message-duration.component');
   NzDemoMessageIconCode = require('!!raw-loader!./nz-demo-message-icon.component');
   NzDemoMessageLoadingCode = require('!!raw-loader!./nz-demo-message-loading.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

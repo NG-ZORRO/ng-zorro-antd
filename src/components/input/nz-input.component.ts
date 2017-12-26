@@ -1,21 +1,22 @@
 import {
-  Component,
-  ViewEncapsulation,
-  Input,
-  Output,
-  TemplateRef,
-  ElementRef,
-  Renderer2,
-  EventEmitter,
-  ContentChild,
   forwardRef,
   AfterContentInit,
-  HostListener,
   AfterViewInit,
-  ViewChild
+  Component,
+  ContentChild,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+  Renderer2,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import calculateNodeHeight from '../util/calculate-node-height';
+import { toBoolean } from '../util/convert';
 
 export interface AutoSizeType {
   minRows?: number;
@@ -87,6 +88,8 @@ export interface AutoSizeType {
   ]
 })
 export class NzInputComponent implements AfterContentInit, ControlValueAccessor, AfterViewInit {
+  private _disabled = false;
+  private _readonly = false;
 
   _el: HTMLElement;
   _value: string;
@@ -94,13 +97,11 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor,
   _prefixCls = 'ant-input';
   _composing = false;
   _classMap;
-  _disabled = false;
-  _readonly = false;
   _autosize: boolean | AutoSizeType = false;
 
   // ngModel Access
-  onChange: any = Function.prototype;
-  onTouched: any = Function.prototype;
+  onChange: (value: string) => void = () => null;
+  onTouched: () => void = () => null;
 
   @Input() nzPlaceHolder: string;
   @Input() nzType = 'text';
@@ -109,76 +110,76 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor,
   @Input() nzCols: number;
 
   @Input()
-  get nzSize(): string {
-    return this._size;
-  };
-
   set nzSize(value: string) {
     this._size = { large: 'lg', small: 'sm' }[ value ];
     this.setClassMap();
   }
 
-  @Input()
-  get nzDisabled(): boolean {
-    return this._disabled;
-  };
+  get nzSize(): string {
+    return this._size;
+  }
 
+  @Input()
   set nzDisabled(value: boolean) {
-    this._disabled = value;
+    this._disabled = toBoolean(value);
     this.setClassMap();
   }
 
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
+
   @Input()
+  set nzReadonly(value: boolean) {
+    this._readonly = toBoolean(value);
+  }
+
   get nzReadonly(): boolean {
     return this._readonly;
-  };
-
-  set nzReadonly(value: boolean) {
-    this._readonly = value;
   }
 
   @Input()
-  get nzAutosize() {
-    return this._autosize;
-  }
-
   set nzAutosize(value: string | boolean | AutoSizeType) {
     if (typeof value === 'string') {
       this._autosize = true;
     } else {
-      this._autosize = <boolean | AutoSizeType>value;
+      this._autosize = value;
     }
     if (this._autosize) {
       this.nzRows = 1;
     }
   }
 
-  @Output() nzBlur: EventEmitter<MouseEvent> = new EventEmitter();
-  @Output() nzFocus: EventEmitter<MouseEvent> = new EventEmitter();
-  @ViewChild('inputTextarea') textAreaRef: ElementRef;
-  @ContentChild('addOnBefore') _addOnContentBefore: TemplateRef<any>;
-  @ContentChild('addOnAfter') _addOnContentAfter: TemplateRef<any>;
+  get nzAutosize(): string | boolean | AutoSizeType {
+    return this._autosize;
+  }
 
-  @ContentChild('prefix') _prefixContent: any;
-  @ContentChild('suffix') _suffixContent: any;
+  @Output() nzBlur: EventEmitter<FocusEvent> = new EventEmitter();
+  @Output() nzFocus: EventEmitter<FocusEvent> = new EventEmitter();
+  @ViewChild('inputTextarea') textAreaRef: ElementRef;
+  @ContentChild('addOnBefore') _addOnContentBefore: TemplateRef<void>;
+  @ContentChild('addOnAfter') _addOnContentAfter: TemplateRef<void>;
+
+  @ContentChild('prefix') _prefixContent: TemplateRef<void>;
+  @ContentChild('suffix') _suffixContent: TemplateRef<void>;
 
   @HostListener('compositionstart', [ '$event' ])
-  compositionStart(e): void {
+  compositionStart(e: CompositionEvent): void {
     this._composing = true;
   }
 
   @HostListener('compositionend', [ '$event' ])
-  compositionEnd(e): void {
+  compositionEnd(e: CompositionEvent): void {
     this._composing = false;
     this.onChange(this._value);
   }
 
-  get nzValue(): any {
+  get nzValue(): string {
     return this._value;
-  };
+  }
 
-  set nzValue(value: any) {
-    if ((this._value === value) || (((this._value === undefined) || (this._value === null)) && ((value === undefined) || (value === null)))) {
+  set nzValue(value: string) {
+    if ((this._value === value) || ((this._value == null) && (value == null))) {
       return;
     }
     this._value = value;
@@ -187,23 +188,23 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor,
     }
   }
 
-  _emitBlur($event) {
+  _emitBlur($event: FocusEvent): void {
     this.nzBlur.emit($event);
     this.onTouched();
   }
 
-  _emitFocus($event) {
+  _emitFocus($event: FocusEvent): void {
     this.nzFocus.emit($event);
   }
 
   setClassMap(): void {
     this._classMap = {
-      [this._prefixCls + '-' + this._size]: true,
+      [`${this._prefixCls}-${this._size}`]: true,
       [`${this._prefixCls}-disabled`]     : this._disabled
     };
   }
 
-  resizeTextarea() {
+  resizeTextarea(): void {
     const textAreaRef =  this.textAreaRef.nativeElement;
     // eliminate jitter
     textAreaRef.style.height = 'auto';
@@ -214,7 +215,7 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor,
     textAreaRef.style.overflowY = textareaStyles.overflowY;
   }
 
-  textareaOnChange() {
+  textareaOnChange(): void {
     if (this.nzType === 'textarea' && this.nzAutosize) {
       this.resizeTextarea();
     }
@@ -224,7 +225,7 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor,
     this._el = this._elementRef.nativeElement;
   }
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     if (this.nzType === 'search' || this._prefixContent || this._suffixContent) {
       this._renderer.setAttribute(this._el, 'class', `${this._prefixCls}-affix-wrapper`);
     } else {
@@ -235,22 +236,22 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor,
     }
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     if (this.nzType === 'textarea' && this.nzAutosize) {
-      setTimeout(() => this.resizeTextarea(), 0)
+      setTimeout(() => this.resizeTextarea(), 0);
     }
   }
 
-  writeValue(value: any): void {
+  writeValue(value: string): void {
     // this.nzValue = value; // [NOTE] nzValue will trigger the onChange which leads to a new "VIEW -> MODEL updating"
     this._value = value;
   }
 
-  registerOnChange(fn: (_: any) => {}): void {
+  registerOnChange(fn: (_: string) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => {}): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 

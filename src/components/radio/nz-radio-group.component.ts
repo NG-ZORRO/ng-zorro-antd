@@ -1,19 +1,18 @@
 import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  Input,
-  ElementRef,
+  forwardRef,
   AfterContentInit,
-  Renderer,
+  Component,
+  ElementRef,
   HostBinding,
-  forwardRef
+  Input,
+  OnInit,
+  Renderer2,
+  ViewEncapsulation,
 } from '@angular/core';
 
-import { NzRadioComponent } from './nz-radio.component';
-import { NzRadioButtonComponent } from './nz-radio-button.component';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
+import { NzRadioButtonComponent } from './nz-radio-button.component';
+import { NzRadioComponent } from './nz-radio.component';
 
 @Component({
   selector     : 'nz-radio-group',
@@ -38,54 +37,55 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
   _prefixCls = 'ant-radio-group';
 
   // ngModel Access
-  onChange: any = Function.prototype;
-  onTouched: any = Function.prototype;
+  onChange: (_: string) => void = () => null;
+  onTouched: () => void = () => null;
 
-  radios: (NzRadioComponent | NzRadioButtonComponent)[] = [];
+  radios: Array<NzRadioComponent | NzRadioButtonComponent> = [];
 
   @Input()
-  get nzSize(): string {
-    return this._size;
-  };
-
   set nzSize(value: string) {
     this._size = value;
   }
 
-  @HostBinding('class.ant-radio-group-large') get isLarge() {
+  get nzSize(): string {
+    return this._size;
+  }
+
+  @HostBinding('class.ant-radio-group-large')
+  get isLarge(): boolean {
     return this._size === 'large';
-  };
+  }
 
-  @HostBinding('class.ant-radio-group-small') get isSmall() {
+  @HostBinding('class.ant-radio-group-small')
+  get isSmall(): boolean {
     return this._size === 'small';
-  };
+  }
 
-
-  addRadio(radio: NzRadioComponent | NzRadioButtonComponent) {
+  addRadio(radio: NzRadioComponent | NzRadioButtonComponent): void {
     this.radios.push(radio);
+    radio.nzChecked = radio.nzValue === this._value;
   }
 
-  selectRadio(radio: NzRadioComponent | NzRadioButtonComponent) {
+  selectRadio(radio: NzRadioComponent | NzRadioButtonComponent): void {
     this.updateValue(radio.nzValue);
-    this.onChange(radio.nzValue);
   }
 
-  updateValue(value: any) {
+  updateValue(value: string): void {
     if (this._value === value) {
       return;
     }
     this._value = value;
+    this.onChange(value);
     this.radios.forEach((item) => {
       item.nzChecked = item.nzValue === this._value;
     });
   }
 
-
-  constructor(private _elementRef: ElementRef, private _render: Renderer) {
+  constructor(private _elementRef: ElementRef, private _render: Renderer2) {
     this._el = this._elementRef.nativeElement;
   }
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     this.radios.forEach((item) => {
       item.nzChecked = item.nzValue === this._value;
     });
@@ -94,18 +94,18 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
       if (node.nodeType === 3) {
         this._el.removeChild(node);
       }
-    })
+    });
   }
 
-  writeValue(value: any): void {
+  writeValue(value: string): void {
     this.updateValue(value);
   }
 
-  registerOnChange(fn: (_: any) => {}): void {
+  registerOnChange(fn: (_: string) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => {}): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -115,7 +115,7 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
     });
   }
 
-  ngOnInit() {
-    this._render.setElementClass(this._el, `${this._prefixCls}`, true);
+  ngOnInit(): void {
+    this._render.addClass(this._el, `${this._prefixCls}`);
   }
 }

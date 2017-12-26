@@ -1,12 +1,12 @@
 import {
+  ComponentFactoryResolver,
   Directive,
   ElementRef,
+  Renderer2,
   ViewContainerRef,
-  ComponentFactoryResolver,
-  Renderer2
 } from '@angular/core';
-import { NzPopoverComponent } from './nz-popover.component';
 import { NzTooltipDirective } from '../tooltip/nz-tooltip.directive';
+import { NzPopoverComponent } from './nz-popover.component';
 
 @Directive({
   selector: '[nz-popover]',

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 
 @Component({
@@ -9,17 +9,10 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     './nz-demo-tag.less',
   ]
 })
-export class NzDemoTagComponent implements OnInit {
+export class NzDemoTagComponent {
   NzDemoTagBasicCode = require('!!raw-loader!./nz-demo-tag-basic.component');
   NzDemoTagControlCode = require('!!raw-loader!./nz-demo-tag-control.component');
   NzDemoTagHotTagsCode  = require('!!raw-loader!./nz-demo-tag-hot-tags.component');
   NzDemoTagColorfulCode = require('!!raw-loader!./nz-demo-tag-colorful.component');
   NzDemoTagCheckableCode = require('!!raw-loader!./nz-demo-tag-checkable.component');
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

@@ -1,14 +1,13 @@
-/* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed, ComponentFixtureAutoDetect, fakeAsync, tick } from '@angular/core/testing';
+/* tslint:disable:no-unused-variable prefer-const */
 import { Component, DebugElement } from '@angular/core';
+import { async, fakeAsync, tick, ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { NzScrollService } from '../core/scroll/nz-scroll.service';
+import { NzAffixComponent } from './nz-affix.component';
 import { NzAffixModule } from './nz-affix.module';
-import { NzScrollService } from "../core/scroll/nz-scroll.service";
-import { NzAffixComponent } from "./nz-affix.component";
 
 describe('Component:nz-affix', () => {
-
   let scrollSrv: MockNzScrollService;
   let fixture: ComponentFixture<TestAffixComponent>;
   let context: TestAffixComponent;
@@ -39,9 +38,15 @@ describe('Component:nz-affix', () => {
 
 });
 
-@Component({ template: `<nz-affix [nzOffsetTop]="10" (nzChange)="onChange($event)"><button>Affix Button</button></nz-affix>` })
+@Component({
+  template: `
+    <nz-affix [nzOffsetTop]="10" (nzChange)="onChange($event)">
+      <button>Affix Button</button>
+    </nz-affix>
+  `
+})
 class TestAffixComponent {
-  onChange(status: boolean) {
+  onChange(status: boolean): boolean {
     return status;
   }
 }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { NzDemoInputNumberBasicComponent } from './nz-demo-input-number-basic.component';
+import { NzDemoInputNumberFormatterComponent } from './nz-demo-input-number-formatter.component';
 import { NzDemoInputNumberSizeComponent } from './nz-demo-input-number-size.component';
 import { NzDemoInputNumberDisabledComponent } from './nz-demo-input-number-disabled.component';
 import { NzDemoInputNumberDigitComponent } from './nz-demo-input-number-digit.component';
@@ -15,9 +16,8 @@ import { NzDemoInputNumberRoutingModule } from './nz-demo-input-number.routing.m
 
 @NgModule({
   imports     : [ NzDemoInputNumberRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule ],
-  declarations: [ NzDemoInputNumberBasicComponent, NzDemoInputNumberSizeComponent, NzDemoInputNumberDisabledComponent, NzDemoInputNumberDigitComponent, NzDemoInputNumberComponent ]
+  declarations: [ NzDemoInputNumberFormatterComponent, NzDemoInputNumberBasicComponent, NzDemoInputNumberSizeComponent, NzDemoInputNumberDisabledComponent, NzDemoInputNumberDigitComponent, NzDemoInputNumberComponent ]
 })
-
 export class NzDemoInputNumberModule {
 
 }

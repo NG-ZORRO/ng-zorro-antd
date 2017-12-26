@@ -1,51 +1,56 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  OnChanges,
-  AfterViewInit,
-  SimpleChanges,
-  ViewEncapsulation,
-  Input,
-  ChangeDetectorRef,
-  ElementRef,
-  Renderer2,
-  HostListener,
-  forwardRef,
-  HostBinding,
-  Output,
-  EventEmitter,
-  ViewChild,
-  TemplateRef
-} from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+/* tslint:disable:no-any */
 import {
   BACKSPACE,
+  DOWN_ARROW,
+  ENTER,
   ESCAPE,
   LEFT_ARROW,
   RIGHT_ARROW,
   UP_ARROW,
-  DOWN_ARROW,
-  ENTER,
 } from '@angular/cdk/keycodes';
+import { ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import {
+  forwardRef,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  Renderer2,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 const ESC = 27;
 
-import { DropDownAnimation } from '../core/animation/dropdown-animations';
-import { ConnectionPositionPair } from '@angular/cdk/overlay';
+import { dropDownAnimation } from '../core/animation/dropdown-animations';
+import { toBoolean } from '../util/convert';
 
-function noop(): void { }
+// TODO: remove this as used nowhere
+const noop = () => null;
 
-function toArray(value: any): any[] {
-  let ret = value;
-  if (value === undefined || value === null) {
-      ret = [];
+function toArray<T>(value: T | T[]): T[] {
+  let ret: T[];
+  if (value == null) {
+    ret = [];
   } else if (!Array.isArray(value)) {
-      ret = [value];
+    ret = [value];
+  } else {
+    ret = value;
   }
   return ret;
 }
 
-function arrayEquals(array1: any[], array2: any[]): boolean {
+function arrayEquals<T>(array1: T[], array2: T[]): boolean {
   if (!array1 || !array2 || array1.length !== array2.length) {
       return false;
   }
@@ -76,12 +81,16 @@ export interface CascaderOption {
   [key: string]: any;
 }
 
+export interface DisplayLabelContext {
+  labels?: string[];
+  selectedOptions?: CascaderOption[];
+}
 
 @Component({
   selector     : 'nz-cascader',
   encapsulation: ViewEncapsulation.None,
   animations   : [
-    DropDownAnimation
+    dropDownAnimation
   ],
   template       : `
     <div
@@ -116,7 +125,7 @@ export interface CascaderOption {
           <ng-container *ngIf="_displayLabelIsTemplate">
             <ng-container *ngTemplateOutlet="_displayLabel; context: _displayLabelContext"></ng-container>
           </ng-container>
-          <ng-container *ngIf="!_displayLabelIsTemplate">{{_displayLabel}}</ng-container>
+          <ng-container *ngIf="!_displayLabelIsTemplate">{{ _displayLabel }}</ng-container>
         </span>
       </div>
       <ng-content></ng-content>
@@ -145,7 +154,7 @@ export interface CascaderOption {
             (mouseleave)="_onOptionMouseLeave(option, i, $event)"
             (click)="_onOptionClick(option, i, $event)"
           >
-            {{_getOptionLabel(option)}}
+            {{ _getOptionLabel(option) }}
           </li>
         </ul>
       </div>
@@ -164,6 +173,13 @@ export interface CascaderOption {
   ]
 })
 export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit, ControlValueAccessor {
+  private _allowClear = true;
+  private _disabled = false;
+  private _enableCache = true;
+  private _showArrow = true;
+  private _showInput = true;
+  private _showSearch = false;
+  private _changeOnSelect = false;
   _el: HTMLElement;
   _prefixCls = 'ant-cascader';
   _inputPrefixCls = 'ant-input';
@@ -171,15 +187,16 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
   _focused = false;
   _popupVisible = false;
 
-  _displayLabel: string | TemplateRef<any>;
+  _displayLabel: string | TemplateRef<void>;
   _displayLabelIsTemplate = false;
-  _displayLabelContext: any = {};
+  _displayLabelContext: DisplayLabelContext = {};
 
+  /* tslint:disable-next-line:variable-name */
   __inputValue = '';
-  get _inputValue() {
+  get _inputValue(): string {
     return this.__inputValue;
   }
-  set _inputValue(inputValue) {
+  set _inputValue(inputValue: string) {
     this.__inputValue = inputValue;
     if (inputValue.length) {
       this._addHostClass(`${this._prefixCls}-picker-with-value`);
@@ -187,7 +204,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
       this._removeHostClass(`${this._prefixCls}-picker-with-value`);
     }
   }
-
 
   // check if change happened
   _lastValue: any[];
@@ -199,8 +215,8 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
   _nzColumns: CascaderOption[][] = [];
 
   // 点击Document的事件（一般用于点击后隐藏菜单）
-  private _clickOutsideHandler: Function;
-  private _touchOutsideHandler: Function;
+  private _clickOutsideHandler: () => void;
+  private _touchOutsideHandler: () => void;
   private _delayTimer: any;
 
   // ngModel Access
@@ -208,7 +224,14 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
   onTouched: any = Function.prototype;
 
   /** Whether is disabled */
-  @Input() nzDisabled = false;
+  @Input()
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
+  }
+
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
 
   /** Input size, one of `large` `default` `small` */
   @Input() nzSize: 'large' | 'default' | 'small' = 'default';
@@ -217,19 +240,47 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
   @Input() nzPlaceHolder = 'Please select';
 
   /** Whether show input box. Defaults to `true`. */
-  @Input() nzShowInput = true;
+  @Input()
+  set nzShowInput(value: boolean) {
+    this._showInput = toBoolean(value);
+  }
+
+  get nzShowInput(): boolean {
+    return this._showInput;
+  }
 
   /** Whether can search. Defaults to `false`. */
-  @Input() nzShowSearch = false;
+  @Input()
+  set nzShowSearch(value: boolean) {
+    this._showSearch = toBoolean(value);
+  }
+
+  get nzShowSearch(): boolean {
+    return this._showSearch;
+  }
 
   /** Whether allow clear. Defaults to `true`. */
-  @Input() nzAllowClear = true;
+  @Input()
+  set nzAllowClear(value: boolean) {
+    this._allowClear = toBoolean(value);
+  }
+
+  get nzAllowClear(): boolean {
+    return this._allowClear;
+  }
 
   /** Hover text for the clear icon */
   @Input() nzClearText = 'Clear';
 
   /** Whether to show arrow */
-  @Input() nzShowArrow = true;
+  @Input()
+  set nzShowArrow(value: boolean) {
+    this._showArrow = toBoolean(value);
+  }
+
+  get nzShowArrow(): boolean {
+    return this._showArrow;
+  }
 
   /** Specify content to show when no result matches. */
   @Input() nzNotFoundContent = 'Not Found';
@@ -244,13 +295,27 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
   @Input() nzOptions: CascaderOption[];
 
   /** Whether cache children when they were loaded asych */
-  @Input() nzEnableCache = true;
+  @Input()
+  set nzEnableCache(value: boolean) {
+    this._enableCache = toBoolean(value);
+  }
+
+  get nzEnableCache(): boolean {
+    return this._enableCache;
+  }
 
   /** Expand column item when click or hover, one of 'click' 'hover' */
   @Input() nzExpandTrigger: CascaderExpandTrigger = 'click';
 
   /** Change value on each selection if set to true */
-  @Input() nzChangeOnSelect = false;
+  @Input()
+  set nzChangeOnSelect(value: boolean) {
+    this._changeOnSelect = toBoolean(value);
+  }
+
+  get nzChangeOnSelect(): boolean {
+    return this._changeOnSelect;
+  }
 
   /** Change value on selection only if this function returns `true` */
   @Input() nzChangeOn: (option: CascaderOption, level: number) => boolean;
@@ -277,7 +342,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
 
   @HostBinding('attr.tabIndex') tabIndex = '0';
 
-
   /** Event: emit on popup show or hide */
   @Output() nzVisibleChange = new EventEmitter<boolean>();
 
@@ -301,15 +365,14 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
   @Output() nzLoad = new EventEmitter<{
     option: CascaderOption,
     index: number,
-    resolve: (children: CascaderOption[]) => void,
-    reject: () => void
+    resolve(children: CascaderOption[]): void,
+    reject(): void
   }>();
 
   /** Event: emit on the clear button clicked */
   @Output() nzClear = new EventEmitter<any>();
 
-
-  onPositionChange(position) {
+  onPositionChange(position: ConnectedOverlayPositionChange): void {
     const _position = position.connectionPair.originY === 'bottom' ? 'bottom' : 'top';
     if (this._dropDownPosition !== _position) {
       this._dropDownPosition = _position;
@@ -317,12 +380,12 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
     }
   }
 
-  nzFocus() {
+  nzFocus(): void {
     this._focused = true;
     this._addHostClass(`${this._prefixCls}-focused`);
   }
 
-  nzBlur() {
+  nzBlur(): void {
     this._focused = false;
     this._removeHostClass(`${this._prefixCls}-focused`);
   }
@@ -382,9 +445,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
     };
   }
 
-
-
-  _getLabel() {
+  _getLabel(): string | TemplateRef<void> {
     return this._displayLabelIsTemplate ? '' : this._displayLabel;
   }
 
@@ -414,16 +475,13 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
   }
 
   /** input key down */
-  _handleInputKeyDown(event: KeyboardEvent): void {
+  _handleInputKeyDown(event: KeyboardEvent): void { }
 
-  }
-
-  _setInputValue(inputValue: any, fireSearch = true): void {
+  _setInputValue(inputValue: any, fireSearch: boolean = true): void {
     if (inputValue !== this._inputValue) {
       this._inputValue = inputValue;
     }
   }
-
 
   _hasInput(): boolean {
     return this._inputValue.length > 0;
@@ -464,7 +522,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
 
   _buildDisplayLabel(): void {
     const selectedOptions = this._selectedOptions;
-    const labels = selectedOptions.map(o => o[this.nzLabelProperty || 'label']);
+    const labels: string[] = selectedOptions.map(o => o[this.nzLabelProperty || 'label']);
     // 设置当前控件的显示值
     this._displayLabel = this._displayRender.call(this, labels, selectedOptions);
     this._displayLabelIsTemplate = !(typeof this._displayLabel === 'string');
@@ -478,7 +536,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
     }
     return false;
   }
-
 
   @HostListener('keydown', ['$event'])
   onKeyDown(event: KeyboardEvent): void {
@@ -523,7 +580,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
     }
   }
 
-
   @HostListener('click', ['$event'])
   _onTriggerClick(event: MouseEvent): void {
     if (this.nzDisabled) {
@@ -565,14 +621,14 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
       }
   }
 
-  _isClickTiggerAction() {
+  _isClickTiggerAction(): boolean {
     if (typeof this.nzTriggerAction === 'string') {
       return this.nzTriggerAction === 'click';
     }
     return this.nzTriggerAction.indexOf('click') !== -1;
   }
 
-  _isPointerTiggerAction() {
+  _isPointerTiggerAction(): boolean {
     if (typeof this.nzTriggerAction === 'string') {
       return this.nzTriggerAction === 'hover';
     }
@@ -735,8 +791,8 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
   _onSelectOption(option: CascaderOption, index: number): void {
     // trigger `nzSelect` event
     this.nzSelect.emit({
-      option: option,
-      index: index
+      option,
+      index
     });
 
     // load children directly
@@ -748,8 +804,8 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
       // load children async
       new Promise((resolve, reject) => {
         this.nzLoad.emit({
-          option: option,
-          index: index,
+          option,
+          index,
           resolve,
           reject
         });
@@ -792,7 +848,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
       }
     }
   }
-
 
   /**
    * 鼠标点击选项
@@ -896,8 +951,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
     }
   }
 
-
-
   /**
    * 鼠标划入选项
    *
@@ -926,7 +979,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
     }
   }
 
-  _delaySelect(option: CascaderOption, index: number, doSelect: boolean) {
+  _delaySelect(option: CascaderOption, index: number, doSelect: boolean): void {
     if (this._delayTimer) {
       clearTimeout(this._delayTimer);
       this._delayTimer = null;
@@ -938,8 +991,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
       }, 150);
     }
   }
-
-
 
   _getSubmitValue(): any[] {
     const values: any[] = [];
@@ -962,15 +1013,12 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
     }
   }
 
-
-
-
   constructor(
     private _elementRef: ElementRef,
     private _render: Renderer2,
-    private _cdr: ChangeDetectorRef) {
+    private _cdr: ChangeDetectorRef
+  ) {
     this._el = this._elementRef.nativeElement;
-
   }
 
   _addHostClass(classname: string): void {
@@ -1021,7 +1069,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
     this.nzDisabled = isDisabled;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     // 设置第一列
     if (this.nzOptions && this.nzOptions.length) {
       this._nzColumns.push(this.nzOptions);
@@ -1036,7 +1084,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const nzDisabled = changes['nzDisabled'];
+    const nzDisabled = changes.nzDisabled;
     if (nzDisabled) {
       if (nzDisabled.currentValue) {
         this._addHostClass(`${this._prefixCls}-picker-disabled`);
@@ -1045,7 +1093,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, OnChanges, AfterV
       }
     }
 
-    const nzOptions = changes['nzOptions'];
+    const nzOptions = changes.nzOptions;
     if (nzOptions && !nzOptions.isFirstChange()) {
       this._nzColumns.splice(0);
       const newOptions: CascaderOption[] = nzOptions.currentValue;

@@ -1,18 +1,19 @@
 import {
   Component,
-  HostListener,
-  OnInit,
-  ViewEncapsulation,
-  Input,
   ElementRef,
-  ViewChild,
+  HostListener,
+  Input,
   OnDestroy,
-  TemplateRef
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 
-import { NzModalSubject } from './nz-modal-subject.service';
-import nzGlobalMonitor from '../util/nz-global-monitor';
 import { NzLocaleService } from '../locale/index';
+import { toBoolean } from '../util/convert';
+import nzGlobalMonitor from '../util/nz-global-monitor';
+import { NzModalSubject } from './nz-modal-subject.service';
 
 interface Position {
   x: number;
@@ -73,38 +74,36 @@ interface Position {
   ]
 })
 export class NzConfirmComponent implements OnInit, OnDestroy {
+  private _maskClosable = true;
+  _confirmLoading = false;
+  _visible = false;
+
   _prefixCls = 'ant-modal';
   _prefixConfirmCls = 'ant-confirm';
   _maskClassMap;
   _bodyClassMap;
   _bodyStyleMap;
-  _visible = false;
   _width = '416px';
   _zIndex = 1000;
   _iconTypeCls = 'anticon anticon-question-circle';
   _title = '';
-  _titleTpl: TemplateRef<any>;
+  _titleTpl: TemplateRef<void>;
   _content = '';
-  _maskClosable = true;
-  _contentTpl: TemplateRef<any>;
+  _contentTpl: TemplateRef<void>;
   _okText = this._locale.translate('Modal.understood');
   _cancelText = '';
   _animationStatus = '';
-  _confirmLoading = false;
   _customClass = '';
   _typeCls = `${this._prefixConfirmCls}-confirm`;
   @ViewChild('confirm_content') private contentEl: ElementRef;
 
   @Input()
-  public get nzVisible(): boolean {
-    return this._visible;
-  };
-
-  public set nzVisible(value: boolean) {
-    if (this._visible === value) {
+  set nzVisible(value: boolean) {
+    const visible = toBoolean(value);
+    if (this._visible === visible) {
       return;
     }
-    if (value) {
+    if (visible) {
       this.anmiateFade('enter');
       this.subject.next('onShow');
       // 每次触发点击事件的时候，通过全局监听的类，记录下点击的位置，计算动画的origin
@@ -118,13 +117,17 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
       this.anmiateFade('leave');
       this.subject.next('onHide');
     }
-    this._visible = value;
+    this._visible = visible;
     // 设置全局的overflow样式
-    nzGlobalMonitor.setDocumentOverflowHidden(value);
+    nzGlobalMonitor.setDocumentOverflowHidden(visible);
+  }
+
+  get nzVisible(): boolean {
+    return this._visible;
   }
 
   @Input()
-  set nzWidth(value: any) {
+  set nzWidth(value: number | string) {
     this._width = typeof value === 'number' ? value + 'px' : value;
   }
 
@@ -134,31 +137,32 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
   }
 
   @Input()
-  set nzZIndex(value: any) {
+  set nzZIndex(value: number) {
     this._zIndex = value;
   }
 
   @Input()
-  set nzTitle(value: string | TemplateRef<any>) {
+  set nzTitle(value: string | TemplateRef<void>) {
+    // TODO: should guard for string instead, all types are theoretically structural
     if (value instanceof TemplateRef) {
       this._titleTpl = value;
     } else {
-      this._title = <string>value;
+      this._title = value;
     }
   }
 
   @Input()
-  set nzContent(value: string | TemplateRef<any>) {
+  set nzContent(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
       this._contentTpl = value;
     } else {
-      this._content = <string>value;
+      this._content = value;
     }
   }
 
   @Input()
   set nzMaskClosable(value: boolean) {
-    this._maskClosable = value;
+    this._maskClosable = toBoolean(value);
   }
 
   @Input()
@@ -187,22 +191,22 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
 
   @Input()
   set nzConfirmLoading(value: boolean) {
-    this._confirmLoading = value;
+    this._confirmLoading = toBoolean(value);
   }
 
   @HostListener('keydown.esc', [ '$event' ])
-  onEsc(e): void {
+  onEsc(e: KeyboardEvent): void {
     if (this._maskClosable) {
       this.subject.next('onCancel');
     }
   }
 
   @HostListener('keydown.enter', [ '$event' ])
-  onEnter(e): void {
+  onEnter(e: KeyboardEvent): void {
     this.subject.next('onOk');
   }
 
-  setStyles(origin?): void {
+  setStyles(origin?: { x: number, y: number }): void {
     const el = this.contentEl.nativeElement;
     const transformOrigin = origin ? `${origin.x - el.offsetLeft}px ${origin.y - el.offsetTop}px 0px` : '';
 
@@ -233,7 +237,7 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
     };
   }
 
-  anmiateFade(status): void {
+  anmiateFade(status: string): void {
     this._animationStatus = status;
     this.setClassMap();
     setTimeout(_ => {
@@ -248,23 +252,22 @@ export class NzConfirmComponent implements OnInit, OnDestroy {
     }, 200);
   }
 
-  closeFromMask(e): void {
-    if (this._maskClosable && e.target.getAttribute('role') === 'dialog') {
+  closeFromMask(e: MouseEvent): void {
+    if (this._maskClosable && (e.target as HTMLElement).getAttribute('role') === 'dialog') {
       this.subject.next('onCancel');
     }
   }
-
 
   constructor(public subject: NzModalSubject, private _locale: NzLocaleService) {
   }
 
   // 通过createComponent方法创建component时，ngOnInit不会被触发
-  ngOnInit() {
+  ngOnInit(): void {
     this.setClassMap();
     this.setStyles();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this._visible) {
       nzGlobalMonitor.setDocumentOverflowHidden(false);
     }

@@ -1,6 +1,6 @@
+/* tslint:disable:no-unused-variable no-inferrable-types no-any prefer-const */
+import { DOCUMENT, PlatformLocation } from '@angular/common';
 import { ReflectiveInjector } from '@angular/core';
-import { PlatformLocation } from '@angular/common';
-import { DOCUMENT } from '@angular/common';
 
 import { NzScrollService } from './nz-scroll.service';
 
@@ -51,8 +51,8 @@ describe('NzScrollService', () => {
     });
 
     it(`should scroll to dom element ${TOP} x`, () => {
-      let el = new MockElement();
-      scrollService.setScrollTop(<any>el, TOP);
+      let el: Element = new MockElement() as any;
+      scrollService.setScrollTop(el, TOP);
       expect(el.scrollTop).toBe(TOP);
     });
   });

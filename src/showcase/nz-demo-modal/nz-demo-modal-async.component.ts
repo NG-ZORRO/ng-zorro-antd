@@ -21,7 +21,7 @@ export class NzDemoModalAsyncComponent {
 
   showModal = () => {
     this.isVisible = true;
-  }
+  };
 
   handleOk = (e) => {
     this.isConfirmLoading = true;
@@ -29,11 +29,9 @@ export class NzDemoModalAsyncComponent {
       this.isVisible = false;
       this.isConfirmLoading = false;
     }, 3000);
-  }
+  };
 
   handleCancel = (e) => {
     this.isVisible = false;
-  }
-
-  constructor() {}
+  };
 }

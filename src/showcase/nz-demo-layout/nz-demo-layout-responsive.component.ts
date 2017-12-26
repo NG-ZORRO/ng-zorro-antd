@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-layout-responsive',
@@ -35,12 +35,6 @@ import { Component, OnInit } from '@angular/core';
     }`
   ]
 })
-export class NzDemoLayoutResponsiveComponent implements OnInit {
+export class NzDemoLayoutResponsiveComponent {
   isCollapsed = false;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

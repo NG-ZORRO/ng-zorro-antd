@@ -31,7 +31,7 @@ import { Component, OnInit } from '@angular/core';
   template : `
     <nz-table #nzTable
       [nzAjaxData]="_dataSet"
-      [nzShowSizeChanger]="true"
+      nzShowSizeChanger
       [nzLoading]="_loading"
       [nzTotal]="_total"
       [(nzPageIndex)]="_current"
@@ -45,7 +45,7 @@ import { Component, OnInit } from '@angular/core';
             <nz-table-sort (nzValueChange)="sort($event)"></nz-table-sort>
           </th>
           <th nz-th>
-            <span>Age</span>
+            <span>Gender</span>
             <nz-dropdown [nzTrigger]="'click'">
               <i class="anticon anticon-filter" nz-dropdown></i>
               <ul nz-menu>
@@ -114,7 +114,7 @@ export class NzDemoTableAjaxComponent implements OnInit {
       this._total = 200;
       this._dataSet = data.results;
     })
-  };
+  }
 
   ngOnInit() {
     this.refreshData();

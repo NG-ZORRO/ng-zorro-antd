@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NzMessageService } from '../../../index.showcase';
 
 
@@ -62,18 +62,15 @@ import { NzMessageService } from '../../../index.showcase';
   ` ]
 })
 
-export class NzDemoPopconfirmLocationComponent implements OnInit {
+export class NzDemoPopconfirmLocationComponent {
   constructor(private message: NzMessageService) {
-  }
-
-  ngOnInit() {
   }
 
   cancel = function () {
     this.message.info('click cancel')
-  }
+  };
 
   confirm = () => {
     this.message.info('click confirm')
-  }
+  };
 }

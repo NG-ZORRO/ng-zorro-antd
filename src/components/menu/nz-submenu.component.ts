@@ -1,11 +1,11 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import {
-  Component, OnInit, OnDestroy, HostBinding, HostListener, ContentChildren, AfterViewInit,
-  Input, Output, EventEmitter, ChangeDetectorRef
+  AfterViewInit, ChangeDetectorRef, Component, ContentChildren, EventEmitter, HostBinding, HostListener, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
-import { style, animate, state, transition, trigger } from '@angular/animations';
-import { NzMenuComponent } from './nz-menu.component';
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operators/debounceTime';
+import { toBoolean } from '../util/convert';
+import { NzMenuComponent } from './nz-menu.component';
 
 @Component({
   selector  : '[nz-submenu]',
@@ -58,38 +58,47 @@ import { debounceTime } from 'rxjs/operators/debounceTime';
 })
 
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
+  private _open = false;
   isInDropDown = false;
   level = 1;
   _$mouseSubject = new Subject();
   @ContentChildren(NzSubMenuComponent) subMenus;
-  @Input() nzOpen = false;
   @Output() nzOpenChange: EventEmitter<boolean> = new EventEmitter();
 
+  @Input()
+  set nzOpen(value: boolean) {
+    this._open = toBoolean(value);
+  }
+
+  get nzOpen(): boolean {
+    return this._open;
+  }
+
   get subItemSelected(): boolean {
-    return !!this.nzMenuComponent.menuItems.find(e => e.selected && e.nzSubMenuComponent === this);
+    return !!this.nzMenuComponent.menuItems.find(e => e.nzSelected && e.nzSubMenuComponent === this);
   }
 
   get submenuSelected(): boolean {
-    return !!this.subMenus._results.find(e => e !== this && e.subItemSelected)
+    return !!this.subMenus._results.find(e => e !== this && e.subItemSelected);
   }
 
-  get expandState() {
+  get expandState(): string {
     if (this.nzOpen && this.nzMenuComponent.nzMode === 'inline') {
       return 'expand';
     } else if (this.nzOpen && this.nzMenuComponent.nzMode !== 'inline') {
-      return 'fade'
+      return 'fade';
     }
     return null;
   }
 
-  clickSubMenuTitle() {
+  clickSubMenuTitle(): void {
     if ((this.nzMenuComponent.nzMode === 'inline') && (!this.isInDropDown)) {
       this.nzOpen = !this.nzOpen;
       this.nzOpenChange.emit(this.nzOpen);
     }
   }
 
-  clickSubMenuDropDown() {
+  clickSubMenuDropDown(): void {
     if (this.isInDropDown || (this.nzMenuComponent.nzMode === 'vertical') || (this.nzMenuComponent.nzMode === 'horizontal')) {
       this._$mouseSubject.next(false);
       this.nzOpen = false;
@@ -98,71 +107,70 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   @HostListener('mouseenter', [ '$event' ])
-  onMouseEnterEvent(e) {
+  onMouseEnterEvent(e: MouseEvent): void {
     if ((this.nzMenuComponent.nzMode === 'horizontal') || (this.nzMenuComponent.nzMode === 'vertical') || this.isInDropDown) {
       this._$mouseSubject.next(true);
     }
   }
 
   @HostListener('mouseleave', [ '$event' ])
-  onMouseLeaveEvent(e) {
+  onMouseLeaveEvent(e: MouseEvent): void {
     if ((this.nzMenuComponent.nzMode === 'horizontal') || (this.nzMenuComponent.nzMode === 'vertical') || this.isInDropDown) {
       this._$mouseSubject.next(false);
     }
   }
 
   @HostBinding('class.ant-dropdown-menu-submenu')
-  get setDropDownSubmenuClass() {
+  get setDropDownSubmenuClass(): boolean {
     return this.isInDropDown;
   }
 
   @HostBinding('class.ant-menu-submenu-open')
-  get setMenuSubmenuOpenClass() {
+  get setMenuSubmenuOpenClass(): boolean {
     return (!this.isInDropDown) && (this.nzOpen);
   }
 
   @HostBinding('class.ant-dropdown-menu-submenu-vertical')
-  get setDropDownVerticalClass() {
+  get setDropDownVerticalClass(): boolean {
     return this.isInDropDown && (this.nzMenuComponent.nzMode === 'vertical');
   }
 
   @HostBinding('class.ant-dropdown-menu-submenu-horizontal')
-  get setDropDownHorizontalClass() {
+  get setDropDownHorizontalClass(): boolean {
     return this.isInDropDown && (this.nzMenuComponent.nzMode === 'horizontal');
   }
 
   @HostBinding('class.ant-menu-submenu')
-  get setMenuSubmenuClass() {
+  get setMenuSubmenuClass(): boolean {
     return !this.isInDropDown;
   }
 
   @HostBinding('class.ant-menu-submenu-selected')
-  get setMenuSubmenuSelectedClass() {
+  get setMenuSubmenuSelectedClass(): boolean {
     return this.submenuSelected || this.subItemSelected;
   }
 
   @HostBinding('class.ant-menu-submenu-vertical')
-  get setMenuVerticalClass() {
+  get setMenuVerticalClass(): boolean {
     return (!this.isInDropDown) && (this.nzMenuComponent.nzMode === 'vertical');
   }
 
   @HostBinding('class.ant-menu-submenu-horizontal')
-  get setMenuHorizontalClass() {
+  get setMenuHorizontalClass(): boolean {
     return (!this.isInDropDown) && (this.nzMenuComponent.nzMode === 'horizontal');
   }
 
   @HostBinding('class.ant-menu-submenu-inline')
-  get setMenuInlineClass() {
+  get setMenuInlineClass(): boolean {
     return (!this.isInDropDown) && (this.nzMenuComponent.nzMode === 'inline');
   }
-
 
   constructor(public nzMenuComponent: NzMenuComponent, public cd: ChangeDetectorRef) {
     this.nzMenuComponent.setHasSubMenu(true);
     this.nzMenuComponent.subMenus.push(this);
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.isInDropDown = this.nzMenuComponent.isInDropDown;
     if (this.subMenus.length && (this.nzMenuComponent.nzMode === 'inline')) {
       this.subMenus.filter(x => x !== this).forEach(menu => {
@@ -173,7 +181,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._$mouseSubject.pipe(debounceTime(300)).subscribe((data: boolean) => {
       if (this.nzOpen !== data) {
         this.nzOpen = data;
@@ -182,7 +190,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this._$mouseSubject.unsubscribe();
   }
 }

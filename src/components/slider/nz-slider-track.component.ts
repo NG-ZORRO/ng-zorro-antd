@@ -1,4 +1,5 @@
-import { Component, OnChanges, SimpleChanges, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-slider-track',
@@ -8,6 +9,8 @@ import { Component, OnChanges, SimpleChanges, Input, ViewEncapsulation } from '@
   `
 })
 export class NzSliderTrackComponent implements OnChanges {
+  private _vertical = false;
+  private _included = false;
 
   // Dynamic properties
   @Input() nzOffset;
@@ -15,23 +18,38 @@ export class NzSliderTrackComponent implements OnChanges {
 
   // Static properties
   @Input() nzClassName;
-  @Input() nzVertical;
-  @Input() nzIncluded;
 
-  style: any = {};
+  @Input()
+  set nzVertical(value: boolean) { // Required
+    this._vertical = toBoolean(value);
+  }
 
-  ngOnChanges(changes: SimpleChanges) {
-    const { nzOffset, nzLength, nzIncluded, nzVertical, style } = this;
+  get nzVertical(): boolean {
+    return this._vertical;
+  }
+
+  @Input()
+  set nzIncluded(value: boolean) {
+    this._included = toBoolean(value);
+  }
+
+  get nzIncluded(): boolean {
+    return this._included;
+  }
+
+  style: { bottom?: string, height?: string, left?: string, width?: string, visibility?: string } = {};
+
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzIncluded) {
-      style.visibility = nzIncluded ? 'visible' : 'hidden';
+      this.style.visibility = this.nzIncluded ? 'visible' : 'hidden';
     }
     if (changes.nzVertical || changes.nzOffset || changes.nzLength) {
-      if (nzVertical) {
-        style.bottom = `${nzOffset}%`;
-        style.height = `${nzLength}%`;
+      if (this.nzVertical) {
+        this.style.bottom = `${this.nzOffset}%`;
+        this.style.height = `${this.nzLength}%`;
       } else {
-        style.left = `${nzOffset}%`;
-        style.width = `${nzLength}%`;
+        this.style.left = `${this.nzOffset}%`;
+        this.style.width = `${this.nzLength}%`;
       }
     }
   }

@@ -10,9 +10,10 @@ import {
     </div>
     <ul class="ant-menu-item-group-list">
       <ng-content></ng-content>
-    </ul>`,
+    </ul>
+  `,
+  host: {
+    '[class.ant-menu-item-group]': 'true'
+  }
 })
-
-export class NzMenuGroupComponent {
-  @HostBinding('class.ant-menu-item-group') _nzMenuItemGroup = true;
-}
+export class NzMenuGroupComponent { }

@@ -1,8 +1,9 @@
 import {
   Component,
+  Input,
   ViewEncapsulation,
-  Input
 } from '@angular/core';
+import { toBoolean } from '../util/convert';
 import { NzCollapseComponent } from './nz-collapse.component';
 
 @Component({
@@ -18,17 +19,31 @@ import { NzCollapseComponent } from './nz-collapse.component';
     './style/patch.less'
   ]
 })
-
-
 export class NzCollapsesetComponent {
+  private _accordion = false;
+  private _bordered = true;
   // all child collapse
-  panels: Array<NzCollapseComponent> = [];
+  panels: NzCollapseComponent[] = [];
 
-  @Input() nzAccordion = false;
+  @Input()
+  set nzAccordion(value: boolean) {
+    this._accordion = toBoolean(value);
+  }
 
-  @Input() nzBordered = true;
+  get nzAccordion(): boolean {
+    return this._accordion;
+  }
 
-  nzClick(collapse) {
+  @Input()
+  set nzBordered(value: boolean) {
+    this._bordered = toBoolean(value);
+  }
+
+  get nzBordered(): boolean {
+    return this._bordered;
+  }
+
+  nzClick(collapse: NzCollapseComponent): void {
     if (this.nzAccordion) {
       this.panels.map((item, index) => {
         const curIndex = this.panels.indexOf(collapse);
@@ -39,10 +54,7 @@ export class NzCollapsesetComponent {
     }
   }
 
-  addTab(collapse: NzCollapseComponent) {
+  addTab(collapse: NzCollapseComponent): void {
     this.panels.push(collapse);
-  }
-
-  constructor() {
   }
 }

@@ -13,12 +13,13 @@ import { NzDropDownComponent } from '../dropdown/nz-dropdown.component';
     <a class="ant-table-filter-dropdown-link clear" (click)="hideDropDown()">
       <ng-content select="[nz-table-filter-clear]"></ng-content>
     </a>
-  `
+  `,
+  host: {
+    '[class.ant-table-filter-dropdown-btns]': 'true'
+  }
 })
 export class NzTableFilterComponent implements OnInit {
-  @HostBinding('class.ant-table-filter-dropdown-btns') _dropDownButton = true;
-
-  hideDropDown() {
+  hideDropDown(): void {
     this.nzDropDownComponent.nzVisible = false;
     this.nzDropDownComponent._hide();
   }
@@ -26,7 +27,7 @@ export class NzTableFilterComponent implements OnInit {
   constructor(private nzDropDownComponent: NzDropDownComponent) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.nzDropDownComponent.hasFilterButton = true;
     this.nzDropDownComponent.nzClickHide = false;
   }

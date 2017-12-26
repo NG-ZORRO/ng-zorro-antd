@@ -1,24 +1,25 @@
+import { AnimationEvent } from '@angular/animations';
 import {
-  Component,
-  OnInit,
   AfterViewInit,
-  ViewEncapsulation,
-  Input,
+  Component,
   ElementRef,
-  Renderer2,
-  HostListener,
+  EventEmitter,
   HostBinding,
+  HostListener,
+  Input,
+  OnInit,
   Output,
-  EventEmitter
+  Renderer2,
+  ViewEncapsulation,
 } from '@angular/core';
-import { TagAnimation } from '../core/animation/tag-animations';
-
+import { tagAnimation } from '../core/animation/tag-animations';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector       : 'nz-checkable-tag',
   encapsulation: ViewEncapsulation.None,
   animations   : [
-    TagAnimation
+    tagAnimation
   ],
   template       : `
     <span *ngIf="!_closed"
@@ -35,31 +36,48 @@ import { TagAnimation } from '../core/animation/tag-animations';
     './style/patch.less'
   ]
 })
-export class NzCheckableTagComponent implements OnInit, AfterViewInit {
+export class NzCheckableTagComponent implements AfterViewInit {
+  private _checked = false;
+  private _closable = false;
+
   _prefixCls = 'ant-tag';
   _closed = false;
 
   /** Whether tag is checked */
-  @Input() nzChecked = false;
+  @Input()
+  set nzChecked(value: boolean) {
+    this._checked = toBoolean(value);
+  }
+
+  get nzChecked(): boolean {
+    return this._checked;
+  }
 
   /** Whether tag is closable */
-  @Input() nzClosable = false;
+  @Input()
+  set nzClosable(value: boolean) {
+    this._closable = toBoolean(value);
+  }
+
+  get nzClosable(): boolean {
+    return this._closable;
+  }
 
   /** The tag color */
   @Input() nzColor: string;
 
-
   /** Event: emit before close */
   @Output() nzBeforeClose = new EventEmitter<Event>();
 
+  // TODO: AnimationEvent is not subclass of Event, but all payloads should be unified
   /** Event: emit after close */
-  @Output() nzClose = new EventEmitter<Event>();
+  @Output() nzClose = new EventEmitter<AnimationEvent>();
 
   /** Event: emit on change */
   @Output() nzChange = new EventEmitter<boolean>();
 
-
-  @HostBinding('attr.data-show') get _dataShow(): boolean {
+  @HostBinding('attr.data-show')
+  get _dataShow(): boolean {
     return !this._closed;
   }
 
@@ -68,13 +86,13 @@ export class NzCheckableTagComponent implements OnInit, AfterViewInit {
     return (this.nzColor && !isPresetColor) ? this.nzColor : null;
   }
 
-  _afterClose(event: any): void {
+  _afterClose(event: AnimationEvent): void {
     if (this._closed) {
       this.nzClose.emit(event);
     }
   }
 
-  get _tagCls(): any {
+  get _tagCls(): object {
     const isPresetColor = this._isPresetColor(this.nzColor);
     return {
       [this._prefixCls]                       : true,
@@ -95,7 +113,7 @@ export class NzCheckableTagComponent implements OnInit, AfterViewInit {
     this.nzChange.emit(!this.nzChecked);
   }
 
-  _close(event: Event): void {
+  _close(event: MouseEvent): void {
     this.nzBeforeClose.emit(event);
     if (event.defaultPrevented) {
         return;
@@ -107,14 +125,10 @@ export class NzCheckableTagComponent implements OnInit, AfterViewInit {
     return /^(pink|red|yellow|orange|cyan|green|blue|purple)(-inverse)?$/.test(color);
   }
 
-
   constructor(
     private _elementRef: ElementRef,
     private _render: Renderer2) {
 
-  }
-
-  ngOnInit() {
   }
 
   ngAfterViewInit(): void {

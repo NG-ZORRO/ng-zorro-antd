@@ -16,7 +16,6 @@ import { NzDemoSwitchRoutingModule } from './nz-demo-switch.routing.module';
   imports     : [ FormsModule, NzDemoSwitchRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule ],
   declarations: [ NzDemoSwitchBasicComponent, NzDemoSwitchDisabledComponent, NzDemoSwitchTextComponent, NzDemoSwitchSizeComponent, NzDemoSwitchComponent ]
 })
-
 export class NzDemoSwitchModule {
 
 }

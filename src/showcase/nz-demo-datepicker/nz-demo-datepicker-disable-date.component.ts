@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import * as moment from 'moment';
 
 @Component({
@@ -9,7 +9,7 @@ import * as moment from 'moment';
   `,
   styles  : []
 })
-export class NzDemoDatePickerDisableDateComponent implements OnInit {
+export class NzDemoDatePickerDisableDateComponent {
   _date = null;
   _moment = null;
   _disabledDate = function (current) {
@@ -19,11 +19,4 @@ export class NzDemoDatePickerDisableDateComponent implements OnInit {
   _disabledMonth = function (current) {
     return current && moment(current).day(0).valueOf() > moment().valueOf();
   };
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

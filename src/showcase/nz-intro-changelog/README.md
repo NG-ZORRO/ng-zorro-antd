@@ -9,6 +9,105 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.6.8
+`2017-12-21`
+
+### Features
+* 与 Ant Design 2.13.11 交互及样式同步 [#777](https://github.com/NG-ZORRO/ng-zorro-antd/pull/777) 
+
+### Bug Fixes
+* `Popconfirm` 修复点击背景弹出框不消失的问题 [#786](https://github.com/NG-ZORRO/ng-zorro-antd/pull/786)
+* `Modal` 修复部分类型错误 [#784](https://github.com/NG-ZORRO/ng-zorro-antd/pull/784)
+* `Table` 修复初始排序时样式问题 [#781](https://github.com/NG-ZORRO/ng-zorro-antd/pull/781)
+* 修复所有下拉框宽度修改后未同步的问题 [#780](https://github.com/NG-ZORRO/ng-zorro-antd/pull/780)
+
+### Other
+* 加速 `Dropdown` 组件的动画效果 [#783](https://github.com/NG-ZORRO/ng-zorro-antd/pull/783)
+* 对 `Affix` 进行了优化  [#708](https://github.com/NG-ZORRO/ng-zorro-antd/pull/708) [@Trotyl Yu](https://github.com/trotyl)
+
+## 0.6.7
+`2017-12-15`
+
+### Features
+* `InputNumber` 支持 `formatter` 与 `parser` 属性，可以自定义显示数据 [#740](https://github.com/NG-ZORRO/ng-zorro-antd/pull/740)
+* `Tooltip` `Popover` `Popconfirm` 支持 `nzMouseEnterDelay` `nzMouseLeaveDelay` 属性 [#758](https://github.com/NG-ZORRO/ng-zorro-antd/pull/758) 
+
+### Bug Fixes
+* `Select` 修复 `option` 发生改变时内部 `value` 没有变化的问题  [#754](https://github.com/NG-ZORRO/ng-zorro-antd/pull/754)
+* `Slider` 修复 `ngModel` 改变时没有生效的问题 [#743](https://github.com/NG-ZORRO/ng-zorro-antd/pull/743)
+* `DatePicker` 修复设置 `nzDisabledDate` 后仍可手动输入数据的问题 [#738](https://github.com/NG-ZORRO/ng-zorro-antd/pull/738)
+* `Calendar` 修复月份显示问题 [#737](https://github.com/NG-ZORRO/ng-zorro-antd/pull/737) [@Hsuan Lee](https://github.com/HsuanXyz)
+
+## 0.6.6
+`2017-12-11`
+
+### Bug Fixes
+* 修复 `Slider` 拖拽的问题 [#732](https://github.com/NG-ZORRO/ng-zorro-antd/pull/732)
+* 修复 `Rate` 点击失效的问题 [#728](https://github.com/NG-ZORRO/ng-zorro-antd/pull/728)
+* 修复 `DatePicker` 时间选择的问题 [#726](https://github.com/NG-ZORRO/ng-zorro-antd/pull/726)
+* 修复 `InputNumber` 超出边界值的问题 [#731](https://github.com/NG-ZORRO/ng-zorro-antd/pull/731)
+
+
+## 0.6.5
+`2017-12-10`
+
+### Bug Fixes
+* 修复 `Modal` 类型兼容问题 [#722](https://github.com/NG-ZORRO/ng-zorro-antd/pull/722)
+* 修复 `i18n` 替换问题 [#722](https://github.com/NG-ZORRO/ng-zorro-antd/pull/722)
+
+## 0.6.4
+`2017-12-10`
+
+### Features
+* `Form` 支持默认`nzValidateStatus`并支持更多错误状态 [#696](https://github.com/NG-ZORRO/ng-zorro-antd/pull/696)
+* `Select` 支持所有场景下无值时显示Placeholder内容 [#703](https://github.com/NG-ZORRO/ng-zorro-antd/pull/703)
+* `Grid` 支持0值布局 [#704](https://github.com/NG-ZORRO/ng-zorro-antd/pull/704)
+* `Tooltip / Popover / Popconfirm` 支持鼠标移入悬浮框内，支持当悬浮框内容为空时不显示 [#714](https://github.com/NG-ZORRO/ng-zorro-antd/pull/714)
+
+### Bug Fixes
+* `InputNumber` 修复使用tab键后未触发脏值检查的问题 [#706](https://github.com/NG-ZORRO/ng-zorro-antd/pull/706)
+
+### Refactor
+* 修正语法书写以符合新的tslint规范 [#691](https://github.com/NG-ZORRO/ng-zorro-antd/pull/691) [@Trotyl Yu](https://github.com/trotyl)
+
+### Docs
+* 修正单词文案 [#694](https://github.com/NG-ZORRO/ng-zorro-antd/pull/694) [@chunghha](https://github.com/chunghha)
+
+## 0.6.3
+`2017-12-07`
+
+### BREAK CHANGES
+* `DropDownButton` 用 `nzDisabled` 取代 `nzDisable` [#459](https://github.com/NG-ZORRO/ng-zorro-antd/pull/459) [@Trotyl Yu](https://github.com/trotyl)
+
+### Features
+* `Select` 支持 `option` 直接渲染 `ng-template` 内容 [#689](https://github.com/NG-ZORRO/ng-zorro-antd/pull/689)
+* `Carousel` 支持更多 API [#688](https://github.com/NG-ZORRO/ng-zorro-antd/pull/688) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `Select` 支持下拉滚动到底部事件 `nzScrollToBottom`，用于滚动加载 [#678](https://github.com/NG-ZORRO/ng-zorro-antd/pull/678)
+* 打包版本支持 `sourcemaps` [#666](https://github.com/NG-ZORRO/ng-zorro-antd/pull/666) [@Trotyl Yu](https://github.com/trotyl)
+* 国际化支持土耳其语 [#634](https://github.com/NG-ZORRO/ng-zorro-antd/pull/634) [@Emrullah TUNCAY](https://github.com/etuncay)
+* 国际化支持繁体中文 [#687](https://github.com/NG-ZORRO/ng-zorro-antd/pull/687)
+* 所有 `boolean` 类型的属性支持直接以 `attribute` 方式使用 [#459](https://github.com/NG-ZORRO/ng-zorro-antd/pull/459) [@Trotyl Yu](https://github.com/trotyl)
+
+### Bug Fixes
+* `Radio` 修复动态改变选项时的问题 [#677](https://github.com/NG-ZORRO/ng-zorro-antd/pull/677) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `Select` 修复 `disabled` 选项可以使用方向键选中的问题 [#675](https://github.com/NG-ZORRO/ng-zorro-antd/pull/675) [@卡色](https://github.com/cipchk)
+* `Affix` 修复位置问题 [#672](https://github.com/NG-ZORRO/ng-zorro-antd/pull/672) [@卡色](https://github.com/cipchk)
+
+### Refactor
+* 重构所有静态 `className` 绑定的方式 [#664](https://github.com/NG-ZORRO/ng-zorro-antd/pull/664) [@Trotyl Yu](https://github.com/trotyl)
+
+### CI
+* 并行加速CI测试 [#655](https://github.com/NG-ZORRO/ng-zorro-antd/pull/655) [@Trotyl Yu](https://github.com/trotyl)
+
+## 0.6.2
+`2017-11-29`
+
+### Features
+* `Steps` 支持动态数据更新 [#629](https://github.com/NG-ZORRO/ng-zorro-antd/pull/629)
+* `Slider` 支持 `nzMarks`属性动态更新 [#636](https://github.com/NG-ZORRO/ng-zorro-antd/pull/636)
+* `Table` 和 `Pagination` 支持自定义分页下拉数据 [#608](https://github.com/NG-ZORRO/ng-zorro-antd/pull/608) [@hllinc](https://github.com/hllinc)
+
+
 ## 0.6.1
 `2017-11-26`
 

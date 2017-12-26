@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
+import { SCROLL_SERVICE_PROVIDER } from '../core/scroll/nz-scroll.service';
+import { NzAnchorLinkComponent } from './nz-anchor-link.component';
 import { NzAnchorComponent } from './nz-anchor.component';
-import { NzAnchorLinkComponent } from "./nz-anchor-link.component";
-import { SCROLL_SERVICE_PROVIDER } from "../core/scroll/nz-scroll.service";
 
 @NgModule({
   declarations: [ NzAnchorComponent, NzAnchorLinkComponent ],
@@ -13,4 +13,3 @@ import { SCROLL_SERVICE_PROVIDER } from "../core/scroll/nz-scroll.service";
 })
 export class NzAnchorModule {
 }
-

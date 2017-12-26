@@ -1,20 +1,20 @@
 
 const availablePrefixs = ['moz', 'ms', 'webkit'];
 
-function requestAnimationFramePolyfill() {
+function requestAnimationFramePolyfill(): typeof requestAnimationFrame {
   let lastTime = 0;
-  return function (callback) {
+  return function (callback: FrameRequestCallback): number {
     const currTime = new Date().getTime();
     const timeToCall = Math.max(0, 16 - (currTime - lastTime));
-    const id = window.setTimeout(function () { callback(currTime + timeToCall); }, timeToCall);
+    const id = window.setTimeout(() => { callback(currTime + timeToCall); }, timeToCall);
     lastTime = currTime + timeToCall;
     return id;
   };
 }
 
-function getRequestAnimationFrame() {
+function getRequestAnimationFrame(): typeof requestAnimationFrame {
   if (typeof window === 'undefined') {
-    return () => { };
+    return () => null;
   }
   if (window.requestAnimationFrame) {
     // https://github.com/vuejs/vue/issues/4465

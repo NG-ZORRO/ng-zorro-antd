@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-dropdown-button',
@@ -18,7 +18,7 @@ import { Component, OnInit } from '@angular/core';
           </li>
         </ul>
       </nz-dropdown-button>
-      <nz-dropdown-button [nzDisable]="true">
+      <nz-dropdown-button nzDisabled>
         DropDown
         <ul nz-menu>
           <li nz-menu-item>
@@ -62,14 +62,8 @@ import { Component, OnInit } from '@angular/core';
     `
   ]
 })
-export class NzDemoDropDownButtonComponent implements OnInit {
+export class NzDemoDropDownButtonComponent {
   log(e) {
     console.log('click dropdown button');
-  }
-
-  constructor() {
-  }
-
-  ngOnInit() {
   }
 }

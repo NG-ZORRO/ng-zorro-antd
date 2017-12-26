@@ -1,20 +1,21 @@
 import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ViewEncapsulation,
-  Input
-} from '@angular/core';
-import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
-import { NzMessageContainerComponent } from './nz-message-container.component';
-import { NzMessageConfig } from './nz-message-config';
-import {
-  trigger,
+  animate,
   state,
   style,
   transition,
-  animate
+  trigger,
 } from '@angular/animations';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
+import { NzMessageConfig } from './nz-message-config';
+import { NzMessageContainerComponent } from './nz-message-container.component';
+import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
+
 @Component({
   selector     : 'nz-message',
   encapsulation: ViewEncapsulation.None,
@@ -46,7 +47,7 @@ import {
             <i *ngSwitchCase="'error'" class="anticon anticon-cross-circle"></i>
             <i *ngSwitchCase="'loading'" class="anticon anticon-spin anticon-loading"></i>
           </ng-container>
-          <span>{{nzMessage.content}}</span>
+          <span>{{ nzMessage.content }}</span>
         </div>
         <div *ngIf="nzMessage.html" [innerHTML]="nzMessage.html"></div>
       </div>
@@ -71,7 +72,7 @@ export class NzMessageComponent implements OnInit, OnDestroy {
 
   constructor(private _messageContainer: NzMessageContainerComponent) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._options = this.nzMessage.options;
 
     if (this._options.nzAnimate) {
@@ -86,27 +87,27 @@ export class NzMessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this._autoErase) {
       this._clearEraseTimeout();
     }
   }
 
-  onEnter() {
+  onEnter(): void {
     if (this._autoErase && this._options.nzPauseOnHover) {
       this._clearEraseTimeout();
       this._updateTTL();
     }
   }
 
-  onLeave() {
+  onLeave(): void {
     if (this._autoErase && this._options.nzPauseOnHover) {
       this._startEraseTimeout();
     }
   }
 
   // Remove self
-  protected _destroy() {
+  protected _destroy(): void {
     if (this._options.nzAnimate) {
       this.nzMessage.state = 'leave';
       setTimeout(() => this._messageContainer.removeMessage(this.nzMessage.messageId), 200);
@@ -115,18 +116,18 @@ export class NzMessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  private _initErase() {
+  private _initErase(): void {
     this._eraseTTL = this._options.nzDuration;
     this._eraseTimingStart = Date.now();
   }
 
-  private _updateTTL() {
+  private _updateTTL(): void {
     if (this._autoErase) {
       this._eraseTTL -= Date.now() - this._eraseTimingStart;
     }
   }
 
-  private _startEraseTimeout() {
+  private _startEraseTimeout(): void {
     if (this._eraseTTL > 0) {
       this._clearEraseTimeout(); // To prevent calling _startEraseTimeout() more times to create more timer
       this._eraseTimer = window.setTimeout(() => this._destroy(), this._eraseTTL);
@@ -136,7 +137,7 @@ export class NzMessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  private _clearEraseTimeout() {
+  private _clearEraseTimeout(): void {
     if (this._eraseTimer !== null) {
       window.clearTimeout(this._eraseTimer);
       this._eraseTimer = null;

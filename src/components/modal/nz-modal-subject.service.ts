@@ -13,17 +13,19 @@ const enum modalEvent {
 }
 
 @Injectable()
+/* tslint:disable-next-line:no-any */
 export class NzModalSubject extends Subject<any> {
   modalId: string;
-  eventsQueue = {}
+  eventsQueue = {};
 
-  destroy(type: any = 'onCancel') {
+  /* tslint:disable-next-line:no-any */
+  destroy(type: any = 'onCancel'): void {
     if (!this.isStopped && !this.closed) {
       this.next(type);
     }
   }
 
-  on(eventType: string, cb: Function) {
+  on(eventType: string, cb: () => void): void {
     if (this.eventsQueue[ eventType ]) {
       this.eventsQueue[ eventType ].push(cb);
     } else {
@@ -34,7 +36,7 @@ export class NzModalSubject extends Subject<any> {
   constructor() {
     super();
     this.subscribe((value: string) => {
-      const eventQueue: Array<Function> = this.eventsQueue[ value ] || [];
+      const eventQueue: Array<() => void> = this.eventsQueue[ value ] || [];
       eventQueue.forEach(cb => {
         if (cb) {
           cb();

@@ -16,7 +16,6 @@ import { NzDemoMessageRoutingModule } from './nz-demo-message.routing.module';
   imports     : [ NzDemoMessageRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule ],
   declarations: [ NzDemoMessageBasicComponent, NzDemoMessageDurationComponent, NzDemoMessageIconComponent, NzDemoMessageLoadingComponent, NzDemoMessageComponent ]
 })
-
 export class NzDemoMessageModule {
 
 }

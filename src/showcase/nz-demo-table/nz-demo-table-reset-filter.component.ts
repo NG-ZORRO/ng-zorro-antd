@@ -75,7 +75,7 @@ import { Component, OnInit } from '@angular/core';
     `
   ]
 })
-export class NzDemoTableResetFilterComponent implements OnInit {
+export class NzDemoTableResetFilterComponent {
   filterNameArray = [
     { name: 'Joe', value: false },
     { name: 'Jim', value: false },
@@ -149,12 +149,6 @@ export class NzDemoTableResetFilterComponent implements OnInit {
       item.value = false;
     });
     this.search();
-  }
-
-  constructor() {
-  }
-
-  ngOnInit() {
   }
 }
 

@@ -17,7 +17,6 @@ import { NzDemoPopconfirmRoutingModule } from './nz-demo-popconfirm.routing.modu
   imports     : [ NzDemoPopconfirmRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule ],
   declarations: [ NzDemoPopconfirmBasicComponent, NzDemoPopconfirmLocalComponent, NzDemoPopconfirmLocationComponent, NzDemoPopconfirmKickComponent, NzDemoPopconfirmComponent ]
 })
-
 export class NzDemoPopconfirmModule {
 
 }

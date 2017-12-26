@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { zhCN, enUS, NzModalService, NzLocaleService } from '../../../index.showcase';
+import { zhCN, enUS, trTR, zhTW, NzModalService, NzLocaleService } from '../../../index.showcase';
 
 @Component({
   selector: 'nz-demo-locale-all',
@@ -8,8 +8,10 @@ import { zhCN, enUS, NzModalService, NzLocaleService } from '../../../index.show
       <div style="margin-bottom: 16px;">
         <span style="margin-right: 16px;">Change locale of components: </span>
         <nz-radio-group [(ngModel)]="locale">
+          <label nz-radio-button [nzValue]="zhCN"><span>简体</span></label>
+          <label nz-radio-button [nzValue]="zhTW"><span>繁体</span></label>
+          <label nz-radio-button [nzValue]="trTR"><span>Turkish</span></label>
           <label nz-radio-button [nzValue]="enUS"><span>English</span></label>
-          <label nz-radio-button [nzValue]="zhCN"><span>中文</span></label>
         </nz-radio-group>
       </div>
 
@@ -18,6 +20,12 @@ import { zhCN, enUS, NzModalService, NzLocaleService } from '../../../index.show
         <ng-container *ngTemplateOutlet="tplLocale"></ng-container>
       </ng-container>
       <ng-container *ngIf="locale === enUS">
+        <ng-container *ngTemplateOutlet="tplLocale"></ng-container>
+      </ng-container>
+      <ng-container *ngIf="locale === trTR">
+        <ng-container *ngTemplateOutlet="tplLocale"></ng-container>
+      </ng-container>
+      <ng-container *ngIf="locale === zhTW">
         <ng-container *ngTemplateOutlet="tplLocale"></ng-container>
       </ng-container>
       <ng-template #tplLocale>
@@ -29,18 +37,22 @@ import { zhCN, enUS, NzModalService, NzLocaleService } from '../../../index.show
 export class NzDemoLocaleAllComponent implements OnInit {
   zhCN = zhCN;
   enUS = enUS;
+  zhTW = zhTW;
+  trTR = trTR;
 
   _locale;
   get locale() {
     return this._locale;
   }
+
   set locale(locale) {
     this._locale = locale;
     /* Switch locale manually (DEMO ONLY) */
     this._localeService.setLocale(locale);
   }
 
-  constructor(private _localeService: NzLocaleService) {}
+  constructor(private _localeService: NzLocaleService) {
+  }
 
   ngOnInit() {
     this.locale = enUS;
@@ -55,7 +67,7 @@ export class NzDemoLocaleAllComponent implements OnInit {
         <nz-pagination [nzPageIndex]="3" [nzTotal]="500" nzShowSizeChanger [nzPageSize]="40"></nz-pagination>
       </div>
       <div class="example">
-        <nz-select style="width: 200px;" nzAllowClear [nzShowSearch]="true">
+        <nz-select style="width: 200px;" nzAllowClear nzShowSearch>
           <nz-option [nzLabel]="'wilson'" [nzValue]="'wilson'"></nz-option>
           <nz-option [nzLabel]="'lucy'" [nzValue]="'lucy'"></nz-option>
         </nz-select>
@@ -89,40 +101,43 @@ export class NzDemoLocaleAllComponent implements OnInit {
       </div>
     </div>
   `,
-  styles: [`
+  styles  : [ `
     .locale-components {
       border-top: 1px solid #d9d9d9;
       padding-top: 16px;
     }
+
     .example {
       margin: 16px 0;
     }
+
     .example > * {
       margin-right: 8px;
     }
-  `],
+  ` ],
 })
 
 export class NzDemoLocaleAllPageComponent {
-  constructor(private _modal: NzModalService) {}
+  constructor(private _modal: NzModalService) {
+  }
 
   showModal() {
     this._modal.open({
-      title: 'Locale Modal',
+      title  : 'Locale Modal',
       content: 'Locale Modal',
     });
   }
 
   showInfo() {
     this._modal.info({
-      title: 'some info',
+      title  : 'some info',
       content: 'some info',
     });
   }
 
   showConfirm() {
     this._modal.confirm({
-      title: 'some info',
+      title  : 'some info',
       content: 'some info',
     });
   }

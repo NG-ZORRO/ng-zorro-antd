@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NzMessageService } from '../../../index.showcase';
 
 
@@ -15,7 +15,7 @@ import { NzMessageService } from '../../../index.showcase';
   `
 })
 
-export class NzDemoPopconfirmKickComponent implements OnInit {
+export class NzDemoPopconfirmKickComponent {
   switchValue = false;
 
   cancel = function () {
@@ -30,8 +30,5 @@ export class NzDemoPopconfirmKickComponent implements OnInit {
 
   constructor(private message: NzMessageService) {
 
-  }
-
-  ngOnInit() {
   }
 }

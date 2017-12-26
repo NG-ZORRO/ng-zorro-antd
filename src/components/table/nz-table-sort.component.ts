@@ -1,11 +1,12 @@
 import {
   Component,
-  ViewEncapsulation,
-  Input,
-  Output,
+  EventEmitter,
   Host,
+  Input,
   Optional,
-  EventEmitter, OnInit, Renderer2
+  Output,
+  Renderer2,
+  ViewEncapsulation,
 } from '@angular/core';
 import { NzThDirective } from './nz-th.directive';
 
@@ -26,42 +27,35 @@ import { NzThDirective } from './nz-th.directive';
     './style/index.less'
   ]
 })
-export class NzTableSortComponent implements OnInit {
-  _value = null;
-  @Output() nzValueChange: EventEmitter<any> = new EventEmitter();
+export class NzTableSortComponent {
+  _value: string = null;
+  @Output() nzValueChange: EventEmitter<string> = new EventEmitter();
 
   @Input()
-  get nzValue() {
+  get nzValue(): string {
     return this._value;
   }
 
-  set nzValue(value) {
+  set nzValue(value: string) {
     this._value = value;
-    if ((this._value !== 'ascend') && (this._value !== 'descend')) {
-      if (this.nzThDirective) {
+    if (this.nzThDirective) {
+      if ((this._value !== 'ascend') && (this._value !== 'descend')) {
         this._renderer.removeClass(this.nzThDirective._el, 'ant-table-column-sort');
+      } else {
+        this._renderer.addClass(this.nzThDirective._el, 'ant-table-column-sort');
       }
     }
   }
 
-  _setValue(value) {
+  _setValue(value: string): void {
     if (this.nzValue === value) {
       this.nzValue = null;
-      if (this.nzThDirective) {
-        this._renderer.removeClass(this.nzThDirective._el, 'ant-table-column-sort');
-      }
     } else {
       this.nzValue = value;
-      if (this.nzThDirective) {
-        this._renderer.addClass(this.nzThDirective._el, 'ant-table-column-sort');
-      }
     }
     this.nzValueChange.emit(this.nzValue);
   }
 
   constructor(@Host() @Optional() private nzThDirective: NzThDirective, private _renderer: Renderer2) {
-  }
-
-  ngOnInit() {
   }
 }

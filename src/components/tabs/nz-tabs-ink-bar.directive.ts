@@ -1,14 +1,27 @@
-import { Directive, Renderer2, ElementRef, NgZone, HostBinding, Input } from '@angular/core';
+import { Directive, ElementRef, HostBinding, Input, NgZone, Renderer2 } from '@angular/core';
 import { reqAnimFrame } from '../core/polyfill/request-animation';
+import { toBoolean } from '../util/convert';
 
 export type NzTabPositionMode = 'horizontal' | 'vertical';
 
 @Directive({
   selector: '[nz-tabs-ink-bar]',
+  host: {
+    '[class.ant-tabs-ink-bar]': 'true'
+  }
 })
 export class NzTabsInkBarDirective {
-  @HostBinding('class.ant-tabs-ink-bar') _nzTabsInkBar = true
-  @Input() @HostBinding('class.ant-tabs-ink-bar-animated') nzAnimated: boolean;
+  private _animated = false;
+
+  @Input()
+  @HostBinding('class.ant-tabs-ink-bar-animated')
+  set nzAnimated(value: boolean) {
+    this._animated = toBoolean(value);
+  }
+
+  get nzAnimated(): boolean {
+    return this._animated;
+  }
 
   @Input() nzPositionMode: NzTabPositionMode = 'horizontal';
 
@@ -17,7 +30,7 @@ export class NzTabsInkBarDirective {
               private _ngZone: NgZone) {
   }
 
-  alignToElement(element: HTMLElement) {
+  alignToElement(element: HTMLElement): void {
     this.show();
 
     this._ngZone.runOutsideAngular(() => {
@@ -45,7 +58,7 @@ export class NzTabsInkBarDirective {
     this._renderer.setStyle(this._elementRef.nativeElement, 'visibility', 'visible');
   }
 
-  setDisplay(value): void {
+  setDisplay(value: string): void {
     this._renderer.setStyle(this._elementRef.nativeElement, 'display', value);
   }
 

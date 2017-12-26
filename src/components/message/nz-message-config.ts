@@ -7,7 +7,7 @@ export interface NzMessageConfig {
   nzAnimate?: boolean;
   // For message container only
   nzMaxStack?: number;
-
+  /* tslint:disable-next-line:no-any */
   [index: string]: any;
 }
 

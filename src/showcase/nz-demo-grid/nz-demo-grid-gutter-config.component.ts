@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-grid-gutter-config',
@@ -33,7 +33,7 @@ import { Component, OnInit } from '@angular/core';
     `
   ]
 })
-export class NzDemoGridGutterConfigComponent implements OnInit {
+export class NzDemoGridGutterConfigComponent {
   gutter = 16;
   count = 4;
   marksGutter = {
@@ -56,12 +56,4 @@ export class NzDemoGridGutterConfigComponent implements OnInit {
   generateArray(value) {
     return new Array(value);
   }
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-
 }
-

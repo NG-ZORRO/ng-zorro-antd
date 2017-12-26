@@ -1,6 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NzBadgeComponent } from './nz-badge.component';
-import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [ NzBadgeComponent ],
@@ -9,4 +9,3 @@ import { CommonModule } from '@angular/common';
 })
 export class NzBadgeModule {
 }
-

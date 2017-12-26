@@ -1,15 +1,20 @@
 import {
+  AfterViewInit,
   Component,
   ContentChildren,
-  ViewChild,
-  HostBinding,
-  AfterViewInit,
-  Renderer2,
-  OnDestroy,
-  Input,
   ElementRef,
-  ViewEncapsulation
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Input,
+  OnDestroy,
+  Output,
+  QueryList,
+  Renderer2,
+  ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
+import { toBoolean } from '../util/convert';
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 
 @Component({
@@ -31,35 +36,114 @@ import { NzCarouselContentDirective } from './nz-carousel-content.directive';
   styleUrls    : [
     './style/index.less',
     './style/patch.less'
-  ]
+  ],
+  host: {
+    '[class.ant-carousel]': 'true'
+  }
 })
 export class NzCarouselComponent implements AfterViewInit, OnDestroy {
+  private _autoPlay = false;
+  private _dots = true;
+  private _vertical = false;
+  private _pauseOnHover = true;
   activeIndex = 0;
   transform = 'translate3d(0px, 0px, 0px)';
   interval;
-  slideContents;
-
+  slideContents: QueryList<NzCarouselContentDirective>;
+  _autoPlaySpeed = 3000;
+  _mouseHover = false;
   @ContentChildren(NzCarouselContentDirective)
-  set _slideContents(value) {
+  set _slideContents(value: QueryList<NzCarouselContentDirective>) {
     this.slideContents = value;
     this.renderContent();
   }
 
   @ViewChild('slickList') slickList: ElementRef;
   @ViewChild('slickTrack') slickTrack: ElementRef;
-  @Input() nzAutoPlay = false;
-  @Input() nzDots = true;
-  @Input() nzEffect = 'scrollx';
-  @Input() @HostBinding('class.ant-carousel-vertical') nzVertical = false;
   @HostBinding('class.ant-carousel') _nzCarousel = true;
+  @Input() nzEffect = 'scrollx';
+  @Output() nzAfterChange: EventEmitter<number> = new EventEmitter();
+  @Output() nzBeforeChange: EventEmitter<{form: number; to: number}> = new EventEmitter();
+  @Input()
+  get nzAutoPlaySpeed(): number {
+    return this._autoPlaySpeed;
+  }
+
+  set nzAutoPlaySpeed(speed: number) {
+    // css transition speed is 500ms
+    this._autoPlaySpeed = Math.max(speed, 500);
+  }
+
+  @HostListener('mouseenter')
+  _onMouseenter(): void {
+    this._mouseHover = true;
+    if (this.nzAutoPlay && this.nzPauseOnHover) {
+      this.clearInterval();
+    }
+  }
+
+  @HostListener('mouseleave')
+  _onMouseleave(): void {
+    this._mouseHover = false;
+    if (!this.interval && this.nzAutoPlay) {
+      this.createInterval();
+    }
+  }
+
+  get _nextIndex(): number {
+    return this.activeIndex < this.slideContents.length - 1 ? (this.activeIndex + 1) : 0;
+  }
+
+  get _prevIndex(): number {
+    return this.activeIndex > 0 ? (this.activeIndex - 1) : (this.slideContents.length - 1);
+  }
+
+  @Input()
+  set nzPauseOnHover(value: boolean) {
+    this._pauseOnHover = toBoolean(value);
+  }
+
+  get nzPauseOnHover(): boolean {
+    return this._pauseOnHover;
+  }
+
+  @Input()
+  set nzDots(value: boolean) {
+    this._dots = toBoolean(value);
+  }
+
+  get nzDots(): boolean {
+    return this._dots;
+  }
+
+  @Input()
+  set nzAutoPlay(value: boolean) {
+    this._autoPlay = toBoolean(value);
+  }
+
+  get nzAutoPlay(): boolean {
+    return this._autoPlay;
+  }
+
+  @Input()
+  @HostBinding('class.ant-carousel-vertical')
+  set nzVertical(value: boolean) {
+    this._vertical = toBoolean(value);
+  }
+
+  get nzVertical(): boolean {
+    return this._vertical;
+  }
 
   constructor(public hostElement: ElementRef, private _renderer: Renderer2) {
   }
 
-  setActive(content, i) {
-    if (this.nzAutoPlay) {
+  setActive(content: NzCarouselContentDirective, i: number): void {
+    if ((this.nzAutoPlay && !this.nzPauseOnHover) || (this.nzAutoPlay && this.nzPauseOnHover && !this._mouseHover)) {
       this.createInterval();
     }
+    const beforeIndex = this.slideContents.toArray().findIndex(slide => slide.isActive);
+    this.nzBeforeChange.emit({ form: beforeIndex, to: i });
     this.activeIndex = i;
     if (this.nzEffect !== 'fade') {
       if (!this.nzVertical) {
@@ -68,17 +152,16 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
         this.transform = `translate3d(0px, ${-this.activeIndex * this.hostElement.nativeElement.offsetHeight}px, 0px)`;
       }
     }
-    this.slideContents.forEach(slide => {
-      slide.isActive = false;
-    });
+    this.slideContents.forEach(slide => slide.isActive = false);
     content.isActive = true;
+    this.nzAfterChange.emit(i);
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.renderContent();
   }
 
-  renderContent() {
+  renderContent(): void {
     setTimeout(_ => {
       if (this.slideContents.first) {
         this.slideContents.first.isActive = true;
@@ -109,29 +192,38 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
         this._renderer.removeStyle(this.slickTrack.nativeElement, 'width');
         this._renderer.setStyle(this.slickTrack.nativeElement, 'width', `${this.slideContents.length * this.hostElement.nativeElement.offsetWidth}px`);
       }
-    })
+    });
   }
 
-  createInterval() {
+  createInterval(): void {
     this.clearInterval();
     this.interval = setInterval(_ => {
-      if (this.activeIndex < this.slideContents.length - 1) {
-        this.activeIndex++;
-      } else {
-        this.activeIndex = 0;
-      }
-      this.setActive(this.slideContents.toArray()[ this.activeIndex ], this.activeIndex);
-    }, 3000);
+      this.setActive(this.slideContents.toArray()[this._nextIndex], this._nextIndex);
+    }, this.nzAutoPlaySpeed);
   }
 
-  clearInterval() {
+  clearInterval(): void {
     if (this.interval) {
       clearInterval(this.interval);
       this.interval = null;
     }
   }
 
-  ngOnDestroy() {
+  nzSlickNext(): void {
+    this.setActive(this.slideContents.toArray()[this._nextIndex], this._nextIndex);
+  }
+
+  nzSlickPrev(): void {
+    this.setActive(this.slideContents.toArray()[this._prevIndex], this._prevIndex);
+  }
+
+  nzSlickGoTo(index: number): void {
+    if (index >= 0 && index <= this.slideContents.length - 1) {
+      this.setActive(this.slideContents.toArray()[index], index);
+    }
+  }
+
+  ngOnDestroy(): void {
     this.clearInterval();
   }
 

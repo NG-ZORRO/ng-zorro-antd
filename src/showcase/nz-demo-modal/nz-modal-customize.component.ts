@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NzModalSubject } from '../../../index.showcase';
 
 @Component({
@@ -30,7 +30,7 @@ import { NzModalSubject } from '../../../index.showcase';
     `
   ]
 })
-export class NzModalCustomizeComponent implements OnInit {
+export class NzModalCustomizeComponent {
   _name: string;
 
   @Input()
@@ -50,8 +50,5 @@ export class NzModalCustomizeComponent implements OnInit {
     this.subject.on('onDestory', () => {
       console.log('destroy');
     });
-  }
-
-  ngOnInit() {
   }
 }

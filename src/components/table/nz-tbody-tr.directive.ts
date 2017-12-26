@@ -1,9 +1,10 @@
 import { Directive, HostBinding, Input } from '@angular/core';
 
 @Directive({
-  selector: '[nz-tbody-tr]'
+  selector: '[nz-tbody-tr]',
+  host: {
+    '[class.ant-table-row]': 'true'
+  }
 })
 
-export class NzTbodyTrDirective {
-  @HostBinding(`class.ant-table-row`) _nzTableRow = true;
-}
+export class NzTbodyTrDirective { }

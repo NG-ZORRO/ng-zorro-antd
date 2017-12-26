@@ -1,6 +1,6 @@
-import { Optional, Inject, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, Optional, ViewEncapsulation } from '@angular/core';
+import { NzMessageConfig, NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG } from './nz-message-config';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
-import { NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG, NzMessageConfig } from './nz-message-config';
 
 @Component({
   selector     : 'nz-message-container',
@@ -14,16 +14,14 @@ import { NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG, NzMessageConfig } from '.
     './style/index.less'
   ]
 })
-export class NzMessageContainerComponent implements OnInit {
+export class NzMessageContainerComponent {
   messages: NzMessageDataFilled[] = [];
   config: NzMessageConfig;
 
   constructor(@Optional() @Inject(NZ_MESSAGE_DEFAULT_CONFIG) defaultConfig: NzMessageConfig,
               @Optional() @Inject(NZ_MESSAGE_CONFIG) config: NzMessageConfig) {
-    this.config = Object.assign({}, defaultConfig, config) as NzMessageConfig;
+    this.config = { ...defaultConfig, ...config };
   }
-
-  ngOnInit() { }
 
   // Create a new message
   createMessage(message: NzMessageDataFilled): void {
@@ -45,7 +43,7 @@ export class NzMessageContainerComponent implements OnInit {
   }
 
   // Remove all messages
-  removeMessageAll() {
+  removeMessageAll(): void {
     this.messages = [];
   }
 
@@ -56,6 +54,6 @@ export class NzMessageContainerComponent implements OnInit {
       nzAnimate: this.config.nzAnimate,
       nzPauseOnHover: this.config.nzPauseOnHover
     };
-    return Object.assign(defaultOptions, options);
+    return { ...defaultOptions, ...options };
   }
 }

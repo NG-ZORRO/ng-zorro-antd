@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { NzAvatarComponent } from './nz-avatar.component';
 
 @NgModule({
@@ -7,6 +7,5 @@ import { NzAvatarComponent } from './nz-avatar.component';
   exports     : [ NzAvatarComponent ],
   imports     : [ CommonModule ]
 })
-
 export class NzAvatarModule {
 }

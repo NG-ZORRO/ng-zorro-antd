@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-tabs-operation',
@@ -19,7 +19,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-tabset>`,
   styles  : []
 })
-export class NzDemoTabsOperationComponent implements OnInit {
+export class NzDemoTabsOperationComponent {
   tabs = [
     {
       name: 'Tab 1'
@@ -31,18 +31,12 @@ export class NzDemoTabsOperationComponent implements OnInit {
 
   closeTab(tab) {
     this.tabs.splice(this.tabs.indexOf(tab), 1);
-  };
+  }
 
   newTab() {
     this.tabs.push({
       name: 'New Tab'
     });
-  };
-
-  constructor() {
-  }
-
-  ngOnInit() {
   }
 }
 

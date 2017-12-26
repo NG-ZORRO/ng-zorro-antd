@@ -16,7 +16,6 @@ import { NzDemoRateRoutingModule } from './nz-demo-rate.routing.module';
   imports     : [ NzDemoRateRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule ],
   declarations: [ NzDemoRateBasicComponent, NzDemoRateDisabledComponent, NzDemoRateTextComponent, NzDemoRateHalfComponent, NzDemoRateComponent ]
 })
-
 export class NzDemoRateModule {
 
 }

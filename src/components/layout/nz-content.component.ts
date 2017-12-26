@@ -5,9 +5,9 @@ import { Component, HostBinding, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   template     : `
     <ng-content></ng-content>
-  `
+  `,
+  host: {
+    '[class.ant-layout-content]': 'true'
+  }
 })
-
-export class NzContentComponent {
-  @HostBinding('class.ant-layout-content') _nzLayoutContent = true;
-}
+export class NzContentComponent { }

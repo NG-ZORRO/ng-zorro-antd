@@ -1,19 +1,20 @@
 import {
   Component,
+  Input,
   ViewEncapsulation,
-  Input
 } from '@angular/core';
-import { FadeAnimation } from '../core/animation/fade-animations';
+import { fadeAnimation } from '../core/animation/fade-animations';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 @Component({
   selector     : 'nz-popover',
   encapsulation: ViewEncapsulation.None,
   animations   : [
-    FadeAnimation
+    fadeAnimation
   ],
   template     : `
     <ng-content></ng-content>
     <ng-template
+      #overlay="cdkConnectedOverlay"
       cdkConnectedOverlay
       [cdkConnectedOverlayOrigin]="overlayOrigin"
       [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
@@ -29,7 +30,7 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
           <div class="ant-popover-inner">
             <div class="ant-popover-title" *ngIf="nzTitle" [innerHTML]="nzTitle"></div>
             <div class="ant-popover-inner-content">
-              <span *ngIf="!nzTemplate">{{nzContent}}</span>
+              <span *ngIf="!nzTemplate">{{ nzContent }}</span>
               <ng-template
                 *ngIf="nzTemplate"
                 [ngTemplateOutlet]="nzTemplate">

@@ -34,6 +34,12 @@
           <p>tags select，随意输入的内容，回车键新增tag</p>
         </div>
       </nz-code-box>
+      <nz-code-box [nzTitle]="'下拉模板'" id="components-select-demo-template" [nzCode]="NzDemoSelectTemplateCode">
+        <nz-demo-select-template demo></nz-demo-select-template>
+        <div intro>
+          <p>可以通过 <code>#nzOptionTemplate</code> 来定制下拉选项模板</p>
+        </div>
+      </nz-code-box>
     </div>
     <div nz-col [nzSpan]="12">
       <nz-code-box [nzTitle]="'三种大小'" id="components-select-demo-size" [nzCode]="NzDemoSelectSizeCode">
@@ -52,6 +58,12 @@
         <nz-demo-select-multiple-change demo></nz-demo-select-multiple-change>
         <div intro>
           <p>多选搜索框和远程数据结合，注意此时需要保留未列在当前选项中但已被加入多选框中的数据，需要添加 <code>nzKeepUnListOptions</code>属性</p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'滚动加载'" id="components-select-demo-pagination" [nzCode]="NzDemoSelectPaginationCode">
+        <nz-demo-select-pagination demo></nz-demo-select-pagination>
+        <div intro>
+          <p>利用 <code>nzScrollToBottom</code> 滚动到底部时动态加载选项</p>
         </div>
       </nz-code-box>
     </div>
@@ -135,6 +147,12 @@
           <td>-</td>
         </tr>
         <tr>
+          <td>nzScrollToBottom</td>
+          <td>下拉菜单滚动到底部回调，可用于作为动态加载的触发条件</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+        <tr>
           <td>nzPlaceHolder</td>
           <td>选择框默认文字</td>
           <td>String</td>
@@ -171,6 +189,12 @@
           <td>nzLabel</td>
           <td>用于显示展示的option内容</td>
           <td>String</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>#nzOptionTemplate</td>
+          <td>用于定制下拉部分option的显示</td>
+          <td>ng-template</td>
           <td></td>
         </tr>
         <tr>

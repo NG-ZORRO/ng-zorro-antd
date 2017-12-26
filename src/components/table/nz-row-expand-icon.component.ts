@@ -1,45 +1,62 @@
 import {
   Component,
+  EventEmitter,
+  HostBinding,
+  HostListener,
   Input,
   Output,
-  HostListener,
-  HostBinding,
-  EventEmitter,
 } from '@angular/core';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector: 'nz-row-expand-icon',
-  template: ``
+  template: ``,
+  host: {
+    '[class.ant-table-row-expand-icon]': 'true'
+  }
 })
 export class NzRowExpandIconComponent {
-  @Input() nzExpand = false;
-  @Input() nzShowExpand = true;
+  private _expand = false;
+  private _showExpand = true;
+
   @Output() nzExpandChange = new EventEmitter();
 
+  @Input()
+  set nzExpand(value: boolean) {
+    this._expand = toBoolean(value);
+  }
+
+  get nzExpand(): boolean {
+    return this._expand;
+  }
+
+  @Input()
+  set nzShowExpand(value: boolean) {
+    this._showExpand = toBoolean(value);
+  }
+
+  get nzShowExpand(): boolean {
+    return this._showExpand;
+  }
+
   @HostBinding('class.ant-table-row-spaced')
-  get hidden() {
+  get hidden(): boolean {
     return !this.nzShowExpand;
   }
 
   @HostBinding(`class.ant-table-row-expanded`)
-  get expanded() {
+  get expanded(): boolean {
     return this.nzShowExpand && this.nzExpand;
   }
 
   @HostBinding(`class.ant-table-row-collapsed`)
-  get collapsed() {
+  get collapsed(): boolean {
     return this.nzShowExpand && !this.nzExpand;
   }
 
-  @HostBinding(`class.ant-table-row-expand-icon`) _expandIcon = true;
-
-
   @HostListener('click')
-  onClick() {
+  onClick(): void {
     this.nzExpand = !this.nzExpand;
     this.nzExpandChange.emit(this.nzExpand);
-  }
-
-  constructor() {
   }
 }

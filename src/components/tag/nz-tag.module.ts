@@ -1,9 +1,8 @@
-import { NgModule } from '@angular/core';
-import { NzTagComponent } from './nz-tag.component';
-import { NzCheckableTagComponent } from './nz-checkable-tag.component';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
+import { NzCheckableTagComponent } from './nz-checkable-tag.component';
+import { NzTagComponent } from './nz-tag.component';
 
 @NgModule({
   imports     : [ CommonModule, FormsModule ],
@@ -14,6 +13,5 @@ import { FormsModule } from '@angular/forms';
     NzTagComponent, NzCheckableTagComponent
   ]
 })
-
 export class NzTagModule {
 }

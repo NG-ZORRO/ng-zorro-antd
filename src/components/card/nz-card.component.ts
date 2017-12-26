@@ -1,11 +1,12 @@
 import {
   Component,
-  Input,
-  HostBinding,
   ContentChild,
+  HostBinding,
+  Input,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-card',
@@ -17,11 +18,11 @@ import {
           [ngTemplateOutlet]="title">
         </ng-template>
       </h3>
-    </div>
-    <div class="ant-card-extra" *ngIf="extra">
-      <ng-template
-        [ngTemplateOutlet]="extra">
-      </ng-template>
+      <div class="ant-card-extra" *ngIf="extra">
+        <ng-template
+          [ngTemplateOutlet]="extra">
+        </ng-template>
+      </div>
     </div>
     <div class="ant-card-body">
       <ng-template
@@ -48,14 +49,46 @@ import {
   styleUrls    : [
     './style/index.less',
     './style/patch.less'
-  ]
+  ],
+  host: {
+    '[class.ant-card]': 'true'
+  }
 })
 export class NzCardComponent {
-  @Input() @HostBinding('class.ant-card-bordered') nzBordered = true;
-  @Input() nzLoading = false;
-  @Input() @HostBinding('class.ant-card-no-hovering') nzNoHovering = false;
-  @ContentChild('title') title: TemplateRef<any>;
-  @ContentChild('extra') extra: TemplateRef<any>;
-  @ContentChild('body') body: TemplateRef<any>;
-  @HostBinding('class.ant-card') _nzCard = true;
+  private _borderd = true;
+  private _loading = false;
+  private _noHovering = false;
+
+  @Input()
+  @HostBinding('class.ant-card-bordered')
+  set nzBordered(value: boolean) {
+    this._borderd = toBoolean(value);
+  }
+
+  get nzBordered(): boolean {
+    return this._borderd;
+  }
+
+  @ContentChild('title') title: TemplateRef<void>;
+  @ContentChild('extra') extra: TemplateRef<void>;
+  @ContentChild('body') body: TemplateRef<void>;
+
+  @Input()
+  set nzLoading(value: boolean) {
+    this._loading = toBoolean(value);
+  }
+
+  get nzLoading(): boolean {
+    return this._loading;
+  }
+
+  @Input()
+  @HostBinding('class.ant-card-no-hovering')
+  set nzNoHovering(value: boolean) {
+    this._noHovering = toBoolean(value);
+  }
+
+  get nzNoHovering(): boolean {
+    return this._noHovering;
+  }
 }

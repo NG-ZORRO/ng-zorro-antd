@@ -1,29 +1,30 @@
+import { TAB } from '@angular/cdk/keycodes';
 import {
+  forwardRef,
   Component,
-  ViewEncapsulation,
-  Input,
-  Output,
   ElementRef,
   EventEmitter,
+  HostBinding,
+  Input,
+  Output,
   Renderer2,
   ViewChild,
-  HostBinding,
-  forwardRef
+  ViewEncapsulation,
 } from '@angular/core';
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { TAB } from '@angular/cdk/keycodes';
+import { toBoolean } from '../util/convert';
 
 @Component({
   selector     : 'nz-input-number',
   encapsulation: ViewEncapsulation.None,
   template     : `
     <div class="ant-input-number-handler-wrap"
-         (mouseover)="_mouseInside = true"
-         (mouseout)="_mouseInside = false">
+      (mouseover)="_mouseInside = true"
+      (mouseout)="_mouseInside = false">
       <a class="ant-input-number-handler ant-input-number-handler-up"
-         [ngClass]="{'ant-input-number-handler-up-disabled':_disabledUp}"
-         (click)="_numberUp($event)">
+        [ngClass]="{'ant-input-number-handler-up-disabled':_disabledUp}"
+        (click)="_numberUp($event)">
         <span
           class="ant-input-number-handler-up-inner"
           (click)="$event.preventDefault();"></span>
@@ -41,18 +42,17 @@ import { TAB } from '@angular/cdk/keycodes';
     <div
       class="ant-input-number-input-wrap">
       <input class="ant-input-number-input"
-             #inputNumber
-             [placeholder]="nzPlaceHolder"
-             [disabled]="nzDisabled"
-             [(ngModel)]="_displayValue"
-             (blur)="_emitBlur($event)"
-             (focus)="_emitFocus($event)"
-             (keydown)="_emitKeydown($event)"
-             (ngModelChange)="_userInputChange()"
-             [attr.min]="nzMin"
-             [attr.max]="nzMax"
-             [attr.step]="_step"
-             autocomplete="off">
+        #inputNumber
+        [placeholder]="nzPlaceHolder"
+        [disabled]="nzDisabled"
+        [(ngModel)]="_displayValue"
+        (blur)="_emitBlur($event)"
+        (focus)="_emitFocus($event)"
+        (keydown)="_emitKeyDown($event)"
+        [attr.min]="nzMin"
+        [attr.max]="nzMax"
+        [attr.step]="_step"
+        autocomplete="off">
     </div>`,
   providers    : [
     {
@@ -66,6 +66,7 @@ import { TAB } from '@angular/cdk/keycodes';
   ]
 })
 export class NzInputNumberComponent implements ControlValueAccessor {
+  private _disabled = false;
   _el: HTMLElement;
   _value: number;
   _size = 'default';
@@ -79,32 +80,38 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   _focused = false;
   _mouseInside = false;
   // ngModel Access
-  onChange: any = Function.prototype;
-  onTouched: any = Function.prototype;
+  onChange: (value: number) => void = () => null;
+  onTouched: () => void = () => null;
   @ViewChild('inputNumber') _inputNumber: ElementRef;
 
   @Input() nzPlaceHolder = '';
   @Input() nzMin: number = -Infinity;
   @Input() nzMax: number = Infinity;
-
-  @Input() @HostBinding('class.ant-input-number-disabled') nzDisabled = false;
+  @Input() nzFormatter = (value) => value;
+  @Input() nzParser = (value) => value;
 
   @Input()
-  get nzSize(): string {
-    return this._size;
-  };
+  @HostBinding('class.ant-input-number-disabled')
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
+  }
 
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
+
+  @Input()
   set nzSize(value: string) {
     this._renderer.removeClass(this._el, `${this._prefixCls}-${this._size}`);
     this._size = { large: 'lg', small: 'sm' }[ value ];
     this._renderer.addClass(this._el, `${this._prefixCls}-${this._size}`);
   }
 
-  @Input()
-  get nzStep(): number {
-    return this._step;
+  get nzSize(): string {
+    return this._size;
   }
 
+  @Input()
   set nzStep(value: number) {
     this._step = value;
     const stepString = value.toString();
@@ -117,10 +124,15 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     this._precisionFactor = Math.pow(10, this._precisionStep);
   }
 
-  @Output() nzBlur: EventEmitter<MouseEvent> = new EventEmitter();
-  @Output() nzFocus: EventEmitter<MouseEvent> = new EventEmitter();
+  get nzStep(): number {
+    return this._step;
+  }
 
-  _numberUp($event) {
+  // TODO: should reconsider the payload
+  @Output() nzBlur: EventEmitter<FocusEvent | KeyboardEvent> = new EventEmitter();
+  @Output() nzFocus: EventEmitter<FocusEvent> = new EventEmitter();
+
+  _numberUp($event: MouseEvent): void {
     $event.preventDefault();
     $event.stopPropagation();
     this._inputNumber.nativeElement.focus();
@@ -132,7 +144,7 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     }
   }
 
-  _numberDown($event) {
+  _numberDown($event: MouseEvent): void {
     $event.preventDefault();
     $event.stopPropagation();
     this._inputNumber.nativeElement.focus();
@@ -146,13 +158,13 @@ export class NzInputNumberComponent implements ControlValueAccessor {
 
   get nzValue(): number {
     return this._value;
-  };
+  }
 
   set nzValue(value: number) {
     this._updateValue(value);
   }
 
-  _emitBlur($event) {
+  _emitBlur($event: FocusEvent): void {
     // avoid unnecessary events
     if (this._focused && !this._mouseInside) {
       this._checkValue();
@@ -162,7 +174,7 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     this.onTouched();
   }
 
-  _emitFocus($event) {
+  _emitFocus($event: FocusEvent): void {
     // avoid unnecessary events
     if (!this._focused) {
       this._focused = true;
@@ -170,25 +182,25 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     }
   }
 
-  _emitKeydown($event) {
+  _emitKeyDown($event: KeyboardEvent): void {
     if ($event.keyCode === TAB && this._focused) {
+      this._checkValue();
       this._focused = false;
       this.nzBlur.emit($event);
     }
   }
 
-  _userInputChange() {
-    const numberValue = +this._displayValue;
-    if (this._isNumber(numberValue) && (numberValue <= this.nzMax) && (numberValue >= this.nzMin)) {
+  _checkValue(): void {
+    const numberValue = +this.nzParser(this._displayValue);
+    if (this._isNumber(numberValue)) {
       this.nzValue = numberValue;
+    } else {
+      this._displayValue = this.nzFormatter(this._value);
+      this._inputNumber.nativeElement.value = this.nzFormatter(this._value);
     }
   }
 
-  _checkValue() {
-    this._displayValue = this.nzValue;
-  }
-
-  _getBoundValue(value) {
+  _getBoundValue(value: number): number {
     if (value > this.nzMax) {
       return this.nzMax;
     } else if (value < this.nzMin) {
@@ -198,12 +210,14 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     }
   }
 
-  _isNumber(value) {
-    return !isNaN(value) && isFinite(value)
+  _isNumber(value: number): boolean {
+    return !isNaN(value) && isFinite(value);
   }
 
-  toPrecisionAsStep(num) {
-    if (isNaN(num) || num === '') {
+  // TODO: normalize value type on @Input
+  toPrecisionAsStep(num: number): number {
+    const input = num as number | string;
+    if (isNaN(num) || input === '') {
       return num;
     }
     return Number(Number(num).toFixed(this._precisionStep));
@@ -214,16 +228,15 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     this._renderer.addClass(this._el, `${this._prefixCls}`);
   }
 
-  writeValue(value: any): void {
-    // this.nzValue = value;
+  writeValue(value: number): void {
     this._updateValue(value, false);
   }
 
-  registerOnChange(fn: (_: any) => {}): void {
+  registerOnChange(fn: (_: number) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => {}): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -231,14 +244,12 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     this.nzDisabled = isDisabled;
   }
 
-  private _updateValue(value: number, emitChange = true) {
-    if (this._value === value) {
-      return;
-    }
+  private _updateValue(value: number, emitChange: boolean = true): void {
+    const cacheValue = this._value;
     this._value = this._getBoundValue(value);
-    this._displayValue = this._value;
-    this._inputNumber.nativeElement.value = this._value;
-    if (emitChange) {
+    this._displayValue = this.nzFormatter(this._value);
+    this._inputNumber.nativeElement.value = this.nzFormatter(this._value);
+    if (emitChange && (value !== cacheValue)) {
       this.onChange(this._value);
     }
     this._disabledUp = (this.nzValue !== undefined) && !((this.nzValue + this.nzStep) <= this.nzMax);

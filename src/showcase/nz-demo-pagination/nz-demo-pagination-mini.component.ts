@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-pagination-mini',
@@ -10,13 +10,6 @@ import { Component, OnInit } from '@angular/core';
     <nz-pagination [(nzPageIndex)]="_current" [nzTotal]="50" [nzSize]="'small'" nzShowTotal></nz-pagination>`,
   styles  : []
 })
-export class NzDemoPaginationMiniComponent implements OnInit {
+export class NzDemoPaginationMiniComponent {
   _current = 1;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
-

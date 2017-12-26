@@ -1,11 +1,11 @@
-import { Component, ViewEncapsulation } from '@angular/core';
 import {
-  trigger,
+  animate,
   state,
   style,
   transition,
-  animate
+  trigger,
 } from '@angular/animations';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { NzMessageComponent } from '../message/nz-message.component';
 import { NzNotificationContainerComponent } from './nz-notification-container.component';
 
@@ -39,8 +39,8 @@ import { NzNotificationContainerComponent } from './nz-notification-container.co
             <i *ngSwitchCase="'warning'" class="ant-notification-notice-icon ant-notification-notice-icon-warning anticon anticon-exclamation-circle-o"></i>
             <i *ngSwitchCase="'error'" class="ant-notification-notice-icon ant-notification-notice-icon-error anticon anticon-cross-circle-o"></i>
           </ng-container>
-          <div class="ant-notification-notice-message">{{nzMessage.title}}</div>
-          <div class="ant-notification-notice-description">{{nzMessage.content}}</div>
+          <div class="ant-notification-notice-message">{{ nzMessage.title }}</div>
+          <div class="ant-notification-notice-description">{{ nzMessage.content }}</div>
         </div>
       </div>
       <div *ngIf="nzMessage.html" [innerHTML]="nzMessage.html"></div>
@@ -58,7 +58,7 @@ export class NzNotificationComponent extends NzMessageComponent {
     super(container);
   }
 
-  onClickClose() {
+  onClickClose(): void {
     this._destroy();
   }
 }

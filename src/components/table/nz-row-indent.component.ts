@@ -1,23 +1,21 @@
 import {
   Component,
-  Input,
   HostBinding,
+  Input,
 } from '@angular/core';
 
 @Component({
   selector: 'nz-row-indent',
-  template: ``
+  template: ``,
+  host: {
+    '[class.ant-table-row-indent]': 'true'
+  }
 })
 export class NzRowIndentComponent {
   @Input() nzIndentSize;
 
   @HostBinding(`style.paddingLeft.px`)
-  get paddingLeft() {
+  get paddingLeft(): number {
     return this.nzIndentSize * 20;
-  }
-
-  @HostBinding(`class.ant-table-row-indent`) _rowIndent = true;
-
-  constructor() {
   }
 }

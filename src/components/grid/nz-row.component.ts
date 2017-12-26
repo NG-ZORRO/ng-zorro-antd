@@ -1,10 +1,10 @@
 import {
   Component,
+  ElementRef,
   Input,
   OnInit,
-  ElementRef,
-  ViewEncapsulation,
   Renderer2,
+  ViewEncapsulation,
 } from '@angular/core';
 
 export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between';
@@ -21,9 +21,8 @@ export type NzType = 'flex' | null;
     './style/index.less'
   ]
 })
-
 export class NzRowComponent implements OnInit {
-  _classList: Array<string> = [];
+  _classList: string[] = [];
   _el: HTMLElement;
   _prefixCls = 'ant-row';
   _gutter: number;
@@ -64,14 +63,14 @@ export class NzRowComponent implements OnInit {
   @Input()
   get nzGutter(): number {
     return this._gutter;
-  };
+  }
 
   set nzGutter(value: number) {
     this._gutter = value;
     this.setStyle();
   }
 
-  setStyle() {
+  setStyle(): void {
     this._renderer.setStyle(this._el, 'margin-left', `-${this._gutter / 2}px`);
     this._renderer.setStyle(this._el, 'margin-right', `-${this._gutter / 2}px`);
   }
@@ -80,7 +79,7 @@ export class NzRowComponent implements OnInit {
   setClassMap(): void {
     this._classList.forEach(_className => {
       this._renderer.removeClass(this._el, _className);
-    })
+    });
     this._classList = [
       (!this.nzType) && this._prefixCls,
       this.nzType && `${this._prefixCls}-${this.nzType}`,
@@ -91,14 +90,14 @@ export class NzRowComponent implements OnInit {
     });
     this._classList.forEach(_className => {
       this._renderer.addClass(this._el, _className);
-    })
+    });
   }
 
   constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
     this._el = this._elementRef.nativeElement;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.setClassMap();
   }
 }

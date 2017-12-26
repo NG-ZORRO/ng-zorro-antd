@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-input-number-disabled',
@@ -12,17 +12,11 @@ import { Component, OnInit } from '@angular/core';
 
   styles: []
 })
-export class NzDemoInputNumberDisabledComponent implements OnInit {
+export class NzDemoInputNumberDisabledComponent {
   demoValue = 3;
   isDisabled = false;
   toggleDisabled = () => {
     this.isDisabled = !this.isDisabled;
-  }
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
+  };
 }
 

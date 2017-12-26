@@ -5,7 +5,6 @@ import { NzDatePipe } from './nz-date.pipe';
   declarations: [ NzDatePipe ],
   exports     : [ NzDatePipe ]
 })
-
 export class NzUtilModule {
 
 }

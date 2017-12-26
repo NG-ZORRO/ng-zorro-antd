@@ -40,7 +40,4 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoCardGridComponent implements OnInit {
-  ngOnInit() {
-  }
-}
+export class NzDemoCardGridComponent { }
