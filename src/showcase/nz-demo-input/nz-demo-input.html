@@ -1,218 +1,220 @@
 <article>
-  <section class="markdown"><h1>Input 输入框</h1>
-    <section class="markdown"><p>通过鼠标或键盘输入内容，是最基础的表单域的包装。</p>
-      <h2 id="何时使用"><span>何时使用</span>
-        <!-- <a class="anchor">#</a> -->
+  <section class="markdown"> <h1> Input input box </h1>
+    <section class="markdown"> <p> It is the most basic wrapper for form fields that is entered via mouse or keyboard. </p>
+      <h2 id="When to use"> <span> When to use </span>
+
       </h2>
       <ul>
-        <li><p>需要用户输入表单域内容时。</p></li>
-        <li><p>提供组合型输入框，带搜索的输入框，还可以进行大小选择。</p></li>
+        <li> <p> Requires user to enter form field content. </p> </li>
+        <li> <p> Provides a combination of input boxes, input boxes with search, and size selection. </p> </li>
       </ul>
     </section>
-    <h2>代码演示<i class="code-box-expand-trigger anticon anticon-appstore" title="展开全部代码"></i></h2>
+    <h2> Code Demo <i class="code-box-expand-trigger anticon anticon-appstore" title="Expand All Code"> </i> </h2>
   </section>
   <div nz-row [nzGutter]="8">
     <div nz-col [nzSpan]="12">
-      <nz-code-box [nzTitle]="'基本使用'" id="components-input-demo-basic" [nzCode]="NzDemoInputBasicCode">
-        <nz-demo-input-basic demo></nz-demo-input-basic>
+      <nz-code-box [nzTitle]="'Basic Usage'" id="components-input-demo-basic" [nzCode]="NzDemoInputBasicCode">
+        <nz-demo-input-basic demo> </nz-demo-input-basic>
         <div intro>
-          <p>基本使用。</p>
+          <p> Basic usage. </p>
         </div>
       </nz-code-box>
-      <nz-code-box [nzTitle]="'前置/后置标签'" id="components-input-demo-add-on" [nzCode]="NzDemoInputAddOnCode">
-        <nz-demo-input-add-on demo></nz-demo-input-add-on>
+      <nz-code-box [nzTitle]="'pre / post tag'" id="components-input-demo-add-on" [nzCode]="NzDemoInputAddOnCode">
+        <nz-demo-input-add-on demo> </nz-demo-input-add-on>
         <div intro>
-          <p>用于配置一些固定组合</p>
+          <p> Used to configure some fixed combinations </p>
         </div>
       </nz-code-box>
-      <nz-code-box [nzTitle]="'搜索框'" id="components-input-demo-search" [nzCode]="NzDemoInputSearchCode">
-        <nz-demo-input-search demo></nz-demo-input-search>
+      <nz-code-box [nzTitle]="'Search Box'" id="components-input-demo-search" [nzCode]="NzDemoInputSearchCode">
+        <nz-demo-input-search demo> </nz-demo-input-search>
         <div intro>
-          <p>带有搜索按钮的输入框。</p>
+          <p> Input box with search button. </p>
         </div>
       </nz-code-box>
-      <nz-code-box [nzTitle]="'适应文本高度的文本域'" id="components-input-demo-textarea-auot-size" [nzCode]="NzDemoInputTextareaAutoSizeCode">
-        <nz-demo-input-textarea-auot-size demo></nz-demo-input-textarea-auot-size>
-        <div intro>
-          <p><code>nzAutosize</code> 属性适用于 <code>textarea</code> 节点，并且只有高度会自动变化。另外 <code>nzAutosize</code>  可以设定为一个对象，指定最小行数和最大行数。</p>
-        </div>
-      </nz-code-box>
-      <nz-code-box [nzTitle]="'前缀与后缀'" id="components-input-demo-affix" [nzCode]="NzDemoInputAffixCode">
-        <nz-demo-input-affix demo></nz-demo-input-affix>
-        <div intro>
-          <p>在输入框上添加前缀或后缀图标。</p>
-        </div>
-      </nz-code-box>
+      <nz-code-box [nzTitle]="' Text field to fit text height '" id="components-input-demo-textarea-auot-size" [nzCode]="NzDemoInputTextareaAutoSizeCode">
+      <nz-demo-input-textarea-auot-size demo> </nz-demo-input-textarea-auot-size>
+      <div intro>
+        <p> The <code>nzAutosize</code>property applies to the <code>textarea</code>node, and only the height changes automatically. Also <code>nzAutosize</code>can be set as an object specifying the minimum number of lines and the maximum number of lines. </p>
+      </div>
+    </nz-code-box>
+    <nz-code-box [nzTitle]="' prefix and suffix '" id="components-input-demo-affix" [nzCode]="NzDemoInputAffixCode">
+    <nz-demo-input-affix demo> </nz-demo-input-affix>
+    <div intro>
+      <p> Add a prefix or suffix icon on the input box. </p>
     </div>
-    <div nz-col [nzSpan]="12">
-      <nz-code-box [nzTitle]="'三种大小'" id="components-input-demo-size" [nzCode]="NzDemoInputSizeCode">
-        <nz-demo-input-size demo></nz-demo-input-size>
-        <div intro>
-          <p>我们为 <code>nz-input</code> 输入框定义了三种尺寸（大、默认、小），高度分别为 <code>32px</code>、<code>28px</code> 和 <code>22px</code>。
-          </p>
-          <p>注意： 在表单里面，我们只使用大尺寸的输入框。</p>
-        </div>
-      </nz-code-box>
-      <nz-code-box [nzTitle]="'输入框组合'" id="components-input-demo-group" [nzCode]="NzDemoInputGroupCode">
-        <nz-demo-input-group demo></nz-demo-input-group>
-        <div intro>
-          <p>输入框的组合展现。</p>
-        </div>
-      </nz-code-box>
-      <nz-code-box [nzTitle]="'文本域'" id="components-input-demo-textarea" [nzCode]="NzDemoInputTextareaCode">
-        <nz-demo-input-textarea demo></nz-demo-input-textarea>
-        <div intro>
-          <p>用于多行输入，指定 <code>nzType</code> 为一个特殊的 <code>textarea</code>。可以用 <code>nzRows</code> 或是 <code>nzAutosize</code> 来控制框的高度。</p>
-        </div>
-      </nz-code-box>
-    </div>
+  </nz-code-box>
+</div>
+<div nz-col [nzSpan]="12">
+  <nz-code-box [nzTitle]="'Three sizes'" id="components-input-demo-size" [nzCode]="NzDemoInputSizeCode">
+    <nz-demo-input-size demo> </nz-demo-input-size>
+    <div intro>
+      <p> We defined three sizes (large, default, small) for the <code>nz-input</code>input box at 32px and <code> 28px</code>And <code>22px</code>.
+  </p>
+  <p> Note: in the form, we only use the large size of the input box. </p>
+</div>
+</nz-code-box>
+<nz-code-box [nzTitle]="'input box combination'" id="components-input-demo-group" [nzCode]="NzDemoInputGroupCode">
+  <nz-demo-input-group demo> </nz-demo-input-group>
+  <div intro>
+    <p> Combinations of input boxes show. </p>
   </div>
-  <section class="markdown api-container">
-    <h2 id="API"><span>API</span>
-      <!-- <a class="anchor">#</a> -->
-    </h2>
-    <h3 id="Input"><span>nz-input</span>
-      <!-- <a class="anchor">#</a> -->
-    </h3>
-    <table>
-      <thead>
-        <tr>
-          <th>参数</th>
-          <th>说明</th>
-          <th>类型</th>
-          <th>默认值</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>ngModel</td>
-          <td>当前input数值，可以双向绑定</td>
-          <td>String</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td>nzType</td>
-          <td>【必须】声明 input 类型，同原生 input 标签的 type 属性。另外提供 <code>nzType="textarea"</code>。</td>
-          <td>String</td>
-          <td>'text'</td>
-        </tr>
-        <tr>
-          <td>nzPlaceHolder</td>
-          <td>在文字框中显示提示讯息</td>
-          <td>String</td>
-          <td>无</td>
-        </tr>
-        <tr>
-          <td>nzSize</td>
-          <td>控件大小，默认值为 default 。注：标准表单内的输入框大小限制为 large。</td>
-          <td>'large'|'default'|'small'</td>
-          <td>'default'</td>
-        </tr>
-        <tr>
-          <td>nzDisabled</td>
-          <td>是否禁用状态，默认为 false</td>
-          <td>bool</td>
-          <td>false</td>
-        </tr>
-        <tr>
-          <td>nzReadonly</td>
-          <td>是否只读状态，默认为 false</td>
-          <td>bool</td>
-          <td>false</td>
-        </tr>
-        <tr>
-          <td>nzBlur</td>
-          <td>失去焦点回调</td>
-          <td>EventEmitter</td>
-          <td>无</td>
-        </tr>
-        <tr>
-          <td>nzFocus</td>
-          <td>获取焦点回调</td>
-          <td>EventEmitter</td>
-          <td>无</td>
-        </tr>
-        <tr>
-          <td>#addonBefore</td>
-          <td>设置前置标签</td>
-          <td>ng-template</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td>#addonAfter</td>
-          <td>设置后置标签</td>
-          <td>ng-template</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td>#prefix</td>
-          <td>带有前缀图标的 input</td>
-          <td>ng-template</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td>#suffix</td>
-          <td>带有后缀图标的 input</td>
-          <td>ng-template</td>
-          <td>-</td>
-        </tr>
-      </tbody>
-    </table>
-    <h4 id="Input.TextArea"><span>nz-input[type=textarea]</span>
-      <!-- <a class="anchor">#</a> -->
-    </h4>
-    <p>当 <code>nzType="textarea"</code> 时，特有的API</p>
-    <table>
-      <thead>
-        <tr>
-          <th>参数</th>
-          <th>说明</th>
-          <th>类型</th>
-          <th>默认值</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>nzAutosize</td>
-          <td>自适应内容高度，可设置为 true|false 或对象：<code>{{'{ minRows: 2, maxRows: 6 }'}}</code></td>
-          <td>Boolean|Object</td>
-          <td><code>false</code></td>
-        </tr>
-        <tr>
-          <td>nzRows</td>
-          <td>控制固定框的行数</td>
-          <td>String</td>
-          <td>无</td>
-        </tr>
-      </tbody>
-    </table>
-    <h4 id="Input.Group"><span>nz-input-group</span>
-      <!-- <a class="anchor">#</a> -->
-    </h4>
-    <p>在nz-input-group中需要使用[nz-input]的directive，而非component进行组合，具体见demo</p>
-    <table>
-      <thead>
-        <tr>
-          <th>参数</th>
-          <th>说明</th>
-          <th>类型</th>
-          <th>默认值</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>nzSize</td>
-          <td><code>nz-input-group</code> 中所有的 <code>nz-input</code> 的大小</td>
-          <td>'large'|'default'|'small'</td>
-          <td>'default'</td>
-        </tr>
-        <tr>
-          <td>nzCompact</td>
-          <td>是否用紧凑模式</td>
-          <td>Boolean</td>
-          <td>false</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+</nz-code-box>
+<nz-code-box [nzTitle]="'text field'" id="components-input-demo-textarea" [nzCode]="NzDemoInputTextareaCode">
+  <nz-demo-input-textarea demo> </nz-demo-input-textarea>
+  <div intro>
+    <p> For multi-line input, specify <code>nzType</code>as a special <code>textarea</code>. You can control the height of the box with <code>nzRows</code>or <code>nzAutosize</code>. </p>
+  </div>
+</nz-code-box>
+</div>
+</div>
+<section class="markdown api-container">
+  <h2 id="API"> <span> API </span>
+
+  </h2>
+  <h3 id="Input"> <span> nz-input </span>
+
+  </h3>
+  <table>
+    <thead>
+    <tr>
+      <th> Parameters </th>
+      <th> Description </th>
+      <th> type </th>
+      <th> Default </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td> ngModel </td>
+      <td> The current input value, you can bind in both directions</td>
+      <td> String </td>
+      <td> - </td>
+    </tr>
+    <tr>
+      <td> nzType </td>
+      <td> [must] declare the input type, same as the type attribute of the native input tag. Also available is <code>nzType="textarea"</code>. </td>
+      <td> String </td>
+      <td> 'text' </td>
+    </tr>
+    <tr>
+      <td> nzPlaceHolder </td>
+      <td> Show reminder message in text box </td>
+      <td> String </td>
+      <td> None </td>
+    </tr>
+    <tr>
+      <td> nzSize </td>
+      <td> control size, the default value is default. Note: The size of the input box in the standard form is limited to large. </td>
+      <td> 'large' | 'default' | 'small' </td>
+      <td> 'default' </td>
+    </tr>
+    <tr>
+      <td> nzDisabled </td>
+      <td> Whether to disable the status, the default is false </td>
+      <td> bool </td>
+      <td> false </td>
+    </tr>
+    <tr>
+      <td> nzReadonly </td>
+      <td> read-only state, the default is false </td>
+      <td> bool </td>
+      <td> false </td>
+    </tr>
+    <tr>
+      <td> nzBlur </td>
+      <td> Lost focus callback </td>
+      <td> EventEmitter </td>
+      <td> None </td>
+    </tr>
+    <tr>
+      <td> nzFocus </td>
+      <td> Get focus callback </td>
+      <td> EventEmitter </td>
+      <td> None </td>
+    </tr>
+    <tr>
+      <td> #addonBefore </td>
+      <td> Set front label </td>
+      <td> ng-template </td>
+      <td> - </td>
+    </tr>
+    <tr>
+      <td> #addonAfter </td>
+      <td> Set post tag </td>
+      <td> ng-template </td>
+      <td> - </td>
+    </tr>
+    <tr>
+      <td> #prefix </td>
+      <td> input with a prefix icon</td>
+      <td> ng-template </td>
+      <td> - </td>
+    </tr>
+    <tr>
+      <td> #suffix </td>
+      <td> input with a suffix icon</td>
+      <td> ng-template </td>
+      <td> - </td>
+    </tr>
+    </tbody>
+  </table>
+  <h4 id="Input.TextArea"> <span> nz-input [type=textarea] </span>
+
+  </h4>
+  <p> Unique API </p> when <code>nzType="textarea"</code>
+  <table>
+    <thead>
+    <tr>
+      <th> Parameters </th>
+      <th> Description </th>
+      <th> type </th>
+      <th> Default </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td> nzAutosize </td>
+      <td> Adaptive content height, set to true | false or object: <code>{{'{minRows: 2, maxRows: 6}'}}</code></td>
+      <td> Boolean | Object </td>
+      <td> <code>false</code></td>
+    </tr>
+    <tr>
+      <td> nzRows </td>
+      <td> Control the number of rows of the fixed frame </td>
+      <td> String </td>
+      <td> None </td>
+    </tr>
+    </tbody>
+  </table>
+  <h4 id="Input.Group"> <span> nz-input-group </span>
+
+  </h4>
+  <p> nz-input-group need to use the [nz-input] directive instead of component combination, see the demo </p>
+  <table>
+    <thead>
+    <tr>
+      <th> Parameters </th>
+      <th> Description </th>
+      <th> type </th>
+      <th> Default </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td> nzSize </td>
+      <td> Size of all <code>nz-input</code>in <code>nz-input-group</code></td>
+      <td> 'large' | 'default' | 'small' </td>
+      <td> 'default' </td>
+    </tr>
+    <tr>
+      <td> nzCompact </td>
+      <td> is in compact mode </td>
+      <td> Boolean </td>
+      <td> false </td>
+    </tr>
+    </tbody>
+  </table>
+</section>
 </article>
+
+

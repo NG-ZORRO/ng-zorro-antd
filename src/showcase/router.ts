@@ -8,18 +8,18 @@ export const ROUTER_LIST = {
     {
       'path'        : 'docs/angular/getting-started',
       // 'loadChildren': './nz-intro-getting-started/nz-intro-get-started.module#NzIntroGetStartedModule',
-      'label'       : '快速上手'
+      'label'       : 'Getting Started'
     },
     {
       'path'        : 'changelog',
       // 'loadChildren': './nz-intro-changelog/nz-intro-changelog.module#NzIntroChangeLogModule',
-      'label'       : '更新日志'
-    },
-    {
-      'path'        : 'i18n',
-      // 'loadChildren': './nz-intro-i18n/nz-intro-i18n.module#NzIntroI18nModule',
-      'label'       : '国际化'
+      'label'       : 'Changelog'
     }
+    // {
+    //   'path'        : 'i18n',
+    //   // 'loadChildren': './nz-intro-i18n/nz-intro-i18n.module#NzIntroI18nModule',
+    //   'label'       : 'i18n'
+    // }
   ],
   'components': [
     {
@@ -36,7 +36,13 @@ export const ROUTER_LIST = {
           'path'        : 'components/icon',
           // 'loadChildren': './nz-demo-icon/nz-demo-icon.module#NzDemoIconModule',
           'zh'          : '图标'
-        }
+        },
+        {
+          'label'       : 'Dropdown',
+          'path'        : 'components/dropdown',
+          // 'loadChildren': './nz-demo-dropdown/nz-demo-dropdown.module#NzDemoDropDownModule',
+          'zh'          : '下拉菜单'
+        },
       ]
     },
     {
@@ -71,12 +77,7 @@ export const ROUTER_LIST = {
           // 'loadChildren': './nz-demo-breadcrumb/nz-demo-breadcrumb.module#NzDemoBreadCrumbModule',
           'zh'          : '面包屑'
         },
-        {
-          'label'       : 'Dropdown',
-          'path'        : 'components/dropdown',
-          // 'loadChildren': './nz-demo-dropdown/nz-demo-dropdown.module#NzDemoDropDownModule',
-          'zh'          : '下拉菜单'
-        },
+
         {
           'label'       : 'Menu',
           'path'        : 'components/menu',

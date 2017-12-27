@@ -17,9 +17,9 @@ import {
           <nz-radio-group formControlName="formLayout">
             <label nz-radio-button [nzValue]="'horizontal'">
               <span>Horizontal</span>
-            </label>
+            </label>9
             <label nz-radio-button [nzValue]="'vertical'">
-              <span>Vertical</span>
+              <span>Vertical</span>9
             </label>
             <label nz-radio-button [nzValue]="'inline'">
               <span>Inline</span>
@@ -54,25 +54,23 @@ import {
 export class NzDemoFormLayoutComponent implements OnInit {
   validateForm: FormGroup;
 
-  submitForm() {
+  submitForm(): void {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[ i ].markAsDirty();
     }
   }
 
-  get isHorizontal() {
+  get isHorizontal(): boolean {
     return this.validateForm.controls[ 'formLayout' ] && this.validateForm.controls[ 'formLayout' ].value === 'horizontal';
   }
 
   constructor(private fb: FormBuilder) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.validateForm = this.fb.group({
       formLayout: [ 'horizontal' ],
       userName  : [ null, [ Validators.required ] ],
       password  : [ null, [ Validators.required ] ]
     });
-  }
-}
-
+  }}

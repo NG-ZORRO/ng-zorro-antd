@@ -16,7 +16,7 @@ import { DOCUMENT } from '@angular/common';
           <a>{{nzTitle}}</a>
         </div>
         <ng-content select="[intro]"></ng-content>
-        <nz-tooltip [nzTitle]="nzExpanded?'收起代码':'展开代码'">
+        <nz-tooltip [nzTitle]="nzExpanded?'Close':'View source code'">
           <span class="code-expand-icon" nz-tooltip (click)="nzExpanded=!nzExpanded">
             <img alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/wSAkBuJFbdxsosKKpqyq.svg" [class.code-expand-icon-show]="nzExpanded" [class.code-expand-icon-hide]="!nzExpanded">
             <img alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/OpROPHYqWmrMDBFMZtKF.svg" [class.code-expand-icon-show]="!nzExpanded" [class.code-expand-icon-hide]="nzExpanded">
@@ -26,7 +26,7 @@ import { DOCUMENT } from '@angular/common';
       <section class="highlight-wrapper" [ngClass]="{'highlight-wrapper-expand':nzExpanded}">
         <div class="highlight">
           <div class="code-box-actions">
-            <nz-tooltip [nzTitle]="'复制代码'">
+            <nz-tooltip [nzTitle]="'Copy'">
               <i nz-tooltip class="anticon code-box-code-copy" [class.anticon-copy]="!_copied" [class.anticon-check]="_copied" [class.ant-tooltip-open]="_copied" (click)="copyCode(_code)"></i>
             </nz-tooltip>
           </div>

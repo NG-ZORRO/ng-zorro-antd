@@ -1,88 +1,84 @@
 NG-ZORRO [![GitHub stars](https://img.shields.io/github/stars/NG-ZORRO/ng-zorro-antd.svg?style=social&label=Star)](https://github.com/NG-ZORRO/ng-zorro-antd)
 ===
-这里是 Ant Design 的 Angular`^5.0.0` 实现，开发和服务于企业级后台产品。
+Here is Angular`^5.0.0` implementation of Ant Design, developing and servicing enterprise backend products.
 
-如果要您使用的是 Angular `4.x` 版本，请使用 `0.5.x` 版本的 [NG-ZORRO](http://ng.ant.design/version/0.5.x)
-
-<div class="pic-plus">
-  <img width="150" src="./assets/img/antd.svg">
-  <span>+</span>
-  <img width="180" src="./assets/img/angular.svg">
-</div>
+If you are using an Angular 4.x version, use  [NG-ZORRO](http://ng.ant.design/version/0.5.x)
 
 
-> 如果你刚开始学习前端或者Angular，将组件作为第一步可能并不是一个好主意，推荐先学习 <a href="http://www.angular.cn" target="_blank"> Angular </a> 和 <a href="https://www.typescriptlang.org/" target="_blank"> TypeScript</a>。
 
-## 特性
-- 提炼自企业级中后台产品的交互语言和视觉风格，定期与 Ant Design React 版本保持更新一致。
-- 开箱即用的高质量 Angular 组件。
-- 使用 TypeScript 构建，提供完整的类型定义文件。
 
-## 版本
+> If you're new to learning front-end or Angular, it might not be a good idea to have the component as a first step, and it is recommended that you first learn about <a href="http://www.angular.cn" target="_blank"> Angular < a> and <a href="https://www.typescriptlang.org/" target="_blank"> TypeScript </a>.
+
+## features
+- Refines the interactive language and visual styles from the mid-level enterprise-class products and regularly keeps up to date with the Ant Design React release.
+- High-quality Angular components out of the box.
+- Built using TypeScript, providing a complete type definition file.
+
+## version
 
 - [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg)](https://www.npmjs.org/package/ng-zorro-antd)
 
-## 支持环境
+## support environment
 
-* 现代浏览器和 IE9 以上（需要 [polyfills](https://angular.cn/guide/browser-support)）。
+* Modern browsers and IE9 above (requires [polyfills](https://angular.cn/guide/browser-support)).
 
-## 兼容版本
+## compatible version
 
-* 当前支持 Angular `^5.0.0` 版本（`5.0.0`以下推荐使用`ng-zorro-antd`的`0.5.x`版本）
+* Angular `^5.0.0` version is currently supported (` `5.0.x` version is recommended below`ng-zorro-antd` below)
 
 
-## 安装
+## installation
 
-**我们推荐使用 npm 方式进行开发**，不仅可在开发环境轻松调试，也可放心地在生产环境打包部署使用，享受整个生态圈和工具链带来的诸多好处。
+** We recommend using npm for development. ** Not only can you easily debug in your development environment, but you can safely pack it in a production environment and enjoy the benefits of the entire ecosystem and toolchain.
 
 ```bash
 $ npm install ng-zorro-antd --save
 ```
 
-如果你的网络环境不佳，推荐使用 [cnpm](https://github.com/cnpm/cnpm)。
+If your network environment is poor, we recommend using [cnpm](https://github.com/cnpm/cnpm).
 
-## 标准开发
+## standard development
 
-实际项目开发中，你会需要对 TypeScript 代码的构建、调试、代理、打包部署等一系列工程化的需求。
-我们推荐官方的 `@angular/cli` 工具链辅助进行开发
+In actual project development, you will need a series of engineering requirements for building, debugging, proxying, packaging and deployment of TypeScript code.
+We recommend the official '@angular/cli` toolchain for development
 
-如果你想了解更多CLI工具链的功能和命令，建议访问 [Angular CLI](https://github.com/angular/angular-cli) 了解更多
+If you want to learn more about the functions and commands of the CLI toolchain, we recommend that you visit [Angular CLI] (https://github.com/angular/angular-cli) to learn more
 
 
-## 历史版本入口
+## historical version of the entrance
 
 - [0.5.x](http://ng.ant.design/version/0.5.x)
 
 
-## 链接
+## link
 
-- [首页](http://ng.ant.design)
-- [Angular官方文档](https://angular.cn/)
-- [开发脚手架](https://cli.angular.io/)
+- [Home](http://ng.ant.design)
+- [Angular official document](https://angular.cn/)
+- [Development Scaffolding](https://cli.angular.io/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [RxJS 5](https://github.com/ReactiveX/rxjs)
 
 
-## 如何贡献
+## How to contribute
 
-如果你希望参与贡献，欢迎 [Pull Request](https://github.com/NG-ZORRO/ng-zorro-antd/pulls)，或给我们 [报告 Bug](https://github.com/NG-ZORRO/ng-zorro-antd/issues)。
+If you wish to contribute, please feel free to contact Pull Request at https://github.com/NG-ZORRO/ng-zorro-antd/pulls or send us a Report Bug (https://github.com/NG -ZORRO / ng-zorro-antd / issues).
 
-> 强烈推荐阅读 [《提问的智慧》](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way)、[《如何向开源社区提问题》](https://github.com/seajs/seajs/issues/545) 和 [《如何有效地报告 Bug》](http://www.chiark.greenend.org.uk/%7Esgtatham/bugs-cn.html)、[《如何向开源项目提交无法解答的问题》](https://zhuanlan.zhihu.com/p/25795393)，更好的问题更容易获得帮助。
+> It is highly recommended to read "Wisdom of Asking Questions" (https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way) ["How to Ask Questions from the Open Source Community"](https: http://github.com/seajs/seajs/issues/545) and [How to Report Bug Bug]] (http://www.chiark.greenend.org.uk/%7Esgtatham/bugs-cn.html), [ "How to submit unanswered questions to open source projects"] (https://zhuanlan.zhihu.com/p/25795393), better questions are easier to get help with.
 
-## 关于NG-ZORRO
+## About NG-ZORRO
 
-​众所周知，Ant Design作为一门设计语言面世，经历过多年的迭代和积累，它对UI的设计思想已经成为一套事实标准，受到众多前端开发者及企业的追捧和喜爱，也是React开发者手中的神兵利器。希望NG-ZORRO能够让Angular开发者也享受到Ant Design的优秀设计。
+As we all know, AntDesign as a design language available, after many years of iteration and accumulation of its UI design ideas has become a de facto standard, sought after by many front-end developers and businesses and favorite, but also React developers Magic weapon. Hope NG-ZORRO will allow Angular developers to enjoy the excellent design of Ant Design.
 
-作为Ant Design的Angular实现，NG-ZORRO不仅继承了Ant Design的独到思想和极致体验，同时也结合了Angular框架的优点和特性。目前第一版发布将支持Angular 4.0.0及以上版本，组件的数量现已覆盖Ant Design React版本的80%以上，组件的风格已与Ant Design最新版本保持同步，组件的接口也尽量保持了与Ant Design的React版本一致（由于Angular的某些特性区别，某些组件的使用方式可能有所改变）。
+As Angular's implementation of Ant Design, NG-ZORRO not only inherits the unique ideas and the ultimate experience of Ant Design, but also combines the advantages and characteristics of the Angular framework. Currently the first release will support Angular 4.0.0 and above, the number of components is now over 80% of the Ant Design React version, the style of the components has been synchronized with the latest version of Ant Design, the component interface is also tried to maintain the React versions of Ant Design are the same (some components may change their usage depending on some features of Angular).
 
-NG-ZORRO 致力于提供给 Angular 开发者愉悦的开发体验。
+NG-ZORRO is committed to providing a pleasing development experience for Angular developers.
 
-## 关于开发者
+## About developers
 
-NG-ZORRO由阿里计算平台事业部、阿里云等不同部门的一些小伙伴在原业务组件的基础上共同构建而成，在这个过程中得到了蚂蚁金服Ant Design团队的很多帮助。在最后开源的准备中也得到了很多社区小伙伴的支持和PR，在这里感谢大家。
+NG-ZORRO by Ali computing platform division, Aliyun and other small business partners in different parts of the original business components based on the common build, in the process by the Ant gold Ant Design team a lot of help. In the final preparation for open source has also been a lot of community partners and PR support, here to thank everyone.
 
-欢迎各位社区开发者加入我们，共同开发和维护NG-ZORRO，期待您的帮助。
+We welcome all community developers to join us to jointly develop and maintain NG-ZORRO. We are looking forward to your help.
 
 ## THANK YOU
 
-VTHINKXIE, Wilson Zeng, chensimeng, zjgzx1988, SunMing, fbchen, Trotyl Yu, 雪狼, afc163, xufei, lightningtgc
+VTHINKXIE, Wilson Zeng, chensimeng, zjgzx1988, SunMing, fbchen, Trotyl Yu, Xuelang, afc163, xufei, lightningtgc

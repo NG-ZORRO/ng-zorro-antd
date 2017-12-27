@@ -1,151 +1,153 @@
 <article>
-  <section class="markdown"><h1>Carousel 走马灯</h1>
-    <section class="markdown"><p>旋转木马，一组轮播的区域。</p>
-      <h2 id="何时使用"><span>何时使用</span>
-        <a  class="anchor">#</a>
+  <section class = "markdown"> <h1> Carousel Marquee </h1>
+    <section class = "markdown"> <p> Carousel, a group of carousels. </p>
+      <h2 id = "When to use"> <span> When to use </span>
+        <a class="anchor"> # </a>
       </h2>
       <ul>
-        <li><p>当有一组平级的内容。</p></li>
-        <li><p>当内容空间不足时，可以用走马灯的形式进行收纳，进行轮播展现。</p></li>
-        <li><p>常用于一组图片或卡片轮播。</p></li>
+        <li> <p> When there is a set of flat content. </p> </li>
+        <li> <p> When the content space is not enough, you can store it in the form of a carousel and show it on a carousel. </p> </li>
+        <li> <p> Commonly used for a group of pictures or card carousels. </p> </li>
       </ul>
     </section>
-    <h2>代码演示<i class="code-box-expand-trigger anticon anticon-appstore" title="展开全部代码"></i></h2>
+    <h2> Code Demo <i class = "code-box-expand-trigger anticon anticon-appstore" title = "Expand All Code"> </i> </h2>
   </section>
-  <div nz-row [nzGutter]="8">
-    <div nz-col [nzSpan]="12">
-      <nz-code-box [nzTitle]="'基本'" id="components-carousel-demo-basic" [nzCode]="NzDemoCarouselBasicCode">
-        <nz-demo-carousel-basic demo></nz-demo-carousel-basic>
+  <div nz-row [nzGutter] = "8">
+    <div nz-col [nzSpan] = "12">
+      <nz-code-box [nzTitle] = "'Basic'" id = "components-carousel-demo-basic" [nzCode] = "NzDemoCarouselBasicCode">
+        <nz-demo-carousel-basic demo> </nz-demo-carousel-basic>
         <div intro>
-          <p>最简单的用法。</p>
+          <p> The simplest usage. </p>
         </div>
       </nz-code-box>
-      <nz-code-box [nzTitle]="'渐现'" id="components-carousel-demo-fade" [nzCode]="NzDemoCarouselFadeCode">
-        <nz-demo-carousel-fade demo></nz-demo-carousel-fade>
+      <nz-code-box [nzTitle] = "'Gradual'" id = "components-carousel-demo-fade" [nzCode] = "NzDemoCarouselFadeCode">
+        <nz-demo-carousel-fade demo> </nz-demo-carousel-fade>
         <div intro>
-          <p>切换效果为渐显。</p>
+          <p> The switching effect is faded. </p>
         </div>
       </nz-code-box>
     </div>
-    <div nz-col [nzSpan]="12">
-      <nz-code-box [nzTitle]="'垂直'" id="components-carousel-demo-vertical" [nzCode]="NzDemoCarouselVerticalCode">
-        <nz-demo-carousel-vertical demo></nz-demo-carousel-vertical>
+    <div nz-col [nzSpan] = "12">
+      <nz-code-box [nzTitle] = "'vertical'" id = "components-carousel-demo-vertical" [nzCode] = "NzDemoCarouselVerticalCode">
+        <nz-demo-carousel-vertical demo> </nz-demo-carousel-vertical>
         <div intro>
-          <p>垂直显示。</p>
+          <p> Vertical display. </p>
         </div>
       </nz-code-box>
-      <nz-code-box [nzTitle]="'自动切换'" id="components-carousel-demo-auto" [nzCode]="NzDemoCarouselAutoCode">
-        <nz-demo-carousel-auto demo></nz-demo-carousel-auto>
+      <nz-code-box [nzTitle] = "'Autochange'" id = "components-carousel-demo-auto" [nzCode] = "NzDemoCarouselAutoCode">
+        <nz-demo-carousel-auto demo> </nz-demo-carousel-auto>
         <div intro>
-          <p>定时切换下一张。</p>
+          <p> Toggle the next timer. </p>
         </div>
       </nz-code-box>
     </div>
   </div>
-  <section class="markdown api-container">
-    <h2 id="API"><span>API</span>
-      <!-- <a class="anchor">#</a> -->
+  <section class = "markdown api-container">
+    <h2 id = "API"> <span> API </span>
+
     </h2>
     <table>
       <thead>
       <tr>
-        <th>参数</th>
-        <th>说明</th>
-        <th>类型</th>
-        <th>默认值</th>
+        <th> Parameters </th>
+        <th> Description </th>
+        <th> type </th>
+        <th> Default </th>
       </tr>
       </thead>
       <tbody>
       <tr>
-        <td>[nz-carousel-content]</td>
-        <td>用于标识滚动的slide内容</td>
-        <td>Directive</td>
-        <td>-</td>
+        <td> [nz-carousel-content] </td>
+        <td> is used to identify the scrolling slide </td> content
+        <td> Directive </td>
+        <td> - </td>
       </tr>
       <tr>
-        <td>nzEffect</td>
-        <td>动画效果函数，可取 scrollx, fade</td>
-        <td>String</td>
-        <td>scrollx</td>
+        <td> nzEffect </td>
+        <td> animation effect function, desirable scrollx, fade </td>
+        <td> String </td>
+        <td> scrollx </td>
       </tr>
       <tr>
-        <td>nzDots</td>
-        <td>是否显示面板指示点</td>
-        <td>Boolean</td>
-        <td>true</td>
+        <td> nzDots </td>
+        <td> Whether to display the panel pointer </td>
+        <td> Boolean </td>
+        <td> true </td>
       </tr>
       <tr>
-        <td>nzVertical</td>
-        <td>垂直显示</td>
-        <td>Boolean</td>
-        <td>false</td>
+        <td> nzVertical </td>
+        <td> Vertical display </td>
+        <td> Boolean </td>
+        <td> false </td>
       </tr>
       <tr>
-        <td>nzAutoPlay</td>
-        <td>是否自动切换</td>
-        <td>Boolean</td>
-        <td>false</td>
+        <td> nzAutoPlay </td>
+        <td> Automatically switch </td>
+        <td> Boolean </td>
+        <td> false </td>
       </tr>
       <tr>
-        <td>nzAutoPlaySpeed</td>
-        <td>自动切换速度, 单位毫秒</td>
-        <td>Number</td>
-        <td>3000</td>
+        <td> nzAutoPlaySpeed ​​</td>
+        <td> Automatic switching speed in milliseconds </td>
+        <td> Number </td>
+        <td> 3000 </td>
       </tr>
       <tr>
-        <td>nzPauseOnHover</td>
-        <td>鼠标悬停暂停</td>
-        <td>Boolean</td>
-        <td>true</td>
+        <td> nzPauseOnHover </td>
+        <td> Pause Mouseover </td>
+        <td> Boolean </td>
+        <td> true </td>
       </tr>
       <tr>
-        <td>nzAfterChange</td>
-        <td>切换面板后的回调, 参数为当前索引</td>
-        <td>Function(number)</td>
-        <td>无</td>
+        <td> nzAfterChange </td>
+        <td> Callback after the panel switch, the current index index </td>
+        <td> Function (number) </td>
+        <td> None </td>
       </tr>
       <tr>
-        <td>nzBeforeChange</td>
-        <td>切换面板前的回调, 参数为当前的索引与被切换到的索引</td>
-        <td>{{ 'Function({ form: number; to: number})' }}</td>
-        <td>无</td>
+        <td> nzBeforeChange </td>
+        <td> Toggle the front-panel callback with the current and indexed switches </td>
+        <td> {{'Function ({form: number; to: number})'}} </td>
+        <td> None </td>
       </tr>
       </tbody>
     </table>
 
     <h2>
-      <span>Methods</span>
-      <small><a href="https://angular.cn/guide/component-interaction">使用方法</a></small>
+      <span> Methods </span>
+      <small> <a href="https://angular.cn/guide/component-interaction"> how to use </a> </small>
     </h2>
     <table>
       <thead>
       <tr>
-        <th>方法名</th>
-        <th>参数</th>
-        <th>说明</th>
-        <th>返回值</th>
+        <th> method name </th>
+        <th> Parameters </th>
+        <th> Description </th>
+        <th> return value </th>
       </tr>
       </thead>
       <tbody>
       <tr>
-        <td>nzSlickNext</td>
-        <td>无</td>
-        <td>切换到下一个面板</td>
-        <td>无</td>
+        <td> nzSlickNext </td>
+        <td> None </td>
+        <td> Switch to the next panel </td>
+        <td> None </td>
       </tr>
       <tr>
-        <td>nzSlickPrev</td>
-        <td>无</td>
-        <td>切换到上一个面板</td>
-        <td>无</td>
+        <td> nzSlickPrev </td>
+        <td> None </td>
+        <td> Switch to the previous panel </td>
+        <td> None </td>
       </tr>
       <tr>
-        <td>nzSlickGoTo</td>
-        <td>index: number</td>
-        <td>切换到指定索引面板</td>
-        <td>无</td>
+        <td> nzSlickGoTo </td>
+        <td> index: number </td>
+        <td> Switch to the specified index panel </td>
+        <td> None </td>
       </tr>
       </tbody>
     </table>
   </section>
 </article>
+
+

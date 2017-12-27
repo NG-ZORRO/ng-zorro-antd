@@ -6,7 +6,7 @@ import { NzModalService } from '../../../index.showcase';
   selector: 'nz-demo-confirm-async',
   template: `
     <button nz-button [nzType]="'info'" (click)="showConfirm()">
-      <span>确认对话框</span>
+      <span>Confirm the dialog box</span>
     </button>
   `,
   styles  : []
@@ -14,8 +14,8 @@ import { NzModalService } from '../../../index.showcase';
 export class NzDemoConfirmAsyncComponent {
   showConfirm = () => {
     this.confirmServ.confirm({
-      title  : '您是否确认要删除这项内容',
-      content: '点确认 1 秒后关闭',
+      title  : 'Are you sure you want to delete this item?',
+      content: 'Close the point after confirming for 1 second',
       showConfirmLoading: true,
       onOk() {
         return new Promise((resolve) => {

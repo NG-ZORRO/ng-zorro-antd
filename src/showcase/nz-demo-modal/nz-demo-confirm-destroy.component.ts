@@ -6,7 +6,7 @@ import { NzModalService } from '../../../index.showcase';
   selector: 'nz-demo-confirm-destroy',
   template: `
     <button nz-button [nzType]="'info'" (click)="success()">
-      <span>成功提示</span>
+      <span>Success tips</span>
     </button>
   `,
   styles: []
@@ -14,8 +14,8 @@ import { NzModalService } from '../../../index.showcase';
 export class NzDemoConfirmDestroyComponent {
   success = () => {
     const modal = this.confirmServ.success({
-      title: '这是一条成功信息',
-      content: '一秒后自动移除'
+      title: 'This is a success message',
+      content: 'Remove automatically after one second'
     });
 
     setTimeout(() => modal.destroy(), 1000);
