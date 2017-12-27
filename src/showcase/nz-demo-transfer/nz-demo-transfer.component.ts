@@ -10,4 +10,5 @@ export class NzDemoTransferComponent {
   NzDemoTransferSearchCode = require('!!raw-loader!./nz-demo-transfer-search.component');
   NzDemoTransferAdvancedCode = require('!!raw-loader!./nz-demo-transfer-advanced.component');
   NzDemoTransferCustomItemCode = require('!!raw-loader!./nz-demo-transfer-custom-item.component');
+  NzDemoTransferCanMoveCode = require('!!raw-loader!./nz-demo-transfer-can-move.component');
 }
