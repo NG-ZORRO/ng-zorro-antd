@@ -3,6 +3,11 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-radio-group-disabled',
   template: `
+    <div>
+      <label nz-radio [(ngModel)]="singleValue" [nzDisabled]="isDisabled">
+        <span>独立使用 {{ singleValue }}</span>
+      </label>
+    </div>
     <nz-radio-group [(ngModel)]="radioValue">
       <label nz-radio [nzValue]="'A'">
         <span>A</span>
@@ -25,6 +30,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NzDemoRadioGroupDisabledComponent {
   radioValue = 'A';
+  singleValue = false;
   isDisabled = true;
   toggleDisabled = () => {
     this.isDisabled = !this.isDisabled;

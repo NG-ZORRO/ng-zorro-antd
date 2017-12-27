@@ -1,13 +1,16 @@
 import {
+  forwardRef,
   Component,
   ElementRef,
   HostBinding,
   HostListener,
   Input,
   OnInit,
+  Optional,
   Renderer2,
-  ViewEncapsulation,
+  ViewEncapsulation
 } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { toBoolean } from '../util/convert';
 import { NzRadioGroupComponent } from './nz-radio-group.component';
@@ -24,9 +27,16 @@ import { NzRadioGroupComponent } from './nz-radio-group.component';
   `,
   styleUrls    : [
     './style/index.less'
+  ],
+  providers    : [
+    {
+      provide    : NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => NzRadioComponent),
+      multi      : true
+    }
   ]
 })
-export class NzRadioComponent implements OnInit {
+export class NzRadioComponent implements OnInit, ControlValueAccessor {
   private _checked = false;
   private _disabled = false;
   private _focused = false;
@@ -36,6 +46,9 @@ export class NzRadioComponent implements OnInit {
   _prefixCls = 'ant-radio';
   _innerPrefixCls = `${this._prefixCls}-inner`;
   _inputPrefixCls = `${this._prefixCls}-input`;
+  // ngModel Access
+  onChange: (_: boolean) => void = () => null;
+  onTouched: () => void = () => null;
 
   @Input()
   @HostBinding('class.ant-radio-wrapper-checked')
@@ -75,9 +88,13 @@ export class NzRadioComponent implements OnInit {
   onClick(e: MouseEvent): void {
     e.preventDefault();
     if (!this._disabled) {
-      this._checked = true;
-      this.setClassMap();
-      this._nzRadioGroup.selectRadio(this);
+      if (this._nzRadioGroup) {
+        this._checked = true;
+        this.setClassMap();
+        this._nzRadioGroup.selectRadio(this);
+      } else {
+        this.updateValue(!this._checked);
+      }
     }
   }
 
@@ -89,7 +106,7 @@ export class NzRadioComponent implements OnInit {
   nzBlur(): void {
     this._focused = false;
     this.setClassMap();
-    this._nzRadioGroup.onTouched();
+    if (this._nzRadioGroup) this._nzRadioGroup.onTouched();
   }
 
   setClassMap(): void {
@@ -101,13 +118,38 @@ export class NzRadioComponent implements OnInit {
     };
   }
 
-  constructor(private _elementRef: ElementRef, public _renderer: Renderer2, public _nzRadioGroup: NzRadioGroupComponent) {
+  constructor(private _elementRef: ElementRef, public _renderer: Renderer2, @Optional() public _nzRadioGroup: NzRadioGroupComponent) {
     this._el = this._elementRef.nativeElement;
   }
 
   ngOnInit(): void {
-    this._nzRadioGroup.addRadio(this);
+    if (this._nzRadioGroup) this._nzRadioGroup.addRadio(this);
     this._renderer.addClass(this._el, `${this._prefixCls}-wrapper`);
     this.setClassMap();
   }
+
+  // region: value accessor
+  updateValue(value: boolean): void {
+    if (value === this._checked) {
+      return;
+    }
+    this.onChange(value);
+    this._focused = false;
+    this._checked = value;
+    this.setClassMap();
+  }
+
+  writeValue(value: boolean): void {
+      this._checked = value;
+      this.setClassMap();
+  }
+
+  registerOnChange(fn: (_: boolean) => {}): void {
+      this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => {}): void {
+      this.onTouched = fn;
+  }
+  // endregion
 }
