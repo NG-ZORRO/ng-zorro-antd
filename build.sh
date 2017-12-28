@@ -4,6 +4,7 @@ readonly currentDir=$(cd $(dirname $0); pwd)
 cd ${currentDir}
 rm -rf publish
 cp -r src/components src/__gen_components
+node ./inline-template.js
 node ./less.convert.js
 
 echo 'Compiling to es2015 via Angular compiler'
