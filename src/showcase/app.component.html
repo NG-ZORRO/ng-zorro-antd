@@ -3,14 +3,14 @@
     <div nz-row>
       <div nz-col [nzXs]="'24'" [nzSm]="'8'" [nzMd]="'8'" [nzLg]="'4'">
         <a id="logo" href>
-          <img alt="logo" src="./assets/img/zorro.svg">
-          <span>NG-ZORRO</span>
+          <img alt="logo" src="./assets/img/TM.svg">
+          <span>Engage UI</span>
         </a>
       </div>
       <div nz-col [nzXs]="'0'" [nzSm]="'16'" [nzMd]="'16'" [nzLg]="'20'" class="nav nav-hide">
         <div id="search-box">
-          <nz-select [nzPlaceHolder]="'搜索组件...'" [nzMode]="'combobox'" [(ngModel)]="searchComponent" (ngModelChange)="navigateToPage($event)">
-            <nz-option [nzValue]="component.path" [nzLabel]="component.label+' - '+component.zh" *ngFor="let component of componentList"></nz-option>
+          <nz-select [nzPlaceHolder]="'Search...'" [nzMode]="'combobox'" [(ngModel)]="searchComponent" (ngModelChange)="navigateToPage($event)">
+            <nz-option [nzValue]="component.path" [nzLabel]="component.label" *ngFor="let component of componentList"></nz-option>
           </nz-select>
         </div>
         <div class="version">
@@ -21,7 +21,7 @@
 
         <ul nz-menu [nzMode]="'horizontal'" id="nav">
           <li nz-menu-item nzSelected>
-            <a routerLink="/docs/angular/introduce"><span>组件</span></a>
+            <a routerLink="/docs/angular/introduce"><span>Ant</span></a>
           </li>
         </ul>
       </div>
@@ -42,7 +42,7 @@
                 <ul>
                   <li nz-menu-item routerLinkActive="ant-menu-item-selected" *ngFor="let component of group.children">
                     <a routerLink="{{component.path}}">
-                      <span>{{component.label}}</span><span class="chinese">{{component.zh}}</span>
+                      <span>{{component.label}}</span>
                     </a>
                   </li>
                 </ul>

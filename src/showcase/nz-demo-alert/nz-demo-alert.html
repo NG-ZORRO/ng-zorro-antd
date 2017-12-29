@@ -1,137 +1,139 @@
 <article>
-  <section class="markdown"><h1>Alert 警告提示</h1>
-    <section class="markdown"><p>警告提示，展现需要关注的信息。</p>
-      <h2 id="何时使用"><span>何时使用</span>
-        <!-- <a class="anchor">#</a> -->
+  <section class="markdown"> <h1> Alert </h1>
+    <section class="markdown"> <p> Warnings to show the information you need to follow. </p>
+      <h2 id="When to use"> <span> When to use </span>
+
       </h2>
       <ul>
-        <li><p>对当某个页面需要向用户显示警告的信息时。</p></li>
-        <li><p>非浮层的静态展现形式，始终展现，不会自动消失，用户可以点击关闭。</p></li>
+        <li> <p> When a page needs to show the user a warning message. </p> </li>
+        <li> <p> Non-floating layer static display form, always show, does not disappear automatically, the user can click to close. </p> </li>
       </ul>
     </section>
-    <h2>代码演示<i class="code-box-expand-trigger anticon anticon-appstore" title="展开全部代码"></i></h2>
+    <h2> Code Demo <i class="code-box-expand-trigger anticon anticon-appstore" title="Expand All Code"> </i> </h2>
   </section>
   <div nz-row [nzGutter]="8">
     <div nz-col [nzSpan]="12">
-      <nz-code-box [nzTitle]="'基本'" id="components-alert-demo-basic" [nzCode]="NzDemoAlertBasicCode">
-        <nz-demo-alert-basic demo></nz-demo-alert-basic>
+      <nz-code-box [nzTitle]="'Basic'" id="components-alert-demo-basic" [nzCode]="NzDemoAlertBasicCode">
+        <nz-demo-alert-basic demo> </nz-demo-alert-basic>
         <div intro>
-          <p>最简单的用法。</p>
+          <p> The simplest usage. </p>
         </div>
       </nz-code-box>
-      <nz-code-box [nzTitle]="'可关闭的警告提示'" id="components-alert-demo-closeable" [nzCode]="NzDemoAlertCloseableCode">
-        <nz-demo-alert-closeable demo></nz-demo-alert-closeable>
+      <nz-code-box [nzTitle]="'turn off warning'" id="components-alert-demo-closeable" [nzCode]="NzDemoAlertCloseableCode">
+        <nz-demo-alert-closeable demo> </nz-demo-alert-closeable>
         <div intro>
-          <p>显示关闭按钮，点击可关闭警告提示。</p>
+          <p> Show close button, click to close warning message. </p>
         </div>
       </nz-code-box>
-      <nz-code-box [nzTitle]="'图标'" id="components-alert-demo-icon" [nzCode]="NzDemoAlertIconCode">
-        <nz-demo-alert-icon demo></nz-demo-alert-icon>
+      <nz-code-box [nzTitle]="'icon'" id="components-alert-demo-icon" [nzCode]="NzDemoAlertIconCode">
+        <nz-demo-alert-icon demo> </nz-demo-alert-icon>
         <div intro>
-          <p>可口的图标让信息类型更加醒目。</p>
+          <p> Delicious icons make the type of information more visible. </p>
         </div>
       </nz-code-box>
     </div>
     <div nz-col [nzSpan]="12">
-      <nz-code-box [nzTitle]="'四种样式'" id="components-alert-demo-4-type" [nzCode]="NzDemoAlert4TypeCode">
-        <nz-demo-alert-4-style demo></nz-demo-alert-4-style>
+      <nz-code-box [nzTitle]="'Four styles'" id="components-alert-demo-4-type" [nzCode]="NzDemoAlert4TypeCode">
+        <nz-demo-alert-4-style demo> </nz-demo-alert-4-style>
         <div intro>
-          <p>共有四种样式 <code>success</code>、<code>info</code>、<code>warning</code>、<code>error</code></p>
+          <p> There are four styles <code> success </code>, <code> info </code>, <code> warning </code>, <code> error </code> </p>
         </div>
       </nz-code-box>
-      <nz-code-box [nzTitle]="'含有辅助性文字介绍'" id="components-alert-demo-4-type-message" [nzCode]="NzDemoAlert4TypeMessageCode">
-        <nz-demo-alert-4-type-message demo></nz-demo-alert-4-type-message>
-        <div intro>
-          <p>含有辅助性文字介绍的警告提示。</p>
-        </div>
-      </nz-code-box>
+      <nz-code-box [nzTitle]="'With auxiliary text introduction '" id="components-alert-demo-4-type-message" [nzCode]="NzDemoAlert4TypeMessageCode">
+      <nz-demo-alert-4-type-message demo> </nz-demo-alert-4-type-message>
+      <div intro>
+        <p> A warning message with accompanying text introduction. </p>
+      </div>
+    </nz-code-box>
 
-      <nz-code-box [nzTitle]="'自定义关闭'" id="components-rate-demo-disabled" [nzCode]="NzDemoAlertIconSelfCode">
-        <nz-demo-alert-self-close demo></nz-demo-alert-self-close>
-        <div intro>
-          <p>可以自定义关闭，自定义的文字会替换原先的关闭 <code>Icon</code></p>
-        </div>
-      </nz-code-box>
-    </div>
+    <nz-code-box [nzTitle]="'Custom Close'" id="components-rate-demo-disabled" [nzCode]="NzDemoAlertIconSelfCode">
+      <nz-demo-alert-self-close demo> </nz-demo-alert-self-close>
+      <div intro>
+        <p> You can customize the closing, custom text will replace the original closed <code> Icon </code> </p>
+      </div>
+    </nz-code-box>
   </div>
-  <section class="markdown api-container">
-    <h2 id="API"><span>API</span>
-      <!-- <a class="anchor">#</a> -->
-    </h2>
-    <h3 id="Rate"><span>nz-alert</span>
-      <!-- <a class="anchor">#</a> -->
-    </h3>
-    <table>
-      <thead>
-        <tr>
-          <th>参数</th>
-          <th>说明</th>
-          <th>类型</th>
-          <th>默认值</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>nzType</td>
-          <td>必选参数，指定警告提示的样式，有四种选择 <code>success</code>、<code>info</code>、<code>warning</code>、<code>error</code></td>
-          <td>String</td>
-          <td><code>info</code></td>
-        </tr>
-        <tr>
-          <td>nzCloseable</td>
-          <td>可选参数，默认不显示关闭按钮</td>
-          <td>Boolean</td>
-          <td>false</td>
-        </tr>
-        <tr>
-          <td>nzCloseText</td>
-          <td>可选参数，自定义关闭按钮</td>
-          <td>String</td>
-          <td>无</td>
-        </tr>
-        <tr>
-          <td>nzMessage</td>
-          <td>与alert-body标签二选一，警告提示内容</td>
-          <td>String</td>
-          <td>无</td>
-        </tr>
-        <tr>
-          <td>nzDescription</td>
-          <td>可选参数，警告提示的辅助性文字介绍</td>
-          <td>String</td>
-          <td>无</td>
-        </tr>
-        <tr>
-          <td>nzOnClose</td>
-          <td>可选参数，关闭时触发的回调函数</td>
-          <td>function</td>
-          <td>无</td>
-        </tr>
-        <tr>
-          <td>nzShowIcon</td>
-          <td>可选参数，是否显示辅助图标</td>
-          <td>Boolean</td>
-          <td>false</td>
-        </tr>
-        <tr>
-          <td>nzBanner</td>
-          <td>是否用作顶部公告	</td>
-          <td>Boolean</td>
-          <td>false</td>
-        </tr>
-        <tr>
-          <td>[alert-body]</td>
-          <td>与nzMessage二选一，定义Message</td>
-          <td>ng-content</td>
-          <td>无</td>
-        </tr>
-        <tr>
-          <td>[alert-description]</td>
-          <td>可选参数，定义Description</td>
-          <td>ng-content</td>
-          <td>无</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+</div>
+<section class="markdown api-container">
+  <h2 id="API"> <span> API </span>
+
+  </h2>
+  <h3 id="Rate"> <span> nz-alert </span>
+
+  </h3>
+  <table>
+    <thead>
+    <tr>
+      <th> Parameters </th>
+      <th> Description </th>
+      <th> type </th>
+      <th> Default </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td> nzType </td>
+      <td> Required parameters that specify the style of the warning prompt, with four choices: <code> success </code> <code> info </code> <code> warning </code> code> </td>
+      <td> String </td>
+      <td> <code> info </code> </td>
+    </tr>
+    <tr>
+      <td> nzCloseable </td>
+      <td> Optional parameter, the close button </td> is not displayed by default
+      <td> Boolean </td>
+      <td> false </td>
+    </tr>
+    <tr>
+      <td> nzCloseText </td>
+      <td> Optional parameter, custom close button </td>
+      <td> String </td>
+      <td> None </td>
+    </tr>
+    <tr>
+      <td> nzMessage </td>
+      <td> Alert-body tag with a second election, warning tips </td>
+      <td> String </td>
+      <td> None </td>
+    </tr>
+    <tr>
+      <td> nzDescription </td>
+      <td> Optional parameter, introduction to warning text </td>
+      <td> String </td>
+      <td> None </td>
+    </tr>
+    <tr>
+      <td> nzOnClose </td>
+      <td> Optional argument, callback function fired on shutdown </td>
+      <td> function </td>
+      <td> None </td>
+    </tr>
+    <tr>
+      <td> nzShowIcon </td>
+      <td> Optional parameter, whether to display the secondary icon </td>
+      <td> Boolean </td>
+      <td> false </td>
+    </tr>
+    <tr>
+      <td> nzBanner </td>
+      <td> is used as a top announcement </td>
+      <td> Boolean </td>
+      <td> false </td>
+    </tr>
+    <tr>
+      <td> [alert-body] </td>
+      <td> And nzMessage alternative one, the definition of Message </td>
+      <td> ng-content </td>
+      <td> None </td>
+    </tr>
+    <tr>
+      <td> [alert-description] </td>
+      <td> Optional parameters, defining Description </td>
+      <td> ng-content </td>
+      <td> None </td>
+    </tr>
+    </tbody>
+  </table>
+</section>
 </article>
+
+

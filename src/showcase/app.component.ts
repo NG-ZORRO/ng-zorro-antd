@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         const currentDemoComponent = this.componentList.find(component => `/${component.path}` === this.router.url);
         if (currentDemoComponent) {
-          this.title.setTitle(`${currentDemoComponent.zh} ${currentDemoComponent.label} - NG-ZORRO`)
+          this.title.setTitle(`${currentDemoComponent.label} - NG-ZORRO`)
         }
         const currentIntroComponent = this.routerList.intro.find(component => `/${component.path}` === this.router.url);
         if (currentIntroComponent) {

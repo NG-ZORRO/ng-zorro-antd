@@ -1,130 +1,132 @@
 <article>
-  <section class="markdown"><h1>TimePicker 时间选择框</h1>
-    <section class="markdown"><p>输入或选择时间的控件。</p>
-      <h2 id="何时使用"><span>何时使用</span>
-        <!-- <a class="anchor">#</a> -->
+  <section class = "markdown"> <h1> TimePicker </h1>
+    <section class = "markdown"> <p> Controls to enter or select a time. </p>
+      <h2 id = "When to use"> <span> When to use </span>
+
       </h2>
-      <p>当用户需要输入一个时间，可以点击标准输入框，弹出时间面板进行选择。</p>
+      <p> When users need to enter a time, they can click on the standard input box, pop-up time panel to choose. </p>
     </section>
-    <h2>代码演示<i class="code-box-expand-trigger anticon anticon-appstore" title="展开全部代码"></i></h2>
+    <h2> Code Demo <i class = "code-box-expand-trigger anticon anticon-appstore" title = "Expand All Code"> </i> </h2>
   </section>
-  <div nz-row [nzGutter]="8">
-    <div nz-col [nzSpan]="12">
-      <nz-code-box [nzTitle]="'基本'" id="components-time-picker-demo-basic" [nzCode]="NzDemoTimePickerBasicCode">
-        <nz-demo-timepicker-basic demo></nz-demo-timepicker-basic>
+  <div nz-row [nzGutter] = "8">
+    <div nz-col [nzSpan] = "12">
+      <nz-code-box [nzTitle] = "'Basic'" id = "components-time-picker-demo-basic" [nzCode] = "NzDemoTimePickerBasicCode">
+        <nz-demo-timepicker-basic demo> </nz-demo-timepicker-basic>
         <div intro>
-          <p>最简单的用法。</p>
+          <p> The simplest usage. </p>
         </div>
       </nz-code-box>
-      <nz-code-box [nzTitle]="'三种大小'" id="components-time-picker-demo-size" [nzCode]="NzDemoTimePickerSizeCode">
-        <nz-demo-timepicker-size demo></nz-demo-timepicker-size>
+      <nz-code-box [nzTitle] = "'Three sizes'" id = "components-time-picker-demo-size" [nzCode] = "NzDemoTimePickerSizeCode">
+        <nz-demo-timepicker-size demo> </nz-demo-timepicker-size>
         <div intro>
-          <p>三种大小的输入框，大的用在表单中，中的为默认。</p>
+          <p> Three sizes of input box, big used in the form, the default. </p>
         </div>
       </nz-code-box>
-      <nz-code-box [nzTitle]="'禁用'" id="components-time-picker-demo-disabled" [nzCode]="NzDemoTimePickerDisabledCode">
-        <nz-demo-timepicker-disabled demo></nz-demo-timepicker-disabled>
+      <nz-code-box [nzTitle] = "'Disabled'" id = "components-time-picker-demo-disabled" [nzCode] = "NzDemoTimePickerDisabledCode">
+        <nz-demo-timepicker-disabled demo> </nz-demo-timepicker-disabled>
         <div intro>
-          <p>禁用时间选择。</p>
+          <p> Disable time selection. </p>
         </div>
       </nz-code-box>
-      <nz-code-box [nzTitle]="'只显示部分选项'" id="components-time-picker-demo-hide-options" [nzCode]="NzDemoTimePickerHideOptionsCode">
-        <nz-demo-timepicker-hide-options demo></nz-demo-timepicker-hide-options>
+      <nz-code-box [nzTitle] = "'Show only partial options'" id = "components-time-picker-demo-hide-options" [nzCode] = "NzDemoTimePickerHideOptionsCode">
+        <nz-demo-timepicker-hide-options demo> </nz-demo-timepicker-hide-options>
         <div intro>
-          <p>通过 <code>nzHideDisabledOptions</code> 将不可选的选项隐藏。</p>
+          <p> Hide non-selectable options via <code> nzHideDisabledOptions </code>. </p>
         </div>
       </nz-code-box>
     </div>
-    <div nz-col [nzSpan]="12">
-      <nz-code-box [nzTitle]="'受控组件'" id="components-time-picker-demo-change" [nzCode]="NzDemoTimePickerChangeCode">
-        <nz-demo-timepicker-change demo></nz-demo-timepicker-change>
+    <div nz-col [nzSpan] = "12">
+      <nz-code-box [nzTitle] = "'Controlled Components'" id = "components-time-picker-demo-change" [nzCode] = "NzDemoTimePickerChangeCode">
+        <nz-demo-timepicker-change demo> </nz-demo-timepicker-change>
         <div intro>
-          <p>nzValue 和 nzValueChange 需要配合使用。</p>
+          <p> nzValue and nzValueChange need to be used together. </p>
         </div>
       </nz-code-box>
-      <nz-code-box [nzTitle]="'不展示秒'" id="components-time-picker-demo-without-seconds" [nzCode]="NzDemoTimePickerWithoutSecondsCode">
-        <nz-demo-timepicker-without-seconds demo></nz-demo-timepicker-without-seconds>
+      <nz-code-box [nzTitle] = "'Do not show second'" id = "components-time-picker-demo-without-seconds" [nzCode] = "NzDemoTimePickerWithoutSecondsCode">
+        <nz-demo-timepicker-without-seconds demo> </nz-demo-timepicker-without-seconds>
         <div intro>
-          <p>不展示秒，也不允许选择。</p>
+          <p> Do not show seconds, nor allow selection. </p>
         </div>
       </nz-code-box>
-      <nz-code-box [nzTitle]="'禁止选项'" id="components-time-picker-demo-disabled-options" [nzCode]="NzDemoTimePickerDisabledOptionsCode">
-        <nz-demo-timepicker-disabled-options demo></nz-demo-timepicker-disabled-options>
+      <nz-code-box [nzTitle] = "'Prohibit options'" id = "components-time-picker-demo-disabled-options" [nzCode] = "NzDemoTimePickerDisabledOptionsCode">
+        <nz-demo-timepicker-disabled-options demo> </nz-demo-timepicker-disabled-options>
         <div intro>
-          <p>限制选择 <code>20:30</code> 到 <code>23:30</code> 这个时间段。</p>
+          <p> Limit the timeframe of <code> 20:30 </code> to <code> 23:30 </code>. </p>
         </div>
       </nz-code-box>
     </div>
   </div>
-  <section class="markdown api-container">
-    <h2 id="API"><span>API</span>
-      <!-- <a class="anchor">#</a> -->
+  <section class = "markdown api-container">
+    <h2 id = "API"> <span> API </span>
+
     </h2>
     <table>
       <thead>
-        <tr>
-          <th>参数</th>
-          <th>说明</th>
-          <th>类型</th>
-          <th>默认值</th>
-        </tr>
+      <tr>
+        <th> Parameters </th>
+        <th> Description </th>
+        <th> type </th>
+        <th> Default </th>
+      </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>ngModel</td>
-          <td>默认时间</td>
-          <td>string or Date</td>
-          <td>无</td>
-        </tr>
-        <tr>
-          <td>nzSize</td>
-          <td>设置TimePicker大小</td>
-          <td>'large'|'small'|'default'</td>
-          <td>'default'</td>
-        </tr>
-        <tr>
-          <td>nzPlaceHolder</td>
-          <td>没有值的时候显示的内容</td>
-          <td>String</td>
-          <td>"请选择时间"</td>
-        </tr>
-        <tr>
-          <td>nzFormat</td>
-          <td>展示的时间格式</td>
-          <td>String</td>
-          <td>"HH:mm:ss"、"HH:mm"、"mm:ss"</td>
-        </tr>
-        <tr>
-          <td>nzDisabled</td>
-          <td>禁用全部操作</td>
-          <td>Boolean</td>
-          <td>false</td>
-        </tr>
-        <tr>
-          <td>nzDisabledHours</td>
-          <td>禁止选择部分小时选项</td>
-          <td>function()</td>
-          <td>无</td>
-        </tr>
-        <tr>
-          <td>nzDisabledMinutes</td>
-          <td>禁止选择部分分钟选项</td>
-          <td>function(selectedHour)</td>
-          <td>无</td>
-        </tr>
-        <tr>
-          <td>nzDisabledSeconds</td>
-          <td>禁止选择部分秒选项</td>
-          <td>function(selectedHour, selectedMinute)</td>
-          <td>无</td>
-        </tr>
-        <tr>
-          <td>nzHideDisabledOptions</td>
-          <td>添加该属性来隐藏禁止选择的选项</td>
-          <td>attribute</td>
-          <td>-</td>
-        </tr>
+      <tr>
+        <td> ngModel </td>
+        <td> default time </td>
+        <td> string or Date </td>
+        <td> None </td>
+      </tr>
+      <tr>
+        <td> nzSize </td>
+        <td> Set TimePicker Size </td>
+        <td> 'large' | 'small' | 'default' </td>
+        <td> 'default' </td>
+      </tr>
+      <tr>
+        <td> nzPlaceHolder </td>
+        <td> What to display when there is no value </td>
+        <td> String </td>
+        <td> "Please select time </td>
+      </tr>
+      <tr>
+        <td> nzFormat </td>
+        <td> Impression time format </td>
+        <td> String </td>
+        <td> "HH: mm: ss", "HH: mm", "mm: ss" </td>
+      </tr>
+      <tr>
+        <td> nzDisabled </td>
+        <td> Disable all actions </td>
+        <td> Boolean </td>
+        <td> false </td>
+      </tr>
+      <tr>
+        <td> nzDisabledHours </td>
+        <td> Disable part-hour option </td>
+        <td> function () </td>
+        <td> None </td>
+      </tr>
+      <tr>
+        <td> nzDisabledMinutes </td>
+        <td> Prohibit selection of partial minutes option </td>
+        <td> function (selectedHour) </td>
+        <td> None </td>
+      </tr>
+      <tr>
+        <td> nzDisabledSeconds </td>
+        <td> Partial selection of seconds option </td> is prohibited
+        <td> function (selectedHour, selectedMinute) </td>
+        <td> None </td>
+      </tr>
+      <tr>
+        <td> nzHideDisabledOptions </td>
+        <td> Add this attribute to hide the option to disable selection </td>
+        <td> attribute </td>
+        <td> - </td>
+      </tr>
       </tbody>
     </table>
   </section>
 </article>
+
+

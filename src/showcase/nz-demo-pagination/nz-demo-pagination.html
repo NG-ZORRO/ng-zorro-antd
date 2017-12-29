@@ -1,135 +1,137 @@
 <article>
   <section class="markdown">
-    <h1>Pagination 分页</h1>
+    <h1> Pagination  </h1>
     <section class="markdown">
-      <p>采用分页的形式分隔长列表，每次只加载一个页面。</p>
-      <h2 id="何时使用"><span>何时使用</span>
-        <a  class="anchor">#</a>
+      <p> Separate long lists in pagination, loading only one page at a time. </p>
+      <h2 id="When to use"> <span> When to use </span>
+        <a class="anchor"> # </a>
       </h2>
       <ul>
-        <li><p>当加载/渲染所有数据将花费很多时间时；</p></li>
-        <li><p>可切换页码浏览数据。</p></li>
+        <li> <p> When loading / rendering all your data will take a lot of time; </p> </li>
+        <li> <p> to switch page numbers to browse data. </p> </li>
       </ul>
     </section>
-    <h2>代码演示
-      <i class="code-box-expand-trigger anticon anticon-appstore" title="展开全部代码"></i>
+    <h2> code demo
+      <i class="code-box-expand-trigger anticon anticon-appstore" title="Expand All Code"> </i>
     </h2>
   </section>
   <div nz-row [nzGutter]="8">
     <div nz-col [nzSpan]="24">
-      <nz-code-box [nzTitle]="'简单'" id="components-pagination-demo-basic" [nzCode]="NzDemoPaginationBasicCode">
-        <nz-demo-pagination-basic demo></nz-demo-pagination-basic>
-        <div intro>
-          <p>基础分页。</p>
-        </div>
-      </nz-code-box>
-      <nz-code-box [nzTitle]="'改变'" id="components-pagination-demo-changer" [nzCode]="NzDemoPaginationChangerCode">
-        <nz-demo-pagination-changer demo></nz-demo-pagination-changer>
-        <div intro>
-          <p>改变每页显示条目。</p>
-        </div>
-      </nz-code-box>
-      <nz-code-box [nzTitle]="'迷你'" id="components-pagination-demo-mini" [nzCode]="NzDemoPaginationMiniCode">
-        <nz-demo-pagination-mini demo></nz-demo-pagination-mini>
-        <div intro>
-          <p>迷你版本。</p>
-        </div>
-      </nz-code-box>
-      <nz-code-box [nzTitle]="'更多'" id="components-pagination-demo-more" [nzCode]="NzDemoPaginationMoreCode">
-        <nz-demo-pagination-more demo></nz-demo-pagination-more>
-        <div intro>
-          <p>更多分页。</p>
-        </div>
-      </nz-code-box>
-      <nz-code-box [nzTitle]="'跳转'" id="components-pagination-demo-jump" [nzCode]="NzDemoPaginationJumpCode">
-        <nz-demo-pagination-jump demo></nz-demo-pagination-jump>
-        <div intro>
-          <p>快速跳转到某一页。</p>
-        </div>
-      </nz-code-box>
-      <nz-code-box [nzTitle]="'简洁'" id="components-pagination-demo-simple" [nzCode]="NzDemoPaginationSimpleCode">
-        <nz-demo-pagination-simple demo></nz-demo-pagination-simple>
-        <div intro>
-          <p>简单地翻页。</p>
-        </div>
-      </nz-code-box>
-      <nz-code-box [nzTitle]="'总数'" id="components-pagination-demo-total" [nzCode]="NzDemoPaginationTotalCode">
-        <nz-demo-pagination-total demo></nz-demo-pagination-total>
-        <div intro>
-          <p>通过设置 <code>nzShowTotal</code> 展示总共有多少数据。</p>
-        </div>
-      </nz-code-box>
-    </div>
+      <nz-code-box [nzTitle]="'Simple'" id =" components-pagination-demo-basic "[nzCode] =" NzDemoPaginationBasicCode ">
+      <nz-demo-pagination-basic demo> </nz-demo-pagination-basic>
+      <div intro>
+        <p> Basic Paging. </p>
+      </div>
+    </nz-code-box>
+    <nz-code-box [nzTitle]="'Change'" id="components-pagination-demo-changer" [nzCode]="NzDemoPaginationChangerCode">
+      <nz-demo-pagination-changer demo> </nz-demo-pagination-changer>
+      <div intro>
+        <p> Change the display of each page. </p>
+      </div>
+    </nz-code-box>
+    <nz-code-box [nzTitle]="'mini'" id="components-pagination-demo-mini" [nzCode]="NzDemoPaginationMiniCode">
+      <nz-demo-pagination-mini demo> </nz-demo-pagination-mini>
+      <div intro>
+        <p> Mini version. </p>
+      </div>
+    </nz-code-box>
+    <nz-code-box [nzTitle]="'more'" id="components-pagination-demo-more" [nzCode]="NzDemoPaginationMoreCode">
+      <nz-demo-pagination-more demo> </nz-demo-pagination-more>
+      <div intro>
+        <p> More pagination. </p>
+      </div>
+    </nz-code-box>
+    <nz-code-box [nzTitle]="'jump'" id="components-pagination-demo-jump" [nzCode]="NzDemoPaginationJumpCode">
+      <nz-demo-pagination-jump demo> </nz-demo-pagination-jump>
+      <div intro>
+        <p> Quick jump to a page. </p>
+      </div>
+    </nz-code-box>
+    <nz-code-box [nzTitle]="'Simple'" id="components-pagination-demo-simple" [nzCode]="NzDemoPaginationSimpleCode">
+      <nz-demo-pagination-simple demo> </nz-demo-pagination-simple>
+      <div intro>
+        <p> Simply flip. </p>
+      </div>
+    </nz-code-box>
+    <nz-code-box [nzTitle]="'Total'" id="components-pagination-demo-total" [nzCode]="NzDemoPaginationTotalCode">
+      <nz-demo-pagination-total demo> </nz-demo-pagination-total>
+      <div intro>
+        <p> Show how much data is total by setting <code>nzShowTotal</code>. </p>
+      </div>
+    </nz-code-box>
   </div>
-  <section class="markdown api-container">
-    <h2 id="API"><span>API</span>
-      <!-- <a class="anchor">#</a> -->
-    </h2>
-    <table>
-      <thead>
-        <tr>
-          <th>参数</th>
-          <th>说明</th>
-          <th>类型</th>
-          <th>默认值</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>nzPageIndex</td>
-          <td>当前页数(双向绑定)</td>
-          <td>Number</td>
-          <td>无</td>
-        </tr>
-        <tr>
-          <td>nzTotal</td>
-          <td>数据总数</td>
-          <td>Number</td>
-          <td>0</td>
-        </tr>
-        <tr>
-          <td>nzPageSize</td>
-          <td>每页条数 (双向绑定)</td>
-          <td>Number</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>nzShowSizeChanger</td>
-          <td>是否可以改变 pageSize，当添加该属性时显示页面改变下拉菜单</td>
-          <td>attribute</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td>nzPageSizeSelectorValues</td>
-          <td>每页显示条目数下拉框值</td>
-          <td>Array</td>
-          <td>[10, 20, 30, 40, 50]</td>
-        </tr>
-        <tr>
-          <td>nzShowQuickJumper</td>
-          <td>是否可以快速跳转至某页，当添加该属性时显示快速跳转</td>
-          <td>attribute</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td>nzSize</td>
-          <td>当为「small」时，是小尺寸分页</td>
-          <td>String</td>
-          <td>""</td>
-        </tr>
-        <tr>
-          <td>nzSimple</td>
-          <td>当添加该属性时，显示为简单分页</td>
-          <td>attribute</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td>nzShowTotal</td>
-          <td>当添加该属性时，显示总共有多少条数据</td>
-          <td>attribute</td>
-          <td>-</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+</div>
+<section class="markdown api-container">
+  <h2 id="API"> <span> API </span>
+
+  </h2>
+  <table>
+    <thead>
+    <tr>
+      <th> Parameters </th>
+      <th> Description </th>
+      <th> type </th>
+      <th> Default </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td> nzPageIndex </td>
+      <td> Current Pages (Bidirectional Binding) </td>
+      <td> Number </td>
+      <td> None </td>
+    </tr>
+    <tr>
+      <td> nzTotal </td>
+      <td> total number of data </td>
+      <td> Number </td>
+      <td> 0 </td>
+    </tr>
+    <tr>
+      <td> nzPageSize </td>
+      <td> Number of pages per page (bidirectional binding) </td>
+      <td> Number </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> nzShowSizeChanger </td>
+      <td> Can change pageSize, display page change drop-down menu when adding this attribute </td>
+      <td> attribute </td>
+      <td> - </td>
+    </tr>
+    <tr>
+      <td> nzPageSizeSelectorValues ​​</td>
+      <td> Show entries per page drop-down box value </td>
+      <td> Array </td>
+      <td> [10, 20, 30, 40, 50] </td>
+    </tr>
+    <tr>
+      <td> nzShowQuickJumper </td>
+      <td> Can you jump to a page quickly, showing a quick jump when adding this attribute </td>
+      <td> attribute </td>
+      <td> - </td>
+    </tr>
+    <tr>
+      <td> nzSize </td>
+      <td> is "small", it is small-size page </td>
+      <td> String </td>
+      <td> "</td>
+    </tr>
+    <tr>
+      <td> nzSimple </td>
+      <td> Appears as a simple page when adding this attribute</td>
+      <td> attribute </td>
+      <td> - </td>
+    </tr>
+    <tr>
+      <td> nzShowTotal </td>
+      <td> When adding this attribute, it shows the total number of data </td>
+      <td> attribute </td>
+      <td> - </td>
+    </tr>
+    </tbody>
+  </table>
+</section>
 </article>
+
+

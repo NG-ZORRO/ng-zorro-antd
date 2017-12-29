@@ -6,7 +6,7 @@ import { NzModalService } from '../../../index.showcase';
   selector: 'nz-demo-confirm-basic',
   template: `
     <button nz-button [nzType]="'info'" (click)="showConfirm()">
-      <span>确认对话框</span>
+      <span>Confirm dialog box</span>
     </button>
   `,
   styles  : []
@@ -14,10 +14,10 @@ import { NzModalService } from '../../../index.showcase';
 export class NzDemoConfirmBasicComponent {
   showConfirm = () => {
     this.confirmServ.confirm({
-      title  : '您是否确认要删除这项内容',
-      content: '<b>一些解释</b>',
+      title  : 'Are you sure you want to delete this item?',
+      content: '<b>Some explanation</b>',
       onOk() {
-        console.log('确定');
+        console.log('determine');
       },
       onCancel() {
       }

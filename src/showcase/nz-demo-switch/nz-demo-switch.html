@@ -1,101 +1,103 @@
 <article>
-  <section class="markdown"><h1>Switch 开关</h1>
-    <section class="markdown"><p>开关选择器。</p>
-      <h2 id="何时使用"><span>何时使用</span>
-        <!-- <a class="anchor">#</a> -->
+  <section class = "markdown"> <h1> Switch  </h1>
+    <section class = "markdown"> <p> Switch selector. </p>
+      <h2 id = "When to use"> <span> When to use </span>
+
       </h2>
       <ul>
-        <li><p>需要表示开关状态/两种状态之间的切换时；</p></li>
-        <li><p>和 <code>checkbox</code>的区别是，切换 <code>switch</code> 会直接触发状态改变，而 <code>checkbox</code> 一般用于状态标记，需要和提交操作配合。
-        </p></li>
+        <li> <p> Needs to indicate switch status / when switching between two states; </p> </li>
+        The difference between <li> <p> and <code> checkbox </code> is that switching <code> switch </code> triggers state changes directly, whereas <code> checkbox </code> is typically used for stateful tags and requires Cooperate with submitting operation.
+      </p> </li>
       </ul>
     </section>
-    <h2>代码演示<i class="code-box-expand-trigger anticon anticon-appstore" title="展开全部代码"></i></h2>
+    <h2> Code Demo <i class = "code-box-expand-trigger anticon anticon-appstore" title = "Expand All Code"> </i> </h2>
   </section>
-  <div nz-row [nzGutter]="8">
-    <div nz-col [nzSpan]="12">
-      <nz-code-box [nzTitle]="'简单'" id="components-switch-demo-basic" [nzCode]="NzDemoSwitchBasicCode">
-        <nz-demo-switch-basic demo></nz-demo-switch-basic>
+  <div nz-row [nzGutter] = "8">
+    <div nz-col [nzSpan] = "12">
+      <nz-code-box [nzTitle] = "'Simple'" id = "components-switch-demo-basic" [nzCode] = "NzDemoSwitchBasicCode">
+        <nz-demo-switch-basic demo> </nz-demo-switch-basic>
         <div intro>
-          <p>最简单的用法。</p>
+          <p> The simplest usage. </p>
         </div>
       </nz-code-box>
-      <nz-code-box [nzTitle]="'文字和图标'" id="components-switch-demo-text" [nzCode]="NzDemoSwitchTextCode">
-        <nz-demo-switch-text demo></nz-demo-switch-text>
+      <nz-code-box [nzTitle] = "'Text and Icon'" id = "components-switch-demo-text" [nzCode] = "NzDemoSwitchTextCode">
+        <nz-demo-switch-text demo> </nz-demo-switch-text>
         <div intro>
-          <p>带有文字和图标</p>
-        </div>
-      </nz-code-box>
-    </div>
-    <div nz-col [nzSpan]="12">
-      <nz-code-box [nzTitle]="'不可用'" id="components-switch-demo-disabled" [nzCode]="NzDemoSwitchDisabledCode">
-        <nz-demo-switch-disabled demo></nz-demo-switch-disabled>
-        <div intro>
-          <p>nz-switch失效状态</p>
-        </div>
-      </nz-code-box>
-      <nz-code-box [nzTitle]="'大小'" id="components-switch-demo-size" [nzCode]="NzDemoSwitchSizeCode">
-        <nz-demo-switch-size demo></nz-demo-switch-size>
-        <div intro>
-          <p><code>[nzSize]="'small'"</code>表示小号开关</p>
+          <p> With text and icons </p>
         </div>
       </nz-code-box>
     </div>
+    <div nz-col [nzSpan] = "12">
+      <nz-code-box [nzTitle] = "'Not Available'" id = "components-switch-demo-disabled" [nzCode] = "NzDemoSwitchDisabledCode">
+        <nz-demo-switch-disabled demo> </nz-demo-switch-disabled>
+        <div intro>
+          <p> nz-switch failure status </p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle] = "'size'" id =" components-switch-demo-size "[nzCode] =" NzDemoSwitchSizeCode ">
+      <nz-demo-switch-size demo> </nz-demo-switch-size>
+      <div intro>
+        <p> <code> [nzSize] = "'small'" </code> for a small switch </p>
+      </div>
+    </nz-code-box>
   </div>
-  <section class="markdown api-container">
-    <h2 id="API"><span>API</span>
-      <!-- <a class="anchor">#</a> -->
-    </h2>
-    <h3 id="Switch"><span>nz-switch</span>
-      <!-- <a class="anchor">#</a> -->
-    </h3>
-    <table>
-      <thead>
-        <tr>
-          <th>参数</th>
-          <th>说明</th>
-          <th>类型</th>
-          <th>介绍</th>
-          <th>默认值</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>ngModel</td>
-          <td>指定当前是否选中</td>
-          <td>Boolean</td>
-          <td>双向绑定</td>
-          <td>false</td>
-        </tr>
-        <tr>
-          <td>nzSize</td>
-          <td>开关大小</td>
-          <td>String</td>
-          <td>'default'|'small'</td>
-          <td>'default'</td>
-        </tr>
-        <tr>
-          <td>nzDisabled</td>
-          <td>开关是否禁用</td>
-          <td>String</td>
-          <td>'default'|'small'</td>
-          <td>'default'</td>
-        </tr>
-        <tr>
-          <td>checked</td>
-          <td>选中时的内容</td>
-          <td>selector</td>
-          <td>标记符</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>unchecked</td>
-          <td>非选中时的内容</td>
-          <td>selector</td>
-          <td>标记符</td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+</div>
+<section class = "markdown api-container">
+  <h2 id = "API"> <span> API </span>
+
+  </h2>
+  <h3 id = "Switch"> <span> nz-switch </span>
+
+  </h3>
+  <table>
+    <thead>
+    <tr>
+      <th> Parameters </th>
+      <th> Description </th>
+      <th> type </th>
+      <th> Introduction </th>
+      <th> Default </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td> ngModel </td>
+      <td> Specifies if is currently selected</td>
+      <td> Boolean </td>
+      <td> Bidirectional binding </td>
+      <td> false </td>
+    </tr>
+    <tr>
+      <td> nzSize </td>
+      <td> switch size </td>
+      <td> String </td>
+      <td> 'default' | 'small' </td>
+      <td> 'default' </td>
+    </tr>
+    <tr>
+      <td> nzDisabled </td>
+      <td> switch is disabled </td>
+      <td> String </td>
+      <td> 'default' | 'small' </td>
+      <td> 'default' </td>
+    </tr>
+    <tr>
+      <td> checked </td>
+      <td> When selected </td>
+      <td> selector </td>
+      <td> tag </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> unchecked </td>
+      <td> Unchecked content </td>
+      <td> selector </td>
+      <td> tag </td>
+      <td> </td>
+    </tr>
+    </tbody>
+  </table>
+</section>
 </article>
+
+
