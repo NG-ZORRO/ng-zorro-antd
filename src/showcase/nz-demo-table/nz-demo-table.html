@@ -1,221 +1,221 @@
 ﻿<article>
   <section class="markdown">
-         <h1> Table  </h1>
-        
+    <h1> Table  </h1>
+
     <section class="markdown"><p> Show row and column data. </p>
-             <h2 id="When to use"><span> When to use </span>
-               </h2>
-            
+      <h2 id="When to use"><span> When to use </span>
+      </h2>
+
       <ul>
-                
+
         <li><p> When there is a lot of structured data to show up; </p></li>
-                
+
         <li><p> When complex behaviors such as sorting, searching, paging, and customizing the data are required. </p>
         </li>
-              
+
       </ul>
-          
+
     </section>
-         <h2> Code Demo <i class="code-box-expand-trigger anticon anticon-appstore" title="Expand All Code"> </i></h2>
-      
+    <h2> Code Demo <i class="code-box-expand-trigger anticon anticon-appstore" title="Expand All Code"> </i></h2>
+
   </section>
 
   <div nz-row [nzGutter]="8">
     <div nz-col [nzSpan]="24">
       <nz-code-box [nzTitle]="'Simple'" id="components-table-demo-basic" [nzCode]="NzDemoTableBasicCode">
-                
+
         <nz-demo-table-basic demo></nz-demo-table-basic>
-                
+
         <div intro>
-                    <p> Simple form, the last column is a variety of operations. </p>
-                  
+          <p> Simple form, the last column is a variety of operations. </p>
+
         </div>
-              
+
       </nz-code-box>
-            
+
       <nz-code-box [nzTitle]="'Optional'" id="components-table-demo-selection" [nzCode]="NzDemoTableSelectionCode">
-                
+
         <nz-demo-table-selection demo></nz-demo-table-selection>
-                
+
         <div intro>
-                    <p> The first column is the linkage checkbox. </p>
-                  
+          <p> The first column is the linkage checkbox. </p>
+
         </div>
-              
+
       </nz-code-box>
-            
+
       <nz-code-box [nzTitle]="'Selection and Operation'" id="components-table-demo-selection-and-operation"
                    [nzCode]="NzDemoTableSelectionAndOperationCode">
-                
+
         <nz-demo-table-selection-and-operation demo></nz-demo-table-selection-and-operation>
-                
+
         <div intro>
-                    <p> Select to operate, clear the selection after finishing. </p>
-                  
+          <p> Select to operate, clear the selection after finishing. </p>
+
         </div>
-              
+
       </nz-code-box>
-            
+
       <nz-code-box [nzTitle]="'Select Box Properties'" id="components-table-demo-selection-props"
                    [nzCode]="NzDemoTableSelectionPropsCode">
-                
+
         <nz-demo-table-selection-props demo></nz-demo-table-selection-props>
-                
+
         <div intro>
-                    <p> Configure the default properties of the selection box. </p>
-                  
+          <p> Configure the default properties of the selection box. </p>
+
         </div>
-              
+
       </nz-code-box>
-            
+
       <nz-code-box [nzTitle]="' Controllable filtering and sorting '" id="components-table-demo-reset-filter"
                    [nzCode]="NzDemoTableResetFilterCode">
-                
+
         <nz-demo-table-reset-filter demo></nz-demo-table-reset-filter>
-                
+
         <div intro>
-                    <p> Use controlled attributes to control the filtering and sorting status. </p>
-                    <p> nzTable can be like
-                      <a href="http://www.w3school.com/tags/tag_table.asp" target="_blank"> HTML table tab </a>
-                      Customize header and content as well as easily customize filtering and sorting capabilities with
-          <code> nz-table-sort </code> and <code> nz-table-filter </code>
-                    </p>
-                  
+          <p> Use controlled attributes to control the filtering and sorting status. </p>
+          <p> nzTable can be like
+            <a href="http://www.w3school.com/tags/tag_table.asp" target="_blank"> HTML table tab </a>
+            Customize header and content as well as easily customize filtering and sorting capabilities with
+            <code> nz-table-sort </code> and <code> nz-table-filter </code>
+          </p>
+
         </div>
-              
+
       </nz-code-box>
-            
+
       <nz-code-box [nzTitle]="'Custom Filter Menu'" id="components-table-demo-custom-filter"
                    [nzCode]="NzDemoTableCustomFilterCode">
-                
+
         <nz-demo-table-custom-filter demo></nz-demo-table-custom-filter>
-                
+
         <div intro>
-                    <p> Customize the filter menu via the <code> nz-dropdown-custom </code> attribute of the <code>
-          nz-dropdown </code></p>
-                    <p> nzTable can be like
-                      <a href="http://www.w3school.com/tags/tag_table.asp" target="_blank"> HTML table tab </a>
-                      The same definition of header and content.
-                    </p>
-                  
+          <p> Customize the filter menu via the <code> nz-dropdown-custom </code> attribute of the <code>
+            nz-dropdown </code></p>
+          <p> nzTable can be like
+            <a href="http://www.w3school.com/tags/tag_table.asp" target="_blank"> HTML table tab </a>
+            The same definition of header and content.
+          </p>
+
         </div>
-              
+
       </nz-code-box>
-            
+
       <nz-code-box [nzTitle]="'Paging'" id="components-table-demo-paging" [nzCode]="NzDemoTablePagingCode">
-                
+
         <nz-demo-table-paging demo></nz-demo-table-paging>
-                
+
         <div intro>
-                    <p> Paging is displayed when there are many data items. </p>
-                  
+          <p> Paging is displayed when there are many data items. </p>
+
         </div>
-              
+
       </nz-code-box>
-            
+
       <nz-code-box [nzTitle]="'Remote Load Data'" id="components-table-demo-ajax" [nzCode]="NzDemoTableAjaxCode">
-                
+
         <nz-demo-table-ajax demo></nz-demo-table-ajax>
-                
+
         <div intro>
-                    <p> This example demonstrates how to read and present data from the server via a simple ajax
-          readout, with the ability to filter, sort, and load pages. Developers can access other data processing methods
-          themselves. </p>
-                    <p><strong> Note that this example is used
-                      <a href="https://randomuser.me"> Analog Interface </a>
-                      , The display data may not be accurate, please open the network panel to view the request.
-        </strong></p>
-                  
+          <p> This example demonstrates how to read and present data from the server via a simple ajax
+            readout, with the ability to filter, sort, and load pages. Developers can access other data processing methods
+            themselves. </p>
+          <p><strong> Note that this example is used
+            <a href="https://randomuser.me"> Analog Interface </a>
+            , The display data may not be accurate, please open the network panel to view the request.
+          </strong></p>
+
         </div>
-              
+
       </nz-code-box>
-            
+
       <nz-code-box [nzTitle]="'Expandable'" id="components-table-demo-expand" [nzCode]="NzDemoTableExpandCode">
-                
+
         <nz-demo-table-expand demo></nz-demo-table-expand>
-                
+
         <div intro>
-                    <p> When the content of the form can not be fully displayed at one time. </p>
-                  
+          <p> When the content of the form can not be fully displayed at one time. </p>
+
         </div>
-              
+
       </nz-code-box>
-            
+
       <nz-code-box [nzTitle]="'table row / column merge'" id="components-table-demo-colspan-rowspan"
                    [nzCode]="NzDemoTableColspanRowspanCode">
-                
+
         <nz-demo-table-colspan-rowspan demo></nz-demo-table-colspan-rowspan>
-                
+
         <div intro>
-                    <p> nzTable can be like
-                      <a href="http://www.w3school.com/tags/tag_table.asp" target="_blank"> HTML table tab </a>
-                      Use the same <code> rowspan </code> and <code> colspan </code> tags
-                    </p>
-                  
+          <p> nzTable can be like
+            <a href="http://www.w3school.com/tags/tag_table.asp" target="_blank"> HTML table tab </a>
+            Use the same <code> rowspan </code> and <code> colspan </code> tags
+          </p>
+
         </div>
-              
+
       </nz-code-box>
       <nz-code-box [nzTitle]="'TreeView'" id="components-table-demo-expand-tree" [nzCode]="NzDemoTableExpandTreeCode">
-                
+
         <nz-demo-table-expand-tree demo></nz-demo-table-expand-tree>
-                
+
         <div intro>
-                    <p> Tables support the display of tree data by <code> nzLevel </code> to control the indentation
-          width of each layer. </p>
-                  
+          <p> Tables support the display of tree data by <code> nzLevel </code> to control the indentation
+            width of each layer. </p>
+
         </div>
-              
+
       </nz-code-box>
-            
+
       <nz-code-box [nzTitle]="'Fixed header'" id="components-table-demo-fixed-header"
                    [nzCode]="NzDemoTableFixedHeaderCode">
-                
+
         <nz-demo-table-fixed-header demo></nz-demo-table-fixed-header>
-                
+
         <div intro>
-                    <p> Convenience to display large amounts of data on one page. </p>
-                    <p> You need to manually specify the width of <code> th </code> and <code> td </code>, or the header
-          and contents may not be aligned. </p>
-                  
+          <p> Convenience to display large amounts of data on one page. </p>
+          <p> You need to manually specify the width of <code> th </code> and <code> td </code>, or the header
+            and contents may not be aligned. </p>
+
         </div>
-              
+
       </nz-code-box>
-            
+
       <nz-code-box [nzTitle]="'Editable'" id="components-table-demo-edit" [nzCode]="NzDemoTableEditCode">
-                
+
         <nz-demo-table-edit demo></nz-demo-table-edit>
-                
+
         <div intro>
-                    <p> Forms with editable functions via custom templates. </p>
-                  
+          <p> Forms with editable functions via custom templates. </p>
+
         </div>
-              
+
       </nz-code-box>
-            
+
       <nz-code-box [nzTitle]="'Do not show paging'" id="components-table-demo-nopagination"
                    [nzCode]="NzDemoTableNoPaginationCode">
-                
+
         <nz-demo-table-nopagination demo></nz-demo-table-nopagination>
-                
+
         <div intro>
-                    <p> Pass nzIsPagination to false. At this point the form will display the complete data within
-          nzDataSource, without any pagination. </p>
-                  
+          <p> Pass nzIsPagination to false. At this point the form will display the complete data within
+            nzDataSource, without any pagination. </p>
+
         </div>
-              
+
       </nz-code-box>
-            
+
       <nz-code-box [nzTitle]="'Dynamic Control Table Properties'" id="components-table-demo-size"
                    [nzCode]="NzDemoTableSizeCode">
-                
+
         <nz-demo-table-size demo></nz-demo-table-size>
-                
+
         <div intro>
-                    <p> Choose a different combination of configurations to see the effect.
-                    </p>
-                  
+          <p> Choose a different combination of configurations to see the effect.
+          </p>
+
         </div>
-              
+
       </nz-code-box>
     </div>
   </div>
@@ -406,8 +406,8 @@
       </tbody>
     </table>
     <h3><span> nz-table-sort </span>
-          </h3>
-        <p> Embedding th display sort status </p>
+    </h3>
+    <p> Embedding th display sort status </p>
     <h3><span> nz-table-filter </span>
     </h3>
     <p> Used in conjunction with nz-dropdown to filter the data in the table </p>
@@ -553,6 +553,8 @@
         <td> true</td>
       </tr>
       </tbody>
-    </table>  
+    </table>
   </section>
 </article>
+
+
