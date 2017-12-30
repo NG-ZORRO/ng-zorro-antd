@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-pagination-options',
   template: `
-    <nz-pagination [nzOptions]="_options" [nzTotal]="100" nzShowSizeChanger></nz-pagination>`,
+    <nz-pagination [nzPageSizeOptions]="_options" [nzTotal]="100" nzShowSizeChanger></nz-pagination>`,
   styles  : []
 })
 export class NzDemoPaginationOptionsComponent implements OnInit {

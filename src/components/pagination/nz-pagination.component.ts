@@ -238,15 +238,16 @@ export class NzPaginationComponent {
   }
 
   @Input()
-  set nzOptions(options: number[]) {
+  set nzPageSizeOptions(options: number[]) {
     if (options && options.length > 0) {
       this._options = options;
     }
   }
 
-  get nzOptions(): number[] {
+  get nzPageSizeOptions(): number[] {
     return this._options;
   }
+
   _pageSizeChange($event) {
     this.nzPageSize = $event;
     this.nzPageSizeChange.emit($event);
