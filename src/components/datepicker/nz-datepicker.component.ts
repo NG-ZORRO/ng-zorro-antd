@@ -206,9 +206,11 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
   _startDecade = Math.floor(this._showYear / 10) * 10;
   _yearPanel: string[][] = [];
   _positions: ConnectionPositionPair[] = [ ...DEFAULT_DATEPICKER_POSITIONS ];
+  _allowClear = true;
   // ngModel Access
-  onChange: (value: Date) => void = () => null;
-  onTouched: () => void = () => null;
+  onChange: any = Function.prototype;
+  onTouched: any = Function.prototype;
+  @Input() nzShowTime: any = null;
   @Input() nzPlaceHolder = this._locale.translate('DateTime.chooseDatePlease');
   @Input() nzFormat = 'YYYY-MM-DD';
   @Input() nzSize = '';
@@ -267,6 +269,20 @@ export class NzDatePickerComponent implements ControlValueAccessor, OnInit {
       return false;
     }
   }
+  
+  @Input()
+  set nzAllowClear(value: boolean | string) {
+    if (value === '') {
+      this._allowClear = true;
+    } else {
+      this._allowClear = value as boolean;
+    }
+  }
+
+  get nzAllowClear() {
+    return this._allowClear;
+  }
+
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     const _position = position.connectionPair.originY === 'bottom' ? 'top' : 'bottom';
