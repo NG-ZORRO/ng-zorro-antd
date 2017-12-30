@@ -4,6 +4,7 @@ import { async, fakeAsync, tick, ComponentFixture, ComponentFixtureAutoDetect, T
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ArrayObservable } from 'rxjs/observable/ArrayObservable';
 import { NzButtonModule } from '../button/nz-button.module';
 import { NzTransferModule } from '../ng-zorro-antd.module';
 import { TransferItem } from './item';
@@ -29,6 +30,17 @@ const DEFAULT = `
 
 const RENDER = `
   <nz-transfer [nzDataSource]="list">
+      <ng-template #render let-item>
+        [OK]{{item.title}}-{{item.description}}
+      </ng-template>
+      <ng-template #footer let-direction>
+        <button nz-button (click)="reload(direction)" [nzSize]="'small'" style="float: right; margin: 5px;">reload</button>
+      </ng-template>
+  </nz-transfer>
+`;
+
+const CANMOVE = `
+  <nz-transfer [nzDataSource]="list" [canMove]="canMove">
       <ng-template #render let-item>
         [OK]{{item.title}}-{{item.description}}
       </ng-template>
@@ -82,6 +94,7 @@ describe('NzTransferModule', () => {
     spyOn(context, 'change');
     spyOn(context, 'search');
     spyOn(context, 'reload');
+    spyOn(context, 'canMove');
     spyOn(context, 'nzFilterOption');
     dl = fixture.debugElement;
     el = fixture.nativeElement;
@@ -176,6 +189,23 @@ describe('NzTransferModule', () => {
     });
   });
 
+  describe('#canMove', () => {
+    beforeEach(() => {
+      createTestModule(CANMOVE);
+    });
+
+    it('should be', () => {
+      context.list = [ ...DATA ].map((item, idx) => {
+        if (idx <= 3) item.checked = true;
+        return item;
+      });
+      fixture.detectChanges();
+      (el.querySelectorAll(`.ant-transfer-operation .ant-btn`)[1] as HTMLButtonElement).click();
+      fixture.detectChanges();
+      expect(context.canMove).toHaveBeenCalled();
+    });
+  });
+
 });
 
 @Component({ template: '' })
@@ -186,7 +216,6 @@ class TestTransferComponent {
   nzSearchPlaceholder = 'nzSearchPlaceholder';
   nzNotFoundContent = 'nzNotFoundContent';
   nzFilterOption(inputValue: string, option: TransferItem): boolean {
-    console.log(inputValue, option);
     return option.description.indexOf(inputValue) > -1;
   }
 
@@ -194,4 +223,10 @@ class TestTransferComponent {
   change(): void { }
   search(): void { }
   reload(): void { }
+  canMove(arg: any) {
+    if (arg.direction === 'right' && arg.list.length > 0) arg.list.splice(0, 1);
+    // or
+    // if (arg.direction === 'right' && arg.list.length > 0) delete arg.list[0];
+    return ArrayObservable.of(arg.list);
+  }
 }

@@ -1,8 +1,46 @@
 // tslint:disable:member-ordering
-import { Component, ContentChild, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChild,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { ArrayObservable } from 'rxjs/observable/ArrayObservable';
 import { NzLocaleService } from '../locale/index';
 import { toBoolean } from '../util/convert';
 import { TransferItem } from './item';
+
+export interface TransferCanMove {
+  direction: string;
+  list: TransferItem[];
+}
+
+export interface TransferChange {
+  from: string;
+  to: string;
+  list: TransferItem[];
+}
+
+export interface TransferSearchChange {
+  direction: string;
+  value: string;
+}
+
+export interface TransferSelectChange {
+  direction: string;
+  checked: boolean;
+  list: TransferItem[];
+  item: TransferItem;
+}
 
 @Component({
   selector: 'nz-transfer',
@@ -54,7 +92,8 @@ import { TransferItem } from './item';
   // tslint:disable-next-line:use-host-property-decorator
   host: {
     '[class.ant-transfer]': 'true'
-  }
+  },
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzTransferComponent implements OnChanges {
   private _showSearch = false;
@@ -70,6 +109,7 @@ export class NzTransferComponent implements OnChanges {
   @Input() nzListStyle: object;
   @Input() nzItemUnit = this._locale.translate('Transfer.itemUnit');
   @Input() nzItemsUnit = this._locale.translate('Transfer.itemsUnit');
+  @Input() canMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => ArrayObservable.of(arg.list);
   @ContentChild('render') render: TemplateRef<void>;
   @ContentChild('footer') footer: TemplateRef<void>;
 
@@ -88,10 +128,9 @@ export class NzTransferComponent implements OnChanges {
   @Input() nzNotFoundContent = this._locale.translate('Transfer.notFoundContent');
 
   // events
-  // TODO: use named interface
-  @Output() nzChange: EventEmitter<{ from: string, to: string, list: TransferItem[] }> = new EventEmitter();
-  @Output() nzSearchChange: EventEmitter<{ direction: string, value: string }> = new EventEmitter();
-  @Output() nzSelectChange: EventEmitter<{ direction: string, checked: boolean, list: TransferItem[], item: TransferItem }> = new EventEmitter();
+  @Output() nzChange: EventEmitter<TransferChange> = new EventEmitter();
+  @Output() nzSearchChange: EventEmitter<TransferSearchChange> = new EventEmitter();
+  @Output() nzSelectChange: EventEmitter<TransferSelectChange> = new EventEmitter();
 
   // endregion
 
@@ -133,6 +172,7 @@ export class NzTransferComponent implements OnChanges {
 
   handleFilterChange(ret: { direction: string, value: string }): void {
     this.nzSearchChange.emit(ret);
+    this.cd.detectChanges();
   }
 
   // endregion
@@ -142,8 +182,9 @@ export class NzTransferComponent implements OnChanges {
   leftActive = false;
   rightActive = false;
 
-  private updateOperationStatus(direction: string, count: number): void {
-    this[direction === 'right' ? 'leftActive' : 'rightActive'] = count > 0;
+  private updateOperationStatus(direction: string, count?: number): void {
+    this[direction === 'right' ? 'leftActive' : 'rightActive'] = (typeof count === 'undefined' ? this.getCheckedData(direction).filter(w => !w.disabled).length : count) > 0;
+    this.cd.detectChanges();
   }
 
   moveToLeft = () => this.moveTo('left');
@@ -151,37 +192,47 @@ export class NzTransferComponent implements OnChanges {
 
   moveTo(direction: string): void {
     const oppositeDirection = direction === 'left' ? 'right' : 'left';
+    this.updateOperationStatus(oppositeDirection, 0);
+    const datasource = direction === 'left' ? this.rightDataSource : this.leftDataSource;
+    const moveList = datasource.filter(item => item.checked === true && !item.disabled);
+    this.canMove({ direction, list: moveList })
+        .subscribe(
+          newMoveList => this.truthMoveTo(direction, newMoveList.filter(i => !!i)),
+          () => moveList.forEach(i => i.checked = false)
+        );
+  }
+
+  private truthMoveTo(direction: string, list: TransferItem[]): void {
+    const oppositeDirection = direction === 'left' ? 'right' : 'left';
     const datasource = direction === 'left' ? this.rightDataSource : this.leftDataSource;
     const targetDatasource = direction === 'left' ? this.leftDataSource : this.rightDataSource;
-    const moveList: TransferItem[] = [];
-    for (let i = 0; i < datasource.length; i++) {
-      const item = datasource[i];
-      if (item.checked === true && !item.disabled) {
-        item.checked = false;
-        moveList.push(item);
-        targetDatasource.push(item);
-        datasource.splice(i, 1);
-        --i;
-      }
+    for (const item of list) {
+      const idx = datasource.indexOf(item);
+      if (idx === -1) continue;
+      item.checked = false;
+      targetDatasource.push(item);
+      datasource.splice(idx, 1);
     }
-    this.updateOperationStatus(oppositeDirection, 0);
+    this.updateOperationStatus(oppositeDirection);
     this.nzChange.emit({
       from: oppositeDirection,
       to: direction,
-      list: moveList
+      list
     });
     // this.nzSelectChange.emit({ direction: oppositeDirection, list: [] });
   }
 
   // endregion
 
-  constructor(private _locale: NzLocaleService) {}
+  constructor(private _locale: NzLocaleService, private el: ElementRef, private cd: ChangeDetectorRef) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('nzDataSource' in changes || 'nzTargetKeys' in changes) {
       this.splitDataSource();
-      this.updateOperationStatus('left', this.leftDataSource.filter(w => w.checked && !w.disabled).length);
-      this.updateOperationStatus('right', this.rightDataSource.filter(w => w.checked && !w.disabled).length);
+      this.updateOperationStatus('left');
+      this.updateOperationStatus('right');
     }
+    this.cd.detectChanges();
   }
 }

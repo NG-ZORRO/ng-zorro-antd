@@ -10,10 +10,11 @@ import { NzDemoTransferBasicComponent } from './nz-demo-transfer-basic.component
 import { NzDemoTransferSearchComponent } from './nz-demo-transfer-search.component';
 import { NzDemoTransferAdvancedComponent } from './nz-demo-transfer-advanced.component';
 import { NzDemoTransferCustomItemComponent } from './nz-demo-transfer-custom-item.component';
+import { NzDemoTransferCanMoveComponent } from './nz-demo-transfer-can-move.component';
 
 @NgModule({
   imports     : [ NzDemoTransferRoutingModule, CommonModule, NzCodeBoxModule, NgZorroAntdModule, FormsModule ],
-  declarations: [ NzDemoTransferComponent, NzDemoTransferBasicComponent, NzDemoTransferSearchComponent, NzDemoTransferAdvancedComponent, NzDemoTransferCustomItemComponent ]
+  declarations: [ NzDemoTransferComponent, NzDemoTransferBasicComponent, NzDemoTransferSearchComponent, NzDemoTransferAdvancedComponent, NzDemoTransferCustomItemComponent, NzDemoTransferCanMoveComponent ]
 })
 export class NzDemoTransferModule {
 
