@@ -42,6 +42,14 @@
         </div>
       </nz-code-box>
     </div>
+    <div nz-col [nzSpan]="24">
+      <nz-code-box [nzTitle]="'二次校验'" id="components-transfer-demo-can-move" [nzCode]="NzDemoTransferCanMoveCode">
+        <nz-demo-transfer-can-move demo></nz-demo-transfer-can-move>
+        <div intro>
+          <p>利用 <code>canMove</code> 允许在穿梭过程中二次校验；示例默认向右移时强制第一项不可穿梭。</p>
+        </div>
+      </nz-code-box>
+    </div>
   </div>
   <section class="markdown api-container">
     <h2 id="API"><span>API</span>
@@ -127,6 +135,12 @@
           <td>nzNotFoundContent</td>
           <td>当列表为空时显示的内容</td>
           <td>列表为空</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>canMove</td>
+          <td>穿梭时二次校验。<p><strong>注意：</strong>穿梭组件内部始终只保留一份数据，二次校验过程中需取消穿梭项则直接<strong>删除</strong>该项；具体用法见示例。</p></td>
+          <td></td>
           <td></td>
         </tr>
         <tr>
