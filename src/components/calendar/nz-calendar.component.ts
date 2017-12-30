@@ -67,7 +67,7 @@ export interface WeekInterface {
         <nz-select
           class="ant-fullcalendar-month-select"
           style="width: 70px;"
-          *ngIf="nzMode == 'year'"
+          *ngIf="nzMode == 'month'"
           [ngModel]="_showMonth"
           (ngModelChange)="_showMonth = $event;_buildCalendar()">
           <nz-option
@@ -77,10 +77,10 @@ export interface WeekInterface {
           </nz-option>
         </nz-select>
         <nz-radio-group [(ngModel)]="nzMode">
-          <label nz-radio-button [nzValue]="'year'">
-            <span>{{ _yearUnit }}</span>
-          </label><label nz-radio-button [nzValue]="'month'">
-          <span>{{ _monthUnit }}</span>
+          <label nz-radio-button [nzValue]="'month'">
+            <span>{{ _monthUnit }}</span>
+          </label><label nz-radio-button [nzValue]="'year'">
+          <span>{{ _yearUnit }}</span>
         </label>
         </nz-radio-group>
       </div>
@@ -97,7 +97,7 @@ export interface WeekInterface {
             [class.ant-fullcalendar-table]="!nzDatePicker"
             [class.ant-calendar-table]="nzDatePicker"
             [class.ant-patch-full-height]="nzDatePicker"
-            *ngIf="nzMode == 'year'">
+            *ngIf="nzMode == 'month'">
             <thead>
               <tr>
                 <th
@@ -155,7 +155,7 @@ export interface WeekInterface {
           <table
             [class.ant-fullcalendar-month-panel-table]="!nzDatePicker"
             [class.ant-calendar-month-panel-table]="nzDatePicker"
-            *ngIf="nzMode == 'month'">
+            *ngIf="nzMode == 'year'">
             <tbody class="ant-fullcalendar-month-panel-tbody">
               <tr *ngFor="let quarter of _quartersCalendar">
                 <ng-template [ngIf]="!nzDatePicker">
@@ -225,7 +225,7 @@ export class NzCalendarComponent implements OnInit {
   @Output() nzClickDay: EventEmitter<DayInterface> = new EventEmitter();
   @Output() nzClickMonth: EventEmitter<MonthInterface> = new EventEmitter();
   @Input() nzClearTime = true;
-  @Input() nzMode = 'year';
+  @Input() nzMode = 'month';
 
   @Input()
   set nzFullScreen(value: boolean) {
