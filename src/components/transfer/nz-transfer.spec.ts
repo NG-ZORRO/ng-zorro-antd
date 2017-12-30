@@ -1,14 +1,14 @@
-// tslint:disable:
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { async, fakeAsync, tick, ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ArrayObservable } from 'rxjs/observable/ArrayObservable';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { NzButtonModule } from '../button/nz-button.module';
 import { NzTransferModule } from '../ng-zorro-antd.module';
 import { TransferItem } from './item';
-import { NzTransferComponent } from './nz-transfer.component';
+import { NzTransferComponent, TransferCanMove } from './nz-transfer.component';
 
 const DEFAULT = `
   <nz-transfer
@@ -223,10 +223,10 @@ class TestTransferComponent {
   change(): void { }
   search(): void { }
   reload(): void { }
-  canMove(arg: any) {
+  canMove(arg: TransferCanMove): Observable<TransferItem[]> {
     if (arg.direction === 'right' && arg.list.length > 0) arg.list.splice(0, 1);
     // or
     // if (arg.direction === 'right' && arg.list.length > 0) delete arg.list[0];
-    return ArrayObservable.of(arg.list);
+    return of(arg.list);
   }
 }

@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ArrayObservable } from 'rxjs/observable/ArrayObservable';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { delay } from 'rxjs/operators';
 import { NzMessageService } from '../../../index.showcase';
+import { TransferItem } from '../../components/transfer/item';
+import { TransferCanMove } from '../../components/transfer/nz-transfer.component';
 
 @Component({
   selector: 'nz-demo-transfer-can-move',
@@ -16,8 +19,9 @@ import { NzMessageService } from '../../../index.showcase';
   `
 })
 export class NzDemoTransferCanMoveComponent implements OnInit {
-  list: any[] = [];
-  ngOnInit() {
+  list: TransferItem[] = [];
+
+  ngOnInit(): void {
     for (let i = 0; i < 20; i++) {
       this.list.push({
         key: i.toString(),
@@ -29,18 +33,18 @@ export class NzDemoTransferCanMoveComponent implements OnInit {
     [ 2, 3 ].forEach(idx => this.list[idx].direction = 'right');
   }
 
-  canMove(arg: any) {
+  canMove(arg: TransferCanMove): Observable<TransferItem[]> {
     if (arg.direction === 'right' && arg.list.length > 0) arg.list.splice(0, 1);
     // or
     // if (arg.direction === 'right' && arg.list.length > 0) delete arg.list[0];
-    return ArrayObservable.of(arg.list).pipe(delay(1000));
+    return of(arg.list).pipe(delay(1000));
   }
 
-  select(ret: any) {
+  select(ret: {}): void {
     console.log('nzSelectChange', ret);
   }
 
-  change(ret: any) {
+  change(ret: {}): void {
     console.log('nzChange', ret);
   }
 }
