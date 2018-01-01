@@ -112,9 +112,9 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
       }
     });
 
-    // ngModelChange 事件内对状态的变更会无效，因此使用延迟改变执行顺序
-    setTimeout(() => this.updateCheckStatus());
-
+    // // ngModelChange 事件内对状态的变更会无效，因此使用延迟改变执行顺序
+    // setTimeout(() => this.updateCheckStatus());
+    this.updateCheckStatus();
     this.handleSelectAll.emit(status);
   }
 

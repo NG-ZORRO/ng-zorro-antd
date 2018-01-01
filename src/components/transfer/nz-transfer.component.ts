@@ -14,7 +14,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ArrayObservable } from 'rxjs/observable/ArrayObservable';
+import { of } from 'rxjs/observable/of';
 import { NzLocaleService } from '../locale/index';
 import { toBoolean } from '../util/convert';
 import { TransferItem } from './item';
@@ -109,7 +109,7 @@ export class NzTransferComponent implements OnChanges {
   @Input() nzListStyle: object;
   @Input() nzItemUnit = this._locale.translate('Transfer.itemUnit');
   @Input() nzItemsUnit = this._locale.translate('Transfer.itemsUnit');
-  @Input() canMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => ArrayObservable.of(arg.list);
+  @Input() canMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => of(arg.list);
   @ContentChild('render') render: TemplateRef<void>;
   @ContentChild('footer') footer: TemplateRef<void>;
 
