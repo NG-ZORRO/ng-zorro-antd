@@ -9,6 +9,23 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.6.9
+`2018-1-2`
+
+### Features
+* `Radio` 组件支持独立作为表单控件使用 [#825](https://github.com/NG-ZORRO/ng-zorro-antd/pull/825) [@cipchk](https://github.com/cipchk)
+* `Transfer` 新增 `canMove` 属性用于支持二次校验，并改用OnPush方式支持按需脏检查 [#824](https://github.com/NG-ZORRO/ng-zorro-antd/pull/824) [@cipchk](https://github.com/cipchk)
+
+### Bug Fixes
+* `Calendar` 修复月/年的切换错误 [#768](https://github.com/NG-ZORRO/ng-zorro-antd/pull/768) [@chunghha](https://github.com/chunghha)
+* `Transfer` 修复点击全选时未能及时更新ui的问题，将 `ArrayObservable.of` 改用 `of`
+
+### Build
+* 支持html模板代码存放到独立文件中 [#831](https://github.com/NG-ZORRO/ng-zorro-antd/pull/831) [@trotyl](https://github.com/trotyl)
+
+### Docs
+* demo文档内，示例代码的格式和语法调整 [#733](https://github.com/NG-ZORRO/ng-zorro-antd/pull/733) [@HsuanXyz](https://github.com/HsuanXyz)
+
 ## 0.6.8
 `2017-12-21`
 
