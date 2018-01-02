@@ -17,7 +17,6 @@
 * `Transfer` 新增 `canMove` 属性用于支持二次校验，并改用OnPush方式支持按需脏检查 [#824](https://github.com/NG-ZORRO/ng-zorro-antd/pull/824) [@cipchk](https://github.com/cipchk)
 
 ### Bug Fixes
-* `Calendar` 修复月/年的切换错误 [#768](https://github.com/NG-ZORRO/ng-zorro-antd/pull/768) [@chunghha](https://github.com/chunghha)
 * `Transfer` 修复点击全选时未能及时更新ui的问题，将 `ArrayObservable.of` 改用 `of`
 
 ### Build
