@@ -1,9 +1,10 @@
 import {
   Component,
   HostBinding,
+  HostListener,
   Input,
   OnInit,
-  ViewEncapsulation,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { toBoolean } from '../util/convert';
@@ -50,5 +51,15 @@ export class NzRadioButtonComponent extends NzRadioComponent implements OnInit {
 
   get nzChecked(): boolean {
     return this._radioButtonChecked;
+  }
+
+  @HostListener('click', [ '$event' ])
+  onClick(e: MouseEvent): void {
+    e.preventDefault();
+    if (!this._radioButtonDisabled) {
+      this._radioButtonChecked = true;
+      this.setClassMap();
+      if (this._nzRadioGroup) this._nzRadioGroup.selectRadio(this);
+    }
   }
 }
