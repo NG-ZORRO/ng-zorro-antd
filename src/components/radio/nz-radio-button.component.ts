@@ -1,6 +1,6 @@
 import {
   Component,
-  HostBinding,
+  HostBinding, HostListener,
   Input,
   OnInit,
   ViewEncapsulation,
@@ -50,5 +50,41 @@ export class NzRadioButtonComponent extends NzRadioComponent implements OnInit {
 
   get nzChecked(): boolean {
     return this._radioButtonChecked;
+  }
+
+  @HostListener('click', [ '$event' ])
+  onClick(e: MouseEvent): void {
+    e.preventDefault();
+    if (!this._radioButtonDisabled) {
+      if (this._nzRadioGroup) {
+        this._radioButtonChecked = true;
+        this.setClassMap();
+        this._nzRadioGroup.selectRadio(this);
+      } else {
+        this.updateValue(!this._radioButtonChecked);
+      }
+    }
+  }
+
+  setClassMap(): void {
+    this._classMap = {
+      [this._prefixCls]              : true,
+      [`${this._prefixCls}-checked`] : this._radioButtonChecked,
+      [`${this._prefixCls}-disabled`]: this._radioButtonDisabled
+    };
+  }
+
+  updateValue(value: boolean): void {
+    if (value === this._radioButtonChecked) {
+      return;
+    }
+    this.onChange(value);
+    this._radioButtonChecked = value;
+    this.setClassMap();
+  }
+
+  writeValue(value: boolean): void {
+    this._radioButtonChecked = value;
+    this.setClassMap();
   }
 }
