@@ -37,7 +37,8 @@ import { toBoolean } from '../util/convert';
       [nzDisabled]="nzDisabled"
       [nzSize]="nzSize"
       class="ant-calendar-picker-input"
-      [value]="_value|nzDate:nzFormat">
+      [value]="_value|nzDate:nzFormat"
+      readonly>
     <i class="ant-calendar-picker-clear anticon anticon-cross-circle"
       *ngIf="_showClearIcon"
       (click)="onTouched();_clearValue($event)">
