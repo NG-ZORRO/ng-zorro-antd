@@ -97,7 +97,7 @@ export class NzAffixComponent implements OnChanges, OnInit, OnDestroy, AfterView
     const wrapEl = this.wrap.nativeElement;
     wrapEl.classList[ hasFixed ? 'add' : 'remove' ]('ant-affix');
     if (hasFixed) {
-      wrapEl.style.cssText = `top:${this.nzOffsetTop + fixTop}px;left:${this.orgOffset.left}px`;
+      wrapEl.style.cssText = `top:${((+this.nzOffsetTop) + (+fixTop))}px;left:${this.orgOffset.left}px`;
     } else {
       wrapEl.style.cssText = ``;
     }
