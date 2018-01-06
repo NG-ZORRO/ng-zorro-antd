@@ -27,5 +27,6 @@ export class AppModule { }
 | 繁体中文 | zh-TW |
 | 美式英语 | en-US |
 | 土耳其语 | tr-TR |
+| 俄语 | ru-RU |
 
 具体的使用方法和新语言包贡献方式请参考 [Locale](#/other/locale) 文档。

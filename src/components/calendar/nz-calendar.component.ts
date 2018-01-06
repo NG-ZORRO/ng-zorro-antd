@@ -397,6 +397,17 @@ export class NzCalendarComponent implements OnInit {
         this._monthUnit = moment.duration(4, 'week').humanize().split(' ')[ 1 ][ 0 ].toUpperCase() + moment.duration(4, 'week').humanize().split(' ')[ 1 ].slice(1, moment.duration(4, 'week').humanize().split(' ')[ 1 ].length);
       } catch (e) { }
     }
+
+    if (this._locale === 'ru-RU') {
+      try {
+        const monthText = moment.duration(12, 'month').humanize().split(' ')[ 0 ];
+        const weekText =  moment.duration(4, 'week').humanize().split(' ')[ 0 ];
+
+        this._yearUnit = monthText.charAt(0).toUpperCase() + monthText.slice(1);
+        this._monthUnit = weekText.charAt(0).toUpperCase() + weekText.slice(1);
+      } catch (e) { }
+    }
+
     this._listOfYearName = this._generateYears(this._showYear);
     this._listOfWeekName = moment.weekdaysMin();
     this._listOfMonthName = moment.monthsShort();
