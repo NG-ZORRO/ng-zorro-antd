@@ -34,6 +34,8 @@ export const ruRU: NzLocale = {
     chooseDate: 'Выберите дату',
     chooseTimePlease: 'Выберите время',
     chooseDatePlease: 'Выберите дату',
+    chooseStartDatePlease: 'Дата начала',
+    chooseEndDatePlease: 'Дата окончания',
     thisMoment: 'Сейчас',
     today: 'Сегодня',
     ok: 'Ок',

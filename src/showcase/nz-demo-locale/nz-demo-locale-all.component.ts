@@ -78,6 +78,7 @@ export class NzDemoLocaleAllComponent implements OnInit {
         </nz-select>
         <nz-datepicker></nz-datepicker>
         <nz-timepicker></nz-timepicker>
+        <nz-rangepicker></nz-rangepicker>
       </div>
       <div class="example">
         <button nz-button [nzType]="'primary'" (click)="showModal()">Show Modal</button>
