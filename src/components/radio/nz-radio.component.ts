@@ -37,9 +37,9 @@ import { NzRadioGroupComponent } from './nz-radio-group.component';
   ]
 })
 export class NzRadioComponent implements OnInit, ControlValueAccessor {
-  private _checked = false;
-  private _disabled = false;
   private _focused = false;
+  _checked = false;
+  _disabled = false;
   _el: HTMLElement;
   _classMap;
   _value: string;
