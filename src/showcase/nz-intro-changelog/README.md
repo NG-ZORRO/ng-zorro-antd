@@ -9,8 +9,19 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+## 0.6.10
+`2018-01-06`
+
+### Bug Fixes
+* `Radio` 修复 disabled 状态下的问题 [#867](https://github.com/NG-ZORRO/ng-zorro-antd/pull/867)
+* `Affix` 修复 `nzOffsetTop` 选项的问题 [#868](https://github.com/NG-ZORRO/ng-zorro-antd/pull/868)
+
+### Features
+* `Datapicker` 新增 时间范围 组件 [@HsuanXyz](https://github.com/HsuanXyz) [#656](https://github.com/NG-ZORRO/ng-zorro-antd/pull/656)
+* 增加 俄语 i18n选项 [@zverbeta](https://github.com/zverbeta) [#853](https://github.com/NG-ZORRO/ng-zorro-antd/pull/853)
+
 ## 0.6.9
-`2018-1-2`
+`2018-01-02`
 
 ### Features
 * `Radio` 组件支持独立作为表单控件使用 [#825](https://github.com/NG-ZORRO/ng-zorro-antd/pull/825) [@cipchk](https://github.com/cipchk)
