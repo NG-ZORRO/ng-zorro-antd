@@ -28,7 +28,7 @@
           <p>选择框的不可用状态。</p>
         </div>
       </nz-code-box>
-      <nz-code-box [nzTitle]="'日期范围一'" id="components-date-picker-startEnd" [nzCode]="NzDemoDatePickerStartEndCode">
+      <nz-code-box [nzTitle]="'自定义日期范围选择'" id="components-date-picker-startEnd" [nzCode]="NzDemoDatePickerStartEndCode">
         <nz-demo-datepicker-start-end demo></nz-demo-datepicker-start-end>
         <div intro>
           <p>可以设置 <code>nzDisabledDate</code> 方法，来约束开始和结束日期。</p>
@@ -61,6 +61,64 @@
     <h2 id="API"><span>API</span>
       <!-- <a class="anchor">#</a> -->
     </h2>
+    <p>日期类组件包括以下三种形式。</p>
+    <ul>
+      <li>nz-datepicker</li>
+      <li>nz-datepicker [nzMode='month']</li>
+      <li>nz-rangepicker</li>
+    </ul>
+    <h3>共同的 API</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>参数</th>
+        <th>说明</th>
+        <th>类型</th>
+        <th>默认值</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nzSize</td>
+        <td>输入框大小，<code>large</code> 高度为 32px，<code>small</code> 为 22px，默认是 28px</td>
+        <td>String</td>
+        <td>month</td>
+      </tr>
+      <tr>
+        <td>nzFormat</td>
+        <td>展示的日期格式，配置参考
+          <a href="http://momentjs.cn/docs/#/parsing/string-formats/" target="_blank">Moment.js文档</a>
+        </td>
+        <td>String</td>
+        <td>"YYYY-MM-DD"</td>
+      </tr>
+      <tr>
+        <td>nzDisabled</td>
+        <td>禁用</td>
+        <td>boolean</td>
+        <td>false</td>
+      </tr>
+      <tr>
+        <td>nzAllowClear</td>
+        <td>是否显示清除按钮</td>
+        <td>boolean</td>
+        <td>true</td>
+      </tr>
+      <tr>
+        <td>nzShowTime</td>
+        <td>时间选项,参见 nz-timepicker 参数</td>
+        <td>boolean | NzTimePickerInnerComponent</td>
+        <td>null</td>
+      </tr>
+      <tr>
+        <td>nzDisabledDate</td>
+        <td>用于禁用日期的回调函数，返回true表示禁用此日期</td>
+        <td>(Date) => boolean</td>
+        <td></td>
+      </tr>
+      </tbody>
+    </table>
+    <h3>nz-datepicker</h3>
     <table>
       <thead>
         <tr>
@@ -78,43 +136,42 @@
           <td>当前日期</td>
         </tr>
         <tr>
+          <td>nzPlaceholder</td>
+          <td>输入框提示文字</td>
+          <td>String</td>
+          <td></td>
+        </tr>
+        <tr>
           <td>nzMode</td>
           <td>选择器模式， <code>month</code> 只选择到月份，<code>day</code> 选择到天</td>
           <td>String</td>
           <td>"day"</td>
         </tr>
-        <tr>
-          <td>nzSize</td>
-          <td>输入框大小，<code>large</code> 高度为 32px，<code>small</code> 为 22px，默认是 28px</td>
-          <td>String</td>
-          <td>month</td>
-        </tr>
-        <tr>
-          <td>nzFormat</td>
-          <td>展示的日期格式，配置参考
-            <a href="http://momentjs.cn/docs/#/parsing/string-formats/" target="_blank">Moment.js文档</a>
-          </td>
-          <td>String</td>
-          <td>"YYYY-MM-DD"</td>
-        </tr>
-        <tr>
-          <td>nzDisabled</td>
-          <td>禁用</td>
-          <td>bool</td>
-          <td>false</td>
-        </tr>
-        <tr>
-          <td>nzDisabledDate</td>
-          <td>用于禁用日期的回调函数，返回true表示禁用此日期</td>
-          <td>function(date)</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>nzShowTime</td>
-          <td>时间选项,参见nz-timepicker参数</td>
-          <td></td>
-          <td>null</td>
-        </tr>
+      </tbody>
+    </table>
+    <h3>nz-rangepicker</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>参数</th>
+        <th>说明</th>
+        <th>类型</th>
+        <th>默认值</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>ngModel</td>
+        <td>展示日期</td>
+        <td>[Date, Date]</td>
+        <td>当前日期</td>
+      </tr>
+      <tr>
+        <td>nzPlaceholder</td>
+        <td>输入框提示文字</td>
+        <td>[String, String]</td>
+        <td></td>
+      </tr>
       </tbody>
     </table>
   </section>

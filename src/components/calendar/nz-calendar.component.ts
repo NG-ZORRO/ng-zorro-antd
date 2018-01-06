@@ -35,6 +35,7 @@ export interface DayInterface {
   isNextMonth: boolean;
   isCurrentDay: boolean;
   isSelectedDay: boolean;
+  isInRange?: boolean;
   title: string;
   date: Moment;
   disabled: boolean;
@@ -45,6 +46,8 @@ export interface DayInterface {
 export interface WeekInterface {
   days: DayInterface[];
 }
+
+export enum RangePart { Start = 0, End = 1 }
 
 @Component({
   selector     : 'nz-calendar',
@@ -99,57 +102,62 @@ export interface WeekInterface {
             [class.ant-patch-full-height]="nzDatePicker"
             *ngIf="nzMode == 'year'">
             <thead>
-              <tr>
-                <th
-                  *ngFor="let _min of _listOfWeekName"
-                  [class.ant-fullcalendar-column-header]="!nzDatePicker"
-                  [class.ant-calendar-column-header]="nzDatePicker">
-                  <span class="ant-fullcalendar-column-header-inner">{{ _min }}</span>
-                </th>
-              </tr>
+            <tr>
+              <th
+                *ngFor="let _min of _listOfWeekName"
+                [class.ant-fullcalendar-column-header]="!nzDatePicker"
+                [class.ant-calendar-column-header]="nzDatePicker">
+                <span class="ant-fullcalendar-column-header-inner">{{ _min }}</span>
+              </th>
+            </tr>
             </thead>
             <tbody
               [class.ant-fullcalendartbody]="!nzDatePicker"
               [class.ant-calendartbody]="nzDatePicker">
-              <tr *ngFor="let week of _weeksCalendar">
-                <ng-template [ngIf]="!nzDatePicker">
-                  <td
-                    [attr.title]="day.title"
-                    *ngFor="let day of week.days"
-                    [class.ant-fullcalendar-cell]="!nzDatePicker"
-                    [class.ant-calendar-cell]="nzDatePicker"
-                    [class.ant-fullcalendar-last-month-cell]="day.isLastMonth"
-                    [class.ant-fullcalendar-next-month-btn-day]="day.isNextMonth"
-                    [class.ant-fullcalendar-selected-day]="day.isSelectedDay"
-                    [class.ant-fullcalendar-today]="day.isCurrentDay">
-                    <div class="ant-fullcalendar-date">
-                      <div class="ant-fullcalendar-value" (click)="_clickDay($event,day)">{{ day.number }}</div>
-                      <div class="ant-fullcalendar-content">
-                        <ng-template
-                          *ngIf="dateCell"
-                          [ngTemplateOutlet]="dateCell"
-                          [ngTemplateOutletContext]="{ $implicit: day}">
-                        </ng-template>
-                      </div>
+            <tr *ngFor="let week of _weeksCalendar">
+              <ng-template [ngIf]="!nzDatePicker">
+                <td
+                  [attr.title]="day.title"
+                  *ngFor="let day of week.days"
+                  [class.ant-fullcalendar-cell]="!nzDatePicker"
+                  [class.ant-calendar-cell]="nzDatePicker"
+                  [class.ant-fullcalendar-last-month-cell]="day.isLastMonth"
+                  [class.ant-fullcalendar-next-month-btn-day]="day.isNextMonth"
+                  [class.ant-fullcalendar-selected-day]="day.isSelectedDay"
+                  [class.ant-fullcalendar-today]="day.isCurrentDay">
+                  <div class="ant-fullcalendar-date">
+                    <div class="ant-fullcalendar-value" (click)="_clickDay($event,day)">{{ day.number }}</div>
+                    <div class="ant-fullcalendar-content">
+                      <ng-template
+                        *ngIf="dateCell"
+                        [ngTemplateOutlet]="dateCell"
+                        [ngTemplateOutletContext]="{ $implicit: day}">
+                      </ng-template>
                     </div>
-                  </td>
-                </ng-template>
-                <ng-template [ngIf]="nzDatePicker">
-                  <td
-                    [attr.title]="day.title"
-                    *ngFor="let day of week.days"
-                    class="ant-calendar-cell"
-                    [class.ant-calendar-disabled-cell-first-of-row]="day.firstDisabled"
-                    [class.ant-calendar-disabled-cell-last-of-row]="day.lastDisabled"
-                    [class.ant-calendar-disabled-cell]="day.disabled"
-                    [class.ant-calendar-last-month-cell]="day.isLastMonth"
-                    [class.ant-calendar-next-month-btn-day]="day.isNextMonth"
-                    [class.ant-calendar-selected-day]="day.isSelectedDay"
-                    [class.ant-calendar-today]="day.isCurrentDay">
-                    <div class="ant-calendar-date" (click)="_clickDay($event,day)">{{ day.number }}</div>
-                  </td>
-                </ng-template>
-              </tr>
+                  </div>
+                </td>
+              </ng-template>
+              <ng-template [ngIf]="nzDatePicker">
+                <td
+                  [attr.title]="day.title"
+                  *ngFor="let day of week.days"
+                  class="ant-calendar-cell"
+                  [class.ant-calendar-disabled-cell-first-of-row]="day.firstDisabled"
+                  [class.ant-calendar-disabled-cell-last-of-row]="day.lastDisabled"
+                  [class.ant-calendar-disabled-cell]="day.disabled"
+                  [class.ant-calendar-last-month-cell]="day.isLastMonth"
+                  [class.ant-calendar-next-month-btn-day]="day.isNextMonth"
+                  [class.ant-calendar-selected-day]="day.isSelectedDay"
+                  [class.ant-calendar-in-range-cell]="day.isInRange && !day.isSelectedDay"
+                  [class.ant-calendar-today]="day.isCurrentDay"
+                  (mouseenter)="_onDayHover($event, day)">
+                  <div class="ant-calendar-date"
+                       (click)="_clickDay($event,day)">
+                    {{ day.number }}
+                  </div>
+                </td>
+              </ng-template>
+            </tr>
             </tbody>
           </table>
           <table
@@ -157,40 +165,40 @@ export interface WeekInterface {
             [class.ant-calendar-month-panel-table]="nzDatePicker"
             *ngIf="nzMode == 'month'">
             <tbody class="ant-fullcalendar-month-panel-tbody">
-              <tr *ngFor="let quarter of _quartersCalendar">
-                <ng-template [ngIf]="!nzDatePicker">
-                  <td
-                    *ngFor="let month of quarter"
-                    [attr.title]="month.name"
-                    class="ant-fullcalendar-month-panel-cell"
-                    [class.ant-fullcalendar-month-panel-selected-cell]="month.isSelectedMonth"
-                    [class.ant-fullcalendar-month-panel-current-cell]="month.isCurrentMonth">
-                    <div class="ant-fullcalendar-month">
-                      <div class="ant-fullcalendar-value" (click)="_clickMonth($event,month)">{{ month.name }}</div>
-                      <div class="ant-fullcalendar-content">
-                        <ng-template
-                          *ngIf="monthCell"
-                          [ngTemplateOutlet]="monthCell"
-                          [ngTemplateOutletContext]="{ $implicit: month}">
-                        </ng-template>
-                      </div>
+            <tr *ngFor="let quarter of _quartersCalendar">
+              <ng-template [ngIf]="!nzDatePicker">
+                <td
+                  *ngFor="let month of quarter"
+                  [attr.title]="month.name"
+                  class="ant-fullcalendar-month-panel-cell"
+                  [class.ant-fullcalendar-month-panel-selected-cell]="month.isSelectedMonth"
+                  [class.ant-fullcalendar-month-panel-current-cell]="month.isCurrentMonth">
+                  <div class="ant-fullcalendar-month">
+                    <div class="ant-fullcalendar-value" (click)="_clickMonth($event,month)">{{ month.name }}</div>
+                    <div class="ant-fullcalendar-content">
+                      <ng-template
+                        *ngIf="monthCell"
+                        [ngTemplateOutlet]="monthCell"
+                        [ngTemplateOutletContext]="{ $implicit: month}">
+                      </ng-template>
                     </div>
-                  </td>
-                </ng-template>
-                <ng-template [ngIf]="nzDatePicker">
-                  <td
-                    *ngFor="let month of quarter"
-                    [attr.title]="month.name"
-                    class="ant-calendar-month-panel-cell"
-                    [class.ant-calendar-month-panel-selected-cell]="month.isSelectedMonth"
-                    [class.ant-calendar-month-panel-cell-disabled]="month.disabled"
-                    [class.ant-calendar-month-panel-current-cell]="month.isCurrentMonth">
-                    <div class="ant-calendar-month-panel-month" (click)="_clickMonth($event,month)">
-                      {{ month.name }}
-                    </div>
-                  </td>
-                </ng-template>
-              </tr>
+                  </div>
+                </td>
+              </ng-template>
+              <ng-template [ngIf]="nzDatePicker">
+                <td
+                  *ngFor="let month of quarter"
+                  [attr.title]="month.name"
+                  class="ant-calendar-month-panel-cell"
+                  [class.ant-calendar-month-panel-selected-cell]="month.isSelectedMonth"
+                  [class.ant-calendar-month-panel-cell-disabled]="month.disabled"
+                  [class.ant-calendar-month-panel-current-cell]="month.isCurrentMonth">
+                  <div class="ant-calendar-month-panel-month"(click)="_clickMonth($event,month)">
+                    {{ month.name }}
+                  </div>
+                </td>
+              </ng-template>
+            </tr>
             </tbody>
           </table>
         </div>
@@ -206,6 +214,7 @@ export class NzCalendarComponent implements OnInit {
   private _datePicker = false;
   private _fullScreen = true;
   private _showHeader = true;
+  private _isRange = false;
 
   _el: HTMLElement;
   _weeksCalendar: WeekInterface[] = [];
@@ -213,17 +222,21 @@ export class NzCalendarComponent implements OnInit {
   _listOfWeekName: string[] = [];
   _listOfMonthName: string[] = [];
   _listOfYearName: number[] = [];
+  _disabledDate: (value: Date) => boolean;
   _yearUnit = '年';
   _monthUnit = '月';
   _showMonth = moment(new Date()).month();
   _showYear = moment(new Date()).year();
   _value: Date = new Date();
+  _rangeValue: Date[] = [null, null];
+  _hoveringSelectValue: Date;
   _locale = this._localeService.getLocale().locale;
   @ContentChild('dateCell') dateCell: TemplateRef<void>;
   @ContentChild('monthCell') monthCell: TemplateRef<void>;
 
   @Output() nzClickDay: EventEmitter<DayInterface> = new EventEmitter();
   @Output() nzClickMonth: EventEmitter<MonthInterface> = new EventEmitter();
+  @Output() nzHoverDay: EventEmitter<DayInterface> = new EventEmitter();
   @Input() nzClearTime = true;
   @Input() nzMode = 'year';
 
@@ -245,7 +258,24 @@ export class NzCalendarComponent implements OnInit {
     return this._showHeader;
   }
 
-  @Input() nzDisabledDate: (date: Date) => boolean = () => false;
+  @Input()
+  set nzIsRange(value: boolean) {
+    this._isRange = toBoolean(value);
+  }
+
+  get nzIsRange(): boolean {
+    return this._isRange;
+  }
+
+  @Input()
+  set nzDisabledDate(value: (value: Date) => boolean) {
+    this._disabledDate = value;
+    this._buildCalendar();
+  }
+
+  get nzDisabledDate(): (value: Date) => boolean {
+    return this._disabledDate;
+  }
 
   @Input()
   @HostBinding('class.ant-patch-full-height')
@@ -270,6 +300,29 @@ export class NzCalendarComponent implements OnInit {
 
   get nzValue(): Date {
     return this._value || new Date();
+  }
+
+  @Input()
+  get nzRangeValue(): Date[] {
+    return this._rangeValue;
+  }
+
+  set nzRangeValue(value: Date[]) {
+    this._rangeValue = value;
+    this._buildCalendar();
+  }
+
+  @Input()
+  get nzHoveringSelectValue(): Date {
+    return this._hoveringSelectValue;
+  }
+
+  set nzHoveringSelectValue(value: Date) {
+    if (this._hoveringSelectValue === value) {
+      return;
+    }
+    this._hoveringSelectValue = value;
+    this._buildCalendar();
   }
 
   @Input()
@@ -328,6 +381,44 @@ export class NzCalendarComponent implements OnInit {
     this.nzClickMonth.emit(month);
   }
 
+  _onDayHover($event: MouseEvent, day: DayInterface): void {
+    $event.preventDefault();
+    $event.stopPropagation();
+    if (day.disabled || day.date.isSame(this._hoveringSelectValue)) {
+      return;
+    }
+    this.nzHoverDay.emit(day);
+  }
+
+  _isSelectedDay(date: Moment, month: Moment): boolean {
+    if (this.nzIsRange) {
+      return (date.isSame(this._rangeValue[RangePart.Start], 'day')
+        || date.isSame(this._rangeValue[RangePart.End], 'day')
+        || date.isSame(this._hoveringSelectValue, 'day'))
+        && date.month() === month.month();
+    } else {
+      return date.isSame(this.nzValue, 'day');
+    }
+  }
+
+  _isInRange(date: Moment, month: Moment): boolean {
+    let ghostDate: Date;
+    if (this.nzIsRange && date.month() === month.month()) {
+      if (this._rangeValue.every(e => moment(e).isValid())) {
+        return date.isBetween.apply(date, this._rangeValue);
+      }
+      ghostDate = this._rangeValue.find(e => moment(e).isValid());
+      if (ghostDate && this._hoveringSelectValue) {
+        const start = moment.min(moment(ghostDate), moment(this._hoveringSelectValue)).toDate();
+        const end = moment.max(moment(ghostDate), moment(this._hoveringSelectValue)).toDate();
+        return date.isBetween(start, end);
+      }
+      return false;
+    } else {
+      return false;
+    }
+  }
+
   _buildMonth(d: Moment): WeekInterface[] {
     const weeks: WeekInterface[] = [];
     const _rawDate = this._removeTime(d);
@@ -355,7 +446,8 @@ export class NzCalendarComponent implements OnInit {
         isLastMonth  : date.month() < month.month(),
         isNextMonth  : date.month() > month.month(),
         isCurrentDay : date.isSame(new Date(), 'day'),
-        isSelectedDay: date.isSame(this.nzValue, 'day'),
+        isSelectedDay: this._isSelectedDay(date, month),
+        isInRange    : this._isInRange(date, month),
         title        : date.format('YYYY-MM-DD'),
         date,
         disabled     : this.nzDisabledDate && this.nzDisabledDate(date.toDate()),

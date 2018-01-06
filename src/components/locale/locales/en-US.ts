@@ -34,6 +34,8 @@ export const enUS: NzLocale = {
     chooseDate: 'Select date',
     chooseTimePlease: 'Select time',
     chooseDatePlease: 'Select date',
+    chooseStartDatePlease: 'Start date',
+    chooseEndDatePlease: 'End date',
     thisMoment: 'This moment',
     today: 'Today',
     ok: 'Ok',
