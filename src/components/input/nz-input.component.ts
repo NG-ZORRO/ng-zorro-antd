@@ -39,6 +39,7 @@ export interface AutoSizeType {
       <input
         (blur)="_emitBlur($event)"
         (focus)="_emitFocus($event)"
+        (keyup.enter)="_onPressEnter()"
         [attr.id]="nzId"
         [disabled]="nzDisabled"
         [readonly]="nzReadonly"
@@ -67,7 +68,7 @@ export interface AutoSizeType {
         [(ngModel)]="nzValue"></textarea>
     </ng-template>
     <span class="ant-input-suffix" *ngIf="(nzType==='search')||(_suffixContent)">
-      <i class="anticon anticon-search ant-input-search-icon" *ngIf="nzType==='search'"></i>
+      <i class="anticon anticon-search ant-input-search-icon" *ngIf="nzType==='search'" (click)="_emitSearch()"></i>
       <ng-template [ngTemplateOutlet]="_suffixContent">
       </ng-template>
     </span>
@@ -156,6 +157,7 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor,
 
   @Output() nzBlur: EventEmitter<FocusEvent> = new EventEmitter();
   @Output() nzFocus: EventEmitter<FocusEvent> = new EventEmitter();
+  @Output() nzOnSearch: EventEmitter<string> = new EventEmitter();
   @ViewChild('inputTextarea') textAreaRef: ElementRef;
   @ContentChild('addOnBefore') _addOnContentBefore: TemplateRef<void>;
   @ContentChild('addOnAfter') _addOnContentAfter: TemplateRef<void>;
@@ -195,6 +197,16 @@ export class NzInputComponent implements AfterContentInit, ControlValueAccessor,
 
   _emitFocus($event: FocusEvent): void {
     this.nzFocus.emit($event);
+  }
+
+  _onPressEnter(): void {
+    if (this.nzType === 'search') {
+      this._emitSearch();
+    }
+  }
+
+  _emitSearch(): void {
+    this.nzOnSearch.emit(this._value);
   }
 
   setClassMap(): void {
