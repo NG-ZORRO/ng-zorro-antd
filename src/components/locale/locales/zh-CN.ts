@@ -61,5 +61,12 @@ export const zhCN: NzLocale = {
     searchPlaceholder: '请输入',
     itemUnit: '项目',
     itemsUnit: '项目',
+  },
+
+  Upload: {
+    uploading: '文件上传中',
+    removeFile: '删除文件',
+    uploadError: '上传错误',
+    previewFile: '预览文件',
   }
 };

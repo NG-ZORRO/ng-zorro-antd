@@ -61,5 +61,12 @@ export const trTR: NzLocale = {
     searchPlaceholder: 'Burada ara',
     itemUnit: 'öğe',
     itemsUnit: 'öğeler',
+  },
+
+  Upload: {
+    uploading: 'Yükleniyor...',
+    removeFile: `Dosyayı kaldır`,
+    uploadError: 'Yükleme Hatası',
+    previewFile: `Dosyayı Önizle`,
   }
 };

@@ -61,4 +61,11 @@ export class NzLocale {
     itemUnit: string,
     itemsUnit: string,
   };
+
+  Upload: {
+    uploading: string,
+    removeFile: string,
+    uploadError: string,
+    previewFile: string,
+  };
 }

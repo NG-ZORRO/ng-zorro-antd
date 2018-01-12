@@ -1,0 +1,252 @@
+<article>
+  <section class="markdown"><h1>Upload 上传</h1>
+    <section class="markdown"><p>文件选择上传和拖拽上传控件。</p>
+      <h2 id="何时使用"><span>何时使用</span>
+        <a  class="anchor">#</a>
+      </h2>
+      <p>上传是将信息（网页、文字、图片、视频等）通过网页或者上传工具发布到远程服务器上的过程。</p>
+      <ul>
+        <li>当需要上传一个或一些文件时。</li>
+        <li>当需要展现上传的进度时。</li>
+        <li>当需要使用拖拽交互时。</li>
+      </ul>
+    </section>
+    <h2>代码演示<i class="code-box-expand-trigger anticon anticon-appstore" title="展开全部代码"></i></h2>
+  </section>
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="12">
+      <nz-code-box [nzTitle]="'点击上传'" id="components-upload-demo-basic" [nzCode]="NzDemoUploadBasicCode">
+        <nz-demo-upload-basic demo></nz-demo-upload-basic>
+        <div intro>
+          <p>经典款式，用户点击按钮弹出文件选择框。</p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'已上传的文件列表'" id="components-upload-demo-filelist" [nzCode]="NzDemoUploadFileListCode">
+        <nz-demo-upload-filelist demo></nz-demo-upload-filelist>
+        <div intro>
+          <p>使用 <code>nzFileList</code> 设置已上传的内容。</p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'过滤器'" id="components-upload-demo-filter" [nzCode]="NzDemoUploadFilterComponentCode">
+        <nz-demo-upload-filter demo></nz-demo-upload-filter>
+        <div intro>
+          <p>使用 <code>nzFilter</code> 对列表进行过滤控制，可以实现各种自定义功能，以下演示三种情况：</p>
+          <ul>
+            <li>1) 上传列表数量的限制。</li>
+            <li>2) 读取远程路径并显示链接。</li>
+            <li>3) 按照服务器返回信息筛选成功上传的文件。</li>
+          </ul>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'图片列表样式'" id="components-upload-demo-picture-style" [nzCode]="NzDemoUploadPictureStyleComponentCode">
+        <nz-demo-upload-picture-style demo></nz-demo-upload-picture-style>
+        <div intro>
+          <p>上传文件为图片，可展示本地缩略图。<code>IE8/9</code> 不支持浏览器本地缩略图展示（<a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL" target="_blank">Ref</a>），可以写 <code>thumbUrl</code> 属性来代替。</p>
+        </div>
+      </nz-code-box>
+    </div>
+    <div nz-col [nzSpan]="12">
+      <nz-code-box [nzTitle]="'用户头像'" id="components-upload-demo-avatar" [nzCode]="NzDemoUploadAvatarCode">
+        <nz-demo-upload-avatar demo></nz-demo-upload-avatar>
+        <div intro>
+          <p>点击上传用户头像，并使用 <code>beforeUpload</code> 限制用户上传的图片格式和大小。</p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'照片墙'" id="components-upload-demo-picture-card" [nzCode]="NzDemoUploadPictureCardComponentCode">
+        <nz-demo-upload-picture-card demo></nz-demo-upload-picture-card>
+        <div intro>
+          <p>用户可以上传图片并在列表中显示缩略图。当上传照片数到达限制后，上传按钮消失。</p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'拖拽上传'" id="components-upload-demo-drag" [nzCode]="NzDemoUploadDragComponentCode">
+        <nz-demo-upload-drag demo></nz-demo-upload-drag>
+        <div intro>
+          <p>把文件拖入指定区域，完成上传，同样支持点击上传。</p>
+          <p>设置 <code>nzMultiple</code> 后，在 <code>IE10+</code> 可以一次上传多个文件。</p>
+        </div>
+      </nz-code-box>
+      <nz-code-box [nzTitle]="'手动上传'" id="components-upload-demo-manually" [nzCode]="NzDemoUploadManuallyComponentCode">
+        <nz-demo-upload-manually demo></nz-demo-upload-manually>
+        <div intro>
+          <p><code>beforeUpload</code> 返回 <code>false</code> 后，手动上传文件。</p>
+        </div>
+      </nz-code-box>
+    </div>
+  </div>
+  <section class="markdown api-container">
+    <h2 id="API"><span>API</span>
+      <!-- <a class="anchor">#</a> -->
+    </h2>
+    <blockquote>
+      <p>服务端上传接口实现可以参考 <a href="https://github.com/blueimp/jQuery-File-Upload/wiki" target="_blank">jQuery-File-Upload</a>。</p>
+    </blockquote>
+    <table>
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>说明</th>
+          <th>类型</th>
+          <th>默认值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>nzAccept</td>
+          <td>接受上传的文件类型, 详见 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-accept" target="_blank">input accept Attribute</a></td>
+          <td>string</td>
+          <td>无</td>
+        </tr>
+        <tr>
+          <td>nzAction</td>
+          <td>必选参数, 上传的地址</td>
+          <td>string</td>
+          <td>无</td>
+        </tr>
+        <tr>
+          <td>nzBeforeUpload</td>
+          <td>上传文件之前的钩子，参数为上传的文件，若返回 <code>false</code> 则停止上传。注意：<strong>IE9</strong> 不支持该方法。注意：务必什么 <code>=></code> 定义处理方法。</td>
+          <td>(file, fileList) => <code>boolean | Observable&lt;boolean&gt;</code></td>
+          <td>无</td>
+        </tr>
+        <tr>
+          <td>nzCustomRequest</td>
+          <td>通过覆盖默认的上传行为，可以自定义自己的上传实现。注意：务必什么 <code>=></code> 定义处理方法。</td>
+          <td>(item) => <code>Subscription</code></td>
+          <td>无</td>
+        </tr>
+        <tr>
+          <td>nzData</td>
+          <td>上传所需参数或返回上传参数的方法。注意：务必什么 <code>=></code> 定义处理方法。</td>
+          <td>Object | ((file: UploadFile) => Object)</td>
+          <td>无</td>
+        </tr>
+        <tr>
+          <td>nzDisabled</td>
+          <td>是否禁用</td>
+          <td>boolean</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>nzFileList</td>
+          <td>文件列表，双向绑定</td>
+          <td>UploadFile[]</td>
+          <td>无</td>
+        </tr>
+        <tr>
+          <td>nzLimit</td>
+          <td>限制单次最多上传数量，<code>nzMultiple</code> 打开时有效；<code>0</code> 表示不限</td>
+          <td>number</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>nzSize</td>
+          <td>限制文件大小，单位：KB；<code>0</code> 表示不限</td>
+          <td>number</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>nzFileType</td>
+          <td>限制文件类型，例如：<code>image/png,image/jpeg,image/gif,image/bmp</code></td>
+          <td>string</td>
+          <td>无</td>
+        </tr>
+        <tr>
+          <td>nzFilter</td>
+          <td>自定义过滤器</td>
+          <td>UploadFilter[]</td>
+          <td>无</td>
+        </tr>
+        <tr>
+          <td>nzHeaders</td>
+          <td>设置上传的请求头部，IE10 以上有效</td>
+          <td>object</td>
+          <td>无</td>
+        </tr>
+        <tr>
+          <td>nzListType</td>
+          <td>上传列表的内建样式，支持三种基本样式 <code>text</code>, <code>picture</code> 和 <code>picture-card</code></td>
+          <td>string</td>
+          <td>'text'</td>
+        </tr>
+        <tr>
+          <td>nzMultiple</td>
+          <td>是否支持多选文件，<code>IE10+</code> 支持。开启后按住 ctrl 可选择多个文件。</td>
+          <td>boolean</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>nzName</td>
+          <td>发到后台的文件参数名</td>
+          <td>string</td>
+          <td>'file'</td>
+        </tr>
+        <tr>
+          <td>nzShowUploadList</td>
+          <td>是否展示列表, 可设为一个对象，用于单独设定 showPreviewIcon 和 showRemoveIcon</td>
+          <td>Boolean or &#123; showPreviewIcon?: boolean, showRemoveIcon?: boolean &#125;</td>
+          <td>true</td>
+        </tr>
+        <tr>
+          <td>nzShowButton</td>
+          <td>是否展示上传按钮</td>
+          <td>boolean</td>
+          <td>true</td>
+        </tr>
+        <tr>
+          <td>nzWithCredentials</td>
+          <td>上传请求时是否携带 cookie</td>
+          <td>boolean</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>nzPreview</td>
+          <td>点击文件链接或预览图标时的回调。注意：务必什么 <code>=></code> 定义处理方法。</td>
+          <td>(file: UploadFile) => void</td>
+          <td>无</td>
+        </tr>
+        <tr>
+          <td>nzRemove</td>
+          <td>点击移除文件时的回调，返回值为 false 时不移除。支持返回 Observable&lt;boolean&gt; 对象。注意：务必什么 <code>=></code> 定义处理方法。</td>
+          <td>(file: UploadFile) => boolean | Observable&lt;boolean&gt;</td>
+          <td>无</td>
+        </tr>
+        <tr>
+          <td>(nzChange)</td>
+          <td>上传文件状态变更时回调</td>
+          <td>EventEmitter</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="nzChange"><span>nzChange</span>
+      <!-- <a class="anchor">#</a> -->
+    </h2>
+    <blockquote><p>开始、上传进度、完成、失败都会调用这个函数。</p></blockquote>
+    <p>文件状态改变的回调，返回为：</p>
+    <pre [innerHTML]="changeDEMO"></pre>
+    <ol>
+      <li>
+        <p><code>file</code> 当前操作的文件对象。</p>
+        <pre [innerHTML]="uploadFileDEMO"></pre>
+      </li>
+      <li><p><code>fileList</code> 当前的文件列表。</p></li>
+      <li><p><code>event</code> 上传中的服务端响应内容，包含了上传进度等信息，高级浏览器支持。</p></li>
+    </ol>
+    <h2 id="nzCustomRequest"><span>nzCustomRequest</span>
+      <!-- <a class="anchor">#</a> -->
+    </h2>
+    <p>默认使用HTML5方式上传（即：使用 <code>HttpClient</code>），允许覆盖默认行为实现定制需求，例如直接与阿里云交互等。</p>
+    <p><code>nzCustomRequest</code> 回调传递以下参数：</p>
+    <ul>
+      <li><code>onProgress: (event: &#123; percent: number &#125;): void</code></li>
+      <li><code>onError: (event: Error): void</code></li>
+      <li><code>onSuccess: (body: Object, xhr?: Object): void</code></li>
+      <li><code>data: Object</code></li>
+      <li><code>filename: String</code></li>
+      <li><code>file: File</code></li>
+      <li><code>withCredentials: Boolean</code></li>
+      <li><code>action: String</code></li>
+      <li><code>headers: Object</code></li>
+    </ul>
+  </section>
+</article>

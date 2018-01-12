@@ -177,6 +177,11 @@ export const ROUTER_LIST = {
           'path'        : 'components/transfer',
           // 'loadChildren': './nz-demo-timepicker/nz-demo-timepicker.module#NzDemoTimePickerModule',
           'zh'          : '穿梭框'
+        },
+        {
+          'label'       : 'Upload',
+          'path'        : 'components/upload',
+          'zh'          : '上传'
         }
       ]
     },
@@ -436,6 +441,10 @@ export const DEMO_ROUTES = [
   {
     'path'        : 'components/transfer',
     'loadChildren': './nz-demo-transfer/nz-demo-transfer.module#NzDemoTransferModule'
+  },
+  {
+    'path'        : 'components/upload',
+    'loadChildren': './nz-demo-upload/nz-demo-upload.module#NzDemoUploadModule'
   },
   {
     'path'        : 'components/badge',

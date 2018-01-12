@@ -61,5 +61,12 @@ export const enUS: NzLocale = {
     searchPlaceholder: 'Search here',
     itemUnit: 'item',
     itemsUnit: 'items',
+  },
+
+  Upload: {
+    uploading: 'Uploading...',
+    removeFile: 'Remove',
+    uploadError: 'Error',
+    previewFile: 'Preview',
   }
 };
