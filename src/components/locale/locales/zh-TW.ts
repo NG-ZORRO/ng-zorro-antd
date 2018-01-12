@@ -61,5 +61,12 @@ export const zhTW: NzLocale = {
     searchPlaceholder: '搜尋資料',
     itemUnit: '項目',
     itemsUnit: '項目',
+  },
+
+  Upload: {
+    uploading: '正在上傳...',
+    removeFile: '刪除檔案',
+    uploadError: '上傳失敗',
+    previewFile: '檔案預覽',
   }
 };

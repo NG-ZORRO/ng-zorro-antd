@@ -61,5 +61,12 @@ export const ruRU: NzLocale = {
     searchPlaceholder: 'Поиск',
     itemUnit: 'элемент',
     itemsUnit: 'элементов',
+  },
+
+  Upload: {
+    uploading: 'Закачиваю...',
+    removeFile: 'Удалить файл',
+    uploadError: 'Ошибка при закачке',
+    previewFile: 'Предпросмотр файла',
   }
 };

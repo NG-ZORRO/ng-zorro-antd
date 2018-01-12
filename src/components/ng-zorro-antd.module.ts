@@ -52,6 +52,7 @@ import { NzTimePickerModule } from './time-picker/nz-timepicker.module';
 import { NzTimelineModule } from './timeline/nz-timeline.module';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
+import { NzUploadModule } from './upload/nz-upload.module';
 import { LoggerModule } from './util/logger/index';
 import { NzUtilModule } from './util/nz-util.module';
 
@@ -120,6 +121,7 @@ export { NzAffixModule } from './affix/nz-affix.module';
 export { NzAnchorModule } from './anchor/nz-anchor.module';
 export { NzAvatarModule } from './avatar/nz-avatar.module';
 export { NzTransferModule } from './transfer/nz-transfer.module';
+export { NzUploadModule } from './upload/nz-upload.module';
 
 // Components
 export { NzRowComponent } from './grid/nz-row.component';
@@ -226,6 +228,8 @@ export { NzAnchorLinkComponent } from './anchor/nz-anchor-link.component';
 export { NzAnchorComponent } from './anchor/nz-anchor.component';
 export { NzAvatarComponent } from './avatar/nz-avatar.component';
 export { NzTransferComponent } from './transfer/nz-transfer.component';
+export { NzUploadComponent } from './upload/nz-upload.component';
+export * from './upload/interface';
 
 // Services
 export { NzNotificationService } from './notification/nz-notification.service';
@@ -291,7 +295,8 @@ export { NZ_ROOT_CONFIG, NzRootConfig } from './root/nz-root-config';
     NzAffixModule,
     NzAnchorModule,
     NzAvatarModule,
-    NzTransferModule
+    NzTransferModule,
+    NzUploadModule
   ]
 })
 export class NgZorroAntdModule {
