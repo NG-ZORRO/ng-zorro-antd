@@ -87,7 +87,7 @@ export class NzProgressComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(value: number): void {
-    this._percent = value;
+    this._percent = value == null ? 0 : +value;
     if (this._percent === 100) {
       this.nzStatus = 'success';
     } else {
