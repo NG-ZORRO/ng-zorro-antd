@@ -1,12 +1,13 @@
 // tslint:disable:ordered-imports no-any
 import { Component, Input, Renderer2, ElementRef, SimpleChange, SimpleChanges, OnInit, OnChanges } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { NzLocaleService } from '../locale/index';
 import { UploadListType, UploadFile, ShowUploadListInterface } from './interface';
 
 @Component({
   selector: 'nz-upload-list',
   template: `
-  <div *ngFor="let file of items" class="ant-upload-list-item ant-upload-list-item-{{file.status}}">
+  <div *ngFor="let file of items" class="ant-upload-list-item ant-upload-list-item-{{file.status}}" @itemState>
     <ng-template #icon>
       <ng-container *ngIf="listType === 'picture' || listType === 'picture-card'; else defIcon">
         <ng-container *ngIf="file.status === 'uploading' || (!file.thumbUrl && !file.url); else thumbIcon">
@@ -66,6 +67,17 @@ import { UploadListType, UploadFile, ShowUploadListInterface } from './interface
     </div>
   </div>
   `,
+  animations: [
+    trigger('itemState', [
+      transition(':enter', [
+        style({ height: '0', width: '0', opacity: 0 }),
+        animate(150, style({height: '*', width: '*', opacity: 1}))
+      ]),
+      transition(':leave', [
+        animate(150, style({ height: '0', width: '0', opacity: 0 }))
+      ])
+    ])
+  ],
   preserveWhitespaces: false
 })
 export class NzUploadListComponent implements OnInit, OnChanges {
