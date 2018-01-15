@@ -32,7 +32,8 @@ import { NzTimePickerInnerComponent } from './nz-timepicker-inner.component';
         [attr.placeholder]="nzPlaceHolder"
         (click)="_openCalendar()"
         (blur)="onTouched()"
-        [value]="_value|nzDate:_format">
+        [value]="_value|nzDate:_format"
+        readonly>
       <span class="ant-time-picker-icon"></span>
     </span>
     <ng-template
