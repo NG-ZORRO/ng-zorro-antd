@@ -18,7 +18,7 @@ import { UploadFile, UploadListType, ShowUploadListInterface, UploadChangeParam,
       [items]="nzFileList"
       [icons]="nzShowUploadList"
       [onPreview]="nzPreview"
-      [onRemove]="onRemove.bind(this)"></nz-upload-list>
+      [onRemove]="onRemove"></nz-upload-list>
   </ng-template>
   <ng-template #con><ng-content></ng-content></ng-template>
   <ng-template #btn>
@@ -179,10 +179,10 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
       multiple: this.nzMultiple,
       withCredentials: this.nzWithCredentials,
       filters,
-      onStart: this.onStart.bind(this),
-      onProgress: this.onProgress.bind(this),
-      onSuccess: this.onSuccess.bind(this),
-      onError: this.onError.bind(this)
+      onStart: this.onStart,
+      onProgress: this.onProgress,
+      onSuccess: this.onSuccess,
+      onError: this.onError
     };
     return this;
   }
@@ -282,7 +282,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     reader.readAsDataURL(file.originFileObj);
   }
 
-  private onStart(file: any): void {
+  private onStart = (file: any): void => {
     if (!this.nzFileList) this.nzFileList = [];
     const targetItem = this.fileToObject(file);
     targetItem.status = 'uploading';
@@ -297,7 +297,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     this.cd.detectChanges();
   }
 
-  private onProgress(e: { percent: number }, file: UploadFile): void {
+  private onProgress = (e: { percent: number }, file: UploadFile): void => {
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
     // removed
@@ -311,7 +311,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     this.cd.detectChanges();
   }
 
-  private onSuccess(res: any, file: any, xhr?: any): void {
+  private onSuccess = (res: any, file: any, xhr?: any): void => {
     this.clearProgressTimer();
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
@@ -326,7 +326,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     this.cd.detectChanges();
   }
 
-  private onError(err: any, file: any): void {
+  private onError = (err: any, file: any): void => {
     this.clearProgressTimer();
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
@@ -357,7 +357,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   // region: list
 
-  onRemove(file: UploadFile): void {
+  onRemove = (file: UploadFile): void => {
     this.upload.abort(file);
     file.status = 'removed';
     (this.nzRemove ? this.nzRemove instanceof Observable ? this.nzRemove : of(this.nzRemove(file)) : of(true))

@@ -104,19 +104,19 @@
         </tr>
         <tr>
           <td>nzBeforeUpload</td>
-          <td>上传文件之前的钩子，参数为上传的文件，若返回 <code>false</code> 则停止上传。注意：<strong>IE9</strong> 不支持该方法。</td>
+          <td>上传文件之前的钩子，参数为上传的文件，若返回 <code>false</code> 则停止上传。注意：<strong>IE9</strong> 不支持该方法。注意：务必什么 <code>=></code> 定义处理方法。</td>
           <td>(file, fileList) => <code>boolean | Observable&lt;boolean&gt;</code></td>
           <td>无</td>
         </tr>
         <tr>
           <td>nzCustomRequest</td>
-          <td>通过覆盖默认的上传行为，可以自定义自己的上传实现</td>
+          <td>通过覆盖默认的上传行为，可以自定义自己的上传实现。注意：务必什么 <code>=></code> 定义处理方法。</td>
           <td>(item) => <code>Subscription</code></td>
           <td>无</td>
         </tr>
         <tr>
           <td>nzData</td>
-          <td>上传所需参数或返回上传参数的方法</td>
+          <td>上传所需参数或返回上传参数的方法。注意：务必什么 <code>=></code> 定义处理方法。</td>
           <td>Object | ((file: UploadFile) => Object)</td>
           <td>无</td>
         </tr>
@@ -200,13 +200,13 @@
         </tr>
         <tr>
           <td>nzPreview</td>
-          <td>点击文件链接或预览图标时的回调</td>
+          <td>点击文件链接或预览图标时的回调。注意：务必什么 <code>=></code> 定义处理方法。</td>
           <td>(file: UploadFile) => void</td>
           <td>无</td>
         </tr>
         <tr>
           <td>nzRemove</td>
-          <td>点击移除文件时的回调，返回值为 false 时不移除。支持返回 Observable&lt;boolean&gt; 对象。</td>
+          <td>点击移除文件时的回调，返回值为 false 时不移除。支持返回 Observable&lt;boolean&gt; 对象。注意：务必什么 <code>=></code> 定义处理方法。</td>
           <td>(file: UploadFile) => boolean | Observable&lt;boolean&gt;</td>
           <td>无</td>
         </tr>

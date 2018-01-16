@@ -12,7 +12,7 @@ import { UploadFile } from './../../components/upload/interface';
       nzListType="picture-card"
       [(nzFileList)]="fileList"
       [nzShowButton]="fileList.length < 3"
-      [nzPreview]="handlePreview.bind(this)">
+      [nzPreview]="handlePreview">
         <i class="anticon anticon-plus"></i>
         <div class="ant-upload-text">Upload</div>
     </nz-upload>
@@ -46,7 +46,7 @@ export class NzDemoUploadPictureCardComponent {
 
   constructor(private msg: NzMessageService) {}
 
-  handlePreview(file: UploadFile) {
+  handlePreview = (file: UploadFile) => {
     this.previewImage = file.url || file.thumbUrl;
     this.previewVisible = true;
   }

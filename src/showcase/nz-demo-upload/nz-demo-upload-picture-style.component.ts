@@ -12,7 +12,7 @@ import { UploadFile } from './../../components/upload/interface';
       nzListType="picture"
       [(nzFileList)]="fileList1">
       <button nz-button>
-        <span><i class="anticon anticon-upload"></i> Upload</span>
+        <i class="anticon anticon-upload"></i><span>Upload</span>
       </button>
     </nz-upload>
   </div>

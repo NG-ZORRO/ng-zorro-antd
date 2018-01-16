@@ -10,9 +10,9 @@ import { UploadFile } from './../../components/upload/interface';
   template: `
   <nz-upload
     [(nzFileList)]="fileList"
-    [nzBeforeUpload]="beforeUpload.bind(this)">
+    [nzBeforeUpload]="beforeUpload">
     <button nz-button>
-      <span><i class="anticon anticon-upload"></i> Select File</span>
+      <i class="anticon anticon-upload"></i><span>Select File</span>
     </button>
   </nz-upload>
   <button nz-button [nzType]="'primary'" [nzLoading]="uploading" (click)="handleUpload()" [disabled]="fileList.length == 0" style="margin-top: 16px">
@@ -26,7 +26,7 @@ export class NzDemoUploadManuallyComponent {
 
   constructor(private http: HttpClient, private msg: NzMessageService) {}
 
-  beforeUpload(file: UploadFile): boolean {
+  beforeUpload = (file: UploadFile): boolean => {
     this.fileList.push(file);
     return false;
   }

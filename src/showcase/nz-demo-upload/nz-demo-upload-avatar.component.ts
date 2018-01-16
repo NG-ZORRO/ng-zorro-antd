@@ -9,33 +9,34 @@ import { UploadFile } from './../../components/upload/interface';
   <nz-upload class="avatar-uploader"
     nzAction="https://jsonplaceholder.typicode.com/posts/"
     nzName="avatar"
-    nzListType="picture-card"
     [nzShowUploadList]="false"
     [nzBeforeUpload]="beforeUpload"
     (nzChange)="handleChange($event)">
-    <ng-container *ngIf="!avatarUrl">
-      <i class="anticon anticon-{{ loading ? 'loading' : 'plus' }}"></i>
-      <div class="ant-upload-text">Upload</div>
-    </ng-container>
-    <img *ngIf="avatarUrl" [src]="avatarUrl">
+    <i *ngIf="!avatarUrl" class="anticon anticon-plus avatar-uploader-trigger"></i>
+    <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar">
   </nz-upload>
   `,
   styles: [`
-  :host ::ng-deep .avatar-uploader > .ant-upload {
-    width: 128px;
-    height: 128px;
-  }
-  :host ::ng-deep i {
-    font-size: 32px;
-    color: #999;
-    /* 2.x */
+  :host ::ng-deep .avatar-uploader,
+  :host ::ng-deep .avatar-uploader-trigger,
+  :host ::ng-deep .avatar {
+    width: 150px;
+    height: 150px;
     display: block;
-    margin-top: 16px;
   }
 
-  :host ::ng-deep .ant-upload-text {
-    margin-top: 8px;
-    color: #666;
+  :host ::ng-deep .avatar-uploader {
+    display: block;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  :host ::ng-deep .avatar-uploader-trigger {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 28px;
+    color: #999;
   }
   `]
 })
@@ -45,7 +46,7 @@ export class NzDemoUploadAvatarComponent {
 
   constructor(private msg: NzMessageService) {}
 
-  beforeUpload(file: File): boolean {
+  beforeUpload = (file: File) => {
     const isJPG = file.type === 'image/jpeg';
     if (!isJPG) {
       this.msg.error('You can only upload JPG file!');

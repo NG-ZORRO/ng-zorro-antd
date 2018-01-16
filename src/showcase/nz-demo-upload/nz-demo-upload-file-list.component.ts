@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
     nzAction="https://jsonplaceholder.typicode.com/posts/"
     [nzFileList]="fileList">
     <button nz-button>
-      <span><i class="anticon anticon-upload"></i>Upload</span>
+      <i class="anticon anticon-upload"></i><span>Upload</span>
     </button>
   </nz-upload>
   `

@@ -12,7 +12,7 @@ import { UploadFile } from './../../components/upload/interface';
     [nzLimit]="2"
     (nzChange)="handleChange($event)">
     <button nz-button>
-      <span><i class="anticon anticon-upload"></i>Upload</span>
+      <i class="anticon anticon-upload"></i><span>Upload</span>
     </button>
   </nz-upload>
   `
