@@ -1,5 +1,7 @@
 # 初始化
-目前文档系统处于基本可用状态，clone仓库后依次执行
+目前文档系统处于基本可用状态，依次执行
+* git clone -b 0.7.0 https://github.com/NG-ZORRO/ng-zorro-antd.git ng-zorro-antd-0.7.0
+* cd ng-zorro-antd-0.7.0
 * npm install
 * npm run site:init (阿里内部运行 npm run site:init-tnpm)
 * cd site
