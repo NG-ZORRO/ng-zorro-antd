@@ -2,7 +2,7 @@
 
 # compiled output
 dist/
-doc/
+site/
 tmp/
 out-tsc/
 publish/
@@ -12,7 +12,7 @@ integration/**/*.ngsummary.json
 
 
 # dependencies
-node_modules/
+node_modules
 node_modules.*/
 package-lock.json
 integration/**/package-lock.json

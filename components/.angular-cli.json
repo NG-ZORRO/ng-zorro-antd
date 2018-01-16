@@ -1,0 +1,20 @@
+{
+  "$schema": "../node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "ng-zorro-antd"
+  },
+  "apps": [
+    {
+      "root": "./",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "./tsconfig.json",
+      "testTsconfig": "./tsconfig.spec.json"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  }
+}

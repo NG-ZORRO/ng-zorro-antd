@@ -1,0 +1,205 @@
+
+.cdk-overlay-container {
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 1000;
+}
+
+.cdk-overlay-backdrop {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity .4s cubic-bezier(.25, .8, .25, 1);
+  opacity: 0;
+  position: absolute;
+  pointer-events: auto;
+  z-index: 1000;
+}
+
+.cdk-overlay-pane {
+  position: absolute;
+  pointer-events: auto;
+  z-index: 1000;
+}
+
+// breadcrumb
+
+nz-breadcrumb {
+  display: block;
+}
+
+.ant-breadcrumb > nz-breadcrumb-item:last-child {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.ant-breadcrumb > nz-breadcrumb-item:last-child .ant-breadcrumb-separator {
+  display: none;
+}
+
+// submenu
+
+.ant-menu-submenu-placement-bottomLeft {
+  top: 6px;
+  position: relative;
+}
+
+.ant-menu-submenu-placement-rightTop {
+  left: 4px;
+  position: relative;
+}
+
+.ant-menu-submenu-placement-leftTop {
+  right: 4px;
+  position: relative;
+}
+
+// dropdown
+
+nz-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+nz-dropdown-button {
+  position: relative;
+  display: inline-block;
+}
+
+.ant-dropdown {
+  top: 100%;
+  left: 0;
+  position: relative;
+  width: 100%;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+// layout
+
+nz-content, nz-layout, nz-header, nz-footer {
+  display: block;
+}
+
+.ant-layout-sider-trigger {
+  width: 100%;
+  position: absolute;
+}
+
+// select
+
+nz-select .ant-select {
+  width: 100%;
+}
+
+.ant-select-dropdown {
+  top: 100%;
+  left: 0;
+  position: relative;
+  width: 100%;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  &.ant-select-dropdown-placement-topLeft {
+    top: -100%;
+    transform: translateY(-100%) !important;
+  }
+  &-menu {
+    &-item {
+      line-height: 1.5;
+    }
+  }
+}
+
+// tooltip
+.ant-tooltip {
+  position: relative;
+}
+
+// popconfirm
+.ant-popover {
+  position: relative;
+}
+
+// badge
+
+.ant-badge {
+  &-count {
+    position: absolute;
+    transform: translateX(50%);
+    right: 0;
+  }
+  &-dot {
+    position: absolute;
+    transform: translateX(50%);
+    right: 0;
+
+  }
+}
+
+// tabs
+nz-tab {
+  display: block;
+}
+
+nz-tabs-nav {
+  display: block;
+}
+
+nz-tabset {
+  display: block;
+  position: relative;
+  .ant-tabs {
+    height: 100%;
+  }
+}
+
+nz-tab-body {
+  display: block;
+}
+
+// card
+nz-card {
+  display: block;
+  position: relative;
+}
+
+// table
+
+.ant-table-th-left-sticky, .ant-table-th-right-sticky, .ant-table-td-right-sticky, .ant-table-td-left-sticky {
+  position: sticky;
+  z-index: 1;
+}
+
+.ant-table-td-left-sticky, .ant-table-td-right-sticky {
+  background: #ffffff;
+}
+
+table.ant-table-fixed {
+  overflow: auto;
+}
+
+.ant-table-scroll-position-middle {
+  .ant-table-th-right-sticky, .ant-table-td-right-sticky {
+    box-shadow: -6px 0 6px 0px rgba(0, 0, 0, 0.05)
+  }
+  .ant-table-th-left-sticky, .ant-table-td-left-sticky {
+    box-shadow: 6px 0 6px 0px rgba(0, 0, 0, 0.05)
+  }
+}
+
+.ant-table-scroll-position-left {
+  .ant-table-th-right-sticky, .ant-table-td-right-sticky {
+    box-shadow: -6px 0 6px 0px rgba(0, 0, 0, 0.05)
+  }
+}
+
+.ant-table-scroll-position-right {
+  .ant-table-th-left-sticky, .ant-table-td-left-sticky {
+    box-shadow: 6px 0 6px 0px rgba(0, 0, 0, 0.05)
+  }
+}

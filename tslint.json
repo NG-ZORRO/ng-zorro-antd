@@ -2,25 +2,48 @@
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
+  "linterOptions": {
+    "exclude": [
+      "scripts/template/*.ts"
+    ]
+  },
   "rules": {
     "adjacent-overload-signatures": true,
     "align": [
       true,
-      "parameters", 
+      "parameters",
       "statements",
       "members",
       "elements"
     ],
-    "array-type": [true, "array-simple"],
+    "array-type": [
+      true,
+      "array-simple"
+    ],
     "arrow-return-shorthand": true,
     "ban-comma-operator": true,
     "ban-types": [
-      true, 
-      ["Object", "Use {} instead."],
-      ["String", "Use string instead."],
-      ["Number", "Use number instead."],
-      ["Boolean", "Use boolean instead."],
-      ["Function", "Use specific callable interface instead."]
+      true,
+      [
+        "Object",
+        "Use {} instead."
+      ],
+      [
+        "String",
+        "Use string instead."
+      ],
+      [
+        "Number",
+        "Use number instead."
+      ],
+      [
+        "Boolean",
+        "Use boolean instead."
+      ],
+      [
+        "Function",
+        "Use specific callable interface instead."
+      ]
     ],
     "binary-expression-operand-order": true,
     "class-name": true,
@@ -44,10 +67,16 @@
       true,
       "spaces"
     ],
-    "interface-name": [true, "never-prefix"],
+    "interface-name": [
+      true,
+      "never-prefix"
+    ],
     "interface-over-type-literal": true,
     "label-position": true,
-    "max-line-length": [false, 120],
+    "max-line-length": [
+      false,
+      120
+    ],
     "member-access": [
       true,
       "no-public",
@@ -95,7 +124,7 @@
     "no-duplicate-imports": true,
     "no-duplicate-super": true,
     "no-empty": [
-      false, 
+      false,
       "allow-empty-catch"
     ],
     "no-empty-interface": true,
@@ -114,7 +143,10 @@
     "no-irregular-whitespace": true,
     "no-magic-numbers": false,
     "no-misused-new": true,
-    "no-namespace": [true, "allow-declarations"],
+    "no-namespace": [
+      true,
+      "allow-declarations"
+    ],
     "no-non-null-assertion": true,
     "no-shadowed-variable": true,
     "no-sparse-arrays": true,
@@ -130,7 +162,10 @@
     "no-var-keyword": true,
     "number-literal-format": true,
     "object-literal-sort-keys": false,
-    "object-literal-key-quotes": [true, "consistent"],
+    "object-literal-key-quotes": [
+      true,
+      "consistent"
+    ],
     "object-literal-shorthand": true,
     "one-line": [
       true,
@@ -139,7 +174,10 @@
       "check-else",
       "check-whitespace"
     ],
-    "one-variable-per-declaration": [true, "ignore-for-loop"],
+    "one-variable-per-declaration": [
+      true,
+      "ignore-for-loop"
+    ],
     "ordered-imports": [
       true,
       {
@@ -154,7 +192,10 @@
     "prefer-for-of": true,
     "prefer-method-signature": true,
     "prefer-object-spread": true,
-    "prefer-template": [true, "allow-single-concat"],
+    "prefer-template": [
+      true,
+      "allow-single-concat"
+    ],
     "quotemark": [
       true,
       "single"
@@ -165,17 +206,20 @@
       "always"
     ],
     "trailing-comma": [
-      true, 
-      {"multiline": "ignore", "singleline": "never"}
+      true,
+      {
+        "multiline": "ignore",
+        "singleline": "never"
+      }
     ],
     "triple-equals": [
       true,
       "allow-null-check"
     ],
     "typedef": [
-      true, 
-      "call-signature", 
-      "parameter", 
+      true,
+      "call-signature",
+      "parameter",
       "property-declaration"
     ],
     "typedef-whitespace": [
@@ -211,8 +255,10 @@
       true,
       "attribute",
       "nz",
-      ["camelCase","kebab-case"]
-
+      [
+        "camelCase",
+        "kebab-case"
+      ]
     ],
     "component-selector": [
       true,
@@ -226,7 +272,11 @@
       ],
       "kebab-case"
     ],
-    "angular-whitespace": [true, "check-interpolation"],
+    "angular-whitespace": [
+      false,
+      "check-interpolation",
+      "check-semicolon"
+    ],
     "no-output-on-prefix": true,
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
