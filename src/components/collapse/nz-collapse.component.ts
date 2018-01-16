@@ -16,8 +16,8 @@ import { toBoolean } from '../util/convert';
 import { NzCollapsesetComponent } from './nz-collapseset.component';
 
 @Component({
-  selector     : 'nz-collapse',
-  template     : `
+  selector  : 'nz-collapse',
+  template  : `
     <div class="ant-collapse-header" [attr.aria-expanded]="_active" (click)="clickHeader($event)" role="tab">
       <i class="arrow"></i>
       <ng-template [ngIf]="nzTitle">
@@ -27,13 +27,13 @@ import { NzCollapsesetComponent } from './nz-collapseset.component';
         <ng-content select="[collapse-title]"></ng-content>
       </ng-template>
     </div>
-    <div class="ant-collapse-content" [@collapseState]="_active?'active':'inactive'">
+    <div [ngClass]="{'ant-collapse-content':true,'ant-collapse-content-status-active':_active,'ant-collapse-contents-status-inactive':!_active}" [@collapseState]="_active?'active':'inactive'">
       <div class="ant-collapse-content-box">
         <ng-content></ng-content>
       </div>
     </div>
   `,
-  animations   : [
+  animations: [
     trigger('collapseState', [
       state('inactive', style({
         opacity: '0',
@@ -47,7 +47,7 @@ import { NzCollapsesetComponent } from './nz-collapseset.component';
       transition('active => inactive', animate('150ms ease-out'))
     ])
   ],
-  host: {
+  host      : {
     '[class.ant-collapse-item]': 'true'
   }
 })
@@ -55,9 +55,7 @@ import { NzCollapsesetComponent } from './nz-collapseset.component';
 export class NzCollapseComponent {
   private _disabled = false;
   _active = false;
-
   _el;
-
   @Input() nzTitle: string;
 
   @Input()
