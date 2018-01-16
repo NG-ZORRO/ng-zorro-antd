@@ -68,6 +68,8 @@ import { toBoolean } from '../util/convert';
 export class NzInputNumberComponent implements ControlValueAccessor {
   private _disabled = false;
   _el: HTMLElement;
+  // default is undefined
+  _defaultValue: number;
   _value: number;
   _size = 'default';
   _prefixCls = 'ant-input-number';
@@ -192,7 +194,11 @@ export class NzInputNumberComponent implements ControlValueAccessor {
 
   _checkValue(): void {
     const numberValue = +this.nzParser(this._displayValue);
-    if (this._isNumber(numberValue)) {
+    if (this._isEmpty(this._displayValue)) {
+      this._displayValue = this.nzFormatter('');
+      this._value = this._defaultValue;
+      this.onChange(this._value);
+    } else if (this._isNumber(numberValue)) {
       this.nzValue = numberValue;
     } else {
       this._displayValue = this.nzFormatter(this._value);
@@ -208,6 +214,13 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     } else {
       return value;
     }
+  }
+
+  _isEmpty(value?: number | string | undefined | null): boolean {
+    return value === undefined
+    || value === null
+    || (typeof value === 'string' && this._displayValue.trim() === '')
+    || (typeof value === 'string' && this.nzFormatter('') === value);
   }
 
   _isNumber(value: number): boolean {
@@ -247,8 +260,8 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   private _updateValue(value: number, emitChange: boolean = true): void {
     const cacheValue = this._value;
     this._value = this._getBoundValue(value);
-    this._displayValue = this.nzFormatter(this._value);
-    this._inputNumber.nativeElement.value = this.nzFormatter(this._value);
+    this._displayValue = this.nzFormatter(this._value || '');
+    this._inputNumber.nativeElement.value = this.nzFormatter(this._value || '');
     if (emitChange && (value !== cacheValue)) {
       this.onChange(this._value);
     }
