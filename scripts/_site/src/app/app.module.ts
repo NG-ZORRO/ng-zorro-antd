@@ -9,6 +9,7 @@ import {
 } from 'ng-zorro-antd';
 import { AppComponent } from './app.component';
 import { routes } from './app.routing.module';
+import { environment } from '../environments/environment';
 import { NzCodeBoxModule } from './share/nz-codebox/nz-codebox.module';
 import { NzHighlightModule } from './share/nz-highlight/nz-highlight.module';
 import { NzNavBottomModule } from './share/nz-nav-bottom/nz-nav-bottom.module';
@@ -26,7 +27,7 @@ import { NzNavBottomModule } from './share/nz-nav-bottom/nz-nav-bottom.module';
     NzCodeBoxModule,
     NzHighlightModule,
     NzNavBottomModule,
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules } : {})
   ],
   providers   : [
     Title,
