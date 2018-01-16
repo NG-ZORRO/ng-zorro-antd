@@ -1,9 +1,12 @@
 {
   "name": "ng-zorro-antd",
-  "version": "0.6.10",
+  "version": "0.7.0",
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "scripts": {
+    "site:init":"node scripts/generate-site init && cd site && npm install --registry=https://registry.npm.taobao.org && cp -R ../components node_modules/ng-zorro-antd",
+    "site:init-tnpm":"node scripts/generate-site init && cd site && tnpm install --by=npm && cp -R ../components node_modules/ng-zorro-antd",
+    "site":"node scripts/generate-site",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --prod",
@@ -16,7 +19,7 @@
     "integration-cli": "npm run generate && cd integration/angular-cli && npm run integration",
     "integration-webpack": "npm run generate && cd integration/webpack && npm run integration",
     "integration-rollup": "npm run generate && cd integration/rollup && npm run integration",
-    "lint": "tslint -c tslint.json 'src/components/**/*.ts'",
+    "lint": "tslint -c tslint.json 'components/**/*.ts'",
     "e2e": "ng e2e"
   },
   "main": "./bundles/antd.umd.js",
@@ -42,11 +45,14 @@
   "dependencies": {
     "@angular/cdk": "^5.0.0",
     "moment": "^2.18.1",
-    "tslib": "^1.7.1"
+    "remark": "^8.0.0",
+    "tslib": "^1.7.1",
+    "wrench": "^1.5.9",
+    "yaml-front-matter": "^3.4.0"
   },
   "devDependencies": {
     "@angular/animations": "^5.0.0",
-    "@angular/cli": "1.6.1",
+    "@angular/cli": "1.6.4",
     "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",
     "@angular/compiler-cli": "^5.0.0",
@@ -64,7 +70,6 @@
     "codelyzer": "~4.0.1",
     "core-js": "^2.4.1",
     "coveralls": "^2.13.1",
-    "glob": "^7.1.2",
     "highlight.js": "^9.12.0",
     "intl": "^1.2.5",
     "jasmine-core": "~2.6.2",
