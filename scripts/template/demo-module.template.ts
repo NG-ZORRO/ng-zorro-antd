@@ -23,6 +23,9 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
   ],
   declarations: [
 {{declarations}}
+  ],
+  entryComponents: [
+{{entryComponents}}
   ]
 })
 export class NzDemo{{component}}Module {
