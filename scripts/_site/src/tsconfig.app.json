@@ -6,14 +6,16 @@
     "module": "es2015",
     "types": [
       "node"
-    ]
+    ],
+    "paths": {
+      "ng-zorro-antd": [ "../../components" ]
+    }
   },
   "exclude": [
     "test.ts",
     "**/*.spec.ts"
   ],
   "include": [
-    "../node_modules/ng-zorro-antd/index.ts",
     "../src/**/*"
   ]
 }
