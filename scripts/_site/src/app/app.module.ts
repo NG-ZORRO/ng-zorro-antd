@@ -8,6 +8,7 @@ import {
   NgZorroAntdModule
 } from 'ng-zorro-antd';
 import { AppComponent } from './app.component';
+import { DEMOComponent } from './_demo/demo.component';
 import { routes } from './app.routing.module';
 import { environment } from '../environments/environment';
 import { NzCodeBoxModule } from './share/nz-codebox/nz-codebox.module';
@@ -16,7 +17,7 @@ import { NzNavBottomModule } from './share/nz-nav-bottom/nz-nav-bottom.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent, DEMOComponent
   ],
   imports     : [
     BrowserModule,

@@ -2,11 +2,24 @@
 目前文档系统处于基本可用状态，依次执行
 * git clone -b 0.7.0 https://github.com/NG-ZORRO/ng-zorro-antd.git ng-zorro-antd-0.7.0
 * cd ng-zorro-antd-0.7.0
-* npm install
-* npm run site:init (阿里内部运行 npm run site:init-tnpm)
-* cd site
+* npm i
+* npm run site:init （初始化文档站点）
 * ng serve
 即可看到目前的doc及相关组件的开发进度
+
+## 调试
+
+运行 `ng serve` 可以直接修改 `./components` 会立即更新。
+
+> （待开发）若修改DEMO代码，需要额外运行一次 `node scripts/generate-site button` 表示重新生成 button 所有DEMO代码。
+
+## 测试代码
+
+运行 `ng test`。
+
+**加速度**
+
+默认会执行 `./components` 下所有 `*.spec.ts`，可手动调整 `./components/test.ts` 文件的临时针对某个测试文件，提升测试体验。
 
 # 开发
 ## 文件夹结构
