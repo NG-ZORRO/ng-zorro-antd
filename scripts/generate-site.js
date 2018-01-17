@@ -20,8 +20,8 @@ if (status === 'init') {
 } else {
   wrench.rmdirSyncRecursive(`${showCasePath}/src`, true);
   wrench.copyDirSyncRecursive(path.resolve(__dirname, '_site/src'), `${showCasePath}/src`);
-  wrench.rmdirSyncRecursive(`${showCasePath}/node_modules/ng-zorro-antd`, true);
-  wrench.copyDirSyncRecursive(path.resolve(__dirname, '../components'), `${showCasePath}/node_modules/ng-zorro-antd`);
+  // wrench.rmdirSyncRecursive(`${showCasePath}/node_modules/ng-zorro-antd`, true);
+  // wrench.copyDirSyncRecursive(path.resolve(__dirname, '../components'), `${showCasePath}/node_modules/ng-zorro-antd`);
 }
 
 const showCaseTargetPath = `${showCasePath}/src/app/`;

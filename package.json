@@ -4,8 +4,7 @@
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "scripts": {
-    "site:init": "node scripts/generate-site init && cd site && npm i && cp -R ../components node_modules/ng-zorro-antd",
-    "site:init-tnpm": "node scripts/generate-site init && cd site && tnpm install --by=npm && cp -R ../components node_modules/ng-zorro-antd",
+    "site:init": "node scripts/generate-site init",
     "site": "node scripts/generate-site",
     "ng": "ng",
     "start": "ng serve",

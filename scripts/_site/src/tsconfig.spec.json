@@ -8,7 +8,10 @@
     "types": [
       "jasmine",
       "node"
-    ]
+    ],
+    "paths": {
+      "ng-zorro-antd": [ "../../components" ]
+    }
   },
   "files": [
     "test.ts"
