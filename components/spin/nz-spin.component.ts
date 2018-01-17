@@ -46,6 +46,7 @@ export class NzSpinComponent implements AfterViewInit {
   @ViewChild('ref') _ref: ElementRef;
   @ContentChild('indicator') indicator: TemplateRef<void>;
 
+
   @Input() set nzDelay(value: number) {
     this._delay = value;
     this.spinning$ = this._spinning$.asObservable().pipe(debounceTime(this.nzDelay));
@@ -79,17 +80,31 @@ export class NzSpinComponent implements AfterViewInit {
     return this._size;
   }
 
+  isEmpty(element: HTMLElement): boolean {
+    const nodes = element.childNodes;
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes.item(i);
+      if (node.nodeType !== 8 && nodes.item(i).textContent.trim().length !== 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   constructor(private _elementRef: ElementRef, private _renderer: Renderer2, private zone: NgZone) {
     this._el = this._elementRef.nativeElement;
   }
 
   ngAfterViewInit(): void {
-    /** no way to detect empty https://github.com/angular/angular/issues/12530 **/
-    if (this._ref.nativeElement.children.length !== 0) {
-      this.zone.onStable.pipe(first()).subscribe(() => {
+    this.zone.onStable.pipe(first()).subscribe(() => {
+      /** no way to detect empty https://github.com/angular/angular/issues/12530 **/
+      if (!this.isEmpty(this._ref.nativeElement)) {
         this._nested = true;
         this._renderer.setStyle(this._el, 'display', 'block');
-      });
-    }
+      } else {
+        this._renderer.removeChild(this._ref.nativeElement.parentNode, this._ref.nativeElement);
+      }
+    });
+
   }
 }
