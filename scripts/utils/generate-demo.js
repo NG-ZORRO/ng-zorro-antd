@@ -20,15 +20,20 @@ function generateDemoModule(content) {
   const demoMap = content.demoMap;
   let imports = '';
   let declarations = '';
+  let entryComponents = [];
   for (const key in demoMap) {
-    imports += `import { NzDemo${componentName(component)}${componentName(key)}Component } from './${key}';\n`;
-    declarations += `\t\tNzDemo${componentName(component)}${componentName(key)}Component,\n`;
+    const declareComponents = [ `NzDemo${componentName(component)}${componentName(key)}Component` ];
+    const entries = retrieveEntryComponents(demoMap[key] && demoMap[key].ts);
+    entryComponents.push(...entries);
+    declareComponents.push(...entries);
+    imports += `import { ${declareComponents.join(', ')} } from './${key}';\n`;
+    declarations += `\t\t${declareComponents.join(',\n\t')},\n`;
   }
   imports += `import { NzDemo${componentName(component)}ZhComponent } from './zh.component';\n`;
   imports += `import { NzDemo${componentName(component)}EnComponent } from './en.component';\n`;
   declarations += `\t\tNzDemo${componentName(component)}ZhComponent,\n`;
   declarations += `\t\tNzDemo${componentName(component)}EnComponent,\n`;
-  return demoModuleTemplate.replace(/{{imports}}/g, imports).replace(/{{declarations}}/g, declarations).replace(/{{component}}/g, componentName(component));
+  return demoModuleTemplate.replace(/{{imports}}/g, imports).replace(/{{declarations}}/g, declarations).replace(/{{component}}/g, componentName(component)).replace(/{{entryComponents}}/g, entryComponents.join(',\n'));
 }
 
 function componentName(component) {
@@ -166,4 +171,12 @@ function generateExample(result) {
     zh: isZhIcon ? '' : (isZhUnion ? templateUnion.replace(/{{content}}/g, zhPart) : templateSplit.replace(/{{first}}/g, firstZhPart).replace(/{{second}}/g, secondZhPart)),
     en: isEnIcon ? '' : (isEnUnion ? templateUnion.replace(/{{content}}/g, enPart) : templateSplit.replace(/{{first}}/g, firstEnPart).replace(/{{second}}/g, secondEnPart))
   }
+}
+
+function retrieveEntryComponents(plainCode) {
+  var matches = (plainCode + '').match(/^\/\*\s*?entryComponents:\s*([^\n]+?)\*\//) || [];
+  if (matches[1]) {
+    return matches[1].split(',').map(className => className.trim()).filter((value, index, self) => value && self.indexOf(value) === index);
+  }
+  return [];
 }
