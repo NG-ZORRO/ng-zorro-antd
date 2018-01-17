@@ -34,7 +34,7 @@
 | tooltip | x | x | x | wilsoncook | - |
 | popconfirm | x | x | x | wilsoncook | - |
 | slider | x | x | x | wilsoncook | - |
-| modal | x | x | x | wilsoncook | - |
+| modal | 90% | 100% | 100% | wilsoncook | √ |
 | message | x | x | x | wilsoncook | - |
 | notification | x | x | x | wilsoncook | - |
 | datepicker | x | x | x | trotyl | - |
