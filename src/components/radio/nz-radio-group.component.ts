@@ -66,6 +66,12 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
     radio.nzChecked = radio.nzValue === this._value;
   }
 
+  checkRadios(): void {
+    this.radios.forEach((item) => {
+      item.nzChecked = item.nzValue === this._value;
+    });
+  }
+
   selectRadio(radio: NzRadioComponent | NzRadioButtonComponent): void {
     this.updateValue(radio.nzValue);
   }
@@ -76,9 +82,7 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
     }
     this._value = value;
     this.onChange(value);
-    this.radios.forEach((item) => {
-      item.nzChecked = item.nzValue === this._value;
-    });
+    this.checkRadios();
   }
 
   constructor(private _elementRef: ElementRef, private _render: Renderer2) {
@@ -86,9 +90,6 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
   }
 
   ngAfterContentInit(): void {
-    this.radios.forEach((item) => {
-      item.nzChecked = item.nzValue === this._value;
-    });
     /** trim text node between radio button */
     Array.from(this._el.childNodes).forEach(node => {
       if (node.nodeType === 3) {
@@ -98,7 +99,8 @@ export class NzRadioGroupComponent implements OnInit, AfterContentInit, ControlV
   }
 
   writeValue(value: string): void {
-    this.updateValue(value);
+    this._value = value;
+    this.checkRadios();
   }
 
   registerOnChange(fn: (_: string) => void): void {
