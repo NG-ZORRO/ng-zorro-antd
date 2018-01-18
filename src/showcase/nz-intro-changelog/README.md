@@ -9,6 +9,23 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+# 0.6.11
+`2018-01-18`
+
+### Features
+* `Upload` 新组件 [@cipchk](https://github.com/cipchk)
+* `InputNumber` 组件新增 `nzAllowClear` 选项支持用户清除数据 [#918](https://github.com/NG-ZORRO/ng-zorro-antd/pull/918)
+* `Input` 组件新增 `nzOnSearch` 事件 [#876](https://github.com/NG-ZORRO/ng-zorro-antd/pull/876) [@Hsuan Lee](https://github.com/HsuanXyz)
+
+### Bug Fixes
+* `Radio` 修复冗余的 `ngModelChange` 触发问题 [#904](https://github.com/NG-ZORRO/ng-zorro-antd/pull/904) [@SangKa.Z](https://github.com/SangKa)
+* `Progress` 修复空值状态下的百分比展示 [#905](https://github.com/NG-ZORRO/ng-zorro-antd/pull/905) [@cipchk](https://github.com/cipchk)
+* `DatePicker` `TimePicker` 修复用户输入的问题 [#856](https://github.com/NG-ZORRO/ng-zorro-antd/pull/856) [@Billy Ma](https://github.com/KennethMa)
+
+### Other
+* `BackTop` 组件增加测试用例 [#907](https://github.com/NG-ZORRO/ng-zorro-antd/pull/907) [@Piotr Jurczyński](https://github.com/pjurczynski)
+* `Collapse` 与Ant Design保持同步 [#881](https://github.com/NG-ZORRO/ng-zorro-antd/pull/881)
+
 ## 0.6.10
 `2018-01-06`
 
