@@ -28,7 +28,7 @@ import { toBoolean } from '../core/util/convert';
           <div class="ant-spin-text" *ngIf="nzTip">{{ nzTip }}</div>
         </div>
       </div>
-      <div class="ant-spin-container" [class.ant-spin-blur]="spinning$|async" #ref [hidden]="!_nested">
+      <div class="ant-spin-container" [class.ant-spin-blur]="spinning$|async" #ref [hidden]="!_nested" (cdkObserveContent)="checkNested()">
         <ng-content></ng-content>
       </div>
     </div>
@@ -91,20 +91,24 @@ export class NzSpinComponent implements AfterViewInit {
     return true;
   }
 
+  checkNested(): void {
+    /** no way to detect empty https://github.com/angular/angular/issues/12530 **/
+    if (!this.isEmpty(this._ref.nativeElement)) {
+      this._nested = true;
+      this._renderer.setStyle(this._el, 'display', 'block');
+    } else {
+      this._nested = false;
+      this._renderer.removeStyle(this._el, 'display');
+    }
+  }
+
   constructor(private _elementRef: ElementRef, private _renderer: Renderer2, private zone: NgZone) {
     this._el = this._elementRef.nativeElement;
   }
 
   ngAfterViewInit(): void {
     this.zone.onStable.pipe(first()).subscribe(() => {
-      /** no way to detect empty https://github.com/angular/angular/issues/12530 **/
-      if (!this.isEmpty(this._ref.nativeElement)) {
-        this._nested = true;
-        this._renderer.setStyle(this._el, 'display', 'block');
-      } else {
-        this._renderer.removeChild(this._ref.nativeElement.parentNode, this._ref.nativeElement);
-      }
+      this.checkNested();
     });
-
   }
 }
