@@ -18,6 +18,7 @@ import { NzGridModule } from './grid/nz-grid.module';
 import { NzInputNumberModule } from './input-number/nz-input-number.module';
 import { NzInputModule } from './input/nz-input.module';
 import { NzLayoutModule } from './layout/nz-layout.module';
+import { NzListModule } from './list/nz-list.module';
 import { NzLocaleModule } from './locale/nz-locale.module';
 import { NzMenuModule } from './menu/nz-menu.module';
 import { NzMessageModule } from './message/nz-message.module';
@@ -41,6 +42,7 @@ import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
 
 export * from './locale/index';
+export * from './list/index';
 
 import { NzMessageService } from './message/nz-message.service';
 import { NzNotificationService } from './notification/nz-notification.service';
@@ -93,7 +95,8 @@ export { NZ_NOTIFICATION_CONFIG } from './notification/nz-notification-config';
     NzCollapseModule,
     NzTableModule,
     NzDividerModule,
-    NzFormModule
+    NzFormModule,
+    NzListModule
   ]
 })
 export class NgZorroAntdModule {
