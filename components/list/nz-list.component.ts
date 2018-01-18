@@ -17,7 +17,6 @@ import { NzListGrid, ListSize } from './interface';
       <ng-container *ngIf="_header; else _headerTpl">{{ _header }}</ng-container>
     </div>
     <nz-spin [nzSpinning]="nzLoading">
-      nz-spin: bug
       <div *ngIf="nzGrid; else itemsTpl" nz-row [nzGutter]="nzGrid.gutter">
         <div nz-col [nzSpan]="nzGrid.span" [nzXs]="nzGrid.xs" [nzSm]="nzGrid.sm" [nzMd]="nzGrid.md" [nzLg]="nzGrid.lg" [nzXl]="nzGrid.xl" [nzXXl]="nzGrid.xxl"
             *ngFor="let item of nzDataSource; let index = index">
