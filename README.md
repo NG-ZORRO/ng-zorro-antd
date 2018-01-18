@@ -13,6 +13,12 @@ An enterprise-class UI components based on Ant Design and Angular.
 
 [中文 README](README-zh_CN.md)
 
+## Document
+The document including showcases and APIs is on the official [website](https://ng.ant.design).
+
+For older versions document:
+- [0.6.x(latest)](https://ng.ant.design)
+- [0.5.x](https://ng.ant.design/version/0.5.x/)
 
 ## Features
 
