@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styles: []
 })
 export class NzDemoInputNumberDigitComponent {
-  demoValue: number;
+  demoValue = 1;
 }

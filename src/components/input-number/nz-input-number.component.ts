@@ -79,6 +79,7 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   _disabledDown = false;
   _focused = false;
   _mouseInside = false;
+  _allowClear = false;
   // ngModel Access
   onChange: (value: number) => void = () => null;
   onTouched: () => void = () => null;
@@ -98,6 +99,15 @@ export class NzInputNumberComponent implements ControlValueAccessor {
 
   get nzDisabled(): boolean {
     return this._disabled;
+  }
+
+  @Input()
+  set nzAllowClear(value: boolean) {
+    this._allowClear = toBoolean(value);
+  }
+
+  get nzAllowClear(): boolean {
+    return this._allowClear;
   }
 
   @Input()
@@ -190,7 +200,18 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     }
   }
 
+  _isEmpty(value?: number | string | undefined | null): boolean {
+    return value === undefined
+      || value === null
+      || (typeof value === 'string' && this._displayValue.trim() === '')
+      || (typeof value === 'string' && this.nzFormatter('') === value);
+  }
+
   _checkValue(): void {
+    if (this.nzAllowClear && this._isEmpty(this._displayValue)) {
+      this.nzValue = undefined;
+      return;
+    }
     const numberValue = +this.nzParser(this._displayValue);
     if (this._isNumber(numberValue)) {
       this.nzValue = numberValue;
@@ -201,7 +222,9 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   }
 
   _getBoundValue(value: number): number {
-    if (value > this.nzMax) {
+    if (this.nzAllowClear && (value === undefined)) {
+      return value;
+    } else if (value > this.nzMax) {
       return this.nzMax;
     } else if (value < this.nzMin) {
       return this.nzMin;
@@ -247,8 +270,8 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   private _updateValue(value: number, emitChange: boolean = true): void {
     const cacheValue = this._value;
     this._value = this._getBoundValue(value);
-    this._displayValue = this.nzFormatter(this._value);
-    this._inputNumber.nativeElement.value = this.nzFormatter(this._value);
+    this._displayValue = this.nzFormatter(this._value || '');
+    this._inputNumber.nativeElement.value = this.nzFormatter(this._value || '');
     if (emitChange && (value !== cacheValue)) {
       this.onChange(this._value);
     }

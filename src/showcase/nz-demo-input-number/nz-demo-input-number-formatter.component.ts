@@ -16,6 +16,6 @@ export class NzDemoInputNumberFormatterComponent {
   parserPercent = value => value.replace('%', '');
   formatterDollar = value => `$${value}`;
   parserDollar = value => value.replace('$', '');
-  formatterInt = value => parseInt(value, 10);
+  formatterInt = value =>  value ? parseInt(value , 10) : '';
   parserInt = value => parseInt(value, 10);
 }
