@@ -6,7 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
+    "build": "node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod",
     "doc": "ng build --prod",
     "helper": "bash ./release-helper.sh",
     "generate": "bash ./build.sh",
@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@angular/animations": "^5.0.0",
-    "@angular/cli": "1.6.1",
+    "@angular/cli": "1.6.5",
     "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",
     "@angular/compiler-cli": "^5.0.0",
@@ -65,7 +65,7 @@
     "core-js": "^2.4.1",
     "coveralls": "^2.13.1",
     "glob": "^7.1.2",
-    "highlight.js": "^9.12.0",
+    "prismjs": "^1.10.0",
     "intl": "^1.2.5",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
