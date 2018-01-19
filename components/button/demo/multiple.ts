@@ -3,10 +3,10 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-button-multiple',
   template: `
-    <button nz-button [nzType]="'primary'">
+    <button nz-button nzType="primary">
       <span>primary</span>
     </button>
-    <button nz-button [nzType]="'default'">
+    <button nz-button nzType="default">
       <span>secondary</span>
     </button>
     <nz-dropdown>

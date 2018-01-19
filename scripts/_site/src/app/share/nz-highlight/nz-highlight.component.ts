@@ -1,14 +1,13 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import * as HighLight from 'highlight.js';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import * as Prism from 'prismjs';
 
 @Component({
-  selector     : 'nz-highlight',
-  encapsulation: ViewEncapsulation.None,
-  template     : `
-    <pre [ngClass]="'language-'+nzLanguage"><code #code [innerText]="nzCode"></code></pre>
+  selector: 'nz-highlight',
+  template: `
+    <pre [ngClass]="'language-'+nzLanguage"><code [innerHTML]="nzCode"></code></pre>
   `
 })
-export class NzHighlightComponent implements OnInit, AfterViewInit {
+export class NzHighlightComponent implements OnInit {
   _code;
   @ViewChild('code') codeElement: ElementRef;
   @Input() nzLanguage: string;
@@ -19,12 +18,7 @@ export class NzHighlightComponent implements OnInit, AfterViewInit {
   }
 
   set nzCode(value: string) {
-    this._code = value;
-  }
-
-  ngAfterViewInit(): void {
-    // noinspection TsLint
-    (HighLight as any).highlightBlock(this.codeElement.nativeElement);
+    this._code = (Prism as any).highlight(value, (Prism.languages as any).javascript);
   }
 
   constructor() {
