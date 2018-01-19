@@ -1,7 +1,8 @@
-import { Input, Component, OnInit, ViewEncapsulation, ElementRef, AfterViewInit } from '@angular/core';
-
+import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 import * as marked from 'marked';
-import * as HighLight from 'highlight.js';
+import * as Prism from 'prismjs';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-bash';
 
 @Component({
   selector     : 'nz-markdown',
@@ -19,19 +20,17 @@ export class NzMarkdownComponent implements OnInit, AfterViewInit {
     this._parsedHTML = marked(value);
   }
 
-
-  constructor(private _elementRef: ElementRef) {
+  constructor(private _elementRef: ElementRef, private renderer: Renderer2) {
     this._el = this._elementRef.nativeElement;
   }
 
   ngAfterViewInit() {
-    const pres = this._el.querySelectorAll('pre');
-    for (let m = 0; m < pres.length; m++) {
-      const codes = pres[ m ].querySelectorAll('code');
-      for (let n = 0; n < codes.length; n++) {
-        (<any>HighLight).highlightBlock(codes[ n ]);
-      }
-    }
+    const codes = this._el.querySelectorAll('code[class^=lang-]');
+    [].forEach.call(codes, code => {
+      const className = code.className;
+      this.renderer.addClass(code, className.replace('lang', 'language'));
+      Prism.highlightElement(code);
+    });
   }
 
   ngOnInit() {
