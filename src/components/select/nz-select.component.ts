@@ -76,7 +76,8 @@ import { NzOptionPipe } from './nz-option.pipe';
         <ul *ngIf="nzMultiple">
           <li
             *ngFor="let option of _selectedOptions"
-            [@tagAnimation] [attr.title]="option?.nzValue"
+            [@tagAnimation]
+            [attr.title]="option?.nzLabel || option?.nzValue"
             class="ant-select-selection__choice" style="-webkit-user-select: none;">
             <div class="ant-select-selection__choice__content">{{ option?.nzLabel }}</div><!----><span class="ant-select-selection__choice__remove" (click)="unSelectMultipleOption(option,$event)"></span>
           </li>
