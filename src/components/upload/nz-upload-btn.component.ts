@@ -1,5 +1,5 @@
 // tslint:disable:no-any ordered-imports
-import { Component, ViewChild, ElementRef, HostListener, OnInit, OnChanges, OnDestroy, SimpleChange, SimpleChanges, ChangeDetectorRef, Input, Renderer2 } from '@angular/core';
+import { Component, ViewChild, ElementRef, HostListener, OnInit, OnChanges, OnDestroy, SimpleChange, SimpleChanges, ChangeDetectorRef, Input, Renderer2, Optional } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -223,7 +223,9 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   }
   // endregion
 
-  constructor(private http: HttpClient, private _el: ElementRef, private _renderer: Renderer2, private cd: ChangeDetectorRef) {}
+  constructor(@Optional() private http: HttpClient, private _el: ElementRef, private _renderer: Renderer2, private cd: ChangeDetectorRef) {
+    if (!http) throw new Error(`Not found 'HttpClient', You can import 'HttpClientModel' in your root module.`);
+  }
 
   ngOnInit(): void {
     this.inited = true;

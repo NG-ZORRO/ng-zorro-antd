@@ -2,6 +2,7 @@
 import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { Component, Injector, ViewChild, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { NzLocaleModule } from '../locale/nz-locale.module';
 import { NzUploadModule } from './nz-upload.module';
 import { NzUploadComponent } from './nz-upload.component';
@@ -12,7 +13,7 @@ describe('NzUpload', () => {
   let instance: TestComponent;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ NzUploadModule ],
+      imports: [ HttpClientModule, NzUploadModule ],
       declarations: [ TestComponent ]
     });
     fixture = TestBed.createComponent(TestComponent);
