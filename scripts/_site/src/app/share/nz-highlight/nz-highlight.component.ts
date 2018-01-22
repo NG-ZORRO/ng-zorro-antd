@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as Prism from 'prismjs';
+import 'prismjs/components/prism-typescript';
 
 @Component({
   selector: 'nz-highlight',
@@ -18,7 +19,7 @@ export class NzHighlightComponent implements OnInit {
   }
 
   set nzCode(value: string) {
-    this._code = (Prism as any).highlight(value, (Prism.languages as any).javascript);
+    this._code = (Prism as any).highlight(value, (Prism.languages as any).typescript);
   }
 
   constructor() {

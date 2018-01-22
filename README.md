@@ -11,7 +11,7 @@
 
 运行 `ng serve` 可以直接修改 `./components` 会立即更新。
 
-> （待开发）若修改DEMO代码，需要额外运行一次 `node scripts/generate-site button` 表示重新生成 button 所有DEMO代码。
+> 若修改DEMO代码，需要额外运行一次 `node scripts/generate-site button` 表示重新生成 button 所有DEMO代码。
 
 ## 测试代码
 
