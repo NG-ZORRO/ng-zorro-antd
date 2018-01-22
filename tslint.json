@@ -21,7 +21,6 @@
       "array-simple"
     ],
     "arrow-return-shorthand": true,
-    "ban-comma-operator": true,
     "ban-types": [
       true,
       [
@@ -137,7 +136,6 @@
       "ignore-params",
       "ignore-properties"
     ],
-    "no-implicit-dependencies": true,
     "no-invalid-template-strings": true,
     "no-invalid-this": true,
     "no-irregular-whitespace": true,

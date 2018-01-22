@@ -9,11 +9,23 @@ import { Component } from '@angular/core';
     <button nz-button nzType="primary">
       <i class="anticon anticon-search"></i><span>Search</span>
     </button>
-    <br>
-    <button nz-button nzType="dashed" nzShape="circle">
+    <button nz-button nzType="default" nzShape="circle">
       <i class="anticon anticon-search"></i>
     </button>
     <button nz-button nzType="default">
+      <i class="anticon anticon-search"></i><span>Search</span>
+    </button>
+    <br>
+    <button nz-button nzType="default" nzShape="circle">
+      <i class="anticon anticon-search"></i>
+    </button>
+    <button nz-button nzType="default">
+      <i class="anticon anticon-search"></i><span>Search</span>
+    </button>
+    <button nz-button nzType="dashed" nzShape="circle">
+      <i class="anticon anticon-search"></i>
+    </button>
+    <button nz-button nzType="dashed">
       <i class="anticon anticon-search"></i><span>Search</span>
     </button>
   `,
