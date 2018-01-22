@@ -1,7 +1,13 @@
-import { toBoolean } from '../core/util/convert';
 import {
-  AfterViewInit, Directive, ElementRef, HostBinding, Input, OnChanges, SimpleChanges
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  HostBinding,
+  Input,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
+import { toBoolean } from '../core/util/convert';
 import { NzMenuItemDirective } from './nz-menu-item.directive';
 import { NzSubMenuComponent } from './nz-submenu.component';
 
@@ -32,7 +38,7 @@ export class NzMenuDirective implements OnChanges, AfterViewInit {
 
   @Input() nzMode: NzMode = 'vertical';
   @Input() nzTheme: 'light' | 'dark' = 'light';
-  @Input() nzInlineIndent  = 24;
+  @Input() nzInlineIndent = 24;
 
   @Input()
   set nzClickActive(value: boolean) {

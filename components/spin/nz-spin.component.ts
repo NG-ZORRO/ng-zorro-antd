@@ -11,6 +11,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 import { debounceTime } from 'rxjs/operators/debounceTime';
 import { first } from 'rxjs/operators/first';
 import { toBoolean } from '../core/util/convert';
@@ -37,7 +38,7 @@ import { toBoolean } from '../core/util/convert';
 })
 export class NzSpinComponent implements AfterViewInit {
   _spinning$ = new BehaviorSubject(true);
-  spinning$ = this._spinning$.asObservable().pipe(debounceTime(this.nzDelay));
+  spinning$: Observable<boolean> = this._spinning$.asObservable().pipe(debounceTime(this.nzDelay));
   _tip: string;
   _el: HTMLElement;
   _size: string;
@@ -45,7 +46,6 @@ export class NzSpinComponent implements AfterViewInit {
   _delay = 0;
   @ViewChild('ref') _ref: ElementRef;
   @ContentChild('indicator') indicator: TemplateRef<void>;
-
 
   @Input() set nzDelay(value: number) {
     this._delay = value;

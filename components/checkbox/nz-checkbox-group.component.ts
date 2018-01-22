@@ -11,7 +11,7 @@ import { toBoolean } from '../core/util/convert';
 @Component({
   selector           : 'nz-checkbox-group',
   preserveWhitespaces: false,
-  template : `
+  template           : `
     <label
       [class.ant-checkbox-vertical]="nzType=='vertical'"
       nz-checkbox
@@ -21,7 +21,7 @@ import { toBoolean } from '../core/util/convert';
       (ngModelChange)="_optionChange()">
       <span>{{ option.label }}</span>
     </label>`,
-  providers: [
+  providers          : [
     {
       provide    : NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzCheckboxGroupComponent),
@@ -32,11 +32,12 @@ import { toBoolean } from '../core/util/convert';
 export class NzCheckboxGroupComponent implements ControlValueAccessor {
   private _disabled = false;
   _el: HTMLElement;
+  /* tslint:disable-next-line:no-any */
   _options: any[];
   _prefixCls = 'ant-checkbox-group';
   // ngModel Access
-  onChange: any = Function.prototype;
-  onTouched: any = Function.prototype;
+  onChange = Function.prototype;
+  onTouched = Function.prototype;
   @Input() nzType: string;
 
   @Input()
@@ -57,11 +58,13 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor {
     this._render.addClass(this._el, `${this._prefixCls}`);
   }
 
-  writeValue(value: any): void {
+  /* tslint:disable-next-line:no-any */
+  writeValue(value: any[]): void {
     this._options = value;
   }
 
-  registerOnChange(fn: (_: any) => {}): void {
+  /* tslint:disable-next-line:no-any */
+  registerOnChange(fn: (_: any[]) => {}): void {
     this.onChange = fn;
   }
 

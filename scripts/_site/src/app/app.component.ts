@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { enUS, zhCN, NzLocaleService } from 'ng-zorro-antd';
 import { ROUTER_LIST } from './router';
+import { environment } from '../environments/environment';
 
 @Component({
   selector   : 'app-root',
@@ -61,9 +62,10 @@ export class AppComponent implements OnInit {
           this.searchComponent = null;
         }
         this.language = this.router.url.split('/')[ this.router.url.split('/').length - 1 ].split('#')[ 0 ];
-        console.log(this.language);
         this.localeService.setLocale(this.language === 'en' ? enUS : zhCN);
-        // window.scrollTo(0, 0);
+        if (environment.production) {
+          window.scrollTo(0, 0);
+        }
       }
     });
   }

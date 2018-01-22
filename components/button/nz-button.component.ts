@@ -24,7 +24,6 @@ export class NzButtonComponent implements AfterContentInit {
   private _ghost = false;
   private _loading = false;
   _el: HTMLElement;
-  nativeElement: HTMLElement;
   _iconElement: HTMLElement;
   _type: NzButtonType;
   _shape: NzButtonShape;
@@ -127,7 +126,6 @@ export class NzButtonComponent implements AfterContentInit {
 
   constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
     this._el = this._elementRef.nativeElement;
-    this.nativeElement = this._elementRef.nativeElement;
     this._renderer.addClass(this._el, this._prefixCls);
   }
 

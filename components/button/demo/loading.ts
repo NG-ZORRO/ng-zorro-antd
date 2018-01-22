@@ -10,10 +10,10 @@ import { Component } from '@angular/core';
       <span>Loading</span>
     </button>
     <br>
-    <button nz-button nzType="primary" (click)="loadOne($event)" [nzLoading]="isLoadingOne">
+    <button nz-button nzType="primary" (click)="loadOne()" [nzLoading]="isLoadingOne">
       <span>Click me!</span>
     </button>
-    <button nz-button nzType="primary" (click)="loadTwo($event)" [nzLoading]="isLoadingTwo">
+    <button nz-button nzType="primary" (click)="loadTwo()" [nzLoading]="isLoadingTwo">
       <i class="anticon anticon-poweroff"></i>
       <span>Click me!</span>
     </button>
@@ -26,16 +26,18 @@ import { Component } from '@angular/core';
 export class NzDemoButtonLoadingComponent {
   isLoadingOne = false;
   isLoadingTwo = false;
-  loadOne = (value) => {
+
+  loadOne(): void {
     this.isLoadingOne = true;
     setTimeout(_ => {
       this.isLoadingOne = false;
     }, 5000);
-  };
-  loadTwo = (value) => {
+  }
+
+  loadTwo(): void {
     this.isLoadingTwo = true;
     setTimeout(_ => {
       this.isLoadingTwo = false;
     }, 5000);
-  };
+  }
 }
