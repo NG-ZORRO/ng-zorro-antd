@@ -1,6 +1,6 @@
 import { Component, HostListener, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 import { toBoolean } from '../core/util/convert';
+import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 import { NzSliderComponent } from './nz-slider.component';
 
 @Component({

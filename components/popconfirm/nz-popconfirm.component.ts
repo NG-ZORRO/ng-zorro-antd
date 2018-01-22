@@ -6,9 +6,9 @@ import {
   Output
 } from '@angular/core';
 import { fadeAnimation } from '../core/animation/fade-animations';
+import { toBoolean } from '../core/util/convert';
 import { NzLocaleService } from '../locale/index';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
-import { toBoolean } from '../core/util/convert';
 
 @Component({
   selector           : 'nz-popconfirm',

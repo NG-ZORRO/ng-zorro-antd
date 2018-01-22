@@ -107,7 +107,7 @@ export class NzProgressComponent implements ControlValueAccessor, OnInit {
         'stroke-dasharray' : `${len}px ${len}px`,
         'stroke-dashoffset': `0px`,
         'transition'       : 'stroke-dashoffset 0.3s ease 0s, stroke-dasharray 0.3s ease 0s, stroke 0.3s'
-      }
+      };
     } else {
       this._pathString = `M 50,50 m 0,${radius}\n     a ${radius},${radius} 0 1 1 0,-${radius * 2}\n     a ${radius},${radius} 0 1 1 0,${radius * 2}`;
       this._pathStyle = {
@@ -119,7 +119,7 @@ export class NzProgressComponent implements ControlValueAccessor, OnInit {
         'stroke-dasharray' : `${len - 70}px ${len}px`,
         'stroke-dashoffset': `-37.5px`,
         'transition'       : 'stroke-dashoffset 0.3s ease 0s, stroke-dasharray 0.3s ease 0s, stroke 0.3s'
-      }
+      };
     }
 
   }
