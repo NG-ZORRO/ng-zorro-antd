@@ -9,27 +9,31 @@ const generateDemo = require('./utils/generate-demo');
 const generateDocs = require('./utils/generate-docs');
 const generateRoutes = require('./utils/generate-routes');
 const getMeta = require('./utils/get-meta');
-const status = process.argv[2] || 'sync';
-
+const target = process.argv[2];
+const isSyncSpecific = target && (target !== 'init');
 // 创建site文件夹
 const showCasePath = path.resolve(__dirname, '../site');
 
-if (status === 'init') {
+if (!target) {
+  wrench.rmdirSyncRecursive(`${showCasePath}/src`, true);
+  wrench.copyDirSyncRecursive(path.resolve(__dirname, '_site/src'), `${showCasePath}/src`);
+} else if (target === 'init') {
   wrench.rmdirSyncRecursive(`${showCasePath}`, true);
   wrench.copyDirSyncRecursive(path.resolve(__dirname, '_site'), `${showCasePath}`);
 } else {
-  wrench.rmdirSyncRecursive(`${showCasePath}/src`, true);
-  wrench.copyDirSyncRecursive(path.resolve(__dirname, '_site/src'), `${showCasePath}/src`);
-  // wrench.rmdirSyncRecursive(`${showCasePath}/node_modules/ng-zorro-antd`, true);
-  // wrench.copyDirSyncRecursive(path.resolve(__dirname, '../components'), `${showCasePath}/node_modules/ng-zorro-antd`);
+  wrench.rmdirSyncRecursive(`${showCasePath}/src/app/${target}`, true);
 }
-
 const showCaseTargetPath = `${showCasePath}/src/app/`;
 // 读取components文件夹
 const rootPath = path.resolve(__dirname, '../components');
 const rootDir = fs.readdirSync(rootPath);
 const componentsMap = {};
 rootDir.forEach(componentName => {
+  if (isSyncSpecific) {
+    if (componentName !== target) {
+      return;
+    }
+  }
   const componentDirPath = path.join(rootPath, componentName);
   if (componentName === 'style' || componentName === 'core' || componentName === 'locale') {
     return;
@@ -73,23 +77,26 @@ rootDir.forEach(componentName => {
   }
 });
 
-// 读取docs文件夹
-const docsPath = path.resolve(__dirname, '../docs');
-const docsDir = fs.readdirSync(docsPath);
-let docsMap = {};
-let docsMeta = {};
-docsDir.forEach(doc => {
-  const name = nameWithoutSuffixUtil(doc);
-  docsMap[name] = {
-    zh: fs.readFileSync(path.join(docsPath, `${name}.zh-CN.md`)),
-    en: fs.readFileSync(path.join(docsPath, `${name}.en-US.md`))
-  };
-  docsMeta[name] = {
-    zh: getMeta(docsMap[name].zh),
-    en: getMeta(docsMap[name].en)
-  }
-});
+if (!isSyncSpecific) {
+  // 读取docs文件夹
+  const docsPath = path.resolve(__dirname, '../docs');
+  const docsDir = fs.readdirSync(docsPath);
+  let docsMap = {};
+  let docsMeta = {};
+  docsDir.forEach(doc => {
+    const name = nameWithoutSuffixUtil(doc);
+    docsMap[name] = {
+      zh: fs.readFileSync(path.join(docsPath, `${name}.zh-CN.md`)),
+      en: fs.readFileSync(path.join(docsPath, `${name}.en-US.md`))
+    };
+    docsMeta[name] = {
+      zh: getMeta(docsMap[name].zh),
+      en: getMeta(docsMap[name].en)
+    }
+  });
 
-generateDocs(showCaseTargetPath, docsMap);
+  generateDocs(showCaseTargetPath, docsMap);
+  generateRoutes(showCaseTargetPath, componentsMap, docsMeta);
+}
 
-generateRoutes(showCaseTargetPath, componentsMap, docsMeta);
+
