@@ -5,9 +5,11 @@ import {
   HostBinding,
   HostListener,
   Input,
+  OnInit,
   Optional,
   Output
 } from '@angular/core';
+import { matchMedia } from '../core/polyfill/match-media';
 import { toBoolean } from '../core/util/convert';
 import { NzLayoutComponent } from './nz-layout.component';
 
@@ -29,7 +31,7 @@ export type NzBreakPoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
     '[class.ant-layout-sider]': 'true'
   }
 })
-export class NzSiderComponent {
+export class NzSiderComponent implements OnInit {
   private _collapsed = false;
   private _collapsible = false;
   private _trigger = true;
@@ -103,8 +105,12 @@ export class NzSiderComponent {
 
   @HostListener('window:resize', [ '$event' ])
   onWindowResize(e: UIEvent): void {
+    this.watchMatchMedia();
+  }
+
+  watchMatchMedia(): void {
     if (this.nzBreakpoint) {
-      const matchBelow = window.matchMedia(`(max-width: ${this._dimensionMap[ this.nzBreakpoint ]})`).matches;
+      const matchBelow = matchMedia(`(max-width: ${this._dimensionMap[ this.nzBreakpoint ]})`).matches;
       this._below = matchBelow;
       this.nzCollapsed = matchBelow;
       this.nzCollapsedChange.emit(matchBelow);
@@ -116,25 +122,6 @@ export class NzSiderComponent {
     this.nzCollapsedChange.emit(this.nzCollapsed);
   }
 
-  constructor(@Optional() @Host() private nzLayoutComponent: NzLayoutComponent) {
-    if (this.nzLayoutComponent) {
-      this.nzLayoutComponent.hasSider = true;
-    }
-    if (typeof window !== 'undefined') {
-      const matchMediaPolyfill = (mediaQuery: string): MediaQueryList => {
-        return {
-          media  : mediaQuery,
-          matches: false,
-          addListener(): void {
-          },
-          removeListener(): void {
-          },
-        };
-      };
-      window.matchMedia = window.matchMedia || matchMediaPolyfill;
-    }
-  }
-
   get _isZeroTrigger(): boolean {
     return this.nzCollapsible && this.nzTrigger && (this.nzCollapsedWidth === 0) && ((this.nzBreakpoint && this._below) || (!this.nzBreakpoint));
   }
@@ -142,4 +129,15 @@ export class NzSiderComponent {
   get _isSiderTrgger(): boolean {
     return this.nzCollapsible && this.nzTrigger && (this.nzCollapsedWidth !== 0);
   }
+
+  constructor(@Optional() @Host() private nzLayoutComponent: NzLayoutComponent) {
+    if (this.nzLayoutComponent) {
+      this.nzLayoutComponent.hasSider = true;
+    }
+  }
+
+  ngOnInit(): void {
+    this.watchMatchMedia();
+  }
+
 }

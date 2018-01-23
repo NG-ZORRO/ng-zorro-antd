@@ -8,12 +8,13 @@ import {
   OnInit,
   Optional,
   Renderer2,
-  SimpleChange,
+  SimpleChange
 } from '@angular/core';
 import { isNotNil } from '../core/util/check';
 import { NzRowComponent } from './nz-row.component';
+import { NzRowDirective } from './nz-row.directive';
 
-export abstract class EmbeddedProperty {
+export interface EmbeddedProperty {
   span: number;
   pull: number;
   push: number;
@@ -35,12 +36,12 @@ export class NzColComponent implements OnInit, OnChanges {
 
   @HostBinding('style.padding-left.px')
   get paddingLeft(): number {
-    return this._nzRow && this._nzRow._gutter / 2;
+    return this.nzRow && this.nzRow.actualGutter / 2;
   }
 
   @HostBinding('style.padding-right.px')
   get paddingRight(): number {
-    return this._nzRow && this._nzRow._gutter / 2;
+    return this.nzRow && this.nzRow.actualGutter / 2;
   }
 
   @Input() nzSpan: number;
@@ -97,15 +98,20 @@ export class NzColComponent implements OnInit, OnChanges {
     return listOfClassName;
   }
 
+  get nzRow(): NzRowComponent {
+    return this.nzRowComponent || this.nzRowDirective;
+  }
+
   ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
     this.setClassMap();
   }
 
-  constructor(private _elementRef: ElementRef, @Optional() @Host() public _nzRow: NzRowComponent, private _renderer: Renderer2) {
+  constructor(private _elementRef: ElementRef, @Optional() @Host() public nzRowComponent: NzRowComponent, @Optional() @Host() public nzRowDirective: NzRowDirective, private _renderer: Renderer2) {
     this._el = this._elementRef.nativeElement;
   }
 
   ngOnInit(): void {
     this.setClassMap();
+    this.nzRow.updateGutter();
   }
 }

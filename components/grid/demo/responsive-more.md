@@ -7,13 +7,13 @@ title:
 
 ## zh-CN
 
-`span` `pull` `push` `offset` `order` 属性可以通过内嵌到 `xs` `sm` `md` `lg` `xl` `xxl` 属性中来使用。
+`span` `pull` `push` `offset` `order` 属性可以通过内嵌到 `nzXs` `nzSm` `nzMd` `nzLg` `nzXl` `nzXXl` 属性中来使用。
 
-其中 `xs={6}` 相当于 `xs={{ span: 6 }}`。
+其中 `nzXs="6"` 相当于 `[nzXs]="{ span: 6 }"`。
 
 ## en-US
 
-`Span` `pull` `push` `offset` `order` property can be embedded into `xs` `sm` `md` `lg` `xl` properties to use,
-where `xs = {6}` is equivalent to `xs = {{span: 6}}`.
+`span` `pull` `push` `offset` `order` property can be embedded into `nzXs` `nzSm` `nzMd` `nzLg` `nzXl` `nzXXl` properties to use,
+where `nzXs="6"` is equivalent to `[nzXs]="{ span: 6 }"`.
 
 
