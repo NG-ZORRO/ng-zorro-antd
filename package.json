@@ -13,7 +13,7 @@
     "helper": "bash ./release-helper.sh",
     "generate": "bash ./build.sh",
     "release": "npm run generate && ng build --prod && npm run helper",
-    "test": "ng test --single-run --code-coverage",
+    "test": "node scripts/generate-site init && ng test --single-run --code-coverage",
     "integration": "npm run generate && bash ./integration-test.sh",
     "integration-cli": "npm run generate && cd integration/angular-cli && npm run integration",
     "integration-webpack": "npm run generate && cd integration/webpack && npm run integration",

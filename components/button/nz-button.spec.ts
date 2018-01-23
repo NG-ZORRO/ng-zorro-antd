@@ -1,7 +1,6 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NzRadioModule } from '../radio/nz-radio.module';
 import { NzDemoButtonBasicComponent } from './demo/basic';
 import { NzDemoButtonButtonGroupComponent } from './demo/button-group';
 import { NzDemoButtonDisabledComponent } from './demo/disabled';
@@ -13,7 +12,7 @@ import { NzButtonGroupComponent } from './nz-button-group.component';
 import { NzButtonComponent } from './nz-button.component';
 import { NzButtonModule } from './nz-button.module';
 
-describe('NzButton', () => {
+describe('button', () => {
   let testComponent;
   let fixture;
   describe('basic', () => {
@@ -197,8 +196,9 @@ describe('NzButton', () => {
     let buttonGroup;
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule, NzRadioModule, FormsModule ],
+        imports     : [ NzButtonModule ],
         declarations: [ NzDemoButtonSizeComponent ],
+        schemas     : [ NO_ERRORS_SCHEMA ],
         providers   : []
       }).compileComponents();
     }));

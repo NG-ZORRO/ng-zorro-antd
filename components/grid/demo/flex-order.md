@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-通过 Flex 布局的 Order 来改变元素的排序。
+通过 Flex 布局的 `nzOrder` 来改变元素的排序。
 
 ## en-US
 
-To change the element sort by Flex layout order.
+To change the element sort by Flex layout `nzOrder`.
