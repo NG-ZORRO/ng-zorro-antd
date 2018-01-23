@@ -1,11 +1,11 @@
 import {
-  AnimationEvent,
+  AnimationEvent
 } from '@angular/animations';
 import {
   ConnectedOverlayDirective,
   ConnectedOverlayPositionChange,
   ConnectionPositionPair,
-  OverlayOrigin,
+  OverlayOrigin
 } from '@angular/cdk/overlay';
 import {
   ChangeDetectorRef,
@@ -18,17 +18,18 @@ import {
   ViewChild
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 import { fadeAnimation } from '../core/animation/fade-animations';
 import { DEFAULT_4_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position-map';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
-  selector  : 'nz-tooltip',
+  selector           : 'nz-tooltip',
   preserveWhitespaces: false,
-  animations: [
+  animations         : [
     fadeAnimation
   ],
-  template  : `
+  template           : `
     <ng-content></ng-content>
     <ng-template
       #overlay="cdkConnectedOverlay"
@@ -83,7 +84,7 @@ export class NzToolTipComponent {
   }
 
   visibleSource = new BehaviorSubject<boolean>(false);
-  visible$ = this.visibleSource.asObservable();
+  visible$: Observable<boolean> = this.visibleSource.asObservable();
 
   @Input()
   set nzTrigger(value: string) {

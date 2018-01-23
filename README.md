@@ -1,3 +1,12 @@
+# 进度
+| 组件 | 文档 | 测试 | 功能 |
+| --- | --- | --- | --- |
+| button | √ | 100% | 100% |
+| icon | √ | - | 100% |
+| grid | √ | 100% | 100% |
+
+
+
 # 初始化
 目前文档系统处于基本可用状态，依次执行
 * git clone -b 0.7.0 https://github.com/NG-ZORRO/ng-zorro-antd.git ng-zorro-antd-0.7.0
