@@ -55,7 +55,7 @@ import { Component } from '@angular/core';
 export class NzDemoMenuInlineCollapsedComponent {
   isCollapsed = false;
 
-  toggleCollapsed() {
+  toggleCollapsed(): void {
     this.isCollapsed = !this.isCollapsed;
   }
 }
