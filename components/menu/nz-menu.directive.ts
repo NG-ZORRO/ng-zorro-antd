@@ -51,11 +51,7 @@ export class NzMenuDirective implements OnChanges, AfterViewInit {
 
   @Input()
   set nzInlineCollapsed(value: boolean) {
-    const state = toBoolean(value);
-    this._inlineCollapsed = state;
-    if (!this.isInit) {
-      return;
-    }
+    this._inlineCollapsed = toBoolean(value);
     if (this._inlineCollapsed) {
       this.hideSubMenus();
       // after the animation is over

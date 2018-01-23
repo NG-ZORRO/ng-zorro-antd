@@ -1,9 +1,59 @@
 # 进度
-| 组件 | 文档 | 测试 | 功能 |
-| --- | --- | --- | --- |
-| button | √ | 100% | 100% |
-| icon | √ | - | 100% |
-| grid | √ | 100% | 100% |
+
+## 组件
+| 组件 | 文档 | 测试 | 功能 | 负责 | 重构 |
+| --- | --- | --- | --- | --- | --- |
+| button | √ | 100% | 100% | vthinkxie | x |
+| icon | √ | - | 100% | vthinkxie | x |
+| grid | √ | 100% | 100% | vthinkxie | x |
+| layout | x | x | x | vthinkxie | - |
+| breadcrumb | x | x | x | vthinkxie | - |
+| dropdown | x | x | x | vthinkxie | - |
+| menu | x | x | x | vthinkxie | - |
+| pagination | x | x | x | vthinkxie | - |
+| steps | x | x | x | vthinkxie | - |
+| checkbox | x | x | x | vthinkxie | - |
+| form | x | x | x | vthinkxie | - |
+| input | x | x | x | vthinkxie | - |
+| inputnumber | x | x | x | vthinkxie | - |
+| radio | x | x | x | vthinkxie | - |
+| rate | x | x | x | vthinkxie | - |
+| select | x | x | x | vthinkxie | - |
+| switch | x | x | x | vthinkxie | - |
+| badge | x | x | x | vthinkxie | - |
+| card | x | x | x | vthinkxie | - |
+| carousel | x | x | x | vthinkxie | - |
+| collapse | x | x | x | vthinkxie | - |
+| table | x | x | x | vthinkxie | - |
+| tabs | x | x | x | vthinkxie | - |
+| timeline | x | x | x | vthinkxie | - |
+| alert | x | x | x | vthinkxie | - |
+| progress | x | x | x | vthinkxie | - |
+| spin | x | x | x | vthinkxie | - |
+| popover | x | x | x | wilsoncook | - |
+| tooltip | x | x | x | wilsoncook | - |
+| popconfirm | x | x | x | wilsoncook | - |
+| slider | x | x | x | wilsoncook | - |
+| modal | x | x | x | wilsoncook | - |
+| message | x | x | x | wilsoncook | - |
+| notification | x | x | x | wilsoncook | - |
+| datepicker | x | x | x | trotyl | - |
+| timepicker | x | x | x | trotyl | - |
+| calendar | x | x | x | trotyl | - |
+| affix | x | x | x | cipchk | - |
+| transfer | x | x | x | cipchk | - |
+| avatar | x | x | x | cipchk | - |
+| list | x | x | x | cipchk | - |
+| upload | x | x | x | cipchk | - |
+| anchor | x | x | x | cipchk | - |
+| backtop | x | x | x | cipchk | - |
+| divider | x | x | x | cipchk | - |
+| treeselect | x | x | x | simplejason | - |
+| tree | x | x | x | simplejason | - |
+| tags | x | x | x | fbchen | -|
+| cascader | x | x | x | fbchen | - |
+| autocomplete | x | x | x | HsuanXyz | - |
+| mention | x | x | x | HsuanXyz | - |
 
 
 
