@@ -39,14 +39,14 @@ const responsiveMap: BreakpointMap = {
   `
 })
 export class NzRowComponent implements OnInit {
-  _classList: string[] = [];
-  _el: HTMLElement;
-  _prefixCls = 'ant-row';
-  _gutter: number | object;
-  _type: NzType;
-  _align: NzAlign = 'top';
-  _justify: NzJustify = 'start';
-  _breakPoint: Breakpoint;
+  private _gutter: number | object;
+  private _type: NzType;
+  private _align: NzAlign = 'top';
+  private _justify: NzJustify = 'start';
+  private classList: string[] = [];
+  private el: HTMLElement;
+  private prefixCls = 'ant-row';
+  private breakPoint: Breakpoint;
   actualGutter: number;
 
   @Input()
@@ -91,15 +91,15 @@ export class NzRowComponent implements OnInit {
   }
 
   setStyle(): void {
-    this._renderer.setStyle(this._el, 'margin-left', `-${this.actualGutter / 2}px`);
-    this._renderer.setStyle(this._el, 'margin-right', `-${this.actualGutter / 2}px`);
+    this._renderer.setStyle(this.el, 'margin-left', `-${this.actualGutter / 2}px`);
+    this._renderer.setStyle(this.el, 'margin-right', `-${this.actualGutter / 2}px`);
   }
 
   calculateGutter(): number {
     if (typeof this.nzGutter !== 'object') {
       return this.nzGutter;
-    } else if (this._breakPoint && this.nzGutter[ this._breakPoint ]) {
-      return this.nzGutter[ this._breakPoint ];
+    } else if (this.breakPoint && this.nzGutter[ this.breakPoint ]) {
+      return this.nzGutter[ this.breakPoint ];
     } else {
       return;
     }
@@ -118,7 +118,7 @@ export class NzRowComponent implements OnInit {
     Object.keys(responsiveMap).map((screen: Breakpoint) => {
       const matchBelow = matchMedia(responsiveMap[ screen ]).matches;
       if (matchBelow) {
-        this._breakPoint = screen;
+        this.breakPoint = screen;
       }
     });
     this.updateGutter();
@@ -127,24 +127,24 @@ export class NzRowComponent implements OnInit {
 
   /** temp solution since no method add classMap to host https://github.com/angular/angular/issues/7289*/
   setClassMap(): void {
-    this._classList.forEach(_className => {
-      this._renderer.removeClass(this._el, _className);
+    this.classList.forEach(_className => {
+      this._renderer.removeClass(this.el, _className);
     });
-    this._classList = [
-      (!this.nzType) && this._prefixCls,
-      this.nzType && `${this._prefixCls}-${this.nzType}`,
-      this.nzType && this.nzAlign && `${this._prefixCls}-${this.nzType}-${this.nzAlign}`,
-      this.nzType && this.nzJustify && `${this._prefixCls}-${this.nzType}-${this.nzJustify}`
+    this.classList = [
+      (!this.nzType) && this.prefixCls,
+      this.nzType && `${this.prefixCls}-${this.nzType}`,
+      this.nzType && this.nzAlign && `${this.prefixCls}-${this.nzType}-${this.nzAlign}`,
+      this.nzType && this.nzJustify && `${this.prefixCls}-${this.nzType}-${this.nzJustify}`
     ].filter((item) => {
       return !!item;
     });
-    this._classList.forEach(_className => {
-      this._renderer.addClass(this._el, _className);
+    this.classList.forEach(_className => {
+      this._renderer.addClass(this.el, _className);
     });
   }
 
-  constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
-    this._el = this._elementRef.nativeElement;
+  constructor(private elementRef: ElementRef, private _renderer: Renderer2) {
+    this.el = this.elementRef.nativeElement;
   }
 
   ngOnInit(): void {

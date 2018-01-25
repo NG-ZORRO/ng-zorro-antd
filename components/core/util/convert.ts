@@ -1,3 +1,9 @@
+import { coerceBooleanProperty, coerceNumberProperty } from '@angular/cdk/coercion';
+
 export function toBoolean(value: boolean | string): boolean {
-  return value === '' || (value && value !== 'false');
+  return coerceBooleanProperty(value);
 }
+//
+// export function toNumber(value: number | string): number {
+//   return coerceNumberProperty(value);
+// }

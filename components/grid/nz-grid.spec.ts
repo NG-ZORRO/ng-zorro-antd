@@ -36,7 +36,7 @@ describe('grid', () => {
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
     });
 
-    it('should have correct class', () => {
+    it('should have correct style', () => {
       fixture.detectChanges();
       expect(rows.every(row => row.nativeElement.classList.contains('ant-row'))).toBe(true);
       expect(cols[ 0 ].nativeElement.classList.contains('ant-col-12')).toBe(true);
@@ -68,7 +68,7 @@ describe('grid', () => {
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
     });
 
-    it('should have correct class', () => {
+    it('should have correct style', () => {
       fixture.detectChanges();
       expect(rows[ 0 ].nativeElement.className).toBe('ant-row-flex ant-row-flex-top ant-row-flex-start');
       expect(rows[ 1 ].nativeElement.className).toBe('ant-row-flex ant-row-flex-top ant-row-flex-center');
@@ -96,7 +96,7 @@ describe('grid', () => {
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
     });
 
-    it('should have correct class', () => {
+    it('should have correct style', () => {
       fixture.detectChanges();
       expect(rows[ 0 ].nativeElement.className).toBe('ant-row-flex ant-row-flex-top ant-row-flex-center');
       expect(rows[ 1 ].nativeElement.className).toBe('ant-row-flex ant-row-flex-middle ant-row-flex-space-around');
@@ -163,7 +163,7 @@ describe('grid', () => {
       expect(cols.slice(0, 4).every(col => col.nativeElement.classList.contains('gutter-row'))).toBe(true);
     });
     it('should responsive work', () => {
-      // TODO: resize window
+      // TODO: fake media query
       fixture.detectChanges();
       expect(rows[ 1 ].nativeElement.style.cssText).toBe('margin-left: -4px; margin-right: -4px;');
       expect(cols.slice(4, 8).every(col => col.nativeElement.style.cssText === 'padding-left: 4px; padding-right: 4px;')).toBe(true);
@@ -192,7 +192,7 @@ describe('grid', () => {
       rows = fixture.debugElement.queryAll(By.directive(NzRowDirective));
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
     });
-    it('should have correct class', () => {
+    it('should have correct style', () => {
       fixture.detectChanges();
       expect(rows.every(row => row.nativeElement.classList.contains('ant-row'))).toBe(true);
       expect(cols[ 0 ].nativeElement.className).toBe('ant-col-8');
@@ -218,7 +218,7 @@ describe('grid', () => {
       testComponent = fixture.debugElement.componentInstance;
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
     });
-    it('should have correct class', () => {
+    it('should have correct style', () => {
       fixture.detectChanges();
       expect(cols[ 0 ].nativeElement.className).toBe('ant-col-xs-2 ant-col-sm-4 ant-col-md-6 ant-col-lg-8 ant-col-xl-10');
       expect(cols[ 1 ].nativeElement.className).toBe('ant-col-xs-20 ant-col-sm-16 ant-col-md-12 ant-col-lg-8 ant-col-xl-4');
@@ -241,7 +241,7 @@ describe('grid', () => {
       testComponent = fixture.debugElement.componentInstance;
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
     });
-    it('should have correct class', () => {
+    it('should have correct style', () => {
       fixture.detectChanges();
       expect(cols[ 0 ].nativeElement.className).toBe('ant-col-xs-5 ant-col-xs-offset-1 ant-col-lg-6 ant-col-lg-offset-2');
       expect(cols[ 1 ].nativeElement.className).toBe('ant-col-xs-11 ant-col-xs-offset-1 ant-col-lg-6 ant-col-lg-offset-2');
@@ -264,7 +264,7 @@ describe('grid', () => {
       testComponent = fixture.debugElement.componentInstance;
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
     });
-    it('should have correct class', () => {
+    it('should have correct style', () => {
       fixture.detectChanges();
       expect(cols[ 0 ].nativeElement.className).toBe('ant-col-18 ant-col-push-6');
       expect(cols[ 1 ].nativeElement.className).toBe('ant-col-6 ant-col-pull-18');
