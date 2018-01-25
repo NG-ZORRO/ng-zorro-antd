@@ -23,6 +23,17 @@ export const ROUTER_LIST = {
   ],
   'components': [
     {
+      'name'    : 'customComponent',
+      'children': [
+        {
+          'label'       : 'good-select',
+          'path'        : 'components/good-select',
+          // 'loadChildren': './nz-demo-button/nz-demo-button.module#NzDemoButtonModule',
+          'zh'          : '品名选择'
+        }
+      ]
+    },
+    {
       'name'    : 'General',
       'children': [
         {
@@ -537,7 +548,11 @@ export const DEMO_ROUTES = [
   {
     'path'        : 'other/locale',
     'loadChildren': './nz-demo-locale/nz-demo-locale.module#NzDemoLocaleModule'
-  }
+  },
+  {
+    'path'        : 'components/good-select',
+    'loadChildren': './custom-demo/good-select/good-select-demo.module#GoodSelectDemoModule'
+  },
 ];
 
 // export const INTRO_ROUTES = ROUTER_LIST.intro.map(route => {
