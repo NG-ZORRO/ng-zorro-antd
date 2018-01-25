@@ -4,7 +4,7 @@ import {
   ElementRef,
   HostListener,
   Input,
-  Renderer2,
+  Renderer2
 } from '@angular/core';
 import { toBoolean } from '../core/util/convert';
 
@@ -22,22 +22,22 @@ export type NzButtonSize = 'small' | 'large' | 'default' ;
 })
 export class NzButtonComponent implements AfterContentInit {
   private _ghost = false;
+  private _type: NzButtonType;
+  private _shape: NzButtonShape;
+  private _size: NzButtonSize;
   private _loading = false;
-  _el: HTMLElement;
-  _iconElement: HTMLElement;
-  _type: NzButtonType;
-  _shape: NzButtonShape;
-  _size: NzButtonSize;
-  _classList: string[] = [];
-  _iconOnly = false;
-  _clicked = false;
-  _prefixCls = 'ant-btn';
-  _sizeMap = { large: 'lg', small: 'sm' };
+  private el: HTMLElement;
+  private iconElement: HTMLElement;
+  private classList: string[] = [];
+  private iconOnly = false;
+  private clicked = false;
+  private prefixCls = 'ant-btn';
+  private sizeMap = { large: 'lg', small: 'sm' };
 
   @Input()
   set nzGhost(value: boolean) {
     this._ghost = toBoolean(value);
-    this._setClassMap();
+    this.setClassMap();
   }
 
   get nzGhost(): boolean {
@@ -51,7 +51,7 @@ export class NzButtonComponent implements AfterContentInit {
 
   set nzType(value: NzButtonType) {
     this._type = value;
-    this._setClassMap();
+    this.setClassMap();
   }
 
   @Input()
@@ -61,13 +61,13 @@ export class NzButtonComponent implements AfterContentInit {
 
   set nzShape(value: NzButtonShape) {
     this._shape = value;
-    this._setClassMap();
+    this.setClassMap();
   }
 
   @Input()
   set nzSize(value: NzButtonSize) {
     this._size = value;
-    this._setClassMap();
+    this.setClassMap();
   }
 
   get nzSize(): NzButtonSize {
@@ -77,8 +77,8 @@ export class NzButtonComponent implements AfterContentInit {
   @Input()
   set nzLoading(value: boolean) {
     this._loading = toBoolean(value);
-    this._setClassMap();
-    this._setIconDisplay(value);
+    this.setClassMap();
+    this.setIconDisplay(value);
   }
 
   get nzLoading(): boolean {
@@ -87,59 +87,59 @@ export class NzButtonComponent implements AfterContentInit {
 
   /** toggle button clicked animation */
   @HostListener('click')
-  _onClick(): void {
-    this._clicked = true;
-    this._setClassMap();
+  onClick(): void {
+    this.clicked = true;
+    this.setClassMap();
     setTimeout(() => {
-      this._clicked = false;
-      this._setClassMap();
+      this.clicked = false;
+      this.setClassMap();
     }, 300);
   }
 
-  _setIconDisplay(value: boolean): void {
-    const innerI = this._iconElement;
+  setIconDisplay(value: boolean): void {
+    const innerI = this.iconElement;
     if (innerI) {
-      this._renderer.setStyle(innerI, 'display', value ? 'none' : 'inline-block');
+      this.renderer.setStyle(innerI, 'display', value ? 'none' : 'inline-block');
     }
   }
 
   /** temp solution since no method add classMap to host https://github.com/angular/angular/issues/7289 */
-  _setClassMap(): void {
-    this._classList.forEach(_className => {
-      this._renderer.removeClass(this._el, _className);
+  setClassMap(): void {
+    this.classList.forEach(_className => {
+      this.renderer.removeClass(this.el, _className);
     });
-    this._classList = [
-      this.nzType && `${this._prefixCls}-${this.nzType}`,
-      this.nzShape && `${this._prefixCls}-${this.nzShape}`,
-      this._sizeMap[ this.nzSize ] && `${this._prefixCls}-${this._sizeMap[ this.nzSize ]}`,
-      this.nzLoading && `${this._prefixCls}-loading`,
-      this._clicked && `${this._prefixCls}-clicked`,
-      this._iconOnly && `${this._prefixCls}-icon-only`,
-      this.nzGhost && `${this._prefixCls}-background-ghost`,
+    this.classList = [
+      this.nzType && `${this.prefixCls}-${this.nzType}`,
+      this.nzShape && `${this.prefixCls}-${this.nzShape}`,
+      this.sizeMap[ this.nzSize ] && `${this.prefixCls}-${this.sizeMap[ this.nzSize ]}`,
+      this.nzLoading && `${this.prefixCls}-loading`,
+      this.clicked && `${this.prefixCls}-clicked`,
+      this.iconOnly && `${this.prefixCls}-icon-only`,
+      this.nzGhost && `${this.prefixCls}-background-ghost`
     ].filter((item) => {
       return !!item;
     });
-    this._classList.forEach(_className => {
-      this._renderer.addClass(this._el, _className);
+    this.classList.forEach(_className => {
+      this.renderer.addClass(this.el, _className);
     });
   }
 
-  constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
-    this._el = this._elementRef.nativeElement;
-    this._renderer.addClass(this._el, this._prefixCls);
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+    this.el = this.elementRef.nativeElement;
+    this.renderer.addClass(this.el, this.prefixCls);
   }
 
   ngAfterContentInit(): void {
-    this._iconElement = this._innerIElement;
+    this.iconElement = this.innerIElement;
     /** check if host children only has i element */
-    if (this._iconElement && this._el.children.length === 1 && (this._iconElement.isEqualNode(this._el.children[ 0 ]))) {
-      this._iconOnly = true;
-      this._setClassMap();
+    if (this.iconElement && this.el.children.length === 1 && (this.iconElement.isEqualNode(this.el.children[ 0 ]))) {
+      this.iconOnly = true;
+      this.setClassMap();
     }
-    this._setIconDisplay(this.nzLoading);
+    this.setIconDisplay(this.nzLoading);
   }
 
-  get _innerIElement(): HTMLElement {
-    return this._el.querySelector('i');
+  get innerIElement(): HTMLElement {
+    return this.el.querySelector('i');
   }
 }

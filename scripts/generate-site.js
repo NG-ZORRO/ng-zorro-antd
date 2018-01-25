@@ -53,8 +53,8 @@ rootDir.forEach(componentName => {
           const nameKey = nameWithoutSuffixUtil(demo);
           const demoMarkDownFile = fs.readFileSync(path.join(demoDirPath, demo));
           demoMap[nameKey] = parseDemoMdUtil(demoMarkDownFile);
-          demoMap[nameKey]['enCode'] = generateCodeBox(componentName, nameKey, demoMap[nameKey].meta.title["en-US"], demoMap[nameKey].en);
-          demoMap[nameKey]['zhCode'] = generateCodeBox(componentName, nameKey, demoMap[nameKey].meta.title["zh-CN"], demoMap[nameKey].zh);
+          demoMap[nameKey]['enCode'] = generateCodeBox(componentName, nameKey, demoMap[nameKey].meta.title["en-US"], demoMap[nameKey].en, demoMap[nameKey].meta.iframe);
+          demoMap[nameKey]['zhCode'] = generateCodeBox(componentName, nameKey, demoMap[nameKey].meta.title["zh-CN"], demoMap[nameKey].zh, demoMap[nameKey].meta.iframe);
         }
         if (/.ts$/.test(demo)) {
           const nameKey = nameWithoutSuffixUtil(demo);

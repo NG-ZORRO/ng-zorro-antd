@@ -7,18 +7,18 @@ export type NzButtonGroupSize = 'small' | 'large' | 'default' ;
   selector           : 'nz-button-group',
   preserveWhitespaces: false,
   template           : `
-    <div [ngClass]="_classMap" #groupWrapper>
+    <div [ngClass]="classMap" #groupWrapper>
       <ng-content></ng-content>
     </div>
   `
 })
 export class NzButtonGroupComponent implements AfterViewInit {
-  _size: NzButtonGroupSize;
-  _prefixCls = 'ant-btn-group';
-  _sizeMap = { large: 'lg', small: 'sm' };
-  _classMap = {
-    [ this._prefixCls ]                                     : true,
-    [ `${this._prefixCls}-${this._sizeMap[ this.nzSize ]}` ]: this._sizeMap[ this.nzSize ]
+  private _size: NzButtonGroupSize;
+  private prefixCls = 'ant-btn-group';
+  private sizeMap = { large: 'lg', small: 'sm' };
+  classMap = {
+    [ this.prefixCls ]                                    : true,
+    [ `${this.prefixCls}-${this.sizeMap[ this.nzSize ]}` ]: this.sizeMap[ this.nzSize ]
   };
   @ViewChild('groupWrapper') _groupWrapper: ElementRef;
 
@@ -29,9 +29,9 @@ export class NzButtonGroupComponent implements AfterViewInit {
 
   set nzSize(value: NzButtonGroupSize) {
     this._size = value;
-    this._classMap = {
-      [ this._prefixCls ]                                     : true,
-      [ `${this._prefixCls}-${this._sizeMap[ this.nzSize ]}` ]: this._sizeMap[ this.nzSize ]
+    this.classMap = {
+      [ this.prefixCls ]                                    : true,
+      [ `${this.prefixCls}-${this.sizeMap[ this.nzSize ]}` ]: this.sizeMap[ this.nzSize ]
     };
   }
 

@@ -6,7 +6,7 @@
 | button | √ | 100% | 100% | vthinkxie | x |
 | icon | √ | - | 100% | vthinkxie | x |
 | grid | √ | 100% | 100% | vthinkxie | x |
-| layout | x | x | x | vthinkxie | - |
+| layout | √ | 100% | 100% | vthinkxie | x |
 | breadcrumb | x | x | x | vthinkxie | - |
 | dropdown | x | x | x | vthinkxie | - |
 | menu | x | x | x | vthinkxie | - |

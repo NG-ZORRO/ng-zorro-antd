@@ -31,7 +31,7 @@ describe('button', () => {
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
-    it('should have correct class', () => {
+    it('should have correct style', () => {
       fixture.detectChanges();
       expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-primary')).toBe(true);
       expect(buttons[ 1 ].nativeElement.classList.contains('ant-btn-default')).toBe(true);
@@ -55,7 +55,7 @@ describe('button', () => {
       buttonGroup = fixture.debugElement.query(By.directive(NzButtonGroupComponent));
     });
 
-    it('should have correct class', () => {
+    it('should have correct style', () => {
       fixture.detectChanges();
       expect(buttonGroup.nativeElement.firstElementChild.classList.contains('ant-btn-group')).toBe(true);
     });
@@ -101,7 +101,7 @@ describe('button', () => {
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
-    it('should have correct class', () => {
+    it('should have correct style', () => {
       fixture.detectChanges();
       expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
       expect(buttons[ 1 ].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
@@ -125,7 +125,7 @@ describe('button', () => {
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
-    it('should have correct class', () => {
+    it('should have correct style', () => {
       fixture.detectChanges();
       expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-icon-only')).toBe(true);
       expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-circle')).toBe(true);
@@ -150,7 +150,7 @@ describe('button', () => {
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
-    it('should have correct class', () => {
+    it('should have correct style', () => {
       fixture.detectChanges();
       expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-loading')).toBe(true);
     });
@@ -210,7 +210,7 @@ describe('button', () => {
       buttonGroup = fixture.debugElement.query(By.directive(NzButtonGroupComponent));
     });
 
-    it('should have correct class', () => {
+    it('should have correct style', () => {
       fixture.detectChanges();
       expect(buttons.every(button => button.nativeElement.classList.contains('ant-btn-lg'))).toBe(true);
       expect(buttonGroup.nativeElement.firstElementChild.classList.contains('ant-btn-group-lg')).toBe(true);

@@ -64,7 +64,7 @@ import { Component } from '@angular/core';
       line-height: 120px;
     }
 
-    :host ::ng-deep .ant-layout {
+    :host > ::ng-deep .ant-layout {
       margin-bottom: 48px;
     }
 

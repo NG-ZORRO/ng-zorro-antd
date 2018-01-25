@@ -56,7 +56,7 @@ import { Component } from '@angular/core';
     </nz-layout>
   `,
   styles  : [
-      `:host ::ng-deep .logo {
+      `.logo {
       width: 120px;
       height: 31px;
       background: rgba(255,255,255,.2);
