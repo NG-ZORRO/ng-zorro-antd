@@ -52,6 +52,11 @@
   "test": {
     "karma": {
       "config": "./components/karma.conf.js"
+    },
+    "codeCoverage": {
+      "exclude": [
+        "./site/**"
+      ]
     }
   },
   "defaults": {

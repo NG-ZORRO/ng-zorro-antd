@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-layout-custom-trigger',
   template: `
     <nz-layout>
-      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate">
         <div class="logo">
         </div>
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
@@ -42,9 +42,12 @@ import { Component } from '@angular/core';
         <nz-footer style="text-align: center;">Ant Design ©2017 Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
+    <ng-template #trigger>
+      <i class="anticon anticon-up"></i>
+    </ng-template>
   `,
   styles  : [
-    `
+      `
       :host ::ng-deep .trigger {
         font-size: 18px;
         line-height: 64px;
@@ -59,7 +62,7 @@ import { Component } from '@angular/core';
 
       :host ::ng-deep .logo {
         height: 32px;
-        background: rgba(255,255,255,.2);
+        background: rgba(255, 255, 255, .2);
         margin: 16px;
       }
     `
@@ -67,4 +70,11 @@ import { Component } from '@angular/core';
 })
 export class NzDemoLayoutCustomTriggerComponent {
   isCollapsed = false;
+  triggerTemplate = null;
+  @ViewChild('trigger') customTrigger: TemplateRef<void>;
+
+  /** custom trigger can be TemplateRef **/
+  changeTrigger(): void {
+    this.triggerTemplate = this.customTrigger;
+  }
 }

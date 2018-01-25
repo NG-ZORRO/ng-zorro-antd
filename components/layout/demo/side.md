@@ -1,6 +1,8 @@
 ---
 order: 3
-iframe: 360
+iframe: 
+  source: https://components-layout-demo-side.stackblitz.io
+  height: 360
 title:
   zh-CN: 侧边布局
   en-US: Sider

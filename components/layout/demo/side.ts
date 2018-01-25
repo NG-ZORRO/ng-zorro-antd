@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-layout-side',
   template: `
     <nz-layout>
-      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed">
+      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="width" [nzReverseArrow]="isReverseArrow">
         <div class="logo">
         </div>
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
@@ -52,5 +52,7 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoLayoutSideComponent {
-  isCollapsed = true;
+  isCollapsed = false;
+  isReverseArrow = false;
+  width = 200;
 }

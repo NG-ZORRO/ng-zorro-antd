@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Host,
@@ -7,9 +8,11 @@ import {
   Input,
   OnInit,
   Optional,
-  Output
+  Output,
+  TemplateRef,
+  ViewChild
 } from '@angular/core';
-import { matchMedia } from '../core/polyfill/match-media';
+import { NzMatchMediaService } from '../core/services/nz-match-media.service';
 import { toBoolean } from '../core/util/convert';
 import { NzLayoutComponent } from './nz-layout.component';
 
@@ -19,24 +22,32 @@ export type NzBreakPoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
   selector           : 'nz-sider',
   preserveWhitespaces: false,
   template           : `
-    <ng-content></ng-content>
-    <span class="ant-layout-sider-zero-width-trigger" *ngIf="_isZeroTrigger" (click)="toggleCollapse()">
+    <div class="ant-layout-sider-children">
+      <ng-content></ng-content>
+    </div>
+    <span class="ant-layout-sider-zero-width-trigger" *ngIf="isZeroTrigger" (click)="toggleCollapse()">
       <i class="anticon anticon-bars"></i>
     </span>
-    <div class="ant-layout-sider-trigger" *ngIf="_isSiderTrgger" (click)="toggleCollapse()">
-      <i class="anticon" [class.anticon-left]="!nzCollapsed" [class.anticon-right]="nzCollapsed"></i>
+    <div class="ant-layout-sider-trigger" *ngIf="isSiderTrgger" (click)="toggleCollapse()" [style.width.px]="nzCollapsed?nzCollapsedWidth:nzWidth">
+      <ng-template [ngTemplateOutlet]="nzTrigger"></ng-template>
     </div>
+    <ng-template #defaultTrigger>
+      <i class="anticon" [class.anticon-left]="!nzCollapsed" [class.anticon-right]="nzCollapsed" *ngIf="!nzReverseArrow"></i>
+      <i class="anticon" [class.anticon-left]="nzCollapsed" [class.anticon-right]="!nzCollapsed" *ngIf="nzReverseArrow"></i>
+    </ng-template>
   `,
   host               : {
     '[class.ant-layout-sider]': 'true'
   }
 })
-export class NzSiderComponent implements OnInit {
+export class NzSiderComponent implements OnInit, AfterViewInit {
   private _collapsed = false;
   private _collapsible = false;
-  private _trigger = true;
-
-  _dimensionMap = {
+  @ViewChild('defaultTrigger') _trigger: TemplateRef<void>;
+  private _reverseArrow = false;
+  private below = false;
+  private isInit = false;
+  private dimensionMap = {
     xs : '480px',
     sm : '576px',
     md : '768px',
@@ -44,17 +55,25 @@ export class NzSiderComponent implements OnInit {
     xl : '1200px',
     xxl: '1600px'
   };
-  _below = false;
-  @Input() nzWidth = '200';
+  @Input() nzWidth = 200;
   @Input() nzCollapsedWidth = 80;
   @Input() nzBreakpoint: NzBreakPoint;
 
   @Input()
-  set nzTrigger(value: boolean) {
-    this._trigger = toBoolean(value);
+  set nzReverseArrow(value: boolean) {
+    this._reverseArrow = toBoolean(value);
   }
 
-  get nzTrigger(): boolean {
+  get nzReverseArrow(): boolean {
+    return this._reverseArrow;
+  }
+
+  @Input()
+  set nzTrigger(value: TemplateRef<void>) {
+    this._trigger = value;
+  }
+
+  get nzTrigger(): TemplateRef<void> {
     return this._trigger;
   }
 
@@ -93,9 +112,10 @@ export class NzSiderComponent implements OnInit {
     }
   }
 
-  // TODO: unify the type of nzCollapsedWidth and nzWidth
+  @HostBinding('style.max-width.px')
+  @HostBinding('style.min-width.px')
   @HostBinding('style.width.px')
-  get setWidth(): number | string {
+  get setWidth(): number {
     if (this.nzCollapsed) {
       return this.nzCollapsedWidth;
     } else {
@@ -110,10 +130,12 @@ export class NzSiderComponent implements OnInit {
 
   watchMatchMedia(): void {
     if (this.nzBreakpoint) {
-      const matchBelow = matchMedia(`(max-width: ${this._dimensionMap[ this.nzBreakpoint ]})`).matches;
-      this._below = matchBelow;
+      const matchBelow = this.nzMatchMediaService.matchMedia(`(max-width: ${this.dimensionMap[ this.nzBreakpoint ]})`).matches;
+      this.below = matchBelow;
       this.nzCollapsed = matchBelow;
-      this.nzCollapsedChange.emit(matchBelow);
+      if (this.isInit) {
+        this.nzCollapsedChange.emit(matchBelow);
+      }
     }
   }
 
@@ -122,22 +144,26 @@ export class NzSiderComponent implements OnInit {
     this.nzCollapsedChange.emit(this.nzCollapsed);
   }
 
-  get _isZeroTrigger(): boolean {
-    return this.nzCollapsible && this.nzTrigger && (this.nzCollapsedWidth === 0) && ((this.nzBreakpoint && this._below) || (!this.nzBreakpoint));
+  get isZeroTrigger(): boolean {
+    return this.nzCollapsible && this.nzTrigger && (this.nzCollapsedWidth === 0) && ((this.nzBreakpoint && this.below) || (!this.nzBreakpoint));
   }
 
-  get _isSiderTrgger(): boolean {
+  get isSiderTrgger(): boolean {
     return this.nzCollapsible && this.nzTrigger && (this.nzCollapsedWidth !== 0);
   }
 
-  constructor(@Optional() @Host() private nzLayoutComponent: NzLayoutComponent) {
+  constructor(@Optional() @Host() private nzLayoutComponent: NzLayoutComponent, private nzMatchMediaService: NzMatchMediaService) {
+  }
+
+  ngOnInit(): void {
+    this.watchMatchMedia();
     if (this.nzLayoutComponent) {
       this.nzLayoutComponent.hasSider = true;
     }
   }
 
-  ngOnInit(): void {
-    this.watchMatchMedia();
+  ngAfterViewInit(): void {
+    this.isInit = true;
   }
 
 }

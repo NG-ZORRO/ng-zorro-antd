@@ -47,56 +47,43 @@ The first level navigation is inclined left near a logo, and the secondary menu 
 
 ## Component Overview
 
-- `Layout`: The layout wrapper, in which `Header` `Sider` `Content` `Footer` or `Layout` itself can be nested, and can be placed in any parent container.
-- `Header`: The top layout with default style, in which any element can be nested, and must be placed in `Layout`.
-- `Sider`: The sidebar with default style and basic functions, in which any element can be nested, and must be placed in `Layout`.
-- `Content`: The content layout with default style, in which any element can be nested, and must be placed in `Layout`.
-- `Footer`: The bottom layout with default style, in which any element can be nested, and must be placed in `Layout`.
+- `nz-layout`: The layout wrapper, in which `nz-header` `nz-sider` `nz-content` `nz-footer` or `nz-layout` itself can be nested, and can be placed in any parent container.
+- `nz-header`: The top layout with default style, in which any element can be nested, and must be placed in `nz-layout`.
+- `nz-sider`: The sidebar with default style and basic functions, in which any element can be nested, and must be placed in `nz-layout`.
+- `nz-content`: The content layout with default style, in which any element can be nested, and must be placed in `nz-layout`.
+- `nz-footer`: The bottom layout with default style, in which any element can be nested, and must be placed in `nz-layout`.
 
 > Based on `flex layout`, please pay attention to the [compatibility](http://caniuse.com/#search=flex).
 
 ## API
 
-```jsx
-<Layout>
-  <Header>header</Header>
-  <Layout>
-    <Sider>left sidebar</Sider>
-    <Content>main content</Content>
-    <Sider>right sidebar</Sider>
-  </Layout>
-  <Footer>footer</Footer>
-</Layout>
+```html
+<nz-layout>
+  <nz-header>header</nz-header>
+  <nz-layout>
+    <nz-sider>left sidebar</nz-sider>
+    <nz-content>main content</nz-content>
+    <nz-sider>right sidebar</nz-sider>
+  </nz-layout>
+  <nz-footer>footer</nz-footer>
+</nz-layout>
 ```
 
-### Layout
-
-The wrapper.
-
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| className | container className | string | - |
-| style | to customize the styles | object | - |
-
-> APIs of `Layout.Header` `Layout.Footer` `Layout.Content` are the same as that of `Layout`.
-
-### Layout.Sider
+### nz-sider
 
 The sidebar.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| breakpoint | [breakpoints](/components/grid#api) of the responsive layout | Enum { 'xs', 'sm', 'md', 'lg', 'xl', 'xxl' } | - |
-| className | container className | string | - |
-| collapsed | to set the current status | boolean | - |
-| collapsedWidth | width of the collapsed sidebar, by setting to `0` a special trigger will appear | number | 64 |
-| collapsible | whether can be collapsed | boolean | false |
-| defaultCollapsed | to set the initial status | boolean | false |
-| reverseArrow | reverse direction of arrow, for a sider that expands from the right | boolean | false |
-| style | to customize the styles | object | - |
-| trigger | specify the customized trigger, set to null to hide the trigger | string丨ReactNode | - |
-| width | width of the sidebar | number丨string | 200 |
-| onCollapse | the callback function, executed by clicking the trigger or activating the responsive layout | (collapsed, type) => {} | - |
+| nzBreakpoint | breakpoints of the responsive layout | Enum { 'xs', 'sm', 'md', 'lg', 'xl', 'xxl' } | - |
+| nzCollapsed | to set the current status | boolean | - |
+| nzCollapsedWidth | width of the collapsed sidebar, by setting to `0` a special trigger will appear | number | 64 |
+| nzCollapsible | whether can be collapsed | boolean | false |
+| nzCollapsed | the collapsed status can be double binding | boolean | false |
+| nzCollapsedChange | the callback function | (collapsed) => {} | - |
+| nzReverseArrow | reverse direction of arrow, for a sider that expands from the right | boolean | false |
+| nzTrigger | specify the customized trigger, set to null to hide the trigger | string丨TemplateRef | - |
+| nzWidth | width of the sidebar | number丨string | 200 |
 
 #### breakpoint width
 
@@ -107,5 +94,6 @@ The sidebar.
   md: '992px',
   lg: '1200px',
   xl: '1600px',
+  xxl: '1600px'
 }
 ```
