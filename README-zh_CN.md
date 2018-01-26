@@ -14,51 +14,38 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/NG-ZORRO/ng-zorro-antd.svg)](http://isitmaintained.com/project/NG-ZORRO/ng-zorro-antd "Average time to resolve an issue")
 [![Gitter](https://img.shields.io/gitter/room/ng-zorro/ng-zorro-antd.svg?style=flat-square)](https://gitter.im/ng-zorro/ng-zorro-antd)
 
-An enterprise-class UI components based on Ant Design and Angular.
+这里是 Ant Design 的 Angular 5.0 实现，开发和服务于企业级后台产品。
 
-[中文 README](README-zh_CN.md)
+[README in English](README.md)
+
+## 特性
+
+- 提炼自企业级中后台产品的交互语言和视觉风格，定期与Ant Design React版本保持更新一致。
+- 开箱即用的高质量 Angular 组件。
+- 使用 TypeScript 构建，提供完整的类型定义文件。
+
+## 支持环境
+
+* 现代浏览器和 IE9 以上（需要 [polyfills](https://angular.io/guide/browser-support)。
+
+## 兼容版本
+
+当前支持Angular`^5.0.0`版本
 
 
-## Features
+## 安装
 
-- An enterprise-class UI design language for web applications.
-- A set of high-quality Angular components out of the box.
-- Written in TypeScript with complete define types.
-
-## Environment Support
-
-* Modern browsers and Internet Explorer 9+（with [polyfills](https://angular.io/guide/browser-support)）。
-
-## Angular Version Support
-
-* Angular`^5.0.0`
-
-
-## Install
+**我们推荐使用 npm 方式进行开发**，不仅可在开发环境轻松调试，也可放心地在生产环境打包部署使用，享受整个生态圈和工具链带来的诸多好处。
 
 ```bash
 $ npm install ng-zorro-antd --save
 ```
 
-## Development
+如果你的网络环境不佳，推荐使用 [cnpm](https://github.com/cnpm/cnpm)。
 
-```bash
-$ git clone git@github.com:NG-ZORRO/ng-zorro-antd.git
-$ npm install
-$ npm start
-```
+## 标准开发
 
+实际项目开发中，你会需要对 TypeScript 代码的构建、调试、代理、打包部署等一系列工程化的需求。
+我们推荐官方的 `@angular/cli` 工具链辅助进行开发
 
-## Links
-
-- [Home page](http://ng.ant.design)
-- [Angular](https://angular.io)
-- [Angular CLI](https://cli.angular.io/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [RxJS](https://github.com/ReactiveX/rxjs)
-
-
-## Contributing
-
-We welcome all contributions. Please read our [CONTRIBUTING.md](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md) first.
-You can submit any ideas as [pull request](https://github.com/NG-ZORRO/ng-zorro-antd/pulls)，or as [GitHub issues](https://github.com/NG-ZORRO/ng-zorro-antd/issues)。
+如果你想了解更多CLI工具链的功能和命令，建议访问[Angular CLI](https://github.com/angular/angular-cli)了解更多
