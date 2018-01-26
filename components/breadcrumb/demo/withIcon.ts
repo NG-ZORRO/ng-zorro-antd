@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
         <i class="anticon anticon-home"></i>
       </nz-breadcrumb-item>
       <nz-breadcrumb-item>
-        <a href=""><i class="anticon anticon-user"></i><span>Application List</span></a>
+        <a><i class="anticon anticon-user"></i><span>Application List</span></a>
       </nz-breadcrumb-item>
       <nz-breadcrumb-item>
         Application

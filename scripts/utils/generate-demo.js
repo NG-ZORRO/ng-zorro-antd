@@ -80,7 +80,7 @@ function generateTemplate(result) {
 
   const titleMap = {
     zh: generateTitle(result.docZh.meta.title, result.docZh.meta.subtitle, result.docZh.path),
-    en: generateTitle(result.docEn.meta.title, '', result.docZh.path)
+    en: generateTitle(result.docEn.meta.title, '', result.docEn.path)
   };
   return {
     zh: wrapperAll(generateToc('zh-CN', result.name, result.demoMap), wrapperHeader(titleMap.zh, result.docZh.whenToUse, 'zh', innerMap.zh) + wrapperAPI(result.docZh.api)),

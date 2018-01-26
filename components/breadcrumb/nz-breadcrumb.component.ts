@@ -1,6 +1,7 @@
 import {
   Component,
-  Input
+  Input,
+  TemplateRef
 } from '@angular/core';
 
 @Component({
@@ -13,5 +14,16 @@ import {
   }
 })
 export class NzBreadCrumbComponent {
-  @Input() nzSeparator = '/';
+  private _separator: string | TemplateRef<void> = '/';
+  isTemplateRef = false;
+
+  @Input()
+  set nzSeparator(value: string | TemplateRef<void>) {
+    this._separator = value;
+    this.isTemplateRef = value instanceof TemplateRef;
+  }
+
+  get nzSeparator(): string | TemplateRef<void> {
+    return this._separator;
+  }
 }

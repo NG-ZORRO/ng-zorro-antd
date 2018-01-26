@@ -7,7 +7,7 @@
 | icon | √ | - | 100% | vthinkxie | x |
 | grid | √ | 100% | 100% | vthinkxie | x |
 | layout | √ | 100% | 100% | vthinkxie | x |
-| breadcrumb | x | x | x | vthinkxie | - |
+| breadcrumb | √ | 100% | 100% | vthinkxie | - |
 | dropdown | x | x | x | vthinkxie | - |
 | menu | x | x | x | vthinkxie | - |
 | pagination | x | x | x | vthinkxie | - |
