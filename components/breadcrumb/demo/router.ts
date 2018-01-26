@@ -1,20 +1,17 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-breadcrumb-basic',
+  selector: 'nz-demo-breadcrumb-router',
   template: `
     <nz-breadcrumb>
       <nz-breadcrumb-item>
-        Home
+        <a [routerLink]="['../../']">Home</a>
       </nz-breadcrumb-item>
       <nz-breadcrumb-item>
-        <a>Application List</a>
-      </nz-breadcrumb-item>
-      <nz-breadcrumb-item>
-        An Application
+        Breadcrumb
       </nz-breadcrumb-item>
     </nz-breadcrumb>`,
   styles  : []
 })
-export class NzDemoBreadcrumbBasicComponent {
+export class NzDemoBreadcrumbRouterComponent {
 }
