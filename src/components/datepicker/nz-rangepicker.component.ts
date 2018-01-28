@@ -1,4 +1,4 @@
-import { ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   forwardRef,
   ChangeDetectorRef,
@@ -19,6 +19,7 @@ import { DEFAULT_DATEPICKER_POSITIONS } from '../core/overlay/overlay-position-m
 import { NzLocaleService } from '../locale/index';
 import { NzTimePickerInnerComponent } from '../time-picker/nz-timepicker-inner.component';
 import { toBoolean } from '../util/convert';
+import { measureScrollbar } from '../util/mesureScrollBar';
 
 @Component({
   selector: 'nz-rangepicker',
@@ -50,11 +51,13 @@ import { toBoolean } from '../util/convert';
 
     <ng-template cdkConnectedOverlay
                  cdkConnectedOverlayHasBackdrop
+                 [cdkConnectedOverlayOffsetX]="_offsetX"
                  [cdkConnectedOverlayPositions]="_positions"
                  [cdkConnectedOverlayOrigin]="origin"
                  (backdropClick)="_closeCalendar()"
                  (detach)="_closeCalendar()"
                  (positionChange)="onPositionChange($event)"
+                 (attach)="onAttach()"
                  [cdkConnectedOverlayOpen]="_open">
       <div class="ant-calendar-picker-container"
            [class.top]="_dropDownPosition === 'top'"
@@ -275,6 +278,8 @@ export class NzRangePickerComponent implements ControlValueAccessor, OnInit {
   _triggerWidth = 0;
   _dropDownPosition = 'bottom';
   _positions: ConnectionPositionPair[] = [...DEFAULT_DATEPICKER_POSITIONS];
+  _offsetX: number = 0;
+  @ViewChild(CdkConnectedOverlay) _cdkOverlay: CdkConnectedOverlay;
   @ViewChild('trigger') trigger;
   onTouched: () => void = () => null;
   onChange: (value: Date[]) => void = () => null;
@@ -555,7 +560,24 @@ export class NzRangePickerComponent implements ControlValueAccessor, OnInit {
     }
   }
 
+  reposition(): void {
+    if (typeof window !== 'undefined' && this._open && this._cdkOverlay && this._cdkOverlay.overlayRef) {
+      const originElement = this._cdkOverlay.origin.elementRef.nativeElement;
+      const overlayElement = this._cdkOverlay.overlayRef.overlayElement;
+      const originX = originElement.getBoundingClientRect().x;
+      const overlayWidth = overlayElement.getBoundingClientRect().width;
+      const margin = window.innerWidth - originX - overlayWidth;
+      this._offsetX = margin > 0 ? 0 : margin - (measureScrollbar() || 15);
+      this._cdr.detectChanges();
+    }
+  }
+
+  onAttach(): void {
+    this.reposition();
+  }
+
   onPositionChange(position: ConnectedOverlayPositionChange): void {
+    this.reposition();
     const _position = position.connectionPair.originY === 'bottom' ? 'top' : 'bottom';
     if (this._dropDownPosition !== _position) {
       this._dropDownPosition = _position;
