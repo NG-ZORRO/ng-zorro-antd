@@ -50,11 +50,17 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
 
   @Input()
   set nzInlineCollapsed(value: boolean) {
-    const state = toBoolean(value);
-    this._inlineCollapsed = state;
-    if (!this.isInit) {
-      return;
+    this._inlineCollapsed = toBoolean(value);
+    if (this.isInit) {
+      this.updateInlineCollapse();
     }
+  }
+
+  get nzInlineCollapsed(): boolean {
+    return this._inlineCollapsed;
+  }
+
+  updateInlineCollapse(): void {
     if (this._inlineCollapsed) {
       this.hideSubMenus();
       // after the animation is over
@@ -63,11 +69,6 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
       this.reductionSubMenus();
       this.nzMode = this._tempMode;
     }
-
-  }
-
-  get nzInlineCollapsed(): boolean {
-    return this._inlineCollapsed;
   }
 
   /** define host class */
@@ -140,6 +141,7 @@ export class NzMenuComponent implements OnChanges, AfterViewInit {
   ngAfterViewInit(): void {
     this.isInit = true;
     this._tempMode = this.nzMode;
+    this.updateInlineCollapse();
   }
 
   /** trigger when menu item clicked */
