@@ -9,6 +9,16 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+# 0.6.13
+`2018-01-28`
+
+### Bug Fixes
+
+* `Alert` 修复 `[alert-description]` 不生效的问题 [#980](https://github.com/NG-ZORRO/ng-zorro-antd/pull/980)
+* `Menu` 修复初始状态收起的展示问题 [#979](https://github.com/NG-ZORRO/ng-zorro-antd/pull/979)
+* `DatePicker` 修复下拉菜单在浏览器边缘的显示问题 [#966](https://github.com/NG-ZORRO/ng-zorro-antd/pull/966) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `Select` 修复 label title的显示问题 [#928](https://github.com/NG-ZORRO/ng-zorro-antd/pull/928) [@Hsuan Lee](https://github.com/HsuanXyz)
+
 # 0.6.12
 
 `2018-01-20`
