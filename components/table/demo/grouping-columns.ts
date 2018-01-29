@@ -6,14 +6,14 @@ import { Component, OnInit } from '@angular/core';
     <nz-table #nzTable [nzDataSource]="dataSet" nzBordered nzSize="middle" [nzPageSize]="10" [nzScroll]="{ x:'130%',y: '240px' }">
       <ng-template #nzColgroup>
         <colgroup>
-          <col nz-col nzWidth="100px">
-          <col nz-col nzWidth="200px">
-          <col nz-col nzWidth="200px">
-          <col nz-col nzWidth="100px">
-          <col nz-col nzWidth="100px">
+          <col nz-column nzWidth="100px">
+          <col nz-column nzWidth="200px">
+          <col nz-column nzWidth="200px">
+          <col nz-column nzWidth="100px">
+          <col nz-column nzWidth="100px">
           <col>
           <col>
-          <col nz-col nzWidth="60px">
+          <col nz-column nzWidth="60px">
         </colgroup>
       </ng-template>
       <ng-template #nzFixedHeader>

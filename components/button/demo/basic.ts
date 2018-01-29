@@ -17,15 +17,15 @@ import { Component, ViewEncapsulation } from '@angular/core';
       <span>Danger</span>
     </button>`,
   styles       : [
-    `
-    [nz-button] {
-      margin-right: 8px;
-      margin-bottom: 12px;
-    }
+      `
+      [id^=components-button-demo-] [nz-button] {
+        margin-right: 8px;
+        margin-bottom: 12px;
+      }
 
-    nz-button-group [nz-button] {
-      margin-right: 0;
-    }
+      [id^=components-button-demo-] nz-button-group [nz-button] {
+        margin-right: 0;
+      }
     `
   ]
 })

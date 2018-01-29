@@ -7,18 +7,27 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
+  Host,
   HostBinding,
-  HostListener,
   Input,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
+  QueryList,
+  SkipSelf,
   ViewChild
 } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
-import { debounceTime } from 'rxjs/operators/debounceTime';
+import { Subscription } from 'rxjs/Subscription';
+import { auditTime } from 'rxjs/operators/auditTime';
+import { combineLatest } from 'rxjs/operators/combineLatest';
+import { map } from 'rxjs/operators/map';
 import { POSITION_MAP } from '../core/overlay/overlay-position-map';
 import { toBoolean } from '../core/util/convert';
+import { NzDropDownButtonComponent } from '../dropdown/nz-dropdown-button.component';
+import { NzDropDownComponent } from '../dropdown/nz-dropdown.component';
 import { NzMenuDirective } from './nz-menu.directive';
 
 @Component({
@@ -26,21 +35,17 @@ import { NzMenuDirective } from './nz-menu.directive';
   preserveWhitespaces: false,
   animations         : [
     trigger('expandAnimation', [
+      state('expand', style({ height: '*' })),
+      state('hidden', style({ height: 0, overflow: 'hidden' })),
+      transition('expand => hidden', animate(150)),
+      transition('hidden => expand', animate(150)),
       state('fade', style({ opacity: 1 })),
-      transition('expand => void', [
-        style({ height: '*', overflow: 'hidden' }),
-        animate(150, style({ height: 0 }))
-      ]),
-      transition('void => expand', [
-        style({ height: 0, overflow: 'hidden' }),
-        animate(150, style({ height: '*' }))
-      ]),
       transition('fade => void', [
         animate(150, style({ opacity: 0 }))
       ]),
       transition('void => fade', [
         style({ opacity: '0' }),
-        animate(150, style({ opacity: 1 }))
+        animate(150)
       ]),
       state('bottom', style({
         opacity        : 1,
@@ -62,7 +67,7 @@ import { NzMenuDirective } from './nz-menu.directive';
           transformOrigin: '0% 0%'
         }))
       ])
-    ]),
+    ])
   ],
   template           : `
     <div
@@ -73,7 +78,7 @@ import { NzMenuDirective } from './nz-menu.directive';
       [class.ant-menu-submenu-title]="!isInDropDown"
       (mouseenter)="onMouseEnterEvent($event)"
       (mouseleave)="onMouseLeaveEvent($event)"
-      (click)="clickSubMenuTitle()"
+      (click)="clickSubMenuTitle($event)"
       [style.paddingLeft.px]="(nzMenuDirective.nzMode === 'inline')?(level*nzMenuDirective.nzInlineIndent):null">
       <ng-content select="[title]"></ng-content>
       <i [class.ant-dropdown-menu-submenu-arrow]="isInDropDown" [class.ant-menu-submenu-arrow]="!isInDropDown"></i>
@@ -88,7 +93,7 @@ import { NzMenuDirective } from './nz-menu.directive';
       [class.ant-menu-sub]="!isInDropDown"
       (mouseleave)="onMouseLeaveEvent($event)"
       (mouseenter)="onMouseEnterEvent($event)"
-      *ngIf="nzOpen&&(nzMenuDirective.nzMode=='inline')">
+      *ngIf="(nzMenuDirective.nzMode=='inline')">
       <ng-template *ngTemplateOutlet="subMenuTemplate"></ng-template>
     </ul>
     <ng-template
@@ -127,15 +132,18 @@ import { NzMenuDirective } from './nz-menu.directive';
 
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
   private _open = false;
+  private _disabled = false;
+  private $mouseSubject = new Subject<boolean>();
+  private openSubscription: Subscription;
+  private placement = 'rightTop';
+  $subOpen = new BehaviorSubject<boolean>(false);
   isInDropDown = false;
-  level = 1;
   isInSubMenu = false;
+  level = 1;
   triggerWidth = null;
-  $mouseSubject = new Subject();
-  placement = 'rightTop';
-  @ContentChildren(NzSubMenuComponent, { descendants: true }) subMenus;
+  @ContentChildren(NzSubMenuComponent, { descendants: true }) subMenus: QueryList<NzSubMenuComponent>;
   @Output() nzOpenChange: EventEmitter<boolean> = new EventEmitter();
-  @ViewChild(CdkConnectedOverlay) _cdkOverlay: CdkConnectedOverlay;
+  @ViewChild(CdkConnectedOverlay) cdkOverlay: CdkConnectedOverlay;
   @ViewChild('trigger') trigger: ElementRef;
 
   @Input()
@@ -145,11 +153,16 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   get nzOpen(): boolean {
-    if (this.subMenuMode === 'inline') {
-      return this._open;
-    } else {
-      return this._open || this.isSubMenuOpen;
-    }
+    return this._open;
+  }
+
+  @Input()
+  set nzDisabled(value: boolean) {
+    this._disabled = toBoolean(value);
+  }
+
+  get nzDisabled(): boolean {
+    return this._disabled;
   }
 
   get subItemSelected(): boolean {
@@ -157,7 +170,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   get submenuSelected(): boolean {
-    return !!this.subMenus._results.find(e => e !== this && e.subItemSelected);
+    return !!this.subMenus.toArray().find(e => e !== this && e.subItemSelected);
   }
 
   get expandState(): string {
@@ -167,8 +180,9 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
       return 'bottom';
     } else if (this.nzOpen && this.subMenuMode === 'vertical') {
       return 'fade';
+    } else {
+      return 'hidden';
     }
-    return null;
   }
 
   get overlayPositions(): ConnectionPositionPair[] {
@@ -179,11 +193,12 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
     }
   }
 
-  get isSubMenuOpen(): boolean {
-    return this.subMenus.some(menu => ((menu !== this) && (menu.nzOpen)));
-  }
-
-  clickSubMenuTitle(): void {
+  clickSubMenuTitle($event: MouseEvent): void {
+    if (this.nzDisabled) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      return;
+    }
     if ((this.subMenuMode === 'inline') && (!this.isInDropDown)) {
       this.nzOpen = !this.nzOpen;
       this.nzOpenChange.emit(this.nzOpen);
@@ -206,14 +221,12 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
     }
   }
 
-  @HostListener('mouseenter', [ '$event' ])
   onMouseEnterEvent(e: MouseEvent): void {
     if ((this.subMenuMode === 'horizontal') || (this.subMenuMode === 'vertical') || this.isInDropDown) {
       this.$mouseSubject.next(true);
     }
   }
 
-  @HostListener('mouseleave', [ '$event' ])
   onMouseLeaveEvent(e: MouseEvent): void {
     if ((this.subMenuMode === 'horizontal') || (this.subMenuMode === 'vertical') || this.isInDropDown) {
       this.$mouseSubject.next(false);
@@ -238,6 +251,11 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
   @HostBinding('class.ant-dropdown-menu-submenu-horizontal')
   get setDropDownHorizontalClass(): boolean {
     return this.isInDropDown && (this.subMenuMode === 'horizontal');
+  }
+
+  @HostBinding('class.ant-dropdown-menu-submenu-disabled')
+  get setDropDownDisabled(): boolean {
+    return this.isInDropDown && this.nzDisabled;
   }
 
   @HostBinding('class.ant-menu-submenu')
@@ -265,12 +283,17 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
     return (!this.isInDropDown) && (this.subMenuMode === 'inline');
   }
 
+  @HostBinding('class.ant-menu-submenu-disabled')
+  get setMenuDisabled(): boolean {
+    return (!this.isInDropDown) && this.nzDisabled;
+  }
+
   setTriggerWidth(): void {
     if (this.subMenuMode === 'horizontal') {
       this.triggerWidth = this.trigger.nativeElement.getBoundingClientRect().width;
       /** should remove after after https://github.com/angular/material2/pull/8765 merged **/
-      if (this._cdkOverlay && this._cdkOverlay.overlayRef) {
-        this._cdkOverlay.overlayRef.updateSize({
+      if (this.cdkOverlay && this.cdkOverlay.overlayRef) {
+        this.cdkOverlay.overlayRef.updateSize({
           width: this.triggerWidth
         });
       }
@@ -286,27 +309,44 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
         overlayX: $event.connectionPair.overlayX,
         overlayY: $event.connectionPair.overlayY
       };
-      if (JSON.stringify(originMap) === JSON.stringify(POSITION_MAP.leftTop)) {
+      const keyList = [ 'originX', 'originY', 'overlayX', 'overlayY' ];
+      if (keyList.every(key => originMap[ key ] === POSITION_MAP.leftTop[ key ])) {
         this.placement = 'leftTop';
-      } else if (JSON.stringify(originMap) === JSON.stringify(POSITION_MAP.rightTop)) {
+      } else if (keyList.every(key => originMap[ key ] === POSITION_MAP.rightTop[ key ])) {
         this.placement = 'rightTop';
       }
       this.cd.detectChanges();
     }
   }
 
-  constructor(public nzMenuDirective: NzMenuDirective, private cd: ChangeDetectorRef) {
+  handleOpenEvent = (data: boolean) => {
+    if (this.nzDisabled) {
+      return;
+    }
+    if (this.nzOpen !== data) {
+      this.nzOpen = data;
+      this.nzOpenChange.emit(this.nzOpen);
+    }
+    if (this.nzSubMenuComponent) {
+      this.nzSubMenuComponent.$subOpen.next(this.nzOpen);
+    }
+    if (this.nzDropDownComponent) {
+      this.nzDropDownComponent.$subOpen.next(this.nzOpen);
+    }
+    if (this.nzDropDownButtonComponent) {
+      this.nzDropDownButtonComponent.$subOpen.next(this.nzOpen);
+    }
+  }
+
+  constructor(public nzMenuDirective: NzMenuDirective, private cd: ChangeDetectorRef, @SkipSelf() @Optional() private nzSubMenuComponent: NzSubMenuComponent, @Host() @Optional() private nzDropDownComponent: NzDropDownComponent, @Host() @Optional() private nzDropDownButtonComponent: NzDropDownButtonComponent) {
     this.nzMenuDirective.setHasSubMenu(true);
     this.nzMenuDirective.subMenus.push(this);
   }
 
   ngOnInit(): void {
-    this.$mouseSubject.pipe(debounceTime(150)).subscribe((data: boolean) => {
-      // TODO reduce dump emit
-      this.nzOpen = data;
-      this.nzOpenChange.emit(this.nzOpen);
-    });
-    this.isInDropDown = this.nzMenuDirective.isInDropDown;
+    const $combineAll = this.$mouseSubject.asObservable().pipe(combineLatest(this.$subOpen), map(value => value[ 0 ] || value[ 1 ]), auditTime(150));
+    this.openSubscription = $combineAll.subscribe(this.handleOpenEvent);
+    this.isInDropDown = this.nzMenuDirective.nzInDropDown;
   }
 
   ngAfterContentInit(): void {
@@ -321,6 +361,9 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   ngOnDestroy(): void {
-    this.$mouseSubject.unsubscribe();
+    if (this.openSubscription) {
+      this.openSubscription.unsubscribe();
+      this.openSubscription = null;
+    }
   }
 }

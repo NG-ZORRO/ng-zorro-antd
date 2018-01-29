@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 @Component({
   selector: 'nz-demo-menu-inline',
   template: `
@@ -48,4 +49,5 @@ import { Component } from '@angular/core';
   `,
   styles  : []
 })
-export class NzDemoMenuInlineComponent { }
+export class NzDemoMenuInlineComponent {
+}

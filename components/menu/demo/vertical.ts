@@ -22,7 +22,7 @@ import { Component } from '@angular/core';
           </li>
         </ul>
       </li>
-      <li nz-submenu>
+      <li nz-submenu (nzOpenChange)="change($event)">
         <span title><i class="anticon anticon-appstore"></i> Navigation Two</span>
         <ul>
           <li nz-menu-item>Option 5</li>
@@ -47,4 +47,8 @@ import { Component } from '@angular/core';
     </ul>`,
   styles  : []
 })
-export class NzDemoMenuVerticalComponent { }
+export class NzDemoMenuVerticalComponent {
+  change(value: boolean): void {
+    console.log(value);
+  }
+}
