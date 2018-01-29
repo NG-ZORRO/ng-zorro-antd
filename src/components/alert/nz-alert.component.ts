@@ -40,7 +40,7 @@ import { toBoolean } from '../util/convert';
         <span class="ant-alert-description">{{ nzDescription }}</span>
       </ng-template>
       <ng-template [ngIf]="!nzDescription">
-        <ng-content select="alert-description"></ng-content>
+        <ng-content select="[alert-description]"></ng-content>
       </ng-template>
       <ng-template [ngIf]="nzCloseable || nzCloseText">
         <a *ngIf="nzCloseable" (click)="closeAlert($event)" class="ant-alert-close-icon">
