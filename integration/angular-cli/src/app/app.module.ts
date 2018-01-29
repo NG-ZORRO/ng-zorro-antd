@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 import { AppComponent } from './app.component';
+import { YztCustomModule } from '../../../../src/custom-components/yzt-custom.module';
 
 @NgModule({
   declarations: [
@@ -11,6 +12,7 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     NgZorroAntdModule.forRoot(),
+    YztCustomModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -12,6 +12,8 @@ import { NzHighlightModule } from './share/nz-highlight/nz-highlight.module';
 
 import { NZ_LOGGER_STATE } from '../../index.showcase';
 import { NZ_LOCALE, enUS } from '../../index.showcase';
+import { CommonModule } from './custom-demo/share/common.module';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { NZ_LOCALE, enUS } from '../../index.showcase';
     NgZorroAntdModule.forRoot({ extraFontName: 'anticon', extraFontUrl: './assets/fonts/iconfont' }),
     NzCodeBoxModule,
     NzHighlightModule,
-    RouterModule.forRoot(routes, { useHash: true, preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { useHash: true, preloadingStrategy: PreloadAllModules }),
+    CommonModule,
+    HttpModule
   ],
   providers   : [
     { provide: NZ_LOGGER_STATE, useValue: true },
