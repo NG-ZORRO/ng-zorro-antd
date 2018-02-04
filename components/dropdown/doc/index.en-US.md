@@ -12,34 +12,44 @@ If there are too many operations to display, you can wrap them in a `Dropdown`. 
 
 ## API
 
-### Dropdown
+### nz-dropdown
+
+> You should add  `[nz-dropdown]` to the element that trigger dropdown
+
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| disabled | whether the dropdown menu is disabled | boolean | - |
-| getPopupContainer | to set the container of the dropdown menu. The default is to create a `div` element in `body`, you can reset it to the scrolling area and make a relative reposition. [example](https://codepen.io/afc163/pen/zEjNOy?editors=0010) | Function(triggerNode) | `() => document.body` |
-| overlay | the dropdown menu | [Menu](/components/menu) | - |
-| placement | placement of pop menu: `bottomLeft` `bottomCenter` `bottomRight` `topLeft` `topCenter` `topRight` | String | `bottomLeft` |
-| trigger | the trigger mode which executes the drop-down action | Array&lt;`click`丨`hover`丨`contentMenu`&gt; | `['hover']` |
-| visible | whether the dropdown menu is visible | boolean | - |
-| onVisibleChange | a callback function takes an argument: `visible`, is executed when the visible state is changed | Function(visible) | - |
+| nzDisabled | whether the dropdown menu is disabled | boolean | - |
+| nzPlacement | placement of pop menu: `bottomLeft` `bottomCenter` `bottomRight` `topLeft` `topCenter` `topRight` | String | `bottomLeft` |
+| nzTrigger | the trigger mode which executes the drop-down action | `click`丨`hover` | `hover` |
+| nzClickHide | whether hide menu when click | boolean | true |
+| nzVisible | whether the dropdown menu is visible, double binding | boolean | - |
+| nzVisibleChange | a callback function takes an argument: `nzVisible`, is executed when the visible state is changed | (nzVisible)=>{} | - |
 
-You should use [Menu](/components/menu/) as `overlay`. The menu items and dividers are also available by using `Menu.Item` and `Menu.Divider`.
+You should use [nz-menu](/components/menu/en) in `nz-dropdown`. The menu items and dividers are also available by using `nz-menu-item` and `nz-menu-divider`.
 
-> Warning: You must set a unique `key` for `Menu.Item`.
->
-> Menu of Dropdown is unselectable by default, you can make it selectable via `<Menu selectable>`.
+> nz-menu of nz-dropdown is unselectable by default, you can make it selectable via `<ul nz-menu nzSelectable>`.
 
-### Dropdown.Button
+### nz-dropdown-button
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| disabled | whether the dropdown menu is disabled | boolean | - |
-| overlay | the dropdown menu | [Menu](/components/menu) | - |
-| placement | placement of pop menu: `bottomLeft` `bottomCenter` `bottomRight` `topLeft` `topCenter` `topRight` | String | `bottomLeft` |
-| size | size of the button, the same as [Button](/components/button) | string | `default` |
-| trigger | the trigger mode which executes the drop-down action | Array&lt;`click`丨`hover`丨`contentMenu`&gt; | `['hover']` |
-| type | type of the button, the same as [Button](/components/button) | string | `default` |
-| visible | whether the dropdown menu is visible | boolean | - |
-| onClick | a callback function, the same as [Button](/components/button), which will be executed when you click the button on the left | Function | - |
-| onVisibleChange | a callback function takes an argument: `visible`, is executed when the visible state is changed | Function | - |
+| nzDisabled | whether the dropdown menu is disabled | boolean | - |
+| nzPlacement | placement of pop menu: `bottomLeft` `bottomCenter` `bottomRight` `topLeft` `topCenter` `topRight` | String | `bottomLeft` |
+| nzSize | size of the button, the same as [nz-buutton](/components/button/en) | string | `default` |
+| nzType | type of the button, the same as [nz-button](/components/button/en) | string | `default` |
+| nzTrigger | the trigger mode which executes the drop-down action | `click`丨`hover` | `hover` |
+| nzClickHide | whether hide menu when click | boolean | true |
+| nzVisible | whether the dropdown menu is visible | boolean | - |
+| nzVisibleChange | a callback function takes an argument: `nzVisible`, is executed when the visible state is changed | (nzVisible)=>{} | - |
+| nzClick | a callback function which will be executed when you click the button on the left | Function | - |
+
+
+### NzDropdownService
+
+Create dropdown with contextmenu, the detail can be found in the example above
+
+| Property | Description | Arguments | Return Value |
+| --- | --- | --- | --- |
+| create | create dropdown | `($event:MouseEvent, template:TemplateRef<void>)` | NzDropdownContextComponent |
+| close | close dropdown | | |

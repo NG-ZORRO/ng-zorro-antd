@@ -41,9 +41,15 @@ import { NzTimelineModule } from './timeline/nz-timeline.module';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
 
+export * from './button';
+export * from './grid';
+export * from './layout';
+export * from './dropdown';
+export * from './menu';
 export * from './locale/index';
 export * from './list/index';
 
+import { NzDropdownService } from './dropdown';
 import { NzMessageService } from './message/nz-message.service';
 import { NzNotificationService } from './notification/nz-notification.service';
 
@@ -107,7 +113,8 @@ export class NgZorroAntdModule {
       providers: [
         // Services
         NzNotificationService,
-        NzMessageService
+        NzMessageService,
+        NzDropdownService
       ]
     };
   }

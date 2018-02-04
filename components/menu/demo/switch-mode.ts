@@ -1,12 +1,18 @@
 import { Component } from '@angular/core';
+
 @Component({
   selector: 'nz-demo-menu-switch-mode',
   template: `
     <nz-switch [(ngModel)]="mode">
     </nz-switch>
+    Change Mode
+    <nz-divider nzType="vertical"></nz-divider>
+    <nz-switch [(ngModel)]="dark">
+    </nz-switch>
+    Change Theme
     <br>
     <br>
-    <ul nz-menu [nzMode]="mode?'vertical':'inline'"  style="width: 240px;">
+    <ul nz-menu [nzMode]="mode?'vertical':'inline'" [nzTheme]="dark?'dark':'light'" style="width: 240px;">
       <li nz-submenu>
         <span title><i class="anticon anticon-mail"></i> Navigation One</span>
         <ul>
@@ -53,4 +59,5 @@ import { Component } from '@angular/core';
 })
 export class NzDemoMenuSwitchModeComponent {
   mode = false;
+  dark = false;
 }

@@ -4,14 +4,14 @@
   </a>
 </p>
 
-# NG ZORRO
-[![Travis branch](https://img.shields.io/travis/NG-ZORRO/ng-zorro-antd/0.7.0.svg?style=flat-square)]()
-[![Coveralls github](https://img.shields.io/coveralls/NG-ZORRO/ng-zorro-antd/0.7.0.svg?style=flat-square)]()
+# NG-ZORRO
+[![Travis branch](https://img.shields.io/travis/NG-ZORRO/ng-zorro-antd/0.7.0.svg?style=flat-square)](https://travis-ci.org/NG-ZORRO/ng-zorro-antd)
+[![Coveralls github](https://img.shields.io/coveralls/NG-ZORRO/ng-zorro-antd/0.7.0.svg?style=flat-square)](https://coveralls.io/github/NG-ZORRO/ng-zorro-antd)
 [![Gemnasium](https://img.shields.io/gemnasium/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://gemnasium.com/github.com/NG-ZORRO/ng-zorro-antd)
 [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
-
+[![GitHub Release Date](https://img.shields.io/github/release-date/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/releases)
+[![Issue Stats](https://img.shields.io/issuestats/i/github/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/issues)
 [![NPM downloads](http://img.shields.io/npm/dm/ng-zorro-antd.svg?style=flat-square)](https://npmjs.org/package/ng-zorro-antd)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/NG-ZORRO/ng-zorro-antd.svg)](http://isitmaintained.com/project/NG-ZORRO/ng-zorro-antd "Average time to resolve an issue")
 [![Gitter](https://img.shields.io/gitter/room/ng-zorro/ng-zorro-antd.svg?style=flat-square)](https://gitter.im/ng-zorro/ng-zorro-antd)
 
 这里是 Ant Design 的 Angular 5.0 实现，开发和服务于企业级后台产品。
@@ -26,7 +26,7 @@
 
 ## 支持环境
 
-* 现代浏览器和 IE9 以上（需要 [polyfills](https://angular.io/guide/browser-support)。
+* 现代浏览器和 IE9 以上（需要 [polyfills](https://angular.io/guide/browser-support))。
 
 ## 兼容版本
 

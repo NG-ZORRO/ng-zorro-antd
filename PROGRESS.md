@@ -3,13 +3,13 @@
 ## 组件
 | 组件 | 文档 | 测试 | 功能 | 负责 | 重构 |
 | --- | --- | --- | --- | --- | --- |
-| button | √ | 100% | 100% | vthinkxie | x |
-| icon | √ | - | 100% | vthinkxie | x |
-| grid | √ | 100% | 100% | vthinkxie | x |
-| layout | √ | 100% | 100% | vthinkxie | x |
+| button | √ | 100% | 100% | vthinkxie | - |
+| icon | √ | - | 100% | vthinkxie | - |
+| grid | √ | 100% | 100% | vthinkxie | - |
+| layout | √ | 100% | 100% | vthinkxie | - |
 | breadcrumb | √ | 100% | 100% | vthinkxie | - |
-| dropdown | x | x | x | vthinkxie | - |
-| menu | x | x | x | vthinkxie | - |
+| dropdown | √ | 100% | 100% | vthinkxie | - |
+| menu | √ | 100% | 100% | vthinkxie | √ |
 | pagination | x | x | x | vthinkxie | - |
 | steps | x | x | x | vthinkxie | - |
 | checkbox | x | x | x | vthinkxie | - |

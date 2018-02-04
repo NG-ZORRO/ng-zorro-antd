@@ -8,13 +8,13 @@ import { Component } from '@angular/core';
         <button nz-button nz-dropdown>bottomLeft</button>
         <ul nz-menu>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">1st menu item length</a>
+            <a>1st menu item length</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item length</a>
+            <a>2nd menu item length</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item length</a>
+            <a>3rd menu item length</a>
           </li>
         </ul>
       </nz-dropdown>
@@ -22,13 +22,13 @@ import { Component } from '@angular/core';
         <button nz-button nz-dropdown>bottomCenter</button>
         <ul nz-menu>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">1st menu item length</a>
+            <a>1st menu item length</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item length</a>
+            <a>2nd menu item length</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item length</a>
+            <a>3rd menu item length</a>
           </li>
         </ul>
       </nz-dropdown>
@@ -36,13 +36,13 @@ import { Component } from '@angular/core';
         <button nz-button nz-dropdown>bottomRight</button>
         <ul nz-menu>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">1st menu item length</a>
+            <a>1st menu item length</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item length</a>
+            <a>2nd menu item length</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item length</a>
+            <a>3rd menu item length</a>
           </li>
         </ul>
       </nz-dropdown>
@@ -50,13 +50,13 @@ import { Component } from '@angular/core';
         <button nz-button nz-dropdown>topLeft</button>
         <ul nz-menu>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">1st menu item length</a>
+            <a>1st menu item length</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item length</a>
+            <a>2nd menu item length</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item length</a>
+            <a>3rd menu item length</a>
           </li>
         </ul>
       </nz-dropdown>
@@ -64,13 +64,13 @@ import { Component } from '@angular/core';
         <button nz-button nz-dropdown>topCenter</button>
         <ul nz-menu>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">1st menu item length</a>
+            <a>1st menu item length</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item length</a>
+            <a>2nd menu item length</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item length</a>
+            <a>3rd menu item length</a>
           </li>
         </ul>
       </nz-dropdown>
@@ -78,19 +78,19 @@ import { Component } from '@angular/core';
         <button nz-button nz-dropdown>topRight</button>
         <ul nz-menu>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">1st menu item length</a>
+            <a>1st menu item length</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item length</a>
+            <a>2nd menu item length</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item length</a>
+            <a>3rd menu item length</a>
           </li>
         </ul>
       </nz-dropdown>
     </div>`,
   styles  : [
-    `
+      `
       :host ::ng-deep .ant-btn {
         margin-right: 8px;
         margin-bottom: 8px;
@@ -98,4 +98,5 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoDropdownPlacementComponent { }
+export class NzDemoDropdownPlacementComponent {
+}

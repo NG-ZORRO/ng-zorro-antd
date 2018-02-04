@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-dropdown-event',
   template: `
     <nz-dropdown>
-      <a class="ant-dropdown-link" nz-dropdown>
+      <a nz-dropdown>
         Hover me, Click menu item <i class="anticon anticon-down"></i>
       </a>
       <ul nz-menu>
@@ -16,7 +16,7 @@ import { Component } from '@angular/core';
   styles  : []
 })
 export class NzDemoDropdownEventComponent {
-  log(data) {
+  log(data: string): void {
     console.log(data);
   }
 }

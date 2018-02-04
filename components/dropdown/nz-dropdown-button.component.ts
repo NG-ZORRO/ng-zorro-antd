@@ -35,67 +35,56 @@ import { NzDropDownDirective } from './nz-dropdown.directive';
         nz-button type="button"
         class="ant-dropdown-trigger"
         [disabled]="nzDisabled"
-        (click)="_onClickEvent()"
-        (mouseenter)="_onMouseEnterEvent($event)"
-        (mouseleave)="_onMouseLeaveEvent($event)">
+        (click)="onClickEvent()"
+        (mouseenter)="onMouseEnterEvent()"
+        (mouseleave)="onMouseLeaveEvent()">
         <i class="anticon anticon-down"></i></button>
     </div>
     <ng-template
       cdkConnectedOverlay
-      [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
-      [cdkConnectedOverlayPositions]="_positions"
-      [cdkConnectedOverlayOrigin]="_nzOrigin"
-      (backdropClick)="_hide()"
-      (detach)="_hide()"
-      [cdkConnectedOverlayMinWidth]="_triggerWidth"
-      (positionChange)="_onPositionChange($event)"
+      [cdkConnectedOverlayHasBackdrop]="hasBackdrop"
+      [cdkConnectedOverlayPositions]="positions"
+      [cdkConnectedOverlayOrigin]="nzOrigin"
+      (backdropClick)="hide()"
+      (detach)="hide()"
+      [cdkConnectedOverlayMinWidth]="triggerWidth"
+      (positionChange)="onPositionChange($event)"
       [cdkConnectedOverlayOpen]="nzVisible"
     >
       <div
         class="{{'ant-dropdown ant-dropdown-placement-'+nzPlacement}}"
-        [@dropDownAnimation]="_dropDownPosition"
-        (mouseenter)="_onMouseEnterEvent($event)"
-        (mouseleave)="_onMouseLeaveEvent($event)"
-        [style.minWidth.px]="_triggerWidth"
-        (click)="_clickDropDown($event)">
+        [@dropDownAnimation]="dropDownPosition"
+        (mouseenter)="onMouseEnterEvent()"
+        (mouseleave)="onMouseLeaveEvent()"
+        [style.minWidth.px]="triggerWidth">
         <ng-content select="[nz-menu]"></ng-content>
       </div>
     </ng-template>    `
 })
 
 export class NzDropDownButtonComponent extends NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
-  _disabled = false;
   @Input() nzSize = 'default';
   @Input() nzType = 'default';
   @ViewChild('content') content;
   @Output() nzClick = new EventEmitter();
-  @ViewChild(NzDropDownDirective) _nzOrigin;
+  @ViewChild(NzDropDownDirective) nzOrigin;
 
-  @Input()
-  set nzDisabled(value: boolean) {
-    this._disabled = toBoolean(value);
-  }
-
-  get nzDisabled(): boolean {
-    return this._disabled;
-  }
-
-  _onVisibleChange = (visible: boolean) => {
+  onVisibleChange = (visible: boolean) => {
     if (this.nzDisabled) {
       return;
     }
     if (visible) {
-      this._setTriggerWidth();
+      this.setTriggerWidth();
     }
     if (this.nzVisible !== visible) {
       this.nzVisible = visible;
       this.nzVisibleChange.emit(this.nzVisible);
     }
-    this._changeDetector.markForCheck();
+    this.changeDetector.markForCheck();
   }
 
   /** rewrite afterViewInit hook */
   ngAfterViewInit(): void {
-    this._startSubscribe(this._visibleChange);
+    this.startSubscribe(this.$visibleChange);
   }
 }
