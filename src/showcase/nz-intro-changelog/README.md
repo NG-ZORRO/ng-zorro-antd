@@ -9,6 +9,22 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+# 0.6.14
+`2018-02-04`
+
+### Features
+
+* `Table` 表格新增水平滚动配置的支持 [#766](https://github.com/NG-ZORRO/ng-zorro-antd/pull/766) [@little-snow-fox](https://github.com/little-snow-fox)
+
+### Bug Fixes
+
+* `InputNumber` 修复零值显示不正确的问题 [#1003](https://github.com/NG-ZORRO/ng-zorro-antd/pull/1003) [@Hsuan Lee](https://github.com/HsuanXyz)
+* `Calendar` / `Datepicker` 修复年月显示切换的问题 [#871](https://github.com/NG-ZORRO/ng-zorro-antd/pull/871) [@chunghha](https://github.com/chunghha)
+
+### Tests
+
+* `Affix` 新增完善单例测试 [#982](https://github.com/NG-ZORRO/ng-zorro-antd/pull/982) [@pjurczynski](https://github.com/pjurczynski)
+
 # 0.6.13
 `2018-01-28`
 
