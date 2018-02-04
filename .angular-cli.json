@@ -58,6 +58,7 @@
         "./site/**",
         "./components/test.ts",
         "./components/core/**",
+        "./components/i18n/**",
         "./components/**/demo/**"
       ]
     }

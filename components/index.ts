@@ -6,21 +6,22 @@ import { NzAnchorModule } from './anchor/nz-anchor.module';
 import { NzAvatarModule } from './avatar/nz-avatar.module';
 import { NzBadgeModule } from './badge/nz-badge.module';
 import { NzBreadCrumbModule } from './breadcrumb/nz-breadcrumb.module';
-import { NzButtonModule } from './button/nz-button.module';
+import { NzButtonModule } from './button';
 import { NzCardModule } from './card/nz-card.module';
 import { NzCarouselModule } from './carousel/nz-carousel.module';
 import { NzCheckboxModule } from './checkbox/nz-checkbox.module';
 import { NzCollapseModule } from './collapse/nz-collapse.module';
 import { NzDividerModule } from './divider/nz-divider.module';
-import { NzDropDownModule } from './dropdown/nz-dropdown.module';
+import { NzDropdownService, NzDropDownModule } from './dropdown';
 import { NzFormModule } from './form/nz-form.module';
-import { NzGridModule } from './grid/nz-grid.module';
+import { NzGridModule } from './grid';
+import { NzI18nModule } from './i18n';
 import { NzInputNumberModule } from './input-number/nz-input-number.module';
 import { NzInputModule } from './input/nz-input.module';
-import { NzLayoutModule } from './layout/nz-layout.module';
-import { NzListModule } from './list/nz-list.module';
-import { NzLocaleModule } from './locale/nz-locale.module';
-import { NzMenuModule } from './menu/nz-menu.module';
+import { NzLayoutModule } from './layout';
+import { NzListModule } from './list';
+import { NzLocaleModule } from './locale';
+import { NzMenuModule } from './menu';
 import { NzMessageModule } from './message/nz-message.module';
 import { NzNotificationModule } from './notification/nz-notification.module';
 import { NzPaginationModule } from './pagination/nz-pagination.module';
@@ -46,10 +47,10 @@ export * from './grid';
 export * from './layout';
 export * from './dropdown';
 export * from './menu';
+export * from './i18n';
 export * from './locale/index';
 export * from './list/index';
 
-import { NzDropdownService } from './dropdown';
 import { NzMessageService } from './message/nz-message.service';
 import { NzNotificationService } from './notification/nz-notification.service';
 
@@ -102,7 +103,8 @@ export { NZ_NOTIFICATION_CONFIG } from './notification/nz-notification-config';
     NzTableModule,
     NzDividerModule,
     NzFormModule,
-    NzListModule
+    NzListModule,
+    NzI18nModule
   ]
 })
 export class NgZorroAntdModule {

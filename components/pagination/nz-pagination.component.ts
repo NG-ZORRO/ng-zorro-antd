@@ -1,6 +1,5 @@
 import {
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   Output
@@ -13,7 +12,7 @@ import { toBoolean } from '../core/util/convert';
   template           : `
     <ul [class.ant-table-pagination]="nzInTable" class="ant-pagination ant-pagination-simple" *ngIf="nzSimple">
       <li
-        title="{{ 'Pagination.prevPage' | nzTranslate }}"
+        title="{{ 'Pagination.prev_page' | nzI18n }}"
         class="ant-pagination-prev"
         (click)="_jumpPage(_current-1)"
         [class.ant-pagination-disabled]="_isFirstIndex">
@@ -113,7 +112,6 @@ export class NzPaginationComponent {
   private _showTotal = false;
   private _showQuickJumper = false;
   private _simple = false;
-  _el: HTMLElement;
   _current = 1;
   _total: number;
   _pageSize = 10;
@@ -295,7 +293,6 @@ export class NzPaginationComponent {
     return Math.round(this._pageSize / 2);
   }
 
-  constructor(private _elementRef: ElementRef) {
-    this._el = this._elementRef.nativeElement;
+  constructor() {
   }
 }
