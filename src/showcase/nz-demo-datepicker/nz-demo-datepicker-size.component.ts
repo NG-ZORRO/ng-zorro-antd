@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
       <label nz-radio-button [nzValue]="'small'"><span>Small</span></label>
     </nz-radio-group>
     <nz-datepicker [(ngModel)]="_date" [nzSize]="size" [nzPlaceHolder]="'Select date'"></nz-datepicker>
-    <nz-datepicker [(ngModel)]="_month" [nzMode]="'month'" [nzSize]="size" [nzPlaceHolder]="'Select date'" [nzFormat]="'YYYY/MM'"></nz-datepicker>
+    <nz-datepicker [(ngModel)]="_month" [nzMode]="'month'" [nzSize]="size" [nzPlaceHolder]="'Select month'" [nzFormat]="'YYYY/MM'"></nz-datepicker>
     <nz-rangepicker [(ngModel)]="_dateRange" [nzSize]="size"></nz-rangepicker>
    `,
   styles  : []

@@ -108,7 +108,7 @@ import { toBoolean } from '../util/convert';
                       [nzShowYear]="_showYear"
                       [nzValue]="_value"
                       (nzClickMonth)="_clickMonth($event)"
-                      [nzMode]="'month'"
+                      [nzMode]="'year'"
                       [nzFullScreen]="false"
                       [nzShowHeader]="false"
                       nzDatePicker>
@@ -159,7 +159,7 @@ import { toBoolean } from '../util/convert';
               [ngModel]="_value" (ngModelChange)="_changeTime($event)"
               *ngIf="nzShowTime&&(_mode == 'time')"></nz-timepicker-inner>
             <div class="ant-calendar-calendar-body">
-              <nz-calendar [nzClearTime]="!nzShowTime" [nzDisabledDate]="nzDisabledDate" (nzClickDay)="_clickDay($event)" [nzShowMonth]="_showMonth" [nzShowYear]="_showYear" [nzValue]="_value" (nzClickMonth)="_clickMonth($event)" [nzMode]="'year'" [nzFullScreen]="false" [nzShowHeader]="false" nzDatePicker></nz-calendar>
+              <nz-calendar [nzClearTime]="!nzShowTime" [nzDisabledDate]="nzDisabledDate" (nzClickDay)="_clickDay($event)" [nzShowMonth]="_showMonth" [nzShowYear]="_showYear" [nzValue]="_value" (nzClickMonth)="_clickMonth($event)" [nzMode]="'month'" [nzFullScreen]="false" [nzShowHeader]="false" nzDatePicker></nz-calendar>
             </div>
             <div class="ant-calendar-footer ant-calendar-footer-show-ok">
               <span class="ant-calendar-footer-btn">

@@ -267,7 +267,7 @@ export class NzRangePickerComponent implements ControlValueAccessor, OnInit {
   _open;
   _disabledDate: (value: Date) => boolean;
   _disabledDatePart: Array<(value: Date) => boolean> = [null, null];
-  _mode = ['year', 'year'];
+  _mode = ['month', 'month'];
   _selectedMonth: number[] = [];
   _selectedYear: number[] = [];
   _selectedDate: number[] = [];
@@ -367,7 +367,7 @@ export class NzRangePickerComponent implements ControlValueAccessor, OnInit {
     if (this.nzDisabled) {
       return;
     }
-    this._mode = ['year', 'year'];
+    this._mode = ['month', 'month'];
     this._open = true;
     this._setTriggerWidth();
     this._initShow();
