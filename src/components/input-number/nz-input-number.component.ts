@@ -270,8 +270,8 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   private _updateValue(value: number, emitChange: boolean = true): void {
     const cacheValue = this._value;
     this._value = this._getBoundValue(value);
-    this._displayValue = this.nzFormatter(this._value || '');
-    this._inputNumber.nativeElement.value = this.nzFormatter(this._value || '');
+    this._displayValue = this.nzFormatter(this._isNumber(this._value) ? this._value : '');
+    this._inputNumber.nativeElement.value = this._displayValue;
     if (emitChange && (value !== cacheValue)) {
       this.onChange(this._value);
     }
