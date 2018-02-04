@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+
 @Component({
   selector: 'nz-demo-menu-sider-current',
   template: `
     <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
-      <li nz-submenu [(nzOpen)]="isOpenOne" (nzOpenChange)="openChange('one')">
+      <li nz-submenu [(nzOpen)]="openMap.sub1" (nzOpenChange)="openHandler('sub1')">
         <span title><i class="anticon anticon-mail"></i> Navigation One</span>
         <ul>
           <li nz-menu-group>
@@ -22,7 +23,7 @@ import { Component } from '@angular/core';
           </li>
         </ul>
       </li>
-      <li nz-submenu [(nzOpen)]="isOpenTwo" (nzOpenChange)="openChange('two')">
+      <li nz-submenu [(nzOpen)]="openMap.sub2" (nzOpenChange)="openHandler('sub2')">
         <span title><i class="anticon anticon-appstore"></i> Navigation Two</span>
         <ul>
           <li nz-menu-item>Option 5</li>
@@ -36,7 +37,7 @@ import { Component } from '@angular/core';
           </li>
         </ul>
       </li>
-      <li nz-submenu [(nzOpen)]="isOpenThree" (nzOpenChange)="openChange('three')">
+      <li nz-submenu [(nzOpen)]="openMap.sub3" (nzOpenChange)="openHandler('sub3')">
         <span title><i class="anticon anticon-setting"></i> Navigation Three</span>
         <ul>
           <li nz-menu-item>Option 9</li>
@@ -48,21 +49,17 @@ import { Component } from '@angular/core';
   styles  : []
 })
 export class NzDemoMenuSiderCurrentComponent {
-  isOpenOne = true;
-  isOpenTwo = false;
-  isOpenThree = false;
+  openMap = {
+    sub1: true,
+    sub2: false,
+    sub3: false
+  };
 
-  openChange(value) {
-    if (value === 'one') {
-      this.isOpenTwo = false;
-      this.isOpenThree = false;
-    } else if (value === 'two') {
-      this.isOpenOne = false;
-      this.isOpenThree = false;
-    } else if (value === 'three') {
-      this.isOpenOne = false;
-      this.isOpenTwo = false;
+  openHandler(value: string): void {
+    for (const key in this.openMap) {
+      if (key !== value) {
+        this.openMap[ key ] = false;
+      }
     }
-
   }
 }

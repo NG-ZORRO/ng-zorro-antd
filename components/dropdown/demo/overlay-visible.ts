@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-dropdown-overlay-visible',
   template: `
     <nz-dropdown [nzClickHide]="false" [(nzVisible)]="visible">
-      <a class="ant-dropdown-link" nz-dropdown>
+      <a nz-dropdown>
         Hover me <i class="anticon anticon-down"></i>
       </a>
       <ul nz-menu>

@@ -7,7 +7,7 @@ import {
   Input,
   OnInit,
   Optional,
-  Renderer2,
+  Renderer2
 } from '@angular/core';
 import { toBoolean } from '../core/util/convert';
 import { NzMenuDirective } from './nz-menu.directive';
@@ -36,9 +36,9 @@ export class NzMenuItemDirective implements OnInit {
   set nzSelected(value: boolean) {
     this._selected = toBoolean(value);
     if (this._selected) {
-      this._renderer.addClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected');
+      this.renderer.addClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected');
     } else {
-      this._renderer.removeClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected');
+      this.renderer.removeClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected');
     }
   }
 
@@ -47,9 +47,15 @@ export class NzMenuItemDirective implements OnInit {
   }
 
   /** clear all item selected status except this */
-  @HostListener('click')
-  _onClickItem(): void {
-    if (this.nzMenuDirective.nzClickActive && (!this.nzDisabled) && (!this.isInDropDown)) {
+  @HostListener('click', [ '$event' ])
+  onClickItem(e: MouseEvent): void {
+    if (this.nzDisabled) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    this.nzMenuDirective.clickItem(this);
+    if (this.nzMenuDirective.nzSelectable) {
       this.nzMenuDirective.clearAllSelected();
       this.nzSelected = true;
     }
@@ -60,12 +66,12 @@ export class NzMenuItemDirective implements OnInit {
 
   /** define host class */
   @HostBinding('class.ant-dropdown-menu-item')
-  get _isInDropDownClass(): boolean {
+  get isInDropDownClass(): boolean {
     return this.isInDropDown;
   }
 
   @HostBinding('class.ant-menu-item')
-  get _isNotInDropDownClass(): boolean {
+  get isNotInDropDownClass(): boolean {
     return !this.isInDropDown;
   }
 
@@ -98,7 +104,7 @@ export class NzMenuItemDirective implements OnInit {
     }
   }
 
-  constructor(private _renderer: Renderer2, public cd: ChangeDetectorRef, private nzMenuDirective: NzMenuDirective, @Optional() public nzSubMenuComponent: NzSubMenuComponent, private hostElement: ElementRef) {
+  constructor(private renderer: Renderer2, public cd: ChangeDetectorRef, private nzMenuDirective: NzMenuDirective, @Optional() public nzSubMenuComponent: NzSubMenuComponent, private hostElement: ElementRef) {
     this.nzMenuDirective.menuItems.push(this);
     /** store origin padding in padding */
     if (this.hostElement.nativeElement.style[ 'padding-left' ]) {
@@ -107,6 +113,6 @@ export class NzMenuItemDirective implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isInDropDown = this.nzMenuDirective.isInDropDown;
+    this.isInDropDown = this.nzMenuDirective.nzInDropDown;
   }
 }

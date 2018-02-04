@@ -55,7 +55,10 @@
     },
     "codeCoverage": {
       "exclude": [
-        "./site/**"
+        "./site/**",
+        "./components/test.ts",
+        "./components/core/**",
+        "./components/**/demo/**"
       ]
     }
   },

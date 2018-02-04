@@ -24,7 +24,7 @@ import { environment } from '../../../environments/environment';
           </a>
         </div>
         <ng-content select="[intro]"></ng-content>
-        <nz-tooltip [nzTitle]="nzExpanded?'收起代码':'展开代码'">
+        <nz-tooltip [nzTitle]="nzExpanded?'Hide Code':'Show Code'">
         <span class="code-expand-icon" nz-tooltip (click)="nzExpanded=!nzExpanded">
             <img alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/wSAkBuJFbdxsosKKpqyq.svg" [class.code-expand-icon-show]="nzExpanded" [class.code-expand-icon-hide]="!nzExpanded">
             <img alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/OpROPHYqWmrMDBFMZtKF.svg" [class.code-expand-icon-show]="!nzExpanded" [class.code-expand-icon-hide]="nzExpanded">

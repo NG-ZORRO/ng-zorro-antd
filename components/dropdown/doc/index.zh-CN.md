@@ -13,34 +13,43 @@ title: Dropdown
 
 ## API
 
-属性如下
+
+### nz-dropdown
+
+> 需要在触发下拉菜单的元素上加入 `[nz-dropdown]` 标记用于定位元素位置
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| disabled | 菜单是否禁用 | boolean | - |
-| getPopupContainer | 菜单渲染父节点。默认渲染到 body 上，如果你遇到菜单滚动定位问题，试试修改为滚动的区域，并相对其定位。[示例](https://codepen.io/afc163/pen/zEjNOy?editors=0010) | Function(triggerNode) | `() => document.body` |
-| overlay | 菜单 | [Menu](/components/menu) | - |
-| placement | 菜单弹出位置：`bottomLeft` `bottomCenter` `bottomRight` `topLeft` `topCenter` `topRight` | String | `bottomLeft` |
-| trigger | 触发下拉的行为 | Array&lt;`click`丨`hover`丨`contentMenu`&gt; | `['hover']` |
-| visible | 菜单是否显示 | boolean | - |
-| onVisibleChange | 菜单显示状态改变时调用，参数为 visible | Function(visible) | - |
+| nzDisabled | 菜单是否禁用 | boolean | - |
+| nzPlacement | 菜单弹出位置：`bottomLeft` `bottomCenter` `bottomRight` `topLeft` `topCenter` `topRight` | String | `bottomLeft` |
+| nzTrigger | 触发下拉的行为 | `click`丨`hover` | `hover` |
+| nzClickHide | 点击后是否隐藏菜单 | boolean | true |
+| nzVisible | 菜单是否显示，可双向绑定 | boolean | - |
+| nzVisibleChange | 菜单显示状态改变时调用，参数为 nzVisible | (nzVisible)=>{} | - |
 
-`overlay` 菜单使用 [Menu](/components/menu/)，还包括菜单项 `Menu.Item`，分割线 `Menu.Divider`。
+菜单使用 [nz-menu](/components/menu/zh)，还包括菜单项 `[nz-menu-item]`，分割线 `[nz-menu-divider]`。
 
-> 注意： Menu.Item 必须设置唯一的 key 属性。
->
-> Dropdown 下的 Menu 默认不可选中。如果需要菜单可选中，可以指定 `<Menu selectable>`.
+> nz-dropdown 下的 nz-menu 默认不可选中。如果需要菜单可选中，可以指定 `<ul nz-menu nzSelectable>`.
 
-### Dropdown.Button
+### nz-dropdown-button
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| disabled | 菜单是否禁用 | boolean | - |
-| overlay | 菜单 | [Menu](/components/menu/) | - |
-| placement | 菜单弹出位置：`bottomLeft` `bottomCenter` `bottomRight` `topLeft` `topCenter` `topRight` | String | `bottomLeft` |
-| size | 按钮大小，和 [Button](/components/button/) 一致 | string | 'default' |
-| trigger | 触发下拉的行为 | Array&lt;`click`丨`hover`丨`contentMenu`&gt; | `['hover']` |
-| type | 按钮类型，和 [Button](/components/button/) 一致 | string | 'default' |
-| visible | 菜单是否显示 | boolean | - |
-| onClick | 点击左侧按钮的回调，和 [Button](/components/button/) 一致 | Function | - |
-| onVisibleChange | 菜单显示状态改变时调用，参数为 visible | Function | - |
+| nzDisabled | 菜单是否禁用 | boolean | - |
+| nzPlacement | 菜单弹出位置：`bottomLeft` `bottomCenter` `bottomRight` `topLeft` `topCenter` `topRight` | String | `bottomLeft` |
+| nzSize | 按钮大小，和 [nz-button](/components/button/zh) 一致 | string | 'default' |
+| nzType | 按钮类型，和 [nz-button](/components/button/zh) 一致 | string | 'default' |
+| nzTrigger | 触发下拉的行为 | `click`丨`hover` | `hover` |
+| nzClickHide | 点击后是否隐藏菜单 | boolean | true |
+| nzVisible | 菜单是否显示 | boolean | - |
+| nzVisibleChange | 菜单显示状态改变时调用，参数为 nzVisible | (nzVisible)=>{} | - |
+| nzClick | 点击左侧按钮的回调 | Function | - |
+
+### NzDropdownService
+
+用于右键弹出下拉菜单，具体参见示例
+
+| 参数 | 说明 | 参数 | 返回 |
+| --- | --- | --- | --- |
+| create | 创建右键菜单 | `($event:MouseEvent, template:TemplateRef<void>)` | NzDropdownContextComponent |
+| close | 关闭右键菜单 | | |

@@ -20,7 +20,7 @@ import { NzDropDownComponent } from '../dropdown/nz-dropdown.component';
 export class NzTableFilterComponent implements OnInit {
   hideDropDown(): void {
     this.nzDropDownComponent.nzVisible = false;
-    this.nzDropDownComponent._hide();
+    this.nzDropDownComponent.hide();
   }
 
   constructor(private nzDropDownComponent: NzDropDownComponent) {

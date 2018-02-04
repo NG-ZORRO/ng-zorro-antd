@@ -5,9 +5,9 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[nz-col]'
+  selector: '[nz-column]'
 })
-export class NzColDirective {
+export class NzColumnDirective {
   _width: string;
 
   @Input()

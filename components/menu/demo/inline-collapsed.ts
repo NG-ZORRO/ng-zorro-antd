@@ -3,13 +3,9 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-menu-inline-collapsed',
   template: `
-    <div  style="width: 240px;">
-      <button nz-button [nzType]="'primary'"
-              (click)="toggleCollapsed()"
-              style="margin-bottom: 10px;">
-        <i class="anticon"
-           [class.anticon-menu-unfold]="isCollapsed"
-           [class.anticon-menu-fold]="!isCollapsed">
+    <div style="width: 240px;">
+      <button nz-button [nzType]="'primary'" (click)="toggleCollapsed()" style="margin-bottom: 10px;">
+        <i class="anticon" [class.anticon-menu-unfold]="isCollapsed" [class.anticon-menu-fold]="!isCollapsed">
         </i>
       </button>
       <ul nz-menu [nzMode]="'inline'" nzTheme='dark' [nzInlineCollapsed]="isCollapsed">
@@ -49,8 +45,7 @@ import { Component } from '@angular/core';
         </li>
       </ul>
     </div>
-  `,
-  styles  : []
+  `
 })
 export class NzDemoMenuInlineCollapsedComponent {
   isCollapsed = false;

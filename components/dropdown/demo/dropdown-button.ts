@@ -7,14 +7,14 @@ import { Component } from '@angular/core';
       <nz-dropdown-button (nzClick)="log($event)">
         DropDown
         <ul nz-menu>
-          <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">1st menu item</a>
-          </li>
-          <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item</a>
-          </li>
-          <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item</a>
+          <li nz-menu-item>1st menu item</li>
+          <li nz-menu-item>2nd menu item</li>
+          <li nz-submenu>
+            <span title>sub menu</span>
+            <ul>
+              <li nz-menu-item>3rd menu item</li>
+              <li nz-menu-item>4th menu item</li>
+            </ul>
           </li>
         </ul>
       </nz-dropdown-button>
@@ -22,13 +22,13 @@ import { Component } from '@angular/core';
         DropDown
         <ul nz-menu>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">1st menu item</a>
+            <a>1st menu item</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item</a>
+            <a>2nd menu item</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item</a>
+            <a>3rd menu item</a>
           </li>
         </ul>
       </nz-dropdown-button>
@@ -36,13 +36,13 @@ import { Component } from '@angular/core';
         <button nz-button nz-dropdown><span>Button</span> <i class="anticon anticon-down"></i></button>
         <ul nz-menu>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">1st menu item</a>
+            <a>1st menu item</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item</a>
+            <a>2nd menu item</a>
           </li>
           <li nz-menu-item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item</a>
+            <a>3rd menu item</a>
           </li>
         </ul>
       </nz-dropdown>
