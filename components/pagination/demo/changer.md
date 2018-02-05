@@ -11,5 +11,5 @@ title:
 
 ## en-US
 
-Change `pageSize`.
+Change `nzPageSize`.
 
