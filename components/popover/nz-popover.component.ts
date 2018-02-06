@@ -43,5 +43,4 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 })
 export class NzPopoverComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';
-  @Input() nzContent;
 }

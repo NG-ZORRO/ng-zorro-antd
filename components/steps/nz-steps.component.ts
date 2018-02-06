@@ -5,8 +5,10 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  QueryList
+  QueryList,
+  TemplateRef
 } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { toBoolean } from '../core/util/convert';
 import { NzStepComponent } from './nz-step.component';
 
@@ -16,19 +18,21 @@ export type NzDirection = 'horizontal' | 'vertical';
   selector           : 'nz-steps',
   preserveWhitespaces: false,
   template           : `
-    <div class="ant-steps" [ngClass]="_stepsClassMap">
+    <div class="ant-steps" [ngClass]="stepsClassMap">
       <ng-content></ng-content>
     </div>
   `
 })
 export class NzStepsComponent implements OnInit, OnDestroy, AfterContentInit {
-  private _progressDot = false;
-  _status = 'process';
-  _current = 0;
-  _stepsClassMap: object;
-  _direction: NzDirection = 'horizontal';
-  _stepsChanges;
+  private _status = 'process';
+  private _current = 0;
+  private _direction: NzDirection = 'horizontal';
+  private _stepsChanges: Subscription;
+  stepsClassMap: object;
+  showProcessDot = false;
+  customProcessDotTemplate: TemplateRef<{ $implicit: TemplateRef<void>, status: string, index: number }>;
   @ContentChildren(NzStepComponent) steps: QueryList<NzStepComponent>;
+  @Input() nzSize: 'default' | 'small' = 'default';
 
   @Input()
   set nzDirection(value: NzDirection) {
@@ -40,17 +44,16 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterContentInit {
     return this._direction;
   }
 
-  @Input() nzSize: 'default' | 'small';
-
   @Input()
-  set nzProgressDot(value: boolean) {
-    this._progressDot = toBoolean(value);
+  set nzProgressDot(value: boolean | TemplateRef<{ $implicit: TemplateRef<void>, status: string, index: number }>) {
+    if (value instanceof TemplateRef) {
+      this.showProcessDot = true;
+      this.customProcessDotTemplate = value;
+    } else {
+      this.showProcessDot = toBoolean(value);
+    }
     this.updateChildrenSteps();
     this.setDirectionClass();
-  }
-
-  get nzProgressDot(): boolean {
-    return this._progressDot;
   }
 
   @Input()
@@ -74,11 +77,11 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   setDirectionClass(): void {
-    this._stepsClassMap = {
+    this.stepsClassMap = {
       [ `ant-steps-${this.nzDirection}` ]: true,
       [ `ant-steps-label-horizontal` ]   : this.nzDirection === 'horizontal',
-      [ `ant-steps-label-vertical` ]     : this.nzProgressDot,
-      [ `ant-steps-dot` ]                : this.nzProgressDot,
+      [ `ant-steps-label-vertical` ]     : this.showProcessDot,
+      [ `ant-steps-dot` ]                : this.showProcessDot,
       [ 'ant-steps-small' ]              : this.nzSize === 'small'
     };
   }
@@ -86,14 +89,15 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterContentInit {
   updateChildrenSteps(): void {
     if (this.steps) {
       this.steps.toArray().forEach((step, index, arr) => {
-        step._outStatus = this.nzStatus;
-        step._processDot = this.nzProgressDot as boolean;
-        step._direction = this.nzDirection;
+        step.outStatus = this.nzStatus;
+        step.showProcessDot = this.showProcessDot;
+        if (this.customProcessDotTemplate) {
+          step.customProcessTemplate = this.customProcessDotTemplate;
+        }
+        step.direction = this.nzDirection;
         step.index = index;
-        step._totalCount = arr.length;
-        step._current = this.nzCurrent;
-        step._first = index === 0;
-        step._last = arr.length === index + 1;
+        step.currentIndex = this.nzCurrent;
+        step.last = arr.length === index + 1;
         step.initClassMap();
       });
     }

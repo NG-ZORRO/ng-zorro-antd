@@ -29,7 +29,7 @@ import { toBoolean } from '../core/util/convert';
           [class.ant-pagination-disabled]="isFirstIndex">
           <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'pre'}"></ng-template>
         </li>
-        <li [attr.title]="current+'/'+lastIndex" class="ant-pagination-simple-pager">
+        <li [attr.title]="nzPageIndex+'/'+lastIndex" class="ant-pagination-simple-pager">
           <input
             #simplePagerInput
             [ngModel]="nzPageIndex"
@@ -75,7 +75,7 @@ import { toBoolean } from '../core/util/convert';
           [attr.title]="'Pagination.prev_5' | nzI18n"
           (click)="jumpPreFive()"
           class="ant-pagination-jump-prev"
-          *ngIf="(lastIndex >9)&&(current-3>firstIndex)">
+          *ngIf="(lastIndex >9)&&(nzPageIndex-3>firstIndex)">
           <a></a>
         </li>
         <li
@@ -83,14 +83,14 @@ import { toBoolean } from '../core/util/convert';
           [attr.title]="page.index"
           class="ant-pagination-item"
           (click)="jumpPage(page.index)"
-          [class.ant-pagination-item-active]="current==page.index">
+          [class.ant-pagination-item-active]="nzPageIndex==page.index">
           <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'page',page: page.index }"></ng-template>
         </li>
         <li
           [attr.title]="'Pagination.next_5' | nzI18n"
           (click)="jumpNextFive()"
           class="ant-pagination-jump-next"
-          *ngIf="(lastIndex >9)&&(current+3<lastIndex)">
+          *ngIf="(lastIndex >9)&&(nzPageIndex+3<lastIndex)">
           <a></a>
         </li>
         <li
@@ -148,7 +148,7 @@ export class NzPaginationComponent {
   private _pageSize = 10;
   private _pageSizeOptions = [ 10, 20, 30, 40 ];
   private _total: number;
-  current = 1;
+  private _pageIndex = 1;
   firstIndex = 1;
   pages = [];
 
@@ -225,21 +225,21 @@ export class NzPaginationComponent {
 
   @Input()
   set nzPageIndex(value: number) {
-    if (this.current === value) {
+    if (this._pageIndex === value) {
       return;
     }
     if (value > this.lastIndex) {
-      this.current = this.lastIndex;
+      this._pageIndex = this.lastIndex;
     } else if (value < this.firstIndex) {
-      this.current = this.firstIndex;
+      this._pageIndex = this.firstIndex;
     } else {
-      this.current = Number(value);
+      this._pageIndex = Number(value);
     }
     this.buildIndexes();
   }
 
   get nzPageIndex(): number {
-    return this.current;
+    return this._pageIndex;
   }
 
   @Input()
@@ -286,25 +286,25 @@ export class NzPaginationComponent {
   }
 
   jumpPreFive(): void {
-    this.jumpPage(this.current - 5);
+    this.jumpPage(this.nzPageIndex - 5);
   }
 
   jumpNextFive(): void {
-    this.jumpPage(this.current + 5);
+    this.jumpPage(this.nzPageIndex + 5);
   }
 
   jumpPreOne(): void {
     if (this.isFirstIndex) {
       return;
     }
-    this.jumpPage(this.current - 1);
+    this.jumpPage(this.nzPageIndex - 1);
   }
 
   jumpNextOne(): void {
     if (this.isLastIndex) {
       return;
     }
-    this.jumpPage(this.current + 1);
+    this.jumpPage(this.nzPageIndex + 1);
   }
 
   onPageSizeChange($event: number): void {
@@ -346,7 +346,7 @@ export class NzPaginationComponent {
   }
 
   checkLastIndexOverflow(): boolean {
-    return this.current > this.lastIndex;
+    return this.nzPageIndex > this.lastIndex;
   }
 
   get lastIndex(): number {
@@ -361,7 +361,7 @@ export class NzPaginationComponent {
         tmpPages.push({ index: i });
       }
     } else {
-      const current = +this.current;
+      const current = +this.nzPageIndex;
       let left = Math.max(2, current - 2);
       let right = Math.min(current + 2, this.lastIndex - 1);
 
@@ -381,11 +381,11 @@ export class NzPaginationComponent {
   }
 
   get isLastIndex(): boolean {
-    return this.current === this.lastIndex;
+    return this.nzPageIndex === this.lastIndex;
   }
 
   get isFirstIndex(): boolean {
-    return this.current === this.firstIndex;
+    return this.nzPageIndex === this.firstIndex;
   }
 
   constructor() {

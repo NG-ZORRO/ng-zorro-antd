@@ -7,10 +7,10 @@ title:
 
 ## zh-CN
 
-迷你版的步骤条，通过设置 `<Steps size="small">` 启用.
+迷你版的步骤条，通过设置 `<nz-steps nzSize="small">` 启用.
 
 ## en-US
 
-By setting like this: `<Steps size="small">`, you can get a mini version.
+By setting like this: `<nz-steps nzSize="small">`, you can get a mini version.
 
 

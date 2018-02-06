@@ -105,8 +105,8 @@ export class NzButtonComponent implements AfterContentInit {
 
   /** temp solution since no method add classMap to host https://github.com/angular/angular/issues/7289 */
   setClassMap(): void {
-    this.classList.forEach(_className => {
-      this.renderer.removeClass(this.el, _className);
+    this.classList.forEach(className => {
+      this.renderer.removeClass(this.el, className);
     });
     this.classList = [
       this.nzType && `${this.prefixCls}-${this.nzType}`,
@@ -119,8 +119,8 @@ export class NzButtonComponent implements AfterContentInit {
     ].filter((item) => {
       return !!item;
     });
-    this.classList.forEach(_className => {
-      this.renderer.addClass(this.el, _className);
+    this.classList.forEach(className => {
+      this.renderer.addClass(this.el, className);
     });
   }
 
