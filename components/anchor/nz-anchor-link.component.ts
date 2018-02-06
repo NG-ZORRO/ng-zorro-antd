@@ -1,11 +1,13 @@
+// tslint:disable:no-any
 import {
   Component,
   ContentChild,
   ElementRef,
   HostBinding,
-  HostListener,
   Input,
-  TemplateRef
+  OnDestroy,
+  OnInit,
+  TemplateRef,
 } from '@angular/core';
 
 import { NzAnchorComponent } from './nz-anchor.component';
@@ -15,8 +17,7 @@ import { NzAnchorComponent } from './nz-anchor.component';
   preserveWhitespaces: false,
   template           : `
     <a (click)="goToClick($event)" href="{{nzHref}}" class="ant-anchor-link-title">
-      <span *ngIf="!nzTemplate">{{ nzTitle }}</span>
-      <ng-template *ngIf="nzTemplate" [ngTemplateOutlet]="nzTemplate"></ng-template>
+      <span *ngIf="_title; else (_titleTpl || nzTemplate)">{{ _title }}</span>
     </a>
     <ng-content></ng-content>
   `,
@@ -25,30 +26,41 @@ import { NzAnchorComponent } from './nz-anchor.component';
     'style'                  : 'display:block'
   }
 })
-export class NzAnchorLinkComponent {
+export class NzAnchorLinkComponent implements OnInit, OnDestroy {
 
-  @Input() nzHref: string;
+  @Input() nzHref = '#';
 
-  @Input() nzTitle: string;
+  _title = '';
+  _titleTpl: TemplateRef<any>;
+  isTitleString = true;
+  @Input()
+  set nzTitle(value: string | TemplateRef<void>) {
+    if (value instanceof TemplateRef) {
+      this._titleTpl = value;
+    } else {
+      this._title = value;
+    }
+  }
 
   @ContentChild('nzTemplate') nzTemplate: TemplateRef<void>;
 
   @HostBinding('class.ant-anchor-link-active') active: boolean = false;
 
-  @HostListener('click')
-  _onClick(): void {
-    this._anchorComp.scrollTo(this);
+  constructor(public el: ElementRef, private _anchorComp: NzAnchorComponent) {
   }
 
-  constructor(public el: ElementRef, private _anchorComp: NzAnchorComponent) {
-    this._anchorComp.add(this);
+  ngOnInit(): void {
+    this._anchorComp.registerLink(this);
   }
 
   goToClick(e: Event): void {
     e.preventDefault();
     e.stopPropagation();
-    this._anchorComp.scrollTo(this);
-    window.location.hash = this.nzHref;
-    // return false;
+    this._anchorComp.handleScrollTo(this);
   }
+
+  ngOnDestroy(): void {
+    this._anchorComp.unregisterLink(this);
+  }
+
 }

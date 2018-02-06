@@ -40,13 +40,13 @@
 | datepicker | x | x | x | trotyl | - |
 | timepicker | x | x | x | trotyl | - |
 | calendar | x | x | x | trotyl | - |
-| affix | x | x | x | cipchk | - |
+| affix | √ | x | 100% | cipchk | √ |
 | transfer | x | x | x | cipchk | - |
 | avatar | x | x | x | cipchk | - |
 | list | x | x | x | cipchk | - |
 | upload | x | x | x | cipchk | - |
-| anchor | x | x | x | cipchk | - |
-| backtop | x | x | x | cipchk | - |
+| anchor | √ | 83% | 100% | cipchk | √ |
+| backtop | √ | 100% | 100% | cipchk | x |
 | divider | x | x | x | cipchk | - |
 | treeselect | x | x | x | simplejason | - |
 | tree | x | x | x | simplejason | - |

@@ -6,4 +6,7 @@ import { Component } from '@angular/core';
   preserveWhitespaces: false
 })
 export class NzDoc{{componentName}}Component {
+  goLink(link: string) {
+    window.location.hash = link;
+  }
 }

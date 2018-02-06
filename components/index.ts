@@ -4,6 +4,7 @@ import { NzAffixModule } from './affix/nz-affix.module';
 import { NzAlertModule } from './alert/nz-alert.module';
 import { NzAnchorModule } from './anchor/nz-anchor.module';
 import { NzAvatarModule } from './avatar/nz-avatar.module';
+import { NzBackTopModule } from './back-top/nz-back-top.module';
 import { NzBadgeModule } from './badge/nz-badge.module';
 import { NzBreadCrumbModule } from './breadcrumb/nz-breadcrumb.module';
 import { NzButtonModule } from './button/nz-button.module';
@@ -41,6 +42,9 @@ import { NzTimelineModule } from './timeline/nz-timeline.module';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
 
+export * from './affix';
+export * from './anchor';
+export * from './back-top';
 export * from './button';
 export * from './grid';
 export * from './layout';
@@ -67,6 +71,7 @@ export { NZ_NOTIFICATION_CONFIG } from './notification/nz-notification-config';
     NzSwitchModule,
     NzSelectModule,
     NzMenuModule,
+    NzBackTopModule,
     NzAnchorModule,
     NzAffixModule,
     NzDropDownModule,
