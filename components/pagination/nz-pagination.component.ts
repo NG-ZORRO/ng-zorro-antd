@@ -9,21 +9,6 @@ import {
 import { isInteger } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
-export const KEYCODE = {
-  ZERO: 48,
-  NINE: 57,
-
-  NUMPAD_ZERO: 96,
-  NUMPAD_NINE: 105,
-
-  BACKSPACE: 8,
-  DELETE   : 46,
-  ENTER    : 13,
-
-  ARROW_UP  : 38,
-  ARROW_DOWN: 40
-};
-
 @Component({
   selector           : 'nz-pagination',
   preserveWhitespaces: false,
@@ -32,124 +17,126 @@ export const KEYCODE = {
       <a class="ant-pagination-item-link" *ngIf="type!='page'"></a>
       <a *ngIf="type=='page'">{{page}}</a>
     </ng-template>
-    <ul
-      *ngIf="nzSimple"
-      [class.ant-table-pagination]="nzInTable"
-      class="ant-pagination ant-pagination-simple">
-      <li
-        title="{{ 'Pagination.prev_page' | nzI18n }}"
-        class="ant-pagination-prev"
-        (click)="jumpPage(current-1)"
-        [class.ant-pagination-disabled]="isFirstIndex">
-        <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'pre'}"></ng-template>
-      </li>
-      <li [attr.title]="current+'/'+lastIndex" class="ant-pagination-simple-pager">
-        <input
-          [ngModel]="nzPageIndex"
-          (ngModelChange)="onPageIndexChange($event)"
-          size="3">
-        <span class="ant-pagination-slash">／</span>
-        {{ lastIndex }}
-      </li>
-      <li
-        title="{{ 'Pagination.next_page' | nzI18n }}"
-        class="ant-pagination-next"
-        (click)="jumpPage(current+1)"
-        [class.ant-pagination-disabled]="isLastIndex">
-        <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'next'}"></ng-template>
-      </li>
-    </ul>
-    <ul
-      *ngIf="!nzSimple"
-      [class.mini]="nzSize=='small'"
-      [class.ant-table-pagination]="nzInTable"
-      class="ant-pagination">
+    <ng-container *ngIf="(nzHideOnSinglePage&&(lastIndex!=1))||!nzHideOnSinglePage">
+      <ul
+        *ngIf="nzSimple"
+        [class.ant-table-pagination]="nzInTable"
+        class="ant-pagination ant-pagination-simple">
+        <li
+          title="{{ 'Pagination.prev_page' | nzI18n }}"
+          class="ant-pagination-prev"
+          (click)="jumpPreOne()"
+          [class.ant-pagination-disabled]="isFirstIndex">
+          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'pre'}"></ng-template>
+        </li>
+        <li [attr.title]="current+'/'+lastIndex" class="ant-pagination-simple-pager">
+          <input
+            #simplePagerInput
+            [ngModel]="nzPageIndex"
+            (keydown.enter)="handleKeyDown($event,simplePagerInput,false)"
+            size="3">
+          <span class="ant-pagination-slash">／</span>
+          {{ lastIndex }}
+        </li>
+        <li
+          title="{{ 'Pagination.next_page' | nzI18n }}"
+          class="ant-pagination-next"
+          (click)="jumpNextOne()"
+          [class.ant-pagination-disabled]="isLastIndex">
+          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'next'}"></ng-template>
+        </li>
+      </ul>
+      <ul
+        *ngIf="!nzSimple"
+        [class.mini]="nzSize=='small'"
+        [class.ant-table-pagination]="nzInTable"
+        class="ant-pagination">
       <span class="ant-pagination-total-text" *ngIf="nzShowTotal">
         <ng-template
           [ngTemplateOutlet]="nzShowTotal"
-          [ngTemplateOutletContext]="{ $implicit: total,range:[(nzPageIndex-1)*nzPageSize+1,nzPageIndex*nzPageSize] }">
+          [ngTemplateOutletContext]="{ $implicit: nzTotal,range:[(nzPageIndex-1)*nzPageSize+1,nzPageIndex*nzPageSize] }">
         </ng-template>
       </span>
-      <li
-        title="{{ 'Pagination.prev_page' | nzI18n }}"
-        class="ant-pagination-prev"
-        (click)="jumpPage(current-1)"
-        [class.ant-pagination-disabled]="isFirstIndex">
-        <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'pre'}"></ng-template>
-      </li>
-      <li
-        [attr.title]="firstIndex"
-        class="ant-pagination-item"
-        (click)="jumpPage(firstIndex)"
-        [class.ant-pagination-item-active]="isFirstIndex">
-        <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'page',page: firstIndex }"></ng-template>
-      </li>
-      <li
-        [attr.title]="'Pagination.prev_5' | nzI18n"
-        (click)="jumpBefore(pageSize)"
-        class="ant-pagination-jump-prev"
-        *ngIf="(lastIndex >9)&&(current-3>firstIndex)">
-        <a></a>
-      </li>
-      <li
-        *ngFor="let page of pages"
-        [attr.title]="page.index"
-        class="ant-pagination-item"
-        (click)="jumpPage(page.index)"
-        [class.ant-pagination-item-active]="current==page.index">
-        <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'page',page: page.index }"></ng-template>
-      </li>
-      <li
-        [attr.title]="'Pagination.next_5' | nzI18n"
-        (click)="jumpAfter(pageSize)"
-        class="ant-pagination-jump-next"
-        *ngIf="(lastIndex >9)&&(current+3<lastIndex)">
-        <a></a>
-      </li>
-      <li
-        [attr.title]="lastIndex"
-        class="ant-pagination-item"
-        (click)="jumpPage(lastIndex)"
-        *ngIf="(lastIndex>0)&&(lastIndex!==firstIndex)"
-        [class.ant-pagination-item-active]="isLastIndex">
-        <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'page',page: lastIndex }"></ng-template>
-      </li>
-      <li
-        title="{{ 'Pagination.next_page' | nzI18n }}"
-        class="ant-pagination-next"
-        (click)="jumpPage(current+1)"
-        [class.ant-pagination-disabled]="isLastIndex">
-        <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'next'}"></ng-template>
-      </li>
-      <div class="ant-pagination-options">
-        <nz-select
-          *ngIf="nzShowSizeChanger"
-          [nzSize]="nzSize=='small'?'small':''"
-          class="ant-pagination-options-size-changer"
-          [ngModel]="pageSize"
-          (ngModelChange)="onPageSizeChange($event)">
-          <nz-option
-            *ngFor="let option of nzPageSizeOptions"
-            [nzLabel]="option + ('Pagination.items_per_page' | nzI18n)"
-            [nzValue]="option">
-          </nz-option>
-          <nz-option
-            *ngIf="nzPageSizeOptions.indexOf(nzPageSize)==-1"
-            [nzLabel]="nzPageSize + ('Pagination.items_per_page' | nzI18n)"
-            [nzValue]="nzPageSize">
-          </nz-option>
-        </nz-select>
-        <div class="ant-pagination-options-quick-jumper"
-          *ngIf="nzShowQuickJumper">
-          {{ 'Pagination.jump_to' | nzI18n }}
-          <input
-            (keydown)="handleKeyDown($event)"
-            (keyup)="handleKeyUp($event)"
-            (change)="handleKeyUp($event)">
-          {{ 'Pagination.page' | nzI18n }}
+        <li
+          title="{{ 'Pagination.prev_page' | nzI18n }}"
+          class="ant-pagination-prev"
+          (click)="jumpPreOne()"
+          [class.ant-pagination-disabled]="isFirstIndex">
+          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'pre'}"></ng-template>
+        </li>
+        <li
+          [attr.title]="firstIndex"
+          class="ant-pagination-item"
+          (click)="jumpPage(firstIndex)"
+          [class.ant-pagination-item-active]="isFirstIndex">
+          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'page',page: firstIndex }"></ng-template>
+        </li>
+        <li
+          [attr.title]="'Pagination.prev_5' | nzI18n"
+          (click)="jumpPreFive()"
+          class="ant-pagination-jump-prev"
+          *ngIf="(lastIndex >9)&&(current-3>firstIndex)">
+          <a></a>
+        </li>
+        <li
+          *ngFor="let page of pages"
+          [attr.title]="page.index"
+          class="ant-pagination-item"
+          (click)="jumpPage(page.index)"
+          [class.ant-pagination-item-active]="current==page.index">
+          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'page',page: page.index }"></ng-template>
+        </li>
+        <li
+          [attr.title]="'Pagination.next_5' | nzI18n"
+          (click)="jumpNextFive()"
+          class="ant-pagination-jump-next"
+          *ngIf="(lastIndex >9)&&(current+3<lastIndex)">
+          <a></a>
+        </li>
+        <li
+          [attr.title]="lastIndex"
+          class="ant-pagination-item"
+          (click)="jumpPage(lastIndex)"
+          *ngIf="(lastIndex>0)&&(lastIndex!==firstIndex)"
+          [class.ant-pagination-item-active]="isLastIndex">
+          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'page',page: lastIndex }"></ng-template>
+        </li>
+        <li
+          title="{{ 'Pagination.next_page' | nzI18n }}"
+          class="ant-pagination-next"
+          (click)="jumpNextOne()"
+          [class.ant-pagination-disabled]="isLastIndex">
+          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'next'}"></ng-template>
+        </li>
+        <div class="ant-pagination-options" *ngIf="nzShowQuickJumper||nzShowSizeChanger">
+          <nz-select
+            *ngIf="nzShowSizeChanger"
+            [nzSize]="nzSize=='small'?'small':''"
+            class="ant-pagination-options-size-changer"
+            [ngModel]="nzPageSize"
+            (ngModelChange)="onPageSizeChange($event)">
+            <nz-option
+              *ngFor="let option of nzPageSizeOptions"
+              [nzLabel]="option + ('Pagination.items_per_page' | nzI18n)"
+              [nzValue]="option">
+            </nz-option>
+            <nz-option
+              *ngIf="nzPageSizeOptions.indexOf(nzPageSize)==-1"
+              [nzLabel]="nzPageSize + ('Pagination.items_per_page' | nzI18n)"
+              [nzValue]="nzPageSize">
+            </nz-option>
+          </nz-select>
+          <div class="ant-pagination-options-quick-jumper"
+            *ngIf="nzShowQuickJumper">
+            {{ 'Pagination.jump_to' | nzI18n }}
+            <input #quickJumperInput (keydown.enter)="handleKeyDown($event,quickJumperInput,true)">
+            {{ 'Pagination.page' | nzI18n }}
+          </div>
         </div>
-      </div>
-    </ul>`
+      </ul>
+    </ng-container>
+
+  `
 })
 export class NzPaginationComponent {
   @ViewChild('renderItemTemplate') private _renderItem: TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }>;
@@ -157,19 +144,18 @@ export class NzPaginationComponent {
   private _showTotal: TemplateRef<{ $implicit: number, range: [ number, number ] }>;
   private _showQuickJumper = false;
   private _simple = false;
+  private _hideOnSinglePage = false;
+  private _pageSize = 10;
   private _pageSizeOptions = [ 10, 20, 30, 40 ];
+  private _total: number;
   current = 1;
-  total: number;
-  pageSize = 10;
   firstIndex = 1;
-  lastIndex = Infinity;
   pages = [];
 
   @Input() nzInTable = false;
   @Input() nzSize: string;
   @Output() nzPageSizeChange: EventEmitter<number> = new EventEmitter();
   @Output() nzPageIndexChange: EventEmitter<number> = new EventEmitter();
-  @Output() nzPageIndexClickChange: EventEmitter<number> = new EventEmitter();
 
   @Input()
   set nzRenderItem(value: TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }>) {
@@ -187,6 +173,15 @@ export class NzPaginationComponent {
 
   get nzShowSizeChanger(): boolean {
     return this._showSizeChanger;
+  }
+
+  @Input()
+  set nzHideOnSinglePage(value: boolean) {
+    this._hideOnSinglePage = toBoolean(value);
+  }
+
+  get nzHideOnSinglePage(): boolean {
+    return this._hideOnSinglePage;
   }
 
   @Input()
@@ -237,8 +232,9 @@ export class NzPaginationComponent {
       this.current = this.lastIndex;
     } else if (value < this.firstIndex) {
       this.current = this.firstIndex;
+    } else {
+      this.current = Number(value);
     }
-    this.current = Number(value);
     this.buildIndexes();
   }
 
@@ -248,37 +244,67 @@ export class NzPaginationComponent {
 
   @Input()
   set nzPageSize(value: number) {
-    if (value === this.pageSize) {
+    if (value === this._pageSize) {
       return;
     }
-    this.pageSize = value;
-    this.nzPageIndexChange.emit(this.nzPageIndex);
+    this._pageSize = value;
+    const pageIndexOverflow = this.checkLastIndexOverflow();
+    if (pageIndexOverflow) {
+      this.nzPageIndex = this.lastIndex;
+      this.nzPageIndexChange.emit(this.lastIndex);
+    }
     this.buildIndexes();
   }
 
   get nzPageSize(): number {
-    return this.pageSize;
+    return this._pageSize;
   }
 
   @Input()
   set nzTotal(value: number) {
-    if (value === this.total) {
-      return;
-    }
-    this.total = value;
+    this._total = value;
     this.buildIndexes();
   }
 
   get nzTotal(): number {
-    return this.total;
+    return this._total;
   }
 
-  jumpBefore(pageSize: number): void {
-    this.jumpPage(this.current - Math.round(pageSize / 2));
+  jumpPage(index: number): void {
+    if (index === this.nzPageIndex) {
+      return;
+    }
+
+    if (index < this.firstIndex) {
+      this.nzPageIndex = this.firstIndex;
+    } else if (index > this.lastIndex) {
+      this.nzPageIndex = this.lastIndex;
+    } else {
+      this.nzPageIndex = index;
+    }
+    this.nzPageIndexChange.emit(this.nzPageIndex);
   }
 
-  jumpAfter(pageSize: number): void {
-    this.jumpPage(this.current + Math.round(pageSize / 2));
+  jumpPreFive(): void {
+    this.jumpPage(this.current - 5);
+  }
+
+  jumpNextFive(): void {
+    this.jumpPage(this.current + 5);
+  }
+
+  jumpPreOne(): void {
+    if (this.isFirstIndex) {
+      return;
+    }
+    this.jumpPage(this.current - 1);
+  }
+
+  jumpNextOne(): void {
+    if (this.isLastIndex) {
+      return;
+    }
+    this.jumpPage(this.current + 1);
   }
 
   onPageSizeChange($event: number): void {
@@ -286,19 +312,8 @@ export class NzPaginationComponent {
     this.nzPageSizeChange.emit($event);
   }
 
-  onPageIndexChange($event: number): void {
-    this.nzPageIndex = $event;
-    this.nzPageIndexChange.emit($event);
-  }
-
-  handleKeyDown(e: KeyboardEvent): void {
-    if (e.keyCode === KEYCODE.ARROW_UP || e.keyCode === KEYCODE.ARROW_DOWN) {
-      e.preventDefault();
-    }
-  }
-
-  handleKeyUp(e: KeyboardEvent): void {
-    const target = e.target as HTMLInputElement;
+  handleKeyDown(e: KeyboardEvent, input: HTMLInputElement, clearInputValue: boolean): void {
+    const target = input;
     const inputValue = target.value;
     const currentInputValue = this.nzPageIndex;
     let value;
@@ -310,31 +325,36 @@ export class NzPaginationComponent {
     } else {
       value = Number(inputValue);
     }
-    if (e.keyCode === KEYCODE.ENTER) {
-      this.handleChange(value, target);
-    }
+    this.handleChange(value, target, clearInputValue);
   }
 
   isValid(page: number): boolean {
-    return isInteger(page) && page >= 1 && page !== this.nzPageIndex;
+    return isInteger(page) && (page >= 1) && (page !== this.nzPageIndex) && (page <= this.lastIndex);
   }
 
-  handleChange(value: number, target: HTMLInputElement): void {
+  handleChange(value: number, target: HTMLInputElement, clearInputValue: boolean): void {
     const page = value;
     if (this.isValid(page)) {
       this.nzPageIndex = page;
       this.nzPageIndexChange.emit(this.nzPageIndex);
     }
-    target.value = null;
+    if (clearInputValue) {
+      target.value = null;
+    } else {
+      target.value = `${this.nzPageIndex}`;
+    }
+  }
+
+  checkLastIndexOverflow(): boolean {
+    return this.current > this.lastIndex;
+  }
+
+  get lastIndex(): number {
+    return Math.ceil(this.nzTotal / this.nzPageSize);
   }
 
   /** generate indexes list */
   buildIndexes(): void {
-    this.lastIndex = Math.ceil(this.total / this.pageSize);
-    if (this.current > this.lastIndex) {
-      this.nzPageIndex = this.lastIndex;
-      this.nzPageIndexChange.emit(this.nzPageIndex);
-    }
     const tmpPages = [];
     if (this.lastIndex <= 9) {
       for (let i = 2; i <= this.lastIndex - 1; i++) {
@@ -358,22 +378,6 @@ export class NzPaginationComponent {
       }
     }
     this.pages = tmpPages;
-  }
-
-  jumpPage(index: number): void {
-    if (index === this.nzPageIndex) {
-      return;
-    }
-
-    if (index < this.firstIndex) {
-      this.nzPageIndex = this.firstIndex;
-    } else if (index > this.lastIndex) {
-      this.nzPageIndex = this.lastIndex;
-    } else {
-      this.nzPageIndex = index;
-    }
-    this.nzPageIndexClickChange.emit(this.nzPageIndex);
-    this.nzPageIndexChange.emit(this.nzPageIndex);
   }
 
   get isLastIndex(): boolean {

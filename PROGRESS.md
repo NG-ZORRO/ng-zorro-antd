@@ -10,7 +10,7 @@
 | breadcrumb | √ | 100% | 100% | vthinkxie | - |
 | dropdown | √ | 100% | 100% | vthinkxie | - |
 | menu | √ | 100% | 100% | vthinkxie | √ |
-| pagination | x | x | x | vthinkxie | - |
+| pagination | √ | 100% | 100% | vthinkxie | - |
 | steps | x | x | x | vthinkxie | - |
 | checkbox | x | x | x | vthinkxie | - |
 | form | x | x | x | vthinkxie | - |

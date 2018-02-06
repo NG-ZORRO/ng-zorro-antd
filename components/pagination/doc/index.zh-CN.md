@@ -33,3 +33,4 @@ cols: 1
 | nzPageSizeOptions | 指定每页可以显示多少条 | `number[]` | `[10, 20, 30, 40]` |
 | nzItemRender | 用于自定义页码的结构 | `TemplateRef<{ $implicit: 'page' ｜ 'prev' ｜ 'next', page: number }>` | - |
 | nzShowTotal | 用于显示数据总量和当前数据范围	 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
+| nzHideOnSinglePage | 只有一页时是否隐藏分页器 | boolean | false |

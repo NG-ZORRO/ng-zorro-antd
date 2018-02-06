@@ -59,7 +59,9 @@
         "./components/test.ts",
         "./components/core/**",
         "./components/i18n/**",
-        "./components/**/demo/**"
+        "./components/locale/**",
+        "./components/**/demo/**",
+        "./components/select/**"
       ]
     }
   },
