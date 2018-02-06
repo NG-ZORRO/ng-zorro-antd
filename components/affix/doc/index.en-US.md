@@ -16,15 +16,15 @@ Please note that Affix should not cover other content on the page, especially wh
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| offsetBottom | Pixels to offset from bottom when calculating position of scroll | number | - |
-| offsetTop | Pixels to offset from top when calculating position of scroll | number | 0 |
-| target | specifies the scrollable area dom node | () => HTMLElement | () => window |
-| onChange | Callback for when affix state is changed | Function(affixed) | - |
+| nzOffsetBottom | Pixels to offset from bottom when calculating position of scroll | number | - |
+| nzOffsetTop | Pixels to offset from top when calculating position of scroll | number | 0 |
+| nzTarget | specifies the scrollable area dom node | `HTMLElement` | `window` |
+| nzChange | Callback for when affix state is changed | Function(affixed) | - |
 
-**Note:** Children of `Affix` can not be `position: absolute`, but you can set `Affix` as `position: absolute`:
+**Note:** Children of `nz-affix` can not be `position: absolute`, but you can set `nz-affix` as `position: absolute`:
 
 ```jsx
-<Affix style={{ position: 'absolute', top: y, left: x}}>
+<nz-affix style="position: absolute; top: 10px, left: 10px">
   ...
-</Affix>
+</nz-affix>
 ```

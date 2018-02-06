@@ -40,7 +40,7 @@
 | datepicker | x | x | x | trotyl | - |
 | timepicker | x | x | x | trotyl | - |
 | calendar | x | x | x | trotyl | - |
-| affix | x | x | x | cipchk | - |
+| affix | √ | x | √ | cipchk | √ |
 | transfer | x | x | x | cipchk | - |
 | avatar | x | x | x | cipchk | - |
 | list | x | x | x | cipchk | - |
