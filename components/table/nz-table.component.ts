@@ -53,7 +53,7 @@ import { NzThDirective } from './nz-th.directive';
           *ngIf="nzIsPagination&&data.length"
           [nzInTable]="true"
           [nzShowSizeChanger]="nzShowSizeChanger"
-          [nzPageSizeSelectorValues]="nzPageSizeSelectorValues"
+          [nzPageSizeOptions]="nzPageSizeSelectorValues"
           [nzShowQuickJumper]="nzShowQuickJumper"
           [nzShowTotal]="nzShowTotal"
           [nzSize]="(nzSize=='middle'||nzSize=='small')?'small':''"
