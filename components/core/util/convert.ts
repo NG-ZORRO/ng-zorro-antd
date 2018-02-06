@@ -3,7 +3,7 @@ import { coerceBooleanProperty, coerceNumberProperty } from '@angular/cdk/coerci
 export function toBoolean(value: boolean | string): boolean {
   return coerceBooleanProperty(value);
 }
-//
-// export function toNumber(value: number | string): number {
-//   return coerceNumberProperty(value);
-// }
+
+export function toNumber(value: number | string): number {
+  return coerceNumberProperty(value);
+}
