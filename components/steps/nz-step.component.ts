@@ -1,23 +1,23 @@
 import {
-  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
-  Renderer2,
   TemplateRef,
   ViewChild
 } from '@angular/core';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
 @Component({
   selector           : 'nz-step',
+  providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
   template           : `
-    <div class="ant-steps-item-tail" #stepsTail *ngIf="last !== true"></div>
+    <div class="ant-steps-item-tail" *ngIf="last !== true"></div>
     <div class="ant-steps-item-icon">
       <ng-template [ngIf]="!showProcessDot">
-        <span class="ant-steps-icon anticon anticon-check" *ngIf="_status === 'finish' && !nzIcon"></span>
-        <span class="ant-steps-icon anticon anticon-cross" *ngIf="_status === 'error'"></span>
-        <span class="ant-steps-icon" *ngIf="(_status === 'process' || _status === 'wait') && !nzIcon">{{ index + 1 }}</span>
+        <span class="ant-steps-icon anticon anticon-check" *ngIf="nzStatus === 'finish' && !nzIcon"></span>
+        <span class="ant-steps-icon anticon anticon-cross" *ngIf="nzStatus === 'error'"></span>
+        <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">{{ index + 1 }}</span>
         <span class="ant-steps-icon" *ngIf="nzIcon">
           <ng-container *ngIf="isIconString; else nzIcon">
             <i [class]="nzIcon"></i>
@@ -59,7 +59,6 @@ export class NzStepComponent {
   direction = 'horizontal';
   outStatus = 'process';
   index = 0;
-  stepStatusClass = {};
   @ViewChild('processDotTemplate') processDotTemplate: TemplateRef<void>;
   customProcessTemplate: TemplateRef<{ $implicit: TemplateRef<void>, status: string, index: number }>;
 
@@ -87,6 +86,7 @@ export class NzStepComponent {
   set nzStatus(status: string) {
     this._status = status;
     this.isCustomStatus = true;
+    this.updateClassMap();
   }
 
   get nzStatus(): string {
@@ -120,30 +120,23 @@ export class NzStepComponent {
         this._status = 'wait';
       }
     }
-    this.initClassMap();
+    this.updateClassMap();
   }
 
-  initClassMap(): void {
-    this.stepStatusClass = {
+  updateClassMap(): void {
+    const classMap = {
       [ 'ant-steps-item' ]        : true,
       [ `ant-steps-item-wait` ]   : this.nzStatus === 'wait',
       [ `ant-steps-item-process` ]: this.nzStatus === 'process',
       [ `ant-steps-item-finish` ] : this.nzStatus === 'finish',
       [ `ant-steps-item-error` ]  : this.nzStatus === 'error',
-      [ 'ant-steps-item-last' ]   : this.last,
       [ 'ant-steps-custom' ]      : !!this.nzIcon,
-      [ 'ant-steps-next-error' ]  : (this.outStatus === 'error' && this.currentIndex === this.index - 1)
+      [ 'ant-steps-next-error' ]  : (this.outStatus === 'error') && (this.currentIndex === this.index + 1)
     };
-    for (const i in this.stepStatusClass) {
-      if (this.stepStatusClass[ i ]) {
-        this.renderer.addClass(this.el, i);
-      } else {
-        this.renderer.removeClass(this.el, i);
-      }
-    }
+    this.nzUpdateHostClassService.updateHostClass(this.el, classMap);
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, public cdr: ChangeDetectorRef) {
+  constructor(private elementRef: ElementRef, private nzUpdateHostClassService: NzUpdateHostClassService) {
     this.el = elementRef.nativeElement;
   }
 }

@@ -7,6 +7,7 @@ import {
   Renderer2
 } from '@angular/core';
 import { matchMedia } from '../core/polyfill/match-media';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
 export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between';
 export type NzAlign = 'top' | 'middle' | 'bottom';
@@ -34,6 +35,7 @@ const responsiveMap: BreakpointMap = {
 @Component({
   selector           : 'nz-row',
   preserveWhitespaces: false,
+  providers          : [ NzUpdateHostClassService ],
   template           : `
     <ng-content></ng-content>
   `
@@ -43,7 +45,6 @@ export class NzRowComponent implements OnInit {
   private _type: NzType;
   private _align: NzAlign = 'top';
   private _justify: NzJustify = 'start';
-  private classList: string[] = [];
   private el: HTMLElement;
   private prefixCls = 'ant-row';
   private breakPoint: Breakpoint;
@@ -91,8 +92,8 @@ export class NzRowComponent implements OnInit {
   }
 
   setStyle(): void {
-    this._renderer.setStyle(this.el, 'margin-left', `-${this.actualGutter / 2}px`);
-    this._renderer.setStyle(this.el, 'margin-right', `-${this.actualGutter / 2}px`);
+    this.renderer.setStyle(this.el, 'margin-left', `-${this.actualGutter / 2}px`);
+    this.renderer.setStyle(this.el, 'margin-right', `-${this.actualGutter / 2}px`);
   }
 
   calculateGutter(): number {
@@ -127,23 +128,16 @@ export class NzRowComponent implements OnInit {
 
   /** temp solution since no method add classMap to host https://github.com/angular/angular/issues/7289*/
   setClassMap(): void {
-    this.classList.forEach(_className => {
-      this._renderer.removeClass(this.el, _className);
-    });
-    this.classList = [
-      (!this.nzType) && this.prefixCls,
-      this.nzType && `${this.prefixCls}-${this.nzType}`,
-      this.nzType && this.nzAlign && `${this.prefixCls}-${this.nzType}-${this.nzAlign}`,
-      this.nzType && this.nzJustify && `${this.prefixCls}-${this.nzType}-${this.nzJustify}`
-    ].filter((item) => {
-      return !!item;
-    });
-    this.classList.forEach(_className => {
-      this._renderer.addClass(this.el, _className);
-    });
+    const classMap = {
+      [ `${this.prefixCls}` ]                                 : !this.nzType,
+      [ `${this.prefixCls}-${this.nzType}` ]                  : this.nzType,
+      [ `${this.prefixCls}-${this.nzType}-${this.nzAlign}` ]  : this.nzType && this.nzAlign,
+      [ `${this.prefixCls}-${this.nzType}-${this.nzJustify}` ]: this.nzType && this.nzJustify
+    };
+    this.nzUpdateHostClassService.updateHostClass(this.el, classMap);
   }
 
-  constructor(private elementRef: ElementRef, private _renderer: Renderer2) {
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
     this.el = this.elementRef.nativeElement;
   }
 

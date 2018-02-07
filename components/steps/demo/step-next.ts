@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-steps-step-next',
   template: `
-    <nz-steps [(nzCurrent)]="current">
+    <nz-steps [nzCurrent]="current">
       <nz-step nzTitle="Finished"></nz-step>
       <nz-step nzTitle="In Progress"></nz-step>
       <nz-step nzTitle="Waiting"></nz-step>
