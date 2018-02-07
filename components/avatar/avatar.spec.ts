@@ -131,7 +131,7 @@ class TestAvatarComponent {
   @ViewChild('comp') comp: NzAvatarComponent;
   nzShape = 'square';
   nzSize = 'large';
-  nzIcon = 'user';
+  nzIcon = 'anticon anticon-user';
   nzText = 'A';
   nzSrc = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==`;
 }

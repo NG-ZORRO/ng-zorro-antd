@@ -7,7 +7,7 @@ export type NzAvatarSize = 'small' | 'large' | 'default';
 @Component({
   selector: 'nz-avatar',
   template: `
-  <i class="anticon anticon-{{nzIcon}}" *ngIf="nzIcon && hasIcon"></i>
+  <i *ngIf="nzIcon && hasIcon" [ngClass]="nzIcon"></i>
   <img [src]="nzSrc" *ngIf="nzSrc && hasSrc" (error)="imgError()"/>
   <span class="ant-avatar-string" #textEl [ngStyle]="textStyles" *ngIf="nzText && hasText">{{ nzText }}</span>`,
   providers: [NzUpdateHostClassService],
