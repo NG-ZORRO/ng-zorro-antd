@@ -1,5 +1,6 @@
 // tslint:disable: no-any
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, ElementRef, Input, OnChanges, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, ElementRef, Input, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
 import { ListSize, NzListGrid } from './interface';
 
@@ -35,6 +36,7 @@ import { ListSize, NzListGrid } from './interface';
     <ng-container *ngIf="_footer; else _footerTpl">{{ _footer }}</ng-container>
   </div>
   `,
+  providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -111,32 +113,28 @@ export class NzListComponent implements OnChanges {
 
   // region: styles
 
-  _prefixCls = 'ant-list';
-  _classList: string[] = [];
+  private prefixCls = 'ant-list';
 
   private _setClassMap(): void {
-    this._classList.forEach(cls => this.renderer.removeClass(this.el.nativeElement, cls));
-
-    this._classList = [
-      this._prefixCls,
-      this.nzItemLayout === 'vertical' && `${this._prefixCls}-vertical`,
-      this.nzSize === 'large' && `${this._prefixCls}-lg`,
-      this.nzSize === 'small' && `${this._prefixCls}-sm`,
-      this.nzSplit && `${this._prefixCls}-split`,
-      this.nzBordered && `${this._prefixCls}-bordered`,
-      this.nzLoading && `${this._prefixCls}-loading`,
-      this.nzGrid && `${this._prefixCls}-grid`,
-      !!(this.nzLoadMore || this.nzPagination || this._isFooter) && `${this._prefixCls}-something-after-last-item`
-    ].filter(item => !!item);
-
-    this._classList.forEach(cls => this.renderer.addClass(this.el.nativeElement, cls));
+    const classMap = {
+      [this.prefixCls]: true,
+      [`${this.prefixCls}-vertical`]: this.nzItemLayout === 'vertical',
+      [`${this.prefixCls}-lg`]: this.nzSize === 'large',
+      [`${this.prefixCls}-sm`]: this.nzSize === 'small',
+      [`${this.prefixCls}-split`]: this.nzSplit,
+      [`${this.prefixCls}-bordered`]: this.nzBordered,
+      [`${this.prefixCls}-loading`]: this.nzLoading,
+      [`${this.prefixCls}-grid`]: this.nzGrid,
+      [`${this.prefixCls}-something-after-last-item`]: !!(this.nzLoadMore || this.nzPagination || this._isFooter)
+    };
+    this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
 
     this.cd.detectChanges();
   }
 
   // endregion
 
-  constructor(private el: ElementRef, private renderer: Renderer2, private cd: ChangeDetectorRef) {}
+  constructor(private el: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this._setClassMap();
