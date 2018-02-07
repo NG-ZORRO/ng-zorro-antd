@@ -11,7 +11,6 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  Renderer2,
   ViewChild
 } from '@angular/core';
 
@@ -38,10 +37,10 @@ const sharpMatcherRegx = /#([^#]+)$/;
     <ng-template [ngTemplateOutlet]="content"></ng-template>
   </nz-affix>
   <ng-template #content>
-    <div class="ant-anchor-wrapper" #wrap [ngStyle]="_wrapperStyle">
+    <div class="ant-anchor-wrapper" #wrap [ngStyle]="wrapperStyle">
       <div class="ant-anchor" [ngClass]="{'fixed': !nzAffix && !nzShowInkInFixed}">
         <div class="ant-anchor-ink">
-          <div class="ant-anchor-ink-ball" [class.visible]="_visible" #ink></div>
+          <div class="ant-anchor-ink-ball" [class.visible]="visible" #ink></div>
         </div>
         <ng-content></ng-content>
       </div>
@@ -55,15 +54,13 @@ export class NzAnchorComponent implements OnDestroy, OnInit, AfterViewInit {
   private animating = false;
   private target: Element = null;
   /** @private */
-  _scroll$: Subscription = null;
+  scroll$: Subscription = null;
   /** @private */
-  _visible = false;
+  visible = false;
   /** @private */
-  _wrapperStyle: {} = { 'max-height': '100vh' };
-  @ViewChild('wrap')
-  private wrap: ElementRef;
-  @ViewChild('ink')
-  private ink: ElementRef;
+  wrapperStyle: {} = { 'max-height': '100vh' };
+  @ViewChild('wrap') private wrap: ElementRef;
+  @ViewChild('ink') private ink: ElementRef;
 
   // region: fields
 
@@ -90,7 +87,7 @@ export class NzAnchorComponent implements OnDestroy, OnInit, AfterViewInit {
   set nzOffsetTop(value: number) {
     this._offsetTop = toNumber(value);
     if (this._offsetTop >= 0) {
-      this._wrapperStyle = {
+      this.wrapperStyle = {
         'max-height': `calc(100vh - ${this._offsetTop}px)`
       };
     }
@@ -99,16 +96,7 @@ export class NzAnchorComponent implements OnDestroy, OnInit, AfterViewInit {
     return this._offsetTop;
   }
 
-  private _offsetBottom: number;
-  @Input()
-  set nzOffsetBottom(value: number) {
-    this._offsetBottom = toNumber(value);
-  }
-  get nzOffsetBottom(): number {
-    return this._offsetBottom;
-  }
-
-  private _showInkInFixed: boolean = true;
+  private _showInkInFixed: boolean = false;
   @Input()
   set nzShowInkInFixed(value: boolean) {
     this._showInkInFixed = toBoolean(value);
@@ -130,7 +118,7 @@ export class NzAnchorComponent implements OnDestroy, OnInit, AfterViewInit {
   // endregion
 
   /* tslint:disable-next-line:no-any */
-  constructor(private scrollSrv: NzScrollService, private _renderer: Renderer2, @Inject(DOCUMENT) private doc: any, private cd: ChangeDetectorRef) {
+  constructor(private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any, private cd: ChangeDetectorRef) {
   }
 
   registerLink(link: NzAnchorLinkComponent): void {
@@ -161,7 +149,7 @@ export class NzAnchorComponent implements OnDestroy, OnInit, AfterViewInit {
 
   private registerScrollEvent(): void {
     this.removeListen();
-    this._scroll$ = fromEvent(this.getTarget(), 'scroll').pipe(throttleTime(50), distinctUntilChanged())
+    this.scroll$ = fromEvent(this.getTarget(), 'scroll').pipe(throttleTime(50), distinctUntilChanged())
     .subscribe(e => this.handleScroll());
     // 由于页面刷新时滚动条位置的记忆
     // 倒置在dom未渲染完成，导致计算不正确
@@ -169,7 +157,7 @@ export class NzAnchorComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   private removeListen(): void {
-    if (this._scroll$) this._scroll$.unsubscribe();
+    if (this.scroll$) this.scroll$.unsubscribe();
   }
 
   private getOffsetTop(element: HTMLElement): number {
@@ -202,8 +190,8 @@ export class NzAnchorComponent implements OnDestroy, OnInit, AfterViewInit {
       }
     });
 
-    this._visible = !!sections.length;
-    if (!this._visible) {
+    this.visible = !!sections.length;
+    if (!this.visible) {
       this.cd.detectChanges();
       return;
     }

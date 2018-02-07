@@ -52,22 +52,10 @@ export class NzAffixComponent implements OnChanges, OnInit, OnDestroy {
     return this._offsetTop;
   }
 
-  private _offset: number;
-  @Input()
-  set nzOffset(value: number) {
-    this._offset = toNumber(value);
-  }
-  get nzOffset(): number {
-    return this._offset;
-  }
-
   private _offsetBottom: number;
   @Input()
   set nzOffsetBottom(value: number) {
     this._offsetBottom = toNumber(value);
-  }
-  get nzOffsetBottom(): number {
-    return this._offsetBottom;
   }
 
   @Output() nzChange: EventEmitter<boolean> = new EventEmitter();
@@ -119,7 +107,8 @@ export class NzAffixComponent implements OnChanges, OnInit, OnDestroy {
       { top: 0, left: 0, bottom: 0 } as ClientRect;
   }
 
-  private getOffset(element: Element, target: Element | Window | null): {
+  /** @private */
+  getOffset(element: Element, target: Element | Window | null): {
       top: number;
       left: number;
       width: number;
@@ -190,7 +179,7 @@ export class NzAffixComponent implements OnChanges, OnInit, OnDestroy {
   updatePosition(e: any): void {
     const targetNode = this.nzTarget;
     // Backwards support
-    let offsetTop = this._offsetTop || this._offset;
+    let offsetTop = this.nzOffsetTop || 0;
     const scrollTop = this.scrollSrv.getScroll(targetNode, true);
     const affixNode = this._el.nativeElement as HTMLElement;
     const elemOffset = this.getOffset(affixNode, targetNode);

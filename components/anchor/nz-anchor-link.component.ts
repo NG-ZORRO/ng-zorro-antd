@@ -1,4 +1,3 @@
-// tslint:disable:no-any
 import {
   Component,
   ContentChild,
@@ -17,7 +16,7 @@ import { NzAnchorComponent } from './nz-anchor.component';
   preserveWhitespaces: false,
   template           : `
     <a (click)="goToClick($event)" href="{{nzHref}}" class="ant-anchor-link-title">
-      <span *ngIf="_title; else (_titleTpl || nzTemplate)">{{ _title }}</span>
+      <span *ngIf="titleStr; else (titleTpl || nzTemplate)">{{ titleStr }}</span>
     </a>
     <ng-content></ng-content>
   `,
@@ -30,15 +29,14 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
 
   @Input() nzHref = '#';
 
-  _title = '';
-  _titleTpl: TemplateRef<any>;
-  isTitleString = true;
+  titleStr = '';
+  titleTpl: TemplateRef<void>;
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
-      this._titleTpl = value;
+      this.titleTpl = value;
     } else {
-      this._title = value;
+      this.titleStr = value;
     }
   }
 
@@ -46,21 +44,21 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
 
   @HostBinding('class.ant-anchor-link-active') active: boolean = false;
 
-  constructor(public el: ElementRef, private _anchorComp: NzAnchorComponent) {
+  constructor(public el: ElementRef, private anchorComp: NzAnchorComponent) {
   }
 
   ngOnInit(): void {
-    this._anchorComp.registerLink(this);
+    this.anchorComp.registerLink(this);
   }
 
   goToClick(e: Event): void {
     e.preventDefault();
     e.stopPropagation();
-    this._anchorComp.handleScrollTo(this);
+    this.anchorComp.handleScrollTo(this);
   }
 
   ngOnDestroy(): void {
-    this._anchorComp.unregisterLink(this);
+    this.anchorComp.unregisterLink(this);
   }
 
 }

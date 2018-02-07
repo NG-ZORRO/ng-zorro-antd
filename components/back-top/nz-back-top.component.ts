@@ -41,21 +41,22 @@ import { toNumber } from '../core/util/convert';
     ])
   ],
   template     : `
-    <div class="ant-back-top" (click)="clickBackTop()" [@enterLeave] *ngIf="_display">
+    <div class="ant-back-top" (click)="clickBackTop()" [@enterLeave] *ngIf="visible">
       <ng-template #defaultContent>
         <div class="ant-back-top-content"><i class="anticon anticon-to-top ant-back-top-icon"></i></div>
       </ng-template>
       <ng-template [ngTemplateOutlet]="nzTemplate || defaultContent"></ng-template>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  preserveWhitespaces: false
 })
 export class NzBackTopComponent implements OnInit, OnDestroy {
 
   private scroll$: Subscription = null;
   private target: HTMLElement = null;
 
-  _display: boolean = false;
+  visible: boolean = false;
 
   @ContentChild('nzTemplate') nzTemplate: TemplateRef<void>;
 
@@ -93,7 +94,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
   }
 
   private handleScroll(): void {
-    this._display = this.scrollSrv.getScroll(this.getTarget()) > this.nzVisibilityHeight;
+    this.visible = this.scrollSrv.getScroll(this.getTarget()) > this.nzVisibilityHeight;
     this.cd.detectChanges();
   }
 
