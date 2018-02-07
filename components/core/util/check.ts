@@ -24,3 +24,9 @@ export function shallowEqual(objA: {}, objB: {}): boolean {
 
   return true;
 }
+
+export function isInteger(value: string | number): boolean {
+  return typeof value === 'number' &&
+    isFinite(value) &&
+    Math.floor(value) === value;
+}

@@ -1,14 +1,14 @@
 ---
 order: 8
 title:
-  zh-CN: 受控
-  en-US: Controlled
+  zh-CN: 页码
+  en-US: Page Index
 ---
 
 ## zh-CN
 
-受控制的页码。
+改变页码。
 
 ## en-US
 
-Controlled page number.
+Change page index number.

@@ -3,21 +3,21 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-steps-step-next',
   template: `
-    <nz-steps [(nzCurrent)]="current">
-      <nz-step [nzTitle]="'Finished'"></nz-step>
-      <nz-step [nzTitle]="'In Progress'"></nz-step>
-      <nz-step [nzTitle]="'Waiting'"></nz-step>
+    <nz-steps [nzCurrent]="current">
+      <nz-step nzTitle="Finished"></nz-step>
+      <nz-step nzTitle="In Progress"></nz-step>
+      <nz-step nzTitle="Waiting"></nz-step>
     </nz-steps>
 
     <div class="steps-content">{{ index }}</div>
     <div class="steps-action">
-      <button nz-button [nzType]="'default'" (click)="pre()" *ngIf="current > 0">
+      <button nz-button nzType="default" (click)="pre()" *ngIf="current > 0">
         <span>Previous</span>
       </button>
-      <button nz-button [nzType]="'default'" (click)="next()" *ngIf="current < 2">
+      <button nz-button nzType="default" (click)="next()" *ngIf="current < 2">
         <span>Next</span>
       </button>
-      <button nz-button [nzType]="'primary'" (click)="done()" *ngIf="current === 2">
+      <button nz-button nzType="primary" (click)="done()" *ngIf="current === 2">
         <span>Done</span>
       </button>
     </div>
@@ -45,21 +45,21 @@ export class NzDemoStepsStepNextComponent {
 
   index = 'First-content';
 
-  pre() {
+  pre(): void {
     this.current -= 1;
     this.changeContent();
   }
 
-  next() {
+  next(): void {
     this.current += 1;
     this.changeContent();
   }
 
-  done() {
-    // this._message.success('done');
+  done(): void {
+    console.log('done');
   }
 
-  changeContent() {
+  changeContent(): void {
     switch (this.current) {
       case 0: {
         this.index = 'First-content';

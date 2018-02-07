@@ -6,4 +6,5 @@ import { Component } from '@angular/core';
     <nz-pagination [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>`,
   styles  : []
 })
-export class NzDemoPaginationBasicComponent { }
+export class NzDemoPaginationBasicComponent {
+}

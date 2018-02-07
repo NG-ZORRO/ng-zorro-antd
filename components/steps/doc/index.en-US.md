@@ -13,33 +13,33 @@ When the task is complicated or has a certain sequence in the series of subtasks
 
 ## API
 
-```jsx
-<Steps>
-  <Step title="first step" />
-  <Step title="second step" />
-  <Step title="third step" />
-</Steps>
+```html
+<nz-steps>
+  <nz-step nzTitle="first step"></nz-step>
+  <nz-step nzTitle="second step"></nz-step>
+  <nz-step nzTitle="third step"></nz-step>
+</nz-steps>
 ```
 
-### Steps
+### nz-steps
 
 The whole of the step bar.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| current | to set the current step, counting from 0. You can overwrite this state by using `status` of `Step` | number | 0 |
-| direction | to specify the direction of the step bar, `horizontal` and `vertical` are currently supported | string | `horizontal` |
-| progressDot | Steps with progress dot style, customize the progress dot by setting it to a function | Boolean or (iconDot, {index, status, title, description}) => ReactNode | false |
-| size | to specify the size of the step bar, `default` and `small` are currently supported | string | `default` |
-| status | to specify the status of current step, can be set to one of the following values: `wait` `process` `finish` `error` | string | `process` |
+| nzCurrent | to set the current step, counting from 0. You can overwrite this state by using `nzStatus` of `nz-step` | number | 0 |
+| nzDirection | to specify the direction of the step bar, `horizontal` and `vertical` are currently supported | string | `horizontal` |
+| nzProgressDot | Steps with progress dot style, customize the progress dot by setting it with TemplateRef | Boolean 丨 `TemplateRef<{ $implicit: TemplateRef<void>, status: string, index: number }>` | false |
+| nzSize | to specify the size of the step bar, `default` and `small` are currently supported | string | `default` |
+| nzStatus | to specify the status of current step, can be set to one of the following values: `wait` `process` `finish` `error` | string | `process` |
 
-### Steps.Step
+### nz-step
 
 A single step in the step bar.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| description | description of the step, optional property | string | ReactNode | - |
-| icon | icon of the step, optional property | string | ReactNode | - |
-| status | to specify the status. It will be automatically set by `current` of `Steps` if not configured. Optional values are: `wait` `process` `finish` `error` | string | `wait` |
-| title | title of the step | string | ReactNode | - |
+| nzDescription | description of the step, optional property | string 丨 `TemplateRef<void>` | - |
+| nzIcon | icon of the step, optional property | string 丨 `TemplateRef<void>` | - |
+| nzStatus | to specify the status. It will be automatically set by `nzCurrent` of `nz-steps` if not configured. Optional values are: `wait` `process` `finish` `error` | string | `wait` |
+| nzTitle | title of the step | string 丨 `TemplateRef<void>` | - |

@@ -6,6 +6,7 @@ import {
   Input,
   Renderer2
 } from '@angular/core';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
 
 export type NzButtonType = 'primary' | 'dashed' | 'danger';
@@ -14,6 +15,7 @@ export type NzButtonSize = 'small' | 'large' | 'default' ;
 
 @Component({
   selector           : '[nz-button]',
+  providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
   template           : `
     <i class="anticon anticon-spin anticon-loading" *ngIf="nzLoading"></i>
@@ -28,7 +30,6 @@ export class NzButtonComponent implements AfterContentInit {
   private _loading = false;
   private el: HTMLElement;
   private iconElement: HTMLElement;
-  private classList: string[] = [];
   private iconOnly = false;
   private clicked = false;
   private prefixCls = 'ant-btn';
@@ -105,26 +106,19 @@ export class NzButtonComponent implements AfterContentInit {
 
   /** temp solution since no method add classMap to host https://github.com/angular/angular/issues/7289 */
   setClassMap(): void {
-    this.classList.forEach(_className => {
-      this.renderer.removeClass(this.el, _className);
-    });
-    this.classList = [
-      this.nzType && `${this.prefixCls}-${this.nzType}`,
-      this.nzShape && `${this.prefixCls}-${this.nzShape}`,
-      this.sizeMap[ this.nzSize ] && `${this.prefixCls}-${this.sizeMap[ this.nzSize ]}`,
-      this.nzLoading && `${this.prefixCls}-loading`,
-      this.clicked && `${this.prefixCls}-clicked`,
-      this.iconOnly && `${this.prefixCls}-icon-only`,
-      this.nzGhost && `${this.prefixCls}-background-ghost`
-    ].filter((item) => {
-      return !!item;
-    });
-    this.classList.forEach(_className => {
-      this.renderer.addClass(this.el, _className);
-    });
+    const classMap = {
+      [ `${this.prefixCls}-${this.nzType}` ]                : this.nzType,
+      [ `${this.prefixCls}-${this.nzShape}` ]               : this.nzShape,
+      [ `${this.prefixCls}-${this.sizeMap[ this.nzSize ]}` ]: this.sizeMap[ this.nzSize ],
+      [ `${this.prefixCls}-loading` ]                       : this.nzLoading,
+      [ `${this.prefixCls}-clicked` ]                       : this.clicked,
+      [ `${this.prefixCls}-icon-only` ]                     : this.iconOnly,
+      [ `${this.prefixCls}-background-ghost` ]              : this.nzGhost
+    };
+    this.nzUpdateHostClassService.updateHostClass(this.el, classMap);
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
     this.el = this.elementRef.nativeElement;
     this.renderer.addClass(this.el, this.prefixCls);
   }
