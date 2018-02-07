@@ -4,27 +4,13 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-steps-icon',
   template: `
     <nz-steps>
-      <nz-step [nzTitle]="'Login'" [nzStatus]="'finish'">
-        <ng-template #nzIcon>
-          <i class="anticon anticon-user"></i>
-        </ng-template>
-      </nz-step>
-      <nz-step [nzTitle]="'Verification'" [nzStatus]="'finish'">
-        <ng-template #nzIcon>
-          <i class="anticon anticon-solution"></i>
-        </ng-template>
-      </nz-step>
-      <nz-step [nzTitle]="'Pay'" [nzStatus]="'process'">
-        <ng-template #nzIcon>
-          <i class="anticon anticon-spin anticon-loading"></i>
-        </ng-template>
-      </nz-step>
-      <nz-step [nzTitle]="'Done'" [nzStatus]="'wait'">
-        <ng-template #nzIcon>
-          <i class="anticon anticon-smile-o"></i>
-        </ng-template>
-      </nz-step>
+      <nz-step nzTitle="Login" nzStatus="finish" nzIcon="anticon anticon-user"></nz-step>
+      <nz-step nzTitle="Verification" nzStatus="finish" nzIcon="anticon anticon-solution"></nz-step>
+      <nz-step nzTitle="Pay" nzStatus="process" nzIcon="anticon anticon-spin anticon-loading"></nz-step>
+      <nz-step nzTitle="Done" nzStatus="wait" [nzIcon]="iconTemplate"></nz-step>
+      <ng-template #iconTemplate><i class="anticon anticon-smile-o"></i></ng-template>
     </nz-steps>
   `
 })
-export class NzDemoStepsIconComponent { }
+export class NzDemoStepsIconComponent {
+}

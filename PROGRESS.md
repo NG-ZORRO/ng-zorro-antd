@@ -11,7 +11,7 @@
 | dropdown | √ | 100% | 100% | vthinkxie | - |
 | menu | √ | 100% | 100% | vthinkxie | √ |
 | pagination | √ | 100% | 100% | vthinkxie | - |
-| steps | x | x | x | vthinkxie | - |
+| steps | √ | 100% | 100% | vthinkxie | - |
 | checkbox | x | x | x | vthinkxie | - |
 | form | x | x | x | vthinkxie | - |
 | input | x | x | x | vthinkxie | - |
