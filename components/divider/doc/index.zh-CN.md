@@ -19,4 +19,4 @@ cols: 1
 | --- | --- | --- | --- |
 | nzDashed | 是否虚线 | Boolean | false |
 | nzType | 水平还是垂直类型 | enum: `horizontal` `vertical` | `horizontal` |
-| nzText | 中间文字 | string|TemplateRef | - |
+| nzText | 中间文字 | `string丨TemplateRef<void>` | - |

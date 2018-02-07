@@ -20,4 +20,4 @@ A divider line separates different content.
 | -------- | ----------- | ---- | ------- |
 | nzDashed | whether line is dasded | Boolean | false |
 | nzType | direction type of divider | enum: `horizontal` `vertical` | `horizontal` |
-| nzText | inner text of divider | string|TemplateRef | - |
+| nzText | inner text of divider | `string丨TemplateRef<void>` | - |
