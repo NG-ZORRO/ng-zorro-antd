@@ -60,6 +60,8 @@ export class NzToolTipComponent {
   _hasBackdrop = false;
 
   @Input() nzTitle: string;
+  @Input() nzContent;
+
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle = {};
   @Input() nzMouseEnterDelay = 0; // Unit: second
@@ -168,6 +170,6 @@ export class NzToolTipComponent {
 
   private isContentEmpty(): boolean {
     // return this.nzTemplate ? !(this.nzTemplate.elementRef.nativeElement as HTMLElement).hasChildNodes() : this.nzTitle === '';
-    return this.nzTemplate ? false : (this.nzTitle === '' || this.nzTitle == null); // Pity, can't detect whether nzTemplate is empty due to can't get it's content before shown up
+    return (this.nzTemplate || this.nzContent) ? false : (this.nzTitle === '' || this.nzTitle == null); // Pity, can't detect whether nzTemplate is empty due to can't get it's content before shown up
   }
 }
