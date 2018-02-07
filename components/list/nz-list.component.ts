@@ -6,35 +6,36 @@ import { ListSize, NzListGrid } from './interface';
 @Component({
   selector: 'nz-list',
   template: `
-    <ng-template #itemsTpl>
-      <ng-container *ngFor="let item of nzDataSource; let index = index">
-        <ng-template
-          [ngTemplateOutlet]="nzItem"
-          [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
-      </ng-container>
-    </ng-template>
-    <div *ngIf="header" class="ant-list-header">
-      <ng-container *ngIf="_header; else _headerTpl">{{ _header }}</ng-container>
-    </div>
-    <nz-spin [nzSpinning]="nzLoading">
-      <div *ngIf="nzGrid; else itemsTpl" nz-row [nzGutter]="nzGrid.gutter">
-        <div nz-col [nzSpan]="nzGrid.span" [nzXs]="nzGrid.xs" [nzSm]="nzGrid.sm" [nzMd]="nzGrid.md" [nzLg]="nzGrid.lg" [nzXl]="nzGrid.xl" [nzXXl]="nzGrid.xxl"
-            *ngFor="let item of nzDataSource; let index = index">
-            <ng-template
-              [ngTemplateOutlet]="nzItem"
-              [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
-        </div>
+  <ng-template #itemsTpl>
+    <ng-container *ngFor="let item of nzDataSource; let index = index">
+      <ng-template
+        [ngTemplateOutlet]="nzItem"
+        [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
+    </ng-container>
+  </ng-template>
+  <div *ngIf="_isHeader" class="ant-list-header">
+    <ng-container *ngIf="_header; else _headerTpl">{{ _header }}</ng-container>
+  </div>
+  <nz-spin [nzSpinning]="nzLoading">
+    <div *ngIf="nzGrid; else itemsTpl" nz-row [nzGutter]="nzGrid.gutter">
+      <div nz-col [nzSpan]="nzGrid.span" [nzXs]="nzGrid.xs" [nzSm]="nzGrid.sm" [nzMd]="nzGrid.md" [nzLg]="nzGrid.lg" [nzXl]="nzGrid.xl" [nzXXl]="nzGrid.xxl"
+          *ngFor="let item of nzDataSource; let index = index">
+          <ng-template
+            [ngTemplateOutlet]="nzItem"
+            [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
       </div>
-    </nz-spin>
-    <ng-template [ngTemplateOutlet]="nzLoadMore"></ng-template>
-    <ng-content></ng-content>
-    <div *ngIf="nzPagination" class="ant-list-pagination">
-      <ng-template [ngTemplateOutlet]="nzPagination"></ng-template>
     </div>
-    <div *ngIf="footer" class="ant-list-footer">
-      <ng-container *ngIf="_footer; else _footerTpl">{{ _footer }}</ng-container>
-    </div>
-    `,
+  </nz-spin>
+  <ng-template [ngTemplateOutlet]="nzLoadMore"></ng-template>
+  <ng-content></ng-content>
+  <div *ngIf="nzPagination" class="ant-list-pagination">
+    <ng-template [ngTemplateOutlet]="nzPagination"></ng-template>
+  </div>
+  <div *ngIf="_isFooter" class="ant-list-footer">
+    <ng-container *ngIf="_footer; else _footerTpl">{{ _footer }}</ng-container>
+  </div>
+  `,
+  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzListComponent implements OnChanges {
@@ -52,7 +53,7 @@ export class NzListComponent implements OnChanges {
 
   @Input() nzGrid: NzListGrid;
 
-  header = false;
+  _isHeader = false;
   _header = '';
   _headerTpl: TemplateRef<any>;
   @Input()
@@ -63,10 +64,10 @@ export class NzListComponent implements OnChanges {
       this._header = value;
     }
 
-    this.header = !!value;
+    this._isHeader = !!value;
   }
 
-  footer = false;
+  _isFooter = false;
   _footer = '';
   _footerTpl: TemplateRef<any>;
   @Input()
@@ -77,7 +78,7 @@ export class NzListComponent implements OnChanges {
       this._footer = value;
     }
 
-    this.footer = !!value;
+    this._isFooter = !!value;
   }
 
   @Input() nzItemLayout: 'vertical' | 'horizontal' = 'horizontal';
@@ -114,7 +115,7 @@ export class NzListComponent implements OnChanges {
   _classList: string[] = [];
 
   private _setClassMap(): void {
-    this._classList.forEach(cls => this._renderer.removeClass(this._el.nativeElement, cls));
+    this._classList.forEach(cls => this.renderer.removeClass(this.el.nativeElement, cls));
 
     this._classList = [
       this._prefixCls,
@@ -125,17 +126,17 @@ export class NzListComponent implements OnChanges {
       this.nzBordered && `${this._prefixCls}-bordered`,
       this.nzLoading && `${this._prefixCls}-loading`,
       this.nzGrid && `${this._prefixCls}-grid`,
-      !!(this.nzLoadMore || this.nzPagination || this.footer) && `${this._prefixCls}-something-after-last-item`
+      !!(this.nzLoadMore || this.nzPagination || this._isFooter) && `${this._prefixCls}-something-after-last-item`
     ].filter(item => !!item);
 
-    this._classList.forEach(cls => this._renderer.addClass(this._el.nativeElement, cls));
+    this._classList.forEach(cls => this.renderer.addClass(this.el.nativeElement, cls));
 
     this.cd.detectChanges();
   }
 
   // endregion
 
-  constructor(private _el: ElementRef, private _renderer: Renderer2, private cd: ChangeDetectorRef) {}
+  constructor(private el: ElementRef, private renderer: Renderer2, private cd: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this._setClassMap();

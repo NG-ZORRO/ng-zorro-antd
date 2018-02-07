@@ -1,6 +1,6 @@
-// tslint:disable
-import { Component, OnInit } from '@angular/core';
+// tslint:disable:no-any
 import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd';
 
 const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,nat&noinfo';
@@ -53,15 +53,15 @@ export class NzDemoListInfiniteLoadComponent implements OnInit {
 
   constructor(private http: HttpClient, private msg: NzMessageService) {}
 
-  ngOnInit() {
-      this.getData((res: any) => this.data = res.results);
+  ngOnInit(): void {
+    this.getData((res: any) => this.data = res.results);
   }
 
-  getData(callback: (res: any) => void) {
-      this.http.get(fakeDataUrl).subscribe((res: any) => callback(res));
+  getData(callback: (res: any) => void): void {
+    this.http.get(fakeDataUrl).subscribe((res: any) => callback(res));
   }
 
-  onScroll () {
+  onScroll(): void {
     if (this.loading) return;
     this.loading = true;
     if (this.data.length > 14) {
