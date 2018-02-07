@@ -14,7 +14,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { toBoolean } from '../core/util/convert';
-import { measureScrollbar } from '../core/util/mesureScrollBar';
+import { measureScrollbar } from '../core/util/mesure-scrollbar';
 import { NzThDirective } from './nz-th.directive';
 
 @Component({
@@ -53,7 +53,7 @@ import { NzThDirective } from './nz-th.directive';
           *ngIf="nzIsPagination&&data.length"
           [nzInTable]="true"
           [nzShowSizeChanger]="nzShowSizeChanger"
-          [nzPageSizeSelectorValues]="nzPageSizeSelectorValues"
+          [nzPageSizeOptions]="nzPageSizeSelectorValues"
           [nzShowQuickJumper]="nzShowQuickJumper"
           [nzShowTotal]="nzShowTotal"
           [nzSize]="(nzSize=='middle'||nzSize=='small')?'small':''"
