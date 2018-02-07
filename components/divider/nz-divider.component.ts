@@ -1,30 +1,30 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
-
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
-    selector: 'nz-divider',
-    template: `
+  selector: 'nz-divider',
+  template: `
     <span *ngIf="isText" class="ant-divider-inner-text">
-      <ng-container *ngIf="_text; else _textTpl">{{ _text }}</ng-container>
+      <ng-container *ngIf="textStr; else textTpl">{{ textStr }}</ng-container>
     </span>
     `,
-    preserveWhitespaces: false,
-    changeDetection: ChangeDetectionStrategy.OnPush
+  providers: [NzUpdateHostClassService],
+  preserveWhitespaces: false,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzDividerComponent implements OnChanges, OnInit {
-
   // region fields
 
   isText = false;
-  _text = '';
-  _textTpl: TemplateRef<void>;
+  textStr = '';
+  textTpl: TemplateRef<void>;
   @Input()
   set nzText(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
-      this._textTpl = value;
+      this.textTpl = value;
     } else {
-      this._text = value;
+      this.textStr = value;
     }
     this.isText = !!value;
   }
@@ -36,31 +36,23 @@ export class NzDividerComponent implements OnChanges, OnInit {
   set nzDashed(value: boolean) {
     this._dashed = toBoolean(value);
   }
-
   get nzDashed(): boolean {
     return this._dashed;
   }
 
   // endregion
-  _classMap: string[] = [];
   private setClass(): void {
-    this._classMap.forEach(cls => this.renderer.removeClass(this.el.nativeElement, cls));
-
-    this._classMap = [ 'ant-divider', `ant-divider-${this.nzType}` ];
-
-    if (this.isText) {
-      this._classMap.push(`ant-divider-with-text`);
-    }
-
-    if (this._dashed) {
-      this._classMap.push(`ant-divider-dashed`);
-    }
-
-    this._classMap.forEach(cls => this.renderer.addClass(this.el.nativeElement, cls));
+    const classMap = {
+      ['ant-divider']: true,
+      [`ant-divider-${this.nzType}`]: true,
+      [`ant-divider-with-text`]: this.isText,
+      [`ant-divider-dashed`]: this.nzDashed
+    };
+    this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
     this.cd.detectChanges();
   }
 
-  constructor(private el: ElementRef, private renderer: Renderer2, private cd: ChangeDetectorRef) {}
+  constructor(private el: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.setClass();
@@ -69,5 +61,4 @@ export class NzDividerComponent implements OnChanges, OnInit {
   ngOnInit(): void {
     this.setClass();
   }
-
 }
