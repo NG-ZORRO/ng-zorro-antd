@@ -1,10 +1,9 @@
-import { fakeAsync, tick } from '@angular/core/testing';
-// tslint:disable
-import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { NzAvatarModule } from './nz-avatar.module';
-import { NzAvatarComponent } from './nz-avatar.component';
+import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
+import { NzAvatarComponent } from './nz-avatar.component';
+import { NzAvatarModule } from './nz-avatar.module';
 
 function getType(dl: DebugElement): string {
   const el = dl.nativeElement as HTMLElement;
@@ -39,11 +38,29 @@ describe('avatar', () => {
     expect(getType(dl)).toBe('icon');
   });
 
-  it('#nzText', () => {
-    context.nzSrc = null;
-    context.nzIcon = null;
-    fixture.detectChanges();
-    expect(getType(dl)).toBe('text');
+  describe('#nzText', () => {
+    beforeEach(() => {
+      context.nzSrc = null;
+      context.nzIcon = null;
+      fixture.detectChanges();
+    });
+    it('property', () => {
+      expect(getType(dl)).toBe('text');
+    });
+    it('should be normal font-size', fakeAsync(() => {
+      context.nzText = 'a';
+      fixture.detectChanges();
+      tick();
+      const scale = +dl.nativeElement.querySelector('.ant-avatar-string').style.transform.replace(/[^\.0-9]/ig, '');
+      expect(scale).toBe(0);
+    }));
+    it('should be autoset font-size', fakeAsync(() => {
+      context.nzText = 'LongUsername';
+      fixture.detectChanges();
+      tick();
+      const scale = +dl.nativeElement.querySelector('.ant-avatar-string').style.transform.replace(/[^\.0-9]/ig, '');
+      expect(scale).toBeLessThan(1);
+    }));
   });
 
   describe('#nzShape', () => {
@@ -61,7 +78,6 @@ describe('avatar', () => {
       it(item.size, () => {
         context.nzSize = item.size;
         fixture.detectChanges();
-        debugger;
         expect(dl.query(By.css(`.ant-avatar-${item.cls}`)) !== null).toBe(true);
       });
     }
@@ -73,19 +89,29 @@ describe('avatar', () => {
     });
     it('should be show icon when image loaded error and icon exists', fakeAsync(() => {
       expect(getType(dl)).toBe('image');
-      context.comp._imgError();
+      context.comp.imgError();
       tick();
       fixture.detectChanges();
       expect(getType(dl)).toBe('icon');
     }));
     it('should be show text when image loaded error and icon not exists', fakeAsync(() => {
       expect(getType(dl)).toBe('image');
-      context.nzIcon = '';
+      context.nzIcon = null;
       fixture.detectChanges();
-      context.comp._imgError();
+      context.comp.imgError();
       tick();
       fixture.detectChanges();
       expect(getType(dl)).toBe('text');
+    }));
+    it('should be show empty when image loaded error and icon & text not exists', fakeAsync(() => {
+      expect(getType(dl)).toBe('image');
+      context.nzIcon = null;
+      context.nzText = null;
+      fixture.detectChanges();
+      context.comp.imgError();
+      tick();
+      fixture.detectChanges();
+      expect(getType(dl)).toBe('');
     }));
   });
 });
@@ -98,7 +124,8 @@ describe('avatar', () => {
     [nzIcon]="nzIcon"
     [nzText]="nzText"
     [nzSrc]="nzSrc"></nz-avatar>
-  `
+  `,
+  styleUrls: [ './style/index.less' ]
 })
 class TestAvatarComponent {
   @ViewChild('comp') comp: NzAvatarComponent;
