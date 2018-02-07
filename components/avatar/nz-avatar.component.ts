@@ -1,24 +1,26 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
   OnChanges,
   Renderer2,
   SimpleChanges,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 
 export type NzAvatarShape = 'square' | 'circle';
 export type NzAvatarSize = 'small' | 'large' | 'default';
 
 @Component({
-  selector           : 'nz-avatar',
-  preserveWhitespaces: false,
-  template           : `
-    <i class="anticon anticon-{{nzIcon}}" *ngIf="nzIcon && _hasIcon"></i>
-    <img [src]="nzSrc" *ngIf="nzSrc && _isSrcExist" (error)="_imgError($event)"/>
-    <span class="ant-avatar-string" #textEl [ngStyle]="_textStyles" *ngIf="nzText && _hasText">{{ nzText }}</span>
-  `
+  selector: 'nz-avatar',
+  template: `
+  <i class="anticon anticon-{{nzIcon}}" *ngIf="nzIcon && _hasIcon"></i>
+  <img [src]="nzSrc" *ngIf="nzSrc && _isSrcExist" (error)="_imgError()"/>
+  <span class="ant-avatar-string" #textEl [ngStyle]="_textStyles" *ngIf="nzText && _hasText">{{ nzText }}</span>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzAvatarComponent implements OnChanges {
 
@@ -50,7 +52,7 @@ export class NzAvatarComponent implements OnChanges {
       this._renderer.removeClass(this._el, _className);
     });
     this._classList = [
-      this._sizeMap[ this.nzSize ] && `${this._prefixCls}-${this._sizeMap[ this.nzSize ]}`,
+      this._sizeMap[this.nzSize] && `${this._prefixCls}-${this._sizeMap[this.nzSize]}`,
       this.nzShape && `${this._prefixCls}-${this.nzShape}`,
       this.nzIcon && `${this._prefixCls}-icon`,
       this.nzSrc && `${this._prefixCls}-image`
@@ -60,12 +62,12 @@ export class NzAvatarComponent implements OnChanges {
     this._classList.forEach(_className => {
       this._renderer.addClass(this._el, _className);
     });
+    this.cd.detectChanges();
     return this;
   }
 
   _imgError(): void {
     this._isSrcExist = false;
-    // TODO(i): need force remove [nzSrc] if broken image?
     this._hasIcon = false;
     this._hasText = false;
     if (this.nzIcon) {
@@ -90,11 +92,12 @@ export class NzAvatarComponent implements OnChanges {
     } else {
       this._textStyles = {
         transform: `scale(${scale})`,
-        position : 'absolute',
-        display  : 'inline-block',
-        left     : `calc(50% - ${Math.round(childrenWidth / 2)}px)`
+        position: 'absolute',
+        display: 'inline-block',
+        left: `calc(50% - ${Math.round(childrenWidth / 2)}px)`
       };
     }
+    this.cd.detectChanges();
   }
 
   private _notifyCalc(): this {
@@ -105,7 +108,7 @@ export class NzAvatarComponent implements OnChanges {
     return this;
   }
 
-  constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
+  constructor(private _elementRef: ElementRef, private _renderer: Renderer2, private cd: ChangeDetectorRef) {
     this._el = _elementRef.nativeElement;
     this._renderer.addClass(this._el, this._prefixCls);
   }
