@@ -1,5 +1,5 @@
-// tslint:disable:ordered-imports no-any
-import { Component, ContentChild, ContentChildren, HostBinding, Input, QueryList, TemplateRef, ViewChild, ElementRef } from '@angular/core';
+// tslint:disable: no-any
+import { Component, ContentChild, ContentChildren, ElementRef, HostBinding, Input, QueryList, TemplateRef, ViewChild } from '@angular/core';
 import { NzListItemMetaComponent } from './nz-list-item-meta.component';
 
 @Component({

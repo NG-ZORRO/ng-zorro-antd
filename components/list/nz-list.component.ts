@@ -1,7 +1,7 @@
-// tslint:disable:ordered-imports no-any
-import { Component, ViewEncapsulation, Input, TemplateRef, ChangeDetectionStrategy, ChangeDetectorRef, ContentChild, ElementRef, Renderer2, OnChanges, SimpleChanges, OnInit } from '@angular/core';
+// tslint:disable: no-any
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, ElementRef, Input, OnChanges, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { toBoolean } from '../core/util/convert';
-import { NzListGrid, ListSize } from './interface';
+import { ListSize, NzListGrid } from './interface';
 
 @Component({
   selector: 'nz-list',
@@ -35,11 +35,9 @@ import { NzListGrid, ListSize } from './interface';
       <ng-container *ngIf="_footer; else _footerTpl">{{ _footer }}</ng-container>
     </div>
     `,
-  styleUrls: ['./style/index.less', './style/patch.less'],
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzListComponent implements OnChanges, OnInit {
+export class NzListComponent implements OnChanges {
   // region: fields
   @Input() nzDataSource: any[] = [];
 
@@ -138,8 +136,6 @@ export class NzListComponent implements OnChanges, OnInit {
   // endregion
 
   constructor(private _el: ElementRef, private _renderer: Renderer2, private cd: ChangeDetectorRef) {}
-
-  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this._setClassMap();

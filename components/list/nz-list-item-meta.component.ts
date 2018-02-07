@@ -1,4 +1,4 @@
-// tslint:disable:ordered-imports no-any
+// tslint:disable:no-any
 import { Component, ContentChild, HostBinding, Input, TemplateRef } from '@angular/core';
 
 @Component({
