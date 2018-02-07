@@ -12,17 +12,3 @@ title:
 ## en-US
 
 Use `type="vertical"` make it vertical.
-
-````jsx
-import { Divider } from 'antd';
-
-ReactDOM.render(
-  <div>
-    Text
-    <Divider type="vertical" />
-    <a href="#">Link</a>
-    <Divider type="vertical" />
-    <a href="#">Link</a>
-  </div>
-, mountNode);
-````

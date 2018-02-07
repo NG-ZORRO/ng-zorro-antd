@@ -42,6 +42,7 @@ import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
 
 export * from './button';
+export * from './divider';
 export * from './grid';
 export * from './layout';
 export * from './dropdown';

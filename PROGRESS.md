@@ -47,7 +47,7 @@
 | upload | x | x | x | cipchk | - |
 | anchor | x | x | x | cipchk | - |
 | backtop | x | x | x | cipchk | - |
-| divider | x | x | x | cipchk | - |
+| divider | √ | 100% | 100% | cipchk | x |
 | treeselect | x | x | x | simplejason | - |
 | tree | x | x | x | simplejason | - |
 | tags | x | x | x | fbchen | -|
