@@ -14,33 +14,33 @@ title: Steps
 
 ## API
 
-```jsx
-<Steps>
-  <Step title="第一步" />
-  <Step title="第二步" />
-  <Step title="第三步" />
-</Steps>
+```html
+<nz-steps>
+  <nz-step nzTitle="第一步"></nz-step>
+  <nz-step nzTitle="第二步"></nz-step>
+  <nz-step nzTitle="第三步"></nz-step>
+</nz-steps>
 ```
 
-### Steps
+### nz-steps
 
 整体步骤条。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| current | 指定当前步骤，从 0 开始记数。在子 Step 元素中，可以通过 `status` 属性覆盖状态 | number | 0 |
-| direction | 指定步骤条方向。目前支持水平（`horizontal`）和竖直（`vertical`）两种方向 | string | horizontal |
-| progressDot | 点状步骤条，可以设置为一个 function | Boolean or (iconDot, {index, status, title, description}) => ReactNode | false |
-| size | 指定大小，目前支持普通（`default`）和迷你（`small`） | string | default |
-| status | 指定当前步骤的状态，可选 `wait` `process` `finish` `error` | string | process |
+| nzCurrent | 指定当前步骤，从 0 开始记数。在子 `nz-step` 元素中，可以通过 `nzStatus` 属性覆盖状态 | number | 0 |
+| nzDirection | 指定步骤条方向。目前支持水平（`horizontal`）和竖直（`vertical`）两种方向 | string | horizontal |
+| nzProgressDot | 点状步骤条，可以设置为一个 TemplateRef | Boolean 丨 `TemplateRef<{ $implicit: TemplateRef<void>, status: string, index: number }>` | false |
+| nzSize | 指定大小，目前支持普通（`default`）和迷你（`small`） | string | default |
+| nzStatus | 指定当前步骤的状态，可选 `wait` `process` `finish` `error` | string | process |
 
-### Steps.Step
+### nz-step
 
 步骤条内的每一个步骤。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| description | 步骤的详情描述，可选 | string | ReactNode | - |
-| icon | 步骤图标的类型，可选 | string | ReactNode | - |
-| status | 指定状态。当不配置该属性时，会使用 Steps 的 `current` 来自动指定状态。可选：`wait` `process` `finish` `error` | string | wait |
-| title | 标题 | string | ReactNode | - |
+| nzDescription | 步骤的详情描述，可选 | string 丨 `TemplateRef<void>` | - |
+| nzIcon | 步骤图标的类型，可选 | string 丨 `TemplateRef<void>` | - |
+| nzStatus | 指定状态。当不配置该属性时，会使用 `nz-steps` 的 `nzCurrent` 来自动指定状态。可选：`wait` `process` `finish` `error` | string | wait |
+| nzTitle | 标题 | string 丨 `TemplateRef<void>` | - |
