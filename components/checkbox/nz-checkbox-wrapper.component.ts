@@ -22,7 +22,12 @@ export class NzCheckboxWrapperComponent {
     this.checkboxList.splice(this.checkboxList.indexOf(value), 1);
   }
 
+  outputValue(): string[] {
+    const checkedList = this.checkboxList.filter(item => item.nzChecked);
+    return checkedList.map(item => item.nzValue);
+  }
+
   onChange(): void {
-    this.nzOnChange.emit(this.checkboxList.filter(item => item.checked).map(item => item.nzValue));
+    this.nzOnChange.emit(this.outputValue());
   }
 }

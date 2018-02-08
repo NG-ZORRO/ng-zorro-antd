@@ -7,10 +7,9 @@ import {
 } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, TemplateRef } from '@angular/core';
+import { Inject, Injectable, NgZone, TemplateRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NzDropdownContextComponent } from './nz-dropdown-context.component';
-import { fromEvent } from 'rxjs/observable/fromEvent';
 
 @Injectable()
 export class NzDropdownService {
@@ -19,7 +18,6 @@ export class NzDropdownService {
   private locatePoint: HTMLElement;
   private positionStrategy: ConnectedPositionStrategy;
   private backdropClickSubscription: Subscription;
-  private backdropContextMenuSubscription: Subscription;
   private detachmentsSubscription: Subscription;
   private onPositionChangeSubscription: Subscription;
   private positions = [
@@ -38,7 +36,7 @@ export class NzDropdownService {
   ];
 
   /* tslint:disable-next-line:no-any */
-  constructor(private overlay: Overlay, @Inject(DOCUMENT) private document: any) {
+  constructor(private overlay: Overlay, @Inject(DOCUMENT) private document: any, private zone: NgZone) {
   }
 
   private createOverlay($event: MouseEvent): OverlayRef {
@@ -107,8 +105,8 @@ export class NzDropdownService {
       this.overlayRef = this.createOverlay($event);
       setTimeout(() => {
         if (this.overlayRef.backdropElement) {
-          this.backdropContextMenuSubscription = fromEvent(this.overlayRef.backdropElement, 'contextmenu').subscribe((e: MouseEvent) => {
-            e.preventDefault();
+          this.zone.runOutsideAngular(() => {
+            this.overlayRef.backdropElement.addEventListener('contextmenu', (e: MouseEvent) => e.preventDefault());
           });
         }
       });
@@ -125,10 +123,6 @@ export class NzDropdownService {
     if (this.backdropClickSubscription) {
       this.backdropClickSubscription.unsubscribe();
       this.backdropClickSubscription = null;
-    }
-    if (this.backdropContextMenuSubscription) {
-      this.backdropContextMenuSubscription.unsubscribe();
-      this.backdropContextMenuSubscription = null;
     }
     if (this.detachmentsSubscription) {
       this.detachmentsSubscription.unsubscribe();

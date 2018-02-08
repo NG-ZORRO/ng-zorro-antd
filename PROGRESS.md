@@ -12,7 +12,7 @@
 | menu | √ | 100% | 100% | vthinkxie | √ |
 | pagination | √ | 100% | 100% | vthinkxie | - |
 | steps | √ | 100% | 100% | vthinkxie | - |
-| checkbox | x | x | x | vthinkxie | - |
+| checkbox | √ | 100% | 100% | vthinkxie | - |
 | form | x | x | x | vthinkxie | - |
 | input | x | x | x | vthinkxie | - |
 | inputnumber | x | x | x | vthinkxie | - |

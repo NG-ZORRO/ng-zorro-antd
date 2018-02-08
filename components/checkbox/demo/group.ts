@@ -10,8 +10,7 @@ import { Component } from '@angular/core';
     <br>
     <br>
     <nz-checkbox-group [(ngModel)]="checkOptionsThree" (ngModelChange)="log(checkOptionsThree)"></nz-checkbox-group>
-  `,
-  styles  : []
+  `
 })
 export class NzDemoCheckboxGroupComponent {
   checkOptionsOne = [

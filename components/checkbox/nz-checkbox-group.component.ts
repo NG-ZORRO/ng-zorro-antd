@@ -2,8 +2,10 @@ import {
   forwardRef,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   Renderer2
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -24,8 +26,8 @@ export interface NzCheckBoxOptionInterface {
       nz-checkbox
       *ngFor="let option of options"
       [nzDisabled]="option.disabled||nzDisabled"
-      [(ngModel)]="option.checked"
-      (ngModelChange)="onOptionChange()">
+      [(nzChecked)]="option.checked"
+      (nzCheckedChange)="onOptionChange()">
       <span>{{ option.label }}</span>
     </label>`,
   providers          : [
