@@ -41,12 +41,14 @@ import { NzTagModule } from './tag/nz-tag.module';
 import { NzTimelineModule } from './timeline/nz-timeline.module';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
+import { NzUploadModule } from './upload/nz-upload.module';
 
 export * from './button';
 export * from './grid';
 export * from './layout';
 export * from './dropdown';
 export * from './menu';
+export * from './upload';
 export * from './i18n';
 export * from './locale/index';
 export * from './list/index';
@@ -104,7 +106,8 @@ export { NZ_NOTIFICATION_CONFIG } from './notification/nz-notification-config';
     NzDividerModule,
     NzFormModule,
     NzListModule,
-    NzI18nModule
+    NzI18nModule,
+    NzUploadModule
   ]
 })
 export class NgZorroAntdModule {

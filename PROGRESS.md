@@ -44,7 +44,7 @@
 | transfer | x | x | x | cipchk | - |
 | avatar | x | x | x | cipchk | - |
 | list | x | x | x | cipchk | - |
-| upload | x | x | x | cipchk | - |
+| upload | √ | 95% | 100% | cipchk | x |
 | anchor | x | x | x | cipchk | - |
 | backtop | x | x | x | cipchk | - |
 | divider | x | x | x | cipchk | - |
