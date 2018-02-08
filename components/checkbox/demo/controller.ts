@@ -23,11 +23,11 @@ export class NzDemoCheckboxControllerComponent {
   isCheckedButton = true;
   isDisabledButton = false;
 
-  checkButton() {
+  checkButton(): void {
     this.isCheckedButton = !this.isCheckedButton;
   }
 
-  disableButton() {
+  disableButton(): void {
     this.isDisabledButton = !this.isDisabledButton;
   }
 }

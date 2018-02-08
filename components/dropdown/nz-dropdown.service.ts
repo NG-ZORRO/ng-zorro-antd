@@ -10,6 +10,7 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, TemplateRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NzDropdownContextComponent } from './nz-dropdown-context.component';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 
 @Injectable()
 export class NzDropdownService {
@@ -18,6 +19,7 @@ export class NzDropdownService {
   private locatePoint: HTMLElement;
   private positionStrategy: ConnectedPositionStrategy;
   private backdropClickSubscription: Subscription;
+  private backdropContextMenuSubscription: Subscription;
   private detachmentsSubscription: Subscription;
   private onPositionChangeSubscription: Subscription;
   private positions = [
@@ -103,6 +105,13 @@ export class NzDropdownService {
       this.overlayRef.dispose();
     } else {
       this.overlayRef = this.createOverlay($event);
+      setTimeout(() => {
+        if (this.overlayRef.backdropElement) {
+          this.backdropContextMenuSubscription = fromEvent(this.overlayRef.backdropElement, 'contextmenu').subscribe((e: MouseEvent) => {
+            e.preventDefault();
+          });
+        }
+      });
       this.instance = this.overlayRef.attach(new ComponentPortal(NzDropdownContextComponent)).instance;
       this.setInstanceValue(this.instance, template);
       this.handleCloseEvent(this.overlayRef);
@@ -116,6 +125,10 @@ export class NzDropdownService {
     if (this.backdropClickSubscription) {
       this.backdropClickSubscription.unsubscribe();
       this.backdropClickSubscription = null;
+    }
+    if (this.backdropContextMenuSubscription) {
+      this.backdropContextMenuSubscription.unsubscribe();
+      this.backdropContextMenuSubscription = null;
     }
     if (this.detachmentsSubscription) {
       this.detachmentsSubscription.unsubscribe();

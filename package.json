@@ -42,7 +42,7 @@
     "url": "https://github.com/NG-ZORRO/ng-zorro-antd/issues"
   },
   "dependencies": {
-    "@angular/cdk": "^5.0.0",
+    "@angular/cdk": "^5.2.0",
     "lodash.ismatch": "^4.4.0",
     "moment": "^2.18.1"
   },

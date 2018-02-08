@@ -14,28 +14,35 @@ title: Checkbox
 
 ## API
 
-### Checkbox
+### nz-checkbox
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| autoFocus | 自动获取焦点 | boolean | false |
-| checked | 指定当前是否选中 | boolean | false |
-| defaultChecked | 初始是否选中 | boolean | false |
-| indeterminate | 设置 indeterminate 状态，只负责样式控制 | boolean | false |
-| onChange | 变化时回调函数 | Function(e:Event) | - |
+| nzAutoFocus | 自动获取焦点 | boolean | false |
+| nzDisabled | 设定 disable 状态 | boolean | false |
+| ngModel | 指定当前是否选中，可双向绑定 | boolean | false |
+| ngModelChange | 选中变化时回调 | (ngModel:boolean)=>{} | - |
+| nzIndeterminate | 设置 indeterminate 状态，只负责样式控制 | boolean | false |
+| nzValue | 设置nzValue，与 `nz-checkbox-wrapper` 的选中回调配合使用 | string | - |
 
-### Checkbox Group
+### nz-checkbox-group
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| defaultValue | 默认选中的选项 | string\[] | \[] |
-| options | 指定可选项 | string\[] | \[] |
-| value | 指定选中的选项 | string\[] | \[] |
-| onChange | 变化时回调函数 | Function(checkedValue) | - |
+| ngModel | 指定可选项，可双向绑定 | `Array<{ label: string; value: string; checked?: boolean; }>` | `[]` |
+| ngModelChange | 选中数据变化时的回调 | `(ngModel:Array<{ label: string; value: string; checked?: boolean; }>)=>{}` | - |
+| nzDisabled | 设定全部 checkbox disable 状态 | boolean | false |
+
+
+### nz-checkbox-wrapper
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| nzOnChange | 选中数据变化时的回调 | `(list:string[])=>{}` | - |
 
 ## 方法
 
-### Checkbox
+### nz-checkbox
 
 | 名称 | 描述 |
 | ---- | ----------- |
