@@ -8,7 +8,7 @@
     "site": "node scripts/generate-site",
     "ng": "ng",
     "start": "ng serve",
-    "build": "node scripts/generate-site init && ng build --prod",
+    "build": "node scripts/generate-site init && ng build",
     "doc": "ng build --prod",
     "helper": "bash ./release-helper.sh",
     "generate": "bash ./build.sh",
@@ -43,7 +43,6 @@
   },
   "dependencies": {
     "@angular/cdk": "^5.0.0",
-    "copy-webpack-plugin": "4.3.0",
     "lodash.ismatch": "^4.4.0",
     "moment": "^2.18.1"
   },
