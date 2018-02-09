@@ -3,34 +3,17 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-button-disabled',
   template: `
-    <button nz-button nzType="primary">
-      <span>Primary</span>
-    </button>
-    <button nz-button nzType="primary" disabled>
-      <span>Primary(disabled)</span>
-    </button>
+    <button nz-button nzType="primary">Primary</button>
+    <button nz-button nzType="primary" disabled>Primary(disabled)</button>
     <br>
-    <button nz-button nzType="default">
-      <span>Default</span>
-    </button>
-    <button nz-button nzType="default" disabled>
-      <span>Default(disabled)</span>
-    </button>
+    <button nz-button nzType="default">Default</button>
+    <button nz-button nzType="default" disabled>Default(disabled)</button>
     <br>
-    <button nz-button nzGhost>
-      <span>Ghost</span>
-    </button>
-    <button nz-button nzGhost disabled>
-      <span>Ghost(disabled)</span>
-    </button>
+    <button nz-button nzGhost>Ghost</button>
+    <button nz-button nzGhost disabled>Ghost(disabled)</button>
     <br>
-    <button nz-button nzType="dashed">
-      <span>Dashed</span>
-    </button>
-    <button nz-button nzType="dashed" disabled>
-      <span>Dashed(disabled)</span>
-    </button>`,
-  styles  : []
+    <button nz-button nzType="dashed">Dashed</button>
+    <button nz-button nzType="dashed" disabled>Dashed(disabled)</button>`
 })
 export class NzDemoButtonDisabledComponent {
 }

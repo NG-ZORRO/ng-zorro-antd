@@ -1,29 +1,37 @@
 import {
   forwardRef,
+  AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
-  Renderer2
+  Optional,
+  Output,
+  Renderer2,
+  ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { toBoolean } from '../core/util/convert';
+import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
 
 @Component({
   selector           : '[nz-checkbox]',
   preserveWhitespaces: false,
   template           : `
-    <span [ngClass]="_classMap">
-      <span [ngClass]="_innerPrefixCls"></span>
-      <input type="checkbox"
-        [ngClass]="_inputPrefixCls"
-        [ngModel]="nzChecked"
-        (focus)="nzFocus()"
-        (blur)="onTouched();nzBlur()">
+    <span [ngClass]="classMap">
+      <input
+        #inputElement
+        [checked]="nzChecked"
+        type="checkbox"
+        class="ant-checkbox-input"
+        (blur)="onBlur()">
+      <span class="ant-checkbox-inner"></span>
     </span>
-    <ng-content></ng-content>
+    <span><ng-content></ng-content></span>
   `,
   providers          : [
     {
@@ -33,18 +41,31 @@ import { toBoolean } from '../core/util/convert';
     }
   ]
 })
-export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChanges {
+export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChanges, AfterViewInit, OnDestroy {
   private _disabled = false;
   private _indeterminate = false;
-  _el: HTMLElement;
-  _prefixCls = 'ant-checkbox';
-  _innerPrefixCls = `${this._prefixCls}-inner`;
-  _inputPrefixCls = `${this._prefixCls}-input`;
-  _checked = false;
-  _focused = false;
-  // ngModel Access
-  onChange = Function.prototype;
-  onTouched = Function.prototype;
+  private _autoFocus = false;
+  private _checked = false;
+  private el: HTMLElement;
+  private isInit = false;
+  private prefixCls = 'ant-checkbox';
+  private onChange = Function.prototype;
+  private onTouched = Function.prototype;
+  @ViewChild('inputElement')
+  private inputElement: ElementRef;
+  classMap = {};
+  @Output() nzCheckedChange = new EventEmitter<boolean>();
+  @Input() nzValue: string;
+
+  @Input()
+  set nzAutoFocus(value: boolean) {
+    this._autoFocus = toBoolean(value);
+    this.updateAutoFocus();
+  }
+
+  get nzAutoFocus(): boolean {
+    return this._autoFocus;
+  }
 
   @Input()
   set nzDisabled(value: boolean) {
@@ -64,15 +85,12 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
     return this._indeterminate;
   }
 
-  _classMap = {
-    [ this._prefixCls ]                   : true,
-    [ `${this._prefixCls}-checked` ]      : this._checked && (!this.nzIndeterminate),
-    [ `${this._prefixCls}-focused` ]      : this._focused,
-    [ `${this._prefixCls}-disabled` ]     : this.nzDisabled,
-    [ `${this._prefixCls}-indeterminate` ]: this.nzIndeterminate,
-  };
-
   @Input()
+  set nzChecked(value: boolean) {
+    this._checked = value;
+    this.updateClassMap();
+  }
+
   get nzChecked(): boolean {
     return this._checked;
   }
@@ -80,35 +98,38 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   @HostListener('click', [ '$event' ])
   onClick(e: MouseEvent): void {
     e.preventDefault();
+    this.inputElement.nativeElement.focus();
     if (!this.nzDisabled) {
-      this.updateValue(!this._checked);
+      this.updateValue(!this.nzChecked);
     }
+  }
+
+  onBlur(): void {
+    this.onTouched();
+  }
+
+  updateAutoFocus(): void {
+    if (this.isInit) {
+      if (this.nzAutoFocus) {
+        this.renderer.setAttribute(this.inputElement.nativeElement, 'autofocus', 'autofocus');
+      } else {
+        this.renderer.removeAttribute(this.inputElement.nativeElement, 'autofocus');
+      }
+    }
+
   }
 
   updateValue(value: boolean): void {
-    if (value === this._checked) {
-      return;
-    }
     this.onChange(value);
-    this._checked = value;
-    this.updateClassMap();
-  }
-
-  nzFocus(): void {
-    this._focused = true;
-  }
-
-  nzBlur(): void {
-    this._focused = false;
-  }
-
-  constructor(private _elementRef: ElementRef, private _render: Renderer2) {
-    this._el = this._elementRef.nativeElement;
+    this.nzCheckedChange.emit(value);
+    this.nzChecked = value;
+    if (this.nzCheckboxWrapperComponent) {
+      this.nzCheckboxWrapperComponent.onChange();
+    }
   }
 
   writeValue(value: boolean): void {
-    this._checked = value;
-    this.updateClassMap();
+    this.nzChecked = value;
   }
 
   registerOnChange(fn: (_: boolean) => {}): void {
@@ -124,21 +145,46 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   }
 
   updateClassMap(): void {
-    this._classMap = {
-      [ this._prefixCls ]                   : true,
-      [ `${this._prefixCls}-checked` ]      : this._checked && (!this.nzIndeterminate),
-      [ `${this._prefixCls}-focused` ]      : this._focused,
-      [ `${this._prefixCls}-disabled` ]     : this.nzDisabled,
-      [ `${this._prefixCls}-indeterminate` ]: this.nzIndeterminate,
+    this.classMap = {
+      [ this.prefixCls ]                   : true,
+      [ `${this.prefixCls}-checked` ]      : this.nzChecked && (!this.nzIndeterminate),
+      [ `${this.prefixCls}-disabled` ]     : this.nzDisabled,
+      [ `${this.prefixCls}-indeterminate` ]: this.nzIndeterminate
     };
   }
 
+  focus(): void {
+    this.inputElement.nativeElement.focus();
+  }
+
+  blur(): void {
+    this.inputElement.nativeElement.blur();
+  }
+
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Optional() private nzCheckboxWrapperComponent: NzCheckboxWrapperComponent) {
+    this.el = this.elementRef.nativeElement;
+  }
+
   ngOnInit(): void {
-    this._render.addClass(this._el, `${this._prefixCls}-wrapper`);
+    this.renderer.addClass(this.el, `${this.prefixCls}-wrapper`);
     this.updateClassMap();
+    if (this.nzCheckboxWrapperComponent) {
+      this.nzCheckboxWrapperComponent.addCheckbox(this);
+    }
   }
 
   ngOnChanges(): void {
     this.updateClassMap();
+  }
+
+  ngAfterViewInit(): void {
+    this.isInit = true;
+    this.updateAutoFocus();
+  }
+
+  ngOnDestroy(): void {
+    if (this.nzCheckboxWrapperComponent) {
+      this.nzCheckboxWrapperComponent.removeCheckbox(this);
+    }
   }
 }

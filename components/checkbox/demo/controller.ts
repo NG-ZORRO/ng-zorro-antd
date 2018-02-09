@@ -5,29 +5,28 @@ import { Component } from '@angular/core';
   template: `
     <p style="margin-bottom: 20px;">
       <label nz-checkbox [(ngModel)]="isCheckedButton" [nzDisabled]="isDisabledButton">
-        <span>{{ isCheckedButton ? 'Checked' : 'Unchecked' }} - {{ isDisabledButton ? 'Disabled' : 'Enabled' }}</span>
+        {{ isCheckedButton ? 'Checked' : 'Unchecked' }} - {{ isDisabledButton ? 'Disabled' : 'Enabled' }}
       </label>
     </p>
     <p>
       <button nz-button [nzType]="'primary'" (click)="checkButton()" [nzSize]="'small'">
-        <span>{{ !isCheckedButton ? 'Checked' : 'Unchecked' }}</span>
+        {{ !isCheckedButton ? 'Checked' : 'Unchecked' }}
       </button>
       <button nz-button [nzType]="'primary'" (click)="disableButton()" [nzSize]="'small'">
-        <span>{{ isDisabledButton ? 'Enabled' : 'Disabled' }}</span>
+        {{ isDisabledButton ? 'Enabled' : 'Disabled' }}
       </button>
     </p>
-  `,
-  styles  : []
+  `
 })
 export class NzDemoCheckboxControllerComponent {
   isCheckedButton = true;
   isDisabledButton = false;
 
-  checkButton() {
+  checkButton(): void {
     this.isCheckedButton = !this.isCheckedButton;
   }
 
-  disableButton() {
+  disableButton(): void {
     this.isDisabledButton = !this.isDisabledButton;
   }
 }
