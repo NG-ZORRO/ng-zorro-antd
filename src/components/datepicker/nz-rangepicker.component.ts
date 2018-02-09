@@ -40,13 +40,13 @@ import { measureScrollbar } from '../util/mesureScrollBar';
         <ng-container *ngTemplateOutlet="inputRangePart; context: { part: _part.Start }"></ng-container>
         <span class="ant-calendar-range-picker-separator"> ~ </span>
         <ng-container *ngTemplateOutlet="inputRangePart; context: { part: _part.End }"></ng-container>
-      </span>
-      <i class="ant-calendar-picker-clear anticon anticon-cross-circle"
+        <i class="ant-calendar-picker-clear anticon anticon-cross-circle"
          *ngIf="showClearIcon"
          (click)="onTouched();
          _clearValue($event)">
-      </i>
-      <span class="ant-calendar-picker-icon"></span>
+        </i>
+        <span class="ant-calendar-picker-icon"></span>
+      </span>
     </span>
 
     <ng-template cdkConnectedOverlay
@@ -99,7 +99,7 @@ import { measureScrollbar } from '../util/mesureScrollBar';
     </ng-template>
     <!-- input template -->
     <ng-template #inputRangePart let-part="part">
-      <input class="ant-calendar-range-picker-input" nz-input [nzDisabled]="nzDisabled"
+      <input class="ant-calendar-range-picker-input" [disabled]="nzDisabled"
              [value]="nzValue[part] | nzDate: nzFormat"
              [placeholder]="nzPlaceholder[part]">
     </ng-template>
