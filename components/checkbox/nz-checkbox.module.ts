@@ -2,17 +2,20 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzCheckboxGroupComponent } from './nz-checkbox-group.component';
+import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
 import { NzCheckboxComponent } from './nz-checkbox.component';
 
 @NgModule({
   imports     : [ CommonModule, FormsModule ],
   declarations: [
     NzCheckboxComponent,
-    NzCheckboxGroupComponent
+    NzCheckboxGroupComponent,
+    NzCheckboxWrapperComponent
   ],
   exports     : [
     NzCheckboxComponent,
-    NzCheckboxGroupComponent
+    NzCheckboxGroupComponent,
+    NzCheckboxWrapperComponent
   ]
 })
 export class NzCheckboxModule {

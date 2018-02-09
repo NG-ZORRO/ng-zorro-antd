@@ -28,8 +28,7 @@ import { Component } from '@angular/core';
     <button nz-button nzType="dashed">
       <i class="anticon anticon-search"></i><span>Search</span>
     </button>
-  `,
-  styles  : []
+  `
 })
 export class NzDemoButtonIconComponent {
 }

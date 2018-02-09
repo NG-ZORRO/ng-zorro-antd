@@ -359,6 +359,22 @@ describe('dropdown', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toBe('');
     }));
+    it('should prevent contextmenu after create', fakeAsync(() => {
+      const fakeEvent = createMouseEvent('contextmenu', 100, 100);
+      testComponent.nzDropdownService.create(fakeEvent, testComponent.template);
+      tick(500);
+      fixture.detectChanges();
+      const backdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop') as HTMLElement;
+      const fakeContextEvent = createMouseEvent('contextmenu', 200, 200);
+      spyOn(fakeContextEvent, 'preventDefault');
+      backdrop.dispatchEvent(fakeContextEvent);
+      tick(500);
+      fixture.detectChanges();
+      expect(fakeContextEvent.preventDefault).toHaveBeenCalled();
+      tick(500);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).not.toBe('');
+    }));
   });
 });
 

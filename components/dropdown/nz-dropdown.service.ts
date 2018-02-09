@@ -7,7 +7,7 @@ import {
 } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, TemplateRef } from '@angular/core';
+import { Inject, Injectable, NgZone, TemplateRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NzDropdownContextComponent } from './nz-dropdown-context.component';
 
@@ -36,7 +36,7 @@ export class NzDropdownService {
   ];
 
   /* tslint:disable-next-line:no-any */
-  constructor(private overlay: Overlay, @Inject(DOCUMENT) private document: any) {
+  constructor(private overlay: Overlay, @Inject(DOCUMENT) private document: any, private zone: NgZone) {
   }
 
   private createOverlay($event: MouseEvent): OverlayRef {
@@ -103,6 +103,13 @@ export class NzDropdownService {
       this.overlayRef.dispose();
     } else {
       this.overlayRef = this.createOverlay($event);
+      setTimeout(() => {
+        if (this.overlayRef.backdropElement) {
+          this.zone.runOutsideAngular(() => {
+            this.overlayRef.backdropElement.addEventListener('contextmenu', (e: MouseEvent) => e.preventDefault());
+          });
+        }
+      });
       this.instance = this.overlayRef.attach(new ComponentPortal(NzDropdownContextComponent)).instance;
       this.setInstanceValue(this.instance, template);
       this.handleCloseEvent(this.overlayRef);
