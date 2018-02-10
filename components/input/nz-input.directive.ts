@@ -22,18 +22,18 @@ export interface AutoSizeType {
   }
 })
 export class NzInputDirective implements AfterViewInit {
-  size = 'default';
-  nativeElement: HTMLElement;
-  _disabled = false;
-  _autosize: boolean | AutoSizeType = false;
+  private _size = 'default';
+  private _disabled = false;
+  private _autosize: boolean | AutoSizeType = false;
+  private el: HTMLElement;
 
   @Input()
   get nzSize(): string {
-    return this.size;
+    return this._size;
   }
 
   set nzSize(value: string) {
-    this.size = { large: 'lg', small: 'sm' }[ value ];
+    this._size = value;
   }
 
   @Input()
@@ -61,12 +61,12 @@ export class NzInputDirective implements AfterViewInit {
 
   @HostBinding(`class.ant-input-lg`)
   get setLgClass(): boolean {
-    return this.size === 'lg';
+    return this.nzSize === 'large';
   }
 
   @HostBinding(`class.ant-input-sm`)
   get setSmClass(): boolean {
-    return this.size === 'sm';
+    return this.nzSize === 'small';
   }
 
   @HostListener('input')
@@ -77,23 +77,23 @@ export class NzInputDirective implements AfterViewInit {
   }
 
   resizeTextArea(): void {
-    const textAreaRef = this.nativeElement as HTMLTextAreaElement;
+    const textAreaRef = this.el as HTMLTextAreaElement;
     // eliminate jitter
-    textAreaRef.style.height = 'auto';
+    this.renderer.setStyle(textAreaRef, 'height', 'auto');
     const maxRows = this.nzAutosize ? (this.nzAutosize as AutoSizeType).maxRows || null : null;
     const minRows = this.nzAutosize ? (this.nzAutosize as AutoSizeType).minRows || null : null;
     const textAreaStyles = calculateNodeHeight(textAreaRef, false, minRows, maxRows);
-    textAreaRef.style.height = `${textAreaStyles.height}px`;
-    textAreaRef.style.overflowY = textAreaStyles.overflowY;
+    this.renderer.setStyle(textAreaRef, 'height', `${textAreaStyles.height}px`);
+    this.renderer.setStyle(textAreaRef, 'overflowY', textAreaStyles.overflowY);
   }
 
-  constructor(private _elementRef: ElementRef, private _render: Renderer2) {
-    this.nativeElement = this._elementRef.nativeElement;
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+    this.el = this.elementRef.nativeElement;
   }
 
   ngAfterViewInit(): void {
     if (this.nzAutosize) {
-      setTimeout(() => this.resizeTextArea());
+      this.resizeTextArea();
     }
   }
 }
