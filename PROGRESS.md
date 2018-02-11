@@ -41,7 +41,7 @@
 | timepicker | x | x | x | trotyl | - |
 | calendar | x | x | x | trotyl | - |
 | affix | x | x | x | cipchk | - |
-| transfer | x | x | x | cipchk | - |
+| transfer | √ | 100% | 100% | cipchk | x |
 | avatar | x | x | x | cipchk | - |
 | list | x | x | x | cipchk | - |
 | upload | x | x | x | cipchk | - |

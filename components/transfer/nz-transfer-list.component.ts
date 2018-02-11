@@ -9,16 +9,17 @@ import {
   OnChanges,
   OnInit,
   Output,
-  Renderer2,
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
-import { TransferItem } from './item';
+import { TransferItem } from './interface';
 
 @Component({
   selector           : 'nz-transfer-list',
   preserveWhitespaces: false,
+  providers          : [ NzUpdateHostClassService ],
   template           : `
     <div class="ant-transfer-list-header">
       <label nz-checkbox [(ngModel)]="stat.checkAll" (ngModelChange)="onHandleSelectAll($event)"
@@ -95,18 +96,14 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
 
   // region: styles
 
-  _prefixCls = 'ant-transfer-list';
-  _classList: string[] = [];
+  prefixCls = 'ant-transfer-list';
 
-  _setClassMap(): void {
-    this._classList.forEach(cls => this._renderer.removeClass(this._el.nativeElement, cls));
-
-    this._classList = [
-      this._prefixCls,
-      !!this.footer && `${this._prefixCls}-with-footer`
-    ].filter(item => !!item);
-
-    this._classList.forEach(cls => this._renderer.addClass(this._el.nativeElement, cls));
+  setClassMap(): void {
+    const classMap = {
+      [ this.prefixCls ]: true,
+      [ `${this.prefixCls}-with-footer` ]: !!this.footer
+    };
+    this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
   }
 
   // endregion
@@ -127,8 +124,6 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
       }
     });
 
-    // // ngModelChange 事件内对状态的变更会无效，因此使用延迟改变执行顺序
-    // setTimeout(() => this.updateCheckStatus());
     this.updateCheckStatus();
     this.handleSelectAll.emit(status);
   }
@@ -167,24 +162,24 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
 
   // endregion
 
-  _listDiffer: IterableDiffer<{}>;
+  listDiffer: IterableDiffer<{}>;
 
-  constructor(private _el: ElementRef, private _renderer: Renderer2, differs: IterableDiffers) {
-    this._listDiffer = differs.find([]).create(null);
+  constructor(private el: ElementRef, private updateHostClassService: NzUpdateHostClassService, differs: IterableDiffers) {
+    this.listDiffer = differs.find([]).create(null);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('footer' in changes) {
-      this._setClassMap();
+      this.setClassMap();
     }
   }
 
   ngOnInit(): void {
-    this._setClassMap();
+    this.setClassMap();
   }
 
   ngDoCheck(): void {
-    const change = this._listDiffer.diff(this.dataSource);
+    const change = this.listDiffer.diff(this.dataSource);
     if (change) {
       this.updateCheckStatus();
     }

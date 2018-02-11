@@ -16,13 +16,14 @@ import { NzMessageService } from 'ng-zorro-antd';
   `
 })
 export class NzDemoTransferCustomItemComponent implements OnInit {
-  list: {}[] = [];
+  // tslint:disable-next-line:no-any
+  list: any[] = [];
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getData();
   }
 
-  getData() {
+  getData(): void {
     const ret = [];
     for (let i = 0; i < 20; i++) {
       ret.push({
@@ -36,11 +37,11 @@ export class NzDemoTransferCustomItemComponent implements OnInit {
     this.list = ret;
   }
 
-  select(ret: {}) {
+  select(ret: {}): void {
     console.log('nzSelectChange', ret);
   }
 
-  change(ret: {}) {
+  change(ret: {}): void {
     console.log('nzChange', ret);
   }
 
