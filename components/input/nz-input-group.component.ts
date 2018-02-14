@@ -1,49 +1,71 @@
 import {
+  AfterContentInit,
   AfterViewInit,
   Component,
-  ContentChild,
+  ContentChildren,
   ElementRef,
   HostBinding,
   Input,
+  QueryList,
   TemplateRef
 } from '@angular/core';
 import { toBoolean } from '../core/util/convert';
 import { trimWhiteSpace } from '../core/util/trim-whitespace';
+import { NzInputDirective } from './nz-input.directive';
+
+export type NzInputGroupSizeType = 'large' | 'default' | 'small';
 
 @Component({
   selector           : 'nz-input-group',
   preserveWhitespaces: false,
   template           : `
     <span class="ant-input-wrapper ant-input-group" *ngIf="isAddOn">
-      <span class="ant-input-group-addon" *ngIf="_addOnContentBefore">
-        <ng-template [ngTemplateOutlet]="_addOnContentBefore"></ng-template>
+      <span class="ant-input-group-addon" *ngIf="nzAddOnBefore">
+        <ng-container *ngIf="isAddOnBeforeString; else nzAddOnBefore">{{ nzAddOnBefore }}</ng-container>
       </span>
       <ng-template *ngTemplateOutlet="contentTemplate"></ng-template>
-      <span class="ant-input-group-addon" *ngIf="_addOnContentAfter">
-        <ng-template [ngTemplateOutlet]="_addOnContentAfter"></ng-template>
+      <span class="ant-input-group-addon" *ngIf="nzAddOnAfter">
+        <ng-container *ngIf="isAddOnAfterString; else nzAddOnAfter">{{ nzAddOnAfter }}</ng-container>
       </span>
     </span>
     <ng-template [ngIf]="isAffix">
-      <span class="ant-input-prefix" *ngIf="_prefixContent">
-        <ng-template [ngTemplateOutlet]="_prefixContent"></ng-template>
+      <span class="ant-input-prefix" *ngIf="nzPrefix">
+        <ng-container *ngIf="isPrefixString; else nzPrefix">{{ nzPrefix }}</ng-container>
       </span>
       <ng-template *ngTemplateOutlet="contentTemplate"></ng-template>
-      <span class="ant-input-suffix" *ngIf="_suffixContent">
-        <ng-template [ngTemplateOutlet]="_suffixContent"></ng-template>
+      <span class="ant-input-suffix" *ngIf="nzSuffix">
+        <ng-container *ngIf="isSuffixString; else nzSuffix">{{ nzSuffix }}</ng-container>
       </span>
     </ng-template>
     <ng-template [ngIf]="isGroup" *ngTemplateOutlet="contentTemplate"></ng-template>
-
     <ng-template #contentTemplate>
       <ng-content></ng-content>
     </ng-template>
   `
 })
 
-export class NzInputGroupComponent implements AfterViewInit {
+export class NzInputGroupComponent implements AfterViewInit, AfterContentInit {
+  private _addOnBefore: string | TemplateRef<void> = '';
+  private _addOnAfter: string | TemplateRef<void> = '';
+  private _prefix: string | TemplateRef<void> = '';
+  private _suffix: string | TemplateRef<void> = '';
+  private _size: NzInputGroupSizeType = 'default';
   private _compact = false;
   private _search = false;
-  @Input() nzSize: string;
+  private isAddOnBeforeString: boolean;
+  private isAddOnAfterString: boolean;
+  private isPrefixString: boolean;
+  private isSuffixString: boolean;
+  @ContentChildren(NzInputDirective) nzInputDirectiveQueryList: QueryList<NzInputDirective>;
+
+  @Input() set nzSize(value: NzInputGroupSizeType) {
+    this._size = value;
+    this.updateChildrenInputSize();
+  }
+
+  get nzSize(): NzInputGroupSizeType {
+    return this._size;
+  }
 
   @Input()
   @HostBinding(`class.ant-input-group-compact`)
@@ -53,6 +75,46 @@ export class NzInputGroupComponent implements AfterViewInit {
 
   get nzCompact(): boolean {
     return this._compact;
+  }
+
+  @Input()
+  set nzAddOnBefore(value: string | TemplateRef<void>) {
+    this.isAddOnBeforeString = !(value instanceof TemplateRef);
+    this._addOnBefore = value;
+  }
+
+  get nzAddOnBefore(): string | TemplateRef<void> {
+    return this._addOnBefore;
+  }
+
+  @Input()
+  set nzAddOnAfter(value: string | TemplateRef<void>) {
+    this.isAddOnAfterString = !(value instanceof TemplateRef);
+    this._addOnAfter = value;
+  }
+
+  get nzAddOnAfter(): string | TemplateRef<void> {
+    return this._addOnAfter;
+  }
+
+  @Input()
+  set nzPrefix(value: string | TemplateRef<void>) {
+    this.isPrefixString = !(value instanceof TemplateRef);
+    this._prefix = value;
+  }
+
+  get nzPrefix(): string | TemplateRef<void> {
+    return this._prefix;
+  }
+
+  @Input()
+  set nzSuffix(value: string | TemplateRef<void>) {
+    this.isSuffixString = !(value instanceof TemplateRef);
+    this._suffix = value;
+  }
+
+  get nzSuffix(): string | TemplateRef<void> {
+    return this._suffix;
   }
 
   @Input()
@@ -74,19 +136,14 @@ export class NzInputGroupComponent implements AfterViewInit {
     return this.nzSize === 'small';
   }
 
-  @ContentChild('addOnBefore') _addOnContentBefore: TemplateRef<void>;
-  @ContentChild('addOnAfter') _addOnContentAfter: TemplateRef<void>;
-  @ContentChild('prefix') _prefixContent: TemplateRef<void>;
-  @ContentChild('suffix') _suffixContent: TemplateRef<void>;
-
   @HostBinding('class.ant-input-affix-wrapper')
   get isAffix(): boolean {
-    return !!(this._suffixContent || this._prefixContent);
+    return !!(this.nzSuffix || this.nzPrefix);
   }
 
   @HostBinding('class.ant-input-group-wrapper')
   get isAddOn(): boolean {
-    return !!(this._addOnContentBefore || this._addOnContentAfter);
+    return !!(this.nzAddOnAfter || this.nzAddOnBefore);
   }
 
   @HostBinding('class.ant-input-group')
@@ -101,10 +158,10 @@ export class NzInputGroupComponent implements AfterViewInit {
 
   @HostBinding(`class.ant-input-group-wrapper-lg`)
   get isLargeGroupWrapper(): boolean {
-    return this.isGroup && this.isLarge;
+    return this.isAddOn && this.isLarge;
   }
 
-  @HostBinding(`class.ant-input-affix-lg`)
+  @HostBinding(`class.ant-input-affix-wrapper-lg`)
   get isLargeAffix(): boolean {
     return this.isAffix && this.isLarge;
   }
@@ -119,14 +176,14 @@ export class NzInputGroupComponent implements AfterViewInit {
     return this.isGroup && this.isSmall;
   }
 
-  @HostBinding(`class.ant-input-affix-sm`)
+  @HostBinding(`class.ant-input-affix-wrapper-sm`)
   get isSmallAffix(): boolean {
     return this.isAffix && this.isSmall;
   }
 
   @HostBinding(`class.ant-input-group-wrapper-sm`)
   get isSmallGroupWrapper(): boolean {
-    return this.isGroup && this.isSmall;
+    return this.isAddOn && this.isSmall;
   }
 
   @HostBinding(`class.ant-input-search-sm`)
@@ -134,8 +191,18 @@ export class NzInputGroupComponent implements AfterViewInit {
     return this.nzSearch && this.isSmall;
   }
 
+  updateChildrenInputSize(): void {
+    if (this.nzInputDirectiveQueryList) {
+      this.nzInputDirectiveQueryList.forEach(item => item.nzSize = this.nzSize);
+    }
+  }
+
   constructor(private el: ElementRef) {
 
+  }
+
+  ngAfterContentInit(): void {
+    this.updateChildrenInputSize();
   }
 
   ngAfterViewInit(): void {

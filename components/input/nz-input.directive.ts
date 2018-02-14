@@ -1,12 +1,15 @@
 import {
   AfterViewInit,
   Directive,
+  DoCheck,
   ElementRef,
   HostBinding,
   HostListener,
   Input,
+  Optional,
   Renderer2
 } from '@angular/core';
+import { NgModel } from '@angular/forms';
 import calculateNodeHeight from '../core/util/calculate-node-height';
 import { toBoolean } from '../core/util/convert';
 
@@ -21,19 +24,23 @@ export interface AutoSizeType {
     '[class.ant-input]': 'true'
   }
 })
-export class NzInputDirective implements AfterViewInit {
-  size = 'default';
-  nativeElement: HTMLElement;
-  _disabled = false;
-  _autosize: boolean | AutoSizeType = false;
+export class NzInputDirective implements DoCheck, AfterViewInit {
+  private _size = 'default';
+  private _disabled = false;
+  private _autosize: boolean | AutoSizeType = false;
+  private el: HTMLTextAreaElement | HTMLInputElement;
+  private previousValue: string;
+  private previewsMinRows: number;
+  private previewsMaxRows: number;
+  private isInit = false;
 
   @Input()
   get nzSize(): string {
-    return this.size;
+    return this._size;
   }
 
   set nzSize(value: string) {
-    this.size = { large: 'lg', small: 'sm' }[ value ];
+    this._size = value;
   }
 
   @Input()
@@ -61,12 +68,12 @@ export class NzInputDirective implements AfterViewInit {
 
   @HostBinding(`class.ant-input-lg`)
   get setLgClass(): boolean {
-    return this.size === 'lg';
+    return this.nzSize === 'large';
   }
 
   @HostBinding(`class.ant-input-sm`)
   get setSmClass(): boolean {
-    return this.size === 'sm';
+    return this.nzSize === 'small';
   }
 
   @HostListener('input')
@@ -77,23 +84,39 @@ export class NzInputDirective implements AfterViewInit {
   }
 
   resizeTextArea(): void {
-    const textAreaRef = this.nativeElement as HTMLTextAreaElement;
-    // eliminate jitter
-    textAreaRef.style.height = 'auto';
+    const textAreaRef = this.el as HTMLTextAreaElement;
     const maxRows = this.nzAutosize ? (this.nzAutosize as AutoSizeType).maxRows || null : null;
     const minRows = this.nzAutosize ? (this.nzAutosize as AutoSizeType).minRows || null : null;
+    if ((this.previousValue === textAreaRef.value) && (this.previewsMaxRows === maxRows) && (this.previewsMinRows === minRows)) {
+      return;
+    }
+    this.previousValue = textAreaRef.value;
+    this.previewsMinRows = minRows;
+    this.previewsMaxRows = maxRows;
+    // eliminate jitter
+    this.renderer.setStyle(textAreaRef, 'height', 'auto');
+
     const textAreaStyles = calculateNodeHeight(textAreaRef, false, minRows, maxRows);
-    textAreaRef.style.height = `${textAreaStyles.height}px`;
-    textAreaRef.style.overflowY = textAreaStyles.overflowY;
+    this.renderer.setStyle(textAreaRef, 'height', `${textAreaStyles.height}px`);
+    this.renderer.setStyle(textAreaRef, 'overflowY', textAreaStyles.overflowY);
+    this.renderer.setStyle(textAreaRef, 'minHeight', `${textAreaStyles.minHeight}px`);
+    this.renderer.setStyle(textAreaRef, 'maxHeight', `${textAreaStyles.maxHeight}px`);
   }
 
-  constructor(private _elementRef: ElementRef, private _render: Renderer2) {
-    this.nativeElement = this._elementRef.nativeElement;
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Optional() private ngModel: NgModel) {
+    this.el = this.elementRef.nativeElement;
+  }
+
+  ngDoCheck(): void {
+    if (this.nzAutosize && this.isInit) {
+      this.resizeTextArea();
+    }
   }
 
   ngAfterViewInit(): void {
+    this.isInit = true;
     if (this.nzAutosize) {
-      setTimeout(() => this.resizeTextArea());
+      this.resizeTextArea();
     }
   }
 }

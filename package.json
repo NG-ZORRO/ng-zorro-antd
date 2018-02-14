@@ -9,7 +9,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "node scripts/generate-site init && ng build",
-    "doc": "ng build --prod",
+    "doc": "node scripts/generate-site init && ng build --prod --build-optimizer",
     "helper": "bash ./release-helper.sh",
     "generate": "bash ./build.sh",
     "release": "npm run generate && ng build --prod && npm run helper",

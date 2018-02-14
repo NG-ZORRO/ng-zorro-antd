@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzDemoButtonBasicComponent } from './demo/basic';
@@ -224,4 +224,33 @@ describe('button', () => {
       expect(buttonGroup.nativeElement.firstElementChild.classList.contains('ant-btn-group-sm')).toBe(true);
     });
   });
+  describe('icon', () => {
+    let button;
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports     : [ NzButtonModule ],
+        declarations: [ NzTestButtonSearchComponent ],
+        providers   : []
+      }).compileComponents();
+    }));
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestButtonSearchComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      button = fixture.debugElement.query(By.directive(NzButtonComponent));
+    });
+
+    it('should have correct style', () => {
+      fixture.detectChanges();
+      expect(button.nativeElement.classList.contains('ant-input-search-button')).toBe(true);
+    });
+  });
 });
+
+@Component({
+  selector: 'nz-test-button-search',
+  template: `
+    <button nz-button nzSearch></button>`
+})
+export class NzTestButtonSearchComponent {
+}
