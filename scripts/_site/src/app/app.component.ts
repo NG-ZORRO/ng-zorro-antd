@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
         this.language = this.router.url.split('/')[ this.router.url.split('/').length - 1 ].split('#')[ 0 ];
         this.localeService.setLocale(this.language === 'en' ? enUS : zhCN);
         this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
-        if (environment.production) {
+        if (environment.production && (this.router.url.indexOf('#') < -1)) {
           window.scrollTo(0, 0);
         }
       }

@@ -14,7 +14,7 @@
 | steps | √ | 100% | 100% | vthinkxie | - |
 | checkbox | √ | 100% | 100% | vthinkxie | - |
 | form | x | x | x | vthinkxie | - |
-| input | x | x | x | vthinkxie | - |
+| input | √ | 100% | 100% | vthinkxie | √ |
 | inputnumber | x | x | x | vthinkxie | - |
 | radio | x | x | x | vthinkxie | - |
 | rate | x | x | x | vthinkxie | - |

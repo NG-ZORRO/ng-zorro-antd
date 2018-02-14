@@ -24,6 +24,7 @@ export type NzButtonSize = 'small' | 'large' | 'default' ;
 })
 export class NzButtonComponent implements AfterContentInit {
   private _ghost = false;
+  private _search = false;
   private _type: NzButtonType;
   private _shape: NzButtonShape;
   private _size: NzButtonSize;
@@ -43,6 +44,16 @@ export class NzButtonComponent implements AfterContentInit {
 
   get nzGhost(): boolean {
     return this._ghost;
+  }
+
+  @Input()
+  set nzSearch(value: boolean) {
+    this._search = toBoolean(value);
+    this.setClassMap();
+  }
+
+  get nzSearch(): boolean {
+    return this._search;
   }
 
   @Input()
@@ -113,7 +124,8 @@ export class NzButtonComponent implements AfterContentInit {
       [ `${this.prefixCls}-loading` ]                       : this.nzLoading,
       [ `${this.prefixCls}-clicked` ]                       : this.clicked,
       [ `${this.prefixCls}-icon-only` ]                     : this.iconOnly,
-      [ `${this.prefixCls}-background-ghost` ]              : this.nzGhost
+      [ `${this.prefixCls}-background-ghost` ]              : this.nzGhost,
+      [ `ant-input-search-button` ]                         : this.nzSearch
     };
     this.nzUpdateHostClassService.updateHostClass(this.el, classMap);
   }
