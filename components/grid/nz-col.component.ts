@@ -105,8 +105,5 @@ export class NzColComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.setClassMap();
-    if (this.nzRow) {
-      this.nzRow.updateGutter();
-    }
   }
 }

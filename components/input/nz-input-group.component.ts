@@ -158,10 +158,10 @@ export class NzInputGroupComponent implements AfterViewInit, AfterContentInit {
 
   @HostBinding(`class.ant-input-group-wrapper-lg`)
   get isLargeGroupWrapper(): boolean {
-    return this.isGroup && this.isLarge;
+    return this.isAddOn && this.isLarge;
   }
 
-  @HostBinding(`class.ant-input-affix-lg`)
+  @HostBinding(`class.ant-input-affix-wrapper-lg`)
   get isLargeAffix(): boolean {
     return this.isAffix && this.isLarge;
   }
@@ -176,14 +176,14 @@ export class NzInputGroupComponent implements AfterViewInit, AfterContentInit {
     return this.isGroup && this.isSmall;
   }
 
-  @HostBinding(`class.ant-input-affix-sm`)
+  @HostBinding(`class.ant-input-affix-wrapper-sm`)
   get isSmallAffix(): boolean {
     return this.isAffix && this.isSmall;
   }
 
   @HostBinding(`class.ant-input-group-wrapper-sm`)
   get isSmallGroupWrapper(): boolean {
-    return this.isGroup && this.isSmall;
+    return this.isAddOn && this.isSmall;
   }
 
   @HostBinding(`class.ant-input-search-sm`)
