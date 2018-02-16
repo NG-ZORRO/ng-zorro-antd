@@ -116,7 +116,6 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
         this.renderer.removeAttribute(this.inputElement.nativeElement, 'autofocus');
       }
     }
-
   }
 
   updateValue(value: boolean): void {

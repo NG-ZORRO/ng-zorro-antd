@@ -43,10 +43,8 @@ export class NzDemoInputTooltipComponent {
     const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
     if ((!isNaN(+value) && reg.test(value)) || value === '' || value === '-') {
       this.value = value;
-      this.inputElement.nativeElement.value = value;
-    } else {
-      this.inputElement.nativeElement.value = this.value;
     }
+    this.inputElement.nativeElement.value = this.value;
     this.updateTitle();
   }
 
