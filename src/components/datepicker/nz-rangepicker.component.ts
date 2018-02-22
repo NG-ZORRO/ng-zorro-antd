@@ -564,10 +564,11 @@ export class NzRangePickerComponent implements ControlValueAccessor, OnInit {
     if (typeof window !== 'undefined' && this._open && this._cdkOverlay && this._cdkOverlay.overlayRef) {
       const originElement = this._cdkOverlay.origin.elementRef.nativeElement;
       const overlayElement = this._cdkOverlay.overlayRef.overlayElement;
-      const originX = originElement.getBoundingClientRect().x;
+      const originX = originElement.getBoundingClientRect().left;
       const overlayWidth = overlayElement.getBoundingClientRect().width;
       const margin = window.innerWidth - originX - overlayWidth;
-      this._offsetX = margin > 0 ? 0 : margin - (measureScrollbar() || 15);
+      const offsetX = margin > 0 ? 0 : margin - (measureScrollbar() || 15);
+      this._offsetX = Number.isFinite(offsetX) ? offsetX : 0;
       this._cdr.detectChanges();
     }
   }
