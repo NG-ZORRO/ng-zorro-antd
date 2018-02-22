@@ -360,7 +360,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   onRemove = (file: UploadFile): void => {
     this.upload.abort(file);
     file.status = 'removed';
-    (this.nzRemove ? this.nzRemove instanceof Observable ? this.nzRemove : of(this.nzRemove(file)) : of(true))
+    ((this.nzRemove ? this.nzRemove instanceof Observable ? this.nzRemove : of(this.nzRemove(file)) : of(true)) as Observable<any>)
       .pipe(filter((res: boolean) => res))
       .subscribe(res => {
         const removedFileList = this.removeFileItem(file, this.nzFileList);
@@ -411,13 +411,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: { [P in keyof this]?: SimpleChange } & SimpleChanges): void {
-    if (changes.nzFileList) {
-      (this.nzFileList || []).forEach(file => file.message = this.genErr(file));
-      if (!changes.nzFileList.firstChange) return;
-    }
-    if (this.inited) {
-      if (changes.nzPreview || changes.nzCustomRequest || changes.nzBeforeUpload || changes.nzRemove) return;
-    }
+    if (changes.nzFileList) (this.nzFileList || []).forEach(file => file.message = this.genErr(file));
     this.zipOptions()._setClassMap();
   }
 

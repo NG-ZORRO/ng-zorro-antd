@@ -25,13 +25,30 @@ describe('NzUpload', () => {
   it('should create an instance', () => {
     expect(instance).toBeTruthy();
   });
+
+  it('recreate bug https://github.com/NG-ZORRO/ng-zorro-antd/issues/1038', () => {
+    expect(instance.ref._btnOptions.disabled).toBe(false);
+    instance.fileList = [{
+      uid: -1,
+      name: 'xxx.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    }];
+    fixture.detectChanges();
+    expect(instance.ref._btnOptions.disabled).toBe(true);
+  });
 });
 
 @Component({
-  template: `<nz-upload #ref [nzShowUploadList]="false">Upload</nz-upload>`
+  template: `<nz-upload #ref
+  [(nzFileList)]="fileList"
+  [nzDisabled]="fileList.length >= 1"
+  [nzShowUploadList]="false">Upload</nz-upload>`
 })
 class TestComponent {
 
   @ViewChild('ref') ref: NzUploadComponent;
+
+  fileList = [];
 
 }
