@@ -6,7 +6,9 @@ import { async, fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs/Subject';
+
 import { dispatchFakeEvent } from '../core/testing';
+
 import { NzDemoMenuHorizontalComponent } from './demo/horizontal';
 import { NzDemoMenuInlineComponent } from './demo/inline';
 import { NzDemoMenuInlineCollapsedComponent } from './demo/inline-collapsed';

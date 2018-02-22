@@ -8,8 +8,8 @@ import {
   OnInit,
   Renderer2
 } from '@angular/core';
-
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
 import { NzRadioButtonComponent } from './nz-radio-button.component';
 import { NzRadioComponent } from './nz-radio.component';
 

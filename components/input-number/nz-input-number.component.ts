@@ -1,90 +1,110 @@
-import { TAB } from '@angular/cdk/keycodes';
 import {
   forwardRef,
+  AfterViewInit,
   Component,
   ElementRef,
-  EventEmitter,
   HostBinding,
   Input,
-  Output,
   Renderer2,
   ViewChild
 } from '@angular/core';
-
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
-  selector           : 'nz-input-number',
-  preserveWhitespaces: false,
-  template           : `
-    <div class="ant-input-number-handler-wrap"
-      (mouseover)="_mouseInside = true"
-      (mouseout)="_mouseInside = false">
-      <a class="ant-input-number-handler ant-input-number-handler-up"
-        [ngClass]="{'ant-input-number-handler-up-disabled':_disabledUp}"
-        (click)="_numberUp($event)">
-        <span
-          class="ant-input-number-handler-up-inner"
-          (click)="$event.preventDefault();"></span>
+  selector : 'nz-input-number',
+  template : `
+    <div class="ant-input-number-handler-wrap">
+      <a
+        (mousedown)="up($event)"
+        (mouseup)="stop()"
+        (mouseleave)="stop()"
+        class="ant-input-number-handler ant-input-number-handler-up"
+        [class.ant-input-number-handler-up-disabled]="disabledUp">
+        <span class="ant-input-number-handler-up-inner" unselectable="unselectable" (click)="$event.preventDefault()"></span>
       </a>
       <a
+        (mousedown)="down($event)"
+        (mouseup)="stop()"
+        (mouseleave)="stop()"
         class="ant-input-number-handler ant-input-number-handler-down"
-        [ngClass]="{'ant-input-number-handler-down-disabled':_disabledDown}"
-        (click)="_numberDown($event)">
-        <span
-          class="ant-input-number-handler-down-inner"
-          (click)="$event.preventDefault();">
-        </span>
+        [class.ant-input-number-handler-down-disabled]="disabledDown">
+        <span class="ant-input-number-handler-down-inner" unselectable="unselectable" (click)="$event.preventDefault()"></span>
       </a>
     </div>
-    <div
-      class="ant-input-number-input-wrap">
-      <input class="ant-input-number-input"
-        #inputNumber
-        [placeholder]="nzPlaceHolder"
+    <div class="ant-input-number-input-wrap">
+      <input
+        #inputElement
+        class="ant-input-number-input"
         [disabled]="nzDisabled"
-        [(ngModel)]="_displayValue"
-        (blur)="_emitBlur($event)"
-        (focus)="_emitFocus($event)"
-        (keydown)="_emitKeyDown($event)"
         [attr.min]="nzMin"
         [attr.max]="nzMax"
-        [attr.step]="_step"
+        [attr.step]="nzStep"
+        (keydown)="onKeyDown($event)"
+        (keyup)="onKeyUp($event)"
+        (blur)="onBlur($event)"
+        (focus)="onFocus($event)"
+        [ngModel]="displayValue"
+        (ngModelChange)="onModelChange($event)"
         autocomplete="off">
     </div>`,
-  providers          : [
+  providers: [
     {
       provide    : NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzInputNumberComponent),
       multi      : true
     }
-  ]
+  ],
+  host     : {
+    '[class.ant-input-number]'        : 'true',
+    '[class.ant-input-number-focused]': 'isFocused'
+  }
 })
-export class NzInputNumberComponent implements ControlValueAccessor {
+export class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit {
+  private isInit = false;
   private _disabled = false;
-  _el: HTMLElement;
-  _value: number;
-  _size = 'default';
-  _prefixCls = 'ant-input-number';
-  _step = 1;
-  _precisionStep = 0;
-  _precisionFactor = 1;
-  _displayValue;
-  _disabledUp = false;
-  _disabledDown = false;
-  _focused = false;
-  _mouseInside = false;
-  // ngModel Access
+  private _step = 1;
+  private autoStepTimer;
+  private _autoFocus = false;
+  displayValue: string | number;
+  actualValue: string | number;
+  isFocused = false;
+  value: string | number;
+  el: HTMLElement;
+  prefixCls = 'ant-input-number';
+  disabledUp = false;
+  disabledDown = false;
   onChange: (value: number) => void = () => null;
   onTouched: () => void = () => null;
-  @ViewChild('inputNumber') _inputNumber: ElementRef;
-
-  @Input() nzPlaceHolder = '';
+  @ViewChild('inputElement') inputElement: ElementRef;
+  @Input() nzSize: 'small' | 'default' | 'large' = 'default';
   @Input() nzMin: number = -Infinity;
   @Input() nzMax: number = Infinity;
   @Input() nzFormatter = (value) => value;
   @Input() nzParser = (value) => value;
+  @Input() nzPrecision: number;
+
+  @HostBinding('class.ant-input-number-lg')
+  get isLarge(): boolean {
+    return this.nzSize === 'large';
+  }
+
+  @HostBinding('class.ant-input-number-sm')
+  get isSmall(): boolean {
+    return this.nzSize === 'small';
+  }
+
+  @Input()
+  set nzAutoFocus(value: boolean) {
+    this._autoFocus = toBoolean(value);
+    this.updateAutoFocus();
+  }
+
+  get nzAutoFocus(): boolean {
+    return this._autoFocus;
+  }
 
   @Input()
   @HostBinding('class.ant-input-number-disabled')
@@ -97,135 +117,242 @@ export class NzInputNumberComponent implements ControlValueAccessor {
   }
 
   @Input()
-  set nzSize(value: string) {
-    this._renderer.removeClass(this._el, `${this._prefixCls}-${this._size}`);
-    this._size = { large: 'lg', small: 'sm' }[ value ];
-    this._renderer.addClass(this._el, `${this._prefixCls}-${this._size}`);
-  }
-
-  get nzSize(): string {
-    return this._size;
-  }
-
-  @Input()
   set nzStep(value: number) {
     this._step = value;
-    const stepString = value.toString();
-    if (stepString.indexOf('e-') >= 0) {
-      this._precisionStep = parseInt(stepString.slice(stepString.indexOf('e-')), 10);
-    }
-    if (stepString.indexOf('.') >= 0) {
-      this._precisionStep = stepString.length - stepString.indexOf('.') - 1;
-    }
-    this._precisionFactor = Math.pow(10, this._precisionStep);
   }
 
   get nzStep(): number {
     return this._step;
   }
 
-  // TODO: should reconsider the payload
-  @Output() nzBlur: EventEmitter<FocusEvent | KeyboardEvent> = new EventEmitter();
-  @Output() nzFocus: EventEmitter<FocusEvent> = new EventEmitter();
-
-  _numberUp($event: MouseEvent): void {
-    $event.preventDefault();
-    $event.stopPropagation();
-    this._inputNumber.nativeElement.focus();
-    if (this.nzValue === undefined) {
-      this.nzValue = this.nzMin || 0;
-    }
-    if (!this._disabledUp) {
-      this.nzValue = this.toPrecisionAsStep((this._precisionFactor * this.nzValue + this._precisionFactor * this.nzStep) / this._precisionFactor);
+  updateAutoFocus(): void {
+    if (this.isInit) {
+      if (this.nzAutoFocus) {
+        this.renderer.setAttribute(this.inputElement.nativeElement, 'autofocus', 'autofocus');
+      } else {
+        this.renderer.removeAttribute(this.inputElement.nativeElement, 'autofocus');
+      }
     }
   }
 
-  _numberDown($event: MouseEvent): void {
-    $event.preventDefault();
-    $event.stopPropagation();
-    this._inputNumber.nativeElement.focus();
-    if (this.nzValue === undefined) {
-      this.nzValue = this.nzMin || 0;
-    }
-    if (!this._disabledDown) {
-      this.nzValue = this.toPrecisionAsStep((this._precisionFactor * this.nzValue - this._precisionFactor * this.nzStep) / this._precisionFactor);
-    }
+  onModelChange(value: string): void {
+    this.actualValue = this.nzParser(value.trim().replace(/。/g, '.').replace(/[^\w\.-]+/g, ''));
+    this.inputElement.nativeElement.value = this.actualValue;
   }
 
-  get nzValue(): number {
-    return this._value;
-  }
-
-  set nzValue(value: number) {
-    this._updateValue(value);
-  }
-
-  _emitBlur($event: FocusEvent): void {
-    // avoid unnecessary events
-    if (this._focused && !this._mouseInside) {
-      this._checkValue();
-      this._focused = false;
-      this.nzBlur.emit($event);
-    }
-    this.onTouched();
-  }
-
-  _emitFocus($event: FocusEvent): void {
-    // avoid unnecessary events
-    if (!this._focused) {
-      this._focused = true;
-      this.nzFocus.emit($event);
-    }
-  }
-
-  _emitKeyDown($event: KeyboardEvent): void {
-    if ($event.keyCode === TAB && this._focused) {
-      this._checkValue();
-      this._focused = false;
-      this.nzBlur.emit($event);
-    }
-  }
-
-  _checkValue(): void {
-    const numberValue = +this.nzParser(this._displayValue);
-    if (this._isNumber(numberValue)) {
-      this.nzValue = numberValue;
+  getCurrentValidValue(value: string | number): number {
+    let val = value;
+    if (val === '') {
+      val = '';
+    } else if (!this.isNotCompleteNumber(val)) {
+      val = this.getValidValue(val) as string;
     } else {
-      this._displayValue = this.nzFormatter(this._value);
-      this._inputNumber.nativeElement.value = this.nzFormatter(this._value);
+      val = this.value;
     }
+    return this.toNumber(val);
   }
 
-  _getBoundValue(value: number): number {
-    if (value > this.nzMax) {
-      return this.nzMax;
-    } else if (value < this.nzMin) {
-      return this.nzMin;
-    } else {
+  // '1.' '1x' 'xx' '' => are not complete numbers
+  isNotCompleteNumber(num: string | number): boolean {
+    return (
+      isNaN(num as number) ||
+      num === '' ||
+      num === null ||
+      (num && num.toString().indexOf('.') === num.toString().length - 1)
+    );
+  }
+
+  getValidValue(value: string | number): string | number {
+    let val = parseFloat(value as string);
+    // https://github.com/ant-design/ant-design/issues/7358
+    if (isNaN(val)) {
       return value;
     }
-  }
-
-  _isNumber(value: number): boolean {
-    return !isNaN(value) && isFinite(value);
-  }
-
-  // TODO: normalize value type on @Input
-  toPrecisionAsStep(num: number): number {
-    const input = num as number | string;
-    if (isNaN(num) || input === '') {
-      return num;
+    if (val < this.nzMin) {
+      val = this.nzMin;
     }
-    return Number(Number(num).toFixed(this._precisionStep));
+    if (val > this.nzMax) {
+      val = this.nzMax;
+    }
+    return val;
   }
 
-  constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
-    this._el = this._elementRef.nativeElement;
-    this._renderer.addClass(this._el, `${this._prefixCls}`);
+  toNumber(num: string | number): number {
+    if (this.isNotCompleteNumber(num)) {
+      return num as number;
+    }
+    if (isNotNil(this.nzPrecision)) {
+      return Number(Number(num).toFixed(this.nzPrecision));
+    }
+    return Number(num);
+  }
+
+  onBlur(e: FocusEvent): void {
+    this.isFocused = false;
+    const value = this.getCurrentValidValue(this.actualValue);
+    this.setValue(value, `${this.value}` !== `${value}`);
+  }
+
+  onFocus(e: FocusEvent): void {
+    this.isFocused = true;
+  }
+
+  getRatio(e: KeyboardEvent): number {
+    let ratio = 1;
+    if (e.metaKey || e.ctrlKey) {
+      ratio = 0.1;
+    } else if (e.shiftKey) {
+      ratio = 10;
+    }
+    return ratio;
+  }
+
+  down(e: MouseEvent | KeyboardEvent, ratio?: number): void {
+    this.step('down', e, ratio);
+  }
+
+  up(e: MouseEvent | KeyboardEvent, ratio?: number): void {
+    this.step('up', e, ratio);
+  }
+
+  getPrecision(value: number): number {
+    const valueString = value.toString();
+    if (valueString.indexOf('e-') >= 0) {
+      return parseInt(valueString.slice(valueString.indexOf('e-') + 2), 10);
+    }
+    let precision = 0;
+    if (valueString.indexOf('.') >= 0) {
+      precision = valueString.length - valueString.indexOf('.') - 1;
+    }
+    return precision;
+  }
+
+  // step={1.0} value={1.51}
+  // press +
+  // then value should be 2.51, rather than 2.5
+  // if this.props.precision is undefined
+  // https://github.com/react-component/input-number/issues/39
+  getMaxPrecision(currentValue: string | number, ratio: number): number {
+    if (isNotNil(this.nzPrecision)) {
+      return this.nzPrecision;
+    }
+    const ratioPrecision = this.getPrecision(ratio);
+    const stepPrecision = this.getPrecision(this.nzStep);
+    const currentValuePrecision = this.getPrecision(currentValue as number);
+    if (!currentValue) {
+      return ratioPrecision + stepPrecision;
+    }
+    return Math.max(currentValuePrecision, ratioPrecision + stepPrecision);
+  }
+
+  getPrecisionFactor(currentValue: string | number, ratio: number): number {
+    const precision = this.getMaxPrecision(currentValue, ratio);
+    return Math.pow(10, precision);
+  }
+
+  upStep(val: string | number, rat: number): number {
+    const precisionFactor = this.getPrecisionFactor(val, rat);
+    const precision = Math.abs(this.getMaxPrecision(val, rat));
+    let result;
+    if (typeof val === 'number') {
+      result =
+        ((precisionFactor * val + precisionFactor * this.nzStep * rat) /
+          precisionFactor).toFixed(precision);
+    } else {
+      result = this.nzMin === -Infinity ? this.nzStep : this.nzMin;
+    }
+    return this.toNumber(result);
+  }
+
+  downStep(val: string | number, rat: number): number {
+    const precisionFactor = this.getPrecisionFactor(val, rat);
+    const precision = Math.abs(this.getMaxPrecision(val, rat));
+    let result;
+    if (typeof val === 'number') {
+      result =
+        ((precisionFactor * val - precisionFactor * this.nzStep * rat) /
+          precisionFactor).toFixed(precision);
+    } else {
+      result = this.nzMin === -Infinity ? -this.nzStep : this.nzMin;
+    }
+    return this.toNumber(result);
+  }
+
+  step(type: string, e: MouseEvent | KeyboardEvent, ratio: number = 1): void {
+    this.stop();
+    e.preventDefault();
+    if (this.nzDisabled) {
+      return;
+    }
+    const value = this.getCurrentValidValue(this.actualValue) || 0;
+    let val;
+    if (type === 'up') {
+      val = this.upStep(value, ratio);
+    } else if (type === 'down') {
+      val = this.downStep(value, ratio);
+    }
+    const outOfRange = val > this.nzMax || val < this.nzMin;
+    if (val > this.nzMax) {
+      val = this.nzMax;
+    } else if (val < this.nzMin) {
+      val = this.nzMin;
+    }
+    this.setValue(val, true);
+    this.isFocused = true;
+    if (outOfRange) {
+      return;
+    }
+    this.autoStepTimer = setTimeout(() => {
+      this[ type ](e, ratio, true);
+    }, 600);
+  }
+
+  stop(): void {
+    if (this.autoStepTimer) {
+      clearTimeout(this.autoStepTimer);
+    }
+  }
+
+  setValue(value: number, emit: boolean): void {
+    if (emit && (`${this.value}` !== `${value}`)) {
+      this.onChange(value);
+    }
+    this.value = value;
+    this.actualValue = value;
+    const displayValue = isNotNil(this.nzFormatter(this.value)) ? this.nzFormatter(this.value) : '';
+    this.displayValue = displayValue;
+    this.inputElement.nativeElement.value = displayValue;
+    this.disabledUp = this.disabledDown = false;
+    if (value || value === 0) {
+      const val = Number(value);
+      if (val >= this.nzMax) {
+        this.disabledUp = true;
+      }
+      if (val <= this.nzMin) {
+        this.disabledDown = true;
+      }
+    }
+
+  }
+
+  onKeyDown(e: KeyboardEvent): void {
+    if (e.code === 'ArrowUp') {
+      const ratio = this.getRatio(e);
+      this.up(e, ratio);
+      this.stop();
+    } else if (e.code === 'ArrowDown') {
+      const ratio = this.getRatio(e);
+      this.down(e, ratio);
+      this.stop();
+    }
+  }
+
+  onKeyUp(e: KeyboardEvent): void {
+    this.stop();
   }
 
   writeValue(value: number): void {
-    this._updateValue(value, false);
+    this.setValue(value, false);
   }
 
   registerOnChange(fn: (_: number) => void): void {
@@ -240,15 +367,19 @@ export class NzInputNumberComponent implements ControlValueAccessor {
     this.nzDisabled = isDisabled;
   }
 
-  private _updateValue(value: number, emitChange: boolean = true): void {
-    const cacheValue = this._value;
-    this._value = this._getBoundValue(value);
-    this._displayValue = this.nzFormatter(this._value);
-    this._inputNumber.nativeElement.value = this.nzFormatter(this._value);
-    if (emitChange && (value !== cacheValue)) {
-      this.onChange(this._value);
-    }
-    this._disabledUp = (this.nzValue !== undefined) && !((this.nzValue + this.nzStep) <= this.nzMax);
-    this._disabledDown = (this.nzValue !== undefined) && !((this.nzValue - this.nzStep) >= this.nzMin);
+  focus(): void {
+    this.inputElement.nativeElement.focus();
+  }
+
+  blur(): void {
+    this.inputElement.nativeElement.blur();
+  }
+
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+    this.el = this.elementRef.nativeElement;
+  }
+
+  ngAfterViewInit(): void {
+    this.isInit = true;
   }
 }

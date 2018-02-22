@@ -17,6 +17,7 @@ import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 import { throttleTime } from 'rxjs/operators/throttleTime';
 
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
+
 import { NzAnchorLinkComponent } from './nz-anchor-link.component';
 
 interface Section {

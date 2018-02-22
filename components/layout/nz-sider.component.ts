@@ -12,8 +12,10 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
+
 import { NzMatchMediaService } from '../core/services/nz-match-media.service';
 import { toBoolean } from '../core/util/convert';
+
 import { NzLayoutComponent } from './nz-layout.component';
 
 export type NzBreakPoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';

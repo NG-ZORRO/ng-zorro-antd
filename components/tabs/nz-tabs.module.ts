@@ -1,6 +1,7 @@
 import { ObserversModule } from '@angular/cdk/observers';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import { NzTabBodyComponent } from './nz-tab-body.component';
 import { NzTabLabelDirective } from './nz-tab-label.directive';
 import { NzTabComponent } from './nz-tab.component';

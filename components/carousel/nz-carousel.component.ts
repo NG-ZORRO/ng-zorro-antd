@@ -13,7 +13,9 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
+
 import { toBoolean } from '../core/util/convert';
+
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 
 @Component({

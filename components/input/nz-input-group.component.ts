@@ -9,8 +9,10 @@ import {
   QueryList,
   TemplateRef
 } from '@angular/core';
+
 import { toBoolean } from '../core/util/convert';
 import { trimWhiteSpace } from '../core/util/trim-whitespace';
+
 import { NzInputDirective } from './nz-input.directive';
 
 export type NzInputGroupSizeType = 'large' | 'default' | 'small';

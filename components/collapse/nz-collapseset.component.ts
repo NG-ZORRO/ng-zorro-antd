@@ -2,7 +2,9 @@ import {
   Component,
   Input
 } from '@angular/core';
+
 import { toBoolean } from '../core/util/convert';
+
 import { NzCollapseComponent } from './nz-collapse.component';
 
 @Component({

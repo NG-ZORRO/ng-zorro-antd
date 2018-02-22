@@ -10,6 +10,7 @@ import {
   Renderer2
 } from '@angular/core';
 import { NgModel } from '@angular/forms';
+
 import calculateNodeHeight from '../core/util/calculate-node-height';
 import { toBoolean } from '../core/util/convert';
 
