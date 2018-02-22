@@ -106,16 +106,15 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
   }
 
   selectRadio(radio: NzRadioComponent | NzRadioButtonComponent): void {
-    this.updateValue(radio.nzValue);
+    this.updateValue(radio.nzValue, true);
   }
 
-  updateValue(value: string): void {
-    if (this.value === value) {
-      return;
-    }
+  updateValue(value: string, emit: boolean): void {
     this.value = value;
-    this.onChange(value);
     this.syncCheckedValue();
+    if (emit) {
+      this.onChange(value);
+    }
   }
 
   constructor(private elementRef: ElementRef) {
@@ -128,7 +127,7 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
   }
 
   writeValue(value: string): void {
-    this.updateValue(value);
+    this.updateValue(value, false);
   }
 
   registerOnChange(fn: (_: string) => void): void {
