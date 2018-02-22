@@ -16,7 +16,7 @@
 | form | x | x | x | vthinkxie | - |
 | input | √ | 100% | 100% | vthinkxie | √ |
 | inputnumber | √ | 100% | 100% | vthinkxie | √ |
-| radio | x | x | x | vthinkxie | - |
+| radio | √ | 100% | 100% | vthinkxie | - |
 | rate | x | x | x | vthinkxie | - |
 | select | x | x | x | vthinkxie | - |
 | switch | x | x | x | vthinkxie | - |

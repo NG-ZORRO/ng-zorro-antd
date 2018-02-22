@@ -23,7 +23,7 @@ title: Checkbox
 | ngModel | 指定当前是否选中，可双向绑定 | boolean | false |
 | ngModelChange | 选中变化时回调 | (ngModel:boolean)=>{} | - |
 | nzIndeterminate | 设置 indeterminate 状态，只负责样式控制 | boolean | false |
-| nzValue | 设置nzValue，与 `nz-checkbox-wrapper` 的选中回调配合使用 | string | - |
+| nzValue | 设置 value，与 `nz-checkbox-wrapper` 的选中回调配合使用 | string | - |
 
 ### nz-checkbox-group
 
