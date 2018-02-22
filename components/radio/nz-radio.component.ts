@@ -1,13 +1,14 @@
 import {
   forwardRef,
+  AfterViewInit,
   Component,
   ElementRef,
-  HostBinding,
   HostListener,
   Input,
   OnInit,
   Optional,
-  Renderer2
+  Renderer2,
+  ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -19,12 +20,17 @@ import { NzRadioGroupComponent } from './nz-radio-group.component';
   selector           : '[nz-radio]',
   preserveWhitespaces: false,
   template           : `
-    <span [ngClass]="_classMap">
-      <span [ngClass]="_innerPrefixCls"></span>
-      <input type="radio" [ngClass]="_inputPrefixCls" [(ngModel)]="nzChecked" (focus)="nzFocus()" (blur)="nzBlur()">
+    <span [ngClass]="classMap">
+      <span class="ant-radio-inner"></span>
+      <input #inputElement type="radio" class="ant-radio-input" [(ngModel)]="nzChecked" (focus)="nzFocus()" (blur)="nzBlur()" [attr.name]="name">
     </span>
-    <ng-content></ng-content>
+    <span><ng-content></ng-content></span>
   `,
+  host               : {
+    '[class.ant-radio-wrapper]'         : 'true',
+    '[class.ant-radio-wrapper-checked]' : 'nzChecked',
+    '[class.ant-radio-wrapper-disabled]': 'nzDisabled'
+  },
   providers          : [
     {
       provide    : NG_VALUE_ACCESSOR,
@@ -33,24 +39,23 @@ import { NzRadioGroupComponent } from './nz-radio-group.component';
     }
   ]
 })
-export class NzRadioComponent implements OnInit, ControlValueAccessor {
-  private _focused = false;
-  _checked = false;
-  _disabled = false;
-  _el: HTMLElement;
-  _classMap;
-  _value: string;
-  _prefixCls = 'ant-radio';
-  _innerPrefixCls = `${this._prefixCls}-inner`;
-  _inputPrefixCls = `${this._prefixCls}-input`;
-  // ngModel Access
+export class NzRadioComponent implements OnInit, ControlValueAccessor, AfterViewInit {
+  private _checked = false;
+  private _disabled = false;
+  private _autoFocus = false;
+  isInit = false;
+  classMap;
+  name: string;
+  focused = false;
+  prefixCls = 'ant-radio';
+  @ViewChild('inputElement') inputElement: ElementRef;
   onChange: (_: boolean) => void = () => null;
   onTouched: () => void = () => null;
+  @Input() nzValue: string;
 
-  @Input()
-  @HostBinding('class.ant-radio-wrapper-checked')
   set nzChecked(value: boolean) {
     this._checked = toBoolean(value);
+    this.updateInputFocus();
     this.setClassMap();
   }
 
@@ -59,19 +64,6 @@ export class NzRadioComponent implements OnInit, ControlValueAccessor {
   }
 
   @Input()
-  get nzValue(): string {
-    return this._value;
-  }
-
-  set nzValue(value: string) {
-    if (this._value === value) {
-      return;
-    }
-    this._value = value;
-  }
-
-  @Input()
-  @HostBinding('class.ant-radio-wrapper-disabled')
   set nzDisabled(value: boolean) {
     this._disabled = toBoolean(value);
     this.setClassMap();
@@ -81,14 +73,46 @@ export class NzRadioComponent implements OnInit, ControlValueAccessor {
     return this._disabled;
   }
 
+  @Input()
+  set nzAutoFocus(value: boolean) {
+    this._autoFocus = toBoolean(value);
+    this.updateAutoFocus();
+  }
+
+  get nzAutoFocus(): boolean {
+    return this._autoFocus;
+  }
+
+  updateAutoFocus(): void {
+    if (this.isInit) {
+      if (this.nzAutoFocus) {
+        this.renderer.setAttribute(this.inputElement.nativeElement, 'autofocus', 'autofocus');
+      } else {
+        this.renderer.removeAttribute(this.inputElement.nativeElement, 'autofocus');
+      }
+    }
+  }
+
+  updateInputFocus(): void {
+    if (this.inputElement) {
+      if (this.nzChecked) {
+        this.focused = true;
+        this.inputElement.nativeElement.focus();
+      } else {
+        this.focused = false;
+        this.inputElement.nativeElement.blur();
+      }
+    }
+  }
+
   @HostListener('click', [ '$event' ])
   onClick(e: MouseEvent): void {
     e.preventDefault();
     if (!this._disabled) {
-      if (this._nzRadioGroup) {
-        this._checked = true;
+      if (this.nzRadioGroup) {
+        this.nzChecked = true;
         this.setClassMap();
-        this._nzRadioGroup.selectRadio(this);
+        this.nzRadioGroup.selectRadio(this);
       } else {
         this.updateValue(true);
       }
@@ -96,48 +120,57 @@ export class NzRadioComponent implements OnInit, ControlValueAccessor {
   }
 
   nzFocus(): void {
-    this._focused = true;
+    this.focused = true;
     this.setClassMap();
   }
 
   nzBlur(): void {
-    this._focused = false;
+    this.focused = false;
     this.setClassMap();
-    if (this._nzRadioGroup) this._nzRadioGroup.onTouched();
+    this.onTouched();
+    if (this.nzRadioGroup) this.nzRadioGroup.onTouched();
   }
 
   setClassMap(): void {
-    this._classMap = {
-      [ this._prefixCls ]              : true,
-      [ `${this._prefixCls}-checked` ] : this._checked,
-      [ `${this._prefixCls}-focused` ] : this._focused,
-      [ `${this._prefixCls}-disabled` ]: this._disabled
+    this.classMap = {
+      [ this.prefixCls ]              : true,
+      [ `${this.prefixCls}-checked` ] : this.nzChecked,
+      [ `${this.prefixCls}-focused` ] : this.focused,
+      [ `${this.prefixCls}-disabled` ]: this.nzDisabled
     };
   }
 
-  constructor(private _elementRef: ElementRef, public _renderer: Renderer2, @Optional() public _nzRadioGroup: NzRadioGroupComponent) {
-    this._el = this._elementRef.nativeElement;
+  focus(): void {
+    this.inputElement.nativeElement.focus();
+  }
+
+  blur(): void {
+    this.inputElement.nativeElement.blur();
+  }
+
+  constructor(@Optional() public nzRadioGroup: NzRadioGroupComponent, private renderer: Renderer2) {
   }
 
   ngOnInit(): void {
-    if (this._nzRadioGroup) this._nzRadioGroup.addRadio(this);
-    this._renderer.addClass(this._el, `${this._prefixCls}-wrapper`);
+    if (this.nzRadioGroup) this.nzRadioGroup.addRadio(this);
     this.setClassMap();
   }
 
-  // region: value accessor
   updateValue(value: boolean): void {
-    if (value === this._checked) {
+    if (value === this.nzChecked) {
       return;
     }
     this.onChange(value);
-    this._focused = false;
-    this._checked = value;
+    this.nzChecked = value;
     this.setClassMap();
   }
 
+  setDisabledState(isDisabled: boolean): void {
+    this.nzDisabled = isDisabled;
+  }
+
   writeValue(value: boolean): void {
-    this._checked = value;
+    this.nzChecked = value;
     this.setClassMap();
   }
 
@@ -149,5 +182,9 @@ export class NzRadioComponent implements OnInit, ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  // endregion
+  ngAfterViewInit(): void {
+    this.isInit = true;
+    this.updateAutoFocus();
+    this.updateInputFocus();
+  }
 }

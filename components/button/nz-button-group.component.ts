@@ -21,7 +21,7 @@ export class NzButtonGroupComponent implements AfterViewInit {
     [ this.prefixCls ]                                    : true,
     [ `${this.prefixCls}-${this.sizeMap[ this.nzSize ]}` ]: this.sizeMap[ this.nzSize ]
   };
-  @ViewChild('groupWrapper') _groupWrapper: ElementRef;
+  @ViewChild('groupWrapper') groupWrapper: ElementRef;
 
   @Input()
   get nzSize(): NzButtonGroupSize {
@@ -38,6 +38,6 @@ export class NzButtonGroupComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     /** trim text node between button */
-    trimWhiteSpace(this._groupWrapper.nativeElement);
+    trimWhiteSpace(this.groupWrapper.nativeElement);
   }
 }
