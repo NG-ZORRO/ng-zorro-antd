@@ -1,4 +1,5 @@
 import { Component, Inject, Optional } from '@angular/core';
+
 import { NzMessageConfig, NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG } from './nz-message-config';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 

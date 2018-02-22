@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
   template: `
     <nz-input-number [(ngModel)]="demoValue" [nzMin]="1" [nzMax]="100" [nzStep]="1" [nzFormatter]="formatterDollar" [nzParser]="parserDollar"></nz-input-number>
     <nz-input-number [(ngModel)]="demoValue" [nzMin]="1" [nzMax]="100" [nzStep]="1" [nzFormatter]="formatterPercent" [nzParser]="parserPercent"></nz-input-number>
-    <nz-input-number [(ngModel)]="demoValue" [nzMin]="1" [nzMax]="100" [nzStep]="1" [nzFormatter]="formatterInt" [nzParser]="parserInt"></nz-input-number>
   `
 })
 export class NzDemoInputNumberFormatterComponent {
@@ -14,6 +13,4 @@ export class NzDemoInputNumberFormatterComponent {
   parserPercent = value => value.replace(' %', '');
   formatterDollar = value => `$ ${value}`;
   parserDollar = value => value.replace('$ ', '');
-  formatterInt = value => value ? parseInt(value, 10) : '';
-  parserInt = value => parseInt(value, 10);
 }

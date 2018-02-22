@@ -23,7 +23,7 @@ When a numeric value needs to be provided.
 | nzFormatter | Specifies the format of the value presented | (value: number ｜ string):string=> {} | - |
 | nzParser | Specifies the value extracted from nzFormatter | (value:string): number=>{} | - |
 | nzPrecision | precision of input value | number | - |
-| nzSize | width of input box | string | - |
+| nzSize | width of input box | string | default |
 | nzStep | The number to which the current value is increased or decreased. It can be an integer or decimal. | number ｜  string | 1 |
 
 ## Methods

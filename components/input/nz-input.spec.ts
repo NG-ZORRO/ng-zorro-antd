@@ -2,7 +2,9 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { async, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+
 import { dispatchKeyboardEvent } from '../core/testing';
+
 import { NzInputGroupComponent } from './nz-input-group.component';
 import { NzInputDirective } from './nz-input.directive';
 import { NzInputModule } from './nz-input.module';

@@ -8,8 +8,9 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
-
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
@@ -22,7 +23,7 @@ import { toBoolean } from '../core/util/convert';
         (mouseleave)="stop()"
         class="ant-input-number-handler ant-input-number-handler-up"
         [class.ant-input-number-handler-up-disabled]="disabledUp">
-        <span class="ant-input-number-handler-up-inner" unselectable="unselectable" (click)="preventDefault($event)"></span>
+        <span class="ant-input-number-handler-up-inner" unselectable="unselectable" (click)="$event.preventDefault()"></span>
       </a>
       <a
         (mousedown)="down($event)"
@@ -30,7 +31,7 @@ import { toBoolean } from '../core/util/convert';
         (mouseleave)="stop()"
         class="ant-input-number-handler ant-input-number-handler-down"
         [class.ant-input-number-handler-down-disabled]="disabledDown">
-        <span class="ant-input-number-handler-down-inner" unselectable="unselectable" (click)="preventDefault($event)"></span>
+        <span class="ant-input-number-handler-down-inner" unselectable="unselectable" (click)="$event.preventDefault()"></span>
       </a>
     </div>
     <div class="ant-input-number-input-wrap">
@@ -65,7 +66,6 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   private isInit = false;
   private _disabled = false;
   private _step = 1;
-  private isInputting = false;
   private autoStepTimer;
   private _autoFocus = false;
   displayValue: string | number;
@@ -125,10 +125,6 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     return this._step;
   }
 
-  preventDefault(e: MouseEvent): void {
-    e.preventDefault();
-  }
-
   updateAutoFocus(): void {
     if (this.isInit) {
       if (this.nzAutoFocus) {
@@ -140,10 +136,8 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   onModelChange(value: string): void {
-    if (this.isFocused) {
-      this.isInputting = true;
-    }
-    this.actualValue = this.nzParser(value.trim().replace(/。/g, '.'));
+    this.actualValue = this.nzParser(value.trim().replace(/。/g, '.').replace(/[^\w\.-]+/g, ''));
+    this.inputElement.nativeElement.value = this.actualValue;
   }
 
   getCurrentValidValue(value: string | number): number {
@@ -168,17 +162,17 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     );
   }
 
-  getValidValue(value: string | number, min: number = this.nzMin, max: number = this.nzMax): string | number {
+  getValidValue(value: string | number): string | number {
     let val = parseFloat(value as string);
     // https://github.com/ant-design/ant-design/issues/7358
     if (isNaN(val)) {
       return value;
     }
-    if (val < min) {
-      val = min;
+    if (val < this.nzMin) {
+      val = this.nzMin;
     }
-    if (val > max) {
-      val = max;
+    if (val > this.nzMax) {
+      val = this.nzMax;
     }
     return val;
   }
@@ -187,14 +181,13 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     if (this.isNotCompleteNumber(num)) {
       return num as number;
     }
-    if (this.nzPrecision) {
+    if (isNotNil(this.nzPrecision)) {
       return Number(Number(num).toFixed(this.nzPrecision));
     }
     return Number(num);
   }
 
   onBlur(e: FocusEvent): void {
-    this.isInputting = false;
     this.isFocused = false;
     const value = this.getCurrentValidValue(this.actualValue);
     this.setValue(value, `${this.value}` !== `${value}`);
@@ -214,18 +207,15 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     return ratio;
   }
 
-  down(e: MouseEvent | KeyboardEvent, ratio: number): void {
+  down(e: MouseEvent | KeyboardEvent, ratio?: number): void {
     this.step('down', e, ratio);
   }
 
-  up(e: MouseEvent | KeyboardEvent, ratio: number): void {
+  up(e: MouseEvent | KeyboardEvent, ratio?: number): void {
     this.step('up', e, ratio);
   }
 
   getPrecision(value: number): number {
-    if (this.nzPrecision) {
-      return this.nzPrecision;
-    }
     const valueString = value.toString();
     if (valueString.indexOf('e-') >= 0) {
       return parseInt(valueString.slice(valueString.indexOf('e-') + 2), 10);
@@ -242,8 +232,8 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   // then value should be 2.51, rather than 2.5
   // if this.props.precision is undefined
   // https://github.com/react-component/input-number/issues/39
-  getMaxPrecision(currentValue: string | number, ratio: number = 1): number {
-    if (this.nzPrecision) {
+  getMaxPrecision(currentValue: string | number, ratio: number): number {
+    if (isNotNil(this.nzPrecision)) {
       return this.nzPrecision;
     }
     const ratioPrecision = this.getPrecision(ratio);
@@ -255,7 +245,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     return Math.max(currentValuePrecision, ratioPrecision + stepPrecision);
   }
 
-  getPrecisionFactor(currentValue: string | number, ratio: number = 1): number {
+  getPrecisionFactor(currentValue: string | number, ratio: number): number {
     const precision = this.getMaxPrecision(currentValue, ratio);
     return Math.pow(10, precision);
   }
@@ -290,16 +280,11 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
 
   step(type: string, e: MouseEvent | KeyboardEvent, ratio: number = 1): void {
     this.stop();
-    if (e) {
-      e.preventDefault();
-    }
+    e.preventDefault();
     if (this.nzDisabled) {
       return;
     }
     const value = this.getCurrentValidValue(this.actualValue) || 0;
-    if (this.isNotCompleteNumber(value)) {
-      return;
-    }
     let val;
     if (type === 'up') {
       val = this.upStep(value, ratio);
@@ -328,36 +313,34 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     }
   }
 
-  setValue(value: number, emit: boolean = false): void {
-    this.value = value;
-    this.actualValue = value;
-    this.displayValue = this.nzFormatter(this.value);
-    this.inputElement.nativeElement.value = this.nzFormatter(this.value);
-    this.disabledUp = this.disabledDown = false;
-    if (value || value === 0) {
-      if (!isNaN(value)) {
-        const val = Number(value);
-        if (val >= this.nzMax) {
-          this.disabledUp = true;
-        }
-        if (val <= this.nzMin) {
-          this.disabledDown = true;
-        }
-      } else {
-        this.disabledUp = this.disabledDown = true;
-      }
-    }
-    if (emit) {
+  setValue(value: number, emit: boolean): void {
+    if (emit && (`${this.value}` !== `${value}`)) {
       this.onChange(value);
     }
+    this.value = value;
+    this.actualValue = value;
+    const displayValue = isNotNil(this.nzFormatter(this.value)) ? this.nzFormatter(this.value) : '';
+    this.displayValue = displayValue;
+    this.inputElement.nativeElement.value = displayValue;
+    this.disabledUp = this.disabledDown = false;
+    if (value || value === 0) {
+      const val = Number(value);
+      if (val >= this.nzMax) {
+        this.disabledUp = true;
+      }
+      if (val <= this.nzMin) {
+        this.disabledDown = true;
+      }
+    }
+
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    if (e.keyCode === 38) {
+    if (e.code === 'ArrowUp') {
       const ratio = this.getRatio(e);
       this.up(e, ratio);
       this.stop();
-    } else if (e.keyCode === 40) {
+    } else if (e.code === 'ArrowDown') {
       const ratio = this.getRatio(e);
       this.down(e, ratio);
       this.stop();

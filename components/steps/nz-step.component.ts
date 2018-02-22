@@ -5,6 +5,7 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
+
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
 @Component({

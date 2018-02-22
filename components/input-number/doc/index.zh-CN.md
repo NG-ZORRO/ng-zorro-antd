@@ -26,7 +26,7 @@ title: InputNumber
 | nzFormatter | 指定输入框展示值的格式 | (value: number ｜ string):string=> {} | - |
 | nzParser | 指定从 nzFormatter 里转换回数字的方式，和 nzFormatter 搭配使用 | (value:string): number=>{} | - |
 | nzPrecision | 数值精度 | number | - |
-| nzSize | 输入框大小 | string | 无 |
+| nzSize | 输入框大小 | string | default |
 | nzStep | 每次改变步数，可以为小数 | number ｜ string | 1 |
 
 ## 方法

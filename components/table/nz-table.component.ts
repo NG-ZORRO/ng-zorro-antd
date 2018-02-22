@@ -13,8 +13,10 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
+
 import { toBoolean } from '../core/util/convert';
 import { measureScrollbar } from '../core/util/mesure-scrollbar';
+
 import { NzThDirective } from './nz-th.directive';
 
 @Component({

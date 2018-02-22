@@ -6,7 +6,9 @@ import {
   trigger,
 } from '@angular/animations';
 import { Component } from '@angular/core';
+
 import { NzMessageComponent } from '../message/nz-message.component';
+
 import { NzNotificationContainerComponent } from './nz-notification-container.component';
 
 @Component({

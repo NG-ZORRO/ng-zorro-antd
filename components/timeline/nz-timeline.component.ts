@@ -8,7 +8,9 @@ import {
   QueryList,
   TemplateRef
 } from '@angular/core';
+
 import { toBoolean } from '../core/util/convert';
+
 import { NzTimelineItemComponent } from './nz-timeline-item.component';
 
 @Component({

@@ -15,7 +15,9 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
 import { toBoolean } from '../core/util/convert';
+
 import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
 
 @Component({

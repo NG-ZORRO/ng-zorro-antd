@@ -24,10 +24,12 @@ import { Subscription } from 'rxjs/Subscription';
 import { auditTime } from 'rxjs/operators/auditTime';
 import { combineLatest } from 'rxjs/operators/combineLatest';
 import { map } from 'rxjs/operators/map';
+
 import { POSITION_MAP } from '../core/overlay/overlay-position-map';
 import { toBoolean } from '../core/util/convert';
 import { NzDropDownButtonComponent } from '../dropdown/nz-dropdown-button.component';
 import { NzDropDownComponent } from '../dropdown/nz-dropdown.component';
+
 import { NzMenuDirective } from './nz-menu.directive';
 
 @Component({

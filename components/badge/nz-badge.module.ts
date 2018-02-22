@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import { NzBadgeComponent } from './nz-badge.component';
 
 @NgModule({
