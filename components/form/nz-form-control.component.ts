@@ -1,5 +1,6 @@
 import { Component, ContentChild, Input } from '@angular/core';
 import { NgControl } from '@angular/forms';
+
 import { toBoolean } from '../core/util/convert';
 
 @Component({

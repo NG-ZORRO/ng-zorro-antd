@@ -22,7 +22,9 @@ import { merge } from 'rxjs/observable/merge';
 import { of as observableOf } from 'rxjs/observable/of';
 import { auditTime } from 'rxjs/operators/auditTime';
 import { startWith } from 'rxjs/operators/startWith';
+
 import { toBoolean } from '../core/util/convert';
+
 import { NzTabLabelDirective } from './nz-tab-label.directive';
 import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
 

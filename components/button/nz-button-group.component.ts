@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+
 import { trimWhiteSpace } from '../core/util/trim-whitespace';
 
 export type NzButtonGroupSize = 'small' | 'large' | 'default' ;

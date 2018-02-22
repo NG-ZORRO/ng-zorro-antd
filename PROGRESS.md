@@ -15,7 +15,7 @@
 | checkbox | √ | 100% | 100% | vthinkxie | - |
 | form | x | x | x | vthinkxie | - |
 | input | √ | 100% | 100% | vthinkxie | √ |
-| inputnumber | x | x | x | vthinkxie | - |
+| inputnumber | √ | 100% | 100% | vthinkxie | √ |
 | radio | x | x | x | vthinkxie | - |
 | rate | x | x | x | vthinkxie | - |
 | select | x | x | x | vthinkxie | - |

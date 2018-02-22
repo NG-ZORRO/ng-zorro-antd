@@ -13,7 +13,9 @@ import {
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
+
 import { toBoolean } from '../core/util/convert';
+
 import { TransferItem } from './item';
 
 @Component({

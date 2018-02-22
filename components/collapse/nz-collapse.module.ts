@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import { NzCollapseComponent } from './nz-collapse.component';
 import { NzCollapsesetComponent } from './nz-collapseset.component';
 

@@ -1,4 +1,5 @@
 import { Component, HostBinding, Input } from '@angular/core';
+
 import { toBoolean } from '../core/util/convert';
 
 @Component({
