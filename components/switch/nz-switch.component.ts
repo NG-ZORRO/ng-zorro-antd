@@ -138,13 +138,13 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    if (e.code === 'ArrowLeft' || e.keyCode === 37) { // Left
+    if (e.keyCode === 37) { // Left
       this.updateValue(false, true);
       e.preventDefault();
-    } else if (e.code === 'ArrowRight' || e.keyCode === 39) { // Right
+    } else if (e.keyCode === 39) { // Right
       this.updateValue(true, true);
       e.preventDefault();
-    } else if (e.code === 'Enter' || e.code === 'Space' || e.keyCode === 32 || e.keyCode === 13) { // Space, Enter
+    } else if (e.keyCode === 32 || e.keyCode === 13) { // Space, Enter
       this.updateValue(!this.checked, true);
       e.preventDefault();
     }

@@ -19,7 +19,7 @@
 | radio | √ | 100% | 100% | vthinkxie | - |
 | rate | √ | 100% | 100% | vthinkxie | - |
 | select | x | x | x | vthinkxie | - |
-| switch | x | x | x | vthinkxie | - |
+| switch | √ | 100% | 100% | vthinkxie | - |
 | badge | x | x | x | vthinkxie | - |
 | card | x | x | x | vthinkxie | - |
 | carousel | x | x | x | vthinkxie | - |
