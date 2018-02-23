@@ -1,10 +1,15 @@
 import {
   forwardRef,
+  AfterViewInit,
   Component,
-  ContentChild,
+  ElementRef,
+  EventEmitter,
   Input,
   OnInit,
-  TemplateRef
+  Output,
+  Renderer2,
+  TemplateRef,
+  ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -14,18 +19,24 @@ import { toBoolean } from '../core/util/convert';
   selector           : 'nz-rate',
   preserveWhitespaces: false,
   template           : `
-    <ul [ngClass]="_classMap" (mouseleave)="_leaveRate($event)">
-      <li *ngFor="let star of _starArray; let i = index"
-        [ngClass]="setClasses(i)"
-        (mouseover)="_hoverRate($event, i, true)"
-        (click)="_clickRate($event, i, true)">
-        <div class="ant-rate-star-first" (mouseover)="_hoverRate($event, i)" (click)="_clickRate($event, i)">
-          <i class="anticon anticon-star" *ngIf="!_characterContent"></i>
-          <ng-template [ngTemplateOutlet]="_characterContent" [ngIf]="_characterContent"></ng-template>
+    <ng-template #defaultCharacter><i class="anticon anticon-star"></i></ng-template>
+    <ul
+      #ulElement
+      [ngClass]="classMap"
+      (mouseleave)="leaveRate($event)"
+      (focus)="onFocus($event)"
+      (blur)="onBlur($event)"
+      (keydown)="onKeyDown($event)"
+      [tabindex]="nzDisabled?-1:1">
+      <li *ngFor="let star of starArray"
+        [ngClass]="setClasses(star)"
+        (mouseover)="hoverRate($event, star, true)"
+        (click)="clickRate($event, star, true)">
+        <div class="ant-rate-star-first" (mouseover)="hoverRate($event, star, false)" (click)="clickRate($event, star, false)">
+          <ng-template [ngTemplateOutlet]="nzCharacter||defaultCharacter"></ng-template>
         </div>
-        <div class="ant-rate-star-second" (mouseover)="_hoverRate($event, i, true)" (click)="_clickRate($event, i, true)">
-          <i class="anticon anticon-star" *ngIf="!_characterContent"></i>
-          <ng-template [ngTemplateOutlet]="_characterContent" [ngIf]="_characterContent"></ng-template>
+        <div class="ant-rate-star-second" (mouseover)="hoverRate($event, star, true)" (click)="clickRate($event, star, true)">
+          <ng-template [ngTemplateOutlet]="nzCharacter||defaultCharacter"></ng-template>
         </div>
       </li>
     </ul>
@@ -38,30 +49,53 @@ import { toBoolean } from '../core/util/convert';
     }
   ]
 })
-export class NzRateComponent implements OnInit, ControlValueAccessor {
-  private _hasHalf = false;
+export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewInit {
   private _allowClear = true;
   private _allowHalf = false;
   private _disabled = false;
-  @ContentChild('character') _characterContent: TemplateRef<void>;
+  private _count = 5;
+  private _value = 0;
+  private _autoFocus = false;
+  @Input() nzCharacter: TemplateRef<void>;
+  @Output() nzOnBlur = new EventEmitter<FocusEvent>();
+  @Output() nzOnFocus = new EventEmitter<FocusEvent>();
+  @Output() nzOnKeyDown = new EventEmitter<KeyboardEvent>();
+  @Output() nzOnHoverChange = new EventEmitter<number>();
+  @ViewChild('ulElement') private ulElement: ElementRef;
+  prefixCls = 'ant-rate';
+  isInit = false;
+  hasHalf = false;
+  innerPrefixCls = `${this.prefixCls}-star`;
+  classMap;
+  starArray: number[] = [];
+  hoverValue = 0;
+  isFocused = false;
+  floatReg: RegExp = /^\d+(\.\d+)?$/;
 
-  _prefixCls = 'ant-rate';
-  _innerPrefixCls = `${this._prefixCls}-star`;
-  _classMap;
-  _starArray: number[] = [];
-  _count = 5;
-  _value = 0;
-  _hoverValue = 0; // 鼠标悬浮时的星数，为正整数，和_hasHalf配合使用
-  // TODO: What's this for? It will match all number values
-  _floatReg: RegExp = /^\d+(\.\d+)?$/;
-
-  // ngModel Access
   onChange: (value: number) => void = () => null;
   onTouched: () => void = () => null;
 
   @Input()
+  set nzAutoFocus(value: boolean) {
+    this._autoFocus = toBoolean(value);
+    this.updateAutoFocus();
+  }
+
+  get nzAutoFocus(): boolean {
+    return this._autoFocus;
+  }
+
+  @Input()
   set nzCount(value: number) {
+    if (this._count === value) {
+      return;
+    }
     this._count = value;
+    this.updateStarArray();
+  }
+
+  get nzCount(): number {
+    return this._count;
   }
 
   @Input()
@@ -69,20 +103,17 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
     this._allowHalf = toBoolean(value);
   }
 
+  get nzAllowHalf(): boolean {
+    return this._allowHalf;
+  }
+
   @Input()
   set nzAllowClear(value: boolean) {
     this._allowClear = toBoolean(value);
   }
 
-  @Input()
-  set nzDefaultValue(input: number) {
-    let value = input;
-    this._value = value;
-    if (this._floatReg.test(value.toString())) {
-      value += 0.5;
-      this._hasHalf = true;
-    }
-    this._hoverValue = value;
+  get nzAllowClear(): boolean {
+    return this._allowClear;
   }
 
   get nzValue(): number {
@@ -95,11 +126,11 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
       return;
     }
     this._value = value;
-    if (this._floatReg.test(value.toString())) {
+    if (this.floatReg.test(value.toString())) {
       value += 0.5;
-      this._hasHalf = true;
+      this.hasHalf = true;
     }
-    this._hoverValue = value;
+    this.hoverValue = value;
   }
 
   @Input()
@@ -108,77 +139,133 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
     this.setClassMap();
   }
 
+  get nzDisabled(): boolean {
+    return this._disabled;
+  }
+
   setClassMap(): void {
-    this._classMap = {
-      [ this._prefixCls ]              : true,
-      [ `${this._prefixCls}-disabled` ]: this._disabled
+    this.classMap = {
+      [ this.prefixCls ]              : true,
+      [ `${this.prefixCls}-disabled` ]: this.nzDisabled
     };
   }
 
-  setChildrenClassMap(): void {
-    let index = 0;
-    while (index < this._count) {
-      this._starArray.push(index++);
+  updateAutoFocus(): void {
+    if (this.isInit && !this.nzDisabled) {
+      if (this.nzAutoFocus) {
+        this.renderer.setAttribute(this.ulElement.nativeElement, 'autofocus', 'autofocus');
+      } else {
+        this.renderer.removeAttribute(this.ulElement.nativeElement, 'autofocus');
+      }
     }
   }
 
-  _clickRate(e: MouseEvent, index: number, isFull: boolean): void {
+  clickRate(e: MouseEvent, index: number, isFull: boolean): void {
     e.stopPropagation();
-    if (this._disabled) {
+    if (this.nzDisabled) {
       return;
     }
-    this._hasHalf = !isFull && this._allowHalf;
+    this.hasHalf = !isFull && this.nzAllowHalf;
 
     let actualValue = index + 1;
-    this._hoverValue = actualValue;
+    this.hoverValue = actualValue;
 
-    if (this._hasHalf) {
+    if (this.hasHalf) {
       actualValue -= 0.5;
     }
 
-    if (this._value === actualValue) {
-      if (this._allowClear) {
-        this._hoverValue = this._value = 0;
+    if (this.nzValue === actualValue) {
+      if (this.nzAllowClear) {
+        this.nzValue = 0;
+        this.onChange(this.nzValue);
       }
     } else {
-      this._value = actualValue;
+      this.nzValue = actualValue;
+      this.onChange(this.nzValue);
     }
-    this.onChange(this._value);
   }
 
-  _hoverRate(e: MouseEvent, index: number, isFull: boolean): void {
+  hoverRate(e: MouseEvent, index: number, isFull: boolean): void {
     e.stopPropagation();
-    if (this._disabled) {
+    if (this.nzDisabled) {
       return;
     }
-    const isHalf: boolean = !isFull && this._allowHalf;
-    // 如果星数一致，则不作操作，用于提高性能
-    if (this._hoverValue === index + 1 && isHalf === this._hasHalf) {
+    const isHalf: boolean = !isFull && this.nzAllowHalf;
+    if (this.hoverValue === index + 1 && isHalf === this.hasHalf) {
       return;
     }
 
-    this._hoverValue = index + 1;
-    this._hasHalf = isHalf;
+    this.hoverValue = index + 1;
+    this.nzOnHoverChange.emit(this.hoverValue);
+    this.hasHalf = isHalf;
   }
 
-  _leaveRate(e: MouseEvent): void {
+  leaveRate(e: MouseEvent): void {
     e.stopPropagation();
-    let oldVal = this._value;
-    if (this._floatReg.test(oldVal.toString())) {
+    let oldVal = this.nzValue;
+    if (this.floatReg.test(oldVal.toString())) {
       oldVal += 0.5;
-      this._hasHalf = true;
+      this.hasHalf = true;
     }
-    this._hoverValue = oldVal;
+    this.hoverValue = oldVal;
+  }
+
+  onFocus(e: FocusEvent): void {
+    this.isFocused = true;
+    this.nzOnFocus.emit(e);
+  }
+
+  onBlur(e: FocusEvent): void {
+    this.isFocused = false;
+    this.nzOnBlur.emit(e);
+  }
+
+  focus(): void {
+    this.ulElement.nativeElement.focus();
+  }
+
+  blur(): void {
+    this.ulElement.nativeElement.blur();
+  }
+
+  onKeyDown(e: KeyboardEvent): void {
+    const code = e.code;
+    if ((code === 'ArrowRight') && (this.nzValue < this.nzCount)) {
+      if (this.nzAllowHalf) {
+        this.nzValue += 0.5;
+      } else {
+        this.nzValue += 1;
+      }
+      this.onChange(this.nzValue);
+    } else if ((code === 'ArrowLeft') && (this.nzValue > 0)) {
+      if (this.nzAllowHalf) {
+        this.nzValue -= 0.5;
+      } else {
+        this.nzValue -= 1;
+      }
+      this.onChange(this.nzValue);
+    }
+    this.nzOnKeyDown.emit(e);
+    e.preventDefault();
   }
 
   setClasses(i: number): object {
     return {
-      [ this._innerPrefixCls ]            : true,
-      [ `${this._innerPrefixCls}-full` ]  : (i + 1 < this._hoverValue) || (!this._hasHalf) && (i + 1 === this._hoverValue),
-      [ `${this._innerPrefixCls}-half` ]  : (this._hasHalf) && (i + 1 === this._hoverValue),
-      [ `${this._innerPrefixCls}-active` ]: (this._hasHalf) && (i + 1 === this._hoverValue),
-      [ `${this._innerPrefixCls}-zero` ]  : (i + 1 > this._hoverValue)
+      [ this.innerPrefixCls ]             : true,
+      [ `${this.innerPrefixCls}-full` ]   : (i + 1 < this.hoverValue) || (!this.hasHalf) && (i + 1 === this.hoverValue),
+      [ `${this.innerPrefixCls}-half` ]   : (this.hasHalf) && (i + 1 === this.hoverValue),
+      [ `${this.innerPrefixCls}-active` ] : (this.hasHalf) && (i + 1 === this.hoverValue),
+      [ `${this.innerPrefixCls}-zero` ]   : (i + 1 > this.hoverValue),
+      [ `${this.innerPrefixCls}-focused` ]: (this.hasHalf) && (i + 1 === this.hoverValue) && this.isFocused
     };
+  }
+
+  updateStarArray(): void {
+    let index = 0;
+    this.starArray = [];
+    while (index < this.nzCount) {
+      this.starArray.push(index++);
+    }
   }
 
   writeValue(value: number | null): void {
@@ -197,8 +284,15 @@ export class NzRateComponent implements OnInit, ControlValueAccessor {
     this.nzDisabled = isDisabled;
   }
 
+  constructor(private renderer: Renderer2) {
+  }
+
   ngOnInit(): void {
     this.setClassMap();
-    this.setChildrenClassMap();
+    this.updateStarArray();
+  }
+
+  ngAfterViewInit(): void {
+    this.isInit = true;
   }
 }

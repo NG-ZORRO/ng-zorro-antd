@@ -5,8 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <nz-rate [(ngModel)]="value" nzAllowHalf></nz-rate>
     <span *ngIf="value" class="ant-rate-text">{{ value }} stars</span>
-  `,
-  styles  : []
+  `
 })
 export class NzDemoRateTextComponent {
   value = 3;

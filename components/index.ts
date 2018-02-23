@@ -29,7 +29,7 @@ import { NzPopconfirmModule } from './popconfirm/nz-popconfirm.module';
 import { NzPopoverModule } from './popover/nz-popover.module';
 import { NzProgressModule } from './progress/nz-progress.module';
 import { NzRadioModule } from './radio';
-import { NzRateModule } from './rate/nz-rate.module';
+import { NzRateModule } from './rate';
 import { NzSelectModule } from './select/nz-select.module';
 import { NzSliderModule } from './slider/nz-slider.module';
 import { NzSpinModule } from './spin/nz-spin.module';
