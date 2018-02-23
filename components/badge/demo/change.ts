@@ -1,13 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-badge-change',
-  template: `
+  selector     : 'nz-demo-badge-change',
+  encapsulation: ViewEncapsulation.None,
+  template     : `
     <div>
-      <nz-badge [nzCount]="count" nzShowZero>
-        <ng-template #content>
-          <a class="head-example"></a>
-        </ng-template>
+      <nz-badge [nzCount]="count">
+        <a class="head-example"></a>
       </nz-badge>
       <nz-button-group>
         <button nz-button [nzType]="'ghost'" (click)="minCount()"><i class="anticon anticon-minus"></i></button>
@@ -16,16 +15,25 @@ import { Component } from '@angular/core';
     </div>
 
     <div style="margin-top: 10px;">
-
       <nz-badge [nzDot]="dot">
-        <ng-template #content>
-          <a class="head-example"></a>
-        </ng-template>
+        <a class="head-example"></a>
       </nz-badge>
       <nz-switch [(ngModel)]="dot"></nz-switch>
     </div>
   `,
-  styles  : []
+  styles       : [ `
+    .ant-badge:not(.ant-badge-status) {
+      margin-right: 20px;
+    }
+
+    .head-example {
+      width: 42px;
+      height: 42px;
+      border-radius: 4px;
+      background: #eee;
+      display: inline-block;
+    }
+  ` ]
 })
 export class NzDemoBadgeChangeComponent {
 
@@ -38,9 +46,8 @@ export class NzDemoBadgeChangeComponent {
 
   minCount(): void {
     this.count--;
-  }
-
-  toggleShow(): void {
-    this.dot = !this.dot;
+    if (this.count < 0) {
+      this.count = 0;
+    }
   }
 }

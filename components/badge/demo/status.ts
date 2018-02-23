@@ -18,8 +18,7 @@ import { Component } from '@angular/core';
     <nz-badge [nzStatus]="'processing'" [nzText]="'Processing'"></nz-badge>
     <br>
     <nz-badge [nzStatus]="'warning'" [nzText]="'Warning'"></nz-badge>
-  `,
-  styles  : []
+  `
 })
 export class NzDemoBadgeStatusComponent {
 }

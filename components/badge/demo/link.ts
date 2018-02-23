@@ -5,13 +5,10 @@ import { Component } from '@angular/core';
   template: `
     <a href="#here">
       <nz-badge [nzCount]="5">
-        <ng-template #content>
-          <a class="head-example"></a>
-        </ng-template>
+        <a class="head-example"></a>
       </nz-badge>
     </a>
-  `,
-  styles  : []
+  `
 })
 export class NzDemoBadgeLinkComponent {
 }
