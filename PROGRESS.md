@@ -17,7 +17,7 @@
 | input | √ | 100% | 100% | vthinkxie | √ |
 | inputnumber | √ | 100% | 100% | vthinkxie | √ |
 | radio | √ | 100% | 100% | vthinkxie | - |
-| rate | x | x | x | vthinkxie | - |
+| rate | √ | 100% | 100% | vthinkxie | - |
 | select | x | x | x | vthinkxie | - |
 | switch | x | x | x | vthinkxie | - |
 | badge | x | x | x | vthinkxie | - |
