@@ -1,29 +1,39 @@
 import {
   forwardRef,
   Component,
+  ElementRef,
   HostListener,
   Input,
-  OnInit
+  OnInit,
+  TemplateRef,
+  ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { toBoolean } from '../core/util/convert';
 
+export type NzSwitchSizeType = 'default' | 'small';
+
 @Component({
   selector           : 'nz-switch',
   preserveWhitespaces: false,
   template           : `
-    <span [ngClass]="_classMap" tabindex="0">
-      <span [ngClass]="_innerPrefixCls">
-        <ng-template [ngIf]="_checked">
-          <ng-content select="[checked]"></ng-content>
-        </ng-template>
-        <ng-template [ngIf]="!_checked">
-          <ng-content select="[unchecked]"></ng-content>
-        </ng-template>
+    <span [ngClass]="classMap" [tabindex]="nzDisabled?-1:0" #switchElement (keydown)="onKeyDown($event)">
+      <span class="ant-switch-inner">
+        <span *ngIf="checked">
+          <ng-container *ngIf="isCheckedChildrenString; else nzCheckedChildren">{{ nzCheckedChildren }}</ng-container>
+        </span>
+        <span *ngIf="!checked">
+          <ng-container *ngIf="isUnCheckedChildrenString; else nzUnCheckedChildren">{{ nzUnCheckedChildren }}</ng-container>
+        </span>
       </span>
     </span>
   `,
+  styles             : [ `
+    :host {
+      display: inline-block;
+    }
+  ` ],
   providers          : [
     {
       provide    : NG_VALUE_ACCESSOR,
@@ -34,24 +44,47 @@ import { toBoolean } from '../core/util/convert';
 })
 export class NzSwitchComponent implements OnInit, ControlValueAccessor {
   private _disabled = false;
-  _prefixCls = 'ant-switch';
-  _innerPrefixCls = `${this._prefixCls}-inner`;
-  _classMap;
-  _size: string;
-  _checked = false;
-  _loading = false;
-
-  // ngModel Access
+  private _size: NzSwitchSizeType;
+  private _loading = false;
+  private _checkedChildren: string | TemplateRef<void>;
+  private _unCheckedChildren: string | TemplateRef<void>;
+  prefixCls = 'ant-switch';
+  classMap;
+  checked = false;
+  isCheckedChildrenString: boolean;
+  isUnCheckedChildrenString: boolean;
+  @ViewChild('switchElement')
+  private switchElement: ElementRef;
   onChange: (value: boolean) => void = () => null;
   onTouched: () => void = () => null;
 
   @Input()
-  set nzSize(value: string) {
+  set nzCheckedChildren(value: string | TemplateRef<void>) {
+    this.isCheckedChildrenString = !(value instanceof TemplateRef);
+    this._checkedChildren = value;
+  }
+
+  get nzCheckedChildren(): string | TemplateRef<void> {
+    return this._checkedChildren;
+  }
+
+  @Input()
+  set nzUnCheckedChildren(value: string | TemplateRef<void>) {
+    this.isUnCheckedChildrenString = !(value instanceof TemplateRef);
+    this._unCheckedChildren = value;
+  }
+
+  get nzUnCheckedChildren(): string | TemplateRef<void> {
+    return this._unCheckedChildren;
+  }
+
+  @Input()
+  set nzSize(value: NzSwitchSizeType) {
     this._size = value;
     this.setClassMap();
   }
 
-  get nzSize(): string {
+  get nzSize(): NzSwitchSizeType {
     return this._size;
   }
 
@@ -78,32 +111,55 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
   @HostListener('click', [ '$event' ])
   onClick(e: MouseEvent): void {
     e.preventDefault();
-    if ((!this._disabled) && (!this._loading)) {
-      this.updateValue(!this._checked);
-      this.onChange(this._checked);
+    if ((!this.nzDisabled) && (!this.nzLoading)) {
+      this.updateValue(!this.checked, true);
     }
   }
 
-  updateValue(value: boolean): void {
-    if (this._checked === value) {
+  updateValue(value: boolean, emit: boolean): void {
+    if (this.checked === value) {
       return;
     }
-    this._checked = value;
+    this.checked = value;
     this.setClassMap();
+    if (emit) {
+      this.onChange(this.checked);
+    }
   }
 
   setClassMap(): void {
-    this._classMap = {
-      [ this._prefixCls ]              : true,
-      [ `${this._prefixCls}-checked` ] : this._checked,
-      [ `${this._prefixCls}-loading` ] : this._loading,
-      [ `${this._prefixCls}-disabled` ]: this._disabled,
-      [ `${this._prefixCls}-small` ]   : this._size === 'small'
+    this.classMap = {
+      [ this.prefixCls ]              : true,
+      [ `${this.prefixCls}-checked` ] : this.checked,
+      [ `${this.prefixCls}-loading` ] : this.nzLoading,
+      [ `${this.prefixCls}-disabled` ]: this.nzDisabled,
+      [ `${this.prefixCls}-small` ]   : this.nzSize === 'small'
     };
   }
 
+  onKeyDown(e: KeyboardEvent): void {
+    if (e.keyCode === 37) { // Left
+      this.updateValue(false, true);
+      e.preventDefault();
+    } else if (e.keyCode === 39) { // Right
+      this.updateValue(true, true);
+      e.preventDefault();
+    } else if (e.keyCode === 32 || e.keyCode === 13) { // Space, Enter
+      this.updateValue(!this.checked, true);
+      e.preventDefault();
+    }
+  }
+
+  focus(): void {
+    this.switchElement.nativeElement.focus();
+  }
+
+  blur(): void {
+    this.switchElement.nativeElement.blur();
+  }
+
   writeValue(value: boolean): void {
-    this.updateValue(value);
+    this.updateValue(value, false);
   }
 
   registerOnChange(fn: (_: boolean) => void): void {
