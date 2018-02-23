@@ -230,14 +230,14 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
 
   onKeyDown(e: KeyboardEvent): void {
     const code = e.code;
-    if ((code === 'ArrowRight') && (this.nzValue < this.nzCount)) {
+    if ((code === 'ArrowRight' || e.keyCode === 39) && (this.nzValue < this.nzCount)) {
       if (this.nzAllowHalf) {
         this.nzValue += 0.5;
       } else {
         this.nzValue += 1;
       }
       this.onChange(this.nzValue);
-    } else if ((code === 'ArrowLeft') && (this.nzValue > 0)) {
+    } else if ((code === 'ArrowLeft' || e.keyCode === 37) && (this.nzValue > 0)) {
       if (this.nzAllowHalf) {
         this.nzValue -= 0.5;
       } else {

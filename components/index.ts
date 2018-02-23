@@ -34,7 +34,7 @@ import { NzSelectModule } from './select/nz-select.module';
 import { NzSliderModule } from './slider/nz-slider.module';
 import { NzSpinModule } from './spin/nz-spin.module';
 import { NzStepsModule } from './steps/nz-steps.module';
-import { NzSwitchModule } from './switch/nz-switch.module';
+import { NzSwitchModule } from './switch';
 import { NzTableModule } from './table/nz-table.module';
 import { NzTabsModule } from './tabs/nz-tabs.module';
 import { NzTagModule } from './tag/nz-tag.module';

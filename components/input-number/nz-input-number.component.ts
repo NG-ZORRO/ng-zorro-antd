@@ -336,11 +336,11 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    if (e.code === 'ArrowUp') {
+    if (e.code === 'ArrowUp' || e.keyCode === 38) {
       const ratio = this.getRatio(e);
       this.up(e, ratio);
       this.stop();
-    } else if (e.code === 'ArrowDown') {
+    } else if (e.code === 'ArrowDown' || e.keyCode === 40) {
       const ratio = this.getRatio(e);
       this.down(e, ratio);
       this.stop();
