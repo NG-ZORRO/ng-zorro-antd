@@ -177,11 +177,12 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
     if (this.nzValue === actualValue) {
       if (this.nzAllowClear) {
         this.nzValue = 0;
+        this.onChange(this.nzValue);
       }
     } else {
       this.nzValue = actualValue;
+      this.onChange(this.nzValue);
     }
-    this.onChange(this.nzValue);
   }
 
   hoverRate(e: MouseEvent, index: number, isFull: boolean): void {
@@ -235,14 +236,15 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
       } else {
         this.nzValue += 1;
       }
+      this.onChange(this.nzValue);
     } else if ((code === 'ArrowLeft') && (this.nzValue > 0)) {
       if (this.nzAllowHalf) {
         this.nzValue -= 0.5;
       } else {
         this.nzValue -= 1;
       }
+      this.onChange(this.nzValue);
     }
-    this.onChange(this.nzValue);
     this.nzOnKeyDown.emit(e);
     e.preventDefault();
   }

@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
     <br>
     <nz-rate [ngModel]="0" nzAllowHalf class="large" [nzCharacter]="characterEnLetter"></nz-rate>
     <br>
-    <nz-rate [ngModel]="0" nzAllowHalf [nzCharacter]="characterZnLetter"></nz-rate>
+    <nz-rate [ngModel]="0" nzAllowHalf [nzCharacter]="characterZhLetter"></nz-rate>
     <ng-template #characterIcon><i class="anticon anticon-heart"></i></ng-template>
     <ng-template #characterZhLetter>好</ng-template>
     <ng-template #characterEnLetter>A</ng-template>
