@@ -21,7 +21,7 @@
 | select | x | x | x | vthinkxie | - |
 | switch | √ | 100% | 100% | vthinkxie | - |
 | badge | √ | 100% | 100% | vthinkxie | - |
-| card | x | x | x | vthinkxie | - |
+| card | √ | 100% | 100% | vthinkxie | - |
 | carousel | x | x | x | vthinkxie | - |
 | collapse | x | x | x | vthinkxie | - |
 | table | x | x | x | vthinkxie | - |

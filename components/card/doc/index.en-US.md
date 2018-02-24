@@ -14,38 +14,34 @@ A card can be used to display content related to a single subject. The content c
 ## API
 
 ```html
-<Card title="Card title">Card content</Card>
+<nz-card nzTitle="卡片标题">卡片内容</nz-card>
 ```
 
-### Card
+### nz-card
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| actions | The action list, shows at the bottom of the Card. | `Array<ReactNode>` | - |
-| bodyStyle | Inline style to apply to the card content | object | - |
-| bordered | Toggles rendering of the border around the card | boolean | `true` |
-| cover | Card cover | ReactNode | - |
-| extra | Content to render in the top-right corner of the card | string｜ReactNode | - |
-| hoverable | Lift up when hovering card | boolean | false |
-| loading | Shows a loading indicator while the contents of the card are being fetched | boolean | false |
-| tabList | List of TabPane's head. | Array&lt;{key: string, tab: ReactNode}> | - |
-| title | Card title | string｜ReactNode | - |
-| type | Card style type, can be set to `inner` or not set | string | - |
-| onTabChange | Callback when tab is switched | (key) => void | - |
+| nzActions | The action list, shows at the bottom of the Card. | `Array<TemplateRef<void>>` | - |
+| nzBodyStyle | Inline style to apply to the card content | object | - |
+| nzBordered | Toggles rendering of the border around the card | boolean | `true` |
+| nzCover | Card cover | `TemplateRef<void>` | - |
+| nzExtra | Content to render in the top-right corner of the card | string｜`TemplateRef<void>` | - |
+| nzHoverable | Lift up when hovering card | boolean | false |
+| nzLoading | Shows a loading indicator while the contents of the card are being fetched | boolean | false |
+| nzTitle | Card title | string｜`TemplateRef<void>` | - |
+| nzType | Card style type, can be set to `inner` or not set | string | - |
 
-### Card.Grid
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| className | className of container | string | - |
-| style | style object of container | object | - |
-
-### Card.Meta
+### nz-card-meta
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| avatar | avatar or icon | ReactNode | - |
-| className | className of container | string | - |
-| description | description content | ReactNode | - |
-| style | style object of container | object | - |
-| title | title content | ReactNode | - |
+| nzAvatar | avatar or icon | `TemplateRef<void>` | - |
+| nzDescription | description content |string｜ `TemplateRef<void>` | - |
+| nzTitle | title content | string｜`TemplateRef<void>` | - |
+
+### nz-card-grid
+Area for grid style card 
+
+### nz-card-tab
+Area for tab card
