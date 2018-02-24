@@ -4,19 +4,14 @@ import { Component, ViewEncapsulation } from '@angular/core';
   selector     : 'nz-demo-card-basic',
   encapsulation: ViewEncapsulation.None,
   template     : `
-    <nz-card style="width:300px;">
-      <ng-template #title>
-        Card title
-      </ng-template>
-      <ng-template #extra>
-        <a>More</a>
-      </ng-template>
-      <ng-template #body>
-        <p>Card content</p>
-        <p>Card content</p>
-        <p>Card content</p>
-      </ng-template>
+    <nz-card style="width:300px;" nzTitle="Card title" [nzExtra]="extraTemplate">
+      <p>Card content</p>
+      <p>Card content</p>
+      <p>Card content</p>
     </nz-card>
+    <ng-template #extraTemplate>
+      <a>More</a>
+    </ng-template>
   `,
   styles       : [
       `.code-box-demo p {

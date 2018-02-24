@@ -4,11 +4,9 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-card-simple',
   template: `
     <nz-card style="width:300px;">
-      <ng-template #body>
-        <p>Card content</p>
-        <p>Card content</p>
-        <p>Card content</p>
-      </ng-template>
+      <p>Card content</p>
+      <p>Card content</p>
+      <p>Card content</p>
     </nz-card>
   `,
   styles  : []
