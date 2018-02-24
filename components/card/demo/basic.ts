@@ -1,9 +1,8 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector     : 'nz-demo-card-basic',
-  encapsulation: ViewEncapsulation.None,
-  template     : `
+  selector: 'nz-demo-card-basic',
+  template: `
     <nz-card style="width:300px;" nzTitle="Card title" [nzExtra]="extraTemplate">
       <p>Card content</p>
       <p>Card content</p>
@@ -13,11 +12,10 @@ import { Component, ViewEncapsulation } from '@angular/core';
       <a>More</a>
     </ng-template>
   `,
-  styles       : [
-      `.code-box-demo p {
+  styles  : [
+      `p {
       margin: 0;
-    }
-    `
+    }`
   ]
 })
 export class NzDemoCardBasicComponent {

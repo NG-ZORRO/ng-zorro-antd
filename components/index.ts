@@ -7,7 +7,7 @@ import { NzAvatarModule } from './avatar/nz-avatar.module';
 import { NzBadgeModule } from './badge';
 import { NzBreadCrumbModule } from './breadcrumb/nz-breadcrumb.module';
 import { NzButtonModule } from './button';
-import { NzCardModule } from './card/nz-card.module';
+import { NzCardModule } from './card';
 import { NzCarouselModule } from './carousel/nz-carousel.module';
 import { NzCheckboxModule } from './checkbox';
 import { NzCollapseModule } from './collapse/nz-collapse.module';

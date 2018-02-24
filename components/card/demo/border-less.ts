@@ -13,7 +13,12 @@ import { Component } from '@angular/core';
     <ng-template #extraTemplate>
       <a>More</a>
     </ng-template>
-  `
+  `,
+  styles  : [
+    `p {
+      margin: 0;
+    }`
+  ]
 })
 export class NzDemoCardBorderLessComponent {
 }

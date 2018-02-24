@@ -68,6 +68,7 @@ export class NzCardComponent {
   @Input() nzBodyStyle: NgStyle;
   @Input() nzCover: TemplateRef<void>;
   @Input() nzActions: Array<TemplateRef<void>> = [];
+  @Input() nzType: string;
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
@@ -88,8 +89,6 @@ export class NzCardComponent {
   get nzExtra(): string | TemplateRef<void> {
     return this._extra;
   }
-
-  @Input() nzType: string;
 
   @HostBinding('class.ant-card-type-inner')
   get isInner(): boolean {
