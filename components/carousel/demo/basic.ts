@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-carousel-basic',
@@ -22,12 +22,6 @@ import { Component, OnInit } from '@angular/core';
     `
   ]
 })
-export class NzDemoCarouselBasicComponent implements OnInit {
-  array = [ 1, 2, 3 ];
-
-  ngOnInit() {
-    setTimeout(_ => {
-      this.array = [ 1, 2, 3, 4 ];
-    }, 500);
-  }
+export class NzDemoCarouselBasicComponent {
+  array = [ 1, 2, 3, 4 ];
 }
