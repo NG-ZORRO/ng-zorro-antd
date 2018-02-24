@@ -1,3 +1,4 @@
+import { NgStyle } from '@angular/common';
 import {
   Component,
   ContentChild,
@@ -8,81 +9,86 @@ import {
 
 import { toBoolean } from '../core/util/convert';
 
+import { NzCardTabComponent } from './nz-card-tab.component';
+
 @Component({
   selector           : 'nz-card',
   preserveWhitespaces: false,
   template           : `
-    <div class="ant-card-head" *ngIf="title||extra||tabs">
-      <ng-template [ngIf]="!tabs">
-        <div class="ant-card-head-title" *ngIf="title">
-          <ng-template
-            [ngTemplateOutlet]="title">
-          </ng-template>
+    <div class="ant-card-head" *ngIf="nzTitle||nzExtra||tab">
+      <ng-template [ngIf]="!tab">
+        <div class="ant-card-head-title" *ngIf="nzTitle">
+          <ng-container *ngIf="isTitleString; else nzTitle">{{ nzTitle }}</ng-container>
         </div>
-        <div class="ant-card-extra" *ngIf="extra">
-          <ng-template
-            [ngTemplateOutlet]="extra">
-          </ng-template>
+        <div class="ant-card-extra" *ngIf="nzExtra">
+          <ng-container *ngIf="isExtraString; else nzExtra">{{ nzExtra }}</ng-container>
         </div>
       </ng-template>
-      <div class="ant-card-head-wrapper" *ngIf="tabs">
-        <div class="ant-card-head-title" *ngIf="title">
-          <ng-template
-            [ngTemplateOutlet]="title">
-          </ng-template>
+      <div class="ant-card-head-wrapper" *ngIf="tab">
+        <div class="ant-card-head-title" *ngIf="nzTitle">
+          <ng-container *ngIf="isTitleString; else nzTitle">{{ nzTitle }}</ng-container>
         </div>
-        <div class="ant-card-extra" *ngIf="extra">
-          <ng-template
-            [ngTemplateOutlet]="extra">
-          </ng-template>
+        <div class="ant-card-extra" *ngIf="nzExtra">
+          <ng-container *ngIf="isExtraString; else nzExtra">{{ nzExtra }}</ng-container>
         </div>
       </div>
-      <ng-template [ngTemplateOutlet]="tabs" [ngIf]="tabs"></ng-template>
+      <ng-container *ngIf="tab">
+        <ng-template [ngTemplateOutlet]="tab.template"></ng-template>
+      </ng-container>
     </div>
-    <div class="ant-card-cover" *ngIf="cover">
-      <ng-template [ngTemplateOutlet]="cover"></ng-template>
+    <div class="ant-card-cover" *ngIf="nzCover">
+      <ng-template [ngTemplateOutlet]="nzCover"></ng-template>
     </div>
-    <div class="ant-card-body">
-      <ng-template
-        *ngIf="!nzLoading"
-        [ngTemplateOutlet]="body">
-      </ng-template>
-      <div *ngIf="nzLoading">
-        <p class="ant-card-loading-block" style="width: 94%;"></p>
-        <p>
-          <span class="ant-card-loading-block" style="width: 28%;"></span><span class="ant-card-loading-block" style="width: 62%;"></span>
-        </p>
-        <p>
-          <span class="ant-card-loading-block" style="width: 22%;"></span><span class="ant-card-loading-block" style="width: 66%;"></span>
-        </p>
-        <p>
-          <span class="ant-card-loading-block" style="width: 56%;"></span><span class="ant-card-loading-block" style="width: 39%;"></span>
-        </p>
-        <p>
-          <span class="ant-card-loading-block" style="width: 21%;"></span><span class="ant-card-loading-block" style="width: 15%;"></span><span class="ant-card-loading-block" style="width: 40%;"></span>
-        </p>
-      </div>
+    <div class="ant-card-body" [ngStyle]="nzBodyStyle">
+      <ng-container *ngIf="!nzLoading">
+        <ng-content></ng-content>
+      </ng-container>
+      <nz-card-loading *ngIf="nzLoading"></nz-card-loading>
     </div>
-    <ul class="ant-card-actions" *ngIf="actions">
-      <ng-template [ngTemplateOutlet]="actions"></ng-template>
+    <ul class="ant-card-actions" *ngIf="nzActions.length">
+      <li *ngFor="let action of nzActions" [style.width.%]="100/nzActions.length">
+        <span><ng-template [ngTemplateOutlet]="action"></ng-template></span>
+      </li>
     </ul>
   `,
   host               : {
-    '[class.ant-card]': 'true'
+    '[class.ant-card]'        : 'true',
+    '[class.ant-card-loading]': 'nzLoading'
   }
 })
 export class NzCardComponent {
   private _bordered = true;
   private _loading = false;
   private _hoverable = false;
-  @ContentChild('title') title: TemplateRef<void>;
-  @ContentChild('extra') extra: TemplateRef<void>;
-  @ContentChild('body') body: TemplateRef<void>;
-  @ContentChild('cover') cover: TemplateRef<void>;
-  @ContentChild('actions') actions: TemplateRef<void>;
-  @ContentChild('tabs') tabs: TemplateRef<void>;
-
+  private _title: string | TemplateRef<void>;
+  private _extra: string | TemplateRef<void>;
+  private isTitleString: boolean;
+  private isExtraString: boolean;
+  @ContentChild(NzCardTabComponent) tab: NzCardTabComponent;
+  @Input() nzBodyStyle: NgStyle;
+  @Input() nzCover: TemplateRef<void>;
+  @Input() nzActions: Array<TemplateRef<void>> = [];
   @Input() nzType: string;
+
+  @Input()
+  set nzTitle(value: string | TemplateRef<void>) {
+    this.isTitleString = !(value instanceof TemplateRef);
+    this._title = value;
+  }
+
+  get nzTitle(): string | TemplateRef<void> {
+    return this._title;
+  }
+
+  @Input()
+  set nzExtra(value: string | TemplateRef<void>) {
+    this.isExtraString = !(value instanceof TemplateRef);
+    this._extra = value;
+  }
+
+  get nzExtra(): string | TemplateRef<void> {
+    return this._extra;
+  }
 
   @HostBinding('class.ant-card-type-inner')
   get isInner(): boolean {
@@ -91,7 +97,7 @@ export class NzCardComponent {
 
   @HostBinding('class.ant-card-contain-tabs')
   get isTabs(): boolean {
-    return !!this.tabs;
+    return !!this.tab;
   }
 
   @Input()
