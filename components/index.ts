@@ -4,7 +4,7 @@ import { NzAffixModule } from './affix/nz-affix.module';
 import { NzAlertModule } from './alert/nz-alert.module';
 import { NzAnchorModule } from './anchor/nz-anchor.module';
 import { NzAvatarModule } from './avatar/nz-avatar.module';
-import { NzBadgeModule } from './badge/nz-badge.module';
+import { NzBadgeModule } from './badge';
 import { NzBreadCrumbModule } from './breadcrumb/nz-breadcrumb.module';
 import { NzButtonModule } from './button';
 import { NzCardModule } from './card/nz-card.module';

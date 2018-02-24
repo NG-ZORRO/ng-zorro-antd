@@ -20,7 +20,7 @@
 | rate | √ | 100% | 100% | vthinkxie | - |
 | select | x | x | x | vthinkxie | - |
 | switch | √ | 100% | 100% | vthinkxie | - |
-| badge | x | x | x | vthinkxie | - |
+| badge | √ | 100% | 100% | vthinkxie | - |
 | card | x | x | x | vthinkxie | - |
 | carousel | x | x | x | vthinkxie | - |
 | collapse | x | x | x | vthinkxie | - |

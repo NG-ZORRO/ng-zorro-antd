@@ -15,6 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import { debounceTime } from 'rxjs/operators/debounceTime';
 import { first } from 'rxjs/operators/first';
 
+import { isEmpty } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
@@ -81,20 +82,9 @@ export class NzSpinComponent implements AfterViewInit {
     return this._size;
   }
 
-  isEmpty(element: HTMLElement): boolean {
-    const nodes = element.childNodes;
-    for (let i = 0; i < nodes.length; i++) {
-      const node = nodes.item(i);
-      if (node.nodeType !== 8 && nodes.item(i).textContent.trim().length !== 0) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   checkNested(): void {
     /** no way to detect empty https://github.com/angular/angular/issues/12530 **/
-    if (!this.isEmpty(this._ref.nativeElement)) {
+    if (!isEmpty(this._ref.nativeElement)) {
       this._nested = true;
       this._renderer.setStyle(this._el, 'display', 'block');
     } else {
