@@ -14,13 +14,13 @@ title: Badge
 ## API
 
 ```html
-<nz-badge nzCount="5">
+<nz-badge [nzCount]="5">
   <a class="head-example"></a>
 </nz-badge>
 ```
 
 ```html
-<nz-badge nzCount="5"></nz-badge>
+<nz-badge [nzCount]="5"></nz-badge>
 ```
 
 | 参数 | 说明 | 类型 | 默认值 |
@@ -29,5 +29,5 @@ title: Badge
 | nzDot | 不展示数字，只有一个小红点 | boolean | false |
 | nzOverflowCount | 展示封顶的数字值 | number | 99 |
 | nzShowZero | 当数值为 0 时，是否展示 Badge | boolean | false |
-| nzStatus | 设置 `nz-badge` 为状态点 | Enum{ 'success', 'processing, 'default', 'error', 'warning' } | '' |
+| nzStatus | 设置 `nz-badge` 为状态点 | Enum{ 'success', 'processing', 'default', 'error', 'warning' } | '' |
 | nzText | 在设置了 `nzStatus` 的前提下有效，设置状态点的文本 | string | '' |

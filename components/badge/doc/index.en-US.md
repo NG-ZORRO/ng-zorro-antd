@@ -13,13 +13,13 @@ Badge normally appears in proximity to notifications or user avatars with eye-ca
 ## API
 
 ```html
-<nz-badge nzCount="5">
+<nz-badge [nzCount]="5">
   <a class="head-example"></a>
 </nz-badge>
 ```
 
 ```html
-<nz-badge nzCount="5"></nz-badge>
+<nz-badge [nzCount]="5"></nz-badge>
 ```
 
 | Property | Description | Type | Default |

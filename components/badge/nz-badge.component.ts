@@ -9,7 +9,6 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
-import { first } from 'rxjs/operators/first';
 
 import {
   animate,
@@ -74,7 +73,7 @@ export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' |
 export class NzBadgeComponent implements OnInit, AfterViewInit {
   private _showDot = false;
   private _showZero = false;
-  count: number;
+  private _count: number;
   maxNumberArray = [];
   countArray = [];
   countSingleArray = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
@@ -105,15 +104,15 @@ export class NzBadgeComponent implements OnInit, AfterViewInit {
   @Input()
   set nzCount(value: number) {
     if (value < 0) {
-      this.count = 0;
+      this._count = 0;
     } else {
-      this.count = value;
+      this._count = value;
     }
-    this.countArray = this.count.toString().split('');
+    this.countArray = this._count.toString().split('');
   }
 
   get nzCount(): number {
-    return this.count;
+    return this._count;
   }
 
   get showSup(): boolean {
@@ -137,8 +136,6 @@ export class NzBadgeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.zone.onStable.pipe(first()).subscribe(() => {
-      this.checkContent();
-    });
+    this.checkContent();
   }
 }

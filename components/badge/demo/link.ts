@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-badge-link',
   template: `
-    <a href="#here">
+    <a>
       <nz-badge [nzCount]="5">
         <a class="head-example"></a>
       </nz-badge>
