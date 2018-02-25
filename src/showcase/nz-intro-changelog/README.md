@@ -9,6 +9,19 @@
 
 更新日志也可以在[Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases)查看
 
+# 0.6.15
+`2018-02-25`
+
+目前主要精力在 0.7.0 新版本的开发，可以在 [0.7.0分支](https://github.com/NG-ZORRO/ng-zorro-antd/tree/0.7.0) 追踪我们的[进度](https://github.com/NG-ZORRO/ng-zorro-antd/blob/0.7.0/PROGRESS.md)
+
+0.6.x的版本发布频率会略微减慢，感谢理解
+
+### Bug Fixes
+
+* `Upload` 修复部分状态不更新的问题 [#1039](https://github.com/NG-ZORRO/ng-zorro-antd/pull/1039) [@cipchk](https://github.com/cipchk)
+* `DatePicker` 修复样式及浏览器兼容性问题 [#1045](https://github.com/NG-ZORRO/ng-zorro-antd/pull/1045) [#1047](https://github.com/NG-ZORRO/ng-zorro-antd/pull/1047) [@Hsuan Lee](https://github.com/HsuanXyz)
+
+
 # 0.6.14
 `2018-02-04`
 
