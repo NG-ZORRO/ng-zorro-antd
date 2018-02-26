@@ -235,8 +235,15 @@ export class NzPaginationComponent {
     this.nzPageSizeChange.emit($event);
   }
 
-  _nzPageIndexChange($event: number): void {
-    this.nzPageIndex = $event;
+  _nzPageIndexChange($event: string): void {
+    let value = Math.floor(Number($event));
+    if (!value || value < 0) {
+      return;
+    }
+    if (value > this._lastIndex) {
+      value = this._lastIndex;
+    }
+    this.nzPageIndex = value;
     this.nzPageIndexChange.emit(this.nzPageIndex);
   }
 
