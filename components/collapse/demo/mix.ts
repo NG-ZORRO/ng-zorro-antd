@@ -3,19 +3,19 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-collapse-mix',
   template: `
-    <nz-collapseset>
-      <nz-collapse *ngFor="let panel of panels" [nzTitle]="panel.name" [nzActive]="panel.active">
+    <nz-collapse>
+      <nz-collapse-panel *ngFor="let panel of panels" [nzHeader]="panel.name" [nzActive]="panel.active">
         <p>{{panel.name}}</p>
         <div *ngIf="panel.childPanel&&panel.childPanel.length>0">
-          <nz-collapseset>
-            <nz-collapse *ngFor="let childPanel of panel.childPanel" [nzTitle]="childPanel.name"
+          <nz-collapse>
+            <nz-collapse-panel *ngFor="let childPanel of panel.childPanel" [nzHeader]="childPanel.name"
               [nzActive]="childPanel.active">
               <p>A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p>
-            </nz-collapse>
-          </nz-collapseset>
+            </nz-collapse-panel>
+          </nz-collapse>
         </div>
-      </nz-collapse>
-    </nz-collapseset>
+      </nz-collapse-panel>
+    </nz-collapse>
   `,
   styles  : []
 })
