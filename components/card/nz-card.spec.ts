@@ -16,7 +16,7 @@ import { NzDemoCardTabsComponent } from './demo/tabs';
 import { NzCardComponent } from './nz-card.component';
 import { NzCardModule } from './nz-card.module';
 
-describe('badge', () => {
+describe('card', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzCardModule ],

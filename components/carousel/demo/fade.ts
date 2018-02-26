@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-carousel-fade',
@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
       <div nz-carousel-content *ngFor="let index of array"><h3>{{index}}</h3></div>
     </nz-carousel>`,
   styles  : [
-      `:host ::ng-deep .ant-carousel .slick-slide {
+      `[nz-carousel-content] {
       text-align: center;
       height: 160px;
       line-height: 160px;
@@ -15,18 +15,13 @@ import { Component, OnInit } from '@angular/core';
       color: #fff;
       overflow: hidden;
     }
+
     h3 {
       color: #fff;
     }
     `
   ]
 })
-export class NzDemoCarouselFadeComponent implements OnInit {
-  array = [];
-
-  ngOnInit() {
-    setTimeout(_ => {
-      this.array = [ 1, 2, 3, 4 ];
-    }, 500);
-  }
+export class NzDemoCarouselFadeComponent {
+  array = [ 1, 2, 3, 4 ];
 }

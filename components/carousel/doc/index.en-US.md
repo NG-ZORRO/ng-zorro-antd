@@ -17,7 +17,6 @@ A carousel component. Scales with its container.
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | nzAutoPlay | Whether to scroll automatically | boolean | `false` |
-| nzAutoPlaySpeed | automatically scroll interval | number | 3000 |
 | nzAfterChange | Callback function called after the current index changes | function(current) | - |
 | nzBeforeChange | Callback function called before the current index changes | function(from, to) | - |
 | nzDots | Whether to show the dots at the bottom of the gallery | boolean | `true` |

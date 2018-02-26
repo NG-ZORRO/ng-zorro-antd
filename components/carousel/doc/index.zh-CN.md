@@ -18,7 +18,6 @@ subtitle: 走马灯
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | nzAutoPlay | 是否自动切换 | boolean | false |
-| nzAutoPlaySpeed | 自动播放间隔 | number | 3000 |
 | nzAfterChange | 切换面板的回调 | (current)=>{} | 无 |
 | nzBeforeChange | 切换面板的回调 | (from, to)=>{} | 无 |
 | nzDots | 是否显示面板指示点 | boolean | true |

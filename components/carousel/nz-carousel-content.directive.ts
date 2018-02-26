@@ -5,6 +5,8 @@ import {
   Renderer2
 } from '@angular/core';
 
+import { isNotNil } from '../core/util/check';
+
 @Directive({
   selector: '[nz-carousel-content]',
   host    : {
@@ -30,7 +32,11 @@ export class NzCarouselContentDirective implements OnInit {
 
   set left(value: number) {
     this._left = value;
-    this.renderer.setStyle(this.el, 'left', `${this.left}px`);
+    if (isNotNil(this.left)) {
+      this.renderer.setStyle(this.el, 'left', `${this.left}px`);
+    } else {
+      this.renderer.removeStyle(this.el, 'left');
+    }
   }
 
   get left(): number {
@@ -39,7 +45,11 @@ export class NzCarouselContentDirective implements OnInit {
 
   set top(value: number) {
     this._top = value;
-    this.renderer.setStyle(this.el, 'top', `${this.top}px`);
+    if (isNotNil(this.top)) {
+      this.renderer.setStyle(this.el, 'top', `${this.top}px`);
+    } else {
+      this.renderer.removeStyle(this.el, 'top');
+    }
   }
 
   get top(): number {
@@ -79,6 +89,7 @@ export class NzCarouselContentDirective implements OnInit {
       this.renderer.setStyle(this.el, 'opacity', this.isActive ? 1 : 0);
     }
   }
+
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
     this.el = this.elementRef.nativeElement;
   }
