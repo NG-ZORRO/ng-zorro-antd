@@ -1,117 +1,68 @@
 import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-import {
   Component,
-  ElementRef,
-  Host,
-  HostBinding,
-  Input,
+  Input
 } from '@angular/core';
 
 import { toBoolean } from '../core/util/convert';
 
-import { NzCollapsesetComponent } from './nz-collapseset.component';
+import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
 
 @Component({
-  selector  : 'nz-collapse',
-  template  : `
-    <div class="ant-collapse-header" [attr.aria-expanded]="_active" (click)="clickHeader($event)" role="tab">
-      <i class="arrow" *ngIf="nzShowArrow"></i>
-      <ng-template [ngIf]="nzTitle">
-        {{ nzTitle }}
-      </ng-template>
-      <ng-template [ngIf]="!nzTitle">
-        <ng-content select="[collapse-title]"></ng-content>
-      </ng-template>
-    </div>
-    <div class="ant-collapse-content" [@collapseState]="_active?'active':'inactive'">
-      <div class="ant-collapse-content-box">
-        <ng-content></ng-content>
-      </div>
+  selector: 'nz-collapse',
+  template: `
+    <div class="ant-collapse" [class.ant-collapse-borderless]="!nzBordered">
+      <ng-content></ng-content>
     </div>
   `,
-  animations: [
-    trigger('collapseState', [
-      state('inactive', style({
-        opacity: '0',
-        height : 0
-      })),
-      state('active', style({
-        opacity: '1',
-        height : '*'
-      })),
-      transition('inactive => active', animate('150ms ease-in')),
-      transition('active => inactive', animate('150ms ease-out'))
-    ])
-  ],
-  styles    : [
-      `
-      :host {
-        display: block
-      }`
-  ],
-  host      : {
-    '[class.ant-collapse-item]': 'true'
-  }
+  styles  : [
+      `:host {
+      display: block;
+    }`
+  ]
 })
-
 export class NzCollapseComponent {
-  private _disabled = false;
-  _active = false;
-  _showArrow = true;
-  _el;
-
-  @Input() set nzShowArrow(value: boolean) {
-    this._showArrow = toBoolean(value);
-  }
-
-  get nzShowArrow(): boolean {
-    return this._showArrow;
-  }
-
-  @HostBinding('class.ant-collapse-no-arrow')
-  get isNoArrow(): boolean {
-    return !this.nzShowArrow;
-  }
-
-  @Input() nzTitle: string;
+  private _accordion = false;
+  private _bordered = true;
+  private listOfPanel: NzCollapsePanelComponent[] = [];
 
   @Input()
-  @HostBinding('class.ant-collapse-item-disabled')
-  set nzDisabled(value: boolean) {
-    this._disabled = toBoolean(value);
+  set nzAccordion(value: boolean) {
+    this._accordion = toBoolean(value);
   }
 
-  get nzDisabled(): boolean {
-    return this._disabled;
+  get nzAccordion(): boolean {
+    return this._accordion;
   }
 
   @Input()
-  @HostBinding('class.ant-collapse-item-active')
-  set nzActive(value: boolean) {
-    this._active = toBoolean(value);
+  set nzBordered(value: boolean) {
+    this._bordered = toBoolean(value);
   }
 
-  get nzActive(): boolean {
-    return this._active;
+  get nzBordered(): boolean {
+    return this._bordered;
   }
 
-  clickHeader($event: MouseEvent): void {
-    if (!this.nzDisabled) {
-      this.nzActive = !this.nzActive;
-      /** trigger host collapseSet click event */
-      this._collapseSet.nzClick(this);
+  click(collapse: NzCollapsePanelComponent): void {
+    if (this.nzAccordion) {
+      this.listOfPanel.forEach(item => {
+        const active = collapse === item;
+        if (item.nzActive !== active) {
+          item.nzActive = active;
+          item.nzActiveChange.emit(item.nzActive);
+        }
+      });
+    } else {
+      collapse.nzActive = !collapse.nzActive;
+      collapse.nzActiveChange.emit(collapse.nzActive);
     }
-
   }
 
-  constructor(@Host() private _collapseSet: NzCollapsesetComponent, private _elementRef: ElementRef) {
-    this._el = this._elementRef.nativeElement;
-    this._collapseSet.addTab(this);
+  addCollapse(collapse: NzCollapsePanelComponent): void {
+    this.listOfPanel.push(collapse);
+  }
+
+  removeCollapse(collapse: NzCollapsePanelComponent): void {
+    this.listOfPanel.splice(this.listOfPanel.indexOf(collapse), 1);
   }
 }

@@ -22,8 +22,8 @@
 | switch | √ | 100% | 100% | vthinkxie | - |
 | badge | √ | 100% | 100% | vthinkxie | - |
 | card | √ | 100% | 100% | vthinkxie | - |
-| carousel | x | x | x | vthinkxie | - |
-| collapse | x | x | x | vthinkxie | - |
+| carousel | √ | 100% | 100% | vthinkxie | - |
+| collapse | √ | 100% | 100% | vthinkxie | - |
 | table | x | x | x | vthinkxie | - |
 | tabs | x | x | x | vthinkxie | - |
 | timeline | x | x | x | vthinkxie | - |
