@@ -3,11 +3,11 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-collapse-accordion',
   template: `
-    <nz-collapseset nzAccordion>
-      <nz-collapse *ngFor="let panel of panels" [nzTitle]="panel.name" [nzActive]="panel.active">
+    <nz-collapse nzAccordion>
+      <nz-collapse-panel *ngFor="let panel of panels" [nzHeader]="panel.name" [nzActive]="panel.active">
         <p>{{panel.name}} 的内容</p>
-      </nz-collapse>
-    </nz-collapseset>
+      </nz-collapse-panel>
+    </nz-collapse>
   `,
   styles  : []
 })

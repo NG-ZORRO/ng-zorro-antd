@@ -181,7 +181,7 @@ describe('menu', () => {
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
-      it('should collapse self work', fakeAsync(() => {
+      it('should collapsed self work', fakeAsync(() => {
         fixture.detectChanges();
         const ul = submenus[ 0 ].nativeElement.querySelector('.ant-menu');
         const title = submenus[ 0 ].nativeElement.querySelector('.ant-menu-submenu-title');
@@ -197,7 +197,7 @@ describe('menu', () => {
         expect(ul.style.height).not.toBe('0px');
         expect(submenus[ 0 ].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
       }));
-      it('should collapse other work', fakeAsync(() => {
+      it('should collapsed other work', fakeAsync(() => {
         fixture.detectChanges();
         const firstUl = submenus[ 0 ].nativeElement.querySelector('.ant-menu');
         const secondUl = submenus[ 1 ].nativeElement.querySelector('.ant-menu');

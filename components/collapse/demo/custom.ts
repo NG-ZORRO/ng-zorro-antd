@@ -3,12 +3,12 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-collapse-custom',
   template: `
-    <nz-collapseset [nzBordered]="false">
-      <nz-collapse *ngFor="let panel of panels" [nzTitle]="panel.name" [nzActive]="panel.active"
+    <nz-collapse [nzBordered]="false">
+      <nz-collapse-panel *ngFor="let panel of panels" [nzHeader]="panel.name" [nzActive]="panel.active"
         [ngStyle]="panel.customStyle">
         <p>{{panel.name}} 的内容</p>
-      </nz-collapse>
-    </nz-collapseset>
+      </nz-collapse-panel>
+    </nz-collapse>
   `,
   styles  : []
 })
