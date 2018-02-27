@@ -21,9 +21,12 @@ import { NzUpdateHostClassService } from '../core/services/update-host-class.ser
         <span class="ant-steps-icon anticon anticon-cross" *ngIf="nzStatus === 'error'"></span>
         <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">{{ index + 1 }}</span>
         <span class="ant-steps-icon" *ngIf="nzIcon">
-          <ng-container *ngIf="isIconString; else nzIcon">
+          <ng-container *ngIf="isIconString; else iconTemplate">
             <i [ngClass]="nzIcon"></i>
           </ng-container>
+          <ng-template #iconTemplate>
+          <ng-template [ngTemplateOutlet]="nzIcon"></ng-template>
+        </ng-template>
         </span>
       </ng-template>
       <ng-template [ngIf]="showProcessDot">
@@ -37,10 +40,16 @@ import { NzUpdateHostClassService } from '../core/services/update-host-class.ser
     </div>
     <div class="ant-steps-item-content">
       <div class="ant-steps-item-title">
-        <ng-container *ngIf="isTitleString; else nzTitle">{{ nzTitle }}</ng-container>
+        <ng-container *ngIf="isTitleString; else titleTemplate">{{ nzTitle }}</ng-container>
+        <ng-template #titleTemplate>
+          <ng-template [ngTemplateOutlet]="nzTitle"></ng-template>
+        </ng-template>
       </div>
       <div class="ant-steps-item-description">
-        <ng-container *ngIf="isDescriptionString; else nzDescription">{{ nzDescription }}</ng-container>
+        <ng-container *ngIf="isDescriptionString; else descriptionTemplate">{{ nzDescription }}</ng-container>
+        <ng-template #descriptionTemplate>
+          <ng-template [ngTemplateOutlet]="nzDescription"></ng-template>
+        </ng-template>
       </div>
     </div>
   `

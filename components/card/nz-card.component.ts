@@ -15,21 +15,27 @@ import { NzCardTabComponent } from './nz-card-tab.component';
   selector           : 'nz-card',
   preserveWhitespaces: false,
   template           : `
+    <ng-template #titleTemplate>
+      <ng-template [ngTemplateOutlet]="nzTitle"></ng-template>
+    </ng-template>
+    <ng-template #extraTemplate>
+      <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
+    </ng-template>
     <div class="ant-card-head" *ngIf="nzTitle||nzExtra||tab">
       <ng-template [ngIf]="!tab">
         <div class="ant-card-head-title" *ngIf="nzTitle">
-          <ng-container *ngIf="isTitleString; else nzTitle">{{ nzTitle }}</ng-container>
+          <ng-container *ngIf="isTitleString; else titleTemplate">{{ nzTitle }}</ng-container>
         </div>
         <div class="ant-card-extra" *ngIf="nzExtra">
-          <ng-container *ngIf="isExtraString; else nzExtra">{{ nzExtra }}</ng-container>
+          <ng-container *ngIf="isExtraString; else extraTemplate">{{ nzExtra }}</ng-container>
         </div>
       </ng-template>
       <div class="ant-card-head-wrapper" *ngIf="tab">
         <div class="ant-card-head-title" *ngIf="nzTitle">
-          <ng-container *ngIf="isTitleString; else nzTitle">{{ nzTitle }}</ng-container>
+          <ng-container *ngIf="isTitleString; else titleTemplate">{{ nzTitle }}</ng-container>
         </div>
         <div class="ant-card-extra" *ngIf="nzExtra">
-          <ng-container *ngIf="isExtraString; else nzExtra">{{ nzExtra }}</ng-container>
+          <ng-container *ngIf="isExtraString; else extraTemplate">{{ nzExtra }}</ng-container>
         </div>
       </div>
       <ng-container *ngIf="tab">

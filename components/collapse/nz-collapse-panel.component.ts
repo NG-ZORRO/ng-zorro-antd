@@ -31,7 +31,10 @@ import { NzCollapseComponent } from './nz-collapse.component';
       class="ant-collapse-header"
       (click)="clickHeader()">
       <i class="arrow" *ngIf="nzShowArrow"></i>
-      <ng-container *ngIf="isHeaderString; else nzHeader">{{ nzHeader }}</ng-container>
+      <ng-container *ngIf="isHeaderString; else headerTemplate">{{ nzHeader }}</ng-container>
+      <ng-template #headerTemplate>
+        <ng-template [ngTemplateOutlet]="nzHeader"></ng-template>
+      </ng-template>
     </div>
     <div
       class="ant-collapse-content"

@@ -3,6 +3,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   TemplateRef
 } from '@angular/core';
@@ -15,34 +16,38 @@ import { toBoolean } from '../core/util/convert';
   animations         : [ fadeAnimation ],
   preserveWhitespaces: false,
   template           : `
-    <div [ngClass]="classMap" *ngIf="display" [@fadeAnimation]>
+    <div [ngClass]="outerClassMap" *ngIf="display" [@fadeAnimation]>
       <ng-container *ngIf="nzShowIcon">
-        <i [ngClass]="nzIconType" *ngIf="nzIconType; else iconTemplate"></i>
+        <i class="ant-alert-icon" [ngClass]="nzIconType" *ngIf="nzIconType; else iconTemplate"></i>
         <ng-template #iconTemplate>
-          <i
-            class="ant-alert-icon anticon"
-            [class.anticon-cross-circle-o]="nzType==='error'"
-            [class.anticon-check-circle-o]="nzType==='success'"
-            [class.anticon-info-circle-o]="nzType==='info'"
-            [class.anticon-exclamation-circle-o]="nzType==='warning'">
+          <i class="ant-alert-icon anticon" [ngClass]="iconClassMap">
           </i>
         </ng-template>
       </ng-container>
       <span class="ant-alert-message" *ngIf="nzMessage">
-        <ng-container *ngIf="isMessageString; else nzMessage">{{ nzMessage }}</ng-container>
+        <ng-container *ngIf="isMessageString; else messageTemplate">{{ nzMessage }}</ng-container>
+        <ng-template #messageTemplate>
+          <ng-template [ngTemplateOutlet]="nzMessage"></ng-template>
+        </ng-template>
       </span>
       <span class="ant-alert-description" *ngIf="nzDescription">
-        <ng-container *ngIf="isDescriptionString; else nzDescription">{{ nzDescription }}</ng-container>
+        <ng-container *ngIf="isDescriptionString; else descriptionTemplate">{{ nzDescription }}</ng-container>
+        <ng-template #descriptionTemplate>
+          <ng-template [ngTemplateOutlet]="nzDescription"></ng-template>
+        </ng-template>
       </span>
       <a
         *ngIf="nzCloseable || nzCloseText"
         (click)="closeAlert($event)"
         class="ant-alert-close-icon">
-        <ng-template #closeTemplate>
+        <ng-template #closeDefaultTemplate>
           <i class="anticon anticon-cross"></i>
         </ng-template>
-        <ng-container *ngIf="nzCloseText; else closeTemplate">
-          <ng-container *ngIf="isCloseTextString; else nzCloseText">{{ nzCloseText }}</ng-container>
+        <ng-container *ngIf="nzCloseText; else closeDefaultTemplate">
+          <ng-container *ngIf="isCloseTextString; else closeTextTemplate">{{ nzCloseText }}</ng-container>
+          <ng-template #closeTextTemplate>
+            <ng-template [ngTemplateOutlet]="nzCloseText"></ng-template>
+          </ng-template>
         </ng-container>
       </a>
     </div>
@@ -53,7 +58,7 @@ import { toBoolean } from '../core/util/convert';
     }`
   ]
 })
-export class NzAlertComponent {
+export class NzAlertComponent implements OnInit {
   private _banner = false;
   private _closeable = false;
   private _showIcon = false;
@@ -68,7 +73,8 @@ export class NzAlertComponent {
   isDescriptionString: boolean;
   isMessageString: boolean;
   isCloseTextString: boolean;
-  classMap;
+  outerClassMap;
+  iconClassMap;
   @Output() nzOnClose: EventEmitter<boolean> = new EventEmitter();
   @Input() nzIconType: NgClass;
 
@@ -76,7 +82,8 @@ export class NzAlertComponent {
   set nzDescription(value: string | TemplateRef<void>) {
     this.isDescriptionString = !(value instanceof TemplateRef);
     this._description = value;
-    this.updateClassMap();
+    this.updateOuterClassMap();
+    this.updateIconClassMap();
   }
 
   get nzDescription(): string | TemplateRef<void> {
@@ -107,7 +114,8 @@ export class NzAlertComponent {
   set nzType(value: string) {
     this._type = value;
     this.isTypeSet = true;
-    this.updateClassMap();
+    this.updateOuterClassMap();
+    this.updateIconClassMap();
   }
 
   get nzType(): string {
@@ -123,7 +131,7 @@ export class NzAlertComponent {
     if (!this.isShowIconSet) {
       this.nzShowIcon = true;
     }
-    this.updateClassMap();
+    this.updateOuterClassMap();
   }
 
   get nzBanner(): boolean {
@@ -143,7 +151,7 @@ export class NzAlertComponent {
   set nzShowIcon(value: boolean) {
     this._showIcon = toBoolean(value);
     this.isShowIconSet = true;
-    this.updateClassMap();
+    this.updateOuterClassMap();
   }
 
   get nzShowIcon(): boolean {
@@ -155,13 +163,31 @@ export class NzAlertComponent {
     this.nzOnClose.emit(true);
   }
 
-  updateClassMap(): void {
-    this.classMap = {
+  updateOuterClassMap(): void {
+    this.outerClassMap = {
       [ `${this.prefixClass}` ]                 : true,
       [ `${this.prefixClass}-${this.nzType}` ]  : true,
       [ `${this.prefixClass}-no-icon` ]         : !this.nzShowIcon,
       [ `${this.prefixClass}-banner` ]          : this.nzBanner,
       [ `${this.prefixClass}-with-description` ]: !!this.nzDescription
     };
+  }
+
+  updateIconClassMap(): void {
+    this.iconClassMap = {
+      'anticon-cross-circle-o'      : this.nzDescription && this.nzType === 'error',
+      'anticon-check-circle-o'      : this.nzDescription && this.nzType === 'success',
+      'anticon-info-circle-o'       : this.nzDescription && this.nzType === 'info',
+      'anticon-exclamation-circle-o': this.nzDescription && this.nzType === 'warning',
+      'anticon-cross-circle'        : (!this.nzDescription) && this.nzType === 'error',
+      'anticon-check-circle'        : (!this.nzDescription) && this.nzType === 'success',
+      'anticon-info-circle'         : (!this.nzDescription) && this.nzType === 'info',
+      'anticon-exclamation-circle'  : (!this.nzDescription) && this.nzType === 'warning'
+    };
+  }
+
+  ngOnInit(): void {
+    this.updateIconClassMap();
+    this.updateOuterClassMap();
   }
 }

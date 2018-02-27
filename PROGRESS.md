@@ -1,7 +1,7 @@
 # 进度
 
 ## 组件
-| 组件 | 文档 | 测试 | 功能 | 负责 | 重构 |
+| 组件 | 文档 | 测试 | 功能 | 负责 | 重写 |
 | --- | --- | --- | --- | --- | --- |
 | button | √ | 100% | 100% | vthinkxie | - |
 | icon | √ | - | 100% | vthinkxie | - |
@@ -27,7 +27,7 @@
 | table | x | x | x | vthinkxie | - | 
 | tabs | x | x | x | vthinkxie | - |
 | timeline | √ | 100% | 100% | vthinkxie | - |
-| alert | x | x | x | vthinkxie | - |
+| alert | √ | 100% | 100% | vthinkxie | - |
 | progress | x | x | x | vthinkxie | - |
 | spin | x | x | x | vthinkxie | - |
 | popover | x | x | x | wilsoncook | - |
