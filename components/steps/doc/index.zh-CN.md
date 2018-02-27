@@ -41,6 +41,6 @@ title: Steps
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | nzDescription | 步骤的详情描述，可选 | string 丨 `TemplateRef<void>` | - |
-| nzIcon | 步骤图标的类型，可选 | string 丨 `TemplateRef<void>` | - |
+| nzIcon | 步骤图标的类型，可选 | `NgClass` 丨 `TemplateRef<void>` | - |
 | nzStatus | 指定状态。当不配置该属性时，会使用 `nz-steps` 的 `nzCurrent` 来自动指定状态。可选：`wait` `process` `finish` `error` | string | wait |
 | nzTitle | 标题 | string 丨 `TemplateRef<void>` | - |

@@ -23,20 +23,32 @@ export type NzInputGroupSizeType = 'large' | 'default' | 'small';
   template           : `
     <span class="ant-input-wrapper ant-input-group" *ngIf="isAddOn">
       <span class="ant-input-group-addon" *ngIf="nzAddOnBefore">
-        <ng-container *ngIf="isAddOnBeforeString; else nzAddOnBefore">{{ nzAddOnBefore }}</ng-container>
+        <ng-container *ngIf="isAddOnBeforeString; else addOnBeforeTemplate">{{ nzAddOnBefore }}</ng-container>
+        <ng-template #addOnBeforeTemplate>
+          <ng-template [ngTemplateOutlet]="nzAddOnBefore"></ng-template>
+        </ng-template>
       </span>
       <ng-template *ngTemplateOutlet="contentTemplate"></ng-template>
       <span class="ant-input-group-addon" *ngIf="nzAddOnAfter">
-        <ng-container *ngIf="isAddOnAfterString; else nzAddOnAfter">{{ nzAddOnAfter }}</ng-container>
+        <ng-container *ngIf="isAddOnAfterString; else addOnAfterTemplate">{{ nzAddOnAfter }}</ng-container>
+        <ng-template #addOnAfterTemplate>
+          <ng-template [ngTemplateOutlet]="nzAddOnAfter"></ng-template>
+        </ng-template>
       </span>
     </span>
     <ng-template [ngIf]="isAffix">
       <span class="ant-input-prefix" *ngIf="nzPrefix">
-        <ng-container *ngIf="isPrefixString; else nzPrefix">{{ nzPrefix }}</ng-container>
+        <ng-container *ngIf="isPrefixString; else prefixTemplate">{{ nzPrefix }}</ng-container>
+        <ng-template #prefixTemplate>
+          <ng-template [ngTemplateOutlet]="nzPrefix"></ng-template>
+        </ng-template>
       </span>
       <ng-template *ngTemplateOutlet="contentTemplate"></ng-template>
       <span class="ant-input-suffix" *ngIf="nzSuffix">
-        <ng-container *ngIf="isSuffixString; else nzSuffix">{{ nzSuffix }}</ng-container>
+        <ng-container *ngIf="isSuffixString; else suffixTemplate">{{ nzSuffix }}</ng-container>
+        <ng-template #suffixTemplate>
+          <ng-template [ngTemplateOutlet]="nzSuffix"></ng-template>
+        </ng-template>
       </span>
     </ng-template>
     <ng-template [ngIf]="isGroup" *ngTemplateOutlet="contentTemplate"></ng-template>

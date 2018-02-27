@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -20,9 +21,12 @@ import { NzUpdateHostClassService } from '../core/services/update-host-class.ser
         <span class="ant-steps-icon anticon anticon-cross" *ngIf="nzStatus === 'error'"></span>
         <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">{{ index + 1 }}</span>
         <span class="ant-steps-icon" *ngIf="nzIcon">
-          <ng-container *ngIf="isIconString; else nzIcon">
-            <i [class]="nzIcon"></i>
+          <ng-container *ngIf="isIconString; else iconTemplate">
+            <i [ngClass]="nzIcon"></i>
           </ng-container>
+          <ng-template #iconTemplate>
+          <ng-template [ngTemplateOutlet]="nzIcon"></ng-template>
+        </ng-template>
         </span>
       </ng-template>
       <ng-template [ngIf]="showProcessDot">
@@ -36,10 +40,16 @@ import { NzUpdateHostClassService } from '../core/services/update-host-class.ser
     </div>
     <div class="ant-steps-item-content">
       <div class="ant-steps-item-title">
-        <ng-container *ngIf="isTitleString; else nzTitle">{{ nzTitle }}</ng-container>
+        <ng-container *ngIf="isTitleString; else titleTemplate">{{ nzTitle }}</ng-container>
+        <ng-template #titleTemplate>
+          <ng-template [ngTemplateOutlet]="nzTitle"></ng-template>
+        </ng-template>
       </div>
       <div class="ant-steps-item-description">
-        <ng-container *ngIf="isDescriptionString; else nzDescription">{{ nzDescription }}</ng-container>
+        <ng-container *ngIf="isDescriptionString; else descriptionTemplate">{{ nzDescription }}</ng-container>
+        <ng-template #descriptionTemplate>
+          <ng-template [ngTemplateOutlet]="nzDescription"></ng-template>
+        </ng-template>
       </div>
     </div>
   `
@@ -47,9 +57,9 @@ import { NzUpdateHostClassService } from '../core/services/update-host-class.ser
 export class NzStepComponent {
   private _status = 'wait';
   private _currentIndex = 0;
-  private _description: string | TemplateRef<void> = '';
-  private _icon: string | TemplateRef<void> = '';
-  private _title: string | TemplateRef<void> = '';
+  private _description: string | TemplateRef<void>;
+  private _icon: NgClass | TemplateRef<void>;
+  private _title: string | TemplateRef<void>;
   private el: HTMLElement;
   isCustomStatus = false;
   isDescriptionString = true;
@@ -74,12 +84,12 @@ export class NzStepComponent {
   }
 
   @Input()
-  set nzIcon(value: string | TemplateRef<void>) {
+  set nzIcon(value: NgClass | TemplateRef<void>) {
     this.isIconString = !(value instanceof TemplateRef);
     this._icon = value;
   }
 
-  get nzIcon(): string | TemplateRef<void> {
+  get nzIcon(): NgClass | TemplateRef<void> {
     return this._icon;
   }
 
