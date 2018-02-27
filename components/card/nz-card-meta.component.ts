@@ -14,10 +14,16 @@ import {
         <ng-template [ngTemplateOutlet]="nzAvatar"></ng-template>
       </div>
       <div class="ant-card-meta-title" *ngIf="nzTitle">
-        <ng-container *ngIf="isTitleString; else nzTitle">{{ nzTitle }}</ng-container>
+        <ng-container *ngIf="isTitleString; else titleTemplate">{{ nzTitle }}</ng-container>
+        <ng-template #titleTemplate>
+          <ng-template [ngTemplateOutlet]="nzTitle"></ng-template>
+        </ng-template>
       </div>
       <div class="ant-card-meta-description" *ngIf="nzDescription">
-        <ng-container *ngIf="isDescriptionString; else nzDescription">{{ nzDescription }}</ng-container>
+        <ng-container *ngIf="isDescriptionString; else descriptionTemplate">{{ nzDescription }}</ng-container>
+        <ng-template #descriptionTemplate>
+          <ng-template [ngTemplateOutlet]="nzDescription"></ng-template>
+        </ng-template>
       </div>
     </div>
   `,

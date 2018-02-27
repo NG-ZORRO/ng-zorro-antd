@@ -25,7 +25,10 @@ import { NzTimelineItemComponent } from './nz-timeline-item.component';
           <i class="anticon anticon-spin anticon-loading"></i>
         </div>
         <div class="ant-timeline-item-content">
-          <ng-container *ngIf="isPendingString; else nzPending">{{ isPendingBoolean ? '' : nzPending }}</ng-container>
+          <ng-container *ngIf="isPendingString; else pendingTemplate">{{ isPendingBoolean ? '' : nzPending }}</ng-container>
+          <ng-template #pendingTemplate>
+            <ng-template [ngTemplateOutlet]="nzPending"></ng-template>
+          </ng-template>
         </div>
       </li>
     </ul>`

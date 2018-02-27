@@ -18,7 +18,10 @@ import {
         class="ant-timeline-item-head"
         [class.ant-timeline-item-head-custom]="nzDot"
         [ngClass]="classMap">
-        <ng-container *ngIf="isDotString; else nzDot">{{ nzDot }}</ng-container>
+        <ng-container *ngIf="isDotString; else dotTemplate">{{ nzDot }}</ng-container>
+        <ng-template #dotTemplate>
+          <ng-template [ngTemplateOutlet]="nzDot"></ng-template>
+        </ng-template>
       </div>
       <div class="ant-timeline-item-content">
         <ng-content></ng-content>
