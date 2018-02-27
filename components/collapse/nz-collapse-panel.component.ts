@@ -25,11 +25,18 @@ import { NzCollapseComponent } from './nz-collapse.component';
 @Component({
   selector  : 'nz-collapse-panel',
   template  : `
-    <div class="ant-collapse-header" (click)="clickHeader()">
+    <div
+      role="tab"
+      [attr.aria-expanded]="nzActive"
+      class="ant-collapse-header"
+      (click)="clickHeader()">
       <i class="arrow" *ngIf="nzShowArrow"></i>
       <ng-container *ngIf="isHeaderString; else nzHeader">{{ nzHeader }}</ng-container>
     </div>
-    <div class="ant-collapse-content" [@collapseState]="nzActive?'active':'inactive'">
+    <div
+      class="ant-collapse-content"
+      [class.ant-collapse-content-active]="nzActive"
+      [@collapseState]="nzActive?'active':'inactive'">
       <div class="ant-collapse-content-box">
         <ng-content></ng-content>
       </div>
@@ -56,7 +63,8 @@ import { NzCollapseComponent } from './nz-collapse.component';
       }`
   ],
   host      : {
-    '[class.ant-collapse-item]': 'true'
+    '[class.ant-collapse-item]': 'true',
+    '[attr.role]'              : '"tablist"'
   }
 })
 
@@ -114,8 +122,6 @@ export class NzCollapsePanelComponent implements OnDestroy, OnInit {
 
   clickHeader(): void {
     if (!this.nzDisabled) {
-      this.nzActive = !this.nzActive;
-      this.nzActiveChange.emit(this.nzActive);
       this.nzCollapseComponent.click(this);
     }
   }

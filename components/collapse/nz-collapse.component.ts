@@ -45,12 +45,16 @@ export class NzCollapseComponent {
 
   click(collapse: NzCollapsePanelComponent): void {
     if (this.nzAccordion) {
-      this.listOfPanel.map((item, index) => {
-        const curIndex = this.listOfPanel.indexOf(collapse);
-        if (index !== curIndex) {
-          item.nzActive = false;
+      this.listOfPanel.forEach(item => {
+        const active = collapse === item;
+        if (item.nzActive !== active) {
+          item.nzActive = active;
+          item.nzActiveChange.emit(item.nzActive);
         }
       });
+    } else {
+      collapse.nzActive = !collapse.nzActive;
+      collapse.nzActiveChange.emit(collapse.nzActive);
     }
   }
 
