@@ -24,9 +24,9 @@
 | card | √ | 100% | 100% | vthinkxie | - |
 | carousel | √ | 100% | 100% | vthinkxie | - |
 | collapse | √ | 100% | 100% | vthinkxie | - |
-| table | x | x | x | vthinkxie | - |
+| table | x | x | x | vthinkxie | - | 
 | tabs | x | x | x | vthinkxie | - |
-| timeline | x | x | x | vthinkxie | - |
+| timeline | √ | 100% | 100% | vthinkxie | - |
 | alert | x | x | x | vthinkxie | - |
 | progress | x | x | x | vthinkxie | - |
 | spin | x | x | x | vthinkxie | - |
