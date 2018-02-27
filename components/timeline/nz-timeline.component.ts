@@ -9,7 +9,7 @@ import {
   TemplateRef
 } from '@angular/core';
 
-import { toBoolean } from '../core/util/convert';
+import { Subscription } from 'rxjs/Subscription';
 
 import { NzTimelineItemComponent } from './nz-timeline-item.component';
 
@@ -21,49 +21,53 @@ import { NzTimelineItemComponent } from './nz-timeline-item.component';
       <ng-content></ng-content>
       <li *ngIf="nzPending" class="ant-timeline-item ant-timeline-item-pending">
         <div class="ant-timeline-item-tail"></div>
-        <div class="ant-timeline-item-head ant-timeline-item-head-blue"></div>
+        <div class="ant-timeline-item-head ant-timeline-item-head-custom ant-timeline-item-head-blue">
+          <i class="anticon anticon-spin anticon-loading"></i>
+        </div>
         <div class="ant-timeline-item-content">
-          <ng-template [ngTemplateOutlet]="_pendingContent">
-          </ng-template>
+          <ng-container *ngIf="isPendingString; else nzPending">{{ isPendingBoolean ? '' : nzPending }}</ng-container>
         </div>
       </li>
     </ul>`
 })
 export class NzTimelineComponent implements AfterContentInit, OnDestroy {
-  _pending = false;
-  _timelineChanges;
+  private _pending: string | boolean | TemplateRef<void>;
+  private isPendingString: boolean;
+  private isPendingBoolean: boolean = false;
+  private timeLineSubscription: Subscription;
 
-  @Input() set nzPending(value: boolean) {
-    this._pending = toBoolean(value);
+  @Input()
+  set nzPending(value: string | boolean | TemplateRef<void>) {
+    this.isPendingString = !(value instanceof TemplateRef);
+    this.isPendingBoolean = value === true;
+    this._pending = value;
   }
 
-  get nzPending(): boolean {
+  get nzPending(): string | boolean | TemplateRef<void> {
     return this._pending;
   }
 
-  items: NzTimelineItemComponent[] = [];
-  @ContentChildren(NzTimelineItemComponent) _listOfTimeline: QueryList<NzTimelineItemComponent>;
+  @ContentChildren(NzTimelineItemComponent) listOfTimeLine: QueryList<NzTimelineItemComponent>;
   @ContentChild('pending') _pendingContent: TemplateRef<void>;
 
-  updateChildrenTimeline(): void {
-    if (this._listOfTimeline && this._listOfTimeline.length) {
-      const listArray = this._listOfTimeline.toArray();
-      listArray[ listArray.length - 1 ]._lastItem = true;
+  updateChildrenTimeLine(): void {
+    if (this.listOfTimeLine && this.listOfTimeLine.length) {
+      this.listOfTimeLine.toArray().forEach((item, index) => item.isLast = index === this.listOfTimeLine.length - 1);
     }
   }
 
   ngOnDestroy(): void {
-    if (this._timelineChanges) {
-      this._timelineChanges.unsubscribe();
-      this._timelineChanges = null;
+    if (this.timeLineSubscription) {
+      this.timeLineSubscription.unsubscribe();
+      this.timeLineSubscription = null;
     }
   }
 
   ngAfterContentInit(): void {
-    this.updateChildrenTimeline();
-    if (this._listOfTimeline) {
-      this._timelineChanges = this._listOfTimeline.changes.subscribe(() => {
-        this.updateChildrenTimeline();
+    this.updateChildrenTimeLine();
+    if (this.listOfTimeLine) {
+      this.timeLineSubscription = this.listOfTimeLine.changes.subscribe(() => {
+        this.updateChildrenTimeLine();
       });
     }
   }

@@ -1,24 +1,24 @@
 import {
   Component,
-  ContentChild,
+  ElementRef,
   Input,
   OnInit,
-  TemplateRef
+  Renderer2,
+  TemplateRef,
+  ViewChild
 } from '@angular/core';
 
 @Component({
   selector           : 'nz-timeline-item',
   preserveWhitespaces: false,
   template           : `
-    <li
-      class="ant-timeline-item"
-      [class.ant-timeline-item-last]="_lastItem">
+    <li class="ant-timeline-item" #liTemplate>
       <div class="ant-timeline-item-tail"></div>
-      <div class="ant-timeline-item-head"
-        [class.ant-timeline-item-head-custom]="_custom"
-        [ngClass]="itemHeadClass">
-        <ng-template [ngTemplateOutlet]="_customContent">
-        </ng-template>
+      <div
+        class="ant-timeline-item-head"
+        [class.ant-timeline-item-head-custom]="nzDot"
+        [ngClass]="classMap">
+        <ng-container *ngIf="isDotString; else nzDot">{{ nzDot }}</ng-container>
       </div>
       <div class="ant-timeline-item-content">
         <ng-content></ng-content>
@@ -26,33 +26,59 @@ import {
     </li>`
 })
 export class NzTimelineItemComponent implements OnInit {
-  itemHeadClass = { 'ant-timeline-item-head-blue': true };
-  _color: string = 'blue';
-  _custom = false;
-  _lastItem = false;
-  @ContentChild('custom') _customContent: TemplateRef<void>;
+  private _dot: string | TemplateRef<void>;
+  private _color: string = 'blue';
+  private _isLast = false;
+  @ViewChild('liTemplate') liTemplate: ElementRef;
+  isDotString: boolean;
+  classMap;
+
+  set isLast(value: boolean) {
+    this._isLast = value;
+    if (this.isLast) {
+      this.renderer.addClass(this.liTemplate.nativeElement, 'ant-timeline-item-last');
+    } else {
+      this.renderer.removeClass(this.liTemplate.nativeElement, 'ant-timeline-item-last');
+    }
+  }
+
+  get isLast(): boolean {
+    return this._isLast;
+  }
+
+  @Input()
+  set nzDot(value: string | TemplateRef<void>) {
+    this.isDotString = !(value instanceof TemplateRef);
+    this._dot = value;
+  }
+
+  get nzDot(): string | TemplateRef<void> {
+    return this._dot;
+  }
 
   @Input()
   set nzColor(color: string) {
     this._color = color;
-    // TODO: There is no removal process, is the result correct?
-    if (color === 'green') {
-      this.itemHeadClass[ 'ant-timeline-item-head-green' ] = true;
-    } else if (color === 'red') {
-      this.itemHeadClass[ 'ant-timeline-item-head-red' ] = true;
-    } else {
-      this.itemHeadClass[ 'ant-timeline-item-head-blue' ] = true;
-    }
+    this.updateClassMap();
   }
 
   get nzColor(): string {
     return this._color;
   }
 
+  updateClassMap(): void {
+    this.classMap = {
+      [ 'ant-timeline-item-head-green' ]: this.nzColor === 'green',
+      [ 'ant-timeline-item-head-red' ]  : this.nzColor === 'red',
+      [ 'ant-timeline-item-head-blue' ] : this.nzColor === 'blue'
+    };
+  }
+
+  constructor(private renderer: Renderer2) {
+  }
+
   ngOnInit(): void {
-    if (this._customContent) {
-      this._custom = true;
-    }
+    this.updateClassMap();
   }
 
 }
