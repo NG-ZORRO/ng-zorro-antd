@@ -23,6 +23,7 @@ import { NzListModule } from './list';
 import { NzLocaleModule } from './locale';
 import { NzMenuModule } from './menu';
 import { NzMessageModule } from './message/nz-message.module';
+import { NzModalModule } from './modal/nz-modal.module';
 import { NzNotificationModule } from './notification/nz-notification.module';
 import { NzPaginationModule } from './pagination';
 import { NzPopconfirmModule } from './popconfirm/nz-popconfirm.module';
@@ -42,6 +43,16 @@ import { NzTimelineModule } from './timeline';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
 
+import { NzMessageService } from './message/nz-message.service';
+import { NzNotificationService } from './notification/nz-notification.service';
+
+export { NzNotificationService } from './notification/nz-notification.service';
+export { NzMessageService } from './message/nz-message.service';
+
+// Tokens (eg. global services' config)
+export { NZ_MESSAGE_CONFIG } from './message/nz-message-config';
+export { NZ_NOTIFICATION_CONFIG } from './notification/nz-notification-config';
+
 export * from './button';
 export * from './grid';
 export * from './layout';
@@ -52,16 +63,7 @@ export * from './input';
 export * from './i18n';
 export * from './locale/index';
 export * from './list/index';
-
-import { NzMessageService } from './message/nz-message.service';
-import { NzNotificationService } from './notification/nz-notification.service';
-
-export { NzNotificationService } from './notification/nz-notification.service';
-export { NzMessageService } from './message/nz-message.service';
-
-// Tokens (eg. global services' config)
-export { NZ_MESSAGE_CONFIG } from './message/nz-message-config';
-export { NZ_NOTIFICATION_CONFIG } from './notification/nz-notification-config';
+export * from './modal/public-api';
 
 @NgModule({
   exports: [
@@ -106,7 +108,8 @@ export { NZ_NOTIFICATION_CONFIG } from './notification/nz-notification-config';
     NzDividerModule,
     NzFormModule,
     NzListModule,
-    NzI18nModule
+    NzI18nModule,
+    NzModalModule
   ]
 })
 export class NgZorroAntdModule {
