@@ -40,6 +40,6 @@ A single step in the step bar.
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | nzDescription | description of the step, optional property | string 丨 `TemplateRef<void>` | - |
-| nzIcon | icon of the step, optional property | string 丨 `TemplateRef<void>` | - |
+| nzIcon | icon of the step, optional property | `NgClass` 丨 `TemplateRef<void>` | - |
 | nzStatus | to specify the status. It will be automatically set by `nzCurrent` of `nz-steps` if not configured. Optional values are: `wait` `process` `finish` `error` | string | `wait` |
 | nzTitle | title of the step | string 丨 `TemplateRef<void>` | - |

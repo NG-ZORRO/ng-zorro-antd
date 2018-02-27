@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -21,7 +22,7 @@ import { NzUpdateHostClassService } from '../core/services/update-host-class.ser
         <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">{{ index + 1 }}</span>
         <span class="ant-steps-icon" *ngIf="nzIcon">
           <ng-container *ngIf="isIconString; else nzIcon">
-            <i [class]="nzIcon"></i>
+            <i [ngClass]="nzIcon"></i>
           </ng-container>
         </span>
       </ng-template>
@@ -47,9 +48,9 @@ import { NzUpdateHostClassService } from '../core/services/update-host-class.ser
 export class NzStepComponent {
   private _status = 'wait';
   private _currentIndex = 0;
-  private _description: string | TemplateRef<void> = '';
-  private _icon: string | TemplateRef<void> = '';
-  private _title: string | TemplateRef<void> = '';
+  private _description: string | TemplateRef<void>;
+  private _icon: NgClass | TemplateRef<void>;
+  private _title: string | TemplateRef<void>;
   private el: HTMLElement;
   isCustomStatus = false;
   isDescriptionString = true;
@@ -74,12 +75,12 @@ export class NzStepComponent {
   }
 
   @Input()
-  set nzIcon(value: string | TemplateRef<void>) {
+  set nzIcon(value: NgClass | TemplateRef<void>) {
     this.isIconString = !(value instanceof TemplateRef);
     this._icon = value;
   }
 
-  get nzIcon(): string | TemplateRef<void> {
+  get nzIcon(): NgClass | TemplateRef<void> {
     return this._icon;
   }
 
