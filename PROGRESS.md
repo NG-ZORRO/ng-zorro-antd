@@ -28,7 +28,7 @@
 | tabs | x | x | x | vthinkxie | - |
 | timeline | √ | 100% | 100% | vthinkxie | - |
 | alert | √ | 100% | 100% | vthinkxie | - |
-| progress | x | x | x | vthinkxie | - |
+| progress | √ | 100% | 100% | vthinkxie | √ |
 | spin | x | x | x | vthinkxie | - |
 | popover | x | x | x | wilsoncook | - |
 | tooltip | x | x | x | wilsoncook | - |
@@ -42,12 +42,12 @@
 | calendar | x | x | x | trotyl | - |
 | affix | x | x | x | cipchk | - |
 | transfer | x | x | x | cipchk | - |
-| avatar | x | x | x | cipchk | - |
+| avatar | √ | 100% | 100% | cipchk | x |
 | list | √ | 100% | 100% | cipchk | x |
 | upload | x | x | x | cipchk | - |
 | anchor | x | x | x | cipchk | - |
 | backtop | x | x | x | cipchk | - |
-| divider | x | x | x | cipchk | - |
+| divider | √ | 100% | 100% | cipchk | x |
 | treeselect | x | x | x | simplejason | - |
 | tree | x | x | x | simplejason | - |
 | tags | x | x | x | fbchen | -|
