@@ -1,7 +1,9 @@
 // tslint:disable: no-any
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, ElementRef, Input, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
+
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
+
 import { ListSize, NzListGrid } from './interface';
 
 @Component({
