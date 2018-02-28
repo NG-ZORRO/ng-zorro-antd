@@ -7,9 +7,9 @@ title:
 
 ## zh-CN
 
-垂直的 RadioGroup，配合更多输入框选项。
+垂直的 `nz-radio-group`，配合更多输入框选项。
 
 ## en-US
 
-Vertical RadioGroup, with more radios.
+Vertical `nz-radio-group`, with more radios.
 

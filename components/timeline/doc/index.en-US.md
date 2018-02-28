@@ -13,28 +13,28 @@ Vertical display timeline.
 
 ## API
 
-```jsx
-<Timeline>
-  <Timeline.Item>step1 2015-09-01</Timeline.Item>
-  <Timeline.Item>step2 2015-09-01</Timeline.Item>
-  <Timeline.Item>step3 2015-09-01</Timeline.Item>
-  <Timeline.Item>step4 2015-09-01</Timeline.Item>
-</Timeline>
+```html
+<nz-timeline>
+  <nz-timeline-item>step1 2015-09-01</nz-timeline-item>
+  <nz-timeline-item>step2 2015-09-01</nz-timeline-item>
+  <nz-timeline-item>step3 2015-09-01</nz-timeline-item>
+  <nz-timeline-item>step4 2015-09-01</nz-timeline-item>
+</nz-timeline>
 ```
 
-### Timeline
+### nz-timeline
 
 Timeline
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| pending | Set the last ghost node's existence or its content | boolean｜string｜ReactNode | `false` |
+| nzPending | Set the last ghost node's existence or its content | boolean｜string｜`TemplateRef<void>` | `false` |
 
-### Timeline.Item
+### nz-timeline-item
 
 Node of timeline
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| color | Set the circle's color to `blue`, `red`, `green` or other custom colors | string | `blue` |
-| dot | Customize timeline dot | string｜ReactNode | - |
+| nzColor | Set the circle's color to `blue`, `red`, `green` or other custom colors | string | `blue` |
+| nzDot | Customize timeline dot | string｜`TemplateRef<void>` | - |

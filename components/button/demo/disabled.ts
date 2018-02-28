@@ -13,7 +13,15 @@ import { Component } from '@angular/core';
     <button nz-button nzGhost disabled>Ghost(disabled)</button>
     <br>
     <button nz-button nzType="dashed">Dashed</button>
-    <button nz-button nzType="dashed" disabled>Dashed(disabled)</button>`
+    <button nz-button nzType="dashed" disabled>Dashed(disabled)</button>`,
+  styles  : [
+    `
+      [nz-button] {
+        margin-right: 8px;
+        margin-bottom: 12px;
+      }
+    `
+  ]
 })
 export class NzDemoButtonDisabledComponent {
 }

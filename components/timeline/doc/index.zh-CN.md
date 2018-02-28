@@ -14,28 +14,28 @@ title: Timeline
 
 ## API
 
-```jsx
-<Timeline>
-  <Timeline.Item>创建服务现场 2015-09-01</Timeline.Item>
-  <Timeline.Item>初步排除网络异常 2015-09-01</Timeline.Item>
-  <Timeline.Item>技术测试异常 2015-09-01</Timeline.Item>
-  <Timeline.Item>网络异常正在修复 2015-09-01</Timeline.Item>
-</Timeline>
+```html
+<nz-timeline>
+  <nz-timeline-item>创建服务现场 2015-09-01</nz-timeline-item>
+  <nz-timeline-item>初步排除网络异常 2015-09-01</nz-timeline-item>
+  <nz-timeline-item>技术测试异常 2015-09-01</nz-timeline-item>
+  <nz-timeline-item>网络异常正在修复 2015-09-01</nz-timeline-item>
+</nz-timeline>
 ```
 
-### Timeline
+### nz-timeline
 
 时间轴。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| pending | 指定最后一个幽灵节点是否存在或内容 | boolean｜string｜ReactNode | false |
+| nzPending | 指定最后一个幽灵节点是否存在或内容 | boolean｜string｜`TemplateRef<void>` | false |
 
-### Timeline.Item
+### nz-timeline-item
 
 时间轴的每一个节点。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| color | 指定圆圈颜色 `blue, red, green`，或自定义的色值 | string | blue |
-| dot | 自定义时间轴点 | string｜ReactNode | - |
+| nzColor | 指定圆圈颜色 `blue, red, green`，或自定义的色值 | string | blue |
+| nzDot | 自定义时间轴点 | string｜`TemplateRef<void>` | - |

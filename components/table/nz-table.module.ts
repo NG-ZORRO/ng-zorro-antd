@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import { NzLocaleModule } from '../locale/index';
 import { NzPaginationModule } from '../pagination/nz-pagination.module';
 import { NzSpinModule } from '../spin/nz-spin.module';
+
 import { NzColumnDirective } from './nz-column.directive';
 import { NzRowExpandIconComponent } from './nz-row-expand-icon.component';
 import { NzRowIndentComponent } from './nz-row-indent.component';
