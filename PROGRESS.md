@@ -29,7 +29,7 @@
 | timeline | √ | 100% | 100% | vthinkxie | - |
 | alert | √ | 100% | 100% | vthinkxie | - |
 | progress | √ | 100% | 100% | vthinkxie | √ |
-| spin | x | x | x | vthinkxie | - |
+| spin | √ | 100% | 100% | vthinkxie | - |
 | popover | x | x | x | wilsoncook | - |
 | tooltip | x | x | x | wilsoncook | - |
 | popconfirm | x | x | x | wilsoncook | - |

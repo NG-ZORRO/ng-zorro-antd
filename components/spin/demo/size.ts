@@ -8,11 +8,8 @@ import { Component } from '@angular/core';
     <nz-spin [nzSize]="'large'"></nz-spin>`,
   styles  : [
       `
-      :host ::ng-deep nz-spin > div {
+      nz-spin {
         display: inline-block;
-      }
-
-      :host ::ng-deep .ant-spin {
         margin-right: 16px;
       }
     `

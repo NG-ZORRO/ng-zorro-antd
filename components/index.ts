@@ -1,7 +1,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 
 import { NzAffixModule } from './affix/nz-affix.module';
-import { NzAlertModule } from './alert/nz-alert.module';
+import { NzAlertModule } from './alert';
 import { NzAnchorModule } from './anchor/nz-anchor.module';
 import { NzAvatarModule } from './avatar/nz-avatar.module';
 import { NzBackTopModule } from './back-top/nz-back-top.module';
@@ -12,7 +12,7 @@ import { NzCardModule } from './card';
 import { NzCarouselModule } from './carousel';
 import { NzCheckboxModule } from './checkbox';
 import { NzCollapseModule } from './collapse';
-import { NzDividerModule } from './divider/nz-divider.module';
+import { NzDividerModule } from './divider';
 import { NzDropdownService, NzDropDownModule } from './dropdown';
 import { NzFormModule } from './form/nz-form.module';
 import { NzGridModule } from './grid';
@@ -34,7 +34,7 @@ import { NzRadioModule } from './radio';
 import { NzRateModule } from './rate';
 import { NzSelectModule } from './select/nz-select.module';
 import { NzSliderModule } from './slider/nz-slider.module';
-import { NzSpinModule } from './spin/nz-spin.module';
+import { NzSpinModule } from './spin';
 import { NzStepsModule } from './steps';
 import { NzSwitchModule } from './switch';
 import { NzTableModule } from './table/nz-table.module';

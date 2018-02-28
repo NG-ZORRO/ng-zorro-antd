@@ -74,6 +74,7 @@ export class NzProgressComponent implements OnInit {
   private _status: NzProgressStatusType = 'normal';
   private _cacheStatus: NzProgressStatusType = 'normal';
   private _strokeWidth = 8;
+  private _size = 'default';
   private _type: NzProgressTypeType = 'line';
   private _format = (percent: number): string => `${percent}%`;
   trailPathStyle: { [key: string]: string };
@@ -93,6 +94,18 @@ export class NzProgressComponent implements OnInit {
   @Input() nzShowInfo = true;
   @Input() nzWidth = 132;
   @Input() nzSuccessPercent = 0;
+
+  @Input()
+  set nzSize(value: string) {
+    this._size = value;
+    if (this.nzSize === 'small' && !this.isStrokeWidthSet) {
+      this._strokeWidth = 6;
+    }
+  }
+
+  get nzSize(): string {
+    return this._size;
+  }
 
   @Input()
   set nzFormat(value: (percent: number) => string) {

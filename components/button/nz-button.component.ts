@@ -1,5 +1,6 @@
 import {
   AfterContentInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostListener,
@@ -135,6 +136,8 @@ export class NzButtonComponent implements AfterContentInit {
 
   checkContent(): void {
     this.moveIcon();
+    this.renderer.removeStyle(this.contentElement.nativeElement, 'display');
+    /** https://github.com/angular/angular/issues/12530 **/
     if (isEmpty(this.contentElement.nativeElement)) {
       this.renderer.setStyle(this.contentElement.nativeElement, 'display', 'none');
       this.iconOnly = !!this.iconElement;
@@ -144,6 +147,7 @@ export class NzButtonComponent implements AfterContentInit {
     }
     this.setClassMap();
     this.updateIconDisplay(this.nzLoading);
+    this.cdr.detectChanges();
   }
 
   moveIcon(): void {
@@ -186,7 +190,7 @@ export class NzButtonComponent implements AfterContentInit {
     return null;
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
+  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
     this.el = this.elementRef.nativeElement;
     this.renderer.addClass(this.el, this.prefixCls);
   }
