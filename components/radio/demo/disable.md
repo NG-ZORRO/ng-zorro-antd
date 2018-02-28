@@ -2,13 +2,13 @@
 order: 1
 title:
   zh-CN: 不可用
-  en-US: disabled
+  en-US: Disabled
 ---
 
 ## zh-CN
 
-Radio 不可用。
+`nz-radio` 不可用。
 
 ## en-US
 
-Radio unavailable.
+`nz-radio` unavailable.

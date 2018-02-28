@@ -14,18 +14,17 @@ When a numeric value needs to be provided.
 
 | property | description | type | default |
 | -------- | ----------- | ---- | ------- |
-| autoFocus | get focus when component mounted | boolean | false |
-| defaultValue | initial value | number |  |
-| disabled | disable the input | boolean | false |
-| formatter | Specifies the format of the value presented | function(value: number  |  string): string | - |
-| max | max vale | number | Infinity |
-| min | min value | number | -Infinity |
-| parser | Specifies the value extracted from formatter | function( string): number | - |
-| precision | precision of input value | number | - |
-| size | width of input box | string | - |
-| step | The number to which the current value is increased or decreased. It can be an integer or decimal. | number | string | 1 |
-| value | current value | number |  |
-| onChange | The callback triggered when the value is changed. | function(value: number  |  string) |  |
+| ngModel | current value, double binding | number ｜ string | - |
+| ngModelChange | The callback triggered when the value is changed | (ngModel:number ｜ string)=>{} | - |
+| nzAutoFocus | get focus when component mounted | boolean | false |
+| nzDisabled | disable the input | boolean | false |
+| nzMax | max vale | number | Infinity |
+| nzMin | min value | number | -Infinity |
+| nzFormatter | Specifies the format of the value presented | (value: number ｜ string):string=> {} | - |
+| nzParser | Specifies the value extracted from nzFormatter | (value:string): number=>{} | - |
+| nzPrecision | precision of input value | number | - |
+| nzSize | width of input box | string | default |
+| nzStep | The number to which the current value is increased or decreased. It can be an integer or decimal. | number ｜  string | 1 |
 
 ## Methods
 

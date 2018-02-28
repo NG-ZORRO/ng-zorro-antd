@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-要使用自定义触发器，可以设置 `trigger={null}` 来隐藏默认设定。
+要使用自定义触发器，可以设置 `nzTrigger={null}` 来隐藏默认设定。
 
 ## en-US
 

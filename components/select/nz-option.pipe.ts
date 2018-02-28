@@ -1,5 +1,6 @@
 /* tslint:disable:no-any */
 import { Pipe, PipeTransform } from '@angular/core';
+
 import { NzOptionComponent } from './nz-option.component';
 
 @Pipe({ name: 'nzOptionPipe' })

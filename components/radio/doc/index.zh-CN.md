@@ -14,31 +14,32 @@ title: Radio
 
 ## API
 
-### Radio
+### nz-radio | nz-radio-button
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| autoFocus | 自动获取焦点 | boolean | false |
-| checked | 指定当前是否选中 | boolean | false |
-| defaultChecked | 初始是否选中 | boolean | false |
-| value | 根据 value 进行比较，判断是否选中 | any | 无 |
+| nzAutoFocus | 自动获取焦点 | boolean | false |
+| nzDisabled | 设定 disable 状态 | boolean | false |
+| ngModel | 指定当前是否选中，可双向绑定 | boolean | false |
+| ngModelChange | 选中变化时回调 | (ngModel:boolean)=>{} | - |
+| nzValue | 设置 value，与 `nz-radio-group` 配合使用 | string | - |
 
-### RadioGroup
 
-单选框组合，用于包裹一组 `Radio`。
+### nz-radio-group
+
+单选框组合，用于包裹一组 `nz-radio`。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| defaultValue | 默认选中的值 | any | 无 |
-| name | RadioGroup 下所有 `input[type="radio"]` 的 `name` 属性 | string | 无 |
-| options | 以配置形式设置子元素 | string\[] ｜ Array&lt;{ label: string value: string disabled?: boolean }> | 无 |
-| size | 大小，只对按钮样式生效 | `large` ｜ `default` ｜ `small` | `default` |
-| value | 用于设置当前选中的值 | any | 无 |
-| onChange | 选项变化时的回调函数 | Function(e:Event) | 无 |
+| ngModel | 指定选中的 `nz-radio` 的 value 值 | string | - |
+| ngModelChange | 选中变化时回调 | (ngModel:string)=>{} | - |
+| nzName | `nz-radio-group` 下所有 `input[type="radio"]` 的 `name` 属性 | string | 无 |
+| nzDisabled | 设定所有 `nz-radio` disable 状态 | boolean | false |
+| nzSize | 大小，只对按钮样式生效 | `large` ｜ `default` ｜ `small` | `default` |
 
 ## 方法
 
-### Radio
+### nz-radio
 
 | 名称 | 描述 |
 | --- | --- |

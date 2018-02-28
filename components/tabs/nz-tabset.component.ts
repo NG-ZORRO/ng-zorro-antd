@@ -17,7 +17,9 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
+
 import { toBoolean } from '../core/util/convert';
+
 import { NzTabComponent } from './nz-tab.component';
 import { NzTabsNavComponent } from './nz-tabs-nav.component';
 

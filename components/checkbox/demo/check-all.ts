@@ -5,13 +5,12 @@ import { Component } from '@angular/core';
   template: `
     <div style="border-bottom: 1px solid rgb(233, 233, 233);">
       <label nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()" [nzIndeterminate]="indeterminate">
-        <span>Check all</span>
+        Check all
       </label>
     </div>
     <br>
     <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="updateSingleChecked()"></nz-checkbox-group>
-  `,
-  styles  : []
+  `
 })
 export class NzDemoCheckboxCheckAllComponent {
   allChecked = false;
@@ -19,10 +18,10 @@ export class NzDemoCheckboxCheckAllComponent {
   checkOptionsOne = [
     { label: 'Apple', value: 'Apple', checked: true },
     { label: 'Pear', value: 'Pear', checked: false },
-    { label: 'Orange', value: 'Orange', checked: false },
+    { label: 'Orange', value: 'Orange', checked: false }
   ];
 
-  updateAllChecked() {
+  updateAllChecked(): void {
     this.indeterminate = false;
     if (this.allChecked) {
       this.checkOptionsOne.forEach(item => item.checked = true);
@@ -31,7 +30,7 @@ export class NzDemoCheckboxCheckAllComponent {
     }
   }
 
-  updateSingleChecked() {
+  updateSingleChecked(): void {
     if (this.checkOptionsOne.every(item => item.checked === false)) {
       this.allChecked = false;
       this.indeterminate = false;
