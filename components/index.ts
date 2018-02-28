@@ -43,6 +43,16 @@ import { NzTimelineModule } from './timeline';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
 
+export * from './button';
+export * from './divider';
+export * from './grid';
+export * from './layout';
+export * from './dropdown';
+export * from './menu';
+export * from './i18n';
+export * from './locale/index';
+export * from './list/index';
+
 import { NzMessageService } from './message/nz-message.service';
 import { NzNotificationService } from './notification/nz-notification.service';
 
