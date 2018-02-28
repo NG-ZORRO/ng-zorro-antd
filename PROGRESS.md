@@ -28,7 +28,7 @@
 | tabs | x | x | x | vthinkxie | - |
 | timeline | √ | 100% | 100% | vthinkxie | - |
 | alert | √ | 100% | 100% | vthinkxie | - |
-| progress | x | x | x | vthinkxie | - |
+| progress | √ | 100% | 100% | vthinkxie | √ |
 | spin | x | x | x | vthinkxie | - |
 | popover | x | x | x | wilsoncook | - |
 | tooltip | x | x | x | wilsoncook | - |

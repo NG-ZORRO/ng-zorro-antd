@@ -23,7 +23,7 @@ If it will take a long time to complete an operation, you can use `Progress` to 
 | nzPercent | to set the completion percentage | number | 0 |
 | nzShowInfo | whether to display the progress value and the status icon | boolean | true |
 | nzStatus | to set the status of the Progress, options: `success` `exception` `active` | string | - |
-| nzStrokeWidth `(nzType=line)` | to set the width of the progress bar, unit: `px` | number | 10 |
+| nzStrokeWidth `(nzType=line)` | to set the width of the progress bar, unit: `px` | number | 8 |
 | nzStrokeWidth `(nzType=circle)` | to set the width of the circular progress bar, unit: percentage of the canvas width | number | 6 |
 | nzType | to set the type, options: `line` `circle` `dashboard` | string | `line` |
 | nzWidth `(nzType=circle)` | to set the canvas width of the circular progress bar, unit: `px` | number | 132 |

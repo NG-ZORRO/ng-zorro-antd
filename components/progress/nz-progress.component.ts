@@ -31,8 +31,8 @@ import { isNotNil } from '../core/util/check';
       <div *ngIf="nzType=='line'">
         <div class="ant-progress-outer">
           <div class="ant-progress-inner">
-            <div class="ant-progress-bg" [style.width.%]="nzPercent" [style.height.px]="lineStrokeWidth"></div>
-            <div class="ant-progress-success-bg" [style.width.%]="nzSuccessPercent" [style.height.px]="lineStrokeWidth"></div>
+            <div class="ant-progress-bg" [style.width.%]="nzPercent" [style.height.px]="nzStrokeWidth"></div>
+            <div class="ant-progress-success-bg" [style.width.%]="nzSuccessPercent" [style.height.px]="nzStrokeWidth"></div>
           </div>
         </div>
         <ng-template [ngTemplateOutlet]="progressInfoTemplate"></ng-template>
@@ -73,7 +73,7 @@ export class NzProgressComponent implements OnInit {
   private _percent = 0;
   private _status: NzProgressStatusType = 'normal';
   private _cacheStatus: NzProgressStatusType = 'normal';
-  private _strokeWidth: number;
+  private _strokeWidth = 8;
   private _type: NzProgressTypeType = 'line';
   private _format = (percent: number): string => `${percent}%`;
   trailPathStyle: { [key: string]: string };
@@ -90,27 +90,20 @@ export class NzProgressComponent implements OnInit {
     exception: '#ff5500',
     success  : '#87d068'
   };
-  @Input() nzSize: string;
   @Input() nzShowInfo = true;
   @Input() nzWidth = 132;
   @Input() nzSuccessPercent = 0;
 
   @Input()
   set nzFormat(value: (percent: number) => string) {
-    this._format = value;
-    this.isFormatSet = true;
+    if (isNotNil(value)) {
+      this._format = value;
+      this.isFormatSet = true;
+    }
   }
 
   get nzFormat(): (percent: number) => string {
     return this._format;
-  }
-
-  get lineStrokeWidth(): number {
-    if (this.isStrokeWidthSet) {
-      return this.nzStrokeWidth;
-    } else {
-      return this.nzSize === 'small' ? 6 : 8;
-    }
   }
 
   @Input()
@@ -134,9 +127,11 @@ export class NzProgressComponent implements OnInit {
 
   @Input()
   set nzStrokeWidth(value: number) {
-    this._strokeWidth = value;
-    this.isStrokeWidthSet = true;
-    this.updatePathStyles();
+    if (isNotNil(value)) {
+      this._strokeWidth = value;
+      this.isStrokeWidthSet = true;
+      this.updatePathStyles();
+    }
   }
 
   get nzStrokeWidth(): number {
@@ -145,10 +140,12 @@ export class NzProgressComponent implements OnInit {
 
   @Input()
   set nzStatus(value: NzProgressStatusType) {
-    this._status = value;
-    this._cacheStatus = value;
-    this.isStatusSet = true;
-    this.updateIconClassMap();
+    if (isNotNil(value)) {
+      this._status = value;
+      this._cacheStatus = value;
+      this.isStatusSet = true;
+      this.updateIconClassMap();
+    }
   }
 
   get nzStatus(): NzProgressStatusType {
@@ -159,9 +156,7 @@ export class NzProgressComponent implements OnInit {
   set nzType(value: NzProgressTypeType) {
     this._type = value;
     if (!this.isStrokeWidthSet) {
-      if (this.nzType === 'line') {
-        this._strokeWidth = 8;
-      } else {
+      if (this.nzType !== 'line') {
         this._strokeWidth = 6;
       }
     }
@@ -183,9 +178,12 @@ export class NzProgressComponent implements OnInit {
 
   @Input()
   set nzGapDegree(value: number) {
-    this._gapDegree = value;
-    this.isGapDegreeSet = true;
-    this.updatePathStyles();
+    if (isNotNil(value)) {
+      this._gapDegree = value;
+      this.isGapDegreeSet = true;
+      this.updatePathStyles();
+    }
+
   }
 
   get nzGapDegree(): number {
@@ -194,9 +192,11 @@ export class NzProgressComponent implements OnInit {
 
   @Input()
   set nzGapPosition(value: NzProgressGapPositionType) {
-    this._gapPosition = value;
-    this.isGapPositionSet = true;
-    this.updatePathStyles();
+    if (isNotNil(value)) {
+      this._gapPosition = value;
+      this.isGapPositionSet = true;
+      this.updatePathStyles();
+    }
   }
 
   get nzGapPosition(): NzProgressGapPositionType {
