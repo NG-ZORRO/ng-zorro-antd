@@ -15,15 +15,13 @@ Switching Selector.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| autoFocus | get focus when component mounted | boolean | false |
-| checked | determine whether the `Switch` is checked | boolean | false |
-| checkedChildren | content to be shown when the state is checked | string丨ReactNode |  |
-| defaultChecked | to set the initial state | boolean | false |
-| disabled | Disable switch | boolean | false |
-| size | the size of the `Switch`, options: `default` `small` | string | default |
-| unCheckedChildren | content to be shown when the state is unchecked | string丨ReactNode |  |
-| onChange | a callback function, can be executed when the checked state is changing | Function(checked:Boolean) |  |
-| loading | loading state of switch | boolean | false |
+| ngModel | determine whether the `nz-switch` is checked, double binding | boolean | false |
+| ngModelChange | a callback function, can be executed when the checked state is changing | (ngModel:boolean)=>{} |  |
+| nzCheckedChildren | content to be shown when the state is checked | string丨`TemplateRef<void>` |  |
+| nzUnCheckedChildren | content to be shown when the state is unchecked | string丨`TemplateRef<void>` |  |
+| nzDisabled | Disable switch | boolean | false |
+| nzSize | the size of the `nz-switch`, options: `default` `small` | string | `default` |
+| nzLoading | loading state of switch | boolean | false |
 
 ## Methods
 

@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
 import { NzLocaleService } from './nz-locale.service';
 
 @Pipe({

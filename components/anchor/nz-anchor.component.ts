@@ -20,6 +20,7 @@ import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
 import { toBoolean, toNumber } from '../core/util/convert';
 
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
+
 import { NzAnchorLinkComponent } from './nz-anchor-link.component';
 
 interface Section {

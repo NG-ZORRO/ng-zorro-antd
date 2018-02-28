@@ -9,7 +9,9 @@ import {
   TemplateRef
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+
 import { toBoolean } from '../core/util/convert';
+
 import { NzStepComponent } from './nz-step.component';
 
 export type NzDirectionType = 'horizontal' | 'vertical';
