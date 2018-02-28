@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ContentChild,
   ElementRef,
   Input,
   NgZone,
@@ -15,7 +14,7 @@ import { Observable } from 'rxjs/Observable';
 import { debounceTime } from 'rxjs/operators/debounceTime';
 import { first } from 'rxjs/operators/first';
 
-import { isEmpty } from '../core/util/check';
+import { isEmpty, isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
@@ -24,7 +23,11 @@ import { toBoolean } from '../core/util/convert';
   changeDetection    : ChangeDetectionStrategy.OnPush,
   template           : `
     <ng-template #defaultIndicatorTemplate>
-      <span class="ant-spin-dot"><i></i><i></i><i></i><i></i></span>
+      <span
+        class="ant-spin-dot"
+        [class.ant-spin-dot-spin]="resultSpinning$|async">
+        <i></i><i></i><i></i><i></i>
+      </span>
     </ng-template>
     <div [class.ant-spin-nested-loading]="isNested">
       <div>
@@ -51,20 +54,22 @@ import { toBoolean } from '../core/util/convert';
   `
 })
 export class NzSpinComponent implements AfterViewInit {
-  baseSpinning$ = new BehaviorSubject(true);
-  resultSpinning$: Observable<boolean> = this.baseSpinning$.asObservable().pipe(debounceTime(this.nzDelay));
   private _tip: string;
   private _delay = 0;
   el: HTMLElement;
   isNested = false;
+  baseSpinning$ = new BehaviorSubject(true);
+  resultSpinning$: Observable<boolean> = this.baseSpinning$.asObservable().pipe(debounceTime(this.nzDelay));
   @ViewChild('containerElement') containerElement: ElementRef;
   @Input() nzIndicator: TemplateRef<void>;
   @Input() nzSize = 'default';
 
   @Input()
   set nzDelay(value: number) {
-    this._delay = value;
-    this.resultSpinning$ = this.baseSpinning$.asObservable().pipe(debounceTime(this.nzDelay));
+    if (isNotNil(value)) {
+      this._delay = value;
+      this.resultSpinning$ = this.baseSpinning$.asObservable().pipe(debounceTime(this.nzDelay));
+    }
   }
 
   get nzDelay(): number {
