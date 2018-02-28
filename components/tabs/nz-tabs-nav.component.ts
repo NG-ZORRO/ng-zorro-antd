@@ -6,9 +6,11 @@ import {
   Component,
   ContentChildren,
   ElementRef,
+  EventEmitter,
   Input,
   NgZone,
   Optional,
+  Output,
   QueryList,
   Renderer2,
   TemplateRef,
@@ -79,6 +81,8 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   @ViewChild(NzTabsInkBarDirective) nzTabsInkBarDirective: NzTabsInkBarDirective;
   @ViewChild('navContainerElement') navContainerElement: ElementRef;
   @ViewChild('navListElement') navListElement: ElementRef;
+  @Output() nzOnNextClick = new EventEmitter<void>();
+  @Output() nzOnPrevClick = new EventEmitter<void>();
   @Input() nzTabBarExtraContent: TemplateRef<void>;
 
   @Input()
@@ -160,7 +164,11 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   }
 
   scrollHeader(scrollDir: ScrollDirection): void {
-
+    if (scrollDir === 'before' && !this.disableScrollBefore) {
+      this.nzOnPrevClick.emit();
+    } else if (scrollDir === 'after' && !this.disableScrollAfter) {
+      this.nzOnNextClick.emit();
+    }
     // Move the scroll distance one-third the length of the tab list's viewport.
     this.scrollDistance += (scrollDir === 'before' ? -1 : 1) * this.viewWidthHeightPix / 3;
   }

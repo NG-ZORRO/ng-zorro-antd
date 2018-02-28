@@ -49,13 +49,18 @@ export type NzTabType = 'line' | 'card';
       [nzShowPagination]="nzShowPagination"
       [nzPositionMode]="tabPositionMode"
       [nzAnimated]="inkBarAnimated"
-      [nzHideBar]="nzHide"
+      [ngStyle]="nzTabBarStyle"
+      [nzHideBar]="nzHideAll"
       [nzTabBarExtraContent]="nzTabBarExtraContent"
-      [selectedIndex]="nzSelectedIndex">
+      [selectedIndex]="nzSelectedIndex"
+      (nzOnNextClick)="nzOnNextClick.emit()"
+      (nzOnPrevClick)="nzOnPrevClick.emit()">
       <div
         nz-tab-label
-        [class.ant-tabs-tab-active]="(nzSelectedIndex == i)&&!nzHide"
-        [disabled]="tab.disabled"
+        role="tab"
+        [style.margin-right.px]="nzTabBarGutter"
+        [class.ant-tabs-tab-active]="(nzSelectedIndex == i) && !nzHideAll"
+        [disabled]="tab.nzDisabled"
         (click)="clickLabel(i)"
         *ngFor="let tab of listOfNzTabComponent; let i = index">
         <ng-container *ngIf="tab.isTitleString; else titleTemplate">{{ tab.nzTitle }}</ng-container>
@@ -72,8 +77,8 @@ export type NzTabType = 'line' | 'card';
       [style.margin-left.%]="tabPaneAnimated&&(-nzSelectedIndex*100)">
       <nz-tab-body
         class="ant-tabs-tabpane"
-        [class.ant-tabs-tabpane-active]="(nzSelectedIndex == i)&&!nzHide"
-        [class.ant-tabs-tabpane-inactive]="(nzSelectedIndex != i)||nzHide"
+        [class.ant-tabs-tabpane-active]="(nzSelectedIndex == i) && !nzHideAll"
+        [class.ant-tabs-tabpane-inactive]="(nzSelectedIndex != i) || nzHideAll"
         [content]="tab.content"
         *ngFor="let tab of listOfNzTabComponent; let i = index">
       </nz-tab-body>
@@ -100,7 +105,11 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
   @ViewChild('tabContent') tabContent: ElementRef;
   @Input() nzAnimated: NzAnimatedInterface | boolean = true;
   @Input() nzShowPagination = true;
-  @Input() nzHide = false;
+  @Input() nzHideAll = false;
+  @Input() nzTabBarGutter: number;
+  @Input() nzTabBarStyle: { [key: string]: string };
+  @Output() nzOnNextClick = new EventEmitter<void>();
+  @Output() nzOnPrevClick = new EventEmitter<void>();
 
   @Input()
   set nzSelectedIndex(value: number | null) {
