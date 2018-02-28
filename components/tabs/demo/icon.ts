@@ -4,10 +4,9 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-tabs-icon',
   template: `
     <nz-tabset>
-      <nz-tab *ngFor="let tab of tabs">
-        <ng-template #nzTabHeading>
-          <i [ngClass]="tab.icon"></i>
-          {{ tab.name }}
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
+        <ng-template #titleTemplate>
+          <i [ngClass]="tab.icon"></i>{{ tab.name }}
         </ng-template>
         <span>{{ tab.name }}</span>
       </nz-tab>
