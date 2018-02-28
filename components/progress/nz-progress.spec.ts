@@ -85,6 +85,16 @@ describe('progress', () => {
       expect(progress.nativeElement.querySelector('.ant-progress-bg').style.cssText).toBe('width: 0%; height: 6px;');
       expect(progress.nativeElement.querySelector('.ant-progress-success-bg').style.cssText).toBe('width: 0%; height: 6px;');
     });
+    it('should size work', () => {
+      fixture.detectChanges();
+      expect(progress.nativeElement.querySelector('.ant-progress-bg').style.cssText).toBe('width: 0%; height: 8px;');
+      expect(progress.nativeElement.querySelector('.ant-progress-success-bg').style.cssText).toBe('width: 0%; height: 8px;');
+      testComponent.size = 'small';
+      fixture.detectChanges();
+      expect(progress.nativeElement.firstElementChild.classList).toContain('ant-progress-small');
+      expect(progress.nativeElement.querySelector('.ant-progress-bg').style.cssText).toBe('width: 0%; height: 6px;');
+      expect(progress.nativeElement.querySelector('.ant-progress-success-bg').style.cssText).toBe('width: 0%; height: 6px;');
+    });
   });
   describe('progress dashboard', () => {
     let fixture;
@@ -187,6 +197,7 @@ describe('progress', () => {
   selector: 'nz-test-progress-line',
   template: `
     <nz-progress
+      [nzSize]="size"
       [nzSuccessPercent]="successPercent"
       [nzFormat]="format"
       [nzStatus]="status"
@@ -197,6 +208,7 @@ describe('progress', () => {
   `
 })
 export class NzTestProgressLineComponent {
+  size;
   status;
   format;
   strokeWidth;
