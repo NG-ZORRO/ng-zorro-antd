@@ -7,10 +7,10 @@ title:
 
 ## zh-CN
 
-`size="small"` 表示小号开关。
+`nzSize="small"` 表示小号开关。
 
 ## en-US
 
-`size="small"` represents a small sized switch.
+`nzSize="small"` represents a small sized switch.
 
 

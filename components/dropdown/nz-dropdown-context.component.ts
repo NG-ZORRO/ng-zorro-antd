@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, TemplateRef } from '@angular/core';
+
 import { dropDownAnimation } from '../core/animation/dropdown-animations';
+
 import { NzDropdownService } from './nz-dropdown.service';
 
 @Component({

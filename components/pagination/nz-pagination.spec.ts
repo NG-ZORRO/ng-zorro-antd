@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { NzPaginationComponent } from './nz-pagination.component';
 import { NzPaginationModule } from './nz-pagination.module';
 

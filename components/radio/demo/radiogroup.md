@@ -7,10 +7,10 @@ title:
 
 ## zh-CN
 
-一组互斥的 Radio 配合使用。
+一组互斥的 `nz-radio` 配合使用。
 
 ## en-US
 
-A group of radio components.
+A group of `nz-radio` components.
 
 

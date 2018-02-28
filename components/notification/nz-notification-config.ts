@@ -1,4 +1,5 @@
 import { InjectionToken } from '@angular/core';
+
 import { NzMessageConfig } from '../message/nz-message-config';
 
 export interface NzNotificationConfig extends NzMessageConfig {

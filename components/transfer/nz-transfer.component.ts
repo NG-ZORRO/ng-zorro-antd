@@ -14,8 +14,10 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+
 import { toBoolean } from '../core/util/convert';
 import { NzLocaleService } from '../locale/index';
+
 import { TransferItem } from './item';
 
 export interface TransferCanMove {

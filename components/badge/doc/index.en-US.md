@@ -12,22 +12,21 @@ Badge normally appears in proximity to notifications or user avatars with eye-ca
 
 ## API
 
-```jsx
-<Badge count={5}>
-  <a href="#" className="head-example" />
-</Badge>
+```html
+<nz-badge [nzCount]="5">
+  <a class="head-example"></a>
+</nz-badge>
 ```
 
-```jsx
-<Badge count={5} />
+```html
+<nz-badge [nzCount]="5"></nz-badge>
 ```
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| count | Number to show in badge | number |  |
-| dot | Whether to display a red dot instead of `count` | boolean | `false` |
-| offset | set offset of the badge dot, like [x, y] | [number, number] | - |
-| overflowCount | Max count to show | number | 99 |
-| showZero | Whether to show badge when `count` is zero | boolean | `false` |
-| status | Set Badge as a status dot | `success` ｜ `processing` ｜ `default` ｜ `error` ｜ `warning` | `''` |
-| text | If `status` is set, `text` sets the display text of the status `dot` | string | `''` |
+| nzCount | Number to show in badge | number |  |
+| nzDot | Whether to display a red dot instead of `count` | boolean | `false` |
+| nzOverflowCount | Max count to show | number | 99 |
+| nzShowZero | Whether to show badge when `count` is zero | boolean | `false` |
+| nzStatus | Set `nz-badge` as a status dot | `success` ｜ `processing` ｜ `default` ｜ `error` ｜ `warning` | `''` |
+| nzText | If `nzStatus` is set, `text` sets the display text of the status `dot` | string | `''` |

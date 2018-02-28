@@ -13,29 +13,34 @@ Checkbox.
 
 ## API
 
-### Checkbox
+### nz-checkbox
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| autoFocus | get focus when component mounted | boolean | false |
-| checked | Specifies whether the checkbox is selected. | boolean | false |
-| defaultChecked | Specifies the initial state: whether or not the checkbox is selected. | boolean | false |
-| disabled | Disable checkbox | boolean | false |
-| onChange | The callback function that is triggered when the state changes. | Function(e:Event) | - |
+| nzAutoFocus | get focus when component mounted | boolean | false |
+| nzDisabled | Disable checkbox | boolean | false |
+| ngModel | Specifies whether the checkbox is selected, double binding | boolean | false |
+| ngModelChange | The callback function that is triggered when the state changes. | (ngModel:boolean)=>{} | - |
+| nzIndeterminate | set the status of indeterminate，only affect the style | boolean | false |
+| nzValue | use for the callback of `nz-checkbox-wrapper` | string | - |
 
-### Checkbox Group
+### nz-checkbox-group
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| defaultValue | Default selected value | string\[] | \[] |
-| disabled | Disable all checkboxes | boolean | false |
-| options | Specifies options | string\[] | \[] |
-| value | Used for setting the currently selected value. | string\[] | \[] |
-| onChange | The callback function that is triggered when the state changes. | Function(checkedValue) | - |
+| ngModel | Specifies options, double binding |  `Array<{ label: string; value: string; checked?: boolean; }>` | `[]` |
+| ngModelChange | The callback function that is triggered when the state changes. | `(ngModel:Array<{ label: string; value: string; checked?: boolean; }>)=>{}` | - |
+| nzDisabled | Disable all checkboxes | boolean | false |
+
+### nz-checkbox-wrapper
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| nzOnChange | The callback function that is triggered when the state changes. | `(list:string[])=>{}` | - |
 
 ## Methods
 
-### Checkbox
+### nz-checkbox
 
 | Name | Description |
 | ---- | ----------- |

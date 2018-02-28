@@ -1,3 +1,9 @@
+// Thanks to https://github.com/andreypopp/react-textarea-autosize/
+
+/**
+ * calculateNodeHeight(uiTextNode, useCache = false)
+ */
+
 const HIDDEN_TEXTAREA_STYLE = `
   min-height:0 !important;
   max-height:none !important;
@@ -25,21 +31,35 @@ const SIZING_STYLE = [
   'padding-left',
   'padding-right',
   'border-width',
-  'box-sizing',
+  'box-sizing'
 ];
 
-const computedStyleCache = {};
+export interface NodeType {
+  sizingStyle: string;
+  paddingSize: number;
+  borderSize: number;
+  boxSizing: string;
+}
+
+export interface NodeProperty {
+  height: number;
+  minHeight: number;
+  maxHeight: number;
+  overflowY: string;
+}
+
+const computedStyleCache: { [key: string]: NodeType } = {};
 let hiddenTextarea: HTMLTextAreaElement;
 
-function calculateNodeStyling(node: Element, useCache: boolean = false): { sizingStyle: string, paddingSize: number, borderSize: number, boxSizing: string} {
+function calculateNodeStyling(node: HTMLElement, useCache: boolean = false): NodeType {
   const nodeRef = (
     node.getAttribute('id') ||
     node.getAttribute('data-reactid') ||
     node.getAttribute('name')
-  );
+  ) as string;
 
-  if (useCache && computedStyleCache[nodeRef]) {
-    return computedStyleCache[nodeRef];
+  if (useCache && computedStyleCache[ nodeRef ]) {
+    return computedStyleCache[ nodeRef ];
   }
 
   const style = window.getComputedStyle(node);
@@ -64,27 +84,24 @@ function calculateNodeStyling(node: Element, useCache: boolean = false): { sizin
   .map(name => `${name}:${style.getPropertyValue(name)}`)
   .join(';');
 
-  const nodeInfo = {
+  const nodeInfo: NodeType = {
     sizingStyle,
     paddingSize,
     borderSize,
-    boxSizing,
+    boxSizing
   };
 
   if (useCache && nodeRef) {
-    computedStyleCache[nodeRef] = nodeInfo;
+    computedStyleCache[ nodeRef ] = nodeInfo;
   }
 
   return nodeInfo;
 }
 
-// TODO: reconsider function name, it's not general
-export default function calculateNodeHeight(
-  uiTextNode: HTMLTextAreaElement,
-  useCache: boolean = false,
-  minRows: number | null = null,
-  maxRows: number | null = null,
-): { height: number, minHeight: number, maxHeight: number, overflowY: string } {
+export default function calculateNodeHeight(uiTextNode: HTMLTextAreaElement,
+                                            useCache: boolean      = false,
+                                            minRows: number | null = null,
+                                            maxRows: number | null = null): NodeProperty {
   if (!hiddenTextarea) {
     hiddenTextarea = document.createElement('textarea');
     document.body.appendChild(hiddenTextarea);
@@ -93,7 +110,7 @@ export default function calculateNodeHeight(
   // Fix wrap="off" issue
   // https://github.com/ant-design/ant-design/issues/6577
   if (uiTextNode.getAttribute('wrap')) {
-    hiddenTextarea.setAttribute('wrap', uiTextNode.getAttribute('wrap'));
+    hiddenTextarea.setAttribute('wrap', uiTextNode.getAttribute('wrap') as string);
   } else {
     hiddenTextarea.removeAttribute('wrap');
   }
@@ -101,9 +118,9 @@ export default function calculateNodeHeight(
   // Copy all CSS properties that have an impact on the height of the content in
   // the textbox
   const {
-    paddingSize, borderSize,
-    boxSizing, sizingStyle,
-  } = calculateNodeStyling(uiTextNode, useCache);
+          paddingSize, borderSize,
+          boxSizing, sizingStyle
+        } = calculateNodeStyling(uiTextNode, useCache);
 
   // Need to have the overflow attribute to hide the scrollbar otherwise
   // text-lines will not calculated properly as the shadow will technically be
@@ -111,8 +128,8 @@ export default function calculateNodeHeight(
   hiddenTextarea.setAttribute('style', `${sizingStyle};${HIDDEN_TEXTAREA_STYLE}`);
   hiddenTextarea.value = uiTextNode.value || uiTextNode.placeholder || '';
 
-  let minHeight = -Infinity;
-  let maxHeight = Infinity;
+  let minHeight = Number.MIN_SAFE_INTEGER;
+  let maxHeight = Number.MAX_SAFE_INTEGER;
   let height = hiddenTextarea.scrollHeight;
   let overflowY: string;
 
