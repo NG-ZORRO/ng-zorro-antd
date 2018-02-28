@@ -22,6 +22,7 @@ export class NzDividerComponent implements OnChanges, OnInit {
   @Input()
   set nzText(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
+      this.textStr = null;
       this.textTpl = value;
     } else {
       this.textStr = value;
