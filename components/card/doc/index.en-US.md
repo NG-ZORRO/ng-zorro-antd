@@ -22,7 +22,7 @@ A card can be used to display content related to a single subject. The content c
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | nzActions | The action list, shows at the bottom of the Card. | `Array<TemplateRef<void>>` | - |
-| nzBodyStyle | Inline style to apply to the card content | object | - |
+| nzBodyStyle | Inline style to apply to the card content | `{ [key: string]: string }` | - |
 | nzBordered | Toggles rendering of the border around the card | boolean | `true` |
 | nzCover | Card cover | `TemplateRef<void>` | - |
 | nzExtra | Content to render in the top-right corner of the card | string｜`TemplateRef<void>` | - |
