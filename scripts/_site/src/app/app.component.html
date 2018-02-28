@@ -21,7 +21,7 @@
             </ng-template>
           </nz-select>
         </div>
-        <button nz-button nzGhost nzSize="small" class="header-lang-button" (click)="switchLanguage(language==='zh'?'en':'zh')"><span>{{language=='zh'?'English':'中文'}}</span></button>
+        <button nz-button nzGhost nzSize="small" class="header-lang-button" (click)="switchLanguage(language==='zh'?'en':'zh')">{{language=='zh'?'English':'中文'}}</button>
         <ul nz-menu [nzMode]="'horizontal'" id="nav">
           <li nz-menu-item nzSelected>
             <a routerLink="/doc/introduce/zh" *ngIf="language=='zh'"><span>组件</span></a>

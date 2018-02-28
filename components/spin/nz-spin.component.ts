@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ContentChild,
   ElementRef,
   Input,
   NgZone,
@@ -15,7 +14,7 @@ import { Observable } from 'rxjs/Observable';
 import { debounceTime } from 'rxjs/operators/debounceTime';
 import { first } from 'rxjs/operators/first';
 
-import { isEmpty } from '../core/util/check';
+import { isEmpty, isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
@@ -23,15 +22,31 @@ import { toBoolean } from '../core/util/convert';
   preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   template           : `
-    <div [class.ant-spin-nested-loading]="_nested">
+    <ng-template #defaultIndicatorTemplate>
+      <span
+        class="ant-spin-dot"
+        [class.ant-spin-dot-spin]="resultSpinning$|async">
+        <i></i><i></i><i></i><i></i>
+      </span>
+    </ng-template>
+    <div [class.ant-spin-nested-loading]="isNested">
       <div>
-        <div class="ant-spin" [ngClass]="{'ant-spin-spinning':spinning$|async,'ant-spin-lg':nzSize=='lg','ant-spin-sm':nzSize=='sm','ant-spin-show-text':nzTip}">
-          <span class="ant-spin-dot" *ngIf="!indicator"><i></i><i></i><i></i><i></i></span>
-          <ng-template [ngTemplateOutlet]="indicator" [ngIf]="indicator"></ng-template>
+        <div
+          class="ant-spin"
+          [class.ant-spin-spinning]="resultSpinning$|async"
+          [class.ant-spin-lg]="nzSize=='large'"
+          [class.ant-spin-sm]="nzSize=='small'"
+          [class.ant-spin-show-text]="nzTip">
+          <ng-template [ngTemplateOutlet]="nzIndicator||defaultIndicatorTemplate"></ng-template>
           <div class="ant-spin-text" *ngIf="nzTip">{{ nzTip }}</div>
         </div>
       </div>
-      <div class="ant-spin-container" [class.ant-spin-blur]="spinning$|async" #ref [hidden]="!_nested" (cdkObserveContent)="checkNested()">
+      <div
+        #containerElement
+        class="ant-spin-container"
+        [class.ant-spin-blur]="resultSpinning$|async"
+        [hidden]="!isNested"
+        (cdkObserveContent)="checkNested()">
         <ng-content></ng-content>
       </div>
     </div>
@@ -39,19 +54,22 @@ import { toBoolean } from '../core/util/convert';
   `
 })
 export class NzSpinComponent implements AfterViewInit {
-  _spinning$ = new BehaviorSubject(true);
-  spinning$: Observable<boolean> = this._spinning$.asObservable().pipe(debounceTime(this.nzDelay));
-  _tip: string;
-  _el: HTMLElement;
-  _size: string;
-  _nested = false;
-  _delay = 0;
-  @ViewChild('ref') _ref: ElementRef;
-  @ContentChild('indicator') indicator: TemplateRef<void>;
+  private _tip: string;
+  private _delay = 0;
+  el: HTMLElement;
+  isNested = false;
+  baseSpinning$ = new BehaviorSubject(true);
+  resultSpinning$: Observable<boolean> = this.baseSpinning$.asObservable().pipe(debounceTime(this.nzDelay));
+  @ViewChild('containerElement') containerElement: ElementRef;
+  @Input() nzIndicator: TemplateRef<void>;
+  @Input() nzSize = 'default';
 
-  @Input() set nzDelay(value: number) {
-    this._delay = value;
-    this.spinning$ = this._spinning$.asObservable().pipe(debounceTime(this.nzDelay));
+  @Input()
+  set nzDelay(value: number) {
+    if (isNotNil(value)) {
+      this._delay = value;
+      this.resultSpinning$ = this.baseSpinning$.asObservable().pipe(debounceTime(this.nzDelay));
+    }
   }
 
   get nzDelay(): number {
@@ -60,7 +78,7 @@ export class NzSpinComponent implements AfterViewInit {
 
   @Input()
   set nzTip(value: string) {
-    this._tip = value || 'Loading...';
+    this._tip = value;
   }
 
   get nzTip(): string {
@@ -69,32 +87,22 @@ export class NzSpinComponent implements AfterViewInit {
 
   @Input()
   set nzSpinning(value: boolean) {
-    this._spinning$.next(toBoolean(value));
-  }
-
-  // TODO: cannot be literal type since the getter & setter have different value, why that?
-  @Input()
-  set nzSize(value: string) {
-    this._size = { large: 'lg', small: 'sm' }[ value ];
-  }
-
-  get nzSize(): string {
-    return this._size;
+    this.baseSpinning$.next(toBoolean(value));
   }
 
   checkNested(): void {
     /** no way to detect empty https://github.com/angular/angular/issues/12530 **/
-    if (!isEmpty(this._ref.nativeElement)) {
-      this._nested = true;
-      this._renderer.setStyle(this._el, 'display', 'block');
+    if (!isEmpty(this.containerElement.nativeElement)) {
+      this.isNested = true;
+      this.renderer.setStyle(this.el, 'display', 'block');
     } else {
-      this._nested = false;
-      this._renderer.removeStyle(this._el, 'display');
+      this.isNested = false;
+      this.renderer.removeStyle(this.el, 'display');
     }
   }
 
-  constructor(private _elementRef: ElementRef, private _renderer: Renderer2, private zone: NgZone) {
-    this._el = this._elementRef.nativeElement;
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, private zone: NgZone) {
+    this.el = this.elementRef.nativeElement;
   }
 
   ngAfterViewInit(): void {
