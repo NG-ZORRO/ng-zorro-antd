@@ -9,20 +9,6 @@ function calInk(node: HTMLElement): number {
   return node.offsetTop + node.clientHeight / 2 - 4.5;
 }
 
-function getOffsetTop(element: HTMLElement): number {
-  if (!element || !element.getClientRects().length) return 0;
-
-  const rect = element.getBoundingClientRect();
-
-  if (rect.width || rect.height) {
-    const doc = element.ownerDocument;
-    const docElem = doc.documentElement;
-    return rect.top - docElem.clientTop;
-  }
-
-  return rect.top;
-}
-
 describe('anchor', () => {
   let fixture: ComponentFixture<TestComponent>;
   let dl: DebugElement;

@@ -299,6 +299,23 @@ describe('affix', () => {
     }));
   });
 
+  it('should adjust the width when resize', fakeAsync(() => {
+    const offsetTop = 150;
+    context.newOffset = offsetTop;
+    setupInitialState({ offsetTop: offsetTop + 1 });
+    emitScroll(window, 2);
+    componentObject.offsetYTo(componentObject.elementRef(), offsetTop + 2);
+    tick(20);
+    fixture.detectChanges();
+    componentObject.emitEvent(window, new Event('resize'));
+    tick(20);
+    fixture.detectChanges();
+
+    expect(componentObject.wrap().offsetTop).toBe(offsetTop);
+
+    discardPeriodicTasks();
+  }));
+
   class NzAffixPageObject {
     offsets: { [key: string]: Offset };
     scrolls: { [key: string]: Scroll };
@@ -425,7 +442,7 @@ describe('affix-extra', () => {
 class TestAffixComponent {
   @ViewChild(NzAffixComponent)
   nzAffixComponent: NzAffixComponent;
-  fakeTarget: Element | Window = window;
+  fakeTarget: Element | Window = null;
   newOffset: {};
   newOffsetBottom: {};
 }

@@ -13,13 +13,12 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
-import { toBoolean, toNumber } from '../core/util/convert';
 
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
+import { toBoolean, toNumber } from '../core/util/convert';
 
 import { NzAnchorLinkComponent } from './nz-anchor-link.component';
 
@@ -164,12 +163,8 @@ export class NzAnchorComponent implements OnDestroy, OnInit, AfterViewInit {
   private getOffsetTop(element: HTMLElement): number {
     if (!element || !element.getClientRects().length) return 0;
     const rect = element.getBoundingClientRect();
-    if (rect.width || rect.height) {
-      const doc = element.ownerDocument;
-      const docElem = doc.documentElement;
-      return rect.top - docElem.clientTop;
-    }
-    return rect.top;
+    if (!rect.width && !rect.height) return rect.top;
+    return rect.top - element.ownerDocument.documentElement.clientTop;
   }
 
   handleScroll(): void {
