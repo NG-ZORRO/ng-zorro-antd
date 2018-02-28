@@ -15,21 +15,18 @@ Rate component.
 
 | Property | Description | type | Default |
 | -------- | ----------- | ---- | ------- |
-| allowClear | whether to allow clear when click again | boolean | true |
-| allowHalf | whether to allow semi selection | boolean | false |
-| autoFocus | get focus when component mounted | boolean | false |
-| character | custom character of rate | ReactNode | `<Icon type="star" />` |
-| className | custom class name of rate | string | - |
-| count | star count | number | 5 |
-| defaultValue | default value | number | 0 |
-| disabled | read only, unable to interact | boolean | false |
-| style | custom style object of rate | object | - |
-| value | current value | number | - |
-| onBlur | callback when component lose focus | Function() | - |
-| onChange | callback when select value | Function(value: number) | - |
-| onFocus | callback when component get focus | Function() | - |
-| onHoverChange | callback when hover item | Function(value: number) | - |
-| onKeyDown | callback when keydown on component | Function(event) | - |
+| nzAllowClear | whether to allow clear when click again | boolean | true |
+| nzAllowHalf | whether to allow semi selection | boolean | false |
+| nzAutoFocus | get focus when component mounted | boolean | false |
+| nzCharacter | custom character of rate | `TemplateRef<void>` | `<i class="anticon anticon-star"></i>` |
+| nzCount | star count | number | 5 |
+| nzDisabled | read only, unable to interact | boolean | false |
+| ngModel | current value , double binding | number | - |
+| ngModelChange | callback when select value | (ngModel: number)=>{} | - |
+| nzOnBlur | callback when component lose focus | (e:FocusEvent)=>{} | - |
+| nzOnFocus | callback when component get focus | (e:FocusEvent)=>{} | - |
+| nzOnHoverChange | callback when hover item | (value: number)=>{} | - |
+| nzOnKeyDown | callback when keydown on component | (event:KeyboardEvent)=>{} | - |
 
 ## Methods
 

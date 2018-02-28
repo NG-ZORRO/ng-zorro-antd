@@ -6,6 +6,7 @@ import {
   OnInit,
   Renderer2
 } from '@angular/core';
+
 import { matchMedia } from '../core/polyfill/match-media';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 

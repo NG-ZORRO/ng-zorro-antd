@@ -24,7 +24,9 @@ import { map } from 'rxjs/operators/map';
 import { pluck } from 'rxjs/operators/pluck';
 import { takeUntil } from 'rxjs/operators/takeUntil';
 import { tap } from 'rxjs/operators/tap';
+
 import { toBoolean } from '../core/util/convert';
+
 import { Marks, MarksArray } from './nz-slider-marks.component';
 import { NzSliderService } from './nz-slider.service';
 

@@ -5,10 +5,10 @@ import { Component } from '@angular/core';
   template: `
     <nz-rate [(ngModel)]="value" nzAllowHalf></nz-rate>
     <span class="ant-rate-text">allowClear: true</span>
+    <br>
     <nz-rate [(ngModel)]="value" nzAllowHalf [nzAllowClear]="false"></nz-rate>
     <span class="ant-rate-text">allowClear: false</span>
-  `,
-  styles  : []
+  `
 })
 export class NzDemoRateClearComponent {
   value = 0;

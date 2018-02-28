@@ -1,4 +1,5 @@
 import { Directive, ElementRef, HostBinding, Input, NgZone, Renderer2 } from '@angular/core';
+
 import { reqAnimFrame } from '../core/polyfill/request-animation';
 import { toBoolean } from '../core/util/convert';
 

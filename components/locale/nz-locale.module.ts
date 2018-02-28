@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+
 import { LoggerModule } from '../core/util/logger/index';
 
 import { zhCN } from './locales/index';

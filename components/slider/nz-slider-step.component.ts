@@ -1,5 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+
 import { toBoolean } from '../core/util/convert';
+
 import {  MarksArray } from './nz-slider-marks.component';
 
 @Component({

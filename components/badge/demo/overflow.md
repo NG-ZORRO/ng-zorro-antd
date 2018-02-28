@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-超过 `overflowCount` 的会显示为 `${overflowCount}+`，默认的 `overflowCount` 为 `99`。
+超过 `nzOverflowCount` 的会显示为 `nzOverflowCount+`，默认的 `nzOverflowCount` 为 `99`。
 
 ## en-US
 
-`${overflowCount}+` is displayed when count is larger than `overflowCount`. The default value of `overflowCount` is `99`.
+`nzOverflowCount+` is displayed when count is larger than `nzOverflowCount`. The default value of `nzOverflowCount` is `99`.

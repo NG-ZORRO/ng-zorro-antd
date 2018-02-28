@@ -8,7 +8,9 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
+
 import { dropDownAnimation } from '../core/animation/dropdown-animations';
+
 import { NzDropDownComponent } from './nz-dropdown.component';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 

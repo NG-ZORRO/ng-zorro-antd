@@ -9,6 +9,7 @@ import {
   Output,
   Renderer2
 } from '@angular/core';
+
 import { tagAnimation } from '../core/animation/tag-animations';
 import { toBoolean } from '../core/util/convert';
 

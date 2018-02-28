@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import { NzMatchMediaService } from '../core/services/nz-match-media.service';
+
 import { NzContentComponent } from './nz-content.component';
 import { NzFooterComponent } from './nz-footer.component';
 import { NzHeaderComponent } from './nz-header.component';

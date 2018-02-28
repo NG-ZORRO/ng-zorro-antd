@@ -1,5 +1,7 @@
 import { Component, Inject, Optional } from '@angular/core';
+
 import { NzMessageContainerComponent } from '../message/nz-message-container.component';
+
 import { NzNotificationConfig, NZ_NOTIFICATION_CONFIG, NZ_NOTIFICATION_DEFAULT_CONFIG } from './nz-notification-config';
 
 @Component({

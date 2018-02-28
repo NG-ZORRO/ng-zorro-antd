@@ -15,38 +15,34 @@ cols: 1
 ## API
 
 ```html
-<Card title="卡片标题">卡片内容</Card>
+<nz-card nzTitle="卡片标题">卡片内容</nz-card>
 ```
 
-### Card
+### nz-card
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| actions | 卡片操作组，位置在卡片底部 | `Array<ReactNode>` | - |
-| bodyStyle | 内容区域自定义样式 | object | - |
-| bordered | 是否有边框 | boolean | true |
-| cover | 卡片封面 | ReactNode | - |
-| extra | 卡片右上角的操作区域 | string｜ReactNode | - |
-| hoverable | 鼠标移过时可浮起 | boolean | false |
-| loading | 当卡片内容还在加载中时，可以用 loading 展示一个占位 | boolean | false |
-| tabList | 页签标题列表 | Array&lt;{key: string, tab: ReactNode}> | - |
-| title | 卡片标题 | string｜ReactNode | - |
-| type | 卡片类型，可设置为 `inner` 或 不设置 | string | - |
-| onTabChange | 页签切换的回调 | (key) => void | - |
+| nzActions | 卡片操作组，位置在卡片底部 | `Array<TemplateRef<void>>` | - |
+| nzBodyStyle | 内容区域自定义样式 | NgStyle | - |
+| nzBordered | 是否有边框 | boolean | true |
+| nzCover | 卡片封面 | `TemplateRef<void>` | - |
+| nzExtra | 卡片右上角的操作区域 | string｜`TemplateRef<void>` | - |
+| nzHoverable | 鼠标移过时可浮起 | boolean | false |
+| nzLoading | 当卡片内容还在加载中时，可以用 loading 展示一个占位 | boolean | false |
+| nzTitle | 卡片标题 | string｜`TemplateRef<void>` | - |
+| nzType | 卡片类型，可设置为 `inner` 或 不设置 | string | - |
 
-### Card.Grid
+### nz-card-meta
 
-| Property | Description | Type | Default |
+| 参数 | 说明 | 类型 | 默认值 |
 | -------- | ----------- | ---- | ------- |
-| className | 网格容器类名 | string | - |
-| style | 定义网格容器类名的样式 | object | - |
+| nzAvatar | 头像/图标 | `TemplateRef<void>` | - |
+| nzDescription | 描述内容 | string｜`TemplateRef<void>` | - |
+| nzTitle | 标题内容 | string｜`TemplateRef<void>` | - |
 
-### Card.Meta
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| avatar | 头像/图标 | ReactNode | - |
-| className | 容器类名 | string | - |
-| description | 描述内容 | ReactNode | - |
-| style | 定义容器类名的样式 | object | - |
-| title | 标题内容 | ReactNode | - |
+### nz-card-grid
+分隔卡片内容区域
+
+### nz-card-tab
+分隔页签标题区域

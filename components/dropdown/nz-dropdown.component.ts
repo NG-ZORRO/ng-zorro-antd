@@ -22,10 +22,12 @@ import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 import { map } from 'rxjs/operators/map';
 import { mapTo } from 'rxjs/operators/mapTo';
 import { merge } from 'rxjs/operators/merge';
+
 import { dropDownAnimation } from '../core/animation/dropdown-animations';
 import { DEFAULT_DROPDOWN_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position-map';
 import { toBoolean } from '../core/util/convert';
 import { NzMenuDirective } from '../menu/nz-menu.directive';
+
 import { NzDropDownDirective } from './nz-dropdown.directive';
 
 export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';

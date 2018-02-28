@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-可以自定义关闭，自定义的文字会替换原先的关闭 `Icon`。
+可以自定义关闭，自定义的内容会替换原先的关闭按钮。
 
 ## en-US
 
-Replace the default icon with customized text.
+Replace the default icon with customized content.
