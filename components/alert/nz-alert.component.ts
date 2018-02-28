@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -7,6 +6,9 @@ import {
   Output,
   TemplateRef
 } from '@angular/core';
+
+// tslint:disable-next-line:no-any
+export type NgClassType = string | string[] | Set<string> | { [klass: string]: any; };
 
 import { fadeAnimation } from '../core/animation/fade-animations';
 import { toBoolean } from '../core/util/convert';
@@ -76,7 +78,7 @@ export class NzAlertComponent implements OnInit {
   outerClassMap;
   iconClassMap;
   @Output() nzOnClose: EventEmitter<boolean> = new EventEmitter();
-  @Input() nzIconType: NgClass;
+  @Input() nzIconType: NgClassType;
 
   @Input()
   set nzDescription(value: string | TemplateRef<void>) {
