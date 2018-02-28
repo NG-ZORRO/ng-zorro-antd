@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
 export type NzAvatarShape = 'square' | 'circle';
