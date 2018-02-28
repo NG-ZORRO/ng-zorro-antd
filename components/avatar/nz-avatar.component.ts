@@ -1,39 +1,29 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnChanges,
-  Renderer2,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
 export type NzAvatarShape = 'square' | 'circle';
 export type NzAvatarSize = 'small' | 'large' | 'default';
 
 @Component({
-  selector           : 'nz-avatar',
+  selector: 'nz-avatar',
+  template: `
+  <i *ngIf="nzIcon && hasIcon" [ngClass]="nzIcon"></i>
+  <img [src]="nzSrc" *ngIf="nzSrc && hasSrc" (error)="imgError()"/>
+  <span class="ant-avatar-string" #textEl [ngStyle]="textStyles" *ngIf="nzText && hasText">{{ nzText }}</span>`,
+  providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,
-  template           : `
-    <i class="anticon anticon-{{nzIcon}}" *ngIf="nzIcon && _hasIcon"></i>
-    <img [src]="nzSrc" *ngIf="nzSrc && _isSrcExist" (error)="_imgError($event)"/>
-    <span class="ant-avatar-string" #textEl [ngStyle]="_textStyles" *ngIf="nzText && _hasText">{{ nzText }}</span>
-  `
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzAvatarComponent implements OnChanges {
+  private el: HTMLElement;
+  private prefixCls = 'ant-avatar';
+  private sizeMap = { large: 'lg', small: 'sm' };
+  hasText: boolean = false;
+  hasSrc: boolean = true;
+  hasIcon: boolean = false;
+  textStyles: {};
 
-  private _el: HTMLElement;
-  private _prefixCls = 'ant-avatar';
-  private _classList: string[] = [];
-  private _sizeMap = { large: 'lg', small: 'sm' };
-
-  _hasText: boolean = false;
-  @ViewChild('textEl') _textEl: ElementRef;
-  _textStyles: {};
-
-  _isSrcExist: boolean = true;
-
-  _hasIcon: boolean = false;
+  @ViewChild('textEl') textEl: ElementRef;
 
   @Input() nzShape: NzAvatarShape = 'circle';
 
@@ -45,76 +35,66 @@ export class NzAvatarComponent implements OnChanges {
 
   @Input() nzIcon: string;
 
-  _setClassMap(): this {
-    this._classList.forEach(_className => {
-      this._renderer.removeClass(this._el, _className);
-    });
-    this._classList = [
-      this._sizeMap[ this.nzSize ] && `${this._prefixCls}-${this._sizeMap[ this.nzSize ]}`,
-      this.nzShape && `${this._prefixCls}-${this.nzShape}`,
-      this.nzIcon && `${this._prefixCls}-icon`,
-      this.nzSrc && `${this._prefixCls}-image`
-    ].filter((item) => {
-      return !!item;
-    });
-    this._classList.forEach(_className => {
-      this._renderer.addClass(this._el, _className);
-    });
+  setClass(): this {
+    const classMap = {
+      [this.prefixCls]: true,
+      [`${this.prefixCls}-${this.sizeMap[this.nzSize]}`]: this.sizeMap[this.nzSize],
+      [`${this.prefixCls}-${this.nzShape}`]: this.nzShape,
+      [`${this.prefixCls}-icon`]: this.nzIcon,
+      [`${this.prefixCls}-image`]: this.nzSrc
+    };
+    this.updateHostClassService.updateHostClass(this.el, classMap);
+    this.cd.detectChanges();
     return this;
   }
 
-  _imgError(): void {
-    this._isSrcExist = false;
-    // TODO(i): need force remove [nzSrc] if broken image?
-    this._hasIcon = false;
-    this._hasText = false;
+  imgError(): void {
+    this.hasSrc = false;
+    this.hasIcon = false;
+    this.hasText = false;
     if (this.nzIcon) {
-      this._hasIcon = true;
+      this.hasIcon = true;
     } else if (this.nzText) {
-      this._hasText = true;
+      this.hasText = true;
     }
-    this._setClassMap()._notifyCalc();
+    this.setClass().notifyCalc();
   }
 
-  private _calcStringSize(): void {
-    if (!this._hasText) return;
+  private calcStringSize(): void {
+    if (!this.hasText) return;
 
-    const el = this._textEl && this._textEl.nativeElement;
-    if (!el) return;
-
-    const childrenWidth = el.offsetWidth;
-    const avatarWidth = this._el.getBoundingClientRect().width;
+    const childrenWidth = this.textEl.nativeElement.offsetWidth;
+    const avatarWidth = this.el.getBoundingClientRect().width;
     const scale = avatarWidth - 8 < childrenWidth ? (avatarWidth - 8) / childrenWidth : 1;
     if (scale === 1) {
-      this._textStyles = {};
+      this.textStyles = {};
     } else {
-      this._textStyles = {
+      this.textStyles = {
         transform: `scale(${scale})`,
-        position : 'absolute',
-        display  : 'inline-block',
-        left     : `calc(50% - ${Math.round(childrenWidth / 2)}px)`
+        position: 'absolute',
+        display: 'inline-block',
+        left: `calc(50% - ${Math.round(childrenWidth / 2)}px)`
       };
     }
+    this.cd.detectChanges();
   }
 
-  private _notifyCalc(): this {
+  private notifyCalc(): this {
     // If use ngAfterViewChecked, always demands more computations, so......
     setTimeout(() => {
-      this._calcStringSize();
+      this.calcStringSize();
     });
     return this;
   }
 
-  constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
-    this._el = _elementRef.nativeElement;
-    this._renderer.addClass(this._el, this._prefixCls);
+  constructor(elementRef: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {
+    this.el = elementRef.nativeElement;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this._hasText = !this.nzSrc && !!this.nzText;
-    this._hasIcon = !this.nzSrc && !!this.nzIcon;
+    this.hasText = !this.nzSrc && !!this.nzText;
+    this.hasIcon = !this.nzSrc && !!this.nzIcon;
 
-    this._setClassMap()._notifyCalc();
+    this.setClass().notifyCalc();
   }
-
 }
