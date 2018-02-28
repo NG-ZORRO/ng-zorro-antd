@@ -169,7 +169,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   updatePosition(e: any): void {
     const targetNode = this._target;
     // Backwards support
-    const offsetTop = this.nzOffsetTop || 0;
+    let offsetTop = this.nzOffsetTop;
     const scrollTop = this.scrollSrv.getScroll(targetNode, true);
     const affixNode = this._el.nativeElement as HTMLElement;
     const elemOffset = this.getOffset(affixNode, targetNode);
@@ -181,8 +181,14 @@ export class NzAffixComponent implements OnInit, OnDestroy {
       top: false,
       bottom: false,
     };
-    offsetMode.top = typeof offsetTop === 'number';
-    offsetMode.bottom = typeof this._offsetBottom === 'number';
+    // Default to `offsetTop=0`.
+    if (typeof offsetTop !== 'number' && typeof this._offsetBottom !== 'number') {
+      offsetMode.top = true;
+      offsetTop = 0;
+    } else {
+      offsetMode.top = typeof offsetTop === 'number';
+      offsetMode.bottom = typeof this._offsetBottom === 'number';
+    }
     const targetRect = this.getTargetRect(targetNode);
     const targetInnerHeight =
       (targetNode as Window).innerHeight || (targetNode as HTMLElement).clientHeight;

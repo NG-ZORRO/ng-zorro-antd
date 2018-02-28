@@ -211,7 +211,7 @@ describe('affix', () => {
     describe('when scrolled below the bottom offset', () => {
       it('sticks to the bottom offset', fakeAsync(() => {
         setupInitialState();
-        emitScroll(target, 100);
+        emitScroll(target, 5000);
         const wrapEl = componentObject.wrap();
         expect(+wrapEl.style.bottom.replace('px', '')).toBe(0);
 
