@@ -23,7 +23,7 @@ cols: 1
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | nzActions | 卡片操作组，位置在卡片底部 | `Array<TemplateRef<void>>` | - |
-| nzBodyStyle | 内容区域自定义样式 | NgStyle | - |
+| nzBodyStyle | 内容区域自定义样式 | `{ [key: string]: string }` | - |
 | nzBordered | 是否有边框 | boolean | true |
 | nzCover | 卡片封面 | `TemplateRef<void>` | - |
 | nzExtra | 卡片右上角的操作区域 | string｜`TemplateRef<void>` | - |

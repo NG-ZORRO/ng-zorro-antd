@@ -1,5 +1,6 @@
 import {
   AfterContentInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostListener,
@@ -144,6 +145,7 @@ export class NzButtonComponent implements AfterContentInit {
     }
     this.setClassMap();
     this.updateIconDisplay(this.nzLoading);
+    this.cdr.markForCheck();
   }
 
   moveIcon(): void {
@@ -186,7 +188,7 @@ export class NzButtonComponent implements AfterContentInit {
     return null;
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
+  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
     this.el = this.elementRef.nativeElement;
     this.renderer.addClass(this.el, this.prefixCls);
   }
