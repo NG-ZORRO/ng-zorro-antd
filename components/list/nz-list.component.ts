@@ -61,6 +61,7 @@ export class NzListComponent implements OnChanges {
   @Input()
   set nzHeader(value: string | TemplateRef<any>) {
     if (value instanceof TemplateRef) {
+      this._header = null;
       this._headerTpl = value;
     } else {
       this._header = value;
@@ -75,6 +76,7 @@ export class NzListComponent implements OnChanges {
   @Input()
   set nzFooter(value: string | TemplateRef<any>) {
     if (value instanceof TemplateRef) {
+      this._footer = null;
       this._footerTpl = value;
     } else {
       this._footer = value;

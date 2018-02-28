@@ -1,4 +1,4 @@
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -58,6 +58,16 @@ describe('list', () => {
       });
       it('with custom template', () => {
         const fixtureTemp = TestBed.createComponent(TestListWithTemplateComponent);
+        fixtureTemp.detectChanges();
+        const footerEl = fixtureTemp.debugElement.query(By.css('.ant-list-footer'));
+        expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(fixtureTemp.componentInstance.footer as string);
+      });
+      it('change string to template', () => {
+        const fixtureTemp = TestBed.createComponent(TestListWithTemplateComponent);
+        fixtureTemp.detectChanges();
+        const footerEl = fixtureTemp.debugElement.query(By.css('.ant-list-footer'));
+        expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(fixtureTemp.componentInstance.footer as string);
+        (fixtureTemp.debugElement.query(By.css('#change')).nativeElement as HTMLButtonElement).click();
         fixtureTemp.detectChanges();
         expect(fixtureTemp.debugElement.query(By.css('.list-footer')) != null).toBe(true);
       });
@@ -201,8 +211,9 @@ class TestListComponent {
 
 @Component({
   template: `
+  <button (click)="footer = nzFooter" id="change">change</button>
   <nz-list
-    [nzFooter]="nzFooter"
+    [nzFooter]="footer"
     [nzHeader]="nzHeader">
     <ng-template #nzFooter><p class="list-footer">footer</p></ng-template>
     <ng-template #nzHeader><p class="list-header">header</p></ng-template>
@@ -210,6 +221,11 @@ class TestListComponent {
   `
 })
 class TestListWithTemplateComponent {
+
+  @ViewChild('nzFooter') nzFooter: TemplateRef<void>;
+
+  footer: string | TemplateRef<void> = 'footer with string';
+
 }
 
 @Component({

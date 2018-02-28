@@ -27,6 +27,7 @@ export class NzListItemMetaComponent {
   @Input()
   set nzAvatar(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
+      this.avatarStr = null;
       this.avatarTpl = value;
     } else {
       this.avatarStr = value;
@@ -41,6 +42,7 @@ export class NzListItemMetaComponent {
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
+      this.titleStr = null;
       this.titleTpl = value;
     } else {
       this.titleStr = value;
@@ -55,6 +57,7 @@ export class NzListItemMetaComponent {
   @Input()
   set nzDescription(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
+      this.descStr = null;
       this.descTpl = value;
     } else {
       this.descStr = value;

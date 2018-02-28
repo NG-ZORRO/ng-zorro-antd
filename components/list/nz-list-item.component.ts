@@ -41,6 +41,7 @@ export class NzListItemComponent {
   @Input()
   set nzContent(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
+      this.conStr = null;
       this.conTpl = value;
     } else {
       this.conStr = value;
