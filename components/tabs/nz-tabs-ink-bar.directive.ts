@@ -64,7 +64,6 @@ export class NzTabsInkBarDirective {
     this.renderer.setStyle(this.elementRef.nativeElement, 'display', value);
   }
 
-
   getLeftPosition(element: HTMLElement): string {
     return element ? element.offsetLeft + 'px' : '0';
   }

@@ -25,7 +25,7 @@
 | carousel | √ | 100% | 100% | vthinkxie | - |
 | collapse | √ | 100% | 100% | vthinkxie | - |
 | table | x | x | x | vthinkxie | - | 
-| tabs | x | x | x | vthinkxie | - |
+| tabs | √ | 100% | 100% | vthinkxie | - |
 | timeline | √ | 100% | 100% | vthinkxie | - |
 | alert | √ | 100% | 100% | vthinkxie | - |
 | progress | √ | 100% | 100% | vthinkxie | √ |
