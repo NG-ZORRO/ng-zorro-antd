@@ -4,17 +4,17 @@ import {
   AfterContentChecked,
   AfterContentInit,
   Component,
-  ContentChild,
   ContentChildren,
   ElementRef,
+  EventEmitter,
   Input,
   NgZone,
   Optional,
+  Output,
   QueryList,
   Renderer2,
   TemplateRef,
-  ViewChild,
-  ViewEncapsulation,
+  ViewChild
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
@@ -31,29 +31,29 @@ import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
 const EXAGGERATED_OVERSCROLL = 64;
 export type ScrollDirection = 'after' | 'before';
 
-/** duplicated defined https://github.com/angular/angular-cli/issues/2034 **/
-export type NzTabPositionMode = 'horizontal' | 'vertical';
+import { NzTabPositionMode } from './nz-tabset.component';
 
 @Component({
   selector           : 'nz-tabs-nav',
   preserveWhitespaces: false,
   template           : `
-    <div style="float:right;" *ngIf="_tabBarExtraContent">
-      <div class="ant-tabs-extra-content">
-        <ng-template [ngTemplateOutlet]="_tabBarExtraContent">
-        </ng-template>
-      </div>
+    <div style="float:right;" *ngIf="nzTabBarExtraContent" class="ant-tabs-extra-content">
+      <ng-template [ngTemplateOutlet]="nzTabBarExtraContent"></ng-template>
     </div>
-    <div class="ant-tabs-nav-container" [class.ant-tabs-nav-container-scrolling]="_showPaginationControls" #tabListContainer>
-      <span class="ant-tabs-tab-prev ant-tabs-tab-arrow-show" (click)="_scrollHeader('before')" [class.ant-tabs-tab-btn-disabled]="_disableScrollBefore" *ngIf="_showPaginationControls">
+    <div class="ant-tabs-nav-container" [class.ant-tabs-nav-container-scrolling]="showPaginationControls" #navContainerElement>
+      <span class="ant-tabs-tab-prev" (click)="scrollHeader('before')" [class.ant-tabs-tab-btn-disabled]="disableScrollBefore" [class.ant-tabs-tab-arrow-show]="showPaginationControls">
         <span class="ant-tabs-tab-prev-icon"></span>
       </span>
-      <span class="ant-tabs-tab-next ant-tabs-tab-arrow-show" (click)="_scrollHeader('after')" [class.ant-tabs-tab-btn-disabled]="_disableScrollAfter" *ngIf="_showPaginationControls">
+      <span class="ant-tabs-tab-next" (click)="scrollHeader('after')" [class.ant-tabs-tab-btn-disabled]="disableScrollAfter" [class.ant-tabs-tab-arrow-show]="showPaginationControls">
         <span class="ant-tabs-tab-next-icon"></span>
       </span>
       <div class="ant-tabs-nav-wrap">
         <div class="ant-tabs-nav-scroll">
-          <div class="ant-tabs-nav" [class.ant-tabs-nav-animated]="nzAnimated" #tabList (cdkObserveContent)="_onContentChanges()">
+          <div
+            class="ant-tabs-nav"
+            [class.ant-tabs-nav-animated]="nzAnimated"
+            #navListElement
+            (cdkObserveContent)="onContentChanges()">
             <div nz-tabs-ink-bar [hidden]="nzHideBar" [nzAnimated]="nzAnimated" [nzPositionMode]="nzPositionMode" style="display: block;"></div>
             <ng-content></ng-content>
           </div>
@@ -69,19 +69,24 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   private _animated = true;
   private _hideBar = false;
   private _showPagination = true;
-
-  _showPaginationControls = false;
-  _disableScrollAfter = true;
-  _disableScrollBefore = true;
-  _scrollDistance = 0;
-  _selectedIndexChanged = false;
-  _realignInkBar: Subscription | null = null;
-  _tabLabelCount: number;
-  _scrollDistanceChanged: boolean;
-  _selectedIndex = 0;
-  _tabPositionMode: NzTabPositionMode = 'horizontal';
-  @Input() nzSize = 'default';
-  _type = 'line';
+  private _type = 'line';
+  private _tabPositionMode: NzTabPositionMode = 'horizontal';
+  private _scrollDistance = 0;
+  private _selectedIndex = 0;
+  showPaginationControls = false;
+  disableScrollAfter = true;
+  disableScrollBefore = true;
+  selectedIndexChanged = false;
+  realignInkBar: Subscription | null = null;
+  tabLabelCount: number;
+  scrollDistanceChanged: boolean;
+  @ContentChildren(NzTabLabelDirective) listOfNzTabLabelDirective: QueryList<NzTabLabelDirective>;
+  @ViewChild(NzTabsInkBarDirective) nzTabsInkBarDirective: NzTabsInkBarDirective;
+  @ViewChild('navContainerElement') navContainerElement: ElementRef;
+  @ViewChild('navListElement') navListElement: ElementRef;
+  @Output() nzOnNextClick = new EventEmitter<void>();
+  @Output() nzOnPrevClick = new EventEmitter<void>();
+  @Input() nzTabBarExtraContent: TemplateRef<void>;
 
   @Input()
   set nzAnimated(value: boolean) {
@@ -105,21 +110,15 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   set nzType(value: string) {
     this._type = value;
     if (this._type !== 'line') {
-      this._inkBar.setDisplay('none');
+      this.nzTabsInkBarDirective.setDisplay('none');
     } else {
-      this._inkBar.setDisplay('block');
+      this.nzTabsInkBarDirective.setDisplay('block');
     }
   }
 
   get nzType(): string {
     return this._type;
   }
-
-  @ContentChild('tabBarExtraContent') _tabBarExtraContent: TemplateRef<void>;
-  @ContentChildren(NzTabLabelDirective) _labelWrappers: QueryList<NzTabLabelDirective>;
-  @ViewChild(NzTabsInkBarDirective) _inkBar: NzTabsInkBarDirective;
-  @ViewChild('tabListContainer') _tabListContainer: ElementRef;
-  @ViewChild('tabList') _tabList: ElementRef;
 
   @Input()
   set nzShowPagination(value: boolean) {
@@ -133,9 +132,9 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   @Input()
   set nzPositionMode(value: NzTabPositionMode) {
     this._tabPositionMode = value;
-    this._alignInkBarToSelectedTab();
+    this.alignInkBarToSelectedTab();
     if (this.nzShowPagination) {
-      this._updatePagination();
+      this.updatePagination();
     }
   }
 
@@ -145,7 +144,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
 
   @Input()
   set selectedIndex(value: number) {
-    this._selectedIndexChanged = this._selectedIndex !== value;
+    this.selectedIndexChanged = this._selectedIndex !== value;
 
     this._selectedIndex = value;
   }
@@ -154,132 +153,134 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     return this._selectedIndex;
   }
 
-  constructor(public _elementRef: ElementRef,
-              private _ngZone: NgZone,
-              private _renderer: Renderer2,
-              @Optional() private _dir: Directionality) {
+  constructor(public elementRef: ElementRef,
+              private ngZone: NgZone,
+              private renderer: Renderer2,
+              @Optional() private dir: Directionality) {
   }
 
-  _onContentChanges(): void {
+  onContentChanges(): void {
     if (this.nzShowPagination) {
-      this._updatePagination();
+      this.updatePagination();
     }
-    this._alignInkBarToSelectedTab();
+    this.alignInkBarToSelectedTab();
   }
 
-  _scrollHeader(scrollDir: ScrollDirection): void {
-
+  scrollHeader(scrollDir: ScrollDirection): void {
+    if (scrollDir === 'before' && !this.disableScrollBefore) {
+      this.nzOnPrevClick.emit();
+    } else if (scrollDir === 'after' && !this.disableScrollAfter) {
+      this.nzOnNextClick.emit();
+    }
     // Move the scroll distance one-third the length of the tab list's viewport.
     this.scrollDistance += (scrollDir === 'before' ? -1 : 1) * this.viewWidthHeightPix / 3;
   }
 
   ngAfterContentChecked(): void {
 
-    if (this._tabLabelCount !== this._labelWrappers.length) {
+    if (this.tabLabelCount !== this.listOfNzTabLabelDirective.length) {
       if (this.nzShowPagination) {
-        this._updatePagination();
+        this.updatePagination();
       }
-      this._tabLabelCount = this._labelWrappers.length;
+      this.tabLabelCount = this.listOfNzTabLabelDirective.length;
     }
-    if (this._selectedIndexChanged) {
-      this._scrollToLabel(this._selectedIndex);
+    if (this.selectedIndexChanged) {
+      this.scrollToLabel(this._selectedIndex);
       if (this.nzShowPagination) {
-        this._checkScrollingControls();
+        this.checkScrollingControls();
       }
-      this._alignInkBarToSelectedTab();
-      this._selectedIndexChanged = false;
+      this.alignInkBarToSelectedTab();
+      this.selectedIndexChanged = false;
     }
-    if (this._scrollDistanceChanged) {
+    if (this.scrollDistanceChanged) {
       if (this.nzShowPagination) {
-        this._updateTabScrollPosition();
+        this.updateTabScrollPosition();
       }
-      this._scrollDistanceChanged = false;
+      this.scrollDistanceChanged = false;
     }
   }
 
   ngAfterContentInit(): void {
-    this._realignInkBar = this._ngZone.runOutsideAngular(() => {
-      const dirChange = this._dir ? this._dir.change : observableOf(null);
+    this.realignInkBar = this.ngZone.runOutsideAngular(() => {
+      const dirChange = this.dir ? this.dir.change : observableOf(null);
       const resize = typeof window !== 'undefined' ?
         fromEvent(window, 'resize').pipe(auditTime(10)) :
         observableOf(null);
       return merge(dirChange, resize).pipe(startWith(null)).subscribe(() => {
         if (this.nzShowPagination) {
-          this._updatePagination();
+          this.updatePagination();
         }
-        this._alignInkBarToSelectedTab();
+        this.alignInkBarToSelectedTab();
       });
     });
   }
 
-  _updateTabScrollPosition(): void {
+  updateTabScrollPosition(): void {
     const scrollDistance = this.scrollDistance;
     if (this.nzPositionMode === 'horizontal') {
-      const translateX = this._getLayoutDirection() === 'ltr' ? -scrollDistance : scrollDistance;
-      this._renderer.setStyle(this._tabList.nativeElement, 'transform',
+      const translateX = this.getLayoutDirection() === 'ltr' ? -scrollDistance : scrollDistance;
+      this.renderer.setStyle(this.navListElement.nativeElement, 'transform',
         `translate3d(${translateX}px, 0, 0)`);
     } else {
-      this._renderer.setStyle(this._tabList.nativeElement, 'transform',
+      this.renderer.setStyle(this.navListElement.nativeElement, 'transform',
         `translate3d(0,${-scrollDistance}px, 0)`);
     }
   }
 
-  _updatePagination(): void {
-    this._checkPaginationEnabled();
-    this._checkScrollingControls();
-    this._updateTabScrollPosition();
+  updatePagination(): void {
+    this.checkPaginationEnabled();
+    this.checkScrollingControls();
+    this.updateTabScrollPosition();
   }
 
-  _checkPaginationEnabled(): void {
-    this._showPaginationControls =
+  checkPaginationEnabled(): void {
+    this.showPaginationControls =
       this.tabListScrollWidthHeightPix > this.elementRefOffSetWidthHeight;
 
-    if (!this._showPaginationControls) {
+    if (!this.showPaginationControls) {
       this.scrollDistance = 0;
     }
   }
 
-  _scrollToLabel(labelIndex: number): void {
-    const selectedLabel = this._labelWrappers
-      ? this._labelWrappers.toArray()[ labelIndex ]
+  scrollToLabel(labelIndex: number): void {
+    const selectedLabel = this.listOfNzTabLabelDirective
+      ? this.listOfNzTabLabelDirective.toArray()[ labelIndex ]
       : null;
 
-    if (!selectedLabel) {
-      return;
-    }
+    if (selectedLabel) {
+      // The view length is the visible width of the tab labels.
 
-    // The view length is the visible width of the tab labels.
-
-    let labelBeforePos: number;
-    let labelAfterPos: number;
-    if (this.nzPositionMode === 'horizontal') {
-      if (this._getLayoutDirection() === 'ltr') {
-        labelBeforePos = selectedLabel.getOffsetLeft();
-        labelAfterPos = labelBeforePos + selectedLabel.getOffsetWidth();
+      let labelBeforePos: number;
+      let labelAfterPos: number;
+      if (this.nzPositionMode === 'horizontal') {
+        if (this.getLayoutDirection() === 'ltr') {
+          labelBeforePos = selectedLabel.getOffsetLeft();
+          labelAfterPos = labelBeforePos + selectedLabel.getOffsetWidth();
+        } else {
+          labelAfterPos = this.navListElement.nativeElement.offsetWidth - selectedLabel.getOffsetLeft();
+          labelBeforePos = labelAfterPos - selectedLabel.getOffsetWidth();
+        }
       } else {
-        labelAfterPos = this._tabList.nativeElement.offsetWidth - selectedLabel.getOffsetLeft();
-        labelBeforePos = labelAfterPos - selectedLabel.getOffsetWidth();
+        labelBeforePos = selectedLabel.getOffsetTop();
+        labelAfterPos = labelBeforePos + selectedLabel.getOffsetHeight();
       }
-    } else {
-      labelBeforePos = selectedLabel.getOffsetTop();
-      labelAfterPos = labelBeforePos + selectedLabel.getOffsetHeight();
-    }
-    const beforeVisiblePos = this.scrollDistance;
-    const afterVisiblePos = this.scrollDistance + this.viewWidthHeightPix;
+      const beforeVisiblePos = this.scrollDistance;
+      const afterVisiblePos = this.scrollDistance + this.viewWidthHeightPix;
 
-    if (labelBeforePos < beforeVisiblePos) {
-      // Scroll header to move label to the before direction
-      this.scrollDistance -= beforeVisiblePos - labelBeforePos + EXAGGERATED_OVERSCROLL;
-    } else if (labelAfterPos > afterVisiblePos) {
-      // Scroll header to move label to the after direction
-      this.scrollDistance += labelAfterPos - afterVisiblePos + EXAGGERATED_OVERSCROLL;
+      if (labelBeforePos < beforeVisiblePos) {
+        // Scroll header to move label to the before direction
+        this.scrollDistance -= beforeVisiblePos - labelBeforePos + EXAGGERATED_OVERSCROLL;
+      } else if (labelAfterPos > afterVisiblePos) {
+        // Scroll header to move label to the after direction
+        this.scrollDistance += labelAfterPos - afterVisiblePos + EXAGGERATED_OVERSCROLL;
+      }
     }
   }
 
-  _checkScrollingControls(): void {
+  checkScrollingControls(): void {
     // Check if the pagination arrows should be activated.
-    this._disableScrollBefore = this.scrollDistance === 0;
-    this._disableScrollAfter = this.scrollDistance === this._getMaxScrollDistance();
+    this.disableScrollBefore = this.scrollDistance === 0;
+    this.disableScrollAfter = this.scrollDistance === this.getMaxScrollDistance();
   }
 
   /**
@@ -289,19 +290,19 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
    * This is an expensive call that forces a layout reflow to compute box and scroll metrics and
    * should be called sparingly.
    */
-  _getMaxScrollDistance(): number {
+  getMaxScrollDistance(): number {
     return (this.tabListScrollWidthHeightPix - this.viewWidthHeightPix) || 0;
   }
 
   /** Sets the distance in pixels that the tab header should be transformed in the X-axis. */
   set scrollDistance(v: number) {
-    this._scrollDistance = Math.max(0, Math.min(this._getMaxScrollDistance(), v));
+    this._scrollDistance = Math.max(0, Math.min(this.getMaxScrollDistance(), v));
 
     // Mark that the scroll distance has changed so that after the view is checked, the CSS
     // transformation can move the header.
-    this._scrollDistanceChanged = true;
+    this.scrollDistanceChanged = true;
 
-    this._checkScrollingControls();
+    this.checkScrollingControls();
   }
 
   get scrollDistance(): number {
@@ -310,43 +311,43 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
 
   get viewWidthHeightPix(): number {
     let PAGINATION_PIX = 0;
-    if (this._showPaginationControls) {
+    if (this.showPaginationControls) {
       PAGINATION_PIX = 64;
     }
     if (this.nzPositionMode === 'horizontal') {
-      return this._tabListContainer.nativeElement.offsetWidth - PAGINATION_PIX;
+      return this.navContainerElement.nativeElement.offsetWidth - PAGINATION_PIX;
     } else {
-      return this._tabListContainer.nativeElement.offsetHeight - PAGINATION_PIX;
+      return this.navContainerElement.nativeElement.offsetHeight - PAGINATION_PIX;
     }
   }
 
   get tabListScrollWidthHeightPix(): number {
     if (this.nzPositionMode === 'horizontal') {
-      return this._tabList.nativeElement.scrollWidth;
+      return this.navListElement.nativeElement.scrollWidth;
     } else {
-      return this._tabList.nativeElement.scrollHeight;
+      return this.navListElement.nativeElement.scrollHeight;
     }
   }
 
   get elementRefOffSetWidthHeight(): number {
     if (this.nzPositionMode === 'horizontal') {
-      return this._elementRef.nativeElement.offsetWidth;
+      return this.elementRef.nativeElement.offsetWidth;
     } else {
-      return this._elementRef.nativeElement.offsetHeight;
+      return this.elementRef.nativeElement.offsetHeight;
     }
   }
 
-  _getLayoutDirection(): Direction {
-    return this._dir && this._dir.value === 'rtl' ? 'rtl' : 'ltr';
+  getLayoutDirection(): Direction {
+    return this.dir && this.dir.value === 'rtl' ? 'rtl' : 'ltr';
   }
 
-  _alignInkBarToSelectedTab(): void {
+  alignInkBarToSelectedTab(): void {
     if (this.nzType === 'line') {
-      const selectedLabelWrapper = this._labelWrappers && this._labelWrappers.length
-        ? this._labelWrappers.toArray()[ this.selectedIndex ].elementRef.nativeElement
+      const selectedLabelWrapper = this.listOfNzTabLabelDirective && this.listOfNzTabLabelDirective.length
+        ? this.listOfNzTabLabelDirective.toArray()[ this.selectedIndex ].elementRef.nativeElement
         : null;
-      if (this._inkBar) {
-        this._inkBar.alignToElement(selectedLabelWrapper);
+      if (this.nzTabsInkBarDirective) {
+        this.nzTabsInkBarDirective.alignToElement(selectedLabelWrapper);
       }
     }
   }

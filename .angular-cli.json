@@ -62,9 +62,7 @@
         "./components/locale/**",
         "./components/**/demo/**",
         "./components/select/**",
-        "./components/tooltip/**",
-        "./components/tabs/**",
-        "./components/avatar/**"
+        "./components/tooltip/**"
       ]
     }
   },

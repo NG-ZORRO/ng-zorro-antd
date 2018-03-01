@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-有四个位置，`tabPosition="left|right|top|bottom"`。
+有四个位置，`nzTabPosition="left|right|top|bottom"`。
 
 ## en-US
 

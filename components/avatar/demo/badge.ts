@@ -4,10 +4,10 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-avatar-badge',
   template: `
   <nz-badge [nzCount]="5" style="margin-right: 24px;">
-    <ng-template #content><nz-avatar nzIcon="anticon anticon-user" [nzShape]="'square'"></nz-avatar></ng-template>
+    <nz-avatar nzIcon="anticon anticon-user" [nzShape]="'square'"></nz-avatar>
   </nz-badge>
   <nz-badge nzDot>
-    <ng-template #content><nz-avatar nzIcon="anticon anticon-user" [nzShape]="'square'"></nz-avatar></ng-template>
+    <nz-avatar nzIcon="anticon anticon-user" [nzShape]="'square'"></nz-avatar>
   </nz-badge>
   `
 })
