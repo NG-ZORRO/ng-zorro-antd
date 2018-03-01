@@ -26,8 +26,8 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 | --- | --- | --- | --- |
 | nzSelectedIndex | 当前激活 tab 面板的 序列号，可双向绑定 | number | 无 |
 | nzSelectedIndexChange | 当前激活 tab 面板的 序列号变更回调函数 | (nzSelectedIndex:number)=>{} | 无 |
-| nzSelectChange | 当前激活 tab 面板变更回调函数 | (index: number,tab: NzTabComponent)=>{} | 无 |
-| nzAnimated | 是否使用动画切换 Tabs，在 `tabPosition=top|bottom` 时有效 | `boolean ｜ {inkBar:boolean, tabPane:boolean} ｜ true`, 当 type="card" 时为 false |
+| nzSelectChange | 当前激活 tab 面板变更回调函数 | (nzSelectedIndex: number,tab: NzTabComponent)=>{} | 无 |
+| nzAnimated | 是否使用动画切换 Tabs，在 `nzTabPosition=top|bottom` 时有效 | `boolean ｜ {inkBar:boolean, tabPane:boolean} ｜ true`, 当 type="card" 时为 false |
 | nzSize | 大小，提供 `large` `default` 和 `small` 三种大小 | string | 'default' |
 | nzTabBarExtraContent | tab bar 上额外的元素 | `TemplateRef<void>` | 无 |
 | nzTabBarStyle | tab bar 的样式对象 | object | - |
@@ -37,13 +37,14 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 | nzOnPrevClick | prev 按钮被点击的回调 | ()=>{} | 无 |
 | nzTabBarGutter | tabs 之间的间隙 | number | 无 |
 | nzHideAll | 是否隐藏所有tab内容 | boolean | false |
+| nzShowPagination | 是否超出范围时显示pre和next按钮 | boolean | true |
 
 ### nz-tab
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzTitle | 选项卡头显示文字 | string ｜ `TemplateRef<void>` | 无 |
-| nzDisabled | 是否禁用 | boolean | 无 |
-| nzClick | title被点击的回调函数 | ()=>{} | 无 |
-| nzSelect | tab被选中的回调函数 | ()=>{} | 无 |
-| nzDeselect | tab被取消选中的回调函数 | ()=>{} | 无 |
+| nzTitle | 选项卡头显示文字 | string ｜ `TemplateRef<void>` | - |
+| nzDisabled | 是否禁用 | boolean | - |
+| nzClick | title被点击的回调函数 | ()=>{} | - |
+| nzSelect | tab被选中的回调函数 | ()=>{} | - |
+| nzDeselect | tab被取消选中的回调函数 | ()=>{} | - |

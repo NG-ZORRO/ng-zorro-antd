@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <nz-tabset [nzTabBarExtraContent]="extraTemplate">
       <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab' + tab ">
-        <span>Content of tab {{ tab }}</span>
+        Content of tab {{ tab }}
       </nz-tab>
     </nz-tabset>
     <ng-template #extraTemplate>

@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
       <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab' + tab ">
-        <span>Content of Tab Pane {{ tab }}</span>
+        Content of Tab Pane {{ tab }}
       </nz-tab>
     </nz-tabset>`,
   styles  : []

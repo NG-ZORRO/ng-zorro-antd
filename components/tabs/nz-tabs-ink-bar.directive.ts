@@ -1,21 +1,22 @@
-import { Directive, ElementRef, HostBinding, Input, NgZone, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Input, NgZone, Renderer2 } from '@angular/core';
 
 import { reqAnimFrame } from '../core/polyfill/request-animation';
 import { toBoolean } from '../core/util/convert';
 
-export type NzTabPositionMode = 'horizontal' | 'vertical';
+import { NzTabPositionMode } from './nz-tabset.component';
 
 @Directive({
   selector: '[nz-tabs-ink-bar]',
-  host: {
-    '[class.ant-tabs-ink-bar]': 'true'
+  host    : {
+    '[class.ant-tabs-ink-bar]'            : 'true',
+    '[class.ant-tabs-ink-bar-animated]'   : 'nzAnimated',
+    '[class.ant-tabs-ink-bar-no-animated]': '!nzAnimated'
   }
 })
 export class NzTabsInkBarDirective {
   private _animated = false;
 
   @Input()
-  @HostBinding('class.ant-tabs-ink-bar-animated')
   set nzAnimated(value: boolean) {
     this._animated = toBoolean(value);
   }
@@ -36,7 +37,7 @@ export class NzTabsInkBarDirective {
 
     this.ngZone.runOutsideAngular(() => {
       reqAnimFrame(() => {
-        /** when horizontal remove height style and add transfrom left **/
+        /** when horizontal remove height style and add transform left **/
         if (this.nzPositionMode === 'horizontal') {
           this.renderer.removeStyle(this.elementRef.nativeElement, 'height');
           this.renderer.setStyle(this.elementRef.nativeElement, 'transform',
@@ -44,7 +45,7 @@ export class NzTabsInkBarDirective {
           this.renderer.setStyle(this.elementRef.nativeElement, 'width',
             this.getElementWidth(element));
         } else {
-          /** when vertical remove width style and add transfrom top **/
+          /** when vertical remove width style and add transform top **/
           this.renderer.removeStyle(this.elementRef.nativeElement, 'width');
           this.renderer.setStyle(this.elementRef.nativeElement, 'transform',
             `translate3d(0px, ${this.getTopPosition(element)}, 0px)`);
@@ -63,9 +64,6 @@ export class NzTabsInkBarDirective {
     this.renderer.setStyle(this.elementRef.nativeElement, 'display', value);
   }
 
-  hide(): void {
-    this.renderer.setStyle(this.elementRef.nativeElement, 'visibility', 'hidden');
-  }
 
   getLeftPosition(element: HTMLElement): string {
     return element ? element.offsetLeft + 'px' : '0';

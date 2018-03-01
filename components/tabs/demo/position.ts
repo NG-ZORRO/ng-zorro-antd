@@ -15,7 +15,7 @@ import { Component } from '@angular/core';
     </div>
     <nz-tabset [nzTabPosition]="position" [nzType]="'line'">
       <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab'+ tab">
-        <span>Content of tab {{ tab }}</span>
+        Content of tab {{ tab }}
       </nz-tab>
     </nz-tabset>`,
   styles  : []

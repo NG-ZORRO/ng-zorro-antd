@@ -19,7 +19,7 @@ import { Component, OnInit } from '@angular/core';
         (nzSelect)="log(['select',tab])"
         (nzClick)="log(['click',tab])"
         (nzDeselect)="log(['deselect',tab])">
-        <span>{{ tab.content }}</span>
+        {{ tab.content }}
       </nz-tab>
     </nz-tabset>`,
   styles  : []

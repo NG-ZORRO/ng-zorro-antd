@@ -5,13 +5,13 @@ import { Component } from '@angular/core';
   template: `
     <nz-tabset>
       <nz-tab nzTitle="Tab 1">
-        <span>Content of Tab Pane 1</span>
+        Content of Tab Pane 1
       </nz-tab>
       <nz-tab nzTitle="Tab 2">
-        <span>Content of Tab Pane 2</span>
+        Content of Tab Pane 2
       </nz-tab>
       <nz-tab nzTitle="Tab 3">
-        <span>Content of Tab Pane 3</span>
+        Content of Tab Pane 3
       </nz-tab>
     </nz-tabset>`
 })

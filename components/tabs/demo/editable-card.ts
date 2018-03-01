@@ -8,10 +8,10 @@ import { Component } from '@angular/core';
         <ng-template #titleTemplate>
           <div>
             {{ tab }}
-            <i class="anticon anticon-cross" (click)="closeTab(tab)"></i>
+            <i class="anticon anticon-close" (click)="closeTab(tab)"></i>
           </div>
         </ng-template>
-        <span>Content of {{ tab }}</span>
+        Content of {{ tab }}
       </nz-tab>
     </nz-tabset>
     <ng-template #extraTemplate>

@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
         *ngFor="let tab of tabs"
         [nzTitle]="tab.name"
         [nzDisabled]="tab.disabled">
-        <span>{{ tab.name }}</span>
+        {{ tab.name }}
       </nz-tab>
     </nz-tabset>`
 })

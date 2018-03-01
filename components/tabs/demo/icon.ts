@@ -8,10 +8,9 @@ import { Component } from '@angular/core';
         <ng-template #titleTemplate>
           <i [ngClass]="tab.icon"></i>{{ tab.name }}
         </ng-template>
-        <span>{{ tab.name }}</span>
+        {{ tab.name }}
       </nz-tab>
-    </nz-tabset>`,
-  styles  : []
+    </nz-tabset>`
 })
 export class NzDemoTabsIconComponent {
   tabs = [

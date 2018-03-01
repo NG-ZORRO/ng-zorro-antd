@@ -9,9 +9,9 @@ import { Component } from '@angular/core';
     <nz-tabset [nzType]="'card'" [nzSelectedIndex]="index">
       <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
         <ng-template #titleTemplate>
-          <div>{{ tab }}<i class="anticon anticon-cross" (click)="closeTab(tab)"></i></div>
+          <div>{{ tab }}<i class="anticon anticon-close" (click)="closeTab(tab)"></i></div>
         </ng-template>
-        <span>Content of {{ tab }}</span>
+        Content of {{ tab }}
       </nz-tab>
     </nz-tabset>`,
   styles  : []

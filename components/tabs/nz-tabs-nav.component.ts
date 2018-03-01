@@ -31,8 +31,7 @@ import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
 const EXAGGERATED_OVERSCROLL = 64;
 export type ScrollDirection = 'after' | 'before';
 
-/** duplicated defined https://github.com/angular/angular-cli/issues/2034 **/
-export type NzTabPositionMode = 'horizontal' | 'vertical';
+import { NzTabPositionMode } from './nz-tabset.component';
 
 @Component({
   selector           : 'nz-tabs-nav',
@@ -50,7 +49,11 @@ export type NzTabPositionMode = 'horizontal' | 'vertical';
       </span>
       <div class="ant-tabs-nav-wrap">
         <div class="ant-tabs-nav-scroll">
-          <div class="ant-tabs-nav" [class.ant-tabs-nav-animated]="nzAnimated" #navListElement (cdkObserveContent)="onContentChanges()">
+          <div
+            class="ant-tabs-nav"
+            [class.ant-tabs-nav-animated]="nzAnimated"
+            #navListElement
+            (cdkObserveContent)="onContentChanges()">
             <div nz-tabs-ink-bar [hidden]="nzHideBar" [nzAnimated]="nzAnimated" [nzPositionMode]="nzPositionMode" style="display: block;"></div>
             <ng-content></ng-content>
           </div>
