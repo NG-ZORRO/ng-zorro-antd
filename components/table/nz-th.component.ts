@@ -14,6 +14,7 @@ import { toBoolean } from '../core/util/convert';
 export type NzThFilterType = Array<{ text: string; value: any }>;
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector           : 'nz-table th',
   preserveWhitespaces: false,
   template           : `

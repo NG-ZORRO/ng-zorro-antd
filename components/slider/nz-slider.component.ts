@@ -11,7 +11,7 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
-  ViewEncapsulation,
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
@@ -424,7 +424,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
         distinctUntilChanged(),
         map((position: number) => this.findClosestValue(position)),
         distinctUntilChanged(),
-        takeUntil(source.end$),
+        takeUntil(source.end$)
       );
       // merge to become moving
       // source.move$ = source.startPlucked$.mergeMapTo(source.moveResolved$);

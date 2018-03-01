@@ -60,5 +60,5 @@ export function NZ_LOCALE_SERVICE_PROVIDER_FACTORY(exist: NzLocaleService, local
 export const NZ_LOCALE_SERVICE_PROVIDER: Provider = {
   provide: NzLocaleService,
   useFactory: NZ_LOCALE_SERVICE_PROVIDER_FACTORY,
-  deps: [ [ new Optional(), new SkipSelf(), NzLocaleService ], NZ_LOCALE, LoggerService ],
+  deps: [ [ new Optional(), new SkipSelf(), NzLocaleService ], NZ_LOCALE, LoggerService ]
 };

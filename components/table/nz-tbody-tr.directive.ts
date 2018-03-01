@@ -3,6 +3,7 @@ import { Directive, HostBinding, Input } from '@angular/core';
 import { toBoolean } from '../core/util/convert';
 
 @Directive({
+  // tslint:disable-next-line:directive-selector
   selector: 'nz-table thead tr',
   host    : {
     '[class.ant-table-row]': 'true'

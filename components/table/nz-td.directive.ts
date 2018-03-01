@@ -2,12 +2,13 @@ import {
   Directive,
   ElementRef,
   HostBinding,
-  Input,
+  Input
 } from '@angular/core';
 
 import { toBoolean } from '../core/util/convert';
 
 @Directive({
+  // tslint:disable-next-line:directive-selector
   selector: 'nz-table td'
 })
 export class NzTdDirective {

@@ -4,7 +4,7 @@ import {
   HostBinding,
   HostListener,
   Input,
-  Output,
+  Output
 } from '@angular/core';
 
 import { toBoolean } from '../core/util/convert';

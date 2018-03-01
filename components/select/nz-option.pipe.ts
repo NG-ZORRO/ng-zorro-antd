@@ -21,7 +21,7 @@ export class NzOptionPipe implements PipeTransform {
           nzDisabled: value.disabled,
           _disabled : value.disabled,
           nzLabel   : value.notFoundContent,
-          _label    : value.notFoundContent,
+          _label    : value.notFoundContent
         } as any as NzOptionComponent
       ];
       }

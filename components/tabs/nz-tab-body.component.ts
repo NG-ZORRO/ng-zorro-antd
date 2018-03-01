@@ -9,7 +9,7 @@ import {
   preserveWhitespaces: false,
   template           : `
     <ng-template [ngTemplateOutlet]="content"></ng-template>
-  `,
+  `
 })
 export class NzTabBodyComponent {
   @Input() content: TemplateRef<void>;

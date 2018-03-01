@@ -13,9 +13,7 @@
     "align": [
       true,
       "parameters",
-      "statements",
-      "members",
-      "elements"
+      "statements"
     ],
     "array-type": [
       true,
@@ -51,10 +49,7 @@
       true,
       "check-space"
     ],
-    "curly": [
-      true,
-      "ignore-same-line"
-    ],
+    "curly": true,
     "encoding": true,
     "eofline": true,
     "import-blacklist": [
@@ -77,39 +72,14 @@
       false,
       120
     ],
-    "member-access": [
-      true,
-      "no-public",
-      "check-parameter-property"
-    ],
-    "member-ordering": [
-      false,
-      {
-        "order": [
-          "public-static-field",
-          "protected-static-field",
-          "private-static-field",
-          "public-static-method",
-          "protected-static-method",
-          "private-static-method",
-          "public-instance-field",
-          "protected-instance-field",
-          "private-instance-field",
-          "public-constructor",
-          "protected-constructor",
-          "private-constructor",
-          "public-instance-method",
-          "protected-instance-method",
-          "private-instance-method"
-        ]
-      }
-    ],
     "new-parens": true,
     "no-angle-bracket-type-assertion": true,
     "no-any": true,
     "no-arg": true,
     "no-bitwise": false,
-    "no-consecutive-blank-lines": true,
+    "no-consecutive-blank-lines": [
+      true
+    ],
     "no-console": [
       true,
       "debug",
@@ -123,10 +93,7 @@
     "no-debugger": true,
     "no-duplicate-imports": true,
     "no-duplicate-super": true,
-    "no-empty": [
-      false,
-      "allow-empty-catch"
-    ],
+    "no-empty": false,
     "no-empty-interface": true,
     "no-eval": true,
     "no-floating-promises": true,
@@ -181,9 +148,7 @@
       true,
       {
         "import-sources-order": "lowercase-last",
-        "grouped-imports": true,
-        "named-imports-order": "lowercase-first",
-        "module-source-path": "full"
+        "named-imports-order": "lowercase-first"
       }
     ],
     "prefer-conditional-expression": false,
@@ -207,7 +172,7 @@
     "trailing-comma": [
       true,
       {
-        "multiline": "ignore",
+        "multiline": "never",
         "singleline": "never"
       }
     ],
@@ -231,7 +196,6 @@
         "variable-declaration": "nospace"
       }
     ],
-    "typeof-compare": true,
     "unified-signatures": true,
     "use-isnan": true,
     "variable-name": [
@@ -245,15 +209,19 @@
       "check-operator",
       "check-module",
       "check-separator",
-      "check-rest-spread",
       "check-type",
-      "check-type-operator",
+      "check-typecast",
       "check-preblock"
     ],
     "directive-selector": [
       true,
-      "attribute",
-      "nz",
+      [
+        "element",
+        "attribute"
+      ],
+      [
+        "nz"
+      ],
       [
         "camelCase",
         "kebab-case"

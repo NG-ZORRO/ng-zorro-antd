@@ -21,6 +21,6 @@ export const NZ_MESSAGE_DEFAULT_CONFIG_PROVIDER = {
     nzDuration    : 1500,
     nzAnimate     : true,
     nzPauseOnHover: true,
-    nzMaxStack    : 7,
+    nzMaxStack    : 7
   }
 };
