@@ -37,15 +37,12 @@ export class RandomUserService {
       (nzPageIndexChange)="refreshData()"
       [(nzPageSize)]="_pageSize"
       (nzPageSizeChange)="refreshData(true)">
-      <thead nz-thead>
+      <thead>
         <tr>
-          <th nz-th>
-            <span>Name</span>
-            <nz-table-sort (nzValueChange)="sort($event)"></nz-table-sort>
-          </th>
-          <th nz-th>
-            <span>Gender</span>
-            <nz-dropdown [nzTrigger]="'click'">
+          <th nzSort (nzSortChange)="sort($event)">Name</th>
+          <th>
+            Gender
+            <nz-dropdown nzTrigger="click">
               <i class="anticon anticon-filter" nz-dropdown></i>
               <ul nz-menu>
                 <li nz-menu-item *ngFor="let filter of _filterGender">
@@ -60,20 +57,19 @@ export class RandomUserService {
               </div>
             </nz-dropdown>
           </th>
-          <th nz-th><span>Email</span></th>
+          <th><span>Email</span></th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of nzTable.data">
-          <td nz-td>
+      <tbody>
+        <tr *ngFor="let data of nzTable.data">
+          <td>
             <a>{{data.name.first}} {{data.name.last}}</a>
           </td>
-          <td nz-td>{{data.gender}}</td>
-          <td nz-td>{{data.email}}</td>
+          <td>{{data.gender}}</td>
+          <td>{{data.email}}</td>
         </tr>
       </tbody>
-    </nz-table>`,
-  styles   : []
+    </nz-table>`
 })
 export class NzDemoTableAjaxComponent implements OnInit {
   _current = 1;

@@ -5,19 +5,19 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <nz-table #nzTable [nzDataSource]="dataSet" [nzPageSize]="50" [nzScroll]="{ y: '240px' }">
       <ng-template #nzFixedHeader>
-        <thead nz-thead>
+        <thead>
           <tr>
-            <th nz-th [nzWidth]="'150px'"><span>Name</span></th>
-            <th nz-th [nzWidth]="'150px'"><span>Age</span></th>
-            <th nz-th><span>Address</span></th>
+            <th [nzWidth]="'150px'">Name</th>
+            <th [nzWidth]="'150px'">Age</th>
+            <th>Address</th>
           </tr>
         </thead>
       </ng-template>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of nzTable.data">
-          <td nz-td>{{data.name}}</td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.address}}</td>
+      <tbody>
+        <tr *ngFor="let data of nzTable.data">
+          <td>{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>`,

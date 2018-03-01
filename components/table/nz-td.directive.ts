@@ -8,7 +8,7 @@ import {
 import { toBoolean } from '../core/util/convert';
 
 @Directive({
-  selector: '[nz-td]'
+  selector: 'nz-table td'
 })
 export class NzTdDirective {
   private _checkbox = false;

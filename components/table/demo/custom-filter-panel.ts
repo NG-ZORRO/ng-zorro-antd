@@ -4,10 +4,10 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-table-custom-filter-panel',
   template: `
     <nz-table #nzTable [nzDataSource]="dataSet" [nzPageSize]="10">
-      <thead nz-thead>
+      <thead>
         <tr>
-          <th nz-th>
-            <span>Name</span>
+          <th>
+            Name
             <nz-dropdown [nzTrigger]="'click'" [nzClickHide]="false">
               <i class="anticon anticon-smile-o ant-table-filter-icon" nz-dropdown></i>
               <div nz-dropdown-custom class="custom-filter-dropdown">
@@ -16,17 +16,17 @@ import { Component } from '@angular/core';
               </div>
             </nz-dropdown>
           </th>
-          <th nz-th>
-            <span>Age</span>
+          <th>
+            Age
           </th>
-          <th nz-th>
-            <span>Address</span>
+          <th>
+            Address
             <nz-dropdown [nzTrigger]="'click'">
               <i class="anticon anticon-filter" nz-dropdown></i>
               <ul nz-menu>
                 <li nz-menu-item *ngFor="let filter of filterAddressArray">
                   <label nz-checkbox [(ngModel)]="filter.value">
-                    <span>{{filter.name}}</span>
+                    {{filter.name}}
                   </label>
                 </li>
               </ul>
@@ -38,13 +38,13 @@ import { Component } from '@angular/core';
           </th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of nzTable.data">
-          <td nz-td>
+      <tbody>
+        <tr *ngFor="let data of nzTable.data">
+          <td>
             <a>{{data.name}}</a>
           </td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.address}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>`,

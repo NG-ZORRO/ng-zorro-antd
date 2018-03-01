@@ -10,17 +10,17 @@ import { Component, OnInit } from '@angular/core';
       [nzIsPageIndexReset]="isResetIndex"
       [nzDataSource]="dataSet"
       [nzPageSize]="10">
-      <thead nz-thead>
+      <thead>
         <tr>
-          <th nz-th nzWidth="30%"><span>Name</span></th>
-          <th nz-th><span>Age</span></th>
-          <th nz-th><span>Address</span></th>
-          <th nz-th><span>Action</span></th>
+          <th nzWidth="30%">Name</th>
+          <th>Age</th>
+          <th>Address</th>
+          <th>Action</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of editRowTable.data">
-          <td nz-td>
+      <tbody>
+        <tr *ngFor="let data of editRowTable.data">
+          <td>
             <div class="editable-cell">
               <div class="editable-cell-text-wrapper">
                 <ng-container *ngIf="!editCache[data.key].edit">
@@ -34,9 +34,9 @@ import { Component, OnInit } from '@angular/core';
               </div>
             </div>
           </td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.address}}</td>
-          <td nz-td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
+          <td>
             <nz-popconfirm [nzTitle]="'Sure to delete?'" (nzOnConfirm)="deleteRow(data.key)">
               <a nz-popconfirm>Delete</a>
             </nz-popconfirm>

@@ -10,34 +10,34 @@ import { Component } from '@angular/core';
       (nzDataChange)="displayDataChange($event)"
       (nzPageIndexChange)="refreshStatus()"
       (nzPageSizeChange)="refreshStatus()">
-      <thead nz-thead>
+      <thead>
         <tr>
-          <th nz-th nzCheckbox>
+          <th nzCheckbox>
             <label nz-checkbox
               [(ngModel)]="allChecked"
               [nzIndeterminate]="indeterminate"
               (ngModelChange)="checkAll($event)">
             </label>
           </th>
-          <th nz-th><span>Name</span></th>
-          <th nz-th><span>Age</span></th>
-          <th nz-th><span>Address</span></th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Address</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of rowSelectionTable.data">
-          <td nz-td nzCheckbox>
+      <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td nzCheckbox>
             <label nz-checkbox
               [nzDisabled]="data.disabled"
               [(ngModel)]="data.checked"
               (ngModelChange)="refreshStatus($event)">
             </label>
           </td>
-          <td nz-td>
+          <td>
             <a>{{data.name}}</a>
           </td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.address}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>`,

@@ -76,7 +76,6 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   positions: ConnectionPositionPair[] = [ ...DEFAULT_DROPDOWN_POSITIONS ];
   visibleSubscription: Subscription;
-  menuClickSubscription: Subscription;
   $subOpen = new BehaviorSubject<boolean>(false);
   $visibleChange = new Subject<boolean>();
   @ContentChild(NzDropDownDirective) nzOrigin: NzDropDownDirective;
@@ -194,19 +193,12 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     if (this.nzMenu) {
       this.nzMenu.nzInDropDown = true;
-      this.menuClickSubscription = this.nzMenu.nzClick.subscribe(() => {
-
-      });
     }
   }
 
   ngOnDestroy(): void {
     if (this.visibleSubscription) {
       this.visibleSubscription.unsubscribe();
-      this.visibleSubscription = null;
-    }
-    if (this.menuClickSubscription) {
-      this.menuClickSubscription.unsubscribe();
       this.visibleSubscription = null;
     }
   }

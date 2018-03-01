@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <div style="margin-bottom: 16px;">
       <button nz-button [disabled]="disabledButton" [nzType]="'primary'" [nzLoading]="operating" (click)="operateData()">
-        <span>Reload</span>
+        Reload
       </button>
       <span style="margin-left: 8px;" *ngIf="checkedNumber">Selected {{checkedNumber}} items</span>
     </div>
@@ -16,9 +16,9 @@ import { Component, OnInit } from '@angular/core';
       (nzDataChange)="displayDataChange($event)"
       (nzPageIndexChange)="refreshStatus()"
       (nzPageSizeChange)="refreshStatus()">
-      <thead nz-thead>
+      <thead>
         <tr>
-          <th nz-th nzCheckbox>
+          <th nzCheckbox>
             <label
               nz-checkbox
               [(ngModel)]="allChecked"
@@ -26,23 +26,23 @@ import { Component, OnInit } from '@angular/core';
               (ngModelChange)="checkAll($event)">
             </label>
           </th>
-          <th nz-th><span>Name</span></th>
-          <th nz-th><span>Age</span></th>
-          <th nz-th><span>Address</span></th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Address</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of rowSelectionTable.data">
-          <td nz-td nzCheckbox>
+      <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td nzCheckbox>
             <label
               nz-checkbox
               [(ngModel)]="data.checked"
               (ngModelChange)="refreshStatus($event)">
             </label>
           </td>
-          <td nz-td>{{data.name}}</td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.address}}</td>
+          <td>{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>`,

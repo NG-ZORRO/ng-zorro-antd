@@ -84,13 +84,13 @@ import { Component, OnInit } from '@angular/core';
           <div nz-form-control>
             <nz-radio-group [(ngModel)]="size" [ngModelOptions]="{standalone: true}">
               <label nz-radio-button [nzValue]="'default'">
-                <span>Default</span>
+                Default
               </label>
               <label nz-radio-button [nzValue]="'middle'">
-                <span>Middle</span>
+                Middle
               </label>
               <label nz-radio-button [nzValue]="'small'">
-                <span>Small</span>
+                Small
               </label>
             </nz-radio-group>
           </div>
@@ -106,45 +106,44 @@ import { Component, OnInit } from '@angular/core';
       [nzBordered]="bordered"
       [nzLoading]="loading"
       [nzIsPagination]="pagination"
-      [nzShowFooter]="footer"
-      [nzShowTitle]="title"
+      [nzFooter]="footer?'Here is Footer':null"
+      [nzTitle]="title?'Here is Title':null"
       [nzSize]="size">
-      <span nz-table-title>Here is Title</span>
       <ng-template #nzFixedHeader [ngIf]="header&&!fixHeader">
-        <thead nz-thead>
+        <thead>
           <tr>
-            <th nz-th nzExpand *ngIf="expandable"></th>
-            <th nz-th nzCheckbox *ngIf="checkbox">
+            <th nzExpand *ngIf="expandable"></th>
+            <th nzCheckbox *ngIf="checkbox">
               <label nz-checkbox
                 [(ngModel)]="allChecked"
                 [nzIndeterminate]="indeterminate"
                 (ngModelChange)="checkAll($event)">
               </label>
             </th>
-            <th nz-th [nzWidth]="'150px'"><span>Name</span></th>
-            <th nz-th [nzWidth]="'70px'"><span>Age</span></th>
-            <th nz-th><span>Address</span></th>
-            <th nz-th [nzWidth]="'360px'"><span>Action</span></th>
+            <th [nzWidth]="'150px'">Name</th>
+            <th [nzWidth]="'70px'">Age</th>
+            <th>Address</th>
+            <th [nzWidth]="'360px'">Action</th>
           </tr>
         </thead>
       </ng-template>
-      <tbody nz-tbody>
+      <tbody>
         <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
-          <tr nz-tbody-tr>
-            <td nz-td nzExpand *ngIf="expandable">
+          <tr>
+            <td nzExpand *ngIf="expandable">
               <nz-row-expand-icon [(nzExpand)]="data.expand"></nz-row-expand-icon>
             </td>
-            <td nz-td nzCheckbox *ngIf="checkbox">
+            <td nzCheckbox *ngIf="checkbox">
               <label nz-checkbox
                 [(ngModel)]="data.checked"
                 (ngModelChange)="refreshStatus($event)">
               </label>
             </td>
-            <td nz-td>{{data.name}}</td>
-            <td nz-td>{{data.age}}</td>
-            <td nz-td>{{data.address}}</td>
-            <td nz-td>
-            <span>
+            <td>{{data.name}}</td>
+            <td>{{data.age}}</td>
+            <td>{{data.address}}</td>
+            <td>
+
               <a href="#">Action 一 {{data.name}}</a>
               <nz-divider nzType="vertical"></nz-divider>
               <a href="#">Delete</a>
@@ -165,18 +164,17 @@ import { Component, OnInit } from '@angular/core';
                   </li>
                 </ul>
               </nz-dropdown>
-            </span>
+
             </td>
           </tr>
-          <tr nz-tbody-tr *ngIf="data.expand" nzExpand>
-            <td nz-td></td>
-            <td nz-td [attr.colspan]="checkbox?5:4">
+          <tr *ngIf="data.expand" nzExpand>
+            <td></td>
+            <td [attr.colspan]="checkbox?5:4">
               {{data.description}}
             </td>
           </tr>
         </ng-template>
       </tbody>
-      <span nz-table-footer>Here is footer</span>
     </nz-table>`,
   styles  : [
       `

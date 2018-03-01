@@ -4,17 +4,16 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-table-head',
   template: `
     <nz-table #nzTable [nzDataSource]="dataSet" [nzPageSize]="10">
-      <thead nz-thead>
+      <thead>
         <tr>
-          <th nz-th>
-            <span>Name</span>
-            <nz-table-sort [(nzValue)]="sortMap.name" (nzValueChange)="sort('name',$event)"></nz-table-sort>
+          <th [(nzSort)]="sortMap.name" (nzSortChange)="sort('name',$event)">
+            Name
             <nz-dropdown [nzTrigger]="'click'">
               <i class="anticon anticon-filter" nz-dropdown></i>
               <ul nz-menu>
                 <li nz-menu-item *ngFor="let filter of filterNameArray">
                   <label nz-checkbox [(ngModel)]="filter.value">
-                    <span>{{filter.name}}</span>
+                    {{filter.name}}
                   </label>
                 </li>
               </ul>
@@ -24,19 +23,15 @@ import { Component } from '@angular/core';
               </div>
             </nz-dropdown>
           </th>
-          <th nz-th>
-            <span>Age</span>
-            <nz-table-sort [(nzValue)]="sortMap.age" (nzValueChange)="sort('age',$event)"></nz-table-sort>
-          </th>
-          <th nz-th>
-            <span>Address</span>
-            <nz-table-sort [(nzValue)]="sortMap.address" (nzValueChange)="sort('address',$event)"></nz-table-sort>
+          <th [(nzSort)]="sortMap.age" (nzSortChange)="sort('age',$event)">Age</th>
+          <th [(nzSort)]="sortMap.address" (nzSortChange)="sort('address',$event)">
+            Address
             <nz-dropdown [nzTrigger]="'click'">
               <i class="anticon anticon-filter" nz-dropdown></i>
               <ul nz-menu>
                 <li nz-menu-item *ngFor="let filter of filterAddressArray">
                   <label nz-radio [(ngModel)]="filter.value" (ngModelChange)="updateFilterAddress(filter.name)">
-                    <span>{{filter.name}}</span>
+                    {{filter.name}}
                   </label>
                 </li>
               </ul>
@@ -48,13 +43,13 @@ import { Component } from '@angular/core';
           </th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of nzTable.data">
-          <td nz-td>
+      <tbody>
+        <tr *ngFor="let data of nzTable.data">
+          <td>
             <a>{{data.name}}</a>
           </td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.address}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>`,
@@ -73,7 +68,7 @@ import { Component } from '@angular/core';
 export class NzDemoTableHeadComponent {
   filterNameArray = [
     { name: 'Joe', value: false },
-    { name: 'Jim', value: false },
+    { name: 'Jim', value: false }
   ];
   filterAddressArray = [
     { name: 'London', value: false },
@@ -90,22 +85,22 @@ export class NzDemoTableHeadComponent {
     {
       name   : 'John Brown',
       age    : 32,
-      address: 'New York No. 1 Lake Park',
+      address: 'New York No. 1 Lake Park'
     },
     {
       name   : 'Jim Green',
       age    : 42,
-      address: 'London No. 1 Lake Park',
+      address: 'London No. 1 Lake Park'
     },
     {
       name   : 'Joe Black',
       age    : 32,
-      address: 'Sidney No. 1 Lake Park',
+      address: 'Sidney No. 1 Lake Park'
     },
     {
       name   : 'Jim Red',
       age    : 32,
-      address: 'London No. 2 Lake Park',
+      address: 'London No. 2 Lake Park'
     }
   ];
   copyData = [ ...this.dataSet ];
@@ -137,7 +132,7 @@ export class NzDemoTableHeadComponent {
     const searchName = this.filterNameArray.filter(name => name.value);
     const filterFunc = (item) => {
       return (searchAddress.length ? searchAddress.some(address => item.address.indexOf(address.name) !== -1) : true) &&
-        (searchName.length ? searchName.some(name => item.name.indexOf(name.name) !== -1) : true)
+        (searchName.length ? searchName.some(name => item.name.indexOf(name.name) !== -1) : true);
     };
     this.dataSet = [ ...this.copyData.filter(item => filterFunc(item)) ];
     this.dataSet = [ ...this.dataSet.sort((a, b) => {

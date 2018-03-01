@@ -4,24 +4,24 @@ import { Component, OnInit } from '@angular/core';
   selector: 'nz-demo-table-expand-children',
   template: `
     <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="10">
-      <thead nz-thead>
+      <thead>
         <tr>
-          <th nz-th [nzWidth]="'40%'"><span>Name</span></th>
-          <th nz-th [nzWidth]="'30%'"><span>Age</span></th>
-          <th nz-th><span>Address</span></th>
+          <th [nzWidth]="'40%'">Name</th>
+          <th [nzWidth]="'30%'">Age</th>
+          <th>Address</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
+      <tbody>
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <ng-template ngFor let-item [ngForOf]="expandDataCache[data.key]">
-            <tr nz-tbody-tr *ngIf="(item.parent&&item.parent.expand)||!(item.parent)">
-              <td nz-td>
+            <tr *ngIf="(item.parent&&item.parent.expand)||!(item.parent)">
+              <td>
                 <nz-row-indent [nzIndentSize]="item.level"></nz-row-indent>
                 <nz-row-expand-icon [(nzExpand)]="item.expand" (nzExpandChange)="collapse(expandDataCache[data.key],item,$event)" [nzShowExpand]="!!item.children"></nz-row-expand-icon>
                 {{item.name}}
               </td>
-              <td nz-td>{{item.age}}</td>
-              <td nz-td>{{item.address}}</td>
+              <td>{{item.age}}</td>
+              <td>{{item.address}}</td>
             </tr>
           </ng-template>
         </ng-template>
@@ -41,7 +41,7 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
           key    : 11,
           name   : 'John Brown',
           age    : 42,
-          address: 'New York No. 2 Lake Park',
+          address: 'New York No. 2 Lake Park'
         },
         {
           key     : 12,
@@ -52,8 +52,8 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
             key    : 121,
             name   : 'Jimmy Brown',
             age    : 16,
-            address: 'New York No. 3 Lake Park',
-          } ],
+            address: 'New York No. 3 Lake Park'
+          } ]
         },
         {
           key     : 13,
@@ -71,25 +71,25 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
                   key    : 1311,
                   name   : 'Jim Green jr.',
                   age    : 25,
-                  address: 'London No. 3 Lake Park',
+                  address: 'London No. 3 Lake Park'
                 },
                 {
                   key    : 1312,
                   name   : 'Jimmy Green sr.',
                   age    : 18,
-                  address: 'London No. 4 Lake Park',
+                  address: 'London No. 4 Lake Park'
                 }
-              ],
+              ]
             }
-          ],
+          ]
         }
-      ],
+      ]
     },
     {
       key    : 2,
       name   : 'Joe Black',
       age    : 32,
-      address: 'Sidney No. 1 Lake Park',
+      address: 'Sidney No. 1 Lake Park'
     }
   ];
   expandDataCache = {};
@@ -110,7 +110,7 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
 
   convertTreeToList(root) {
     const stack = [];
-    const array = []
+    const array = [];
     const hashMap = {};
     stack.push({ ...root, level: 0, expand: false });
 

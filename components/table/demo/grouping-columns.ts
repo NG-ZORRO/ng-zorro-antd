@@ -17,16 +17,16 @@ import { Component, OnInit } from '@angular/core';
         </colgroup>
       </ng-template>
       <ng-template #nzFixedHeader>
-        <thead nz-thead>
+        <thead>
           <tr style="height: 46px;">
-            <th nz-th rowspan="4" nzLeft="0px">
-              <span>Name</span>
+            <th rowspan="4" nzLeft="0px">
+              Name
               <nz-dropdown [nzTrigger]="'click'">
                 <i class="anticon anticon-filter" nz-dropdown></i>
                 <ul nz-menu>
                   <li nz-menu-item *ngFor="let filter of filterNameArray">
                     <label nz-checkbox [(ngModel)]="filter.value">
-                      <span>{{filter.name}}</span>
+                      {{filter.name}}
                     </label>
                   </li>
                 </ul>
@@ -36,39 +36,36 @@ import { Component, OnInit } from '@angular/core';
                 </div>
               </nz-dropdown>
             </th>
-            <th nz-th colspan="4"><span>Other</span></th>
-            <th nz-th colspan="2"><span>Company</span></th>
-            <th nz-th rowspan="4" nzRight="0px"><span>Gender</span></th>
+            <th colspan="4">Other</th>
+            <th colspan="2">Company</th>
+            <th rowspan="4" nzRight="0px">Gender</th>
           </tr>
           <tr style="height: 46px;">
-            <th nz-th rowspan="3">
-              <span>Age</span>
-              <nz-table-sort [(nzValue)]="sortValue" (nzValueChange)="search()"></nz-table-sort>
-            </th>
-            <th nz-th colspan="3"><span>Address</span></th>
-            <th nz-th rowspan="3"><span>Company Address</span></th>
-            <th nz-th rowspan="3"><span>Company Name</span></th>
+            <th rowspan="3" [(nzSort)]="sortValue" (nzSortChange)="search()">Age</th>
+            <th colspan="3">Address</th>
+            <th rowspan="3">Company Address</th>
+            <th rowspan="3">Company Name</th>
           </tr>
           <tr style="height: 46px;">
-            <th nz-th rowspan="2"><span>Street</span></th>
-            <th nz-th colspan="2"><span>Block</span></th>
+            <th rowspan="2">Street</th>
+            <th colspan="2">Block</th>
           </tr>
           <tr style="height: 46px;">
-            <th nz-th><span>Building</span></th>
-            <th nz-th><span>Door No.</span></th>
+            <th>Building</th>
+            <th>Door No.</th>
           </tr>
         </thead>
       </ng-template>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of nzTable.data">
-          <td nz-td nzLeft="0px">{{data.name}}</td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.street}}</td>
-          <td nz-td>{{data.building}}</td>
-          <td nz-td>{{data.number}}</td>
-          <td nz-td>{{data.companyAddress}}</td>
-          <td nz-td>{{data.companyName}}</td>
-          <td nz-td nzRight="0px">{{data.gender}}</td>
+      <tbody>
+        <tr *ngFor="let data of nzTable.data">
+          <td nzLeft="0px">{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.street}}</td>
+          <td>{{data.building}}</td>
+          <td>{{data.number}}</td>
+          <td>{{data.companyAddress}}</td>
+          <td>{{data.companyName}}</td>
+          <td nzRight="0px">{{data.gender}}</td>
         </tr>
       </tbody>
     </nz-table>`,
@@ -80,13 +77,13 @@ export class NzDemoTableGroupingColumnsComponent implements OnInit {
   sortValue = null;
   filterNameArray = [
     { name: 'Joe', value: false },
-    { name: 'John', value: false },
+    { name: 'John', value: false }
   ];
 
   reset(): void {
     this.filterNameArray = [
       { name: 'Joe', value: false },
-      { name: 'John', value: false },
+      { name: 'John', value: false }
     ];
     this.search();
   }
@@ -94,7 +91,7 @@ export class NzDemoTableGroupingColumnsComponent implements OnInit {
   search(): void {
     const searchName = this.filterNameArray.filter(name => name.value);
     const filterFunc = (item) => {
-      return searchName.length ? searchName.some(name => item.name.indexOf(name.name) !== -1) : true
+      return searchName.length ? searchName.some(name => item.name.indexOf(name.name) !== -1) : true;
     };
     this.dataSet = [ ...this.backData.filter(item => filterFunc(item)) ];
     this.dataSet = [ ...this.dataSet.sort((a, b) => {
@@ -118,7 +115,7 @@ export class NzDemoTableGroupingColumnsComponent implements OnInit {
         number        : 2035,
         companyAddress: 'Lake Street 42',
         companyName   : 'SoftLake Co',
-        gender        : 'M',
+        gender        : 'M'
       });
     }
     this.backData = [ ...this.dataSet ];

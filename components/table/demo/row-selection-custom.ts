@@ -9,9 +9,9 @@ import { Component, OnInit } from '@angular/core';
       [nzPageSize]="10"
       (nzPageIndexChange)="refreshStatus()"
       (nzPageSizeChange)="refreshStatus()">
-      <thead nz-thead>
+      <thead>
         <tr>
-          <th nz-th nzCheckbox class="ant-table-selection-column-custom">
+          <th nzCheckbox class="ant-table-selection-column-custom">
             <div class="ant-table-selection">
               <label
                 nz-checkbox
@@ -31,23 +31,23 @@ import { Component, OnInit } from '@angular/core';
               </nz-dropdown>
             </div>
           </th>
-          <th nz-th><span>Name</span></th>
-          <th nz-th><span>Age</span></th>
-          <th nz-th><span>Address</span></th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Address</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of rowSelectionTable.data">
-          <td nz-td nzCheckbox>
+      <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td nzCheckbox>
             <label
               nz-checkbox
               [(ngModel)]="data.checked"
               (ngModelChange)="refreshStatus($event)">
             </label>
           </td>
-          <td nz-td>{{data.name}}</td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.address}}</td>
+          <td>{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>`,
