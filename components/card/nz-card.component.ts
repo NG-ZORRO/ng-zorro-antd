@@ -1,4 +1,3 @@
-import { NgStyle } from '@angular/common';
 import {
   Component,
   ContentChild,
