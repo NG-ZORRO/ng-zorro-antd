@@ -5,13 +5,21 @@ import {
   HostBinding,
   Input,
   Output,
-  Renderer2
+  Renderer2,
+  ViewChild
 } from '@angular/core';
 
 import { toBoolean } from '../core/util/convert';
-
+import { NzDropDownComponent } from '../dropdown';
 /* tslint:disable-next-line:no-any */
 export type NzThFilterType = Array<{ text: string; value: any }>;
+
+export interface NzThItemInterface {
+  text: string;
+  /* tslint:disable-next-line:no-any */
+  value: any;
+  checked: boolean;
+}
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -19,7 +27,7 @@ export type NzThFilterType = Array<{ text: string; value: any }>;
   preserveWhitespaces: false,
   template           : `
     <ng-content></ng-content>
-    <div class="ant-table-column-sorter">
+    <div class="ant-table-column-sorter" *ngIf="showSort">
       <span
         class="ant-table-column-sorter-up"
         [class.on]="nzSort == 'ascend'"
@@ -37,18 +45,27 @@ export type NzThFilterType = Array<{ text: string; value: any }>;
         <i class="anticon anticon-caret-down"></i>
       </span>
     </div>
-    <nz-dropdown nzTrigger="click" *ngIf="showFilter&&nzFilterMultiple">
+    <nz-dropdown nzTrigger="click" *ngIf="showFilter" [nzClickHide]="false" [hasFilterButton]="true" (nzVisibleChange)="dropDownVisibleChange($event)">
       <i class="anticon anticon-filter" nz-dropdown></i>
       <ul nz-menu>
-        <li nz-menu-item *ngFor="let filter of multipleFilterList">
-          <label nz-checkbox [(ngModel)]="filter.checked">
-            {{filter.text}}
-          </label>
-        </li>
+        <ng-container *ngIf="nzFilterMultiple">
+          <li nz-menu-item *ngFor="let filter of multipleFilterList" (click)="filter.checked=!filter.checked">
+            <label nz-checkbox [ngModel]="filter.checked">{{filter.text}}</label>
+          </li>
+        </ng-container>
+        <ng-container *ngIf="!nzFilterMultiple">
+          <li nz-menu-item *ngFor="let filter of singleFilterList" (click)="checkSingle(filter)">
+            <label nz-radio [ngModel]="filter.checked">{{filter.text}}</label>
+          </li>
+        </ng-container>
       </ul>
-      <div nz-table-filter>
-        <span nz-table-filter-confirm (click)="search()">{{'Table.filterConfirm' | nzI18n}}</span>
-        <span nz-table-filter-clear (click)="reset()">{{'Table.filterReset' | nzI18n}}</span>
+      <div class="ant-table-filter-dropdown-btns">
+        <a class="ant-table-filter-dropdown-link confirm" (click)="hideDropDown()">
+          <span (click)="search()">{{'Table.filterConfirm' | nzI18n}}</span>
+        </a>
+        <a class="ant-table-filter-dropdown-link clear" (click)="hideDropDown()">
+          <span (click)="reset()">{{'Table.filterReset' | nzI18n}}</span>
+        </a>
       </div>
     </nz-dropdown>
   `
@@ -63,11 +80,12 @@ export class NzThComponent {
   el: HTMLElement;
   showSort: boolean;
   showFilter: boolean;
-  /* tslint:disable-next-line:no-any */
-  multipleFilterList: Array<{ text: string; value: any, checked: boolean }> = [];
+  @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
+  multipleFilterList: NzThItemInterface[] = [];
+  singleFilterList: NzThItemInterface[] = [];
   @Output() nzSortChange = new EventEmitter<string>();
   /* tslint:disable-next-line:no-any */
-  @Output() nzOnFilter = new EventEmitter<any[]>();
+  @Output() nzOnFilter = new EventEmitter<any[] | any>();
   @Input() nzFilterMultiple = true;
 
   @Input()
@@ -95,12 +113,35 @@ export class NzThComponent {
   }
 
   search(): void {
-    this.nzOnFilter.emit(this.multipleFilterList.filter(item => item.checked).map(item => item.value));
+    if (this.nzFilterMultiple) {
+      this.nzOnFilter.emit(this.multipleFilterList.filter(item => item.checked).map(item => item.value));
+    } else {
+      const checkedFilter = this.singleFilterList.find(item => item.checked);
+      this.nzOnFilter.emit(checkedFilter ? checkedFilter.value : null);
+    }
+    this.hideDropDown();
   }
 
   reset(): void {
     this.initMultipleFilterList();
+    this.initSingleFilterList();
     this.search();
+    this.hideDropDown();
+  }
+
+  checkSingle(filter: NzThItemInterface): void {
+    this.singleFilterList.forEach(item => item.checked = item === filter);
+  }
+
+  hideDropDown(): void {
+    this.nzDropDownComponent.nzVisible = false;
+    this.nzDropDownComponent.hide();
+  }
+
+  dropDownVisibleChange(value: boolean): void {
+    if (!value) {
+      this.search();
+    }
   }
 
   @Input()
@@ -110,6 +151,8 @@ export class NzThComponent {
       this._filters = value;
       if (this.nzFilterMultiple) {
         this.initMultipleFilterList();
+      } else {
+        this.initSingleFilterList();
       }
     } else {
       this.showFilter = false;
@@ -122,6 +165,12 @@ export class NzThComponent {
 
   initMultipleFilterList(): void {
     this.multipleFilterList = this.nzFilters.map(item => {
+      return { text: item.text, value: item.value, checked: false };
+    });
+  }
+
+  initSingleFilterList(): void {
+    this.singleFilterList = this.nzFilters.map(item => {
       return { text: item.text, value: item.value, checked: false };
     });
   }

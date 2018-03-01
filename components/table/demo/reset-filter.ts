@@ -8,24 +8,12 @@ import { Component } from '@angular/core';
       <button nz-button (click)="resetFilters()">Clear filters</button>
       <button nz-button (click)="resetSortAndFilters()">Clear filters and sorters</button>
     </div>
-    <nz-table #filterTable [nzDataSource]="data">
+    <nz-table #filterTable [nzDataSource]="displayData">
       <thead>
         <tr>
-          <th
-            [(nzSort)]="sortMap.name"
-            (nzSortChange)="sort('name',$event)"
-            [nzFilters]="filterNameList"
-            (nzOnFilter)="search($event)">
-            Name
-          </th>
+          <th [(nzSort)]="sortMap.name" (nzSortChange)="sort('name',$event)" [nzFilters]="filterNameList" (nzOnFilter)="search($event,searchAddressList)">Name</th>
           <th [(nzSort)]="sortMap.age" (nzSortChange)="sort('age',$event)">Age</th>
-          <th
-            [(nzSort)]="sortMap.address"
-            (nzSortChange)="sort('address',$event)"
-            [nzFilters]="filterAddressList"
-            (nzOnFilter)="search(null,$event)">
-            Address
-          </th>
+          <th [(nzSort)]="sortMap.address" (nzSortChange)="sort('address',$event)" [nzFilters]="filterAddressList" (nzOnFilter)="search(searchNameList,$event)">Address</th>
         </tr>
       </thead>
       <tbody>
@@ -49,8 +37,8 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoTableResetFilterComponent {
-  searchName = [];
-  searchAddress = [];
+  searchNameList = [];
+  searchAddressList = [];
   filterNameList = [
     { text: 'Joe', value: 'Joe' },
     { text: 'Jim', value: 'Jim' }
@@ -89,7 +77,7 @@ export class NzDemoTableResetFilterComponent {
       address: 'London No. 2 Lake Park'
     }
   ];
-  copyData = [ ...this.data ];
+  displayData = [ ...this.data ];
 
   sort(sortName: string, value: string): void {
     this.sortName = sortName;
@@ -97,22 +85,18 @@ export class NzDemoTableResetFilterComponent {
     for (const key in this.sortMap) {
       this.sortMap[ key ] = (key === sortName ? value : null);
     }
-    this.search();
+    this.search(this.searchNameList, this.searchAddressList);
   }
 
-  search(searchName?: string[], searchAddress?: string[]): void {
-    if (searchName) {
-      this.searchName = searchName;
-    }
-    if (searchAddress) {
-      this.searchAddress = searchAddress;
-    }
-    const filterFunc = item => (this.searchAddress.length ? this.searchAddress.some(address => item.address.indexOf(address) !== -1) : true) && (this.searchName.length ? this.searchName.some(name => item.name.indexOf(name) !== -1) : true);
-    const data = this.copyData.filter(item => filterFunc(item));
+  search(searchNameList: string[], searchAddressList: string[]): void {
+    this.searchNameList = searchNameList;
+    this.searchAddressList = searchAddressList;
+    const filterFunc = item => (this.searchAddressList.length ? this.searchAddressList.some(address => item.address.indexOf(address) !== -1) : true) && (this.searchNameList.length ? this.searchNameList.some(name => item.name.indexOf(name) !== -1) : true);
+    const data = this.data.filter(item => filterFunc(item));
     if (this.sortName) {
-      this.data = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] - b[ this.sortName ]) : (b[ this.sortName ] - a[ this.sortName ]));
+      this.displayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] > b[ this.sortName ] ? 1 : -1) : (b[ this.sortName ] > a[ this.sortName ] ? 1 : -1));
     } else {
-      this.data = data;
+      this.displayData = data;
     }
   }
 
@@ -125,9 +109,9 @@ export class NzDemoTableResetFilterComponent {
       { text: 'London', value: 'London' },
       { text: 'Sidney', value: 'Sidney' }
     ];
-    this.searchName = [];
-    this.searchAddress = [];
-    this.search();
+    this.searchNameList = [];
+    this.searchAddressList = [];
+    this.search(this.searchNameList, this.searchAddressList);
   }
 
   resetSortAndFilters(): void {
@@ -139,6 +123,6 @@ export class NzDemoTableResetFilterComponent {
       address: null
     };
     this.resetFilters();
-    this.search();
+    this.search(this.searchNameList, this.searchAddressList);
   }
 }

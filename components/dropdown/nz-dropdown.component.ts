@@ -59,7 +59,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
         [style.minWidth.px]="triggerWidth">
         <div [class.ant-table-filter-dropdown]="hasFilterButton">
           <ng-content select="[nz-menu]"></ng-content>
-          <ng-content select="[nz-table-filter]"></ng-content>
+          <ng-content select=".ant-table-filter-dropdown-btns"></ng-content>
         </div>
         <ng-content select="[nz-dropdown-custom]"></ng-content>
       </div>
@@ -70,7 +70,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   private _clickHide = true;
   private _visible = false;
   private _disabled = false;
-  hasFilterButton = false;
+  @Input() hasFilterButton = false;
   triggerWidth = 0;
   placement: NzPlacement = 'bottomLeft';
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
