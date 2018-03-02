@@ -40,7 +40,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
   ],
   template           : `
     <div>
-      <ng-content></ng-content>
+      <ng-content select="[nz-dropdown]"></ng-content>
     </div>
     <ng-template
       cdkConnectedOverlay
@@ -48,6 +48,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
       [cdkConnectedOverlayPositions]="positions"
       [cdkConnectedOverlayOrigin]="nzOrigin"
       (backdropClick)="hide()"
+      (detach)="hide()"
       [cdkConnectedOverlayMinWidth]="triggerWidth"
       (positionChange)="onPositionChange($event)"
       [cdkConnectedOverlayOpen]="nzVisible">
@@ -61,7 +62,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
           <ng-content select="[nz-menu]"></ng-content>
           <ng-content select=".ant-table-filter-dropdown-btns"></ng-content>
         </div>
-        <ng-content select="[nz-dropdown-custom]"></ng-content>
+        <ng-content></ng-content>
       </div>
     </ng-template>`
 })

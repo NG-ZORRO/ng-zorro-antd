@@ -16,21 +16,15 @@ import { Component } from '@angular/core';
       <tbody>
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr>
-            <td nzExpand>
-              <nz-row-expand-icon [(nzExpand)]="data.expand"></nz-row-expand-icon>
-            </td>
+            <td nzShowExpand [(nzExpand)]="data.expand"></td>
             <td>{{data.name}}</td>
             <td>{{data.age}}</td>
             <td>{{data.address}}</td>
-            <td>
-              <a href="#">Delete</a>
-            </td>
+            <td><a href="#">Delete</a></td>
           </tr>
-          <tr *ngIf="data.expand">
+          <tr [nzExpand]="data.expand">
             <td></td>
-            <td colspan="4">
-              {{data.description}}
-            </td>
+            <td colspan="4">{{data.description}}</td>
           </tr>
         </ng-template>
       </tbody>

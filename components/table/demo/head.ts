@@ -6,9 +6,9 @@ import { Component } from '@angular/core';
     <nz-table #filterTable [nzDataSource]="displayData">
       <thead>
         <tr>
-          <th [(nzSort)]="sortMap.name" (nzSortChange)="sort('name',$event)" [nzFilters]="filterNameList" (nzOnFilter)="search($event,searchAddress)">Name</th>
-          <th [(nzSort)]="sortMap.age" (nzSortChange)="sort('age',$event)">Age</th>
-          <th [(nzSort)]="sortMap.address" [nzFilterMultiple]="false" (nzSortChange)="sort('address',$event)" [nzFilters]="filterAddressList" (nzOnFilter)="search(searchNameList,$event)">Address</th>
+          <th nzShowSort nzShowFilter [(nzSort)]="sortMap.name" (nzSortChange)="sort('name',$event)" [nzFilters]="filterNameList" (nzOnFilter)="search($event,searchAddress)">Name</th>
+          <th nzShowSort [(nzSort)]="sortMap.age" (nzSortChange)="sort('age',$event)">Age</th>
+          <th nzShowSort nzShowFilter [(nzSort)]="sortMap.address" [nzFilterMultiple]="false" (nzSortChange)="sort('address',$event)" [nzFilters]="filterAddressList" (nzOnFilter)="search(searchNameList,$event)">Address</th>
         </tr>
       </thead>
       <tbody>
@@ -75,8 +75,10 @@ export class NzDemoTableHeadComponent {
   search(searchNameList: string[], searchAddress: string): void {
     this.searchNameList = searchNameList;
     this.searchAddress = searchAddress;
+    /** filter data **/
     const filterFunc = item => (this.searchAddress ? item.address.indexOf(this.searchAddress) !== -1 : true) && (this.searchNameList.length ? this.searchNameList.some(name => item.name.indexOf(name) !== -1) : true);
     const data = this.data.filter(item => filterFunc(item));
+    /** sort data **/
     if (this.sortName) {
       this.displayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] > b[ this.sortName ] ? 1 : -1) : (b[ this.sortName ] > a[ this.sortName ] ? 1 : -1));
     } else {

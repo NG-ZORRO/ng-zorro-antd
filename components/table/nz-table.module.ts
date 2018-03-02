@@ -11,20 +11,16 @@ import { NzRadioModule } from '../radio';
 import { NzSpinModule } from '../spin';
 
 import { NzColumnDirective } from './nz-column.directive';
-import { NzRowExpandIconComponent } from './nz-row-expand-icon.component';
-import { NzRowIndentComponent } from './nz-row-indent.component';
-import { NzTableFilterComponent } from './nz-table-filter.component';
-import { NzTableSortComponent } from './nz-table-sort.component';
 import { NzTableComponent } from './nz-table.component';
 import { NzTbodyTrDirective } from './nz-tbody-tr.directive';
 import { NzTbodyDirective } from './nz-tbody.directive';
-import { NzTdDirective } from './nz-td.directive';
+import { NzTdComponent } from './nz-td.component';
 import { NzThComponent } from './nz-th.component';
 import { NzTheadDirective } from './nz-thead.directive';
 
 @NgModule({
-  declarations: [ NzColumnDirective, NzRowIndentComponent, NzRowExpandIconComponent, NzTableFilterComponent, NzTableComponent, NzThComponent, NzTdDirective, NzTheadDirective, NzTbodyDirective, NzTbodyTrDirective, NzTableSortComponent ],
-  exports     : [ NzColumnDirective, NzRowIndentComponent, NzRowExpandIconComponent, NzTableFilterComponent, NzTableComponent, NzThComponent, NzTdDirective, NzTheadDirective, NzTbodyDirective, NzTbodyTrDirective, NzTableSortComponent ],
+  declarations: [ NzColumnDirective, NzTableComponent, NzThComponent, NzTdComponent, NzTheadDirective, NzTbodyDirective, NzTbodyTrDirective ],
+  exports     : [ NzColumnDirective, NzTableComponent, NzThComponent, NzTdComponent, NzTheadDirective, NzTbodyDirective, NzTbodyTrDirective ],
   imports     : [ NzMenuModule, FormsModule, NzRadioModule, NzCheckboxModule, NzDropDownModule, CommonModule, NzPaginationModule, NzSpinModule, NzI18nModule ]
 })
 export class NzTableModule {

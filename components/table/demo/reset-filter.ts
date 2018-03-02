@@ -11,9 +11,9 @@ import { Component } from '@angular/core';
     <nz-table #filterTable [nzDataSource]="displayData">
       <thead>
         <tr>
-          <th [(nzSort)]="sortMap.name" (nzSortChange)="sort('name',$event)" [nzFilters]="filterNameList" (nzOnFilter)="search($event,searchAddressList)">Name</th>
-          <th [(nzSort)]="sortMap.age" (nzSortChange)="sort('age',$event)">Age</th>
-          <th [(nzSort)]="sortMap.address" (nzSortChange)="sort('address',$event)" [nzFilters]="filterAddressList" (nzOnFilter)="search(searchNameList,$event)">Address</th>
+          <th nzShowSort nzShowFilter [(nzSort)]="sortMap.name" (nzSortChange)="sort('name',$event)" [nzFilters]="filterNameList" (nzOnFilter)="search($event,searchAddressList)">Name</th>
+          <th nzShowSort [(nzSort)]="sortMap.age" (nzSortChange)="sort('age',$event)">Age</th>
+          <th nzShowSort nzShowFilter [(nzSort)]="sortMap.address" (nzSortChange)="sort('address',$event)" [nzFilters]="filterAddressList" (nzOnFilter)="search(searchNameList,$event)">Address</th>
         </tr>
       </thead>
       <tbody>

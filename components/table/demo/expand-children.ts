@@ -15,9 +15,7 @@ import { Component, OnInit } from '@angular/core';
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <ng-template ngFor let-item [ngForOf]="expandDataCache[data.key]">
             <tr *ngIf="(item.parent&&item.parent.expand)||!(item.parent)">
-              <td>
-                <nz-row-indent [nzIndentSize]="item.level"></nz-row-indent>
-                <nz-row-expand-icon [(nzExpand)]="item.expand" (nzExpandChange)="collapse(expandDataCache[data.key],item,$event)" [nzShowExpand]="!!item.children"></nz-row-expand-icon>
+              <td [nzIndentSize]="item.level*20" [nzShowExpand]="!!item.children" [(nzExpand)]="item.expand" (nzExpandChange)="collapse(expandDataCache[data.key],item,$event)">
                 {{item.name}}
               </td>
               <td>{{item.age}}</td>

@@ -1,4 +1,4 @@
-import { Directive, HostBinding, Input } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
 
 import { toBoolean } from '../core/util/convert';
 
@@ -11,14 +11,18 @@ import { toBoolean } from '../core/util/convert';
 })
 
 export class NzTbodyTrDirective {
-  _expand = false;
+
   @Input()
-  @HostBinding(`class.ant-table-expanded-row`)
   set nzExpand(value: boolean) {
-    this._expand = toBoolean(value);
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-table-expanded-row');
+    if (value) {
+      this.renderer.removeStyle(this.elementRef.nativeElement, 'display');
+    } else {
+      this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'none');
+    }
   }
 
-  get nzExpand(): boolean {
-    return this._expand;
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+
   }
 }

@@ -12,20 +12,12 @@ import { Component, OnInit } from '@angular/core';
     <nz-table
       #rowSelectionTable
       [nzDataSource]="dataSet"
-      [nzPageSize]="10"
       (nzDataChange)="displayDataChange($event)"
       (nzPageIndexChange)="refreshStatus()"
       (nzPageSizeChange)="refreshStatus()">
       <thead>
         <tr>
-          <th nzCheckbox>
-            <label
-              nz-checkbox
-              [(ngModel)]="allChecked"
-              [nzIndeterminate]="indeterminate"
-              (ngModelChange)="checkAll($event)">
-            </label>
-          </th>
+          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
           <th>Name</th>
           <th>Age</th>
           <th>Address</th>
@@ -33,13 +25,7 @@ import { Component, OnInit } from '@angular/core';
       </thead>
       <tbody>
         <tr *ngFor="let data of rowSelectionTable.data">
-          <td nzCheckbox>
-            <label
-              nz-checkbox
-              [(ngModel)]="data.checked"
-              (ngModelChange)="refreshStatus($event)">
-            </label>
-          </td>
+          <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus($event)"></td>
           <td>{{data.name}}</td>
           <td>{{data.age}}</td>
           <td>{{data.address}}</td>

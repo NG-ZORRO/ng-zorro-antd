@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
             <label>Bordered</label>
           </div>
           <div nz-form-control>
-            <nz-switch [(ngModel)]="bordered" [ngModelOptions]="{standalone: true}"></nz-switch>
+            <nz-switch [(ngModel)]="bordered" name="bordered"></nz-switch>
           </div>
         </div>
         <div nz-row nz-form-item>
@@ -18,7 +18,7 @@ import { Component, OnInit } from '@angular/core';
             <label>Loading</label>
           </div>
           <div nz-form-control>
-            <nz-switch [(ngModel)]="loading" [ngModelOptions]="{standalone: true}"></nz-switch>
+            <nz-switch [(ngModel)]="loading" name="loading"></nz-switch>
           </div>
         </div>
         <div nz-row nz-form-item>
@@ -26,7 +26,7 @@ import { Component, OnInit } from '@angular/core';
             <label>Pagination</label>
           </div>
           <div nz-form-control>
-            <nz-switch [(ngModel)]="pagination" [ngModelOptions]="{standalone: true}"></nz-switch>
+            <nz-switch [(ngModel)]="pagination" name="pagination"></nz-switch>
           </div>
         </div>
         <div nz-row nz-form-item>
@@ -34,7 +34,7 @@ import { Component, OnInit } from '@angular/core';
             <label>Title</label>
           </div>
           <div nz-form-control>
-            <nz-switch [(ngModel)]="title" [ngModelOptions]="{standalone: true}"></nz-switch>
+            <nz-switch [(ngModel)]="title" name="title"></nz-switch>
           </div>
         </div>
         <div nz-row nz-form-item>
@@ -42,7 +42,7 @@ import { Component, OnInit } from '@angular/core';
             <label>Column Header</label>
           </div>
           <div nz-form-control>
-            <nz-switch [(ngModel)]="header" [ngModelOptions]="{standalone: true}"></nz-switch>
+            <nz-switch [(ngModel)]="header" name="header"></nz-switch>
           </div>
         </div>
         <div nz-row nz-form-item>
@@ -50,7 +50,7 @@ import { Component, OnInit } from '@angular/core';
             <label>Footer</label>
           </div>
           <div nz-form-control>
-            <nz-switch [(ngModel)]="footer" [ngModelOptions]="{standalone: true}"></nz-switch>
+            <nz-switch [(ngModel)]="footer" name="footer"></nz-switch>
           </div>
         </div>
         <div nz-row nz-form-item>
@@ -58,7 +58,7 @@ import { Component, OnInit } from '@angular/core';
             <label>Expandable</label>
           </div>
           <div nz-form-control>
-            <nz-switch [(ngModel)]="expandable" [ngModelOptions]="{standalone: true}"></nz-switch>
+            <nz-switch [(ngModel)]="expandable" name="expandable"></nz-switch>
           </div>
         </div>
         <div nz-row nz-form-item>
@@ -66,7 +66,7 @@ import { Component, OnInit } from '@angular/core';
             <label>Checkbox</label>
           </div>
           <div nz-form-control>
-            <nz-switch [(ngModel)]="checkbox" [ngModelOptions]="{standalone: true}"></nz-switch>
+            <nz-switch [(ngModel)]="checkbox" name="checkbox"></nz-switch>
           </div>
         </div>
         <div nz-row nz-form-item>
@@ -74,7 +74,7 @@ import { Component, OnInit } from '@angular/core';
             <label>Fixed Header</label>
           </div>
           <div nz-form-control>
-            <nz-switch [(ngModel)]="fixHeader" [ngModelOptions]="{standalone: true}"></nz-switch>
+            <nz-switch [(ngModel)]="fixHeader" name="fixHeader"></nz-switch>
           </div>
         </div>
         <div nz-row nz-form-item>
@@ -82,16 +82,10 @@ import { Component, OnInit } from '@angular/core';
             <label>Size</label>
           </div>
           <div nz-form-control>
-            <nz-radio-group [(ngModel)]="size" [ngModelOptions]="{standalone: true}">
-              <label nz-radio-button [nzValue]="'default'">
-                Default
-              </label>
-              <label nz-radio-button [nzValue]="'middle'">
-                Middle
-              </label>
-              <label nz-radio-button [nzValue]="'small'">
-                Small
-              </label>
+            <nz-radio-group [(ngModel)]="size" name="size">
+              <label nz-radio-button nzValue="default">Default</label>
+              <label nz-radio-button nzValue="middle">Middle</label>
+              <label nz-radio-button nzValue="small">Small</label>
             </nz-radio-group>
           </div>
         </div>
@@ -102,7 +96,6 @@ import { Component, OnInit } from '@angular/core';
       (nzDataChange)="displayDataChange($event)"
       [nzScroll]="fixHeader?{ y: '240px' }:null"
       [nzDataSource]="dataSet"
-      [nzPageSize]="10"
       [nzBordered]="bordered"
       [nzLoading]="loading"
       [nzIsPagination]="pagination"
@@ -130,9 +123,7 @@ import { Component, OnInit } from '@angular/core';
       <tbody>
         <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
           <tr>
-            <td nzExpand *ngIf="expandable">
-              <nz-row-expand-icon [(nzExpand)]="data.expand"></nz-row-expand-icon>
-            </td>
+            <td nzShowExpand *ngIf="expandable" [(nzExpand)]="data.expand"></td>
             <td nzCheckbox *ngIf="checkbox">
               <label nz-checkbox
                 [(ngModel)]="data.checked"
@@ -143,35 +134,14 @@ import { Component, OnInit } from '@angular/core';
             <td>{{data.age}}</td>
             <td>{{data.address}}</td>
             <td>
-
               <a href="#">Action 一 {{data.name}}</a>
               <nz-divider nzType="vertical"></nz-divider>
               <a href="#">Delete</a>
-              <nz-divider nzType="vertical"></nz-divider>
-              <nz-dropdown>
-                <a class="ant-dropdown-link" nz-dropdown>
-                  More actions <i class="anticon anticon-down"></i>
-                </a>
-                <ul nz-menu>
-                  <li nz-menu-item>
-                    <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">1st menu item</a>
-                  </li>
-                  <li nz-menu-item>
-                    <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item</a>
-                  </li>
-                  <li nz-menu-item>
-                    <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item</a>
-                  </li>
-                </ul>
-              </nz-dropdown>
-
             </td>
           </tr>
-          <tr *ngIf="data.expand" nzExpand>
+          <tr [nzExpand]="data.expand" >
             <td></td>
-            <td [attr.colspan]="checkbox?5:4">
-              {{data.description}}
-            </td>
+            <td [attr.colspan]="checkbox?5:4">{{data.description}}</td>
           </tr>
         </ng-template>
       </tbody>

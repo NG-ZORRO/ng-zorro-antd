@@ -19,9 +19,7 @@ import { Component, OnInit } from '@angular/core';
       <tbody>
         <ng-template ngFor let-data [ngForOf]="nestedTable.data">
           <tr>
-            <td nzExpand>
-              <nz-row-expand-icon [(nzExpand)]="data.expand"></nz-row-expand-icon>
-            </td>
+            <td nzShowExpand [(nzExpand)]="data.expand"></td>
             <td>{{data.name}}</td>
             <td>{{data.platform}}</td>
             <td>{{data.version}}</td>
@@ -32,7 +30,7 @@ import { Component, OnInit } from '@angular/core';
               <a>Publish</a>
             </td>
           </tr>
-          <tr *ngIf="data.expand" nzExpand>
+          <tr [nzExpand]="data.expand">
             <td></td>
             <td colspan="7">
               <nz-table #innerTable [nzDataSource]="innerTableData" [nzPageSize]="10" [nzIsPagination]="false">

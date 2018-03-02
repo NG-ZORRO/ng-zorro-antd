@@ -14,9 +14,7 @@ import { Component } from '@angular/core';
       </thead>
       <tbody>
         <tr *ngFor="let data of nzTable.data; index as i;">
-          <td>
-            <a>{{data.name}}</a>
-          </td>
+          <td>{{data.name}}</td>
           <td [attr.colspan]="i==4?5:1">{{data.age}}</td>
           <td [attr.rowspan]="i==2?2:1" *ngIf="(i!=3)&&(i!=4)">{{data.tel}}</td>
           <td *ngIf="i!=4">{{data.phone}}</td>
