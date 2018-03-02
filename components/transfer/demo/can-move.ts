@@ -9,7 +9,6 @@ import { TransferCanMove, TransferItem, NzMessageService } from 'ng-zorro-antd';
   template: `
     <nz-transfer
       [nzDataSource]="list"
-      [nzTitles]="['Source', 'Target']"
       [canMove]="canMove"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)">

@@ -16,7 +16,8 @@ import { of } from 'rxjs/observable/of';
 
 import { toBoolean } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
-import { TransferItem, TransferCanMove, TransferChange, TransferItem, TransferSearchChange, TransferSelectChange } from './interface';
+
+import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, TransferSelectChange } from './interface';
 
 @Component({
   selector           : 'nz-transfer',
@@ -75,7 +76,7 @@ export class NzTransferComponent implements OnChanges {
   // region: fields
 
   @Input() nzDataSource: TransferItem[] = [];
-  @Input() nzTitles: string[] = this.i18n.translate('Transfer.titles').split(',');
+  @Input() nzTitles: string[] = ['', ''];
   @Input() nzOperations: string[] = [];
   @Input() nzListStyle: object;
   @Input() nzItemUnit = this.i18n.translate('Transfer.itemUnit');

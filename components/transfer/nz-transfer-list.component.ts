@@ -12,8 +12,10 @@ import {
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
+
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
+
 import { TransferItem } from './interface';
 
 @Component({
@@ -23,10 +25,12 @@ import { TransferItem } from './interface';
   template           : `
     <div class="ant-transfer-list-header">
       <label nz-checkbox [(ngModel)]="stat.checkAll" (ngModelChange)="onHandleSelectAll($event)"
-        [nzIndeterminate]="stat.checkHalf"></label><span class="ant-transfer-list-header-selected">
-        <span>{{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ dataSource.length > 1 ? itemsUnit : itemUnit }}</span>
-        <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
-      </span>
+        [nzIndeterminate]="stat.checkHalf">
+        <span class="ant-transfer-list-header-selected">
+          <span>{{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ dataSource.length > 1 ? itemsUnit : itemUnit }}</span>
+          <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
+        </span>
+      </label>
     </div>
     <div class="{{showSearch ? 'ant-transfer-list-body ant-transfer-list-body-with-search' : 'ant-transfer-list-body'}}"
       [ngClass]="{'ant-transfer__nodata': stat.shownCount === 0}">

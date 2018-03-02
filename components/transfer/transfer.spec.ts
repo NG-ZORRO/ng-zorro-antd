@@ -6,7 +6,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { delay, map } from 'rxjs/operators';
-import { NzTransferComponent, NzTransferModule } from '.';
+
+import { NzTransferComponent, NzTransferModule } from './index';
 import { TransferCanMove, TransferItem } from './interface';
 
 const COUNT = 20;
@@ -14,7 +15,7 @@ const LEFTCOUNT = 2;
 
 describe('transfer', () => {
   let injector: Injector;
-  let fixture: ComponentFixture<TestTransferComponent>;
+  let fixture: ComponentFixture<TestTransferComponent | TestTransferCustomRenderComponent>;
   let dl: DebugElement;
   let instance: TestTransferComponent;
   let pageObject: TransferPageObject;
@@ -81,18 +82,6 @@ describe('transfer', () => {
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(LEFTCOUNT);
     });
 
-    it('should be from left to right when two verification', () => {
-      instance.canMove = (arg: TransferCanMove): Observable<TransferItem[]> => {
-        if (arg.direction === 'right' && arg.list.length > 0) arg.list.splice(0, 1);
-        return of(arg.list);
-      };
-      fixture.detectChanges();
-      pageObject.expectLeft(LEFTCOUNT)
-                .transfer('right', [ 0, 1 ])
-                .expectLeft(LEFTCOUNT - 1)
-                .expectRight(COUNT - LEFTCOUNT + 1);
-    });
-
     it('should be checkbox is toggle select', () => {
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(0);
       pageObject.checkItem('left', 0);
@@ -154,7 +143,32 @@ describe('transfer', () => {
     });
   });
 
-  describe('#issues', () => {
+  describe('#canMove', () => {
+    it('default', () => {
+      fixture = TestBed.createComponent(TestTransferCustomRenderComponent);
+      dl = fixture.debugElement;
+      instance = dl.componentInstance;
+      pageObject = new TransferPageObject();
+      fixture.detectChanges();
+      pageObject.expectLeft(LEFTCOUNT)
+                .transfer('right', 0)
+                .expectLeft(LEFTCOUNT - 1)
+                .expectRight(COUNT - LEFTCOUNT + 1);
+    });
+    it('should be from left to right when two verification', () => {
+      instance.canMove = (arg: TransferCanMove): Observable<TransferItem[]> => {
+        if (arg.direction === 'right' && arg.list.length > 0) arg.list.splice(0, 1);
+        return of(arg.list);
+      };
+      fixture.detectChanges();
+      pageObject.expectLeft(LEFTCOUNT)
+                .transfer('right', [ 0, 1 ])
+                .expectLeft(LEFTCOUNT - 1)
+                .expectRight(COUNT - LEFTCOUNT + 1);
+    });
+  });
+
+  xdescribe('#issues', () => {
     xit('#996', () => {
       const tempFixture = TestBed.createComponent(TestTransferCustomRenderComponent);
       tempFixture.detectChanges();
@@ -269,15 +283,12 @@ class TestTransferComponent implements OnInit {
   }
 
   search(ret: {}): void {
-    console.log('nzSearchChange', ret);
   }
 
   select(ret: {}): void {
-    console.log('nzSelectChange', ret);
   }
 
   change(ret: {}): void {
-    console.log('nzChange', ret);
   }
 }
 
