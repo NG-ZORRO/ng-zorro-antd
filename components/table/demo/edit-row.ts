@@ -6,9 +6,7 @@ import { Component, OnInit } from '@angular/core';
     <nz-table
       #editRowTable
       nzBordered
-      [nzIsPageIndexReset]="isResetIndex"
-      [nzDataSource]="dataSet"
-      [nzPageSize]="10">
+      [nzData]="dataSet">
       <thead>
         <tr>
           <th nzWidth="25%">Name</th>
@@ -74,7 +72,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NzDemoTableEditRowComponent implements OnInit {
   i = 1;
-  isResetIndex = false;
   editCache = {};
   dataSet = [];
 

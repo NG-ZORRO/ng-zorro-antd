@@ -11,15 +11,15 @@ import { NzRadioModule } from '../radio';
 import { NzSpinModule } from '../spin';
 
 import { NzTableComponent } from './nz-table.component';
-import { NzTbodyTrDirective } from './nz-tbody-tr.directive';
 import { NzTbodyDirective } from './nz-tbody.directive';
 import { NzTdComponent } from './nz-td.component';
 import { NzThComponent } from './nz-th.component';
 import { NzTheadComponent } from './nz-thead.component';
+import { NzTrDirective } from './nz-tr.directive';
 
 @NgModule({
-  declarations: [ NzTableComponent, NzThComponent, NzTdComponent, NzTheadComponent, NzTbodyDirective, NzTbodyTrDirective ],
-  exports     : [ NzTableComponent, NzThComponent, NzTdComponent, NzTheadComponent, NzTbodyDirective, NzTbodyTrDirective ],
+  declarations: [ NzTableComponent, NzThComponent, NzTdComponent, NzTheadComponent, NzTbodyDirective, NzTrDirective ],
+  exports     : [ NzTableComponent, NzThComponent, NzTdComponent, NzTheadComponent, NzTbodyDirective, NzTrDirective ],
   imports     : [ NzMenuModule, FormsModule, NzRadioModule, NzCheckboxModule, NzDropDownModule, CommonModule, NzPaginationModule, NzSpinModule, NzI18nModule ]
 })
 export class NzTableModule {

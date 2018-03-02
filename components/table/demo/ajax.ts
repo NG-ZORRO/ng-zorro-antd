@@ -28,27 +28,27 @@ export class RandomUserService {
   selector : 'nz-demo-table-ajax',
   providers: [ RandomUserService ],
   template : `
-    <nz-table #nzTable
-      [nzAjaxData]="dataSet"
+    <nz-table
+      #ajaxTable
+      nzServerRender
       nzShowSizeChanger
+      [nzData]="dataSet"
       [nzLoading]="loading"
       [nzTotal]="total"
       [(nzPageIndex)]="pageIndex"
-      (nzPageIndexChange)="searchData()"
       [(nzPageSize)]="pageSize"
+      (nzPageIndexChange)="searchData()"
       (nzPageSizeChange)="searchData(true)">
-      <thead>
+      <thead (nzSortChange)="sort($event)" nzSingleSort>
         <tr>
-          <th nzShowSort (nzSortChange)="sort($event)">Name</th>
-          <th nzShowFilter [nzFilters]="filterGender" (nzOnFilter)="updateFilter($event)">Gender</th>
-          <th><span>Email</span></th>
+          <th nzShowSort nzSortKey="name">Name</th>
+          <th nzShowFilter [nzFilters]="filterGender" (nzFilterChange)="updateFilter($event)">Gender</th>
+          <th nzShowSort nzSortKey="email"><span>Email</span></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of nzTable.data">
-          <td>
-            <a>{{data.name.first}} {{data.name.last}}</a>
-          </td>
+        <tr *ngFor="let data of ajaxTable.data">
+          <td>{{data.name.first}} {{data.name.last}}</td>
           <td>{{data.gender}}</td>
           <td>{{data.email}}</td>
         </tr>
@@ -62,14 +62,16 @@ export class NzDemoTableAjaxComponent implements OnInit {
   dataSet = [];
   loading = true;
   sortValue = null;
+  sortKey = null;
   filterGender = [
     { text: 'male', value: 'male' },
     { text: 'female', value: 'female' }
   ];
   searchGenderList: string[] = [];
 
-  sort(value: string): void {
-    this.sortValue = value;
+  sort(sort: { key: string, value: string }): void {
+    this.sortKey = sort.key;
+    this.sortValue = sort.value;
     this.searchData();
   }
 
@@ -81,7 +83,7 @@ export class NzDemoTableAjaxComponent implements OnInit {
       this.pageIndex = 1;
     }
     this.loading = true;
-    this.randomUserService.getUsers(this.pageIndex, this.pageSize, 'name', this.sortValue, this.searchGenderList).subscribe((data: any) => {
+    this.randomUserService.getUsers(this.pageIndex, this.pageSize, this.sortKey, this.sortValue, this.searchGenderList).subscribe((data: any) => {
       this.loading = false;
       this.total = 200;
       this.dataSet = data.results;

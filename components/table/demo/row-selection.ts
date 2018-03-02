@@ -5,8 +5,8 @@ import { Component } from '@angular/core';
   template: `
     <nz-table
       #rowSelectionTable
-      [nzDataSource]="data"
-      (nzDataChange)="displayDataChange($event)"
+      [nzData]="data"
+      (nzCurrentPageDataChange)="currentPageDataChange($event)"
       (nzPageIndexChange)="refreshStatus()"
       (nzPageSizeChange)="refreshStatus()">
       <thead>
@@ -63,7 +63,7 @@ export class NzDemoTableRowSelectionComponent {
     }
   ];
 
-  displayDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean; disabled: boolean; }>): void {
+  currentPageDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean; disabled: boolean; }>): void {
     this.displayData = $event;
     this.refreshStatus();
   }

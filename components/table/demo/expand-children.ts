@@ -1,9 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 
+export interface TreeNodeInterface {
+  key: number;
+  name: string;
+  age: number;
+  level: number;
+  expand: boolean;
+  address: string;
+  children?: TreeNodeInterface[];
+}
+
 @Component({
   selector: 'nz-demo-table-expand-children',
   template: `
-    <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="10">
+    <nz-table #nzTable [nzData]="data">
       <thead>
         <tr>
           <th [nzWidth]="'40%'">Name</th>
@@ -92,7 +102,7 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
   ];
   expandDataCache = {};
 
-  collapse(array, data, $event) {
+  collapse(array: TreeNodeInterface[], data: TreeNodeInterface, $event: boolean): void {
     if ($event === false) {
       if (data.children) {
         data.children.forEach(d => {
@@ -106,7 +116,7 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
     }
   }
 
-  convertTreeToList(root) {
+  convertTreeToList(root: object): TreeNodeInterface[] {
     const stack = [];
     const array = [];
     const hashMap = {};
@@ -125,7 +135,7 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
     return array;
   }
 
-  visitNode(node, hashMap, array): void {
+  visitNode(node: TreeNodeInterface, hashMap: object, array: TreeNodeInterface[]): void {
     if (!hashMap[ node.key ]) {
       hashMap[ node.key ] = true;
       array.push(node);

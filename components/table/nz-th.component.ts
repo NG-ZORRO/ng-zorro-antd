@@ -3,8 +3,6 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnDestroy,
-  OnInit,
   Output,
   Renderer2,
   ViewChild
@@ -13,6 +11,8 @@ import {
 import { toBoolean } from '../core/util/convert';
 
 import { NzDropDownComponent } from '../dropdown';
+import { NzTheadComponent } from './nz-thead.component';
+
 /* tslint:disable-next-line:no-any */
 export type NzThFilterType = Array<{ text: string; value: any }>;
 
@@ -25,7 +25,7 @@ export interface NzThItemInterface {
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector           : 'nz-table th',
+  selector           : 'th:not(.clear-nz)',
   preserveWhitespaces: false,
   template           : `
     <ng-template #checkboxTemplate>
@@ -110,6 +110,7 @@ export class NzThComponent {
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
+  @Input() nzSortKey: string;
   @Output() nzCheckedChange = new EventEmitter<boolean>();
   el: HTMLElement;
   multipleFilterList: NzThItemInterface[] = [];
@@ -117,8 +118,9 @@ export class NzThComponent {
   @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
   @Input() nzFilterMultiple = true;
   @Output() nzSortChange = new EventEmitter<string>();
+  @Output() nzSortChangeWithKey = new EventEmitter<{ key: string, value: string }>();
   /* tslint:disable-next-line:no-any */
-  @Output() nzOnFilter = new EventEmitter<any[] | any>();
+  @Output() nzFilterChange = new EventEmitter<any[] | any>();
   @Input() nzWidth: string;
 
   @Input()
@@ -209,15 +211,16 @@ export class NzThComponent {
     } else {
       this.nzSort = value;
     }
+    this.nzSortChangeWithKey.emit({ key: this.nzSortKey, value: this.nzSort });
     this.nzSortChange.emit(this.nzSort);
   }
 
   search(): void {
     if (this.nzFilterMultiple) {
-      this.nzOnFilter.emit(this.multipleFilterList.filter(item => item.checked).map(item => item.value));
+      this.nzFilterChange.emit(this.multipleFilterList.filter(item => item.checked).map(item => item.value));
     } else {
       const checkedFilter = this.singleFilterList.find(item => item.checked);
-      this.nzOnFilter.emit(checkedFilter ? checkedFilter.value : null);
+      this.nzFilterChange.emit(checkedFilter ? checkedFilter.value : null);
     }
     this.hideDropDown();
   }

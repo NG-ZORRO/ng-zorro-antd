@@ -11,7 +11,7 @@ import { toBoolean } from '../core/util/convert';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'nz-table td',
+  selector: 'td:not(.clear-nz)',
   template: `
     <span class="ant-table-row-indent" [style.padding-left.px]="nzIndentSize"></span>
     <label

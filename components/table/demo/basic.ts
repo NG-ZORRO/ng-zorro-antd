@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-basic',
   template: `
-    <nz-table #basicTable [nzDataSource]="dataSet">
+    <nz-table #basicTable [nzData]="dataSet">
       <thead>
         <tr>
           <th>Name</th>

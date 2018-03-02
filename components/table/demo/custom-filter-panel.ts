@@ -3,12 +3,12 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-custom-filter-panel',
   template: `
-    <nz-table #nzTable [nzDataSource]="displayData" [nzPageSize]="10">
+    <nz-table #nzTable [nzData]="displayData" [nzPageSize]="10">
       <thead>
         <tr>
           <th>
             Name
-            <nz-dropdown [nzTrigger]="'click'" [nzClickHide]="false">
+            <nz-dropdown nzTrigger="click" [nzClickHide]="false">
               <i class="anticon anticon-smile-o ant-table-filter-icon" nz-dropdown></i>
               <div class="custom-filter-dropdown">
                 <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue">
@@ -17,14 +17,12 @@ import { Component } from '@angular/core';
             </nz-dropdown>
           </th>
           <th>Age</th>
-          <th nzShowFilter [nzFilters]="filterAddressArray" (nzOnFilter)="filterAddressChange($event)">Address</th>
+          <th nzShowFilter [nzFilters]="filterAddressArray" (nzFilterChange)="filterAddressChange($event)">Address</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of nzTable.data">
-          <td>
-            <a>{{data.name}}</a>
-          </td>
+          <td>{{data.name}}</td>
           <td>{{data.age}}</td>
           <td>{{data.address}}</td>
         </tr>

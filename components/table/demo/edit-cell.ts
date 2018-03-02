@@ -7,9 +7,7 @@ import { Component, OnInit } from '@angular/core';
     <nz-table
       #editRowTable
       nzBordered
-      [nzIsPageIndexReset]="isResetIndex"
-      [nzDataSource]="dataSet"
-      [nzPageSize]="10">
+      [nzData]="dataSet">
       <thead>
         <tr>
           <th nzWidth="30%">Name</th>
@@ -94,7 +92,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NzDemoTableEditCellComponent implements OnInit {
   i = 1;
-  isResetIndex = false;
   editCache = {};
   dataSet = [
     {
@@ -125,9 +122,6 @@ export class NzDemoTableEditCellComponent implements OnInit {
 
   deleteRow(i: string): void {
     const dataSet = this.dataSet.filter(d => d.key !== i);
-    if (dataSet.length % 10 === 0) {
-      this.isResetIndex = true;
-    }
     this.dataSet = dataSet;
   }
 

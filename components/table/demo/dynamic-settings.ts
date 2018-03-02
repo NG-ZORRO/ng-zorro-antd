@@ -93,9 +93,9 @@ import { Component, OnInit } from '@angular/core';
     </div>
     <nz-table
       #dynamicTable
-      (nzDataChange)="displayDataChange($event)"
+      (nzCurrentPageDataChange)="currentPageDataChange($event)"
       [nzScroll]="fixHeader?{ y: '240px' }:null"
-      [nzDataSource]="dataSet"
+      [nzData]="dataSet"
       [nzBordered]="bordered"
       [nzLoading]="loading"
       [nzIsPagination]="pagination"
@@ -109,7 +109,7 @@ import { Component, OnInit } from '@angular/core';
           <th nzWidth="150px">Name</th>
           <th nzWidth="70px">Age</th>
           <th>Address</th>
-          <th nzWidth="360px">Action</th>
+          <th nzWidth="260px">Action</th>
         </tr>
       </thead>
       <tbody>
@@ -162,7 +162,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   indeterminate = false;
   displayData = [];
 
-  displayDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean; expand: boolean; description: string; }>): void {
+  currentPageDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean; expand: boolean; description: string; }>): void {
     this.displayData = $event;
     this.refreshStatus();
   }

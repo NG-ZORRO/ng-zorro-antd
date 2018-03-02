@@ -3,11 +3,11 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-fixed-header',
   template: `
-    <nz-table #nzTable [nzDataSource]="dataSet" [nzPageSize]="50" [nzScroll]="{ y: '240px' }">
+    <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="50" [nzScroll]="{ y: '240px' }">
       <thead>
         <tr>
-          <th [nzWidth]="'150px'">Name</th>
-          <th [nzWidth]="'150px'">Age</th>
+          <th nzWidth="150px">Name</th>
+          <th nzWidth="150px">Age</th>
           <th>Address</th>
         </tr>
       </thead>

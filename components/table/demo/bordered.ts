@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
       nzBordered
       nzFooter="Footer"
       nzTitle="Header"
-      [nzDataSource]="dataSet">
+      [nzData]="dataSet">
       <thead>
         <tr>
           <th>Name</th>

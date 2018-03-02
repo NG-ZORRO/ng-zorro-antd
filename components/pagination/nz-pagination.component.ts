@@ -142,7 +142,6 @@ import { toBoolean } from '../core/util/convert';
 export class NzPaginationComponent {
   @ViewChild('renderItemTemplate') private _renderItem: TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }>;
   private _showSizeChanger = false;
-  private _showTotal: TemplateRef<{ $implicit: number, range: [ number, number ] }>;
   private _showQuickJumper = false;
   private _simple = false;
   private _hideOnSinglePage = false;
@@ -152,7 +151,7 @@ export class NzPaginationComponent {
   private _pageIndex = 1;
   firstIndex = 1;
   pages = [];
-
+  @Input() nzShowTotal: TemplateRef<{ $implicit: number, range: [ number, number ] }>;
   @Input() nzInTable = false;
   @Input() nzSize: string;
   @Output() nzPageSizeChange: EventEmitter<number> = new EventEmitter();
@@ -192,15 +191,6 @@ export class NzPaginationComponent {
 
   get nzShowQuickJumper(): boolean {
     return this._showQuickJumper;
-  }
-
-  @Input()
-  set nzShowTotal(value: TemplateRef<{ $implicit: number, range: [ number, number ] }>) {
-    this._showTotal = value;
-  }
-
-  get nzShowTotal(): TemplateRef<{ $implicit: number, range: [ number, number ] }> {
-    return this._showTotal;
   }
 
   @Input()

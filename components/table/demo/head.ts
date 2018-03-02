@@ -3,12 +3,12 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-head',
   template: `
-    <nz-table #filterTable [nzDataSource]="displayData">
-      <thead>
+    <nz-table #filterTable [nzData]="displayData">
+      <thead (nzSortChange)="sort($event)" nzSingleSort>
         <tr>
-          <th nzShowSort nzShowFilter [(nzSort)]="sortMap.name" (nzSortChange)="sort('name',$event)" [nzFilters]="filterNameList" (nzOnFilter)="search($event,searchAddress)">Name</th>
-          <th nzShowSort [(nzSort)]="sortMap.age" (nzSortChange)="sort('age',$event)">Age</th>
-          <th nzShowSort nzShowFilter [(nzSort)]="sortMap.address" [nzFilterMultiple]="false" (nzSortChange)="sort('address',$event)" [nzFilters]="filterAddressList" (nzOnFilter)="search(searchNameList,$event)">Address</th>
+          <th nzShowSort nzSortKey="name" nzShowFilter [nzFilters]="nameList" (nzFilterChange)="filter($event,searchAddress)">Name</th>
+          <th nzShowSort nzSortKey="age">Age</th>
+          <th nzShowSort nzSortKey="address" nzShowFilter [nzFilterMultiple]="false" [nzFilters]="addressList" (nzFilterChange)="filter(listOfSearchName,$event)">Address</th>
         </tr>
       </thead>
       <tbody>
@@ -21,24 +21,18 @@ import { Component } from '@angular/core';
     </nz-table>`
 })
 export class NzDemoTableHeadComponent {
-  searchNameList = [];
-  searchAddress;
-  filterNameList = [
+  nameList = [
     { text: 'Joe', value: 'Joe' },
     { text: 'Jim', value: 'Jim' }
   ];
-  filterAddressList = [
+  addressList = [
     { text: 'London', value: 'London' },
     { text: 'Sidney', value: 'Sidney' }
   ];
-  sortMap = {
-    name   : null,
-    age    : null,
-    address: null
-  };
   sortName = null;
   sortValue = null;
-
+  listOfSearchName = [];
+  searchAddress: string;
   data = [
     {
       name   : 'John Brown',
@@ -63,20 +57,21 @@ export class NzDemoTableHeadComponent {
   ];
   displayData = [ ...this.data ];
 
-  sort(sortName: string, value: string): void {
-    this.sortName = sortName;
-    this.sortValue = value;
-    for (const key in this.sortMap) {
-      this.sortMap[ key ] = (key === sortName ? value : null);
-    }
-    this.search(this.searchNameList, this.searchAddress);
+  sort(sort: { key: string, value: string }): void {
+    this.sortName = sort.key;
+    this.sortValue = sort.value;
+    this.search();
   }
 
-  search(searchNameList: string[], searchAddress: string): void {
-    this.searchNameList = searchNameList;
+  filter(listOfSearchName: string[], searchAddress: string): void {
+    this.listOfSearchName = listOfSearchName;
     this.searchAddress = searchAddress;
+    this.search();
+  }
+
+  search(): void {
     /** filter data **/
-    const filterFunc = item => (this.searchAddress ? item.address.indexOf(this.searchAddress) !== -1 : true) && (this.searchNameList.length ? this.searchNameList.some(name => item.name.indexOf(name) !== -1) : true);
+    const filterFunc = item => (this.searchAddress ? item.address.indexOf(this.searchAddress) !== -1 : true) && (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
     const data = this.data.filter(item => filterFunc(item));
     /** sort data **/
     if (this.sortName) {

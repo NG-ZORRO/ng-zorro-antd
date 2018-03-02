@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-expand',
   template: `
-    <nz-table #nzTable [nzDataSource]="dataSet" [nzPageSize]="10">
+    <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10">
       <thead>
         <tr>
           <th nzShowExpand></th>

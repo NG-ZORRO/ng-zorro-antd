@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
     <nz-table
       #middleTable
       nzSize="middle"
-      [nzDataSource]="data">
+      [nzData]="data">
       <thead>
         <tr>
           <th>Name</th>
@@ -27,7 +27,7 @@ import { Component } from '@angular/core';
     <nz-table
       #smallTable
       nzSize="small"
-      [nzDataSource]="data">
+      [nzData]="data">
       <thead>
         <tr>
           <th>Name</th>

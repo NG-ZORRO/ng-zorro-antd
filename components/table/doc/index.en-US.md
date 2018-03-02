@@ -14,36 +14,43 @@ A table displays rows of data.
 
 ## How To Use
 
-Specify `dataSource` of Table as an array of data.
+The Table component is both easy to use and highly customizable.
 
-```jsx
-const dataSource = [{
-  key: '1',
-  name: 'Mike',
-  age: 32,
-  address: '10 Downing Street'
-}, {
-  key: '2',
-  name: 'John',
-  age: 42,
-  address: '10 Downing Street'
-}];
+### Highly Customizable
 
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
-}, {
-  title: 'Age',
-  dataIndex: 'age',
-  key: 'age',
-}, {
-  title: 'Address',
-  dataIndex: 'address',
-  key: 'address',
-}];
+You can use `nz-table` like  [` W3C Standard <table>`](https://www.w3.org/TR/html401/struct/tables.html) , developers can control every part of the table as you wish.
 
-<Table dataSource={dataSource} columns={columns} />
+### Component Enhancements
+
+The component in `nz-table` such as `th`, `td`, `thead`, etc are enhanced, developers can make the table sortable, filterable, fixed header, server rendering, etc easily with api provided.
+
+### Data Processing
+
+The data passed to `[nzData]` will be export with [Template Context](https://angular.io/guide/template-syntax#statement-context) after processing, developers can use `*ngFor` to render current page data in table.
+
+```html
+    <nz-table #basicTable [nzData]="dataSet">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Address</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td>{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
+          <td>
+            <a>Action 一 {{data.name}}</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a>Delete</a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
 ```
 
 ## API

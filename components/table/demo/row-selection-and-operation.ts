@@ -11,8 +11,8 @@ import { Component, OnInit } from '@angular/core';
     </div>
     <nz-table
       #rowSelectionTable
-      [nzDataSource]="dataSet"
-      (nzDataChange)="displayDataChange($event)"
+      [nzData]="dataSet"
+      (nzCurrentPageDataChange)="currentPageDataChange($event)"
       (nzPageIndexChange)="refreshStatus()"
       (nzPageSizeChange)="refreshStatus()">
       <thead>
@@ -43,7 +43,7 @@ export class NzDemoTableRowSelectionAndOperationComponent implements OnInit {
   dataSet = [];
   indeterminate = false;
 
-  displayDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean }>): void {
+  currentPageDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean }>): void {
     this.displayData = $event;
   }
 

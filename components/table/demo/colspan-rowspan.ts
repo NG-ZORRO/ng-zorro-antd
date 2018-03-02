@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-colspan-rowspan',
   template: `
-    <nz-table #nzTable [nzDataSource]="dataSet" [nzPageSize]="10" nzBordered>
+    <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" nzBordered>
       <thead>
         <tr>
           <th>Name</th>

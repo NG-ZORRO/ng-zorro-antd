@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-nested-table',
   template: `
-    <nz-table #nestedTable [nzDataSource]="nestedTableData" [nzPageSize]="10">
+    <nz-table #nestedTable [nzData]="nestedTableData" [nzPageSize]="10">
       <thead>
         <tr>
           <th nzShowExpand></th>
@@ -33,7 +33,7 @@ import { Component, OnInit } from '@angular/core';
           <tr [nzExpand]="data.expand">
             <td></td>
             <td colspan="7">
-              <nz-table #innerTable [nzDataSource]="innerTableData" [nzPageSize]="10" [nzIsPagination]="false">
+              <nz-table #innerTable [nzData]="innerTableData" [nzPageSize]="10" [nzIsPagination]="false">
                 <thead>
                   <tr>
                     <th>Date</th>

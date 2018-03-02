@@ -8,12 +8,12 @@ import { Component } from '@angular/core';
       <button nz-button (click)="resetFilters()">Clear filters</button>
       <button nz-button (click)="resetSortAndFilters()">Clear filters and sorters</button>
     </div>
-    <nz-table #filterTable [nzDataSource]="displayData">
+    <nz-table #filterTable [nzData]="displayData">
       <thead>
         <tr>
-          <th nzShowSort nzShowFilter [(nzSort)]="sortMap.name" (nzSortChange)="sort('name',$event)" [nzFilters]="filterNameList" (nzOnFilter)="search($event,searchAddressList)">Name</th>
+          <th nzShowSort nzShowFilter [(nzSort)]="sortMap.name" (nzSortChange)="sort('name',$event)" [nzFilters]="filterNameList" (nzFilterChange)="search($event,searchAddressList)">Name</th>
           <th nzShowSort [(nzSort)]="sortMap.age" (nzSortChange)="sort('age',$event)">Age</th>
-          <th nzShowSort nzShowFilter [(nzSort)]="sortMap.address" (nzSortChange)="sort('address',$event)" [nzFilters]="filterAddressList" (nzOnFilter)="search(searchNameList,$event)">Address</th>
+          <th nzShowSort nzShowFilter [(nzSort)]="sortMap.address" (nzSortChange)="sort('address',$event)" [nzFilters]="filterAddressList" (nzFilterChange)="search(searchNameList,$event)">Address</th>
         </tr>
       </thead>
       <tbody>

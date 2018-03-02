@@ -1,24 +1,23 @@
 import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
 
-import { toBoolean } from '../core/util/convert';
-
 @Directive({
   // tslint:disable-next-line:directive-selector
-  selector: 'nz-table thead tr',
+  selector: 'tr:not(.clear-nz)',
   host    : {
     '[class.ant-table-row]': 'true'
   }
 })
 
-export class NzTbodyTrDirective {
+export class NzTrDirective {
 
   @Input()
   set nzExpand(value: boolean) {
-    this.renderer.addClass(this.elementRef.nativeElement, 'ant-table-expanded-row');
     if (value) {
       this.renderer.removeStyle(this.elementRef.nativeElement, 'display');
+      this.renderer.addClass(this.elementRef.nativeElement, 'ant-table-expanded-row');
     } else {
       this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'none');
+      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-table-expanded-row');
     }
   }
 

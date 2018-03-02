@@ -1,20 +1,23 @@
 import { Overlay } from '@angular/cdk/overlay';
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ContentChild,
+  ContentChildren,
   ElementRef,
   EventEmitter,
   Input,
   OnInit,
   Output,
+  QueryList,
   TemplateRef,
   ViewChild
 } from '@angular/core';
+import { isNotNil } from '../core/util/check';
 
 import { toBoolean } from '../core/util/convert';
 import { measureScrollbar } from '../core/util/mesure-scrollbar';
+import { NzThComponent } from './nz-th.component';
 
 import { NzTheadComponent } from './nz-thead.component';
 
@@ -23,32 +26,41 @@ import { NzTheadComponent } from './nz-thead.component';
   preserveWhitespaces: false,
   template           : `
     <ng-template #colGroupTemplate>
-      <colgroup *ngIf="nzTheadComponent&&!isWidthConfigSet">
-        <col [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth" *ngFor="let th of nzTheadComponent.listOfNzThComponent">
+      <colgroup *ngIf="!isWidthConfigSet">
+        <col [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth" *ngFor="let th of listOfNzThComponent">
       </colgroup>
       <colgroup *ngIf="isWidthConfigSet">
         <col [style.width]="width" [style.minWidth]="width" *ngFor="let width of nzWidthConfig">
       </colgroup>
     </ng-template>
     <ng-template #tableInnerTemplate>
-      <div class="ant-table-header" #tableHeaderElement (scroll)="syncScrollTable($event)" [ngStyle]="headerBottomStyle" *ngIf="nzScroll">
-        <table [class.ant-table-fixed]="nzScroll?.x" [style.width]="nzScroll?.x">
+      <div
+        #tableHeaderElement
+        *ngIf="nzScroll.x || nzScroll.y"
+        class="ant-table-header"
+        (scroll)="syncScrollTable($event)"
+        [ngStyle]="headerBottomStyle">
+        <table
+          [class.ant-table-fixed]="nzScroll.x"
+          [style.width]="nzScroll.x">
           <ng-template [ngTemplateOutlet]="colGroupTemplate"></ng-template>
-          <ng-container *ngIf="nzTheadComponent&&(nzScroll?.y)">
-            <thead class="ant-table-thead">
-              <ng-template [ngTemplateOutlet]="nzTheadComponent.template"></ng-template>
-            </thead>
-          </ng-container>
+          <thead class="ant-table-thead clear-nz" *ngIf="nzScroll.y">
+            <ng-template [ngTemplateOutlet]="nzTheadComponent?.template"></ng-template>
+          </thead>
         </table>
       </div>
-      <div class="ant-table-body" #tableBodyElement (scroll)="syncScrollTable($event)" [style.maxHeight]="nzScroll?.y" [style.overflow-y]="nzScroll?.y?'scroll':''" [style.overflow-x]="nzScroll?.x?'auto':''">
-        <table [class.ant-table-fixed]="nzScroll?.x" [style.width]="nzScroll?.x">
+      <div
+        #tableBodyElement
+        class="ant-table-body"
+        (scroll)="syncScrollTable($event)"
+        [style.maxHeight]="nzScroll.y"
+        [style.overflow-y]="nzScroll.y?'scroll':''"
+        [style.overflow-x]="nzScroll.x?'auto':''">
+        <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
           <ng-template [ngTemplateOutlet]="colGroupTemplate"></ng-template>
-          <ng-container *ngIf="nzTheadComponent&&(!nzScroll?.y)">
-            <thead class="ant-table-thead">
-              <ng-template [ngTemplateOutlet]="nzTheadComponent.template"></ng-template>
-            </thead>
-          </ng-container>
+          <thead class="ant-table-thead clear-nz" *ngIf="!nzScroll.y">
+            <ng-template [ngTemplateOutlet]="nzTheadComponent?.template"></ng-template>
+          </thead>
           <ng-content></ng-content>
         </table>
       </div>
@@ -71,11 +83,13 @@ import { NzTheadComponent } from './nz-thead.component';
     <div
       class="ant-table-wrapper"
       [class.ant-table-empty]="data.length==0">
-      <nz-spin [nzSpinning]="nzLoading">
+      <nz-spin
+        [nzDelay]="nzLoadingDelay"
+        [nzSpinning]="nzLoading">
         <div>
           <div
             class="ant-table"
-            [class.ant-table-fixed-header]="nzScroll"
+            [class.ant-table-fixed-header]="nzScroll.x || nzScroll.y"
             [class.ant-table-scroll-position-left]="scrollPosition==='left'"
             [class.ant-table-scroll-position-right]="scrollPosition==='right'"
             [class.ant-table-scroll-position-middle]="scrollPosition==='middle'"
@@ -90,12 +104,11 @@ import { NzTheadComponent } from './nz-thead.component';
               </ng-template>
             </div>
             <div class="ant-table-content">
-              <ng-container *ngIf="!nzScroll">
-                <ng-template [ngTemplateOutlet]="tableInnerTemplate"></ng-template>
+              <ng-container *ngIf="nzScroll.x || nzScroll.y; else tableInnerTemplate">
+                <div class="ant-table-scroll">
+                  <ng-template [ngTemplateOutlet]="tableInnerTemplate"></ng-template>
+                </div>
               </ng-container>
-              <div class="ant-table-scroll" *ngIf="nzScroll">
-                <ng-template [ngTemplateOutlet]="tableInnerTemplate"></ng-template>
-              </div>
             </div>
           </div>
         </div>
@@ -103,63 +116,73 @@ import { NzTheadComponent } from './nz-thead.component';
           *ngIf="nzIsPagination&&data.length"
           [nzInTable]="true"
           [nzShowSizeChanger]="nzShowSizeChanger"
-          [nzPageSizeOptions]="nzPageSizeSelectorValues"
+          [nzPageSizeOptions]="nzPageSizeOptions"
           [nzShowQuickJumper]="nzShowQuickJumper"
           [nzShowTotal]="nzShowTotal"
           [nzSize]="(nzSize=='middle'||nzSize=='small')?'small':''"
           [(nzPageSize)]="nzPageSize"
+          (nzPageSizeChange)="emitPageSize()"
           [nzTotal]="nzTotal"
           [(nzPageIndex)]="nzPageIndex"
-          (nzPageIndexChange)="pageChangeClick($event)">
+          (nzPageIndexChange)="emitPageIndex()">
         </nz-pagination>
       </nz-spin>
     </div>
   `
 })
-export class NzTableComponent implements AfterViewInit, OnInit {
+export class NzTableComponent implements OnInit {
   private _bordered = false;
   private _isPageIndexReset = true;
   private _isPagination = true;
   private _loading = false;
   private _showSizeChanger = false;
   private _showQuickJumper = false;
-  private _showTotal = false;
-  private _scroll: { x: string; y: string };
+  private _scroll: { x: string; y: string } = { x: null, y: null };
   private _footer: string | TemplateRef<void>;
   private _title: string | TemplateRef<void>;
   private _noResult: string | TemplateRef<void>;
   private _pageIndex = 1;
   private _pageSize = 10;
   private _widthConfig: string[] = [];
-  /* tslint:disable-next-line:no-any */
-  private _dataSource: any[] = [];
   private _total: number;
+  private _serverRender = false;
   isFooterString: boolean;
   isTitleString: boolean;
   isNoResultString: boolean;
   el: HTMLElement;
   scrollPosition: string;
   lastScrollLeft = 0;
+  /* tslint:disable-next-line:no-any */
+  syncData: any[] = [];
   /** public data for ngFor tr */
-  // TODO: the data cannot be type-checked in current design
   /* tslint:disable-next-line:no-any */
   data: any[] = [];
   headerBottomStyle;
-  isInit = false;
-  isAjaxData = false;
   isWidthConfigSet = false;
+  @ViewChild('tableHeaderElement') tableHeaderElement: ElementRef;
+  @ViewChild('tableBodyElement') tableBodyElement: ElementRef;
+  @ContentChild(NzTheadComponent) nzTheadComponent: NzTheadComponent;
+  @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
 
   @Output() nzPageSizeChange: EventEmitter<number> = new EventEmitter();
   @Output() nzPageIndexChange: EventEmitter<number> = new EventEmitter();
+  @Input() nzShowTotal: TemplateRef<{ $implicit: number, range: [ number, number ] }>;
+
   /* tslint:disable-next-line:no-any */
-  @Output() nzDataChange: EventEmitter<any[]> = new EventEmitter();
-  @Output() nzPageIndexChangeClick: EventEmitter<number> = new EventEmitter();
+  @Output() nzCurrentPageDataChange: EventEmitter<any[]> = new EventEmitter();
   @Input() nzSize: string;
-  @ViewChild('tableHeaderElement') tableHeaderElement: ElementRef;
-  @ViewChild('tableBodyElement') tableBodyElement: ElementRef;
   /** page size changer select values */
-  @Input() nzPageSizeSelectorValues = [ 10, 20, 30, 40, 50 ];
-  @ContentChild(NzTheadComponent) nzTheadComponent: NzTheadComponent;
+  @Input() nzPageSizeOptions = [ 10, 20, 30, 40, 50 ];
+  @Input() nzLoadingDelay = 0;
+
+  @Input()
+  set nzServerRender(value: boolean) {
+    this._serverRender = toBoolean(value);
+  }
+
+  get nzServerRender(): boolean {
+    return this._serverRender;
+  }
 
   @Input()
   set nzWidthConfig(value: string[]) {
@@ -247,26 +270,12 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   }
 
   @Input()
-  set nzShowTotal(value: boolean) {
-    this._showTotal = toBoolean(value);
-  }
-
-  get nzShowTotal(): boolean {
-    return this._showTotal;
-  }
-
-  @Input()
-  set nzIsPageIndexReset(value: boolean) {
-    this._isPageIndexReset = toBoolean(value);
-  }
-
-  get nzIsPageIndexReset(): boolean {
-    return this._isPageIndexReset;
-  }
-
-  @Input()
   set nzScroll(value: { x: string; y: string }) {
-    this._scroll = value;
+    if (isNotNil(value)) {
+      this._scroll = value;
+    } else {
+      this._scroll = { x: null, y: null };
+    }
     this.cdr.detectChanges();
     if (value && value.x) {
       this.scrollPosition = 'left';
@@ -277,26 +286,16 @@ export class NzTableComponent implements AfterViewInit, OnInit {
     return this._scroll;
   }
 
-  /** async data */
   @Input()
   /* tslint:disable-next-line:no-any */
-  set nzAjaxData(data: any[]) {
-    this.isAjaxData = true;
-    this.data = data;
-  }
-
-  /** sync data */
-  @Input()
-  /* tslint:disable-next-line:no-any */
-  set nzDataSource(value: any[]) {
-    this._dataSource = value;
-    this.nzTotal = this._dataSource.length;
-    this.generateData(true);
-  }
-
-  /* tslint:disable-next-line:no-any */
-  get nzDataSource(): any[] {
-    return this._dataSource;
+  set nzData(data: any[]) {
+    if (this.nzServerRender) {
+      this.data = data;
+    } else {
+      this.syncData = data;
+      this.nzTotal = this.syncData.length;
+      this.generateData(true);
+    }
   }
 
   @Input()
@@ -306,15 +305,18 @@ export class NzTableComponent implements AfterViewInit, OnInit {
     }
     this._pageIndex = value;
     this.generateData();
-    this.nzPageIndexChange.emit(this.nzPageIndex);
   }
 
   get nzPageIndex(): number {
     return this._pageIndex;
   }
 
-  pageChangeClick(value: number): void {
-    this.nzPageIndexChangeClick.emit(value);
+  emitPageIndex(): void {
+    this.nzPageIndexChange.emit(this.nzPageIndex);
+  }
+
+  emitPageSize(): void {
+    this.nzPageSizeChange.emit(this.nzPageSize);
   }
 
   @Input()
@@ -324,9 +326,6 @@ export class NzTableComponent implements AfterViewInit, OnInit {
     }
     this._pageSize = value;
     this.generateData();
-    if (this.isInit) {
-      this.nzPageSizeChange.emit(value);
-    }
   }
 
   get nzPageSize(): number {
@@ -346,21 +345,21 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   }
 
   generateData(forceRefresh: boolean = false): void {
-    if (!this.isAjaxData) {
+    if (!this.nzServerRender) {
       if (this.nzIsPagination) {
         if (forceRefresh) {
-          if (this.nzIsPageIndexReset) {
-            this.nzPageIndex = 1;
-          } else {
-            const maxPageIndex = Math.ceil(this._dataSource.length / this.nzPageSize);
-            this.nzPageIndex = !this.nzPageIndex ? 1 : (this.nzPageIndex > maxPageIndex ? maxPageIndex : this.nzPageIndex);
+          const maxPageIndex = Math.ceil(this.syncData.length / this.nzPageSize);
+          const pageIndex = !this.nzPageIndex ? 1 : (this.nzPageIndex > maxPageIndex ? maxPageIndex : this.nzPageIndex);
+          if (pageIndex !== this.nzPageIndex) {
+            this.nzPageIndex = pageIndex;
+            this.nzPageIndexChange.emit(pageIndex);
           }
         }
-        this.data = this._dataSource.slice((this.nzPageIndex - 1) * this.nzPageSize, this.nzPageIndex * this.nzPageSize);
+        this.data = this.syncData.slice((this.nzPageIndex - 1) * this.nzPageSize, this.nzPageIndex * this.nzPageSize);
       } else {
-        this.data = this._dataSource;
+        this.data = this.syncData;
       }
-      this.nzDataChange.emit(this.data);
+      this.nzCurrentPageDataChange.emit(this.data);
     }
   }
 
@@ -407,9 +406,5 @@ export class NzTableComponent implements AfterViewInit, OnInit {
 
   constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private overlay: Overlay) {
     this.el = this.elementRef.nativeElement;
-  }
-
-  ngAfterViewInit(): void {
-    this.isInit = true;
   }
 }

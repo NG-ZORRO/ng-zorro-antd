@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <nz-table
       #rowSelectionTable
-      [nzDataSource]="dataSet"
+      [nzData]="dataSet"
       [nzPageSize]="10"
       (nzPageIndexChange)="refreshStatus()"
       (nzPageSizeChange)="refreshStatus()">
