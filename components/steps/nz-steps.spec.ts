@@ -1,6 +1,7 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { NzStepComponent } from './nz-step.component';
 import { NzStepsComponent } from './nz-steps.component';
 import { NzStepsModule } from './nz-steps.module';

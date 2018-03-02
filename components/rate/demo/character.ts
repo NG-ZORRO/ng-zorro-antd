@@ -3,23 +3,14 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-rate-character',
   template: `
-    <nz-rate [ngModel]="0" nzAllowHalf>
-      <ng-template #character>
-        <i class="anticon anticon-heart"></i>
-      </ng-template>
-    </nz-rate>
+    <nz-rate [ngModel]="0" nzAllowHalf [nzCharacter]="characterIcon"></nz-rate>
     <br>
-    <nz-rate [ngModel]="0" nzAllowHalf class="large">
-      <ng-template #character>
-        A
-      </ng-template>
-    </nz-rate>
+    <nz-rate [ngModel]="0" nzAllowHalf class="large" [nzCharacter]="characterEnLetter"></nz-rate>
     <br>
-    <nz-rate [ngModel]="0" nzAllowHalf>
-      <ng-template #character>
-        好
-      </ng-template>
-    </nz-rate>
+    <nz-rate [ngModel]="0" nzAllowHalf [nzCharacter]="characterZhLetter"></nz-rate>
+    <ng-template #characterIcon><i class="anticon anticon-heart"></i></ng-template>
+    <ng-template #characterZhLetter>好</ng-template>
+    <ng-template #characterEnLetter>A</ng-template>
   `,
   styles  : [
       `

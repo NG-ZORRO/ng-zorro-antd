@@ -1,9 +1,10 @@
 import { Directive, ElementRef, HostBinding, Input } from '@angular/core';
+
 import { toBoolean } from '../core/util/convert';
 
 @Directive({
   selector: '[nz-tab-label]',
-  host: {
+  host    : {
     '[class.ant-tabs-tab]': 'true'
   }
 })

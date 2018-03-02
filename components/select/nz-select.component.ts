@@ -20,10 +20,12 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
 import { dropDownAnimation } from '../core/animation/dropdown-animations';
 import { tagAnimation } from '../core/animation/tag-animations';
 import { toBoolean } from '../core/util/convert';
 import { NzLocaleService } from '../locale/index';
+
 import { NzOptionComponent } from './nz-option.component';
 import { NzOptionPipe } from './nz-option.pipe';
 

@@ -2,6 +2,7 @@ import {
   Component,
   Input
 } from '@angular/core';
+
 import { fadeAnimation } from '../core/animation/fade-animations';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 

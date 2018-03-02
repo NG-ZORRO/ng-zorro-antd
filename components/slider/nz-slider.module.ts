@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
+
 import { NzSliderHandleComponent } from './nz-slider-handle.component';
 import { NzSliderMarksComponent } from './nz-slider-marks.component';
 import { NzSliderStepComponent } from './nz-slider-step.component';

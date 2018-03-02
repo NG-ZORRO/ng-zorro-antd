@@ -42,7 +42,6 @@
   },
   "dependencies": {
     "@angular/cdk": "^5.0.0",
-    "moment": "^2.18.1",
     "remark": "^8.0.0",
     "tslib": "^1.7.1",
     "wrench": "^1.5.9",
@@ -97,7 +96,6 @@
     "@angular/cdk": "^5.0.0",
     "@angular/common": "^5.0.0",
     "@angular/core": "^5.0.0",
-    "@angular/forms": "^5.0.0",
-    "moment": "^2.18.1"
+    "@angular/forms": "^5.0.0"
   }
 }

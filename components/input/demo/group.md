@@ -9,11 +9,11 @@ title:
 
 输入框的组合展现。
 
-注意：使用 `compact` 模式时，不需要通过 `Col` 来控制宽度。
+注意：使用 `nzCompact` 模式时，不需要通过 `nz-col` 来控制宽度。
 
 ## en-US
 
 Input.Group example
 
-Note: You don't need `Col` to control the width in the `compact` mode.
+Note: You don't need `nz-col` to control the width in the `nzCompact` mode.
 

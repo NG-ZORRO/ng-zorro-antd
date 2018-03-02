@@ -3,47 +3,31 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-card-tabs',
   template: `
-    <nz-card style="width: 100%;">
-      <ng-template #title>Card title</ng-template>
-      <ng-template #extra>
-        <a>More</a>
-      </ng-template>
-      <ng-template #tabs>
+    <nz-card style="width: 100%;" nzTitle="Card title" [nzExtra]="extraTemplate">
+      <nz-card-tab>
         <nz-tabset nzSize="large" [(nzSelectedIndex)]="index1">
-          <nz-tab>
-            <ng-template #nzTabHeading>tab1</ng-template>
-          </nz-tab>
-          <nz-tab>
-            <ng-template #nzTabHeading>tab2</ng-template>
-          </nz-tab>
+          <nz-tab nzTitle="tab1"></nz-tab>
+          <nz-tab nzTitle="tab2"></nz-tab>
         </nz-tabset>
-      </ng-template>
-      <ng-template #body>
-        content{{ index1 }}
-      </ng-template>
+      </nz-card-tab>
+      content{{ index1 }}
     </nz-card>
+    <ng-template #extraTemplate>
+      <a>More</a>
+    </ng-template>
     <br>
     <br>
     <nz-card style="width: 100%;">
-      <ng-template #tabs>
+      <nz-card-tab>
         <nz-tabset nzSize="large" [(nzSelectedIndex)]="index2">
-          <nz-tab>
-            <ng-template #nzTabHeading>article</ng-template>
-          </nz-tab>
-          <nz-tab>
-            <ng-template #nzTabHeading>app</ng-template>
-          </nz-tab>
-          <nz-tab>
-            <ng-template #nzTabHeading>project</ng-template>
-          </nz-tab>
+          <nz-tab nzTitle="article"></nz-tab>
+          <nz-tab nzTitle="app"></nz-tab>
+          <nz-tab nzTitle="project"></nz-tab>
         </nz-tabset>
-      </ng-template>
-      <ng-template #body>
-        content{{ index2 }}
-      </ng-template>
+      </nz-card-tab>
+      content{{ index2 }}
     </nz-card>
-  `,
-  styles  : []
+  `
 })
 export class NzDemoCardTabsComponent {
   index1 = 0;

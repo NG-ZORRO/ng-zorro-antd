@@ -6,6 +6,7 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
+
 import { isInteger } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 

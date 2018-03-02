@@ -1,7 +1,9 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { NzMatchMediaService } from '../core/services/nz-match-media.service';
+
 import { NzDemoLayoutBasicComponent } from './demo/basic';
 import { NzDemoLayoutCustomTriggerComponent } from './demo/custom-trigger';
 import { NzDemoLayoutResponsiveComponent } from './demo/responsive';

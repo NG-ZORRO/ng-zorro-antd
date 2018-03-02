@@ -18,5 +18,6 @@ A divider line separates different content.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| dashed | whether line is dasded | Boolean | false |
-| type | direction type of divider | enum: `horizontal` `vertical` | `horizontal` |
+| nzDashed | whether line is dasded | Boolean | false |
+| nzType | direction type of divider | enum: `horizontal` `vertical` | `horizontal` |
+| nzText | inner text of divider | `string丨TemplateRef<void>` | - |

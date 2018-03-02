@@ -15,9 +15,8 @@ subtitle: 加载中
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| delay | 延迟显示加载效果的时间（防止闪烁） | number (毫秒) | - |
-| indicator | 加载指示符 | ReactNode | - |
-| size | 组件大小，可选值为 `small` `default` `large` | string | 'default' |
-| spinning | 是否旋转 | boolean | true |
-| tip | 当作为包裹元素时，可以自定义描述文案 | string | - |
-| wrapperClassName | 包装器的类属性 | string | - |
+| nzDelay | 延迟显示加载效果的时间（防止闪烁） | number (毫秒) | - |
+| nzIndicator | 加载指示符 | `TemplateRef<void>` | - |
+| nzSize | 组件大小，可选值为 `small` `default` `large` | string | 'default' |
+| nzSpinning | 是否旋转 | boolean | true |
+| nzTip | 当作为包裹元素时，可以自定义描述文案 | string | - |

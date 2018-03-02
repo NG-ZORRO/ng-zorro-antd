@@ -14,18 +14,19 @@ A content area which can be collapsed and expanded.
 
 ## API
 
-### Collapse
+### nz-collapse
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| activeKey | Key of the active panel | string\[]｜string | No default value. In `accordion` mode, it's the key of the first panel. |
-| defaultActiveKey | Key of the initial active panel | string | - |
-| onChange | Callback function executed when active panel is changed | Function | - |
+| nzAccordion | Accordion mode | boolean | false|
+| nzBordered | Set border style | boolean | true |
 
-### Collapse.Panel
+### nz-collapse-panel
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| disabled | If `true`, panel cannot be opened or closed | boolean | `false` |
-| header | Title of the panel | string｜ReactNode | - |
-| key | Unique key identifying the panel from among its siblings | string | - |
+| nzDisabled | If `true`, panel cannot be opened or closed | boolean | `false` |
+| nzHeader | Title of the panel | string｜ `TemplateRef<void>` | - |
+| nzShowArrow | Display arrow or not | boolean | true |
+| nzActive | Active status of panel, double binding | boolean | - |
+| nzActiveChange | Callback function of the active status | (nzActive:boolean)=>{} | - |

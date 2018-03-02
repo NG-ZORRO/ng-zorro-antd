@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzCollapseComponent } from './nz-collapse.component';
-import { NzCollapsesetComponent } from './nz-collapseset.component';
 
-export const NZ_COLLAPSE_DIRECTIVES = [ NzCollapsesetComponent, NzCollapseComponent ];
+import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
+import { NzCollapseComponent } from './nz-collapse.component';
 
 @NgModule({
-  declarations: NZ_COLLAPSE_DIRECTIVES,
-  exports     : NZ_COLLAPSE_DIRECTIVES,
+  declarations: [ NzCollapsePanelComponent, NzCollapseComponent ],
+  exports     : [ NzCollapsePanelComponent, NzCollapseComponent ],
   imports     : [ CommonModule ]
 })
 

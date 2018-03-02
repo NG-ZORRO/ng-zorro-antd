@@ -1,59 +1,101 @@
 import {
   Directive,
   ElementRef,
-  HostBinding,
+  OnInit,
+  Renderer2
 } from '@angular/core';
+
+import { isNotNil } from '../core/util/check';
 
 @Directive({
   selector: '[nz-carousel-content]',
-  host: {
+  host    : {
     '[class.slick-slide]': 'true'
   }
 })
-export class NzCarouselContentDirective {
-  width = 0;
-  isActive = false;
-  left: number = null;
-  top: number = null;
-  fadeMode = false;
-  nativeElement: HTMLElement;
+export class NzCarouselContentDirective implements OnInit {
+  private _active = false;
+  private _width: number = 0;
+  private _left: number;
+  private _top: number;
+  private _fadeMode = false;
+  el: HTMLElement;
 
-  @HostBinding('class.slick-active')
-  get setActiveClass(): boolean {
-    return this.isActive === true;
+  set width(value: number) {
+    this._width = value;
+    this.renderer.setStyle(this.el, 'width', `${this.width}px`);
   }
 
-  @HostBinding('style.width.px')
-  get setWidth(): number {
-    return this.width;
+  get width(): number {
+    return this._width;
   }
 
-  @HostBinding('style.left.px')
-  get setLeft(): number {
-    return this.left;
-  }
-
-  @HostBinding('style.top.px')
-  get setTop(): number {
-    return this.top;
-  }
-
-  @HostBinding('style.position')
-  get setPosition(): string {
-    if (this.fadeMode) {
-      return 'relative';
+  set left(value: number) {
+    this._left = value;
+    if (isNotNil(this.left)) {
+      this.renderer.setStyle(this.el, 'left', `${this.left}px`);
+    } else {
+      this.renderer.removeStyle(this.el, 'left');
     }
   }
 
-  @HostBinding('style.opacity')
-  get setOpacity(): number {
-    if (this.fadeMode) {
-      return this.isActive ? 1 : 0;
+  get left(): number {
+    return this._left;
+  }
+
+  set top(value: number) {
+    this._top = value;
+    if (isNotNil(this.top)) {
+      this.renderer.setStyle(this.el, 'top', `${this.top}px`);
+    } else {
+      this.renderer.removeStyle(this.el, 'top');
     }
   }
 
-  constructor(private _el: ElementRef) {
-    this.nativeElement = this._el.nativeElement;
+  get top(): number {
+    return this._top;
+  }
+
+  set isActive(value: boolean) {
+    this._active = value;
+    this.updateOpacity();
+    if (this.isActive) {
+      this.renderer.addClass(this.el, 'slick-active');
+    } else {
+      this.renderer.removeClass(this.el, 'slick-active');
+    }
+  }
+
+  get isActive(): boolean {
+    return this._active;
+  }
+
+  set fadeMode(value: boolean) {
+    this._fadeMode = value;
+    if (this.fadeMode) {
+      this.renderer.setStyle(this.el, 'position', 'relative');
+    } else {
+      this.renderer.removeStyle(this.el, 'position');
+    }
+    this.updateOpacity();
+  }
+
+  get fadeMode(): boolean {
+    return this._fadeMode;
+  }
+
+  updateOpacity(): void {
+    if (this.fadeMode) {
+      this.renderer.setStyle(this.el, 'opacity', this.isActive ? 1 : 0);
+    }
+  }
+
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+    this.el = this.elementRef.nativeElement;
+  }
+
+  ngOnInit(): void {
+    this.renderer.setStyle(this.el, 'transition', 'opacity 500ms ease');
   }
 
 }

@@ -7,9 +7,9 @@ title:
 
 ## zh-CN
 
-可以利用 `Card.Meta` 支持更灵活的内容。
+可以利用 `nz-card-meta` 支持更灵活的内容。
 
 ## en-US
 
-You can use `Card.Meta` to support more flexible content.
+You can use `nz-card-meta` to support more flexible content.
 
