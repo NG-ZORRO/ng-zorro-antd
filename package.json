@@ -92,7 +92,8 @@
     "web-animations-js": "^2.3.1",
     "wrench": "^1.5.9",
     "yaml-front-matter": "^3.4.0",
-    "zone.js": "^0.8.19"
+    "zone.js": "^0.8.19",
+    "ngx-infinite-scroll": "^0.8.2"
   },
   "peerDependencies": {
     "@angular/animations": "^5.0.0",
