@@ -4,15 +4,13 @@ import { Component, OnInit } from '@angular/core';
   selector: 'nz-demo-table-fixed-header',
   template: `
     <nz-table #nzTable [nzDataSource]="dataSet" [nzPageSize]="50" [nzScroll]="{ y: '240px' }">
-      <ng-template #nzFixedHeader>
-        <thead>
-          <tr>
-            <th [nzWidth]="'150px'">Name</th>
-            <th [nzWidth]="'150px'">Age</th>
-            <th>Address</th>
-          </tr>
-        </thead>
-      </ng-template>
+      <thead>
+        <tr>
+          <th [nzWidth]="'150px'">Name</th>
+          <th [nzWidth]="'150px'">Age</th>
+          <th>Address</th>
+        </tr>
+      </thead>
       <tbody>
         <tr *ngFor="let data of nzTable.data">
           <td>{{data.name}}</td>
@@ -31,7 +29,7 @@ export class NzDemoTableFixedHeaderComponent implements OnInit {
       this.dataSet.push({
         name   : `Edward King ${i}`,
         age    : 32,
-        address: `London, Park Lane no. ${i}`,
+        address: `London, Park Lane no. ${i}`
       });
     }
   }

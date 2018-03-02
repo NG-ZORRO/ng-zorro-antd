@@ -4,23 +4,21 @@ import { Component, OnInit } from '@angular/core';
   selector: 'nz-demo-table-fixed-columns-header',
   template: `
     <nz-table #nzTable [nzDataSource]="dataSet" [nzPageSize]="10" [nzScroll]="{ x:'1300px',y: '240px' }">
-      <ng-template #nzFixedHeader>
-        <thead>
-          <tr>
-            <th nzWidth="100px" nzLeft="0px">Full Name</th>
-            <th nzWidth="100px" nzLeft="100px">Age</th>
-            <th>Column 1</th>
-            <th>Column 2</th>
-            <th>Column 3</th>
-            <th>Column 4</th>
-            <th>Column 5</th>
-            <th>Column 6</th>
-            <th>Column 7</th>
-            <th>Column 8</th>
-            <th nzWidth="100px" nzRight="0px">Action</th>
-          </tr>
-        </thead>
-      </ng-template>
+      <thead>
+        <tr>
+          <th nzWidth="100px" nzLeft="0px">Full Name</th>
+          <th nzWidth="100px" nzLeft="100px">Age</th>
+          <th>Column 1</th>
+          <th>Column 2</th>
+          <th>Column 3</th>
+          <th>Column 4</th>
+          <th>Column 5</th>
+          <th>Column 6</th>
+          <th>Column 7</th>
+          <th>Column 8</th>
+          <th nzWidth="100px" nzRight="0px">Action</th>
+        </tr>
+      </thead>
       <tbody>
         <tr *ngFor="let data of nzTable.data">
           <td nzLeft="0px">{{data.name}}</td>

@@ -3,6 +3,8 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnDestroy,
+  OnInit,
   Output,
   Renderer2,
   ViewChild

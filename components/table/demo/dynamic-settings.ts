@@ -102,34 +102,21 @@ import { Component, OnInit } from '@angular/core';
       [nzFooter]="footer?'Here is Footer':null"
       [nzTitle]="title?'Here is Title':null"
       [nzSize]="size">
-      <ng-template #nzFixedHeader [ngIf]="header&&!fixHeader">
-        <thead>
-          <tr>
-            <th nzExpand *ngIf="expandable"></th>
-            <th nzCheckbox *ngIf="checkbox">
-              <label nz-checkbox
-                [(ngModel)]="allChecked"
-                [nzIndeterminate]="indeterminate"
-                (ngModelChange)="checkAll($event)">
-              </label>
-            </th>
-            <th [nzWidth]="'150px'">Name</th>
-            <th [nzWidth]="'70px'">Age</th>
-            <th>Address</th>
-            <th [nzWidth]="'360px'">Action</th>
-          </tr>
-        </thead>
-      </ng-template>
+      <thead *ngIf="header">
+        <tr>
+          <th nzWidth="50px" nzShowExpand *ngIf="expandable" ></th>
+          <th nzWidth="62px" nzShowCheckbox *ngIf="checkbox" [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
+          <th nzWidth="150px">Name</th>
+          <th nzWidth="70px">Age</th>
+          <th>Address</th>
+          <th nzWidth="360px">Action</th>
+        </tr>
+      </thead>
       <tbody>
         <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
           <tr>
             <td nzShowExpand *ngIf="expandable" [(nzExpand)]="data.expand"></td>
-            <td nzCheckbox *ngIf="checkbox">
-              <label nz-checkbox
-                [(ngModel)]="data.checked"
-                (ngModelChange)="refreshStatus($event)">
-              </label>
-            </td>
+            <td nzShowCheckbox *ngIf="checkbox" [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus($event)"></td>
             <td>{{data.name}}</td>
             <td>{{data.age}}</td>
             <td>{{data.address}}</td>
@@ -139,7 +126,7 @@ import { Component, OnInit } from '@angular/core';
               <a href="#">Delete</a>
             </td>
           </tr>
-          <tr [nzExpand]="data.expand" >
+          <tr [nzExpand]="data.expand">
             <td></td>
             <td [attr.colspan]="checkbox?5:4">{{data.description}}</td>
           </tr>

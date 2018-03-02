@@ -10,17 +10,16 @@ import { NzPaginationModule } from '../pagination';
 import { NzRadioModule } from '../radio';
 import { NzSpinModule } from '../spin';
 
-import { NzColumnDirective } from './nz-column.directive';
 import { NzTableComponent } from './nz-table.component';
 import { NzTbodyTrDirective } from './nz-tbody-tr.directive';
 import { NzTbodyDirective } from './nz-tbody.directive';
 import { NzTdComponent } from './nz-td.component';
 import { NzThComponent } from './nz-th.component';
-import { NzTheadDirective } from './nz-thead.directive';
+import { NzTheadComponent } from './nz-thead.component';
 
 @NgModule({
-  declarations: [ NzColumnDirective, NzTableComponent, NzThComponent, NzTdComponent, NzTheadDirective, NzTbodyDirective, NzTbodyTrDirective ],
-  exports     : [ NzColumnDirective, NzTableComponent, NzThComponent, NzTdComponent, NzTheadDirective, NzTbodyDirective, NzTbodyTrDirective ],
+  declarations: [ NzTableComponent, NzThComponent, NzTdComponent, NzTheadComponent, NzTbodyDirective, NzTbodyTrDirective ],
+  exports     : [ NzTableComponent, NzThComponent, NzTdComponent, NzTheadComponent, NzTbodyDirective, NzTbodyTrDirective ],
   imports     : [ NzMenuModule, FormsModule, NzRadioModule, NzCheckboxModule, NzDropDownModule, CommonModule, NzPaginationModule, NzSpinModule, NzI18nModule ]
 })
 export class NzTableModule {

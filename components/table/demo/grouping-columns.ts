@@ -3,43 +3,35 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-grouping-columns',
   template: `
-    <nz-table #groupingTable [nzDataSource]="displayData" nzBordered nzSize="middle" [nzScroll]="{ x:'130%',y: '240px' }">
-      <ng-template #nzColgroup>
-        <colgroup>
-          <col nz-column nzWidth="100px">
-          <col nz-column nzWidth="200px">
-          <col nz-column nzWidth="200px">
-          <col nz-column nzWidth="100px">
-          <col nz-column nzWidth="100px">
-          <col>
-          <col>
-          <col nz-column nzWidth="60px">
-        </colgroup>
-      </ng-template>
-      <ng-template #nzFixedHeader>
-        <thead>
-          <tr style="height: 46px;">
-            <th rowspan="4" nzLeft="0px" nzShowFilter [nzFilters]="filterName" (nzOnFilter)="search($event)">Name</th>
-            <th colspan="4">Other</th>
-            <th colspan="2">Company</th>
-            <th rowspan="4" nzRight="0px">Gender</th>
-          </tr>
-          <tr style="height: 46px;">
-            <th rowspan="3" nzShowSort [(nzSort)]="sortValue" (nzSortChange)="search()">Age</th>
-            <th colspan="3">Address</th>
-            <th rowspan="3">Company Address</th>
-            <th rowspan="3">Company Name</th>
-          </tr>
-          <tr style="height: 46px;">
-            <th rowspan="2">Street</th>
-            <th colspan="2">Block</th>
-          </tr>
-          <tr style="height: 46px;">
-            <th>Building</th>
-            <th>Door No.</th>
-          </tr>
-        </thead>
-      </ng-template>
+    <nz-table
+      #groupingTable
+      [nzDataSource]="displayData"
+      nzBordered
+      nzSize="middle"
+      [nzWidthConfig]="['100px','200px','200px','100px','100px',null,null,'60px']"
+      [nzScroll]="{ x:'130%',y: '240px' }">
+      <thead>
+        <tr style="height: 46px;">
+          <th rowspan="4" nzLeft="0px" nzShowFilter [nzFilters]="filterName" (nzOnFilter)="search($event)">Name</th>
+          <th colspan="4">Other</th>
+          <th colspan="2">Company</th>
+          <th rowspan="4" nzRight="0px">Gender</th>
+        </tr>
+        <tr style="height: 46px;">
+          <th rowspan="3" nzShowSort [(nzSort)]="sortValue" (nzSortChange)="search()">Age</th>
+          <th colspan="3">Address</th>
+          <th rowspan="3">Company Address</th>
+          <th rowspan="3">Company Name</th>
+        </tr>
+        <tr style="height: 46px;">
+          <th rowspan="2">Street</th>
+          <th colspan="2">Block</th>
+        </tr>
+        <tr style="height: 46px;">
+          <th>Building</th>
+          <th>Door No.</th>
+        </tr>
+      </thead>
       <tbody>
         <tr *ngFor="let data of groupingTable.data">
           <td nzLeft="0px">{{data.name}}</td>

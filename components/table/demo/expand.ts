@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     <nz-table #nzTable [nzDataSource]="dataSet" [nzPageSize]="10">
       <thead>
         <tr>
-          <th nzExpand></th>
+          <th nzShowExpand></th>
           <th>Name</th>
           <th>Age</th>
           <th>Address</th>

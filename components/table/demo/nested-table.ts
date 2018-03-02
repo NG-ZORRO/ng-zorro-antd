@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
     <nz-table #nestedTable [nzDataSource]="nestedTableData" [nzPageSize]="10">
       <thead>
         <tr>
-          <th nzExpand></th>
+          <th nzShowExpand></th>
           <th>Name</th>
           <th>Platform</th>
           <th>Version</th>
