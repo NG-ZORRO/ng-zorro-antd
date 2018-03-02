@@ -1,7 +1,7 @@
 # 进度
 
 ## 组件
-| 组件 | 文档 | 测试 | 功能 | 负责 | 重构 |
+| 组件 | 文档 | 测试 | 功能 | 负责 | 重写 |
 | --- | --- | --- | --- | --- | --- |
 | button | √ | 100% | 100% | vthinkxie | - |
 | icon | √ | - | 100% | vthinkxie | - |
@@ -14,27 +14,27 @@
 | steps | √ | 100% | 100% | vthinkxie | - |
 | checkbox | √ | 100% | 100% | vthinkxie | - |
 | form | x | x | x | vthinkxie | - |
-| input | x | x | x | vthinkxie | - |
-| inputnumber | x | x | x | vthinkxie | - |
-| radio | x | x | x | vthinkxie | - |
-| rate | x | x | x | vthinkxie | - |
+| input | √ | 100% | 100% | vthinkxie | √ |
+| inputnumber | √ | 100% | 100% | vthinkxie | √ |
+| radio | √ | 100% | 100% | vthinkxie | - |
+| rate | √ | 100% | 100% | vthinkxie | - |
 | select | x | x | x | vthinkxie | - |
-| switch | x | x | x | vthinkxie | - |
-| badge | x | x | x | vthinkxie | - |
-| card | x | x | x | vthinkxie | - |
-| carousel | x | x | x | vthinkxie | - |
-| collapse | x | x | x | vthinkxie | - |
-| table | x | x | x | vthinkxie | - |
-| tabs | x | x | x | vthinkxie | - |
-| timeline | x | x | x | vthinkxie | - |
-| alert | x | x | x | vthinkxie | - |
-| progress | x | x | x | vthinkxie | - |
-| spin | x | x | x | vthinkxie | - |
+| switch | √ | 100% | 100% | vthinkxie | - |
+| badge | √ | 100% | 100% | vthinkxie | - |
+| card | √ | 100% | 100% | vthinkxie | - |
+| carousel | √ | 100% | 100% | vthinkxie | - |
+| collapse | √ | 100% | 100% | vthinkxie | - |
+| table | x | x | x | vthinkxie | - | 
+| tabs | √ | 100% | 100% | vthinkxie | - |
+| timeline | √ | 100% | 100% | vthinkxie | - |
+| alert | √ | 100% | 100% | vthinkxie | - |
+| progress | √ | 100% | 100% | vthinkxie | √ |
+| spin | √ | 100% | 100% | vthinkxie | - |
 | popover | x | x | x | wilsoncook | - |
 | tooltip | x | x | x | wilsoncook | - |
 | popconfirm | x | x | x | wilsoncook | - |
 | slider | x | x | x | wilsoncook | - |
-| modal | x | x | x | wilsoncook | - |
+| modal | 90% | 100% | 100% | wilsoncook | √ |
 | message | x | x | x | wilsoncook | - |
 | notification | x | x | x | wilsoncook | - |
 | datepicker | x | x | x | trotyl | - |
@@ -42,12 +42,12 @@
 | calendar | x | x | x | trotyl | - |
 | affix | x | x | x | cipchk | - |
 | transfer | √ | 100% | 100% | cipchk | x |
-| avatar | x | x | x | cipchk | - |
+| avatar | √ | 100% | 100% | cipchk | x |
 | list | x | x | x | cipchk | - |
 | upload | x | x | x | cipchk | - |
 | anchor | x | x | x | cipchk | - |
 | backtop | x | x | x | cipchk | - |
-| divider | x | x | x | cipchk | - |
+| divider | √ | 100% | 100% | cipchk | x |
 | treeselect | x | x | x | simplejason | - |
 | tree | x | x | x | simplejason | - |
 | tags | x | x | x | fbchen | -|

@@ -2,7 +2,7 @@
 order: 3
 title:
   zh-CN: 按钮样式
-  en-US: radio style
+  en-US: Radio Style
 ---
 
 ## zh-CN

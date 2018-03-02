@@ -4,6 +4,6 @@ export function toBoolean(value: boolean | string): boolean {
   return coerceBooleanProperty(value);
 }
 
-export function toNumber(value: number | string): number {
-  return coerceNumberProperty(value);
+export function toNumber<D>(value: number | string, fallback: D): number | D {
+  return coerceNumberProperty(value, fallback);
 }

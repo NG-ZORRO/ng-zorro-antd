@@ -4,15 +4,15 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-switch-disabled',
   template: `
     <nz-switch [(ngModel)]="switchValue" [nzDisabled]="isDisabled"></nz-switch>
-    <div style="margin-top:8px;">
-      <button nz-button [nzType]="'primary'" (click)="toggleDisabled()">Toggle disabled</button>
-    </div>`,
-  styles  : []
+    <br>
+    <button nz-button [nzType]="'primary'" (click)="isDisabled = !isDisabled">Toggle disabled</button>`,
+  styles  : [ `
+    nz-switch {
+      margin-bottom: 8px;
+    }`
+  ]
 })
 export class NzDemoSwitchDisabledComponent {
   switchValue = false;
   isDisabled = true;
-  toggleDisabled = () => {
-    this.isDisabled = !this.isDisabled;
-  }
 }

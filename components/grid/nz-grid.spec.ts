@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { NzDemoGridBasicComponent } from './demo/basic';
 import { NzDemoGridFlexComponent } from './demo/flex';
 import { NzDemoGridFlexAlignComponent } from './demo/flex-align';

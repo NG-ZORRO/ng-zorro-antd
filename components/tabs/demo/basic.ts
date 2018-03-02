@@ -4,26 +4,16 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-tabs-basic',
   template: `
     <nz-tabset>
-      <nz-tab>
-        <ng-template #nzTabHeading>
-          Tab 1
-        </ng-template>
-        <span>Content of Tab Pane 1</span>
+      <nz-tab nzTitle="Tab 1">
+        Content of Tab Pane 1
       </nz-tab>
-      <nz-tab>
-        <ng-template #nzTabHeading>
-          Tab 2
-        </ng-template>
-        <span>Content of Tab Pane 2</span>
+      <nz-tab nzTitle="Tab 2">
+        Content of Tab Pane 2
       </nz-tab>
-      <nz-tab>
-        <ng-template #nzTabHeading>
-          Tab 3
-        </ng-template>
-        <span>Content of Tab Pane 3</span>
+      <nz-tab nzTitle="Tab 3">
+        Content of Tab Pane 3
       </nz-tab>
-    </nz-tabset>`,
-  styles  : []
+    </nz-tabset>`
 })
 export class NzDemoTabsBasicComponent {
 }

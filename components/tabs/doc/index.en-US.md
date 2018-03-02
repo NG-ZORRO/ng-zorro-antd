@@ -13,33 +13,35 @@ Ant Design has 3 types of Tabs for different situations.
 
 - Card Tabs: for managing too many closeable views.
 - Normal Tabs: for functional aspects of a page.
-- [RadioButton](/components/radio/#components-radio-demo-radiobutton): for secondary tabs.
+- [RadioButton](/components/radio/en/#components-radio-demo-radiobutton): for secondary tabs.
 
 ## API
 
-### Tabs
+### nz-tabset
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| activeKey | Current TabPane's key | string | - |
-| animated | Whether to change tabs with animation. Only works while `tabPosition="top"｜"bottom"` | boolean ｜ {inkBar:boolean, tabPane:boolean} | `true`, `false` when `type="card"` |
-| defaultActiveKey | Initial active TabPane's key, if `activeKey` is not set. | string | - |
-| hideAdd | Hide plus icon or not. Only works while `type="editable-card"` | boolean | `false` |
-| size | Tab bar size. Only works while `type="line"`. | `default` ｜ `small` | `default` |
-| tabBarExtraContent | Extra content in tab bar | React.ReactNode | - |
-| tabBarStyle | Tab bar style object | object | - |
-| tabPosition | Position of tabs | `top` ｜ `right` ｜ `bottom` ｜ `left` | `top` |
-| type | Basic style of tabs | `line` ｜ `card` ｜ `editable-card` | `line` |
-| onChange | Callback executed when active tab is changed | Function | - |
-| onEdit | Callback executed when tab is added or removed. Only works while `type="editable-card"` | (targetKey, action): void | - |
-| onNextClick | Callback executed when next button is clicked | Function | - |
-| onPrevClick | Callback executed when prev button is clicked | Function | - |
-| onTabClick | Callback executed when tab is clicked | Function | - |
+| nzSelectedIndex | Current tab's index | number | - |
+| nzSelectedIndexChange | Current tab's index change callback | (nzSelectedIndex:number)=>{} | - |
+| nzSelectChange | Current tab's change callback | (nzSelectedIndex: number,tab: NzTabComponent)=>{} | - |
+| nzAnimated | Whether to change tabs with animation. Only works while `nzTabPosition="top"｜"bottom"` | boolean ｜ {inkBar:boolean, tabPane:boolean} | `true`, `false` when `type="card"` |
+| nzSize | preset tab bar size | `large` ｜ `default` ｜ `small` | `default` |
+| nzTabBarExtraContent | Extra content in tab bar | `TemplateRef<void>` | - |
+| nzTabBarStyle | Tab bar style object | object | - |
+| nzTabPosition | Position of tabs | `top` ｜ `right` ｜ `bottom` ｜ `left` | `top` |
+| nzType | Basic style of tabs | `line` ｜ `card`  | `line` |
+| nzOnNextClick | Callback executed when next button is clicked | Function | - |
+| nzOnPrevClick | Callback executed when prev button is clicked | Function | - |
+| nzTabBarGutter | The gap between tabs | number | - |
+| nzHideAll | Whether hide all tabs | boolean | false |
+| nzShowPagination | Whether show pre or next button when exceed display area | boolean | true |
 
-### Tabs.TabPane
+### nz-tab
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| forceRender | Forced render of content in tabs, not lazy render after clicking on tabs | boolean | false |
-| key | TabPane's key | string | - |
-| tab | Show text in TabPane's head | string｜ReactNode | - |
+| nzTitle | Show text in tab's head | string｜`TemplateRef<void>` | - |
+| nzDisabled | tab disable | boolean | - |
+| nzClick | title click callback | ()=>{} | - |
+| nzSelect | title select callback | ()=>{} | - |
+| nzDeselect | title deselect callback | ()=>{} | - |

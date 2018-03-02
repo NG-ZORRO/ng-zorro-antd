@@ -11,6 +11,7 @@ import {
   OnDestroy,
   OnInit
 } from '@angular/core';
+
 import { NzMessageConfig } from './nz-message-config';
 import { NzMessageContainerComponent } from './nz-message-container.component';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';

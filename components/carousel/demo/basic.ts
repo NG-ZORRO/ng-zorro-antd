@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-carousel-basic',
   template: `
-    <nz-carousel>
+    <nz-carousel [nzEffect]="effect">
       <div nz-carousel-content *ngFor="let index of array"><h3>{{index}}</h3></div>
     </nz-carousel>`,
   styles  : [
-      `:host ::ng-deep .ant-carousel .slick-slide {
+      `[nz-carousel-content] {
       text-align: center;
       height: 160px;
       line-height: 160px;
@@ -22,12 +22,13 @@ import { Component, OnInit } from '@angular/core';
     `
   ]
 })
-export class NzDemoCarouselBasicComponent implements OnInit {
-  array = [ 1, 2, 3 ];
+export class NzDemoCarouselBasicComponent {
+  array = [ 1, 2, 3, 4 ];
+  effect = 'scrollx';
 
   ngOnInit() {
-    setTimeout(_ => {
-      this.array = [ 1, 2, 3, 4 ];
-    }, 500);
+    setTimeout(() => {
+      this.effect = 'fade';
+    }, 3000);
   }
 }

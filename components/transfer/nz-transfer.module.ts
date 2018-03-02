@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { NzButtonModule } from '../button/nz-button.module';
 import { NzCheckboxModule } from '../checkbox/nz-checkbox.module';
 import { NzI18nModule } from '../i18n';
