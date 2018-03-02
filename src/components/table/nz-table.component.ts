@@ -241,7 +241,11 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   /* tslint:disable-next-line:no-any */
   set nzAjaxData(data: any[]) {
     this._isAjax = true;
-    this.data = data;
+    if(data) {
+      this.data = data;
+    } else {
+      this.data = []
+    }
   }
 
   /* tslint:disable-next-line:no-any */
