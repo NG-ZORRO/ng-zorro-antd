@@ -9,18 +9,18 @@ import { Component } from '@angular/core';
       <button nz-button (click)="resetSortAndFilters()">Clear filters and sorters</button>
     </div>
     <nz-table #filterTable [nzData]="displayData">
-      <thead>
-        <tr>
-          <th nzShowSort nzShowFilter [(nzSort)]="sortMap.name" (nzSortChange)="sort('name',$event)" [nzFilters]="filterNameList" (nzFilterChange)="search($event,searchAddressList)">Name</th>
-          <th nzShowSort [(nzSort)]="sortMap.age" (nzSortChange)="sort('age',$event)">Age</th>
-          <th nzShowSort nzShowFilter [(nzSort)]="sortMap.address" (nzSortChange)="sort('address',$event)" [nzFilters]="filterAddressList" (nzFilterChange)="search(searchNameList,$event)">Address</th>
+      <thead nz-thead>
+        <tr nz-tr>
+          <th nz-th nzShowSort nzShowFilter [(nzSort)]="sortMap.name" (nzSortChange)="sort('name',$event)" [nzFilters]="filterNameList" (nzFilterChange)="search($event,searchAddressList)">Name</th>
+          <th nz-th nzShowSort [(nzSort)]="sortMap.age" (nzSortChange)="sort('age',$event)">Age</th>
+          <th nz-th nzShowSort nzShowFilter [(nzSort)]="sortMap.address" (nzSortChange)="sort('address',$event)" [nzFilters]="filterAddressList" (nzFilterChange)="search(searchNameList,$event)">Address</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let data of filterTable.data">
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
+      <tbody nz-tbody>
+        <tr nz-tr *ngFor="let data of filterTable.data">
+          <td nz-td>{{data.name}}</td>
+          <td nz-td>{{data.age}}</td>
+          <td nz-td>{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>`,

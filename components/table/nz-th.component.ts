@@ -11,7 +11,6 @@ import {
 import { toBoolean } from '../core/util/convert';
 
 import { NzDropDownComponent } from '../dropdown';
-import { NzTheadComponent } from './nz-thead.component';
 
 /* tslint:disable-next-line:no-any */
 export type NzThFilterType = Array<{ text: string; value: any }>;
@@ -24,8 +23,7 @@ export interface NzThItemInterface {
 }
 
 @Component({
-  // tslint:disable-next-line:component-selector
-  selector           : 'th:not(.clear-nz)',
+  selector           : '[nz-th]',
   preserveWhitespaces: false,
   template           : `
     <ng-template #checkboxTemplate>
@@ -78,7 +76,7 @@ export interface NzThItemInterface {
       <ul nz-menu>
         <ng-container *ngIf="nzFilterMultiple">
           <li nz-menu-item *ngFor="let filter of multipleFilterList" (click)="filter.checked=!filter.checked">
-            <label nz-checkbox [ngModel]="filter.checked">{{filter.text}}</label>
+            <label nz-checkbox [ngModel]="filter.checked"></label><span>{{filter.text}}</span>
           </li>
         </ng-container>
         <ng-container *ngIf="!nzFilterMultiple">

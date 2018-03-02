@@ -4,9 +4,9 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-table-custom-filter-panel',
   template: `
     <nz-table #nzTable [nzData]="displayData" [nzPageSize]="10">
-      <thead>
-        <tr>
-          <th>
+      <thead nz-thead>
+        <tr nz-tr>
+          <th nz-th>
             Name
             <nz-dropdown nzTrigger="click" [nzClickHide]="false">
               <i class="anticon anticon-smile-o ant-table-filter-icon" nz-dropdown></i>
@@ -16,15 +16,15 @@ import { Component } from '@angular/core';
               </div>
             </nz-dropdown>
           </th>
-          <th>Age</th>
-          <th nzShowFilter [nzFilters]="filterAddressArray" (nzFilterChange)="filterAddressChange($event)">Address</th>
+          <th nz-th>Age</th>
+          <th nz-th nzShowFilter [nzFilters]="filterAddressArray" (nzFilterChange)="filterAddressChange($event)">Address</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let data of nzTable.data">
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
+      <tbody nz-tbody>
+        <tr nz-tr *ngFor="let data of nzTable.data">
+          <td nz-td>{{data.name}}</td>
+          <td nz-td>{{data.age}}</td>
+          <td nz-td>{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>`,

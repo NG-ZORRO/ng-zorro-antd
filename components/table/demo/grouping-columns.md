@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-当使用分组表头时，`th` 的 `nzWidth` 方式不再适用，使用 `nzWidthConfig` 来设定每个分组的宽度
+当使用分组表头时，`nz-th` 的 `nzWidth` 方式不再适用，使用 `nzWidthConfig` 来设定每个分组的宽度
 
 ## en-US
 

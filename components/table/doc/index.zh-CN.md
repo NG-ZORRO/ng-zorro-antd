@@ -23,7 +23,7 @@ Table 组件同时具备了易用性和高度可定制性
 
 ### 组件增强
 
-在 `nz-table`, `thead`, `th`, `td` 等多个暴露的元素上，组件提供了增强语法，经过配置之后可以很方便的实现多选、过滤、排序、固定列、固定表头、服务端分页等功能。
+在 `nz-table`, `nz-thead`, `nz-th`, `nz-td` 等多个暴露的元素上，组件提供了增强语法，经过配置之后可以很方便的实现多选、过滤、排序、固定列、固定表头、服务端分页等功能。
 
 ### 数据处理
 
@@ -31,20 +31,20 @@ Table 组件同时具备了易用性和高度可定制性
 
 ```html
 <nz-table #basicTable [nzData]="dataSet">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Age</th>
-      <th>Address</th>
-      <th>Action</th>
+  <thead nz-thead>
+    <tr nz-tr>
+      <th nz-th>Name</th>
+      <th nz-th>Age</th>
+      <th nz-th>Address</th>
+      <th nz-th>Action</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of basicTable.data">
-      <td>{{data.name}}</td>
-      <td>{{data.age}}</td>
-      <td>{{data.address}}</td>
-      <td>
+    <tr nz-tr *ngFor="let data of basicTable.data">
+      <td nz-td>{{data.name}}</td>
+      <td nz-td>{{data.age}}</td>
+      <td nz-td>{{data.address}}</td>
+      <td nz-td>
         <a>Action 一 {{data.name}}</a>
         <nz-divider nzType="vertical"></nz-divider>
         <a>Delete</a>
@@ -70,7 +70,7 @@ Table 组件同时具备了易用性和高度可定制性
 | nzCurrentPageDataChange | 当前页面展示数据改变的回调函数 | (data:any[])=>{} | - |
 | nzIsPagination | 当前数据是否分页展示 | boolean | true |
 | nzBordered | 是否展示外边框和列边框 | boolean | false |
-| nzWidthConfig | 表头分组时指定每列宽度，与 `th` 的 `nzWidth` 不可混用 | string[] | - |
+| nzWidthConfig | 表头分组时指定每列宽度，与 `nz-th` 的 `nzWidth` 不可混用 | string[] | - |
 | nzSize | 正常或迷你类型，`default` or `small` or `middle` | string | `default` |
 | nzLoading | 页面是否加载中 | boolean | false |
 | nzLoadingDelay | 延迟显示加载效果的时间（防止闪烁） | number | 0 |
@@ -83,7 +83,7 @@ Table 组件同时具备了易用性和高度可定制性
 | nzShowSizeChanger | 是否可以改变 `nzPageSize` | boolean | false |
 | nzShowTotal | 用于显示数据总量和当前数据范围 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
 
-### th
+### nz-th
 
 勾选属性
 
@@ -107,7 +107,7 @@ Table 组件同时具备了易用性和高度可定制性
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | nzShowSort | 是否显示排序 | boolean | - |
-| nzSortKey | 排序key，非受控模式使用，与 `thead` 中 `nzSortChange` 配合使用 | string | - |
+| nzSortKey | 排序key，非受控模式使用，与 `nz-thead` 中 `nzSortChange` 配合使用 | string | - |
 | nzSort | 当前排序状态，受控模式使用，可双向绑定 | 'descend'丨'ascend'丨null | null |
 | nzSortChange | 排序状态改变回调，受控模式使用 | `(nzSort:'descend'丨'ascend'丨null)=>{}` | - |
 
@@ -134,7 +134,7 @@ Table 组件同时具备了易用性和高度可定制性
 | --- | --- | --- | --- |
 | nzExpand | 当前列是否包含展开按钮 | boolean | - |
 
-### td
+### nz-td
 
 勾选属性
 
@@ -166,39 +166,19 @@ Table 组件同时具备了易用性和高度可定制性
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzIndentSize | 展示树形数据时，每层缩进的宽度，以 px 为单位 | number | 15 |
+| nzIndentSize | 展示树形数据时，每层缩进的宽度，以 px 为单位 | number | - |
 
 
-### thead
+### nz-thead
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzSortChange | 排序改变时的回调函数，需要与 `th` 上的 `nzSortKey` 同时使用，非受控排序下使用 | `(sortChange:{ nzSortKey: string, value: 'descend'丨'ascend'丨null })=>{}` | - |
+| nzSortChange | 排序改变时的回调函数，需要与 `nz-th` 上的 `nzSortKey` 同时使用，非受控排序下使用 | `(sortChange:{ nzSortKey: string, value: 'descend'丨'ascend'丨null })=>{}` | - |
 | nzSingleSort | 是否单列排序模式，非受控排序下使用 | boolean | false |
 
 
-### tr
+### nz-tr
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzExpand | 当前列是否展开，与 `td` 上的 `nzExpand` 属性配合使用 | boolean | - |
-
-## 注意
-
-引入 `nz-table` 组件后，组件工作范围下所有的 table 将全部按照 `nz-table` 的模式工作，如果在某特定 table 上禁止 `nz-table` 生效，需要在每个元素上添加 `.clear-nz` 的 className
-
-例如
-```html
-<table>
-  <thead class="clear-nz">
-    <tr class="clear-nz">
-      <th class="clear-nz">Name</th>
-    </tr>
-  </thead>
-  <tbody class="clear-nz">
-    <tr class="clear-nz">
-      <td class="clear-nz">name</td>
-    </tr>
-  </tbody>
-</table>
-```
+| nzExpand | 当前列是否展开，与 `nz-td` 上的 `nzExpand` 属性配合使用 | boolean | - |

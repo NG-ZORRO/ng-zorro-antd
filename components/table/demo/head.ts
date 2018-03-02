@@ -4,18 +4,18 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-table-head',
   template: `
     <nz-table #filterTable [nzData]="displayData">
-      <thead (nzSortChange)="sort($event)" nzSingleSort>
-        <tr>
-          <th nzShowSort nzSortKey="name" nzShowFilter [nzFilters]="nameList" (nzFilterChange)="filter($event,searchAddress)">Name</th>
-          <th nzShowSort nzSortKey="age">Age</th>
-          <th nzShowSort nzSortKey="address" nzShowFilter [nzFilterMultiple]="false" [nzFilters]="addressList" (nzFilterChange)="filter(listOfSearchName,$event)">Address</th>
+      <thead nz-thead (nzSortChange)="sort($event)" nzSingleSort>
+        <tr nz-tr>
+          <th nz-th nzShowSort nzSortKey="name" nzShowFilter [nzFilters]="nameList" (nzFilterChange)="filter($event,searchAddress)">Name</th>
+          <th nz-th nzShowSort nzSortKey="age">Age</th>
+          <th nz-th nzShowSort nzSortKey="address" nzShowFilter [nzFilterMultiple]="false" [nzFilters]="addressList" (nzFilterChange)="filter(listOfSearchName,$event)">Address</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let data of filterTable.data">
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
+      <tbody nz-tbody>
+        <tr nz-tr *ngFor="let data of filterTable.data">
+          <td nz-td>{{data.name}}</td>
+          <td nz-td>{{data.age}}</td>
+          <td nz-td>{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>`

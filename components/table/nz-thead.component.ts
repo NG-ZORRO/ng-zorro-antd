@@ -17,8 +17,7 @@ import { toBoolean } from '../core/util/convert';
 import { NzThComponent } from './nz-th.component';
 
 @Component({
-  // tslint:disable-next-line:component-selector
-  selector: 'thead:not(.clear-nz)',
+  selector: '[nz-thead]',
   template: `
     <ng-template>
       <ng-content></ng-content>

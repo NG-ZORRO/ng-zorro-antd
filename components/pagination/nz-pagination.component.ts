@@ -28,7 +28,7 @@ import { toBoolean } from '../core/util/convert';
           class="ant-pagination-prev"
           (click)="jumpPreOne()"
           [class.ant-pagination-disabled]="isFirstIndex">
-          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'pre'}"></ng-template>
+          <ng-template [ngTemplateOutlet]="nzItemRender" [ngTemplateOutletContext]="{ $implicit: 'pre'}"></ng-template>
         </li>
         <li [attr.title]="nzPageIndex+'/'+lastIndex" class="ant-pagination-simple-pager">
           <input
@@ -44,7 +44,7 @@ import { toBoolean } from '../core/util/convert';
           class="ant-pagination-next"
           (click)="jumpNextOne()"
           [class.ant-pagination-disabled]="isLastIndex">
-          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'next'}"></ng-template>
+          <ng-template [ngTemplateOutlet]="nzItemRender" [ngTemplateOutletContext]="{ $implicit: 'next'}"></ng-template>
         </li>
       </ul>
       <ul
@@ -63,14 +63,14 @@ import { toBoolean } from '../core/util/convert';
           class="ant-pagination-prev"
           (click)="jumpPreOne()"
           [class.ant-pagination-disabled]="isFirstIndex">
-          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'pre'}"></ng-template>
+          <ng-template [ngTemplateOutlet]="nzItemRender" [ngTemplateOutletContext]="{ $implicit: 'pre'}"></ng-template>
         </li>
         <li
           [attr.title]="firstIndex"
           class="ant-pagination-item"
           (click)="jumpPage(firstIndex)"
           [class.ant-pagination-item-active]="isFirstIndex">
-          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'page',page: firstIndex }"></ng-template>
+          <ng-template [ngTemplateOutlet]="nzItemRender" [ngTemplateOutletContext]="{ $implicit: 'page',page: firstIndex }"></ng-template>
         </li>
         <li
           [attr.title]="'Pagination.prev_5' | nzI18n"
@@ -85,7 +85,7 @@ import { toBoolean } from '../core/util/convert';
           class="ant-pagination-item"
           (click)="jumpPage(page.index)"
           [class.ant-pagination-item-active]="nzPageIndex==page.index">
-          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'page',page: page.index }"></ng-template>
+          <ng-template [ngTemplateOutlet]="nzItemRender" [ngTemplateOutletContext]="{ $implicit: 'page',page: page.index }"></ng-template>
         </li>
         <li
           [attr.title]="'Pagination.next_5' | nzI18n"
@@ -100,14 +100,14 @@ import { toBoolean } from '../core/util/convert';
           (click)="jumpPage(lastIndex)"
           *ngIf="(lastIndex>0)&&(lastIndex!==firstIndex)"
           [class.ant-pagination-item-active]="isLastIndex">
-          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'page',page: lastIndex }"></ng-template>
+          <ng-template [ngTemplateOutlet]="nzItemRender" [ngTemplateOutletContext]="{ $implicit: 'page',page: lastIndex }"></ng-template>
         </li>
         <li
           title="{{ 'Pagination.next_page' | nzI18n }}"
           class="ant-pagination-next"
           (click)="jumpNextOne()"
           [class.ant-pagination-disabled]="isLastIndex">
-          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: 'next'}"></ng-template>
+          <ng-template [ngTemplateOutlet]="nzItemRender" [ngTemplateOutletContext]="{ $implicit: 'next'}"></ng-template>
         </li>
         <div class="ant-pagination-options" *ngIf="nzShowQuickJumper||nzShowSizeChanger">
           <nz-select
@@ -140,7 +140,7 @@ import { toBoolean } from '../core/util/convert';
   `
 })
 export class NzPaginationComponent {
-  @ViewChild('renderItemTemplate') private _renderItem: TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }>;
+  @ViewChild('renderItemTemplate') private _itemRender: TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }>;
   private _showSizeChanger = false;
   private _showQuickJumper = false;
   private _simple = false;
@@ -158,12 +158,12 @@ export class NzPaginationComponent {
   @Output() nzPageIndexChange: EventEmitter<number> = new EventEmitter();
 
   @Input()
-  set nzRenderItem(value: TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }>) {
-    this._renderItem = value;
+  set nzItemRender(value: TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }>) {
+    this._itemRender = value;
   }
 
-  get nzRenderItem(): TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }> {
-    return this._renderItem;
+  get nzItemRender(): TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }> {
+    return this._itemRender;
   }
 
   @Input()

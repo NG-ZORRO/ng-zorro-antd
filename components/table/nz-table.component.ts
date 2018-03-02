@@ -44,7 +44,7 @@ import { NzTheadComponent } from './nz-thead.component';
           [class.ant-table-fixed]="nzScroll.x"
           [style.width]="nzScroll.x">
           <ng-template [ngTemplateOutlet]="colGroupTemplate"></ng-template>
-          <thead class="ant-table-thead clear-nz" *ngIf="nzScroll.y">
+          <thead class="ant-table-thead" *ngIf="nzScroll.y">
             <ng-template [ngTemplateOutlet]="nzTheadComponent?.template"></ng-template>
           </thead>
         </table>
@@ -58,7 +58,7 @@ import { NzTheadComponent } from './nz-thead.component';
         [style.overflow-x]="nzScroll.x?'auto':''">
         <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
           <ng-template [ngTemplateOutlet]="colGroupTemplate"></ng-template>
-          <thead class="ant-table-thead clear-nz" *ngIf="!nzScroll.y">
+          <thead class="ant-table-thead" *ngIf="!nzScroll.y">
             <ng-template [ngTemplateOutlet]="nzTheadComponent?.template"></ng-template>
           </thead>
           <ng-content></ng-content>
@@ -128,11 +128,12 @@ import { NzTheadComponent } from './nz-thead.component';
         </nz-pagination>
       </nz-spin>
     </div>
-  `
+  `,
+  styles             : [ `
+  ` ]
 })
 export class NzTableComponent implements OnInit {
   private _bordered = false;
-  private _isPageIndexReset = true;
   private _isPagination = true;
   private _loading = false;
   private _showSizeChanger = false;
@@ -393,10 +394,13 @@ export class NzTableComponent implements OnInit {
 
   ngOnInit(): void {
     const scrollbarWidth = measureScrollbar();
-    this.headerBottomStyle = {
-      marginBottom : `-${scrollbarWidth}px`,
-      paddingBottom: `0px`
-    };
+    if (scrollbarWidth) {
+      this.headerBottomStyle = {
+        marginBottom : `-${scrollbarWidth}px`,
+        paddingBottom: `0px`
+      };
+    }
+
     if (this.nzScroll && this.nzScroll.x && this.nzScroll.y) {
       /** magic code to sync scroll **/
       const overlay = this.overlay.create();

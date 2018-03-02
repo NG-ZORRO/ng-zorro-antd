@@ -10,8 +10,7 @@ import {
 import { toBoolean } from '../core/util/convert';
 
 @Component({
-  // tslint:disable-next-line:component-selector
-  selector: 'td:not(.clear-nz)',
+  selector: '[nz-td]',
   template: `
     <span class="ant-table-row-indent" [style.padding-left.px]="nzIndentSize"></span>
     <label

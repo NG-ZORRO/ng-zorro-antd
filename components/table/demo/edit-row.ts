@@ -7,17 +7,17 @@ import { Component, OnInit } from '@angular/core';
       #editRowTable
       nzBordered
       [nzData]="dataSet">
-      <thead>
-        <tr>
-          <th nzWidth="25%">Name</th>
-          <th nzWidth="15%">Age</th>
-          <th nzWidth="40%">Address</th>
-          <th>Action</th>
+      <thead nz-thead>
+        <tr nz-tr>
+          <th nz-th nzWidth="25%">Name</th>
+          <th nz-th nzWidth="15%">Age</th>
+          <th nz-th nzWidth="40%">Address</th>
+          <th nz-th>Action</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let data of editRowTable.data">
-          <td>
+      <tbody nz-tbody>
+        <tr nz-tr *ngFor="let data of editRowTable.data">
+          <td nz-td>
             <div class="editable-cell">
               <div class="editable-cell-text-wrapper">
                 <ng-container *ngIf="!editCache[data.key].edit">
@@ -29,7 +29,7 @@ import { Component, OnInit } from '@angular/core';
               </div>
             </div>
           </td>
-          <td>
+          <td nz-td>
             <ng-container *ngIf="!editCache[data.key].edit">
               {{data.age}}
             </ng-container>
@@ -37,7 +37,7 @@ import { Component, OnInit } from '@angular/core';
               <input type="text" nz-input [(ngModel)]="editCache[data.key].data.age">
             </ng-container>
           </td>
-          <td>
+          <td nz-td>
             <ng-container *ngIf="!editCache[data.key].edit">
               {{data.address}}
             </ng-container>
@@ -45,7 +45,7 @@ import { Component, OnInit } from '@angular/core';
               <input type="text" nz-input [(ngModel)]="editCache[data.key].data.address">
             </ng-container>
           </td>
-          <td>
+          <td nz-td>
             <div class="editable-row-operations">
               <ng-container *ngIf="!editCache[data.key].edit">
                 <a (click)="startEdit(data.key)">Edit</a>

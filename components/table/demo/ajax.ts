@@ -39,18 +39,18 @@ export class RandomUserService {
       [(nzPageSize)]="pageSize"
       (nzPageIndexChange)="searchData()"
       (nzPageSizeChange)="searchData(true)">
-      <thead (nzSortChange)="sort($event)" nzSingleSort>
-        <tr>
-          <th nzShowSort nzSortKey="name">Name</th>
-          <th nzShowFilter [nzFilters]="filterGender" (nzFilterChange)="updateFilter($event)">Gender</th>
-          <th nzShowSort nzSortKey="email"><span>Email</span></th>
+      <thead nz-thead (nzSortChange)="sort($event)" nzSingleSort>
+        <tr nz-tr>
+          <th nz-th nzShowSort nzSortKey="name">Name</th>
+          <th nz-th nzShowFilter [nzFilters]="filterGender" (nzFilterChange)="updateFilter($event)">Gender</th>
+          <th nz-th nzShowSort nzSortKey="email"><span>Email</span></th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let data of ajaxTable.data">
-          <td>{{data.name.first}} {{data.name.last}}</td>
-          <td>{{data.gender}}</td>
-          <td>{{data.email}}</td>
+      <tbody nz-tbody>
+        <tr nz-tr *ngFor="let data of ajaxTable.data">
+          <td nz-td>{{data.name.first}} {{data.name.last}}</td>
+          <td nz-td>{{data.gender}}</td>
+          <td nz-td>{{data.email}}</td>
         </tr>
       </tbody>
     </nz-table>`

@@ -8,17 +8,17 @@ import { Component, OnInit } from '@angular/core';
       #editRowTable
       nzBordered
       [nzData]="dataSet">
-      <thead>
-        <tr>
-          <th nzWidth="30%">Name</th>
-          <th>Age</th>
-          <th>Address</th>
-          <th>Action</th>
+      <thead nz-thead>
+        <tr nz-tr>
+          <th nz-th nzWidth="30%">Name</th>
+          <th nz-th>Age</th>
+          <th nz-th>Address</th>
+          <th nz-th>Action</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let data of editRowTable.data">
-          <td>
+      <tbody nz-tbody>
+        <tr nz-tr *ngFor="let data of editRowTable.data">
+          <td nz-td>
             <div class="editable-cell">
               <div class="editable-cell-text-wrapper">
                 <ng-container *ngIf="!editCache[data.key].edit">
@@ -32,9 +32,9 @@ import { Component, OnInit } from '@angular/core';
               </div>
             </div>
           </td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
-          <td>
+          <td nz-td>{{data.age}}</td>
+          <td nz-td>{{data.address}}</td>
+          <td nz-td>
             <nz-popconfirm [nzTitle]="'Sure to delete?'" (nzOnConfirm)="deleteRow(data.key)">
               <a nz-popconfirm>Delete</a>
             </nz-popconfirm>

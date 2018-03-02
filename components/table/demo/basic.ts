@@ -4,20 +4,20 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-table-basic',
   template: `
     <nz-table #basicTable [nzData]="dataSet">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Address</th>
-          <th>Action</th>
+      <thead nz-thead>
+        <tr nz-tr>
+          <th nz-th>Name</th>
+          <th nz-th>Age</th>
+          <th nz-th>Address</th>
+          <th nz-th>Action</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let data of basicTable.data">
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
-          <td>
+      <tbody nz-tbody>
+        <tr nz-tr *ngFor="let data of basicTable.data">
+          <td nz-td>{{data.name}}</td>
+          <td nz-td>{{data.age}}</td>
+          <td nz-td>{{data.address}}</td>
+          <td nz-td>
             <a>Action 一 {{data.name}}</a>
             <nz-divider nzType="vertical"></nz-divider>
             <a>Delete</a>

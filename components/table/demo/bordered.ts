@@ -9,18 +9,18 @@ import { Component } from '@angular/core';
       nzFooter="Footer"
       nzTitle="Header"
       [nzData]="dataSet">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Address</th>
+      <thead nz-thead>
+        <tr nz-tr>
+          <th nz-th>Name</th>
+          <th nz-th>Age</th>
+          <th nz-th>Address</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let data of borderedTable.data">
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
+      <tbody nz-tbody>
+        <tr nz-tr *ngFor="let data of borderedTable.data">
+          <td nz-td>{{data.name}}</td>
+          <td nz-td>{{data.age}}</td>
+          <td nz-td>{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>

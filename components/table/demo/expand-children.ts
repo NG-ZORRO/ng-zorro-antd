@@ -14,22 +14,22 @@ export interface TreeNodeInterface {
   selector: 'nz-demo-table-expand-children',
   template: `
     <nz-table #nzTable [nzData]="data">
-      <thead>
-        <tr>
-          <th [nzWidth]="'40%'">Name</th>
-          <th [nzWidth]="'30%'">Age</th>
-          <th>Address</th>
+      <thead nz-thead>
+        <tr nz-tr>
+          <th nz-th nzWidth="40%">Name</th>
+          <th nz-th nzWidth="30%">Age</th>
+          <th nz-th>Address</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody nz-tbody>
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <ng-template ngFor let-item [ngForOf]="expandDataCache[data.key]">
-            <tr *ngIf="(item.parent&&item.parent.expand)||!(item.parent)">
-              <td [nzIndentSize]="item.level*20" [nzShowExpand]="!!item.children" [(nzExpand)]="item.expand" (nzExpandChange)="collapse(expandDataCache[data.key],item,$event)">
+            <tr nz-tr *ngIf="(item.parent&&item.parent.expand)||!(item.parent)">
+              <td nz-td [nzIndentSize]="item.level*20" [nzShowExpand]="!!item.children" [(nzExpand)]="item.expand" (nzExpandChange)="collapse(expandDataCache[data.key],item,$event)">
                 {{item.name}}
               </td>
-              <td>{{item.age}}</td>
-              <td>{{item.address}}</td>
+              <td nz-td>{{item.age}}</td>
+              <td nz-td>{{item.address}}</td>
             </tr>
           </ng-template>
         </ng-template>

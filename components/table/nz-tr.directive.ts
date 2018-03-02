@@ -1,8 +1,7 @@
 import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
 
 @Directive({
-  // tslint:disable-next-line:directive-selector
-  selector: 'tr:not(.clear-nz)',
+  selector: '[nz-tr]',
   host    : {
     '[class.ant-table-row]': 'true'
   }
