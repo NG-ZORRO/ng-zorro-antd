@@ -43,7 +43,7 @@
 | affix | x | x | x | cipchk | - |
 | transfer | x | x | x | cipchk | - |
 | avatar | √ | 100% | 100% | cipchk | x |
-| list | x | x | x | cipchk | - |
+| list | √ | 100% | 100% | cipchk | x |
 | upload | x | x | x | cipchk | - |
 | anchor | x | x | x | cipchk | - |
 | backtop | x | x | x | cipchk | - |
