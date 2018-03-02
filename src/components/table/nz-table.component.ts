@@ -253,7 +253,11 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   @Input()
   /* tslint:disable-next-line:no-any */
   set nzDataSource(value: any[]) {
-    this._dataSet = value;
+    if(value) {
+      this._dataSet = value;
+    } else {
+      this._dataSet = []
+    }
     this.nzTotal = this._dataSet.length;
     this._generateData(true);
   }
