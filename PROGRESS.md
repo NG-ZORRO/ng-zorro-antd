@@ -25,11 +25,11 @@
 | carousel | √ | 100% | 100% | vthinkxie | - |
 | collapse | √ | 100% | 100% | vthinkxie | - |
 | table | x | x | x | vthinkxie | - | 
-| tabs | x | x | x | vthinkxie | - |
+| tabs | √ | 100% | 100% | vthinkxie | - |
 | timeline | √ | 100% | 100% | vthinkxie | - |
 | alert | √ | 100% | 100% | vthinkxie | - |
-| progress | x | x | x | vthinkxie | - |
-| spin | x | x | x | vthinkxie | - |
+| progress | √ | 100% | 100% | vthinkxie | √ |
+| spin | √ | 100% | 100% | vthinkxie | - |
 | popover | x | x | x | wilsoncook | - |
 | tooltip | x | x | x | wilsoncook | - |
 | popconfirm | x | x | x | wilsoncook | - |
@@ -47,7 +47,7 @@
 | upload | x | x | x | cipchk | - |
 | anchor | x | x | x | cipchk | - |
 | backtop | x | x | x | cipchk | - |
-| divider | x | x | x | cipchk | - |
+| divider | √ | 100% | 100% | cipchk | x |
 | treeselect | x | x | x | simplejason | - |
 | tree | x | x | x | simplejason | - |
 | tags | x | x | x | fbchen | -|

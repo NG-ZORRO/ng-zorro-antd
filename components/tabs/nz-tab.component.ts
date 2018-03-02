@@ -7,7 +7,7 @@ import {
   OnInit,
   Output,
   TemplateRef,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 
 import { toBoolean } from '../core/util/convert';
@@ -28,39 +28,45 @@ import { NzTabSetComponent } from './nz-tabset.component';
   }
 })
 export class NzTabComponent implements OnDestroy, OnInit {
-  private disabled = false;
-
+  private _title: string | TemplateRef<void>;
+  private _disabled = false;
   position: number | null = null;
   origin: number | null = null;
+  isTitleString: boolean;
 
   @Input()
   set nzDisabled(value: boolean) {
-    this.disabled = toBoolean(value);
+    this._disabled = toBoolean(value);
   }
 
   get nzDisabled(): boolean {
-    return this.disabled;
+    return this._disabled;
   }
 
-  @Output() nzSelect = new EventEmitter();
-  @Output() nzClick = new EventEmitter();
-  @Output() nzDeselect = new EventEmitter();
-  @ContentChild('nzTabHeading') _tabHeading: TemplateRef<void>;
-  @ViewChild(TemplateRef) _content: TemplateRef<void>;
+  @Output() nzClick = new EventEmitter<void>();
+  @Output() nzSelect = new EventEmitter<void>();
+  @Output() nzDeselect = new EventEmitter<void>();
+  @ViewChild(TemplateRef) content: TemplateRef<void>;
 
-  get content(): TemplateRef<void> | null {
-    return this._content;
+  @Input()
+  set nzTitle(value: string | TemplateRef<void>) {
+    this.isTitleString = !(value instanceof TemplateRef);
+    this._title = value;
+  }
+
+  get nzTitle(): string | TemplateRef<void> {
+    return this._title;
   }
 
   constructor(private nzTabSetComponent: NzTabSetComponent) {
   }
 
   ngOnInit(): void {
-    this.nzTabSetComponent._tabs.push(this);
+    this.nzTabSetComponent.addTab(this);
   }
 
   ngOnDestroy(): void {
-    this.nzTabSetComponent._tabs.splice(this.nzTabSetComponent._tabs.indexOf(this), 1);
+    this.nzTabSetComponent.removeTab(this);
   }
 
 }

@@ -1,4 +1,3 @@
-import { NgStyle } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -80,7 +79,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit {
   @ViewChild('contentElement') contentElement: ElementRef;
   @Input() nzOverflowCount = 99;
   @Input() nzText: string;
-  @Input() nzStyle: NgStyle;
+  @Input() nzStyle: { [key: string]: string };
   @Input() nzStatus: NzBadgeStatusType;
 
   @Input()

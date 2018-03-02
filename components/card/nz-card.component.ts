@@ -1,4 +1,3 @@
-import { NgStyle } from '@angular/common';
 import {
   Component,
   ContentChild,
@@ -71,7 +70,7 @@ export class NzCardComponent {
   private isTitleString: boolean;
   private isExtraString: boolean;
   @ContentChild(NzCardTabComponent) tab: NzCardTabComponent;
-  @Input() nzBodyStyle: NgStyle;
+  @Input() nzBodyStyle: { [key: string]: string };
   @Input() nzCover: TemplateRef<void>;
   @Input() nzActions: Array<TemplateRef<void>> = [];
   @Input() nzType: string;

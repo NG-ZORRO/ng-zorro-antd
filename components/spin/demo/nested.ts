@@ -11,8 +11,7 @@ import { Component } from '@angular/core';
       Loading state：
       <nz-switch [(ngModel)]="isSpinning"></nz-switch>
     </div>
-    `,
-  styles  : []
+  `
 })
 export class NzDemoSpinNestedComponent {
   isSpinning = false;
