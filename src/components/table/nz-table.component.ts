@@ -241,10 +241,10 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   /* tslint:disable-next-line:no-any */
   set nzAjaxData(data: any[]) {
     this._isAjax = true;
-    if(data) {
+    if (data) {
       this.data = data;
     } else {
-      this.data = []
+      this.data = [];
     }
   }
 
@@ -257,10 +257,10 @@ export class NzTableComponent implements AfterViewInit, OnInit {
   @Input()
   /* tslint:disable-next-line:no-any */
   set nzDataSource(value: any[]) {
-    if(value) {
+    if (value) {
       this._dataSet = value;
     } else {
-      this._dataSet = []
+      this._dataSet = [];
     }
     this.nzTotal = this._dataSet.length;
     this._generateData(true);
