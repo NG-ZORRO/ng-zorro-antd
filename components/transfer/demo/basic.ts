@@ -13,9 +13,10 @@ import { NzMessageService } from 'ng-zorro-antd';
   `
 })
 export class NzDemoTransferBasicComponent implements OnInit {
+  // tslint:disable-next-line:no-any
   list: any[] = [];
 
-  ngOnInit() {
+  ngOnInit(): void {
     for (let i = 0; i < 20; i++) {
       this.list.push({
         key     : i.toString(),
@@ -27,11 +28,11 @@ export class NzDemoTransferBasicComponent implements OnInit {
     [ 2, 3 ].forEach(idx => this.list[ idx ].direction = 'right');
   }
 
-  select(ret: any) {
+  select(ret: {}): void {
     console.log('nzSelectChange', ret);
   }
 
-  change(ret: any) {
+  change(ret: {}): void {
     console.log('nzChange', ret);
   }
 }

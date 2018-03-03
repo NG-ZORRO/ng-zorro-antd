@@ -1,4 +1,3 @@
-// tslint:disable
 import { Component } from '@angular/core';
 
 @Component({
@@ -8,9 +7,8 @@ import { Component } from '@angular/core';
     <ng-template #item let-item>
       <nz-list-item [nzContent]="nzContent">
         <ng-template #nzContent>
-          <nz-card>
-            <ng-template #title>{{item.title}}</ng-template>
-            <ng-template #body>Card content</ng-template>
+          <nz-card [nzTitle]="item.title">
+            Card content
           </nz-card>
         </ng-template>
       </nz-list-item>
@@ -21,22 +19,22 @@ import { Component } from '@angular/core';
 export class NzDemoListResposiveComponent {
   data = [
     {
-      title: 'Title 1',
+      title: 'Title 1'
     },
     {
-      title: 'Title 2',
+      title: 'Title 2'
     },
     {
-      title: 'Title 3',
+      title: 'Title 3'
     },
     {
-      title: 'Title 4',
+      title: 'Title 4'
     },
     {
-      title: 'Title 5',
+      title: 'Title 5'
     },
     {
-      title: 'Title 6',
-    },
+      title: 'Title 6'
+    }
   ];
 }
