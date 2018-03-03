@@ -15,9 +15,10 @@ import { NzMessageService } from 'ng-zorro-antd';
   `
 })
 export class NzDemoTransferSearchComponent implements OnInit {
+  // tslint:disable-next-line:no-any
   list: any[] = [];
 
-  ngOnInit() {
+  ngOnInit(): void {
     for (let i = 0; i < 20; i++) {
       this.list.push({
         key        : i.toString(),
@@ -28,19 +29,20 @@ export class NzDemoTransferSearchComponent implements OnInit {
     }
   }
 
-  filterOption(inputValue, option) {
-    return option.description.indexOf(inputValue) > -1;
+  // tslint:disable-next-line:no-any
+  filterOption(inputValue: string, item: any): boolean {
+    return item.description.indexOf(inputValue) > -1;
   }
 
-  search(ret: any) {
+  search(ret: {}): void {
     console.log('nzSearchChange', ret);
   }
 
-  select(ret: any) {
+  select(ret: {}): void {
     console.log('nzSelectChange', ret);
   }
 
-  change(ret: any) {
+  change(ret: {}): void {
     console.log('nzChange', ret);
   }
 }

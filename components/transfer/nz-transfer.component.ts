@@ -1,4 +1,3 @@
-// tslint:disable:member-ordering
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -16,32 +15,9 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
 import { toBoolean } from '../core/util/convert';
-import { NzLocaleService } from '../locale/index';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 
-import { TransferItem } from './item';
-
-export interface TransferCanMove {
-  direction: string;
-  list: TransferItem[];
-}
-
-export interface TransferChange {
-  from: string;
-  to: string;
-  list: TransferItem[];
-}
-
-export interface TransferSearchChange {
-  direction: string;
-  value: string;
-}
-
-export interface TransferSelectChange {
-  direction: string;
-  checked: boolean;
-  list: TransferItem[];
-  item: TransferItem;
-}
+import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, TransferSelectChange } from './interface';
 
 @Component({
   selector           : 'nz-transfer',
@@ -86,7 +62,6 @@ export interface TransferSelectChange {
       (handleSelect)="handleRightSelect($event)"
       (handleSelectAll)="handleRightSelectAll($event)"></nz-transfer-list>
   `,
-  // tslint:disable-next-line:use-host-property-decorator
   host               : {
     '[class.ant-transfer]': 'true'
   },
@@ -101,11 +76,11 @@ export class NzTransferComponent implements OnChanges {
   // region: fields
 
   @Input() nzDataSource: TransferItem[] = [];
-  @Input() nzTitles: string[] = this._locale.translate('Transfer.titles').split(',');
+  @Input() nzTitles: string[] = ['', ''];
   @Input() nzOperations: string[] = [];
   @Input() nzListStyle: object;
-  @Input() nzItemUnit = this._locale.translate('Transfer.itemUnit');
-  @Input() nzItemsUnit = this._locale.translate('Transfer.itemsUnit');
+  @Input() nzItemUnit = this.i18n.translate('Transfer.itemUnit');
+  @Input() nzItemsUnit = this.i18n.translate('Transfer.itemsUnit');
   @Input() canMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => of(arg.list);
   @ContentChild('render') render: TemplateRef<void>;
   @ContentChild('footer') footer: TemplateRef<void>;
@@ -121,8 +96,8 @@ export class NzTransferComponent implements OnChanges {
   }
 
   @Input() nzFilterOption: (inputValue: string, item: TransferItem) => boolean;
-  @Input() nzSearchPlaceholder = this._locale.translate('Transfer.searchPlaceholder');
-  @Input() nzNotFoundContent = this._locale.translate('Transfer.notFoundContent');
+  @Input() nzSearchPlaceholder = this.i18n.translate('Transfer.searchPlaceholder');
+  @Input() nzNotFoundContent = this.i18n.translate('Transfer.notFoundContent');
 
   // events
   @Output() nzChange: EventEmitter<TransferChange> = new EventEmitter();
@@ -204,11 +179,9 @@ export class NzTransferComponent implements OnChanges {
     const datasource = direction === 'left' ? this.rightDataSource : this.leftDataSource;
     const targetDatasource = direction === 'left' ? this.leftDataSource : this.rightDataSource;
     for (const item of list) {
-      const idx = datasource.indexOf(item);
-      if (idx === -1) continue;
       item.checked = false;
       targetDatasource.push(item);
-      datasource.splice(idx, 1);
+      datasource.splice(datasource.indexOf(item), 1);
     }
     this.updateOperationStatus(oppositeDirection);
     this.nzChange.emit({
@@ -216,16 +189,15 @@ export class NzTransferComponent implements OnChanges {
       to  : direction,
       list
     });
-    // this.nzSelectChange.emit({ direction: oppositeDirection, list: [] });
   }
 
   // endregion
 
-  constructor(private _locale: NzLocaleService, private el: ElementRef, private cd: ChangeDetectorRef) {
+  constructor(private i18n: NzI18nService, private el: ElementRef, private cd: ChangeDetectorRef) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ('nzDataSource' in changes || 'nzTargetKeys' in changes) {
+    if ('nzDataSource' in changes) {
       this.splitDataSource();
       this.updateOperationStatus('left');
       this.updateOperationStatus('right');

@@ -23,11 +23,11 @@ import { NzMessageService } from 'ng-zorro-antd';
 export class NzDemoTransferAdvancedComponent implements OnInit {
   list = [];
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getData();
   }
 
-  getData() {
+  getData(): void {
     const ret = [];
     for (let i = 0; i < 20; i++) {
       ret.push({
@@ -40,16 +40,16 @@ export class NzDemoTransferAdvancedComponent implements OnInit {
     this.list = ret;
   }
 
-  reload(direction: string) {
+  reload(direction: string): void {
     this.getData();
     this.msg.success(`your clicked ${direction}!`);
   }
 
-  select(ret: {}) {
+  select(ret: {}): void {
     console.log('nzSelectChange', ret);
   }
 
-  change(ret: {}) {
+  change(ret: {}): void {
     console.log('nzChange', ret);
   }
 

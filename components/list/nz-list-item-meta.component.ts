@@ -1,61 +1,68 @@
-// tslint:disable:ordered-imports no-any
 import { Component, ContentChild, HostBinding, Input, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'nz-list-item-meta',
   template: `
-    <div *ngIf="avatar" class="ant-list-item-meta-avatar">
-        <ng-container *ngIf="_avatar; else _avatarTpl"><nz-avatar [nzSrc]="_avatar"></nz-avatar></ng-container>
-    </div>
-    <div *ngIf="title || desc" class="ant-list-item-meta-content">
-        <h4 *ngIf="title" class="ant-list-item-meta-title">
-            <ng-container *ngIf="_title; else _titleTpl">{{ _title }}</ng-container>
-        </h4>
-        <div *ngIf="desc" class="ant-list-item-meta-description">
-            <ng-container *ngIf="_desc; else _descTpl">{{ _desc }}</ng-container>
-        </div>
-    </div>
-    `
+  <div *ngIf="isAvatar" class="ant-list-item-meta-avatar">
+      <ng-container *ngIf="avatarStr; else avatarTpl"><nz-avatar [nzSrc]="avatarStr"></nz-avatar></ng-container>
+  </div>
+  <div *ngIf="isTitle || isDesc" class="ant-list-item-meta-content">
+      <h4 *ngIf="isTitle" class="ant-list-item-meta-title">
+          <ng-container *ngIf="titleStr; else titleTpl">{{ titleStr }}</ng-container>
+      </h4>
+      <div *ngIf="isDesc" class="ant-list-item-meta-description">
+          <ng-container *ngIf="descStr; else descTpl">{{ descStr }}</ng-container>
+      </div>
+  </div>`,
+  preserveWhitespaces: false,
+  host: {
+    '[class.ant-list-item-meta]': 'true'
+  }
 })
 export class NzListItemMetaComponent {
-  @HostBinding('class.ant-list-item-meta') _nzListItemMeta = true;
 
-  avatar = false;
-  _avatar = '';
-  _avatarTpl: TemplateRef<any>;
+  isAvatar = false;
+  avatarStr = '';
+  avatarTpl: TemplateRef<void>;
   @Input()
-  set nzAvatar(value: string | TemplateRef<any>) {
+  set nzAvatar(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
-      this._avatarTpl = value;
+      this.avatarStr = null;
+      this.avatarTpl = value;
     } else {
-      this._avatar = value;
+      this.avatarStr = value;
     }
 
-    this.avatar = !!value;
+    this.isAvatar = !!value;
   }
 
-  title = false;
-  _title = '';
-  _titleTpl: TemplateRef<any>;
+  isTitle = false;
+  titleStr = '';
+  titleTpl: TemplateRef<void>;
   @Input()
-  set nzTitle(value: string | TemplateRef<any>) {
+  set nzTitle(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
-      this._titleTpl = value;
+      this.titleStr = null;
+      this.titleTpl = value;
     } else {
-      this._title = value;
+      this.titleStr = value;
     }
 
-    this.title = !!value;
+    this.isTitle = !!value;
   }
 
-  desc = false;
-  _desc = '';
-  _descTpl: TemplateRef<any>;
+  isDesc = false;
+  descStr = '';
+  descTpl: TemplateRef<void>;
   @Input()
-  set nzDescription(value: string | TemplateRef<any>) {
-    if (value instanceof TemplateRef) this._descTpl = value;
-    else this._desc = value;
+  set nzDescription(value: string | TemplateRef<void>) {
+    if (value instanceof TemplateRef) {
+      this.descStr = null;
+      this.descTpl = value;
+    } else {
+      this.descStr = value;
+    }
 
-    this.desc = !!value;
+    this.isDesc = !!value;
   }
 }
