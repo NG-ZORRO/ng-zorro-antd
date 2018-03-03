@@ -4,15 +4,13 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-tabs-disabled',
   template: `
     <nz-tabset>
-      <nz-tab *ngFor="let tab of tabs"
+      <nz-tab
+        *ngFor="let tab of tabs"
+        [nzTitle]="tab.name"
         [nzDisabled]="tab.disabled">
-        <ng-template #nzTabHeading>
-          {{ tab.name }}
-        </ng-template>
-        <span>{{ tab.name }}</span>
+        {{ tab.name }}
       </nz-tab>
-    </nz-tabset>`,
-  styles  : []
+    </nz-tabset>`
 })
 export class NzDemoTabsDisabledComponent {
   tabs = [

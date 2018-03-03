@@ -7,37 +7,25 @@ import { Component } from '@angular/core';
       <button nz-button (click)="newTab()">ADD</button>
     </div>
     <nz-tabset [nzType]="'card'" [nzSelectedIndex]="index">
-      <nz-tab *ngFor="let tab of tabs">
-        <ng-template #nzTabHeading>
-          <div>
-            {{ tab.name }}
-            <i class="anticon anticon-cross" (click)="closeTab(tab)"></i>
-          </div>
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
+        <ng-template #titleTemplate>
+          <div>{{ tab }}<i class="anticon anticon-close" (click)="closeTab(tab)"></i></div>
         </ng-template>
-        <span>Content of {{ tab.name }}</span>
+        Content of {{ tab }}
       </nz-tab>
     </nz-tabset>`,
   styles  : []
 })
 export class NzDemoTabsCustomAddTriggerComponent {
   index = 0;
-  tabs = [
-    {
-      name: 'Tab 1'
-    },
-    {
-      name: 'Tab 2'
-    }
-  ];
+  tabs = [ 'Tab 1', 'Tab 2' ];
 
-  closeTab(tab): void {
+  closeTab(tab: string): void {
     this.tabs.splice(this.tabs.indexOf(tab), 1);
   }
 
   newTab(): void {
-    this.tabs.push({
-      name: 'New Tab'
-    });
+    this.tabs.push('New Tab');
     this.index = this.tabs.length - 1;
   }
 }

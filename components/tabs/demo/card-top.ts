@@ -5,13 +5,10 @@ import { Component } from '@angular/core';
   template: `
     <div class="card-container">
       <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
-        <nz-tab *ngFor="let tab of tabs">
-          <ng-template #nzTabHeading>
-            Tab {{ tab.index }}
-          </ng-template>
-          <p>Content of Tab Pane {{ tab.index }}</p>
-          <p>Content of Tab Pane {{ tab.index }}</p>
-          <p>Content of Tab Pane {{ tab.index }}</p>
+        <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab Title ' + tab">
+          <p>Content of Tab Pane {{ tab }}</p>
+          <p>Content of Tab Pane {{ tab }}</p>
+          <p>Content of Tab Pane {{ tab }}</p>
         </nz-tab>
       </nz-tabset>
     </div>
@@ -52,15 +49,5 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoTabsCardTopComponent {
-  tabs = [
-    {
-      index: 1
-    },
-    {
-      index: 2
-    },
-    {
-      index: 3
-    }
-  ];
+  tabs = [ 1, 2, 3 ];
 }

@@ -53,6 +53,7 @@ export * from './grid';
 export * from './layout';
 export * from './dropdown';
 export * from './menu';
+export * from './transfer';
 export * from './i18n';
 export * from './locale/index';
 export * from './list/index';

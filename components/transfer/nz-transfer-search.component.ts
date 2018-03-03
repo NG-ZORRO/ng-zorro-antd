@@ -9,7 +9,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     <a *ngIf="value && value.length > 0; else def" class="ant-transfer-list-search-action" (click)="_clear()">
       <i class="anticon anticon-cross-circle"></i>
     </a>
-    <ng-template #def><span class="ant-transfer-list-search-action"><i class="anticon anticon-search"></i></span>
+    <ng-template #def>
+      <span class="ant-transfer-list-search-action"><i class="anticon anticon-search"></i></span>
     </ng-template>
   `
 })

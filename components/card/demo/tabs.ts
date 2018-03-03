@@ -6,12 +6,8 @@ import { Component } from '@angular/core';
     <nz-card style="width: 100%;" nzTitle="Card title" [nzExtra]="extraTemplate">
       <nz-card-tab>
         <nz-tabset nzSize="large" [(nzSelectedIndex)]="index1">
-          <nz-tab>
-            <ng-template #nzTabHeading>tab1</ng-template>
-          </nz-tab>
-          <nz-tab>
-            <ng-template #nzTabHeading>tab2</ng-template>
-          </nz-tab>
+          <nz-tab nzTitle="tab1"></nz-tab>
+          <nz-tab nzTitle="tab2"></nz-tab>
         </nz-tabset>
       </nz-card-tab>
       content{{ index1 }}
@@ -24,15 +20,9 @@ import { Component } from '@angular/core';
     <nz-card style="width: 100%;">
       <nz-card-tab>
         <nz-tabset nzSize="large" [(nzSelectedIndex)]="index2">
-          <nz-tab>
-            <ng-template #nzTabHeading>article</ng-template>
-          </nz-tab>
-          <nz-tab>
-            <ng-template #nzTabHeading>app</ng-template>
-          </nz-tab>
-          <nz-tab>
-            <ng-template #nzTabHeading>project</ng-template>
-          </nz-tab>
+          <nz-tab nzTitle="article"></nz-tab>
+          <nz-tab nzTitle="app"></nz-tab>
+          <nz-tab nzTitle="project"></nz-tab>
         </nz-tabset>
       </nz-card-tab>
       content{{ index2 }}

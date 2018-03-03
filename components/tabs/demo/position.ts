@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <div style="margin-bottom: 16px;">
       Tab position：
-      <nz-select [(ngModel)]="_position" style="width: 80px;">
+      <nz-select [(ngModel)]="position" style="width: 80px;">
         <nz-option
           *ngFor="let option of options"
           [nzLabel]="option.label"
@@ -13,29 +13,16 @@ import { Component } from '@angular/core';
         </nz-option>
       </nz-select>
     </div>
-    <nz-tabset [nzTabPosition]="_position" [nzType]="'line'">
-      <nz-tab *ngFor="let tab of tabs">
-        <ng-template #nzTabHeading>
-          Tab {{ tab.index }}
-        </ng-template>
-        <span>Content of tab {{ tab.index }}</span>
+    <nz-tabset [nzTabPosition]="position" [nzType]="'line'">
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab'+ tab">
+        Content of tab {{ tab }}
       </nz-tab>
     </nz-tabset>`,
   styles  : []
 })
 export class NzDemoTabsPositionComponent {
-  _position = 'top';
-  tabs = [
-    {
-      index: 1
-    },
-    {
-      index: 2
-    },
-    {
-      index: 3
-    }
-  ];
+  position = 'top';
+  tabs = [ 1, 2, 3 ];
   options = [
     { value: 'top', label: 'top' },
     { value: 'left', label: 'left' },

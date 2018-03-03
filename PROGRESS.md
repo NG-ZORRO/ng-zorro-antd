@@ -25,7 +25,7 @@
 | carousel | √ | 100% | 100% | vthinkxie | - |
 | collapse | √ | 100% | 100% | vthinkxie | - |
 | table | x | x | x | vthinkxie | - | 
-| tabs | x | x | x | vthinkxie | - |
+| tabs | √ | 100% | 100% | vthinkxie | - |
 | timeline | √ | 100% | 100% | vthinkxie | - |
 | alert | √ | 100% | 100% | vthinkxie | - |
 | progress | √ | 100% | 100% | vthinkxie | √ |
@@ -41,9 +41,9 @@
 | timepicker | x | x | x | trotyl | - |
 | calendar | x | x | x | trotyl | - |
 | affix | √ | x | 100% | cipchk | √ |
-| transfer | x | x | x | cipchk | - |
+| transfer | √ | 100% | 100% | cipchk | x |
 | avatar | √ | 100% | 100% | cipchk | x |
-| list | x | x | x | cipchk | - |
+| list | √ | 100% | 100% | cipchk | x |
 | upload | x | x | x | cipchk | - |
 | anchor | √ | 83% | 100% | cipchk | √ |
 | backtop | √ | 100% | 100% | cipchk | x |
