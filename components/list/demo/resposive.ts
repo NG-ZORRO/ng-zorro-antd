@@ -3,7 +3,10 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-list-resposive',
   template: `
-  <nz-list [nzDataSource]="data" [nzGrid]="{gutter: 16, xs: 24, sm: 12, md: 6, lg: 6, xl: 4 }">
+  <nz-list
+    [nzDataSource]="data"
+    [nzRenderItem]="item"
+    [nzGrid]="{gutter: 16, xs: 24, sm: 12, md: 6, lg: 6, xl: 4 }">
     <ng-template #item let-item>
       <nz-list-item [nzContent]="nzContent">
         <ng-template #nzContent>

@@ -14,7 +14,7 @@ const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,
     [infiniteScrollThrottle]="50"
     (scrolled)="onScroll()"
     [scrollWindow]="false">
-    <nz-list [nzDataSource]="data">
+    <nz-list [nzDataSource]="data" [nzRenderItem]="item">
       <ng-template #item let-item>
         <nz-list-item>
           <nz-list-item-meta
