@@ -9,6 +9,8 @@ import { NzMessageService } from 'ng-zorro-antd';
       nzShowSearch
       [nzOperations]="['to right', 'to left']"
       [nzListStyle]="{'width.px': 250, 'height.px': 300}"
+      [nzRender]="render"
+      [nzFooter]="footer"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)">
       <ng-template #render let-item>
