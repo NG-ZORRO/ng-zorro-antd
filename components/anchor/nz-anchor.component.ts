@@ -9,7 +9,6 @@ import {
   Inject,
   Input,
   OnDestroy,
-  OnInit,
   Output,
   ViewChild
 } from '@angular/core';
@@ -48,7 +47,7 @@ const sharpMatcherRegx = /#([^#]+)$/;
   </ng-template>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzAnchorComponent implements OnDestroy, OnInit, AfterViewInit {
+export class NzAnchorComponent implements OnDestroy, AfterViewInit {
 
   private links: NzAnchorLinkComponent[] = [];
   private animating = false;
@@ -76,7 +75,7 @@ export class NzAnchorComponent implements OnDestroy, OnInit, AfterViewInit {
   private _bounds: number = 5;
   @Input()
   set nzBounds(value: number) {
-    this._bounds = toNumber(value);
+    this._bounds = toNumber(value, 5);
   }
   get nzBounds(): number {
     return this._bounds;
@@ -85,7 +84,7 @@ export class NzAnchorComponent implements OnDestroy, OnInit, AfterViewInit {
   private _offsetTop: number;
   @Input()
   set nzOffsetTop(value: number) {
-    this._offsetTop = toNumber(value);
+    this._offsetTop = toNumber(value, 0);
     if (this._offsetTop >= 0) {
       this.wrapperStyle = {
         'max-height': `calc(100vh - ${this._offsetTop}px)`
@@ -136,9 +135,6 @@ export class NzAnchorComponent implements OnDestroy, OnInit, AfterViewInit {
     return this.target || window;
   }
 
-  ngOnInit(): void {
-  }
-
   ngAfterViewInit(): void {
     this.registerScrollEvent();
   }
@@ -173,7 +169,6 @@ export class NzAnchorComponent implements OnDestroy, OnInit, AfterViewInit {
     const sections: Section[] = [];
     const scope = (this.nzOffsetTop || 0) + this.nzBounds;
     this.links.forEach(comp => {
-      comp.active = false;
       const sharpLinkMatch = sharpMatcherRegx.exec(comp.nzHref.toString());
       if (!sharpLinkMatch) return;
       const target = this.doc.getElementById(sharpLinkMatch[1]);
@@ -188,18 +183,29 @@ export class NzAnchorComponent implements OnDestroy, OnInit, AfterViewInit {
 
     this.visible = !!sections.length;
     if (!this.visible) {
+      this.clearActive();
       this.cd.detectChanges();
       return;
     }
 
     const maxSection = sections.reduce((prev, curr) => curr.top > prev.top ? curr : prev);
-    maxSection.comp.active = true;
+    this.handleActive(maxSection.comp);
+  }
+
+  private clearActive(): void {
+    this.links.forEach(i => i.active = false);
+  }
+
+  private handleActive(comp: NzAnchorLinkComponent): void {
+    this.clearActive();
+
+    comp.active = true;
     this.cd.detectChanges();
 
-    const linkNode = (maxSection.comp.el.nativeElement as HTMLDivElement).querySelector('.ant-anchor-link-title') as HTMLElement;
+    const linkNode = (comp.el.nativeElement as HTMLDivElement).querySelector('.ant-anchor-link-title') as HTMLElement;
     this.ink.nativeElement.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
 
-    this.nzScroll.emit(maxSection.comp);
+    this.nzScroll.emit(comp);
   }
 
   handleScrollTo(linkComp: NzAnchorLinkComponent): void {
@@ -212,7 +218,7 @@ export class NzAnchorComponent implements OnDestroy, OnInit, AfterViewInit {
     const targetScrollTop = containerScrollTop + elOffsetTop - (this.nzOffsetTop || 0);
     this.scrollSrv.scrollTo(this.getTarget(), targetScrollTop, null, () => {
       this.animating = false;
-      this.handleScroll();
+      this.handleActive(linkComp);
     });
     this.nzClick.emit(linkComp.nzHref);
   }

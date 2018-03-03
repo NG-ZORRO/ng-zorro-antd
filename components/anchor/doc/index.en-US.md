@@ -16,7 +16,7 @@ For displaying anchor hyperlinks on page and jumping between them.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzAffix | Fixed mode of Anchor | boolean | false |
+| nzAffix | Fixed mode of Anchor | boolean | true |
 | nzBounds | Bounding distance of anchor area | number | 5(px) |
 | nzOffsetBottom | Pixels to offset from bottom when calculating position of scroll | number | - |
 | nzOffsetTop | Pixels to offset from top when calculating position of scroll | number | 0 |

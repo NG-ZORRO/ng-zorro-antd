@@ -131,7 +131,7 @@ function generateToc(language, name, demoMap) {
   linkArray.sort((pre, next) => pre.order - next.order);
   const links = linkArray.map(link => link.content).join('');
   return `<nz-affix class="toc-affix" [nzOffsetTop]="16">
-    <nz-anchor [nzAffix]="false" (nzClick)="goLink($event)">
+    <nz-anchor [nzAffix]="false" nzShowInkInFixed (nzClick)="goLink($event)">
       ${links}
     </nz-anchor>
   </nz-affix>`;

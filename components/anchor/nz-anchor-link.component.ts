@@ -15,7 +15,7 @@ import { NzAnchorComponent } from './nz-anchor.component';
   selector           : 'nz-link',
   preserveWhitespaces: false,
   template           : `
-    <a (click)="goToClick($event)" href="{{nzHref}}" class="ant-anchor-link-title">
+    <a (click)="goToClick($event)" href="{{nzHref}}" class="ant-anchor-link-title" title="{{titleStr}}">
       <span *ngIf="titleStr; else (titleTpl || nzTemplate)">{{ titleStr }}</span>
     </a>
     <ng-content></ng-content>

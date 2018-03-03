@@ -54,7 +54,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   @Input()
   set nzOffsetTop(value: number) {
     if (typeof value === 'undefined') return;
-    this._offsetTop = toNumber(value);
+    this._offsetTop = toNumber(value, null);
   }
   get nzOffsetTop(): number {
     return this._offsetTop;
@@ -64,7 +64,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   @Input()
   set nzOffsetBottom(value: number) {
     if (typeof value === 'undefined') return;
-    this._offsetBottom = toNumber(value);
+    this._offsetBottom = toNumber(value, null);
   }
 
   @Output() nzChange: EventEmitter<boolean> = new EventEmitter();

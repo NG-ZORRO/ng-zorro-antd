@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-back-top-custom',
   template: `
-  <nz-back-top [nzVisibilityHeight]="100" (nzOnClick)="notify()">
-    <ng-template #nzTemplate>
+  <nz-back-top [nzTemplate]="tpl" [nzVisibilityHeight]="100" (nzOnClick)="notify()">
+    <ng-template #tpl>
       <div class="ant-back-top-inner">UP</div>
     </ng-template>
   </nz-back-top>

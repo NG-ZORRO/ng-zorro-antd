@@ -215,8 +215,8 @@ class TestBackTopComponent {
 @Component({
   template: `
     my comp
-  <nz-back-top>
-    <ng-template #nzTemplate>
+  <nz-back-top [nzTemplate]="tpl">
+    <ng-template #tpl>
       <div class="this-is-my-template"></div>
     </ng-template>
   </nz-back-top>

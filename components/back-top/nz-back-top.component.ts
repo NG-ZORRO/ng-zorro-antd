@@ -58,12 +58,12 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
 
   visible: boolean = false;
 
-  @ContentChild('nzTemplate') nzTemplate: TemplateRef<void>;
+  @Input() nzTemplate: TemplateRef<void>;
 
   private _visibilityHeight: number = 400;
   @Input()
   set nzVisibilityHeight(value: number) {
-    this._visibilityHeight = toNumber(value);
+    this._visibilityHeight = toNumber(value, 400);
   }
   get nzVisibilityHeight(): number {
     return this._visibilityHeight;
@@ -94,7 +94,8 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
   }
 
   private handleScroll(): void {
-    this.visible = this.scrollSrv.getScroll(this.getTarget()) > this.nzVisibilityHeight;
+    if (this.visible === this.scrollSrv.getScroll(this.getTarget()) > this.nzVisibilityHeight) return;
+    this.visible = !this.visible;
     this.cd.detectChanges();
   }
 
