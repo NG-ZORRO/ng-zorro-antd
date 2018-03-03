@@ -56,6 +56,12 @@ import { NzCardTabComponent } from './nz-card-tab.component';
       </li>
     </ul>
   `,
+  styles             : [ `
+    :host {
+      display: block;
+      position: relative;
+    }
+  ` ],
   host               : {
     '[class.ant-card]'        : 'true',
     '[class.ant-card-loading]': 'nzLoading'

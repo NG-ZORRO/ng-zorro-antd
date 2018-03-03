@@ -1,4 +1,5 @@
-declare const Prism: any;
+
+const Prism = require('node-prismjs');
 Prism.languages.angular = Prism.languages.extend('typescript', {});
 
 Prism.languages.insertBefore('angular', 'string', {
@@ -23,3 +24,5 @@ Prism.languages.insertBefore('angular', 'string', {
     }
   }
 });
+
+module.exports = Prism;

@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const camelCase = require('./camelcase');
-
 const template = String(fs.readFileSync(path.resolve(__dirname, '../template/code-box.template.html')));
 
 module.exports = function generateCodeBox(component, key, title, doc, iframe) {

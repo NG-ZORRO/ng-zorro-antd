@@ -64,7 +64,15 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
         </div>
         <ng-content></ng-content>
       </div>
-    </ng-template>`
+    </ng-template>`,
+  styles             : [
+      `
+      :host {
+        position: relative;
+        display: inline-block;
+      }
+    `
+  ]
 })
 
 export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -189,7 +197,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
       this.nzVisibleChange.emit(this.nzVisible);
     }
     this.changeDetector.markForCheck();
-  }
+  };
 
   ngOnInit(): void {
     if (this.nzMenu) {

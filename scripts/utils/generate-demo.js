@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const capitalizeFirstLetter = require('./capitalize-first-letter');
 const camelCase = require('./camelcase');
-
+const PrismAngular = require('./angular-language-marked');
 module.exports = function (showCaseComponentPath, result) {
   const demoTemplate = generateTemplate(result);
   fs.writeFileSync(path.join(showCaseComponentPath, `zh.html`), demoTemplate.zh);
@@ -22,7 +22,7 @@ function generateDemoModule(content) {
   let declarations = '';
   let entryComponents = [];
   for (const key in demoMap) {
-    const declareComponents = [ `NzDemo${componentName(component)}${componentName(key)}Component` ];
+    const declareComponents = [`NzDemo${componentName(component)}${componentName(key)}Component`];
     const entries = retrieveEntryComponents(demoMap[key] && demoMap[key].ts);
     entryComponents.push(...entries);
     declareComponents.push(...entries);
@@ -51,7 +51,8 @@ function generateDemoComponent(content) {
   const demoMap = content.demoMap;
   let code = '';
   for (const key in demoMap) {
-    code += `\t${camelCase(key)} = require('!!raw-loader!./${key}.ts');\n`;
+    const angularCode = encodeURIComponent(PrismAngular.highlight(demoMap[key].ts, Prism.languages['angular']));
+    code += `\t${camelCase(key)} = \`${angularCode}\`\n`;
   }
   let output = demoComponentTemplate;
   output = output.replace(/{{component}}/g, component);

@@ -38,6 +38,8 @@ import { environment } from '../../../environments/environment';
             <i nz-tooltip class="anticon code-box-code-copy" [class.anticon-copy]="!_copied" [class.anticon-check]="_copied" [class.ant-tooltip-open]="_copied" (click)="copyCode(_code)"></i>
             </nz-tooltip>
           </div>
+          <ng-content select="[code]"></ng-content>
+
           <nz-highlight [nzCode]="_code" [nzLanguage]="'typescript'"></nz-highlight>
         </div>
       </section>

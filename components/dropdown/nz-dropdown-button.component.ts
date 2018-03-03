@@ -60,7 +60,13 @@ import { NzDropDownDirective } from './nz-dropdown.directive';
         [style.minWidth.px]="triggerWidth">
         <ng-content select="[nz-menu]"></ng-content>
       </div>
-    </ng-template>    `
+    </ng-template>`,
+  styles             : [ `
+    :host {
+      position: relative;
+      display: inline-block;
+    }
+  ` ]
 })
 
 export class NzDropDownButtonComponent extends NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -82,7 +88,7 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
       this.nzVisibleChange.emit(this.nzVisible);
     }
     this.changeDetector.markForCheck();
-  }
+  };
 
   /** rewrite afterViewInit hook */
   ngAfterViewInit(): void {
