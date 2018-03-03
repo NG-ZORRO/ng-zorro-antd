@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-使用 `defaultFileList` 设置已上传的内容。
+使用 `nzFileList` 设置已上传的内容。
 
 ## en-US
 
-Use `defaultFileList` for uploaded files when page init.
+Use `nzFileList` for uploaded files when page init.
