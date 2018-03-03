@@ -1,8 +1,10 @@
 // tslint:disable: no-any
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
+
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { NzI18nService } from '../i18n/nz-i18n.service';
+
 import { ShowUploadListInterface, UploadFile, UploadListType } from './interface';
 
 @Component({
@@ -64,7 +66,7 @@ import { ShowUploadListInterface, UploadFile, UploadListType } from './interface
       <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" class="anticon anticon-cross" title="{{ locale.removeFile }}"></i>
     </ng-template>
     <div *ngIf="file.status === 'uploading'" class="ant-upload-list-item-progress">
-      <nz-progress [ngModel]="file.percent" [nzShowInfo]="false" [nzStrokeWidth]="2"></nz-progress>
+      <nz-progress [ngModel]="file.percent" [nzShowInfo]="false" [nzStrokeWidth]="2" ngDefaultControl></nz-progress>
     </div>
   </div>
   `,

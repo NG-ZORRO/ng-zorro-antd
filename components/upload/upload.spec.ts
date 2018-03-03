@@ -8,9 +8,11 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+
 import { NzI18nModule, NzI18nService } from '../i18n';
 import { NzProgressModule } from '../progress/nz-progress.module';
 import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
+
 import { ShowUploadListInterface, UploadChangeParam, UploadFile, UploadFilter, UploadListType, UploadType, ZipButtonOptions } from './interface';
 import { NzUploadBtnComponent } from './nz-upload-btn.component';
 import { NzUploadListComponent } from './nz-upload-list.component';
@@ -308,6 +310,53 @@ describe('upload', () => {
             pageObject.postSmall();
             expect(ret).toBe(true);
           });
+        });
+      });
+
+      describe('[nzFilter]', () => {
+        it('shoule be custom limit', () => {
+          instance.nzMultiple = true;
+          instance.nzLimit = 1;
+          instance.nzFilter = [
+            {
+              name: 'limit',
+              fn: (fileList: UploadFile[]) => fileList.slice(-instance.nzLimit)
+            }
+          ];
+          fixture.detectChanges();
+          expect(instance._beforeUploadList.length).toBe(0);
+          pageObject.postFile([
+            ...PNGSMALL.target.files,
+            ...PNGSMALL.target.files,
+            ...PNGSMALL.target.files
+          ]);
+          expect(instance._beforeUploadList.length).toBe(instance.nzLimit);
+        });
+        it('shoule be custom size', () => {
+          instance.nzSize = 1;
+          instance.nzFilter = [
+            {
+              name: 'size',
+              fn: (fileList: UploadFile[]) => fileList.filter(w => (w.size / 1024) <= instance.nzSize)
+            }
+          ];
+          fixture.detectChanges();
+          expect(instance._beforeUploadList.length).toBe(0);
+          pageObject.postLarge();
+          expect(instance._beforeUploadList.length).toBe(0);
+        });
+        it('shoule be custom type', () => {
+          instance.nzFileType = 'image/png';
+          instance.nzFilter = [
+            {
+              name: 'type',
+              fn: (fileList: UploadFile[]) => fileList.filter(w => ~[ instance.nzFileType ].indexOf(w.type))
+            }
+          ];
+          fixture.detectChanges();
+          expect(instance._beforeUploadList.length).toBe(0);
+          pageObject.postFile(JPGSMALL.target.files);
+          expect(instance._beforeUploadList.length).toBe(0);
         });
       });
     });

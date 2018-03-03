@@ -1,8 +1,7 @@
-// tslint:disable:prefer-method-signature
+// tslint:disable:no-any prefer-method-signature
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-// tslint:disable:no-any
 /** 状态 */
 export type UploadFileStatus = 'error' | 'success' | 'done' | 'uploading' | 'removed';
 

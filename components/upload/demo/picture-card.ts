@@ -14,7 +14,11 @@ import { NzMessageService, UploadFile } from 'ng-zorro-antd';
         <i class="anticon anticon-plus"></i>
         <div class="ant-upload-text">Upload</div>
     </nz-upload>
-    modal待实现：{{ previewVisible | json }}
+    <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible=false">
+      <ng-template #modalContent>
+        <img [src]="previewImage" [ngStyle]="{ 'width': '100%' }" />
+      </ng-template>
+    </nz-modal>
   </div>
   `,
   styles: [

@@ -3,7 +3,9 @@ import { HttpClient, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } fro
 import { ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnChanges, OnDestroy, OnInit, Optional, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+
 import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
 
 @Component({

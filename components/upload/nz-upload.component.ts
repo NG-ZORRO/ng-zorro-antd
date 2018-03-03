@@ -4,8 +4,10 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { of } from 'rxjs/observable/of';
 import { filter } from 'rxjs/operators';
+
 import { toBoolean, toNumber } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
+
 import { ShowUploadListInterface, UploadChangeParam, UploadFile, UploadFileStatus, UploadFilter, UploadListType, UploadType, ZipButtonOptions } from './interface';
 import { NzUploadBtnComponent } from './nz-upload-btn.component';
 
@@ -67,7 +69,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   private _limit: number = 0;
   @Input()
   set nzLimit(value: number) {
-    this._limit = toNumber(value);
+    this._limit = toNumber(value, null);
   }
   get nzLimit(): number {
     return this._limit;
@@ -75,7 +77,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   private _size: number = 0;
   @Input()
   set nzSize(value: number) {
-    this._size = toNumber(value);
+    this._size = toNumber(value, null);
   }
   get nzSize(): number {
     return this._size;
