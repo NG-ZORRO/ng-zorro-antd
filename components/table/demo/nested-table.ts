@@ -33,7 +33,7 @@ import { Component, OnInit } from '@angular/core';
           <tr nz-tr [nzExpand]="data.expand">
             <td nz-td></td>
             <td nz-td colspan="7">
-              <nz-table #innerTable [nzData]="innerTableData" [nzPageSize]="10" [nzIsPagination]="false">
+              <nz-table #innerTable [nzData]="innerTableData" nzSize="middle" [nzIsPagination]="false">
                 <thead nz-thead>
                   <tr nz-tr>
                     <th nz-th>Date</th>

@@ -43,7 +43,6 @@
   },
   "dependencies": {
     "@angular/cdk": "^5.0.0",
-    "lodash.ismatch": "^4.4.0",
     "moment": "^2.18.1"
   },
   "devDependencies": {
@@ -93,7 +92,8 @@
     "wrench": "^1.5.9",
     "yaml-front-matter": "^3.4.0",
     "zone.js": "^0.8.19",
-    "ngx-infinite-scroll": "^0.8.2"
+    "ngx-infinite-scroll": "^0.8.2",
+    "@stackblitz/sdk": "^1.1.1"
   },
   "peerDependencies": {
     "@angular/animations": "^5.0.0",

@@ -1,4 +1,3 @@
-
 const Prism = require('node-prismjs');
 Prism.languages.angular = Prism.languages.extend('typescript', {});
 
