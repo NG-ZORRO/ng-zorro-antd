@@ -1,9 +1,11 @@
-import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Host, Input, Optional, Renderer2 } from '@angular/core';
+import { NzTableComponent } from './nz-table.component';
 
 @Directive({
-  selector: '[nz-tr]',
+  // tslint:disable-next-line:directive-selector
+  selector: 'tr',
   host    : {
-    '[class.ant-table-row]': 'true'
+    '[class.ant-table-row]': 'nzTableComponent'
   }
 })
 
@@ -20,7 +22,7 @@ export class NzTrDirective {
     }
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Host() @Optional() public nzTableComponent: NzTableComponent) {
 
   }
 }

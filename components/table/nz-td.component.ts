@@ -10,9 +10,10 @@ import {
 import { toBoolean } from '../core/util/convert';
 
 @Component({
-  selector: '[nz-td]',
+  // tslint:disable-next-line:component-selector
+  selector: 'td',
   template: `
-    <span class="ant-table-row-indent" [style.padding-left.px]="nzIndentSize"></span>
+    <span class="ant-table-row-indent" *ngIf="nzIndentSize" [style.padding-left.px]="nzIndentSize"></span>
     <label
       *ngIf="nzShowCheckbox"
       nz-checkbox

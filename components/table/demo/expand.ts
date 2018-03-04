@@ -4,27 +4,27 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-table-expand',
   template: `
     <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10">
-      <thead nz-thead>
-        <tr nz-tr>
-          <th nz-th nzShowExpand></th>
-          <th nz-th>Name</th>
-          <th nz-th>Age</th>
-          <th nz-th>Address</th>
-          <th nz-th>Action</th>
+      <thead>
+        <tr>
+          <th nzShowExpand></th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Address</th>
+          <th>Action</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
+      <tbody>
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
-          <tr nz-tr>
-            <td nz-td nzShowExpand [(nzExpand)]="data.expand"></td>
-            <td nz-td>{{data.name}}</td>
-            <td nz-td>{{data.age}}</td>
-            <td nz-td>{{data.address}}</td>
-            <td nz-td><a href="#">Delete</a></td>
+          <tr>
+            <td nzShowExpand [(nzExpand)]="data.expand"></td>
+            <td>{{data.name}}</td>
+            <td>{{data.age}}</td>
+            <td>{{data.address}}</td>
+            <td><a href="#">Delete</a></td>
           </tr>
-          <tr nz-tr [nzExpand]="data.expand">
-            <td nz-td></td>
-            <td nz-td colspan="4">{{data.description}}</td>
+          <tr [nzExpand]="data.expand">
+            <td></td>
+            <td colspan="4">{{data.description}}</td>
           </tr>
         </ng-template>
       </tbody>

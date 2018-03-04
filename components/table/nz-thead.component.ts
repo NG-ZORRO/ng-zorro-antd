@@ -3,8 +3,10 @@ import {
   Component,
   ContentChildren,
   EventEmitter,
+  Host,
   Input,
   OnDestroy,
+  Optional,
   Output,
   QueryList,
   TemplateRef,
@@ -16,17 +18,20 @@ import { merge } from 'rxjs/operators/merge';
 import { toBoolean } from '../core/util/convert';
 import { NzThComponent } from './nz-th.component';
 
+import { NzTableComponent } from './nz-table.component';
+
 @Component({
-  selector: '[nz-thead]',
+  // tslint:disable-next-line:component-selector
+  selector: 'thead:not(.ant-table-thead)',
+//  selector: '[nz-thead]',
   template: `
-    <ng-template>
+    <ng-template #contentTemplate>
       <ng-content></ng-content>
-    </ng-template>`,
-  styles  : [
-      `:host {
-      display: none;
-    }`
-  ]
+    </ng-template>
+    <ng-container *ngIf="!nzTableComponent">
+      <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
+    </ng-container>
+  `
 })
 export class NzTheadComponent implements AfterContentInit, OnDestroy {
   private _singleSort = false;
@@ -41,11 +46,17 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy {
     return this._singleSort;
   }
 
-  @ViewChild(TemplateRef) template: TemplateRef<void>;
+  @ViewChild('contentTemplate') template: TemplateRef<void>;
 
   @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
 
   @Output() nzSortChange = new EventEmitter<{ key: string, value: string }>();
+
+  constructor(@Host() @Optional() public nzTableComponent: NzTableComponent) {
+    if (this.nzTableComponent) {
+      this.nzTableComponent.nzTheadComponent = this;
+    }
+  }
 
   ngAfterContentInit(): void {
     let sortChange = new Subject<{ key: string, value: string }>().asObservable();

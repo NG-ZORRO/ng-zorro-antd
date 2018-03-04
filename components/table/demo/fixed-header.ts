@@ -4,18 +4,18 @@ import { Component, OnInit } from '@angular/core';
   selector: 'nz-demo-table-fixed-header',
   template: `
     <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="50" [nzScroll]="{ y: '240px' }">
-      <thead nz-thead>
-        <tr nz-tr>
-          <th nz-th nzWidth="150px">Name</th>
-          <th nz-th nzWidth="150px">Age</th>
-          <th nz-th>Address</th>
+      <thead>
+        <tr>
+          <th nzWidth="150px">Name</th>
+          <th nzWidth="150px">Age</th>
+          <th>Address</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tr *ngFor="let data of nzTable.data">
-          <td nz-td>{{data.name}}</td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.address}}</td>
+      <tbody>
+        <tr *ngFor="let data of nzTable.data">
+          <td>{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>`,

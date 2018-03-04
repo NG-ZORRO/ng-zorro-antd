@@ -23,7 +23,8 @@ export interface NzThItemInterface {
 }
 
 @Component({
-  selector           : '[nz-th]',
+  // tslint:disable-next-line:component-selector
+  selector: 'th',
   preserveWhitespaces: false,
   template           : `
     <ng-template #checkboxTemplate>

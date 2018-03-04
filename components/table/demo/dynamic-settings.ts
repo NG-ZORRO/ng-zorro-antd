@@ -102,33 +102,33 @@ import { Component, OnInit } from '@angular/core';
       [nzFooter]="footer?'Here is Footer':null"
       [nzTitle]="title?'Here is Title':null"
       [nzSize]="size">
-      <thead nz-thead *ngIf="header">
-        <tr nz-tr>
-          <th nz-th nzWidth="50px" nzShowExpand *ngIf="expandable" ></th>
-          <th nz-th nzWidth="62px" nzShowCheckbox *ngIf="checkbox" [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
-          <th nz-th nzWidth="150px">Name</th>
-          <th nz-th nzWidth="70px">Age</th>
-          <th nz-th>Address</th>
-          <th nz-th nzWidth="260px">Action</th>
+      <thead *ngIf="header">
+        <tr>
+          <th nzWidth="50px" nzShowExpand *ngIf="expandable" ></th>
+          <th nzWidth="62px" nzShowCheckbox *ngIf="checkbox" [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
+          <th nzWidth="150px">Name</th>
+          <th nzWidth="70px">Age</th>
+          <th>Address</th>
+          <th nzWidth="260px">Action</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
+      <tbody>
         <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
-          <tr nz-tr>
-            <td nz-td nzShowExpand *ngIf="expandable" [(nzExpand)]="data.expand"></td>
-            <td nz-td nzShowCheckbox *ngIf="checkbox" [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus($event)"></td>
-            <td nz-td>{{data.name}}</td>
-            <td nz-td>{{data.age}}</td>
-            <td nz-td>{{data.address}}</td>
-            <td nz-td>
+          <tr>
+            <td nzShowExpand *ngIf="expandable" [(nzExpand)]="data.expand"></td>
+            <td nzShowCheckbox *ngIf="checkbox" [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus($event)"></td>
+            <td>{{data.name}}</td>
+            <td>{{data.age}}</td>
+            <td>{{data.address}}</td>
+            <td>
               <a href="#">Action 一 {{data.name}}</a>
               <nz-divider nzType="vertical"></nz-divider>
               <a href="#">Delete</a>
             </td>
           </tr>
-          <tr nz-tr [nzExpand]="data.expand">
-            <td nz-td></td>
-            <td nz-td [attr.colspan]="checkbox?5:4">{{data.description}}</td>
+          <tr [nzExpand]="data.expand">
+            <td></td>
+            <td [attr.colspan]="checkbox?5:4">{{data.description}}</td>
           </tr>
         </ng-template>
       </tbody>

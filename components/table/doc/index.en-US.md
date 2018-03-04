@@ -22,7 +22,7 @@ You can use `nz-table` like  [` W3C Standard <table>`](https://www.w3.org/TR/htm
 
 ### Component Enhancements
 
-The component in `nz-table` such as `nz-th`, `nz-td`, `nz-thead`, etc are enhanced, developers can make the table sortable, filterable, fixed header, server rendering, etc easily with api provided.
+The component in `nz-table` such as `th`, `td`, `thead`, etc are enhanced, developers can make the table sortable, filterable, fixed header, server rendering, etc easily with api provided.
 
 ### Data Processing
 
@@ -30,20 +30,20 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 
 ```html
 <nz-table #basicTable [nzData]="dataSet">
-  <thead nz-thead>
-    <tr nz-tr>
-      <th nz-th>Name</th>
-      <th nz-th>Age</th>
-      <th nz-th>Address</th>
-      <th nz-th>Action</th>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Address</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
-    <tr nz-tr *ngFor="let data of basicTable.data">
-      <td nz-td>{{data.name}}</td>
-      <td nz-td>{{data.age}}</td>
-      <td nz-td>{{data.address}}</td>
-      <td nz-td>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data.name}}</td>
+      <td>{{data.age}}</td>
+      <td>{{data.address}}</td>
+      <td>
         <a>Action 一 {{data.name}}</a>
         <nz-divider nzType="vertical"></nz-divider>
         <a>Delete</a>
@@ -69,7 +69,7 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | nzCurrentPageDataChange | current pageData change callback | (data:any[])=>{} | - |
 | nzIsPagination | Whether paging data | boolean | true |
 | nzBordered | Whether to show all table borders | boolean | `false` |
-| nzWidthConfig | Set col width can not used with `nzWidth` of `nz-th` | string[] | - |
+| nzWidthConfig | Set col width can not used with `nzWidth` of `th` | string[] | - |
 | nzSize | Size of table | `default` ｜ `middle` ｜ `small` | `default` |
 | nzLoading | Loading status of table | boolean | `false` |
 | nzLoadingDelay | Specifies a delay in milliseconds for loading state (prevent flush) | number | 0 |
@@ -82,7 +82,7 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | nzShowSizeChanger | Determine whether `nzPageSize` can be changed | boolean | false |
 | nzShowTotal | To display the total number and range	 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
 
-### nz-th
+### th
 
 Checkbox property
 
@@ -125,7 +125,7 @@ Other property
 | -------- | ----------- | ---- | ------- |
 | nzExpand | Whether current column include expand icon | boolean | - |
 
-### nz-td
+### td
 
 Checkbox property
 
@@ -158,16 +158,16 @@ Other property
 | -------- | ----------- | ---- | ------- |
 | nzIndentSize | Indent size in pixels of tree data | number | - |
 
-### nz-thead
+### thead
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzSortChange | sort change callback，should used with `nzSortKey` of `nz-th` | `(sortChange:{ nzSortKey: string, value: 'descend'丨'ascend'丨null })=>{}` | - |
+| nzSortChange | sort change callback，should used with `nzSortKey` of `th` | `(sortChange:{ nzSortKey: string, value: 'descend'丨'ascend'丨null })=>{}` | - |
 | nzSingleSort | Whether single column sort mode | boolean | false |
 
 ### nz-tr
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzExpand | Whether expand current row，used with `nzExpand` of `nz-td`  | boolean | - |
+| nzExpand | Whether expand current row，used with `nzExpand` of `td`  | boolean | - |
 

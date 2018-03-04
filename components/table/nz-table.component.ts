@@ -147,6 +147,7 @@ export class NzTableComponent implements OnInit {
   private _widthConfig: string[] = [];
   private _total: number;
   private _serverRender = false;
+  nzTheadComponent: NzTheadComponent;
   isFooterString: boolean;
   isTitleString: boolean;
   isNoResultString: boolean;
@@ -162,7 +163,6 @@ export class NzTableComponent implements OnInit {
   isWidthConfigSet = false;
   @ViewChild('tableHeaderElement') tableHeaderElement: ElementRef;
   @ViewChild('tableBodyElement') tableBodyElement: ElementRef;
-  @ContentChild(NzTheadComponent) nzTheadComponent: NzTheadComponent;
   @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
 
   @Output() nzPageSizeChange: EventEmitter<number> = new EventEmitter();

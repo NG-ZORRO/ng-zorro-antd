@@ -10,38 +10,38 @@ import { Component, OnInit } from '@angular/core';
       nzSize="middle"
       [nzWidthConfig]="['100px','200px','200px','100px','100px',null,null,'60px']"
       [nzScroll]="{ x:'130%',y: '240px' }">
-      <thead nz-thead>
-        <tr nz-tr style="height: 46px;">
-          <th nz-th rowspan="4" nzLeft="0px" nzShowFilter [nzFilters]="filterName" (nzFilterChange)="search($event)">Name</th>
-          <th nz-th colspan="4">Other</th>
-          <th nz-th colspan="2">Company</th>
-          <th nz-th rowspan="4" nzRight="0px">Gender</th>
+      <thead>
+        <tr style="height: 46px;">
+          <th rowspan="4" nzLeft="0px" nzShowFilter [nzFilters]="filterName" (nzFilterChange)="search($event)">Name</th>
+          <th colspan="4">Other</th>
+          <th colspan="2">Company</th>
+          <th rowspan="4" nzRight="0px">Gender</th>
         </tr>
-        <tr nz-tr style="height: 46px;">
-          <th nz-th rowspan="3" nzShowSort [(nzSort)]="sortValue" (nzSortChange)="search(searchName)">Age</th>
-          <th nz-th colspan="3">Address</th>
-          <th nz-th rowspan="3">Company Address</th>
-          <th nz-th rowspan="3">Company Name</th>
+        <tr style="height: 46px;">
+          <th rowspan="3" nzShowSort [(nzSort)]="sortValue" (nzSortChange)="search(searchName)">Age</th>
+          <th colspan="3">Address</th>
+          <th rowspan="3">Company Address</th>
+          <th rowspan="3">Company Name</th>
         </tr>
-        <tr nz-tr style="height: 46px;">
-          <th nz-th rowspan="2">Street</th>
-          <th nz-th colspan="2">Block</th>
+        <tr style="height: 46px;">
+          <th rowspan="2">Street</th>
+          <th colspan="2">Block</th>
         </tr>
-        <tr nz-tr style="height: 46px;">
-          <th nz-th>Building</th>
-          <th nz-th>Door No.</th>
+        <tr style="height: 46px;">
+          <th>Building</th>
+          <th>Door No.</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tr *ngFor="let data of groupingTable.data">
-          <td nz-td nzLeft="0px">{{data.name}}</td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.street}}</td>
-          <td nz-td>{{data.building}}</td>
-          <td nz-td>{{data.number}}</td>
-          <td nz-td>{{data.companyAddress}}</td>
-          <td nz-td>{{data.companyName}}</td>
-          <td nz-td nzRight="0px">{{data.gender}}</td>
+      <tbody>
+        <tr *ngFor="let data of groupingTable.data">
+          <td nzLeft="0px">{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.street}}</td>
+          <td>{{data.building}}</td>
+          <td>{{data.number}}</td>
+          <td>{{data.companyAddress}}</td>
+          <td>{{data.companyName}}</td>
+          <td nzRight="0px">{{data.gender}}</td>
         </tr>
       </tbody>
     </nz-table>`,

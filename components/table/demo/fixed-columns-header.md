@@ -22,7 +22,7 @@ A Solution for displaying large amounts of data with long columns.
 
 > We use `sticky` property to fixed column，[browsers support](https://caniuse.com/#feat=css-sticky).
 
-> Specify the width of `nz-th` if header and cell do not align properly.
+> Specify the width of `th` if header and cell do not align properly.
 
 > A fixed value which is greater than table width for `nzScroll.x` is recommended. The sum of unfixed columns should not greater than `nzScroll.x`.
 

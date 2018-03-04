@@ -4,21 +4,21 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-table-colspan-rowspan',
   template: `
     <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" nzBordered>
-      <thead nz-thead>
-        <tr nz-tr>
-          <th nz-th>Name</th>
-          <th nz-th>Age</th>
-          <th nz-th colspan="2">Home phone</th>
-          <th nz-th>Address</th>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th colspan="2">Home phone</th>
+          <th>Address</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tr *ngFor="let data of nzTable.data; index as i;">
-          <td nz-td>{{data.name}}</td>
-          <td nz-td [attr.colspan]="i==4?5:1">{{data.age}}</td>
-          <td nz-td [attr.rowspan]="i==2?2:1" *ngIf="(i!=3)&&(i!=4)">{{data.tel}}</td>
-          <td nz-td *ngIf="i!=4">{{data.phone}}</td>
-          <td nz-td *ngIf="i!=4">{{data.address}}</td>
+      <tbody>
+        <tr *ngFor="let data of nzTable.data; index as i;">
+          <td>{{data.name}}</td>
+          <td [attr.colspan]="i==4?5:1">{{data.age}}</td>
+          <td [attr.rowspan]="i==2?2:1" *ngIf="(i!=3)&&(i!=4)">{{data.tel}}</td>
+          <td *ngIf="i!=4">{{data.phone}}</td>
+          <td *ngIf="i!=4">{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>`,

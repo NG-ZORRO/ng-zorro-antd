@@ -4,54 +4,54 @@ import { Component, OnInit } from '@angular/core';
   selector: 'nz-demo-table-nested-table',
   template: `
     <nz-table #nestedTable [nzData]="nestedTableData" [nzPageSize]="10">
-      <thead nz-thead>
-        <tr nz-tr>
-          <th nz-th nzShowExpand></th>
-          <th nz-th>Name</th>
-          <th nz-th>Platform</th>
-          <th nz-th>Version</th>
-          <th nz-th>Upgraded</th>
-          <th nz-th>Creator</th>
-          <th nz-th>Date</th>
-          <th nz-th>Action</th>
+      <thead>
+        <tr>
+          <th nzShowExpand></th>
+          <th>Name</th>
+          <th>Platform</th>
+          <th>Version</th>
+          <th>Upgraded</th>
+          <th>Creator</th>
+          <th>Date</th>
+          <th>Action</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
+      <tbody>
         <ng-template ngFor let-data [ngForOf]="nestedTable.data">
-          <tr nz-tr>
-            <td nz-td nzShowExpand [(nzExpand)]="data.expand"></td>
-            <td nz-td>{{data.name}}</td>
-            <td nz-td>{{data.platform}}</td>
-            <td nz-td>{{data.version}}</td>
-            <td nz-td>{{data.upgradeNum}}</td>
-            <td nz-td>{{data.creator}}</td>
-            <td nz-td>{{data.createdAt}}</td>
-            <td nz-td>
+          <tr>
+            <td nzShowExpand [(nzExpand)]="data.expand"></td>
+            <td>{{data.name}}</td>
+            <td>{{data.platform}}</td>
+            <td>{{data.version}}</td>
+            <td>{{data.upgradeNum}}</td>
+            <td>{{data.creator}}</td>
+            <td>{{data.createdAt}}</td>
+            <td>
               <a>Publish</a>
             </td>
           </tr>
-          <tr nz-tr [nzExpand]="data.expand">
-            <td nz-td></td>
-            <td nz-td colspan="7">
+          <tr [nzExpand]="data.expand">
+            <td></td>
+            <td colspan="7">
               <nz-table #innerTable [nzData]="innerTableData" nzSize="middle" [nzIsPagination]="false">
-                <thead nz-thead>
-                  <tr nz-tr>
-                    <th nz-th>Date</th>
-                    <th nz-th>Name</th>
-                    <th nz-th>Status</th>
-                    <th nz-th>Upgrade Status</th>
-                    <th nz-th>Action</th>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Upgrade Status</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
-                <tbody nz-tbody>
-                  <tr nz-tr *ngFor="let data of innerTable.data">
-                    <td nz-td>{{data.date}}</td>
-                    <td nz-td>{{data.name}}</td>
-                    <td nz-td>
+                <tbody>
+                  <tr *ngFor="let data of innerTable.data">
+                    <td>{{data.date}}</td>
+                    <td>{{data.name}}</td>
+                    <td>
                       <nz-badge [nzStatus]="'success'" [nzText]="'Finished'"></nz-badge>
                     </td>
-                    <td nz-td>{{data.upgradeNum}}</td>
-                    <td nz-td>
+                    <td>{{data.upgradeNum}}</td>
+                    <td>
                       <span class="table-operation">
                         <nz-dropdown>
                           <a nz-dropdown class="operation">
