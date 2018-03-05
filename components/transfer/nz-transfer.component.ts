@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChild,
   ElementRef,
   EventEmitter,
   Input,
@@ -29,13 +28,13 @@ import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, Tr
       [filter]="leftFilter"
       [filterOption]="nzFilterOption"
       (filterChange)="handleFilterChange($event)"
-      [render]="render"
+      [render]="nzRender"
       [showSearch]="nzShowSearch"
       [searchPlaceholder]="nzSearchPlaceholder"
       [notFoundContent]="nzNotFoundContent"
       [itemUnit]="nzItemUnit"
       [itemsUnit]="nzItemsUnit"
-      [footer]="footer"
+      [footer]="nzFooter"
       (handleSelect)="handleLeftSelect($event)"
       (handleSelectAll)="handleLeftSelectAll($event)"></nz-transfer-list>
     <div class="ant-transfer-operation">
@@ -52,13 +51,13 @@ import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, Tr
       [filter]="rightFilter"
       [filterOption]="nzFilterOption"
       (filterChange)="handleFilterChange($event)"
-      [render]="render"
+      [render]="nzRender"
       [showSearch]="nzShowSearch"
       [searchPlaceholder]="nzSearchPlaceholder"
       [notFoundContent]="nzNotFoundContent"
       [itemUnit]="nzItemUnit"
       [itemsUnit]="nzItemsUnit"
-      [footer]="footer"
+      [footer]="nzFooter"
       (handleSelect)="handleRightSelect($event)"
       (handleSelectAll)="handleRightSelectAll($event)"></nz-transfer-list>
   `,
@@ -81,9 +80,9 @@ export class NzTransferComponent implements OnChanges {
   @Input() nzListStyle: object;
   @Input() nzItemUnit = this.i18n.translate('Transfer.itemUnit');
   @Input() nzItemsUnit = this.i18n.translate('Transfer.itemsUnit');
-  @Input() canMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => of(arg.list);
-  @ContentChild('render') render: TemplateRef<void>;
-  @ContentChild('footer') footer: TemplateRef<void>;
+  @Input() nzCanMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => of(arg.list);
+  @Input() nzRender: TemplateRef<void>;
+  @Input() nzFooter: TemplateRef<void>;
 
   // search
   @Input()
@@ -167,7 +166,7 @@ export class NzTransferComponent implements OnChanges {
     this.updateOperationStatus(oppositeDirection, 0);
     const datasource = direction === 'left' ? this.rightDataSource : this.leftDataSource;
     const moveList = datasource.filter(item => item.checked === true && !item.disabled);
-    this.canMove({ direction, list: moveList })
+    this.nzCanMove({ direction, list: moveList })
     .subscribe(
       newMoveList => this.truthMoveTo(direction, newMoveList.filter(i => !!i)),
       () => moveList.forEach(i => i.checked = false)
