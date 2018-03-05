@@ -12,7 +12,7 @@ import { ListSize, NzListGrid } from './interface';
   <ng-template #itemsTpl>
     <ng-container *ngFor="let item of nzDataSource; let index = index">
       <ng-template
-        [ngTemplateOutlet]="nzItem"
+        [ngTemplateOutlet]="nzRenderItem"
         [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
     </ng-container>
   </ng-template>
@@ -24,7 +24,7 @@ import { ListSize, NzListGrid } from './interface';
       <div nz-col [nzSpan]="nzGrid.span" [nzXs]="nzGrid.xs" [nzSm]="nzGrid.sm" [nzMd]="nzGrid.md" [nzLg]="nzGrid.lg" [nzXl]="nzGrid.xl" [nzXXl]="nzGrid.xxl"
           *ngFor="let item of nzDataSource; let index = index">
           <ng-template
-            [ngTemplateOutlet]="nzItem"
+            [ngTemplateOutlet]="nzRenderItem"
             [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
       </div>
     </div>
@@ -59,9 +59,9 @@ export class NzListComponent implements OnChanges {
 
   _isHeader = false;
   _header = '';
-  _headerTpl: TemplateRef<any>;
+  _headerTpl: TemplateRef<void>;
   @Input()
-  set nzHeader(value: string | TemplateRef<any>) {
+  set nzHeader(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
       this._header = null;
       this._headerTpl = value;
@@ -74,9 +74,9 @@ export class NzListComponent implements OnChanges {
 
   _isFooter = false;
   _footer = '';
-  _footerTpl: TemplateRef<any>;
+  _footerTpl: TemplateRef<void>;
   @Input()
-  set nzFooter(value: string | TemplateRef<any>) {
+  set nzFooter(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
       this._footer = null;
       this._footerTpl = value;
@@ -89,7 +89,7 @@ export class NzListComponent implements OnChanges {
 
   @Input() nzItemLayout: 'vertical' | 'horizontal' = 'horizontal';
 
-  @ContentChild('item') nzItem: TemplateRef<any>;
+  @Input() nzRenderItem: TemplateRef<void>;
 
   private _loading = false;
   @Input()
@@ -100,8 +100,8 @@ export class NzListComponent implements OnChanges {
     return this._loading;
   }
 
-  @ContentChild('loadMore') nzLoadMore: TemplateRef<any>;
-  @ContentChild('pagination') nzPagination: TemplateRef<any>;
+  @Input() nzLoadMore: TemplateRef<void>;
+  @Input() nzPagination: TemplateRef<void>;
 
   @Input() nzSize: ListSize = 'default';
 

@@ -11,10 +11,10 @@ import { NzListItemMetaComponent } from './nz-list-item-meta.component';
     </div>
   </ng-template>
   <ng-template #actionsTpl>
-    <ul *ngIf="actions?.length > 0" class="ant-list-item-action">
-      <li *ngFor="let i of actions; let idx = index">
+    <ul *ngIf="nzActions?.length > 0" class="ant-list-item-action">
+      <li *ngFor="let i of nzActions; let idx = index">
         <ng-template [ngTemplateOutlet]="i"></ng-template>
-        <em *ngIf="idx!==actions.length-1" class="ant-list-item-action-split"></em>
+        <em *ngIf="idx!==nzActions.length-1" class="ant-list-item-action-split"></em>
       </li>
     </ul>
   </ng-template>
@@ -23,9 +23,9 @@ import { NzListItemMetaComponent } from './nz-list-item-meta.component';
     <ng-template [ngTemplateOutlet]="contentTpl"></ng-template>
     <ng-template [ngTemplateOutlet]="actionsTpl"></ng-template>
   </ng-template>
-  <div *ngIf="extra; else mainTpl" class="ant-list-item-extra-wrap">
+  <div *ngIf="nzExtra; else mainTpl" class="ant-list-item-extra-wrap">
     <div class="ant-list-item-main"><ng-template [ngTemplateOutlet]="mainTpl"></ng-template></div>
-    <div class="ant-list-item-extra"><ng-template [ngTemplateOutlet]="extra"></ng-template></div>
+    <div class="ant-list-item-extra"><ng-template [ngTemplateOutlet]="nzExtra"></ng-template></div>
   </div>`,
   preserveWhitespaces: false,
   host: {
@@ -33,7 +33,7 @@ import { NzListItemMetaComponent } from './nz-list-item-meta.component';
   }
 })
 export class NzListItemComponent {
-  @ContentChildren('action') actions: QueryList<ElementRef>;
+  @Input() nzActions: Array<TemplateRef<void>> = [];
   @ContentChildren(NzListItemMetaComponent) metas: QueryList<NzListItemMetaComponent>;
 
   isCon = false;
@@ -51,5 +51,5 @@ export class NzListItemComponent {
     this.isCon = !!value;
   }
 
-  @ContentChild('extra') extra: TemplateRef<void>;
+  @Input() nzExtra: TemplateRef<void>;
 }

@@ -172,7 +172,10 @@ describe('list', () => {
     [nzLoading]="nzLoading"
     [nzSize]="nzSize"
     [nzSplit]="nzSplit"
-    [nzGrid]="nzGrid">
+    [nzGrid]="nzGrid"
+    [nzRenderItem]="item"
+    [nzLoadMore]="loadMore"
+    [nzPagination]="pagination">
     <ng-template #item let-item>
       <nz-list-item>
         <nz-list-item-meta
@@ -231,7 +234,7 @@ class TestListWithTemplateComponent {
 @Component({
   template: `
   <nz-list id="item-string">
-    <nz-list-item [nzContent]="'content'">
+    <nz-list-item [nzContent]="'content'" [nzActions]="[action]" [nzExtra]="extra">
       <ng-template #action><i class="anticon anticon-star-o" style="margin-right: 8px;"></i> 156</ng-template>
       <ng-template #extra>
         <img width="272" alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png">
