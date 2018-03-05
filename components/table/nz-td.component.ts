@@ -7,6 +7,7 @@ import {
   Renderer2
 } from '@angular/core';
 
+import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
@@ -47,7 +48,7 @@ export class NzTdComponent {
   @Input()
   set nzIndentSize(value: number) {
     this._indentSize = value;
-    this.isIndentSizeSet = true;
+    this.isIndentSizeSet = isNotNil(value);
     this.updateExpandIconClass();
   }
 
@@ -90,14 +91,18 @@ export class NzTdComponent {
 
   @Input()
   set nzLeft(value: string) {
-    this.renderer.addClass(this.el, 'ant-table-td-left-sticky');
-    this.renderer.setStyle(this.el, 'left', value);
+    if (isNotNil(value)) {
+      this.renderer.addClass(this.el, 'ant-table-td-left-sticky');
+      this.renderer.setStyle(this.el, 'left', value);
+    }
   }
 
   @Input()
   set nzRight(value: string) {
-    this.renderer.addClass(this.el, 'ant-table-td-right-sticky');
-    this.renderer.setStyle(this.el, 'right', value);
+    if (isNotNil(value)) {
+      this.renderer.addClass(this.el, 'ant-table-td-right-sticky');
+      this.renderer.setStyle(this.el, 'right', value);
+    }
   }
 
   updateExpandIconClass(): void {
