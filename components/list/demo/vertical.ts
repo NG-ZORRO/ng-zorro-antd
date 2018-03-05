@@ -3,12 +3,16 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-list-vertical',
   template: `
-  <nz-list [nzDataSource]="data" [nzItemLayout]="'vertical'">
+  <nz-list
+    [nzDataSource]="data"
+    [nzItemLayout]="'vertical'"
+    [nzRenderItem]="item"
+    [nzPagination]="pagination">
       <ng-template #item let-item>
-          <nz-list-item [nzContent]="item.content">
-              <ng-template #action><i class="anticon anticon-star-o" style="margin-right: 8px;"></i> 156</ng-template>
-              <ng-template #action><i class="anticon anticon-like-o" style="margin-right: 8px;"></i> 156</ng-template>
-              <ng-template #action><i class="anticon anticon-message" style="margin-right: 8px;"></i> 2</ng-template>
+          <nz-list-item [nzContent]="item.content" [nzActions]="[starAction,likeAction,msgAction]" [nzExtra]="extra">
+              <ng-template #starAction><i class="anticon anticon-star-o" style="margin-right: 8px;"></i> 156</ng-template>
+              <ng-template #likeAction><i class="anticon anticon-like-o" style="margin-right: 8px;"></i> 156</ng-template>
+              <ng-template #msgAction><i class="anticon anticon-message" style="margin-right: 8px;"></i> 2</ng-template>
               <nz-list-item-meta
                   [nzAvatar]="item.avatar"
                   [nzTitle]="nzTitle"
