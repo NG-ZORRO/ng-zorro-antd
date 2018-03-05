@@ -98,13 +98,14 @@ import { Component, OnInit } from '@angular/core';
       [nzData]="dataSet"
       [nzBordered]="bordered"
       [nzLoading]="loading"
-      [nzIsPagination]="pagination"
+      [nzFrontPagination]="pagination"
+      [nzShowPagination]="pagination"
       [nzFooter]="footer?'Here is Footer':null"
       [nzTitle]="title?'Here is Title':null"
       [nzSize]="size">
       <thead *ngIf="header">
         <tr>
-          <th nzWidth="50px" nzShowExpand *ngIf="expandable" ></th>
+          <th nzWidth="50px" nzShowExpand *ngIf="expandable"></th>
           <th nzWidth="62px" nzShowCheckbox *ngIf="checkbox" [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
           <th nzWidth="150px">Name</th>
           <th nzWidth="70px">Age</th>
@@ -126,7 +127,7 @@ import { Component, OnInit } from '@angular/core';
               <a href="#">Delete</a>
             </td>
           </tr>
-          <tr [nzExpand]="data.expand">
+          <tr [nzExpand]="data.expand&&expandable">
             <td></td>
             <td [attr.colspan]="checkbox?5:4">{{data.description}}</td>
           </tr>
@@ -184,7 +185,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 20; i++) {
       this.dataSet.push({
         name       : 'John Brown',
         age        : `${i}2`,

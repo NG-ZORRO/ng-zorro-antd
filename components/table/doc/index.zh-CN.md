@@ -61,14 +61,14 @@ Table 组件同时具备了易用性和高度可定制性
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | nzData | 数据数组 | `any[]` | - |
-| nzServerRender | 是否服务器渲染分页 | boolean | false |
+| nzFrontPagination | 是否在前端对数据进行分页，如果在服务器分页数据或者需要在前端显示全部数据时传入 false | boolean | true |
 | nzTotal | 当前总数据，在服务器渲染时需要传入 | number | - |
 | nzPageIndex | 当前页码，可双向绑定 | number | - |
 | nzPageIndexChange | 当前页码改版时的回调函数 | (nzPageIndex:number)=>{} | - |
 | nzPageSize | 每页展示多少数据，可双向绑定 | number | - |
 | nzPageSizeChange | 页数改变时的回调函数 | (nzPageSize:number)=>{} | - |
 | nzCurrentPageDataChange | 当前页面展示数据改变的回调函数 | (data:any[])=>{} | - |
-| nzIsPagination | 当前数据是否分页展示 | boolean | true |
+| nzShowPagination | 是否显示分页器 | boolean | true |
 | nzBordered | 是否展示外边框和列边框 | boolean | false |
 | nzWidthConfig | 表头分组时指定每列宽度，与 `th` 的 `nzWidth` 不可混用 | string[] | - |
 | nzSize | 正常或迷你类型，`default` or `small` or `middle` | string | `default` |
@@ -182,3 +182,21 @@ Table 组件同时具备了易用性和高度可定制性
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | nzExpand | 当前列是否展开，与 `td` 上的 `nzExpand` 属性配合使用 | boolean | - |
+
+
+## 注意
+
+按照 [Angular 的设计](https://angular.io/guide/lifecycle-hooks#onchanges)，当需要对 `nzData` 中的数据进行增删时需要使用以下操作，使用 `push` 或者 `splice` 修改 `nzData` 的数据不会生效
+
+
+```typescript
+    // 增加数据
+    this.dataSet = [ ...this.dataSet, {
+      key    : `${this.i}`,
+      name   : `Edward King ${this.i}`,
+      age    : '32',
+      address: `London, Park Lane no. ${this.i}`
+    }];
+    // 删除数据
+    this.dataSet = this.dataSet.filter(d => d.key !== i);
+```

@@ -60,14 +60,14 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | nzData | Data record array to be displayed | `any[]` | - |
-| nzServerRender | Whether server paging data | boolean | - |
+| nzFrontPagination | Whether paginate data in front side，should set to `false` if you want to paginate data in server side or display all data in table | boolean | true |
 | nzTotal | Total data count, should set when `nzServerRender` is true | number | - |
 | nzPageIndex | pageIndex , double binding | number | - |
 | nzPageIndexChange | pageIndex change callback | (nzPageIndex:number)=>{} | - |
 | nzPageSize | pageSize, double binding | number | - |
 | nzPageSizeChange | pageSize change callback | (nzPageSize:number)=>{} | - |
 | nzCurrentPageDataChange | current pageData change callback | (data:any[])=>{} | - |
-| nzIsPagination | Whether paging data | boolean | true |
+| nzShowPagination | Whether show pagination component in bottom of the table | boolean | true |
 | nzBordered | Whether to show all table borders | boolean | `false` |
 | nzWidthConfig | Set col width can not used with `nzWidth` of `th` | string[] | - |
 | nzSize | Size of table | `default` ｜ `middle` ｜ `small` | `default` |
@@ -171,3 +171,21 @@ Other property
 | -------- | ----------- | ---- | ------- |
 | nzExpand | Whether expand current row，used with `nzExpand` of `td`  | boolean | - |
 
+
+
+## Note
+
+According to [Angular documentation](https://angular.io/guide/lifecycle-hooks#onchanges)，developers should not use `push` or `splice` to change the data passed to `nzData`
+
+
+```typescript
+    // add data
+    this.dataSet = [ ...this.dataSet, {
+      key    : `${this.i}`,
+      name   : `Edward King ${this.i}`,
+      age    : '32',
+      address: `London, Park Lane no. ${this.i}`
+    }];
+    // remove data
+    this.dataSet = this.dataSet.filter(d => d.key !== i);
+```

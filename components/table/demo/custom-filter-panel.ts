@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-custom-filter-panel',
   template: `
-    <nz-table #nzTable [nzData]="displayData" [nzPageSize]="10">
+    <nz-table #nzTable [nzData]="displayData">
       <thead>
         <tr>
           <th>

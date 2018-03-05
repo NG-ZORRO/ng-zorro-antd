@@ -44,7 +44,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-table>
   `,
   styles  : [
-    `
+      `
       .editable-cell {
         position: relative;
       }
@@ -98,25 +98,24 @@ export class NzDemoTableEditCellComponent implements OnInit {
       key    : '0',
       name   : 'Edward King 0',
       age    : '32',
-      address: 'London, Park Lane no. 0',
+      address: 'London, Park Lane no. 0'
     },
     {
       key    : '1',
       name   : 'Edward King 1',
       age    : '32',
-      address: 'London, Park Lane no. 1',
+      address: 'London, Park Lane no. 1'
     }
   ];
 
   addRow(): void {
     this.i++;
-    this.dataSet.push({
+    this.dataSet = [ ...this.dataSet, {
       key    : `${this.i}`,
       name   : `Edward King ${this.i}`,
       age    : '32',
-      address: `London, Park Lane no. ${this.i}`,
-    });
-    this.dataSet = [ ...this.dataSet ];
+      address: `London, Park Lane no. ${this.i}`
+    } ];
     this.updateEditCache();
   }
 

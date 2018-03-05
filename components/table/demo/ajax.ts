@@ -30,8 +30,8 @@ export class RandomUserService {
   template : `
     <nz-table
       #ajaxTable
-      nzServerRender
       nzShowSizeChanger
+      [nzFrontPagination]="false"
       [nzData]="dataSet"
       [nzLoading]="loading"
       [nzTotal]="total"
