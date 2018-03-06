@@ -41,7 +41,7 @@ function generateToc(meta, raw) {
       links += `<nz-link nzHref="#${lowerText}" nzTitle="${text}"></nz-link>`
     }
   }
-  return `  <div class="toc-affix fixed">
+  return `  <div class="toc-affix fixed toc">
     <nz-anchor>
       ${links}
     </nz-anchor>

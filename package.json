@@ -43,7 +43,6 @@
   },
   "dependencies": {
     "@angular/cdk": "^5.0.0",
-    "lodash.ismatch": "^4.4.0",
     "moment": "^2.18.1"
   },
   "devDependencies": {
@@ -76,7 +75,6 @@
     "@types/node": "~6.0.60",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.4.1",
-    "coveralls": "^2.13.1",
     "karma-cli": "~1.0.1",
     "marked": "^0.3.6",
     "node-prismjs": "^0.1.1",
@@ -93,7 +91,9 @@
     "wrench": "^1.5.9",
     "yaml-front-matter": "^3.4.0",
     "zone.js": "^0.8.19",
-    "ngx-infinite-scroll": "^0.8.2"
+    "ngx-infinite-scroll": "^0.8.2",
+    "@stackblitz/sdk": "^1.1.1",
+    "codecov": "^3.0.0"
   },
   "peerDependencies": {
     "@angular/animations": "^5.0.0",

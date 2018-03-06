@@ -3,57 +3,55 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-nested-table',
   template: `
-    <nz-table #nestedTable [nzDataSource]="nestedTableData" [nzPageSize]="10">
-      <thead nz-thead>
+    <nz-table #nestedTable [nzData]="nestedTableData" [nzPageSize]="10">
+      <thead>
         <tr>
-          <th nz-th nzExpand></th>
-          <th nz-th><span>Name</span></th>
-          <th nz-th><span>Platform</span></th>
-          <th nz-th><span>Version</span></th>
-          <th nz-th><span>Upgraded</span></th>
-          <th nz-th><span>Creator</span></th>
-          <th nz-th><span>Date</span></th>
-          <th nz-th><span>Action</span></th>
+          <th nzShowExpand></th>
+          <th>Name</th>
+          <th>Platform</th>
+          <th>Version</th>
+          <th>Upgraded</th>
+          <th>Creator</th>
+          <th>Date</th>
+          <th>Action</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
+      <tbody>
         <ng-template ngFor let-data [ngForOf]="nestedTable.data">
-          <tr nz-tbody-tr>
-            <td nz-td nzExpand>
-              <nz-row-expand-icon [(nzExpand)]="data.expand"></nz-row-expand-icon>
-            </td>
-            <td nz-td>{{data.name}}</td>
-            <td nz-td>{{data.platform}}</td>
-            <td nz-td>{{data.version}}</td>
-            <td nz-td>{{data.upgradeNum}}</td>
-            <td nz-td>{{data.creator}}</td>
-            <td nz-td>{{data.createdAt}}</td>
-            <td nz-td>
+          <tr>
+            <td nzShowExpand [(nzExpand)]="data.expand"></td>
+            <td>{{data.name}}</td>
+            <td>{{data.platform}}</td>
+            <td>{{data.version}}</td>
+            <td>{{data.upgradeNum}}</td>
+            <td>{{data.creator}}</td>
+            <td>{{data.createdAt}}</td>
+            <td>
               <a>Publish</a>
             </td>
           </tr>
-          <tr nz-tbody-tr *ngIf="data.expand" nzExpand>
-            <td nz-td></td>
-            <td nz-td colspan="7">
-              <nz-table #innerTable [nzDataSource]="innerTableData" [nzPageSize]="10" [nzIsPagination]="false">
-                <thead nz-thead>
+          <tr [nzExpand]="data.expand">
+            <td></td>
+            <td colspan="7">
+              <nz-table #innerTable [nzData]="innerTableData" nzSize="middle" [nzShowPagination]="false">
+                <thead>
                   <tr>
-                    <th nz-th><span>Date</span></th>
-                    <th nz-th><span>Name</span></th>
-                    <th nz-th><span>Status</span></th>
-                    <th nz-th><span>Upgrade Status</span></th>
-                    <th nz-th><span>Action</span></th>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Upgrade Status</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
-                <tbody nz-tbody>
-                  <tr nz-tbody-tr *ngFor="let data of innerTable.data">
-                    <td nz-td>{{data.date}}</td>
-                    <td nz-td>{{data.name}}</td>
-                    <td nz-td>
+                <tbody>
+                  <tr *ngFor="let data of innerTable.data">
+                    <td>{{data.date}}</td>
+                    <td>{{data.name}}</td>
+                    <td>
                       <nz-badge [nzStatus]="'success'" [nzText]="'Finished'"></nz-badge>
                     </td>
-                    <td nz-td>{{data.upgradeNum}}</td>
-                    <td nz-td>
+                    <td>{{data.upgradeNum}}</td>
+                    <td>
                       <span class="table-operation">
                         <nz-dropdown>
                           <a nz-dropdown class="operation">

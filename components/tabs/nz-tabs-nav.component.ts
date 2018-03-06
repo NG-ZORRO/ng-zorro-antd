@@ -219,11 +219,9 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     const scrollDistance = this.scrollDistance;
     if (this.nzPositionMode === 'horizontal') {
       const translateX = this.getLayoutDirection() === 'ltr' ? -scrollDistance : scrollDistance;
-      this.renderer.setStyle(this.navListElement.nativeElement, 'transform',
-        `translate3d(${translateX}px, 0, 0)`);
+      this.renderer.setStyle(this.navListElement.nativeElement, 'transform', `translate3d(${translateX}px, 0, 0)`);
     } else {
-      this.renderer.setStyle(this.navListElement.nativeElement, 'transform',
-        `translate3d(0,${-scrollDistance}px, 0)`);
+      this.renderer.setStyle(this.navListElement.nativeElement, 'transform', `translate3d(0,${-scrollDistance}px, 0)`);
     }
   }
 

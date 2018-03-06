@@ -7,12 +7,15 @@ import { NzCodeBoxComponent } from '../share/nz-codebox/nz-codebox.component';
   templateUrl  : './{{language}}.html'
 })
 export class {{componentName}} {
+  expanded = false;
   @ViewChildren(NzCodeBoxComponent) codeBoxes: QueryList<NzCodeBoxComponent>;
 
   expandAllCode(): void {
+    this.expanded = !this.expanded;
     this.codeBoxes.forEach(code => {
-      code.nzExpanded = !code.nzExpanded;
+      code.nzExpanded = this.expanded;
     });
   }
 {{code}}
+{{rawCode}}
 }

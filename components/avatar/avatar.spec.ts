@@ -7,8 +7,8 @@ import { NzAvatarModule } from './nz-avatar.module';
 
 function getType(dl: DebugElement): string {
   const el = dl.nativeElement as HTMLElement;
-  if (el.querySelector('img') != null) return 'image';
-  if (el.querySelector('.anticon') != null) return 'icon';
+  if (el.querySelector('img') != null) { return 'image'; }
+  if (el.querySelector('.anticon') != null) { return 'icon'; }
   return el.innerText.trim().length === 0 ? '' : 'text';
 }
 

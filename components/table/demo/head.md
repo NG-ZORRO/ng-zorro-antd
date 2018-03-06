@@ -1,5 +1,5 @@
 ---
-order: 7
+order: 6
 title:
   en-US: Filter and sorter
   zh-CN: 筛选和排序
@@ -7,16 +7,14 @@ title:
 
 ## zh-CN
 
-对某一列数据进行筛选，使用列的 `filters` 属性来指定需要筛选菜单的列，`onFilter` 用于筛选当前数据，`filterMultiple` 用于指定多选和单选。
+对某一列数据进行筛选，通过指定 `th` 的 `nzShowFilter` 属性来展示筛选菜单， 使用 `nzFilters` 属性来指定筛选选项，`nzFilterChange` 用于获取当前选中的选项，`nzFilterMultiple` 用于指定多选和单选。
 
-对某一列数据进行排序，通过指定列的 `sorter` 函数即可启动排序按钮。`sorter: function(a, b) { ... }`， a、b 为比较的两个列数据。
+对某一列数据进行排序，通过指定 `th` 的 `nzShowSort` 属性来展示排序按钮，使用 `nzSortKey` 来指定排序的 key，在 `thead` 上通过 `nzSortChange` 来获取排序改变事件，通过 `nzSingleSort` 来指定是否单列排序。
 
 ## en-US
 
-Use `filters` to generate filter menu in columns, `onFilter` to determine filtered result, and `filterMultiple` to indicate whether it's multiple or single selection.
+Use `nzShowFilter` of `th` to show filter menu, `nzFilters` to define options of the filter menu, `nzFilterChange` to get current selected filter option, and `nzFilterMultiple` to indicate whether it's multiple or single selection.
 
-Use `sorter` to make a column sortable. `sorter` can be a function `function(a, b) { ... }` for sorting data locally.
-
-Uses `defaultSortOrder` to make a column sorted by default.
+Use `nzShowSort` of `th` to make table sortable . `nzSortKey` to define sort key of column, use `nzSortChange` of `thead` to watch sort change, and `nzSingleSort` to indicate whether it is single column sort.
 
 

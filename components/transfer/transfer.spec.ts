@@ -157,7 +157,9 @@ describe('transfer', () => {
     });
     it('should be from left to right when two verification', () => {
       instance.canMove = (arg: TransferCanMove): Observable<TransferItem[]> => {
-        if (arg.direction === 'right' && arg.list.length > 0) arg.list.splice(0, 1);
+        if (arg.direction === 'right' && arg.list.length > 0) {
+          arg.list.splice(0, 1);
+        }
         return of(arg.list);
       };
       fixture.detectChanges();
@@ -190,14 +192,18 @@ describe('transfer', () => {
       return dl.query(By.css('[data-direction="right"]')).nativeElement as HTMLElement;
     }
     transfer(direction: 'left' | 'right', index: number | number[]): this {
-      if (!Array.isArray(index)) index = [ index ];
+      if (!Array.isArray(index)) {
+        index = [ index ];
+      }
       this.checkItem(direction === 'left' ? 'right' : 'left', index);
       (direction === 'left' ? this.leftBtn : this.rightBtn).click();
       fixture.detectChanges();
       return this;
     }
     checkItem(direction: 'left' | 'right', index: number | number[]): this {
-      if (!Array.isArray(index)) index = [ index ];
+      if (!Array.isArray(index)) {
+        index = [ index ];
+      }
       const items = (direction === 'left' ? this.leftList : this.rightList).querySelectorAll('.ant-transfer-list-content-item');
       for (const idx of index) {
         (items[idx] as HTMLElement).click();

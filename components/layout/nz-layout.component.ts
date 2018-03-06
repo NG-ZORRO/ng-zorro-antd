@@ -1,4 +1,4 @@
-import { Component, HostBinding } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector           : 'nz-layout',
@@ -7,9 +7,10 @@ import { Component, HostBinding } from '@angular/core';
     <ng-content></ng-content>
   `,
   host               : {
-    '[class.ant-layout]': 'true'
+    '[class.ant-layout]'                : 'true',
+    '[class.ant-layout-has-sider]': 'hasSider'
   }
 })
 export class NzLayoutComponent {
-  @HostBinding('class.ant-layout-has-sider') hasSider = false;
+  hasSider = false;
 }
