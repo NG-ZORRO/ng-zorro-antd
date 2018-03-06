@@ -43,7 +43,6 @@
   },
   "dependencies": {
     "@angular/cdk": "^5.0.0",
-    "@angular/material": "^5.2.3",
     "moment": "^2.18.1"
   },
   "devDependencies": {

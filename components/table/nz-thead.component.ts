@@ -23,7 +23,6 @@ import { NzTableComponent } from './nz-table.component';
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'thead:not(.ant-table-thead)',
-//  selector: '[nz-thead]',
   template: `
     <ng-template #contentTemplate>
       <ng-content></ng-content>
@@ -36,6 +35,9 @@ import { NzTableComponent } from './nz-table.component';
 export class NzTheadComponent implements AfterContentInit, OnDestroy {
   private _singleSort = false;
   private sortSubscription: Subscription;
+  @ViewChild('contentTemplate') template: TemplateRef<void>;
+  @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
+  @Output() nzSortChange = new EventEmitter<{ key: string, value: string }>();
 
   @Input()
   set nzSingleSort(value: boolean) {
@@ -45,12 +47,6 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy {
   get nzSingleSort(): boolean {
     return this._singleSort;
   }
-
-  @ViewChild('contentTemplate') template: TemplateRef<void>;
-
-  @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
-
-  @Output() nzSortChange = new EventEmitter<{ key: string, value: string }>();
 
   constructor(@Host() @Optional() public nzTableComponent: NzTableComponent) {
     if (this.nzTableComponent) {

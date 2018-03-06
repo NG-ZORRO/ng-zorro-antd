@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { NzTableModule } from './nz-table.module';
 import { NzTdComponent } from './nz-td.component';
 
-describe('nz-th', () => {
+describe('nz-td', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzTableModule ],
@@ -12,7 +12,7 @@ describe('nz-th', () => {
     });
     TestBed.compileComponents();
   }));
-  describe('basic nz-th', () => {
+  describe('basic nz-td', () => {
     let fixture;
     let testComponent;
     let td;

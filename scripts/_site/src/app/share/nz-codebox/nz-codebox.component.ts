@@ -129,7 +129,7 @@ export class NzCodeBoxComponent implements OnInit {
   /** bug here https://github.com/stackblitz/core/issues/311 **/
   openOnStackBlitz() {
     sdk.openProject({
-      files      : {
+      files       : {
         '.angular-cli.json'   : `{
   "apps": [{
     "styles": ["styles.css"]
@@ -222,12 +222,14 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
         'app/app.component.ts': this.nzRawCode,
         'app/app.module.ts'   : `import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 import { ${this.nzComponentName} } from './app.component';
 
 @NgModule({
-  imports:      [ BrowserModule, FormsModule ],
+  imports:      [ BrowserModule, FormsModule, NgZorroAntdModule.forRoot(), BrowserAnimationsModule ],
   declarations: [ ${this.nzComponentName} ],
   bootstrap:    [ ${this.nzComponentName} ]
 })
@@ -235,10 +237,23 @@ export class AppModule { }
 `,
         'styles.css'          : `/* Add application styles & imports to this file! */`
       },
-      title      : 'Dynamically Generated Project',
-      description: 'Created with <3 by the StackBlitz SDK!',
-      template   : 'angular-cli',
-      tags       : [ 'stackblitz', 'sdk' ]
+      title       : 'Dynamically Generated Project',
+      description : 'Created with <3 by the StackBlitz SDK!',
+      template    : 'angular-cli',
+      dependencies: {
+        '@angular/cdk'                     : '^5.0.0',
+        '@angular/core'                    : '^5.0.0',
+        '@angular/forms'                   : '^5.0.0',
+        '@angular/http'                    : '^5.0.0',
+        '@angular/language-service'        : '^5.0.0',
+        '@angular/platform-browser'        : '^5.0.0',
+        '@angular/platform-browser-dynamic': '^5.0.0',
+        '@angular/common'                  : '^5.0.0',
+        '@angular/router'                  : '^5.0.0',
+        '@angular/animations'              : '^5.0.0',
+        'ng-zorro-antd'                    : 'latest'
+      },
+      tags        : [ 'stackblitz', 'sdk' ]
     });
   }
 

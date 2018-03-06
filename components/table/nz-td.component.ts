@@ -37,12 +37,12 @@ export class NzTdComponent {
   private _indentSize: number;
   private _expand = false;
   private _showCheckbox = false;
+  isIndentSizeSet = false;
+  el: HTMLElement;
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
   @Output() nzCheckedChange = new EventEmitter<boolean>();
-  isIndentSizeSet = false;
-  el: HTMLElement;
   @Output() nzExpandChange = new EventEmitter<boolean>();
 
   @Input()
@@ -94,6 +94,9 @@ export class NzTdComponent {
     if (isNotNil(value)) {
       this.renderer.addClass(this.el, 'ant-table-td-left-sticky');
       this.renderer.setStyle(this.el, 'left', value);
+    } else {
+      this.renderer.removeClass(this.el, 'ant-table-td-left-sticky');
+      this.renderer.removeStyle(this.el, 'left');
     }
   }
 
@@ -102,6 +105,9 @@ export class NzTdComponent {
     if (isNotNil(value)) {
       this.renderer.addClass(this.el, 'ant-table-td-right-sticky');
       this.renderer.setStyle(this.el, 'right', value);
+    } else {
+      this.renderer.removeClass(this.el, 'ant-table-td-right-sticky');
+      this.renderer.removeStyle(this.el, 'right');
     }
   }
 

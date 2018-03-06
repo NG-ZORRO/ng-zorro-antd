@@ -7,6 +7,7 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
+import { isNotNil } from '../core/util/check';
 
 import { toBoolean } from '../core/util/convert';
 
@@ -24,7 +25,7 @@ export interface NzThItemInterface {
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'th',
+  selector           : 'th',
   preserveWhitespaces: false,
   template           : `
     <ng-template #checkboxTemplate>
@@ -76,7 +77,7 @@ export interface NzThItemInterface {
       <i class="anticon anticon-filter" nz-dropdown></i>
       <ul nz-menu>
         <ng-container *ngIf="nzFilterMultiple">
-          <li nz-menu-item *ngFor="let filter of multipleFilterList" (click)="filter.checked=!filter.checked">
+          <li nz-menu-item *ngFor="let filter of multipleFilterList" (click)="checkMultiple(filter)">
             <label nz-checkbox [ngModel]="filter.checked"></label><span>{{filter.text}}</span>
           </li>
         </ng-container>
@@ -104,23 +105,23 @@ export class NzThComponent {
   private _showFilter = false;
   private _showCheckbox = false;
   private _showRowSelection = false;
+  el: HTMLElement;
+  multipleFilterList: NzThItemInterface[] = [];
+  singleFilterList: NzThItemInterface[] = [];
   /* tslint:disable-next-line:no-any */
   @Input() nzSelections: Array<{ text: string, onSelect: any }> = [];
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
   @Input() nzSortKey: string;
-  @Output() nzCheckedChange = new EventEmitter<boolean>();
-  el: HTMLElement;
-  multipleFilterList: NzThItemInterface[] = [];
-  singleFilterList: NzThItemInterface[] = [];
-  @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
   @Input() nzFilterMultiple = true;
+  @Input() nzWidth: string;
+  @Output() nzCheckedChange = new EventEmitter<boolean>();
+  @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
   @Output() nzSortChange = new EventEmitter<string>();
   @Output() nzSortChangeWithKey = new EventEmitter<{ key: string, value: string }>();
   /* tslint:disable-next-line:no-any */
   @Output() nzFilterChange = new EventEmitter<any[] | any>();
-  @Input() nzWidth: string;
 
   @Input()
   set nzShowSort(value: boolean) {
@@ -156,14 +157,24 @@ export class NzThComponent {
 
   @Input()
   set nzLeft(value: string) {
-    this.renderer.addClass(this.el, 'ant-table-th-left-sticky');
-    this.renderer.setStyle(this.el, 'left', value);
+    if (isNotNil(value)) {
+      this.renderer.addClass(this.el, 'ant-table-th-left-sticky');
+      this.renderer.setStyle(this.el, 'left', value);
+    } else {
+      this.renderer.removeClass(this.el, 'ant-table-th-left-sticky');
+      this.renderer.removeStyle(this.el, 'left');
+    }
   }
 
   @Input()
   set nzRight(value: string) {
-    this.renderer.addClass(this.el, 'ant-table-th-right-sticky');
-    this.renderer.setStyle(this.el, 'right', value);
+    if (isNotNil(value)) {
+      this.renderer.addClass(this.el, 'ant-table-th-right-sticky');
+      this.renderer.setStyle(this.el, 'right', value);
+    } else {
+      this.renderer.removeClass(this.el, 'ant-table-th-right-sticky');
+      this.renderer.removeStyle(this.el, 'right');
+    }
   }
 
   @Input()
@@ -231,6 +242,10 @@ export class NzThComponent {
     this.hideDropDown();
   }
 
+  checkMultiple(filter: NzThItemInterface): void {
+    filter.checked = !filter.checked;
+  }
+
   checkSingle(filter: NzThItemInterface): void {
     this.singleFilterList.forEach(item => item.checked = item === filter);
   }
@@ -248,13 +263,10 @@ export class NzThComponent {
 
   @Input()
   set nzFilters(value: NzThFilterType) {
-    if (value && value.length) {
+    if (Array.isArray(value)) {
       this._filters = value;
-      if (this.nzFilterMultiple) {
-        this.initMultipleFilterList();
-      } else {
-        this.initSingleFilterList();
-      }
+      this.initMultipleFilterList();
+      this.initSingleFilterList();
     } else {
       console.warn('nzFilters only accept type of Array<{ text: string; value: any }>');
     }

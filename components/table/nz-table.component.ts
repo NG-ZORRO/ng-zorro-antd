@@ -290,8 +290,12 @@ export class NzTableComponent implements OnInit {
   @Input()
   /* tslint:disable-next-line:no-any */
   set nzData(data: any[]) {
-    this.rawData = data;
-    this.parseInputData();
+    if (Array.isArray(data)) {
+      this.rawData = data;
+      this.parseInputData();
+    } else {
+      console.warn('nzData only accept array');
+    }
   }
 
   parseInputData(): void {

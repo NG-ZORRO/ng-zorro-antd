@@ -108,6 +108,14 @@ describe('nz-table', () => {
       expect(testComponent.pageSizeChange).toHaveBeenCalledTimes(0);
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
     }));
+    it('should warn if nzData is not array', () => {
+      console.warn = jasmine.createSpy('warn');
+      fixture.detectChanges();
+      expect(console.warn).toHaveBeenCalledTimes(0);
+      testComponent.dataSet = null;
+      fixture.detectChanges();
+      expect(console.warn).toHaveBeenCalledTimes(1);
+    });
     it('should pagination work', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-pagination')).toBeDefined();
@@ -263,7 +271,6 @@ describe('nz-table', () => {
       const mouseEvent = event as MouseEvent;
       testComponent.nzTableComponent.syncScrollTable(mouseEvent);
       fixture.detectChanges();
-      // TODO: fix next line
       expect(table.nativeElement.querySelector('.ant-table').classList).toContain('ant-table-scroll-position-right');
     });
   });
@@ -356,8 +363,8 @@ export class NzTestTableBasicComponent implements OnInit {
       <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" [nzScroll]="{ x:'1300px',y: '240px' }">
         <thead>
           <tr>
-            <th nzWidth="100px" nzLeft="0px">Full Name</th>
-            <th nzWidth="100px" nzLeft="100px">Age</th>
+            <th>Full Name</th>
+            <th>Age</th>
             <th>Column 1</th>
             <th>Column 2</th>
             <th>Column 3</th>
@@ -366,13 +373,13 @@ export class NzTestTableBasicComponent implements OnInit {
             <th>Column 6</th>
             <th>Column 7</th>
             <th>Column 8</th>
-            <th nzWidth="100px" nzRight="0px">Action</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let data of nzTable.data">
-            <td nzLeft="0px">{{data.name}}</td>
-            <td nzLeft="100px">{{data.age}}</td>
+            <td>{{data.name}}</td>
+            <td>{{data.age}}</td>
             <td>{{data.address}}</td>
             <td>{{data.address}}</td>
             <td>{{data.address}}</td>
@@ -381,7 +388,7 @@ export class NzTestTableBasicComponent implements OnInit {
             <td>{{data.address}}</td>
             <td>{{data.address}}</td>
             <td>{{data.address}}</td>
-            <td nzRight="0px">
+            <td>
               <a>action</a>
             </td>
           </tr>

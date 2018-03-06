@@ -1,4 +1,5 @@
 import { Directive, ElementRef, Host, Input, Optional, Renderer2 } from '@angular/core';
+import { toBoolean } from '../core/util/convert';
 import { NzTableComponent } from './nz-table.component';
 
 @Directive({
@@ -13,7 +14,7 @@ export class NzTrDirective {
 
   @Input()
   set nzExpand(value: boolean) {
-    if (value) {
+    if (toBoolean(value)) {
       this.renderer.removeStyle(this.elementRef.nativeElement, 'display');
       this.renderer.addClass(this.elementRef.nativeElement, 'ant-table-expanded-row');
     } else {

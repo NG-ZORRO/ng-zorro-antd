@@ -197,7 +197,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
       this.nzVisibleChange.emit(this.nzVisible);
     }
     this.changeDetector.markForCheck();
-  };
+  }
 
   ngOnInit(): void {
     if (this.nzMenu) {
