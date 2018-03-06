@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const capitalizeFirstLetter = require('./capitalize-first-letter');
 const camelCase = require('./camelcase');
-
+const PrismAngular = require('./angular-language-marked');
 module.exports = function (showCaseComponentPath, result) {
   const demoTemplate = generateTemplate(result);
   fs.writeFileSync(path.join(showCaseComponentPath, `zh.html`), demoTemplate.zh);
@@ -22,7 +22,7 @@ function generateDemoModule(content) {
   let declarations = '';
   let entryComponents = [];
   for (const key in demoMap) {
-    const declareComponents = [ `NzDemo${componentName(component)}${componentName(key)}Component` ];
+    const declareComponents = [`NzDemo${componentName(component)}${componentName(key)}Component`];
     const entries = retrieveEntryComponents(demoMap[key] && demoMap[key].ts);
     entryComponents.push(...entries);
     declareComponents.push(...entries);
@@ -50,12 +50,16 @@ function generateDemoComponent(content) {
   const component = content.name;
   const demoMap = content.demoMap;
   let code = '';
+  let rawCode = '';
   for (const key in demoMap) {
-    code += `\t${camelCase(key)} = require('!!raw-loader!./${key}.ts');\n`;
+    const angularCode = encodeURIComponent(PrismAngular.highlight(demoMap[key].ts, Prism.languages['angular']));
+    code += `\t${camelCase(key)} = \`${angularCode}\`\n`;
+    rawCode += `\t${camelCase(key)}Raw = require('!!raw-loader!./${key}.ts');\n`;
   }
   let output = demoComponentTemplate;
   output = output.replace(/{{component}}/g, component);
   output = output.replace(/{{code}}/g, code);
+  output = output.replace(/{{rawCode}}/g, rawCode);
   let zhOutput = output;
   let enOutput = output;
   enOutput = enOutput.replace(/{{componentName}}/g, generateComponentName(component, 'en'));
@@ -130,7 +134,7 @@ function generateToc(language, name, demoMap) {
   }
   linkArray.sort((pre, next) => pre.order - next.order);
   const link = linkArray.map(link => link.content).join('');
-  return `  <div class="toc-affix fixed">
+  return `  <div class="toc-affix fixed toc">
     <nz-anchor>${link}</nz-anchor>
   </div>`;
 }

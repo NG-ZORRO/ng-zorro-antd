@@ -5,55 +5,52 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <nz-table
       #rowSelectionTable
-      [nzDataSource]="dataSet"
+      [nzData]="dataSet"
       [nzPageSize]="10"
       (nzPageIndexChange)="refreshStatus()"
       (nzPageSizeChange)="refreshStatus()">
-      <thead nz-thead>
+      <thead>
         <tr>
-          <th nz-th nzCheckbox class="ant-table-selection-column-custom">
-            <div class="ant-table-selection">
-              <label
-                nz-checkbox
-                [(ngModel)]="allChecked"
-                [nzIndeterminate]="indeterminate"
-                (ngModelChange)="checkAll($event)">
-              </label>
-              <nz-dropdown nzPlacement="bottomCenter">
-                <div nz-dropdown class="ant-table-selection-down">
-                  <i class="anticon anticon-down"></i>
-                </div>
-                <ul nz-menu>
-                  <li nz-menu-item (click)="checkAll(true)">Select All Row</li>
-                  <li nz-menu-item (click)="checkOdd(true)">Select Odd Row</li>
-                  <li nz-menu-item (click)="checkEven(true)">Select Even Row</li>
-                </ul>
-              </nz-dropdown>
-            </div>
-          </th>
-          <th nz-th><span>Name</span></th>
-          <th nz-th><span>Age</span></th>
-          <th nz-th><span>Address</span></th>
+          <th nzShowCheckbox nzShowRowSelection [nzSelections]="listOfSelection" [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Address</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of rowSelectionTable.data">
-          <td nz-td nzCheckbox>
-            <label
-              nz-checkbox
-              [(ngModel)]="data.checked"
-              (ngModelChange)="refreshStatus($event)">
-            </label>
-          </td>
-          <td nz-td>{{data.name}}</td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.address}}</td>
+      <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus($event)"></td>
+          <td>{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>`,
   styles  : []
 })
 export class NzDemoTableRowSelectionCustomComponent implements OnInit {
+  listOfSelection = [
+    {
+      text    : 'Select All Row',
+      onSelect: () => {
+        this.checkAll(true);
+      }
+    },
+    {
+      text    : 'Select Odd Row',
+      onSelect: () => {
+        this.dataSet.forEach((data, index) => data.checked = index % 2 !== 0);
+        this.refreshStatus();
+      }
+    },
+    {
+      text    : 'Select Even Row',
+      onSelect: () => {
+        this.dataSet.forEach((data, index) => data.checked = index % 2 === 0);
+        this.refreshStatus();
+      }
+    }
+  ];
   allChecked = false;
   dataSet: Array<{ name: string; age: number; address: string; checked: boolean }> = [];
   indeterminate = false;
@@ -67,24 +64,6 @@ export class NzDemoTableRowSelectionCustomComponent implements OnInit {
 
   checkAll(value: boolean): void {
     this.dataSet.forEach(data => data.checked = value);
-    this.refreshStatus();
-  }
-
-  checkOdd(value: boolean): void {
-    this.dataSet.forEach((data, index) => {
-      if (index % 2 !== 0) {
-        data.checked = value;
-      }
-    });
-    this.refreshStatus();
-  }
-
-  checkEven(value: boolean): void {
-    this.dataSet.forEach((data, index) => {
-      if (index % 2 === 0) {
-        data.checked = value;
-      }
-    });
     this.refreshStatus();
   }
 

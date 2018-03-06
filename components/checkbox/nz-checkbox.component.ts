@@ -16,6 +16,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { isEmpty } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
@@ -33,7 +34,7 @@ import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
         (blur)="onBlur()">
       <span class="ant-checkbox-inner"></span>
     </span>
-    <span><ng-content></ng-content></span>
+    <span #contentElement (cdkObserveContent)="checkContent()"><ng-content></ng-content></span>
   `,
   providers          : [
     {
@@ -55,6 +56,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   private onTouched = Function.prototype;
   @ViewChild('inputElement')
   private inputElement: ElementRef;
+  @ViewChild('contentElement') contentElement: ElementRef;
   classMap = {};
   @Output() nzCheckedChange = new EventEmitter<boolean>();
   @Input() nzValue: string;
@@ -162,6 +164,14 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
     this.inputElement.nativeElement.blur();
   }
 
+  checkContent(): void {
+    if (isEmpty(this.contentElement.nativeElement)) {
+      this.renderer.setStyle(this.contentElement.nativeElement, 'display', 'none');
+    } else {
+      this.renderer.removeStyle(this.contentElement.nativeElement, 'display');
+    }
+  }
+
   constructor(private elementRef: ElementRef, private renderer: Renderer2, @Optional() private nzCheckboxWrapperComponent: NzCheckboxWrapperComponent) {
     this.el = this.elementRef.nativeElement;
   }
@@ -181,6 +191,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   ngAfterViewInit(): void {
     this.isInit = true;
     this.updateAutoFocus();
+    this.checkContent();
   }
 
   ngOnDestroy(): void {

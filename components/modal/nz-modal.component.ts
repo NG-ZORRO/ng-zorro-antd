@@ -244,11 +244,11 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
     if (state) {
       this.maskAnimationClassMap = {
         [`fade-${state}`]: true,
-        [`fade-${state}-active`]: true,
+        [`fade-${state}-active`]: true
       };
       this.modalAnimationClassMap = {
         [`zoom-${state}`]: true,
-        [`zoom-${state}-active`]: true,
+        [`zoom-${state}-active`]: true
       };
     } else {
       this.maskAnimationClassMap = this.modalAnimationClassMap = null;
@@ -276,7 +276,7 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
           autoLoading: true,
           show: true,
           loading: false,
-          disabled: false,
+          disabled: false
         },
         ...button
       };

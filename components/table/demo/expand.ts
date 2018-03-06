@@ -3,36 +3,28 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-expand',
   template: `
-    <nz-table #nzTable [nzDataSource]="dataSet" [nzPageSize]="10">
-      <thead nz-thead>
+    <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10">
+      <thead>
         <tr>
-          <th nz-th nzExpand></th>
-          <th nz-th><span>Name</span></th>
-          <th nz-th><span>Age</span></th>
-          <th nz-th><span>Address</span></th>
-          <th nz-th><span>Action</span></th>
+          <th nzShowExpand></th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Address</th>
+          <th>Action</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
+      <tbody>
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
-          <tr nz-tbody-tr>
-            <td nz-td nzExpand>
-              <nz-row-expand-icon [(nzExpand)]="data.expand"></nz-row-expand-icon>
-            </td>
-            <td nz-td>{{data.name}}</td>
-            <td nz-td>{{data.age}}</td>
-            <td nz-td>{{data.address}}</td>
-            <td nz-td>
-            <span>
-              <a href="#">Delete</a>
-            </span>
-            </td>
+          <tr>
+            <td nzShowExpand [(nzExpand)]="data.expand"></td>
+            <td>{{data.name}}</td>
+            <td>{{data.age}}</td>
+            <td>{{data.address}}</td>
+            <td><a href="#">Delete</a></td>
           </tr>
-          <tr nz-tbody-tr *ngIf="data.expand">
-            <td nz-td></td>
-            <td nz-td colspan="4">
-              {{data.description}}
-            </td>
+          <tr [nzExpand]="data.expand">
+            <td></td>
+            <td colspan="4">{{data.description}}</td>
           </tr>
         </ng-template>
       </tbody>
@@ -61,6 +53,6 @@ export class NzDemoTableExpandComponent {
       expand     : false,
       address    : 'Sidney No. 1 Lake Park',
       description: 'My name is Joe Black, I am 32 years old, living in Sidney No. 1 Lake Park.'
-    },
+    }
   ];
 }

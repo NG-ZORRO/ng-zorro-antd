@@ -36,12 +36,12 @@ import { NzSliderModule } from './slider/nz-slider.module';
 import { NzSpinModule } from './spin';
 import { NzStepsModule } from './steps';
 import { NzSwitchModule } from './switch';
-import { NzTableModule } from './table/nz-table.module';
-import { NzTabsModule } from './tabs/nz-tabs.module';
+import { NzTableModule } from './table';
+import { NzTabsModule } from './tabs';
 import { NzTagModule } from './tag/nz-tag.module';
 import { NzTimelineModule } from './timeline';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
-import { NzTransferModule } from './transfer/nz-transfer.module';
+import { NzTransferModule } from './transfer';
 
 export * from './button';
 export * from './divider';

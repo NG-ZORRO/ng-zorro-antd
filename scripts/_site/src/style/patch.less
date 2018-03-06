@@ -16,8 +16,14 @@
 .toc-affix {
   &.fixed {
     position: fixed;
-    top: 90px;
-    right: 65px;
+    top: 70px;
+    right: 30px;
+    .ant-anchor-ink {
+      left: 20px;
+      &::before {
+        width: 1px;
+      }
+    }
   }
   .ant-affix {
     overflow: visible;

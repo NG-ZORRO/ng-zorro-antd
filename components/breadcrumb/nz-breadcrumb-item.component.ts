@@ -16,7 +16,17 @@ import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
       <ng-template #stringTemplate>
          {{ nzBreadCrumbComponent.nzSeparator }}
       </ng-template>
-    </span>`
+    </span>`,
+  styles             : [
+      `:host:last-child {
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    :host:last-child .ant-breadcrumb-separator{
+      display: none;
+    }
+    `
+  ]
 })
 export class NzBreadCrumbItemComponent {
   constructor(public nzBreadCrumbComponent: NzBreadCrumbComponent) {

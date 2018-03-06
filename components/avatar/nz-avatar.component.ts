@@ -62,7 +62,7 @@ export class NzAvatarComponent implements OnChanges {
   }
 
   private calcStringSize(): void {
-    if (!this.hasText) return;
+    if (!this.hasText) { return; }
 
     const childrenWidth = this.textEl.nativeElement.offsetWidth;
     const avatarWidth = this.el.getBoundingClientRect().width;

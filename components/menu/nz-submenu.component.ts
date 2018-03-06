@@ -96,7 +96,7 @@ import { NzMenuDirective } from './nz-menu.directive';
       (mouseleave)="onMouseLeaveEvent($event)"
       (mouseenter)="onMouseEnterEvent($event)"
       *ngIf="(nzMenuDirective.nzMode=='inline')">
-      <ng-template *ngTemplateOutlet="subMenuTemplate"></ng-template>
+      <ng-template [ngTemplateOutlet]="subMenuTemplate"></ng-template>
     </ul>
     <ng-template
       cdkConnectedOverlay
@@ -122,7 +122,7 @@ import { NzMenuDirective } from './nz-menu.directive';
           [class.ant-menu-sub]="!isInDropDown"
           (mouseleave)="onMouseLeaveEvent($event)"
           (mouseenter)="onMouseEnterEvent($event)">
-          <ng-template *ngTemplateOutlet="subMenuTemplate"></ng-template>
+          <ng-template [ngTemplateOutlet]="subMenuTemplate"></ng-template>
         </ul>
       </div>
     </ng-template>

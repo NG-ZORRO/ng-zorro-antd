@@ -5,44 +5,30 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <div style="margin-bottom: 16px;">
       <button nz-button [disabled]="disabledButton" [nzType]="'primary'" [nzLoading]="operating" (click)="operateData()">
-        <span>Reload</span>
+        Reload
       </button>
       <span style="margin-left: 8px;" *ngIf="checkedNumber">Selected {{checkedNumber}} items</span>
     </div>
     <nz-table
       #rowSelectionTable
-      [nzDataSource]="dataSet"
-      [nzPageSize]="10"
-      (nzDataChange)="displayDataChange($event)"
+      [nzData]="dataSet"
+      (nzCurrentPageDataChange)="currentPageDataChange($event)"
       (nzPageIndexChange)="refreshStatus()"
       (nzPageSizeChange)="refreshStatus()">
-      <thead nz-thead>
+      <thead>
         <tr>
-          <th nz-th nzCheckbox>
-            <label
-              nz-checkbox
-              [(ngModel)]="allChecked"
-              [nzIndeterminate]="indeterminate"
-              (ngModelChange)="checkAll($event)">
-            </label>
-          </th>
-          <th nz-th><span>Name</span></th>
-          <th nz-th><span>Age</span></th>
-          <th nz-th><span>Address</span></th>
+          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Address</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of rowSelectionTable.data">
-          <td nz-td nzCheckbox>
-            <label
-              nz-checkbox
-              [(ngModel)]="data.checked"
-              (ngModelChange)="refreshStatus($event)">
-            </label>
-          </td>
-          <td nz-td>{{data.name}}</td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.address}}</td>
+      <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus($event)"></td>
+          <td>{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>`,
@@ -57,7 +43,7 @@ export class NzDemoTableRowSelectionAndOperationComponent implements OnInit {
   dataSet = [];
   indeterminate = false;
 
-  displayDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean }>): void {
+  currentPageDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean }>): void {
     this.displayData = $event;
   }
 

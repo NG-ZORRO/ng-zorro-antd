@@ -13,7 +13,7 @@ import { NzTranslatePipe } from './nz-translate.pipe';
   exports: [ NzTranslatePipe ],
   providers: [
     { provide: NZ_LOCALE, useValue: zhCN },
-    NZ_LOCALE_SERVICE_PROVIDER,
-  ],
+    NZ_LOCALE_SERVICE_PROVIDER
+  ]
 })
 export class NzLocaleModule { }

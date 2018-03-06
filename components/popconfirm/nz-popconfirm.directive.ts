@@ -3,7 +3,7 @@ import {
   Directive,
   ElementRef,
   Renderer2,
-  ViewContainerRef,
+  ViewContainerRef
 } from '@angular/core';
 
 import { NzTooltipDirective } from '../tooltip/nz-tooltip.directive';
@@ -11,7 +11,7 @@ import { NzTooltipDirective } from '../tooltip/nz-tooltip.directive';
 import { NzPopconfirmComponent } from './nz-popconfirm.component';
 
 @Directive({
-  selector: '[nz-popconfirm]',
+  selector: '[nz-popconfirm]'
 })
 export class NzPopconfirmDirective extends NzTooltipDirective {
   constructor(

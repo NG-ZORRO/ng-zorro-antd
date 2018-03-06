@@ -7,10 +7,10 @@ title:
 
 ## zh-CN
 
-`columns[n]` 可以内嵌 `children`，以渲染分组表头。
+当使用分组表头时，`th` 的 `nzWidth` 方式不再适用，使用 `nzWidthConfig` 来设定每个分组的宽度
 
 ## en-US
 
-Group table head with `columns[n].children`.
+Group table head with `nzWidthConfig`.
 
 

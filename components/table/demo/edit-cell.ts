@@ -7,20 +7,18 @@ import { Component, OnInit } from '@angular/core';
     <nz-table
       #editRowTable
       nzBordered
-      [nzIsPageIndexReset]="isResetIndex"
-      [nzDataSource]="dataSet"
-      [nzPageSize]="10">
-      <thead nz-thead>
+      [nzData]="dataSet">
+      <thead>
         <tr>
-          <th nz-th nzWidth="30%"><span>Name</span></th>
-          <th nz-th><span>Age</span></th>
-          <th nz-th><span>Address</span></th>
-          <th nz-th><span>Action</span></th>
+          <th nzWidth="30%">Name</th>
+          <th>Age</th>
+          <th>Address</th>
+          <th>Action</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of editRowTable.data">
-          <td nz-td>
+      <tbody>
+        <tr *ngFor="let data of editRowTable.data">
+          <td>
             <div class="editable-cell">
               <div class="editable-cell-text-wrapper">
                 <ng-container *ngIf="!editCache[data.key].edit">
@@ -34,9 +32,9 @@ import { Component, OnInit } from '@angular/core';
               </div>
             </div>
           </td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.address}}</td>
-          <td nz-td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
+          <td>
             <nz-popconfirm [nzTitle]="'Sure to delete?'" (nzOnConfirm)="deleteRow(data.key)">
               <a nz-popconfirm>Delete</a>
             </nz-popconfirm>
@@ -46,7 +44,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-table>
   `,
   styles  : [
-    `
+      `
       .editable-cell {
         position: relative;
       }
@@ -94,40 +92,35 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NzDemoTableEditCellComponent implements OnInit {
   i = 1;
-  isResetIndex = false;
   editCache = {};
   dataSet = [
     {
       key    : '0',
       name   : 'Edward King 0',
       age    : '32',
-      address: 'London, Park Lane no. 0',
+      address: 'London, Park Lane no. 0'
     },
     {
       key    : '1',
       name   : 'Edward King 1',
       age    : '32',
-      address: 'London, Park Lane no. 1',
+      address: 'London, Park Lane no. 1'
     }
   ];
 
   addRow(): void {
     this.i++;
-    this.dataSet.push({
+    this.dataSet = [ ...this.dataSet, {
       key    : `${this.i}`,
       name   : `Edward King ${this.i}`,
       age    : '32',
-      address: `London, Park Lane no. ${this.i}`,
-    });
-    this.dataSet = [ ...this.dataSet ];
+      address: `London, Park Lane no. ${this.i}`
+    } ];
     this.updateEditCache();
   }
 
   deleteRow(i: string): void {
     const dataSet = this.dataSet.filter(d => d.key !== i);
-    if (dataSet.length % 10 === 0) {
-      this.isResetIndex = true;
-    }
     this.dataSet = dataSet;
   }
 

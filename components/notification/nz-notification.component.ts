@@ -3,7 +3,7 @@ import {
   state,
   style,
   transition,
-  trigger,
+  trigger
 } from '@angular/animations';
 import { Component } from '@angular/core';
 
@@ -38,7 +38,7 @@ import { NzNotificationContainerComponent } from './nz-notification-container.co
           transformOrigin: '0% 0%'
         }),
         animate('100ms linear')
-      ]),
+      ])
     ])
   ],
   template           : `

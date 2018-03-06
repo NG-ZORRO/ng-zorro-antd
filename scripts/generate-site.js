@@ -49,6 +49,7 @@ rootDir.forEach(componentName => {
     if (fs.existsSync(demoDirPath)) {
       const demoDir = fs.readdirSync(demoDirPath);
       demoDir.forEach(demo => {
+
         if (/.md$/.test(demo)) {
           const nameKey = nameWithoutSuffixUtil(demo);
           const demoMarkDownFile = fs.readFileSync(path.join(demoDirPath, demo));

@@ -3,114 +3,72 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-grouping-columns',
   template: `
-    <nz-table #nzTable [nzDataSource]="dataSet" nzBordered nzSize="middle" [nzPageSize]="10" [nzScroll]="{ x:'130%',y: '240px' }">
-      <ng-template #nzColgroup>
-        <colgroup>
-          <col nz-column nzWidth="100px">
-          <col nz-column nzWidth="200px">
-          <col nz-column nzWidth="200px">
-          <col nz-column nzWidth="100px">
-          <col nz-column nzWidth="100px">
-          <col>
-          <col>
-          <col nz-column nzWidth="60px">
-        </colgroup>
-      </ng-template>
-      <ng-template #nzFixedHeader>
-        <thead nz-thead>
-          <tr style="height: 46px;">
-            <th nz-th rowspan="4" nzLeft="0px">
-              <span>Name</span>
-              <nz-dropdown [nzTrigger]="'click'">
-                <i class="anticon anticon-filter" nz-dropdown></i>
-                <ul nz-menu>
-                  <li nz-menu-item *ngFor="let filter of filterNameArray">
-                    <label nz-checkbox [(ngModel)]="filter.value">
-                      <span>{{filter.name}}</span>
-                    </label>
-                  </li>
-                </ul>
-                <div nz-table-filter>
-                  <span nz-table-filter-confirm (click)="search()">OK</span>
-                  <span nz-table-filter-clear (click)="reset()">Reset</span>
-                </div>
-              </nz-dropdown>
-            </th>
-            <th nz-th colspan="4"><span>Other</span></th>
-            <th nz-th colspan="2"><span>Company</span></th>
-            <th nz-th rowspan="4" nzRight="0px"><span>Gender</span></th>
-          </tr>
-          <tr style="height: 46px;">
-            <th nz-th rowspan="3">
-              <span>Age</span>
-              <nz-table-sort [(nzValue)]="sortValue" (nzValueChange)="search()"></nz-table-sort>
-            </th>
-            <th nz-th colspan="3"><span>Address</span></th>
-            <th nz-th rowspan="3"><span>Company Address</span></th>
-            <th nz-th rowspan="3"><span>Company Name</span></th>
-          </tr>
-          <tr style="height: 46px;">
-            <th nz-th rowspan="2"><span>Street</span></th>
-            <th nz-th colspan="2"><span>Block</span></th>
-          </tr>
-          <tr style="height: 46px;">
-            <th nz-th><span>Building</span></th>
-            <th nz-th><span>Door No.</span></th>
-          </tr>
-        </thead>
-      </ng-template>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of nzTable.data">
-          <td nz-td nzLeft="0px">{{data.name}}</td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.street}}</td>
-          <td nz-td>{{data.building}}</td>
-          <td nz-td>{{data.number}}</td>
-          <td nz-td>{{data.companyAddress}}</td>
-          <td nz-td>{{data.companyName}}</td>
-          <td nz-td nzRight="0px">{{data.gender}}</td>
+    <nz-table
+      #groupingTable
+      [nzData]="displayData"
+      nzBordered
+      nzSize="middle"
+      [nzWidthConfig]="['100px','200px','200px','100px','100px',null,null,'60px']"
+      [nzScroll]="{ x:'130%',y: '240px' }">
+      <thead>
+        <tr style="height: 46px;">
+          <th rowspan="4" nzLeft="0px" nzShowFilter [nzFilters]="filterName" (nzFilterChange)="search($event)">Name</th>
+          <th colspan="4">Other</th>
+          <th colspan="2">Company</th>
+          <th rowspan="4" nzRight="0px">Gender</th>
+        </tr>
+        <tr style="height: 46px;">
+          <th rowspan="3" nzShowSort [(nzSort)]="sortValue" (nzSortChange)="search(searchName)">Age</th>
+          <th colspan="3">Address</th>
+          <th rowspan="3">Company Address</th>
+          <th rowspan="3">Company Name</th>
+        </tr>
+        <tr style="height: 46px;">
+          <th rowspan="2">Street</th>
+          <th colspan="2">Block</th>
+        </tr>
+        <tr style="height: 46px;">
+          <th>Building</th>
+          <th>Door No.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of groupingTable.data">
+          <td nzLeft="0px">{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.street}}</td>
+          <td>{{data.building}}</td>
+          <td>{{data.number}}</td>
+          <td>{{data.companyAddress}}</td>
+          <td>{{data.companyName}}</td>
+          <td nzRight="0px">{{data.gender}}</td>
         </tr>
       </tbody>
     </nz-table>`,
   styles  : []
 })
 export class NzDemoTableGroupingColumnsComponent implements OnInit {
-  dataSet = [];
-  backData = [];
+  displayData = [];
+  data = [];
   sortValue = null;
-  filterNameArray = [
-    { name: 'Joe', value: false },
-    { name: 'John', value: false },
+  filterName = [
+    { text: 'Joe', value: 'Joe' },
+    { text: 'John', value: 'John' }
   ];
+  searchName = [];
 
-  reset(): void {
-    this.filterNameArray = [
-      { name: 'Joe', value: false },
-      { name: 'John', value: false },
-    ];
-    this.search();
-  }
-
-  search(): void {
-    const searchName = this.filterNameArray.filter(name => name.value);
+  search(searchName: string[]): void {
+    this.searchName = searchName;
     const filterFunc = (item) => {
-      return searchName.length ? searchName.some(name => item.name.indexOf(name.name) !== -1) : true
+      return this.searchName.length ? this.searchName.some(name => item.name.indexOf(name) !== -1) : true;
     };
-    this.dataSet = [ ...this.backData.filter(item => filterFunc(item)) ];
-    this.dataSet = [ ...this.dataSet.sort((a, b) => {
-      if (a.age > b.age) {
-        return (this.sortValue === 'ascend') ? 1 : -1;
-      } else if (a.age < b.age) {
-        return (this.sortValue === 'ascend') ? -1 : 1;
-      } else {
-        return 0;
-      }
-    }) ];
+    const data = this.data.filter(item => filterFunc(item));
+    this.displayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a.age > b.age ? 1 : -1) : (b.age > a.age ? 1 : -1));
   }
 
   ngOnInit(): void {
     for (let i = 0; i < 100; i++) {
-      this.dataSet.push({
+      this.displayData.push({
         name          : 'John Brown',
         age           : i + 1,
         street        : 'Lake Park',
@@ -118,9 +76,9 @@ export class NzDemoTableGroupingColumnsComponent implements OnInit {
         number        : 2035,
         companyAddress: 'Lake Street 42',
         companyName   : 'SoftLake Co',
-        gender        : 'M',
+        gender        : 'M'
       });
     }
-    this.backData = [ ...this.dataSet ];
+    this.data = [ ...this.displayData ];
   }
 }

@@ -41,7 +41,7 @@ describe('tabs nav', () => {
     TestBed.compileComponents();
   }));
 
-  describe('pagination', () => {
+  describe('tabs paginate', () => {
     describe('ltr', () => {
       beforeEach(() => {
         dir = 'ltr';

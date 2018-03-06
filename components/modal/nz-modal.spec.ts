@@ -401,7 +401,7 @@ class TestVaryServiceComponent {
           label: 'show loading',
           onClick: () => Promise.reject(null)
         }
-      ],
+      ]
     });
 
     return modal;

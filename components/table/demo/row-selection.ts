@@ -5,39 +5,24 @@ import { Component } from '@angular/core';
   template: `
     <nz-table
       #rowSelectionTable
-      [nzDataSource]="data"
-      [nzPageSize]="10"
-      (nzDataChange)="displayDataChange($event)"
+      [nzData]="data"
+      (nzCurrentPageDataChange)="currentPageDataChange($event)"
       (nzPageIndexChange)="refreshStatus()"
       (nzPageSizeChange)="refreshStatus()">
-      <thead nz-thead>
+      <thead>
         <tr>
-          <th nz-th nzCheckbox>
-            <label nz-checkbox
-              [(ngModel)]="allChecked"
-              [nzIndeterminate]="indeterminate"
-              (ngModelChange)="checkAll($event)">
-            </label>
-          </th>
-          <th nz-th><span>Name</span></th>
-          <th nz-th><span>Age</span></th>
-          <th nz-th><span>Address</span></th>
+          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Address</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of rowSelectionTable.data">
-          <td nz-td nzCheckbox>
-            <label nz-checkbox
-              [nzDisabled]="data.disabled"
-              [(ngModel)]="data.checked"
-              (ngModelChange)="refreshStatus($event)">
-            </label>
-          </td>
-          <td nz-td>
-            <a>{{data.name}}</a>
-          </td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.address}}</td>
+      <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td nzShowCheckbox [(nzChecked)]="data.checked" [nzDisabled]="data.disabled" (nzCheckedChange)="refreshStatus($event)"></td>
+          <td>{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>`,
@@ -78,7 +63,7 @@ export class NzDemoTableRowSelectionComponent {
     }
   ];
 
-  displayDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean; disabled: boolean; }>): void {
+  currentPageDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean; disabled: boolean; }>): void {
     this.displayData = $event;
     this.refreshStatus();
   }

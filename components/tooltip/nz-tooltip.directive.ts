@@ -13,7 +13,7 @@ import {
 import { NzToolTipComponent } from './nz-tooltip.component';
 
 @Directive({
-  selector: '[nz-tooltip]',
+  selector: '[nz-tooltip]'
 })
 export class NzTooltipDirective implements AfterViewInit {
   // [NOTE] Here hard coded, and nzTitle used only under NzTooltipDirective currently.

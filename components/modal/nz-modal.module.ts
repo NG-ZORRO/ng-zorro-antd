@@ -15,6 +15,6 @@ import { NzModalService } from './nz-modal.service';
   exports: [ NzModalComponent ],
   declarations: [ NzModalComponent, CssUnitPipe ],
   entryComponents: [ NzModalComponent ],
-  providers: [ NzModalService ],
+  providers: [ NzModalService ]
 })
 export class NzModalModule { }

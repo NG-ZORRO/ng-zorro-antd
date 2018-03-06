@@ -28,20 +28,6 @@
   z-index: 1000;
 }
 
-// breadcrumb
-
-nz-breadcrumb {
-  display: block;
-}
-
-.ant-breadcrumb > nz-breadcrumb-item:last-child {
-  color: rgba(0, 0, 0, 0.65);
-}
-
-.ant-breadcrumb > nz-breadcrumb-item:last-child .ant-breadcrumb-separator {
-  display: none;
-}
-
 // submenu
 
 .ant-menu-submenu-placement-bottomLeft {
@@ -59,18 +45,6 @@ nz-breadcrumb {
   position: relative;
 }
 
-// dropdown
-
-nz-dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-nz-dropdown-button {
-  position: relative;
-  display: inline-block;
-}
-
 .ant-dropdown {
   top: 100%;
   left: 0;
@@ -79,19 +53,6 @@ nz-dropdown-button {
   margin-top: 4px;
   margin-bottom: 4px;
 }
-
-// layout
-
-nz-content, nz-layout, nz-header, nz-footer {
-  display: block;
-}
-
-//.ant-layout-sider-trigger {
-//  width: 100%;
-//  position: absolute;
-//}
-
-// select
 
 nz-select .ant-select {
   width: 100%;
@@ -160,46 +121,4 @@ nz-tabset {
 
 nz-tab-body {
   display: block;
-}
-
-// card
-nz-card {
-  display: block;
-  position: relative;
-}
-
-// table
-
-.ant-table-th-left-sticky, .ant-table-th-right-sticky, .ant-table-td-right-sticky, .ant-table-td-left-sticky {
-  position: sticky;
-  z-index: 1;
-}
-
-.ant-table-td-left-sticky, .ant-table-td-right-sticky {
-  background: #ffffff;
-}
-
-table.ant-table-fixed {
-  overflow: auto;
-}
-
-.ant-table-scroll-position-middle {
-  .ant-table-th-right-sticky, .ant-table-td-right-sticky {
-    box-shadow: -6px 0 6px 0px rgba(0, 0, 0, 0.05)
-  }
-  .ant-table-th-left-sticky, .ant-table-td-left-sticky {
-    box-shadow: 6px 0 6px 0px rgba(0, 0, 0, 0.05)
-  }
-}
-
-.ant-table-scroll-position-left {
-  .ant-table-th-right-sticky, .ant-table-td-right-sticky {
-    box-shadow: -6px 0 6px 0px rgba(0, 0, 0, 0.05)
-  }
-}
-
-.ant-table-scroll-position-right {
-  .ant-table-th-left-sticky, .ant-table-td-left-sticky {
-    box-shadow: 6px 0 6px 0px rgba(0, 0, 0, 0.05)
-  }
 }
