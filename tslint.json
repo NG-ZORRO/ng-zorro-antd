@@ -2,12 +2,6 @@
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
-  "linterOptions": {
-    "exclude": [
-      "scripts/template/*.ts",
-      "components/**/demo/*.ts"
-    ]
-  },
   "rules": {
     "adjacent-overload-signatures": true,
     "align": [
