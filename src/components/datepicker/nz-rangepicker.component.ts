@@ -124,14 +124,14 @@ import { measureScrollbar } from '../util/mesureScrollBar';
                title="{{ 'DateTime.prevYear' | nzTranslate }}"
                (click)="_preYear(part)"></a>
             <a class="ant-calendar-prev-month-btn"
-               *ngIf="_mode[part] !== 'month' && (part !== _part.End ||_showBtn(part))"
+               *ngIf="_mode[part] === 'month' && (part !== _part.End ||_showBtn(part))"
                title="{{ 'DateTime.prevMonth' | nzTranslate }}"
                (click)="_preMonth(part)"></a>
             <span class="ant-calendar-ym-select">
                         <a class="ant-calendar-month-select"
                            title="{{ 'DateTime.chooseMonth' | nzTranslate }}"
-                           *ngIf="_mode[part] !== 'month'"
-                           (click)="_mode[part] = 'month'; _bindDisabledDateToPart()">
+                           *ngIf="_mode[part] === 'month'"
+                           (click)="_mode[part] = 'year'; _bindDisabledDateToPart()">
                           {{ 'DateTime.nMonth' | nzTranslate: {num: _showMonth[part] + 1} }}
                         </a>
                         <a class="ant-calendar-year-select"
@@ -140,7 +140,7 @@ import { measureScrollbar } from '../util/mesureScrollBar';
                           {{ 'DateTime.nYear' | nzTranslate: {num: _showYear[part]} }}</a>
                       </span>
             <a class="ant-calendar-next-month-btn"
-               *ngIf="_mode[part] !== 'month' && (part !== _part.Start || _showBtn(part))"
+               *ngIf="_mode[part] === 'month' && (part !== _part.Start || _showBtn(part))"
                title="{{ 'DateTime.nextMonth' | nzTranslate }}"
                (click)="_nextMonth(part)"></a>
             <a class="ant-calendar-next-year-btn"
@@ -461,7 +461,7 @@ export class NzRangePickerComponent implements ControlValueAccessor, OnInit {
 
   _clickMonth(month: MonthInterface, part: RangePart): void {
     this._showMonth[part] = month.index;
-    this._mode[part] = 'year';
+    this._mode[part] = 'month';
     this._bindDisabledDateToPart();
     this.adjustShowMonth();
   }
