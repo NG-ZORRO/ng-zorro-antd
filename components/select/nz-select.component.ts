@@ -104,7 +104,7 @@ import { NzSelectTopControlComponent } from './nz-select-top-control.component';
         [nzShowSearch]="nzShowSearch"
         [nzDisabled]="nzDisabled"
         [nzMode]="nzMode"
-        [nzListOfOption]="listOfOption"
+        [nzListTemplateOfOption]="listOfTemplateOption"
         [nzListOfSelectedValue]="listOfSelectedValue"
         (nzOnSearch)="onSearch($event)"
         (nzListOfSelectedValueChange)="updateListOfSelectedValueFromTopControl($event)">
@@ -121,15 +121,18 @@ import { NzSelectTopControlComponent } from './nz-select-top-control.component';
       (positionChange)="onPositionChange($event)"
       [cdkConnectedOverlayWidth]="triggerWidth"
       [cdkConnectedOverlayOpen]="!isDestroy">
-      <div [ngClass]="dropDownClassMap" [@dropDownAnimation]="nzOpen?dropDownPosition:'hidden'">
+      <div [ngClass]="dropDownClassMap" [@dropDownAnimation]="nzOpen ? dropDownPosition : 'hidden' ">
         <div
           style="overflow: auto"
           nz-option-container
           [listOfNzOptionComponent]="listOfNzOptionComponent"
           [listOfNzOptionGroupComponent]="listOfNzOptionGroupComponent"
           [nzSearchValue]="searchValue"
+          [nzFilterOption]="nzFilterOption"
           [nzMode]="nzMode"
-          (nzListOfOptionChange)="listOfOptionChange($event)"
+          (nzScrollToBottom)="nzScrollToBottom.emit()"
+          (nzClickOption)="onClickOptionFromOptionContainer()"
+          (nzListOfTemplateOptionChange)="listOfTemplateOptionChange($event)"
           (nzListOfSelectedValueChange)="updateListOfSelectedValueFromOptionContainer($event)"
           [nzListOfSelectedValue]="listOfSelectedValue">
         </div>
@@ -145,6 +148,7 @@ import { NzSelectTopControlComponent } from './nz-select-top-control.component';
     '[class.ant-select-lg]'         : 'nzSize==="large"',
     '[class.ant-select-sm]'         : 'nzSize==="small"',
     '[class.ant-select-enabled]'    : '!nzDisabled',
+    '[class.ant-select-disabled]'   : 'nzDisabled',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-open]'       : 'nzOpen'
   }
@@ -160,11 +164,11 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   // tslint:disable-next-line:no-any
   listOfSelectedValue: any[] = [];
-  listOfOption: NzOptionComponent[] = [];
+  listOfTemplateOption: NzOptionComponent[] = [];
   // tslint:disable-next-line:no-any
   value: any | any[];
   triggerWidth = 0;
-  searchValue: string;
+  searchValue: string = '';
   isDestroy = true;
   dropDownClassMap;
   @ViewChild(CdkOverlayOrigin) cdkOverlayOrigin: CdkOverlayOrigin;
@@ -175,6 +179,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @ContentChildren(NzOptionComponent) listOfNzOptionComponent: QueryList<NzOptionComponent>;
   @ContentChildren(NzOptionGroupComponent) listOfNzOptionGroupComponent: QueryList<NzOptionGroupComponent>;
   @Output() nzOnSearch = new EventEmitter<string>();
+  @Output() nzScrollToBottom = new EventEmitter<void>();
   @Input() nzSize = 'default';
   @Input() nzMode: 'default' | 'multiple' | 'tags' = 'default';
   @Input() nzDropdownMatchSelectWidth = true;
@@ -261,6 +266,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this.updateDropDownClassMap();
   }
 
+  onClickOptionFromOptionContainer(): void {
+    if (this.isSingleMode) {
+      this.closeDropDown();
+    }
+  }
+
   updateCdkConnectedOverlayStatus(): void {
     if (this.nzOpen && this.nzDropdownMatchSelectWidth && this.cdkOverlayOrigin) {
       this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
@@ -293,9 +304,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   // tslint:disable-next-line:no-any
   updateListOfSelectedValueFromOptionContainer(value: any[]): void {
     this.clearSearchValue();
-    if (this.isSingleMode) {
-      this.closeDropDown();
-    }
     this.updateFromSelectedList(value);
   }
 
@@ -323,8 +331,10 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   onSearch(value: string): void {
-    this.nzOnSearch.emit(value);
-    this.searchValue = value;
+    if (this.searchValue !== value) {
+      this.nzOnSearch.emit(value);
+      this.searchValue = value;
+    }
   }
 
   clearNgModel(): void {
@@ -344,8 +354,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     }
   }
 
-  listOfOptionChange(value: NzOptionComponent[]): void {
-    this.listOfOption = value;
+  listOfTemplateOptionChange(value: NzOptionComponent[]): void {
+    this.listOfTemplateOption = value;
   }
 
   updateDropDownClassMap(): void {
@@ -365,7 +375,11 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   clearSearchValue(): void {
-    this.nzSelectTopControlComponent.setInputValue('', true);
+    if (this.isSingleMode) {
+      this.nzSelectTopControlComponent.setInputValue('', false);
+    } else {
+      this.nzSelectTopControlComponent.setInputValue('', false);
+    }
   }
 
   constructor(private renderer: Renderer2) {

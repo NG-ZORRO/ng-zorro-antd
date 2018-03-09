@@ -58,7 +58,7 @@ import { NzOptionComponent } from './nz-option.component';
         class="ant-select-selection-selected-value"
         [attr.title]="nzListOfSelectedValue[0].nzLabel"
         [ngStyle]="selectedValueDisplay">
-        {{ getPropertyFromValue(nzListOfSelectedValue[0], 'nzLabel') }}
+        {{ singleValueLabel }}
       </div>
       <!--show search-->
       <div
@@ -98,22 +98,24 @@ export class NzSelectTopControlComponent {
   // tslint:disable-next-line:no-any
   private _listOfSelectedValue: any[];
   private _open = false;
+  listOfCachedSelectedOption: NzOptionComponent[] = [];
   inputValue: string;
-  composing = false;
+  isComposing = false;
   @ViewChild('inputElement') inputElement: ElementRef;
-  // tslint:disable-next-line:no-any
   // tslint:disable-next-line:no-any
   @Output() nzListOfSelectedValueChange = new EventEmitter<any[]>();
   @Output() nzOnSearch = new EventEmitter<string>();
   @Input() nzMode = 'default';
   @Input() nzShowSearch = false;
   @Input() nzDisabled = false;
-  @Input() nzListOfOption: NzOptionComponent[] = [];
+  @Input() nzListTemplateOfOption: NzOptionComponent[] = [];
+  @Input() nzPlaceHolder: string;
 
   @Input()
   // tslint:disable-next-line:no-any
   set nzListOfSelectedValue(value: any[]) {
     this._listOfSelectedValue = value;
+    this.updateListOfCachedOption();
   }
 
   // tslint:disable-next-line:no-any
@@ -126,7 +128,7 @@ export class NzSelectTopControlComponent {
     this._open = value;
     if (this.nzOpen) {
       this.focusOnInput();
-      this.setInputValue('', true);
+      this.setInputValue('', false);
     } else {
       this.setInputValue('', false);
     }
@@ -136,7 +138,20 @@ export class NzSelectTopControlComponent {
     return this._open;
   }
 
-  @Input() nzPlaceHolder: string;
+  /** cached selected option list **/
+  updateListOfCachedOption(): void {
+    if (this.isSingleMode) {
+      const selectedOption = this.nzListTemplateOfOption.find(o => o.nzValue === this.nzListOfSelectedValue[ 0 ]);
+      if (selectedOption) {
+        this.listOfCachedSelectedOption = [ selectedOption ];
+      }
+    } else {
+      const listOfCachedOptionFromLatestTemplate = this.nzListTemplateOfOption.filter(o => this.nzListOfSelectedValue.indexOf(o.nzValue) > -1);
+      const restSelectedValue = this.nzListOfSelectedValue.filter(v => listOfCachedOptionFromLatestTemplate.map(o => o.nzValue).indexOf(v) === -1);
+      const listOfCachedOptionFromOld = this.listOfCachedSelectedOption.filter(o => restSelectedValue.indexOf(o.nzValue) > -1);
+      this.listOfCachedSelectedOption = listOfCachedOptionFromLatestTemplate.concat(listOfCachedOptionFromOld);
+    }
+  }
 
   setInputValue(value: string, emit: boolean): void {
     this.inputValue = value;
@@ -155,7 +170,7 @@ export class NzSelectTopControlComponent {
   }
 
   get placeHolderDisplay(): string {
-    return this.inputValue || this.nzListOfSelectedValue.length ? 'none' : 'block';
+    return this.inputValue || this.isComposing || this.nzListOfSelectedValue.length ? 'none' : 'block';
   }
 
   get searchDisplay(): string {
@@ -169,7 +184,7 @@ export class NzSelectTopControlComponent {
       showSelectedValue = true;
     } else {
       if (this.nzOpen) {
-        showSelectedValue = !(this.inputValue || this.composing);
+        showSelectedValue = !(this.inputValue || this.isComposing);
         if (showSelectedValue) {
           opacity = 0.4;
         }
@@ -183,6 +198,10 @@ export class NzSelectTopControlComponent {
     };
   }
 
+  get singleValueLabel(): string {
+    return this.getPropertyFromValue(this.nzListOfSelectedValue[ 0 ], 'nzLabel');
+  }
+
   focusOnInput(): void {
     setTimeout(() => {
       if (this.inputElement) {
@@ -193,7 +212,8 @@ export class NzSelectTopControlComponent {
 
   // tslint:disable-next-line:no-any
   getPropertyFromValue(value: any, prop: string): string {
-    const targetOption = this.nzListOfOption.find(item => item.nzValue === value);
+    const optionList = this.nzListTemplateOfOption.concat(this.listOfCachedSelectedOption);
+    const targetOption = optionList.find(item => item.nzValue === value);
     return targetOption ? targetOption[ prop ] : '';
   }
 
@@ -212,16 +232,16 @@ export class NzSelectTopControlComponent {
   }
 
   compositionStart(): void {
-    this.composing = true;
+    this.isComposing = true;
   }
 
   compositionEnd(): void {
-    this.composing = false;
+    this.isComposing = false;
   }
 
   updateWidth(): void {
     if (this.isMultipleOrTags && this.inputElement) {
-      if (this.inputValue) {
+      if (this.inputValue || this.isComposing) {
         this.renderer.setStyle(this.inputElement.nativeElement, 'width', `${this.inputElement.nativeElement.scrollWidth}px`);
       } else {
         this.renderer.removeStyle(this.inputElement.nativeElement, 'width');

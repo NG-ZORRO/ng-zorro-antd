@@ -15,7 +15,7 @@ import { NzOptionComponent } from './nz-option.component';
     '[class.ant-select-dropdown-menu-item]'         : 'true',
     '[class.ant-select-dropdown-menu-item-selected]': 'selected',
     '[class.ant-select-dropdown-menu-item-disabled]': 'nzOption.nzDisabled',
-    '[class.ant-select-dropdown-menu-item-active]'  : 'active && !nzOption.nzDisabled',
+    '[class.ant-select-dropdown-menu-item-active]'  : 'active && !nzOption.nzDisabled && nzShowActive',
     '[attr.unselectable]'                           : '"unselectable"',
     '[attr.role]'                                   : '"menuitem"',
     '[style.user-select]'                           : '"none"'
@@ -25,6 +25,7 @@ export class NzOptionLiComponent {
   selected = false;
   active = false;
   @Input() nzOption: NzOptionComponent;
+  @Input() nzShowActive = true;
 
   @Input()
   set nzActiveOption(value: NzOptionComponent) {

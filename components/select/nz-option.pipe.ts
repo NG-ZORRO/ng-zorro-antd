@@ -3,9 +3,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
 
-export type TFilterOption = (input: string, option: NzOptionComponent) => boolean;
+export type TFilterOption = (input?: string, option?: NzOptionComponent) => boolean;
 
-@Pipe({ name: 'nzFilterOptionPipe' })
+// TODO: can not dynamic change pipe pure yet
+@Pipe({ name: 'nzFilterOptionPipe', pure: false })
 export class NzOptionPipe implements PipeTransform {
   transform(options: NzOptionComponent[], input: string, filterOption: TFilterOption): NzOptionComponent[] {
     if (!input) {
@@ -16,7 +17,7 @@ export class NzOptionPipe implements PipeTransform {
   }
 }
 
-@Pipe({ name: 'nzSubFilterOptionPipe' })
+@Pipe({ name: 'nzSubFilterOptionPipe', pure: false })
 export class NzSubOptionPipe implements PipeTransform {
   transform(groups: NzOptionGroupComponent[], input: string, filterOption: TFilterOption): NzOptionGroupComponent[] {
     if (!input) {

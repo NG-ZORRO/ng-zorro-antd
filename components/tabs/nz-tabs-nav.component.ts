@@ -34,7 +34,7 @@ export type ScrollDirection = 'after' | 'before';
 import { NzTabPositionMode } from './nz-tabset.component';
 
 @Component({
-  selector           : 'nz-tabs-nav',
+  selector           : '[nz-tabs-nav]',
   preserveWhitespaces: false,
   template           : `
     <div style="float:right;" *ngIf="nzTabBarExtraContent" class="ant-tabs-extra-content">

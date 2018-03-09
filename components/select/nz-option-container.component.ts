@@ -20,9 +20,11 @@ import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pi
   preserveWhitespaces: false,
   template           : `
     <ul
+      #dropdownUl
       class="ant-select-dropdown-menu ant-select-dropdown-menu-root ant-select-dropdown-menu-vertical"
       role="menu"
       (keydown)="onKeyDownUl($event)"
+      (scroll)="dropDownScroll(dropdownUl)"
       (mouseleave)="clearActivatedOption()"
       tabindex="0">
       <li
@@ -34,6 +36,7 @@ import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pi
       <li
         *ngIf="isAddTagOptionDisplay"
         nz-select-unselectable
+        (click)="addTagOption()"
         class="ant-select-dropdown-menu-item ant-select-dropdown-menu-item-active">
         {{ nzSearchValue }}
       </li>
@@ -41,7 +44,7 @@ import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pi
         nz-option-li
         *ngFor="let option of listOfNzOptionComponent | nzFilterOptionPipe : nzSearchValue : nzFilterOption "
         (mouseover)="onMouseOverOption(option)"
-        (click)="updateSelectedOption(option,false)"
+        (click)="clickOption(option,false)"
         [nzActiveOption]="activatedOption"
         [nzOption]="option"
         [nzSelectedOptions]="listOfSelectedOption">
@@ -61,9 +64,10 @@ import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pi
           <li
             nz-option-li
             *ngFor="let option of group.listOfNzOptionComponent | nzFilterOptionPipe : nzSearchValue : nzFilterOption"
-            (click)="updateSelectedOption(option,false)"
+            (click)="clickOption(option,false)"
             (mouseover)="onMouseOverOption(option)"
             [nzActiveOption]="activatedOption"
+            [nzShowActive]="!isAddTagOptionDisplay"
             [nzOption]="option"
             [nzSelectedOptions]="listOfSelectedOption">
           </li>
@@ -73,8 +77,9 @@ import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pi
         nz-option-li
         *ngFor="let option of listOfTagOption | nzFilterOptionPipe : nzSearchValue : nzFilterOption "
         (mouseover)="onMouseOverOption(option)"
-        (click)="updateSelectedOption(option,false)"
+        (click)="clickOption(option,false)"
         [nzActiveOption]="activatedOption"
+        [nzShowActive]="!isAddTagOptionDisplay"
         [nzOption]="option"
         [nzSelectedOptions]="listOfSelectedOption">
       </li>
@@ -85,6 +90,7 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   private _listOfSelectedValue: any[];
   private _searchValue: string;
   isInit = false;
+  isAddTagOptionDisplay = false;
   listOfAllTemplateOption: NzOptionComponent[] = [];
   optionSubscription: Subscription;
   groupSubscription: Subscription;
@@ -97,13 +103,16 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   @Input() listOfNzOptionGroupComponent: QueryList<NzOptionGroupComponent>;
   // tslint:disable-next-line:no-any
   @Output() nzListOfSelectedValueChange = new EventEmitter<any[]>();
-  @Output() nzListOfOptionChange = new EventEmitter<NzOptionComponent[]>();
+  @Output() nzListOfTemplateOptionChange = new EventEmitter<NzOptionComponent[]>();
+  @Output() nzClickOption = new EventEmitter<void>();
+  @Output() nzScrollToBottom = new EventEmitter<void>();
   @Input() nzMode = 'default';
   @Input() nzFilterOption: TFilterOption = defaultFilterOption;
 
   @Input()
   set nzSearchValue(value: string) {
     this._searchValue = value;
+    this.updateAddTagOptionDisplay();
     this.updateListOfFilterOption();
   }
 
@@ -127,6 +136,16 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
     return this._listOfSelectedValue;
   }
 
+  addTagOption(): void {
+    this.nzListOfSelectedValue = [ ...this.nzListOfSelectedValue, this.nzSearchValue ];
+    this.nzListOfSelectedValueChange.emit(this.nzListOfSelectedValue);
+  }
+
+  clickOption(option: NzOptionComponent, isPressEnter: boolean): void {
+    this.updateSelectedOption(option, isPressEnter);
+    this.nzClickOption.emit();
+  }
+
   onKeyDownUl(e: KeyboardEvent): void {
     if ([ 38, 40, 13 ].indexOf(e.keyCode) > -1) {
       e.preventDefault();
@@ -140,12 +159,12 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
         const nextIndex = activeIndex < this.listOfFilterOption.length - 1 ? (activeIndex + 1) : 0;
         this.activatedOption = this.listOfFilterOption[ nextIndex ];
       } else if (e.keyCode === 13) {
+        this.nzClickOption.emit();
         // enter
-        if (this.listOfFilterOption.length !== 0) {
+        if (!this.isAddTagOptionDisplay) {
           this.updateSelectedOption(this.activatedOption, true);
-        } else if (this.isTagsMode && this.nzSearchValue) {
-          this.nzListOfSelectedValue = [ ...this.nzListOfSelectedValue, this.nzSearchValue ];
-          this.nzListOfSelectedValueChange.emit(this.nzListOfSelectedValue);
+        } else {
+          this.addTagOption();
         }
       }
     }
@@ -164,25 +183,29 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
     if (option && !option.nzDisabled) {
       let changed = false;
       this.activatedOption = option;
+      let listOfSelectedValue = [ ...this.nzListOfSelectedValue ];
       if (this.isMultipleOrTags) {
-        const index = this.listOfSelectedOption.map(o => o.nzValue).indexOf(option.nzValue);
-        if (index > -1) {
+        const targetOption = this.listOfSelectedOption.find(o => o.nzValue === option.nzValue);
+        if (targetOption) {
           if (!isPressEnter) {
             /** should not toggle option when press enter **/
-            this.listOfSelectedOption = this.listOfSelectedOption.filter((item, i) => i !== index);
+            this.listOfSelectedOption = this.listOfSelectedOption.filter(item => item.nzValue !== targetOption.nzValue);
+            listOfSelectedValue.splice(listOfSelectedValue.indexOf(option.nzValue), 1);
             changed = true;
           }
         } else {
           this.listOfSelectedOption = [ ...this.listOfSelectedOption, option ];
+          listOfSelectedValue.push(option.nzValue);
           changed = true;
         }
       } else if (this.listOfSelectedOption[ 0 ] !== option) {
         this.listOfSelectedOption = [ option ];
+        listOfSelectedValue = [ option.nzValue ];
         changed = true;
       }
       /** update selectedValues when click option **/
       if (changed) {
-        this._listOfSelectedValue = this.listOfSelectedOption.map(item => item.nzValue);
+        this._listOfSelectedValue = listOfSelectedValue;
         this.nzListOfSelectedValueChange.emit(this.nzListOfSelectedValue);
         if (this.isTagsMode) {
           this.refreshAllOptionStatus(false);
@@ -192,17 +215,20 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   }
 
   refreshListOfTagOption(): void {
-    /** refresh tags option **/
-    const listOfTagsOption = [];
-    this.nzListOfSelectedValue.forEach(value => {
-      if (this.listOfAllTemplateOption.map(item => item.nzValue).indexOf(value) === -1) {
-        const nzOptionComponent = new NzOptionComponent();
-        nzOptionComponent.nzValue = value;
-        nzOptionComponent.nzLabel = value;
-        listOfTagsOption.push(nzOptionComponent);
-      }
-    });
-    this.listOfTagOption = listOfTagsOption;
+    if (this.isTagsMode) {
+      /** refresh tags option **/
+      const listOfTagsOption = [];
+      this.nzListOfSelectedValue.forEach(value => {
+        if (this.listOfAllTemplateOption.map(item => item.nzValue).indexOf(value) === -1) {
+          const nzOptionComponent = new NzOptionComponent();
+          nzOptionComponent.nzValue = value;
+          nzOptionComponent.nzLabel = value;
+          listOfTagsOption.push(nzOptionComponent);
+        }
+      });
+      this.listOfTagOption = listOfTagsOption;
+    }
+
   }
 
   refreshListOfSelectedOption(): void {
@@ -221,7 +247,7 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
 
   refreshListOfAllTemplateOption(): void {
     this.listOfAllTemplateOption = this.listOfNzOptionComponent.toArray().concat(this.listOfNzOptionGroupComponent.toArray().reduce((pre, cur) => [ ...pre, ...cur.listOfNzOptionComponent.toArray() ], []));
-    Promise.resolve().then(() => this.nzListOfOptionChange.emit(this.listOfAllTemplateOption));
+    Promise.resolve().then(() => this.nzListOfTemplateOptionChange.emit(this.listOfAllTemplateOption));
   }
 
   refreshAllOptionStatus(isTemplateOptionChange: boolean): void {
@@ -232,6 +258,7 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
       }
       this.refreshListOfTagOption();
       this.refreshListOfSelectedOption();
+      this.updateAddTagOptionDisplay();
     }
   }
 
@@ -278,8 +305,16 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
     return (!this.isTagsMode) && (!this.listOfFilterOption.length);
   }
 
-  get isAddTagOptionDisplay(): boolean {
-    return this.isTagsMode && (!this.listOfFilterOption.length);
+  updateAddTagOptionDisplay(): void {
+    const listOfAllOption = this.listOfAllTemplateOption.concat(this.listOfTagOption).map(item => item.nzLabel);
+    const isMatch = listOfAllOption.indexOf(this.nzSearchValue) > -1;
+    this.isAddTagOptionDisplay = this.isTagsMode && this.nzSearchValue && (!isMatch);
+  }
+
+  dropDownScroll(ul: HTMLUListElement): void {
+    if (ul && (ul.scrollHeight - ul.scrollTop === ul.clientHeight)) {
+      this.nzScrollToBottom.emit();
+    }
   }
 
   ngAfterContentInit(): void {
