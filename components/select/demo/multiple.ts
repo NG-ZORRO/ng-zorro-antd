@@ -6,8 +6,7 @@ import { Component, OnInit } from '@angular/core';
     <nz-select style="width: 400px;"
       [nzMode]="'multiple'"
       [nzPlaceHolder]="'请选择人员'"
-      [(ngModel)]="selectedMultipleOption"
-      [nzNotFoundContent]="'无法找到'">
+      [(ngModel)]="selectedMultipleOption">
       <nz-option
         *ngFor="let option of searchOptions"
         [nzLabel]="option.label"

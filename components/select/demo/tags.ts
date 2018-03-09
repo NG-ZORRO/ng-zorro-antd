@@ -4,12 +4,10 @@ import { Component, OnInit } from '@angular/core';
   selector: 'nz-demo-select-tags',
   template: `
     <nz-select
+      [nzMode]="'tags'"
       style="width: 400px;"
-      nzTags
       [nzPlaceHolder]="'请选择人员'"
-      [(ngModel)]="selectedMultipleOption"
-      [nzNotFoundContent]="'无法找到'"
-      nzShowSearch>
+      [(ngModel)]="selectedMultipleOption">
       <nz-option
         *ngFor="let option of searchOptions"
         [nzLabel]="option.label"

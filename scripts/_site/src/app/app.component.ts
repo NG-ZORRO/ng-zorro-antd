@@ -32,6 +32,7 @@ export class AppComponent implements OnInit {
   }
 
   navigateToPage(url) {
+    console.log(url);
     if (url) {
       this.router.navigateByUrl(url);
     }
