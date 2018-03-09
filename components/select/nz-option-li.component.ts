@@ -37,7 +37,8 @@ export class NzOptionLiComponent {
   }
 
   @Input()
-  set nzSelectedOptions(value: NzOptionComponent[]) {
-    this.selected = value.indexOf(this.nzOption) > -1;
+  // tslint:disable-next-line:no-any
+  set nzListOfSelectedValue(value: any[]) {
+    this.selected = value.indexOf(this.nzOption.nzValue) > -1;
   }
 }

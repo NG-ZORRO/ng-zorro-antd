@@ -97,19 +97,19 @@ import { NzOptionComponent } from './nz-option.component';
 export class NzSelectTopControlComponent {
   // tslint:disable-next-line:no-any
   private _listOfSelectedValue: any[];
-  private _open = false;
   listOfCachedSelectedOption: NzOptionComponent[] = [];
   inputValue: string;
   isComposing = false;
   @ViewChild('inputElement') inputElement: ElementRef;
   // tslint:disable-next-line:no-any
   @Output() nzListOfSelectedValueChange = new EventEmitter<any[]>();
-  @Output() nzOnSearch = new EventEmitter<string>();
+  @Output() nzOnSearch = new EventEmitter<{ value: string, emit: boolean }>();
   @Input() nzMode = 'default';
   @Input() nzShowSearch = false;
   @Input() nzDisabled = false;
   @Input() nzListTemplateOfOption: NzOptionComponent[] = [];
   @Input() nzPlaceHolder: string;
+  @Input() nzOpen = false;
 
   @Input()
   // tslint:disable-next-line:no-any
@@ -121,21 +121,6 @@ export class NzSelectTopControlComponent {
   // tslint:disable-next-line:no-any
   get nzListOfSelectedValue(): any[] {
     return this._listOfSelectedValue;
-  }
-
-  @Input()
-  set nzOpen(value: boolean) {
-    this._open = value;
-    if (this.nzOpen) {
-      this.focusOnInput();
-      this.setInputValue('', false);
-    } else {
-      this.setInputValue('', false);
-    }
-  }
-
-  get nzOpen(): boolean {
-    return this._open;
   }
 
   /** cached selected option list **/
@@ -156,9 +141,7 @@ export class NzSelectTopControlComponent {
   setInputValue(value: string, emit: boolean): void {
     this.inputValue = value;
     this.updateWidth();
-    if (emit) {
-      this.nzOnSearch.emit(value);
-    }
+    this.nzOnSearch.emit({ value, emit });
   }
 
   get isSingleMode(): boolean {
@@ -212,8 +195,7 @@ export class NzSelectTopControlComponent {
 
   // tslint:disable-next-line:no-any
   getPropertyFromValue(value: any, prop: string): string {
-    const optionList = this.nzListTemplateOfOption.concat(this.listOfCachedSelectedOption);
-    const targetOption = optionList.find(item => item.nzValue === value);
+    const targetOption = this.listOfCachedSelectedOption.find(item => item.nzValue === value);
     return targetOption ? targetOption[ prop ] : '';
   }
 

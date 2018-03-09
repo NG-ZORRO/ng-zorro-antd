@@ -9,9 +9,9 @@ import { switchMap } from 'rxjs/operators/switchMap';
 @Component({
   selector: 'nz-demo-select-select-users',
   template: `
-    <nz-select style="width: 100%;" [(ngModel)]="selectedUser" nzPlaceHolder="Select users" nzAllowClear nzShowSearch [nzFilterOption]="filterOption" (nzOnSearch)="onSearch($event)">
-      <ng-container *ngIf="!isLoading">
-        <nz-option *ngFor="let o of optionList" [nzValue]="o" [nzLabel]="o"></nz-option>
+    <nz-select style="width: 100%;" nzMode="multiple" [(ngModel)]="selectedUser" nzPlaceHolder="Select users" nzAllowClear nzShowSearch [nzServerSearch]="true" (nzOnSearch)="onSearch($event)">
+      <ng-container *ngFor="let o of optionList">
+        <nz-option *ngIf="!isLoading" [nzValue]="o" [nzLabel]="o"></nz-option>
       </ng-container>
       <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
         <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
@@ -36,19 +36,14 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
     this.searchChange$.next(value);
   }
 
-  /** disable default filter function **/
-  filterOption = () => true;
-
   constructor(private http: HttpClient) {
   }
 
   ngOnInit(): void {
-    const getRandomNameList = (name: string) => {
-      // tslint:disable-next-line:no-any
-      return this.http.get(`${this.randomUserUrl}`).pipe(map((res: any) => res.results)).pipe(map((list: any) => {
-        return list.map(item => `${item.name.first}-${item.name.last} ${name}`);
-      }));
-    };
+    // tslint:disable-next-line:no-any
+    const getRandomNameList = (name: string) => this.http.get(`${this.randomUserUrl}`).pipe(map((res: any) => res.results)).pipe(map((list: any) => {
+      return list.map(item => `${item.name.first} ${name}`);
+    }));
     const optionList$: Observable<string[]> = this.searchChange$.asObservable().pipe(debounceTime(500)).pipe(switchMap(getRandomNameList));
     optionList$.subscribe(data => {
       this.optionList = data;

@@ -106,7 +106,7 @@ import { NzSelectTopControlComponent } from './nz-select-top-control.component';
         [nzMode]="nzMode"
         [nzListTemplateOfOption]="listOfTemplateOption"
         [nzListOfSelectedValue]="listOfSelectedValue"
-        (nzOnSearch)="onSearch($event)"
+        (nzOnSearch)="onSearch($event.value,$event.emit)"
         (nzListOfSelectedValueChange)="updateListOfSelectedValueFromTopControl($event)">
       </div>
       <span *ngIf="nzAllowClear" class="ant-select-selection__clear" nz-select-unselectable (click)="onClearSelection($event)"></span>
@@ -129,6 +129,8 @@ import { NzSelectTopControlComponent } from './nz-select-top-control.component';
           [listOfNzOptionGroupComponent]="listOfNzOptionGroupComponent"
           [nzSearchValue]="searchValue"
           [nzFilterOption]="nzFilterOption"
+          [nzServerSearch]="nzServerSearch"
+          [nzMaxMultipleLength]="nzMaxMultipleLength"
           [nzMode]="nzMode"
           (nzScrollToBottom)="nzScrollToBottom.emit()"
           (nzClickOption)="onClickOptionFromOptionContainer()"
@@ -181,9 +183,11 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Output() nzOnSearch = new EventEmitter<string>();
   @Output() nzScrollToBottom = new EventEmitter<void>();
   @Input() nzSize = 'default';
+  @Input() nzServerSearch = false;
   @Input() nzMode: 'default' | 'multiple' | 'tags' = 'default';
   @Input() nzDropdownMatchSelectWidth = true;
   @Input() nzFilterOption: TFilterOption = defaultFilterOption;
+  @Input() nzMaxMultipleLength = Infinity;
 
   @Input()
   set nzOpen(value: boolean) {
@@ -191,6 +195,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this.handleEscBug();
     this.updateCdkConnectedOverlayStatus();
     this.updateDropDownClassMap();
+    if (this.nzOpen) {
+      this.nzSelectTopControlComponent.focusOnInput();
+      this.nzSelectTopControlComponent.setInputValue('', true);
+    } else {
+      this.nzSelectTopControlComponent.setInputValue('', false);
+    }
   }
 
   get nzOpen(): boolean {
@@ -330,8 +340,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this.updateNgModel(value, modelValue);
   }
 
-  onSearch(value: string): void {
-    if (this.searchValue !== value) {
+  onSearch(value: string, emit: boolean): void {
+    if (emit && (this.searchValue !== value)) {
       this.nzOnSearch.emit(value);
       this.searchValue = value;
     }
