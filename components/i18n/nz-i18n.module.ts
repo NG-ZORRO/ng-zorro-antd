@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { LoggerModule } from '../core/util/logger/index';
@@ -13,6 +14,7 @@ import { NZ_I18N } from './nz-i18n.token';
   exports     : [ NzI18nPipe ],
   providers   : [
     { provide: NZ_I18N, useValue: zh_CN },
+    DatePipe,
     NZ_I18N_SERVICE_PROVIDER
   ]
 })

@@ -1,0 +1,72 @@
+<nz-calendar-header [fullscreen]="fullscreen" [activeDate]="activeDate"
+                    [(mode)]="nzMode" (modeChange)="onModeChange($event)"
+                    (yearChange)="onYearSelect($event)" (monthChange)="onMonthSelect($event)">
+</nz-calendar-header>
+
+<div class="ant-fullcalendar ant-fullcalendar-full" [ngClass]="fullscreen ? 'ant-fullcalendar-fullscreen' : ''">
+  <div class="ant-fullcalendar-calendar-body">
+    <ng-container *ngIf="nzMode === 'month' then monthModeTable else yearModeTable"></ng-container>
+  </div>
+</div>
+
+<ng-template #monthModeTable>
+  <table class="ant-fullcalendar-table" cellspacing="0" role="grid">
+    <thead>
+      <tr role="row">
+        <th *ngFor="let day of daysInWeek" class="ant-fullcalendar-column-header" role="columnheader" [title]="day.title">
+          <span class="ant-fullcalendar-column-header-inner">{{ day.label }}</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody class="ant-fullcalendar-tbody">
+      <tr *ngFor="let week of dateMatrix; index as row"
+          [class.ant-fullcalendar-current-week]="row === currentDateRow"
+          [class.ant-fullcalendar-active-week]="row === activeDateRow">
+        <td *ngFor="let day of week; index as col" role="gridcell" class="ant-fullcalendar-cell" [title]="day.title"
+            [class.ant-fullcalendar-today]="row === currentDateRow && col === currentDateCol"
+            [class.ant-fullcalendar-selected-day]="row === activeDateRow && col === activeDateCol"
+            [class.ant-fullcalendar-last-month-cell]="day.rel === 'last'"
+            [class.ant-fullcalendar-next-month-btn-day]="day.rel === 'next'"
+            (click)="onDateSelect(day.value, row, col)">
+            <div class="ant-fullcalendar-date">
+              <ng-container *ngIf="dateFullCell else defaultCell">
+                <ng-container *ngTemplateOutlet="dateFullCell; context: {$implicit: day.value}"></ng-container>
+              </ng-container>
+              <ng-template #defaultCell>
+                <div class="ant-fullcalendar-value">{{ day.label }}</div>
+                <div *ngIf="dateCell" class="ant-fullcalendar-content">
+                  <ng-container *ngTemplateOutlet="dateCell; context: {$implicit: day.value}"></ng-container>
+                </div>
+              </ng-template>
+            </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
+
+<ng-template #yearModeTable>
+  <table class="ant-fullcalendar-month-panel-table" cellspacing="0" role="grid">
+    <tbody class="ant-fullcalendar-month-panel-tbody">
+      <tr *ngFor="let row of [0, 1, 2, 3]" role="row">
+        <td *ngFor="let col of [0, 1, 2]" role="gridcell" [title]="monthsInYear[row * 3 + col].title"
+            class="ant-fullcalendar-month-panel-cell"
+            [class.ant-fullcalendar-month-panel-current-cell]="row === currentMonthRow && col === currentMonthCol"
+            [class.ant-fullcalendar-month-panel-selected-cell]="row === activeMonthRow && col === activeMonthCol"
+            (click)="onMonthSelect(row * 3 + col)">
+          <div class="ant-fullcalendar-month">
+            <ng-container *ngIf="monthFullCell else defaultCell">
+              <ng-container *ngTemplateOutlet="monthFullCell; context: {$implicit: monthsInYear[row * 3 + col].start}"></ng-container>
+            </ng-container>
+            <ng-template #defaultCell>
+              <div class="ant-fullcalendar-value">{{ monthsInYear[row * 3 + col].label }}</div>
+              <div *ngIf="monthCell" class="ant-fullcalendar-content">
+                <ng-container *ngTemplateOutlet="monthCell; context: {$implicit: monthsInYear[row * 3 + col].start}"></ng-container>
+              </div>
+            </ng-template>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
