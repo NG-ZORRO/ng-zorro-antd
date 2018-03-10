@@ -15,7 +15,7 @@ import { NzSelectComponent } from './nz-select.component';
 @NgModule({
   imports     : [ CommonModule, FormsModule, OverlayModule, NzI18nModule ],
   declarations: [ NzOptionPipe, NzSubOptionPipe, NzOptionComponent, NzSelectComponent, NzOptionContainerComponent, NzOptionGroupComponent, NzOptionLiComponent, NzSelectTopControlComponent, NzSelectUnselectableDirective ],
-  exports     : [ NzOptionComponent, NzSelectComponent, NzOptionContainerComponent, NzOptionGroupComponent ]
+  exports     : [ NzOptionComponent, NzSelectComponent, NzOptionContainerComponent, NzOptionGroupComponent, NzSelectTopControlComponent ]
 })
 export class NzSelectModule {
 }

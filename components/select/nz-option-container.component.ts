@@ -26,7 +26,7 @@ import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pi
       class="ant-select-dropdown-menu ant-select-dropdown-menu-root ant-select-dropdown-menu-vertical"
       role="menu"
       (keydown)="onKeyDownUl($event)"
-      (scroll)="dropDownScroll(dropdownUl)"
+      (scroll)="dropDownScroll($event,dropdownUl)"
       tabindex="0">
       <li
         *ngIf="isNotFoundDisplay"
@@ -45,7 +45,6 @@ import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pi
         nz-option-li
         [compareWith]="compareWith"
         *ngFor="let option of listOfNzOptionComponent | nzFilterOptionPipe : nzSearchValue : nzFilterOption : nzServerSearch "
-        (mouseover)="setActiveOption(option,false)"
         (click)="clickOption(option,false)"
         [nzActiveOption]="activatedOption"
         [nzOption]="option"
@@ -68,7 +67,6 @@ import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pi
             [compareWith]="compareWith"
             *ngFor="let option of group.listOfNzOptionComponent | nzFilterOptionPipe : nzSearchValue : nzFilterOption : nzServerSearch"
             (click)="clickOption(option,false)"
-            (mouseover)="setActiveOption(option,false)"
             [nzActiveOption]="activatedOption"
             [nzShowActive]="!isAddTagOptionDisplay"
             [nzOption]="option"
@@ -80,7 +78,6 @@ import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pi
         nz-option-li
         [compareWith]="compareWith"
         *ngFor="let option of listOfTagOption | nzFilterOptionPipe : nzSearchValue : nzFilterOption : nzServerSearch "
-        (mouseover)="setActiveOption(option)"
         (click)="clickOption(option,false)"
         [nzActiveOption]="activatedOption"
         [nzShowActive]="!isAddTagOptionDisplay"
@@ -327,7 +324,9 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
     this.isAddTagOptionDisplay = this.isTagsMode && this.nzSearchValue && (!isMatch);
   }
 
-  dropDownScroll(ul: HTMLUListElement): void {
+  dropDownScroll(e: MouseEvent, ul: HTMLUListElement): void {
+    e.preventDefault();
+    e.stopPropagation();
     if (ul && (ul.scrollHeight - ul.scrollTop === ul.clientHeight)) {
       this.nzScrollToBottom.emit();
     }

@@ -15,7 +15,7 @@ import { NzOptionComponent } from './nz-option.component';
     '[class.ant-select-dropdown-menu-item]'         : 'true',
     '[class.ant-select-dropdown-menu-item-selected]': 'selected && !nzOption.nzDisabled',
     '[class.ant-select-dropdown-menu-item-disabled]': 'nzOption.nzDisabled',
-    '[class.ant-select-dropdown-menu-item-active]'  : 'active && !nzOption.nzDisabled && nzShowActive',
+    '[class.ant-select-dropdown-menu-item-active]'  : 'active && !nzOption.nzDisabled && nzShowActive && !selected',
     '[attr.unselectable]'                           : '"unselectable"',
     '[style.user-select]'                           : '"none"'
   }
