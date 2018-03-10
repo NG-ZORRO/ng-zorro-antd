@@ -18,10 +18,12 @@ export class NzDemoPopconfirmDynamicTriggerComponent {
 
   cancel(): void {
     // this.message.info('click cancel');
+    console.log('click cancel');
   }
 
   confirm(): void {
     // this.message.info('click confirm');
+    console.log('click confirm');
   }
 
 }

@@ -46,9 +46,7 @@
         "./components/test.ts",
         "./components/core/**",
         "./components/i18n/**",
-        "./components/locale/**",
-        "./components/**/demo/**",
-        "./components/tooltip/**"
+        "./components/**/demo/**"
       ]
     }
   },

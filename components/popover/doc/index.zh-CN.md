@@ -17,10 +17,10 @@ title: Popover
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| content | 卡片内容 | string | ReactNode | 无 |
-| title | 卡片标题 | string | ReactNode | 无 |
+| nzTitle | 卡片标题 | string | ReactNode | 无 |
+| nzTemplate | 用于定义Content内容（不会覆盖nzTitle） | ng-template | 无 |
 
-更多属性请参考 [Tooltip](/components/tooltip/#API)。
+更多属性请参考 [Tooltip](/components/tooltip/zh#api)。
 
 ## 注意
 

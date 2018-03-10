@@ -38,6 +38,17 @@ export class SliderHandle {
   active: boolean;
 }
 
+interface MouseTouchObserverConfig {
+  start: string;
+  move: string;
+  end: string;
+  pluckKey: string[];
+  filter?(e: Event): boolean;
+  startPlucked$?: Observable<number>;
+  end$?: Observable<number>;
+  moveResolved$?: Observable<number>;
+}
+
 @Component({
   selector     : 'nz-slider',
   preserveWhitespaces: false,
@@ -46,45 +57,7 @@ export class SliderHandle {
     useExisting: forwardRef(() => NzSliderComponent),
     multi      : true
   } ],
-  template     : `
-    <div #slider [ngClass]="classMap">
-      <div class="ant-slider-rail"></div>
-      <nz-slider-track
-        nzClassName="{{prefixCls}}-track"
-        [nzVertical]="nzVertical"
-        [nzIncluded]="nzIncluded"
-        [nzOffset]="track.offset"
-        [nzLength]="track.length"
-      ></nz-slider-track>
-      <nz-slider-step *ngIf="marksArray"
-        nzPrefixCls="{{prefixCls}}"
-        [nzVertical]="nzVertical"
-        [nzLowerBound]="bounds.lower"
-        [nzUpperBound]="bounds.upper"
-        [nzMarksArray]="marksArray"
-        [nzIncluded]="nzIncluded"
-      ></nz-slider-step>
-      <nz-slider-handle
-        *ngFor="let handle of handles;"
-        nzClassName="{{prefixCls}}-handle"
-        [nzVertical]="nzVertical"
-        [nzOffset]="handle.offset"
-        [nzValue]="handle.value"
-        [nzActive]="handle.active"
-        [nzTipFormatter]="nzTipFormatter"
-      ></nz-slider-handle>
-      <nz-slider-marks *ngIf="marksArray"
-        nzClassName="{{prefixCls}}-mark"
-        [nzVertical]="nzVertical"
-        [nzMin]="nzMin"
-        [nzMax]="nzMax"
-        [nzLowerBound]="bounds.lower"
-        [nzUpperBound]="bounds.upper"
-        [nzMarksArray]="marksArray"
-        [nzIncluded]="nzIncluded"
-      ></nz-slider-marks>
-    </div>
-  `
+  templateUrl  : './nz-slider.component.html'
 })
 export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
 
@@ -166,6 +139,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   marksArray: Marks[]; // "marks" in array type with more data & FILTER out the invalid mark
   bounds = { lower: null, upper: null }; // now for nz-slider-step
   onValueChange: (value: SliderValue) => void; // Used by ngModel. BUG: onValueChange() will not success to effect the "value" variable ( [(ngModel)]="value" ) when the first initializing, except using "nextTick" functionality (MAY angular2's problem ?)
+  onTouched: () => void = () => {}; // onTouch function registered via registerOnTouch (ControlValueAccessor).
   isDragging = false; // Current dragging state
 
   // Events observables & subscriptions
@@ -236,7 +210,9 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     this.onValueChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void { }
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
@@ -272,12 +248,14 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzDisabled, nzMarks } = changes;
+    const { nzDisabled, nzMarks, nzRange } = changes;
     if (nzDisabled && !nzDisabled.firstChange) {
       this.toggleDragDisabled(nzDisabled.currentValue);
       this.setClassMap();
     } else if (nzMarks && !nzMarks.firstChange) {
       this.marksArray = this.nzMarks ? this.toMarksArray(this.nzMarks) : null;
+    } else if (nzRange && !nzRange.firstChange) {
+      this.setValue(this.formatValue(null)); // Change to default value when nzRange changed
     }
   }
 
@@ -391,22 +369,18 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   createDrag(): void {
     const sliderDOM   = this.sliderDOM;
     const orientField = this.nzVertical ? 'pageY' : 'pageX';
-    // TODO: using named interface
-    const mouse  = {
+    const mouse: MouseTouchObserverConfig = {
       start: 'mousedown', move: 'mousemove', end: 'mouseup',
-      pluckKey                                  : [ orientField ]
-    } as { start: string, move: string, end: string, pluckKey: string[], filter(e: Event): boolean, startPlucked$: Observable<number>, end$: Observable<number>, moveResolved$: Observable<number> } ;
-    const touch = {
+      pluckKey: [ orientField ]
+    };
+    const touch: MouseTouchObserverConfig = {
       start: 'touchstart', move: 'touchmove', end: 'touchend',
-      pluckKey                                   : [ 'touches', '0', orientField ],
-      filter                                     : (e: MouseEvent | TouchEvent) => !this.utils.isNotTouchEvent(e as TouchEvent)
-    } as { start: string, move: string, end: string, pluckKey: string[], filter(e: Event): boolean, startPlucked$: Observable<number>, end$: Observable<number>, moveResolved$: Observable<number> } ;
+      pluckKey: [ 'touches', '0', orientField ],
+      filter: (e: MouseEvent | TouchEvent) => !this.utils.isNotTouchEvent(e as TouchEvent)
+    };
     // make observables
     [ mouse, touch ].forEach(source => {
-      // TODO: remove any
-      // TODO: filterFunc doesn't match filter in touch, should be checked
-      /* tslint:disable-next-line:no-any */
-      const { start, move, end, pluckKey, filterFunc = (() => true) } = source as any;
+      const { start, move, end, pluckKey, filter: filterFunc = (() => true) } = source;
       // start
       source.startPlucked$ = fromEvent(sliderDOM, start).pipe(
         filter(filterFunc),

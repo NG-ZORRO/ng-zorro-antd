@@ -17,47 +17,63 @@ used in the following cases:
   about upcoming steps the user may have to follow.
 - A notification that is pushed by the application.
 
-## API
+## How To Use
 
-- `notification.success(config)`
-- `notification.error(config)`
-- `notification.info(config)`
-- `notification.warning(config)`
-- `notification.warn(config)`
-- `notification.close(key: String)`
-- `notification.destroy()`
+Similar to `NzMessage`, if you want to modify the global default configuration, you can modify the value of provider `NZ_NOTIFICATION_CONFIG`.
+(Example: Add `{ provide: NZ_NOTIFICATION_CONFIG, useValue: { nzDuration: 3000 }}` to `providers` of your module, `NZ_MESSAGE_CONFIG` can be imported from `ng-zorro-antd`)
 
-The properties of config are as follows:
-
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| btn | Customized close button | ReactNode | - |
-| className | Customized CSS class | string | - |
-| description | The content of notification box (required) | string｜ReactNode | - |
-| duration | Time in seconds before Notification is closed. When set to 0 or null, it will never be closed automatically | number | 4.5 |
-| icon | Customized icon | ReactNode | - |
-| key | The unique identifier of the Notification | string | - |
-| message | The title of notification box (required) | string｜ReactNode | - |
-| placement | Position of Notification, can be one of `topLeft` `topRight` `bottomLeft` `bottomRight` | string | `topRight` |
-| style | Customized inline style | [React.CSSProperties](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/e434515761b36830c3e58a970abf5186f005adac/types/react/index.d.ts#L794) | - |
-| onClose | Specify a function that will be called when the close button is clicked | Function | - |
-
-`notification` also provides a global `config()` method that can be used for specifying the default options. Once this method is used, all the notification boxes will take into account these globally defined options when displaying.
-
-- `notification.config(options)`
-
+The default global configuration is:
 ```js
-notification.config({
-  placement: 'bottomRight',
-  bottom: 50,
-  duration: 3,
-});
+{
+  nzTop         : '24px',
+  nzBottom      : '24px',
+  nzPlacement   : 'topRight',
+  nzDuration    : 4500,
+  nzMaxStack    : 7,
+  nzPauseOnHover: true,
+  nzAnimate     : true
+ }
 ```
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| bottom | Distance from the bottom of the viewport, when `placement` is `bottomRight` or `bottomLeft` (unit: pixels). | number | 24 |
-| duration | Time in seconds before Notification is closed. When set to 0 or null, it will never be closed automatically | number | 4.5 |
-| getContainer | Return the mount node for Notification | () => HTMLNode | () => document.body |
-| placement | Position of Notification, can be one of `topLeft` `topRight` `bottomLeft` `bottomRight` | string | `topRight` |
-| top | Distance from the top of the viewport, when `placement` is `topRight` or `topLeft` (unit: pixels). | number | 24 |
+## API
+
+The component provides a number of service methods using the following methods and parameters:
+
+- `NzNotificationService.blank(title, content, [options])` // Notification without icon
+- `NzNotificationService.success(title, content, [options])`
+- `NzNotificationService.error(title, content, [options])`
+- `NzNotificationService.info(title, content, [options])`
+- `NzNotificationService.warning(title, content, [options])`
+- `NzNotificationService.loading(title, content, [options])`
+
+| Argument | Description | Type | Default |
+| --- | --- | --- | --- |
+| title | Title | string | - |
+| content | Notification content | string | - |
+| options | Support setting the parameters for the current notification box, see the table below | object | - |
+
+The parameters that are set by the `options` support are as follows:
+
+| Argument | Description | Type |
+| --- | --- | --- |
+| nzDuration | Duration (milliseconds), does not disappear when set to 0 | number |
+| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | boolean |
+| nzAnimate | Whether to turn on animation | boolean |
+| nzStyle | Custom inline style | object |
+| nzClass | Custom CSS class | object |
+
+Methods for destruction are also provided:
+
+- `NzNotificationService.remove(id)` // Remove the notification with the specified id. When the id is empty, remove all notifications (the notification id is returned by the above method)
+
+### Global configuration (NZ_MESSAGE_CONFIG)
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| nzDuration | Duration (milliseconds), does not disappear when set to 0 | number | 4500 |
+| nzMaxStack | The maximum number of notifications that can be displayed at the same time | number | 8 |
+| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | boolean | true |
+| nzAnimate | Whether to turn on animation | boolean | true |
+| nzTop | The top of the notification when it pops up from the top. | string | 24px |
+| nzBottom | The bottom of the notification when it pops up from the bottom. | string | 24px |
+| nzPlacement | Popup position, optional `topLeft` `topRight` `bottomLeft` `bottomRight` | string | `topRight` |

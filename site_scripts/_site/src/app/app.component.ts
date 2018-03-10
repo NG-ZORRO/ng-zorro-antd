@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
-import { enUS, zhCN, NzLocaleService } from 'ng-zorro-antd';
 import { en_US, zh_CN, NzI18nService } from 'ng-zorro-antd';
 import { ROUTER_LIST } from './router';
 import { environment } from '../environments/environment';
@@ -27,7 +26,7 @@ export class AppComponent implements OnInit {
     this.router.navigateByUrl(url.join('/') + '/' + language);
   }
 
-  constructor(private router: Router, private title: Title, private localeService: NzLocaleService, private nzI18nService: NzI18nService) {
+  constructor(private router: Router, private title: Title, private nzI18nService: NzI18nService) {
 
   }
 
@@ -64,7 +63,6 @@ export class AppComponent implements OnInit {
           this.searchComponent = null;
         }
         this.language = this.router.url.split('/')[ this.router.url.split('/').length - 1 ].split('#')[ 0 ];
-        this.localeService.setLocale(this.language === 'en' ? enUS : zhCN);
         this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
         if (environment.production && (this.router.url.indexOf('#') < -1)) {
           window.scrollTo(0, 0);
