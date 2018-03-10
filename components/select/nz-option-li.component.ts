@@ -13,11 +13,10 @@ import { NzOptionComponent } from './nz-option.component';
   `,
   host    : {
     '[class.ant-select-dropdown-menu-item]'         : 'true',
-    '[class.ant-select-dropdown-menu-item-selected]': 'selected',
+    '[class.ant-select-dropdown-menu-item-selected]': 'selected && !nzOption.nzDisabled',
     '[class.ant-select-dropdown-menu-item-disabled]': 'nzOption.nzDisabled',
     '[class.ant-select-dropdown-menu-item-active]'  : 'active && !nzOption.nzDisabled && nzShowActive',
     '[attr.unselectable]'                           : '"unselectable"',
-    '[attr.role]'                                   : '"menuitem"',
     '[style.user-select]'                           : '"none"'
   }
 })
@@ -33,7 +32,7 @@ export class NzOptionLiComponent {
   @Input()
   set nzActiveOption(value: NzOptionComponent) {
     if (value) {
-      this.active = value === this.nzOption;
+      this.active = this.compareWith(value.nzValue, this.nzOption.nzValue);
     } else {
       this.active = false;
     }

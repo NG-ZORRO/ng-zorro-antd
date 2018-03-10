@@ -22,17 +22,63 @@ describe('select option li', () => {
       testComponent = fixture.debugElement.componentInstance;
       li = fixture.debugElement.query(By.directive(NzOptionLiComponent));
     });
+    it('should class and style correct', () => {
+      fixture.detectChanges();
+      const element = li.nativeElement;
+      expect(element.classList).toContain('ant-select-dropdown-menu-item');
+      expect(element.attributes.getNamedItem('unselectable').name).toBe('unselectable');
+      expect(element.style.userSelect).toBe('none');
+    });
+    it('should disabled work', () => {
+      testComponent.option.nzDisabled = true;
+      fixture.detectChanges();
+      expect(li.nativeElement.classList).toContain('ant-select-dropdown-menu-item-disabled');
+    });
+    it('should selected work', () => {
+      testComponent.option.nzValue = { value: 'test' };
+      testComponent.listOfSelectedValue = [ { value: 'test' } ];
+      fixture.detectChanges();
+      expect(li.nativeElement.classList).toContain('ant-select-dropdown-menu-item-selected');
+    });
+    it('should activeOption null work', () => {
+      testComponent.option.nzValue = { value: 'test' };
+      testComponent.activeOption = null;
+      fixture.detectChanges();
+      expect(li.nativeElement.classList).not.toContain('ant-select-dropdown-menu-item-active');
+    });
+    it('should activeOption set work', () => {
+      testComponent.option.nzValue = { value: 'test' };
+      testComponent.activeOption.nzValue = { value: 'test' };
+      fixture.detectChanges();
+      expect(li.nativeElement.classList).toContain('ant-select-dropdown-menu-item-active');
+    });
+    it('should nzShowActive work', () => {
+      testComponent.option.nzValue = { value: 'test' };
+      testComponent.activeOption.nzValue = { value: 'test' };
+      testComponent.showActive = false;
+      fixture.detectChanges();
+      expect(li.nativeElement.classList).not.toContain('ant-select-dropdown-menu-item-active');
+    });
   });
 });
 
 @Component({
   selector: 'nz-test-select-option-li',
   template: `
-    <li nz-option-li [nzOption]="option" [nzListOfSelectedValue]="listOfSelectedValue" [nzShowActive]="showActive" [nzActiveOption]="activeOption"></li>`
+    <li
+      nz-option-li
+      [compareWith]="compareFn"
+      [nzOption]="option"
+      [nzListOfSelectedValue]="listOfSelectedValue"
+      [nzShowActive]="showActive"
+      [nzActiveOption]="activeOption">
+    </li>`
 })
 export class NzTestSelectOptionLiComponent {
   option = new NzOptionComponent();
   showActive = true;
   listOfSelectedValue = [];
   activeOption = new NzOptionComponent();
+  // tslint:disable-next-line:no-any
+  compareFn = (o1: any, o2: any) => o1 && o2 ? o1.value === o2.value : o1 === o2;
 }

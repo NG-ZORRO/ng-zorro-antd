@@ -170,12 +170,16 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
         const nextIndex = activeIndex < this.listOfFilterOption.length - 1 ? (activeIndex + 1) : 0;
         this.setActiveOption(this.listOfFilterOption[ nextIndex ]);
       } else if (e.keyCode === 13) {
-        this.nzClickOption.emit();
         // enter
-        if (!this.isAddTagOptionDisplay) {
-          this.updateSelectedOption(this.activatedOption, true);
+        if (this.isTagsMode) {
+          if (!this.isAddTagOptionDisplay) {
+            this.clickOption(this.activatedOption, true);
+          } else {
+            this.addTagOption();
+            this.nzClickOption.emit();
+          }
         } else {
-          this.addTagOption();
+          this.clickOption(this.activatedOption, true);
         }
       }
     }
