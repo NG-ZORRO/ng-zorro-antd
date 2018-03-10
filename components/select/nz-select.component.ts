@@ -196,10 +196,20 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this.updateCdkConnectedOverlayStatus();
     this.updateDropDownClassMap();
     if (this.nzOpen) {
-      this.nzSelectTopControlComponent.focusOnInput();
-      this.nzSelectTopControlComponent.setInputValue('', true);
+      if (this.nzSelectTopControlComponent) {
+        this.nzSelectTopControlComponent.focusOnInput();
+        this.nzSelectTopControlComponent.setInputValue('', true);
+      }
+      if (this.nzOptionContainerComponent) {
+        this.nzOptionContainerComponent.scrollIntoView();
+      }
     } else {
-      this.nzSelectTopControlComponent.setInputValue('', false);
+      if (this.nzSelectTopControlComponent) {
+        this.nzSelectTopControlComponent.setInputValue('', false);
+      }
+      if (this.nzOptionContainerComponent) {
+        this.nzOptionContainerComponent.resetActiveOption();
+      }
     }
   }
 

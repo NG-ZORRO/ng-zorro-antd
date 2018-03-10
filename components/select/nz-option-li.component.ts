@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ElementRef } from '@angular/core';
 import { NzOptionComponent } from './nz-option.component';
 
 @Component({
@@ -22,6 +22,7 @@ import { NzOptionComponent } from './nz-option.component';
   }
 })
 export class NzOptionLiComponent {
+  el: Element;
   selected = false;
   active = false;
   @Input() nzOption: NzOptionComponent;
@@ -40,5 +41,9 @@ export class NzOptionLiComponent {
   // tslint:disable-next-line:no-any
   set nzListOfSelectedValue(value: any[]) {
     this.selected = value.indexOf(this.nzOption.nzValue) > -1;
+  }
+
+  constructor(private elementRef: ElementRef) {
+    this.el = elementRef.nativeElement;
   }
 }

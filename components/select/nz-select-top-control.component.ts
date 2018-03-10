@@ -5,10 +5,7 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import {
-  ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, Renderer2,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, Renderer2, ViewChild } from '@angular/core';
 import { NzOptionComponent } from './nz-option.component';
 
 @Component({
@@ -247,7 +244,7 @@ export class NzSelectTopControlComponent {
     }
   }
 
-  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {
+  constructor(private renderer: Renderer2) {
 
   }
 }
