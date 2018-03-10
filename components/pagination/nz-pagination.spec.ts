@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzPaginationComponent } from './nz-pagination.component';
 import { NzPaginationModule } from './nz-pagination.module';
 
@@ -9,7 +10,7 @@ describe('pagination', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzPaginationModule ],
+      imports     : [ NzPaginationModule, NoopAnimationsModule ],
       declarations: [ NzTestPaginationComponent, NzTestPaginationRenderComponent, NzTestPaginationTotalComponent ]
     });
     TestBed.compileComponents();
@@ -58,7 +59,7 @@ describe('pagination', () => {
         const length = paginationElement.children.length;
         const array = Array.prototype.slice.call(paginationElement.children).slice(1, length - 1);
         expect(array[ 0 ].classList.contains('ant-pagination-item-active')).toBe(true);
-        array[0].click();
+        array[ 0 ].click();
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
       });
@@ -141,20 +142,15 @@ describe('pagination', () => {
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(paginationElement.children.length).toBe(9);
       });
-      it('should showSizeChanger work', fakeAsync(() => {
+      it('should showSizeChanger work', async(() => {
         testComponent.total = 500;
-        fixture.detectChanges();
         testComponent.pageIndex = 50;
-        fixture.detectChanges();
         testComponent.showSizeChanger = true;
-        tick();
         fixture.detectChanges();
-        tick();
-        expect(paginationElement.children.length).toBe(10);
-        expect(paginationElement.lastElementChild.classList.contains('ant-pagination-options')).toBe(true);
-        fixture.detectChanges();
-        tick();
-        expect(paginationElement.querySelector('.ant-select-selection-selected-value').innerText).toBe('10条/页');
+        fixture.whenStable().then(() => {
+          expect(paginationElement.children.length).toBe(12);
+          expect(paginationElement.lastElementChild.classList.contains('ant-pagination-options')).toBe(true);
+        });
       }));
       it('should change pageSize correct', () => {
         testComponent.pageIndex = 5;
