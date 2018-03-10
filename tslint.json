@@ -49,7 +49,7 @@
       true,
       "check-space"
     ],
-    "curly": true,
+    "curly": [true, "ignore-same-line"],
     "encoding": true,
     "eofline": true,
     "import-blacklist": [
@@ -172,7 +172,7 @@
     "trailing-comma": [
       true,
       {
-        "multiline": "never",
+        "multiline": "ignore",
         "singleline": "never"
       }
     ],
