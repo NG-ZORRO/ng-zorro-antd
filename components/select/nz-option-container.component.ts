@@ -32,7 +32,7 @@ import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pi
         *ngIf="isNotFoundDisplay"
         nz-select-unselectable
         class="ant-select-dropdown-menu-item ant-select-dropdown-menu-item-disabled">
-        Not Found
+        {{ nzNotFoundContent? nzNotFoundContent:('Select.notFoundContent' | nzI18n) }}
       </li>
       <li
         *ngIf="isAddTagOptionDisplay"
@@ -110,7 +110,9 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   @Input() nzMode = 'default';
   @Input() nzServerSearch = false;
   @Input() nzFilterOption: TFilterOption = defaultFilterOption;
-  @Input() nzMaxMultipleLength = Infinity;
+  @Input() nzMaxMultipleCount = Infinity;
+  @Input() nzNotFoundContent: string;
+
 
   @Input()
   set nzSearchValue(value: string) {
@@ -140,7 +142,7 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   }
 
   addTagOption(): void {
-    if (this.nzListOfSelectedValue.length < this.nzMaxMultipleLength) {
+    if (this.nzListOfSelectedValue.length < this.nzMaxMultipleCount) {
       this.nzListOfSelectedValue = [ ...this.nzListOfSelectedValue, this.nzSearchValue ];
       this.nzListOfSelectedValueChange.emit(this.nzListOfSelectedValue);
     }
@@ -214,7 +216,7 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
             listOfSelectedValue.splice(listOfSelectedValue.indexOf(option.nzValue), 1);
             changed = true;
           }
-        } else if (this.nzListOfSelectedValue.length < this.nzMaxMultipleLength) {
+        } else if (this.nzListOfSelectedValue.length < this.nzMaxMultipleCount) {
           listOfSelectedValue.push(option.nzValue);
           changed = true;
         }
