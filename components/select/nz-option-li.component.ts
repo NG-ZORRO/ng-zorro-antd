@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 import { NzOptionComponent } from './nz-option.component';
 
 @Component({
@@ -27,6 +27,8 @@ export class NzOptionLiComponent {
   active = false;
   @Input() nzOption: NzOptionComponent;
   @Input() nzShowActive = true;
+  // tslint:disable-next-line:no-any
+  @Input() compareWith = (o1: any, o2: any) => o1 === o2;
 
   @Input()
   set nzActiveOption(value: NzOptionComponent) {
@@ -39,8 +41,8 @@ export class NzOptionLiComponent {
 
   @Input()
   // tslint:disable-next-line:no-any
-  set nzListOfSelectedValue(value: any[]) {
-    this.selected = value.indexOf(this.nzOption.nzValue) > -1;
+  set nzListOfSelectedValue(valueList: any[]) {
+    this.selected = valueList.find(v => this.compareWith(v, this.nzOption.nzValue));
   }
 
   constructor(private elementRef: ElementRef) {

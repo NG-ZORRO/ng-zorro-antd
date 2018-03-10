@@ -48,7 +48,6 @@
         "./components/i18n/**",
         "./components/locale/**",
         "./components/**/demo/**",
-        "./components/select/**",
         "./components/tooltip/**"
       ]
     }

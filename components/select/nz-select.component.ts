@@ -100,6 +100,7 @@ import { NzSelectTopControlComponent } from './nz-select-top-control.component';
       <div
         nz-select-top-control
         [nzOpen]="nzOpen"
+        [compareWith]="compareWith"
         [nzPlaceHolder]="nzPlaceHolder"
         [nzShowSearch]="nzShowSearch"
         [nzDisabled]="nzDisabled"
@@ -130,6 +131,7 @@ import { NzSelectTopControlComponent } from './nz-select-top-control.component';
           [nzSearchValue]="searchValue"
           [nzFilterOption]="nzFilterOption"
           [nzServerSearch]="nzServerSearch"
+          [compareWith]="compareWith"
           [nzNotFoundContent]="nzNotFoundContent"
           [nzMaxMultipleCount]="nzMaxMultipleCount"
           [nzMode]="nzMode"
@@ -194,6 +196,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() nzMaxMultipleCount = Infinity;
   @Input() nzDropdownStyle: { [key: string]: string; };
   @Input() nzNotFoundContent: string;
+  // tslint:disable-next-line:no-any
+  @Input() compareWith = (o1: any, o2: any) => o1 === o2;
 
   @Input()
   set nzDropdownClassName(value: string) {
@@ -333,6 +337,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   onClickOptionFromOptionContainer(): void {
     if (this.isSingleMode) {
       this.closeDropDown();
+    } else if (this.nzMode === 'tags') {
+      this.onSearch('', true);
     }
   }
 

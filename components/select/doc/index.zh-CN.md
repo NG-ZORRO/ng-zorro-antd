@@ -26,6 +26,7 @@ title: Select
 | --- | --- | --- | --- |
 | ngModel | 当前选中的 nz-option 的 nzValue 值，可双向绑定，当 `nzMode` 为 `multiple` 或 `tags` 时，ngModel 为数组 | `any 丨 any[]` | - |
 | ngModelChange | 选中的 nz-option 发生变化时，调用此函数 | (ngModel:`any 丨 any[]`)=>{} | - |
+| compareWith | 与 [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection) 相同 | (o1: any, o2: any) => boolean | (o1: any, o2: any) => o1===o2 |
 | nzAllowClear | 支持清除 | boolean | false |
 | nzAutoFocus | 默认获取焦点 | boolean | false |
 | nzDisabled | 是否禁用 | boolean | false |

@@ -107,6 +107,8 @@ export class NzSelectTopControlComponent {
   @Input() nzListTemplateOfOption: NzOptionComponent[] = [];
   @Input() nzPlaceHolder: string;
   @Input() nzOpen = false;
+  // tslint:disable-next-line:no-any
+  @Input() compareWith = (o1: any, o2: any) => o1 === o2;
 
   @Input()
   // tslint:disable-next-line:no-any
@@ -123,14 +125,14 @@ export class NzSelectTopControlComponent {
   /** cached selected option list **/
   updateListOfCachedOption(): void {
     if (this.isSingleMode) {
-      const selectedOption = this.nzListTemplateOfOption.find(o => o.nzValue === this.nzListOfSelectedValue[ 0 ]);
+      const selectedOption = this.nzListTemplateOfOption.find(o => this.compareWith(o.nzValue, this.nzListOfSelectedValue[ 0 ]));
       if (selectedOption) {
         this.listOfCachedSelectedOption = [ selectedOption ];
       }
     } else {
-      const listOfCachedOptionFromLatestTemplate = this.nzListTemplateOfOption.filter(o => this.nzListOfSelectedValue.indexOf(o.nzValue) > -1);
-      const restSelectedValue = this.nzListOfSelectedValue.filter(v => listOfCachedOptionFromLatestTemplate.map(o => o.nzValue).indexOf(v) === -1);
-      const listOfCachedOptionFromOld = this.listOfCachedSelectedOption.filter(o => restSelectedValue.indexOf(o.nzValue) > -1);
+      const listOfCachedOptionFromLatestTemplate = this.nzListTemplateOfOption.filter(o => !!this.nzListOfSelectedValue.find(v => this.compareWith(v, o.nzValue)));
+      const restSelectedValue = this.nzListOfSelectedValue.filter(v => !listOfCachedOptionFromLatestTemplate.find(o => this.compareWith(o.nzValue, v)));
+      const listOfCachedOptionFromOld = this.listOfCachedSelectedOption.filter(o => restSelectedValue.find(v => this.compareWith(o.nzValue, v)));
       this.listOfCachedSelectedOption = listOfCachedOptionFromLatestTemplate.concat(listOfCachedOptionFromOld);
     }
   }
@@ -192,7 +194,7 @@ export class NzSelectTopControlComponent {
 
   // tslint:disable-next-line:no-any
   getPropertyFromValue(value: any, prop: string): string {
-    const targetOption = this.listOfCachedSelectedOption.find(item => item.nzValue === value);
+    const targetOption = this.listOfCachedSelectedOption.find(item => this.compareWith(item.nzValue, value));
     return targetOption ? targetOption[ prop ] : '';
   }
 

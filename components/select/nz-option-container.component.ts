@@ -32,7 +32,7 @@ import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pi
         *ngIf="isNotFoundDisplay"
         nz-select-unselectable
         class="ant-select-dropdown-menu-item ant-select-dropdown-menu-item-disabled">
-        {{ nzNotFoundContent? nzNotFoundContent:('Select.notFoundContent' | nzI18n) }}
+        {{ nzNotFoundContent ? nzNotFoundContent : ('Select.notFoundContent' | nzI18n) }}
       </li>
       <li
         *ngIf="isAddTagOptionDisplay"
@@ -43,6 +43,7 @@ import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pi
       </li>
       <li
         nz-option-li
+        [compareWith]="compareWith"
         *ngFor="let option of listOfNzOptionComponent | nzFilterOptionPipe : nzSearchValue : nzFilterOption : nzServerSearch "
         (mouseover)="setActiveOption(option,false)"
         (click)="clickOption(option,false)"
@@ -64,6 +65,7 @@ import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pi
         <ul class="ant-select-dropdown-menu-item-group-list">
           <li
             nz-option-li
+            [compareWith]="compareWith"
             *ngFor="let option of group.listOfNzOptionComponent | nzFilterOptionPipe : nzSearchValue : nzFilterOption : nzServerSearch"
             (click)="clickOption(option,false)"
             (mouseover)="setActiveOption(option,false)"
@@ -76,6 +78,7 @@ import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pi
       </li>
       <li
         nz-option-li
+        [compareWith]="compareWith"
         *ngFor="let option of listOfTagOption | nzFilterOptionPipe : nzSearchValue : nzFilterOption : nzServerSearch "
         (mouseover)="setActiveOption(option)"
         (click)="clickOption(option,false)"
@@ -112,7 +115,8 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   @Input() nzFilterOption: TFilterOption = defaultFilterOption;
   @Input() nzMaxMultipleCount = Infinity;
   @Input() nzNotFoundContent: string;
-
+  // tslint:disable-next-line:no-any
+  @Input() compareWith = (o1: any, o2: any) => o1 === o2;
 
   @Input()
   set nzSearchValue(value: string) {
@@ -178,7 +182,7 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   }
 
   resetActiveOption(): void {
-    const firstActiveOption = this.listOfAllTemplateOption.concat(this.listOfTagOption).find(item => item.nzValue === this.nzListOfSelectedValue[ 0 ]);
+    const firstActiveOption = this.listOfAllTemplateOption.concat(this.listOfTagOption).find(item => this.compareWith(item.nzValue, this.nzListOfSelectedValue[ 0 ]));
     this.setActiveOption(firstActiveOption);
   }
 
@@ -209,18 +213,18 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
       this.setActiveOption(option);
       let listOfSelectedValue = [ ...this.nzListOfSelectedValue ];
       if (this.isMultipleOrTags) {
-        const targetOption = listOfSelectedValue.find(o => o === option.nzValue);
-        if (targetOption) {
+        const targetValue = listOfSelectedValue.find(o => this.compareWith(o, option.nzValue));
+        if (targetValue) {
           if (!isPressEnter) {
             /** should not toggle option when press enter **/
-            listOfSelectedValue.splice(listOfSelectedValue.indexOf(option.nzValue), 1);
+            listOfSelectedValue.splice(listOfSelectedValue.indexOf(targetValue), 1);
             changed = true;
           }
         } else if (this.nzListOfSelectedValue.length < this.nzMaxMultipleCount) {
           listOfSelectedValue.push(option.nzValue);
           changed = true;
         }
-      } else if (listOfSelectedValue[ 0 ] !== option.nzValue) {
+      } else if (!this.compareWith(listOfSelectedValue[ 0 ], option.nzValue)) {
         listOfSelectedValue = [ option.nzValue ];
         changed = true;
       }
@@ -240,7 +244,8 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
       /** refresh tags option **/
       const listOfTagsOption = [];
       this.nzListOfSelectedValue.forEach(value => {
-        if (this.listOfAllTemplateOption.map(item => item.nzValue).indexOf(value) === -1) {
+        const existedOption = this.listOfAllTemplateOption.find(o => this.compareWith(o, value));
+        if (existedOption) {
           const nzOptionComponent = new NzOptionComponent();
           nzOptionComponent.nzValue = value;
           nzOptionComponent.nzLabel = value;
