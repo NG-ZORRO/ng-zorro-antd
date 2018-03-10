@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Inject, Injectable, Optional, Provider, SkipSelf } from '@angular/core';
 
 import { LoggerService } from '../core/util/logger/index';
@@ -9,7 +10,7 @@ import { NZ_I18N } from './nz-i18n.token';
 export class NzI18nService {
   private _locale: NzI18nInterface;
 
-  constructor(@Inject(NZ_I18N) locale: NzI18nInterface, private _logger: LoggerService) {
+  constructor(@Inject(NZ_I18N) locale: NzI18nInterface, private _logger: LoggerService, private datePipe: DatePipe) {
     this.setLocale(locale);
   }
 
@@ -41,6 +42,10 @@ export class NzI18nService {
     return this._locale;
   }
 
+  formatDate(date: Date, format: string): string {
+    return this.datePipe.transform(date, format, null, this.getLocale().locale);
+  }
+
   private _getObjectPath(obj: object, path: string): string | object {
     let res = obj;
     const paths = path.split('.');
@@ -53,12 +58,12 @@ export class NzI18nService {
   }
 }
 
-export function NZ_LOCALE_SERVICE_PROVIDER_FACTORY(exist: NzI18nService, locale: NzI18nInterface, logger: LoggerService): NzI18nService {
-  return exist || new NzI18nService(locale, logger);
+export function NZ_LOCALE_SERVICE_PROVIDER_FACTORY(exist: NzI18nService, locale: NzI18nInterface, logger: LoggerService, datePipe: DatePipe): NzI18nService {
+  return exist || new NzI18nService(locale, logger, datePipe);
 }
 
 export const NZ_I18N_SERVICE_PROVIDER: Provider = {
   provide   : NzI18nService,
   useFactory: NZ_LOCALE_SERVICE_PROVIDER_FACTORY,
-  deps      : [ [ new Optional(), new SkipSelf(), NzI18nService ], NZ_I18N, LoggerService ]
+  deps      : [ [ new Optional(), new SkipSelf(), NzI18nService ], NZ_I18N, LoggerService, DatePipe ]
 };

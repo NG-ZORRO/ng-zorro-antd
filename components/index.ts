@@ -7,6 +7,7 @@ import { NzAvatarModule } from './avatar';
 import { NzBadgeModule } from './badge';
 import { NzBreadCrumbModule } from './breadcrumb';
 import { NzButtonModule } from './button';
+import { NzCalendarModule } from './calendar';
 import { NzCardModule } from './card';
 import { NzCarouselModule } from './carousel';
 import { NzCheckboxModule } from './checkbox';
@@ -79,6 +80,7 @@ export * from './modal/public-api';
 @NgModule({
   exports: [
     NzButtonModule,
+    NzCalendarModule,
     NzGridModule,
     NzSwitchModule,
     NzSelectModule,
