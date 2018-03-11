@@ -31,8 +31,8 @@ import { NzOptionComponent } from './nz-option.component';
         #inputElement
         autocomplete="off"
         class="ant-select-search__field"
-        (compositionstart)="compositionStart()"
-        (compositionend)="compositionEnd()"
+        (compositionstart)="isComposing = true"
+        (compositionend)="isComposing = false"
         (input)="updateWidth()"
         (keydown)="onKeyDownInput($event)"
         [ngModel]="inputValue"
@@ -210,14 +210,6 @@ export class NzSelectTopControlComponent {
     }
     this._listOfSelectedValue = this.nzListOfSelectedValue.filter(item => item !== value);
     this.nzListOfSelectedValueChange.emit(this.nzListOfSelectedValue);
-  }
-
-  compositionStart(): void {
-    this.isComposing = true;
-  }
-
-  compositionEnd(): void {
-    this.isComposing = false;
   }
 
   updateWidth(): void {

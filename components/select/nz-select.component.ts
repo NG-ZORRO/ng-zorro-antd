@@ -120,7 +120,8 @@ import { NzSelectTopControlComponent } from './nz-select-top-control.component';
       (backdropClick)="closeDropDown()"
       (detach)="closeDropDown();"
       (positionChange)="onPositionChange($event)"
-      [cdkConnectedOverlayWidth]="triggerWidth"
+      [cdkConnectedOverlayWidth]="overlayWidth"
+      [cdkConnectedOverlayMinWidth]="overlayMinWidth"
       [cdkConnectedOverlayOpen]="!isDestroy">
       <div [ngClass]="dropDownClassMap" [@dropDownAnimation]="nzOpen ? dropDownPosition : 'hidden' " [ngStyle]="nzDropdownStyle">
         <div
@@ -174,7 +175,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   listOfTemplateOption: NzOptionComponent[] = [];
   // tslint:disable-next-line:no-any
   value: any | any[];
-  triggerWidth: number;
+  overlayWidth: number;
+  overlayMinWidth: number;
   searchValue: string = '';
   isDestroy = true;
   isInit = false;
@@ -197,7 +199,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() nzDropdownStyle: { [key: string]: string; };
   @Input() nzNotFoundContent: string;
   /** https://github.com/angular/angular/pull/13349/files **/
-  // tslint:disable-next-line:no-any
+           // tslint:disable-next-line:no-any
   @Input() compareWith = (o1: any, o2: any) => o1 === o2;
 
   @Input()
@@ -344,9 +346,15 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   updateCdkConnectedOverlayStatus(): void {
-    if (this.nzOpen && this.nzDropdownMatchSelectWidth && this.cdkOverlayOrigin) {
-      this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
-      this.cdkConnectedOverlay.overlayRef.updateSize({ width: this.triggerWidth });
+    if (this.isInit && this.nzOpen && this.cdkOverlayOrigin) {
+      if (this.nzDropdownMatchSelectWidth) {
+        this.overlayWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+        this.cdkConnectedOverlay.overlayRef.updateSize({ width: this.overlayWidth });
+      } else {
+        this.overlayMinWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+        this.cdkConnectedOverlay.overlayRef.updateSize({ minWidth: this.overlayMinWidth });
+      }
+
     }
     this.updateCdkConnectedOverlayPositions();
     if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef && this.cdkConnectedOverlay.overlayRef.backdropElement) {
