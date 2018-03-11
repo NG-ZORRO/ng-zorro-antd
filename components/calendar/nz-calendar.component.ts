@@ -138,11 +138,15 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   private updateDate(date: Date, touched: boolean = true): void {
+    const dayChanged = !isSameDay(date, this.activeDate);
     const monthChanged = !isSameMonth(date, this.activeDate);
     const yearChanged = !isSameYear(date, this.activeDate);
 
     this.activeDate = date;
 
+    if (dayChanged) {
+      this.calculateActiveDate();
+    }
     if (monthChanged) {
       this.setUpDateMatrix();
       this.calculateCurrentDate();
@@ -151,8 +155,6 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     if (yearChanged) {
       this.calculateCurrentMonth();
     }
-
-    this.calculateActiveDate();
 
     if (touched) {
       this.onChangeFn(date);
