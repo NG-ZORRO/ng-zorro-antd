@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector           : 'nz-tab-body',
+  selector           : '[nz-tab-body]',
   preserveWhitespaces: false,
   template           : `
     <ng-template [ngTemplateOutlet]="content"></ng-template>

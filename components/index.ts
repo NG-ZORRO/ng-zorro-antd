@@ -32,7 +32,7 @@ import { NzPopoverModule } from './popover/nz-popover.module';
 import { NzProgressModule } from './progress';
 import { NzRadioModule } from './radio';
 import { NzRateModule } from './rate';
-import { NzSelectModule } from './select/nz-select.module';
+import { NzSelectModule } from './select';
 import { NzSliderModule } from './slider/nz-slider.module';
 import { NzSpinModule } from './spin';
 import { NzStepsModule } from './steps';
