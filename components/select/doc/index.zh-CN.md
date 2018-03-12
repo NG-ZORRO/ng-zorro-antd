@@ -28,6 +28,8 @@ title: Select
 | ngModelChange | 选中的 nz-option 发生变化时，调用此函数 | (ngModel:`any 丨 any[]`)=>{} | - |
 | compareWith | 与 [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection) 相同 | (o1: any, o2: any) => boolean | (o1: any, o2: any) => o1===o2 |
 | nzAllowClear | 支持清除 | boolean | false |
+| nzOpen | 下拉菜单是否打开，可双向绑定 | boolean | false |
+| nzOpenChange | 下拉菜单打开状态变化回调 | (nzOpen:boolean)=>{} | false |
 | nzAutoFocus | 默认获取焦点 | boolean | false |
 | nzDisabled | 是否禁用 | boolean | false |
 | nzDropdownClassName | 下拉菜单的 className 属性 | string | - |

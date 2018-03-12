@@ -27,6 +27,8 @@ Select component to select value from options.
 | ngModelChange | Current selected nz-option value change callback. | (ngModel:`any 丨 any[]`)=>{} | - |
 | compareWith | Same as [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection) | (o1: any, o2: any) => boolean | (o1: any, o2: any) => o1===o2 |
 | nzAllowClear | Show clear button. | boolean | false |
+| nzOpen | dropdown expand state, double binding | boolean | false |
+| nzOpenChange | dropdown expand change callback | (nzOpen:boolean)=>{} | false |
 | nzAutoFocus | Get focus by default | boolean | false |
 | nzDisabled | Whether disabled select | boolean | false |
 | nzDropdownClassName | className of dropdown menu | string | - |

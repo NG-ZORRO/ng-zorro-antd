@@ -245,8 +245,8 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
       /** refresh tags option **/
       const listOfTagsOption = [];
       this.nzListOfSelectedValue.forEach(value => {
-        const existedOption = this.listOfAllTemplateOption.find(o => this.compareWith(o, value));
-        if (existedOption) {
+        const existedOption = this.listOfAllTemplateOption.find(o => this.compareWith(o.nzValue, value));
+        if (!existedOption) {
           const nzOptionComponent = new NzOptionComponent();
           nzOptionComponent.nzValue = value;
           nzOptionComponent.nzLabel = value;

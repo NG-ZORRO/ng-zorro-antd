@@ -90,7 +90,7 @@ describe('nz-select top control', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(inputEl.scrollWidth).toBe(parseInt(inputEl.style.width, 10));
+      expect(Math.floor(inputEl.scrollWidth / 10)).toBe(Math.floor(parseInt(inputEl.style.width, 10) / 10));
       inputEl.value = '';
       dispatchFakeEvent(inputEl, 'input');
       fixture.detectChanges();

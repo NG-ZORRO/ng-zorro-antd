@@ -190,6 +190,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @ContentChildren(NzOptionGroupComponent) listOfNzOptionGroupComponent: QueryList<NzOptionGroupComponent>;
   @Output() nzOnSearch = new EventEmitter<string>();
   @Output() nzScrollToBottom = new EventEmitter<void>();
+  @Output() nzOpenChange = new EventEmitter<boolean>();
   @Input() nzSize = 'default';
   @Input() nzServerSearch = false;
   @Input() nzMode: 'default' | 'multiple' | 'tags' = 'default';
@@ -254,7 +255,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   set nzDisabled(value: boolean) {
     this._disabled = toBoolean(value);
     if (this.nzDisabled) {
-      this.nzOpen = false;
+      this.closeDropDown();
     }
   }
 
@@ -293,11 +294,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   onClick(): void {
     if (!this.nzDisabled) {
       this.nzOpen = !this.nzOpen;
+      this.nzOpenChange.emit(this.nzOpen);
     }
   }
 
   updateAutoFocus(): void {
-    if (this.isInit) {
+    if (this.isInit && this.nzSelectTopControlComponent.inputElement) {
       if (this.nzAutoFocus) {
         this.renderer.setAttribute(this.nzSelectTopControlComponent.inputElement.nativeElement, 'autofocus', 'autofocus');
       } else {
@@ -307,16 +309,20 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   focus(): void {
-    this.nzSelectTopControlComponent.inputElement.nativeElement.focus();
+    if (this.nzSelectTopControlComponent.inputElement) {
+      this.nzSelectTopControlComponent.inputElement.nativeElement.focus();
+    }
   }
 
   blur(): void {
-    this.nzSelectTopControlComponent.inputElement.nativeElement.blur();
+    if (this.nzSelectTopControlComponent.inputElement) {
+      this.nzSelectTopControlComponent.inputElement.nativeElement.blur();
+    }
   }
 
   /** overlay can not be always open , reopen overlay after press esc **/
   handleEscBug(): void {
-    if (this.nzOpen && !this.cdkConnectedOverlay.overlayRef.backdropElement) {
+    if (this.nzOpen && this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef && !this.cdkConnectedOverlay.overlayRef.backdropElement) {
       this.cdkConnectedOverlay.open = true;
       this.cdkConnectedOverlay.ngOnChanges({ open: new SimpleChange(false, true, false) });
     }
@@ -329,7 +335,11 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   closeDropDown(): void {
-    this.nzOpen = false;
+    this.onTouched();
+    if (this.nzOpen) {
+      this.nzOpen = false;
+      this.nzOpenChange.emit(this.nzOpen);
+    }
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
@@ -499,7 +509,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   ngAfterViewInit(): void {
     this.isInit = true;
-    this.updateCdkConnectedOverlayStatus();
+    Promise.resolve().then(() => this.updateCdkConnectedOverlayStatus());
   }
 
   ngOnDestroy(): void {
