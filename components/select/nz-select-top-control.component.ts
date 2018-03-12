@@ -108,7 +108,7 @@ export class NzSelectTopControlComponent {
   @Input() nzPlaceHolder: string;
   @Input() nzOpen = false;
   // tslint:disable-next-line:no-any
-  @Input() compareWith = (o1: any, o2: any) => o1 === o2;
+  @Input() compareWith: (o1: any, o2: any) => boolean;
 
   @Input()
   // tslint:disable-next-line:no-any

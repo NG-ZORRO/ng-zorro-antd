@@ -63,10 +63,10 @@ import { NzSelectTopControlComponent } from './nz-select-top-control.component';
           transform      : 'scaleY(0.8)',
           transformOrigin: '0% 0%'
         }),
-        animate('150ms cubic-bezier(0.755, 0.05, 0.855, 0.06)')
+        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)')
       ]),
       transition('bottom => hidden', [
-        animate('150ms cubic-bezier(0.755, 0.05, 0.855, 0.06)', style({
+        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)', style({
           opacity        : 0,
           transform      : 'scaleY(0.8)',
           transformOrigin: '0% 0%'
@@ -78,10 +78,10 @@ import { NzSelectTopControlComponent } from './nz-select-top-control.component';
           transform      : 'scaleY(0.8)',
           transformOrigin: '0% 100%'
         }),
-        animate('150ms cubic-bezier(0.755, 0.05, 0.855, 0.06)')
+        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)')
       ]),
       transition('top => hidden', [
-        animate('150ms cubic-bezier(0.755, 0.05, 0.855, 0.06)', style({
+        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)', style({
           opacity        : 0,
           transform      : 'scaleY(0.8)',
           transformOrigin: '0% 100%'
@@ -335,8 +335,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   closeDropDown(): void {
-    this.onTouched();
     if (this.nzOpen) {
+      this.onTouched();
       this.nzOpen = false;
       this.nzOpenChange.emit(this.nzOpen);
     }
@@ -409,8 +409,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     if (this.isSingleMode) {
       if (value.length) {
         modelValue = value[ 0 ];
-      } else {
-        modelValue = null;
       }
     } else {
       modelValue = value;
