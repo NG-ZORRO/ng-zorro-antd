@@ -1,6 +1,5 @@
 import {
   Component,
-  ContentChild,
   EventEmitter,
   Input,
   OnDestroy,

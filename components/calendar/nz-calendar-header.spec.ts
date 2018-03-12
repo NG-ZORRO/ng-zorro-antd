@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzRadioGroupComponent as RadioGroup, NzRadioModule } from '../radio/index';
 import { NzSelectComponent as Select } from '../select/nz-select.component';
@@ -21,6 +22,7 @@ describe('Calendar Header', () => {
         NzI18nModule,
         NzRadioModule,
         NzSelectModule,
+        NoopAnimationsModule
       ],
       declarations: [
         CalendarHeader,
@@ -100,8 +102,8 @@ describe('Calendar Header', () => {
       const [yearSelect, monthSelect] = header.queryAll(By.directive(Select)).map(x => x.injector.get(Select));
       const modeRadioGroup = header.query(By.directive(RadioGroup)).injector.get(RadioGroup);
 
-      expect(yearSelect.nzSize).toBe('sm');
-      expect(monthSelect.nzSize).toBe('sm');
+      expect(yearSelect.nzSize).toBe('small');
+      expect(monthSelect.nzSize).toBe('small');
       expect(modeRadioGroup.nzSize).toBe('small');
     });
   });

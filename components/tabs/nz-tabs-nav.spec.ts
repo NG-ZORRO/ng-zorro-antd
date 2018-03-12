@@ -2,7 +2,7 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { PortalModule } from '@angular/cdk/portal';
 import { ScrollDispatchModule, VIEWPORT_RULER_PROVIDER } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import {
   async,
   discardPeriodicTasks,
@@ -162,10 +162,10 @@ describe('tabs nav', () => {
 });
 
 @Component({
-  selector: 'nz-test-tab-nav',
-  template: `
+  selector     : 'nz-test-tab-nav',
+  template     : `
     <div [dir]="dir" style="width: 130px;">
-      <nz-tabs-nav
+      <div nz-tabs-nav
         role="tablist"
         tabindex="0"
         [selectedIndex]="selectedIndex"
@@ -177,9 +177,14 @@ describe('tabs nav', () => {
           role="tab">
           {{tab.label}}
         </div>
-      </nz-tabs-nav>
+      </div>
     </div>
-  `
+  `,
+  encapsulation: ViewEncapsulation.None,
+  styleUrls    : [
+    '../style/index.less',
+    './style/index.less'
+  ]
 })
 class NzTestTabNavComponent {
   selectedIndex: number = 0;

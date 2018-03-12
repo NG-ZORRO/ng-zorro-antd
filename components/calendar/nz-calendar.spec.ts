@@ -1,9 +1,10 @@
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component } from '@angular/core';
-import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, flush, ComponentFixture , TestBed } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzCalendarHeaderComponent as CalendarHeader } from './nz-calendar-header.component';
 import { NzCalendarComponent as Calendar } from './nz-calendar.component';
 import { NzCalendarModule } from './nz-calendar.module';
@@ -16,6 +17,7 @@ describe('Calendar', () => {
       imports: [
         FormsModule,
         NzCalendarModule,
+        NoopAnimationsModule
       ],
       declarations: [
         NzTestCalendarModeComponent,
@@ -129,7 +131,9 @@ describe('Calendar', () => {
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[2];
       const calendar = host.injector.get(Calendar);
       const model = host.injector.get(NgModel);
-      tick();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
 
       expect(calendar.activeDate).toBe(component.date1);
 

@@ -18,7 +18,7 @@
 | inputnumber | √ | 100% | 100% | vthinkxie | √ |
 | radio | √ | 100% | 100% | vthinkxie | - |
 | rate | √ | 100% | 100% | vthinkxie | - |
-| select | x | x | x | vthinkxie | - |
+| select | √ | 100% | 100% | vthinkxie | √ |
 | switch | √ | 100% | 100% | vthinkxie | - |
 | badge | √ | 100% | 100% | vthinkxie | - |
 | card | √ | 100% | 100% | vthinkxie | - |
@@ -39,7 +39,7 @@
 | notification | x | x | x | wilsoncook | - |
 | datepicker | x | x | x | trotyl | - |
 | timepicker | x | x | x | trotyl | - |
-| calendar | x | x | x | trotyl | - |
+| calendar | √ | 100% | 100% | trotyl | √ |
 | affix | x | x | x | cipchk | - |
 | transfer | √ | 100% | 100% | cipchk | x |
 | avatar | √ | 100% | 100% | cipchk | x |

@@ -2,14 +2,14 @@
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
-  "linterOptions": {
-    "exclude": [
-      "scripts/template/*.ts",
-      "components/**/demo/*.ts"
-    ]
-  },
   "rules": {
     "adjacent-overload-signatures": true,
+    "callable-types": true,
+    "class-name": true,
+    "comment-format": [
+      true,
+      "check-space"
+    ],
     "align": [
       true,
       "parameters",
@@ -44,14 +44,12 @@
       ]
     ],
     "binary-expression-operand-order": true,
-    "class-name": true,
-    "comment-format": [
-      true,
-      "check-space"
-    ],
     "curly": [true, "ignore-same-line"],
     "encoding": true,
     "eofline": true,
+    "deprecation": {
+      "severity": "warn"
+    },
     "import-blacklist": [
       true,
       "rxjs",
@@ -68,12 +66,9 @@
     ],
     "interface-over-type-literal": true,
     "label-position": true,
-    "max-line-length": [
-      false,
-      120
-    ],
     "new-parens": true,
     "no-angle-bracket-type-assertion": true,
+    "member-access": false,
     "no-any": true,
     "no-arg": true,
     "no-bitwise": false,
@@ -215,10 +210,7 @@
     ],
     "directive-selector": [
       true,
-      [
-        "element",
-        "attribute"
-      ],
+      "attribute",
       [
         "nz"
       ],
