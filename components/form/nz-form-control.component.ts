@@ -13,7 +13,10 @@ import { toBoolean } from '../core/util/convert';
       [class.has-success]="isSuccess"
       [class.has-feedback]="hasFeedBack"
       [class.is-validating]="isValidate">
-      <ng-content></ng-content>
+      <span class="ant-form-item-children">
+        <ng-content></ng-content>
+      </span>
+      <ng-content select="[nz-form-explain]"></ng-content>
     </div>
   `,
   host               : {

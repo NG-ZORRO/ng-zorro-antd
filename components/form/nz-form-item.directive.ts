@@ -1,4 +1,5 @@
-import { Directive } from '@angular/core';
+import { Directive, Renderer2, Input, ElementRef } from '@angular/core';
+import { toBoolean } from '../core/util/convert';
 
 @Directive({
   selector: '[nz-form-item]',
@@ -8,7 +9,18 @@ import { Directive } from '@angular/core';
   }
 })
 export class NzFormItemDirective {
+  private _flex = false;
   withHelp = 0;
+
+  @Input()
+  set nzFlex(value: boolean) {
+    this._flex = toBoolean(value);
+    if (this._flex) {
+      this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'flex');
+    } else {
+      this.renderer.removeStyle(this.elementRef.nativeElement, 'display');
+    }
+  }
 
   enableHelp(): void {
     this.withHelp++;
@@ -16,5 +28,9 @@ export class NzFormItemDirective {
 
   disableHelp(): void {
     this.withHelp--;
+  }
+
+  constructor(private renderer: Renderer2, private elementRef: ElementRef) {
+
   }
 }

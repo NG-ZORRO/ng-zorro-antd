@@ -11,7 +11,7 @@ import {
     <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
       <div nz-row [nzGutter]="24">
         <div nz-col [nzSpan]="8" *ngFor="let control of controlArray" [style.display]="control.show?'block':'none'">
-          <div nz-form-item>
+          <div nz-form-item nzFlex>
             <div nz-form-label>
               <label [attr.for]="'field'+control.index">Field {{control.index}}</label>
             </div>
@@ -54,10 +54,6 @@ import {
         min-height: 200px;
         text-align: center;
         padding-top: 80px;
-      }
-
-      [nz-form-item] {
-        display: flex;
       }
 
       [nz-form-label] {
