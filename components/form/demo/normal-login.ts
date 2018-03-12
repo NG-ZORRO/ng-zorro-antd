@@ -7,13 +7,13 @@ import {
 } from '@angular/forms';
 
 @Component({
-  selector: 'nz-demo-form-horizontal-login',
+  selector: 'nz-demo-form-normal-login',
   template: `
-    <form nz-form [nzLayout]="'inline'" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
       <div nz-form-item>
         <div nz-form-control>
           <nz-input-group nzPrefixIcon="anticon anticon-user">
-            <input formControlName="userName" nz-input placeholder="Username">
+            <input type="text" nz-input formControlName="userName" placeholder="Username">
           </nz-input-group>
           <div nz-form-explain *ngIf="getControl('userName').dirty && getControl('userName').hasError('required')">Please input your username!</div>
         </div>
@@ -21,19 +21,40 @@ import {
       <div nz-form-item>
         <div nz-form-control>
           <nz-input-group nzPrefixIcon="anticon anticon-lock">
-            <input formControlName="password" nz-input type="password" placeholder="Password">
+            <input type="password" nz-input formControlName="password" placeholder="Password">
           </nz-input-group>
           <div nz-form-explain *ngIf="getControl('password').dirty && getControl('password').hasError('required')">Please input your Password!</div>
         </div>
       </div>
       <div nz-form-item>
         <div nz-form-control>
-          <button nz-button nzType="primary" [disabled]="!validateForm.valid">Log in</button>
+          <label nz-checkbox formControlName="remember">
+            <span>Remember me</span>
+          </label>
+          <a class="login-form-forgot" class="login-form-forgot">Forgot password</a>
+          <button nz-button class="login-form-button" [nzType]="'primary'">Log in</button>
+          Or
+          <a href="">register now!</a>
         </div>
       </div>
-    </form>`
+    </form>
+  `,
+  styles: [ `
+    .login-form {
+      max-width: 300px;
+    }
+
+    .login-form-forgot {
+      float: right;
+    }
+
+    .login-form-button {
+      width: 100%;
+    }
+  `
+  ]
 })
-export class NzDemoFormHorizontalLoginComponent implements OnInit {
+export class NzDemoFormNormalLoginComponent implements OnInit {
   validateForm: FormGroup;
 
   submitForm(): void {

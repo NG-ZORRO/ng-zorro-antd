@@ -23,7 +23,7 @@ import { toBoolean } from '../core/util/convert';
 export class NzFormControlComponent {
   private _hasFeedback = false;
   private _validateStatus: string | NgControl;
-  @ContentChild(NgControl) ngControl: NgControl;
+  @ContentChild(NgControl) control: NgControl;
 
   @Input()
   set nzHasFeedback(value: boolean) {
@@ -40,7 +40,7 @@ export class NzFormControlComponent {
   }
 
   get nzValidateStatus(): string | NgControl {
-    return this._validateStatus || this.ngControl;
+    return this._validateStatus || this.control;
   }
 
   get isWarning(): boolean {
