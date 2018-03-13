@@ -40,7 +40,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
   ],
   template           : `
     <div>
-      <ng-content></ng-content>
+      <ng-content select="[nz-dropdown]"></ng-content>
     </div>
     <ng-template
       cdkConnectedOverlay
@@ -48,6 +48,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
       [cdkConnectedOverlayPositions]="positions"
       [cdkConnectedOverlayOrigin]="nzOrigin"
       (backdropClick)="hide()"
+      (detach)="hide()"
       [cdkConnectedOverlayMinWidth]="triggerWidth"
       (positionChange)="onPositionChange($event)"
       [cdkConnectedOverlayOpen]="nzVisible">
@@ -59,24 +60,31 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
         [style.minWidth.px]="triggerWidth">
         <div [class.ant-table-filter-dropdown]="hasFilterButton">
           <ng-content select="[nz-menu]"></ng-content>
-          <ng-content select="[nz-table-filter]"></ng-content>
+          <ng-content select=".ant-table-filter-dropdown-btns"></ng-content>
         </div>
-        <ng-content select="[nz-dropdown-custom]"></ng-content>
+        <ng-content></ng-content>
       </div>
-    </ng-template>`
+    </ng-template>`,
+  styles             : [
+      `
+      :host {
+        position: relative;
+        display: inline-block;
+      }
+    `
+  ]
 })
 
 export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   private _clickHide = true;
   private _visible = false;
   private _disabled = false;
-  hasFilterButton = false;
+  @Input() hasFilterButton = false;
   triggerWidth = 0;
   placement: NzPlacement = 'bottomLeft';
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   positions: ConnectionPositionPair[] = [ ...DEFAULT_DROPDOWN_POSITIONS ];
   visibleSubscription: Subscription;
-  menuClickSubscription: Subscription;
   $subOpen = new BehaviorSubject<boolean>(false);
   $visibleChange = new Subject<boolean>();
   @ContentChild(NzDropDownDirective) nzOrigin: NzDropDownDirective;
@@ -194,19 +202,12 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     if (this.nzMenu) {
       this.nzMenu.nzInDropDown = true;
-      this.menuClickSubscription = this.nzMenu.nzClick.subscribe(() => {
-
-      });
     }
   }
 
   ngOnDestroy(): void {
     if (this.visibleSubscription) {
       this.visibleSubscription.unsubscribe();
-      this.visibleSubscription = null;
-    }
-    if (this.menuClickSubscription) {
-      this.menuClickSubscription.unsubscribe();
       this.visibleSubscription = null;
     }
   }

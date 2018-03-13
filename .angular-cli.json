@@ -30,22 +30,9 @@
       }
     }
   ],
-  "e2e": {
-    "protractor": {
-      "config": "./protractor.conf.js"
-    }
-  },
   "lint": [
     {
-      "project": "src/tsconfig.app.json",
-      "exclude": "**/node_modules/**"
-    },
-    {
-      "project": "src/tsconfig.spec.json",
-      "exclude": "**/node_modules/**"
-    },
-    {
-      "project": "e2e/tsconfig.e2e.json",
+      "project": "site/src/tsconfig.app.json",
       "exclude": "**/node_modules/**"
     }
   ],
@@ -61,7 +48,6 @@
         "./components/i18n/**",
         "./components/locale/**",
         "./components/**/demo/**",
-        "./components/select/**",
         "./components/tooltip/**"
       ]
     }

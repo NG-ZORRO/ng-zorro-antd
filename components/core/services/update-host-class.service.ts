@@ -6,7 +6,7 @@ export class NzUpdateHostClassService {
 
   updateHostClass(el: HTMLElement, classMap: object): void {
     this.removeClass(el, this.classMap, this.renderer);
-    this.classMap = classMap;
+    this.classMap = { ...classMap };
     this.addClass(el, this.classMap, this.renderer);
   }
 

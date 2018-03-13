@@ -123,7 +123,7 @@ export class NzRadioComponent implements OnInit, ControlValueAccessor, AfterView
 
   onBlur(): void {
     this.onTouched();
-    if (this.nzRadioGroup) this.nzRadioGroup.onTouched();
+    if (this.nzRadioGroup) { this.nzRadioGroup.onTouched(); }
   }
 
   setClassMap(): void {
@@ -148,7 +148,7 @@ export class NzRadioComponent implements OnInit, ControlValueAccessor, AfterView
   }
 
   ngOnInit(): void {
-    if (this.nzRadioGroup) this.nzRadioGroup.addRadio(this);
+    if (this.nzRadioGroup) { this.nzRadioGroup.addRadio(this); }
     this.setClassMap();
   }
 

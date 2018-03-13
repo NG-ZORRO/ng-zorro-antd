@@ -14,36 +14,43 @@ A table displays rows of data.
 
 ## How To Use
 
-Specify `dataSource` of Table as an array of data.
+The Table component is both easy to use and highly customizable.
 
-```jsx
-const dataSource = [{
-  key: '1',
-  name: 'Mike',
-  age: 32,
-  address: '10 Downing Street'
-}, {
-  key: '2',
-  name: 'John',
-  age: 42,
-  address: '10 Downing Street'
-}];
+### Highly Customizable
 
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
-}, {
-  title: 'Age',
-  dataIndex: 'age',
-  key: 'age',
-}, {
-  title: 'Address',
-  dataIndex: 'address',
-  key: 'address',
-}];
+You can use `nz-table` like  [` W3C Standard <table>`](https://www.w3.org/TR/html401/struct/tables.html) , developers can control every part of the table as you wish.
 
-<Table dataSource={dataSource} columns={columns} />
+### Component Enhancements
+
+The component in `nz-table` such as `th`, `td`, `thead`, etc are enhanced, developers can make the table sortable, filterable, fixed header, server rendering, etc easily with api provided.
+
+### Data Processing
+
+The data passed to `[nzData]` will be export with [Template Context](https://angular.io/guide/template-syntax#statement-context) after processing, developers can use `*ngFor` to render current page data in table.
+
+```html
+<nz-table #basicTable [nzData]="dataSet">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Address</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data.name}}</td>
+      <td>{{data.age}}</td>
+      <td>{{data.address}}</td>
+      <td>
+        <a>Action 一 {{data.name}}</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a>Delete</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
 ```
 
 ## API
@@ -52,138 +59,133 @@ const columns = [{
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| bordered | Whether to show all table borders | boolean | `false` |
-| columns | Columns of table | [ColumnProps](https://git.io/vMMXC)\[] | - |
-| components | Override default table elements | object | - |
-| dataSource | Data record array to be displayed | any\[] | - |
-| defaultExpandAllRows | Expand all rows initially | boolean | `false` |
-| defaultExpandedRowKeys | Initial expanded row keys | string\[] | - |
-| expandedRowKeys | Current expanded row keys | string\[] | - |
-| expandedRowRender | Expanded container render for each row | Function(record):ReactNode | - |
-| expandRowByClick | Whether to expand row by clicking anywhere in the whole row | boolean | `false` |
-| footer | Table footer renderer | Function(currentPageData) |  |
-| indentSize | Indent size in pixels of tree data | number | 15 |
-| loading | Loading status of table | boolean｜[object](https://ant.design/components/spin-cn/#API) ([more](https://github.com/ant-design/ant-design/issues/4544#issuecomment-271533135)) | `false` |
-| locale | i18n text including filter, sort, empty text, etc | object | filterConfirm: 'Ok' <br> filterReset: 'Reset' <br> emptyText: 'No Data' <br> [Default](https://github.com/ant-design/ant-design/issues/575#issuecomment-159169511) |
-| pagination | Pagination [config](/components/pagination/), hide it by setting it to `false` | object |  |
-| rowClassName | Row's className | Function(record, index):string | - |
-| rowKey | Row's unique key, could be a string or function that returns a string | string｜Function(record):string | `key` |
-| rowSelection | Row selection [config](#rowSelection) | object | null |
-| scroll | Whether table can be scrolled in x/y direction, `x` or `y` can be a number that indicates the width and height of table body | object | - |
-| showHeader | Whether to show table header | boolean | `true` |
-| size | Size of table | `default` ｜ `middle` ｜ `small` | `default` |
-| title | Table title renderer | Function(currentPageData) |  |
-| onChange | Callback executed when pagination, filters or sorter is changed | Function(pagination, filters, sorter) |  |
-| onExpand | Callback executed when the row expand icon is clicked | Function(expanded, record) |  |
-| onExpandedRowsChange | Callback executed when the expanded rows change | Function(expandedRows) |  |
-| onHeaderRow | Set props on per header row | Function(column, index) | - |
-| onRow | Set props on per row | Function(record, index) | - |
+| nzData | Data record array to be displayed | `any[]` | - |
+| nzFrontPagination | Whether paginate data in front side，should set to `false` if you want to paginate data in server side or display all data in table | boolean | true |
+| nzTotal | Total data count, should set when `nzServerRender` is true | number | - |
+| nzPageIndex | pageIndex , double binding | number | - |
+| nzPageIndexChange | pageIndex change callback | (nzPageIndex:number)=>{} | - |
+| nzPageSize | pageSize, double binding | number | - |
+| nzPageSizeChange | pageSize change callback | (nzPageSize:number)=>{} | - |
+| nzCurrentPageDataChange | current pageData change callback | (data:any[])=>{} | - |
+| nzShowPagination | Whether show pagination component in bottom of the table | boolean | true |
+| nzBordered | Whether to show all table borders | boolean | `false` |
+| nzWidthConfig | Set col width can not used with `nzWidth` of `th` | string[] | - |
+| nzSize | Size of table | `default` ｜ `middle` ｜ `small` | `default` |
+| nzLoading | Loading status of table | boolean | `false` |
+| nzLoadingDelay | Specifies a delay in milliseconds for loading state (prevent flush) | number | 0 |
+| nzScroll | Whether table can be scrolled in x/y direction, `x` or `y` can be a string that indicates the width and height of table body | object | - |
+| nzTitle | Table title renderer | string丨`TemplateRef<void>` | - |
+| nzFooter | Table footer renderer | string丨`TemplateRef<void>` | - |
+| nzNoResult | Custom no result content | string丨`TemplateRef<void>` |  |
+| nzPageSizeOptions | Specify the sizeChanger options | `number[]` | `[10, 20, 30, 40]` |
+| nzShowQuickJumper | Determine whether you can jump to pages directly | boolean | false |
+| nzShowSizeChanger | Determine whether `nzPageSize` can be changed | boolean | false |
+| nzShowTotal | To display the total number and range	 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
 
-### Column
+### th
 
-One of the Table `columns` prop for describing the table's columns, Column has the same API.
+Checkbox property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| className | className of this column | string | - |
-| colSpan | Span of this column's title | number |  |
-| dataIndex | Display field of the data record, could be set like `a.b.c` | string | - |
-| defaultSortOrder | Default order of sorted values: `'ascend'` `'descend'` `null` | string | - |
-| filterDropdown | Customized filter overlay | ReactNode | - |
-| filterDropdownVisible | Whether `filterDropdown` is visible | boolean | - |
-| filtered | Whether the `dataSource` is filtered | boolean | `false` |
-| filteredValue | Controlled filtered value, filter icon will highlight | string\[] | - |
-| filterIcon | Customized filter icon | ReactNode | `false` |
-| filterMultiple | Whether multiple filters can be selected | boolean | `true` |
-| filters | Filter menu config | object\[] | - |
-| fixed | Set column to be fixed: `true`(same as left) `'left'` `'right'` | boolean｜string | `false` |
-| key | Unique key of this column, you can ignore this prop if you've set a unique `dataIndex` | string | - |
-| render | Renderer of the table cell. The return value should be a ReactNode, or an object for [colSpan/rowSpan config](#components-table-demo-colspan-rowspan) | Function(text, record, index) {} | - |
-| sorter | Sort function for local sort, see [Array.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)'s compareFunction. If you need sort buttons only, set to `true` | Function｜boolean | - |
-| sortOrder | Order of sorted values: `'ascend'` `'descend'` `false` | boolean｜string | - |
-| title | Title of this column | string｜ReactNode | - |
-| width | Width of this column | string｜number | - |
-| onCell | Set props on per cell | Function(record) | - |
-| onFilter | Callback executed when the confirm filter button is clicked | Function | - |
-| onFilterDropdownVisibleChange | Callback executed when `filterDropdownVisible` is changed | function(visible) {} | - |
-| onHeaderCell | Set props on per header cell | Function(column) | - |
+| nzShowCheckbox | Whether add nz-checkbox | boolean | - |
+| nzDisabled | Whether disable checkbox | boolean | - |
+| nzIndeterminate | Indeterminate status | boolean | - |
+| nzChecked | Checked status, double binding | boolean | - |
+| nzCheckedChange | Checked status change callback | (nzChecked:boolean)=>{} | - |
 
-### ColumnGroup
+Selection property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| title | Title of the column group | string｜ReactNode | - |
+| nzShowRowSelection | Whether show selections | boolean | - |
+| nzSelections | Selection options include `text` and `onSelect` function | `Array<{ text: string, onSelect: any }>` | - |
 
-### rowSelection
 
-Properties for row selection.
-
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| fixed | Fixed selection column on the left | boolean | - |
-| getCheckboxProps | Get Checkbox or Radio props | Function(record) | - |
-| hideDefaultSelections | Remove the default `Select All` and `Select Invert` selections | boolean | `false` |
-| selectedRowKeys | Controlled selected row keys | string\[] | \[] |
-| selections | Custom selection [config](#rowSelection), only displays default selections when set to `true` | object\[]｜boolean | - |
-| type | `checkbox` or `radio` | `checkbox` ｜ `radio` | `checkbox` |
-| onChange | Callback executed when selected rows change | Function(selectedRowKeys, selectedRows) | - |
-| onSelect | Callback executed when select/deselect one row | Function(record, selected, selectedRows) | - |
-| onSelectAll | Callback executed when select/deselect all rows | Function(selected, selectedRows, changeRows) | - |
-| onSelectInvert | Callback executed when row selection is inverted | Function(selectedRows) | - |
-
-### selection
+Filter property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| key | Unique key of this selection | string | - |
-| text | Display text of this selection | string｜React.ReactNode | - |
-| onSelect | Callback executed when this selection is clicked | Function(changeableRowKeys) | - |
+| nzShowFilter | Whether show filter | boolean | - |
+| nzFilters | Filter options,  `text`，and `value` for callback | `Array<{ text: string; value: any }>` | - |
+| nzFilterChange | Filter change callback `value` | (value:any[] 丨 any)=>{} | - |
+| nzFilterMultiple | Whether filter multiple mode | boolean | true |
 
-## Using in TypeScript
+Style property
 
-```jsx
-import { Table } from 'antd';
-import { ColumnProps } from 'antd/lib/table';
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| nzWidth | Specify the column width, can not used when grouping columns | string | - |
+| nzLeft | Left pixels, used to fixed column to left | string | - |
+| nzRight | Right pixels, used to fixed column to right | string | - |
 
-interface IUser {
-  key: number,
-  name: string;
-}
+Other property
 
-const columns: ColumnProps<IUser>[] = [{
-  key: 'name',
-  title: 'Name',
-  dataIndex: 'name',
-}];
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| nzExpand | Whether current column include expand icon | boolean | - |
 
-const data: IUser[] = [{
-  key: 0,
-  name: 'Jack',
-}];
+### td
 
-class UserTable extends Table<IUser> {}
+Checkbox property
 
-<UserTable columns={columns} dataSource={data} />
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| nzShowCheckbox | Whether add nz-checkbox | boolean | - |
+| nzDisabled | Whether disable checkbox | boolean | - |
+| nzIndeterminate | Indeterminate status | boolean | - |
+| nzChecked | Checked status, double binding | boolean | - |
+| nzCheckedChange | Checked status change callback | (nzChecked:boolean)=>{} | - |
 
-// Use JSX style API
-class NameColumn extends Table.Column<IUser> {}
+Expand property
 
-<UserTable dataSource={data}>
-  <NameColumn key="name" title="Name" dataIndex="name" />
-</UserTable>
-```
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| nzShowExpand | Whether show expand icon | boolean | - |
+| nzExpand | Current expand status, double binding | boolean | - |
+| nzExpandChange | Expand status change callback | (nzExpand:boolean)=>{} | - |
+
+Style property
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| nzLeft | Left pixels, used to fixed column to left | string | - |
+| nzRight | Right pixels, used to fixed column to right | string | - |
+
+Other property
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| nzIndentSize | Indent size in pixels of tree data | number | - |
+
+### thead
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| nzSortChange | sort change callback，should used with `nzSortKey` of `th` | `(sortChange:{ nzSortKey: string, value: 'descend'丨'ascend'丨null })=>{}` | - |
+| nzSingleSort | Whether single column sort mode | boolean | false |
+
+### nz-tr
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| nzExpand | Whether expand current row，used with `nzExpand` of `td`  | boolean | - |
+
+
 
 ## Note
 
-According to [React documentation](https://facebook.github.io/react/docs/lists-and-keys.html#keys), every child in array should be assigned a unique key. The values inside `dataSource` and `columns` should follow this in Table, and `dataSource[i].key` would be treated as key value default for `dataSource`.
+According to [Angular documentation](https://angular.io/guide/lifecycle-hooks#onchanges)，developers should not use `push` or `splice` to change the data passed to `nzData`
 
-If `dataSource[i].key` is not provided, then you should specify the primary key of dataSource value via `rowKey`. If not, warnings like above will show in browser console.
 
-![](https://os.alipayobjects.com/rmsportal/luLdLvhPOiRpyss.png)
-
-```jsx
-// primary key is uid
-return <Table rowKey="uid" />;
-// or
-return <Table rowKey={record => record.uid} />;
+```typescript
+    // add data
+    this.dataSet = [ ...this.dataSet, {
+      key    : `${this.i}`,
+      name   : `Edward King ${this.i}`,
+      age    : '32',
+      address: `London, Park Lane no. ${this.i}`
+    }];
+    // remove data
+    this.dataSet = this.dataSet.filter(d => d.key !== i);
 ```

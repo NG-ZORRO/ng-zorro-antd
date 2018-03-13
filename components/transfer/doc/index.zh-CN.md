@@ -25,13 +25,13 @@ title: Transfer
 | nzListStyle | 两个穿梭框的自定义样式，等同 `ngStyle` | object |  |
 | nzItemUnit | 单数单位 | string | 项目 |
 | nzItemsUnit | 复数单位 | string | 项目 |
-| #render | 每行数据渲染模板，见示例 | `TemplateRef<void>` | - |
-| #footer | 底部渲染模板，见示例 | `TemplateRef<void>` | - |
+| nzRender | 每行数据渲染模板，见示例 | `TemplateRef<void>` | - |
+| nzFooter | 底部渲染模板，见示例 | `TemplateRef<void>` | - |
 | nzShowSearch | 是否显示搜索框 | boolean | false |
 | nzFilterOption | 接收 `inputValue` `option` 两个参数，当 `option` 符合筛选条件时，应返回 `true`，反之则返回 `false`。 | (inputValue, option): boolean | `(inputValue: string, item: TransferItem) => boolean` |
 | nzSearchPlaceholder | 搜索框的默认值 | string | '请输入搜索内容' |
 | nzNotFoundContent | 当列表为空时显示的内容 | string | '列表为空' |
-| canMove | 穿梭时二次校验。**注意：** 穿梭组件内部始终只保留一份数据，二次校验过程中需取消穿梭项则直接删除该项；具体用法见示例。 | `(arg: TransferCanMove) => Observable<TransferItem[]>` | - |
+| nzCanMove | 穿梭时二次校验。**注意：** 穿梭组件内部始终只保留一份数据，二次校验过程中需取消穿梭项则直接删除该项；具体用法见示例。 | `(arg: TransferCanMove) => Observable<TransferItem[]>` | - |
 | (nzChange) | 选项在两栏之间转移时的回调函数 | `EventEmitter<TransferChange>` | - |
 | (nzSearchChange) | 搜索框内容时改变时的回调函数 | `EventEmitter<TransferSearchChange>` | - |
 | (nzSelectChange) | 选中项发生改变时的回调函数 | `EventEmitter<TransferSearchChange>` | - |

@@ -34,7 +34,7 @@ export type ScrollDirection = 'after' | 'before';
 import { NzTabPositionMode } from './nz-tabset.component';
 
 @Component({
-  selector           : 'nz-tabs-nav',
+  selector           : '[nz-tabs-nav]',
   preserveWhitespaces: false,
   template           : `
     <div style="float:right;" *ngIf="nzTabBarExtraContent" class="ant-tabs-extra-content">
@@ -219,11 +219,9 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     const scrollDistance = this.scrollDistance;
     if (this.nzPositionMode === 'horizontal') {
       const translateX = this.getLayoutDirection() === 'ltr' ? -scrollDistance : scrollDistance;
-      this.renderer.setStyle(this.navListElement.nativeElement, 'transform',
-        `translate3d(${translateX}px, 0, 0)`);
+      this.renderer.setStyle(this.navListElement.nativeElement, 'transform', `translate3d(${translateX}px, 0, 0)`);
     } else {
-      this.renderer.setStyle(this.navListElement.nativeElement, 'transform',
-        `translate3d(0,${-scrollDistance}px, 0)`);
+      this.renderer.setStyle(this.navListElement.nativeElement, 'transform', `translate3d(0,${-scrollDistance}px, 0)`);
     }
   }
 

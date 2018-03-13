@@ -8,6 +8,7 @@ import { NzBackTopModule } from './back-top/nz-back-top.module';
 import { NzBadgeModule } from './badge/nz-badge.module';
 import { NzBreadCrumbModule } from './breadcrumb/nz-breadcrumb.module';
 import { NzButtonModule } from './button';
+import { NzCalendarModule } from './calendar';
 import { NzCardModule } from './card';
 import { NzCarouselModule } from './carousel';
 import { NzCheckboxModule } from './checkbox';
@@ -32,17 +33,17 @@ import { NzPopoverModule } from './popover/nz-popover.module';
 import { NzProgressModule } from './progress';
 import { NzRadioModule } from './radio';
 import { NzRateModule } from './rate';
-import { NzSelectModule } from './select/nz-select.module';
+import { NzSelectModule } from './select';
 import { NzSliderModule } from './slider/nz-slider.module';
 import { NzSpinModule } from './spin';
 import { NzStepsModule } from './steps';
 import { NzSwitchModule } from './switch';
-import { NzTableModule } from './table/nz-table.module';
-import { NzTabsModule } from './tabs/nz-tabs.module';
+import { NzTableModule } from './table';
+import { NzTabsModule } from './tabs';
 import { NzTagModule } from './tag/nz-tag.module';
 import { NzTimelineModule } from './timeline';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
-import { NzTransferModule } from './transfer/nz-transfer.module';
+import { NzTransferModule } from './transfer';
 
 export * from './affix';
 export * from './anchor';
@@ -83,6 +84,7 @@ export * from './modal/public-api';
 @NgModule({
   exports: [
     NzButtonModule,
+    NzCalendarModule,
     NzGridModule,
     NzSwitchModule,
     NzSelectModule,

@@ -28,94 +28,74 @@ export class RandomUserService {
   selector : 'nz-demo-table-ajax',
   providers: [ RandomUserService ],
   template : `
-    <nz-table #nzTable
-      [nzAjaxData]="_dataSet"
+    <nz-table
+      #ajaxTable
       nzShowSizeChanger
-      [nzLoading]="_loading"
-      [nzTotal]="_total"
-      [(nzPageIndex)]="_current"
-      (nzPageIndexChange)="refreshData()"
-      [(nzPageSize)]="_pageSize"
-      (nzPageSizeChange)="refreshData(true)">
-      <thead nz-thead>
+      [nzFrontPagination]="false"
+      [nzData]="dataSet"
+      [nzLoading]="loading"
+      [nzTotal]="total"
+      [(nzPageIndex)]="pageIndex"
+      [(nzPageSize)]="pageSize"
+      (nzPageIndexChange)="searchData()"
+      (nzPageSizeChange)="searchData(true)">
+      <thead (nzSortChange)="sort($event)" nzSingleSort>
         <tr>
-          <th nz-th>
-            <span>Name</span>
-            <nz-table-sort (nzValueChange)="sort($event)"></nz-table-sort>
-          </th>
-          <th nz-th>
-            <span>Gender</span>
-            <nz-dropdown [nzTrigger]="'click'">
-              <i class="anticon anticon-filter" nz-dropdown></i>
-              <ul nz-menu>
-                <li nz-menu-item *ngFor="let filter of _filterGender">
-                  <label nz-checkbox [(ngModel)]="filter.value">
-                    <span>{{filter.name}}</span>
-                  </label>
-                </li>
-              </ul>
-              <div nz-table-filter>
-                <span nz-table-filter-confirm (click)="refreshData(true)">OK</span>
-                <span nz-table-filter-clear (click)="reset()">Reset</span>
-              </div>
-            </nz-dropdown>
-          </th>
-          <th nz-th><span>Email</span></th>
+          <th nzShowSort nzSortKey="name">Name</th>
+          <th nzShowFilter [nzFilters]="filterGender" (nzFilterChange)="updateFilter($event)">Gender</th>
+          <th nzShowSort nzSortKey="email"><span>Email</span></th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of nzTable.data">
-          <td nz-td>
-            <a>{{data.name.first}} {{data.name.last}}</a>
-          </td>
-          <td nz-td>{{data.gender}}</td>
-          <td nz-td>{{data.email}}</td>
+      <tbody>
+        <tr *ngFor="let data of ajaxTable.data">
+          <td>{{data.name.first}} {{data.name.last}}</td>
+          <td>{{data.gender}}</td>
+          <td>{{data.email}}</td>
         </tr>
       </tbody>
-    </nz-table>`,
-  styles   : []
+    </nz-table>`
 })
 export class NzDemoTableAjaxComponent implements OnInit {
-  _current = 1;
-  _pageSize = 10;
-  _total = 1;
-  _dataSet = [];
-  _loading = true;
-  _sortValue = null;
-  _filterGender = [
-    { name: 'male', value: false },
-    { name: 'female', value: false }
+  pageIndex = 1;
+  pageSize = 10;
+  total = 1;
+  dataSet = [];
+  loading = true;
+  sortValue = null;
+  sortKey = null;
+  filterGender = [
+    { text: 'male', value: 'male' },
+    { text: 'female', value: 'female' }
   ];
+  searchGenderList: string[] = [];
 
-  sort(value: string): void {
-    this._sortValue = value;
-    this.refreshData();
+  sort(sort: { key: string, value: string }): void {
+    this.sortKey = sort.key;
+    this.sortValue = sort.value;
+    this.searchData();
   }
 
-  reset(): void {
-    this._filterGender.forEach(item => {
-      item.value = false;
-    });
-    this.refreshData(true);
+  constructor(private randomUserService: RandomUserService) {
   }
 
-  constructor(private _randomUser: RandomUserService) {
-  }
-
-  refreshData(reset: boolean = false): void {
+  searchData(reset: boolean = false): void {
     if (reset) {
-      this._current = 1;
+      this.pageIndex = 1;
     }
-    this._loading = true;
-    const selectedGender = this._filterGender.filter(item => item.value).map(item => item.name);
-    this._randomUser.getUsers(this._current, this._pageSize, 'name', this._sortValue, selectedGender).subscribe((data: any) => {
-      this._loading = false;
-      this._total = 200;
-      this._dataSet = data.results;
+    this.loading = true;
+    this.randomUserService.getUsers(this.pageIndex, this.pageSize, this.sortKey, this.sortValue, this.searchGenderList).subscribe((data: any) => {
+      this.loading = false;
+      this.total = 200;
+      this.dataSet = data.results;
     });
+  }
+
+  updateFilter(value: string[]): void {
+    this.searchGenderList = value;
+    this.searchData(true);
   }
 
   ngOnInit(): void {
-    this.refreshData();
+    this.searchData();
   }
 }

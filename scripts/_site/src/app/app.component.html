@@ -10,13 +10,11 @@
       <div nz-col [nzXs]="0" [nzSm]="0" [nzMd]="16" [nzLg]="19" [nzXl]="19" [nzXXl]="20" class="nav nav-hide">
         <div id="search-box">
           <i class="anticon anticon-search"></i>
-          <nz-select [nzPlaceHolder]="language=='zh'?'搜索组件...':'Search Components...'" [nzMode]="'combobox'" [(ngModel)]="searchComponent" (ngModelChange)="navigateToPage($event)">
+          <nz-select [nzPlaceHolder]="language=='zh'?'搜索组件...':'Search Components...'" nzShowSearch [(ngModel)]="searchComponent" (ngModelChange)="navigateToPage($event)">
             <ng-template [ngForOf]="componentList" ngFor let-component>
-              <nz-option [nzValue]="component.path" [nzLabel]="component.label" *ngIf="language==component.language">
-                <ng-template #nzOptionTemplate>
-                  <strong>{{component.label}}</strong>
-                  <span class="ant-component-decs">{{component.zh}}</span>
-                </ng-template>
+              <nz-option [nzValue]="component.path" [nzLabel]="component.label" nzCustomContent *ngIf="language==component.language">
+                <strong>{{component.label}}</strong>
+                <span class="ant-component-decs">{{component.zh}}</span>
               </nz-option>
             </ng-template>
           </nz-select>

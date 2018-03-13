@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-list-basic',
   template: `
-  <nz-list [nzDataSource]="data" [nzItemLayout]="'horizontal'">
+  <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
     <ng-template #item let-item>
       <nz-list-item>
         <nz-list-item-meta
