@@ -43,6 +43,7 @@ import { NzTagModule } from './tag/nz-tag.module';
 import { NzTimelineModule } from './timeline';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer';
+import { NzUploadModule } from './upload';
 
 export * from './button';
 export * from './divider';
@@ -50,6 +51,7 @@ export * from './grid';
 export * from './layout';
 export * from './dropdown';
 export * from './menu';
+export * from './upload';
 export * from './transfer';
 export * from './i18n';
 export * from './locale/index';
@@ -122,6 +124,7 @@ export * from './modal/public-api';
     NzFormModule,
     NzListModule,
     NzI18nModule,
+    NzUploadModule,
     NzModalModule
   ]
 })
