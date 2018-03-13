@@ -1,0 +1,14 @@
+<nz-select class="ant-fullcalendar-year-select" [nzSize]="size" [nzDropdownMatchSelectWidth]="false"
+           [ngModel]="activeYear" (ngModelChange)="yearChange.emit($event)">
+  <nz-option *ngFor="let year of years" [nzLabel]="year.label" [nzValue]="year.value"></nz-option>
+</nz-select>
+
+<nz-select *ngIf="mode === 'month'" class="ant-fullcalendar-month-select" [nzSize]="size" [nzDropdownMatchSelectWidth]="false"
+           [ngModel]="activeMonth" (ngModelChange)="monthChange.emit($event)">
+  <nz-option *ngFor="let month of months" [nzLabel]="month.label" [nzValue]="month.value"></nz-option>
+</nz-select>
+
+<nz-radio-group [(ngModel)]="mode" (ngModelChange)="modeChange.emit($event)" [nzSize]="size">
+  <label nz-radio-button nzValue="month">{{ monthTypeText }}</label>
+  <label nz-radio-button nzValue="year">{{ yearTypeText }}</label>
+</nz-radio-group>

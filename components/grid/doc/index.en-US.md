@@ -81,7 +81,7 @@ Flex layout uses a 24 grid layout to define the width of each "box", but does no
 
 ## API
 
-### Row
+### nz-row
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
@@ -90,7 +90,7 @@ Flex layout uses a 24 grid layout to define the width of each "box", but does no
 | nzJustify | horizontal arrangement of the flex layout: `start` `end` `center` `space-around` `space-between` | string | `start` |
 | nzType | layout mode, optional `flex`, [browser support](http://caniuse.com/#search=flex) | string |  |
 
-### Col
+### nz-col
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |

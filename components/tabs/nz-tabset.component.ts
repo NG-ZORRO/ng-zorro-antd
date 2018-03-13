@@ -42,7 +42,7 @@ export type NzTabType = 'line' | 'card';
   preserveWhitespaces: false,
   providers          : [ NzUpdateHostClassService ],
   template           : `
-    <nz-tabs-nav
+    <div nz-tabs-nav
       role="tablist"
       tabindex="0"
       [nzType]="nzType"
@@ -68,20 +68,20 @@ export type NzTabType = 'line' | 'card';
           <ng-template [ngTemplateOutlet]="tab.nzTitle"></ng-template>
         </ng-template>
       </div>
-    </nz-tabs-nav>
+    </div>
     <div
       class="ant-tabs-content"
       #tabContent
       [class.ant-tabs-content-animated]="tabPaneAnimated"
       [class.ant-tabs-content-no-animated]="!tabPaneAnimated"
       [style.margin-left.%]="tabPaneAnimated&&(-nzSelectedIndex*100)">
-      <nz-tab-body
+      <div nz-tab-body
         class="ant-tabs-tabpane"
         [class.ant-tabs-tabpane-active]="(nzSelectedIndex == i) && !nzHideAll"
         [class.ant-tabs-tabpane-inactive]="(nzSelectedIndex != i) || nzHideAll"
         [content]="tab.content"
         *ngFor="let tab of listOfNzTabComponent; let i = index">
-      </nz-tab-body>
+      </div>
     </div>`,
   styles             : [ `
     :host {

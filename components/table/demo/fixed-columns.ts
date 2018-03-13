@@ -3,35 +3,35 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-fixed-columns',
   template: `
-    <nz-table #nzTable [nzDataSource]="dataSet" [nzPageSize]="10" [nzScroll]="{x:'1300px'}">
-      <thead nz-thead>
+    <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" [nzScroll]="{x:'1300px'}">
+      <thead>
         <tr>
-          <th nz-th nzWidth="100px" nzLeft="0px"><span>Full Name</span></th>
-          <th nz-th nzWidth="100px" nzLeft="100px"><span>Age</span></th>
-          <th nz-th><span>Column 1</span></th>
-          <th nz-th><span>Column 2</span></th>
-          <th nz-th><span>Column 3</span></th>
-          <th nz-th><span>Column 4</span></th>
-          <th nz-th><span>Column 5</span></th>
-          <th nz-th><span>Column 6</span></th>
-          <th nz-th><span>Column 7</span></th>
-          <th nz-th><span>Column 8</span></th>
-          <th nz-th nzWidth="100px" nzRight="0px"><span>Action</span></th>
+          <th nzWidth="100px" nzLeft="0px">Full Name</th>
+          <th nzWidth="100px" nzLeft="100px">Age</th>
+          <th>Column 1</th>
+          <th>Column 2</th>
+          <th>Column 3</th>
+          <th>Column 4</th>
+          <th>Column 5</th>
+          <th>Column 6</th>
+          <th>Column 7</th>
+          <th>Column 8</th>
+          <th nzWidth="100px" nzRight="0px">Action</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of nzTable.data">
-          <td nz-td nzLeft="0px">{{data.name}}</td>
-          <td nz-td nzLeft="100px">{{data.age}}</td>
-          <td nz-td>{{data.address}}</td>
-          <td nz-td>{{data.address}}</td>
-          <td nz-td>{{data.address}}</td>
-          <td nz-td>{{data.address}}</td>
-          <td nz-td>{{data.address}}</td>
-          <td nz-td>{{data.address}}</td>
-          <td nz-td>{{data.address}}</td>
-          <td nz-td>{{data.address}}</td>
-          <td nz-td nzRight="0px">
+      <tbody>
+        <tr *ngFor="let data of nzTable.data">
+          <td nzLeft="0px">{{data.name}}</td>
+          <td nzLeft="100px">{{data.age}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td nzRight="0px">
             <a>action</a>
           </td>
         </tr>

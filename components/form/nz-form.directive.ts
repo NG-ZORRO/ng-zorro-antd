@@ -1,38 +1,35 @@
 import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
 @Directive({
-  selector: '[nz-form]'
+  selector : '[nz-form]',
+  providers: [ NzUpdateHostClassService ]
 })
 export class NzFormDirective implements OnInit {
-  _classList: string[] = [];
-  _el: HTMLElement;
-  _prefixCls = 'ant-form';
-
-  /**  @deprecated Use `nzLayout` instead. */
-  @Input() nzType = 'horizontal';
+  el: HTMLElement;
+  prefixCls = 'ant-form';
+  private _layout = 'horizontal';
 
   @Input()
   set nzLayout(value: string) {
-    this.nzType = value;
+    this._layout = value;
     this.setClassMap();
   }
 
-  setClassMap(): void {
-    this._classList.forEach(_className => {
-      this._renderer.removeClass(this._el, _className);
-    });
-    this._classList = [
-      this.nzType && `${this._prefixCls}-${this.nzType}`
-    ].filter((item) => {
-      return !!item;
-    });
-    this._classList.forEach(_className => {
-      this._renderer.addClass(this._el, _className);
-    });
+  get nzLayout(): string {
+    return this._layout;
   }
 
-  constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
-    this._el = this._elementRef.nativeElement;
+  setClassMap(): void {
+    const classMap = {
+      [ `${this.prefixCls}` ]                 : true,
+      [ `${this.prefixCls}-${this.nzLayout}` ]: this.nzLayout
+    };
+    this.nzUpdateHostClassService.updateHostClass(this.el, classMap);
+  }
+
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
+    this.el = this.elementRef.nativeElement;
   }
 
   ngOnInit(): void {
