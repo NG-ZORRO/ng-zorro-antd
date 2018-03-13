@@ -3,9 +3,10 @@ import {
   ContentChild,
   ElementRef,
   HostBinding,
-  HostListener,
   Input,
-  TemplateRef
+  OnDestroy,
+  OnInit,
+  TemplateRef,
 } from '@angular/core';
 
 import { NzAnchorComponent } from './nz-anchor.component';
@@ -14,9 +15,8 @@ import { NzAnchorComponent } from './nz-anchor.component';
   selector           : 'nz-link',
   preserveWhitespaces: false,
   template           : `
-    <a (click)="goToClick($event)" href="{{nzHref}}" class="ant-anchor-link-title">
-      <span *ngIf="!nzTemplate">{{ nzTitle }}</span>
-      <ng-template *ngIf="nzTemplate" [ngTemplateOutlet]="nzTemplate"></ng-template>
+    <a (click)="goToClick($event)" href="{{nzHref}}" class="ant-anchor-link-title" title="{{titleStr}}">
+      <span *ngIf="titleStr; else (titleTpl || nzTemplate)">{{ titleStr }}</span>
     </a>
     <ng-content></ng-content>
   `,
@@ -25,30 +25,40 @@ import { NzAnchorComponent } from './nz-anchor.component';
     'style'                  : 'display:block'
   }
 })
-export class NzAnchorLinkComponent {
+export class NzAnchorLinkComponent implements OnInit, OnDestroy {
 
-  @Input() nzHref: string;
+  @Input() nzHref = '#';
 
-  @Input() nzTitle: string;
+  titleStr = '';
+  titleTpl: TemplateRef<void>;
+  @Input()
+  set nzTitle(value: string | TemplateRef<void>) {
+    if (value instanceof TemplateRef) {
+      this.titleTpl = value;
+    } else {
+      this.titleStr = value;
+    }
+  }
 
   @ContentChild('nzTemplate') nzTemplate: TemplateRef<void>;
 
   @HostBinding('class.ant-anchor-link-active') active: boolean = false;
 
-  @HostListener('click')
-  _onClick(): void {
-    this._anchorComp.scrollTo(this);
+  constructor(public el: ElementRef, private anchorComp: NzAnchorComponent) {
   }
 
-  constructor(public el: ElementRef, private _anchorComp: NzAnchorComponent) {
-    this._anchorComp.add(this);
+  ngOnInit(): void {
+    this.anchorComp.registerLink(this);
   }
 
   goToClick(e: Event): void {
     e.preventDefault();
     e.stopPropagation();
-    this._anchorComp.scrollTo(this);
-    window.location.hash = this.nzHref;
-    // return false;
+    this.anchorComp.handleScrollTo(this);
   }
+
+  ngOnDestroy(): void {
+    this.anchorComp.unregisterLink(this);
+  }
+
 }
