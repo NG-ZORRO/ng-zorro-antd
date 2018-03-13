@@ -24,7 +24,7 @@
 | card | √ | 100% | 100% | vthinkxie | - |
 | carousel | √ | 100% | 100% | vthinkxie | - |
 | collapse | √ | 100% | 100% | vthinkxie | - |
-| table | √ | 100% | 100% | vthinkxie | √ | 
+| table | √ | 100% | 100% | vthinkxie | √ |
 | tabs | √ | 100% | 100% | vthinkxie | - |
 | timeline | √ | 100% | 100% | vthinkxie | - |
 | alert | √ | 100% | 100% | vthinkxie | - |
@@ -40,13 +40,13 @@
 | datepicker | x | x | x | trotyl | - |
 | timepicker | x | x | x | trotyl | - |
 | calendar | √ | 100% | 100% | trotyl | √ |
-| affix | x | x | x | cipchk | - |
+| affix | √ | 100% | 100% | cipchk | √ |
 | transfer | √ | 100% | 100% | cipchk | x |
 | avatar | √ | 100% | 100% | cipchk | x |
 | list | √ | 100% | 100% | cipchk | x |
-| upload | x | x | x | cipchk | - |
-| anchor | x | x | x | cipchk | - |
-| backtop | x | x | x | cipchk | - |
+| upload | √ | 100% | 100% | cipchk | x |
+| anchor | √ | 100% | 100% | cipchk | √ |
+| backtop | √ | 100% | 100% | cipchk | x |
 | divider | √ | 100% | 100% | cipchk | x |
 | treeselect | x | x | x | simplejason | - |
 | tree | x | x | x | simplejason | - |

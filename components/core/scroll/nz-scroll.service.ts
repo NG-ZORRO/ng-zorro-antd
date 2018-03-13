@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, Optional, Provider, SkipSelf } from '@angular/core';
+
 import { reqAnimFrame } from '../polyfill/request-animation';
 
 export type EasyingFn = (t: number, b: number, c: number, d: number) => number;

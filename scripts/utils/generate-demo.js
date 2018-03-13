@@ -133,10 +133,12 @@ function generateToc(language, name, demoMap) {
     );
   }
   linkArray.sort((pre, next) => pre.order - next.order);
-  const link = linkArray.map(link => link.content).join('');
-  return `  <div class="toc-affix fixed toc">
-    <nz-anchor>${link}</nz-anchor>
-  </div>`;
+  const links = linkArray.map(link => link.content).join('');
+  return `<nz-affix class="toc-affix" [nzOffsetTop]="16">
+    <nz-anchor [nzAffix]="false" nzShowInkInFixed (nzClick)="goLink($event)">
+      ${links}
+    </nz-anchor>
+  </nz-affix>`;
 }
 
 function generateExample(result) {
