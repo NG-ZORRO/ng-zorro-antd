@@ -80,7 +80,7 @@ Flex 布局是基于 24 栅格来定义每一个『盒子』的宽度，但排�
 
 ## API
 
-### Row
+### nz-row
 
 | 成员 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -89,7 +89,7 @@ Flex 布局是基于 24 栅格来定义每一个『盒子』的宽度，但排�
 | nzJustify | flex 布局下的水平排列方式：`start` `end` `center` `space-around` `space-between` | string | `start` |
 | nzType | 布局模式，可选 `flex`，[现代浏览器](http://caniuse.com/#search=flex) 下有效 | string |  |
 
-### Col
+### nz-col
 
 | 成员 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

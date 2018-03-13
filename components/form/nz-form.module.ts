@@ -1,20 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { NzGridModule } from '../grid';
 import { NzFormControlComponent } from './nz-form-control.component';
-import { NzFormExplainDirective } from './nz-form-explain.directive';
-import { NzFormExtraDirective } from './nz-form-extra.directive';
-import { NzFormItemRequiredDirective } from './nz-form-item-required.directive';
-import { NzFormItemDirective } from './nz-form-item.directive';
-import { NzFormLabelDirective } from './nz-form-label.directive';
-import { NzFormSplitDirective } from './nz-form-split.directive';
-import { NzFormTextDirective } from './nz-form-text.directive';
+import { NzFormExplainComponent } from './nz-form-explain.component';
+import { NzFormExtraComponent } from './nz-form-extra.component';
+import { NzFormItemComponent } from './nz-form-item.component';
+import { NzFormLabelComponent } from './nz-form-label.component';
+import { NzFormSplitComponent } from './nz-form-split.component';
+import { NzFormTextComponent } from './nz-form-text.component';
 import { NzFormDirective } from './nz-form.directive';
 
 @NgModule({
-  declarations: [ NzFormExtraDirective, NzFormLabelDirective, NzFormDirective, NzFormItemDirective, NzFormControlComponent, NzFormExplainDirective, NzFormTextDirective, NzFormSplitDirective, NzFormItemRequiredDirective ],
-  exports     : [ NzFormExtraDirective, NzFormLabelDirective, NzFormDirective, NzFormItemDirective, NzFormControlComponent, NzFormExplainDirective, NzFormTextDirective, NzFormSplitDirective, NzFormItemRequiredDirective ],
-  imports     : [ CommonModule ]
+  declarations: [ NzFormExtraComponent, NzFormLabelComponent, NzFormDirective, NzFormItemComponent, NzFormControlComponent, NzFormExplainComponent, NzFormTextComponent, NzFormSplitComponent ],
+  exports     : [ NzFormExtraComponent, NzFormLabelComponent, NzFormDirective, NzFormItemComponent, NzFormControlComponent, NzFormExplainComponent, NzFormTextComponent, NzFormSplitComponent ],
+  imports     : [ CommonModule, NzGridModule ]
 })
 export class NzFormModule {
 }
