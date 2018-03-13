@@ -34,11 +34,9 @@ A form consists of one or more form fields whose type includes input, textarea, 
 ```html
 <form nz-form>
   <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzFor="email" nzRequired>
-      E-mail
-    </nz-form-label>
+    <nz-form-label [nzSpan]="6" nzFor="email">E-mail</nz-form-label>
     <nz-form-control [nzSpan]="14">
-      <input nz-input name="email" id="email">
+      <input nz-input name="email" type="email" id="email">
     </nz-form-control>
   </nz-form-item >
 </form>
@@ -84,7 +82,7 @@ A form consists of one or more form fields whose type includes input, textarea, 
 
 | Property | Description | Type | Default Value |
 | --- | --- | --- | --- |
-| nzValidateStatus(Reactive Forms) | Will generate status based on NgControl| NgControl | first `NgControl` in `nz-form-control` |
+| nzValidateStatus(Reactive Forms) | Will generate status based on FormControl| FormControl | first `FormControl` in `nz-form-control` |
 | nzValidateStatus(Template-driven Forms) | The validation status. options：'success' 'warning' 'error' 'validating' | string |  |
 | nzHasFeedback | Used with `nzValidateStatus`, this option specifies the validation status icon. Recommended to be used only with `Input`. | boolean | false |
 

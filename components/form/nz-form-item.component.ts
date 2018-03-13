@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service'
 import { toBoolean } from '../core/util/convert';
 import { NzRowComponent } from '../grid';
 
@@ -6,6 +7,7 @@ import { NzRowComponent } from '../grid';
 @Component({
   selector           : 'nz-form-item',
   preserveWhitespaces: false,
+  providers          : [ NzUpdateHostClassService ],
   template           : `
     <ng-content></ng-content>`,
   host               : {
@@ -37,4 +39,6 @@ export class NzFormItemComponent extends NzRowComponent {
   disableHelp(): void {
     this.withHelp--;
   }
+
+
 }

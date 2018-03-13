@@ -1,5 +1,5 @@
 import { AfterContentInit, Component, ContentChild, Input, OnDestroy, OnInit } from '@angular/core';
-import { NgControl } from '@angular/forms';
+import { FormControl, NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
@@ -30,7 +30,7 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
   validateString: string;
   controlStatus: string;
   controlClassMap;
-  @ContentChild(NgControl) validateControl: NgControl;
+  @ContentChild(NgControl) validateControl: FormControl;
 
   @Input()
   set nzHasFeedback(value: boolean) {
@@ -43,10 +43,12 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
   }
 
   @Input()
-  set nzValidateStatus(value: string | NgControl) {
-    if (value instanceof NgControl) {
+  set nzValidateStatus(value: string | FormControl) {
+    if (value instanceof FormControl) {
       this.validateControl = value;
       this.validateString = null;
+      this.controlStatus = null;
+      this.setControlClassMap();
       this.watchControl();
     } else {
       this.validateString = value;

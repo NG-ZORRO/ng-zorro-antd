@@ -34,11 +34,9 @@ title: Form
 ```html
 <form nz-form>
   <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzFor="email" nzRequired>
-      E-mail
-    </nz-form-label>
+    <nz-form-label [nzSpan]="6" nzFor="email">E-mail</nz-form-label>
     <nz-form-control [nzSpan]="14">
-      <input nz-input name="email" id="email">
+      <input nz-input name="email" type="email" id="email">
     </nz-form-control>
   </nz-form-item >
 </form>
@@ -82,7 +80,7 @@ title: Form
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzValidateStatus(Reactive Forms) | 会根据NgControl的状态自动生成校验状态 | NgControl | `nz-form-control` 中包裹的第一个 `NgControl`  |
+| nzValidateStatus(Reactive Forms) | 会根据 FormControl 的状态自动生成校验状态 | FormControl | `nz-form-control` 中包裹的第一个 `FormControl`  |
 | nzValidateStatus(Template-driven Forms) | 校验状态，可选：'success' 'warning' 'error' 'validating' | string |  |
 | nzHasFeedback | 配合 nzValidateStatus 属性使用，展示校验状态图标	 | boolean | false|
 
