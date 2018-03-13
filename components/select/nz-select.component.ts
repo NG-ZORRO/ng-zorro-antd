@@ -157,7 +157,17 @@ import { NzSelectTopControlComponent } from './nz-select-top-control.component';
     '[class.ant-select-disabled]'   : 'nzDisabled',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-open]'       : 'nzOpen'
-  }
+  },
+  styles             : [ `
+    .ant-select-dropdown {
+      top: 100%;
+      left: 0;
+      position: relative;
+      width: 100%;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+  ` ]
 })
 export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy {
   private _disabled = false;

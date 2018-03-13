@@ -1,3 +1,4 @@
+@import "../../style/themes/default";
 
 .cdk-overlay-container {
   pointer-events: none;
@@ -28,63 +29,64 @@
   z-index: 1000;
 }
 
-// submenu
 
-.ant-menu-submenu-placement-bottomLeft {
-  top: 6px;
-  position: relative;
-}
-
-.ant-menu-submenu-placement-rightTop {
-  left: 4px;
-  position: relative;
-}
-
-.ant-menu-submenu-placement-leftTop {
-  right: 4px;
-  position: relative;
-}
-
-.ant-dropdown {
-  top: 100%;
-  left: 0;
-  position: relative;
-  width: 100%;
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
-
-.ant-select-dropdown {
-  top: 100%;
-  left: 0;
-  position: relative;
-  width: 100%;
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
-
-// tooltip
-.ant-tooltip {
-  position: relative;
-}
-
-// popconfirm
-.ant-popover {
-  position: relative;
-}
-
-// badge
-
-.ant-badge {
-  &-count {
-    position: absolute;
-    transform: translateX(50%);
-    right: 0;
+.box-shadow-left() {
+  .ant-table-th-right-sticky, .ant-table-td-right-sticky {
+    box-shadow: -6px 0 6px 0px rgba(0, 0, 0, .05);
   }
-  &-dot {
-    position: absolute;
-    transform: translateX(50%);
-    right: 0;
+}
 
+.box-shadow-right() {
+  .ant-table-th-left-sticky, .ant-table-td-left-sticky {
+    box-shadow: 6px 0 6px 0px rgba(0, 0, 0, .05);
+  }
+}
+
+.border-left() {
+  .ant-table-th-right-sticky, .ant-table-td-right-sticky {
+    border-right: @border-width-base @border-style-base @border-color-split;
+  }
+}
+
+.border-right() {
+  .ant-table-th-left-sticky, .ant-table-td-left-sticky {
+    border-left: @border-width-base @border-style-base @border-color-split;
+  }
+}
+
+.ant-table-th-left-sticky, .ant-table-th-right-sticky, .ant-table-td-right-sticky, .ant-table-td-left-sticky {
+  position: sticky;
+  z-index: 1;
+}
+
+.ant-table-td-left-sticky, .ant-table-td-right-sticky {
+  background: @component-background;
+}
+
+.ant-table-scroll-position-middle {
+  .box-shadow-right;
+  .box-shadow-left;
+}
+
+.ant-table-scroll-position-left {
+  .box-shadow-left;
+}
+
+.ant-table-scroll-position-right {
+  .box-shadow-right;
+}
+
+.ant-table-bordered {
+  &.ant-table-scroll-position-middle {
+    .border-right;
+    .border-left;
+  }
+
+  &.ant-table-scroll-position-left {
+    .border-left;
+  }
+
+  &.ant-table-scroll-position-right {
+    .border-right;
   }
 }
