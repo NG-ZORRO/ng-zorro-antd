@@ -74,8 +74,8 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   private attrAccept(file: File, acceptedFiles: string | string[]): boolean {
     if (file && acceptedFiles) {
       const acceptedFilesArray = Array.isArray(acceptedFiles) ? acceptedFiles : acceptedFiles.split(',');
-      const fileName = file.name || '';
-      const mimeType = file.type || '';
+      const fileName = '' + file.name;
+      const mimeType = '' + file.type;
       const baseMimeType = mimeType.replace(/\/.*$/, '');
 
       return acceptedFilesArray.some(type => {
@@ -92,12 +92,19 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     return true;
   }
 
+  private attachUid(file: UploadFile): UploadFile {
+    if (!file.uid) {
+      file.uid = Math.random().toString(36).substring(2);
+    }
+    return file;
+  }
+
   /** @private */
   uploadFiles(fileList: FileList | File[]): void {
     let postFiles: UploadFile[] = Array.prototype.slice.call(fileList);
     this.options.filters.forEach(f => postFiles = f.fn(postFiles));
     postFiles.forEach((file: UploadFile) => {
-      file.uid = Math.random().toString(36).substring(2);
+      this.attachUid(file);
       this.upload(file, postFiles);
     });
   }
@@ -111,6 +118,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
       before.subscribe((processedFile: UploadFile) => {
         const processedFileType = Object.prototype.toString.call(processedFile);
         if (processedFileType === '[object File]' || processedFileType === '[object Blob]') {
+          this.attachUid(processedFile);
           this.post(processedFile);
         } else {
           this.post(file);
@@ -187,20 +195,14 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
 
   abort(file?: UploadFile): void {
     if (file) {
-      let uid: any = file;
-      if (file && file.uid) {
-        uid = file.uid;
-      }
+      const uid: any = file && file.uid;
       if (this.reqs[uid]) {
         this.reqs[uid].unsubscribe();
         delete this.reqs[uid];
       }
     } else {
       Object.keys(this.reqs).forEach((uid) => {
-        if (this.reqs[uid]) {
-          this.reqs[uid].unsubscribe();
-        }
-
+        this.reqs[uid].unsubscribe();
         delete this.reqs[uid];
       });
     }

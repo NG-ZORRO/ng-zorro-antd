@@ -142,7 +142,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     return this._withCredentials;
   }
 
-  @Input() nzRemove: (file: UploadFile) => boolean | Observable<boolean>;
+  @Input() nzRemove: ((file: UploadFile) => boolean) | Observable<boolean>;
   @Input() nzPreview: (file: UploadFile) => void;
 
   @Output() nzChange: EventEmitter<UploadChangeParam> = new EventEmitter<UploadChangeParam>();
@@ -214,20 +214,16 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
       error: file.error,
       percent: 0,
       // tslint:disable-next-line:no-angle-bracket-type-assertion
-      originFileObj: <any>file
+      originFileObj: <any> file
     };
   }
 
   private getFileItem(file: UploadFile, fileList: UploadFile[]): UploadFile {
-    const matchKey = file.uid !== undefined ? 'uid' : 'name';
-    return fileList.filter(item => item[matchKey] === file[matchKey])[0];
+    return fileList.filter(item => item.uid === file.uid)[0];
   }
 
   private removeFileItem(file: UploadFile, fileList: UploadFile[]): UploadFile[] {
-    const matchKey = file.uid !== undefined ? 'uid' : 'name';
-    const removed = fileList.filter(item => item[matchKey] !== file[matchKey]);
-    if (removed.length === fileList.length) return null;
-    return removed;
+    return fileList.filter(item => item.uid !== file.uid);
   }
 
   private uploadErrorText = this.i18n.translate('Upload.uploadError');
@@ -268,8 +264,6 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   private onProgress = (e: { percent: number }, file: UploadFile): void => {
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
-    // removed
-    if (!targetItem) return;
     targetItem.percent = e.percent;
     this.nzChange.emit({
       event: e,
@@ -283,8 +277,6 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   private onSuccess = (res: any, file: any, xhr?: any): void => {
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
-    // removed
-    if (!targetItem) return;
     targetItem.status = 'done';
     targetItem.response = res;
     this.nzChange.emit({
@@ -295,18 +287,16 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     this.cd.detectChanges();
   }
 
-  private onError = (err: any, file: any, type: string = 'error'): void => {
+  private onError = (err: any, file: any): void => {
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
-    // removed
-    if (!targetItem) return;
     targetItem.error = err;
     targetItem.status = 'error';
-    targetItem.message = this.genErr(file);
+    targetItem.message = this.genErr(targetItem);
     this.nzChange.emit({
       file: { ...targetItem },
       fileList,
-      type
+      type: 'error'
     });
     this.cd.detectChanges();
   }
@@ -328,17 +318,14 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     ((this.nzRemove ? this.nzRemove instanceof Observable ? this.nzRemove : of(this.nzRemove(file)) : of(true)) as Observable<any>)
       .pipe(filter((res: boolean) => res))
       .subscribe(res => {
-        const removedFileList = this.removeFileItem(file, this.nzFileList);
-        if (removedFileList) {
-          this.nzFileList = removedFileList;
-          this.nzChange.emit({
-            file,
-            fileList: removedFileList,
-            type: 'removed'
-          });
-          this.nzFileListChange.emit(this.nzFileList);
-          this.cd.detectChanges();
-        }
+        this.nzFileList = this.removeFileItem(file, this.nzFileList);
+        this.nzChange.emit({
+          file,
+          fileList: this.nzFileList,
+          type: 'removed'
+        });
+        this.nzFileListChange.emit(this.nzFileList);
+        this.cd.detectChanges();
       });
   }
 

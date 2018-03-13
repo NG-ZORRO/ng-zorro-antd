@@ -96,7 +96,7 @@ describe('upload', () => {
       it('should be error when using 404 http', () => {
         pageObject.postLarge();
         const req = httpMock.expectOne(instance.nzAction);
-        req.error(null, { status: 404 });
+        req.error(null, { status: 404, statusText: 'not found' });
         pageObject.expectChange('error');
         httpMock.verify();
       });
@@ -159,6 +159,7 @@ describe('upload', () => {
       it('should be upload a file via drag', () => {
         instance.nzType = 'drag';
         fixture.detectChanges();
+        instance.comp.fileDrop({ type: 'dragover' } as any);
         instance.comp.fileDrop({ type: 'dragover' } as any);
         fixture.detectChanges();
         expect(pageObject.getByCss('.ant-upload-drag-hover') != null).toBe(true);
@@ -359,6 +360,66 @@ describe('upload', () => {
           expect(instance._beforeUploadList.length).toBe(0);
         });
       });
+
+      it('#nzFileList, should be allow empty', () => {
+        instance.nzFileList = null;
+        fixture.detectChanges();
+        expect(instance._nzChange).toBeUndefined();
+        pageObject.postFile(
+          new File(
+            [`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`],
+            null, { type: null }
+          )
+        );
+        const req = httpMock.expectOne(instance.nzAction);
+        pageObject.expectChange();
+        req.flush({});
+        pageObject.expectChange('success');
+        httpMock.verify();
+      });
+
+      describe('[onRemove]', () => {
+        const INITCOUNT = 3;
+        beforeEach(() => {
+          instance.nzFileList = [
+            {
+              uid: 1,
+              name: 'xxx.png',
+              status: 'done',
+              response: 'Server Error 500', // custom error message to show
+              url: 'http://www.baidu.com/xxx.png'
+            },
+            {
+              uid: 2,
+              name: 'yyy.png',
+              status: 'done',
+              url: 'http://www.baidu.com/yyy.png'
+            },
+            {
+              uid: 3,
+              name: 'zzz.png',
+              status: 'error',
+              response: 'Server Error 500', // custom error message to show
+              url: 'http://www.baidu.com/zzz.png'
+            }
+          ] as any[];
+          fixture.detectChanges();
+        });
+        it('should be with Observable', () => {
+          instance.onRemove = of(false);
+          fixture.detectChanges();
+          expect(dl.queryAll(By.css('.anticon-cross')).length).toBe(INITCOUNT);
+          dl.query(By.css('.anticon-cross')).nativeElement.click();
+          expect(dl.queryAll(By.css('.anticon-cross')).length).toBe(INITCOUNT);
+        });
+        it('should be with null', () => {
+          instance.onRemove = null;
+          fixture.detectChanges();
+          expect(dl.queryAll(By.css('.anticon-cross')).length).toBe(INITCOUNT);
+          dl.query(By.css('.anticon-cross')).nativeElement.click();
+          expect(dl.queryAll(By.css('.anticon-cross')).length).toBe(INITCOUNT - 1);
+        });
+      });
     });
 
     describe('CORS', () => {
@@ -512,12 +573,12 @@ describe('upload', () => {
     });
 
     describe('[onRemove]', () => {
-      it('should be handle review', () => {
+      it('should be handle remove', () => {
         expect(instance._onRemove).toBe(false);
         dl.query(By.css('.ant-upload-list-item-actions .anticon-delete')).nativeElement.click();
         expect(instance._onRemove).toBe(true);
       });
-      it('should be invalid handle review when is a null', () => {
+      it('should be invalid handle remove when is a null', () => {
         expect(instance._onRemove).toBe(false);
         instance.onRemove = null;
         fixture.detectChanges();
@@ -664,7 +725,7 @@ describe('upload', () => {
             target: {
               files: [
                 ...PNGSMALL.target.files,
-                ...PNGSMALL.target.files
+                ...JPGSMALL.target.files
               ]
             }
           } as any);
@@ -713,9 +774,7 @@ describe('upload', () => {
         http = injector.get(HttpTestingController);
       });
 
-      it(
-        'should uploading a png file',
-        fakeAsync(() => {
+      it('should uploading a png file', fakeAsync(() => {
           spyOn(comp.options, 'onStart');
           spyOn(comp.options, 'onProgress');
           spyOn(comp.options, 'onSuccess');
@@ -730,9 +789,7 @@ describe('upload', () => {
         })
       );
 
-      it(
-        'should contain the parameters of http request',
-        fakeAsync(() => {
+      it('should contain the parameters of http request', fakeAsync(() => {
           comp.onChange(PNGSMALL as any);
           tick(1);
           const req = http.expectOne('/test');
@@ -757,7 +814,7 @@ describe('upload', () => {
         expect(comp.options.onStart).not.toHaveBeenCalled();
       });
 
-      it('should request when beforeUpload return false', () => {
+      it('should be no request when beforeUpload is false', () => {
         spyOn(comp.options, 'beforeUpload').and.returnValue(false);
         spyOn(comp.options, 'onStart');
         comp.onChange(PNGSMALL as any);
@@ -765,9 +822,7 @@ describe('upload', () => {
         expect(comp.options.onStart).not.toHaveBeenCalled();
       });
 
-      it(
-        'should error if request error',
-        fakeAsync(() => {
+      it('should error when request error', fakeAsync(() => {
           spyOn(comp.options, 'onStart');
           spyOn(comp.options, 'onSuccess');
           spyOn(comp.options, 'onError');
@@ -854,7 +909,7 @@ class TestUploadComponent {
     this._onPreview = true;
   }
   _onRemove = false;
-  onRemove = (file: UploadFile): boolean => {
+  onRemove: ((file: UploadFile) => boolean) | Observable<boolean> = (file: UploadFile): boolean => {
     this._onRemove = true;
     return true;
   }
@@ -908,7 +963,7 @@ class TestUploadListComponent {
     this._onPreview = true;
   }
   _onRemove = false;
-  onRemove = (file: UploadFile): void => {
+  onRemove: any = (file: UploadFile): void => {
     this._onRemove = true;
   }
 }
