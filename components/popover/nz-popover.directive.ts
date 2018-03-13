@@ -3,7 +3,7 @@ import {
   Directive,
   ElementRef,
   Renderer2,
-  ViewContainerRef,
+  ViewContainerRef
 } from '@angular/core';
 
 import { NzTooltipDirective } from '../tooltip/nz-tooltip.directive';
@@ -11,7 +11,7 @@ import { NzTooltipDirective } from '../tooltip/nz-tooltip.directive';
 import { NzPopoverComponent } from './nz-popover.component';
 
 @Directive({
-  selector: '[nz-popover]',
+  selector: '[nz-popover]'
 })
 export class NzPopoverDirective extends NzTooltipDirective {
   constructor(

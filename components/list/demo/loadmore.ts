@@ -12,11 +12,13 @@ const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,
     class="demo-loadmore-list"
     [nzDataSource]="data"
     [nzItemLayout]="'horizontal'"
-    [nzLoading]="loading">
+    [nzLoading]="loading"
+    [nzRenderItem]="item"
+    [nzLoadMore]="loadMore">
     <ng-template #item let-item>
-      <nz-list-item [nzContent]="'content'">
-        <ng-template #action><a (click)="edit(item)">edit</a></ng-template>
-        <ng-template #action><a (click)="edit(item)">more</a></ng-template>
+      <nz-list-item [nzContent]="'content'" [nzActions]="[editAction,moreAction]">
+        <ng-template #editAction><a (click)="edit(item)">edit</a></ng-template>
+        <ng-template #moreAction><a (click)="edit(item)">more</a></ng-template>
         <nz-list-item-meta
             [nzTitle]="nzTitle"
             nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"

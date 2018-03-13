@@ -7,6 +7,7 @@ import { NzMessageService } from 'ng-zorro-antd';
     <nz-transfer
       [nzDataSource]="list"
       [nzListStyle]="{'width.px': 300, 'height.px': 300}"
+      [nzRender]="render"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)">
       <ng-template #render let-item>

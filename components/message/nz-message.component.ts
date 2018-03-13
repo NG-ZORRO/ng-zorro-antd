@@ -3,7 +3,7 @@ import {
   state,
   style,
   transition,
-  trigger,
+  trigger
 } from '@angular/animations';
 import {
   Component,
@@ -30,7 +30,7 @@ import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definiti
       transition('* => leave', [
         style({ opacity: 1, transform: 'translateY(0)' }),
         animate('100ms linear')
-      ]),
+      ])
     ])
   ],
   template           : `

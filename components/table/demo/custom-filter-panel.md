@@ -7,10 +7,10 @@ title:
 
 ## zh-CN
 
-通过 `filterDropdown`、`filterDropdownVisible` 和 `filterDropdownVisibleChange` 定义自定义的列筛选功能，并实现一个搜索列的示例。
+通过 `nz-dropdown`、`nzFilters` 和 `nzFilterChange` 定义自定义的列筛选功能，并实现一个搜索列的示例。
 
 ## en-US
 
-Implement a customized column search example via `filterDropdown`, `filterDropdownVisible` and `filterDropdownVisibleChange`.
+Implement a customized column search example via `nz-dropdown`, `nzFilters` and `nzFilterChange`.
 
 

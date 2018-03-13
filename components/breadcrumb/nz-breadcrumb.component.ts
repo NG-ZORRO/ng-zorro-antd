@@ -11,7 +11,12 @@ import {
     <ng-content></ng-content>`,
   host               : {
     '[class.ant-breadcrumb]': 'true'
-  }
+  },
+  styles             : [ `
+    :host {
+      display: block;
+    }
+  ` ]
 })
 export class NzBreadCrumbComponent {
   private _separator: string | TemplateRef<void> = '/';

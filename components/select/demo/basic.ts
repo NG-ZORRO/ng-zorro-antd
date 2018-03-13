@@ -1,42 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-select-basic',
   template: `
-    <nz-select style="width: 120px;" [(ngModel)]="selectedOption" [nzPlaceHolder]="'choose option'" nzAllowClear>
-      <nz-option
-        *ngFor="let option of options"
-        [nzLabel]="option.label"
-        [nzValue]="option"
-        [nzDisabled]="option.disabled">
-      </nz-option>
-    </nz-select>
-    <nz-select style="width: 120px;" [(ngModel)]="selectedOption" [nzPlaceHolder]="'choose option'" nzDisabled>
-      <nz-option
-        *ngFor="let option of options"
-        [nzLabel]="option.label"
-        [nzValue]="option"
-        [nzDisabled]="option.disabled">
-      </nz-option>
-    </nz-select>
-  `,
-  styles  : []
+    <div>
+      <nz-select style="width: 120px;" [(ngModel)]="selectedValue" nzAllowClear nzPlaceHolder="Choose">
+        <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
+        <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
+        <nz-option nzValue="disabled" nzLabel="Disabled" nzDisabled></nz-option>
+      </nz-select>
+      <nz-select style="width: 120px;" [ngModel]="'lucy'" nzDisabled>
+        <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
+      </nz-select>
+    </div>
+  `
 })
-export class NzDemoSelectBasicComponent implements OnInit {
-  options = [];
-  selectedOption;
-
-  ngOnInit() {
-    /*模拟服务器异步加载*/
-    setTimeout(_ => {
-      this.options = [
-        { value: 'jack', label: 'Jack' },
-        { value: 'lucy', label: 'Lucy' },
-        { value: 'disabled', label: 'Disabled', disabled: true }
-      ];
-      this.selectedOption = this.options[ 0 ];
-    }, 100);
-  }
+export class NzDemoSelectBasicComponent {
+  selectedValue = 'lucy';
 }
-
-

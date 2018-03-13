@@ -6,31 +6,25 @@ import { Component } from '@angular/core';
     <nz-table
       #borderedTable
       nzBordered
-      nzShowFooter
-      nzShowTitle
-      [nzDataSource]="dataSet"
-      [nzPageSize]="10">
-      <span nz-table-title>Header</span>
-      <thead nz-thead>
+      nzFooter="Footer"
+      nzTitle="Header"
+      [nzData]="dataSet">
+      <thead>
         <tr>
-          <th nz-th><span>Name</span></th>
-          <th nz-th><span>Age</span></th>
-          <th nz-th><span>Address</span></th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Address</th>
         </tr>
       </thead>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of borderedTable.data">
-          <td nz-td>
-            <a>{{data.name}}</a>
-          </td>
-          <td nz-td>{{data.age}}</td>
-          <td nz-td>{{data.address}}</td>
+      <tbody>
+        <tr *ngFor="let data of borderedTable.data">
+          <td>{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
         </tr>
       </tbody>
-      <span nz-table-footer>Footer</span>
     </nz-table>
-  `,
-  styles  : []
+  `
 })
 export class NzDemoTableBorderedComponent {
   dataSet = [
@@ -38,19 +32,19 @@ export class NzDemoTableBorderedComponent {
       key    : '1',
       name   : 'John Brown',
       age    : 32,
-      address: 'New York No. 1 Lake Park',
+      address: 'New York No. 1 Lake Park'
     },
     {
       key    : '2',
       name   : 'Jim Green',
       age    : 42,
-      address: 'London No. 1 Lake Park',
+      address: 'London No. 1 Lake Park'
     },
     {
       key    : '3',
       name   : 'Joe Black',
       age    : 32,
-      address: 'Sidney No. 1 Lake Park',
+      address: 'Sidney No. 1 Lake Park'
     }
   ];
 }

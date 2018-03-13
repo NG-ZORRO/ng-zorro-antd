@@ -23,13 +23,13 @@ One or more elements can be selected from either column, one click on the proper
 | nzListStyle | A custom CSS style used for rendering the transfer columns. equal `ngStyle` | object |  |
 | nzItemUnit | single unit | string | item |
 | nzItemsUnit | multiple unit | string | items |
-| #render | The function to generate the item shown on a column. please refer to the case. | `TemplateRef<void>` | - |
-| #footer | A function used for rendering the footer. please refer to the case. | `TemplateRef<void>` | - |
+| nzRender | The function to generate the item shown on a column. please refer to the case. | `TemplateRef<void>` | - |
+| nzFooter | A function used for rendering the footer. please refer to the case. | `TemplateRef<void>` | - |
 | nzShowSearch | If included, a search box is shown on each column. | boolean | false |
 | nzFilterOption | A function to determine whether an item should show in search result list | `(inputValue: string, item: TransferItem) => boolean` |
 | nzSearchPlaceholder | The hint text of the search box. | string | 'Search here' |
 | nzNotFoundContent | Text to display when a column is empty. | string | 'The list is empty' |
-| canMove | Two verification when transfer choice box. please refer to the case. | `(arg: TransferCanMove) => Observable<TransferItem[]>` | - |
+| nzCanMove | Two verification when transfer choice box. please refer to the case. | `(arg: TransferCanMove) => Observable<TransferItem[]>` | - |
 | (nzChange) | A callback function that is executed when the transfer between columns is complete. | `EventEmitter<TransferChange>` | - |
 | (nzSearchChange) | A callback function which is executed when search field are changed | `EventEmitter<TransferSearchChange>` | - |
 | (nzSelectChange) | A callback function which is executed when selected items are changed. | `EventEmitter<TransferSearchChange>` | - |

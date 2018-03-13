@@ -1,53 +1,21 @@
-import {
-  Component,
-  ContentChild,
-  Input,
-  OnDestroy,
-  OnInit,
-  TemplateRef
-} from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 
 import { toBoolean } from '../core/util/convert';
 
-import { NzSelectComponent } from './nz-select.component';
-
 @Component({
-  selector           : 'nz-option',
-  preserveWhitespaces: false,
-  template           : `
-    <ng-content></ng-content>
-  `
+  selector: 'nz-option',
+  template: `
+    <ng-template>
+      <ng-content></ng-content>
+    </ng-template>`
 })
-export class NzOptionComponent implements OnDestroy, OnInit {
+export class NzOptionComponent {
   private _disabled = false;
-
-  _value: string;
-  _label: string;
-  @ContentChild('nzOptionTemplate') nzOptionTemplate: TemplateRef<void>;
-
-  @Input()
-  set nzValue(value: string) {
-    if (this._value === value) {
-      return;
-    }
-    this._value = value;
-  }
-
-  get nzValue(): string {
-    return this._value;
-  }
-
-  @Input()
-  set nzLabel(value: string) {
-    if (this._label === value) {
-      return;
-    }
-    this._label = value;
-  }
-
-  get nzLabel(): string {
-    return this._label;
-  }
+  private _customContent = false;
+  @ViewChild(TemplateRef) template: TemplateRef<void>;
+  @Input() nzLabel: string;
+  // tslint:disable-next-line:no-any
+  @Input() nzValue: any;
 
   @Input()
   set nzDisabled(value: boolean) {
@@ -58,14 +26,12 @@ export class NzOptionComponent implements OnDestroy, OnInit {
     return this._disabled;
   }
 
-  constructor(private _nzSelect: NzSelectComponent) {
+  @Input()
+  set nzCustomContent(value: boolean) {
+    this._customContent = toBoolean(value);
   }
 
-  ngOnInit(): void {
-    this._nzSelect.addOption(this);
-  }
-
-  ngOnDestroy(): void {
-    this._nzSelect.removeOption(this);
+  get nzCustomContent(): boolean {
+    return this._customContent;
   }
 }

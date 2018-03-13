@@ -57,6 +57,6 @@ export class NzLocale {
     notFoundContent: string,
     searchPlaceholder: string,
     itemUnit: string,
-    itemsUnit: string,
+    itemsUnit: string
   };
 }

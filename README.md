@@ -6,7 +6,7 @@
 
 # NG-ZORRO
 [![Travis branch](https://img.shields.io/travis/NG-ZORRO/ng-zorro-antd/0.7.0.svg?style=flat-square)](https://travis-ci.org/NG-ZORRO/ng-zorro-antd)
-[![Coveralls github](https://img.shields.io/coveralls/NG-ZORRO/ng-zorro-antd/0.7.0.svg?style=flat-square)](https://coveralls.io/github/NG-ZORRO/ng-zorro-antd)
+[![codecov](https://codecov.io/gh/NG-ZORRO/ng-zorro-antd/branch/0.7.0/graph/badge.svg)](https://codecov.io/gh/NG-ZORRO/ng-zorro-antd)
 [![Gemnasium](https://img.shields.io/gemnasium/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://gemnasium.com/github.com/NG-ZORRO/ng-zorro-antd)
 [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 [![GitHub Release Date](https://img.shields.io/github/release-date/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/releases)

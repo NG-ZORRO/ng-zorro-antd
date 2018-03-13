@@ -10,6 +10,6 @@ import { NzNotificationComponent } from './nz-notification.component';
   imports: [ CommonModule, OverlayModule ],
   declarations: [ NzNotificationComponent, NzNotificationContainerComponent ],
   providers: [ NZ_NOTIFICATION_DEFAULT_CONFIG_PROVIDER ],
-  entryComponents: [ NzNotificationContainerComponent ],
+  entryComponents: [ NzNotificationContainerComponent ]
 })
 export class NzNotificationModule { }

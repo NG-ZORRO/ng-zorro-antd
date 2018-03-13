@@ -3,12 +3,9 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-input-search-input',
   template: `
-    <nz-input-group [nzSuffix]="suffixIcon">
+    <nz-input-group nzSuffixIcon="anticon anticon-search">
       <input type="text" nz-input placeholder="input search text">
     </nz-input-group>
-    <ng-template #suffixIcon>
-      <i class="anticon anticon-search"></i>
-    </ng-template>
     <br>
     <br>
     <nz-input-group nzSearch [nzSuffix]="suffixIconButton">

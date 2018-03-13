@@ -3,33 +3,21 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-select-tags',
   template: `
-    <nz-select
-      style="width: 400px;"
-      nzTags
-      [nzPlaceHolder]="'请选择人员'"
-      [(ngModel)]="selectedMultipleOption"
-      [nzNotFoundContent]="'无法找到'"
-      nzShowSearch>
-      <nz-option
-        *ngFor="let option of searchOptions"
-        [nzLabel]="option.label"
-        [nzValue]="option">
+    <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="Tag Mode" [(ngModel)]="listOfTagOptions">
+      <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value">
       </nz-option>
     </nz-select>
-  `,
-  styles  : []
+  `
 })
 export class NzDemoSelectTagsComponent implements OnInit {
-  searchOptions = [
-    { value: 'jack', label: '杰克' },
-    { value: 'lucy', label: '露西' },
-    { value: 'tom', label: '汤姆' }
-  ];
-  selectedMultipleOption = [ this.searchOptions[ 0 ] ];
+  listOfOption = [];
+  listOfTagOptions = [];
 
-  ngOnInit() {
-    setTimeout(_ => {
-      this.selectedMultipleOption = [];
-    }, 2000);
+  ngOnInit(): void {
+    const children = [];
+    for (let i = 10; i < 36; i++) {
+      children.push({ label: i.toString(36) + i, value: i.toString(36) + i });
+    }
+    this.listOfOption = children;
   }
 }
