@@ -44,9 +44,9 @@ Uploading is the process of publishing information (web pages, text, pictures, v
 
 ## nzChange
 
-> 开始、上传进度、完成、失败都会调用这个函数。
+> The function will be called when uploading is in progress, completed or failed
 
-文件状态改变的回调，返回为：
+When uploading state change, it returns:
 
 ```js
 {
@@ -56,25 +56,25 @@ Uploading is the process of publishing information (web pages, text, pictures, v
 }
 ```
 
-1. `file` 当前操作的文件对象。
+1. `file` File object for the current operation.
 
    ```js
    {
-      uid: 'uid',      // 文件唯一标识
-      name: 'xx.png'   // 文件名
-      status: 'done', // 状态有：uploading done error removed
-      response: '{"status": "success"}' // 服务端响应内容
+      uid: 'uid',      // unique identifier
+      name: 'xx.png'   // file name
+      status: 'done', // options：uploading, done, error, removed
+      response: '{"status": "success"}' // response from server
    }
    ```
 
-2. `fileList` 当前的文件列表。
-3. `event` 上传中的服务端响应内容，包含了上传进度等信息，高级浏览器支持。
+2. `fileList` current list of files
+3. `event` response from server, including uploading progress, supported by advanced browsers.
 
 ## nzCustomRequest
 
-默认使用HTML5方式上传（即：使用 `HttpClient`），允许覆盖默认行为实现定制需求，例如直接与阿里云交互等。
+Allows for advanced customization by overriding default behavior in `HttpClient`. Provide your own XMLHttpRequest calls to interface with custom backend processes or interact with AWS S3 service through the aws-sdk-js package.
 
-`nzCustomRequest` 回调传递以下参数：
+`nzCustomRequest` callback is passed an object with:
 
 - `onProgress: (event: { percent: number }): void`
 - `onError: (event: Error): void`
