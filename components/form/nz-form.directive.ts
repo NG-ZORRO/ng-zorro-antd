@@ -8,18 +8,22 @@ import { NzUpdateHostClassService } from '../core/services/update-host-class.ser
 export class NzFormDirective implements OnInit {
   el: HTMLElement;
   prefixCls = 'ant-form';
-  type = 'horizontal';
+  private _layout = 'horizontal';
 
   @Input()
   set nzLayout(value: string) {
-    this.type = value;
+    this._layout = value;
     this.setClassMap();
+  }
+
+  get nzLayout(): string {
+    return this._layout;
   }
 
   setClassMap(): void {
     const classMap = {
-      [ `${this.prefixCls}` ]             : true,
-      [ `${this.prefixCls}-${this.type}` ]: this.type
+      [ `${this.prefixCls}` ]                 : true,
+      [ `${this.prefixCls}-${this.nzLayout}` ]: this.nzLayout
     };
     this.nzUpdateHostClassService.updateHostClass(this.el, classMap);
   }

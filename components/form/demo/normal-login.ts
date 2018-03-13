@@ -10,24 +10,24 @@ import {
   selector: 'nz-demo-form-normal-login',
   template: `
     <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
-      <div nz-form-item>
-        <div nz-form-control>
+      <nz-form-item>
+        <nz-form-control>
           <nz-input-group nzPrefixIcon="anticon anticon-user">
             <input type="text" nz-input formControlName="userName" placeholder="Username">
           </nz-input-group>
-          <div nz-form-explain *ngIf="getControl('userName').dirty && getControl('userName').hasError('required')">Please input your username!</div>
-        </div>
-      </div>
-      <div nz-form-item>
-        <div nz-form-control>
+          <nz-form-explain *ngIf="validateForm.get('userName').dirty && validateForm.get('userName').errors">Please input your username!</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
           <nz-input-group nzPrefixIcon="anticon anticon-lock">
             <input type="password" nz-input formControlName="password" placeholder="Password">
           </nz-input-group>
-          <div nz-form-explain *ngIf="getControl('password').dirty && getControl('password').hasError('required')">Please input your Password!</div>
-        </div>
-      </div>
-      <div nz-form-item>
-        <div nz-form-control>
+          <nz-form-explain *ngIf="validateForm.get('password').dirty && validateForm.get('password').errors">Please input your Password!</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
           <label nz-checkbox formControlName="remember">
             <span>Remember me</span>
           </label>
@@ -35,8 +35,8 @@ import {
           <button nz-button class="login-form-button" [nzType]="'primary'">Log in</button>
           Or
           <a href="">register now!</a>
-        </div>
-      </div>
+        </nz-form-control>
+      </nz-form-item>
     </form>
   `,
   styles: [ `
@@ -61,10 +61,6 @@ export class NzDemoFormNormalLoginComponent implements OnInit {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[ i ].markAsDirty();
     }
-  }
-
-  getControl(name: string): AbstractControl {
-    return this.validateForm.controls[ name ];
   }
 
   constructor(private fb: FormBuilder) {

@@ -11,30 +11,26 @@ import {
   selector: 'nz-demo-form-dynamic-form-item',
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-      <div nz-form-item nz-row *ngFor="let control of controlArray;let i = index">
-        <div nz-form-label nz-col [nzXs]="24" [nzSm]="4" *ngIf="i==0">
-          <label [attr.for]="control.controlInstance">Passengers</label>
-        </div>
-        <div nz-form-control nz-col [nzXs]="24" [nzSm]="20" [nzOffset]="i==0?0:4">
+      <nz-form-item *ngFor="let control of controlArray;let i = index">
+        <nz-form-label [nzXs]="24" [nzSm]="4" *ngIf="i==0" [nzFor]="control.controlInstance">Passengers</nz-form-label>
+        <nz-form-control [nzXs]="24" [nzSm]="20" [nzOffset]="i==0?0:4">
           <input nz-input style="width: 60%; margin-right:8px;" placeholder="placeholder" [attr.id]="control.id" [formControlName]="control.controlInstance">
           <i class="anticon anticon-minus-circle-o dynamic-delete-button" (click)="removeField(control,$event)"></i>
-          <div nz-form-explain *ngIf="getFormControl(control.controlInstance)?.dirty&&getFormControl(control.controlInstance)?.hasError('required')">
+          <nz-form-explain *ngIf="getFormControl(control.controlInstance)?.dirty&&getFormControl(control.controlInstance)?.hasError('required')">
             Please input passenger's name or delete this field.
-          </div>
-        </div>
-      </div>
-      <div nz-form-item nz-row>
-        <div nz-form-control nz-col [nzXs]="{span:24,offset:0}" [nzSm]="{span:20,offset:4}">
-          <button nz-button nzType="dashed" style="width:60%" (click)="addField($event)">
-            <i class="anticon anticon-plus"></i> Add field
-          </button>
-        </div>
-      </div>
-      <div nz-form-item nz-row>
-        <div nz-form-control nz-col [nzXs]="{span:24,offset:0}" [nzSm]="{span:20,offset:4}">
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control [nzXs]="{span:24,offset:0}" [nzSm]="{span:20,offset:4}">
+          <button nz-button nzType="dashed" style="width:60%" (click)="addField($event)"><i class="anticon anticon-plus"></i> Add field</button>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control [nzXs]="{span:24,offset:0}" [nzSm]="{span:20,offset:4}">
           <button nz-button nzType="primary">Submit</button>
-        </div>
-      </div>
+        </nz-form-control>
+      </nz-form-item>
     </form>
   `,
 

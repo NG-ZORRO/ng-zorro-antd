@@ -11,14 +11,12 @@ import {
     <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
       <div nz-row [nzGutter]="24">
         <div nz-col [nzSpan]="8" *ngFor="let control of controlArray" [style.display]="control.show?'block':'none'">
-          <div nz-form-item nzFlex>
-            <div nz-form-label>
-              <label [attr.for]="'field'+control.index">Field {{control.index}}</label>
-            </div>
-            <div nz-form-control>
+          <nz-form-item nzFlex>
+            <nz-form-label [nzFor]="'field'+control.index">Field {{control.index}}</nz-form-label>
+            <nz-form-control>
               <input nz-input placeholder="placeholder" [formControlName]="'field'+control.index" [attr.id]="'field'+control.index">
-            </div>
-          </div>
+            </nz-form-control>
+          </nz-form-item>
         </div>
       </div>
       <div nz-row>

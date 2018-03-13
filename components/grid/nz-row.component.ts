@@ -138,7 +138,7 @@ export class NzRowComponent implements OnInit {
     this.nzUpdateHostClassService.updateHostClass(this.el, classMap);
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
+  constructor(public elementRef: ElementRef, public renderer: Renderer2, public nzUpdateHostClassService: NzUpdateHostClassService) {
     this.el = this.elementRef.nativeElement;
   }
 

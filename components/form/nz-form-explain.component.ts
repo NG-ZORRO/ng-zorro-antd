@@ -6,10 +6,11 @@ import {
   trigger
 } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NzFormItemDirective } from './nz-form-item.directive';
+import { NzFormItemComponent } from './nz-form-item.component';
 
 @Component({
-  selector  : '[nz-form-explain]',
+  selector  : 'nz-form-explain',
+  preserveWhitespaces: false,
   animations: [
     trigger('flyInOut', [
       state('*', style({ opacity: 1, transform: 'translateY(0)' })),
@@ -33,17 +34,20 @@ import { NzFormItemDirective } from './nz-form-item.directive';
   host      : {
     '[class.ant-form-explain]': 'true',
     '[@flyInOut]'             : ''
-  }
+  },
+  styles             : [ `:host {
+    display: block;
+  }` ]
 })
 export class NzFormExplainComponent implements OnDestroy, OnInit {
-  constructor(private nzFormItem: NzFormItemDirective) {
+  constructor(private nzFormItemComponent: NzFormItemComponent) {
   }
 
   ngOnDestroy(): void {
-    this.nzFormItem.disableHelp();
+    this.nzFormItemComponent.disableHelp();
   }
 
   ngOnInit(): void {
-    this.nzFormItem.enableHelp();
+    this.nzFormItemComponent.enableHelp();
   }
 }

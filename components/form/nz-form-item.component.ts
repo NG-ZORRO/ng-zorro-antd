@@ -1,14 +1,22 @@
-import { Directive, Renderer2, Input, ElementRef } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { toBoolean } from '../core/util/convert';
+import { NzRowComponent } from '../grid';
 
-@Directive({
-  selector: '[nz-form-item]',
-  host    : {
+/** should add nz-row directive to host, track https://github.com/angular/angular/issues/8785 **/
+@Component({
+  selector           : 'nz-form-item',
+  preserveWhitespaces: false,
+  template           : `
+    <ng-content></ng-content>`,
+  host               : {
     '[class.ant-form-item]'          : 'true',
     '[class.ant-form-item-with-help]': 'withHelp>0'
-  }
+  },
+  styles             : [ `:host {
+    display: block;
+  }` ]
 })
-export class NzFormItemDirective {
+export class NzFormItemComponent extends NzRowComponent {
   private _flex = false;
   withHelp = 0;
 
@@ -28,9 +36,5 @@ export class NzFormItemDirective {
 
   disableHelp(): void {
     this.withHelp--;
-  }
-
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) {
-
   }
 }
