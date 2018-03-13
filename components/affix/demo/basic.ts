@@ -1,27 +1,20 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector     : 'nz-demo-affix-basic',
-  encapsulation: ViewEncapsulation.None,
   template     : `
-    <nz-affix>
-      <button nz-button [nzType]="'primary'">
-        <span>Affix Button</span>
-      </button>
-    </nz-affix>
-  `,
-  styles       : [ `
-    #components-affix-demo-target .scrollable-container {
-      height: 100px;
-      overflow-y: scroll;
-    }
-
-    #components-affix-demo-target .background {
-      padding-top: 60px;
-      height: 300px;
-      background-image: url('https://zos.alipayobjects.com/rmsportal/RmjwQiJorKyobvI.jpg');
-    }
-  ` ]
+  <nz-affix>
+    <button nz-button [nzType]="'primary'">
+      <span>Affix top</span>
+    </button>
+  </nz-affix>
+  <br>
+  <nz-affix nzOffsetBottom="0">
+    <button nz-button [nzType]="'primary'">
+      <span>Affix bottom</span>
+    </button>
+  </nz-affix>
+  `
 })
 export class NzDemoAffixBasicComponent {
 }

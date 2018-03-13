@@ -10,6 +10,10 @@ export class {{componentName}} {
   expanded = false;
   @ViewChildren(NzCodeBoxComponent) codeBoxes: QueryList<NzCodeBoxComponent>;
 
+  goLink(link: string) {
+    window.location.hash = link;
+  }
+
   expandAllCode(): void {
     this.expanded = !this.expanded;
     this.codeBoxes.forEach(code => {

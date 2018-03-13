@@ -3,9 +3,10 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { NzAffixModule } from './affix/nz-affix.module';
 import { NzAlertModule } from './alert';
 import { NzAnchorModule } from './anchor/nz-anchor.module';
-import { NzAvatarModule } from './avatar';
-import { NzBadgeModule } from './badge';
-import { NzBreadCrumbModule } from './breadcrumb';
+import { NzAvatarModule } from './avatar/nz-avatar.module';
+import { NzBackTopModule } from './back-top/nz-back-top.module';
+import { NzBadgeModule } from './badge/nz-badge.module';
+import { NzBreadCrumbModule } from './breadcrumb/nz-breadcrumb.module';
 import { NzButtonModule } from './button';
 import { NzCalendarModule } from './calendar';
 import { NzCardModule } from './card';
@@ -45,6 +46,9 @@ import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer';
 import { NzUploadModule } from './upload';
 
+export * from './affix';
+export * from './anchor';
+export * from './back-top';
 export * from './button';
 export * from './divider';
 export * from './grid';
@@ -87,6 +91,7 @@ export * from './modal/public-api';
     NzSwitchModule,
     NzSelectModule,
     NzMenuModule,
+    NzBackTopModule,
     NzAnchorModule,
     NzAffixModule,
     NzDropDownModule,
