@@ -85,11 +85,9 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   @Input()
   set nzOffsetTop(value: number) {
     this._offsetTop = toNumber(value, 0);
-    if (this._offsetTop >= 0) {
-      this.wrapperStyle = {
-        'max-height': `calc(100vh - ${this._offsetTop}px)`
-      };
-    }
+    this.wrapperStyle = {
+      'max-height': `calc(100vh - ${this._offsetTop}px)`
+    };
   }
   get nzOffsetTop(): number {
     return this._offsetTop;
@@ -121,14 +119,11 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   }
 
   registerLink(link: NzAnchorLinkComponent): void {
-    if (this.links.indexOf(link) === -1) this.links.push(link);
+    this.links.push(link);
   }
 
   unregisterLink(link: NzAnchorLinkComponent): void {
-    const index = this.links.indexOf(link);
-    if (index !== -1) {
-      this.links.splice(index, 1);
-    }
+    this.links.splice(this.links.indexOf(link), 1);
   }
 
   private getTarget(): Element | Window {
@@ -164,13 +159,17 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   }
 
   handleScroll(): void {
-    if (this.animating) return;
+    if (this.animating) {
+      return;
+    }
 
     const sections: Section[] = [];
     const scope = (this.nzOffsetTop || 0) + this.nzBounds;
     this.links.forEach(comp => {
       const sharpLinkMatch = sharpMatcherRegx.exec(comp.nzHref.toString());
-      if (!sharpLinkMatch) return;
+      if (!sharpLinkMatch) {
+        return;
+      }
       const target = this.doc.getElementById(sharpLinkMatch[1]);
       if (target && this.getOffsetTop(target) < scope) {
         const top = this.getOffsetTop(target);
@@ -185,11 +184,10 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
     if (!this.visible) {
       this.clearActive();
       this.cd.detectChanges();
-      return;
+    } else {
+      const maxSection = sections.reduce((prev, curr) => curr.top > prev.top ? curr : prev);
+      this.handleActive(maxSection.comp);
     }
-
-    const maxSection = sections.reduce((prev, curr) => curr.top > prev.top ? curr : prev);
-    this.handleActive(maxSection.comp);
   }
 
   private clearActive(): void {

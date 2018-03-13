@@ -4,28 +4,44 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NzAnchorModule } from './nz-anchor.module';
 import { NzAnchorComponent } from './nz-anchor.component';
+import { NzAnchorLinkComponent } from './nz-anchor-link.component';
+import { NzScrollService } from '../core/scroll/nz-scroll.service';
 
-function calInk(node: HTMLElement): number {
-  return node.offsetTop + node.clientHeight / 2 - 4.5;
-}
-
+const throttleTime = 51;
 describe('anchor', () => {
   let fixture: ComponentFixture<TestComponent>;
   let dl: DebugElement;
   let context: TestComponent;
+  let page: PageObject;
+  let srv: NzScrollService;
   beforeEach(() => {
-    fixture = TestBed.configureTestingModule({
+    const i = TestBed.configureTestingModule({
         imports: [ NzAnchorModule ],
         declarations: [ TestComponent ]
-    }).createComponent(TestComponent);
+    });
+    fixture = TestBed.createComponent(TestComponent);
     dl = fixture.debugElement;
     context = fixture.componentInstance;
     fixture.detectChanges();
+    page = new PageObject();
+    spyOn(context, '_scroll');
+    srv = i.get(NzScrollService);
   });
+  afterEach(() => context.comp.ngOnDestroy());
 
   describe('[default]', () => {
-    it('should be init', () => {
-      expect(context).not.toBeNull();
+    it(`should scolling to target via click a link`, () => {
+      spyOn(srv, 'scrollTo').and.callFake((
+        containerEl: Element | Window,
+        targetTopValue: number = 0,
+        easing?: any,
+        callback?: () => void
+      ) => {
+        callback();
+      });
+      expect(context._scroll).not.toHaveBeenCalled();
+      page.to('#何时使用');
+      expect(context._scroll).toHaveBeenCalled();
     });
 
     it('should hava remove listen when the component is destroyed', () => {
@@ -35,69 +51,103 @@ describe('anchor', () => {
       expect(context.comp.scroll$.closed).toBeTruthy();
     });
 
-    it('should be actived when scrolling to the anchor', () => {
-      spyOn(context, '_scroll');
+    it('should actived when scrolling to the anchor', (done: () => void) => {
       expect(context._scroll).not.toHaveBeenCalled();
-      scrollTo();
-      const inkNode = dl.query(By.css('.ant-anchor-ink-ball'));
-      expect(inkNode).not.toBeNull();
-      const activeNode = dl.query(By.css('.ant-anchor-link-active .ant-anchor-link-title'));
-      expect(activeNode).not.toBeNull();
-      const ret = calInk(activeNode.nativeElement);
-      expect(+inkNode.nativeElement.style.top.replace('px', '')).toBe(ret);
-      expect(context._scroll).toHaveBeenCalled();
+      page.scrollTo();
+      setTimeout(() => {
+        const inkNode = page.getEl('.ant-anchor-ink-ball');
+        expect(+inkNode.style.top.replace('px', '')).toBeGreaterThan(0);
+        expect(context._scroll).toHaveBeenCalled();
+        done();
+      }, throttleTime);
+    });
+
+    it(`won't scolling when is not exists link`, () => {
+      spyOn(srv, 'getScroll');
+      expect(context._scroll).not.toHaveBeenCalled();
+      expect(srv.getScroll).not.toHaveBeenCalled();
+      page.to('#invalid');
+      expect(srv.getScroll).not.toHaveBeenCalled();
+    });
+
+    it(`won't scolling when is invalid link`, () => {
+      spyOn(srv, 'getScroll');
+      expect(context._scroll).not.toHaveBeenCalled();
+      expect(srv.getScroll).not.toHaveBeenCalled();
+      page.to('invalidLink');
+      expect(srv.getScroll).not.toHaveBeenCalled();
+    });
+
+    it(`supports complete href link (e.g. http://www.example.com/#id)`, () => {
+      spyOn(srv, 'getScroll');
+      expect(context._scroll).not.toHaveBeenCalled();
+      expect(srv.getScroll).not.toHaveBeenCalled();
+      page.getEl('.mock-complete').click();
+      fixture.detectChanges();
+      expect(srv.getScroll).not.toHaveBeenCalled();
+    });
+
+    it(`should priorities most recently`, (done: () => void) => {
+      expect(context._scroll).not.toHaveBeenCalled();
+      page.scrollTo('#parallel1');
+      setTimeout(() => {
+        expect(context._scroll).toHaveBeenCalled();
+        done();
+      }, throttleTime);
     });
   });
 
-  describe('[nzAffix]', () => {
-    it(`is [true]`, () => {
-      const linkList = dl.queryAll(By.css('nz-affix'));
-      expect(linkList.length).toBe(1);
+  describe('property', () => {
+    describe('[nzAffix]', () => {
+      it(`is [true]`, () => {
+        const linkList = dl.queryAll(By.css('nz-affix'));
+        expect(linkList.length).toBe(1);
+      });
+      it(`is [false]`, () => {
+        let linkList = dl.queryAll(By.css('nz-affix'));
+        expect(linkList.length).toBe(1);
+        context.nzAffix = false;
+        fixture.detectChanges();
+        linkList = dl.queryAll(By.css('nz-affix'));
+        expect(linkList.length).toBe(0);
+      });
     });
-    it(`is [false]`, () => {
-      let linkList = dl.queryAll(By.css('nz-affix'));
-      expect(linkList.length).toBe(1);
-      context.nzAffix = false;
-      fixture.detectChanges();
-      linkList = dl.queryAll(By.css('nz-affix'));
-      expect(linkList.length).toBe(0);
-    });
-  });
 
-  describe('[nzOffsetTop]', () => {
-    it('should be using "calc" method calculate max-height', () => {
-      const wrapperEl = dl.query(By.css('.ant-anchor-wrapper'));
-      expect(wrapperEl.styles['max-height']).toContain('calc(');
+    describe('[nzOffsetTop]', () => {
+      it('should be using "calc" method calculate max-height', () => {
+        const wrapperEl = dl.query(By.css('.ant-anchor-wrapper'));
+        expect(wrapperEl.styles['max-height']).toContain('calc(');
+      });
     });
-  });
 
-  describe('[nzShowInkInFixed]', () => {
-    beforeEach(() => {
-      context.nzAffix = false;
-      fixture.detectChanges();
+    describe('[nzShowInkInFixed]', () => {
+      beforeEach(() => {
+        context.nzAffix = false;
+        fixture.detectChanges();
+      });
+      it('should be show ink when [false]', () => {
+        context.nzShowInkInFixed = false;
+        fixture.detectChanges();
+        scrollTo();
+        expect(dl.query(By.css('.fixed')) == null).toBe(false);
+      });
+      it('should be hide ink when [true]', () => {
+        context.nzShowInkInFixed = true;
+        fixture.detectChanges();
+        scrollTo();
+        expect(dl.query(By.css('.fixed')) == null).toBe(true);
+      });
     });
-    it('should be show ink when [false]', () => {
-      context.nzShowInkInFixed = false;
-      fixture.detectChanges();
-      scrollTo();
-      expect(dl.query(By.css('.fixed')) == null).toBe(false);
-    });
-    it('should be hide ink when [true]', () => {
-      context.nzShowInkInFixed = true;
-      fixture.detectChanges();
-      scrollTo();
-      expect(dl.query(By.css('.fixed')) == null).toBe(true);
-    });
-  });
 
-  it('(nzClick)', () => {
-    spyOn(context, '_click');
-    expect(context._click).not.toHaveBeenCalled();
-    const linkList = dl.queryAll(By.css('.ant-anchor-link-title'));
-    expect(linkList.length).toBeGreaterThan(0);
-    (linkList[0].nativeElement as HTMLLinkElement).click();
-    fixture.detectChanges();
-    expect(context._click).toHaveBeenCalled();
+    it('(nzClick)', () => {
+      spyOn(context, '_click');
+      expect(context._click).not.toHaveBeenCalled();
+      const linkList = dl.queryAll(By.css('.ant-anchor-link-title'));
+      expect(linkList.length).toBeGreaterThan(0);
+      (linkList[0].nativeElement as HTMLLinkElement).click();
+      fixture.detectChanges();
+      expect(context._click).toHaveBeenCalled();
+    });
   });
 
   describe('link', () => {
@@ -109,11 +159,40 @@ describe('anchor', () => {
     });
   });
 
-  function scrollTo(href: string = '#何时使用'): void {
-    const toNode = dl.query(By.css(href));
-    (toNode.nativeElement as HTMLElement).scrollIntoView();
-    context.comp.handleScroll();
-    fixture.detectChanges();
+  describe('**boundary**', () => {
+    it('#getOffsetTop', (done: () => void) => {
+      const el1 = document.getElementById('何时使用');
+      spyOn(el1, 'getClientRects').and.returnValue([]);
+      const el2 = document.getElementById('parallel1');
+      spyOn(el2, 'getBoundingClientRect').and.returnValue({
+        top: 0
+      });
+      expect(context._scroll).not.toHaveBeenCalled();
+      page.scrollTo();
+      setTimeout(() => {
+        expect(context._scroll).toHaveBeenCalled();
+        done();
+      }, throttleTime);
+    });
+  });
+
+  class PageObject {
+    getEl(cls: string): HTMLElement {
+      const el = dl.query(By.css(cls));
+      expect(el).not.toBeNull();
+      return el.nativeElement as HTMLElement;
+    }
+    to(href: string = '#何时使用'): this {
+      this.getEl(`nz-affix [href="${href}"]`).click();
+      fixture.detectChanges();
+      return this;
+    }
+    scrollTo(href: string = '#何时使用'): this {
+      const toNode = dl.query(By.css(href));
+      (toNode.nativeElement as HTMLElement).scrollIntoView();
+      fixture.detectChanges();
+      return this;
+    }
   }
 
 });
@@ -142,6 +221,11 @@ describe('anchor', () => {
         </ng-template>
       </nz-link>
     </nz-link>
+    <nz-link nzHref="#invalid" nzTitle="invalid"></nz-link>
+    <nz-link nzHref="invalidLink" nzTitle="invalidLink"></nz-link>
+    <nz-link nzHref="http://www.example.com/#id" nzTitle="complete" class="mock-complete"></nz-link>
+    <nz-link nzHref="#parallel1" nzTitle="parallel1"></nz-link>
+    <nz-link nzHref="#parallel2" nzTitle="parallel2"></nz-link>
   </nz-anchor>
   <h2 id="何时使用"></h2>
   <div style="height: 1000px"></div>
@@ -152,7 +236,13 @@ describe('anchor', () => {
   <h2 id="API-Anchor"></h2>
   <div style="height: 100px"></div>
   <h2 id="API-AnchorLink"></h2>
-  <div style="height: 100px"></div>
+  <table>
+    <tr>
+      <td><h2 id="parallel1">parallel1</h2></td>
+      <td><h2 id="parallel2">parallel2</h2></td>
+    </tr>
+  </table>
+  <div style="height: 1000px"></div>
   `
 })
 export class TestComponent {
@@ -161,7 +251,7 @@ export class TestComponent {
   nzBounds = 5;
   nzOffsetTop = 0;
   nzShowInkInFixed = false;
-  nzTarget = window;
+  nzTarget = null;
   _click() {}
   _scroll() {}
 }

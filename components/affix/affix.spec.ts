@@ -189,34 +189,53 @@ describe('affix', () => {
 
   describe('[nzOffsetBottom]', () => {
     const offsetTop = 0;
-    let target: HTMLElement;
+    let target: HTMLElement | Window;
 
-    beforeEach(() => {
-      target = componentObject.target();
-      context.fakeTarget = target;
-      context.newOffsetBottom = offsetTop;
+    describe('with window', () => {
+      beforeEach(() => {
+        target = window;
+        context.fakeTarget = target;
+        context.newOffsetBottom = 10;
+      });
+      describe('when scrolled below the bottom offset', () => {
+        it('sticks to the bottom offset', fakeAsync(() => {
+          setupInitialState();
+          emitScroll(target, 5000);
+          const wrapEl = componentObject.wrap();
+          expect(+wrapEl.style.bottom.replace('px', '')).toBe(0);
+
+          discardPeriodicTasks();
+        }));
+      });
     });
 
-    describe('when scrolled within bottom offset', () => {
-      it('scrolls with the content', fakeAsync(() => {
-        setupInitialState();
-        emitScroll(target, 0);
-        const wrapEl = componentObject.wrap();
-        expect(+wrapEl.style.bottom.replace('px', '')).toBeGreaterThan(0);
+    describe('with target', () => {
+      beforeEach(() => {
+        target = componentObject.target();
+        context.fakeTarget = target;
+        context.newOffsetBottom = offsetTop;
+      });
+      describe('when scrolled within bottom offset', () => {
+        it('scrolls with the content', fakeAsync(() => {
+          setupInitialState();
+          emitScroll(target, 0);
+          const wrapEl = componentObject.wrap();
+          expect(+wrapEl.style.bottom.replace('px', '')).toBeGreaterThan(0);
 
-        discardPeriodicTasks();
-      }));
-    });
+          discardPeriodicTasks();
+        }));
+      });
 
-    describe('when scrolled below the bottom offset', () => {
-      it('sticks to the bottom offset', fakeAsync(() => {
-        setupInitialState();
-        emitScroll(target, 5000);
-        const wrapEl = componentObject.wrap();
-        expect(+wrapEl.style.bottom.replace('px', '')).toBe(0);
+      describe('when scrolled below the bottom offset', () => {
+        it('sticks to the bottom offset', fakeAsync(() => {
+          setupInitialState();
+          emitScroll(target, 5000);
+          const wrapEl = componentObject.wrap();
+          expect(+wrapEl.style.bottom.replace('px', '')).toBe(0);
 
-        discardPeriodicTasks();
-      }));
+          discardPeriodicTasks();
+        }));
+      });
     });
   });
 
@@ -413,17 +432,49 @@ describe('affix', () => {
 
 describe('affix-extra', () => {
   let fixture: ComponentFixture<TestAffixComponent>;
+  let context: TestAffixComponent;
+  let dl: DebugElement;
+  let component: NzAffixComponent;
+  let page: PageObject;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NzAffixModule],
       declarations: [TestAffixComponent]
     }).compileComponents();
     fixture = TestBed.createComponent(TestAffixComponent);
+    context = fixture.componentInstance;
+    component = context.nzAffixComponent;
+    dl = fixture.debugElement;
+    page = new PageObject();
   });
   it('#getOffset', () => {
     const ret = fixture.componentInstance.nzAffixComponent.getOffset(fixture.debugElement.query(By.css('#affix')).nativeElement, window);
     expect(ret).not.toBeUndefined();
   });
+  it('with window when scrolled below the bottom offset', fakeAsync(() => {
+    const value = 10;
+    context.newOffsetBottom = value;
+    context.fakeTarget = window;
+    fixture.detectChanges();
+    const el = dl.query(By.css('nz-affix')).nativeElement as HTMLElement;
+    spyOn(el, 'getBoundingClientRect').and.returnValue({
+      top: 1000,
+      left: 5,
+      width: 200,
+      height: 20
+    });
+    window.dispatchEvent(new Event('scroll'));
+    tick(30);
+    fixture.detectChanges();
+    window.dispatchEvent(new Event('scroll'));
+    tick(30);
+    fixture.detectChanges();
+    const ret = +(el.querySelector('.ant-affix') as HTMLElement).style.bottom.replace('px', '');
+    expect(ret).toBe(value);
+  }));
+  class PageObject {
+
+  }
 });
 
 @Component({
