@@ -3,7 +3,6 @@ category: Components
 type: Other
 title: Divider
 subtitle: 分割线
-cols: 2
 ---
 
 区隔内容的分割线。

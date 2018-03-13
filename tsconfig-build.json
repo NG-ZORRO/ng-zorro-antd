@@ -20,7 +20,6 @@
     "strictMetadataEmit": true,
     "flatModuleOutFile": "index.js",
     "flatModuleId": "ng-zorro-antd",
-    "skipTemplateCodegen": true,
-    "debug": true
+    "skipTemplateCodegen": true
   }
 }

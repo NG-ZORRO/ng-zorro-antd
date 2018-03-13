@@ -3,6 +3,7 @@
 readonly currentDir=$(cd $(dirname $0); pwd)
 cd ${currentDir}
 rm -rf publish
+rm -rf __gen_components
 cp -r components __gen_components
 node ./inline-template.js
 

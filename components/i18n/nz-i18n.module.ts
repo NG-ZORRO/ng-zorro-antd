@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { LoggerModule } from '../core/util/logger/index';
+import { LoggerModule } from '../core/util/logger/logger.module';
 
 import zh_CN from './languages/zh_CN';
 import { NzI18nPipe } from './nz-i18n.pipe';
