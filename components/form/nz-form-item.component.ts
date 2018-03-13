@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service'
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
 import { NzRowComponent } from '../grid';
 
@@ -39,6 +39,4 @@ export class NzFormItemComponent extends NzRowComponent {
   disableHelp(): void {
     this.withHelp--;
   }
-
-
 }
