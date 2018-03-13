@@ -1,33 +1,41 @@
-import { Component, ContentChild, Input } from '@angular/core';
-import { NgControl } from '@angular/forms';
-
+import { AfterContentInit, Component, ContentChild, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, NgControl } from '@angular/forms';
+import { Subscription } from 'rxjs/Subscription';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
+import { NzColComponent } from '../grid';
 
 @Component({
-  selector           : '[nz-form-control]',
+  selector           : 'nz-form-control',
+  providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
   template           : `
-    <div class="ant-form-item-control"
-      [class.has-warning]="isWarning"
-      [class.has-error]="isError"
-      [class.has-success]="isSuccess"
-      [class.has-feedback]="hasFeedBack"
-      [class.is-validating]="isValidate">
-      <ng-content></ng-content>
+    <div class="ant-form-item-control" [ngClass]="controlClassMap">
+      <span class="ant-form-item-children">
+        <ng-content></ng-content>
+      </span>
+      <ng-content select="nz-form-explain"></ng-content>
     </div>
   `,
   host               : {
     '[class.ant-form-item-control-wrapper]': 'true'
-  }
+  },
+  styles             : [ `:host {
+    display: block;
+  }` ]
 })
-export class NzFormControlComponent {
+export class NzFormControlComponent extends NzColComponent implements OnDestroy, OnInit, AfterContentInit {
   private _hasFeedback = false;
-  private _validateStatus: string | NgControl;
-  @ContentChild(NgControl) ngControl: NgControl;
+  validateChanges: Subscription;
+  validateString: string;
+  controlStatus: string;
+  controlClassMap;
+  @ContentChild(NgControl) validateControl: FormControl;
 
   @Input()
   set nzHasFeedback(value: boolean) {
     this._hasFeedback = toBoolean(value);
+    this.setControlClassMap();
   }
 
   get nzHasFeedback(): boolean {
@@ -35,31 +43,64 @@ export class NzFormControlComponent {
   }
 
   @Input()
-  set nzValidateStatus(value: string | NgControl) {
-    this._validateStatus = value;
+  set nzValidateStatus(value: string | FormControl) {
+    if (value instanceof FormControl) {
+      this.validateControl = value;
+      this.validateString = null;
+      this.controlStatus = null;
+      this.setControlClassMap();
+      this.watchControl();
+    } else {
+      this.validateString = value;
+      this.validateControl = null;
+      this.removeSubscribe();
+      this.setControlClassMap();
+    }
   }
 
-  get nzValidateStatus(): string | NgControl {
-    return this._validateStatus || this.ngControl;
+  removeSubscribe(): void {
+    if (this.validateChanges) {
+      this.validateChanges.unsubscribe();
+      this.validateChanges = null;
+    }
   }
 
-  get isWarning(): boolean {
-    return this.nzValidateStatus === 'warning' || this.nzValidateStatus && (this.nzValidateStatus as NgControl).dirty && (this.nzValidateStatus as NgControl).hasError && (this.nzValidateStatus as NgControl).hasError('warning');
+  watchControl(): void {
+    this.removeSubscribe();
+    if (this.validateControl && this.validateControl.statusChanges) {
+      this.validateChanges = this.validateControl.statusChanges.subscribe(data => {
+        if (this.validateControl.dirty) {
+          this.controlStatus = data;
+          this.setControlClassMap();
+        } else {
+          this.controlStatus = null;
+          this.setControlClassMap();
+        }
+      });
+    }
+
   }
 
-  get isValidate(): boolean {
-    return this.nzValidateStatus === 'validating' || this.nzValidateStatus === 'pending' || this.nzValidateStatus && (this.nzValidateStatus as NgControl).dirty && (this.nzValidateStatus as NgControl).pending;
+  setControlClassMap(): void {
+    this.controlClassMap = {
+      [ `has-warning` ]  : this.validateString === 'warning',
+      [ `is-validating` ]: this.validateString === 'validating' || this.validateString === 'pending' || this.controlStatus === 'PENDING',
+      [ `has-error` ]    : this.validateString === 'error' || this.controlStatus === 'INVALID',
+      [ `has-success` ]  : this.validateString === 'success' || this.controlStatus === 'VALID',
+      [ `has-feedback` ] : this.nzHasFeedback
+    };
   }
 
-  get isError(): boolean {
-    return this.nzValidateStatus === 'error' || this.nzValidateStatus && (this.nzValidateStatus as NgControl).dirty && (this.nzValidateStatus as NgControl).errors && (this.nzValidateStatus as NgControl).hasError && !(this.nzValidateStatus as NgControl).hasError('warning');
+  ngOnInit(): void {
+    this.setClassMap();
+    this.setControlClassMap();
   }
 
-  get isSuccess(): boolean {
-    return this.nzValidateStatus === 'success' || this.nzValidateStatus && (this.nzValidateStatus as NgControl).dirty && (this.nzValidateStatus as NgControl).valid;
+  ngOnDestroy(): void {
+    this.removeSubscribe();
   }
 
-  get hasFeedBack(): boolean {
-    return this.nzHasFeedback;
+  ngAfterContentInit(): void {
+    this.watchControl();
   }
 }

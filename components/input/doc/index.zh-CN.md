@@ -28,9 +28,13 @@ nz-input 可以使用所有的W3C标准下的所有 [使用方式](https://www.w
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | nzAddonAfter | 带标签的 input，设置后置标签 | string 丨 `TemplateRef<void>` |  |
+| nzAddonAfterIcon | 后置标签按钮，`nzAddonAfter`的快捷使用方式 | `string 丨 string[] 丨 Set<string> 丨 { [klass: string]: any; }` | - |
 | nzAddonBefore | 带标签的 input，设置前置标签 | string 丨 `TemplateRef<void>` |  |
+| nzAddonBeforeIcon | 前置标签按钮，`nzAddonBefore`的快捷使用方式 | `string 丨 string[] 丨 Set<string> 丨 { [klass: string]: any; }` | - |
 | nzPrefix | 带有前缀图标的 input | string丨 `TemplateRef<void>` |  |
+| nzPrefixIcon | 前缀图标，`nzPrefix`的快捷使用方式 | `string 丨 string[] 丨 Set<string> 丨 { [klass: string]: any; }` | - |
 | nzSuffix | 带有后缀图标的 input | string丨 `TemplateRef<void>` |  |
+| nzSuffixIcon | 后缀图标，`nzSuffix`的快捷使用方式 | `string 丨 string[] 丨 Set<string> 丨 { [klass: string]: any; }` | - |
 | nzCompact | 是否用紧凑模式 | boolean | false |
 | nzSearch | 是否用搜索框 | boolean | false |
 | nzSize | `nz-input-group` 中所有的 `nz-input` 的大小，可选 `large` `default` `small` | string | `default` |

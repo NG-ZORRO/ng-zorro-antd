@@ -94,6 +94,7 @@ import { NzOptionComponent } from './nz-option.component';
 export class NzSelectTopControlComponent {
   // tslint:disable-next-line:no-any
   private _listOfSelectedValue: any[];
+  private _listTemplateOfOption: NzOptionComponent[] = [];
   listOfCachedSelectedOption: NzOptionComponent[] = [];
   inputValue: string;
   isComposing = false;
@@ -104,7 +105,7 @@ export class NzSelectTopControlComponent {
   @Input() nzMode = 'default';
   @Input() nzShowSearch = false;
   @Input() nzDisabled = false;
-  @Input() nzListTemplateOfOption: NzOptionComponent[] = [];
+
   @Input() nzPlaceHolder: string;
   @Input() nzOpen = false;
   // tslint:disable-next-line:no-any
@@ -120,6 +121,16 @@ export class NzSelectTopControlComponent {
   // tslint:disable-next-line:no-any
   get nzListOfSelectedValue(): any[] {
     return this._listOfSelectedValue;
+  }
+
+  @Input()
+  set nzListTemplateOfOption(value: NzOptionComponent[]) {
+    this._listTemplateOfOption = value;
+    this.updateListOfCachedOption();
+  }
+
+  get nzListTemplateOfOption(): NzOptionComponent[] {
+    return this._listTemplateOfOption;
   }
 
   /** cached selected option list **/

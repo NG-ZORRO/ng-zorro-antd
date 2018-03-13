@@ -13,7 +13,7 @@
 | pagination | √ | 100% | 100% | vthinkxie | - |
 | steps | √ | 100% | 100% | vthinkxie | - |
 | checkbox | √ | 100% | 100% | vthinkxie | - |
-| form | x | x | x | vthinkxie | - |
+| form | √ | 100% | 100% | vthinkxie | √ |
 | input | √ | 100% | 100% | vthinkxie | √ |
 | inputnumber | √ | 100% | 100% | vthinkxie | √ |
 | radio | √ | 100% | 100% | vthinkxie | - |
