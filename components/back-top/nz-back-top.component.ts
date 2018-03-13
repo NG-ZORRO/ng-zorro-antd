@@ -43,7 +43,7 @@ import { toNumber } from '../core/util/convert';
   template     : `
     <div class="ant-back-top" (click)="clickBackTop()" [@enterLeave] *ngIf="visible">
       <ng-template #defaultContent>
-        <div class="ant-back-top-content"><i class="anticon anticon-to-top ant-back-top-icon"></i></div>
+        <div class="ant-back-top-content"><div class="ant-back-top-icon"></div></div>
       </ng-template>
       <ng-template [ngTemplateOutlet]="nzTemplate || defaultContent"></ng-template>
     </div>
