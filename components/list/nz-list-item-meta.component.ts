@@ -1,21 +1,23 @@
-import { Component, ContentChild, HostBinding, Input, TemplateRef } from '@angular/core';
+import { Component, Input, TemplateRef } from '@angular/core';
 
 @Component({
-  selector: 'nz-list-item-meta',
-  template: `
-  <div *ngIf="isAvatar" class="ant-list-item-meta-avatar">
-      <ng-container *ngIf="avatarStr; else avatarTpl"><nz-avatar [nzSrc]="avatarStr"></nz-avatar></ng-container>
-  </div>
-  <div *ngIf="isTitle || isDesc" class="ant-list-item-meta-content">
+  selector           : 'nz-list-item-meta',
+  template           : `
+    <div *ngIf="isAvatar" class="ant-list-item-meta-avatar">
+      <ng-container *ngIf="avatarStr; else avatarTpl">
+        <nz-avatar [nzSrc]="avatarStr"></nz-avatar>
+      </ng-container>
+    </div>
+    <div *ngIf="isTitle || isDesc" class="ant-list-item-meta-content">
       <h4 *ngIf="isTitle" class="ant-list-item-meta-title">
-          <ng-container *ngIf="titleStr; else titleTpl">{{ titleStr }}</ng-container>
+        <ng-container *ngIf="titleStr; else titleTpl">{{ titleStr }}</ng-container>
       </h4>
       <div *ngIf="isDesc" class="ant-list-item-meta-description">
-          <ng-container *ngIf="descStr; else descTpl">{{ descStr }}</ng-container>
+        <ng-container *ngIf="descStr; else descTpl">{{ descStr }}</ng-container>
       </div>
-  </div>`,
+    </div>`,
   preserveWhitespaces: false,
-  host: {
+  host               : {
     '[class.ant-list-item-meta]': 'true'
   }
 })
@@ -24,6 +26,7 @@ export class NzListItemMetaComponent {
   isAvatar = false;
   avatarStr = '';
   avatarTpl: TemplateRef<void>;
+
   @Input()
   set nzAvatar(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
@@ -39,6 +42,7 @@ export class NzListItemMetaComponent {
   isTitle = false;
   titleStr = '';
   titleTpl: TemplateRef<void>;
+
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
@@ -54,6 +58,7 @@ export class NzListItemMetaComponent {
   isDesc = false;
   descStr = '';
   descTpl: TemplateRef<void>;
+
   @Input()
   set nzDescription(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {

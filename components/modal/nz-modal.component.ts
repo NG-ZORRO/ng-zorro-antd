@@ -38,9 +38,7 @@ type AnimationState = 'enter' | 'leave' | null;
 
 @Component({
   selector: 'nz-modal',
-  encapsulation: ViewEncapsulation.None,
-  templateUrl: './nz-modal.component.html',
-  styleUrls: [ './style/index.less' ]
+  templateUrl: './nz-modal.component.html'
 })
 
 export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChanges, AfterViewInit, ModalOptions {

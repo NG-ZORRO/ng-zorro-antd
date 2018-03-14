@@ -7,6 +7,7 @@
 .input-lg() {
   padding: @input-padding-vertical-lg @input-padding-horizontal-lg;
   height: @input-height-lg;
+  font-size: @font-size-lg;
 }
 
 .input-sm() {
@@ -326,6 +327,9 @@
     z-index: 2;
     line-height: 0;
     color: @input-color;
+    :not(.anticon) {
+      line-height: @line-height-base;
+    }
   }
 
   .@{inputClass}-prefix {
