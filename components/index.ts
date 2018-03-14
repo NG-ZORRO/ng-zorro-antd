@@ -11,6 +11,7 @@ import { NzButtonModule } from './button';
 import { NzCalendarModule } from './calendar';
 import { NzCardModule } from './card';
 import { NzCarouselModule } from './carousel';
+import { NzCascaderModule } from './cascader';
 import { NzCheckboxModule } from './checkbox';
 import { NzCollapseModule } from './collapse';
 import { NzDividerModule } from './divider';
@@ -124,6 +125,7 @@ export * from './modal/public-api';
     NzTransferModule,
     NzCarouselModule,
     NzCollapseModule,
+    NzCascaderModule,
     NzTableModule,
     NzDividerModule,
     NzFormModule,
