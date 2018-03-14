@@ -5,7 +5,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   template     : `
     <div class="example-input">
-      <input nz-input [(ngModel)]="inputValue" (ngModelChange)="onChange($event)" [nzAutocomplete]="auto">
+      <input placeholder="input here" nz-input [(ngModel)]="inputValue" (input)="onInput($event.target?.value)" [nzAutocomplete]="auto">
       <nz-autocomplete [nzDataSource]="options" nzBackfill #auto>
       </nz-autocomplete>
     </div>
@@ -15,7 +15,7 @@ export class NzDemoAutoCompleteBasicComponent {
   inputValue: string;
   options = [];
 
-  onChange(value: string): void {
+  onInput(value: string): void {
     this.options = value ? [
       value,
       value + value,

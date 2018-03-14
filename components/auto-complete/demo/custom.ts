@@ -5,7 +5,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   template     : `
     <div class="example-input">
-      <textarea row="4" nz-input [(ngModel)]="inputValue" (ngModelChange)="onChange($event)" [nzAutocomplete]="auto"></textarea>
+      <textarea placeholder="input here" nz-input row="4"  [(ngModel)]="inputValue" (input)="onInput($event.target?.value)" [nzAutocomplete]="auto"></textarea>
       <nz-autocomplete #auto>
         <nz-auto-option *ngFor="let option of options" [nzValue]="option">{{option}}</nz-auto-option>
       </nz-autocomplete>
@@ -16,7 +16,7 @@ export class NzDemoAutoCompleteCustomComponent {
   inputValue: string;
   options = [];
 
-  onChange(value: string): void {
+  onInput(value: string): void {
     this.options = value ? [
       value,
       value + value,

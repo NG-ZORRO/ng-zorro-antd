@@ -5,7 +5,12 @@ import { Component, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   template     : `
     <div class="example-input">
-      <input nz-input [(ngModel)]="inputValue" (ngModelChange)="onChange($event)" [nzAutocomplete]="auto"/>
+      <nz-input-group nzSearch nzSize="large" [nzSuffix]="suffixIconButton">
+        <input nz-input [(ngModel)]="inputValue" (ngModelChange)="onChange($event)" [nzAutocomplete]="auto"/>
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSize="large" nzSearch><i class="anticon anticon-search"></i></button>
+      </ng-template>
       <nz-autocomplete #auto>
         <nz-auto-option *ngFor="let option of options" [nzValue]="option.category">
           {{option.value}} 在
