@@ -5,9 +5,10 @@ node_js:
   - '6.10'
 
 env:
-  - TASK=build
+  - TASK=doc
   - TASK=test
   - TASK=lint
+  - TASK=generate
 
 addons:
 apt:

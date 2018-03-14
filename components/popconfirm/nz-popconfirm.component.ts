@@ -8,7 +8,7 @@ import {
 
 import { fadeAnimation } from '../core/animation/fade-animations';
 import { toBoolean } from '../core/util/convert';
-import { NzLocaleService } from '../locale/index';
+import { NzLocaleService } from '../locale/nz-locale.service';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 
 @Component({

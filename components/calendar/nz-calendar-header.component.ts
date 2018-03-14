@@ -7,8 +7,8 @@ import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
   templateUrl: './nz-calendar-header.component.html',
   host: {
     '[style.display]': `'block'`,
-    '[class.ant-fullcalendar-header]': `true`,
-  },
+    '[class.ant-fullcalendar-header]': `true`
+  }
 })
 export class NzCalendarHeaderComponent implements OnInit {
   @Input() mode: 'month'|'year' = 'month';

@@ -1,12 +1,11 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { NzButtonModule } from './button/nz-button.module';
-
 import { NzAffixModule } from './affix/nz-affix.module';
 import { NzAlertModule } from './alert/nz-alert.module';
 import { NzAnchorModule } from './anchor/nz-anchor.module';
 import { NzAvatarModule } from './avatar/nz-avatar.module';
 import { NzBadgeModule } from './badge/nz-badge.module';
 import { NzBreadCrumbModule } from './breadcrumb/nz-breadcrumb.module';
+import { NzButtonModule } from './button/nz-button.module';
 import { NzCalendarModule } from './calendar/nz-calendar.module';
 import { NzCardModule } from './card/nz-card.module';
 import { NzCarouselModule } from './carousel/nz-carousel.module';
@@ -14,6 +13,7 @@ import { NzCheckboxModule } from './checkbox/nz-checkbox.module';
 import { NzCollapseModule } from './collapse/nz-collapse.module';
 import { NzDividerModule } from './divider/nz-divider.module';
 import { NzDropDownModule } from './dropdown/nz-dropdown.module';
+import { NzDropdownService } from './dropdown/nz-dropdown.service';
 import { NzFormModule } from './form/nz-form.module';
 import { NzGridModule } from './grid/nz-grid.module';
 import { NzI18nModule } from './i18n/nz-i18n.module';
@@ -24,8 +24,10 @@ import { NzListModule } from './list/nz-list.module';
 import { NzLocaleModule } from './locale/nz-locale.module';
 import { NzMenuModule } from './menu/nz-menu.module';
 import { NzMessageModule } from './message/nz-message.module';
+import { NzMessageService } from './message/nz-message.service';
 import { NzModalModule } from './modal/nz-modal.module';
 import { NzNotificationModule } from './notification/nz-notification.module';
+import { NzNotificationService } from './notification/nz-notification.service';
 import { NzPaginationModule } from './pagination/nz-pagination.module';
 import { NzPopconfirmModule } from './popconfirm/nz-popconfirm.module';
 import { NzPopoverModule } from './popover/nz-popover.module';
@@ -44,29 +46,6 @@ import { NzTimelineModule } from './timeline/nz-timeline.module';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
 import { NzUploadModule } from './upload/nz-upload.module';
-
-//export * from './button/index';
-//export * from './divider/index';
-//export * from './grid/index';
-//export * from './layout/index';
-//export * from './dropdown/index';
-//export * from './menu/index';
-//export * from './upload/index';
-//export * from './transfer/index';
-//export * from './i18n/index';
-//export * from './locale/index';
-//export * from './list/index';
-
-import { NzDropdownService } from './dropdown/nz-dropdown.service';
-import { NzMessageService } from './message/nz-message.service';
-import { NzNotificationService } from './notification/nz-notification.service';
-
-export { NzNotificationService } from './notification/nz-notification.service';
-export { NzMessageService } from './message/nz-message.service';
-
-// Tokens (eg. global services' config)
-export { NZ_MESSAGE_CONFIG } from './message/nz-message-config';
-export { NZ_NOTIFICATION_CONFIG } from './notification/nz-notification-config';
 
 @NgModule({
   exports: [
@@ -87,15 +66,15 @@ export { NZ_NOTIFICATION_CONFIG } from './notification/nz-notification-config';
     NzCheckboxModule,
     NzInputNumberModule,
     NzToolTipModule,
-//    NzLocaleModule,
-//    NzPopconfirmModule,
-//    NzPopoverModule,
-//    NzSliderModule,
+    NzLocaleModule,
+    NzPopconfirmModule,
+    NzPopoverModule,
+    NzSliderModule,
     NzRateModule,
     NzBadgeModule,
     NzRadioModule,
-//    NzNotificationModule,
-//    NzMessageModule,
+    NzNotificationModule,
+    NzMessageModule,
     NzAlertModule,
     NzSpinModule,
     NzProgressModule,
@@ -104,7 +83,7 @@ export { NZ_NOTIFICATION_CONFIG } from './notification/nz-notification-config';
     NzAvatarModule,
     NzTagModule,
     NzTimelineModule,
-//    NzTransferModule,
+    NzTransferModule,
     NzCarouselModule,
     NzCollapseModule,
     NzTableModule,
@@ -112,8 +91,8 @@ export { NZ_NOTIFICATION_CONFIG } from './notification/nz-notification-config';
     NzFormModule,
     NzListModule,
     NzI18nModule,
-//    NzUploadModule,
-//    NzModalModule
+    NzUploadModule,
+    NzModalModule
   ]
 })
 export class NgZorroAntdModule {

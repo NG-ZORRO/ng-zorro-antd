@@ -113,7 +113,7 @@ export class NzUploadListComponent implements OnInit, OnChanges {
   };
 
   handlePreview(file: UploadFile, e: Event): void {
-    if (!this.onPreview) return;
+    if (!this.onPreview) { return; }
 
     e.preventDefault();
     return this.onPreview(file);
@@ -121,7 +121,7 @@ export class NzUploadListComponent implements OnInit, OnChanges {
 
   handleRemove(file: UploadFile, e: Event): void {
     e.preventDefault();
-    if (this.onRemove) this.onRemove(file);
+    if (this.onRemove) { this.onRemove(file); }
     return ;
   }
 

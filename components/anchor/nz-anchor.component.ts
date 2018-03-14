@@ -16,7 +16,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 import { throttleTime } from 'rxjs/operators/throttleTime';
-
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
 import { toBoolean, toNumber } from '../core/util/convert';
 
@@ -157,13 +156,13 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   }
 
   private removeListen(): void {
-    if (this.scroll$) this.scroll$.unsubscribe();
+    if (this.scroll$) { this.scroll$.unsubscribe(); }
   }
 
   private getOffsetTop(element: HTMLElement): number {
-    if (!element || !element.getClientRects().length) return 0;
+    if (!element || !element.getClientRects().length) { return 0; }
     const rect = element.getBoundingClientRect();
-    if (!rect.width && !rect.height) return rect.top;
+    if (!rect.width && !rect.height) { return rect.top; }
     return rect.top - element.ownerDocument.documentElement.clientTop;
   }
 
@@ -217,7 +216,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
 
   handleScrollTo(linkComp: NzAnchorLinkComponent): void {
     const el = this.doc.querySelector(linkComp.nzHref);
-    if (!el) return;
+    if (!el) { return; }
 
     this.animating = true;
     const containerScrollTop = this.scrollSrv.getScroll(this.getTarget());
