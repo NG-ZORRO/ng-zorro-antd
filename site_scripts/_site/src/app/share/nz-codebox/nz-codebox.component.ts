@@ -41,7 +41,7 @@ import sdk from '@stackblitz/sdk';
               <i nz-tooltip class="anticon anticon-form code-box-code-copy" (click)="openOnStackBlitz()"></i>
             </nz-tooltip>
             <nz-tooltip [nzTitle]="'Copy Code'">
-              <i nz-tooltip class="anticon anticon-copy code-box-code-copy" [class.anticon-copy]="!_copied" [class.anticon-check]="_copied" [class.ant-tooltip-open]="_copied" (click)="copyCode(_code)"></i>
+              <i nz-tooltip class="anticon anticon-copy code-box-code-copy" [class.anticon-copy]="!_copied" [class.anticon-check]="_copied" [class.ant-tooltip-open]="_copied" (click)="copyCode(nzRawCode)"></i>
             </nz-tooltip>
           </div>
           <ng-content select="[code]"></ng-content>
