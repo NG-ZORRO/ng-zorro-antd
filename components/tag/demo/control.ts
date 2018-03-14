@@ -9,14 +9,12 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
       (nzAfterClose)="handleClose(tag)">
       {{ sliceTagName(tag) }}
     </nz-tag>
-    <button
+    <nz-tag
       *ngIf="!inputVisible"
-      nz-button
-      nzSize="small"
-      nzType="dashed"
+      class="editable-tag"
       (click)="showInput()">
-      + New Tag
-    </button>
+      <i class="anticon anticon-plus"></i> New Tag
+    </nz-tag>
     <input
       #inputElement
       nz-input
@@ -26,7 +24,13 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
       style="width: 78px;"
       (blur)="handleInputConfirm()"
       (keydown.enter)="handleInputConfirm()">
-  `
+  `,
+  styles  : [
+      `.editable-tag ::ng-deep .ant-tag {
+      background: rgb(255, 255, 255);
+      border-style: dashed;
+    }`
+  ]
 })
 export class NzDemoTagControlComponent {
 
@@ -52,7 +56,7 @@ export class NzDemoTagControlComponent {
   }
 
   handleInputConfirm(): void {
-    if (this.inputValue) {
+    if (this.inputValue && this.tags.indexOf(this.inputValue) === -1) {
       this.tags.push(this.inputValue);
     }
     this.inputValue = '';
