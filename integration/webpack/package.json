@@ -1,0 +1,44 @@
+{
+  "name": "integration-test",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "setup": "bash ../../setup-shared-libs.sh ./lib",
+    "start": "webpack-dev-server",
+    "build": "webpack",
+    "test": "echo \"Error: no test... minimal project\" && exit 1",
+    "lint": "echo \"Error: no lint... minimal project\" && exit 1",
+    "e2e": "echo \"Error: no e2e... minimal project\" && exit 1",
+    "preintegration": "npm run setup && npm install --ignore-scripts",
+    "integration": "npm run build"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "file:lib/@angular/animations",
+    "@angular/cdk": "file:lib/@angular/cdk",
+    "@angular/common": "file:lib/@angular/common",
+    "@angular/compiler": "file:lib/@angular/compiler",
+    "@angular/core": "file:lib/@angular/core",
+    "@angular/forms": "file:lib/@angular/forms",
+    "@angular/http": "file:lib/@angular/http",
+    "@angular/platform-browser": "file:lib/@angular/platform-browser",
+    "@angular/platform-browser-dynamic": "file:lib/@angular/platform-browser-dynamic",
+    "@angular/router": "file:lib/@angular/router",
+    "core-js": "file:lib/core-js",
+    "date-fns": "file:lib/date-fns",
+    "ng-zorro-antd": "file:lib/ng-zorro-antd",
+    "rxjs": "file:lib/rxjs",
+    "zone.js": "file:lib/zone.js"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-optimizer": "0.0.18",
+    "@angular/cli": "file:lib/@angular/cli",
+    "@angular/compiler-cli": "file:lib/@angular/compiler-cli",
+    "@ngtools/webpack": "^1.6.2",
+    "html-webpack-plugin": "^2.30.1",
+    "typescript": "file:lib/typescript",
+    "uglifyjs-webpack-plugin": "^0.4.6",
+    "webpack": "^3.5.6",
+    "webpack-dev-server": "^2.7.1"
+  }
+}

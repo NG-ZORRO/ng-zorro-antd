@@ -8,8 +8,9 @@ env:
   - TASK=doc
   - TASK=test
   - TASK=lint
-  - TASK=generate
-
+  - TASK=integration-cli
+  - TASK=integration-webpack
+  - TASK=integration-rollup
 addons:
 apt:
   sources:
