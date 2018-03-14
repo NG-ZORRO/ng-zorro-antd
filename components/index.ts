@@ -42,6 +42,7 @@ import { NzTableModule } from './table';
 import { NzTabsModule } from './tabs';
 import { NzTagModule } from './tag/nz-tag.module';
 import { NzTimelineModule } from './timeline';
+import { NzTimepickerModule } from './timepicker';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer';
 import { NzUploadModule } from './upload';
@@ -121,6 +122,7 @@ export * from './modal/public-api';
     NzAvatarModule,
     NzTagModule,
     NzTimelineModule,
+    NzTimepickerModule,
     NzTransferModule,
     NzCarouselModule,
     NzCollapseModule,
