@@ -10,7 +10,7 @@ import {
   Output,
   QueryList,
   TemplateRef,
-  ViewChild, ViewChildren,
+  ViewChild, ViewChildren
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -20,6 +20,7 @@ import { filter, switchMap, take } from 'rxjs/operators';
 
 import { toBoolean } from '../core/util/convert';
 
+import { dropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './nz-autocomplete-option.component';
 
 export interface AutocompleteDataSourceItem {
@@ -33,10 +34,14 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
   selector           : 'nz-autocomplete',
   preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
+  animations         : [
+    dropDownAnimation
+  ],
   template           : `
   <ng-template>
     <div class="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft"
          #panel
+         [@dropDownAnimation]="dropDownPosition"
          [class.ant-select-dropdown-hidden]="!showPanel">
       <div style="overflow: auto;">
           <ul class="ant-select-dropdown-menu  ant-select-dropdown-menu-root ant-select-dropdown-menu-vertical"
@@ -53,7 +58,24 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
       <nz-auto-option *ngFor="let option of _dataSource" [nzValue]="option">{{option}}</nz-auto-option>
     </ng-template>
   </ng-template>
-  `
+  `,
+  styles             : [
+    `
+      :host {
+        position: relative;
+        display: inline-block;
+      }
+
+      .ant-select-dropdown {
+        top: 100%;
+        left: 0;
+        position: relative;
+        width: 100%;
+        margin-top: 4px;
+        margin-bottom: 4px;
+      }
+    `
+  ]
 })
 export class NzAutocompleteComponent implements AfterViewInit {
   private activeItemIndex: number = -1;
@@ -62,7 +84,7 @@ export class NzAutocompleteComponent implements AfterViewInit {
   showPanel: boolean = false;
   isOpen: boolean = false;
   activeItem: NzAutocompleteOptionComponent;
-
+  dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   /** 组件支持设置 dataSource 和 content 设置 options
    *  这个属性为其提供方便的访问方式 */
   get options(): QueryList<NzAutocompleteOptionComponent> {

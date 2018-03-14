@@ -1,10 +1,12 @@
 import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import {
+  ConnectedOverlayPositionChange,
   ConnectedPositionStrategy,
   Overlay,
   OverlayConfig,
   OverlayRef,
   PositionStrategy,
+  VerticalConnectionPos
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
@@ -17,7 +19,7 @@ import {
   Input,
   OnDestroy,
   Optional,
-  ViewContainerRef,
+  ViewContainerRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -25,6 +27,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { merge } from 'rxjs/observable/merge';
 import { of } from 'rxjs/observable/of';
+import { distinct, map } from 'rxjs/operators';
 
 import { NzAutocompleteOptionComponent } from './nz-autocomplete-option.component';
 import { NzAutocompleteComponent } from './nz-autocomplete.component';
@@ -51,7 +54,7 @@ export function getNzAutocompleteMissingPanelError(): Error {
     '(blur)': 'handleBlur()',
     '(input)': 'handleInput($event)',
     '(keydown)': 'handleKeydown($event)'
-  },
+  }
 })
 export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnDestroy {
 
@@ -61,6 +64,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   private previousValue: string | number | null;
   private selectionChangeSubscription: Subscription;
   private overlayBackdropClickSubscription: Subscription;
+  private overlayPositionChangeSubscription: Subscription;
 
   _onChange: (value: {}) => void = () => {};
   _onTouched = () => {};
@@ -97,6 +101,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
         this.overlayRef.detach();
         this.selectionChangeSubscription.unsubscribe();
         this.overlayBackdropClickSubscription.unsubscribe();
+        this.overlayPositionChangeSubscription.unsubscribe();
       }
     }
   }
@@ -136,6 +141,17 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     });
   }
 
+  private subscribeOverlayPositionChange(): Subscription {
+    return this.positionStrategy.onPositionChange
+    .pipe(
+      map((position: ConnectedOverlayPositionChange) => position.connectionPair.originY),
+      distinct()
+    )
+    .subscribe((position: VerticalConnectionPos) => {
+      this.nzAutocomplete.dropDownPosition = position;
+    });
+  }
+
   private attachOverlay(): void {
     if (!this.nzAutocomplete) {
       throw getNzAutocompleteMissingPanelError();
@@ -148,7 +164,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       // 如果没有设置 nzDisplayWith 则使用 Host 元素的宽度
       this.overlayRef.updateSize({width: this.nzAutocomplete.nzWidth || this.getHostWidth()});
     }
-
+    this.overlayPositionChangeSubscription = this.subscribeOverlayPositionChange();
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
       this.overlayRef.attach(this.portal);
       this.selectionChangeSubscription = this.subscribeSelectionChange();
@@ -156,8 +172,9 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     }
 
     this.nzAutocomplete.isOpen = this.panelOpen = true;
-    this.resetActiveItem();
     this.nzAutocomplete.setVisibility();
+    this.resetActiveItem();
+
   }
 
   private destroyPanel(): void {
