@@ -24,7 +24,7 @@ import {
   }
 })
 export class NzAutocompleteOptgroupComponent {
-  private isLabelString: boolean;
+  isLabelString: boolean;
 
   /** group 的 label，支持 'string' 和 `TemplateRef` */
   @Input()

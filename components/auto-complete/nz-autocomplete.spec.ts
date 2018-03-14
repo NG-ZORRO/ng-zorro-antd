@@ -238,21 +238,13 @@ describe('auto-complete', () => {
     });
 
     it('should have correct width when setting', () => {
-
-      fixture.componentInstance.trigger.openPanel();
-      fixture.detectChanges();
-
-      const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
-      expect(Math.ceil(parseFloat(overlayPane.style.width as string))).toBe(206);
-
-      fixture.componentInstance.trigger.closePanel();
-      fixture.detectChanges();
-
       fixture.componentInstance.width = 500;
       fixture.detectChanges();
 
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
+
+      const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
 
       expect(Math.ceil(parseFloat(overlayPane.style.width as string))).toBe(500);
     });
@@ -656,9 +648,7 @@ class NzTestSimpleAutocompleteComponent {
 @Component({
   template: `
   <div>
-      <input class="input"
-             [style.width.px]="200"
-             [(ngModel)]="inputValue"
+      <input [(ngModel)]="inputValue"
              [nzAutocomplete]="auto">
       <nz-autocomplete [nzWidth]="width" [nzDataSource]="options" [nzDefaultActiveFirstOption]="false" nzBackfill #auto>
       </nz-autocomplete>
