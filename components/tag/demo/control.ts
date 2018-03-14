@@ -3,30 +3,37 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 @Component({
   selector: 'nz-demo-tag-control',
   template: `
-    <nz-tag *ngFor="let tag of tags; let i = index;"
-      [nzClosable]="i !== 0"
-      (nzClose)="handleClose(tag)">
+    <nz-tag
+      *ngFor="let tag of tags; let i = index;"
+      [nzMode]="i === 0 ? 'default' : 'closeable'"
+      (nzAfterClose)="handleClose(tag)">
       {{ sliceTagName(tag) }}
     </nz-tag>
-    <button nz-button *ngIf="!inputVisible"
-      [nzSize]="'small'" [nzType]="'dashed'"
-      (click)="showInput()">+ New Tag
+    <button
+      *ngIf="!inputVisible"
+      nz-button
+      nzSize="small"
+      nzType="dashed"
+      (click)="showInput()">
+      + New Tag
     </button>
-    <input nz-input #input
+    <input
+      #inputElement
+      nz-input
       nzSize="small"
       *ngIf="inputVisible" type="text"
       [(ngModel)]="inputValue"
       style="width: 78px;"
-      (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()">
-  `,
-  styles  : []
+      (blur)="handleInputConfirm()"
+      (keydown.enter)="handleInputConfirm()">
+  `
 })
 export class NzDemoTagControlComponent {
 
   tags = [ 'Unremovable', 'Tag 2', 'Tag 3' ];
   inputVisible = false;
   inputValue = '';
-  @ViewChild('input') input: ElementRef;
+  @ViewChild('inputElement') inputElement: ElementRef;
 
   handleClose(removedTag: {}): void {
     this.tags = this.tags.filter(tag => tag !== removedTag);
@@ -40,7 +47,7 @@ export class NzDemoTagControlComponent {
   showInput(): void {
     this.inputVisible = true;
     setTimeout(() => {
-      this.input.nativeElement.focus();
+      this.inputElement.nativeElement.focus();
     }, 10);
   }
 

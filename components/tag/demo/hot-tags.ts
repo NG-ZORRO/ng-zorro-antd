@@ -6,10 +6,10 @@ const tagsFromServer = [ 'Movie', 'Books', 'Music', 'Sports' ];
   selector: 'nz-demo-tag-hot-tags',
   template: `
     <strong>Categories: </strong>
-    <nz-checkable-tag *ngFor="let tag of hotTags"
-      [nzChecked]="selectedTags.indexOf(tag) > -1" (nzChange)="handleChange($event, tag)">
+    <nz-tag *ngFor="let tag of hotTags" nzMode="checkable"
+      [nzChecked]="selectedTags.indexOf(tag) > -1" (nzCheckedChange)="handleChange($event, tag)">
       {{ tag }}
-    </nz-checkable-tag>
+    </nz-tag>
   `,
   styles  : []
 })
