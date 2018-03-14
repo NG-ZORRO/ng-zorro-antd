@@ -29,8 +29,8 @@ describe('Calendar Header', () => {
         NzTestCalendarHeaderModeComponent,
         NzTestCalendarHeaderFullscreenComponent,
         NzTestCalendarHeaderActiveDateComponent,
-        NzTestCalendarHeaderChangesComponent,
-      ],
+        NzTestCalendarHeaderChangesComponent
+      ]
     }).compileComponents();
   }));
 

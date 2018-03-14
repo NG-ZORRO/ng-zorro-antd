@@ -13,7 +13,19 @@ import { NzDropdownService } from './nz-dropdown.service';
     <div class="ant-dropdown ant-dropdown-placement-bottomLeft" [@dropDownAnimation]="dropDownPosition" (@dropDownAnimation.done)="afterAnimation()" *ngIf="open">
       <ng-template [ngTemplateOutlet]="template"></ng-template>
     </div>
-  `
+  `,
+  styles    : [
+      `
+      .ant-dropdown {
+        top: 100%;
+        left: 0;
+        position: relative;
+        width: 100%;
+        margin-top: 4px;
+        margin-bottom: 4px;
+      }
+    `
+  ]
 })
 export class NzDropdownContextComponent implements AfterViewInit {
   dropDownPosition: 'top' | 'bottom' = 'bottom';

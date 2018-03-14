@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 
 import { NzButtonModule } from '../button/nz-button.module';
 import { LoggerModule } from '../core/util/logger/logger.module';
-import { NzLocaleModule } from '../locale';
+import { NzLocaleModule } from '../locale/nz-locale.module';
 
 import { CssUnitPipe } from './css-unit.pipe';
 import { NzModalComponent } from './nz-modal.component';

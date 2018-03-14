@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 
-import { LoggerModule } from '../core/util/logger/index';
+import { LoggerModule } from '../core/util/logger/logger.module';
 
-import { zhCN } from './locales/index';
+import { zhCN } from './locales/zh-CN';
 import { NZ_LOCALE_SERVICE_PROVIDER } from './nz-locale.service';
 import { NZ_LOCALE } from './nz-locale.token';
 import { NzTranslatePipe } from './nz-translate.pipe';

@@ -129,7 +129,25 @@ import { NzMenuDirective } from './nz-menu.directive';
     <ng-template #subMenuTemplate>
       <ng-content></ng-content>
     </ng-template>
-  `
+  `,
+  styles             : [
+      `
+      .ant-menu-submenu-placement-bottomLeft {
+        top: 6px;
+        position: relative;
+      }
+
+      .ant-menu-submenu-placement-rightTop {
+        left: 4px;
+        position: relative;
+      }
+
+      .ant-menu-submenu-placement-leftTop {
+        right: 4px;
+        position: relative;
+      }
+    `
+  ]
 })
 
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {

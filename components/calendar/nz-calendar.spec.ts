@@ -26,8 +26,8 @@ describe('Calendar', () => {
         NzTestCalendarDateCellComponent,
         NzTestCalendarDateFullCellComponent,
         NzTestCalendarMonthCellComponent,
-        NzTestCalendarMonthFullCellComponent,
-      ],
+        NzTestCalendarMonthFullCellComponent
+      ]
     }).compileComponents();
   }));
 

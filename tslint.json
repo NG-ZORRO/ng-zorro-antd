@@ -44,7 +44,7 @@
       ]
     ],
     "binary-expression-operand-order": true,
-    "curly": [true, "ignore-same-line"],
+    "curly": true,
     "encoding": true,
     "eofline": true,
     "deprecation": {
@@ -167,7 +167,7 @@
     "trailing-comma": [
       true,
       {
-        "multiline": "ignore",
+        "multiline": "never",
         "singleline": "never"
       }
     ],

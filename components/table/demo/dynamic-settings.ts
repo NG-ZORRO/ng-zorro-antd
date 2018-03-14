@@ -4,91 +4,91 @@ import { Component, OnInit } from '@angular/core';
   selector: 'nz-demo-table-dynamic-settings',
   template: `
     <div class="components-table-demo-control-bar">
-      <form nz-form [nzLayout]="'inline'">
-        <div nz-row nz-form-item>
-          <div nz-form-label>
+      <form nz-form nzLayout="inline">
+        <nz-form-item>
+          <nz-form-label>
             <label>Bordered</label>
-          </div>
-          <div nz-form-control>
+          </nz-form-label>
+          <nz-form-control>
             <nz-switch [(ngModel)]="bordered" name="bordered"></nz-switch>
-          </div>
-        </div>
-        <div nz-row nz-form-item>
-          <div nz-form-label>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>
             <label>Loading</label>
-          </div>
-          <div nz-form-control>
+          </nz-form-label>
+          <nz-form-control>
             <nz-switch [(ngModel)]="loading" name="loading"></nz-switch>
-          </div>
-        </div>
-        <div nz-row nz-form-item>
-          <div nz-form-label>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>
             <label>Pagination</label>
-          </div>
-          <div nz-form-control>
+          </nz-form-label>
+          <nz-form-control>
             <nz-switch [(ngModel)]="pagination" name="pagination"></nz-switch>
-          </div>
-        </div>
-        <div nz-row nz-form-item>
-          <div nz-form-label>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>
             <label>Title</label>
-          </div>
-          <div nz-form-control>
+          </nz-form-label>
+          <nz-form-control>
             <nz-switch [(ngModel)]="title" name="title"></nz-switch>
-          </div>
-        </div>
-        <div nz-row nz-form-item>
-          <div nz-form-label>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>
             <label>Column Header</label>
-          </div>
-          <div nz-form-control>
+          </nz-form-label>
+          <nz-form-control>
             <nz-switch [(ngModel)]="header" name="header"></nz-switch>
-          </div>
-        </div>
-        <div nz-row nz-form-item>
-          <div nz-form-label>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>
             <label>Footer</label>
-          </div>
-          <div nz-form-control>
+          </nz-form-label>
+          <nz-form-control>
             <nz-switch [(ngModel)]="footer" name="footer"></nz-switch>
-          </div>
-        </div>
-        <div nz-row nz-form-item>
-          <div nz-form-label>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>
             <label>Expandable</label>
-          </div>
-          <div nz-form-control>
+          </nz-form-label>
+          <nz-form-control>
             <nz-switch [(ngModel)]="expandable" name="expandable"></nz-switch>
-          </div>
-        </div>
-        <div nz-row nz-form-item>
-          <div nz-form-label>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>
             <label>Checkbox</label>
-          </div>
-          <div nz-form-control>
+          </nz-form-label>
+          <nz-form-control>
             <nz-switch [(ngModel)]="checkbox" name="checkbox"></nz-switch>
-          </div>
-        </div>
-        <div nz-row nz-form-item>
-          <div nz-form-label>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>
             <label>Fixed Header</label>
-          </div>
-          <div nz-form-control>
+          </nz-form-label>
+          <nz-form-control>
             <nz-switch [(ngModel)]="fixHeader" name="fixHeader"></nz-switch>
-          </div>
-        </div>
-        <div nz-row nz-form-item>
-          <div nz-form-label>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>
             <label>Size</label>
-          </div>
-          <div nz-form-control>
+          </nz-form-label>
+          <nz-form-control>
             <nz-radio-group [(ngModel)]="size" name="size">
               <label nz-radio-button nzValue="default">Default</label>
               <label nz-radio-button nzValue="middle">Middle</label>
               <label nz-radio-button nzValue="small">Small</label>
             </nz-radio-group>
-          </div>
-        </div>
+          </nz-form-control>
+        </nz-form-item>
       </form>
     </div>
     <nz-table

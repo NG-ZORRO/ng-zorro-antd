@@ -1,4 +1,3 @@
-import { ObserversModule } from '@angular/cdk/observers';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -16,14 +15,14 @@ import { NzCalendarComponent } from './nz-calendar.component';
     NzDateCellDirective,
     NzDateFullCellDirective,
     NzMonthCellDirective,
-    NzMonthFullCellDirective,
+    NzMonthFullCellDirective
   ],
   exports     : [
     NzCalendarComponent,
     NzDateCellDirective,
     NzDateFullCellDirective,
     NzMonthCellDirective,
-    NzMonthFullCellDirective,
+    NzMonthFullCellDirective
   ],
   imports     : [ CommonModule, FormsModule, NzI18nModule, NzRadioModule, NzSelectModule ]
 })

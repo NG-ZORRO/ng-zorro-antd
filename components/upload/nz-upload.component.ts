@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { of } from 'rxjs/observable/of';
-import { filter } from 'rxjs/operators';
+import { filter } from 'rxjs/operators/filter';
 
 import { toBoolean, toNumber } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -251,7 +251,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private onStart = (file: any): void => {
-    if (!this.nzFileList) this.nzFileList = [];
+    if (!this.nzFileList) { this.nzFileList = []; }
     const targetItem = this.fileToObject(file);
     targetItem.status = 'uploading';
     this.nzFileList.push(targetItem);
@@ -305,7 +305,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   // region: drag
   private dragState: string;
   fileDrop(e: DragEvent): void {
-    if (e.type === this.dragState) return;
+    if (e.type === this.dragState) { return; }
     this.dragState = e.type;
     this.setClassMap();
   }
@@ -362,7 +362,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: { [P in keyof this]?: SimpleChange } & SimpleChanges): void {
-    if (changes.nzFileList) (this.nzFileList || []).forEach(file => file.message = this.genErr(file));
+    if (changes.nzFileList) { (this.nzFileList || []).forEach(file => file.message = this.genErr(file)); }
     this.zipOptions().setClassMap();
   }
 
