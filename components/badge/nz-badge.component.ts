@@ -70,13 +70,13 @@ export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' |
   },
   styles             : [
       `
-      .ant-badge-count {
+      :host:not(.ant-badge-not-a-wrapper) .ant-badge-count {
         position: absolute;
         transform: translateX(50%);
         right: 0;
       }
 
-      .ant-badge-dot {
+      :host .ant-badge-dot {
         position: absolute;
         transform: translateX(50%);
         right: 0;

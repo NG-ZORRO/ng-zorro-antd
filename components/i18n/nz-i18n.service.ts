@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Inject, Injectable, Optional, Provider, SkipSelf } from '@angular/core';
 
-import { LoggerService } from '../core/util/logger/index';
+import { LoggerService } from '../core/util/logger/logger.service';
 
 import { NzI18nInterface } from './nz-i18n.interface';
 import { NZ_I18N } from './nz-i18n.token';

@@ -50,7 +50,7 @@ import { NzUploadModule } from './upload/nz-upload.module';
 @NgModule({
   exports: [
     NzButtonModule,
-//    NzCalendarModule,
+    NzCalendarModule,
     NzGridModule,
     NzSwitchModule,
     NzSelectModule,
