@@ -11,7 +11,10 @@ import {
   changeDetection    : ChangeDetectionStrategy.OnPush,
   template           : `
 <div class="ant-select-dropdown-menu-item-group-title">
- <ng-container *ngIf="isLabelString; else nzLabel">{{nzLabel}}</ng-container>
+ <ng-container *ngIf="isLabelString; else labelTemplate">{{nzLabel}}</ng-container>
+ <ng-template #labelTemplate>
+   <ng-template [ngTemplateOutlet]="nzLabel"></ng-template>
+ </ng-template>
 </div>
 <ul class="ant-select-dropdown-menu-item-group-list">
   <ng-content select="nz-auto-option"></ng-content>
