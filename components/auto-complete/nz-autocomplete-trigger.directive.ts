@@ -1,4 +1,4 @@
-import { DOWN_ARROW, ENTER, TAB, UP_ARROW } from '@angular/cdk/keycodes';
+import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   ConnectedPositionStrategy,
   Overlay,
@@ -35,6 +35,12 @@ export const NZ_AUTOCOMPLETE_VALUE_ACCESSOR: ExistingProvider = {
   multi: true
 };
 
+export function getNzAutocompleteMissingPanelError(): Error {
+  return Error('Attempting to open an undefined instance of `nz-autocomplete`. ' +
+    'Make sure that the id passed to the `nzAutocomplete` is correct and that ' +
+    'you\'re attempting to open it after the ngAfterContentInit hook.');
+}
+
 @Directive({
   selector: `input[nzAutocomplete], textarea[nzAutocomplete]`,
   providers: [NZ_AUTOCOMPLETE_VALUE_ACCESSOR],
@@ -51,7 +57,6 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
   private overlayRef: OverlayRef | null;
   private portal: TemplatePortal<{}>;
-  private panelOpen: boolean = false;
   private positionStrategy: ConnectedPositionStrategy;
   private previousValue: string | number | null;
   private selectionChangeSubscription: Subscription;
@@ -60,18 +65,19 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   _onChange: (value: {}) => void = () => {};
   _onTouched = () => {};
 
+  panelOpen: boolean = false;
+
   /** 用于绑定 nzAutocomplete 组件 */
   @Input() nzAutocomplete: NzAutocompleteComponent;
 
   /**
    * 当前被激活的 Option
-   * @returns {NzAutocompleteOptionComponent | null}
+   * @returns {NzAutocompleteOptionComponent}
    */
-  get activeOption(): NzAutocompleteOptionComponent | null {
+  get activeOption(): NzAutocompleteOptionComponent {
     if (this.nzAutocomplete && this.nzAutocomplete.options.length) {
       return this.nzAutocomplete.activeItem;
     }
-    return null;
   }
 
   constructor(private _element: ElementRef, private _overlay: Overlay,
@@ -132,7 +138,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
   private attachOverlay(): void {
     if (!this.nzAutocomplete) {
-      return;
+      throw getNzAutocompleteMissingPanelError();
     }
 
     if (!this.overlayRef) {
@@ -199,36 +205,31 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
   private handleKeydown(event: KeyboardEvent): void {
     const keyCode = event.keyCode;
-    switch (keyCode) {
-      case TAB:
-        // 通过 tab 跳出时，重置输入标签 value
-        if (this.activeOption.getLabel() !== this.previousValue) {
-          this.setTriggerValue(this.previousValue);
-        }
-        this.closePanel();
-        return;
-      case DOWN_ARROW:
-        if (this.nzAutocomplete.showPanel) {
-          this.nzAutocomplete.setNextItemActive();
-          this.doBackfill();
-          event.preventDefault();
-        }
-        break;
-      case UP_ARROW:
-        if (this.nzAutocomplete.showPanel) {
-          this.nzAutocomplete.setPreviousItemActive();
-          this.doBackfill();
-          event.preventDefault();
-        }
-        break;
-      case ENTER:
-        if (this.nzAutocomplete.showPanel && this.activeOption) {
-          this.activeOption.selectViaInteraction();
-        }
-        event.preventDefault();
-        break;
-      default:
-        return;
+    const isArrowKey = keyCode === UP_ARROW || keyCode === DOWN_ARROW;
+
+    if (keyCode === ESCAPE) {
+      event.preventDefault();
+    }
+
+    if (this.panelOpen && (keyCode === ESCAPE || keyCode === TAB)) {
+      // 通过 tab / ESC 关闭，重置输入标签 value
+      if (this.activeOption.getLabel() !== this.previousValue) {
+        this.setTriggerValue(this.previousValue);
+      }
+      this.closePanel();
+    } else if (this.panelOpen && keyCode === ENTER) {
+      event.preventDefault();
+      if (this.nzAutocomplete.showPanel && this.activeOption) {
+        this.activeOption.selectViaInteraction();
+      }
+    } else if (this.panelOpen && isArrowKey && this.nzAutocomplete.showPanel) {
+      event.stopPropagation();
+      if (keyCode === UP_ARROW) {
+        this.nzAutocomplete.setPreviousItemActive();
+      } else {
+        this.nzAutocomplete.setNextItemActive();
+      }
+      this.doBackfill();
     }
   }
 

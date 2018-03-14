@@ -12,12 +12,12 @@ import {
   TemplateRef,
   ViewChild, ViewChildren,
 } from '@angular/core';
-
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { defer } from 'rxjs/observable/defer';
 import { merge } from 'rxjs/observable/merge';
 import { filter, switchMap, take } from 'rxjs/operators';
+
 import { toBoolean } from '../core/util/convert';
 
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './nz-autocomplete-option.component';
@@ -135,13 +135,6 @@ export class NzAutocompleteComponent implements AfterViewInit {
     this.optionsInit();
   }
 
-  select(option: NzAutocompleteOptionComponent): void {
-    if (option.nzValue !== null) {
-      this.clearSelectedOptions(option);
-      this.setActiveItem(this.getOptionIndex(option));
-    }
-  }
-
   setVisibility(): void {
     this.showPanel = !!this.options.length;
     this.changeDetectorRef.markForCheck();
@@ -211,7 +204,8 @@ export class NzAutocompleteComponent implements AfterViewInit {
     .pipe(filter((event: NzOptionSelectionChange) => event.isUserInput))
     .subscribe((event: NzOptionSelectionChange) => {
       if (!event.source.selected) {
-        event.source.selectViaInteraction();
+        event.source.select();
+        event.source.setActiveStyles();
       } else {
         this.clearSelectedOptions(event.source);
       }
