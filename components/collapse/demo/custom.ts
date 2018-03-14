@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-collapse-custom',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
     <nz-collapse [nzBordered]="false">
       <nz-collapse-panel *ngFor="let panel of panels" [nzHeader]="panel.name" [nzActive]="panel.active"
         [ngStyle]="panel.customStyle">
-        <p>{{panel.name}} 的内容</p>
+        <p>{{panel.name}} content</p>
       </nz-collapse-panel>
     </nz-collapse>
   `,

@@ -55,16 +55,16 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   get nzCard(): boolean { return !this.fullscreen; }
 
   @ContentChild(DateCell, {read: TemplateRef})
-  set dateCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) this.dateCell = value; }
+  set dateCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.dateCell = value; } }
 
   @ContentChild(DateFullCell, {read: TemplateRef})
-  set dateFullCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) this.dateFullCell = value; }
+  set dateFullCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.dateFullCell = value; } }
 
   @ContentChild(MonthCell, {read: TemplateRef})
-  set monthCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) this.monthCell = value; }
+  set monthCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.monthCell = value; } }
 
   @ContentChild(MonthFullCell, {read: TemplateRef})
-  set monthFullCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) this.monthFullCell = value; }
+  set monthFullCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.monthFullCell = value; } }
 
   @HostBinding('class.ant-fullcalendar--fullscreen')
   fullscreen = true;

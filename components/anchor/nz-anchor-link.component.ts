@@ -6,7 +6,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  TemplateRef,
+  TemplateRef
 } from '@angular/core';
 
 import { NzAnchorComponent } from './nz-anchor.component';
