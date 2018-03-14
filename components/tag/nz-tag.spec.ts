@@ -9,7 +9,7 @@ describe('tag', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzTagModule, NoopAnimationsModule ],
-      declarations: [ NzTestTagBasicComponent ]
+      declarations: [ NzTestTagBasicComponent, NzTestTagPreventComponent ]
     });
     TestBed.compileComponents();
   }));
@@ -74,6 +74,26 @@ describe('tag', () => {
       expect(tag.nativeElement.firstElementChild.style.backgroundColor).toBe('');
     });
   });
+  describe('prevent tag', () => {
+    let fixture;
+    let testComponent;
+    let tag;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTagPreventComponent);
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+      tag = fixture.debugElement.query(By.directive(NzTagComponent));
+    });
+    it('should close prevent default', fakeAsync(() => {
+      fixture.detectChanges();
+      expect(tag.nativeElement.querySelector('.anticon-cross')).toBeDefined();
+      tag.nativeElement.querySelector('.anticon-cross').click();
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      expect(tag.nativeElement.querySelector('.anticon-cross')).toBeDefined();
+    }));
+  });
 });
 
 @Component({
@@ -96,4 +116,19 @@ export class NzTestTagBasicComponent {
   onClose = jasmine.createSpy('on close');
   afterClose = jasmine.createSpy('after close');
   checkedChange = jasmine.createSpy('after close');
+}
+
+@Component({
+  template: `
+    <nz-tag
+      nzMode="closeable"
+      (nzOnClose)="onClose($event)">
+      Tag 1
+    </nz-tag>
+  `
+})
+export class NzTestTagPreventComponent {
+  onClose(e: MouseEvent): void {
+    e.preventDefault();
+  }
 }
