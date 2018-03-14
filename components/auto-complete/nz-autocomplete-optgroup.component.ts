@@ -20,7 +20,7 @@ import {
 `,
   host               : {
     'role'  : 'group',
-    'class' : 'ant-select-dropdown-menu-item-group',
+    'class' : 'ant-select-dropdown-menu-item-group'
   }
 })
 export class NzAutocompleteOptgroupComponent {

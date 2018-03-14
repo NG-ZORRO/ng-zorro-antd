@@ -7,7 +7,7 @@ import {
   NgZone,
   QueryList,
   ViewChild,
-  ViewChildren,
+  ViewChildren
 } from '@angular/core';
 import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/testing';
 import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -20,7 +20,7 @@ import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
   typeInElement,
-  MockNgZone,
+  MockNgZone
 } from '../core/testing';
 
 import {
@@ -131,18 +131,19 @@ describe('auto-complete', () => {
       .toContain('Burns Bay Road');
     });
 
-    it('should close the panel programmatically', () => {
+    it('should close the panel programmatically', fakeAsync(() => {
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
 
       fixture.componentInstance.trigger.closePanel();
       fixture.detectChanges();
 
+      tick(500);
       expect(fixture.componentInstance.trigger.panelOpen)
       .toBe(false);
       expect(overlayContainerElement.textContent)
       .toEqual('');
-    });
+    }));
 
     it('should close the panel when the user clicks away', fakeAsync(() => {
       dispatchFakeEvent(input, 'focusin');
@@ -177,6 +178,7 @@ describe('auto-complete', () => {
       option.click();
       fixture.detectChanges();
 
+      tick(500);
       expect(fixture.componentInstance.trigger.panelOpen)
       .toBe(false);
       expect(overlayContainerElement.textContent)
@@ -592,6 +594,7 @@ describe('auto-complete', () => {
       dispatchKeyboardEvent(input, 'keydown', TAB);
       fixture.detectChanges();
 
+      tick(500);
       expect(overlayContainerElement.querySelector('.ant-select-dropdown'))
       .toBeFalsy();
     }));
@@ -607,6 +610,7 @@ describe('auto-complete', () => {
       dispatchKeyboardEvent(input, 'keydown', ESCAPE);
       fixture.detectChanges();
 
+      tick(500);
       expect(overlayContainerElement.querySelector('.ant-select-dropdown'))
       .toBeFalsy();
     }));
@@ -704,27 +708,27 @@ class NzTestAutocompleteGroupComponent {
     title: '话题',
     children: [{
       title: 'AntDesign one',
-      count: 10000,
+      count: 10000
     },         {
       title: 'AntDesign two',
-      count: 10600,
-    }],
+      count: 10600
+    }]
   },              {
     title: '问题',
     children: [{
       title: 'AntDesign three',
-      count: 60100,
+      count: 60100
     },         {
       title: 'AntDesign four',
-      count: 30010,
-    }],
+      count: 30010
+    }]
   },              {
     title: '文章',
     children: [{
       title: 'AntDesign five',
       disabled: true,
-      count: 100000,
-    }],
+      count: 100000
+    }]
   }];
 
   @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;

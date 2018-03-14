@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component, EventEmitter,
-  Input, Output,
+  Input, Output
 } from '@angular/core';
 
 import { toBoolean } from '../core/util/convert';
@@ -29,7 +29,7 @@ export class NzOptionSelectionChange {
     '[attr.aria-selected]'                          : 'selected.toString()',
     '[attr.aria-disabled]'                          : 'nzDisabled.toString()',
     '(click)'                                       : 'selectViaInteraction()',
-    '(keydown)'                                     : 'handleKeydown($event)',
+    '(keydown)'                                     : 'handleKeydown($event)'
   }
 })
 export class NzAutocompleteOptionComponent {
