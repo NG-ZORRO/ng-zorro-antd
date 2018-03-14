@@ -140,10 +140,8 @@ export class NzAutocompleteComponent implements AfterViewInit {
 
   /** 用于组件内部监听 options 的选择变化 */
   readonly optionSelectionChanges: Observable<NzOptionSelectionChange> = defer(() => {
-    if (this._dataSource) {
-      return merge(...this.fromDataSourceOptions.map(option => option.selectionChange));
-    } else if (this.fromContentOptions) {
-      return merge(...this.fromContentOptions.map(option => option.selectionChange));
+    if (this.options) {
+      return merge(...this.options.map(option => option.selectionChange));
     }
     return this._ngZone.onStable
     .asObservable()
@@ -163,19 +161,14 @@ export class NzAutocompleteComponent implements AfterViewInit {
   }
 
   setActiveItem(index: number): void {
-    const previousIndex = this.activeItemIndex;
-    const previousItem = this.activeItem;
-    this.activeItemIndex = index;
-    this.activeItem = this.options.toArray()[index];
-    if (this.activeItemIndex !== previousIndex) {
-      if (this.activeItem) {
-        this.activeItem.setActiveStyles();
-        if (previousItem) {
-          previousItem.setInactiveStyles();
-        }
-      }
+    const activeItem = this.options.toArray()[index];
+    if (activeItem && !activeItem.active) {
+      this.activeItem = activeItem;
+      this.activeItemIndex = index;
+      this.clearSelectedOptions(this.activeItem);
+      this.activeItem.setActiveStyles();
+      this.changeDetectorRef.markForCheck();
     }
-    this.changeDetectorRef.markForCheck();
   }
 
   setNextItemActive(): void {
@@ -211,11 +204,14 @@ export class NzAutocompleteComponent implements AfterViewInit {
   /**
    * 清除 Options 的激活状态
    * @param {NzAutocompleteOptionComponent} skip
+   * @param {boolean} deselect
    */
-  private clearSelectedOptions(skip?: NzAutocompleteOptionComponent): void {
+  private clearSelectedOptions(skip?: NzAutocompleteOptionComponent, deselect: boolean = false): void {
     this.options.forEach(option => {
       if (option !== skip) {
-        option.deselect();
+        if (deselect) {
+          option.deselect();
+        }
         option.setInactiveStyles();
       }
     });
@@ -225,12 +221,11 @@ export class NzAutocompleteComponent implements AfterViewInit {
     this.selectionChangeSubscription = this.optionSelectionChanges
     .pipe(filter((event: NzOptionSelectionChange) => event.isUserInput))
     .subscribe((event: NzOptionSelectionChange) => {
-      if (!event.source.selected) {
-        event.source.select();
-        event.source.setActiveStyles();
-      } else {
-        this.clearSelectedOptions(event.source);
-      }
+      event.source.select();
+      event.source.setActiveStyles();
+      this.activeItem = event.source;
+      this.activeItemIndex = this.getOptionIndex(this.activeItem);
+      this.clearSelectedOptions(event.source, true);
       this.selectionChange.emit(event.source);
     });
   }

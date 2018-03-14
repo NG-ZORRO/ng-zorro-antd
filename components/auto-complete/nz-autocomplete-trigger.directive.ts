@@ -26,8 +26,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { merge } from 'rxjs/observable/merge';
-import { of } from 'rxjs/observable/of';
-import { distinct, map } from 'rxjs/operators';
+import { delay, distinct, map } from 'rxjs/operators';
 
 import { NzAutocompleteOptionComponent } from './nz-autocomplete-option.component';
 import { NzAutocompleteComponent } from './nz-autocomplete.component';
@@ -63,6 +62,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   private positionStrategy: ConnectedPositionStrategy;
   private previousValue: string | number | null;
   private selectionChangeSubscription: Subscription;
+  private optionsChangeSubscription: Subscription;
   private overlayBackdropClickSubscription: Subscription;
   private overlayPositionChangeSubscription: Subscription;
 
@@ -102,8 +102,21 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
         this.selectionChangeSubscription.unsubscribe();
         this.overlayBackdropClickSubscription.unsubscribe();
         this.overlayPositionChangeSubscription.unsubscribe();
+        this.optionsChangeSubscription.unsubscribe();
       }
     }
+  }
+
+  /**
+   * 订阅数据源改变事件
+   * @returns {Subscription}
+   */
+  private subscribeOptionsChange(): Subscription {
+    return this.nzAutocomplete.options.changes.pipe(
+      delay(0)
+    ).subscribe(() => {
+      this.resetActiveItem();
+    });
   }
 
   /**
@@ -114,7 +127,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   private subscribeSelectionChange(): Subscription {
     return this.nzAutocomplete.selectionChange
     .subscribe((option: NzAutocompleteOptionComponent) => {
-      this.setValue(option);
+      this.setValueAndClose(option);
     });
   }
 
@@ -124,9 +137,6 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
    * @returns {Subscription}
    */
   private subscribeOverlayBackdropClick(): Subscription {
-    if (!this._document) {
-      return of(null).subscribe();
-    }
     return merge(
       fromEvent(this._document, 'click'),
       fromEvent(this._document, 'touchend')
@@ -141,6 +151,11 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     });
   }
 
+  /**
+   * 订阅 Overlay 位置改变事件
+   * 并重新设置动画方向
+   * @returns {Subscription}
+   */
   private subscribeOverlayPositionChange(): Subscription {
     return this.positionStrategy.onPositionChange
     .pipe(
@@ -169,6 +184,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       this.overlayRef.attach(this.portal);
       this.selectionChangeSubscription = this.subscribeSelectionChange();
       this.overlayBackdropClickSubscription = this.subscribeOverlayBackdropClick();
+      this.optionsChangeSubscription = this.subscribeOptionsChange();
     }
 
     this.nzAutocomplete.isOpen = this.panelOpen = true;
@@ -213,7 +229,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   }
 
   private resetActiveItem(): void {
-    if (this.nzAutocomplete.activeItem) {
+    if (this.nzAutocomplete.activeItem && this.nzAutocomplete.getOptionIndex(this.nzAutocomplete.activeItem)) {
       this.nzAutocomplete.setActiveItem(this.nzAutocomplete.getOptionIndex(this.nzAutocomplete.activeItem));
     } else {
       this.nzAutocomplete.setActiveItem(this.nzAutocomplete.nzDefaultActiveFirstOption ? 0 : -1);
@@ -250,16 +266,14 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     }
   }
 
-  private setValue(option: NzAutocompleteOptionComponent, isClose: boolean = true): void {
+  private setValueAndClose(option: NzAutocompleteOptionComponent): void {
     if (option && !option.nzDisabled) {
       const value = option.getLabel();
       this.setTriggerValue(value);
       this._onChange(value);
       this._element.nativeElement.focus();
     }
-    if (isClose) {
-      this.closePanel();
-    }
+    this.closePanel();
   }
 
   private setTriggerValue(value: string | number | null): void {

@@ -28,14 +28,13 @@ export class NzOptionSelectionChange {
     '[class.ant-select-dropdown-menu-item-disabled]': 'nzDisabled',
     '[attr.aria-selected]'                          : 'selected.toString()',
     '[attr.aria-disabled]'                          : 'nzDisabled.toString()',
-    '(click)'                                       : 'selectViaInteraction()',
-    '(keydown)'                                     : 'handleKeydown($event)'
+    '(click)'                                       : 'selectViaInteraction()'
   }
 })
 export class NzAutocompleteOptionComponent {
-  private active = false;
   private disabled = false;
 
+  active = false;
   selected = false;
 
   @Input() nzValue: {};
@@ -86,13 +85,6 @@ export class NzAutocompleteOptionComponent {
 
   private emitSelectionChangeEvent(isUserInput: boolean = false): void {
     this.selectionChange.emit(new NzOptionSelectionChange(this, isUserInput));
-  }
-
-  private handleKeydown(event: KeyboardEvent): void {
-    if (event.keyCode === ENTER || event.keyCode === SPACE) {
-      this.selectViaInteraction();
-      event.preventDefault();
-    }
   }
 
   selectViaInteraction(): void {

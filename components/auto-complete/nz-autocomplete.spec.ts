@@ -260,6 +260,7 @@ describe('auto-complete', () => {
 
       componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
       fixture.detectChanges();
+      tick();
 
       expect(input.value)
       .toBe('Burns Bay Road');
@@ -499,6 +500,22 @@ describe('auto-complete', () => {
 
       expect(optionEls[0].classList).not.toContain('ant-select-dropdown-menu-item-active');
       expect(optionEls[1].classList).toContain('ant-select-dropdown-menu-item-active');
+
+    });
+
+    it('should set the active item to the first option when DOWN key is pressed in last item', () => {
+      const componentInstance = fixture.componentInstance;
+      const optionEls =
+        overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
+
+      expect(componentInstance.trigger.panelOpen)
+      .toBe(true);
+
+      [1, 2, 3].forEach(() => componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT));
+      fixture.detectChanges();
+
+      expect(optionEls[1].classList).not.toContain('ant-select-dropdown-menu-item-active');
+      expect(optionEls[0].classList).toContain('ant-select-dropdown-menu-item-active');
 
     });
 
