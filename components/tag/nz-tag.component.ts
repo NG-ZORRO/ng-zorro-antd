@@ -4,12 +4,14 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  HostBinding,
   Input,
+  OnInit,
   Output,
-  Renderer2
+  Renderer2,
+  ViewChild
 } from '@angular/core';
 
+export type TagType = 'default' | 'closeable' | 'checkable';
 import { tagAnimation } from '../core/animation/tag-animations';
 import { toBoolean } from '../core/util/convert';
 
@@ -20,89 +22,121 @@ import { toBoolean } from '../core/util/convert';
     tagAnimation
   ],
   template           : `
-    <span *ngIf="!_closed"
-      [ngClass]="_tagCls"
-      [style.backgroundColor]="_backgroundColor"
+    <div
+      *ngIf="!closed"
+      [ngClass]="classMap"
+      #wrapperElement
       [@tagAnimation]
-      (@tagAnimation.done)="_afterClose($event)">
-      <span [class]="_textClass"><ng-content></ng-content></span>
-      <i class="anticon anticon-cross" (click)="_close($event)" *ngIf="nzClosable"></i>
-    </span>
+      (@tagAnimation.done)="afterAnimation($event)"
+      (click)="updateCheckedStatus()">
+      <ng-content></ng-content>
+      <i class="anticon anticon-cross" *ngIf="nzMode==='closeable'" (click)="closeTag($event)"></i>
+    </div>
   `
 })
-export class NzTagComponent implements AfterViewInit {
-  private _closable = false;
+export class NzTagComponent implements OnInit, AfterViewInit {
+  private _color: string;
+  private _checked = false;
+  private isPreset: boolean;
+  private _mode: TagType = 'default';
+  classMap;
+  closed = false;
+  @ViewChild('wrapperElement') wrapperElement: ElementRef;
+  @Output() nzAfterClose = new EventEmitter<void>();
+  @Output() nzOnClose = new EventEmitter<MouseEvent>();
+  @Output() nzCheckedChange = new EventEmitter<boolean>();
 
-  _prefixCls = 'ant-tag';
-  _closed = false;
-
-  /** Whether tag is closable */
   @Input()
-  set nzClosable(value: boolean) {
-    this._closable = toBoolean(value);
+  set nzMode(value: TagType) {
+    this._mode = value;
+    this.updateClassMap();
   }
 
-  get nzClosable(): boolean {
-    return this._closable;
+  get nzMode(): TagType {
+    return this._mode;
   }
 
-  /** The tag color */
-  @Input() nzColor: string;
-
-  /** Event: emit before close */
-  @Output() nzBeforeClose = new EventEmitter<Event>();
-
-  // TODO: AnimationEvent is not subclass of Event, but all payloads should be unified
-  /** Event: emit after close */
-  @Output() nzClose = new EventEmitter<AnimationEvent>();
-
-  @HostBinding('attr.data-show')
-  get _dataShow(): boolean {
-    return !this._closed;
+  @Input()
+  set nzColor(value: string) {
+    this._color = value;
+    this.isPreset = this.isPresetColor(value);
+    this.updateClassMap();
+    this.updateColorStatus();
   }
 
-  get _backgroundColor(): string {
-    const isPresetColor = this._isPresetColor(this.nzColor);
-    return (this.nzColor && !isPresetColor) ? this.nzColor : null;
+  get nzColor(): string {
+    return this._color;
   }
 
-  _afterClose(event: AnimationEvent): void {
-    if (this._closed) {
-      this.nzClose.emit(event);
+  @Input()
+  set nzChecked(value: boolean) {
+    this._checked = toBoolean(value);
+    this.updateClassMap();
+  }
+
+  get nzChecked(): boolean {
+    return this._checked;
+  }
+
+  isPresetColor(color?: string): boolean {
+    if (!color) {
+      return false;
+    }
+    return (
+      /^(pink|red|yellow|orange|cyan|green|blue|purple|geekblue|magenta|volcano|gold|lime)(-inverse)?$/
+      .test(color)
+    );
+  }
+
+  updateCheckedStatus(): void {
+    if (this.nzMode === 'checkable') {
+      this.nzChecked = !this.nzChecked;
+      this.nzCheckedChange.emit(this.nzChecked);
     }
   }
 
-  get _tagCls(): object {
-    const isPresetColor = this._isPresetColor(this.nzColor);
-    return {
-      [ this._prefixCls ]                     : true,
-      [ `${this._prefixCls}-${this.nzColor}` ]: isPresetColor,
-      [ `${this._prefixCls}-has-color` ]      : (this.nzColor && !isPresetColor)
+  closeTag(e: MouseEvent): void {
+    this.nzOnClose.emit(e);
+    if (!e.defaultPrevented) {
+      this.closed = true;
+    }
+  }
+
+  afterAnimation(e: AnimationEvent): void {
+    if (this.closed && !e.fromState) {
+      this.nzAfterClose.emit();
+    }
+  }
+
+  updateClassMap(): void {
+    this.classMap = {
+      [ `ant-tag` ]                  : true,
+      [ `ant-tag-has-color` ]        : this.isPreset === false,
+      [ `ant-tag-${this.nzColor}` ]  : this.isPreset === true,
+      [ `ant-tag-checkable` ]        : this.nzMode === 'checkable',
+      [ `ant-tag-checkable-checked` ]: this.nzChecked
     };
   }
 
-  get _textClass(): string {
-    return `${this._prefixCls}-text`;
-  }
-
-  _close(event: Event): void {
-    this.nzBeforeClose.emit(event);
-    if (event.defaultPrevented) {
-      return;
+  updateColorStatus(): void {
+    if (this.wrapperElement && this.nzColor) {
+      if (this.isPreset) {
+        this.renderer.removeStyle(this.wrapperElement.nativeElement, 'background-color');
+      } else {
+        this.renderer.setStyle(this.wrapperElement.nativeElement, 'background-color', this.nzColor);
+      }
     }
-    this._closed = true;
   }
 
-  _isPresetColor(color: string): boolean {
-    return /^(magenta|red|volcano|orange|gold|lime|green|cyan|blue|geekblue|purple)(-inverse)?$/.test(color);
+  constructor(private renderer: Renderer2) {
+
   }
 
-  constructor(private _elementRef: ElementRef,
-              private _render: Renderer2) {
-
+  ngOnInit(): void {
+    this.updateClassMap();
   }
 
   ngAfterViewInit(): void {
-    this._render.addClass(this._elementRef.nativeElement, `${this._prefixCls}-root`);
+    this.updateColorStatus();
   }
 }

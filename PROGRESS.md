@@ -30,6 +30,7 @@
 | alert | √ | 100% | 100% | vthinkxie | - |
 | progress | √ | 100% | 100% | vthinkxie | √ |
 | spin | √ | 100% | 100% | vthinkxie | - |
+| tags | √ | 100% | 100% | vthinkxie | √ |
 | popover | x | x | x | wilsoncook | - |
 | tooltip | x | x | x | wilsoncook | - |
 | popconfirm | x | x | x | wilsoncook | - |
@@ -50,7 +51,6 @@
 | divider | √ | 100% | 100% | cipchk | x |
 | treeselect | x | x | x | simplejason | - |
 | tree | x | x | x | simplejason | - |
-| tags | x | x | x | fbchen | -|
 | cascader | x | x | x | fbchen | - |
 | autocomplete | x | x | x | HsuanXyz | - |
 | mention | x | x | x | HsuanXyz | - |

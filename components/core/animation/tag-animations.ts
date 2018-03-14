@@ -4,7 +4,7 @@ import {
   style,
   transition,
   trigger,
-  AnimationTriggerMetadata,
+  AnimationTriggerMetadata
 } from '@angular/animations';
 
 export const tagAnimation: AnimationTriggerMetadata = trigger('tagAnimation', [
