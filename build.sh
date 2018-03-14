@@ -6,7 +6,7 @@ rm -rf publish
 rm -rf __gen_components
 rm -rf publish-es2015
 cp -r components __gen_components
-node ./inline-template.js
+node ./build_scripts/inline-template.js
 
 echo 'Compiling to es2015 via Angular compiler'
 $(npm bin)/ngc -p tsconfig-build.json -t es2015 --outDir publish-es2015/src
@@ -47,3 +47,5 @@ rm publish/src/index.d.ts publish/src/index.metadata.json
 
 echo 'Copying package.json'
 cp package.json publish/package.json
+
+node ./build_scripts/generate-less.js

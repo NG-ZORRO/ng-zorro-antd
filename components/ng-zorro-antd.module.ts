@@ -32,6 +32,7 @@ import { NzStepsModule } from './steps/nz-steps.module';
 import { NzSwitchModule } from './switch/nz-switch.module';
 import { NzTableModule } from './table/nz-table.module';
 import { NzTabsModule } from './tabs/nz-tabs.module';
+import { NzTagModule } from './tag/nz-tag.module';
 import { NzTimelineModule } from './timeline/nz-timeline.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
 import { NzUploadModule } from './upload/nz-upload.module';
@@ -43,7 +44,6 @@ import { NzNotificationModule } from './notification/nz-notification.module';
 import { NzNotificationService } from './notification/nz-notification.service';
 import { NzPopoverModule } from './popover/nz-popover.module';
 import { NzSliderModule } from './slider/nz-slider.module';
-import { NzTagModule } from './tag/nz-tag.module';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 
 // error
@@ -87,10 +87,10 @@ export * from './tabs';
 export * from './timeline';
 export * from './transfer';
 export * from './upload';
+export * from './tag';
 
 // export * from './message';
 // export * from './tooltip';
-// export * from './tag';
 // export * from './slider';
 // export * from './popover';
 // export * from './notification';

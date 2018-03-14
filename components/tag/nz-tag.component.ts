@@ -1,4 +1,11 @@
-import { AnimationEvent } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+  AnimationEvent
+} from '@angular/animations';
 import {
   AfterViewInit,
   Component,
@@ -12,15 +19,23 @@ import {
 } from '@angular/core';
 
 export type TagType = 'default' | 'closeable' | 'checkable';
-import { tagAnimation } from '../core/animation/tag-animations';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
   selector           : 'nz-tag',
   preserveWhitespaces: false,
-  animations         : [
-    tagAnimation
-  ],
+  animations         : [ trigger('tagAnimation', [
+    state('*', style({ opacity: 1 })),
+    transition('void => *', [
+      style({ opacity: 0 }),
+      animate('300ms cubic-bezier(0.78, 0.14, 0.15, 0.86)')
+    ]),
+    state('void', style({ opacity: 0 })),
+    transition('* => void', [
+      style({ opacity: 1 }),
+      animate('300ms cubic-bezier(0.78, 0.14, 0.15, 0.86)')
+    ])
+  ]) ],
   template           : `
     <div
       *ngIf="!closed"
