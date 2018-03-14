@@ -8,7 +8,6 @@ import * as differenceInCalendarWeeks from 'date-fns/difference_in_calendar_week
 import * as endOfMonth from 'date-fns/end_of_month';
 import * as isSameDay from 'date-fns/is_same_day';
 import * as isSameMonth from 'date-fns/is_same_month';
-import * as isSameWeek from 'date-fns/is_same_week';
 import * as isSameYear from 'date-fns/is_same_year';
 import * as isThisMonth from 'date-fns/is_this_month';
 import * as isThisYear from 'date-fns/is_this_year';

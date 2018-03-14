@@ -9,7 +9,7 @@ import {
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
 // tslint:disable-next-line:no-any
-export type NgClassType = string | string[] | Set<string> | { [klass: string]: any; };
+export type StepNgClassType = string | string[] | Set<string> | { [klass: string]: any; };
 
 @Component({
   selector           : 'nz-step',
@@ -60,7 +60,7 @@ export class NzStepComponent {
   private _status = 'wait';
   private _currentIndex = 0;
   private _description: string | TemplateRef<void>;
-  private _icon: NgClassType | TemplateRef<void>;
+  private _icon: StepNgClassType | TemplateRef<void>;
   private _title: string | TemplateRef<void>;
   private el: HTMLElement;
   isCustomStatus = false;
@@ -86,12 +86,12 @@ export class NzStepComponent {
   }
 
   @Input()
-  set nzIcon(value: NgClassType | TemplateRef<void>) {
+  set nzIcon(value: StepNgClassType | TemplateRef<void>) {
     this.isIconString = !(value instanceof TemplateRef);
     this._icon = value;
   }
 
-  get nzIcon(): NgClassType | TemplateRef<void> {
+  get nzIcon(): StepNgClassType | TemplateRef<void> {
     return this._icon;
   }
 
