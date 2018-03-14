@@ -215,7 +215,7 @@ describe('nz-select option container', () => {
       expect(testComponent.scrollToBottom).toHaveBeenCalledTimes(1);
     });
   });
-  describe('tags', () => {
+  describe('option with tags', () => {
     let fixture;
     let testComponent;
     let oc;

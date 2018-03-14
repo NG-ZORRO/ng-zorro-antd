@@ -1,3 +1,4 @@
+import { AnimationEvent } from '@angular/animations';
 import {
   AfterViewInit,
   Component,
@@ -26,7 +27,7 @@ import { toBoolean } from '../core/util/convert';
       [ngClass]="classMap"
       #wrapperElement
       [@tagAnimation]
-      (@tagAnimation.done)="afterAnimation()"
+      (@tagAnimation.done)="afterAnimation($event)"
       (click)="updateCheckedStatus()">
       <ng-content></ng-content>
       <i class="anticon anticon-cross" *ngIf="nzMode==='closeable'" (click)="closeTag($event)"></i>
@@ -101,8 +102,8 @@ export class NzTagComponent implements OnInit, AfterViewInit {
     }
   }
 
-  afterAnimation(): void {
-    if (this.closed) {
+  afterAnimation(e: AnimationEvent): void {
+    if (this.closed && !e.fromState) {
       this.nzAfterClose.emit();
     }
   }
