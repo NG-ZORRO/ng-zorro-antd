@@ -36,18 +36,21 @@ let globals = {
   '@angular/cdk/stepper'    : 'ng.cdk.stepper',
   '@angular/cdk/table'      : 'ng.cdk.table',
 
-  'date-fns'               : 'date-fns',
-  'date-fns/end_of_month'  : 'date-fns/end_of_month',
-  'date-fns/is_same_day'   : 'date-fns/is_same_day',
-  'date-fns/is_same_month' : 'date-fns/is_same_month',
-  'date-fns/is_same_year'  : 'date-fns/is_same_year',
-  'date-fns/is_this_month' : 'date-fns/is_this_month',
-  'date-fns/is_this_year'  : 'date-fns/is_this_year',
-  'date-fns/set_month'     : 'date-fns/set_month',
-  'date-fns/set_year'      : 'date-fns/set_year',
-  'date-fns/start_of_month': 'date-fns/start_of_month',
-  'date-fns/start_of_week' : 'date-fns/start_of_week',
-  'date-fns/start_of_year' : 'date-fns/start_of_year',
+  'date-fns/add_days'                     : 'date-fns/add_days/index',
+  'date-fns/difference_in_calendar_days'  : 'date-fns/difference_in_calendar_days/index',
+  'date-fns/difference_in_calendar_months': 'date-fns/difference_in_calendar_months/index',
+  'date-fns/difference_in_calendar_weeks' : 'date-fns/difference_in_calendar_weeks/index',
+  'date-fns/end_of_month'                 : 'date-fns/end_of_month/index',
+  'date-fns/is_same_day'                  : 'date-fns/is_same_day/index',
+  'date-fns/is_same_month'                : 'date-fns/is_same_month/index',
+  'date-fns/is_same_year'                 : 'date-fns/is_same_year/index',
+  'date-fns/is_this_month'                : 'date-fns/is_this_month/index',
+  'date-fns/is_this_year'                 : 'date-fns/is_this_year/index',
+  'date-fns/set_month'                    : 'date-fns/set_month/index',
+  'date-fns/set_year'                     : 'date-fns/set_year/index',
+  'date-fns/start_of_month'               : 'date-fns/start_of_month/index',
+  'date-fns/start_of_week'                : 'date-fns/start_of_week/index',
+  'date-fns/start_of_year'                : 'date-fns/start_of_year/index',
 
   'rxjs/Observer'  : 'Rx',
   'rxjs/Subscriber': 'Rx',
@@ -145,13 +148,15 @@ const listOfDateFns = [
 ];
 const listOfReplace = listOfDateFns.map(name => {
   const map = {};
-  map[` * as ${name} from `] = ` `;
+  // map[`import * as ${name} `] = `var ${name}=_${name};\nimport * as _${name} `;
+  map[`import * as ${name}`] = `import ${name}`;
   return replace(map)
 });
 
 let plugins = [
   sourcemaps(),
   ...listOfReplace,
+  // replace({ "import * as setMonth ": "import " }),
   resolve(),
 ];
 

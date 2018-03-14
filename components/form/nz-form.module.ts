@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzGridModule } from '../grid';
+import { NzGridModule } from '../grid/nz-grid.module';
 import { NzFormControlComponent } from './nz-form-control.component';
 import { NzFormExplainComponent } from './nz-form-explain.component';
 import { NzFormExtraComponent } from './nz-form-extra.component';

@@ -11,7 +11,7 @@ import { isNotNil } from '../core/util/check';
 
 import { toBoolean } from '../core/util/convert';
 
-import { NzDropDownComponent } from '../dropdown';
+import { NzDropDownComponent } from '../dropdown/nz-dropdown.component';
 
 /* tslint:disable-next-line:no-any */
 export type NzThFilterType = Array<{ text: string; value: any }>;
