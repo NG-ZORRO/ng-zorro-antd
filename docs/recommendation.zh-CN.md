@@ -26,7 +26,7 @@ title: 社区推荐
 - [Angular Weekly Meeting Notes](http://g.co/ng/weekly-notes)
 - [ThoughtRam Blog](https://blog.thoughtram.io/)
 - [Mgechev Blog](http://blog.mgechev.com/)
-- [Ng Fans](http://www.ngfans.net)
+- [NgFans](http://www.ngfans.net)
 - [Angular In Depth](https://blog.angularindepth.com/)
 - [30 天精通 RxJS](https://ithelp.ithome.com.tw/users/20103367/ironman/1199)
 - [RxJS 中文社区](https://github.com/RxJS-CN)

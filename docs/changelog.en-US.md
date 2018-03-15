@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 9
 title: Change Log
 toc: false
 timeline: true
@@ -12,7 +12,4 @@ timeline: true
 
 ---
 
-
-## 3.0.2
-
-`2017-12-17`
+All releases notes can be found [here](https://github.com/NG-ZORRO/ng-zorro-antd/releases)

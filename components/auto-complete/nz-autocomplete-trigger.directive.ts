@@ -68,10 +68,8 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   private overlayBackdropClickSubscription: Subscription;
   private overlayPositionChangeSubscription: Subscription;
 
-  _onChange: (value: {}) => void = () => {
-  };
-  _onTouched = () => {
-  };
+  _onChange: (value: {}) => void = () => {};
+  _onTouched = () => {};
 
   panelOpen: boolean = false;
 

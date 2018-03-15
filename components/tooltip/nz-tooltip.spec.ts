@@ -48,6 +48,10 @@ describe('NzTooltip', () => {
     // Move inside to trigger tooltip shown up
     dispatchMouseEvent(triggerElement, 'mouseenter');
     demoAppFixture.detectChanges();
+    tick(150); // wait for the default 150ms delay
+    demoAppFixture.detectChanges();
+    tick();
+    demoAppFixture.detectChanges();
     expect(overlayContainerElement.textContent).toContain(featureKey);
 
     // NOTE: the overlayElement is only available after tooltip shown up
@@ -74,9 +78,13 @@ describe('NzTooltip', () => {
     const triggerElement = demoAppComponent.normalTrigger.nativeElement;
 
     expect(overlayContainerElement.textContent).not.toContain(featureKey);
-
+    demoAppFixture.detectChanges();
     // Move inside to trigger tooltip shown up
     dispatchMouseEvent(triggerElement, 'mouseenter');
+    demoAppFixture.detectChanges();
+    tick(150); // wait for the default 150ms delay
+    demoAppFixture.detectChanges();
+    tick();
     demoAppFixture.detectChanges();
     expect(overlayContainerElement.textContent).toContain(featureKey);
 
@@ -88,13 +96,17 @@ describe('NzTooltip', () => {
     expect(overlayContainerElement.textContent).not.toContain(featureKey);
   }));
 
-  it('should show tooltip with custom template', () => {
+  it('should show tooltip with custom template', fakeAsync(() => {
     const triggerElement = demoAppComponent.templateTrigger.nativeElement;
 
     dispatchMouseEvent(triggerElement, 'mouseenter');
     demoAppFixture.detectChanges();
+    tick(150); // wait for the default 150ms delay
+    demoAppFixture.detectChanges();
+    tick();
+    demoAppFixture.detectChanges();
     expect(overlayContainerElement.querySelector('.anticon-file')).not.toBeNull();
-  });
+  }));
 
   it('should show/hide tooltip by focus', fakeAsync(() => {
     const featureKey = 'FOCUS';

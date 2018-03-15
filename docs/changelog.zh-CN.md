@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 9
 title: 更新日志
 toc: false
 timeline: true
@@ -30,9 +30,9 @@ timeline: true
 - 支持定制主题
 - 支持英文文档
 - 支持34种语言类型
-- 已有组件的功能全部与Ant Design React同步
+- 已有组件的功能与Ant Design React同步
 - 大量组件的性能优化与重构
-- 单元测试率提高到98%
+- 单元测试率提高到95以上%
 - 新的 Tree 组件
 - 新的 AutoComplete 组件
 - 新的 Divider 组件

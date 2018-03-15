@@ -99,7 +99,7 @@ export class AppModule { }
 用下面的代码替换 `/src/app/app.component.html`
 
 ```html
-<button nz-button nzType="primary">测试按钮</button>
+<button nz-button nzType="primary">Button</button>
 ```
 
 ### 7. 开发调试
@@ -110,7 +110,7 @@ export class AppModule { }
 $ ng serve --port 0 --open
 ```
 
-此时就可以看到最简单的最简单的 [Button效果](https://stackblitz.com/edit/ng-zorro-antd-setup?file=app%2Fapp.component.ts)
+此时就可以看到最简单的 [Button效果](https://stackblitz.com/edit/ng-zorro-antd-setup?file=app%2Fapp.component.ts)
 
 ### 8. 构建和部署
 
@@ -123,9 +123,3 @@ $ ng build --prod
 ## 了解更多
 
 如果你想了解更多CLI工具链的功能和命令，建议访问 [Angular CLI](https://github.com/angular/angular-cli) 了解更多
-
-
-## 配置主题和字体
-
-- [改变主题](/docs/customize-theme/zh)
-- [使用本地字体](https://github.com/ant-design/antd-init/tree/master/examples/local-iconfont)
