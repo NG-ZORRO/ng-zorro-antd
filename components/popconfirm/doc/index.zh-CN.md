@@ -17,14 +17,15 @@ title: Popconfirm
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| cancelText | 取消按钮文字 | string | 取消 |
-| okText | 确认按钮文字 | string | 确定 |
-| okType | 确认按钮类型 | string | primary |
-| title | 确认框的描述 | string | ReactNode | 无 |
-| onCancel | 点击取消的回调 | function(e) | 无 |
-| onConfirm | 点击确认的回调 | function(e) | 无 |
+| nzCancelText | 取消按钮文字 | string | 取消 |
+| nzOkText | 确认按钮文字 | string | 确定 |
+| nzOkType | 确认按钮类型 | string | primary |
+| nzTitle | 确认框的描述 | string | ReactNode | 无 |
+| nzOnCancel | 点击取消的回调 | EventEmitter | 无 |
+| nzOnConfirm | 点击确认的回调 | EventEmitter | 无 |
+| nzCondition | 是否直接触发 `nzOnConfirm` 而不弹出框 | boolean | false |
 
-更多属性请参考 [Tooltip](/components/tooltip/#API)。
+更多属性请参考 [Tooltip](/components/tooltip/zh#api)。
 
 ## 注意
 

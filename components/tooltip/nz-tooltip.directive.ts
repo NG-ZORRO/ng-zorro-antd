@@ -19,7 +19,7 @@ export class NzTooltipDirective implements AfterViewInit {
   // [NOTE] Here hard coded, and nzTitle used only under NzTooltipDirective currently.
   // The inherited class such as NzPopconfirmDirective should override this property if want using this property.
   @Input('nz-tooltip')
-  get nzTitle(): string { return this.tooltip.nzTitle; }
+  // get nzTitle(): string { return this.tooltip.nzTitle; }
   set nzTitle(title: string) {
     if (this.isDynamicTooltip) {
       this.tooltip.nzTitle = title;

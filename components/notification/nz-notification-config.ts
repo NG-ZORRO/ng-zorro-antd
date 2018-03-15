@@ -5,7 +5,7 @@ import { NzMessageConfig } from '../message/nz-message-config';
 export interface NzNotificationConfig extends NzMessageConfig {
   nzTop?: string;
   nzBottom?: string;
-  nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+  nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | string;
 }
 
 export const NZ_NOTIFICATION_DEFAULT_CONFIG = new InjectionToken<NzNotificationConfig>('NZ_NOTIFICATION_DEFAULT_CONFIG');

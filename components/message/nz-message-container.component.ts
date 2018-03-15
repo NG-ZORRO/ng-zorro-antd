@@ -6,11 +6,7 @@ import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definiti
 @Component({
   selector           : 'nz-message-container',
   preserveWhitespaces: false,
-  template           : `
-    <div class="ant-message">
-      <nz-message *ngFor="let message of messages; let i = index" [nzMessage]="message" [nzIndex]="i"></nz-message>
-    </div>
-  `
+  templateUrl        : './nz-message-container.component.html'
 })
 export class NzMessageContainerComponent {
   messages: NzMessageDataFilled[] = [];

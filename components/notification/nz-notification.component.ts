@@ -5,11 +5,12 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { NzMessageComponent } from '../message/nz-message.component';
 
 import { NzNotificationContainerComponent } from './nz-notification-container.component';
+import { NzNotificationDataFilled } from './nz-notification.definitions';
 
 @Component({
   selector           : 'nz-notification',
@@ -41,35 +42,11 @@ import { NzNotificationContainerComponent } from './nz-notification-container.co
       ])
     ])
   ],
-  template           : `
-    <div class="ant-notification-notice ant-notification-notice-closable"
-      [ngStyle]="nzMessage.options.nzStyle"
-      [ngClass]="nzMessage.options.nzClass"
-      [@enterLeave]="state"
-      (mouseenter)="onEnter()"
-      (mouseleave)="onLeave()">
-      <div *ngIf="!nzMessage.template" class="ant-notification-notice-content">
-        <div class="ant-notification-notice-content" [ngClass]="{ 'ant-notification-notice-with-icon': nzMessage.type !== 'blank' }">
-          <div [class.ant-notification-notice-with-icon]="nzMessage.type !== 'blank'">
-            <ng-container [ngSwitch]="nzMessage.type">
-              <i *ngSwitchCase="'success'" class="ant-notification-notice-icon ant-notification-notice-icon-success anticon anticon-check-circle-o"></i>
-              <i *ngSwitchCase="'info'" class="ant-notification-notice-icon ant-notification-notice-icon-info anticon anticon-info-circle-o"></i>
-              <i *ngSwitchCase="'warning'" class="ant-notification-notice-icon ant-notification-notice-icon-warning anticon anticon-exclamation-circle-o"></i>
-              <i *ngSwitchCase="'error'" class="ant-notification-notice-icon ant-notification-notice-icon-error anticon anticon-cross-circle-o"></i>
-            </ng-container>
-            <div class="ant-notification-notice-message">{{ nzMessage.title }}</div>
-            <div class="ant-notification-notice-description">{{ nzMessage.content }}</div>
-          </div>
-        </div>
-      </div>
-      <ng-template [ngIf]="nzMessage.template" [ngTemplateOutlet]="nzMessage.template" [ngTemplateOutletContext]="{ $implicit: this }"></ng-template>
-      <a tabindex="0" class="ant-notification-notice-close" (click)="close()">
-        <span class="ant-notification-notice-close-x"></span>
-      </a>
-    </div>
-  `
+  templateUrl         : './nz-notification.component.html'
 })
 export class NzNotificationComponent extends NzMessageComponent {
+  @Input() nzMessage: NzNotificationDataFilled;
+
   constructor(private container: NzNotificationContainerComponent) {
     super(container);
   }

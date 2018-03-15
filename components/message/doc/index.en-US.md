@@ -12,39 +12,53 @@ Display global messages as feedback in response to user operations.
 - To provide feedback such as success, warning, error etc.
 - A message is displayed at top and center and will be dismissed automatically, as a non-interrupting light-weighted prompt.
 
-## API
+## How To Use
 
-This components provides some static methods, with usage and arguments as following:
+If you want to modify the global default configuration, you can modify the value of provider `NZ_MESSAGE_CONFIG`.
+(eg, add `{ provide: NZ_MESSAGE_CONFIG, useValue: { nzDuration: 3000 }}` to `providers` of your module, `NZ_MESSAGE_CONFIG` can be imported from `ng-zorro-antd`)
 
-- `message.success(content, [duration], onClose)`
-- `message.error(content, [duration], onClose)`
-- `message.info(content, [duration], onClose)`
-- `message.warning(content, [duration], onClose)`
-- `message.warn(content, [duration], onClose)` // alias of warning
-- `message.loading(content, [duration], onClose)`
-
-| Argument | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| content | content of the message | string｜ReactNode | - |
-| duration | time before auto-dismiss, in seconds | number | 1.5 |
-| onClose | Specify a function that will be called when the message is closed | Function | - |
-
-Methods for global configuration and destruction are also provided:
-
-- `message.config(options)`
-- `message.destroy()`
-
-### message.config
-
+The default global configuration is:
 ```js
-message.config({
-  top: 100,
-  duration: 2,
-});
+{
+  nzDuration: 3000,
+  nzMaxStack: 7,
+  nzPauseOnHover: true,
+  nzAnimate: true
+}
 ```
 
+## API
+
+This components provides some service methods, with usage and arguments as following:
+
+- `NzMessageService.success(content, [options])`
+- `NzMessageService.error(content, [options])`
+- `NzMessageService.info(content, [options])`
+- `NzMessageService.warning(content, [options])`
+- `NzMessageService.loading(content, [options])`
+
 | Argument | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| duration | time before auto-dismiss, in seconds | number | 1.5 |
-| getContainer | Return the mount node for Message | () => HTMLElement | () => document.body |
-| top | distance from top | number | 24px |
+| content | The content of message | string | - |
+| options | Support setting the parameters for the current message box, see the table below | object | - |
+
+The parameters that are set by the `options` support are as follows:
+
+| Argument | Description | Type |
+| --- | --- | --- |
+| nzDuration | Duration (milliseconds), does not disappear when set to 0 | number |
+| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true`  | boolean |
+| nzAnimate | Whether to turn on animation | boolean |
+
+Methods for destruction are also provided:
+
+- `message.remove(id)` // Remove the message with the specified id. When the id is empty, remove all messages (the message id is returned by the above method)
+
+### Global configuration (NZ_MESSAGE_CONFIG)
+
+| Argument | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| nzDuration | Duration (milliseconds), does not disappear when set to 0 | number | 3000 |
+| nzMaxStack | The maximum number of messages that can be displayed at the same time | number | 8 |
+| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | boolean | true |
+| nzAnimate | Whether to turn on animation | boolean | true |
