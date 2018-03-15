@@ -52,7 +52,7 @@
 | treeselect | x | x | x | simplejason | - |
 | tree | x | x | x | simplejason | - |
 | cascader | x | x | x | fbchen | - |
-| autocomplete | x | x | x | HsuanXyz | - |
+| autocomplete | √ | 100% | 100% | HsuanXyz | - |
 | mention | x | x | x | HsuanXyz | - |
 
 

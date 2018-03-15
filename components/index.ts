@@ -3,6 +3,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { NzAffixModule } from './affix/nz-affix.module';
 import { NzAlertModule } from './alert';
 import { NzAnchorModule } from './anchor/nz-anchor.module';
+import { NzAutocompleteModule } from './auto-complete/nz-autocomplete.module';
 import { NzAvatarModule } from './avatar/nz-avatar.module';
 import { NzBackTopModule } from './back-top/nz-back-top.module';
 import { NzBadgeModule } from './badge/nz-badge.module';
@@ -130,7 +131,8 @@ export * from './modal/public-api';
     NzListModule,
     NzI18nModule,
     NzUploadModule,
-    NzModalModule
+    NzModalModule,
+    NzAutocompleteModule
   ]
 })
 export class NgZorroAntdModule {
