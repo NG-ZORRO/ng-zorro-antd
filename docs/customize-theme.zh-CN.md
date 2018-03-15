@@ -9,7 +9,7 @@ Ant Design 设计规范上支持一定程度的样式定制，以满足业务和
 
 ## 样式变量
 
-Ant Design 的样式使用了 [Less](http://lesscss.org/) 作为开发语言，并定义了一系列全局/组件的样式变量，你可以根据需求进行相应调整，[默认样式变量](https://github.com/NG-ZORRO/ng-zorro-antd/blob/0.7.0/components/style/themes/default.less)
+Ant Design 的样式使用了 [Less](http://lesscss.org/) 作为开发语言，并定义了一系列全局/组件的样式变量，你可以根据需求进行相应调整，[默认样式变量](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/style/themes/default.less)
 
 > Ant Design React 的主题定制文件在 `ng-zorro-antd` 中同样可以使用。
 
@@ -24,7 +24,7 @@ Ant Design 的样式使用了 [Less](http://lesscss.org/) 作为开发语言，�
 @import "your-theme-file.less";   // 用于覆盖上面定义的变量
 ```
 
-自定义 less 变量的文件可以参考 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/blob/0.7.0/site_scripts/_site/src/theme.less)。
+自定义 less 变量的文件可以参考 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/site_scripts/_site/src/theme.less)。
 
 ## 本地部署字体
 

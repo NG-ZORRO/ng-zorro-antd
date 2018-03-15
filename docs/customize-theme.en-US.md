@@ -22,7 +22,7 @@ Create a standalone less file like the one below, and add the path of it to the 
 @import "your-theme-file.less";   // override variables here
 ```
 
-[Here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/0.7.0/site_scripts/_site/src/theme.less) is a sample of theme define file.
+[Here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/site_scripts/_site/src/theme.less) is a sample of theme define file.
 
 
 ## Local deployment fonts
