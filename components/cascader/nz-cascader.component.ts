@@ -128,6 +128,7 @@ export interface CascaderOption {
       <div #menu
         [ngClass]="menuCls" [ngStyle]="nzMenuStyle"
         [@dropDownAnimation]="dropDownPosition"
+        (mouseleave)="onTriggerMouseLeave($event)"
       >
         <ul *ngFor="let options of nzColumns; let i = index;" [ngClass]="menuColumnCls">
           <li *ngFor="let option of options"
@@ -201,8 +202,9 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   // 表示当前菜单的数据列：all data columns
   public nzColumns: CascaderOption[][] = [];
 
-  // 点击Document的事件（一般用于点击后隐藏菜单）
+  // 显示或隐藏菜单计时器
   private delayTimer: any;
+  private delaySelectTimer: any;
 
   /** 搜索相关的输入值 */
   private _inputValue = '';
@@ -686,21 +688,23 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
 
   @HostListener('mouseleave', ['$event'])
   public onTriggerMouseLeave(event: MouseEvent): void {
-      if (this.nzDisabled) {
+    if (this.nzDisabled) {
+      return;
+    }
+    if (!this.isMenuVisible()) {
+      return;
+    }
+    if (this.isPointerTiggerAction()) {
+      const mouseTarget = event.relatedTarget as HTMLElement;
+      const hostEl = this.el;
+      const menuEl = this.menu && this.menu.nativeElement as HTMLElement;
+      if (hostEl.contains(mouseTarget) || (menuEl && menuEl.contains(mouseTarget))
+          /*|| mouseTarget.parentElement.contains(menuEl)*/) {
+        // 因为浮层的backdrop出现，暂时没有办法自动消失
         return;
       }
-      if (!this.isMenuVisible()) {
-        return;
-      }
-      if (this.isPointerTiggerAction()) {
-        const hostEl = this.el;
-        const menuEl = this.menu && this.menu.nativeElement as HTMLElement;
-        const mouseTarget = event.relatedTarget as Node;
-        if (mouseTarget && (hostEl.contains(mouseTarget) || (menuEl && menuEl.contains(mouseTarget)))) {
-          return; // 还在菜单内部
-        }
-        this.delaySetMenuVisible(false, this.nzMouseLeaveDelay);
-      }
+      this.delaySetMenuVisible(false, this.nzMouseLeaveDelay);
+    }
   }
 
   private isClickTiggerAction(): boolean {
@@ -791,13 +795,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
 
   private isActivedOption(option: CascaderOption, index: number): boolean {
     const activeOpt = this.activatedOptions[index];
-    if (activeOpt === option) {
-      return true;
-    }
-    if (activeOpt && this.getOptionValue(activeOpt) === this.getOptionValue(option)) {
-      return true;
-    }
-    return false;
+    return activeOpt === option;
   }
 
   /**
@@ -846,10 +844,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   }
 
   private loadChildren(option: CascaderOption, index: number): void {
-    if (option.children && option.children.length) {
-      return;
-    }
-
     if (this.nzLoadData) {
       this.isLoading = index < 0;
       option.loading = true;
@@ -861,6 +855,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
         }
       }, () => {
         option.loading = this.isLoading = false;
+        option.isLeaf = true;
       });
     }
   }
@@ -937,11 +932,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     // 该组中已经被激活的选项
     const activeOption = this.activatedOptions[columnIndex];
     // 该组所有的选项，用于遍历获取下一个被激活的选项
-    const options = this.nzColumns[columnIndex];
-    if (!options || !options.length) {
-      return;
-    }
-
+    const options = this.nzColumns[columnIndex] || [];
     const length = options.length;
     let nextIndex = -1;
     if (!activeOption) { // 该列还没有选中的选项
@@ -986,10 +977,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
    */
   private moveRight(): void {
     const length = this.activatedOptions.length;
-    if (length === 0) {
-      return;
-    }
-
     const options = this.nzColumns[length];
     if (options && options.length) {
       const nextOpt = options.find(o => !o.disabled);
@@ -1027,15 +1014,19 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     }
   }
 
-  private delaySelect(option: CascaderOption, index: number, doSelect: boolean): void {
-    if (this.delayTimer) {
-      clearTimeout(this.delayTimer);
-      this.delayTimer = null;
+  private clearDelaySelectTimer(): void {
+    if (this.delaySelectTimer) {
+      clearTimeout(this.delaySelectTimer);
+      this.delaySelectTimer = null;
     }
+  }
+
+  private delaySelect(option: CascaderOption, index: number, doSelect: boolean): void {
+    this.clearDelaySelectTimer();
     if (doSelect) {
-      this.delayTimer = setTimeout(() => {
+      this.delaySelectTimer = setTimeout(() => {
         this.setActiveOption(option, index, true);
-        this.delayTimer = null;
+        this.delaySelectTimer = null;
       }, 150);
     }
   }
@@ -1094,9 +1085,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
         };
       }
       array[index] = option;
-      if (option.children) {
-        this.setColumnData(option.children, index + 1);
-      }
+      this.setActiveOption(option, index, false);
     });
     this.value = value;
     this.activatedOptions = array;
@@ -1133,10 +1122,8 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   }
 
   ngOnDestroy(): void {
-    if (this.delayTimer) {
-      clearTimeout(this.delayTimer);
-      this.delayTimer = null;
-    }
+    this.clearDelayTimer();
+    this.clearDelaySelectTimer();
   }
 
 }

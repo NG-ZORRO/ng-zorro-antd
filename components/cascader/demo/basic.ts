@@ -11,12 +11,12 @@ const options = [{
       value: 'xihu',
       label: 'West Lake',
       isLeaf: true
-    }],
+    }]
   }, {
     value: 'ningbo',
     label: 'Ningbo',
     isLeaf: true
-  }],
+  }]
 }, {
   value: 'jiangsu',
   label: 'Jiangsu',
@@ -27,8 +27,8 @@ const options = [{
       value: 'zhonghuamen',
       label: 'Zhong Hua Men',
       isLeaf: true
-    }],
-  }],
+    }]
+  }]
 }];
 
 const otherOptions = [{
@@ -41,8 +41,8 @@ const otherOptions = [{
       value: 'Kulangsu',
       label: 'Kulangsu',
       isLeaf: true
-    }],
-  }],
+    }]
+  }]
 }, {
   value: 'guangxi',
   label: 'Guangxi',
@@ -53,8 +53,8 @@ const otherOptions = [{
       value: 'Lijiang',
       label: 'Li Jiang River',
       isLeaf: true
-    }],
-  }],
+    }]
+  }]
 }];
 
 @Component({

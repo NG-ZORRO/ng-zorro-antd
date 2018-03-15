@@ -32,23 +32,25 @@ const options = [{
 }];
 
 @Component({
-  selector: 'nz-demo-cascader-hover',
+  selector: 'nz-demo-cascader-trigger-action',
   template: `
     <nz-cascader
+      [nzTriggerAction]="'hover'"
       [nzExpandTrigger]="'hover'"
       [nzOptions]="nzOptions"
       [(ngModel)]="values"
-      (ngModelChange)="onChanges($event)">
+      (ngModelChange)="onChanges($event)"
+    >
     </nz-cascader>`,
-    styles  : [
-      `
-      .ant-cascader-picker {
-        width: 300px;
-      }
-      `
-    ]
+  styles  : [
+    `
+    .ant-cascader-picker {
+      width: 300px;
+    }
+    `
+  ]
 })
-export class NzDemoCascaderHoverComponent {
+export class NzDemoCascaderTriggerActionComponent {
   /** init data */
   nzOptions = options;
 
@@ -58,4 +60,5 @@ export class NzDemoCascaderHoverComponent {
   public onChanges(values: any): void {
     console.log(values, this.values);
   }
+
 }

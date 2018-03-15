@@ -12,13 +12,13 @@ const options = [{
       label: 'West Lake',
       code: 752100,
       isLeaf: true
-    }],
+    }]
   }, {
     value: 'ningbo',
     label: 'Ningbo',
     code: '315000',
     isLeaf: true
-  }],
+  }]
 }, {
   value: 'jiangsu',
   label: 'Jiangsu',
@@ -30,8 +30,8 @@ const options = [{
       label: 'Zhong Hua Men',
       code: 453400,
       isLeaf: true
-    }],
-  }],
+    }]
+  }]
 }];
 
 @Component({

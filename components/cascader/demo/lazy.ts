@@ -12,7 +12,7 @@ const provinces = [{
 const cities = {
   zhejiang: [{
     value: 'hangzhou',
-    label: 'Hangzhou',
+    label: 'Hangzhou'
   }, {
     value: 'ningbo',
     label: 'Ningbo',
