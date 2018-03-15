@@ -74,9 +74,13 @@
         >{{ button.label }}</button>
       </ng-container>
       <ng-container *ngSwitchDefault>
-        <button *ngIf="nzCancelText" nz-button (click)="onClickOkCancel($event, 'cancel')" [nzLoading]="nzCancelLoading"><span>{{ nzCancelText }}</span></button>
-        <button *ngIf="nzOkText" nz-button [nzType]="nzOkType" (click)="onClickOkCancel($event, 'ok')" [nzLoading]="nzOkLoading">
-          <span>{{ nzOkText }}</span>
+        <button *ngIf="nzCancelText!==null" nz-button (click)="onClickOkCancel($event, 'cancel')" [nzLoading]="nzCancelLoading">
+          <ng-container *ngIf="nzCancelText">{{ nzCancelText }}</ng-container>
+          <ng-container *ngIf="!nzCancelText">{{ 'Modal.cancelText' | nzI18n }}</ng-container>
+        </button>
+        <button *ngIf="nzOkText!==null" nz-button [nzType]="nzOkType" (click)="onClickOkCancel($event, 'ok')" [nzLoading]="nzOkLoading">
+          <ng-container *ngIf="nzOkText">{{ nzOkText }}</ng-container>
+          <ng-container *ngIf="!nzOkText">{{ 'Modal.okText' | nzI18n }}</ng-container>
         </button>
       </ng-container>
     </ng-container>
@@ -107,9 +111,13 @@
         </div>
       </div>
       <div class="ant-confirm-btns">
-        <button *ngIf="nzCancelText" nz-button (click)="onClickOkCancel($event, 'cancel')" [nzLoading]="nzCancelLoading"><span>{{ nzCancelText }}</span></button>
-        <button #autoFocusButtonOk *ngIf="nzOkText" nz-button [nzType]="nzOkType" (click)="onClickOkCancel($event, 'ok')" [nzLoading]="nzOkLoading">
-          <span>{{ nzOkText }}</span>
+        <button nz-button *ngIf="nzCancelText!==null" (click)="onClickOkCancel($event, 'cancel')" [nzLoading]="nzCancelLoading">
+          <ng-container *ngIf="nzCancelText">{{ nzCancelText }}</ng-container>
+          <ng-container *ngIf="!nzCancelText">{{ 'Modal.cancelText' | nzI18n }}</ng-container>
+        </button>
+        <button *ngIf="nzOkText!==null" #autoFocusButtonOk nz-button [nzType]="nzOkType" (click)="onClickOkCancel($event, 'ok')" [nzLoading]="nzOkLoading">
+          <ng-container *ngIf="nzOkText">{{ nzOkText }}</ng-container>
+          <ng-container *ngIf="!nzOkText">{{ 'Modal.okText' | nzI18n }}</ng-container>
         </button>
       </div>
     </div> <!-- /.ant-confirm-body-wrapper -->

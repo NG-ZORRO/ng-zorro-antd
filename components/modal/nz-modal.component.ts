@@ -1,3 +1,4 @@
+import { Overlay } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -5,24 +6,23 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
   ElementRef,
-  EmbeddedViewRef,
   EventEmitter,
   Inject,
-  InjectionToken,
   Injector,
   Input,
   OnChanges,
   OnInit,
   Output,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
   Type,
   ViewChild,
-  ViewContainerRef,
-  ViewEncapsulation
+  ViewContainerRef
 } from '@angular/core';
 
-import { NzI18nService } from '../i18n';
+import { measureScrollbar } from '../core/util/mesure-scrollbar';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import { ModalPublicAgent } from './modal-public-agent.class';
 import ModalUtil from './modal-util';
@@ -37,7 +37,7 @@ interface ClassMap {
 type AnimationState = 'enter' | 'leave' | null;
 
 @Component({
-  selector: 'nz-modal',
+  selector   : 'nz-modal',
   templateUrl: './nz-modal.component.html'
 })
 
@@ -46,7 +46,7 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
   @Input() nzContent: string | TemplateRef<{}> | Type<{}>; // [STATIC] If not specified, will use <ng-content>
   @Input() nzComponentParams: object; // [STATIC] ONLY avaliable when nzContent is a component
   @Input() nzFooter: string | TemplateRef<{}> | ModalButtonOptions[]; // [STATIC] Default Modal ONLY
-  @Input() nzGetContainer: HTMLElement | (() => HTMLElement) = this.document.body; // [STATIC]
+  @Input() nzGetContainer: HTMLElement | (() => HTMLElement); // [STATIC]
 
   @Input() nzVisible = false;
   @Output() nzVisibleChange = new EventEmitter<boolean>();
@@ -65,19 +65,21 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
   @Output() nzAfterClose = new EventEmitter<void>(); // Trigger when modal is hidden
 
   // --- Predefined OK & Cancel buttons
-  @Input() nzOkText: string = this.locale.translate('Modal.okText');
+  @Input() nzOkText: string;
   @Input() nzOkType = 'primary';
   @Input() nzOkLoading = false;
   @Input() @Output() nzOnOk: EventEmitter<MouseEvent> | OnClickCallback = new EventEmitter<MouseEvent>();
   @ViewChild('autoFocusButtonOk', { read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
-  @Input() nzCancelText: string = this.locale.translate('Modal.cancelText');
+  @Input() nzCancelText: string;
   @Input() nzCancelLoading = false;
   @Input() @Output() nzOnCancel: EventEmitter<MouseEvent> | OnClickCallback = new EventEmitter<MouseEvent>();
 
   @ViewChild('modalContainer') modalContainer: ElementRef;
   @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
 
-  get hidden(): boolean { return !this.nzVisible && !this.animationState; } // Indicate whether this dialog should hidden
+  get hidden(): boolean {
+    return !this.nzVisible && !this.animationState;
+  } // Indicate whether this dialog should hidden
   maskAnimationClassMap: object;
   modalAnimationClassMap: object;
   transformOrigin = '0px 0px 0px'; // The origin point that animation based on
@@ -85,12 +87,13 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
   private contentComponentRef: ComponentRef<{}>; // Handle the reference when using nzContent as Component
   private animationState: AnimationState; // Current animation state
 
-  constructor(
-    private locale: NzI18nService,
-    private cfr: ComponentFactoryResolver,
-    private elementRef: ElementRef,
-    private viewContainer: ViewContainerRef,
-    @Inject(DOCUMENT) private document: any // tslint:disable-line:no-any
+  constructor(private overlay: Overlay,
+              private locale: NzI18nService,
+              private renderer: Renderer2,
+              private cfr: ComponentFactoryResolver,
+              private elementRef: ElementRef,
+              private viewContainer: ViewContainerRef,
+              @Inject(DOCUMENT) private document: any // tslint:disable-line:no-any
   ) {
     super();
   }
@@ -107,6 +110,8 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
     const container = typeof this.nzGetContainer === 'function' ? this.nzGetContainer() : this.nzGetContainer;
     if (container instanceof HTMLElement) {
       container.appendChild(this.elementRef.nativeElement);
+    } else { // Use overlay to handle this modal by default
+      this.overlay.create().overlayElement.appendChild(this.elementRef.nativeElement);
     }
   }
 
@@ -184,7 +189,10 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
       const caseClose = (doClose: boolean | void | {}) => (doClose !== false) && this.close(); // Users can return "false" to prevent closing by default
       if (isPromise(result)) {
         this[ loadingKey ] = true;
-        const handleThen = (doClose) => { this[ loadingKey ] = false; caseClose(doClose); };
+        const handleThen = (doClose) => {
+          this[ loadingKey ] = false;
+          caseClose(doClose);
+        };
         (result as Promise<void>).then(handleThen).catch(handleThen);
       } else {
         caseClose(result);
@@ -210,9 +218,11 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
 
   // Lookup a button's property, if the prop is a function, call & then return the result, otherwise, return itself.
   private getButtonCallableProp(options: ModalButtonOptions, prop: string): {} {
-    const value = options[prop];
+    const value = options[ prop ];
     const args = [];
-    if (this.contentComponentRef) { args.push(this.contentComponentRef.instance); }
+    if (this.contentComponentRef) {
+      args.push(this.contentComponentRef.instance);
+    }
     return typeof value === 'function' ? value.apply(options, args) : value;
   }
 
@@ -241,12 +251,12 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
     this.animationState = state;
     if (state) {
       this.maskAnimationClassMap = {
-        [`fade-${state}`]: true,
-        [`fade-${state}-active`]: true
+        [ `fade-${state}` ]       : true,
+        [ `fade-${state}-active` ]: true
       };
       this.modalAnimationClassMap = {
-        [`zoom-${state}`]: true,
-        [`zoom-${state}-active`]: true
+        [ `zoom-${state}` ]       : true,
+        [ `zoom-${state}-active` ]: true
       };
     } else {
       this.maskAnimationClassMap = this.modalAnimationClassMap = null;
@@ -269,12 +279,12 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
     return buttons.map((button) => {
       const mixedButton = {
         ...{
-          type: 'default',
-          size: 'large',
+          type       : 'default',
+          size       : 'default',
           autoLoading: true,
-          show: true,
-          loading: false,
-          disabled: false
+          show       : true,
+          loading    : false,
+          disabled   : false
         },
         ...button
       };
@@ -291,7 +301,13 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
    */
   private createDynamicComponent(component: Type<{}>): void {
     const factory = this.cfr.resolveComponentFactory(component);
-    const childInjector = Injector.create([{ provide: ModalPublicAgent, useValue: this }], this.viewContainer.parentInjector);
+    const childInjector = Injector.create({
+      providers: [ {
+        provide : ModalPublicAgent,
+        useValue: this
+      } ],
+      parent   : this.viewContainer.parentInjector
+    });
     this.contentComponentRef = factory.create(childInjector);
     if (this.nzComponentParams) {
       Object.assign(this.contentComponentRef.instance, this.nzComponentParams);
@@ -312,9 +328,23 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
     // }
   }
 
-  // TODO: We should detect if there are modals remained in this page, if 0 modals that we chould to remove overflow, otherwise, we should leave it 'hidden'.
   private changeBodyOverflow(visible: boolean): void {
-    this.document.body.style.overflow = visible ? 'hidden' : '';
+    const countKey = 'data-modal-count';
+    let countValue = parseInt(this.document.body.attributes.getNamedItem(countKey) && this.document.body.attributes.getNamedItem('data-modal-count').value || 0, 10);
+    if (visible) {
+      countValue += 1;
+    } else {
+      countValue = (countValue - 1 >= 0) ? (countValue - 1) : 0;
+    }
+    if (countValue) {
+      const scrollBarWidth = measureScrollbar();
+      this.renderer.setStyle(this.document.body, 'padding-right', `${scrollBarWidth}px`);
+      this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
+    } else {
+      this.renderer.removeStyle(this.document.body, 'padding-right');
+      this.renderer.removeStyle(this.document.body, 'overflow');
+    }
+    this.renderer.setAttribute(this.document.body, countKey, `${countValue}`);
   }
 }
 

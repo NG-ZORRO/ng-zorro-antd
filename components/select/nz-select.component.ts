@@ -247,6 +247,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
       if (this.nzOptionContainerComponent) {
         this.nzOptionContainerComponent.scrollIntoView();
       }
+      if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
+        this.cdkConnectedOverlay.overlayRef.updatePosition();
+      }
     } else {
       if (this.nzSelectTopControlComponent) {
         this.nzSelectTopControlComponent.setInputValue('', false);

@@ -1,46 +1,34 @@
 ---
 order: 7
-title: 社区精选组件
+title: 社区推荐
 ---
 
-`antd` 是 Ant Design 设计规范的 React 实现，所以我们倾向于只提供符合该规范、且带有视觉展现的 UI 组件，也尽量不重复造轮子。我们推荐使用以下社区已有的优秀实现，与 antd 形成互补：
+`ng-zorro-antd` 是 Ant Design 设计规范的 Angular 实现，我们推荐使用以下社区已有的优秀实现和网站，希望能为你的开发过程提供帮助。
 
-类型 | 推荐组件
-----|--------
-路由 | [react-router](https://github.com/ReactTraining/react-router)
-布局 | [react-blocks](https://github.com/whoisandy/react-blocks)
-拖拽 | [react-dnd](https://github.com/gaearon/react-dnd) [react-draggable](https://github.com/mzabriskie/react-draggable)
-代码编辑器 | [react-codemirror2](https://github.com/scniro/react-codemirror2)
-富文本编辑器 | [react-quill](https://github.com/zenoamaro/react-quill) [react-draft-wysiwyg](https://github.com/jpuri/react-draft-wysiwyg) [react-lz-editor](https://github.com/leejaen/react-lz-editor)（Ant Design 风格） [braft-editor](https://github.com/margox/braft-editor)
-拾色器 | [rc-color-picker](https://github.com/react-component/color-picker) [react-color](http://casesandberg.github.io/react-color/)
-响应式 | [react-responsive](https://github.com/contra/react-responsive) [react-media](https://github.com/ReactTraining/react-media)
-复制到剪贴板 | [react-copy-to-clipboard](https://github.com/nkbt/react-copy-to-clipboard)
-页面 meta 属性 | [react-helmet](https://github.com/nfl/react-helmet) [react-document-title](https://github.com/gaearon/react-document-title)
-图标 | [react-fa](https://github.com/andreypopp/react-fa) [react-icons](https://github.com/gorangajic/react-icons)
-二维码  | [qrcode.react](https://github.com/zpao/qrcode.react)
-可视化图表 | [BizCharts](https://github.com/alibaba/BizCharts) [recharts](https://github.com/recharts/recharts/) [victory](https://github.com/FormidableLabs/victory)
-顶部进度条 | [nprogress](https://github.com/rstacruz/nprogress)
-应用国际化 | [react-intl](https://github.com/yahoo/react-intl)
-代码高亮 | [react-syntax-highlighter](https://github.com/conorhastings/react-syntax-highlighter)
-Markdown 渲染 | [react-markdown](http://rexxars.github.io/react-markdown/)
-无限滚动 | [react-virtualized](https://github.com/bvaughn/react-virtualized)
-地图 | [react-google-maps](https://github.com/tomchentw/react-google-maps) [google-map-react](https://github.com/istarkov/google-map-react) [react-amap 高德](https://github.com/ElemeFE/react-amap)
-Emoji | [emoji-mart](https://github.com/missive/emoji-mart)
+## 工具及解决方案
 
-<style>
-.markdown table td:first-child {
-  font-weight: 500;
-  width: 20%;
-  background: #fcfcfc;
-}
-.markdown table td > a:not(:last-child) {
-  margin-right: 18px;
-}
-.markdown table td > a:not(:last-child):after {
-  content: '|';
-  color: #bbb;
-  margin: 0 6px 0 8px;
-  pointer-events: none;
-  position: absolute;
-}
-</style>
+类型 | 名称 | 描述
+----|----|--------
+脚手架|[NG ALAIN](http://ng-alain.com/) | 基于 `ng-zorro-antd` 的 Admin 系统解决方案
+可视化|[Viser-NG](https://viserjs.github.io/docs.html) | G2 的 Angular 版本的官方实现
+可视化|[NGX-CHARTS](https://swimlane.github.io/ngx-charts/) | 基于 D3 的Angular 可视化组件库
+可视化|[NGX-CHARTS-DAG](https://swimlane.github.io/ngx-graph/) | 基于 Dagre 的有向无环图可视化组件库
+拖拽|[NGX-DND](https://swimlane.github.io/ngx-dnd/) | Angular 的拖拽组件库
+无限滚动|[NGX-INFINITE-SCROLL](https://github.com/orizens/ngx-infinite-scroll) | 无限滚动组件
+打包 |[Angular CLI](https://cli.angular.io/) | Angular 的配套打包工具
+调试|[Angular Augury](https://augury.angular.io/) | Angular Chrome 调试工具
+服务端渲染|[Angular Universal](https://universal.angular.io/) | Angular服务端渲染工具
+
+## 博客及网站
+- [Angular中文官网](https://angular.cn/)
+- [Angular英文官网](https://angular.io/)
+- [Angular官方博客](https://blog.angular.io/)
+- [Angular Weekly Meeting Notes](http://g.co/ng/weekly-notes)
+- [ThoughtRam Blog](https://blog.thoughtram.io/)
+- [Mgechev Blog](http://blog.mgechev.com/)
+- [NgFans](http://www.ngfans.net)
+- [Angular In Depth](https://blog.angularindepth.com/)
+- [30 天精通 RxJS](https://ithelp.ithome.com.tw/users/20103367/ironman/1199)
+- [RxJS 中文社区](https://github.com/RxJS-CN)
+- [Angular News](https://zhuanlan.zhihu.com/angular-news)
+

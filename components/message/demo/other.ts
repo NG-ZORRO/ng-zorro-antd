@@ -9,8 +9,8 @@ import { NzMessageService } from 'ng-zorro-antd';
     <button nz-button (click)="createMessage('warning')">Warning</button>
   `,
   styles  : [
-    `
-      :host ::ng-deep .ant-btn {
+      `
+      [nz-button] {
         margin-right: 8px;
       }
     `
@@ -18,9 +18,9 @@ import { NzMessageService } from 'ng-zorro-antd';
 })
 export class NzDemoMessageOtherComponent {
   createMessage(type: string): void {
-    this._message.create(type, `This is a message of ${type}`);
+    this.message.create(type, `This is a message of ${type}`);
   }
 
-  constructor(private _message: NzMessageService) {
+  constructor(private message: NzMessageService) {
   }
 }

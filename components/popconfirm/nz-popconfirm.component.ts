@@ -8,16 +8,18 @@ import {
 
 import { fadeAnimation } from '../core/animation/fade-animations';
 import { toBoolean } from '../core/util/convert';
-import { NzI18nService } from '../i18n';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 
 @Component({
-  selector: 'nz-popconfirm',
+  selector           : 'nz-popconfirm',
   preserveWhitespaces: false,
-  animations: [ fadeAnimation ],
-  templateUrl: './nz-popconfirm.component.html',
-  styles: [ `
-    .ant-popover { position: relative; }
+  animations         : [ fadeAnimation ],
+  templateUrl        : './nz-popconfirm.component.html',
+  styles             : [ `
+    .ant-popover {
+      position: relative;
+    }
   ` ]
 })
 export class NzPopconfirmComponent extends NzToolTipComponent {
@@ -26,8 +28,8 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
   _trigger = 'click';
   _hasBackdrop = true;
   @Input() nzContent;
-  @Input() nzOkText = this._locale.translate('Modal.okText');
-  @Input() nzCancelText = this._locale.translate('Modal.cancelText');
+  @Input() nzOkText: string;
+  @Input() nzCancelText: string;
 
   @Input()
   set nzCondition(value: boolean) {

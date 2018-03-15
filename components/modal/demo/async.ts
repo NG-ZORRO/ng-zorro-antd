@@ -4,10 +4,10 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-modal-async',
   template: `
     <button nz-button nzType="primary" (click)="showModal()">
-      <span>显示对话框</span>
+      <span>Show Modal</span>
     </button>
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="对话框标题" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)" [nzOkLoading]="isOkLoading">
-      <p>对话框的内容</p>
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="Modal Title" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)" [nzOkLoading]="isOkLoading">
+      <p>Modal Content</p>
     </nz-modal>
   `,
   styles: []

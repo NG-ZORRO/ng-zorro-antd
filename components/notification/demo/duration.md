@@ -11,7 +11,7 @@ title:
 
 ## en-US
 
-`Duration` can be used to specify how long the notification stays open. After the duration time elapses,
+`nzDuration` can be used to specify how long the notification stays open. After the duration time elapses,
 the notification closes automatically. If not specified, default value is 4.5 seconds. If you set the value to 0,
 the notification box will never close automatically.
 

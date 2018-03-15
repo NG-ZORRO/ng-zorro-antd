@@ -10,13 +10,13 @@ import { NzMessageService } from 'ng-zorro-antd';
 })
 export class NzDemoMessageLoadingComponent {
 
-  constructor(private _message: NzMessageService) {
+  constructor(private message: NzMessageService) {
   }
 
   createBasicMessage(): void {
-    const id = this._message.loading('Action in progress..', { nzDuration: 0 }).messageId;
+    const id = this.message.loading('Action in progress..', { nzDuration: 0 }).messageId;
     setTimeout(_ => {
-      this._message.remove(id);
+      this.message.remove(id);
     }, 2500);
   }
 }

@@ -21,14 +21,16 @@
               <div class="ant-popover-message-title">{{ nzTitle }}</div>
             </div>
             <div class="ant-popover-buttons" *ngIf="!nzTemplate">
-              <button nz-button [nzSize]="'small'" (click)="onCancel()"><span>{{ nzCancelText }}</span></button>
+              <button nz-button [nzSize]="'small'" (click)="onCancel()">
+                <ng-container *ngIf="nzCancelText">{{ nzCancelText }}</ng-container>
+                <ng-container *ngIf="!nzCancelText">{{ 'Modal.cancelText' | nzI18n }}</ng-container>
+              </button>
               <button nz-button [nzSize]="'small'" [nzType]="'primary'" (click)="onConfirm()">
-                <span>{{ nzOkText }}</span></button>
+                <ng-container *ngIf="nzOkText">{{ nzOkText }}</ng-container>
+                <ng-container *ngIf="!nzOkText">{{ 'Modal.okText' | nzI18n }}</ng-container>
+              </button>
             </div>
-            <ng-template
-              *ngIf="nzTemplate"
-              [ngTemplateOutlet]="nzTemplate">
-            </ng-template>
+            <ng-template *ngIf="nzTemplate" [ngTemplateOutlet]="nzTemplate"></ng-template>
           </div>
         </div>
       </div>

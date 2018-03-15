@@ -19,7 +19,7 @@ The difference with the `confirm` modal dialog is that it's more lightweight tha
 | nzCancelText | text of the Cancel button | string | `Cancel` |
 | nzOkText | text of the Confirm button | string | `Confirm` |
 | nzOkType | Button `type` of the Confirm button | string | `primary` |
-| nzTitle | title of the confirmation box | string | ReactNode | - |
+| nzTitle | title of the confirmation box | string丨`TemplateRef<void>` | - |
 | nzOnCancel | callback of cancel | EventEmitter | - |
 | nzOnConfirm | callback of confirmation | EventEmitter | - |
 | nzCondition | Whether to directly emit `onConfirm` without showing Popconfirm | boolean | false |

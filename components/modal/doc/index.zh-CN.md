@@ -30,7 +30,7 @@ title: Modal
 | nzOkLoading       | 确定按钮 loading | boolean | false |
 | nzCancelLoading   | 取消按钮 loading | boolean | false |
 | nzFooter          | 底部内容。<i>1. 仅在普通模式下有效。<br>2. 可通过传入 ModalButtonOptions 来最大程度自定义按钮（详见案例或下方说明）。<br>3. 当不需要底部时，可以设为 null</i> | string<br>TemplateRef<br>ModalButtonOptions | 默认的确定取消按钮 |
-| nzGetContainer    | 指定 Modal 挂载的 HTML 节点 | HTMLElement<br>() => HTMLElement| document.body |
+| nzGetContainer    | 指定 Modal 挂载的 HTML 节点 | HTMLElement<br>() => HTMLElement| 默认在overlay容器中 |
 | nzMask            | 是否展示遮罩 | boolean | true |
 | nzMaskClosable    | 点击蒙层是否允许关闭 | boolean | true |
 | nzMaskStyle       | 遮罩样式 | object | 无 |

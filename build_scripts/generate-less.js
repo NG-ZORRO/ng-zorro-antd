@@ -16,4 +16,4 @@ targetFolder.forEach(dir => {
 )
 wrench.copyDirSyncRecursive(path.resolve(sourcePath, 'style'), path.resolve(targetPath, 'style'));
 fs.writeFileSync(`${targetPath}/components.less`, componentsLessContent);
-fs.writeFileSync(`${targetPath}/ng-zorro.less`, fs.readFileSync(`${sourcePath}/ng-zorro.less`));
+fs.writeFileSync(`${targetPath}/ng-zorro-antd.less`, fs.readFileSync(`${sourcePath}/ng-zorro-antd.less`));

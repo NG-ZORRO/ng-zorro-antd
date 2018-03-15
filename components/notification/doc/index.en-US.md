@@ -20,7 +20,7 @@ used in the following cases:
 ## How To Use
 
 Similar to `NzMessage`, if you want to modify the global default configuration, you can modify the value of provider `NZ_NOTIFICATION_CONFIG`.
-(Example: Add `{ provide: NZ_NOTIFICATION_CONFIG, useValue: { nzDuration: 3000 }}` to `providers` of your module, `NZ_MESSAGE_CONFIG` can be imported from `ng-zorro-antd`)
+(Example: Add `{ provide: NZ_NOTIFICATION_CONFIG, useValue: { nzDuration: 3000 }}` to `providers` of your module, `NZ_NOTIFICATION_CONFIG` can be imported from `ng-zorro-antd`)
 
 The default global configuration is:
 ```js

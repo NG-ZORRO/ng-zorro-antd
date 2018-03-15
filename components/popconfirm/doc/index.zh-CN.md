@@ -20,7 +20,7 @@ title: Popconfirm
 | nzCancelText | 取消按钮文字 | string | 取消 |
 | nzOkText | 确认按钮文字 | string | 确定 |
 | nzOkType | 确认按钮类型 | string | primary |
-| nzTitle | 确认框的描述 | string | ReactNode | 无 |
+| nzTitle | 确认框的描述 | string 丨`TemplateRef<void>` | 无 |
 | nzOnCancel | 点击取消的回调 | EventEmitter | 无 |
 | nzOnConfirm | 点击确认的回调 | EventEmitter | 无 |
 | nzCondition | 是否直接触发 `nzOnConfirm` 而不弹出框 | boolean | false |

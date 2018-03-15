@@ -4,7 +4,7 @@ import { NzNotificationService } from 'ng-zorro-antd';
 @Component({
   selector: 'nz-demo-notification-placement',
   template: `
-    <nz-select [(ngModel)]="placement" style="width: 120px; margin-right: 10px;">
+    <nz-select [(ngModel)]="placement" style="width: 120px; margin-right: 10px;" (ngModelChange)="clearBeforeNotifications()">
       <nz-option nzValue="topLeft" nzLabel="topLeft"></nz-option>
       <nz-option nzValue="topRight" nzLabel="topRight"></nz-option>
       <nz-option nzValue="bottomLeft" nzLabel="bottomLeft"></nz-option>
@@ -17,13 +17,17 @@ import { NzNotificationService } from 'ng-zorro-antd';
 export class NzDemoNotificationPlacementComponent {
   placement = 'topRight';
 
-  constructor(private _notification: NzNotificationService) {
+  clearBeforeNotifications(): void {
+    this.notification.remove();
   }
 
   createBasicNotification(): void {
-    this._notification.config({
+    this.notification.config({
       nzPlacement: this.placement
     });
-    this._notification.blank('Notification Title', 'This is the content of the notification. This is the content of the notification. This is the content of the notification.');
+    this.notification.blank('Notification Title', 'This is the content of the notification. This is the content of the notification. This is the content of the notification.');
+  }
+
+  constructor(private notification: NzNotificationService) {
   }
 }
