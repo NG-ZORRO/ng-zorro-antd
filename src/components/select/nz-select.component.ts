@@ -178,7 +178,7 @@ export class NzSelectComponent implements OnInit, AfterContentInit, AfterContent
   _selectionPrefixCls = `${this._prefixCls}-selection`;
   _size: string;
   _value: string[] | string;
-  _placeholder = 'placeholder';
+  _placeholder = '';
   _notFoundContent = this._locale.translate('Select.notFoundContent');
   _searchText = '';
   _triggerWidth = 0;
