@@ -3,8 +3,10 @@ import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes'
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import {
+  ChangeDetectionStrategy,
   Component,
   NgZone,
+  OnInit,
   QueryList,
   ViewChild,
   ViewChildren
@@ -40,12 +42,13 @@ describe('auto-complete', () => {
   beforeEach(async(() => {
     const dir = 'ltr';
     TestBed.configureTestingModule({
-      imports     : [ NzAutocompleteModule, NoopAnimationsModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
+      imports     : [ NzAutocompleteModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
       declarations: [
         NzTestSimpleAutocompleteComponent,
         NzTestAutocompletePropertyComponent,
         NzTestAutocompleteWithoutPanelComponent,
-        NzTestAutocompleteGroupComponent
+        NzTestAutocompleteGroupComponent,
+        NzTestAutocompleteWithOnPushDelayComponent
       ],
       providers   : [
         { provide: Directionality, useFactory: () => ({ value: dir }) },
@@ -159,6 +162,30 @@ describe('auto-complete', () => {
       .toBe(false);
     }));
 
+    it('should not close the panel when the user clicks this input', fakeAsync(() => {
+      dispatchFakeEvent(input, 'focusin');
+      fixture.detectChanges();
+      flush();
+
+      expect(fixture.componentInstance.trigger.panelOpen)
+      .toBe(true);
+
+      dispatchFakeEvent(input, 'click');
+
+      expect(fixture.componentInstance.trigger.panelOpen)
+      .toBe(true);
+    }));
+
+    it('should not throw when attempting to close the panel of a destroyed autocomplete', () => {
+      const trigger = fixture.componentInstance.trigger;
+
+      trigger.openPanel();
+      fixture.detectChanges();
+      trigger.destroyPanel();
+
+      expect(() => trigger.closePanel()).not.toThrow();
+    });
+
     it('should close the panel when the user taps away on a touch device', fakeAsync(() => {
       dispatchFakeEvent(input, 'focus');
       fixture.detectChanges();
@@ -215,12 +242,16 @@ describe('auto-complete', () => {
     let fixture;
     let input;
     let DOWN_ARROW_EVENT: KeyboardEvent;
+    let ENTER_EVENT: KeyboardEvent;
+    let TAB_EVENT: KeyboardEvent;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestAutocompletePropertyComponent);
       fixture.detectChanges();
       input = fixture.debugElement.query(By.css('input')).nativeElement;
       DOWN_ARROW_EVENT = createKeyboardEvent('keydown', DOWN_ARROW);
+      ENTER_EVENT = createKeyboardEvent('keydown', ENTER);
+      TAB_EVENT = createKeyboardEvent('keydown', TAB);
 
     });
 
@@ -264,6 +295,54 @@ describe('auto-complete', () => {
 
       expect(input.value)
       .toBe('Burns Bay Road');
+
+    }));
+
+    it('should reset the backfilled value display when pressing tabbing', fakeAsync(() => {
+      const componentInstance = fixture.componentInstance;
+      componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+      flush();
+
+      expect(componentInstance.trigger.panelOpen)
+      .toBe(true);
+
+      componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
+      fixture.detectChanges();
+      tick();
+
+      expect(input.value)
+      .toBe('Burns Bay Road');
+
+      componentInstance.trigger.handleKeydown(TAB_EVENT);
+      fixture.detectChanges();
+
+      expect(input.value)
+      .not.toBe('Burns Bay Road');
+
+      componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+      flush();
+
+      componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
+      componentInstance.trigger.handleKeydown(ENTER_EVENT);
+      fixture.detectChanges();
+
+      tick(500);
+      expect(input.value)
+      .toBe('Downing Street');
+
+      componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+      flush();
+
+      componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
+      componentInstance.trigger.handleKeydown(TAB_EVENT);
+      fixture.detectChanges();
+      tick(500);
+
+      expect(input.value)
+      .toBe('Downing Street');
 
     }));
 
@@ -334,24 +413,6 @@ describe('auto-complete', () => {
 
       expect(fixture.componentInstance.inputControl.touched)
       .toBe(true);
-    }));
-
-  });
-
-  describe('panel is not defined', () => {
-    let fixture;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestAutocompleteWithoutPanelComponent);
-      fixture.detectChanges();
-    });
-
-    it('should throw on with the panel is not defined', fakeAsync(() => {
-      fixture.detectChanges();
-
-      expect(() => {
-        fixture.componentInstance.trigger.openPanel();
-      }).toThrow(getNzAutocompleteMissingPanelError());
     }));
 
   });
@@ -536,6 +597,23 @@ describe('auto-complete', () => {
 
     });
 
+    it('should set the active item to the previous option when UP key is pressed', () => {
+      const componentInstance = fixture.componentInstance;
+      const optionEls =
+        overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
+
+      expect(componentInstance.trigger.panelOpen)
+      .toBe(true);
+
+      [1, 2].forEach(() => componentInstance.trigger.handleKeydown(UP_ARROW_EVENT));
+      fixture.detectChanges();
+
+      expect(optionEls[0].classList).not.toContain('ant-select-dropdown-menu-item-active');
+      expect(optionEls[1].classList).toContain('ant-select-dropdown-menu-item-active');
+      expect(optionEls[2].classList).not.toContain('ant-select-dropdown-menu-item-active');
+
+    });
+
     it('should set the active item properly after filtering', () => {
       const componentInstance = fixture.componentInstance;
 
@@ -553,6 +631,29 @@ describe('auto-complete', () => {
       expect(optionEls[1].innerText).toEqual('Wall Street');
 
     });
+
+    it('should not open the panel if the `input` event was dispatched with changing the value',
+      fakeAsync(() => {
+        const trigger = fixture.componentInstance.trigger;
+
+        dispatchFakeEvent(input, 'focusin');
+        typeInElement('A', input);
+        fixture.detectChanges();
+        tick();
+
+        expect(trigger.panelOpen).toBe(true);
+
+        trigger.closePanel();
+        fixture.detectChanges();
+
+        expect(trigger.panelOpen).toBe(false);
+
+        dispatchFakeEvent(input, 'input');
+        fixture.detectChanges();
+        tick();
+
+        expect(trigger.panelOpen).toBe(false);
+      }));
 
     it('should fill the text field when an option is selected with ENTER', fakeAsync(() => {
       const componentInstance = fixture.componentInstance;
@@ -626,6 +727,93 @@ describe('auto-complete', () => {
 
   });
 
+  describe('Fallback positions', () => {
+    let fixture;
+    let input: HTMLInputElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestSimpleAutocompleteComponent);
+      fixture.detectChanges();
+      input = fixture.debugElement.query(By.css('input')).nativeElement;
+    });
+
+    it('should use bottom positioning by default', fakeAsync(() => {
+      fixture.componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+      flush();
+
+      const position = fixture.componentInstance.trigger.nzAutocomplete.dropDownPosition;
+      expect(position)
+      .toEqual('bottom');
+    }));
+
+    it('should reposition the panel on scroll', () => {
+      const spacer = document.createElement('div');
+
+      spacer.style.height = '1000px';
+      document.body.appendChild(spacer);
+
+      fixture.componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+
+      const autocomplete = fixture.componentInstance.trigger.nzAutocomplete;
+
+      autocomplete.dropDownPosition = 'top';
+      fixture.detectChanges();
+
+      expect(autocomplete.dropDownPosition)
+      .toEqual('top');
+
+      window.scroll(0, 100);
+      scrolledSubject.next();
+      fixture.detectChanges();
+
+      expect(autocomplete.dropDownPosition)
+      .toEqual('bottom');
+
+      document.body.removeChild(spacer);
+    });
+
+  });
+
+  describe('misc', () => {
+    let fixture;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestAutocompleteWithoutPanelComponent);
+      fixture.detectChanges();
+    });
+
+    it('should throw on with the panel is not defined', fakeAsync(() => {
+      fixture.detectChanges();
+
+      expect(() => {
+        fixture.componentInstance.trigger.openPanel();
+      }).toThrow(getNzAutocompleteMissingPanelError());
+    }));
+
+    it('should show the panel when the options are initialized later within a component with ' +
+      'OnPush change detection', fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestAutocompleteWithOnPushDelayComponent);
+      fixture.detectChanges();
+
+      dispatchFakeEvent(fixture.debugElement.query(By.css('input')).nativeElement, 'focusin');
+      fixture.detectChanges();
+      tick(1000);
+
+      fixture.detectChanges();
+      tick();
+
+      Promise.resolve().then(() => {
+        fixture.detectChanges();
+        flush();
+        const panel = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+        expect(panel.classList).not.toContain('ant-select-dropdown-hidden');
+      });
+    }));
+
+  });
+
 });
 
 @Component({
@@ -669,7 +857,7 @@ class NzTestSimpleAutocompleteComponent {
              [nzAutocomplete]="auto">
       <nz-autocomplete [nzWidth]="width" [nzDataSource]="options" [nzDefaultActiveFirstOption]="false" nzBackfill #auto>
       </nz-autocomplete>
-    </div>
+  </div>
   `
 })
 class NzTestAutocompletePropertyComponent {
@@ -689,6 +877,27 @@ class NzTestAutocompletePropertyComponent {
 })
 class NzTestAutocompleteWithoutPanelComponent {
   @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
+}
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+  <div>
+      <input [nzAutocomplete]="auto">
+      <nz-autocomplete [nzDataSource]="options" #auto>
+      </nz-autocomplete>
+  </div>
+  `
+})
+class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
+  options: string[] = [];
+  @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
+
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.options = ['One'];
+    }, 1000);
+  }
 }
 
 @Component({

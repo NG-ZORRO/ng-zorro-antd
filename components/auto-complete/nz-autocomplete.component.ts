@@ -47,7 +47,7 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
           <ul class="ant-select-dropdown-menu  ant-select-dropdown-menu-root ant-select-dropdown-menu-vertical"
           role="menu"
           aria-activedescendant>
-            <ng-template *ngTemplateOutlet="_dataSource ? optionsTemplate : contentTemplate"></ng-template>
+            <ng-template *ngTemplateOutlet="nzDataSource ? optionsTemplate : contentTemplate"></ng-template>
           </ul>
       </div>
     </div>
@@ -55,7 +55,7 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
       <ng-content></ng-content>
     </ng-template>
     <ng-template #optionsTemplate>
-      <nz-auto-option *ngFor="let option of _dataSource" [nzValue]="option">{{option}}</nz-auto-option>
+      <nz-auto-option *ngFor="let option of nzDataSource" [nzValue]="option">{{option}}</nz-auto-option>
     </ng-template>
   </ng-template>
   `,
@@ -89,7 +89,7 @@ export class NzAutocompleteComponent implements AfterViewInit {
    *  这个属性为其提供方便的访问方式 */
   get options(): QueryList<NzAutocompleteOptionComponent> {
     // 优先使用 dataSource
-    if (this._dataSource) {
+    if (this.nzDataSource) {
       return this.fromDataSourceOptions;
     } else {
       return this.fromContentOptions;
@@ -190,7 +190,7 @@ export class NzAutocompleteComponent implements AfterViewInit {
   private optionsInit(): void {
     this.setVisibility();
     this.subscribeOptionChanges();
-    const changes = this._dataSource ? this.fromDataSourceOptions.changes : this.fromContentOptions.changes;
+    const changes = this.nzDataSource ? this.fromDataSourceOptions.changes : this.fromContentOptions.changes;
 
     // 用于处理动态/异步的 options
     changes.subscribe(e => {

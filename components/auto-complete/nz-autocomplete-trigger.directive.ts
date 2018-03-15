@@ -267,12 +267,10 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   }
 
   private setValueAndClose(option: NzAutocompleteOptionComponent): void {
-    if (option && !option.nzDisabled) {
-      const value = option.getLabel();
-      this.setTriggerValue(value);
-      this._onChange(value);
-      this._element.nativeElement.focus();
-    }
+    const value = option.getLabel();
+    this.setTriggerValue(value);
+    this._onChange(value);
+    this._element.nativeElement.focus();
     this.closePanel();
   }
 
