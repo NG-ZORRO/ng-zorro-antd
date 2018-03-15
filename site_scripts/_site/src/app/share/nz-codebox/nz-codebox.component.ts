@@ -129,10 +129,10 @@ export class NzCodeBoxComponent implements OnInit {
   /** bug here https://github.com/stackblitz/core/issues/311 **/
   openOnStackBlitz() {
     sdk.openProject({
-      files       : {
+      files: {
         '.angular-cli.json'   : `{
   "apps": [{
-    "styles": ["styles.css"]
+    "styles": ["styles.less"]
   }]
 }`,
         'index.html'          : `<${this.nzSelector}>loading</${this.nzSelector}>`,
@@ -235,8 +235,9 @@ import { ${this.nzComponentName} } from './app.component';
 })
 export class AppModule { }
 `,
-        'styles.css'          : `/* Add application styles & imports to this file! */`
+        'styles.less'         : `@import "~ng-zorro-antd/src/ng-zorro-antd.less";`
       },
+
       title       : 'Dynamically Generated Project',
       description : 'Created with <3 by the StackBlitz SDK!',
       template    : 'angular-cli',
@@ -251,7 +252,8 @@ export class AppModule { }
         '@angular/common'                  : '^5.0.0',
         '@angular/router'                  : '^5.0.0',
         '@angular/animations'              : '^5.0.0',
-        'ng-zorro-antd'                    : 'latest'
+        'date-fns'                         : '^1.29.0',
+        'ng-zorro-antd'                    : 'next'
       },
       tags        : [ 'stackblitz', 'sdk' ]
     });
