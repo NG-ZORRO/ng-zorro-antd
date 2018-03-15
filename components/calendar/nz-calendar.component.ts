@@ -8,7 +8,6 @@ import * as differenceInCalendarWeeks from 'date-fns/difference_in_calendar_week
 import * as endOfMonth from 'date-fns/end_of_month';
 import * as isSameDay from 'date-fns/is_same_day';
 import * as isSameMonth from 'date-fns/is_same_month';
-import * as isSameWeek from 'date-fns/is_same_week';
 import * as isSameYear from 'date-fns/is_same_year';
 import * as isThisMonth from 'date-fns/is_this_month';
 import * as isThisYear from 'date-fns/is_this_year';
@@ -55,16 +54,16 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   get nzCard(): boolean { return !this.fullscreen; }
 
   @ContentChild(DateCell, {read: TemplateRef})
-  set dateCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) this.dateCell = value; }
+  set dateCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.dateCell = value; } }
 
   @ContentChild(DateFullCell, {read: TemplateRef})
-  set dateFullCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) this.dateFullCell = value; }
+  set dateFullCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.dateFullCell = value; } }
 
   @ContentChild(MonthCell, {read: TemplateRef})
-  set monthCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) this.monthCell = value; }
+  set monthCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.monthCell = value; } }
 
   @ContentChild(MonthFullCell, {read: TemplateRef})
-  set monthFullCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) this.monthFullCell = value; }
+  set monthFullCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.monthFullCell = value; } }
 
   @HostBinding('class.ant-fullcalendar--fullscreen')
   fullscreen = true;

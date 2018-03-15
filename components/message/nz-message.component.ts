@@ -33,26 +33,7 @@ import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definiti
       ])
     ])
   ],
-  template           : `
-    <div class="ant-message-notice"
-      [@enterLeave]="nzMessage.state"
-      (mouseenter)="onEnter()"
-      (mouseleave)="onLeave()">
-      <div class="ant-message-notice-content">
-        <div *ngIf="!nzMessage.template" class="ant-message-custom-content" [ngClass]="'ant-message-' + nzMessage.type">
-          <ng-container [ngSwitch]="nzMessage.type">
-            <i *ngSwitchCase="'success'" class="anticon anticon-check-circle"></i>
-            <i *ngSwitchCase="'info'" class="anticon anticon-info-circle"></i>
-            <i *ngSwitchCase="'warning'" class="anticon anticon-exclamation-circle"></i>
-            <i *ngSwitchCase="'error'" class="anticon anticon-cross-circle"></i>
-            <i *ngSwitchCase="'loading'" class="anticon anticon-spin anticon-loading"></i>
-          </ng-container>
-          <span>{{ nzMessage.content }}</span>
-        </div>
-        <div *ngIf="nzMessage.template" [innerHTML]="nzMessage.template"></div>
-      </div>
-    </div>
-  `
+  templateUrl         : './nz-message.component.html'
 })
 export class NzMessageComponent implements OnInit, OnDestroy {
 

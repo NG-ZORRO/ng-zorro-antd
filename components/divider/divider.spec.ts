@@ -56,6 +56,16 @@ describe('divider', () => {
       expect(fixtureTemplate.debugElement.query(By.css('.anticon-plus')) != null).toBe(true);
     });
   });
+
+  describe('#nzOrientation', () => {
+    [ 'left', 'right' ].forEach(type => {
+      it(`with ${type}`, () => {
+        context.nzOrientation = type;
+        fixture.detectChanges();
+        expect(dl.query(By.css(`.ant-divider-with-text-${type}`)) != null).toBe(true);
+      });
+    });
+  });
 });
 
 @Component({
@@ -63,7 +73,8 @@ describe('divider', () => {
   <nz-divider #comp
     [nzDashed]="nzDashed"
     [nzType]="nzType"
-    [nzText]="nzText"></nz-divider>
+    [nzText]="nzText"
+    [nzOrientation]="nzOrientation"></nz-divider>
   `
 })
 class TestDividerComponent {
@@ -71,6 +82,7 @@ class TestDividerComponent {
   nzDashed = false;
   nzType = 'horizontal';
   nzText = 'with text';
+  nzOrientation: string = '';
 }
 
 @Component({

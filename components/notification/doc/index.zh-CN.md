@@ -16,47 +16,63 @@ subtitle: 通知提醒框
 - 带有交互的通知，给出用户下一步的行动点。
 - 系统主动推送。
 
-## API
+## 如何使用
 
-- `notification.success(config)`
-- `notification.error(config)`
-- `notification.info(config)`
-- `notification.warning(config)`
-- `notification.warn(config)`
-- `notification.close(key: String)`
-- `notification.destroy()`
+与`NzMessage`类似，如果要修改全局默认配置，你可以设置提供商 `NZ_NOTIFICATION_CONFIG` 的值来修改。
+（如：在你的模块的`providers`中加入 `{ provide: NZ_NOTIFICATION_CONFIG, useValue: { nzDuration: 3000 }}`，`NZ_MESSAGE_CONFIG` 可以从 `ng-zorro-antd` 中导入）
 
-config 参数如下：
-
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| btn | 自定义关闭按钮 | ReactNode | - |
-| className | 自定义 CSS class | string | - |
-| description | 通知提醒内容，必选 | string｜ReactNode | - |
-| duration | 默认 4.5 秒后自动关闭，配置为 null 则不自动关闭 | number | 4.5 |
-| icon | 自定义图标 | ReactNode | - |
-| key | 当前通知唯一标志 | string | - |
-| message | 通知提醒标题，必选 | string｜ReactNode | - |
-| placement | 弹出位置，可选 `topLeft` `topRight` `bottomLeft` `bottomRight` | string | topRight |
-| style | 自定义内联样式 | [React.CSSProperties](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/e434515761b36830c3e58a970abf5186f005adac/types/react/index.d.ts#L794) | - |
-| onClose | 点击默认关闭按钮时触发的回调函数 | Function | - |
-
-还提供了一个全局配置方法，在调用前提前配置，全局一次生效。
-
-- `notification.config(options)`
-
+默认全局配置为：
 ```js
-notification.config({
-  placement: 'bottomRight',
-  bottom: 50,
-  duration: 3,
-});
+{
+  nzTop         : '24px',
+  nzBottom      : '24px',
+  nzPlacement   : 'topRight',
+  nzDuration    : 4500,
+  nzMaxStack    : 7,
+  nzPauseOnHover: true,
+  nzAnimate     : true
+ }
 ```
 
+## API
+
+组件提供了一些服务方法，使用方式和参数如下：
+
+- `NzNotificationService.blank(title, content, [options])` // 不带图标的提示
+- `NzNotificationService.success(title, content, [options])`
+- `NzNotificationService.error(title, content, [options])`
+- `NzNotificationService.info(title, content, [options])`
+- `NzNotificationService.warning(title, content, [options])`
+- `NzNotificationService.loading(title, content, [options])`
+
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| bottom | 消息从底部弹出时，距离底部的位置，单位像素。 | number | 24 |
-| duration | 默认自动关闭延时，单位秒 | number | 4.5 |
-| getContainer | 配置渲染节点的输出位置 | () => HTMLNode | () => document.body |
-| placement | 弹出位置，可选 `topLeft` `topRight` `bottomLeft` `bottomRight` | string | topRight |
-| top | 消息从顶部弹出时，距离顶部的位置，单位像素。 | number | 24 |
+| title | 标题 | string | - |
+| content | 提示内容 | string | - |
+| options | 支持设置针对当前提示框的参数，见下方表格 | object | - |
+
+`options` 支持设置的参数如下：
+
+| 参数 | 说明 | 类型 |
+| --- | --- | --- |
+| nzDuration | 持续时间(毫秒)，当设置为0时不消失 | number |
+| nzPauseOnHover | 鼠标移上时禁止自动移除 | boolean |
+| nzAnimate | 开关动画效果 | boolean |
+| nzStyle | 自定义内联样式 | object |
+| nzClass | 自定义 CSS class | object |
+
+还提供了全局销毁方法：
+
+- `NzNotificationService.remove(id)` // 移除特定id的消息，当id为空时，移除所有消息（该消息id通过上述方法返回值中得到）
+
+### 全局配置（NZ_MESSAGE_CONFIG）
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| nzDuration | 持续时间(毫秒)，当设置为0时不消失 | number | 4500 |
+| nzMaxStack | 同一时间可展示的最大提示数量 | number | 8 |
+| nzPauseOnHover | 鼠标移上时禁止自动移除 | boolean | true |
+| nzAnimate | 开关动画效果 | boolean | true |
+| nzTop | 消息从顶部弹出时，距离顶部的位置。 | string | 24px |
+| nzBottom | 消息从底部弹出时，距离底部的位置。 | string | 24px |
+| nzPlacement | 弹出位置，可选 `topLeft` `topRight` `bottomLeft` `bottomRight` | string | `topRight` |

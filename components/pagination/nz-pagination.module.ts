@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { NzI18nModule } from '../i18n';
-import { NzSelectModule } from '../select';
+import { NzI18nModule } from '../i18n/nz-i18n.module';
+import { NzSelectModule } from '../select/nz-select.module';
 
 import { NzPaginationComponent } from './nz-pagination.component';
 

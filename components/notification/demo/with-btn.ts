@@ -8,7 +8,9 @@ import { NzNotificationService } from 'ng-zorro-antd';
       <div class="ant-notification-notice-content">
         <div>
           <div class="ant-notification-notice-message">Notification Title</div>
-          <div class="ant-notification-notice-description">A function will be be called after the notification is closed (automatically after the "duration" time of manually).</div>
+          <div class="ant-notification-notice-description">
+            A function will be be called after the notification is closed (automatically after the "duration" time of manually).
+          </div>
           <span class="ant-notification-notice-btn">
             <button nz-button nzType="primary" nzSize="small" (click)="notification.close()"><span>Confirm</span></button>
           </span>
@@ -24,7 +26,7 @@ export class NzDemoNotificationWithBtnComponent {
   constructor(private _notification: NzNotificationService) {
   }
 
-  createBasicNotification(template: TemplateRef<void>): void {
+  createBasicNotification(template: TemplateRef<{}>): void {
     this._notification.template(template);
   }
 }

@@ -1,0 +1,17 @@
+<div class="ant-message-notice"
+  [@enterLeave]="nzMessage.state"
+  (mouseenter)="onEnter()"
+  (mouseleave)="onLeave()">
+  <div class="ant-message-notice-content">
+    <div class="ant-message-custom-content" [ngClass]="'ant-message-' + nzMessage.type">
+      <ng-container [ngSwitch]="nzMessage.type">
+        <i *ngSwitchCase="'success'" class="anticon anticon-check-circle"></i>
+        <i *ngSwitchCase="'info'" class="anticon anticon-info-circle"></i>
+        <i *ngSwitchCase="'warning'" class="anticon anticon-exclamation-circle"></i>
+        <i *ngSwitchCase="'error'" class="anticon anticon-cross-circle"></i>
+        <i *ngSwitchCase="'loading'" class="anticon anticon-spin anticon-loading"></i>
+      </ng-container>
+      <span [innerHTML]="nzMessage.content"></span>
+    </div>
+  </div>
+</div>

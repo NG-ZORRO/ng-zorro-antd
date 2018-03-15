@@ -18,14 +18,9 @@ Tag for categorizing or markup.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| afterClose | Callback executed when close animation is completed | () => void | - |
-| closable | Whether Tag can be closed | boolean | `false` |
-| color | Color of the Tag | string | - |
-| onClose | Callback executed when tag is closed | (e) => void | - |
-
-### Tag.CheckableTag
-
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| checked | Checked status of Tag | boolean | `false` |
-| onChange | Callback executed when Tag is checked/unchecked | (checked) => void | - |
+| nzMode | Mode of tag | `'closable'丨'default'丨'checkable'` | `default` |
+| nzAfterClose | Callback executed when close animation is completed, only works when `nzMode="closable"` | () => void | - |
+| nzOnClose | Callback executed when tag is closed, only works when `nzMode="closable"`| (e:MouseEvent) => void | - |
+| nzChecked | Checked status of Tag, double binding, only works when `nzMode="checkable"` | boolean | `false` |
+| nzCheckedChange | Checked status change call back, only works when `nzMode="checkable"` | (nzChecked:boolean)=>{} | - |
+| nzColor | Color of the Tag | string | - |

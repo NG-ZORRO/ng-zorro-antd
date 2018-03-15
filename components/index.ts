@@ -3,6 +3,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { NzAffixModule } from './affix/nz-affix.module';
 import { NzAlertModule } from './alert';
 import { NzAnchorModule } from './anchor/nz-anchor.module';
+import { NzAutocompleteModule } from './auto-complete/nz-autocomplete.module';
 import { NzAvatarModule } from './avatar/nz-avatar.module';
 import { NzBackTopModule } from './back-top/nz-back-top.module';
 import { NzBadgeModule } from './badge/nz-badge.module';
@@ -22,7 +23,6 @@ import { NzInputModule } from './input';
 import { NzInputNumberModule } from './input-number';
 import { NzLayoutModule } from './layout';
 import { NzListModule } from './list';
-import { NzLocaleModule } from './locale';
 import { NzMenuModule } from './menu';
 import { NzMessageModule } from './message/nz-message.module';
 import { NzModalModule } from './modal';
@@ -58,7 +58,6 @@ export * from './menu';
 export * from './upload';
 export * from './transfer';
 export * from './i18n';
-export * from './locale/index';
 export * from './list/index';
 
 import { NzMessageService } from './message/nz-message.service';
@@ -79,7 +78,6 @@ export * from './menu';
 export * from './checkbox';
 export * from './input';
 export * from './i18n';
-export * from './locale/index';
 export * from './list/index';
 export * from './modal/public-api';
 
@@ -103,7 +101,6 @@ export * from './modal/public-api';
     NzCheckboxModule,
     NzInputNumberModule,
     NzToolTipModule,
-    NzLocaleModule,
     NzPopconfirmModule,
     NzPopconfirmModule,
     NzPopoverModule,
@@ -130,7 +127,8 @@ export * from './modal/public-api';
     NzListModule,
     NzI18nModule,
     NzUploadModule,
-    NzModalModule
+    NzModalModule,
+    NzAutocompleteModule
   ]
 })
 export class NgZorroAntdModule {

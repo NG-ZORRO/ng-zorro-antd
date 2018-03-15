@@ -8,14 +8,14 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  TemplateRef,
+  TemplateRef
 } from '@angular/core';
 
 import {
   animate,
   style,
   transition,
-  trigger,
+  trigger
 } from '@angular/animations';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -43,7 +43,7 @@ import { toNumber } from '../core/util/convert';
   template     : `
     <div class="ant-back-top" (click)="clickBackTop()" [@enterLeave] *ngIf="visible">
       <ng-template #defaultContent>
-        <div class="ant-back-top-content"><i class="anticon anticon-to-top ant-back-top-icon"></i></div>
+        <div class="ant-back-top-content"><div class="ant-back-top-icon"></div></div>
       </ng-template>
       <ng-template [ngTemplateOutlet]="nzTemplate || defaultContent"></ng-template>
     </div>
@@ -81,7 +81,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (!this.scroll$) this.registerScrollEvent();
+    if (!this.scroll$) { this.registerScrollEvent(); }
   }
 
   clickBackTop(): void {
@@ -94,13 +94,13 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
   }
 
   private handleScroll(): void {
-    if (this.visible === this.scrollSrv.getScroll(this.getTarget()) > this.nzVisibilityHeight) return;
+    if (this.visible === this.scrollSrv.getScroll(this.getTarget()) > this.nzVisibilityHeight) { return; }
     this.visible = !this.visible;
     this.cd.detectChanges();
   }
 
   private removeListen(): void {
-    if (this.scroll$) this.scroll$.unsubscribe();
+    if (this.scroll$) { this.scroll$.unsubscribe(); }
   }
 
   private registerScrollEvent(): void {

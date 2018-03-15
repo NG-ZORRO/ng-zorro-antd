@@ -22,7 +22,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzLocaleService } from '../locale';
+import { NzI18nService } from '../i18n';
 
 import { ModalPublicAgent } from './modal-public-agent.class';
 import ModalUtil from './modal-util';
@@ -38,9 +38,7 @@ type AnimationState = 'enter' | 'leave' | null;
 
 @Component({
   selector: 'nz-modal',
-  encapsulation: ViewEncapsulation.None,
-  templateUrl: './nz-modal.component.html',
-  styleUrls: [ './style/index.less' ]
+  templateUrl: './nz-modal.component.html'
 })
 
 export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChanges, AfterViewInit, ModalOptions {
@@ -88,7 +86,7 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
   private animationState: AnimationState; // Current animation state
 
   constructor(
-    private locale: NzLocaleService,
+    private locale: NzI18nService,
     private cfr: ComponentFactoryResolver,
     private elementRef: ElementRef,
     private viewContainer: ViewContainerRef,

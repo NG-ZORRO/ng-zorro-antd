@@ -42,7 +42,7 @@ describe('affix', () => {
     new Event('touchmove'),
     new Event('touchend'),
     new Event('pageshow'),
-    new Event('load'),
+    new Event('load')
   ];
 
   beforeEach(fakeAsync(() => {
@@ -53,7 +53,7 @@ describe('affix', () => {
         {
           provide: NzScrollService,
           useClass: NzScrollService
-        },
+        }
       ]
     }).compileComponents();
 

@@ -9,7 +9,9 @@ import { NzNotificationService } from 'ng-zorro-antd';
         <div class="ant-notification-notice-with-icon">
           <span class="ant-notification-notice-icon"><i class="anticon anticon-smile-circle" style="color: rgb(16, 142, 233);"></i></span>
           <div class="ant-notification-notice-message">Notification Title</div>
-          <div class="ant-notification-notice-description">This is the content of the notification. This is the content of the notification. This is the content of the notification.</div>
+          <div class="ant-notification-notice-description">
+            This is the content of the notification. This is the content of the notification. This is the content of the notification.
+          </div>
         </div>
       </div>
     </ng-template>
@@ -22,7 +24,7 @@ export class NzDemoNotificationCustomIconComponent {
   constructor(private _notification: NzNotificationService) {
   }
 
-  createBasicNotification(template: TemplateRef<void>): void {
+  createBasicNotification(template: TemplateRef<{}>): void {
     this._notification.template(template);
   }
 }

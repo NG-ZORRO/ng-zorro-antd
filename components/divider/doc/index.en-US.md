@@ -2,7 +2,6 @@
 category: Components
 type: Other
 title: Divider
-cols: 1
 ---
 
 A divider line separates different content.
@@ -21,3 +20,4 @@ A divider line separates different content.
 | nzDashed | whether line is dasded | Boolean | false |
 | nzType | direction type of divider | enum: `horizontal` `vertical` | `horizontal` |
 | nzText | inner text of divider | `string丨TemplateRef<void>` | - |
+| nzOrientation | inner text orientation | enum: `left` `right` | - |

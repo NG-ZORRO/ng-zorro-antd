@@ -14,18 +14,14 @@ title: Tag
 
 ## API
 
-### Tag
+### nz-tag
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| afterClose | 关闭动画完成后的回调 | () => void | - |
-| closable | 标签是否可以关闭 | boolean | false |
-| color | 标签色 | string | - |
-| onClose | 关闭时的回调 | (e) => void | - |
-
-### Tag.CheckableTag
-
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| checked | 设置标签的选中状态 | boolean | false |
-| onChange | 点击标签时触发的回调 | (checked) => void | - |
+| nzMode | 设定标签工作的模式 | `'closable'丨'default'丨'checkable'` | `default` |
+| nzAfterClose | 关闭动画完成后的回调，在 `nzMode="closable"` 时可用 | () => void | - |
+| nzOnClose | 关闭时的回调，在 `nzMode="closable"` 时可用 | (e:MouseEvent) => void | - |
+| nzChecked | 设置标签的选中状态，可双向绑定，在 `nzMode="checkable"` 时可用 | boolean | false |
+| nzCheckedChange | 设置标签的选中状态的回调，在 `nzMode="checkable"` 时可用 | (nzChecked:boolean)=>{} | -
+ |
+| nzColor | 标签色 | string | - |

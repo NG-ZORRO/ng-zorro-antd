@@ -33,6 +33,8 @@ export class NzDividerComponent implements OnChanges, OnInit {
 
   @Input() nzType: 'horizontal' | 'vertical' = 'horizontal';
 
+  @Input() nzOrientation: 'left' | 'right' | '' = '';
+
   private _dashed = false;
   @Input()
   set nzDashed(value: boolean) {
@@ -44,10 +46,11 @@ export class NzDividerComponent implements OnChanges, OnInit {
 
   // endregion
   private setClass(): void {
+    const orientationPrefix = (this.nzOrientation.length > 0) ? '-' + this.nzOrientation : this.nzOrientation;
     const classMap = {
       ['ant-divider']: true,
       [`ant-divider-${this.nzType}`]: true,
-      [`ant-divider-with-text`]: this.isText,
+      [`ant-divider-with-text${orientationPrefix}`]: this.isText,
       [`ant-divider-dashed`]: this.nzDashed
     };
     this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);

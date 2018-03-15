@@ -67,7 +67,22 @@ export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' |
   host               : {
     '[class.ant-badge]'       : 'true',
     '[class.ant-badge-status]': 'nzStatus'
-  }
+  },
+  styles             : [
+      `
+      :host:not(.ant-badge-not-a-wrapper) .ant-badge-count {
+        position: absolute;
+        transform: translateX(50%);
+        right: 0;
+      }
+
+      :host .ant-badge-dot {
+        position: absolute;
+        transform: translateX(50%);
+        right: 0;
+      }
+    `
+  ]
 })
 export class NzBadgeComponent implements OnInit, AfterViewInit {
   private _showDot = false;

@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { NzCheckboxModule } from '../checkbox';
-import { NzDropDownModule } from '../dropdown';
-import { NzI18nModule } from '../i18n';
-import { NzMenuModule } from '../menu';
-import { NzPaginationModule } from '../pagination';
-import { NzRadioModule } from '../radio';
-import { NzSpinModule } from '../spin';
+import { NzCheckboxModule } from '../checkbox/nz-checkbox.module';
+import { NzDropDownModule } from '../dropdown/nz-dropdown.module';
+import { NzI18nModule } from '../i18n/nz-i18n.module';
+import { NzMenuModule } from '../menu/nz-menu.module';
+import { NzPaginationModule } from '../pagination/nz-pagination.module';
+import { NzRadioModule } from '../radio/nz-radio.module';
+import { NzSpinModule } from '../spin/nz-spin.module';
 
 import { NzTableComponent } from './nz-table.component';
 import { NzTbodyDirective } from './nz-tbody.directive';

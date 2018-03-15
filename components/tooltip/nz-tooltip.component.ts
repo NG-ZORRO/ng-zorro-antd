@@ -25,37 +25,13 @@ import { DEFAULT_4_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-posit
 import { toBoolean } from '../core/util/convert';
 
 @Component({
-  selector           : 'nz-tooltip',
+  selector: 'nz-tooltip',
   preserveWhitespaces: false,
-  animations         : [
-    fadeAnimation
-  ],
-  template           : `
-    <ng-content></ng-content>
-    <ng-template
-      #overlay="cdkConnectedOverlay"
-      cdkConnectedOverlay
-      [cdkConnectedOverlayOrigin]="overlayOrigin"
-      [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
-      (backdropClick)="hide()"
-      (detach)="hide()"
-      (positionChange)="onPositionChange($event)"
-      [cdkConnectedOverlayPositions]="_positions"
-      [cdkConnectedOverlayOpen]="visible$ | async">
-      <div class="ant-tooltip" [ngClass]="_classMap" [ngStyle]="nzOverlayStyle" [@fadeAnimation]="''+(visible$ | async)"
-        (@fadeAnimation.done)="_afterVisibilityAnimation($event)">
-        <div class="ant-tooltip-content">
-          <div class="ant-tooltip-arrow"></div>
-          <div class="ant-tooltip-inner">
-            <span *ngIf="!nzTemplate">{{ nzTitle }}</span>
-            <ng-template
-              *ngIf="nzTemplate"
-              [ngTemplateOutlet]="nzTemplate">
-            </ng-template>
-          </div>
-        </div>
-      </div>
-    </ng-template>`
+  animations: [ fadeAnimation ],
+  templateUrl: './nz-tooltip.component.html',
+  styles: [ `
+    .ant-tooltip { position: relative; }
+  ` ]
 })
 export class NzToolTipComponent {
   _hasBackdrop = false;

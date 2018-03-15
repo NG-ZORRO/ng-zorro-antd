@@ -37,13 +37,13 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   // endregion
   @HostListener('click')
   onClick(): void {
-    if (this.options.disabled) return;
+    if (this.options.disabled) { return; }
     (this.file.nativeElement as HTMLInputElement).click();
   }
 
   @HostListener('keydown', ['$event'])
   onKeyDown(e: KeyboardEvent): void {
-    if (this.options.disabled) return;
+    if (this.options.disabled) { return; }
     if (e.key === 'Enter') {
       this.onClick();
     }
@@ -59,13 +59,13 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     const files: File[] = Array.prototype.slice.call(e.dataTransfer.files).filter(
       (file: File) => this.attrAccept(file, this.options.accept)
     );
-    if (files.length) this.uploadFiles(files);
+    if (files.length) { this.uploadFiles(files); }
 
     e.preventDefault();
   }
 
   onChange(e: Event): void {
-    if (this.options.disabled) return;
+    if (this.options.disabled) { return; }
     const hie = e.target as HTMLInputElement;
     this.uploadFiles(hie.files);
     hie.value = '';
@@ -130,12 +130,12 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private post(file: UploadFile): void {
-    if (this.destroy) return;
+    if (this.destroy) { return; }
     const opt = this.options;
     const { uid } = file;
     let { data, headers } = opt;
-    if (typeof data === 'function') data = data(file);
-    if (typeof headers === 'function') headers = headers(file);
+    if (typeof data === 'function') { data = data(file); }
+    if (typeof headers === 'function') { headers = headers(file); }
     const args: UploadXHRArgs = {
       action: opt.action,
       name: opt.name,
@@ -167,7 +167,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
         formData.append(key, args.data[key]);
       });
     }
-    if (!args.headers) args.headers = {};
+    if (!args.headers) { args.headers = {}; }
     if (args.headers['X-Requested-With'] !== null) {
       args.headers['X-Requested-With'] = `XMLHttpRequest`;
     } else {
@@ -223,7 +223,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
 
   // endregion
   constructor(@Optional() private http: HttpClient, private el: ElementRef, private updateHostClassService: NzUpdateHostClassService, private cd: ChangeDetectorRef) {
-    if (!http) throw new Error(`Not found 'HttpClient', You can import 'HttpClientModel' in your root module.`);
+    if (!http) { throw new Error(`Not found 'HttpClient', You can import 'HttpClientModel' in your root module.`); }
   }
 
   ngOnInit(): void {
