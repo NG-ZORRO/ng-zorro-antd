@@ -16,7 +16,7 @@ export class ModalBuilderForService {
   constructor(private overlay: Overlay, options: ModalOptionsForService = {}) {
       this.createModal();
 
-      if (!('nzGetContainer' in options)) { // As we use CDK to create modal in service, there is no need to append DOM to body by default
+      if (!('nzGetContainer' in options)) { // As we use CDK to create modal in service by force, there is no need to use nzGetContainer
         options.nzGetContainer = null;
       }
 

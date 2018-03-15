@@ -1,3 +1,4 @@
+import { Overlay } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -19,6 +20,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+
 import { measureScrollbar } from '../core/util/mesure-scrollbar';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
@@ -85,7 +87,8 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
   private contentComponentRef: ComponentRef<{}>; // Handle the reference when using nzContent as Component
   private animationState: AnimationState; // Current animation state
 
-  constructor(private locale: NzI18nService,
+  constructor(private overlay: Overlay,
+              private locale: NzI18nService,
               private renderer: Renderer2,
               private cfr: ComponentFactoryResolver,
               private elementRef: ElementRef,
@@ -106,7 +109,9 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
 
     const container = typeof this.nzGetContainer === 'function' ? this.nzGetContainer() : this.nzGetContainer;
     if (container instanceof HTMLElement) {
-      container.insertBefore(this.elementRef.nativeElement, container.firstChild);
+      container.appendChild(this.elementRef.nativeElement);
+    } else { // Use overlay to handle this modal by default
+      this.overlay.create().overlayElement.appendChild(this.elementRef.nativeElement);
     }
   }
 
