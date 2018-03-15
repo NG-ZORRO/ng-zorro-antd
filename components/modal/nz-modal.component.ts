@@ -328,7 +328,6 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
     // }
   }
 
-  // TODO: We should detect if there are modals remained in this page, if 0 modals that we chould to remove overflow, otherwise, we should leave it 'hidden'.
   private changeBodyOverflow(visible: boolean): void {
     const countKey = 'data-modal-count';
     let countValue = parseInt(this.document.body.attributes.getNamedItem(countKey) && this.document.body.attributes.getNamedItem('data-modal-count').value || 0, 10);

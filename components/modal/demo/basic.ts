@@ -8,18 +8,12 @@ import { Component } from '@angular/core';
       <p>Content one</p>
       <p>Content two</p>
       <p>Content three</p>
-      <nz-select style="width: 120px;" [(ngModel)]="selectedValue" nzAllowClear nzPlaceHolder="Choose">
-        <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
-        <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
-        <nz-option nzValue="disabled" nzLabel="Disabled" nzDisabled></nz-option>
-      </nz-select>
     </nz-modal>
   `,
   styles: []
 })
 export class NzDemoModalBasicComponent {
   isVisible = false;
-  selectedValue = 'lucy';
 
   constructor() {}
 
