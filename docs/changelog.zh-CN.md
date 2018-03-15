@@ -17,7 +17,7 @@ timeline: true
 
 `2018-03-15`
 
-0.7.0 beta 作为 1.0 正式版 之前的最后一个版本，涉及到了底层的大量重构与改动，大部分 API 将与 1.0 正式版本的内容保持一致，目前剩余以下组件仍在紧张开发中，最近几日会逐步放出
+0.7.0 作为 1.0 正式版 之前的最后一系列版本，涉及到了底层的大量重构与改动，大部分 API 将与 1.0 正式版本的内容保持一致，目前剩余以下组件仍在紧张开发中，最近几日会逐步放出
 
 - TimePicker
 - DatePicker
@@ -62,7 +62,8 @@ timeline: true
 - 支持 自定义Trigger为模板变量
 
 #### Affix
-- Todo
+- 增加距离底部固钉
+- 增加目标占位符、更好的滚动性能
 
 #### Breadcrumb
 - 自定义分隔符 支持传入模板
@@ -120,9 +121,6 @@ timeline: true
 - 自定义内容方式改变，nzCheckedChildren 与 nzUnCheckedChildren 支持传入 模板和字符串
 - 支持loading效果
 
-#### Calendar
-- TODO
-
 #### Card
 - 重写使用方式，大幅度降低使用成本
 
@@ -169,13 +167,13 @@ timeline: true
 - 支持自定义 加载指示符
 
 #### Anchor
-- TODO
-
-#### BackTop
-- TODO
+- 增加 `nzAffix`、`nzShowInkInFixed`、`nzScroll` 等属性
 
 #### Divider
-- TODO
+- 新组件：区隔内容的分割线
+
+#### List
+- 新组件：通用列表
 
 ## 之前版本
 

@@ -37,8 +37,7 @@ title: Ant Design of Angular
 
 ## 版本
 
-- [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
-
+- [![npm (next)](https://img.shields.io/npm/v/ng-zorro-antd/next.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 
 ## 安装
 
