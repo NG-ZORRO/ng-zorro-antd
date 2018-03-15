@@ -352,6 +352,8 @@ class TestBasicServiceComponent {
   basicModal: ModalPublicAgent;
 
   constructor(private modalService: NzModalService) {
+    this.modalService.create(); // [Testing Required] Only for coverage temporarily
+
     // Testing for creating modal immediately
     this.basicModal = this.modalService.create({
       nzGetContainer: () => document.body,
@@ -431,6 +433,9 @@ export class TestConfirmModalComponent {
   constructor(public modalService: NzModalService) { }
 
   createConfirm(): ModalPublicAgent {
+    this.modalService.confirm(); // [Testing Required] Only for coverage temporarily
+    this.modalService.confirm({ nzWidth: 100 }); // [Testing Required] Only for coverage temporarily
+
     // Boundary detection for options: nzFooter, nzOnOk
     return this.modalService.confirm({
       nzFooter: 'should warning',
@@ -441,9 +446,8 @@ export class TestConfirmModalComponent {
   createOtherModals(): string[] {
     return [ 'info', 'success', 'error', 'warning' ].map(type => {
       const modalId = generateUniqueId();
-      this.modalService[type]({
-        nzClassName: modalId
-      });
+      this.modalService[type]({ nzClassName: modalId });
+      this.modalService[type]();  // [Testing Required] Only for coverage temporarily
       return modalId;
     });
   }

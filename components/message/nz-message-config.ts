@@ -18,7 +18,7 @@ export const NZ_MESSAGE_CONFIG = new InjectionToken<NzMessageConfig>('NZ_MESSAGE
 export const NZ_MESSAGE_DEFAULT_CONFIG_PROVIDER = {
   provide : NZ_MESSAGE_DEFAULT_CONFIG,
   useValue: {
-    nzDuration    : 1500,
+    nzDuration    : 3000,
     nzAnimate     : true,
     nzPauseOnHover: true,
     nzMaxStack    : 7

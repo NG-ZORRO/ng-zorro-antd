@@ -17,7 +17,7 @@ title: Tooltip
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| title | 提示文字 | string | ReactNode | () => ReactNode | 无 |
+| nzTitle | 提示文字 | string | 无 |
 
 ### 共同的 API
 
@@ -25,18 +25,15 @@ title: Tooltip
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| arrowPointAtCenter | 箭头是否指向目标元素中心，`antd@1.11+` 支持 | boolean | `false` |
-| autoAdjustOverflow | 气泡被遮挡时自动调整位置 | boolean | `true` |
-| defaultVisible | 默认是否显隐 | boolean | false |
-| getPopupContainer | 浮层渲染父节点，默认渲染到 body 上。`2.5.2` 之前请使用 `getTooltipContainer` | Function(triggerNode) | () => document.body |
-| mouseEnterDelay | 鼠标移入后延时多少才显示 Tooltip，单位：秒 | number | 0 |
-| mouseLeaveDelay | 鼠标移出后延时多少才隐藏 Tooltip，单位：秒 | number | 0.1 |
-| overlayClassName | 卡片类名 | string | 无 |
-| overlayStyle | 卡片样式 | object | 无 |
-| placement | 气泡框位置，可选 `top` `left` `right` `bottom` `topLeft` `topRight` `bottomLeft` `bottomRight` `leftTop` `leftBottom` `rightTop` `rightBottom` | string | top |
-| trigger | 触发行为，可选 `hover/focus/click` | string | hover |
-| visible | 用于手动控制浮层显隐 | boolean | false |
-| onVisibleChange | 显示隐藏的回调 | (visible) => void | 无 |
+| nzMouseEnterDelay | 鼠标移入后延时多少才显示 Tooltip，单位：秒 | number | 0 |
+| nzMouseLeaveDelay | 鼠标移出后延时多少才隐藏 Tooltip，单位：秒 | number | 0.1 |
+| nzOverlayClassName | 卡片类名 | string | 无 |
+| nzOverlayStyle | 卡片样式 | object | 无 |
+| nzPlacement | 气泡框位置，可选 `top` `left` `right` `bottom` `topLeft` `topRight` `bottomLeft` `bottomRight` `leftTop` `leftBottom` `rightTop` `rightBottom` | string | top |
+| nzTrigger | 触发行为，可选 `hover/focus/click` | string | hover |
+| nzVisible | 用于手动控制浮层显隐 | boolean | false |
+| nzVisibleChange | 显示隐藏的回调 | EventEmitter | 无 |
+| nzTemplate | 气泡内容，设置后会覆盖掉nzTitle的内容（用法见示例） | ng-template | 无 |
 
 ## 注意
 

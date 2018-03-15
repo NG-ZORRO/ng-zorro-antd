@@ -6,9 +6,9 @@ import { NzMessageConfig } from './nz-message-config';
 import { NzMessageContainerComponent } from './nz-message-container.component';
 import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
-// TODO: remove MessageData generic type as it has no contributon in typing
-export class NzMessageBaseService<ContainerClass extends NzMessageContainerComponent, MessageData> {
-  protected _counter = 0; // Id counter for messages
+let globalCounter = 0; // global ID counter for messages
+
+export class NzMessageBaseService<ContainerClass extends NzMessageContainerComponent, MessageData, MessageConfig extends NzMessageConfig> {
   protected _container: ContainerClass;
 
   constructor(overlay: Overlay, containerClass: Type<ContainerClass>, private _idPrefix: string = '') {
@@ -23,10 +23,10 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
     }
   }
 
-  createMessage(message: object, options?: NzMessageDataOptions): NzMessageDataFilled {
+  createMessage(message: MessageData, options?: NzMessageDataOptions): NzMessageDataFilled {
     // TODO: spread on literal has been disallow on latest proposal
     const resultMessage: NzMessageDataFilled = {
-      ...message, ...{
+      ...(message as {}), ...{
         messageId: this._generateMessageId(),
         options,
         createdAt: new Date()
@@ -37,17 +37,17 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
     return resultMessage;
   }
 
-  config(config: NzMessageConfig): void {
+  config(config: MessageConfig): void {
     this._container.setConfig(config);
   }
 
   protected _generateMessageId(): string {
-    return this._idPrefix + this._counter++;
+    return this._idPrefix + globalCounter++;
   }
 }
 
 @Injectable()
-export class NzMessageService extends NzMessageBaseService<NzMessageContainerComponent, NzMessageData> {
+export class NzMessageService extends NzMessageBaseService<NzMessageContainerComponent, NzMessageData, NzMessageConfig> {
 
   constructor(overlay: Overlay) {
     super(overlay, NzMessageContainerComponent, 'message-');
@@ -74,12 +74,7 @@ export class NzMessageService extends NzMessageBaseService<NzMessageContainerCom
     return this.createMessage({ type: 'loading', content }, options);
   }
 
-  create(type: string, content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+  create(type: 'success' | 'info' | 'warning' | 'error' | 'loading' | string, content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
     return this.createMessage({ type, content }, options);
-  }
-
-  // For content with template
-  template(template: TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
-    return this.createMessage({ template }, options);
   }
 }

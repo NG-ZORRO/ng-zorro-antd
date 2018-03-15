@@ -8,53 +8,17 @@ import {
 
 import { fadeAnimation } from '../core/animation/fade-animations';
 import { toBoolean } from '../core/util/convert';
-import { NzLocaleService } from '../locale/nz-locale.service';
+import { NzI18nService } from '../i18n';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 
 @Component({
-  selector           : 'nz-popconfirm',
+  selector: 'nz-popconfirm',
   preserveWhitespaces: false,
-  animations         : [
-    fadeAnimation
-  ],
-  template           : `
-    <ng-content></ng-content>
-    <ng-template
-      #overlay="cdkConnectedOverlay"
-      cdkConnectedOverlay
-      [cdkConnectedOverlayOrigin]="overlayOrigin"
-      [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
-      (backdropClick)="hide()"
-      (detach)="hide()"
-      (positionChange)="onPositionChange($event)"
-      [cdkConnectedOverlayPositions]="_positions"
-      [cdkConnectedOverlayOpen]="visible$ | async">
-      <div class="ant-popover" [ngClass]="_classMap" [ngStyle]="nzOverlayStyle" [@fadeAnimation]="''+(visible$ | async)"
-        (@fadeAnimation.done)="_afterVisibilityAnimation($event)">
-        <div class="ant-popover-content">
-          <div class="ant-popover-arrow"></div>
-          <div class="ant-popover-inner">
-            <div>
-              <div class="ant-popover-inner-content">
-                <div class="ant-popover-message" *ngIf="!nzTemplate">
-                  <i class="anticon anticon-exclamation-circle"></i>
-                  <div class="ant-popover-message-title">{{ nzTitle }}</div>
-                </div>
-                <div class="ant-popover-buttons" *ngIf="!nzTemplate">
-                  <button nz-button [nzSize]="'small'" (click)="onCancel()"><span>{{ nzCancelText }}</span></button>
-                  <button nz-button [nzSize]="'small'" [nzType]="'primary'" (click)="onConfirm()">
-                    <span>{{ nzOkText }}</span></button>
-                </div>
-                <ng-template
-                  *ngIf="nzTemplate"
-                  [ngTemplateOutlet]="nzTemplate">
-                </ng-template>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </ng-template>`
+  animations: [ fadeAnimation ],
+  templateUrl: './nz-popconfirm.component.html',
+  styles: [ `
+    .ant-popover { position: relative; }
+  ` ]
 })
 export class NzPopconfirmComponent extends NzToolTipComponent {
   private _condition = false;
@@ -70,14 +34,14 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
     this._condition = toBoolean(value);
   }
 
-  get nzCondition(): boolean {
-    return this._condition;
-  }
+  // get nzCondition(): boolean {
+  //   return this._condition;
+  // }
 
   @Output() nzOnCancel: EventEmitter<void> = new EventEmitter();
   @Output() nzOnConfirm: EventEmitter<void> = new EventEmitter();
 
-  constructor(cdr: ChangeDetectorRef, private _locale: NzLocaleService) {
+  constructor(cdr: ChangeDetectorRef, private _locale: NzI18nService) {
     super(cdr);
   }
 
