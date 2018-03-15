@@ -75,8 +75,8 @@
       </ng-container>
       <ng-container *ngSwitchDefault>
         <button *ngIf="nzCancelText" nz-button (click)="onClickOkCancel($event, 'cancel')" [nzLoading]="nzCancelLoading"><span>{{ nzCancelText }}</span></button>
-        <button *ngIf="nzOkText" nz-button [nzType]="nzOkType" (click)="onClickOkCancel($event, 'ok')" [nzLoading]="nzOkLoading">
-          <span>{{ nzOkText }}</span>
+        <button *ngIf="okText" nz-button [nzType]="nzOkType" (click)="onClickOkCancel($event, 'ok')" [nzLoading]="nzOkLoading">
+          <span>{{ okText }}</span>
         </button>
       </ng-container>
     </ng-container>
@@ -107,7 +107,7 @@
         </div>
       </div>
       <div class="ant-confirm-btns">
-        <button *ngIf="nzCancelText" nz-button (click)="onClickOkCancel($event, 'cancel')" [nzLoading]="nzCancelLoading"><span>{{ nzCancelText }}</span></button>
+        <button *ngIf="cancelText" nz-button (click)="onClickOkCancel($event, 'cancel')" [nzLoading]="nzCancelLoading"><span>{{ cancelText }}</span></button>
         <button #autoFocusButtonOk *ngIf="nzOkText" nz-button [nzType]="nzOkType" (click)="onClickOkCancel($event, 'ok')" [nzLoading]="nzOkLoading">
           <span>{{ nzOkText }}</span>
         </button>

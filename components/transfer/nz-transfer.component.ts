@@ -6,11 +6,14 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
   Output,
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { of } from 'rxjs/observable/of';
 
 import { toBoolean } from '../core/util/convert';
@@ -30,10 +33,10 @@ import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, Tr
       (filterChange)="handleFilterChange($event)"
       [render]="nzRender"
       [showSearch]="nzShowSearch"
-      [searchPlaceholder]="nzSearchPlaceholder"
-      [notFoundContent]="nzNotFoundContent"
-      [itemUnit]="nzItemUnit"
-      [itemsUnit]="nzItemsUnit"
+      [searchPlaceholder]="nzSearchPlaceholder || locale.searchPlaceholder"
+      [notFoundContent]="nzNotFoundContent || locale.notFoundContent"
+      [itemUnit]="nzItemUnit || locale.itemUnit"
+      [itemsUnit]="nzItemsUnit || locale.itemsUnit"
       [footer]="nzFooter"
       (handleSelect)="handleLeftSelect($event)"
       (handleSelectAll)="handleLeftSelectAll($event)"></nz-transfer-list>
@@ -53,10 +56,10 @@ import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, Tr
       (filterChange)="handleFilterChange($event)"
       [render]="nzRender"
       [showSearch]="nzShowSearch"
-      [searchPlaceholder]="nzSearchPlaceholder"
-      [notFoundContent]="nzNotFoundContent"
-      [itemUnit]="nzItemUnit"
-      [itemsUnit]="nzItemsUnit"
+      [searchPlaceholder]="nzSearchPlaceholder || locale.searchPlaceholder"
+      [notFoundContent]="nzNotFoundContent || locale.notFoundContent"
+      [itemUnit]="nzItemUnit || locale.itemUnit"
+      [itemsUnit]="nzItemsUnit || locale.itemsUnit"
       [footer]="nzFooter"
       (handleSelect)="handleRightSelect($event)"
       (handleSelectAll)="handleRightSelectAll($event)"></nz-transfer-list>
@@ -66,7 +69,14 @@ import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, Tr
   },
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
-export class NzTransferComponent implements OnChanges {
+export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
+  private i18n$: Subscription;
+  locale = {
+    itemUnit: '',
+    itemsUnit: '',
+    searchPlaceholder: '',
+    notFoundContent: ''
+  };
   private _showSearch = false;
 
   leftFilter = '';
@@ -78,8 +88,8 @@ export class NzTransferComponent implements OnChanges {
   @Input() nzTitles: string[] = ['', ''];
   @Input() nzOperations: string[] = [];
   @Input() nzListStyle: object;
-  @Input() nzItemUnit = this.i18n.translate('Transfer.itemUnit');
-  @Input() nzItemsUnit = this.i18n.translate('Transfer.itemsUnit');
+  @Input() nzItemUnit: string;
+  @Input() nzItemsUnit: string;
   @Input() nzCanMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => of(arg.list);
   @Input() nzRender: TemplateRef<void>;
   @Input() nzFooter: TemplateRef<void>;
@@ -95,8 +105,8 @@ export class NzTransferComponent implements OnChanges {
   }
 
   @Input() nzFilterOption: (inputValue: string, item: TransferItem) => boolean;
-  @Input() nzSearchPlaceholder = this.i18n.translate('Transfer.searchPlaceholder');
-  @Input() nzNotFoundContent = this.i18n.translate('Transfer.notFoundContent');
+  @Input() nzSearchPlaceholder: string;
+  @Input() nzNotFoundContent: string;
 
   // events
   @Output() nzChange: EventEmitter<TransferChange> = new EventEmitter();
@@ -193,6 +203,22 @@ export class NzTransferComponent implements OnChanges {
   // endregion
 
   constructor(private i18n: NzI18nService, private el: ElementRef, private cd: ChangeDetectorRef) {
+  }
+
+  ngOnInit(): void {
+    this.i18n$ = this.i18n.localeChange.subscribe(() => {
+      this.locale = {
+        itemUnit: this.i18n.translate('Transfer.itemUnit'),
+        itemsUnit: this.i18n.translate('Transfer.itemsUnit'),
+        searchPlaceholder: this.i18n.translate('Transfer.searchPlaceholder'),
+        notFoundContent: this.i18n.translate('Transfer.notFoundContent')
+      };
+      this.cd.detectChanges();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.i18n$.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

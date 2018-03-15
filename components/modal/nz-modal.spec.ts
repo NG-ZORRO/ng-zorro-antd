@@ -6,6 +6,8 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { NzButtonComponent } from '../button/nz-button.component';
 import { NzButtonModule } from '../button/nz-button.module';
 
+import en_US from '../i18n/languages/en_US';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CssUnitPipe } from './css-unit.pipe';
 import { ModalPublicAgent } from './modal-public-agent.class';
 import { MODAL_ANIMATE_DURATION, NzModalComponent } from './nz-modal.component';
@@ -282,6 +284,22 @@ describe('modal', () => {
       // fixture.detectChanges();
       expect(testElement.style.top).toBe('100pt');
     });
+  });
+
+  it('#i18n', () => {
+    const injector = TestBed.configureTestingModule({
+      imports: [ NzButtonModule, NzModalModule ],
+      declarations: [ NzDemoModalAsyncComponent ]
+    });
+    fixture = TestBed.createComponent(NzDemoModalAsyncComponent);
+    const comp = fixture.componentInstance as NzDemoModalAsyncComponent;
+    comp.showModal();
+    fixture.detectChanges();
+    const oldText = (fixture.debugElement.query(By.css('nz-modal .ant-btn-primary')).nativeElement as HTMLElement).textContent.trim();
+    injector.get(NzI18nService).setLocale(en_US);
+    fixture.detectChanges();
+    const newText = (fixture.debugElement.query(By.css('nz-modal .ant-btn-primary')).nativeElement as HTMLElement).textContent.trim();
+    expect(oldText).not.toBe(newText);
   });
 });
 
