@@ -3,20 +3,20 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-modal-position',
   template: `
-    <button nz-button nzType="primary" (click)="showModalTop()">显示距离顶部 20px 的对话框</button>
-    <nz-modal [nzStyle]="{ top: '20px' }" [(nzVisible)]="isVisibleTop" nzTitle="距离顶部 20px 的对话框" (nzOnCancel)="handleCancelTop()" (nzOnOk)="handleOkTop()">
-      <p>对话框的内容</p>
-      <p>对话框的内容</p>
-      <p>对话框的内容</p>
+    <button nz-button nzType="primary" (click)="showModalTop()">Display a modal dialog at 20px to Top</button>
+    <nz-modal [nzStyle]="{ top: '20px' }" [(nzVisible)]="isVisibleTop" nzTitle="20px to Top" (nzOnCancel)="handleCancelTop()" (nzOnOk)="handleOkTop()">
+      <p>some contents...</p>
+      <p>some contents...</p>
+      <p>some contents...</p>
     </nz-modal>
 
     <br/><br/>
 
-    <button nz-button nzType="primary" (click)="showModalMiddle()">显示垂直居中的对话框</button>
-    <nz-modal nzWrapClassName="vertical-center-modal" [(nzVisible)]="isVisibleMiddle" nzTitle="垂直居中的对话框" (nzOnCancel)="handleCancelMiddle()" (nzOnOk)="handleOkMiddle()">
-      <p>对话框的内容</p>
-      <p>对话框的内容</p>
-      <p>对话框的内容</p>
+    <button nz-button nzType="primary" (click)="showModalMiddle()">Vertically centered modal dialog</button>
+    <nz-modal nzWrapClassName="vertical-center-modal" [(nzVisible)]="isVisibleMiddle" nzTitle="Vertically centered modal dialog" (nzOnCancel)="handleCancelMiddle()" (nzOnOk)="handleOkMiddle()">
+      <p>some contents...</p>
+      <p>some contents...</p>
+      <p>some contents...</p>
     </nz-modal>
   `,
   styles: [ `
@@ -53,7 +53,7 @@ export class NzDemoModalPositionComponent {
   }
 
   handleOkMiddle(): void {
-    console.log('点击了确定');
+    console.log('click ok');
     this.isVisibleMiddle = false;
   }
 

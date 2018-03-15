@@ -22,7 +22,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzI18nService } from '../i18n';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import { ModalPublicAgent } from './modal-public-agent.class';
 import ModalUtil from './modal-util';
@@ -65,12 +65,12 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
   @Output() nzAfterClose = new EventEmitter<void>(); // Trigger when modal is hidden
 
   // --- Predefined OK & Cancel buttons
-  @Input() nzOkText: string = this.locale.translate('Modal.okText');
+  @Input() nzOkText: string;
   @Input() nzOkType = 'primary';
   @Input() nzOkLoading = false;
   @Input() @Output() nzOnOk: EventEmitter<MouseEvent> | OnClickCallback = new EventEmitter<MouseEvent>();
   @ViewChild('autoFocusButtonOk', { read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
-  @Input() nzCancelText: string = this.locale.translate('Modal.cancelText');
+  @Input() nzCancelText: string;
   @Input() nzCancelLoading = false;
   @Input() @Output() nzOnCancel: EventEmitter<MouseEvent> | OnClickCallback = new EventEmitter<MouseEvent>();
 
@@ -270,7 +270,7 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
       const mixedButton = {
         ...{
           type: 'default',
-          size: 'large',
+          size: 'default',
           autoLoading: true,
           show: true,
           loading: false,

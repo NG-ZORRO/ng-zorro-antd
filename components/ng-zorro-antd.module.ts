@@ -2,13 +2,16 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { NzAffixModule } from './affix/nz-affix.module';
 import { NzAlertModule } from './alert/nz-alert.module';
 import { NzAnchorModule } from './anchor/nz-anchor.module';
+import { NzAutocompleteModule } from './auto-complete/nz-autocomplete.module';
 import { NzAvatarModule } from './avatar/nz-avatar.module';
+import { NzBackTopModule } from './back-top/nz-back-top.module';
 import { NzBadgeModule } from './badge/nz-badge.module';
 import { NzBreadCrumbModule } from './breadcrumb/nz-breadcrumb.module';
 import { NzButtonModule } from './button/nz-button.module';
 import { NzCalendarModule } from './calendar/nz-calendar.module';
 import { NzCardModule } from './card/nz-card.module';
 import { NzCarouselModule } from './carousel/nz-carousel.module';
+import { NzCascaderModule } from './cascader/nz-cascader.module';
 import { NzCheckboxModule } from './checkbox/nz-checkbox.module';
 import { NzCollapseModule } from './collapse/nz-collapse.module';
 import { NzDividerModule } from './divider/nz-divider.module';
@@ -22,11 +25,19 @@ import { NzInputModule } from './input/nz-input.module';
 import { NzLayoutModule } from './layout/nz-layout.module';
 import { NzListModule } from './list/nz-list.module';
 import { NzMenuModule } from './menu/nz-menu.module';
+import { NzMessageModule } from './message/nz-message.module';
+import { NzMessageService } from './message/nz-message.service';
+import { NzModalModule } from './modal/nz-modal.module';
+import { NzNotificationModule } from './notification/nz-notification.module';
+import { NzNotificationService } from './notification/nz-notification.service';
 import { NzPaginationModule } from './pagination/nz-pagination.module';
+import { NzPopconfirmModule } from './popconfirm/nz-popconfirm.module';
+import { NzPopoverModule } from './popover/nz-popover.module';
 import { NzProgressModule } from './progress/nz-progress.module';
 import { NzRadioModule } from './radio/nz-radio.module';
 import { NzRateModule } from './rate/nz-rate.module';
 import { NzSelectModule } from './select/nz-select.module';
+import { NzSliderModule } from './slider/nz-slider.module';
 import { NzSpinModule } from './spin/nz-spin.module';
 import { NzStepsModule } from './steps/nz-steps.module';
 import { NzSwitchModule } from './switch/nz-switch.module';
@@ -34,22 +45,9 @@ import { NzTableModule } from './table/nz-table.module';
 import { NzTabsModule } from './tabs/nz-tabs.module';
 import { NzTagModule } from './tag/nz-tag.module';
 import { NzTimelineModule } from './timeline/nz-timeline.module';
+import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
 import { NzUploadModule } from './upload/nz-upload.module';
-
-// unfinished
-import { NzMessageModule } from './message/nz-message.module';
-import { NzMessageService } from './message/nz-message.service';
-import { NzNotificationModule } from './notification/nz-notification.module';
-import { NzNotificationService } from './notification/nz-notification.service';
-import { NzPopoverModule } from './popover/nz-popover.module';
-import { NzSliderModule } from './slider/nz-slider.module';
-import { NzToolTipModule } from './tooltip/nz-tooltip.module';
-
-// error
-// import { NzPopconfirmModule } from './popconfirm/nz-popconfirm.module';
-// import { NzModalModule } from './modal/nz-modal.module';
-// import { NzLocaleModule } from './locale/nz-locale.module';
 
 export * from './affix';
 export * from './alert';
@@ -88,16 +86,15 @@ export * from './timeline';
 export * from './transfer';
 export * from './upload';
 export * from './tag';
-
-// export * from './message';
-// export * from './tooltip';
-// export * from './slider';
-// export * from './popover';
-// export * from './notification';
-
-// export * from './popconfirm';
-// export * from './modal';
-// export * from './locale';
+export * from './auto-complete';
+export * from './message';
+export * from './tooltip';
+export * from './slider';
+export * from './popover';
+export * from './notification';
+export * from './popconfirm';
+export * from './modal';
+export * from './cascader';
 
 @NgModule({
   exports: [
@@ -137,16 +134,16 @@ export * from './tag';
     NzListModule,
     NzI18nModule,
     NzUploadModule,
-    // unfinished
+    NzAutocompleteModule,
+    NzTagModule,
     NzMessageModule,
     NzNotificationModule,
     NzPopoverModule,
-    NzTagModule,
-    NzToolTipModule
-    // error
-    // NzPopconfirmModule,
-    // NzModalModule,
-    // NzLocaleModule,
+    NzToolTipModule,
+    NzPopconfirmModule,
+    NzModalModule,
+    NzBackTopModule,
+    NzCascaderModule
   ]
 })
 export class NgZorroAntdModule {

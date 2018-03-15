@@ -19,7 +19,7 @@ subtitle: 通知提醒框
 ## 如何使用
 
 与`NzMessage`类似，如果要修改全局默认配置，你可以设置提供商 `NZ_NOTIFICATION_CONFIG` 的值来修改。
-（如：在你的模块的`providers`中加入 `{ provide: NZ_NOTIFICATION_CONFIG, useValue: { nzDuration: 3000 }}`，`NZ_MESSAGE_CONFIG` 可以从 `ng-zorro-antd` 中导入）
+（如：在你的模块的`providers`中加入 `{ provide: NZ_NOTIFICATION_CONFIG, useValue: { nzDuration: 3000 }}`，`NZ_NOTIFICATION_CONFIG` 可以从 `ng-zorro-antd` 中导入）
 
 默认全局配置为：
 ```js

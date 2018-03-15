@@ -23,10 +23,10 @@ import { NzNotificationService } from 'ng-zorro-antd';
 })
 export class NzDemoNotificationWithBtnComponent {
 
-  constructor(private _notification: NzNotificationService) {
+  constructor(private notification: NzNotificationService) {
   }
 
   createBasicNotification(template: TemplateRef<{}>): void {
-    this._notification.template(template);
+    this.notification.template(template);
   }
 }

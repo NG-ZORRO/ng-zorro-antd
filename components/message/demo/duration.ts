@@ -10,9 +10,9 @@ import { NzMessageService } from 'ng-zorro-antd';
 })
 export class NzDemoMessageDurationComponent {
   createBasicMessage(): void {
-    this._message.success('This is a prompt message for success, and it will disappear in 10 seconds', { nzDuration: 10000 });
+    this.message.success('This is a prompt message for success, and it will disappear in 10 seconds', { nzDuration: 10000 });
   }
 
-  constructor(private _message: NzMessageService) {
+  constructor(private message: NzMessageService) {
   }
 }

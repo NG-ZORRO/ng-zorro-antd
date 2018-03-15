@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
-import { NzRowComponent } from '../grid';
+import { NzRowComponent } from '../grid/nz-row.component';
 
 /** should add nz-row directive to host, track https://github.com/angular/angular/issues/8785 **/
 @Component({

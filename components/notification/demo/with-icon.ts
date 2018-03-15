@@ -19,10 +19,10 @@ import { NzNotificationService } from 'ng-zorro-antd';
 })
 export class NzDemoNotificationWithIconComponent {
   createNotification(type: string): void {
-    this._notification.create(type, 'Notification Title',
+    this.notification.create(type, 'Notification Title',
       'This is the content of the notification. This is the content of the notification. This is the content of the notification.');
   }
 
-  constructor(private _notification: NzNotificationService) {
+  constructor(private notification: NzNotificationService) {
   }
 }
