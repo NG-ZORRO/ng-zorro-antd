@@ -47,6 +47,7 @@ import { NzTagModule } from './tag/nz-tag.module';
 import { NzTimelineModule } from './timeline/nz-timeline.module';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
+import { NzTreeModule } from './tree/nz-tree.module';
 import { NzUploadModule } from './upload/nz-upload.module';
 
 export * from './affix';
@@ -95,6 +96,7 @@ export * from './notification';
 export * from './popconfirm';
 export * from './modal';
 export * from './cascader';
+export * from './tree';
 
 @NgModule({
   exports: [
@@ -143,7 +145,8 @@ export * from './cascader';
     NzPopconfirmModule,
     NzModalModule,
     NzBackTopModule,
-    NzCascaderModule
+    NzCascaderModule,
+    NzTreeModule
   ]
 })
 export class NgZorroAntdModule {
