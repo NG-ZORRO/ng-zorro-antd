@@ -46,7 +46,7 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
   @Input() nzContent: string | TemplateRef<{}> | Type<{}>; // [STATIC] If not specified, will use <ng-content>
   @Input() nzComponentParams: object; // [STATIC] ONLY avaliable when nzContent is a component
   @Input() nzFooter: string | TemplateRef<{}> | ModalButtonOptions[]; // [STATIC] Default Modal ONLY
-  @Input() nzGetContainer: HTMLElement | (() => HTMLElement) = this.document.body; // [STATIC]
+  @Input() nzGetContainer: HTMLElement | (() => HTMLElement); // [STATIC]
 
   @Input() nzVisible = false;
   @Output() nzVisibleChange = new EventEmitter<boolean>();
