@@ -10,10 +10,10 @@ import { NzMessageService } from 'ng-zorro-antd';
 })
 export class NzDemoMessageInfoComponent {
 
-  constructor(private _message: NzMessageService) {
+  constructor(private message: NzMessageService) {
   }
 
   createBasicMessage(): void {
-    this._message.info('This is a normal message');
+    this.message.info('This is a normal message');
   }
 }

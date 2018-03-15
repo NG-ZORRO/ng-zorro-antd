@@ -45,7 +45,7 @@ More layouts with navigation: [layout](/components/layout/en).
 | nzDisabled | whether menu item is disabled or not | boolean | false |
 | nzSelected | whether menu item is selected or not | boolean | false |
 
-### [nz-sub-menu]
+### [nz-submenu]
 
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |

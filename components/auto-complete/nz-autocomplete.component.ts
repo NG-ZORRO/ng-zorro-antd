@@ -16,7 +16,9 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { defer } from 'rxjs/observable/defer';
 import { merge } from 'rxjs/observable/merge';
-import { filter, switchMap, take } from 'rxjs/operators';
+import { filter } from 'rxjs/operators/filter';
+import { switchMap } from 'rxjs/operators/switchMap';
+import { take } from 'rxjs/operators/take';
 
 import { toBoolean } from '../core/util/convert';
 
@@ -38,29 +40,29 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
     dropDownAnimation
   ],
   template           : `
-  <ng-template>
-    <div class="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft"
-         #panel
-         [@dropDownAnimation]="dropDownPosition"
-         [class.ant-select-dropdown-hidden]="!showPanel">
-      <div style="overflow: auto;">
+    <ng-template>
+      <div class="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft"
+        #panel
+        [@dropDownAnimation]="dropDownPosition"
+        [class.ant-select-dropdown-hidden]="!showPanel">
+        <div style="overflow: auto;">
           <ul class="ant-select-dropdown-menu  ant-select-dropdown-menu-root ant-select-dropdown-menu-vertical"
-          role="menu"
-          aria-activedescendant>
+            role="menu"
+            aria-activedescendant>
             <ng-template *ngTemplateOutlet="nzDataSource ? optionsTemplate : contentTemplate"></ng-template>
           </ul>
+        </div>
       </div>
-    </div>
-    <ng-template #contentTemplate>
-      <ng-content></ng-content>
+      <ng-template #contentTemplate>
+        <ng-content></ng-content>
+      </ng-template>
+      <ng-template #optionsTemplate>
+        <nz-auto-option *ngFor="let option of nzDataSource" [nzValue]="option">{{option}}</nz-auto-option>
+      </ng-template>
     </ng-template>
-    <ng-template #optionsTemplate>
-      <nz-auto-option *ngFor="let option of nzDataSource" [nzValue]="option">{{option}}</nz-auto-option>
-    </ng-template>
-  </ng-template>
   `,
   styles             : [
-    `
+      `
       :host {
         position: relative;
         display: inline-block;
@@ -85,6 +87,7 @@ export class NzAutocompleteComponent implements AfterViewInit {
   isOpen: boolean = false;
   activeItem: NzAutocompleteOptionComponent;
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
+
   /** 组件支持设置 dataSource 和 content 设置 options
    *  这个属性为其提供方便的访问方式 */
   get options(): QueryList<NzAutocompleteOptionComponent> {
@@ -113,26 +116,38 @@ export class NzAutocompleteComponent implements AfterViewInit {
 
   /** 是否默认高亮第一个选项，默认 `true` */
   @Input()
-  get nzDefaultActiveFirstOption(): boolean { return this._defaultActiveFirstOption; }
+  get nzDefaultActiveFirstOption(): boolean {
+    return this._defaultActiveFirstOption;
+  }
+
   set nzDefaultActiveFirstOption(value: boolean) {
     this._defaultActiveFirstOption = toBoolean(value);
   }
+
   _defaultActiveFirstOption: boolean = true;
 
   /** 使用键盘选择选项的时候把选中项回填到输入框中，默认 `false` */
   @Input()
-  get nzBackfill(): boolean { return this._backfill; }
+  get nzBackfill(): boolean {
+    return this._backfill;
+  }
+
   set nzBackfill(value: boolean) {
     this._backfill = toBoolean(value);
   }
+
   _backfill: boolean = false;
 
   /** 自动完成的数据源 */
   @Input()
-  get nzDataSource(): AutocompleteDataSource { return this._dataSource; }
+  get nzDataSource(): AutocompleteDataSource {
+    return this._dataSource;
+  }
+
   set nzDataSource(value: AutocompleteDataSource) {
     this._dataSource = value;
   }
+
   _dataSource: AutocompleteDataSource;
 
   /** 选择时发出的事件 */
@@ -161,7 +176,7 @@ export class NzAutocompleteComponent implements AfterViewInit {
   }
 
   setActiveItem(index: number): void {
-    const activeItem = this.options.toArray()[index];
+    const activeItem = this.options.toArray()[ index ];
     if (activeItem && !activeItem.active) {
       this.activeItem = activeItem;
       this.activeItemIndex = index;

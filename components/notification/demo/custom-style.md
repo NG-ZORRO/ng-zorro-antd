@@ -7,10 +7,10 @@ title:
 
 ## zh-CN
 
-使用 style 和 className 来定义样式。
+使用 nzStyle 和 nzClass 来定义样式。
 
 ## en-US
 
-The style and className are available to customize Notification.
+The nzStyle and nzClass are available to customize Notification.
 
 

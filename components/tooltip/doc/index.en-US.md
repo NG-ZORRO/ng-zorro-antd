@@ -31,7 +31,7 @@ The following APIs are shared by Tooltip, Popconfirm, Popover.
 | nzTrigger | Tooltip trigger mode | `hover`  |  `focus`  |  `click` | `hover` |
 | nzVisible | Whether the floating tooltip card is visible or not | boolean | `false` |
 | nzVisibleChange | Callback executed when visibility of the tooltip card is changed | EventEmitter | - |
-| nzTemplate | Tooltip content, the content of nzTitle will be overwritten after setting (see usage example) | ng-template | - |
+| nzTemplate | Tooltip content, the content of nzTitle will be overwritten after setting (see usage example) | `TemplateRef<void>` | - |
 
 ## Note
 

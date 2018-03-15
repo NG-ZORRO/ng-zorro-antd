@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-The icon can be customized to any react node.
+The icon can be customized to any `TemplateRef<void>`.

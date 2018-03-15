@@ -6,7 +6,7 @@ const scrollbarMeasure = {
   top: '-9999px',
   width: '50px',
   height: '50px',
-  overflow: 'scroll',
+  overflow: 'scroll'
 };
 
 export function measureScrollbar(): number {

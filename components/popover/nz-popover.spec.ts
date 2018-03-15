@@ -45,6 +45,10 @@ describe('NzPopover', () => {
     // Move inside to trigger tooltip shown up
     dispatchMouseEvent(triggerElement, 'mouseenter');
     demoAppFixture.detectChanges();
+    tick(150); // wait for the default 100ms delay
+    demoAppFixture.detectChanges();
+    tick();
+    demoAppFixture.detectChanges();
     expect(overlayContainerElement.textContent).toContain(featureKey);
 
     // Move out from the trigger element to hide it
@@ -55,13 +59,17 @@ describe('NzPopover', () => {
     expect(overlayContainerElement.textContent).not.toContain(featureKey);
   }));
 
-  it('should show tooltip with custom template', () => {
+  it('should show tooltip with custom template', fakeAsync(() => {
     const triggerElement = demoAppComponent.templateTrigger.nativeElement;
 
     dispatchMouseEvent(triggerElement, 'mouseenter');
     demoAppFixture.detectChanges();
+    tick(150); // wait for the default 100ms delay
+    demoAppFixture.detectChanges();
+    tick();
+    demoAppFixture.detectChanges();
     expect(overlayContainerElement.querySelector('.anticon-file')).not.toBeNull();
-  });
+  }));
 
   it('should show/hide tooltip by focus', fakeAsync(() => {
     const featureKey = 'FOCUS';

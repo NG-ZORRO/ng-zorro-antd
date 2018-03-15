@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { NzButtonModule } from '../button/nz-button.module';
-import { NzI18nModule } from '../i18n';
+import { NzI18nModule } from '../i18n/nz-i18n.module';
 
 import { NzPopconfirmComponent } from './nz-popconfirm.component';
 import { NzPopconfirmDirective } from './nz-popconfirm.directive';

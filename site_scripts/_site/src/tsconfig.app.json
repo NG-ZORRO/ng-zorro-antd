@@ -8,7 +8,7 @@
       "node"
     ],
     "paths": {
-      "ng-zorro-antd": [ "../../components" ]
+      "ng-zorro-antd": [ "../../components/ng-zorro-antd.module.ts" ]
     }
   },
   "exclude": [

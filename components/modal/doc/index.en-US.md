@@ -30,7 +30,7 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | nzOkLoading       | Whether to apply loading visual effect for OK button or not | boolean | false |
 | nzCancelLoading   | Whether to apply loading visual effect for Cancel button or not | boolean | false |
 | nzFooter          | Footer content, set as footer=null when you don't need default buttons. <i>1. Only valid in normal mode.<br>2. You can customize the buttons to the maximum extent by passing a `ModalButtonOptions` configuration (see the case or the instructions below).</i> | string<br>TemplateRef<br>ModalButtonOptions | OK and Cancel buttons |
-| nzGetContainer    | The mount node for Modal | HTMLElement / () => HTMLElement| document.body |
+| nzGetContainer    | The mount node for Modal | HTMLElement / () => HTMLElement| Handled by overlay container |
 | nzMask            | Whether show mask or not. | boolean | true |
 | nzMaskClosable    | Whether to close the modal dialog when the mask (area outside the modal) is clicked | boolean | true |
 | nzMaskStyle       | Style for modal's mask element. | object | - |
