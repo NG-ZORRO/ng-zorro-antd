@@ -153,7 +153,7 @@ export interface CascaderOption {
     }
   ],
   host: {
-    'attr.tabIndex': '0'
+    '[attr.tabIndex]': '"0"'
   }
 })
 export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAccessor {
@@ -174,6 +174,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   public dropDownPosition = 'bottom';
   public menuVisible = false;
   public isLoading = false;
+  private isOpening = false;
 
   // 内部样式
   private _arrowCls: {[name: string]: any};
@@ -425,6 +426,8 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
       const input = this.el.querySelector(`.${this.prefixCls}-input`) as HTMLElement;
       if (input && input.focus) {
         input.focus();
+      } else {
+        this.el.focus();
       }
       this.isFocused = true;
       this.setClassMap();
@@ -436,6 +439,8 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
       const input = this.el.querySelector(`.${this.prefixCls}-input`) as HTMLElement;
       if (input && input.blur) {
         input.blur();
+      } else {
+        this.el.blur();
       }
       this.isFocused = false;
       this.setClassMap();
@@ -682,7 +687,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
       return;
     }
     if (this.isPointerTiggerAction()) {
-      this.delaySetMenuVisible(true, this.nzMouseEnterDelay);
+      this.delaySetMenuVisible(true, this.nzMouseEnterDelay, true);
     }
   }
 
@@ -691,7 +696,8 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     if (this.nzDisabled) {
       return;
     }
-    if (!this.isMenuVisible()) {
+    if (!this.isMenuVisible() || this.isOpening) {
+      event.preventDefault();
       return;
     }
     if (this.isPointerTiggerAction()) {
@@ -739,12 +745,18 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
    * @param visible true-显示，false-隐藏
    * @param delay 延迟时间
    */
-  public delaySetMenuVisible(visible: boolean, delay: number): void {
+  public delaySetMenuVisible(visible: boolean, delay: number, setOpening: boolean = false): void {
     this.clearDelayTimer();
     if (delay) {
+      if (visible && setOpening) {
+        this.isOpening = true;
+      }
       this.delayTimer = setTimeout(() => {
         this.setMenuVisible(visible);
         this.clearDelayTimer();
+        if (visible) {
+          setTimeout(() => { this.isOpening = false; }, 100);
+        }
       }, delay);
     } else {
       this.setMenuVisible(visible);

@@ -257,28 +257,44 @@ describe('cascader', () => {
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
       dispatchMouseEvent(cascader.nativeElement, 'mouseleave');
       fixture.detectChanges();
-
       flush();
       fixture.detectChanges();
       expect(testComponent.cascader.isMenuVisible()).toBe(false);
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(2);
     }));
-    /*
-    it('should clear delayTimer on repeat click', fakeAsync(() => {
+    it('should clear timer on option mouseenter and mouseleave', fakeAsync(() => {
+      const mouseenter = createMouseEvent('mouseenter');
+      const mouseleave = createMouseEvent('mouseleave');
+      const option = options1[0]; // zhejiang
+
+      testComponent.nzExpandTrigger = 'hover';
       fixture.detectChanges();
       expect(testComponent.cascader.isMenuVisible()).toBe(false);
-      cascader.nativeElement.click();
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      expect(testComponent.cascader.isMenuVisible()).toBe(true);
+      flush();
+      fixture.detectChanges();
+      const optionEl = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement; // 第1列第1个
+      expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
+
+      testComponent.cascader.onOptionMouseEnter(option, 0, mouseenter);
       fixture.detectChanges();
       tick(10);
       fixture.detectChanges();
-      cascader.nativeElement.click();
+      expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
+      testComponent.cascader.onOptionMouseLeave(option, 0, mouseleave);
       fixture.detectChanges();
-      tick(500);
+      tick(400);
       fixture.detectChanges();
-      expect(testComponent.cascader.isMenuVisible()).toBe(false);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
+      expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
+
+      testComponent.cascader.onOptionMouseEnter(option, 0, mouseenter);
+      fixture.detectChanges();
+      tick(400);
+      fixture.detectChanges();
+      expect(optionEl.classList).toContain('ant-cascader-menu-item-active');
     }));
-    */
     it('should disabled work', fakeAsync(() => {
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).not.toContain('ant-cascader-picker-disabled');
@@ -364,6 +380,17 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(testComponent.values.length).toBe(0);
     }));
+    it('should clear value work 2', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
+      fixture.detectChanges();
+      flush();
+      expect(testComponent.values.length).toBe(3);
+      fixture.detectChanges();
+      testComponent.cascader.clearSelection();
+      fixture.detectChanges();
+      expect(testComponent.values.length).toBe(0);
+    }));
     it('should autofocus work', () => {
       testComponent.nzShowInput = true;
       testComponent.nzAutoFocus = true;
@@ -405,6 +432,18 @@ describe('cascader', () => {
       testComponent.cascader.blur();
       fixture.detectChanges();
       expect(cascader.nativeElement.querySelector('input') === document.activeElement).toBe(false);
+    });
+    it('should focus and blur function work 2', () => {
+      testComponent.nzShowInput = false;
+      cascader.nativeElement.click();
+      fixture.detectChanges();
+      expect(cascader.nativeElement === document.activeElement).toBe(false);
+      testComponent.cascader.focus();
+      fixture.detectChanges();
+      expect(cascader.nativeElement === document.activeElement).toBe(true);
+      testComponent.cascader.blur();
+      fixture.detectChanges();
+      expect(cascader.nativeElement === document.activeElement).toBe(false);
     });
     it('should menu class work', fakeAsync(() => {
       fixture.detectChanges();
@@ -515,6 +554,17 @@ describe('cascader', () => {
       expect(values3[1]).toBe('hangzhou');
       expect(values3[2]).toBe('xihu');
       expect(control.labelRenderText).toBe('zhejiang / hangzhou / xihu');
+
+      control.writeValue([
+        {value: 'zhejiang', label: 'ZJ'}, {value: 'hangzhou', label: 'HZ'}, {value: 'xihu', label: 'XH'}
+      ]); // so these values are not match
+      fixture.detectChanges();
+      expect(control.getSubmitValue().length).toBe(3);
+      const values4 = control.getSubmitValue();
+      expect(values4[0]).toBe('zhejiang');
+      expect(values4[1]).toBe('hangzhou');
+      expect(values4[2]).toBe('xihu');
+      expect(control.labelRenderText).toBe('ZJ / HZ / XH');
     }));
     it('should click option to expand', () => {
       fixture.detectChanges();
