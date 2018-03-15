@@ -12,6 +12,7 @@ import {
   Injector,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -24,6 +25,7 @@ import {
 
 import { NzI18nService } from '../i18n';
 
+import { Subscription } from 'rxjs/Subscription';
 import { ModalPublicAgent } from './modal-public-agent.class';
 import ModalUtil from './modal-util';
 import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './nz-modal.type';
@@ -41,7 +43,12 @@ type AnimationState = 'enter' | 'leave' | null;
   templateUrl: './nz-modal.component.html'
 })
 
-export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChanges, AfterViewInit, ModalOptions {
+export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChanges, AfterViewInit, ModalOptions, OnDestroy {
+  private i18n$: Subscription;
+  locale = {
+    okText: '',
+    cancelText: ''
+  };
   @Input() nzModalType: ModalType = 'default';
   @Input() nzContent: string | TemplateRef<{}> | Type<{}>; // [STATIC] If not specified, will use <ng-content>
   @Input() nzComponentParams: object; // [STATIC] ONLY avaliable when nzContent is a component
@@ -65,12 +72,18 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
   @Output() nzAfterClose = new EventEmitter<void>(); // Trigger when modal is hidden
 
   // --- Predefined OK & Cancel buttons
-  @Input() nzOkText: string = this.locale.translate('Modal.okText');
+  @Input() nzOkText: string;
+  get okText(): string {
+    return this.nzOkText || this.locale.okText;
+  }
   @Input() nzOkType = 'primary';
   @Input() nzOkLoading = false;
   @Input() @Output() nzOnOk: EventEmitter<MouseEvent> | OnClickCallback = new EventEmitter<MouseEvent>();
   @ViewChild('autoFocusButtonOk', { read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
-  @Input() nzCancelText: string = this.locale.translate('Modal.cancelText');
+  @Input() nzCancelText: string;
+  get cancelText(): string {
+    return this.nzCancelText || this.locale.cancelText;
+  }
   @Input() nzCancelLoading = false;
   @Input() @Output() nzOnCancel: EventEmitter<MouseEvent> | OnClickCallback = new EventEmitter<MouseEvent>();
 
@@ -86,7 +99,7 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
   private animationState: AnimationState; // Current animation state
 
   constructor(
-    private locale: NzI18nService,
+    private i18n: NzI18nService,
     private cfr: ComponentFactoryResolver,
     private elementRef: ElementRef,
     private viewContainer: ViewContainerRef,
@@ -108,6 +121,17 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
     if (container instanceof HTMLElement) {
       container.appendChild(this.elementRef.nativeElement);
     }
+
+    this.i18n$ = this.i18n.localeChange.subscribe(() => {
+      this.locale = {
+        okText: this.i18n.translate('Modal.okText'),
+        cancelText: this.i18n.translate('Modal.cancelText')
+      };
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.i18n$.unsubscribe();
   }
 
   // [NOTE] NOT available when using by service!
