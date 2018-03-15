@@ -5,7 +5,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  HostBinding,
   HostListener,
   Input,
   OnDestroy,
@@ -19,7 +18,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
-import { ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
@@ -95,7 +94,6 @@ export interface CascaderOption {
           [(ngModel)]="inputValue"
           (blur)="handleInputBlur($event)"
           (focus)="handleInputFocus($event)"
-          (keydown)="handleInputKeyDown($event)"
           (change)="handlerInputChange($event)"
         >
         <i *ngIf="showClearIcon"
@@ -131,7 +129,7 @@ export interface CascaderOption {
         [ngClass]="menuCls" [ngStyle]="nzMenuStyle"
         [@dropDownAnimation]="dropDownPosition"
       >
-        <ul *ngFor="let options of nzColumns; let i = index;" [ngClass]="columnCls">
+        <ul *ngFor="let options of nzColumns; let i = index;" [ngClass]="menuColumnCls">
           <li *ngFor="let option of options"
             [attr.title]="option.title || getOptionLabel(option)"
             [ngClass]="getOptionCls(option, i)"
@@ -152,7 +150,10 @@ export interface CascaderOption {
       useExisting: forwardRef(() => NzCascaderComponent),
       multi      : true
     }
-  ]
+  ],
+  host: {
+    'attr.tabIndex': '0'
+  }
 })
 export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAccessor {
   private allowClear = true;
@@ -161,15 +162,26 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   private enableCache = true;
   private showArrow = true;
   private showInput = true;
-  private showSearch = false;
-  private changeOnSelect = false;
-  private classMap = {};
+  private size: NzCascaderSize = 'default';
   private prefixCls = 'ant-cascader';
   private inputPrefixCls = 'ant-input';
+  private menuClassName;
+  private columnClassName;
+  private changeOnSelect = false;
+  // private showSearch = false;
 
   public dropDownPosition = 'bottom';
   public menuVisible = false;
   public isLoading = false;
+
+  // 内部样式
+  private _arrowCls: {[name: string]: any};
+  private _clearCls: {[name: string]: any};
+  private _inputCls: {[name: string]: any};
+  private _labelCls: {[name: string]: any};
+  private _loadingCls: {[name: string]: any};
+  private _menuCls: {[name: string]: any};
+  private _menuColumnCls: {[name: string]: any};
 
   public el: HTMLElement;
   private isFocused = false;
@@ -199,22 +211,16 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   }
   set inputValue(inputValue: string) {
     this._inputValue = inputValue;
-    this.classMap[`${this.prefixCls}-picker-with-value`] = inputValue.length;
-    this.updateHostClass();
+    this.setClassMap();
   }
 
   // ngModel Access
   onChange: any = Function.prototype;
   onTouched: any = Function.prototype;
 
-  /** Input size, one of `large` `default` `small` */
-  @Input() nzSize: NzCascaderSize = 'default';
-
-  /** Input placeholder */
-  @Input() nzPlaceHolder = 'Please select';
-
   /** Display Render ngTemplate */
-  @Input() set nzLabelRender(value: TemplateRef<any>) {
+  @Input()
+  set nzLabelRender(value: TemplateRef<any>) {
     this.labelRenderTpl = value;
     this.isLabelRenderTemplate = (value instanceof TemplateRef);
   }
@@ -226,6 +232,14 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   @Input()
   set nzPrefixCls(prefixCls: string) {
     this.prefixCls = prefixCls;
+    this.setClassMap();
+    this.setLabelClass();
+    this.setArrowClass();
+    this.setLoadingClass();
+    this.setClearClass();
+    this.setInputClass();
+    this.setMenuClass();
+    this.setMenuColumnClass();
   }
   get nzPrefixCls(): string {
     return this.prefixCls;
@@ -235,11 +249,22 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   @Input()
   set nzDisabled(value: boolean) {
     this.disabled = toBoolean(value);
-    this.classMap[`${this.prefixCls}-picker-disabled`] = this.disabled;
-    this.updateHostClass();
+    this.setClassMap();
+    this.setInputClass();
   }
   get nzDisabled(): boolean {
     return this.disabled;
+  }
+
+  /** Input size, one of `large` `default` `small` */
+  @Input()
+  set nzSize(value: NzCascaderSize) {
+    this.size = value;
+    this.setClassMap();
+    this.setInputClass();
+  }
+  get nzSize(): NzCascaderSize {
+    return this.size;
   }
 
   /** Whether show input box. Defaults to `true`. */
@@ -247,12 +272,12 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   set nzShowInput(value: boolean) {
     this.showInput = toBoolean(value);
   }
-
   get nzShowInput(): boolean {
     return this.showInput;
   }
 
   /** Whether can search. Defaults to `false`. */
+  /* // not support yet
   @Input()
   set nzShowSearch(value: boolean) {
     this.showSearch = toBoolean(value);
@@ -260,6 +285,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   get nzShowSearch(): boolean {
     return this.showSearch;
   }
+  */
 
   /** Whether allow clear. Defaults to `true`. */
   @Input()
@@ -279,9 +305,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     return this.autoFocus;
   }
 
-  /** Hover text for the clear icon */
-  @Input() nzClearText = 'Clear';
-
   /** Whether to show arrow */
   @Input()
   set nzShowArrow(value: boolean) {
@@ -291,17 +314,25 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     return this.showArrow;
   }
 
-  /** Specify content to show when no result matches. */
-  @Input() nzNotFoundContent = 'Not Found';
-
   /** Additional className of popup overlay */
-  @Input() nzMenuClassName: string;
+  @Input()
+  set nzMenuClassName(value: string) {
+    this.menuClassName = value;
+    this.setMenuClass();
+  }
+  get nzMenuClassName(): string {
+    return this.menuClassName;
+  }
 
   /** Additional className of popup overlay column */
-  @Input() nzColumnClassName: string;
-
-  /** Additional style of popup overlay */
-  @Input() nzMenuStyle: { [key: string]: string; };
+  @Input()
+  set nzColumnClassName(value: string) {
+    this.columnClassName = value;
+    this.setMenuColumnClass();
+  }
+  get nzColumnClassName(): string {
+    return this.columnClassName;
+  }
 
   /** Options for first column, sub column will be load async */
   @Input() set nzOptions(options: CascaderOption[] | null) {
@@ -311,9 +342,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     return this.nzColumns[0];
   }
 
-  /** Expand column item when click or hover, one of 'click' 'hover' */
-  @Input() nzExpandTrigger: NzCascaderExpandTrigger = 'click';
-
   /** Change value on each selection if set to true */
   @Input()
   set nzChangeOnSelect(value: boolean) {
@@ -322,6 +350,21 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   get nzChangeOnSelect(): boolean {
     return this.changeOnSelect;
   }
+
+  /** Hover text for the clear icon */
+  @Input() nzClearText = 'Clear';
+
+  /** Expand column item when click or hover, one of 'click' 'hover' */
+  @Input() nzExpandTrigger: NzCascaderExpandTrigger = 'click';
+
+  /** Specify content to show when no result matches. */
+  @Input() nzNotFoundContent = 'Not Found';
+
+  /** Input placeholder */
+  @Input() nzPlaceHolder = 'Please select';
+
+  /** Additional style of popup overlay */
+  @Input() nzMenuStyle: { [key: string]: string; };
 
   /** Change value on selection only if this function returns `true` */
   @Input() nzChangeOn: (option: CascaderOption, level: number) => boolean;
@@ -364,13 +407,8 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   /** Event: emit on the clear button clicked */
   @Output() nzClear = new EventEmitter<any>();
 
+  /** 浮层菜单 */
   @ViewChild('menu') menu: ElementRef;
-
-  @HostBinding('attr.tabIndex') tabIndex = '0';
-
-  private updateHostClass(): void {
-    this.nzUpdateHostClassService.updateHostClass(this.el, this.classMap);
-  }
 
   public onPositionChange(position: ConnectedOverlayPositionChange): void {
     const newValue = position.connectionPair.originY === 'bottom' ? 'bottom' : 'top';
@@ -381,46 +419,88 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   }
 
   public focus(): void {
-    this.el.querySelector('input').focus();
-    this.isFocused = true;
-    this.classMap[`${this.prefixCls}-focused`] = true;
-    this.updateHostClass();
+    if (!this.isFocused) {
+      const input = this.el.querySelector(`.${this.prefixCls}-input`) as HTMLElement;
+      if (input && input.focus) {
+        input.focus();
+      }
+      this.isFocused = true;
+      this.setClassMap();
+    }
   }
 
   public blur(): void {
-    this.el.querySelector('input').blur();
-    this.isFocused = false;
-    this.classMap[`${this.prefixCls}-focused`] = false;
-    this.updateHostClass();
+    if (this.isFocused) {
+      const input = this.el.querySelector(`.${this.prefixCls}-input`) as HTMLElement;
+      if (input && input.blur) {
+        input.blur();
+      }
+      this.isFocused = false;
+      this.setClassMap();
+    }
   }
 
+  private setClassMap(): void {
+    const classMap = {
+      [`${this.prefixCls}`]                   : 1,
+      [`${this.prefixCls}-picker`]            : 1,
+      [`${this.prefixCls}-lg`]                : this.nzSize === 'large',
+      [`${this.prefixCls}-sm`]                : this.nzSize === 'small',
+      [`${this.prefixCls}-picker-disabled`]   : this.disabled,
+      [`${this.prefixCls}-focused`]           : this.isFocused,
+      [`${this.prefixCls}-picker-open`]       : this.menuVisible,
+      [`${this.prefixCls}-picker-with-value`] : this.inputValue && this.inputValue.length
+    };
+    this.nzUpdateHostClassService.updateHostClass(this.el, classMap);
+  }
+
+  /** 标签 样式 */
   public get labelCls(): any {
-    return {
+    return this._labelCls;
+  }
+  private setLabelClass(): void {
+    this._labelCls = {
       [`${this.prefixCls}-picker-label`]: true
     };
   }
 
+  /** 箭头 样式 */
   public get arrowCls(): any {
-    return {
+    return this._arrowCls;
+  }
+  private setArrowClass(): void {
+    this._arrowCls = {
       [`${this.prefixCls}-picker-arrow`]       : true,
       [`${this.prefixCls}-picker-arrow-expand`]: this.menuVisible
     };
   }
 
+  /** 加载中图标 样式 */
   public get loadingCls(): any {
-    return {
+    return this._loadingCls;
+  }
+  private setLoadingClass(): void {
+    this._loadingCls = {
       [`${this.prefixCls}-picker-arrow`]: true
     };
   }
 
+  /** 清除图标 样式 */
   public get clearCls(): any {
-    return {
+    return this._clearCls;
+  }
+  private setClearClass(): void {
+    this._clearCls = {
       [`${this.prefixCls}-picker-clear`]: true
     };
   }
 
+  /** 输入框 样式 */
   public get inputCls(): any {
-    return {
+    return this._inputCls;
+  }
+  private setInputClass(): void {
+    this._inputCls = {
       [`${this.prefixCls}-input`]        : 1,
       [`${this.inputPrefixCls}-disabled`]: this.nzDisabled,
       [`${this.inputPrefixCls}-lg`]      : this.nzSize === 'large',
@@ -428,17 +508,24 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     };
   }
 
+  /** 浮层 样式 */
   public get menuCls(): any {
-    return {
+    return this._menuCls;
+  }
+  private setMenuClass(): void {
+    this._menuCls = {
       [`${this.prefixCls}-menus`]        : true,
       [`${this.prefixCls}-menus-hidden`] : !this.menuVisible,
-      [`${this.nzMenuClassName}`]       : this.nzMenuClassName
+      [`${this.nzMenuClassName}`]        : this.nzMenuClassName
     };
   }
 
-  /** 获取菜单中列的样式 */
-  public get columnCls(): any {
-    return {
+  /** 浮层列 样式 */
+  public get menuColumnCls(): any {
+    return this._menuColumnCls;
+  }
+  private setMenuColumnClass(): void {
+    this._menuColumnCls = {
       [`${this.prefixCls}-menu`]  : true,
       [`${this.nzColumnClassName}`]: this.nzColumnClassName
     };
@@ -462,11 +549,13 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
 
   /** input element blur */
   public handleInputBlur(event: Event): void {
+    /*
     if (!this.nzShowSearch) {
       return;
     }
+    */
     if (this.menuVisible) {
-      this.focus();
+      this.focus(); // keep input has focus when menu opened
     } else {
       this.blur();
     }
@@ -474,14 +563,12 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
 
   /** input element focus */
   public handleInputFocus(event: Event): void {
+    /*
     if (!this.nzShowSearch) {
       return;
     }
+    */
     this.focus();
-  }
-
-  /** input key down */
-  public handleInputKeyDown(event: KeyboardEvent): void {
   }
 
   private hasInput(): boolean {
@@ -563,17 +650,13 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
       event.preventDefault();
       if (keyCode === DOWN_ARROW) {
         this.moveDown();
-      }
-      if (keyCode === UP_ARROW) {
+      } else if (keyCode === UP_ARROW) {
         this.moveUp();
-      }
-      if (keyCode === LEFT_ARROW) {
+      } else if (keyCode === LEFT_ARROW) {
         this.moveLeft();
-      }
-      if (keyCode === RIGHT_ARROW) {
+      } else if (keyCode === RIGHT_ARROW) {
         this.moveRight();
-      }
-      if (keyCode === ENTER) {
+      } else if (keyCode === ENTER) {
         this.onEnter();
       }
     }
@@ -612,8 +695,8 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
       if (this.isPointerTiggerAction()) {
         const hostEl = this.el;
         const menuEl = this.menu && this.menu.nativeElement as HTMLElement;
-        const mouseTarget = event.target as Node;
-        if (hostEl.contains(mouseTarget) || (menuEl && menuEl.contains(mouseTarget))) {
+        const mouseTarget = event.relatedTarget as Node;
+        if (mouseTarget && (hostEl.contains(mouseTarget) || (menuEl && menuEl.contains(mouseTarget)))) {
           return; // 还在菜单内部
         }
         this.delaySetMenuVisible(false, this.nzMouseLeaveDelay);
@@ -677,8 +760,9 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
       this.menuVisible = menuVisible;
 
       // update class
-      this.classMap[`${this.prefixCls}-picker-open`] = menuVisible;
-      this.updateHostClass();
+      this.setClassMap();
+      this.setArrowClass();
+      this.setMenuClass();
 
       if (menuVisible) {
         this.beforeVisible();
@@ -1038,11 +1122,14 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
 
   ngOnInit(): void {
     // 设置样式
-    this.classMap = {
-      [`${this.prefixCls}`]: 1,
-      [`${this.prefixCls}-picker`]: 1
-    };
-    this.updateHostClass();
+    this.setClassMap();
+    this.setLabelClass();
+    this.setArrowClass();
+    this.setLoadingClass();
+    this.setClearClass();
+    this.setInputClass();
+    this.setMenuClass();
+    this.setMenuColumnClass();
   }
 
   ngOnDestroy(): void {
