@@ -26,15 +26,17 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { merge } from 'rxjs/observable/merge';
-import { delay, distinct, map } from 'rxjs/operators';
+import { delay } from 'rxjs/operators/delay';
+import { distinct } from 'rxjs/operators/distinct';
+import { map } from 'rxjs/operators/map';
 
 import { NzAutocompleteOptionComponent } from './nz-autocomplete-option.component';
 import { NzAutocompleteComponent } from './nz-autocomplete.component';
 
 export const NZ_AUTOCOMPLETE_VALUE_ACCESSOR: ExistingProvider = {
-  provide: NG_VALUE_ACCESSOR,
+  provide    : NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => NzAutocompleteTriggerDirective),
-  multi: true
+  multi      : true
 };
 
 export function getNzAutocompleteMissingPanelError(): Error {
@@ -44,15 +46,15 @@ export function getNzAutocompleteMissingPanelError(): Error {
 }
 
 @Directive({
-  selector: `input[nzAutocomplete], textarea[nzAutocomplete]`,
-  providers: [NZ_AUTOCOMPLETE_VALUE_ACCESSOR],
-  host: {
-    'autocomplete': 'off',
+  selector : `input[nzAutocomplete], textarea[nzAutocomplete]`,
+  providers: [ NZ_AUTOCOMPLETE_VALUE_ACCESSOR ],
+  host     : {
+    'autocomplete'     : 'off',
     'aria-autocomplete': 'list',
-    '(focusin)': 'handleFocus()',
-    '(blur)': 'handleBlur()',
-    '(input)': 'handleInput($event)',
-    '(keydown)': 'handleKeydown($event)'
+    '(focusin)'        : 'handleFocus()',
+    '(blur)'           : 'handleBlur()',
+    '(input)'          : 'handleInput($event)',
+    '(keydown)'        : 'handleKeydown($event)'
   }
 })
 export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnDestroy {
@@ -86,7 +88,8 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
   constructor(private _element: ElementRef, private _overlay: Overlay,
               private _viewContainerRef: ViewContainerRef,
-              @Optional() @Inject(DOCUMENT) private _document: Document) {
+              // tslint:disable-next-line:no-any
+              @Optional() @Inject(DOCUMENT) private _document: any) {
   }
 
   openPanel(): void {
@@ -177,7 +180,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       this.overlayRef = this._overlay.create(this.getOverlayConfig());
     } else {
       // 如果没有设置 nzDisplayWith 则使用 Host 元素的宽度
-      this.overlayRef.updateSize({width: this.nzAutocomplete.nzWidth || this.getHostWidth()});
+      this.overlayRef.updateSize({ width: this.nzAutocomplete.nzWidth || this.getHostWidth() });
     }
     this.overlayPositionChangeSubscription = this.subscribeOverlayPositionChange();
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
@@ -204,9 +207,9 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   private getOverlayConfig(): OverlayConfig {
     return new OverlayConfig({
       positionStrategy: this.getOverlayPosition(),
-      scrollStrategy: this._overlay.scrollStrategies.reposition(),
+      scrollStrategy  : this._overlay.scrollStrategies.reposition(),
       // 如果没有设置 nzWidth 则使用 Host 元素的宽度
-      width: this.nzAutocomplete.nzWidth || this.getHostWidth()
+      width           : this.nzAutocomplete.nzWidth || this.getHostWidth()
     });
   }
 
@@ -221,9 +224,9 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   private getOverlayPosition(): PositionStrategy {
     this.positionStrategy = this._overlay.position().connectedTo(
       this.getConnectedElement(),
-      {originX: 'start', originY: 'bottom'}, {overlayX: 'start', overlayY: 'top'})
+      { originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' })
     .withFallbackPosition(
-      {originX: 'start', originY: 'top'}, {overlayX: 'start', overlayY: 'bottom'}
+      { originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' }
     );
     return this.positionStrategy;
   }

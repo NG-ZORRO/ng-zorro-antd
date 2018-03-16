@@ -41,7 +41,7 @@ export class NzToolTipComponent {
 
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle = {};
-  @Input() nzMouseEnterDelay = 0; // Unit: second
+  @Input() nzMouseEnterDelay = 0.15; // Unit: second
   @Input() nzMouseLeaveDelay = 0.1; // Unit: second
   @Output() nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
   @ContentChild('nzTemplate') nzTemplate: TemplateRef<void>;

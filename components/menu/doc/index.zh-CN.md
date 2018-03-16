@@ -46,7 +46,7 @@ subtitle: 导航菜单
 | nzDisabled | 是否禁用 | boolean | false |
 | nzSelected | 是否被选中 | boolean | false |
 
-### [nz-sub-menu]
+### [nz-submenu]
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

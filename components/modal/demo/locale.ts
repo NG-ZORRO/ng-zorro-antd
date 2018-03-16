@@ -9,8 +9,8 @@ import { NzModalService } from 'ng-zorro-antd';
       <nz-modal
         [(nzVisible)]="isVisible"
         nzTitle="Modal"
-        nzOkText="确认"
-        nzCancelText="取消"
+        nzOkText="Ok"
+        nzCancelText="Cancel"
         (nzOnOk)="handleOk()"
         (nzOnCancel)="handleCancel()"
       >
@@ -45,8 +45,8 @@ export class NzDemoModalLocaleComponent {
     this.modalService.confirm({
       nzTitle: 'Confirm',
       nzContent: 'Bla bla ...',
-      nzOkText: '确认',
-      nzCancelText: '取消'
+      nzOkText: 'OK',
+      nzCancelText: 'Cancel'
     });
   }
 }

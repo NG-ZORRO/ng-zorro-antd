@@ -3,7 +3,7 @@ import { FormControl, NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
-import { NzColComponent } from '../grid';
+import { NzColComponent } from '../grid/nz-col.component';
 
 @Component({
   selector           : 'nz-form-control',

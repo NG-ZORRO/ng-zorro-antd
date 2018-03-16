@@ -7,33 +7,33 @@ import { ModalPublicAgent, NzModalService } from 'ng-zorro-antd';
   selector: 'nz-demo-modal-service',
   template: `
     <button nz-button nzType="primary" (click)="createModal()">
-      <span>使用文本</span>
+      <span>String</span>
     </button>
 
     <button nz-button nzType="primary" (click)="createTplModal(tplTitle, tplContent, tplFooter)">
-      <span>使用模板</span>
+      <span>Template</span>
     </button>
     <ng-template #tplTitle>
-      <span>对话框标题模板</span>
+      <span>Title Template</span>
     </ng-template>
     <ng-template #tplContent>
-      <p>对话框的内容</p>
-      <p>对话框的内容</p>
-      <p>对话框的内容</p>
-      <p>对话框的内容</p>
-      <p>对话框的内容</p>
+      <p>some contents...</p>
+      <p>some contents...</p>
+      <p>some contents...</p>
+      <p>some contents...</p>
+      <p>some contents...</p>
     </ng-template>
     <ng-template #tplFooter>
-      <button nz-button nzType="primary" [nzSize]="'large'" (click)="destroyTplModal()" [nzLoading]="tplModalButtonLoading">提交后关闭</button>
+      <button nz-button nzType="primary" (click)="destroyTplModal()" [nzLoading]="tplModalButtonLoading">Close after submit</button>
     </ng-template>
 
     <br /><br />
 
     <button nz-button nzType="primary" (click)="createComponentModal()">
-      <span>使用Component</span>
+      <span>Use Component</span>
     </button>
 
-    <button nz-button nzType="primary" (click)="createCustomButtonModal()">使用自定义按钮</button>
+    <button nz-button nzType="primary" (click)="createCustomButtonModal()">Custom Button</button>
   `
 })
 export class NzDemoModalServiceComponent {
@@ -44,8 +44,8 @@ export class NzDemoModalServiceComponent {
 
   createModal(): void {
     this.modalService.create({
-      nzTitle: '对话框标题',
-      nzContent: '纯文本内容，点确认 1 秒后关闭',
+      nzTitle: 'Modal Title',
+      nzContent: 'string, will close after 1 sec',
       nzClosable: false,
       nzOnOk: () => new Promise((resolve) => window.setTimeout(resolve, 1000))
     });
@@ -72,58 +72,58 @@ export class NzDemoModalServiceComponent {
 
   createComponentModal(): void {
     const modal = this.modalService.create({
-      nzTitle: '对话框标题',
+      nzTitle: 'Modal Title',
       nzContent: NzModalCustomComponent,
       nzComponentParams: {
-        title: '这是Component内部标题',
-        subtitle: '这是Component中的副标题，2秒后会被动态改变'
+        title: 'title in component',
+        subtitle: 'component sub title，will be changed after 2 sec'
       },
       nzFooter: [{
-        label: '从外部改变Component标题',
+        label: 'change component tilte from outside',
         onClick: (componentInstance: NzModalCustomComponent) => {
-          componentInstance.title = '内部Component标题被改变啦！！！！！！！！！';
+          componentInstance.title = 'title in inner component is changed';
         }
-      }],
+      }]
     });
 
-    // 从外部改变副标题（注：当对话框实例还未初始化完毕时，getContentComponentRef()将返回undefined）
+    // delay until modal instance created
     window.setTimeout(() => {
       const instance = modal.getContentComponentRef().instance as NzModalCustomComponent;
-      instance.subtitle = '副标题已改变！！！！！！！！';
+      instance.subtitle = 'sub title is changed';
     }, 2000);
   }
 
   createCustomButtonModal(): void {
     const modal = this.modalService.create({
-      nzTitle: '自定义按钮举例',
-      nzContent: '通过传入按钮配置数组到nzFooter，用于创建多个自定义按钮',
+      nzTitle: 'custom button demo',
+      nzContent: 'pass array of button config to nzFooter to create multiple buttons',
       nzFooter: [
         {
-          label: 'X',
-          shape: 'circle',
-          onClick: () => modal.destroy(),
+          label: 'Close',
+          shape: 'default',
+          onClick: () => modal.destroy()
         },
         {
-          label: '弹出确认框',
+          label: 'Confirm',
           type: 'primary',
-          onClick: () => this.modalService.confirm({ nzTitle: '确认框标题！', nzContent: '确认框描述' }),
+          onClick: () => this.modalService.confirm({ nzTitle: 'Confirm Modal Title', nzContent: 'Confirm Modal Content' })
         },
         {
-          label: '自动改变按钮状态',
+          label: 'Change Button Status',
           type: 'danger',
           loading: false,
-          onClick(): void { // 注：这里由于要得到this，所以不能用箭头函数
+          onClick(): void {
             this.loading = true;
             window.setTimeout(() => this.loading = false, 1000);
             window.setTimeout(() => {
               this.loading = false;
               this.disabled = true;
-              this.label = '不能点击了！';
+              this.label = 'can not be clicked！';
             }, 2000);
           }
         },
         {
-          label: '异步加载',
+          label: 'async load',
           type: 'dashed',
           onClick: () => new Promise(resolve => window.setTimeout(resolve, 2000))
         }
@@ -139,8 +139,8 @@ export class NzDemoModalServiceComponent {
       <h2>{{ title }}</h2>
       <h4>{{ subtitle }}</h4>
       <p>
-        <span>可以在弹出框中的Component内访问到模态框实例</span>
-        <button nz-button [nzType]="'primary'" (click)="destroyModal()">从内部销毁模态框</button>
+        <span>Get Modal instance in component</span>
+        <button nz-button [nzType]="'primary'" (click)="destroyModal()">destroy modal in the component</button>
       </p>
     </div>
   `

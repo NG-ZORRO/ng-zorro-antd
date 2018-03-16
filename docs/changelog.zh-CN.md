@@ -1,11 +1,9 @@
 ---
-order: 3
+order: 9
 title: 更新日志
 toc: false
 timeline: true
 ---
-
-`antd` 严格遵循 [Semantic Versioning 2.0.0](http://semver.org/lang/zh-CN/) 语义化版本规范。
 
 #### 发布周期
 
@@ -15,23 +13,168 @@ timeline: true
 
 ---
 
-## 3.0.2
+## 0.7.0-beta.1
 
-`2017-12-17`
+`2018-03-15`
 
-- 📝 提供了 3.0 迁移工具。[e71b68dd](https://github.com/ant-design/ant-design/commit/e71b68dd1d2ff91200fea6dd9d56e6aa5653edbc)
-- 📝 重写了 [开源贡献指南](https://github.com/ant-design/ant-design/blob/master/.github/CONTRIBUTING.zh-CN.md)
-- 🌟 优化 notification 在小屏幕下的显示效果。[#8631](https://github.com/ant-design/ant-design/issues/8631)
-- 🌟 优化了 Pagination 的样式和并修复了对齐和边距问题。
-- 🐞 升级 react-slick 到 `0.16.0`，修复 peerDependencies 安装警告。[#8455](https://github.com/ant-design/ant-design/issues/8455)
-- 🐞 修复固定列头的表格大小设置无效的问题。[#8577](https://github.com/ant-design/ant-design/issues/8577)
-- 🐞 修复 DatePicker 等时间组件的 `locale` 属性失效的问题。[#8635](https://github.com/ant-design/ant-design/issues/8635)
-- 🐞 修复 Popover 的箭头偏移和大小无法覆盖的问题。[#8548](https://github.com/ant-design/ant-design/issues/8548) [#8549](https://github.com/ant-design/ant-design/issues/8549)
-- 🐞 修复 AutoComponent 的 `notFoundContent` 设置无效的问题。[#8553](https://github.com/ant-design/ant-design/issues/8553)
-- 🐞 微调 RangePicker 的垂直对齐问题。
-- 🐞 Layout.Sider 的响应式断点和栅格系统保持一致。[#8620](https://github.com/ant-design/ant-design/issues/8620)
-- 🐞 修复一个 collapsedWidth 为 0 时，收缩后子菜单依然会显示的问题。[#8587](https://github.com/ant-design/ant-design/issues/8587)
-- 🐞 修复 Card 的 `Meta.title` 文本无法自动截断的问题。[#8597](https://github.com/ant-design/ant-design/issues/8597)
-- 🐞 修复带边框的 List 下的分页样式边距。[#8562](https://github.com/ant-design/ant-design/issues/8562)
-- 🐞 修复一个 Menu 指定了不存在的 defaultOpenKeys 时子菜单无法展开的问题。[#8475](https://github.com/ant-design/ant-design/issues/8475)
-- 🐞 修复 Input、AutoComplete、Transfer 的 `InputProps` 和 `SearchProps` TypeScript 类型命名冲突。[#8478](https://github.com/ant-design/ant-design/issues/8478)
+0.7.0 作为 1.0 正式版 之前的最后一系列版本，涉及到了底层的大量重构与改动，大部分 API 将与 1.0 正式版本的内容保持一致，目前剩余以下组件仍在紧张开发中，最近几日会逐步放出
+
+- TimePicker
+- DatePicker
+- Mention
+- TreeSelect
+
+### 主要变化
+
+- 同步Ant Design 3.0 的设计
+- 支持定制主题
+- 支持英文文档
+- 支持34种语言类型
+- 已有组件的功能与Ant Design React同步
+- 大量组件的性能优化与重构
+- 单元测试率提高到95以上%
+- 新的 Tree 组件
+- 新的 AutoComplete 组件
+- 新的 Divider 组件
+- 新的 List 组件
+
+### 升级内容
+
+#### 全局部分
+
+- 需要手动引入样式文件，支持自定义主题
+- 不再依赖 moment，新增加 date-fns 依赖
+- `forRoot` 方法不再接受字体配置，本地字体部署需要在定制主题中实现
+
+#### Button
+- `nz-button` 内部不再需要加入`<span>`标签
+
+#### Icon
+- 新增部分iconfont
+- 本地字体部署需要在定制主题中实现
+
+#### Grid
+- 栅格断点增加xxl
+- 栅格间隔支持根据不同屏幕宽度变化
+
+#### Layout
+- 支持 翻转折叠提示箭头的方向
+- 支持 自定义Trigger为模板变量
+
+#### Affix
+- 增加距离底部固钉
+- 增加目标占位符、更好的滚动性能
+
+#### Breadcrumb
+- 自定义分隔符 支持传入模板
+
+#### Dropdown
+- 增加边界检测
+- 增加右键菜单支持
+
+#### Menu
+- 支持菜单是否可选中功能
+- 增加子菜单选中事件
+- 支持二级菜单禁用
+- 增加自动边界检测
+
+#### Pagination
+- 支持自定义渲染页码结构
+- 支持只有一页时是否隐藏分页器
+
+#### Steps
+- 支持传入模板可以自定义点状步骤条渲染内容
+- 自定义图标 支持传入 样式名称和模板两种方式，原有方式废弃
+- 自定义标题 支持传入模板和字符串
+
+
+#### Checkbox
+- label 内部不再需要写入 `span` 标签
+- 新增灵活布局的使用方式
+
+#### Form
+- 废弃原有 Directive 的使用方式，大幅度简化使用方式
+
+#### Input
+- 暴露原生 input 标签，大幅度简化使用方式
+
+#### InputNumber
+- 重写了内部逻辑，与React版本逻辑保持一致
+- 支持更多快捷键操作
+
+#### Radio
+- 内部不再需要写入 `span` 标签
+- 支持nzName及更多快捷键操作
+
+#### Rate
+— 支持自定义字符
+- 支持清除模式
+
+#### Select
+- 支持 option 分组功能
+- 支持 compareWith 方法
+- 支持 nzDropdownClassName、nzDropdownMatchSelectWidth、nzDropdownStyle等对样式定义的方法
+- option 自定义内容方式改变
+- 增加 nzFilterOption、nzServerSearch 等搜索定义API
+
+#### Switch
+- 自定义内容方式改变，nzCheckedChildren 与 nzUnCheckedChildren 支持传入 模板和字符串
+- 支持loading效果
+
+#### Card
+- 重写使用方式，大幅度降低使用成本
+
+#### Carousel
+- 支持动态调整所有属性，重写内部逻辑
+
+#### Collapse
+- selector名称改变
+- 面板头部内容支持模板和字符串变量
+- 增加是否展示箭头的方法
+- 增加展开回调函数
+
+#### Table
+- 重写内部逻辑，大幅度简化使用方式
+- 支持React版本的全部功能
+
+#### Tabs
+- nzTitle 的传入方式改变，支持传入模板和字符串
+- nzTabBarExtraContent 的传入方式改变
+- 增加 nzTabBarGutter、nzOnNextClick、nzOnPrevClick、nzHideAll等多种方法
+
+#### Tags
+- 重写使用方式，增加 nzMode 选项
+
+#### Timeline
+- 幽灵节点的定义支持 模板 字符串和布尔类型
+- 支持自定义自定义时间轴点
+
+#### Alert
+- 自定义图标类型、自定义关闭按钮、警告提示的辅助性文字介绍、	警告提示内容 全部支持传入模板
+
+#### Modal
+- 重构，同一套代码，以模版方式支持普通模态框和确认框
+- 支持AntDesign的所有参数用法（部分参数有调整）
+- 额外支持设置确认/取消按钮的loading状态
+- 增强footer的自定义：支持配置方式设置按钮组
+- 更加便捷的方式进行内外组件与对话框的相互通信和调用
+
+#### Progress
+- 重写，支持React的全部功能
+
+
+#### Spin
+- 支持自定义 加载指示符
+
+#### Anchor
+- 增加 `nzAffix`、`nzShowInkInFixed`、`nzScroll` 等属性
+
+#### Divider
+- 新组件：区隔内容的分割线
+
+#### List
+- 新组件：通用列表
+
+## 之前版本
+
+之前版本的更新记录可以在 [Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases) 查看

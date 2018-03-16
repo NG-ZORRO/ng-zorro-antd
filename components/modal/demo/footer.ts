@@ -5,25 +5,25 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-modal-footer',
   template: `
     <button nz-button nzType="primary" (click)="showModal()">
-      <span>显示对话框</span>
+      <span>Show Modal</span>
     </button>
     <nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel($event)">
       <ng-template #modalTitle>
-        自定义对话框标题
+        Custom Modal Title
       </ng-template>
 
       <ng-template #modalContent>
-        <p>对话框的内容</p>
-        <p>对话框的内容</p>
-        <p>对话框的内容</p>
-        <p>对话框的内容</p>
-        <p>对话框的内容</p>
+        <p>Modal Content</p>
+        <p>Modal Content</p>
+        <p>Modal Content</p>
+        <p>Modal Content</p>
+        <p>Modal Content</p>
       </ng-template>
 
       <ng-template #modalFooter>
-        <span>自定义底部: </span>
-        <button nz-button nzType="default" (click)="handleCancel($event)">自定义返回</button>
-        <button nz-button nzType="primary" (click)="handleOk($event)" [nzLoading]="isConfirmLoading">自定义提交</button>
+        <span>Modal Footer: </span>
+        <button nz-button nzType="default" (click)="handleCancel($event)">Custom Callback</button>
+        <button nz-button nzType="primary" (click)="handleOk($event)" [nzLoading]="isConfirmLoading">Custom Submit</button>
       </ng-template>
     </nz-modal>
   `,

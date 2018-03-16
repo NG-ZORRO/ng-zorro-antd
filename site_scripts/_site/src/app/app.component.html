@@ -20,6 +20,9 @@
           </nz-select>
         </div>
         <button nz-button nzGhost nzSize="small" class="header-lang-button" (click)="switchLanguage(language==='zh'?'en':'zh')">{{language=='zh'?'English':'中文'}}</button>
+        <nz-select nzSize="small" class="version" style="width: 68px;" [(ngModel)]="currentVersion" (ngModelChange)="navigateToVersion($event)">
+          <nz-option *ngFor="let version of versionList" [nzLabel]="version" [nzValue]="version"></nz-option>
+        </nz-select>
         <ul nz-menu [nzMode]="'horizontal'" id="nav">
           <li nz-menu-item nzSelected>
             <a routerLink="/doc/introduce/zh" *ngIf="language=='zh'"><span>组件</span></a>
