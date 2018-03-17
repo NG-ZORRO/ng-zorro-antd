@@ -1,7 +1,7 @@
 /* entryComponents: NzModalCustomComponent */
 
 import { Component, Input, TemplateRef } from '@angular/core';
-import { ModalPublicAgent, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-modal-service',
@@ -37,7 +37,7 @@ import { ModalPublicAgent, NzModalService } from 'ng-zorro-antd';
   `
 })
 export class NzDemoModalServiceComponent {
-  tplModal: ModalPublicAgent;
+  tplModal: NzModalRef;
   tplModalButtonLoading = false;
 
   constructor(private modalService: NzModalService) { }
@@ -80,15 +80,18 @@ export class NzDemoModalServiceComponent {
       },
       nzFooter: [{
         label: 'change component tilte from outside',
-        onClick: (componentInstance: NzModalCustomComponent) => {
+        onClick: (componentInstance) => {
           componentInstance.title = 'title in inner component is changed';
         }
       }]
     });
 
+    // Return a result when closed
+    modal.afterClose().subscribe((result) => console.log('[afterClose] The result is:', result));
+
     // delay until modal instance created
     window.setTimeout(() => {
-      const instance = modal.getContentComponentRef().instance as NzModalCustomComponent;
+      const instance = modal.getContentComponent();
       instance.subtitle = 'sub title is changed';
     }, 2000);
   }
@@ -149,9 +152,9 @@ export class NzModalCustomComponent {
   @Input() title: string;
   @Input() subtitle: string;
 
-  constructor(private modal: ModalPublicAgent) { }
+  constructor(private modal: NzModalRef) { }
 
   destroyModal(): void {
-    this.modal.destroy();
+    this.modal.destroy({ data: 'this the result data' });
   }
 }

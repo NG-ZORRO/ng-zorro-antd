@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
     <button nz-button nzType="primary" (click)="showModal()">
       <span>Show Modal</span>
     </button>
-    <nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel($event)">
+    <nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
       <ng-template #modalTitle>
         Custom Modal Title
       </ng-template>
@@ -22,8 +22,8 @@ import { Component } from '@angular/core';
 
       <ng-template #modalFooter>
         <span>Modal Footer: </span>
-        <button nz-button nzType="default" (click)="handleCancel($event)">Custom Callback</button>
-        <button nz-button nzType="primary" (click)="handleOk($event)" [nzLoading]="isConfirmLoading">Custom Submit</button>
+        <button nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
+        <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Custom Submit</button>
       </ng-template>
     </nz-modal>
   `,
@@ -39,7 +39,7 @@ export class NzDemoModalFooterComponent {
     this.isVisible = true;
   }
 
-  handleOk($event: MouseEvent): void {
+  handleOk(): void {
     this.isConfirmLoading = true;
     setTimeout(() => {
       this.isVisible = false;
@@ -47,7 +47,7 @@ export class NzDemoModalFooterComponent {
     }, 3000);
   }
 
-  handleCancel($event: MouseEvent): void {
+  handleCancel(): void {
     this.isVisible = false;
   }
 }

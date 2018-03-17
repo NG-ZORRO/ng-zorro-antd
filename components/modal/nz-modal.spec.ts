@@ -7,7 +7,7 @@ import { NzButtonComponent } from '../button/nz-button.component';
 import { NzButtonModule } from '../button/nz-button.module';
 
 import { CssUnitPipe } from './css-unit.pipe';
-import { ModalPublicAgent } from './modal-public-agent.class';
+import { NzModalRef } from './nz-modal-ref.class';
 import { MODAL_ANIMATE_DURATION, NzModalComponent } from './nz-modal.component';
 import { NzModalModule } from './nz-modal.module';
 import { NzModalService } from './nz-modal.service';
@@ -57,7 +57,7 @@ describe('modal', () => {
 
   describe('demo-confirm-promise', () => {
     const tempModalId = generateUniqueId(); // Temp unique id to mark the confirm modal that created by service
-    let modalAgent: ModalPublicAgent;
+    let modalAgent: NzModalRef;
     let buttonShow: HTMLButtonElement;
 
     beforeEach(async(() => {
@@ -103,7 +103,7 @@ describe('modal', () => {
 
   describe('NormalModal: created by service with most APIs', () => {
     const tempModalId = generateUniqueId(); // Temp unique id to mark the confirm modal that created by service
-    let modalAgent: ModalPublicAgent;
+    let modalAgent: NzModalRef;
     let modalElement: HTMLElement;
 
     beforeEach(async(() => {
@@ -169,7 +169,7 @@ describe('modal', () => {
 
   describe('NormalModal: created by service with vary nzContent and nzFooter', () => {
     const tempModalId = generateUniqueId(); // Temp unique id to mark the confirm modal that created by service
-    let modalAgent: ModalPublicAgent;
+    let modalAgent: NzModalRef<TestVaryServiceCustomComponent>;
     let modalElement: HTMLElement;
 
     beforeEach(async(() => {
@@ -193,7 +193,7 @@ describe('modal', () => {
     it('should change title from in/outside and trigger button', fakeAsync(() => {
       fixture.detectChanges(); // Initial change detecting
 
-      const contentComponent = modalAgent.getContentComponentRef().instance as TestVaryServiceCustomComponent;
+      const contentComponent = modalAgent.getContentComponent();
       const contentElement = contentComponent.elementRef.nativeElement as HTMLElement;
       // change title from outside
       const firstButton = modalElement.querySelector('.ant-modal-footer button:first-child') as HTMLButtonElement;
@@ -234,7 +234,7 @@ describe('modal', () => {
       spyOn(logger, 'warn');
 
       const tempModalId = generateUniqueId();
-      const modalAgent = instance.createConfirm() as ModalPublicAgent;
+      const modalAgent = instance.createConfirm() as NzModalRef;
       const modalElement = modalAgent.getElement();
       modalElement.classList.add(tempModalId);
       fixture.detectChanges();
@@ -295,7 +295,7 @@ describe('modal', () => {
     <button nz-button nzType="primary" (click)="showModal()">
       <span>show modal</span>
     </button>
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="title" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)" [nzOkLoading]="isOkLoading">
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="title" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" [nzOkLoading]="isOkLoading">
       <p>content</p>
     </nz-modal>
   `,
@@ -309,7 +309,7 @@ class NzDemoModalAsyncComponent {
     this.isVisible = true;
   }
 
-  handleOk($event: MouseEvent): void {
+  handleOk(): void {
     this.isOkLoading = true;
     window.setTimeout(() => {
       this.isVisible = false;
@@ -317,7 +317,7 @@ class NzDemoModalAsyncComponent {
     }, 3000);
   }
 
-  handleCancel($event: MouseEvent): void {
+  handleCancel(): void {
     this.isVisible = false;
   }
 }
@@ -330,7 +330,7 @@ class NzDemoModalAsyncComponent {
   styles  : []
 })
 class NzDemoModalConfirmPromiseComponent {
-  confirmModal: ModalPublicAgent; // For testing by now
+  confirmModal: NzModalRef; // For testing by now
 
   constructor(private modal: NzModalService) { }
 
@@ -349,7 +349,7 @@ class NzDemoModalConfirmPromiseComponent {
   template: ``
 })
 class TestBasicServiceComponent {
-  basicModal: ModalPublicAgent;
+  basicModal: NzModalRef;
 
   constructor(private modalService: NzModalService) {
     this.modalService.create(); // [Testing Required] Only for coverage temporarily
@@ -387,14 +387,14 @@ class TestBasicServiceComponent {
 class TestVaryServiceComponent {
   constructor(private modalService: NzModalService) {}
 
-  createWithVary(): ModalPublicAgent {
+  createWithVary(): NzModalRef<TestVaryServiceCustomComponent> {
     const modal = this.modalService.create({
       nzContent: TestVaryServiceCustomComponent,
       nzComponentParams: { title: 'internal title', subtitle: 'subtitle' },
       nzFooter: [
         {
           label: 'change title from outside',
-          onClick: (componentInstance: TestVaryServiceCustomComponent) => {
+          onClick: (componentInstance) => {
             componentInstance.title = 'internal title changed';
             return Promise.resolve();
           }
@@ -419,7 +419,7 @@ export class TestVaryServiceCustomComponent {
   @Input() title: string;
   @Input() subtitle: string;
 
-  constructor(private modal: ModalPublicAgent, public elementRef: ElementRef) { }
+  constructor(private modal: NzModalRef, public elementRef: ElementRef) { }
 
   destroyModal(): void {
     this.modal.destroy();
@@ -432,7 +432,7 @@ export class TestVaryServiceCustomComponent {
 export class TestConfirmModalComponent {
   constructor(public modalService: NzModalService) { }
 
-  createConfirm(): ModalPublicAgent {
+  createConfirm(): NzModalRef {
     this.modalService.confirm(); // [Testing Required] Only for coverage temporarily
     this.modalService.confirm({ nzWidth: 100 }); // [Testing Required] Only for coverage temporarily
 

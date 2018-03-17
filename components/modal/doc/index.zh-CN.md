@@ -15,7 +15,7 @@ title: Modal
 
 推荐使用加载Component的方式弹出Modal，这样弹出层的Component逻辑可以与外层Component完全隔离，并且做到可以随时复用，
 
-在弹出层Component中可以通过依赖注入`ModalPublicAgent`方式直接获取模态框的组件实例，用于控制在弹出层组件中控制模态框行为。
+在弹出层Component中可以通过依赖注入`NzModalRef`方式直接获取模态框的组件实例，用于控制在弹出层组件中控制模态框行为。
 
 ## API
 
@@ -30,7 +30,7 @@ title: Modal
 | nzOkLoading       | 确定按钮 loading | boolean | false |
 | nzCancelLoading   | 取消按钮 loading | boolean | false |
 | nzFooter          | 底部内容。<i>1. 仅在普通模式下有效。<br>2. 可通过传入 ModalButtonOptions 来最大程度自定义按钮（详见案例或下方说明）。<br>3. 当不需要底部时，可以设为 null</i> | string<br>TemplateRef<br>ModalButtonOptions | 默认的确定取消按钮 |
-| nzGetContainer    | 指定 Modal 挂载的 HTML 节点 | HTMLElement<br>() => HTMLElement| 默认在overlay容器中 |
+| nzGetContainer    | 指定 Modal 挂载的 HTML 节点 | HTMLElement<br>() => HTMLElement| 默认容器 |
 | nzMask            | 是否展示遮罩 | boolean | true |
 | nzMaskClosable    | 点击蒙层是否允许关闭 | boolean | true |
 | nzMaskStyle       | 遮罩样式 | object | 无 |
@@ -42,8 +42,8 @@ title: Modal
 | nzWidth           | 宽度。<i>使用数字时，默认单位为px</i> | string<br>number | 520 |
 | nzWrapClassName   | 对话框外层容器的类名 | string | 无 |
 | nzZIndex          | 设置 Modal 的 `z-index` | number | 1000 |
-| nzOnCancel        | 点击遮罩层或右上角叉或取消按钮的回调。<i>注：当以`NzModalService.create`创建时，此参数应传入function（回调函数）。该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | EventEmitter | 无 |
-| nzOnOk            | 点击确定回调 | EventEmitter | 无 |
+| nzOnCancel        | 点击遮罩层或右上角叉或取消按钮的回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>注：当以`NzModalService.create`创建时，此参数应传入function（回调函数）。该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | EventEmitter | 无 |
+| nzOnOk            | 点击确定回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>注：当以`NzModalService.create`创建时，此参数应传入function（回调函数）。该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | EventEmitter | 无 |
 | nzContent         | 内容 | string<br>TemplateRef<br>Component<br>ng-content | 无 |
 | nzComponentParams | 当nzContent为组件类(Component)时，该参数中的属性将传入nzContent实例中 | object | 无 |
 | nzIconType        | 图标 Icon 类型。<i>仅 确认框模式 下有效</i> | string | question-circle |
@@ -70,8 +70,8 @@ title: Modal
 
 | 参数       | 说明           | 类型             | 默认值       |
 |------------|----------------|------------------|--------------|
-| nzOnOk          | 点击确定按钮时将执行的回调函数。<i>该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | function | 无 |
-| nzOnCancel      | 点击遮罩层或右上角叉或取消按钮的回调。<i>该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | function | 无 |
+| nzOnOk          | 点击确定按钮时将执行的回调函数（若nzContent为Component，则将会以该Component实例作为参数）。<i>该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | function | 无 |
+| nzOnCancel      | 点击遮罩层或右上角叉或取消按钮的回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | function | 无 |
 | nzWidth         | 宽度 | string<br>number | 416 |
 | nzMaskClosable  | 点击蒙层是否允许关闭 | boolean | false |
 
@@ -79,23 +79,24 @@ title: Modal
 
 ```ts
 constructor(modal: NzModalService) {
-  const ref: ModalPublicAgent = modal.info();
+  const ref: NzModalRef = modal.info();
   ref.destroy(); // 注：这里将直接销毁对话框
 }
 ```
 
 ### 相关类型定义
 
-#### ModalPublicAgent（用于控制对话框）
+#### NzModalRef（用于控制对话框）
 
-通过服务方式 `NzModalService.xxx()` 创建的对话框，都会返回一个 `ModalPublicAgent` 对象，用于操控该对话框（若使用nzContent为Component时，也可通过依赖注入 `ModalPublicAgent` 方式获得此对象），该对象具有以下方法：
+通过服务方式 `NzModalService.xxx()` 创建的对话框，都会返回一个 `NzModalRef` 对象，用于操控该对话框（若使用nzContent为Component时，也可通过依赖注入 `NzModalRef` 方式获得此对象），该对象具有以下方法：
 
 | 方法 | 说明 |
 |----|----|
 | open()                    | 打开(显示)对话框。<i>若对话框已销毁，则调用此函数将失效</i> |
-| close()                   | 关闭(隐藏)对话框。<i>注：当用于以服务方式创建的对话框，此方法将直接 销毁 对话框（同destroy方法）</i> |
-| destroy()                 | 销毁对话框。<i>注：仅用于服务方式创建的对话框（非服务方式创建的对话框，此方法只会隐藏对话框）</i> |
-| getContentComponentRef()  | 获取对话框内容中`nzContent`的Component引用（类型为`ComponentRef`）。<i>注：当对话框还未初始化完毕（`ngOnInit`未执行）时，此函数将返回`undefined`</i> |
+| close(result: any)        | 关闭(隐藏)对话框。<i>注：当用于以服务方式创建的对话框，此方法将直接 销毁 对话框（同destroy方法）</i> |
+| destroy(result: any)      | 销毁对话框。<i>注：仅用于服务方式创建的对话框（非服务方式创建的对话框，此方法只会隐藏对话框）</i> |
+| afterClose() | 返回一个Observable对象来获取close/destroy中传递的result参数（将在对话框关闭后触发） |
+| getContentComponent()  | 获取对话框内容中`nzContent`的Component实例instance。<i>注：当对话框还未初始化完毕（`ngOnInit`未执行）时，此函数将返回`undefined`</i> |
 
 #### ModalButtonOptions（用于自定义底部按钮）
 

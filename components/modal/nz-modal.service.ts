@@ -4,7 +4,7 @@ import { ApplicationRef, ComponentFactoryResolver, ComponentRef, EventEmitter, I
 
 import { LoggerService } from '../core/util/logger/logger.service';
 
-import { ModalPublicAgent } from './modal-public-agent.class';
+import { NzModalRef } from './nz-modal-ref.class';
 import { NzModalComponent } from './nz-modal.component';
 import { ConfirmType, ModalOptions, ModalOptionsForService } from './nz-modal.type';
 
@@ -17,7 +17,7 @@ export class ModalBuilderForService {
       this.createModal();
 
       if (!('nzGetContainer' in options)) { // As we use CDK to create modal in service by force, there is no need to use nzGetContainer
-        options.nzGetContainer = null;
+        options.nzGetContainer = null; // Override nzGetContainer's default value to prevent creating another overlay
       }
 
       this.changeProps(options);
@@ -54,7 +54,7 @@ export class NzModalService {
 
   constructor(private overlay: Overlay, private logger: LoggerService) { }
 
-  create(options: ModalOptionsForService = {}): ModalPublicAgent {
+  create<T>(options: ModalOptionsForService<T> = {}): NzModalRef<T> {
     if (typeof options.nzOnCancel !== 'function') {
       options.nzOnCancel = () => {}; // Leave a empty function to close this modal by default
     }
@@ -62,7 +62,7 @@ export class NzModalService {
     return new ModalBuilderForService(this.overlay, options).getInstance();
   }
 
-  confirm(options: ModalOptionsForService = {}, confirmType: ConfirmType = 'confirm'): ModalPublicAgent {
+  confirm<T>(options: ModalOptionsForService<T> = {}, confirmType: ConfirmType = 'confirm'): NzModalRef<T> {
     if ('nzFooter' in options) {
       this.logger.warn(`The Confirm-Modal doesn't support "nzFooter", this property will be ignored.`);
     }
@@ -79,23 +79,23 @@ export class NzModalService {
     return this.create(options);
   }
 
-  info(options: ModalOptionsForService = {}): ModalPublicAgent {
+  info<T>(options: ModalOptionsForService<T> = {}): NzModalRef<T> {
     return this.simpleConfirm(options, 'info');
   }
 
-  success(options: ModalOptionsForService = {}): ModalPublicAgent {
+  success<T>(options: ModalOptionsForService<T> = {}): NzModalRef<T> {
     return this.simpleConfirm(options, 'success');
   }
 
-  error(options: ModalOptionsForService = {}): ModalPublicAgent {
+  error<T>(options: ModalOptionsForService<T> = {}): NzModalRef<T> {
     return this.simpleConfirm(options, 'error');
   }
 
-  warning(options: ModalOptionsForService = {}): ModalPublicAgent {
+  warning<T>(options: ModalOptionsForService<T> = {}): NzModalRef<T> {
     return this.simpleConfirm(options, 'warning');
   }
 
-  private simpleConfirm(options: ModalOptionsForService = {}, confirmType: ConfirmType): ModalPublicAgent {
+  private simpleConfirm<T>(options: ModalOptionsForService<T> = {}, confirmType: ConfirmType): NzModalRef<T> {
     if (!('nzIconType' in options)) {
       options.nzIconType = { 'info': 'info-circle', 'success': 'check-circle', 'error': 'cross-circle', 'warning': 'exclamation-circle' }[ confirmType ];
     }

@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-modal-basic',
   template: `
     <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)">
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
       <p>Content one</p>
       <p>Content two</p>
       <p>Content three</p>
@@ -21,13 +21,13 @@ export class NzDemoModalBasicComponent {
     this.isVisible = true;
   }
 
-  handleOk($event: MouseEvent): void {
+  handleOk(): void {
     console.log('Button ok clicked!');
     this.isVisible = false;
   }
 
-  handleCancel($event: MouseEvent): void {
-    console.log('Button cancel clicked!', $event);
+  handleCancel(): void {
+    console.log('Button cancel clicked!');
     this.isVisible = false;
   }
 }

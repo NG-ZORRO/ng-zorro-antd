@@ -20,12 +20,13 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { measureScrollbar } from '../core/util/mesure-scrollbar';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
-import { ModalPublicAgent } from './modal-public-agent.class';
 import ModalUtil from './modal-util';
+import { NzModalRef } from './nz-modal-ref.class';
 import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './nz-modal.type';
 
 export const MODAL_ANIMATE_DURATION = 200; // Duration when perform animations (ms)
@@ -41,12 +42,13 @@ type AnimationState = 'enter' | 'leave' | null;
   templateUrl: './nz-modal.component.html'
 })
 
-export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChanges, AfterViewInit, ModalOptions {
+// tslint:disable-next-line:no-any
+export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> implements OnInit, OnChanges, AfterViewInit, ModalOptions {
   @Input() nzModalType: ModalType = 'default';
-  @Input() nzContent: string | TemplateRef<{}> | Type<{}>; // [STATIC] If not specified, will use <ng-content>
+  @Input() nzContent: string | TemplateRef<{}> | Type<T>; // [STATIC] If not specified, will use <ng-content>
   @Input() nzComponentParams: object; // [STATIC] ONLY avaliable when nzContent is a component
-  @Input() nzFooter: string | TemplateRef<{}> | ModalButtonOptions[]; // [STATIC] Default Modal ONLY
-  @Input() nzGetContainer: HTMLElement | (() => HTMLElement); // [STATIC]
+  @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>>; // [STATIC] Default Modal ONLY
+  @Input() nzGetContainer: HTMLElement | (() => HTMLElement) = () => this.overlay.create().overlayElement; // [STATIC]
 
   @Input() nzVisible = false;
   @Output() nzVisibleChange = new EventEmitter<boolean>();
@@ -62,17 +64,17 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
   @Input() nzMaskClosable = true;
   @Input() nzMaskStyle: object;
   @Input() nzBodyStyle: object;
-  @Output() nzAfterClose = new EventEmitter<void>(); // Trigger when modal is hidden
+  @Output() nzAfterClose = new EventEmitter<R | undefined>(); // Trigger when modal is hidden
 
   // --- Predefined OK & Cancel buttons
   @Input() nzOkText: string;
   @Input() nzOkType = 'primary';
   @Input() nzOkLoading = false;
-  @Input() @Output() nzOnOk: EventEmitter<MouseEvent> | OnClickCallback = new EventEmitter<MouseEvent>();
+  @Input() @Output() nzOnOk: EventEmitter<T | undefined> | OnClickCallback<T | undefined> = new EventEmitter<T | undefined>();
   @ViewChild('autoFocusButtonOk', { read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
   @Input() nzCancelText: string;
   @Input() nzCancelLoading = false;
-  @Input() @Output() nzOnCancel: EventEmitter<MouseEvent> | OnClickCallback = new EventEmitter<MouseEvent>();
+  @Input() @Output() nzOnCancel: EventEmitter<T | undefined> | OnClickCallback<T | undefined> = new EventEmitter<T | undefined>();
 
   @ViewChild('modalContainer') modalContainer: ElementRef;
   @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
@@ -84,7 +86,7 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
   modalAnimationClassMap: object;
   transformOrigin = '0px 0px 0px'; // The origin point that animation based on
 
-  private contentComponentRef: ComponentRef<{}>; // Handle the reference when using nzContent as Component
+  private contentComponentRef: ComponentRef<T>; // Handle the reference when using nzContent as Component
   private animationState: AnimationState; // Current animation state
 
   constructor(private overlay: Overlay,
@@ -100,18 +102,16 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
 
   ngOnInit(): void {
     if (this.isComponent(this.nzContent)) {
-      this.createDynamicComponent(this.nzContent as Type<{}>); // Create component along without View
+      this.createDynamicComponent(this.nzContent as Type<T>); // Create component along without View
     }
 
     if (this.isModalButtons(this.nzFooter)) { // Setup default button options
-      this.nzFooter = this.formatModalButtons(this.nzFooter as ModalButtonOptions[]);
+      this.nzFooter = this.formatModalButtons(this.nzFooter as Array<ModalButtonOptions<T>>);
     }
 
     const container = typeof this.nzGetContainer === 'function' ? this.nzGetContainer() : this.nzGetContainer;
     if (container instanceof HTMLElement) {
       container.appendChild(this.elementRef.nativeElement);
-    } else { // Use overlay to handle this modal by default
-      this.overlay.create().overlayElement.appendChild(this.elementRef.nativeElement);
     }
   }
 
@@ -143,20 +143,28 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
     this.changeVisibleFromInside(true);
   }
 
-  close(): void {
-    this.changeVisibleFromInside(false).then(() => this.nzAfterClose.emit());
+  close(result?: R): void {
+    this.changeVisibleFromInside(false).then(() => this.nzAfterClose.emit(result));
   }
 
-  destroy(): void { // Destroy equals Close
-    this.close();
+  destroy(result?: R): void { // Destroy equals Close
+    this.close(result);
+  }
+
+  afterClose(): Observable<R | undefined> {
+    return this.nzAfterClose.asObservable();
   }
 
   getInstance(): NzModalComponent {
     return this;
   }
 
-  getContentComponentRef(): ComponentRef<{}> {
+  getContentComponentRef(): ComponentRef<T> {
     return this.contentComponentRef;
+  }
+
+  getContentComponent(): T {
+    return this.contentComponentRef && this.contentComponentRef.instance;
   }
 
   getElement(): HTMLElement {
@@ -165,8 +173,7 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
 
   onClickMask($event: MouseEvent): void {
     if (this.nzMask && this.nzMaskClosable && ($event.target as HTMLElement).classList.contains('ant-modal-wrap')) {
-      // this.close();
-      this.onClickOkCancel($event, 'cancel');
+      this.onClickOkCancel('cancel');
     }
   }
 
@@ -174,18 +181,17 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
     return this.nzModalType === type;
   }
 
-  private onClickCloseBtn($event: MouseEvent): void {
-    // this.close();
-    this.onClickOkCancel($event, 'cancel');
+  private onClickCloseBtn(): void {
+    this.onClickOkCancel('cancel');
   }
 
-  private onClickOkCancel($event: MouseEvent, type: 'ok' | 'cancel'): void {
+  private onClickOkCancel(type: 'ok' | 'cancel'): void {
     const trigger = { 'ok': this.nzOnOk, 'cancel': this.nzOnCancel }[ type ];
     const loadingKey = { 'ok': 'nzOkLoading', 'cancel': 'nzCancelLoading' }[ type ];
     if (trigger instanceof EventEmitter) {
-      trigger.emit($event);
+      trigger.emit(this.getContentComponent());
     } else if (typeof trigger === 'function') {
-      const result = trigger($event);
+      const result = trigger(this.getContentComponent());
       const caseClose = (doClose: boolean | void | {}) => (doClose !== false) && this.close(); // Users can return "false" to prevent closing by default
       if (isPromise(result)) {
         this[ loadingKey ] = true;
@@ -217,7 +223,7 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
   }
 
   // Lookup a button's property, if the prop is a function, call & then return the result, otherwise, return itself.
-  private getButtonCallableProp(options: ModalButtonOptions, prop: string): {} {
+  private getButtonCallableProp(options: ModalButtonOptions<T>, prop: string): {} {
     const value = options[ prop ];
     const args = [];
     if (this.contentComponentRef) {
@@ -227,7 +233,7 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
   }
 
   // On nzFooter's modal button click
-  private onButtonClick(button: ModalButtonOptions): void {
+  private onButtonClick(button: ModalButtonOptions<T>): void {
     const result = this.getButtonCallableProp(button, 'onClick'); // Call onClick directly
     if (isPromise(result)) {
       button.loading = true;
@@ -275,7 +281,7 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
     }, MODAL_ANIMATE_DURATION));
   }
 
-  private formatModalButtons(buttons: ModalButtonOptions[]): ModalButtonOptions[] {
+  private formatModalButtons(buttons: Array<ModalButtonOptions<T>>): Array<ModalButtonOptions<T>> {
     return buttons.map((button) => {
       const mixedButton = {
         ...{
@@ -299,14 +305,11 @@ export class NzModalComponent extends ModalPublicAgent implements OnInit, OnChan
    * Create a component dynamically but not attach to any View (this action will be executed when bodyContainer is ready)
    * @param component Component class
    */
-  private createDynamicComponent(component: Type<{}>): void {
+  private createDynamicComponent(component: Type<T>): void {
     const factory = this.cfr.resolveComponentFactory(component);
     const childInjector = Injector.create({
-      providers: [ {
-        provide : ModalPublicAgent,
-        useValue: this
-      } ],
-      parent   : this.viewContainer.parentInjector
+      providers: [ { provide : NzModalRef, useValue: this } ],
+      parent: this.viewContainer.parentInjector
     });
     this.contentComponentRef = factory.create(childInjector);
     if (this.nzComponentParams) {
