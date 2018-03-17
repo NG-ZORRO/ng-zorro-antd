@@ -74,7 +74,7 @@ export interface NzThItemInterface {
       </span>
     </div>
     <nz-dropdown nzTrigger="click" *ngIf="nzShowFilter" [nzClickHide]="false" [hasFilterButton]="true" (nzVisibleChange)="dropDownVisibleChange($event)">
-      <i class="anticon anticon-filter" nz-dropdown></i>
+      <i class="anticon anticon-filter" [class.ant-table-filter-selected]="filterVisible" nz-dropdown></i>
       <ul nz-menu>
         <ng-container *ngIf="nzFilterMultiple">
           <li nz-menu-item *ngFor="let filter of multipleFilterList" (click)="checkMultiple(filter)">
@@ -106,6 +106,7 @@ export class NzThComponent {
   private _showCheckbox = false;
   private _showRowSelection = false;
   el: HTMLElement;
+  filterVisible = false;
   multipleFilterList: NzThItemInterface[] = [];
   singleFilterList: NzThItemInterface[] = [];
   /* tslint:disable-next-line:no-any */
@@ -256,6 +257,7 @@ export class NzThComponent {
   }
 
   dropDownVisibleChange(value: boolean): void {
+    this.filterVisible = value;
     if (!value) {
       this.search();
     }
