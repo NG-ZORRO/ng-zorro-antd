@@ -273,6 +273,17 @@ describe('nz-table', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-table').classList).toContain('ant-table-scroll-position-right');
     });
+    it('should change width affect scroll', () => {
+      fixture.detectChanges();
+      table.nativeElement.querySelector('.ant-spin-container').removeAttribute('hidden');
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelector('.ant-table').classList).toContain('ant-table-scroll-position-left');
+      testComponent.width = 1000;
+      window.dispatchEvent(new Event('resize'));
+      fixture.detectChanges();
+      const tableBody = table.nativeElement.querySelector('.ant-table-body');
+      expect(tableBody.scrollWidth).toBe(tableBody.clientWidth);
+    });
   });
 });
 
@@ -359,8 +370,8 @@ export class NzTestTableBasicComponent implements OnInit {
 @Component({
   selector     : 'nz-test-table-scroll',
   template     : `
-    <div style="width: 300px; display: block;">
-      <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" [nzScroll]="{ x:'1300px',y: '240px' }">
+    <div style="display: block;" [style.width.px]="width">
+      <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" [nzScroll]="{ x:'600px',y: '240px' }">
         <thead>
           <tr>
             <th>Full Name</th>
@@ -405,6 +416,7 @@ export class NzTestTableBasicComponent implements OnInit {
 export class NzTestTableScrollComponent implements OnInit {
   @ViewChild(NzTableComponent) nzTableComponent: NzTableComponent;
   dataSet = [];
+  width = 300;
 
   ngOnInit(): void {
     for (let i = 0; i < 100; i++) {

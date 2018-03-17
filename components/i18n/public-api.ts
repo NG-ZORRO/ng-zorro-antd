@@ -1,6 +1,7 @@
 export { NzI18nModule } from './nz-i18n.module';
 export { NZ_I18N } from './nz-i18n.token';
 export { NzI18nService } from './nz-i18n.service';
+export { NzI18nInterface } from './nz-i18n.interface';
 export { default as ar_EG } from './languages/ar_EG';
 export { default as bg_BG } from './languages/bg_BG';
 export { default as ca_ES } from './languages/ca_ES';

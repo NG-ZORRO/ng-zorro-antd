@@ -1,10 +1,12 @@
 import { Overlay } from '@angular/cdk/overlay';
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ContentChildren,
   ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnInit,
   Output,
@@ -129,7 +131,7 @@ import { NzTheadComponent } from './nz-thead.component';
     </div>
   `
 })
-export class NzTableComponent implements OnInit {
+export class NzTableComponent implements OnInit, AfterViewInit {
   private _bordered = false;
   private _showPagination = true;
   private _loading = false;
@@ -278,9 +280,7 @@ export class NzTableComponent implements OnInit {
       this._scroll = { x: null, y: null };
     }
     this.cdr.detectChanges();
-    if (value && value.x) {
-      this.scrollPosition = 'left';
-    }
+    this.setScrollPositionClassName();
   }
 
   get nzScroll(): { x: string; y: string } {
@@ -383,8 +383,10 @@ export class NzTableComponent implements OnInit {
   }
 
   setScrollPositionClassName(): void {
-    if (this.tableBodyElement) {
-      if (this.tableBodyElement.nativeElement.scrollLeft === 0) {
+    if (this.tableBodyElement && this.nzScroll && this.nzScroll.x) {
+      if ((this.tableBodyElement.nativeElement.scrollWidth === this.tableBodyElement.nativeElement.clientWidth) && (this.tableBodyElement.nativeElement.scrollWidth !== 0)) {
+        this.scrollPosition = 'default';
+      } else if (this.tableBodyElement.nativeElement.scrollLeft === 0) {
         this.scrollPosition = 'left';
       } else if (this.tableBodyElement.nativeElement.scrollWidth === (this.tableBodyElement.nativeElement.scrollLeft + this.tableBodyElement.nativeElement.clientWidth)) {
         this.scrollPosition = 'right';
@@ -394,7 +396,7 @@ export class NzTableComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  fitScrollBar(): void {
     const scrollbarWidth = measureScrollbar();
     if (scrollbarWidth) {
       this.headerBottomStyle = {
@@ -402,12 +404,25 @@ export class NzTableComponent implements OnInit {
         paddingBottom: `0px`
       };
     }
+  }
 
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    this.fitScrollBar();
+    this.setScrollPositionClassName();
+  }
+
+  ngOnInit(): void {
+    this.fitScrollBar();
     if (this.nzScroll && this.nzScroll.x && this.nzScroll.y) {
       /** magic code to sync scroll **/
       const overlay = this.overlay.create();
       overlay.dispose();
     }
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.setScrollPositionClassName());
   }
 
   constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private overlay: Overlay) {
