@@ -1,5 +1,6 @@
 <div class="page-wrapper">
   <header id="header" class="clearfix">
+    <i class="anticon anticon-menu nav-phone-icon" (click)="toggleHide()"></i>
     <div nz-row>
       <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8" [nzLg]="5" [nzXl]="5" [nzXXl]="4">
         <a id="logo" href>
@@ -34,7 +35,7 @@
   </header>
   <div class="main-wrapper">
     <div nz-row>
-      <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="6" [nzXl]="5" [nzXXl]="4" class="main-menu">
+      <div nz-col [class.hide-menu]="hide" [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="6" [nzXl]="5" [nzXXl]="4" class="main-menu">
         <ul nz-menu [nzMode]="'inline'" class="aside-container menu-site" nzInlineIndent="40">
           <li *ngFor="let intro of routerList.intro" nz-menu-item routerLinkActive="ant-menu-item-selected" [hidden]="intro.language!=language">
             <a routerLink="{{intro.path}}">{{intro.label}}</a>

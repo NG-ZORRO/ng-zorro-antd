@@ -10,6 +10,7 @@ import { environment } from '../environments/environment';
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
+  hide = true;
   routerList = ROUTER_LIST;
   componentList = [];
   searchComponent = null;
@@ -25,6 +26,11 @@ export class AppComponent implements OnInit {
     const url = this.router.url.split('/');
     url.splice(-1);
     this.router.navigateByUrl(url.join('/') + '/' + language);
+  }
+
+
+  toggleHide() {
+    this.hide = !this.hide;
   }
 
   constructor(private router: Router, private title: Title, private nzI18nService: NzI18nService) {
