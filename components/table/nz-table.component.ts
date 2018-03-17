@@ -280,9 +280,6 @@ export class NzTableComponent implements OnInit, AfterViewInit {
       this._scroll = { x: null, y: null };
     }
     this.cdr.detectChanges();
-    if (value && value.x) {
-      this.scrollPosition = 'left';
-    }
     this.setScrollPositionClassName();
   }
 
@@ -388,7 +385,7 @@ export class NzTableComponent implements OnInit, AfterViewInit {
   setScrollPositionClassName(): void {
     if (this.tableBodyElement && this.nzScroll && this.nzScroll.x) {
       if ((this.tableBodyElement.nativeElement.scrollWidth === this.tableBodyElement.nativeElement.clientWidth) && (this.tableBodyElement.nativeElement.scrollWidth !== 0)) {
-        this.scrollPosition = null;
+        this.scrollPosition = 'default';
       } else if (this.tableBodyElement.nativeElement.scrollLeft === 0) {
         this.scrollPosition = 'left';
       } else if (this.tableBodyElement.nativeElement.scrollWidth === (this.tableBodyElement.nativeElement.scrollLeft + this.tableBodyElement.nativeElement.clientWidth)) {
