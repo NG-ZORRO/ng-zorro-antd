@@ -10,7 +10,7 @@ describe('nz-form-control', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzFormModule, NoopAnimationsModule, ReactiveFormsModule, FormsModule ],
-      declarations: [ NzTestStaticFormControlComponent, NzTestReactiveFormControlComponent ]
+      declarations: [ NzTestStaticFormControlComponent, NzTestReactiveFormControlComponent, NzTestReactiveFormControlInitStatusComponent ]
     });
     TestBed.compileComponents();
   }));
@@ -141,6 +141,23 @@ describe('nz-form-control', () => {
       expect(formControls[ 1 ].nativeElement.querySelector('.ant-form-item-control').classList).toContain('has-error');
     }));
   });
+  describe('reactive init status', () => {
+    let fixture;
+    let testComponent;
+    let formControl;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestReactiveFormControlInitStatusComponent);
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+      formControl = fixture.debugElement.query(By.directive(NzFormControlComponent));
+    });
+    it('should init status correct', fakeAsync(() => {
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(formControl.nativeElement.querySelector('.ant-form-item-control').classList).toContain('has-error');
+    }));
+  });
 });
 
 @Component({
@@ -176,5 +193,26 @@ export class NzTestReactiveFormControlComponent {
       input3: [ '', [ Validators.required ] ]
     });
     this.validateStatus = this.formGroup.get('input2');
+  }
+}
+
+/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1170 **/
+@Component({
+  template: `
+    <form [formGroup]="formGroup">
+      <nz-form-control>
+        <input formControlName="input">
+      </nz-form-control>
+    </form>
+  `
+})
+export class NzTestReactiveFormControlInitStatusComponent {
+  formGroup: FormGroup;
+
+  constructor(private formBuilder: FormBuilder) {
+    this.formGroup = this.formBuilder.group({
+      input : [ '', [ Validators.required ] ]
+    });
+    this.formGroup.controls.input.markAsDirty();
   }
 }
