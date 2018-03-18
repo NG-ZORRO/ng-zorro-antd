@@ -1,3 +1,4 @@
+import { OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter, TemplateRef, Type } from '@angular/core';
 
 export type OnClickCallback<T> = ((instance: T) => (false | void | {}) | Promise<false | void | {}>);
@@ -25,17 +26,18 @@ export interface ModalOptions<T = any, R = any> { // tslint:disable-line:no-any
   nzMaskStyle?: object;
   nzBodyStyle?: object;
   nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>>; // Default Modal ONLY
-  nzGetContainer?: HTMLElement | (() => HTMLElement); // STATIC
-  nzAfterClose?: EventEmitter<R | undefined>;
+  nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef); // STATIC
+  nzAfterOpen?: EventEmitter<void>;
+  nzAfterClose?: EventEmitter<R>;
 
   // --- Predefined OK & Cancel buttons
   nzOkText?: string;
   nzOkType?: string;
   nzOkLoading?: boolean;
-  nzOnOk?: EventEmitter<T | undefined> | OnClickCallback<T>; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
+  nzOnOk?: EventEmitter<T> | OnClickCallback<T>; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
   nzCancelText?: string;
   nzCancelLoading?: boolean;
-  nzOnCancel?: EventEmitter<T | undefined> | OnClickCallback<T>; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
+  nzOnCancel?: EventEmitter<T> | OnClickCallback<T>; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
 }
 
 // tslint:disable-next-line:no-any

@@ -1,6 +1,6 @@
 /* entryComponents: NzModalCustomComponent */
 
-import { Component, Input, TemplateRef } from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 
 @Component({
@@ -34,11 +34,17 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd';
     </button>
 
     <button nz-button nzType="primary" (click)="createCustomButtonModal()">Custom Button</button>
+
+    <br /><br />
+
+    <button nz-button nzType="primary" (click)="openAndCloseAll()">Open more modals then close all after 2s</button>
+    <nz-modal [(nzVisible)]="htmlModalVisible" nzMask="false" nzZIndex="1001" nzTitle="Non-service html modal">This is a non-service html modal</nz-modal>
   `
 })
 export class NzDemoModalServiceComponent {
   tplModal: NzModalRef;
   tplModalButtonLoading = false;
+  htmlModalVisible = false;
 
   constructor(private modalService: NzModalService) { }
 
@@ -86,8 +92,10 @@ export class NzDemoModalServiceComponent {
       }]
     });
 
+    modal.afterOpen.subscribe(() => console.log('[afterOpen] emitted!'));
+
     // Return a result when closed
-    modal.afterClose().subscribe((result) => console.log('[afterClose] The result is:', result));
+    modal.afterClose.subscribe((result) => console.log('[afterClose] The result is:', result));
 
     // delay until modal instance created
     window.setTimeout(() => {
@@ -132,6 +140,23 @@ export class NzDemoModalServiceComponent {
         }
       ]
     });
+  }
+
+  openAndCloseAll(): void {
+    let pos = 0;
+
+    [ 'create', 'info', 'success', 'error' ].forEach((method) => this.modalService[method]({
+      nzMask: false,
+      nzTitle: `Test ${method} title`,
+      nzContent: `Test content: <b>${method}</b>`,
+      nzStyle: { position: 'absolute', top: `${pos * 70}px`, left: `${(pos++) * 300}px` }
+    }));
+
+    this.htmlModalVisible = true;
+
+    this.modalService.afterAllClose.subscribe(() => console.log('afterAllClose emitted!'));
+
+    window.setTimeout(() => this.modalService.closeAll(), 2000);
   }
 }
 

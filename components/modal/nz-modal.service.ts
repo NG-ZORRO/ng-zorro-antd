@@ -1,9 +1,11 @@
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ApplicationRef, ComponentFactoryResolver, ComponentRef, EventEmitter, Injectable, Injector, TemplateRef, Type } from '@angular/core';
+import { ApplicationRef, ComponentFactoryResolver, ComponentRef, EventEmitter, Injectable, Injector, Optional, SkipSelf, TemplateRef, Type } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { LoggerService } from '../core/util/logger/logger.service';
 
+import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
 import { NzModalComponent } from './nz-modal.component';
 import { ConfirmType, ModalOptions, ModalOptionsForService } from './nz-modal.type';
@@ -14,15 +16,15 @@ export class ModalBuilderForService {
   private overlayRef: OverlayRef;
 
   constructor(private overlay: Overlay, options: ModalOptionsForService = {}) {
-      this.createModal();
+    this.createModal();
 
-      if (!('nzGetContainer' in options)) { // As we use CDK to create modal in service by force, there is no need to use nzGetContainer
-        options.nzGetContainer = null; // Override nzGetContainer's default value to prevent creating another overlay
-      }
+    if (!('nzGetContainer' in options)) { // As we use CDK to create modal in service by force, there is no need to use nzGetContainer
+      options.nzGetContainer = null; // Override nzGetContainer's default value to prevent creating another overlay
+    }
 
-      this.changeProps(options);
-      this.modalRef.instance.open();
-      this.modalRef.instance.nzAfterClose.subscribe(() => this.destroyModal()); // [NOTE] By default, close equals destroy when using as Service
+    this.changeProps(options);
+    this.modalRef.instance.open();
+    this.modalRef.instance.nzAfterClose.subscribe(() => this.destroyModal()); // [NOTE] By default, close equals destroy when using as Service
   }
 
   getInstance(): NzModalComponent {
@@ -51,15 +53,33 @@ export class ModalBuilderForService {
 
 @Injectable()
 export class NzModalService {
+  // Track of the current close modals (we assume invisible is close this time)
+  get openModals(): NzModalRef[] {
+    return this.modalControl.openModals;
+  }
 
-  constructor(private overlay: Overlay, private logger: LoggerService) { }
+  get afterAllClose(): Observable<void> {
+    return this.modalControl.afterAllClose.asObservable();
+  }
+
+  constructor(
+    private overlay: Overlay,
+    private logger: LoggerService,
+    private modalControl: NzModalControlService) { }
+
+  // Closes all of the currently-open dialogs
+  closeAll(): void {
+    this.modalControl.closeAll();
+  }
 
   create<T>(options: ModalOptionsForService<T> = {}): NzModalRef<T> {
     if (typeof options.nzOnCancel !== 'function') {
       options.nzOnCancel = () => {}; // Leave a empty function to close this modal by default
     }
 
-    return new ModalBuilderForService(this.overlay, options).getInstance();
+    const modalRef = new ModalBuilderForService(this.overlay, options).getInstance(); // NOTE: use NzModalComponent as the NzModalRef by now, we may need archive the real NzModalRef object in the future
+
+    return modalRef;
   }
 
   confirm<T>(options: ModalOptionsForService<T> = {}, confirmType: ConfirmType = 'confirm'): NzModalRef<T> {

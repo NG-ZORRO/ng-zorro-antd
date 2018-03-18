@@ -1,4 +1,4 @@
-import { Overlay } from '@angular/cdk/overlay';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -11,6 +11,7 @@ import {
   Injector,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   Renderer2,
@@ -22,10 +23,12 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
+import { toBoolean } from '../core/util/convert';
 import { measureScrollbar } from '../core/util/mesure-scrollbar';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import ModalUtil from './modal-util';
+import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
 import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './nz-modal.type';
 
@@ -38,20 +41,25 @@ interface ClassMap {
 type AnimationState = 'enter' | 'leave' | null;
 
 @Component({
-  selector   : 'nz-modal',
+  selector: 'nz-modal',
   templateUrl: './nz-modal.component.html'
 })
 
 // tslint:disable-next-line:no-any
-export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> implements OnInit, OnChanges, AfterViewInit, ModalOptions {
+export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> implements OnInit, OnChanges, AfterViewInit, OnDestroy, ModalOptions {
   @Input() nzModalType: ModalType = 'default';
   @Input() nzContent: string | TemplateRef<{}> | Type<T>; // [STATIC] If not specified, will use <ng-content>
   @Input() nzComponentParams: object; // [STATIC] ONLY avaliable when nzContent is a component
   @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>>; // [STATIC] Default Modal ONLY
-  @Input() nzGetContainer: HTMLElement | (() => HTMLElement) = () => this.overlay.create().overlayElement; // [STATIC]
+  @Input() nzGetContainer: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef) = () => this.overlay.create(); // [STATIC]
 
-  @Input() nzVisible = false;
+  @Input()
+  get nzVisible(): boolean { return this._visible; }
+  set nzVisible(value: boolean) { this._visible = toBoolean(value); }
+  private _visible: boolean = false;
+
   @Output() nzVisibleChange = new EventEmitter<boolean>();
+
   @Input() nzZIndex: number = 1000;
   @Input() nzWidth: number | string = 520;
   @Input() nzWrapClassName: string;
@@ -59,22 +67,53 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Input() nzStyle: object;
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzTitle: string | TemplateRef<{}>;
-  @Input() nzClosable = true;
-  @Input() nzMask = true;
-  @Input() nzMaskClosable = true;
+
+  @Input()
+  get nzClosable(): boolean { return this._closable; }
+  set nzClosable(value: boolean) { this._closable = toBoolean(value); }
+  private _closable: boolean = true;
+
+  @Input()
+  get nzMask(): boolean { return this._mask; }
+  set nzMask(value: boolean) { this._mask = toBoolean(value); }
+  private _mask: boolean = true;
+
+  @Input()
+  get nzMaskClosable(): boolean { return this._maskClosable; }
+  set nzMaskClosable(value: boolean) { this._maskClosable = toBoolean(value); }
+  private _maskClosable: boolean = true;
+
   @Input() nzMaskStyle: object;
   @Input() nzBodyStyle: object;
-  @Output() nzAfterClose = new EventEmitter<R | undefined>(); // Trigger when modal is hidden
+
+  @Output() nzAfterOpen = new EventEmitter<void>(); // Trigger when modal open(visible) after animations
+  @Output() nzAfterClose = new EventEmitter<R>(); // Trigger when modal leave-animation over
+  get afterOpen(): Observable<void> { // Observable alias for nzAfterOpen
+    return this.nzAfterOpen.asObservable();
+  }
+  get afterClose(): Observable<R> { // Observable alias for nzAfterClose
+    return this.nzAfterClose.asObservable();
+  }
 
   // --- Predefined OK & Cancel buttons
   @Input() nzOkText: string;
   @Input() nzOkType = 'primary';
-  @Input() nzOkLoading = false;
-  @Input() @Output() nzOnOk: EventEmitter<T | undefined> | OnClickCallback<T | undefined> = new EventEmitter<T | undefined>();
+
+  @Input()
+  get nzOkLoading(): boolean { return this._okLoading; }
+  set nzOkLoading(value: boolean) { this._okLoading = toBoolean(value); }
+  private _okLoading: boolean = false;
+
+  @Input() @Output() nzOnOk: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
   @ViewChild('autoFocusButtonOk', { read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
   @Input() nzCancelText: string;
-  @Input() nzCancelLoading = false;
-  @Input() @Output() nzOnCancel: EventEmitter<T | undefined> | OnClickCallback<T | undefined> = new EventEmitter<T | undefined>();
+
+  @Input()
+  get nzCancelLoading(): boolean { return this._cancelLoading; }
+  set nzCancelLoading(value: boolean) { this._cancelLoading = toBoolean(value); }
+  private _cancelLoading: boolean = false;
+
+  @Input() @Output() nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
 
   @ViewChild('modalContainer') modalContainer: ElementRef;
   @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
@@ -88,15 +127,18 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   private contentComponentRef: ComponentRef<T>; // Handle the reference when using nzContent as Component
   private animationState: AnimationState; // Current animation state
+  private container: HTMLElement | OverlayRef;
 
-  constructor(private overlay: Overlay,
-              private locale: NzI18nService,
-              private renderer: Renderer2,
-              private cfr: ComponentFactoryResolver,
-              private elementRef: ElementRef,
-              private viewContainer: ViewContainerRef,
-              @Inject(DOCUMENT) private document: any // tslint:disable-line:no-any
-  ) {
+  constructor(
+    private overlay: Overlay,
+    private locale: NzI18nService,
+    private renderer: Renderer2,
+    private cfr: ComponentFactoryResolver,
+    private elementRef: ElementRef,
+    private viewContainer: ViewContainerRef,
+    private modalControl: NzModalControlService,
+    @Inject(DOCUMENT) private document: any) { // tslint:disable-line:no-any
+
     super();
   }
 
@@ -109,10 +151,16 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
       this.nzFooter = this.formatModalButtons(this.nzFooter as Array<ModalButtonOptions<T>>);
     }
 
-    const container = typeof this.nzGetContainer === 'function' ? this.nzGetContainer() : this.nzGetContainer;
-    if (container instanceof HTMLElement) {
-      container.appendChild(this.elementRef.nativeElement);
+    // Place the modal dom to elsewhere
+    this.container = typeof this.nzGetContainer === 'function' ? this.nzGetContainer() : this.nzGetContainer;
+    if (this.container instanceof HTMLElement) {
+      this.container.appendChild(this.elementRef.nativeElement);
+    } else if (this.container instanceof OverlayRef) { // NOTE: only attach the dom to overlay, the view container is not changed actually
+      this.container.overlayElement.appendChild(this.elementRef.nativeElement);
     }
+
+    // Register modal when afterOpen/afterClose is stable
+    this.modalControl.registerModal(this);
   }
 
   // [NOTE] NOT available when using by service!
@@ -121,10 +169,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   // BUT: User also can change "nzContent" dynamically to trigger UI changes (provided you don't use Component that needs initializations)
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzVisible) {
-      this.changeBodyOverflow(this.nzVisible);
-      if (!changes.nzVisible.firstChange) { // Do not trigger animation while initializing
-        this.animateTo(this.nzVisible);
-      }
+      this.handleVisibleStateChange(this.nzVisible, !changes.nzVisible.firstChange); // Do not trigger animation while initializing
     }
   }
 
@@ -139,20 +184,22 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     }
   }
 
+  ngOnDestroy(): void {
+    if (this.container instanceof OverlayRef) {
+      this.container.dispose();
+    }
+  }
+
   open(): void {
     this.changeVisibleFromInside(true);
   }
 
   close(result?: R): void {
-    this.changeVisibleFromInside(false).then(() => this.nzAfterClose.emit(result));
+    this.changeVisibleFromInside(false, result);
   }
 
   destroy(result?: R): void { // Destroy equals Close
     this.close(result);
-  }
-
-  afterClose(): Observable<R | undefined> {
-    return this.nzAfterClose.asObservable();
   }
 
   getInstance(): NzModalComponent {
@@ -222,6 +269,20 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     return Array.isArray(value) && value.length > 0;
   }
 
+  // Do rest things when visible state changed
+  private handleVisibleStateChange(visible: boolean, animation: boolean = true, closeResult?: R): Promise<void> {
+    return Promise
+      .resolve(animation && this.animateTo(visible))
+      .then(() => { // Emit open/close event after animations over
+        if (visible) {
+          this.nzAfterOpen.emit();
+        } else {
+          this.nzAfterClose.emit(closeResult);
+        }
+      })
+      .then(() => this.changeBodyOverflow());
+  }
+
   // Lookup a button's property, if the prop is a function, call & then return the result, otherwise, return itself.
   private getButtonCallableProp(options: ModalButtonOptions<T>, prop: string): {} {
     const value = options[ prop ];
@@ -242,13 +303,12 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   // Change nzVisible from inside
-  private changeVisibleFromInside(visible: boolean): Promise<void> {
+  private changeVisibleFromInside(visible: boolean, closeResult?: R): Promise<void> {
     if (this.nzVisible !== visible) {
       // Change nzVisible value immediately
       this.nzVisible = visible;
-      this.changeBodyOverflow(this.nzVisible);
       this.nzVisibleChange.emit(visible);
-      return this.animateTo(visible);
+      return this.handleVisibleStateChange(visible, true, closeResult);
     }
     return Promise.resolve();
   }
@@ -331,23 +391,16 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     // }
   }
 
-  private changeBodyOverflow(visible: boolean): void {
-    const countKey = 'data-modal-count';
-    let countValue = parseInt(this.document.body.attributes.getNamedItem(countKey) && this.document.body.attributes.getNamedItem('data-modal-count').value || 0, 10);
-    if (visible) {
-      countValue += 1;
-    } else {
-      countValue = (countValue - 1 >= 0) ? (countValue - 1) : 0;
-    }
-    if (countValue) {
-      const scrollBarWidth = measureScrollbar();
-      this.renderer.setStyle(this.document.body, 'padding-right', `${scrollBarWidth}px`);
+  private changeBodyOverflow(): void {
+    const openModals = this.modalControl.openModals;
+
+    if (openModals.length) {
+      this.renderer.setStyle(this.document.body, 'padding-right', `${measureScrollbar()}px`);
       this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
     } else {
       this.renderer.removeStyle(this.document.body, 'padding-right');
       this.renderer.removeStyle(this.document.body, 'overflow');
     }
-    this.renderer.setAttribute(this.document.body, countKey, `${countValue}`);
   }
 }
 

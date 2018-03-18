@@ -23,7 +23,8 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 
 | Property | Description | Type | Default |
 |----|----|----|----|
-| nzAfterClose      | Specify a EventEmitter that will be emitted when modal is closed completely. | EventEmitter | - |
+| nzAfterOpen      | Specify a EventEmitter that will be emitted when modal opened | EventEmitter | - |
+| nzAfterClose      | Specify a EventEmitter that will be emitted when modal is closed completely (Can listen for parameters passed in the close/destroy method) | EventEmitter | - |
 | nzBodyStyle       | Body style for modal body element. Such as height, padding etc. | object | - |
 | nzCancelText      | Text of the Cancel button. <i>Set to null to show no cancel button (this value is invalid if the nzFooter parameter is used in normal mode)</i> | string | Cancel |
 | nzClosable        | Whether a close (x) button is visible on top right of the modal dialog or not. <i>Invalid value in confirm box mode (default will be hidden)</i> | boolean | true |
@@ -81,22 +82,33 @@ All the `NzModalService.method`s will return a reference, and then we can close 
 ```ts
 constructor(modal: NzModalService) {
   const ref: NzModalRef = modal.info();
-  ref.destroy(); // Note: This dialog will be destroyed directly
+  ref.close(); // Or ref.destroy(); This dialog will be destroyed directly
 }
 ```
 
 ### Related type definition
 
-#### NzModalRef (used for control dialogs)
+#### Other Methods/Attributes for NzModalService
+
+| Methods/Attributes | Description | Type |
+|----|----|
+| openModals | All currently open Modal list | NzModalRef[] |
+| afterAllClose | Callback called after all Modals closed completely | Observable&lt;void&gt; |
+| closeAll() | Close all modals | function |
+
+#### NzModalRef
+
+> NzModalRef object is used to control dialogs and communicate with inside content
 
 The dialog created by the service method `NzModalService.xxx()` will return a `NzModalRef` object that is used to manipulate the dialog (this object can also be obtained by dependency injection `NzModalRef` if `nzContent` is used as Component) , This object has the following methods:
 
 | Method | Description |
 |----|----|
+| afterOpen                 | Same as nzAfterOpen but of type Observable&lt;void&gt; |
+| afterClose | Same as nzAfterClose, but of type Observable&lt;result:any&gt; |
 | open()                    | Open (display) dialog box. <i>Calling this function will fail if the dialog is already destroyed</i> |
 | close()                   | Close (hide) the dialog. <i>Note: When used for a dialog created as a service, this method will destroy the dialog directly (as with the destroy method)</i> |
 | destroy()                 | Destroy the dialog. <i>Note: Used only for dialogs created by the service (non-service created dialogs, this method only hides the dialog)</i> |
-| afterClose() | Returns an Observable object to get the result parameter passed in close/destroy (will fire after the dialog is closed) |
 | getContentComponent()  | Gets the Component instance in the contents of the dialog for `nzContent`. <i> Note: When the dialog is not initialized (`ngOnInit` is not executed), this function will return `undefined`</i> |
 
 #### ModalButtonOptions (used to customize the bottom button)

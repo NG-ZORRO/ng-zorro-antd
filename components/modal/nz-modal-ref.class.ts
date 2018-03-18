@@ -8,10 +8,12 @@ import { NzModalComponent } from './nz-modal.component';
  * NzModalRef is aim to avoid accessing to the modal instance directly by users.
  */
 export abstract class NzModalRef<T = any, R = any> { // tslint:disable-line:no-any
+  abstract afterOpen: Observable<void>;
+  abstract afterClose: Observable<R>;
+
   abstract open(): void;
   abstract close(result?: R): void;
   abstract destroy(result?: R): void;
-  abstract afterClose(): Observable<R | undefined>;
 
   // /**
   //  * Return the ComponentRef of nzContent when specify nzContent as a Component

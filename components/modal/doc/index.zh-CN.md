@@ -23,7 +23,8 @@ title: Modal
 
 | 参数 | 说明 | 类型 | 默认值 |
 |----|----|----|----|
-| nzAfterClose      | Modal 完全关闭后的回调 | EventEmitter | 无 |
+| nzAfterOpen      | Modal 打开后的回调 | EventEmitter | 无 |
+| nzAfterClose      | Modal 完全关闭后的回调，可监听close/destroy方法传入的参数 | EventEmitter | 无 |
 | nzBodyStyle       | Modal body 样式 | object | 无 |
 | nzCancelText      | 取消按钮文字。<i>设为 null 表示不显示取消按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | string | 取消 |
 | nzClosable        | 是否显示右上角的关闭按钮。<i>确认框模式下该值无效（默认会被隐藏）</i> | boolean | true |
@@ -80,22 +81,33 @@ title: Modal
 ```ts
 constructor(modal: NzModalService) {
   const ref: NzModalRef = modal.info();
-  ref.destroy(); // 注：这里将直接销毁对话框
+  ref.close(); // 或 ref.destroy(); 将直接销毁对话框
 }
 ```
 
 ### 相关类型定义
 
-#### NzModalRef（用于控制对话框）
+#### NzModalService的其他方法/属性
+
+| 方法/属性 | 说明 | 类型 |
+|----|----|
+| openModals | 当前打开的所有Modal引用列表 | NzModalRef[] |
+| afterAllClose | 所有Modal完全关闭后的回调 | Observable&lt;void&gt; |
+| closeAll() | 关闭所有模态框 | function |
+
+#### NzModalRef
+
+> NzModalRef 对象用于控制对话框以及进行内容间的通信
 
 通过服务方式 `NzModalService.xxx()` 创建的对话框，都会返回一个 `NzModalRef` 对象，用于操控该对话框（若使用nzContent为Component时，也可通过依赖注入 `NzModalRef` 方式获得此对象），该对象具有以下方法：
 
-| 方法 | 说明 |
+| 方法/属性 | 说明 |
 |----|----|
+| afterOpen                 | 同nzAfterOpen，但类型为Observable&lt;void&gt; |
+| afterClose                | 同nzAfterClose，但类型为Observable&lt;result:any&gt; |
 | open()                    | 打开(显示)对话框。<i>若对话框已销毁，则调用此函数将失效</i> |
 | close(result: any)        | 关闭(隐藏)对话框。<i>注：当用于以服务方式创建的对话框，此方法将直接 销毁 对话框（同destroy方法）</i> |
 | destroy(result: any)      | 销毁对话框。<i>注：仅用于服务方式创建的对话框（非服务方式创建的对话框，此方法只会隐藏对话框）</i> |
-| afterClose() | 返回一个Observable对象来获取close/destroy中传递的result参数（将在对话框关闭后触发） |
 | getContentComponent()  | 获取对话框内容中`nzContent`的Component实例instance。<i>注：当对话框还未初始化完毕（`ngOnInit`未执行）时，此函数将返回`undefined`</i> |
 
 #### ModalButtonOptions（用于自定义底部按钮）
