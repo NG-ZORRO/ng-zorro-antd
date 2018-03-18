@@ -13,7 +13,7 @@
     "doc": "npm run site:init && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer",
     "helper": "bash ./release-helper.sh",
     "generate": "bash ./build.sh",
-    "pre-release": "npm run site:init && bash ./build_scripts/replace-publish.sh && npm run generate && ng build --prod && npm run helper",
+    "pre-release": "npm run site:init && bash ./build_scripts/replace-publish.sh && npm run generate && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod && npm run helper",
     "test": "node site_scripts/generate-site init && ng test --single-run --code-coverage",
     "integration": "npm run generate && bash ./integration-test.sh",
     "integration-cli": "npm run generate && cd integration/angular-cli && npm run integration",
