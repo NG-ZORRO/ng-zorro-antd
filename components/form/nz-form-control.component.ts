@@ -65,18 +65,20 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
     }
   }
 
+  updateValidateStatus(status: string): void {
+    if (this.validateControl.dirty) {
+      this.controlStatus = status;
+      this.setControlClassMap();
+    } else {
+      this.controlStatus = null;
+      this.setControlClassMap();
+    }
+  }
+
   watchControl(): void {
     this.removeSubscribe();
     if (this.validateControl && this.validateControl.statusChanges) {
-      this.validateChanges = this.validateControl.statusChanges.subscribe(data => {
-        if (this.validateControl.dirty) {
-          this.controlStatus = data;
-          this.setControlClassMap();
-        } else {
-          this.controlStatus = null;
-          this.setControlClassMap();
-        }
-      });
+      this.validateChanges = this.validateControl.statusChanges.subscribe(data => this.updateValidateStatus(data));
     }
 
   }
@@ -102,5 +104,8 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
 
   ngAfterContentInit(): void {
     this.watchControl();
+    if (this.validateControl) {
+      this.updateValidateStatus(this.validateControl.status);
+    }
   }
 }
