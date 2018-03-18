@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
 import { NzI18nModule, NzI18nService } from '../i18n';
+import en_US from '../i18n/languages/en_US';
 import { NzProgressModule } from '../progress/nz-progress.module';
 import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
 
@@ -174,6 +175,22 @@ describe('upload', () => {
         } as any];
         fixture.detectChanges();
         expect(pageObject.getByCss('.ant-upload-drag-uploading') != null).toBe(true);
+      });
+
+      it('#i18n', () => {
+        instance.nzFileList = [{
+          uid: 1,
+          name: 'xxx.png',
+          status: 'done',
+          response: 'Server Error 500', // custom error message to show
+          url: 'http://www.baidu.com/xxx.png'
+        } as any];
+        fixture.detectChanges();
+        const oldText = (pageObject.getByCss('.anticon-cross').nativeElement as HTMLElement).title;
+        injector.get(NzI18nService).setLocale(en_US);
+        fixture.detectChanges();
+        const newText = (pageObject.getByCss('.anticon-cross').nativeElement as HTMLElement).title;
+        expect(oldText).not.toBe(newText);
       });
 
     });
@@ -457,7 +474,7 @@ describe('upload', () => {
         return this.btnEl.injector.get(NzUploadBtnComponent) as NzUploadBtnComponent;
       }
 
-      getByCss(css: string): any {
+      getByCss(css: string): DebugElement {
         return dl.query(By.css(css));
       }
 
