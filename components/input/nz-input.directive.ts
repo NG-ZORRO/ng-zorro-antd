@@ -7,9 +7,10 @@ import {
   HostListener,
   Input,
   Optional,
-  Renderer2
+  Renderer2,
+  Self
 } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { NgControl, NgModel } from '@angular/forms';
 
 import calculateNodeHeight from '../core/util/calculate-node-height';
 import { toBoolean } from '../core/util/convert';
@@ -51,6 +52,9 @@ export class NzInputDirective implements DoCheck, AfterViewInit {
   }
 
   get disabled(): boolean {
+    if (this.ngControl && this.ngControl.disabled !== null) {
+      return this.ngControl.disabled;
+    }
     return this._disabled;
   }
 
@@ -104,7 +108,7 @@ export class NzInputDirective implements DoCheck, AfterViewInit {
     this.renderer.setStyle(textAreaRef, 'maxHeight', `${textAreaStyles.maxHeight}px`);
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Optional() private ngModel: NgModel) {
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Optional() private ngModel: NgModel, @Optional() @Self() public ngControl: NgControl) {
     this.el = this.elementRef.nativeElement;
   }
 

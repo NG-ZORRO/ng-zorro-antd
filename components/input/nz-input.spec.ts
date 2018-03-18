@@ -1,6 +1,6 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { async, fakeAsync, flush, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { dispatchKeyboardEvent } from '../core/testing';
@@ -15,7 +15,7 @@ describe('input', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports     : [ NzInputModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestInputWithInputComponent, NzTestInputWithTextAreaComponent, NzTestInputWithTextAreaAutoSizeStringComponent, NzTestInputWithTextAreaAutoSizeObjectComponent, NzTestInputGroupAddonComponent, NzTestInputGroupAffixComponent, NzTestInputGroupMultipleComponent, NzTestInputGroupColComponent ],
+      declarations: [ NzTestInputWithInputComponent, NzTestInputWithTextAreaComponent, NzTestInputWithTextAreaAutoSizeStringComponent, NzTestInputWithTextAreaAutoSizeObjectComponent, NzTestInputGroupAddonComponent, NzTestInputGroupAffixComponent, NzTestInputGroupMultipleComponent, NzTestInputGroupColComponent, NzTestInputFormComponent ],
       providers   : []
     }).compileComponents();
   }));
@@ -322,6 +322,25 @@ describe('input', () => {
       });
     });
   });
+  describe('input form', () => {
+    describe('input with form', () => {
+      let inputElement;
+      beforeEach(() => {
+        fixture = TestBed.createComponent(NzTestInputFormComponent);
+        testComponent = fixture.debugElement.componentInstance;
+        fixture.detectChanges();
+        inputElement = fixture.debugElement.query(By.directive(NzInputDirective));
+      });
+      it('should set disabled work', fakeAsync(() => {
+        flush();
+        expect(inputElement.nativeElement.classList).not.toContain('ant-input-disabled');
+        testComponent.disable();
+        flush();
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.classList).toContain('ant-input-disabled');
+      }));
+    });
+  });
 });
 
 @Component({
@@ -422,4 +441,26 @@ export class NzTestInputGroupMultipleComponent {
   `
 })
 export class NzTestInputGroupColComponent {
+}
+
+@Component({
+  selector: 'nz-test-input-form',
+  template: `
+    <form [formGroup]="formGroup">
+      <input nz-input formControlName="input">
+    </form>
+  `
+})
+export class NzTestInputFormComponent {
+  formGroup: FormGroup;
+
+  constructor(private formBuilder: FormBuilder) {
+    this.formGroup = this.formBuilder.group({
+      input: [ 'abc' ]
+    });
+  }
+
+  disable(): void {
+    this.formGroup.disable();
+  }
 }
