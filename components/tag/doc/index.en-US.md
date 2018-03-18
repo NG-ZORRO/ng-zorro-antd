@@ -18,7 +18,7 @@ Tag for categorizing or markup.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzMode | Mode of tag | `'closable'丨'default'丨'checkable'` | `default` |
+| nzMode | Mode of tag | `'closeable'丨'default'丨'checkable'` | `default` |
 | nzAfterClose | Callback executed when close animation is completed, only works when `nzMode="closable"` | () => void | - |
 | nzOnClose | Callback executed when tag is closed, only works when `nzMode="closable"`| (e:MouseEvent) => void | - |
 | nzChecked | Checked status of Tag, double binding, only works when `nzMode="checkable"` | boolean | `false` |

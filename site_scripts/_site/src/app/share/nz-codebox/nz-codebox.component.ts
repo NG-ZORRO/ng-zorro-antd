@@ -223,14 +223,14 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
         'app/app.module.ts'   : `import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 import { ${this.nzComponentName} } from './app.component';
 
 @NgModule({
-  imports:      [ BrowserModule, FormsModule, HttpClientModule, NgZorroAntdModule.forRoot(), BrowserAnimationsModule ],
+  imports:      [ BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule, NgZorroAntdModule.forRoot(), BrowserAnimationsModule ],
   declarations: [ ${this.nzComponentName} ],
   bootstrap:    [ ${this.nzComponentName} ]
 })
