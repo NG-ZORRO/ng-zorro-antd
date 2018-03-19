@@ -146,7 +146,7 @@ export class NzPaginationComponent {
   private _simple = false;
   private _hideOnSinglePage = false;
   private _pageSize = 10;
-  private _pageSizeOptions = [ 10, 20, 30, 40 ];
+  private _pageSizeOptions = [ 10, 20, 30, 40, 50, 100 ];
   private _total: number;
   private _pageIndex = 1;
   firstIndex = 1;
