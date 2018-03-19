@@ -13,6 +13,21 @@ timeline: true
 
 ---
 
+## 0.7.0-beta.2
+
+`2018-03-19`
+
+#### 全局部分
+
+- 去掉了 cdk-overlay-pane 的 z-index 样式
+
+#### Modal
+
+- 新增参数`nzAfterOpen`/`nzAfterClose`
+- `nzGetContainer`参数默认值改为动态创建的overlay容器
+- `NzModalService`服务新增`openModals`/`afterAllClose`/`closeAll()`支持
+- `NzModalRef`新增`afterOpen`/`afterClose`/`getContentComponent()`支持，并且原`close`/`destroy`方法支持传递参数
+
 ## 0.7.0-beta.1
 
 `2018-03-15`
