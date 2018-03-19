@@ -1,7 +1,7 @@
 /* entryComponents: NzModalCustomComponent */
 
-import { Component, Input, TemplateRef } from '@angular/core';
-import { ModalPublicAgent, NzModalService } from 'ng-zorro-antd';
+import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-modal-service',
@@ -34,11 +34,17 @@ import { ModalPublicAgent, NzModalService } from 'ng-zorro-antd';
     </button>
 
     <button nz-button nzType="primary" (click)="createCustomButtonModal()">Custom Button</button>
+
+    <br /><br />
+
+    <button nz-button nzType="primary" (click)="openAndCloseAll()">Open more modals then close all after 2s</button>
+    <nz-modal [(nzVisible)]="htmlModalVisible" nzMask="false" nzZIndex="1001" nzTitle="Non-service html modal">This is a non-service html modal</nz-modal>
   `
 })
 export class NzDemoModalServiceComponent {
-  tplModal: ModalPublicAgent;
+  tplModal: NzModalRef;
   tplModalButtonLoading = false;
+  htmlModalVisible = false;
 
   constructor(private modalService: NzModalService) { }
 
@@ -80,15 +86,20 @@ export class NzDemoModalServiceComponent {
       },
       nzFooter: [{
         label: 'change component tilte from outside',
-        onClick: (componentInstance: NzModalCustomComponent) => {
+        onClick: (componentInstance) => {
           componentInstance.title = 'title in inner component is changed';
         }
       }]
     });
 
+    modal.afterOpen.subscribe(() => console.log('[afterOpen] emitted!'));
+
+    // Return a result when closed
+    modal.afterClose.subscribe((result) => console.log('[afterClose] The result is:', result));
+
     // delay until modal instance created
     window.setTimeout(() => {
-      const instance = modal.getContentComponentRef().instance as NzModalCustomComponent;
+      const instance = modal.getContentComponent();
       instance.subtitle = 'sub title is changed';
     }, 2000);
   }
@@ -130,6 +141,23 @@ export class NzDemoModalServiceComponent {
       ]
     });
   }
+
+  openAndCloseAll(): void {
+    let pos = 0;
+
+    [ 'create', 'info', 'success', 'error' ].forEach((method) => this.modalService[method]({
+      nzMask: false,
+      nzTitle: `Test ${method} title`,
+      nzContent: `Test content: <b>${method}</b>`,
+      nzStyle: { position: 'absolute', top: `${pos * 70}px`, left: `${(pos++) * 300}px` }
+    }));
+
+    this.htmlModalVisible = true;
+
+    this.modalService.afterAllClose.subscribe(() => console.log('afterAllClose emitted!'));
+
+    window.setTimeout(() => this.modalService.closeAll(), 2000);
+  }
 }
 
 @Component({
@@ -149,9 +177,9 @@ export class NzModalCustomComponent {
   @Input() title: string;
   @Input() subtitle: string;
 
-  constructor(private modal: ModalPublicAgent) { }
+  constructor(private modal: NzModalRef) { }
 
   destroyModal(): void {
-    this.modal.destroy();
+    this.modal.destroy({ data: 'this the result data' });
   }
 }

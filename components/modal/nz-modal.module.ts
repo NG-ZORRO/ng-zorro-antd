@@ -7,6 +7,7 @@ import { LoggerModule } from '../core/util/logger/logger.module';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 
 import { CssUnitPipe } from './css-unit.pipe';
+import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalComponent } from './nz-modal.component';
 import { NzModalService } from './nz-modal.service';
 
@@ -15,6 +16,6 @@ import { NzModalService } from './nz-modal.service';
   exports: [ NzModalComponent ],
   declarations: [ NzModalComponent, CssUnitPipe ],
   entryComponents: [ NzModalComponent ],
-  providers: [ NzModalService ]
+  providers: [ NzModalControlService, NzModalService ]
 })
 export class NzModalModule { }

@@ -1,20 +1,24 @@
-import { Component, DebugElement, ElementRef, Input, NgModule, OnInit } from '@angular/core';
-import { async, fakeAsync, flush, tick, ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
+/* TODO: Sort out and rewrite for more standardized */
+
+import { Component, DebugElement, ElementRef, EventEmitter, Input, NgModule } from '@angular/core';
+import { async, fakeAsync, flush, flushMicrotasks, inject, tick, ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { NzButtonComponent } from '../button/nz-button.component';
 import { NzButtonModule } from '../button/nz-button.module';
 
 import { CssUnitPipe } from './css-unit.pipe';
-import { ModalPublicAgent } from './modal-public-agent.class';
+import { NzModalControlService } from './nz-modal-control.service';
+import { NzModalRef } from './nz-modal-ref.class';
 import { MODAL_ANIMATE_DURATION, NzModalComponent } from './nz-modal.component';
 import { NzModalModule } from './nz-modal.module';
 import { NzModalService } from './nz-modal.service';
 
 const WAIT_ANIMATE_TIME = MODAL_ANIMATE_DURATION + 50;
 
-describe('modal', () => {
+describe('modal testing (legacy)', () => {
   let instance;
   let fixture: ComponentFixture<{}>;
 
@@ -57,7 +61,7 @@ describe('modal', () => {
 
   describe('demo-confirm-promise', () => {
     const tempModalId = generateUniqueId(); // Temp unique id to mark the confirm modal that created by service
-    let modalAgent: ModalPublicAgent;
+    let modalAgent: NzModalRef;
     let buttonShow: HTMLButtonElement;
 
     beforeEach(async(() => {
@@ -103,7 +107,7 @@ describe('modal', () => {
 
   describe('NormalModal: created by service with most APIs', () => {
     const tempModalId = generateUniqueId(); // Temp unique id to mark the confirm modal that created by service
-    let modalAgent: ModalPublicAgent;
+    let modalAgent: NzModalRef;
     let modalElement: HTMLElement;
 
     beforeEach(async(() => {
@@ -169,7 +173,7 @@ describe('modal', () => {
 
   describe('NormalModal: created by service with vary nzContent and nzFooter', () => {
     const tempModalId = generateUniqueId(); // Temp unique id to mark the confirm modal that created by service
-    let modalAgent: ModalPublicAgent;
+    let modalAgent: NzModalRef<TestVaryServiceCustomComponent>;
     let modalElement: HTMLElement;
 
     beforeEach(async(() => {
@@ -193,7 +197,9 @@ describe('modal', () => {
     it('should change title from in/outside and trigger button', fakeAsync(() => {
       fixture.detectChanges(); // Initial change detecting
 
-      const contentComponent = modalAgent.getContentComponentRef().instance as TestVaryServiceCustomComponent;
+      const contentComponent = modalAgent.getContentComponent();
+      const contentComponentRef = (modalAgent as any).getContentComponentRef(); // tslint:disable-line:no-any
+      expect(contentComponent).toBe(contentComponentRef.instance);
       const contentElement = contentComponent.elementRef.nativeElement as HTMLElement;
       // change title from outside
       const firstButton = modalElement.querySelector('.ant-modal-footer button:first-child') as HTMLButtonElement;
@@ -234,7 +240,7 @@ describe('modal', () => {
       spyOn(logger, 'warn');
 
       const tempModalId = generateUniqueId();
-      const modalAgent = instance.createConfirm() as ModalPublicAgent;
+      const modalAgent = instance.createConfirm() as NzModalRef;
       const modalElement = modalAgent.getElement();
       modalElement.classList.add(tempModalId);
       fixture.detectChanges();
@@ -285,6 +291,143 @@ describe('modal', () => {
   });
 });
 
+describe('NzModal', () => {
+  let modalService: NzModalService;
+  let overlayContainer: OverlayContainer;
+  let overlayContainerElement: HTMLElement;
+
+  beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [ NzModalModule ],
+      declarations: [
+        ModalByServiceComponent
+      ]
+    });
+
+    TestBed.compileComponents();
+  }));
+
+  beforeEach(inject([ NzModalService, OverlayContainer ], (ms: NzModalService, oc: OverlayContainer) => {
+    modalService = ms;
+    overlayContainer = oc;
+    overlayContainerElement = oc.getContainerElement();
+  }));
+
+  afterEach(() => {
+    overlayContainer.ngOnDestroy();
+  });
+
+  describe('created by service', () => {
+    let fixture: ComponentFixture<ModalByServiceComponent>;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(ModalByServiceComponent);
+    });
+    afterEach(fakeAsync(() => { // wait all openModals tobe closed to clean up the ModalManager as it is globally static
+      modalService.closeAll();
+      fixture.detectChanges();
+      tick(1000);
+    }));
+
+    it('should trigger both afterOpen/nzAfterOpen and have the correct openModals length', fakeAsync(() => {
+      const spy = jasmine.createSpy('afterOpen spy');
+      const nzAfterOpen = new EventEmitter<void>();
+      const modalRef = modalService.create({ nzAfterOpen });
+
+      modalRef.afterOpen.subscribe(spy);
+      nzAfterOpen.subscribe(spy);
+
+      fixture.detectChanges();
+      expect(spy).not.toHaveBeenCalled();
+
+      tick(600);
+      expect(spy).toHaveBeenCalledTimes(2);
+      expect(modalService.openModals.indexOf(modalRef)).toBeGreaterThan(-1);
+      expect(modalService.openModals.length).toBe(1);
+    }));
+
+    it('should trigger both afterClose/nzAfterClose and have the correct openModals length', fakeAsync(() => {
+      const spy = jasmine.createSpy('afterClose spy');
+      const nzAfterClose = new EventEmitter<void>();
+      const modalRef = modalService.create({ nzAfterClose });
+
+      modalRef.afterClose.subscribe(spy);
+      nzAfterClose.subscribe(spy);
+
+      fixture.detectChanges();
+      tick(600);
+      modalRef.close();
+      fixture.detectChanges();
+      expect(spy).not.toHaveBeenCalled();
+
+      tick(600);
+      expect(spy).toHaveBeenCalledTimes(2);
+      expect(modalService.openModals.indexOf(modalRef)).toBe(-1);
+      expect(modalService.openModals.length).toBe(0);
+    }));
+
+    it('should return/receive with/without result data', fakeAsync(() => {
+      const spy = jasmine.createSpy('afterClose without result spy');
+      const modalRef = modalService.success();
+
+      modalRef.afterClose.subscribe(spy);
+      fixture.detectChanges();
+      tick(600);
+      modalRef.destroy();
+      expect(spy).not.toHaveBeenCalled();
+      tick(600);
+      expect(spy).toHaveBeenCalledWith(undefined);
+    }));
+
+    it('should return/receive with result data', fakeAsync(() => {
+      const result = { data: 'Fake Error' };
+      const spy = jasmine.createSpy('afterClose with result spy');
+      const modalRef = modalService.error();
+
+      fixture.detectChanges();
+      tick(600);
+      modalRef.destroy(result);
+      modalRef.afterClose.subscribe(spy);
+      expect(spy).not.toHaveBeenCalled();
+      tick(600);
+      expect(spy).toHaveBeenCalledWith(result);
+    }));
+
+    it('should close all opened modals (include non-service modals)', fakeAsync(() => {
+      const spy = jasmine.createSpy('afterAllClose spy');
+      const modalMethods = [ 'create', 'info', 'success', 'error', 'confirm' ];
+      const uniqueId = (name: string) => `__${name}_ID_SUFFIX__`;
+      const queryOverlayElement = (name: string) => overlayContainerElement.querySelector(`.${uniqueId(name)}`) as HTMLElement;
+
+      modalService.afterAllClose.subscribe(spy);
+
+      fixture.componentInstance.nonServiceModalVisible = true; // Show non-service modal
+      modalMethods.forEach(method => modalService[method]({ nzWrapClassName: uniqueId(method) })); // Service modals
+
+      fixture.detectChanges();
+      tick(600);
+      (modalMethods.concat('NON_SERVICE')).forEach(method => expect(queryOverlayElement(method).style.display).not.toBe('none')); // Cover non-service modal for later checking
+      expect(modalService.openModals.length).toBe(6);
+
+      modalService.closeAll();
+      fixture.detectChanges();
+      expect(spy).not.toHaveBeenCalled();
+      tick(600);
+      expect(spy).toHaveBeenCalled();
+      expect(modalService.openModals.length).toBe(0);
+    }));
+
+    it('should modal not be registered twice', fakeAsync(() => {
+      const modalRef = modalService.create();
+
+      fixture.detectChanges();
+      (modalService as any).modalControl.registerModal(modalRef); // tslint:disable-line:no-any
+      tick(600);
+      expect(modalService.openModals.length).toBe(1);
+    }));
+  });
+});
+
 // -------------------------------------------
 // | Testing Components
 // -------------------------------------------
@@ -295,7 +438,7 @@ describe('modal', () => {
     <button nz-button nzType="primary" (click)="showModal()">
       <span>show modal</span>
     </button>
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="title" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)" [nzOkLoading]="isOkLoading">
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="title" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" [nzOkLoading]="isOkLoading">
       <p>content</p>
     </nz-modal>
   `,
@@ -309,7 +452,7 @@ class NzDemoModalAsyncComponent {
     this.isVisible = true;
   }
 
-  handleOk($event: MouseEvent): void {
+  handleOk(): void {
     this.isOkLoading = true;
     window.setTimeout(() => {
       this.isVisible = false;
@@ -317,7 +460,7 @@ class NzDemoModalAsyncComponent {
     }, 3000);
   }
 
-  handleCancel($event: MouseEvent): void {
+  handleCancel(): void {
     this.isVisible = false;
   }
 }
@@ -330,7 +473,7 @@ class NzDemoModalAsyncComponent {
   styles  : []
 })
 class NzDemoModalConfirmPromiseComponent {
-  confirmModal: ModalPublicAgent; // For testing by now
+  confirmModal: NzModalRef; // For testing by now
 
   constructor(private modal: NzModalService) { }
 
@@ -349,7 +492,7 @@ class NzDemoModalConfirmPromiseComponent {
   template: ``
 })
 class TestBasicServiceComponent {
-  basicModal: ModalPublicAgent;
+  basicModal: NzModalRef;
 
   constructor(private modalService: NzModalService) {
     this.modalService.create(); // [Testing Required] Only for coverage temporarily
@@ -387,14 +530,14 @@ class TestBasicServiceComponent {
 class TestVaryServiceComponent {
   constructor(private modalService: NzModalService) {}
 
-  createWithVary(): ModalPublicAgent {
+  createWithVary(): NzModalRef<TestVaryServiceCustomComponent> {
     const modal = this.modalService.create({
       nzContent: TestVaryServiceCustomComponent,
       nzComponentParams: { title: 'internal title', subtitle: 'subtitle' },
       nzFooter: [
         {
           label: 'change title from outside',
-          onClick: (componentInstance: TestVaryServiceCustomComponent) => {
+          onClick: (componentInstance) => {
             componentInstance.title = 'internal title changed';
             return Promise.resolve();
           }
@@ -419,7 +562,7 @@ export class TestVaryServiceCustomComponent {
   @Input() title: string;
   @Input() subtitle: string;
 
-  constructor(private modal: ModalPublicAgent, public elementRef: ElementRef) { }
+  constructor(private modal: NzModalRef, public elementRef: ElementRef) { }
 
   destroyModal(): void {
     this.modal.destroy();
@@ -432,7 +575,7 @@ export class TestVaryServiceCustomComponent {
 export class TestConfirmModalComponent {
   constructor(public modalService: NzModalService) { }
 
-  createConfirm(): ModalPublicAgent {
+  createConfirm(): NzModalRef {
     this.modalService.confirm(); // [Testing Required] Only for coverage temporarily
     this.modalService.confirm({ nzWidth: 100 }); // [Testing Required] Only for coverage temporarily
 
@@ -457,6 +600,19 @@ export class TestConfirmModalComponent {
   template: `<div [style.width]="100 | toCssUnit" [style.height]="'100px' | toCssUnit" [style.top]="100 | toCssUnit:'pt'"></div>`
 })
 class TestCssUnitPipeComponent { }
+
+@Component({
+  selector: 'nz-modal-by-service',
+  template: `
+    <nz-modal [(nzVisible)]="nonServiceModalVisible" nzWrapClassName="__NON_SERVICE_ID_SUFFIX__"></nz-modal>
+  `,
+  providers: [ NzModalControlService ] // Testing for service with parent service
+})
+export class ModalByServiceComponent {
+  nonServiceModalVisible = false;
+
+  constructor(modalControlService: NzModalControlService) {}
+}
 
 // -------------------------------------------
 // | Local tool functions

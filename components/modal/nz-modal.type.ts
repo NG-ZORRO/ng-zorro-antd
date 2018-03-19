@@ -1,13 +1,14 @@
+import { OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter, TemplateRef, Type } from '@angular/core';
 
-export type OnClickCallback = (($event: MouseEvent) => (false | void | {}) | Promise<false | void | {}>);
+export type OnClickCallback<T> = ((instance: T) => (false | void | {}) | Promise<false | void | {}>);
 
 export type ModalType = 'default' | 'confirm'; // Different modal styles we have supported
 
 export type ConfirmType = 'confirm' | 'info' | 'success' | 'error' | 'warning'; // Subtypes of Confirm Modal
 
 // Public options for using by service
-export interface ModalOptions {
+export interface ModalOptions<T = any, R = any> { // tslint:disable-line:no-any
   nzModalType?: ModalType;
   nzVisible?: boolean;
   nzZIndex?: number;
@@ -17,33 +18,35 @@ export interface ModalOptions {
   nzStyle?: object;
   nzIconType?: string; // Confirm Modal ONLY
   nzTitle?: string | TemplateRef<{}>;
-  nzContent?: string | TemplateRef<{}> | Type<{}>;
+  nzContent?: string | TemplateRef<{}> | Type<T>;
   nzComponentParams?: object;
   nzClosable?: boolean;
   nzMask?: boolean;
   nzMaskClosable?: boolean;
   nzMaskStyle?: object;
   nzBodyStyle?: object;
-  nzFooter?: string | TemplateRef<{}> | ModalButtonOptions[]; // Default Modal ONLY
-  nzGetContainer?: HTMLElement | (() => HTMLElement); // STATIC
-  nzAfterClose?: EventEmitter<void>;
+  nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>>; // Default Modal ONLY
+  nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef); // STATIC
+  nzAfterOpen?: EventEmitter<void>;
+  nzAfterClose?: EventEmitter<R>;
 
   // --- Predefined OK & Cancel buttons
   nzOkText?: string;
   nzOkType?: string;
   nzOkLoading?: boolean;
-  nzOnOk?: EventEmitter<MouseEvent> | OnClickCallback; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
+  nzOnOk?: EventEmitter<T> | OnClickCallback<T>; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
   nzCancelText?: string;
   nzCancelLoading?: boolean;
-  nzOnCancel?: EventEmitter<MouseEvent> | OnClickCallback; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
+  nzOnCancel?: EventEmitter<T> | OnClickCallback<T>; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
 }
 
-export interface ModalOptionsForService extends ModalOptions { // Limitations for using by service
-  nzOnOk?: OnClickCallback;
-  nzOnCancel?: OnClickCallback;
+// tslint:disable-next-line:no-any
+export interface ModalOptionsForService<T = any> extends ModalOptions<T> { // Limitations for using by service
+  nzOnOk?: OnClickCallback<T>;
+  nzOnCancel?: OnClickCallback<T>;
 }
 
-export interface ModalButtonOptions {
+export interface ModalButtonOptions<T = any> { // tslint:disable-line:no-any
   label: string;
   type?: string;
   shape?: string;
@@ -52,8 +55,8 @@ export interface ModalButtonOptions {
   autoLoading?: boolean; // Default: true, indicate whether show loading automatically while onClick returned a Promise
 
   // [NOTE] "componentInstance" will refer to the component's instance when using Component
-  show?: boolean | ((this: ModalButtonOptions, contentComponentInstance?: object) => boolean);
-  loading?: boolean | ((this: ModalButtonOptions, contentComponentInstance?: object) => boolean); // This prop CAN'T use with autoLoading=true
-  disabled?: boolean | ((this: ModalButtonOptions, contentComponentInstance?: object) => boolean);
-  onClick?(this: ModalButtonOptions, contentComponentInstance?: object): (void | {}) | Promise<(void | {})>;
+  show?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean);
+  loading?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean); // This prop CAN'T use with autoLoading=true
+  disabled?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean);
+  onClick?(this: ModalButtonOptions<T>, contentComponentInstance?: T): (void | {}) | Promise<(void | {})>;
 }

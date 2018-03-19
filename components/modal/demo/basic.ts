@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { NzModalComponent } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-modal-basic',
   template: `
     <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)">
+    <nz-modal #modal *ngIf="modalValid" [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
       <p>Content one</p>
       <p>Content two</p>
       <p>Content three</p>
@@ -12,22 +13,30 @@ import { Component } from '@angular/core';
   `,
   styles: []
 })
-export class NzDemoModalBasicComponent {
+export class NzDemoModalBasicComponent implements OnInit {
   isVisible = false;
+  modalValid = true;
+
+  @ViewChild('modal') private modal: NzModalComponent;
 
   constructor() {}
 
-  showModal(): void {
-    this.isVisible = true;
+  ngOnInit(): void {
+    (window as any).modal = this.modal; // tslint:disable-line
   }
 
-  handleOk($event: MouseEvent): void {
+  showModal(): void {
+    this.isVisible = true;
+    window.setTimeout(() => this.modalValid = false, 2000);
+  }
+
+  handleOk(): void {
     console.log('Button ok clicked!');
     this.isVisible = false;
   }
 
-  handleCancel($event: MouseEvent): void {
-    console.log('Button cancel clicked!', $event);
+  handleCancel(): void {
+    console.log('Button cancel clicked!');
     this.isVisible = false;
   }
 }
