@@ -77,6 +77,7 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
 
   watchControl(): void {
     this.removeSubscribe();
+    /** miss detect https://github.com/angular/angular/issues/10887 **/
     if (this.validateControl && this.validateControl.statusChanges) {
       this.validateChanges = this.validateControl.statusChanges.subscribe(data => this.updateValidateStatus(data));
     }

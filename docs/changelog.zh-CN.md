@@ -15,7 +15,7 @@ timeline: true
 
 ## 0.7.0-beta.2
 
-`2018-03-19`
+`2018-03-20`
 
 #### 全局部分
 
@@ -23,10 +23,28 @@ timeline: true
 
 #### Modal
 
-- 新增参数`nzAfterOpen`/`nzAfterClose`
-- `nzGetContainer`参数默认值改为动态创建的overlay容器
-- `NzModalService`服务新增`openModals`/`afterAllClose`/`closeAll()`支持
-- `NzModalRef`新增`afterOpen`/`afterClose`/`getContentComponent()`支持，并且原`close`/`destroy`方法支持传递参数
+- 新增参数 `nzAfterOpen` / `nzAfterClose`
+- `nzGetContainer` 参数默认值改为动态创建的overlay容器
+- `NzModalService` 服务新增 `openModals` / `afterAllClose` / `closeAll()` 支持
+- `NzModalRef` 新增 `afterOpen` / `afterClose` / `getContentComponent()` 支持，并且原 `close` / `destroy` 方法支持传递参数
+
+#### Form
+
+- 修复 `Form` 校验 `markAsDirty` 样式不生效的问题
+- 修复 `Input` 在 `ReactiveForm` 模式下 `disabled` 属性不生效的问题
+
+
+#### Table
+
+- 修复 Table 横向滚动宽度小于实际宽度时的样式问题
+- 修复 Table 右侧固定多列时的样式问题
+
+
+#### Doc
+
+- 修复多处文档错误
+- 增加手机浏览时的适配
+
 
 ## 0.7.0-beta.1
 
