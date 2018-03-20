@@ -97,6 +97,7 @@ export class NzDemoFormValidateReactiveComponent {
     $event.preventDefault();
     for (const key in this.validateForm.controls) {
       this.validateForm.controls[ key ].markAsDirty();
+      this.validateForm.controls[ key ].updateValueAndValidity();
     }
     console.log(value);
   }
@@ -106,6 +107,7 @@ export class NzDemoFormValidateReactiveComponent {
     this.validateForm.reset();
     for (const key in this.validateForm.controls) {
       this.validateForm.controls[ key ].markAsPristine();
+      this.validateForm.controls[ key ].updateValueAndValidity();
     }
   }
 
