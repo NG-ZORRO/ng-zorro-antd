@@ -91,6 +91,7 @@ export class NzDemoFormDynamicFormItemComponent implements OnInit {
   submitForm(): void {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[ i ].markAsDirty();
+      this.validateForm.controls[ i ].updateValueAndValidity();
     }
     console.log(this.validateForm.value);
   }
