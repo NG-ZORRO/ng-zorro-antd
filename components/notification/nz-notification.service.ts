@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Injectable, TemplateRef } from '@angular/core';
+import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector, TemplateRef } from '@angular/core';
 
 import { NzMessageBaseService } from '../message/nz-message.service';
 
@@ -10,8 +10,13 @@ import { NzNotificationData, NzNotificationDataFilled, NzNotificationDataOptions
 @Injectable()
 export class NzNotificationService extends NzMessageBaseService<NzNotificationContainerComponent, NzNotificationData, NzNotificationConfig> {
 
-  constructor(overlay: Overlay) {
-    super(overlay, NzNotificationContainerComponent, 'notification-');
+  constructor(
+    overlay: Overlay,
+    injector: Injector,
+    cfr: ComponentFactoryResolver,
+    appRef: ApplicationRef) {
+
+    super(overlay, NzNotificationContainerComponent, injector, cfr, appRef, 'notification-');
   }
 
   // Shortcut methods
