@@ -23,7 +23,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
 import { measureScrollbar } from '../core/util/mesure-scrollbar';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
@@ -53,11 +53,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>>; // [STATIC] Default Modal ONLY
   @Input() nzGetContainer: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef) = () => this.overlay.create(); // [STATIC]
 
-  @Input()
-  get nzVisible(): boolean { return this._visible; }
-  set nzVisible(value: boolean) { this._visible = toBoolean(value); }
-  private _visible: boolean = false;
-
+  @Input() @InputBoolean() nzVisible: boolean = false;
   @Output() nzVisibleChange = new EventEmitter<boolean>();
 
   @Input() nzZIndex: number = 1000;
@@ -67,22 +63,9 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Input() nzStyle: object;
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzTitle: string | TemplateRef<{}>;
-
-  @Input()
-  get nzClosable(): boolean { return this._closable; }
-  set nzClosable(value: boolean) { this._closable = toBoolean(value); }
-  private _closable: boolean = true;
-
-  @Input()
-  get nzMask(): boolean { return this._mask; }
-  set nzMask(value: boolean) { this._mask = toBoolean(value); }
-  private _mask: boolean = true;
-
-  @Input()
-  get nzMaskClosable(): boolean { return this._maskClosable; }
-  set nzMaskClosable(value: boolean) { this._maskClosable = toBoolean(value); }
-  private _maskClosable: boolean = true;
-
+  @Input() @InputBoolean() nzClosable: boolean = true;
+  @Input() @InputBoolean() nzMask: boolean = true;
+  @Input() @InputBoolean() nzMaskClosable: boolean = true;
   @Input() nzMaskStyle: object;
   @Input() nzBodyStyle: object;
 
@@ -98,23 +81,12 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   // --- Predefined OK & Cancel buttons
   @Input() nzOkText: string;
   @Input() nzOkType = 'primary';
-
-  @Input()
-  get nzOkLoading(): boolean { return this._okLoading; }
-  set nzOkLoading(value: boolean) { this._okLoading = toBoolean(value); }
-  private _okLoading: boolean = false;
-
+  @Input() @InputBoolean() nzOkLoading: boolean = false;
   @Input() @Output() nzOnOk: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
   @ViewChild('autoFocusButtonOk', { read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
   @Input() nzCancelText: string;
-
-  @Input()
-  get nzCancelLoading(): boolean { return this._cancelLoading; }
-  set nzCancelLoading(value: boolean) { this._cancelLoading = toBoolean(value); }
-  private _cancelLoading: boolean = false;
-
+  @Input() @InputBoolean() nzCancelLoading: boolean = false;
   @Input() @Output() nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
-
   @ViewChild('modalContainer') modalContainer: ElementRef;
   @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
 
