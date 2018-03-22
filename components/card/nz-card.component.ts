@@ -21,15 +21,7 @@ import { NzCardTabComponent } from './nz-card-tab.component';
       <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
     </ng-template>
     <div class="ant-card-head" *ngIf="nzTitle||nzExtra||tab">
-      <ng-template [ngIf]="!tab">
-        <div class="ant-card-head-title" *ngIf="nzTitle">
-          <ng-container *ngIf="isTitleString; else titleTemplate">{{ nzTitle }}</ng-container>
-        </div>
-        <div class="ant-card-extra" *ngIf="nzExtra">
-          <ng-container *ngIf="isExtraString; else extraTemplate">{{ nzExtra }}</ng-container>
-        </div>
-      </ng-template>
-      <div class="ant-card-head-wrapper" *ngIf="tab">
+      <div class="ant-card-head-wrapper">
         <div class="ant-card-head-title" *ngIf="nzTitle">
           <ng-container *ngIf="isTitleString; else titleTemplate">{{ nzTitle }}</ng-container>
         </div>
