@@ -1,11 +1,10 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { NzModalComponent } from 'ng-zorro-antd';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-modal-basic',
   template: `
     <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
-    <nz-modal #modal *ngIf="modalValid" [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
       <p>Content one</p>
       <p>Content two</p>
       <p>Content three</p>
@@ -13,21 +12,13 @@ import { NzModalComponent } from 'ng-zorro-antd';
   `,
   styles: []
 })
-export class NzDemoModalBasicComponent implements OnInit {
+export class NzDemoModalBasicComponent {
   isVisible = false;
-  modalValid = true;
-
-  @ViewChild('modal') private modal: NzModalComponent;
 
   constructor() {}
 
-  ngOnInit(): void {
-    (window as any).modal = this.modal; // tslint:disable-line
-  }
-
   showModal(): void {
     this.isVisible = true;
-    window.setTimeout(() => this.modalValid = false, 2000);
   }
 
   handleOk(): void {
