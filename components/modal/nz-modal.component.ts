@@ -202,6 +202,14 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     this.close(result);
   }
 
+  triggerOk(): void {
+    this.onClickOkCancel('ok');
+  }
+
+  triggerCancel(): void {
+    this.onClickOkCancel('cancel');
+  }
+
   getInstance(): NzModalComponent {
     return this;
   }
