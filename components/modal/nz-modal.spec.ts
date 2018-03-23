@@ -425,6 +425,23 @@ describe('NzModal', () => {
       tick(600);
       expect(modalService.openModals.length).toBe(1);
     }));
+
+    it('should trigger nzOnOk/nzOnCancel', () => {
+      const spyOk = jasmine.createSpy('ok spy');
+      const spyCancel = jasmine.createSpy('cancel spy');
+      const modalRef: NzModalRef = modalService.create({
+        nzOnOk: spyOk,
+        nzOnCancel: spyCancel
+      });
+
+      fixture.detectChanges();
+
+      modalRef.triggerOk();
+      expect(spyOk).toHaveBeenCalled();
+
+      modalRef.triggerCancel();
+      expect(spyCancel).toHaveBeenCalled();
+    });
   });
 });
 

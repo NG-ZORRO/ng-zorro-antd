@@ -15,6 +15,12 @@ export abstract class NzModalRef<T = any, R = any> { // tslint:disable-line:no-a
   abstract close(result?: R): void;
   abstract destroy(result?: R): void;
 
+  /**
+   * Trigger the nzOnOk/nzOnCancel by manual
+   */
+  abstract triggerOk(): void;
+  abstract triggerCancel(): void;
+
   // /**
   //  * Return the ComponentRef of nzContent when specify nzContent as a Component
   //  * Note: this method may return undefined if the Component has not ready yet. (it only available after Modal's ngOnInit)
