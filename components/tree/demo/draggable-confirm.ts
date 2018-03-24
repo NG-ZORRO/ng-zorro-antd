@@ -1,19 +1,26 @@
 import { Component } from '@angular/core';
+import { NzFormatBeforeDropEvent, NzFormatEmitEvent, NzModalService } from 'ng-zorro-antd';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { delay } from 'rxjs/operators';
 
 @Component({
-  selector: 'nz-demo-tree-line',
+  selector: 'nz-demo-tree-draggable-confirm',
   template: `
     <nz-tree [nzTreeData]="nodes"
-             [nzShowLine]="true"
-             [nzDefaultExpandedKeys]="expandKeys"
              (nzExpandChange)="mouseAction('expand',$event)"
-             (nzDblClick)="mouseAction('dblclick',$event)"
-             (nzContextMenu)="mouseAction('contextmenu', $event)"
-             (nzClick)="mouseAction('click',$event)">
-    </nz-tree>`
+             [nzDraggable]="true"
+             [nzBeforeDrop]="beforeDrop"
+             (nzOnDragStart)="mouseAction('dragstart',$event)"
+             (nzOnDragEnter)="mouseAction('enter',$event)"
+             (nzOnDragLeave)="mouseAction('leave', $event)"
+             (nzOnDrop)="mouseAction('drop', $event)"
+             (nzOnDragEnd)="mouseAction('end', $event)">
+    </nz-tree>
+  `
 })
-export class NzDemoTreeLineComponent {
-  expandKeys = [ '1001', '10001' ];
+
+export class NzDemoTreeDraggableConfirmComponent {
   nodes = [
     {
       title   : 'root1',
@@ -36,6 +43,7 @@ export class NzDemoTreeLineComponent {
                   title   : 'grandchild1.2.1',
                   key     : '1000121',
                   isLeaf  : true,
+                  checked : true,
                   disabled: true
                 },
                 {
@@ -58,10 +66,9 @@ export class NzDemoTreeLineComponent {
       key     : '1002',
       children: [
         {
-          title          : 'child2.1',
-          key            : '10021',
-          children       : [],
-          disableCheckbox: true
+          title   : 'child2.1',
+          key     : '10021',
+          children: []
         },
         {
           title   : 'child2.2',
@@ -78,7 +85,18 @@ export class NzDemoTreeLineComponent {
     { title: 'root3', key: '1003' }
   ];
 
-  mouseAction(name: string, e: any): void {
-    console.log(name, e);
+  mouseAction(name: string, e: NzFormatEmitEvent): void {
+    if (name !== 'over') {
+      console.log(name, e);
+    }
+  }
+
+  beforeDrop(arg: NzFormatBeforeDropEvent): Observable<boolean> {
+    // if insert node into another node, wait 1s
+    if (arg.pos === 0) {
+      return of(true).pipe(delay(1000));
+    } else {
+      return of(false);
+    }
   }
 }

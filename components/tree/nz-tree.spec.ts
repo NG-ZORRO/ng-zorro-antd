@@ -1,0 +1,686 @@
+import { Component } from '@angular/core';
+import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { dispatchMouseEvent, dispatchTouchEvent } from '../core/testing/dispatch-events';
+import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from './interface';
+import { NzTreeNode } from './nz-tree-node';
+import { NzTreeComponent } from './nz-tree.component';
+import { NzTreeModule } from './nz-tree.module';
+import { NzTreeService } from './nz-tree.service';
+
+describe('tree component test', () => {
+  let treeInstance;
+  let fixture: ComponentFixture<{}>;
+  let treeService: NzTreeService;
+
+  describe('basic tree', () => {
+    let treeElement: HTMLElement;
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports     : [ NzTreeModule, NoopAnimationsModule ],
+        declarations: [ NzDemoBasicTreeComponent ]
+      }).compileComponents();
+    }));
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzDemoBasicTreeComponent);
+      treeInstance = fixture.debugElement.componentInstance;
+      treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
+      fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
+    }));
+
+    it('should create', () => {
+      expect(treeInstance).toBeTruthy();
+    });
+    it('should className correct', fakeAsync(() => {
+      // selected
+      const allSelectedKeys = treeElement.querySelectorAll('.ant-tree-node-selected');
+      expect(allSelectedKeys[ 0 ].getAttribute('title')).toEqual('child1');
+      expect(allSelectedKeys[ 1 ].getAttribute('title')).toEqual('child1.1');
+      // checked
+      const allCheckedKeys = treeElement.querySelectorAll('.ant-tree-checkbox-checked');
+      expect(allCheckedKeys.length).toEqual(4);
+      // expanded
+      const allExpandedKeys = treeElement.querySelectorAll('.ant-tree-switcher_open');
+      expect(allExpandedKeys.length).toEqual(2);
+    }));
+
+    it('click should response correctly', fakeAsync(() => {
+      const clickSpy = spyOn(treeInstance, 'onClick');
+      // click child1
+      let targetNode = treeElement.querySelectorAll('li')[ 1 ];
+      expect(targetNode.querySelectorAll('.ant-tree-node-selected').length).toEqual(2);
+      dispatchMouseEvent(targetNode, 'click');
+      tick(250);
+      fixture.detectChanges();
+      // cancel selected
+      targetNode = treeElement.querySelectorAll('li')[ 1 ];
+      expect(targetNode.querySelectorAll('.ant-tree-node-selected').length).toEqual(1);
+      expect(clickSpy).toHaveBeenCalled();
+      expect(clickSpy).toHaveBeenCalledTimes(1);
+    }));
+    it('dblclick/contextmenu should response correctly', fakeAsync(() => {
+      const clickSpy = spyOn(treeInstance, 'onClick');
+      const dblClickSpy = spyOn(treeInstance, 'onDblClick');
+      const contextMenuSpy = spyOn(treeInstance, 'onContextMenu');
+      // detect changes
+      fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
+      // dblclick child1
+      let targetNode = treeElement.querySelectorAll('li')[ 1 ];
+      dispatchMouseEvent(targetNode, 'dblclick');
+      tick(250);
+      fixture.detectChanges();
+      // cancel selected
+      expect(clickSpy).toHaveBeenCalledTimes(0);
+      // dblclick
+      expect(dblClickSpy).toHaveBeenCalled();
+      expect(dblClickSpy).toHaveBeenCalledTimes(1);
+      // contextmenu
+      targetNode = treeElement.querySelectorAll('li')[ 1 ];
+      dispatchMouseEvent(targetNode, 'contextmenu');
+      expect(contextMenuSpy).toHaveBeenCalled();
+      expect(contextMenuSpy).toHaveBeenCalledTimes(1);
+    }));
+
+    it('check/expand should response correctly', fakeAsync(() => {
+      const checkSpy = spyOn(treeInstance, 'onCheck');
+      const expandSpy = spyOn(treeInstance, 'onExpand');
+      // detect changes
+      fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
+      expect(treeElement.querySelectorAll('.ant-tree-checkbox-checked').length).toEqual(4);
+      // check child1
+      let targetNode = treeElement.querySelectorAll('.ant-tree-checkbox')[ 0 ];
+      expect(targetNode.classList).toContain('ant-tree-checkbox-indeterminate');
+      dispatchMouseEvent(targetNode, 'click');
+      fixture.detectChanges();
+      targetNode = treeElement.querySelectorAll('.ant-tree-checkbox')[ 0 ];
+      expect(targetNode.classList).toContain('ant-tree-checkbox-checked');
+      // all nodes inside root1 are checked
+      expect(treeElement.querySelectorAll('.ant-tree-checkbox-checked').length).toEqual(6);
+      expect(checkSpy).toHaveBeenCalled();
+      expect(checkSpy).toHaveBeenCalledTimes(1);
+
+      // click disabled node
+      targetNode = treeElement.querySelector('.ant-tree-checkbox-disabled');
+      dispatchMouseEvent(targetNode, 'click');
+      fixture.detectChanges();
+      expect(targetNode.classList).toContain('ant-tree-checkbox-disabled');
+
+      // expand node
+      targetNode = treeElement.querySelectorAll('.ant-tree-switcher_close')[ 0 ];
+      dispatchMouseEvent(targetNode, 'click');
+      fixture.detectChanges();
+      expect(targetNode.classList).toContain('ant-tree-switcher_open');
+      expect(expandSpy).toHaveBeenCalled();
+      expect(expandSpy).toHaveBeenCalledTimes(1);
+    }));
+
+    it('should className correct showline/showexpand/expandall', fakeAsync(() => {
+      treeInstance.showLine = true;
+      fixture.detectChanges();
+      expect(treeElement.querySelector('ul').classList).toContain('ant-tree-show-line');
+      // hide expand icon
+      expect(treeElement.querySelectorAll('.ant-tree-switcher').length).toBeGreaterThan(0);
+      treeInstance.showExpand = false;
+      fixture.detectChanges();
+      expect(treeElement.querySelectorAll('.ant-tree-switcher').length).toEqual(0);
+      // expandAll
+      treeInstance.expandDefault = true;
+      fixture.detectChanges();
+    }));
+
+    it('search value', fakeAsync(() => {
+      const searchSpy = spyOn(treeInstance, 'onSearch');
+      treeInstance.searchValue = 'grand';
+      fixture.detectChanges();
+      expect(treeElement.querySelectorAll('.font-red').length).toEqual(3);
+      expect(searchSpy).toHaveBeenCalled();
+      expect(searchSpy).toHaveBeenCalledTimes(1);
+    }));
+  });
+
+  describe('async tree', () => {
+    treeInstance = null;
+    fixture = null;
+    let treeElement: HTMLElement;
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports     : [ NzTreeModule, NoopAnimationsModule ],
+        declarations: [ NzDemoAsyncTreeComponent ]
+      }).compileComponents();
+    }));
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzDemoAsyncTreeComponent);
+      treeInstance = fixture.debugElement.componentInstance;
+      treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
+      fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
+    }));
+
+    it('should create', () => {
+      expect(treeInstance).toBeTruthy();
+    });
+
+    it('should add children', fakeAsync(() => {
+      const expandSpy = spyOn(treeInstance, 'onExpand');
+      // detect changes
+      fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
+      // init
+      expect(treeElement.querySelectorAll('.ant-tree-switcher').length).toEqual(3);
+      // click expand, test can not excute add children
+      let targetNode = treeElement.querySelectorAll('.ant-tree-switcher')[ 0 ];
+      dispatchMouseEvent(targetNode, 'click');
+      fixture.detectChanges();
+      targetNode = treeElement.querySelectorAll('.ant-tree-switcher')[ 0 ];
+      expect(targetNode.classList).toContain('ant-tree-icon_loading');
+      fixture.detectChanges();
+      expect(expandSpy).toHaveBeenCalled();
+      expect(expandSpy).toHaveBeenCalledTimes(1);
+    }));
+  });
+
+  describe('test node', () => {
+    let treeNode: NzTreeNode;
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports: [ NzTreeModule ]
+      }).compileComponents();
+    }));
+
+    beforeEach(fakeAsync(() => {
+      treeNode = new NzTreeNode({
+        title   : 'root1',
+        key     : '1001',
+        children: []
+      });
+    }));
+
+    it('should create', () => {
+      expect(treeNode).toBeDefined();
+    });
+
+    it('should add children', () => {
+      // add json array
+      treeNode.addChildren([
+        {
+          title: 'childAdd-1',
+          key  : '10031-' + (new Date()).getTime()
+        },
+        {
+          title : 'childAdd-2',
+          key   : '10032-' + (new Date()).getTime(),
+          isLeaf: true
+        } ]);
+      expect(treeNode.getChildren().length).toEqual(2);
+      // add NzTreeNode
+      treeNode.clearChildren();
+      const newNode = new NzTreeNode({
+        title: 'childAdd-1',
+        key  : '100001'
+      });
+      treeNode.addChildren([ newNode ]);
+      expect(treeNode.getChildren().length).toEqual(1);
+      expect(treeNode.getChildren()[ 0 ].title).toEqual('childAdd-1');
+    });
+
+    it('add children if node is leaf', () => {
+      treeNode = new NzTreeNode({
+        title : 'root1',
+        key   : '1001',
+        isLeaf: true
+      });
+      treeNode.addChildren([ {
+        title: 'childAdd-1',
+        key  : '100001'
+      } ]);
+      expect(treeNode.getChildren().length).toEqual(0);
+    });
+
+    it('init node with children', () => {
+      treeNode = new NzTreeNode({
+        title   : 'root1',
+        key     : '1001',
+        checked : true,
+        children: [ {
+          title: 'childAdd-1',
+          key  : '100001'
+        } ]
+      });
+      expect(treeNode.getChildren().length).toEqual(1);
+      expect(treeNode.getChildren()[ 0 ].isChecked).toEqual(true);
+    });
+  });
+
+  describe('test draggable node', () => {
+    let treeElement: HTMLElement;
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports     : [ NzTreeModule, NoopAnimationsModule ],
+        declarations: [ NzDemoDraggableTreeComponent ],
+        providers   : [
+          NzTreeService
+        ]
+      }).compileComponents();
+    }));
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzDemoDraggableTreeComponent);
+      treeInstance = fixture.debugElement.componentInstance;
+      treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
+      fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
+    }));
+
+    it('should create', () => {
+      expect(treeInstance).toBeTruthy();
+    });
+    it('drag event', () => {
+      const dragStartSpy = spyOn(treeInstance, 'onDragStart');
+      const dragEnterSpy = spyOn(treeInstance, 'onDragEnter');
+      const dragOverSpy = spyOn(treeInstance, 'onDragOver');
+      const dragLeaveSpy = spyOn(treeInstance, 'onDragLeave');
+      const dropSpy = spyOn(treeInstance, 'onDrop');
+      const dragEndSpy = spyOn(treeInstance, 'onDragEnd');
+
+      let dragNode = treeElement.querySelector('[title=root3]'); // root3
+      let dropNode = treeElement.querySelector('[title=root1]'); // root1
+      let passNode = treeElement.querySelector('[title=root2]'); // root2
+
+      dispatchTouchEvent(dragNode, 'dragstart');
+      dispatchTouchEvent(passNode, 'dragenter');
+      fixture.detectChanges();
+      // drag - dragenter
+      dragNode = treeElement.querySelector('[title=root3]'); // root3
+      passNode = treeElement.querySelector('[title=root2]'); // root2
+      expect(dragNode.previousElementSibling.classList).toContain('ant-tree-switcher_close');
+      expect(passNode.previousElementSibling.classList).toContain('ant-tree-switcher_open');
+      expect(dragStartSpy).toHaveBeenCalledTimes(1);
+      expect(dragEnterSpy).toHaveBeenCalledTimes(1);
+      // dragover
+      dispatchTouchEvent(passNode, 'dragover');
+      fixture.detectChanges();
+      passNode = treeElement.querySelector('[title=root2]'); // root2
+      expect(passNode.parentElement.classList).toContain('drag-over');
+      expect(dragOverSpy).toHaveBeenCalledTimes(1);
+      // dragleave
+      dispatchTouchEvent(passNode, 'dragleave');
+      fixture.detectChanges();
+      passNode = treeElement.querySelector('[title=root2]'); // root2
+      expect(passNode.parentElement.classList.contains('drag-over')).toEqual(false);
+      expect(dragLeaveSpy).toHaveBeenCalledTimes(1);
+      // drop root3 to root1
+      dispatchTouchEvent(dropNode, 'dragover');
+      dispatchTouchEvent(dropNode, 'drop');
+      fixture.detectChanges();
+      expect(dropSpy).toHaveBeenCalledTimes(1);
+      dropNode = treeElement.querySelector('[title=root1]');
+      expect(dropNode.parentElement.querySelector('[title=root3]')).toBeDefined();
+      // dragend
+      dispatchTouchEvent(dropNode, 'dragend');
+      fixture.detectChanges();
+      expect(dragEndSpy).toHaveBeenCalledTimes(1);
+    });
+    it('drag event canDrop', () => {
+      treeInstance.beforeDrop = (arg: NzFormatBeforeDropEvent): Observable<boolean> => {
+        return of(true);
+      };
+      fixture.detectChanges();
+      const dropSpy = spyOn(treeInstance, 'onDrop');
+
+      const dragNode = treeElement.querySelector('[title=root3]'); // root3
+      let dropNode = treeElement.querySelector('[title=root1]'); // root1
+
+      dispatchTouchEvent(dragNode, 'dragstart');
+      fixture.detectChanges();
+      // drop root3 to root1
+      dispatchTouchEvent(dropNode, 'drop');
+      fixture.detectChanges();
+      expect(dropSpy).toHaveBeenCalledTimes(1);
+      dropNode = treeElement.querySelector('[title=root1]');
+      expect(dropNode.parentElement.querySelector('[title=root3]')).toBeDefined();
+    });
+  });
+
+  describe('test service', () => {
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports     : [ NzTreeModule, NoopAnimationsModule ],
+        declarations: [ NzDemoDraggableTreeComponent ],
+        providers   : [
+          NzTreeService
+        ]
+      }).compileComponents();
+    }));
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzDemoDraggableTreeComponent);
+      treeInstance = fixture.debugElement.componentInstance;
+      treeService = treeInstance.nzTreeService;
+      treeService.initTreeNodes(treeInstance.nodes);
+    }));
+    it('test service - setSelectedNodeList', () => {
+      const selectedNode = treeService.rootNodes[ 0 ];
+      // node is not selected
+      treeService.setSelectedNodeList(selectedNode, false);
+      // node is already selected
+      selectedNode.isSelected = true;
+      treeService.setSelectedNodeList(selectedNode, false);
+    });
+
+    it('test service - initNodeActive', () => {
+      const selectedNode = treeService.rootNodes[ 0 ];
+      treeService.initNodeActive(selectedNode, false);
+      expect(treeService.getSelectedNodeList().length).toEqual(1);
+      expect(treeService.getSelectedNodeList()[ 0 ].title).toEqual('root1');
+    });
+
+    it('test service - dropAndApply', () => {
+      // init selected node
+      treeService.selectedNode = treeService.rootNodes[ 0 ].getChildren()[ 0 ]; // child1
+      // drop
+      // dragPos = 2, not drop
+      let targetNode = treeService.rootNodes[ 2 ]; // root3
+      treeService.dropAndApply(targetNode, 2);
+      // dragPos = -1, pre
+      treeService.dropAndApply(targetNode, -1);
+      expect(treeService.rootNodes[ 2 ].level).toEqual(0);
+      expect(treeService.rootNodes[ 2 ].title).toEqual('child1');
+      // dragPos = -1, next
+      treeService.selectedNode = treeService.rootNodes[ 2 ]; // child1
+      targetNode = treeService.rootNodes[ 3 ];
+      treeService.dropAndApply(targetNode, 1);
+      expect(treeService.rootNodes[ 3 ].title).toEqual('child1');
+    });
+
+    it('test service - dropAndApply - has - parent', () => {
+      // init selected node
+      treeService.selectedNode = treeService.rootNodes[ 0 ].getChildren()[ 0 ]; // child1
+      // drop to child2.2 pre
+      const targetNode = treeService.rootNodes[ 1 ].getChildren()[ 1 ]; // child2.2
+      treeService.dropAndApply(targetNode, -1);
+      expect(treeService.rootNodes[ 1 ].getChildren()[ 1 ].title).toEqual('child1');
+    });
+  });
+});
+// -------------------------------------------
+// | Testing Components
+// -------------------------------------------
+
+@Component({
+  selector: 'nz-demo-tree-basic',
+  template: `
+    <nz-tree [nzTreeData]="nodes"
+             [nzCheckable]="true"
+             [nzMultiple]="multiple"
+             [nzShowLine]="showLine"
+             [nzShowExpand]="showExpand"
+             [nzSearchValue]="searchValue"
+             [nzDefaultExpandedKeys]="expandKeys"
+             [nzDefaultCheckedKeys]="checkedKeys"
+             [nzDefaultSelectedKeys]="selectedKeys"
+             [nzDefaultExpandAll]="expandDefault"
+             (nzClick)="onClick()"
+             (nzDblClick)="onDblClick()"
+             (nzContextMenu)="onContextMenu()"
+             (nzCheckBoxChange)="onCheck()"
+             (nzExpandChange)="onExpand()"
+             (nzOnSearchNode)="onSearch()"
+    >
+    </nz-tree>
+  `
+})
+class NzDemoBasicTreeComponent {
+  expandKeys = [ '1001', '10001' ];
+  checkedKeys = [ '10001', '100012' ];
+  selectedKeys = [ '10001', '100011' ];
+  multiple = true;
+  expandDefault = false;
+  showLine = false;
+  showExpand = true;
+  searchValue = '';
+  nodes = [
+    {
+      title   : 'root1',
+      key     : '1001',
+      children: [
+        {
+          title   : 'child1',
+          key     : '10001',
+          children: [
+            {
+              title   : 'child1.1',
+              key     : '100011',
+              children: []
+            },
+            {
+              title   : 'child1.2',
+              key     : '100012',
+              children: [
+                {
+                  title   : 'grandchild1.2.1',
+                  key     : '1000121',
+                  isLeaf  : true,
+                  disabled: true
+                },
+                {
+                  title  : 'grandchild1.2.2',
+                  key    : '1000122',
+                  checked: true,
+                  isLeaf : true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          title: 'child2',
+          key  : '10002'
+        }
+      ]
+    },
+    {
+      title   : 'root2',
+      key     : '1002',
+      children: [
+        {
+          title          : 'child2.1',
+          key            : '10021',
+          children       : [],
+          disableCheckbox: true
+        },
+        {
+          title   : 'child2.2',
+          key     : '10022',
+          children: [
+            {
+              title: 'grandchild2.2.1',
+              key  : '100221'
+            }
+          ]
+        }
+      ]
+    },
+    { title: 'root3', key: '1003' }
+  ];
+
+  onClick(): void {
+  }
+
+  onDblClick(): void {
+  }
+
+  onContextMenu(): void {
+  }
+
+  onCheck(): void {
+  }
+
+  onExpand(): void {
+  }
+
+  onSearch(): void {
+  }
+
+}
+
+// -------------------------------------------
+// | Testing Async Components
+// -------------------------------------------
+
+@Component({
+  selector: 'nz-demo-tree-async',
+  template: `
+    <nz-tree [nzTreeData]="nodes"
+             [nzAsyncData]="true"
+             (nzExpandChange)="onExpand($event)"
+    >
+    </nz-tree>`,
+  styles  : []
+})
+
+class NzDemoAsyncTreeComponent {
+  nodes = [
+    {
+      title   : 'root1',
+      key     : '1001',
+      children: []
+    },
+    {
+      title   : 'root2',
+      key     : '1002',
+      children: []
+    },
+    {
+      title: 'root3',
+      key  : '1003'
+    }
+  ];
+
+  onExpand(data: NzFormatEmitEvent): void {
+  }
+}
+
+// -------------------------------------------
+// | Testing Draggable Components
+// -------------------------------------------
+
+@Component({
+  selector: 'nz-demo-tree-draggable',
+  template: `
+    <nz-tree [nzTreeData]="nodes"
+             [nzDraggable]="true"
+             [nzMultiple]="false"
+             [nzBeforeDrop]="beforeDrop"
+             (nzOnDragStart)="onDragStart()"
+             (nzOnDragEnter)="onDragEnter()"
+             (nzOnDragOver)="onDragOver()"
+             (nzOnDragLeave)="onDragLeave()"
+             (nzOnDrop)="onDrop()"
+             (nzOnDragEnd)="onDragEnd()"
+    >
+    </nz-tree>`,
+  styles  : []
+})
+
+class NzDemoDraggableTreeComponent {
+  nodes = [
+    {
+      title   : 'root1',
+      key     : '1001',
+      children: [
+        {
+          title   : 'child1',
+          key     : '10001',
+          children: [
+            {
+              title   : 'child1.1',
+              key     : '100011',
+              children: []
+            },
+            {
+              title   : 'child1.2',
+              key     : '100012',
+              children: [
+                {
+                  title   : 'grandchild1.2.1',
+                  key     : '1000121',
+                  isLeaf  : true,
+                  disabled: true
+                },
+                {
+                  title : 'grandchild1.2.2',
+                  key   : '1000122',
+                  isLeaf: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          title: 'child2',
+          key  : '10002'
+        }
+      ]
+    },
+    {
+      title   : 'root2',
+      key     : '1002',
+      children: [
+        {
+          title          : 'child2.1',
+          key            : '10021',
+          children       : [],
+          disableCheckbox: true
+        },
+        {
+          title   : 'child2.2',
+          key     : '10022',
+          children: [
+            {
+              title: 'grandchild2.2.1',
+              key  : '100221'
+            }
+          ]
+        }
+      ]
+    },
+    { title: 'root3', key: '1003', expanded: true }
+  ];
+
+  beforeDrop;
+
+  onDragStart(): void {
+  }
+
+  onDragEnter(): void {
+  }
+
+  onDragOver(): void {
+  }
+
+  onDragLeave(): void {
+  }
+
+  onDrop(): void {
+  }
+
+  onDragEnd(): void {
+  }
+
+  constructor(public nzTreeService: NzTreeService) {
+  }
+}
