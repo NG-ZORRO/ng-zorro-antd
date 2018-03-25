@@ -893,7 +893,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     }
   }
 
-  private loadChildren(option: CascaderOption, index: number, success?: Function, failure?: Function): void {
+  private loadChildren(option: CascaderOption, index: number, success?: () => void, failure?: () => void): void {
     if (this.nzLoadData) {
       this.isLoading = index < 0;
       option.loading = true;
