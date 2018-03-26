@@ -25,12 +25,14 @@ Almost anything can be represented in a tree structure. Examples include directo
 | nzDefaultExpandedKeys | Specify the keys of the default expanded treeNodes | string\[] | \[] |
 | nzDefaultCheckedKeys | Specifies the keys of the default checked treeNodes | string\[] | \[] |
 | nzDefaultSelectedKeys | Specifies the keys of the default selected treeNodes(set nzMultiple to be true) | string\[] | \[] |
-| nzSearchValue |  filter (highlight) treeNodes (see demo `Searchable`) | string | null |
+| nzSearchValue | Filter (highlight) treeNodes (see demo `Searchable`) | string | null |
+| nzBeforeDrop | Drop before the second check, allowing the user to decide whether to allow placement | `(confirm: NzFormatBeforeDropEvent) => Observable<boolean>` | - |
 | nzClick | Callback function for when the user clicks a treeNode | EventEmitter<NzFormatEmitEvent\> | - |
 | nzDblClick | Callback function for when the user double clicks a treeNode | EventEmitter<NzFormatEmitEvent\> | - |
 | nzContextMenu | Callback function for when the user right clicks a treeNode | EventEmitter<NzFormatEmitEvent\> | - |
 | nzCheckBoxChange | Callback function for when user clicks the Checkbox | EventEmitter<NzFormatEmitEvent\> | - |
 | nzExpandChange | Callback function for when a treeNode is expanded or collapsed |EventEmitter<NzFormatEmitEvent\> | - |
+| nzOnSearchNode | Callback function for when filter treeNodes(used with nzSearchValue) | EventEmitter<NzFormatEmitEvent\> | - |
 | nzOnDragStart | Callback function for when the onDragStart event occurs | EventEmitter<NzFormatEmitEvent\> | - |
 | nzOnDragEnter | Callback function for when the onDragEnter event occurs | EventEmitter<NzFormatEmitEvent\> | - |
 | nzOnDragOver | Callback function for when the onDragOver event occurs | EventEmitter<NzFormatEmitEvent\> | - |
@@ -58,13 +60,20 @@ Almost anything can be represented in a tree structure. Examples include directo
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
-| eventName | Event Name | enum: `click` `dblclick` `contextmenu` `check` `expand` & `dragstart` `dragenter` `dragover` `dragleave` `drop` `dragend` | '' |
+| eventName | Event Name | enum: `click` `dblclick` `contextmenu` `check` `expand` `search` & `dragstart` `dragenter` `dragover` `dragleave` `drop` `dragend` | '' |
 | node | The current operation node (such as the target node to drop while dragging) | NzTreeNode | null |
 | event | MouseEvent or DragEvent | enum: `MouseEvent` `DragEvent` | null |
 | dragNode? | Current drag node (existing when dragged) | NzTreeNode | null |
 | selectedKeys? | Selected node list (exist when clicked) | array<NzTreeNode\> | [] |
 | checkedKeys? | Checked node list (exist when click checkbox) | array<NzTreeNode\> | [] |
 
+### NzFormatBeforeDropEvent props
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| dragNode | Current drag node (existing when dragged) | NzTreeNode | - |
+| node | The current operation node (such as the target node to drop while dragging) | NzTreeNode | - |
+| pos | position to drop(-1: before the target node, 0: inside the target node, 1: behind the target node) | number | - |
 
 ### NzTreeNode props
 
@@ -92,5 +101,4 @@ Almost anything can be represented in a tree structure. Examples include directo
 | clearChildren | clear the treeNode's children | function | void |
 
 ## Note
-nzDefaultExpandedKeys, nzDefaultCheckedKeys will not associate child nodes when initialized!
 

@@ -27,11 +27,13 @@ subtitle: 树形控件
 | nzDefaultCheckedKeys | 默认选中复选框的树节点 | string\[] | \[] |
 | nzDefaultSelectedKeys | 默认选中的树节点(nzMultiple为true) | string\[] | \[] |
 | nzSearchValue | 按需筛选树高亮节点(结合搜索控件) | string | null |
+| nzBeforeDrop | drop前二次校验,允许用户自行决定是否允许放置 | `(confirm: NzFormatBeforeDropEvent) => Observable<boolean>` | - |
 | nzClick | 点击树节点触发 | EventEmitter<NzFormatEmitEvent\> | - |
 | nzDblClick | 双击树节点触发 | EventEmitter<NzFormatEmitEvent\> | - |
 | nzContextMenu | 右键树节点触发 | EventEmitter<NzFormatEmitEvent\> | - |
 | nzCheckBoxChange | 点击树节点 Checkbox 触发 | EventEmitter<NzFormatEmitEvent\> | - |
 | nzExpandChange | 点击展开树节点图标触发 |EventEmitter<NzFormatEmitEvent\> | - |
+| nzOnSearchNode | 搜索节点时调用(与nzSearchValue配合使用) | EventEmitter<NzFormatEmitEvent\> | - |
 | nzOnDragStart | 开始拖拽时调用 | EventEmitter<NzFormatEmitEvent\> | - |
 | nzOnDragEnter | dragenter 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
 | nzOnDragOver | dragover 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
@@ -54,18 +56,25 @@ subtitle: 树形控件
 | disabled | 设置是否禁用节点(不可进行任何操作) | boolean | false |
 | disableCheckbox | 设置节点禁用 Checkbox | boolean | false |
 
-
 ### NzFormatEmitEvent props
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| eventName | 事件名 | enum: `click` `dblclick` `contextmenu` `check` `expand` & `dragstart` `dragenter` `dragover` `dragleave` `drop` `dragend` | '' |
+| eventName | 事件名 | enum: `click` `dblclick` `contextmenu` `check` `expand` `search` & `dragstart` `dragenter` `dragover` `dragleave` `drop` `dragend` | '' |
 | node | 当前操作节点(拖拽时表示目标节点) | NzTreeNode | null |
 | event | 原生事件 | enum: `MouseEvent` `DragEvent` | null |
 | dragNode? | 当前拖拽节点(拖拽时存在) | NzTreeNode | null |
 | selectedKeys? | 已选中的节点(单击时存在) | array<NzTreeNode\> | [] |
 | checkedKeys? | checkBox 已选中的节点(点击 checkBox 存在) | array<NzTreeNode\> | [] |
+| matchededKeys? | 搜索时匹配到的节点 | array<NzTreeNode\> | [] |
 
+### NzFormatBeforeDropEvent props
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| dragNode | 当前拖拽节点(拖拽时存在) | NzTreeNode | - |
+| node | 当前操作节点(拖拽时表示目标节点) | NzTreeNode | - |
+| pos | 放置位置(-1:目标节点前面, 0: 目标节点内部, 1: 目标节点后面) | number | - |
 
 ### NzTreeNode props
 
@@ -93,4 +102,3 @@ subtitle: 树形控件
 | clearChildren | 清除子节点 | function | void |
 
 ## 注意
-nzDefaultExpandedKeys、nzDefaultCheckedKeys初始化时将不关联子节点!

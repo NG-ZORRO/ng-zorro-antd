@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NzFormatEmitEvent } from 'ng-zorro-antd';
 
 @Component({
     selector: 'nz-demo-tree-basic',
@@ -15,7 +16,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NzDemoTreeBasicComponent implements OnInit {
     expandKeys = ['1001', '10001'];
-    checkedKeys = ['10001', '100012'];
+    checkedKeys = ['10001', '1002'];
     selectedKeys = ['10001', '100011'];
     expandDefault = false;
     nodes = [
@@ -82,7 +83,7 @@ export class NzDemoTreeBasicComponent implements OnInit {
         {title: 'root3', key: '1003'}
     ];
 
-    mouseAction(name: string, event: any): void {
+    mouseAction(name: string, event: NzFormatEmitEvent): void {
         console.log(name, event);
     }
 
