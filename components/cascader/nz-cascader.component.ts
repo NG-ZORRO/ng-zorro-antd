@@ -177,6 +177,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   private columnClassName;
   private changeOnSelect = false;
   // private showSearch = false;
+  private defaultValue: any[];
 
   public dropDownPosition = 'bottom';
   public menuVisible = false;
@@ -359,6 +360,9 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   /** Options for first column, sub column will be load async */
   @Input() set nzOptions(options: CascaderOption[] | null) {
     this.nzColumns = options && options.length ? [ options ] : [];
+    if (this.defaultValue && this.nzColumns.length) {
+      this.initOptions(0);
+    }
   }
 
   get nzOptions(): CascaderOption[] {
@@ -819,6 +823,10 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
 
   /** load init data if necessary */
   private beforeVisible(): void {
+    this.loadRootOptions();
+  }
+
+  private loadRootOptions(): void {
     if (!this.nzColumns.length) {
       const root: any = {};
       this.loadChildren(root, -1);
@@ -847,7 +855,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
    * @param index  选项所在的列组的索引
    * @param select 是否触发选择结点
    */
-  private setActiveOption(option: CascaderOption, index: number, select: boolean = false): void {
+  private setActiveOption(option: CascaderOption, index: number, select: boolean = false, loadChildren: boolean = true): void {
     if (!option || option.disabled) {
       return;
     }
@@ -870,7 +878,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
       option.isLeaf = false;
       option.children.forEach(child => child.parent = option);
       this.setColumnData(option.children, index + 1);
-    } else if (!option.isLeaf) {
+    } else if (!option.isLeaf && loadChildren) {
       this.loadChildren(option, index);
     } else {
       // clicking leaf node will remove any children columns
@@ -885,19 +893,25 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     }
   }
 
-  private loadChildren(option: CascaderOption, index: number): void {
+  private loadChildren(option: CascaderOption, index: number, success?: () => void, failure?: () => void): void {
     if (this.nzLoadData) {
       this.isLoading = index < 0;
       option.loading = true;
       this.nzLoadData(option, index).then(() => {
         option.loading = this.isLoading = false;
         if (option.children) {
-          option.children.forEach(child => child.parent = option);
+          option.children.forEach(child => child.parent = index < 0 ? undefined : option);
           this.setColumnData(option.children, index + 1);
+        }
+        if (success) {
+          success();
         }
       }, () => {
         option.loading = this.isLoading = false;
         option.isLeaf = true;
+        if (failure) {
+          failure();
+        }
       });
     }
   }
@@ -1085,6 +1099,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   private onValueChange(): void {
     const value = this.getSubmitValue();
     if (!arrayEquals(this.value, value)) {
+      this.defaultValue = null; // clear the init-value
       this.value = value;
       this.onChange(value); // Angular need this
       if (value.length === 0) {
@@ -1110,29 +1125,61 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     return null;
   }
 
+  private isLoaded(index: number): boolean {
+    return this.nzColumns[index] && this.nzColumns[index].length > 0;
+  }
+
+  private activateOnInit(index: number, value: any): void {
+    let option = this.findOption(value, index);
+    if (!option) {
+      option = typeof value === 'object' ? value : {
+        [ `${this.nzValueProperty || 'value'}` ]: value,
+        [ `${this.nzLabelProperty || 'label'}` ]: value
+      };
+    }
+    this.setActiveOption(option, index, false, false);
+  }
+
+  private initOptions(index: number): void {
+    const vs = this.defaultValue;
+    const load = () => {
+      this.activateOnInit(index, vs[index]);
+      if (index < vs.length - 1) {
+        this.initOptions(index + 1);
+      }
+      if (index === vs.length - 1) {
+        this.afterWriteValue();
+      }
+    };
+
+    if (this.isLoaded(index) || !this.nzLoadData) {
+      load();
+    } else {
+      const node = this.activatedOptions[ index - 1 ] || {};
+      this.loadChildren(node, index - 1, load, this.afterWriteValue);
+    }
+  }
+
+  afterWriteValue(): void {
+    this.selectedOptions = this.activatedOptions;
+    this.value = this.getSubmitValue();
+    this.buildDisplayLabel();
+  }
+
   /**
    * Write a new value to the element.
    *
    * @Override (From ControlValueAccessor interface)
    */
   writeValue(value: any): void {
-    const array: any[] = [];
-    toArray(value).forEach((v: any, index: number) => {
-      let option = this.findOption(v, index);
-      if (!option) {
-        option = typeof v === 'object' ? v : {
-          [ `${this.nzValueProperty}` ]: v,
-          [ `${this.nzLabelProperty}` ]: v
-        };
-      }
-      array[ index ] = option;
-      this.setActiveOption(option, index, false);
-    });
-    this.value = value;
-    this.activatedOptions = array;
-    this.selectedOptions = array;
-    this.buildDisplayLabel();
-    // this.onValueChange();
+    const vs = this.defaultValue = toArray(value);
+    if (vs.length) {
+      this.initOptions(0);
+    } else {
+      this.value = vs;
+      this.activatedOptions = [];
+      this.afterWriteValue();
+    }
   }
 
   registerOnChange(fn: (_: any) => {}): void {

@@ -32,7 +32,7 @@ Cascade selection box.
 | nzMenuStyle | additional css style of popup overlay | object | - |
 | nzLabelProperty | the label property name of options | string | 'label' |
 | nzLabelRender | render template of displaying selected options | TemplateRef&lt;any&gt; | - |
-| nzLoadData | To load option lazily | (option: any, index?: index) => PromiseLike&lt;any&gt; | - |
+| nzLoadData | To load option lazily. If setting `ngModel` with an array value and `nzOptions` is not setting, lazy load will be call immediately | (option: any, index?: index) => PromiseLike&lt;any&gt; | - |
 | nzOptions | data options of cascade | object[] | - |
 | nzPlaceHolder | input placeholder | string | 'Please select' |
 | nzShowArrow | Whether show arrow | boolean | true |
