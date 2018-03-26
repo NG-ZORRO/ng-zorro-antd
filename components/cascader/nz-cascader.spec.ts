@@ -103,7 +103,7 @@ describe('cascader', () => {
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText).toBe('Zhejiang / Hangzhou / West Lake');
       expect(testComponent.cascader.getSubmitValue().join(',')).toBe('1,2,3');
     }));
-    it('should not value and label property work', fakeAsync(() => {
+    it('should no value and label property work', fakeAsync(() => {
       testComponent.nzValueProperty = null;
       testComponent.nzLabelProperty = null;
       fixture.detectChanges();
@@ -507,6 +507,7 @@ describe('cascader', () => {
     }));
     it('should write value work', fakeAsync(() => {
       const control = testComponent.cascader;
+      testComponent.nzOptions = options1;
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(0);
       control.writeValue(null);
@@ -565,6 +566,70 @@ describe('cascader', () => {
       expect(values4[1]).toBe('hangzhou');
       expect(values4[2]).toBe('xihu');
       expect(control.labelRenderText).toBe('ZJ / HZ / XH');
+    }));
+    it('should write value work on setting `nzOptions` asyn', fakeAsync(() => {
+      const control = testComponent.cascader;
+      testComponent.nzOptions = null;
+      fixture.detectChanges();
+      expect(control.getSubmitValue().length).toBe(0);
+      control.writeValue(null);
+      fixture.detectChanges();
+      expect(control.getSubmitValue().length).toBe(0);
+      control.writeValue(undefined);
+      fixture.detectChanges();
+      expect(control.getSubmitValue().length).toBe(0);
+      control.writeValue([]);
+      fixture.detectChanges();
+      expect(control.getSubmitValue().length).toBe(0);
+      control.writeValue('');
+      fixture.detectChanges();
+      expect(control.getSubmitValue().length).toBe(1);
+      expect(control.getSubmitValue()[0]).toBe('');
+
+      control.writeValue(['zhejiang']);
+      fixture.detectChanges();
+      expect(control.getSubmitValue().length).toBe(1);
+      expect(control.getSubmitValue()[0]).toBe('zhejiang');
+      expect(control.labelRenderText).toBe('zhejiang');
+      testComponent.nzOptions = options1; // update the nzOptions like asyn
+      fixture.detectChanges();
+      expect(control.getSubmitValue().length).toBe(1);
+      expect(control.getSubmitValue()[0]).toBe('zhejiang');
+      expect(control.labelRenderText).toBe('Zhejiang');
+    }));
+    it('should write value work on setting `nzOptions` asyn (match)', fakeAsync(() => {
+      const control = testComponent.cascader;
+      testComponent.nzOptions = null;
+      testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
+      fixture.detectChanges();
+      flush(); // force value to be write
+      fixture.detectChanges();
+      expect(control.getSubmitValue().length).toBe(3);
+      expect(control.labelRenderText).toBe('zhejiang / hangzhou / xihu');
+      testComponent.nzOptions = options1; // update the nzOptions like asyn
+      fixture.detectChanges();
+      const values = control.getSubmitValue();
+      expect(values[0]).toBe('zhejiang');
+      expect(values[1]).toBe('hangzhou');
+      expect(values[2]).toBe('xihu');
+      expect(control.labelRenderText).toBe('Zhejiang / Hangzhou / West Lake');
+    }));
+    it('should write value work on setting `nzOptions` asyn (not match)', fakeAsync(() => {
+      const control = testComponent.cascader;
+      testComponent.nzOptions = null;
+      testComponent.values = ['zhejiang2', 'hangzhou2', 'xihu2'];
+      fixture.detectChanges();
+      flush(); // force value to be write
+      fixture.detectChanges();
+      expect(control.getSubmitValue().length).toBe(3);
+      expect(control.labelRenderText).toBe('zhejiang2 / hangzhou2 / xihu2');
+      testComponent.nzOptions = options1; // update the nzOptions like asyn
+      fixture.detectChanges();            // but still the values is not match
+      const values = control.getSubmitValue();
+      expect(values[0]).toBe('zhejiang2');
+      expect(values[1]).toBe('hangzhou2');
+      expect(values[2]).toBe('xihu2');
+      expect(control.labelRenderText).toBe('zhejiang2 / hangzhou2 / xihu2');
     }));
     it('should click option to expand', () => {
       fixture.detectChanges();
@@ -1323,6 +1388,17 @@ describe('cascader', () => {
       expect(testComponent.values[0]).toBe('zhejiang');
       expect(testComponent.values[1]).toBe('hangzhou');
       expect(testComponent.values[2]).toBe('xihu');
+    }));
+
+    it('should LOAD DATA work when specifies default value', fakeAsync(() => {
+      spyOn(testComponent, 'addCallTimes');
+      testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
+      fixture.detectChanges();
+      tick(3000);
+      fixture.detectChanges();
+      expect(testComponent.addCallTimes).toHaveBeenCalledTimes(3);
+      expect(testComponent.cascader.nzColumns.length).toBe(3);
+      expect(testComponent.values.join(',')).toBe('zhejiang,hangzhou,xihu');
     }));
 
   });
