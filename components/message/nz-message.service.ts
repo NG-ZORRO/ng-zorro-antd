@@ -1,6 +1,6 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Injectable, Type } from '@angular/core';
+import { ApplicationRef, ComponentFactoryResolver, EmbeddedViewRef, Injectable, Injector, Type } from '@angular/core';
 
 import { NzMessageConfig } from './nz-message-config';
 import { NzMessageContainerComponent } from './nz-message-container.component';
@@ -11,8 +11,16 @@ let globalCounter = 0; // global ID counter for messages
 export class NzMessageBaseService<ContainerClass extends NzMessageContainerComponent, MessageData, MessageConfig extends NzMessageConfig> {
   protected _container: ContainerClass;
 
-  constructor(overlay: Overlay, containerClass: Type<ContainerClass>, private _idPrefix: string = '') {
-    this._container = overlay.create().attach(new ComponentPortal(containerClass)).instance;
+  constructor(
+    private overlay: Overlay,
+    private containerClass: Type<ContainerClass>,
+    private injector: Injector,
+    private cfr: ComponentFactoryResolver,
+    private appRef: ApplicationRef,
+    private _idPrefix: string = '') {
+
+    // this._container = overlay.create().attach(new ComponentPortal(containerClass)).instance;
+    this._container = this.createContainer();
   }
 
   remove(messageId?: string): void {
@@ -44,13 +52,30 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
   protected _generateMessageId(): string {
     return this._idPrefix + globalCounter++;
   }
+
+  // Manually creating container for overlay to avoid multi-checking error, see: https://github.com/NG-ZORRO/ng-zorro-antd/issues/391
+  // NOTE: we never clean up the container component and it's overlay resources, if we should, we need to do it by our own codes.
+  private createContainer(): ContainerClass {
+    const factory = this.cfr.resolveComponentFactory(this.containerClass);
+    const componentRef = factory.create(this.injector); // Use root injector
+    componentRef.changeDetectorRef.detectChanges(); // Immediately change detection to avoid multi-checking error
+    this.appRef.attachView(componentRef.hostView); // Load view into app root
+    this.overlay.create().overlayElement.appendChild((componentRef.hostView as EmbeddedViewRef<{}>).rootNodes[0] as HTMLElement);
+
+    return componentRef.instance;
+  }
 }
 
 @Injectable()
 export class NzMessageService extends NzMessageBaseService<NzMessageContainerComponent, NzMessageData, NzMessageConfig> {
 
-  constructor(overlay: Overlay) {
-    super(overlay, NzMessageContainerComponent, 'message-');
+  constructor(
+    overlay: Overlay,
+    injector: Injector,
+    cfr: ComponentFactoryResolver,
+    appRef: ApplicationRef) {
+
+    super(overlay, NzMessageContainerComponent, injector, cfr, appRef, 'message-');
   }
 
   // Shortcut methods
