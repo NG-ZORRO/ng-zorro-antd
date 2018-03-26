@@ -18,7 +18,7 @@ export class NzI18nService {
   // TODO: cache more deeply paths for performance
   /* tslint:disable-next-line:no-any */
   translate(path: string, data?: any): string {
-    this._logger.debug(`[NzI18nService] Translating(${this._locale.locale}): ${path}`);
+    // this._logger.debug(`[NzI18nService] Translating(${this._locale.locale}): ${path}`);
     let content = this._getObjectPath(this._locale, path) as string;
     if (typeof content === 'string') {
       if (data) {
