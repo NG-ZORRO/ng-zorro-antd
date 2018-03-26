@@ -327,7 +327,7 @@ export class NzTreeService {
   }
 
   getOffset(ele: Element): NzFormatPosition {
-    if (!ele || !ele.getClientRects().length) {
+    if (!ele.getClientRects().length) {
       return { top: 0, left: 0 };
     }
     const rect = ele.getBoundingClientRect();
