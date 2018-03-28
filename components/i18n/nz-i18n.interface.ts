@@ -14,36 +14,13 @@ export interface NzPaginationI18nInterface {
 }
 
 export interface NzDatePickerI18nInterface {
-  lang: {
-    placeholder: string;
-    rangePlaceholder: string[];
-    today: string;
-    now: string;
-    backToToday: string;
-    ok: string;
-    clear: string;
-    month: string;
-    year: string;
-    timeSelect: string;
-    dateSelect: string;
-    monthSelect: string;
-    yearSelect: string;
-    decadeSelect: string;
-    yearFormat: string;
-    dateFormat: string;
-    dayFormat: string;
-    dateTimeFormat: string;
-    monthBeforeYear?: boolean;
-    previousMonth: string;
-    nextMonth: string;
-    previousYear: string;
-    nextYear: string;
-    previousDecade: string;
-    nextDecade: string;
-    previousCentury: string;
-    nextCentury: string;
-  };
+  lang: NzDatePickerLangI18nInterface;
   timePickerLocale: NzTimePickerI18nInterface;
+}
+
+export interface NzDatePickerLangI18nInterface extends NzCalendarI18nInterface {
+  placeholder: string;
+  rangePlaceholder: string[];
 }
 
 export interface NzTimePickerI18nInterface {
@@ -64,6 +41,7 @@ export interface NzCalendarI18nInterface {
   yearSelect: string;
   decadeSelect: string;
   yearFormat: string;
+  monthFormat?: string;
   dateFormat: string;
   dayFormat: string;
   dateTimeFormat: string;

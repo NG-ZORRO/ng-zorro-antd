@@ -14,6 +14,7 @@ import { NzTimeValueAccessorDirective } from './nz-time-value-accessor.directive
     NzTimeValueAccessorDirective
   ],
   exports        : [
+    NzTimePickerPanelComponent,
     NzTimePickerComponent
   ],
   imports        : [ CommonModule, FormsModule, NzI18nModule, OverlayModule ],
