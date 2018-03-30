@@ -39,7 +39,7 @@
 | message | x | x | x | wilsoncook | - |
 | notification | x | x | x | wilsoncook | - |
 | datepicker | x | x | x | trotyl | - |
-| timepicker | x | x | x | trotyl | - |
+| time-picker | x | x | x | trotyl | - |
 | calendar | √ | 100% | 100% | trotyl | √ |
 | affix | √ | 100% | 100% | cipchk | √ |
 | transfer | √ | 100% | 100% | cipchk | x |
