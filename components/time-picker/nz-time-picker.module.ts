@@ -5,11 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzTimePickerPanelComponent } from './nz-time-picker-panel.component';
 import { NzTimePickerComponent } from './nz-time-picker.component';
+import { NzTimeValueAccessorDirective } from './nz-time-value-accessor.directive';
 
 @NgModule({
   declarations: [
     NzTimePickerComponent,
-    NzTimePickerPanelComponent
+    NzTimePickerPanelComponent,
+    NzTimeValueAccessorDirective
   ],
   exports: [
     NzTimePickerComponent
