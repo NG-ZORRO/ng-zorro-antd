@@ -1,6 +1,7 @@
 <div class="ant-time-picker-panel-inner" [style.width.px]="enabledColumns * 56">
   <div class="ant-time-picker-panel-input-wrap">
-    <input type="nzTime" class="ant-time-picker-panel-input" [value]="time.value" autofocus placeholder="Select time">
+    <input type="text" [nzTime]="format" class="ant-time-picker-panel-input" [(ngModel)]="time.value" autofocus
+           placeholder="Select time">
     <a class="ant-time-picker-panel-clear-btn" role="button" title="clear" (click)="clear()"></a>
   </div>
   <div class="ant-time-picker-panel-combobox">

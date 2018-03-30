@@ -1,6 +1,6 @@
 <div cdkOverlayOrigin #origin="cdkOverlayOrigin" style="position: relative;top: -2px"></div>
-<input type="text" class="ant-time-picker-input" placeholder="Select time"
-       [value]="formattedTime" (click)="open()">
+<input type="text" [nzTime]="nzFormat" class="ant-time-picker-input" placeholder="Select time"
+       [(ngModel)]="selectedTime" (click)="open()">
 <span class="ant-time-picker-icon"></span>
 
 <ng-template cdkConnectedOverlay

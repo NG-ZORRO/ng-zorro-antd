@@ -17,7 +17,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit {
   @Input() nzOffset: [number, number, number];
   @Input() nzMinuteStep: number;
   @Input() nzSecondStep: number;
-  formattedTime: string | null;
   opened = false;
 
   private _selectedTime: Date | null = null;
@@ -28,7 +27,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit {
 
   set selectedTime(value: Date | null) {
     this._selectedTime = value;
-    this.formattedTime = value ? this.i18n.formatDate(value, this.nzFormat) : null;
   }
 
   constructor(private element: ElementRef,
