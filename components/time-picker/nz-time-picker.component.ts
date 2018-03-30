@@ -19,7 +19,17 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit {
   @Input() nzSecondStep: number;
   formattedTime: string | null;
   opened = false;
-  private selectedTime: Date | null = null;
+
+  private _selectedTime: Date | null = null;
+
+  get selectedTime(): Date | null {
+    return this._selectedTime;
+  }
+
+  set selectedTime(value: Date | null) {
+    this._selectedTime = value;
+    this.formattedTime = value ? this.i18n.formatDate(value, this.nzFormat) : null;
+  }
 
   constructor(private element: ElementRef,
               private injector: Injector,
@@ -41,13 +51,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit {
     this.opened = false;
   }
 
-  updateTime(time: Date | null): void {
-    this.selectedTime = time;
-    this.formattedTime = time ? this.i18n.formatDate(time, this.nzFormat) : null;
-  }
-
   writeValue(time: Date | null): void {
-    this.updateTime(time);
+    this.selectedTime = time;
   }
 
   registerOnChange(fn: (time: Date) => void): void {
