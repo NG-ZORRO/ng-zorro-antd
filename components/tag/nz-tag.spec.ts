@@ -60,7 +60,7 @@ describe('tag', () => {
     }));
     it('should color work', () => {
       fixture.detectChanges();
-      expect(tag.nativeElement.firstElementChild.classList).toContain('ant-tag-has-color');
+      expect(tag.nativeElement.firstElementChild.classList).not.toContain('ant-tag-has-color');
       testComponent.color = 'green';
       fixture.detectChanges();
       expect(tag.nativeElement.firstElementChild.classList).toContain('ant-tag-green');
@@ -72,6 +72,17 @@ describe('tag', () => {
       fixture.detectChanges();
       expect(tag.nativeElement.firstElementChild.classList).toContain('ant-tag-green');
       expect(tag.nativeElement.firstElementChild.style.backgroundColor).toBe('');
+    });
+    it('issues #1176', () => {
+      testComponent.color = 'green';
+      fixture.detectChanges();
+      expect(tag.nativeElement.firstElementChild.classList).toContain('ant-tag-green');
+      testComponent.color = '';
+      fixture.detectChanges();
+      expect(tag.nativeElement.firstElementChild.classList).not.toContain('ant-tag-has-color');
+      testComponent.color = undefined;
+      fixture.detectChanges();
+      expect(tag.nativeElement.firstElementChild.classList).not.toContain('ant-tag-has-color');
     });
   });
   describe('prevent tag', () => {
