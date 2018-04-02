@@ -1,6 +1,6 @@
 // tslint:disable:no-any no-parameter-reassignment
 import { Component, DebugElement, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable } from 'rxjs/Observable';
@@ -15,14 +15,14 @@ const LEFTCOUNT = 2;
 
 describe('transfer', () => {
   let injector: Injector;
-  let fixture: ComponentFixture<TestTransferComponent | TestTransferCustomRenderComponent>;
+  let fixture: ComponentFixture<TestTransferComponent | TestTransferCustomRenderComponent | Test996Component>;
   let dl: DebugElement;
   let instance: TestTransferComponent;
   let pageObject: TransferPageObject;
   beforeEach(() => {
     injector = TestBed.configureTestingModule({
       imports: [NoopAnimationsModule, NzTransferModule],
-      declarations: [TestTransferComponent, TestTransferCustomRenderComponent]
+      declarations: [TestTransferComponent, TestTransferCustomRenderComponent, Test996Component]
     });
     fixture = TestBed.createComponent(TestTransferComponent);
     dl = fixture.debugElement;
@@ -72,6 +72,7 @@ describe('transfer', () => {
       pageObject.expectLeft(LEFTCOUNT).search('left', 'description of content1');
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
       (pageObject.leftList.querySelector('.ant-transfer-list-search-action') as HTMLElement).click();
+      fixture.detectChanges();
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(LEFTCOUNT);
     });
 
@@ -79,6 +80,7 @@ describe('transfer', () => {
       pageObject.expectLeft(LEFTCOUNT).search('left', '1');
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
       (pageObject.leftList.querySelector('.ant-transfer-list-search-action') as HTMLElement).click();
+      fixture.detectChanges();
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(LEFTCOUNT);
     });
 
@@ -170,15 +172,26 @@ describe('transfer', () => {
     });
   });
 
-  xdescribe('#issues', () => {
-    xit('#996', () => {
-      const tempFixture = TestBed.createComponent(TestTransferCustomRenderComponent);
-      tempFixture.detectChanges();
-    });
+  describe('#issues', () => {
+    it('#996', fakeAsync(() => {
+      fixture = TestBed.createComponent(Test996Component);
+      dl = fixture.debugElement;
+      instance = dl.componentInstance;
+      pageObject = new TransferPageObject();
+      fixture.detectChanges();
+      expect(pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList).not.toContain('ant-checkbox-checked');
+      pageObject.checkItem('right', 1);
+      tick();
+      fixture.detectChanges();
+      expect(pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList).toContain('ant-checkbox-checked');
+    }));
   });
 
   class TransferPageObject {
     [key: string]: any;
+    getEl(cls: string): HTMLElement {
+      return dl.query(By.css(cls)).nativeElement as HTMLElement;
+    }
     get leftBtn(): HTMLButtonElement {
       return dl.query(By.css('.ant-transfer-operation .anticon-left')).nativeElement as HTMLButtonElement;
     }
@@ -325,5 +338,25 @@ class TestTransferCustomRenderComponent implements OnInit {
       });
     }
     this.nzDataSource = ret;
+  }
+}
+
+@Component({
+  template: `<nz-transfer [nzDataSource]="list"></nz-transfer>`
+})
+class Test996Component implements OnInit {
+  // tslint:disable-next-line:no-any
+  list: any[] = [];
+
+  ngOnInit(): void {
+    for (let i = 0; i < 2; i++) {
+      this.list.push({
+        key     : i.toString(),
+        title   : `content${i + 1}`,
+        disabled: i % 3 < 1
+      });
+    }
+
+    [ 0, 1 ].forEach(idx => this.list[ idx ].direction = 'right');
   }
 }

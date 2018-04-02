@@ -24,7 +24,7 @@ import { TransferItem } from './interface';
   providers          : [ NzUpdateHostClassService ],
   template           : `
     <div class="ant-transfer-list-header">
-      <label nz-checkbox [(ngModel)]="stat.checkAll" (ngModelChange)="onHandleSelectAll($event)"
+      <label nz-checkbox [ngModel]="stat.checkAll" (ngModelChange)="onHandleSelectAll($event)"
         [nzIndeterminate]="stat.checkHalf">
         <span class="ant-transfer-list-header-selected">
           <span>{{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ dataSource.length > 1 ? itemsUnit : itemUnit }}</span>
@@ -45,10 +45,8 @@ import { TransferItem } from './interface';
         <ng-container *ngFor="let item of dataSource">
           <li *ngIf="!item._hiden" (click)="_handleSelect(item)" class="ant-transfer-list-content-item">
             <label nz-checkbox [ngModel]="item.checked" [nzDisabled]="item.disabled">
-              <span>
-                <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
-                <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
-              </span>
+              <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
+              <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
             </label>
           </li>
         </ng-container>
