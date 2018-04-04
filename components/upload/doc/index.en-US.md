@@ -31,7 +31,7 @@ Uploading is the process of publishing information (web pages, text, pictures, v
 | nzSize | limit file size (KB). `0` unlimited | number | 0 |
 | nzFileType | limit file type, e.g: `image/png,image/jpeg,image/gif,image/bmp` | string | - |
 | nzFilter | Custom filter when choosed file | UploadFilter[] | - |
-| nzHeaders | Set request headers, valid above IE10. NOTICE: Muse be use `=>` to define the method. | `Object|((file: UploadFile) => Object)` | - |
+| nzHeaders | Set request headers, valid above IE10. NOTICE: Muse be use `=>` to define the method. | `Object｜((file: UploadFile) => Object)` | - |
 | nzListType | Built-in stylesheets, support for three types: `text`, `picture` or `picture-card` | string | 'text' |
 | nzMultiple | Whether to support selected multiple file. `IE10+` supported. You can select multiple files with CTRL holding down while multiple is set to be true | boolean | false |
 | nzName | The name of uploading file | string | 'file' |
@@ -39,7 +39,7 @@ Uploading is the process of publishing information (web pages, text, pictures, v
 | nzShowButton | Show upload button | boolean | true |
 | nzWithCredentials | ajax upload with cookie sent | boolean | false |
 | nzPreview | A callback function, will be executed when file link or preview icon is clicked. NOTICE: Muse be use `=>` to define the method. | `(file: UploadFile) => void` | - |
-| nzRemove   | A callback function, will be executed when removing file button is clicked, remove event will be prevented when return value is `false` or a Observable. NOTICE: Muse be use `=>` to define the method. | (file: UploadFile) => `boolean|Observable` | -   |
+| nzRemove   | A callback function, will be executed when removing file button is clicked, remove event will be prevented when return value is `false` or a Observable. NOTICE: Muse be use `=>` to define the method. | (file: UploadFile) => `boolean｜Observable` | -   |
 | (nzChange) | A callback function, can be executed when uploading state is changing | EventEmitter | - |
 
 ## nzChange

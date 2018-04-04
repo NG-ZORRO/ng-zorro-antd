@@ -32,7 +32,7 @@ title: Upload
 | nzSize | 限制文件大小，单位：KB；`0` 表示不限 | number | 0 |
 | nzFileType | 限制文件类型，例如：`image/png,image/jpeg,image/gif,image/bmp` | string | - |
 | nzFilter | 自定义过滤器 | UploadFilter[] | - |
-| nzHeaders | 设置上传的请求头部，IE10 以上有效；注意：务必使用 `=>` 定义处理方法。 | `Object|((file: UploadFile) => Object)` | - |
+| nzHeaders | 设置上传的请求头部，IE10 以上有效；注意：务必使用 `=>` 定义处理方法。 | `Object｜((file: UploadFile) => Object)` | - |
 | nzListType | 上传列表的内建样式，支持三种基本样式 `text`, `picture` 和 `picture-card` | string | 'text' |
 | nzMultiple | 是否支持多选文件，`ie10+` 支持。开启后按住 ctrl 可选择多个文件。 | boolean | false |
 | nzName | 发到后台的文件参数名 | string | 'file' |
@@ -40,7 +40,7 @@ title: Upload
 | nzShowButton | 是否展示上传按钮 | boolean | true |
 | nzWithCredentials | 上传请求时是否携带 cookie | boolean | false |
 | nzPreview | 点击文件链接或预览图标时的回调；注意：务必使用 `=>` 定义处理方法。 | `(file: UploadFile) => void` | - |
-| nzRemove   | 点击移除文件时的回调，返回值为 false 时不移除。支持返回 `Observable` 对象；注意：务必使用 `=>` 定义处理方法。 | (file: UploadFile) => `boolean|Observable` | 无   |
+| nzRemove   | 点击移除文件时的回调，返回值为 false 时不移除。支持返回 `Observable` 对象；注意：务必使用 `=>` 定义处理方法。 | (file: UploadFile) => `boolean｜Observable` | 无   |
 | (nzChange) | 上传文件改变时的状态 | EventEmitter | - |
 
 ## nzChange
