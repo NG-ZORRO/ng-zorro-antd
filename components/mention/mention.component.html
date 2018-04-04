@@ -1,0 +1,19 @@
+<ng-content></ng-content>
+<ng-template #suggestions>
+  <ul class="ant-mention-dropdown">
+    <li class="ant-mention-dropdown-item"
+        *ngFor="let suggestion of filteredSuggestions; let i = index"
+        [class.focus]="i === activeIndex"
+        (click)="selectSuggestion(suggestion)">
+      <ng-container *ngIf="suggestionTemplate else defaultSuggestion">
+        <ng-container *ngTemplateOutlet="suggestionTemplate; context: {$implicit: suggestion}"></ng-container>
+      </ng-container>
+      <ng-template #defaultSuggestion>{{ nzValueWith(suggestion) }}</ng-template>
+    </li>
+    <li class="ant-mention-dropdown-notfound ant-mention-dropdown-item"
+        *ngIf="filteredSuggestions.length === 0">
+      <span *ngIf="nzLoading"><i class="anticon anticon-spin anticon-loading"></i></span>
+      <span *ngIf="!nzLoading">{{ nzNotFoundContent }}</span>
+    </li>
+  </ul>
+</ng-template>
