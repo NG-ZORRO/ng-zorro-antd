@@ -124,10 +124,11 @@ export class NzTagComponent implements OnInit, AfterViewInit {
   }
 
   updateClassMap(): void {
+    const isPresetColor = this.isPresetColor(this.nzColor);
     this.classMap = {
       [ `ant-tag` ]                  : true,
-      [ `ant-tag-has-color` ]        : this.isPreset === false,
-      [ `ant-tag-${this.nzColor}` ]  : this.isPreset === true,
+      [ `ant-tag-has-color` ]        : this.nzColor && !isPresetColor,
+      [ `ant-tag-${this.nzColor}` ]  : isPresetColor,
       [ `ant-tag-checkable` ]        : this.nzMode === 'checkable',
       [ `ant-tag-checkable-checked` ]: this.nzChecked
     };
