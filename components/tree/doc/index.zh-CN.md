@@ -55,6 +55,7 @@ subtitle: 树形控件
 | selectable | 设置节点是否可被选中 | boolean | true |
 | disabled | 设置是否禁用节点(不可进行任何操作) | boolean | false |
 | disableCheckbox | 设置节点禁用 Checkbox | boolean | false |
+| origin | 原始数据(用户提供) | - | - |
 
 ### NzFormatEmitEvent props
 

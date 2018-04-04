@@ -6,6 +6,8 @@ export class NzTreeNode {
   level: number = 0;
   children: NzTreeNode[];
   isLeaf: boolean;
+  // tslint:disable-next-line:no-any
+  origin: any;
   // Parent Node
   parentNode: NzTreeNode;
   isChecked: boolean;
@@ -23,6 +25,7 @@ export class NzTreeNode {
     this.title = option.title || '---';
     this.key = option.key || null;
     this.isLeaf = option.isLeaf || false;
+    this.origin = option;
 
     this.children = [];
     this.parentNode = parent;

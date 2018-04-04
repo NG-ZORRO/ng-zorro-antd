@@ -54,7 +54,7 @@ Almost anything can be represented in a tree structure. Examples include directo
 | selectable | Set whether the treeNode can be selected	 | boolean | true |
 | disabled | Disables the treeNode | boolean | false |
 | disableCheckbox | Disables the checkbox of the treeNode | boolean | false |
-
+| origin | treeNode's raw data(user provided) | - | - |
 
 ### NzFormatEmitEvent props
 
