@@ -383,6 +383,10 @@ describe('tree component test', () => {
 
     it('test service - initNodeActive', () => {
       const selectedNode = treeService.rootNodes[ 0 ];
+      selectedNode.isDisabled = true;
+      treeService.initNodeActive(selectedNode, false);
+      expect(treeService.getSelectedNodeList().length).toEqual(0);
+      selectedNode.isDisabled = false;
       treeService.initNodeActive(selectedNode, false);
       expect(treeService.getSelectedNodeList().length).toEqual(1);
       expect(treeService.getSelectedNodeList()[ 0 ].title).toEqual('root1');
