@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector           : '[nz-card-meta]',
+  selector           : 'nz-card-meta',
   preserveWhitespaces: false,
   template           : `
     <div class="ant-card-meta-avatar" *ngIf="nzAvatar">
@@ -27,6 +27,11 @@ import {
       </div>
     </div>
   `,
+  styles             : [ `
+    :host {
+      display: block;
+    }
+  ` ],
   host               : {
     '[class.ant-card-meta]': 'true'
   }
