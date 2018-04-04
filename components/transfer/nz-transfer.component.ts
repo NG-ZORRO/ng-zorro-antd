@@ -63,8 +63,7 @@ import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, Tr
   `,
   host               : {
     '[class.ant-transfer]': 'true'
-  },
-  changeDetection    : ChangeDetectionStrategy.OnPush
+  }
 })
 export class NzTransferComponent implements OnChanges {
   private _showSearch = false;
@@ -143,7 +142,6 @@ export class NzTransferComponent implements OnChanges {
 
   handleFilterChange(ret: { direction: string, value: string }): void {
     this.nzSearchChange.emit(ret);
-    this.cd.detectChanges();
   }
 
   // endregion
@@ -155,7 +153,6 @@ export class NzTransferComponent implements OnChanges {
 
   private updateOperationStatus(direction: string, count?: number): void {
     this[ direction === 'right' ? 'leftActive' : 'rightActive' ] = (typeof count === 'undefined' ? this.getCheckedData(direction).filter(w => !w.disabled).length : count) > 0;
-    this.cd.detectChanges();
   }
 
   moveToLeft = () => this.moveTo('left');
@@ -192,7 +189,7 @@ export class NzTransferComponent implements OnChanges {
 
   // endregion
 
-  constructor(private i18n: NzI18nService, private el: ElementRef, private cd: ChangeDetectorRef) {
+  constructor(private i18n: NzI18nService, private el: ElementRef) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -201,6 +198,5 @@ export class NzTransferComponent implements OnChanges {
       this.updateOperationStatus('left');
       this.updateOperationStatus('right');
     }
-    this.cd.detectChanges();
   }
 }
