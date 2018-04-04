@@ -8,7 +8,8 @@
       "node"
     ],
     "paths": {
-      "ng-zorro-antd": [ "../../components/ng-zorro-antd.module.ts" ]
+      "ng-zorro-antd": [ "../../components/ng-zorro-antd.module.ts" ],
+      "ngx-color/sketch": [ "../../node_modules/ngx-color/sketch" ]
     }
   },
   "exclude": [
