@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
-import { en_US, zh_CN, NzI18nService } from 'ng-zorro-antd';
+import { en_US, zh_CN, NzI18nService, NzMessageService } from 'ng-zorro-antd';
 import { ROUTER_LIST } from './router';
 import { environment } from '../environments/environment';
 
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
     this.hide = !this.hide;
   }
 
-  constructor(private router: Router, private title: Title, private nzI18nService: NzI18nService) {
+  constructor(private router: Router, private title: Title, private nzI18nService: NzI18nService, private msg: NzMessageService) {
 
   }
 
@@ -76,6 +76,55 @@ export class AppComponent implements OnInit {
         }
       }
     });
+    this.initColor();
   }
+
+  // region: color
+  color = `#1890ff`;
+  initColor() {
+    const node = document.createElement('link');
+    node.rel = 'stylesheet/less';
+    node.type = 'text/css';
+    node.href = '/assets/color.less';
+    document.getElementsByTagName('head')[0].appendChild(node);
+  }
+  lessLoaded = false;
+  changeColor(res: any) {
+    const changeColor = () => {
+      (window as any).less.modifyVars({
+        '@primary-color': res.color.hex
+      }).then(() => {
+        this.msg.success(`应用成功`);
+        this.color = res.color.hex;
+        window.scrollTo(0, 0);
+      });
+    };
+
+    const lessUrl = 'https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js';
+
+    if (this.lessLoaded) {
+      changeColor();
+    } else {
+      (window as any).less = {
+        async: true
+      };
+      this.loadScript(lessUrl).then(() => {
+        this.lessLoaded = true;
+        changeColor();
+      });
+    }
+  }
+
+  loadScript(src: string) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = src;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+  // endregion
 
 }

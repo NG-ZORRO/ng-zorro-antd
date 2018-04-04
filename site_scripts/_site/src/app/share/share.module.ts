@@ -6,6 +6,7 @@ import {
   NgZorroAntdModule
 } from 'ng-zorro-antd';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ColorSketchModule } from 'ngx-color/sketch';
 
 import { NzCodeBoxModule } from './nz-codebox/nz-codebox.module';
 import { NzHighlightModule } from './nz-highlight/nz-highlight.module';
@@ -25,6 +26,7 @@ import { NzCopyIconModule } from './nz-copy-icon/nz-copy-icon.module';
     NzCopyIconModule,
     // third libs
     InfiniteScrollModule,
+    ColorSketchModule,
   ],
   exports: [
     CommonModule,
@@ -38,6 +40,7 @@ import { NzCopyIconModule } from './nz-copy-icon/nz-copy-icon.module';
     NzCopyIconModule,
     // third libs
     InfiniteScrollModule,
+    ColorSketchModule,
   ]
 })
 export class ShareModule { }
