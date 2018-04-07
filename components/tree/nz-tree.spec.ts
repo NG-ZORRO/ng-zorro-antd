@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable } from 'rxjs/Observable';
@@ -20,25 +21,25 @@ describe('tree component test', () => {
     let treeElement: HTMLElement;
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzTreeModule, NoopAnimationsModule ],
+        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
         declarations: [ NzDemoBasicTreeComponent ]
       }).compileComponents();
     }));
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(async(() => {
       fixture = TestBed.createComponent(NzDemoBasicTreeComponent);
+      fixture.detectChanges();
       treeInstance = fixture.debugElement.componentInstance;
       treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
-      fixture.detectChanges();
-      tick(100);
-      fixture.detectChanges();
     }));
 
     it('should create', () => {
       expect(treeInstance).toBeTruthy();
     });
     it('should className correct', fakeAsync(() => {
-      // selected
+      fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
       const allSelectedKeys = treeElement.querySelectorAll('.ant-tree-node-selected');
       expect(allSelectedKeys[ 0 ].getAttribute('title')).toEqual('child1');
       expect(allSelectedKeys[ 1 ].getAttribute('title')).toEqual('child1.1');
@@ -51,31 +52,35 @@ describe('tree component test', () => {
     }));
 
     it('click should response correctly', fakeAsync(() => {
+      fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
       const clickSpy = spyOn(treeInstance, 'onClick');
       // click child1
       let targetNode = treeElement.querySelectorAll('li')[ 1 ];
       expect(targetNode.querySelectorAll('.ant-tree-node-selected').length).toEqual(2);
       dispatchMouseEvent(targetNode, 'click');
-      tick(250);
       fixture.detectChanges();
       // cancel selected
       targetNode = treeElement.querySelectorAll('li')[ 1 ];
       expect(targetNode.querySelectorAll('.ant-tree-node-selected').length).toEqual(1);
       expect(clickSpy).toHaveBeenCalled();
       expect(clickSpy).toHaveBeenCalledTimes(1);
+      // test set node checked has been added to checked list
+      // treeInstance.treeComponent.nzTreeService.setSelectedNodeList(treeInstance.treeComponent.nzTreeService.getSelectedNodeList()[0]);
     }));
     it('dblclick/contextmenu should response correctly', fakeAsync(() => {
+      fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
       const clickSpy = spyOn(treeInstance, 'onClick');
       const dblClickSpy = spyOn(treeInstance, 'onDblClick');
       const contextMenuSpy = spyOn(treeInstance, 'onContextMenu');
       // detect changes
       fixture.detectChanges();
-      tick(100);
-      fixture.detectChanges();
       // dblclick child1
       let targetNode = treeElement.querySelectorAll('li')[ 1 ];
       dispatchMouseEvent(targetNode, 'dblclick');
-      tick(250);
       fixture.detectChanges();
       // cancel selected
       expect(clickSpy).toHaveBeenCalledTimes(0);
@@ -90,11 +95,12 @@ describe('tree component test', () => {
     }));
 
     it('check/expand should response correctly', fakeAsync(() => {
+      fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
       const checkSpy = spyOn(treeInstance, 'onCheck');
       const expandSpy = spyOn(treeInstance, 'onExpand');
       // detect changes
-      fixture.detectChanges();
-      tick(100);
       fixture.detectChanges();
       expect(treeElement.querySelectorAll('.ant-tree-checkbox-checked').length).toEqual(4);
       // check child1
@@ -108,7 +114,9 @@ describe('tree component test', () => {
       expect(treeElement.querySelectorAll('.ant-tree-checkbox-checked').length).toEqual(6);
       expect(checkSpy).toHaveBeenCalled();
       expect(checkSpy).toHaveBeenCalledTimes(1);
-
+      // click toggle checked
+      dispatchMouseEvent(targetNode, 'click');
+      dispatchMouseEvent(targetNode, 'click');
       // click disabled node
       targetNode = treeElement.querySelector('.ant-tree-checkbox-disabled');
       dispatchMouseEvent(targetNode, 'click');
@@ -127,6 +135,8 @@ describe('tree component test', () => {
     it('should className correct showline/showexpand/expandall', fakeAsync(() => {
       treeInstance.showLine = true;
       fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
       expect(treeElement.querySelector('ul').classList).toContain('ant-tree-show-line');
       // hide expand icon
       expect(treeElement.querySelectorAll('.ant-tree-switcher').length).toBeGreaterThan(0);
@@ -138,14 +148,14 @@ describe('tree component test', () => {
       fixture.detectChanges();
     }));
 
-    it('search value', fakeAsync(() => {
+    it('search value', () => {
       const searchSpy = spyOn(treeInstance, 'onSearch');
       treeInstance.searchValue = 'grand';
       fixture.detectChanges();
       expect(treeElement.querySelectorAll('.font-red').length).toEqual(3);
       expect(searchSpy).toHaveBeenCalled();
       expect(searchSpy).toHaveBeenCalledTimes(1);
-    }));
+    });
   });
 
   describe('async tree', () => {
@@ -154,7 +164,7 @@ describe('tree component test', () => {
     let treeElement: HTMLElement;
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzTreeModule, NoopAnimationsModule ],
+        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
         declarations: [ NzDemoAsyncTreeComponent ]
       }).compileComponents();
     }));
@@ -164,19 +174,15 @@ describe('tree component test', () => {
       treeInstance = fixture.debugElement.componentInstance;
       treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
       fixture.detectChanges();
-      tick(100);
-      fixture.detectChanges();
     }));
 
     it('should create', () => {
       expect(treeInstance).toBeTruthy();
     });
 
-    it('should add children', fakeAsync(() => {
+    it('should add children', () => {
       const expandSpy = spyOn(treeInstance, 'onExpand');
       // detect changes
-      fixture.detectChanges();
-      tick(100);
       fixture.detectChanges();
       // init
       expect(treeElement.querySelectorAll('.ant-tree-switcher').length).toEqual(3);
@@ -189,7 +195,7 @@ describe('tree component test', () => {
       fixture.detectChanges();
       expect(expandSpy).toHaveBeenCalled();
       expect(expandSpy).toHaveBeenCalledTimes(1);
-    }));
+    });
   });
 
   describe('test node', () => {
@@ -268,7 +274,7 @@ describe('tree component test', () => {
     let treeElement: HTMLElement;
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzTreeModule, NoopAnimationsModule ],
+        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
         declarations: [ NzDemoDraggableTreeComponent ],
         providers   : [
           NzTreeService
@@ -276,19 +282,20 @@ describe('tree component test', () => {
       }).compileComponents();
     }));
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(async(() => {
       fixture = TestBed.createComponent(NzDemoDraggableTreeComponent);
       treeInstance = fixture.debugElement.componentInstance;
       treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
-      fixture.detectChanges();
-      tick(100);
       fixture.detectChanges();
     }));
 
     it('should create', () => {
       expect(treeInstance).toBeTruthy();
     });
-    it('drag event', () => {
+    it('drag event', fakeAsync(() => {
+      fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
       const dragStartSpy = spyOn(treeInstance, 'onDragStart');
       const dragEnterSpy = spyOn(treeInstance, 'onDragEnter');
       const dragOverSpy = spyOn(treeInstance, 'onDragOver');
@@ -333,7 +340,7 @@ describe('tree component test', () => {
       dispatchTouchEvent(dropNode, 'dragend');
       fixture.detectChanges();
       expect(dragEndSpy).toHaveBeenCalledTimes(1);
-    });
+    }));
     it('drag event canDrop', () => {
       treeInstance.beforeDrop = (arg: NzFormatBeforeDropEvent): Observable<boolean> => {
         return of(true);
@@ -358,7 +365,7 @@ describe('tree component test', () => {
   describe('test service', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzTreeModule, NoopAnimationsModule ],
+        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
         declarations: [ NzDemoDraggableTreeComponent ],
         providers   : [
           NzTreeService
@@ -366,12 +373,12 @@ describe('tree component test', () => {
       }).compileComponents();
     }));
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoDraggableTreeComponent);
       treeInstance = fixture.debugElement.componentInstance;
       treeService = treeInstance.nzTreeService;
       treeService.initTreeNodes(treeInstance.nodes);
-    }));
+    });
     it('test service - setSelectedNodeList', () => {
       const selectedNode = treeService.rootNodes[ 0 ];
       // node is not selected
@@ -427,27 +434,30 @@ describe('tree component test', () => {
 @Component({
   selector: 'nz-demo-tree-basic',
   template: `
-    <nz-tree [nzTreeData]="nodes"
-             [nzCheckable]="true"
-             [nzMultiple]="multiple"
-             [nzShowLine]="showLine"
-             [nzShowExpand]="showExpand"
-             [nzSearchValue]="searchValue"
-             [nzDefaultExpandedKeys]="expandKeys"
-             [nzDefaultCheckedKeys]="checkedKeys"
-             [nzDefaultSelectedKeys]="selectedKeys"
-             [nzDefaultExpandAll]="expandDefault"
-             (nzClick)="onClick()"
-             (nzDblClick)="onDblClick()"
-             (nzContextMenu)="onContextMenu()"
-             (nzCheckBoxChange)="onCheck()"
-             (nzExpandChange)="onExpand()"
-             (nzOnSearchNode)="onSearch()"
+    <nz-tree
+      #treeComponent
+      [(ngModel)]="nodes"
+      [nzCheckable]="true"
+      [nzMultiple]="multiple"
+      [nzShowLine]="showLine"
+      [nzShowExpand]="showExpand"
+      [nzSearchValue]="searchValue"
+      [nzDefaultExpandedKeys]="expandKeys"
+      [nzDefaultCheckedKeys]="checkedKeys"
+      [nzDefaultSelectedKeys]="selectedKeys"
+      [nzDefaultExpandAll]="expandDefault"
+      (nzClick)="onClick()"
+      (nzDblClick)="onDblClick()"
+      (nzContextMenu)="onContextMenu()"
+      (nzCheckBoxChange)="onCheck()"
+      (nzExpandChange)="onExpand()"
+      (nzOnSearchNode)="onSearch()"
     >
     </nz-tree>
   `
 })
 class NzDemoBasicTreeComponent {
+  @ViewChild('treeComponent') treeComponent: NzTreeComponent;
   expandKeys = [ '1001', '10001' ];
   checkedKeys = [ '10001', '100012' ];
   selectedKeys = [ '10001', '100011' ];
@@ -457,7 +467,7 @@ class NzDemoBasicTreeComponent {
   showExpand = true;
   searchValue = '';
   nodes = [
-    {
+    new NzTreeNode({
       title   : 'root1',
       key     : '1001',
       children: [
@@ -483,8 +493,8 @@ class NzDemoBasicTreeComponent {
                 {
                   title  : 'grandchild1.2.2',
                   key    : '1000122',
-                  checked: true,
-                  isLeaf : true
+                  isLeaf : true,
+                  checked: true
                 }
               ]
             }
@@ -495,8 +505,8 @@ class NzDemoBasicTreeComponent {
           key  : '10002'
         }
       ]
-    },
-    {
+    }),
+    new NzTreeNode({
       title   : 'root2',
       key     : '1002',
       children: [
@@ -517,8 +527,8 @@ class NzDemoBasicTreeComponent {
           ]
         }
       ]
-    },
-    { title: 'root3', key: '1003' }
+    }),
+    new NzTreeNode({ title: 'root3', key: '1003' })
   ];
 
   onClick(): void {
@@ -548,30 +558,33 @@ class NzDemoBasicTreeComponent {
 @Component({
   selector: 'nz-demo-tree-async',
   template: `
-    <nz-tree [nzTreeData]="nodes"
-             [nzAsyncData]="true"
-             (nzExpandChange)="onExpand($event)"
+    <nz-tree
+      #treeComponent
+      [(ngModel)]="nodes"
+      [nzAsyncData]="true"
+      (nzExpandChange)="onExpand($event)"
     >
     </nz-tree>`,
   styles  : []
 })
 
 class NzDemoAsyncTreeComponent {
+  @ViewChild('treeComponent') treeComponent: NzTreeComponent;
   nodes = [
-    {
+    new NzTreeNode({
       title   : 'root1',
       key     : '1001',
       children: []
-    },
-    {
+    }),
+    new NzTreeNode({
       title   : 'root2',
       key     : '1002',
       children: []
-    },
-    {
+    }),
+    new NzTreeNode({
       title: 'root3',
       key  : '1003'
-    }
+    })
   ];
 
   onExpand(data: NzFormatEmitEvent): void {
@@ -585,24 +598,27 @@ class NzDemoAsyncTreeComponent {
 @Component({
   selector: 'nz-demo-tree-draggable',
   template: `
-    <nz-tree [nzTreeData]="nodes"
-             [nzDraggable]="true"
-             [nzMultiple]="false"
-             [nzBeforeDrop]="beforeDrop"
-             (nzOnDragStart)="onDragStart()"
-             (nzOnDragEnter)="onDragEnter()"
-             (nzOnDragOver)="onDragOver()"
-             (nzOnDragLeave)="onDragLeave()"
-             (nzOnDrop)="onDrop()"
-             (nzOnDragEnd)="onDragEnd()"
+    <nz-tree
+      #treeComponent
+      [(ngModel)]="nodes"
+      [nzDraggable]="true"
+      [nzMultiple]="false"
+      [nzBeforeDrop]="beforeDrop"
+      (nzOnDragStart)="onDragStart()"
+      (nzOnDragEnter)="onDragEnter()"
+      (nzOnDragOver)="onDragOver()"
+      (nzOnDragLeave)="onDragLeave()"
+      (nzOnDrop)="onDrop()"
+      (nzOnDragEnd)="onDragEnd()"
     >
     </nz-tree>`,
   styles  : []
 })
 
 class NzDemoDraggableTreeComponent {
+  @ViewChild('treeComponent') treeComponent: NzTreeComponent;
   nodes = [
-    {
+    new NzTreeNode({
       title   : 'root1',
       key     : '1001',
       children: [
@@ -639,8 +655,8 @@ class NzDemoDraggableTreeComponent {
           key  : '10002'
         }
       ]
-    },
-    {
+    }),
+    new NzTreeNode({
       title   : 'root2',
       key     : '1002',
       children: [
@@ -661,8 +677,8 @@ class NzDemoDraggableTreeComponent {
           ]
         }
       ]
-    },
-    { title: 'root3', key: '1003', expanded: true }
+    }),
+    new NzTreeNode({ title: 'root3', key: '1003', expanded: true })
   ];
 
   beforeDrop;

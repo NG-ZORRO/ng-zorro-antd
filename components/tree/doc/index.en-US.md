@@ -14,7 +14,7 @@ Almost anything can be represented in a tree structure. Examples include directo
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzTreeData | Tree data (Reference TreeNodeOption) | array | \[] |
+| ngModel | Tree data (Reference NzTreeNode) | NzTreeNode\[] | \[] |
 | nzCheckable | Adds a Checkbox before the treeNodes| boolean | false |
 | nzShowExpand | Show a Expand Icon before the treeNodes | boolean | true |
 | nzShowLine | Shows a connecting line | boolean | false |
@@ -54,7 +54,6 @@ Almost anything can be represented in a tree structure. Examples include directo
 | selectable | Set whether the treeNode can be selected	 | boolean | true |
 | disabled | Disables the treeNode | boolean | false |
 | disableCheckbox | Disables the checkbox of the treeNode | boolean | false |
-| origin | treeNode's raw data(user provided) | - | - |
 
 ### NzFormatEmitEvent props
 
@@ -83,7 +82,7 @@ Almost anything can be represented in a tree structure. Examples include directo
 | key | Key | string | NzTreeNodeOptions.key |
 | level | TreeNode's level relative to the root node | number | number |
 | children | Children | array<NzTreeNode\> | array<NzTreeNode\> |
-| treeOptions | User's Tree Data(will not change) | NzTreeNodeOptions | NzTreeNodeOptions |
+| origin | treeNode's raw data of NzTreeNodeOptions(user provided to show more datas) | NzTreeNodeOptions | - |
 | getParentNode | Get parentNode | function | `NzTreeNode` / `null` |
 | isLeaf | Whether treeNode is a Leaf Node | boolean |  `true` / `false` |
 | isExpanded | Whether treeNode is expanded | boolean | `true` / `false` |
