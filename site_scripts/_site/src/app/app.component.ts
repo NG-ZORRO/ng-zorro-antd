@@ -71,9 +71,15 @@ export class AppComponent implements OnInit {
         }
         this.language = this.router.url.split('/')[ this.router.url.split('/').length - 1 ].split('#')[ 0 ];
         this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
-        if (environment.production && (this.router.url.indexOf('#') < -1)) {
+        if (environment.production) {
           window.scrollTo(0, 0);
         }
+        setTimeout(() => {
+          const toc = this.router.parseUrl(this.router.url).fragment || '';
+          if (toc) {
+            document.querySelector(`#${toc}`).scrollIntoView();
+          }
+        }, 200);
       }
     });
     this.initColor();
