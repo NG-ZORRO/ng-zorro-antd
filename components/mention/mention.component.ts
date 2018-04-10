@@ -15,6 +15,11 @@ import { getCaretCoordinates } from '../core/util/textarea-caret-position';
 import { NzMentionSuggestionDirective } from './mention-suggestions';
 import { NzMentionTriggerDirective } from './mention-trigger';
 
+export interface MentionOnSearchTypes {
+  value: string;
+  prefix: string;
+}
+
 @Component({
   selector: 'nz-mention',
   templateUrl: './mention.component.html',
@@ -34,7 +39,7 @@ import { NzMentionTriggerDirective } from './mention-trigger';
 export class NzMentionComponent implements OnDestroy, AfterContentInit {
 
   @Output() nzOnSelect: EventEmitter<string | {}> = new EventEmitter();
-  @Output() nzOnSearchChange: EventEmitter<string> = new EventEmitter();
+  @Output() nzOnSearchChange: EventEmitter<MentionOnSearchTypes> = new EventEmitter();
 
   @Input() nzValueWith: (value: any) => string = value => value; // tslint:disable-line:no-any
   @Input() nzPrefix: string | string[] = '@';
@@ -171,12 +176,16 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
   }
 
   private suggestionsFilter(value: string, emit: boolean): void {
+    const suggestions = value.substring(1);
     if (this.previousValue === value) { return; }
     this.previousValue = value;
     if (emit) {
-      this.nzOnSearchChange.emit(this.cursorMention);
+      this.nzOnSearchChange.emit({
+        value: this.cursorMention.substring(1),
+        prefix:  this.cursorMention[0]
+      });
     }
-    const searchValue = value.toLowerCase();
+    const searchValue = suggestions.toLowerCase();
     this.filteredSuggestions = this.nzSuggestions
     .filter(suggestion => this.nzValueWith(suggestion).toLowerCase().includes(searchValue));
   }
@@ -188,7 +197,7 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
       return;
     }
     this.suggestionsFilter(this.cursorMention, emit);
-    const activeIndex = this.filteredSuggestions.indexOf(this.cursorMention);
+    const activeIndex = this.filteredSuggestions.indexOf(this.cursorMention.substring(1));
     this.activeIndex = activeIndex >= 0 ? activeIndex : 0;
     this.openDropdown();
   }
@@ -227,7 +236,7 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
         this.cursorMentionStart =  -1;
         this.cursorMentionEnd =  -1;
       } else {
-        this.cursorMention =  mention.substring(1);
+        this.cursorMention =  mention;
         this.cursorMentionStart =  startPos;
         this.cursorMentionEnd =  endPos;
         return;
