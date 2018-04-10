@@ -8,6 +8,7 @@ import {
   QueryList,
   ViewChildren
 } from '@angular/core';
+import { isNotNil } from '../core/util/check';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
 
@@ -200,9 +201,11 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
 
   scrollIntoView(): void {
     if (this.listOfNzOptionLiComponent && this.listOfNzOptionLiComponent.length) {
-      const targetLi = this.listOfNzOptionLiComponent.find(o => o.nzOption === this.activatedOption);
-      if (targetLi && targetLi.el) {
-        setTimeout(() => targetLi.el.scrollIntoView(false), 150);
+      const targetOption = this.listOfNzOptionLiComponent.find(o => o.nzOption === this.activatedOption);
+      /* tslint:disable-next-line:no-string-literal */
+      if (targetOption && targetOption.el && targetOption.el[ 'scrollIntoViewIfNeeded' ]) {
+        /* tslint:disable-next-line:no-string-literal */
+        setTimeout(() => targetOption.el[ 'scrollIntoViewIfNeeded' ](false), 150);
       }
     }
   }
@@ -215,7 +218,7 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
       let listOfSelectedValue = [ ...this.nzListOfSelectedValue ];
       if (this.isMultipleOrTags) {
         const targetValue = listOfSelectedValue.find(o => this.compareWith(o, option.nzValue));
-        if (targetValue) {
+        if (isNotNil(targetValue)) {
           if (!isPressEnter) {
             /** should not toggle option when press enter **/
             listOfSelectedValue.splice(listOfSelectedValue.indexOf(targetValue), 1);
