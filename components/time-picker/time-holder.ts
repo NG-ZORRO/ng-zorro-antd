@@ -40,6 +40,10 @@ export class TimeHolder {
     this.update();
   }
 
+  get isEmpty(): boolean {
+    return isUndefined(this._hours) && isUndefined(this._minutes) && isUndefined(this._seconds);
+  }
+
   private _clear(): void {
     this._hours = undefined;
     this._minutes = undefined;
@@ -47,10 +51,22 @@ export class TimeHolder {
   }
 
   private update(): void {
-    if (isUndefined(this._hours) || isUndefined(this._minutes) || isUndefined(this._seconds)) {
+    if (this.isEmpty) {
       this._value = undefined;
     } else {
-      this._value = new Date(0, 0, 0, this.hours, this.minutes, this.seconds);
+      if (isUndefined(this._hours)) {
+        this._hours = this.defaultHours;
+      }
+
+      if (isUndefined(this._minutes)) {
+        this._minutes = this.defaultMinutes;
+      }
+
+      if (isUndefined(this._seconds)) {
+        this._seconds = this.defaultSeconds;
+      }
+
+      this._value = new Date(0, 0, 0, this._hours, this._minutes, this._seconds);
     }
     this._changes.next(this._value);
   }
@@ -104,5 +120,35 @@ export class TimeHolder {
   setSeconds(value: number): this {
     this.seconds = value;
     return this;
+  }
+
+  private _defaultOpenValue: Date = new Date();
+
+  get defaultOpenValue(): Date {
+    return this._defaultOpenValue;
+  }
+
+  set defaultOpenValue(value: Date) {
+    if (this._defaultOpenValue !== value) {
+      this._defaultOpenValue = value;
+      this.update();
+    }
+  }
+
+  setDefaultOpenValue(value: Date): this {
+    this.defaultOpenValue = value;
+    return this;
+  }
+
+  get defaultHours(): number {
+    return this._defaultOpenValue.getHours();
+  }
+
+  get defaultMinutes(): number {
+    return this._defaultOpenValue.getMinutes();
+  }
+
+  get defaultSeconds(): number {
+    return this._defaultOpenValue.getSeconds();
   }
 }
