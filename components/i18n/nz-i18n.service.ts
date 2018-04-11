@@ -58,6 +58,13 @@ export class NzI18nService {
     return parse(text);
   }
 
+  parseTime(text: string): Date {
+    if (!text) {
+      return;
+    }
+    return parse(`1970-01-01 ${text}`);
+  }
+
   private _getObjectPath(obj: object, path: string): string | object {
     let res = obj;
     const paths = path.split('.');

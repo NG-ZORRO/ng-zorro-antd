@@ -68,6 +68,10 @@ export class TimeHolder {
 
       this._value = new Date(0, 0, 0, this._hours, this._minutes, this._seconds);
     }
+    this.changed();
+  }
+
+  changed(): void {
     this._changes.next(this._value);
   }
 
