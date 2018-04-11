@@ -74,7 +74,7 @@ export interface NzThItemInterface {
       </span>
     </div>
     <nz-dropdown nzTrigger="click" *ngIf="nzShowFilter" [nzClickHide]="false" [hasFilterButton]="true" (nzVisibleChange)="dropDownVisibleChange($event)">
-      <i class="anticon anticon-filter" [class.ant-table-filter-selected]="filterVisible" nz-dropdown></i>
+      <i class="anticon anticon-filter" [class.ant-table-filter-selected]="hasFilterValue" nz-dropdown></i>
       <ul nz-menu>
         <ng-container *ngIf="nzFilterMultiple">
           <li nz-menu-item *ngFor="let filter of multipleFilterList" (click)="checkMultiple(filter)">
@@ -106,7 +106,7 @@ export class NzThComponent {
   private _showCheckbox = false;
   private _showRowSelection = false;
   el: HTMLElement;
-  filterVisible = false;
+  hasFilterValue = false;
   multipleFilterList: NzThItemInterface[] = [];
   singleFilterList: NzThItemInterface[] = [];
   /* tslint:disable-next-line:no-any */
@@ -228,10 +228,14 @@ export class NzThComponent {
 
   search(): void {
     if (this.nzFilterMultiple) {
-      this.nzFilterChange.emit(this.multipleFilterList.filter(item => item.checked).map(item => item.value));
+      const filterList = this.multipleFilterList.filter(item => item.checked).map(item => item.value);
+      this.hasFilterValue = filterList.length > 0;
+      this.nzFilterChange.emit(filterList);
     } else {
       const checkedFilter = this.singleFilterList.find(item => item.checked);
-      this.nzFilterChange.emit(checkedFilter ? checkedFilter.value : null);
+      const filterValue = checkedFilter ? checkedFilter.value : null;
+      this.hasFilterValue = isNotNil(filterValue);
+      this.nzFilterChange.emit(filterValue);
     }
     this.hideDropDown();
   }
@@ -241,6 +245,7 @@ export class NzThComponent {
     this.initSingleFilterList();
     this.search();
     this.hideDropDown();
+    this.hasFilterValue = false;
   }
 
   checkMultiple(filter: NzThItemInterface): void {
@@ -257,7 +262,6 @@ export class NzThComponent {
   }
 
   dropDownVisibleChange(value: boolean): void {
-    this.filterVisible = value;
     if (!value) {
       this.search();
     }
