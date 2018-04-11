@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { isUndefined } from 'util';
 
 export class TimeHolder {
   constructor() {
@@ -29,22 +30,32 @@ export class TimeHolder {
     }
   }
 
+  setValue(value: Date): this {
+    this.value = value;
+    return this;
+  }
+
   clear(): void {
     this._clear();
     this.update();
   }
 
-  setHours(value: number): this {
-    this.hours = value;
-    return this;
+  private _clear(): void {
+    this._hours = undefined;
+    this._minutes = undefined;
+    this._seconds = undefined;
   }
 
-  setMinutes(value: number): this {
-    this.minutes = value;
-    return this;
+  private update(): void {
+    if (isUndefined(this._hours) || isUndefined(this._minutes) || isUndefined(this._seconds)) {
+      this._value = undefined;
+    } else {
+      this._value = new Date(0, 0, 0, this.hours, this.minutes, this.seconds);
+    }
+    this._changes.next(this._value);
   }
 
-  private _hours = 0;
+  private _hours = undefined;
   get hours(): number {
     return this._hours;
   }
@@ -56,13 +67,12 @@ export class TimeHolder {
     }
   }
 
-  private _clear(): void {
-    this._hours = 0;
-    this._minutes = 0;
-    this._seconds = 0;
+  setHours(value: number): this {
+    this.hours = value;
+    return this;
   }
 
-  private _minutes = 0;
+  private _minutes = undefined;
   get minutes(): number {
     return this._minutes;
   }
@@ -74,12 +84,12 @@ export class TimeHolder {
     }
   }
 
-  private update(): void {
-    this._value = new Date(0, 0, 0, this.hours, this.minutes, this.seconds);
-    this._changes.next(this._value);
+  setMinutes(value: number): this {
+    this.minutes = value;
+    return this;
   }
 
-  private _seconds = 0;
+  private _seconds = undefined;
   get seconds(): number {
     return this._seconds;
   }
