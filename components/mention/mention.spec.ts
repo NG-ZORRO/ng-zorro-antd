@@ -474,7 +474,6 @@ class NzTestSimpleMentionComponent {
     [nzValueWith]="valueWith"
     [nzPrefix]="prefix"
     [nzPlacement]="'top'"
-    (nzOnSearchChange)="onSearchChange($event)"
     [nzLoading]="loading">
      <textarea
         nz-input

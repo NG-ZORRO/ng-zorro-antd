@@ -36,7 +36,7 @@ title: Mention
 | nzSuggestions | 建议内容 | `any[]` | `[]` |
 | nzValueWith | 建议选项的取值方法  | `(any) => string` | `(value: string) => string` |
 | (nzOnSelect) | 下拉框选择建议时回调 | `EventEmitter<any>` | - |
-| (onSearchChange) | 输入框中 @ 变化时回调 | `EventEmitter<string>` | - |
+| (onSearchChange) | 输入框中 @ 变化时回调 | `EventEmitter<MentionOnSearchTypes>` | - |
 
 ### 方法
 
@@ -72,3 +72,10 @@ title: Mention
     </ng-container>
   </nz-mention>
 ```
+
+### MentionOnSearchTypes
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| value | 搜索关键词 | string | - |
+| prefix | 触发前缀 | string | - |

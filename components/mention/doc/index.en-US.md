@@ -35,7 +35,7 @@ When need to mention someone or something.
 | nzSuggestions | Suggestion content | `any[]` | `[]` |
 | nzValueWith | Function that maps an suggestion's value  | `(any) => string` | `(value: string) => string` |
 | (nzOnSelect) | Callback function called when select from suggestions | `EventEmitter<any>` | - |
-| (onSearchChange) | Callback function called when search content changes| `EventEmitter<string>` | - |
+| (onSearchChange) | Callback function called when search content changes| `EventEmitter<MentionOnSearchTypes>` | - |
 
 ### Methods
 
@@ -72,3 +72,9 @@ Customize the suggestion template
   </nz-mention>
 ```
 
+### MentionOnSearchTypes
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| value | Search keyword | string | - |
+| prefix | prefix | string | - |
