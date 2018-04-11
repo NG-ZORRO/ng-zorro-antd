@@ -4,7 +4,7 @@
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "scripts": {
-    "site:start": "node site_scripts/generate-site init && ng serve --port 0 --open",
+    "site:start": "node site_scripts/generate-site init && node site_scripts/generateColorLess && ng serve --port 0 --open",
     "site:init": "node site_scripts/generate-site init && node site_scripts/generateColorLess",
     "site": "node site_scripts/generate-site",
     "ng": "ng",

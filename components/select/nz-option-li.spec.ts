@@ -40,6 +40,13 @@ describe('select option li', () => {
       fixture.detectChanges();
       expect(li.nativeElement.classList).toContain('ant-select-dropdown-menu-item-selected');
     });
+    /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1229 **/
+    it('should zero value work', () => {
+      testComponent.option.nzValue = { value: 0 };
+      testComponent.listOfSelectedValue = [ { value: 0 } ];
+      fixture.detectChanges();
+      expect(li.nativeElement.classList).toContain('ant-select-dropdown-menu-item-selected');
+    });
     it('should activeOption null work', () => {
       testComponent.option.nzValue = { value: 'test' };
       testComponent.activeOption = null;
