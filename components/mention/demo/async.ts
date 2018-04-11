@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { MentionOnSearchTypes } from 'ng-zorro-antd';
 
 @Component({
   selector     : 'nz-demo-mention-async',
@@ -20,7 +21,7 @@ export class NzDemoMentionAsyncComponent {
   loading = false;
   suggestions = [];
 
-  onSearchChange(value: string): void {
+  onSearchChange({value}: MentionOnSearchTypes): void {
     console.log(`search: ${value}`);
     this.loading = true;
     this.fetchSuggestions(value, (suggestions) => {
