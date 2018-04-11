@@ -16,5 +16,5 @@ export function getMentions(value: string, prefix: string | string[] = '@'): str
   }
   const regex = getRegExp(prefix);
   const mentions = value.match(regex);
-  return mentions !== null ? mentions.map(e => e.trim().substring(1)) : [];
+  return mentions !== null ? mentions.map(e => e.trim()) : [];
 }
