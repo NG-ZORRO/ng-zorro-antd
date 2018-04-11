@@ -6,6 +6,7 @@ import {
   trigger
 } from '@angular/animations';
 import { Component, ElementRef, EventEmitter, Input, Output, Renderer2, ViewChild } from '@angular/core';
+import { isNotNil } from '../core/util/check';
 import { NzOptionComponent } from './nz-option.component';
 
 @Component({
@@ -137,13 +138,13 @@ export class NzSelectTopControlComponent {
   updateListOfCachedOption(): void {
     if (this.isSingleMode) {
       const selectedOption = this.nzListTemplateOfOption.find(o => this.compareWith(o.nzValue, this.nzListOfSelectedValue[ 0 ]));
-      if (selectedOption) {
+      if (isNotNil(selectedOption)) {
         this.listOfCachedSelectedOption = [ selectedOption ];
       }
     } else {
-      const listOfCachedOptionFromLatestTemplate = this.nzListTemplateOfOption.filter(o => !!this.nzListOfSelectedValue.find(v => this.compareWith(v, o.nzValue)));
-      const restSelectedValue = this.nzListOfSelectedValue.filter(v => !listOfCachedOptionFromLatestTemplate.find(o => this.compareWith(o.nzValue, v)));
-      const listOfCachedOptionFromOld = this.listOfCachedSelectedOption.filter(o => restSelectedValue.find(v => this.compareWith(o.nzValue, v)));
+      const listOfCachedOptionFromLatestTemplate = this.nzListTemplateOfOption.filter(o => isNotNil(this.nzListOfSelectedValue.find(v => this.compareWith(v, o.nzValue))));
+      const restSelectedValue = this.nzListOfSelectedValue.filter(v => !isNotNil(listOfCachedOptionFromLatestTemplate.find(o => this.compareWith(o.nzValue, v))));
+      const listOfCachedOptionFromOld = this.listOfCachedSelectedOption.filter(o => isNotNil(restSelectedValue.find(v => this.compareWith(o.nzValue, v))));
       this.listOfCachedSelectedOption = listOfCachedOptionFromLatestTemplate.concat(listOfCachedOptionFromOld);
     }
   }
