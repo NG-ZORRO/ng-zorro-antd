@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { discardPeriodicTasks, fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { dispatchKeyboardEvent } from '../core/testing';
@@ -109,21 +109,19 @@ describe('carousel', () => {
       fixture.detectChanges();
       expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe('translate3d(0px, 0px, 0px)');
     });
-    it('should autoplay work', fakeAsync((done) => {
+    it('should autoplay work', fakeAsync(() => {
+      testComponent.autoPlay = true;
       fixture.detectChanges();
       expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
-      testComponent.autoPlay = true;
       fixture.detectChanges();
       tick(3000 + 10);
       fixture.detectChanges();
-      discardPeriodicTasks();
       expect(carouselContents[ 1 ].nativeElement.classList).toContain('slick-active');
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
-      testComponent.autoPlay = true;
       fixture.detectChanges();
       tick(3000 + 10);
       fixture.detectChanges();
-      discardPeriodicTasks();
+      testComponent.nzCarouselComponent.clearTimeout();
       expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
     }));
     it('should func work', () => {
