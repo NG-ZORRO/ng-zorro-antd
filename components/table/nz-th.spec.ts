@@ -179,6 +179,7 @@ describe('nz-th', () => {
       testComponent.nzThComponent.checkMultiple(testComponent.nzThComponent.multipleFilterList[ 0 ]);
       testComponent.nzThComponent.dropDownVisibleChange(false);
       fixture.detectChanges();
+      expect(testComponent.nzThComponent.hasFilterValue).toBe(true);
       expect(testComponent.filterChange).toHaveBeenCalledWith([ '1' ]);
     });
     it('should reset work', () => {
@@ -190,6 +191,7 @@ describe('nz-th', () => {
       testComponent.nzThComponent.reset();
       fixture.detectChanges();
       expect(testComponent.filterChange).toHaveBeenCalledWith([]);
+      expect(testComponent.nzThComponent.hasFilterValue).toBe(false);
     });
     it('should filterMultiple work', () => {
       testComponent.showFilter = true;
@@ -202,6 +204,7 @@ describe('nz-th', () => {
       testComponent.nzThComponent.dropDownVisibleChange(false);
       fixture.detectChanges();
       expect(testComponent.filterChange).toHaveBeenCalledWith('1');
+      expect(testComponent.nzThComponent.hasFilterValue).toBe(true);
     });
     it('should expand work', () => {
       fixture.detectChanges();
