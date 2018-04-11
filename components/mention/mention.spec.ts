@@ -437,10 +437,11 @@ describe('mention', () => {
     });
 
     it('should correct parsing the trigger content', () => {
-      typeInElement('ABC @Angular 123 @ant-design @你好 foo ant@gmail.com @@ng 123 .@.@ /@hello \\@hello', textarea);
+      fixture.componentInstance.setArrayPrefix();
+      typeInElement('ABC @Angular 123 @ant-design @你好 foo ant@gmail.com @@ng 123 .@.@ /@hello \\@hello #ng', textarea);
       fixture.detectChanges();
       expect(fixture.componentInstance.mention.getMentions().join(','))
-      .toBe('Angular,ant-design,你好,@ng');
+      .toBe('@Angular,@ant-design,@你好,@@ng,#ng');
     });
 
   });
