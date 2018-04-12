@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 
-import { NzFormatEmitEvent, NzFormatPosition, NzTreeNodeOptions } from './interface';
+import { NzFormatEmitEvent } from './interface';
 import { NzTreeNode } from './nz-tree-node';
 
 @Injectable()
 export class NzTreeService {
+  DRAG_SIDE_RANGE = 0.25;
+  DRAG_MIN_GAP = 2;
+
   selectedNode: NzTreeNode;
   targetNode: NzTreeNode;
   rootNodes: NzTreeNode[] = [];
@@ -16,13 +19,12 @@ export class NzTreeService {
    * init data to NzTreeNode
    * @param {any[]} root
    */
-  initTreeNodes(root: NzTreeNodeOptions[]): NzTreeNode[] {
-    this.rootNodes = [];
+  initTreeNodes(root: NzTreeNode[]): NzTreeNode[] {
+    this.rootNodes = root;
     if (root.length > 0) {
       root.forEach((node) => {
-        const currentNode = new NzTreeNode(node);
+        const currentNode = node;
         this.initParentNode(currentNode);
-        this.rootNodes.push(currentNode);
       });
     }
     return this.rootNodes;
@@ -52,15 +54,10 @@ export class NzTreeService {
     return this.selectedNode;
   }
 
-  // add node to select list
+  // if node is clicked, add or remove node to select list
   setSelectedNodeList(node: NzTreeNode, isMultiple: boolean): void {
     if (isMultiple) {
-      let sIndex = -1;
-      this.selectedNodeList.forEach((cNode, index) => {
-        if (node.key === cNode.key) {
-          sIndex = index;
-        }
-      });
+      const sIndex = this.selectedNodeList.findIndex(cNode => node.key === cNode.key);
       if (node.isSelected && sIndex === -1) {
         this.selectedNodeList.push(node);
       } else if (sIndex > -1) {
@@ -79,24 +76,13 @@ export class NzTreeService {
     return this.selectedNodeList;
   }
 
-  // add node to checkbox list
+  // if checkbox is clicked, add or remove node to checkbox list
   setCheckedNodeList(node: NzTreeNode): void {
-    let isExist = false;
-    this.checkedNodeList.forEach((cNode) => {
-      if (node.key === cNode.key && node.title === cNode.title) {
-        isExist = true;
-      }
-    });
-    if (node.isChecked && !isExist) {
+    if (node.isChecked && this.checkedNodeList.findIndex(cNode => (node.key === cNode.key && node.title === cNode.title)) === -1) {
       this.checkedNodeList.push(node);
     }
-    const removeChild = (rNode) => {
-      let rIndex = -1;
-      this.checkedNodeList.forEach((cNode, index) => {
-        if (rNode.key === cNode.key && rNode.title === cNode.title) {
-          rIndex = index;
-        }
-      });
+    const removeChild = (rNode: NzTreeNode) => {
+      const rIndex = this.checkedNodeList.findIndex(cNode => (rNode.key === cNode.key && rNode.title === cNode.title));
       if (rIndex > -1) {
         this.checkedNodeList.splice(rIndex, 1);
       }
@@ -104,14 +90,10 @@ export class NzTreeService {
         removeChild(child);
       });
     };
-    this.rootNodes.forEach((rNode) => {
-      const loopNode = (lNode) => {
-        let cIndex = -1;
-        this.checkedNodeList.forEach((cNode, index) => {
-          if (lNode.key === cNode.key) {
-            cIndex = index;
-          }
-        });
+    // refresh tree nodes check state, merge child node checked
+    this.rootNodes.forEach((rNode: NzTreeNode) => {
+      const loopNode = (lNode: NzTreeNode) => {
+        const cIndex = this.checkedNodeList.findIndex(cNode => (lNode.key === cNode.key && lNode.title === cNode.title));
         if (lNode.isChecked) {
           if (cIndex === -1) {
             this.checkedNodeList.push(lNode);
@@ -160,6 +142,7 @@ export class NzTreeService {
     this.setSelectedNodeList(node, isMultiple);
   }
 
+  // reset all nodes to unselected
   resetNodeActive(node: NzTreeNode): void {
     node.isSelected = false;
     node.children.forEach((child) => {
@@ -267,7 +250,7 @@ export class NzTreeService {
     const isSelectedRootNode = this.selectedNode.getParentNode();
     // remove the dragNode
     if (isSelectedRootNode) {
-      isSelectedRootNode.children.splice(isSelectedRootNode.children.indexOf(this.selectedNode), 1);
+      isSelectedRootNode.getChildren().splice(isSelectedRootNode.getChildren().indexOf(this.selectedNode), 1);
     } else {
       this.rootNodes.splice(this.rootNodes.indexOf(this.selectedNode), 1);
     }
@@ -296,6 +279,7 @@ export class NzTreeService {
       this.initParentNode(child);
     });
   }
+
   // reset node level
   resetNodeLevel(node: NzTreeNode): void {
     if (node.getParentNode()) {
@@ -313,35 +297,17 @@ export class NzTreeService {
    * @returns {number}
    */
   calcDropPosition(e: DragEvent): number {
-    const offsetTop = this.getOffset(e.srcElement as HTMLElement).top;
-    const offsetHeight = (e.srcElement as HTMLElement).offsetHeight;
-    const pageY = e.pageY;
-    const gapHeight = offsetHeight * 0.1; // TODO: remove hard code
-    if (pageY > offsetTop + offsetHeight * 0.9) {
+    const { clientY } = e;
+    const { top, bottom, height } = e.srcElement.getBoundingClientRect();
+    const des = Math.max(height * this.DRAG_SIDE_RANGE, this.DRAG_MIN_GAP);
+
+    if (clientY <= top + des) {
+      return -1;
+    } else if (clientY >= bottom - des) {
       return 1;
     }
-    if (pageY < offsetTop + gapHeight) {
-      return -1;
-    }
+
     return 0;
-  }
-
-  getOffset(ele: Element): NzFormatPosition {
-    if (!ele.getClientRects().length) {
-      return { top: 0, left: 0 };
-    }
-    const rect = ele.getBoundingClientRect();
-    if (rect.width || rect.height) {
-      const doc = ele.ownerDocument;
-      const win = doc.defaultView;
-      const docElem = doc.documentElement;
-
-      return {
-        top : rect.top + win.pageYOffset - docElem.clientTop,
-        left: rect.left + win.pageXOffset - docElem.clientLeft
-      };
-    }
-    return rect;
   }
 
   /**

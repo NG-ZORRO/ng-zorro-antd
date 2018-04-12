@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { NzTreeNode } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-tree-line',
   template: `
-    <nz-tree [nzTreeData]="nodes"
+    <nz-tree [(ngModel)]="nodes"
              [nzShowLine]="true"
              [nzDefaultExpandedKeys]="expandKeys"
              (nzExpandChange)="mouseAction('expand',$event)"
@@ -15,7 +16,7 @@ import { Component } from '@angular/core';
 export class NzDemoTreeLineComponent {
   expandKeys = [ '1001', '10001' ];
   nodes = [
-    {
+    new NzTreeNode({
       title   : 'root1',
       key     : '1001',
       children: [
@@ -52,8 +53,8 @@ export class NzDemoTreeLineComponent {
           key  : '10002'
         }
       ]
-    },
-    {
+    }),
+    new NzTreeNode({
       title   : 'root2',
       key     : '1002',
       children: [
@@ -74,8 +75,8 @@ export class NzDemoTreeLineComponent {
           ]
         }
       ]
-    },
-    { title: 'root3', key: '1003' }
+    }),
+    new NzTreeNode({ title: 'root3', key: '1003' })
   ];
 
   mouseAction(name: string, e: any): void {
