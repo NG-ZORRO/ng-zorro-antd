@@ -14,10 +14,10 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
+import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 import { isNotNil } from '../core/util/check';
 
 import { toBoolean } from '../core/util/convert';
-import { measureScrollbar } from '../core/util/mesure-scrollbar';
 import { NzThComponent } from './nz-th.component';
 
 import { NzTheadComponent } from './nz-thead.component';
@@ -397,7 +397,7 @@ export class NzTableComponent implements OnInit, AfterViewInit {
   }
 
   fitScrollBar(): void {
-    const scrollbarWidth = measureScrollbar();
+    const scrollbarWidth = this.nzMeasureScrollbarService.scrollBarWidth;
     if (scrollbarWidth) {
       this.headerBottomStyle = {
         marginBottom : `-${scrollbarWidth}px`,
@@ -425,7 +425,7 @@ export class NzTableComponent implements OnInit, AfterViewInit {
     setTimeout(() => this.setScrollPositionClassName());
   }
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private overlay: Overlay) {
+  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private overlay: Overlay, private nzMeasureScrollbarService: NzMeasureScrollbarService) {
     this.el = this.elementRef.nativeElement;
   }
 }

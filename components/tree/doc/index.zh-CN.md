@@ -15,7 +15,7 @@ subtitle: 树形控件
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzTreeData | 元数据,单个节点结构参考NzTreeNode | array | \[] |
+| ngModel | 元数据,NzTreeNode数组,单个节点原始结构参考NzTreeNodeOptions | array | \[] |
 | nzCheckable | 节点前添加 Checkbox 复选框 | boolean | false |
 | nzShowExpand | 节点前添加展开图标 | boolean | true |
 | nzShowLine | 是否展示连接线 | boolean | false |
@@ -84,7 +84,7 @@ subtitle: 树形控件
 | key | key值 | string | NzTreeNodeOptions.key |
 | level | 层级(最顶层为0,子节点逐层加1) | number | number |
 | children | 子节点 | array<NzTreeNode\> | array<NzTreeNode\> |
-| treeOptions | 原始节点树结构 | NzTreeNodeOptions | NzTreeNodeOptions |
+| origin | 原始节点树结构(用户提供,用于展示额外信息) | NzTreeNodeOptions | - |
 | getParentNode | 获取父节点 | function | `NzTreeNode` 或 `null` |
 | isLeaf | 是否为叶子节点 | boolean |  `true` 或 `false` |
 | isExpanded | 是否已展开 | boolean | `true` 或 `false` |

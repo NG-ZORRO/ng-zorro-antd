@@ -29,8 +29,6 @@ export class NzMenuDirective implements AfterViewInit {
   private cacheMode: NzMode;
   /** opened index of array */
   private subMenusOpenIndex = [];
-  /** set when has submenu component */
-  hasSubMenu = false;
 
   /** collection of menu item */
   menuItems: NzMenuItemDirective[] = [];
@@ -166,10 +164,6 @@ export class NzMenuDirective implements AfterViewInit {
   reductionSubMenus(): void {
     this.subMenusOpenIndex.forEach(i => this.subMenus[ i ].nzOpen = true);
     this.subMenusOpenIndex = [];
-  }
-
-  setHasSubMenu(value: boolean): void {
-    this.hasSubMenu = value;
   }
 
   clickItem(value: NzMenuItemDirective): void {

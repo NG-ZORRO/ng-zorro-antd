@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 import { NzTableModule } from './nz-table.module';
 import { NzTrDirective } from './nz-tr.directive';
 
@@ -8,7 +9,8 @@ describe('nz-tr', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzTableModule ],
-      declarations: [ NzTrTestTableComponent, NzTrTestNzTableComponent ]
+      declarations: [ NzTrTestTableComponent, NzTrTestNzTableComponent ],
+      providers   : [ NzMeasureScrollbarService ]
     });
     TestBed.compileComponents();
   }));

@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 import { NzTableComponent } from './nz-table.component';
 import { NzTableModule } from './nz-table.module';
 import { NzThComponent } from './nz-th.component';
@@ -9,7 +10,8 @@ describe('nz-th', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzTableModule ],
-      declarations: [ NzThTestNzTableComponent ]
+      declarations: [ NzThTestNzTableComponent ],
+      providers   : [ NzMeasureScrollbarService ]
     });
     TestBed.compileComponents();
   }));
@@ -179,6 +181,7 @@ describe('nz-th', () => {
       testComponent.nzThComponent.checkMultiple(testComponent.nzThComponent.multipleFilterList[ 0 ]);
       testComponent.nzThComponent.dropDownVisibleChange(false);
       fixture.detectChanges();
+      expect(testComponent.nzThComponent.hasFilterValue).toBe(true);
       expect(testComponent.filterChange).toHaveBeenCalledWith([ '1' ]);
     });
     it('should reset work', () => {
@@ -190,6 +193,7 @@ describe('nz-th', () => {
       testComponent.nzThComponent.reset();
       fixture.detectChanges();
       expect(testComponent.filterChange).toHaveBeenCalledWith([]);
+      expect(testComponent.nzThComponent.hasFilterValue).toBe(false);
     });
     it('should filterMultiple work', () => {
       testComponent.showFilter = true;
@@ -202,6 +206,7 @@ describe('nz-th', () => {
       testComponent.nzThComponent.dropDownVisibleChange(false);
       fixture.detectChanges();
       expect(testComponent.filterChange).toHaveBeenCalledWith('1');
+      expect(testComponent.nzThComponent.hasFilterValue).toBe(true);
     });
     it('should expand work', () => {
       fixture.detectChanges();

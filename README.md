@@ -50,7 +50,7 @@ $ yarn add ng-zorro-antd
 If you are in a bad network environment，you can try other registries and tools like [cnpm](https://github.com/cnpm/cnpm).
 
 
-## Companies using antd
+## Companies using ng-zorro-antd
 
 - [Alibaba](http://www.alibaba.com/)
 - [Aliyun](http://www.aliyun.com/)
@@ -63,7 +63,7 @@ Please read our [CONTRIBUTING.md](https://github.com/NG-ZORRO/ng-zorro-antd/blob
 
 If you'd like to help us improve ng-zorro-antd, just create a [Pull Request](https://github.com/NG-ZORRO/ng-zorro-antd/pulls). Feel free to report bugs and issues [here](http://ng.ant.design/issue-helper/#/new-issue).
 
-> If you're new to posting issues, we ask that you read [*How To Ask Questions The Smart Way*](http://www.catb.org/~esr/faqs/smart-questions.html) and [How to Ask a Question in Open Source Community](https://github.com/seajs/seajs/issues/545) and [How to Report Bugs Effectively](http://www.chiark.greenend.org.uk/~sgtatham/bugs.html) prior to posting. Well written bug reports help us help you!
+> If you're new to posting issues, we ask that you read [*How To Ask Questions The Smart Way*](http://www.catb.org/~esr/faqs/smart-questions.html)(**This guide does not provide actual support services for this project!**) and [How to Ask a Question in Open Source Community](https://github.com/seajs/seajs/issues/545) and [How to Report Bugs Effectively](http://www.chiark.greenend.org.uk/~sgtatham/bugs.html) prior to posting. Well written bug reports help us help you!
 
 ## Need Help?
 

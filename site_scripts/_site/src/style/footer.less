@@ -78,3 +78,24 @@ footer {
     }
   }
 }
+
+.theme-color {
+  padding: 4px;
+  background: rgb(255, 255, 255);
+  border-radius: 2px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 0 0 1px;
+  display: inline-block;
+  cursor: pointer;
+  vertical-align: middle;
+  &-value {
+      width: 80px;
+      height: 16px;
+      border-radius: 2px;
+  }
+  &-content {
+    .ant-popover-inner-content {
+        width: 200px;
+        padding: 0;
+    }
+  }
+}

@@ -91,7 +91,7 @@
           <div class="footer-center">
             <h2>{{language==='zh'?'资源链接':'Resources'}}</h2>
             <div>
-              <a href="http://www.angular.cn" target="_blank">Angular</a>
+              <a href="https://angular.cn" target="_blank">Angular</a>
             </div>
             <div>
               <a href="https://cli.angular.io/" target="_blank">Angular CLI</a>
@@ -127,6 +127,16 @@
             <div>
               <a target="_blank" rel="noopener noreferrer" href="https://eggjs.org/">Egg</a>
               <span> - </span><span>{{language==='zh'?'企业级 Node 开发框架':'Enterprise Node Framework'}}</span>
+            </div>
+            <div style="margin-top: 20px;">
+              <nz-popover [nzTrigger]="'click'" nzOverlayClassName="theme-color-content">
+                <div class="theme-color" nz-popover>
+                  <div class="theme-color-value" [ngStyle]="{'background': color}"></div>
+                </div>
+                <ng-template #nzTemplate>
+                  <color-sketch [color]="color" (onChangeComplete)="changeColor($event)"></color-sketch>
+                </ng-template>
+              </nz-popover>
             </div>
           </div>
         </div>

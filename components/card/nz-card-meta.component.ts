@@ -6,13 +6,13 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector           : '[nz-card-meta]',
+  selector           : 'nz-card-meta',
   preserveWhitespaces: false,
   template           : `
-    <div class="ant-card-meta-detail">
-      <div class="ant-card-meta-avatar" *ngIf="nzAvatar">
-        <ng-template [ngTemplateOutlet]="nzAvatar"></ng-template>
-      </div>
+    <div class="ant-card-meta-avatar" *ngIf="nzAvatar">
+      <ng-template [ngTemplateOutlet]="nzAvatar"></ng-template>
+    </div>
+    <div class="ant-card-meta-detail" *ngIf="nzTitle || nzDescription">
       <div class="ant-card-meta-title" *ngIf="nzTitle">
         <ng-container *ngIf="isTitleString; else titleTemplate">{{ nzTitle }}</ng-container>
         <ng-template #titleTemplate>
@@ -27,6 +27,11 @@ import {
       </div>
     </div>
   `,
+  styles             : [ `
+    :host {
+      display: block;
+    }
+  ` ],
   host               : {
     '[class.ant-card-meta]': 'true'
   }

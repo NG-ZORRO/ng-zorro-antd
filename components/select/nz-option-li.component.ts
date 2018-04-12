@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input } from '@angular/core';
+import { isNotNil } from '../core/util/check';
 import { NzOptionComponent } from './nz-option.component';
 
 @Component({
@@ -41,7 +42,7 @@ export class NzOptionLiComponent {
   @Input()
   // tslint:disable-next-line:no-any
   set nzListOfSelectedValue(valueList: any[]) {
-    this.selected = valueList.find(v => this.compareWith(v, this.nzOption.nzValue));
+    this.selected = isNotNil(valueList.find(v => this.compareWith(v, this.nzOption.nzValue)));
   }
 
   constructor(private elementRef: ElementRef) {

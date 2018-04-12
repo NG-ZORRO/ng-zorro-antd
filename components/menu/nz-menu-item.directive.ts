@@ -89,32 +89,28 @@ export class NzMenuItemDirective implements OnInit {
 
   @HostBinding('style.padding-left.px')
   get setPaddingLeft(): number {
-    if (this.nzSubMenuComponent) {
-      /** if in sub menu component */
-      if (this.nzSubMenuComponent.nzMenuDirective.nzMode === 'inline' && (this.nzSubMenuComponent.nzMenuDirective)) {
-        /** if host menu's mode is inline add PADDING_BASE * level padding */
-        return (this.nzSubMenuComponent.level + 1) * this.nzSubMenuComponent.nzMenuDirective.nzInlineIndent;
+    if (this.nzMenuDirective.nzMode === 'inline') {
+      if (this.nzSubMenuComponent) {
+        /** if in sub menu component and host menu's mode is inline add PADDING_BASE * level padding */
+        return (this.nzSubMenuComponent.level + 1) * this.nzMenuDirective.nzInlineIndent;
       } else {
-        /** return origin padding */
-        return this.padding;
+        /** not in sub menu component but root menu's mode is inline return default padding */
+        return this.nzMenuDirective.nzInlineIndent;
       }
-    } else if (this.nzMenuDirective.hasSubMenu && (this.nzMenuDirective.nzMode === 'inline')) {
-      /** not in sub menu component but root menu's mode is inline and contains submenu return default padding*/
-      return this.nzMenuDirective.nzInlineIndent;
     } else {
       return this.padding;
     }
   }
 
   constructor(private renderer: Renderer2, public cd: ChangeDetectorRef, private nzMenuDirective: NzMenuDirective, @Optional() public nzSubMenuComponent: NzSubMenuComponent, private hostElement: ElementRef) {
+  }
+
+  ngOnInit(): void {
     this.nzMenuDirective.menuItems.push(this);
     /** store origin padding in padding */
     if (this.hostElement.nativeElement.style[ 'padding-left' ]) {
       this.padding = parseInt(this.hostElement.nativeElement.style[ 'padding-left' ], 10);
     }
-  }
-
-  ngOnInit(): void {
     this.isInDropDown = this.nzMenuDirective.nzInDropDown;
   }
 }

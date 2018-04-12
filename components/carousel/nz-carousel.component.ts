@@ -1,4 +1,5 @@
 import {
+  AfterContentInit,
   AfterViewInit,
   Component,
   ContentChildren,
@@ -6,7 +7,6 @@ import {
   EventEmitter,
   HostBinding,
   Input,
-  NgZone,
   OnDestroy,
   Output,
   QueryList,
@@ -14,8 +14,6 @@ import {
   ViewChild
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { first } from 'rxjs/operators/first';
-
 import { toBoolean } from '../core/util/convert';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
@@ -67,7 +65,7 @@ import { NzCarouselContentDirective } from './nz-carousel-content.directive';
     `
   ]
 })
-export class NzCarouselComponent implements AfterViewInit, OnDestroy {
+export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterContentInit {
   private _autoPlay = false;
   private _dots = true;
   private _vertical = false;
@@ -75,7 +73,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   slideContentsSubscription: Subscription;
   activeIndex = 0;
   transform = 'translate3d(0px, 0px, 0px)';
-  interval;
+  timeout;
 
   @ContentChildren(NzCarouselContentDirective) slideContents: QueryList<NzCarouselContentDirective>;
   @ViewChild('slickList') slickList: ElementRef;
@@ -153,7 +151,6 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
 
   renderContent(): void {
     if (this.slideContents && this.slideContents.length) {
-      this.slideContents.first.isActive = true;
       this.slideContents.forEach((content, i) => {
         content.width = this.elementRef.nativeElement.offsetWidth;
         if (this.nzEffect === 'fade') {
@@ -187,9 +184,9 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
   }
 
   setUpAutoPlay(): void {
-    this.clearInterval();
+    this.clearTimeout();
     if (this.nzAutoPlay) {
-      this.interval = setInterval(_ => {
+      this.timeout = setTimeout(_ => {
         this.setActive(this.slideContents.toArray()[ this.nextIndex ], this.nextIndex);
       }, 3000);
     }
@@ -202,10 +199,10 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  clearInterval(): void {
-    if (this.interval) {
-      clearInterval(this.interval);
-      this.interval = null;
+  clearTimeout(): void {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
     }
   }
 
@@ -233,16 +230,20 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  constructor(public elementRef: ElementRef, private renderer: Renderer2, private zone: NgZone) {
+  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
+  }
+
+  ngAfterContentInit(): void {
+    if (this.slideContents && this.slideContents.length) {
+      this.slideContents.first.isActive = true;
+    }
   }
 
   ngAfterViewInit(): void {
     this.slideContentsSubscription = this.slideContents.changes.subscribe(() => {
       this.renderContent();
     });
-    this.zone.onStable.pipe(first()).subscribe(() => {
-      this.renderContent();
-    });
+    this.renderContent();
   }
 
   ngOnDestroy(): void {
@@ -250,7 +251,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy {
       this.slideContentsSubscription.unsubscribe();
       this.slideContentsSubscription = null;
     }
-    this.clearInterval();
+    this.clearTimeout();
   }
 
 }

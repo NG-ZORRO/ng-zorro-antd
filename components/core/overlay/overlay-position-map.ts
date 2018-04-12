@@ -106,6 +106,16 @@ export const DEFAULT_DATEPICKER_POSITIONS = [
   }
 ] as ConnectionPositionPair[];
 
+export const DEFAULT_MENTION_POSITIONS = [
+  POSITION_MAP.bottomLeft,
+  {
+    originX : 'start',
+    originY : 'bottom',
+    overlayX: 'start',
+    overlayY: 'bottom'
+  }
+] as ConnectionPositionPair[];
+
 function arrayMap<T, S>(array: T[], iteratee: (item: T, index: number, arr: T[]) => S): S[] {
   let index = -1;
   const length = array == null ? 0 : array.length;
