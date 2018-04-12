@@ -1,12 +1,11 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import {
-  AfterContentInit,
+  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
   Input,
   NgZone,
-  OnDestroy,
   OnInit,
   Output,
   Renderer2,
@@ -14,12 +13,9 @@ import {
   ViewChild
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { debounceTime } from 'rxjs/operators/debounceTime';
 
-import { NzFormatBeforeDropEvent, NzFormatClickEvent, NzFormatEmitEvent } from './interface';
+import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from './interface';
 import { NzTreeNode } from './nz-tree-node';
 import { NzTreeService } from './nz-tree.service';
 
@@ -131,7 +127,7 @@ import { NzTreeService } from './nz-tree.service';
   ]
 })
 
-export class NzTreeNodeComponent implements OnInit, AfterContentInit, OnDestroy {
+export class NzTreeNodeComponent implements OnInit, AfterViewInit {
   dragPos = 2;
   prefixCls = 'ant-tree';
   _treeNode;
@@ -147,9 +143,6 @@ export class NzTreeNodeComponent implements OnInit, AfterContentInit, OnDestroy 
     '1' : 'drag-over-gap-bottom',
     '-1': 'drag-over-gap-top'
   };
-  clickNum = 0;
-  emitSubject$ = new Subject();
-  emitSubjection: Subscription;
 
   @ViewChild('dragElement') dragElement: ElementRef;
 
@@ -267,17 +260,6 @@ export class NzTreeNodeComponent implements OnInit, AfterContentInit, OnDestroy 
     if (this.nzTreeNode.isChecked) {
       this.nzTreeService.setCheckedNodeList(this.nzTreeNode);
     }
-    this.emitSubjection = this.emitSubject$.pipe(debounceTime(200)).subscribe((e: NzFormatClickEvent) => {
-      if (this.clickNum % 2 === 0) {
-        this.dblClick.emit(this.nzTreeService.formatEvent('dblclick', e.node, e.event));
-      } else {
-        if (this.nzTreeNode.isSelectable && !this.nzTreeNode.isDisabled) {
-          this.nzTreeService.initNodeActive(this.nzTreeNode, this.nzMultiple);
-        }
-        this.clickNode.emit(this.nzTreeService.formatEvent('click', e.node, e.event));
-      }
-      this.clickNum = 0;
-    });
   }
 
   handleDragStart(e: DragEvent): void {
@@ -305,7 +287,10 @@ export class NzTreeNodeComponent implements OnInit, AfterContentInit, OnDestroy 
     if (this.dragPos !== this.nzTreeService.calcDropPosition(e)) {
       this._clearDragClass();
       this.dragPos = this.nzTreeService.calcDropPosition(e);
-      this.renderer.addClass(this.dragElement.nativeElement, this.dragPosClass[ this.dragPos ]);
+      if (!(this.dragPos === 0 && this.nzTreeNode.isLeaf)) {
+        // leaf node can not be inserted
+        this.renderer.addClass(this.dragElement.nativeElement, this.dragPosClass[ this.dragPos ]);
+      }
     }
     this.nzDragOver.emit(this.nzTreeService.formatEvent('dragover', this.nzTreeNode, e));
   }
@@ -357,7 +342,7 @@ export class NzTreeNodeComponent implements OnInit, AfterContentInit, OnDestroy 
     });
   }
 
-  ngAfterContentInit(): void {
+  ngAfterViewInit(): void {
     if (this.nzDraggable) {
       this.ngZone.runOutsideAngular(() => {
         fromEvent(this.dragElement.nativeElement, 'dragstart').subscribe((e: DragEvent) => this.handleDragStart(e));
@@ -380,20 +365,16 @@ export class NzTreeNodeComponent implements OnInit, AfterContentInit, OnDestroy 
   _clickNode($event: MouseEvent, node: NzTreeNode): void {
     $event.preventDefault();
     $event.stopPropagation();
-    this.clickNum++;
-    this.emitSubject$.next({
-      'event': $event,
-      'node' : node
-    });
+    if (this.nzTreeNode.isSelectable && !this.nzTreeNode.isDisabled) {
+      this.nzTreeService.initNodeActive(this.nzTreeNode, this.nzMultiple);
+    }
+    this.clickNode.emit(this.nzTreeService.formatEvent('click', node, $event));
   }
 
   _dblClickNode($event: MouseEvent, node: NzTreeNode): void {
     $event.preventDefault();
     $event.stopPropagation();
-    this.emitSubject$.next({
-      'event': $event,
-      'node' : node
-    });
+    this.dblClick.emit(this.nzTreeService.formatEvent('dblclick', node, $event));
   }
 
   _contextMenuNode($event: MouseEvent, node: NzTreeNode): void {
@@ -427,12 +408,6 @@ export class NzTreeNodeComponent implements OnInit, AfterContentInit, OnDestroy 
       if (!this.nzTreeNode.isLeaf) {
         this.clickExpand.emit(this.nzTreeService.formatEvent('expand', node, $event));
       }
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this.emitSubjection) {
-      this.emitSubjection.unsubscribe();
     }
   }
 }

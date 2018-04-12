@@ -12,6 +12,14 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+##
+
+#### Tree
+
+- `nzTreeData` 变更为 `ngModel`, 初始化数据使用 `new NzTreeNode({})`,请参阅示例
+- 新增 `origin` 属性存储用户原始数据
+- 支持根据 `NzTreeComponent` 上下文获取NzTreeService
+
 ## 0.7.0-beta.3
 
 #### Tree

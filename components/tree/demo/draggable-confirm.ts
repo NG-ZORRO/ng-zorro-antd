@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzFormatBeforeDropEvent, NzFormatEmitEvent, NzModalService } from 'ng-zorro-antd';
+import { NzFormatBeforeDropEvent, NzFormatEmitEvent, NzModalService, NzTreeNode } from 'ng-zorro-antd';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { delay } from 'rxjs/operators';
@@ -7,7 +7,7 @@ import { delay } from 'rxjs/operators';
 @Component({
   selector: 'nz-demo-tree-draggable-confirm',
   template: `
-    <nz-tree [nzTreeData]="nodes"
+    <nz-tree [(ngModel)]="nodes"
              (nzExpandChange)="mouseAction('expand',$event)"
              [nzDraggable]="true"
              [nzBeforeDrop]="beforeDrop"
@@ -17,12 +17,23 @@ import { delay } from 'rxjs/operators';
              (nzOnDrop)="mouseAction('drop', $event)"
              (nzOnDragEnd)="mouseAction('end', $event)">
     </nz-tree>
-  `
+  `,
+  styles  : [
+      `
+      :host ::ng-deep .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {
+        width: calc(100% - 8px);
+      }
+
+      :host ::ng-deep .ant-tree li span[draggable], :host ::ng-deep .ant-tree li span[draggable="true"] {
+        width: calc(100% - 8px);
+      }
+    `
+  ]
 })
 
 export class NzDemoTreeDraggableConfirmComponent {
   nodes = [
-    {
+    new NzTreeNode({
       title   : 'root1',
       key     : '1001',
       children: [
@@ -60,8 +71,8 @@ export class NzDemoTreeDraggableConfirmComponent {
           key  : '10002'
         }
       ]
-    },
-    {
+    }),
+    new NzTreeNode({
       title   : 'root2',
       key     : '1002',
       children: [
@@ -81,8 +92,8 @@ export class NzDemoTreeDraggableConfirmComponent {
           ]
         }
       ]
-    },
-    { title: 'root3', key: '1003' }
+    }),
+    new NzTreeNode({ title: 'root3', key: '1003' })
   ];
 
   mouseAction(name: string, e: NzFormatEmitEvent): void {

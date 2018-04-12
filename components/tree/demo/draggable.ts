@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NzFormatEmitEvent } from 'ng-zorro-antd';
+import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-tree-draggable',
   template: `
-    <nz-tree [nzTreeData]="nodes"
+    <nz-tree [(ngModel)]="nodes"
              (nzExpandChange)="mouseAction('expand',$event)"
              [nzDraggable]="true"
              (nzOnDragStart)="mouseAction('dragstart',$event)"
@@ -12,11 +12,20 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd';
              (nzOnDragLeave)="mouseAction('leave', $event)"
              (nzOnDrop)="mouseAction('drop', $event)"
              (nzOnDragEnd)="mouseAction('end', $event)">
-    </nz-tree>`
+    </nz-tree>`,
+  styles  : [ `
+    :host ::ng-deep .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {
+      width: calc(100% - 8px);
+    }
+
+    :host ::ng-deep .ant-tree li span[draggable], :host ::ng-deep .ant-tree li span[draggable="true"] {
+      width: calc(100% - 8px);
+    }
+  ` ]
 })
 export class NzDemoTreeDraggableComponent implements OnInit {
   nodes = [
-    {
+    new NzTreeNode({
       title   : 'root1',
       key     : '1001',
       children: [
@@ -54,8 +63,8 @@ export class NzDemoTreeDraggableComponent implements OnInit {
           key  : '10002'
         }
       ]
-    },
-    {
+    }),
+    new NzTreeNode({
       title   : 'root2',
       key     : '1002',
       children: [
@@ -75,8 +84,8 @@ export class NzDemoTreeDraggableComponent implements OnInit {
           ]
         }
       ]
-    },
-    { title: 'root3', key: '1003' }
+    }),
+    new NzTreeNode({ title: 'root3', key: '1003' })
   ];
 
   mouseAction(name: string, e: NzFormatEmitEvent): void {

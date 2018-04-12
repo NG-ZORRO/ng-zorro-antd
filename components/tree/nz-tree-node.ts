@@ -44,7 +44,7 @@ export class NzTreeNode {
     this.isMatched = false;
 
     /**
-     * 初始化时父节点expanded/checked状态影响全部子节点
+     * 初始化时父节点checked状态影响全部子节点
      */
     if (parent) {
       this.level = parent.level + 1;
