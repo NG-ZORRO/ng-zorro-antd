@@ -14,6 +14,7 @@ import { NzCarouselModule } from './carousel/nz-carousel.module';
 import { NzCascaderModule } from './cascader/nz-cascader.module';
 import { NzCheckboxModule } from './checkbox/nz-checkbox.module';
 import { NzCollapseModule } from './collapse/nz-collapse.module';
+import { NzMeasureScrollbarService } from './core/services/nz-measure-scrollbar.service';
 import { NzDividerModule } from './divider/nz-divider.module';
 import { NzDropDownModule } from './dropdown/nz-dropdown.module';
 import { NzDropdownService } from './dropdown/nz-dropdown.service';
@@ -161,7 +162,8 @@ export class NgZorroAntdModule {
         // Services
         NzNotificationService,
         NzMessageService,
-        NzDropdownService
+        NzDropdownService,
+        NzMeasureScrollbarService
       ]
     };
   }

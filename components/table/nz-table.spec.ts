@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 import { NzTableComponent } from './nz-table.component';
 import { NzTableModule } from './nz-table.module';
 
@@ -8,7 +9,8 @@ describe('nz-table', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzTableModule ],
-      declarations: [ NzTestTableBasicComponent, NzTestTableScrollComponent ]
+      declarations: [ NzTestTableBasicComponent, NzTestTableScrollComponent ],
+      providers   : [ NzMeasureScrollbarService ]
     });
     TestBed.compileComponents();
   }));
