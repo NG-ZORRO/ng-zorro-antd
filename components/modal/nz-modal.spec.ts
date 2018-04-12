@@ -8,6 +8,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { NzButtonComponent } from '../button/nz-button.component';
 import { NzButtonModule } from '../button/nz-button.module';
+import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 
 import { CssUnitPipe } from './css-unit.pipe';
 import { NzModalControlService } from './nz-modal-control.service';
@@ -29,7 +30,8 @@ describe('modal testing (legacy)', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [ NzButtonModule, NzModalModule ],
-        declarations: [ NzDemoModalAsyncComponent ]
+        declarations: [ NzDemoModalAsyncComponent ],
+        providers   : [ NzMeasureScrollbarService ]
       }).compileComponents();
     }));
 
@@ -67,7 +69,8 @@ describe('modal testing (legacy)', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [ NzButtonModule, NzModalModule ],
-        declarations: [ NzDemoModalConfirmPromiseComponent ]
+        declarations: [ NzDemoModalConfirmPromiseComponent ],
+        providers   : [ NzMeasureScrollbarService ]
       }).compileComponents();
     }));
 
@@ -113,7 +116,8 @@ describe('modal testing (legacy)', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [ NzModalModule ],
-        declarations: [ TestBasicServiceComponent ]
+        declarations: [ TestBasicServiceComponent ],
+        providers   : [ NzMeasureScrollbarService ]
       }).compileComponents();
     }));
 
@@ -179,7 +183,8 @@ describe('modal testing (legacy)', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [ NzModalModule ],
-        declarations: [ TestVaryServiceComponent, TestVaryServiceCustomComponent ]
+        declarations: [ TestVaryServiceComponent, TestVaryServiceCustomComponent ],
+        providers   : [ NzMeasureScrollbarService ]
       });
       TestBed.overrideModule(BrowserDynamicTestingModule, {
         set: { entryComponents: [ TestVaryServiceCustomComponent ] }
@@ -226,7 +231,8 @@ describe('modal testing (legacy)', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [ NzModalModule ],
-        declarations: [ TestConfirmModalComponent ]
+        declarations: [ TestConfirmModalComponent ],
+        providers   : [ NzMeasureScrollbarService ]
       }).compileComponents();
     }));
 
@@ -299,6 +305,7 @@ describe('NzModal', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [ NzModalModule ],
+      providers   : [ NzMeasureScrollbarService ],
       declarations: [
         ModalByServiceComponent
       ]
