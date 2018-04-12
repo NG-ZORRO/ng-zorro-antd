@@ -12,13 +12,64 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
-##
+## 0.7.0-beta.4
+
+#### Mention
+
+- 新增 Mention 组件
 
 #### Tree
 
 - `nzTreeData` 变更为 `ngModel`, 初始化数据使用 `new NzTreeNode({})`,请参阅示例
 - 新增 `origin` 属性存储用户原始数据
-- 支持根据 `NzTreeComponent` 上下文获取NzTreeService
+- 支持根据 `NzTreeComponent` 上下文获取 `NzTreeService`
+
+#### Table
+
+- 修复计算滚动条宽度导致的重绘问题
+- 修复过滤器高亮问题
+
+#### Message
+
+- 修复动态创建时报错的问题
+
+#### Notification
+
+- 修复动态创建时报错的问题
+
+#### Card
+
+- 修复了 `card-meta` 的对齐问题
+
+#### Transfer
+
+- 修复了 Transfer 在 OnPush 下使用的问题
+
+#### Select
+
+- 修复 `nzValue` 值为 0 不能选中的问题
+- 修复滚动条定位的问题
+
+#### Carousel
+
+- 修复自动播放的问题
+
+#### Menu
+
+- 修复动态修改结构时 `ExpressionChangedAfterItHasBeenCheckedError` 的问题
+
+#### i18n
+
+- 更详细的描述了国际化的使用方式
+- 修复了未设置 i18n 时的报错
+
+#### 其他
+
+- 官网支持动态修改主题
+- 更新了 angular.cn 的网址
+- 更新了 `Upload` 组件的说明
+- 更新了 `Tree` 组件的说明
+
 
 ## 0.7.0-beta.3
 
@@ -27,7 +78,7 @@ timeline: true
 - 支持拖拽文件夹前 `beforeDrop` 进行确认的API
 
 #### Modal
- 
+
 - 支持手动触发 `nzOnOk` 与 `nzOnCancel` 的方法
 
 #### Cascader
