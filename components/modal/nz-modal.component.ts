@@ -22,9 +22,9 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 
 import { InputBoolean } from '../core/util/convert';
-import { measureScrollbar } from '../core/util/mesure-scrollbar';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import ModalUtil from './modal-util';
@@ -35,13 +35,13 @@ import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './
 export const MODAL_ANIMATE_DURATION = 200; // Duration when perform animations (ms)
 
 interface ClassMap {
-  [index: string]: boolean;
+  [ index: string ]: boolean;
 }
 
 type AnimationState = 'enter' | 'leave' | null;
 
 @Component({
-  selector: 'nz-modal',
+  selector   : 'nz-modal',
   templateUrl: './nz-modal.component.html'
 })
 
@@ -74,6 +74,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   get afterOpen(): Observable<void> { // Observable alias for nzAfterOpen
     return this.nzAfterOpen.asObservable();
   }
+
   get afterClose(): Observable<R> { // Observable alias for nzAfterClose
     return this.nzAfterClose.asObservable();
   }
@@ -108,6 +109,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     private cfr: ComponentFactoryResolver,
     private elementRef: ElementRef,
     private viewContainer: ViewContainerRef,
+    private nzMeasureScrollbarService: NzMeasureScrollbarService,
     private modalControl: NzModalControlService,
     @Inject(DOCUMENT) private document: any) { // tslint:disable-line:no-any
 
@@ -252,15 +254,15 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   // Do rest things when visible state changed
   private handleVisibleStateChange(visible: boolean, animation: boolean = true, closeResult?: R): Promise<void> {
     return Promise
-      .resolve(animation && this.animateTo(visible))
-      .then(() => { // Emit open/close event after animations over
-        if (visible) {
-          this.nzAfterOpen.emit();
-        } else {
-          this.nzAfterClose.emit(closeResult);
-        }
-      })
-      .then(() => this.changeBodyOverflow());
+    .resolve(animation && this.animateTo(visible))
+    .then(() => { // Emit open/close event after animations over
+      if (visible) {
+        this.nzAfterOpen.emit();
+      } else {
+        this.nzAfterClose.emit(closeResult);
+      }
+    })
+    .then(() => this.changeBodyOverflow());
   }
 
   // Lookup a button's property, if the prop is a function, call & then return the result, otherwise, return itself.
@@ -348,8 +350,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   private createDynamicComponent(component: Type<T>): void {
     const factory = this.cfr.resolveComponentFactory(component);
     const childInjector = Injector.create({
-      providers: [ { provide : NzModalRef, useValue: this } ],
-      parent: this.viewContainer.parentInjector
+      providers: [ { provide: NzModalRef, useValue: this } ],
+      parent   : this.viewContainer.parentInjector
     });
     this.contentComponentRef = factory.create(childInjector);
     if (this.nzComponentParams) {
@@ -375,7 +377,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     const openModals = this.modalControl.openModals;
 
     if (openModals.length) {
-      this.renderer.setStyle(this.document.body, 'padding-right', `${measureScrollbar()}px`);
+      this.renderer.setStyle(this.document.body, 'padding-right', `${this.nzMeasureScrollbarService.scrollBarWidth}px`);
       this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
     } else {
       this.renderer.removeStyle(this.document.body, 'padding-right');
