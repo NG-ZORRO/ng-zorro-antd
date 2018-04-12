@@ -73,6 +73,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
       this.formattedTime = this.i18n.formatDate(this.time.value, this._format);
       this.changed();
       this.touched();
+      this.scrollSelectionToTop();
     });
     this.setClassMap();
   }
@@ -83,6 +84,18 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   writeValue(value: Date): void {
     this.time.value = value;
+    this.scrollSelectionToTop();
+  }
+
+  private scrollSelectionToTop(): void {
+    setTimeout(() => {
+      const element = this.element.nativeElement as HTMLElement;
+      const selections = element.querySelectorAll('.ant-time-picker-panel-select-option-selected');
+      for (let i = 0; i < selections.length; ++i) {
+        const item = selections.item(i);
+        item.scrollIntoView();
+      }
+    });
   }
 
   registerOnChange(fn: (value: Date) => void): void {
