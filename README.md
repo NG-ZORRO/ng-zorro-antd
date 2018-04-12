@@ -50,7 +50,7 @@ $ yarn add ng-zorro-antd
 If you are in a bad network environment，you can try other registries and tools like [cnpm](https://github.com/cnpm/cnpm).
 
 
-## Companies using antd
+## Companies using ng-zorro-antd
 
 - [Alibaba](http://www.alibaba.com/)
 - [Aliyun](http://www.aliyun.com/)

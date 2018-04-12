@@ -35,9 +35,9 @@ import { NzTimelineItemComponent } from './nz-timeline-item.component';
 })
 export class NzTimelineComponent implements AfterContentInit, OnDestroy {
   private _pending: string | boolean | TemplateRef<void>;
-  private isPendingString: boolean;
-  private isPendingBoolean: boolean = false;
   private timeLineSubscription: Subscription;
+  isPendingString: boolean;
+  isPendingBoolean: boolean = false;
 
   @Input()
   set nzPending(value: string | boolean | TemplateRef<void>) {
