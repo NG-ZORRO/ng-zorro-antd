@@ -66,7 +66,7 @@ import { ShowUploadListInterface, UploadFile, UploadListType } from './interface
       <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" class="anticon anticon-cross" title="{{ locale.removeFile }}"></i>
     </ng-template>
     <div *ngIf="file.status === 'uploading'" class="ant-upload-list-item-progress">
-      <nz-progress [ngModel]="file.percent" [nzShowInfo]="false" [nzStrokeWidth]="2" ngDefaultControl></nz-progress>
+      <nz-progress [nzPercent]="file.percent" [nzShowInfo]="false" [nzStrokeWidth]="2"></nz-progress>
     </div>
   </div>
   `,
