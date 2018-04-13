@@ -165,6 +165,9 @@ describe('modal testing (legacy)', () => {
       fixture.detectChanges();
       // should show mask
       expect((modalElement.querySelector('.ant-modal-mask') as HTMLElement).style.opacity).toBe('0.4');
+      // config draggable to be false
+      modalInstance.nzDraggable = false;
+      expect((modalElement.querySelector('.ant-modal-header') as HTMLElement).style.cursor).toBe('default');
       // should not trigger nzOnCancel if click mask
       (modalElement.querySelector('.ant-modal-wrap') as HTMLElement).click();
       expect(console.log).not.toHaveBeenCalledWith('click cancel');
@@ -319,6 +322,52 @@ describe('modal testing (legacy)', () => {
     const okText = (fixture.debugElement.query(By.css('nz-modal .ant-btn-primary')).nativeElement as HTMLElement).textContent.trim();
     expect(okText).toBe(en_US.Modal.okText);
   });
+
+  describe('demo-drag', () => {
+    let modalService: NzModalService;
+    let overlayContainer: OverlayContainer;
+    let overlayContainerElement: HTMLElement;
+    let modalElement: HTMLElement;
+    let buttonShow: HTMLButtonElement;
+
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports: [ NzButtonModule, NzModalModule ],
+        declarations: [ NzDemoModalBasicDragComponent ],
+        providers   : [ NzMeasureScrollbarService ]
+      }).compileComponents();
+    }));
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzDemoModalBasicDragComponent);
+      instance = fixture.debugElement.componentInstance;
+      modalElement = fixture.debugElement.query(By.directive(NzModalComponent)).nativeElement;
+      buttonShow = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+    });
+
+    beforeEach(inject([ NzModalService, OverlayContainer ], (ms: NzModalService, oc: OverlayContainer) => {
+      modalService = ms;
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    }));
+
+    it('should afterOpen/nzAfterOpen modal header cursor style to "move" when set nzDraggable is true ', fakeAsync(() => {
+      buttonShow.click();
+      fixture.detectChanges();
+      // fix  Error: 2 timer(s) still in the queue.
+      tick(1000);
+      flush();
+      const spy = jasmine.createSpy('afterOpen spy');
+      const nzAfterOpen = new EventEmitter<void>();
+      const modalRef = modalService.create({ nzAfterOpen });
+      modalRef.afterOpen.subscribe(spy);
+      nzAfterOpen.subscribe(spy);
+      fixture.detectChanges();
+      // fix test error: 2 times(s) still in the queue.
+      tick(1000);
+      expectModalDraggable(modalElement, true);
+    }));
+  }); // /demo-drag
 });
 
 describe('NzModal', () => {
@@ -556,6 +605,7 @@ class TestBasicServiceComponent {
       nzTitle: '<b>TEST BOLD TITLE</b>',
       nzContent: '<p>test html content</p>',
       nzClosable: false,
+      nzDraggable: false,
       nzMask: false,
       nzMaskClosable: false,
       nzMaskStyle: { opacity: 0.4 },
@@ -662,6 +712,39 @@ export class ModalByServiceComponent {
   constructor(modalControlService: NzModalControlService) {}
 }
 
+@Component({
+  selector: 'nz-demo-modal-basic-drag',
+  template: `
+    <button nz-button  [nzType]="'primary'" (click)="showModal()"><span>Show Drag Modal</span></button>
+    <nz-modal [(nzVisible)]="isVisible" nzDraggable="isDraggable" nzMaskClosable="false"  nzTitle="Drag Test Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+      <p>1.Click header to drag</p>
+      <p>2.Click mouse button to move</p>
+      <p>3.Mouse up to stop drag.  </p>
+    </nz-modal>
+  `,
+  styles: []
+})
+export class NzDemoModalBasicDragComponent {
+  isVisible = false;
+  isDraggable = true;
+
+  constructor() {}
+
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+    console.log('Button ok clicked!');
+    this.isVisible = false;
+  }
+
+  handleCancel(): void {
+    console.log('Button cancel clicked!');
+    this.isVisible = false;
+  }
+}
+
 // -------------------------------------------
 // | Local tool functions
 // -------------------------------------------
@@ -682,6 +765,17 @@ function expectModalDestroyed(classId: string, destroyed: boolean): void {
     expect(element).toBeFalsy();
   } else {
     expect(element).not.toBeFalsy();
+  }
+}
+
+function expectModalDraggable(modalElement: HTMLElement, nzDraggable: boolean): void {
+  const display = (modalElement.querySelector('.ant-modal-wrap') as HTMLElement).style.display;
+  console.log(display);
+  const cursor = (modalElement.querySelector('.ant-modal-header') as HTMLElement).style.cursor;
+  console.log((modalElement.querySelector('.ant-modal-header') as HTMLElement));
+  if (display !== 'none' && nzDraggable) {
+    console.log(cursor);
+    expect(cursor).toBe('move');
   }
 }
 

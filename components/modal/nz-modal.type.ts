@@ -11,6 +11,7 @@ export type ConfirmType = 'confirm' | 'info' | 'success' | 'error' | 'warning'; 
 export interface ModalOptions<T = any, R = any> { // tslint:disable-line:no-any
   nzModalType?: ModalType;
   nzVisible?: boolean;
+  nzDraggable?: boolean;
   nzZIndex?: number;
   nzWidth?: number | string;
   nzWrapClassName?: string;

@@ -45,6 +45,7 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | nzWidth           | Width of the modal dialog. <i>When using numbers, the default unit is `px`</i> | string<br>number | 520 |
 | nzWrapClassName   | The class name of the container of the modal dialog | string | - |
 | nzZIndex          | The z-index of the Modal | number | 1000 |
+| nzDraggable       | Enables dragging to change the position using header | boolean | false |
 | nzOnCancel        | Specify a function that will be called when a user clicks mask, close button on top right or Cancel button (If nzContent is Component, the Component instance will be put in as an argument). <i>Note: When created with `NzModalService.create`, this parameter should be passed into the type of function (callback function). This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | EventEmitter | - |
 | nzOnOk            | Specify a EventEmitter that will be emitted when a user clicks the OK button (If nzContent is Component, the Component instance will be put in as an argument). <i>Note: When created with `NzModalService.create`, this parameter should be passed into the type of function (callback function). This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | EventEmitter | 无 |
 | nzContent         | Content | string / TemplateRef / Component / ng-content | - |

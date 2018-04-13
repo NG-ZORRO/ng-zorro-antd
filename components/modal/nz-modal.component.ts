@@ -10,6 +10,7 @@ import {
   Inject,
   Injector,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -63,6 +64,14 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Input() @InputBoolean() nzVisible: boolean = false;
   @Output() nzVisibleChange = new EventEmitter<boolean>();
 
+  @Input() @InputBoolean() nzDraggable: boolean; // add drag input property
+  private dragging: boolean;
+  private lastPageX = 0;
+  private lastPageY = 0;
+  private documentDragListener: object;
+  private documentDragEndListener: object;
+  public cursorStyle = 'default';
+
   @Input() nzZIndex: number = 1000;
   @Input() nzWidth: number | string = 520;
   @Input() nzWrapClassName: string;
@@ -107,7 +116,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Input() @Output() nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
   @ViewChild('modalContainer') modalContainer: ElementRef;
   @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
-
+  @ViewChild('modalHeader') modalHeader: ElementRef;
+  
   get hidden(): boolean {
     return !this.nzVisible && !this.animationState;
   } // Indicate whether this dialog should hidden
@@ -125,6 +135,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     private renderer: Renderer2,
     private cfr: ComponentFactoryResolver,
     private elementRef: ElementRef,
+    private _ngZone: NgZone,
     private viewContainer: ViewContainerRef,
     private nzMeasureScrollbarService: NzMeasureScrollbarService,
     private modalControl: NzModalControlService,
@@ -180,6 +191,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   ngOnDestroy(): void {
     if (this.container instanceof OverlayRef) {
       this.container.dispose();
+      this.unbindGlobalListeners();
     }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -290,6 +302,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     .then(() => { // Emit open/close event after animations over
       if (visible) {
         this.nzAfterOpen.emit();
+        this.bindGlobalListeners();
       } else {
         this.nzAfterClose.emit(closeResult);
         this.changeBodyOverflow(); // Show/hide scrollbar when animation is over
@@ -421,6 +434,99 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
       this.renderer.removeStyle(this.document.body, 'overflow');
     }
   }
+   /**
+   * add drag event
+   * @params nzDraggable
+   * @params dragging
+   */
+  public initDrag = (event: MouseEvent): void => {
+    event.preventDefault();
+    event.stopPropagation();
+    this._ngZone.runOutsideAngular(() => {
+      if (this.nzDraggable) {
+        this.dragging = true;
+        this.lastPageX = event.clientX;
+        this.lastPageY = event.clientY;
+        const curPos = this.modalHeader.nativeElement.getBoundingClientRect();
+        const left = curPos.left;
+        const top = curPos.top;
+        this.modalContainer.nativeElement.style.position = 'absolute';
+        this.modalContainer.nativeElement.style.left = left + 'px';
+        this.modalContainer.nativeElement.style.top = top + 'px';
+      }
+    });
+  }
+
+  private onDrag = (event: MouseEvent): void => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (this.dragging) {
+      const deltaX = event.clientX - this.lastPageX;
+      const deltaY = event.clientY - this.lastPageY;
+      let leftPos = parseInt(this.modalContainer.nativeElement.style.left, 10) + deltaX;
+      let topPos = parseInt(this.modalContainer.nativeElement.style.top, 10) + deltaY;
+      leftPos = Math.max(0, Math.min(leftPos, window.innerWidth - this.modalContainer.nativeElement.offsetWidth));
+      topPos = Math.max(0, Math.min(topPos, window.innerHeight - this.modalContainer.nativeElement.offsetHeight));
+      this.modalContainer.nativeElement.style.left = leftPos + 'px';
+      this.modalContainer.nativeElement.style.top = topPos + 'px';
+      this.lastPageX = event.clientX;
+      this.lastPageY = event.clientY;
+    }
+  }
+
+  private endDrag = (event: MouseEvent): void => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (this.nzDraggable) {
+      this.dragging = false;
+    }
+  }
+
+  private bindDocumentDragListener(): void {
+    this._ngZone.runOutsideAngular(() => {
+      this.documentDragListener = this.onDrag.bind(this);
+      this.document.addEventListener('mousemove', this.documentDragListener);
+    });
+  }
+
+  private unbindDocumentDragListener(): void {
+    if (this.documentDragListener) {
+      this.document.removeEventListener('mousemove', this.documentDragListener);
+      this.documentDragListener = null;
+    }
+  }
+
+  private bindDocumentDragEndListener(): void {
+    this._ngZone.runOutsideAngular(() => {
+      this.documentDragEndListener = this.endDrag.bind(this);
+      this.document.addEventListener('mouseup', this.documentDragEndListener);
+    });
+  }
+
+  private unbindDocumentDragEndListener(): void {
+    if (this.documentDragEndListener) {
+      this.document.removeEventListener('mouseup', this.documentDragEndListener);
+      this.documentDragEndListener = null;
+    }
+  }
+  // drag event end
+
+  // global event begin
+  private bindGlobalListeners(): void {
+    if (this.nzDraggable) {
+      // if set draggable is true, change cursor style when user mouseenter the modal header.
+      this.cursorStyle = 'move';
+      this.bindDocumentDragListener();
+      this.bindDocumentDragEndListener();
+    }
+    // bind other events, continue...
+  }
+
+  private unbindGlobalListeners(): void {
+    this.unbindDocumentDragListener();
+    this.unbindDocumentDragEndListener();
+  }
+  // global event end
 }
 
 ////////////

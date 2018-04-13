@@ -45,6 +45,7 @@ title: Modal
 | nzWidth           | 宽度。<i>使用数字时，默认单位为px</i> | string<br>number | 520 |
 | nzWrapClassName   | 对话框外层容器的类名 | string | 无 |
 | nzZIndex          | 设置 Modal 的 `z-index` | number | 1000 |
+| nzDraggable       | 是否允许拖动（点击modal Header） | boolean | false |
 | nzOnCancel        | 点击遮罩层或右上角叉或取消按钮的回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>注：当以`NzModalService.create`创建时，此参数应传入function（回调函数）。该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | EventEmitter | 无 |
 | nzOnOk            | 点击确定回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>注：当以`NzModalService.create`创建时，此参数应传入function（回调函数）。该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | EventEmitter | 无 |
 | nzContent         | 内容 | string<br>TemplateRef<br>Component<br>ng-content | 无 |
