@@ -10,6 +10,6 @@ export class NzDemoTimePickerValueComponent {
   time: Date | null = null;
 
   log(time: Date): void {
-    console.log(time.toTimeString());
+    console.log(time && time.toTimeString());
   }
 }
