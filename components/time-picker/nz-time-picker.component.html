@@ -8,7 +8,8 @@
              [cdkConnectedOverlayOrigin]="origin"
              [cdkConnectedOverlayOpen]="opened"
              (backdropClick)="close()">
-  <nz-time-picker-panel [format]="nzFormat" (timeClear)="close();" [(ngModel)]="value">
+  <nz-time-picker-panel [format]="nzFormat" [nzHourStep]="nzHourStep" [nzMinuteStep]="nzMinuteStep"
+                        [nzSecondStep]="nzSecondStep" (timeClear)="close();" [(ngModel)]="value">
     <ng-content></ng-content>
   </nz-time-picker-panel>
 </ng-template>

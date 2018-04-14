@@ -16,8 +16,9 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit {
   @Input() nzFormat = 'HH:mm:ss';
   @Input() nzSize: string | null = null;
   @Input() nzOffset: [number, number, number];
-  @Input() nzMinuteStep: number;
-  @Input() nzSecondStep: number;
+  @Input() nzHourStep = 1;
+  @Input() nzMinuteStep = 1;
+  @Input() nzSecondStep = 1;
 
   @ViewChild('input')
   inputRef: ElementRef;

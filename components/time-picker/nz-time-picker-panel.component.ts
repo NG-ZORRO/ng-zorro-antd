@@ -1,13 +1,13 @@
 /* tslint:disable:no-conditional-assignment */
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Subscription } from 'rxjs/Subscription';
 import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
 import { NzI18nService } from '../i18n';
-import { Subscription } from 'rxjs/Subscription';
 import { TimeHolder } from './time-holder';
 
-function makeRange(length: number, offset: number = 0): ReadonlyArray<number> {
-  return Object.freeze(new Array(length).fill(0).map((_, i) => offset + i));
+function makeRange(length: number, step: number = 1): ReadonlyArray<number> {
+  return Object.freeze(new Array(Math.ceil(length / step)).fill(0).map((_, i) => i * step));
 }
 
 @Component({
@@ -21,20 +21,69 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   @Output() timeClear = new EventEmitter<void>();
   time = new TimeHolder();
   formattedTime = '';
-  readonly hourRange = makeRange(24);
 
   hourEnabled = true;
   minuteEnabled = true;
   secondEnabled = true;
   enabledColumns = 3;
-  readonly minuteRange = makeRange(60);
-  readonly secondRange = makeRange(60);
+
+  hourRange: ReadonlyArray<number>;
+
+  private _nzHourStep;
+
+  get nzHourStep(): number {
+    return this._nzHourStep;
+  }
+
+  @Input()
+  set nzHourStep(value: number) {
+    if (this._nzHourStep !== value) {
+      this._nzHourStep = value;
+      this.hourRange = makeRange(24, this._nzHourStep);
+    }
+  }
+
+  minuteRange: ReadonlyArray<number>;
+
+  private _nzMinuteStep;
+
+  get nzMinuteStep(): number {
+    return this._nzMinuteStep;
+  }
+
+  @Input()
+  set nzMinuteStep(value: number) {
+    if (this._nzMinuteStep !== value) {
+      this._nzMinuteStep = value;
+      this.minuteRange = makeRange(60, this._nzMinuteStep);
+    }
+  }
+
+  secondRange: ReadonlyArray<number>;
+
+  private _nzSecondStep;
+
+  get nzSecondStep(): number {
+    return this._nzSecondStep;
+  }
+
+  @Input()
+  set nzSecondStep(value: number) {
+    if (this._nzSecondStep !== value) {
+      this._nzSecondStep = value;
+      this.secondRange = makeRange(60, this._nzSecondStep);
+    }
+  }
+
   private sub: Subscription;
   private onChange: (value: Date) => void;
   private onTouch: () => void;
   private isDisabled = false;
 
   constructor(private element: ElementRef, private updateCls: UpdateCls, private i18n: NzI18nService) {
+    this.nzHourStep = 1;
+    this.nzMinuteStep = 1;
+    this.nzSecondStep = 1;
   }
 
   private _format: string;
