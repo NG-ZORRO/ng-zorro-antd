@@ -1,9 +1,9 @@
 import { Overlay, OverlayPositionBuilder } from '@angular/cdk/overlay';
 import { Component, ElementRef, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
-import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
 import { isUndefined } from 'util';
+import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
+import { NzI18nService as I18n } from '../i18n';
 
 @Component({
   selector: 'nz-time-picker',
