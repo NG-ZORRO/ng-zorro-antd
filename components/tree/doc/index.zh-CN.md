@@ -40,6 +40,9 @@ subtitle: 树形控件
 | nzOnDragLeave | dragleave 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
 | nzOnDrop | drop 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
 | nzOnDragEnd | dragend 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
+| getCheckedNodeList | 获取组件 checkBox 被点击选中的节点 | NzTreeNode[] | [] |
+| getFlatCheckedNodeList | 获取组件 checkBox 被点击选中的节点(打平数组) | NzTreeNode[] | [] |
+| getSelectedNodeList | 获取组件被选中的节点 | NzTreeNode[] | [] |
 
 ### NzTreeNodeOptions props
 
@@ -66,6 +69,7 @@ subtitle: 树形控件
 | dragNode? | 当前拖拽节点(拖拽时存在) | NzTreeNode | null |
 | selectedKeys? | 已选中的节点(单击时存在) | array<NzTreeNode\> | [] |
 | checkedKeys? | checkBox 已选中的节点(点击 checkBox 存在) | array<NzTreeNode\> | [] |
+| flatCheckedKeys? | 打平 checkBox 已选中的节点, 生成一维数组(点击 checkBox 存在) | array<NzTreeNode\> | [] |
 | matchededKeys? | 搜索时匹配到的节点 | array<NzTreeNode\> | [] |
 
 ### NzFormatBeforeDropEvent props

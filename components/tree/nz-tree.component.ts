@@ -1,4 +1,4 @@
-import { forwardRef, Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { Component, ContentChild, EventEmitter, forwardRef, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
@@ -63,6 +63,7 @@ export class NzTreeComponent implements OnInit {
   ngModelNodes: NzTreeNode[] = [];
   @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<{}>;
 
+  @Input() nzCheckStrictly: boolean = false;
   @Input() nzCheckable;
   @Input() nzShowExpand: boolean = true;
   @Input() nzAsyncData: boolean = false;
@@ -122,6 +123,22 @@ export class NzTreeComponent implements OnInit {
     };
   }
 
+  /**
+   * public function
+   * @returns {NzTreeNode[]}
+   */
+  public getCheckedNodeList(): NzTreeNode[] {
+    return this.nzTreeService.getCheckedNodeList();
+  }
+
+  public getSelectedNodeList(): NzTreeNode[] {
+    return this.nzTreeService.getSelectedNodeList();
+  }
+
+  public getFlatCheckedNodeList(): NzTreeNode[] {
+    return this.nzTreeService.getFlatCheckedNodeList();
+  }
+
   // ngModel
   writeValue(value: NzTreeNode[]): void {
     if (value) {
@@ -139,7 +156,7 @@ export class NzTreeComponent implements OnInit {
     this.onTouched = fn;
   }
 
-  constructor(private nzTreeService: NzTreeService) {
+  constructor(public nzTreeService: NzTreeService) {
   }
 
   ngOnInit(): void {

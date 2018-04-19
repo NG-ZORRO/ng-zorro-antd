@@ -146,23 +146,12 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
 
   @ViewChild('dragElement') dragElement: ElementRef;
 
-  @Output() clickNode: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() dblClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() contextMenu: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() clickCheckBox: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() clickExpand: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDragStart: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDragEnter: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDragOver: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDragLeave: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDrop: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDragEnd: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-
   @Input() nzShowLine: boolean;
   @Input() nzShowExpand: boolean;
   @Input() nzDraggable: boolean;
   @Input() nzMultiple: boolean;
   @Input() nzCheckable: boolean;
+  @Input() nzCheckStrictly: boolean;
   @Input() nzAsyncData;
   @Input() nzTreeTemplate: TemplateRef<void>;
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
@@ -247,6 +236,18 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
   get nzSearchValue(): string {
     return this._searchValue;
   }
+
+  @Output() clickNode: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() dblClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() contextMenu: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() clickCheckBox: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() clickExpand: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() nzDragStart: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() nzDragEnter: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() nzDragOver: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() nzDragLeave: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() nzDrop: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() nzDragEnd: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
 
   constructor(private nzTreeService: NzTreeService, private ngZone: NgZone, private renderer: Renderer2) {
   }

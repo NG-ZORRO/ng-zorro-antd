@@ -13,6 +13,7 @@ export class NzTreeService {
   rootNodes: NzTreeNode[] = [];
   selectedNodeList: NzTreeNode[] = [];
   checkedNodeList: NzTreeNode[] = [];
+  flatCheckedNodeList: NzTreeNode[] = [];
   matchedNodeList: NzTreeNode[] = [];
 
   /**
@@ -76,13 +77,23 @@ export class NzTreeService {
     return this.selectedNodeList;
   }
 
-  // if checkbox is clicked, add or remove node to checkbox list
+  /**
+   * merge checked nodes
+   * @param {NzTreeNode} node
+   */
+  setFlatCheckedNodeList(): void {
+    this.flatCheckedNodeList = [];
+    this.checkedNodeList.forEach(node => {
+      this.deepCheckNode(node);
+    });
+  }
+
   setCheckedNodeList(node: NzTreeNode): void {
-    if (node.isChecked && this.checkedNodeList.findIndex(cNode => (node.key === cNode.key && node.title === cNode.title)) === -1) {
+    if (node.isChecked && this.checkedNodeList.findIndex(cNode => (node.key === cNode.key)) === -1) {
       this.checkedNodeList.push(node);
     }
     const removeChild = (rNode: NzTreeNode) => {
-      const rIndex = this.checkedNodeList.findIndex(cNode => (rNode.key === cNode.key && rNode.title === cNode.title));
+      const rIndex = this.checkedNodeList.findIndex(cNode => (rNode.key === cNode.key));
       if (rIndex > -1) {
         this.checkedNodeList.splice(rIndex, 1);
       }
@@ -93,7 +104,7 @@ export class NzTreeService {
     // refresh tree nodes check state, merge child node checked
     this.rootNodes.forEach((rNode: NzTreeNode) => {
       const loopNode = (lNode: NzTreeNode) => {
-        const cIndex = this.checkedNodeList.findIndex(cNode => (lNode.key === cNode.key && lNode.title === cNode.title));
+        const cIndex = this.checkedNodeList.findIndex(cNode => (lNode.key === cNode.key));
         if (lNode.isChecked) {
           if (cIndex === -1) {
             this.checkedNodeList.push(lNode);
@@ -113,12 +124,39 @@ export class NzTreeService {
       };
       loopNode(rNode);
     });
+    // set flat checked list
+    this.setFlatCheckedNodeList();
   }
 
+  /**
+   * flat the checked nodes
+   * @param {NzTreeNode} node
+   */
+  deepCheckNode(node: NzTreeNode): void {
+    this.flatCheckedNodeList.push(node);
+    if (node.getChildren().length > 0) {
+      node.getChildren().filter(cNode => cNode.isAllChecked === true).forEach(cNode => {
+        return this.deepCheckNode(cNode);
+      });
+    }
+  }
+
+  getFlatCheckedNodeList(): NzTreeNode[] {
+    return this.flatCheckedNodeList;
+  }
+
+  /**
+   * return checked nodes
+   * @returns {NzTreeNode[]}
+   */
   getCheckedNodeList(): NzTreeNode[] {
     return this.checkedNodeList;
   }
 
+  /**
+   * return search matched nodes
+   * @returns {NzTreeNode[]}
+   */
   getMatchedNodeList(): NzTreeNode[] {
     return this.matchedNodeList;
   }
@@ -337,6 +375,7 @@ export class NzTreeService {
         break;
       case 'check':
         Object.assign(emitStructure, { 'checkedKeys': this.getCheckedNodeList() });
+        Object.assign(emitStructure, { 'flatCheckedKeys': this.getFlatCheckedNodeList() });
         break;
       case 'search':
         Object.assign(emitStructure, { 'matchedKeys': this.getMatchedNodeList() });

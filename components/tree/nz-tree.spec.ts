@@ -43,9 +43,14 @@ describe('tree component test', () => {
       const allSelectedKeys = treeElement.querySelectorAll('.ant-tree-node-selected');
       expect(allSelectedKeys[ 0 ].getAttribute('title')).toEqual('child1');
       expect(allSelectedKeys[ 1 ].getAttribute('title')).toEqual('child1.1');
+      expect(treeInstance.treeComponent.getSelectedNodeList().length).toEqual(2);
+
       // checked
       const allCheckedKeys = treeElement.querySelectorAll('.ant-tree-checkbox-checked');
       expect(allCheckedKeys.length).toEqual(4);
+      // merged to one node
+      expect(treeInstance.treeComponent.getCheckedNodeList().length).toEqual(1);
+      expect(treeInstance.treeComponent.getFlatCheckedNodeList().length).toEqual(4);
       // expanded
       const allExpandedKeys = treeElement.querySelectorAll('.ant-tree-switcher_open');
       expect(allExpandedKeys.length).toEqual(2);
@@ -66,8 +71,6 @@ describe('tree component test', () => {
       expect(targetNode.querySelectorAll('.ant-tree-node-selected').length).toEqual(1);
       expect(clickSpy).toHaveBeenCalled();
       expect(clickSpy).toHaveBeenCalledTimes(1);
-      // test set node checked has been added to checked list
-      // treeInstance.treeComponent.nzTreeService.setSelectedNodeList(treeInstance.treeComponent.nzTreeService.getSelectedNodeList()[0]);
     }));
     it('dblclick/contextmenu should response correctly', fakeAsync(() => {
       fixture.detectChanges();
@@ -435,7 +438,6 @@ describe('tree component test', () => {
   selector: 'nz-demo-tree-basic',
   template: `
     <nz-tree
-      #treeComponent
       [(ngModel)]="nodes"
       [nzCheckable]="true"
       [nzMultiple]="multiple"
@@ -457,7 +459,7 @@ describe('tree component test', () => {
   `
 })
 class NzDemoBasicTreeComponent {
-  @ViewChild('treeComponent') treeComponent: NzTreeComponent;
+  @ViewChild(NzTreeComponent) treeComponent: NzTreeComponent;
   expandKeys = [ '1001', '10001' ];
   checkedKeys = [ '10001', '100012' ];
   selectedKeys = [ '10001', '100011' ];
@@ -559,7 +561,6 @@ class NzDemoBasicTreeComponent {
   selector: 'nz-demo-tree-async',
   template: `
     <nz-tree
-      #treeComponent
       [(ngModel)]="nodes"
       [nzAsyncData]="true"
       (nzExpandChange)="onExpand($event)"
@@ -569,7 +570,7 @@ class NzDemoBasicTreeComponent {
 })
 
 class NzDemoAsyncTreeComponent {
-  @ViewChild('treeComponent') treeComponent: NzTreeComponent;
+  @ViewChild(NzTreeComponent) treeComponent: NzTreeComponent;
   nodes = [
     new NzTreeNode({
       title   : 'root1',
@@ -599,7 +600,6 @@ class NzDemoAsyncTreeComponent {
   selector: 'nz-demo-tree-draggable',
   template: `
     <nz-tree
-      #treeComponent
       [(ngModel)]="nodes"
       [nzDraggable]="true"
       [nzMultiple]="false"
@@ -616,7 +616,7 @@ class NzDemoAsyncTreeComponent {
 })
 
 class NzDemoDraggableTreeComponent {
-  @ViewChild('treeComponent') treeComponent: NzTreeComponent;
+  @ViewChild(NzTreeComponent) treeComponent: NzTreeComponent;
   nodes = [
     new NzTreeNode({
       title   : 'root1',
