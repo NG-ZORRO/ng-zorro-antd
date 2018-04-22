@@ -148,14 +148,12 @@ describe('Component:nz-back-top', () => {
     }));
 
     describe('when clicked', () => {
-      it(`emit event on nzClick`, fakeAsync((done) => {
+      it(`emit event on nzClick`, fakeAsync(() => {
         component.nzClick.subscribe((returnValue) => {
           expect(returnValue).toBe(true);
-          done();
         });
 
         componentObject.clickBackTop();
-        tick();
       }));
     });
   });
