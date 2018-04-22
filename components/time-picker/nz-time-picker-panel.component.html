@@ -1,0 +1,36 @@
+<div class="ant-time-picker-panel-inner" [style.width.px]="enabledColumns * 56">
+  <div class="ant-time-picker-panel-input-wrap">
+    <input type="text" class="ant-time-picker-panel-input" placeholder="Select time"
+           [nzTime]="format" [(ngModel)]="time.value" (blur)="time.changed()">
+    <a class="ant-time-picker-panel-clear-btn" role="button" title="clear" (click)="clear()"></a>
+  </div>
+  <div class="ant-time-picker-panel-combobox">
+    <div *ngIf="hourEnabled" class="ant-time-picker-panel-select">
+      <ul>
+        <li *ngFor="let hour of hourRange" (click)="time.setHours(hour)"
+            [class.ant-time-picker-panel-select-option-selected]="hour === time.hours">
+          {{ hour | number:'2.0-0' }}
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="minuteEnabled" class="ant-time-picker-panel-select">
+      <ul>
+        <li *ngFor="let minute of minuteRange" (click)="time.setMinutes(minute)"
+            [class.ant-time-picker-panel-select-option-selected]="minute === time.minutes">
+          {{ minute | number:'2.0-0' }}
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="secondEnabled" class="ant-time-picker-panel-select">
+      <ul>
+        <li *ngFor="let second of secondRange" (click)="time.setSeconds(second)"
+            [class.ant-time-picker-panel-select-option-selected]="second === time.seconds">
+          {{ second | number:'2.0-0' }}
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="ant-time-picker-panel-addon">
+    <ng-content></ng-content>
+  </div>
+</div>
