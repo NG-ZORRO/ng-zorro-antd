@@ -20,7 +20,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 
 export class NzDemoTreeBasicComponent implements OnInit {
   expandKeys = [ '1001', '10001' ];
-  checkedKeys = [ '10001', '1002' ];
+  checkedKeys = [ '100011', '1002' ];
   selectedKeys = [ '10001', '100011' ];
   expandDefault = false;
   nodes = [

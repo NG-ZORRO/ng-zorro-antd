@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -428,10 +428,109 @@ describe('tree component test', () => {
       expect(treeService.rootNodes[ 1 ].getChildren()[ 1 ].title).toEqual('child1');
     });
   });
+
+  describe('strict mode', () => {
+    treeInstance = null;
+    fixture = null;
+    let treeElement: HTMLElement;
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
+        declarations: [ NzDemoStrictTreeComponent ]
+      }).compileComponents();
+    }));
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzDemoStrictTreeComponent);
+      treeInstance = fixture.debugElement.componentInstance;
+      treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+    }));
+
+    it('should create', () => {
+      expect(treeInstance).toBeTruthy();
+    });
+
+    it('should check strictly', () => {
+      fixture.detectChanges();
+      // check child1
+      let targetNode = treeElement.querySelectorAll('.ant-tree-checkbox')[ 0 ];
+      dispatchMouseEvent(targetNode, 'click');
+      fixture.detectChanges();
+      expect(treeElement.querySelectorAll('.ant-tree-checkbox-checked').length).toEqual(2);
+      // cancel
+      targetNode = treeElement.querySelectorAll('.ant-tree-checkbox')[ 0 ];
+      dispatchMouseEvent(targetNode, 'click');
+      fixture.detectChanges();
+      expect(treeElement.querySelectorAll('.ant-tree-checkbox-checked').length).toEqual(1);
+    });
+  });
+
+
 });
 // -------------------------------------------
 // | Testing Components
 // -------------------------------------------
+@Component({
+  selector: 'nz-demo-tree-strict',
+  template: `
+    <nz-tree
+      [(ngModel)]="nodes"
+      [nzCheckable]="true"
+      [nzCheckStrictly]="true"
+      [nzMultiple]="multiple"
+      [nzShowLine]="showLine"
+      [nzShowExpand]="showExpand"
+    >
+    </nz-tree>
+  `
+})
+
+class NzDemoStrictTreeComponent {
+  nodes = [
+    new NzTreeNode({
+      title   : 'root1',
+      key     : '1001',
+      children: [
+        {
+          title   : 'child1',
+          key     : '10001',
+          children: [
+            {
+              title   : 'child1.1',
+              key     : '100011',
+              checked : true,
+              children: []
+            },
+            {
+              title   : 'child1.2',
+              key     : '100012',
+              children: [
+                {
+                  title   : 'grandchild1.2.1',
+                  key     : '1000121',
+                  isLeaf  : true,
+                  disabled: true
+                },
+                {
+                  title : 'grandchild1.2.2',
+                  key   : '1000122',
+                  isLeaf: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          title: 'child2',
+          key  : '10002'
+        }
+      ]
+    })
+  ];
+}
 
 @Component({
   selector: 'nz-demo-tree-basic',

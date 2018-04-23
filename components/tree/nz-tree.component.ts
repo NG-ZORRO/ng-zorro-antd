@@ -71,9 +71,9 @@ export class NzTreeComponent implements OnInit {
   @Input() nzDraggable;
   @Input() nzMultiple;
   @Input() nzDefaultExpandAll: boolean = false;
-  @Input() nzDefaultCheckedKeys: string[];
-  @Input() nzDefaultExpandedKeys: string[];
-  @Input() nzDefaultSelectedKeys: string[];
+  @Input() nzDefaultCheckedKeys: string[] = [];
+  @Input() nzDefaultExpandedKeys: string[] = [];
+  @Input() nzDefaultSelectedKeys: string[] = [];
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
 
   @Input()
@@ -140,7 +140,7 @@ export class NzTreeComponent implements OnInit {
   writeValue(value: NzTreeNode[]): void {
     if (value) {
       this.ngModelNodes = value;
-      this.nzTreeService.initTreeNodes(this.ngModelNodes);
+      this.nzTreeService.initTreeNodes(this.ngModelNodes, this.nzDefaultCheckedKeys, this.nzCheckStrictly);
       this.onChange(value);
     }
   }

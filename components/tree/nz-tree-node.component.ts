@@ -132,6 +132,7 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
   dragPos = 2;
   prefixCls = 'ant-tree';
   _treeNode;
+  _checkStrictly;
   _expandAll = false;
   _defaultCheckedKeys = [];
   _defaultExpandedKeys = [];
@@ -152,8 +153,9 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
   @Input() nzDraggable: boolean;
   @Input() nzMultiple: boolean;
   @Input() nzCheckable: boolean;
-  @Input() nzCheckStrictly: boolean;
   @Input() nzAsyncData;
+  @Input() nzCheckStrictly: boolean;
+  @Input() nzDefaultCheckedKeys: string[];
   @Input() nzTreeTemplate: TemplateRef<void>;
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
 
@@ -176,15 +178,6 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
 
   get nzDefaultExpandAll(): boolean {
     return this._expandAll;
-  }
-
-  @Input()
-  set nzDefaultCheckedKeys(value: string[]) {
-    this._defaultCheckedKeys = value;
-  }
-
-  get nzDefaultCheckedKeys(): string[] {
-    return this._defaultCheckedKeys;
   }
 
   @Input()
@@ -248,19 +241,13 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    if (this.nzDefaultCheckedKeys && this.nzDefaultCheckedKeys.indexOf(this.nzTreeNode.key) > -1) {
-      setTimeout(() => {
-        this.nzTreeNode.isChecked = true;
-        // associate nodes
-        if (this.nzCheckStrictly) {
-          this.nzTreeNode.isAllChecked = this.nzTreeNode.isChecked;
-          this.nzTreeNode.isHalfChecked = false;
-          this.nzTreeService.setCheckedNodeListStrict(this.nzTreeNode);
-        } else {
-          this.nzTreeService.setCheckedNodeList(this.nzTreeNode);
-          this.nzTreeService.checkTreeNode(this.nzTreeNode);
-        }
-      });
+    if (this.nzTreeNode.isChecked) {
+      // associate nodes
+      if (this.nzCheckStrictly) {
+        this.nzTreeService.setCheckedNodeListStrict(this.nzTreeNode);
+      } else {
+        this.nzTreeService.setCheckedNodeList(this.nzTreeNode);
+      }
     }
     // add select list
     if (this.nzTreeNode.isSelected) {
