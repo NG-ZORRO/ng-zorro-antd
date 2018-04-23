@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -467,8 +467,6 @@ describe('tree component test', () => {
       expect(treeElement.querySelectorAll('.ant-tree-checkbox-checked').length).toEqual(1);
     });
   });
-
-
 });
 // -------------------------------------------
 // | Testing Components
