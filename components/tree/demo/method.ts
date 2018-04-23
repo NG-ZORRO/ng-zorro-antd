@@ -63,11 +63,12 @@ export class NzDemoTreeMethodComponent implements OnInit {
   ];
 
   mouseAction(name: string, event: NzFormatEmitEvent): void {
+    // just for demo, should get in ngAfterViewInit
     console.log('checkedNodes: %o, flatCheckedNodes: %o', this.nzTree.getCheckedNodeList(), this.nzTree.getFlatCheckedNodeList());
     console.log('selectedNodes: %o', this.nzTree.getSelectedNodeList());
+    console.log(this.nzTree.nzTreeService.getCheckedNodeList());
   }
 
   ngOnInit(): void {
-    console.log(this.nzTree.nzTreeService);
   }
 }

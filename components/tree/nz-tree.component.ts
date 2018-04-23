@@ -1,4 +1,4 @@
-import { Component, ContentChild, EventEmitter, forwardRef, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { forwardRef, Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
@@ -127,15 +127,15 @@ export class NzTreeComponent implements OnInit {
    * public function
    * @returns {NzTreeNode[]}
    */
-  public getCheckedNodeList(): NzTreeNode[] {
+  getCheckedNodeList(): NzTreeNode[] {
     return this.nzTreeService.getCheckedNodeList();
   }
 
-  public getSelectedNodeList(): NzTreeNode[] {
+  getSelectedNodeList(): NzTreeNode[] {
     return this.nzTreeService.getSelectedNodeList();
   }
 
-  public getFlatCheckedNodeList(): NzTreeNode[] {
+  getFlatCheckedNodeList(): NzTreeNode[] {
     return this.nzTreeService.getFlatCheckedNodeList();
   }
 
