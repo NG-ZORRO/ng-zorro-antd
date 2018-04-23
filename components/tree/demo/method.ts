@@ -5,6 +5,7 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeNode } from 'ng-zorro-antd';
   selector: 'nz-demo-tree-method',
   template: `
     <nz-tree
+      #nzTree
       [(ngModel)]="nodes"
       [nzCheckable]="true"
       [nzMultiple]="true"
@@ -21,7 +22,7 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeNode } from 'ng-zorro-antd';
 })
 
 export class NzDemoTreeMethodComponent implements OnInit {
-  @ViewChild(NzTreeComponent) nzTree: NzTreeComponent;
+  @ViewChild('nzTree') nzTree: NzTreeComponent;
   expandKeys = [ '1001', '10001' ];
   checkedKeys = [ '10001' ];
   selectedKeys = [ '10001', '100011' ];
@@ -64,6 +65,7 @@ export class NzDemoTreeMethodComponent implements OnInit {
   ];
 
   mouseAction(name: string, event: NzFormatEmitEvent): void {
+    console.log(name, event);
     // just for demo, should get in ngAfterViewInit
     console.log('checkedNodes: %o', this.nzTree.getCheckedNodeList());
     console.log('selectedNodes: %o', this.nzTree.getSelectedNodeList());
@@ -71,6 +73,5 @@ export class NzDemoTreeMethodComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.nzTree.nzTreeService);
   }
 }
