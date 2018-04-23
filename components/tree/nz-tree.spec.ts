@@ -50,7 +50,6 @@ describe('tree component test', () => {
       expect(allCheckedKeys.length).toEqual(4);
       // merged to one node
       expect(treeInstance.treeComponent.getCheckedNodeList().length).toEqual(1);
-      expect(treeInstance.treeComponent.getFlatCheckedNodeList().length).toEqual(4);
       // expanded
       const allExpandedKeys = treeElement.querySelectorAll('.ant-tree-switcher_open');
       expect(allExpandedKeys.length).toEqual(2);

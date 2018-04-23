@@ -90,6 +90,7 @@ import { NzTreeService } from './nz-tree.service';
                       [nzAsyncData]="nzAsyncData"
                       [nzMultiple]="nzMultiple"
                       [nzBeforeDrop]="nzBeforeDrop"
+                      [nzCheckStrictly]="nzCheckStrictly"
                       [nzDefaultExpandAll]="nzDefaultExpandAll"
                       [nzDefaultCheckedKeys]="nzDefaultCheckedKeys"
                       [nzDefaultExpandedKeys]="nzDefaultExpandedKeys"
@@ -180,12 +181,6 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
   @Input()
   set nzDefaultCheckedKeys(value: string[]) {
     this._defaultCheckedKeys = value;
-    if (value && value.indexOf(this.nzTreeNode.key) > -1) {
-      // associate nodes
-      setTimeout(() => {
-        this.nzTreeService.checkTreeNode(this.nzTreeNode, true);
-      });
-    }
   }
 
   get nzDefaultCheckedKeys(): string[] {
@@ -253,13 +248,23 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    if (this.nzDefaultCheckedKeys && this.nzDefaultCheckedKeys.indexOf(this.nzTreeNode.key) > -1) {
+      setTimeout(() => {
+        this.nzTreeNode.isChecked = true;
+        // associate nodes
+        if (this.nzCheckStrictly) {
+          this.nzTreeNode.isAllChecked = this.nzTreeNode.isChecked;
+          this.nzTreeNode.isHalfChecked = false;
+          this.nzTreeService.setCheckedNodeListStrict(this.nzTreeNode);
+        } else {
+          this.nzTreeService.setCheckedNodeList(this.nzTreeNode);
+          this.nzTreeService.checkTreeNode(this.nzTreeNode);
+        }
+      });
+    }
     // add select list
     if (this.nzTreeNode.isSelected) {
       this.nzTreeService.setSelectedNodeList(this.nzTreeNode, this.nzMultiple);
-    }
-    // add check list
-    if (this.nzTreeNode.isChecked) {
-      this.nzTreeService.setCheckedNodeList(this.nzTreeNode);
     }
   }
 
@@ -391,7 +396,15 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
     if (node.isDisableCheckbox || node.isDisabled) {
       return;
     }
-    this.nzTreeService.checkTreeNode(node);
+    node.isChecked = !node.isChecked;
+    if (this.nzCheckStrictly) {
+      node.isAllChecked = node.isChecked;
+      node.isHalfChecked = false;
+      this.nzTreeService.setCheckedNodeListStrict(this.nzTreeNode);
+    } else {
+      this.nzTreeService.setCheckedNodeList(this.nzTreeNode);
+      this.nzTreeService.checkTreeNode(node);
+    }
     this.clickCheckBox.emit(this.nzTreeService.formatEvent('check', node, $event));
   }
 

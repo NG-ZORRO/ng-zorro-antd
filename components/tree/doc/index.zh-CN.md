@@ -22,6 +22,7 @@ subtitle: 树形控件
 | nzAsyncData | 是否异步加载(显示加载状态) | boolean | false |
 | nzDraggable | 设置节点可拖拽（IE>8） | boolean | false |
 | nzMultiple | 支持点选多个节点（节点本身） | boolean | false |
+| nzCheckStrictly | checkable状态下节点选择完全受控（父子节点选中状态不再关联） | boolean | false |
 | nzDefaultExpandAll | 默认展开所有树节点 | boolean | false |
 | nzDefaultExpandedKeys | 默认展开指定的树节点 | string\[] | \[] |
 | nzDefaultCheckedKeys | 默认选中复选框的树节点 | string\[] | \[] |
@@ -41,7 +42,6 @@ subtitle: 树形控件
 | nzOnDrop | drop 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
 | nzOnDragEnd | dragend 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
 | getCheckedNodeList | 获取组件 checkBox 被点击选中的节点 | NzTreeNode[] | [] |
-| getFlatCheckedNodeList | 获取组件 checkBox 被点击选中的节点(打平数组) | NzTreeNode[] | [] |
 | getSelectedNodeList | 获取组件被选中的节点 | NzTreeNode[] | [] |
 
 ### NzTreeNodeOptions props
@@ -69,7 +69,6 @@ subtitle: 树形控件
 | dragNode? | 当前拖拽节点(拖拽时存在) | NzTreeNode | null |
 | selectedKeys? | 已选中的节点(单击时存在) | array<NzTreeNode\> | [] |
 | checkedKeys? | checkBox 已选中的节点(点击 checkBox 存在) | array<NzTreeNode\> | [] |
-| flatCheckedKeys? | 打平 checkBox 已选中的节点, 生成一维数组(点击 checkBox 存在) | array<NzTreeNode\> | [] |
 | matchededKeys? | 搜索时匹配到的节点 | array<NzTreeNode\> | [] |
 
 ### NzFormatBeforeDropEvent props

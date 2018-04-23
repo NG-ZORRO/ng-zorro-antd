@@ -23,6 +23,7 @@ import { NzTreeService } from './nz-tree.service';
                     [nzDraggable]="nzDraggable"
                     [nzCheckable]="nzCheckable"
                     [nzBeforeDrop]="nzBeforeDrop"
+                    [nzCheckStrictly]="nzCheckStrictly"
                     [nzDefaultExpandAll]="nzDefaultExpandAll"
                     [nzDefaultCheckedKeys]="nzDefaultCheckedKeys"
                     [nzDefaultExpandedKeys]="nzDefaultExpandedKeys"
@@ -133,10 +134,6 @@ export class NzTreeComponent implements OnInit {
 
   getSelectedNodeList(): NzTreeNode[] {
     return this.nzTreeService.getSelectedNodeList();
-  }
-
-  getFlatCheckedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getFlatCheckedNodeList();
   }
 
   // ngModel
