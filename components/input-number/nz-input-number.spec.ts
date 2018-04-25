@@ -366,6 +366,15 @@ describe('input number', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(-10);
     });
+    it('should update value immediatelly after formatter changed', (() => {
+      const newFormatter = v => `${v} %`;
+      const initValue = '1';
+      testComponent.nzInputNumberComponent.onModelChange(initValue);
+      fixture.detectChanges();
+      testComponent.formatter = newFormatter;
+      fixture.detectChanges();
+      expect(inputElement.value).toBe(newFormatter(initValue));
+    }));
   });
   describe('input number form', () => {
     let fixture;
