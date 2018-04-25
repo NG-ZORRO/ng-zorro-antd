@@ -1,37 +1,90 @@
-import { Overlay, OverlayPositionBuilder } from '@angular/cdk/overlay';
-import { Component, ElementRef, Injector, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger
+} from '@angular/animations';
+import { CdkOverlayOrigin, ConnectionPositionPair, Overlay, OverlayPositionBuilder } from '@angular/cdk/overlay';
+import { Component, ElementRef, Input, OnInit, Renderer2, TemplateRef, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { isUndefined } from 'util';
+import { dropDownAnimation } from '../core/animation/dropdown-animations';
+import { POSITION_MAP } from '../core/overlay/overlay-position-map';
 import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
-import { NzI18nService as I18n } from '../i18n';
+import { isNotNil } from '../core/util/check';
+import { toBoolean } from '../core/util/convert';
+import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
 
 @Component({
-  selector: 'nz-time-picker',
+  selector   : 'nz-time-picker',
   templateUrl: './nz-time-picker.component.html',
-  providers: [
+  animations : [
+    trigger('dropDownAnimation', [
+      state('void', style({
+        opacity: 0,
+        display: 'none'
+      })),
+      state('*', style({
+        opacity        : 1,
+        transform      : 'scaleY(1)',
+        transformOrigin: '0% 0%'
+      })),
+      transition('void => *', [
+        style({
+          opacity        : 0,
+          transform      : 'scaleY(0.8)',
+          transformOrigin: '0% 0%'
+        }),
+        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)')
+      ]),
+      transition('* => void', [
+        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)', style({
+          opacity        : 0,
+          transform      : 'scaleY(0.8)',
+          transformOrigin: '0% 0%'
+        }))
+      ])
+    ])
+  ],
+  providers  : [
+    UpdateCls,
     { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }
   ]
 })
 export class NzTimePickerComponent implements ControlValueAccessor, OnInit {
-  @Input() nzFormat = 'HH:mm:ss';
-  @Input() nzSize: string | null = null;
-  @Input() nzOffset: [number, number, number];
-  @Input() nzHourStep = 1;
-  @Input() nzMinuteStep = 1;
-  @Input() nzSecondStep = 1;
-
-  @ViewChild('input')
-  inputRef: ElementRef;
-
-  opened = false;
-
+  private _disabled = false;
   private _value: Date | null = null;
-
   private _onChange: (value: Date) => void;
   private _onTouched: () => void;
 
-  get value(): Date | null {
-    return this._value;
+  opened = false;
+  origin: CdkOverlayOrigin;
+  overlayPositions: ConnectionPositionPair[] = [ POSITION_MAP.leftTop ];
+  @ViewChild('inputElement') inputRef: ElementRef;
+  @Input() nzFormat = 'HH:mm:ss';
+  @Input() nzSize: string | null = null;
+  @Input() nzOffset: [ number, number, number ];
+  @Input() nzHourStep = 1;
+  @Input() nzMinuteStep = 1;
+  @Input() nzSecondStep = 1;
+  @Input() nzAddOn: TemplateRef<void>;
+  @Input() nzHideDisabledOptions = false;
+  @Input() nzDisabledHours: () => number[];
+  @Input() nzDisabledMinutes: (hour: number) => number[];
+  @Input() nzDisabledSeconds: (hour: number, minute: number) => number[];
+  @Input()
+  set nzDisabled(value: boolean | string) {
+    this._disabled = toBoolean(value);
+    const input = this.inputRef.nativeElement as HTMLInputElement;
+    if (this._disabled) {
+      this.renderer.setAttribute(input, 'disabled', '');
+    } else {
+      this.renderer.removeAttribute(input, 'disabled');
+    }
+  }
+
+  get nzDisabled(): boolean | string {
+    return this._disabled;
   }
 
   set value(value: Date | null) {
@@ -44,25 +97,30 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  private _disabled = false;
-
-  get disabled(): boolean | string {
-    return this._disabled;
+  get value(): Date | null {
+    return this._value;
   }
 
-  @Input('nzDisabled')
-  set disabled(value: boolean | string) {
-    this._disabled = value === '' || !isUndefined(value) && !!value;
-    const input = this.inputRef.nativeElement as HTMLInputElement;
-    if (this._disabled) {
-      input.setAttribute('disabled', 'disabled');
-    } else {
-      input.removeAttribute('disabled');
+  open(): void {
+    if (this.nzDisabled) {
+      return;
     }
+    this.opened = true;
+  }
+
+  close(): void {
+    this.opened = false;
+  }
+
+  private setClassMap(): void {
+    this.updateCls.updateHostClass(this.element.nativeElement, {
+      [ `ant-time-picker` ]               : true,
+      [ `ant-time-picker-${this.nzSize}` ]: isNotNil(this.nzSize)
+    });
   }
 
   constructor(private element: ElementRef,
-              private injector: Injector,
+              private renderer: Renderer2,
               private overlay: Overlay,
               private positionBuilder: OverlayPositionBuilder,
               private i18n: I18n,
@@ -71,17 +129,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit {
 
   ngOnInit(): void {
     this.setClassMap();
-  }
-
-  open(): void {
-    if (this.disabled) {
-      return;
-    }
-    this.opened = true;
-  }
-
-  close(): void {
-    this.opened = false;
+    this.origin = new CdkOverlayOrigin(this.element);
   }
 
   writeValue(time: Date | null): void {
@@ -96,14 +144,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit {
     this._onTouched = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-  }
-
-  private setClassMap(): void {
-    this.updateCls.updateHostClass(this.element.nativeElement, {
-      [`ant-time-picker`]: true,
-      [`ant-time-picker-${this.nzSize}`]: this.nzSize != null
-    });
+  setDisabledState(isDisabled: boolean): void {
+    this.nzDisabled = isDisabled;
   }
 }

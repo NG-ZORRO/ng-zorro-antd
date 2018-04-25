@@ -1,13 +1,38 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { isUndefined } from 'util';
+import { isNotNil } from '../core/util/check';
 
 export class TimeHolder {
-  constructor() {
-  }
-
+  private _seconds = undefined;
+  private _hours = undefined;
+  private _minutes = undefined;
+  private _defaultOpenValue: Date = new Date(0, 0, 0, 0, 0, 0);
   private _value: Date;
   private _changes = new Subject<Date>();
+
+  setMinutes(value: number, disabled: boolean): this {
+    if (disabled) {
+      return;
+    }
+    this.minutes = value;
+    return this;
+  }
+
+  setHours(value: number, disabled: boolean): this {
+    if (disabled) {
+      return;
+    }
+    this.hours = value;
+    return this;
+  }
+
+  setSeconds(value: number, disabled: boolean): this {
+    if (disabled) {
+      return;
+    }
+    this.seconds = value;
+    return this;
+  }
 
   get changes(): Observable<Date> {
     return this._changes.asObservable();
@@ -41,7 +66,7 @@ export class TimeHolder {
   }
 
   get isEmpty(): boolean {
-    return isUndefined(this._hours) && isUndefined(this._minutes) && isUndefined(this._seconds);
+    return !(isNotNil(this._hours) || isNotNil(this._minutes) || isNotNil(this._seconds));
   }
 
   private _clear(): void {
@@ -54,15 +79,15 @@ export class TimeHolder {
     if (this.isEmpty) {
       this._value = undefined;
     } else {
-      if (isUndefined(this._hours)) {
+      if (!isNotNil(this._hours)) {
         this._hours = this.defaultHours;
       }
 
-      if (isUndefined(this._minutes)) {
+      if (!isNotNil(this._minutes)) {
         this._minutes = this.defaultMinutes;
       }
 
-      if (isUndefined(this._seconds)) {
+      if (!isNotNil(this._seconds)) {
         this._seconds = this.defaultSeconds;
       }
 
@@ -75,7 +100,6 @@ export class TimeHolder {
     this._changes.next(this._value);
   }
 
-  private _hours = undefined;
   get hours(): number {
     return this._hours;
   }
@@ -87,12 +111,6 @@ export class TimeHolder {
     }
   }
 
-  setHours(value: number): this {
-    this.hours = value;
-    return this;
-  }
-
-  private _minutes = undefined;
   get minutes(): number {
     return this._minutes;
   }
@@ -104,12 +122,6 @@ export class TimeHolder {
     }
   }
 
-  setMinutes(value: number): this {
-    this.minutes = value;
-    return this;
-  }
-
-  private _seconds = undefined;
   get seconds(): number {
     return this._seconds;
   }
@@ -120,13 +132,6 @@ export class TimeHolder {
       this.update();
     }
   }
-
-  setSeconds(value: number): this {
-    this.seconds = value;
-    return this;
-  }
-
-  private _defaultOpenValue: Date = new Date();
 
   get defaultOpenValue(): Date {
     return this._defaultOpenValue;
@@ -155,4 +160,8 @@ export class TimeHolder {
   get defaultSeconds(): number {
     return this._defaultOpenValue.getSeconds();
   }
+
+  constructor() {
+  }
+
 }

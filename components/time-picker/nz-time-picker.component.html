@@ -1,16 +1,34 @@
-<div cdkOverlayOrigin #origin="cdkOverlayOrigin" style="position: relative;top: -2px"></div>
-<input type="text" [nzTime]="nzFormat" class="ant-time-picker-input" placeholder="Select time"
-       [(ngModel)]="value" (click)="open()" #input>
+<input
+  type="text"
+  [nzTime]="nzFormat"
+  class="ant-time-picker-input"
+  placeholder="Select time"
+  [(ngModel)]="value"
+  (click)="open()"
+  #inputElement>
 <span class="ant-time-picker-icon"></span>
 
-<ng-template cdkConnectedOverlay
-             cdkConnectedOverlayHasBackdrop
-             [cdkConnectedOverlayOrigin]="origin"
-             [cdkConnectedOverlayOpen]="opened"
-             (backdropClick)="close()">
-  <nz-time-picker-panel [format]="nzFormat" [nzHourStep]="nzHourStep" [nzMinuteStep]="nzMinuteStep"
-                        [nzSecondStep]="nzSecondStep" (timeClear)="close();" [(ngModel)]="value">
-    <ng-content></ng-content>
+<ng-template
+  cdkConnectedOverlay
+  cdkConnectedOverlayHasBackdrop
+  [cdkConnectedOverlayPositions]="overlayPositions"
+  [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayOpen]="opened"
+  (detach)="close()"
+  (backdropClick)="close()">
+  <nz-time-picker-panel
+    [@dropDownAnimation]="'bottom'"
+    [format]="nzFormat"
+    [nzHourStep]="nzHourStep"
+    [nzMinuteStep]="nzMinuteStep"
+    [nzSecondStep]="nzSecondStep"
+    [nzDisabledHours]="nzDisabledHours"
+    [nzDisabledMinutes]="nzDisabledMinutes"
+    [nzDisabledSeconds]="nzDisabledSeconds"
+    [nzHideDisabledOptions]="nzHideDisabledOptions"
+    [nzAddOn]="nzAddOn"
+    (timeClear)="close()"
+    [(ngModel)]="value">
   </nz-time-picker-panel>
 </ng-template>
 
