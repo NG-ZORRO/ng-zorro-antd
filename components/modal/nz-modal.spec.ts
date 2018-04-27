@@ -770,11 +770,8 @@ function expectModalDestroyed(classId: string, destroyed: boolean): void {
 
 function expectModalDraggable(modalElement: HTMLElement, nzDraggable: boolean): void {
   const display = (modalElement.querySelector('.ant-modal-wrap') as HTMLElement).style.display;
-  console.log(display);
   const cursor = (modalElement.querySelector('.ant-modal-header') as HTMLElement).style.cursor;
-  console.log((modalElement.querySelector('.ant-modal-header') as HTMLElement));
   if (display !== 'none' && nzDraggable) {
-    console.log(cursor);
     expect(cursor).toBe('move');
   }
 }
