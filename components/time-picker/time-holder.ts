@@ -6,13 +6,13 @@ export class TimeHolder {
   private _seconds = undefined;
   private _hours = undefined;
   private _minutes = undefined;
-  private _defaultOpenValue: Date = new Date(0, 0, 0, 0, 0, 0);
+  private _defaultOpenValue: Date = new Date();
   private _value: Date;
   private _changes = new Subject<Date>();
 
   setMinutes(value: number, disabled: boolean): this {
     if (disabled) {
-      return;
+      return this;
     }
     this.minutes = value;
     return this;
@@ -20,7 +20,7 @@ export class TimeHolder {
 
   setHours(value: number, disabled: boolean): this {
     if (disabled) {
-      return;
+      return this;
     }
     this.hours = value;
     return this;
@@ -28,7 +28,7 @@ export class TimeHolder {
 
   setSeconds(value: number, disabled: boolean): this {
     if (disabled) {
-      return;
+      return this;
     }
     this.seconds = value;
     return this;
@@ -45,7 +45,7 @@ export class TimeHolder {
   set value(value: Date) {
     if (value !== this._value) {
       this._value = value;
-      if (this._value) {
+      if (isNotNil(this._value)) {
         this._hours = this._value.getHours();
         this._minutes = this._value.getMinutes();
         this._seconds = this._value.getSeconds();

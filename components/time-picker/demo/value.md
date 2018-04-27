@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-可以通过 `NgModel` 进行双向绑定。
+可以进行双向绑定。
 
 ## en-US
 
-Work with two-way binding via `NgModel`.
+Work with two-way binding.

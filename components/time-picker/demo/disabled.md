@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-A disabled state of the `TimePicker`.
+A disabled state of the `nz-time-picker`.

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input, OnInit } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
@@ -8,7 +8,7 @@ import { NzI18nService } from '../i18n/nz-i18n.service';
     { provide: NG_VALUE_ACCESSOR, useExisting: NzTimeValueAccessorDirective, multi: true }
   ]
 })
-export class NzTimeValueAccessorDirective implements ControlValueAccessor, OnInit {
+export class NzTimeValueAccessorDirective implements ControlValueAccessor {
 
   private _onChange: (value: Date) => void;
   private _onTouch: () => void;
@@ -41,18 +41,16 @@ export class NzTimeValueAccessorDirective implements ControlValueAccessor, OnIni
     }
   }
 
-  constructor(private i18n: NzI18nService, private elementRef: ElementRef) {
+  setRange(): void {
+    this.element.focus();
+    this.element.setSelectionRange(0, this.element.value.length);
   }
 
-  ngOnInit(): void {
-    Promise.resolve().then(() => {
-      this.element.focus();
-    });
+  constructor(private i18n: NzI18nService, private elementRef: ElementRef) {
   }
 
   writeValue(value: Date): void {
     this.element.value = this.i18n.formatDate(value, this.format);
-    this.element.setSelectionRange(0, this.element.value.length);
   }
 
   registerOnChange(fn: (value: Date) => void): void {

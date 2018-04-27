@@ -14,11 +14,11 @@ import { Subscription } from 'rxjs/Subscription';
 import { reqAnimFrame } from '../core/polyfill/request-animation';
 import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
 import { isNotNil } from '../core/util/check';
-import { NzI18nService } from '../i18n/nz-i18n.service';
+import { NzTimeValueAccessorDirective } from './nz-time-value-accessor.directive';
 import { TimeHolder } from './time-holder';
 
-function makeRange(length: number, step: number = 1): ReadonlyArray<number> {
-  return Object.freeze(new Array(Math.ceil(length / step)).fill(0).map((_, i) => i * step));
+function makeRange(length: number, step: number = 1): number[] {
+  return new Array(Math.ceil(length / step)).fill(0).map((_, i) => i * step);
 }
 
 @Component({
@@ -41,8 +41,9 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   private _disabledHours: () => number[];
   private _disabledMinutes: (hour: number) => number[];
   private _disabledSeconds: (hour: number, minute: number) => number[];
+  private _defaultOpenValue = new Date();
+  private _opened = false;
   time = new TimeHolder();
-  formattedTime = '';
   hourEnabled = true;
   minuteEnabled = true;
   secondEnabled = true;
@@ -50,12 +51,39 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   hourRange: ReadonlyArray<{ index: number, disabled: boolean }>;
   minuteRange: ReadonlyArray<{ index: number, disabled: boolean }>;
   secondRange: ReadonlyArray<{ index: number, disabled: boolean }>;
+  @ViewChild(NzTimeValueAccessorDirective) nzTimeValueAccessorDirective: NzTimeValueAccessorDirective;
   @ViewChild('hourListElement') hourListElement;
   @ViewChild('minuteListElement') minuteListElement;
   @ViewChild('secondListElement') secondListElement;
   @Input() nzAddOn: TemplateRef<void>;
   @Input() nzHideDisabledOptions = false;
+  @Input() nzClearText: string;
+  @Input() nzPlaceHolder: string;
+  @Input() nzAllowEmpty = true;
   @Output() timeClear = new EventEmitter<void>();
+
+  @Input()
+  set opened(value: boolean) {
+    this._opened = value;
+    if (this.opened) {
+      this.initPosition();
+      this.selectInputRange();
+    }
+  }
+
+  get opened(): boolean {
+    return this._opened;
+  }
+
+  @Input()
+  set nzDefaultOpenValue(value: Date) {
+    this._defaultOpenValue = value;
+    this.time.setDefaultOpenValue(this.nzDefaultOpenValue);
+  }
+
+  get nzDefaultOpenValue(): Date {
+    return this._defaultOpenValue;
+  }
 
   @Input()
   set nzDisabledHours(value: () => number[]) {
@@ -100,7 +128,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
       if (isNotNil(value)) {
         this.enabledColumns = 0;
         const charSet = new Set(value);
-        this.hourEnabled = charSet.has('H');
+        this.hourEnabled = charSet.has('H') || charSet.has('h');
         this.minuteEnabled = charSet.has('m');
         this.secondEnabled = charSet.has('s');
         if (this.hourEnabled) {
@@ -159,6 +187,12 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   get nzSecondStep(): number {
     return this._nzSecondStep;
+  }
+
+  selectInputRange(): void {
+    setTimeout(() => {
+      this.nzTimeValueAccessorDirective.setRange();
+    });
   }
 
   buildHours(): void {
@@ -293,30 +327,52 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     });
   }
 
+  isSelectedHour(hour: { index: number, disabled: boolean }): boolean {
+    return (hour.index === this.time.hours) || (!isNotNil(this.time.hours) && (hour.index === this.time.defaultHours));
+  }
+
+  isSelectedMinute(minute: { index: number, disabled: boolean }): boolean {
+    return (minute.index === this.time.minutes) || (!isNotNil(this.time.minutes) && (minute.index === this.time.defaultMinutes));
+  }
+
+  isSelectedSecond(second: { index: number, disabled: boolean }): boolean {
+    return (second.index === this.time.seconds) || (!isNotNil(this.time.seconds) && (second.index === this.time.defaultSeconds));
+  }
+
   initPosition(): void {
     setTimeout(() => {
       if (this.hourEnabled && this.hourListElement) {
-        this.scrollToSelected(this.hourListElement.nativeElement, this.time.hours, 0, 'hour');
+        if (isNotNil(this.time.hours)) {
+          this.scrollToSelected(this.hourListElement.nativeElement, this.time.hours, 0, 'hour');
+        } else {
+          this.scrollToSelected(this.hourListElement.nativeElement, this.time.defaultHours, 0, 'hour');
+        }
       }
       if (this.minuteEnabled && this.minuteListElement) {
-        this.scrollToSelected(this.minuteListElement.nativeElement, this.time.minutes, 0, 'minute');
+        if (isNotNil(this.time.minutes)) {
+          this.scrollToSelected(this.minuteListElement.nativeElement, this.time.minutes, 0, 'minute');
+        } else {
+          this.scrollToSelected(this.minuteListElement.nativeElement, this.time.defaultMinutes, 0, 'minute');
+        }
       }
       if (this.secondEnabled && this.secondListElement) {
-        this.scrollToSelected(this.secondListElement.nativeElement, this.time.seconds, 0, 'second');
+        if (isNotNil(this.time.seconds)) {
+          this.scrollToSelected(this.secondListElement.nativeElement, this.time.seconds, 0, 'second');
+        } else {
+          this.scrollToSelected(this.secondListElement.nativeElement, this.time.defaultSeconds, 0, 'second');
+        }
       }
     });
   }
 
-  constructor(private element: ElementRef, private updateCls: UpdateCls, private i18n: NzI18nService) {
+  constructor(private element: ElementRef, private updateCls: UpdateCls) {
     this.nzHourStep = 1;
     this.nzMinuteStep = 1;
     this.nzSecondStep = 1;
   }
 
   ngOnInit(): void {
-    this.formattedTime = this.i18n.formatDate(this.time.value, this._format);
     this.sub = this.time.changes.subscribe(() => {
-      this.formattedTime = this.i18n.formatDate(this.time.value, this._format);
       this.changed();
       this.touched();
     });
@@ -331,7 +387,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   writeValue(value: Date): void {
     this.time.value = value;
     this.buildTimes();
-    this.initPosition();
   }
 
   registerOnChange(fn: (value: Date) => void): void {

@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-在 TimePicker 选择框底部显示自定义的内容。
+在 `nz-time-picker` 选择框底部显示自定义的内容。
 
 ## en-US
 
-Render addon contents to time-picker panel's bottom.
+Render addon contents to `nz-time-picker` panel's bottom.

@@ -6,10 +6,20 @@ import {
   trigger
 } from '@angular/animations';
 import { CdkOverlayOrigin, ConnectionPositionPair, Overlay, OverlayPositionBuilder } from '@angular/cdk/overlay';
-import { Component, ElementRef, Input, OnInit, Renderer2, TemplateRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Renderer2,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { dropDownAnimation } from '../core/animation/dropdown-animations';
-import { POSITION_MAP } from '../core/overlay/overlay-position-map';
 import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
 import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
@@ -51,27 +61,60 @@ import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
     { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }
   ]
 })
-export class NzTimePickerComponent implements ControlValueAccessor, OnInit {
+export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit {
   private _disabled = false;
   private _value: Date | null = null;
+  private _allowEmpty = true;
+  private _autoFocus = false;
   private _onChange: (value: Date) => void;
   private _onTouched: () => void;
-
-  opened = false;
+  isInit = false;
   origin: CdkOverlayOrigin;
-  overlayPositions: ConnectionPositionPair[] = [ POSITION_MAP.leftTop ];
+  overlayPositions: ConnectionPositionPair[] = [ {
+    originX : 'start',
+    originY : 'top',
+    overlayX: 'end',
+    overlayY: 'top',
+    offsetX : 0,
+    offsetY : 0
+  } ];
   @ViewChild('inputElement') inputRef: ElementRef;
-  @Input() nzFormat = 'HH:mm:ss';
   @Input() nzSize: string | null = null;
-  @Input() nzOffset: [ number, number, number ];
   @Input() nzHourStep = 1;
   @Input() nzMinuteStep = 1;
   @Input() nzSecondStep = 1;
+  @Input() nzClearText = 'clear';
+  @Input() nzPopupClassName = '';
+  @Input() nzPlaceHolder = '';
   @Input() nzAddOn: TemplateRef<void>;
   @Input() nzHideDisabledOptions = false;
+  @Input() nzDefaultOpenValue = new Date();
   @Input() nzDisabledHours: () => number[];
   @Input() nzDisabledMinutes: (hour: number) => number[];
   @Input() nzDisabledSeconds: (hour: number, minute: number) => number[];
+  @Input() nzFormat = 'HH:mm:ss';
+  @Input() nzOpen = false;
+  @Output() nzOpenChange = new EventEmitter<boolean>();
+
+  @Input()
+  set nzAllowEmpty(value: boolean) {
+    this._allowEmpty = toBoolean(value);
+  }
+
+  get nzAllowEmpty(): boolean {
+    return this._allowEmpty;
+  }
+
+  @Input()
+  set nzAutoFocus(value: boolean) {
+    this._autoFocus = toBoolean(value);
+    this.updateAutoFocus();
+  }
+
+  get nzAutoFocus(): boolean {
+    return this._autoFocus;
+  }
+
   @Input()
   set nzDisabled(value: boolean | string) {
     this._disabled = toBoolean(value);
@@ -105,11 +148,23 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit {
     if (this.nzDisabled) {
       return;
     }
-    this.opened = true;
+    this.nzOpen = true;
+    this.nzOpenChange.emit(this.nzOpen);
   }
 
   close(): void {
-    this.opened = false;
+    this.nzOpen = false;
+    this.nzOpenChange.emit(this.nzOpen);
+  }
+
+  updateAutoFocus(): void {
+    if (this.isInit && !this.nzDisabled) {
+      if (this.nzAutoFocus) {
+        this.renderer.setAttribute(this.inputRef.nativeElement, 'autofocus', 'autofocus');
+      } else {
+        this.renderer.removeAttribute(this.inputRef.nativeElement, 'autofocus');
+      }
+    }
   }
 
   private setClassMap(): void {
@@ -117,6 +172,18 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit {
       [ `ant-time-picker` ]               : true,
       [ `ant-time-picker-${this.nzSize}` ]: isNotNil(this.nzSize)
     });
+  }
+
+  focus(): void {
+    if (this.inputRef.nativeElement) {
+      this.inputRef.nativeElement.focus();
+    }
+  }
+
+  blur(): void {
+    if (this.inputRef.nativeElement) {
+      this.inputRef.nativeElement.blur();
+    }
   }
 
   constructor(private element: ElementRef,
@@ -130,6 +197,11 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit {
   ngOnInit(): void {
     this.setClassMap();
     this.origin = new CdkOverlayOrigin(this.element);
+  }
+
+  ngAfterViewInit(): void {
+    this.isInit = true;
+    this.updateAutoFocus();
   }
 
   writeValue(time: Date | null): void {

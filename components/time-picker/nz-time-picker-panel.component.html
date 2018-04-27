@@ -2,15 +2,17 @@
   class="ant-time-picker-panel-inner"
   [style.width.px]="enabledColumns * 56">
   <div class="ant-time-picker-panel-input-wrap">
-    <input type="text"
+    <input
+      type="text"
       class="ant-time-picker-panel-input"
-      placeholder="Select time"
+      [placeholder]="nzPlaceHolder"
       [nzTime]="format"
       [(ngModel)]="time.value"
       (blur)="time.changed()">
-    <a class="ant-time-picker-panel-clear-btn"
-      role="button"
-      title="clear"
+    <a
+      *ngIf="nzAllowEmpty"
+      class="ant-time-picker-panel-clear-btn"
+      [attr.title]="nzClearText"
       (click)="clear()">
     </a>
   </div>
@@ -24,7 +26,7 @@
           <li
             *ngIf="!(nzHideDisabledOptions && hour.disabled)"
             (click)="selectHour(hour)"
-            [class.ant-time-picker-panel-select-option-selected]="hour.index === time.hours"
+            [class.ant-time-picker-panel-select-option-selected]="isSelectedHour(hour)"
             [class.ant-time-picker-panel-select-option-disabled]="hour.disabled">
             {{ hour.index | number:'2.0-0' }}
           </li>
@@ -40,7 +42,7 @@
           <li
             *ngIf="!(nzHideDisabledOptions && minute.disabled)"
             (click)="selectMinute(minute)"
-            [class.ant-time-picker-panel-select-option-selected]="minute.index === time.minutes"
+            [class.ant-time-picker-panel-select-option-selected]="isSelectedMinute(minute)"
             [class.ant-time-picker-panel-select-option-disabled]="minute.disabled">
             {{ minute.index | number:'2.0-0' }}
           </li>
@@ -56,12 +58,11 @@
           <li
             *ngIf="!(nzHideDisabledOptions && second.disabled)"
             (click)="selectSecond(second)"
-            [class.ant-time-picker-panel-select-option-selected]="second.index === time.seconds"
+            [class.ant-time-picker-panel-select-option-selected]="isSelectedSecond(second)"
             [class.ant-time-picker-panel-select-option-disabled]="second.disabled">
             {{ second.index | number:'2.0-0' }}
           </li>
         </ng-container>
-
       </ul>
     </div>
   </div>
