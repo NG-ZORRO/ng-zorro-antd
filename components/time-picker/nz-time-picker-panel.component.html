@@ -1,0 +1,72 @@
+<div
+  class="ant-time-picker-panel-inner"
+  [style.width.px]="enabledColumns * 56">
+  <div class="ant-time-picker-panel-input-wrap">
+    <input
+      type="text"
+      class="ant-time-picker-panel-input"
+      [placeholder]="nzPlaceHolder"
+      [nzTime]="format"
+      [(ngModel)]="time.value"
+      (blur)="time.changed()">
+    <a
+      *ngIf="nzAllowEmpty"
+      class="ant-time-picker-panel-clear-btn"
+      [attr.title]="nzClearText"
+      (click)="clear()">
+    </a>
+  </div>
+  <div class="ant-time-picker-panel-combobox">
+    <div
+      *ngIf="hourEnabled"
+      #hourListElement
+      class="ant-time-picker-panel-select">
+      <ul>
+        <ng-container *ngFor="let hour of hourRange">
+          <li
+            *ngIf="!(nzHideDisabledOptions && hour.disabled)"
+            (click)="selectHour(hour)"
+            [class.ant-time-picker-panel-select-option-selected]="isSelectedHour(hour)"
+            [class.ant-time-picker-panel-select-option-disabled]="hour.disabled">
+            {{ hour.index | number:'2.0-0' }}
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+    <div
+      *ngIf="minuteEnabled"
+      #minuteListElement
+      class="ant-time-picker-panel-select">
+      <ul>
+        <ng-container *ngFor="let minute of minuteRange">
+          <li
+            *ngIf="!(nzHideDisabledOptions && minute.disabled)"
+            (click)="selectMinute(minute)"
+            [class.ant-time-picker-panel-select-option-selected]="isSelectedMinute(minute)"
+            [class.ant-time-picker-panel-select-option-disabled]="minute.disabled">
+            {{ minute.index | number:'2.0-0' }}
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+    <div
+      *ngIf="secondEnabled"
+      #secondListElement
+      class="ant-time-picker-panel-select">
+      <ul>
+        <ng-container *ngFor="let second of secondRange">
+          <li
+            *ngIf="!(nzHideDisabledOptions && second.disabled)"
+            (click)="selectSecond(second)"
+            [class.ant-time-picker-panel-select-option-selected]="isSelectedSecond(second)"
+            [class.ant-time-picker-panel-select-option-disabled]="second.disabled">
+            {{ second.index | number:'2.0-0' }}
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+  <div class="ant-time-picker-panel-addon" *ngIf="nzAddOn">
+    <ng-template [ngTemplateOutlet]="nzAddOn"></ng-template>
+  </div>
+</div>

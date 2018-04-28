@@ -3,6 +3,8 @@ import { Inject, Injectable, Optional, Provider, SkipSelf } from '@angular/core'
 
 import { LoggerService } from '../core/util/logger/logger.service';
 
+import * as parse from 'date-fns/parse';
+
 import { NzI18nInterface } from './nz-i18n.interface';
 import { NZ_I18N } from './nz-i18n.token';
 
@@ -43,7 +45,24 @@ export class NzI18nService {
   }
 
   formatDate(date: Date, format: string): string {
+    if (!date) {
+      return '';
+    }
     return this.datePipe.transform(date, format, null, this.getLocale().locale);
+  }
+
+  parseDate(text: string): Date {
+    if (!text) {
+      return;
+    }
+    return parse(text);
+  }
+
+  parseTime(text: string): Date {
+    if (!text) {
+      return;
+    }
+    return parse(`1970-01-01 ${text}`);
   }
 
   private _getObjectPath(obj: object, path: string): string | object {

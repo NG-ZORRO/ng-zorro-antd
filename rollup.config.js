@@ -51,6 +51,7 @@ let globals = {
   'date-fns/start_of_month'               : 'date-fns/start_of_month/index',
   'date-fns/start_of_week'                : 'date-fns/start_of_week/index',
   'date-fns/start_of_year'                : 'date-fns/start_of_year/index',
+  'date-fns/parse'                       : 'date-fns/parse/index',
 
   'rxjs/Observer'  : 'Rx',
   'rxjs/Subscriber': 'Rx',
@@ -146,7 +147,8 @@ const listOfDateFns = [
   'setYear',
   'startOfMonth',
   'startOfWeek',
-  'startOfYear'
+  'startOfYear',
+  'parse'
 ];
 const listOfReplace = listOfDateFns.map(name => {
   const map = {};

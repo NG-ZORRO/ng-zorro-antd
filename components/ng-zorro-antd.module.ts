@@ -46,6 +46,7 @@ import { NzSwitchModule } from './switch/nz-switch.module';
 import { NzTableModule } from './table/nz-table.module';
 import { NzTabsModule } from './tabs/nz-tabs.module';
 import { NzTagModule } from './tag/nz-tag.module';
+import { NzTimePickerModule } from './time-picker/nz-time-picker.module';
 import { NzTimelineModule } from './timeline/nz-timeline.module';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
@@ -92,6 +93,7 @@ export * from './upload';
 export * from './tag';
 export * from './auto-complete';
 export * from './message';
+export * from './time-picker';
 export * from './tooltip';
 export * from './slider';
 export * from './popover';
@@ -131,6 +133,7 @@ export * from './tree';
     NzCardModule,
     NzAvatarModule,
     NzTimelineModule,
+    NzTimePickerModule,
     NzTransferModule,
     NzCarouselModule,
     NzCollapseModule,
