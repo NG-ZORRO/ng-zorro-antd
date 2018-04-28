@@ -14,10 +14,6 @@ export class NzTimeValueAccessorDirective implements ControlValueAccessor {
   private _onTouch: () => void;
   @Input('nzTime') format: string;
 
-  get element(): HTMLInputElement {
-    return this.elementRef.nativeElement;
-  }
-
   @HostListener('keyup')
   keyup(): void {
     this.changed();
@@ -30,7 +26,7 @@ export class NzTimeValueAccessorDirective implements ControlValueAccessor {
 
   changed(): void {
     if (this._onChange) {
-      const value = this.i18n.parseTime(this.element.value);
+      const value = this.i18n.parseTime(this.elementRef.nativeElement.value);
       this._onChange(value);
     }
   }
@@ -42,15 +38,15 @@ export class NzTimeValueAccessorDirective implements ControlValueAccessor {
   }
 
   setRange(): void {
-    this.element.focus();
-    this.element.setSelectionRange(0, this.element.value.length);
+    this.elementRef.nativeElement.focus();
+    this.elementRef.nativeElement.setSelectionRange(0, this.elementRef.nativeElement.value.length);
   }
 
   constructor(private i18n: NzI18nService, private elementRef: ElementRef) {
   }
 
   writeValue(value: Date): void {
-    this.element.value = this.i18n.formatDate(value, this.format);
+    this.elementRef.nativeElement.value = this.i18n.formatDate(value, this.format);
   }
 
   registerOnChange(fn: (value: Date) => void): void {

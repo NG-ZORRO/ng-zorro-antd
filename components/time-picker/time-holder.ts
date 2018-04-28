@@ -10,10 +10,17 @@ export class TimeHolder {
   private _value: Date;
   private _changes = new Subject<Date>();
 
+  setDefaultValueIfNil(): void {
+    if (!isNotNil(this._value)) {
+      this._value = new Date(this.defaultOpenValue);
+    }
+  }
+
   setMinutes(value: number, disabled: boolean): this {
     if (disabled) {
       return this;
     }
+    this.setDefaultValueIfNil();
     this.minutes = value;
     return this;
   }
@@ -22,6 +29,7 @@ export class TimeHolder {
     if (disabled) {
       return this;
     }
+    this.setDefaultValueIfNil();
     this.hours = value;
     return this;
   }
@@ -30,6 +38,7 @@ export class TimeHolder {
     if (disabled) {
       return this;
     }
+    this.setDefaultValueIfNil();
     this.seconds = value;
     return this;
   }
@@ -81,17 +90,23 @@ export class TimeHolder {
     } else {
       if (!isNotNil(this._hours)) {
         this._hours = this.defaultHours;
+      } else {
+        this._value.setHours(this.hours);
       }
 
       if (!isNotNil(this._minutes)) {
         this._minutes = this.defaultMinutes;
+      } else {
+        this._value.setMinutes(this.minutes);
       }
 
       if (!isNotNil(this._seconds)) {
         this._seconds = this.defaultSeconds;
+      } else {
+        this._value.setSeconds(this.seconds);
       }
 
-      this._value = new Date(0, 0, 0, this._hours, this._minutes, this._seconds);
+      this._value = new Date(this._value);
     }
     this.changed();
   }

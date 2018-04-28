@@ -30,13 +30,12 @@ function makeRange(length: number, step: number = 1): number[] {
   ]
 })
 export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit, OnDestroy {
-  private _nzHourStep;
-  private _nzMinuteStep;
-  private _nzSecondStep;
+  private _nzHourStep = 1;
+  private _nzMinuteStep = 1;
+  private _nzSecondStep = 1;
   private sub: Subscription;
   private onChange: (value: Date) => void;
   private onTouch: () => void;
-  private isDisabled = false;
   private _format: string;
   private _disabledHours: () => number[];
   private _disabledMinutes: (hour: number) => number[];
@@ -191,12 +190,14 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   selectInputRange(): void {
     setTimeout(() => {
-      this.nzTimeValueAccessorDirective.setRange();
+      if (this.nzTimeValueAccessorDirective) {
+        this.nzTimeValueAccessorDirective.setRange();
+      }
     });
   }
 
   buildHours(): void {
-    this.hourRange = makeRange(24, this._nzHourStep).map(r => {
+    this.hourRange = makeRange(24, this.nzHourStep).map(r => {
         return {
           index   : r,
           disabled: this.nzDisabledHours && (this.nzDisabledHours().indexOf(r) !== -1)
@@ -206,7 +207,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   }
 
   buildMinutes(): void {
-    this.minuteRange = makeRange(60, this._nzMinuteStep).map(r => {
+    this.minuteRange = makeRange(60, this.nzMinuteStep).map(r => {
         return {
           index   : r,
           disabled: this.nzDisabledMinutes && (this.nzDisabledMinutes(this.time.hours).indexOf(r) !== -1)
@@ -216,7 +217,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   }
 
   buildSeconds(): void {
-    this.secondRange = makeRange(60, this._nzSecondStep).map(r => {
+    this.secondRange = makeRange(60, this.nzSecondStep).map(r => {
         return {
           index   : r,
           disabled: this.nzDisabledSeconds && (this.nzDisabledSeconds(this.time.hours, this.time.minutes).indexOf(r) !== -1)
@@ -321,9 +322,10 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   private setClassMap(): void {
     this.updateCls.updateHostClass(this.element.nativeElement, {
-      'ant-time-picker-panel'                     : true,
-      'ant-time-picker-panel-column-3'            : true,
-      'ant-time-picker-panel-placement-bottomLeft': true
+      'ant-time-picker-panel'                                  : true,
+      [ `ant-time-picker-panel-column-${this.enabledColumns}` ]: true,
+      'ant-time-picker-panel-narrow'                           : this.enabledColumns < 3,
+      'ant-time-picker-panel-placement-bottomLeft'             : true
     });
   }
 
@@ -366,9 +368,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   }
 
   constructor(private element: ElementRef, private updateCls: UpdateCls) {
-    this.nzHourStep = 1;
-    this.nzMinuteStep = 1;
-    this.nzSecondStep = 1;
   }
 
   ngOnInit(): void {
@@ -381,7 +380,10 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    if (this.sub) {
+      this.sub.unsubscribe();
+      this.sub = null;
+    }
   }
 
   writeValue(value: Date): void {
@@ -395,10 +397,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   registerOnTouched(fn: () => void): void {
     this.onTouch = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.isDisabled = isDisabled;
   }
 
 }
