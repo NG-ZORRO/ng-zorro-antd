@@ -8,7 +8,7 @@
     "site:init": "node site_scripts/generate-site init && node site_scripts/generateColorLess",
     "site": "node site_scripts/generate-site",
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve -p 0",
     "build": "node site_scripts/generate-site init && ng build",
     "doc": "npm run site:init && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer",
     "helper": "bash ./release-helper.sh",
