@@ -23,6 +23,7 @@ import { NzTreeService } from './nz-tree.service';
                     [nzDraggable]="nzDraggable"
                     [nzCheckable]="nzCheckable"
                     [nzBeforeDrop]="nzBeforeDrop"
+                    [nzCheckStrictly]="nzCheckStrictly"
                     [nzDefaultExpandAll]="nzDefaultExpandAll"
                     [nzDefaultCheckedKeys]="nzDefaultCheckedKeys"
                     [nzDefaultExpandedKeys]="nzDefaultExpandedKeys"
@@ -63,15 +64,16 @@ export class NzTreeComponent implements OnInit {
   ngModelNodes: NzTreeNode[] = [];
   @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<{}>;
 
+  @Input() nzCheckStrictly: boolean = false;
   @Input() nzCheckable;
   @Input() nzShowExpand: boolean = true;
   @Input() nzAsyncData: boolean = false;
   @Input() nzDraggable;
   @Input() nzMultiple;
   @Input() nzDefaultExpandAll: boolean = false;
-  @Input() nzDefaultCheckedKeys: string[];
-  @Input() nzDefaultExpandedKeys: string[];
-  @Input() nzDefaultSelectedKeys: string[];
+  @Input() nzDefaultCheckedKeys: string[] = [];
+  @Input() nzDefaultExpandedKeys: string[] = [];
+  @Input() nzDefaultSelectedKeys: string[] = [];
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
 
   @Input()
@@ -122,11 +124,23 @@ export class NzTreeComponent implements OnInit {
     };
   }
 
+  /**
+   * public function
+   * @returns {NzTreeNode[]}
+   */
+  getCheckedNodeList(): NzTreeNode[] {
+    return this.nzTreeService.getCheckedNodeList();
+  }
+
+  getSelectedNodeList(): NzTreeNode[] {
+    return this.nzTreeService.getSelectedNodeList();
+  }
+
   // ngModel
   writeValue(value: NzTreeNode[]): void {
     if (value) {
       this.ngModelNodes = value;
-      this.nzTreeService.initTreeNodes(this.ngModelNodes);
+      this.nzTreeService.initTreeNodes(this.ngModelNodes, this.nzDefaultCheckedKeys, this.nzCheckStrictly);
       this.onChange(value);
     }
   }
@@ -139,7 +153,7 @@ export class NzTreeComponent implements OnInit {
     this.onTouched = fn;
   }
 
-  constructor(private nzTreeService: NzTreeService) {
+  constructor(public nzTreeService: NzTreeService) {
   }
 
   ngOnInit(): void {

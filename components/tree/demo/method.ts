@@ -1,26 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NzFormatEmitEvent, NzTreeComponent, NzTreeNode } from 'ng-zorro-antd';
 
 @Component({
-  selector: 'nz-demo-tree-basic',
+  selector: 'nz-demo-tree-method',
   template: `
     <nz-tree
+      #nzTree
       [(ngModel)]="nodes"
       [nzCheckable]="true"
       [nzMultiple]="true"
+      [nzCheckStrictly]="true"
       [nzDefaultExpandedKeys]="expandKeys"
       [nzDefaultCheckedKeys]="checkedKeys"
       [nzDefaultSelectedKeys]="selectedKeys"
       [nzDefaultExpandAll]="expandDefault"
       (nzClick)="mouseAction('click',$event)"
+      (nzCheckBoxChange)="mouseAction('check',$event)"
       (nzDblClick)="mouseAction('dblclick', $event)"
     >
     </nz-tree>`
 })
 
-export class NzDemoTreeBasicComponent implements OnInit {
+export class NzDemoTreeMethodComponent implements OnInit {
+  @ViewChild('nzTree') nzTree: NzTreeComponent;
   expandKeys = [ '1001', '10001' ];
-  checkedKeys = [ '100011', '1002' ];
+  checkedKeys = [ '10001' ];
   selectedKeys = [ '10001', '100011' ];
   expandDefault = false;
   nodes = [
@@ -57,34 +61,15 @@ export class NzDemoTreeBasicComponent implements OnInit {
           ]
         }
       ]
-    }),
-    new NzTreeNode({
-      title   : 'root2',
-      key     : '1002',
-      children: [
-        {
-          title          : 'child2.1',
-          key            : '10021',
-          children       : [],
-          disableCheckbox: true
-        },
-        {
-          title   : 'child2.2',
-          key     : '10022',
-          children: [
-            {
-              title : 'grandchild2.2.1',
-              key   : '100221',
-              isLeaf: true
-            }
-          ]
-        }
-      ]
     })
   ];
 
   mouseAction(name: string, event: NzFormatEmitEvent): void {
     console.log(name, event);
+    // just for demo, should get in ngAfterViewInit
+    console.log('checkedNodes: %o', this.nzTree.getCheckedNodeList());
+    console.log('selectedNodes: %o', this.nzTree.getSelectedNodeList());
+    console.log(this.nzTree.nzTreeService.getCheckedNodeList());
   }
 
   ngOnInit(): void {
