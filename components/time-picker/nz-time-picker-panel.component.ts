@@ -36,12 +36,13 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   private sub: Subscription;
   private onChange: (value: Date) => void;
   private onTouch: () => void;
-  private _format: string;
+  private _format = 'HH:mm:ss';
   private _disabledHours: () => number[];
   private _disabledMinutes: (hour: number) => number[];
   private _disabledSeconds: (hour: number, minute: number) => number[];
   private _defaultOpenValue = new Date();
   private _opened = false;
+  private _allowEmpty = true;
   time = new TimeHolder();
   hourEnabled = true;
   minuteEnabled = true;
@@ -58,8 +59,18 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   @Input() nzHideDisabledOptions = false;
   @Input() nzClearText: string;
   @Input() nzPlaceHolder: string;
-  @Input() nzAllowEmpty = true;
   @Output() timeClear = new EventEmitter<void>();
+
+  @Input()
+  set nzAllowEmpty(value: boolean) {
+    if (isNotNil(value)) {
+      this._allowEmpty = value;
+    }
+  }
+
+  get nzAllowEmpty(): boolean {
+    return this._allowEmpty;
+  }
 
   @Input()
   set opened(value: boolean) {
@@ -98,8 +109,8 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   @Input()
   set nzDisabledMinutes(value: (hour: number) => number[]) {
-    this._disabledMinutes = value;
-    if (this._disabledMinutes) {
+    if (isNotNil(value)) {
+      this._disabledMinutes = value;
       this.buildMinutes();
     }
   }
@@ -110,8 +121,8 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   @Input()
   set nzDisabledSeconds(value: (hour: number, minute: number) => number[]) {
-    this._disabledSeconds = value;
-    if (this._disabledSeconds) {
+    if (isNotNil(value)) {
+      this._disabledSeconds = value;
       this.buildSeconds();
     }
   }
@@ -122,28 +133,21 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   @Input()
   set format(value: string) {
-    if (value !== this._format) {
+    if (isNotNil(value)) {
       this._format = value;
-      if (isNotNil(value)) {
-        this.enabledColumns = 0;
-        const charSet = new Set(value);
-        this.hourEnabled = charSet.has('H') || charSet.has('h');
-        this.minuteEnabled = charSet.has('m');
-        this.secondEnabled = charSet.has('s');
-        if (this.hourEnabled) {
-          this.enabledColumns++;
-        }
-        if (this.minuteEnabled) {
-          this.enabledColumns++;
-        }
-        if (this.secondEnabled) {
-          this.enabledColumns++;
-        }
-      } else {
-        this.hourEnabled = true;
-        this.minuteEnabled = true;
-        this.secondEnabled = true;
-        this.enabledColumns = 3;
+      this.enabledColumns = 0;
+      const charSet = new Set(value);
+      this.hourEnabled = charSet.has('H') || charSet.has('h');
+      this.minuteEnabled = charSet.has('m');
+      this.secondEnabled = charSet.has('s');
+      if (this.hourEnabled) {
+        this.enabledColumns++;
+      }
+      if (this.minuteEnabled) {
+        this.enabledColumns++;
+      }
+      if (this.secondEnabled) {
+        this.enabledColumns++;
       }
     }
   }
@@ -154,7 +158,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   @Input()
   set nzHourStep(value: number) {
-    if (this._nzHourStep !== value) {
+    if (isNotNil(value)) {
       this._nzHourStep = value;
       this.buildHours();
     }
@@ -166,7 +170,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   @Input()
   set nzMinuteStep(value: number) {
-    if (this._nzMinuteStep !== value) {
+    if (isNotNil(value)) {
       this._nzMinuteStep = value;
       this.buildMinutes();
     }
@@ -178,7 +182,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   @Input()
   set nzSecondStep(value: number) {
-    if (this._nzSecondStep !== value) {
+    if (isNotNil(value)) {
       this._nzSecondStep = value;
       this.buildSeconds();
     }
