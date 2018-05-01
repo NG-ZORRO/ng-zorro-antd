@@ -64,7 +64,7 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
   styles             : [
       `
       :host {
-        position: relative;
+        position: absolute;
         display: inline-block;
       }
 
