@@ -19,13 +19,37 @@ export class NzTreeService {
    * init data to NzTreeNode
    * @param {any[]} root
    */
-  initTreeNodes(root: NzTreeNode[]): NzTreeNode[] {
+  initCheckedStatus(childNode: NzTreeNode, defaultCheckedKeys: string[], nzCheckStrictly: boolean): void {
+    if (defaultCheckedKeys.indexOf(childNode.key) > -1) {
+      childNode.isChecked = true;
+      childNode.isAllChecked = true;
+      childNode.isHalfChecked = false;
+    }
+    if (childNode.getChildren()) {
+      childNode.getChildren().forEach((child) => {
+        // will change child status
+        if (!nzCheckStrictly && childNode.isChecked && !child.isDisabled && !child.isDisableCheckbox) {
+          child.isChecked = true;
+          child.isAllChecked = true;
+          child.isHalfChecked = false;
+        }
+        this.initCheckedStatus(child, defaultCheckedKeys, nzCheckStrictly);
+      });
+    }
+  }
+
+  initTreeNodes(root: NzTreeNode[], defaultCheckedKeys: string[] = [], nzCheckStrictly: boolean = false): NzTreeNode[] {
     this.rootNodes = root;
     if (root.length > 0) {
       root.forEach((node) => {
-        const currentNode = node;
-        this.initParentNode(currentNode);
+        this.initCheckedStatus(node, defaultCheckedKeys, nzCheckStrictly);
       });
+      if (!nzCheckStrictly) {
+        root.forEach((node) => {
+          this.initParentNode(node);
+        });
+        // should reset node status
+      }
     }
     return this.rootNodes;
   }
@@ -36,13 +60,40 @@ export class NzTreeService {
    * @returns {NzTreeNode}
    */
   initParentNode(node: NzTreeNode): void {
-    if (node.children.length === 0) {
+    if (node.getChildren().length === 0) {
       // until root
       this.checkTreeNodeParents(node);
     } else {
       node.children.forEach((child) => {
         this.initParentNode(child);
       });
+    }
+  }
+
+  /**
+   * 1、children half checked
+   * 2、children all checked, parent checked
+   * 3、no children checked
+   * @param node
+   * @returns {boolean}
+   */
+  checkTreeNodeParents(node: NzTreeNode): void {
+    const parentNode = node.getParentNode();
+    if (parentNode) {
+      if (parentNode.children.every(child => child.isDisabled || child.isDisableCheckbox || (!child.isHalfChecked && child.isAllChecked))) {
+        parentNode.isChecked = true;
+        parentNode.isAllChecked = true;
+        parentNode.isHalfChecked = false;
+      } else if (parentNode.children.some(child => child.isHalfChecked || child.isAllChecked)) {
+        parentNode.isChecked = false;
+        parentNode.isAllChecked = false;
+        parentNode.isHalfChecked = true;
+      } else {
+        parentNode.isChecked = false;
+        parentNode.isAllChecked = false;
+        parentNode.isHalfChecked = false;
+      }
+      this.checkTreeNodeParents(parentNode);
     }
   }
 
@@ -76,13 +127,25 @@ export class NzTreeService {
     return this.selectedNodeList;
   }
 
-  // if checkbox is clicked, add or remove node to checkbox list
+  /**
+   * merge checked nodes
+   * @param {NzTreeNode} node
+   */
+  setCheckedNodeListStrict(node: NzTreeNode): void {
+    if (node.isChecked && this.checkedNodeList.findIndex(cNode => (node.key === cNode.key)) === -1) {
+      this.checkedNodeList.push(node);
+    } else if (!node.isChecked && this.checkedNodeList.findIndex(cNode => (node.key === cNode.key)) > -1) {
+      // cancel checked
+      this.checkedNodeList.splice(this.checkedNodeList.findIndex(cNode => (node.key === cNode.key)), 1);
+    }
+  }
+
   setCheckedNodeList(node: NzTreeNode): void {
-    if (node.isChecked && this.checkedNodeList.findIndex(cNode => (node.key === cNode.key && node.title === cNode.title)) === -1) {
+    if (node.isChecked && this.checkedNodeList.findIndex(cNode => (node.key === cNode.key)) === -1) {
       this.checkedNodeList.push(node);
     }
     const removeChild = (rNode: NzTreeNode) => {
-      const rIndex = this.checkedNodeList.findIndex(cNode => (rNode.key === cNode.key && rNode.title === cNode.title));
+      const rIndex = this.checkedNodeList.findIndex(cNode => (rNode.key === cNode.key));
       if (rIndex > -1) {
         this.checkedNodeList.splice(rIndex, 1);
       }
@@ -93,7 +156,7 @@ export class NzTreeService {
     // refresh tree nodes check state, merge child node checked
     this.rootNodes.forEach((rNode: NzTreeNode) => {
       const loopNode = (lNode: NzTreeNode) => {
-        const cIndex = this.checkedNodeList.findIndex(cNode => (lNode.key === cNode.key && lNode.title === cNode.title));
+        const cIndex = this.checkedNodeList.findIndex(cNode => (lNode.key === cNode.key));
         if (lNode.isChecked) {
           if (cIndex === -1) {
             this.checkedNodeList.push(lNode);
@@ -115,10 +178,18 @@ export class NzTreeService {
     });
   }
 
+  /**
+   * return checked nodes
+   * @returns {NzTreeNode[]}
+   */
   getCheckedNodeList(): NzTreeNode[] {
     return this.checkedNodeList;
   }
 
+  /**
+   * return search matched nodes
+   * @returns {NzTreeNode[]}
+   */
   getMatchedNodeList(): NzTreeNode[] {
     return this.matchedNodeList;
   }
@@ -154,13 +225,9 @@ export class NzTreeService {
    * click checkbox
    * @param {NzTreeNode} checkedNode
    */
-  checkTreeNode(node: NzTreeNode, defaultValue?: boolean): void {
-    node.isChecked = typeof(defaultValue) === 'undefined' ? !node.isChecked : defaultValue;
-    node.isAllChecked = node.isChecked;
-    const isChecked = node.isChecked;
-    this.checkTreeNodeChildren(node, isChecked);
+  checkTreeNode(node: NzTreeNode): void {
+    this.checkTreeNodeChildren(node, node.isChecked);
     this.checkTreeNodeParents(node);
-    this.setCheckedNodeList(node);
   }
 
   /**
@@ -172,39 +239,12 @@ export class NzTreeService {
     if (!node.isDisabled && !node.isDisableCheckbox) {
       node.isChecked = value;
       node.isAllChecked = value;
-      if (value) {
+      if (node.isChecked) {
         node.isHalfChecked = false;
       }
       for (const n of node.children) {
         this.checkTreeNodeChildren(n, value);
       }
-    }
-  }
-
-  /**
-   * 1、children half checked
-   * 2、children all checked, parent checked
-   * 3、no children checked
-   * @param node
-   * @returns {boolean}
-   */
-  checkTreeNodeParents(node: NzTreeNode): void {
-    const parentNode = node.getParentNode();
-    if (parentNode) {
-      if (parentNode.children.every(child => child.isDisabled || child.isDisableCheckbox || (!child.isHalfChecked && child.isAllChecked))) {
-        parentNode.isChecked = true;
-        parentNode.isAllChecked = true;
-        parentNode.isHalfChecked = false;
-      } else if (parentNode.children.some(child => child.isHalfChecked || child.isAllChecked)) {
-        parentNode.isChecked = false;
-        parentNode.isAllChecked = false;
-        parentNode.isHalfChecked = true;
-      } else {
-        parentNode.isChecked = false;
-        parentNode.isAllChecked = false;
-        parentNode.isHalfChecked = false;
-      }
-      this.checkTreeNodeParents(parentNode);
     }
   }
 

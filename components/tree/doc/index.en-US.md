@@ -21,6 +21,7 @@ Almost anything can be represented in a tree structure. Examples include directo
 | nzAsyncData | Load data asynchronously (should be used with NzTreeNode.addChildren(...)) | boolean | false |
 | nzDraggable | Specifies whether this Tree is draggable (IE > 8) | boolean | false |
 | nzMultiple | Allows selecting multiple treeNodes | boolean | false |
+| nzCheckStrictly | Check treeNode precisely; parent treeNode and children treeNodes are not associated | boolean | false |
 | nzDefaultExpandAll | Whether to expand all treeNodes by default | boolean | false |
 | nzDefaultExpandedKeys | Specify the keys of the default expanded treeNodes | string\[] | \[] |
 | nzDefaultCheckedKeys | Specifies the keys of the default checked treeNodes | string\[] | \[] |
@@ -39,6 +40,8 @@ Almost anything can be represented in a tree structure. Examples include directo
 | nzOnDragLeave | Callback function for when the onDragLeave event occurs | EventEmitter<NzFormatEmitEvent\> | - |
 | nzOnDrop | Callback function for when the onDrop event occurs | EventEmitter<NzFormatEmitEvent\> | - |
 | nzOnDragEnd | Callback function for when the onDragEnd event occurs | EventEmitter<NzFormatEmitEvent\> | - |
+| getCheckedNodeList | get checked nodes(merged) | NzTreeNode[] | [] |
+| getSelectedNodeList | get selected nodes | NzTreeNode[] | [] |
 
 ### NzTreeNodeOptions props
 
@@ -65,6 +68,8 @@ Almost anything can be represented in a tree structure. Examples include directo
 | dragNode? | Current drag node (existing when dragged) | NzTreeNode | null |
 | selectedKeys? | Selected node list (exist when clicked) | array<NzTreeNode\> | [] |
 | checkedKeys? | Checked node list (exist when click checkbox) | array<NzTreeNode\> | [] |
+| flatCheckedKeys? | Flatten the Checked nodes list (exist when click checkbox) | array<NzTreeNode\> | [] |
+| matchededKeys? | matched nodes while searching | array<NzTreeNode\> | [] |
 
 ### NzFormatBeforeDropEvent props
 
