@@ -68,6 +68,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   private _autoFocus = false;
   private _onChange: (value: Date) => void;
   private _onTouched: () => void;
+  private _hideDisabledOptions = false;
   isInit = false;
   origin: CdkOverlayOrigin;
   overlayPositions: ConnectionPositionPair[] = [ {
@@ -87,7 +88,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() nzPopupClassName = '';
   @Input() nzPlaceHolder = '';
   @Input() nzAddOn: TemplateRef<void>;
-  @Input() nzHideDisabledOptions = false;
   @Input() nzDefaultOpenValue = new Date();
   @Input() nzDisabledHours: () => number[];
   @Input() nzDisabledMinutes: (hour: number) => number[];
@@ -95,6 +95,15 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() nzFormat = 'HH:mm:ss';
   @Input() nzOpen = false;
   @Output() nzOpenChange = new EventEmitter<boolean>();
+
+  @Input()
+  set nzHideDisabledOptions(value: boolean) {
+    this._hideDisabledOptions = toBoolean(value);
+  }
+
+  get nzHideDisabledOptions(): boolean {
+    return this._hideDisabledOptions;
+  }
 
   @Input()
   set nzAllowEmpty(value: boolean) {
@@ -205,7 +214,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   writeValue(time: Date | null): void {
-    this.value = time;
+    this._value = time;
   }
 
   registerOnChange(fn: (time: Date) => void): void {

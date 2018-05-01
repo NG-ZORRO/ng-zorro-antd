@@ -53,8 +53,8 @@ describe('time-picker-panel', () => {
       fixture.detectChanges();
       expect(testComponent.nzTimePickerPanelComponent.hourEnabled).toBe(true);
       expect(testComponent.nzTimePickerPanelComponent.minuteEnabled).toBe(true);
-      expect(testComponent.nzTimePickerPanelComponent.secondEnabled).toBe(true);
-      expect(testComponent.nzTimePickerPanelComponent.enabledColumns).toBe(3);
+      expect(testComponent.nzTimePickerPanelComponent.secondEnabled).toBe(false);
+      expect(testComponent.nzTimePickerPanelComponent.enabledColumns).toBe(2);
     });
     it('should default open value work', fakeAsync(() => {
       testComponent.nzTimePickerPanelComponent.opened = true;
