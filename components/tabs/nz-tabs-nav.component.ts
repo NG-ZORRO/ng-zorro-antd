@@ -16,12 +16,8 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { merge } from 'rxjs/observable/merge';
-import { of as observableOf } from 'rxjs/observable/of';
-import { auditTime } from 'rxjs/operators/auditTime';
-import { startWith } from 'rxjs/operators/startWith';
+import { fromEvent, merge, of as observableOf, Subscription } from 'rxjs';
+import { auditTime, startWith } from 'rxjs/operators';
 
 import { toBoolean } from '../core/util/convert';
 

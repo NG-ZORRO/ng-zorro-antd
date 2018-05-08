@@ -13,7 +13,7 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { toBoolean } from '../core/util/convert';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';

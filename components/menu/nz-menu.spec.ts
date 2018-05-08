@@ -5,7 +5,7 @@ import { Component, ElementRef, NO_ERRORS_SCHEMA, QueryList, ViewChild, ViewChil
 import { async, fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 import { dispatchFakeEvent } from '../core/testing';
 

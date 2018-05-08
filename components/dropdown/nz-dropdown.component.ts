@@ -12,16 +12,8 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { combineLatest } from 'rxjs/operators/combineLatest';
-import { debounceTime } from 'rxjs/operators/debounceTime';
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
-import { map } from 'rxjs/operators/map';
-import { mapTo } from 'rxjs/operators/mapTo';
-import { merge } from 'rxjs/operators/merge';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, map, mapTo, merge } from 'rxjs/operators';
 
 import { dropDownAnimation } from '../core/animation/dropdown-animations';
 import { DEFAULT_DROPDOWN_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position-map';

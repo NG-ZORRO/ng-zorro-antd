@@ -9,10 +9,8 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { debounceTime } from 'rxjs/operators/debounceTime';
-import { first } from 'rxjs/operators/first';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { debounceTime, first } from 'rxjs/operators';
 
 import { isEmpty, isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';

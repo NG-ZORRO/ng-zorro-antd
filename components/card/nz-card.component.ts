@@ -65,8 +65,8 @@ export class NzCardComponent {
   private _hoverable = false;
   private _title: string | TemplateRef<void>;
   private _extra: string | TemplateRef<void>;
-  private isTitleString: boolean;
-  private isExtraString: boolean;
+  isTitleString: boolean;
+  isExtraString: boolean;
   @ContentChild(NzCardTabComponent) tab: NzCardTabComponent;
   @Input() nzBodyStyle: { [key: string]: string };
   @Input() nzCover: TemplateRef<void>;

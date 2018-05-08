@@ -12,9 +12,8 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { merge } from 'rxjs/operators/merge';
+import { Subject, Subscription } from 'rxjs';
+import { merge } from 'rxjs/operators';
 import { toBoolean } from '../core/util/convert';
 import { NzThComponent } from './nz-th.component';
 

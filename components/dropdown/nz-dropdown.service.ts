@@ -8,7 +8,7 @@ import {
 import { ComponentPortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, NgZone, TemplateRef } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { NzDropdownContextComponent } from './nz-dropdown-context.component';
 

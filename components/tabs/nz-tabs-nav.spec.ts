@@ -12,7 +12,7 @@ import {
   TestBed
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 import { dispatchFakeEvent } from '../core/testing';
 

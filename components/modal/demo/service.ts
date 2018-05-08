@@ -39,7 +39,12 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 
     <button nz-button nzType="primary" (click)="openAndCloseAll()">Open more modals then close all after 2s</button>
     <nz-modal [(nzVisible)]="htmlModalVisible" nzMask="false" nzZIndex="1001" nzTitle="Non-service html modal">This is a non-service html modal</nz-modal>
-  `
+  `,
+  styles  : [
+    `button {
+      margin-right: 8px;
+    }`
+  ]
 })
 export class NzDemoModalServiceComponent {
   tplModal: NzModalRef;

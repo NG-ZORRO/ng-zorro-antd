@@ -16,6 +16,12 @@ export type StepNgClassType = string | string[] | Set<string> | { [klass: string
   providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
   template           : `
+    <ng-template #titleTemplate>
+      <ng-template [ngTemplateOutlet]="nzTitle"></ng-template>
+    </ng-template>
+    <ng-template #descriptionTemplate>
+      <ng-template [ngTemplateOutlet]="nzDescription"></ng-template>
+    </ng-template>
     <div class="ant-steps-item-tail" *ngIf="last !== true"></div>
     <div class="ant-steps-item-icon">
       <ng-template [ngIf]="!showProcessDot">
@@ -43,15 +49,9 @@ export type StepNgClassType = string | string[] | Set<string> | { [klass: string
     <div class="ant-steps-item-content">
       <div class="ant-steps-item-title">
         <ng-container *ngIf="isTitleString; else titleTemplate">{{ nzTitle }}</ng-container>
-        <ng-template #titleTemplate>
-          <ng-template [ngTemplateOutlet]="nzTitle"></ng-template>
-        </ng-template>
       </div>
       <div class="ant-steps-item-description">
-        <ng-container *ngIf="isDescriptionString; else nzDescription">{{ nzDescription }}</ng-container>
-        <ng-template #descriptionTemplate>
-          <ng-template [ngTemplateOutlet]="nzDescription"></ng-template>
-        </ng-template>
+        <ng-container *ngIf="isDescriptionString; else descriptionTemplate">{{ nzDescription }}</ng-container>
       </div>
     </div>
   `

@@ -12,13 +12,8 @@ import {
   TemplateRef,
   ViewChild, ViewChildren
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { defer } from 'rxjs/observable/defer';
-import { merge } from 'rxjs/observable/merge';
-import { filter } from 'rxjs/operators/filter';
-import { switchMap } from 'rxjs/operators/switchMap';
-import { take } from 'rxjs/operators/take';
+import { defer, merge, Observable, Subscription } from 'rxjs';
+import { filter, switchMap, take } from 'rxjs/operators';
 
 import { toBoolean } from '../core/util/convert';
 

@@ -18,12 +18,8 @@ import {
   SkipSelf,
   ViewChild
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { auditTime } from 'rxjs/operators/auditTime';
-import { combineLatest } from 'rxjs/operators/combineLatest';
-import { map } from 'rxjs/operators/map';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { auditTime, combineLatest, map } from 'rxjs/operators';
 
 import { POSITION_MAP } from '../core/overlay/overlay-position-map';
 import { toBoolean } from '../core/util/convert';

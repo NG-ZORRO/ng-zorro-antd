@@ -1,6 +1,5 @@
 import { Injectable, Optional, SkipSelf } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subject, Subscription } from 'rxjs';
 
 import { NzModalRef } from './nz-modal-ref.class';
 
@@ -16,6 +15,7 @@ export class NzModalControlService {
   get afterAllClose(): Subject<void> {
     return this.parentService ? this.parentService.afterAllClose : this.rootAfterAllClose;
   }
+
   // Track singleton openModals array through over the injection tree
   get openModals(): NzModalRef[] {
     return this.parentService ? this.parentService.openModals : this.rootOpenModals;
@@ -25,12 +25,14 @@ export class NzModalControlService {
   private rootAfterAllClose: Subject<void> = this.parentService ? null : new Subject<void>();
 
   private rootRegisteredMetaMap: Map<NzModalRef, RegisteredMeta> = this.parentService ? null : new Map();
+
   private get registeredMetaMap(): Map<NzModalRef, RegisteredMeta> { // Registered modal for later usage
     return this.parentService ? this.parentService.registeredMetaMap : this.rootRegisteredMetaMap;
   }
 
   constructor(
-    @Optional() @SkipSelf() private parentService: NzModalControlService) {}
+    @Optional() @SkipSelf() private parentService: NzModalControlService) {
+  }
 
   // Register a modal to listen its open/close
   registerModal(modalRef: NzModalRef): void {
@@ -54,7 +56,7 @@ export class NzModalControlService {
     let i = this.openModals.length;
 
     while (i--) {
-      this.openModals[i].close();
+      this.openModals[ i ].close();
     }
   }
 

@@ -5,7 +5,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { async, fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 import { createMouseEvent, dispatchFakeEvent } from '../core/testing';
 import { NzMenuModule } from '../menu/nz-menu.module';

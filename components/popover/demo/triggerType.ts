@@ -24,7 +24,14 @@ import { Component } from '@angular/core';
           <p>Content</p></div>
       </ng-template>
     </nz-popover>
-  `
+  `,
+  styles  : [
+      `
+      nz-popover {
+        margin-right: 8px;
+      }
+    `
+  ]
 })
 export class NzDemoPopoverTriggerTypeComponent {
 }

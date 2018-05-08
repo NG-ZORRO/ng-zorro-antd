@@ -23,12 +23,8 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { Subscription } from 'rxjs/Subscription';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { merge } from 'rxjs/observable/merge';
-import { delay } from 'rxjs/operators/delay';
-import { distinct } from 'rxjs/operators/distinct';
-import { map } from 'rxjs/operators/map';
+import { fromEvent, merge, Subscription } from 'rxjs';
+import { delay, distinct, map } from 'rxjs/operators';
 
 import { NzAutocompleteOptionComponent } from './nz-autocomplete-option.component';
 import { NzAutocompleteComponent } from './nz-autocomplete.component';
@@ -68,8 +64,10 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   private overlayBackdropClickSubscription: Subscription;
   private overlayPositionChangeSubscription: Subscription;
 
-  _onChange: (value: {}) => void = () => {};
-  _onTouched = () => {};
+  _onChange: (value: {}) => void = () => {
+  }
+  _onTouched = () => {
+  }
 
   panelOpen: boolean = false;
 
