@@ -12,7 +12,39 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 0.7.0-beta.5
+
+`2018.05.01`
+
+`DatePicker` 主体工作已经完成，由于同时包含 `RangePicker` 与 `WeekPicker` 目前还剩余一些测试工作，大家可以追踪[PR](https://github.com/NG-ZORRO/ng-zorro-antd/pull/1254) 追踪进度
+
+### TimePicker
+
+- 新增 `TimePicker` 组件
+
+### Tree
+
+- 增加了更多的快捷使用方法及样例
+
+### InputNumber
+
+- 支持 `nzFormatter` 动态变更生效
+
+### Mention
+
+- 增加更多的例子
+
+### Upload
+
+- 修复 `Uplaod` 上传进度条展示
+
+### 其他
+
+- 修复文档及测试的部分问题
+
 ## 0.7.0-beta.4
+
+`2018.04.12`
 
 #### Mention
 
@@ -72,6 +104,8 @@ timeline: true
 
 
 ## 0.7.0-beta.3
+
+`2018-03-26`
 
 #### Tree
 

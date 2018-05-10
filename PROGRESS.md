@@ -38,8 +38,8 @@
 | modal | 90% | 100% | 100% | wilsoncook | √ |
 | message | x | x | x | wilsoncook | - |
 | notification | x | x | x | wilsoncook | - |
-| datepicker | x | x | x | trotyl | - |
-| timepicker | x | x | x | trotyl | - |
+| datepicker | x | x | x | wilsoncook | - |
+| time-picker | √ | 100% | 100% | trotyl  asnowwolf vthinkxie | √ |
 | calendar | √ | 100% | 100% | trotyl | √ |
 | affix | √ | 100% | 100% | cipchk | √ |
 | transfer | √ | 100% | 100% | cipchk | x |
@@ -50,8 +50,8 @@
 | backtop | √ | 100% | 100% | cipchk | x |
 | divider | √ | 100% | 100% | cipchk | x |
 | treeselect | x | x | x | simplejason | - |
-| tree | x | x | x | simplejason | - |
-| cascader | x | x | x | fbchen | - |
+| tree |  √ | 100% | 100% | simplejason | - |
+| cascader | √ | 100% | 100% | fbchen | - |
 | autocomplete | √ | 100% | 100% | HsuanXyz | - |
 | mention | √ | 100%  | 100%  | HsuanXyz | - |
 

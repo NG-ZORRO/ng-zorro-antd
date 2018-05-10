@@ -155,7 +155,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
   private _disabled = false;
   private $mouseSubject = new Subject<boolean>();
   private openSubscription: Subscription;
-  private placement = 'rightTop';
+  placement = 'rightTop';
   $subOpen = new BehaviorSubject<boolean>(false);
   isInDropDown = false;
   isInSubMenu = false;

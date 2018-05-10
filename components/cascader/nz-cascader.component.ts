@@ -58,7 +58,7 @@ export type NzCascaderTriggerType = 'click' | 'hover';
 export type NzCascaderSize = 'small' | 'large' | 'default' ;
 
 export interface CascaderOption {
-  value?: string;
+  value?: any;
   label?: string;
   title?: string;
   disabled?: boolean;

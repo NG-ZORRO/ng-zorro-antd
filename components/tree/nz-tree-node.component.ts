@@ -90,6 +90,7 @@ import { NzTreeService } from './nz-tree.service';
                       [nzAsyncData]="nzAsyncData"
                       [nzMultiple]="nzMultiple"
                       [nzBeforeDrop]="nzBeforeDrop"
+                      [nzCheckStrictly]="nzCheckStrictly"
                       [nzDefaultExpandAll]="nzDefaultExpandAll"
                       [nzDefaultCheckedKeys]="nzDefaultCheckedKeys"
                       [nzDefaultExpandedKeys]="nzDefaultExpandedKeys"
@@ -131,6 +132,7 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
   dragPos = 2;
   prefixCls = 'ant-tree';
   _treeNode;
+  _checkStrictly;
   _expandAll = false;
   _defaultCheckedKeys = [];
   _defaultExpandedKeys = [];
@@ -146,24 +148,14 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
 
   @ViewChild('dragElement') dragElement: ElementRef;
 
-  @Output() clickNode: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() dblClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() contextMenu: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() clickCheckBox: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() clickExpand: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDragStart: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDragEnter: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDragOver: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDragLeave: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDrop: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDragEnd: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-
   @Input() nzShowLine: boolean;
   @Input() nzShowExpand: boolean;
   @Input() nzDraggable: boolean;
   @Input() nzMultiple: boolean;
   @Input() nzCheckable: boolean;
   @Input() nzAsyncData;
+  @Input() nzCheckStrictly: boolean;
+  @Input() nzDefaultCheckedKeys: string[];
   @Input() nzTreeTemplate: TemplateRef<void>;
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
 
@@ -186,21 +178,6 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
 
   get nzDefaultExpandAll(): boolean {
     return this._expandAll;
-  }
-
-  @Input()
-  set nzDefaultCheckedKeys(value: string[]) {
-    this._defaultCheckedKeys = value;
-    if (value && value.indexOf(this.nzTreeNode.key) > -1) {
-      // associate nodes
-      setTimeout(() => {
-        this.nzTreeService.checkTreeNode(this.nzTreeNode, true);
-      });
-    }
-  }
-
-  get nzDefaultCheckedKeys(): string[] {
-    return this._defaultCheckedKeys;
   }
 
   @Input()
@@ -248,17 +225,33 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
     return this._searchValue;
   }
 
+  @Output() clickNode: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() dblClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() contextMenu: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() clickCheckBox: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() clickExpand: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() nzDragStart: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() nzDragEnter: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() nzDragOver: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() nzDragLeave: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() nzDrop: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() nzDragEnd: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+
   constructor(private nzTreeService: NzTreeService, private ngZone: NgZone, private renderer: Renderer2) {
   }
 
   ngOnInit(): void {
+    if (this.nzTreeNode.isChecked) {
+      // associate nodes
+      if (this.nzCheckStrictly) {
+        this.nzTreeService.setCheckedNodeListStrict(this.nzTreeNode);
+      } else {
+        this.nzTreeService.setCheckedNodeList(this.nzTreeNode);
+      }
+    }
     // add select list
     if (this.nzTreeNode.isSelected) {
       this.nzTreeService.setSelectedNodeList(this.nzTreeNode, this.nzMultiple);
-    }
-    // add check list
-    if (this.nzTreeNode.isChecked) {
-      this.nzTreeService.setCheckedNodeList(this.nzTreeNode);
     }
   }
 
@@ -390,7 +383,15 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
     if (node.isDisableCheckbox || node.isDisabled) {
       return;
     }
-    this.nzTreeService.checkTreeNode(node);
+    node.isChecked = !node.isChecked;
+    if (this.nzCheckStrictly) {
+      node.isAllChecked = node.isChecked;
+      node.isHalfChecked = false;
+      this.nzTreeService.setCheckedNodeListStrict(this.nzTreeNode);
+    } else {
+      this.nzTreeService.setCheckedNodeList(this.nzTreeNode);
+      this.nzTreeService.checkTreeNode(node);
+    }
     this.clickCheckBox.emit(this.nzTreeService.formatEvent('check', node, $event));
   }
 

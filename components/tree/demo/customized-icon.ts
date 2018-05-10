@@ -47,6 +47,7 @@ export class NzDemoTreeCustomizedIconComponent implements OnInit {
     new NzTreeNode({
       title   : 'root1',
       key     : '1001',
+      expanded: true,
       children: [
         {
           title   : 'child1',
@@ -77,36 +78,9 @@ export class NzDemoTreeCustomizedIconComponent implements OnInit {
               ]
             }
           ]
-        },
-        {
-          title: 'child2',
-          key  : '10002'
         }
       ]
-    }),
-    new NzTreeNode({
-      title   : 'root2',
-      key     : '1002',
-      expanded: true,
-      children: [
-        {
-          title   : 'child2.1',
-          key     : '10021',
-          children: []
-        },
-        {
-          title   : 'child2.2',
-          key     : '10022',
-          children: [
-            {
-              title: 'grandchild2.2.1',
-              key  : '100221'
-            }
-          ]
-        }
-      ]
-    }),
-    new NzTreeNode({ title: 'root3', key: '1003' })
+    })
   ];
 
   mouseAction(name: string, e: any): void {

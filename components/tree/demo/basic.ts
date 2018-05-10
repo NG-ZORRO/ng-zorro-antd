@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NzFormatEmitEvent, NzTreeComponent, NzTreeNode } from 'ng-zorro-antd';
+import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-tree-basic',
@@ -20,7 +20,7 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeNode } from 'ng-zorro-antd';
 
 export class NzDemoTreeBasicComponent implements OnInit {
   expandKeys = [ '1001', '10001' ];
-  checkedKeys = [ '10001', '1002' ];
+  checkedKeys = [ '100011', '1002' ];
   selectedKeys = [ '10001', '100011' ];
   expandDefault = false;
   nodes = [
@@ -55,10 +55,6 @@ export class NzDemoTreeBasicComponent implements OnInit {
               ]
             }
           ]
-        },
-        {
-          title: 'child2',
-          key  : '10002'
         }
       ]
     }),
@@ -77,14 +73,14 @@ export class NzDemoTreeBasicComponent implements OnInit {
           key     : '10022',
           children: [
             {
-              title: 'grandchild2.2.1',
-              key  : '100221'
+              title : 'grandchild2.2.1',
+              key   : '100221',
+              isLeaf: true
             }
           ]
         }
       ]
-    }),
-    new NzTreeNode({ title: 'root3', key: '1003' })
+    })
   ];
 
   mouseAction(name: string, event: NzFormatEmitEvent): void {
