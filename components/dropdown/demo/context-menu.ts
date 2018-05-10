@@ -1,5 +1,5 @@
 import { Component, TemplateRef } from '@angular/core';
-import { NzDropdownContextComponent, NzDropdownService, NzMenuItemDirective } from 'ng-zorro-antd';
+import { NzDropdownContextComponent, NzDropdownService, NzMenuItemDirective, NzFormatEmitEvent } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-dropdown-context-menu',
@@ -34,8 +34,8 @@ import { NzDropdownContextComponent, NzDropdownService, NzMenuItemDirective } fr
 export class NzDemoDropdownContextMenuComponent {
   private dropdown: NzDropdownContextComponent;
 
-  contextMenu($event: MouseEvent, template: TemplateRef<void>): void {
-    this.dropdown = this.nzDropdownService.create($event, template);
+  contextMenu($event: NzFormatEmitEvent, template: TemplateRef<void>): void {
+    this.dropdown = this.nzDropdownService.create($event.event, template);
   }
 
   close(e: NzMenuItemDirective): void {
