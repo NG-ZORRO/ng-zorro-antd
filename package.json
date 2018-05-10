@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@angular/animations": "^5.0.0",
-    "@angular/cli": "^1.7.1",
+    "@angular/cli": "^1.7.4",
     "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",
     "@angular/compiler-cli": "^5.0.0",

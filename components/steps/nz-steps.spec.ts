@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzStepComponent } from './nz-step.component';
@@ -10,7 +10,7 @@ describe('steps', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports     : [ NzStepsModule ],
-      declarations: [ NzTestOuterStepsComponent, NzTestInnerStepStringComponent, NzTestInnerStepTemplateComponent ]
+      declarations: [ NzTestOuterStepsComponent, NzTestInnerStepStringComponent, NzTestInnerStepTemplateComponent, NzTestStepForComponent ]
     });
     TestBed.compileComponents();
   }));
@@ -25,13 +25,15 @@ describe('steps', () => {
       outStep = fixture.debugElement.query(By.directive(NzStepsComponent));
       innerSteps = fixture.debugElement.queryAll(By.directive(NzStepComponent));
     });
-    it('should init className correct', () => {
+    it('should init className correct', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       expect(outStep.nativeElement.firstElementChild.className).toBe('ant-steps ant-steps-horizontal ant-steps-label-horizontal');
       expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-process');
       expect(innerSteps[ 1 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
       expect(innerSteps[ 2 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
-    });
+    }));
     it('should current change correct', () => {
       fixture.detectChanges();
       testComponent.current = 1;
@@ -40,12 +42,14 @@ describe('steps', () => {
       expect(innerSteps[ 1 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-process');
       expect(innerSteps[ 2 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
     });
-    it('should tail display correct', () => {
+    it('should tail display correct', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       expect(innerSteps[ 0 ].nativeElement.firstElementChild.classList.contains('ant-steps-item-tail')).toBe(true);
       expect(innerSteps[ 1 ].nativeElement.firstElementChild.classList.contains('ant-steps-item-tail')).toBe(true);
       expect(innerSteps[ 2 ].nativeElement.firstElementChild.classList.contains('ant-steps-item-tail')).toBe(false);
-    });
+    }));
     it('should title correct', () => {
       fixture.detectChanges();
       expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-title').innerText).toBe('0title');
@@ -183,6 +187,11 @@ describe('steps', () => {
       expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toBe('anticon anticon-smile-o');
     });
   });
+  describe('step ng for', () => {
+    it('should title display correct', () => {
+      TestBed.createComponent(NzTestStepForComponent).detectChanges();
+    });
+  });
 });
 
 @Component({
@@ -245,4 +254,16 @@ export class NzTestInnerStepStringComponent {
   `
 })
 export class NzTestInnerStepTemplateComponent {
+}
+
+@Component({
+  selector: 'nz-test-step-for',
+  template: `
+    <nz-steps>
+      <nz-step *ngFor="let step of steps"></nz-step>
+    </nz-steps>
+  `
+})
+export class NzTestStepForComponent {
+  steps = [ 1, 2, 3 ];
 }
