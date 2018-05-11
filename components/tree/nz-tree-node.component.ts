@@ -12,8 +12,7 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { fromEvent } from 'rxjs/observable/fromEvent';
+import { fromEvent, Observable } from 'rxjs';
 
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from './interface';
 import { NzTreeNode } from './nz-tree-node';

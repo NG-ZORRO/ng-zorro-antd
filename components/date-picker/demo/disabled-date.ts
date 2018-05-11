@@ -30,7 +30,7 @@ import * as setHours from 'date-fns/set_hours';
 
 export class NzDemoDatePickerDisabledDateComponent {
   today = new Date();
-  timeDefaultValue = setHours(new Date());
+  timeDefaultValue = setHours(new Date(), 0);
 
   range(start: number, end: number): number[] {
     const result = [];
@@ -43,7 +43,7 @@ export class NzDemoDatePickerDisabledDateComponent {
   disabledDate = (current: Date): boolean => {
     // Can not select days before today and today
     return differenceInDays(current, this.today) > 0;
-  }
+  };
 
   disabledDateTime = (): object => {
     return {
@@ -51,7 +51,7 @@ export class NzDemoDatePickerDisabledDateComponent {
       nzDisabledMinutes: () => this.range(30, 60),
       nzDisabledSeconds: () => [ 55, 56 ]
     };
-  }
+  };
 
   disabledRangeTime = (value: Date[], type: 'start' | 'end'): object => {
     if (type === 'start') {
@@ -66,5 +66,5 @@ export class NzDemoDatePickerDisabledDateComponent {
       nzDisabledMinutes: () => this.range(0, 31),
       nzDisabledSeconds: () => [ 55, 56 ]
     };
-  }
+  };
 }
