@@ -15,16 +15,3 @@ export interface NzFormatBeforeDropEvent {
   node: NzTreeNode;
   pos: number;
 }
-
-export interface NzTreeNodeOptions {
-  title: string;
-  key: string;
-  isLeaf?: boolean;
-  checked?: boolean;
-  selected?: boolean;
-  selectable?: boolean;
-  disabled?: boolean;
-  disableCheckbox?: boolean;
-  expanded?: boolean;
-  children?: NzTreeNodeOptions[];
-}

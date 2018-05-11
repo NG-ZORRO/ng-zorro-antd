@@ -1,4 +1,15 @@
-import { NzTreeNodeOptions } from './interface';
+export interface NzTreeNodeOptions {
+  title: string;
+  key: string;
+  isLeaf?: boolean;
+  checked?: boolean;
+  selected?: boolean;
+  selectable?: boolean;
+  disabled?: boolean;
+  disableCheckbox?: boolean;
+  expanded?: boolean;
+  children?: NzTreeNodeOptions[];
+}
 
 export class NzTreeNode {
   title?: string;
