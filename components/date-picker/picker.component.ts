@@ -1,6 +1,7 @@
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
+import { dropDownAnimation } from '../core/animation/dropdown-animations';
 import { DEFAULT_DATEPICKER_POSITIONS } from '../core/overlay/overlay-position-map';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CandyDate } from './lib/candy-date';
@@ -8,6 +9,9 @@ import { CandyDate } from './lib/candy-date';
 @Component({
   selector: 'nz-picker',
   templateUrl: 'picker.component.html',
+  animations: [
+    dropDownAnimation
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -52,7 +56,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
       overlayY: 'bottom'
     }
   ] as ConnectionPositionPair[];
-  currentPosition: string;
+  currentPosition: 'top' | 'bottom';
   // get valueReadable(): string {
   //   return this.value && this.i18n.formatDateCompatible(this.value.nativeDate, this.format);
   // }
@@ -96,6 +100,10 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
     this.hideOverlay();
   }
 
+  // NOTE: A issue here, the first time position change, the animation will not be triggered.
+  // Because the overlay's "positionChange" event is emitted after the content's full shown up.
+  // All other components like "nz-dropdown" which depends on overlay also has the same issue.
+  // See: https://github.com/NG-ZORRO/ng-zorro-antd/issues/1429
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     this.currentPosition = position.connectionPair.originY === 'top' ? 'bottom' : 'top';
     this.changeDetector.detectChanges(); // Take side-effects to position styles
