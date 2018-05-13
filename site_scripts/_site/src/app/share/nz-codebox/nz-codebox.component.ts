@@ -43,6 +43,9 @@ import sdk from '@stackblitz/sdk';
             <nz-tooltip [nzTitle]="'Copy Code'">
               <i nz-tooltip class="anticon anticon-copy code-box-code-copy" [class.anticon-copy]="!_copied" [class.anticon-check]="_copied" [class.ant-tooltip-open]="_copied" (click)="copyCode(nzRawCode)"></i>
             </nz-tooltip>
+            <nz-tooltip [nzTitle]="'Copy Generate Command'" *ngIf="nzGenerateCommand">
+              <i nz-tooltip class="anticon anticon-code-o code-box-code-copy" [class.anticon-code-o]="!_commandCopied" [class.anticon-check]="_commandCopied" [class.ant-tooltip-open]="_commandCopied" (click)="copyGenerateCommand(nzGenerateCommand)"></i>
+            </nz-tooltip>
           </div>
           <ng-content select="[code]"></ng-content>
 
@@ -58,6 +61,7 @@ import sdk from '@stackblitz/sdk';
 export class NzCodeBoxComponent implements OnInit {
   _code: string;
   _copied = false;
+  _commandCopied = false;
   showIframe: boolean;
   simulateIFrame: boolean;
   iframe: SafeUrl;
@@ -70,6 +74,7 @@ export class NzCodeBoxComponent implements OnInit {
   @Input() nzRawCode = '';
   @Input() nzComponentName = '';
   @Input() nzSelector = '';
+  @Input() nzGenerateCommand = '';
 
   @Input() set nzIframeSource(value: string) {
     this.showIframe = (value != 'null') && environment.production;
@@ -95,6 +100,15 @@ export class NzCodeBoxComponent implements OnInit {
       this._copied = true;
       setTimeout(() => {
         this._copied = false;
+      }, 1000);
+    });
+  }
+
+  copyGenerateCommand(command) {
+    this.copy(command).then(() => {
+      this._commandCopied = true;
+      setTimeout(() => {
+        this._commandCopied = false;
       }, 1000);
     });
   }
