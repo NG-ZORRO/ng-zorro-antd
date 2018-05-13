@@ -4,25 +4,6 @@ import { FunctionProp } from '../core/types/common-wrap';
 import { NzDatePickerI18nInterface } from '../i18n/nz-i18n.interface';
 import { CandyDate } from './lib/candy-date';
 
-// // APIs all pickers support
-// export interface CommonPickerApi {
-//   nzAllowClear: boolean;
-//   nzAutoFocus: boolean;
-//   nzClassName: string;
-//   nzDateRender: FunctionProp<TemplateRef<CandyDate> | string>;
-//   nzDisabled: boolean;
-//   nzDisabledDate(currentDate: CandyDate): boolean;
-//   // nzGetCalendarContainer(): HTMLElement;
-//   nzLocale: NzDatePickerI18nInterface;
-//   nzOpen: boolean;
-//   nzPlaceholder: string | string[];
-//   nzPopupStyle: object;
-//   nzDropdownClassName: string;
-//   nzSize: 'large' | 'small' | 'default';
-//   nzStyle: object;
-//   nzOnOpenChange: EventEmitter<boolean>;
-// }
-
 // The common result data format (the range-picker's props can be result as array)
 export interface PickerResultSingle {
   date: CandyDate;

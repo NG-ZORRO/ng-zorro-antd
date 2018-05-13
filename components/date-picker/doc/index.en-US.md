@@ -19,82 +19,74 @@ There are four kinds of picker:
 - RangePicker
 - WeekPicker
 
+**Note: ** All input and output date objects are `CandyDate`,`CandyDate` is a minimalist date processing tool, the currently supported API is continuously improved, you can [click here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/date-picker/lib/candy-date/candy-date.ts) to get more informations. You can also get native `Date` objects directly with `CandyDate.nativeDate`. Specific usage You can view DEMO.
+
 ### Common API
 
 The following APIs are shared by DatePicker, MonthPicker, RangePicker, WeekPicker.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| allowClear | Whether to show clear button | boolean | true |
-| autoFocus | get focus when component mounted | boolean | false |
-| className | picker className | string | '' |
-| dateRender | custom rendering function for date cells | function(currentDate: moment, today: moment) => React.ReactNode | - |
-| disabled | determine whether the DatePicker is disabled | boolean | false |
-| disabledDate | specify the date that cannot be selected | (currentDate: moment) => boolean | - |
-| getCalendarContainer | to set the container of the floating layer, while the default is to create a `div` element in `body` | function(trigger) | - |
-| locale | localization configuration | object | [default](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
-| open | open state of picker | boolean | - |
-| placeholder | placeholder of date input | string\|RangePicker\[] | - |
-| popupStyle | to customize the style of the popup calendar | object | {} |
-| dropdownClassName | to customize the className of the popup calendar  | string | - |
-| size | determine the size of the input box, the height of `large` and `small`, are 40px and 24px respectively, while default size is 32px | string | - |
-| style | to customize the style of the input box | object | {} |
-| onOpenChange | a callback function, can be executed whether the popup calendar is popped up or closed | function(status) | - |
-
-### Common Methods
-
-| Name | Description |
-| ---- | ----------- |
-| blur() | remove focus |
-| focus() | get focus |
+| nzAllowClear | Whether to show clear button | boolean | true |
+| nzAutoFocus | get focus when component mounted | boolean | false |
+| nzClassName | picker className | string | '' |
+| nzDateRender | custom rendering function for date cells (Not support by MonthPicker) | TemplateRef&lt;CandyDate&gt; / string or (d: CandyDate) => TemplateRef&lt;CandyDate&gt; / string | - |
+| nzDisabled | determine whether the DatePicker is disabled | boolean | false |
+| nzDisabledDate | specify the date that cannot be selected | (current: CandyDate) => boolean | - |
+| nzLocale | localization configuration | object | [default](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
+| nzOpen | open state of picker | boolean | - |
+| nzPlaceholder | placeholder of date input | string / string[] | - |
+| nzPopupStyle | to customize the style of the popup calendar | object | {} |
+| nzDropdownClassName | to customize the className of the popup calendar  | string | - |
+| nzSize | determine the size of the input box, the height of `large` and `small`, are 40px and 24px respectively, while default size is 32px | string | - |
+| nzStyle | to customize the style of the input box | object | {} |
+| nzOnOpenChange | a callback emitter, can be executed whether the popup calendar is popped up or closed | EventEmitter&lt;boolean&gt; | - |
 
 ### DatePicker
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| defaultValue | to set default date | [moment](http://momentjs.com/) | - |
-| disabledTime | to specify the time that cannot be selected | function(date) | - |
-| format | to set the date format, refer to [moment.js](http://momentjs.com/) | string | "YYYY-MM-DD" |
-| renderExtraFooter | render extra footer in panel | () => React.ReactNode | - |
-| showTime | to provide an additional time selection | object\|boolean | [TimePicker Options](/components/time-picker/#API) |
-| showTime.defaultValue | to set default time of selected date, [demo](https://ant.design/components/date-picker/#components-date-picker-demo-disabled-date) | [moment](http://momentjs.com/) | moment() |
-| showToday | whether to show "Today" button | boolean | true |
-| value | to set date | [moment](http://momentjs.com/) | - |
-| onCalendarChange | a callback function, can be executed when the start time or the end time of the range is changing | function(dates: [moment, moment], dateStrings: [string, string]) | 无 |
-| onChange | a callback function, can be executed when the selected time is changing | function(date: moment, dateString: string) | - |
-| onOk | callback when click ok button | function() | - |
+| nzDefaultValue | to set default date | CandyDate | - |
+| nzDisabledTime | to specify the time that cannot be selected | (current: CandyDate) => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds } | - |
+| nzFormat | to set the date format, refer to [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-MM-dd" |
+| nzRenderExtraFooter | render extra footer in panel | TemplateRef / string or () => TemplateRef / string | - |
+| nzShowTime | to provide an additional time selection | object / boolean | [TimePicker Options](/components/time-picker/en#api) |
+| nzShowToday | whether to show "Today" button | boolean | true |
+| nzValue | to set date | CandyDate | - |
+| nzOnChange | a callback emitter, can be executed when the selected time is changing | EventEmitter&lt;{ date: CandyDate, dateString: string }&gt; | - |
+| nzOnOk | callback when click ok button | EventEmitter&lt;CandyDate&gt; | - |
 
 ### MonthPicker
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| defaultValue | to set default date | [moment](http://momentjs.com/) | - |
-| format | to set the date format, refer to [moment.js](http://momentjs.com/) | string | "YYYY-MM" |
-| monthCellContentRender | Custom month cell content render method | function(date, locale): ReactNode | - |
-| renderExtraFooter | render extra footer in panel | () => React.ReactNode | - |
-| value | to set date | [moment](http://momentjs.com/) | - |
-| onChange | a callback function, can be executed when the selected time is changing | function(date: moment, dateString: string) | - |
+| nzDefaultValue | to set default date | CandyDate | - |
+| nzFormat | to set the date format, refer to [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-MM" |
+| nzRenderExtraFooter | render extra footer in panel | TemplateRef / string or () => TemplateRef / string | - |
+| nzValue | to set date | CandyDate | - |
+| nzOnChange | a callback emitter, can be executed when the selected time is changing | EventEmitter&lt;{ date: CandyDate, dateString: string }&gt; | - |
 
 ### WeekPicker
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| defaultValue | to set default date | [moment](http://momentjs.com/) | - |
-| format | to set the date format, refer to [moment.js](http://momentjs.com/) | string | "YYYY-wo" |
-| value | to set date | [moment](http://momentjs.com/) | - |
-| onChange | a callback function, can be executed when the selected time is changing | function(date: moment, dateString: string) | - |
+| nzDefaultValue | to set default date | CandyDate | - |
+| nzFormat | to set the date format, refer to [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-ww" |
+| nzValue | to set date | CandyDate | - |
+| nzOnChange | a callback emitter, can be executed when the selected time is changing | EventEmitter&lt;{ date: CandyDate, dateString: string }&gt; | - |
 
 ### RangePicker
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| defaultValue | to set default date | \[[moment](http://momentjs.com/), [moment](http://momentjs.com/)] | - |
-| disabledTime | to specify the time that cannot be selected | function(dates: [moment, moment], partial: `'start'|'end'`) | - |
-| format | to set the date format | string | "YYYY-MM-DD HH:mm:ss" |
-| ranges | preseted ranges for quick selection | { \[range: string\]&#x3A; [moment](http://momentjs.com/)\[] } \| () => { \[range: string\]&#x3A; [moment](http://momentjs.com/)\[] } | - |
-| renderExtraFooter | render extra footer in panel | () => React.ReactNode | - |
-| showTime | to provide an additional time selection | object\|boolean | [TimePicker Options](/components/time-picker/#API) |
-| showTime.defaultValue | to set default time of selected date, [demo](https://ant.design/components/date-picker/#components-date-picker-demo-disabled-date) | [moment](http://momentjs.com/)\[] | [moment(), moment()] |
-| value | to set date | \[[moment](http://momentjs.com/), [moment](http://momentjs.com/)] | - |
-| onChange | a callback function, can be executed when the selected time is changing | function(dates: [moment, moment], dateStrings: [string, string]) | - |
-| onOk | callback when click ok button | function() | - |
+| nzDefaultValue | to set default date | CandyDate[] | - |
+| nzDisabledTime | to specify the time that cannot be selected | (current: CandyDate, partial: 'start' / 'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds } | - |
+| nzFormat | to set the date format | string | "yyyy-MM-dd" |
+| nzRanges | preseted ranges for quick selection | { [ key: string ]: CandyDate[] } | - |
+| nzRenderExtraFooter | render extra footer in panel | TemplateRef / string or () => TemplateRef / string | - |
+| nzShowTime | to provide an additional time selection | object / boolean | [TimePicker Options](/components/time-picker/en#api) |
+| nzValue | to set date | CandyDate[] | - |
+| nzOnChange | a callback emitter, can be executed when the selected time is changing | EventEmitter&lt;{ date: CandyDate[], dateString: string[] }&gt; | - |
+| nzOnOk | callback when click ok button | EventEmitter&lt;CandyDate[]&gt; | - |
+
+> Currently supported `TimePicker` parameters in `NzShowTime` are: `nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`

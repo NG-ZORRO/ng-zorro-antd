@@ -20,6 +20,8 @@ subtitle: 日期选择框
 - RangePicker
 - WeekPicker
 
+**注意：** 所有输入输出日期对象均为 `CandyDate`，`CandyDate` 是一个极简的日期处理工具，目标是替代过重的`moment`，目前支持的API正持续完善中，可以[点此查看](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/date-picker/lib/candy-date/candy-date.ts)。您也可以通过 `CandyDate.nativeDate` 来直接获得原生的 `Date` 对象。具体使用用法您可查看DEMO。
+
 ### 共同的 API
 
 以下 API 为 DatePicker、MonthPicker、RangePicker, WeekPicker 共享的 API。
@@ -39,7 +41,7 @@ subtitle: 日期选择框
 | nzDropdownClassName | 额外的弹出日历 className | string | - |
 | nzSize | 输入框大小，`large` 高度为 40px，`small` 为 24px，默认是 32px | string | 无 |
 | nzStyle | 自定义输入框样式 | object | {} |
-| nzOnOpenChange | 弹出日历和关闭日历的回调 | (open: boolean): void | 无 |
+| nzOnOpenChange | 弹出日历和关闭日历的回调 | EventEmitter&lt;boolean&gt; | 无 |
 
 ### DatePicker
 
@@ -52,8 +54,8 @@ subtitle: 日期选择框
 | nzShowTime | 增加时间选择功能 | object / boolean | [TimePicker Options](/components/time-picker/zh#api) |
 | nzShowToday | 是否展示“今天”按钮 | boolean | true |
 | nzValue | 日期 | CandyDate | 无 |
-| nzOnChange | 时间发生变化的回调 | EventEmitter<{ date: CandyDate, dateString: string }> | 无 |
-| nzOnOk | 点击确定按钮的回调 | EventEmitter | - |
+| nzOnChange | 时间发生变化的回调 | EventEmitter&lt;{ date: CandyDate, dateString: string }&gt; | 无 |
+| nzOnOk | 点击确定按钮的回调 | EventEmitter&lt;CandyDate&gt; | - |
 
 ### MonthPicker
 
@@ -63,7 +65,7 @@ subtitle: 日期选择框
 | nzFormat | 展示的日期格式，配置参考 [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-MM" |
 | nzRenderExtraFooter | 在面板中添加额外的页脚 | TemplateRef / string or () => TemplateRef / string | - |
 | nzValue | 日期 | CandyDate | 无 |
-| nzOnChange | 时间发生变化的回调，发生在用户选择时间时 | EventEmitter<{ date: CandyDate, dateString: string }> | - |
+| nzOnChange | 时间发生变化的回调，发生在用户选择时间时 | EventEmitter&lt;{ date: CandyDate, dateString: string }&gt; | - |
 
 ### WeekPicker
 
@@ -72,7 +74,7 @@ subtitle: 日期选择框
 | nzDefaultValue | 默认日期 | CandyDate | - |
 | nzFormat | 展示的日期格式，配置参考 [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-ww" |
 | nzValue | 日期 | CandyDate | - |
-| nzOnChange | 时间发生变化的回调，发生在用户选择时间时 | EventEmitter<{ date: CandyDate, dateString: string }> | - |
+| nzOnChange | 时间发生变化的回调，发生在用户选择时间时 | EventEmitter&lt;{ date: CandyDate, dateString: string }&gt; | - |
 
 ### RangePicker
 
@@ -85,5 +87,7 @@ subtitle: 日期选择框
 | nzRenderExtraFooter | 在面板中添加额外的页脚 | TemplateRef / string or () => TemplateRef / string | - |
 | nzShowTime | 增加时间选择功能 | object / boolean | [TimePicker Options](/components/time-picker/zh#api) |
 | nzValue | 日期 | CandyDate[] | 无 |
-| nzOnChange | 日期范围发生变化的回调 | EventEmitter<{ date: CandyDate[], dateString: string[] }> | 无 |
-| nzOnOk | 点击确定按钮的回调 | EventEmitter | - |
+| nzOnChange | 日期范围发生变化的回调 | EventEmitter&lt;{ date: CandyDate[], dateString: string[] }&gt; | 无 |
+| nzOnOk | 点击确定按钮的回调 | EventEmitter&lt;CandyDate[]&gt; | - |
+
+> `NzShowTime` 中当前支持的 `TimePicker` 参数有：`nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`

@@ -23,7 +23,7 @@ export class NzDemoDatePickerModeComponent {
 
   handleDateOpenChange(open: boolean): void {
     if (open) {
-      this.dateMode = 'decade';
+      this.dateMode = 'time';
     }
   }
 
