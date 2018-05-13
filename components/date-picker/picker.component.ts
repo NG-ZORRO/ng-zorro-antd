@@ -1,5 +1,5 @@
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 import { DEFAULT_DATEPICKER_POSITIONS } from '../core/overlay/overlay-position-map';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -136,7 +136,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
   }
 
   // Whether open state is permanently controlled by user himself
-  private isOpenHandledByUser(): boolean {
+  isOpenHandledByUser(): boolean {
     return this.open !== undefined;
   }
 }

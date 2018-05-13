@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
-import { NzI18nService } from '../../../i18n';
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
+import { NzI18nService } from '../../../i18n/nz-i18n.service';
 import { PanelMode } from '../../standard-types';
 import { CandyDate } from '../candy-date';
 
@@ -25,8 +25,8 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Output() panelModeChange = new EventEmitter<PanelMode>();
 
   prefixCls: string = 'ant-calendar';
+  yearMonthDaySelectors: YearMonthDaySelector[];
 
-  private yearMonthDaySelectors: YearMonthDaySelector[];
   private yearToMonth: boolean = false; // Indicate whether should change to month panel when current is year panel (if referer=month, it should show month panel when choosed a year)
 
   constructor(private i18n: NzI18nService) { }

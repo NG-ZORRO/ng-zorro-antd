@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { InputBoolean } from '../../../core/util/convert';
-import { NzI18nService } from '../../../i18n';
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
+import { NzI18nService } from '../../../i18n/nz-i18n.service';
 import { CandyDate } from '../candy-date';
 
 @Component({

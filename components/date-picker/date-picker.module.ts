@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { LibPackerModule } from './lib/lib-packer.module';
 
 import { NzDatePickerComponent } from './date-picker.component';
+import { DateRangePickerComponent } from './date-range-picker.component';
 import { NzMonthPickerComponent } from './month-picker.component';
 import { NzPickerComponent } from './picker.component';
 import { NzRangePickerComponent } from './range-picker.component';
@@ -24,6 +25,7 @@ import { NzWeekPickerComponent } from './week-picker.component';
     NzWeekPickerComponent
   ],
   declarations: [
+    DateRangePickerComponent,
     NzDatePickerComponent,
     NzMonthPickerComponent,
     NzWeekPickerComponent,

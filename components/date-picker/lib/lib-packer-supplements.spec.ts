@@ -4,14 +4,14 @@ import { fakeAsync, inject, ComponentFixture, TestBed } from '@angular/core/test
 
 import { NzI18nService } from '../../i18n/nz-i18n.service';
 
+import { AbstractPickerComponent } from '../abstract-picker.component';
 import { CalendarHeaderComponent } from './calendar/calendar-header.component';
 import { TodayButtonComponent } from './calendar/today-button.component';
 import { CandyDate } from './candy-date';
-import { LibPackerModule } from './lib-packer.module';
 import { DateTableComponent } from './date/date-table.component';
+import { LibPackerModule } from './lib-packer.module';
 import { MonthTableComponent } from './month/month-table.component';
 import { DateRangePopupComponent } from './popups/date-range-popup.component';
-import { AbstractPickerComponent } from '../abstract-picker.component';
 import { YearPanelComponent } from './year/year-panel.component';
 
 registerLocaleData(zh);

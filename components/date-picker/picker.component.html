@@ -64,7 +64,7 @@
   [cdkConnectedOverlayHasBackdrop]="!isOpenHandledByUser()"
   [cdkConnectedOverlayPositions]="overlayPositions"
   (positionChange)="onPositionChange($event)"
-  (backdropClick)="onClickBackdrop($event)"
+  (backdropClick)="onClickBackdrop()"
 >
   <div
     style="position: relative; left: -2px;"

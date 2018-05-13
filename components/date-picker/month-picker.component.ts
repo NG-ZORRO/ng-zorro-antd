@@ -1,4 +1,4 @@
-import { forwardRef, Component, EventEmitter, Input, Output, TemplateRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import { forwardRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { FunctionProp } from '../core/types/common-wrap';

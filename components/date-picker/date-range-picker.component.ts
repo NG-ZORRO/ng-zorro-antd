@@ -3,19 +3,19 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { FunctionProp } from '../core/types/common-wrap';
 import { toBoolean, valueFunctionProp, InputBoolean } from '../core/util/convert';
 import { LoggerService } from '../core/util/logger/logger.service';
-import { NzI18nService } from '../i18n';
 import { NzDatePickerI18nInterface } from '../i18n/nz-i18n.interface';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CandyDate } from './lib/candy-date';
-// import { DateChangeEvent } from './lib/date-change-event';
-// import { CommonPickerApi } from './standard-types';
 
 import { AbstractPickerComponent, CompatibleValue } from './abstract-picker.component';
 import { NzPickerComponent } from './picker.component';
 import { DisabledTimeFn, PanelMode, PresetRanges } from './standard-types';
 
-@Component({ })
+@Component({
+  template: `` // Just for rollup
+})
 
-export abstract class DateRangePickerComponent extends AbstractPickerComponent implements OnInit, OnChanges {
+export class DateRangePickerComponent extends AbstractPickerComponent implements OnInit, OnChanges {
   showWeek: boolean = false; // Should show as week picker
 
   @Input() nzDateRender: FunctionProp<TemplateRef<CandyDate> | string>;

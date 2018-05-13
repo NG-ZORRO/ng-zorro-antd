@@ -3,11 +3,11 @@ import { ControlValueAccessor } from '@angular/forms';
 
 import { FunctionProp } from '../core/types/common-wrap';
 import { InputBoolean } from '../core/util/convert';
-import { NzI18nService } from '../i18n';
 import { NzDatePickerI18nInterface } from '../i18n/nz-i18n.interface';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CandyDate } from './lib/candy-date';
 import { NzPickerComponent } from './picker.component';
-import { PickerResult, PickerResultSingle, PickerResultRange } from './standard-types';
+import { PickerResult, PickerResultRange, PickerResultSingle } from './standard-types';
 
 const POPUP_STYLE_PATCH = { 'position': 'relative' }; // Aim to override antd's style to support overlay's position strategy (position:absolute will cause it not working beacuse the overlay can't get the height/width of it's content)
 
