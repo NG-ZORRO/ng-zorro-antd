@@ -21,8 +21,8 @@ import * as getISOWeek from 'date-fns/get_iso_week';
 })
 
 export class NzDemoDatePickerBasicComponent {
-  date = new Date();
-  dateRange = [ new Date(), addDays(new Date(), 3) ];
+  date = null; // new Date();
+  dateRange = []; // [ new Date(), addDays(new Date(), 3) ];
 
   onChange(result: Date): void {
     console.log('onChange: ', result);
