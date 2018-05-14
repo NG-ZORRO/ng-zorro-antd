@@ -15,7 +15,7 @@ export class MonthTableComponent implements OnInit, OnChanges {
   @Input() value: CandyDate;
   @Output() valueChange = new EventEmitter<CandyDate>();
 
-  @Input() disabledDate: (date: CandyDate) => boolean;
+  @Input() disabledDate: (date: Date) => boolean;
 
   prefixCls: string = 'ant-calendar-month-panel';
   panelMonths: PanelMonthData[][];
@@ -50,7 +50,7 @@ export class MonthTableComponent implements OnInit, OnChanges {
       months[rowIndex] = [];
       for (let colIndex = 0; colIndex < MAX_COL; colIndex ++) {
         const month = this.value.setMonth(monthValue);
-        const disabled = this.disabledDate ? this.disabledDate(this.value.setMonth(monthValue)) : false;
+        const disabled = this.disabledDate ? this.disabledDate(this.value.setMonth(monthValue).nativeDate) : false;
         const content = this.i18n.formatDateCompatible(month.nativeDate, 'MMM');
 
         const cell = months[rowIndex][colIndex] = {

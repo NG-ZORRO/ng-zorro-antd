@@ -68,6 +68,8 @@
 >
   <div
     [@dropDownAnimation]="currentPosition"
+    (@dropDownAnimation.start)="animationStart()"
+    (@dropDownAnimation.done)="animationDone()"
     style="position: relative; left: -2px;"
     [style.top]="currentPosition === 'top' ? '2px' : '-2px'"
   > <!-- Compatible for overlay that not support offset dynamically and immediately -->

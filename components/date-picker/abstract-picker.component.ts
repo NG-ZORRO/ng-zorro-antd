@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 
 import { FunctionProp } from '../core/types/common-wrap';
@@ -23,7 +33,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, Cont
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzOpen: boolean;
   @Input() nzClassName: string;
-  @Input() nzDisabledDate: (d: CandyDate) => boolean;
+  @Input() nzDisabledDate: (d: Date) => boolean;
   @Input() nzLocale: NzDatePickerI18nInterface;
   @Input() nzPlaceholder: string | string[];
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
@@ -32,19 +42,24 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, Cont
   @Input() nzStyle: object;
   @Output() nzOnOpenChange = new EventEmitter<boolean>();
 
-  @Input() nzDefaultValue: CompatibleValue;
   @Input() nzFormat: string;
 
   @Input() nzValue: CompatibleValue;
-  @Output() nzOnChange = new EventEmitter<PickerResult>();
 
   @ViewChild(NzPickerComponent) protected picker: NzPickerComponent;
 
   isRange: boolean = false; // Indicate whether the value is a range value
 
-  get realOpenState(): boolean { return this.picker.realOpenState; } // Use picker's real open state to let re-render the picker's content when shown up
+  get realOpenState(): boolean {
+    return this.picker.animationOpenState;
+  } // Use picker's real open state to let re-render the picker's content when shown up
 
-  constructor(protected i18n: NzI18nService) { }
+  initValue(): void {
+    this.nzValue = this.isRange ? [] : null;
+  }
+
+  constructor(protected i18n: NzI18nService) {
+  }
 
   ngOnInit(): void {
     // Default locale (NOTE: Place here to assign default value due to the i18n'locale may change before ngOnInit)
@@ -53,7 +68,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, Cont
     }
 
     // Default value
-    this.setValue(this.nzValue);
+    this.initValue();
 
     // Default placeholder
     if (!this.nzPlaceholder) {
@@ -78,18 +93,18 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, Cont
   onValueChange(value: CompatibleValue): void {
     this.nzValue = value;
     if (this.isRange) {
-      this.nzOnChange.emit({
-        date: value,
-        dateString: [ this.formatDate(value[0]), this.formatDate(value[1]) ]
-      } as PickerResultRange);
+      if ((this.nzValue as CandyDate[]).length) {
+        this.onChangeFn([ this.nzValue[ 0 ].nativeDate, this.nzValue[ 1 ].nativeDate ]);
+      } else {
+        this.onChangeFn([]);
+      }
     } else {
-      this.nzOnChange.emit({
-        date: value,
-        dateString: this.formatDate(value as CandyDate)
-      } as PickerResultSingle);
+      if (this.nzValue) {
+        this.onChangeFn((this.nzValue as CandyDate).nativeDate);
+      } else {
+        this.onChangeFn(null);
+      }
     }
-
-    this.onChangeFn(value);
     this.onTouchedFn();
   }
 
@@ -106,10 +121,10 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, Cont
   // ------------------------------------------------------------------------
 
   // NOTE: onChangeFn/onTouchedFn will not be assigned if user not use as ngModel
-  onChangeFn: (val: CompatibleValue) => void = () => void 0;
+  onChangeFn: (val: CompatibleDate) => void = () => void 0;
   onTouchedFn: () => void = () => void 0;
 
-  writeValue(value: CompatibleValue): void {
+  writeValue(value: CompatibleDate): void {
     this.setValue(value);
   }
 
@@ -134,9 +149,15 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, Cont
   }
 
   // Safe way of setting value with default
-  private setValue(value: CompatibleValue): void {
-    this.nzValue = value ? value : this.nzDefaultValue || (this.isRange ? [] : null);
+  private setValue(value: CompatibleDate): void {
+    if (this.isRange) {
+      this.nzValue = value ? [ new CandyDate(value[ 0 ]), new CandyDate(value[ 1 ]) ] : [];
+    } else {
+      this.nzValue = value ? new CandyDate(value as Date) : null;
+    }
   }
 }
 
 export type CompatibleValue = CandyDate | CandyDate[];
+
+export type CompatibleDate = Date | Date[];

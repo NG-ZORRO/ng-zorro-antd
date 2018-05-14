@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { PickerResult, CandyDate } from 'ng-zorro-antd';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-date-picker-time',
@@ -8,7 +7,7 @@ import { PickerResult, CandyDate } from 'ng-zorro-antd';
       nzShowTime
       nzFormat="yyyy-MM-dd HH:mm:ss"
       nzPlaceholder="Select Time"
-      (nzOnChange)="onChange($event)"
+      (ngModelChange)="onChange($event)"
       (nzOnOk)="onOk($event)"
     ></nz-date-picker>
     <br>
@@ -16,24 +15,23 @@ import { PickerResult, CandyDate } from 'ng-zorro-antd';
       [nzShowTime]="{ nzFormat: 'HH:mm' }"
       nzFormat="yyyy-MM-dd HH:mm"
       [nzPlaceholder]="[ 'Start Time', 'End Time' ]"
-      (nzOnChange)="onChange($event)"
+      (ngModelChange)="onChange($event)"
       (nzOnOk)="onOk($event)"
     ></nz-range-picker>
   `,
-  styles: [`
+  styles  : [ `
     :host ::ng-deep .ant-calendar-picker {
       margin: 0 8px 12px 0;
     }
-  `]
+  ` ]
 })
 
 export class NzDemoDatePickerTimeComponent {
-  onChange(result: PickerResult): void {
-    console.log('Selected Time: ', result.date);
-    console.log('Formatted Selected Time: ', result.dateString);
+  onChange(result: Date): void {
+    console.log('Selected Time: ', result);
   }
 
-  onOk(value: CandyDate | CandyDate[]): void {
-    console.log('onOk: ', value);
+  onOk(result: Date): void {
+    console.log('onOk', result);
   }
 }
