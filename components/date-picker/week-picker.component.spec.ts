@@ -2,7 +2,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, DebugElement } from '@angular/core';
-import { fakeAsync, inject, ComponentFixture, TestBed } from '@angular/core/testing';
+import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -20,7 +20,7 @@ describe('NzWeekPickerComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ NoopAnimationsModule, NzDatePickerModule ],
+      imports     : [ NoopAnimationsModule, NzDatePickerModule ],
       declarations: [ NzTestWeekPickerComponent ]
     });
 
@@ -41,13 +41,16 @@ describe('NzWeekPickerComponent', () => {
   afterEach(() => {
     overlayContainer.ngOnDestroy();
   });
-
-  it('should show week num', () => {
+  it('should show week num', fakeAsync(() => {
     fixtureInstance.nzFormat = null; // cover branch
     fixture.detectChanges();
+    tick(3000);
+    fixture.detectChanges();
     openPickerByClickTrigger();
+    tick(3000);
+    fixture.detectChanges();
     expect(queryFromOverlay('.ant-calendar-week-number-cell')).toBeTruthy();
-  });
+  }));
 
   ////////////
 

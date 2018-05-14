@@ -57,13 +57,13 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       dispatchMouseEvent(getPickerTrigger(), 'click');
       fixture.detectChanges();
-      tick(1000);
+      tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
 
       dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
       fixture.detectChanges();
-      tick(1000);
+      tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
     }));
@@ -116,20 +116,20 @@ describe('NzRangePickerComponent', () => {
       fixtureInstance.useSuite = 2;
 
       fixture.detectChanges();
-      tick(1000);
+      tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
 
       fixtureInstance.nzOpen = true;
       fixture.detectChanges();
-      tick(1000);
+      tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
       expect(queryFromOverlay('.cdk-overlay-backdrop')).toBeNull();
 
       fixtureInstance.nzOpen = false;
       fixture.detectChanges();
-      tick(1000);
+      tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
     }));
@@ -175,7 +175,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       dispatchMouseEvent(getPickerTrigger(), 'click');
       fixture.detectChanges();
-      tick(1000);
+      tick(500);
       fixture.detectChanges();
       expect(getPickerContainer().style.color).toBe('red');
     }));
@@ -185,7 +185,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       dispatchMouseEvent(getPickerTrigger(), 'click');
       fixture.detectChanges();
-      tick(1000);
+      tick(500);
       fixture.detectChanges();
       expect(getPickerContainer().classList.contains(keyCls)).toBeTruthy();
     }));
@@ -211,13 +211,13 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       dispatchMouseEvent(getPickerTrigger(), 'click');
       fixture.detectChanges();
-      tick(1000);
+      tick(500);
       fixture.detectChanges();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
       dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
       fixture.detectChanges();
-      tick(1000);
+      tick(500);
       fixture.detectChanges();
       expect(nzOnOpenChange).toHaveBeenCalledWith(false);
       expect(nzOnOpenChange).toHaveBeenCalledTimes(2);
@@ -240,13 +240,13 @@ describe('NzRangePickerComponent', () => {
       const leftText = left.textContent.trim();
       dispatchMouseEvent(left, 'click');
       fixture.detectChanges();
-      tick(1000);
+      tick(500);
       fixture.detectChanges();
       const right = getFirstCell('right'); // NOTE: At the time "left" clicked, the date panel will be re-rendered
       const rightText = right.textContent.trim();
       dispatchMouseEvent(right, 'click');
       fixture.detectChanges();
-      tick(1000);
+      tick(500);
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
       const result = nzOnChange.calls.allArgs()[0][0];
@@ -433,7 +433,7 @@ describe('NzRangePickerComponent', () => {
       // Click ok button
       dispatchMouseEvent(overlayContainerElement.querySelector('.ant-calendar-ok-btn'), 'click');
       fixture.detectChanges();
-      tick(1000);
+      tick(500);
       expect(fixtureInstance.nzOnOk).toHaveBeenCalledWith(fixtureInstance.modelValue);
     }));
 
@@ -489,7 +489,7 @@ describe('NzRangePickerComponent', () => {
       selector = queryFromOverlay('.ant-calendar-range-quick-selector > a');
       dispatchMouseEvent(selector, 'click');
       fixture.detectChanges();
-      tick(1000);
+      tick(500);
       expect(queryFromOverlay('.ant-calendar-picker-container')).toBeFalsy();
     }));
 
@@ -506,7 +506,7 @@ describe('NzRangePickerComponent', () => {
       rightInput.value = '2018-12-12';
       rightInput.dispatchEvent(new KeyboardEvent('keyup'));
       fixture.detectChanges();
-      tick(1000);
+      tick(500);
       expect(nzOnChange).toHaveBeenCalled();
       const result = nzOnChange.calls.allArgs()[0][0];
       expect(result[0].getDate()).toBe(11);
@@ -573,7 +573,7 @@ describe('NzRangePickerComponent', () => {
   function openPickerByClickTrigger(): void {
     dispatchMouseEvent(getPickerTrigger(), 'click');
     fixture.detectChanges();
-    tick(1000);
+    tick(500);
     fixture.detectChanges();
   }
 });
