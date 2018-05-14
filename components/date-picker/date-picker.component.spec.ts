@@ -48,207 +48,207 @@ describe('NzDatePickerComponent', () => {
     overlayContainer.ngOnDestroy();
   });
 
-  describe('general api testing', () => {
-    beforeEach(() => fixtureInstance.useSuite = 1);
-
-    it('should open by click and close by click at outside', fakeAsync(() => {
-      fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(getPickerContainer()).not.toBeNull();
-
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(getPickerContainer()).toBeNull();
-    }));
-
-    it('should support nzAllowClear and work properly', fakeAsync(() => {
-      const clearBtnSelector = By.css('nz-picker i.ant-calendar-picker-clear');
-      const initial = fixtureInstance.nzValue = new Date();
-      fixtureInstance.nzAllowClear = false;
-      fixture.detectChanges();
-      expect(debugElement.query(clearBtnSelector)).toBeFalsy();
-
-      fixtureInstance.nzAllowClear = true;
-      tick(500);
-      fixture.detectChanges();
-      expect(fixtureInstance.nzValue).toBe(initial);
-      expect(debugElement.query(clearBtnSelector)).toBeTruthy();
-
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
-      debugElement.query(clearBtnSelector).nativeElement.click();
-      fixture.detectChanges();
-      expect(fixtureInstance.nzValue).toBe(initial);
-      expect(nzOnChange).toHaveBeenCalledWith(null);
-      expect(debugElement.query(clearBtnSelector)).toBeFalsy();
-    }));
-
-    it('should support nzAutoFocus', () => {
-      fixtureInstance.nzAutoFocus = true;
-      fixture.detectChanges();
-      expect(getPickerTrigger() === document.activeElement).toBeTruthy();
-    });
-
-    it('should support nzDisabled', fakeAsync(() => {
-      // Make sure picker clear button shown up
-      fixtureInstance.nzAllowClear = true;
-      fixtureInstance.nzValue = new Date();
-
-      fixtureInstance.nzDisabled = true;
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      expect(!!debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeTruthy();
-      expect(!!debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeFalsy();
-
-      fixtureInstance.nzDisabled = false;
-      tick(500);
-      fixture.detectChanges();
-      expect(!!debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeFalsy();
-      expect(!!debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeTruthy();
-    }));
-
-    it('should support nzOpen if assigned', fakeAsync(() => {
-      fixtureInstance.useSuite = 2;
-
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(getPickerContainer()).toBeNull();
-      fixtureInstance.nzOpen = true;
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(getPickerContainer()).not.toBeNull();
-      expect(queryFromOverlay('.cdk-overlay-backdrop')).toBeNull();
-      // dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
-      // expect(getPickerContainer()).not.toBeNull();
-
-      fixtureInstance.nzOpen = false;
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(getPickerContainer()).toBeNull();
-    }));
-
-    it('should support nzClassName', () => {
-      const className = fixtureInstance.nzClassName = 'my-test-class';
-      fixture.detectChanges();
-      const picker = debugElement.query(By.css('.ant-calendar-picker')).nativeElement as HTMLElement;
-      expect(picker.classList.contains(className)).toBeTruthy();
-    });
-
-    it('should support nzDisabledDate', fakeAsync(() => {
-      fixture.detectChanges();
-      const compareDate = new Date('2018-11-15 00:00:00');
-      fixtureInstance.nzValue = new Date('2018-11-11 12:12:12');
-      fixtureInstance.nzDisabledDate = (current: Date) => isSameDay(current, compareDate);
-      fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      const disabledCell = queryFromOverlay('tbody.ant-calendar-tbody td.ant-calendar-disabled-cell');
-      expect(disabledCell.textContent.trim()).toBe('15');
-    }));
-
-    it('should support nzLocale', () => {
-      const featureKey = 'TEST_PLACEHOLDER';
-      fixtureInstance.nzLocale = { lang: { placeholder: featureKey } };
-      fixture.detectChanges();
-      expect(getPickerTrigger().getAttribute('placeholder')).toBe(featureKey);
-    });
-
-    it('should support nzPlaceholder', () => {
-      const featureKey = fixtureInstance.nzPlaceholder = 'TEST_PLACEHOLDER';
-      fixture.detectChanges();
-      expect(getPickerTrigger().getAttribute('placeholder')).toBe(featureKey);
-    });
-
-    it('should support nzPopupStyle', fakeAsync(() => {
-      fixtureInstance.nzPopupStyle = { color: 'red' };
-      fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(getPickerContainer().style.color).toBe('red');
-    }));
-
-    it('should support nzDropdownClassName', fakeAsync(() => {
-      const keyCls = fixtureInstance.nzDropdownClassName = 'my-test-class';
-      fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(getPickerContainer().classList.contains(keyCls)).toBeTruthy();
-    }));
-
-    it('should support nzSize', () => {
-      fixtureInstance.nzSize = 'large';
-      fixture.detectChanges();
-      expect(getPicker().classList.contains('ant-calendar-picker-large')).toBeTruthy();
-
-      fixtureInstance.nzSize = 'small';
-      fixture.detectChanges();
-      expect(getPicker().classList.contains('ant-calendar-picker-small')).toBeTruthy();
-    });
-
-    it('should support nzStyle', () => {
-      fixtureInstance.nzStyle = { color: 'blue' };
-      fixture.detectChanges();
-      expect(getPicker().style.color).toBe('blue');
-    });
-
-    it('should support nzOnOpenChange', () => {
-      const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
-      fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
-      fixture.detectChanges();
-      expect(nzOnOpenChange).toHaveBeenCalledWith(true);
-
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
-      fixture.detectChanges();
-      expect(nzOnOpenChange).toHaveBeenCalledWith(false);
-      expect(nzOnOpenChange).toHaveBeenCalledTimes(2);
-    });
-
-    it('should support nzValue', fakeAsync(() => {
-      fixtureInstance.nzValue = new Date('2018-11-11');
-      fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(getSelectedDayCell().textContent.trim()).toBe('11');
-    }));
-
-    it('should support nzOnChange', fakeAsync(() => {
-      fixtureInstance.nzValue = new Date('2018-11-11');
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
-      fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-
-      const cell = getFirstCell(); // Use the first cell
-      const cellText = cell.textContent.trim();
-      dispatchMouseEvent(cell, 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(nzOnChange).toHaveBeenCalled();
-      const result = nzOnChange.calls.allArgs()[ 0 ][ 0 ];
-      expect(result.getDate()).toBe(+cellText);
-    }));
-
-  });
+  // describe('general api testing', () => {
+  //   beforeEach(() => fixtureInstance.useSuite = 1);
+  //
+  //   it('should open by click and close by click at outside', fakeAsync(() => {
+  //     fixture.detectChanges();
+  //     dispatchMouseEvent(getPickerTrigger(), 'click');
+  //     fixture.detectChanges();
+  //     tick(500);
+  //     fixture.detectChanges();
+  //     expect(getPickerContainer()).not.toBeNull();
+  //
+  //     dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+  //     fixture.detectChanges();
+  //     tick(500);
+  //     fixture.detectChanges();
+  //     expect(getPickerContainer()).toBeNull();
+  //   }));
+  //
+  //   it('should support nzAllowClear and work properly', fakeAsync(() => {
+  //     const clearBtnSelector = By.css('nz-picker i.ant-calendar-picker-clear');
+  //     const initial = fixtureInstance.nzValue = new Date();
+  //     fixtureInstance.nzAllowClear = false;
+  //     fixture.detectChanges();
+  //     expect(debugElement.query(clearBtnSelector)).toBeFalsy();
+  //
+  //     fixtureInstance.nzAllowClear = true;
+  //     tick(500);
+  //     fixture.detectChanges();
+  //     expect(fixtureInstance.nzValue).toBe(initial);
+  //     expect(debugElement.query(clearBtnSelector)).toBeTruthy();
+  //
+  //     const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+  //     debugElement.query(clearBtnSelector).nativeElement.click();
+  //     fixture.detectChanges();
+  //     expect(fixtureInstance.nzValue).toBe(initial);
+  //     expect(nzOnChange).toHaveBeenCalledWith(null);
+  //     expect(debugElement.query(clearBtnSelector)).toBeFalsy();
+  //   }));
+  //
+  //   it('should support nzAutoFocus', () => {
+  //     fixtureInstance.nzAutoFocus = true;
+  //     fixture.detectChanges();
+  //     expect(getPickerTrigger() === document.activeElement).toBeTruthy();
+  //   });
+  //
+  //   it('should support nzDisabled', fakeAsync(() => {
+  //     // Make sure picker clear button shown up
+  //     fixtureInstance.nzAllowClear = true;
+  //     fixtureInstance.nzValue = new Date();
+  //
+  //     fixtureInstance.nzDisabled = true;
+  //     fixture.detectChanges();
+  //     flush();
+  //     fixture.detectChanges();
+  //     expect(!!debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeTruthy();
+  //     expect(!!debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeFalsy();
+  //
+  //     fixtureInstance.nzDisabled = false;
+  //     tick(500);
+  //     fixture.detectChanges();
+  //     expect(!!debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeFalsy();
+  //     expect(!!debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeTruthy();
+  //   }));
+  //
+  //   it('should support nzOpen if assigned', fakeAsync(() => {
+  //     fixtureInstance.useSuite = 2;
+  //
+  //     fixture.detectChanges();
+  //     tick(500);
+  //     fixture.detectChanges();
+  //     expect(getPickerContainer()).toBeNull();
+  //     fixtureInstance.nzOpen = true;
+  //     fixture.detectChanges();
+  //     tick(500);
+  //     fixture.detectChanges();
+  //     expect(getPickerContainer()).not.toBeNull();
+  //     expect(queryFromOverlay('.cdk-overlay-backdrop')).toBeNull();
+  //     // dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+  //     // expect(getPickerContainer()).not.toBeNull();
+  //
+  //     fixtureInstance.nzOpen = false;
+  //     fixture.detectChanges();
+  //     tick(500);
+  //     fixture.detectChanges();
+  //     expect(getPickerContainer()).toBeNull();
+  //   }));
+  //
+  //   it('should support nzClassName', () => {
+  //     const className = fixtureInstance.nzClassName = 'my-test-class';
+  //     fixture.detectChanges();
+  //     const picker = debugElement.query(By.css('.ant-calendar-picker')).nativeElement as HTMLElement;
+  //     expect(picker.classList.contains(className)).toBeTruthy();
+  //   });
+  //
+  //   it('should support nzDisabledDate', fakeAsync(() => {
+  //     fixture.detectChanges();
+  //     const compareDate = new Date('2018-11-15 00:00:00');
+  //     fixtureInstance.nzValue = new Date('2018-11-11 12:12:12');
+  //     fixtureInstance.nzDisabledDate = (current: Date) => isSameDay(current, compareDate);
+  //     fixture.detectChanges();
+  //     dispatchMouseEvent(getPickerTrigger(), 'click');
+  //     fixture.detectChanges();
+  //     tick(500);
+  //     fixture.detectChanges();
+  //     const disabledCell = queryFromOverlay('tbody.ant-calendar-tbody td.ant-calendar-disabled-cell');
+  //     expect(disabledCell.textContent.trim()).toBe('15');
+  //   }));
+  //
+  //   it('should support nzLocale', () => {
+  //     const featureKey = 'TEST_PLACEHOLDER';
+  //     fixtureInstance.nzLocale = { lang: { placeholder: featureKey } };
+  //     fixture.detectChanges();
+  //     expect(getPickerTrigger().getAttribute('placeholder')).toBe(featureKey);
+  //   });
+  //
+  //   it('should support nzPlaceholder', () => {
+  //     const featureKey = fixtureInstance.nzPlaceholder = 'TEST_PLACEHOLDER';
+  //     fixture.detectChanges();
+  //     expect(getPickerTrigger().getAttribute('placeholder')).toBe(featureKey);
+  //   });
+  //
+  //   it('should support nzPopupStyle', fakeAsync(() => {
+  //     fixtureInstance.nzPopupStyle = { color: 'red' };
+  //     fixture.detectChanges();
+  //     dispatchMouseEvent(getPickerTrigger(), 'click');
+  //     fixture.detectChanges();
+  //     tick(500);
+  //     fixture.detectChanges();
+  //     expect(getPickerContainer().style.color).toBe('red');
+  //   }));
+  //
+  //   it('should support nzDropdownClassName', fakeAsync(() => {
+  //     const keyCls = fixtureInstance.nzDropdownClassName = 'my-test-class';
+  //     fixture.detectChanges();
+  //     dispatchMouseEvent(getPickerTrigger(), 'click');
+  //     fixture.detectChanges();
+  //     tick(500);
+  //     fixture.detectChanges();
+  //     expect(getPickerContainer().classList.contains(keyCls)).toBeTruthy();
+  //   }));
+  //
+  //   it('should support nzSize', () => {
+  //     fixtureInstance.nzSize = 'large';
+  //     fixture.detectChanges();
+  //     expect(getPicker().classList.contains('ant-calendar-picker-large')).toBeTruthy();
+  //
+  //     fixtureInstance.nzSize = 'small';
+  //     fixture.detectChanges();
+  //     expect(getPicker().classList.contains('ant-calendar-picker-small')).toBeTruthy();
+  //   });
+  //
+  //   it('should support nzStyle', () => {
+  //     fixtureInstance.nzStyle = { color: 'blue' };
+  //     fixture.detectChanges();
+  //     expect(getPicker().style.color).toBe('blue');
+  //   });
+  //
+  //   it('should support nzOnOpenChange', () => {
+  //     const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
+  //     fixture.detectChanges();
+  //     dispatchMouseEvent(getPickerTrigger(), 'click');
+  //     fixture.detectChanges();
+  //     expect(nzOnOpenChange).toHaveBeenCalledWith(true);
+  //
+  //     dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+  //     fixture.detectChanges();
+  //     expect(nzOnOpenChange).toHaveBeenCalledWith(false);
+  //     expect(nzOnOpenChange).toHaveBeenCalledTimes(2);
+  //   });
+  //
+  //   it('should support nzValue', fakeAsync(() => {
+  //     fixtureInstance.nzValue = new Date('2018-11-11');
+  //     fixture.detectChanges();
+  //     dispatchMouseEvent(getPickerTrigger(), 'click');
+  //     fixture.detectChanges();
+  //     tick(500);
+  //     fixture.detectChanges();
+  //     expect(getSelectedDayCell().textContent.trim()).toBe('11');
+  //   }));
+  //
+  //   it('should support nzOnChange', fakeAsync(() => {
+  //     fixtureInstance.nzValue = new Date('2018-11-11');
+  //     const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+  //     fixture.detectChanges();
+  //     dispatchMouseEvent(getPickerTrigger(), 'click');
+  //     fixture.detectChanges();
+  //     tick(500);
+  //     fixture.detectChanges();
+  //
+  //     const cell = getFirstCell(); // Use the first cell
+  //     const cellText = cell.textContent.trim();
+  //     dispatchMouseEvent(cell, 'click');
+  //     fixture.detectChanges();
+  //     tick(500);
+  //     fixture.detectChanges();
+  //     expect(nzOnChange).toHaveBeenCalled();
+  //     const result = nzOnChange.calls.allArgs()[ 0 ][ 0 ];
+  //     expect(result.getDate()).toBe(+cellText);
+  //   }));
+  //
+  // });
 
   describe('panel switch and move forward/afterward', () => {
     beforeEach(() => fixtureInstance.useSuite = 1);
