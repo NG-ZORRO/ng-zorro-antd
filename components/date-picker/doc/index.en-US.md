@@ -19,7 +19,7 @@ There are four kinds of picker:
 - RangePicker
 - WeekPicker
 
-**Note: ** All input and output date objects are `CandyDate`,`CandyDate` is a minimalist date processing tool, the currently supported API is continuously improved, you can [click here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/date-picker/lib/candy-date/candy-date.ts) to get more informations. You can also get native `Date` objects directly with `CandyDate.nativeDate`. Specific usage You can view DEMO.
+**Note: ** All input and output date objects are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manpulate it with [date-fns](https://date-fns.org/).
 
 ### Common API
 
@@ -30,9 +30,9 @@ The following APIs are shared by DatePicker, MonthPicker, RangePicker, WeekPicke
 | nzAllowClear | Whether to show clear button | boolean | true |
 | nzAutoFocus | get focus when component mounted | boolean | false |
 | nzClassName | picker className | string | '' |
-| nzDateRender | custom rendering function for date cells (Not support by MonthPicker) | TemplateRef&lt;CandyDate&gt; / string or (d: CandyDate) => TemplateRef&lt;CandyDate&gt; / string | - |
+| nzDateRender | custom rendering function for date cells (Not support by MonthPicker) | TemplateRef&lt;Date&gt; / string or (d: Date) => TemplateRef&lt;Date&gt; / string | - |
 | nzDisabled | determine whether the DatePicker is disabled | boolean | false |
-| nzDisabledDate | specify the date that cannot be selected | (current: CandyDate) => boolean | - |
+| nzDisabledDate | specify the date that cannot be selected | (current: Date) => boolean | - |
 | nzLocale | localization configuration | object | [default](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
 | nzOpen | open state of picker | boolean | - |
 | nzPlaceholder | placeholder of date input | string / string[] | - |
@@ -46,47 +46,43 @@ The following APIs are shared by DatePicker, MonthPicker, RangePicker, WeekPicke
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzDefaultValue | to set default date | CandyDate | - |
-| nzDisabledTime | to specify the time that cannot be selected | (current: CandyDate) => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds } | - |
+| ngModel | Date | Date | - |
+| ngModelChange | Date change callback | `(ngModel:Date)=>{}` | - |
+| nzDisabledTime | to specify the time that cannot be selected | (current: Date) => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds } | - |
 | nzFormat | to set the date format, refer to [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-MM-dd" |
 | nzRenderExtraFooter | render extra footer in panel | TemplateRef / string or () => TemplateRef / string | - |
 | nzShowTime | to provide an additional time selection | object / boolean | [TimePicker Options](/components/time-picker/en#api) |
 | nzShowToday | whether to show "Today" button | boolean | true |
-| nzValue | to set date | CandyDate | - |
-| nzOnChange | a callback emitter, can be executed when the selected time is changing | EventEmitter&lt;{ date: CandyDate, dateString: string }&gt; | - |
-| nzOnOk | callback when click ok button | EventEmitter&lt;CandyDate&gt; | - |
+| nzOnOk | callback when click ok button | EventEmitter&lt;Date&gt; | - |
 
 ### MonthPicker
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzDefaultValue | to set default date | CandyDate | - |
+| ngModel | Date | Date | - |
+| ngModelChange | Date change callback | `(ngModel:Date)=>{}` | - |
 | nzFormat | to set the date format, refer to [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-MM" |
 | nzRenderExtraFooter | render extra footer in panel | TemplateRef / string or () => TemplateRef / string | - |
-| nzValue | to set date | CandyDate | - |
-| nzOnChange | a callback emitter, can be executed when the selected time is changing | EventEmitter&lt;{ date: CandyDate, dateString: string }&gt; | - |
 
 ### WeekPicker
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzDefaultValue | to set default date | CandyDate | - |
+| ngModel | Date | Date | - |
+| ngModelChange | Date change callback | `(ngModel:Date)=>{}` | - |
 | nzFormat | to set the date format, refer to [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-ww" |
-| nzValue | to set date | CandyDate | - |
-| nzOnChange | a callback emitter, can be executed when the selected time is changing | EventEmitter&lt;{ date: CandyDate, dateString: string }&gt; | - |
 
 ### RangePicker
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzDefaultValue | to set default date | CandyDate[] | - |
-| nzDisabledTime | to specify the time that cannot be selected | (current: CandyDate, partial: 'start' / 'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds } | - |
+| ngModel | Date | Date[] | - |
+| ngModelChange | Date change callback | `(ngModel:Date[])=>{}` | - |
+| nzDisabledTime | to specify the time that cannot be selected | (current: Date, partial: 'start' / 'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds } | - |
 | nzFormat | to set the date format | string | "yyyy-MM-dd" |
-| nzRanges | preseted ranges for quick selection | { [ key: string ]: CandyDate[] } | - |
+| nzRanges | preseted ranges for quick selection | { [ key: string ]: Date[] } | - |
 | nzRenderExtraFooter | render extra footer in panel | TemplateRef / string or () => TemplateRef / string | - |
 | nzShowTime | to provide an additional time selection | object / boolean | [TimePicker Options](/components/time-picker/en#api) |
-| nzValue | to set date | CandyDate[] | - |
-| nzOnChange | a callback emitter, can be executed when the selected time is changing | EventEmitter&lt;{ date: CandyDate[], dateString: string[] }&gt; | - |
-| nzOnOk | callback when click ok button | EventEmitter&lt;CandyDate[]&gt; | - |
+| nzValue | to set date | Date[] | - |
 
 > Currently supported `TimePicker` parameters in `NzShowTime` are: `nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`

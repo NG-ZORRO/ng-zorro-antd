@@ -14,7 +14,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Input() locale: NzCalendarI18nInterface;
   @Input() enablePrev: boolean = true;
   @Input() enableNext: boolean = true;
-  @Input() disabledMonth: (date: CandyDate) => boolean;
+  @Input() disabledMonth: (date: Date) => boolean;
   @Input() showTimePicker: boolean = false;
   @Input() forceToMonth: boolean = false; // Force change panel to month without value change when choose a year/decade
 

@@ -15,7 +15,7 @@ export interface PickerResultRange {
 }
 export type PickerResult = PickerResultSingle | PickerResultRange;
 
-export type DisabledDateFn = (d: CandyDate) => boolean;
+export type DisabledDateFn = (d: Date) => boolean;
 
 export type DisabledTimePartial = 'start' | 'end';
 
@@ -25,7 +25,7 @@ export interface DisabledTimeConfig {
   nzDisabledSeconds(hour: number, minute: number): number[];
 }
 
-export type DisabledTimeFn = (current: CandyDate | CandyDate[], partial?: DisabledTimePartial) => DisabledTimeConfig;
+export type DisabledTimeFn = (current: Date | Date[], partial?: DisabledTimePartial) => DisabledTimeConfig;
 
 export interface SupportTimeOptions {
   nzFormat?: string;
@@ -41,7 +41,7 @@ export interface SupportTimeOptions {
 }
 
 export interface PresetRanges {
-  [ key: string ]: CandyDate[];
+  [ key: string ]: Date[];
 }
 
 export type PanelMode = 'decade' | 'year' | 'month' | 'date' | 'time';

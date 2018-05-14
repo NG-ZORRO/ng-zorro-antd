@@ -1,5 +1,21 @@
-import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  CdkConnectedOverlay,
+  CdkOverlayOrigin,
+  ConnectedOverlayPositionChange,
+  ConnectionPositionPair
+} from '@angular/cdk/overlay';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 
 import { dropDownAnimation } from '../core/animation/dropdown-animations';
 import { DEFAULT_DATEPICKER_POSITIONS } from '../core/overlay/overlay-position-map';
@@ -7,9 +23,9 @@ import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CandyDate } from './lib/candy-date';
 
 @Component({
-  selector: 'nz-picker',
-  templateUrl: 'picker.component.html',
-  animations: [
+  selector       : 'nz-picker',
+  templateUrl    : 'picker.component.html',
+  animations     : [
     dropDownAnimation
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -37,6 +53,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
   @ViewChild('pickerInput') pickerInput: ElementRef;
 
   prefixCls = 'ant-calendar';
+  animationOpenState = false;
   overlayOpen: boolean = false; // Available when "open"=undefined
   overlayOffsetY: number = 0;
   overlayOffsetX: number = -2;
@@ -56,7 +73,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
       overlayY: 'bottom'
     }
   ] as ConnectionPositionPair[];
-  currentPosition: 'top' | 'bottom';
+  currentPosition: 'top' | 'bottom' = 'bottom';
   // get valueReadable(): string {
   //   return this.value && this.i18n.formatDateCompatible(this.value.nativeDate, this.format);
   // }
@@ -64,9 +81,11 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
     return this.isOpenHandledByUser() ? this.open : this.overlayOpen;
   }
 
-  constructor(private i18n: NzI18nService, private changeDetector: ChangeDetectorRef) { }
+  constructor(private i18n: NzI18nService, private changeDetector: ChangeDetectorRef) {
+  }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+  }
 
   ngAfterViewInit(): void {
     if (this.autoFocus) {
@@ -132,7 +151,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
   }
 
   getPlaceholder(partType?: RangePartType): string {
-    return this.isRange ? this.placeholder[this.getPartTypeIndex(partType)] : this.placeholder as string;
+    return this.isRange ? this.placeholder[ this.getPartTypeIndex(partType) ] : this.placeholder as string;
   }
 
   isEmptyValue(value: CandyDate[]): boolean {
@@ -146,6 +165,16 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
   // Whether open state is permanently controlled by user himself
   isOpenHandledByUser(): boolean {
     return this.open !== undefined;
+  }
+
+  animationStart(): void {
+    if (this.realOpenState) {
+      this.animationOpenState = true;
+    }
+  }
+
+  animationDone(): void {
+    this.animationOpenState = this.realOpenState;
   }
 }
 

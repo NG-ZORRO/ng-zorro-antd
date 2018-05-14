@@ -95,7 +95,7 @@
 <ng-template #tplRangeQuickSelector>
   <a *ngFor="let name of getObjectKeys(ranges)"
     (click)="onClickPresetRange(ranges[name])"
-    (mouseenter)="hoverValue = ranges[name]"
+    (mouseenter)="onHoverPresetRange(ranges[name])"
     (mouseleave)="onPresetRangeMouseLeave()"
   >{{ name }}</a>
 </ng-template>
