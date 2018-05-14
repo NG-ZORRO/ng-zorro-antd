@@ -209,6 +209,7 @@ describe('Coverage supplements', () => {
     });
 
     it('should cover render', () => {
+      // cover render
       componentInstance.value = null;
       spyOn(componentInstance, 'makePanelYears');
       expect(componentInstance.makePanelYears).not.toHaveBeenCalled();
