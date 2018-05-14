@@ -151,7 +151,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, Cont
   // Safe way of setting value with default
   private setValue(value: CompatibleDate): void {
     if (this.isRange) {
-      this.nzValue = value ? [ new CandyDate(value[ 0 ]), new CandyDate(value[ 1 ]) ] : [];
+      this.nzValue = value ? (value as Date[]).map(val => new CandyDate(val)) : [];
     } else {
       this.nzValue = value ? new CandyDate(value as Date) : null;
     }
