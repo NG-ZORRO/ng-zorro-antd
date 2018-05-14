@@ -1,3 +1,5 @@
+import { TemplateRef, Type } from '@angular/core';
+
 // tslint:disable-next-line:no-any
 export function isNotNil(value: any): boolean {
   return (typeof(value) !== 'undefined') && value !== null;
@@ -43,4 +45,16 @@ export function isEmpty(element: HTMLElement): boolean {
     }
   }
   return true;
+}
+
+export function isNonEmptyString(value: any): boolean { // tslint:disable-line:no-any
+  return typeof value === 'string' && value !== '';
+}
+
+export function isTemplateRef(value: any): boolean { // tslint:disable-line:no-any
+  return value instanceof TemplateRef;
+}
+
+export function isComponent(value: any): boolean { // tslint:disable-line:no-any
+  return value instanceof Type;
 }
