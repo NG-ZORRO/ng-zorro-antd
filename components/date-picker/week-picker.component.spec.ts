@@ -47,6 +47,8 @@ describe('NzWeekPickerComponent', () => {
     tick(3000);
     fixture.detectChanges();
     openPickerByClickTrigger();
+    tick(3000);
+    fixture.detectChanges();
     expect(queryFromOverlay('.ant-calendar-week-number-cell')).toBeTruthy();
   }));
 
@@ -62,8 +64,6 @@ describe('NzWeekPickerComponent', () => {
 
   function openPickerByClickTrigger(): void {
     dispatchMouseEvent(getPickerTrigger(), 'click');
-    fixture.detectChanges();
-    tick(3000);
     fixture.detectChanges();
   }
 
