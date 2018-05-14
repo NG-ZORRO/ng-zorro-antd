@@ -7,11 +7,11 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import * as isBefore from 'date-fns/is_before';
 import { dispatchMouseEvent } from '../core/testing';
 import { NzDatePickerModule } from './date-picker.module';
 import { CandyDate } from './lib/candy-date';
 import { PickerResultSingle } from './standard-types';
-import * as isBefore from 'date-fns/is_before';
 
 registerLocaleData(zh);
 
@@ -119,7 +119,7 @@ describe('NzMonthPickerComponent', () => {
       expect(!!debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeTruthy();
     }));
 
-    it('should support nzOpen if assigned', () => {
+    it('should support nzOpen if assigned', fakeAsync(() => {
       fixtureInstance.useSuite = 2;
 
       fixture.detectChanges();
@@ -141,7 +141,7 @@ describe('NzMonthPickerComponent', () => {
         fixture.detectChanges();
         expect(getPickerContainer()).toBeNull();
       });
-    });
+    }));
 
     it('should support nzClassName', () => {
       const className = fixtureInstance.nzClassName = 'my-test-class';
@@ -266,12 +266,14 @@ describe('NzMonthPickerComponent', () => {
   describe('panel switch and move forward/afterward', () => {
     beforeEach(() => fixtureInstance.useSuite = 1);
 
-    it('should support year panel changes', () => {
-      fixtureInstance.nzValue = new CandyDate('2018-11');
+    it('should support year panel changes', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2018-11');
       fixture.detectChanges();
       openPickerByClickTrigger();
       // Click year select to show year panel
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-month-panel-year-select'), 'click');
+      fixture.detectChanges();
+      tick(1000);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-calendar-year-panel')).toBeTruthy();
       expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent).toContain('2010');
@@ -279,47 +281,63 @@ describe('NzMonthPickerComponent', () => {
       // Goto previous year
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-year-panel-prev-decade-btn'), 'click');
       fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
       expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent).toContain('2000');
       expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent).toContain('2009');
       // Goto next year * 2
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-year-panel-next-decade-btn'), 'click');
       fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-year-panel-next-decade-btn'), 'click');
+      fixture.detectChanges();
+      tick(1000);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent).toContain('2020');
       expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent).toContain('2029');
-    });
+    }));
 
-    it('should support decade panel changes', () => {
-      fixtureInstance.nzValue = new CandyDate('2018-11');
+    it('should support decade panel changes', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2018-11');
       fixture.detectChanges();
       openPickerByClickTrigger();
       // Click to show decade panel
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-month-panel-year-select'), 'click');
       fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-year-panel-decade-select'), 'click');
+      fixture.detectChanges();
+      tick(1000);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-calendar-decade-panel')).toBeTruthy();
       // Goto previous decade
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-decade-panel-prev-century-btn'), 'click');
+      fixture.detectChanges();
+      tick(1000);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-calendar-decade-panel-century').textContent).toContain('1900');
       expect(queryFromOverlay('.ant-calendar-decade-panel-century').textContent).toContain('1999');
       // Goto next decade * 2
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-decade-panel-next-century-btn'), 'click');
       fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-decade-panel-next-century-btn'), 'click');
+      fixture.detectChanges();
+      tick(1000);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-calendar-decade-panel-century').textContent).toContain('2100');
       expect(queryFromOverlay('.ant-calendar-decade-panel-century').textContent).toContain('2199');
-    });
+    }));
 
   }); // /panel switch and move forward/afterward
 
   describe('specified date picker testing', () => {
     beforeEach(() => fixtureInstance.useSuite = 1);
 
-    it('should support nzRenderExtraFooter', () => {
+    it('should support nzRenderExtraFooter', fakeAsync(() => {
       fixtureInstance.nzRenderExtraFooter = () => fixtureInstance.tplExtraFooter;
       fixture.detectChanges();
 
@@ -329,7 +347,7 @@ describe('NzMonthPickerComponent', () => {
       fixtureInstance.nzRenderExtraFooter = 'TEST_EXTRA_FOOTER_STRING';
       fixture.detectChanges();
       expect(overlayContainerElement.textContent.indexOf(fixtureInstance.nzRenderExtraFooter) > -1).toBeTruthy();
-    });
+    }));
 
   }); // /specified date picker testing
 
@@ -337,9 +355,9 @@ describe('NzMonthPickerComponent', () => {
     beforeEach(() => fixtureInstance.useSuite = 3);
 
     it('should specified date provide by "modelValue" be choosed', fakeAsync(() => {
-      fixtureInstance.modelValue = new CandyDate('2018-11');
+      fixtureInstance.modelValue = new Date('2018-11');
       fixture.detectChanges();
-      tick(); // Wait writeValue() tobe done
+      flush(); // Wait writeValue() tobe done
       fixture.detectChanges();
       expect(getSelectedMonthCell().textContent).toContain('11');
 
@@ -347,6 +365,8 @@ describe('NzMonthPickerComponent', () => {
       const cell = getFirstMonthCell();
       const cellText = cell.textContent.trim();
       dispatchMouseEvent(cell, 'click');
+      fixture.detectChanges();
+      tick(1000);
       fixture.detectChanges();
       expect(fixtureInstance.modelValue.getMonth() + 1).toBe(parseInt(cellText, 10));
     }));
@@ -380,6 +400,8 @@ describe('NzMonthPickerComponent', () => {
 
   function openPickerByClickTrigger(): void {
     dispatchMouseEvent(getPickerTrigger(), 'click');
+    fixture.detectChanges();
+    tick(1000);
     fixture.detectChanges();
   }
 
