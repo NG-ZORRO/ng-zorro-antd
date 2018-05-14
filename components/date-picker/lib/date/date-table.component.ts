@@ -22,8 +22,8 @@ export class DateTableComponent implements OnInit, OnChanges {
   @Output() valueChange = new EventEmitter<CandyDate>();
 
   @Input() showWeek: boolean;
-  @Input() disabledDate: (d: CandyDate) => boolean;
-  @Input() dateRender: FunctionProp<TemplateRef<CandyDate> | string>; // Customize date content while rendering
+  @Input() disabledDate: (d: Date) => boolean;
+  @Input() dateRender: FunctionProp<TemplateRef<Date> | string>; // Customize date content while rendering
 
   @Output() dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
 
@@ -173,7 +173,7 @@ export class DateTableComponent implements OnInit, OnChanges {
           week.isActive = true;
         }
 
-        if (this.disabledDate && this.disabledDate(current)) {
+        if (this.disabledDate && this.disabledDate(current.nativeDate)) {
           cell.isDisabled = true;
         }
 
@@ -236,7 +236,7 @@ export interface WeekDayLabel {
 export interface DateCell {
   value: CandyDate;
   title: string;
-  customContent: TemplateRef<CandyDate> | string;
+  customContent: TemplateRef<Date> | string;
   content: string;
   isSelected?: boolean;
   isToday?: boolean;

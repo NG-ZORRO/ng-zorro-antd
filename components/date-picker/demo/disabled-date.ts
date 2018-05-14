@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { CandyDate } from 'ng-zorro-antd';
+import { Component } from '@angular/core';
+import * as differenceInDays from 'date-fns/difference_in_days';
+import * as setHours from 'date-fns/set_hours';
 
 @Component({
   selector: 'nz-demo-date-picker-disabled-date',
@@ -8,8 +9,8 @@ import { CandyDate } from 'ng-zorro-antd';
       nzFormat="yyyy-MM-dd HH:mm:ss"
       [nzDisabledDate]="disabledDate"
       [nzDisabledTime]="disabledDateTime"
-      [nzShowTime]="{ nzDefaultOpenValue: timeDefaultValue }"
-    ></nz-date-picker>
+      [nzShowTime]="{ nzDefaultOpenValue: timeDefaultValue }">
+    </nz-date-picker>
     <br>
     <nz-month-picker [nzDisabledDate]="disabledDate" nzPlaceholder="Select month"></nz-month-picker>
     <br>
@@ -20,22 +21,16 @@ import { CandyDate } from 'ng-zorro-antd';
       nzFormat="yyyy-MM-dd HH:mm:ss"
     ></nz-range-picker>
   `,
-  styles: [`
+  styles  : [ `
     :host ::ng-deep .ant-calendar-picker {
       margin: 0 8px 12px 0;
     }
-  `]
+  ` ]
 })
 
 export class NzDemoDatePickerDisabledDateComponent {
-  today = new CandyDate();
-  timeDefaultValue = (new CandyDate()).setHms(0, 0, 0);
-
-  constructor() {
-    this.disabledDate = this.disabledDate.bind(this);
-    this.disabledDateTime = this.disabledDateTime.bind(this);
-    this.disabledRangeTime = this.disabledRangeTime.bind(this);
-  }
+  today = new Date();
+  timeDefaultValue = setHours(new Date());
 
   range(start: number, end: number): number[] {
     const result = [];
@@ -45,31 +40,31 @@ export class NzDemoDatePickerDisabledDateComponent {
     return result;
   }
 
-  disabledDate(current: CandyDate): boolean {
+  disabledDate = (current: Date): boolean => {
     // Can not select days before today and today
-    return current.isBefore(this.today, 'day') || current.isSame(this.today, 'day');
+    return differenceInDays(current, this.today) > 0;
   }
 
-  disabledDateTime(): object {
+  disabledDateTime = (): object => {
     return {
-      nzDisabledHours: () => this.range(0, 24).splice(4, 20),
+      nzDisabledHours  : () => this.range(0, 24).splice(4, 20),
       nzDisabledMinutes: () => this.range(30, 60),
-      nzDisabledSeconds: () => [55, 56]
+      nzDisabledSeconds: () => [ 55, 56 ]
     };
   }
 
-  disabledRangeTime(value: CandyDate[], type: 'start' | 'end'): object {
+  disabledRangeTime = (value: Date[], type: 'start' | 'end'): object => {
     if (type === 'start') {
       return {
-        nzDisabledHours: () => this.range(0, 60).splice(4, 20),
+        nzDisabledHours  : () => this.range(0, 60).splice(4, 20),
         nzDisabledMinutes: () => this.range(30, 60),
-        nzDisabledSeconds: () => [55, 56]
+        nzDisabledSeconds: () => [ 55, 56 ]
       };
     }
     return {
-      nzDisabledHours: () => this.range(0, 60).splice(20, 4),
+      nzDisabledHours  : () => this.range(0, 60).splice(20, 4),
       nzDisabledMinutes: () => this.range(0, 31),
-      nzDisabledSeconds: () => [55, 56]
+      nzDisabledSeconds: () => [ 55, 56 ]
     };
   }
 }

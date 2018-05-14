@@ -3,13 +3,20 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { FunctionProp } from '../../../core/types/common-wrap';
 import { valueFunctionProp } from '../../../core/util/convert';
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
-import { DisabledDateFn, DisabledTimeConfig, DisabledTimeFn, DisabledTimePartial, PanelMode, PresetRanges, SupportTimeOptions } from '../../standard-types';
+import {
+  DisabledDateFn,
+  DisabledTimeConfig,
+  DisabledTimeFn,
+  DisabledTimePartial,
+  PanelMode,
+  PresetRanges,
+  SupportTimeOptions
+} from '../../standard-types';
 import { CandyDate } from '../candy-date';
-import { DateChangeSource } from '../date-change-event';
 import { getTimeConfig, isAllowedDate } from '../util';
 
 @Component({
-  selector: 'date-range-popup',
+  selector   : 'date-range-popup',
   templateUrl: 'date-range-popup.component.html'
 })
 
@@ -26,7 +33,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   @Input() showTime: SupportTimeOptions | boolean;
   @Input() extraFooter: TemplateRef<void> | string;
   @Input() ranges: FunctionProp<PresetRanges>;
-  @Input() dateRender: FunctionProp<TemplateRef<CandyDate> | string>;
+  @Input() dateRender: FunctionProp<TemplateRef<Date> | string>;
   @Input() popupStyle: object;
   @Input() dropdownClassName: string;
 
@@ -55,6 +62,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   get hasTimePicker(): boolean {
     return !!this.showTime;
   }
+
   get hasFooter(): boolean {
     return this.showToday || this.hasTimePicker || !!this.extraFooter || !!this.ranges;
   }
@@ -64,7 +72,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     // Initialization for range properties to prevent errors while later assignment
     if (this.isRange) {
-      ['placeholder', 'panelMode', 'selectedValue', 'hoverValue' ].forEach((prop) => this.initialArray(prop));
+      [ 'placeholder', 'panelMode', 'selectedValue', 'hoverValue' ].forEach((prop) => this.initialArray(prop));
     }
   }
 
@@ -108,8 +116,8 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   }
 
   onDayHover(value: CandyDate): void {
-    if (this.isRange && this.selectedValue[0] && !this.selectedValue[1]) { // When right value is selected, don't do hover
-      const base = this.selectedValue[0]; // Use the left of selected value as the base to decide later hoverValue
+    if (this.isRange && this.selectedValue[ 0 ] && !this.selectedValue[ 1 ]) { // When right value is selected, don't do hover
+      const base = this.selectedValue[ 0 ]; // Use the left of selected value as the base to decide later hoverValue
       if (base.isBefore(value, 'day')) {
         this.hoverValue = [ base, value ];
       } else {
@@ -221,32 +229,34 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   }
 
   getPlaceholder(partType?: RangePartType): string {
-    return this.isRange ? this.placeholder[this.getPartTypeIndex(partType)] : this.placeholder as string;
+    return this.isRange ? this.placeholder[ this.getPartTypeIndex(partType) ] : this.placeholder as string;
   }
 
   hasSelectedValue(): boolean {
-    return this.selectedValue && !!this.selectedValue[1] && !!this.selectedValue[0];
+    return this.selectedValue && !!this.selectedValue[ 1 ] && !!this.selectedValue[ 0 ];
   }
 
-  disabledStartTime(value: CandyDate): DisabledTimeConfig {
+  disabledStartTime = (value: Date): DisabledTimeConfig => {
     return this.disabledTime && this.disabledTime(value, 'start');
-  }
+  };
 
-  disabledEndTime(value: CandyDate): DisabledTimeConfig {
+  disabledEndTime = (value: Date): DisabledTimeConfig => {
     return this.disabledTime && this.disabledTime(value, 'end');
-  }
+  };
 
   isAllowedSelectedValue(): boolean {
     const selectedValue = this.selectedValue;
-    if (selectedValue && selectedValue[0] && selectedValue[1]) {
-      return isAllowedDate(selectedValue[0], this.disabledDate, this.disabledStartTime.bind(this)) &&
-        isAllowedDate(selectedValue[1], this.disabledDate, this.disabledEndTime.bind(this));
+    if (selectedValue && selectedValue[ 0 ] && selectedValue[ 1 ]) {
+      return isAllowedDate(selectedValue[ 0 ], this.disabledDate, this.disabledStartTime) &&
+        isAllowedDate(selectedValue[ 1 ], this.disabledDate, this.disabledEndTime);
     }
     return false;
   }
 
   timePickerDisabled(): boolean {
-    if (!this.hasTimePicker) { return true; }
+    if (!this.hasTimePicker) {
+      return true;
+    }
 
     if (this.isRange) {
       return !this.hasSelectedValue() || !!this.hoverValue.length;
@@ -256,7 +266,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   }
 
   okDisabled(): boolean {
-    if (!this.hasTimePicker) { return true; }
+    if (!this.hasTimePicker) {
+      return true;
+    }
 
     if (this.isRange) {
       return !this.isAllowedSelectedValue() || !this.hasSelectedValue() || !!this.hoverValue.length;
@@ -272,14 +284,18 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     return null;
   }
 
-  onClickPresetRange(val: CandyDate[]): void {
+  onClickPresetRange(val: Date[]): void {
     const value = valueFunctionProp(val);
-    this.setValue(value);
+    this.setValue([ new CandyDate(value[ 0 ]), new CandyDate(value[ 1 ]) ]);
     this.resultOk.emit();
   }
 
   onPresetRangeMouseLeave(): void {
     this.clearHoverValue();
+  }
+
+  onHoverPresetRange(val: Date[]): void {
+    this.hoverValue = ([ new CandyDate(val[ 0 ]), new CandyDate(val[ 1 ]) ]);
   }
 
   getObjectKeys(obj: object): string[] {
@@ -298,7 +314,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     if (this.showTime) {
       const showTime = typeof this.showTime === 'object' ? this.showTime : {};
       if (this.isRange) {
-        this.timeOptions = [ this.overrideTimeOptions(showTime, this.value[0], 'start'), this.overrideTimeOptions(showTime, this.value[1], 'end') ];
+        this.timeOptions = [ this.overrideTimeOptions(showTime, this.value[ 0 ], 'start'), this.overrideTimeOptions(showTime, this.value[ 1 ], 'end') ];
       } else {
         this.timeOptions = this.overrideTimeOptions(showTime, this.value as CandyDate);
       }
@@ -310,7 +326,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   private overrideTimeOptions(origin: SupportTimeOptions, value: CandyDate, partial?: DisabledTimePartial): SupportTimeOptions {
     let disabledTimeFn;
     if (partial) {
-      disabledTimeFn = partial === 'start' ? this.disabledStartTime.bind(this) : this.disabledEndTime.bind(this);
+      disabledTimeFn = partial === 'start' ? this.disabledStartTime : this.disabledEndTime;
     } else {
       disabledTimeFn = this.disabledTime;
     }
@@ -337,7 +353,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   }
 
   private overrideHms(from: CandyDate, to: CandyDate): CandyDate {
-    if (!from || !to) { return null; }
+    if (!from || !to) {
+      return null;
+    }
     return to.setHms(from.getHours(), from.getMinutes(), from.getSeconds());
   }
 
@@ -379,7 +397,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   }
 
   private cloneRangeDate(value: CandyDate[]): CandyDate[] {
-    return [ value[0] && value[0].clone(), value[1] && value[1].clone() ] as CandyDate[];
+    return [ value[ 0 ] && value[ 0 ].clone(), value[ 1 ] && value[ 1 ].clone() ] as CandyDate[];
   }
 
   private initialArray(key: string): void {

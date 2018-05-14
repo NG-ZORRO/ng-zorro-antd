@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { PanelMode } from 'ng-zorro-antd';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-date-picker-mode',
@@ -8,8 +7,8 @@ import { PanelMode } from 'ng-zorro-antd';
       [nzMode]="dateMode"
       nzShowTime
       (nzOnOpenChange)="handleDateOpenChange($event)"
-      (nzOnPanelChange)="handleDatePanelChange($event)"
-    ></nz-date-picker>
+      (nzOnPanelChange)="handleDatePanelChange($event)">
+    </nz-date-picker>
   `,
   styles: [`
     :host ::ng-deep .ant-calendar-picker {
@@ -27,8 +26,7 @@ export class NzDemoDatePickerModeComponent {
     }
   }
 
-  handleDatePanelChange(mode: PanelMode): void {
+  handleDatePanelChange(mode: string): void {
     console.log('handleDatePanelChange: ', mode);
-    // this.dateMode = mode;
   }
 }

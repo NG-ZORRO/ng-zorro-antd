@@ -13,7 +13,7 @@ export class TodayButtonComponent implements OnInit, OnChanges {
   @Input() locale: NzCalendarI18nInterface;
   @Input() hasTimePicker: boolean = false;
   // @Input() disabled: boolean = false;
-  @Input() disabledDate: (d: CandyDate) => boolean;
+  @Input() disabledDate: (d: Date) => boolean;
 
   @Output() clickToday = new EventEmitter<CandyDate>();
 
@@ -31,7 +31,7 @@ export class TodayButtonComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabledDate) {
-      this.isDisabled = this.disabledDate && this.disabledDate(this.now);
+      this.isDisabled = this.disabledDate && this.disabledDate(this.now.nativeDate);
     }
   }
 

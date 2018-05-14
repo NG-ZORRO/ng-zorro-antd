@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-The input box comes in three sizes. `default` will be used if `size` is omitted.
+The input box comes in three sizes. `default` will be used if `nzSize` is omitted.

@@ -1,55 +1,54 @@
-import { Component, OnInit } from '@angular/core';
-import { CandyDate, PickerResultSingle } from 'ng-zorro-antd';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-date-picker-start-end',
   template: `
     <nz-date-picker
-      [nzDisabledDate]="disabledStartDate.bind(this)"
+      [nzDisabledDate]="disabledStartDate"
       nzShowTime
       nzFormat="yyyy-MM-dd HH:mm:ss"
-      [nzValue]="startValue"
+      [(ngModel)]="startValue"
       nzPlaceholder="Start"
-      (nzOnChange)="onStartChange($event)"
+      (ngModelChange)="onStartChange($event)"
       (nzOnOpenChange)="handleStartOpenChange($event)"
     ></nz-date-picker>
     <nz-date-picker
-      [nzDisabledDate]="disabledEndDate.bind(this)"
+      [nzDisabledDate]="disabledEndDate"
       nzShowTime
       nzFormat="yyyy-MM-dd HH:mm:ss"
-      [nzValue]="endValue"
+      [(ngModel)]="endValue"
       nzPlaceholder="End"
       [nzOpen]="endOpen"
-      (nzOnChange)="onEndChange($event)"
+      (ngModelChange)="onEndChange($event)"
       (nzOnOpenChange)="handleEndOpenChange($event)"
     ></nz-date-picker>
   `
 })
 
 export class NzDemoDatePickerStartEndComponent {
-  startValue: CandyDate = null;
-  endValue: CandyDate = null;
+  startValue: Date = null;
+  endValue: Date = null;
   endOpen: boolean = false;
 
-  disabledStartDate(startValue: CandyDate): boolean {
+  disabledStartDate = (startValue: Date): boolean => {
     if (!startValue || !this.endValue) {
       return false;
     }
     return startValue.getTime() > this.endValue.getTime();
   }
 
-  disabledEndDate(endValue: CandyDate): boolean {
+  disabledEndDate = (endValue: Date): boolean => {
     if (!endValue || !this.startValue) {
       return false;
     }
     return endValue.getTime() <= this.startValue.getTime();
   }
 
-  onStartChange({ date }: PickerResultSingle): void {
+  onStartChange(date: Date): void {
     this.startValue = date;
   }
 
-  onEndChange({ date }: PickerResultSingle): void {
+  onEndChange(date: Date): void {
     this.endValue = date;
   }
 

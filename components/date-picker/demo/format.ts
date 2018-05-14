@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { CandyDate } from 'ng-zorro-antd';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-date-picker-format',
   template: `
-    <nz-date-picker [nzDefaultValue]="defaultDate" [nzFormat]="dateFormat"></nz-date-picker>
+    <nz-date-picker [nzFormat]="dateFormat"></nz-date-picker>
     <br>
-    <nz-month-picker [nzDefaultValue]="defaultMonth" [nzFormat]="monthFormat"></nz-month-picker>
+    <nz-month-picker [nzFormat]="monthFormat"></nz-month-picker>
     <br>
-    <nz-range-picker [nzDefaultValue]="defaultRange" [nzFormat]="dateFormat"></nz-range-picker>
+    <nz-range-picker [nzFormat]="dateFormat"></nz-range-picker>
   `,
   styles: [`
     :host ::ng-deep .ant-calendar-picker {
@@ -18,10 +17,6 @@ import { CandyDate } from 'ng-zorro-antd';
 })
 
 export class NzDemoDatePickerFormatComponent {
-  defaultDate = new CandyDate('2015/01/01');
-  defaultMonth = new CandyDate('2015/01');
-  defaultRange = [ new CandyDate('2015/01/01'), new CandyDate('2015/01/01') ];
-
   dateFormat = 'yyyy/MM/dd';
   monthFormat = 'yyyy/MM';
 }

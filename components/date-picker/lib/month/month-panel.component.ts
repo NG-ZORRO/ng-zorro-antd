@@ -14,7 +14,7 @@ export class MonthPanelComponent implements OnInit {
   @Input() value: CandyDate;
   @Output() valueChange = new EventEmitter<CandyDate>();
 
-  @Input() disabledDate: (date: CandyDate) => boolean;
+  @Input() disabledDate: (date: Date) => boolean;
 
   @Output() yearPanelShow = new EventEmitter<void>();
 

@@ -20,7 +20,7 @@ export class CalendarFooterComponent {
   // @Input() disabled: boolean = false;
   @Input() timePickerDisabled: boolean = false;
   @Input() okDisabled: boolean = false;
-  @Input() disabledDate: (d: CandyDate) => boolean;
+  @Input() disabledDate: (d: Date) => boolean;
   @Input() extraFooter: TemplateRef<void> | string;
   @Input() rangeQuickSelector: TemplateRef<void>;
 

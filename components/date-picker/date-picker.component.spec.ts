@@ -631,7 +631,7 @@ describe('NzDatePickerComponent', () => {
 })
 class NzTestDatePickerComponent {
   useSuite: 1 | 2 | 3;
-  @ViewChild('tplDateRender') tplDateRender: TemplateRef<CandyDate>;
+  @ViewChild('tplDateRender') tplDateRender: TemplateRef<Date>;
   @ViewChild('tplExtraFooter') tplExtraFooter: TemplateRef<void>;
 
   // --- Suite 1

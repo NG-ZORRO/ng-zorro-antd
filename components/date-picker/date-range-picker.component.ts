@@ -1,14 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
 
 import { FunctionProp } from '../core/types/common-wrap';
 import { toBoolean, valueFunctionProp, InputBoolean } from '../core/util/convert';
 import { LoggerService } from '../core/util/logger/logger.service';
-import { NzDatePickerI18nInterface } from '../i18n/nz-i18n.interface';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CandyDate } from './lib/candy-date';
 
-import { AbstractPickerComponent, CompatibleValue } from './abstract-picker.component';
-import { NzPickerComponent } from './picker.component';
+import { AbstractPickerComponent, CompatibleDate } from './abstract-picker.component';
 import { DisabledTimeFn, PanelMode, PresetRanges } from './standard-types';
 
 @Component({
@@ -18,7 +16,7 @@ import { DisabledTimeFn, PanelMode, PresetRanges } from './standard-types';
 export class DateRangePickerComponent extends AbstractPickerComponent implements OnInit, OnChanges {
   showWeek: boolean = false; // Should show as week picker
 
-  @Input() nzDateRender: FunctionProp<TemplateRef<CandyDate> | string>;
+  @Input() nzDateRender: FunctionProp<TemplateRef<Date> | string>;
   @Input() nzDisabledTime: DisabledTimeFn;
   @Input() nzRenderExtraFooter: FunctionProp<TemplateRef<void> | string>;
   @Input() @InputBoolean() nzShowToday: boolean = true;
@@ -32,7 +30,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
     this._showTime = typeof value === 'object' ? value : toBoolean(value);
   }
 
-  @Output() nzOnOk = new EventEmitter<CompatibleValue>();
+  @Output() nzOnOk = new EventEmitter<CompatibleDate>();
 
   get realShowToday(): boolean { // Range not support nzShowToday currently
     return !this.isRange && this.nzShowToday;
@@ -76,7 +74,19 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
 
   // Emitted when done with date selecting
   onResultOk(): void {
-    this.nzOnOk.emit(this.nzValue);
+    if (this.isRange) {
+      if ((this.nzValue as CandyDate[]).length) {
+        this.nzOnOk.emit([ this.nzValue[ 0 ].nativeDate, this.nzValue[ 1 ].nativeDate ]);
+      } else {
+        this.nzOnOk.emit([]);
+      }
+    } else {
+      if (this.nzValue) {
+        this.nzOnOk.emit((this.nzValue as CandyDate).nativeDate);
+      } else {
+        this.nzOnOk.emit(null);
+      }
+    }
     this.closeOverlay();
   }
 

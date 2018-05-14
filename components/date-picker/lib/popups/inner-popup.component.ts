@@ -19,7 +19,7 @@ export class InnerPopupComponent implements OnInit, OnChanges {
   @Input() enablePrev: boolean;
   @Input() enableNext: boolean;
   @Input() disabledDate: DisabledDateFn;
-  @Input() dateRender: FunctionProp<TemplateRef<CandyDate> | string>;
+  @Input() dateRender: FunctionProp<TemplateRef<Date> | string>;
   @Input() selectedValue: CandyDate[]; // Range ONLY
   @Input() hoverValue: CandyDate[]; // Range ONLY
 

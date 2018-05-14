@@ -14,7 +14,7 @@ export class CalendarInputComponent implements OnInit {
   @Input() locale: NzCalendarI18nInterface;
   @Input() format: string;
   @Input() placeholder: string;
-  @Input() disabledDate: (d: CandyDate) => boolean;
+  @Input() disabledDate: (d: Date) => boolean;
 
   @Input() value: CandyDate;
   @Output() valueChange = new EventEmitter<CandyDate>();
@@ -29,7 +29,7 @@ export class CalendarInputComponent implements OnInit {
   onInputKeyup(event: Event): void {
     const date = this.checkValidInputDate(event);
 
-    if (!date || (this.disabledDate && this.disabledDate(date))) {
+    if (!date || (this.disabledDate && this.disabledDate(date.nativeDate))) {
       return ;
     }
 
