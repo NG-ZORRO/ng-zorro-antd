@@ -13,25 +13,34 @@ subtitle: 日期选择框
 
 ## API
 
+**注意：**nz-date-picker 的部分 locale 来自于 Angular 自身的[国际化支持](https://angular.io/guide/i18n)，需要在 `main.ts`文件中 引入相应的 Angular 语言包。
+
+例如：
+```typescript
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
+registerLocaleData(zh);
+```
+
 日期类组件包括以下四种形式。
 
-- DatePicker
-- MonthPicker
-- RangePicker
-- WeekPicker
+- nz-date-picker
+- nz-month-picker
+- nz-range-picker
+- nz-week-picker
 
 **注意：** 所有输入输出日期对象均为 [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)，你可以通过 [date-fns](https://date-fns.org/) 工具库获得你需要的数据。
 
 ### 共同的 API
 
-以下 API 为 DatePicker、MonthPicker、RangePicker, WeekPicker 共享的 API。
+以下 API 为 nz-date-picker、nz-month-picker、nz-range-picker, nz-week-picker 共享的 API。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | nzAllowClear | 是否显示清除按钮 | boolean | true |
 | nzAutoFocus | 自动获取焦点 | boolean | false |
 | nzClassName | 选择器 className | string | '' |
-| nzDateRender | 自定义日期单元格的内容（MonthPicker不支持） | TemplateRef&lt;Date&gt; / string or (d: Date) => TemplateRef&lt;Date&gt; / string | - |
+| nzDateRender | 自定义日期单元格的内容（nz-month-picker不支持） | TemplateRef&lt;Date&gt; / string or (d: Date) => TemplateRef&lt;Date&gt; / string | - |
 | nzDisabled | 禁用 | boolean | false |
 | nzDisabledDate | 不可选择的日期 | (current: Date) => boolean | 无 |
 | nzLocale | 国际化配置 | object | [默认配置](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
@@ -43,7 +52,7 @@ subtitle: 日期选择框
 | nzStyle | 自定义输入框样式 | object | {} |
 | nzOnOpenChange | 弹出日历和关闭日历的回调 | EventEmitter&lt;boolean&gt; | 无 |
 
-### DatePicker
+### nz-date-picker
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -56,7 +65,7 @@ subtitle: 日期选择框
 | nzShowToday | 是否展示“今天”按钮 | boolean | true |
 | nzOnOk | 点击确定按钮的回调 | EventEmitter&lt;Date&gt; | - |
 
-### MonthPicker
+### nz-month-picker
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -65,7 +74,7 @@ subtitle: 日期选择框
 | nzFormat | 展示的日期格式，配置参考 [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-MM" |
 | nzRenderExtraFooter | 在面板中添加额外的页脚 | TemplateRef / string or () => TemplateRef / string | - |
 
-### WeekPicker
+### nz-week-picker
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -73,7 +82,7 @@ subtitle: 日期选择框
 | ngModelChange | 时间发生变化的回调 | `(ngModel:Date)=>{}` | 无 |
 | nzFormat | 展示的日期格式，配置参考 [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-ww" |
 
-### RangePicker
+### nz-range-picker
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

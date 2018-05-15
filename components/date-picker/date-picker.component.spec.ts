@@ -77,7 +77,7 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(fixtureInstance.nzValue).toBe(initial);
-      expect(debugElement.query(clearBtnSelector)).toBeTruthy();
+      expect(debugElement.query(clearBtnSelector)).toBeDefined();
 
       const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
       debugElement.query(clearBtnSelector).nativeElement.click();
@@ -102,14 +102,14 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(!!debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeTruthy();
-      expect(!!debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeFalsy();
+      expect(debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeDefined();
+      expect(debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeNull();
 
       fixtureInstance.nzDisabled = false;
       tick(500);
       fixture.detectChanges();
-      expect(!!debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeFalsy();
-      expect(!!debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeTruthy();
+      expect(debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeNull();
+      expect(debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeDefined();
     }));
 
     it('should support nzOpen if assigned', fakeAsync(() => {
@@ -304,7 +304,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-header .ant-calendar-month-panel')).toBeTruthy();
+      expect(queryFromOverlay('.ant-calendar-header .ant-calendar-month-panel')).toBeDefined();
       expect(queryFromOverlay('.ant-calendar-month-panel-year-select-content').textContent.indexOf('2018') > -1).toBeTruthy();
       // Goto previous year
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-month-panel-prev-year-btn'), 'click');
@@ -341,7 +341,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-header .ant-calendar-year-panel')).toBeTruthy();
+      expect(queryFromOverlay('.ant-calendar-header .ant-calendar-year-panel')).toBeDefined();
       expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent.indexOf('2010') > -1).toBeTruthy();
       expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent.indexOf('2019') > -1).toBeTruthy();
       // Coverage for last/next cell
@@ -394,7 +394,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-header .ant-calendar-decade-panel')).toBeTruthy();
+      expect(queryFromOverlay('.ant-calendar-header .ant-calendar-decade-panel')).toBeDefined();
       // Coverage for last/next cell
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-decade-panel-next-century-cell'), 'click');
       fixture.detectChanges();
@@ -427,7 +427,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-header .ant-calendar-year-panel')).toBeTruthy();
+      expect(queryFromOverlay('.ant-calendar-header .ant-calendar-year-panel')).toBeDefined();
     }));
 
   }); // /panel switch and move forward/afterward
@@ -462,8 +462,8 @@ describe('NzDatePickerComponent', () => {
       fixtureInstance.nzShowTime = true;
       fixture.detectChanges();
       openPickerByClickTrigger();
-      expect(queryFromOverlay('.ant-calendar-time-picker-btn')).toBeTruthy();
-      expect(queryFromOverlay('.ant-calendar-ok-btn')).toBeTruthy();
+      expect(queryFromOverlay('.ant-calendar-time-picker-btn')).toBeDefined();
+      expect(queryFromOverlay('.ant-calendar-ok-btn')).toBeDefined();
 
       // Open time picker panel
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-time-picker-btn'), 'click');
@@ -472,7 +472,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-time-picker-inner.ant-calendar-time-picker-column-3')).toBeTruthy();
+      expect(queryFromOverlay('.ant-calendar-time-picker-inner.ant-calendar-time-picker-column-3')).toBeDefined();
       expect(queryFromOverlay('.ant-calendar-time-picker-select:first-child li.ant-calendar-time-picker-select-option-selected').textContent.trim()).toBe('11');
 
       // Click to choose a hour
@@ -493,7 +493,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-time-picker-inner.ant-calendar-time-picker-column-2')).toBeTruthy();
+      expect(queryFromOverlay('.ant-calendar-time-picker-inner.ant-calendar-time-picker-column-2')).toBeDefined();
     }));
 
     it('should support nzDisabledTime and nzShowTime.nzHideDisabledOptions', fakeAsync(() => {
@@ -540,11 +540,11 @@ describe('NzDatePickerComponent', () => {
     it('should support nzShowToday', fakeAsync(() => {
       fixture.detectChanges();
       openPickerByClickTrigger();
-      expect(overlayContainerElement.querySelector('.ant-calendar-footer')).toBeFalsy();
+      expect(overlayContainerElement.querySelector('.ant-calendar-footer')).toBeDefined();
 
       fixtureInstance.nzShowToday = true;
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-calendar-today-btn ')).toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-calendar-today-btn ')).toBeDefined();
 
       // Click today button
       const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
@@ -561,7 +561,7 @@ describe('NzDatePickerComponent', () => {
       fixtureInstance.nzMode = 'month';
       fixture.detectChanges();
       openPickerByClickTrigger();
-      expect(overlayContainerElement.querySelector('.ant-calendar-header .ant-calendar-month-panel')).toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-calendar-header .ant-calendar-month-panel')).toBeDefined();
     }));
 
     it('should support nzOnPanelChange', fakeAsync(() => {

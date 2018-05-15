@@ -12,26 +12,35 @@ By clicking the input box, you can select a date from a popup calendar.
 
 ## API
 
+**Note:** Some of nz-date-picker's locale are coming from [Angular i18n](https://angular.io/guide/i18n), that should be provided in the file of `main.ts`.
+
+For example:
+```typescript
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
+registerLocaleData(zh);
+```
+
 There are four kinds of picker:
 
-- DatePicker
-- MonthPicker
-- RangePicker
-- WeekPicker
+- nz-date-picker
+- nz-month-picker
+- nz-range-picker
+- nz-week-picker
 
 **Note: ** All input and output date objects are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manpulate it with [date-fns](https://date-fns.org/).
 
 ### Common API
 
-The following APIs are shared by DatePicker, MonthPicker, RangePicker, WeekPicker.
+The following APIs are shared by nz-date-picker, nz-month-picker, nz-range-picker, nz-week-picker.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | nzAllowClear | Whether to show clear button | boolean | true |
 | nzAutoFocus | get focus when component mounted | boolean | false |
 | nzClassName | picker className | string | '' |
-| nzDateRender | custom rendering function for date cells (Not support by MonthPicker) | TemplateRef&lt;Date&gt; / string or (d: Date) => TemplateRef&lt;Date&gt; / string | - |
-| nzDisabled | determine whether the DatePicker is disabled | boolean | false |
+| nzDateRender | custom rendering function for date cells (Not support by nz-month-picker) | TemplateRef&lt;Date&gt; / string or (d: Date) => TemplateRef&lt;Date&gt; / string | - |
+| nzDisabled | determine whether the nz-date-picker is disabled | boolean | false |
 | nzDisabledDate | specify the date that cannot be selected | (current: Date) => boolean | - |
 | nzLocale | localization configuration | object | [default](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
 | nzOpen | open state of picker | boolean | - |
@@ -42,7 +51,7 @@ The following APIs are shared by DatePicker, MonthPicker, RangePicker, WeekPicke
 | nzStyle | to customize the style of the input box | object | {} |
 | nzOnOpenChange | a callback emitter, can be executed whether the popup calendar is popped up or closed | EventEmitter&lt;boolean&gt; | - |
 
-### DatePicker
+### nz-date-picker
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
@@ -55,7 +64,7 @@ The following APIs are shared by DatePicker, MonthPicker, RangePicker, WeekPicke
 | nzShowToday | whether to show "Today" button | boolean | true |
 | nzOnOk | callback when click ok button | EventEmitter&lt;Date&gt; | - |
 
-### MonthPicker
+### nz-month-picker
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
@@ -64,7 +73,7 @@ The following APIs are shared by DatePicker, MonthPicker, RangePicker, WeekPicke
 | nzFormat | to set the date format, refer to [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-MM" |
 | nzRenderExtraFooter | render extra footer in panel | TemplateRef / string or () => TemplateRef / string | - |
 
-### WeekPicker
+### nz-week-picker
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
@@ -72,7 +81,7 @@ The following APIs are shared by DatePicker, MonthPicker, RangePicker, WeekPicke
 | ngModelChange | Date change callback | `(ngModel:Date)=>{}` | - |
 | nzFormat | to set the date format, refer to [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-ww" |
 
-### RangePicker
+### nz-range-picker
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
@@ -85,4 +94,4 @@ The following APIs are shared by DatePicker, MonthPicker, RangePicker, WeekPicke
 | nzShowTime | to provide an additional time selection | object / boolean | [TimePicker Options](/components/time-picker/en#api) |
 | nzValue | to set date | Date[] | - |
 
-> Currently supported `TimePicker` parameters in `NzShowTime` are: `nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`
+> Currently supported `nz-time-picker` parameters in `NzShowTime` are: `nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`

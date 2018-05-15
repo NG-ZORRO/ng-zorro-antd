@@ -37,7 +37,11 @@ Following the Ant Design specification, we developed a Angular UI library `ng-zo
 
 ## Version
 
-- [![npm (next)](https://img.shields.io/npm/v/ng-zorro-antd/next.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+
+- 1.x (support Angular 6.x & Ant Design 3.x) will release soon
+- 0.7.x (support Angular 5.x & Ant Design 3.x) current version
+- 0.6.x (support Angular 5.x & Ant Design 2.x) **Not Under Maintenance**
 
 ## Installation
 
