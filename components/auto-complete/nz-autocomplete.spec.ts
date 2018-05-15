@@ -340,7 +340,8 @@ describe('auto-complete', () => {
       componentInstance.trigger.handleKeydown(TAB_EVENT);
       fixture.detectChanges();
       tick(500);
-
+      flush();
+      fixture.detectChanges();
       expect(input.value)
       .toBe('Downing Street');
 

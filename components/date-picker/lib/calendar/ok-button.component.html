@@ -1,0 +1,7 @@
+<a
+    class="{{ prefixCls }}-ok-btn {{ okDisabled ? prefixCls + '-ok-btn-disabled' : '' }}"
+    role="button"
+    (click)="okDisabled ? null : clickOk.emit()"
+  >
+    {{ locale.ok }}
+  </a>

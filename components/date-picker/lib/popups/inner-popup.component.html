@@ -1,0 +1,42 @@
+<calendar-header
+  [(panelMode)]="panelMode"
+  (panelModeChange)="panelModeChange.emit($event)"
+  [(value)]="value"
+  (valueChange)="headerChange.emit($event)"
+  [locale]="locale"
+  [showTimePicker]="showTimePicker"
+  [enablePrev]="enablePrev"
+  [enableNext]="enableNext"
+></calendar-header>
+
+<ng-container *ngIf="showTimePicker && timeOptions">
+  <nz-time-picker-panel
+    [nzInDatePicker]="true"
+    [ngModel]="value.nativeDate"
+    (ngModelChange)="onSelectTime($event)"
+    [format]="timeOptions.nzFormat"
+    [nzHourStep]="timeOptions.nzHourStep"
+    [nzMinuteStep]="timeOptions.nzMinuteStep"
+    [nzSecondStep]="timeOptions.nzSecondStep"
+    [nzDisabledHours]="timeOptions.nzDisabledHours"
+    [nzDisabledMinutes]="timeOptions.nzDisabledMinutes"
+    [nzDisabledSeconds]="timeOptions.nzDisabledSeconds"
+    [nzHideDisabledOptions]="timeOptions.nzHideDisabledOptions"
+    [nzDefaultOpenValue]="timeOptions.nzDefaultOpenValue"
+    [nzAddOn]="timeOptions.nzAddOn"
+  ></nz-time-picker-panel>
+</ng-container>
+
+<div class="{{ prefixCls }}-body">
+  <date-table
+    [showWeek]="showWeek"
+    [value]="value"
+    (valueChange)="onSelectDate($event)"
+    showWeekNumber="false"
+    [disabledDate]="disabledDate"
+    [dateRender]="dateRender"
+    [selectedValue]="selectedValue"
+    [hoverValue]="hoverValue"
+    (dayHover)="dayHover.emit($event)"
+  ></date-table>
+</div>

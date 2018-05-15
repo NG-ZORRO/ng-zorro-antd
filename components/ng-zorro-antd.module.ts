@@ -15,6 +15,7 @@ import { NzCascaderModule } from './cascader/nz-cascader.module';
 import { NzCheckboxModule } from './checkbox/nz-checkbox.module';
 import { NzCollapseModule } from './collapse/nz-collapse.module';
 import { NzMeasureScrollbarService } from './core/services/nz-measure-scrollbar.service';
+import { NzDatePickerModule } from './date-picker/date-picker.module';
 import { NzDividerModule } from './divider/nz-divider.module';
 import { NzDropDownModule } from './dropdown/nz-dropdown.module';
 import { NzDropdownService } from './dropdown/nz-dropdown.service';
@@ -66,6 +67,7 @@ export * from './card';
 export * from './carousel';
 export * from './checkbox';
 export * from './collapse';
+export * from './date-picker';
 export * from './divider';
 export * from './dropdown';
 export * from './form';
@@ -102,6 +104,7 @@ export * from './popconfirm';
 export * from './modal';
 export * from './cascader';
 export * from './tree';
+export * from './time-picker';
 
 @NgModule({
   exports: [
@@ -138,6 +141,7 @@ export * from './tree';
     NzCarouselModule,
     NzCollapseModule,
     NzTableModule,
+    NzDatePickerModule,
     NzDividerModule,
     NzFormModule,
     NzListModule,
@@ -153,7 +157,8 @@ export * from './tree';
     NzModalModule,
     NzBackTopModule,
     NzCascaderModule,
-    NzTreeModule
+    NzTreeModule,
+    NzTimePickerModule
   ]
 })
 export class NgZorroAntdModule {
