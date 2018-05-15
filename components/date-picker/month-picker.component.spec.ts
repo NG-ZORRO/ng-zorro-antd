@@ -81,7 +81,7 @@ describe('NzMonthPickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(fixtureInstance.nzValue).toBe(initial);
-      expect(debugElement.query(clearBtnSelector)).toBeTruthy();
+      expect(debugElement.query(clearBtnSelector)).toBeDefined();
 
       const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
       debugElement.query(clearBtnSelector).nativeElement.click();
@@ -108,15 +108,15 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(!!debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeTruthy();
-      expect(!!debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeFalsy();
+      expect(debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeDefined();
+      expect(debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeNull();
 
       fixtureInstance.nzDisabled = false;
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(!!debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeFalsy();
-      expect(!!debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeTruthy();
+      expect(debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeNull();
+      expect(debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeDefined();
     }));
 
     it('should support nzOpen if assigned', fakeAsync(() => {
@@ -275,7 +275,7 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-year-panel')).toBeTruthy();
+      expect(queryFromOverlay('.ant-calendar-year-panel')).toBeDefined();
       expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent).toContain('2010');
       expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent).toContain('2019');
       // Goto previous year
@@ -311,7 +311,7 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-decade-panel')).toBeTruthy();
+      expect(queryFromOverlay('.ant-calendar-decade-panel')).toBeDefined();
       // Goto previous decade
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-decade-panel-prev-century-btn'), 'click');
       fixture.detectChanges();

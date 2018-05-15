@@ -23,11 +23,13 @@ NG-ZORRO 致力于提供给程序员**愉悦**的开发体验。
 
 ### 1. 安装脚手架工具
 
-> 使用 `@angular/cli` 前，务必确认 [Node.js](https://nodejs.org/en/) 已经升级到 v6.9 或以上，强烈建议升级至最新版本的 `@angular/cli`。
+> 使用 `@angular/cli` 前，务必确认 [Node.js](https://nodejs.org/en/) 已经升级到 v8.10 或以上，强烈建议升级至最新版本的 `@angular/cli`。
 
 ```bash
 $ npm install -g @angular/cli@latest
 ```
+
+**请注意：** 由于 `0.7.0` 版本的 `ng-zorro-antd` 目前尚未正式支持 `angular 6.0` 版本，`@angular/cli` 请选择 `1.7.4` 版本安装。
 
 更多功能请参考 [CLI 文档](https://github.com/angular/angular-cli/wiki)。
 
@@ -54,7 +56,7 @@ $ npm install ng-zorro-antd --save
 
 直接用下面的代码替换 `/src/app/app.module.ts` 的内容
 
-> **注意**：在根 module 中需要使用 `NgZorroAntdModule.forRoot()`，在子 module 需要使用 `NgZorroAntdModule` 
+> **注意**：在根 module 中需要使用 `NgZorroAntdModule.forRoot()`，在子 module 需要使用 `NgZorroAntdModule`
 
 ```typescript
 import { BrowserModule } from '@angular/platform-browser';

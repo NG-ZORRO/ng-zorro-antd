@@ -37,7 +37,12 @@ title: Ant Design of Angular
 
 ## 版本
 
-- [![npm (next)](https://img.shields.io/npm/v/ng-zorro-antd/next.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+
+- 1.x (支持 Angular 6.x & Ant Design 3.x) 即将放出
+- 0.7.x (support Angular 5.x & Ant Design 3.x) 目前推荐版本
+- 0.6.x (support Angular 5.x & Ant Design 2.x) **不再维护**
+
 
 ## 安装
 
@@ -89,5 +94,5 @@ $ yarn add ng-zorro-antd
 通过 Stack Overflow 或者 Segment Fault 提问时，建议加上 `ng-zorro` 标签。
 
 1. [<img alt="Stack Overflow" src="https://cdn.sstatic.net/Sites/stackoverflow/company/img/logos/so/so-logo.svg?v=2bb144720a66" width="140" />](https://stackoverflow.com/questions/tagged/ng-zorro)（English）
-2. [<img alt="Segment Fault" src="http://static.segmentfault.com/global/img/logo.svg" width="100" />](https://segmentfault.com/t/ng-zorro)（中文）
+2. [<img alt="Segment Fault" src="https://gw.alipayobjects.com/zos/rmsportal/hfYFfCvHTQTUKntlJbMF.svg" width="100" />](https://segmentfault.com/t/ng-zorro)（中文）
 3. [![Gitter](https://img.shields.io/gitter/room/ng-zorro/ng-zorro-antd.svg?style=flat-square)](https://gitter.im/ng-zorro/ng-zorro-antd)

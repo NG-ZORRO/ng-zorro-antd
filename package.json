@@ -1,6 +1,6 @@
 {
   "name": "ng-zorro-antd",
-  "version": "0.7.0-beta.5",
+  "version": "0.7.0",
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "scripts": {
@@ -14,7 +14,7 @@
     "helper": "bash ./release-helper.sh",
     "generate": "bash ./build.sh",
     "pre-release": "npm run site:init && bash ./build_scripts/replace-publish.sh && npm run generate && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod && npm run helper",
-    "test": "node site_scripts/generate-site init && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng test --single-run --code-coverage",
+    "test": "node site_scripts/generate-site init && ng test --single-run --code-coverage --log-level ALL",
     "integration": "npm run generate && bash ./integration-test.sh",
     "integration-cli": "npm run generate && cd integration/angular-cli && npm run integration",
     "integration-webpack": "npm run generate && cd integration/webpack && npm run integration",

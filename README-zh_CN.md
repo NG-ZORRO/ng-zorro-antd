@@ -8,7 +8,7 @@
 [![Travis branch](https://img.shields.io/travis/NG-ZORRO/ng-zorro-antd/master.svg?style=flat-square)](https://travis-ci.org/NG-ZORRO/ng-zorro-antd)
 [![Codecov](https://img.shields.io/codecov/c/github/NG-ZORRO/ng-zorro-antd/master.svg?style=flat-square)](https://codecov.io/gh/NG-ZORRO/ng-zorro-antd)
 [![Gemnasium](https://img.shields.io/gemnasium/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://gemnasium.com/github.com/NG-ZORRO/ng-zorro-antd)
-[![npm package](https://img.shields.io/npm/v/ng-zorro-antd/next.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 [![GitHub Release Date](https://img.shields.io/github/release-date/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/releases)
 [![Issue Stats](https://img.shields.io/issuestats/i/github/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/issues)
 [![NPM downloads](http://img.shields.io/npm/dm/ng-zorro-antd.svg?style=flat-square)](https://npmjs.org/package/ng-zorro-antd)
@@ -17,6 +17,14 @@
 这里是 Ant Design 的 Angular 实现，开发和服务于企业级后台产品。
 
 [README in English](README.md)
+
+## 版本
+
+- [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+
+- 1.x (支持 Angular 6.x & Ant Design 3.x) 即将放出
+- 0.7.x (support Angular 5.x & Ant Design 3.x) 目前推荐版本
+- 0.6.x (support Angular 5.x & Ant Design 2.x) **不再维护**
 
 ## 特性
 
@@ -27,10 +35,6 @@
 ## 支持环境
 
 * 现代浏览器和 IE9 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）。
-
-## 版本
-
-- [![npm package](https://img.shields.io/npm/v/ng-zorro-antd/next.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 
 
 ## 安装
