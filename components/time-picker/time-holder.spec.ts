@@ -1,5 +1,9 @@
 import { TimeHolder } from './time-holder';
 
+function mathSecondRound(value: Date): number {
+  return Math.round(value.getTime() / 1000);
+}
+
 describe('time holder', () => {
   it('should get hours/minutes/seconds', () => {
     const holder = new TimeHolder().setValue(new Date(0, 0, 0, 23, 10, 20));
@@ -14,7 +18,7 @@ describe('time holder', () => {
     date.setHours(23);
     date.setMinutes(10);
     date.setSeconds(20);
-    expect(holder.value).toEqual(date);
+    expect(mathSecondRound(holder.value)).toEqual(mathSecondRound(date));
   });
 
   it('should ignore disabled', () => {
@@ -24,7 +28,7 @@ describe('time holder', () => {
     date.setHours(23);
     date.setMinutes(10);
     date.setSeconds(20);
-    expect(holder.value).toEqual(date);
+    expect(mathSecondRound(holder.value)).toEqual(mathSecondRound(date));
   });
 
   it('should ignore date part', () => {

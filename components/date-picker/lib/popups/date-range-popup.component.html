@@ -1,0 +1,101 @@
+<div
+  class="{{ prefixCls }}-picker-container {{ dropdownClassName }} {{ prefixCls }}-picker-container-placement-bottomLeft"
+  [ngStyle]="popupStyle">
+
+  <div class="{{ prefixCls }} {{ showWeek ? prefixCls + '-week-number': '' }} {{ hasTimePicker ? prefixCls + '-time' : '' }} {{ isRange ? prefixCls + '-range' : '' }}" tabindex="0">
+    <div class="{{ prefixCls }}-panel">
+      <ng-container *ngIf="!isRange"> <!-- Single ONLY -->
+        <ng-container *ngTemplateOutlet="tplCalendarInput"></ng-container>
+      </ng-container>
+      <div class="{{ prefixCls }}-date-panel">
+        <ng-container *ngIf="isRange; else tplSinglePart">
+          <!-- Range Selectors -->
+          <ng-container *ngTemplateOutlet="tplRangePart; context: { partType: 'left' }"></ng-container>
+          <div class="ant-calendar-range-middle">~</div>
+          <ng-container *ngTemplateOutlet="tplRangePart; context: { partType: 'right' }"></ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="!isRange"> <!-- Single ONLY -->
+          <ng-container *ngTemplateOutlet="tplFooter"></ng-container>
+        </ng-container>
+      </div>
+      <ng-container *ngIf="isRange"> <!-- Range ONLY -->
+        <ng-container *ngTemplateOutlet="tplFooter"></ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-template #tplCalendarInput let-partType="partType">
+  <calendar-input
+    [value]="getValue(partType)"
+    (valueChange)="changeValue($event, partType)"
+    [locale]="locale"
+    [disabledDate]="disabledDate"
+    [format]="format"
+    [placeholder]="getPlaceholder(partType)"
+  ></calendar-input>
+</ng-template>
+
+<ng-template #tplInnerPopup let-partType="partType">
+  <inner-popup
+    [showWeek]="showWeek"
+    [locale]="locale"
+    [showTimePicker]="hasTimePicker && showTimePicker"
+    [timeOptions]="getTimeOptions(partType)"
+    [panelMode]="getPanelMode(partType)"
+    (panelModeChange)="onPanelModeChange($event, partType)"
+    [value]="getValueBySelector(partType)"
+    [disabledDate]="disabledDate"
+    [dateRender]="dateRender"
+    [selectedValue]="selectedValue"
+    [hoverValue]="hoverValue"
+    [enablePrev]="enablePrevNext('prev', partType)"
+    [enableNext]="enablePrevNext('next', partType)"
+    (dayHover)="onDayHover($event)"
+    (selectDate)="changeValueFromSelect($event)"
+    (selectTime)="onSelectTime($event, partType)"
+    (headerChange)="onHeaderChange($event, partType)"
+  ></inner-popup>
+</ng-template>
+
+<ng-template #tplFooter>
+  <calendar-footer
+    *ngIf="hasFooter"
+    [locale]="locale"
+    [showToday]="showToday"
+    [hasTimePicker]="hasTimePicker"
+    [timePickerDisabled]="timePickerDisabled()"
+    [okDisabled]="okDisabled()"
+    [extraFooter]="extraFooter"
+    [rangeQuickSelector]="ranges ? tplRangeQuickSelector : null"
+    [(showTimePicker)]="showTimePicker"
+    (showTimePickerChange)="onShowTimePickerChange($event)"
+    (clickOk)="resultOk.emit()"
+    (clickToday)="onClickToday($event)"
+  ></calendar-footer>
+</ng-template>
+
+<!-- Single ONLY -->
+<ng-template #tplSinglePart>
+  <ng-container *ngTemplateOutlet="tplInnerPopup"></ng-container>
+</ng-template>
+
+<!-- Range ONLY -->
+<ng-template #tplRangePart let-partType="partType">
+  <div class="{{ prefixCls }}-range-part {{ prefixCls }}-range-{{ partType }}">
+    <ng-container *ngTemplateOutlet="tplCalendarInput; context: { partType: partType }"></ng-container>
+    <div style="outline: none;">
+      <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: partType }"></ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Range ONLY: Range Quick Selector -->
+<ng-template #tplRangeQuickSelector>
+  <a *ngFor="let name of getObjectKeys(ranges)"
+    (click)="onClickPresetRange(ranges[name])"
+    (mouseenter)="onHoverPresetRange(ranges[name])"
+    (mouseleave)="onPresetRangeMouseLeave()"
+  >{{ name }}</a>
+</ng-template>

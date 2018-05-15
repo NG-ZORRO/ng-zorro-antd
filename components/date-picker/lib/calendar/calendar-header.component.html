@@ -1,0 +1,68 @@
+<div class="{{ prefixCls }}-header">
+  <div style="position: relative;">
+    <a *ngIf="enablePrev && !showTimePicker"
+      class="{{ prefixCls }}-prev-year-btn"
+      role="button"
+      (click)="previousYear()"
+      title="{{ locale.previousYear }}"
+    ></a>
+    <a *ngIf="enablePrev && !showTimePicker"
+      class="{{ prefixCls }}-prev-month-btn"
+      role="button"
+      (click)="previousMonth()"
+      title="{{ locale.previousMonth }}"
+    ></a>
+
+    <span class="{{ prefixCls }}-{{ locale.monthBeforeYear ? 'my-select' : 'ym-select' }}">
+      <ng-container *ngFor="let selector of yearMonthDaySelectors">
+        <a class="{{ selector.className }}"
+          role="button"
+          (click)="selector.onClick ? selector.onClick() : null"
+          title="{{ selector.title || null }}"
+        >
+          {{ selector.label }}
+        </a>
+      </ng-container>
+    </span>
+
+    <a *ngIf="enableNext && !showTimePicker"
+      class="{{ prefixCls }}-next-month-btn"
+      role="button"
+      (click)="nextMonth()"
+      title="{{ locale.nextMonth }}"
+    ></a>
+    <a *ngIf="enableNext && !showTimePicker"
+      class="{{ prefixCls }}-next-year-btn"
+      role="button"
+      (click)="nextYear()"
+      title="{{ locale.nextYear }}"
+    ></a>
+  </div>
+
+  <ng-container [ngSwitch]="panelMode">
+    <ng-container *ngSwitchCase="'decade'">
+      <decade-panel
+        [locale]="locale"
+        [value]="value"
+        (valueChange)="onChooseDecade($event)"
+      ></decade-panel>
+    </ng-container>
+    <ng-container *ngSwitchCase="'year'">
+      <year-panel
+        [locale]="locale"
+        [value]="value"
+        (valueChange)="onChooseYear($event)"
+        (decadePanelShow)="changePanel('decade')"
+      ></year-panel>
+    </ng-container>
+    <ng-container *ngSwitchCase="'month'">
+      <month-panel
+        [locale]="locale"
+        [value]="value"
+        [disabledDate]="disabledMonth"
+        (valueChange)="onChooseMonth($event)"
+        (yearPanelShow)="changePanel('year')"
+      ></month-panel>
+    </ng-container>
+  </ng-container>
+</div>
