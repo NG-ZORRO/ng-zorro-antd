@@ -92,7 +92,6 @@ import { NzTreeService } from './nz-tree.service';
                       [nzBeforeDrop]="nzBeforeDrop"
                       [nzCheckStrictly]="nzCheckStrictly"
                       [nzDefaultExpandAll]="nzDefaultExpandAll"
-                      [nzDefaultCheckedKeys]="nzDefaultCheckedKeys"
                       [nzDefaultExpandedKeys]="nzDefaultExpandedKeys"
                       [nzDefaultSelectedKeys]="nzDefaultSelectedKeys"
                       [nzTreeTemplate]="nzTreeTemplate"
@@ -132,7 +131,6 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
   dragPos = 2;
   prefixCls = 'ant-tree';
   _treeNode;
-  _checkStrictly;
   _expandAll = false;
   _defaultCheckedKeys = [];
   _defaultExpandedKeys = [];
@@ -155,7 +153,6 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
   @Input() nzCheckable: boolean;
   @Input() nzAsyncData;
   @Input() nzCheckStrictly: boolean;
-  @Input() nzDefaultCheckedKeys: string[];
   @Input() nzTreeTemplate: TemplateRef<void>;
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
 
@@ -389,8 +386,8 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
       node.isHalfChecked = false;
       this.nzTreeService.setCheckedNodeListStrict(this.nzTreeNode);
     } else {
-      this.nzTreeService.setCheckedNodeList(this.nzTreeNode);
       this.nzTreeService.checkTreeNode(node);
+      this.nzTreeService.setCheckedNodeList(this.nzTreeNode);
     }
     this.clickCheckBox.emit(this.nzTreeService.formatEvent('check', node, $event));
   }

@@ -1,0 +1,41 @@
+<div class="{{ prefixCls }}">
+  <div>
+    <div class="{{ prefixCls }}-header">
+      <a
+        class="{{ prefixCls }}-prev-decade-btn"
+        role="button"
+        (click)="previousDecade()"
+        title="{{ locale.previousDecade }}"
+      ></a>
+      <a
+        class="{{ prefixCls }}-decade-select"
+        role="button"
+        (click)="decadePanelShow.emit()"
+        title="{{ locale.decadeSelect }}"
+      >
+        <span class="{{ prefixCls }}-decade-select-content">
+          {{ startYear }}-{{ endYear }}
+        </span>
+        <span class="{{ prefixCls }}-decade-select-arrow">x</span>
+      </a>
+
+      <a class="{{ prefixCls }}-next-decade-btn" (click)="nextDecade()" title="{{ locale.nextDecade }}" role="button"></a>
+    </div>
+    <div class="{{ prefixCls }}-body">
+      <table class="{{ prefixCls }}-table" cellSpacing="0" role="grid">
+        <tbody class="{{ prefixCls }}-tbody">
+          <tr *ngFor="let row of panelYears" role="row">
+            <td *ngFor="let yearCell of row; trackBy: trackPanelYear"
+              role="gridcell"
+              title="{{ yearCell.title }}"
+              (click)="yearCell.onClick()"
+              [ngClass]="yearCell.classMap"
+            >
+              <a class="{{ prefixCls }}-year">{{ yearCell.content }}</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

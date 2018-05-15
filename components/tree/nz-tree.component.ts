@@ -25,7 +25,6 @@ import { NzTreeService } from './nz-tree.service';
                     [nzBeforeDrop]="nzBeforeDrop"
                     [nzCheckStrictly]="nzCheckStrictly"
                     [nzDefaultExpandAll]="nzDefaultExpandAll"
-                    [nzDefaultCheckedKeys]="nzDefaultCheckedKeys"
                     [nzDefaultExpandedKeys]="nzDefaultExpandedKeys"
                     [nzDefaultSelectedKeys]="nzDefaultSelectedKeys"
                     (clickCheckBox)="nzCheckBoxChange.emit($event)"
@@ -52,7 +51,6 @@ import { NzTreeService } from './nz-tree.service';
   ]
 })
 export class NzTreeComponent implements OnInit {
-  _root: NzTreeNode[] = [];
   _searchValue;
   _showLine = false;
   _prefixCls = 'ant-tree';

@@ -116,6 +116,15 @@ describe('tree component test', () => {
       expect(treeElement.querySelectorAll('.ant-tree-checkbox-checked').length).toEqual(6);
       expect(checkSpy).toHaveBeenCalled();
       expect(checkSpy).toHaveBeenCalledTimes(1);
+      // for bug test https://github.com/NG-ZORRO/ng-zorro-antd/issues/1423
+      // auto merge child node
+      expect(treeInstance.treeComponent.getCheckedNodeList().length).toEqual(1);
+      expect(treeInstance.treeComponent.getCheckedNodeList()[0].title).toEqual('root1');
+      // cancel checked status
+      dispatchMouseEvent(targetNode, 'click');
+      fixture.detectChanges();
+      expect(treeElement.querySelectorAll('.ant-tree-checkbox-checked').length).toEqual(0);
+      expect(treeInstance.treeComponent.getCheckedNodeList().length).toEqual(0);
       // click toggle checked
       dispatchMouseEvent(targetNode, 'click');
       dispatchMouseEvent(targetNode, 'click');
