@@ -49,3 +49,4 @@ echo 'Copying package.json'
 cp package.json publish/package.json
 
 node ./build_scripts/generate-less.js
+node ./build_scripts/generate-css.js
