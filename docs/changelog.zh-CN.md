@@ -12,164 +12,68 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
-## 0.7.0-beta.5
 
-`2018.05.01`
+### 写给 `0.6.x` 版本用户
 
-`DatePicker` 主体工作已经完成，由于同时包含 `RangePicker` 与 `WeekPicker` 目前还剩余一些测试工作，大家可以追踪[PR](https://github.com/NG-ZORRO/ng-zorro-antd/pull/1254) 追踪进度
+#### 我应该升级到最新版本的 `ng-zorro-antd` 吗？
 
-### TimePicker
+`0.7.0` 版本的 `ng-zorro-antd` 在以下几个方面做出了很大改进
 
-- 新增 `TimePicker` 组件
+* 更少的代码：简化了很多组件的使用方式，例如 `form` 表单同样功能下代码量会缩减1/3
+* 更强的功能：完善了很多组件的功能，无论是 `input` 还是 `date-picker` 等大量组件都有了更强大的功能可用
+* 更好的质量：增加了组件的单元测试，为了保证组件的质量我们目前为止增加了 1070 个测试用例，单测覆盖率达到了 `95%` 以上
+* 更新的规范：升级到 Ant Design 3.0 规范，并且支持像 `react` 版本一样自定义主题
 
-### Tree
+升级到 `0.7.0` 版本是最好的选择。
 
-- 增加了更多的快捷使用方法及样例
+#### 为什么会有这么多 break change
 
-### InputNumber
+就像上文所说的那样，为了能够提供更好的使用方式，我们对大量代码进行了简化，并对很多功能做了增强，在这个过程中不可避免的会引入破坏性更新，希望大家能够理解。
 
-- 支持 `nzFormatter` 动态变更生效
+#### 应该如何升级到最新版本
 
-### Mention
+为了帮助用户从低版本升级，我们保留了低版本的文档系统，你可以随时对比文档中的差别，另外 `ng-alain` 也提供了从 `0.6.x` 版本升级到 `0.7.0` 的[在线模板工具](https://ng-alain.com/6to7)，大家可以根据需要使用。
 
-- 增加更多的例子
+**请注意：** 由于 `@angular/cli` 的最新版本已经默认采用 `angular 6.0` 以上的版本，请使用 `@angular/cli` 1.7.4 及以下版本。
 
-### Upload
+### 写给 `0.7.0` 试用用户
 
-- 修复 `Uplaod` 上传进度条展示
+感谢在测试阶段升级到 `0.7.0 beta` 版本的所有用户，没有你们的协助就不会有 `0.7.0` 正式版本的诞生，推荐所有 `0.7.0 beta` 版本用户升级到该版本。
 
-### 其他
+#### 如何从 `0.7.0` 测试版本迁移到正式版
 
-- 修复文档及测试的部分问题
+从 `0.7.0` 测试版本到 `0.7.0` 正式版本基本没有破坏性更新，更多的工作是在开发新的组件上，因此可以放心迁移。
 
-## 0.7.0-beta.4
+```bash
+npm install ng-zorro-antd@0.7.0
+```
+命令即可升级至 `0.7.0` 正式版本
 
-`2018.04.12`
+#### 什么时候官方会支持 `Angular 6.0` 版本
 
-#### Mention
+目前 `ng-zorro-antd` 已经全力在适配 `Angular 6.0` 版本，可以在[这里](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1406) 追踪我们的进度。
+我们会在 `1.0` 版本提供经过测试的 `Angular 6.0` 适配版本，届时我们还会同时支持 `@angular/cli` 最新版本的众多特性，`rxjs` 与 `cdk` 的依赖版本也会同步升级到 `6.0` 版本，提供更好更多的性能。
 
-- 新增 Mention 组件
 
-#### Tree
+#### 如何在 0.7.0 版本下使用 `Angular 6.0`
 
-- `nzTreeData` 变更为 `ngModel`, 初始化数据使用 `new NzTreeNode({})`,请参阅示例
-- 新增 `origin` 属性存储用户原始数据
-- 支持根据 `NzTreeComponent` 上下文获取 `NzTreeService`
+如果你希望在当前版本(0.7.0) 使用 `Angular 6.0`，你需要完成以下两部分工作
 
-#### Table
+* 安装 `rxjs-compat` 用于兼容 `rxjs 5.x`
+* 降级到 `less 2.7` 版本，因为最新版本的 `@angular/cli` 依赖的 `less 3.0` 版本禁用了 `javascriptEnabled` 选项，相关工作可以在[这里](https://github.com/angular/angular-cli/issues/10430) 追踪
 
-- 修复计算滚动条宽度导致的重绘问题
-- 修复过滤器高亮问题
+最后，由于目前官方未对 `Angular 6.0` 版本进行全面的测试和兼容工作，并不建议用户在生产环境使用 `Angular 6.0` 版本。
 
-#### Message
+#### 从 `0.7.0` 到 `1.0.0` 还会有破坏性更新吗？
 
-- 修复动态创建时报错的问题
+除了Angular 和 RxJS 升级带来的更新之外，`ng-zorro-antd` 不会再引入破坏性更新，可以安心使用当前版本。
 
-#### Notification
+---
 
-- 修复动态创建时报错的问题
+## 0.7.0
+`2018.05.15`
 
-#### Card
-
-- 修复了 `card-meta` 的对齐问题
-
-#### Transfer
-
-- 修复了 Transfer 在 OnPush 下使用的问题
-
-#### Select
-
-- 修复 `nzValue` 值为 0 不能选中的问题
-- 修复滚动条定位的问题
-
-#### Carousel
-
-- 修复自动播放的问题
-
-#### Menu
-
-- 修复动态修改结构时 `ExpressionChangedAfterItHasBeenCheckedError` 的问题
-
-#### i18n
-
-- 更详细的描述了国际化的使用方式
-- 修复了未设置 i18n 时的报错
-
-#### 其他
-
-- 官网支持动态修改主题
-- 更新了 angular.cn 的网址
-- 更新了 `Upload` 组件的说明
-- 更新了 `Tree` 组件的说明
-
-
-## 0.7.0-beta.3
-
-`2018-03-26`
-
-#### Tree
-
-- 支持拖拽文件夹前 `beforeDrop` 进行确认的API
-
-#### Modal
-
-- 支持手动触发 `nzOnOk` 与 `nzOnCancel` 的方法
-
-#### Cascader
-
-- 修复异步加载数据时的问题
-
-#### Card
-
-- 修复样式问题
-
-#### 文档
-
-- 修复部分文档问题
-
-## 0.7.0-beta.2
-
-`2018-03-20`
-
-#### 全局部分
-
-- 去掉了 cdk-overlay-pane 的 z-index 样式
-
-#### Modal
-
-- 新增参数 `nzAfterOpen` / `nzAfterClose`
-- `nzGetContainer` 参数默认值改为动态创建的overlay容器
-- `NzModalService` 服务新增 `openModals` / `afterAllClose` / `closeAll()` 支持
-- `NzModalRef` 新增 `afterOpen` / `afterClose` / `getContentComponent()` 支持，并且原 `close` / `destroy` 方法支持传递参数
-
-#### Form
-
-- 修复 `Form` 校验 `markAsDirty` 样式不生效的问题
-- 修复 `Input` 在 `ReactiveForm` 模式下 `disabled` 属性不生效的问题
-
-
-#### Table
-
-- 修复 Table 横向滚动宽度小于实际宽度时的样式问题
-- 修复 Table 右侧固定多列时的样式问题
-
-
-#### Doc
-
-- 修复多处文档错误
-- 增加手机浏览时的适配
-
-
-## 0.7.0-beta.1
-
-`2018-03-15`
-
-0.7.0 作为 1.0 正式版 之前的最后一系列版本，涉及到了底层的大量重构与改动，大部分 API 将与 1.0 正式版本的内容保持一致，目前剩余以下组件仍在紧张开发中，最近几日会逐步放出
-
-- TimePicker
-- DatePicker
-- Mention
-- TreeSelect
+0.7.0 作为 1.0 正式版 之前的最后一系列版本，涉及到了底层的大量重构与改动，API 将与 1.0 正式版本的内容保持一致，请大家放心升级
 
 ### 主要变化
 
@@ -181,6 +85,9 @@ timeline: true
 - 大量组件的性能优化与重构
 - 单元测试率提高到95以上%
 - 新的 Tree 组件
+- 新的 DatePicker 组件
+- 新的 TimePicker 组件
+- 新的 Mention 组件
 - 新的 AutoComplete 组件
 - 新的 Divider 组件
 - 新的 List 组件
@@ -321,6 +228,14 @@ timeline: true
 
 #### List
 - 新组件：通用列表
+
+#### TimePicker
+
+- 新增 `TimePicker` 组件
+
+#### Mention
+
+- 新增 Mention 组件
 
 ## 之前版本
 

@@ -29,6 +29,8 @@ We strongly recommended to develop Angular with `@angular/cli`, you can install 
 $ npm install -g @angular/cli@latest
 ```
 
+**Note:** Please use `@angular/cli 1.7.4` since `ng-zorro-antd 0.7.0` can not work with `angular 6.0` yet.
+
 Read [the documentation of `Angular CLI`](https://github.com/angular/angular-cli/wiki) to explore more features.
 
 
