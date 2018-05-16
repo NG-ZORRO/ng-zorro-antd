@@ -219,10 +219,16 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   down(e: MouseEvent | KeyboardEvent, ratio?: number): void {
+    if (!this.isFocused) {
+      this.focus();
+    }
     this.step('down', e, ratio);
   }
 
   up(e: MouseEvent | KeyboardEvent, ratio?: number): void {
+    if (!this.isFocused) {
+      this.focus();
+    }
     this.step('up', e, ratio);
   }
 
