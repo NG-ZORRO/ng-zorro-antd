@@ -12,7 +12,7 @@ import {
   ViewChildren
 } from '@angular/core';
 import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/testing';
-import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs/Subject';
@@ -48,7 +48,8 @@ describe('auto-complete', () => {
         NzTestAutocompletePropertyComponent,
         NzTestAutocompleteWithoutPanelComponent,
         NzTestAutocompleteGroupComponent,
-        NzTestAutocompleteWithOnPushDelayComponent
+        NzTestAutocompleteWithOnPushDelayComponent,
+        NzTestAutocompleteWithFormComponent
       ],
       providers   : [
         { provide: Directionality, useFactory: () => ({ value: dir }) },
@@ -416,6 +417,58 @@ describe('auto-complete', () => {
       .toBe(true);
     }));
 
+  });
+
+  describe('form', () => {
+    let fixture;
+    let input: HTMLInputElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestAutocompleteWithFormComponent);
+      fixture.detectChanges();
+      input = fixture.debugElement.query(By.css('input')).nativeElement;
+    });
+
+    it('should set the value with form', () => {
+      const componentInstance = fixture.componentInstance;
+      fixture.detectChanges();
+      expect(componentInstance.form.get('formControl').value)
+        .toContain('Burns');
+      expect(input.value)
+        .toContain('Burns');
+    });
+
+    it('should set disabled work', () => {
+      const componentInstance = fixture.componentInstance;
+      const formControl = (componentInstance.form as FormGroup).get('formControl');
+      fixture.detectChanges();
+
+      expect(input.disabled).toBe(false);
+
+      formControl.disable();
+      fixture.detectChanges();
+
+      expect(input.disabled).toBe(true);
+
+    });
+
+    it('should close the panel when the input is disabled', () => {
+      const componentInstance = fixture.componentInstance;
+      const formControl = (componentInstance.form as FormGroup).get('formControl');
+      fixture.detectChanges();
+
+      componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+
+      expect(componentInstance.trigger.panelOpen).toBe(true);
+
+      formControl.disable();
+      fixture.detectChanges();
+
+      expect(input.disabled).toBe(true);
+      expect(componentInstance.trigger.panelOpen).toBe(false);
+
+    });
   });
 
   describe('option groups', () => {
@@ -949,4 +1002,24 @@ class NzTestAutocompleteGroupComponent {
   }];
 
   @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
+}
+
+@Component({
+  template: `
+    <form [formGroup]='form'>
+      <input formControlName="formControl" [nzAutocomplete]="auto"/>
+      <nz-autocomplete #auto>
+        <nz-auto-option *ngFor="let option of options" [nzValue]="option">{{option}}</nz-auto-option>
+      </nz-autocomplete>
+    </form>
+  `
+})
+class NzTestAutocompleteWithFormComponent {
+  form: FormGroup;
+  options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
+  @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
+
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({ formControl: 'Burns' });
+  }
 }
