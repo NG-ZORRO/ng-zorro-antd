@@ -17,11 +17,11 @@ import { Component, OnInit } from '@angular/core';
       <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
     </nz-select>
     <br><br>
-    <nz-select style="width: 100%" [(ngModel)]="multipleValue" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
+    <nz-select style="width: 100%" [(ngModel)]="multipleValue" [nzSize]="size" nzMode="multiple" nzPlaceholder="Please select">
       <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
     </nz-select>
     <br><br>
-    <nz-select style="width: 100%" [(ngModel)]="tagValue" [nzSize]="size" nzMode="tags" nzPlaceHolder="Please select">
+    <nz-select style="width: 100%" [(ngModel)]="tagValue" [nzSize]="size" nzMode="tags" nzPlaceholder="Please select">
       <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
     </nz-select>
   `

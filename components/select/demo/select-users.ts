@@ -9,7 +9,7 @@ import { switchMap } from 'rxjs/operators/switchMap';
 @Component({
   selector: 'nz-demo-select-select-users',
   template: `
-    <nz-select style="width: 100%;" nzMode="multiple" [(ngModel)]="selectedUser" nzPlaceHolder="Select users" nzAllowClear nzShowSearch [nzServerSearch]="true" (nzOnSearch)="onSearch($event)">
+    <nz-select style="width: 100%;" nzMode="multiple" [(ngModel)]="selectedUser" nzPlaceholder="Select users" nzAllowClear nzShowSearch [nzServerSearch]="true" (nzOnSearch)="onSearch($event)">
       <ng-container *ngFor="let o of optionList">
         <nz-option *ngIf="!isLoading" [nzValue]="o" [nzLabel]="o"></nz-option>
       </ng-container>

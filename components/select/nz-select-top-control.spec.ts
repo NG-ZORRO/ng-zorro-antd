@@ -188,7 +188,7 @@ describe('nz-select top control', () => {
       nz-select-top-control
       [nzOpen]="open"
       [compareWith]="compareFn"
-      [nzPlaceHolder]="placeHolder"
+      [nzPlaceholder]="placeHolder"
       [nzDisabled]="disabled"
       [nzMode]="mode"
       [nzListTemplateOfOption]="listOfTemplateOption"
@@ -227,7 +227,7 @@ export class NzTestSelectTopControlMultipleComponent {
       nz-select-top-control
       [nzOpen]="open"
       [compareWith]="compareFn"
-      [nzPlaceHolder]="placeHolder"
+      [nzPlaceholder]="placeHolder"
       [nzDisabled]="disabled"
       [nzMode]="mode"
       [nzShowSearch]="showSearch"

@@ -273,7 +273,7 @@ describe('nz-select component', () => {
       [nzDropdownStyle]="dropdownStyle"
       [nzDropdownClassName]="'test-class'"
       (nzOnSearch)="onSearch($event)"
-      [nzPlaceHolder]="placeholder">
+      [nzPlaceholder]="placeholder">
       <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
       <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
       <nz-option nzValue="disabled" nzLabel="Disabled" nzDisabled></nz-option>

@@ -101,7 +101,7 @@ import { NzSelectTopControlComponent } from './nz-select-top-control.component';
         nz-select-top-control
         [nzOpen]="nzOpen"
         [compareWith]="compareWith"
-        [nzPlaceHolder]="nzPlaceHolder"
+        [nzPlaceholder]="nzPlaceholder"
         [nzShowSearch]="nzShowSearch"
         [nzDisabled]="nzDisabled"
         [nzMode]="nzMode"
@@ -295,11 +295,11 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   @Input()
-  set nzPlaceHolder(value: string) {
+  set nzPlaceholder(value: string) {
     this._placeholder = value;
   }
 
-  get nzPlaceHolder(): string {
+  get nzPlaceholder(): string {
     return this._placeholder;
   }
 
