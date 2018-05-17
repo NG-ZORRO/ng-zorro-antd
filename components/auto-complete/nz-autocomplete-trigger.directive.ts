@@ -278,7 +278,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   }
 
   private setTriggerValue(value: string | number | null): void {
-    this._element.nativeElement.value = value;
+    this._element.nativeElement.value = value || '';
   }
 
   private doBackfill(): void {
@@ -318,7 +318,9 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     return !element.readOnly && !element.disabled;
   }
 
-  writeValue(obj: {}): void {
+  // tslint:disable-next-line:no-any
+  writeValue(value: any): void {
+    this.setTriggerValue(value);
   }
 
   registerOnChange(fn: (value: {}) => {}): void {
@@ -327,6 +329,12 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
   registerOnTouched(fn: () => {}): void {
     this._onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    const element: HTMLInputElement = this._element.nativeElement;
+    element.disabled = isDisabled;
+    this.closePanel();
   }
 
   ngOnDestroy(): void {
