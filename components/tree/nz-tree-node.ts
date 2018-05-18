@@ -84,8 +84,6 @@ export class NzTreeNode {
 
   /**
    * 支持按索引位置插入,叶子节点不可添加
-   * @param {Array<NzTreeNode>|any[]} children
-   * @param {number} childPos
    */
   // tslint:disable-next-line:no-any
   public addChildren(children: any[], childPos: number = -1): void {

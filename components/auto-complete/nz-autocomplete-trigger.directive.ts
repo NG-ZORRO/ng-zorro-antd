@@ -78,7 +78,6 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
   /**
    * 当前被激活的 Option
-   * @returns {NzAutocompleteOptionComponent}
    */
   get activeOption(): NzAutocompleteOptionComponent {
     if (this.nzAutocomplete && this.nzAutocomplete.options.length) {
@@ -112,7 +111,6 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
   /**
    * 订阅数据源改变事件
-   * @returns {Subscription}
    */
   private subscribeOptionsChange(): Subscription {
     return this.nzAutocomplete.options.changes.pipe(
@@ -125,7 +123,6 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   /**
    * 订阅 option 选择事件
    * 并设置值
-   * @returns {Subscription}
    */
   private subscribeSelectionChange(): Subscription {
     return this.nzAutocomplete.selectionChange
@@ -137,7 +134,6 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   /**
    * 订阅组件外部的单击事件
    * 并关闭弹窗
-   * @returns {Subscription}
    */
   private subscribeOverlayBackdropClick(): Subscription {
     return merge(
@@ -157,7 +153,6 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   /**
    * 订阅 Overlay 位置改变事件
    * 并重新设置动画方向
-   * @returns {Subscription}
    */
   private subscribeOverlayPositionChange(): Subscription {
     return this.positionStrategy.onPositionChange

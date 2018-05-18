@@ -103,7 +103,6 @@ export class NzAffixComponent implements OnInit, OnDestroy {
       { top: 0, left: 0, bottom: 0 } as ClientRect;
   }
 
-  /** @private */
   getOffset(element: Element, target: Element | Window | null): {
       top: number;
       left: number;
