@@ -5,12 +5,12 @@ node_js:
   - '8.10'
 
 env:
-  - TASK=pre-release
+  # - TASK=pre-release
   - TASK=test
-  - TASK=lint
-  - TASK=integration-cli
-  - TASK=integration-webpack
-  - TASK=integration-rollup
+  # - TASK=lint
+  # - TASK=integration-cli
+  # - TASK=integration-webpack
+  # - TASK=integration-rollup
 addons:
 apt:
   sources:
