@@ -207,7 +207,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() nzDropdownMatchSelectWidth = true;
   @Input() nzFilterOption: TFilterOption = defaultFilterOption;
   @Input() nzMaxMultipleCount = Infinity;
-  @Input() nzDropdownStyle: { [key: string]: string; };
+  @Input() nzDropdownStyle: { [ key: string ]: string; };
   @Input() nzNotFoundContent: string;
   /** https://github.com/angular/angular/pull/13349/files **/
            // tslint:disable-next-line:no-any
@@ -239,6 +239,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this.handleEscBug();
     this.updateCdkConnectedOverlayStatus();
     this.updateDropDownClassMap();
+    this.updateCdkPanePosition();
     if (this.nzOpen) {
       if (this.nzSelectTopControlComponent) {
         this.nzSelectTopControlComponent.focusOnInput();
@@ -451,6 +452,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     if (value !== this.value) {
       this.value = value;
       this.onChange(this.value);
+      this.updateCdkConnectedOverlayPositions();
     }
   }
 
@@ -480,6 +482,13 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
       this.nzSelectTopControlComponent.setInputValue('', false);
     } else {
       this.nzSelectTopControlComponent.setInputValue('', false);
+    }
+  }
+
+  updateCdkPanePosition(): void {
+    if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
+      this.cdkConnectedOverlay.overlayRef.backdropElement.parentElement.appendChild(this.cdkConnectedOverlay.overlayRef.backdropElement);
+      this.cdkConnectedOverlay.overlayRef.overlayElement.parentElement.appendChild(this.cdkConnectedOverlay.overlayRef.overlayElement);
     }
   }
 

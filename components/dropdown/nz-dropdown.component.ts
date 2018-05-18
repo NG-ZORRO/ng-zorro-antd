@@ -189,7 +189,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
 
   startSubscribe(observable$: Observable<boolean>): void {
     let $pre = observable$;
-    if (this.nzClickHide) {
+    if (this.nzClickHide && this.nzMenu) {
       const $menuItemClick = this.nzMenu.nzClick.asObservable().pipe(mapTo(false));
       $pre = $pre.pipe(merge($menuItemClick));
     }

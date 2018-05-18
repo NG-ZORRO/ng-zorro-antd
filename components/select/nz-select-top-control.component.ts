@@ -14,15 +14,13 @@ import { NzOptionComponent } from './nz-option.component';
   preserveWhitespaces: false,
   animations         : [
     trigger('tagAnimation', [
-      state('*', style({ opacity: 1, transform: 'scale(1)' })),
       transition('void => *', [
         style({ opacity: 0, transform: 'scale(0)' }),
-        animate('150ms linear')
+        animate('150ms linear', style({ opacity: 1, transform: 'scale(1)' }))
       ]),
-      state('void', style({ opacity: 0, transform: 'scale(0)' })),
       transition('* => void', [
         style({ opacity: 1, transform: 'scale(1)' }),
-        animate('150ms linear')
+        animate('150ms linear', style({ opacity: 0, transform: 'scale(0)' }))
       ])
     ])
   ],
@@ -171,7 +169,7 @@ export class NzSelectTopControlComponent {
     return this.nzOpen ? 'block' : 'none';
   }
 
-  get selectedValueDisplay(): { [key: string]: string } {
+  get selectedValueDisplay(): { [ key: string ]: string } {
     let showSelectedValue = false;
     let opacity = 1;
     if (!this.nzShowSearch) {
