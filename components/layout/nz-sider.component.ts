@@ -30,7 +30,7 @@ export type NzBreakPoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
     <span class="ant-layout-sider-zero-width-trigger" *ngIf="isZeroTrigger" (click)="toggleCollapse()">
       <i class="anticon anticon-bars"></i>
     </span>
-    <div class="ant-layout-sider-trigger" *ngIf="isSiderTrgger" (click)="toggleCollapse()" [style.width.px]="nzCollapsed?nzCollapsedWidth:nzWidth">
+    <div class="ant-layout-sider-trigger" *ngIf="isSiderTrigger" (click)="toggleCollapse()" [style.width.px]="nzCollapsed?nzCollapsedWidth:nzWidth">
       <ng-template [ngTemplateOutlet]="nzTrigger"></ng-template>
     </div>
     <ng-template #defaultTrigger>
@@ -150,7 +150,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit {
     return this.nzCollapsible && this.nzTrigger && (this.nzCollapsedWidth === 0) && ((this.nzBreakpoint && this.below) || (!this.nzBreakpoint));
   }
 
-  get isSiderTrgger(): boolean {
+  get isSiderTrigger(): boolean {
     return this.nzCollapsible && this.nzTrigger && (this.nzCollapsedWidth !== 0);
   }
 
