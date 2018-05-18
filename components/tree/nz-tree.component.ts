@@ -60,6 +60,7 @@ export class NzTreeComponent implements OnInit {
     ['draggable-tree']              : false
   };
   ngModelNodes: NzTreeNode[] = [];
+  defaultCheckedKeys: string[] = [];
   @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<{}>;
 
   @Input() nzCheckStrictly: boolean = false;
@@ -69,10 +70,17 @@ export class NzTreeComponent implements OnInit {
   @Input() nzDraggable;
   @Input() nzMultiple;
   @Input() nzDefaultExpandAll: boolean = false;
-  @Input() nzDefaultCheckedKeys: string[] = [];
   @Input() nzDefaultExpandedKeys: string[] = [];
   @Input() nzDefaultSelectedKeys: string[] = [];
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
+  @Input()
+  set nzDefaultCheckedKeys(value: string[]) {
+    this.defaultCheckedKeys = value;
+    this.nzTreeService.initTreeNodes(this.ngModelNodes, this.nzDefaultCheckedKeys, this.nzCheckStrictly);
+  }
+  get nzDefaultCheckedKeys(): string[] {
+    return this.defaultCheckedKeys;
+  }
 
   @Input()
   set nzShowLine(value: boolean) {
