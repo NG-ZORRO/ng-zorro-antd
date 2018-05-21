@@ -38,5 +38,5 @@ fs.writeFileSync(`${targetPath}/components.less`, componentsLessContent);
 fs.writeFileSync(`${targetPath}/ng-zorro-antd.less`, fs.readFileSync(`${sourcePath}/ng-zorro-antd.less`));
 
 const lessContent = `@import "${path.join(targetPath, 'ng-zorro-antd.less')}";`;
-compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.css'), false),
-compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.min.css'), true)
+compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.css'), false);
+compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.min.css'), true);
