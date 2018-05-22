@@ -58,6 +58,18 @@ describe('NzPopconfirm', () => {
     expect(overlayContainerElement.textContent).not.toContain(featureKey);
   }));
 
+  it('should support nzOkType', fakeAsync(() => {
+    demoAppComponent.nzOkType = 'danger';
+    const triggerElement = demoAppComponent.normalTrigger.nativeElement;
+
+    dispatchMouseEvent(triggerElement, 'mouseenter');
+    demoAppFixture.detectChanges();
+    tick(150); // wait for the default 100ms delay
+    demoAppFixture.detectChanges();
+    tick();
+    expect(!!overlayContainerElement.querySelector('button.ant-btn-danger')).toBeTruthy();
+  }));
+
   it('should show tooltip with custom template', fakeAsync(() => {
     const triggerElement = demoAppComponent.templateTrigger.nativeElement;
 
@@ -144,7 +156,7 @@ describe('NzPopconfirm', () => {
 @Component({
   selector: 'nz-demo-app',
   template: `
-    <nz-popconfirm [nzTitle]="'NORMAL'" [nzTrigger]="'hover'"><span #normalTrigger nz-popconfirm>Show</span></nz-popconfirm>
+    <nz-popconfirm [nzOkType]="nzOkType" [nzTitle]="'NORMAL'" [nzTrigger]="'hover'"><span #normalTrigger nz-popconfirm>Show</span></nz-popconfirm>
 
     <nz-popconfirm [nzTrigger]="'hover'">
       <button #templateTrigger nz-popconfirm>Show</button>
@@ -163,6 +175,8 @@ describe('NzPopconfirm', () => {
   `
 })
 export class DemoAppComponent {
+  nzOkType = 'primary';
+
   @ViewChild('normalTrigger') normalTrigger: ElementRef;
 
   @ViewChild('templateTrigger') templateTrigger: ElementRef;
