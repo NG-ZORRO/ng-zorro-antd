@@ -213,8 +213,6 @@ export class NzAutocompleteComponent implements AfterViewInit {
 
   /**
    * 清除 Options 的激活状态
-   * @param {NzAutocompleteOptionComponent} skip
-   * @param {boolean} deselect
    */
   private clearSelectedOptions(skip?: NzAutocompleteOptionComponent, deselect: boolean = false): void {
     this.options.forEach(option => {

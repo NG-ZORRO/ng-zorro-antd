@@ -182,10 +182,12 @@ switch (target) {
 }
 
 export default {
-  exports  : 'named',
-  name     : 'ngZorro.antd',
   plugins,
   external : Object.keys(globals),
-  globals,
-  sourceMap: true,
+  output   : {
+    exports  : 'named',
+    name     : 'ngZorro.antd',
+    globals,
+    sourcemap: true,
+  }
 }

@@ -61,7 +61,6 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   private inited = false;
   private progressTimer: any;
-  /** @private */
   @ViewChild('upload') upload: NzUploadBtnComponent;
 
   // region: fields
@@ -147,7 +146,6 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output() nzChange: EventEmitter<UploadChangeParam> = new EventEmitter<UploadChangeParam>();
 
-  /** @private */
   _btnOptions: ZipButtonOptions;
 
   private zipOptions(): this {
