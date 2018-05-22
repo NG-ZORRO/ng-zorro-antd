@@ -11,8 +11,8 @@ import { NzInputNumberModule } from './nz-input-number.module';
 describe('input number', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzInputNumberModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestInputNumberBasicComponent, NzTestInputNumberFormComponent ]
+      imports     : [NzInputNumberModule, FormsModule, ReactiveFormsModule],
+      declarations: [NzTestInputNumberBasicComponent, NzTestInputNumberFormComponent]
     });
     TestBed.compileComponents();
   }));
@@ -375,6 +375,21 @@ describe('input number', () => {
       fixture.detectChanges();
       expect(inputElement.value).toBe(newFormatter(initValue));
     }));
+    // #1449
+    it('should up and down focus input', (() => {
+      dispatchFakeEvent(upHandler, 'mousedown');
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-focused');
+      dispatchFakeEvent(inputElement, 'blur');
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
+      dispatchFakeEvent(downHandler, 'mousedown');
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-focused');
+      dispatchFakeEvent(inputElement, 'blur');
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
+    }));
   });
   describe('input number form', () => {
     let fixture;
@@ -466,7 +481,7 @@ export class NzTestInputNumberFormComponent {
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
-      inputNumber: [ 1 ]
+      inputNumber: [1]
     });
   }
 
