@@ -1,0 +1,83 @@
+<div class="{{ nzInDatePicker ? prefixCls + '-panel' : '' }}">
+  <div
+    class="{{ prefixCls }}-inner {{ nzInDatePicker ? prefixCls + '-column-' + enabledColumns : '' }}"
+    [style.width.px]="nzInDatePicker ? null : enabledColumns * 56">
+    <div class="{{ prefixCls }}-input-wrap">
+      <input
+        type="text"
+        class="{{ prefixCls }}-input"
+        [placeholder]="nzPlaceHolder"
+        [nzTime]="format"
+        [(ngModel)]="time.value"
+        (blur)="time.changed()">
+      <a
+        *ngIf="nzAllowEmpty"
+        class="{{ prefixCls }}-clear-btn"
+        [attr.title]="nzClearText"
+        (click)="clear()">
+      </a>
+    </div>
+    <div class="{{ prefixCls }}-combobox">
+      <div
+        *ngIf="hourEnabled"
+        #hourListElement
+        class="{{ prefixCls }}-select">
+        <ul>
+          <ng-container *ngFor="let hour of hourRange">
+            <li
+              *ngIf="!(nzHideDisabledOptions && hour.disabled)"
+              (click)="selectHour(hour)"
+              class="
+                {{ isSelectedHour(hour) ? prefixCls + '-select-option-selected' : '' }}
+                {{ hour.disabled ? prefixCls + '-select-option-disabled' : '' }}
+              "
+            >
+              {{ hour.index | number:'2.0-0' }}
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+      <div
+        *ngIf="minuteEnabled"
+        #minuteListElement
+        class="{{ prefixCls }}-select">
+        <ul>
+          <ng-container *ngFor="let minute of minuteRange">
+            <li
+              *ngIf="!(nzHideDisabledOptions && minute.disabled)"
+              (click)="selectMinute(minute)"
+              class="
+                {{ isSelectedMinute(minute) ? prefixCls + '-select-option-selected' : '' }}
+                {{ minute.disabled ? prefixCls + '-select-option-disabled' : '' }}
+              "
+            >
+              {{ minute.index | number:'2.0-0' }}
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+      <div
+        *ngIf="secondEnabled"
+        #secondListElement
+        class="{{ prefixCls }}-select">
+        <ul>
+          <ng-container *ngFor="let second of secondRange">
+            <li
+              *ngIf="!(nzHideDisabledOptions && second.disabled)"
+              (click)="selectSecond(second)"
+              class="
+                {{ isSelectedSecond(second) ? prefixCls + '-select-option-selected' : '' }}
+                {{ second.disabled ? prefixCls + '-select-option-disabled' : '' }}
+              "
+            >
+              {{ second.index | number:'2.0-0' }}
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </div>
+    <div class="{{ prefixCls }}-addon" *ngIf="nzAddOn">
+      <ng-template [ngTemplateOutlet]="nzAddOn"></ng-template>
+    </div>
+  </div>
+</div>

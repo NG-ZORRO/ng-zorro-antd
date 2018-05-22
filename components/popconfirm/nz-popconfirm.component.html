@@ -1,0 +1,39 @@
+<ng-content></ng-content>
+<ng-template
+  #overlay="cdkConnectedOverlay"
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="overlayOrigin"
+  [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
+  (backdropClick)="hide()"
+  (detach)="hide()"
+  (positionChange)="onPositionChange($event)"
+  [cdkConnectedOverlayPositions]="_positions"
+  [cdkConnectedOverlayOpen]="visible$ | async">
+  <div class="ant-popover" [ngClass]="_classMap" [ngStyle]="nzOverlayStyle" [@fadeAnimation]="''+(visible$ | async)"
+    (@fadeAnimation.done)="_afterVisibilityAnimation($event)">
+    <div class="ant-popover-content">
+      <div class="ant-popover-arrow"></div>
+      <div class="ant-popover-inner">
+        <div>
+          <div class="ant-popover-inner-content">
+            <div class="ant-popover-message" *ngIf="!nzTemplate">
+              <i class="anticon anticon-exclamation-circle"></i>
+              <div class="ant-popover-message-title">{{ nzTitle }}</div>
+            </div>
+            <div class="ant-popover-buttons" *ngIf="!nzTemplate">
+              <button nz-button [nzSize]="'small'" (click)="onCancel()">
+                <ng-container *ngIf="nzCancelText">{{ nzCancelText }}</ng-container>
+                <ng-container *ngIf="!nzCancelText">{{ 'Modal.cancelText' | nzI18n }}</ng-container>
+              </button>
+              <button nz-button [nzSize]="'small'" [nzType]="'primary'" (click)="onConfirm()">
+                <ng-container *ngIf="nzOkText">{{ nzOkText }}</ng-container>
+                <ng-container *ngIf="!nzOkText">{{ 'Modal.okText' | nzI18n }}</ng-container>
+              </button>
+            </div>
+            <ng-template *ngIf="nzTemplate" [ngTemplateOutlet]="nzTemplate"></ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

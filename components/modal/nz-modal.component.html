@@ -1,0 +1,126 @@
+<ng-template #tplOriginContent><ng-content></ng-content></ng-template> <!-- Compatible: the <ng-content> can appear only once -->
+
+<div>
+  <div *ngIf="nzMask"
+    class="ant-modal-mask"
+    [ngClass]="maskAnimationClassMap"
+    [class.ant-modal-mask-hidden]="hidden"
+    [ngStyle]="nzMaskStyle"
+    [style.zIndex]="nzZIndex"
+  ></div>
+  <div
+    (click)="onClickMask($event)"
+    class="ant-modal-wrap {{ nzWrapClassName }}"
+    [style.zIndex]="nzZIndex"
+    [style.display]="hidden ? 'none' : ''"
+    tabindex="-1"
+    role="dialog"
+  >
+    <div #modalContainer
+      class="ant-modal {{ nzClassName }}"
+      [ngClass]="modalAnimationClassMap"
+      [ngStyle]="nzStyle"
+      [style.width]="nzWidth | toCssUnit"
+      [style.transform-origin]="transformOrigin"
+      role="document"
+    >
+      <div class="ant-modal-content">
+        <button *ngIf="nzClosable" (click)="onClickCloseBtn($event)" class="ant-modal-close" aria-label="Close">
+          <span class="ant-modal-close-x"></span>
+        </button>
+        <ng-container [ngSwitch]="true">
+          <ng-container *ngSwitchCase="isModalType('default')" [ngTemplateOutlet]="tplContentDefault"></ng-container>
+          <ng-container *ngSwitchCase="isModalType('confirm')" [ngTemplateOutlet]="tplContentConfirm"></ng-container>
+        </ng-container>
+      </div>
+    </div>
+    <div tabindex="0" style="width: 0px; height: 0px; overflow: hidden;">sentinel</div>
+  </div>
+</div>
+
+<!-- [Predefined] Default Modal Content -->
+<ng-template #tplContentDefault>
+  <div *ngIf="nzTitle" class="ant-modal-header">
+    <div class="ant-modal-title">
+      <ng-container [ngSwitch]="true">
+        <ng-container *ngSwitchCase="isTemplateRef(nzTitle)" [ngTemplateOutlet]="nzTitle"></ng-container>
+        <ng-container *ngSwitchCase="isNonEmptyString(nzTitle)"><div [innerHTML]="nzTitle"></div></ng-container>
+      </ng-container>
+    </div>
+  </div>
+  <div class="ant-modal-body" [ngStyle]="nzBodyStyle">
+    <ng-container #bodyContainer>
+      <ng-container *ngIf="!isComponent(nzContent)" [ngSwitch]="true">
+        <ng-container *ngSwitchCase="isTemplateRef(nzContent)" [ngTemplateOutlet]="nzContent"></ng-container>
+        <ng-container *ngSwitchCase="isNonEmptyString(nzContent)"><div [innerHTML]="nzContent"></div></ng-container>
+        <ng-container *ngSwitchDefault [ngTemplateOutlet]="tplOriginContent"></ng-container>
+      </ng-container>
+    </ng-container>
+  </div>
+  <div *ngIf="nzFooter !== null" class="ant-modal-footer">
+    <ng-container [ngSwitch]="true">
+      <ng-container *ngSwitchCase="isTemplateRef(nzFooter)" [ngTemplateOutlet]="nzFooter"></ng-container>
+      <ng-container *ngSwitchCase="isNonEmptyString(nzFooter)"><div [innerHTML]="nzFooter"></div></ng-container>
+      <ng-container *ngSwitchCase="isModalButtons(nzFooter)">
+        <button *ngFor="let button of nzFooter" nz-button
+          (click)="onButtonClick(button)"
+          [hidden]="!getButtonCallableProp(button, 'show')"
+          [nzLoading]="getButtonCallableProp(button, 'loading')"
+          [disabled]="getButtonCallableProp(button, 'disabled')"
+          [nzType]="button.type"
+          [nzShape]="button.shape"
+          [nzSize]="button.size"
+          [nzGhost]="button.ghost"
+        >{{ button.label }}</button>
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+        <button *ngIf="nzCancelText!==null" nz-button (click)="onClickOkCancel('cancel')" [nzLoading]="nzCancelLoading">
+          <ng-container *ngIf="nzCancelText">{{ nzCancelText }}</ng-container>
+          <ng-container *ngIf="!nzCancelText">{{ 'Modal.cancelText' | nzI18n }}</ng-container>
+        </button>
+        <button *ngIf="nzOkText!==null" nz-button [nzType]="nzOkType" (click)="onClickOkCancel('ok')" [nzLoading]="nzOkLoading">
+          <ng-container *ngIf="nzOkText">{{ nzOkText }}</ng-container>
+          <ng-container *ngIf="!nzOkText">{{ 'Modal.okText' | nzI18n }}</ng-container>
+        </button>
+      </ng-container>
+    </ng-container>
+  </div>
+</ng-template>
+<!-- /[Predefined] Default Modal Content -->
+
+<!-- [Predefined] Confirm Modal Content -->
+<ng-template #tplContentConfirm>
+  <div class="ant-modal-body" [ngStyle]="nzBodyStyle">
+    <div class="ant-confirm-body-wrapper">
+      <div class="ant-confirm-body">
+        <i class="anticon anticon-{{ nzIconType }}"></i>
+        <span class="ant-confirm-title">
+          <ng-container [ngSwitch]="true">
+            <ng-container *ngSwitchCase="isTemplateRef(nzTitle)" [ngTemplateOutlet]="nzTitle"></ng-container>
+            <ng-container *ngSwitchCase="isNonEmptyString(nzTitle)"><span [innerHTML]="nzTitle"></span></ng-container>
+          </ng-container>
+        </span>
+        <div class="ant-confirm-content">
+          <ng-container #bodyContainer>
+            <ng-container *ngIf="!isComponent(nzContent)" [ngSwitch]="true">
+              <ng-container *ngSwitchCase="isTemplateRef(nzContent)" [ngTemplateOutlet]="nzContent"></ng-container>
+              <ng-container *ngSwitchCase="isNonEmptyString(nzContent)"><div [innerHTML]="nzContent"></div></ng-container>
+              <ng-container *ngSwitchDefault [ngTemplateOutlet]="tplOriginContent"></ng-container>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+      <div class="ant-confirm-btns">
+        <button nz-button *ngIf="nzCancelText!==null" (click)="onClickOkCancel('cancel')" [nzLoading]="nzCancelLoading">
+          <ng-container *ngIf="nzCancelText">{{ nzCancelText }}</ng-container>
+          <ng-container *ngIf="!nzCancelText">{{ 'Modal.cancelText' | nzI18n }}</ng-container>
+        </button>
+        <button *ngIf="nzOkText!==null" #autoFocusButtonOk nz-button [nzType]="nzOkType" (click)="onClickOkCancel('ok')" [nzLoading]="nzOkLoading">
+          <ng-container *ngIf="nzOkText">{{ nzOkText }}</ng-container>
+          <ng-container *ngIf="!nzOkText">{{ 'Modal.okText' | nzI18n }}</ng-container>
+        </button>
+      </div>
+    </div> <!-- /.ant-confirm-body-wrapper -->
+  </div>
+</ng-template>
+<!-- /[Predefined] Confirm Modal Content -->

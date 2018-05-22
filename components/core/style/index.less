@@ -1,0 +1,109 @@
+@import "../../style/themes/default";
+
+.cdk-overlay-container {
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 1000;
+}
+
+.cdk-overlay-backdrop {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity .4s cubic-bezier(.25, .8, .25, 1);
+  opacity: 0;
+  position: absolute;
+  pointer-events: auto;
+  z-index: 1000;
+}
+
+.cdk-overlay-pane {
+  position: absolute;
+  pointer-events: auto;
+  z-index: 1000; // Give an opportunity to the content own to manage their z-index such as Modal
+}
+
+.box-shadow-left() {
+  .ant-table-th-right-sticky, .ant-table-td-right-sticky {
+    box-shadow: -6px 0 6px 0px rgba(0, 0, 0, .05);
+  }
+}
+
+.box-shadow-right() {
+  .ant-table-th-left-sticky, .ant-table-td-left-sticky {
+    box-shadow: 6px 0 6px 0px rgba(0, 0, 0, .05);
+  }
+}
+
+.border-left() {
+  .ant-table-th-right-sticky, .ant-table-td-right-sticky {
+    border-right: @border-width-base @border-style-base @border-color-split;
+  }
+}
+
+.border-right() {
+  .ant-table-th-left-sticky, .ant-table-td-left-sticky {
+    border-left: @border-width-base @border-style-base @border-color-split;
+  }
+}
+
+.ant-table-td-right-sticky + .ant-table-td-right-sticky {
+  box-shadow: none;
+}
+
+.ant-table-th-right-sticky + .ant-table-th-right-sticky {
+  box-shadow: none;
+}
+
+.ant-table-th-left-sticky, .ant-table-th-right-sticky, .ant-table-td-right-sticky, .ant-table-td-left-sticky {
+  position: sticky;
+  z-index: 1;
+}
+
+.ant-table-td-left-sticky, .ant-table-td-right-sticky {
+  background: @component-background;
+}
+
+.ant-table-scroll-position-middle {
+  .box-shadow-right;
+  .box-shadow-left;
+}
+
+.ant-table-scroll-position-left {
+  .box-shadow-left;
+}
+
+// // tooltip
+// .ant-tooltip {
+//   position: relative;
+// }
+
+// // popconfirm
+// .ant-popover {
+//   position: relative;
+// }
+
+.ant-table-scroll-position-right {
+  .box-shadow-right;
+}
+
+.ant-table-bordered {
+  &.ant-table-scroll-position-middle {
+    .border-right;
+    .border-left;
+  }
+
+  &.ant-table-scroll-position-left {
+    .border-left;
+  }
+
+  &.ant-table-scroll-position-right {
+    .border-right;
+  }
+}

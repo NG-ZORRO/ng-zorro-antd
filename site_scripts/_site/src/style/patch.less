@@ -1,0 +1,38 @@
+[hidden] {
+  display: none !important;
+}
+
+.pic-plus > * {
+  display: inline-block !important;
+  vertical-align: middle;
+}
+
+.pic-plus span {
+  font-size: 30px;
+  color: #aaa;
+  margin: 0 20px;
+}
+
+.toc-affix {
+  &.fixed {
+    position: fixed;
+    top: 70px;
+    right: 30px;
+    .ant-anchor-ink {
+      left: 20px;
+      &::before {
+        width: 1px;
+      }
+    }
+  }
+  .ant-affix {
+    overflow: visible;
+  }
+  nz-link {
+    font-size: 12px;
+  }
+  .ant-anchor-link-active {
+    border-color: @primary-color;
+    color: @primary-color;
+  }
+}
