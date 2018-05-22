@@ -25,7 +25,7 @@
                 <ng-container *ngIf="nzCancelText">{{ nzCancelText }}</ng-container>
                 <ng-container *ngIf="!nzCancelText">{{ 'Modal.cancelText' | nzI18n }}</ng-container>
               </button>
-              <button nz-button [nzSize]="'small'" [nzType]="'primary'" (click)="onConfirm()">
+              <button nz-button [nzSize]="'small'" [nzType]="nzOkType" (click)="onConfirm()">
                 <ng-container *ngIf="nzOkText">{{ nzOkText }}</ng-container>
                 <ng-container *ngIf="!nzOkText">{{ 'Modal.okText' | nzI18n }}</ng-container>
               </button>
