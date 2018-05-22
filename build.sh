@@ -52,3 +52,7 @@ echo 'Copying README.md'
 cp README.md publish/README.md
 
 node ./build_scripts/generate-less.js
+
+echo 'Compiling ng-zorro-antd.less'
+lessc -v
+$(npm bin)/lessc publish/src/ng-zorro-antd.less publish/src/ng-zorro-antd.css --compress -x
