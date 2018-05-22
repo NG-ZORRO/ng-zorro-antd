@@ -11,7 +11,7 @@ import { NzInputNumberModule } from './nz-input-number.module';
 describe('input number', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzInputNumberModule, FormsModule, ReactiveFormsModule],
+      imports     : [NzInputNumberModule, FormsModule, ReactiveFormsModule],
       declarations: [NzTestInputNumberBasicComponent, NzTestInputNumberFormComponent]
     });
     TestBed.compileComponents();
@@ -302,11 +302,11 @@ describe('input number', () => {
     });
     it('should key up and down work with ctrl key', () => {
       const upArrowEvent = new KeyboardEvent('keydown', {
-        code: 'ArrowUp',
+        code   : 'ArrowUp',
         ctrlKey: true
       });
       const downArrowEvent = new KeyboardEvent('keydown', {
-        code: 'ArrowDown',
+        code   : 'ArrowDown',
         ctrlKey: true
       });
       fixture.detectChanges();
@@ -323,11 +323,11 @@ describe('input number', () => {
     });
     it('should key up and down work with meta key', () => {
       const upArrowEvent = new KeyboardEvent('keydown', {
-        code: 'ArrowUp',
+        code   : 'ArrowUp',
         metaKey: true
       });
       const downArrowEvent = new KeyboardEvent('keydown', {
-        code: 'ArrowDown',
+        code   : 'ArrowDown',
         metaKey: true
       });
       fixture.detectChanges();
@@ -346,11 +346,11 @@ describe('input number', () => {
       testComponent.max = 100;
       testComponent.min = -100;
       const upArrowEvent = new KeyboardEvent('keydown', {
-        code: 'ArrowUp',
+        code    : 'ArrowUp',
         shiftKey: true
       });
       const downArrowEvent = new KeyboardEvent('keydown', {
-        code: 'ArrowDown',
+        code    : 'ArrowDown',
         shiftKey: true
       });
       fixture.detectChanges();
@@ -382,14 +382,12 @@ describe('input number', () => {
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number-focused');
       dispatchFakeEvent(inputElement, 'blur');
       fixture.detectChanges();
-      expect(testComponent.isFocused).toBe(false);
       expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
       dispatchFakeEvent(downHandler, 'mousedown');
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number-focused');
       dispatchFakeEvent(inputElement, 'blur');
       fixture.detectChanges();
-      expect(testComponent.isFocused).toBe(false);
       expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
     }));
   });
