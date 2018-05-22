@@ -44,6 +44,7 @@ describe('NzMessage', () => {
     messageService.success('SUCCESS');
     demoAppFixture.detectChanges();
 
+    expect((overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement).style.zIndex).toBe('1010');
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
     expect(overlayContainerElement.querySelector('.anticon-check-circle')).not.toBeNull();
   }));
@@ -96,7 +97,7 @@ describe('NzMessage', () => {
 
     const messageElement = overlayContainerElement.querySelector('.ant-message-notice');
     dispatchMouseEvent(messageElement, 'mouseenter');
-    tick(50000);
+    tick(1000);
     expect(overlayContainerElement.textContent).toContain('EXISTS');
 
     dispatchMouseEvent(messageElement, 'mouseleave');
@@ -146,7 +147,7 @@ describe('NzMessage', () => {
     messageService.config({ nzDuration: 0 });
     messageService.create('loading', 'EXISTS');
     demoAppFixture.detectChanges();
-    tick(50000);
+    tick(1000);
     expect(overlayContainerElement.textContent).toContain('EXISTS');
   }));
 });

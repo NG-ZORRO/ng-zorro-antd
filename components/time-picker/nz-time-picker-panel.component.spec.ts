@@ -25,6 +25,7 @@ describe('time-picker-panel', () => {
       panelElement = fixture.debugElement.query(By.directive(NzTimePickerPanelComponent));
     });
     it('should init correct', () => {
+      testComponent.inDatePicker = true;
       fixture.detectChanges();
       expect(panelElement.nativeElement.classList).toContain('ant-time-picker-panel');
     });
@@ -188,6 +189,7 @@ export class NzTestTimePanelComponent {
       [nzDefaultOpenValue]="openValue"
       [nzSecondStep]="secondStep"
       [nzMinuteStep]="minuteStep"
+      [nzInDatePicker]="inDatePicker"
       [nzHideDisabledOptions]="hideDisabledOptions"
       [nzHourStep]="hourStep">
     </nz-time-picker-panel>`,
@@ -197,6 +199,7 @@ export class NzTestTimePanelComponent {
   ]
 })
 export class NzTestTimePanelDisabledComponent {
+  inDatePicker = false;
   secondStep = 1;
   minuteStep = 1;
   hourStep = 1;

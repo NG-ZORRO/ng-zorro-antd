@@ -60,7 +60,9 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
     const componentRef = factory.create(this.injector); // Use root injector
     componentRef.changeDetectorRef.detectChanges(); // Immediately change detection to avoid multi-checking error
     this.appRef.attachView(componentRef.hostView); // Load view into app root
-    this.overlay.create().overlayElement.appendChild((componentRef.hostView as EmbeddedViewRef<{}>).rootNodes[0] as HTMLElement);
+    const overlayPane = this.overlay.create().overlayElement;
+    overlayPane.style.zIndex = '1010'; // Patching: assign the same zIndex of ant-message to it's parent overlay panel, to the ant-message's zindex work.
+    overlayPane.appendChild((componentRef.hostView as EmbeddedViewRef<{}>).rootNodes[0] as HTMLElement);
 
     return componentRef.instance;
   }
