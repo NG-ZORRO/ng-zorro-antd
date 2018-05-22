@@ -1,6 +1,25 @@
 const fs = require('fs');
 const path = require('path');
 const wrench = require('wrench');
+const less = require('less');
+const LessPluginCleanCSS = require('less-plugin-clean-css');
+
+function compileLess(content, savePath, min) {
+  return new Promise((resolve, reject) => {
+    const plugins = [];
+    if (min) {
+      const cleanCSSPlugin = new LessPluginCleanCSS({advanced: true});
+      plugins.push(cleanCSSPlugin);
+    }
+    return less.render
+      .call(less, content, { plugins })
+      .then(({ css }) => {
+        fs.writeFileSync(savePath, css);
+        resolve();
+      })
+      .catch(err => reject(err));
+  });
+}
 
 const sourcePath = path.resolve(__dirname, '../components');
 const targetPath = path.resolve(__dirname, '../publish/src');
@@ -17,3 +36,7 @@ targetFolder.forEach(dir => {
 wrench.copyDirSyncRecursive(path.resolve(sourcePath, 'style'), path.resolve(targetPath, 'style'));
 fs.writeFileSync(`${targetPath}/components.less`, componentsLessContent);
 fs.writeFileSync(`${targetPath}/ng-zorro-antd.less`, fs.readFileSync(`${sourcePath}/ng-zorro-antd.less`));
+
+const lessContent = `@import "${path.join(targetPath, 'ng-zorro-antd.less')}";`;
+compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.css'), false);
+compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.min.css'), true);
