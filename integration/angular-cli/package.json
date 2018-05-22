@@ -5,13 +5,13 @@
   "scripts": {
     "setup": "bash ../../setup-shared-libs.sh ./lib",
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "./node_modules/@angular/cli/bin/ng serve",
+    "build": "./node_modules/@angular/cli/bin/ng build",
     "test": "echo \"Error: no test... minimal project\" && exit 1",
     "lint": "echo \"Error: no lint... minimal project\" && exit 1",
     "e2e": "echo \"Error: no e2e... minimal project\" && exit 1",
     "preintegration": "npm run setup && npm install --ignore-scripts",
-    "integration": "ng build --prod --build-optimizer"
+    "integration": "./node_modules/@angular/cli/bin/ng build --prod --build-optimizer"
   },
   "private": true,
   "dependencies": {
