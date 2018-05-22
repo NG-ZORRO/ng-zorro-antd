@@ -52,11 +52,8 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   private links: NzAnchorLinkComponent[] = [];
   private animating = false;
   private target: Element = null;
-  /** @private */
   scroll$: Subscription = null;
-  /** @private */
   visible = false;
-  /** @private */
   wrapperStyle: {} = { 'max-height': '100vh' };
   @ViewChild('wrap') private wrap: ElementRef;
   @ViewChild('ink') private ink: ElementRef;
