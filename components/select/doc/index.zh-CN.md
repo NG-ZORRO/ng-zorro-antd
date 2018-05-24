@@ -40,7 +40,7 @@ title: Select
 | nzMaxMultipleCount | 最多选中多少个标签| number | Infinity |
 | nzMode | 设置 nz-select 的模式 | 'multiple' 丨 'tags' 丨 'default' | 'default' |
 | nzNotFoundContent | 当下拉列表为空时显示的内容 | string | - |
-| nzPlaceHolder | 选择框默认文字 | string | - |
+| nzPlaceholder | 选择框默认文字 | string | - |
 | nzShowSearch | 使单选模式可搜索 | boolean | false |
 | nzSize | 选择框大小，可选 `large` `small` | string | default |
 | nzScrollToBottom | 下拉列表滚动到底部的回调 | ()=>{} | - |

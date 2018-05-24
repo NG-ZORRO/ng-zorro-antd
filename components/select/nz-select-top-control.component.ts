@@ -41,12 +41,12 @@ import { NzOptionComponent } from './nz-option.component';
         [disabled]="nzDisabled">
     </ng-template>
     <div
-      *ngIf="nzPlaceHolder"
+      *ngIf="nzPlaceholder"
       nz-select-unselectable
       [style.display]="placeHolderDisplay"
       (click)="focusOnInput()"
       class="ant-select-selection__placeholder">
-      {{ nzPlaceHolder }}
+      {{ nzPlaceholder }}
     </div>
     <!--single mode-->
     <ng-container *ngIf="isSingleMode">
@@ -107,7 +107,7 @@ export class NzSelectTopControlComponent {
   @Input() nzShowSearch = false;
   @Input() nzDisabled = false;
 
-  @Input() nzPlaceHolder: string;
+  @Input() nzPlaceholder: string;
   @Input() nzOpen = false;
   // tslint:disable-next-line:no-any
   @Input() compareWith: (o1: any, o2: any) => boolean;

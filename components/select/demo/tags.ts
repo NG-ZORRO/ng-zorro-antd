@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-select-tags',
   template: `
-    <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="Tag Mode" [(ngModel)]="listOfTagOptions">
+    <nz-select nzMode="tags" style="width: 100%;" nzPlaceholder="Tag Mode" [(ngModel)]="listOfTagOptions">
       <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value">
       </nz-option>
     </nz-select>
