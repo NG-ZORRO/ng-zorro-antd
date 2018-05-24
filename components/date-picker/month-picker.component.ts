@@ -21,7 +21,7 @@ import { PanelMode, PickerResult } from './standard-types';
 })
 
 export class NzMonthPickerComponent extends AbstractPickerComponent implements OnChanges {
-  @Input() nzPlaceholder: string;
+  @Input() nzPlaceHolder: string;
 
   @Input() nzRenderExtraFooter: FunctionProp<TemplateRef<void> | string>;
   @Input() nzDefaultValue: CandyDate;

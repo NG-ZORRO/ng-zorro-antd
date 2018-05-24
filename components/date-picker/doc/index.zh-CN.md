@@ -45,7 +45,7 @@ registerLocaleData(zh);
 | nzDisabledDate | 不可选择的日期 | (current: Date) => boolean | 无 |
 | nzLocale | 国际化配置 | object | [默认配置](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
 | nzOpen | 控制弹层是否展开 | boolean | - |
-| nzPlaceholder | 输入框提示文字 | string / string[] | - |
+| nzPlaceHolder | 输入框提示文字 | string / string[] | - |
 | nzPopupStyle | 额外的弹出日历样式 | object | {} |
 | nzDropdownClassName | 额外的弹出日历 className | string | - |
 | nzSize | 输入框大小，`large` 高度为 40px，`small` 为 24px，默认是 32px | string | 无 |

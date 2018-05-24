@@ -11,11 +11,11 @@ import { Component } from '@angular/core';
     <br /><br />
     <nz-date-picker [nzSize]="size"></nz-date-picker>
     <br />
-    <nz-month-picker [nzSize]="size" nzPlaceholder="Select Month"></nz-month-picker>
+    <nz-month-picker [nzSize]="size" nzPlaceHolder="Select Month"></nz-month-picker>
     <br />
     <nz-range-picker [nzSize]="size"></nz-range-picker>
     <br />
-    <nz-week-picker [nzSize]="size" nzPlaceholder="Select Week"></nz-week-picker>
+    <nz-week-picker [nzSize]="size" nzPlaceHolder="Select Week"></nz-week-picker>
   `,
   styles: [`
     :host ::ng-deep .ant-calendar-picker {

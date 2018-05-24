@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
       nzShowTime
       nzFormat="yyyy-MM-dd HH:mm:ss"
       [(ngModel)]="startValue"
-      nzPlaceholder="Start"
+      nzPlaceHolder="Start"
       (ngModelChange)="onStartChange($event)"
       (nzOnOpenChange)="handleStartOpenChange($event)"
     ></nz-date-picker>
@@ -17,7 +17,7 @@ import { Component } from '@angular/core';
       nzShowTime
       nzFormat="yyyy-MM-dd HH:mm:ss"
       [(ngModel)]="endValue"
-      nzPlaceholder="End"
+      nzPlaceHolder="End"
       [nzOpen]="endOpen"
       (ngModelChange)="onEndChange($event)"
       (nzOnOpenChange)="handleEndOpenChange($event)"

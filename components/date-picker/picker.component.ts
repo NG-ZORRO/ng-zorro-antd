@@ -18,7 +18,6 @@ import {
 } from '@angular/core';
 
 import { dropDownAnimation } from '../core/animation/dropdown-animations';
-import { DEFAULT_DATEPICKER_POSITIONS } from '../core/overlay/overlay-position-map';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CandyDate } from './lib/candy-date';
 
@@ -71,9 +70,23 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
       originY : 'bottom',
       overlayX: 'start',
       overlayY: 'bottom'
+    },
+    {
+      originX : 'end',
+      originY : 'top',
+      overlayX: 'end',
+      overlayY: 'top'
+    },
+    {
+      originX : 'end',
+      originY : 'bottom',
+      overlayX: 'end',
+      overlayY: 'bottom'
     }
   ] as ConnectionPositionPair[];
-  currentPosition: 'top' | 'bottom' = 'bottom';
+  dropdownAnimation: 'top' | 'bottom' = 'bottom';
+  currentPositionX: 'start' | 'end' = 'start';
+  currentPositionY: 'top' | 'bottom' = 'top';
   // get valueReadable(): string {
   //   return this.value && this.i18n.formatDateCompatible(this.value.nativeDate, this.format);
   // }
@@ -124,7 +137,9 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
   // All other components like "nz-dropdown" which depends on overlay also has the same issue.
   // See: https://github.com/NG-ZORRO/ng-zorro-antd/issues/1429
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    this.currentPosition = position.connectionPair.originY === 'top' ? 'bottom' : 'top';
+    this.dropdownAnimation = position.connectionPair.originY === 'top' ? 'bottom' : 'top';
+    this.currentPositionX = position.connectionPair.originX as 'start' | 'end';
+    this.currentPositionY = position.connectionPair.originY as 'top' | 'bottom';
     this.changeDetector.detectChanges(); // Take side-effects to position styles
   }
 
