@@ -13,13 +13,13 @@ When data is in the form of dates, such as schedules, timetables, prices calenda
 
 ## API
 
-**Note:** Some of Calendar's locale are coming from [Angular i18n](https://angular.io/guide/i18n), that should be provided in the file of `main.ts`.
+**Note:** Some of Calendar's locale are coming from [Angular i18n](https://angular.io/guide/i18n), that should be provided in the file of `main.ts` or `app.module.ts`.
 
 For example:
 ```typescript
 import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
-registerLocaleData(zh);
+import en from '@angular/common/locales/en';
+registerLocaleData(en);
 ```
 
 ```html
