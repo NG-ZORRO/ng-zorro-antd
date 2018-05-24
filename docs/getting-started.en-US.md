@@ -64,6 +64,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { AppComponent } from './app.component';
 
+/** register language package ** /
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+registerLocaleData(en);
+import { NZ_I18N, en_US } from 'ng-zorro-antd';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -75,7 +81,8 @@ import { AppComponent } from './app.component';
     BrowserAnimationsModule,
     NgZorroAntdModule.forRoot()
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ],
+  providers   : [ { provide: NZ_I18N, useValue: en_US } ]
 })
 export class AppModule { }
 

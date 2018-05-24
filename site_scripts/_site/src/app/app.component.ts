@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { en_US, zh_CN, NzI18nService, NzMessageService } from 'ng-zorro-antd';
-import { ROUTER_LIST } from './router';
 import { environment } from '../environments/environment';
+import { ROUTER_LIST } from './router';
 
 @Component({
   selector   : 'app-root',
@@ -27,7 +27,6 @@ export class AppComponent implements OnInit {
     url.splice(-1);
     this.router.navigateByUrl(url.join('/') + '/' + language);
   }
-
 
   toggleHide() {
     this.hide = !this.hide;
@@ -53,6 +52,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('打开钉钉扫码加入 NG-ZORRO 自助服务群');
+    console.log('%c', 'padding:100px;background:url(\'https://img.alicdn.com/tfs/TB1XNAjteuSBuNjy1XcXXcYjFXa-200-232.png\') no-repeat;');
     this.routerList.components.forEach(group => {
       this.componentList = this.componentList.concat([ ...group.children ]);
     });
@@ -132,5 +133,4 @@ export class AppComponent implements OnInit {
     });
   }
   // endregion
-
 }
