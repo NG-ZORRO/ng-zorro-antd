@@ -22,6 +22,7 @@ Switching Selector.
 | nzDisabled | Disable switch | boolean | false |
 | nzSize | the size of the `nz-switch`, options: `default` `small` | string | `default` |
 | nzLoading | loading state of switch | boolean | false |
+| nzControl | determine whether fully control state by user  | boolean | false |
 
 ## Methods
 
