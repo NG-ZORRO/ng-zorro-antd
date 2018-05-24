@@ -41,3 +41,10 @@ When there is a need for autocomplete functionality.
 | nzDefaultActiveFirstOption | Whether active first option by default | `boolean` | `true` |
 | nzWidth | Custom width, unit px | `number` | trigger element width |
 
+### nz-auto-option
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| nzValue | bind ngModel of the trigger element  | `any` | - |
+| nzLabel | display value of the trigger element  | `string` | - |
+| nzDisabled | disabled option | `boolean` | `false` |

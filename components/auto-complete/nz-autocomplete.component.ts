@@ -107,7 +107,7 @@ export class NzAutocompleteComponent implements AfterViewInit {
   @ViewChildren(NzAutocompleteOptionComponent) fromDataSourceOptions: QueryList<NzAutocompleteOptionComponent>;
 
   /** 自定义宽度单位 px */
-  @Input() nzWidth: number | void;
+  @Input() nzWidth: number;
 
   /** 是否默认高亮第一个选项，默认 `true` */
   @Input()
