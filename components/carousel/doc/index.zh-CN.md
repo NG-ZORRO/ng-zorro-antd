@@ -30,5 +30,5 @@ subtitle: 走马灯
 | --- | --- |
 | goTo(slideNumber) | 切换到指定面板 |
 | next() | 切换到下一面板 |
-| prev() | 切换到上一面板 |
+| pre() | 切换到上一面板 |
 
