@@ -91,20 +91,20 @@ export const POSITION_MAP: { [key: string]: ConnectionPositionPair } = {
 export const DEFAULT_4_POSITIONS = _objectValues([ POSITION_MAP.top, POSITION_MAP.right, POSITION_MAP.bottom, POSITION_MAP.left]);
 export const DEFAULT_DROPDOWN_POSITIONS = _objectValues([ POSITION_MAP.bottomLeft, POSITION_MAP.topLeft ]);
 
-export const DEFAULT_DATEPICKER_POSITIONS = [
-  {
-    originX : 'start',
-    originY : 'top',
-    overlayX: 'start',
-    overlayY: 'top',
-  },
-  {
-    originX : 'start',
-    originY : 'bottom',
-    overlayX: 'start',
-    overlayY: 'bottom',
-  }
-] as ConnectionPositionPair[];
+// export const DEFAULT_DATEPICKER_POSITIONS = [
+//   {
+//     originX : 'start',
+//     originY : 'top',
+//     overlayX: 'start',
+//     overlayY: 'top',
+//   },
+//   {
+//     originX : 'start',
+//     originY : 'bottom',
+//     overlayX: 'start',
+//     overlayY: 'bottom',
+//   }
+// ] as ConnectionPositionPair[];
 
 export const DEFAULT_MENTION_POSITIONS = [
   POSITION_MAP.bottomLeft,
