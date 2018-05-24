@@ -28,6 +28,7 @@ title: InputNumber
 | nzPrecision | 数值精度 | number | - |
 | nzSize | 输入框大小 | string | default |
 | nzStep | 每次改变步数，可以为小数 | number ｜ string | 1 |
+| nzPlaceHolder | 选择框默认文字 | string | - |
 
 ## 方法
 
