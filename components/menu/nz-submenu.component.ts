@@ -131,7 +131,7 @@ import { NzMenuDirective } from './nz-menu.directive';
     </ng-template>
   `,
   styles             : [
-      `
+    `
       .ant-menu-submenu-placement-bottomLeft {
         top: 6px;
         position: relative;
@@ -372,7 +372,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
     if (this.subMenus && this.subMenus.length) {
       this.subMenus.filter(x => x !== this).forEach(menu => {
         if (this.subMenuMode === 'inline') {
-          menu.level = this.level + 1;
+          Promise.resolve().then(() => menu.level = this.level + 1);
         }
         menu.isInSubMenu = true;
       });
