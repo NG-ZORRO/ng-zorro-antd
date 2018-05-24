@@ -13,6 +13,40 @@ timeline: true
 
 ---
 
+## 0.7.1
+`2018.05.24`
+
+### Menu
+- 修复 `Menu` 在 `*ngFor` 使用方式下的问题
+
+### Switch
+- 支持用户完全控制 `Switch` 状态
+
+### AutoComplete
+- 修复 `nzValue` 与 `nzLabel` 并存时未生效的问题
+- 修复在 `ReactiveForm` 下未生效的问题
+
+### InputNumber
+- 支持自定义 `placeholder` 内容
+- 修复 `focus` 样式未被移除的问题
+
+### DatePicker
+- 修复贴近边界时的显示问题
+
+### Popconfirm
+- 修复 `nzOkType` 未生效的问题
+
+### Message
+- 修复 `Modal` 弹出时遮挡 `Message` 的问题
+
+### Modal
+- 调整隐藏和显示滚动条的逻辑
+
+### 其他
+- 修复部分文档错误
+- 修复部分打包问题
+
+
 ### 写给 `0.6.x` 版本用户
 
 #### 我应该升级到最新版本的 `ng-zorro-antd` 吗？

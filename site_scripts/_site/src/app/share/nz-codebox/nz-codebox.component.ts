@@ -229,10 +229,16 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 import { ${this.nzComponentName} } from './app.component';
 
+import { NZ_I18N, en_US } from 'ng-zorro-antd';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+registerLocaleData(en);
+
 @NgModule({
   imports:      [ BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule, NgZorroAntdModule.forRoot(), BrowserAnimationsModule ],
   declarations: [ ${this.nzComponentName} ],
-  bootstrap:    [ ${this.nzComponentName} ]
+  bootstrap:    [ ${this.nzComponentName} ],
+  providers   : [ { provide: NZ_I18N, useValue: en_US } ]
 })
 export class AppModule { }
 `,

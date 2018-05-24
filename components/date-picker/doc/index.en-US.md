@@ -17,8 +17,8 @@ By clicking the input box, you can select a date from a popup calendar.
 For example:
 ```typescript
 import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
-registerLocaleData(zh);
+import en from '@angular/common/locales/en';
+registerLocaleData(en);
 ```
 
 There are four kinds of picker:
