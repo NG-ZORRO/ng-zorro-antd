@@ -253,6 +253,10 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   // Do rest things when visible state changed
   private handleVisibleStateChange(visible: boolean, animation: boolean = true, closeResult?: R): Promise<void> {
+    if (visible) { // Hide scrollbar at the first time when shown up
+      this.changeBodyOverflow(1);
+    }
+
     return Promise
     .resolve(animation && this.animateTo(visible))
     .then(() => { // Emit open/close event after animations over
@@ -260,9 +264,10 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
         this.nzAfterOpen.emit();
       } else {
         this.nzAfterClose.emit(closeResult);
+        this.changeBodyOverflow(); // Show/hide scrollbar when animation is over
       }
-    })
-    .then(() => this.changeBodyOverflow());
+    });
+    // .then(() => this.changeBodyOverflow());
   }
 
   // Lookup a button's property, if the prop is a function, call & then return the result, otherwise, return itself.
@@ -373,10 +378,14 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     // }
   }
 
-  private changeBodyOverflow(): void {
+  /**
+   * Take care of the body's overflow to decide the existense of scrollbar
+   * @param plusNum The number that the openModals.length will increase soon
+   */
+  private changeBodyOverflow(plusNum: number = 0): void {
     const openModals = this.modalControl.openModals;
 
-    if (openModals.length) {
+    if (openModals.length + plusNum > 0) {
       this.renderer.setStyle(this.document.body, 'padding-right', `${this.nzMeasureScrollbarService.scrollBarWidth}px`);
       this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
     } else {
