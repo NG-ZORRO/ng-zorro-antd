@@ -162,9 +162,9 @@ describe('NzRangePickerComponent', () => {
       expect(getPickerTrigger().querySelector('input:nth-of-type(1)').getAttribute('placeholder')).toBe(featureKey);
     });
 
-    it('should support nzPlaceholder', () => {
+    it('should support nzPlaceHolder', () => {
       const featureKey = 'RIGHT_PLACEHOLDER';
-      fixtureInstance.nzPlaceholder = [ 'Start', featureKey ];
+      fixtureInstance.nzPlaceHolder = [ 'Start', featureKey ];
       fixture.detectChanges();
       expect(getPickerTrigger().querySelector('input:nth-of-type(2)').getAttribute('placeholder')).toBe(featureKey);
     });
@@ -588,7 +588,7 @@ describe('NzRangePickerComponent', () => {
         [nzClassName]="nzClassName"
         [nzDisabledDate]="nzDisabledDate"
         [nzLocale]="nzLocale"
-        [nzPlaceholder]="nzPlaceholder"
+        [nzPlaceHolder]="nzPlaceHolder"
         [nzPopupStyle]="nzPopupStyle"
         [nzDropdownClassName]="nzDropdownClassName"
         [nzSize]="nzSize"
@@ -635,7 +635,7 @@ class NzTestRangePickerComponent {
   nzClassName;
   nzDisabledDate;
   nzLocale;
-  nzPlaceholder;
+  nzPlaceHolder;
   nzPopupStyle;
   nzDropdownClassName;
   nzSize;

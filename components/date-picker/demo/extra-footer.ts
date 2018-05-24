@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
     <nz-date-picker [nzRenderExtraFooter]="plainFooter" nzShowTime></nz-date-picker>
     <nz-range-picker [nzRenderExtraFooter]="footerRender"></nz-range-picker>
     <nz-range-picker [nzRenderExtraFooter]="plainFooter" nzShowTime></nz-range-picker>
-    <nz-month-picker [nzRenderExtraFooter]="footerRender" nzPlaceholder="Select month"></nz-month-picker>
+    <nz-month-picker [nzRenderExtraFooter]="footerRender" nzPlaceHolder="Select month"></nz-month-picker>
   `,
   styles: [`
     :host ::ng-deep .ant-calendar-picker {
