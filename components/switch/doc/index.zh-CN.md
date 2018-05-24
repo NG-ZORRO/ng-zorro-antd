@@ -23,6 +23,7 @@ title: Switch
 | nzDisabled | disable 状态 | boolean | false |
 | nzSize | 开关大小，可选值：`default` `small` | string | `default` |
 | nzLoading | 加载中的开关 | boolean | false |
+| nzControl | 是否完全由用户控制状态 | boolean | false |
 
 ## 方法
 

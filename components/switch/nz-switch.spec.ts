@@ -55,6 +55,14 @@ describe('switch', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
+      testComponent.control = true;
+      fixture.detectChanges();
+      switchElement.nativeElement.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.value).toBe(false);
+      expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
     }));
     it('should disable work', fakeAsync(() => {
       testComponent.disabled = true;
@@ -107,6 +115,12 @@ describe('switch', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(3);
+      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', 13);
+      fixture.detectChanges();
+      expect(testComponent.value).toBe(false);
+      expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
+      testComponent.control = true;
+      fixture.detectChanges();
       dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', 13);
       fixture.detectChanges();
       expect(testComponent.value).toBe(false);
@@ -206,6 +220,7 @@ describe('switch', () => {
       [nzDisabled]="disabled"
       [nzLoading]="loading"
       [nzSize]="size"
+      [nzControl]="control"
       [nzCheckedChildren]="checkedChildren"
       [nzUnCheckedChildren]="unCheckedChildren">
     </nz-switch>`
@@ -217,6 +232,7 @@ export class NzTestSwitchBasicComponent {
   checkedChildren = 'on';
   unCheckedChildren = 'off';
   value = false;
+  control = false;
   disabled = false;
   size = 'default';
   loading = false;
