@@ -27,7 +27,7 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 | nzSelectedIndex | 当前激活 tab 面板的 序列号，可双向绑定 | number | 无 |
 | nzSelectedIndexChange | 当前激活 tab 面板的 序列号变更回调函数 | (nzSelectedIndex:number)=>{} | 无 |
 | nzSelectChange | 当前激活 tab 面板变更回调函数 | (nzSelectedIndex: number,tab: NzTabComponent)=>{} | 无 |
-| nzAnimated | 是否使用动画切换 Tabs，在 `nzTabPosition=top|bottom` 时有效 | `boolean ｜ {inkBar:boolean, tabPane:boolean} ｜ true`, 当 type="card" 时为 false |
+| nzAnimated | 是否使用动画切换 Tabs，在 nzTabPosition=top丨bottom 时有效 | boolean丨{inkBar:boolean, tabPane:boolean} | true, 当 type="card" 时为 false |
 | nzSize | 大小，提供 `large` `default` 和 `small` 三种大小 | string | 'default' |
 | nzTabBarExtraContent | tab bar 上额外的元素 | `TemplateRef<void>` | 无 |
 | nzTabBarStyle | tab bar 的样式对象 | object | - |
