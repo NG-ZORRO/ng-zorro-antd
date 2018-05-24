@@ -28,7 +28,7 @@ describe('menu', () => {
     const dir = 'ltr';
     TestBed.configureTestingModule({
       imports     : [ NzMenuModule, NoopAnimationsModule, NoopAnimationsModule ],
-      declarations: [ NzDemoMenuHorizontalComponent, NzDemoMenuInlineComponent, NzDemoMenuInlineCollapsedComponent, NzDemoMenuSiderCurrentComponent, NzDemoMenuThemeComponent, NzDemoMenuSwitchModeComponent, NzTestMenuHorizontalComponent, NzTestMenuInlineComponent ],
+      declarations: [ NzDemoMenuHorizontalComponent, NzDemoMenuInlineComponent, NzDemoMenuInlineCollapsedComponent, NzDemoMenuSiderCurrentComponent, NzDemoMenuThemeComponent, NzDemoMenuSwitchModeComponent, NzTestMenuHorizontalComponent, NzTestMenuInlineComponent, NzDemoMenuNgForComponent ],
       schemas     : [ NO_ERRORS_SCHEMA ],
       providers   : [
         { provide: Directionality, useFactory: () => ({ value: dir }) },
@@ -423,6 +423,11 @@ describe('menu', () => {
         expect(submenu.nativeElement.classList.contains('ant-menu-submenu-open')).toBe(false);
       }));
     });
+    describe('ng-for', () => {
+      it('should ng for works fine', () => {
+        TestBed.createComponent(NzDemoMenuNgForComponent).detectChanges();
+      });
+    });
   });
 });
 
@@ -495,4 +500,38 @@ export class NzTestMenuInlineComponent {
   collapse = false;
   @ViewChild(NzSubMenuComponent) subsmenu: NzSubMenuComponent;
   @ViewChild('menuitem', { read: ElementRef }) menuitem: ElementRef;
+}
+
+@Component({
+  selector: 'nz-demo-menu-ngfor',
+  template: `
+    <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
+      <li *ngFor="let l1 of menus" nz-submenu>
+        <span title><i class="anticon anticon-appstore"></i> {{l1.text}}</span>
+        <ul>
+          <li *ngFor="let l2 of l1.children" nz-submenu>
+            <span title>{{l2.text}}</span>
+            <ul>
+              <li *ngFor="let l3 of l2.children" nz-menu-item>{{l3.text}}</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>`,
+  styles  : []
+})
+export class NzDemoMenuNgForComponent {
+  menus = [
+    {
+      text    : 'level1',
+      children: [
+        {
+          text    : 'level2',
+          children: [
+            { text: 'level3' }
+          ]
+        }
+      ]
+    }
+  ];
 }
