@@ -29,5 +29,5 @@ A carousel component. Scales with its container.
 | ---- | ----------- |
 | goTo(slideNumber) | Change current slide to given slide number |
 | next() | Change current slide to next slide |
-| prev() | Change current slide to previous slide |
+| pre() | Change current slide to previous slide |
 
