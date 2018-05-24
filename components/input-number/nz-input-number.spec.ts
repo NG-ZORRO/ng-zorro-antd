@@ -35,6 +35,7 @@ describe('input number', () => {
     it('should basic className correct', () => {
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number');
+      expect(inputElement.getAttribute('placeholder')).toBe('placeholder');
     });
     it('should focus className correct', () => {
       fixture.detectChanges();
@@ -446,6 +447,7 @@ describe('input number', () => {
       [nzSize]="size"
       [nzMin]="min"
       [nzMax]="max"
+      [nzPlaceHolder]="placeholder"
       [nzStep]="step"
       [nzFormatter]="formatter"
       [nzParser]="parser"
@@ -461,6 +463,7 @@ export class NzTestInputNumberBasicComponent {
   min = -1;
   max = 1;
   size = 'default';
+  placeholder = 'placeholder';
   step = 1;
   precision = 2;
   formatter = (value) => value;

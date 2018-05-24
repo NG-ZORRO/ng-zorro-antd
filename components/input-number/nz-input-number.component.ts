@@ -41,6 +41,7 @@ import { toBoolean } from '../core/util/convert';
         [disabled]="nzDisabled"
         [attr.min]="nzMin"
         [attr.max]="nzMax"
+        [placeholder]="nzPlaceHolder"
         [attr.step]="nzStep"
         (keydown)="onKeyDown($event)"
         (keyup)="onKeyUp($event)"
@@ -85,6 +86,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzMax: number = Infinity;
   @Input() nzParser = (value) => value;
   @Input() nzPrecision: number;
+  @Input() nzPlaceHolder = '';
 
   @HostBinding('class.ant-input-number-lg')
   get isLarge(): boolean {
