@@ -111,7 +111,7 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterContentInit {
         step.updateClassMap();
       });
     }
-  };
+  }
 
   ngOnInit(): void {
     this.updateClassMap();

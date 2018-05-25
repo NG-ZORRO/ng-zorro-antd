@@ -294,7 +294,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
     if (this.nzDropDownButtonComponent) {
       this.nzDropDownButtonComponent.$subOpen.next(this.nzOpen);
     }
-  };
+  }
 
   constructor(public nzMenuDirective: NzMenuDirective, private cd: ChangeDetectorRef, @SkipSelf() @Optional() private nzSubMenuComponent: NzSubMenuComponent, @Host() @Optional() private nzDropDownComponent: NzDropDownComponent, @Host() @Optional() private nzDropDownButtonComponent: NzDropDownButtonComponent) {
   }

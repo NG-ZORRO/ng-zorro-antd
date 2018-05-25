@@ -30,9 +30,9 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
   animations         : [
     dropDownAnimation
   ],
-  template           : './nz-dropdown.component.html',
+  templateUrl        : './nz-dropdown.component.html',
   styles             : [
-      `
+    `
       :host {
         position: relative;
         display: inline-block;
