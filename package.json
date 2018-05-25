@@ -94,7 +94,8 @@
     "wrench": "^1.5.9",
     "yaml-front-matter": "^3.4.0",
     "@stackblitz/sdk": "^1.1.1",
-    "codecov": "^3.0.0"
+    "codecov": "^3.0.0",
+    "ngx-infinite-scroll": "^6.0.0"
   },
   "peerDependencies": {
     "@angular/animations": "^6.0.0",

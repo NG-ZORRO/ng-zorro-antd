@@ -3,9 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector           : 'nz-footer',
   preserveWhitespaces: false,
-  template           : `
-    <ng-content></ng-content>
-  `,
+  templateUrl        : './nz-footer.component.html',
   styles             : [
     `:host {
       display: block;

@@ -1,5 +1,4 @@
 import {
-  CdkConnectedOverlay,
   CdkOverlayOrigin,
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
@@ -23,7 +22,7 @@ import { CandyDate } from './lib/candy-date';
 
 @Component({
   selector       : 'nz-picker',
-  templateUrl    : 'picker.component.html',
+  templateUrl    : './picker.component.html',
   animations     : [
     dropDownAnimation
   ],

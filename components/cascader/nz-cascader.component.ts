@@ -10,10 +10,8 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
   TemplateRef,
-  ViewChild,
-  ViewEncapsulation
+  ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -67,7 +65,7 @@ export interface CascaderOption {
   parent?: CascaderOption;
   children?: CascaderOption[];
 
-  [key: string]: any;
+  [ key: string ]: any;
 }
 
 @Component({
@@ -76,75 +74,7 @@ export interface CascaderOption {
   animations         : [
     dropDownAnimation
   ],
-  template           : `
-    <div
-      cdkOverlayOrigin
-      #origin="cdkOverlayOrigin"
-      #trigger
-    >
-      <div *ngIf="nzShowInput">
-        <input #input
-          nz-input
-          [attr.autoComplete]="'off'"
-          [attr.placeholder]="showPlaceholder ? nzPlaceHolder : null"
-          [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"
-          [readonly]="!nzShowSearch"
-          [disabled]="nzDisabled"
-          [nzSize]="nzSize"
-          [ngClass]="inputCls"
-          [(ngModel)]="inputValue"
-          (blur)="handleInputBlur($event)"
-          (focus)="handleInputFocus($event)"
-          (change)="handlerInputChange($event)"
-        >
-        <i *ngIf="showClearIcon"
-          [class]="'anticon anticon-cross-circle'"
-          [ngClass]="clearCls"
-          [attr.title]="nzClearText"
-          (click)="clearSelection($event)"></i>
-        <i *ngIf="nzShowArrow && !isLoading"
-          class="anticon anticon-down"
-          [ngClass]="arrowCls"></i>
-        <i *ngIf="isLoading"
-          class="anticon anticon-loading anticon-spin"
-          [ngClass]="loadingCls"></i>
-        <span [ngClass]="labelCls">
-          <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{ labelRenderText }}</ng-container>
-          <ng-template #labelTemplate>
-            <ng-template [ngTemplateOutlet]="nzLabelRender" [ngTemplateOutletContext]="labelRenderContext"></ng-template>
-          </ng-template>
-        </span>
-      </div>
-      <ng-content></ng-content>
-    </div>
-    <ng-template
-      cdkConnectedOverlay
-      cdkConnectedOverlayHasBackdrop
-      [cdkConnectedOverlayOrigin]="origin"
-      (backdropClick)="closeMenu()"
-      (detach)="closeMenu()"
-      (positionChange)="onPositionChange($event)"
-      [cdkConnectedOverlayOpen]="menuVisible"
-    >
-      <div #menu
-        [ngClass]="menuCls" [ngStyle]="nzMenuStyle"
-        [@dropDownAnimation]="dropDownPosition"
-        (mouseleave)="onTriggerMouseLeave($event)"
-      >
-        <ul *ngFor="let options of nzColumns; let i = index;" [ngClass]="menuColumnCls">
-          <li *ngFor="let option of options"
-            [attr.title]="option.title || getOptionLabel(option)"
-            [ngClass]="getOptionCls(option, i)"
-            (mouseenter)="onOptionMouseEnter(option, i, $event)"
-            (mouseleave)="onOptionMouseLeave(option, i, $event)"
-            (click)="onOptionClick(option, i, $event)"
-          >
-            {{ getOptionLabel(option) }}
-          </li>
-        </ul>
-      </div>
-    </ng-template>
-  `,
+  templateUrl        : './nz-cascader.component.html',
   providers          : [
     NzUpdateHostClassService,
     {
@@ -157,7 +87,7 @@ export interface CascaderOption {
     '[attr.tabIndex]': '"0"'
   },
   styles             : [
-      `.ant-cascader-menus {
+    `.ant-cascader-menus {
       margin-top: 4px;
       margin-bottom: 4px;
     }`
@@ -185,13 +115,13 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   private isOpening = false;
 
   // 内部样式
-  private _arrowCls: { [name: string]: any };
-  private _clearCls: { [name: string]: any };
-  private _inputCls: { [name: string]: any };
-  private _labelCls: { [name: string]: any };
-  private _loadingCls: { [name: string]: any };
-  private _menuCls: { [name: string]: any };
-  private _menuColumnCls: { [name: string]: any };
+  private _arrowCls: { [ name: string ]: any };
+  private _clearCls: { [ name: string ]: any };
+  private _inputCls: { [ name: string ]: any };
+  private _labelCls: { [ name: string ]: any };
+  private _loadingCls: { [ name: string ]: any };
+  private _menuCls: { [ name: string ]: any };
+  private _menuColumnCls: { [ name: string ]: any };
 
   public el: HTMLElement;
   private isFocused = false;
@@ -392,7 +322,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   @Input() nzPlaceHolder = 'Please select';
 
   /** Additional style of popup overlay */
-  @Input() nzMenuStyle: { [key: string]: string; };
+  @Input() nzMenuStyle: { [ key: string ]: string; };
 
   /** Change value on selection only if this function returns `true` */
   @Input() nzChangeOn: (option: CascaderOption, level: number) => boolean;
@@ -1126,7 +1056,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   }
 
   private isLoaded(index: number): boolean {
-    return this.nzColumns[index] && this.nzColumns[index].length > 0;
+    return this.nzColumns[ index ] && this.nzColumns[ index ].length > 0;
   }
 
   private activateOnInit(index: number, value: any): void {
@@ -1143,7 +1073,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   private initOptions(index: number): void {
     const vs = this.defaultValue;
     const load = () => {
-      this.activateOnInit(index, vs[index]);
+      this.activateOnInit(index, vs[ index ]);
       if (index < vs.length - 1) {
         this.initOptions(index + 1);
       }

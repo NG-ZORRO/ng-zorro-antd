@@ -3,13 +3,9 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
-  selector     : 'nz-slider-marks',
+  selector           : 'nz-slider-marks',
   preserveWhitespaces: false,
-  template     : `
-    <div [class]="nzClassName">
-      <span *ngFor="let attr of attrs; trackBy: trackById" [ngClass]="attr.classes" [ngStyle]="attr.style" [innerHTML]="attr.label"></span>
-    </div>
-  `
+  templateUrl        : './nz-slider-marks.component.html'
 })
 export class NzSliderMarksComponent implements OnChanges {
   private _vertical = false;
@@ -44,7 +40,7 @@ export class NzSliderMarksComponent implements OnChanges {
   }
 
   // TODO: using named interface
-  attrs: Array<{ id: number, value: number, offset: number, classes: { [key: string]: boolean }, style: object, label: Mark }>; // points for inner use
+  attrs: Array<{ id: number, value: number, offset: number, classes: { [ key: string ]: boolean }, style: object, label: Mark }>; // points for inner use
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzMarksArray) {
@@ -55,7 +51,7 @@ export class NzSliderMarksComponent implements OnChanges {
     }
   }
 
-  trackById(index: number, attr: { id: number, value: number, offset: number, classes: { [key: string]: boolean }, style: object, label: Mark }): number {
+  trackById(index: number, attr: { id: number, value: number, offset: number, classes: { [ key: string ]: boolean }, style: object, label: Mark }): number {
     return attr.id;
   }
 
@@ -73,8 +69,8 @@ export class NzSliderMarksComponent implements OnChanges {
         };
       } else {
         const marksCount = this.nzMarksArray.length;
-        const unit       = 100 / (marksCount - 1);
-        const markWidth  = unit * 0.9;
+        const unit = 100 / (marksCount - 1);
+        const markWidth = unit * 0.9;
         style = {
           width     : `${markWidth}%`,
           marginLeft: `${-markWidth / 2}%`,
@@ -93,7 +89,7 @@ export class NzSliderMarksComponent implements OnChanges {
         value,
         offset,
         classes: {
-          [`${this.nzClassName}-text`]: true
+          [ `${this.nzClassName}-text` ]: true
         },
         style,
         label
@@ -104,9 +100,9 @@ export class NzSliderMarksComponent implements OnChanges {
   togglePointActive(): void {
     if (this.attrs && this.nzLowerBound !== null && this.nzUpperBound !== null) {
       this.attrs.forEach(attr => {
-        const value    = attr.value;
+        const value = attr.value;
         const isActive = (!this.nzIncluded && value === this.nzUpperBound) ||
-            (this.nzIncluded && value <= this.nzUpperBound && value >= this.nzLowerBound);
+          (this.nzIncluded && value <= this.nzUpperBound && value >= this.nzLowerBound);
         attr.classes[ `${this.nzClassName}-text-active` ] = isActive;
       });
     }
@@ -127,7 +123,7 @@ export class Marks {
 
 // TODO: extends Array could cause unexpected behavior when targeting es5 or below
 export class MarksArray extends Array<{ value: number, offset: number, config: Mark }> {
-  [index: number]: {
+  [ index: number ]: {
     value: number;
     offset: number;
     config: Mark;

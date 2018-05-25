@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChild,
   EventEmitter,
   Input,
   OnDestroy,
@@ -38,16 +37,7 @@ import { toNumber } from '../core/util/convert';
       ])
     ])
   ],
-  template           : `
-    <div class="ant-back-top" (click)="clickBackTop()" [@enterLeave] *ngIf="visible">
-      <ng-template #defaultContent>
-        <div class="ant-back-top-content">
-          <div class="ant-back-top-icon"></div>
-        </div>
-      </ng-template>
-      <ng-template [ngTemplateOutlet]="nzTemplate || defaultContent"></ng-template>
-    </div>
-  `,
+  templateUrl        : './nz-back-top.component.html',
   changeDetection    : ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false
 })

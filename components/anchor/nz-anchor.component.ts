@@ -29,20 +29,7 @@ const sharpMatcherRegx = /#([^#]+)$/;
 @Component({
   selector           : 'nz-anchor',
   preserveWhitespaces: false,
-  template           : `
-    <nz-affix *ngIf="nzAffix;else content" [nzOffsetTop]="nzOffsetTop">
-      <ng-template [ngTemplateOutlet]="content"></ng-template>
-    </nz-affix>
-    <ng-template #content>
-      <div class="ant-anchor-wrapper" #wrap [ngStyle]="wrapperStyle">
-        <div class="ant-anchor" [ngClass]="{'fixed': !nzAffix && !nzShowInkInFixed}">
-          <div class="ant-anchor-ink">
-            <div class="ant-anchor-ink-ball" [class.visible]="visible" #ink></div>
-          </div>
-          <ng-content></ng-content>
-        </div>
-      </div>
-    </ng-template>`,
+  templateUrl        : './nz-anchor.component.html',
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzAnchorComponent implements OnDestroy, AfterViewInit {

@@ -9,8 +9,6 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChange,
-  SimpleChanges,
   ViewChild
 } from '@angular/core';
 
@@ -21,13 +19,10 @@ import { throttleByAnimationFrameDecorator } from '../core/util/throttleByAnimat
 
 @Component({
   selector       : 'nz-affix',
-  template       : `
-    <div #wrap>
-      <ng-content></ng-content>
-    </div>`,
+  templateUrl    : './nz-affix.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles         : [
-      `:host {
+    `:host {
       display: block;
     }`
   ]

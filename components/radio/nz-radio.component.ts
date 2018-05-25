@@ -21,13 +21,7 @@ import { NzRadioGroupComponent } from './nz-radio-group.component';
 @Component({
   selector           : '[nz-radio]',
   preserveWhitespaces: false,
-  template           : `
-    <span [ngClass]="classMap">
-      <input #inputElement type="radio" class="ant-radio-input" [disabled]="nzDisabled" [(ngModel)]="nzChecked" (blur)="onBlur()" [attr.name]="name">
-      <span class="ant-radio-inner"></span>
-    </span>
-    <span><ng-content></ng-content></span>
-  `,
+  templateUrl        : './nz-radio.component.html',
   host               : {
     '[class.ant-radio-wrapper]'         : 'true',
     '[class.ant-radio-wrapper-disabled]': 'nzDisabled'
@@ -123,7 +117,9 @@ export class NzRadioComponent implements OnInit, ControlValueAccessor, AfterView
 
   onBlur(): void {
     this.onTouched();
-    if (this.nzRadioGroup) { this.nzRadioGroup.onTouched(); }
+    if (this.nzRadioGroup) {
+      this.nzRadioGroup.onTouched();
+    }
   }
 
   setClassMap(): void {
@@ -148,7 +144,9 @@ export class NzRadioComponent implements OnInit, ControlValueAccessor, AfterView
   }
 
   ngOnInit(): void {
-    if (this.nzRadioGroup) { this.nzRadioGroup.addRadio(this); }
+    if (this.nzRadioGroup) {
+      this.nzRadioGroup.addRadio(this);
+    }
     this.setClassMap();
   }
 

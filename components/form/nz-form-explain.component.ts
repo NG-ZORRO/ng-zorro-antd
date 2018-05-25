@@ -1,6 +1,5 @@
 import {
   animate,
-  state,
   style,
   transition,
   trigger
@@ -12,15 +11,22 @@ import { NzFormItemComponent } from './nz-form-item.component';
   selector           : 'nz-form-explain',
   preserveWhitespaces: false,
   animations         : [
-    trigger('flyInOut', [
+    trigger('formExplainAnimation', [
       transition('void => *', [
         style({
           opacity  : 0,
           transform: 'translateY(-5px)'
         }),
-        animate('0.3s cubic-bezier(0.645, 0.045, 0.355, 1)')
+        animate('0.3s cubic-bezier(0.645, 0.045, 0.355, 1)', style({
+          opacity  : 1,
+          transform: 'translateY(0)'
+        }))
       ]),
       transition('* => void', [
+        style({
+          opacity  : 1,
+          transform: 'translateY(0)'
+        }),
         animate('0.3s cubic-bezier(0.645, 0.045, 0.355, 1)', style({
           opacity  : 0,
           transform: 'translateY(-5px)'
@@ -28,15 +34,15 @@ import { NzFormItemComponent } from './nz-form-item.component';
       ])
     ])
   ],
-  template           : `
-    <ng-content></ng-content>`,
+  templateUrl        : './nz-form-explain.component.html',
   host               : {
-    '[class.ant-form-explain]': 'true',
-    '[@flyInOut]'             : ''
+    '[class.ant-form-explain]': 'true'
   },
-  styles             : [ `:host {
-    display: block;
-  }` ]
+  styles             : [
+    `:host{
+      display:block;
+    }`
+  ]
 })
 export class NzFormExplainComponent implements OnDestroy, OnInit {
   constructor(private nzFormItemComponent: NzFormItemComponent) {

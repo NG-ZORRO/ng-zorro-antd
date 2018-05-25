@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import {
   NgZorroAntdModule
 } from 'ng-zorro-antd';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ColorSketchModule } from 'ngx-color/sketch';
 
 import { NzCodeBoxModule } from './nz-codebox/nz-codebox.module';
@@ -37,7 +38,8 @@ import { NzNavBottomModule } from './nz-nav-bottom/nz-nav-bottom.module';
     NzNavBottomModule,
     NzCopyIconModule,
     // third libs
-    ColorSketchModule
+    InfiniteScrollModule,
+    ColorSketchModule,
   ]
 })
 export class ShareModule { }

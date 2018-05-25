@@ -12,25 +12,8 @@ import { toBoolean } from '../core/util/convert';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'td',
-  template: `
-    <span class="ant-table-row-indent" *ngIf="nzIndentSize" [style.padding-left.px]="nzIndentSize"></span>
-    <label
-      *ngIf="nzShowCheckbox"
-      nz-checkbox
-      [nzDisabled]="nzDisabled"
-      [(ngModel)]="nzChecked"
-      [nzIndeterminate]="nzIndeterminate"
-      (ngModelChange)="nzCheckedChange.emit($event)">
-    </label>
-    <span
-      *ngIf="nzShowExpand"
-      class="ant-table-row-expand-icon"
-      (click)="expandChange()"
-      [class.ant-table-row-expanded]="nzExpand"
-      [class.ant-table-row-collapsed]="!nzExpand"></span>
-    <ng-content></ng-content>
-  `
+  selector   : 'td',
+  templateUrl: './nz-td.component.html'
 })
 export class NzTdComponent {
   private _showExpand = false;

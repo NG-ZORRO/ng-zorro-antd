@@ -24,18 +24,7 @@ import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
 @Component({
   selector           : '[nz-checkbox]',
   preserveWhitespaces: false,
-  template           : `
-    <span [ngClass]="classMap">
-      <input
-        #inputElement
-        [checked]="nzChecked"
-        type="checkbox"
-        class="ant-checkbox-input"
-        (blur)="onBlur()">
-      <span class="ant-checkbox-inner"></span>
-    </span>
-    <span #contentElement (cdkObserveContent)="checkContent()"><ng-content></ng-content></span>
-  `,
+  templateUrl        : './nz-checkbox.component.html',
   providers          : [
     {
       provide    : NG_VALUE_ACCESSOR,

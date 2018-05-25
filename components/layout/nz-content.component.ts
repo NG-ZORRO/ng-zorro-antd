@@ -3,11 +3,9 @@ import { Component } from '@angular/core';
 @Component({
   selector           : 'nz-content',
   preserveWhitespaces: false,
-  template           : `
-    <ng-content></ng-content>
-  `,
+  templateUrl        : './nz-content.component.html',
   styles             : [
-      `:host {
+    `:host {
       display: block;
     }`
   ],

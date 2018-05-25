@@ -1,0 +1,38 @@
+<ng-template #titleTemplate>
+  <ng-template [ngTemplateOutlet]="nzTitle"></ng-template>
+</ng-template>
+<ng-template #descriptionTemplate>
+  <ng-template [ngTemplateOutlet]="nzDescription"></ng-template>
+</ng-template>
+<div class="ant-steps-item-tail" *ngIf="last !== true"></div>
+<div class="ant-steps-item-icon">
+  <ng-template [ngIf]="!showProcessDot">
+    <span class="ant-steps-icon anticon anticon-check" *ngIf="nzStatus === 'finish' && !nzIcon"></span>
+    <span class="ant-steps-icon anticon anticon-cross" *ngIf="nzStatus === 'error'"></span>
+    <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">{{ index + 1 }}</span>
+    <span class="ant-steps-icon" *ngIf="nzIcon">
+      <ng-container *ngIf="isIconString; else iconTemplate">
+        <i [ngClass]="nzIcon"></i>
+      </ng-container>
+      <ng-template #iconTemplate>
+      <ng-template [ngTemplateOutlet]="nzIcon"></ng-template>
+    </ng-template>
+    </span>
+  </ng-template>
+  <ng-template [ngIf]="showProcessDot">
+    <span class="ant-steps-icon">
+      <ng-template #processDotTemplate>
+        <span class="ant-steps-icon-dot"></span>
+      </ng-template>
+      <ng-template [ngTemplateOutlet]="customProcessTemplate||processDotTemplate" [ngTemplateOutletContext]="{ $implicit: processDotTemplate, status:nzStatus, index:index }"></ng-template>
+    </span>
+  </ng-template>
+</div>
+<div class="ant-steps-item-content">
+  <div class="ant-steps-item-title">
+    <ng-container *ngIf="isTitleString; else titleTemplate">{{ nzTitle }}</ng-container>
+  </div>
+  <div class="ant-steps-item-description">
+    <ng-container *ngIf="isDescriptionString; else descriptionTemplate">{{ nzDescription }}</ng-container>
+  </div>
+</div>

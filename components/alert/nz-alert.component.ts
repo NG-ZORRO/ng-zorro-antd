@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 
 // tslint:disable-next-line:no-any
-export type NgClassType = string | string[] | Set<string> | { [klass: string]: any; };
+export type NgClassType = string | string[] | Set<string> | { [ klass: string ]: any; };
 
 import { fadeAnimation } from '../core/animation/fade-animations';
 import { toBoolean } from '../core/util/convert';
@@ -17,45 +17,9 @@ import { toBoolean } from '../core/util/convert';
   selector           : 'nz-alert',
   animations         : [ fadeAnimation ],
   preserveWhitespaces: false,
-  template           : `
-    <div [ngClass]="outerClassMap" *ngIf="display" [@fadeAnimation]>
-      <ng-container *ngIf="nzShowIcon">
-        <i class="ant-alert-icon" [ngClass]="nzIconType" *ngIf="nzIconType; else iconTemplate"></i>
-        <ng-template #iconTemplate>
-          <i class="ant-alert-icon anticon" [ngClass]="iconClassMap">
-          </i>
-        </ng-template>
-      </ng-container>
-      <span class="ant-alert-message" *ngIf="nzMessage">
-        <ng-container *ngIf="isMessageString; else messageTemplate">{{ nzMessage }}</ng-container>
-        <ng-template #messageTemplate>
-          <ng-template [ngTemplateOutlet]="nzMessage"></ng-template>
-        </ng-template>
-      </span>
-      <span class="ant-alert-description" *ngIf="nzDescription">
-        <ng-container *ngIf="isDescriptionString; else descriptionTemplate">{{ nzDescription }}</ng-container>
-        <ng-template #descriptionTemplate>
-          <ng-template [ngTemplateOutlet]="nzDescription"></ng-template>
-        </ng-template>
-      </span>
-      <a
-        *ngIf="nzCloseable || nzCloseText"
-        (click)="closeAlert($event)"
-        class="ant-alert-close-icon">
-        <ng-template #closeDefaultTemplate>
-          <i class="anticon anticon-cross"></i>
-        </ng-template>
-        <ng-container *ngIf="nzCloseText; else closeDefaultTemplate">
-          <ng-container *ngIf="isCloseTextString; else closeTextTemplate">{{ nzCloseText }}</ng-container>
-          <ng-template #closeTextTemplate>
-            <ng-template [ngTemplateOutlet]="nzCloseText"></ng-template>
-          </ng-template>
-        </ng-container>
-      </a>
-    </div>
-  `,
+  templateUrl        : './nz-alert.component.html',
   styles             : [
-      `:host {
+    `:host {
       display: block;
     }`
   ]

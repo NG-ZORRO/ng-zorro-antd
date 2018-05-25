@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
@@ -6,14 +15,11 @@ export type NzAvatarShape = 'square' | 'circle';
 export type NzAvatarSize = 'small' | 'large' | 'default';
 
 @Component({
-  selector: 'nz-avatar',
-  template: `
-  <i *ngIf="nzIcon && hasIcon" [ngClass]="nzIcon"></i>
-  <img [src]="nzSrc" *ngIf="nzSrc && hasSrc" (error)="imgError()"/>
-  <span class="ant-avatar-string" #textEl [ngStyle]="textStyles" *ngIf="nzText && hasText">{{ nzText }}</span>`,
-  providers: [NzUpdateHostClassService],
+  selector           : 'nz-avatar',
+  templateUrl        : './nz-avatar.component.html',
+  providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzAvatarComponent implements OnChanges {
   private el: HTMLElement;
@@ -38,11 +44,11 @@ export class NzAvatarComponent implements OnChanges {
 
   setClass(): this {
     const classMap = {
-      [this.prefixCls]: true,
-      [`${this.prefixCls}-${this.sizeMap[this.nzSize]}`]: this.sizeMap[this.nzSize],
-      [`${this.prefixCls}-${this.nzShape}`]: this.nzShape,
-      [`${this.prefixCls}-icon`]: this.nzIcon,
-      [`${this.prefixCls}-image`]: this.nzSrc
+      [ this.prefixCls ]                                    : true,
+      [ `${this.prefixCls}-${this.sizeMap[ this.nzSize ]}` ]: this.sizeMap[ this.nzSize ],
+      [ `${this.prefixCls}-${this.nzShape}` ]               : this.nzShape,
+      [ `${this.prefixCls}-icon` ]                          : this.nzIcon,
+      [ `${this.prefixCls}-image` ]                         : this.nzSrc
     };
     this.updateHostClassService.updateHostClass(this.el, classMap);
     this.cd.detectChanges();
@@ -62,7 +68,9 @@ export class NzAvatarComponent implements OnChanges {
   }
 
   private calcStringSize(): void {
-    if (!this.hasText) { return; }
+    if (!this.hasText) {
+      return;
+    }
 
     const childrenWidth = this.textEl.nativeElement.offsetWidth;
     const avatarWidth = this.el.getBoundingClientRect().width;
@@ -72,9 +80,9 @@ export class NzAvatarComponent implements OnChanges {
     } else {
       this.textStyles = {
         transform: `scale(${scale})`,
-        position: 'absolute',
-        display: 'inline-block',
-        left: `calc(50% - ${Math.round(childrenWidth / 2)}px)`
+        position : 'absolute',
+        display  : 'inline-block',
+        left     : `calc(50% - ${Math.round(childrenWidth / 2)}px)`
       };
     }
     this.cd.detectChanges();

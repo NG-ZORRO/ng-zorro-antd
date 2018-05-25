@@ -7,10 +7,7 @@ import { NzColComponent } from '../grid/nz-col.component';
   selector           : 'nz-form-label',
   providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
-  template           : `
-    <label [attr.for]="nzFor" [class.ant-form-item-required]="nzRequired">
-      <ng-content></ng-content>
-    </label>`,
+  templateUrl        : './nz-form-label.component.html',
   host               : {
     '[class.ant-form-item-label]': 'true'
   }

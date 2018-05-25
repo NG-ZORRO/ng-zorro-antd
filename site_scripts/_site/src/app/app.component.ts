@@ -49,6 +49,7 @@ export class AppComponent implements OnInit {
     } else {
       window.location.href = window.location.origin;
     }
+    this.currentVersion = version;
   }
 
   ngOnInit(): void {

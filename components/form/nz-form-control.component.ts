@@ -9,14 +9,7 @@ import { NzColComponent } from '../grid/nz-col.component';
   selector           : 'nz-form-control',
   providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
-  template           : `
-    <div class="ant-form-item-control" [ngClass]="controlClassMap">
-      <span class="ant-form-item-children">
-        <ng-content></ng-content>
-      </span>
-      <ng-content select="nz-form-explain"></ng-content>
-    </div>
-  `,
+  templateUrl        : './nz-form-control.component.html',
   host               : {
     '[class.ant-form-item-control-wrapper]': 'true'
   },

@@ -1,14 +1,11 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+
 export type NzButtonGroupSize = 'small' | 'large' | 'default' ;
 
 @Component({
   selector           : 'nz-button-group',
   preserveWhitespaces: false,
-  template           : `
-    <div [ngClass]="classMap" #groupWrapper>
-      <ng-content></ng-content>
-    </div>
-  `
+  templateUrl        : './nz-button-group.component.html'
 })
 export class NzButtonGroupComponent {
   private _size: NzButtonGroupSize;

@@ -1,7 +1,6 @@
 import {
   forwardRef,
   AfterContentInit,
-  AfterViewInit,
   Component,
   ElementRef,
   HostBinding,
@@ -17,8 +16,7 @@ import { NzRadioComponent } from './nz-radio.component';
 @Component({
   selector           : 'nz-radio-group',
   preserveWhitespaces: false,
-  template           : `
-    <ng-content></ng-content>`,
+  templateUrl        : './nz-radio-group.component.html',
   host               : {
     '[class.ant-radio-group]': 'true'
   },
