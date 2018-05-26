@@ -185,7 +185,9 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     this.nzAutocomplete.isOpen = this.panelOpen = true;
     this.nzAutocomplete.setVisibility();
     this.resetActiveItem();
-
+    if (this.activeOption) {
+      this.activeOption.scrollIntoViewIfNeeded();
+    }
   }
 
   private destroyPanel(): void {
@@ -255,6 +257,9 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
         this.nzAutocomplete.setPreviousItemActive();
       } else {
         this.nzAutocomplete.setNextItemActive();
+      }
+      if (this.activeOption) {
+        this.activeOption.scrollIntoViewIfNeeded();
       }
       this.doBackfill();
     }
