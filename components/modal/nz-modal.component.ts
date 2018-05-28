@@ -221,7 +221,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
       trigger.emit(this.getContentComponent());
     } else if (typeof trigger === 'function') {
       const result = trigger(this.getContentComponent());
-      const caseClose = (doClose: boolean | void | {}) => (doClose !== false) && this.close(); // Users can return "false" to prevent closing by default
+      const caseClose = (doClose: boolean | void | {}) => (doClose !== false) && this.close(doClose as R); // Users can return "false" to prevent closing by default
       if (isPromise(result)) {
         this[ loadingKey ] = true;
         const handleThen = (doClose) => {
