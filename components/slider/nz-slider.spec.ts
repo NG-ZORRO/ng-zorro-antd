@@ -576,17 +576,21 @@ describe('NzSlider', () => {
       sliderControl = testComponent.form.controls.slider;
     });
 
+    it('should have correct initial value', () => {
+      expect(sliderInstance.value).toBe(42);
+    });
+
     it('should not update the control when the value is updated', () => {
-      expect(sliderControl.value).toBe(0);
+      expect(sliderControl.value).toBe(42);
 
       sliderInstance.value = 11;
       fixture.detectChanges();
 
-      expect(sliderControl.value).toBe(0);
+      expect(sliderControl.value).toBe(42);
     });
 
     it('should update the control on click', () => {
-      expect(sliderControl.value).toBe(0);
+      expect(sliderControl.value).toBe(42);
 
       dispatchClickEventSequence(sliderNativeElement, 0.76);
       fixture.detectChanges();
@@ -595,16 +599,16 @@ describe('NzSlider', () => {
     });
 
     it('should update the control on slide', () => {
-      expect(sliderControl.value).toBe(0);
+      expect(sliderControl.value).toBe(42);
 
-      dispatchSlideEventSequence(sliderNativeElement, 0, 0.19);
+      dispatchSlideEventSequence(sliderNativeElement, 0.42, 0.19);
       fixture.detectChanges();
 
       expect(sliderControl.value).toBe(19);
     });
 
     it('should update the value when the control is set', () => {
-      expect(sliderInstance.value).toBe(0);
+      expect(sliderInstance.value).toBe(42);
 
       sliderControl.setValue(7);
       fixture.detectChanges();
@@ -754,7 +758,7 @@ class SliderWithFormControlComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      slider: [ 0 ]
+      slider: [ 42 ]
     });
   }
 }
