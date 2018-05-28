@@ -163,8 +163,8 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerTrigger().getAttribute('placeholder')).toBe(featureKey);
     });
 
-    it('should support nzPlaceholder', () => {
-      const featureKey = fixtureInstance.nzPlaceholder = 'TEST_PLACEHOLDER';
+    it('should support nzPlaceHolder', () => {
+      const featureKey = fixtureInstance.nzPlaceHolder = 'TEST_PLACEHOLDER';
       fixture.detectChanges();
       expect(getPickerTrigger().getAttribute('placeholder')).toBe(featureKey);
     });
@@ -687,7 +687,7 @@ describe('NzDatePickerComponent', () => {
         [nzClassName]="nzClassName"
         [nzDisabledDate]="nzDisabledDate"
         [nzLocale]="nzLocale"
-        [nzPlaceholder]="nzPlaceholder"
+        [nzPlaceHolder]="nzPlaceHolder"
         [nzPopupStyle]="nzPopupStyle"
         [nzDropdownClassName]="nzDropdownClassName"
         [nzSize]="nzSize"
@@ -734,7 +734,7 @@ class NzTestDatePickerComponent {
   nzClassName;
   nzDisabledDate;
   nzLocale;
-  nzPlaceholder;
+  nzPlaceHolder;
   nzPopupStyle;
   nzDropdownClassName;
   nzSize;

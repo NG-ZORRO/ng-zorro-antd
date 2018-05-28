@@ -39,7 +39,7 @@ Select component to select value from options.
 | nzMaxMultipleCount |  Max selected option can be selected | number | Infinity |
 | nzMode | Set mode of Select | 'multiple' 丨 'tags' 丨 'default' | 'default' |
 | nzNotFoundContent | Specify content to show when no result matches.. | string | 'Not Found' |
-| nzPlaceholder | Placeholder of select | string丨`TemplateRef<void>` | - |
+| nzPlaceHolder | Placeholder of select | string | - |
 | nzShowSearch | Whether show search input in single mode. | boolean | false |
 | nzSize | Size of Select input. `default` `large` `small` | string | default |
 | nzScrollToBottom | Called when dropdown scrolls to bottom | ()=>{} | - |

@@ -40,7 +40,7 @@ By clicking the input box, you can select a time from a popup panel.
 | nzSecondStep | interval between seconds in picker | number | 1 |
 | nzOpen | whether to popup panel, double binding | boolean | false |
 | nzOpenChange | a callback function which will be called while panel opening/closing | (open: boolean): void | - |
-| nzPlaceholder | display when there's no value | string | "Select a time" |
+| nzPlaceHolder | display when there's no value | string | "Select a time" |
 | nzPopupClassName | className of panel | string | '' |
 
 

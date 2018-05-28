@@ -17,8 +17,8 @@ By clicking the input box, you can select a date from a popup calendar.
 For example:
 ```typescript
 import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
-registerLocaleData(zh);
+import en from '@angular/common/locales/en';
+registerLocaleData(en);
 ```
 
 There are four kinds of picker:
@@ -44,7 +44,7 @@ The following APIs are shared by nz-date-picker, nz-month-picker, nz-range-picke
 | nzDisabledDate | specify the date that cannot be selected | (current: Date) => boolean | - |
 | nzLocale | localization configuration | object | [default](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
 | nzOpen | open state of picker | boolean | - |
-| nzPlaceholder | placeholder of date input | string / string[] | - |
+| nzPlaceHolder | placeholder of date input | string / string[] | - |
 | nzPopupStyle | to customize the style of the popup calendar | object | {} |
 | nzDropdownClassName | to customize the className of the popup calendar  | string | - |
 | nzSize | determine the size of the input box, the height of `large` and `small`, are 40px and 24px respectively, while default size is 32px | string | - |

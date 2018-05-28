@@ -67,6 +67,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { AppComponent } from './app.component';
 
+/** 注册语言包 ** /
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
+registerLocaleData(zh);
+
 @NgModule({
   declarations: [
     AppComponent
@@ -78,7 +83,7 @@ import { AppComponent } from './app.component';
     BrowserAnimationsModule,
     NgZorroAntdModule.forRoot()
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }
 

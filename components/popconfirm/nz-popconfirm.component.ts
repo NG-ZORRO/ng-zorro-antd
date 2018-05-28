@@ -29,6 +29,7 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
   _hasBackdrop = true;
   @Input() nzContent;
   @Input() nzOkText: string;
+  @Input() nzOkType: string = 'primary';
   @Input() nzCancelText: string;
 
   @Input()

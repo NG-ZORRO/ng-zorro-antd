@@ -36,7 +36,8 @@ export class NzAutocompleteOptionComponent {
   active = false;
   selected = false;
 
-  @Input() nzValue: {};
+  /* tslint:disable-next-line:no-any */
+  @Input() nzValue: any;
   @Input() nzLabel: string;
 
   @Input()

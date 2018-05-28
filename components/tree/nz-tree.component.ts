@@ -124,7 +124,6 @@ export class NzTreeComponent implements OnInit {
 
   /**
    * public function
-   * @returns {NzTreeNode[]}
    */
   getCheckedNodeList(): NzTreeNode[] {
     return this.nzTreeService.getCheckedNodeList();

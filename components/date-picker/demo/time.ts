@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     <nz-date-picker
       nzShowTime
       nzFormat="yyyy-MM-dd HH:mm:ss"
-      nzPlaceholder="Select Time"
+      nzPlaceHolder="Select Time"
       (ngModelChange)="onChange($event)"
       (nzOnOk)="onOk($event)"
     ></nz-date-picker>
@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
     <nz-range-picker
       [nzShowTime]="{ nzFormat: 'HH:mm' }"
       nzFormat="yyyy-MM-dd HH:mm"
-      [nzPlaceholder]="[ 'Start Time', 'End Time' ]"
+      [nzPlaceHolder]="[ 'Start Time', 'End Time' ]"
       (ngModelChange)="onChange($event)"
       (nzOnOk)="onOk($event)"
     ></nz-range-picker>

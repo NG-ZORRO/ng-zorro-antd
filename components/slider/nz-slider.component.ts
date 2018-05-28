@@ -198,10 +198,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       this.valueToOffset(normalizedValue as number);
   }
 
-  writeValue(val: SliderValue): void { // NOTE: writeValue will be called twice when initialized (may BUG? see: https://github.com/angular/angular/issues/14988), here we just ignore the first inited(the first the onValueChange will not registered)
-    if (typeof this.onValueChange !== 'function') {
-      return;
-    } // ignore the first initial call
+  writeValue(val: SliderValue): void {
     this.log(`[ngModel/writeValue]current writing value = `, val);
     this.setValue(val, true);
   }

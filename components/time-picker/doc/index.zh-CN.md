@@ -41,7 +41,7 @@ title: TimePicker
 | nzSecondStep | 秒选项间隔 | number | 1 |
 | nzOpen | 面板是否打开，可双向绑定 | boolean | false |
 | nzOpenChange | 面板打开/关闭时的回调 | (nzOpen: boolean): void | - |
-| nzPlaceholder | 没有值的时候显示的内容 | string | "请选择时间" |
+| nzPlaceHolder | 没有值的时候显示的内容 | string | "请选择时间" |
 | nzPopupClassName | 弹出层类名 | string | '' |
 
 ## 方法

@@ -35,7 +35,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, Cont
   @Input() nzClassName: string;
   @Input() nzDisabledDate: (d: Date) => boolean;
   @Input() nzLocale: NzDatePickerI18nInterface;
-  @Input() nzPlaceholder: string | string[];
+  @Input() nzPlaceHolder: string | string[];
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
   @Input() nzDropdownClassName: string;
   @Input() nzSize: 'large' | 'small';
@@ -71,8 +71,8 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, Cont
     this.initValue();
 
     // Default placeholder
-    if (!this.nzPlaceholder) {
-      this.nzPlaceholder = this.isRange ? this.nzLocale.lang.rangePlaceholder : this.nzLocale.lang.placeholder;
+    if (!this.nzPlaceHolder) {
+      this.nzPlaceHolder = this.isRange ? this.nzLocale.lang.rangePlaceholder : this.nzLocale.lang.placeholder;
     }
   }
 

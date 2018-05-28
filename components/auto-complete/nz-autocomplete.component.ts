@@ -107,7 +107,7 @@ export class NzAutocompleteComponent implements AfterViewInit {
   @ViewChildren(NzAutocompleteOptionComponent) fromDataSourceOptions: QueryList<NzAutocompleteOptionComponent>;
 
   /** 自定义宽度单位 px */
-  @Input() nzWidth: number | void;
+  @Input() nzWidth: number;
 
   /** 是否默认高亮第一个选项，默认 `true` */
   @Input()
@@ -213,8 +213,6 @@ export class NzAutocompleteComponent implements AfterViewInit {
 
   /**
    * 清除 Options 的激活状态
-   * @param {NzAutocompleteOptionComponent} skip
-   * @param {boolean} deselect
    */
   private clearSelectedOptions(skip?: NzAutocompleteOptionComponent, deselect: boolean = false): void {
     this.options.forEach(option => {

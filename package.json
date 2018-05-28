@@ -1,6 +1,6 @@
 {
   "name": "ng-zorro-antd",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "scripts": {
@@ -95,7 +95,8 @@
     "zone.js": "^0.8.19",
     "ngx-infinite-scroll": "^0.8.2",
     "@stackblitz/sdk": "^1.1.1",
-    "codecov": "^3.0.0"
+    "codecov": "^3.0.0",
+    "less-plugin-clean-css": "^1.5.1"
   },
   "peerDependencies": {
     "@angular/animations": "^5.0.0",

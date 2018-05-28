@@ -229,10 +229,16 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 import { ${this.nzComponentName} } from './app.component';
 
+import { NZ_I18N, en_US } from 'ng-zorro-antd';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+registerLocaleData(en);
+
 @NgModule({
   imports:      [ BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule, NgZorroAntdModule.forRoot(), BrowserAnimationsModule ],
   declarations: [ ${this.nzComponentName} ],
-  bootstrap:    [ ${this.nzComponentName} ]
+  bootstrap:    [ ${this.nzComponentName} ],
+  providers   : [ { provide: NZ_I18N, useValue: en_US } ]
 })
 export class AppModule { }
 `,
@@ -243,6 +249,7 @@ export class AppModule { }
       description : 'Created with <3 by the StackBlitz SDK!',
       template    : 'angular-cli',
       dependencies: {
+        'rxjs'                             : '^5.0.0',
         '@angular/cdk'                     : '^5.0.0',
         '@angular/core'                    : '^5.0.0',
         '@angular/forms'                   : '^5.0.0',
@@ -254,7 +261,7 @@ export class AppModule { }
         '@angular/router'                  : '^5.0.0',
         '@angular/animations'              : '^5.0.0',
         'date-fns'                         : '^1.29.0',
-        'ng-zorro-antd'                    : 'next'
+        'ng-zorro-antd'                    : '^0.7.0'
       },
       tags        : [ 'stackblitz', 'sdk' ]
     });

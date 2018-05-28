@@ -12,7 +12,7 @@ import * as setHours from 'date-fns/set_hours';
       [nzShowTime]="{ nzDefaultOpenValue: timeDefaultValue }">
     </nz-date-picker>
     <br>
-    <nz-month-picker [nzDisabledDate]="disabledDate" nzPlaceholder="Select month"></nz-month-picker>
+    <nz-month-picker [nzDisabledDate]="disabledDate" nzPlaceHolder="Select month"></nz-month-picker>
     <br>
     <nz-range-picker
       [nzDisabledDate]="disabledDate"
