@@ -89,6 +89,14 @@ import { Component, OnInit } from '@angular/core';
             </nz-radio-group>
           </nz-form-control>
         </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>
+            <label>No Result</label>
+          </nz-form-label>
+          <nz-form-control>
+            <nz-switch [(ngModel)]="noResult" (ngModelChange)="noResultChange($event)" name="noResult"></nz-switch>
+          </nz-form-control>
+        </nz-form-item>
       </form>
     </div>
     <nz-table
@@ -162,6 +170,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   allChecked = false;
   indeterminate = false;
   displayData = [];
+  noResult = false;
 
   currentPageDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean; expand: boolean; description: string; }>): void {
     this.displayData = $event;
@@ -169,8 +178,9 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   }
 
   refreshStatus(): void {
-    const allChecked = this.displayData.filter(value => !value.disabled).every(value => value.checked === true);
-    const allUnChecked = this.displayData.filter(value => !value.disabled).every(value => !value.checked);
+    const validData = this.displayData.filter(value => !value.disabled);
+    const allChecked = validData.length > 0 && validData.every(value => value.checked === true);
+    const allUnChecked = validData.every(value => !value.checked);
     this.allChecked = allChecked;
     this.indeterminate = (!allChecked) && (!allUnChecked);
   }
@@ -194,6 +204,13 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
         checked    : false,
         expand     : false
       });
+    }
+  }
+
+  noResultChange(status: boolean): void {
+    this.dataSet = [];
+    if (!status) {
+      this.ngOnInit();
     }
   }
 }

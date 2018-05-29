@@ -16,6 +16,7 @@ import { NzUploadBtnComponent } from './nz-upload-btn.component';
   template: `
   <ng-template #list>
     <nz-upload-list *ngIf="nzShowUploadList"
+      [locale]="locale"
       [listType]="nzListType"
       [items]="nzFileList"
       [icons]="nzShowUploadList"
@@ -58,7 +59,8 @@ import { NzUploadBtnComponent } from './nz-upload-btn.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
-
+  private i18n$: Subscription;
+  locale: any = {};
   private inited = false;
   private progressTimer: any;
   @ViewChild('upload') upload: NzUploadBtnComponent;
@@ -224,11 +226,10 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     return fileList.filter(item => item.uid !== file.uid);
   }
 
-  private uploadErrorText = this.i18n.translate('Upload.uploadError');
   private genErr(file: UploadFile): string {
     return file.response && typeof file.response === 'string' ?
             file.response :
-            (file.error && file.error.statusText) || this.uploadErrorText;
+            (file.error && file.error.statusText) || this.locale.uploadError;
   }
 
   private genThumb(file: UploadFile): void {
@@ -357,6 +358,10 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   // endregion
   ngOnInit(): void {
     this.inited = true;
+    this.i18n$ = this.i18n.localeChange.subscribe(() => {
+      this.locale = this.i18n.getLocaleData('Upload');
+      this.cd.detectChanges();
+    });
   }
 
   ngOnChanges(changes: { [P in keyof this]?: SimpleChange } & SimpleChanges): void {
@@ -365,5 +370,6 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.i18n$.unsubscribe();
   }
 }

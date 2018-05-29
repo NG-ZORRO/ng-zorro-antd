@@ -7,11 +7,14 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { delay, map } from 'rxjs/operators';
 
+import en_US from '../i18n/languages/en_US';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzTransferComponent, NzTransferModule } from './index';
 import { TransferCanMove, TransferItem } from './interface';
 
-const COUNT = 20;
+const COUNT = 21;
 const LEFTCOUNT = 2;
+const DISABLED = 1;
 
 describe('transfer', () => {
   let injector: Injector;
@@ -61,7 +64,7 @@ describe('transfer', () => {
                 .transfer('left', [0, 1])
                 .expectLeft(LEFTCOUNT + 2)
                 .expectRight(COUNT - LEFTCOUNT - 2);
-      expect(pageObject.rightList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(0);
+      expect(pageObject.rightList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(DISABLED);
     });
 
     it('should be custom filter option', () => {
@@ -115,7 +118,7 @@ describe('transfer', () => {
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(0);
       const btn = (pageObject.rightList.querySelector('.ant-transfer-list-header .ant-checkbox') as HTMLElement);
       btn.click();
-      expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(COUNT - LEFTCOUNT);
+      expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(COUNT - LEFTCOUNT - DISABLED);
       btn.click();
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(0);
     });
@@ -142,6 +145,15 @@ describe('transfer', () => {
 
     it('should be custom footer', () => {
       expect(pageObject.leftList.querySelector('#transfer-footer') != null).toBe(true);
+    });
+
+    it('#i18n', () => {
+      const tempFixture = TestBed.createComponent(TestTransferCustomRenderComponent);
+      tempFixture.detectChanges();
+      injector.get(NzI18nService).setLocale(en_US);
+      tempFixture.detectChanges();
+      const searchPhText = (tempFixture.debugElement.query(By.css('.ant-transfer-list-search')).nativeElement as HTMLElement).attributes.getNamedItem('placeholder').textContent;
+      expect(searchPhText).toBe(en_US.Transfer.searchPlaceholder);
     });
   });
 
@@ -296,7 +308,8 @@ class TestTransferComponent implements OnInit {
         title      : `content${i + 1}`,
         description: `description of content${i + 1}`,
         direction  : i >= LEFTCOUNT ? 'right' : '',
-        icon       : `frown-o`
+        icon       : `frown-o`,
+        disabled   : i === 20
       });
     }
     this.nzDataSource = ret;
@@ -315,6 +328,7 @@ class TestTransferComponent implements OnInit {
 @Component({
   template: `
     <nz-transfer #comp
+      nzShowSearch
       [nzRender]="render"
       [nzDataSource]="nzDataSource">
       <ng-template #render let-item>
