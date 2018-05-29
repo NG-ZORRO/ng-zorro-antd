@@ -99,20 +99,23 @@
     height: 20px;
     width: 20px;
     line-height: 0;
-    font-size: 16px;
+    font-size: 0;
     cursor: pointer;
     background: transparent;
-    color: #fff;
+    color: transparent;
     top: 50%;
     margin-top: -10px;
     padding: 0;
     border: 0;
     outline: none;
-    z-index: 30;
-    opacity: 0.3;
     &:hover,
     &:focus {
-      opacity: 0.75;
+      outline: none;
+      background: transparent;
+      color: transparent;
+      &:before {
+        opacity: 1;
+      }
     }
     &.slick-disabled:before {
       opacity: 0.25;
@@ -120,11 +123,17 @@
   }
 
   .slick-prev {
-    left: 5px;
+    left: -25px;
+    &:before {
+      content: "←";
+    }
   }
 
   .slick-next {
-    right: 5px;
+    right: -25px;
+    &:before {
+      content: "→";
+    }
   }
 
   // Dots

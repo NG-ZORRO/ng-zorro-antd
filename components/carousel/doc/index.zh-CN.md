@@ -21,7 +21,6 @@ subtitle: 走马灯
 | nzAfterChange | 切换面板的回调 | (current)=>{} | 无 |
 | nzBeforeChange | 切换面板的回调 | (from, to)=>{} | 无 |
 | nzDots | 是否显示面板指示点 | boolean | true |
-| nzArrows | ? | boolean | `false` |
 | nzEffect | 动画效果函数，可取 scrollx, fade | string | scrollx |
 | nzVertical | 垂直显示 | boolean | false |
 

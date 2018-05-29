@@ -23,13 +23,11 @@ import { NzCarouselContentDirective } from './nz-carousel-content.directive';
   preserveWhitespaces: false,
   template           : `
     <div class="slick-initialized slick-slider" [class.slick-vertical]="nzVertical">
-      <button class="slick-prev" (click)="pre()" *ngIf="nzArrows && !nzVertical"><i class="anticon anticon-left"></i></button>
       <div class="slick-list" #slickList tabindex="-1" (keydown)="onKeyDown($event)">
         <div class="slick-track" [style.transform]="transform" #slickTrack>
           <ng-content></ng-content>
         </div>
       </div>
-      <button class="slick-next" (click)="next()" *ngIf="nzArrows && !nzVertical"><i class="anticon anticon-right"></i></button>
       <ul class="slick-dots" *ngIf="nzDots">
         <li
           *ngFor="let content of slideContents; let i =index"
@@ -70,7 +68,6 @@ import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterContentInit {
   private _autoPlay = false;
   private _dots = true;
-  private _arrows = false;
   private _vertical = false;
   private _effect = 'scrollx';
   slideContentsSubscription: Subscription;
@@ -99,15 +96,6 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
 
   get nzDots(): boolean {
     return this._dots;
-  }
-
-  @Input()
-    set nzArrows(value: boolean) {
-      this._arrows = toBoolean(value);
-  }
-
-  get nzArrows(): boolean {
-    return this._arrows;
   }
 
   @Input()

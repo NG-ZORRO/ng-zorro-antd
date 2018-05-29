@@ -20,7 +20,6 @@ A carousel component. Scales with its container.
 | nzAfterChange | Callback function called after the current index changes | function(current) | - |
 | nzBeforeChange | Callback function called before the current index changes | function(from, to) | - |
 | nzDots | Whether to show the dots at the bottom of the gallery | boolean | `true` |
-| nzArrows | Whether to show the arrows (does not work with `nzVertical=true`) | boolean | `false` |
 | nzEffect | Transition effect | `scrollx` ｜ `fade` | `scrollx` |
 | nzVertical | Whether to use a vertical display | boolean | `false` |
 
