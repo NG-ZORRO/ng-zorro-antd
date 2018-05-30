@@ -7,7 +7,7 @@ import {
 } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, NgZone, TemplateRef } from '@angular/core';
+import { ElementRef, Inject, Injectable, NgZone, TemplateRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { NzDropdownContextComponent } from './nz-dropdown-context.component';
@@ -45,7 +45,7 @@ export class NzDropdownService {
     const defaultPosition = this.positions[ 0 ];
     const originPoint = { originX: defaultPosition.originX, originY: defaultPosition.originY };
     const overlayPoint = { overlayX: defaultPosition.overlayX, overlayY: defaultPosition.overlayY };
-    const fakeElementRef = { nativeElement: this.locatePoint };
+    const fakeElementRef = new ElementRef(this.locatePoint);
     this.positionStrategy = this.overlay.position().connectedTo(fakeElementRef, originPoint, overlayPoint);
     this.handlePositionChanges(this.positionStrategy);
     const overlayConfig = new OverlayConfig({
