@@ -65,7 +65,7 @@ export class NzTreeNode {
     if (typeof(option.children) !== 'undefined' && option.children !== null) {
       option.children.forEach(
         (nodeOptions) => {
-          if (option.checked && !option.disabled) {
+          if (option.checked && !option.disabled && !nodeOptions.disabled && !nodeOptions.disableCheckbox) {
             nodeOptions.checked = option.checked;
           }
           this.children.push(new NzTreeNode(nodeOptions, this));
@@ -95,8 +95,12 @@ export class NzTreeNode {
         (node) => {
           let tNode = node;
           if (tNode instanceof NzTreeNode) {
-            tNode.parentNode = this;
+            tNode = new NzTreeNode({
+              checked: !tNode.origin.disabled && !tNode.origin.disableCheckbox && this.isChecked,
+              ...(tNode.origin as NzTreeNodeOptions)
+            }, this);
           } else {
+            node.checked = !node.disabled && !node.disableCheckbox && this.isChecked;
             tNode = new NzTreeNode(node, this);
           }
           tNode.level = this.level + 1;

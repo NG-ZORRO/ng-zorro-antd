@@ -192,8 +192,9 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
   @Input()
   set nzDefaultSelectedKeys(value: string[]) {
     this._defaultSelectedKeys = value;
-    if (value && !this.nzTreeNode.isDisabled && this.nzMultiple && value.indexOf(this.nzTreeNode.key) > -1) {
+    if (value && !this.nzTreeNode.isDisabled && value.indexOf(this.nzTreeNode.key) > -1) {
       this.nzTreeNode.isSelected = true;
+      this.nzTreeService.setSelectedNodeList(this.nzTreeNode, this.nzMultiple);
     }
   }
 
