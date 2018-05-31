@@ -12,7 +12,6 @@
   .reset-component;
   margin: 0;
   padding: 0;
-  display: block;
 
   ol, ul {
     list-style: none;
@@ -82,12 +81,8 @@
       &.@{tree-prefix-cls}-node-selected {
         background-color: @primary-2;
       }
-      .font-red {
-        color: #FF5500;
-      }
     }
     span {
-      cursor: pointer;
       &.@{tree-prefix-cls}-checkbox {
         margin: 4px 4px 0 2px;
       }
@@ -98,14 +93,19 @@
         height: 24px;
         line-height: 24px;
         display: inline-block;
-        vertical-align: middle;
+        vertical-align: top;
         border: 0 none;
         cursor: pointer;
         outline: none;
         text-align: center;
       }
       &.@{tree-prefix-cls}-icon_loading {
+        position: absolute;
+        left: 0;
+        top: 1px;
         background: #fff;
+        transform: translateX(-100%);
+        transition: all .3s;
         &:after {
           display: inline-block;
           .iconfont-font("\E64D");
@@ -152,10 +152,9 @@
     }
   }
   li&-treenode-disabled {
-    > span,
+    > span:not(.@{tree-prefix-cls}-switcher),
     > .@{tree-prefix-cls}-node-content-wrapper,
-    > .@{tree-prefix-cls}-node-content-wrapper span,
-    > span.@{tree-prefix-cls}-switcher {
+    > .@{tree-prefix-cls}-node-content-wrapper span {
       color: @disabled-color;
       cursor: not-allowed;
     }
@@ -191,27 +190,14 @@
         }
       }
     }
-    > nz-tree-node:not(:last-child), .ant-tree-child-tree > nz-tree-node:not(:last-child) {
-      > li:before {
-        content: ' ';
-        width: 1px;
-        border-left: 1px solid @border-color-base;
-        height: 100%;
-        position: absolute;
-        left: 12px;
-        margin: 22px 0;
-      }
-    }
-    .ant-tree-child-tree > nz-tree-node:last-child {
-      > li:before {
-        content: ' ';
-        width: 1px;
-        border-left: 0px solid @border-color-base;
-        height: 100%;
-        position: absolute;
-        left: 12px;
-        margin: 22px 0;
-      }
+    li:not(:last-child):before {
+      content: ' ';
+      width: 1px;
+      border-left: 1px solid @border-color-base;
+      height: 100%;
+      position: absolute;
+      left: 12px;
+      margin: 22px 0;
     }
   }
 }

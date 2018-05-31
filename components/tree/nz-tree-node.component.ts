@@ -31,6 +31,7 @@ import { NzTreeService } from './nz-tree.service';
       <ng-container *ngIf="nzShowExpand">
                 <span
                   class="ant-tree-switcher"
+                  [ngStyle]="loadingStyle"
                   [class.ant-tree-switcher_open]="nzTreeNode.isExpanded && !nzTreeNode.isLeaf && !nzTreeNode.isLoading"
                   [class.ant-tree-switcher_close]="!nzTreeNode.isExpanded && !nzTreeNode.isLeaf && !nzTreeNode.isLoading"
                   [class.ant-tree-switcher-noop]="nzTreeNode.isLeaf && !nzTreeNode.isLoading"
@@ -64,7 +65,7 @@ import { NzTreeService } from './nz-tree.service';
                         <span class="ant-tree-title">
                             <ng-container *ngIf="matchValue.length==2">
                                 <span>
-                                    {{matchValue[0]}}<span class="font-red">{{nzSearchValue}}</span>{{matchValue[1]}}
+                                    {{matchValue[0]}}<span class="font-highlight">{{nzSearchValue}}</span>{{matchValue[1]}}
                                 </span>
                             </ng-container>
                             <ng-container *ngIf="matchValue.length!=2">
@@ -221,6 +222,14 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
 
   get nzSearchValue(): string {
     return this._searchValue;
+  }
+
+  get loadingStyle(): { [key: string]: string } {
+    const isLoading = this.nzTreeNode.isLoading && !this.nzTreeNode.isLeaf;
+    return {
+      position : isLoading ? 'relative' : '',
+      transform: isLoading ? 'translateX(0%)' : ''
+    };
   }
 
   @Output() clickNode: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
