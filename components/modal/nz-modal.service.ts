@@ -1,7 +1,7 @@
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ApplicationRef, ComponentFactoryResolver, ComponentRef, EventEmitter, Injectable, Injector, Optional, SkipSelf, TemplateRef, Type } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { ComponentRef, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { LoggerService } from '../core/util/logger/logger.service';
 
@@ -65,7 +65,8 @@ export class NzModalService {
   constructor(
     private overlay: Overlay,
     private logger: LoggerService,
-    private modalControl: NzModalControlService) { }
+    private modalControl: NzModalControlService) {
+  }
 
   // Closes all of the currently-open dialogs
   closeAll(): void {
@@ -74,7 +75,8 @@ export class NzModalService {
 
   create<T>(options: ModalOptionsForService<T> = {}): NzModalRef<T> {
     if (typeof options.nzOnCancel !== 'function') {
-      options.nzOnCancel = () => {}; // Leave a empty function to close this modal by default
+      options.nzOnCancel = () => {
+      }; // Leave a empty function to close this modal by default
     }
 
     const modalRef = new ModalBuilderForService(this.overlay, options).getInstance(); // NOTE: use NzModalComponent as the NzModalRef by now, we may need archive the real NzModalRef object in the future
@@ -90,7 +92,8 @@ export class NzModalService {
       options.nzWidth = 416;
     }
     if (typeof options.nzOnOk !== 'function') { // NOTE: only support function currently by calling confirm()
-      options.nzOnOk = () => {}; // Leave a empty function to close this modal by default
+      options.nzOnOk = () => {
+      }; // Leave a empty function to close this modal by default
     }
 
     options.nzModalType = 'confirm';
@@ -117,7 +120,12 @@ export class NzModalService {
 
   private simpleConfirm<T>(options: ModalOptionsForService<T> = {}, confirmType: ConfirmType): NzModalRef<T> {
     if (!('nzIconType' in options)) {
-      options.nzIconType = { 'info': 'info-circle', 'success': 'check-circle', 'error': 'cross-circle', 'warning': 'exclamation-circle' }[ confirmType ];
+      options.nzIconType = {
+        'info'   : 'info-circle',
+        'success': 'check-circle',
+        'error'  : 'cross-circle',
+        'warning': 'exclamation-circle'
+      }[ confirmType ];
     }
     if (!('nzCancelText' in options)) { // Remove the Cancel button if the user not specify a Cancel button
       options.nzCancelText = null;

@@ -1,47 +1,15 @@
 import { forwardRef, Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from './interface';
 import { NzTreeNode } from './nz-tree-node';
 import { NzTreeService } from './nz-tree.service';
 
 @Component({
-  selector : 'nz-tree',
-  template : `
-    <ul
-      class="ant-tree"
-      [ngClass]="classMap"
-      role="tree-node" unselectable="on">
-      <nz-tree-node *ngFor="let node of ngModelNodes" [nzTreeNode]="node"
-                    [nzShowLine]="nzShowLine"
-                    [nzTreeTemplate]="nzTreeTemplate"
-                    [nzShowExpand]="nzShowExpand"
-                    [nzSearchValue]="nzSearchValue"
-                    [nzAsyncData]="nzAsyncData"
-                    [nzMultiple]="nzMultiple"
-                    [nzDraggable]="nzDraggable"
-                    [nzCheckable]="nzCheckable"
-                    [nzBeforeDrop]="nzBeforeDrop"
-                    [nzCheckStrictly]="nzCheckStrictly"
-                    [nzDefaultExpandAll]="nzDefaultExpandAll"
-                    [nzDefaultExpandedKeys]="nzDefaultExpandedKeys"
-                    [nzDefaultSelectedKeys]="nzDefaultSelectedKeys"
-                    (clickCheckBox)="nzCheckBoxChange.emit($event)"
-                    (clickExpand)="nzExpandChange.emit($event)"
-                    (clickNode)="nzClick.emit($event)"
-                    (dblClick)="nzDblClick.emit($event)"
-                    (contextMenu)="nzContextMenu.emit($event)"
-                    (nzDragStart)="nzOnDragStart.emit($event)"
-                    (nzDragEnter)="nzOnDragEnter.emit($event)"
-                    (nzDragOver)="nzOnDragOver.emit($event)"
-                    (nzDragLeave)="nzOnDragLeave.emit($event)"
-                    (nzDrop)="nzOnDrop.emit($event)"
-                    (nzDragEnd)="nzOnDragEnd.emit($event)"
-      ></nz-tree-node>
-    </ul>
-  `,
-  providers: [
+  selector   : 'nz-tree',
+  templateUrl: './nz-tree.component.html',
+  providers  : [
     NzTreeService,
     {
       provide    : NG_VALUE_ACCESSOR,
@@ -55,9 +23,9 @@ export class NzTreeComponent implements OnInit {
   _showLine = false;
   _prefixCls = 'ant-tree';
   classMap = {
-    [ this._prefixCls ]             : true,
-    [this._prefixCls + '-show-line']: false,
-    ['draggable-tree']              : false
+    [ this._prefixCls ]               : true,
+    [ this._prefixCls + '-show-line' ]: false,
+    [ 'draggable-tree' ]              : false
   };
   ngModelNodes: NzTreeNode[] = [];
   defaultCheckedKeys: string[] = [];
@@ -124,9 +92,9 @@ export class NzTreeComponent implements OnInit {
 
   setClassMap(): void {
     this.classMap = {
-      [ this._prefixCls ]             : true,
-      [this._prefixCls + '-show-line']: this.nzShowLine,
-      ['draggable-tree']              : this.nzDraggable
+      [ this._prefixCls ]               : true,
+      [ this._prefixCls + '-show-line' ]: this.nzShowLine,
+      [ 'draggable-tree' ]              : this.nzDraggable
     };
   }
 

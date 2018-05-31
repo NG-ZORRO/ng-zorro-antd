@@ -3,8 +3,7 @@ import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { of, Observable } from 'rxjs';
 import { dispatchMouseEvent, dispatchTouchEvent } from '../core/testing/dispatch-events';
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from './interface';
 import { NzTreeNode } from './nz-tree-node';

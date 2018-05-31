@@ -1,0 +1,35 @@
+<div class="ant-input-number-handler-wrap">
+  <a
+    (mousedown)="up($event)"
+    (mouseup)="stop()"
+    (mouseleave)="stop()"
+    class="ant-input-number-handler ant-input-number-handler-up"
+    [class.ant-input-number-handler-up-disabled]="disabledUp">
+    <span class="ant-input-number-handler-up-inner" unselectable="unselectable" (click)="$event.preventDefault()"></span>
+  </a>
+  <a
+    (mousedown)="down($event)"
+    (mouseup)="stop()"
+    (mouseleave)="stop()"
+    class="ant-input-number-handler ant-input-number-handler-down"
+    [class.ant-input-number-handler-down-disabled]="disabledDown">
+    <span class="ant-input-number-handler-down-inner" unselectable="unselectable" (click)="$event.preventDefault()"></span>
+  </a>
+</div>
+<div class="ant-input-number-input-wrap">
+  <input
+    #inputElement
+    class="ant-input-number-input"
+    [disabled]="nzDisabled"
+    [attr.min]="nzMin"
+    [attr.max]="nzMax"
+    [placeholder]="nzPlaceHolder"
+    [attr.step]="nzStep"
+    (keydown)="onKeyDown($event)"
+    (keyup)="onKeyUp($event)"
+    (blur)="onBlur($event)"
+    (focus)="onFocus($event)"
+    [ngModel]="displayValue"
+    (ngModelChange)="onModelChange($event)"
+    autocomplete="off">
+</div>

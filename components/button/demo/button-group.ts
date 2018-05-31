@@ -47,6 +47,7 @@ import { Component } from '@angular/core';
 
       nz-button-group {
         margin-bottom: 8px;
+        margin-right: 8px;
       }
     `
   ]

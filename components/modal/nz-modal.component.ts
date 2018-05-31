@@ -21,8 +21,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, Subscription } from 'rxjs';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 
 import { InputBoolean } from '../core/util/convert';
@@ -85,17 +84,21 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   // --- Predefined OK & Cancel buttons
   @Input() nzOkText: string;
+
   get okText(): string {
     return this.nzOkText || this.locale.okText;
   }
+
   @Input() nzOkType = 'primary';
   @Input() @InputBoolean() nzOkLoading: boolean = false;
   @Input() @Output() nzOnOk: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
   @ViewChild('autoFocusButtonOk', { read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
   @Input() nzCancelText: string;
+
   get cancelText(): string {
     return this.nzCancelText || this.locale.cancelText;
   }
+
   @Input() @InputBoolean() nzCancelLoading: boolean = false;
   @Input() @Output() nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
   @ViewChild('modalContainer') modalContainer: ElementRef;

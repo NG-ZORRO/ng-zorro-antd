@@ -12,16 +12,8 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { combineLatest } from 'rxjs/operators/combineLatest';
-import { debounceTime } from 'rxjs/operators/debounceTime';
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
-import { map } from 'rxjs/operators/map';
-import { mapTo } from 'rxjs/operators/mapTo';
-import { merge } from 'rxjs/operators/merge';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, map, mapTo, merge } from 'rxjs/operators';
 
 import { dropDownAnimation } from '../core/animation/dropdown-animations';
 import { DEFAULT_DROPDOWN_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position-map';
@@ -38,35 +30,9 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
   animations         : [
     dropDownAnimation
   ],
-  template           : `
-    <div>
-      <ng-content select="[nz-dropdown]"></ng-content>
-    </div>
-    <ng-template
-      cdkConnectedOverlay
-      [cdkConnectedOverlayHasBackdrop]="hasBackdrop"
-      [cdkConnectedOverlayPositions]="positions"
-      [cdkConnectedOverlayOrigin]="nzOrigin"
-      (backdropClick)="hide()"
-      (detach)="hide()"
-      [cdkConnectedOverlayMinWidth]="triggerWidth"
-      (positionChange)="onPositionChange($event)"
-      [cdkConnectedOverlayOpen]="nzVisible">
-      <div
-        class="{{'ant-dropdown ant-dropdown-placement-'+nzPlacement}}"
-        [@dropDownAnimation]="dropDownPosition"
-        (mouseenter)="onMouseEnterEvent()"
-        (mouseleave)="onMouseLeaveEvent()"
-        [style.minWidth.px]="triggerWidth">
-        <div [class.ant-table-filter-dropdown]="hasFilterButton">
-          <ng-content select="[nz-menu]"></ng-content>
-          <ng-content select=".ant-table-filter-dropdown-btns"></ng-content>
-        </div>
-        <ng-content></ng-content>
-      </div>
-    </ng-template>`,
+  templateUrl        : './nz-dropdown.component.html',
   styles             : [
-      `
+    `
       :host {
         position: relative;
         display: inline-block;
@@ -189,7 +155,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
 
   startSubscribe(observable$: Observable<boolean>): void {
     let $pre = observable$;
-    if (this.nzClickHide) {
+    if (this.nzClickHide && this.nzMenu) {
       const $menuItemClick = this.nzMenu.nzClick.asObservable().pipe(mapTo(false));
       $pre = $pre.pipe(merge($menuItemClick));
     }

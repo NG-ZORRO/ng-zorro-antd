@@ -11,22 +11,7 @@ import {
 @Component({
   selector           : 'nz-timeline-item',
   preserveWhitespaces: false,
-  template           : `
-    <li class="ant-timeline-item" #liTemplate>
-      <div class="ant-timeline-item-tail"></div>
-      <div
-        class="ant-timeline-item-head"
-        [class.ant-timeline-item-head-custom]="nzDot"
-        [ngClass]="classMap">
-        <ng-container *ngIf="isDotString; else dotTemplate">{{ nzDot }}</ng-container>
-        <ng-template #dotTemplate>
-          <ng-template [ngTemplateOutlet]="nzDot"></ng-template>
-        </ng-template>
-      </div>
-      <div class="ant-timeline-item-content">
-        <ng-content></ng-content>
-      </div>
-    </li>`
+  templateUrl        : './nz-timeline-item.component.html'
 })
 export class NzTimelineItemComponent implements OnInit {
   private _dot: string | TemplateRef<void>;

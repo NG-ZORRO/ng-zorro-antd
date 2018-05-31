@@ -16,12 +16,8 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { merge } from 'rxjs/observable/merge';
-import { of as observableOf } from 'rxjs/observable/of';
-import { auditTime } from 'rxjs/operators/auditTime';
-import { startWith } from 'rxjs/operators/startWith';
+import { fromEvent, merge, of as observableOf, Subscription } from 'rxjs';
+import { auditTime, startWith } from 'rxjs/operators';
 
 import { toBoolean } from '../core/util/convert';
 
@@ -36,31 +32,7 @@ import { NzTabPositionMode } from './nz-tabset.component';
 @Component({
   selector           : '[nz-tabs-nav]',
   preserveWhitespaces: false,
-  template           : `
-    <div style="float:right;" *ngIf="nzTabBarExtraContent" class="ant-tabs-extra-content">
-      <ng-template [ngTemplateOutlet]="nzTabBarExtraContent"></ng-template>
-    </div>
-    <div class="ant-tabs-nav-container" [class.ant-tabs-nav-container-scrolling]="showPaginationControls" #navContainerElement>
-      <span class="ant-tabs-tab-prev" (click)="scrollHeader('before')" [class.ant-tabs-tab-btn-disabled]="disableScrollBefore" [class.ant-tabs-tab-arrow-show]="showPaginationControls">
-        <span class="ant-tabs-tab-prev-icon"></span>
-      </span>
-      <span class="ant-tabs-tab-next" (click)="scrollHeader('after')" [class.ant-tabs-tab-btn-disabled]="disableScrollAfter" [class.ant-tabs-tab-arrow-show]="showPaginationControls">
-        <span class="ant-tabs-tab-next-icon"></span>
-      </span>
-      <div class="ant-tabs-nav-wrap">
-        <div class="ant-tabs-nav-scroll">
-          <div
-            class="ant-tabs-nav"
-            [class.ant-tabs-nav-animated]="nzAnimated"
-            #navListElement
-            (cdkObserveContent)="onContentChanges()">
-            <div nz-tabs-ink-bar [hidden]="nzHideBar" [nzAnimated]="nzAnimated" [nzPositionMode]="nzPositionMode" style="display: block;"></div>
-            <ng-content></ng-content>
-          </div>
-        </div>
-      </div>
-    </div>
-  `,
+  templateUrl        : './nz-tabs-nav.component.html',
   host               : {
     '[class.ant-tabs-bar]': 'true'
   }

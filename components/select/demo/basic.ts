@@ -13,7 +13,14 @@ import { Component } from '@angular/core';
         <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
       </nz-select>
     </div>
-  `
+  `,
+  styles  : [
+    `
+      nz-select {
+        margin-right: 8px;
+      }
+    `
+  ]
 })
 export class NzDemoSelectBasicComponent {
   selectedValue = 'lucy';

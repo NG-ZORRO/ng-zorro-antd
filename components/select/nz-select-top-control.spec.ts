@@ -100,7 +100,7 @@ describe('nz-select top control', () => {
     }));
     it('should placeholder display', () => {
       fixture.detectChanges();
-      expect(tc.nativeElement.querySelector('.ant-select-selection__placeholder').innerText).toBe(' placeholder ');
+      expect(tc.nativeElement.querySelector('.ant-select-selection__placeholder').innerText).toBe('placeholder');
       testComponent.placeHolder = '';
       fixture.detectChanges();
       expect(tc.nativeElement.querySelector('.ant-select-selection__placeholder')).toBeNull();

@@ -1,19 +1,13 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
-
-import { trimWhiteSpace } from '../core/util/trim-whitespace';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 
 export type NzButtonGroupSize = 'small' | 'large' | 'default' ;
 
 @Component({
   selector           : 'nz-button-group',
   preserveWhitespaces: false,
-  template           : `
-    <div [ngClass]="classMap" #groupWrapper>
-      <ng-content></ng-content>
-    </div>
-  `
+  templateUrl        : './nz-button-group.component.html'
 })
-export class NzButtonGroupComponent implements AfterViewInit {
+export class NzButtonGroupComponent {
   private _size: NzButtonGroupSize;
   private prefixCls = 'ant-btn-group';
   private sizeMap = { large: 'lg', small: 'sm' };
@@ -34,10 +28,5 @@ export class NzButtonGroupComponent implements AfterViewInit {
       [ this.prefixCls ]                                    : true,
       [ `${this.prefixCls}-${this.sizeMap[ this.nzSize ]}` ]: this.sizeMap[ this.nzSize ]
     };
-  }
-
-  ngAfterViewInit(): void {
-    /** trim text node between button */
-    trimWhiteSpace(this.groupWrapper.nativeElement);
   }
 }

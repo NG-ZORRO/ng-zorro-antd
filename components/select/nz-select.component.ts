@@ -89,66 +89,7 @@ import { NzSelectTopControlComponent } from './nz-select-top-control.component';
       ])
     ])
   ],
-  template           : `
-    <div
-      cdkOverlayOrigin
-      class="ant-select-selection"
-      [class.ant-select-selection--single]="isSingleMode"
-      [class.ant-select-selection--multiple]="isMultipleOrTags"
-      (keydown)="onKeyDownCdkOverlayOrigin($event)"
-      tabindex="0">
-      <div
-        nz-select-top-control
-        [nzOpen]="nzOpen"
-        [compareWith]="compareWith"
-        [nzPlaceHolder]="nzPlaceHolder"
-        [nzShowSearch]="nzShowSearch"
-        [nzDisabled]="nzDisabled"
-        [nzMode]="nzMode"
-        [nzListTemplateOfOption]="listOfTemplateOption"
-        [nzListOfSelectedValue]="listOfSelectedValue"
-        (nzOnSearch)="onSearch($event.value,$event.emit)"
-        (nzListOfSelectedValueChange)="updateListOfSelectedValueFromTopControl($event)">
-      </div>
-      <span *ngIf="nzAllowClear" class="ant-select-selection__clear" nz-select-unselectable (click)="onClearSelection($event)"></span>
-      <span class="ant-select-arrow" nz-select-unselectable><b></b></span>
-    </div>
-    <ng-template
-      cdkConnectedOverlay
-      [cdkConnectedOverlayHasBackdrop]="true"
-      [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
-      (backdropClick)="closeDropDown()"
-      (detach)="closeDropDown();"
-      (positionChange)="onPositionChange($event)"
-      [cdkConnectedOverlayWidth]="overlayWidth"
-      [cdkConnectedOverlayMinWidth]="overlayMinWidth"
-      [cdkConnectedOverlayOpen]="!isDestroy">
-      <div [ngClass]="dropDownClassMap" [@dropDownAnimation]="nzOpen ? dropDownPosition : 'hidden' " [ngStyle]="nzDropdownStyle">
-        <div
-          style="overflow: auto"
-          nz-option-container
-          [listOfNzOptionComponent]="listOfNzOptionComponent"
-          [listOfNzOptionGroupComponent]="listOfNzOptionGroupComponent"
-          [nzSearchValue]="searchValue"
-          [nzFilterOption]="nzFilterOption"
-          [nzServerSearch]="nzServerSearch"
-          [compareWith]="compareWith"
-          [nzNotFoundContent]="nzNotFoundContent"
-          [nzMaxMultipleCount]="nzMaxMultipleCount"
-          [nzMode]="nzMode"
-          (nzScrollToBottom)="nzScrollToBottom.emit()"
-          (nzClickOption)="onClickOptionFromOptionContainer()"
-          (nzListOfTemplateOptionChange)="listOfTemplateOptionChange($event)"
-          (nzListOfSelectedValueChange)="updateListOfSelectedValueFromOptionContainer($event)"
-          [nzListOfSelectedValue]="listOfSelectedValue">
-        </div>
-      </div>
-    </ng-template>
-    <!--can not use ViewChild since it will match sub options in option group -->
-    <ng-template>
-      <ng-content></ng-content>
-    </ng-template>
-  `,
+  templateUrl        : './nz-select.component.html',
   host               : {
     '[class.ant-select]'            : 'true',
     '[class.ant-select-lg]'         : 'nzSize==="large"',
@@ -207,7 +148,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() nzDropdownMatchSelectWidth = true;
   @Input() nzFilterOption: TFilterOption = defaultFilterOption;
   @Input() nzMaxMultipleCount = Infinity;
-  @Input() nzDropdownStyle: { [key: string]: string; };
+  @Input() nzDropdownStyle: { [ key: string ]: string; };
   @Input() nzNotFoundContent: string;
   /** https://github.com/angular/angular/pull/13349/files **/
            // tslint:disable-next-line:no-any

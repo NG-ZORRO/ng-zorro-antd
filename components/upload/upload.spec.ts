@@ -6,8 +6,7 @@ import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testin
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { of, Observable } from 'rxjs';
 
 import { NzI18nModule, NzI18nService } from '../i18n';
 import en_US from '../i18n/languages/en_US';

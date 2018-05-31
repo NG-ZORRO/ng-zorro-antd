@@ -5,14 +5,7 @@ import {
 @Component({
   selector           : '[nz-menu-group]',
   preserveWhitespaces: false,
-  template           : `
-    <div class="ant-menu-item-group-title">
-      <ng-content select="[title]"></ng-content>
-    </div>
-    <ul class="ant-menu-item-group-list">
-      <ng-content></ng-content>
-    </ul>
-  `,
+  templateUrl        : './nz-menu-group.component.html',
   host               : {
     '[class.ant-menu-item-group]': 'true'
   }

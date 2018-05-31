@@ -6,14 +6,9 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 import { NzSliderComponent } from './nz-slider.component';
 
 @Component({
-  selector     : 'nz-slider-handle',
+  selector           : 'nz-slider-handle',
   preserveWhitespaces: false,
-  template     : `
-    <nz-tooltip *ngIf="nzTipFormatter !== null" #tooltip [nzTitle]="tooltipTitle" [nzTrigger]="null">
-      <div nz-tooltip [class]="nzClassName" [ngStyle]="style"></div>
-    </nz-tooltip>
-    <div *ngIf="nzTipFormatter === null" [class]="nzClassName" [ngStyle]="style"></div>
-  `
+  templateUrl        : './nz-slider-handle.component.html'
 })
 export class NzSliderHandleComponent implements OnChanges {
 
@@ -39,7 +34,8 @@ export class NzSliderHandleComponent implements OnChanges {
   tooltipTitle: string; // [For tooltip]
   style: object = {};
 
-  constructor(private _slider: NzSliderComponent) { }
+  constructor(private _slider: NzSliderComponent) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzOffset) {
@@ -58,6 +54,7 @@ export class NzSliderHandleComponent implements OnChanges {
       this.nzActive = true;
     }
   }
+
   @HostListener('mouseleave', [ '$event' ])
   onMouseLeave($event: MouseEvent): void {
     if (!this._slider.isDragging) {

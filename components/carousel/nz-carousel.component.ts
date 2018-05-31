@@ -13,7 +13,7 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { toBoolean } from '../core/util/convert';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
@@ -21,27 +21,12 @@ import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 @Component({
   selector           : 'nz-carousel',
   preserveWhitespaces: false,
-  template           : `
-    <div class="slick-initialized slick-slider" [class.slick-vertical]="nzVertical">
-      <div class="slick-list" #slickList tabindex="-1" (keydown)="onKeyDown($event)">
-        <div class="slick-track" [style.transform]="transform" #slickTrack>
-          <ng-content></ng-content>
-        </div>
-      </div>
-      <ul class="slick-dots" *ngIf="nzDots">
-        <li
-          *ngFor="let content of slideContents; let i =index"
-          [class.slick-active]="content.isActive"
-          (click)="setActive(content,i)">
-          <button>{{i + 1}}</button>
-        </li>
-      </ul>
-    </div>`,
+  templateUrl        : './nz-carousel.component.html',
   host               : {
     '[class.ant-carousel]': 'true'
   },
   styles             : [
-      `
+    `
       :host {
         display: block;
         position: relative;

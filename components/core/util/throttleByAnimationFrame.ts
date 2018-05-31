@@ -1,7 +1,7 @@
 // tslint:disable:no-any typedef no-invalid-this
 import { cancelRequestAnimationFrame, reqAnimFrame } from '../polyfill/request-animation';
 
-export default function throttleByAnimationFrame(fn: () => void) {
+export default function throttleByAnimationFrame(fn: any) {
   let requestId: number | null;
 
   const later = (args: any[]) => () => {

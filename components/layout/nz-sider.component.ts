@@ -23,21 +23,7 @@ export type NzBreakPoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 @Component({
   selector           : 'nz-sider',
   preserveWhitespaces: false,
-  template           : `
-    <div class="ant-layout-sider-children">
-      <ng-content></ng-content>
-    </div>
-    <span class="ant-layout-sider-zero-width-trigger" *ngIf="isZeroTrigger" (click)="toggleCollapse()">
-      <i class="anticon anticon-bars"></i>
-    </span>
-    <div class="ant-layout-sider-trigger" *ngIf="isSiderTrigger" (click)="toggleCollapse()" [style.width.px]="nzCollapsed?nzCollapsedWidth:nzWidth">
-      <ng-template [ngTemplateOutlet]="nzTrigger"></ng-template>
-    </div>
-    <ng-template #defaultTrigger>
-      <i class="anticon" [class.anticon-left]="!nzCollapsed" [class.anticon-right]="nzCollapsed" *ngIf="!nzReverseArrow"></i>
-      <i class="anticon" [class.anticon-left]="nzCollapsed" [class.anticon-right]="!nzCollapsed" *ngIf="nzReverseArrow"></i>
-    </ng-template>
-  `,
+  templateUrl        : './nz-sider.component.html',
   host               : {
     '[class.ant-layout-sider]': 'true'
   }

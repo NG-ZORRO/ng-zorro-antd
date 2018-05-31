@@ -10,9 +10,7 @@ import {
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { of } from 'rxjs/observable/of';
+import { of, Observable, Subscription } from 'rxjs';
 
 import { toBoolean } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -22,46 +20,7 @@ import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, Tr
 @Component({
   selector           : 'nz-transfer',
   preserveWhitespaces: false,
-  template           : `
-    <nz-transfer-list class="ant-transfer-list" [ngStyle]="nzListStyle" data-direction="left"
-      [titleText]="nzTitles[0]"
-      [dataSource]="leftDataSource"
-      [filter]="leftFilter"
-      [filterOption]="nzFilterOption"
-      (filterChange)="handleFilterChange($event)"
-      [render]="nzRender"
-      [showSearch]="nzShowSearch"
-      [searchPlaceholder]="nzSearchPlaceholder || locale.searchPlaceholder"
-      [notFoundContent]="nzNotFoundContent || locale.notFoundContent"
-      [itemUnit]="nzItemUnit || locale.itemUnit"
-      [itemsUnit]="nzItemsUnit || locale.itemsUnit"
-      [footer]="nzFooter"
-      (handleSelect)="handleLeftSelect($event)"
-      (handleSelectAll)="handleLeftSelectAll($event)"></nz-transfer-list>
-    <div class="ant-transfer-operation">
-      <button nz-button (click)="moveToLeft()" [disabled]="!leftActive" [nzType]="'primary'" [nzSize]="'small'">
-        <i class="anticon anticon-left"></i><span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
-      </button>
-      <button nz-button (click)="moveToRight()" [disabled]="!rightActive" [nzType]="'primary'" [nzSize]="'small'">
-        <i class="anticon anticon-right"></i><span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
-      </button>
-    </div>
-    <nz-transfer-list class="ant-transfer-list" [ngStyle]="nzListStyle" data-direction="right"
-      [titleText]="nzTitles[1]"
-      [dataSource]="rightDataSource"
-      [filter]="rightFilter"
-      [filterOption]="nzFilterOption"
-      (filterChange)="handleFilterChange($event)"
-      [render]="nzRender"
-      [showSearch]="nzShowSearch"
-      [searchPlaceholder]="nzSearchPlaceholder || locale.searchPlaceholder"
-      [notFoundContent]="nzNotFoundContent || locale.notFoundContent"
-      [itemUnit]="nzItemUnit || locale.itemUnit"
-      [itemsUnit]="nzItemsUnit || locale.itemsUnit"
-      [footer]="nzFooter"
-      (handleSelect)="handleRightSelect($event)"
-      (handleSelectAll)="handleRightSelectAll($event)"></nz-transfer-list>
-  `,
+  templateUrl        : './nz-transfer.component.html',
   host               : {
     '[class.ant-transfer]': 'true'
   }
@@ -78,7 +37,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   // region: fields
 
   @Input() nzDataSource: TransferItem[] = [];
-  @Input() nzTitles: string[] = ['', ''];
+  @Input() nzTitles: string[] = [ '', '' ];
   @Input() nzOperations: string[] = [];
   @Input() nzListStyle: object;
   @Input() nzItemUnit: string;

@@ -1,6 +1,6 @@
 import { AfterContentInit, Component, ContentChild, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
 import { NzColComponent } from '../grid/nz-col.component';
@@ -9,14 +9,7 @@ import { NzColComponent } from '../grid/nz-col.component';
   selector           : 'nz-form-control',
   providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
-  template           : `
-    <div class="ant-form-item-control" [ngClass]="controlClassMap">
-      <span class="ant-form-item-children">
-        <ng-content></ng-content>
-      </span>
-      <ng-content select="nz-form-explain"></ng-content>
-    </div>
-  `,
+  templateUrl        : './nz-form-control.component.html',
   host               : {
     '[class.ant-form-item-control-wrapper]': 'true'
   },

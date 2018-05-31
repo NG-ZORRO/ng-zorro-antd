@@ -14,51 +14,16 @@ import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
-  selector : 'nz-input-number',
-  template : `
-    <div class="ant-input-number-handler-wrap">
-      <a
-        (mousedown)="up($event)"
-        (mouseup)="stop()"
-        (mouseleave)="stop()"
-        class="ant-input-number-handler ant-input-number-handler-up"
-        [class.ant-input-number-handler-up-disabled]="disabledUp">
-        <span class="ant-input-number-handler-up-inner" unselectable="unselectable" (click)="$event.preventDefault()"></span>
-      </a>
-      <a
-        (mousedown)="down($event)"
-        (mouseup)="stop()"
-        (mouseleave)="stop()"
-        class="ant-input-number-handler ant-input-number-handler-down"
-        [class.ant-input-number-handler-down-disabled]="disabledDown">
-        <span class="ant-input-number-handler-down-inner" unselectable="unselectable" (click)="$event.preventDefault()"></span>
-      </a>
-    </div>
-    <div class="ant-input-number-input-wrap">
-      <input
-        #inputElement
-        class="ant-input-number-input"
-        [disabled]="nzDisabled"
-        [attr.min]="nzMin"
-        [attr.max]="nzMax"
-        [placeholder]="nzPlaceHolder"
-        [attr.step]="nzStep"
-        (keydown)="onKeyDown($event)"
-        (keyup)="onKeyUp($event)"
-        (blur)="onBlur($event)"
-        (focus)="onFocus($event)"
-        [ngModel]="displayValue"
-        (ngModelChange)="onModelChange($event)"
-        autocomplete="off">
-    </div>`,
-  providers: [
+  selector   : 'nz-input-number',
+  templateUrl: './nz-input-number.component.html',
+  providers  : [
     {
       provide    : NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzInputNumberComponent),
       multi      : true
     }
   ],
-  host     : {
+  host       : {
     '[class.ant-input-number]'        : 'true',
     '[class.ant-input-number-focused]': 'isFocused'
   }

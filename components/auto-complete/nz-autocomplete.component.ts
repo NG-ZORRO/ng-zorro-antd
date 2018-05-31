@@ -12,13 +12,8 @@ import {
   TemplateRef,
   ViewChild, ViewChildren
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { defer } from 'rxjs/observable/defer';
-import { merge } from 'rxjs/observable/merge';
-import { filter } from 'rxjs/operators/filter';
-import { switchMap } from 'rxjs/operators/switchMap';
-import { take } from 'rxjs/operators/take';
+import { defer, merge, Observable, Subscription } from 'rxjs';
+import { filter, switchMap, take } from 'rxjs/operators';
 
 import { toBoolean } from '../core/util/convert';
 
@@ -39,30 +34,9 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
   animations         : [
     dropDownAnimation
   ],
-  template           : `
-    <ng-template>
-      <div class="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft"
-        #panel
-        [@dropDownAnimation]="dropDownPosition"
-        [class.ant-select-dropdown-hidden]="!showPanel">
-        <div style="overflow: auto;">
-          <ul class="ant-select-dropdown-menu  ant-select-dropdown-menu-root ant-select-dropdown-menu-vertical"
-            role="menu"
-            aria-activedescendant>
-            <ng-template *ngTemplateOutlet="nzDataSource ? optionsTemplate : contentTemplate"></ng-template>
-          </ul>
-        </div>
-      </div>
-      <ng-template #contentTemplate>
-        <ng-content></ng-content>
-      </ng-template>
-      <ng-template #optionsTemplate>
-        <nz-auto-option *ngFor="let option of nzDataSource" [nzValue]="option">{{option}}</nz-auto-option>
-      </ng-template>
-    </ng-template>
-  `,
+  templateUrl        : './nz-autocomplete.component.html',
   styles             : [
-      `
+    `
     .ant-select-dropdown {
       top: 100%;
       left: 0;

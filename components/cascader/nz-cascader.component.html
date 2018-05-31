@@ -1,0 +1,67 @@
+<div
+  cdkOverlayOrigin
+  #origin="cdkOverlayOrigin"
+  #trigger
+>
+  <div *ngIf="nzShowInput">
+    <input #input
+      nz-input
+      [attr.autoComplete]="'off'"
+      [attr.placeholder]="showPlaceholder ? nzPlaceHolder : null"
+      [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"
+      [readonly]="!nzShowSearch"
+      [disabled]="nzDisabled"
+      [nzSize]="nzSize"
+      [ngClass]="inputCls"
+      [(ngModel)]="inputValue"
+      (blur)="handleInputBlur($event)"
+      (focus)="handleInputFocus($event)"
+      (change)="handlerInputChange($event)"
+    >
+    <i *ngIf="showClearIcon"
+      [class]="'anticon anticon-cross-circle'"
+      [ngClass]="clearCls"
+      [attr.title]="nzClearText"
+      (click)="clearSelection($event)"></i>
+    <i *ngIf="nzShowArrow && !isLoading"
+      class="anticon anticon-down"
+      [ngClass]="arrowCls"></i>
+    <i *ngIf="isLoading"
+      class="anticon anticon-loading anticon-spin"
+      [ngClass]="loadingCls"></i>
+    <span [ngClass]="labelCls">
+          <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{ labelRenderText }}</ng-container>
+          <ng-template #labelTemplate>
+            <ng-template [ngTemplateOutlet]="nzLabelRender" [ngTemplateOutletContext]="labelRenderContext"></ng-template>
+          </ng-template>
+        </span>
+  </div>
+  <ng-content></ng-content>
+</div>
+<ng-template
+  cdkConnectedOverlay
+  cdkConnectedOverlayHasBackdrop
+  [cdkConnectedOverlayOrigin]="origin"
+  (backdropClick)="closeMenu()"
+  (detach)="closeMenu()"
+  (positionChange)="onPositionChange($event)"
+  [cdkConnectedOverlayOpen]="menuVisible"
+>
+  <div #menu
+    [ngClass]="menuCls" [ngStyle]="nzMenuStyle"
+    [@dropDownAnimation]="dropDownPosition"
+    (mouseleave)="onTriggerMouseLeave($event)"
+  >
+    <ul *ngFor="let options of nzColumns; let i = index;" [ngClass]="menuColumnCls">
+      <li *ngFor="let option of options"
+        [attr.title]="option.title || getOptionLabel(option)"
+        [ngClass]="getOptionCls(option, i)"
+        (mouseenter)="onOptionMouseEnter(option, i, $event)"
+        (mouseleave)="onOptionMouseLeave(option, i, $event)"
+        (click)="onOptionClick(option, i, $event)"
+      >
+        {{ getOptionLabel(option) }}
+      </li>
+    </ul>
+  </div>
+</ng-template>

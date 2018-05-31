@@ -1,0 +1,15 @@
+<div class="slick-initialized slick-slider" [class.slick-vertical]="nzVertical">
+  <div class="slick-list" #slickList tabindex="-1" (keydown)="onKeyDown($event)">
+    <div class="slick-track" [style.transform]="transform" #slickTrack>
+      <ng-content></ng-content>
+    </div>
+  </div>
+  <ul class="slick-dots" *ngIf="nzDots">
+    <li
+      *ngFor="let content of slideContents; let i =index"
+      [class.slick-active]="content.isActive"
+      (click)="setActive(content,i)">
+      <button>{{i + 1}}</button>
+    </li>
+  </ul>
+</div>

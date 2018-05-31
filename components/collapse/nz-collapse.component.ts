@@ -8,14 +8,10 @@ import { toBoolean } from '../core/util/convert';
 import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
 
 @Component({
-  selector: 'nz-collapse',
-  template: `
-    <div class="ant-collapse" [class.ant-collapse-borderless]="!nzBordered">
-      <ng-content></ng-content>
-    </div>
-  `,
-  styles  : [
-      `:host {
+  selector   : 'nz-collapse',
+  templateUrl: './nz-collapse.component.html',
+  styles     : [
+    `:host {
       display: block;
     }`
   ]

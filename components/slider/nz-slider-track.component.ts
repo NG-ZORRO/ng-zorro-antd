@@ -3,11 +3,9 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
-  selector     : 'nz-slider-track',
+  selector           : 'nz-slider-track',
   preserveWhitespaces: false,
-  template     : `
-    <div [class]="nzClassName" [ngStyle]="style"></div>
-  `
+  templateUrl        : './nz-slider-track.component.html'
 })
 export class NzSliderTrackComponent implements OnChanges {
   private _vertical = false;

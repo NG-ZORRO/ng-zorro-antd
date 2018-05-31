@@ -15,7 +15,7 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
@@ -27,111 +27,7 @@ import { NzTheadComponent } from './nz-thead.component';
 @Component({
   selector           : 'nz-table',
   preserveWhitespaces: false,
-  template           : `
-    <ng-template #colGroupTemplate>
-      <colgroup *ngIf="!isWidthConfigSet">
-        <col [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth" *ngFor="let th of listOfNzThComponent">
-      </colgroup>
-      <colgroup *ngIf="isWidthConfigSet">
-        <col [style.width]="width" [style.minWidth]="width" *ngFor="let width of nzWidthConfig">
-      </colgroup>
-    </ng-template>
-    <ng-template #tableInnerTemplate>
-      <div
-        #tableHeaderElement
-        *ngIf="nzScroll.x || nzScroll.y"
-        class="ant-table-header"
-        (scroll)="syncScrollTable($event)"
-        [ngStyle]="headerBottomStyle">
-        <table
-          [class.ant-table-fixed]="nzScroll.x"
-          [style.width]="nzScroll.x">
-          <ng-template [ngTemplateOutlet]="colGroupTemplate"></ng-template>
-          <thead class="ant-table-thead" *ngIf="nzScroll.y">
-            <ng-template [ngTemplateOutlet]="nzTheadComponent?.template"></ng-template>
-          </thead>
-        </table>
-      </div>
-      <div
-        #tableBodyElement
-        class="ant-table-body"
-        (scroll)="syncScrollTable($event)"
-        [style.maxHeight]="nzScroll.y"
-        [style.overflow-y]="nzScroll.y?'scroll':''"
-        [style.overflow-x]="nzScroll.x?'auto':''">
-        <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
-          <ng-template [ngTemplateOutlet]="colGroupTemplate"></ng-template>
-          <thead class="ant-table-thead" *ngIf="!nzScroll.y">
-            <ng-template [ngTemplateOutlet]="nzTheadComponent?.template"></ng-template>
-          </thead>
-          <ng-content></ng-content>
-        </table>
-      </div>
-      <div class="ant-table-placeholder" *ngIf="(data.length==0)&&!nzLoading">
-        <span *ngIf="!nzNoResult">{{ locale.emptyText }}</span>
-        <ng-container *ngIf="nzNoResult">
-          <ng-container *ngIf="isNoResultString; else noResultTemplate">{{ nzNoResult }}</ng-container>
-          <ng-template #noResultTemplate>
-            <ng-template [ngTemplateOutlet]="nzNoResult"></ng-template>
-          </ng-template>
-        </ng-container>
-      </div>
-      <div class="ant-table-footer" *ngIf="nzFooter">
-        <ng-container *ngIf="isFooterString; else footerTemplate">{{ nzFooter }}</ng-container>
-        <ng-template #footerTemplate>
-          <ng-template [ngTemplateOutlet]="nzFooter"></ng-template>
-        </ng-template>
-      </div>
-    </ng-template>
-    <div
-      class="ant-table-wrapper"
-      [class.ant-table-empty]="data.length==0">
-      <nz-spin
-        [nzDelay]="nzLoadingDelay"
-        [nzSpinning]="nzLoading">
-        <div>
-          <div
-            class="ant-table"
-            [class.ant-table-fixed-header]="nzScroll.x || nzScroll.y"
-            [class.ant-table-scroll-position-left]="scrollPosition==='left'"
-            [class.ant-table-scroll-position-right]="scrollPosition==='right'"
-            [class.ant-table-scroll-position-middle]="scrollPosition==='middle'"
-            [class.ant-table-bordered]="nzBordered"
-            [class.ant-table-large]="nzSize=='default'"
-            [class.ant-table-middle]="nzSize=='middle'"
-            [class.ant-table-small]="nzSize=='small'">
-            <div class="ant-table-title" *ngIf="nzTitle">
-              <ng-container *ngIf="isTitleString; else titleTemplate">{{ nzTitle }}</ng-container>
-              <ng-template #titleTemplate>
-                <ng-template [ngTemplateOutlet]="nzTitle"></ng-template>
-              </ng-template>
-            </div>
-            <div class="ant-table-content">
-              <ng-container *ngIf="nzScroll.x || nzScroll.y; else tableInnerTemplate">
-                <div class="ant-table-scroll">
-                  <ng-template [ngTemplateOutlet]="tableInnerTemplate"></ng-template>
-                </div>
-              </ng-container>
-            </div>
-          </div>
-        </div>
-        <nz-pagination
-          *ngIf="nzShowPagination&&data.length"
-          [nzInTable]="true"
-          [nzShowSizeChanger]="nzShowSizeChanger"
-          [nzPageSizeOptions]="nzPageSizeOptions"
-          [nzShowQuickJumper]="nzShowQuickJumper"
-          [nzShowTotal]="nzShowTotal"
-          [nzSize]="(nzSize=='middle'||nzSize=='small')?'small':''"
-          [nzPageSize]="nzPageSize"
-          (nzPageSizeChange)="emitPageSize($event)"
-          [nzTotal]="nzTotal"
-          [nzPageIndex]="nzPageIndex"
-          (nzPageIndexChange)="emitPageIndex($event)">
-        </nz-pagination>
-      </nz-spin>
-    </div>
-  `
+  templateUrl        : './nz-table.component.html'
 })
 export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private i18n$: Subscription;
