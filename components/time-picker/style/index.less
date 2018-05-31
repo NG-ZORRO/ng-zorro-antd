@@ -2,10 +2,10 @@
 @import "../../style/mixins/index";
 @import "../../input/style/mixin";
 
-@time-picker-prefix-cls: ~"@{ant-prefix}-time-picker";
-@time-picker-item-height: 32px;
+@timepicker-prefix-cls: ~"@{ant-prefix}-time-picker";
+@timepicker-item-height: 32px;
 
-.@{time-picker-prefix-cls}-panel {
+.@{timepicker-prefix-cls}-panel {
   .reset-component;
   z-index: @zindex-picker;
   position: absolute;
@@ -85,7 +85,7 @@
     width: @time-picker-panel-column-width;
     overflow: hidden;
     position: relative; // Fix chrome weird render bug
-    max-height: @time-picker-item-height * 6;
+    max-height: @timepicker-item-height * 6;
 
     &:hover {
       overflow-y: auto;
@@ -108,7 +108,7 @@
       list-style: none;
       box-sizing: border-box;
       margin: 0;
-      padding: 0 0 @time-picker-item-height * 5;
+      padding: 0 0 @timepicker-item-height * 5;
       width: 100%;
     }
 
@@ -118,8 +118,8 @@
       margin: 0;
       padding: 0 0 0 @control-padding-horizontal;
       width: 100%;
-      height: @time-picker-item-height;
-      line-height: @time-picker-item-height;
+      height: @timepicker-item-height;
+      line-height: @timepicker-item-height;
       text-align: left;
       cursor: pointer;
       user-select: none;
@@ -181,7 +181,7 @@
   }
 }
 
-.@{time-picker-prefix-cls} {
+.@{timepicker-prefix-cls} {
   .reset-component;
   position: relative;
   display: inline-block;

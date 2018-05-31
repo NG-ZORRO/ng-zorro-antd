@@ -71,8 +71,8 @@
 
 // LINK
 @link-color             : @primary-color;
-@link-hover-color       : @primary-5;
-@link-active-color      : @primary-7;
+@link-hover-color       : color(~`colorPalette("@{link-color}", 5)`);
+@link-active-color      : color(~`colorPalette("@{link-color}", 7)`);
 @link-decoration        : none;
 @link-hover-decoration  : none;
 
@@ -322,7 +322,7 @@
 @menu-dark-arrow-color: #fff;
 @menu-dark-submenu-bg: #000c17;
 @menu-dark-highlight-color: #fff;
-@menu-dark-item-selected-bg: @primary-color;
+@menu-dark-item-active-bg: @primary-color;
 
 // Spin
 // ---
@@ -336,6 +336,7 @@
 @table-header-sort-bg: @background-color-base;
 @table-row-hover-bg: @primary-1;
 @table-selected-row-bg: #fafafa;
+@table-expanded-row-bg: #fbfbfb;
 @table-padding-vertical: 16px;
 @table-padding-horizontal: 16px;
 
@@ -389,16 +390,16 @@
 @tabs-title-font-size: @font-size-base;
 @tabs-title-font-size-lg: @font-size-lg;
 @tabs-title-font-size-sm: @font-size-base;
-@tabs-ink-bar-bg-color: @primary-color;
-@tab-bar-margin: 0 0 16px 0;
-@tab-horizontal-margin: 0 32px 0 0;
-@tab-vertical-margin: 0 0 16px 0;
-@tab-horizontal-padding: 12px 16px;
-@tab-vertical-padding: 8px 24px;
-@tab-scrolling-size: 32px;
-@tab-highlight-color: @primary-color;
-@tab-hover-color: @primary-5;
-@tab-active-color: @primary-7;
+@tabs-ink-bar-color: @primary-color;
+@tabs-bar-margin: 0 0 16px 0;
+@tabs-horizontal-margin: 0 32px 0 0;
+@tabs-horizontal-padding: 12px 16px;
+@tabs-vertical-padding: 8px 24px;
+@tabs-vertical-margin: 0 0 16px 0;
+@tabs-scrolling-size: 32px;
+@tabs-highlight-color: @primary-color;
+@tabs-hover-color: @primary-5;
+@tabs-active-color: @primary-7;
 
 // BackTop
 // ---
@@ -422,6 +423,7 @@
 // ---
 @switch-height: 22px;
 @switch-sm-height: 16px;
+@switch-sm-checked-margin-left: -(@switch-sm-height - 3px);
 @switch-disabled-opacity: 0.4;
 @switch-color: @primary-color;
 
@@ -430,6 +432,7 @@
 @pagination-item-size: 32px;
 @pagination-item-size-sm: 24px;
 @pagination-font-family: Arial;
+@pagination-font-weight-active: 500;
 
 // Breadcrumb
 // ---
@@ -458,3 +461,12 @@
 @slider-dot-border-color-active:      tint(@primary-color, 50%);
 @slider-disabled-color:               @disabled-color;
 @slider-disabled-background-color:    @component-background;
+
+// Collapse
+// ---
+@collapse-header-padding:             12px 0 12px 40px;
+@collapse-header-bg:                  @background-color-light;
+@collapse-content-padding:            @padding-md;
+@collapse-content-bg:                 @component-background;
+
+@import "./default.deperated.less";

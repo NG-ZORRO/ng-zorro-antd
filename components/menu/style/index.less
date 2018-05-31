@@ -63,8 +63,6 @@
     &:before {
       position: absolute;
       background-color: transparent;
-      width: 100%;
-      height: 100%;
       top: 0;
       left: 0;
       bottom: 0;
@@ -279,13 +277,21 @@
         border-bottom: 2px solid @menu-highlight-color;
         color: @menu-highlight-color;
       }
+    }
 
+    > .@{menu-prefix-cls}-item {
       > a {
         display: block;
         color: @menu-item-color;
         &:hover {
           color: @menu-highlight-color;
         }
+        &:before {
+          bottom: -2px;
+        }
+      }
+      &-selected > a {
+        color: @menu-highlight-color;
       }
     }
 
@@ -454,6 +460,12 @@
     > .@{menu-prefix-cls}-submenu-title {
       color: @disabled-color !important;
       cursor: not-allowed;
+      > .@{menu-prefix-cls}-submenu-arrow {
+        &:before,
+        &:after {
+          background: @disabled-color !important;
+        }
+      }
     }
   }
 }
