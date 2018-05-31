@@ -1,5 +1,12 @@
 import { DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
-import { ConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
+import {
+  ConnectionPositionPair,
+  FlexibleConnectedPositionStrategy,
+  Overlay,
+  OverlayConfig,
+  OverlayRef,
+  PositionStrategy
+} from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
   AfterContentInit,
@@ -105,7 +112,7 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
   private activeIndex: number = -1;
   private overlayRef: OverlayRef | null;
   private portal: TemplatePortal<{}>;
-  private positionStrategy: ConnectedPositionStrategy;
+  private positionStrategy: FlexibleConnectedPositionStrategy;
   private overlayBackdropClickSubscription: Subscription;
 
   private get triggerNativeElement(): HTMLTextAreaElement | HTMLInputElement {
@@ -280,7 +287,7 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
       - this.triggerNativeElement.scrollTop
       + (this.nzPlacement === 'bottom' ? coordinates.height : 0);
     const left = coordinates.left - this.triggerNativeElement.scrollLeft;
-    this.positionStrategy.withOffsetX(left).withOffsetY(top);
+    this.positionStrategy.withDefaultOffsetX(left).withDefaultOffsetY(top);
     if (this.nzPlacement === 'bottom') {
       this.positionStrategy.withPositions([ DEFAULT_MENTION_POSITIONS[ 0 ] ]);
     }
@@ -323,12 +330,11 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
   }
 
   private getOverlayPosition(): PositionStrategy {
-    this.positionStrategy = this.overlay.position().connectedTo(
-      this.trigger.el,
-      { originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' })
-    .withFallbackPosition(
-      { originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' }
-    );
+    const positions = [
+      new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
+      new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
+    ];
+    this.positionStrategy = this.overlay.position().flexibleConnectedTo(this.trigger.el).withPositions(positions).withLockedPosition(true);
     return this.positionStrategy;
   }
 

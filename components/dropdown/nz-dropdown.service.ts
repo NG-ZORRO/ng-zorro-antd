@@ -1,6 +1,6 @@
 import {
-  ConnectedPositionStrategy,
   ConnectionPositionPair,
+  FlexibleConnectedPositionStrategy,
   Overlay,
   OverlayConfig,
   OverlayRef
@@ -17,7 +17,7 @@ export class NzDropdownService {
   protected instance: NzDropdownContextComponent;
   private overlayRef: OverlayRef;
   private locatePoint: HTMLElement;
-  private positionStrategy: ConnectedPositionStrategy;
+  private positionStrategy: FlexibleConnectedPositionStrategy;
   private backdropClickSubscription: Subscription;
   private detachmentsSubscription: Subscription;
   private onPositionChangeSubscription: Subscription;
@@ -42,11 +42,8 @@ export class NzDropdownService {
 
   private createOverlay($event: MouseEvent): OverlayRef {
     this.createPoint($event);
-    const defaultPosition = this.positions[ 0 ];
-    const originPoint = { originX: defaultPosition.originX, originY: defaultPosition.originY };
-    const overlayPoint = { overlayX: defaultPosition.overlayX, overlayY: defaultPosition.overlayY };
     const fakeElementRef = new ElementRef(this.locatePoint);
-    this.positionStrategy = this.overlay.position().connectedTo(fakeElementRef, originPoint, overlayPoint);
+    this.positionStrategy = this.overlay.position().flexibleConnectedTo(fakeElementRef);
     this.handlePositionChanges(this.positionStrategy);
     const overlayConfig = new OverlayConfig({
       hasBackdrop     : true,
@@ -56,14 +53,9 @@ export class NzDropdownService {
     return this.overlay.create(overlayConfig);
   }
 
-  private handlePositionChanges(strategy: ConnectedPositionStrategy): void {
-    for (let i = 1; i < this.positions.length; i++) {
-      strategy.withFallbackPosition(
-        { originX: this.positions[ i ].originX, originY: this.positions[ i ].originY },
-        { overlayX: this.positions[ i ].overlayX, overlayY: this.positions[ i ].overlayY }
-      );
-    }
-    this.onPositionChangeSubscription = this.positionStrategy.onPositionChange.subscribe(data => {
+  private handlePositionChanges(strategy: FlexibleConnectedPositionStrategy): void {
+    strategy.withPositions(this.positions);
+    this.onPositionChangeSubscription = this.positionStrategy.positionChanges.subscribe(data => {
       const position = data.connectionPair.overlayY === 'bottom' ? 'top' : 'bottom';
       this.instance.setDropDownPosition(position);
     });
