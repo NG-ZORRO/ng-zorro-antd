@@ -1,19 +1,27 @@
 import { DatePipe } from '@angular/common';
 import { Inject, Injectable, Optional, Provider, SkipSelf } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
 import { LoggerService } from '../core/util/logger/logger.service';
 
 import * as parse from 'date-fns/parse';
 
+import zh_CN from './languages/zh_CN';
 import { NzI18nInterface } from './nz-i18n.interface';
 import { NZ_I18N } from './nz-i18n.token';
 
 @Injectable()
 export class NzI18nService {
   private _locale: NzI18nInterface;
+  private _change = new BehaviorSubject<NzI18nInterface>(this._locale);
 
   constructor(@Inject(NZ_I18N) locale: NzI18nInterface, private _logger: LoggerService, private datePipe: DatePipe) {
-    this.setLocale(locale);
+    this.setLocale(locale || zh_CN);
+  }
+
+  get localeChange(): Observable<NzI18nInterface> {
+    return this._change.asObservable();
   }
 
   // [NOTE] Performance issue: this method may called by every change detections
@@ -37,7 +45,11 @@ export class NzI18nService {
    * @param locale The translating letters
    */
   setLocale(locale: NzI18nInterface): void {
+    if (this._locale && this._locale.locale === locale.locale) {
+      return ;
+    }
     this._locale = locale;
+    this._change.next(locale);
   }
 
   getLocale(): NzI18nInterface {

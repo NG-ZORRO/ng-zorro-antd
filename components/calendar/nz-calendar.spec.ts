@@ -209,6 +209,7 @@ describe('Calendar', () => {
     });
 
     it('should mark active month in year mode', () => {
+      component.date2.setDate(1);
       component.date2.setMonth(10);
       fixture.detectChanges();
 
