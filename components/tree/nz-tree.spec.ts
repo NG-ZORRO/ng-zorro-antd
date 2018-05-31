@@ -163,7 +163,7 @@ describe('tree component test', () => {
       const searchSpy = spyOn(treeInstance, 'onSearch');
       treeInstance.searchValue = 'grand';
       fixture.detectChanges();
-      expect(treeElement.querySelectorAll('.font-red').length).toEqual(3);
+      expect(treeElement.querySelectorAll('.font-highlight').length).toEqual(3);
       expect(searchSpy).toHaveBeenCalled();
       expect(searchSpy).toHaveBeenCalledTimes(1);
     });

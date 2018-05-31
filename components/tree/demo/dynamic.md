@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 7
 title:
   zh-CN: 异步数据加载
   en-US: load data asynchronously
