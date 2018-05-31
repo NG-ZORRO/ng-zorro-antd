@@ -3,6 +3,7 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
+  OnInit,
   Output,
   TemplateRef,
   ViewChild
@@ -142,7 +143,7 @@ import { NzI18nService } from '../i18n/nz-i18n.service';
 
   `
 })
-export class NzPaginationComponent implements OnDestroy {
+export class NzPaginationComponent implements OnInit, OnDestroy {
   private i18n$: Subscription;
   locale: {} = {};
   @ViewChild('renderItemTemplate') private _itemRender: TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }>;
@@ -384,8 +385,10 @@ export class NzPaginationComponent implements OnDestroy {
     return this.nzPageIndex === this.firstIndex;
   }
 
-  constructor(i18n: NzI18nService) {
-    this.i18n$ = i18n.localeChange.subscribe(() => this.locale = i18n.getLocaleData('Pagination'));
+  constructor(private i18n: NzI18nService) { }
+
+  ngOnInit(): void {
+    this.i18n$ = this.i18n.localeChange.subscribe(() => this.locale = this.i18n.getLocaleData('Pagination'));
   }
 
   ngOnDestroy(): void {

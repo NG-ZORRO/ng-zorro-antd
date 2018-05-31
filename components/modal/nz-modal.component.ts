@@ -114,7 +114,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   constructor(
     private overlay: Overlay,
-    i18n: NzI18nService,
+    private i18n: NzI18nService,
     private renderer: Renderer2,
     private cfr: ComponentFactoryResolver,
     private elementRef: ElementRef,
@@ -124,11 +124,11 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     @Inject(DOCUMENT) private document: any) { // tslint:disable-line:no-any
 
     super();
-
-    this.i18n$ = i18n.localeChange.subscribe(() => this.locale = i18n.getLocaleData('Modal'));
   }
 
   ngOnInit(): void {
+    this.i18n$ = this.i18n.localeChange.subscribe(() => this.locale = this.i18n.getLocaleData('Modal'));
+
     if (this.isComponent(this.nzContent)) {
       this.createDynamicComponent(this.nzContent as Type<T>); // Create component along without View
     }

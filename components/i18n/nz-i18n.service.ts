@@ -13,11 +13,11 @@ import { NZ_I18N } from './nz-i18n.token';
 
 @Injectable()
 export class NzI18nService {
-  private _locale: NzI18nInterface = zh_CN;
+  private _locale: NzI18nInterface;
   private _change = new BehaviorSubject<NzI18nInterface>(this._locale);
 
   constructor(@Inject(NZ_I18N) locale: NzI18nInterface, private _logger: LoggerService, private datePipe: DatePipe) {
-    this.setLocale(locale);
+    this.setLocale(locale || zh_CN);
   }
 
   get localeChange(): Observable<NzI18nInterface> {
@@ -45,7 +45,7 @@ export class NzI18nService {
    * @param locale The translating letters
    */
   setLocale(locale: NzI18nInterface): void {
-    if (this._locale.locale === locale.locale) {
+    if (this._locale && this._locale.locale === locale.locale) {
       return ;
     }
     this._locale = locale;

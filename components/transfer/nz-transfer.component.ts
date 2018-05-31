@@ -5,6 +5,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Output,
   SimpleChanges,
   TemplateRef
@@ -65,7 +66,7 @@ import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, Tr
     '[class.ant-transfer]': 'true'
   }
 })
-export class NzTransferComponent implements OnChanges, OnDestroy {
+export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   private i18n$: Subscription;
   // tslint:disable-next-line:no-any
   locale: any = {};
@@ -192,8 +193,11 @@ export class NzTransferComponent implements OnChanges, OnDestroy {
 
   // endregion
 
-  constructor(i18n: NzI18nService, private el: ElementRef) {
-    this.i18n$ = i18n.localeChange.subscribe(() => this.locale = i18n.getLocaleData('Transfer'));
+  constructor(private i18n: NzI18nService, private el: ElementRef) {
+  }
+
+  ngOnInit(): void {
+    this.i18n$ = this.i18n.localeChange.subscribe(() => this.locale = this.i18n.getLocaleData('Transfer'));
   }
 
   ngOnChanges(changes: SimpleChanges): void {

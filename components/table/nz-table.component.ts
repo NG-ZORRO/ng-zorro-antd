@@ -417,6 +417,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.i18n$ = this.i18n.localeChange.subscribe(() => this.locale = this.i18n.getLocaleData('Table'));
     this.fitScrollBar();
     if (this.nzScroll && this.nzScroll.x && this.nzScroll.y) {
       /** magic code to sync scroll **/
@@ -433,8 +434,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.i18n$.unsubscribe();
   }
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private overlay: Overlay, private nzMeasureScrollbarService: NzMeasureScrollbarService, i18n: NzI18nService) {
+  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private overlay: Overlay, private nzMeasureScrollbarService: NzMeasureScrollbarService, private i18n: NzI18nService) {
     this.el = this.elementRef.nativeElement;
-    this.i18n$ = i18n.localeChange.subscribe(() => this.locale = i18n.getLocaleData('Table'));
   }
 }
