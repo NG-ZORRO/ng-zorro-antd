@@ -106,7 +106,7 @@ export class NzTreeService {
       const sIndex = this.selectedNodeList.findIndex(cNode => node.key === cNode.key);
       if (node.isSelected && sIndex === -1) {
         this.selectedNodeList.push(node);
-      } else if (sIndex > -1) {
+      } else if (sIndex > -1 && !node.isSelected) {
         this.selectedNodeList.splice(sIndex, 1);
       }
     } else {

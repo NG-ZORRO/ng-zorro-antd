@@ -52,6 +52,7 @@ import { NzTimelineModule } from './timeline/nz-timeline.module';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
 import { NzTreeModule } from './tree/nz-tree.module';
+import { NzTreeSelectModule } from './tree-select/nz-tree-select.module';
 import { NzUploadModule } from './upload/nz-upload.module';
 
 export * from './affix';
@@ -104,6 +105,7 @@ export * from './popconfirm';
 export * from './modal';
 export * from './cascader';
 export * from './tree';
+export * from './tree-select';
 export * from './time-picker';
 
 @NgModule({
@@ -158,6 +160,7 @@ export * from './time-picker';
     NzBackTopModule,
     NzCascaderModule,
     NzTreeModule,
+    NzTreeSelectModule,
     NzTimePickerModule
   ]
 })
