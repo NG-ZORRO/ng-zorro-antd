@@ -2,11 +2,11 @@
   [class.ant-tree-treenode-disabled]="nzTreeNode.isDisabled"
   (dblclick)="_dblClickNode($event,nzTreeNode)"
   (click)="_clickNode($event,nzTreeNode)"
-  (contextmenu)="_contextMenuNode($event,nzTreeNode)"
->
+  (contextmenu)="_contextMenuNode($event,nzTreeNode)">
   <ng-container *ngIf="nzShowExpand">
     <span
       class="ant-tree-switcher"
+      [ngStyle]="loadingStyle"
       [class.ant-tree-switcher_open]="nzTreeNode.isExpanded && !nzTreeNode.isLeaf && !nzTreeNode.isLoading"
       [class.ant-tree-switcher_close]="!nzTreeNode.isExpanded && !nzTreeNode.isLeaf && !nzTreeNode.isLoading"
       [class.ant-tree-switcher-noop]="nzTreeNode.isLeaf && !nzTreeNode.isLoading"
@@ -15,7 +15,8 @@
       [class.ant-tree-icon_loading]="nzTreeNode.isLoading && !nzTreeNode.isLeaf"
       [class.ant-tree-icon__open]="nzTreeNode.isLoading && nzTreeNode.isExpanded && !nzTreeNode.isLeaf"
       [class.ant-tree-icon__close]="nzTreeNode.isLoading && !nzTreeNode.isExpanded && !nzTreeNode.isLeaf"
-      (click)="_clickExpand($event, nzTreeNode)"></span>
+      (click)="_clickExpand($event, nzTreeNode)">
+    </span>
   </ng-container>
   <ng-container #checkbox *ngIf="nzCheckable">
     <span
@@ -40,14 +41,14 @@
         <span class="ant-tree-title">
           <ng-container *ngIf="matchValue.length==2">
             <span>
-                {{matchValue[0]}}<span class="font-red">{{nzSearchValue}}</span>{{matchValue[1]}}
+              {{matchValue[0]}}<span class="font-highlight">{{nzSearchValue}}</span>{{matchValue[1]}}
             </span>
           </ng-container>
           <ng-container *ngIf="matchValue.length!=2">
             {{nzTreeNode.title}}
           </ng-container>
         </span>
-        </span>
+    </span>
   </ng-container>
   <ng-template
     [ngTemplateOutlet]="nzTreeTemplate"
@@ -81,7 +82,7 @@
       (nzDragOver)="nzDragOver.emit($event)"
       (nzDragLeave)="nzDragLeave.emit($event)"
       (nzDrop)="nzDrop.emit($event)"
-      (nzDragEnd)="nzDragEnd.emit($event)"
-    ></nz-tree-node>
+      (nzDragEnd)="nzDragEnd.emit($event)">
+    </nz-tree-node>
   </ul>
 </li>

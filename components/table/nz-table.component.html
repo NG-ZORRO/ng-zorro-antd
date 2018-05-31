@@ -38,7 +38,7 @@
     </table>
   </div>
   <div class="ant-table-placeholder" *ngIf="(data.length==0)&&!nzLoading">
-    <span *ngIf="!nzNoResult">{{ 'Table.emptyText' | nzI18n }}</span>
+    <span *ngIf="!nzNoResult">{{ locale.emptyText }}</span>
     <ng-container *ngIf="nzNoResult">
       <ng-container *ngIf="isNoResultString; else noResultTemplate">{{ nzNoResult }}</ng-container>
       <ng-template #noResultTemplate>

@@ -310,13 +310,12 @@ describe('dropdown', () => {
       testComponent = fixture.debugElement.componentInstance;
     });
     it('should create dropdown', () => {
-      const fakeEvent = createMouseEvent('contextmenu', 100, 100);
+      const fakeEvent = createMouseEvent('contextmenu', 300, 300);
       testComponent.nzDropdownService.create(fakeEvent, testComponent.template);
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).not.toBe('');
       const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
-      expect(window.getComputedStyle(overlayPane, null).top).toBe('100px');
-      expect(window.getComputedStyle(overlayPane, null).left).toBe('100px');
+      expect(window.getComputedStyle(overlayPane, null).top).toBe('300px');
       testComponent.nzDropdownService.close();
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toBe('');
