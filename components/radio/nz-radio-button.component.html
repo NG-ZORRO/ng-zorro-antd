@@ -1,0 +1,5 @@
+<span [ngClass]="classMap">
+  <input type="radio" #inputElement class="ant-radio-button-input" [disabled]="nzDisabled" [(ngModel)]="nzChecked" (blur)="onBlur()" [attr.name]="name">
+  <span class="ant-radio-button-inner"></span>
+</span>
+<span><ng-content></ng-content></span>

@@ -1,6 +1,5 @@
 // tslint:disable:no-any prefer-method-signature
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, Subscription } from 'rxjs';
 
 /** 状态 */
 export type UploadFileStatus = 'error' | 'success' | 'done' | 'uploading' | 'removed';
@@ -28,7 +27,8 @@ export interface UploadFile {
   error?: any;
   linkProps?: any;
   type: string;
-  [key: string]: any;
+
+  [ key: string ]: any;
 }
 
 export interface UploadChangeParam {

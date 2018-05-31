@@ -21,10 +21,7 @@ export type NzButtonSize = 'small' | 'large' | 'default' ;
   selector           : '[nz-button]',
   providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
-  template           : `
-    <i class="anticon anticon-spin anticon-loading" *ngIf="nzLoading"></i>
-    <span (cdkObserveContent)="checkContent()" #contentElement><ng-content></ng-content></span>
-  `
+  templateUrl        : './nz-button.component.html'
 })
 export class NzButtonComponent implements AfterContentInit {
   private _ghost = false;

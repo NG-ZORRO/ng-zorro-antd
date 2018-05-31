@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { NzMessageService, TransferCanMove, TransferItem } from 'ng-zorro-antd';
+import { of, Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { TransferCanMove, TransferItem, NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-transfer-can-move',
@@ -23,7 +22,7 @@ export class NzDemoTransferCanMoveComponent implements OnInit {
       this.list.push({
         key     : i.toString(),
         title   : `content${i + 1}`,
-        disabled: i % 3 < 1,
+        disabled: i % 3 < 1
       });
     }
 
@@ -31,7 +30,7 @@ export class NzDemoTransferCanMoveComponent implements OnInit {
   }
 
   canMove(arg: TransferCanMove): Observable<TransferItem[]> {
-    if (arg.direction === 'right' && arg.list.length > 0) arg.list.splice(0, 1);
+    if (arg.direction === 'right' && arg.list.length > 0) { arg.list.splice(0, 1); }
     // or
     // if (arg.direction === 'right' && arg.list.length > 0) delete arg.list[0];
     return of(arg.list).pipe(delay(1000));

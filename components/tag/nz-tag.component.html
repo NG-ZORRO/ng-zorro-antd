@@ -1,0 +1,10 @@
+<div
+  *ngIf="!closed"
+  [ngClass]="classMap"
+  #wrapperElement
+  [@tagAnimation]
+  (@tagAnimation.done)="afterAnimation($event)"
+  (click)="updateCheckedStatus()">
+  <ng-content></ng-content>
+  <i class="anticon anticon-cross" *ngIf="nzMode==='closeable'" (click)="closeTag($event)"></i>
+</div>

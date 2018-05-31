@@ -1,7 +1,8 @@
 import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   ConnectedOverlayPositionChange,
-  ConnectedPositionStrategy,
+  ConnectionPositionPair,
+  FlexibleConnectedPositionStrategy,
   Overlay,
   OverlayConfig,
   OverlayRef,
@@ -23,12 +24,8 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { Subscription } from 'rxjs/Subscription';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { merge } from 'rxjs/observable/merge';
-import { delay } from 'rxjs/operators/delay';
-import { distinct } from 'rxjs/operators/distinct';
-import { map } from 'rxjs/operators/map';
+import { fromEvent, merge, Subscription } from 'rxjs';
+import { delay, distinct, map } from 'rxjs/operators';
 
 import { NzAutocompleteOptionComponent } from './nz-autocomplete-option.component';
 import { NzAutocompleteComponent } from './nz-autocomplete.component';
@@ -61,7 +58,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
   private overlayRef: OverlayRef | null;
   private portal: TemplatePortal<{}>;
-  private positionStrategy: ConnectedPositionStrategy;
+  private positionStrategy: FlexibleConnectedPositionStrategy;
   private previousValue: string | number | null;
   private selectionChangeSubscription: Subscription;
   private optionsChangeSubscription: Subscription;
@@ -155,7 +152,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
    * 并重新设置动画方向
    */
   private subscribeOverlayPositionChange(): Subscription {
-    return this.positionStrategy.onPositionChange
+    return this.positionStrategy.positionChanges
     .pipe(
       map((position: ConnectedOverlayPositionChange) => position.connectionPair.originY),
       distinct()
@@ -217,12 +214,11 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   }
 
   private getOverlayPosition(): PositionStrategy {
-    this.positionStrategy = this._overlay.position().connectedTo(
-      this.getConnectedElement(),
-      { originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' })
-    .withFallbackPosition(
-      { originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' }
-    );
+    const positions = [
+      new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
+      new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
+    ];
+    this.positionStrategy = this._overlay.position().flexibleConnectedTo(this.getConnectedElement()).withPositions(positions);
     return this.positionStrategy;
   }
 

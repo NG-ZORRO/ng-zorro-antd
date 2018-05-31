@@ -1,12 +1,31 @@
 import { DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
-import { ConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
+import {
+  ConnectionPositionPair,
+  FlexibleConnectedPositionStrategy,
+  Overlay,
+  OverlayConfig,
+  OverlayRef,
+  PositionStrategy
+} from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { AfterContentInit, Component, ContentChild, EventEmitter, Inject, Input, NgZone, OnDestroy, Optional, Output, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChild,
+  EventEmitter,
+  Inject,
+  Input,
+  NgZone,
+  OnDestroy,
+  Optional,
+  Output,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 
 import { DOCUMENT } from '@angular/common';
-import { Subscription } from 'rxjs/Subscription';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { merge } from 'rxjs/observable/merge';
+import { fromEvent, merge, Subscription } from 'rxjs';
 
 import { DEFAULT_MENTION_POSITIONS } from '../core/overlay/overlay-position-map';
 import { getMentions } from '../core/util/getMentions';
@@ -21,10 +40,10 @@ export interface MentionOnSearchTypes {
 }
 
 @Component({
-  selector: 'nz-mention',
-  templateUrl: './mention.component.html',
+  selector           : 'nz-mention',
+  templateUrl        : './mention.component.html',
   preserveWhitespaces: false,
-  styles: [`
+  styles             : [ `
     .ant-mention-dropdown {
       top: 100%;
       left: 0;
@@ -33,7 +52,7 @@ export interface MentionOnSearchTypes {
       margin-top: 4px;
       margin-bottom: 4px;
     }
-  `]
+  ` ]
 })
 
 export class NzMentionComponent implements OnDestroy, AfterContentInit {
@@ -55,20 +74,34 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
       this.resetDropdown(false);
     }
   }
-  get nzSuggestions(): string[] { return this._suggestions; }
+
+  get nzSuggestions(): string[] {
+    return this._suggestions;
+  }
 
   @Input()
-  set nzPlacement(value: MentionPlacement) { this._placement = value; }
-  get nzPlacement(): MentionPlacement { return this._placement; }
+  set nzPlacement(value: MentionPlacement) {
+    this._placement = value;
+  }
+
+  get nzPlacement(): MentionPlacement {
+    return this._placement;
+  }
 
   @ContentChild(NzMentionTriggerDirective) trigger;
   @ViewChild(TemplateRef) suggestionsTemp;
-  @ContentChild(NzMentionSuggestionDirective, {read: TemplateRef})
-  set suggestionChild(value: TemplateRef<{$implicit: any}>) {if (value) { this.suggestionTemplate = value; }} // tslint:disable-line:no-any
+
+  @ContentChild(NzMentionSuggestionDirective, { read: TemplateRef })
+  // tslint:disable-next-line:no-any
+  set suggestionChild(value: TemplateRef<{ $implicit: any }>) {
+    if (value) {
+      this.suggestionTemplate = value;
+    }
+  }
 
   isOpen: boolean = false;
   filteredSuggestions: string[];
-  suggestionTemplate: TemplateRef<{$implicit: any}> | null = null; // tslint:disable-line:no-any
+  suggestionTemplate: TemplateRef<{ $implicit: any }> | null = null; // tslint:disable-line:no-any
 
   private _suggestions: string[];
   private _placement: MentionPlacement = 'bottom';
@@ -79,7 +112,7 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
   private activeIndex: number = -1;
   private overlayRef: OverlayRef | null;
   private portal: TemplatePortal<{}>;
-  private positionStrategy: ConnectedPositionStrategy;
+  private positionStrategy: FlexibleConnectedPositionStrategy;
   private overlayBackdropClickSubscription: Subscription;
 
   private get triggerNativeElement(): HTMLTextAreaElement | HTMLInputElement {
@@ -120,9 +153,9 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
   selectSuggestion(suggestion: string | {}): void {
     const value = this.nzValueWith(suggestion);
     this.trigger.insertMention({
-      mention: value,
+      mention : value,
       startPos: this.cursorMentionStart,
-      endPos: this.cursorMentionEnd
+      endPos  : this.cursorMentionEnd
     });
     this.nzOnSelect.emit(suggestion);
     this.closeDropdown();
@@ -139,7 +172,7 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
   private handleKeydown(event: KeyboardEvent): void {
     const keyCode = event.keyCode;
     if (this.isOpen && keyCode === ENTER && this.activeIndex !== -1 && this.filteredSuggestions.length) {
-      this.selectSuggestion(this.filteredSuggestions[this.activeIndex]);
+      this.selectSuggestion(this.filteredSuggestions[ this.activeIndex ]);
       event.preventDefault();
     } else if (keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
       this.resetDropdown();
@@ -177,12 +210,14 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
 
   private suggestionsFilter(value: string, emit: boolean): void {
     const suggestions = value.substring(1);
-    if (this.previousValue === value) { return; }
+    if (this.previousValue === value) {
+      return;
+    }
     this.previousValue = value;
     if (emit) {
       this.nzOnSearchChange.emit({
-        value: this.cursorMention.substring(1),
-        prefix:  this.cursorMention[0]
+        value : this.cursorMention.substring(1),
+        prefix: this.cursorMention[ 0 ]
       });
     }
     const searchValue = suggestions.toLowerCase();
@@ -222,23 +257,23 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
   private resetCursorMention(): void {
     const value = this.triggerNativeElement.value.replace(/[\r\n]/g, ' ') || '';
     const selectionStart = this.triggerNativeElement.selectionStart;
-    const prefix = typeof this.nzPrefix === 'string' ? [this.nzPrefix] : this.nzPrefix;
+    const prefix = typeof this.nzPrefix === 'string' ? [ this.nzPrefix ] : this.nzPrefix;
     let i = prefix.length;
     while (i >= 0) {
-      const startPos = value.lastIndexOf(prefix[i], selectionStart);
+      const startPos = value.lastIndexOf(prefix[ i ], selectionStart);
       const endPos = value.indexOf(' ', selectionStart) > -1 ? value.indexOf(' ', selectionStart) : value.length;
       const mention = value.substring(startPos, endPos);
-      if ((startPos > 0 && value[startPos - 1] !== ' ')
+      if ((startPos > 0 && value[ startPos - 1 ] !== ' ')
         || startPos < 0
-        || mention.includes(prefix[i], 1)
+        || mention.includes(prefix[ i ], 1)
         || mention.includes(' ')) {
-        this.cursorMention =  null;
-        this.cursorMentionStart =  -1;
-        this.cursorMentionEnd =  -1;
+        this.cursorMention = null;
+        this.cursorMentionStart = -1;
+        this.cursorMentionEnd = -1;
       } else {
-        this.cursorMention =  mention;
-        this.cursorMentionStart =  startPos;
-        this.cursorMentionEnd =  endPos;
+        this.cursorMention = mention;
+        this.cursorMentionStart = startPos;
+        this.cursorMentionEnd = endPos;
         return;
       }
       i--;
@@ -250,14 +285,14 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
     const top = coordinates.top
       - this.triggerNativeElement.getBoundingClientRect().height
       - this.triggerNativeElement.scrollTop
-      + (this.nzPlacement === 'bottom' ? coordinates.height : 0 );
+      + (this.nzPlacement === 'bottom' ? coordinates.height : 0);
     const left = coordinates.left - this.triggerNativeElement.scrollLeft;
-    this.positionStrategy.withOffsetX(left).withOffsetY(top);
+    this.positionStrategy.withDefaultOffsetX(left).withDefaultOffsetY(top);
     if (this.nzPlacement === 'bottom') {
-      this.positionStrategy.withPositions([DEFAULT_MENTION_POSITIONS[0]]);
+      this.positionStrategy.withPositions([ DEFAULT_MENTION_POSITIONS[ 0 ] ]);
     }
     if (this.nzPlacement === 'top') {
-      this.positionStrategy.withPositions([DEFAULT_MENTION_POSITIONS[1]]);
+      this.positionStrategy.withPositions([ DEFAULT_MENTION_POSITIONS[ 1 ] ]);
     }
     this.positionStrategy.apply();
   }
@@ -290,17 +325,16 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
   private getOverlayConfig(): OverlayConfig {
     return new OverlayConfig({
       positionStrategy: this.getOverlayPosition(),
-      scrollStrategy: this.overlay.scrollStrategies.reposition()
+      scrollStrategy  : this.overlay.scrollStrategies.reposition()
     });
   }
 
   private getOverlayPosition(): PositionStrategy {
-    this.positionStrategy = this.overlay.position().connectedTo(
-      this.trigger.el,
-      { originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' })
-    .withFallbackPosition(
-      { originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' }
-    );
+    const positions = [
+      new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
+      new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
+    ];
+    this.positionStrategy = this.overlay.position().flexibleConnectedTo(this.trigger.el).withPositions(positions).withLockedPosition(true);
     return this.positionStrategy;
   }
 

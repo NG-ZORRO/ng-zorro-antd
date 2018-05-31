@@ -8,8 +8,7 @@ import { NzRowComponent } from '../grid/nz-row.component';
   selector           : 'nz-form-item',
   preserveWhitespaces: false,
   providers          : [ NzUpdateHostClassService ],
-  template           : `
-    <ng-content></ng-content>`,
+  templateUrl        : './nz-form-item.component.html',
   host               : {
     '[class.ant-form-item]'          : 'true',
     '[class.ant-form-item-with-help]': 'withHelp>0'

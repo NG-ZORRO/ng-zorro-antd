@@ -2,16 +2,12 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { toBoolean } from '../core/util/convert';
 
-import {  MarksArray } from './nz-slider-marks.component';
+import { MarksArray } from './nz-slider-marks.component';
 
 @Component({
-  selector     : 'nz-slider-step',
+  selector           : 'nz-slider-step',
   preserveWhitespaces: false,
-  template     : `
-    <div class="{{nzPrefixCls}}-step">
-      <span *ngFor="let attr of attrs; trackBy: trackById" [ngClass]="attr.classes" [ngStyle]="attr.style"></span>
-    </div>
-  `
+  templateUrl        : './nz-slider-step.component.html'
 })
 export class NzSliderStepComponent implements OnChanges {
   private _vertical = false;
@@ -44,7 +40,7 @@ export class NzSliderStepComponent implements OnChanges {
   }
 
   // TODO: using named interface
-  attrs: Array<{ id: number, value: number, offset: number, classes: { [key: string]: boolean }, style: object }>;
+  attrs: Array<{ id: number, value: number, offset: number, classes: { [ key: string ]: boolean }, style: object }>;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzMarksArray) {
@@ -55,7 +51,7 @@ export class NzSliderStepComponent implements OnChanges {
     }
   }
 
-  trackById(index: number, attr: { id: number, value: number, offset: number, classes: { [key: string]: boolean }, style: object }): number {
+  trackById(index: number, attr: { id: number, value: number, offset: number, classes: { [ key: string ]: boolean }, style: object }): number {
     return attr.id;
   }
 
@@ -69,11 +65,11 @@ export class NzSliderStepComponent implements OnChanges {
         value,
         offset,
         style  : {
-          [orient]: `${offset}%`
+          [ orient ]: `${offset}%`
         },
         classes: {
-          [`${prefixCls}-dot`]       : true,
-          [`${prefixCls}-dot-active`]: false
+          [ `${prefixCls}-dot` ]       : true,
+          [ `${prefixCls}-dot-active` ]: false
         }
       };
     });
@@ -82,9 +78,9 @@ export class NzSliderStepComponent implements OnChanges {
   togglePointActive(): void {
     if (this.attrs && this.nzLowerBound !== null && this.nzUpperBound !== null) {
       this.attrs.forEach(attr => {
-        const value    = attr.value;
+        const value = attr.value;
         const isActive = (!this.nzIncluded && value === this.nzUpperBound) ||
-            (this.nzIncluded && value <= this.nzUpperBound && value >= this.nzLowerBound);
+          (this.nzIncluded && value <= this.nzUpperBound && value >= this.nzLowerBound);
         attr.classes[ `${this.nzPrefixCls}-dot-active` ] = isActive;
       });
     }

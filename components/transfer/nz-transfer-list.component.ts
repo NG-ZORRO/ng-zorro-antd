@@ -22,41 +22,7 @@ import { TransferItem } from './interface';
   selector           : 'nz-transfer-list',
   preserveWhitespaces: false,
   providers          : [ NzUpdateHostClassService ],
-  template           : `
-    <div class="ant-transfer-list-header">
-      <label nz-checkbox [ngModel]="stat.checkAll" (ngModelChange)="onHandleSelectAll($event)"
-        [nzIndeterminate]="stat.checkHalf">
-        <span class="ant-transfer-list-header-selected">
-          <span>{{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ dataSource.length > 1 ? itemsUnit : itemUnit }}</span>
-          <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
-        </span>
-      </label>
-    </div>
-    <div class="{{showSearch ? 'ant-transfer-list-body ant-transfer-list-body-with-search' : 'ant-transfer-list-body'}}"
-      [ngClass]="{'ant-transfer__nodata': stat.shownCount === 0}">
-      <div *ngIf="showSearch" class="ant-transfer-list-body-search-wrapper">
-        <div nz-transfer-search
-          (valueChanged)="handleFilter($event)"
-          (valueClear)="handleClear()"
-          [placeholder]="searchPlaceholder"
-          [value]="filter"></div>
-      </div>
-      <ul class="ant-transfer-list-content">
-        <ng-container *ngFor="let item of dataSource">
-          <li *ngIf="!item._hiden" (click)="_handleSelect(item)" class="ant-transfer-list-content-item">
-            <label nz-checkbox [ngModel]="item.checked" [nzDisabled]="item.disabled">
-              <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
-              <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
-            </label>
-          </li>
-        </ng-container>
-      </ul>
-      <div class="ant-transfer-list-body-not-found">{{ notFoundContent }}</div>
-    </div>
-    <div *ngIf="footer" class="ant-transfer-list-footer">
-      <ng-template [ngTemplateOutlet]="footer" [ngTemplateOutletContext]="{ $implicit: direction }"></ng-template>
-    </div>
-  `
+  templateUrl        : './nz-transfer-list.component.html'
 })
 export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
   private _showSearch = false;
@@ -102,7 +68,7 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
 
   setClassMap(): void {
     const classMap = {
-      [ this.prefixCls ]: true,
+      [ this.prefixCls ]                 : true,
       [ `${this.prefixCls}-with-footer` ]: !!this.footer
     };
     this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);

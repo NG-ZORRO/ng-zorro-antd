@@ -23,29 +23,9 @@ import { toBoolean } from '../core/util/convert';
 import { NzCollapseComponent } from './nz-collapse.component';
 
 @Component({
-  selector  : 'nz-collapse-panel',
-  template  : `
-    <div
-      role="tab"
-      [attr.aria-expanded]="nzActive"
-      class="ant-collapse-header"
-      (click)="clickHeader()">
-      <i class="arrow" *ngIf="nzShowArrow"></i>
-      <ng-container *ngIf="isHeaderString; else headerTemplate">{{ nzHeader }}</ng-container>
-      <ng-template #headerTemplate>
-        <ng-template [ngTemplateOutlet]="nzHeader"></ng-template>
-      </ng-template>
-    </div>
-    <div
-      class="ant-collapse-content"
-      [class.ant-collapse-content-active]="nzActive"
-      [@collapseState]="nzActive?'active':'inactive'">
-      <div class="ant-collapse-content-box">
-        <ng-content></ng-content>
-      </div>
-    </div>
-  `,
-  animations: [
+  selector   : 'nz-collapse-panel',
+  templateUrl: './nz-collapse-panel.component.html',
+  animations : [
     trigger('collapseState', [
       state('inactive', style({
         opacity: '0',
@@ -59,13 +39,13 @@ import { NzCollapseComponent } from './nz-collapse.component';
       transition('active => inactive', animate('150ms ease-out'))
     ])
   ],
-  styles    : [
-      `
+  styles     : [
+    `
       :host {
         display: block
       }`
   ],
-  host      : {
+  host       : {
     '[class.ant-collapse-item]': 'true',
     '[attr.role]'              : '"tablist"'
   }

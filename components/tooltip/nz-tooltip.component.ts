@@ -2,10 +2,10 @@ import {
   AnimationEvent
 } from '@angular/animations';
 import {
-  ConnectedOverlayDirective,
+  CdkConnectedOverlay,
+  CdkOverlayOrigin,
   ConnectedOverlayPositionChange,
-  ConnectionPositionPair,
-  OverlayOrigin
+  ConnectionPositionPair
 } from '@angular/cdk/overlay';
 import {
   ChangeDetectorRef,
@@ -17,20 +17,21 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { fadeAnimation } from '../core/animation/fade-animations';
 import { DEFAULT_4_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position-map';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
-  selector: 'nz-tooltip',
+  selector           : 'nz-tooltip',
   preserveWhitespaces: false,
-  animations: [ fadeAnimation ],
-  templateUrl: './nz-tooltip.component.html',
-  styles: [ `
-    .ant-tooltip { position: relative; }
+  animations         : [ fadeAnimation ],
+  templateUrl        : './nz-tooltip.component.html',
+  styles             : [ `
+    .ant-tooltip {
+      position: relative;
+    }
   ` ]
 })
 export class NzToolTipComponent {
@@ -45,9 +46,9 @@ export class NzToolTipComponent {
   @Input() nzMouseLeaveDelay = 0.1; // Unit: second
   @Output() nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
   @ContentChild('nzTemplate') nzTemplate: TemplateRef<void>;
-  @ViewChild('overlay') overlay: ConnectedOverlayDirective;
+  @ViewChild('overlay') overlay: CdkConnectedOverlay;
 
-  overlayOrigin: OverlayOrigin;
+  overlayOrigin: CdkOverlayOrigin;
 
   @Input()
   set nzVisible(value: boolean) {
@@ -138,7 +139,7 @@ export class NzToolTipComponent {
     };
   }
 
-  setOverlayOrigin(origin: OverlayOrigin): void {
+  setOverlayOrigin(origin: CdkOverlayOrigin): void {
     this.overlayOrigin = origin;
   }
 

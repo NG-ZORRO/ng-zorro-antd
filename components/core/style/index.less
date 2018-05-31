@@ -29,6 +29,15 @@
   z-index: 1000; // Give an opportunity to the content own to manage their z-index such as Modal
 }
 
+.cdk-overlay-connected-position-bounding-box {
+  position: absolute;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  min-width: 1px;
+  min-height: 1px;
+}
+
 .box-shadow-left() {
   .ant-table-th-right-sticky, .ant-table-td-right-sticky {
     box-shadow: -6px 0 6px 0px rgba(0, 0, 0, .05);
@@ -78,16 +87,6 @@
 .ant-table-scroll-position-left {
   .box-shadow-left;
 }
-
-// // tooltip
-// .ant-tooltip {
-//   position: relative;
-// }
-
-// // popconfirm
-// .ant-popover {
-//   position: relative;
-// }
 
 .ant-table-scroll-position-right {
   .box-shadow-right;

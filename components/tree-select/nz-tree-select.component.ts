@@ -1,5 +1,12 @@
 import { BACKSPACE } from '@angular/cdk/keycodes';
-import { ConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
+import {
+  ConnectionPositionPair,
+  FlexibleConnectedPositionStrategy,
+  Overlay,
+  OverlayConfig,
+  OverlayRef,
+  PositionStrategy
+} from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -22,12 +29,12 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { Subscription } from 'rxjs/Subscription';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { merge } from 'rxjs/observable/merge';
-import { of as observableOf } from 'rxjs/observable/of';
-import { filter } from 'rxjs/operators/filter';
-import { tap } from 'rxjs/operators/tap';
+import {
+  merge,
+  of as observableOf,
+  Subscription
+} from 'rxjs';
+import { filter, tap } from 'rxjs/operators';
 
 import { selectDropDownAnimation } from '../core/animation/select-dropdown-animations';
 import { selectTagAnimation } from '../core/animation/select-tag-animations';
@@ -36,119 +43,17 @@ import { NzTreeNode } from '../tree/nz-tree-node';
 import { NzTreeComponent } from '../tree/nz-tree.component';
 
 @Component({
-  selector  : 'nz-tree-select',
-  animations: [ selectDropDownAnimation, selectTagAnimation ],
-  template  : `
-    <ng-template #inputTemplate>
-      <input
-        #inputElement
-        autocomplete="off"
-        class="ant-select-search__field"
-        (compositionstart)="isComposing = true"
-        (compositionend)="isComposing = false"
-        (keydown)="onKeyDownInput($event)"
-        [ngModel]="inputValue"
-        (ngModelChange)="setInputValue($event, true)"
-        [disabled]="nzDisabled">
-    </ng-template>
-
-    <ng-template #dropdownTemplate>
-      <div [ngClass]="dropDownClassMap" [@selectDropDownAnimation]="nzOpen ? dropDownPosition : 'hidden'"
-        [ngStyle]="nzDropdownStyle">
-        <nz-tree
-          #treeRef
-          [ngModel]="nzNodes"
-          [nzMultiple]="nzMultiple"
-          [nzSearchValue]="inputValue"
-          [nzCheckable]="nzCheckable"
-          [nzAsyncData]="nzAsyncData"
-          [nzShowExpand]="nzShowExpand"
-          [nzShowLine]="nzShowLine"
-          [nzDefaultExpandAll]="nzDefaultExpandAll"
-          [nzDefaultExpandedKeys]="nzDefaultExpandedKeys"
-          [nzDefaultCheckedKeys]="nzCheckable ? value : []"
-          [nzDefaultSelectedKeys]="!nzCheckable ? value : []"
-          (nzExpandChange)="nzExpandChange.emit($event)"
-          (nzClick)="nzTreeClick.emit($event)"
-          (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)"
-        >
-        </nz-tree>
-      </div>
-    </ng-template>
-
-    <div
-      #treeSelect
-      class="ant-select-selection"
-      [class.ant-select-selection--single]="!isMultiple"
-      [class.ant-select-selection--multiple]="isMultiple"
-      tabindex="0">
-      <ng-container *ngIf="!isMultiple">
-        <div class="ant-select-selection__rendered">
-          <div
-            *ngIf="nzPlaceHolder && selectedNodes.length === 0"
-            [style.display]="placeHolderDisplay"
-            class="ant-select-selection__placeholder">
-            {{ nzPlaceHolder }}
-          </div>
-
-          <div
-            *ngIf="selectedNodes.length === 1"
-            class="ant-select-selection-selected-value"
-            [attr.title]="selectedNodes[0].title"
-            [ngStyle]="selectedValueDisplay">
-            {{ selectedNodes[0].title }}
-          </div>
-
-          <div
-            *ngIf="nzShowSearch"
-            [style.display]="searchDisplay"
-            class="ant-select-search ant-select-search--inline">
-            <div class="ant-select-search__field__wrap">
-              <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>
-              <span class="ant-select-search__field__mirror">{{inputValue}}&nbsp;</span>
-            </div>
-          </div>
-
-        </div>
-      </ng-container>
-      <ng-container *ngIf="isMultiple">
-        <ul class="ant-select-selection__rendered">
-          <div
-            *ngIf="nzPlaceHolder && selectedNodes.length === 0"
-            [style.display]="placeHolderDisplay"
-            class="ant-select-selection__placeholder">
-            {{ nzPlaceHolder }}
-          </div>
-          <ng-container *ngFor="let node of selectedNodes">
-            <li
-              [@selectTagAnimation]
-              (@selectTagAnimation.done)="updatePosition()"
-              [attr.title]="node.title"
-              [class.ant-select-selection__choice__disabled]="node.isDisabled"
-              class="ant-select-selection__choice">
-               <span *ngIf="!node.isDisabled" class="ant-select-selection__choice__remove"
-                 (click)="removeSelected(node)"></span>
-              <span class="ant-select-selection__choice__content">{{ node.title }}</span>
-            </li>
-          </ng-container>
-          <li class="ant-select-search ant-select-search--inline">
-            <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>
-          </li>
-        </ul>
-      </ng-container>
-      <span *ngIf="nzAllowClear" class="ant-select-selection__clear"
-        (click)="onClearSelection()"></span>
-      <span *ngIf="!isMultiple" class="ant-select-arrow"><b></b></span>
-    </div>
-  `,
-  providers : [
+  selector   : 'nz-tree-select',
+  animations : [ selectDropDownAnimation, selectTagAnimation ],
+  templateUrl: './nz-tree-select.component.html',
+  providers  : [
     {
       provide    : NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzTreeSelectComponent),
       multi      : true
     }
   ],
-  host      : {
+  host       : {
     '[class.ant-select]'            : 'true',
     '[class.ant-select-lg]'         : 'nzSize==="large"',
     '[class.ant-select-sm]'         : 'nzSize==="small"',
@@ -157,7 +62,7 @@ import { NzTreeComponent } from '../tree/nz-tree.component';
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-open]'       : 'nzOpen'
   },
-  styles    : [ `
+  styles     : [ `
     .ant-select-dropdown {
       top: 100%;
       left: 0;
@@ -179,7 +84,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   overlayRef: OverlayRef | null;
   portal: TemplatePortal<{}>;
-  positionStrategy: ConnectedPositionStrategy;
+  positionStrategy: FlexibleConnectedPositionStrategy;
   overlayBackdropClickSubscription: Subscription;
   selectionChangeSubscription: Subscription;
 
@@ -354,17 +259,16 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
       positionStrategy                                          : this.getOverlayPosition(),
       scrollStrategy                                            : this.overlay.scrollStrategies.reposition(),
       [ this.nzDropdownMatchSelectWidth ? 'width' : 'minWidth' ]: overlayWidth,
-      hasBackdrop: true
+      hasBackdrop                                               : true
     });
   }
 
   getOverlayPosition(): PositionStrategy {
-    this.positionStrategy = this.overlay.position().connectedTo(
-      this.treeSelect,
-      { originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' })
-    .withFallbackPosition(
-      { originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' }
-    );
+    const positions = [
+      new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
+      new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
+    ];
+    this.positionStrategy = this.overlay.position().flexibleConnectedTo(this.treeSelect).withPositions(positions);
     return this.positionStrategy;
   }
 
@@ -399,7 +303,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     ).subscribe(() => {
       this.updateSelectedNodes();
       const value = this.selectedNodes.map(node => node.key);
-      this.value = [...value];
+      this.value = [ ...value ];
       if (this.nzShowSearch) {
         this.inputValue = '';
       }

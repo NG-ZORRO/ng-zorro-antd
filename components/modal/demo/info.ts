@@ -9,7 +9,11 @@ import { NzModalService } from 'ng-zorro-antd';
     <button nz-button (click)="error()">Error</button>
     <button nz-button (click)="warning()">Warning</button>
   `,
-  styles: []
+  styles  : [
+    `button {
+      margin-right: 8px;
+    }`
+  ]
 })
 export class NzDemoModalInfoComponent {
   constructor(private modalService: NzModalService) { }

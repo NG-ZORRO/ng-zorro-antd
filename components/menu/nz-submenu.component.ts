@@ -18,12 +18,8 @@ import {
   SkipSelf,
   ViewChild
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { auditTime } from 'rxjs/operators/auditTime';
-import { combineLatest } from 'rxjs/operators/combineLatest';
-import { map } from 'rxjs/operators/map';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { auditTime, combineLatest, map } from 'rxjs/operators';
 
 import { POSITION_MAP } from '../core/overlay/overlay-position-map';
 import { toBoolean } from '../core/util/convert';
@@ -71,65 +67,7 @@ import { NzMenuDirective } from './nz-menu.directive';
       ])
     ])
   ],
-  template           : `
-    <div
-      #trigger
-      cdkOverlayOrigin
-      #origin="cdkOverlayOrigin"
-      [class.ant-dropdown-menu-submenu-title]="isInDropDown"
-      [class.ant-menu-submenu-title]="!isInDropDown"
-      (mouseenter)="onMouseEnterEvent($event)"
-      (mouseleave)="onMouseLeaveEvent($event)"
-      (click)="clickSubMenuTitle($event)"
-      [style.paddingLeft.px]="(nzMenuDirective.nzMode === 'inline')?(level*nzMenuDirective.nzInlineIndent):null">
-      <ng-content select="[title]"></ng-content>
-      <i [class.ant-dropdown-menu-submenu-arrow]="isInDropDown" [class.ant-menu-submenu-arrow]="!isInDropDown"></i>
-    </div>
-    <ul
-      [class.ant-dropdown-menu]="isInDropDown"
-      [@expandAnimation]="expandState"
-      [class.ant-menu]="!isInDropDown"
-      [class.ant-dropdown-menu-vertical]="isInDropDown"
-      [class.ant-menu-inline]="!isInDropDown"
-      [class.ant-dropdown-menu-sub]="isInDropDown"
-      [class.ant-menu-sub]="!isInDropDown"
-      (mouseleave)="onMouseLeaveEvent($event)"
-      (mouseenter)="onMouseEnterEvent($event)"
-      *ngIf="(nzMenuDirective.nzMode=='inline')">
-      <ng-template [ngTemplateOutlet]="subMenuTemplate"></ng-template>
-    </ul>
-    <ng-template
-      cdkConnectedOverlay
-      [cdkConnectedOverlayPositions]="overlayPositions"
-      [cdkConnectedOverlayOrigin]="origin"
-      [cdkConnectedOverlayWidth]="triggerWidth"
-      (positionChange)="onPositionChange($event)"
-      [cdkConnectedOverlayOpen]="nzOpen&&(nzMenuDirective.nzMode!='inline')">
-      <div
-        class="ant-menu-submenu ant-menu-submenu-popup"
-        [class.ant-menu-light]="nzMenuDirective.nzTheme=='light'"
-        [class.ant-menu-dark]="nzMenuDirective.nzTheme=='dark'"
-        [class.ant-menu-submenu-placement-bottomLeft]="subMenuMode=='horizontal'"
-        [class.ant-menu-submenu-placement-rightTop]="(subMenuMode=='vertical')&&(placement=='rightTop')"
-        [class.ant-menu-submenu-placement-leftTop]="(subMenuMode=='vertical')&&(placement=='leftTop')"
-        [@expandAnimation]="expandState">
-        <ul
-          [class.ant-dropdown-menu]="isInDropDown"
-          [class.ant-menu]="!isInDropDown"
-          [class.ant-dropdown-menu-vertical]="isInDropDown"
-          [class.ant-menu-vertical]="!isInDropDown"
-          [class.ant-dropdown-menu-sub]="isInDropDown"
-          [class.ant-menu-sub]="!isInDropDown"
-          (mouseleave)="onMouseLeaveEvent($event)"
-          (mouseenter)="onMouseEnterEvent($event)">
-          <ng-template [ngTemplateOutlet]="subMenuTemplate"></ng-template>
-        </ul>
-      </div>
-    </ng-template>
-    <ng-template #subMenuTemplate>
-      <ng-content></ng-content>
-    </ng-template>
-  `,
+  templateUrl        : './nz-submenu.component.html',
   styles             : [
     `
       .ant-menu-submenu-placement-bottomLeft {

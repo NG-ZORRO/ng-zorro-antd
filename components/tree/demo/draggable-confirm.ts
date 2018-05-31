@@ -1,21 +1,20 @@
 import { Component } from '@angular/core';
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent, NzModalService, NzTreeNode } from 'ng-zorro-antd';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { of, Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-demo-tree-draggable-confirm',
   template: `
     <nz-tree [(ngModel)]="nodes"
-             (nzExpandChange)="mouseAction('expand',$event)"
-             [nzDraggable]="true"
-             [nzBeforeDrop]="beforeDrop"
-             (nzOnDragStart)="mouseAction('dragstart',$event)"
-             (nzOnDragEnter)="mouseAction('enter',$event)"
-             (nzOnDragLeave)="mouseAction('leave', $event)"
-             (nzOnDrop)="mouseAction('drop', $event)"
-             (nzOnDragEnd)="mouseAction('end', $event)">
+      (nzExpandChange)="mouseAction('expand',$event)"
+      [nzDraggable]="true"
+      [nzBeforeDrop]="beforeDrop"
+      (nzOnDragStart)="mouseAction('dragstart',$event)"
+      (nzOnDragEnter)="mouseAction('enter',$event)"
+      (nzOnDragLeave)="mouseAction('leave', $event)"
+      (nzOnDrop)="mouseAction('drop', $event)"
+      (nzOnDragEnd)="mouseAction('end', $event)">
     </nz-tree>
   `,
   styles  : [

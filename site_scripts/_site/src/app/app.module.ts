@@ -7,10 +7,10 @@ import { PreloadAllModules, RouterModule } from '@angular/router';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { ShareModule } from './share/share.module';
 
-import { AppComponent } from './app.component';
-import { DEMOComponent } from './_demo/demo.component';
-import { routes } from './app.routing.module';
 import { environment } from '../environments/environment';
+import { DEMOComponent } from './_demo/demo.component';
+import { AppComponent } from './app.component';
+import { routes } from './app.routing.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,7 @@ import { environment } from '../environments/environment';
     RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules } : {})
   ],
   providers   : [
-    Title,
+    Title
   ],
   bootstrap   : [ AppComponent ]
 })

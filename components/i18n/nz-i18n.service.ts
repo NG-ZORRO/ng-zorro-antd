@@ -1,7 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Inject, Injectable, Optional, Provider, SkipSelf } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { LoggerService } from '../core/util/logger/logger.service';
 
@@ -46,7 +45,7 @@ export class NzI18nService {
    */
   setLocale(locale: NzI18nInterface): void {
     if (this._locale && this._locale.locale === locale.locale) {
-      return ;
+      return;
     }
     this._locale = locale;
     this._change.next(locale);
@@ -119,8 +118,8 @@ export class NzI18nService {
    */
   private compatDateFormat(format: string): string {
     return format && format
-      .replace(/Y/g, 'y') // only support y, yy, yyy, yyyy
-      .replace(/D/g, 'd'); // d, dd represent of D, DD for momentjs, others are not support
+    .replace(/Y/g, 'y') // only support y, yy, yyy, yyyy
+    .replace(/D/g, 'd'); // d, dd represent of D, DD for momentjs, others are not support
   }
 }
 

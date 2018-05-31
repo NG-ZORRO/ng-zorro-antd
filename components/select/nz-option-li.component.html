@@ -1,0 +1,6 @@
+<ng-container *ngIf="nzOption.nzCustomContent">
+  <ng-template [ngTemplateOutlet]="nzOption.template"></ng-template>
+</ng-container>
+<ng-container *ngIf="!nzOption.nzCustomContent">
+  {{nzOption.nzLabel}}
+</ng-container>

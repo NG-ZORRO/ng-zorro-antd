@@ -8,7 +8,7 @@ import {
   QueryList,
   TemplateRef
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { toBoolean } from '../core/util/convert';
 
@@ -21,11 +21,7 @@ export type NzSizeType = 'default' | 'small';
 @Component({
   selector           : 'nz-steps',
   preserveWhitespaces: false,
-  template           : `
-    <div class="ant-steps" [ngClass]="stepsClassMap">
-      <ng-content></ng-content>
-    </div>
-  `
+  templateUrl        : './nz-steps.component.html'
 })
 export class NzStepsComponent implements OnInit, OnDestroy, AfterContentInit {
   private _status: NzStatusType = 'process';

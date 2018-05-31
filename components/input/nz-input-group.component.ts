@@ -1,6 +1,5 @@
 import {
   AfterContentInit,
-  AfterViewInit,
   Component,
   ContentChildren,
   ElementRef,
@@ -10,59 +9,19 @@ import {
   TemplateRef
 } from '@angular/core';
 import { toBoolean } from '../core/util/convert';
-import { trimWhiteSpace } from '../core/util/trim-whitespace';
 
 import { NzInputDirective } from './nz-input.directive';
 // tslint:disable-next-line:no-any
-export type TInputGroupIconClass = string | string[] | Set<string> | { [klass: string]: any; };
+export type TInputGroupIconClass = string | string[] | Set<string> | { [ klass: string ]: any; };
 export type NzInputGroupSizeType = 'large' | 'default' | 'small';
 
 @Component({
   selector           : 'nz-input-group',
   preserveWhitespaces: false,
-  template           : `
-    <span class="ant-input-wrapper ant-input-group" *ngIf="isAddOn">
-      <span class="ant-input-group-addon" *ngIf="nzAddOnBefore || nzAddOnBeforeIcon">
-        <i [ngClass]="nzAddOnBeforeIcon" *ngIf="nzAddOnBeforeIcon"></i>
-        <ng-container *ngIf="isAddOnBeforeString; else addOnBeforeTemplate">{{ nzAddOnBefore }}</ng-container>
-        <ng-template #addOnBeforeTemplate>
-          <ng-template [ngTemplateOutlet]="nzAddOnBefore"></ng-template>
-        </ng-template>
-      </span>
-      <ng-template *ngTemplateOutlet="contentTemplate"></ng-template>
-      <span class="ant-input-group-addon" *ngIf="nzAddOnAfter || nzAddOnAfterIcon">
-        <i [ngClass]="nzAddOnAfterIcon" *ngIf="nzAddOnAfterIcon"></i>
-        <ng-container *ngIf="isAddOnAfterString; else addOnAfterTemplate">{{ nzAddOnAfter }}</ng-container>
-        <ng-template #addOnAfterTemplate>
-          <ng-template [ngTemplateOutlet]="nzAddOnAfter"></ng-template>
-        </ng-template>
-      </span>
-    </span>
-    <ng-template [ngIf]="isAffix">
-      <span class="ant-input-prefix" *ngIf="nzPrefix || nzPrefixIcon">
-        <i [ngClass]="nzPrefixIcon" *ngIf="nzPrefixIcon"></i>
-        <ng-container *ngIf="isPrefixString; else prefixTemplate">{{ nzPrefix }}</ng-container>
-        <ng-template #prefixTemplate>
-          <ng-template [ngTemplateOutlet]="nzPrefix"></ng-template>
-        </ng-template>
-      </span>
-      <ng-template *ngTemplateOutlet="contentTemplate"></ng-template>
-      <span class="ant-input-suffix" *ngIf="nzSuffix || nzSuffixIcon">
-        <i [ngClass]="nzSuffixIcon" *ngIf="nzSuffixIcon"></i>
-        <ng-container *ngIf="isSuffixString; else suffixTemplate">{{ nzSuffix }}</ng-container>
-        <ng-template #suffixTemplate>
-          <ng-template [ngTemplateOutlet]="nzSuffix"></ng-template>
-        </ng-template>
-      </span>
-    </ng-template>
-    <ng-template [ngIf]="isGroup" *ngTemplateOutlet="contentTemplate"></ng-template>
-    <ng-template #contentTemplate>
-      <ng-content></ng-content>
-    </ng-template>
-  `
+  templateUrl        : './nz-input-group.component.html'
 })
 
-export class NzInputGroupComponent implements AfterViewInit, AfterContentInit {
+export class NzInputGroupComponent implements AfterContentInit {
   private _addOnBefore: string | TemplateRef<void> = '';
   private _addOnAfter: string | TemplateRef<void> = '';
   private _prefix: string | TemplateRef<void> = '';
@@ -70,10 +29,10 @@ export class NzInputGroupComponent implements AfterViewInit, AfterContentInit {
   private _size: NzInputGroupSizeType = 'default';
   private _compact = false;
   private _search = false;
-  private isAddOnBeforeString: boolean;
-  private isAddOnAfterString: boolean;
-  private isPrefixString: boolean;
-  private isSuffixString: boolean;
+  isAddOnBeforeString: boolean;
+  isAddOnAfterString: boolean;
+  isPrefixString: boolean;
+  isSuffixString: boolean;
   @ContentChildren(NzInputDirective) nzInputDirectiveQueryList: QueryList<NzInputDirective>;
   @Input() nzAddOnBeforeIcon: TInputGroupIconClass;
   @Input() nzAddOnAfterIcon: TInputGroupIconClass;
@@ -225,10 +184,5 @@ export class NzInputGroupComponent implements AfterViewInit, AfterContentInit {
 
   ngAfterContentInit(): void {
     this.updateChildrenInputSize();
-  }
-
-  ngAfterViewInit(): void {
-    /** trim text node between button */
-    trimWhiteSpace(this.el.nativeElement);
   }
 }
