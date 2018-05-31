@@ -10,7 +10,7 @@ import { NzTreeNode } from 'ng-zorro-antd';
              (nzDblClick)="mouseAction('dblclick',$event)"
     >
       <ng-template #nzTreeTemplate let-node>
-        <span class="custom-node" draggable="true" aria-grabbed="true" [class.active]="node.isSelected">
+        <span class="custom-node" [class.active]="node.isSelected">
           <span>
             <i class="anticon anticon-smile-o" *ngIf="node.isExpanded"></i>
             <i class="anticon anticon-frown-o" *ngIf="!node.isExpanded"></i> {{node.title}}

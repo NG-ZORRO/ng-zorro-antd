@@ -67,7 +67,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
     .is-dragging {
       background-color: transparent !important;
       color: #000;
-      opacity: 0.9;
+      opacity: 0.7;
     }
 
     .file-name, .folder-name {
