@@ -1,9 +1,7 @@
-// tslint:disable: no-any
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import { ShowUploadListInterface, UploadFile, UploadListType } from './interface';
 
@@ -84,8 +82,9 @@ import { ShowUploadListInterface, UploadFile, UploadListType } from './interface
   ],
   preserveWhitespaces: false
 })
-export class NzUploadListComponent implements OnInit, OnChanges {
+export class NzUploadListComponent implements OnChanges {
   // region: fields
+  @Input() locale: {} = {};
   @Input() listType: UploadListType;
   @Input() items: UploadFile[];
   @Input() icons: ShowUploadListInterface;
@@ -106,11 +105,6 @@ export class NzUploadListComponent implements OnInit, OnChanges {
 
   // endregion
   // region: render
-  private locale = {
-    uploading: this.i18n.translate('Upload.uploading'),
-    previewFile: this.i18n.translate('Upload.previewFile'),
-    removeFile: this.i18n.translate('Upload.removeFile')
-  };
 
   handlePreview(file: UploadFile, e: Event): void {
     if (!this.onPreview) { return; }
@@ -126,9 +120,7 @@ export class NzUploadListComponent implements OnInit, OnChanges {
   }
 
   // endregion
-  constructor(private el: ElementRef, private updateHostClassService: NzUpdateHostClassService, private i18n: NzI18nService) {}
-
-  ngOnInit(): void {}
+  constructor(private el: ElementRef, private updateHostClassService: NzUpdateHostClassService) {}
 
   ngOnChanges(changes: { [P in keyof this]?: SimpleChange } & SimpleChanges): void {
     this.setClassMap();

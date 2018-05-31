@@ -75,12 +75,10 @@
       </ng-container>
       <ng-container *ngSwitchDefault>
         <button *ngIf="nzCancelText!==null" nz-button (click)="onClickOkCancel('cancel')" [nzLoading]="nzCancelLoading">
-          <ng-container *ngIf="nzCancelText">{{ nzCancelText }}</ng-container>
-          <ng-container *ngIf="!nzCancelText">{{ 'Modal.cancelText' | nzI18n }}</ng-container>
+          {{ cancelText }}
         </button>
         <button *ngIf="nzOkText!==null" nz-button [nzType]="nzOkType" (click)="onClickOkCancel('ok')" [nzLoading]="nzOkLoading">
-          <ng-container *ngIf="nzOkText">{{ nzOkText }}</ng-container>
-          <ng-container *ngIf="!nzOkText">{{ 'Modal.okText' | nzI18n }}</ng-container>
+          {{ okText }}
         </button>
       </ng-container>
     </ng-container>
@@ -112,12 +110,10 @@
       </div>
       <div class="ant-confirm-btns">
         <button nz-button *ngIf="nzCancelText!==null" (click)="onClickOkCancel('cancel')" [nzLoading]="nzCancelLoading">
-          <ng-container *ngIf="nzCancelText">{{ nzCancelText }}</ng-container>
-          <ng-container *ngIf="!nzCancelText">{{ 'Modal.cancelText' | nzI18n }}</ng-container>
+          {{ cancelText }}
         </button>
         <button *ngIf="nzOkText!==null" #autoFocusButtonOk nz-button [nzType]="nzOkType" (click)="onClickOkCancel('ok')" [nzLoading]="nzOkLoading">
-          <ng-container *ngIf="nzOkText">{{ nzOkText }}</ng-container>
-          <ng-container *ngIf="!nzOkText">{{ 'Modal.okText' | nzI18n }}</ng-container>
+          {{ okText }}
         </button>
       </div>
     </div> <!-- /.ant-confirm-body-wrapper -->

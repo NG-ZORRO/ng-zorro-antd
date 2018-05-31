@@ -8,18 +8,20 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   QueryList,
   TemplateRef,
   ViewChild
 } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 import { isNotNil } from '../core/util/check';
-
 import { toBoolean } from '../core/util/convert';
-import { NzThComponent } from './nz-th.component';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 
+import { NzThComponent } from './nz-th.component';
 import { NzTheadComponent } from './nz-thead.component';
 
 @Component({
@@ -66,7 +68,7 @@ import { NzTheadComponent } from './nz-thead.component';
         </table>
       </div>
       <div class="ant-table-placeholder" *ngIf="(data.length==0)&&!nzLoading">
-        <span *ngIf="!nzNoResult">{{ 'Table.emptyText' | nzI18n }}</span>
+        <span *ngIf="!nzNoResult">{{ locale.emptyText }}</span>
         <ng-container *ngIf="nzNoResult">
           <ng-container *ngIf="isNoResultString; else noResultTemplate">{{ nzNoResult }}</ng-container>
           <ng-template #noResultTemplate>
@@ -131,7 +133,9 @@ import { NzTheadComponent } from './nz-thead.component';
     </div>
   `
 })
-export class NzTableComponent implements OnInit, AfterViewInit {
+export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
+  private i18n$: Subscription;
+  locale: {} = {};
   private _bordered = false;
   private _showPagination = true;
   private _loading = false;
@@ -413,6 +417,7 @@ export class NzTableComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.i18n$ = this.i18n.localeChange.subscribe(() => this.locale = this.i18n.getLocaleData('Table'));
     this.fitScrollBar();
     if (this.nzScroll && this.nzScroll.x && this.nzScroll.y) {
       /** magic code to sync scroll **/
@@ -425,7 +430,11 @@ export class NzTableComponent implements OnInit, AfterViewInit {
     setTimeout(() => this.setScrollPositionClassName());
   }
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private overlay: Overlay, private nzMeasureScrollbarService: NzMeasureScrollbarService) {
+  ngOnDestroy(): void {
+    this.i18n$.unsubscribe();
+  }
+
+  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private overlay: Overlay, private nzMeasureScrollbarService: NzMeasureScrollbarService, private i18n: NzI18nService) {
     this.el = this.elementRef.nativeElement;
   }
 }

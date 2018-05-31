@@ -1,5 +1,4 @@
-// tslint:disable:no-any
-import { HttpClient, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnChanges, OnDestroy, OnInit, Optional, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -159,6 +158,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
 
   private xhr(args: UploadXHRArgs): Subscription {
     const formData = new FormData();
+    // tslint:disable-next-line:no-any
     formData.append(args.name, args.file as any);
     if (args.data) {
       Object.keys(args.data).map(key => {
@@ -176,10 +176,11 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
       withCredentials: args.withCredentials,
       headers: new HttpHeaders(args.headers)
     });
-    return this.http.request(req).subscribe((event: any) => {
+    return this.http.request(req).subscribe((event: HttpEvent<{}>) => {
       if (event.type === HttpEventType.UploadProgress) {
         if (event.total > 0) {
-          event.percent = event.loaded / event.total * 100;
+          // tslint:disable-next-line:no-any
+          (event as any).percent = event.loaded / event.total * 100;
         }
         args.onProgress(event, args.file);
       } else if (event instanceof HttpResponse) {
@@ -193,7 +194,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
 
   abort(file?: UploadFile): void {
     if (file) {
-      const uid: any = file && file.uid;
+      const uid = file && file.uid;
       if (this.reqs[uid]) {
         this.reqs[uid].unsubscribe();
         delete this.reqs[uid];

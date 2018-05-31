@@ -1,16 +1,17 @@
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
   Output,
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { of } from 'rxjs/observable/of';
 
 import { toBoolean } from '../core/util/convert';
@@ -30,10 +31,10 @@ import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, Tr
       (filterChange)="handleFilterChange($event)"
       [render]="nzRender"
       [showSearch]="nzShowSearch"
-      [searchPlaceholder]="nzSearchPlaceholder"
-      [notFoundContent]="nzNotFoundContent"
-      [itemUnit]="nzItemUnit"
-      [itemsUnit]="nzItemsUnit"
+      [searchPlaceholder]="nzSearchPlaceholder || locale.searchPlaceholder"
+      [notFoundContent]="nzNotFoundContent || locale.notFoundContent"
+      [itemUnit]="nzItemUnit || locale.itemUnit"
+      [itemsUnit]="nzItemsUnit || locale.itemsUnit"
       [footer]="nzFooter"
       (handleSelect)="handleLeftSelect($event)"
       (handleSelectAll)="handleLeftSelectAll($event)"></nz-transfer-list>
@@ -53,10 +54,10 @@ import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, Tr
       (filterChange)="handleFilterChange($event)"
       [render]="nzRender"
       [showSearch]="nzShowSearch"
-      [searchPlaceholder]="nzSearchPlaceholder"
-      [notFoundContent]="nzNotFoundContent"
-      [itemUnit]="nzItemUnit"
-      [itemsUnit]="nzItemsUnit"
+      [searchPlaceholder]="nzSearchPlaceholder || locale.searchPlaceholder"
+      [notFoundContent]="nzNotFoundContent || locale.notFoundContent"
+      [itemUnit]="nzItemUnit || locale.itemUnit"
+      [itemsUnit]="nzItemsUnit || locale.itemsUnit"
       [footer]="nzFooter"
       (handleSelect)="handleRightSelect($event)"
       (handleSelectAll)="handleRightSelectAll($event)"></nz-transfer-list>
@@ -65,7 +66,10 @@ import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, Tr
     '[class.ant-transfer]': 'true'
   }
 })
-export class NzTransferComponent implements OnChanges {
+export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
+  private i18n$: Subscription;
+  // tslint:disable-next-line:no-any
+  locale: any = {};
   private _showSearch = false;
 
   leftFilter = '';
@@ -77,8 +81,8 @@ export class NzTransferComponent implements OnChanges {
   @Input() nzTitles: string[] = ['', ''];
   @Input() nzOperations: string[] = [];
   @Input() nzListStyle: object;
-  @Input() nzItemUnit = this.i18n.translate('Transfer.itemUnit');
-  @Input() nzItemsUnit = this.i18n.translate('Transfer.itemsUnit');
+  @Input() nzItemUnit: string;
+  @Input() nzItemsUnit: string;
   @Input() nzCanMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => of(arg.list);
   @Input() nzRender: TemplateRef<void>;
   @Input() nzFooter: TemplateRef<void>;
@@ -94,8 +98,8 @@ export class NzTransferComponent implements OnChanges {
   }
 
   @Input() nzFilterOption: (inputValue: string, item: TransferItem) => boolean;
-  @Input() nzSearchPlaceholder = this.i18n.translate('Transfer.searchPlaceholder');
-  @Input() nzNotFoundContent = this.i18n.translate('Transfer.notFoundContent');
+  @Input() nzSearchPlaceholder: string;
+  @Input() nzNotFoundContent: string;
 
   // events
   @Output() nzChange: EventEmitter<TransferChange> = new EventEmitter();
@@ -192,11 +196,19 @@ export class NzTransferComponent implements OnChanges {
   constructor(private i18n: NzI18nService, private el: ElementRef) {
   }
 
+  ngOnInit(): void {
+    this.i18n$ = this.i18n.localeChange.subscribe(() => this.locale = this.i18n.getLocaleData('Transfer'));
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if ('nzDataSource' in changes) {
       this.splitDataSource();
       this.updateOperationStatus('left');
       this.updateOperationStatus('right');
     }
+  }
+
+  ngOnDestroy(): void {
+    this.i18n$.unsubscribe();
   }
 }
