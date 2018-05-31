@@ -6,10 +6,11 @@ import { NzCheckboxComponent } from './nz-checkbox.component';
   selector           : 'nz-checkbox-wrapper',
   preserveWhitespaces: false,
   template           : `
-    <div class="ant-checkbox-group">
-      <ng-content></ng-content>
-    </div>
-  `
+    <ng-content></ng-content>
+  `,
+  host: {
+    '[class.ant-checkbox-group]': 'true'
+  }
 })
 export class NzCheckboxWrapperComponent {
   @Output() nzOnChange = new EventEmitter<string[]>();
