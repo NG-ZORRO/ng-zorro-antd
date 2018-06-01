@@ -5,7 +5,10 @@ import { NzCheckboxComponent } from './nz-checkbox.component';
 @Component({
   selector           : 'nz-checkbox-wrapper',
   preserveWhitespaces: false,
-  templateUrl        : './nz-checkbox-wrapper.component.html'
+  templateUrl        : './nz-checkbox-wrapper.component.html',
+  host               : {
+    '[class.ant-checkbox-group]': 'true'
+  }
 })
 export class NzCheckboxWrapperComponent {
   @Output() nzOnChange = new EventEmitter<string[]>();
