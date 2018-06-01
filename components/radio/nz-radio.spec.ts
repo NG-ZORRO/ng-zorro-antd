@@ -12,7 +12,7 @@ describe('radio', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzRadioModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestRadioSingleComponent, NzTestRadioButtonComponent, NzTestRadioGroupComponent, NzTestRadioFormComponent, NzTestRadioGroupFormComponent ]
+      declarations: [ NzTestRadioSingleComponent, NzTestRadioButtonComponent, NzTestRadioGroupComponent, NzTestRadioFormComponent, NzTestRadioGroupFormComponent, NzTestRadioGroupDisabledComponent ]
     });
     TestBed.compileComponents();
   }));
@@ -154,6 +154,29 @@ describe('radio', () => {
       fixture.detectChanges();
       expect(radios.every(radio => radio.nativeElement.querySelector('input').name === 'test')).toBe(true);
     });
+  });
+  describe('radio group disabled', () => {
+    let fixture;
+    let testComponent;
+    let radios;
+    let radioGroup;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestRadioGroupDisabledComponent);
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+      radios = fixture.debugElement.queryAll(By.directive(NzRadioButtonComponent));
+      radioGroup = fixture.debugElement.query(By.directive(NzRadioGroupComponent));
+    });
+    it('should disable work', fakeAsync(() => {
+      fixture.detectChanges();
+      expect(testComponent.value).toBe('A');
+      radios[ 1 ].nativeElement.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(radios[ 1 ].nativeElement.firstElementChild.classList).not.toContain('ant-radio-button-checked');
+      expect(testComponent.value).toBe('A');
+    }));
   });
   describe('radio form', () => {
     let fixture;
@@ -314,4 +337,23 @@ export class NzTestRadioGroupFormComponent {
   disable(): void {
     this.formGroup.disable();
   }
+}
+
+/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1543 **/
+@Component({
+  selector: 'nz-test-radio-group-disabled',
+  template: `
+    <nz-radio-group [(ngModel)]="value" [nzName]="name" [nzDisabled]="disabled" [nzSize]="size">
+      <label nz-radio-button nzValue="A">A</label>
+      <label nz-radio-button nzValue="B">B</label>
+      <label nz-radio-button nzValue="C">C</label>
+      <label nz-radio-button nzValue="D">D</label>
+    </nz-radio-group>`
+})
+
+export class NzTestRadioGroupDisabledComponent {
+  size = 'default';
+  value = 'A';
+  disabled = true;
+  name: string;
 }
