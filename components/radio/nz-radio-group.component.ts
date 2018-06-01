@@ -53,9 +53,7 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
   @Input()
   set nzDisabled(value: boolean) {
     this._disabled = value;
-    this.radios.forEach((radio) => {
-      radio.nzDisabled = this.nzDisabled;
-    });
+    this.updateDisabledState();
   }
 
   get nzDisabled(): boolean {
@@ -70,6 +68,12 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
 
   get nzName(): string {
     return this._name;
+  }
+
+  updateDisabledState(): void {
+    this.radios.forEach((radio) => {
+      radio.nzDisabled = this.nzDisabled;
+    });
   }
 
   updateChildrenName(): void {
@@ -120,6 +124,7 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
   ngAfterContentInit(): void {
     this.syncCheckedValue();
     this.updateChildrenName();
+    this.updateDisabledState();
   }
 
   writeValue(value: string): void {
