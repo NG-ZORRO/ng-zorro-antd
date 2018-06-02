@@ -105,4 +105,4 @@ Almost anything can be represented in a tree structure. Examples include directo
 | clearChildren | clear the treeNode's children | function | void |
 
 ## Note
-
+`NzTreeNodeOptions` accepts your customized properties，use NzTreeNode.origin to get them.
