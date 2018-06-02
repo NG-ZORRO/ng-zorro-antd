@@ -37,6 +37,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private _loading = false;
   private _showSizeChanger = false;
   private _showQuickJumper = false;
+  private _hideOnSinglePage = false;
   private _scroll: { x: string; y: string } = { x: null, y: null };
   private _footer: string | TemplateRef<void>;
   private _title: string | TemplateRef<void>;
@@ -161,6 +162,15 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get nzShowSizeChanger(): boolean {
     return this._showSizeChanger;
+  }
+
+  @Input()
+  set nzHideOnSinglePage(value: boolean) {
+    this._hideOnSinglePage = toBoolean(value);
+  }
+
+  get nzHideOnSinglePage(): boolean {
+    return this._hideOnSinglePage;
   }
 
   @Input()

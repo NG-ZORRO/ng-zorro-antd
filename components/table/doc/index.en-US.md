@@ -81,6 +81,7 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | nzShowQuickJumper | Determine whether you can jump to pages directly | boolean | false |
 | nzShowSizeChanger | Determine whether `nzPageSize` can be changed | boolean | false |
 | nzShowTotal | To display the total number and range	 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
+| nzHideOnSinglePage | Whether to hide pager on single page | boolean | false |
 
 ### th
 

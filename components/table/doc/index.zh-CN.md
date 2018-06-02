@@ -82,6 +82,7 @@ Table 组件同时具备了易用性和高度可定制性
 | nzShowQuickJumper | 是否可以快速跳转至某页 | boolean | false |
 | nzShowSizeChanger | 是否可以改变 `nzPageSize` | boolean | false |
 | nzShowTotal | 用于显示数据总量和当前数据范围 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
+| nzHideOnSinglePage | 只有一页时是否隐藏分页器 | boolean | false |
 
 ### th
 
