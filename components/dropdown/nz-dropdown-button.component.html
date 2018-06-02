@@ -6,17 +6,20 @@
     [nzType]="nzType"
     [nzSize]="nzSize"
     (click)="nzClick.emit($event)">
-    <span><ng-content></ng-content></span></button>
+    <span><ng-content></ng-content></span>
+  </button>
   <button
+    nz-button
+    type="button"
+    class="ant-dropdown-trigger"
     [nzType]="nzType"
     [nzSize]="nzSize"
-    nz-button type="button"
-    class="ant-dropdown-trigger"
     [disabled]="nzDisabled"
     (click)="onClickEvent()"
     (mouseenter)="onMouseEnterEvent()"
     (mouseleave)="onMouseLeaveEvent()">
-    <i class="anticon anticon-down"></i></button>
+    <i class="anticon anticon-ellipsis"></i>
+  </button>
 </div>
 <ng-template
   cdkConnectedOverlay
@@ -27,8 +30,7 @@
   (detach)="hide()"
   [cdkConnectedOverlayMinWidth]="triggerWidth"
   (positionChange)="onPositionChange($event)"
-  [cdkConnectedOverlayOpen]="nzVisible"
->
+  [cdkConnectedOverlayOpen]="nzVisible">
   <div
     class="{{'ant-dropdown ant-dropdown-placement-'+nzPlacement}}"
     [@dropDownAnimation]="dropDownPosition"

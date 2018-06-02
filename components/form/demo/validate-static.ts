@@ -45,6 +45,18 @@ import { Component } from '@angular/core';
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
+        <nz-form-label [nzSpan]="5">Success</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzValidateStatus="success" nzHasFeedback>
+          <nz-date-picker name="date-picker-success" style="width: 100%"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">Warning</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzValidateStatus="warning" nzHasFeedback>
+          <nz-time-picker name="time-picker-warning" style="width: 100%"></nz-time-picker>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
         <nz-form-label [nzSpan]="5">Error</nz-form-label>
         <nz-form-control [nzSpan]="12" nzValidateStatus="error" nzHasFeedback>
           <nz-select name="select-error" [ngModel]="'Option 1'">
@@ -70,9 +82,12 @@ import { Component } from '@angular/core';
       </nz-form-item>
     </form>`,
   styles  : [
-      `
+    `
       [nz-form] {
         max-width: 600px;
+      }
+      nz-date-picker ::ng-deep .ant-calendar-picker{
+        width: 100%;
       }
     `
   ]

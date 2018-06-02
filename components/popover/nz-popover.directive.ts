@@ -15,11 +15,11 @@ import { NzPopoverComponent } from './nz-popover.component';
 })
 export class NzPopoverDirective extends NzTooltipDirective {
   constructor(
-      elementRef: ElementRef,
-      hostView: ViewContainerRef,
-      resolver: ComponentFactoryResolver,
-      renderer: Renderer2,
-      tooltip: NzPopoverComponent) {
+    elementRef: ElementRef,
+    hostView: ViewContainerRef,
+    resolver: ComponentFactoryResolver,
+    renderer: Renderer2,
+    tooltip: NzPopoverComponent) {
     super(elementRef, hostView, resolver, renderer, tooltip);
   }
 }
