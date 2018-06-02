@@ -58,6 +58,7 @@ subtitle: 树形控件
 | selectable | 设置节点是否可被选中 | boolean | true |
 | disabled | 设置是否禁用节点(不可进行任何操作) | boolean | false |
 | disableCheckbox | 设置节点禁用 Checkbox | boolean | false |
+| [key: string] | 自定义数据 | any | - |
 
 ### NzFormatEmitEvent props
 
@@ -105,3 +106,4 @@ subtitle: 树形控件
 | clearChildren | 清除子节点 | function | void |
 
 ## 注意
+`NzTreeNodeOptions` 可以接受用户自定义属性，可通过 `NzTreeNode` 的 `origin` 属性取得。
