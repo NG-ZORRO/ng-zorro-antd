@@ -2,7 +2,7 @@
   <a class="ant-pagination-item-link" *ngIf="type!='page'"></a>
   <a *ngIf="type=='page'">{{page}}</a>
 </ng-template>
-<ng-container *ngIf="(nzHideOnSinglePage&&(lastIndex!=1))||!nzHideOnSinglePage">
+<ng-container *ngIf="(nzHideOnSinglePage&&(nzTotal>nzPageSize))||!nzHideOnSinglePage">
   <ul
     *ngIf="nzSimple"
     [class.ant-table-pagination]="nzInTable"
