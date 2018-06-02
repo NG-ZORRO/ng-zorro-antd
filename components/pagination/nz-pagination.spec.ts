@@ -236,6 +236,12 @@ describe('pagination', () => {
         expect(testComponent.pageIndex).toBe(5);
       });
     });
+    it('should be hidden pagination when total is 0 and nzHideOnSinglePage is true', () => {
+      (testComponent as NzTestPaginationComponent).total = 0;
+      (testComponent as NzTestPaginationComponent).hideOnSinglePage = true;
+      fixture.detectChanges();
+      expect(fixture.debugElement.nativeElement.querySelector('.ant-pagination')).toBeNull();
+    });
   });
   describe('pagination render items', () => {
     let fixture;
