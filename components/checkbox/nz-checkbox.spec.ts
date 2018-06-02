@@ -251,7 +251,7 @@ describe('checkbox', () => {
       inputElement = checkboxWrapper.nativeElement.querySelector('input') as HTMLInputElement;
     }));
     it('should className correct', fakeAsync(() => {
-      expect(checkboxWrapper.nativeElement.firstElementChild.classList).toContain('ant-checkbox-group');
+      expect(checkboxWrapper.nativeElement.classList).toContain('ant-checkbox-group');
     }));
     it('should onChange correct', fakeAsync(() => {
       inputElement.click();

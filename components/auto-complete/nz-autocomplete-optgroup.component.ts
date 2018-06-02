@@ -6,24 +6,13 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'nz-auto-optgroup',
+  selector           : 'nz-auto-optgroup',
   preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
-  template           : `
-<div class="ant-select-dropdown-menu-item-group-title">
- <ng-container *ngIf="isLabelString; else labelTemplate">{{nzLabel}}</ng-container>
- <ng-template #labelTemplate>
-   <ng-template [ngTemplateOutlet]="nzLabel"></ng-template>
- </ng-template>
-</div>
-<ul class="ant-select-dropdown-menu-item-group-list">
-  <ng-content select="nz-auto-option"></ng-content>
-</ul>
-
-`,
+  templateUrl        : './nz-autocomplete-optgroup.component.html',
   host               : {
-    'role'  : 'group',
-    'class' : 'ant-select-dropdown-menu-item-group'
+    'role' : 'group',
+    'class': 'ant-select-dropdown-menu-item-group'
   }
 })
 export class NzAutocompleteOptgroupComponent {
@@ -35,11 +24,14 @@ export class NzAutocompleteOptgroupComponent {
     this.isLabelString = !(value instanceof TemplateRef);
     this._label = value;
   }
+
   get nzLabel(): string | TemplateRef<void> {
     return this._label;
   }
+
   _label: string | TemplateRef<void>;
 
-  constructor() {}
+  constructor() {
+  }
 
 }

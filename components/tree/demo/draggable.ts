@@ -34,9 +34,9 @@ export class NzDemoTreeDraggableComponent implements OnInit {
           key     : '10001',
           children: [
             {
-              title   : 'child1.1',
-              key     : '100011',
-              children: []
+              title : 'child1.1',
+              key   : '100011',
+              isLeaf: true
             },
             {
               title   : 'child1.2',
@@ -57,10 +57,6 @@ export class NzDemoTreeDraggableComponent implements OnInit {
               ]
             }
           ]
-        },
-        {
-          title: 'child2',
-          key  : '10002'
         }
       ]
     }),
@@ -69,23 +65,23 @@ export class NzDemoTreeDraggableComponent implements OnInit {
       key     : '1002',
       children: [
         {
-          title   : 'child2.1',
-          key     : '10021',
-          children: []
+          title : 'child2.1',
+          key   : '10021',
+          isLeaf: true
         },
         {
           title   : 'child2.2',
           key     : '10022',
           children: [
             {
-              title: 'grandchild2.2.1',
-              key  : '100221'
+              title : 'grandchild2.2.1',
+              key   : '100221',
+              isLeaf: true
             }
           ]
         }
       ]
-    }),
-    new NzTreeNode({ title: 'root3', key: '1003' })
+    })
   ];
 
   mouseAction(name: string, e: NzFormatEmitEvent): void {

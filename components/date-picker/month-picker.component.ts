@@ -1,18 +1,16 @@
-import { forwardRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { forwardRef, Component, Input, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { FunctionProp } from '../core/types/common-wrap';
-import { valueFunctionProp, InputBoolean } from '../core/util/convert';
-import { NzDatePickerI18nInterface } from '../i18n/nz-i18n.interface';
+import { valueFunctionProp } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { AbstractPickerComponent } from './abstract-picker.component';
 import { CandyDate } from './lib/candy-date';
-import { NzPickerComponent } from './picker.component';
-import { PanelMode, PickerResult } from './standard-types';
+import { PanelMode } from './standard-types';
 
 @Component({
   selector: 'nz-month-picker',
-  templateUrl: 'month-picker.component.html',
+  templateUrl: './month-picker.component.html',
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     multi: true,

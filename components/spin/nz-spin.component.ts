@@ -9,10 +9,8 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { debounceTime } from 'rxjs/operators/debounceTime';
-import { first } from 'rxjs/operators/first';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 import { isEmpty, isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
@@ -21,37 +19,7 @@ import { toBoolean } from '../core/util/convert';
   selector           : 'nz-spin',
   preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
-  template           : `
-    <ng-template #defaultIndicatorTemplate>
-      <span
-        class="ant-spin-dot"
-        [class.ant-spin-dot-spin]="resultSpinning$|async">
-        <i></i><i></i><i></i><i></i>
-      </span>
-    </ng-template>
-    <div [class.ant-spin-nested-loading]="isNested">
-      <div>
-        <div
-          class="ant-spin"
-          [class.ant-spin-spinning]="resultSpinning$|async"
-          [class.ant-spin-lg]="nzSize=='large'"
-          [class.ant-spin-sm]="nzSize=='small'"
-          [class.ant-spin-show-text]="nzTip">
-          <ng-template [ngTemplateOutlet]="nzIndicator||defaultIndicatorTemplate"></ng-template>
-          <div class="ant-spin-text" *ngIf="nzTip">{{ nzTip }}</div>
-        </div>
-      </div>
-      <div
-        #containerElement
-        class="ant-spin-container"
-        [class.ant-spin-blur]="resultSpinning$|async"
-        [hidden]="!isNested"
-        (cdkObserveContent)="checkNested()">
-        <ng-content></ng-content>
-      </div>
-    </div>
-
-  `
+  templateUrl        : './nz-spin.component.html'
 })
 export class NzSpinComponent implements AfterViewInit {
   private _tip: string;
@@ -106,8 +74,6 @@ export class NzSpinComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.zone.onStable.pipe(first()).subscribe(() => {
-      this.checkNested();
-    });
+    this.checkNested();
   }
 }

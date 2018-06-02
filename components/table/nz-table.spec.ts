@@ -1,13 +1,16 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
+import en_US from '../i18n/languages/en_US';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzTableComponent } from './nz-table.component';
 import { NzTableModule } from './nz-table.module';
 
 describe('nz-table', () => {
+  let injector: Injector;
   beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
+    injector = TestBed.configureTestingModule({
       imports     : [ NzTableModule ],
       declarations: [ NzTestTableBasicComponent, NzTestTableScrollComponent ],
       providers   : [ NzMeasureScrollbarService ]
@@ -191,6 +194,14 @@ describe('nz-table', () => {
       testComponent.showSizeChanger = true;
       expect(table.nativeElement.querySelector('.ant-pagination-options-quick-jumper')).toBeDefined();
       expect(table.nativeElement.querySelector('.ant-pagination-options-size-changer')).toBeDefined();
+    });
+    it('#18n', () => {
+      testComponent.dataSet = [];
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelector('.ant-table-placeholder').innerText).toBe('暂无数据');
+      injector.get(NzI18nService).setLocale(en_US);
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelector('.ant-table-placeholder').innerText).toBe(en_US.Table.emptyText);
     });
   });
   describe('scroll nz-table', () => {

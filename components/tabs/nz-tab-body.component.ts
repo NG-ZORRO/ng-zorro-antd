@@ -7,9 +7,7 @@ import {
 @Component({
   selector           : '[nz-tab-body]',
   preserveWhitespaces: false,
-  template           : `
-    <ng-template [ngTemplateOutlet]="content"></ng-template>
-  `
+  templateUrl        : './nz-tab-body.component.html'
 })
 export class NzTabBodyComponent {
   @Input() content: TemplateRef<void>;

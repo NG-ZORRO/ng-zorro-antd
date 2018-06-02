@@ -1,17 +1,16 @@
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
   Output,
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { of, Observable, Subscription } from 'rxjs';
 
 import { toBoolean } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -21,51 +20,15 @@ import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, Tr
 @Component({
   selector           : 'nz-transfer',
   preserveWhitespaces: false,
-  template           : `
-    <nz-transfer-list class="ant-transfer-list" [ngStyle]="nzListStyle" data-direction="left"
-      [titleText]="nzTitles[0]"
-      [dataSource]="leftDataSource"
-      [filter]="leftFilter"
-      [filterOption]="nzFilterOption"
-      (filterChange)="handleFilterChange($event)"
-      [render]="nzRender"
-      [showSearch]="nzShowSearch"
-      [searchPlaceholder]="nzSearchPlaceholder"
-      [notFoundContent]="nzNotFoundContent"
-      [itemUnit]="nzItemUnit"
-      [itemsUnit]="nzItemsUnit"
-      [footer]="nzFooter"
-      (handleSelect)="handleLeftSelect($event)"
-      (handleSelectAll)="handleLeftSelectAll($event)"></nz-transfer-list>
-    <div class="ant-transfer-operation">
-      <button nz-button (click)="moveToLeft()" [disabled]="!leftActive" [nzType]="'primary'" [nzSize]="'small'">
-        <i class="anticon anticon-left"></i><span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
-      </button>
-      <button nz-button (click)="moveToRight()" [disabled]="!rightActive" [nzType]="'primary'" [nzSize]="'small'">
-        <i class="anticon anticon-right"></i><span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
-      </button>
-    </div>
-    <nz-transfer-list class="ant-transfer-list" [ngStyle]="nzListStyle" data-direction="right"
-      [titleText]="nzTitles[1]"
-      [dataSource]="rightDataSource"
-      [filter]="rightFilter"
-      [filterOption]="nzFilterOption"
-      (filterChange)="handleFilterChange($event)"
-      [render]="nzRender"
-      [showSearch]="nzShowSearch"
-      [searchPlaceholder]="nzSearchPlaceholder"
-      [notFoundContent]="nzNotFoundContent"
-      [itemUnit]="nzItemUnit"
-      [itemsUnit]="nzItemsUnit"
-      [footer]="nzFooter"
-      (handleSelect)="handleRightSelect($event)"
-      (handleSelectAll)="handleRightSelectAll($event)"></nz-transfer-list>
-  `,
+  templateUrl        : './nz-transfer.component.html',
   host               : {
     '[class.ant-transfer]': 'true'
   }
 })
-export class NzTransferComponent implements OnChanges {
+export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
+  private i18n$: Subscription;
+  // tslint:disable-next-line:no-any
+  locale: any = {};
   private _showSearch = false;
 
   leftFilter = '';
@@ -74,11 +37,11 @@ export class NzTransferComponent implements OnChanges {
   // region: fields
 
   @Input() nzDataSource: TransferItem[] = [];
-  @Input() nzTitles: string[] = ['', ''];
+  @Input() nzTitles: string[] = [ '', '' ];
   @Input() nzOperations: string[] = [];
   @Input() nzListStyle: object;
-  @Input() nzItemUnit = this.i18n.translate('Transfer.itemUnit');
-  @Input() nzItemsUnit = this.i18n.translate('Transfer.itemsUnit');
+  @Input() nzItemUnit: string;
+  @Input() nzItemsUnit: string;
   @Input() nzCanMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => of(arg.list);
   @Input() nzRender: TemplateRef<void>;
   @Input() nzFooter: TemplateRef<void>;
@@ -94,8 +57,8 @@ export class NzTransferComponent implements OnChanges {
   }
 
   @Input() nzFilterOption: (inputValue: string, item: TransferItem) => boolean;
-  @Input() nzSearchPlaceholder = this.i18n.translate('Transfer.searchPlaceholder');
-  @Input() nzNotFoundContent = this.i18n.translate('Transfer.notFoundContent');
+  @Input() nzSearchPlaceholder: string;
+  @Input() nzNotFoundContent: string;
 
   // events
   @Output() nzChange: EventEmitter<TransferChange> = new EventEmitter();
@@ -192,11 +155,19 @@ export class NzTransferComponent implements OnChanges {
   constructor(private i18n: NzI18nService, private el: ElementRef) {
   }
 
+  ngOnInit(): void {
+    this.i18n$ = this.i18n.localeChange.subscribe(() => this.locale = this.i18n.getLocaleData('Transfer'));
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if ('nzDataSource' in changes) {
       this.splitDataSource();
       this.updateOperationStatus('left');
       this.updateOperationStatus('right');
     }
+  }
+
+  ngOnDestroy(): void {
+    this.i18n$.unsubscribe();
   }
 }

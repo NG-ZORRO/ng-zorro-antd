@@ -29,9 +29,7 @@ export interface EmbeddedProperty {
   selector           : 'nz-col',
   providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
-  template           : `
-    <ng-content></ng-content>
-  `
+  templateUrl        : './nz-col.component.html'
 })
 export class NzColComponent implements OnInit, OnChanges {
   private el: HTMLElement;
@@ -97,7 +95,7 @@ export class NzColComponent implements OnInit, OnChanges {
     return this.nzRowComponent || this.nzRowDirective;
   }
 
-  ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
+  ngOnChanges(changes: { [ propertyName: string ]: SimpleChange }): void {
     this.setClassMap();
   }
 

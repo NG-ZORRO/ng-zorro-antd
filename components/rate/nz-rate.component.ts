@@ -18,29 +18,7 @@ import { toBoolean } from '../core/util/convert';
 @Component({
   selector           : 'nz-rate',
   preserveWhitespaces: false,
-  template           : `
-    <ng-template #defaultCharacter><i class="anticon anticon-star"></i></ng-template>
-    <ul
-      #ulElement
-      [ngClass]="classMap"
-      (mouseleave)="leaveRate($event)"
-      (focus)="onFocus($event)"
-      (blur)="onBlur($event)"
-      (keydown)="onKeyDown($event)"
-      [tabindex]="nzDisabled?-1:1">
-      <li *ngFor="let star of starArray"
-        [ngClass]="setClasses(star)"
-        (mouseover)="hoverRate($event, star, true)"
-        (click)="clickRate($event, star, true)">
-        <div class="ant-rate-star-first" (mouseover)="hoverRate($event, star, false)" (click)="clickRate($event, star, false)">
-          <ng-template [ngTemplateOutlet]="nzCharacter||defaultCharacter"></ng-template>
-        </div>
-        <div class="ant-rate-star-second" (mouseover)="hoverRate($event, star, true)" (click)="clickRate($event, star, true)">
-          <ng-template [ngTemplateOutlet]="nzCharacter||defaultCharacter"></ng-template>
-        </div>
-      </li>
-    </ul>
-  `,
+  templateUrl        : './nz-rate.component.html',
   providers          : [
     {
       provide    : NG_VALUE_ACCESSOR,

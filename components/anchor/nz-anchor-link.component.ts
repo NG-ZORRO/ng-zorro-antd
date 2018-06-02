@@ -14,12 +14,7 @@ import { NzAnchorComponent } from './nz-anchor.component';
 @Component({
   selector           : 'nz-link',
   preserveWhitespaces: false,
-  template           : `
-    <a (click)="goToClick($event)" href="{{nzHref}}" class="ant-anchor-link-title" title="{{titleStr}}">
-      <span *ngIf="titleStr; else (titleTpl || nzTemplate)">{{ titleStr }}</span>
-    </a>
-    <ng-content></ng-content>
-  `,
+  templateUrl        : './nz-anchor-link.component.html',
   host               : {
     '[class.ant-anchor-link]': 'true',
     'style'                  : 'display:block'
@@ -31,6 +26,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
 
   titleStr = '';
   titleTpl: TemplateRef<void>;
+
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {

@@ -7,8 +7,7 @@ import {
 @Component({
   selector           : 'nz-breadcrumb',
   preserveWhitespaces: false,
-  template           : `
-    <ng-content></ng-content>`,
+  templateUrl        : './nz-breadcrumb.component.html',
   host               : {
     '[class.ant-breadcrumb]': 'true'
   },

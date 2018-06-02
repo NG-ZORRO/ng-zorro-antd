@@ -1,15 +1,18 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Injector, ViewChild } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import en_US from '../i18n/languages/en_US';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzPaginationComponent } from './nz-pagination.component';
 import { NzPaginationModule } from './nz-pagination.module';
 
 describe('pagination', () => {
+  let injector: Injector;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
+    injector = TestBed.configureTestingModule({
       imports     : [ NzPaginationModule, NoopAnimationsModule ],
       declarations: [ NzTestPaginationComponent, NzTestPaginationRenderComponent, NzTestPaginationTotalComponent ]
     });
@@ -272,6 +275,18 @@ describe('pagination', () => {
       fixture.detectChanges();
       expect(paginationElement.firstElementChild.innerText).toBe('21-40 of 85 items');
     });
+  });
+
+  it('#i18n', () => {
+    const fixture = TestBed.createComponent(NzTestPaginationComponent);
+    const dl = fixture.debugElement;
+    fixture.detectChanges();
+    injector.get(NzI18nService).setLocale(en_US);
+    fixture.detectChanges();
+    const prevText = (dl.query(By.css('.ant-pagination-prev')).nativeElement as HTMLElement).title;
+    expect(prevText).toBe(en_US.Pagination.prev_page);
+    const nextText = (dl.query(By.css('.ant-pagination-next')).nativeElement as HTMLElement).title;
+    expect(nextText).toBe(en_US.Pagination.next_page);
   });
 });
 

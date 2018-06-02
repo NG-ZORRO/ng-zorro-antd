@@ -6,10 +6,10 @@ import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testin
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { of, Observable } from 'rxjs';
 
 import { NzI18nModule, NzI18nService } from '../i18n';
+import en_US from '../i18n/languages/en_US';
 import { NzProgressModule } from '../progress/nz-progress.module';
 import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
 
@@ -176,6 +176,20 @@ describe('upload', () => {
         expect(pageObject.getByCss('.ant-upload-drag-uploading') != null).toBe(true);
       });
 
+      it('#i18n', () => {
+        instance.nzFileList = [{
+          uid: 1,
+          name: 'xxx.png',
+          status: 'done',
+          response: 'Server Error 500', // custom error message to show
+          url: 'http://www.baidu.com/xxx.png'
+        } as any];
+        fixture.detectChanges();
+        injector.get(NzI18nService).setLocale(en_US);
+        fixture.detectChanges();
+        const removeFileText = (pageObject.getByCss('.anticon-cross').nativeElement as HTMLElement).title;
+        expect(removeFileText).toBe(en_US.Upload.removeFile);
+      });
     });
 
     describe('property', () => {

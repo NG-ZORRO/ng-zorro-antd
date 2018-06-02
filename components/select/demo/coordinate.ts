@@ -11,7 +11,14 @@ import { Component } from '@angular/core';
         <nz-option *ngFor="let c of cityData[selectedProvince]" [nzValue]="c" [nzLabel]="c"></nz-option>
       </nz-select>
     </div>
-  `
+  `,
+  styles  : [
+    `
+      nz-select {
+        margin-right: 8px;
+      }
+    `
+  ]
 })
 export class NzDemoSelectCoordinateComponent {
   selectedProvince = 'Zhejiang';

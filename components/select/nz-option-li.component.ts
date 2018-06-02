@@ -3,16 +3,9 @@ import { isNotNil } from '../core/util/check';
 import { NzOptionComponent } from './nz-option.component';
 
 @Component({
-  selector: '[nz-option-li]',
-  template: `
-    <ng-container *ngIf="nzOption.nzCustomContent">
-      <ng-template [ngTemplateOutlet]="nzOption.template"></ng-template>
-    </ng-container>
-    <ng-container *ngIf="!nzOption.nzCustomContent">
-      {{nzOption.nzLabel}}
-    </ng-container>
-  `,
-  host    : {
+  selector   : '[nz-option-li]',
+  templateUrl: './nz-option-li.component.html',
+  host       : {
     '[class.ant-select-dropdown-menu-item]'         : 'true',
     '[class.ant-select-dropdown-menu-item-selected]': 'selected && !nzOption.nzDisabled',
     '[class.ant-select-dropdown-menu-item-disabled]': 'nzOption.nzDisabled',

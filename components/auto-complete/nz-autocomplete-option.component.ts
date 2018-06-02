@@ -11,14 +11,15 @@ export class NzOptionSelectionChange {
   constructor(
     public source: NzAutocompleteOptionComponent,
     public isUserInput: boolean = false
-  ) { }
+  ) {
+  }
 }
 
 @Component({
-  selector: 'nz-auto-option',
+  selector           : 'nz-auto-option',
   preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
-  template           : `<ng-content></ng-content>`,
+  templateUrl        : './nz-autocomplete-option.component.html',
   host               : {
     'role'                                          : 'menuitem',
     'class'                                         : 'ant-select-dropdown-menu-item',
@@ -41,12 +42,18 @@ export class NzAutocompleteOptionComponent {
   @Input() nzLabel: string;
 
   @Input()
-  get nzDisabled(): boolean { return this.disabled; }
-  set nzDisabled(value: boolean) { this.disabled = toBoolean(value); }
+  get nzDisabled(): boolean {
+    return this.disabled;
+  }
+
+  set nzDisabled(value: boolean) {
+    this.disabled = toBoolean(value);
+  }
 
   @Output() selectionChange = new EventEmitter<NzOptionSelectionChange>();
 
-  constructor(private changeDetectorRef: ChangeDetectorRef) {}
+  constructor(private changeDetectorRef: ChangeDetectorRef) {
+  }
 
   /** 选择 */
   select(): void {

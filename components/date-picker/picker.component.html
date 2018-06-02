@@ -65,6 +65,7 @@
   [cdkConnectedOverlayPositions]="overlayPositions"
   (positionChange)="onPositionChange($event)"
   (backdropClick)="onClickBackdrop()"
+  (detach)="onOverlayDetach()"
 >
   <div
     [@dropDownAnimation]="dropdownAnimation"

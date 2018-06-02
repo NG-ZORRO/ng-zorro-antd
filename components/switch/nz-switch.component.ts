@@ -17,24 +17,7 @@ export type NzSwitchSizeType = 'default' | 'small';
 @Component({
   selector           : 'nz-switch',
   preserveWhitespaces: false,
-  template           : `
-    <span [ngClass]="classMap" [tabindex]="nzDisabled?-1:0" #switchElement (keydown)="onKeyDown($event)">
-      <span class="ant-switch-inner">
-        <span *ngIf="checked">
-          <ng-container *ngIf="isCheckedChildrenString; else checkedChildrenTemplate">{{ nzCheckedChildren }}</ng-container>
-          <ng-template #checkedChildrenTemplate>
-            <ng-template [ngTemplateOutlet]="nzCheckedChildren"></ng-template>
-          </ng-template>
-        </span>
-        <span *ngIf="!checked">
-          <ng-container *ngIf="isUnCheckedChildrenString; else unCheckedChildrenTemplate">{{ nzUnCheckedChildren }}</ng-container>
-          <ng-template #unCheckedChildrenTemplate>
-            <ng-template [ngTemplateOutlet]="nzUnCheckedChildren"></ng-template>
-          </ng-template>
-        </span>
-      </span>
-    </span>
-  `,
+  templateUrl        : './nz-switch.component.html',
   styles             : [ `
     :host {
       display: inline-block;

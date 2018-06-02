@@ -1,0 +1,101 @@
+<ng-template #inputTemplate>
+  <input
+    #inputElement
+    autocomplete="off"
+    class="ant-select-search__field"
+    (compositionstart)="isComposing = true"
+    (compositionend)="isComposing = false"
+    (keydown)="onKeyDownInput($event)"
+    [ngModel]="inputValue"
+    (ngModelChange)="setInputValue($event, true)"
+    [disabled]="nzDisabled">
+</ng-template>
+
+<ng-template #dropdownTemplate>
+  <div [ngClass]="dropDownClassMap" [@selectDropDownAnimation]="nzOpen ? dropDownPosition : 'hidden'"
+    [ngStyle]="nzDropdownStyle">
+    <nz-tree
+      #treeRef
+      [ngModel]="nzNodes"
+      [nzMultiple]="nzMultiple"
+      [nzSearchValue]="inputValue"
+      [nzCheckable]="nzCheckable"
+      [nzAsyncData]="nzAsyncData"
+      [nzShowExpand]="nzShowExpand"
+      [nzShowLine]="nzShowLine"
+      [nzDefaultExpandAll]="nzDefaultExpandAll"
+      [nzDefaultExpandedKeys]="nzDefaultExpandedKeys"
+      [nzDefaultCheckedKeys]="nzCheckable ? value : []"
+      [nzDefaultSelectedKeys]="!nzCheckable ? value : []"
+      (nzExpandChange)="nzExpandChange.emit($event)"
+      (nzClick)="nzTreeClick.emit($event)"
+      (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)"
+    >
+    </nz-tree>
+  </div>
+</ng-template>
+
+<div
+  #treeSelect
+  class="ant-select-selection"
+  [class.ant-select-selection--single]="!isMultiple"
+  [class.ant-select-selection--multiple]="isMultiple"
+  tabindex="0">
+  <ng-container *ngIf="!isMultiple">
+    <div class="ant-select-selection__rendered">
+      <div
+        *ngIf="nzPlaceHolder && selectedNodes.length === 0"
+        [style.display]="placeHolderDisplay"
+        class="ant-select-selection__placeholder">
+        {{ nzPlaceHolder }}
+      </div>
+
+      <div
+        *ngIf="selectedNodes.length === 1"
+        class="ant-select-selection-selected-value"
+        [attr.title]="selectedNodes[0].title"
+        [ngStyle]="selectedValueDisplay">
+        {{ selectedNodes[0].title }}
+      </div>
+
+      <div
+        *ngIf="nzShowSearch"
+        [style.display]="searchDisplay"
+        class="ant-select-search ant-select-search--inline">
+        <div class="ant-select-search__field__wrap">
+          <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>
+          <span class="ant-select-search__field__mirror">{{inputValue}}&nbsp;</span>
+        </div>
+      </div>
+
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isMultiple">
+    <ul class="ant-select-selection__rendered">
+      <div
+        *ngIf="nzPlaceHolder && selectedNodes.length === 0"
+        [style.display]="placeHolderDisplay"
+        class="ant-select-selection__placeholder">
+        {{ nzPlaceHolder }}
+      </div>
+      <ng-container *ngFor="let node of selectedNodes">
+        <li
+          [@selectTagAnimation]
+          (@selectTagAnimation.done)="updatePosition()"
+          [attr.title]="node.title"
+          [class.ant-select-selection__choice__disabled]="node.isDisabled"
+          class="ant-select-selection__choice">
+               <span *ngIf="!node.isDisabled" class="ant-select-selection__choice__remove"
+                 (click)="removeSelected(node)"></span>
+          <span class="ant-select-selection__choice__content">{{ node.title }}</span>
+        </li>
+      </ng-container>
+      <li class="ant-select-search ant-select-search--inline">
+        <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>
+      </li>
+    </ul>
+  </ng-container>
+  <span *ngIf="nzAllowClear" class="ant-select-selection__clear"
+    (click)="onClearSelection()"></span>
+  <span *ngIf="!isMultiple" class="ant-select-arrow"><b></b></span>
+</div>

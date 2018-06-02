@@ -12,9 +12,8 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { merge } from 'rxjs/operators/merge';
+import { Subject, Subscription } from 'rxjs';
+import { merge } from 'rxjs/operators';
 import { toBoolean } from '../core/util/convert';
 import { NzThComponent } from './nz-th.component';
 
@@ -22,15 +21,8 @@ import { NzTableComponent } from './nz-table.component';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'thead:not(.ant-table-thead)',
-  template: `
-    <ng-template #contentTemplate>
-      <ng-content></ng-content>
-    </ng-template>
-    <ng-container *ngIf="!nzTableComponent">
-      <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
-    </ng-container>
-  `
+  selector   : 'thead:not(.ant-table-thead)',
+  templateUrl: './nz-thead.component.html'
 })
 export class NzTheadComponent implements AfterContentInit, OnDestroy {
   private _singleSort = false;
