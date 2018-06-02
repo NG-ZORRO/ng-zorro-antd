@@ -34,6 +34,6 @@
   "devDependencies": {
     "@angular/cli": "file:lib/@angular/cli",
     "@angular/compiler-cli": "file:lib/@angular/compiler-cli",
-    "typescript": "file:lib/typescript"
+    "typescript": "~2.9.1"
   }
 }

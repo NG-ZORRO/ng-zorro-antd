@@ -1,0 +1,12 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "integration/angular-cli/package.json",
+        "integration/rollup/package.json",
+        "integration/webpack/package.json",
+        "package.json"
+      ]
+    }
+  }
+}
