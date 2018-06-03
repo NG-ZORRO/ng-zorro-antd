@@ -217,7 +217,12 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   onClickMask($event: MouseEvent): void {
-    if (this.nzMask && this.nzMaskClosable && ($event.target as HTMLElement).classList.contains('ant-modal-wrap')) {
+    if (
+      this.nzMask &&
+      this.nzMaskClosable &&
+      ($event.target as HTMLElement).classList.contains('ant-modal-wrap') &&
+      this.nzVisible
+    ) {
       this.onClickOkCancel('cancel');
     }
   }
@@ -227,7 +232,9 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   private onClickCloseBtn(): void {
-    this.onClickOkCancel('cancel');
+    if (this.nzVisible) {
+      this.onClickOkCancel('cancel');
+    }
   }
 
   private onClickOkCancel(type: 'ok' | 'cancel'): void {
