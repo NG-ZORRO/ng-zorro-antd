@@ -15,7 +15,10 @@ import { PanelMode } from './standard-types';
     provide: NG_VALUE_ACCESSOR,
     multi: true,
     useExisting: forwardRef(() => NzMonthPickerComponent)
-  }]
+  }],
+  host               : {
+    '[class.ant-checkbox-group]': 'true'
+  }
 })
 
 export class NzMonthPickerComponent extends AbstractPickerComponent implements OnChanges {

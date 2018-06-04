@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import * as addDays from 'date-fns/add_days';
 import * as getISOWeek from 'date-fns/get_iso_week';
 
 @Component({
@@ -14,7 +13,7 @@ import * as getISOWeek from 'date-fns/get_iso_week';
     <nz-week-picker [(ngModel)]="date" (ngModelChange)="getWeek($event)" nzPlaceHolder="Select week"></nz-week-picker>
   `,
   styles  : [ `
-    :host ::ng-deep .ant-calendar-picker {
+    nz-date-picker, nz-month-picker, nz-range-picker, nz-week-picker {
       margin: 0 8px 12px 0;
     }
   ` ]

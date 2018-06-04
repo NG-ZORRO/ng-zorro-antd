@@ -21,7 +21,8 @@ import { NzI18nService } from '../i18n/nz-i18n.service';
 })
 export class NzPaginationComponent implements OnInit, OnDestroy {
   private i18n$: Subscription;
-  locale: {} = {};
+  // tslint:disable-next-line:no-any
+  locale: any = {};
   @ViewChild('renderItemTemplate') private _itemRender: TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }>;
   private _showSizeChanger = false;
   private _showQuickJumper = false;

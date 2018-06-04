@@ -83,9 +83,12 @@ import { Observable, Observer } from 'rxjs';
     </form>`,
 
   styles: [
-      `
+    `
       [nz-form] {
         max-width: 600px;
+      }
+      button {
+        margin-left: 8px;
       }
     `
   ]
@@ -99,7 +102,7 @@ export class NzDemoFormValidateReactiveComponent {
       this.validateForm.controls[ key ].updateValueAndValidity();
     }
     console.log(value);
-  }
+  };
 
   resetForm(e: MouseEvent): void {
     e.preventDefault();
@@ -123,15 +126,15 @@ export class NzDemoFormValidateReactiveComponent {
       }
       observer.complete();
     }, 1000);
-  })
+  });
 
-  confirmValidator = (control: FormControl): { [s: string]: boolean } => {
+  confirmValidator = (control: FormControl): { [ s: string ]: boolean } => {
     if (!control.value) {
       return { required: true };
     } else if (control.value !== this.validateForm.controls.password.value) {
       return { confirm: true, error: true };
     }
-  }
+  };
 
   constructor(private fb: FormBuilder) {
     this.validateForm = this.fb.group({

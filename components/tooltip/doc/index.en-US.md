@@ -15,11 +15,11 @@ A simple text popup tip.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzTitle | The text shown in the tooltip | string | - |
+| nzTitle | The text shown in the tooltip | string丨`TemplateRef<void>` | - |
 
 ### Common API
 
-The following APIs are shared by Tooltip, Popconfirm, Popover.
+The following APIs are shared by `nz-tooltip`, `nz-popconfirm`, `nz-popover`.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
@@ -31,8 +31,7 @@ The following APIs are shared by Tooltip, Popconfirm, Popover.
 | nzTrigger | Tooltip trigger mode | `hover`  |  `focus`  |  `click` | `hover` |
 | nzVisible | Whether the floating tooltip card is visible or not | boolean | `false` |
 | nzVisibleChange | Callback executed when visibility of the tooltip card is changed | EventEmitter | - |
-| nzTemplate | Tooltip content, the content of nzTitle will be overwritten after setting (see usage example) | `TemplateRef<void>` | - |
 
 ## Note
 
-Please ensure that the child node of `Tooltip` accepts `onMouseEnter`, `onMouseLeave`, `onFocus`, `onClick` events.
+Please ensure that the child node of `nz-tooltip` accepts `onMouseEnter`, `onMouseLeave`, `onFocus`, `onClick` events.

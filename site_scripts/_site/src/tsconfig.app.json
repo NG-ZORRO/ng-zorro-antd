@@ -18,5 +18,6 @@
   ],
   "include": [
     "../src/**/*"
-  ]
+  ],
+  "strictNullChecks": true
 }

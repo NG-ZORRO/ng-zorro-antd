@@ -17,10 +17,10 @@ Comparing with `Tooltip`, besides information `Popover` card can also provide ac
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |
 | nzTitle | Title of the card | string 丨`TemplateRef<void>` | - |
-| nzTemplate | Used to define the content (will not override the nzTitle) | `TemplateRef<void>` | - |
+| nzTemplate | Used to define the content | string 丨`TemplateRef<void>` | - |
 
 Consult [Tooltip's documentation](/components/tooltip/en#api) to find more APIs.
 
 ## Note
 
-Please ensure that the child node of `Popover` accepts `onMouseEnter`, `onMouseLeave`, `onFocus`, `onClick` events.
+Please ensure that the child node of `nz-popover` accepts `onMouseEnter`, `onMouseLeave`, `onFocus`, `onClick` events.
