@@ -168,7 +168,7 @@
   &-thead > tr > th,
   &-tbody > tr > td {
     padding: @table-padding-vertical @table-padding-horizontal;
-    word-break: break-all;
+    word-break: break-word;
   }
 
   &-thead > tr > th.@{table-prefix-cls}-selection-column-custom {
@@ -361,10 +361,6 @@
     background: @component-background;
     border-radius: @border-radius-base;
     box-shadow: @box-shadow-base;
-
-    .@{ant-prefix}-checkbox-input {
-      z-index: 1;
-    }
 
     .@{ant-prefix}-dropdown-menu {
       border: 0;
