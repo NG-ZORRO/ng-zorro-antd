@@ -240,6 +240,9 @@ export class NzTreeService {
    */
   searchExpand(value: string): void {
     this.matchedNodeList = [];
+    if (!value) {
+      return;
+    }
     const loopParent = (node: NzTreeNode) => {
       // expand parent node
       if (node.getParentNode()) {
