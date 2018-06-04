@@ -1,7 +1,7 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component, EventEmitter,
+  Component, ElementRef, EventEmitter,
   Input, Output
 } from '@angular/core';
 
@@ -52,7 +52,7 @@ export class NzAutocompleteOptionComponent {
 
   @Output() selectionChange = new EventEmitter<NzOptionSelectionChange>();
 
-  constructor(private changeDetectorRef: ChangeDetectorRef) {
+  constructor(private changeDetectorRef: ChangeDetectorRef, private element: ElementRef) {
   }
 
   /** 选择 */
@@ -87,6 +87,14 @@ export class NzAutocompleteOptionComponent {
     if (this.active) {
       this.active = false;
       this.changeDetectorRef.markForCheck();
+    }
+  }
+
+  scrollIntoViewIfNeeded(): void {
+    /* tslint:disable-next-line:no-string-literal */
+    if (this.element.nativeElement && this.element.nativeElement['scrollIntoViewIfNeeded']) {
+      /* tslint:disable-next-line:no-string-literal */
+      setTimeout(() =>  this.element.nativeElement[ 'scrollIntoViewIfNeeded' ](false), 150);
     }
   }
 
