@@ -4,7 +4,8 @@ export interface TransferItem {
   disabled?: boolean;
   checked?: boolean;
   _hiden?: boolean;
-  [key: string]: {};
+  // tslint:disable-next-line:no-any
+  [key: string]: any;
 }
 
 export interface TransferCanMove {
