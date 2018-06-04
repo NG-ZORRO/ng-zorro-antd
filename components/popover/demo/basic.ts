@@ -1,29 +1,19 @@
 import {
-  Component,
-  ViewEncapsulation
+  Component
 } from '@angular/core';
 
 @Component({
-  selector     : 'nz-demo-popover-basic',
-  encapsulation: ViewEncapsulation.None,
-  template     : `
-    <nz-popover [nzTitle]="'Title'">
-      <button nz-button [nzType]="'primary'" nz-popover>Hover me</button>
-      <ng-template #nzTemplate>
-        <div>
-          <p>Content</p>
-          <p>Content</p>
-        </div>
-      </ng-template>
-    </nz-popover>
-  `,
-  styles       : [
-      `
-      p {
-        margin: 0;
-      }
-    `
-  ]
+  selector: 'nz-demo-popover-basic',
+  template: `
+    <button
+      nz-button
+      nz-popover
+      nzType="primary"
+      nzTitle="Title"
+      nzContent="Content">
+      Hover me
+    </button>
+  `
 })
 export class NzDemoPopoverBasicComponent {
 }

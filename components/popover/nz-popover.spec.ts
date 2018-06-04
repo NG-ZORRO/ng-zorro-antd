@@ -2,8 +2,8 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
 import { dispatchMouseEvent } from '../core/testing';
+import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
 import { NzPopoverModule } from './nz-popover.module';
 
 describe('NzPopover', () => {
@@ -14,7 +14,7 @@ describe('NzPopover', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ NzPopoverModule, NoopAnimationsModule ],
+      imports     : [ NzPopoverModule, NoopAnimationsModule, NzToolTipModule ],
       declarations: [ DemoAppComponent ]
     });
 

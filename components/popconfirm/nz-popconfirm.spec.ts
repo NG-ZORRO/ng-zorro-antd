@@ -4,6 +4,7 @@ import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/cor
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
+import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
 import { NzPopconfirmModule } from './nz-popconfirm.module';
 
 describe('NzPopconfirm', () => {
@@ -14,7 +15,7 @@ describe('NzPopconfirm', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ NzPopconfirmModule, NoopAnimationsModule ],
+      imports     : [ NzPopconfirmModule, NoopAnimationsModule, NzToolTipModule ],
       declarations: [ DemoAppComponent ]
     });
 
@@ -25,10 +26,6 @@ describe('NzPopconfirm', () => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
-
-  // afterEach(() => {
-  //   overlayContainer.ngOnDestroy();
-  // });
 
   beforeEach(() => {
     demoAppFixture = TestBed.createComponent(DemoAppComponent);
@@ -156,7 +153,8 @@ describe('NzPopconfirm', () => {
 @Component({
   selector: 'nz-demo-app',
   template: `
-    <nz-popconfirm [nzOkType]="nzOkType" [nzTitle]="'NORMAL'" [nzTrigger]="'hover'"><span #normalTrigger nz-popconfirm>Show</span></nz-popconfirm>
+    <nz-popconfirm [nzOkType]="nzOkType" [nzTitle]="'NORMAL'" [nzTrigger]="'hover'">
+      <span #normalTrigger nz-popconfirm>Show</span></nz-popconfirm>
 
     <nz-popconfirm [nzTrigger]="'hover'">
       <button #templateTrigger nz-popconfirm>Show</button>
@@ -169,9 +167,12 @@ describe('NzPopconfirm', () => {
 
     <nz-popconfirm nzTitle="CLICK" nzTrigger="click"><span #clickTrigger nz-popconfirm>Show</span></nz-popconfirm>
 
-    <nz-popconfirm nzTitle="VISIBLE" [(nzVisible)]="visible"><span #visibleTrigger nz-popconfirm>Show</span></nz-popconfirm>
+    <nz-popconfirm nzTitle="VISIBLE" [(nzVisible)]="visible"><span #visibleTrigger nz-popconfirm>Show</span>
+    </nz-popconfirm>
 
-    <nz-popconfirm nzTitle="EXECUTE" [nzCondition]="executeCondition" (nzOnConfirm)="onConfirm()" (nzOnCancel)="onCancel()"><span #executeTrigger nz-popconfirm>Show</span></nz-popconfirm>
+    <nz-popconfirm nzTitle="EXECUTE" [nzCondition]="executeCondition" (nzOnConfirm)="onConfirm()" (nzOnCancel)="onCancel()">
+      <span #executeTrigger nz-popconfirm>Show</span>
+    </nz-popconfirm>
   `
 })
 export class DemoAppComponent {
@@ -190,6 +191,10 @@ export class DemoAppComponent {
 
   executeCondition: boolean;
   @ViewChild('executeTrigger') executeTrigger: ElementRef;
-  onConfirm(): void { }
-  onCancel(): void { }
+
+  onConfirm(): void {
+  }
+
+  onCancel(): void {
+  }
 }

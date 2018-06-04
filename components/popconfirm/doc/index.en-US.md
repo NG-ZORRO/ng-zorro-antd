@@ -28,4 +28,4 @@ Consult [Tooltip's documentation](/components/tooltip/en#api) to find more APIs.
 
 ## Note
 
-Please ensure that the child node of `Popconfirm` accepts `onMouseEnter`, `onMouseLeave`, `onFocus`, `onClick` events.
+Please ensure that the child node of `nz-popconfirm` accepts `onMouseEnter`, `onMouseLeave`, `onFocus`, `onClick` events.

@@ -21,13 +21,14 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { fadeAnimation } from '../core/animation/fade-animations';
 import { DEFAULT_4_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position-map';
+import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
   selector           : 'nz-tooltip',
-  preserveWhitespaces: false,
   animations         : [ fadeAnimation ],
   templateUrl        : './nz-tooltip.component.html',
+  preserveWhitespaces: false,
   styles             : [ `
     .ant-tooltip {
       position: relative;
@@ -36,19 +37,44 @@ import { toBoolean } from '../core/util/convert';
 })
 export class NzToolTipComponent {
   _hasBackdrop = false;
-
-  @Input() nzTitle: string;
-  @Input() nzContent;
+  _prefix = 'ant-tooltip-placement';
+  _positions: ConnectionPositionPair[] = [ ...DEFAULT_4_POSITIONS ];
+  _classMap = {};
+  _placement = 'top';
+  _trigger = 'hover';
+  _content: string | TemplateRef<void>;
+  overlayOrigin: CdkOverlayOrigin;
+  isContentString: boolean;
+  isTitleString: boolean;
+  visibleSource = new BehaviorSubject<boolean>(false);
+  visible$: Observable<boolean> = this.visibleSource.asObservable();
+  @ContentChild('nzTemplate') _title: string | TemplateRef<void>;
+  @ViewChild('overlay') overlay: CdkConnectedOverlay;
+  @Output() nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
 
   @Input() nzOverlayClassName = '';
-  @Input() nzOverlayStyle = {};
+  @Input() nzOverlayStyle: { [ key: string ]: string } = {};
   @Input() nzMouseEnterDelay = 0.15; // Unit: second
   @Input() nzMouseLeaveDelay = 0.1; // Unit: second
-  @Output() nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
-  @ContentChild('nzTemplate') nzTemplate: TemplateRef<void>;
-  @ViewChild('overlay') overlay: CdkConnectedOverlay;
+  @Input()
+  set nzContent(value: string | TemplateRef<void>) {
+    this.isContentString = !(value instanceof TemplateRef);
+    this._content = value;
+  }
 
-  overlayOrigin: CdkOverlayOrigin;
+  get nzContent(): string | TemplateRef<void> {
+    return this._content;
+  }
+
+  @Input()
+  set nzTitle(value: string | TemplateRef<void>) {
+    this.isTitleString = !(value instanceof TemplateRef);
+    this._title = value;
+  }
+
+  get nzTitle(): string | TemplateRef<void> {
+    return this._title;
+  }
 
   @Input()
   set nzVisible(value: boolean) {
@@ -63,9 +89,6 @@ export class NzToolTipComponent {
     return this.visibleSource.value;
   }
 
-  visibleSource = new BehaviorSubject<boolean>(false);
-  visible$: Observable<boolean> = this.visibleSource.asObservable();
-
   @Input()
   set nzTrigger(value: string) {
     this._trigger = value;
@@ -75,12 +98,6 @@ export class NzToolTipComponent {
   get nzTrigger(): string {
     return this._trigger;
   }
-
-  _prefix = 'ant-tooltip-placement';
-  _positions: ConnectionPositionPair[] = [ ...DEFAULT_4_POSITIONS ];
-  _classMap = {};
-  _placement = 'top';
-  _trigger = 'hover';
 
   @Input()
   set nzPlacement(value: string) {
@@ -110,7 +127,7 @@ export class NzToolTipComponent {
     }
     this.setClassMap();
     /** TODO may cause performance problem */
-    this._cdr.detectChanges();
+    this.cdr.detectChanges();
   }
 
   show(): void {
@@ -143,11 +160,10 @@ export class NzToolTipComponent {
     this.overlayOrigin = origin;
   }
 
-  constructor(private _cdr: ChangeDetectorRef) {
+  constructor(public cdr: ChangeDetectorRef) {
   }
 
-  private isContentEmpty(): boolean {
-    // return this.nzTemplate ? !(this.nzTemplate.elementRef.nativeElement as HTMLElement).hasChildNodes() : this.nzTitle === '';
-    return (this.nzTemplate || this.nzContent) ? false : (this.nzTitle === '' || this.nzTitle == null); // Pity, can't detect whether nzTemplate is empty due to can't get it's content before shown up
+  isContentEmpty(): boolean {
+    return this.isTitleString ? (this.nzTitle === '' || !isNotNil(this.nzTitle)) : false; // Pity, can't detect whether nzTemplate is empty due to can't get it's content before shown up
   }
 }
