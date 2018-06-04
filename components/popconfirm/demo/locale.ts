@@ -1,21 +1,24 @@
 import { Component } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-popconfirm-locale',
   template: `
-    <nz-popconfirm [nzTitle]="'Are you sure？'" [nzOkText]="'ok'" [nzCancelText]="'cancel'" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">
-      <a nz-popconfirm>delete</a>
-    </nz-popconfirm>
+    <a nz-popconfirm nzTitle="Are you sure?" nzOkText="ok" nzCancelText="cancel" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">delete</a>
   `
 })
 
 export class NzDemoPopconfirmLocaleComponent {
 
   cancel(): void {
-    // this.message.info('click cancel');
+    this.nzMessageService.info('click cancel');
   }
 
   confirm(): void {
-    // this.message.info('click confirm');
+    this.nzMessageService.info('click confirm');
+  }
+
+  constructor(private nzMessageService: NzMessageService) {
+
   }
 }

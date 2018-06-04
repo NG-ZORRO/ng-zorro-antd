@@ -31,7 +31,6 @@ import { NzTheadComponent } from './nz-thead.component';
 })
 export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private i18n$: Subscription;
-  locale: {} = {};
   private _bordered = false;
   private _showPagination = true;
   private _loading = false;
@@ -46,6 +45,8 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private _pageSize = 10;
   private _widthConfig: string[] = [];
   private _frontPagination = true;
+  /* tslint:disable-next-line:no-any */
+  locale: any = {};
   nzTheadComponent: NzTheadComponent;
   isFooterString: boolean;
   isTitleString: boolean;

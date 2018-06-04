@@ -17,11 +17,11 @@ title: Tooltip
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzTitle | 提示文字 | string | 无 |
+| nzTitle | 提示文字 | string丨`TemplateRef<void>` | 无 |
 
 ### 共同的 API
 
-以下 API 为 Tooltip、Popconfirm、Popover 共享的 API。
+以下 API 为 `nz-tooltip`、`nz-popconfirm`、`nz-popover` 共享的 API。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -33,8 +33,7 @@ title: Tooltip
 | nzTrigger | 触发行为，可选 `hover/focus/click` | string | hover |
 | nzVisible | 用于手动控制浮层显隐 | boolean | false |
 | nzVisibleChange | 显示隐藏的回调 | EventEmitter | 无 |
-| nzTemplate | 气泡内容，设置后会覆盖掉nzTitle的内容（用法见示例） | `TemplateRef<void>` | 无 |
 
 ## 注意
 
-请确保 `Tooltip` 的子元素能接受 `onMouseEnter`、`onMouseLeave`、`onFocus`、`onClick` 事件。
+请确保 `nz-tooltip` 的子元素能接受 `onMouseEnter`、`onMouseLeave`、`onFocus`、`onClick` 事件。
