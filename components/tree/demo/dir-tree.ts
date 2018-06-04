@@ -62,7 +62,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
     }
 
     .active {
-      background: #87CEFF;
+      background: #1890ff;
       color: #fff;
     }
 

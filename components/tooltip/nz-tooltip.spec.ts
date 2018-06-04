@@ -173,6 +173,7 @@ describe('NzTooltip', () => {
       tick();
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain(featureKey);
+      expect(overlayContainerElement.querySelector('.ant-tooltip').classList).toContain('testClass');
 
       // NOTE: the overlayElement is only available after tooltip shown up
       const overlayElement = (component.titleStringNzTooltipDirective as any).tooltip.overlay.overlayRef.overlayElement; // tslint:disable-line:no-any
@@ -231,6 +232,23 @@ describe('NzTooltip', () => {
 });
 
 @Component({
+  selector: 'nz-tooltip-test-new',
+  template: `
+    <a #titleString nz-tooltip nzTitle="title-string" nzTrigger="hover" nzPlacement="topLeft" nzOverlayClassName="testClass" [nzOverlayStyle]="{color:'#000'}" [nzMouseEnterDelay]="0.15" [nzMouseLeaveDelay]="0.1">Show</a>
+    <a #titleTemplate nz-tooltip [nzTitle]="template">Show</a>
+    <ng-template #template>
+      title-template
+    </ng-template>
+  `
+})
+export class NzTooltipTestNewComponent {
+  @ViewChild('titleString') titleString: ElementRef;
+  @ViewChild('titleString', { read: NzTooltipDirective }) titleStringNzTooltipDirective: NzTooltipDirective;
+  @ViewChild('titleTemplate') titleTemplate: ElementRef;
+  @ViewChild('titleTemplate', { read: NzTooltipDirective }) titleTemplateNzTooltipDirective: NzTooltipDirective;
+}
+
+@Component({
   selector: 'nz-tooltip-test-wrapper',
   template: `
     <a #mostSimpleTrigger nz-tooltip="MOST-SIMPLE">Show</a>
@@ -264,21 +282,4 @@ export class NzTooltipTestWrapperComponent {
 
   @ViewChild('mostSimpleTrigger') mostSimpleTrigger: ElementRef;
   @ViewChild('mostSimpleTrigger', { read: NzTooltipDirective }) mostSimpleDirective: NzTooltipDirective;
-}
-
-@Component({
-  selector: 'nz-tooltip-test-new',
-  template: `
-    <a #titleString nz-tooltip nzTitle="title-string" nzTrigger="hover" nzPlacement="topLeft">Show</a>
-    <a #titleTemplate nz-tooltip [nzTitle]="template">Show</a>
-    <ng-template #template>
-      title-template
-    </ng-template>
-  `
-})
-export class NzTooltipTestNewComponent {
-  @ViewChild('titleString') titleString: ElementRef;
-  @ViewChild('titleString', { read: NzTooltipDirective }) titleStringNzTooltipDirective: NzTooltipDirective;
-  @ViewChild('titleTemplate') titleTemplate: ElementRef;
-  @ViewChild('titleTemplate', { read: NzTooltipDirective }) titleTemplateNzTooltipDirective: NzTooltipDirective;
 }
