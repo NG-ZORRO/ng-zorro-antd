@@ -15,42 +15,39 @@ Cascade selection box.
 ## API
 
 ```html
-<nz-cascader [nzOptions]="options" [(ngModel)]="values" (ngModelChange)="onChanges($event)"></nz-cascader>
+<nz-cascader [nzOptions]="options" [(ngModel)]="values"></nz-cascader>
 ```
+
+### nz-cascader
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| ngModel | selected value | string\[] | - |
-| nzAllowClear | whether allow clear | boolean | true |
-| nzAutoFocus | whether auto focus the input box | boolean | false |
-| nzChangeOn | change value on each selection if this function return `true` | function(option: any, index: number) =&gt; boolean | - |
-| nzChangeOnSelect | change value on each selection if set to true, see above demo for details | boolean | false |
-| nzColumnClassName | additional className of column in the popup overlay | string | - |
-| nzDisabled | whether disabled select | boolean | false |
-| nzExpandTrigger | expand current item when click or hover, one of 'click' 'hover' | string | 'click' |
-| nzMenuClassName | additional className of popup overlay | string | - |
-| nzMenuStyle | additional css style of popup overlay | object | - |
-| nzLabelProperty | the label property name of options | string | 'label' |
-| nzLabelRender | render template of displaying selected options | TemplateRef&lt;any&gt; | - |
-| nzLoadData | To load option lazily. If setting `ngModel` with an array value and `nzOptions` is not setting, lazy load will be call immediately | (option: any, index?: index) => PromiseLike&lt;any&gt; | - |
-| nzOptions | data options of cascade | object[] | - |
-| nzPlaceHolder | input placeholder | string | 'Please select' |
-| nzShowArrow | Whether show arrow | boolean | true |
-| nzShowInput | Whether show input | boolean | true |
-| nzSize | input size, one of `large` `default` `small` | string | `default` |
-| nzValueProperty | the value property name of options | string | 'value' |
+| `[ngModel]` | selected value | any[] | - |
+| `[nzAllowClear]` | whether allow clear | boolean | true |
+| `[nzAutoFocus]` | whether auto focus the input box | boolean | false |
+| `[nzChangeOn]` | change value on each selection if this function return `true` | function(option: any, index: number) =&gt; boolean | - |
+| `[nzChangeOnSelect]` | change value on each selection if set to true, see above demo for details | boolean | false |
+| `[nzColumnClassName]` | additional className of column in the popup overlay | string | - |
+| `[nzDisabled]` | whether disabled select | boolean | false |
+| `[nzExpandTrigger]` | expand current item when click or hover, one of 'click' 'hover' | string | 'click' |
+| `[nzMenuClassName]` | additional className of popup overlay | string | - |
+| `[nzMenuStyle]` | additional css style of popup overlay | object | - |
+| `[nzLabelProperty]` | the label property name of options | string | 'label' |
+| `[nzLabelRender]` | render template of displaying selected options | TemplateRef&lt;any&gt; | - |
+| `[nzLoadData]` | To load option lazily. If setting `ngModel` with an array value and `nzOptions` is not setting, lazy load will be call immediately | (option: any, index?: index) => PromiseLike&lt;any&gt; | - |
+| `[nzOptions]` | data options of cascade | object[] | - |
+| `[nzPlaceHolder]` | input placeholder | string | 'Please select' |
+| `[nzShowArrow]` | Whether show arrow | boolean | true |
+| `[nzShowInput]` | Whether show input | boolean | true |
+| `[nzSize]` | input size, one of `large` `default` `small` | string | `default` |
+| `[nzValueProperty]` | the value property name of options | string | 'value' |
+| `(ngModelChange)` | Emit on values change | `EventEmitter<any[]>` | - |
+| `(nzClear)` | Emit on clear values | `EventEmitter<void>` | - |
+| `(nzVisibleChange)` | Emit on popup menu visible or hide | `EventEmitter<boolean>` | - |
+| `(nzSelect)` | Emit on select | `EventEmitter<{option: any, index: number}>` | - |
+| `(nzSelectionChange)` | Emit on selection change | `EventEmitter<any[]>` | - |
 
-## Event
-
-| Event | Description | Params |
-| --- | --- | --- |
-| ngModelChange | Emit on values change | value: any[] |
-| nzClear | Emit on clear values | - |
-| nzVisibleChange | Emit on popup menu visible or hide | visible: boolean |
-| nzSelect | Emit on select | {option: any, index: number} |
-| nzSelectionChange | Emit on selection change | options: any[] |
-
-## Methods
+#### Methods
 
 | Name | Description |
 | ---- | ----------- |

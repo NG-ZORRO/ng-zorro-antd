@@ -12,10 +12,12 @@ When part of the page is waiting for asynchronous data or during a rendering pro
 
 ## API
 
+### nz-spin
+
 | Property | Description | Type | Default Value |
 | -------- | ----------- | ---- | ------------- |
-| nzDelay | specifies a delay in milliseconds for loading state (prevent flush) | number (milliseconds) | - |
-| nzIndicator | React node of the spinning indicator | `TemplateRef<void>` | - |
-| nzSize | size of Spin, options: `small`, `default` and `large` | string | `default` |
-| nzSpinning | whether Spin is spinning | boolean | true |
-| nzTip | customize description content when Spin has children | string | - |
+| `[nzDelay]` | specifies a delay in milliseconds for loading state (prevent flush) | number (milliseconds) | - |
+| `[nzIndicator]` | React node of the spinning indicator | `TemplateRef<void>` | - |
+| `[nzSize]` | size of Spin, options: `small`, `default` and `large` | string | `default` |
+| `[nzSpinning]` | whether Spin is spinning | boolean | true |
+| `[nzTip]` | customize description content when Spin has children | string | - |

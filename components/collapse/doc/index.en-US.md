@@ -18,15 +18,15 @@ A content area which can be collapsed and expanded.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzAccordion | Accordion mode | boolean | false|
-| nzBordered | Set border style | boolean | true |
+| `[nzAccordion]` | Accordion mode | boolean | false|
+| `[nzBordered]` | Set border style | boolean | true |
 
 ### nz-collapse-panel
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzDisabled | If `true`, panel cannot be opened or closed | boolean | `false` |
-| nzHeader | Title of the panel | string｜ `TemplateRef<void>` | - |
-| nzShowArrow | Display arrow or not | boolean | true |
-| nzActive | Active status of panel, double binding | boolean | - |
-| nzActiveChange | Callback function of the active status | (nzActive:boolean)=>{} | - |
+| `[nzDisabled]` | If `true`, panel cannot be opened or closed | boolean | `false` |
+| `[nzHeader]` | Title of the panel | string｜ `TemplateRef<void>` | - |
+| `[nzShowArrow]` | Display arrow or not | boolean | true |
+| `[nzActive]` | Active status of panel, double binding | boolean | - |
+| `(nzActiveChange)` | Callback function of the active status | `EventEmitter<boolean>` | - |

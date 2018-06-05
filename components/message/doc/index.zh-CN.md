@@ -30,6 +30,8 @@ title: Message
 
 ## API
 
+### NzMessageService
+
 组件提供了一些服务方法，使用方式和参数如下：
 
 - `NzMessageService.success(content, [options])`

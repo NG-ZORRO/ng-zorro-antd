@@ -15,6 +15,8 @@ title: Breadcrumb
 
 ## API
 
+### nz-breadcrumb
+
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | --- | --- | --- | --- | --- |
-| nzSeparator | 分隔符自定义 | string丨TemplateRef |  | '/' |
+| `[nzSeparator]` | 分隔符自定义 | string丨`TemplateRef<void>` |  | '/' |

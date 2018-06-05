@@ -42,7 +42,7 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
   @Input() nzSize = 'default';
   @Input() nzType = 'default';
   @ViewChild('content') content;
-  @Output() nzClick = new EventEmitter();
+  @Output() nzClick = new EventEmitter<MouseEvent>();
   @ViewChild(NzDropDownDirective) nzOrigin;
 
   onVisibleChange = (visible: boolean) => {

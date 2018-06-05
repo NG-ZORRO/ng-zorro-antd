@@ -16,7 +16,7 @@ import { Component } from '@angular/core';
       <button nz-button nzGhost disabled>Ghost(disabled)</button>
     </div>`,
   styles  : [
-    `
+      `
       [nz-button] {
         margin-right: 8px;
         margin-bottom: 12px;

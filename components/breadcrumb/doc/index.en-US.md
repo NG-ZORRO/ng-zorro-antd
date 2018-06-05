@@ -15,7 +15,9 @@ A breadcrumb displays the current location within a hierarchy. It allows going b
 
 ## API
 
+### nz-breadcrumb
+
 | Property | Description | Type | Optional | Default |
 | -------- | ----------- | ---- | -------- | ------- |
-| nzSeparator | Custom separator | string丨TemplateRef |  | `/` |
+| `[nzSeparator]` | Custom separator | string丨`TemplateRef<void>` |  | `/` |
 
