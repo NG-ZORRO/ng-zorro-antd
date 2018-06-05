@@ -128,17 +128,13 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     }
     const before = this.options.beforeUpload(file, fileList);
     if (before instanceof Observable) {
-      before.subscribe((processedFile: UploadFile) => {
-        const processedFileType = Object.prototype.toString.call(processedFile);
-        if (processedFileType === '[object File]' || processedFileType === '[object Blob]') {
-          this.attachUid(processedFile);
-          this.post(processedFile);
-        } else {
+      before.subscribe((canProceed: boolean) => {
+        if (canProceed !== false) {
           this.post(file);
         }
       });
     } else if (before !== false) {
-      return this.post(file);
+      this.post(file);
     }
   }
 

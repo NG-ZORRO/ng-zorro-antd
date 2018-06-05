@@ -22,16 +22,16 @@ Uploading is the process of publishing information (web pages, text, pictures, v
 | --- | --- | --- | --- |
 | nzAccept | File types that can be accepted. See [input accept Attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-accept) | string | - |
 | nzAction | Required. Uploading URL | string | - |
-| nzBeforeUpload | Hook function which will be executed before uploading. Uploading will be stopped with `false` or a Observable. **Warning：this function is not supported in IE9**. NOTICE: Muse be use `=>` to define the method. | (file, fileList) => `boolean|Observable` | - |
+| nzBeforeUpload | Hook function which will be executed before uploading. Uploading will be stopped with boolean `false` or an Observable `false`. **Warning：this function is not supported in IE9**. NOTICE: Muse be use `=>` to define the method. | (file, fileList) => `boolean` or `Observable<boolean>` | - |
 | nzCustomRequest | override for the default xhr behavior allowing for additional customization and ability to implement your own XMLHttpRequest. NOTICE: Muse be use `=>` to define the method. | `(item) => Subscription` | - |
-| nzData | Uploading params or function which can return uploading params. NOTICE: Muse be use `=>` to define the method. | `Object|((file: UploadFile) => Object)` | - |
+| nzData | Uploading params or function which can return uploading params. NOTICE: Muse be use `=>` to define the method. | `Object` or `((file: UploadFile) => Object)` | - |
 | nzDisabled | disable upload button | boolean | false |
 | nzFileList | List of files, two-way data-binding | UploadFile[] | - |
 | nzLimit | limit single upload count when `nzMultiple` has opened. `0` unlimited | number | 0 |
 | nzSize | limit file size (KB). `0` unlimited | number | 0 |
 | nzFileType | limit file type, e.g: `image/png,image/jpeg,image/gif,image/bmp` | string | - |
 | nzFilter | Custom filter when choosed file | UploadFilter[] | - |
-| nzHeaders | Set request headers, valid above IE10. NOTICE: Muse be use `=>` to define the method. | `Object｜((file: UploadFile) => Object)` | - |
+| nzHeaders | Set request headers, valid above IE10. NOTICE: Muse be use `=>` to define the method. | `Object` or `((file: UploadFile) => Object)` | - |
 | nzListType | Built-in stylesheets, support for three types: `text`, `picture` or `picture-card` | string | 'text' |
 | nzMultiple | Whether to support selected multiple file. `IE10+` supported. You can select multiple files with CTRL holding down while multiple is set to be true | boolean | false |
 | nzName | The name of uploading file | string | 'file' |
