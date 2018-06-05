@@ -48,7 +48,7 @@ title: Form
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzLayout | 表单布局	 | `'horizontal'丨'vertical'丨'inline'`| 'horizontal'|
+| `[nzLayout]`| 表单布局	 | `'horizontal'丨'vertical'丨'inline'`| 'horizontal'|
 
 ### nz-form-item
 
@@ -58,7 +58,7 @@ title: Form
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzFlex | 是否Flex布局	 | boolean | false|
+| `[nzFlex]`| 是否Flex布局	 | boolean | false|
 
 ### nz-form-label
 
@@ -68,8 +68,8 @@ title: Form
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzRequired | 当前项是否为必填，仅影响样式	 | boolean | false|
-| nzFor | label 标签的 for 属性	 | string | -|
+| `[nzRequired]`| 当前项是否为必填，仅影响样式	 | boolean | false|
+| `[nzFor]`| label 标签的 for 属性	 | string | -|
 
 ### nz-form-control
 
@@ -80,9 +80,9 @@ title: Form
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzValidateStatus(Reactive Forms) | 会根据 FormControl 的状态自动生成校验状态 | FormControl | `nz-form-control` 中包裹的第一个 `FormControl`  |
-| nzValidateStatus(Template-driven Forms) | 校验状态，可选：'success' 'warning' 'error' 'validating' | string |  |
-| nzHasFeedback | 配合 nzValidateStatus 属性使用，展示校验状态图标	 | boolean | false|
+| `[nzValidateStatus]`(Reactive Forms) | 会根据 FormControl 的状态自动生成校验状态 | FormControl | `nz-form-control` 中包裹的第一个 `FormControl`  |
+| `[nzValidateStatus]`(Template-driven Forms) | 校验状态，可选：'success' 'warning' 'error' 'validating' | string |  |
+| `[nzHasFeedback]`| 配合 nzValidateStatus 属性使用，展示校验状态图标	 | boolean | false|
 
 ### nz-form-explain
 

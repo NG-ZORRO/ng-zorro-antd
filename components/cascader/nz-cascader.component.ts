@@ -363,7 +363,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   }>();
 
   /** Event: emit on the clear button clicked */
-  @Output() nzClear = new EventEmitter<any>();
+  @Output() nzClear = new EventEmitter<void>();
 
   /** 浮层菜单 */
   @ViewChild('menu') menu: ElementRef;

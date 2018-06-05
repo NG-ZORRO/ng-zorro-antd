@@ -75,15 +75,15 @@ The sidebar.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzBreakpoint | breakpoints of the responsive layout | Enum { 'xs', 'sm', 'md', 'lg', 'xl', 'xxl' } | - |
-| nzCollapsed | to set the current status | boolean | - |
-| nzCollapsedWidth | width of the collapsed sidebar, by setting to `0` a special trigger will appear | number | 64 |
-| nzCollapsible | whether can be collapsed | boolean | false |
-| nzCollapsed | the collapsed status can be double binding | boolean | false |
-| nzCollapsedChange | the callback function | (collapsed) => {} | - |
-| nzReverseArrow | reverse direction of arrow, for a sider that expands from the right | boolean | false |
-| nzTrigger | specify the customized trigger, set to null to hide the trigger | string丨TemplateRef | - |
-| nzWidth | width of the sidebar | number丨string | 200 |
+| `[nzBreakpoint]` | breakpoints of the responsive layout | Enum { 'xs', 'sm', 'md', 'lg', 'xl', 'xxl' } | - |
+| `[nzCollapsed]` | to set the current status | boolean | - |
+| `[nzCollapsedWidth]` | width of the collapsed sidebar, by setting to `0` a special trigger will appear | number | 64 |
+| `[nzCollapsible]` | whether can be collapsed | boolean | false |
+| `[nzCollapsed]` | the collapsed status can be double binding | boolean | false |
+| `[nzReverseArrow]` | reverse direction of arrow, for a sider that expands from the right | boolean | false |
+| `[nzTrigger]` | specify the customized trigger, set to null to hide the trigger | string丨`TemplateRef<void>` | - |
+| `[nzWidth]` | width of the sidebar | number丨string | 200 |
+| `(nzCollapsedChange)` | the callback function | `EventEmitter<boolean>` | - |
 
 #### breakpoint width
 

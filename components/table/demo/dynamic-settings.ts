@@ -111,8 +111,8 @@ import { Component, OnInit } from '@angular/core';
       [nzFooter]="footer?'Here is Footer':null"
       [nzTitle]="title?'Here is Title':null"
       [nzSize]="size">
-      <thead *ngIf="header">
-        <tr>
+      <thead>
+        <tr *ngIf="header">
           <th nzWidth="50px" nzShowExpand *ngIf="expandable"></th>
           <th nzWidth="62px" nzShowCheckbox *ngIf="checkbox" [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
           <th nzWidth="150px">Name</th>

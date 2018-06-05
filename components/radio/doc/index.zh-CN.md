@@ -14,15 +14,15 @@ title: Radio
 
 ## API
 
-### nz-radio | nz-radio-button
+### [nz-radio] | [nz-radio-button]
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzAutoFocus | 自动获取焦点 | boolean | false |
-| nzDisabled | 设定 disable 状态 | boolean | false |
-| ngModel | 指定当前是否选中，可双向绑定 | boolean | false |
-| ngModelChange | 选中变化时回调 | (ngModel:boolean)=>{} | - |
-| nzValue | 设置 value，与 `nz-radio-group` 配合使用 | string | - |
+| `[nzAutoFocus]` | 自动获取焦点 | boolean | false |
+| `[nzDisabled]` | 设定 disable 状态 | boolean | false |
+| `[ngModel]` | 指定当前是否选中，可双向绑定 | boolean | false |
+| `[nzValue]` | 设置 value，与 `nz-radio-group` 配合使用 | string | - |
+| `(ngModelChange)` | 选中变化时回调 | `EventEmitter<boolean>` | - |
 
 
 ### nz-radio-group
@@ -31,15 +31,15 @@ title: Radio
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| ngModel | 指定选中的 `nz-radio` 的 value 值 | string | - |
-| ngModelChange | 选中变化时回调 | (ngModel:string)=>{} | - |
-| nzName | `nz-radio-group` 下所有 `input[type="radio"]` 的 `name` 属性 | string | 无 |
-| nzDisabled | 设定所有 `nz-radio` disable 状态 | boolean | false |
-| nzSize | 大小，只对按钮样式生效 | `large` ｜ `default` ｜ `small` | `default` |
+| `[ngModel]` | 指定选中的 `nz-radio` 的 value 值 | string | - |
+| `[nzName]` | `nz-radio-group` 下所有 `input[type="radio"]` 的 `name` 属性 | string | 无 |
+| `[nzDisabled]` | 设定所有 `nz-radio` disable 状态 | boolean | false |
+| `[nzSize]` | 大小，只对按钮样式生效 | `large` ｜ `default` ｜ `small` | `default` |
+| `(ngModelChange)` | 选中变化时回调 | `EventEmitter<boolean>` | - |
 
 ## 方法
 
-### nz-radio
+### [nz-radio]
 
 | 名称 | 描述 |
 | --- | --- |

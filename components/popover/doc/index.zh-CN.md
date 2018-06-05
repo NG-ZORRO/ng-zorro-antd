@@ -15,10 +15,12 @@ title: Popover
 
 ## API
 
+### [nz-popover]
+
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzTitle | 卡片标题 | string 丨`TemplateRef<void>` | 无 |
-| nzContent | 用于定义Content内容 | string 丨`TemplateRef<void>` | 无 |
+| `[nzTitle]` | 卡片标题 | string 丨`TemplateRef<void>` | 无 |
+| `[nzContent]` | 用于定义Content内容 | string 丨`TemplateRef<void>` | 无 |
 
 更多属性请参考 [Tooltip](/components/tooltip/zh#api)。
 

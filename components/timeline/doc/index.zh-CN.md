@@ -29,7 +29,7 @@ title: Timeline
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzPending | 指定最后一个幽灵节点是否存在或内容 | boolean｜string｜`TemplateRef<void>` | false |
+| `[nzPending]` | 指定最后一个幽灵节点是否存在或内容 | boolean｜string｜`TemplateRef<void>` | false |
 
 ### nz-timeline-item
 
@@ -37,5 +37,5 @@ title: Timeline
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzColor | 指定圆圈颜色 `blue, red, green`，或自定义的色值 | string | blue |
-| nzDot | 自定义时间轴点 | string｜`TemplateRef<void>` | - |
+| `[nzColor]` | 指定圆圈颜色 `blue, red, green`，或自定义的色值 | string | blue |
+| `[nzDot]` | 自定义时间轴点 | string｜`TemplateRef<void>` | - |
