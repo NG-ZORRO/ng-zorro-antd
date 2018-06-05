@@ -13,24 +13,24 @@ A list can be used to display content related to a single subject. The content c
 
 ## API
 
-### List
+### nz-list
 
 | Property | Description | Type | Default
 | --- | --- | --- | --- |
-| nzDataSource | Data source for list | `any[]` | - |
-| nzRenderItem | Custom item renderer | `TemplateRef` | - |
-| nzBordered | Toggles rendering of the border around the list | boolean | false |
-| nzFooter | List footer renderer | `string,TemplateRef` | - |
-| nzGrid | The grid type of list. You can set grid to something like `{gutter: 16, column: 4}` | object | - |
-| nzHeader | List header renderer | `string,TemplateRef` | - |
-| nzItemLayout | The layout of list, default is `horizontal`, If a vertical list is desired, set the itemLayout property to `vertical` | string | - |
-| nzLoading | Shows a loading indicator while the contents of the list are being fetched | boolean | false |
-| nzLoadMore | Shows a load more content | `TemplateRef` | - |
-| nzPagination | Shows a pagination content | `TemplateRef` | - |
-| nzSize | Size of list | `default,small,large` | `default` |
-| nzSplit | Toggles rendering of the split under the list item | boolean | true |
+| `[nzDataSource]` | Data source for list | `any[]` | - |
+| `[nzRenderItem]` | Custom item renderer | `TemplateRef<void>` | - |
+| `[nzBordered]` | Toggles rendering of the border around the list | boolean | false |
+| `[nzFooter]` | List footer renderer | `string｜TemplateRef<void>` | - |
+| `[nzGrid]` | The grid type of list. You can set grid to something like `{gutter: 16, column: 4}` | object | - |
+| `[nzHeader]` | List header renderer | `string｜TemplateRef<void>` | - |
+| `[nzItemLayout]` | The layout of list, default is `horizontal`, If a vertical list is desired, set the itemLayout property to `vertical` | string | - |
+| `[nzLoading]` | Shows a loading indicator while the contents of the list are being fetched | boolean | false |
+| `[nzLoadMore]` | Shows a load more content | `TemplateRef<void>` | - |
+| `[nzPagination]` | Shows a pagination content | `TemplateRef<void>` | - |
+| `[nzSize]` | Size of list | `default,small,large` | `default` |
+| `[nzSplit]` | Toggles rendering of the split under the list item | boolean | true |
 
-### List grid props
+#### nzGrid
 
 | Property | Description | Type | Default
 | --- | --- | --- | --- |
@@ -47,14 +47,14 @@ A list can be used to display content related to a single subject. The content c
 
 | Property | Description | Type | Default
 | --- | --- | --- | --- |
-| nzContent | content renderer | `string,TemplateRef` | - |
-| nzActions | The actions content of list item. If `itemLayout` is `vertical`, shows the content on bottom, otherwise shows content on the far right. | `Array<TemplateRef<void>>` | - |
-| nzExtra | The extra content of list item. If `itemLayout` is `vertical`, shows the content on right, otherwise shows content on the far right. | `TemplateRef` | - |
+| `[nzContent]` | content renderer | `string｜TemplateRef<void>` | - |
+| `[nzActions]` | The actions content of list item. If `itemLayout` is `vertical`, shows the content on bottom, otherwise shows content on the far right. | `Array<TemplateRef<void>>` | - |
+| `[nzExtra]` | The extra content of list item. If `itemLayout` is `vertical`, shows the content on right, otherwise shows content on the far right. | `TemplateRef<void>` | - |
 
 ### nz-list-item-meta
 
 | Property | Description | Type | Default
 | --- | --- | --- | --- |
-| nzAvatar | The avatar of list item | `string,TemplateRef` | - |
-| nzDescription | The description of list item | `string,TemplateRef` | - |
-| nzTitle | The title of list item | `string,TemplateRef` | - |
+| `[nzAvatar]` | The avatar of list item | `string｜TemplateRef<void>` | - |
+| `[nzDescription]` | The description of list item | `string｜TemplateRef<void>` | - |
+| `[nzTitle]` | The title of list item | `string｜TemplateRef<void>` | - |

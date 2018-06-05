@@ -29,6 +29,8 @@ The default global configuration is:
 
 ## API
 
+### NzMessageService
+
 This components provides some service methods, with usage and arguments as following:
 
 - `NzMessageService.success(content, [options])`

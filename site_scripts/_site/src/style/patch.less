@@ -36,3 +36,37 @@
     color: @primary-color;
   }
 }
+
+label {
+  &.api-type-label {
+    padding: 1px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    line-height: 18px;
+    display: inline;
+    vertical-align: middle;
+    color: #fff;
+    margin-left: 8px;
+    font-weight: normal;
+    text-transform: uppercase;
+    &.directive {
+      color: @magenta-6;
+      border: 2px solid @magenta-6;
+    }
+    &.component {
+      color: @blue-6;
+      border: 2px solid @blue-6;
+    }
+    &.service {
+      color: @green-6;
+      border: 2px solid @green-6;
+    }
+  }
+}
+
+span.ant-component-decs {
+  font-size: 12px;
+  position: absolute;
+  color: #aaa;
+  right: 16px;
+}

@@ -28,7 +28,7 @@ Timeline
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzPending | Set the last ghost node's existence or its content | boolean｜string｜`TemplateRef<void>` | `false` |
+| `[nzPending]` | Set the last ghost node's existence or its content | boolean｜string｜`TemplateRef<void>` | `false` |
 
 ### nz-timeline-item
 
@@ -36,5 +36,5 @@ Node of timeline
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzColor | Set the circle's color to `blue`, `red`, `green` or other custom colors | string | `blue` |
-| nzDot | Customize timeline dot | string｜`TemplateRef<void>` | - |
+| `[nzColor]` | Set the circle's color to `blue`, `red`, `green` or other custom colors | string | `blue` |
+| `[nzDot]` | Customize timeline dot | string｜`TemplateRef<void>` | - |

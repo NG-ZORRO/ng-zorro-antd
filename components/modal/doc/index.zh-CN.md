@@ -19,6 +19,8 @@ title: Modal
 
 ## API
 
+### NzModalService
+
 对话框当前分为2种模式，`普通模式` 和 `确认框模式`（即`Confirm`对话框，通过调用`confirm/info/success/error/warning`弹出），两种模式对API的支持程度稍有不同。
 
 | 参数 | 说明 | 类型 | 默认值 |
