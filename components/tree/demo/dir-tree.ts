@@ -8,7 +8,9 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
              [nzShowExpand]="true"
              [nzDraggable]="true"
              (nzOnDragStart)="dragStart($event)"
-             (nzClick)="activeNode($event)">
+             (nzClick)="activeNode($event)"
+             (nzDblClick)="openFolder($event)"
+             >
       <ng-template #nzTreeTemplate let-node>
         <span class="custom-node" draggable="true" aria-grabbed="true" [class.active]="activedNode?.key===node.key">
           <span *ngIf="!node.isLeaf" [class.shine-animate]="node.origin.isLoading">
@@ -54,7 +56,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 
     .custom-node {
       cursor: pointer;
-      line-height: 30px;
+      line-height: 26px;
       margin-left: 4px;
       display: inline-block;
       margin: 0 -1000px;
@@ -62,7 +64,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
     }
 
     .active {
-      background: #1890ff;
+      background: #1890FF;
       color: #fff;
     }
 
@@ -78,7 +80,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 
     .file-desc, .folder-desc {
       padding: 2px 8px;
-      background: rgba(0,0,0,.15);
+      background: #87CEFF;
       color: #FFFFFF;
     }
   ` ]
@@ -180,18 +182,32 @@ export class NzDemoTreeDirTreeComponent implements OnInit {
    * @param {} data
    */
 
-  openFolder(data: NzTreeNode): void {
+  openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
     // do something if u want
-    // change node's expand status
-    if (!data.isExpanded) {
-      // close to open
-      data.origin.isLoading = true;
-      setTimeout(() => {
+    if (data instanceof NzTreeNode) {
+      // change node's expand status
+      if (!data.isExpanded) {
+        // close to open
+        data.origin.isLoading = true;
+        setTimeout(() => {
+          data.isExpanded = !data.isExpanded;
+          data.origin.isLoading = false;
+        }, 500);
+      } else {
         data.isExpanded = !data.isExpanded;
-        data.origin.isLoading = false;
-      }, 500);
+      }
     } else {
-      data.isExpanded = !data.isExpanded;
+      // change node's expand status
+      if (!data.node.isExpanded) {
+        // close to open
+        data.node.origin.isLoading = true;
+        setTimeout(() => {
+          data.node.isExpanded = !data.node.isExpanded;
+          data.node.origin.isLoading = false;
+        }, 500);
+      } else {
+        data.node.isExpanded = !data.node.isExpanded;
+      }
     }
   }
 
