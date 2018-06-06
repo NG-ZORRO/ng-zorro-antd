@@ -24,14 +24,14 @@ export default function (options: Schema): Rule {
   ]);
 }
 
-/** 添加 i18n 配置, 取决于 options.locale */
+/** 添加 i18n 配置, 取决于 options.i18n */
 function addI18n(options: Schema): (host: Tree) => Tree {
   return function (host: Tree): Tree {
     const workspace = getWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
     const modulePath = getAppModulePath(host, project.architect.build.options.main);
     const moduleSource = getSourceFile(host, modulePath);
-    const locale = options.locale;
+    const locale = options.i18n;
     const localePrefix = locale.split('_')[0];
 
     if (!moduleSource) {
