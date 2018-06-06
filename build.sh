@@ -49,8 +49,6 @@ echo 'Generate schematics by demos'
 npm run schematic:demo
 
 echo 'Building schematics'
-node ./schematics_script/set-version.js
-node ./schematics_script/set-theme.js
 npm run schematic:demo
 npm run schematic:build
 rm -rf schematics/demo

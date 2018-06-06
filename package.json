@@ -9,7 +9,7 @@
     "site": "node site_scripts/generate-site",
     "schematic:demo": "node schematics_script/demo2schematics",
     "schematic:tsc": "tsc -p schematics/tsconfig.json",
-    "schematic:build": "npm run schematic:tsc && node schematics_script/copy-resources",
+    "schematic:build": "node ./schematics_script/set-theme.js && node ./schematics_script/set-version.js && npm run schematic:tsc && node schematics_script/copy-resources",
     "ng": "ng",
     "start": "ng serve -p 0",
     "build": "node site_scripts/generate-site init && ng build",
