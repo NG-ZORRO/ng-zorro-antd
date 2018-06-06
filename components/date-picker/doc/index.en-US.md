@@ -12,7 +12,7 @@ By clicking the input box, you can select a date from a popup calendar.
 
 ## API
 
-**Note:** Some of nz-date-picker's locale are coming from [Angular i18n](https://angular.io/guide/i18n), that should be provided in the file of `main.ts`.
+**Note:** Some of nz-date-picker's locale are coming from [Angular i18n](https://angular.io/guide/i18n), that should be provided in the file of `app.module.ts`.
 
 For example:
 ```typescript

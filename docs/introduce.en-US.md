@@ -37,35 +37,37 @@ Following the Ant Design specification, we developed a Angular UI library `ng-zo
 
 ## Version
 
-[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+- Stable: [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 
-- 1.x (support Angular 6.x & Ant Design 3.x) will release soon
-- 0.7.x (support Angular 5.x & Ant Design 3.x) current version
-- 0.6.x (support Angular 5.x & Ant Design 2.x) **Not Under Maintenance**
+Support `angular ^6.0.0` and follow the latest design guidelines of Ant Design.
+
+> `ng-zorro-antd` sync with ant design guidelines periodically, check the online [log](https://nz-styles-syncer.now.sh/).
+
 
 ## Installation
 
-### Using npm or yarn
-
-**We recommend using npm or yarn to install**，it not only makes development easier，but also allow you to take advantage of the rich ecosystem of Javascript packages and tooling.
+**We recommend using `@angular/cli` to install**，it not only makes development easier，but also allow you to take advantage of the rich ecosystem of angular packages and tooling.
 
 ```bash
-$ npm install ng-zorro-antd --save
+$ ng new PROJECT_NAME
+$ cd PROJECT_NAME
+$ ng add ng-zorro-antd -i18n=en_US
 ```
+
+> More information about `@angular/cli` [here](https://github.com/angular/angular-cli).
+
+You can also install `ng-zorro-antd` with npm or yarn
 
 ```bash
-$ yarn add ng-zorro-antd
+$ npm install ng-zorro-antd
 ```
 
-If you are in a bad network environment，you can try other registries and tools like [cnpm](https://github.com/cnpm/cnpm).
-
-
-## Companies using antd
+## Companies using ng-zorro-antd
 
 - [Alibaba](http://www.alibaba.com/)
 - [Aliyun](http://www.aliyun.com/)
 
-> If your company or product uses NG-ZORRO, let us know [here](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142)!
+> If your company or product uses ng-zorro-antd, let us know [here](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142)!
 
 ## Contributing
 
