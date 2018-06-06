@@ -1,7 +1,6 @@
 import {
   Component,
   ContentChild,
-  Input,
   TemplateRef
 } from '@angular/core';
 import { fadeAnimation } from '../core/animation/fade-animations';
@@ -20,6 +19,6 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 })
 export class NzPopoverComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';
-  _title: string | TemplateRef<void>;
+  @ContentChild('neverUsedTemplate') _title: string | TemplateRef<void>; // used to remove NzToolTipComponent @ContentChild('nzTemplate')
   @ContentChild('nzTemplate') _content: string | TemplateRef<void>;
 }
