@@ -82,7 +82,7 @@
     "karma-cli": "~1.0.1",
     "marked": "^0.3.6",
     "node-prismjs": "^0.1.1",
-    "ngx-color": "^1.2.1",
+    "ngx-color": "^1.5.2",
     "prismjs": "^1.10.0",
     "remark": "^8.0.0",
     "rollup": "^0.49.2",
