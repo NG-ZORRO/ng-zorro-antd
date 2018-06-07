@@ -18,7 +18,7 @@ We are using [Less](http://lesscss.org/) as the development language for styling
 Create a standalone less file like the one below, and add the path of it to the list of `styles` in `.angular-cli.json` file.
 
 ```css
-@import "~antd/dist/antd.less";   // import official less entry file
+@import "~ng-zorro-antd/src/ng-zorro-antd.less";   // import official less entry file
 @import "your-theme-file.less";   // override variables here
 ```
 
