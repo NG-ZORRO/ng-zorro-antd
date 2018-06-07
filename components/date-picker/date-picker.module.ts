@@ -10,6 +10,7 @@ import { NzMonthPickerComponent } from './month-picker.component';
 import { NzPickerComponent } from './picker.component';
 import { NzRangePickerComponent } from './range-picker.component';
 import { NzWeekPickerComponent } from './week-picker.component';
+import { NzYearPickerComponent } from './year-picker.component';
 
 @NgModule({
   imports: [
@@ -21,12 +22,14 @@ import { NzWeekPickerComponent } from './week-picker.component';
   exports: [
     NzDatePickerComponent,
     NzRangePickerComponent,
+    NzYearPickerComponent,
     NzMonthPickerComponent,
     NzWeekPickerComponent
   ],
   declarations: [
     DateRangePickerComponent,
     NzDatePickerComponent,
+    NzYearPickerComponent,
     NzMonthPickerComponent,
     NzWeekPickerComponent,
     NzRangePickerComponent,

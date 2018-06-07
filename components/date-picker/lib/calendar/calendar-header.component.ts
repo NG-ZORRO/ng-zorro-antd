@@ -14,9 +14,11 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Input() locale: NzCalendarI18nInterface;
   @Input() enablePrev: boolean = true;
   @Input() enableNext: boolean = true;
+  @Input() disabledYear: (date: Date) => boolean;
   @Input() disabledMonth: (date: Date) => boolean;
   @Input() showTimePicker: boolean = false;
-  @Input() forceToMonth: boolean = false; // Force change panel to month without value change when choose a year/decade
+  @Input() forceToMonth: boolean = false; // Force change panel to month without value change when choose a year
+  @Input() forceToYear: boolean = false; // Force change panel to year without value change when choose a decade
 
   @Input() value: CandyDate;
   @Output() valueChange = new EventEmitter<CandyDate>();
@@ -69,7 +71,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   }
 
   onChooseDecade(value: CandyDate): void {
-    if (this.forceToMonth) {
+    if (this.forceToYear) {
       this.value = value; // Change internal value only
       this.changePanel('year');
     } else {

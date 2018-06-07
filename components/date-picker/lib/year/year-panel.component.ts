@@ -17,6 +17,8 @@ export class YearPanelComponent implements OnChanges {
   @Input() value: CandyDate;
   @Output() valueChange = new EventEmitter<CandyDate>();
 
+  @Input() disabledDate: (date: Date) => boolean;
+
   @Output() decadePanelShow = new EventEmitter<void>();
 
   get currentYear(): number {
@@ -35,7 +37,7 @@ export class YearPanelComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value) {
+    if (changes.value || changes.disabledDate) {
       this.render();
     }
   }
@@ -82,10 +84,12 @@ export class YearPanelComponent implements OnChanges {
       years[rowIndex] = [];
       for (let colIndex = 0; colIndex < MAX_COL; colIndex ++) {
         const year = previousYear + index;
+        const disabled = this.disabledDate ? this.disabledDate(this.value.setYear(year).nativeDate) : false;
         const content = String(year);
 
         const cell = years[rowIndex][colIndex] = {
           content,
+          disabled,
           year,
           title: content,
           isCurrent: year === currentYear,
@@ -97,6 +101,7 @@ export class YearPanelComponent implements OnChanges {
 
         cell.classMap = {
           [`${this.prefixCls}-cell`]: true,
+          [`${this.prefixCls}-cell-disabled`]: disabled,
           [`${this.prefixCls}-selected-cell`]: cell.isCurrent,
           [`${this.prefixCls}-last-decade-cell`]: cell.isLowerThanStart,
           [`${this.prefixCls}-next-decade-cell`]: cell.isBiggerThanEnd
@@ -119,6 +124,7 @@ export class YearPanelComponent implements OnChanges {
 
 export interface PanelYearData {
   content: string;
+  disabled: boolean;
   year: number;
   title: string;
   isCurrent: boolean;

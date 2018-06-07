@@ -33,8 +33,27 @@
   border-collapse: separate;
 }
 
+.@{calendar-prefix-cls}-year-panel-selected-cell .@{calendar-prefix-cls}-year-panel-year {
+  background: @primary-color;
+  color: #fff;
+
+  &:hover {
+    background: @primary-color;
+    color: #fff;
+  }
+}
+
 .@{calendar-prefix-cls}-year-panel-cell {
   text-align: center;
+
+  &-disabled .@{calendar-prefix-cls}-year-panel-year {
+    &,
+    &:hover {
+      cursor: not-allowed;
+      color: #bcbcbc;
+      background: @disabled-bg;
+    }
+  }
 }
 
 .@{calendar-prefix-cls}-year-panel-year {
@@ -52,16 +71,6 @@
   &:hover {
     background: @item-hover-bg;
     cursor: pointer;
-  }
-}
-
-.@{calendar-prefix-cls}-year-panel-selected-cell .@{calendar-prefix-cls}-year-panel-year {
-  background: @primary-color;
-  color: #fff;
-
-  &:hover {
-    background: @primary-color;
-    color: #fff;
   }
 }
 
