@@ -5,8 +5,6 @@ title: 脚手架
 使用脚手架可以更加方便的初始化项目，生成模板代码，节省开发时间。
 > 脚手架部分完全基于 [Schematics](https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2) 部分进行开发。
 
--------
-
 ## 项目初始化
 
 自动完成 `ng-zorro-antd` 的初始化配置，包括引入国际化文件，导入模块，引入样式文件等工作。
@@ -27,7 +25,7 @@ ng add ng-zorro-antd [options]
 
 ***--i18n***
 
-初始化配置时增加 `--i18n=[语言]` 参数，`ng-zorro-antd` 会自动引入 `ng-zorro-antd` 支持的语言包以及 Angular 对应的 [i18n 文件](https://angular.io/guide/i18n)
+初始化配置时增加 `--i18n=[语言]` 参数，`ng-zorro-antd` 会自动引入支持的语言包以及 Angular 对应的 [i18n 文件](https://angular.io/guide/i18n)
 
 默认的国际化配置为中文(zh_CN)，详细的可配置选项可以在[国际化](/docs/i18n/zh)中查看。
 
@@ -38,7 +36,7 @@ ng add ng-zorro-antd [options]
 ### 生成组件命令
 
 ```bash
-ng g ng-zorro-antd:[templete] --name=NAME [options]
+ng g ng-zorro-antd:[template] --name=NAME [options]
 ```
 
 例如通过以下代码可以快速生成一个登陆框组件
@@ -71,7 +69,7 @@ ng g ng-zorro-antd:form-normal-login -p app --styleext='less' --name=login
 
 ***--path***
 
-制定组件创建目录（相当于执行时所在的目录）
+指定组件创建目录（相当于执行时所在的目录）
 
 ***--spec***
 
@@ -92,5 +90,5 @@ ng g ng-zorro-antd:form-normal-login -p app --styleext='less' --name=login
 
 ***--module***, ***-m***
 
-制定要声明的模块名
+指定要声明的模块名
 

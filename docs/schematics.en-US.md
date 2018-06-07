@@ -2,13 +2,11 @@
 order: 2
 title: Schematics
 ---
-`ng-zorro-antd` support [schematics]((https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2)), you can init configuration and generate component with schematics now.
+`ng-zorro-antd` support [schematics](https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2), you can init configuration and generate component with schematics now.
 
--------
+## Init Project
 
-## Init Configuration
-
-Init configuration for `ng-zorro-antd`.
+Init project with `ng-zorro-antd`.
 
 ### Command
 
@@ -37,12 +35,12 @@ You can get component generation code in our doc after expand the code panel bel
 ### Command
 
 ```bash
-ng g ng-zorro-antd:[templete] --name=NAME [options]
+ng g ng-zorro-antd:[template] --name=NAME [options]
 ```
 
 For example, you can generate an login form with the follow command.
 
-```
+```bash
 ng g ng-zorro-antd:form-normal-login -p app --styleext='less' --name=login
 ```
 

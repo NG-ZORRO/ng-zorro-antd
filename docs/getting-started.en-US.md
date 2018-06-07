@@ -5,15 +5,13 @@ title: Getting Started
 
 Ant Design of Angular is dedicated to providing a **good development experience** for programmers.
 
----
-
 > Before delving into Ant Design Angular, a good knowledge of [Angular](https://angular.io/) and [JavaScript ES2015](http://babeljs.io/docs/learn-es2015/) is needed.
 
 ## Playground
 
 The following StackBlitz demo is the simplest use case, and it's also a good habit to fork this demo to provide a re-producible demo while reporting a bug. Please don't use this demo as a scaffold in production.
 
-- [NG-ZORRO StackBlitz](https://stackblitz.com/edit/ng-zorro-antd-setup?file=app%2Fapp.component.ts)
+- [NG-ZORRO StackBlitz](https://stackblitz.com/edit/ng-zorro-antd-start?file=src%2Fapp%2Fapp.component.ts)
 
 ## First Local Development
 
@@ -46,7 +44,7 @@ $ ng new PROJECT-NAME
 
 ```bash
 $ cd PROJECT-NAME
-$ ng add ng-zorro-antd
+$ ng add ng-zorro-antd --i18n=en_US
 ```
 
 ### 4. Development & Debugging
@@ -57,7 +55,7 @@ Run your project now, you can see the img below now.
 $ ng serve --port 0 --open
 ```
 
-<img style="display: block;padding: 30px 180px;height: 260px;" src="https://img.alicdn.com/tfs/TB1MGSRv21TBuNjy0FjXXajyXXa-89-131.svg">
+<img style="display: block;padding: 30px 30%;height: 260px;" src="https://img.alicdn.com/tfs/TB1MGSRv21TBuNjy0FjXXajyXXa-89-131.svg">
 
 ### 5. Building & Deployment
 
@@ -79,8 +77,6 @@ $ npm install ng-zorro-antd --save
 
 ### 2. Import module
 
-**Note**：You should import `NgZorroAntdModule.forRoot()` in root module，and import `NgZorroAntdModule` instead in sub module.
-
 ```typescript
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -93,7 +89,7 @@ import { AppComponent } from './app.component';
 /** config angular i18n **/
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
-registerLocaleData(zh);
+registerLocaleData(en);
 
 @NgModule({
   declarations: [
@@ -105,7 +101,7 @@ registerLocaleData(zh);
     HttpClientModule,
     BrowserAnimationsModule,
     /** import ng-zorro-antd root module，you should import NgZorroAntdModule instead in sub module **/
-    NgZorroAntdModule.forRoot()
+    NgZorroAntdModule
   ],
   bootstrap: [ AppComponent ],
   /** config ng-zorro-antd i18n **/

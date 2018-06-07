@@ -37,6 +37,10 @@ import { Component } from '@angular/core';
       .steps-action {
         margin-top: 24px;
       }
+
+      button {
+        margin-right: 8px;
+      }
     `
   ]
 })

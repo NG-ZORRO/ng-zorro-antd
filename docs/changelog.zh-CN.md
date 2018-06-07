@@ -4,6 +4,7 @@ title: 更新日志
 toc: false
 timeline: true
 ---
+`ng-zorro-antd` 严格遵循 [Semantic Versioning 2.0.0](http://semver.org/lang/zh-CN/) 语义化版本规范。
 
 #### 发布周期
 
@@ -13,8 +14,11 @@ timeline: true
 
 ---
 
+## 1.0.0
+`2018-06-11`
 
+更多内容见 NG ZORRO 1.0 发布公告。
 
-## 之前版本
+## 1.0 之前版本
 
-之前版本的更新记录可以在 [Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases) 查看
+1.0 之前版本的更新记录可以在 [Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases) 查看

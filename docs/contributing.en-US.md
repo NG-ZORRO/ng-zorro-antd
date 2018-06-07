@@ -43,7 +43,7 @@ The core team is monitoring for pull requests. We will review your pull request 
 
 1. Run `npm install` in the repository root.
 2. If you’ve fixed a bug or added code that should be tested, add tests!
-3. Ensure the test suite passes (npm run test). 
+3. Ensure the test suite passes (npm run test).
 4. Make sure your code lints (npm run lint). Tip: Lint runs automatically when you `git commit`.
 5. Make sure rebase your code to keep the history clean.
 6. Make sure your commit message meet the [guidelines](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md#-commit-message-guidelines)
@@ -55,5 +55,4 @@ After cloning `ng-zorro-antd`, run `npm install` to fetch its dependencies. Then
 1. `npm run site:start` runs NG-ZORRO website locally.
 2. `npm run lint` checks the code style.
 3. `npm test` runs the complete test suite.
-4. `npm run compile` compiles TypeScript code to the `lib` and `es` directory.
 5. `npm run generate` creates build of `ng-zorro-antd`.

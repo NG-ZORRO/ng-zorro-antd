@@ -45,9 +45,6 @@ sed -e "s/from '.\//from '.\/src\//g" publish/src/index.d.ts > publish/antd.d.ts
 sed -e "s/\":\".\//\":\".\/src\//g" publish/src/index.metadata.json > publish/antd.metadata.json
 rm publish/src/index.d.ts publish/src/index.metadata.json
 
-echo 'Generate schematics by demos'
-npm run schematic:demo
-
 echo 'Building schematics'
 npm run schematic:demo
 npm run schematic:build

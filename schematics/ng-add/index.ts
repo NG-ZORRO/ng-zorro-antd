@@ -207,7 +207,7 @@ function insertCustomTheme(project: Project, host: Tree, workspace: Workspace): 
 function setBootstrapPage(): (host: Tree) => Tree {
   return (host: Tree) => {
     host.overwrite('src/app/app.component.html', `<a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" style="display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;">
-  <img height="400" src="https://img.alicdn.com/tfs/TB1MGSRv21TBuNjy0FjXXajyXXa-89-131.svg">
+  <img height="300" src="https://img.alicdn.com/tfs/TB1NvvIwTtYBeNjy1XdXXXXyVXa-89-131.svg">
 </a>
 `);
     return host;

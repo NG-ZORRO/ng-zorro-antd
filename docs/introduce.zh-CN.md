@@ -8,7 +8,7 @@ title: Ant Design of Angular
 <div class="pic-plus">
   <img width="150" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg">
   <span>+</span>
-  <img width="180" src="https://angular.cn/assets/images/logos/angular/angular.svg">
+  <img height="150" src="https://img.alicdn.com/tfs/TB1Z0PywTtYBeNjy1XdXXXXyVXa-186-200.svg">
 </div>
 
 <style>
@@ -23,7 +23,6 @@ title: Ant Design of Angular
 }
 </style>
 
----
 
 ## 特性
 
@@ -33,14 +32,19 @@ title: Ant Design of Angular
 
 ## 支持环境
 
-* 现代浏览器和 IE9 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）。
+现代浏览器和 IE9 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）。
 
-## 版本
+## 当前版本
 
-- 稳定版：[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 
-支持 `angular ^6.0.0`，并完全遵循最新的 Ant Design 设计规范。
-> `ng-zorro-antd` 与 Ant Design 设计规范定期同步，查看[同步日志](https://nz-styles-syncer.now.sh/)。
+## 支持 Angular 版本
+
+目前支持 Angular `^6.0.0` 版本。
+
+## 设计规范
+
+与 Ant Design 设计规范定期同步，你可以在线查看[同步日志](https://nz-styles-syncer.now.sh/)。
 
 ## 安装
 

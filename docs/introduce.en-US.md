@@ -8,7 +8,7 @@ Following the Ant Design specification, we developed a Angular UI library `ng-zo
 <div class="pic-plus">
   <img width="150" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg">
   <span>+</span>
-  <img width="180" src="https://angular.cn/assets/images/logos/angular/angular.svg">
+  <img height="150" src="https://img.alicdn.com/tfs/TB1Z0PywTtYBeNjy1XdXXXXyVXa-186-200.svg">
 </div>
 
 <style>
@@ -23,8 +23,6 @@ Following the Ant Design specification, we developed a Angular UI library `ng-zo
 }
 </style>
 
----
-
 ## Features
 
 - An enterprise-class UI design language for web applications.
@@ -33,15 +31,19 @@ Following the Ant Design specification, we developed a Angular UI library `ng-zo
 
 ## Environment Support
 
-* Modern browsers and Internet Explorer 9+ (with [polyfills](https://angular.io/guide/browser-support))
+Modern browsers and Internet Explorer 9+ (with [polyfills](https://angular.io/guide/browser-support))
 
 ## Version
 
-- Stable: [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 
-Support `angular ^6.0.0` and follow the latest design guidelines of Ant Design.
+## Angular Support
 
-> `ng-zorro-antd` sync with ant design guidelines periodically, check the online [log](https://nz-styles-syncer.now.sh/).
+Now Supports Angular `^6.0.0`.
+
+## Design Specification
+
+`ng-zorro-antd` synchronizes design specification with [Ant Design](https://ant.design/docs/spec/introduce) on a regular basis, you can check the [log](https://nz-styles-syncer.now.sh/) online.
 
 
 ## Installation
@@ -51,7 +53,7 @@ Support `angular ^6.0.0` and follow the latest design guidelines of Ant Design.
 ```bash
 $ ng new PROJECT_NAME
 $ cd PROJECT_NAME
-$ ng add ng-zorro-antd -i18n=en_US
+$ ng add ng-zorro-antd --i18n=en_US
 ```
 
 > More information about `@angular/cli` [here](https://github.com/angular/angular-cli).

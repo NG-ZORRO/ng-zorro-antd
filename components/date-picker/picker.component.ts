@@ -1,4 +1,5 @@
 import {
+  CdkConnectedOverlay,
   CdkOverlayOrigin,
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
@@ -47,7 +48,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
   @Output() openChange = new EventEmitter<boolean>(); // Emitted when overlay's open state change
 
   @ViewChild('origin') origin: CdkOverlayOrigin;
-  // @ViewChild('overlay') overlay: CdkConnectedOverlay;
+  @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
   @ViewChild('pickerInput') pickerInput: ElementRef;
 
   prefixCls = 'ant-calendar';
@@ -115,6 +116,11 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
     if (!this.realOpenState) {
       this.overlayOpen = true;
       this.openChange.emit(this.overlayOpen);
+      setTimeout(() => {
+        if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
+          this.cdkConnectedOverlay.overlayRef.updatePosition();
+        }
+      });
     }
   }
 

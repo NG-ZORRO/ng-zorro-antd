@@ -7,7 +7,6 @@
 # NG-ZORRO
 [![Travis branch](https://img.shields.io/travis/NG-ZORRO/ng-zorro-antd/master.svg?style=flat-square)](https://travis-ci.org/NG-ZORRO/ng-zorro-antd)
 [![Codecov](https://img.shields.io/codecov/c/github/NG-ZORRO/ng-zorro-antd/master.svg?style=flat-square)](https://codecov.io/gh/NG-ZORRO/ng-zorro-antd)
-[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 [![GitHub Release Date](https://img.shields.io/github/release-date/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/releases)
 [![Issue Stats](https://img.shields.io/issuestats/i/github/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/issues)
 [![NPM downloads](http://img.shields.io/npm/dm/ng-zorro-antd.svg?style=flat-square)](https://npmjs.org/package/ng-zorro-antd)
@@ -19,12 +18,15 @@ An enterprise-class UI components based on Ant Design and Angular.
 
 ## Version
 
-- Stable: [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 
-Support `angular ^6.0.0` and follow the latest design guidelines of Ant Design.
+## Angular Support
 
-> `ng-zorro-antd` sync with ant design guidelines periodically, check the online [log](https://nz-styles-syncer.now.sh/).
+Now Supports Angular `^6.0.0`.
 
+## Design Specification
+
+`ng-zorro-antd` synchronizes design specification with [Ant Design](https://ant.design/docs/spec/introduce) on a regular basis, you can check the [log](https://nz-styles-syncer.now.sh/) online.
 
 ## Features
 
@@ -44,7 +46,7 @@ Support `angular ^6.0.0` and follow the latest design guidelines of Ant Design.
 ```bash
 $ ng new PROJECT_NAME
 $ cd PROJECT_NAME
-$ ng add ng-zorro-antd -i18n=en_US
+$ ng add ng-zorro-antd --i18n=en_US
 ```
 
 > More information about `@angular/cli` [here](https://github.com/angular/angular-cli).

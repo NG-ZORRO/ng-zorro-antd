@@ -4,6 +4,8 @@ title: Change Log
 toc: false
 timeline: true
 ---
+`ng-zorro-antd` strictly follows [Semantic Versioning 2.0.0](http://semver.org/lang/zh-CN/).
+
 #### Release Schedule
 
 * Weekly release: patch version at the end of every week for routine bugfix (anytime for urgent bugfix).

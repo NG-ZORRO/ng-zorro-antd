@@ -5,15 +5,13 @@ title: 快速上手
 
 NG-ZORRO 致力于提供给程序员**愉悦**的开发体验。
 
----
-
 <blockquote style="border-color: red;"><p><strong>官方指南假设你已了解关于 HTML、CSS 和 JavaScript 的中级知识，并且已经完全掌握了 Angular 及配套设施的正确开发方式。如果你刚开始学习前端或者 Angular ，将框架作为你的第一步可能不是最好的主意 —— 掌握好基础知识再来吧！</strong></p></blockquote>
 
 ## 在线演示
 
 最简单的使用方式参照以下 StackBlitz 演示，也推荐 Fork 本例来进行 `Bug Report`，注意不要在实际项目中这样使用。
 
-- [NG-ZORRO StackBlitz](https://stackblitz.com/edit/ng-zorro-antd-setup?file=app%2Fapp.component.ts)
+- [NG-ZORRO StackBlitz](https://stackblitz.com/edit/ng-zorro-antd-start?file=src%2Fapp%2Fapp.component.ts)
 
 ## 第一个本地实例
 
@@ -58,7 +56,7 @@ $ ng add ng-zorro-antd
 $ ng serve --port 0 --open
 ```
 
-<img style="display: block;padding: 30px 180px;height: 260px;" src="https://img.alicdn.com/tfs/TB1MGSRv21TBuNjy0FjXXajyXXa-89-131.svg">
+<img style="display: block;padding: 30px 30%;height: 260px;" src="https://img.alicdn.com/tfs/TB1MGSRv21TBuNjy0FjXXajyXXa-89-131.svg">
 
 
 ### 5. 构建和部署
@@ -80,8 +78,6 @@ $ npm install ng-zorro-antd --save
 ```
 
 ### 2.引入模块
-
-**注意**：在根 module 中需要使用 `NgZorroAntdModule.forRoot()`，在子 module 需要使用 `NgZorroAntdModule`。
 
 ```typescript
 import { BrowserModule } from '@angular/platform-browser';
@@ -106,8 +102,8 @@ registerLocaleData(zh);
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    /** 导入 ng-zorro-antd 根模块，注意：在子模块中应导入 NgZorroAntdModule **/
-    NgZorroAntdModule.forRoot()
+    /** 导入 ng-zorro-antd 模块 **/
+    NgZorroAntdModule
   ],
   bootstrap: [ AppComponent ],
   /** 配置 ng-zorro-antd 国际化 **/
