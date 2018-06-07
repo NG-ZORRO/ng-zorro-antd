@@ -57,6 +57,10 @@ import {
       [nz-form-label] {
         overflow: visible;
       }
+
+      button {
+        margin-left: 8px;
+      }
     `
   ]
 })

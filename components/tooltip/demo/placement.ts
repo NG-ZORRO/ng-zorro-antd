@@ -4,48 +4,24 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-tooltip-placement',
   template: `
     <div style="margin-left:60px;">
-      <nz-tooltip [nzTitle]="'prompt text'" [nzPlacement]="'topLeft'">
-        <button nz-button nz-tooltip>TL</button>
-      </nz-tooltip>
-      <nz-tooltip [nzTitle]="'prompt text'" [nzPlacement]="'top'">
-        <button nz-button nz-tooltip>Top</button>
-      </nz-tooltip>
-      <nz-tooltip [nzTitle]="'prompt text'" [nzPlacement]="'topRight'">
-        <button nz-button nz-tooltip>TR</button>
-      </nz-tooltip>
+      <button nzTitle="prompt text" nzPlacement="topLeft" nz-button nz-tooltip>TL</button>
+      <button nzTitle="prompt text" nzPlacement="top" nz-button nz-tooltip>Top</button>
+      <button nzTitle="prompt text" nzPlacement="topRight" nz-button nz-tooltip>TR</button>
     </div>
     <div style="float:left;width: 60px;">
-      <nz-tooltip [nzTitle]="'prompt text'" [nzPlacement]="'leftTop'">
-        <button nz-button nz-tooltip>LT</button>
-      </nz-tooltip>
-      <nz-tooltip [nzTitle]="'prompt text'" [nzPlacement]="'left'">
-        <button nz-button nz-tooltip>Left</button>
-      </nz-tooltip>
-      <nz-tooltip [nzTitle]="'prompt text'" [nzPlacement]="'leftBottom'">
-        <button nz-button nz-tooltip>LB</button>
-      </nz-tooltip>
+      <button nzTitle="prompt text" nzPlacement="leftTop" nz-button nz-tooltip>LT</button>
+      <button nzTitle="prompt text" nzPlacement="left" nz-button nz-tooltip>Left</button>
+      <button nzTitle="prompt text" nzPlacement="leftBottom" nz-button nz-tooltip>LB</button>
     </div>
     <div style="margin-left:270px;width: 60px;">
-      <nz-tooltip [nzTitle]="'prompt text'" [nzPlacement]="'rightTop'">
-        <button nz-button nz-tooltip>RT</button>
-      </nz-tooltip>
-      <nz-tooltip [nzTitle]="'prompt text'" [nzPlacement]="'right'">
-        <button nz-button nz-tooltip>Right</button>
-      </nz-tooltip>
-      <nz-tooltip [nzTitle]="'prompt text'" [nzPlacement]="'rightBottom'">
-        <button nz-button nz-tooltip>RB</button>
-      </nz-tooltip>
+      <button nzTitle="prompt text" nzPlacement="rightTop" nz-button nz-tooltip>RT</button>
+      <button nzTitle="prompt text" nzPlacement="right" nz-button nz-tooltip>Right</button>
+      <button nzTitle="prompt text" nzPlacement="rightBottom" nz-button nz-tooltip>RB</button>
     </div>
     <div style="margin-left:60px;clear: both;">
-      <nz-tooltip [nzTitle]="'prompt text'" [nzPlacement]="'bottomLeft'">
-        <button nz-button nz-tooltip>BL</button>
-      </nz-tooltip>
-      <nz-tooltip [nzTitle]="'prompt text'" [nzPlacement]="'bottom'">
-        <button nz-button nz-tooltip>Bottom</button>
-      </nz-tooltip>
-      <nz-tooltip [nzTitle]="'prompt text'" [nzPlacement]="'bottomRight'">
-        <button nz-button nz-tooltip>BR</button>
-      </nz-tooltip>
+      <button nzTitle="prompt text" nzPlacement="bottomLeft" nz-button nz-tooltip>BL</button>
+      <button nzTitle="prompt text" nzPlacement="bottom" nz-button nz-tooltip>Bottom</button>
+      <button nzTitle="prompt text" nzPlacement="bottomRight" nz-button nz-tooltip>BR</button>
     </div>
   `,
   styles  : [

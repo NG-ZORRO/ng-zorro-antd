@@ -8,17 +8,21 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
              [nzShowExpand]="true"
              [nzDraggable]="true"
              (nzOnDragStart)="dragStart($event)"
-             (nzClick)="activeNode($event)">
+             (nzClick)="activeNode($event)"
+             (nzDblClick)="openFolder($event)"
+             >
       <ng-template #nzTreeTemplate let-node>
         <span class="custom-node" draggable="true" aria-grabbed="true" [class.active]="activedNode?.key===node.key">
           <span *ngIf="!node.isLeaf" [class.shine-animate]="node.origin.isLoading">
             <i class="anticon anticon-folder" *ngIf="!node.isExpanded" (click)="openFolder(node)"></i>
             <i class="anticon anticon-folder-open" *ngIf="node.isExpanded" (click)="openFolder(node)"></i>
             <span class="folder-name">{{node.title}}</span>
+            <span class="folder-desc">{{node?.origin?.author | lowercase}} created at 2018-04-01</span>
           </span>
           <span *ngIf="node.isLeaf">
             <i class="anticon anticon-file"></i>
             <span class="file-name">{{node.title}}</span>
+            <span class="file-desc">{{node?.origin?.author | lowercase}} modified at 2018-05-01</span>
           </span>
         </span>
       </ng-template>
@@ -52,7 +56,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 
     .custom-node {
       cursor: pointer;
-      line-height: 30px;
+      line-height: 26px;
       margin-left: 4px;
       display: inline-block;
       margin: 0 -1000px;
@@ -60,7 +64,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
     }
 
     .active {
-      background: #1890ff;
+      background: #1890FF;
       color: #fff;
     }
 
@@ -70,10 +74,15 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
       opacity: 0.7;
     }
 
-    .file-name, .folder-name {
+    .file-name, .folder-name, .file-desc, .folder-desc {
       margin-left: 4px;
     }
 
+    .file-desc, .folder-desc {
+      padding: 2px 8px;
+      background: #87CEFF;
+      color: #FFFFFF;
+    }
   ` ]
 })
 export class NzDemoTreeDirTreeComponent implements OnInit {
@@ -84,24 +93,29 @@ export class NzDemoTreeDirTreeComponent implements OnInit {
     new NzTreeNode({
       title   : 'root1',
       key     : '1001',
+      author  : 'ANGULAR',
       expanded: true,
       children: [
         {
           title   : 'child1',
           key     : '10001',
+          author  : 'ZORRO',
           children: [
             {
               title   : 'child1.1',
               key     : '100011',
+              author  : 'ZORRO',
               children: []
             },
             {
               title   : 'child1.2',
               key     : '100012',
+              author  : 'ZORRO',
               children: [
                 {
                   title   : 'grandchild1.2.1',
                   key     : '1000121',
+                  author  : 'ZORRO-FANS',
                   isLeaf  : true,
                   checked : true,
                   disabled: true
@@ -109,6 +123,7 @@ export class NzDemoTreeDirTreeComponent implements OnInit {
                 {
                   title : 'grandchild1.2.2',
                   key   : '1000122',
+                  author: 'ZORRO-FANS',
                   isLeaf: true
                 }
               ]
@@ -120,19 +135,23 @@ export class NzDemoTreeDirTreeComponent implements OnInit {
     new NzTreeNode({
       title   : 'root2',
       key     : '1002',
+      author  : 'ANGULAR',
       children: [
         {
           title : 'child2.1',
           key   : '10021',
+          author: 'ZORRO-FANS',
           isLeaf: true
         },
         {
           title   : 'child2.2',
           key     : '10022',
+          author  : 'ZORRO',
           children: [
             {
               title : 'grandchild2.2.1',
               key   : '100221',
+              author: 'ZORRO-FANS',
               isLeaf: true
             }
           ]
@@ -163,18 +182,32 @@ export class NzDemoTreeDirTreeComponent implements OnInit {
    * @param {} data
    */
 
-  openFolder(data: NzTreeNode): void {
+  openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
     // do something if u want
-    // change node's expand status
-    if (!data.isExpanded) {
-      // close to open
-      data.origin.isLoading = true;
-      setTimeout(() => {
+    if (data instanceof NzTreeNode) {
+      // change node's expand status
+      if (!data.isExpanded) {
+        // close to open
+        data.origin.isLoading = true;
+        setTimeout(() => {
+          data.isExpanded = !data.isExpanded;
+          data.origin.isLoading = false;
+        }, 500);
+      } else {
         data.isExpanded = !data.isExpanded;
-        data.origin.isLoading = false;
-      }, 500);
+      }
     } else {
-      data.isExpanded = !data.isExpanded;
+      // change node's expand status
+      if (!data.node.isExpanded) {
+        // close to open
+        data.node.origin.isLoading = true;
+        setTimeout(() => {
+          data.node.isExpanded = !data.node.isExpanded;
+          data.node.origin.isLoading = false;
+        }, 500);
+      } else {
+        data.node.isExpanded = !data.node.isExpanded;
+      }
     }
   }
 

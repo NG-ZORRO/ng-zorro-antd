@@ -136,7 +136,7 @@ describe('NzRangePickerComponent', () => {
     it('should support nzClassName', () => {
       const className = fixtureInstance.nzClassName = 'my-test-class';
       fixture.detectChanges();
-      const picker = debugElement.query(By.css('.ant-calendar-picker')).nativeElement as HTMLElement;
+      const picker = debugElement.queryAll(By.css('.ant-calendar-picker'))[1].nativeElement as HTMLElement;
       expect(picker.classList.contains(className)).toBeTruthy();
     });
 

@@ -6,7 +6,7 @@
   </span>
 </ng-template>
 <div [class.ant-spin-nested-loading]="isNested">
-  <div>
+  <div [hidden]="!(resultSpinning$|async)">
     <div
       class="ant-spin"
       [class.ant-spin-spinning]="resultSpinning$|async"

@@ -195,6 +195,14 @@ describe('nz-table', () => {
       expect(table.nativeElement.querySelector('.ant-pagination-options-quick-jumper')).toBeDefined();
       expect(table.nativeElement.querySelector('.ant-pagination-options-size-changer')).toBeDefined();
     });
+    it('should hideOnSinglePage work', () => {
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelector('.ant-pagination')).not.toBe(null);
+      testComponent.hideOnSinglePage = true;
+      testComponent.dataSet = [ {} ];
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelector('.ant-pagination')).toBe(null);
+    });
     it('#18n', () => {
       testComponent.dataSet = [];
       fixture.detectChanges();
@@ -315,6 +323,7 @@ describe('nz-table', () => {
       [nzLoading]="loading"
       [nzShowSizeChanger]="showSizeChanger"
       [nzShowQuickJumper]="showQuickJumper"
+      [nzHideOnSinglePage]="hideOnSinglePage"
       [nzWidthConfig]="widthConfig"
       [nzShowPagination]="pagination"
       [nzFrontPagination]="pagination"
@@ -356,6 +365,7 @@ export class NzTestTableBasicComponent implements OnInit {
   noResult = '';
   showSizeChanger = false;
   showQuickJumper = false;
+  hideOnSinglePage = false;
   bordered = false;
   loading = false;
   pagination = true;

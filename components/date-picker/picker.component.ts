@@ -112,14 +112,14 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
 
   // Show overlay content
   showOverlay(): void {
-    if (!this.overlayOpen) {
+    if (!this.realOpenState) {
       this.overlayOpen = true;
       this.openChange.emit(this.overlayOpen);
     }
   }
 
   hideOverlay(): void {
-    if (this.overlayOpen) {
+    if (this.realOpenState) {
       this.overlayOpen = false;
       this.openChange.emit(this.overlayOpen);
     }

@@ -24,7 +24,8 @@ import { ShowUploadListInterface, UploadFile, UploadListType } from './interface
 })
 export class NzUploadListComponent implements OnChanges {
   // region: fields
-  @Input() locale: {} = {};
+  // tslint:disable-next-line:no-any
+  @Input() locale: any = {};
   @Input() listType: UploadListType;
   @Input() items: UploadFile[];
   @Input() icons: ShowUploadListInterface;

@@ -1,50 +1,196 @@
 import {
   AfterViewInit,
+  ComponentFactory,
   ComponentFactoryResolver,
   Directive,
   ElementRef,
+  EventEmitter,
   HostBinding,
   Input,
+  OnDestroy,
+  OnInit,
   Optional,
+  Output,
   Renderer2,
+  TemplateRef,
   ViewContainerRef
 } from '@angular/core';
-
+import { Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { isNotNil } from '../core/util/check';
 import { NzToolTipComponent } from './nz-tooltip.component';
 
 @Directive({
   selector: '[nz-tooltip]'
 })
-export class NzTooltipDirective implements AfterViewInit {
+export class NzTooltipDirective implements AfterViewInit, OnInit, OnDestroy {
   // [NOTE] Here hard coded, and nzTitle used only under NzTooltipDirective currently.
-  // The inherited class such as NzPopconfirmDirective should override this property if want using this property.
+  isTooltipOpen: boolean = false;
+  isDynamicTooltip = false; // Indicate whether current tooltip is dynamic created
+  delayTimer; // Timer for delay enter/leave
+  _title: string | TemplateRef<void>;
+  _content: string | TemplateRef<void>;
+  _overlayClassName: string;
+  _overlayStyle: { [ key: string ]: string };
+  _mouseEnterDelay: number;
+  _mouseLeaveDelay: number;
+  _visible: boolean;
+  _trigger: string;
+  _placement: string;
+  _visibleChange: Subscription;
+  factory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
+  @Output() nzVisibleChange = new EventEmitter<boolean>();
+
   @Input('nz-tooltip')
-  // get nzTitle(): string { return this.tooltip.nzTitle; }
-  set nzTitle(title: string) {
-    if (this.isDynamicTooltip) {
-      this.tooltip.nzTitle = title;
+  set nzTitle(title: string | TemplateRef<void>) {
+    this._title = title;
+    this.updateCompValue('nzTitle', title);
+  }
+
+  get nzTitle(): string | TemplateRef<void> {
+    return this._title;
+  }
+
+  @Input('nzTitle')
+  set setTitle(title: string | TemplateRef<void>) {
+    this.nzTitle = title;
+  }
+
+  @Input()
+  set nzContent(value: string | TemplateRef<void>) {
+    this._content = value;
+    this.updateCompValue('nzContent', value);
+  }
+
+  get nzContent(): string | TemplateRef<void> {
+    return this._content;
+  }
+
+  @Input()
+  set nzOverlayClassName(value: string) {
+    this._overlayClassName = value;
+    this.updateCompValue('nzOverlayClassName', value);
+  }
+
+  get nzOverlayClassName(): string {
+    return this._overlayClassName;
+  }
+
+  @Input()
+  set nzOverlayStyle(value: { [ key: string ]: string }) {
+    this._overlayStyle = value;
+    this.updateCompValue('nzOverlayStyle', value);
+  }
+
+  get nzOverlayStyle(): { [ key: string ]: string } {
+    return this._overlayStyle;
+  }
+
+  @Input()
+  set nzMouseEnterDelay(value: number) {
+    this._mouseEnterDelay = value;
+    this.updateCompValue('nzMouseEnterDelay', value);
+  }
+
+  get nzMouseEnterDelay(): number {
+    return this._mouseEnterDelay;
+  }
+
+  @Input()
+  set nzMouseLeaveDelay(value: number) {
+    this._mouseLeaveDelay = value;
+    this.updateCompValue('nzMouseLeaveDelay', value);
+  }
+
+  get nzMouseLeaveDelay(): number {
+    return this._mouseEnterDelay;
+  }
+
+  @Input()
+  set nzVisible(value: boolean) {
+    this._visible = value;
+    this.updateCompValue('nzVisible', value);
+  }
+
+  get nzVisible(): boolean {
+    return this._visible;
+  }
+
+  @Input()
+  set nzTrigger(value: string) {
+    this._trigger = value;
+    this.updateCompValue('nzTrigger', value);
+  }
+
+  get nzTrigger(): string {
+    return this._trigger;
+  }
+
+  @Input()
+  set nzPlacement(value: string) {
+    this._placement = value;
+    this.updateCompValue('nzPlacement', value);
+  }
+
+  get nzPlacement(): string {
+    return this._placement;
+  }
+
+  @HostBinding('class.ant-tooltip-open')
+  get isOpen(): boolean {
+    return this.isTooltipOpen;
+  }
+
+  private show(): void {
+    this.tooltip.show();
+    this.isTooltipOpen = true;
+  }
+
+  private hide(): void {
+    this.tooltip.hide();
+    this.isTooltipOpen = false;
+  }
+
+  private delayEnterLeave(isOrigin: boolean, isEnter: boolean, delay: number = -1): void {
+    if (this.delayTimer) { // Clear timer during the delay time
+      window.clearTimeout(this.delayTimer);
+      this.delayTimer = null;
+    } else if (delay > 0) {
+      this.delayTimer = window.setTimeout(() => {
+        this.delayTimer = null;
+        isEnter ? this.show() : this.hide();
+      }, delay * 1000);
+    } else {
+      isEnter && isOrigin ? this.show() : this.hide(); // [Compatible] The "isOrigin" is used due to the tooltip will not hide immediately (may caused by the fade-out animation)
     }
   }
 
-  @HostBinding('class.ant-tooltip-open') isTooltipOpen;
-
-  private tooltip: NzToolTipComponent;
-  private isDynamicTooltip = false; // Indicate whether current tooltip is dynamic created
-  private delayTimer; // Timer for delay enter/leave
+  // tslint:disable-next-line:no-any
+  updateCompValue(key: string, value: any): void {
+    if (this.isDynamicTooltip && isNotNil(value)) {
+      this.tooltip[ key ] = value;
+    }
+  }
 
   constructor(
-      public elementRef: ElementRef,
-      private hostView: ViewContainerRef,
-      private resolver: ComponentFactoryResolver,
-      private renderer: Renderer2,
-      @Optional() tooltip: NzToolTipComponent) {
+    public elementRef: ElementRef,
+    public hostView: ViewContainerRef,
+    public resolver: ComponentFactoryResolver,
+    public renderer: Renderer2,
+    @Optional() public tooltip: NzToolTipComponent) {
+  }
 
-    this.tooltip = tooltip;
+  ngOnInit(): void {
     // Support faster tooltip mode: <a nz-tooltip="xxx"></a>. [NOTE] Used only under NzTooltipDirective currently.
     if (!this.tooltip) {
-      const factory = this.resolver.resolveComponentFactory(NzToolTipComponent);
-      this.tooltip = this.hostView.createComponent(factory).instance;
+      this.tooltip = this.hostView.createComponent(this.factory).instance;
       this.isDynamicTooltip = true;
+      const properties = [ 'nzTitle', 'nzContent', 'nzOverlayClassName', 'nzOverlayStyle', 'nzMouseEnterDelay', 'nzMouseLeaveDelay', 'nzVisible', 'nzTrigger', 'nzPlacement' ];
+      properties.forEach(property => this.updateCompValue(property, this[ property ]));
+      this._visibleChange = this.tooltip.nzVisibleChange.pipe(distinctUntilChanged()).subscribe(data => {
+        this._visible = data;
+        this.nzVisibleChange.emit(data);
+      });
     }
     this.tooltip.setOverlayOrigin(this);
   }
@@ -72,27 +218,11 @@ export class NzTooltipDirective implements AfterViewInit {
     }
   }
 
-  private show(): void {
-    this.tooltip.show();
-    this.isTooltipOpen = true;
-  }
-
-  private hide(): void {
-    this.tooltip.hide();
-    this.isTooltipOpen = false;
-  }
-
-  private delayEnterLeave(isOrigin: boolean, isEnter: boolean, delay: number = -1): void {
-    if (this.delayTimer) { // Clear timer during the delay time
-      window.clearTimeout(this.delayTimer);
-      this.delayTimer = null;
-    } else if (delay > 0) {
-      this.delayTimer = window.setTimeout(() => {
-        this.delayTimer = null;
-        isEnter ? this.show() : this.hide();
-      }, delay * 1000);
-    } else {
-      isEnter && isOrigin ? this.show() : this.hide(); // [Compatible] The "isOrigin" is used due to the tooltip will not hide immediately (may caused by the fade-out animation)
+  ngOnDestroy(): void {
+    if (this._visibleChange) {
+      this._visibleChange.unsubscribe();
+      this._visibleChange = null;
     }
   }
+
 }

@@ -31,12 +31,12 @@ import { NzTheadComponent } from './nz-thead.component';
 })
 export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private i18n$: Subscription;
-  locale: {} = {};
   private _bordered = false;
   private _showPagination = true;
   private _loading = false;
   private _showSizeChanger = false;
   private _showQuickJumper = false;
+  private _hideOnSinglePage = false;
   private _scroll: { x: string; y: string } = { x: null, y: null };
   private _footer: string | TemplateRef<void>;
   private _title: string | TemplateRef<void>;
@@ -45,6 +45,8 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private _pageSize = 10;
   private _widthConfig: string[] = [];
   private _frontPagination = true;
+  /* tslint:disable-next-line:no-any */
+  locale: any = {};
   nzTheadComponent: NzTheadComponent;
   isFooterString: boolean;
   isTitleString: boolean;
@@ -161,6 +163,15 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get nzShowSizeChanger(): boolean {
     return this._showSizeChanger;
+  }
+
+  @Input()
+  set nzHideOnSinglePage(value: boolean) {
+    this._hideOnSinglePage = toBoolean(value);
+  }
+
+  get nzHideOnSinglePage(): boolean {
+    return this._hideOnSinglePage;
   }
 
   @Input()

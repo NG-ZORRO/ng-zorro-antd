@@ -1,5 +1,5 @@
 ---
-order: 1
+order: 6
 title:
   zh-CN: 三种触发方式
   en-US: Three ways to trigger

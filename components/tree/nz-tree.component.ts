@@ -63,10 +63,8 @@ export class NzTreeComponent implements OnInit {
   @Input()
   set nzSearchValue(value: string) {
     this._searchValue = value;
-    if (value) {
-      this.nzTreeService.searchExpand(value);
-      this.nzOnSearchNode.emit(this.nzTreeService.formatEvent('search', null, null));
-    }
+    this.nzTreeService.searchExpand(value);
+    this.nzOnSearchNode.emit(this.nzTreeService.formatEvent('search', null, null));
   }
 
   get nzSearchValue(): string {

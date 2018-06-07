@@ -172,6 +172,10 @@ describe('modal testing (legacy)', () => {
       modalInstance.nzMaskClosable = true;
       (modalElement.querySelector('.ant-modal-wrap') as HTMLElement).click();
       expect(console.log).toHaveBeenCalledWith('click cancel');
+      // second click on mask should not trigger nzOnCancel
+      (console.log as jasmine.Spy).calls.reset();
+      (modalElement.querySelector('.ant-modal-wrap') as HTMLElement).click();
+      expect(console.log).not.toHaveBeenCalledWith('click cancel');
       flush();
       expectModalDestroyed(tempModalId, true); // should be destroyed
     })); // /basic props

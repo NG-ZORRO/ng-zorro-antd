@@ -11,40 +11,46 @@ subtitle: 树形控件
 
 ## API
 
-### Tree props
+### nz-tree
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| ngModel | 元数据,NzTreeNode数组,单个节点原始结构参考NzTreeNodeOptions | array | \[] |
-| nzCheckable | 节点前添加 Checkbox 复选框 | boolean | false |
-| nzShowExpand | 节点前添加展开图标 | boolean | true |
-| nzShowLine | 是否展示连接线 | boolean | false |
-| nzAsyncData | 是否异步加载(显示加载状态) | boolean | false |
-| nzDraggable | 设置节点可拖拽（IE>8） | boolean | false |
-| nzMultiple | 支持点选多个节点（节点本身） | boolean | false |
-| nzCheckStrictly | checkable状态下节点选择完全受控（父子节点选中状态不再关联） | boolean | false |
-| nzDefaultExpandAll | 默认展开所有树节点 | boolean | false |
-| nzDefaultExpandedKeys | 默认展开指定的树节点 | string\[] | \[] |
-| nzDefaultCheckedKeys | 默认选中复选框的树节点 | string\[] | \[] |
-| nzDefaultSelectedKeys | 默认选中的树节点(nzMultiple为true) | string\[] | \[] |
-| nzSearchValue | 按需筛选树高亮节点(结合搜索控件) | string | null |
-| nzBeforeDrop | drop前二次校验,允许用户自行决定是否允许放置 | `(confirm: NzFormatBeforeDropEvent) => Observable<boolean>` | - |
-| nzClick | 点击树节点触发 | EventEmitter<NzFormatEmitEvent\> | - |
-| nzDblClick | 双击树节点触发 | EventEmitter<NzFormatEmitEvent\> | - |
-| nzContextMenu | 右键树节点触发 | EventEmitter<NzFormatEmitEvent\> | - |
-| nzCheckBoxChange | 点击树节点 Checkbox 触发 | EventEmitter<NzFormatEmitEvent\> | - |
-| nzExpandChange | 点击展开树节点图标触发 |EventEmitter<NzFormatEmitEvent\> | - |
-| nzOnSearchNode | 搜索节点时调用(与nzSearchValue配合使用) | EventEmitter<NzFormatEmitEvent\> | - |
-| nzOnDragStart | 开始拖拽时调用 | EventEmitter<NzFormatEmitEvent\> | - |
-| nzOnDragEnter | dragenter 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
-| nzOnDragOver | dragover 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
-| nzOnDragLeave | dragleave 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
-| nzOnDrop | drop 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
-| nzOnDragEnd | dragend 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
+| `[ngModel]` | 元数据,NzTreeNode数组,单个节点原始结构参考NzTreeNodeOptions | array | \[] |
+| `[nzCheckable]` | 节点前添加 Checkbox 复选框 | boolean | false |
+| `[nzShowExpand]` | 节点前添加展开图标 | boolean | true |
+| `[nzShowLine]` | 是否展示连接线 | boolean | false |
+| `[nzAsyncData]` | 是否异步加载(显示加载状态) | boolean | false |
+| `[nzDraggable]` | 设置节点可拖拽（IE>8） | boolean | false |
+| `[nzMultiple]` | 支持点选多个节点（节点本身） | boolean | false |
+| `[nzCheckStrictly]` | checkable状态下节点选择完全受控（父子节点选中状态不再关联） | boolean | false |
+| `[nzDefaultExpandAll]` | 默认展开所有树节点 | boolean | false |
+| `[nzDefaultExpandedKeys]` | 默认展开指定的树节点 | string\[] | \[] |
+| `[nzDefaultCheckedKeys]` | 默认选中复选框的树节点 | string\[] | \[] |
+| `[nzDefaultSelectedKeys]` | 默认选中的树节点(nzMultiple为true) | string\[] | \[] |
+| `[nzSearchValue]` | 按需筛选树高亮节点(结合搜索控件) | string | null |
+| `[nzBeforeDrop]` | drop前二次校验,允许用户自行决定是否允许放置 | `(confirm: NzFormatBeforeDropEvent) => Observable<boolean>` | - |
+| `(nzClick)` | 点击树节点触发 | EventEmitter<NzFormatEmitEvent\> | - |
+| `(nzDblClick)` | 双击树节点触发 | EventEmitter<NzFormatEmitEvent\> | - |
+| `(nzContextMenu)` | 右键树节点触发 | EventEmitter<NzFormatEmitEvent\> | - |
+| `(nzCheckBoxChange)` | 点击树节点 Checkbox 触发 | EventEmitter<NzFormatEmitEvent\> | - |
+| `(nzExpandChange)` | 点击展开树节点图标触发 |EventEmitter<NzFormatEmitEvent\> | - |
+| `(nzOnSearchNode)` | 搜索节点时调用(与nzSearchValue配合使用) | EventEmitter<NzFormatEmitEvent\> | - |
+| `(nzOnDragStart)` | 开始拖拽时调用 | EventEmitter<NzFormatEmitEvent\> | - |
+| `(nzOnDragEnter)` | dragenter 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
+| `(nzOnDragOver)` | dragover 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
+| `(nzOnDragLeave)` | dragleave 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
+| `(nzOnDrop)` | drop 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
+| `(nzOnDragEnd)` | dragend 触发时调用 | EventEmitter<NzFormatEmitEvent\> | - |
+
+
+#### 方法
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
 | getCheckedNodeList | 获取组件 checkBox 被点击选中的节点 | NzTreeNode[] | [] |
 | getSelectedNodeList | 获取组件被选中的节点 | NzTreeNode[] | [] |
 
-### NzTreeNodeOptions props
+#### NzTreeNodeOptions props
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -58,8 +64,9 @@ subtitle: 树形控件
 | selectable | 设置节点是否可被选中 | boolean | true |
 | disabled | 设置是否禁用节点(不可进行任何操作) | boolean | false |
 | disableCheckbox | 设置节点禁用 Checkbox | boolean | false |
+| [key: string] | 自定义数据 | any | - |
 
-### NzFormatEmitEvent props
+#### NzFormatEmitEvent props
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -71,7 +78,7 @@ subtitle: 树形控件
 | checkedKeys? | checkBox 已选中的节点(点击 checkBox 存在) | array<NzTreeNode\> | [] |
 | matchededKeys? | 搜索时匹配到的节点 | array<NzTreeNode\> | [] |
 
-### NzFormatBeforeDropEvent props
+#### NzFormatBeforeDropEvent props
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -79,7 +86,7 @@ subtitle: 树形控件
 | node | 当前操作节点(拖拽时表示目标节点) | NzTreeNode | - |
 | pos | 放置位置(-1:目标节点前面, 0: 目标节点内部, 1: 目标节点后面) | number | - |
 
-### NzTreeNode props
+#### NzTreeNode props
 
 | 方法 | 说明 | 类型 | 返回值类型 |
 | --- | --- | --- | --- |
@@ -105,3 +112,4 @@ subtitle: 树形控件
 | clearChildren | 清除子节点 | function | void |
 
 ## 注意
+`NzTreeNodeOptions` 可以接受用户自定义属性，可通过 `NzTreeNode` 的 `origin` 属性取得。

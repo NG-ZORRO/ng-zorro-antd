@@ -30,6 +30,7 @@ import { NzCarouselContentDirective } from './nz-carousel-content.directive';
       :host {
         display: block;
         position: relative;
+        overflow: hidden;
         width: 100%;
         height: 100%;
       }

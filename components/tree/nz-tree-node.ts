@@ -9,6 +9,8 @@ export interface NzTreeNodeOptions {
   disableCheckbox?: boolean;
   expanded?: boolean;
   children?: NzTreeNodeOptions[];
+  // tslint:disable-next-line:no-any
+  [key: string]: any;
 }
 
 export class NzTreeNode {

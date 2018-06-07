@@ -10,7 +10,10 @@ import { DateRangePickerComponent } from './date-range-picker.component';
     provide    : NG_VALUE_ACCESSOR,
     multi      : true,
     useExisting: forwardRef(() => NzWeekPickerComponent)
-  } ]
+  } ],
+  host       : {
+    '[class.ant-calendar-picker]': 'true'
+  }
 })
 
 export class NzWeekPickerComponent extends DateRangePickerComponent {

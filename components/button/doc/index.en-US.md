@@ -12,12 +12,14 @@ A button means an operation (or a series of operations). Clicking a button will 
 
 ## API
 
+### [nz-button]
+
 To get a customized button, just set `nzType`/`nzShape`/`nzSize`/`nzLoading`/`disabled`.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzGhost | make background transparent and invert text and border colors | boolean | false |
-| nzLoading | set the loading status of button | boolean | false |
-| nzShape | can be set to `circle` or omitted | string | - |
-| nzSize | can be set to `small` `large` or omitted | string | `default` |
-| nzType | can be set to `primary` `ghost` `dashed` `danger` or omitted (meaning `default`) | string | `default` |
+| `[nzGhost]` | make background transparent and invert text and border colors | boolean | false |
+| `[nzLoading]` | set the loading status of button | boolean | false |
+| `[nzShape]` | can be set to `circle` or omitted | string | - |
+| `[nzSize]` | can be set to `small` `large` or omitted | string | `default` |
+| `[nzType]` | can be set to `primary` `ghost` `dashed` `danger` or omitted (meaning `default`) | string | `default` |
