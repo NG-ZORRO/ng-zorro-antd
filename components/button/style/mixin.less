@@ -250,12 +250,13 @@
   .@{btnClassName} + &,
   span + .@{btnClassName},
   .@{btnClassName} + span,
+  > span + span,
   & + .@{btnClassName},
   & + & {
     margin-left: -1px;
   }
 
-  .@{btnClassName}-primary + .@{btnClassName}:not(.@{btnClassName}-primary) {
+  .@{btnClassName}-primary + .@{btnClassName}:not(.@{btnClassName}-primary):not([disabled]) {
     border-left-color: transparent;
   }
 
