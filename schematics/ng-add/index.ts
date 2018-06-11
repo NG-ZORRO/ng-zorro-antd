@@ -3,8 +3,13 @@ import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import * as ts from 'typescript';
 import { addModuleImportToRootModule, getSourceFile } from '../utils/ast';
 import { createCustomTheme } from '../utils/custom-theme';
-import { addSymbolToNgModuleMetadata, findNodes, insertAfterLastOccurrence } from '../utils/devkit-utils/ast-utils';
-import { InsertChange } from '../utils/devkit-utils/change';
+import {
+  addSymbolToNgModuleMetadata,
+  findNodes,
+  getDecoratorMetadata,
+  insertAfterLastOccurrence
+} from '../utils/devkit-utils/ast-utils';
+import { Change, InsertChange, ReplaceChange } from '../utils/devkit-utils/change';
 import { getProjectFromWorkspace, getWorkspace, Project, Workspace } from '../utils/devkit-utils/config';
 import { getAppModulePath } from '../utils/devkit-utils/ng-ast-utils';
 import { insertImport } from '../utils/devkit-utils/route-utils';
@@ -42,15 +47,13 @@ function addI18n(options: Schema): (host: Tree) => Tree {
       throw new SchematicsException(`Invalid locale-symbol`);
     }
 
-    const allImports = findNodes(moduleSource, ts.SyntaxKind.ImportDeclaration);
-
     const changes = [
       insertImport(moduleSource, modulePath, 'NZ_I18N', 'ng-zorro-antd'),
       insertImport(moduleSource, modulePath, locale, 'ng-zorro-antd'),
       insertImport(moduleSource, modulePath, 'registerLocaleData', '@angular/common'),
       insertImport(moduleSource, modulePath, localePrefix, `@angular/common/locales/${localePrefix}`, true),
-      ...addSymbolToNgModuleMetadata(moduleSource, modulePath, 'providers', `{ provide: NZ_I18N, useValue: ${locale} }`, null),
-      insertAfterLastOccurrence(allImports, `\n\nregisterLocaleData(${localePrefix});`, modulePath, 0)
+      registerLocaleData(moduleSource, modulePath, localePrefix),
+      ...insertI18nTokenProvide(moduleSource, modulePath, locale)
     ];
 
     const recorder = host.beginUpdate(modulePath);
@@ -58,11 +61,80 @@ function addI18n(options: Schema): (host: Tree) => Tree {
       if (change instanceof InsertChange) {
         recorder.insertLeft(change.pos, change.toAdd);
       }
+
+      if (change instanceof ReplaceChange) {
+        recorder.remove(change.pos, change.oldText.length);
+        recorder.insertLeft(change.pos, change.newText);
+      }
+
     });
 
     host.commitUpdate(recorder);
     return host;
   };
+}
+
+function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string, locale: string): Change[] {
+  const metadataField = 'providers';
+  const nodes = getDecoratorMetadata(moduleSource, 'NgModule', '@angular/core');
+  const addProvide = addSymbolToNgModuleMetadata(moduleSource, modulePath, 'providers', `{ provide: NZ_I18N, useValue: ${locale} }`, null);
+  let node: any = nodes[0];  // tslint:disable-line:no-any
+
+  if (!node) {
+    return [];
+  }
+
+  const matchingProperties: ts.ObjectLiteralElement[] =
+          (node as ts.ObjectLiteralExpression).properties
+          .filter(prop => prop.kind === ts.SyntaxKind.PropertyAssignment)
+          .filter((prop: ts.PropertyAssignment) => {
+            const name = prop.name;
+            switch (name.kind) {
+              case ts.SyntaxKind.Identifier:
+                return (name as ts.Identifier).getText(moduleSource) === metadataField;
+              case ts.SyntaxKind.StringLiteral:
+                return (name as ts.StringLiteral).text === metadataField;
+            }
+
+            return false;
+          });
+
+  if (!matchingProperties) {
+    return [];
+  }
+
+  if (matchingProperties.length) {
+    const assignment = matchingProperties[0] as ts.PropertyAssignment;
+    if (assignment.initializer.kind !== ts.SyntaxKind.ArrayLiteralExpression) {
+      return [];
+    }
+    const arrLiteral = assignment.initializer as ts.ArrayLiteralExpression;
+    if (arrLiteral.elements.length === 0) {
+      return addProvide;
+    } else {
+      node = arrLiteral.elements.filter(e => e.getText && e.getText().includes('NZ_I18N'));
+      if (node.length === 0) {
+        return addProvide;
+      }
+      return node.map(e => new ReplaceChange(modulePath, e.getStart(), e.getText(), `{ provide: NZ_I18N, useValue: ${locale} }`));
+    }
+  } else {
+    return addProvide;
+  }
+
+}
+
+/** 注册 ng 国际化 */
+function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, locale: string): Change {
+  const allImports = findNodes(moduleSource, ts.SyntaxKind.ImportDeclaration);
+  const allFun = findNodes(moduleSource, ts.SyntaxKind.ExpressionStatement);
+  const registerLocaleDataFun = allFun.filter(node => {
+    const fun = node.getChildren();
+    return fun[0].getChildren()[0] && fun[0].getChildren()[0].getText() === 'registerLocaleData';
+  });
+  return  registerLocaleDataFun.length === 0
+    ? insertAfterLastOccurrence(allImports, `\n\nregisterLocaleData(${locale});`, modulePath, 0)
+    : new ReplaceChange(modulePath, registerLocaleDataFun[0].getStart(), registerLocaleDataFun[0].getText(), `registerLocaleData(${locale});`);
 }
 
 /** 降级 less */
@@ -90,7 +162,7 @@ function addModulesToAppModule(options: Schema): (host: Tree) => Tree {
     addModuleImportToRootModule(host, 'BrowserAnimationsModule', '@angular/platform-browser/animations', project);
     addModuleImportToRootModule(host, 'FormsModule', '@angular/forms', project);
     addModuleImportToRootModule(host, 'HttpClientModule', '@angular/common/http', project);
-    addModuleImportToRootModule(host, 'NgZorroAntdModule.forRoot()', 'ng-zorro-antd', project);
+    addModuleImportToRootModule(host, 'NgZorroAntdModule', 'ng-zorro-antd', project);
 
     return host;
   };
@@ -113,7 +185,16 @@ export function addThemeToAppStyles(options: Schema): (host: Tree) => Tree {
 /** 将预设样式写入 theme.less，并添加到 angular.json */
 function insertCustomTheme(project: Project, host: Tree, workspace: Workspace): void {
   const themePath = 'src/theme.less';
-  host.create(themePath, createCustomTheme());
+  const customTheme = createCustomTheme();
+  if (host.exists(themePath)) {
+    const beforeContent = host.read(themePath).toString('utf8');
+    if (beforeContent.indexOf(customTheme) === -1) {
+      host.overwrite(themePath, `${customTheme}\n${beforeContent}`);
+    }
+  } else {
+    host.create(themePath, createCustomTheme());
+  }
+
   if (project.architect) {
     addStyleToTarget(project.architect.build, host, themePath, workspace);
     addStyleToTarget(project.architect.test, host, themePath, workspace);
