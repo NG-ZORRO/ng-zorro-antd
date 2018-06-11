@@ -9,7 +9,7 @@ import {
   getDecoratorMetadata,
   insertAfterLastOccurrence
 } from '../utils/devkit-utils/ast-utils';
-import { Change, InsertChange, RemoveChange, ReplaceChange } from '../utils/devkit-utils/change';
+import { Change, InsertChange, ReplaceChange } from '../utils/devkit-utils/change';
 import { getProjectFromWorkspace, getWorkspace, Project, Workspace } from '../utils/devkit-utils/config';
 import { getAppModulePath } from '../utils/devkit-utils/ng-ast-utils';
 import { insertImport } from '../utils/devkit-utils/route-utils';
@@ -185,7 +185,16 @@ export function addThemeToAppStyles(options: Schema): (host: Tree) => Tree {
 /** 将预设样式写入 theme.less，并添加到 angular.json */
 function insertCustomTheme(project: Project, host: Tree, workspace: Workspace): void {
   const themePath = 'src/theme.less';
-  host.create(themePath, createCustomTheme());
+  const customTheme = createCustomTheme();
+  if (host.exists(themePath)) {
+    const beforeContent = host.read(themePath).toString('utf8');
+    if (beforeContent.indexOf(customTheme) === -1) {
+      host.overwrite(themePath, `${customTheme}\n${beforeContent}`);
+    }
+  } else {
+    host.create(themePath, createCustomTheme());
+  }
+
   if (project.architect) {
     addStyleToTarget(project.architect.build, host, themePath, workspace);
     addStyleToTarget(project.architect.test, host, themePath, workspace);
