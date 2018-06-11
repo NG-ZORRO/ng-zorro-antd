@@ -22,7 +22,7 @@ import { routes } from './app.routing.module';
     FormsModule,
     HttpClientModule,
     ShareModule,
-    NgZorroAntdModule.forRoot(),
+    NgZorroAntdModule,
     RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules } : {})
   ],
   providers   : [

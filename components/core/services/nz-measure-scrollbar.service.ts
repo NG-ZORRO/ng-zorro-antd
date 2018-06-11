@@ -2,7 +2,9 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { isNotNil } from '../util/check';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class NzMeasureScrollbarService {
   private _scrollbarWidth: number;
   private scrollbarMeasure = {

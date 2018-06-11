@@ -13,7 +13,7 @@ subtitle: 日期选择框
 
 ## API
 
-**注意：**nz-date-picker 的部分 locale 来自于 Angular 自身的[国际化支持](https://angular.io/guide/i18n)，需要在 `main.ts`文件中 引入相应的 Angular 语言包。
+**注意：**nz-date-picker 的部分 locale 来自于 Angular 自身的[国际化支持](https://angular.io/guide/i18n)，需要在 `app.module.ts` 文件中 引入相应的 Angular 语言包。
 
 例如：
 ```typescript
@@ -45,7 +45,6 @@ registerLocaleData(zh);
 | `[nzDisabledDate]` | 不可选择的日期 | (current: Date) => boolean | 无 |
 | `[nzLocale]` | 国际化配置 | object | [默认配置](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
 | `[nzOpen]` | 控制弹层是否展开 | boolean | - |
-| `[nzPlaceHolder]` | 输入框提示文字 | string / string[] | - |
 | `[nzPopupStyle]` | 额外的弹出日历样式 | object | {} |
 | `[nzDropdownClassName]` | 额外的弹出日历 className | string | - |
 | `[nzSize]` | 输入框大小，`large` 高度为 40px，`small` 为 24px，默认是 32px | string | 无 |
@@ -62,6 +61,7 @@ registerLocaleData(zh);
 | `[nzRenderExtraFooter]` | 在面板中添加额外的页脚 | TemplateRef / string or () => TemplateRef / string | - |
 | `[nzShowTime]` | 增加时间选择功能 | object / boolean | [TimePicker Options](/components/time-picker/zh#api) |
 | `[nzShowToday]` | 是否展示“今天”按钮 | boolean | true |
+| `[nzPlaceHolder]` | 输入框提示文字 | string | - |
 | `(nzOnOk)` | 点击确定按钮的回调 | `EventEmitter<Date>` | - |
 | `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | 无 |
 
@@ -72,6 +72,7 @@ registerLocaleData(zh);
 | `[ngModel]` | 日期 | Date | 无 |
 | `[nzFormat]` | 展示的日期格式，配置参考 [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-MM" |
 | `[nzRenderExtraFooter]` | 在面板中添加额外的页脚 | TemplateRef / string or () => TemplateRef / string | - |
+| `[nzPlaceHolder]` | 输入框提示文字 | string | - |
 | `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | 无 |
 
 ### nz-week-picker
@@ -80,6 +81,7 @@ registerLocaleData(zh);
 | --- | --- | --- | --- |
 | `[ngModel]` | 日期 | Date | 无 |
 | `[nzFormat]` | 展示的日期格式，配置参考 [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-ww" |
+| `[nzPlaceHolder]` | 输入框提示文字 | string | - |
 | `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | 无 |
 
 ### nz-range-picker
@@ -92,6 +94,7 @@ registerLocaleData(zh);
 | `[nzRanges]`       | 预设时间范围快捷选择 | { [ key: string ]: Date[] } | 无 |
 | `[nzRenderExtraFooter]` | 在面板中添加额外的页脚 | TemplateRef / string or () => TemplateRef / string | - |
 | `[nzShowTime]` | 增加时间选择功能 | object / boolean | [TimePicker Options](/components/time-picker/zh#api) |
+| `[nzPlaceHolder]` | 输入框提示文字 | string[] | - |
 | `(nzOnOk)` | 点击确定按钮的回调 | `EventEmitter<Date[]>` | - |
 | `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date[]>` | 无 |
 

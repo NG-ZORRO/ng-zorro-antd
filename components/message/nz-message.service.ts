@@ -62,13 +62,15 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
     this.appRef.attachView(componentRef.hostView); // Load view into app root
     const overlayPane = this.overlay.create().overlayElement;
     overlayPane.style.zIndex = '1010'; // Patching: assign the same zIndex of ant-message to it's parent overlay panel, to the ant-message's zindex work.
-    overlayPane.appendChild((componentRef.hostView as EmbeddedViewRef<{}>).rootNodes[0] as HTMLElement);
+    overlayPane.appendChild((componentRef.hostView as EmbeddedViewRef<{}>).rootNodes[ 0 ] as HTMLElement);
 
     return componentRef.instance;
   }
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NzMessageService extends NzMessageBaseService<NzMessageContainerComponent, NzMessageData, NzMessageConfig> {
 
   constructor(

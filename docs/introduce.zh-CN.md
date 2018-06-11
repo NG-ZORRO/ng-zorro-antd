@@ -8,7 +8,7 @@ title: Ant Design of Angular
 <div class="pic-plus">
   <img width="150" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg">
   <span>+</span>
-  <img width="180" src="https://angular.cn/assets/images/logos/angular/angular.svg">
+  <img height="150" src="https://img.alicdn.com/tfs/TB1Z0PywTtYBeNjy1XdXXXXyVXa-186-200.svg">
 </div>
 
 <style>
@@ -23,7 +23,6 @@ title: Ant Design of Angular
 }
 </style>
 
----
 
 ## 特性
 
@@ -33,38 +32,31 @@ title: Ant Design of Angular
 
 ## 支持环境
 
-* 现代浏览器和 IE9 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）。
+现代浏览器和 IE9 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）。
 
-## 版本
+## 当前版本
 
 [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 
-- 1.x (支持 Angular 6.x & Ant Design 3.x) 即将放出
-- 0.7.x (support Angular 5.x & Ant Design 3.x) 目前推荐版本
-- 0.6.x (support Angular 5.x & Ant Design 2.x) **不再维护**
+## 支持 Angular 版本
 
+目前支持 Angular `^6.0.0` 版本。
+
+## 设计规范
+
+与 Ant Design 设计规范定期同步，你可以在线查看[同步日志](https://nz-styles-syncer.now.sh/)。
 
 ## 安装
 
-### 使用 npm 或 yarn 安装
-
-**我们推荐使用 npm 或 yarn 的方式进行开发**，不仅可在开发环境轻松调试，也可放心地在生产环境打包部署使用，享受整个生态圈和工具链带来的诸多好处。
+我们强烈推荐官方的 `@angular/cli` 工具链辅助进行开发，在实际项目开发中，它可以很好的满足对 TypeScript 代码的构建、调试、代理、打包部署等一系列工程化的需求。
 
 ```bash
-$ npm install ng-zorro-antd --save
+$ ng new PROJECT_NAME
+$ cd PROJECT_NAME
+$ ng add ng-zorro-antd
 ```
 
-```bash
-$ yarn add ng-zorro-antd
-```
-
-如果你的网络环境不佳，推荐使用 [cnpm](https://github.com/cnpm/cnpm)。
-
-## 标准开发
-
-实际项目开发中，你会需要对 TypeScript 代码的构建、调试、代理、打包部署等一系列工程化的需求，我们强烈推荐官方的 `@angular/cli` 工具链辅助进行开发。
 > 如果你想了解更多CLI工具链的功能和命令，建议访问 [Angular CLI](https://github.com/angular/angular-cli) 了解更多
-
 
 ## 链接
 
@@ -83,7 +75,7 @@ $ yarn add ng-zorro-antd
 
 ## 如何贡献
 
-在任何形式的参与前，请先阅读 [贡献者文档](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md)。如果你希望参与贡献，欢迎 [Pull Request](https://github.com/NG-ZORRO/ng-zorro-antd/pulls)，或给我们 [报告 Bug](http://ng.ant.design/issue-helper/#/new-issue)。
+在任何形式的参与前，请先阅读 [贡献者文档](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md)。如果你希望参与贡献，欢迎 [Pull Request](https://github.com/NG-ZORRO/ng-zorro-antd/pulls)，或给我们 [报告 Bug](http://ng.ant.design/issue-helper/#/en)。
 
 > 强烈推荐阅读 [《提问的智慧》](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way)(本指南不提供此项目的实际支持服务！)、[《如何向开源社区提问题》](https://github.com/seajs/seajs/issues/545) 和 [《如何有效地报告 Bug》](http://www.chiark.greenend.org.uk/%7Esgtatham/bugs-cn.html)、[《如何向开源项目提交无法解答的问题》](https://zhuanlan.zhihu.com/p/25795393)，更好的问题更容易获得帮助。
 

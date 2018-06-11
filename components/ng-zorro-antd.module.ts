@@ -14,11 +14,9 @@ import { NzCarouselModule } from './carousel/nz-carousel.module';
 import { NzCascaderModule } from './cascader/nz-cascader.module';
 import { NzCheckboxModule } from './checkbox/nz-checkbox.module';
 import { NzCollapseModule } from './collapse/nz-collapse.module';
-import { NzMeasureScrollbarService } from './core/services/nz-measure-scrollbar.service';
 import { NzDatePickerModule } from './date-picker/date-picker.module';
 import { NzDividerModule } from './divider/nz-divider.module';
 import { NzDropDownModule } from './dropdown/nz-dropdown.module';
-import { NzDropdownService } from './dropdown/nz-dropdown.service';
 import { NzFormModule } from './form/nz-form.module';
 import { NzGridModule } from './grid/nz-grid.module';
 import { NzI18nModule } from './i18n/nz-i18n.module';
@@ -29,10 +27,8 @@ import { NzListModule } from './list/nz-list.module';
 import { NzMentionModule } from './mention/mention.module';
 import { NzMenuModule } from './menu/nz-menu.module';
 import { NzMessageModule } from './message/nz-message.module';
-import { NzMessageService } from './message/nz-message.service';
 import { NzModalModule } from './modal/nz-modal.module';
 import { NzNotificationModule } from './notification/nz-notification.module';
-import { NzNotificationService } from './notification/nz-notification.service';
 import { NzPaginationModule } from './pagination/nz-pagination.module';
 import { NzPopconfirmModule } from './popconfirm/nz-popconfirm.module';
 import { NzPopoverModule } from './popover/nz-popover.module';
@@ -51,8 +47,8 @@ import { NzTimePickerModule } from './time-picker/nz-time-picker.module';
 import { NzTimelineModule } from './timeline/nz-timeline.module';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
-import { NzTreeModule } from './tree/nz-tree.module';
 import { NzTreeSelectModule } from './tree-select/nz-tree-select.module';
+import { NzTreeModule } from './tree/nz-tree.module';
 import { NzUploadModule } from './upload/nz-upload.module';
 
 export * from './affix';
@@ -165,17 +161,12 @@ export * from './time-picker';
   ]
 })
 export class NgZorroAntdModule {
-
+  /**
+   * @deprecated Use `NgZorroAntdModule` instead.
+   */
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule : NgZorroAntdModule,
-      providers: [
-        // Services
-        NzNotificationService,
-        NzMessageService,
-        NzDropdownService,
-        NzMeasureScrollbarService
-      ]
+      ngModule: NgZorroAntdModule
     };
   }
 }
