@@ -15,12 +15,12 @@ export class AppComponent implements OnInit {
   componentList = [];
   searchComponent = null;
   language = 'zh';
-  versionList = [
+  oldVersionList = [
     '0.5.x',
     '0.6.x',
     '0.7.x'
   ];
-  currentVersion = '0.7.x';
+  currentVersion = '1.0.0';
 
   switchLanguage(language) {
     const url = this.router.url.split('/');

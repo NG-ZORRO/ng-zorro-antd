@@ -7,7 +7,9 @@ import { NzNotificationConfig } from './nz-notification-config';
 import { NzNotificationContainerComponent } from './nz-notification-container.component';
 import { NzNotificationData, NzNotificationDataFilled, NzNotificationDataOptions } from './nz-notification.definitions';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NzNotificationService extends NzMessageBaseService<NzNotificationContainerComponent, NzNotificationData, NzNotificationConfig> {
 
   constructor(

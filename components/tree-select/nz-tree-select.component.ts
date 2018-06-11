@@ -268,7 +268,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
       new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
       new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
     ];
-    this.positionStrategy = this.overlay.position().flexibleConnectedTo(this.treeSelect).withPositions(positions);
+    this.positionStrategy = this.overlay.position().flexibleConnectedTo(this.treeSelect).withPositions(positions).withLockedPosition(true);
     return this.positionStrategy;
   }
 

@@ -33,10 +33,10 @@ More layouts with navigation: [layout](/components/layout/en).
 | ----- | ----------- | ---- | ------------- |
 | `[nzInlineCollapsed]` | specifies the collapsed status when menu is inline mode | boolean | - |
 | `[nzInlineIndent]` | indent px of inline menu item on each level | number | 24 |
-| `[nzClick]` | the Output when click nz-menu-item inside nz-menu | `EventEmitter<NzMenuItemDirective>` | |
 | `[nzMode]` | type of the menu; `vertical`, `horizontal`, and `inline` modes are supported | string: `vertical` 丨 `horizontal` 丨 `inline` | `vertical` |
 | `[nzSelectable]` | allow selecting menu items | boolean | true |
 | `[nzTheme]` | color theme of the menu | string: `light` `dark` | `light` |
+| `(nzClick)` | the Output when click nz-menu-item inside nz-menu | `EventEmitter<NzMenuItemDirective>` | |
 
 ### [nz-menu-item]
 
