@@ -1,4 +1,4 @@
-<div [ngClass]="outerClassMap" *ngIf="display" [@fadeAnimation]>
+<div [ngClass]="outerClassMap" *ngIf="display" [@fadeAnimation] (@fadeAnimation.done)="onFadeAnimationDone()">
   <ng-container *ngIf="nzShowIcon">
     <i class="ant-alert-icon" [ngClass]="nzIconType" *ngIf="nzIconType; else iconTemplate"></i>
     <ng-template #iconTemplate>
