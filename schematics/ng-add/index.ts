@@ -17,6 +17,17 @@ import { zorroVersion } from '../utils/lib-versions';
 import { addPackageToPackageJson } from '../utils/package';
 import { Schema } from './schema';
 
+const ADD_CONFIG = {
+  LESS_VERSION: '^2.7.3',
+  CUSTOM_THEME_PATH: 'src/theme.less',
+  COMPILED_THEME_PATH: 'node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css',
+  BOOT_PAGE_PATH: 'src/app/app.component.html',
+  BOOT_PAGE_HTML: `<!-- NG-ZORRO -->
+<a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" style="display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;">
+  <img height="300" src="https://img.alicdn.com/tfs/TB1NvvIwTtYBeNjy1XdXXXXyVXa-89-131.svg">
+</a>`
+};
+
 export default function (options: Schema): Rule {
   return chain([
     options && options.skipPackageJson ? noop() : addZorroToPackageJson(),
@@ -140,7 +151,7 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
 /** 降级 less */
 function downgradeLess(): (host: Tree) => Tree {
   return (host: Tree) => {
-    addPackageToPackageJson(host, 'dependencies', 'less', '^2.7.3');
+    addPackageToPackageJson(host, 'dependencies', 'less', ADD_CONFIG.LESS_VERSION);
     return host;
   };
 }
@@ -184,7 +195,7 @@ export function addThemeToAppStyles(options: Schema): (host: Tree) => Tree {
 
 /** 将预设样式写入 theme.less，并添加到 angular.json */
 function insertCustomTheme(project: Project, host: Tree, workspace: Workspace): void {
-  const themePath = 'src/theme.less';
+  const themePath = ADD_CONFIG.CUSTOM_THEME_PATH;
   const customTheme = createCustomTheme();
   if (host.exists(themePath)) {
     const beforeContent = host.read(themePath).toString('utf8');
@@ -196,8 +207,8 @@ function insertCustomTheme(project: Project, host: Tree, workspace: Workspace): 
   }
 
   if (project.architect) {
-    addStyleToTarget(project.architect.build, host, themePath, workspace);
-    addStyleToTarget(project.architect.test, host, themePath, workspace);
+    addStyleToTarget(project.architect.build, host, workspace, themePath, ADD_CONFIG.COMPILED_THEME_PATH);
+    addStyleToTarget(project.architect.test, host, workspace, themePath, ADD_CONFIG.COMPILED_THEME_PATH);
   } else {
     throw new SchematicsException(`${project.name} does not have an architect configuration`);
   }
@@ -206,10 +217,7 @@ function insertCustomTheme(project: Project, host: Tree, workspace: Workspace): 
 /** 设置引导页面到 app.component.ts */
 function setBootstrapPage(): (host: Tree) => Tree {
   return (host: Tree) => {
-    host.overwrite('src/app/app.component.html', `<a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" style="display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;">
-  <img height="300" src="https://img.alicdn.com/tfs/TB1NvvIwTtYBeNjy1XdXXXXyVXa-89-131.svg">
-</a>
-`);
+    host.overwrite(ADD_CONFIG.BOOT_PAGE_PATH, ADD_CONFIG.BOOT_PAGE_HTML);
     return host;
   };
 
@@ -224,18 +232,18 @@ function installNodeDeps(): (host: Tree, context: SchematicContext) => void {
 
 /** 将编译的 css 添加到 angular.json */
 function insertCompiledTheme(project: Project, host: Tree, workspace: Workspace): void {
-  const themePath = `node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css`;
+  const themePath = ADD_CONFIG.COMPILED_THEME_PATH;
 
   if (project.architect) {
-    addStyleToTarget(project.architect.build, host, themePath, workspace);
-    addStyleToTarget(project.architect.test, host, themePath, workspace);
+    addStyleToTarget(project.architect.build, host, workspace, themePath);
+    addStyleToTarget(project.architect.test, host, workspace, themePath);
   } else {
     throw new SchematicsException(`${project.name} does not have an architect configuration`);
   }
 }
 
 /** Adds a style entry to the given target. */
-function addStyleToTarget(target: any, host: Tree, asset: string, workspace: Workspace): void {
+function addStyleToTarget(target: any, host: Tree, workspace: Workspace, asset: string, exclude: string = ''): void {
   const styleEntry = asset;
 
   // We can't assume that any of these properties are defined, so safely add them as we go
@@ -247,6 +255,13 @@ function addStyleToTarget(target: any, host: Tree, asset: string, workspace: Wor
   } else {
     const existingStyles = target.options.styles.map(s => typeof s === 'string' ? s : s.input);
     const hasGivenTheme = existingStyles.find(s => s.includes(asset));
+
+    if (exclude) {
+      const removeIndex = target.options.styles.indexOf(exclude);
+      if (removeIndex >= 0) {
+        target.options.styles.splice(removeIndex, 1);
+      }
+    }
 
     if (!hasGivenTheme) {
       target.options.styles.splice(0, 0, styleEntry);
