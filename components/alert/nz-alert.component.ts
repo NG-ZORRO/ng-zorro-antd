@@ -126,7 +126,12 @@ export class NzAlertComponent implements OnInit {
 
   closeAlert(): void {
     this.display = false;
-    this.nzOnClose.emit(true);
+  }
+
+  onFadeAnimationDone(): void {
+    if (!this.display) {
+      this.nzOnClose.emit(true);
+    }
   }
 
   updateOuterClassMap(): void {
