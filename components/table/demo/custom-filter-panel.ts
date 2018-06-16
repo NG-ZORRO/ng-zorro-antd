@@ -102,7 +102,7 @@ export class NzDemoTableCustomFilterPanelComponent {
 
   search(): void {
     const filterFunc = (item) => {
-      return (this.searchAddress.length ? this.searchAddress.some(address => item.address.indexOf(address.name) !== -1) : true) &&
+      return (this.searchAddress.length ? this.searchAddress.some(address => item.address.indexOf(address) !== -1) : true) &&
         (item.name.indexOf(this.searchValue) !== -1);
     };
     const data = this.data.filter(item => filterFunc(item));

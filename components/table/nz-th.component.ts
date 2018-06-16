@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostBinding,
   Input,
   Output,
   Renderer2,
@@ -54,6 +55,11 @@ export class NzThComponent {
   @Output() nzSortChangeWithKey = new EventEmitter<{ key: string, value: string }>();
   /* tslint:disable-next-line:no-any */
   @Output() nzFilterChange = new EventEmitter<any[] | any>();
+
+  @HostBinding('class.ant-table-column-has-filters')
+  get hasFiltersClass(): boolean {
+    return this.nzShowSort || this.nzShowFilter;
+  }
 
   @Input()
   set nzShowSort(value: boolean) {
@@ -157,16 +163,30 @@ export class NzThComponent {
     this.nzSortChange.emit(this.nzSort);
   }
 
-  search(): void {
+  get filterList(): NzThItemInterface[] {
+    return this.multipleFilterList.filter(item => item.checked).map(item => item.value);
+  }
+
+  /* tslint:disable-next-line:no-any */
+  get filterValue(): any {
+    const checkedFilter = this.singleFilterList.find(item => item.checked);
+    return checkedFilter ? checkedFilter.value : null;
+  }
+
+  updateFilterStatus(): void {
     if (this.nzFilterMultiple) {
-      const filterList = this.multipleFilterList.filter(item => item.checked).map(item => item.value);
-      this.hasFilterValue = filterList.length > 0;
-      this.nzFilterChange.emit(filterList);
+      this.hasFilterValue = this.filterList.length > 0;
     } else {
-      const checkedFilter = this.singleFilterList.find(item => item.checked);
-      const filterValue = checkedFilter ? checkedFilter.value : null;
-      this.hasFilterValue = isNotNil(filterValue);
-      this.nzFilterChange.emit(filterValue);
+      this.hasFilterValue = isNotNil(this.filterValue);
+    }
+  }
+
+  search(): void {
+    this.updateFilterStatus();
+    if (this.nzFilterMultiple) {
+      this.nzFilterChange.emit(this.filterList);
+    } else {
+      this.nzFilterChange.emit(this.filterValue);
     }
     this.hideDropDown();
   }
@@ -204,6 +224,7 @@ export class NzThComponent {
       this._filters = value;
       this.initMultipleFilterList();
       this.initSingleFilterList();
+      this.updateFilterStatus();
     } else {
       console.warn('nzFilters only accept type of Array<{ text: string; value: any }>');
     }
