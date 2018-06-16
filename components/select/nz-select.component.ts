@@ -190,6 +190,11 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
       }
       if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
         this.cdkConnectedOverlay.overlayRef.updatePosition();
+        const backdropElement = this.cdkConnectedOverlay.overlayRef.backdropElement;
+        const parentNode = this.renderer.parentNode(backdropElement);
+        const hostElement = this.cdkConnectedOverlay.overlayRef.hostElement;
+        this.renderer.appendChild(parentNode, backdropElement);
+        this.renderer.appendChild(parentNode, hostElement);
       }
     } else {
       if (this.nzSelectTopControlComponent) {
