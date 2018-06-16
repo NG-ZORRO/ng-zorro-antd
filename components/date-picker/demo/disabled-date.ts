@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import * as differenceInDays from 'date-fns/difference_in_days';
+import * as differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 import * as setHours from 'date-fns/set_hours';
 
 @Component({
@@ -42,7 +42,7 @@ export class NzDemoDatePickerDisabledDateComponent {
 
   disabledDate = (current: Date): boolean => {
     // Can not select days before today and today
-    return differenceInDays(current, this.today) > 0;
+    return differenceInCalendarDays(current, this.today) > 0;
   };
 
   disabledDateTime = (): object => {

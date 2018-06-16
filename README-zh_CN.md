@@ -7,7 +7,6 @@
 # NG-ZORRO
 [![Travis branch](https://img.shields.io/travis/NG-ZORRO/ng-zorro-antd/master.svg?style=flat-square)](https://travis-ci.org/NG-ZORRO/ng-zorro-antd)
 [![Codecov](https://img.shields.io/codecov/c/github/NG-ZORRO/ng-zorro-antd/master.svg?style=flat-square)](https://codecov.io/gh/NG-ZORRO/ng-zorro-antd)
-[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 [![GitHub Release Date](https://img.shields.io/github/release-date/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/releases)
 [![Issue Stats](https://img.shields.io/issuestats/i/github/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/issues)
 [![NPM downloads](http://img.shields.io/npm/dm/ng-zorro-antd.svg?style=flat-square)](https://npmjs.org/package/ng-zorro-antd)
@@ -18,12 +17,15 @@
 [README in English](README.md)
 
 ## 版本
+[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 
-- [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+## 支持 Angular 版本
 
-- 1.x (支持 Angular 6.x & Ant Design 3.x) 即将放出
-- 0.7.x (support Angular 5.x & Ant Design 3.x) 目前推荐版本
-- 0.6.x (support Angular 5.x & Ant Design 2.x) **不再维护**
+目前支持 Angular `^6.0.0` 版本。
+
+## 设计规范
+
+`ng-zorro-antd` 与 Ant Design 设计规范定期同步，你可以在线查看[同步日志](https://nz-styles-syncer.now.sh/)。
 
 ## 特性
 
@@ -38,23 +40,14 @@
 
 ## 安装
 
-### 使用 npm 或 yarn 安装
-
-**我们推荐使用 npm 或 yarn 的方式进行开发**，不仅可在开发环境轻松调试，也可放心地在生产环境打包部署使用，享受整个生态圈和工具链带来的诸多好处。
+我们强烈推荐官方的 `@angular/cli` 工具链辅助进行开发，在实际项目开发中，它可以很好的满足对 TypeScript 代码的构建、调试、代理、打包部署等一系列工程化的需求。
 
 ```bash
-$ npm install ng-zorro-antd --save
+$ ng new PROJECT_NAME
+$ cd PROJECT_NAME
+$ ng add ng-zorro-antd
 ```
 
-```bash
-$ yarn add ng-zorro-antd
-```
-
-如果你的网络环境不佳，推荐使用 [cnpm](https://github.com/cnpm/cnpm)。
-
-## 标准开发
-
-实际项目开发中，你会需要对 TypeScript 代码的构建、调试、代理、打包部署等一系列工程化的需求，我们强烈推荐官方的 `@angular/cli` 工具链辅助进行开发。
 > 如果你想了解更多CLI工具链的功能和命令，建议访问 [Angular CLI](https://github.com/angular/angular-cli) 了解更多
 
 

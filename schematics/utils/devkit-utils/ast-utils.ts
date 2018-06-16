@@ -364,7 +364,7 @@ export function addSymbolToNgModuleMetadata(
 
   let toInsert: string;
   let position = node.getEnd();
-  if (node.kind == ts.SyntaxKind.ObjectLiteralExpression) {
+  if (node.kind == ts.SyntaxKind.ObjectLiteralExpression && node === arrLiteral) {
     // We haven't found the field in the metadata declaration. Insert a new
     // field.
     const expr = node as ts.ObjectLiteralExpression;

@@ -12,7 +12,9 @@ import { Subscription } from 'rxjs';
 
 import { NzDropdownContextComponent } from './nz-dropdown-context.component';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NzDropdownService {
   protected instance: NzDropdownContextComponent;
   private overlayRef: OverlayRef;
