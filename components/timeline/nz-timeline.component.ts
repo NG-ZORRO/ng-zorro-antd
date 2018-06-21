@@ -9,7 +9,8 @@ import {
   TemplateRef
 } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { NzTimelineItemComponent } from './nz-timeline-item.component';
 
@@ -20,7 +21,7 @@ import { NzTimelineItemComponent } from './nz-timeline-item.component';
 })
 export class NzTimelineComponent implements AfterContentInit, OnDestroy {
   private _pending: string | boolean | TemplateRef<void>;
-  private timeLineSubscription: Subscription;
+  private unsubscribe$ = new Subject<void>();
   isPendingString: boolean;
   isPendingBoolean: boolean = false;
 
@@ -45,16 +46,14 @@ export class NzTimelineComponent implements AfterContentInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.timeLineSubscription) {
-      this.timeLineSubscription.unsubscribe();
-      this.timeLineSubscription = null;
-    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   ngAfterContentInit(): void {
     this.updateChildrenTimeLine();
     if (this.listOfTimeLine) {
-      this.timeLineSubscription = this.listOfTimeLine.changes.subscribe(() => {
+      this.listOfTimeLine.changes.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
         this.updateChildrenTimeLine();
       });
     }

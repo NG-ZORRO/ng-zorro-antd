@@ -10,7 +10,9 @@ import {
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
-import { of, Observable, Subscription } from 'rxjs';
+
+import { of, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { toBoolean } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -26,7 +28,7 @@ import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, Tr
   }
 })
 export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
-  private i18n$: Subscription;
+  private unsubscribe$ = new Subject<void>();
   // tslint:disable-next-line:no-any
   locale: any = {};
   private _showSearch = false;
@@ -156,7 +158,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.i18n$ = this.i18n.localeChange.subscribe(() => this.locale = this.i18n.getLocaleData('Transfer'));
+    this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.locale = this.i18n.getLocaleData('Transfer'));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -168,6 +170,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.i18n$.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

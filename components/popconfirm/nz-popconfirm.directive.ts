@@ -13,8 +13,9 @@ import {
   ViewContainerRef
 } from '@angular/core';
 
-import { Subscription } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+
 import { toBoolean } from '../core/util/convert';
 import { NzTooltipDirective } from '../tooltip/nz-tooltip.directive';
 import { NzPopconfirmComponent } from './nz-popconfirm.component';
@@ -23,13 +24,13 @@ import { NzPopconfirmComponent } from './nz-popconfirm.component';
   selector: '[nz-popconfirm]'
 })
 export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit, OnDestroy {
+  private subclassUnsubscribe$ = new Subject<void>();
+
   factory: ComponentFactory<NzPopconfirmComponent> = this.resolver.resolveComponentFactory(NzPopconfirmComponent);
   _condition: boolean = false;
   _okText: string;
   _okType: string = 'primary';
   _cancelText: string;
-  _onCancel: Subscription;
-  _onConfirm: Subscription;
 
   @Output() nzOnCancel: EventEmitter<void> = new EventEmitter();
   @Output() nzOnConfirm: EventEmitter<void> = new EventEmitter();
@@ -102,14 +103,14 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit,
         'nzCancelText',
         'nzCondition' ];
       properties.forEach(property => this.updateCompValue(property, this[ property ]));
-      this._visibleChange = this.tooltip.nzVisibleChange.pipe(distinctUntilChanged()).subscribe(data => {
+      this.tooltip.nzVisibleChange.pipe(takeUntil(this.subclassUnsubscribe$), distinctUntilChanged()).subscribe(data => {
         this._visible = data;
         this.nzVisibleChange.emit(data);
       });
-      this._onCancel = (this.tooltip  as NzPopconfirmComponent).nzOnCancel.subscribe(data => {
+      (this.tooltip  as NzPopconfirmComponent).nzOnCancel.pipe(takeUntil(this.subclassUnsubscribe$)).subscribe(data => {
         this.nzOnCancel.emit();
       });
-      this._onConfirm = (this.tooltip  as NzPopconfirmComponent).nzOnConfirm.subscribe(data => {
+      (this.tooltip  as NzPopconfirmComponent).nzOnConfirm.pipe(takeUntil(this.subclassUnsubscribe$)).subscribe(data => {
         this.nzOnConfirm.emit();
       });
     }
@@ -117,17 +118,7 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit,
   }
 
   ngOnDestroy(): void {
-    if (this._visibleChange) {
-      this._visibleChange.unsubscribe();
-      this._visibleChange = null;
-    }
-    if (this._onCancel) {
-      this._onCancel.unsubscribe();
-      this._onCancel = null;
-    }
-    if (this._onConfirm) {
-      this._onConfirm.unsubscribe();
-      this._onConfirm = null;
-    }
+    this.subclassUnsubscribe$.next();
+    this.subclassUnsubscribe$.complete();
   }
 }
