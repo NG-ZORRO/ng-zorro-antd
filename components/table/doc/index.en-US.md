@@ -79,6 +79,7 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | `[nzShowSizeChanger]` | Determine whether `nzPageSize` can be changed | boolean | false |
 | `[nzShowTotal]` | To display the total number and range	 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
 | `[nzHideOnSinglePage]` | Whether to hide pager on single page | boolean | false |
+| `[nzSimple]` | whether to use simple mode | boolean | - |
 | `(nzPageIndexChange)` | pageIndex change callback | `EventEmitter<number>` | - |
 | `(nzPageSizeChange)` | pageSize change callback | `EventEmitter<number>` | - |
 | `(nzCurrentPageDataChange)` | current pageData change callback | `EventEmitter<any[]>` | - |

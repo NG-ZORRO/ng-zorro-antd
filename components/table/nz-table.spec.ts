@@ -121,6 +121,13 @@ describe('nz-table', () => {
       fixture.detectChanges();
       expect(console.warn).toHaveBeenCalledTimes(1);
     });
+    it('should pagination simple work', () => {
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelector('.ant-pagination-simple')).toBeNull();
+      testComponent.simple = true;
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelector('.ant-pagination-simple')).toBeDefined();
+    });
     it('should pagination work', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-pagination')).toBeDefined();
@@ -322,6 +329,7 @@ describe('nz-table', () => {
       [nzBordered]="bordered"
       [nzLoading]="loading"
       [nzShowSizeChanger]="showSizeChanger"
+      [nzSimple]="simple"
       [nzShowQuickJumper]="showQuickJumper"
       [nzHideOnSinglePage]="hideOnSinglePage"
       [nzWidthConfig]="widthConfig"
@@ -373,6 +381,7 @@ export class NzTestTableBasicComponent implements OnInit {
   title = true;
   footer = true;
   fixHeader = false;
+  simple = false;
   size = 'small';
   widthConfig = [];
 
