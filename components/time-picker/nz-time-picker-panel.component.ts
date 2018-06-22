@@ -10,7 +10,10 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subscription } from 'rxjs';
+
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { reqAnimFrame } from '../core/polyfill/request-animation';
 import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
 import { isNotNil } from '../core/util/check';
@@ -33,7 +36,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   private _nzHourStep = 1;
   private _nzMinuteStep = 1;
   private _nzSecondStep = 1;
-  private sub: Subscription;
+  private unsubscribe$ = new Subject<void>();
   private onChange: (value: Date) => void;
   private onTouch: () => void;
   private _format = 'HH:mm:ss';
@@ -383,7 +386,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
       this.prefixCls = 'ant-calendar-time-picker';
     }
 
-    this.sub = this.time.changes.subscribe(() => {
+    this.time.changes.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.changed();
       this.touched();
     });
@@ -392,10 +395,8 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   }
 
   ngOnDestroy(): void {
-    if (this.sub) {
-      this.sub.unsubscribe();
-      this.sub = null;
-    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   writeValue(value: Date): void {

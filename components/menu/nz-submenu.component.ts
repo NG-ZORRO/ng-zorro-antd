@@ -18,8 +18,9 @@ import {
   SkipSelf,
   ViewChild
 } from '@angular/core';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
-import { auditTime, combineLatest, map } from 'rxjs/operators';
+
+import { combineLatest, BehaviorSubject, Subject } from 'rxjs';
+import { auditTime, map, takeUntil } from 'rxjs/operators';
 
 import { POSITION_MAP } from '../core/overlay/overlay-position-map';
 import { toBoolean } from '../core/util/convert';
@@ -92,7 +93,8 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
   private _open = false;
   private _disabled = false;
   private $mouseSubject = new Subject<boolean>();
-  private openSubscription: Subscription;
+  private unsubscribe$ = new Subject<void>();
+
   placement = 'rightTop';
   $subOpen = new BehaviorSubject<boolean>(false);
   isInDropDown = false;
@@ -301,8 +303,8 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
 
   ngOnInit(): void {
     this.nzMenuDirective.subMenus.push(this);
-    const $combineAll = this.$mouseSubject.asObservable().pipe(combineLatest(this.$subOpen), map(value => value[ 0 ] || value[ 1 ]), auditTime(150));
-    this.openSubscription = $combineAll.subscribe(this.handleOpenEvent);
+    const $combineAll = combineLatest(this.$subOpen, this.$mouseSubject.asObservable()).pipe(map(value => value[ 0 ] || value[ 1 ]), auditTime(150));
+    $combineAll.pipe(takeUntil(this.unsubscribe$)).subscribe(this.handleOpenEvent);
     this.isInDropDown = this.nzMenuDirective.nzInDropDown;
   }
 
@@ -318,9 +320,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   ngOnDestroy(): void {
-    if (this.openSubscription) {
-      this.openSubscription.unsubscribe();
-      this.openSubscription = null;
-    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

@@ -12,8 +12,7 @@ import { isNotNil } from '../core/util/check';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
 
-import { Subject, Subscription } from 'rxjs';
-import { merge } from 'rxjs/operators';
+import { merge, Subject, Subscription } from 'rxjs';
 import { NzOptionLiComponent } from './nz-option-li.component';
 import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pipe';
 
@@ -223,9 +222,13 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   /** watch options change in option group **/
   watchSubOptionChanges(): void {
     this.unsubscribeOption();
-    let optionChanges$ = new Subject().asObservable().pipe(merge(this.listOfNzOptionGroupComponent.changes)).pipe(merge(this.listOfNzOptionComponent.changes));
+    let optionChanges$ = merge(
+      new Subject().asObservable(),
+      this.listOfNzOptionGroupComponent.changes,
+      this.listOfNzOptionComponent.changes
+    );
     if (this.listOfNzOptionGroupComponent.length) {
-      this.listOfNzOptionGroupComponent.forEach(group => optionChanges$ = group.listOfNzOptionComponent ? optionChanges$.pipe(merge(group.listOfNzOptionComponent.changes)) : optionChanges$);
+      this.listOfNzOptionGroupComponent.forEach(group => optionChanges$ = group.listOfNzOptionComponent ? merge(group.listOfNzOptionComponent.changes, optionChanges$) : optionChanges$);
     }
     this.optionSubscription = optionChanges$.subscribe(() => this.refreshAllOptionStatus(true));
   }

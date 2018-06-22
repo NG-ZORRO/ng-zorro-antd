@@ -15,7 +15,10 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
@@ -30,7 +33,7 @@ import { NzTheadComponent } from './nz-thead.component';
   templateUrl        : './nz-table.component.html'
 })
 export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
-  private i18n$: Subscription;
+  private unsubscribe$ = new Subject<void>();
   private _bordered = false;
   private _showPagination = true;
   private _loading = false;
@@ -324,7 +327,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.i18n$ = this.i18n.localeChange.subscribe(() => this.locale = this.i18n.getLocaleData('Table'));
+    this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.locale = this.i18n.getLocaleData('Table'));
     this.fitScrollBar();
     if (this.nzScroll && this.nzScroll.x && this.nzScroll.y) {
       /** magic code to sync scroll **/
@@ -338,7 +341,8 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.i18n$.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private overlay: Overlay, private nzMeasureScrollbarService: NzMeasureScrollbarService, private i18n: NzI18nService) {
