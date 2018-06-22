@@ -107,6 +107,10 @@ export class NzTreeComponent implements OnInit {
     return this.nzTreeService.getSelectedNodeList();
   }
 
+  getHalfCheckedNodeList(): NzTreeNode[] {
+    return this.nzTreeService.getHalfCheckedNodeList();
+  }
+
   // ngModel
   writeValue(value: NzTreeNode[]): void {
     if (value) {
