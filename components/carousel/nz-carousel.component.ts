@@ -13,7 +13,10 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { toBoolean } from '../core/util/convert';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
@@ -56,7 +59,8 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
   private _dots = true;
   private _vertical = false;
   private _effect = 'scrollx';
-  slideContentsSubscription: Subscription;
+  private unsubscribe$ = new Subject<void>();
+
   activeIndex = 0;
   transform = 'translate3d(0px, 0px, 0px)';
   timeout;
@@ -226,17 +230,17 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
   }
 
   ngAfterViewInit(): void {
-    this.slideContentsSubscription = this.slideContents.changes.subscribe(() => {
+    this.slideContents.changes
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(() => {
       this.renderContent();
     });
     this.renderContent();
   }
 
   ngOnDestroy(): void {
-    if (this.slideContentsSubscription) {
-      this.slideContentsSubscription.unsubscribe();
-      this.slideContentsSubscription = null;
-    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
     this.clearTimeout();
   }
 
