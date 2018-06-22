@@ -466,6 +466,22 @@ describe('NzRangePickerComponent', () => {
       expect(queryFromOverlay('.ant-calendar-range-right .ant-calendar-selected-end-date')).toBeDefined();
     }));
 
+    it('should display expected date when the range values are the same day (include the scenario of timepicker)', fakeAsync(() => {
+      fixtureInstance.modelValue = [ new Date('2018-05-15'), new Date('2018-05-15') ];
+      fixtureInstance.nzShowTime = true;
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      expect(queryFromOverlay('.ant-calendar-range-right .ant-calendar-month-select').textContent).toContain('6');
+
+      // Open time picker panel
+      dispatchMouseEvent(queryFromOverlay('.ant-calendar-time-picker-btn'), 'click');
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(queryFromOverlay('.ant-calendar-range-right .ant-calendar-month-select').textContent).toContain('5');
+    }));
+
     it('should support nzRanges', fakeAsync(() => {
       const today = new Date();
       fixtureInstance.nzRanges = { 'Today': [ today, today ] };

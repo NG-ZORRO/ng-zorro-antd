@@ -218,7 +218,8 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
   getValueBySelector(partType?: RangePartType): CandyDate {
     if (this.isRange) {
-      return this.valueForRangeShow[ this.getPartTypeIndex(partType) ];
+      const valueShow = this.showTimePicker ? this.value : this.valueForRangeShow; // Use the real time value that without decorations when timepicker is shown up
+      return valueShow[ this.getPartTypeIndex(partType) ];
     } else {
       return this.value as CandyDate;
     }
@@ -238,11 +239,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
   disabledStartTime = (value: Date): DisabledTimeConfig => {
     return this.disabledTime && this.disabledTime(value, 'start');
-  };
+  }
 
   disabledEndTime = (value: Date): DisabledTimeConfig => {
     return this.disabledTime && this.disabledTime(value, 'end');
-  };
+  }
 
   isAllowedSelectedValue(): boolean {
     const selectedValue = this.selectedValue;
