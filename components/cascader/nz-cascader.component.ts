@@ -16,11 +16,11 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
-import { ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
-
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { DEFAULT_DROPDOWN_POSITIONS } from '../core/overlay/overlay-position-map';
 
 import { dropDownAnimation } from '../core/animation/dropdown-animations';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
 
 function toArray<T>(value: T | T[]): T[] {
@@ -87,9 +87,13 @@ export interface CascaderOption {
     '[attr.tabIndex]': '"0"'
   },
   styles             : [
-    `.ant-cascader-menus {
+      `.ant-cascader-menus {
       margin-top: 4px;
       margin-bottom: 4px;
+      top: 100%;
+      left: 0;
+      position: relative;
+      width: 100%;
     }`
   ]
 })
@@ -159,6 +163,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   // ngModel Access
   onChange: any = Function.prototype;
   onTouched: any = Function.prototype;
+  positions: ConnectionPositionPair[] = [ ...DEFAULT_DROPDOWN_POSITIONS ];
 
   /** Display Render ngTemplate */
   @Input()
