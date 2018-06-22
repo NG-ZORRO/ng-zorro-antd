@@ -1,8 +1,7 @@
 <div
   cdkOverlayOrigin
   #origin="cdkOverlayOrigin"
-  #trigger
->
+  #trigger>
   <div *ngIf="nzShowInput">
     <input #input
       nz-input
@@ -16,8 +15,7 @@
       [(ngModel)]="inputValue"
       (blur)="handleInputBlur($event)"
       (focus)="handleInputFocus($event)"
-      (change)="handlerInputChange($event)"
-    >
+      (change)="handlerInputChange($event)">
     <i *ngIf="showClearIcon"
       [class]="'anticon anticon-cross-circle'"
       [ngClass]="clearCls"
@@ -42,24 +40,22 @@
   cdkConnectedOverlay
   cdkConnectedOverlayHasBackdrop
   [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayPositions]="positions"
   (backdropClick)="closeMenu()"
   (detach)="closeMenu()"
   (positionChange)="onPositionChange($event)"
-  [cdkConnectedOverlayOpen]="menuVisible"
->
+  [cdkConnectedOverlayOpen]="menuVisible">
   <div #menu
     [ngClass]="menuCls" [ngStyle]="nzMenuStyle"
     [@dropDownAnimation]="dropDownPosition"
-    (mouseleave)="onTriggerMouseLeave($event)"
-  >
+    (mouseleave)="onTriggerMouseLeave($event)">
     <ul *ngFor="let options of nzColumns; let i = index;" [ngClass]="menuColumnCls">
       <li *ngFor="let option of options"
         [attr.title]="option.title || getOptionLabel(option)"
         [ngClass]="getOptionCls(option, i)"
         (mouseenter)="onOptionMouseEnter(option, i, $event)"
         (mouseleave)="onOptionMouseLeave(option, i, $event)"
-        (click)="onOptionClick(option, i, $event)"
-      >
+        (click)="onOptionClick(option, i, $event)">
         {{ getOptionLabel(option) }}
       </li>
     </ul>
