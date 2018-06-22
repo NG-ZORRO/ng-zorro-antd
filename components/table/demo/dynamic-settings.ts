@@ -79,6 +79,22 @@ import { Component, OnInit } from '@angular/core';
         </nz-form-item>
         <nz-form-item>
           <nz-form-label>
+            <label>No Result</label>
+          </nz-form-label>
+          <nz-form-control>
+            <nz-switch [(ngModel)]="noResult" (ngModelChange)="noResultChange($event)" name="noResult"></nz-switch>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>
+            <label>Simple Pagination</label>
+          </nz-form-label>
+          <nz-form-control>
+            <nz-switch [(ngModel)]="simple" name="simple"></nz-switch>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>
             <label>Size</label>
           </nz-form-label>
           <nz-form-control>
@@ -89,14 +105,6 @@ import { Component, OnInit } from '@angular/core';
             </nz-radio-group>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
-          <nz-form-label>
-            <label>No Result</label>
-          </nz-form-label>
-          <nz-form-control>
-            <nz-switch [(ngModel)]="noResult" (ngModelChange)="noResultChange($event)" name="noResult"></nz-switch>
-          </nz-form-control>
-        </nz-form-item>
       </form>
     </div>
     <nz-table
@@ -105,6 +113,7 @@ import { Component, OnInit } from '@angular/core';
       [nzScroll]="fixHeader?{ y: '240px' }:null"
       [nzData]="dataSet"
       [nzBordered]="bordered"
+      [nzSimple]="simple"
       [nzLoading]="loading"
       [nzFrontPagination]="pagination"
       [nzShowPagination]="pagination"
@@ -170,6 +179,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   allChecked = false;
   indeterminate = false;
   displayData = [];
+  simple = false;
   noResult = false;
 
   currentPageDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean; expand: boolean; description: string; }>): void {

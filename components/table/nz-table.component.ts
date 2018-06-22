@@ -48,6 +48,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private _pageSize = 10;
   private _widthConfig: string[] = [];
   private _frontPagination = true;
+  private _simple = false;
   /* tslint:disable-next-line:no-any */
   locale: any = {};
   nzTheadComponent: NzTheadComponent;
@@ -82,6 +83,14 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() nzLoadingDelay = 0;
   @Input() nzTotal: number;
 
+  @Input()
+  set nzSimple(value: boolean) {
+    this._simple = toBoolean(value);
+  }
+
+  get nzSimple(): boolean {
+    return this._simple;
+  }
   @Input()
   set nzFrontPagination(value: boolean) {
     this._frontPagination = toBoolean(value);
