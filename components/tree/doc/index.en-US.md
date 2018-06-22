@@ -47,6 +47,7 @@ Almost anything can be represented in a tree structure. Examples include directo
 | -------- | ----------- | ---- | ------- |
 | getCheckedNodeList | get checked nodes(merged) | NzTreeNode[] | [] |
 | getSelectedNodeList | get selected nodes | NzTreeNode[] | [] |
+| getHalfCheckedNodeList | get half checked nodes | NzTreeNode[] | [] |
 
 #### NzTreeNodeOptions props
 
