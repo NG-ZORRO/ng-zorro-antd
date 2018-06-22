@@ -232,7 +232,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     }
   }
 
-  private handleKeydown(event: KeyboardEvent): void {
+  handleKeydown(event: KeyboardEvent): void {
     const keyCode = event.keyCode;
     const isArrowKey = keyCode === UP_ARROW || keyCode === DOWN_ARROW;
 
@@ -284,7 +284,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     }
   }
 
-  private handleInput(event: KeyboardEvent): void {
+  handleInput(event: KeyboardEvent): void {
     const target = event.target as HTMLInputElement;
     let value: number | string | null = target.value;
     if (target.type === 'number') {
@@ -298,14 +298,14 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     }
   }
 
-  private handleFocus(): void {
+  handleFocus(): void {
     if (this.canOpen()) {
       this.previousValue = this._element.nativeElement.value;
       this.openPanel();
     }
   }
 
-  private handleBlur(): void {
+  handleBlur(): void {
     this._onTouched();
   }
 
