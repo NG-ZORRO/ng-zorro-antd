@@ -568,7 +568,9 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     }
 
     this.labelRenderText = '';
-    this.isLabelRenderTemplate = false;
+    // this.isLabelRenderTemplate = false;
+    // clear custom context
+    this.labelRenderContext = {};
     this.selectedOptions = [];
     this.activatedOptions = [];
     this.inputValue = '';
