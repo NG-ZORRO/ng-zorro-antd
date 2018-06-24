@@ -44,10 +44,12 @@ describe('input number', () => {
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).toContain('ng-untouched');
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number-focused');
+      expect(testComponent.onFocus).toHaveBeenCalledTimes(1);
       dispatchFakeEvent(inputElement, 'blur');
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
       expect(inputNumber.nativeElement.classList).toContain('ng-touched');
+      expect(testComponent.onBlur).toHaveBeenCalledTimes(1);
     });
     it('should nzSize work', () => {
       testComponent.size = 'large';
@@ -457,7 +459,9 @@ describe('input number', () => {
       [nzStep]="step"
       [nzFormatter]="formatter"
       [nzParser]="parser"
-      [nzPrecision]="precision">
+      [nzPrecision]="precision"
+      (nzOnBlur)="onBlur($event)"
+      (nzOnFocus)="onFocus($event)">
     </nz-input-number>
   `
 })
@@ -475,6 +479,8 @@ export class NzTestInputNumberBasicComponent {
   formatter = (value) => value;
   parser = (value) => value;
   modelChange = jasmine.createSpy('change callback');
+  onBlur = jasmine.createSpy('blur callback');
+  onFocus = jasmine.createSpy('focus callback');
 }
 
 @Component({

@@ -31,6 +31,8 @@ title: InputNumber
 | `[nzStep]` | 每次改变步数，可以为小数 | number ｜ string | 1 |
 | `[nzPlaceHolder]` | 选择框默认文字 | string | - |
 | `(ngModelChange)` | 数值改变时回调 | `EventEmitter<number>` | - |
+| `(nzOnBlur)` | 失去焦点时的回调 | `EventEmitter<FocusEvent>` | - |
+| `(nzOnFocus)` | 获取焦点时的回调 | `EventEmitter<FocusEvent>` | - |
 
 #### 方法
 

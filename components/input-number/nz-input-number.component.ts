@@ -3,8 +3,10 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   HostBinding,
   Input,
+  Output,
   Renderer2,
   ViewChild
 } from '@angular/core';
@@ -52,6 +54,9 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzParser = (value) => value;
   @Input() nzPrecision: number;
   @Input() nzPlaceHolder = '';
+
+  @Output() nzOnBlur: EventEmitter<FocusEvent> = new EventEmitter();
+  @Output() nzOnFocus: EventEmitter<FocusEvent> = new EventEmitter();
 
   @HostBinding('class.ant-input-number-lg')
   get isLarge(): boolean {
@@ -166,12 +171,14 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   onBlur(e: FocusEvent): void {
     this.onTouched();
     this.isFocused = false;
+    this.nzOnBlur.emit(e);
     const value = this.getCurrentValidValue(this.actualValue);
     this.setValue(value, `${this.value}` !== `${value}`);
   }
 
   onFocus(e: FocusEvent): void {
     this.isFocused = true;
+    this.nzOnFocus.emit(e);
   }
 
   getRatio(e: KeyboardEvent): number {

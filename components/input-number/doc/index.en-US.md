@@ -28,6 +28,8 @@ When a numeric value needs to be provided.
 | `[nzStep]` | The number to which the current value is increased or decreased. It can be an integer or decimal. | number ｜  string | 1 |
 | `[nzPlaceHolder]` | Placeholder of select | string | - |
 | `(ngModelChange)` | The callback triggered when the value is changed | `EventEmitter<number>` | - |
+| `(nzOnBlur)` | callback when component lose focus | `EventEmitter<FocusEvent>` | - |
+| `(nzOnFocus)` | callback when component get focus | `EventEmitter<FocusEvent>` | - |
 
 #### Methods
 
