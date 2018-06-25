@@ -20,10 +20,14 @@ export class CandyDate {
     //   return new CandyDate(date);
     // }
 
-    if (date instanceof Date) {
-      this.nativeDate = date;
-    } else if (typeof date === 'string') {
-      this.nativeDate = new Date(date);
+    if (date) {
+      if (date instanceof Date) {
+        this.nativeDate = date;
+      } else if (typeof date === 'string') {
+        this.nativeDate = new Date(date);
+      } else {
+        throw new Error('The input date type is not supported ("Date" and "string" is now recommended)');
+      }
     } else {
       this.nativeDate = new Date();
     }
