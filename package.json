@@ -1,6 +1,6 @@
 {
   "name": "ng-zorro-antd",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "scripts": {
@@ -23,7 +23,7 @@
     "integration-webpack": "npm run generate && cd integration/webpack && npm run integration",
     "integration-rollup": "npm run generate && cd integration/rollup && npm run integration",
     "lint": "tslint -c tslint.json 'components/*/*.ts'",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && node scripts/changelog/replace-scope-prefix.js"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && node site_scripts/replace-scope-prefix.js"
   },
   "main": "./bundles/antd.umd.js",
   "module": "./esm5/antd.js",
