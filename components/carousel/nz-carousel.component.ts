@@ -17,7 +17,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { toBoolean } from '../core/util/convert';
+import { toBoolean, toNumber } from '../core/util/convert';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 
@@ -56,6 +56,7 @@ import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 })
 export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterContentInit {
   private _autoPlay = false;
+  private _autoPlaySpeed = 3000;
   private _dots = true;
   private _vertical = false;
   private _effect = 'scrollx';
@@ -106,6 +107,16 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
 
   get nzAutoPlay(): boolean {
     return this._autoPlay;
+  }
+
+  @Input()
+  set nzAutoPlaySpeed(value: number) {
+    this._autoPlaySpeed = toNumber(value, null);
+    this.setUpAutoPlay();
+  }
+
+  get nzAutoPlaySpeed(): number {
+    return this._autoPlaySpeed;
   }
 
   @Input()
@@ -178,7 +189,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
     if (this.nzAutoPlay) {
       this.timeout = setTimeout(_ => {
         this.setActive(this.slideContents.toArray()[ this.nextIndex ], this.nextIndex);
-      }, 3000);
+      }, this.nzAutoPlaySpeed);
     }
   }
 
