@@ -12,7 +12,7 @@ import { toBoolean } from '../core/util/convert';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector   : 'td',
+  selector   : 'td:not(.custom-tag)',
   templateUrl: './nz-td.component.html'
 })
 export class NzTdComponent {
