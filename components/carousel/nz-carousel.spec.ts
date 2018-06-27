@@ -117,17 +117,27 @@ describe('carousel', () => {
       tick(3000 + 10);
       fixture.detectChanges();
       expect(carouselContents[ 1 ].nativeElement.classList).toContain('slick-active');
-      testComponent.autoPlaySpeed = 1000;
-      fixture.detectChanges();
-      tick(1000 + 10);
-      fixture.detectChanges();
-      expect(carouselContents[ 2 ].nativeElement.classList).toContain('slick-active');
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
       fixture.detectChanges();
-      tick(1000 + 10);
+      tick(3000 + 10);
       fixture.detectChanges();
       testComponent.nzCarouselComponent.clearTimeout();
       expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
+    }));
+    it('should autoplay speed work', fakeAsync(() => {
+      testComponent.autoPlay = true;
+      testComponent.autoPlaySpeed = 1000;
+      fixture.detectChanges();
+      expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
+      fixture.detectChanges();
+      tick(1000 + 10);
+      fixture.detectChanges();
+      expect(carouselContents[ 1 ].nativeElement.classList).toContain('slick-active');
+      testComponent.autoPlaySpeed = 0;
+      fixture.detectChanges();
+      tick(2000 + 10);
+      fixture.detectChanges();
+      expect(carouselContents[ 1 ].nativeElement.classList).toContain('slick-active');
     }));
     it('should func work', () => {
       fixture.detectChanges();
@@ -153,7 +163,7 @@ describe('carousel', () => {
       [nzVertical]="vertical"
       [nzDots]="dots"
       [nzAutoPlay]="autoPlay"
-      [nzAutoPlay]="autoPlaySpeed"
+      [nzAutoPlaySpeed]="autoPlaySpeed"
       (nzAfterChange)="afterChange($event)"
       (nzBeforeChange)="beforeChange($event)">
       <div nz-carousel-content *ngFor="let index of array"><h3>{{index}}</h3></div>

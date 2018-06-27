@@ -186,7 +186,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
 
   setUpAutoPlay(): void {
     this.clearTimeout();
-    if (this.nzAutoPlay) {
+    if (this.nzAutoPlay && this.nzAutoPlaySpeed > 0) {
       this.timeout = setTimeout(_ => {
         this.setActive(this.slideContents.toArray()[ this.nextIndex ], this.nextIndex);
       }, this.nzAutoPlaySpeed);

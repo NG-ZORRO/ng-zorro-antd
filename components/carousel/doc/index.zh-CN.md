@@ -20,6 +20,7 @@ subtitle: 走马灯
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzAutoPlay]` | 是否自动切换 | boolean | false |
+| `[nzAutoPlaySpeed]` | 切换时间(毫秒)，当设置为0时不切换 | number | 3000 |
 | `[nzDots]` | 是否显示面板指示点 | boolean | true |
 | `[nzEffect]` | 动画效果函数，可取 scrollx, fade | string | scrollx |
 | `[nzVertical]` | 垂直显示 | boolean | false |
