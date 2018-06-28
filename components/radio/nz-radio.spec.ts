@@ -167,7 +167,7 @@ describe('radio', () => {
       radios = fixture.debugElement.queryAll(By.directive(NzRadioButtonComponent));
       radioGroup = fixture.debugElement.query(By.directive(NzRadioGroupComponent));
     });
-    it('should disable work', fakeAsync(() => {
+    it('should group disable work', fakeAsync(() => {
       fixture.detectChanges();
       expect(testComponent.value).toBe('A');
       radios[ 1 ].nativeElement.click();
@@ -175,6 +175,19 @@ describe('radio', () => {
       flush();
       fixture.detectChanges();
       expect(radios[ 1 ].nativeElement.firstElementChild.classList).not.toContain('ant-radio-button-checked');
+      expect(testComponent.value).toBe('A');
+    }));
+    it('should single disable work', fakeAsync(() => {
+      testComponent.disabled = false;
+      fixture.detectChanges();
+      testComponent.singleDisabled = true;
+      fixture.detectChanges();
+      expect(testComponent.value).toBe('A');
+      radios[ 2 ].nativeElement.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(radios[ 2 ].nativeElement.firstElementChild.classList).not.toContain('ant-radio-button-checked');
       expect(testComponent.value).toBe('A');
     }));
   });
@@ -238,11 +251,11 @@ describe('radio', () => {
     it('should set disabled work', fakeAsync(() => {
       flush();
       expect(testComponent.formGroup.get('radioGroup').value).toBe('B');
-      radios[0].nativeElement.click();
+      radios[ 0 ].nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.formGroup.get('radioGroup').value).toBe('A');
       testComponent.disable();
-      radios[1].nativeElement.click();
+      radios[ 1 ].nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.formGroup.get('radioGroup').value).toBe('A');
     }));
@@ -340,13 +353,15 @@ export class NzTestRadioGroupFormComponent {
 }
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1543 **/
+/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1734 **/
+
 @Component({
   selector: 'nz-test-radio-group-disabled',
   template: `
     <nz-radio-group [(ngModel)]="value" [nzName]="name" [nzDisabled]="disabled" [nzSize]="size">
       <label nz-radio-button nzValue="A">A</label>
       <label nz-radio-button nzValue="B">B</label>
-      <label nz-radio-button nzValue="C">C</label>
+      <label nz-radio-button nzValue="C" [nzDisabled]="singleDisabled">C</label>
       <label nz-radio-button nzValue="D">D</label>
     </nz-radio-group>`
 })
@@ -356,4 +371,5 @@ export class NzTestRadioGroupDisabledComponent {
   value = 'A';
   disabled = true;
   name: string;
+  singleDisabled = false;
 }

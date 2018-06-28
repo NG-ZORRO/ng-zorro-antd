@@ -7,6 +7,8 @@ import {
   Input
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { isNotNil } from '../core/util/check';
+import { toBoolean } from '../core/util/convert';
 
 export type NzRadioGroupSizeType = 'large' | 'default' | 'small';
 
@@ -31,7 +33,7 @@ import { NzRadioComponent } from './nz-radio.component';
 export class NzRadioGroupComponent implements AfterContentInit, ControlValueAccessor {
   private _size: NzRadioGroupSizeType = 'default';
   private _name: string;
-  private _disabled: boolean = false;
+  private _disabled: boolean;
   el: HTMLElement;
   value: string;
 
@@ -52,7 +54,7 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
 
   @Input()
   set nzDisabled(value: boolean) {
-    this._disabled = value;
+    this._disabled = toBoolean(value);
     this.updateDisabledState();
   }
 
@@ -71,9 +73,11 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
   }
 
   updateDisabledState(): void {
-    this.radios.forEach((radio) => {
-      radio.nzDisabled = this.nzDisabled;
-    });
+    if (isNotNil(this.nzDisabled)) {
+      this.radios.forEach((radio) => {
+        radio.nzDisabled = this.nzDisabled;
+      });
+    }
   }
 
   updateChildrenName(): void {
