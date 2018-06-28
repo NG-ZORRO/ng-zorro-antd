@@ -24,6 +24,7 @@ import { NzRadioGroupComponent } from './nz-radio-group.component';
   templateUrl        : './nz-radio.component.html',
   host               : {
     '[class.ant-radio-wrapper]'         : 'true',
+    '[class.ant-radio-wrapper-checked]' : 'nzChecked',
     '[class.ant-radio-wrapper-disabled]': 'nzDisabled'
   },
   providers          : [
