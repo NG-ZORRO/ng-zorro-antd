@@ -128,7 +128,9 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
   ngAfterContentInit(): void {
     this.syncCheckedValue();
     this.updateChildrenName();
-    this.updateDisabledState();
+    Promise.resolve().then(() => {
+      this.updateDisabledState();
+    });
   }
 
   writeValue(value: string): void {
