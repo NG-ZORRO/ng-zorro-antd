@@ -3,7 +3,7 @@
     [nzIndeterminate]="stat.checkHalf">
   </label>
   <span class="ant-transfer-list-header-selected">
-    {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ dataSource.length > 1 ? itemsUnit : itemUnit }}
+    <span>{{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ dataSource.length > 1 ? itemsUnit : itemUnit }}</span>
     <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
   </span>
 </div>
