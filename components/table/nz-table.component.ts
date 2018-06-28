@@ -15,7 +15,10 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
@@ -30,7 +33,7 @@ import { NzTheadComponent } from './nz-thead.component';
   templateUrl        : './nz-table.component.html'
 })
 export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
-  private i18n$: Subscription;
+  private unsubscribe$ = new Subject<void>();
   private _bordered = false;
   private _showPagination = true;
   private _loading = false;
@@ -45,6 +48,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private _pageSize = 10;
   private _widthConfig: string[] = [];
   private _frontPagination = true;
+  private _simple = false;
   /* tslint:disable-next-line:no-any */
   locale: any = {};
   nzTheadComponent: NzTheadComponent;
@@ -79,6 +83,14 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() nzLoadingDelay = 0;
   @Input() nzTotal: number;
 
+  @Input()
+  set nzSimple(value: boolean) {
+    this._simple = toBoolean(value);
+  }
+
+  get nzSimple(): boolean {
+    return this._simple;
+  }
   @Input()
   set nzFrontPagination(value: boolean) {
     this._frontPagination = toBoolean(value);
@@ -324,7 +336,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.i18n$ = this.i18n.localeChange.subscribe(() => this.locale = this.i18n.getLocaleData('Table'));
+    this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.locale = this.i18n.getLocaleData('Table'));
     this.fitScrollBar();
     if (this.nzScroll && this.nzScroll.x && this.nzScroll.y) {
       /** magic code to sync scroll **/
@@ -338,7 +350,8 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.i18n$.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private overlay: Overlay, private nzMeasureScrollbarService: NzMeasureScrollbarService, private i18n: NzI18nService) {

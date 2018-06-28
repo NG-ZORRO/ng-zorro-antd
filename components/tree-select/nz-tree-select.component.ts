@@ -183,6 +183,8 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
       this.nzOpen = true;
       this.nzOpenChange.emit(this.nzOpen);
       this.updateCdkConnectedOverlayStatus();
+      this.updatePosition();
+      this.updateDropDownClassMap();
     }
   }
 

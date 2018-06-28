@@ -21,7 +21,10 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 
 import { InputBoolean } from '../core/util/convert';
@@ -47,7 +50,8 @@ type AnimationState = 'enter' | 'leave' | null;
 
 // tslint:disable-next-line:no-any
 export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> implements OnInit, OnChanges, AfterViewInit, OnDestroy, ModalOptions {
-  private i18n$: Subscription;
+  private unsubscribe$ = new Subject<void>();
+
   // tslint:disable-next-line:no-any
   locale: any = {};
   @Input() nzModalType: ModalType = 'default';
@@ -130,7 +134,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   ngOnInit(): void {
-    this.i18n$ = this.i18n.localeChange.subscribe(() => this.locale = this.i18n.getLocaleData('Modal'));
+    this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.locale = this.i18n.getLocaleData('Modal'));
 
     if (this.isComponent(this.nzContent)) {
       this.createDynamicComponent(this.nzContent as Type<T>); // Create component along without View
@@ -177,7 +181,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     if (this.container instanceof OverlayRef) {
       this.container.dispose();
     }
-    this.i18n$.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   open(): void {

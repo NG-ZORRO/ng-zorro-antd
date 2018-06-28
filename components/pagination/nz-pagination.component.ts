@@ -9,7 +9,9 @@ import {
   ViewChild
 } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { isInteger } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -20,7 +22,7 @@ import { NzI18nService } from '../i18n/nz-i18n.service';
   templateUrl        : './nz-pagination.component.html'
 })
 export class NzPaginationComponent implements OnInit, OnDestroy {
-  private i18n$: Subscription;
+  private unsubscribe$ = new Subject<void>();
   // tslint:disable-next-line:no-any
   locale: any = {};
   @ViewChild('renderItemTemplate') private _itemRender: TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }>;
@@ -266,10 +268,11 @@ export class NzPaginationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.i18n$ = this.i18n.localeChange.subscribe(() => this.locale = this.i18n.getLocaleData('Pagination'));
+    this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.locale = this.i18n.getLocaleData('Pagination'));
   }
 
   ngOnDestroy(): void {
-    this.i18n$.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

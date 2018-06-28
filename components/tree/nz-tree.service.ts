@@ -13,6 +13,7 @@ export class NzTreeService {
   rootNodes: NzTreeNode[] = [];
   selectedNodeList: NzTreeNode[] = [];
   checkedNodeList: NzTreeNode[] = [];
+  halfCheckedNodeList: NzTreeNode[] = [];
   matchedNodeList: NzTreeNode[] = [];
 
   /**
@@ -177,6 +178,30 @@ export class NzTreeService {
    */
   getCheckedNodeList(): NzTreeNode[] {
     return this.checkedNodeList;
+  }
+
+  /**
+   * return half checked nodes
+   * @returns {NzTreeNode[]}
+   */
+  getHalfCheckedNodeList(): NzTreeNode[] {
+    this.halfCheckedNodeList = [];
+    this.rootNodes.forEach((rNode: NzTreeNode) => {
+      const loopNode = (lNode: NzTreeNode) => {
+        const cIndex = this.halfCheckedNodeList.findIndex(cNode => (lNode.key === cNode.key));
+        if (lNode.isHalfChecked) {
+          if (cIndex === -1) {
+            this.halfCheckedNodeList.push(lNode);
+          }
+          // reset child state
+          lNode.children.forEach((child) => {
+            loopNode(child);
+          });
+        }
+      };
+      loopNode(rNode);
+    });
+    return this.halfCheckedNodeList;
   }
 
   /**

@@ -124,9 +124,11 @@ describe('tree component test', () => {
       fixture.detectChanges();
       expect(treeElement.querySelectorAll('.ant-tree-checkbox-checked').length).toEqual(0);
       expect(treeInstance.treeComponent.getCheckedNodeList().length).toEqual(0);
-      // click toggle checked
+      // test half checked nodes, click child1.1
+      targetNode = treeElement.querySelectorAll('.ant-tree-checkbox')[ 2 ];
       dispatchMouseEvent(targetNode, 'click');
-      dispatchMouseEvent(targetNode, 'click');
+      fixture.detectChanges();
+      expect(treeInstance.treeComponent.getHalfCheckedNodeList().length).toEqual(2);
       // click disabled node
       targetNode = treeElement.querySelector('.ant-tree-checkbox-disabled');
       dispatchMouseEvent(targetNode, 'click');

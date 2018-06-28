@@ -15,8 +15,10 @@ import {
   TemplateRef,
   ViewContainerRef
 } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+
+import { Subject } from 'rxjs';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+
 import { isNotNil } from '../core/util/check';
 import { NzToolTipComponent } from './nz-tooltip.component';
 
@@ -24,6 +26,8 @@ import { NzToolTipComponent } from './nz-tooltip.component';
   selector: '[nz-tooltip]'
 })
 export class NzTooltipDirective implements AfterViewInit, OnInit, OnDestroy {
+  private unsubscribe$ = new Subject<void>();
+
   // [NOTE] Here hard coded, and nzTitle used only under NzTooltipDirective currently.
   isTooltipOpen: boolean = false;
   isDynamicTooltip = false; // Indicate whether current tooltip is dynamic created
@@ -37,7 +41,6 @@ export class NzTooltipDirective implements AfterViewInit, OnInit, OnDestroy {
   _visible: boolean;
   _trigger: string;
   _placement: string;
-  _visibleChange: Subscription;
   factory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
   @Output() nzVisibleChange = new EventEmitter<boolean>();
 
@@ -187,7 +190,7 @@ export class NzTooltipDirective implements AfterViewInit, OnInit, OnDestroy {
       this.isDynamicTooltip = true;
       const properties = [ 'nzTitle', 'nzContent', 'nzOverlayClassName', 'nzOverlayStyle', 'nzMouseEnterDelay', 'nzMouseLeaveDelay', 'nzVisible', 'nzTrigger', 'nzPlacement' ];
       properties.forEach(property => this.updateCompValue(property, this[ property ]));
-      this._visibleChange = this.tooltip.nzVisibleChange.pipe(distinctUntilChanged()).subscribe(data => {
+      this.tooltip.nzVisibleChange.pipe(takeUntil(this.unsubscribe$), distinctUntilChanged()).subscribe(data => {
         this._visible = data;
         this.nzVisibleChange.emit(data);
       });
@@ -219,10 +222,8 @@ export class NzTooltipDirective implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this._visibleChange) {
-      this._visibleChange.unsubscribe();
-      this._visibleChange = null;
-    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

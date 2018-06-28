@@ -80,6 +80,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzShowSizeChanger]` | 是否可以改变 `nzPageSize` | boolean | false |
 | `[nzShowTotal]` | 用于显示数据总量和当前数据范围 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
 | `[nzHideOnSinglePage]` | 只有一页时是否隐藏分页器 | boolean | false |
+| `[nzSimple]` | 当添加该属性时，显示为简单分页 | boolean | - |
 | `(nzPageIndexChange)` | 当前页码改版时的回调函数 | `EventEmitter<number>` | - |
 | `(nzPageSizeChange)` | 页数改变时的回调函数 | `EventEmitter<number>` | - |
 | `(nzCurrentPageDataChange)` | 当前页面展示数据改变的回调函数 | `EventEmitter<any[]>` | - |

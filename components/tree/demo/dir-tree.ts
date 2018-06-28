@@ -1,25 +1,31 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
+import { Component, HostListener, OnInit, TemplateRef } from '@angular/core';
+import { NzDropdownService, NzFormatEmitEvent, NzTreeNode, NzDropdownContextComponent } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-tree-dir-tree',
   template: `
-    <nz-tree [(ngModel)]="nodes"
-             [nzShowExpand]="true"
-             [nzDraggable]="true"
-             (nzOnDragStart)="dragStart($event)"
-             (nzClick)="activeNode($event)"
-             (nzDblClick)="openFolder($event)"
-             >
+    <nz-tree
+      [(ngModel)]="nodes"
+      [nzShowExpand]="true"
+      [nzDraggable]="true"
+      (nzOnDragStart)="dragStart($event)"
+      (nzClick)="activeNode($event)"
+      (nzDblClick)="openFolder($event)">
+      <ng-template #contextTemplate>
+        <ul nz-menu nzInDropDown>
+          <li nz-menu-item (click)="selectDropdown()">新建文件</li>
+          <li nz-menu-item (click)="selectDropdown()">新建文件夹</li>
+        </ul>
+      </ng-template>
       <ng-template #nzTreeTemplate let-node>
         <span class="custom-node" draggable="true" aria-grabbed="true" [class.active]="activedNode?.key===node.key">
-          <span *ngIf="!node.isLeaf" [class.shine-animate]="node.origin.isLoading">
+          <span *ngIf="!node.isLeaf" [class.shine-animate]="node.origin.isLoading" (contextmenu)="contextMenu($event,contextTemplate, node)">
             <i class="anticon anticon-folder" *ngIf="!node.isExpanded" (click)="openFolder(node)"></i>
             <i class="anticon anticon-folder-open" *ngIf="node.isExpanded" (click)="openFolder(node)"></i>
             <span class="folder-name">{{node.title}}</span>
             <span class="folder-desc">{{node?.origin?.author | lowercase}} created at 2018-04-01</span>
           </span>
-          <span *ngIf="node.isLeaf">
+          <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event,contextTemplate, node)">
             <i class="anticon anticon-file"></i>
             <span class="file-name">{{node.title}}</span>
             <span class="file-desc">{{node?.origin?.author | lowercase}} modified at 2018-05-01</span>
@@ -86,6 +92,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
   ` ]
 })
 export class NzDemoTreeDirTreeComponent implements OnInit {
+  dropdown: NzDropdownContextComponent;
   // can active only one node
   activedNode: NzTreeNode;
   dragNodeElement;
@@ -131,32 +138,6 @@ export class NzDemoTreeDirTreeComponent implements OnInit {
           ]
         }
       ]
-    }),
-    new NzTreeNode({
-      title   : 'root2',
-      key     : '1002',
-      author  : 'ANGULAR',
-      children: [
-        {
-          title : 'child2.1',
-          key   : '10021',
-          author: 'ZORRO-FANS',
-          isLeaf: true
-        },
-        {
-          title   : 'child2.2',
-          key     : '10022',
-          author  : 'ZORRO',
-          children: [
-            {
-              title : 'grandchild2.2.1',
-              key   : '100221',
-              author: 'ZORRO-FANS',
-              isLeaf: true
-            }
-          ]
-        }
-      ]
     })
   ];
 
@@ -181,7 +162,6 @@ export class NzDemoTreeDirTreeComponent implements OnInit {
    * if u want to custom event/node properties, u need to maintain the selectedNodesList/checkedNodesList yourself
    * @param {} data
    */
-
   openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
     // do something if u want
     if (data instanceof NzTreeNode) {
@@ -227,6 +207,19 @@ export class NzDemoTreeDirTreeComponent implements OnInit {
     if (this.dragNodeElement.className.indexOf('is-dragging') === -1) {
       this.dragNodeElement.className = event.event.srcElement.className + ' is-dragging';
     }
+  }
+
+  contextMenu($event: MouseEvent, template: TemplateRef<void>, node: NzTreeNode): void {
+    this.dropdown = this.nzDropdownService.create($event, template);
+  }
+
+  selectDropdown(): void {
+    this.dropdown.close();
+    // do something
+    console.log('dropdown clicked');
+  }
+
+  constructor(private nzDropdownService: NzDropdownService) {
   }
 
   ngOnInit(): void {

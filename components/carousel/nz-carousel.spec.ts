@@ -124,6 +124,21 @@ describe('carousel', () => {
       testComponent.nzCarouselComponent.clearTimeout();
       expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
     }));
+    it('should autoplay speed work', fakeAsync(() => {
+      testComponent.autoPlay = true;
+      testComponent.autoPlaySpeed = 1000;
+      fixture.detectChanges();
+      expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
+      fixture.detectChanges();
+      tick(1000 + 10);
+      fixture.detectChanges();
+      expect(carouselContents[ 1 ].nativeElement.classList).toContain('slick-active');
+      testComponent.autoPlaySpeed = 0;
+      fixture.detectChanges();
+      tick(2000 + 10);
+      fixture.detectChanges();
+      expect(carouselContents[ 1 ].nativeElement.classList).toContain('slick-active');
+    }));
     it('should func work', () => {
       fixture.detectChanges();
       expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
@@ -148,6 +163,7 @@ describe('carousel', () => {
       [nzVertical]="vertical"
       [nzDots]="dots"
       [nzAutoPlay]="autoPlay"
+      [nzAutoPlaySpeed]="autoPlaySpeed"
       (nzAfterChange)="afterChange($event)"
       (nzBeforeChange)="beforeChange($event)">
       <div nz-carousel-content *ngFor="let index of array"><h3>{{index}}</h3></div>
@@ -160,6 +176,7 @@ export class NzTestCarouselBasicComponent {
   effect = 'scrollx';
   array = [ 1, 2, 3, 4 ];
   autoPlay = false;
+  autoPlaySpeed = 3000;
   afterChange = jasmine.createSpy('afterChange callback');
   beforeChange = jasmine.createSpy('beforeChange callback');
 

@@ -49,6 +49,7 @@ subtitle: 树形控件
 | --- | --- | --- | --- |
 | getCheckedNodeList | 获取组件 checkBox 被点击选中的节点 | NzTreeNode[] | [] |
 | getSelectedNodeList | 获取组件被选中的节点 | NzTreeNode[] | [] |
+| getHalfCheckedNodeList | 获取组件半选状态节点 | NzTreeNode[] | [] |
 
 #### NzTreeNodeOptions props
 

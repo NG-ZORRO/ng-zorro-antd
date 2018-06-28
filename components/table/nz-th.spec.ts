@@ -77,9 +77,11 @@ describe('nz-th', () => {
     });
     it('should showSort work', () => {
       fixture.detectChanges();
+      expect(th.nativeElement.classList).not.toContain('ant-table-column-has-filters');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter')).toBeNull();
       testComponent.showSort = true;
       fixture.detectChanges();
+      expect(th.nativeElement.classList).toContain('ant-table-column-has-filters');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter')).toBeDefined();
     });
     it('should sort change work', () => {
@@ -167,9 +169,11 @@ describe('nz-th', () => {
     });
     it('should showFilter work', () => {
       fixture.detectChanges();
+      expect(th.nativeElement.classList).not.toContain('ant-table-column-has-filters');
       expect(th.nativeElement.querySelector('.anticon anticon-filter')).toBeNull();
       testComponent.showFilter = true;
       fixture.detectChanges();
+      expect(th.nativeElement.classList).toContain('ant-table-column-has-filters');
       expect(th.nativeElement.querySelector('.anticon anticon-filter')).toBeDefined();
     });
     it('should filterChange work', () => {
@@ -183,6 +187,35 @@ describe('nz-th', () => {
       fixture.detectChanges();
       expect(testComponent.nzThComponent.hasFilterValue).toBe(true);
       expect(testComponent.filterChange).toHaveBeenCalledWith([ '1' ]);
+    });
+    it('should hasFilter change after filters change with multiple', () => {
+      testComponent.showFilter = true;
+      fixture.detectChanges();
+      testComponent.nzThComponent.checkMultiple(testComponent.nzThComponent.multipleFilterList[ 0 ]);
+      testComponent.nzThComponent.search();
+      fixture.detectChanges();
+      expect(testComponent.nzThComponent.hasFilterValue).toBe(true);
+      testComponent.filters = [
+        { text: 'filter1', value: '4' },
+        { text: 'filter2', value: '3' }
+      ];
+      fixture.detectChanges();
+      expect(testComponent.nzThComponent.hasFilterValue).toBe(false);
+    });
+    it('should hasFilter change after filters change with single', () => {
+      testComponent.showFilter = true;
+      testComponent.filterMultiple = false;
+      fixture.detectChanges();
+      testComponent.nzThComponent.checkSingle(testComponent.nzThComponent.singleFilterList[ 0 ]);
+      testComponent.nzThComponent.search();
+      fixture.detectChanges();
+      expect(testComponent.nzThComponent.hasFilterValue).toBe(true);
+      testComponent.filters = [
+        { text: 'filter1', value: '5' },
+        { text: 'filter2', value: '3' }
+      ];
+      fixture.detectChanges();
+      expect(testComponent.nzThComponent.hasFilterValue).toBe(false);
     });
     it('should reset work', () => {
       testComponent.showFilter = true;
