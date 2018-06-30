@@ -233,6 +233,8 @@ describe('tree-select component', () => {
     it('should set null value work', fakeAsync(() => {
       fixture.detectChanges();
       expect(testComponent.value[0]).toBe('1000122');
+      treeSelectComponent.updateSelectedNodes();
+      fixture.detectChanges();
       testComponent.setNull();
       fixture.detectChanges();
       tick(200);
