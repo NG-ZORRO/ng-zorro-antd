@@ -75,15 +75,25 @@ export class NzTreeService {
    */
   checkTreeNodeParents(node: NzTreeNode): void {
     const parentNode = node.getParentNode();
+    // 全禁用节点不选中
+    if (parentNode && (parentNode.isDisabled || parentNode.isDisableCheckbox)) {
+      if (parentNode.children.every(child => child.isDisabled || child.isDisableCheckbox)) {
+        return;
+      }
+    }
     if (parentNode) {
       if (parentNode.children.every(child => child.isDisabled || child.isDisableCheckbox || (!child.isHalfChecked && child.isAllChecked))) {
-        parentNode.isChecked = true;
-        parentNode.isAllChecked = true;
-        parentNode.isHalfChecked = false;
+        if (!(parentNode.isDisabled || parentNode.isDisableCheckbox)) {
+          parentNode.isChecked = true;
+          parentNode.isAllChecked = true;
+          parentNode.isHalfChecked = false;
+        }
       } else if (parentNode.children.some(child => child.isHalfChecked || child.isAllChecked)) {
-        parentNode.isChecked = false;
-        parentNode.isAllChecked = false;
-        parentNode.isHalfChecked = true;
+        if (!(parentNode.isDisabled || parentNode.isDisableCheckbox)) {
+          parentNode.isChecked = false;
+          parentNode.isAllChecked = false;
+          parentNode.isHalfChecked = true;
+        }
       } else {
         parentNode.isChecked = false;
         parentNode.isAllChecked = false;
@@ -254,9 +264,10 @@ export class NzTreeService {
       if (node.isChecked) {
         node.isHalfChecked = false;
       }
-      for (const n of node.children) {
-        this.checkTreeNodeChildren(n, value);
-      }
+    }
+    // 遍历全部子节点
+    for (const n of node.children) {
+      this.checkTreeNodeChildren(n, value);
     }
   }
 
