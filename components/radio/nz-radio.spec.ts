@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -12,7 +12,7 @@ describe('radio', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzRadioModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestRadioSingleComponent, NzTestRadioButtonComponent, NzTestRadioGroupComponent, NzTestRadioFormComponent, NzTestRadioGroupFormComponent, NzTestRadioGroupDisabledComponent ]
+      declarations: [ NzTestRadioSingleComponent, NzTestRadioButtonComponent, NzTestRadioGroupComponent, NzTestRadioFormComponent, NzTestRadioGroupFormComponent, NzTestRadioGroupDisabledComponent, NzTestRadioGroupDisabledFormComponent ]
     });
     TestBed.compileComponents();
   }));
@@ -139,6 +139,8 @@ describe('radio', () => {
     it('should disable work', fakeAsync(() => {
       testComponent.disabled = true;
       fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
       expect(testComponent.value).toBe('A');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
       radios[ 1 ].nativeElement.click();
@@ -167,7 +169,8 @@ describe('radio', () => {
       radios = fixture.debugElement.queryAll(By.directive(NzRadioButtonComponent));
       radioGroup = fixture.debugElement.query(By.directive(NzRadioGroupComponent));
     });
-    it('should disable work', fakeAsync(() => {
+    it('should group disable work', fakeAsync(() => {
+      testComponent.disabled = true;
       fixture.detectChanges();
       expect(testComponent.value).toBe('A');
       radios[ 1 ].nativeElement.click();
@@ -175,6 +178,19 @@ describe('radio', () => {
       flush();
       fixture.detectChanges();
       expect(radios[ 1 ].nativeElement.firstElementChild.classList).not.toContain('ant-radio-button-checked');
+      expect(testComponent.value).toBe('A');
+    }));
+    it('should single disable work', fakeAsync(() => {
+      testComponent.disabled = false;
+      fixture.detectChanges();
+      testComponent.singleDisabled = true;
+      fixture.detectChanges();
+      expect(testComponent.value).toBe('A');
+      radios[ 2 ].nativeElement.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(radios[ 2 ].nativeElement.firstElementChild.classList).not.toContain('ant-radio-button-checked');
       expect(testComponent.value).toBe('A');
     }));
   });
@@ -238,16 +254,26 @@ describe('radio', () => {
     it('should set disabled work', fakeAsync(() => {
       flush();
       expect(testComponent.formGroup.get('radioGroup').value).toBe('B');
-      radios[0].nativeElement.click();
+      radios[ 0 ].nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.formGroup.get('radioGroup').value).toBe('A');
       testComponent.disable();
-      radios[1].nativeElement.click();
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      radios[ 1 ].nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.formGroup.get('radioGroup').value).toBe('A');
     }));
   });
-
+  describe('radio group disable form', () => {
+    it('expect not to thrown error', fakeAsync(() => {
+      expect(() => {
+        const fixture = TestBed.createComponent(NzTestRadioGroupDisabledFormComponent);
+        fixture.detectChanges();
+      }).not.toThrow();
+    }));
+  });
 });
 
 @Component({
@@ -340,13 +366,15 @@ export class NzTestRadioGroupFormComponent {
 }
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1543 **/
+/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1734 **/
+
 @Component({
   selector: 'nz-test-radio-group-disabled',
   template: `
     <nz-radio-group [(ngModel)]="value" [nzName]="name" [nzDisabled]="disabled" [nzSize]="size">
       <label nz-radio-button nzValue="A">A</label>
       <label nz-radio-button nzValue="B">B</label>
-      <label nz-radio-button nzValue="C">C</label>
+      <label nz-radio-button nzValue="C" [nzDisabled]="singleDisabled">C</label>
       <label nz-radio-button nzValue="D">D</label>
     </nz-radio-group>`
 })
@@ -354,6 +382,31 @@ export class NzTestRadioGroupFormComponent {
 export class NzTestRadioGroupDisabledComponent {
   size = 'default';
   value = 'A';
-  disabled = true;
+  disabled = false;
   name: string;
+  singleDisabled = false;
+}
+
+/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1735 **/
+@Component({
+  selector: 'nz-test-radio-group-disabled-form',
+  template: `
+    <form nz-form [formGroup]="validateForm">
+      <nz-radio-group formControlName="radio">
+        <label nz-radio *ngFor="let val of radioValues" [nzValue]="val">{{val}}</label>
+      </nz-radio-group>
+    </form>`
+})
+export class NzTestRadioGroupDisabledFormComponent implements OnInit {
+  validateForm: FormGroup;
+  radioValues = [ 'A', 'B', 'C', 'D' ];
+
+  constructor(private fb: FormBuilder) {
+  }
+
+  ngOnInit(): void {
+    this.validateForm = this.fb.group({
+      radio: [ { value: 'B', disabled: true } ]
+    });
+  }
 }

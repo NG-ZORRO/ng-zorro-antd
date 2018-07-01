@@ -123,6 +123,13 @@ describe('nz-td', () => {
       expect(td.nativeElement.classList).toContain('ant-table-td-right-sticky');
       expect(td.nativeElement.style.right).toBe('20px');
     });
+    it('should be throw error when use specific class name', () => {
+      expect(() => {
+        TestBed.configureTestingModule({
+          declarations: [ NzTestDisableTdComponent ]
+        }).createComponent(NzTestDisableTdComponent);
+      }).toThrow();
+    });
   });
 });
 
@@ -155,3 +162,11 @@ export class NzTestTdComponent {
   left;
   right;
 }
+
+@Component({
+  selector: 'nz-disable-td',
+  template: `
+    <td class="nz-disable-td" [nzShowCheckbox]="true"></td>
+  `
+})
+export class NzTestDisableTdComponent {}

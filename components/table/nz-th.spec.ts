@@ -248,6 +248,13 @@ describe('nz-th', () => {
       fixture.detectChanges();
       expect(th.nativeElement.classList).toContain('ant-table-expand-icon-th');
     });
+    it('should be throw error when use specific class name', () => {
+      expect(() => {
+        TestBed.configureTestingModule({
+          declarations: [ NzTestDisableThComponent ]
+        }).createComponent(NzTestDisableThComponent);
+      }).toThrow();
+    });
   });
 });
 
@@ -306,3 +313,11 @@ export class NzThTestNzTableComponent {
   filterMultiple = true;
   expand = false;
 }
+
+@Component({
+  selector: 'nz-disable-th',
+  template: `
+    <th class="nz-disable-th" [nzShowCheckbox]="true"></th>
+  `
+})
+export class NzTestDisableThComponent {}
