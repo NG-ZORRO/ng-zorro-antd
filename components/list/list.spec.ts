@@ -105,6 +105,13 @@ describe('list', () => {
           expect(dl.query(By.css('.ant-list-loading')) != null).toBe(value);
         });
       }
+
+      it('should be minimum area block when data is empty', () => {
+        context.nzLoading = true;
+        context.data = [];
+        fixture.detectChanges();
+        expect(dl.query(By.css('.ant-spin-nested-loading'))).not.toBeNull();
+      });
     });
 
     it('#nzDataSource', () => {
