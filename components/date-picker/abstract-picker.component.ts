@@ -2,6 +2,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -9,6 +10,8 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { InputBoolean } from '../core/util/convert';
 import { NzDatePickerI18nInterface } from '../i18n/nz-i18n.interface';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -20,7 +23,7 @@ const POPUP_STYLE_PATCH = { 'position': 'relative' }; // Aim to override antd's 
 /**
  * The base picker for all common APIs
  */
-export abstract class AbstractPickerComponent implements OnInit, OnChanges, ControlValueAccessor {
+export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
   // --- Common API
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
@@ -52,28 +55,42 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, Cont
     this.nzValue = this.isRange ? [] : null;
   }
 
+  protected destroyed$: Subject<void> = new Subject();
+  protected isCustomPlaceHolder: boolean = false;
+
   constructor(protected i18n: NzI18nService) {
   }
 
   ngOnInit(): void {
-    // Default locale (NOTE: Place here to assign default value due to the i18n'locale may change before ngOnInit)
+    // Subscribe the every locale change if the nzLocale is not handled by user
     if (!this.nzLocale) {
-      this.nzLocale = this.i18n.getLocaleData('DatePicker', {});
+      this.i18n.localeChange
+        .pipe(takeUntil(this.destroyed$))
+        .subscribe(() => this.setLocale());
     }
 
     // Default value
     this.initValue();
-
-    // Default placeholder
-    if (!this.nzPlaceHolder) {
-      this.nzPlaceHolder = this.isRange ? this.nzLocale.lang.rangePlaceholder : this.nzLocale.lang.placeholder;
-    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzPopupStyle) { // Always assign the popup style patch
       this.nzPopupStyle = this.nzPopupStyle ? { ...this.nzPopupStyle, ...POPUP_STYLE_PATCH } : POPUP_STYLE_PATCH;
     }
+
+    // Mark as customized placeholder by user once nzPlaceHolder assigned at the first time
+    if (changes.nzPlaceHolder && changes.nzPlaceHolder.firstChange && typeof this.nzPlaceHolder !== 'undefined') {
+      this.isCustomPlaceHolder = true;
+    }
+
+    if (changes.nzLocale) { // The nzLocale is currently handled by user
+      this.setDefaultPlaceHolder();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   closeOverlay(): void {
@@ -137,6 +154,18 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, Cont
   // ------------------------------------------------------------------------
   // | Internal methods
   // ------------------------------------------------------------------------
+
+  // Reload locale from i18n with side effects
+  private setLocale(): void {
+    this.nzLocale = this.i18n.getLocaleData('DatePicker', {});
+    this.setDefaultPlaceHolder();
+  }
+
+  private setDefaultPlaceHolder(): void {
+    if (!this.isCustomPlaceHolder && this.nzLocale) {
+      this.nzPlaceHolder = this.isRange ? this.nzLocale.lang.rangePlaceholder : this.nzLocale.lang.placeholder;
+    }
+  }
 
   private formatDate(date: CandyDate): string {
     return date ? this.i18n.formatDateCompatible(date.nativeDate, this.nzFormat) : '';

@@ -10,6 +10,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import * as isSameDay from 'date-fns/is_same_day';
 
 import { dispatchKeyboardEvent, dispatchMouseEvent } from '../core/testing';
+import en_US from '../i18n/languages/en_US';
+import { NzI18nModule } from '../i18n/nz-i18n.module';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzDatePickerModule } from './date-picker.module';
 import { PickerResultSingle } from './standard-types';
 
@@ -21,10 +24,11 @@ describe('NzDatePickerComponent', () => {
   let debugElement: DebugElement;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
+  let i18nService: NzI18nService;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ FormsModule, NoopAnimationsModule, NzDatePickerModule ],
+      imports     : [ FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule ],
       providers   : [],
       declarations: [
         NzTestDatePickerComponent
@@ -40,9 +44,10 @@ describe('NzDatePickerComponent', () => {
     debugElement = fixture.debugElement;
   });
 
-  beforeEach(inject([ OverlayContainer ], (oc: OverlayContainer) => {
+  beforeEach(inject([ OverlayContainer, NzI18nService ], (oc: OverlayContainer, i18n: NzI18nService) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
+    i18nService = i18n;
   }));
 
   afterEach(() => {
@@ -65,6 +70,21 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
+    }));
+
+    it('should support changing language at runtime', fakeAsync(() => {
+      fixture.detectChanges();
+      expect(getPickerTrigger().placeholder).toBe('请选择日期');
+      i18nService.setLocale(en_US);
+      fixture.detectChanges();
+      expect(getPickerTrigger().placeholder).toBe('Select date');
+
+      dispatchMouseEvent(getPickerTrigger(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect((queryFromOverlay('.ant-calendar-date-input-wrap input.ant-calendar-input') as HTMLInputElement).placeholder).toBe('Select date');
+      expect(queryFromOverlay('.ant-calendar-table .ant-calendar-column-header-inner').textContent).toContain('Su');
     }));
 
     /* Issue https://github.com/NG-ZORRO/ng-zorro-antd/issues/1539 */
