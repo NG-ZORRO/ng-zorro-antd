@@ -378,6 +378,12 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
         this.value = [ (value as string) ];
       }
       setTimeout(() => this.updateSelectedNodes(), 100);
+    } else {
+      this.value = [];
+      this.selectedNodes.forEach(node => {
+        this.removeSelected(node, false);
+      });
+      this.selectedNodes = [];
     }
   }
 
