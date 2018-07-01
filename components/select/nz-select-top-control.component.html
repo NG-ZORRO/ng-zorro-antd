@@ -1,7 +1,7 @@
 <ng-template #inputTemplate>
   <input
     #inputElement
-    autocomplete="off"
+    autocomplete="something-new"
     class="ant-select-search__field"
     (compositionstart)="isComposing = true"
     (compositionend)="isComposing = false"
@@ -30,7 +30,6 @@
   <!--show search-->
   <div
     *ngIf="nzShowSearch"
-    [style.display]="searchDisplay"
     class="ant-select-search ant-select-search--inline">
     <div class="ant-select-search__field__wrap">
       <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>

@@ -106,10 +106,6 @@ export class NzSelectTopControlComponent {
     return this.inputValue || this.isComposing || this.nzListOfSelectedValue.length ? 'none' : 'block';
   }
 
-  get searchDisplay(): string {
-    return this.nzOpen ? 'block' : 'none';
-  }
-
   get selectedValueDisplay(): { [ key: string ]: string } {
     let showSelectedValue = false;
     let opacity = 1;
