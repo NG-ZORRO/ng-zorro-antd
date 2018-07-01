@@ -178,11 +178,17 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   ngOnDestroy(): void {
-    if (this.container instanceof OverlayRef) {
-      this.container.dispose();
-    }
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+    // Close self before destructing
+    this.changeVisibleFromInside(false).then(() => {
+      this.modalControl.deregisterModal(this);
+
+      if (this.container instanceof OverlayRef) {
+        this.container.dispose();
+      }
+
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
+    });
   }
 
   open(): void {
