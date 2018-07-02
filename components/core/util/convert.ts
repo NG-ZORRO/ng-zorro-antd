@@ -31,27 +31,35 @@ export function valueFunctionProp<T>(prop: FunctionProp<T>, ...args: any[]): T {
  * ```
  */
 export function InputBoolean(): any { // tslint:disable-line:no-any
-  return function InputBooleanPropDecorator (target: object, name: string): void {
+  return function InputBooleanPropDecorator(target: object, name: string): void {
     // Add our own private prop
     const privatePropName = `$$__${name}`;
 
-    if (Object.prototype.hasOwnProperty.call(target, privatePropName)) {
-      console.warn(`The prop "${privatePropName}" is already exist, it will be overrided by InputBoolean decorator.`);
+    const originalOwnPropertyDescriptor = Object.getOwnPropertyDescriptor(target, name);
+    if (!originalOwnPropertyDescriptor) {
+      Object.defineProperty(target, privatePropName, {
+        configurable: true,
+        writable    : true
+      });
+
+      Object.defineProperty(target, name, {
+        get(): boolean {
+          return this[privatePropName]; // tslint:disable-line:no-invalid-this
+        },
+        set(value: boolean | string): void {
+          this[privatePropName] = toBoolean(value); // tslint:disable-line:no-invalid-this
+        }
+      });
+    } else {
+      Object.defineProperty(target, name, {
+        get(): boolean {
+          return originalOwnPropertyDescriptor.get.call(target); // tslint:disable-line:no-invalid-this
+        },
+        set(value: boolean | string): void {
+          originalOwnPropertyDescriptor.set.call(target, toBoolean(value)); // tslint:disable-line:no-invalid-this
+        }
+      });
     }
-
-    Object.defineProperty(target, privatePropName, {
-      configurable: true,
-      writable: true
-    });
-
-    Object.defineProperty(target, name, {
-      get(): boolean {
-        return this[ privatePropName ]; // tslint:disable-line:no-invalid-this
-      },
-      set(value: boolean | string): void {
-        this[ privatePropName ] = toBoolean(value); // tslint:disable-line:no-invalid-this
-      }
-    });
 
     // // Do rest things for input decorator
     // const inputDecorator = Input();
