@@ -94,7 +94,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   @Input() nzOpen = false;
   @Input() nzAllowClear = true;
   @Input() nzSize = 'default';
-  @Input() nzDropdownMatchSelectWidth = false;
+  @Input() nzDropdownMatchSelectWidth = true;
   @Input() nzPlaceHolder = '';
   @Input() nzShowSearch = true;
   @Input() nzDisabled = false;
@@ -367,6 +367,13 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   updateCdkConnectedOverlayStatus(): void {
+    const overlayWidth = this.treeSelect.nativeElement.getBoundingClientRect().width;
+    if (this.nzDropdownMatchSelectWidth) {
+      this.overlayRef.updateSize({ width: overlayWidth });
+    } else {
+      this.overlayRef.updateSize({ minWidth: overlayWidth });
+    }
+
     if (this.nzOpen) {
       this.renderer.removeStyle(this.overlayRef.backdropElement, 'display');
     } else {
