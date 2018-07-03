@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
     '0.6.x',
     '0.7.x'
   ];
-  currentVersion = '1.1.0';
+  currentVersion = '1.1.1';
 
   switchLanguage(language) {
     const url = this.router.url.split('/');
