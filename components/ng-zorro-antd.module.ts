@@ -16,6 +16,7 @@ import { NzCheckboxModule } from './checkbox/nz-checkbox.module';
 import { NzCollapseModule } from './collapse/nz-collapse.module';
 import { NzDatePickerModule } from './date-picker/date-picker.module';
 import { NzDividerModule } from './divider/nz-divider.module';
+import { NzDrawerModule } from './drawer/nz-drawer.module';
 import { NzDropDownModule } from './dropdown/nz-dropdown.module';
 import { NzFormModule } from './form/nz-form.module';
 import { NzGridModule } from './grid/nz-grid.module';
@@ -141,6 +142,7 @@ export * from './time-picker';
     NzTableModule,
     NzDatePickerModule,
     NzDividerModule,
+    NzDrawerModule,
     NzFormModule,
     NzListModule,
     NzI18nModule,
