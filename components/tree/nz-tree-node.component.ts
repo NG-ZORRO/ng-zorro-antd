@@ -89,6 +89,23 @@ export class NzTreeNodeComponent implements OnInit, AfterViewInit {
   }
 
   @Input()
+  set nzDefaultCheckedKeys(value: string[]) {
+    // should set checked node list
+    this._defaultCheckedKeys = value;
+    if (value && value.indexOf(this.nzTreeNode.key) > -1) {
+      if (this.nzCheckStrictly) {
+        this.nzTreeService.setCheckedNodeListStrict(this.nzTreeNode);
+      } else {
+        this.nzTreeService.setCheckedNodeList(this.nzTreeNode);
+      }
+    }
+  }
+
+  get nzDefaultCheckedKeys(): string[] {
+    return this._defaultCheckedKeys;
+  }
+
+  @Input()
   set nzDefaultExpandedKeys(value: string[]) {
     this._defaultExpandedKeys = value;
     if (value && value.indexOf(this.nzTreeNode.key) > -1) {
