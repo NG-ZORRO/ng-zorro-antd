@@ -268,7 +268,7 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   dropDownScroll(e: MouseEvent, ul: HTMLUListElement): void {
     e.preventDefault();
     e.stopPropagation();
-    if (ul && (ul.scrollHeight - ul.scrollTop === ul.clientHeight)) {
+    if (ul && (ul.clientHeight + Math.ceil(ul.scrollTop) >= ul.scrollHeight)) {
       this.nzScrollToBottom.emit();
     }
   }
