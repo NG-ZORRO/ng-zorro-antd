@@ -49,15 +49,29 @@
     [ngClass]="menuCls" [ngStyle]="nzMenuStyle"
     [@dropDownAnimation]="dropDownPosition"
     (mouseleave)="onTriggerMouseLeave($event)">
-    <ul *ngFor="let options of nzColumns; let i = index;" [ngClass]="menuColumnCls">
-      <li *ngFor="let option of options"
-        [attr.title]="option.title || getOptionLabel(option)"
-        [ngClass]="getOptionCls(option, i)"
-        (mouseenter)="onOptionMouseEnter(option, i, $event)"
-        (mouseleave)="onOptionMouseLeave(option, i, $event)"
-        (click)="onOptionClick(option, i, $event)">
-        {{ getOptionLabel(option) }}
-      </li>
-    </ul>
+    <ng-container *ngIf="!inSearch">
+      <ul *ngFor="let options of nzColumns; let i = index;" [ngClass]="menuColumnCls">
+        <li *ngFor="let option of options"
+          [attr.title]="option.title || getOptionLabel(option)"
+          [ngClass]="getOptionCls(option, i)"
+          (mouseenter)="onOptionMouseEnter(option, i, $event)"
+          (mouseleave)="onOptionMouseLeave(option, i, $event)"
+          (click)="onOptionClick(option, i, $event)">
+          {{ getOptionLabel(option) }}
+        </li>
+      </ul>
+    </ng-container>
+    <ng-container *ngIf="inSearch">
+      <ul [ngClass]="menuColumnCls" [style.width]="searchWithStyle" [style.height]="searchResults.length ? '': 'auto'">
+        <li *ngFor="let result of searchResults"
+          [ngClass]="getOptionCls(result, 1)"
+          [innerHTML]="renderSearchString(result)"
+          (click)="onSearchOptionClick(result, $event)">
+        </li>
+        <li *ngIf="!searchResults.length" class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled">
+          Not Found
+        </li>
+      </ul>
+    </ng-container>
   </div>
 </ng-template>

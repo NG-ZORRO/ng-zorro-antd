@@ -1,68 +1,70 @@
 // tslint:disable:no-any
 import { Component, OnInit } from '@angular/core';
 
-const options = [{
+const options = [ {
   value: 'zhejiang',
   label: 'Zhejiang',
-  children: [{
+  children: [ {
     value: 'hangzhou',
     label: 'Hangzhou',
-    children: [{
+    children: [ {
       value: 'xihu',
       label: 'West Lake',
       isLeaf: true
-    }]
+    } ]
   }, {
     value: 'ningbo',
     label: 'Ningbo',
-    isLeaf: true
-  }]
+    isLeaf: true,
+    disabled: true
+  } ]
 }, {
   value: 'jiangsu',
   label: 'Jiangsu',
-  children: [{
+  children: [ {
     value: 'nanjing',
     label: 'Nanjing',
-    children: [{
+    children: [ {
       value: 'zhonghuamen',
       label: 'Zhong Hua Men',
       isLeaf: true
-    }]
-  }]
-}];
+    } ]
+  } ]
+} ];
 
-const otherOptions = [{
+const otherOptions = [ {
   value: 'fujian',
   label: 'Fujian',
-  children: [{
+  children: [ {
     value: 'xiamen',
     label: 'Xiamen',
-    children: [{
+    children: [ {
       value: 'Kulangsu',
       label: 'Kulangsu',
       isLeaf: true
-    }]
-  }]
+    } ]
+  } ]
 }, {
   value: 'guangxi',
   label: 'Guangxi',
-  children: [{
+  children: [ {
     value: 'guilin',
     label: 'Guilin',
-    children: [{
+    children: [ {
       value: 'Lijiang',
       label: 'Li Jiang River',
       isLeaf: true
-    }]
-  }]
-}];
+    } ]
+  } ]
+} ];
 
 @Component({
-  selector: 'nz-demo-cascader-basic',
+  selector: 'nz-demo-cascader-search',
   template: `
     <nz-cascader
       [nzOptions]="nzOptions"
       [(ngModel)]="values"
+      [nzShowSearch]="true"
       (ngModelChange)="onChanges($event)">
     </nz-cascader>
     &nbsp;
@@ -70,7 +72,7 @@ const otherOptions = [{
       Change Options
     </a>
     `,
-  styles  : [
+  styles: [
     `
     .ant-cascader-picker {
       width: 300px;
@@ -83,7 +85,7 @@ const otherOptions = [{
     `
   ]
 })
-export class NzDemoCascaderBasicComponent implements OnInit {
+export class NzDemoCascaderSearchComponent implements OnInit {
   /** init data */
   public nzOptions = null;
 
@@ -93,7 +95,7 @@ export class NzDemoCascaderBasicComponent implements OnInit {
   ngOnInit(): void {
     // let's set nzOptions in a asynchronous way
     setTimeout(() => {
-        this.nzOptions = options;
+      this.nzOptions = options;
     }, 100);
   }
 
