@@ -104,12 +104,10 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   updateAutoFocus(): void {
-    if (this.isInit) {
-      if (this.nzAutoFocus) {
-        this.renderer.setAttribute(this.inputElement.nativeElement, 'autofocus', 'autofocus');
-      } else {
-        this.renderer.removeAttribute(this.inputElement.nativeElement, 'autofocus');
-      }
+    if (this.nzAutoFocus) {
+      this.renderer.setAttribute(this.inputElement.nativeElement, 'autofocus', 'autofocus');
+    } else {
+      this.renderer.removeAttribute(this.inputElement.nativeElement, 'autofocus');
     }
   }
 
@@ -365,5 +363,8 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
 
   ngAfterViewInit(): void {
     this.isInit = true;
+    if (this._autoFocus) {
+      this.focus();
+    }
   }
 }
