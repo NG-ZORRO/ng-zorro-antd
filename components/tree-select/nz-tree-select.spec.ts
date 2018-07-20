@@ -100,6 +100,23 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       tick();
     }));
+    it('should dropdownMatchSelectWidth work', fakeAsync(() => {
+      testComponent.dropdownMatchSelectWidth = true;
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      expect(treeSelectComponent.nzOpen).toBe(true);
+      const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
+      expect(overlayPane.style.width).toBe('250px');
+      treeSelectComponent.closeDropDown();
+      fixture.detectChanges();
+      testComponent.dropdownMatchSelectWidth = false;
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      expect(treeSelectComponent.nzOpen).toBe(true);
+      expect(overlayPane.style.minWidth).toBe('250px');
+    }));
     it('should clear value work', fakeAsync(() => {
       testComponent.allowClear = true;
       fixture.detectChanges();
@@ -323,7 +340,7 @@ describe('tree-select component', () => {
   selector: 'nz-test-tree-select-basic',
   template: `
     <nz-tree-select
-      style="width: 250px"
+      style="width:250px;position: relative;display: block;"
       nzPlaceHolder="Please select"
       [nzDefaultExpandedKeys]="expandKeys"
       [nzNodes]="nodes"

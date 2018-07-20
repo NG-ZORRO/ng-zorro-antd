@@ -79,7 +79,7 @@ Almost anything can be represented in a tree structure. Examples include directo
 
 #### NzFormatBeforeDropEvent props
 
-| 参数 | 说明 | 类型 | 默认值 |
+| Property | Description | Type | Default |
 | --- | --- | --- | --- |
 | dragNode | Current drag node (existing when dragged) | NzTreeNode | - |
 | node | The current operation node (such as the target node to drop while dragging) | NzTreeNode | - |
