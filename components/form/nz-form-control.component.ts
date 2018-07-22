@@ -59,7 +59,7 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
   }
 
   updateValidateStatus(status: string): void {
-    if (this.validateControl.dirty) {
+    if (this.validateControl.dirty || this.validateControl.touched) {
       this.controlStatus = status;
       this.setControlClassMap();
     } else {
