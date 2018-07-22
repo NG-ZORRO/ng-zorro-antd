@@ -40,7 +40,7 @@ Ant Design 的样式使用了 [Less](http://lesscss.org/) 作为开发语言，�
 
 ```css
 // -------- 引入官方提供的 less 样式入口文件 -----------
-@import "../node_modules/ng-zorro-antd/src/ng-zorro-antd.less";
+@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
 
 // -------- 自定义参数覆盖 -----------
 @primary-color          : #f5222d;
@@ -56,7 +56,7 @@ Ant Design 的样式使用了 [Less](http://lesscss.org/) 作为开发语言，�
 
 ```css
 // -------- 引入官方提供的 less 样式入口文件 -----------
-@import "../node_modules/ng-zorro-antd/src/ng-zorro-antd.less";
+@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
 
 // -------- 自定义参数覆盖 -----------
 @icon-url               : "/assets/fonts/iconfont";
