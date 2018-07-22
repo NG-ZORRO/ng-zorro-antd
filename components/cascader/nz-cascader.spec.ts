@@ -14,7 +14,7 @@ import {
 } from '../core/testing';
 
 // import { NzDemoCascaderBasicComponent } from './demo/basic';
-import { NzCascaderComponent } from './nz-cascader.component';
+import { CascaderOption, NzCascaderComponent, NzShowSearchOptions } from './nz-cascader.component';
 import { NzCascaderModule } from './nz-cascader.module';
 
 describe('cascader', () => {
@@ -1309,6 +1309,93 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(testComponent.cascader.dropDownPosition).toBe('bottom');
     });
+    it('should support search', fakeAsync(() => {
+      testComponent.nzShowSearch = true;
+      fixture.detectChanges();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearch).toBe(true);
+      expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+      itemEl1.click();
+      tick(300);
+      expect(testComponent.cascader.inSearch).toBe(false);
+      expect(testComponent.cascader.menuVisible).toBe(false);
+      expect(testComponent.cascader.inputValue).toBe('');
+      expect(testComponent.values.join(',')).toBe('zhejiang,hangzhou,xihu');
+    }));
+    it('should support custom filter', fakeAsync(() => {
+      testComponent.nzShowSearch = {
+        filter(inputValue: string, path: CascaderOption[]): boolean {
+          let flag = false;
+          path.forEach(p => {
+            if (p.label.indexOf(inputValue) > -1) { flag = true; }
+          });
+          return flag;
+        }
+      } as NzShowSearchOptions;
+      fixture.detectChanges();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearch).toBe(true);
+      expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+      itemEl1.click();
+      tick(300);
+      expect(testComponent.cascader.inSearch).toBe(false);
+      expect(testComponent.cascader.menuVisible).toBe(false);
+      expect(testComponent.cascader.inputValue).toBe('');
+      expect(testComponent.values.join(',')).toBe('zhejiang,hangzhou,xihu');
+    }));
+    it('should support custom sorter', fakeAsync(() => {
+      testComponent.nzShowSearch = {
+        sorter(a: CascaderOption[], b: CascaderOption[], inputValue: string): number {
+          return 1; // all reversed, just to be sure it works
+        }
+      } as NzShowSearchOptions;
+      fixture.detectChanges();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearch).toBe(true);
+      expect(itemEl1.innerText).toBe('Jiangsu / Nanjing / Zhong Hua Men');
+      itemEl1.click();
+      tick(300);
+      expect(testComponent.cascader.inSearch).toBe(false);
+      expect(testComponent.cascader.menuVisible).toBe(false);
+      expect(testComponent.cascader.inputValue).toBe('');
+      expect(testComponent.values.join(',')).toBe('jiangsu,nanjing,zhonghuamen');
+    }));
+    it('should forbid disabled search options to be clicked', fakeAsync(() => {
+      testComponent.nzOptions = options4;
+      fixture.detectChanges();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+      expect(testComponent.cascader.searchResults[0].disabled).toBe(true);
+      itemEl1.click();
+      tick(300);
+      fixture.detectChanges();
+      expect(testComponent.cascader.inSearch).toBe(true);
+      expect(testComponent.cascader.menuVisible).toBe(true);
+      expect(testComponent.cascader.inputValue).toBe('o');
+      expect(testComponent.values).toBe(null);
+    }));
+    it('should pass disabled property to children when searching', () => {
+      testComponent.nzOptions = options4;
+      fixture.detectChanges();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      expect(testComponent.cascader.searchResults[0].disabled).toBe(true);
+      expect(testComponent.cascader.searchResults[1].disabled).toBe(undefined);
+      expect(testComponent.cascader.searchResults[2].disabled).toBe(true);
+    });
   });
 
   describe('load data lazily', () => {
@@ -1533,6 +1620,37 @@ const options3 = [ {
   } ]
 } ];
 
+const options4 = [ {
+  value: 'zhejiang',
+  label: 'Zhejiang',
+  children: [ {
+    value: 'hangzhou',
+    label: 'Hangzhou',
+    disabled: true,
+    children: [ {
+      value: 'xihu',
+      label: 'West Lake',
+      isLeaf: true
+    } ]
+  }, {
+    value: 'ningbo',
+    label: 'Ningbo',
+    isLeaf: true
+  } ]
+}, {
+  value: 'jiangsu',
+  label: 'Jiangsu',
+  disabled: true,
+  children: [ {
+    value: 'nanjing',
+    label: 'Nanjing',
+    children: [ {
+      value: 'zhonghuamen',
+      label: 'Zhong Hua Men',
+      isLeaf: true
+    } ]
+  } ]
+} ];
 @Component({
   selector: 'nz-demo-cascader-default',
   template: `
@@ -1553,6 +1671,7 @@ const options3 = [ {
       [nzPrefixCls]="nzPrefixCls"
       [nzShowArrow]="nzShowArrow"
       [nzShowInput]="nzShowInput"
+      [nzShowSearch]="nzShowSearch"
       [nzSize]="nzSize"
       [nzTriggerAction]="nzTriggerAction"
       [nzMouseEnterDelay]="nzMouseEnterDelay"
@@ -1597,6 +1716,7 @@ export class NzDemoCascaderDefaultComponent {
   nzPrefixCls = 'ant-cascader';
   nzShowArrow = true;
   nzShowInput = true;
+  nzShowSearch: boolean | NzShowSearchOptions = false;
   nzSize = 'default';
   nzLabelRender = null;
   nzChangeOn = null;

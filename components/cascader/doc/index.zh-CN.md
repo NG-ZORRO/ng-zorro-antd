@@ -40,6 +40,7 @@ subtitle: 级联选择
 | `[nzPlaceHolder]` | 输入框占位文本 | string | '请选择' |
 | `[nzShowArrow]` | 是否显示箭头 | boolean | true |
 | `[nzShowInput]` | 显示输入框 | boolean | true |
+| `[nzShowSearch]` | 是否支持搜索，默认情况下对 `label` 进行全匹配搜索 | `boolean` `NzShowSearchOptions` | `false` |
 | `[nzSize]` | 输入框大小，可选 `large` `default` `small` | string | `default` |
 | `[nzValueProperty]` | 选项的实际值的属性名 | string | 'value' |
 | `(ngModelChange)` | 值发生变化时触发 | `EventEmitter<any[]>` | - |
@@ -47,6 +48,13 @@ subtitle: 级联选择
 | `(nzVisibleChange)` | 菜单浮层的显示/隐藏 | `EventEmitter<boolean>` | - |
 | `(nzSelect)` | 选中菜单选项时触发 | `EventEmitter<{option: any, index: number}>` | - |
 | `(nzSelectionChange)` | 选中菜单选项时触发 | `EventEmitter<any[]>` |- |
+
+`nzShowSearch` 为对象时需遵守 `NzShowSearchOptions` 接口：
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `filter` | 可选，选择是否保留选项的过滤函数，每级菜单的选项都会被匹配 | `(inputValue: string, path: CascaderOption[]): boolean` | - |
+| `sorter` | 可选，按照到每个最终选项的路径进行排序，默认按照原始数据的顺序 | `(a: CascaderOption[], b: CascaderOption[], inputValue: string): number` | - |
 
 #### 方法
 
