@@ -166,6 +166,22 @@ describe('carousel', () => {
       tick(200);
       expect(resizeSpy).toHaveBeenCalled();
     }));
+    it('should swipe work', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.nzCarouselComponent.swipe('swipeleft');
+      tick(1000);
+      fixture.detectChanges();
+      expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
+    }));
+    it('should swipeInProgress work', () => {
+      fixture.detectChanges();
+      fixture.detectChanges();
+      testComponent.nzCarouselComponent.swipeInProgress({ isFinal: false, deltaX: 100 });
+      expect(testComponent.nzCarouselComponent.transform).toBe('translate3d(120px, 0px, 0px)');
+      testComponent.nzCarouselComponent.swipeInProgress({ isFinal: true });
+      fixture.detectChanges();
+      expect(testComponent.nzCarouselComponent.transform).toBe('translate3d(0px, 0px, 0px)');
+    });
   });
 });
 
