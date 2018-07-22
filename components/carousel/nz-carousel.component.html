@@ -1,5 +1,6 @@
 <div class="slick-initialized slick-slider" [class.slick-vertical]="nzVertical">
-  <div class="slick-list" #slickList tabindex="-1" (keydown)="onKeyDown($event)">
+  <div class="slick-list" #slickList tabindex="-1" (keydown)="onKeyDown($event)" 
+    (swipeleft)="swipe('swipeleft')" (swiperight)="swipe('swiperight')" (pan)="swipeInProgress($event);">
     <div class="slick-track" [style.transform]="transform" #slickTrack>
       <ng-content></ng-content>
     </div>

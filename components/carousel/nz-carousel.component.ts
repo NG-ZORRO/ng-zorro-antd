@@ -14,13 +14,13 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
-
+import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 import { toBoolean, toNumber } from '../core/util/convert';
-
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
+
+export type SwipeDirection = 'swipeleft' | 'swiperight';
 
 @Component({
   selector           : 'nz-carousel',
@@ -72,6 +72,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
   @ViewChild('slickTrack') slickTrack: ElementRef;
   @Output() nzAfterChange: EventEmitter<number> = new EventEmitter();
   @Output() nzBeforeChange: EventEmitter<{ from: number; to: number }> = new EventEmitter();
+  @Input() nzEnableSwipe = true;
 
   @HostListener('window:resize', [ '$event' ])
   onWindowResize(e: UIEvent): void {
@@ -234,6 +235,33 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
     } else if (e.keyCode === 39) { // Right
       this.next();
       e.preventDefault();
+    }
+  }
+
+  swipe(action: SwipeDirection = 'swipeleft'): void {
+    if (!this.nzEnableSwipe) { return; }
+    if (action === 'swipeleft') { this.next(); }
+    if (action === 'swiperight') { this.pre(); }
+  }
+
+  swipeInProgress(e: any): void {
+    if (this.nzEffect === 'scrollx') {
+      const final = e.isFinal;
+      const scrollWidth = final ? 0 : e.deltaX * 1.2;
+      const totalWidth = this.elementRef.nativeElement.offsetWidth;
+      if (this.nzVertical) {
+        const totalHeight = this.elementRef.nativeElement.offsetHeight;
+        const scrollPercent = scrollWidth / totalWidth;
+        const scrollHeight =  scrollPercent * totalHeight;
+        this.transform = `translate3d(0px, ${-this.activeIndex * totalHeight + scrollHeight}px, 0px)`;
+      } else {
+        this.transform = `translate3d(${-this.activeIndex * totalWidth + scrollWidth}px, 0px, 0px)`;
+      }
+    }
+    if (e.isFinal) {
+      this.setUpAutoPlay();
+    } else {
+      this.clearTimeout();
     }
   }
 
