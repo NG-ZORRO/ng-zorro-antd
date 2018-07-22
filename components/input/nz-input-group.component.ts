@@ -117,9 +117,13 @@ export class NzInputGroupComponent implements AfterContentInit {
     return this.nzSize === 'small';
   }
 
-  @HostBinding('class.ant-input-affix-wrapper')
   get isAffix(): boolean {
-    return !!(this.nzSuffix || this.nzPrefix || this.nzPrefixIcon || this.nzSuffixIcon);
+    return (!!(this.nzSuffix || this.nzPrefix || this.nzPrefixIcon || this.nzSuffixIcon));
+  }
+
+  @HostBinding('class.ant-input-affix-wrapper')
+  get isAffixWrapper(): boolean {
+    return (!!(this.nzSuffix || this.nzPrefix || this.nzPrefixIcon || this.nzSuffixIcon)) && !this.isAddOn;
   }
 
   @HostBinding('class.ant-input-group-wrapper')
@@ -144,7 +148,7 @@ export class NzInputGroupComponent implements AfterContentInit {
 
   @HostBinding(`class.ant-input-affix-wrapper-lg`)
   get isLargeAffix(): boolean {
-    return this.isAffix && this.isLarge;
+    return this.isAffixWrapper && this.isLarge;
   }
 
   @HostBinding(`class.ant-input-search-lg`)
@@ -159,7 +163,7 @@ export class NzInputGroupComponent implements AfterContentInit {
 
   @HostBinding(`class.ant-input-affix-wrapper-sm`)
   get isSmallAffix(): boolean {
-    return this.isAffix && this.isSmall;
+    return this.isAffixWrapper && this.isSmall;
   }
 
   @HostBinding(`class.ant-input-group-wrapper-sm`)
