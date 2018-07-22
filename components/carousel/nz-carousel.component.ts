@@ -244,7 +244,6 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
   }
 
   swipeInProgress(e: HammerInput): void {
-    console.log(e);
     if (this.nzEffect === 'scrollx') {
       const final = e.isFinal;
       const scrollWidth = final ? 0 : e.deltaX * 1.2;
