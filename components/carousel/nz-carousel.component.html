@@ -9,7 +9,11 @@
       *ngFor="let content of slideContents; let i =index"
       [class.slick-active]="content.isActive"
       (click)="setActive(content,i)">
-      <button>{{i + 1}}</button>
+      <ng-template [ngTemplateOutlet]="nzDotRender || renderDotTemplate" [ngTemplateOutletContext]="{ $implicit: i }"></ng-template>
     </li>
   </ul>
 </div>
+
+<ng-template #renderDotTemplate let-index>
+  <button>{{index + 1}}</button>
+</ng-template>
