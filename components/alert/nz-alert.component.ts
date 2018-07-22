@@ -140,7 +140,8 @@ export class NzAlertComponent implements OnInit {
       [ `${this.prefixClass}-${this.nzType}` ]  : true,
       [ `${this.prefixClass}-no-icon` ]         : !this.nzShowIcon,
       [ `${this.prefixClass}-banner` ]          : this.nzBanner,
-      [ `${this.prefixClass}-with-description` ]: !!this.nzDescription
+      [ `${this.prefixClass}-with-description` ]: !!this.nzDescription,
+      [ `${this.prefixClass}-closeable` ]: this.nzCloseable
     };
   }
 
