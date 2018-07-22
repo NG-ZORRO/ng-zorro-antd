@@ -14,7 +14,6 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
-import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { toBoolean, toNumber } from '../core/util/convert';
@@ -244,9 +243,8 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
     if (action === 'swiperight') { this.pre(); }
   }
 
-  /* Angular provides no typedef for hammer.js, so let it be */
-  /* tslint:disable:no-any */
-  swipeInProgress(e: any): void {
+  swipeInProgress(e: HammerInput): void {
+    console.log(e);
     if (this.nzEffect === 'scrollx') {
       const final = e.isFinal;
       const scrollWidth = final ? 0 : e.deltaX * 1.2;

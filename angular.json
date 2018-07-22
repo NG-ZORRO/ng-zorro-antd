@@ -24,7 +24,9 @@
             "styles": [
               "site/src/styles.less"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/hammerjs/hammer.min.js"
+            ]
           },
           "configurations": {
             "production": {
