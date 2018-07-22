@@ -170,13 +170,11 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     if (!this.overlayRef) {
       this.portal = new TemplatePortal(this.nzAutocomplete.template, this._viewContainerRef);
       this.overlayRef = this._overlay.create(this.getOverlayConfig());
-    } else {
-      // 如果没有设置 nzDisplayWith 则使用 Host 元素的宽度
-      this.overlayRef.updateSize({ width: this.nzAutocomplete.nzWidth || this.getHostWidth() });
     }
-    this.overlayPositionChangeSubscription = this.subscribeOverlayPositionChange();
+
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
       this.overlayRef.attach(this.portal);
+      this.overlayPositionChangeSubscription = this.subscribeOverlayPositionChange();
       this.selectionChangeSubscription = this.subscribeSelectionChange();
       this.overlayBackdropClickSubscription = this.subscribeOverlayBackdropClick();
       this.optionsChangeSubscription = this.subscribeOptionsChange();
@@ -184,6 +182,12 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
     this.nzAutocomplete.isOpen = this.panelOpen = true;
     this.nzAutocomplete.setVisibility();
+    this.overlayRef.updateSize({ width: this.nzAutocomplete.nzWidth || this.getHostWidth() });
+    setTimeout(() => {
+      if (this.overlayRef) {
+        this.overlayRef.updatePosition();
+      }
+    }, 150);
     this.resetActiveItem();
     if (this.activeOption) {
       this.activeOption.scrollIntoViewIfNeeded();
