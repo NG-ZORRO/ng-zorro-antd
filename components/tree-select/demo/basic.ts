@@ -8,6 +8,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
       style="width: 250px"
       [nzDefaultExpandedKeys]="expandKeys"
       [nzNodes]="nodes"
+      nzShowSearch
       nzPlaceHolder="Please select"
       [(ngModel)]="value"
       (ngModelChange)="onChange($event)">
