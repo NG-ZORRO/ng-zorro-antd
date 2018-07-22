@@ -244,6 +244,8 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
     if (action === 'swiperight') { this.pre(); }
   }
 
+  /* Angular provides no typedef for hammer.js, so let it be */
+  /* tslint:disable:no-any */
   swipeInProgress(e: any): void {
     if (this.nzEffect === 'scrollx') {
       const final = e.isFinal;
