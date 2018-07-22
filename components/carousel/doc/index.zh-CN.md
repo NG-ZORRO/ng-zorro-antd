@@ -27,6 +27,7 @@ subtitle: 走马灯
 | `[nzVertical]` | 垂直显示 | boolean | false |
 | `(nzAfterChange)` | 切换面板的回调 | `EventEmitter<number>` | 无 |
 | `(nzBeforeChange)` | 切换面板的回调 | `EventEmitter<{ from: number; to: number }>` | 无 |
+| `[nzEnableSwipe]` | 是否支持手势划动切换，仅在自行引入 hammer.js 的情形下生效 | `boolean` | `true` |
 #### 方法
 
 | 名称 | 描述 |
