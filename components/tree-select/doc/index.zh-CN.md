@@ -32,4 +32,5 @@ title: TreeSelect
 | `[nzNodes]` | treeNodes 数据 | NzTreeNode\[] | \[] |
 | `[nzDefaultExpandAll]` | 默认展开所有树节点 | boolean | false |
 | `[nzDefaultExpandedKeys]` | 默认展开指定的树节点 | string\[] | \[] |
+| `[nzDisplayWith]` | 如何在输入框显示所选的节点值的方法 | `(node: NzTreeNode) => string` | `(node: NzTreeNode) => node.title` |
 | `(nzExpandChange)` | 点击展开树节点图标调用 | EventEmitter<NzFormatEmitEvent\> | - |
