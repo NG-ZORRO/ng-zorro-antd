@@ -496,6 +496,7 @@ describe('tree component test', () => {
       [(ngModel)]="nodes"
       [nzCheckable]="true"
       [nzCheckStrictly]="true"
+      [nzDefaultCheckedKeys]="checkedKeys"
       [nzMultiple]="multiple"
       [nzShowLine]="showLine"
       [nzShowExpand]="showExpand"
@@ -505,6 +506,7 @@ describe('tree component test', () => {
 })
 
 class NzDemoStrictTreeComponent {
+  checkedKeys = [ '100011' ];
   nodes = [
     new NzTreeNode({
       title   : 'root1',
