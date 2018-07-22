@@ -64,11 +64,11 @@
     <ng-container *ngIf="inSearch">
       <ul [ngClass]="menuColumnCls" [style.width]="searchWithStyle" [style.height]="searchResults.length ? '': 'auto'">
         <li *ngFor="let result of searchResults"
-          [ngClass]="getOptionCls(result, 1)"
+          [ngClass]="getOptionCls(result, 0)"
           [innerHTML]="renderSearchString(result)"
           (click)="onSearchOptionClick(result, $event)">
         </li>
-        <li *ngIf="!searchResults.length" class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled">
+        <li *ngIf="!searchResults.length"  class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled">
           Not Found
         </li>
       </ul>

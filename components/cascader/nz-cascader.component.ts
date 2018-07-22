@@ -1224,17 +1224,20 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     if (result && result.disabled) {
       return;
     }
+    
+    this.activatedOptions = [ result ];
+    this.delaySetMenuVisible(false, 200);
 
-    const index = result.path.length - 1;
-    const destiNode = result.path[index];
-    const mockClickParent = (node: CascaderOption, cIndex: number) => {
-      if (node && node.parent) { mockClickParent(node.parent, cIndex - 1); }
-      this.onOptionClick(node, cIndex, event);
-    };
-    mockClickParent(destiNode, index);
-    // FIXME: it should delay setting menu invisible
-    this.inputValue = '';
-    this.setMenuVisible(false);
+    setTimeout(() => {
+      const index = result.path.length - 1;
+      const destiNode = result.path[index];
+      const mockClickParent = (node: CascaderOption, cIndex: number) => {
+        if (node && node.parent) { mockClickParent(node.parent, cIndex - 1); }
+        this.onOptionClick(node, cIndex, event);
+      };
+      mockClickParent(destiNode, index);
+      this.inputValue = '';
+    }, 300);
   }
 
   ngOnInit(): void {
