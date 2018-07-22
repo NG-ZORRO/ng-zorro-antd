@@ -1224,18 +1224,14 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     if (result && result.disabled) {
       return;
     }
-    
+
     this.activatedOptions = [ result ];
     this.delaySetMenuVisible(false, 200);
 
     setTimeout(() => {
-      const index = result.path.length - 1;
-      const destiNode = result.path[index];
-      const mockClickParent = (node: CascaderOption, cIndex: number) => {
-        if (node && node.parent) { mockClickParent(node.parent, cIndex - 1); }
-        this.onOptionClick(node, cIndex, event);
-      };
-      mockClickParent(destiNode, index);
+      this.selectedOptions = this.activatedOptions = result.path;
+      this.buildDisplayLabel();
+      this.onValueChange();
       this.inputValue = '';
     }, 300);
   }
