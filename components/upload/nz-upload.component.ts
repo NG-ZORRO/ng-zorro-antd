@@ -137,7 +137,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     return this._withCredentials;
   }
 
-  @Input() nzRemove: ((file: UploadFile) => boolean) | Observable<boolean>;
+  @Input() nzRemove: (file: UploadFile) => boolean | Observable<boolean>;
   @Input() nzPreview: (file: UploadFile) => void;
 
   @Output() nzChange: EventEmitter<UploadChangeParam> = new EventEmitter<UploadChangeParam>();
@@ -314,9 +314,11 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   onRemove = (file: UploadFile): void => {
     this.upload.abort(file);
     file.status = 'removed';
-    ((this.nzRemove ? this.nzRemove instanceof Observable ? this.nzRemove : of(this.nzRemove(file)) : of(true)) as Observable<any>)
+    const fnRes = typeof this.nzRemove === 'function' ?
+      this.nzRemove(file) : this.nzRemove == null ? true : this.nzRemove;
+    (fnRes instanceof Observable ? fnRes : of(fnRes))
     .pipe(filter((res: boolean) => res))
-    .subscribe(res => {
+    .subscribe(() => {
       this.nzFileList = this.removeFileItem(file, this.nzFileList);
       this.nzChange.emit({
         file,
