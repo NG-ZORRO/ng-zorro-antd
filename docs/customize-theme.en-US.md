@@ -40,7 +40,7 @@ Here is an example of `theme.less`
 
 ```css
 // -------- import official less file -----------
-@import "../node_modules/ng-zorro-antd/src/ng-zorro-antd.less";
+@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
 
 // -------- override less var -----------
 @primary-color          : #f5222d;
@@ -57,7 +57,7 @@ Here is an example set icon url to the folder `assets/fonts`
 
 ```css
 // -------- import official less file -----------
-@import "../node_modules/ng-zorro-antd/src/ng-zorro-antd.less";
+@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
 
 // -------- override less var -----------
 @icon-url               : "/assets/fonts/iconfont";
