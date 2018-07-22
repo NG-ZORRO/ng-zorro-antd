@@ -12,6 +12,7 @@ import {
   Output,
   QueryList,
   Renderer2,
+  TemplateRef,
   ViewChild
 } from '@angular/core';
 
@@ -85,6 +86,8 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
   get prevIndex(): number {
     return this.activeIndex > 0 ? (this.activeIndex - 1) : (this.slideContents.length - 1);
   }
+
+  @Input() nzDotRender: TemplateRef<{ $implicit: number }>;
 
   @Input()
   set nzDots(value: boolean) {

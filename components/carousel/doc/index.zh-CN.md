@@ -22,11 +22,11 @@ subtitle: 走马灯
 | `[nzAutoPlay]` | 是否自动切换 | boolean | false |
 | `[nzAutoPlaySpeed]` | 切换时间(毫秒)，当设置为0时不切换 | number | 3000 |
 | `[nzDots]` | 是否显示面板指示点 | boolean | true |
+| `[nzDotRender]` | Dot渲染模板 | `TemplateRef<{ $implicit: number }>` | - |
 | `[nzEffect]` | 动画效果函数，可取 scrollx, fade | string | scrollx |
 | `[nzVertical]` | 垂直显示 | boolean | false |
 | `(nzAfterChange)` | 切换面板的回调 | `EventEmitter<number>` | 无 |
 | `(nzBeforeChange)` | 切换面板的回调 | `EventEmitter<{ from: number; to: number }>` | 无 |
-
 #### 方法
 
 | 名称 | 描述 |
