@@ -6,8 +6,8 @@ import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/cor
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import * as differenceInDays from 'date-fns/difference_in_days';
-import * as isSameDay from 'date-fns/is_same_day';
+import differenceInDays from 'date-fns/difference_in_days';
+import isSameDay from 'date-fns/is_same_day';
 
 import { dispatchMouseEvent } from '../core/testing';
 import { NzDatePickerModule } from './date-picker.module';
