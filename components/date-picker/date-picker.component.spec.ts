@@ -7,7 +7,7 @@ import { fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angu
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import * as isSameDay from 'date-fns/is_same_day';
+import isSameDay from 'date-fns/is_same_day';
 
 import { dispatchKeyboardEvent, dispatchMouseEvent } from '../core/testing';
 import en_US from '../i18n/languages/en_US';

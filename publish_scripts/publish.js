@@ -41,7 +41,7 @@ checkout();
 function changeVersion() {
   log.info('Updating version number...');
 
-  const packageJson = path.join(__dirname, '../package.json');
+  const packageJson = path.join(__dirname, '../components/package.json');
   const appComponent = path.join(__dirname, '../site_scripts/_site/src/app/app.component.ts') ;
   const codeBox = path.join(__dirname, '../site_scripts/_site/src/app/share/nz-codebox/nz-codebox.component.ts');
   const currentVersion = fs.readFileSync(packageJson, 'utf-8').match(/"version": "([0-9.]+)"/)[ 1 ];

@@ -21,7 +21,7 @@ function compileLess(content, savePath, min) {
 }
 
 const sourcePath = path.resolve(__dirname, '../components');
-const targetPath = path.resolve(__dirname, '../publish/src');
+const targetPath = path.resolve(__dirname, '../publish');
 
 const targetFolder = fs.readdirSync(targetPath);
 let componentsLessContent = '';
