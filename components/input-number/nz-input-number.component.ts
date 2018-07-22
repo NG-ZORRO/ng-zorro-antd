@@ -164,6 +164,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   onBlur(e: FocusEvent): void {
+    this.onTouched();
     this.isFocused = false;
     const value = this.getCurrentValidValue(this.actualValue);
     this.setValue(value, `${this.value}` !== `${value}`);
