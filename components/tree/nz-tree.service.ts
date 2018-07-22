@@ -192,7 +192,6 @@ export class NzTreeService {
 
   /**
    * return half checked nodes
-   * @returns {NzTreeNode[]}
    */
   getHalfCheckedNodeList(): NzTreeNode[] {
     this.halfCheckedNodeList = [];

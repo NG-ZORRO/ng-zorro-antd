@@ -1,0 +1,13 @@
+{
+  "$schema": "../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../publish",
+  "deleteDestPath": true,
+  "lib": {
+    "entryFile": "ng-zorro-antd.module.ts"
+  },
+  "whitelistedNonPeerDependencies": [
+    "tslib",
+    "angular",
+    "date-fns"
+  ]
+}

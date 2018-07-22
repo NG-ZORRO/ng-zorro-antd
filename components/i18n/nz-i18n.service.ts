@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { LoggerService } from '../core/util/logger/logger.service';
 
-import * as parse from 'date-fns/parse';
+import parse from 'date-fns/parse';
 
 import zh_CN from './languages/zh_CN';
 import { NzI18nInterface } from './nz-i18n.interface';

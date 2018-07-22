@@ -1,6 +1,6 @@
 {
-  "name": "ng-zorro-antd",
-  "version": "1.1.1",
+  "name": "ng-zorro-antd-workspace",
+  "version": "0.0.0-NOT-USED",
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "scripts": {
@@ -15,7 +15,8 @@
     "build": "node site_scripts/generate-site init && ng build",
     "doc": "npm run site:init && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer",
     "helper": "bash ./release-helper.sh",
-    "generate": "bash ./build.sh",
+    "generate": "ng build ng-zorro-antd-lib",
+    "postgenerate": "node ./build_scripts/generate-less.js && cp README.md publish/README.md",
     "pre-release": "npm run site:init && bash ./build_scripts/replace-publish.sh && npm run generate && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod && npm run helper",
     "test": "ng test --watch=false --code-coverage",
     "integration": "npm run generate && bash ./integration-test.sh",
@@ -25,33 +26,13 @@
     "lint": "tslint -c tslint.json 'components/*/*.ts'",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && node site_scripts/replace-scope-prefix.js"
   },
-  "main": "./bundles/antd.umd.js",
-  "module": "./esm5/antd.js",
-  "es2015": "./esm2015/antd.js",
-  "typings": "./antd.d.ts",
-  "schematics": "./schematics/collection.json",
-  "keywords": [
-    "ant",
-    "design",
-    "angular",
-    "ui",
-    "framework",
-    "frontend"
-  ],
-  "homepage": "https://ng.ant.design",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/NG-ZORRO/ng-zorro-antd"
-  },
-  "bugs": {
-    "url": "https://github.com/NG-ZORRO/ng-zorro-antd/issues"
-  },
   "dependencies": {
     "@angular/cdk": "^6.0.0",
     "date-fns": "^1.29.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.6.0",
+    "@angular-devkit/build-ng-packagr": "^0.6.8",
     "@angular-devkit/core": "^0.6.0",
     "@angular-devkit/schematics": "^0.6.0",
     "@angular/animations": "^6.0.0",
@@ -89,6 +70,7 @@
     "less": "^2.7.3",
     "less-plugin-clean-css": "^1.5.1",
     "marked": "^0.3.6",
+    "ng-packagr": "^3.0.0-rc.2",
     "ngx-color": "^1.5.2",
     "ngx-infinite-scroll": "^6.0.0",
     "node-prismjs": "^0.1.1",
@@ -103,18 +85,12 @@
     "rollup-plugin-uglify": "^2.0.1",
     "rxjs": "^6.0.0",
     "ts-node": "~5.0.1",
+    "tsickle": "^0.30.0",
     "tslib": "^1.9.0",
     "tslint": "~5.9.1",
     "typescript": "~2.7.2",
     "wrench": "^1.5.9",
     "yaml-front-matter": "^3.4.0",
     "zone.js": "^0.8.26"
-  },
-  "peerDependencies": {
-    "@angular/animations": "^6.0.0",
-    "@angular/cdk": "^6.0.0",
-    "@angular/common": "^6.0.0",
-    "@angular/core": "^6.0.0",
-    "@angular/forms": "^6.0.0"
   }
 }
