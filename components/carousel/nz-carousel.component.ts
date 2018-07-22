@@ -6,6 +6,7 @@ import {
   ElementRef,
   EventEmitter,
   HostBinding,
+  HostListener,
   Input,
   OnDestroy,
   Output,
@@ -71,6 +72,11 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
   @ViewChild('slickTrack') slickTrack: ElementRef;
   @Output() nzAfterChange: EventEmitter<number> = new EventEmitter();
   @Output() nzBeforeChange: EventEmitter<{ from: number; to: number }> = new EventEmitter();
+
+  @HostListener('window:resize', [ '$event' ])
+  onWindowResize(e: UIEvent): void {
+    this.renderContent();
+  }
 
   get nextIndex(): number {
     return this.activeIndex < this.slideContents.length - 1 ? (this.activeIndex + 1) : 0;

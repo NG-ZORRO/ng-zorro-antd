@@ -152,6 +152,12 @@ describe('carousel', () => {
       fixture.detectChanges();
       expect(carouselContents[ 2 ].nativeElement.classList).toContain('slick-active');
     });
+    it('should resize content after window resized', fakeAsync(() => {
+      const resizeSpy = spyOn(testComponent.nzCarouselComponent, 'renderContent');
+      window.dispatchEvent(new Event('resize'));
+      tick(200);
+      expect(resizeSpy).toHaveBeenCalled();
+    }));
   });
 });
 
