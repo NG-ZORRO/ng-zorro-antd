@@ -44,11 +44,16 @@ describe('Coverage supplements', () => {
       expect(componentInstance.render).not.toHaveBeenCalled();
     });
 
-    it('should work with forceToMonth branch', () => {
-      componentInstance.forceToMonth = true;
+    it('should work with forceToYear branch', () => {
+      componentInstance.forceToYear = true;
       spyOn(componentInstance, 'changePanel');
       componentInstance.onChooseDecade(new CandyDate());
       expect(componentInstance.changePanel).toHaveBeenCalledWith('year');
+    });
+
+    it('should work with forceToMonth branch', () => {
+      componentInstance.forceToMonth = true;
+      spyOn(componentInstance, 'changePanel');
       componentInstance.onChooseYear(new CandyDate());
       expect(componentInstance.changePanel).toHaveBeenCalledWith('month');
     });

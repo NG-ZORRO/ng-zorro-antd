@@ -4,5 +4,6 @@ export { PickerResult, PickerResultSingle, PickerResultRange, PresetRanges, Pane
 export { NzDatePickerModule } from './date-picker.module';
 export { NzDatePickerComponent } from './date-picker.component';
 export { NzRangePickerComponent } from './range-picker.component';
+export { NzYearPickerComponent } from './year-picker.component';
 export { NzMonthPickerComponent } from './month-picker.component';
 export { NzWeekPickerComponent } from './week-picker.component';

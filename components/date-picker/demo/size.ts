@@ -11,6 +11,8 @@ import { Component } from '@angular/core';
     <br /><br />
     <nz-date-picker [nzSize]="size"></nz-date-picker>
     <br />
+    <nz-year-picker [nzSize]="size" nzPlaceHolder="Select Year"></nz-year-picker>
+    <br />
     <nz-month-picker [nzSize]="size" nzPlaceHolder="Select Month"></nz-month-picker>
     <br />
     <nz-range-picker [nzSize]="size"></nz-range-picker>
@@ -18,7 +20,7 @@ import { Component } from '@angular/core';
     <nz-week-picker [nzSize]="size" nzPlaceHolder="Select Week"></nz-week-picker>
   `,
   styles: [`
-    nz-date-picker, nz-month-picker, nz-range-picker, nz-week-picker {
+    nz-date-picker, nz-year-picker, nz-month-picker, nz-range-picker, nz-week-picker {
       margin: 0 8px 12px 0;
     }
   `]
