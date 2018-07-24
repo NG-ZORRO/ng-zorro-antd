@@ -103,6 +103,7 @@ export * from './cascader';
 export * from './tree';
 export * from './tree-select';
 export * from './time-picker';
+export * from './version';
 
 @NgModule({
   exports: [

@@ -8,6 +8,11 @@ rm -rf publish-es2015
 cp -r components __gen_components
 node ./build_scripts/inline-template.js
 
+VERSION=$(node -p "require('./package.json').version")
+
+echo "Package Version: ${VERSION}"
+perl -p -i -e "s/0\.0\.0\-PLACEHOLDER/${VERSION}/g" $(grep -ril 0\.0\.0\-PLACEHOLDER __gen_components) < /dev/null 2> /dev/null
+
 echo 'Compiling to es2015 via Angular compiler'
 $(npm bin)/ngc -p tsconfig-build.json -t es2015 --outDir publish-es2015/src
 
