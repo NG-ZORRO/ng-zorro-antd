@@ -1,13 +1,16 @@
 /** get some code from https://github.com/angular/material2 */
 
+import { DOCUMENT } from '@angular/common';
 import {
   AfterContentChecked,
   AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   OnInit,
+  Optional,
   Output,
   Renderer2,
   TemplateRef,
@@ -42,6 +45,9 @@ export type NzTabType = 'line' | 'card';
   preserveWhitespaces: false,
   providers          : [ NzUpdateHostClassService ],
   templateUrl        : './nz-tabset.component.html',
+  host               : {
+    '(scroll)': 'onScroll($event)'
+  },
   styles             : [ `
     :host {
       display: block;
@@ -227,7 +233,20 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
     this.listOfNzTabComponent.splice(this.listOfNzTabComponent.indexOf(value), 1);
   }
 
-  constructor(private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService, private elementRef: ElementRef) {
+  // From https://github.com/react-component/tabs/blob/master/src/Tabs.js
+  // Prevent focus to make the Tabs scroll offset
+  onScroll($event: Event): void {
+    const target: Element = $event.target as Element;
+    if (target.scrollLeft > 0) {
+      target.scrollLeft = 0;
+      if (this.document && this.document.activeElement) {
+        (this.document.activeElement as HTMLElement).blur();
+      }
+    }
+  }
+
+  // tslint:disable-next-line:no-any
+  constructor(private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService, private elementRef: ElementRef, @Optional() @Inject(DOCUMENT) private document: any) {
     this.el = this.elementRef.nativeElement;
   }
 

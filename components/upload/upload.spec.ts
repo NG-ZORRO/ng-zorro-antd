@@ -1,12 +1,13 @@
 // tslint:disable:no-any
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Component, ContentChild, DebugElement, Injector, Input, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, DebugElement, Injector, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, Observable } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 import { NzI18nModule, NzI18nService } from '../i18n';
 import en_US from '../i18n/languages/en_US';
@@ -17,7 +18,6 @@ import { ShowUploadListInterface, UploadChangeParam, UploadFile, UploadFilter, U
 import { NzUploadBtnComponent } from './nz-upload-btn.component';
 import { NzUploadListComponent } from './nz-upload-list.component';
 import { NzUploadComponent } from './nz-upload.component';
-import { NzUploadModule } from './nz-upload.module';
 
 const PNGSMALL = { target: { files: [new File([`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`], 'test.png', {
   type: 'image/png'
@@ -392,7 +392,7 @@ describe('upload', () => {
         httpMock.verify();
       });
 
-      describe('[onRemove]', () => {
+      describe('[nzRemove]', () => {
         const INITCOUNT = 3;
         beforeEach(() => {
           instance.nzFileList = [
@@ -419,8 +419,33 @@ describe('upload', () => {
           ] as any[];
           fixture.detectChanges();
         });
-        it('should be with Observable', () => {
-          instance.onRemove = of(false);
+        it('should be return a Observable', () => {
+          instance.onRemove = () => of(false);
+          fixture.detectChanges();
+          expect(dl.queryAll(By.css('.anticon-cross')).length).toBe(INITCOUNT);
+          dl.query(By.css('.anticon-cross')).nativeElement.click();
+          expect(dl.queryAll(By.css('.anticon-cross')).length).toBe(INITCOUNT);
+        });
+        it('should be return a Observable includes a delay operation', (done: () => void) => {
+          const DELAY = 20;
+          instance.onRemove = (file: UploadFile) => of(true).pipe(delay(DELAY));
+          fixture.detectChanges();
+          expect(dl.queryAll(By.css('.anticon-cross')).length).toBe(INITCOUNT);
+          dl.query(By.css('.anticon-cross')).nativeElement.click();
+          setTimeout(() => {
+            expect(dl.queryAll(By.css('.anticon-cross')).length).toBe(INITCOUNT - 1);
+            done();
+          }, DELAY + 1);
+        });
+        it('should be return a truth value', () => {
+          instance.onRemove = () => true;
+          fixture.detectChanges();
+          expect(dl.queryAll(By.css('.anticon-cross')).length).toBe(INITCOUNT);
+          dl.query(By.css('.anticon-cross')).nativeElement.click();
+          expect(dl.queryAll(By.css('.anticon-cross')).length).toBe(INITCOUNT - 1);
+        });
+        it('should be return a falsy value', () => {
+          instance.onRemove = () => false;
           fixture.detectChanges();
           expect(dl.queryAll(By.css('.anticon-cross')).length).toBe(INITCOUNT);
           dl.query(By.css('.anticon-cross')).nativeElement.click();
@@ -923,7 +948,7 @@ class TestUploadComponent {
     this._onPreview = true;
   }
   _onRemove = false;
-  onRemove: ((file: UploadFile) => boolean) | Observable<boolean> = (file: UploadFile): boolean => {
+  onRemove: (file: UploadFile) => boolean | Observable<boolean> = (file: UploadFile): boolean => {
     this._onRemove = true;
     return true;
   }

@@ -6,7 +6,10 @@
       <ng-template [ngTemplateOutlet]="nzAddOnBefore"></ng-template>
     </ng-template>
   </span>
-  <ng-template *ngTemplateOutlet="contentTemplate"></ng-template>
+  <ng-template [ngIf]="!isAffix" *ngTemplateOutlet="contentTemplate"></ng-template>
+  <span class="ant-input-affix-wrapper" [class.ant-input-affix-wrapper-sm]="isSmall" [class.ant-input-affix-wrapper-lg]="isLarge" *ngIf="isAffix">
+    <ng-template *ngTemplateOutlet="affixTemplate"></ng-template>
+  </span>
   <span class="ant-input-group-addon" *ngIf="nzAddOnAfter || nzAddOnAfterIcon">
     <i [ngClass]="nzAddOnAfterIcon" *ngIf="nzAddOnAfterIcon"></i>
     <ng-container *ngIf="isAddOnAfterString; else addOnAfterTemplate">{{ nzAddOnAfter }}</ng-container>
@@ -15,22 +18,25 @@
     </ng-template>
   </span>
 </span>
-<ng-template [ngIf]="isAffix">
-<span class="ant-input-prefix" *ngIf="nzPrefix || nzPrefixIcon">
-  <i [ngClass]="nzPrefixIcon" *ngIf="nzPrefixIcon"></i>
-  <ng-container *ngIf="isPrefixString; else prefixTemplate">{{ nzPrefix }}</ng-container>
-  <ng-template #prefixTemplate>
-    <ng-template [ngTemplateOutlet]="nzPrefix"></ng-template>
-  </ng-template>
-</span>
-<ng-template *ngTemplateOutlet="contentTemplate"></ng-template>
-<span class="ant-input-suffix" *ngIf="nzSuffix || nzSuffixIcon">
-  <i [ngClass]="nzSuffixIcon" *ngIf="nzSuffixIcon"></i>
-  <ng-container *ngIf="isSuffixString; else suffixTemplate">{{ nzSuffix }}</ng-container>
-  <ng-template #suffixTemplate>
-    <ng-template [ngTemplateOutlet]="nzSuffix"></ng-template>
-  </ng-template>
-</span>
+<ng-container *ngIf="isAffix && !isAddOn">
+  <ng-template *ngTemplateOutlet="affixTemplate"></ng-template>
+</ng-container>
+<ng-template #affixTemplate>
+  <span class="ant-input-prefix" *ngIf="nzPrefix || nzPrefixIcon">
+    <i [ngClass]="nzPrefixIcon" *ngIf="nzPrefixIcon"></i>
+    <ng-container *ngIf="isPrefixString; else prefixTemplate">{{ nzPrefix }}</ng-container>
+    <ng-template #prefixTemplate>
+      <ng-template [ngTemplateOutlet]="nzPrefix"></ng-template>
+    </ng-template>
+  </span>
+  <ng-template *ngTemplateOutlet="contentTemplate"></ng-template>
+  <span class="ant-input-suffix" *ngIf="nzSuffix || nzSuffixIcon">
+    <i [ngClass]="nzSuffixIcon" *ngIf="nzSuffixIcon"></i>
+    <ng-container *ngIf="isSuffixString; else suffixTemplate">{{ nzSuffix }}</ng-container>
+    <ng-template #suffixTemplate>
+      <ng-template [ngTemplateOutlet]="nzSuffix"></ng-template>
+    </ng-template>
+  </span>
 </ng-template>
 <ng-template [ngIf]="isGroup" *ngTemplateOutlet="contentTemplate"></ng-template>
 <ng-template #contentTemplate>

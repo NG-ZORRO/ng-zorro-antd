@@ -15,7 +15,7 @@ describe('input', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports     : [ NzInputModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestInputWithInputComponent, NzTestInputWithTextAreaComponent, NzTestInputWithTextAreaAutoSizeStringComponent, NzTestInputWithTextAreaAutoSizeObjectComponent, NzTestInputGroupAddonComponent, NzTestInputGroupAffixComponent, NzTestInputGroupMultipleComponent, NzTestInputGroupColComponent, NzTestInputFormComponent ],
+      declarations: [ NzTestInputWithInputComponent, NzTestInputWithTextAreaComponent, NzTestInputWithTextAreaAutoSizeStringComponent, NzTestInputWithTextAreaAutoSizeObjectComponent, NzTestInputGroupAddonComponent, NzTestInputGroupAffixComponent, NzTestInputGroupMultipleComponent, NzTestInputGroupColComponent, NzTestInputFormComponent, NzTestInputGroupMixComponent ],
       providers   : []
     }).compileComponents();
   }));
@@ -321,6 +321,18 @@ describe('input', () => {
         expect(inputGroupElement.classList).toContain('ant-input-group');
       });
     });
+    describe('mix', () => {
+      let inputGroupElement;
+      beforeEach(() => {
+        fixture = TestBed.createComponent(NzTestInputGroupMixComponent);
+        testComponent = fixture.debugElement.componentInstance;
+        fixture.detectChanges();
+        inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
+      });
+      it('should mix work', () => {
+        expect(inputGroupElement.querySelector('.ant-input-affix-wrapper').nextElementSibling.classList).toContain('ant-input-group-addon');
+      });
+    });
   });
   describe('input form', () => {
     describe('input with form', () => {
@@ -425,6 +437,18 @@ export class NzTestInputGroupMultipleComponent {
   compact = false;
   search = false;
   size = 'default';
+}
+
+/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1795 **/
+@Component({
+  selector: 'nz-test-input-group-mix',
+  template: `
+    <nz-input-group nzPrefixIcon="anticon anticon-user" nzAddOnAfter="@example.com">
+      <input type="text" nz-input placeholder="邮箱地址">
+    </nz-input-group>
+  `
+})
+export class NzTestInputGroupMixComponent {
 }
 
 @Component({
