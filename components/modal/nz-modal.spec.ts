@@ -1,7 +1,7 @@
 /* TODO: Sort out and rewrite for more standardized */
 
-import { Component, DebugElement, ElementRef, EventEmitter, Input, NgModule } from '@angular/core';
-import { async, fakeAsync, flush, flushMicrotasks, inject, tick, ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
+import { Component, ElementRef, EventEmitter, Input } from '@angular/core';
+import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
@@ -15,11 +15,9 @@ import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CssUnitPipe } from './css-unit.pipe';
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
-import { MODAL_ANIMATE_DURATION, NzModalComponent } from './nz-modal.component';
+import { NzModalComponent } from './nz-modal.component';
 import { NzModalModule } from './nz-modal.module';
 import { NzModalService } from './nz-modal.service';
-
-const WAIT_ANIMATE_TIME = MODAL_ANIMATE_DURATION + 50;
 
 describe('modal testing (legacy)', () => {
   let instance;
@@ -473,6 +471,24 @@ describe('NzModal', () => {
       modalRef.triggerCancel();
       expect(spyCancel).toHaveBeenCalled();
     });
+
+    it('should add/remove padding-left depends on current scrollbar (just functions mockup)', () => {
+      const modalRef = modalService.create();
+      const modalInstance = modalRef.getInstance();
+      spyOnProperty(window, 'innerHeight').and.returnValue(null); // Disable innerHeight to test another branch
+      // tslint:disable-next-line:no-string-literal
+      spyOnProperty(modalInstance['document'].body, 'scrollHeight').and.returnValue(200);
+      // tslint:disable-next-line:no-string-literal
+      spyOnProperty(modalInstance['document'].documentElement, 'clientHeight').and.returnValue(100);
+      // tslint:disable-next-line:no-string-literal
+      expect(modalInstance['hasBodyScrollBar']()).toBeTruthy();
+
+      // tslint:disable-next-line:no-string-literal
+      const spySetStyle = spyOn(modalInstance['renderer'], 'setStyle');
+      // tslint:disable-next-line:no-string-literal
+      modalInstance['changeBodyOverflow'](1);
+      expect(spySetStyle).toHaveBeenCalled();
+    });
   });
 });
 
@@ -658,8 +674,6 @@ class TestCssUnitPipeComponent { }
 })
 export class ModalByServiceComponent {
   nonServiceModalVisible = false;
-
-  constructor(modalControlService: NzModalControlService) {}
 }
 
 // -------------------------------------------
