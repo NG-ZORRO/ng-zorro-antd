@@ -109,7 +109,7 @@ Filter property
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzShowFilter]` | Whether show filter | boolean | - |
-| `[nzFilters]` | Filter options,  `text`，and `value` for callback | `Array<{ text: string; value: any }>` | - |
+| `[nzFilters]` | Filter options,  `text`, and `value` for callback, `byDefault` to enable filter by default | `Array<{ text: string; value: any; byDefault?: boolean }>` | - |
 | `[nzFilterMultiple]` | Whether filter multiple mode | boolean | true |
 | `(nzFilterChange)` | Filter change callback `value` | `EventEmitter<any[] 丨 any>` | - |
 
