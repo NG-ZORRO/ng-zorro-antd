@@ -34,7 +34,7 @@ A list can be used to display content related to a single subject. The content c
 
 | Property | Description | Type | Default
 | --- | --- | --- | --- |
-| column | column of grid | number | - |
+| span | column of grid | number | - |
 | gutter | spacing between grid | number | 0 |
 | xs | `<576px` column of grid | number | - |
 | sm | `≥576px` column of grid | number | - |
