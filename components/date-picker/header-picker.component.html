@@ -19,12 +19,12 @@
         <div class="ant-calendar-month-calendar-content">
           <div class="ant-calendar-month-header-wrap">
             <calendar-header
-              [forceToMonth]="true"
               [disabledMonth]="nzDisabledDate"
               [panelMode]="panelMode"
               (panelModeChange)="onPanelModeChange($event)"
               [value]="nzValue"
-              (valueChange)="onValueChange($event)"
+              (chooseYear)="onChooseValue('year', $event)"
+              (chooseMonth)="onChooseValue('month', $event)"
               [locale]="nzLocale.lang"
               [enablePrev]="true"
               [enableNext]="true"

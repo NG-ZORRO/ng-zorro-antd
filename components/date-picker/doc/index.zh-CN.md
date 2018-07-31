@@ -40,9 +40,9 @@ registerLocaleData(zh);
 | `[nzAllowClear]` | 是否显示清除按钮 | boolean | true |
 | `[nzAutoFocus]` | 自动获取焦点 | boolean | false |
 | `[nzClassName]` | 选择器 className | string | '' |
-| `[nzDateRender]` | 自定义日期单元格的内容（nz-month-picker不支持） | TemplateRef&lt;Date&gt; / string or (d: Date) => TemplateRef&lt;Date&gt; / string | - |
+| `[nzDateRender]` | 自定义日期单元格的内容（month-picker/year-picker不支持） | TemplateRef&lt;Date&gt; / string or (d: Date) => TemplateRef&lt;Date&gt; / string | - |
 | `[nzDisabled]` | 禁用 | boolean | false |
-| `[nzDisabledDate]` | 不可选择的日期 | (current: Date) => boolean | 无 |
+| `[nzDisabledDate]` | 不可选择的日期（year-picker不支持） | (current: Date) => boolean | 无 |
 | `[nzLocale]` | 国际化配置 | object | [默认配置](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
 | `[nzOpen]` | 控制弹层是否展开 | boolean | - |
 | `[nzPopupStyle]` | 额外的弹出日历样式 | object | {} |
@@ -63,6 +63,16 @@ registerLocaleData(zh);
 | `[nzShowToday]` | 是否展示“今天”按钮 | boolean | true |
 | `[nzPlaceHolder]` | 输入框提示文字 | string | - |
 | `(nzOnOk)` | 点击确定按钮的回调 | `EventEmitter<Date>` | - |
+| `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | 无 |
+
+### nz-year-picker
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `[ngModel]` | 日期 | Date | 无 |
+| `[nzFormat]` | 展示的日期格式，配置参考 [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy" |
+| `[nzRenderExtraFooter]` | 在面板中添加额外的页脚 | TemplateRef / string or () => TemplateRef / string | - |
+| `[nzPlaceHolder]` | 输入框提示文字 | string | - |
 | `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | 无 |
 
 ### nz-month-picker
