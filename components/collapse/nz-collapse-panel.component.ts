@@ -56,7 +56,9 @@ export class NzCollapsePanelComponent implements OnDestroy, OnInit {
   private _showArrow = true;
   private _active = false;
   private _header: string | TemplateRef<void>;
+  private _extra: string | TemplateRef<void>;
   isHeaderString: boolean;
+  isExtraString: boolean;
   private el: HTMLElement;
   @Output() nzActiveChange = new EventEmitter<boolean>();
 
@@ -81,6 +83,15 @@ export class NzCollapsePanelComponent implements OnDestroy, OnInit {
 
   get nzHeader(): string | TemplateRef<void> {
     return this._header;
+  }
+
+  @Input()
+  set nzExtra(value: string | TemplateRef<void>) {
+    this.isExtraString = !(value instanceof TemplateRef);
+    this._extra = value;
+  }
+  get nzExtra(): string | TemplateRef<void> {
+    return this._extra;
   }
 
   @Input()

@@ -1,3 +1,9 @@
+<ng-template #headerTemplate>
+  <ng-template [ngTemplateOutlet]="nzHeader"></ng-template>
+</ng-template>
+<ng-template #extraTemplate>
+  <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
+</ng-template>
 <div
   role="tab"
   [attr.aria-expanded]="nzActive"
@@ -5,9 +11,9 @@
   (click)="clickHeader()">
   <i class="arrow" *ngIf="nzShowArrow"></i>
   <ng-container *ngIf="isHeaderString; else headerTemplate">{{ nzHeader }}</ng-container>
-  <ng-template #headerTemplate>
-    <ng-template [ngTemplateOutlet]="nzHeader"></ng-template>
-  </ng-template>
+  <div class="ant-collapse-extra">
+    <ng-container *ngIf="isExtraString; else extraTemplate">{{ nzExtra }}</ng-container>
+  </div>
 </div>
 <div
   class="ant-collapse-content"

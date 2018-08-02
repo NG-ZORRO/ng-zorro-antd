@@ -11,7 +11,7 @@ describe('collapse', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzCollapseModule, NoopAnimationsModule ],
-      declarations: [ NzTestCollapseBasicComponent, NzTestCollapseTemplateComponent ]
+      declarations: [ NzTestCollapseBasicComponent, NzTestCollapseTemplateComponent, NzTestCollapseExtraComponent ]
     });
     TestBed.compileComponents();
   }));
@@ -100,7 +100,24 @@ describe('collapse', () => {
     });
     it('should header work', () => {
       fixture.detectChanges();
-      expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-header').innerText).toBe('string');
+      expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-header').innerText.trim()).toBe('string');
+    });
+  });
+  describe('extra template', () => {
+    let fixture;
+    let testComponent;
+    let collapse;
+    let panels;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestCollapseExtraComponent);
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+      collapse = fixture.debugElement.query(By.directive(NzCollapseComponent));
+      panels = fixture.debugElement.queryAll(By.directive(NzCollapsePanelComponent));
+    });
+    it('should extra work', () => {
+      fixture.detectChanges();
+      expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-extra').innerText.trim()).toContain('extra');
     });
   });
   describe('collapse template', () => {
@@ -117,7 +134,7 @@ describe('collapse', () => {
     });
     it('should header work', () => {
       fixture.detectChanges();
-      expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-header').innerText).toBe('template');
+      expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-header').innerText.trim()).toBe('template');
     });
   });
 });
@@ -127,7 +144,8 @@ describe('collapse', () => {
   template: `
     <ng-template #headerTemplate>template</ng-template>
     <nz-collapse [nzAccordion]="accordion" [nzBordered]="bordered">
-      <nz-collapse-panel [(nzActive)]="active01" (nzActiveChange)="active01Change($event)" [nzHeader]="header" [nzShowArrow]="showArrow">
+      <nz-collapse-panel [(nzActive)]="active01" (nzActiveChange)="active01Change($event)" [nzHeader]="header"
+                         [nzShowArrow]="showArrow">
         <p>Panel01</p>
       </nz-collapse-panel>
       <nz-collapse-panel [(nzActive)]="active02" (nzActiveChange)="active02Change($event)" [nzDisabled]="disabled">
@@ -161,4 +179,19 @@ export class NzTestCollapseBasicComponent {
   `
 })
 export class NzTestCollapseTemplateComponent {
+}
+
+@Component({
+  selector: 'nz-test-collapse-extra',
+  template: `
+    <ng-template #extra>extra</ng-template>
+    <nz-collapse>
+      <nz-collapse-panel [nzHeader]="'panel'" [nzExtra]="extra" [nzActive]="true" [nzDisabled]="false">
+        <p style="margin:0;">A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be
+          found as a welcome guest in many households across the world.</p>
+      </nz-collapse-panel>
+    </nz-collapse>
+  `
+})
+export class NzTestCollapseExtraComponent {
 }
