@@ -28,6 +28,7 @@ cols: 1
 | --- | --- | --- | --- |
 | `[nzDisabled]` | 禁用后的面板展开与否将无法通过用户交互改变 | boolean | false |
 | `[nzHeader]` | 面板头内容 | string｜ `TemplateRef<void>` | 无 |
+| `[nzExtra]` | 面板右上角的操作区域 | string｜ `TemplateRef<void>` | 无 |
 | `[nzShowArrow]` | 是否展示箭头 | boolean | true |
 | `[nzActive]` | 面板是否展开，可双向绑定 | boolean | 无 |
 | `(nzActiveChange)` | 面板展开回调 | `EventEmitter<boolean>` | 无 |
