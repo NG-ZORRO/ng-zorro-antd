@@ -3,84 +3,81 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-calendar-notice-calendar',
   template: `
-    <nz-calendar>
-      <ul *nzDateCell="let date" class="events">
-        <ng-container [ngSwitch]="date.getDate()">
-          <ng-container *ngSwitchCase="8">
-            <li *ngFor="let item of listDataMap.eight">
-              <nz-badge [nzStatus]="item.type" [nzText]="item.content"></nz-badge>
-            </li>
-          </ng-container>
-          <ng-container *ngSwitchCase="10">
-            <li *ngFor="let item of listDataMap.ten">
-              <nz-badge [nzStatus]="item.type" [nzText]="item.content"></nz-badge>
-            </li>
-          </ng-container>
-          <ng-container *ngSwitchCase="11">
-            <li *ngFor="let item of listDataMap.eleven">
-              <nz-badge [nzStatus]="item.type" [nzText]="item.content"></nz-badge>
-            </li>
-          </ng-container>
-        </ng-container>
-      </ul>
-      <ng-container *nzMonthCell="let month">
-        <div *ngIf="getMonthData(month) as monthData" class="notes-month">
-          <section>{{ monthData }}</section>
-          <span>Backlog number</span>
-        </div>
+<nz-calendar>
+   <ul *nzDateCell="let date" class="events">
+      <ng-container *ngFor="let event of getEvents(date)">
+         <li nz-popover nzTitle="{{event.title}}" nzContent="{{event.content}}">
+            <nz-badge [nzStatus]="event.type" [nzText]="event.title"></nz-badge>
+         </li>
       </ng-container>
-    </nz-calendar>
-  `,
-  styles  : [ `
-    .events {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
+   </ul>
+   <ul *nzMonthCell="let month" class="events">
+      <ng-container *ngFor="let event of getMonthEvents(month)">
+        <li nz-popover nzTitle="{{event.title}}" nzContent="{{event.content}}">
+            <nz-badge [nzStatus]="event.type" [nzText]="event.title"></nz-badge>
+        </li>
+      </ng-container>
+   </ul>
+</nz-calendar>
+`,
+  styles: [`
+  .events {
+    text-align: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
-    .events .ant-badge-status {
-      overflow: hidden;
-      white-space: nowrap;
-      width: 100%;
-      text-overflow: ellipsis;
-      font-size: 12px;
-    }
-
-    .notes-month {
-      text-align: center;
-      font-size: 28px;
-    }
-
-    .notes-month section {
-      font-size: 28px;
-    }
-  ` ]
+  .events .ant-badge-status {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    text-overflow: ellipsis;
+    font-size: 12px;
+  }
+` ]
 })
 export class NzDemoCalendarNoticeCalendarComponent {
-  listDataMap = {
-    eight : [
-      { type: 'warning', content: 'This is warning event.' },
-      { type: 'success', content: 'This is usual event.' }
-    ],
-    ten   : [
-      { type: 'warning', content: 'This is warning event.' },
-      { type: 'success', content: 'This is usual event.' },
-      { type: 'error', content: 'This is error event.' }
-    ],
-    eleven: [
-      { type: 'warning', content: 'This is warning event' },
-      { type: 'success', content: 'This is very long usual event........' },
-      { type: 'error', content: 'This is error event 1.' },
-      { type: 'error', content: 'This is error event 2.' },
-      { type: 'error', content: 'This is error event 3.' },
-      { type: 'error', content: 'This is error event 4.' }
-    ]
-  };
+  current = new Date();
+  tomorrow = new Date();
+  yesterday = new Date();
+  nextMonth = new Date();
 
-  getMonthData(date: Date): number | null {
-    if (date.getMonth() === 8) {
-      return 1394;
-    }
-    return null;
+  constructor() {
+    this.tomorrow.setDate(this.tomorrow.getDate() + 1);
+    this.yesterday.setDate(this.yesterday.getDate() - 1);
+    this.nextMonth.setMonth(this.nextMonth.getMonth() + 1);
+  }
+
+  objects =
+  [{
+    type: 'warning', content: 'This is warning event', title: 'This is title to warning event',
+    date: this.tomorrow
+  },
+  {
+    type: 'success', content: 'This is very long usual event with very very long decription...',
+    title: 'This is title to event with long description', date: this.current
+  },
+  {
+    type: 'error', content: 'This is error event', title: 'This is title to erro event',
+    date: this.yesterday
+  },
+  {
+    type: 'default', content: 'This is default event', title: 'This is title to default event',
+    date: this.nextMonth
+  }];
+
+  getEvents(date: Date) {
+    date.setHours(0, 0, 0, 0);
+    return this.objects.filter(value => {
+      value.date.setHours(0, 0, 0, 0);
+      return date.getTime() === value.date.getTime();
+    });
+  }
+
+  getMonthEvents(date: Date) {
+    return this.objects.filter(value => {
+      return date.getMonth() === value.date.getMonth();
+    });
   }
 }
