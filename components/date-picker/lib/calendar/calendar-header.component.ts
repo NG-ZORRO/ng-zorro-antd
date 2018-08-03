@@ -16,13 +16,16 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Input() enableNext: boolean = true;
   @Input() disabledMonth: (date: Date) => boolean;
   @Input() showTimePicker: boolean = false;
-  @Input() forceToMonth: boolean = false; // Force change panel to month without value change when choose a year/decade
 
   @Input() value: CandyDate;
   @Output() valueChange = new EventEmitter<CandyDate>();
 
   @Input() panelMode: PanelMode;
   @Output() panelModeChange = new EventEmitter<PanelMode>();
+
+  @Output() chooseDecade = new EventEmitter<CandyDate>();
+  @Output() chooseYear = new EventEmitter<CandyDate>();
+  @Output() chooseMonth = new EventEmitter<CandyDate>();
 
   prefixCls: string = 'ant-calendar';
   yearMonthDaySelectors: YearMonthDaySelector[];
@@ -60,8 +63,6 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   }
 
   changePanel(mode: PanelMode, value?: CandyDate): void {
-    // this.panelMode = mode;
-    // this.panelModeChange.emit(this.panelMode);
     this.panelModeChange.emit(mode);
     if (value) {
       this.changeValueFromInside(value);
@@ -69,27 +70,20 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   }
 
   onChooseDecade(value: CandyDate): void {
-    if (this.forceToMonth) {
-      this.value = value; // Change internal value only
-      this.changePanel('year');
-    } else {
-      this.changePanel('year', value);
-    }
+    this.changePanel('year', value);
+    this.chooseDecade.emit(value);
   }
 
   onChooseYear(value: CandyDate): void {
-    if (this.forceToMonth) {
-      this.value = value; // Change internal value only
-      this.changePanel('month');
-    } else {
-      this.changePanel(this.yearToMonth ? 'month' : 'date', value);
-      this.yearToMonth = false; // Clear
-    }
+    this.changePanel(this.yearToMonth ? 'month' : 'date', value);
+    this.yearToMonth = false; // Clear
+    this.chooseYear.emit(value);
   }
 
   onChooseMonth(value: CandyDate): void {
     this.changePanel('date', value);
     this.yearToMonth = false; // Clear
+    this.chooseMonth.emit(value);
   }
 
   changeToMonthPanel(): void {
