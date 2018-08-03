@@ -49,14 +49,23 @@
     [ngClass]="menuCls" [ngStyle]="nzMenuStyle"
     [@dropDownAnimation]="dropDownPosition"
     (mouseleave)="onTriggerMouseLeave($event)">
-    <ul *ngFor="let options of nzColumns; let i = index;" [ngClass]="menuColumnCls">
+    <ul *ngFor="let options of nzColumns; let i = index;" [ngClass]="menuColumnCls"
+      [style.height]="inSearch && !nzColumns[0].length ? 'auto': ''" [style.width]="searchWidthStyle">
       <li *ngFor="let option of options"
         [attr.title]="option.title || getOptionLabel(option)"
         [ngClass]="getOptionCls(option, i)"
         (mouseenter)="onOptionMouseEnter(option, i, $event)"
         (mouseleave)="onOptionMouseLeave(option, i, $event)"
         (click)="onOptionClick(option, i, $event)">
-        {{ getOptionLabel(option) }}
+        <ng-container *ngIf="inSearch">
+          <span [innerHTML]="renderSearchString(getOptionLabel(option))"></span>
+        </ng-container>
+        <ng-container *ngIf="!inSearch">
+          {{ getOptionLabel(option) }}
+        </ng-container>
+      </li>
+      <li *ngIf="inSearch && !nzColumns[0].length" class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled">
+        Not Found
       </li>
     </ul>
   </div>
