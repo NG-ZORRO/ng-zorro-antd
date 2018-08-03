@@ -21,6 +21,10 @@
     position: relative;
   }
 
+  &-show-search&-focused {
+    color: @disabled-color;
+  }
+
   &-picker {
     .reset-component;
     position: relative;
@@ -29,6 +33,7 @@
     background-color: @component-background;
     border-radius: @border-radius-base;
     outline: 0;
+    transition: color .3s;
 
     &-with-value &-label {
       color: transparent;
