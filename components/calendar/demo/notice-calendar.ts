@@ -4,20 +4,21 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-calendar-notice-calendar',
   template: `
 <nz-calendar>
-   <ul *nzDateCell="let date" class="events">
-      <ng-container *ngFor="let event of getEvents(date)">
-         <li nz-popover nzTitle="{{event.title}}" nzContent="{{event.content}}">
-            <nz-badge [nzStatus]="event.type" [nzText]="event.title"></nz-badge>
-         </li>
-      </ng-container>
-   </ul>
-   <ul *nzMonthCell="let month" class="events">
-      <ng-container *ngFor="let event of getMonthEvents(month)">
-        <li nz-popover nzTitle="{{event.title}}" nzContent="{{event.content}}">
-            <nz-badge [nzStatus]="event.type" [nzText]="event.title"></nz-badge>
+  <ul *nzDateCell="let date" class="events">
+     <ng-container *ngFor="let event of objects; trackBy:getEvents">
+        <li nz-popover *ngIf="event.date.getTime() === date.getTime()"
+         nzTitle="{{event.title}}" nzContent="{{event.content}}">
+           <nz-badge [nzStatus]="event.type" [nzText]="event.title"></nz-badge>
         </li>
-      </ng-container>
-   </ul>
+     </ng-container>
+  </ul>
+  <ul *nzMonthCell="let month" class="events">
+     <ng-container *ngFor="let event of getMonthEvents(month)">
+       <li nz-popover nzTitle="{{event.title}}" nzContent="{{event.content}}">
+           <nz-badge [nzStatus]="event.type" [nzText]="event.title"></nz-badge>
+       </li>
+     </ng-container>
+  </ul>
 </nz-calendar>
 `,
   styles: [`
@@ -59,25 +60,22 @@ export class NzDemoCalendarNoticeCalendarComponent {
     title: 'This is title to event with long description', date: this.current
   },
   {
-    type: 'error', content: 'This is error event', title: 'This is title to erro event',
+    type: 'error', content: 'This is error event', title: 'This is title to error event',
     date: this.yesterday
   },
   {
     type: 'default', content: 'This is default event', title: 'This is title to default event',
     date: this.nextMonth
   }];
-
-  getEvents(date: Date) {
-    date.setHours(0, 0, 0, 0);
-    return this.objects.filter(value => {
-      value.date.setHours(0, 0, 0, 0);
-      return date.getTime() === value.date.getTime();
-    });
+ 
+  getEvents(index, event) {
+    event.date.setHours(0, 0, 0, 0);
+    return event;
   }
 
-  getMonthEvents(date: Date) {
+  getMonthEvents(month: Date) {
     return this.objects.filter(value => {
-      return date.getMonth() === value.date.getMonth();
+      return value.date.getMonth() === month.getMonth();
     });
   }
 }
