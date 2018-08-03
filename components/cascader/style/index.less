@@ -13,16 +13,11 @@
     background-color: transparent !important;
     cursor: pointer;
     width: 100%;
-    display: block;
     position: static;
   }
 
   &-picker-show-search &-input.@{ant-prefix}-input {
     position: relative;
-  }
-
-  &-show-search&-focused {
-    color: @disabled-color;
   }
 
   &-picker {
@@ -50,6 +45,10 @@
 
     &:focus .@{cascader-prefix-cls}-input {
       .active;
+    }
+
+    &-show-search&-focused {
+      color: @disabled-color;
     }
 
     &-label {
