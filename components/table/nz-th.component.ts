@@ -15,7 +15,7 @@ import { toBoolean } from '../core/util/convert';
 import { NzDropDownComponent } from '../dropdown/nz-dropdown.component';
 
 /* tslint:disable-next-line:no-any */
-export type NzThFilterType = Array<{ text: string; value: any }>;
+export type NzThFilterType = Array<{ text: string; value: any; byDefault?: boolean }>;
 
 export interface NzThItemInterface {
   text: string;
@@ -37,6 +37,7 @@ export class NzThComponent {
   private _showFilter = false;
   private _showCheckbox = false;
   private _showRowSelection = false;
+  private _hasDefaultFilter = false;
   el: HTMLElement;
   hasFilterValue = false;
   multipleFilterList: NzThItemInterface[] = [];
@@ -192,8 +193,8 @@ export class NzThComponent {
   }
 
   reset(): void {
-    this.initMultipleFilterList();
-    this.initSingleFilterList();
+    this.initMultipleFilterList(true);
+    this.initSingleFilterList(true);
     this.search();
     this.hideDropDown();
     this.hasFilterValue = false;
@@ -234,16 +235,27 @@ export class NzThComponent {
     return this._filters;
   }
 
-  initMultipleFilterList(): void {
+  initMultipleFilterList(force?: boolean): void {
     this.multipleFilterList = this.nzFilters.map(item => {
-      return { text: item.text, value: item.value, checked: false };
+      const checked = force ? false : !!item.byDefault;
+      if (checked) { this._hasDefaultFilter = true; }
+      return { text: item.text, value: item.value, checked };
     });
+    this.checkDefaultFilters();
   }
 
-  initSingleFilterList(): void {
+  initSingleFilterList(force?: boolean): void {
     this.singleFilterList = this.nzFilters.map(item => {
-      return { text: item.text, value: item.value, checked: false };
+      const checked = force ? false : !!item.byDefault;
+      if (checked) { this._hasDefaultFilter = true; }
+      return { text: item.text, value: item.value, checked };
     });
+    this.checkDefaultFilters();
+  }
+
+  checkDefaultFilters(): void {
+    if (!this.nzFilters || this.nzFilters.length === 0 || !this._hasDefaultFilter) { return; }
+    this.updateFilterStatus();
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {

@@ -118,7 +118,7 @@ Table 组件同时具备了易用性和高度可定制性
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzShowFilter]` | 是否显示过滤 | boolean | - |
-| `[nzFilters]` | 过滤器内容, 显示数据 `text`，回调函数传出 `value` | `Array<{ text: string; value: any }>` | - |
+| `[nzFilters]` | 过滤器内容, 显示数据 `text`，回调函数传出 `value`，设置 `byDefault` 以默认应用过滤规则 | `Array<{ text: string; value: any; byDefault?: boolean }>` | - |
 | `[nzFilterMultiple]` | 是否为多选过滤器 | boolean | true |
 | `(nzFilterChange)` | 过滤器内容选择的 value 数据回调 | `EventEmitter<any[]丨 any>` | - |
 
