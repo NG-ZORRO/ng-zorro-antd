@@ -11,7 +11,8 @@
       <div nz-col [nzXs]="0" [nzSm]="0" [nzMd]="16" [nzLg]="19" [nzXl]="19" [nzXXl]="20" class="nav nav-hide">
         <div id="search-box">
           <i class="anticon anticon-search"></i>
-          <nz-select [nzPlaceHolder]="language=='zh'?'搜索组件...':'Search Components...'" nzShowSearch [(ngModel)]="searchComponent" (ngModelChange)="navigateToPage($event)">
+          <input *ngIf="useDocsearch" nz-input #searchInput [placeholder]="language=='zh' ? '在 ng.ant.design 中搜索' : 'Search in ng.ant.design'">
+          <nz-select *ngIf="!useDocsearch" [nzPlaceHolder]="language=='zh'?'搜索组件...':'Search Components...'" nzShowSearch [(ngModel)]="searchComponent" (ngModelChange)="navigateToPage($event)">
             <ng-template [ngForOf]="componentList" ngFor let-component>
               <nz-option [nzValue]="component.path" [nzLabel]="component.label" nzCustomContent *ngIf="language==component.language">
                 <strong>{{component.label}}</strong>
@@ -41,7 +42,7 @@
           <li *ngFor="let intro of routerList.intro" nz-menu-item routerLinkActive="ant-menu-item-selected" [hidden]="intro.language!=language">
             <a routerLink="{{intro.path}}">{{intro.label}}</a>
           </li>
-          <li nz-submenu nzOpen>
+          <li nz-submenu nzOpen routerLinkActive="ant-menu-submenu-selected">
             <span title><h4>Components</h4></span>
             <ul>
               <li nz-menu-group *ngFor="let group of routerList.components">
