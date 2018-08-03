@@ -39,9 +39,9 @@ The following APIs are shared by nz-date-picker, nz-month-picker, nz-range-picke
 | `[nzAllowClear]` | Whether to show clear button | boolean | true |
 | `[nzAutoFocus]` | get focus when component mounted | boolean | false |
 | `[nzClassName]` | picker className | string | '' |
-| `[nzDateRender]` | custom rendering function for date cells (Not support by nz-month-picker) | TemplateRef&lt;Date&gt; / string or (d: Date) => TemplateRef&lt;Date&gt; / string | - |
+| `[nzDateRender]` | custom rendering function for date cells (Not support by month-picker/year-picker) | TemplateRef&lt;Date&gt; / string or (d: Date) => TemplateRef&lt;Date&gt; / string | - |
 | `[nzDisabled]` | determine whether the nz-date-picker is disabled | boolean | false |
-| `[nzDisabledDate]` | specify the date that cannot be selected | (current: Date) => boolean | - |
+| `[nzDisabledDate]` | specify the date that cannot be selected (Not support by year-picker) | (current: Date) => boolean | - |
 | `[nzLocale]` | localization configuration | object | [default](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
 | `[nzOpen]` | open state of picker | boolean | - |
 | `[nzPopupStyle]` | to customize the style of the popup calendar | object | {} |
@@ -62,6 +62,16 @@ The following APIs are shared by nz-date-picker, nz-month-picker, nz-range-picke
 | `[nzShowToday]` | whether to show "Today" button | boolean | true |
 | `[nzPlaceHolder]` | placeholder of date input | string | - |
 | `(nzOnOk)` | callback when click ok button | `EventEmitter<Date>` | - |
+| `(ngModelChange)` | Date change callback | `EventEmitter<Date>` | - |
+
+### nz-year-picker
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| `[ngModel]` | Date | Date | - |
+| `[nzFormat]` | to set the date format, refer to [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy" |
+| `[nzRenderExtraFooter]` | render extra footer in panel | TemplateRef / string or () => TemplateRef / string | - |
+| `[nzPlaceHolder]` | placeholder of date input | string | - |
 | `(ngModelChange)` | Date change callback | `EventEmitter<Date>` | - |
 
 ### nz-month-picker
