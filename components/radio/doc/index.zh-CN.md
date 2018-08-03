@@ -36,6 +36,7 @@ title: Radio
 | `[nzDisabled]` | 设定所有 `nz-radio` disable 状态 | boolean | false |
 | `[nzSize]` | 大小，只对按钮样式生效 | `large` ｜ `default` ｜ `small` | `default` |
 | `(ngModelChange)` | 选中变化时回调 | `EventEmitter<boolean>` | - |
+| `[nzButtonStyle]` | RadioButton 的风格样式，目前有描边和填色两种风格 | `outline` 丨 `solid` | `outline` |
 
 ## 方法
 

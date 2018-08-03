@@ -177,6 +177,22 @@ span.@{radio-prefix-cls} + * {
     padding: 0 @control-padding-horizontal-sm - 1px;
   }
 
+  .@{radio-group-prefix-cls}-solid &-checked:not(&-disabled) {
+    background: @radio-dot-color;
+    border-color: @radio-dot-color;
+    color: #fff;
+    &:hover {
+      border-color: @radio-button-hover-color;
+      background: @radio-button-hover-color;
+      color: #fff;
+    }
+    &:active {
+      border-color: @radio-button-active-color;
+      background: @radio-button-active-color;
+      color: #fff;
+    }
+  }
+
   &:not(:first-child) {
     &::before {
       content: "";
