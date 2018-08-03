@@ -11,6 +11,7 @@ import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 export type NzRadioGroupSizeType = 'large' | 'default' | 'small';
+export type NzRadioButtonStyle = 'outline' | 'solid';
 
 import { NzRadioButtonComponent } from './nz-radio-button.component';
 import { NzRadioComponent } from './nz-radio.component';
@@ -72,6 +73,8 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
     return this._name;
   }
 
+  @Input() nzButtonStyle: NzRadioButtonStyle = 'outline';
+
   updateDisabledState(): void {
     if (isNotNil(this.nzDisabled)) {
       this.radios.forEach((radio) => {
@@ -102,6 +105,11 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
   @HostBinding('class.ant-radio-group-small')
   get isSmall(): boolean {
     return this.nzSize === 'small';
+  }
+
+  @HostBinding('class.ant-radio-group-solid')
+  get isSolid(): boolean {
+    return this.nzButtonStyle === 'solid';
   }
 
   addRadio(radio: NzRadioComponent | NzRadioButtonComponent): void {

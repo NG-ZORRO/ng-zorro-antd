@@ -34,6 +34,7 @@ radio group，wrap a group of `nz-radio`。
 | `[nzDisabled]` | Disable all radio buttons | boolean |  false |
 | `[nzSize]` | Size, only on radio style | `large` `default` `small` | `default` |
 | `(ngModelChange)` | the callback function when current selected `nz-radio` value change | `EventEmitter<string>` | - |
+| `[nzButtonStyle]` | style type of radio button | `outline` 丨 `solid` | `outline` |
 
 ## Methods
 
