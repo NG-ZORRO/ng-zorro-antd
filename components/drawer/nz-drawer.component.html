@@ -1,0 +1,29 @@
+<ng-template #drawerTemplate>
+  <div
+    class="ant-drawer"
+    [class.ant-drawer-open]="isOpen"
+    [class.ant-drawer-right]="nzPlacement === 'right'"
+    [class.ant-drawer-left]="nzPlacement === 'left'">
+    <div  class="ant-drawer-mask" (click)="maskClick($event)" *ngIf="nzMask" [style.zIndex]="nzZIndex" [ngStyle]="nzMaskStyle"></div>
+    <div class="ant-drawer-content-wrapper {{ nzWrapClassName }}"
+         [style.zIndex]="nzZIndex"
+          [style.transform]="transform">
+      <div class="ant-drawer-content">
+        <div style="overflow: auto; height: 100%;" [style.width]="width">
+          <div *ngIf="nzTitle" class="ant-drawer-header">
+            <div class="ant-drawer-title">
+              <ng-container [ngSwitch]="true">
+                <ng-container *ngSwitchCase="isTemplateRef(nzTitle)" [ngTemplateOutlet]="nzTitle"></ng-container>
+                <ng-container *ngSwitchCase="isNonEmptyString(nzTitle)"><div [innerHTML]="nzTitle"></div></ng-container>
+              </ng-container>
+            </div>
+          </div>
+          <button *ngIf="nzClosable" (click)="close($event)" aria-label="Close" class="ant-drawer-close"><span class="ant-drawer-close-x"></span></button>
+          <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
+            <ng-content></ng-content>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
