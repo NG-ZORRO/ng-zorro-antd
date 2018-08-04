@@ -67,6 +67,7 @@ describe('input number', () => {
       fixture.detectChanges();
       expect(inputElement === document.activeElement).toBe(true);
       expect(inputElement.attributes.getNamedItem('autofocus').name).toBe('autofocus');
+      expect(testComponent.onFocus).toHaveBeenCalledTimes(1);
       testComponent.autofocus = false;
       fixture.detectChanges();
       expect(inputElement.attributes.getNamedItem('autofocus')).toBe(null);
@@ -76,9 +77,11 @@ describe('input number', () => {
       testComponent.nzInputNumberComponent.focus();
       fixture.detectChanges();
       expect(inputElement === document.activeElement).toBe(true);
+      expect(testComponent.onFocus).toHaveBeenCalledTimes(1);
       testComponent.nzInputNumberComponent.blur();
       fixture.detectChanges();
       expect(inputElement === document.activeElement).toBe(false);
+      expect(testComponent.onBlur).toHaveBeenCalledTimes(1);
     });
     it('should ngModel work', fakeAsync(() => {
       testComponent.value = 5;
