@@ -117,7 +117,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @ViewChild('modalContainer') modalContainer: ElementRef;
   @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
   @ViewChild('modalHeader') modalHeader: ElementRef;
-  
+
   get hidden(): boolean {
     return !this.nzVisible && !this.animationState;
   } // Indicate whether this dialog should hidden
