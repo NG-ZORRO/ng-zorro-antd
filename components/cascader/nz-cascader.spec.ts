@@ -1311,6 +1311,13 @@ describe('cascader', () => {
     it('should support search', (done) => {
       fixture.detectChanges();
       testComponent.nzShowSearch = true;
+      fixture.detectChanges();
+      // const input: HTMLElement = cascader.nativeElement.querySelector('.ant-cascader-input');
+      const spy = spyOn(testComponent.cascader, 'focus');
+      cascader.nativeElement.click();
+      fixture.detectChanges();
+      // expect(document.activeElement).toBe(input);
+      expect(spy).toHaveBeenCalled();
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
