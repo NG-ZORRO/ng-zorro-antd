@@ -194,6 +194,19 @@ describe('radio', () => {
       expect(testComponent.value).toBe('A');
     }));
   });
+  describe('radio group solid', () => {
+    let fixture;
+    let radioGroup;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestRadioGroupSolidComponent);
+      fixture.detectChanges();
+      radioGroup = fixture.debugElement.query(By.directive(NzRadioGroupComponent));
+      it('should support solid css', () => {
+        fixture.detectChanges();
+        expect(radioGroup.nativeElement.classList).toContain('ant-radio-group-solid');
+      });
+    });
+  });
   describe('radio form', () => {
     let fixture;
     let testComponent;
@@ -409,4 +422,19 @@ export class NzTestRadioGroupDisabledFormComponent implements OnInit {
       radio: [ { value: 'B', disabled: true } ]
     });
   }
+}
+
+@Component({
+  selector: 'nz-test-radui-group-solid',
+  template: `
+    <nz-radio-group [(ngModel)]="value" [nzButtonStyle]="'solid'">
+      <label nz-radio-button nzValue="A">A</label>
+      <label nz-radio-button nzValue="B">B</label>
+      <label nz-radio-button nzValue="C" [nzDisabled]="singleDisabled">C</label>
+      <label nz-radio-button nzValue="D">D</label>
+    </nz-radio-group>`
+})
+export class NzTestRadioGroupSolidComponent {
+  value = 'A';
+  singleDisabled = false;
 }

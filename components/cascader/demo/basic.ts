@@ -65,6 +65,7 @@ const otherOptions = [{
       [(ngModel)]="values"
       (ngModelChange)="onChanges($event)">
     </nz-cascader>
+    &nbsp;
     <a href="javascript:;" (click)="changeNzOptions()" class="change-options">
       Change Options
     </a>
@@ -92,7 +93,7 @@ export class NzDemoCascaderBasicComponent implements OnInit {
   ngOnInit(): void {
     // let's set nzOptions in a asynchronous way
     setTimeout(() => {
-      this.nzOptions = options;
+        this.nzOptions = options;
     }, 100);
   }
 

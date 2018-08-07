@@ -1,26 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { en_US, zh_CN, NzI18nService, NzMessageService } from 'ng-zorro-antd';
 import { environment } from '../environments/environment';
 import { ROUTER_LIST } from './router';
 
+declare const docsearch: any;
+
 @Component({
   selector   : 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   hide = true;
   routerList = ROUTER_LIST;
   componentList = [];
   searchComponent = null;
+  docsearch = null;
+
+  get useDocsearch(): boolean {
+    return window && window.location.href.indexOf('/version') === -1;
+  }
+
   language = 'zh';
   oldVersionList = [
     '0.5.x',
     '0.6.x',
     '0.7.x'
   ];
-  currentVersion = '1.2.0';
+  currentVersion = '1.3.0';
+
+  @ViewChild('searchInput') searchInput: ElementRef<HTMLInputElement>;
 
   switchLanguage(language) {
     const url = this.router.url.split('/');
@@ -73,6 +83,11 @@ export class AppComponent implements OnInit {
         }
         this.language = this.router.url.split('/')[ this.router.url.split('/').length - 1 ].split('#')[ 0 ];
         this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
+
+        if (this.docsearch) {
+          this.docsearch.algoliaOptions = { hitsPerPage: 5, facetFilters: [`tags:${this.language}`] };
+        }
+
         if (environment.production) {
           window.scrollTo(0, 0);
         }
@@ -85,6 +100,39 @@ export class AppComponent implements OnInit {
       }
     });
     this.initColor();
+  }
+
+  ngAfterViewInit(): void {
+    if (this.useDocsearch) {
+      this.initDocsearch();
+    }
+  }
+
+  initDocsearch() {
+    this.loadScript('https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js').then(() => {
+      this.docsearch = docsearch({
+        appId: 'PO5D2PCS2I',
+        apiKey: 'cda01b4d7172b1582a2911ef08519f62',
+        indexName: 'dev_ng_zorro',
+        inputSelector: '#search-box input',
+        algoliaOptions: { hitsPerPage: 5, facetFilters: [`tags:${this.language}`] },
+        transformData(hits) {
+          hits.forEach((hit) => {
+            hit.url = hit.url.replace('ng.ant.design', location.host);
+            hit.url = hit.url.replace('https:', location.protocol);
+          });
+          return hits;
+        },
+        debug: false
+      });
+    });
+  }
+
+  @HostListener('document:keyup.s', ['$event'])
+  onKeyUp(event: KeyboardEvent) {
+    if (this.useDocsearch && this.searchInput && this.searchInput.nativeElement && event.target === document.body) {
+      this.searchInput.nativeElement.focus();
+    }
   }
 
   // region: color
@@ -133,5 +181,6 @@ export class AppComponent implements OnInit {
       document.head.appendChild(script);
     });
   }
+
   // endregion
 }

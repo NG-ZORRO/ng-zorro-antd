@@ -39,6 +39,7 @@ Cascade selection box.
 | `[nzPlaceHolder]` | input placeholder | string | 'Please select' |
 | `[nzShowArrow]` | Whether show arrow | boolean | true |
 | `[nzShowInput]` | Whether show input | boolean | true |
+| `[nzShowSearch]` | Whether support search | `boolean` `NzShowSearchOptions` | `false` |
 | `[nzSize]` | input size, one of `large` `default` `small` | string | `default` |
 | `[nzValueProperty]` | the value property name of options | string | 'value' |
 | `(ngModelChange)` | Emit on values change | `EventEmitter<any[]>` | - |
@@ -46,6 +47,13 @@ Cascade selection box.
 | `(nzVisibleChange)` | Emit on popup menu visible or hide | `EventEmitter<boolean>` | - |
 | `(nzSelect)` | Emit on select | `EventEmitter<{option: any, index: number}>` | - |
 | `(nzSelectionChange)` | Emit on selection change | `EventEmitter<any[]>` | - |
+
+When `nzShowSearch` is an object it should implements `NzShowSearchOptions`：
+
+| Params | Explanation | Type | Default |
+| --- | --- | --- | --- |
+| `filter` | Optional. Be aware that all non-leaf CascaderOptions would be filtered | `(inputValue: string, path: CascaderOption[]): boolean` | - |
+| `sorter` | Optional | `(a: CascaderOption[], b: CascaderOption[], inputValue: string): number` | - |
 
 #### Methods
 
