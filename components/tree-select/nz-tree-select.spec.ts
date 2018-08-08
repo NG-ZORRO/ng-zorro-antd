@@ -22,7 +22,7 @@ describe('tree-select component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports     : [ NzTreeSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestTreeSelectBasicComponent, NzTestTreeSelectCheckableComponent, NzTestTreeSelectFormComponent ]
+      declarations: [ NzTestTreeSelectBasicComponent, NzTestTreeSelectCheckableComponent, NzTestTreeSelectFormComponent, NzTestTreeSelectAsyncNodesComponent ]
     });
     TestBed.compileComponents();
     inject([ OverlayContainer ], (oc: OverlayContainer) => {
@@ -249,7 +249,7 @@ describe('tree-select component', () => {
 
     it('should set null value work', fakeAsync(() => {
       fixture.detectChanges();
-      expect(testComponent.value[0]).toBe('1000122');
+      expect(testComponent.value[ 0 ]).toBe('1000122');
       treeSelectComponent.updateSelectedNodes();
       fixture.detectChanges();
       testComponent.setNull();
@@ -332,6 +332,38 @@ describe('tree-select component', () => {
       expect(treeSelectComponent.selectedNodes.length).toBe(0);
       expect(treeSelectComponent.value.length).toBe(0);
     }));
+  });
+
+  describe('async nodes', () => {
+    let fixture;
+    let testComponent;
+    let treeSelect;
+    let treeSelectComponent: NzTreeSelectComponent;
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestTreeSelectAsyncNodesComponent);
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+      treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
+      treeSelectComponent = treeSelect.componentInstance;
+      fixture.detectChanges();
+      flush();
+      tick(200);
+      fixture.detectChanges();
+    }));
+    it('should update selected nodes after load nodes', fakeAsync(() => {
+      treeSelectComponent.updateSelectedNodes();
+      fixture.detectChanges();
+      expect(treeSelectComponent.selectedNodes.length).toBe(0);
+      testComponent.loadNodes();
+      tick(200);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      treeSelectComponent.updateSelectedNodes();
+      fixture.detectChanges();
+      expect(treeSelectComponent.selectedNodes.length).toBe(1);
+    }));
+
   });
 
 });
@@ -555,5 +587,84 @@ export class NzTestTreeSelectFormComponent {
 
   setNull(): void {
     this.formGroup.get('select').reset(null);
+  }
+}
+
+@Component({
+  selector: 'nz-test-tree-select-async-nodes',
+  template: `
+    <nz-tree-select
+      [nzNodes]="nodes"
+      [(ngModel)]="value">
+    </nz-tree-select>
+  `
+})
+
+export class NzTestTreeSelectAsyncNodesComponent {
+  value: string = '10001';
+  nodes = [];
+
+  loadNodes(): void {
+    setTimeout(() => {
+      this.nodes = [
+        new NzTreeNode({
+          title   : 'root1',
+          key     : '1001',
+          children: [
+            {
+              title   : 'child1',
+              key     : '10001',
+              children: [
+                {
+                  title   : 'child1.1',
+                  key     : '100011',
+                  children: []
+                },
+                {
+                  title   : 'child1.2',
+                  key     : '100012',
+                  children: [
+                    {
+                      title   : 'grandchild1.2.1',
+                      key     : '1000121',
+                      isLeaf  : true,
+                      disabled: true
+                    },
+                    {
+                      title : 'grandchild1.2.2',
+                      key   : '1000122',
+                      isLeaf: true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }),
+        new NzTreeNode({
+          title   : 'root2',
+          key     : '1002',
+          children: [
+            {
+              title          : 'child2.1',
+              key            : '10021',
+              children       : [],
+              disableCheckbox: true
+            },
+            {
+              title   : 'child2.2',
+              key     : '10022',
+              children: [
+                {
+                  title : 'grandchild2.2.1',
+                  key   : '100221',
+                  isLeaf: true
+                }
+              ]
+            }
+          ]
+        })
+      ];
+    });
   }
 }
