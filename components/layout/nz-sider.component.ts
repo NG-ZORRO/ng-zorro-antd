@@ -32,6 +32,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit {
   private _collapsed = false;
   private _collapsible = false;
   @ViewChild('defaultTrigger') _trigger: TemplateRef<void>;
+  @ViewChild('defaultZeroTrigger') _zeroTrigger: TemplateRef<void>;
   private _reverseArrow = false;
   private below = false;
   private isInit = false;
@@ -63,6 +64,15 @@ export class NzSiderComponent implements OnInit, AfterViewInit {
 
   get nzTrigger(): TemplateRef<void> {
     return this._trigger;
+  }
+
+  @Input()
+  set nzZeroTrigger(value: TemplateRef<void>) {
+    this._zeroTrigger = value;
+  }
+
+  get nzZeroTrigger(): TemplateRef<void> {
+    return this._zeroTrigger;
   }
 
   @Input()
