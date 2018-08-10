@@ -86,7 +86,10 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit,
 
   ngOnInit(): void {
     if (!this.tooltip) {
-      this.tooltip = this.hostView.createComponent(this.factory).instance;
+      const tooltipComponent = this.hostView.createComponent(this.factory);
+      this.tooltip = tooltipComponent.instance;
+      // Remove element when use directive https://github.com/NG-ZORRO/ng-zorro-antd/issues/1967
+      this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), tooltipComponent.location.nativeElement);
       this.isDynamicTooltip = true;
       const properties = [
         'nzTitle',

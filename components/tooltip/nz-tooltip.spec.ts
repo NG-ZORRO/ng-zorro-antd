@@ -193,6 +193,7 @@ describe('NzTooltip', () => {
       tick(); // wait for next tick to hide
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
     }));
+
     it('should nzTitle support template', fakeAsync(() => {
       const featureKey = 'title-template';
       const triggerElement = component.titleTemplate.nativeElement;
@@ -227,6 +228,13 @@ describe('NzTooltip', () => {
       tick(); // wait for next tick to hide
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
     }));
+
+    it('should not create element', fakeAsync(() => {
+      fixture.detectChanges();
+      const triggerElement = component.inBtnGroup.nativeElement;
+      expect(triggerElement.nextSibling.tagName).toBe('BUTTON');
+    }));
+
   });
 
 });
@@ -239,6 +247,11 @@ describe('NzTooltip', () => {
     <ng-template #template>
       title-template
     </ng-template>
+    <div>
+      <button>A</button>
+      <button #inBtnGroup nz-tooltip nzTitle="title-string" >B</button>
+      <button>C</button>
+    </div>
   `
 })
 export class NzTooltipTestNewComponent {
@@ -246,6 +259,8 @@ export class NzTooltipTestNewComponent {
   @ViewChild('titleString', { read: NzTooltipDirective }) titleStringNzTooltipDirective: NzTooltipDirective;
   @ViewChild('titleTemplate') titleTemplate: ElementRef;
   @ViewChild('titleTemplate', { read: NzTooltipDirective }) titleTemplateNzTooltipDirective: NzTooltipDirective;
+  @ViewChild('inBtnGroup') inBtnGroup: ElementRef;
+
 }
 
 @Component({
