@@ -27,7 +27,7 @@
   transition: color 0.3s ease, opacity 0.15s ease;
   &:before {
     display: block;
-    .iconfont-font("\e62e");
+    .iconfont-font("\f03b");
   }
   &:hover {
     color: @text-color-secondary;
@@ -68,8 +68,8 @@
     }
 
     &:before {
-      content: '\e61d';
-      transition: transform .3s;
+      content: "\f050";
+      transition: transform 0.3s;
     }
   }
 
@@ -86,7 +86,7 @@
     // strange align fix for chrome but works
     // https://gw.alipayobjects.com/zos/rmsportal/VFTfKXJuogBAXcvfAUWJ.gif
     border-top-width: @border-width-base + 0.02px;
-    transition: all .3s @ease-in-out;
+    transition: all 0.3s @ease-in-out;
 
     &:hover {
       .hover;
@@ -164,7 +164,7 @@
     line-height: @input-height-base - 2px;
     // https://github.com/ant-design/ant-design/issues/3481#issuecomment-254721026
     &:after {
-      content: '.';
+      content: ".";
       visibility: hidden;
       pointer-events: none;
       display: inline-block;
@@ -234,7 +234,8 @@
   }
 
   &-selection__placeholder,
-  &-search__field__placeholder { // for TreeSelect compatibility
+  &-search__field__placeholder {
+    // for TreeSelect compatibility
     position: absolute;
     top: 50%;
     left: 0;
@@ -317,7 +318,8 @@
     }
 
     > ul > li,
-    .@{select-prefix-cls}-selection__rendered > ul > li {  // for tree-select
+    .@{select-prefix-cls}-selection__rendered > ul > li {
+      // for tree-select
       margin-top: 3px;
       height: @input-height-base - 8px;
       line-height: @input-height-base - 8px - 2px;
@@ -334,7 +336,7 @@
       max-width: 99%;
       position: relative;
       overflow: hidden;
-      transition: padding .3s @ease-in-out;
+      transition: padding 0.3s @ease-in-out;
       padding: 0 20px 0 10px;
       &__disabled {
         padding: 0 10px;
@@ -347,7 +349,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 100%;
-      transition: margin .3s @ease-in-out;
+      transition: margin 0.3s @ease-in-out;
     }
 
     .@{select-prefix-cls}-selection__choice__remove {
@@ -357,7 +359,7 @@
       cursor: pointer;
       display: inline-block;
       font-weight: bold;
-      transition: all .3s;
+      transition: all 0.3s;
       font-size: @font-size-sm;
       .iconfont-size-under-12px(10px);
       position: absolute;
@@ -366,7 +368,7 @@
         color: #404040;
       }
       &:before {
-        content: "\e633";
+        content: "\f03e";
       }
     }
 
@@ -410,7 +412,7 @@
       height: 100%;
       position: relative;
       z-index: 1;
-      transition: all .3s @ease-in-out;
+      transition: all 0.3s @ease-in-out;
       box-shadow: none;
     }
   }
@@ -542,7 +544,7 @@
   &&--multiple {
     .@{select-prefix-cls}-dropdown-menu-item {
       &:after {
-        .iconfont-font("\e632");
+        .iconfont-font("\f042");
         color: transparent;
         .iconfont-size-under-12px(10px);
         transition: all 0.2s ease;

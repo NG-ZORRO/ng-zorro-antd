@@ -57,7 +57,7 @@
 
     &:focus,
     &:hover {
-      transition: all .3s;
+      transition: all 0.3s;
       border-color: @primary-color;
       a {
         color: @primary-color;
@@ -111,7 +111,7 @@
     &:focus,
     &:hover {
       &:after {
-        content: "\e620\e620";
+        content: "\f04f\f04f";
       }
     }
   }
@@ -120,7 +120,7 @@
     &:focus,
     &:hover {
       &:after {
-        content: "\e61f\e61f";
+        content: "\f053\f053";
       }
     }
   }
@@ -143,7 +143,7 @@
     height: @pagination-item-size;
     line-height: @pagination-item-size;
     text-align: center;
-    transition: all .3s;
+    transition: all 0.3s;
     display: inline-block;
     vertical-align: middle;
   }
@@ -167,7 +167,7 @@
       border-radius: @border-radius-base;
       outline: none;
       display: block;
-      transition: all .3s;
+      transition: all 0.3s;
 
       &:after {
         font-size: 12px;
@@ -188,14 +188,14 @@
 
   &-prev {
     .@{pagination-prefix-cls}-item-link:after {
-      content: "\e620";
+      content: "\f04f";
       display: block;
     }
   }
 
   &-next {
     .@{pagination-prefix-cls}-item-link:after {
-      content: "\e61f";
+      content: "\f053";
       display: block;
     }
   }
@@ -272,7 +272,7 @@
       padding: 0 6px;
       height: 100%;
       text-align: center;
-      transition: border-color .3s;
+      transition: border-color 0.3s;
 
       &:hover {
         border-color: @primary-color;

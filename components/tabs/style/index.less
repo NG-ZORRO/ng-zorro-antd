@@ -26,7 +26,7 @@
     border-bottom: @border-width-base @border-style-base @border-color-split;
     margin: @tab-bar-margin;
     outline: none;
-    transition: padding .3s @ease-in-out;
+    transition: padding 0.3s @ease-in-out;
   }
 
   &-nav-container {
@@ -37,7 +37,7 @@
     position: relative;
     white-space: nowrap;
     margin-bottom: -1px;
-    transition: padding .3s @ease-in-out;
+    transition: padding 0.3s @ease-in-out;
     .clearfix;
 
     &-scrolling {
@@ -74,7 +74,8 @@
     position: absolute;
     text-align: center;
     color: @text-color-secondary;
-    transition: width .3s @ease-in-out, opacity .3s @ease-in-out, color .3s @ease-in-out;
+    transition: width 0.3s @ease-in-out, opacity 0.3s @ease-in-out,
+      color 0.3s @ease-in-out;
     opacity: 0;
     pointer-events: none;
 
@@ -122,14 +123,14 @@
     right: 2px;
 
     &-icon:before {
-      content: "\e61f";
+      content: "\f053";
     }
   }
 
   &-tab-prev {
     left: 0;
     &-icon:before {
-      content: "\e620";
+      content: "\f04f";
     }
     :root & {
       filter: none;
@@ -229,7 +230,7 @@
       > .@{tab-prefix-cls}-tabpane {
         flex-shrink: 0;
         width: 100%;
-        transition: opacity .45s;
+        transition: opacity 0.45s;
         opacity: 1;
       }
 
@@ -252,10 +253,12 @@
     > .@{tab-prefix-cls}-bar {
       border-bottom: 0;
       height: 100%;
-      &-tab-prev, &-tab-next {
+      &-tab-prev,
+      &-tab-next {
         width: @tab-scrolling-size;
         height: 0;
-        transition: height .3s @ease-in-out, opacity .3s @ease-in-out, color .3s @ease-in-out;
+        transition: height 0.3s @ease-in-out, opacity 0.3s @ease-in-out,
+          color 0.3s @ease-in-out;
       }
       &-tab-prev.@{tab-prefix-cls}-tab-arrow-show,
       &-tab-next.@{tab-prefix-cls}-tab-arrow-show {
@@ -315,7 +318,7 @@
         bottom: 0;
         height: @tab-scrolling-size;
         &-icon:before {
-          content: "\e61d";
+          content: "\f050";
         }
       }
 
@@ -391,12 +394,12 @@
 
 .@{tab-prefix-cls}-top .@{tab-prefix-cls}-ink-bar-animated,
 .@{tab-prefix-cls}-bottom .@{tab-prefix-cls}-ink-bar-animated {
-  transition: transform .3s @ease-in-out, width .3s @ease-in-out;
+  transition: transform 0.3s @ease-in-out, width 0.3s @ease-in-out;
 }
 
 .@{tab-prefix-cls}-left .@{tab-prefix-cls}-ink-bar-animated,
 .@{tab-prefix-cls}-right .@{tab-prefix-cls}-ink-bar-animated {
-  transition: transform .3s @ease-in-out, height .3s @ease-in-out;
+  transition: transform 0.3s @ease-in-out, height 0.3s @ease-in-out;
 }
 
 .no-flex,

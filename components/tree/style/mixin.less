@@ -1,9 +1,9 @@
 @import "../../style/mixins/index";
 
-@tree-default-open-icon: "\e606";
+@tree-default-open-icon: "\f035";
 @tree-showline-open-icon: "\e621";
 @tree-showline-close-icon: "\e645";
-@tree-doc-icon: "\e664";
+@tree-doc-icon: "\f052";
 
 .antTreeSwitcherIcon(@type: "tree-default-open-icon") {
   &:after {
@@ -11,7 +11,7 @@
     display: inline-block;
     .iconfont-font(@@type);
     font-weight: bold;
-    transition: transform .3s;
+    transition: transform 0.3s;
   }
 }
 
@@ -22,6 +22,6 @@
     .iconfont-font(@@type);
     vertical-align: baseline;
     font-weight: normal;
-    transition: transform .3s;
+    transition: transform 0.3s;
   }
 }

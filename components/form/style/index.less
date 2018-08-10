@@ -9,7 +9,8 @@
 @form-component-height: @input-height-base;
 @form-component-max-height: @input-height-lg;
 @form-feedback-icon-size: 14px;
-@form-help-margin-top: (@form-component-height - @form-component-max-height) / 2 + 2px;
+@form-help-margin-top: (@form-component-height - @form-component-max-height) / 2 +
+  2px;
 
 .@{form-prefix-cls} {
   .reset-component;
@@ -91,7 +92,8 @@ input[type="checkbox"] {
   }
 
   &-with-help {
-    margin-bottom: @form-item-margin-bottom - @font-size-base * @line-height-base - @form-help-margin-top;
+    margin-bottom: @form-item-margin-bottom - @font-size-base *
+      @line-height-base - @form-help-margin-top;
   }
 
   &-label {
@@ -132,7 +134,7 @@ input[type="checkbox"] {
 .@{form-prefix-cls}-extra {
   color: @text-color-secondary;
   line-height: @line-height-base;
-  transition: color .3s @ease-out; // sync input color transition
+  transition: color 0.3s @ease-out; // sync input color transition
   margin-top: @form-help-margin-top;
   clear: both;
 }
@@ -162,12 +164,18 @@ form {
     // https://github.com/ant-design/ant-design/issues/4431
     > .@{ant-prefix}-select .@{ant-prefix}-select-arrow,
     > .@{ant-prefix}-select .@{ant-prefix}-select-selection__clear,
-    :not(.@{ant-prefix}-input-group-addon) > .@{ant-prefix}-select .@{ant-prefix}-select-arrow,
-    :not(.@{ant-prefix}-input-group-addon) > .@{ant-prefix}-select .@{ant-prefix}-select-selection__clear {
+    :not(.@{ant-prefix}-input-group-addon)
+      > .@{ant-prefix}-select
+      .@{ant-prefix}-select-arrow,
+    :not(.@{ant-prefix}-input-group-addon)
+      > .@{ant-prefix}-select
+      .@{ant-prefix}-select-selection__clear {
       right: 28px;
     }
     > .@{ant-prefix}-select .@{ant-prefix}-select-selection-selected-value,
-    :not(.@{ant-prefix}-input-group-addon) > .@{ant-prefix}-select .@{ant-prefix}-select-selection-selected-value {
+    :not(.@{ant-prefix}-input-group-addon)
+      > .@{ant-prefix}-select
+      .@{ant-prefix}-select-selection-selected-value {
       padding-right: 42px;
     }
 
@@ -376,7 +384,8 @@ form {
       margin-bottom: 24px;
     }
 
-    > .@{form-prefix-cls}-item-control-wrapper, > .@{form-prefix-cls}-item-label {
+    > .@{form-prefix-cls}-item-control-wrapper,
+    > .@{form-prefix-cls}-item-label {
       display: inline-block;
       vertical-align: middle;
     }
@@ -413,7 +422,7 @@ form {
     margin-top: -10px;
     text-align: center;
     font-size: @form-feedback-icon-size;
-    animation: zoomIn .3s @ease-out-back;
+    animation: zoomIn 0.3s @ease-out-back;
     .iconfont-font("");
     z-index: 1;
   }
@@ -422,7 +431,7 @@ form {
 .has-success {
   &.has-feedback .@{form-prefix-cls}-item-children:after {
     animation-name: diffZoomIn1 !important;
-    content: '\e630';
+    content: "\f03d";
     color: @success-color;
   }
 }
@@ -431,7 +440,7 @@ form {
   .form-control-validation(@warning-color; @warning-color;);
 
   &.has-feedback .@{form-prefix-cls}-item-children:after {
-    content: '\e62c';
+    content: "\f043";
     color: @warning-color;
     animation-name: diffZoomIn3 !important;
   }
@@ -478,7 +487,7 @@ form {
   .form-control-validation(@error-color; @error-color;);
 
   &.has-feedback .@{form-prefix-cls}-item-children:after {
-    content: '\e62e';
+    content: "\f03b";
     color: @error-color;
     animation-name: diffZoomIn2 !important;
   }
@@ -535,7 +544,8 @@ form {
         border-color: @error-color;
       }
     }
-    &.@{ant-prefix}-mention-active:not([disabled]) .@{ant-prefix}-mention-editor,
+    &.@{ant-prefix}-mention-active:not([disabled])
+      .@{ant-prefix}-mention-editor,
     .@{ant-prefix}-mention-editor:not([disabled]):focus {
       .active(@error-color);
     }
@@ -560,7 +570,8 @@ form {
     margin-bottom: @form-item-margin-bottom;
 
     &-with-help {
-      margin-bottom: @form-item-margin-bottom - @font-size-base * @line-height-base - @form-help-margin-top;
+      margin-bottom: @form-item-margin-bottom - @font-size-base *
+        @line-height-base - @form-help-margin-top;
     }
   }
 }
