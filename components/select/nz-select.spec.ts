@@ -15,16 +15,16 @@ describe('nz-select component', () => {
   let overlayContainerElement: HTMLElement;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestSelectDefaultComponent, NzTestSelectTagsComponent, NzTestSelectFormComponent ]
+      imports: [NzSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule],
+      declarations: [NzTestSelectDefaultComponent, NzTestSelectTagsComponent, NzTestSelectFormComponent]
     });
     TestBed.compileComponents();
-    inject([ OverlayContainer ], (oc: OverlayContainer) => {
+    inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
       overlayContainerElement = oc.getContainerElement();
     })();
   }));
-  afterEach(inject([ OverlayContainer ], (currentOverlayContainer: OverlayContainer) => {
+  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
@@ -213,14 +213,14 @@ describe('nz-select component', () => {
       flush();
       fixture.detectChanges();
       expect(testComponent.selectedValue.length).toBe(1);
-      expect(testComponent.selectedValue[ 0 ]).toBe('jack');
+      expect(testComponent.selectedValue[0]).toBe('jack');
     }));
     it('should remove from top control work', () => {
       fixture.detectChanges();
-      testComponent.nzSelectComponent.updateListOfSelectedValueFromTopControl([ 'jack' ]);
+      testComponent.nzSelectComponent.updateListOfSelectedValueFromTopControl(['jack']);
       fixture.detectChanges();
       expect(testComponent.selectedValue.length).toBe(1);
-      expect(testComponent.selectedValue[ 0 ]).toBe('jack');
+      expect(testComponent.selectedValue[0]).toBe('jack');
     });
     it('should clear work', fakeAsync(() => {
       fixture.detectChanges();
@@ -310,6 +310,7 @@ export class NzTestSelectDefaultComponent {
     <nz-select
       [(ngModel)]="selectedValue"
       [nzAllowClear]="true"
+      [nzAllowTitle]="true"
       [nzMode]="'tags'">
       <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
       <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
@@ -319,7 +320,7 @@ export class NzTestSelectDefaultComponent {
 })
 export class NzTestSelectTagsComponent {
   @ViewChild(NzSelectComponent) nzSelectComponent: NzSelectComponent;
-  selectedValue = [ 'lucy', 'jack' ];
+  selectedValue = ['lucy', 'jack'];
   allowClear = false;
 }
 
@@ -341,7 +342,7 @@ export class NzTestSelectFormComponent {
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
-      select: [ 'jack' ]
+      select: ['jack']
     });
   }
 

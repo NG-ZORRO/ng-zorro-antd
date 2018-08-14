@@ -16,7 +16,22 @@
     [nzListTemplateOfOption]="listOfTemplateOption"
     [nzListOfSelectedValue]="listOfSelectedValue"
     (nzOnSearch)="onSearch($event.value,$event.emit)"
-    (nzListOfSelectedValueChange)="updateListOfSelectedValueFromTopControl($event)">
+    (nzListOfSelectedValueChange)="updateListOfSelectedValueFromTopControl($event)"
+    *ngIf="nzAllowTitle" title="{{value}}">
+  </div>
+  <div
+    nz-select-top-control
+    [nzOpen]="nzOpen"
+    [compareWith]="compareWith"
+    [nzPlaceHolder]="nzPlaceHolder"
+    [nzShowSearch]="nzShowSearch"
+    [nzDisabled]="nzDisabled"
+    [nzMode]="nzMode"
+    [nzListTemplateOfOption]="listOfTemplateOption"
+    [nzListOfSelectedValue]="listOfSelectedValue"
+    (nzOnSearch)="onSearch($event.value,$event.emit)"
+    (nzListOfSelectedValueChange)="updateListOfSelectedValueFromTopControl($event)"
+    *ngIf="!nzAllowTitle">
   </div>
   <span *ngIf="nzAllowClear" class="ant-select-selection__clear" nz-select-unselectable (click)="onClearSelection($event)"></span>
   <span class="ant-select-arrow" nz-select-unselectable><b></b></span>
