@@ -16,6 +16,17 @@ and so on.
 
 It is recommended to use the `Component` way to pop up the Modal, so that the component logic of the popup layer can be completely isolated from the outer component, and can be reused at any time. In the popup layer component, you can obtain Modal's component instance by injecting `NzModalRef` to control the behavior of the modal box.
 
+## How To Use
+
+If you want to modify the global default configuration, you can modify the value of provider `NZ_MODAL_CONFIG`.
+(eg, add `{ provide: NZ_MODAL_CONFIG, useValue: { autoBodyPadding: false }}` to `providers` of your module, `NZ_MODAL_CONFIG` can be imported from `ng-zorro-antd`)
+
+The default global configuration is:
+```js
+{
+  autoBodyPadding: true, // Whether to automatically add "padding" and "overflow" the body to hide the scroll bar
+}
+```
 
 ## API
 
