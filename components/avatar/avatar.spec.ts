@@ -27,7 +27,7 @@ describe('avatar', () => {
     fixture.detectChanges();
   });
 
-  describe('#nzSrc', function () {
+  describe('#nzSrc', () => {
     it('#nzSrc', () => {
       expect(context).not.toBeNull();
     });
