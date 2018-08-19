@@ -55,6 +55,15 @@ export class NzTimelineItemComponent implements OnInit {
   }
 
   updateClassMap(): void {
+    // Support custom color
+    const defaultColors = [ 'blue', 'red', 'green' ];
+    const circle = this.liTemplate.nativeElement.querySelector('.ant-timeline-item-head');
+    if (defaultColors.indexOf(this._color) === -1) {
+      this.renderer.setStyle(circle, 'border-color', this._color);
+    } else {
+      this.renderer.removeStyle(circle, 'border-color');
+    }
+
     this.classMap = {
       [ 'ant-timeline-item-head-green' ]: this.nzColor === 'green',
       [ 'ant-timeline-item-head-red' ]  : this.nzColor === 'red',
