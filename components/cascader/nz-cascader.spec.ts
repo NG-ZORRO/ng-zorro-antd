@@ -1176,7 +1176,7 @@ describe('cascader', () => {
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0); // 0列
       expect(testComponent.cascader.isMenuVisible()).toBe(false);
     }));
-    it('should change on hover work', fakeAsync(() => {
+    it('should not change on hover work', fakeAsync(() => {
       testComponent.nzChangeOnSelect = true;
       testComponent.nzExpandTrigger = 'hover';
       fixture.detectChanges();
@@ -1199,9 +1199,7 @@ describe('cascader', () => {
       expect(testComponent.cascader.isMenuVisible()).toBe(true);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2); // 2列
-      expect(testComponent.values).toBeDefined();
-      expect(testComponent.values.length).toBe(1);
-      expect(testComponent.values[ 0 ]).toBe('zhejiang');
+      expect(testComponent.values).toBeNull(); // mouseenter does not trigger selection
 
       const itemEl2 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)') as HTMLElement; // 第2列第1个
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
@@ -1215,10 +1213,7 @@ describe('cascader', () => {
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3); // 3列
-      expect(testComponent.values).toBeDefined();
-      expect(testComponent.values.length).toBe(2);
-      expect(testComponent.values[ 0 ]).toBe('zhejiang');
-      expect(testComponent.values[ 1 ]).toBe('hangzhou');
+      expect(testComponent.values).toBeNull(); // mouseenter does not trigger selection
 
       const itemEl3 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)') as HTMLElement; // 第3列第1个
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
@@ -1229,17 +1224,14 @@ describe('cascader', () => {
       tick(200);
       fixture.detectChanges();
 
-      expect(testComponent.values).toBeDefined();
-      expect(testComponent.values.length).toBe(2);
-      expect(testComponent.values[ 0 ]).toBe('zhejiang');
-      expect(testComponent.values[ 1 ]).toBe('hangzhou');
+      expect(testComponent.values).toBeNull(); // mouseenter does not trigger selection
 
       itemEl3.click();
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
 
-      expect(testComponent.values).toBeDefined();
+      expect(testComponent.values).toBeDefined(); // click trigger selection
       expect(testComponent.values.length).toBe(3);
       expect(testComponent.values[ 0 ]).toBe('zhejiang');
       expect(testComponent.values[ 1 ]).toBe('hangzhou');
