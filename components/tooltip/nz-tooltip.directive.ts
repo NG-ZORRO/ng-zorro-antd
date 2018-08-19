@@ -186,7 +186,10 @@ export class NzTooltipDirective implements AfterViewInit, OnInit, OnDestroy {
   ngOnInit(): void {
     // Support faster tooltip mode: <a nz-tooltip="xxx"></a>. [NOTE] Used only under NzTooltipDirective currently.
     if (!this.tooltip) {
-      this.tooltip = this.hostView.createComponent(this.factory).instance;
+      const tooltipComponent = this.hostView.createComponent(this.factory);
+      this.tooltip = tooltipComponent.instance;
+      // Remove element when use directive https://github.com/NG-ZORRO/ng-zorro-antd/issues/1967
+      this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), tooltipComponent.location.nativeElement);
       this.isDynamicTooltip = true;
       const properties = [ 'nzTitle', 'nzContent', 'nzOverlayClassName', 'nzOverlayStyle', 'nzMouseEnterDelay', 'nzMouseLeaveDelay', 'nzVisible', 'nzTrigger', 'nzPlacement' ];
       properties.forEach(property => this.updateCompValue(property, this[ property ]));

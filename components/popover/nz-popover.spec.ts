@@ -171,6 +171,12 @@ describe('NzPopover', () => {
       expect(overlayContainerElement.querySelector('.ant-popover-title')).toBeNull();
       expect(overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeNull();
     }));
+
+    it('should not create element', fakeAsync(() => {
+      fixture.detectChanges();
+      const triggerElement = component.inBtnGroup.nativeElement;
+      expect(triggerElement.nextSibling.tagName).toBe('BUTTON');
+    }));
   });
 });
 
@@ -185,6 +191,11 @@ describe('NzPopover', () => {
     <ng-template #templateContent>
       content-template
     </ng-template>
+    <div>
+      <button>A</button>
+      <button #inBtnGroup nz-popover nzTitle="title-string" >B</button>
+      <button>C</button>
+    </div>
   `
 })
 export class NzPopoverTestNewComponent {
@@ -192,6 +203,7 @@ export class NzPopoverTestNewComponent {
   @ViewChild('stringPopover', { read: NzPopoverDirective }) stringPopoverNzPopoverDirective: NzPopoverDirective;
   @ViewChild('templatePopover') templatePopover: ElementRef;
   @ViewChild('templatePopover', { read: NzPopoverDirective }) templatePopoverNzPopoverDirective: NzPopoverDirective;
+  @ViewChild('inBtnGroup') inBtnGroup: ElementRef;
 }
 
 @Component({
