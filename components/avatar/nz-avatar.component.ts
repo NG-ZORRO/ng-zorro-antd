@@ -103,6 +103,7 @@ export class NzAvatarComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.hasText = !this.nzSrc && !!this.nzText;
     this.hasIcon = !this.nzSrc && !!this.nzIcon;
+    this.hasSrc = !!this.nzSrc;
 
     this.setClass().notifyCalc();
   }
