@@ -192,6 +192,18 @@ describe('nz-select component', () => {
       fixture.detectChanges();
       expect(testComponent.onSearch).toHaveBeenCalledTimes(1);
     });
+    it('should blur after user hits enter key in single mode', () => {
+        const spy = spyOn(testComponent.nzSelectComponent, 'blur');
+        testComponent.showSearch = true;
+        select.nativeElement.click();
+        fixture.detectChanges();
+        dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', 40);
+        fixture.detectChanges();
+        expect(spy).not.toHaveBeenCalled();
+        dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', 13);
+        fixture.detectChanges();
+        expect(spy).toHaveBeenCalled();
+    });
   });
   describe('tags', () => {
     let fixture;
