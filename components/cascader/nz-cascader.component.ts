@@ -1072,7 +1072,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     this.clearDelaySelectTimer();
     if (doSelect) {
       this.delaySelectTimer = setTimeout(() => {
-        // 鼠标滑入只展开 children 不进行选中操作
+        // 鼠标滑入只展开，不进行选中操作
         this.setActiveOption(option, index);
         this.delaySelectTimer = null;
       }, 150);
