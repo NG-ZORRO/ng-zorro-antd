@@ -10,7 +10,7 @@ describe('timeline', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports     : [ NzTimelineModule ],
-      declarations: [ NzTestTimelineBasicComponent, NzTestTimelinePendingComponent ]
+      declarations: [ NzTestTimelineBasicComponent, NzTestTimelinePendingComponent, NzTestTimelineCustomColorComponent ]
     });
     TestBed.compileComponents();
   }));
@@ -67,6 +67,25 @@ describe('timeline', () => {
       expect(timeline.nativeElement.querySelector('.ant-timeline-item-pending').innerText).toBe('pending');
     });
   });
+  describe('custom color timeline', () => {
+    let fixture;
+    let testComponent;
+    let timeline;
+    let items;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTimelineCustomColorComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
+      items = fixture.debugElement.queryAll(By.directive(NzTimelineItemComponent));
+    });
+    it('should support custom color', () => {
+      fixture.detectChanges();
+      expect(items[0].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('grey');
+      expect(items[1].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('rgb(200, 0, 0)');
+      expect(items[2].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('rgb(120, 18, 65)'); // hex would be converted to rgb()
+      expect(items[3].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('');
+    });
+  });
   describe('pending timeline', () => {
     let fixture;
     let testComponent;
@@ -102,6 +121,19 @@ export class NzTestTimelineBasicComponent {
   dot = 'dot';
   pending = false;
   last = false;
+}
+
+@Component({
+  selector: 'nz-test-timeline-custom-color',
+  template: `
+    <nz-timeline>
+      <nz-timeline-item [nzColor]="'grey'">Create a services site 2015-09-01</nz-timeline-item>
+      <nz-timeline-item [nzColor]="'rgb(200, 0, 0)'">Solve initial network problems 2015-09-01</nz-timeline-item>
+      <nz-timeline-item [nzColor]="'#781241'">Technical testing 2015-09-01</nz-timeline-item>
+      <nz-timeline-item [nzColor]="'red'">Network problems being solved 2015-09-01</nz-timeline-item>
+    </nz-timeline>`
+})
+export class NzTestTimelineCustomColorComponent {
 }
 
 @Component({

@@ -37,5 +37,5 @@ title: Timeline
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzColor]` | 指定圆圈颜色 `blue, red, green`，或自定义的色值 | string | blue |
+| `[nzColor]` | 指定圆圈颜色 `blue, red, green`，或自定义的色值(CSS 颜色) | string | blue |
 | `[nzDot]` | 自定义时间轴点 | string｜`TemplateRef<void>` | - |
