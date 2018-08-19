@@ -1311,6 +1311,13 @@ describe('cascader', () => {
     it('should support search', (done) => {
       fixture.detectChanges();
       testComponent.nzShowSearch = true;
+      fixture.detectChanges();
+      // const input: HTMLElement = cascader.nativeElement.querySelector('.ant-cascader-input');
+      const spy = spyOn(testComponent.cascader, 'focus');
+      cascader.nativeElement.click();
+      fixture.detectChanges();
+      // expect(document.activeElement).toBe(input);
+      expect(spy).toHaveBeenCalled();
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
@@ -1546,6 +1553,41 @@ describe('cascader', () => {
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(3);
       expect(testComponent.cascader.nzColumns.length).toBe(3);
       expect(testComponent.values.join(',')).toBe('zhejiang,hangzhou,xihu');
+    }));
+
+    it('should not emit error after clear search and reopen it', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      tick(1000); // wait for first row to load finish
+      fixture.detectChanges();
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement; // 第1列第1个
+      itemEl1.click();
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+      const itemEl2 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)') as HTMLElement; // 第2列第1个
+      itemEl2.click();
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+      const itemEl3 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)') as HTMLElement; // 第3列第1个
+      itemEl3.click();
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+      flush(); // wait for cdk-overlay to close
+      fixture.detectChanges();
+      itemEl3.click(); // re-click again, this time it is a leaf
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+      flush(); // wait for cdk-overlay to close
+      fixture.detectChanges();
+      cascader.nativeElement.querySelector('.ant-cascader-picker-clear').click();
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      expect(testComponent.values.length).toBe(0);
     }));
 
   });

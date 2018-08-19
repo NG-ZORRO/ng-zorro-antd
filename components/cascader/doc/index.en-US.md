@@ -39,7 +39,7 @@ Cascade selection box.
 | `[nzPlaceHolder]` | input placeholder | string | 'Please select' |
 | `[nzShowArrow]` | Whether show arrow | boolean | true |
 | `[nzShowInput]` | Whether show input | boolean | true |
-| `[nzShowSearch]` | Whether support search | `boolean` `NzShowSearchOptions` | `false` |
+| `[nzShowSearch]` | Whether support search. Cannot be used with `[nzLoadData]` at the same time | `boolean` `NzShowSearchOptions` | `false` |
 | `[nzSize]` | input size, one of `large` `default` `small` | string | `default` |
 | `[nzValueProperty]` | the value property name of options | string | 'value' |
 | `(ngModelChange)` | Emit on values change | `EventEmitter<any[]>` | - |

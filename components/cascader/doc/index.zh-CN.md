@@ -40,7 +40,7 @@ subtitle: 级联选择
 | `[nzPlaceHolder]` | 输入框占位文本 | string | '请选择' |
 | `[nzShowArrow]` | 是否显示箭头 | boolean | true |
 | `[nzShowInput]` | 显示输入框 | boolean | true |
-| `[nzShowSearch]` | 是否支持搜索，默认情况下对 `label` 进行全匹配搜索 | `boolean` `NzShowSearchOptions` | `false` |
+| `[nzShowSearch]` | 是否支持搜索，默认情况下对 `label` 进行全匹配搜索，不能和 `[nzLoadData]` 同时使用 | `boolean` `NzShowSearchOptions` | `false` |
 | `[nzSize]` | 输入框大小，可选 `large` `default` `small` | string | `default` |
 | `[nzValueProperty]` | 选项的实际值的属性名 | string | 'value' |
 | `(ngModelChange)` | 值发生变化时触发 | `EventEmitter<any[]>` | - |
