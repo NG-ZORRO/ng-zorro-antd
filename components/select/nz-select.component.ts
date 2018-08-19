@@ -298,6 +298,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
       this.onTouched();
       this.nzOpen = false;
       this.nzOpenChange.emit(this.nzOpen);
+      this.blur();
     }
   }
 
