@@ -93,7 +93,7 @@ export class NzDemoTableResetFilterComponent {
     this.searchAddressList = searchAddressList;
     const filterFunc = item => (this.searchAddressList.length ? this.searchAddressList.some(address => item.address.indexOf(address) !== -1) : true) && (this.searchNameList.length ? this.searchNameList.some(name => item.name.indexOf(name) !== -1) : true);
     const data = this.data.filter(item => filterFunc(item));
-    if (this.sortName) {
+    if (this.sortName && this.sortValue) {
       this.displayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] > b[ this.sortName ] ? 1 : -1) : (b[ this.sortName ] > a[ this.sortName ] ? 1 : -1));
     } else {
       this.displayData = data;

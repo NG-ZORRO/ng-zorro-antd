@@ -74,7 +74,7 @@ export class NzDemoTableDefaultFilterComponent {
     const filterFunc = item => (this.searchAddress ? item.address.indexOf(this.searchAddress) !== -1 : true) && (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
     const data = this.data.filter(item => filterFunc(item));
     /** sort data **/
-    if (this.sortName) {
+    if (this.sortName && this.sortValue) {
       this.displayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] > b[ this.sortName ] ? 1 : -1) : (b[ this.sortName ] > a[ this.sortName ] ? 1 : -1));
     } else {
       this.displayData = data;
