@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <nz-dropdown [nzTrigger]="'click'">
       <a nz-dropdown>
-        Click me <i class="anticon anticon-down"></i>
+        Click me <i class="anticon anticon-caret-down"></i>
       </a>
       <ul nz-menu>
         <li nz-menu-item>1st menu item</li>

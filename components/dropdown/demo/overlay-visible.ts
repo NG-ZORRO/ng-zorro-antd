@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <nz-dropdown [nzClickHide]="false" [(nzVisible)]="visible">
       <a nz-dropdown>
-        Hover me <i class="anticon anticon-down"></i>
+        Hover me <i class="anticon anticon-caret-down"></i>
       </a>
       <ul nz-menu>
         <li nz-menu-item>Clicking me will not close the menu.</li>

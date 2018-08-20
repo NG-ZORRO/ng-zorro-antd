@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'nz-demo-dropdown-basic',
+  selector: "nz-demo-dropdown-basic",
   template: `
     <nz-dropdown>
       <a nz-dropdown>
-        Hover me <i class="anticon anticon-down"></i>
+        Hover me <i class="anticon anticon-caret-down"></i>
       </a>
       <ul nz-menu nzSelectable>
         <li nz-menu-item>
@@ -19,7 +19,6 @@ import { Component } from '@angular/core';
         </li>
       </ul>
     </nz-dropdown>`,
-  styles  : []
+  styles: []
 })
-export class NzDemoDropdownBasicComponent {
-}
+export class NzDemoDropdownBasicComponent {}

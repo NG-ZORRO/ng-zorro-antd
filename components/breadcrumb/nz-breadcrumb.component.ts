@@ -1,24 +1,22 @@
-import {
-  Component,
-  Input,
-  TemplateRef
-} from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild } from "@angular/core";
 
 @Component({
-  selector           : 'nz-breadcrumb',
+  selector: "nz-breadcrumb",
   preserveWhitespaces: false,
-  templateUrl        : './nz-breadcrumb.component.html',
-  host               : {
-    '[class.ant-breadcrumb]': 'true'
+  templateUrl: "./nz-breadcrumb.component.html",
+  host: {
+    "[class.ant-breadcrumb]": "true"
   },
-  styles             : [ `
-    :host {
-      display: block;
-    }
-  ` ]
+  styles: [
+    `
+      :host {
+        display: block;
+      }
+    `
+  ]
 })
 export class NzBreadCrumbComponent {
-  private _separator: string | TemplateRef<void> = '/';
+  private _separator: string | TemplateRef<void> = "/";
   isTemplateRef = false;
 
   @Input()

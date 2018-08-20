@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <nz-dropdown>
       <a nz-dropdown>
-        Hover me, Click menu item <i class="anticon anticon-down"></i>
+        Hover me, Click menu item <i class="anticon anticon-caret-down"></i>
       </a>
       <ul nz-menu>
         <li nz-menu-item (click)="log('1st menu item')">1st menu item</li>
