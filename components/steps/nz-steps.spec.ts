@@ -115,6 +115,19 @@ describe('steps', () => {
       expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').lastElementChild.classList.contains('ant-steps-icon-dot')).toBe(true);
       expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').lastElementChild.classList.contains('ant-steps-icon-dot')).toBe(true);
     });
+    it('should support custom starting index', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.startIndex = 3;
+      testComponent.current = 3;
+      tick();
+      fixture.detectChanges();
+      expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-process');
+      expect(innerSteps[ 1 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
+      expect(innerSteps[ 2 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
+      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').innerText).toBe('4');
+      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').innerText).toBe('5');
+      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').innerText).toBe('6');
+    }));
   });
   describe('inner step string', () => {
     let fixture;
@@ -197,7 +210,7 @@ describe('steps', () => {
 @Component({
   selector: 'nz-test-outer-steps',
   template: `
-    <nz-steps [nzCurrent]="current" [nzDirection]="direction" [nzSize]="size" [nzStatus]="status" [nzProgressDot]="progressDot">
+    <nz-steps [nzCurrent]="current" [nzDirection]="direction" [nzSize]="size" [nzStatus]="status" [nzProgressDot]="progressDot" [nzStartIndex]="startIndex">
       <nz-step nzTitle="0title" nzDescription="0description"></nz-step>
       <nz-step nzTitle="1title" nzDescription="1description"></nz-step>
       <nz-step nzTitle="2title" nzDescription="2description"></nz-step>
@@ -215,12 +228,13 @@ export class NzTestOuterStepsComponent {
   size = 'default';
   status = 'process';
   progressDot = false;
+  startIndex = 0;
 }
 
 @Component({
   selector: 'nz-test-inner-step-string',
   template: `
-    <nz-steps [nzCurrent]="1">
+    <nz-steps [nzCurrent]="current">
       <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status"></nz-step>
       <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status"></nz-step>
       <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status"></nz-step>
@@ -235,6 +249,7 @@ export class NzTestInnerStepStringComponent {
   @ViewChild('descriptionTemplate') descriptionTemplate: TemplateRef<void>;
   @ViewChild('iconTemplate') iconTemplate: TemplateRef<void>;
   status = 'process';
+  current = 1;
   icon = 'anticon anticon-user';
   title = 'title';
   description = 'description';
