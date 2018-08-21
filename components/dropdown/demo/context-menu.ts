@@ -1,8 +1,12 @@
-import { Component, TemplateRef } from '@angular/core';
-import { NzDropdownContextComponent, NzDropdownService, NzMenuItemDirective } from 'ng-zorro-antd';
+import { Component, TemplateRef } from "@angular/core";
+import {
+  NzDropdownContextComponent,
+  NzDropdownService,
+  NzMenuItemDirective
+} from "ng-zorro-antd";
 
 @Component({
-  selector: 'nz-demo-dropdown-context-menu',
+  selector: "nz-demo-dropdown-context-menu",
   template: `
     <div style="background: rgb(190, 200, 200); padding: 32px;text-align: center" (contextmenu)="contextMenu($event,template)">
       <ng-template #template>
@@ -29,7 +33,7 @@ import { NzDropdownContextComponent, NzDropdownService, NzMenuItemDirective } fr
       <span style="color:#fff;font-size: 14px;">Context Menu</span>
     </div>
   `,
-  styles  : []
+  styles: []
 })
 export class NzDemoDropdownContextMenuComponent {
   private dropdown: NzDropdownContextComponent;
@@ -43,7 +47,5 @@ export class NzDemoDropdownContextMenuComponent {
     this.dropdown.close();
   }
 
-  constructor(private nzDropdownService: NzDropdownService) {
-
-  }
+  constructor(private nzDropdownService: NzDropdownService) {}
 }
