@@ -15,7 +15,9 @@ import {
 import { CdkOverlayOrigin, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 
-import { InputBoolean } from '../core/util/convert';
+import { toCssPixel, InputBoolean } from '../core/util/convert';
+
+export type NzDrawerPlacement = 'top' | 'right' | 'bottom' | 'left';
 
 @Component({
   selector           : 'nz-drawer',
@@ -30,15 +32,31 @@ export class NzDrawerComponent implements OnInit, OnDestroy {
   isOpen = false;
 
   get transform(): string {
-    if (this.nzPlacement === 'left') {
-      return this.isOpen ? `translateX(${this.nzOffsetX}px)` : `translateX(-${this.width})`;
-    } else {
-      return this.isOpen ? `translateX(-${this.nzOffsetX}px)` : `translateX(${this.width})`;
+
+    switch (this.nzPlacement) {
+      case 'left':
+        return this.isOpen ? `translateX(${this.nzOffsetX}px)` : `translateX(-${this.width})`;
+      case 'right':
+        return this.isOpen ? `translateX(-${this.nzOffsetX}px)` : `translateX(${this.width})`;
+      case 'top':
+        return this.isOpen ? `translateY(${this.nzOffsetY}px)` : `translateY(-${this.height})`;
+      case 'bottom':
+        return this.isOpen ? `translateY(-${this.nzOffsetY}px)` : `translateY(${this.height})`;
+      default:
+        return '';
     }
   }
 
   get width(): string {
-    return typeof this.nzWidth === 'number' ? `${this.nzWidth}px` : this.nzWidth;
+    return this.isLeftOrRight ? toCssPixel(this.nzWidth) : null;
+  }
+
+  get height(): string {
+    return !this.isLeftOrRight ? toCssPixel(this.nzHeight) : null;
+  }
+
+  get isLeftOrRight(): boolean {
+    return this.nzPlacement === 'left' || this.nzPlacement === 'right';
   }
 
   @ViewChild('drawerTemplate') drawerTemplate: TemplateRef<{}>;
@@ -50,9 +68,11 @@ export class NzDrawerComponent implements OnInit, OnDestroy {
   @Input() nzBodyStyle: object = {};
   @Input() nzWrapClassName: string;
   @Input() nzWidth: number | string = 256;
-  @Input() nzPlacement: 'left' | 'right' = 'right';
+  @Input() nzHeight: number | string = 256;
+  @Input() nzPlacement: NzDrawerPlacement = 'right';
   @Input() nzZIndex = 1000;
   @Input() nzOffsetX = 0;
+  @Input() nzOffsetY = 0;
   @Output() nzOnClose = new EventEmitter<MouseEvent>();
 
   @Input()
