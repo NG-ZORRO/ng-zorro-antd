@@ -65,6 +65,7 @@ $ ng add ng-zorro-antd
 - [开发脚手架](https://cli.angular.io/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [RxJS](https://github.com/ReactiveX/rxjs)
+- [VSCode Snippet 插件](https://marketplace.visualstudio.com/items?itemName=cipchk.ng-zorro-vscode)
 
 ## 谁在使用
 
@@ -88,3 +89,6 @@ $ ng add ng-zorro-antd
 1. [<img alt="Stack Overflow" src="https://cdn.sstatic.net/Sites/stackoverflow/company/img/logos/so/so-logo.svg?v=2bb144720a66" width="140" />](https://stackoverflow.com/questions/tagged/ng-zorro)（English）
 2. [<img alt="Segment Fault" src="https://gw.alipayobjects.com/zos/rmsportal/hfYFfCvHTQTUKntlJbMF.svg" width="100" />](https://segmentfault.com/t/ng-zorro)（中文）
 3. [![Gitter](https://img.shields.io/gitter/room/ng-zorro/ng-zorro-antd.svg?style=flat-square)](https://gitter.im/ng-zorro/ng-zorro-antd)
+4. 加入钉钉 NG-ZORRO 自助服务群（中文）
+
+<img src="https://img.alicdn.com/tfs/TB17P11r_qWBKNjSZFxXXcpLpXa-750-990.jpg" width="300">
