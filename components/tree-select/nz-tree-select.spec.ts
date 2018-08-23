@@ -1,6 +1,6 @@
 import { BACKSPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -22,7 +22,7 @@ describe('tree-select component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports     : [ NzTreeSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestTreeSelectBasicComponent, NzTestTreeSelectCheckableComponent, NzTestTreeSelectFormComponent, NzTestTreeSelectAsyncNodesComponent ]
+      declarations: [ NzTestTreeSelectBasicComponent, NzTestTreeSelectCheckableComponent, NzTestTreeSelectFormComponent, NzTestTreeSelectAsyncNodesComponent, NzTestTreeSelectOnPushComponent ]
     });
     TestBed.compileComponents();
     inject([ OverlayContainer ], (oc: OverlayContainer) => {
@@ -34,6 +34,38 @@ describe('tree-select component', () => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
+
+  describe('OnPush', () => {
+    let fixture;
+    let testComponent: NzTestTreeSelectOnPushComponent;
+    let treeSelectComponent: NzTreeSelectComponent;
+    let treeSelect;
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestTreeSelectOnPushComponent);
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+      treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
+      treeSelectComponent = treeSelect.componentInstance;
+      fixture.detectChanges();
+      flush();
+      tick(200);
+      fixture.detectChanges();
+    }));
+
+    it('should close when the outside clicks', fakeAsync(() => {
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      expect(treeSelectComponent.nzOpen).toBe(true);
+      tick(200);
+      expect((overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement).style.opacity).toBe('1');
+      dispatchFakeEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop'), 'click');
+      fixture.detectChanges();
+      tick();
+      expect(treeSelectComponent.nzOpen).toBe(false);
+      expect((overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement).style.opacity).toBe('0');
+    }));
+  });
 
   describe('basic', () => {
     let fixture;
@@ -667,4 +699,29 @@ export class NzTestTreeSelectAsyncNodesComponent {
       ];
     });
   }
+}
+
+@Component({
+  selector: 'nz-test-tree-select-on-push',
+  template: `
+    <nz-tree-select
+      [nzNodes]="nodes"
+      [(ngModel)]="value">
+    </nz-tree-select>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+
+export class NzTestTreeSelectOnPushComponent {
+  value: string = '1001';
+  nodes = [
+    new NzTreeNode({
+      title   : 'root1',
+      key     : '1001'
+    }),
+    new NzTreeNode({
+      title   : 'root2',
+      key     : '1002'
+    })
+  ];
 }
