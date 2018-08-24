@@ -5,7 +5,7 @@
       <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8" [nzLg]="5" [nzXl]="5" [nzXXl]="4">
         <a id="logo" href>
           <img alt="logo" src="./assets/img/logo.svg">
-          <img alt="NG-ZORRO" src="./assets/img/zorro.svg">
+          <h2>ng-cosmos-ui</h2>
         </a>
       </div>
       <div nz-col [nzXs]="0" [nzSm]="0" [nzMd]="16" [nzLg]="19" [nzXl]="19" [nzXXl]="20" class="nav nav-hide">
@@ -20,7 +20,7 @@
             </ng-template>
           </nz-select>
         </div>
-        <button nz-button nzGhost nzSize="small" class="header-lang-button" (click)="switchLanguage(language==='zh'?'en':'zh')">{{language=='zh'?'English':'中文'}}</button>
+        <!-- <button nz-button nzGhost nzSize="small" class="header-lang-button" (click)="switchLanguage(language==='zh'?'en':'zh')">{{language=='zh'?'English':'中文'}}</button> -->
         <nz-select nzSize="small" class="version" style="width: 68px;" [ngModel]="currentVersion" (ngModelChange)="navigateToVersion($event)">
           <nz-option *ngFor="let version of oldVersionList" [nzLabel]="version" [nzValue]="version"></nz-option>
           <nz-option [nzLabel]="currentVersion" [nzValue]="currentVersion"></nz-option>
@@ -63,7 +63,8 @@
       </div>
     </div>
     <div nz-row>
-      <div nz-col [nzXs]="{span:24}" [nzSm]="{span:24}" [nzMd]="{span:24}" [nzLg]="{span:18,offset:6}" [nzXl]="{span:19,offset:5}" [nzXXl]="{span:20,offset:4}">
+      <div nz-col [nzXs]="{span:24}" [nzSm]="{span:24}" [nzMd]="{span:24}" [nzLg]="{span:18,offset:6}" [nzXl]="{span:19,offset:5}"
+        [nzXXl]="{span:20,offset:4}">
         <nz-nav-bottom></nz-nav-bottom>
       </div>
     </div>
@@ -112,7 +113,9 @@
               <a href="https://medium.com/ng-zorro" target="_blank"><span>Medium</span></a>
             </div>
             <div>
-              <a href="https://github.com/NG-ZORRO/ng-zorro-antd/releases" target="_blank"><span>{{language==='zh'?'更新记录':'Change Log'}}</span></a>
+              <a href="https://github.com/NG-ZORRO/ng-zorro-antd/releases" target="_blank"><span>{{language==='zh'?'更新记录':'Change
+                  Log'}}
+                </span></a>
             </div>
             <div>
               <a target="_blank" rel="noopener noreferrer" [href]="'http://ng.ant.design/issue-helper/#/'+language">

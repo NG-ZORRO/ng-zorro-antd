@@ -23,7 +23,8 @@
     "integration-webpack": "npm run generate && cd integration/webpack && npm run integration",
     "integration-rollup": "npm run generate && cd integration/rollup && npm run integration",
     "lint": "tslint -c tslint.json 'components/*/*.ts'",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && node site_scripts/replace-scope-prefix.js"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && node site_scripts/replace-scope-prefix.js",
+    "deploy": "gh-pages -b gh-pages -d dist"
   },
   "main": "./bundles/antd.umd.js",
   "module": "./esm5/antd.js",
@@ -80,6 +81,7 @@
     "conventional-changelog-cli": "^2.0.1",
     "core-js": "^2.5.4",
     "fs-extra": "^6.0.1",
+    "gh-pages": "^1.2.0",
     "hammerjs": "^2.0.8",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",

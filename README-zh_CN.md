@@ -1,10 +1,11 @@
-<p align="center">
+<!-- <p align="center">
   <a href="http://ng.ant.design">
     <img width="230" src="https://img.alicdn.com/tfs/TB1FVMDosrI8KJjy0FhXXbfnpXa-200-200.svg">
   </a>
-</p>
+</p> -->
 
-# NG-ZORRO
+# NG-COSMOS-UI
+
 [![Travis branch](https://img.shields.io/travis/NG-ZORRO/ng-zorro-antd/master.svg?style=flat-square)](https://travis-ci.org/NG-ZORRO/ng-zorro-antd)
 [![Codecov](https://img.shields.io/codecov/c/github/NG-ZORRO/ng-zorro-antd/master.svg?style=flat-square)](https://codecov.io/gh/NG-ZORRO/ng-zorro-antd)
 [![GitHub Release Date](https://img.shields.io/github/release-date/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/releases)
@@ -17,6 +18,7 @@
 [README in English](README.md)
 
 ## 版本
+
 [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 
 ## 支持 Angular 版本
@@ -29,14 +31,13 @@
 
 ## 特性
 
-- 提炼自企业级中后台产品的交互语言和视觉风格。
-- 开箱即用的高质量 Angular 组件。
-- 使用 TypeScript 构建，提供完整的类型定义文件。
+-   提炼自企业级中后台产品的交互语言和视觉风格。
+-   开箱即用的高质量 Angular 组件。
+-   使用 TypeScript 构建，提供完整的类型定义文件。
 
 ## 支持环境
 
-* 现代浏览器和 IE9 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）。
-
+-   现代浏览器和 IE9 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）。
 
 ## 安装
 
@@ -48,21 +49,20 @@ $ cd PROJECT_NAME
 $ ng add ng-zorro-antd
 ```
 
-> 如果你想了解更多CLI工具链的功能和命令，建议访问 [Angular CLI](https://github.com/angular/angular-cli) 了解更多
-
+> 如果你想了解更多 CLI 工具链的功能和命令，建议访问 [Angular CLI](https://github.com/angular/angular-cli) 了解更多
 
 ## 链接
 
-- [首页](http://ng.ant.design)
-- [Angular官方文档](https://angular.io/)
-- [开发脚手架](https://cli.angular.io/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [RxJS](https://github.com/ReactiveX/rxjs)
+-   [首页](http://ng.ant.design)
+-   [Angular 官方文档](https://angular.io/)
+-   [开发脚手架](https://cli.angular.io/)
+-   [TypeScript](https://www.typescriptlang.org/)
+-   [RxJS](https://github.com/ReactiveX/rxjs)
 
 ## 谁在使用
 
-- [阿里巴巴](http://www.alibaba.com/)
-- [阿里云](http://www.aliyun.com/)
+-   [阿里巴巴](http://www.alibaba.com/)
+-   [阿里云](http://www.aliyun.com/)
 
 > 如果你的公司和产品使用了 NG-ZORRO，欢迎到 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142) 留言。
 

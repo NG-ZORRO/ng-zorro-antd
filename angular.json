@@ -12,6 +12,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist",
+            "baseHref": "/ng-cosmos-ui/",
             "index": "./site/src/index.html",
             "main": "./site/src/main.ts",
             "tsConfig": "./site/src/tsconfig.app.json",
@@ -21,12 +22,8 @@
               "site/src/favicon.ico",
               "site/src/404.html"
             ],
-            "styles": [
-              "site/src/styles.less"
-            ],
-            "scripts": [
-              "node_modules/hammerjs/hammer.min.js"
-            ]
+            "styles": ["site/src/styles.less"],
+            "scripts": ["node_modules/hammerjs/hammer.min.js"]
           },
           "configurations": {
             "production": {
@@ -72,12 +69,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "site/src/tsconfig.app.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["site/src/tsconfig.app.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
