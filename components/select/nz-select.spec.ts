@@ -16,7 +16,7 @@ describe('nz-select component', () => {
   let overlayContainerElement: HTMLElement;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
+      imports: [ NzSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
       declarations: [ NzTestSelectDefaultComponent, NzTestSelectTagsComponent, NzTestSelectFormComponent ]
     });
     TestBed.compileComponents();
@@ -222,6 +222,13 @@ describe('nz-select component', () => {
       flush();
       fixture.detectChanges();
       expect(testComponent.open).toBe(true);
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', TAB);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.open).toBe(false);
+      testComponent.disabled = true;
+      fixture.detectChanges();
       dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', TAB);
       fixture.detectChanges();
       flush();
