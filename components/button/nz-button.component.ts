@@ -30,6 +30,7 @@ export class NzButtonComponent implements AfterContentInit {
   private _shape: NzButtonShape;
   private _size: NzButtonSize;
   private _loading = false;
+  private _block = false;
   private el: HTMLElement;
   private iconElement: HTMLElement;
   private iconOnly = false;
@@ -37,6 +38,16 @@ export class NzButtonComponent implements AfterContentInit {
   private prefixCls = 'ant-btn';
   private sizeMap = { large: 'lg', small: 'sm' };
   @ViewChild('contentElement') contentElement: ElementRef;
+
+  @Input()
+  set nzBlock(value: boolean) {
+    this._block = toBoolean(value);
+    this.setClassMap();
+  }
+
+  get nzBlock(): boolean {
+    return this._block;
+  }
 
   @Input()
   set nzGhost(value: boolean) {
@@ -126,7 +137,8 @@ export class NzButtonComponent implements AfterContentInit {
       [ `${this.prefixCls}-clicked` ]                       : this.clicked,
       [ `${this.prefixCls}-icon-only` ]                     : this.iconOnly,
       [ `${this.prefixCls}-background-ghost` ]              : this.nzGhost,
-      [ `ant-input-search-button` ]                         : this.nzSearch
+      [ `ant-input-search-button` ]                         : this.nzSearch,
+      [ `ant-btn-block` ]                                   : this.nzBlock
     };
     this.nzUpdateHostClassService.updateHostClass(this.el, classMap);
   }

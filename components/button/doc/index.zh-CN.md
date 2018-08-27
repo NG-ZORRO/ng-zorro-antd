@@ -27,3 +27,4 @@ subtitle: 按钮
 | `[nzShape]` | 设置按钮形状，可选值为 `circle` 或者不设 | string | - |
 | `[nzSize]` | 设置按钮大小，可选值为 `small` `large` 或者不设 | string | default |
 | `[nzType]` | 设置按钮类型，可选值为 `primary` `dashed` `danger` 或者不设 | string | - |
+| `[nzBlock]` | 将按钮宽度调整为其父宽度的选项 | boolean | false |
