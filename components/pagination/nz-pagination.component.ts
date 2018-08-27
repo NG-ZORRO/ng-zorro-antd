@@ -264,6 +264,10 @@ export class NzPaginationComponent implements OnInit, OnDestroy {
     return this.nzPageIndex === this.firstIndex;
   }
 
+  min(val1: number, val2: number): number {
+    return Math.min(val1, val2);
+  }
+
   constructor(private i18n: NzI18nService) {
   }
 
