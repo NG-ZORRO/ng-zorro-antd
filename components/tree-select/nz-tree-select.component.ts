@@ -13,6 +13,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  ContentChild,
   ElementRef,
   EventEmitter,
   HostListener,
@@ -102,6 +103,8 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   @Output() readonly nzTreeClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzTreeCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
 
+  @ContentChild('nzTreeTemplate') nzTreeSelectTemplate: TemplateRef<{}>;
+
   @ViewChild('inputElement') inputElement: ElementRef;
   @ViewChild('treeSelect') treeSelect: ElementRef;
   @ViewChild('dropdownTemplate', { read: TemplateRef }) dropdownTemplate;
@@ -182,6 +185,10 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
 
   ngAfterViewInit(): void {
     this.attachOverlay();
+    if (this.nzTreeSelectTemplate) {
+      // Throw ExpressionChangedAfterItHasBeenCheckedError without setTimeout
+      setTimeout(() => this.treeRef.nzTreeTemplate = this.nzTreeSelectTemplate, 0);
+    }
   }
 
   setDisabledState(isDisabled: boolean): void {

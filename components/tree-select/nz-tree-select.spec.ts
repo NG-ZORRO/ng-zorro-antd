@@ -22,7 +22,7 @@ describe('tree-select component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports     : [ NzTreeSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestTreeSelectBasicComponent, NzTestTreeSelectCheckableComponent, NzTestTreeSelectFormComponent ]
+      declarations: [ NzTestTreeSelectBasicComponent, NzTestTreeSelectCheckableComponent, NzTestTreeSelectFormComponent, NzTestTreeSelectCustomizedIconComponent ]
     });
     TestBed.compileComponents();
     inject([ OverlayContainer ], (oc: OverlayContainer) => {
@@ -400,6 +400,28 @@ describe('tree-select component', () => {
     }));
   });
 
+  describe('customized icon', () => {
+    let fixture;
+    let testComponent;
+    let treeSelect;
+    let treeSelectComponent;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTreeSelectCustomizedIconComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
+      treeSelectComponent = treeSelect.componentInstance;
+    });
+    it('should display', fakeAsync(() => {
+      treeSelectComponent.ngAfterViewInit();
+      flush();
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      flush();
+      expect(overlayContainerElement.querySelector('i.anticon.anticon-frown-o')).toBeTruthy();
+    }));
+  });
+
 });
 
 @Component({
@@ -622,4 +644,39 @@ export class NzTestTreeSelectFormComponent {
   setNull(): void {
     this.formGroup.get('select').reset(null);
   }
+}
+
+@Component({
+  selector: 'nz-test-tree-select-customized-icon',
+  template: `
+    <nz-tree-select
+      [nzNodes]="nodes"
+      [(ngModel)]="value"
+    >
+      <ng-template #nzTreeTemplate let-node>
+        <span>
+          <i class="anticon anticon-frown-o"></i> {{node.title}}
+        </span>
+      </ng-template>
+    </nz-tree-select>
+  `
+})
+export class NzTestTreeSelectCustomizedIconComponent {
+  value: string;
+  nodes = [
+    new NzTreeNode({
+      title   : 'root3',
+      key     : '1003',
+      children: [
+        {
+          title: 'child3.1',
+          key  : '10031'
+        },
+        {
+          title: 'child3.2',
+          key  : '10032'
+        }
+      ]
+    })
+  ];
 }
