@@ -414,12 +414,22 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     const openModals = this.modalControl.openModals;
 
     if (openModals.length + plusNum > 0) {
-      this.renderer.setStyle(this.document.body, 'padding-right', `${this.nzMeasureScrollbarService.scrollBarWidth}px`);
-      this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
-    } else {
+      if (this.hasBodyScrollBar()) { // Adding padding-right only when body's scrollbar is able to shown up
+        this.renderer.setStyle(this.document.body, 'padding-right', `${this.nzMeasureScrollbarService.scrollBarWidth}px`);
+        this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
+      }
+    } else { // NOTE: we need to always remove the padding due to the scroll bar may be disappear by window resizing before modal closed
       this.renderer.removeStyle(this.document.body, 'padding-right');
       this.renderer.removeStyle(this.document.body, 'overflow');
     }
+  }
+
+  /**
+   * Check whether the body element is able to has the scroll bar (if the body content height exceeds the window's height)
+   * Exceptional Cases: users can show the scroll bar by their own permanently (eg. overflow: scroll)
+   */
+  private hasBodyScrollBar(): boolean {
+    return this.document.body.scrollHeight > (window.innerHeight || this.document.documentElement.clientHeight);
   }
 }
 

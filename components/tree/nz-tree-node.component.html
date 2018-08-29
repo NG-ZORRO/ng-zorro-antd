@@ -1,4 +1,5 @@
 <li #dragElement
+  [class.ant-tree-treenode-loading]="nzTreeNode.isLoading && !nzTreeNode.isLeaf"
   [class.ant-tree-treenode-disabled]="nzTreeNode.isDisabled"
   (dblclick)="_dblClickNode($event,nzTreeNode)"
   (click)="_clickNode($event,nzTreeNode)"
@@ -7,12 +8,11 @@
     <span
       class="ant-tree-switcher"
       [ngStyle]="loadingStyle"
-      [class.ant-tree-switcher_open]="nzTreeNode.isExpanded && !nzTreeNode.isLeaf && !nzTreeNode.isLoading"
-      [class.ant-tree-switcher_close]="!nzTreeNode.isExpanded && !nzTreeNode.isLeaf && !nzTreeNode.isLoading"
-      [class.ant-tree-switcher-noop]="nzTreeNode.isLeaf && !nzTreeNode.isLoading"
-      [class.ant-tree-switcher-disabled]="nzTreeNode.isDisabled && !nzTreeNode.isLoading"
+      [class.ant-tree-switcher_open]="nzTreeNode.isExpanded && !nzTreeNode.isLeaf"
+      [class.ant-tree-switcher_close]="!nzTreeNode.isExpanded && !nzTreeNode.isLeaf"
+      [class.ant-tree-switcher-noop]="nzTreeNode.isLeaf"
+      [class.ant-tree-switcher-disabled]="nzTreeNode.isDisabled"
       [class.ant-tree-iconEle]="nzTreeNode.isLoading && !nzTreeNode.isLeaf"
-      [class.ant-tree-icon_loading]="nzTreeNode.isLoading && !nzTreeNode.isLeaf"
       [class.ant-tree-icon__open]="nzTreeNode.isLoading && nzTreeNode.isExpanded && !nzTreeNode.isLeaf"
       [class.ant-tree-icon__close]="nzTreeNode.isLoading && !nzTreeNode.isExpanded && !nzTreeNode.isLeaf"
       (click)="_clickExpand($event, nzTreeNode)">

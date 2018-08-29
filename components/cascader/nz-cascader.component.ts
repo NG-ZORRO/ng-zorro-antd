@@ -166,20 +166,25 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
 
   set inputValue(inputValue: string) {
     this._inputValue = inputValue;
+    const willBeInSearch = !!inputValue;
 
-    if (!this.inSearch) {
+    // 搜索状态变动之前，如要进入则要保留之前激活选项的快照，退出搜索状态要还原该快照
+    if (!this.inSearch && willBeInSearch) {
       this.oldActivatedOptions = this.activatedOptions;
       this.activatedOptions = [];
-    } else {
+      this.searchWidthStyle = `${this.input.nativeElement.offsetWidth}px`;
+    } else if (this.inSearch && !willBeInSearch) {
       this.activatedOptions = this.oldActivatedOptions;
     }
 
-    this.inSearch = !!inputValue;
+    // 搜索状态变更之后
+    this.inSearch = !!willBeInSearch;
     if (this.inSearch) {
-      this.searchWidthStyle = `${this.input.nativeElement.offsetWidth}px`;
       this.prepareSearchValue();
     } else {
-      this.nzColumns = this.oldColumnsHolder;
+      if (this.showSearch) {
+        this.nzColumns = this.oldColumnsHolder;
+      }
       this.searchWidthStyle = '';
     }
     this.setClassMap();
@@ -258,6 +263,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   set nzShowSearch(value: boolean | NzShowSearchOptions) {
     this.showSearch = value;
   }
+
   get nzShowSearch(): boolean | NzShowSearchOptions {
     return this.showSearch;
   }
@@ -460,8 +466,8 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   private setLabelClass(): void {
     this._labelCls = {
       [ `${this.prefixCls}-picker-label` ]: true,
-      [ `${this.prefixCls}-show-search`]: !!this.nzShowSearch,
-      [ `${this.prefixCls}-focused`]: !!this.nzShowSearch && this.isFocused && !this._inputValue
+      [ `${this.prefixCls}-show-search` ] : !!this.nzShowSearch,
+      [ `${this.prefixCls}-focused` ]     : !!this.nzShowSearch && this.isFocused && !this._inputValue
     };
   }
 
@@ -686,7 +692,9 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
       return;
     }
     this.onTouched(); // set your control to 'touched'
-    if (this.nzShowSearch) { this.focus(); }
+    if (this.nzShowSearch) {
+      this.focus();
+    }
 
     if (this.isClickTiggerAction()) {
       this.delaySetMenuVisible(!this.menuVisible, 100);
@@ -941,7 +949,9 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
    * @param event 鼠标事件
    */
   onOptionClick(option: CascaderOption, index: number, event: Event): void {
-    if (event) { event.preventDefault(); }
+    if (event) {
+      event.preventDefault();
+    }
 
     // Keep focused state for keyboard support
     this.el.focus();
@@ -1072,7 +1082,8 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     this.clearDelaySelectTimer();
     if (doSelect) {
       this.delaySelectTimer = setTimeout(() => {
-        this.setActiveOption(option, index, true);
+        // 鼠标滑入只展开，不进行选中操作
+        this.setActiveOption(option, index);
         this.delaySelectTimer = null;
       }, 150);
     }
@@ -1193,7 +1204,9 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     const defaultFilter = (inputValue: string, p: CascaderOption[]): boolean => {
       let flag = false;
       p.forEach(n => {
-        if (n.label.indexOf(inputValue) > -1) { flag = true; }
+        if (n.label.indexOf(inputValue) > -1) {
+          flag = true;
+        }
       });
       return flag;
     };
@@ -1207,9 +1220,16 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
       const disabled = forceDisabled || node.disabled;
       path.push(node);
       node.children.forEach((sNode) => {
-        if (!sNode.parent) { sNode.parent = node; } /** 搜索的同时建立 parent 连接，因为用户直接搜索的话是没有建立连接的，会提升从叶子节点回溯的难度 */
-        if (!sNode.isLeaf) { loopParent(sNode, disabled); }
-        if (sNode.isLeaf || !sNode.children) { loopChild(sNode, disabled); }
+        if (!sNode.parent) {
+          sNode.parent = node;
+        }
+        /** 搜索的同时建立 parent 连接，因为用户直接搜索的话是没有建立连接的，会提升从叶子节点回溯的难度 */
+        if (!sNode.isLeaf) {
+          loopParent(sNode, disabled);
+        }
+        if (sNode.isLeaf || !sNode.children) {
+          loopChild(sNode, disabled);
+        }
       });
       path.pop();
     };
@@ -1221,15 +1241,17 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
         results.push({
           disabled,
           isLeaf: true,
-          path: cPath,
-          label: cPath.map(p => p.label).join(' / ')
+          path  : cPath,
+          label : cPath.map(p => p.label).join(' / ')
         } as CascaderSearchOption);
       }
       path.pop();
     };
 
-    this.oldColumnsHolder[0].forEach(node => loopParent(node));
-    if (sorter) { results.sort((a, b) => sorter(a.path, b.path, this._inputValue)); }
+    this.oldColumnsHolder[ 0 ].forEach(node => loopParent(node));
+    if (sorter) {
+      results.sort((a, b) => sorter(a.path, b.path, this._inputValue));
+    }
     this.nzColumns = [ results ];
   }
 
@@ -1245,9 +1267,11 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     setTimeout(() => {
       this.inputValue = ''; // Not only remove `inputValue` but also reverse `nzColumns` in the hook.
       const index = result.path.length - 1;
-      const destiNode = result.path[index];
+      const destiNode = result.path[ index ];
       const mockClickParent = (node: CascaderOption, cIndex: number) => {
-        if (node && node.parent) { mockClickParent(node.parent, cIndex - 1); }
+        if (node && node.parent) {
+          mockClickParent(node.parent, cIndex - 1);
+        }
         this.onOptionClick(node, cIndex, event);
       };
       mockClickParent(destiNode, index);

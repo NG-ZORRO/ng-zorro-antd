@@ -34,9 +34,9 @@
 @body-background        : #fff;
 // Base background color for most components
 @component-background   : #fff;
-@font-family-no-number  : "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
-@font-family            : "Monospaced Number", @font-family-no-number;
-@code-family            : Consolas, Menlo, Courier, monospace;
+@font-family  : "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif,
+"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+@code-family            : "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
 @heading-color          : fade(#000, 85%);
 @text-color             : fade(#000, 65%);
 @text-color-secondary   : fade(#000, 45%);
@@ -77,6 +77,8 @@
 @link-hover-decoration  : none;
 
 // Animation
+@ease-base-out       : cubic-bezier(0.7, 0.3, 0.1, 1);
+@ease-base-in        : cubic-bezier(0.9, 0, 0.3, 0.7);
 @ease-out            : cubic-bezier(0.215, 0.61, 0.355, 1);
 @ease-in             : cubic-bezier(0.55, 0.055, 0.675, 0.19);
 @ease-in-out         : cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -485,5 +487,9 @@
 // Message
 // ---
 @message-notice-content-padding:      10px 16px;
+
+// Motion
+// ---
+@wave-animation-width: 6px;
 
 @import "./default.deperated.less";

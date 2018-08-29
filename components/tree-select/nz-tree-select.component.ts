@@ -77,6 +77,7 @@ import { NzTreeComponent } from '../tree/nz-tree.component';
 })
 export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy {
 
+  private nodes = [];
   isInit = false;
   isComposing = false;
   isDestroy = true;
@@ -107,7 +108,6 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   @Input() nzPlaceHolder = '';
   @Input() nzDropdownStyle: { [ key: string ]: string; };
   @Input() nzDefaultExpandedKeys: string[] = [];
-  @Input() nzNodes: NzTreeNode[] = [];
   @Input() nzDisplayWith: (node: NzTreeNode) => string = (node: NzTreeNode) => node.title;
   @Output() nzOpenChange = new EventEmitter<boolean>();
   @Output() nzCleared = new EventEmitter<void>();
@@ -115,6 +115,18 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   @Output() nzExpandChange = new EventEmitter<NzFormatEmitEvent>();
   @Output() nzTreeClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() nzTreeCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
+
+  @Input()
+  set nzNodes(value: NzTreeNode[]) {
+    this.nodes = value;
+    if (this.isInit) {
+      setTimeout(() => this.updateSelectedNodes(), 0);
+    }
+  }
+
+  get nzNodes(): NzTreeNode[] {
+    return this.nodes;
+  }
 
   @ViewChild('inputElement') inputElement: ElementRef;
   @ViewChild('treeSelect') treeSelect: ElementRef;

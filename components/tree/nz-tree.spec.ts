@@ -207,11 +207,8 @@ describe('tree component test', () => {
       // init
       expect(treeElement.querySelectorAll('.ant-tree-switcher').length).toEqual(3);
       // click expand, test can not excute add children
-      let targetNode = treeElement.querySelectorAll('.ant-tree-switcher')[ 0 ];
+      const targetNode = treeElement.querySelectorAll('.ant-tree-switcher')[ 0 ];
       dispatchMouseEvent(targetNode, 'click');
-      fixture.detectChanges();
-      targetNode = treeElement.querySelectorAll('.ant-tree-switcher')[ 0 ];
-      expect(targetNode.classList).toContain('ant-tree-icon_loading');
       fixture.detectChanges();
       expect(expandSpy).toHaveBeenCalled();
       expect(expandSpy).toHaveBeenCalledTimes(1);

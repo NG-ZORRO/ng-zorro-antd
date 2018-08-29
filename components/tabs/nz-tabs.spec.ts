@@ -452,7 +452,7 @@ describe('tabs', () => {
     it('should prevent focus scroll', fakeAsync(() => {
       fixture.detectChanges();
       expect(tabs.nativeElement.scrollLeft).toBe(0);
-      const input: HTMLInputElement = tabs.nativeElement.querySelector('input');
+      const input: HTMLInputElement = tabs.nativeElement.querySelector('button');
       input.focus();
       expect(tabs.nativeElement.scrollLeft > 0).toBe(true);
       dispatchFakeEvent(tabs.nativeElement, 'scroll');
@@ -496,7 +496,10 @@ describe('tabs', () => {
           (nzDeselect)="deselect01()"
           (nzSelect)="select01()"
           (nzClick)="click01()"
-          [nzDisabled]="disabled">Content 2<!----><input></nz-tab>
+          [nzDisabled]="disabled">
+          Content 2<!---->
+          <button></button>
+        </nz-tab>
         <nz-tab
           nzTitle="add"
           *ngIf="add"
