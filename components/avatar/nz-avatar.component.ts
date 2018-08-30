@@ -5,6 +5,7 @@ import {
   ElementRef,
   Input,
   OnChanges,
+  OnInit,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
@@ -21,7 +22,7 @@ export type NzAvatarSize = 'small' | 'large' | 'default';
   preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
-export class NzAvatarComponent implements OnChanges {
+export class NzAvatarComponent implements OnChanges, OnInit {
   private el: HTMLElement;
   private prefixCls = 'ant-avatar';
   private sizeMap = { large: 'lg', small: 'sm' };
@@ -90,6 +91,8 @@ export class NzAvatarComponent implements OnChanges {
 
   private notifyCalc(): this {
     // If use ngAfterViewChecked, always demands more computations, so......
+    // Should set a minimum time waiting for DOM to be rendered, otherwise string size would not change when avatar is
+    // used in list.
     setTimeout(() => {
       this.calcStringSize();
     });
@@ -106,5 +109,11 @@ export class NzAvatarComponent implements OnChanges {
     this.hasSrc = !!this.nzSrc;
 
     this.setClass().notifyCalc();
+  }
+
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.notifyCalc();
+    }, 16);
   }
 }
