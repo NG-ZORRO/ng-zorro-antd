@@ -477,6 +477,22 @@ describe('NzModal', () => {
       expect(modalService.openModals.length).toBe(1);
     }));
 
+    it('should degregister a modal', fakeAsync(() => {
+      const modalRef = modalService.create();
+      const modalControl = (modalService as any).modalControl as NzModalControlService; // tslint:disable-line:no-any
+
+      fixture.detectChanges();
+      tick(600);
+      expect(modalService.openModals.length).toBe(1);
+
+      modalControl.deregisterModal(modalRef);
+      expect(modalService.openModals.length).toBe(0);
+
+      // Should nothing happened
+      modalControl.deregisterModal(modalRef);
+      expect(modalService.openModals.length).toBe(0);
+    }));
+
     it('should trigger nzOnOk/nzOnCancel', () => {
       const spyOk = jasmine.createSpy('ok spy');
       const spyCancel = jasmine.createSpy('cancel spy');
