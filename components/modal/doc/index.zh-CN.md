@@ -55,6 +55,8 @@ title: Modal
 
 > `<nz-modal>` 默认关闭后状态不会自动清空, 如果希望每次打开都是新内容，请采用 `NzModalService` 服务方式创建对话框（当以服务方式创建时，默认会监听 `nzAfterClose` 并销毁对话框）。
 
+> 通过 `NzModalService` 服务方式创建的对话框需要自行管理其生命周期。比如你在页面路由切换时，服务方式创建的对话框并不会被销毁，你需要使用对话框引用来手动销毁（`NzModalRef.close()` 或 `NzModalRef.destroy()`）。
+
 #### 采用服务方式创建普通模式对话框
 
 > 您可调用 `NzModalService.create(options)` 来动态创建**普通模式**对话框，这里的 `options` 是一个对象，支持上方API中给出的支持 **普通模式** 的参数

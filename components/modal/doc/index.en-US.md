@@ -55,6 +55,8 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 
 > The default state of `<nz-modal>` will not be automatically cleared. If you wish to open new content each time, use the `NzModalService` service to create modals (when created as a service, the `nzAfterClose` event will be listened by default aim to destroy the modal).
 
+> Modals created through the `NzModalService` service need you to manage their own life cycle. For example, when you switch the page route, the modal box created by service will not be destroyed automatically. You need to use the modal box's reference to manually destroy it (`NzModalRef.close()` or `NzModalRef.destroy()`).
+
 #### Using service to create Normal Mode modal
 
 > You can call `NzModalService.create(options)` to dynamically create **normal mode** modals, where `options` is an object that supports the support given in the API above **normal mode** parameters
