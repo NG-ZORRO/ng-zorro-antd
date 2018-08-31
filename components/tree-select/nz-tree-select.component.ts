@@ -243,7 +243,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     node.isSelected = false;
     node.isChecked = false;
     if (this.nzCheckable) {
-      this.treeRef.nzTreeService.checkTreeNode(node);
+      this.treeRef.nzTreeService.conduct(node);
       this.treeRef.nzTreeService.setCheckedNodeList(node);
     } else {
       this.treeRef.nzTreeService.setSelectedNodeList(node, this.nzMultiple);
@@ -306,7 +306,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
           const node = event.node;
           if (this.nzCheckable && !node.isDisabled && !node.isDisableCheckbox) {
             node.isChecked = !node.isChecked;
-            this.treeRef.nzTreeService.checkTreeNode(node);
+            this.treeRef.nzTreeService.conduct(node);
             this.treeRef.nzTreeService.setCheckedNodeList(node);
           }
           if (this.nzCheckable) {
@@ -367,8 +367,8 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   updateDropDownClassMap(): void {
-    if (this.treeRef && !this.treeRef.classMap[ 'ant-select-tree' ]) {
-      this.treeRef.classMap = { ...this.treeRef.classMap, [ 'ant-select-tree' ]: true };
+    if (this.treeRef && !this.treeRef.nzTreeClass[ 'ant-select-tree' ]) {
+      this.treeRef.nzTreeClass = { ...this.treeRef.nzTreeClass, [ 'ant-select-tree' ]: true };
     }
     this.dropDownClassMap = {
       [ 'ant-select-dropdown' ]                     : true,
