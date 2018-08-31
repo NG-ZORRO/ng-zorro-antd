@@ -100,6 +100,17 @@ describe('nz-td', () => {
       expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-expanded');
       expect(testComponent.expandChange).toHaveBeenCalledTimes(1);
     });
+    it('should be row index when index-size is 0', () => {
+      testComponent.indentSize = 0;
+      fixture.detectChanges();
+      expect(td.nativeElement.querySelector('.ant-table-row-indent')).not.toBeNull();
+    });
+    it('should be keeping space when hidden expand and index-size is not null', () => {
+      testComponent.showExpand = false;
+      testComponent.indentSize = 0;
+      fixture.detectChanges();
+      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-spaced');
+    });
     it('should indentSize work', () => {
       fixture.detectChanges();
       expect(td.nativeElement.querySelector('.ant-table-row-indent')).toBeNull();
