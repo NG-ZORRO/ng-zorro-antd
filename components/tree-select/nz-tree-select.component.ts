@@ -12,6 +12,7 @@ import { DOCUMENT } from '@angular/common';
 import {
   forwardRef,
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -78,7 +79,6 @@ import { NzTreeComponent } from '../tree/nz-tree.component';
 export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy {
 
   private nodes = [];
-  isInit = false;
   isComposing = false;
   isDestroy = true;
   inputValue = '';
@@ -119,7 +119,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   @Input()
   set nzNodes(value: NzTreeNode[]) {
     this.nodes = value;
-    if (this.isInit) {
+    if (this.treeRef) {
       setTimeout(() => this.updateSelectedNodes(), 0);
     }
   }
@@ -173,6 +173,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     @Optional() @Inject(DOCUMENT) private document: any, // tslint:disable-line:no-any
     @Optional() private element: ElementRef,
     private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef) {
   }
@@ -204,6 +205,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     this.nzOpen = false;
     this.nzOpenChange.emit(this.nzOpen);
     this.updateCdkConnectedOverlayStatus();
+    this.cdr.markForCheck();
   }
 
   onKeyDownInput(e: KeyboardEvent): void {
@@ -263,6 +265,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     this.portal = new TemplatePortal(this.dropdownTemplate, this.viewContainerRef);
     this.overlayRef = this.overlay.create(this.getOverlayConfig());
     this.overlayRef.attach(this.portal);
+    this.cdr.detectChanges();
     this.overlayBackdropClickSubscription = this.subscribeOverlayBackdropClick();
   }
 
@@ -434,7 +437,6 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
 
   ngAfterViewInit(): void {
     this.attachOverlay();
-    this.isInit = true;
   }
 
   setDisabledState(isDisabled: boolean): void {
