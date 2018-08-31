@@ -44,8 +44,17 @@ export class NzModalControlService {
     }
   }
 
-  // TODO: allow deregister modals
-  // deregisterModal(modalRef: NzModalRef): void {}
+  // deregister modals
+  deregisterModal(modalRef: NzModalRef): void {
+    const registeredMeta = this.registeredMetaMap.get(modalRef);
+    if (registeredMeta) {
+      // Remove this modal if it is still in the opened modal list (NOTE: it may trigger "afterAllClose")
+      this.removeOpenModal(registeredMeta.modalRef);
+      registeredMeta.afterOpenSubscription.unsubscribe();
+      registeredMeta.afterCloseSubscription.unsubscribe();
+      this.registeredMetaMap.delete(modalRef);
+    }
+  }
 
   hasRegistered(modalRef: NzModalRef): boolean {
     return this.registeredMetaMap.has(modalRef);
