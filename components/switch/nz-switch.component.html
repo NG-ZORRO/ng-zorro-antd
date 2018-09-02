@@ -1,4 +1,4 @@
-<span [ngClass]="classMap" [tabindex]="nzDisabled?-1:0" #switchElement (keydown)="onKeyDown($event)">
+<span nz-wave [nzWaveExtraNode]="true" [ngClass]="classMap" [tabindex]="nzDisabled?-1:0" #switchElement (keydown)="onKeyDown($event)">
   <span class="ant-switch-inner">
     <span *ngIf="checked">
       <ng-container *ngIf="isCheckedChildrenString; else checkedChildrenTemplate">{{ nzCheckedChildren }}</ng-container>
