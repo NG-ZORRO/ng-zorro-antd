@@ -51,6 +51,7 @@ import { NzTransferModule } from './transfer/nz-transfer.module';
 import { NzTreeSelectModule } from './tree-select/nz-tree-select.module';
 import { NzTreeModule } from './tree/nz-tree.module';
 import { NzUploadModule } from './upload/nz-upload.module';
+import { NzWaveModule } from './core/wave/nz-wave.module';
 
 export * from './affix';
 export * from './alert';
@@ -105,6 +106,7 @@ export * from './tree';
 export * from './tree-select';
 export * from './time-picker';
 export * from './version';
+export * from './core/wave';
 
 @NgModule({
   exports: [
@@ -160,7 +162,8 @@ export * from './version';
     NzCascaderModule,
     NzTreeModule,
     NzTreeSelectModule,
-    NzTimePickerModule
+    NzTimePickerModule,
+    NzWaveModule
   ]
 })
 export class NgZorroAntdModule {
