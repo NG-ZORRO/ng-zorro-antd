@@ -34,6 +34,8 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 | `[nzTabBarGutter]` | tabs 之间的间隙 | number | 无 |
 | `[nzHideAll]` | 是否隐藏所有tab内容 | boolean | false |
 | `[nzShowPagination]` | 是否超出范围时显示pre和next按钮 | boolean | true |
+| `[nzNavigationOptions]` | 使用路由联动 tab 时的路由参数 | `Array<{ path: string }>` | false |
+| `[nzQueryParam]` | 路由联动 tab 使用查询模式并定义字符串 key，不传入即为子路由模式 | string | 无 |   
 | `(nzSelectedIndexChange)` | 当前激活 tab 面板的 序列号变更回调函数 | `EventEmitter<number>` | 无 |
 | `(nzSelectChange)` | 当前激活 tab 面板变更回调函数 | `EventEmitter<{nzSelectedIndex: number,tab: NzTabComponent}>` | 无 |
 | `(nzOnNextClick)` | next 按钮被点击的回调 | `EventEmitter<void>` | 无 |

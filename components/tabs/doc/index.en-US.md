@@ -31,8 +31,10 @@ Ant Design has 3 types of Tabs for different situations.
 | `[nzTabBarGutter]` | The gap between tabs | number | - |
 | `[nzHideAll]` | Whether hide all tabs | boolean | false |
 | `[nzShowPagination]` | Whether show pre or next button when exceed display area | boolean | true |
+| `[nzNavigationOptions]` | Navigation options connecting tab to route | `Array<{ path: string}>` | false |
+| `[nzQueryParam]` | A string that would be treated as a query param's key. Passing it would enable query param mode. | string | - |   
 | `(nzSelectedIndexChange)` | Current tab's index change callback | `EventEmitter<number>` | - |
-| `(nzSelectChange)` | Current tab's change callback | `EventEmitter<{nzSelectedIndex: number,tab: NzTabComponent}>` | - |
+| `(nzSelectChange)` | Current tab's change callback | `EventEmitter<{nzSelectedIndex: number,tab: NzTabComponent }>` | - |
 | `(nzOnNextClick)` | Callback executed when next button is clicked | `EventEmitter<void>` | - |
 | `(nzOnPrevClick)` | Callback executed when prev button is clicked | `EventEmitter<void>` | - |
 
