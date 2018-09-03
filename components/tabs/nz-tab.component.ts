@@ -1,66 +1,39 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 
-import { toBoolean } from '../core/util/convert';
-
-import { NzTabSetComponent } from './nz-tabset.component';
+import { InputBoolean } from '../core/util/convert';
 
 @Component({
+  changeDetection    : ChangeDetectionStrategy.OnPush,
   selector           : 'nz-tab',
   preserveWhitespaces: false,
-  templateUrl        : './nz-tab.component.html',
+  template           : '<ng-template><ng-content></ng-content></ng-template>',
   host               : {
     '[class.ant-tabs-tabpane]': 'true'
   }
 })
-export class NzTabComponent implements OnDestroy, OnInit {
-  private _title: string | TemplateRef<void>;
-  private _disabled = false;
-  position: number | null = null;
-  origin: number | null = null;
-  isTitleString: boolean;
-
-  @Input()
-  set nzDisabled(value: boolean) {
-    this._disabled = toBoolean(value);
-  }
-
-  get nzDisabled(): boolean {
-    return this._disabled;
-  }
-
-  @Output() readonly nzClick = new EventEmitter<void>();
-  @Output() readonly nzSelect = new EventEmitter<void>();
-  @Output() readonly nzDeselect = new EventEmitter<void>();
+export class NzTabComponent {
   @ViewChild(TemplateRef) content: TemplateRef<void>;
 
+  /** If this tab is disabled. Disabled tab could not be clicked and set active. */
+  @Input() @InputBoolean() nzDisabled = false;
+
+  /** Identifier of a tab. */
+  @Input() nzPathOrParam: string;
+
   @Input()
+  get nzTitle(): string | TemplateRef<void> { return this._title; }
   set nzTitle(value: string | TemplateRef<void>) {
     this.isTitleString = !(value instanceof TemplateRef);
     this._title = value;
   }
 
-  get nzTitle(): string | TemplateRef<void> {
-    return this._title;
-  }
+  isTitleString: boolean;
+  private _title: string | TemplateRef<void>;
 
-  constructor(private nzTabSetComponent: NzTabSetComponent) {
-  }
+  @Output() readonly nzClick = new EventEmitter<void>();
+  @Output() readonly nzSelect = new EventEmitter<void>();
+  @Output() readonly nzDeselect = new EventEmitter<void>();
 
-  ngOnInit(): void {
-    this.nzTabSetComponent.addTab(this);
-  }
-
-  ngOnDestroy(): void {
-    this.nzTabSetComponent.removeTab(this);
-  }
-
+  position: number | null = null;
+  origin: number | null = null;
 }

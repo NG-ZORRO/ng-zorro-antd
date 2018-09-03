@@ -31,8 +31,10 @@ Ant Design has 3 types of Tabs for different situations.
 | `[nzTabBarGutter]` | The gap between tabs | number | - |
 | `[nzHideAll]` | Whether hide all tabs | boolean | false |
 | `[nzShowPagination]` | Whether show pre or next button when exceed display area | boolean | true |
+| `[nzEnableRoute]` | Enable router linked mode | boolean | false |
+| `[nzQueryParam]` | A string that would be treated as a query param's key. Passing it would enable query param mode. | string | - |
 | `(nzSelectedIndexChange)` | Current tab's index change callback | `EventEmitter<number>` | - |
-| `(nzSelectChange)` | Current tab's change callback | `EventEmitter<{nzSelectedIndex: number,tab: NzTabComponent}>` | - |
+| `(nzSelectChange)` | Current tab's change callback | `EventEmitter<{nzSelectedIndex: number,tab: NzTabComponent }>` | - |
 | `(nzOnNextClick)` | Callback executed when next button is clicked | `EventEmitter<void>` | - |
 | `(nzOnPrevClick)` | Callback executed when prev button is clicked | `EventEmitter<void>` | - |
 
@@ -42,6 +44,21 @@ Ant Design has 3 types of Tabs for different situations.
 | -------- | ----------- | ---- | ------- |
 | `[nzTitle]` | Show text in tab's head | string｜`TemplateRef<void>` | - |
 | `[nzDisabled]` | tab disable | boolean | - |
+| `[nzPathOrParam] ` | A tab's unique identifier in router linked mode | string | - |
 | `(nzClick)` | title click callback | `EventEmitter<void>` | - |
 | `(nzSelect)` | title select callback | `EventEmitter<void>` | - |
 | `(nzDeselect)` | title deselect callback | `EventEmitter<void>` | - |
+
+## Router Linked
+
+If you want to use it, make sure you set `nzEnableRoute` to `true` before the component initializes. There are two modes, query string mode and child route mode. If you want to use child route mode, you should config `data.tabs` in your route definitions like this:
+
+```ts
+{
+  path: '/path',
+  component: SomeComponent,
+  data: {
+    tabs: 'identifier'
+  }
+}
+```

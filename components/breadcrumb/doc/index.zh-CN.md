@@ -22,7 +22,9 @@ title: Breadcrumb
 | `[nzSeparator]` | 分隔符自定义 | string丨`TemplateRef<void>` |  | '/' |
 | `[nzAutoGenerate]` | 自动生成 Breadcrumb | boolean |  | `false` |
 
-使用 `[nzAutoGenerate]` 时，需要在路由类中定义 `data`:
+## 自动生成
+
+如果你想要使用自动生成，务必在组件初始化之前就将 `nzAutoGenerate` 设置为 `true`，并路由中定义 `data.breadcrumb`:
 
 ```ts
 {

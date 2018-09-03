@@ -20,6 +20,7 @@
         #navListElement
         (cdkObserveContent)="onContentChanges()">
         <div nz-tabs-ink-bar [hidden]="nzHideBar" [nzAnimated]="nzAnimated" [nzPositionMode]="nzPositionMode" style="display: block;"></div>
+        <!-- `nz-tab-label`s would be rendered in this `ng-content`. -->
         <ng-content></ng-content>
       </div>
     </div>
