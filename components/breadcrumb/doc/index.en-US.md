@@ -33,3 +33,5 @@ Using `[nzAutoGenerate]` by configuring `data` like this:
   }
 }
 ```
+
+If you want to use it, make sure you set `nzAutoGenerate` to `true` before the component init.

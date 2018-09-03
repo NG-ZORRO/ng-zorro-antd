@@ -3,12 +3,16 @@
 import { DOCUMENT } from '@angular/common';
 import {
   AfterContentChecked,
+  AfterContentInit,
   AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
   Inject,
+  Injector,
   Input,
+  NgZone,
+  OnDestroy,
   OnInit,
   Optional,
   Output,
@@ -16,13 +20,15 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { isNotNil } from '../core/util/check';
-import { toNumber } from '../core/util/convert';
+import { toNumber, InputBoolean } from '../core/util/convert';
 
+import { RouterModuleNotImportedError } from '../core/error/error';
 import { NzTabComponent } from './nz-tab.component';
 import { NzTabsNavComponent } from './nz-tabs-nav.component';
 
@@ -35,6 +41,8 @@ export class NzTabChangeEvent {
   index: number;
   tab: NzTabComponent;
 }
+
+export const NZ_ROUTE_DATA_TABS = 'tabs';
 
 export type NzTabPosition = 'top' | 'bottom' | 'left' | 'right';
 export type NzTabPositionMode = 'horizontal' | 'vertical';
@@ -54,29 +62,37 @@ export type NzTabType = 'line' | 'card';
     }
   ` ]
 })
-export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterViewInit {
-  private _tabPosition: NzTabPosition = 'top';
-  private _indexToSelect: number | null = 0;
-  private _selectedIndex: number | null = null;
-  private _type: NzTabType = 'line';
-  private _size = 'default';
-  private _animated: NzAnimatedInterface | boolean = true;
-  el: HTMLElement = this.elementRef.nativeElement;
+export class NzTabSetComponent implements AfterContentInit, AfterContentChecked, OnInit, AfterViewInit, OnDestroy {
+  @ViewChild(NzTabsNavComponent) nzTabsNavComponent: NzTabsNavComponent;
+  @ViewChild('tabContent') tabContent: ElementRef;
+
+  @Input() nzTabBarExtraContent: TemplateRef<void>;
+  @Input() nzShowPagination = true;
+  @Input() nzHideAll = false;
+  @Input() nzTabBarGutter: number;
+  @Input() nzTabBarStyle: { [ key: string ]: string };
+  @Input() nzQueryParam: string;
+
+  @Output() readonly nzOnNextClick = new EventEmitter<void>();
+  @Output() readonly nzOnPrevClick = new EventEmitter<void>();
+
+  el: HTMLElement;
   prefixCls = 'ant-tabs';
   tabPositionMode: NzTabPositionMode = 'horizontal';
   inkBarAnimated = true;
   tabPaneAnimated = true;
   isViewInit = false;
   listOfNzTabComponent: NzTabComponent[] = [];
-  @Input() nzTabBarExtraContent: TemplateRef<void>;
-  @ViewChild(NzTabsNavComponent) nzTabsNavComponent: NzTabsNavComponent;
-  @ViewChild('tabContent') tabContent: ElementRef;
-  @Input() nzShowPagination = true;
-  @Input() nzHideAll = false;
-  @Input() nzTabBarGutter: number;
-  @Input() nzTabBarStyle: { [ key: string ]: string };
-  @Output() readonly nzOnNextClick = new EventEmitter<void>();
-  @Output() readonly nzOnPrevClick = new EventEmitter<void>();
+
+  private _tabPosition: NzTabPosition = 'top';
+  private _indexToSelect: number | null = 0;
+  private _selectedIndex: number | null = null;
+  private _type: NzTabType = 'line';
+  private _size = 'default';
+  private _animated: NzAnimatedInterface | boolean = true;
+  private unsubscribe$ = new Subject();
+
+  @Input() @InputBoolean() nzEnableRoute: boolean = false;
 
   @Input()
   set nzAnimated(value: NzAnimatedInterface | boolean) {
@@ -178,11 +194,118 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
     if (!disabled) {
       this.nzSelectedIndex = index;
       this.listOfNzTabComponent[ index ].nzClick.emit();
+      if (this.nzEnableRoute) { this.navigate(index); }
     }
+  }
+
+  createChangeEvent(index: number): NzTabChangeEvent {
+    const event = new NzTabChangeEvent();
+    event.index = index;
+    if (this.listOfNzTabComponent && this.listOfNzTabComponent.length) {
+      event.tab = this.listOfNzTabComponent[ index ];
+      this.listOfNzTabComponent.forEach((item, i) => {
+        if (i !== index) { item.nzDeselect.emit(); }
+      });
+      event.tab.nzSelect.emit();
+    }
+    return event;
+  }
+
+  addTab(value: NzTabComponent): void {
+    this.listOfNzTabComponent.push(value);
+  }
+
+  removeTab(value: NzTabComponent): void {
+    this.listOfNzTabComponent.splice(this.listOfNzTabComponent.indexOf(value), 1);
+  }
+
+  // From https://github.com/react-component/tabs/blob/master/src/Tabs.js
+  // Prevent focus to make the Tabs scroll offset
+  onScroll($event: Event): void {
+    const target: Element = $event.target as Element;
+    if (target.scrollLeft > 0) {
+      target.scrollLeft = 0;
+      if (this.document && this.document.activeElement) {
+        (this.document.activeElement as HTMLElement).blur();
+      }
+    }
+  }
+
+  navigate(index: number): void {
+    const router: Router = this.injector.get(Router);
+    const activatedRoute: ActivatedRoute = this.injector.get(ActivatedRoute);
+    const pathOrParam = this.listOfNzTabComponent[ index ].nzPathOrParam;
+
+    if (this.nzQueryParam) {
+      this.ngZone.run(() => {
+        router.navigate([ '.' ], {
+          queryParams        : { [ `${this.nzQueryParam}` ]: pathOrParam || null },
+          relativeTo         : activatedRoute,
+          queryParamsHandling: 'merge',
+          preserveFragment   : true
+        }).then();
+      });
+    } else {
+      this.ngZone.run(() => {
+        if (pathOrParam) {
+          router.navigate([ '.', pathOrParam ], {
+            relativeTo: activatedRoute
+          }).then();
+        }
+      });
+    }
+  }
+
+  private addRouteLink(): void {
+    try {
+      const activatedRoute = this.injector.get(ActivatedRoute);
+      const router = this.injector.get(Router);
+
+      if (this.nzQueryParam) {
+        activatedRoute.queryParamMap.pipe(
+          takeUntil(this.unsubscribe$),
+          map(params => params.get(this.nzQueryParam))
+        ).subscribe(data => {
+          this.nzSelectedIndex = this.listOfNzTabComponent
+            .map(component => component.nzPathOrParam)
+            .findIndex(nav => !data ? !nav : data === nav);
+        });
+      } else {
+        router.events.pipe(
+          takeUntil(this.unsubscribe$),
+          filter(e => e instanceof NavigationEnd)
+        ).subscribe(() => {
+          const data = activatedRoute.snapshot.firstChild.data[ NZ_ROUTE_DATA_TABS ];
+          this.nzSelectedIndex = this.listOfNzTabComponent
+            .map(component => component.nzPathOrParam)
+            .findIndex(nav => !data ? !nav : data === nav);
+        });
+      }
+    } catch (e) {
+      throw RouterModuleNotImportedError('router linked tabs');
+    }
+  }
+
+  constructor(
+    private renderer: Renderer2,
+    private nzUpdateHostClassService: NzUpdateHostClassService,
+    private elementRef: ElementRef,
+    private injector: Injector,
+    private ngZone: NgZone,
+    // tslint:disable-next-line:no-any
+    @Optional() @Inject(DOCUMENT) private document: any
+  ) {
+    this.el = this.elementRef.nativeElement;
   }
 
   ngOnInit(): void {
     this.setClassMap();
+  }
+
+  ngAfterContentInit(): void {
+    if (this.nzEnableRoute) {
+      this.addRouteLink();
+    }
   }
 
   ngAfterContentChecked(): void {
@@ -210,48 +333,13 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
     this._selectedIndex = indexToSelect;
   }
 
-  createChangeEvent(index: number): NzTabChangeEvent {
-    const event = new NzTabChangeEvent();
-    event.index = index;
-    if (this.listOfNzTabComponent && this.listOfNzTabComponent.length) {
-      event.tab = this.listOfNzTabComponent[ index ];
-      this.listOfNzTabComponent.forEach((item, i) => {
-        if (i !== index) {
-          item.nzDeselect.emit();
-        }
-      });
-      event.tab.nzSelect.emit();
-    }
-    return event;
-  }
-
-  addTab(value: NzTabComponent): void {
-    this.listOfNzTabComponent.push(value);
-  }
-
-  removeTab(value: NzTabComponent): void {
-    this.listOfNzTabComponent.splice(this.listOfNzTabComponent.indexOf(value), 1);
-  }
-
-  // From https://github.com/react-component/tabs/blob/master/src/Tabs.js
-  // Prevent focus to make the Tabs scroll offset
-  onScroll($event: Event): void {
-    const target: Element = $event.target as Element;
-    if (target.scrollLeft > 0) {
-      target.scrollLeft = 0;
-      if (this.document && this.document.activeElement) {
-        (this.document.activeElement as HTMLElement).blur();
-      }
-    }
-  }
-
-  // tslint:disable-next-line:no-any
-  constructor(private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService, private elementRef: ElementRef, @Optional() @Inject(DOCUMENT) private document: any) {
-  }
-
   ngAfterViewInit(): void {
     this.isViewInit = true;
     this.setPosition(this.nzTabPosition);
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }

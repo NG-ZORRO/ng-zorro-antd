@@ -48,6 +48,8 @@ export class NzTabComponent implements OnDestroy, OnInit {
     this._title = value;
   }
 
+  @Input() nzPathOrParam: string; // Identifier of a tab.
+
   get nzTitle(): string | TemplateRef<void> {
     return this._title;
   }
