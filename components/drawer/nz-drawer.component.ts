@@ -14,6 +14,7 @@ import {
 
 import { CdkOverlayOrigin, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
+import { NzScrollStrategyOptions } from '../core/overlay/scroll/nz-scroll-strategy-options';
 
 import { InputBoolean } from '../core/util/convert';
 
@@ -77,6 +78,7 @@ export class NzDrawerComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private overlay: Overlay,
     private elementRef: ElementRef,
+    private nzScrollStrategyOptions: NzScrollStrategyOptions,
     private viewContainerRef: ViewContainerRef) {
 
   }
@@ -109,13 +111,18 @@ export class NzDrawerComponent implements OnInit, OnDestroy {
 
   getOverlayConfig(): OverlayConfig {
     return new OverlayConfig({
-      scrollStrategy: this.overlay.scrollStrategies.block()
+      scrollStrategy: this.nzScrollStrategyOptions.block()
     });
   }
 
   updateOverlayStyle(): void {
     if (this.overlayRef && this.overlayRef.overlayElement) {
       this.renderer.setStyle(this.overlayRef.overlayElement, 'pointer-events', this.isOpen ? 'auto' : 'none');
+      if (this.isOpen) {
+        this.overlayRef.getConfig().scrollStrategy.enable();
+      } else {
+        this.overlayRef.getConfig().scrollStrategy.disable();
+      }
     }
   }
 
