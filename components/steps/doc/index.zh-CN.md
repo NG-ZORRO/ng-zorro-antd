@@ -33,6 +33,7 @@ title: Steps
 | `[nzProgressDot]` | 点状步骤条，可以设置为一个 TemplateRef | Boolean 丨 `TemplateRef<{ $implicit: TemplateRef<void>, status: string, index: number }>` | false |
 | `[nzSize]` | 指定大小，目前支持普通（`default`）和迷你（`small`） | string | default |
 | `[nzStatus]` | 指定当前步骤的状态，可选 `wait` `process` `finish` `error` | string | process |
+| `[nzStartIndex]` | 指定起始位置的序号 | number | 0 |
 
 ### nz-step
 
