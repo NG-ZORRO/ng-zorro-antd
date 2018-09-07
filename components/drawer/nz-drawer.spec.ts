@@ -61,6 +61,15 @@ describe('NzDrawerComponent', () => {
     expect(component.drawerComponent.nzVisible).toBe(false);
   });
 
+  it('should set body overflow', () => {
+    component.open();
+    fixture.detectChanges();
+    expect(document.body.style.overflow).toBe('hidden');
+    component.close();
+    fixture.detectChanges();
+    expect(document.body.style.overflow).toBe('');
+  });
+
   it('should hied close button', () => {
     component.closable = false;
     component.open();
