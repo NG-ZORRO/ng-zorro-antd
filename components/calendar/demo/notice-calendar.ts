@@ -48,6 +48,11 @@ export class NzDemoCalendarNoticeCalendarComponent {
     this.tomorrow.setDate(this.tomorrow.getDate() + 1);
     this.yesterday.setDate(this.yesterday.getDate() - 1);
     this.nextMonth.setMonth(this.nextMonth.getMonth() + 1);
+    // Ignore time
+    this.current.setHours(0,0,0,0);
+    this.tomorrow.setHours(0,0,0,0);
+    this.yesterday.setHours(0,0,0,0);
+    this.nextMonth.setHours(0,0,0,0);
   }
 
   objects =
@@ -69,7 +74,6 @@ export class NzDemoCalendarNoticeCalendarComponent {
   }];
  
   getEvents(index, event) {
-    event.date.setHours(0, 0, 0, 0);
     return event;
   }
 
