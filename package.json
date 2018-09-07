@@ -23,7 +23,8 @@
     "integration-webpack": "npm run generate && cd integration/webpack && npm run integration",
     "integration-rollup": "npm run generate && cd integration/rollup && npm run integration",
     "lint": "tslint -c tslint.json 'components/*/*.ts'",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && node site_scripts/replace-scope-prefix.js"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && node site_scripts/replace-scope-prefix.js",
+    "publish": "node ./publish_scripts/publish.js"
   },
   "main": "./bundles/antd.umd.js",
   "module": "./esm5/antd.js",
@@ -73,6 +74,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "antd-theme-generator": "^1.0.7",
+    "chalk": "^2.4.1",
     "classlist.js": "^1.1.20150312",
     "codecov": "^3.0.0",
     "codelyzer": "~4.2.1",
@@ -97,6 +99,7 @@
     "parse5": "^4.0.0",
     "prismjs": "^1.10.0",
     "protractor": "~5.3.0",
+    "readline-sync": "^1.4.9",
     "remark": "^8.0.0",
     "rollup": "^0.49.2",
     "rollup-plugin-node-resolve": "^3.0.0",
