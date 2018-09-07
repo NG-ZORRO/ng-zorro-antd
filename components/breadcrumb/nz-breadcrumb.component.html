@@ -1,1 +1,6 @@
 <ng-content></ng-content>
+<ng-container *ngIf="nzAutoGenerate">
+  <nz-breadcrumb-item *ngFor="let breadcrumb of breadcrumbs">
+    <a [attr.href]="breadcrumb.url">{{ breadcrumb.label }}</a>
+  </nz-breadcrumb-item>
+</ng-container>
