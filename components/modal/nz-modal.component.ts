@@ -38,10 +38,6 @@ import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './
 
 export const MODAL_ANIMATE_DURATION = 200; // Duration when perform animations (ms)
 
-interface ClassMap {
-  [ index: string ]: boolean;
-}
-
 type AnimationState = 'enter' | 'leave' | null;
 
 @Component({
@@ -50,14 +46,14 @@ type AnimationState = 'enter' | 'leave' | null;
 })
 
 // tslint:disable-next-line:no-any
-export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> implements OnInit, OnChanges, AfterViewInit, OnDestroy, ModalOptions {
+export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> implements OnInit, OnChanges, AfterViewInit, OnDestroy, ModalOptions<T> {
   private unsubscribe$ = new Subject<void>();
 
   // tslint:disable-next-line:no-any
   locale: any = {};
   @Input() nzModalType: ModalType = 'default';
   @Input() nzContent: string | TemplateRef<{}> | Type<T>; // [STATIC] If not specified, will use <ng-content>
-  @Input() nzComponentParams: object; // [STATIC] ONLY avaliable when nzContent is a component
+  @Input() nzComponentParams: T; // [STATIC] ONLY avaliable when nzContent is a component
   @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>>; // [STATIC] Default Modal ONLY
   @Input() nzGetContainer: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef) = () => this.overlay.create(); // [STATIC]
 
