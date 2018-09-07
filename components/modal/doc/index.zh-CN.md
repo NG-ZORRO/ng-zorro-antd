@@ -17,6 +17,18 @@ title: Modal
 
 在弹出层Component中可以通过依赖注入`NzModalRef`方式直接获取模态框的组件实例，用于控制在弹出层组件中控制模态框行为。
 
+## 如何使用
+
+如果要修改全局默认配置，你可以设置提供商 `NZ_MODAL_CONFIG` 的值来修改。
+（如：在你的模块的`providers`中加入 `{ provide: NZ_MODAL_CONFIG, useValue: { autoBodyPadding: false }}`，`NZ_MODAL_CONFIG` 可以从 `ng-zorro-antd` 中导入）
+
+默认全局配置为：
+```js
+{
+  autoBodyPadding: true, // 是否自动给body加上padding及overflow来隐藏滚动条
+}
+```
+
 ## API
 
 ### NzModalService

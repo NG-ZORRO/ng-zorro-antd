@@ -31,6 +31,7 @@ import { InputBoolean } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import ModalUtil from './modal-util';
+import { NzModalConfig, NZ_MODAL_CONFIG, NZ_MODAL_DEFAULT_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
 import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './nz-modal.type';
@@ -128,9 +129,12 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     private viewContainer: ViewContainerRef,
     private nzMeasureScrollbarService: NzMeasureScrollbarService,
     private modalControl: NzModalControlService,
+    @Inject(NZ_MODAL_CONFIG) private config: NzModalConfig,
     @Inject(DOCUMENT) private document: any) { // tslint:disable-line:no-any
 
     super();
+
+    this.config = this.mergeDefaultConfig(this.config);
   }
 
   ngOnInit(): void {
@@ -417,16 +421,18 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
    * @param plusNum The number that the openModals.length will increase soon
    */
   private changeBodyOverflow(plusNum: number = 0): void {
-    const openModals = this.modalControl.openModals;
+    if (this.config.autoBodyPadding) {
+      const openModals = this.modalControl.openModals;
 
-    if (openModals.length + plusNum > 0) {
-      if (this.hasBodyScrollBar()) { // Adding padding-right only when body's scrollbar is able to shown up
-        this.renderer.setStyle(this.document.body, 'padding-right', `${this.nzMeasureScrollbarService.scrollBarWidth}px`);
-        this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
+      if (openModals.length + plusNum > 0) {
+        if (this.hasBodyScrollBar()) { // Adding padding-right only when body's scrollbar is able to shown up
+          this.renderer.setStyle(this.document.body, 'padding-right', `${this.nzMeasureScrollbarService.scrollBarWidth}px`);
+          this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
+        }
+      } else { // NOTE: we need to always remove the padding due to the scroll bar may be disappear by window resizing before modal closed
+        this.renderer.removeStyle(this.document.body, 'padding-right');
+        this.renderer.removeStyle(this.document.body, 'overflow');
       }
-    } else { // NOTE: we need to always remove the padding due to the scroll bar may be disappear by window resizing before modal closed
-      this.renderer.removeStyle(this.document.body, 'padding-right');
-      this.renderer.removeStyle(this.document.body, 'overflow');
     }
   }
 
@@ -436,6 +442,10 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
    */
   private hasBodyScrollBar(): boolean {
     return this.document.body.scrollHeight > (window.innerHeight || this.document.documentElement.clientHeight);
+  }
+
+  private mergeDefaultConfig(config: NzModalConfig): NzModalConfig {
+    return { ...NZ_MODAL_DEFAULT_CONFIG, ...config };
   }
 }
 
