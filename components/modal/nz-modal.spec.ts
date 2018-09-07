@@ -14,6 +14,7 @@ import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CssUnitPipe } from './css-unit.pipe';
+import { NZ_MODAL_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
 import { NzModalComponent } from './nz-modal.component';
@@ -527,6 +528,39 @@ describe('NzModal', () => {
       modalInstance['changeBodyOverflow'](1);
       expect(spySetStyle).toHaveBeenCalled();
     });
+  });
+});
+
+describe('NzModal with config settled', () => {
+  let modalService: NzModalService;
+
+  beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [ NzModalModule ],
+      providers: [{
+        provide: NZ_MODAL_CONFIG,
+        useValue: {
+          autoBodyPadding: false // Disable body padding
+        }
+      }]
+    }).compileComponents();
+  }));
+
+  beforeEach(inject([ NzModalService ], (ms: NzModalService) => {
+    modalService = ms;
+  }));
+
+  it('should disable body padding', () => {
+    const modalInstance = modalService.create().getInstance();
+    // Both style operating should not be called
+    // tslint:disable-next-line:no-string-literal
+    const setStyle = spyOn(modalInstance['renderer'], 'setStyle');
+    // tslint:disable-next-line:no-string-literal
+    const removeStyle = spyOn(modalInstance['renderer'], 'removeStyle');
+    // tslint:disable-next-line:no-string-literal
+    modalInstance['changeBodyOverflow']();
+    expect(setStyle).not.toHaveBeenCalled();
+    expect(removeStyle).not.toHaveBeenCalled();
   });
 });
 
