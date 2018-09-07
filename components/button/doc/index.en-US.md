@@ -23,3 +23,4 @@ To get a customized button, just set `nzType`/`nzShape`/`nzSize`/`nzLoading`/`di
 | `[nzShape]` | can be set to `circle` or omitted | string | - |
 | `[nzSize]` | can be set to `small` `large` or omitted | string | `default` |
 | `[nzType]` | can be set to `primary` `ghost` `dashed` `danger` or omitted (meaning `default`) | string | `default` |
+| `[nzBlock]` | option to fit button width to its parent width | boolean | false |
