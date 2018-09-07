@@ -27,9 +27,11 @@ title: Drawer
 | `[nzBodyStyle]` | Modal body 样式 | `object` | `{}` |
 | `[nzTitle]` | 标题 | `string`  `TemplateRef<{}>` | - |
 | `[nzVisible]` | Drawer 是否可见 | `boolean` | - |
-| `[nzWidth]` | 宽度 | `number` `string` | `256` |
+| `[nzPlacement]` | 抽屉的方向 | `'top'` `'right'` `'bottom'` `'left'` | `'right'` |
+| `[nzWidth]` | 宽度, 只在方向为 `'right'`或`'left'` 时生效 | `number` `string` | `256` |
+| `[nzHeight]` | 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number` `string` | `256` |
+| `[nzOffsetX]` | x 坐标移量(px), 只在方向为 `'right'`或`'left'` 时生效 | `number` | `0` |
+| `[nzOffsetY]` | y 坐标移量(px), 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number` | `0` |
 | `[nzWrapClassName]` | 对话框外层容器的类名 | `string` | - |
 | `[nzZIndex]` | 设置 Drawer 的 `z-index` | `number` | `1000` |
-| `[nzPlacement]` | 抽屉的方向 | `'left'` `'right'` | `'right'` |
-| `[nzOffsetX]` | x 坐标移量(px) | `number` | `0` |
 | `(nzOnClose)` | 点击遮罩层或右上角叉或取消按钮的回调 | `EventEmitter<MouseEvent>` | - |

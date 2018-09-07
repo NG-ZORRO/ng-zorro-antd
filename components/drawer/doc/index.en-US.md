@@ -26,9 +26,11 @@ A Drawer is a panel that is typically overlaid on top of a page and slides in fr
 | `[nzBodyStyle]` | Body style for modal body element. Such as height, padding etc. | `object` | `{}` |
 | `[nzTitle]` | The title for Drawer. | `string`  `TemplateRef<{}>` | - |
 | `[nzVisible]` | Whether the Drawer dialog is visible or not. | `boolean` | `false` |
-| `[nzWidth]` | Width of the Drawer dialog. | `number` `string` | `256` |
+| `[nzPlacement]` | The placement of the Drawer. | `'top'` `'right'` `'bottom'` `'left'` | `'right'` |
+| `[nzWidth]` | Width of the Drawer dialog, only when placement is `'right'` or `'left'`.  | `number` `string` | `256` |
+| `[nzHeight]` | Height of the Drawer dialog, only when placement is `'top'` or `'bottom'`.  | `number` `string` | `256` |
+| `[nzOffsetX]` | The the X coordinate offset(px), only when placement is `'right'` or `'left'`. | `number` | `0` |
+| `[nzOffsetY]` | The the Y coordinate offset(px), only when placement is `'top'` or `'bottom'`. | `number` | `0` |
 | `[nzWrapClassName]` | The class name of the container of the Drawer dialog. | `string` | - |
 | `[nzZIndex]` | The `z-index` of the Drawer. | `number` | `1000` |
-| `[nzPlacement]` | The placement of the Drawer. | `'left'` `'right'` | `'right'` |
-| `[nzOffsetX]` | The the X coordinate offset(px) | `number` | `0` |
 | `(nzOnClose)` | Specify a callback that will be called when a user clicks mask, close button or Cancel button. | `EventEmitter<MouseEvent>` | - |

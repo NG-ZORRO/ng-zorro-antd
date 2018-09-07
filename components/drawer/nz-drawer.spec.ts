@@ -151,19 +151,41 @@ describe('NzDrawerComponent', () => {
   });
 
   it('should support custom width', () => {
-    component.width = '300px';
+    component.width = '500px';
     component.open();
     fixture.detectChanges();
     expect(overlayContainerElement.querySelector('.ant-drawer').classList.contains('ant-drawer-open')).toBe(true);
-    expect((overlayContainerElement.querySelector('.ant-drawer .ant-drawer-content > div') as HTMLElement).getBoundingClientRect().width).toBe(300);
+    expect((overlayContainerElement.querySelector('.ant-drawer .ant-drawer-content') as HTMLElement).getBoundingClientRect().width).toBe(500);
   });
 
   it('should support custom number type width', () => {
-    component.width = 500;
+    component.width = 520;
     component.open();
     fixture.detectChanges();
     expect(overlayContainerElement.querySelector('.ant-drawer').classList.contains('ant-drawer-open')).toBe(true);
-    expect((overlayContainerElement.querySelector('.ant-drawer .ant-drawer-content > div') as HTMLElement).getBoundingClientRect().width).toBe(500);
+    expect((overlayContainerElement.querySelector('.ant-drawer .ant-drawer-content') as HTMLElement).getBoundingClientRect().width).toBe(520);
+  });
+
+  it('should support custom height', () => {
+    component.height = '500px';
+    component.placement = 'top';
+    component.open();
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer').classList.contains('ant-drawer-open')).toBe(true);
+    expect((overlayContainerElement.querySelector('.ant-drawer .ant-drawer-content-wrapper') as HTMLElement).getBoundingClientRect().height).toBe(500);
+    component.placement = 'left';
+    fixture.detectChanges();
+  });
+
+  it('should support custom number type height', () => {
+    component.height = 520;
+    component.placement = 'top';
+    component.open();
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer').classList.contains('ant-drawer-open')).toBe(true);
+    expect((overlayContainerElement.querySelector('.ant-drawer .ant-drawer-content-wrapper') as HTMLElement).getBoundingClientRect().height).toBe(520);
+    component.placement = 'left';
+    fixture.detectChanges();
   });
 
   it('should nzWrapClassName work', () => {
@@ -186,10 +208,44 @@ describe('NzDrawerComponent', () => {
     fixture.detectChanges();
     expect(overlayContainerElement.querySelector('.ant-drawer').classList.contains('ant-drawer-open')).toBe(true);
     expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-left')).toBe(true);
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-bottom')).toBe(false);
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-top')).toBe(false);
     component.placement = 'right';
     fixture.detectChanges();
+    component.close();
+    fixture.detectChanges();
+    component.open();
     expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-left')).toBe(false);
     expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-right')).toBe(true);
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-bottom')).toBe(false);
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-top')).toBe(false);
+    component.placement = 'top';
+    fixture.detectChanges();
+    component.close();
+    fixture.detectChanges();
+    component.open();
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-left')).toBe(false);
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-right')).toBe(false);
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-bottom')).toBe(false);
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-top')).toBe(true);
+    component.placement = 'bottom';
+    fixture.detectChanges();
+    component.close();
+    fixture.detectChanges();
+    component.open();
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-left')).toBe(false);
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-right')).toBe(false);
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-bottom')).toBe(true);
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-top')).toBe(false);
+    component.close();
+    fixture.detectChanges();
+    component.placement = 'Invalid';
+    fixture.detectChanges();
+    component.open();
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-left')).toBe(false);
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-right')).toBe(false);
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-bottom')).toBe(false);
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).classList.contains('ant-drawer-top')).toBe(false);
     component.close();
     fixture.detectChanges();
   });
@@ -211,6 +267,23 @@ describe('NzDrawerComponent', () => {
     fixture.detectChanges();
   });
 
+  it('should nzOffsetY work', () => {
+    component.open();
+    component.placement = 'top';
+    component.height = '300px';
+    component.offsetY = 100;
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer').classList.contains('ant-drawer-open')).toBe(true);
+    expect((overlayContainerElement.querySelector('.ant-drawer .ant-drawer-content-wrapper') as HTMLElement).style.transform).toBe('translateY(100px)');
+    fixture.detectChanges();
+    component.placement = 'bottom';
+    component.offsetY = 100;
+    fixture.detectChanges();
+    expect((overlayContainerElement.querySelector('.ant-drawer .ant-drawer-content-wrapper') as HTMLElement).style.transform).toBe('translateY(-100px)');
+    component.close();
+    fixture.detectChanges();
+  });
+
 });
 
 @Component({
@@ -228,9 +301,11 @@ describe('NzDrawerComponent', () => {
       [nzMask]="showMask"
       [nzVisible]="visible"
       [nzWidth]="width"
+      [nzHeight]="height"
       [nzPlacement]="placement"
       [nzTitle]="title"
       [nzOffsetX]="offsetX"
+      [nzOffsetY]="offsetY"
       (nzOnClose)="close()">
       <p>Some contents...</p>
       <p>Some contents...</p>
@@ -247,8 +322,10 @@ class NzTestDrawerComponent {
   title = null;
   stringTitle = 'test';
   width: string | number = '300px';
+  height: string | number = '300px';
   placement = 'left';
   offsetX = 0;
+  offsetY = 0;
   @ViewChild('customTitle') templateTitle: TemplateRef<void>;
 
   @ViewChild(NzDrawerComponent) drawerComponent: NzDrawerComponent;
