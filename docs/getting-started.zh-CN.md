@@ -5,7 +5,7 @@ title: 快速上手
 
 NG-ZORRO 致力于提供给程序员**愉悦**的开发体验。
 
-<blockquote style="border-color: red;"><p><strong>官方指南假设你已了解关于 HTML、CSS 和 JavaScript 的中级知识，并且已经完全掌握了 Angular 及配套设施的正确开发方式。如果你刚开始学习前端或者 Angular ，将框架作为你的第一步可能不是最好的主意 —— 掌握好基础知识再来吧！</strong></p></blockquote>
+<blockquote style="border-color: red;"><p><strong>官方指南假设你已了解关于 HTML、CSS 和 JavaScript 的中级知识，并且已经完全掌握了 Angular 及配套设施的正确开发方式。如果你刚开始学习前端或者 Angular ，将框架作为你的第一步可能不是最好的主意 —— 掌握好基础知识再来吧！</strong></p><p><a href="https://github.com/NG-ZORRO/today-ng-steps" target="_blank">我们为你准备了一套教程</a>，能够帮助你快速上手 NG-ZORRO。</p></blockquote>
 
 ## 在线演示
 
