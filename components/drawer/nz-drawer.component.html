@@ -2,14 +2,18 @@
   <div
     class="ant-drawer"
     [class.ant-drawer-open]="isOpen"
+    [class.ant-drawer-top]="nzPlacement === 'top'"
+    [class.ant-drawer-bottom]="nzPlacement === 'bottom'"
     [class.ant-drawer-right]="nzPlacement === 'right'"
     [class.ant-drawer-left]="nzPlacement === 'left'">
     <div  class="ant-drawer-mask" (click)="maskClick($event)" *ngIf="nzMask" [style.zIndex]="nzZIndex" [ngStyle]="nzMaskStyle"></div>
     <div class="ant-drawer-content-wrapper {{ nzWrapClassName }}"
          [style.zIndex]="nzZIndex"
-          [style.transform]="transform">
+         [style.width]="width"
+         [style.height]="height"
+         [style.transform]="transform">
       <div class="ant-drawer-content">
-        <div style="overflow: auto; height: 100%;" [style.width]="width">
+        <div class="ant-drawer-wrapper-body">
           <div *ngIf="nzTitle" class="ant-drawer-header">
             <div class="ant-drawer-title">
               <ng-container [ngSwitch]="true">
