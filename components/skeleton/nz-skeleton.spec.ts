@@ -41,12 +41,12 @@ describe('skeleton', () => {
       expect(dl.nativeElement.querySelector('.ant-skeleton-title').style.width).toBe('50%');
       testComp.nzParagraph = false;
       fixture.detectChanges();
-      expect(dl.nativeElement.querySelector('.ant-skeleton-title').style.width).toBe('100%');
+      expect(dl.nativeElement.querySelector('.ant-skeleton-title').style.width).toBe('');
     });
     it('should customize width props work', () => {
       testComp.nzTitle = true;
       fixture.detectChanges();
-      expect(dl.nativeElement.querySelector('.ant-skeleton-title').style.width).toBe('100%');
+      expect(dl.nativeElement.querySelector('.ant-skeleton-title').style.width).toBe('');
       testComp.nzTitle = { width: '50%' };
       fixture.detectChanges();
       expect(dl.nativeElement.querySelector('.ant-skeleton-title').style.width).toBe('50%');
@@ -92,26 +92,26 @@ describe('skeleton', () => {
       fixture.detectChanges();
       let paragraphs = dl.nativeElement.querySelectorAll('.ant-skeleton-paragraph > li');
       expect(paragraphs.length).toBe(2);
-      expect(paragraphs[0].style.width).toBe('100%');
-      expect(paragraphs[1].style.width).toBe('100%');
+      expect(paragraphs[0].style.width).toBe('');
+      expect(paragraphs[1].style.width).toBe('');
       testComp.nzAvatar = false;
       fixture.detectChanges();
       paragraphs = dl.nativeElement.querySelectorAll('.ant-skeleton-paragraph > li');
       expect(paragraphs.length).toBe(3);
-      expect(paragraphs[1].style.width).toBe('100%');
+      expect(paragraphs[1].style.width).toBe('');
       expect(paragraphs[2].style.width).toBe('61%');
     });
     it('should width type is string or number work', () => {
       testComp.nzParagraph = { width: 100 };
       fixture.detectChanges();
       let paragraphs = dl.nativeElement.querySelectorAll('.ant-skeleton-paragraph > li');
-      expect(paragraphs[0].style.width).toBe('100%');
+      expect(paragraphs[0].style.width).toBe('');
       expect(paragraphs[1].style.width).toBe('100px');
       expect(paragraphs[2]).toBeFalsy();
       testComp.nzParagraph = { width: 100, rows: 3 };
       fixture.detectChanges();
       paragraphs = dl.nativeElement.querySelectorAll('.ant-skeleton-paragraph > li');
-      expect(paragraphs[1].style.width).toBe('100%');
+      expect(paragraphs[1].style.width).toBe('');
       expect(paragraphs[2].style.width).toBe('100px');
     });
     it('should define width type is Array work', () => {
@@ -125,7 +125,7 @@ describe('skeleton', () => {
       fixture.detectChanges();
       paragraphs = dl.nativeElement.querySelectorAll('.ant-skeleton-paragraph > li');
       expect(paragraphs[2].style.width).toBe('90%');
-      expect(paragraphs[3].style.width).toBe('100%');
+      expect(paragraphs[3].style.width).toBe('');
     });
   });
 });

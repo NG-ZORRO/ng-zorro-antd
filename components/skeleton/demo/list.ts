@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
     <nz-list [nzDataSource]="listData" [nzRenderItem]="item" [nzItemLayout]="'vertical'">
       <ng-template #item let-item>
         <nz-list-item [nzContent]="loading?' ':item.content" [nzActions]="loading?[]:[starAction,likeAction,msgAction]" [nzExtra]="loading?'':extra">
-          <nz-skeleton [nzLoading]="loading" [nzActive]="true">
+          <nz-skeleton [nzLoading]="loading" [nzActive]="true" [nzAvatar]="true">
             <ng-template #starAction><i class="anticon anticon-star-o" style="margin-right: 8px;"></i> 156</ng-template>
             <ng-template #likeAction><i class="anticon anticon-like-o" style="margin-right: 8px;"></i> 156</ng-template>
             <ng-template #msgAction><i class="anticon anticon-message" style="margin-right: 8px;"></i> 2</ng-template>

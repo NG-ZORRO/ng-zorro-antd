@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { AvatarShape, NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle } from './nz-skeleton.type';
+import { AvatarShape, AvatarSize, NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle } from './nz-skeleton.type';
 
 @Component({
   selector: 'nz-skeleton',
@@ -24,7 +24,7 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   @Input() nzAvatar: NzSkeletonAvatar | boolean = false;
   @Input() nzParagraph: NzSkeletonParagraph | boolean = true;
 
-  private getTitleBasicProps(): NzSkeletonTitle {
+  private getTitleProps(): NzSkeletonTitle {
     const hasAvatar: boolean = !!this.nzAvatar;
     const hasParagraph: boolean = !!this.nzParagraph;
     let width: string;
@@ -32,25 +32,22 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
       width = '38%';
     } else if (hasAvatar && hasParagraph) {
       width = '50%';
-    } else {
-      width = '100%';
     }
     return { width, ...this.getProps(this.nzTitle) };
   }
 
-  private getAvatarBasicProps(): NzSkeletonAvatar {
+  private getAvatarProps(): NzSkeletonAvatar {
     const shape: AvatarShape = (!!this.nzTitle && !this.nzParagraph) ? 'square' : 'circle';
-    return { shape, ...this.getProps(this.nzAvatar) };
+    const size: AvatarSize = 'large';
+    return { shape, size, ...this.getProps(this.nzAvatar) };
   }
 
-  private getParagraphBasicProps(): NzSkeletonParagraph {
+  private getParagraphProps(): NzSkeletonParagraph {
     const hasAvatar: boolean = !!this.nzAvatar;
     const hasTitle: boolean = !!this.nzTitle;
     const basicProps: NzSkeletonParagraph = {};
     // Width
-    if (hasAvatar && hasTitle) {
-      basicProps.width = '100%';
-    } else {
+    if (!hasAvatar || !hasTitle) {
       basicProps.width = '61%';
     }
     // Rows
@@ -69,7 +66,7 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
     return {};
   }
 
-  toCSSUnit(value: number | string = '100%'): string {
+  toCSSUnit(value: number | string = ''): string {
     if (typeof value === 'number') {
       return `${value}px`;
     } else if (typeof value === 'string') {
@@ -99,9 +96,9 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   }
 
   updateProps(): void {
-    this.title     = this.getTitleBasicProps();
-    this.avatar    = this.getAvatarBasicProps();
-    this.paragraph = this.getParagraphBasicProps();
+    this.title     = this.getTitleProps();
+    this.avatar    = this.getAvatarProps();
+    this.paragraph = this.getParagraphProps();
     this.rowsList  = [...Array(this.paragraph.rows)];
     this.widthList = this.getWidthList();
   }

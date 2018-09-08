@@ -73,14 +73,13 @@ describe('card', () => {
     fixture.detectChanges();
     expect(card.nativeElement.classList).toContain('ant-card');
   });
-  // this demo has changed to use nz-skeleton
-  // it('should loading work', () => {
-  //   const fixture = TestBed.createComponent(NzDemoCardLoadingComponent);
-  //   const card = fixture.debugElement.query(By.directive(NzCardComponent));
-  //   fixture.detectChanges();
-  //   expect(card.nativeElement.classList).toContain('ant-card-loading');
-  //   expect(card.nativeElement.querySelector('nz-card-loading').classList).toContain('ant-card-loading-content');
-  // });
+  it('should loading work', () => {
+    const fixture = TestBed.createComponent(NzDemoCardLoadingComponent);
+    const card = fixture.debugElement.query(By.directive(NzCardComponent));
+    fixture.detectChanges();
+    expect(card.nativeElement.classList).toContain('ant-card-loading');
+    expect(card.nativeElement.querySelector('nz-card-loading').classList).toContain('ant-card-loading-content');
+  });
   it('should grid work', () => {
     const fixture = TestBed.createComponent(NzDemoCardGridCardComponent);
     const card = fixture.debugElement.query(By.directive(NzCardComponent));

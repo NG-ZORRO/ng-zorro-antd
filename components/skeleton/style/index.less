@@ -57,6 +57,16 @@
       > li {
         height: 16px;
         background: @skeleton-color;
+        list-style: none;
+        width: 100%;
+
+        &:nth-child(3) {
+          width: 94%;
+        }
+
+        &:nth-child(4) {
+          width: 96%;
+        }
 
         + li {
           margin-top: 16px;
@@ -83,6 +93,10 @@
       .@{skeleton-paragraph-prefix-cls} > li {
         .skeleton-color();
       }
+    }
+
+    .@{skeleton-avatar-prefix-cls} {
+      .skeleton-color();
     }
   }
 }
