@@ -50,6 +50,9 @@ function changeVersion() {
   let version;
 
   function checkVersionNumber(cur, next) {
+    // Must be numbers and dots.
+    if (!/^[1-9][0-9.]{1,10}[0-9]$/.test(next)) { return false; }
+
     const curArr = cur.split('.');
     const nextArr = next.split('.');
     const length = curArr.length;
@@ -71,7 +74,7 @@ function changeVersion() {
       versionNumberValid = true;
       nextVersion = version;
     } else {
-      log.error(`The current version ${currentVersion} is not ahead of your input. Please check it.`);
+      log.error(`Your input ${version} is not after the current version ${currentVersion} or is unvalid. Please check it.`);
     }
   }
 
