@@ -45,18 +45,18 @@ describe('tag', () => {
     });
     it('should closeable work', fakeAsync(() => {
       fixture.detectChanges();
-      expect(tag.nativeElement.querySelector('.anticon-cross')).toBeNull();
+      expect(tag.nativeElement.querySelector('.anticon-close')).toBeNull();
       testComponent.mode = 'closeable';
       fixture.detectChanges();
-      expect(tag.nativeElement.querySelector('.anticon-cross')).toBeDefined();
-      tag.nativeElement.querySelector('.anticon-cross').click();
+      expect(tag.nativeElement.querySelector('.anticon-close')).toBeDefined();
+      tag.nativeElement.querySelector('.anticon-close').click();
       fixture.detectChanges();
       expect(testComponent.onClose).toHaveBeenCalledTimes(1);
       expect(testComponent.afterClose).toHaveBeenCalledTimes(0);
       tick(1000);
       fixture.detectChanges();
       expect(testComponent.afterClose).toHaveBeenCalledTimes(1);
-      expect(tag.nativeElement.querySelector('.anticon-cross')).toBeNull();
+      expect(tag.nativeElement.querySelector('.anticon-close')).toBeNull();
     }));
     it('should color work', () => {
       fixture.detectChanges();
@@ -97,12 +97,12 @@ describe('tag', () => {
     });
     it('should close prevent default', fakeAsync(() => {
       fixture.detectChanges();
-      expect(tag.nativeElement.querySelector('.anticon-cross')).toBeDefined();
-      tag.nativeElement.querySelector('.anticon-cross').click();
+      expect(tag.nativeElement.querySelector('.anticon-close')).toBeDefined();
+      tag.nativeElement.querySelector('.anticon-close').click();
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
-      expect(tag.nativeElement.querySelector('.anticon-cross')).toBeDefined();
+      expect(tag.nativeElement.querySelector('.anticon-close')).toBeDefined();
     }));
   });
 });

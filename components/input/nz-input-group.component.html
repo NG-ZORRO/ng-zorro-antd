@@ -1,6 +1,6 @@
 <span class="ant-input-wrapper ant-input-group" *ngIf="isAddOn">
   <span class="ant-input-group-addon" *ngIf="nzAddOnBefore || nzAddOnBeforeIcon">
-    <i [ngClass]="nzAddOnBeforeIcon" *ngIf="nzAddOnBeforeIcon"></i>
+    <i nz-icon [ngClass]="nzAddOnBeforeIcon" *ngIf="nzAddOnBeforeIcon"></i>
     <ng-container *ngIf="isAddOnBeforeString; else addOnBeforeTemplate">{{ nzAddOnBefore }}</ng-container>
     <ng-template #addOnBeforeTemplate>
       <ng-template [ngTemplateOutlet]="nzAddOnBefore"></ng-template>
@@ -11,7 +11,7 @@
     <ng-template *ngTemplateOutlet="affixTemplate"></ng-template>
   </span>
   <span class="ant-input-group-addon" *ngIf="nzAddOnAfter || nzAddOnAfterIcon">
-    <i [ngClass]="nzAddOnAfterIcon" *ngIf="nzAddOnAfterIcon"></i>
+    <i nz-icon [ngClass]="nzAddOnAfterIcon" *ngIf="nzAddOnAfterIcon"></i>
     <ng-container *ngIf="isAddOnAfterString; else addOnAfterTemplate">{{ nzAddOnAfter }}</ng-container>
     <ng-template #addOnAfterTemplate>
       <ng-template [ngTemplateOutlet]="nzAddOnAfter"></ng-template>
@@ -23,7 +23,8 @@
 </ng-container>
 <ng-template #affixTemplate>
   <span class="ant-input-prefix" *ngIf="nzPrefix || nzPrefixIcon">
-    <i [ngClass]="nzPrefixIcon" *ngIf="nzPrefixIcon"></i>
+    <!-- TODO: should have a class to set its color, cc: antd-->
+    <i nz-icon [ngClass]="nzPrefixIcon" *ngIf="nzPrefixIcon" style="color: rgba(0, 0, 0, 0.25)"></i>
     <ng-container *ngIf="isPrefixString; else prefixTemplate">{{ nzPrefix }}</ng-container>
     <ng-template #prefixTemplate>
       <ng-template [ngTemplateOutlet]="nzPrefix"></ng-template>
@@ -31,7 +32,7 @@
   </span>
   <ng-template *ngTemplateOutlet="contentTemplate"></ng-template>
   <span class="ant-input-suffix" *ngIf="nzSuffix || nzSuffixIcon">
-    <i [ngClass]="nzSuffixIcon" *ngIf="nzSuffixIcon"></i>
+    <i nz-icon [ngClass]="nzSuffixIcon" *ngIf="nzSuffixIcon"></i>
     <ng-container *ngIf="isSuffixString; else suffixTemplate">{{ nzSuffix }}</ng-container>
     <ng-template #suffixTemplate>
       <ng-template [ngTemplateOutlet]="nzSuffix"></ng-template>

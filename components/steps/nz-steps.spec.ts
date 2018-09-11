@@ -2,6 +2,8 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { NzIconModule } from '../icon/nz-icon.module';
+
 import { NzStepComponent } from './nz-step.component';
 import { NzStepsComponent } from './nz-steps.component';
 import { NzStepsModule } from './nz-steps.module';
@@ -9,7 +11,7 @@ import { NzStepsModule } from './nz-steps.module';
 describe('steps', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzStepsModule ],
+      imports     : [ NzStepsModule, NzIconModule ],
       declarations: [ NzTestOuterStepsComponent, NzTestInnerStepStringComponent, NzTestInnerStepTemplateComponent, NzTestStepForComponent ]
     });
     TestBed.compileComponents();
@@ -218,9 +220,9 @@ describe('steps', () => {
     });
     it('should icon display correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toBe('anticon anticon-smile-o');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toBe('anticon anticon-smile-o');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toBe('anticon anticon-smile-o');
+      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toContain('anticon-smile-o');
+      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toContain('anticon-smile-o');
+      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toContain('anticon-smile-o');
     });
   });
   describe('step ng for', () => {
@@ -270,7 +272,7 @@ export class NzTestOuterStepsComponent {
     </nz-steps>
     <ng-template #titleTemplate>titleTemplate</ng-template>
     <ng-template #descriptionTemplate>descriptionTemplate</ng-template>
-    <ng-template #iconTemplate><i class="anticon anticon-smile-o"></i></ng-template>
+    <ng-template #iconTemplate><i nz-icon type="smile-o"></i></ng-template>
   `
 })
 export class NzTestInnerStepStringComponent {
@@ -294,7 +296,7 @@ export class NzTestInnerStepStringComponent {
     </nz-steps>
     <ng-template #titleTemplate>titleTemplate</ng-template>
     <ng-template #descriptionTemplate>descriptionTemplate</ng-template>
-    <ng-template #iconTemplate><i class="anticon anticon-smile-o"></i></ng-template>
+    <ng-template #iconTemplate><i nz-icon type="smile-o"></i></ng-template>
   `
 })
 export class NzTestInnerStepTemplateComponent {

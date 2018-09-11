@@ -12,7 +12,7 @@ import { Component } from '@angular/core';
       <input type="text" nz-input placeholder="input search text">
     </nz-input-group>
     <ng-template #suffixIconButton>
-      <button nz-button nzType="primary" nzSearch><i class="anticon anticon-search"></i></button>
+      <button nz-button nzType="primary" nzSearch><i nz-icon type="search"></i></button>
     </ng-template>
     <br>
     <br>

@@ -23,6 +23,7 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
   validateString: string;
   controlStatus: string;
   controlClassMap;
+  iconType: string;
   @ContentChild(NgControl) validateControl: FormControl;
 
   @Input()
@@ -85,6 +86,18 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
       [ `has-success` ]  : this.validateString === 'success' || this.controlStatus === 'VALID',
       [ `has-feedback` ] : this.nzHasFeedback
     };
+
+    if (this.controlClassMap[ 'has-warning' ]) {
+      this.iconType = 'exclamation-circle-fill';
+    } else if (this.controlClassMap[ 'is-validating' ]) {
+      this.iconType = 'loading';
+    } else if (this.controlClassMap['has-error']) {
+      this.iconType = 'close-circle-fill';
+    } else if (this.controlClassMap['has-success']) {
+      this.iconType = 'check-circle-fill';
+    } else {
+      this.iconType = '';
+    }
   }
 
   ngOnInit(): void {

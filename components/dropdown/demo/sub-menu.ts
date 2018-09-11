@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <nz-dropdown (nzVisibleChange)="change($event)">
       <a nz-dropdown>
-        Cascading menu <i class="anticon anticon-down"></i>
+        Cascading menu <i nz-icon type="down"></i>
       </a>
       <ul nz-menu>
         <li nz-menu-item>1st menu item</li>

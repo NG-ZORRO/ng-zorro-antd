@@ -11,7 +11,7 @@ import { NzMessageService, UploadFile } from 'ng-zorro-antd';
       [(nzFileList)]="fileList"
       [nzShowButton]="fileList.length < 3"
       [nzPreview]="handlePreview">
-        <i class="anticon anticon-plus"></i>
+        <i nz-icon type="plus"></i>
         <div class="ant-upload-text">Upload</div>
     </nz-upload>
     <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible=false">

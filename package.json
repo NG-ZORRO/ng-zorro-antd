@@ -3,6 +3,9 @@
   "version": "0.0.0-NOT-USED",
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "scripts": {
     "start": "ng serve -port 0",
     "build": "node ./scripts/site/generate-site init && ng build",
@@ -31,6 +34,7 @@
   },
   "dependencies": {
     "@angular/cdk": "^6.0.0",
+    "@ant-design/icons-angular": "0.0.1-alpha.1",
     "date-fns": "^1.29.0"
   },
   "devDependencies": {

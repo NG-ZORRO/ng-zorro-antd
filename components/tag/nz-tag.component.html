@@ -6,5 +6,5 @@
   (@tagAnimation.done)="afterAnimation($event)"
   (click)="updateCheckedStatus()">
   <ng-content></ng-content>
-  <i class="anticon anticon-cross" *ngIf="nzMode==='closeable'" (click)="closeTag($event)"></i>
+  <i nz-icon type="close" *ngIf="nzMode==='closeable'" (click)="closeTag($event)"></i>
 </div>

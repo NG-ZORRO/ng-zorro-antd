@@ -14,6 +14,23 @@ timeline: true
 
 ---
 
+## 1.7.0
+
+`date`
+
+### Note for SVG icon
+
+After `1.7.0` version，we synced to Ant Design `3.9.x` and replaced font icons with svg icons which bring benefits below:
+
+- Complete offline usage of icon, no dependency of alipay cdn font icon file and no more empty square during downloading than no need to deploy icon font files locally either.
+- Much more display accuracy in lower-level screens.
+- Support multiple colors for icon.
+- No need to change built-in icons with overriding styles by providing more props in component.
+
+We make the old API compatible to this new component. You don't need to change your code but some configuration is required perhaps. You can find more about Icon API in section ["Svg icon"](/components/icon/en#svg-icons) and ["Static loading and dynamic loading"](/components/icon/en#static-loading-and-dynamic-loading).
+
+---
+
 ## 1.6.0
 `2018-09-22`
 

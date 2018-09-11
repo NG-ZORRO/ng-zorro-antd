@@ -1,7 +1,9 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
-import { en_US, zh_CN, NzI18nService, NzMessageService } from 'ng-zorro-antd';
+import { IconDefinition } from '@ant-design/icons-angular';
+import * as AllIcons from '@ant-design/icons-angular/icons';
+import { en_US, zh_CN, NzI18nService, NzIconService, NzMessageService } from 'ng-zorro-antd';
 import { environment } from '../environments/environment';
 import { ROUTER_LIST } from './router';
 
@@ -42,8 +44,14 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.hide = !this.hide;
   }
 
-  constructor(private router: Router, private title: Title, private nzI18nService: NzI18nService, private msg: NzMessageService) {
-
+  constructor(private router: Router, private title: Title, private nzI18nService: NzI18nService, private msg: NzMessageService, private iconService: NzIconService) {
+    const antDesignIcons = AllIcons as {
+      [key: string]: IconDefinition;
+    };
+    this.iconService.addIcon(...Object.keys(antDesignIcons).map(
+      key => antDesignIcons[key])
+    );
+    this.iconService.twoToneColor = { primaryColor: '#1890ff' };
   }
 
   navigateToPage(url) {

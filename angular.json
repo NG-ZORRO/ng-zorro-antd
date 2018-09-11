@@ -19,7 +19,12 @@
             "assets": [
               "site/src/assets",
               "site/src/favicon.ico",
-              "site/src/404.html"
+              "site/src/404.html",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons/inline-svg/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "site/src/styles.less"
@@ -54,8 +59,8 @@
             "browserTarget": "ng-zorro-antd-doc:build"
           },
           "configurations": {
-            "prod": {
-              "browserTarget": "ng-zorro-antd-doc:build:prod"
+            "production": {
+              "browserTarget": "ng-zorro-antd-doc:build:production"
             }
           }
         },

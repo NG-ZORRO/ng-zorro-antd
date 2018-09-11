@@ -11,13 +11,13 @@ import { Component } from '@angular/core';
       <ul nz-menu [nzMode]="'inline'" nzTheme='dark' [nzInlineCollapsed]="isCollapsed">
         <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="isCollapsed ? 'Navigation One' : ''">
           <span title>
-            <i class="anticon anticon-mail"></i>
+            <i nz-icon type="mail"></i>
             <span>Navigation One</span>
           </span>
         </li>
         <li nz-submenu>
           <span title>
-            <i class="anticon anticon-appstore"></i>
+            <i nz-icon type="appstore"></i>
             <span>Navigation Two</span>
           </span>
           <ul>
@@ -34,7 +34,7 @@ import { Component } from '@angular/core';
         </li>
         <li nz-submenu>
           <span title>
-            <i class="anticon anticon-setting"></i>
+            <i nz-icon type="setting"></i>
             <span>Navigation Three</span>
           </span>
           <ul>

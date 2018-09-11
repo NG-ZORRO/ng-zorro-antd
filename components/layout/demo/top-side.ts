@@ -22,7 +22,7 @@ import { Component } from '@angular/core';
           <nz-sider [nzWidth]="200" style="background:#fff">
             <ul nz-menu [nzMode]="'inline'" style="height:100%">
               <li nz-submenu>
-                <span title><i class="anticon anticon-user"></i>subnav 1</span>
+                <span title><i nz-icon type="user"></i>subnav 1</span>
                 <ul>
                   <li nz-menu-item>option1</li>
                   <li nz-menu-item>option2</li>
@@ -31,7 +31,7 @@ import { Component } from '@angular/core';
                 </ul>
               </li>
               <li nz-submenu>
-                <span title><i class="anticon anticon-laptop"></i>subnav 2</span>
+                <span title><i nz-icon type="laptop"></i>subnav 2</span>
                 <ul>
                   <li nz-menu-item>option5</li>
                   <li nz-menu-item>option6</li>
@@ -40,7 +40,7 @@ import { Component } from '@angular/core';
                 </ul>
               </li>
               <li nz-submenu>
-                <span title><i class="anticon anticon-notification"></i>subnav 3</span>
+                <span title><i nz-icon type="notification"></i>subnav 3</span>
                 <ul>
                   <li nz-menu-item>option9</li>
                   <li nz-menu-item>option10</li>

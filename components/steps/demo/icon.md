@@ -7,10 +7,10 @@ title:
 
 ## zh-CN
 
-通过设置 `nz-step` 的 `nzIcon` 属性，可以启用自定义图标。
+通过设置 `nz-step` 的 `nzIcon` 属性，可以启用自定义图标。旧的 API 仍然可用，但我们建议您迁移到新的 API。
 
 ## en-US
 
-You can use your own custom icons by setting the property `nzIcon` for `nz-step`.
+You can use your own custom icons by setting the property `nzIcon` for `nz-step`. Old API is still compatible but we strongly suggest the new API.
 
 

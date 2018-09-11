@@ -22,7 +22,7 @@ import { environment } from '../../../environments/environment';
         <div class="code-box-title">
           <a (click)="navigateToFragment()">{{ nzTitle }}
             <a class="edit-button" [attr.href]="nzHref" target="_blank" style="">
-              <i class="anticon anticon-edit"></i>
+              <i nz-icon type="edit"></i>
             </a>
           </a>
         </div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ArrowRightOutline } from '@ant-design/icons-angular/icons';
 
 @Component({
   selector: 'nz-demo-breadcrumb-separator',
@@ -28,7 +29,7 @@ import { Component } from '@angular/core';
         An Application
       </nz-breadcrumb-item>
     </nz-breadcrumb>
-    <ng-template #iconTemplate><i class="anticon anticon-arrow-right"></i></ng-template>
+    <ng-template #iconTemplate><i nz-icon type="arrow-right"></i></ng-template>
   `,
   styles  : [
       `

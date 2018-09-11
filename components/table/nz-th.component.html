@@ -14,7 +14,7 @@
   </ng-container>
   <nz-dropdown nzPlacement="bottomLeft">
     <div nz-dropdown class="ant-table-selection-down">
-      <i class="anticon anticon-down"></i>
+      <i nz-icon type="down"></i>
     </div>
     <ul nz-menu class="ant-table-selection-menu">
       <li nz-menu-item *ngFor="let selection of nzSelections" (click)="selection.onSelect()">{{selection.text}}</li>
@@ -32,7 +32,7 @@
         [class.off]="nzSort != 'ascend'"
         title="↑"
         (click)="setSortValue('ascend')">
-        <i class="anticon anticon-caret-up"></i>
+        <i nz-icon type="caret-up"></i>
       </span>
   <span
     class="ant-table-column-sorter-down"
@@ -40,11 +40,11 @@
     [class.off]="nzSort != 'descend'"
     title="↓"
     (click)="setSortValue('descend')">
-        <i class="anticon anticon-caret-down"></i>
+        <i nz-icon type="caret-down"></i>
       </span>
 </div>
 <nz-dropdown nzTrigger="click" *ngIf="nzShowFilter" [nzClickHide]="false" [hasFilterButton]="true" (nzVisibleChange)="dropDownVisibleChange($event)">
-  <i class="anticon anticon-filter" [class.ant-table-filter-selected]="hasFilterValue" nz-dropdown></i>
+  <i nz-icon type="filter" [class.ant-table-filter-selected]="hasFilterValue" nz-dropdown></i>
   <ul nz-menu>
     <ng-container *ngIf="nzFilterMultiple">
       <li nz-menu-item *ngFor="let filter of multipleFilterList" (click)="checkMultiple(filter)">
