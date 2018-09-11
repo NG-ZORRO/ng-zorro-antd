@@ -1,6 +1,5 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
-const wrench = require('wrench');
 const parseDocMdUtil = require('./utils/parse-doc-md');
 const parseDemoMdUtil = require('./utils/parse-demo-md');
 const nameWithoutSuffixUtil = require('./utils/name-without-suffix');
@@ -15,13 +14,13 @@ const isSyncSpecific = target && (target !== 'init');
 const showCasePath = path.resolve(__dirname, '../site');
 
 if (!target) {
-  wrench.rmdirSyncRecursive(`${showCasePath}/src`, true);
-  wrench.copyDirSyncRecursive(path.resolve(__dirname, '_site/src'), `${showCasePath}/src`);
+  fs.removeSync(`${showCasePath}/src`);
+  fs.copySync(path.resolve(__dirname, '_site/src'), `${showCasePath}/src`);
 } else if (target === 'init') {
-  wrench.rmdirSyncRecursive(`${showCasePath}`, true);
-  wrench.copyDirSyncRecursive(path.resolve(__dirname, '_site'), `${showCasePath}`);
+  fs.removeSync(`${showCasePath}`);
+  fs.copySync(path.resolve(__dirname, '_site'), `${showCasePath}`);
 } else {
-  wrench.rmdirSyncRecursive(`${showCasePath}/src/app/${target}`, true);
+  fs.removeSync(`${showCasePath}/src/app/${target}`);
 }
 const showCaseTargetPath = `${showCasePath}/src/app/`;
 // 读取components文件夹
