@@ -242,13 +242,13 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     return this.nzModalType === type;
   }
 
-  private onClickCloseBtn(): void {
+  public onClickCloseBtn(): void {
     if (this.nzVisible) {
       this.onClickOkCancel('cancel');
     }
   }
 
-  private onClickOkCancel(type: 'ok' | 'cancel'): void {
+  public onClickOkCancel(type: 'ok' | 'cancel'): void {
     const trigger = { 'ok': this.nzOnOk, 'cancel': this.nzOnCancel }[ type ];
     const loadingKey = { 'ok': 'nzOkLoading', 'cancel': 'nzCancelLoading' }[ type ];
     if (trigger instanceof EventEmitter) {
@@ -269,19 +269,19 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     }
   }
 
-  private isNonEmptyString(value: {}): boolean {
+  public isNonEmptyString(value: {}): boolean {
     return typeof value === 'string' && value !== '';
   }
 
-  private isTemplateRef(value: {}): boolean {
+  public isTemplateRef(value: {}): boolean {
     return value instanceof TemplateRef;
   }
 
-  private isComponent(value: {}): boolean {
+  public isComponent(value: {}): boolean {
     return value instanceof Type;
   }
 
-  private isModalButtons(value: {}): boolean {
+  public isModalButtons(value: {}): boolean {
     return Array.isArray(value) && value.length > 0;
   }
 
@@ -305,7 +305,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   // Lookup a button's property, if the prop is a function, call & then return the result, otherwise, return itself.
-  private getButtonCallableProp(options: ModalButtonOptions<T>, prop: string): {} {
+  public getButtonCallableProp(options: ModalButtonOptions<T>, prop: string): {} {
     const value = options[ prop ];
     const args = [];
     if (this.contentComponentRef) {
@@ -315,7 +315,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   // On nzFooter's modal button click
-  private onButtonClick(button: ModalButtonOptions<T>): void {
+  public onButtonClick(button: ModalButtonOptions<T>): void {
     const result = this.getButtonCallableProp(button, 'onClick'); // Call onClick directly
     if (isPromise(result)) {
       button.loading = true;

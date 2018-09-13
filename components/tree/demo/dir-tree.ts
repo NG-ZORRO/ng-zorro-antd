@@ -149,7 +149,7 @@ export class NzDemoTreeDirTreeComponent implements OnInit {
     }
   }
 
-  @HostListener('mousedown', [ '$event' ])
+  @HostListener('mousedown')
   mouseDown(): void {
     // do not prevent
     if (this.dragNodeElement && this.dragNodeElement.className.indexOf('is-dragging') > -1) {
