@@ -134,7 +134,7 @@ import { Component, OnInit } from '@angular/core';
         <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
           <tr>
             <td nzShowExpand *ngIf="expandable" [(nzExpand)]="data.expand"></td>
-            <td nzShowCheckbox *ngIf="checkbox" [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus($event)"></td>
+            <td nzShowCheckbox *ngIf="checkbox" [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
             <td>{{data.name}}</td>
             <td>{{data.age}}</td>
             <td>{{data.address}}</td>

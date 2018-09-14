@@ -259,7 +259,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   @HostListener('keydown', [ '$event' ])
-  private _handleKeydown(event: KeyboardEvent): void {
+  _handleKeydown(event: KeyboardEvent): void {
     if (this._disabled) { return; }
 
     const keyCode = event.keyCode;

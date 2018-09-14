@@ -399,7 +399,7 @@ export class AppModule { }
     });
   }
 
-  constructor(@Inject(DOCUMENT) private dom: Document, private sanitizer: DomSanitizer, private _el: ElementRef, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(@Inject(DOCUMENT) private dom: any, private sanitizer: DomSanitizer, private _el: ElementRef, private activatedRoute: ActivatedRoute, private router: Router) {
 
   }
 

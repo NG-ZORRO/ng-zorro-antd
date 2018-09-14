@@ -18,10 +18,10 @@ import {
   }
 })
 export class NzCardMetaComponent {
+  isDescriptionString: boolean;
+  isTitleString: boolean;
   private _title: string | TemplateRef<void>;
-  private isTitleString: boolean;
   private _description: string | TemplateRef<void>;
-  private isDescriptionString: boolean;
   @Input() nzAvatar: TemplateRef<void>;
 
   @Input()
