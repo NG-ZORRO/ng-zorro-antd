@@ -14,6 +14,7 @@ import { NzCarouselModule } from './carousel/nz-carousel.module';
 import { NzCascaderModule } from './cascader/nz-cascader.module';
 import { NzCheckboxModule } from './checkbox/nz-checkbox.module';
 import { NzCollapseModule } from './collapse/nz-collapse.module';
+import { NzWaveModule } from './core/wave/nz-wave.module';
 import { NzDatePickerModule } from './date-picker/date-picker.module';
 import { NzDividerModule } from './divider/nz-divider.module';
 import { NzDrawerModule } from './drawer/nz-drawer.module';
@@ -51,7 +52,6 @@ import { NzTransferModule } from './transfer/nz-transfer.module';
 import { NzTreeSelectModule } from './tree-select/nz-tree-select.module';
 import { NzTreeModule } from './tree/nz-tree.module';
 import { NzUploadModule } from './upload/nz-upload.module';
-import { NzWaveModule } from './core/wave/nz-wave.module';
 
 export * from './affix';
 export * from './alert';
@@ -69,6 +69,7 @@ export * from './collapse';
 export * from './date-picker';
 export * from './divider';
 export * from './dropdown';
+export * from './drawer';
 export * from './form';
 export * from './grid';
 export * from './i18n';
@@ -162,7 +163,6 @@ export * from './core/wave';
     NzCascaderModule,
     NzTreeModule,
     NzTreeSelectModule,
-    NzTimePickerModule,
     NzWaveModule
   ]
 })
