@@ -102,6 +102,7 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
   isOpen: boolean = false;
   filteredSuggestions: string[];
   suggestionTemplate: TemplateRef<{ $implicit: any }> | null = null; // tslint:disable-line:no-any
+  activeIndex: number = -1;
 
   private _suggestions: string[];
   private _placement: MentionPlacement = 'bottom';
@@ -109,7 +110,6 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
   private cursorMention: string;
   private cursorMentionStart: number;
   private cursorMentionEnd: number;
-  private activeIndex: number = -1;
   private overlayRef: OverlayRef | null;
   private portal: TemplatePortal<{}>;
   private positionStrategy: FlexibleConnectedPositionStrategy;

@@ -7,7 +7,7 @@
     (compositionend)="isComposing = false"
     (keydown)="onKeyDownInput($event)"
     [ngModel]="inputValue"
-    (ngModelChange)="setInputValue($event, true)"
+    (ngModelChange)="setInputValue($event)"
     [disabled]="nzDisabled">
 </ng-template>
 

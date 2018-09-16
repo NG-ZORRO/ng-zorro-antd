@@ -15,7 +15,8 @@ export class InnerPopupComponent implements OnInit, OnChanges {
 
   @Input() locale: NzCalendarI18nInterface;
   @Input() showTimePicker: boolean;
-  @Input() timeOptions: object;
+  // tslint:disable-next-line:no-any
+  @Input() timeOptions: any;
   @Input() enablePrev: boolean;
   @Input() enableNext: boolean;
   @Input() disabledDate: DisabledDateFn;

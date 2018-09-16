@@ -39,7 +39,7 @@
       <span class="ant-pagination-total-text" *ngIf="nzShowTotal">
         <ng-template
           [ngTemplateOutlet]="nzShowTotal"
-          [ngTemplateOutletContext]="{ $implicit: nzTotal,range:[(nzPageIndex-1)*nzPageSize+1,nzPageIndex*nzPageSize] }">
+          [ngTemplateOutletContext]="{ $implicit: nzTotal,range:[(nzPageIndex-1)*nzPageSize+1, min(nzPageIndex*nzPageSize, nzTotal)] }">
         </ng-template>
       </span>
     <li

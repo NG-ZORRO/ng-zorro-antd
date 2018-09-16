@@ -27,7 +27,7 @@
             [class.ant-fullcalendar-selected-day]="row === activeDateRow && col === activeDateCol"
             [class.ant-fullcalendar-last-month-cell]="day.rel === 'last'"
             [class.ant-fullcalendar-next-month-btn-day]="day.rel === 'next'"
-            (click)="onDateSelect(day.value, row, col)">
+            (click)="onDateSelect(day.value)">
             <div class="ant-fullcalendar-date">
               <ng-container *ngIf="dateFullCell else defaultCell">
                 <ng-container *ngTemplateOutlet="dateFullCell; context: {$implicit: day.value}"></ng-container>

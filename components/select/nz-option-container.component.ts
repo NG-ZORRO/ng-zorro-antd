@@ -213,7 +213,7 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   }
 
   updateListOfFilterOption(): void {
-    this.listOfFilterOption = new NzOptionPipe().transform(this.listOfAllTemplateOption.concat(this.listOfTagOption), this.nzSearchValue, this.nzFilterOption, this.nzServerSearch);
+    this.listOfFilterOption = new NzOptionPipe().transform(this.listOfAllTemplateOption.concat(this.listOfTagOption), this.nzSearchValue, this.nzFilterOption, this.nzServerSearch) as NzOptionComponent[];
     if (this.nzSearchValue) {
       this.setActiveOption(this.listOfFilterOption[ 0 ]);
     }

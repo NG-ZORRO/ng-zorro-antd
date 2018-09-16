@@ -393,13 +393,13 @@ export class AppModule { }
         '@angular/router'                  : '^6.0.0',
         '@angular/animations'              : '^6.0.0',
         'date-fns'                         : '^1.29.0',
-        'ng-zorro-antd'                    : '^1.4.0'
+        'ng-zorro-antd'                    : '^1.5.0'
       },
       tags        : [ 'stackblitz', 'sdk' ]
     });
   }
 
-  constructor(@Inject(DOCUMENT) private dom: Document, private sanitizer: DomSanitizer, private _el: ElementRef, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(@Inject(DOCUMENT) private dom: any, private sanitizer: DomSanitizer, private _el: ElementRef, private activatedRoute: ActivatedRoute, private router: Router) {
 
   }
 

@@ -9,5 +9,4 @@ import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
   declarations: [ NzBreadCrumbComponent, NzBreadCrumbItemComponent ],
   exports     : [ NzBreadCrumbComponent, NzBreadCrumbItemComponent ]
 })
-export class NzBreadCrumbModule {
-}
+export class NzBreadCrumbModule {}

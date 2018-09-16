@@ -141,7 +141,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       const clickTarget = event.target as HTMLElement;
 
       // 确保不是点击组件自身
-      if (clickTarget !== this._element.nativeElement && this.panelOpen) {
+      if (clickTarget !== this._element.nativeElement && !this.overlayRef.overlayElement.contains(clickTarget) && this.panelOpen) {
         this.closePanel();
       }
     });

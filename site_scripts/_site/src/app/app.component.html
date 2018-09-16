@@ -22,7 +22,7 @@
           </nz-select>
         </div>
         <button nz-button nzGhost nzSize="small" class="header-lang-button" (click)="switchLanguage(language==='zh'?'en':'zh')">{{language=='zh'?'English':'中文'}}</button>
-        <nz-select nzSize="small" class="version" style="width: 68px;" [ngModel]="currentVersion" (ngModelChange)="navigateToVersion($event)">
+        <nz-select nzSize="small" class="version" style="width: 72px;" [ngModel]="currentVersion" (ngModelChange)="navigateToVersion($event)">
           <nz-option *ngFor="let version of oldVersionList" [nzLabel]="version" [nzValue]="version"></nz-option>
           <nz-option [nzLabel]="currentVersion" [nzValue]="currentVersion"></nz-option>
         </nz-select>
