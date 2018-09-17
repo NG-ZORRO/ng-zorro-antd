@@ -52,7 +52,7 @@
     "date-fns": "^1.29.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.8.0",
+    "@angular-devkit/build-angular": "^0.7.0",
     "@angular/cli": "~6.2.1",
     "@angular/compiler-cli": "^6.1.0",
     "@angular/language-service": "^6.1.0",
@@ -93,7 +93,6 @@
     "core-js": "^2.5.4",
     "fs-extra": "^6.0.1",
     "hammerjs": "^2.0.8",
-    "karma-cli": "~1.0.1",
     "less": "^2.7.3",
     "less-plugin-clean-css": "^1.5.1",
     "marked": "^0.3.6",
