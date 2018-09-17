@@ -15,7 +15,7 @@ import { NzLayoutComponent } from './nz-layout.component';
 import { NzLayoutModule } from './nz-layout.module';
 import { NzSiderComponent } from './nz-sider.component';
 
-fdescribe('layout', () => {
+describe('layout', () => {
   let testComponent;
   let fixture;
   describe('basic', () => {
