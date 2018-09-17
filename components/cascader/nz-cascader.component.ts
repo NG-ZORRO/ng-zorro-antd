@@ -1227,7 +1227,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
         if (!sNode.isLeaf) {
           loopParent(sNode, disabled);
         }
-        if (sNode.isLeaf || !sNode.children) {
+        if (sNode.isLeaf || !sNode.children || !sNode.children.length) {
           loopChild(sNode, disabled);
         }
       });
@@ -1248,7 +1248,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
       path.pop();
     };
 
-    this.oldColumnsHolder[ 0 ].forEach(node => loopParent(node));
+    this.oldColumnsHolder[ 0 ].forEach(node => (node.isLeaf || !node.children || !node.children.length) ? loopChild(node) : loopParent(node));
     if (sorter) {
       results.sort((a, b) => sorter(a.path, b.path, this._inputValue));
     }
