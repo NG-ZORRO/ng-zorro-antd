@@ -24,7 +24,7 @@
     "integration-rollup": "npm run generate && cd integration/rollup && npm run integration",
     "lint": "tslint -c tslint.json 'components/*/*.ts'",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && node site_scripts/replace-scope-prefix.js",
-    "publish": "node ./publish_scripts/publish.js"
+    "release": "node ./publish_scripts/publish.js"
   },
   "main": "./bundles/antd.umd.js",
   "module": "./esm5/antd.js",
