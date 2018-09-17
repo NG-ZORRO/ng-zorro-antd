@@ -1441,6 +1441,30 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
     });
+    it('should support search a root node have no children ', (done) => {
+      fixture.detectChanges();
+      testComponent.nzShowSearch = true;
+      testComponent.nzOptions = options5;
+      fixture.detectChanges();
+      const spy = spyOn(testComponent.cascader, 'focus');
+      cascader.nativeElement.click();
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalled();
+      testComponent.cascader.inputValue = 'Roo';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearch).toBe(true);
+      expect(itemEl1.innerText).toBe('Root');
+      itemEl1.click();
+      fixture.whenStable().then(() => {
+        expect(testComponent.cascader.inSearch).toBe(false);
+        expect(testComponent.cascader.menuVisible).toBe(false);
+        expect(testComponent.cascader.inputValue).toBe('');
+        expect(testComponent.values.join(',')).toBe('root');
+        done();
+      });
+    });
   });
 
   describe('load data lazily', () => {
@@ -1730,6 +1754,40 @@ const options4 = [ {
       isLeaf: true
     } ]
   } ]
+} ];
+
+const options5 = [ {
+  value   : 'zhejiang',
+  label   : 'Zhejiang',
+  children: [ {
+    value   : 'hangzhou',
+    label   : 'Hangzhou',
+    children: [ {
+      value : 'xihu',
+      label : 'West Lake',
+      isLeaf: true
+    } ]
+  }, {
+    value : 'ningbo',
+    label : 'Ningbo',
+    isLeaf: true
+  } ]
+}, {
+  value   : 'jiangsu',
+  label   : 'Jiangsu',
+  children: [ {
+    value   : 'nanjing',
+    label   : 'Nanjing',
+    children: [ {
+      value : 'zhonghuamen',
+      label : 'Zhong Hua Men',
+      isLeaf: true
+    } ]
+  } ]
+}, {
+  value   : 'root',
+  label   : 'Root',
+  isLeaf: true
 } ];
 @Component({
   selector: 'nz-demo-cascader-default',
