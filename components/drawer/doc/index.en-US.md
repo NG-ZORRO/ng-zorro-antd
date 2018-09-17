@@ -23,7 +23,7 @@ A Drawer is a panel that is typically overlaid on top of a page and slides in fr
 | `[nzMask]` | Whether to show mask or not. | `boolean` | `true` |
 | `[nzMaskClosable]` | Clicking on the mask (area outside the Drawer) to close the Drawer or not. | `boolean` | `true` |
 | `[nzMaskStyle]` | Style for Drawer's mask element. | `object` | `{}` |
-| `[nzBodyStyle]` | Body style for modal body element. Such as height, padding etc. | `object` | `{}` |
+| `[nzBodyStyle]` | Body style for drawer body element. Such as height, padding etc. | `object` | `{}` |
 | `[nzTitle]` | The title for Drawer. | `string`  `TemplateRef<{}>` | - |
 | `[nzVisible]` | Whether the Drawer dialog is visible or not. | `boolean` | `false` |
 | `[nzPlacement]` | The placement of the Drawer. | `'top'` `'right'` `'bottom'` `'left'` | `'right'` |
