@@ -15,7 +15,7 @@ import { NzLayoutComponent } from './nz-layout.component';
 import { NzLayoutModule } from './nz-layout.module';
 import { NzSiderComponent } from './nz-sider.component';
 
-describe('layout', () => {
+fdescribe('layout', () => {
   let testComponent;
   let fixture;
   describe('basic', () => {
@@ -173,6 +173,34 @@ describe('layout', () => {
       expect(trigger).not.toBeNull();
     });
   });
+
+  describe('custom-zero-trigger', () => {
+    let sider;
+
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports     : [ NzLayoutModule ],
+        declarations: [ NzDemoLayoutCustomTriggerComponent ],
+        providers   : [],
+        schemas     : [ NO_ERRORS_SCHEMA ]
+      }).compileComponents();
+    }));
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzDemoLayoutCustomTriggerComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      sider = fixture.debugElement.query(By.directive(NzSiderComponent)).injector.get(NzSiderComponent);
+    });
+    it('should display custom zero trigger', () => {
+      testComponent.changeZeroWidthTrigger();
+      testComponent.isCollapsed = true;
+      fixture.detectChanges();
+      const trigger = fixture.debugElement.query(By.css('.ant-layout-sider-zero-width-trigger'));
+      expect(trigger).not.toBeNull();
+      expect(trigger.nativeElement.firstElementChild.classList.contains('anticon-up')).toBe(true);
+    });
+  });
+
   describe('responsive', () => {
     let sider;
 

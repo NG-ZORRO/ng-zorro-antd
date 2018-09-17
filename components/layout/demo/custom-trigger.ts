@@ -4,7 +4,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
   selector: 'nz-demo-layout-custom-trigger',
   template: `
     <nz-layout>
-      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate">
+      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzCollapsedWidth]="collapsedWidth" [nzTrigger]="triggerTemplate" [nzZeroTrigger]="zeroTriggerTemplate">
         <div class="logo">
         </div>
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
@@ -71,10 +71,18 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 export class NzDemoLayoutCustomTriggerComponent {
   isCollapsed = false;
   triggerTemplate = null;
+  zeroTriggerTemplate = null;
+  collapsedWidth = 80;
   @ViewChild('trigger') customTrigger: TemplateRef<void>;
 
   /** custom trigger can be TemplateRef **/
   changeTrigger(): void {
     this.triggerTemplate = this.customTrigger;
+  }
+
+  /** custom trigger can be TemplateRef **/
+  changeZeroWidthTrigger(): void {
+    this.collapsedWidth = 0;
+    this.zeroTriggerTemplate = this.customTrigger;
   }
 }
