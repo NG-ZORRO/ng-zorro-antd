@@ -37,6 +37,7 @@ import { NzProgressModule } from './progress/nz-progress.module';
 import { NzRadioModule } from './radio/nz-radio.module';
 import { NzRateModule } from './rate/nz-rate.module';
 import { NzSelectModule } from './select/nz-select.module';
+import { NzSkeletonModule } from './skeleton/nz-skeleton.module';
 import { NzSliderModule } from './slider/nz-slider.module';
 import { NzSpinModule } from './spin/nz-spin.module';
 import { NzStepsModule } from './steps/nz-steps.module';
@@ -96,6 +97,7 @@ export * from './auto-complete';
 export * from './message';
 export * from './time-picker';
 export * from './tooltip';
+export * from './skeleton';
 export * from './slider';
 export * from './popover';
 export * from './notification';
@@ -163,7 +165,8 @@ export * from './core/wave';
     NzTreeModule,
     NzTreeSelectModule,
     NzTimePickerModule,
-    NzWaveModule
+    NzWaveModule,
+    NzSkeletonModule
   ]
 })
 export class NgZorroAntdModule {
