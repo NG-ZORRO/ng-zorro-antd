@@ -21,7 +21,7 @@ import { Schema } from './schema';
 const ADD_CONFIG = {
   LESS_VERSION: '^2.7.3',
   CUSTOM_THEME_PATH: 'src/theme.less',
-  COMPILED_THEME_PATH: 'node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css',
+  COMPILED_THEME_PATH: 'node_modules/ng-zorro-antd/ng-zorro-antd.min.css',
   BOOT_PAGE_PATH: 'src/app/app.component.html',
   BOOT_PAGE_HTML: `<!-- NG-ZORRO -->
 <a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" style="display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;">

@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import * as isBefore from 'date-fns/is_before';
+import isBefore from 'date-fns/is_before';
 import { dispatchMouseEvent } from '../core/testing';
 import { NzDatePickerModule } from './date-picker.module';
 import { CandyDate } from './lib/candy-date';

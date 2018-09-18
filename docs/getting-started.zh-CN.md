@@ -116,7 +116,7 @@ export class AppModule { }
 
 ### 3. 引入样式
 
-在全局样式中引入 `node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css` 文件。如果需要自定义主题样式，请参考[自定义主题](/docs/customize-theme/zh)部分。
+在全局样式中引入 `node_modules/ng-zorro-antd/ng-zorro-antd.min.css` 文件。如果需要自定义主题样式，请参考[自定义主题](/docs/customize-theme/zh)部分。
 
 ## 配置主题和字体
 

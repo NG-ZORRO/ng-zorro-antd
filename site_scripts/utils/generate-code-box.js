@@ -29,6 +29,6 @@ module.exports = function generateCodeBox(component, key, title, doc, iframe) {
   }
   output = output.replace(/{{code}}/g, camelCase(key));
   output = output.replace(/{{rawCode}}/g, `${camelCase(key)}Raw`);
-  output = output.replace(/{{nzGenerateCommand}}/g, `ng g ng-zorro-antd:${component}-${key} -p app --styleext='less' --name=`);
+  output = output.replace(/{{nzGenerateCommand}}/g, `ng g ng-zorro-antd:${component}-${key} -p app --name=`);
   return output;
 };
