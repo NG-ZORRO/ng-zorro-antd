@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import * as setMonth from 'date-fns/set_month';
+import setMonth from 'date-fns/set_month';
 import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
 
 @Component({

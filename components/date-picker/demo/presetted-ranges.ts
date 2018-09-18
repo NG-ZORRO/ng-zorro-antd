@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import * as endOfMonth from 'date-fns/end_of_month';
+import endOfMonth from 'date-fns/end_of_month';
 
 @Component({
   selector: 'nz-demo-date-picker-presetted-ranges',

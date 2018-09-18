@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import * as differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
-import * as setHours from 'date-fns/set_hours';
+import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
+import setHours from 'date-fns/set_hours';
 
 @Component({
   selector: 'nz-demo-date-picker-disabled-date',
