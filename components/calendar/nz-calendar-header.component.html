@@ -1,5 +1,5 @@
 <nz-select class="ant-fullcalendar-year-select" [nzSize]="size" [nzDropdownMatchSelectWidth]="false"
-           [ngModel]="activeYear" (ngModelChange)="yearChange.emit($event)">
+           [ngModel]="activeYear" (ngModelChange)="updateYear($event)">
   <nz-option *ngFor="let year of years" [nzLabel]="year.label" [nzValue]="year.value"></nz-option>
 </nz-select>
 
