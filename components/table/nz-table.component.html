@@ -11,7 +11,6 @@
     #tableHeaderElement
     *ngIf="nzScroll.x || nzScroll.y"
     class="ant-table-header"
-    (scroll)="syncScrollTable($event)"
     [ngStyle]="headerBottomStyle">
     <table
       [class.ant-table-fixed]="nzScroll.x"
@@ -25,7 +24,6 @@
   <div
     #tableBodyElement
     class="ant-table-body"
-    (scroll)="syncScrollTable($event)"
     [style.maxHeight]="nzScroll.y"
     [style.overflow-y]="nzScroll.y?'scroll':''"
     [style.overflow-x]="nzScroll.x?'auto':''">
@@ -62,10 +60,8 @@
     <div>
       <div
         class="ant-table"
+        #tableMainElement
         [class.ant-table-fixed-header]="nzScroll.x || nzScroll.y"
-        [class.ant-table-scroll-position-left]="scrollPosition==='left'"
-        [class.ant-table-scroll-position-right]="scrollPosition==='right'"
-        [class.ant-table-scroll-position-middle]="scrollPosition==='middle'"
         [class.ant-table-bordered]="nzBordered"
         [class.ant-table-large]="nzSize=='default'"
         [class.ant-table-middle]="nzSize=='middle'"
