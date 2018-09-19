@@ -145,17 +145,21 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
       const beforeIndex = this.slideContents.toArray().findIndex(slide => slide.isActive);
       this.nzBeforeChange.emit({ from: beforeIndex, to: i });
       this.activeIndex = i;
-      if (this.nzEffect === 'scrollx') {
-        if (this.nzVertical) {
-          this.transform = `translate3d(0px, ${-this.activeIndex * this.elementRef.nativeElement.offsetHeight}px, 0px)`;
-        } else {
-          this.transform = `translate3d(${-this.activeIndex * this.elementRef.nativeElement.offsetWidth}px, 0px, 0px)`;
-        }
-      } else {
-        this.transform = 'translate3d(0px, 0px, 0px)';
-      }
+      this.setTransformByIndex(this.activeIndex);
       this.slideContents.forEach(slide => slide.isActive = slide === content);
       this.nzAfterChange.emit(i);
+    }
+  }
+
+  setTransformByIndex(index: number): void {
+    if (this.nzEffect === 'scrollx') {
+      if (this.nzVertical) {
+        this.transform = `translate3d(0px, ${-index * this.elementRef.nativeElement.offsetHeight}px, 0px)`;
+      } else {
+        this.transform = `translate3d(${-index * this.elementRef.nativeElement.offsetWidth}px, 0px, 0px)`;
+      }
+    } else {
+      this.transform = 'translate3d(0px, 0px, 0px)';
     }
   }
 
@@ -189,6 +193,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
         this.renderer.removeStyle(this.slickTrack.nativeElement, 'width');
         this.renderer.setStyle(this.slickTrack.nativeElement, 'width', `${this.slideContents.length * this.elementRef.nativeElement.offsetWidth}px`);
       }
+      this.setTransformByIndex(this.activeIndex);
       this.setUpAutoPlay();
     }
   }
