@@ -11,21 +11,13 @@
   cursor: pointer;
 }
 
-@media only screen and (max-width: 1280px) {
-  .en-us #search-box {
-    display: none;
-  }
-}
-
 @media only screen and (max-width: @screen-xl) {
   #search-box {
     display: none;
   }
-
   #logo {
     padding: 0 40px;
   }
-
   .banner-wrapper .banner-title-wrapper {
     h1 {
       font-size: 36px;
@@ -36,78 +28,32 @@
   }
 }
 
-@media only screen and (max-width: @screen-lg) {
+@media only screen and (max-width: 767.99px) {
+  #header {
+    text-align: center;
+    #logo {
+      float: initial;
+    }
+  }
   #search-box {
     display: none;
   }
-
   .code-boxes-col-2-1, .code-boxes-col-1-1 {
     float: none;
     width: 100%;
   }
-
   .preview-image-boxes {
     margin: 0 !important;
     float: none;
     width: 100%;
   }
-
   .preview-image-box {
     padding-left: 0;
     margin: 10px 0;
   }
 
-  .banner-entry {
-    position: relative;
-    top: 30px;
-    left: 0;
-    text-align: center;
-  }
-
   .image-wrapper {
     display: none;
-  }
-
-  .banner-wrapper {
-    background-position: 40%;
-  }
-
-  .content-wrapper .text-wrapper {
-    float: none;
-    text-align: center;
-    left: 0 !important;
-    width: 100%;
-    padding: 0;
-    > p {
-      max-width: 100% !important;
-      padding: 0 40px;
-    }
-  }
-
-  .content-wrapper.page {
-    min-height: 300px;
-    height: 300px;
-  }
-
-  .banner-text-wrapper {
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    width: 100%;
-    .start-button {
-      text-align: center;
-      > a {
-        margin: 0 4px;
-      }
-    }
-    .github-btn {
-      text-align: center;
-      float: none;
-      display: inline-block;
-    }
-    .line {
-      display: none;
-    }
   }
 
   div.version {
@@ -184,18 +130,6 @@
     border-right: 0;
   }
 
-  .toc-affix {
-    display: none !important;
-  }
-
-  #nav {
-    display: none;
-  }
-
-  .hide-menu {
-    display: none;
-  }
-
   .main-container {
     padding-left: 16px;
     padding-right: 16px;
@@ -215,20 +149,24 @@
     text-align: center;
     .footer-wrap {
       padding: 40px;
+      .ant-row {
+        padding: 0;
+        > div {
+          &:nth-child(2),
+          &:nth-child(4) {
+            display: none;
+          }
+          a {
+            font-weight: 300;
+          }
+        }
+      }
     }
     .footer-center {
       text-align: center;
     }
     h2 {
       margin-top: 16px;
-    }
-    .bottom-bar {
-      text-align: center;
-      .translate-button {
-        width: auto;
-        text-align: center;
-        margin-bottom: 16px;
-      }
     }
   }
 
