@@ -9,6 +9,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import isBefore from 'date-fns/is_before';
 import { dispatchMouseEvent } from '../core/testing';
+import { NzInputModule } from '../input/nz-input.module';
 import { NzDatePickerModule } from './date-picker.module';
 import { CandyDate } from './lib/candy-date';
 import { PickerResultSingle } from './standard-types';
@@ -24,7 +25,7 @@ describe('NzMonthPickerComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ FormsModule, NoopAnimationsModule, NzDatePickerModule ],
+      imports     : [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzInputModule ],
       providers   : [],
       declarations: [
         NzTestMonthPickerComponent
@@ -146,8 +147,19 @@ describe('NzMonthPickerComponent', () => {
     it('should support nzClassName', () => {
       const className = fixtureInstance.nzClassName = 'my-test-class';
       fixture.detectChanges();
-      const picker = debugElement.query(By.css('.ant-calendar-picker')).nativeElement as HTMLElement;
+      const picker = debugElement.queryAll(By.css('.ant-calendar-picker'))[1].nativeElement as HTMLElement;
       expect(picker.classList.contains(className)).toBeTruthy();
+    });
+
+    it('should support nzCompact', () => {
+      fixtureInstance.useSuite = 4;
+
+      fixture.detectChanges();
+      const pickerInput = debugElement.query(By.css('input.ant-calendar-picker-input')).nativeElement as HTMLElement;
+      expect(pickerInput).not.toBeNull();
+      const compStyles = window.getComputedStyle(pickerInput);
+      expect(compStyles.getPropertyValue('border-top-right-radius') === '0px').toBeTruthy();
+      expect(compStyles.getPropertyValue('border-bottom-right-radius') === '0px').toBeTruthy();
     });
 
     it('should support nzDisabledDate', fakeAsync(() => {
@@ -441,11 +453,17 @@ describe('NzMonthPickerComponent', () => {
 
       <!-- Suite 3 -->
       <nz-month-picker *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-month-picker>
+
+      <!-- Suite 4 -->
+      <nz-input-group *ngSwitchCase="4" nzCompact>
+        <nz-month-picker style="width: 200px;"></nz-month-picker>
+        <input nz-input type="text" style="width: 200px;" />
+      </nz-input-group>
     </ng-container>
   `
 })
 class NzTestMonthPickerComponent {
-  useSuite: 1 | 2 | 3;
+  useSuite: 1 | 2 | 3 | 4;
   @ViewChild('tplExtraFooter') tplExtraFooter: TemplateRef<void>;
 
   // --- Suite 1
