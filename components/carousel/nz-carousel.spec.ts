@@ -166,6 +166,17 @@ describe('carousel', () => {
       tick(200);
       expect(resizeSpy).toHaveBeenCalled();
     }));
+    it('should setTransformByIndex work', fakeAsync(() => {
+      const activeIndex = 1;
+      testComponent.nzCarouselComponent.nzVertical = true;
+      fixture.detectChanges();
+      testComponent.nzCarouselComponent.setTransformByIndex(activeIndex);
+      expect(testComponent.nzCarouselComponent.transform).toBe(`translate3d(0px, ${-activeIndex * fixture.nativeElement.offsetHeight}px, 0px)`);
+      testComponent.nzCarouselComponent.nzVertical = false;
+      testComponent.nzCarouselComponent.setTransformByIndex(activeIndex);
+      fixture.detectChanges();
+      expect(testComponent.nzCarouselComponent.transform).toBe(`translate3d(${-activeIndex * fixture.nativeElement.offsetWidth}px, 0px, 0px)`);
+    }));
     it('should swipe work', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.nzCarouselComponent.swipe('swipeleft');
