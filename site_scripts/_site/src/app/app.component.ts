@@ -47,7 +47,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   navigateToPage(url) {
-    console.log(url);
     if (url) {
       this.router.navigateByUrl(url);
     }
@@ -63,8 +62,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    console.log('打开钉钉扫码加入 NG-ZORRO 自助服务群');
-    console.log('%c', 'padding:100px;background:url(\'https://img.alicdn.com/tfs/TB1XNAjteuSBuNjy1XcXXcYjFXa-200-232.png\') no-repeat;');
     this.routerList.components.forEach(group => {
       this.componentList = this.componentList.concat([ ...group.children ]);
     });
