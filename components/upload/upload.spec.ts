@@ -19,10 +19,12 @@ import { NzUploadBtnComponent } from './nz-upload-btn.component';
 import { NzUploadListComponent } from './nz-upload-list.component';
 import { NzUploadComponent } from './nz-upload.component';
 
-const PNGSMALL = { target: { files: [new File([`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`], 'test.png', {
+const FILECONTENT = [`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`];
+const FILE = new File(FILECONTENT, null, { type: null });
+const PNGSMALL = { target: { files: [new File(FILECONTENT, 'test.png', {
   type: 'image/png'
 })] } };
-const JPGSMALL = { target: { files: [new File([`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`], 'test.jpg', {
+const JPGSMALL = { target: { files: [new File(FILECONTENT, 'test.jpg', {
   type: 'image/jpg'
 })] } };
 const LARGEFILE = {
@@ -66,12 +68,7 @@ describe('upload', () => {
 
       it('should be upload a file', () => {
         expect(instance._nzChange).toBeUndefined();
-        pageObject.postFile(
-          new File(
-            [`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`],
-            null, { type: null }
-          )
-        );
+        pageObject.postFile(FILE);
         const req = httpMock.expectOne(instance.nzAction);
         pageObject.expectChange();
         req.flush({});
@@ -379,12 +376,7 @@ describe('upload', () => {
         instance.nzFileList = null;
         fixture.detectChanges();
         expect(instance._nzChange).toBeUndefined();
-        pageObject.postFile(
-          new File(
-            [`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`],
-            null, { type: null }
-          )
-        );
+        pageObject.postFile(FILE);
         const req = httpMock.expectOne(instance.nzAction);
         pageObject.expectChange();
         req.flush({});
@@ -670,12 +662,7 @@ describe('upload', () => {
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
               type: 'dragend',
-              dataTransfer: { files: [
-                new File(
-                  [`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`],
-                  null, { type: null }
-                )
-              ] },
+              dataTransfer: { files: [ FILE ] },
               preventDefault: () => {}
             } as any);
             expect(instance.comp.uploadFiles).toHaveBeenCalled();
@@ -724,6 +711,76 @@ describe('upload', () => {
           expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
           instance.comp.onChange(PNGSMALL as any);
           expect(instance.comp.uploadFiles).toHaveBeenCalled();
+        });
+        describe('via directory', () => {
+          // tslint:disable:no-invalid-this
+          // tslint:disable-next-line:typedef
+          function Item(name) {
+            this.name = name;
+            this.toString = () => this.name;
+          }
+          const makeFileSystemEntry = (item) => {
+            const isDirectory = Array.isArray(item.children);
+            const ret = {
+              isDirectory,
+              isFile: !isDirectory,
+              file: (handle) => {
+                handle(new Item(item.name));
+              },
+              createReader: () => {
+                return {
+                  readEntries: handle => handle(item.children.map(makeFileSystemEntry))
+                };
+              }
+            };
+            return ret;
+          };
+          const makeDataTransferItem = (item) => ({ webkitGetAsEntry: () => makeFileSystemEntry(item) });
+          beforeEach(() => instance.options.directory = true);
+          it('should working', () => {
+            spyOn(instance.comp, 'uploadFiles');
+            const files = {
+              name: 'foo',
+              children: [
+                {
+                  name: 'bar',
+                  children: [
+                    {
+                      name: 'is.webp'
+                    }
+                  ]
+                }
+              ]
+            };
+            instance.comp.onFileDrop({
+              type: 'dragend',
+              dataTransfer: {
+                items: [makeDataTransferItem(files)]
+              },
+              preventDefault: () => {}
+            } as any);
+            expect(instance.comp.uploadFiles).toHaveBeenCalled();
+          });
+          it('should be ingore invalid extension', () => {
+            instance.options.accept = ['.webp'];
+            spyOn(instance.comp, 'uploadFiles');
+            const files = {
+              name: 'foo',
+              children: [
+                {
+                  name: 'is.jpg'
+                }
+              ]
+            };
+            instance.comp.onFileDrop({
+              type: 'dragend',
+              dataTransfer: {
+                items: [makeDataTransferItem(files)]
+              },
+              preventDefault: () => {}
+            } as any);
+            expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
+          });
         });
       });
 
@@ -908,6 +965,7 @@ describe('upload', () => {
     [nzWithCredentials]="nzWithCredentials"
     [nzPreview]="onPreview"
     [nzRemove]="onRemove"
+    [nzDirectory]="directory"
     (nzFileListChange)="nzFileListChange($event)"
     (nzChange)="nzChange($event)">
     <button nz-button>
@@ -956,6 +1014,7 @@ class TestUploadComponent {
   nzChange(value: UploadChangeParam): void { this._nzChange = value; }
   _nzFileListChange: any;
   nzFileListChange(value: any): void { this._nzChange = value; }
+  directory = false;
 }
 
 @Component({
