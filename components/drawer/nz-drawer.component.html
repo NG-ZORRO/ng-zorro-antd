@@ -13,7 +13,9 @@
          [style.height]="height"
          [style.transform]="transform">
       <div class="ant-drawer-content">
-        <div class="ant-drawer-wrapper-body">
+        <div class="ant-drawer-wrapper-body"
+          [style.overflow]="isLeftOrRight ? 'auto' : null"
+          [style.height]="isLeftOrRight ? '100%' : null">
           <div *ngIf="nzTitle" class="ant-drawer-header">
             <div class="ant-drawer-title">
               <ng-container [ngSwitch]="true">

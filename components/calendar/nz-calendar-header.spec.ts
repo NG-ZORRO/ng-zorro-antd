@@ -9,8 +9,7 @@ import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzRadioGroupComponent as RadioGroup, NzRadioModule } from '../radio/index';
 import { NzSelectComponent as Select } from '../select/nz-select.component';
 import { NzSelectModule } from '../select/nz-select.module';
-import { NzCalendarHeaderComponent as CalendarHeader } from './nz-calendar-header.component';
-import { NzCalendarModule } from './nz-calendar.module';
+import { NzCalendarHeaderComponent, NzCalendarHeaderComponent as CalendarHeader } from './nz-calendar-header.component';
 
 registerLocaleData(zh);
 
@@ -170,6 +169,12 @@ describe('Calendar Header', () => {
       fixture.detectChanges();
 
       expect(component.month).toBe(2);
+    });
+    it('should update years when change year', () => {
+      const header = fixture.debugElement.queryAll(By.directive(CalendarHeader))[0];
+      const headerComponent = header.injector.get(NzCalendarHeaderComponent);
+      headerComponent.updateYear(2010);
+      expect(headerComponent.years[0].value).toBe(2000);
     });
   });
 });

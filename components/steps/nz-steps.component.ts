@@ -113,16 +113,18 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterContentInit {
   updateChildrenSteps = () => {
     if (this.steps) {
       this.steps.toArray().forEach((step, index, arr) => {
-        step.outStatus = this.nzStatus;
-        step.showProcessDot = this.showProcessDot;
-        if (this.customProcessDotTemplate) {
-          step.customProcessTemplate = this.customProcessDotTemplate;
-        }
-        step.direction = this.nzDirection;
-        step.index = index + this.nzStartIndex;
-        step.currentIndex = this.nzCurrent;
-        step.last = arr.length === index + 1;
-        step.updateClassMap();
+        Promise.resolve().then(() => {
+          step.outStatus = this.nzStatus;
+          step.showProcessDot = this.showProcessDot;
+          if (this.customProcessDotTemplate) {
+            step.customProcessTemplate = this.customProcessDotTemplate;
+          }
+          step.direction = this.nzDirection;
+          step.index = index + this.nzStartIndex;
+          step.currentIndex = this.nzCurrent;
+          step.last = arr.length === index + 1;
+          step.updateClassMap();
+        });
       });
     }
   }
@@ -137,7 +139,7 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    Promise.resolve().then(() => this.updateChildrenSteps());
+    this.updateChildrenSteps();
     if (this.steps) {
        this.steps.changes.pipe(takeUntil(this.unsubscribe$)).subscribe(this.updateChildrenSteps);
     }

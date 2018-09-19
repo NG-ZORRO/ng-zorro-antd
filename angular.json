@@ -86,6 +86,20 @@
       "root": "",
       "sourceRoot": "",
       "projectType": "application"
+    },
+    "ng-zorro-antd-lib": {
+      "root": "components",
+      "projectType": "library",
+      "prefix": "nz",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "components/tsconfig.lib.json",
+            "project": "components/ng-package.json"
+          }
+        }
+      }
     }
   },
   "defaultProject": "ng-zorro-antd-doc",

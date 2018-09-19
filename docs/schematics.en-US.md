@@ -41,7 +41,7 @@ ng g ng-zorro-antd:[template] --name=NAME [options]
 For example, you can generate an login form with the follow command.
 
 ```bash
-ng g ng-zorro-antd:form-normal-login -p app --styleext='less' --name=login
+ng g ng-zorro-antd:form-normal-login -p app --styleext=less --name=login
 ```
 
 ### Options

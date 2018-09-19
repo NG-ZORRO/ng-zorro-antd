@@ -5,7 +5,8 @@ title: 快速上手
 
 NG-ZORRO 致力于提供给程序员**愉悦**的开发体验。
 
-<blockquote style="border-color: red;"><p><strong>官方指南假设你已了解关于 HTML、CSS 和 JavaScript 的中级知识，并且已经完全掌握了 Angular 及配套设施的正确开发方式。如果你刚开始学习前端或者 Angular ，将框架作为你的第一步可能不是最好的主意 —— 掌握好基础知识再来吧！</strong></p><p><a href="https://github.com/NG-ZORRO/today-ng-steps" target="_blank">我们为你准备了一套教程</a>，能够帮助你快速上手 NG-ZORRO。</p></blockquote>
+<blockquote style="border-color: red;"><p><strong>官方指南假设你已了解关于 HTML、CSS 和 JavaScript 的中级知识，并且已经完全掌握了 Angular 及配套设施的正确开发方式。如果你刚开始学习前端或者 Angular ，将框架作为你的第一步可能不是最好的主意 —— 掌握好基础知识再来吧！</strong></p></blockquote>
+<blockquote style="border-color: red;"><p><a href="https://github.com/NG-ZORRO/today-ng-steps" target="_blank">我们为你准备了一套教程</a>，能够帮助你快速上手 NG-ZORRO。</p></blockquote>
 
 ## 在线演示
 
@@ -116,7 +117,7 @@ export class AppModule { }
 
 ### 3. 引入样式
 
-在全局样式中引入 `node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css` 文件。如果需要自定义主题样式，请参考[自定义主题](/docs/customize-theme/zh)部分。
+在全局样式中引入 `node_modules/ng-zorro-antd/ng-zorro-antd.min.css` 文件。如果需要自定义主题样式，请参考[自定义主题](/docs/customize-theme/zh)部分。
 
 ## 配置主题和字体
 

@@ -1,4 +1,3 @@
-import { Overlay } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -8,15 +7,17 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
   Output,
   QueryList,
+  Renderer2,
   TemplateRef,
   ViewChild
 } from '@angular/core';
 
-import { Subject } from 'rxjs';
+import { fromEvent, merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
@@ -56,7 +57,6 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   isTitleString: boolean;
   isNoResultString: boolean;
   el: HTMLElement;
-  scrollPosition: string;
   lastScrollLeft = 0;
   /* tslint:disable-next-line:no-any */
   rawData: any[] = [];
@@ -69,6 +69,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   isWidthConfigSet = false;
   @ViewChild('tableHeaderElement') tableHeaderElement: ElementRef;
   @ViewChild('tableBodyElement') tableBodyElement: ElementRef;
+  @ViewChild('tableMainElement') tableMainElement: ElementRef;
   @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
 
   @Output() nzPageSizeChange: EventEmitter<number> = new EventEmitter();
@@ -91,6 +92,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   get nzSimple(): boolean {
     return this._simple;
   }
+
   @Input()
   set nzFrontPagination(value: boolean) {
     this._frontPagination = toBoolean(value);
@@ -308,14 +310,25 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   setScrollPositionClassName(): void {
     if (this.tableBodyElement && this.nzScroll && this.nzScroll.x) {
       if ((this.tableBodyElement.nativeElement.scrollWidth === this.tableBodyElement.nativeElement.clientWidth) && (this.tableBodyElement.nativeElement.scrollWidth !== 0)) {
-        this.scrollPosition = 'default';
+        this.setScrollName();
       } else if (this.tableBodyElement.nativeElement.scrollLeft === 0) {
-        this.scrollPosition = 'left';
+        this.setScrollName('left');
       } else if (this.tableBodyElement.nativeElement.scrollWidth === (this.tableBodyElement.nativeElement.scrollLeft + this.tableBodyElement.nativeElement.clientWidth)) {
-        this.scrollPosition = 'right';
+        this.setScrollName('right');
       } else {
-        this.scrollPosition = 'middle';
+        this.setScrollName('middle');
       }
+    }
+  }
+
+  setScrollName(position?: string): void {
+    const prefix = 'ant-table-scroll-position';
+    const classList = [ 'left', 'right', 'middle' ];
+    classList.forEach(name => {
+      this.renderer.removeClass(this.tableMainElement.nativeElement, `${prefix}-${name}`);
+    });
+    if (position) {
+      this.renderer.addClass(this.tableMainElement.nativeElement, `${prefix}-${position}`);
     }
   }
 
@@ -338,15 +351,23 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.locale = this.i18n.getLocaleData('Table'));
     this.fitScrollBar();
-    if (this.nzScroll && this.nzScroll.x && this.nzScroll.y) {
-      /** magic code to sync scroll **/
-      const overlay = this.overlay.create();
-      overlay.dispose();
-    }
   }
 
   ngAfterViewInit(): void {
     setTimeout(() => this.setScrollPositionClassName());
+    this.ngZone.runOutsideAngular(() => {
+      if (this.tableHeaderElement
+        && this.tableHeaderElement.nativeElement
+        && this.tableBodyElement
+        && this.tableBodyElement.nativeElement) {
+        merge(
+          fromEvent(this.tableHeaderElement.nativeElement, 'scroll'),
+          fromEvent(this.tableBodyElement.nativeElement, 'scroll')
+        ).pipe(takeUntil(this.unsubscribe$)).subscribe((data: MouseEvent) => {
+          this.syncScrollTable(data);
+        });
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -354,7 +375,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private overlay: Overlay, private nzMeasureScrollbarService: NzMeasureScrollbarService, private i18n: NzI18nService) {
+  constructor(private renderer: Renderer2, private ngZone: NgZone, private elementRef: ElementRef, private cdr: ChangeDetectorRef, private nzMeasureScrollbarService: NzMeasureScrollbarService, private i18n: NzI18nService) {
     this.el = this.elementRef.nativeElement;
   }
 }
