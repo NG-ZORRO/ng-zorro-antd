@@ -322,6 +322,15 @@ describe('upload', () => {
             pageObject.postSmall();
             expect(ret).toBe(true);
           });
+          it('cancel upload when returan a false value', () => {
+            expect(instance._nzChange).toBeUndefined();
+            instance.beforeUpload = (file: UploadFile, fileList: UploadFile[]): Observable<any> => {
+              return of(false);
+            };
+            fixture.detectChanges();
+            pageObject.postSmall();
+            expect(instance._nzChange).toBeUndefined();
+          });
         });
       });
 

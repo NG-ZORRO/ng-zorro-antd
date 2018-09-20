@@ -162,7 +162,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
         if (processedFileType === '[object File]' || processedFileType === '[object Blob]') {
           this.attachUid(processedFile);
           this.post(processedFile);
-        } else {
+        } else if (typeof processedFile === 'boolean' && processedFile !== false) {
           this.post(file);
         }
       });
