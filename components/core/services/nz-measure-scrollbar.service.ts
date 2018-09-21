@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { isNotNil } from '../util/check';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class NzMeasureScrollbarService {
   private _scrollbarWidth: number;

@@ -69,6 +69,7 @@ export * from './checkbox';
 export * from './collapse';
 export * from './date-picker';
 export * from './divider';
+export * from './drawer';
 export * from './dropdown';
 export * from './drawer';
 export * from './form';

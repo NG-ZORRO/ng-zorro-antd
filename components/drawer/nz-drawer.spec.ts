@@ -1,14 +1,17 @@
 import {
-  Component,
+  Component, Input,
   TemplateRef,
   ViewChild
 } from '@angular/core';
 
-import { async, inject, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { NzDrawerRef } from './nz-drawer-ref';
 import { NzDrawerComponent } from './nz-drawer.component';
 import { NzDrawerModule } from './nz-drawer.module';
+import { NzDrawerService } from './nz-drawer.service';
 
 describe('NzDrawerComponent', () => {
   let component: NzTestDrawerComponent;
@@ -61,14 +64,16 @@ describe('NzDrawerComponent', () => {
     expect(component.drawerComponent.nzVisible).toBe(false);
   });
 
-  it('should set body overflow', () => {
+  it('should set body overflow', fakeAsync(() => {
     component.open();
     fixture.detectChanges();
     expect(document.body.style.overflow).toBe('hidden');
     component.close();
     fixture.detectChanges();
+    tick(300);
+    fixture.detectChanges();
     expect(document.body.style.overflow).toBe('');
-  });
+  }));
 
   it('should hied close button', () => {
     component.closable = false;
@@ -293,11 +298,82 @@ describe('NzDrawerComponent', () => {
   });
 });
 
+describe('NzDrawerService', () => {
+  let component: NzTestDrawerWithServiceComponent;
+  let fixture: ComponentFixture<NzTestDrawerWithServiceComponent>;
+  let overlayContainer: OverlayContainer;
+  let drawerService: NzDrawerService;
+  let overlayContainerElement: HTMLElement;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports     : [ NzDrawerModule ],
+      providers   : [NzDrawerService],
+      declarations: [ NzTestDrawerWithServiceComponent, NzDrawerCustomComponent ]
+    });
+    TestBed.overrideModule(BrowserDynamicTestingModule, {
+      set: { entryComponents: [ NzDrawerCustomComponent ] }
+    }).compileComponents();
+  }));
+
+  beforeEach(async(() => {
+    fixture = TestBed.createComponent(NzTestDrawerWithServiceComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  }));
+
+  beforeEach(inject([ OverlayContainer, NzDrawerService ], (oc: OverlayContainer, ds: NzDrawerService) => {
+    overlayContainer = oc;
+    drawerService = ds;
+    overlayContainerElement = oc.getContainerElement();
+  }));
+
+  afterEach(() => {
+    overlayContainer.ngOnDestroy();
+  });
+
+  it('should create template content drawer', fakeAsync(() => {
+    component.openTemplate();
+    fixture.detectChanges();
+    tick(300);
+    expect(component.templateOpenSpy).toHaveBeenCalled();
+    fixture.detectChanges();
+    (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-mask') as HTMLElement).click();
+    tick(300);
+    expect(component.templateCloseSpy).toHaveBeenCalled();
+    fixture.detectChanges();
+  }));
+
+  it('should create component content drawer', fakeAsync(() => {
+    const openSpy = jasmine.createSpy('afterOpen spy');
+    const closeSpy = jasmine.createSpy('afterClose spy').and.returnValue(1);
+    const drawerRef = drawerService.create({
+      nzTitle        : 'Service',
+      nzContent      : NzDrawerCustomComponent,
+      nzContentParams: { value: 1 }
+    });
+    drawerRef.afterOpen.subscribe(openSpy);
+    drawerRef.afterOpen.subscribe(closeSpy);
+    fixture.detectChanges();
+    expect(openSpy).not.toHaveBeenCalled();
+    tick(300);
+    expect(openSpy).toHaveBeenCalled();
+    (overlayContainerElement.querySelector('.ant-drawer .close-btn') as HTMLElement).click();
+    fixture.detectChanges();
+    tick(300);
+    expect(closeSpy).toHaveBeenCalled();
+  }));
+
+});
+
 @Component({
-  selector: 'nz-demo-modal-async',
+  selector: 'nz-test-drawer',
   template: `
     <button (click)="open()">Open</button>
-    <ng-template #customTitle><span class="custom-title">title</span></ng-template>
+    <ng-template #customTitle>
+      <span class="custom-title">title</span>
+      <button class="close-btn"></button>
+    </ng-template>
     <nz-drawer
       [nzMaskStyle]="{ color: 'gray' }"
       [nzBodyStyle]="{ color: 'gray' }"
@@ -319,7 +395,7 @@ describe('NzDrawerComponent', () => {
       <p>Some contents...</p>
     </nz-drawer>
   `,
-  styles: []
+  styles  : []
 })
 class NzTestDrawerComponent {
   visible = false;
@@ -343,5 +419,58 @@ class NzTestDrawerComponent {
 
   close(): void {
     this.visible = false;
+  }
+}
+
+@Component({
+  selector: 'nz-test-drawer-with-service',
+  template: `
+    <ng-template #drawerTemplate>
+      <span>Template</span>
+    </ng-template>
+  `
+})
+class NzTestDrawerWithServiceComponent {
+  @ViewChild('drawerTemplate') drawerTemplate;
+  templateOpenSpy = jasmine.createSpy('template afterOpen spy');
+  templateCloseSpy = jasmine.createSpy('template afterClose spy');
+  templateDrawerRef: NzDrawerRef;
+
+  constructor(
+    private drawerService: NzDrawerService
+  ) {
+  }
+
+  openTemplate(): void {
+    this.templateDrawerRef = this.drawerService.create({
+      nzTitle        : 'Service',
+      nzContent      : this.drawerTemplate
+    });
+
+    this.templateDrawerRef.afterOpen.subscribe(this.templateOpenSpy);
+    this.templateDrawerRef.afterClose.subscribe(this.templateCloseSpy);
+  }
+
+}
+
+@Component({
+  selector: 'nz-drawer-custom-component',
+  template: `
+    <div>
+      <p>Custom Component</p>
+      <button class="close-btn" (click)="close()" nz-button>Close</button>
+    </div>
+  `
+})
+export class NzDrawerCustomComponent {
+
+  @Input() value;
+  constructor(
+    private drawerRef: NzDrawerRef
+  ) {
+  }
+
+  close(): void {
+    this.drawerRef.close(this.value);
   }
 }
