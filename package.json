@@ -72,6 +72,7 @@
     "antd-theme-generator": "^1.0.7",
     "chalk": "^2.4.1",
     "classlist.js": "^1.1.20150312",
+    "clean-css": "~4.1.11",
     "codecov": "^3.0.0",
     "conventional-changelog-cli": "^2.0.1",
     "core-js": "^2.5.4",
