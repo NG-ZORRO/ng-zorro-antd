@@ -25,6 +25,7 @@ title: Upload
 | --- | --- | --- | --- |
 | `[nzAccept]` | 接受上传的文件类型, 详见 [input accept Attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-accept) | string | - |
 | `[nzAction]` | 必选参数, 上传的地址 | string | - |
+| `[nzDirectory]` | 支持上传文件夹（[caniuse](https://caniuse.com/#feat=input-file-directory)） | boolean | false |
 | `[nzBeforeUpload]` | 上传文件之前的钩子，参数为上传的文件，若返回 `false` 则停止上传。注意：**IE9** 不支持该方法；注意：务必使用 `=>` 定义处理方法。 | (file, fileList) => `boolean|Observable` | - |
 | `[nzCustomRequest]` | 通过覆盖默认的上传行为，可以自定义自己的上传实现；注意：务必使用 `=>` 定义处理方法。 | `(item) => Subscription` | - |
 | `[nzData]` | 上传所需参数或返回上传参数的方法；注意：务必使用 `=>` 定义处理方法。 | `Object|((file: UploadFile) => Object)` | - |
