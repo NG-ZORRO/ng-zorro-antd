@@ -16,7 +16,7 @@ import {
 import { of, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { toBoolean, toNumber } from '../core/util/convert';
+import { toBoolean, toNumber, InputBoolean } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import {
@@ -39,8 +39,6 @@ import { NzUploadBtnComponent } from './nz-upload-btn.component';
 export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   private i18n$: Subscription;
   locale: any = {};
-  private inited = false;
-  private progressTimer: any;
   @ViewChild('upload') upload: NzUploadBtnComponent;
 
   // region: fields
@@ -70,6 +68,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzFileType: string;
   @Input() nzAccept: string | string[];
   @Input() nzAction: string;
+  @Input() @InputBoolean() nzDirectory: boolean = false;
   @Input() nzBeforeUpload: (file: UploadFile, fileList: UploadFile[]) => boolean | Observable<any>;
   @Input() nzCustomRequest: (item: any) => Subscription;
   @Input() nzData: {} | ((file: UploadFile) => {});
@@ -176,6 +175,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
       disabled       : this.nzDisabled,
       accept         : this.nzAccept,
       action         : this.nzAction,
+      directory      : this.nzDirectory,
       beforeUpload   : this.nzBeforeUpload,
       customRequest  : this.nzCustomRequest,
       data           : this.nzData,
@@ -240,7 +240,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     file.thumbUrl = '';
 
     const reader = new FileReader();
-    reader.onloadend = () => file.thumbUrl = reader.result;
+    reader.onloadend = () => file.thumbUrl = reader.result as string;
     reader.readAsDataURL(file.originFileObj);
   }
 
@@ -361,7 +361,6 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   // endregion
   ngOnInit(): void {
-    this.inited = true;
     this.i18n$ = this.i18n.localeChange.subscribe(() => {
       this.locale = this.i18n.getLocaleData('Upload');
       this.cd.detectChanges();

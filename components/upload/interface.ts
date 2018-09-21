@@ -48,6 +48,7 @@ export interface ZipButtonOptions {
   disabled?: boolean;
   accept?: string | string[];
   action?: string;
+  directory?: boolean;
   beforeUpload?: (file: UploadFile, fileList: UploadFile[]) => boolean | Observable<any>;
   customRequest?: (item: any) => Subscription;
   data?: {} | ((file: UploadFile) => {});
