@@ -247,7 +247,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   // endregion
   constructor(@Optional() private http: HttpClient, private el: ElementRef, private updateHostClassService: NzUpdateHostClassService, private cd: ChangeDetectorRef) {
     if (!http) {
-      throw new Error(`Not found 'HttpClient', You can import 'HttpClientModel' in your root module.`);
+      throw new Error(`Not found 'HttpClient', You can import 'HttpClientModule' in your root module.`);
     }
   }
 
