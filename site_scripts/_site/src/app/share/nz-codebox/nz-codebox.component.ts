@@ -393,7 +393,7 @@ export class AppModule { }
         '@angular/router'                  : '^6.0.0',
         '@angular/animations'              : '^6.0.0',
         'date-fns'                         : '^1.29.0',
-        'ng-zorro-antd'                    : '^1.5.0'
+        'ng-zorro-antd'                    : '^1.6.0'
       },
       tags        : [ 'stackblitz', 'sdk' ]
     });

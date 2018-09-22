@@ -14,6 +14,40 @@ timeline: true
 
 ---
 
+## 1.6.0
+`2018-09-22`
+
+### Bug Fixes
+
+* **date-picker:** 修复在 input group 中的样式问题 ([#2136](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2136)) ([049212f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/049212f))
+* **calendar:** 修复年份列表选择器的问题 ([#2140](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2140)) ([e485d02](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e485d02)), closes [#2091](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2091)
+* **cascader:** 修复搜索问题 ([#2108](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2108)) ([28556e4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/28556e4)), closes [#2104](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2104)
+* **drawer:** 修复不能滚动问题 ([#2120](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2120)) ([e8dad8f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e8dad8f)), closes [#2119](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2119)
+* **steps:** 修复动态生成问题 ([#2149](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2149)) ([ee3fa7e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ee3fa7e)), closes [#2148](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2148)
+* **publish:** 增加版本校验 ([#2117](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2117)) ([bc1f6fa](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bc1f6fa))
+* **schematics:** 修复与 Angular CLI 6.2.0 的兼容问题 ([#2131](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2131)) ([ac428db](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ac428db))
+* **test:** 修复覆盖率问题 ([#2146](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2146)) ([310771f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/310771f))
+* **upload:** 修复提示错误 ([#2173](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2173)) ([69c5210](https://github.com/NG-ZORRO/ng-zorro-antd/commit/69c5210))
+
+
+### Features
+
+* **drawer:** 支持使用 service 创建 drawer ([#1981](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1981)) ([a232d59](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a232d59)), closes [#1937](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1937)
+* **upload:** 支持文件夹上传 ([#2164](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2164)) ([3ef8bcf](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3ef8bcf)), closes [#2167](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2167) [#2154](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2154)
+* **tree:** 支持更多常用属性，简化用法 ([#2121](https://github.com/NG-ZORRO/ng-zorro-antd/pull/2121))
+* **skeleton:** 增加 skeleton 组件 ([#1829](https://github.com/NG-ZORRO/ng-zorro-antd/pull/1829))
+
+
+### Build
+
+* **build:** 打包器切换至 ng-packagr ([#2126](https://github.com/NG-ZORRO/ng-zorro-antd/pull/2126))
+
+
+### Performance Improvements
+
+* **table:** 提升固定表头时 table 的性能 ([#2157](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2157)) ([cde5fb0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cde5fb0))
+
+
 ## 1.5.0
 `2018-09-09`
 
