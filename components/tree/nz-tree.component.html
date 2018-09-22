@@ -1,32 +1,32 @@
 <ul
-  class="ant-tree"
-  [ngClass]="classMap"
-  role="tree-node" unselectable="on">
-  <nz-tree-node *ngFor="let node of ngModelNodes" [nzTreeNode]="node"
+  role="tree"
+  unselectable="on"
+  [ngClass]="nzTreeClass">
+  <nz-tree-node
+    *ngFor="let node of nzNodes"
+    [nzTreeNode]="node"
     [nzShowLine]="nzShowLine"
-    [nzTreeTemplate]="nzTreeTemplate"
-    [nzShowExpand]="nzShowExpand"
-    [nzSearchValue]="nzSearchValue"
-    [nzAsyncData]="nzAsyncData"
-    [nzMultiple]="nzMultiple"
     [nzDraggable]="nzDraggable"
     [nzCheckable]="nzCheckable"
+    [nzShowExpand]="nzShowExpand"
+    [nzAsyncData]="nzAsyncData"
+    [nzMultiple]="nzMultiple"
+    [nzSearchValue]="nzSearchValue"
     [nzBeforeDrop]="nzBeforeDrop"
     [nzCheckStrictly]="nzCheckStrictly"
+    [nzExpandAll]="nzExpandAll"
     [nzDefaultExpandAll]="nzDefaultExpandAll"
-    [nzDefaultExpandedKeys]="nzDefaultExpandedKeys"
-    [nzDefaultSelectedKeys]="nzDefaultSelectedKeys"
-    [nzDefaultCheckedKeys]="nzDefaultCheckedKeys"
-    (clickCheckBox)="nzCheckBoxChange.emit($event)"
-    (clickExpand)="nzExpandChange.emit($event)"
+    [nzTreeTemplate]="nzTreeTemplate"
     (clickNode)="nzClick.emit($event)"
     (dblClick)="nzDblClick.emit($event)"
     (contextMenu)="nzContextMenu.emit($event)"
+    (clickExpand)="nzExpandChange.emit($event)"
+    (clickCheckBox)="nzCheckBoxChange.emit($event)"
     (nzDragStart)="nzOnDragStart.emit($event)"
     (nzDragEnter)="nzOnDragEnter.emit($event)"
     (nzDragOver)="nzOnDragOver.emit($event)"
     (nzDragLeave)="nzOnDragLeave.emit($event)"
     (nzDrop)="nzOnDrop.emit($event)"
-    (nzDragEnd)="nzOnDragEnd.emit($event)"
-  ></nz-tree-node>
+    (nzDragEnd)="nzOnDragEnd.emit($event)">
+  </nz-tree-node>
 </ul>

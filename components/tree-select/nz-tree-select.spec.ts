@@ -1,6 +1,6 @@
 import { BACKSPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -22,7 +22,7 @@ describe('tree-select component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports     : [ NzTreeSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestTreeSelectBasicComponent, NzTestTreeSelectCheckableComponent, NzTestTreeSelectFormComponent, NzTestTreeSelectAsyncNodesComponent, NzTestTreeSelectOnPushComponent ]
+      declarations: [ NzTestTreeSelectBasicComponent, NzTestTreeSelectCheckableComponent, NzTestTreeSelectFormComponent ]
     });
     TestBed.compileComponents();
     inject([ OverlayContainer ], (oc: OverlayContainer) => {
@@ -34,38 +34,6 @@ describe('tree-select component', () => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
-
-  describe('OnPush', () => {
-    let fixture;
-    let testComponent: NzTestTreeSelectOnPushComponent;
-    let treeSelectComponent: NzTreeSelectComponent;
-    let treeSelect;
-
-    beforeEach(fakeAsync(() => {
-      fixture = TestBed.createComponent(NzTestTreeSelectOnPushComponent);
-      fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-      treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
-      treeSelectComponent = treeSelect.componentInstance;
-      fixture.detectChanges();
-      flush();
-      tick(200);
-      fixture.detectChanges();
-    }));
-
-    it('should close when the outside clicks', fakeAsync(() => {
-      treeSelect.nativeElement.click();
-      fixture.detectChanges();
-      expect(treeSelectComponent.nzOpen).toBe(true);
-      tick(200);
-      expect((overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement).style.opacity).toBe('1');
-      dispatchFakeEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop'), 'click');
-      fixture.detectChanges();
-      tick();
-      expect(treeSelectComponent.nzOpen).toBe(false);
-      expect((overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement).style.opacity).toBe('0');
-    }));
-  });
 
   describe('basic', () => {
     let fixture;
@@ -81,18 +49,19 @@ describe('tree-select component', () => {
       treeSelectComponent = treeSelect.componentInstance;
       fixture.detectChanges();
       flush();
+      fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
     }));
 
-    it('should size work', () => {
+    it('should size work', fakeAsync(() => {
       testComponent.size = 'small';
       fixture.detectChanges();
       expect(treeSelect.nativeElement.classList).toContain('ant-select-sm');
       testComponent.size = 'large';
       fixture.detectChanges();
       expect(treeSelect.nativeElement.classList).toContain('ant-select-lg');
-    });
+    }));
     it('should allowClear work', () => {
       expect(treeSelect.nativeElement.classList).not.toContain('ant-select-allow-clear');
       testComponent.allowClear = true;
@@ -164,13 +133,17 @@ describe('tree-select component', () => {
     it('should set null value work', fakeAsync(() => {
       fixture.detectChanges();
       expect(testComponent.value).toBe('10001');
+      testComponent.nzSelectTreeComponent.updateSelectedNodes();
+      fixture.detectChanges();
       testComponent.setNull();
       fixture.detectChanges();
-      tick(200);
+      tick();
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       expect(testComponent.value).toBe(null);
-      expect(treeSelectComponent.selectedNodes.length).toBe(0);
-      expect(treeSelectComponent.value.length).toBe(0);
+      expect(testComponent.nzSelectTreeComponent.selectedNodes.length).toEqual(0);
+      expect(testComponent.nzSelectTreeComponent.value.length).toBe(0);
     }));
     it('should dropdown style work', fakeAsync(() => {
       treeSelect.nativeElement.click();
@@ -185,7 +158,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       fixture.detectChanges();
-      const targetNode = overlayContainerElement.querySelectorAll('li')[ 2 ];
+      const targetNode = overlayContainerElement.querySelectorAll('nz-tree-node')[ 2 ];
       dispatchMouseEvent(targetNode, 'click');
       fixture.detectChanges();
       flush();
@@ -243,6 +216,7 @@ describe('tree-select component', () => {
       treeSelectComponent = treeSelect.componentInstance;
       fixture.detectChanges();
       flush();
+      fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
     }));
@@ -282,15 +256,15 @@ describe('tree-select component', () => {
     it('should set null value work', fakeAsync(() => {
       fixture.detectChanges();
       expect(testComponent.value[ 0 ]).toBe('1000122');
-      treeSelectComponent.updateSelectedNodes();
-      fixture.detectChanges();
       testComponent.setNull();
       fixture.detectChanges();
-      tick(200);
+      tick();
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       expect(testComponent.value).toBe(null);
-      expect(treeSelectComponent.selectedNodes.length).toBe(0);
-      expect(treeSelectComponent.value.length).toBe(0);
+      expect(testComponent.nzSelectTreeComponent.selectedNodes.length).toBe(0);
+      expect(testComponent.nzSelectTreeComponent.value.length).toBe(0);
     }));
 
     it('should remove checked when press backs', fakeAsync(() => {
@@ -319,7 +293,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       fixture.detectChanges();
-      const targetNode = overlayContainerElement.querySelectorAll('li')[ 2 ];
+      const targetNode = overlayContainerElement.querySelectorAll('nz-tree-node')[ 2 ];
       dispatchMouseEvent(targetNode, 'click');
       fixture.detectChanges();
       flush();
@@ -364,38 +338,6 @@ describe('tree-select component', () => {
       expect(treeSelectComponent.selectedNodes.length).toBe(0);
       expect(treeSelectComponent.value.length).toBe(0);
     }));
-  });
-
-  describe('async nodes', () => {
-    let fixture;
-    let testComponent;
-    let treeSelect;
-    let treeSelectComponent: NzTreeSelectComponent;
-    beforeEach(fakeAsync(() => {
-      fixture = TestBed.createComponent(NzTestTreeSelectAsyncNodesComponent);
-      fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-      treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
-      treeSelectComponent = treeSelect.componentInstance;
-      fixture.detectChanges();
-      flush();
-      tick(200);
-      fixture.detectChanges();
-    }));
-    it('should update selected nodes after load nodes', fakeAsync(() => {
-      treeSelectComponent.updateSelectedNodes();
-      fixture.detectChanges();
-      expect(treeSelectComponent.selectedNodes.length).toBe(0);
-      testComponent.loadNodes();
-      tick(200);
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      treeSelectComponent.updateSelectedNodes();
-      fixture.detectChanges();
-      expect(treeSelectComponent.selectedNodes.length).toBe(1);
-    }));
-
   });
 
 });
@@ -620,108 +562,4 @@ export class NzTestTreeSelectFormComponent {
   setNull(): void {
     this.formGroup.get('select').reset(null);
   }
-}
-
-@Component({
-  selector: 'nz-test-tree-select-async-nodes',
-  template: `
-    <nz-tree-select
-      [nzNodes]="nodes"
-      [(ngModel)]="value">
-    </nz-tree-select>
-  `
-})
-
-export class NzTestTreeSelectAsyncNodesComponent {
-  value: string = '10001';
-  nodes = [];
-
-  loadNodes(): void {
-    setTimeout(() => {
-      this.nodes = [
-        new NzTreeNode({
-          title   : 'root1',
-          key     : '1001',
-          children: [
-            {
-              title   : 'child1',
-              key     : '10001',
-              children: [
-                {
-                  title   : 'child1.1',
-                  key     : '100011',
-                  children: []
-                },
-                {
-                  title   : 'child1.2',
-                  key     : '100012',
-                  children: [
-                    {
-                      title   : 'grandchild1.2.1',
-                      key     : '1000121',
-                      isLeaf  : true,
-                      disabled: true
-                    },
-                    {
-                      title : 'grandchild1.2.2',
-                      key   : '1000122',
-                      isLeaf: true
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }),
-        new NzTreeNode({
-          title   : 'root2',
-          key     : '1002',
-          children: [
-            {
-              title          : 'child2.1',
-              key            : '10021',
-              children       : [],
-              disableCheckbox: true
-            },
-            {
-              title   : 'child2.2',
-              key     : '10022',
-              children: [
-                {
-                  title : 'grandchild2.2.1',
-                  key   : '100221',
-                  isLeaf: true
-                }
-              ]
-            }
-          ]
-        })
-      ];
-    });
-  }
-}
-
-@Component({
-  selector: 'nz-test-tree-select-on-push',
-  template: `
-    <nz-tree-select
-      [nzNodes]="nodes"
-      [(ngModel)]="value">
-    </nz-tree-select>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
-
-export class NzTestTreeSelectOnPushComponent {
-  value: string = '1001';
-  nodes = [
-    new NzTreeNode({
-      title   : 'root1',
-      key     : '1001'
-    }),
-    new NzTreeNode({
-      title   : 'root2',
-      key     : '1002'
-    })
-  ];
 }
