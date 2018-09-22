@@ -8,6 +8,8 @@ export interface NzFormatEmitEvent {
   selectedKeys?: NzTreeNode[];
   checkedKeys?: NzTreeNode[];
   matchedKeys?: NzTreeNode[];
+  nodes?: NzTreeNode[];
+  keys?: string[];
 }
 
 export interface NzFormatBeforeDropEvent {

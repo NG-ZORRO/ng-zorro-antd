@@ -1,6 +1,7 @@
 export interface NzTreeNodeOptions {
   title: string;
   key: string;
+  icon?: string;
   isLeaf?: boolean;
   checked?: boolean;
   selected?: boolean;
@@ -9,8 +10,9 @@ export interface NzTreeNodeOptions {
   disableCheckbox?: boolean;
   expanded?: boolean;
   children?: NzTreeNodeOptions[];
+
   // tslint:disable-next-line:no-any
-  [key: string]: any;
+  [ key: string ]: any;
 }
 
 export class NzTreeNode {
@@ -39,25 +41,22 @@ export class NzTreeNode {
     this.key = option.key || null;
     this.isLeaf = option.isLeaf || false;
     this.origin = option;
-
     this.children = [];
     this.parentNode = parent;
-
     // option params
     this.isChecked = option.checked || false;
     this.isSelectable = option.disabled || (option.selectable === false ? false : true);
     this.isDisabled = option.disabled || false;
     this.isDisableCheckbox = option.disableCheckbox || false;
-    this.isExpanded = option.expanded || false;
-
+    this.isExpanded = option.isLeaf ? false : (option.expanded || false);
     this.isAllChecked = option.checked || false;
     this.isHalfChecked = false;
-    this.isSelected = option.selected || false;
+    this.isSelected = (!option.disabled && option.selected) || false;
     this.isLoading = false;
     this.isMatched = false;
 
     /**
-     * 初始化时父节点checked状态影响全部子节点
+     * parent's checked status will affect children while initializing
      */
     if (parent) {
       this.level = parent.level + 1;
@@ -76,6 +75,23 @@ export class NzTreeNode {
     }
   }
 
+  public setChecked(checked: boolean = false, halfChecked: boolean = false): void {
+    this.origin.checked = checked;
+    this.isChecked = checked;
+    this.isAllChecked = checked;
+    this.isHalfChecked = halfChecked;
+  }
+
+  public setExpanded(value: boolean): void {
+    this.origin.expanded = value;
+    this.isExpanded = value;
+  }
+
+  public setSelected(value: boolean): void {
+    this.origin.selected = value;
+    this.isSelected = value;
+  }
+
   public getParentNode(): NzTreeNode {
     return this.parentNode;
   }
@@ -89,29 +105,33 @@ export class NzTreeNode {
    */
   // tslint:disable-next-line:no-any
   public addChildren(children: any[], childPos: number = -1): void {
-    if (this.isLeaf) {
-      // remove loading state
-      this.isLoading = false;
-    } else {
+    if (!this.isLeaf) {
       children.forEach(
         (node) => {
-          let tNode = node;
-          if (tNode instanceof NzTreeNode) {
-            tNode = new NzTreeNode({
-              checked: !tNode.origin.disabled && !tNode.origin.disableCheckbox && this.isChecked,
-              ...(tNode.origin as NzTreeNodeOptions)
-            }, this);
+          const refreshLevel = (n: NzTreeNode) => {
+            n.getChildren().forEach(c => {
+              c.level = c.getParentNode().level + 1;
+              // flush origin
+              c.origin.level = c.level;
+              refreshLevel(c);
+            });
+          };
+          let child = node;
+          if (child instanceof NzTreeNode) {
+            child.parentNode = this;
           } else {
-            node.checked = !node.disabled && !node.disableCheckbox && this.isChecked;
-            tNode = new NzTreeNode(node, this);
+            child = new NzTreeNode(node, this);
           }
-          tNode.level = this.level + 1;
+          child.level = this.level + 1;
+          child.origin.level = child.level;
+          refreshLevel(child);
           try {
-            childPos === -1 ? this.children.push(tNode) : this.children.splice(childPos, 0, tNode);
+            childPos === -1 ? this.children.push(child) : this.children.splice(childPos, 0, child);
+            // flush origin
           } catch (e) {
-
           }
         });
+      this.origin.children = this.getChildren().map(v => v.origin);
       // remove loading state
       this.isLoading = false;
     }

@@ -16,21 +16,20 @@
     [ngStyle]="nzDropdownStyle">
     <nz-tree
       #treeRef
-      [ngModel]="nzNodes"
+      [nzData]="nzNodes"
       [nzMultiple]="nzMultiple"
       [nzSearchValue]="inputValue"
       [nzCheckable]="nzCheckable"
       [nzAsyncData]="nzAsyncData"
       [nzShowExpand]="nzShowExpand"
       [nzShowLine]="nzShowLine"
-      [nzDefaultExpandAll]="nzDefaultExpandAll"
-      [nzDefaultExpandedKeys]="nzDefaultExpandedKeys"
-      [nzDefaultCheckedKeys]="nzCheckable ? value : []"
-      [nzDefaultSelectedKeys]="!nzCheckable ? value : []"
+      [nzExpandAll]="nzDefaultExpandAll"
+      [nzExpandedKeys]="nzDefaultExpandedKeys"
+      [nzCheckedKeys]="nzCheckable ? value : []"
+      [nzSelectedKeys]="!nzCheckable ? value : []"
       (nzExpandChange)="nzExpandChange.emit($event)"
       (nzClick)="nzTreeClick.emit($event)"
-      (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)"
-    >
+      (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)">
     </nz-tree>
   </div>
 </ng-template>

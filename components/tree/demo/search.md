@@ -1,8 +1,8 @@
 ---
-order: 6
+order: 5
 title:
   zh-CN: 可搜索
-  en-US: searchable
+  en-US: Searchable
 ---
 
 ## zh-CN
