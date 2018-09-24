@@ -1,6 +1,9 @@
-import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Location, CommonModule } from '@angular/common';
+import { Component, TemplateRef, ViewChild, ViewEncapsulation, NgZone } from '@angular/core';
 import { fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { Routes, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { dispatchFakeEvent } from '../core/testing';
 
 import { NzTabsModule } from './nz-tabs.module';
@@ -463,6 +466,97 @@ describe('tabs', () => {
   });
 });
 
+describe('route link', () => {
+  beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
+      imports     : [ CommonModule, NzTabsModule, RouterTestingModule.withRoutes(routes) ],
+      declarations: [ NzTestTabsQueryParamComponent, NzTestTabsNullComponent, NzTestTabsChildRouteComponent ]
+    });
+    TestBed.compileComponents();
+  }));
+
+  describe('auto tabs', () => {
+    let fixture;
+    let testComponent;
+    let tabsComponent;
+    let router: Router;
+    let location: Location;
+    let zone;
+
+    it('should query param mode work', fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestTabsQueryParamComponent);
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+      tabsComponent = fixture.debugElement.query(By.directive(NzTabSetComponent));
+      router = TestBed.get(Router);
+      location = TestBed.get(Location);
+      zone = TestBed.get(NgZone);
+      router.initialNavigation();
+
+      fixture.detectChanges();
+      const titles = tabsComponent.nativeElement.querySelectorAll('.ant-tabs-tab');
+      expect(location.path()).toBe('');
+      expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(0);
+      zone.run(() => {
+        router.navigate([ '.' ], { queryParams: { tab: 'one' } });
+      });
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(location.path()).toBe('/?tab=one');
+      expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(1);
+      router.navigate([ '.' ], { queryParams: { tab: 'two' } });
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(location.path()).toBe('/?tab=two');
+      expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(2);
+      titles[ 0 ].click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(location.path()).toBe('');
+      expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(0);
+    }));
+
+    // it('should child route mode work', fakeAsync(() => {
+    //   fixture = TestBed.createComponent(NzTestTabsChildRouteComponent);
+    //   fixture.detectChanges();
+    //   testComponent = fixture.debugElement.componentInstance;
+    //   tabsComponent = fixture.debugElement.query(By.directive(NzTabSetComponent));
+    //   router = TestBed.get(Router);
+    //   location = TestBed.get(Location);
+    //   zone = TestBed.get(NgZone);
+    //   router.initialNavigation();
+    //
+    //   fixture.detectChanges();
+    //   const titles = tabsComponent.nativeElement.querySelectorAll('.ant-tabs-tab');
+    //   expect(location.path()).toBe('');
+    //   expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(0);
+    //   zone.run(() => {
+    //     router.navigate([ '/one' ]);
+    //   });
+    //   fixture.detectChanges();
+    //   flush();
+    //   fixture.detectChanges();
+    //   expect(location.path()).toBe('/one');
+    //   expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(1);
+    //   // titles[ 2 ].click();
+    //   // fixture.detectChanges();
+    //   // flush();
+    //   // fixture.detectChanges();
+    //   // expect(location.path()).toBe('/?tab=two');
+    //   // expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(2);
+    //   // titles[ 0 ].click();
+    //   // fixture.detectChanges();
+    //   // flush();
+    //   // fixture.detectChanges();
+    //   // expect(location.path()).toBe('/');
+    //   // expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(0);
+    // }));
+  });
+});
+
 @Component({
   selector     : 'nz-test-tabs-basic',
   encapsulation: ViewEncapsulation.None,
@@ -541,3 +635,76 @@ export class NzTestTabsBasicComponent {
   deselect02 = jasmine.createSpy('deselect02 callback');
   array = [];
 }
+
+@Component({
+  selector: 'nz-test-tabs-query-param',
+  template: `
+    <nz-tabset [nzNavigationOptions]="listOfNavigation" [nzQueryParam]="queryParam">
+      <nz-tab nzTitle="Zero">I have no param.</nz-tab>
+      <nz-tab nzTitle="One">I have a param One. Try refresh this page and you will see me again!</nz-tab>
+      <nz-tab nzTitle="Two">I have a param Two.</nz-tab>
+      <nz-tab nzTitle="Three">I have a param Three.</nz-tab>
+    </nz-tabset>
+    <router-outlet></router-outlet>
+  `
+})
+export class NzTestTabsQueryParamComponent {
+  queryParam = 'tab';
+  listOfNavigation = [
+    { path: '' },
+    { path: 'one' },
+    { path: 'two' },
+    { path: 'three' }
+  ];
+}
+
+@Component({
+  selector: 'nz-test-tabs-child-route',
+  template: `
+    <nz-tabset [nzNavigationOptions]="listOfNavigation">
+      <nz-tab nzTitle="Zero">I have no param.</nz-tab>
+      <nz-tab nzTitle="One">I have a param One. Try refresh this page and you will see me again!</nz-tab>
+      <nz-tab nzTitle="Two">I have a param Two.</nz-tab>
+      <nz-tab nzTitle="Three">I have a param Three.</nz-tab>
+    </nz-tabset>
+    <router-outlet></router-outlet>
+  `
+})
+export class NzTestTabsChildRouteComponent {
+  listOfNavigation = [
+    { path: '' },
+    { path: 'one' },
+    { path: 'two' },
+    { path: 'three' }
+  ];
+}
+
+@Component({
+  selector: 'nz-test-tabs-null',
+  template: ''
+})
+export class NzTestTabsNullComponent {}
+
+const routes: Routes = [
+  {
+    path    : '',
+    children: [
+      {
+        path     : '',
+        component: NzTestTabsNullComponent
+      },
+      {
+        path     : 'one',
+        component: NzTestTabsNullComponent
+      },
+      {
+        path     : 'two',
+        component: NzTestTabsNullComponent
+      },
+      {
+        path     : 'three',
+        component: NzTestTabsNullComponent
+      }
+    ]
+  }
+];

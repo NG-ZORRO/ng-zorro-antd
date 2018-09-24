@@ -8,16 +8,20 @@ import {
   ElementRef,
   EventEmitter,
   Inject,
+  Injector,
   Input,
+  OnDestroy,
   OnInit,
   Optional,
   Output,
   Renderer2,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  NgZone
 } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { ActivatedRoute, NavigationEnd, NavigationExtras, Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { isNotNil } from '../core/util/check';
@@ -29,6 +33,10 @@ import { NzTabsNavComponent } from './nz-tabs-nav.component';
 export interface NzAnimatedInterface {
   inkBar: boolean;
   tabPane: boolean;
+}
+
+export interface NzTabNavigationOption {
+  path: string;
 }
 
 export class NzTabChangeEvent {
@@ -54,13 +62,14 @@ export type NzTabType = 'line' | 'card';
     }
   ` ]
 })
-export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterViewInit {
+export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterViewInit, OnDestroy {
   private _tabPosition: NzTabPosition = 'top';
   private _indexToSelect: number | null = 0;
   private _selectedIndex: number | null = null;
   private _type: NzTabType = 'line';
   private _size = 'default';
   private _animated: NzAnimatedInterface | boolean = true;
+  private $destory = new Subject();
   el: HTMLElement;
   prefixCls = 'ant-tabs';
   tabPositionMode: NzTabPositionMode = 'horizontal';
@@ -75,6 +84,8 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
   @Input() nzHideAll = false;
   @Input() nzTabBarGutter: number;
   @Input() nzTabBarStyle: { [ key: string ]: string };
+  @Input() nzNavigationOptions: NzTabNavigationOption[] = [];
+  @Input() nzQueryParam: string;
   @Output() nzOnNextClick = new EventEmitter<void>();
   @Output() nzOnPrevClick = new EventEmitter<void>();
 
@@ -178,36 +189,11 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
     if (!disabled) {
       this.nzSelectedIndex = index;
       this.listOfNzTabComponent[ index ].nzClick.emit();
-    }
-  }
 
-  ngOnInit(): void {
-    this.setClassMap();
-  }
-
-  ngAfterContentChecked(): void {
-    // Clamp the next selected index to the bounds of 0 and the tabs length. Note the `|| 0`, which
-    // ensures that values like NaN can't get through and which would otherwise throw the
-    // component into an infinite loop (since Math.max(NaN, 0) === NaN).
-    const indexToSelect = this._indexToSelect =
-      Math.min(this.listOfNzTabComponent.length - 1, Math.max(this._indexToSelect || 0, 0));
-
-    // If there is a change in selected index, emit a change event. Should not trigger if
-    // the selected index has not yet been initialized.
-    if (this._selectedIndex !== indexToSelect && isNotNil(this._selectedIndex)) {
-      this.nzSelectChange.emit(this.createChangeEvent(indexToSelect));
-    }
-
-    // Setup the position for each tab and optionally setup an origin on the next selected tab.
-    this.listOfNzTabComponent.forEach((tab: NzTabComponent, index: number) => {
-      tab.position = index - indexToSelect;
-      // If there is already a selected tab, then set up an origin for the next selected tab
-      // if it doesn't have one already.
-      if (isNotNil(this._selectedIndex) && tab.position === 0 && !tab.origin) {
-        tab.origin = indexToSelect - this._selectedIndex;
+      if (this.nzNavigationOptions.length > 0) {
+        this.navigate(index);
       }
-    });
-    this._selectedIndex = indexToSelect;
+    }
   }
 
   createChangeEvent(index: number): NzTabChangeEvent {
@@ -245,9 +231,93 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
     }
   }
 
+  navigate(index: number): void {
+    const router: Router = this._injector.get(Router);
+    const activatedRoute: ActivatedRoute = this._injector.get(ActivatedRoute);
+    if (this.nzQueryParam) {
+      const param = this.nzNavigationOptions[ index ].path;
+      const opt: NavigationExtras = {
+        relativeTo         : activatedRoute,
+        queryParamsHandling: 'merge',
+        preserveFragment   : true
+      };
+      if (param) { opt[this.nzQueryParam] = param; }
+      this._ngZone.run(() => {
+        router.navigate([ '.' ], opt);
+      });
+    } else {
+      const path = this.nzNavigationOptions[ index ].path;
+      this._ngZone.run(() => {
+        router.navigate([ path ], { relativeTo: activatedRoute });
+      });
+    }
+  }
+
   // tslint:disable-next-line:no-any
-  constructor(private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService, private elementRef: ElementRef, @Optional() @Inject(DOCUMENT) private document: any) {
+  constructor(
+    private renderer: Renderer2,
+    private nzUpdateHostClassService: NzUpdateHostClassService,
+    private elementRef: ElementRef,
+    private _injector: Injector,
+    private _ngZone: NgZone,
+    @Optional() @Inject(DOCUMENT) private document: any
+  ) {
     this.el = this.elementRef.nativeElement;
+  }
+
+  ngOnInit(): void {
+    if (this.nzNavigationOptions.length > 0) {
+      let activatedRoute: ActivatedRoute;
+      let router: Router;
+
+      try {
+        activatedRoute = this._injector.get(ActivatedRoute);
+        router = this._injector.get(Router);
+      } catch (e) {
+        throw new Error('[ng-zorro] You should import RouterModule if you want to use router linked tabs.');
+      }
+
+      if (this.nzQueryParam) {
+        activatedRoute.queryParamMap.pipe(takeUntil(this.$destory), map(params => params.get(this.nzQueryParam))).subscribe(data => {
+          // Query param could not exist, then selected the '' path.
+          const index = this.nzNavigationOptions.map(nav => nav.path).findIndex(nav => !data ? !nav : data === nav);
+          this.nzSelectedIndex = index;
+        });
+      } else {
+        router.events.pipe(filter(e => e instanceof NavigationEnd), takeUntil(this.$destory)).subscribe(() => {
+          const urlSegment = activatedRoute.snapshot.url[0].path || '';
+          console.log(activatedRoute.snapshot);
+          this.nzSelectedIndex = this.nzNavigationOptions.map(nav => nav.path).findIndex(nav => !urlSegment ? !nav : urlSegment === nav);
+        });
+      }
+    }
+
+    this.setClassMap();
+  }
+
+  ngAfterContentChecked(): void {
+    // Clamp the next selected index to the bounds of 0 and the tabs length. Note the `|| 0`, which
+    // ensures that values like NaN can't get through and which would otherwise throw the
+    // component into an infinite loop (since Math.max(NaN, 0) === NaN).
+    const indexToSelect = this._indexToSelect =
+      Math.min(this.listOfNzTabComponent.length - 1, Math.max(this._indexToSelect || 0, 0));
+
+    // If there is a change in selected index, emit a change event. Should not trigger if
+    // the selected index has not yet been initialized.
+    if (this._selectedIndex !== indexToSelect && isNotNil(this._selectedIndex)) {
+      this.nzSelectChange.emit(this.createChangeEvent(indexToSelect));
+    }
+
+    // Setup the position for each tab and optionally setup an origin on the next selected tab.
+    this.listOfNzTabComponent.forEach((tab: NzTabComponent, index: number) => {
+      tab.position = index - indexToSelect;
+      // If there is already a selected tab, then set up an origin for the next selected tab
+      // if it doesn't have one already.
+      if (isNotNil(this._selectedIndex) && tab.position === 0 && !tab.origin) {
+        tab.origin = indexToSelect - this._selectedIndex;
+      }
+    });
+    this._selectedIndex = indexToSelect;
   }
 
   ngAfterViewInit(): void {
@@ -255,4 +325,8 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
     this.setPosition(this.nzTabPosition);
   }
 
+  ngOnDestroy(): void {
+    this.$destory.next();
+    this.$destory.complete();
+  }
 }
