@@ -4,93 +4,77 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 @Component({
   selector: 'nz-demo-tree-draggable',
   template: `
-    <nz-tree [(ngModel)]="nodes"
-             (nzExpandChange)="mouseAction('expand',$event)"
-             [nzDraggable]="true"
-             (nzOnDragStart)="mouseAction('dragstart',$event)"
-             (nzOnDragEnter)="mouseAction('enter',$event)"
-             (nzOnDragLeave)="mouseAction('leave', $event)"
-             (nzOnDrop)="mouseAction('drop', $event)"
-             (nzOnDragEnd)="mouseAction('end', $event)">
-    </nz-tree>`,
+    <nz-tree
+      [nzData]="nodes"
+      nzDraggable="true"
+      (nzOnDragStart)="nzEvent($event)"
+      (nzOnDragEnter)="nzEvent($event)"
+      (nzOnDragLeave)="nzEvent($event)"
+      (nzOnDrop)="nzEvent($event)"
+      (nzOnDragEnd)="nzEvent($event)">
+    </nz-tree>
+  `,
   styles  : [ `
-    :host ::ng-deep .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {
-      width: calc(100% - 8px);
-    }
-
-    :host ::ng-deep .ant-tree li span[draggable], :host ::ng-deep .ant-tree li span[draggable="true"] {
-      width: calc(100% - 8px);
+    :host ::ng-deep .draggable-tree .ant-tree-node-content-wrapper {
+      width: calc(100% - 42px);
     }
   ` ]
 })
+
 export class NzDemoTreeDraggableComponent implements OnInit {
-  nodes = [
-    new NzTreeNode({
-      title   : 'root1',
-      key     : '1001',
+  nodes = [ {
+    title   : '0-0',
+    key     : '00',
+    expanded: true,
+    children: [ {
+      title   : '0-0-0',
+      key     : '000',
+      expanded: true,
       children: [
-        {
-          title   : 'child1',
-          key     : '10001',
-          children: [
-            {
-              title : 'child1.1',
-              key   : '100011',
-              isLeaf: true
-            },
-            {
-              title   : 'child1.2',
-              key     : '100012',
-              children: [
-                {
-                  title   : 'grandchild1.2.1',
-                  key     : '1000121',
-                  isLeaf  : true,
-                  checked : true,
-                  disabled: true
-                },
-                {
-                  title : 'grandchild1.2.2',
-                  key   : '1000122',
-                  isLeaf: true
-                }
-              ]
-            }
-          ]
-        }
+        { title: '0-0-0-0', key: '0000', isLeaf: true },
+        { title: '0-0-0-1', key: '0001', isLeaf: true },
+        { title: '0-0-0-2', key: '0002', isLeaf: true }
       ]
-    }),
-    new NzTreeNode({
-      title   : 'root2',
-      key     : '1002',
+    }, {
+      title   : '0-0-1',
+      key     : '001',
       children: [
-        {
-          title : 'child2.1',
-          key   : '10021',
-          isLeaf: true
-        },
-        {
-          title   : 'child2.2',
-          key     : '10022',
-          children: [
-            {
-              title : 'grandchild2.2.1',
-              key   : '100221',
-              isLeaf: true
-            }
-          ]
-        }
+        { title: '0-0-1-0', key: '0010', isLeaf: true },
+        { title: '0-0-1-1', key: '0011', isLeaf: true },
+        { title: '0-0-1-2', key: '0012', isLeaf: true }
       ]
-    })
-  ];
+    }, {
+      title: '0-0-2',
+      key  : '002'
+    } ]
+  }, {
+    title   : '0-1',
+    key     : '01',
+    children: [ {
+      title   : '0-1-0',
+      key     : '010',
+      children: [
+        { title: '0-1-0-0', key: '0100', isLeaf: true },
+        { title: '0-1-0-1', key: '0101', isLeaf: true },
+        { title: '0-1-0-2', key: '0102', isLeaf: true }
+      ]
+    }, {
+      title   : '0-1-1',
+      key     : '011',
+      children: [
+        { title: '0-1-1-0', key: '0110', isLeaf: true },
+        { title: '0-1-1-1', key: '0111', isLeaf: true },
+        { title: '0-1-1-2', key: '0112', isLeaf: true }
+      ]
+    } ]
+  }, {
+    title : '0-2',
+    key   : '02',
+    isLeaf: true
+  } ];
 
-  mouseAction(name: string, e: NzFormatEmitEvent): void {
-    if (name !== 'over') {
-      console.log(name, e);
-    }
-  }
-
-  constructor() {
+  nzEvent(event: NzFormatEmitEvent): void {
+    console.log(event);
   }
 
   ngOnInit(): void {

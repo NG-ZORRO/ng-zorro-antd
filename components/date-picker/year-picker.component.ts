@@ -12,7 +12,7 @@ import { HeaderPickerComponent, SupportHeaderPanel } from './header-picker.compo
     useExisting: forwardRef(() => NzYearPickerComponent)
   }],
   host               : {
-    '[class.ant-checkbox-group]': 'true'
+    '[class.ant-calendar-picker]': 'true'
   }
 })
 

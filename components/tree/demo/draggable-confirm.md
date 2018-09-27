@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-nzBeforeDrop: 在拖拽放置事件(drop事件)之前做校验, 例如仅允许拖拽到内部(延时一秒)。
+nzBeforeDrop: 在拖拽放置事件(drop事件)之前做校验, 例如仅允许拖拽到内部(延时一秒)、放置前结合modal验证等。
 
 ## en-US
 
-nzBeforeDrop: Validate before drop event, for example only allowed to drag inside(delay 1s).
+nzBeforeDrop: Validate before drop event, for example: only allow to drag inside(delay 1s)、 validate using modal .etc.

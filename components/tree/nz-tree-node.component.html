@@ -1,53 +1,62 @@
-<li #dragElement
-  [class.ant-tree-treenode-loading]="nzTreeNode.isLoading && !nzTreeNode.isLeaf"
-  [class.ant-tree-treenode-disabled]="nzTreeNode.isDisabled"
-  (dblclick)="_dblClickNode($event,nzTreeNode)"
-  (click)="_clickNode($event,nzTreeNode)"
-  (contextmenu)="_contextMenuNode($event,nzTreeNode)">
+<li
+  #dragElement
+  role="treeitem"
+  [ngClass]="nzNodeClass"
+  [class.ant-tree-treenode-switcher-open]="isSwitcherOpen"
+  [class.ant-tree-treenode-switcher-close]="isSwitcherClose"
+  [class.ant-tree-treenode-checkbox-checked]="nzTreeNode.isChecked"
+  [class.ant-tree-treenode-checkbox-indeterminate]="nzTreeNode.isHalfChecked"
+  [class.ant-tree-treenode-selected]="nzTreeNode.isSelected"
+  [class.ant-tree-treenode-loading]="nzTreeNode.isLoading">
   <ng-container *ngIf="nzShowExpand">
     <span
-      class="ant-tree-switcher"
-      [ngStyle]="loadingStyle"
-      [class.ant-tree-switcher_open]="nzTreeNode.isExpanded && !nzTreeNode.isLeaf"
-      [class.ant-tree-switcher_close]="!nzTreeNode.isExpanded && !nzTreeNode.isLeaf"
-      [class.ant-tree-switcher-noop]="nzTreeNode.isLeaf"
-      [class.ant-tree-switcher-disabled]="nzTreeNode.isDisabled"
-      [class.ant-tree-iconEle]="nzTreeNode.isLoading && !nzTreeNode.isLeaf"
-      [class.ant-tree-icon__open]="nzTreeNode.isLoading && nzTreeNode.isExpanded && !nzTreeNode.isLeaf"
-      [class.ant-tree-icon__close]="nzTreeNode.isLoading && !nzTreeNode.isExpanded && !nzTreeNode.isLeaf"
-      (click)="_clickExpand($event, nzTreeNode)">
+      [ngClass]="nzNodeSwitcherClass"
+      [class.ant-tree-switcher_open]="isSwitcherOpen"
+      [class.ant-tree-switcher_close]="isSwitcherClose"
+      (click)="_clickExpand($event)">
     </span>
   </ng-container>
-  <ng-container #checkbox *ngIf="nzCheckable">
+  <ng-container *ngIf="nzCheckable">
     <span
       class="ant-tree-checkbox"
-      [class.ant-tree-checkbox-checked]="nzTreeNode.isChecked && nzTreeNode.isAllChecked"
-      [class.ant-tree-checkbox-disabled]="nzTreeNode.isDisabled || nzTreeNode.isDisableCheckbox"
+      [class.ant-tree-checkbox-checked]="nzTreeNode.isChecked"
       [class.ant-tree-checkbox-indeterminate]="nzTreeNode.isHalfChecked"
-      (click)="_clickCheckBox($event, nzTreeNode)">
-        <span class="ant-tree-checkbox-inner"></span>
+      [class.ant-tree-checkbox-disabled]="(nzTreeNode.isDisabled || nzTreeNode.isDisableCheckbox)"
+      (click)="_clickCheckBox($event)">
+      <span class="ant-tree-checkbox-inner"></span>
     </span>
   </ng-container>
   <ng-container *ngIf="!nzTreeTemplate">
     <span
       title="{{nzTreeNode.title}}"
-      class="ant-tree-node-content-wrapper"
+      [attr.draggable]="canDraggable"
+      [attr.aria-grabbed]="canDraggable"
+      [ngClass]="nzNodeContentClass"
+      [class.ant-tree-node-content-wrapper-open]="isSwitcherOpen"
+      [class.ant-tree-node-content-wrapper-close]="isSwitcherClose"
       [class.ant-tree-node-selected]="nzTreeNode.isSelected"
-      [class.ant-tree-node-content-wrapper-open]="nzTreeNode.isExpanded && nzTreeNode.getChildren().length>0"
-      [class.ant-tree-node-content-wrapper-close]="!nzTreeNode.isExpanded && nzTreeNode.getChildren().length>0"
-      [class.ant-tree-node-content-wrapper-normal]="nzTreeNode.getChildren().length>0"
-      [attr.draggable]="nzDraggable"
-      [attr.aria-grabbed]="nzDraggable">
-        <span class="ant-tree-title">
-          <ng-container *ngIf="matchValue.length==2">
-            <span>
-              {{matchValue[0]}}<span class="font-highlight">{{nzSearchValue}}</span>{{matchValue[1]}}
-            </span>
-          </ng-container>
-          <ng-container *ngIf="matchValue.length!=2">
-            {{nzTreeNode.title}}
-          </ng-container>
+      [class.draggable]="canDraggable">
+      <span
+        *ngIf="nzTreeNode.origin.icon"
+        [class.ant-tree-icon__open]="isSwitcherOpen"
+        [class.ant-tree-icon__close]="isSwitcherClose"
+        [class.ant-tree-icon_loading]="nzTreeNode.isLoading"
+        [ngClass]="nzNodeContentLoadingClass">
+        <span
+          [ngClass]="nzNodeContentIconClass">
+          <i class="anticon" [ngClass]="nzTreeNode.origin.icon"></i>
         </span>
+      </span>
+      <span class="ant-tree-title">
+        <ng-container *ngIf="nzTreeNode.isMatched">
+          <span>
+            {{highlightKeys[0]}}<span class="font-highlight">{{nzSearchValue}}</span>{{highlightKeys[1]}}
+          </span>
+        </ng-container>
+        <ng-container *ngIf="!nzTreeNode.isMatched">
+          {{nzTreeNode.title}}
+        </ng-container>
+      </span>
     </span>
   </ng-container>
   <ng-template
@@ -55,29 +64,31 @@
     [ngTemplateOutletContext]="{ $implicit: nzTreeNode }">
   </ng-template>
 
-  <ul class="ant-tree-child-tree ant-tree-child-tree-open"
+  <ul
+    role="group"
     [attr.data-expanded]="nzTreeNode.isExpanded"
-    [@expandState]="(nzTreeNode.getChildren().length>0 && nzTreeNode.isExpanded)?'active':'inactive'">
-    <nz-tree-node *ngFor="let node of nzTreeNode.children" [nzTreeNode]="node"
+    [ngClass]="nzNodeChildrenClass"
+    [@nodeState]="nzTreeNode.isExpanded ? 'active' : 'inactive'">
+    <nz-tree-node
+      *ngFor="let node of nzTreeNode.getChildren()"
+      [nzTreeNode]="node"
       [nzShowLine]="nzShowLine"
       [nzDraggable]="nzDraggable"
       [nzCheckable]="nzCheckable"
       [nzShowExpand]="nzShowExpand"
-      [nzSearchValue]="nzSearchValue"
       [nzAsyncData]="nzAsyncData"
       [nzMultiple]="nzMultiple"
+      [nzExpandAll]="nzExpandAll"
+      [nzDefaultExpandAll]="nzDefaultExpandAll"
+      [nzSearchValue]="nzSearchValue"
       [nzBeforeDrop]="nzBeforeDrop"
       [nzCheckStrictly]="nzCheckStrictly"
-      [nzDefaultExpandAll]="nzDefaultExpandAll"
-      [nzDefaultExpandedKeys]="nzDefaultExpandedKeys"
-      [nzDefaultSelectedKeys]="nzDefaultSelectedKeys"
-      [nzDefaultCheckedKeys]="nzDefaultCheckedKeys"
       [nzTreeTemplate]="nzTreeTemplate"
       (clickNode)="clickNode.emit($event)"
       (dblClick)="dblClick.emit($event)"
       (contextMenu)="contextMenu.emit($event)"
-      (clickCheckBox)="clickCheckBox.emit($event)"
       (clickExpand)="clickExpand.emit($event)"
+      (clickCheckBox)="clickCheckBox.emit($event)"
       (nzDragStart)="nzDragStart.emit($event)"
       (nzDragEnter)="nzDragEnter.emit($event)"
       (nzDragOver)="nzDragOver.emit($event)"

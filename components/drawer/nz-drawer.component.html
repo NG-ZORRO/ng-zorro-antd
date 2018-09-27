@@ -6,7 +6,7 @@
     [class.ant-drawer-bottom]="nzPlacement === 'bottom'"
     [class.ant-drawer-right]="nzPlacement === 'right'"
     [class.ant-drawer-left]="nzPlacement === 'left'">
-    <div  class="ant-drawer-mask" (click)="maskClick($event)" *ngIf="nzMask" [style.zIndex]="nzZIndex" [ngStyle]="nzMaskStyle"></div>
+    <div  class="ant-drawer-mask" (click)="maskClick()" *ngIf="nzMask" [style.zIndex]="nzZIndex" [ngStyle]="nzMaskStyle"></div>
     <div class="ant-drawer-content-wrapper {{ nzWrapClassName }}"
          [style.zIndex]="nzZIndex"
          [style.width]="width"
@@ -24,9 +24,13 @@
               </ng-container>
             </div>
           </div>
-          <button *ngIf="nzClosable" (click)="close($event)" aria-label="Close" class="ant-drawer-close"><span class="ant-drawer-close-x"></span></button>
+          <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close"><span class="ant-drawer-close-x"></span></button>
           <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
-            <ng-content></ng-content>
+            <ng-template cdkPortalOutlet></ng-template>
+            <ng-container *ngIf="isTemplateRef(nzContent)">
+              <ng-container *ngTemplateOutlet="nzContent; context: templateContext"></ng-container>
+            </ng-container>
+            <ng-content *ngIf="!nzContent"></ng-content>
           </div>
         </div>
       </div>

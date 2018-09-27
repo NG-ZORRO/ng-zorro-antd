@@ -1,38 +1,32 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 
 @Component({
-  selector: 'nz-demo-tree-search',
+  selector: 'nz-demo-tree-basic-controlled',
   template: `
-    <nz-input-group [nzSuffix]="suffixIcon">
-      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchValue">
-    </nz-input-group>
-    <ng-template #suffixIcon>
-      <i class="anticon anticon-search"></i>
-    </ng-template>
     <nz-tree
-      #treeCom
       [nzData]="nodes"
-      [nzSearchValue]="searchValue"
+      nzCheckable="true"
+      nzMultiple="true"
+      [nzCheckedKeys]="defaultCheckedKeys"
+      [nzExpandedKeys]="defaultExpandedKeys"
+      [nzSelectedKeys]="defaultSelectedKeys"
       (nzClick)="nzEvent($event)"
       (nzExpandChange)="nzEvent($event)"
-      (nzSearchValueChange)="nzEvent($event)">
+      (nzCheckBoxChange)="nzEvent($event)">
     </nz-tree>
-  `,
-  styles  : [ `
-    nz-input-group {
-      padding: 10px 0;
-    }
-  ` ]
+  `
 })
 
-export class NzDemoTreeSearchComponent implements OnInit {
-  @ViewChild('treeCom') treeCom;
-  searchValue;
+export class NzDemoTreeBasicControlledComponent implements OnInit {
+  defaultCheckedKeys = [ '0-0-0' ];
+  defaultSelectedKeys = [];
+  defaultExpandedKeys = [ '0-0', '0-0-0', '0-0-1' ];
 
   nodes = [ {
     title   : '0-0',
     key     : '0-0',
+    expanded: true,
     children: [ {
       title   : '0-0-0',
       key     : '0-0-0',
@@ -69,7 +63,7 @@ export class NzDemoTreeSearchComponent implements OnInit {
   } ];
 
   nzEvent(event: NzFormatEmitEvent): void {
-    console.log(event, this.treeCom.getMatchedNodeList().map(v => v.title));
+    console.log(event);
   }
 
   ngOnInit(): void {

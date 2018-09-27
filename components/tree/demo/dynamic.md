@@ -1,5 +1,5 @@
 ---
-order: 7
+order: 4
 title:
   zh-CN: 异步数据加载
   en-US: load data asynchronously
@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-点击展开节点，动态加载数据，直到执行 addChildren() 方法取消加载状态。
+点击展开节点，动态加载数据。
 
 ## en-US
 
-To load data asynchronously when click to expand a treeNode, loading state keeps until excute addChildren().
+To load data asynchronously when click to expand a treeNode.
