@@ -68,7 +68,7 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | `[nzBordered]` | Whether to show all table borders | boolean | `false` |
 | `[nzWidthConfig]` | Set col width can not used with `nzWidth` of `th` | string[] | - |
 | `[nzSize]` | Size of table | `default` ｜ `middle` ｜ `small` | `default` |
-| `[nzLoading]` | Loading status of table | boolean | `false` |
+| `[nzLoading]` | Whether or not loading animation should be displayed,if true,[spin](https://ng.ant.design/components/spin/en) will be displayed | boolean | `false` |
 | `[nzLoadingDelay]` | Specifies a delay in milliseconds for loading state (prevent flush) | number | 0 |
 | `[nzScroll]` | Whether table can be scrolled in x/y direction, `x` or `y` can be a string that indicates the width and height of table body | object | - |
 | `[nzTitle]` | Table title renderer | string丨`TemplateRef<void>` | - |
