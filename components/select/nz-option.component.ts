@@ -3,11 +3,8 @@ import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
-  selector: 'nz-option',
-  template: `
-    <ng-template>
-      <ng-content></ng-content>
-    </ng-template>`
+  selector   : 'nz-option',
+  templateUrl: './nz-option.component.html'
 })
 export class NzOptionComponent {
   private _disabled = false;

@@ -5,10 +5,8 @@ import {
   Input,
   Output
 } from '@angular/core';
-
 import { fadeAnimation } from '../core/animation/fade-animations';
 import { toBoolean } from '../core/util/convert';
-import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 
 @Component({
@@ -23,12 +21,15 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
   ` ]
 })
 export class NzPopconfirmComponent extends NzToolTipComponent {
-  private _condition = false;
+  _condition = false;
   _prefix = 'ant-popover-placement';
   _trigger = 'click';
   _hasBackdrop = true;
-  @Input() nzContent;
+  @Output() nzOnCancel: EventEmitter<void> = new EventEmitter();
+  @Output() nzOnConfirm: EventEmitter<void> = new EventEmitter();
+
   @Input() nzOkText: string;
+  @Input() nzOkType: string = 'primary';
   @Input() nzCancelText: string;
 
   @Input()
@@ -36,19 +37,12 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
     this._condition = toBoolean(value);
   }
 
-  // get nzCondition(): boolean {
-  //   return this._condition;
-  // }
-
-  @Output() nzOnCancel: EventEmitter<void> = new EventEmitter();
-  @Output() nzOnConfirm: EventEmitter<void> = new EventEmitter();
-
-  constructor(cdr: ChangeDetectorRef, private _locale: NzI18nService) {
-    super(cdr);
+  get nzCondition(): boolean {
+    return this._condition;
   }
 
   show(): void {
-    if (!this._condition) {
+    if (!this.nzCondition) {
       this.nzVisible = true;
     } else {
       this.onConfirm();
@@ -64,4 +58,9 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
     this.nzOnConfirm.emit();
     this.nzVisible = false;
   }
+
+  constructor(cdr: ChangeDetectorRef) {
+    super(cdr);
+  }
+
 }

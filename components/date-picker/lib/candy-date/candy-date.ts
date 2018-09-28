@@ -1,8 +1,9 @@
-import * as addMonths from 'date-fns/add_months';
-import * as addYears from 'date-fns/add_years';
-import * as endOfMonth from 'date-fns/end_of_month';
-import * as setDay from 'date-fns/set_day';
-// import * as setYear from 'date-fns/set_year';
+import addMonths from 'date-fns/add_months';
+import addYears from 'date-fns/add_years';
+import endOfMonth from 'date-fns/end_of_month';
+import setDay from 'date-fns/set_day';
+import setMonth from 'date-fns/set_month';
+// import setYear from 'date-fns/set_year';
 import { firstDayOfWeek } from './util';
 
 /**
@@ -20,10 +21,14 @@ export class CandyDate {
     //   return new CandyDate(date);
     // }
 
-    if (date instanceof Date) {
-      this.nativeDate = date;
-    } else if (typeof date === 'string') {
-      this.nativeDate = new Date(date);
+    if (date) {
+      if (date instanceof Date) {
+        this.nativeDate = date;
+      } else if (typeof date === 'string') {
+        this.nativeDate = new Date(date);
+      } else {
+        throw new Error('The input date type is not supported ("Date" and "string" is now recommended)');
+      }
     } else {
       this.nativeDate = new Date();
     }
@@ -104,10 +109,12 @@ export class CandyDate {
   }
 
   // NOTE: month starts from 0
+  // NOTE: Don't use the native API for month manipulation as it not restrict the date when it overflows, eg. (new Date('2018-7-31')).setMonth(1) will be date of 2018-3-03 instead of 2018-2-28
   setMonth(month: number): CandyDate {
-    const date = new Date(this.nativeDate);
-    date.setMonth(month);
-    return new CandyDate(date);
+    // const date = new Date(this.nativeDate);
+    // date.setMonth(month);
+    // return new CandyDate(date);
+    return new CandyDate(setMonth(this.nativeDate, month));
   }
 
   addMonths(amount: number): CandyDate {

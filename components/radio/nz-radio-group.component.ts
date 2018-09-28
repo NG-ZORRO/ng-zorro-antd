@@ -1,17 +1,17 @@
 import {
   forwardRef,
   AfterContentInit,
-  AfterViewInit,
   Component,
   ElementRef,
   HostBinding,
   Input
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { isNotNil } from '../core/util/check';
+import { toBoolean } from '../core/util/convert';
 
 export type NzRadioGroupSizeType = 'large' | 'default' | 'small';
-
-import { trimWhiteSpace } from '../core/util/trim-whitespace';
+export type NzRadioButtonStyle = 'outline' | 'solid';
 
 import { NzRadioButtonComponent } from './nz-radio-button.component';
 import { NzRadioComponent } from './nz-radio.component';
@@ -19,8 +19,7 @@ import { NzRadioComponent } from './nz-radio.component';
 @Component({
   selector           : 'nz-radio-group',
   preserveWhitespaces: false,
-  template           : `
-    <ng-content></ng-content>`,
+  templateUrl        : './nz-radio-group.component.html',
   host               : {
     '[class.ant-radio-group]': 'true'
   },
@@ -32,10 +31,10 @@ import { NzRadioComponent } from './nz-radio.component';
     }
   ]
 })
-export class NzRadioGroupComponent implements AfterContentInit, ControlValueAccessor, AfterViewInit {
+export class NzRadioGroupComponent implements AfterContentInit, ControlValueAccessor {
   private _size: NzRadioGroupSizeType = 'default';
   private _name: string;
-  private _disabled: boolean = false;
+  private _disabled: boolean;
   el: HTMLElement;
   value: string;
 
@@ -56,10 +55,8 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
 
   @Input()
   set nzDisabled(value: boolean) {
-    this._disabled = value;
-    this.radios.forEach((radio) => {
-      radio.nzDisabled = this.nzDisabled;
-    });
+    this._disabled = toBoolean(value);
+    this.updateDisabledState();
   }
 
   get nzDisabled(): boolean {
@@ -74,6 +71,16 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
 
   get nzName(): string {
     return this._name;
+  }
+
+  @Input() nzButtonStyle: NzRadioButtonStyle = 'outline';
+
+  updateDisabledState(): void {
+    if (isNotNil(this.nzDisabled)) {
+      this.radios.forEach((radio) => {
+        radio.nzDisabled = this.nzDisabled;
+      });
+    }
   }
 
   updateChildrenName(): void {
@@ -100,6 +107,11 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
     return this.nzSize === 'small';
   }
 
+  @HostBinding('class.ant-radio-group-solid')
+  get isSolid(): boolean {
+    return this.nzButtonStyle === 'solid';
+  }
+
   addRadio(radio: NzRadioComponent | NzRadioButtonComponent): void {
     this.radios.push(radio);
     radio.nzChecked = radio.nzValue === this.value;
@@ -124,6 +136,9 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
   ngAfterContentInit(): void {
     this.syncCheckedValue();
     this.updateChildrenName();
+    Promise.resolve().then(() => {
+      this.updateDisabledState();
+    });
   }
 
   writeValue(value: string): void {
@@ -140,9 +155,5 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
-  }
-
-  ngAfterViewInit(): void {
-    trimWhiteSpace(this.el);
   }
 }

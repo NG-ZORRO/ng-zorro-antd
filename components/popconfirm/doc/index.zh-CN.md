@@ -15,18 +15,20 @@ title: Popconfirm
 
 ## API
 
+### [nz-popconfirm]
+
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzCancelText | 取消按钮文字 | string | 取消 |
-| nzOkText | 确认按钮文字 | string | 确定 |
-| nzOkType | 确认按钮类型 | string | primary |
-| nzTitle | 确认框的描述 | string 丨`TemplateRef<void>` | 无 |
-| nzOnCancel | 点击取消的回调 | EventEmitter | 无 |
-| nzOnConfirm | 点击确认的回调 | EventEmitter | 无 |
-| nzCondition | 是否直接触发 `nzOnConfirm` 而不弹出框 | boolean | false |
+| `[nzCancelText]` | 取消按钮文字 | string | 取消 |
+| `[nzOkText]` | 确认按钮文字 | string | 确定 |
+| `[nzOkType]` | 确认按钮类型 | string | primary |
+| `[nzTitle]` | 确认框的描述 | string 丨`TemplateRef<void>` | 无 |
+| `[nzCondition]` | 是否直接触发 `nzOnConfirm` 而不弹出框 | boolean | false |
+| `(nzOnCancel)` | 点击取消的回调 | `EventEmitter<void>` | 无 |
+| `(nzOnConfirm)` | 点击确认的回调 | `EventEmitter<void>` | 无 |
 
 更多属性请参考 [Tooltip](/components/tooltip/zh#api)。
 
 ## 注意
 
-请确保 `Popconfirm` 的子元素能接受 `onMouseEnter`、`onMouseLeave`、`onFocus`、`onClick` 事件。
+请确保 `nz-popconfirm` 的子元素能接受 `onMouseEnter`、`onMouseLeave`、`onFocus`、`onClick` 事件。

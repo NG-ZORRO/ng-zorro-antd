@@ -1,9 +1,9 @@
 import { DOCUMENT } from '@angular/common';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Component, ElementRef, Inject, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { environment } from '../../../environments/environment';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 import sdk from '@stackblitz/sdk';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector     : 'nz-code-box',
@@ -43,6 +43,9 @@ import sdk from '@stackblitz/sdk';
             <nz-tooltip [nzTitle]="'Copy Code'">
               <i nz-tooltip class="anticon anticon-copy code-box-code-copy" [class.anticon-copy]="!_copied" [class.anticon-check]="_copied" [class.ant-tooltip-open]="_copied" (click)="copyCode(nzRawCode)"></i>
             </nz-tooltip>
+            <nz-tooltip [nzTitle]="'Copy Generate Command'" *ngIf="nzGenerateCommand">
+              <i nz-tooltip class="anticon anticon-code-o code-box-code-copy" [class.anticon-code-o]="!_commandCopied" [class.anticon-check]="_commandCopied" [class.ant-tooltip-open]="_commandCopied" (click)="copyGenerateCommand(nzGenerateCommand)"></i>
+            </nz-tooltip>
           </div>
           <ng-content select="[code]"></ng-content>
 
@@ -58,6 +61,7 @@ import sdk from '@stackblitz/sdk';
 export class NzCodeBoxComponent implements OnInit {
   _code: string;
   _copied = false;
+  _commandCopied = false;
   showIframe: boolean;
   simulateIFrame: boolean;
   iframe: SafeUrl;
@@ -70,6 +74,7 @@ export class NzCodeBoxComponent implements OnInit {
   @Input() nzRawCode = '';
   @Input() nzComponentName = '';
   @Input() nzSelector = '';
+  @Input() nzGenerateCommand = '';
 
   @Input() set nzIframeSource(value: string) {
     this.showIframe = (value != 'null') && environment.production;
@@ -95,6 +100,15 @@ export class NzCodeBoxComponent implements OnInit {
       this._copied = true;
       setTimeout(() => {
         this._copied = false;
+      }, 1000);
+    });
+  }
+
+  copyGenerateCommand(command) {
+    this.copy(command).then(() => {
+      this._commandCopied = true;
+      setTimeout(() => {
+        this._commandCopied = false;
       }, 1000);
     });
   }
@@ -130,13 +144,131 @@ export class NzCodeBoxComponent implements OnInit {
   openOnStackBlitz() {
     sdk.openProject({
       files: {
-        '.angular-cli.json'   : `{
-  "apps": [{
-    "styles": ["styles.less"]
-  }]
+        'angular.json'   : `{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "demo": {
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/demo",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css",
+              "src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "demo:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "demo:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "demo:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "karmaConfig": "src/karma.conf.js",
+            "styles": [
+              "styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "demo-e2e": {
+      "root": "e2e/",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "demo:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "demo"
 }`,
-        'index.html'          : `<${this.nzSelector}>loading</${this.nzSelector}>`,
-        'main.ts'             : `import './polyfills';
+        'src/index.html'          : `<${this.nzSelector}>loading</${this.nzSelector}>`,
+        'src/main.ts'             : `import './polyfills';
 
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
@@ -150,9 +282,9 @@ platformBrowserDynamic().bootstrapModule(AppModule).then(ref => {
   }
   window['ngRef'] = ref;
 
-  // Otherise, log the boot error
+  // Otherwise, log the boot error
 }).catch(err => console.error(err));`,
-        'polyfills.ts'        : `/**
+        'src/polyfills.ts'        : `/**
  * This file includes polyfills needed by Angular and is loaded before the app.
  * You can add your own extra polyfills to this file.
  *
@@ -219,8 +351,8 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  * Needed for: All but Chrome, Firefox, Edge, IE11 and Safari 10
  */
 // import 'intl';  // Run \`npm install --save intl\`.`,
-        'app/app.component.ts': this.nzRawCode,
-        'app/app.module.ts'   : `import { NgModule } from '@angular/core';
+        'src/app/app.component.ts': this.nzRawCode,
+        'src/app/app.module.ts'   : `import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -229,38 +361,45 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 import { ${this.nzComponentName} } from './app.component';
 
+import { NZ_I18N, en_US } from 'ng-zorro-antd';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+registerLocaleData(en);
+
 @NgModule({
-  imports:      [ BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule, NgZorroAntdModule.forRoot(), BrowserAnimationsModule ],
+  imports:      [ BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule, NgZorroAntdModule, BrowserAnimationsModule ],
   declarations: [ ${this.nzComponentName} ],
-  bootstrap:    [ ${this.nzComponentName} ]
+  bootstrap:    [ ${this.nzComponentName} ],
+  providers   : [ { provide: NZ_I18N, useValue: en_US } ]
 })
 export class AppModule { }
 `,
-        'styles.less'         : `@import "~ng-zorro-antd/src/ng-zorro-antd.less";`
+        'src/styles.css'         : `/* Add application styles & imports to this file! */;`
       },
 
       title       : 'Dynamically Generated Project',
       description : 'Created with <3 by the StackBlitz SDK!',
       template    : 'angular-cli',
       dependencies: {
-        '@angular/cdk'                     : '^5.0.0',
-        '@angular/core'                    : '^5.0.0',
-        '@angular/forms'                   : '^5.0.0',
-        '@angular/http'                    : '^5.0.0',
-        '@angular/language-service'        : '^5.0.0',
-        '@angular/platform-browser'        : '^5.0.0',
-        '@angular/platform-browser-dynamic': '^5.0.0',
-        '@angular/common'                  : '^5.0.0',
-        '@angular/router'                  : '^5.0.0',
-        '@angular/animations'              : '^5.0.0',
+        'rxjs'                             : '^6.0.0',
+        '@angular/cdk'                     : '^6.0.0',
+        '@angular/core'                    : '^6.0.0',
+        '@angular/forms'                   : '^6.0.0',
+        '@angular/http'                    : '^6.0.0',
+        '@angular/language-service'        : '^6.0.0',
+        '@angular/platform-browser'        : '^6.0.0',
+        '@angular/platform-browser-dynamic': '^6.0.0',
+        '@angular/common'                  : '^6.0.0',
+        '@angular/router'                  : '^6.0.0',
+        '@angular/animations'              : '^6.0.0',
         'date-fns'                         : '^1.29.0',
-        'ng-zorro-antd'                    : 'next'
+        'ng-zorro-antd'                    : '^1.6.0'
       },
       tags        : [ 'stackblitz', 'sdk' ]
     });
   }
 
-  constructor(@Inject(DOCUMENT) private dom: Document, private sanitizer: DomSanitizer, private _el: ElementRef, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(@Inject(DOCUMENT) private dom: any, private sanitizer: DomSanitizer, private _el: ElementRef, private activatedRoute: ActivatedRoute, private router: Router) {
 
   }
 

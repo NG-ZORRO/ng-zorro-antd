@@ -10,20 +10,11 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild,
-  ViewEncapsulation
+  ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { merge } from 'rxjs/observable/merge';
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
-import { filter } from 'rxjs/operators/filter';
-import { map } from 'rxjs/operators/map';
-import { pluck } from 'rxjs/operators/pluck';
-import { takeUntil } from 'rxjs/operators/takeUntil';
-import { tap } from 'rxjs/operators/tap';
+import { fromEvent, merge, Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged, filter, map, pluck, takeUntil, tap } from 'rxjs/operators';
 
 import { toBoolean } from '../core/util/convert';
 
@@ -43,21 +34,23 @@ interface MouseTouchObserverConfig {
   move: string;
   end: string;
   pluckKey: string[];
+
   filter?(e: Event): boolean;
+
   startPlucked$?: Observable<number>;
-  end$?: Observable<number>;
+  end$?: Observable<Event>;
   moveResolved$?: Observable<number>;
 }
 
 @Component({
-  selector     : 'nz-slider',
+  selector           : 'nz-slider',
   preserveWhitespaces: false,
-  providers    : [ {
+  providers          : [ {
     provide    : NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => NzSliderComponent),
     multi      : true
   } ],
-  templateUrl  : './nz-slider.component.html'
+  templateUrl        : './nz-slider.component.html'
 })
 export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
 
@@ -139,13 +132,14 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   marksArray: Marks[]; // "marks" in array type with more data & FILTER out the invalid mark
   bounds = { lower: null, upper: null }; // now for nz-slider-step
   onValueChange: (value: SliderValue) => void; // Used by ngModel. BUG: onValueChange() will not success to effect the "value" variable ( [(ngModel)]="value" ) when the first initializing, except using "nextTick" functionality (MAY angular2's problem ?)
-  onTouched: () => void = () => {}; // onTouch function registered via registerOnTouch (ControlValueAccessor).
+  onTouched: () => void = () => {
+  } // onTouch function registered via registerOnTouch (ControlValueAccessor).
   isDragging = false; // Current dragging state
 
   // Events observables & subscriptions
   dragstart$: Observable<number>;
   dragmove$: Observable<number>;
-  dragend$: Observable<number>;
+  dragend$: Observable<Event>;
   dragstart_: Subscription;
   dragmove_: Subscription;
   dragend_: Subscription;
@@ -198,10 +192,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       this.valueToOffset(normalizedValue as number);
   }
 
-  writeValue(val: SliderValue): void { // NOTE: writeValue will be called twice when initialized (may BUG? see: https://github.com/angular/angular/issues/14988), here we just ignore the first inited(the first the onValueChange will not registered)
-    if (typeof this.onValueChange !== 'function') {
-      return;
-    } // ignore the first initial call
+  writeValue(val: SliderValue): void {
     this.log(`[ngModel/writeValue]current writing value = `, val);
     this.setValue(val, true);
   }
@@ -269,10 +260,10 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
   setClassMap(): void {
     this.classMap = {
-      [this.prefixCls]                : true,
-      [`${this.prefixCls}-disabled`]  : this.nzDisabled,
-      [`${this.prefixCls}-vertical`]  : this.nzVertical,
-      [`${this.prefixCls}-with-marks`]: this.marksArray ? this.marksArray.length : 0
+      [ this.prefixCls ]                : true,
+      [ `${this.prefixCls}-disabled` ]  : this.nzDisabled,
+      [ `${this.prefixCls}-vertical` ]  : this.nzVertical,
+      [ `${this.prefixCls}-with-marks` ]: this.marksArray ? this.marksArray.length : 0
     };
   }
 
@@ -367,16 +358,16 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   createDrag(): void {
-    const sliderDOM   = this.sliderDOM;
+    const sliderDOM = this.sliderDOM;
     const orientField = this.nzVertical ? 'pageY' : 'pageX';
     const mouse: MouseTouchObserverConfig = {
-      start: 'mousedown', move: 'mousemove', end: 'mouseup',
+      start   : 'mousedown', move: 'mousemove', end: 'mouseup',
       pluckKey: [ orientField ]
     };
     const touch: MouseTouchObserverConfig = {
-      start: 'touchstart', move: 'touchmove', end: 'touchend',
+      start   : 'touchstart', move: 'touchmove', end: 'touchend',
       pluckKey: [ 'touches', '0', orientField ],
-      filter: (e: MouseEvent | TouchEvent) => !this.utils.isNotTouchEvent(e as TouchEvent)
+      filter  : (e: MouseEvent | TouchEvent) => !this.utils.isNotTouchEvent(e as TouchEvent)
     };
     // make observables
     [ mouse, touch ].forEach(source => {
@@ -470,7 +461,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   findClosestValue(position: number): number {
     const sliderStart = this.getSliderStartPosition();
     const sliderLength = this.getSliderLength();
-    const ratio  = this.utils.correctNumLimit((position - sliderStart) / sliderLength, 0, 1);
+    const ratio = this.utils.correctNumLimit((position - sliderStart) / sliderLength, 0, 1);
     const val = (this.nzMax - this.nzMin) * (this.nzVertical ? 1 - ratio : ratio) + this.nzMin;
     const points = (this.nzMarks === null ? [] : Object.keys(this.nzMarks).map(parseFloat));
     // push closest step
@@ -535,7 +526,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     } // it's an invalid value, just return
     const isArray = Array.isArray(value);
     if (!Array.isArray(value)) {
-      let parsedValue: number =  value;
+      let parsedValue: number = value;
       if (typeof value !== 'number') {
         parsedValue = parseFloat(value);
       }

@@ -17,24 +17,7 @@ export type NzSwitchSizeType = 'default' | 'small';
 @Component({
   selector           : 'nz-switch',
   preserveWhitespaces: false,
-  template           : `
-    <span [ngClass]="classMap" [tabindex]="nzDisabled?-1:0" #switchElement (keydown)="onKeyDown($event)">
-      <span class="ant-switch-inner">
-        <span *ngIf="checked">
-          <ng-container *ngIf="isCheckedChildrenString; else checkedChildrenTemplate">{{ nzCheckedChildren }}</ng-container>
-          <ng-template #checkedChildrenTemplate>
-            <ng-template [ngTemplateOutlet]="nzCheckedChildren"></ng-template>
-          </ng-template>
-        </span>
-        <span *ngIf="!checked">
-          <ng-container *ngIf="isUnCheckedChildrenString; else unCheckedChildrenTemplate">{{ nzUnCheckedChildren }}</ng-container>
-          <ng-template #unCheckedChildrenTemplate>
-            <ng-template [ngTemplateOutlet]="nzUnCheckedChildren"></ng-template>
-          </ng-template>
-        </span>
-      </span>
-    </span>
-  `,
+  templateUrl        : './nz-switch.component.html',
   styles             : [ `
     :host {
       display: inline-block;
@@ -52,6 +35,7 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
   private _disabled = false;
   private _size: NzSwitchSizeType;
   private _loading = false;
+  private _control = false;
   private _checkedChildren: string | TemplateRef<void>;
   private _unCheckedChildren: string | TemplateRef<void>;
   prefixCls = 'ant-switch';
@@ -63,6 +47,15 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
   private switchElement: ElementRef;
   onChange: (value: boolean) => void = () => null;
   onTouched: () => void = () => null;
+
+  @Input()
+  set nzControl(value: boolean) {
+    this._control = toBoolean(value);
+  }
+
+  get nzControl(): boolean {
+    return this._control;
+  }
 
   @Input()
   set nzCheckedChildren(value: string | TemplateRef<void>) {
@@ -117,7 +110,7 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
   @HostListener('click', [ '$event' ])
   onClick(e: MouseEvent): void {
     e.preventDefault();
-    if ((!this.nzDisabled) && (!this.nzLoading)) {
+    if ((!this.nzDisabled) && (!this.nzLoading) && (!this.nzControl)) {
       this.updateValue(!this.checked, true);
     }
   }
@@ -144,15 +137,17 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    if (e.keyCode === 37) { // Left
-      this.updateValue(false, true);
-      e.preventDefault();
-    } else if (e.keyCode === 39) { // Right
-      this.updateValue(true, true);
-      e.preventDefault();
-    } else if (e.keyCode === 32 || e.keyCode === 13) { // Space, Enter
-      this.updateValue(!this.checked, true);
-      e.preventDefault();
+    if (!this.nzControl) {
+      if (e.keyCode === 37) { // Left
+        this.updateValue(false, true);
+        e.preventDefault();
+      } else if (e.keyCode === 39) { // Right
+        this.updateValue(true, true);
+        e.preventDefault();
+      } else if (e.keyCode === 32 || e.keyCode === 13) { // Space, Enter
+        this.updateValue(!this.checked, true);
+        e.preventDefault();
+      }
     }
   }
 

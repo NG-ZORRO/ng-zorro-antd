@@ -27,8 +27,27 @@ describe('avatar', () => {
     fixture.detectChanges();
   });
 
-  it('#nzSrc', () => {
-    expect(context).not.toBeNull();
+  describe('#nzSrc', () => {
+    it('#nzSrc', () => {
+      expect(context).not.toBeNull();
+    });
+    it('should tolerate error src', fakeAsync(() => {
+      expect(getType(dl)).toBe('image');
+      expect(context.comp.hasSrc).toBe(true);
+      // Manually dispatch error.
+      context.nzSrc = '';
+      context.comp.imgError();
+      tick();
+      fixture.detectChanges();
+      expect(getType(dl)).toBe('icon');
+      expect(context.comp.hasSrc).toBe(false);
+      context.nzSrc = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==';
+      tick();
+      fixture.detectChanges();
+      expect(context.comp.hasSrc).toBe(true);
+      expect(getType(dl)).toBe('image');
+      tick();
+    }));
   });
 
   it('#nzIcon', () => {

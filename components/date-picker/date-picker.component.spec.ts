@@ -1,3 +1,4 @@
+import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
@@ -6,9 +7,12 @@ import { fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angu
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import * as isSameDay from 'date-fns/is_same_day';
+import isSameDay from 'date-fns/is_same_day';
 
-import { dispatchMouseEvent } from '../core/testing';
+import { dispatchKeyboardEvent, dispatchMouseEvent } from '../core/testing';
+import en_US from '../i18n/languages/en_US';
+import { NzI18nModule } from '../i18n/nz-i18n.module';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzDatePickerModule } from './date-picker.module';
 import { PickerResultSingle } from './standard-types';
 
@@ -20,10 +24,11 @@ describe('NzDatePickerComponent', () => {
   let debugElement: DebugElement;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
+  let i18nService: NzI18nService;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ FormsModule, NoopAnimationsModule, NzDatePickerModule ],
+      imports     : [ FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule ],
       providers   : [],
       declarations: [
         NzTestDatePickerComponent
@@ -39,9 +44,10 @@ describe('NzDatePickerComponent', () => {
     debugElement = fixture.debugElement;
   });
 
-  beforeEach(inject([ OverlayContainer ], (oc: OverlayContainer) => {
+  beforeEach(inject([ OverlayContainer, NzI18nService ], (oc: OverlayContainer, i18n: NzI18nService) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
+    i18nService = i18n;
   }));
 
   afterEach(() => {
@@ -64,6 +70,43 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
+    }));
+
+    it('should support changing language at runtime', fakeAsync(() => {
+      fixture.detectChanges();
+      expect(getPickerTrigger().placeholder).toBe('请选择日期');
+      i18nService.setLocale(en_US);
+      fixture.detectChanges();
+      expect(getPickerTrigger().placeholder).toBe('Select date');
+
+      dispatchMouseEvent(getPickerTrigger(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect((queryFromOverlay('.ant-calendar-date-input-wrap input.ant-calendar-input') as HTMLInputElement).placeholder).toBe('Select date');
+      expect(queryFromOverlay('.ant-calendar-table .ant-calendar-column-header-inner').textContent).toContain('Su');
+    }));
+
+    /* Issue https://github.com/NG-ZORRO/ng-zorro-antd/issues/1539 */
+    it('should be openable after closed by "Escape" key', fakeAsync(() => {
+      fixture.detectChanges();
+      dispatchMouseEvent(getPickerTrigger(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+
+      dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
+
+      dispatchMouseEvent(getPickerTrigger(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
     }));
 
     it('should support nzAllowClear and work properly', fakeAsync(() => {
@@ -138,7 +181,7 @@ describe('NzDatePickerComponent', () => {
     it('should support nzClassName', () => {
       const className = fixtureInstance.nzClassName = 'my-test-class';
       fixture.detectChanges();
-      const picker = debugElement.query(By.css('.ant-calendar-picker')).nativeElement as HTMLElement;
+      const picker = debugElement.queryAll(By.css('.ant-calendar-picker'))[1].nativeElement as HTMLElement;
       expect(picker.classList.contains(className)).toBeTruthy();
     });
 
@@ -163,8 +206,8 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerTrigger().getAttribute('placeholder')).toBe(featureKey);
     });
 
-    it('should support nzPlaceholder', () => {
-      const featureKey = fixtureInstance.nzPlaceholder = 'TEST_PLACEHOLDER';
+    it('should support nzPlaceHolder', () => {
+      const featureKey = fixtureInstance.nzPlaceHolder = 'TEST_PLACEHOLDER';
       fixture.detectChanges();
       expect(getPickerTrigger().getAttribute('placeholder')).toBe(featureKey);
     });
@@ -216,6 +259,30 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(nzOnOpenChange).toHaveBeenCalledWith(false);
       expect(nzOnOpenChange).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not emit nzOnOpenChange second time when input clicked twice', () => {
+      const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
+
+      fixture.detectChanges();
+      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTrigger(), 'click');
+      fixture.detectChanges();
+
+      expect(nzOnOpenChange).toHaveBeenCalledWith(true);
+      expect(nzOnOpenChange).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not emit nzOnOpenChange when nzOpen is false and input is clicked', () => {
+      const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
+      fixtureInstance.useSuite = 2;
+      fixtureInstance.nzOpen = false;
+
+      fixture.detectChanges();
+      dispatchMouseEvent(getPickerTrigger(), 'click');
+      fixture.detectChanges();
+
+      expect(nzOnOpenChange).not.toHaveBeenCalledWith(true);
     });
 
     it('should support nzValue', fakeAsync(() => {
@@ -687,7 +754,7 @@ describe('NzDatePickerComponent', () => {
         [nzClassName]="nzClassName"
         [nzDisabledDate]="nzDisabledDate"
         [nzLocale]="nzLocale"
-        [nzPlaceholder]="nzPlaceholder"
+        [nzPlaceHolder]="nzPlaceHolder"
         [nzPopupStyle]="nzPopupStyle"
         [nzDropdownClassName]="nzDropdownClassName"
         [nzSize]="nzSize"
@@ -715,7 +782,10 @@ describe('NzDatePickerComponent', () => {
 
       <!-- Suite 2 -->
       <!-- use another picker to avoid nzOpen's side-effects beacuse nzOpen act as "true" if used -->
-      <nz-date-picker *ngSwitchCase="2" [nzOpen]="nzOpen"></nz-date-picker>
+      <nz-date-picker *ngSwitchCase="2"
+        [nzOpen]="nzOpen"
+        (nzOnOpenChange)="nzOnOpenChange($event)"
+      ></nz-date-picker>
 
       <!-- Suite 3 -->
       <nz-date-picker *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-date-picker>
@@ -734,7 +804,7 @@ class NzTestDatePickerComponent {
   nzClassName;
   nzDisabledDate;
   nzLocale;
-  nzPlaceholder;
+  nzPlaceHolder;
   nzPopupStyle;
   nzDropdownClassName;
   nzSize;

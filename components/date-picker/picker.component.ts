@@ -18,13 +18,12 @@ import {
 } from '@angular/core';
 
 import { dropDownAnimation } from '../core/animation/dropdown-animations';
-import { DEFAULT_DATEPICKER_POSITIONS } from '../core/overlay/overlay-position-map';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CandyDate } from './lib/candy-date';
 
 @Component({
   selector       : 'nz-picker',
-  templateUrl    : 'picker.component.html',
+  templateUrl    : './picker.component.html',
   animations     : [
     dropDownAnimation
   ],
@@ -49,7 +48,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
   @Output() openChange = new EventEmitter<boolean>(); // Emitted when overlay's open state change
 
   @ViewChild('origin') origin: CdkOverlayOrigin;
-  // @ViewChild('overlay') overlay: CdkConnectedOverlay;
+  @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
   @ViewChild('pickerInput') pickerInput: ElementRef;
 
   prefixCls = 'ant-calendar';
@@ -71,9 +70,23 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
       originY : 'bottom',
       overlayX: 'start',
       overlayY: 'bottom'
+    },
+    {
+      originX : 'end',
+      originY : 'top',
+      overlayX: 'end',
+      overlayY: 'top'
+    },
+    {
+      originX : 'end',
+      originY : 'bottom',
+      overlayX: 'end',
+      overlayY: 'bottom'
     }
   ] as ConnectionPositionPair[];
-  currentPosition: 'top' | 'bottom' = 'bottom';
+  dropdownAnimation: 'top' | 'bottom' = 'bottom';
+  currentPositionX: 'start' | 'end' = 'start';
+  currentPositionY: 'top' | 'bottom' = 'top';
   // get valueReadable(): string {
   //   return this.value && this.i18n.formatDateCompatible(this.value.nativeDate, this.format);
   // }
@@ -100,17 +113,26 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
 
   // Show overlay content
   showOverlay(): void {
-    this.overlayOpen = true;
-    this.openChange.emit(this.overlayOpen);
+    if (!this.realOpenState) {
+      this.overlayOpen = true;
+      this.openChange.emit(this.overlayOpen);
+      setTimeout(() => {
+        if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
+          this.cdkConnectedOverlay.overlayRef.updatePosition();
+        }
+      });
+    }
   }
 
   hideOverlay(): void {
-    this.overlayOpen = false;
-    this.openChange.emit(this.overlayOpen);
+    if (this.realOpenState) {
+      this.overlayOpen = false;
+      this.openChange.emit(this.overlayOpen);
+    }
   }
 
   onClickInputBox(): void {
-    if (!this.disabled) {
+    if (!this.disabled && !this.isOpenHandledByUser()) {
       this.showOverlay();
     }
   }
@@ -119,12 +141,18 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
     this.hideOverlay();
   }
 
+  onOverlayDetach(): void {
+    this.hideOverlay();
+  }
+
   // NOTE: A issue here, the first time position change, the animation will not be triggered.
   // Because the overlay's "positionChange" event is emitted after the content's full shown up.
   // All other components like "nz-dropdown" which depends on overlay also has the same issue.
   // See: https://github.com/NG-ZORRO/ng-zorro-antd/issues/1429
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    this.currentPosition = position.connectionPair.originY === 'top' ? 'bottom' : 'top';
+    this.dropdownAnimation = position.connectionPair.originY === 'top' ? 'bottom' : 'top';
+    this.currentPositionX = position.connectionPair.originX as 'start' | 'end';
+    this.currentPositionY = position.connectionPair.originY as 'top' | 'bottom';
     this.changeDetector.detectChanges(); // Take side-effects to position styles
   }
 
@@ -154,7 +182,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
     return this.isRange ? this.placeholder[ this.getPartTypeIndex(partType) ] : this.placeholder as string;
   }
 
-  isEmptyValue(value: CandyDate[]): boolean {
+  isEmptyValue(value: CandyDate[] | CandyDate): boolean {
     if (this.isRange) {
       return !value || !Array.isArray(value) || value.every((val) => !val);
     } else {

@@ -1,18 +1,18 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import * as setMonth from 'date-fns/set_month';
+import setMonth from 'date-fns/set_month';
 import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
 
 @Component({
-  selector: 'nz-calendar-header',
+  selector   : 'nz-calendar-header',
   templateUrl: './nz-calendar-header.component.html',
-  host: {
-    '[style.display]': `'block'`,
+  host       : {
+    '[style.display]'                : `'block'`,
     '[class.ant-fullcalendar-header]': `true`
   }
 })
 export class NzCalendarHeaderComponent implements OnInit {
-  @Input() mode: 'month'|'year' = 'month';
-  @Output() modeChange: EventEmitter<'month'|'year'> = new EventEmitter();
+  @Input() mode: 'month' | 'year' = 'month';
+  @Output() modeChange: EventEmitter<'month' | 'year'> = new EventEmitter();
 
   @Input() fullscreen: boolean = true;
   @Input() activeDate: Date = new Date();
@@ -22,8 +22,8 @@ export class NzCalendarHeaderComponent implements OnInit {
 
   yearOffset: number = 10;
   yearTotal: number = 20;
-  years: Array<{label: string, value: number}>;
-  months: Array<{label: string, value: number}>;
+  years: Array<{ label: string, value: number }>;
+  months: Array<{ label: string, value: number }>;
 
   get activeYear(): number {
     return this.activeDate.getFullYear();
@@ -47,20 +47,26 @@ export class NzCalendarHeaderComponent implements OnInit {
 
   private prefixCls = 'ant-fullcalendar';
 
-  constructor(private i18n: I18n) { }
+  constructor(private i18n: I18n) {
+  }
 
   ngOnInit(): void {
     this.setUpYears();
     this.setUpMonths();
   }
 
-  private setUpYears(): void {
-    const start = this.activeYear - this.yearOffset;
+  updateYear(year: number): void {
+    this.yearChange.emit(year);
+    this.setUpYears(year);
+  }
+
+  private setUpYears(year?: number): void {
+    const start = (year || this.activeYear) - this.yearOffset;
     const end = start + this.yearTotal;
 
     this.years = [];
     for (let i = start; i < end; i++) {
-      this.years.push({label: `${i}`, value: i});
+      this.years.push({ label: `${i}`, value: i });
     }
   }
 
@@ -70,7 +76,7 @@ export class NzCalendarHeaderComponent implements OnInit {
     for (let i = 0; i < 12; i++) {
       const dateInMonth = setMonth(this.activeDate, i);
       const monthText = this.i18n.formatDate(dateInMonth, 'MMM');
-      this.months.push({label: monthText, value: i});
+      this.months.push({ label: monthText, value: i });
     }
   }
 }

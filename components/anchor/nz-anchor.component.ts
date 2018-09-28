@@ -12,10 +12,8 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
-import { throttleTime } from 'rxjs/operators/throttleTime';
+import { fromEvent, Subscription } from 'rxjs';
+import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
 import { toBoolean, toNumber } from '../core/util/convert';
 
@@ -31,20 +29,7 @@ const sharpMatcherRegx = /#([^#]+)$/;
 @Component({
   selector           : 'nz-anchor',
   preserveWhitespaces: false,
-  template           : `
-    <nz-affix *ngIf="nzAffix;else content" [nzOffsetTop]="nzOffsetTop">
-      <ng-template [ngTemplateOutlet]="content"></ng-template>
-    </nz-affix>
-    <ng-template #content>
-      <div class="ant-anchor-wrapper" #wrap [ngStyle]="wrapperStyle">
-        <div class="ant-anchor" [ngClass]="{'fixed': !nzAffix && !nzShowInkInFixed}">
-          <div class="ant-anchor-ink">
-            <div class="ant-anchor-ink-ball" [class.visible]="visible" #ink></div>
-          </div>
-          <ng-content></ng-content>
-        </div>
-      </div>
-    </ng-template>`,
+  templateUrl        : './nz-anchor.component.html',
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzAnchorComponent implements OnDestroy, AfterViewInit {
@@ -52,11 +37,8 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   private links: NzAnchorLinkComponent[] = [];
   private animating = false;
   private target: Element = null;
-  /** @private */
   scroll$: Subscription = null;
-  /** @private */
   visible = false;
-  /** @private */
   wrapperStyle: {} = { 'max-height': '100vh' };
   @ViewChild('wrap') private wrap: ElementRef;
   @ViewChild('ink') private ink: ElementRef;
@@ -156,13 +138,19 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   }
 
   private removeListen(): void {
-    if (this.scroll$) { this.scroll$.unsubscribe(); }
+    if (this.scroll$) {
+      this.scroll$.unsubscribe();
+    }
   }
 
   private getOffsetTop(element: HTMLElement): number {
-    if (!element || !element.getClientRects().length) { return 0; }
+    if (!element || !element.getClientRects().length) {
+      return 0;
+    }
     const rect = element.getBoundingClientRect();
-    if (!rect.width && !rect.height) { return rect.top; }
+    if (!rect.width && !rect.height) {
+      return rect.top;
+    }
     return rect.top - element.ownerDocument.documentElement.clientTop;
   }
 
@@ -216,7 +204,9 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
 
   handleScrollTo(linkComp: NzAnchorLinkComponent): void {
     const el = this.doc.querySelector(linkComp.nzHref);
-    if (!el) { return; }
+    if (!el) {
+      return;
+    }
 
     this.animating = true;
     const containerScrollTop = this.scrollSrv.getScroll(this.getTarget());

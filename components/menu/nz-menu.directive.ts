@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterContentInit,
   Directive,
   ElementRef,
   EventEmitter,
@@ -19,7 +19,7 @@ export type NzMode = 'vertical' | 'horizontal' | 'inline';
   selector: '[nz-menu]'
 })
 
-export class NzMenuDirective implements AfterViewInit {
+export class NzMenuDirective implements AfterContentInit {
   private _selectable = true;
   private _inlineCollapsed = false;
   private _inDropDown = false;
@@ -140,7 +140,7 @@ export class NzMenuDirective implements AfterViewInit {
 
   }
 
-  ngAfterViewInit(): void {
+  ngAfterContentInit(): void {
     this.isInit = true;
     this.cacheMode = this.nzMode;
     this.updateInlineCollapse();

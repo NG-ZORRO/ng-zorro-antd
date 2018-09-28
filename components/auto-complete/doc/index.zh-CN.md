@@ -31,14 +31,21 @@ subtitle: 自动完成
 
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzAutocomplete | 用于绑定 nzAutocomplete 组件 | `NzAutocompleteComponent` | - |
+| `[nzAutocomplete]` | 用于绑定 nzAutocomplete 组件 | `NzAutocompleteComponent` | - |
 
 ### nz-autocomplete
 
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzBackfill | 使用键盘选择选项的时候把选中项回填到输入框中 | `boolean` | `false` |
-| nzDataSource | 自动完成的数据源 | `AutocompleteDataSource` | - |
-| nzDefaultActiveFirstOption | 是否默认高亮第一个选项。 | `boolean` | `true` |
-| nzWidth | 自定义宽度单位 px | `number` | 触发元素宽度 |
+| `[nzBackfill]` | 使用键盘选择选项的时候把选中项回填到输入框中 | `boolean` | `false` |
+| `[nzDataSource]` | 自动完成的数据源 | `AutocompleteDataSource` | - |
+| `[nzDefaultActiveFirstOption]` | 是否默认高亮第一个选项。 | `boolean` | `true` |
+| `[nzWidth]` | 自定义宽度单位 px | `number` | 触发元素宽度 |
 
+### nz-auto-option
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `[nzValue]` | 绑定到触发元素 ngModel 的值 | `any` | - |
+| `[nzLabel]` | 填入触发元素显示的值 | `string` | - |
+| `[nzDisabled]` | 禁用选项 | `boolean` | `false` |

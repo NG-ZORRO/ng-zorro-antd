@@ -2,10 +2,8 @@ import {
   forwardRef,
   Component,
   ElementRef,
-  EventEmitter,
   Input,
   OnInit,
-  Output,
   Renderer2
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -22,15 +20,7 @@ export interface NzCheckBoxOptionInterface {
 @Component({
   selector           : 'nz-checkbox-group',
   preserveWhitespaces: false,
-  template           : `
-    <label
-      nz-checkbox
-      *ngFor="let option of options"
-      [nzDisabled]="option.disabled||nzDisabled"
-      [(nzChecked)]="option.checked"
-      (nzCheckedChange)="onOptionChange()">
-      <span>{{ option.label }}</span>
-    </label>`,
+  templateUrl        : './nz-checkbox-group.component.html',
   providers          : [
     {
       provide    : NG_VALUE_ACCESSOR,

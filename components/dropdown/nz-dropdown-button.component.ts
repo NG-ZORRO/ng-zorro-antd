@@ -20,47 +20,7 @@ import { NzDropDownDirective } from './nz-dropdown.directive';
   animations         : [
     dropDownAnimation
   ],
-  template           : `
-    <div class="ant-btn-group ant-dropdown-button" nz-dropdown>
-      <button
-        type="button"
-        nz-button
-        [disabled]="nzDisabled"
-        [nzType]="nzType"
-        [nzSize]="nzSize"
-        (click)="nzClick.emit($event)">
-        <span><ng-content></ng-content></span></button>
-      <button
-        [nzType]="nzType"
-        [nzSize]="nzSize"
-        nz-button type="button"
-        class="ant-dropdown-trigger"
-        [disabled]="nzDisabled"
-        (click)="onClickEvent()"
-        (mouseenter)="onMouseEnterEvent()"
-        (mouseleave)="onMouseLeaveEvent()">
-        <i class="anticon anticon-down"></i></button>
-    </div>
-    <ng-template
-      cdkConnectedOverlay
-      [cdkConnectedOverlayHasBackdrop]="hasBackdrop"
-      [cdkConnectedOverlayPositions]="positions"
-      [cdkConnectedOverlayOrigin]="nzOrigin"
-      (backdropClick)="hide()"
-      (detach)="hide()"
-      [cdkConnectedOverlayMinWidth]="triggerWidth"
-      (positionChange)="onPositionChange($event)"
-      [cdkConnectedOverlayOpen]="nzVisible"
-    >
-      <div
-        class="{{'ant-dropdown ant-dropdown-placement-'+nzPlacement}}"
-        [@dropDownAnimation]="dropDownPosition"
-        (mouseenter)="onMouseEnterEvent()"
-        (mouseleave)="onMouseLeaveEvent()"
-        [style.minWidth.px]="triggerWidth">
-        <ng-content select="[nz-menu]"></ng-content>
-      </div>
-    </ng-template>`,
+  templateUrl        : './nz-dropdown-button.component.html',
   styles             : [ `
     :host {
       position: relative;
@@ -82,7 +42,7 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
   @Input() nzSize = 'default';
   @Input() nzType = 'default';
   @ViewChild('content') content;
-  @Output() nzClick = new EventEmitter();
+  @Output() nzClick = new EventEmitter<MouseEvent>();
   @ViewChild(NzDropDownDirective) nzOrigin;
 
   onVisibleChange = (visible: boolean) => {

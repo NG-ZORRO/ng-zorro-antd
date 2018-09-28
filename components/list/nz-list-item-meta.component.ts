@@ -2,20 +2,7 @@ import { Component, Input, TemplateRef } from '@angular/core';
 
 @Component({
   selector           : 'nz-list-item-meta',
-  template           : `
-    <div *ngIf="isAvatar" class="ant-list-item-meta-avatar">
-      <ng-container *ngIf="avatarStr; else avatarTpl">
-        <nz-avatar [nzSrc]="avatarStr"></nz-avatar>
-      </ng-container>
-    </div>
-    <div *ngIf="isTitle || isDesc" class="ant-list-item-meta-content">
-      <h4 *ngIf="isTitle" class="ant-list-item-meta-title">
-        <ng-container *ngIf="titleStr; else titleTpl">{{ titleStr }}</ng-container>
-      </h4>
-      <div *ngIf="isDesc" class="ant-list-item-meta-description">
-        <ng-container *ngIf="descStr; else descTpl">{{ descStr }}</ng-container>
-      </div>
-    </div>`,
+  templateUrl        : './nz-list-item-meta.component.html',
   preserveWhitespaces: false,
   host               : {
     '[class.ant-list-item-meta]': 'true'

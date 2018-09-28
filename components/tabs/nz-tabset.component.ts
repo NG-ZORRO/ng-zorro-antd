@@ -1,20 +1,23 @@
 /** get some code from https://github.com/angular/material2 */
 
+import { DOCUMENT } from '@angular/common';
 import {
   AfterContentChecked,
   AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   OnInit,
+  Optional,
   Output,
   Renderer2,
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators/map';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { isNotNil } from '../core/util/check';
@@ -41,48 +44,10 @@ export type NzTabType = 'line' | 'card';
   selector           : 'nz-tabset',
   preserveWhitespaces: false,
   providers          : [ NzUpdateHostClassService ],
-  template           : `
-    <div nz-tabs-nav
-      role="tablist"
-      tabindex="0"
-      [nzType]="nzType"
-      [nzShowPagination]="nzShowPagination"
-      [nzPositionMode]="tabPositionMode"
-      [nzAnimated]="inkBarAnimated"
-      [ngStyle]="nzTabBarStyle"
-      [nzHideBar]="nzHideAll"
-      [nzTabBarExtraContent]="nzTabBarExtraContent"
-      [selectedIndex]="nzSelectedIndex"
-      (nzOnNextClick)="nzOnNextClick.emit()"
-      (nzOnPrevClick)="nzOnPrevClick.emit()">
-      <div
-        nz-tab-label
-        role="tab"
-        [style.margin-right.px]="nzTabBarGutter"
-        [class.ant-tabs-tab-active]="(nzSelectedIndex == i) && !nzHideAll"
-        [disabled]="tab.nzDisabled"
-        (click)="clickLabel(i,tab.nzDisabled)"
-        *ngFor="let tab of listOfNzTabComponent; let i = index">
-        <ng-container *ngIf="tab.isTitleString; else titleTemplate">{{ tab.nzTitle }}</ng-container>
-        <ng-template #titleTemplate>
-          <ng-template [ngTemplateOutlet]="tab.nzTitle"></ng-template>
-        </ng-template>
-      </div>
-    </div>
-    <div
-      class="ant-tabs-content"
-      #tabContent
-      [class.ant-tabs-content-animated]="tabPaneAnimated"
-      [class.ant-tabs-content-no-animated]="!tabPaneAnimated"
-      [style.margin-left.%]="tabPaneAnimated&&(-nzSelectedIndex*100)">
-      <div nz-tab-body
-        class="ant-tabs-tabpane"
-        [class.ant-tabs-tabpane-active]="(nzSelectedIndex == i) && !nzHideAll"
-        [class.ant-tabs-tabpane-inactive]="(nzSelectedIndex != i) || nzHideAll"
-        [content]="tab.content"
-        *ngFor="let tab of listOfNzTabComponent; let i = index">
-      </div>
-    </div>`,
+  templateUrl        : './nz-tabset.component.html',
+  host               : {
+    '(scroll)': 'onScroll($event)'
+  },
   styles             : [ `
     :host {
       display: block;
@@ -109,7 +74,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
   @Input() nzShowPagination = true;
   @Input() nzHideAll = false;
   @Input() nzTabBarGutter: number;
-  @Input() nzTabBarStyle: { [key: string]: string };
+  @Input() nzTabBarStyle: { [ key: string ]: string };
   @Output() nzOnNextClick = new EventEmitter<void>();
   @Output() nzOnPrevClick = new EventEmitter<void>();
 
@@ -268,7 +233,20 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
     this.listOfNzTabComponent.splice(this.listOfNzTabComponent.indexOf(value), 1);
   }
 
-  constructor(private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService, private elementRef: ElementRef) {
+  // From https://github.com/react-component/tabs/blob/master/src/Tabs.js
+  // Prevent focus to make the Tabs scroll offset
+  onScroll($event: Event): void {
+    const target: Element = $event.target as Element;
+    if (target.scrollLeft > 0) {
+      target.scrollLeft = 0;
+      if (this.document && this.document.activeElement) {
+        (this.document.activeElement as HTMLElement).blur();
+      }
+    }
+  }
+
+  // tslint:disable-next-line:no-any
+  constructor(private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService, private elementRef: ElementRef, @Optional() @Inject(DOCUMENT) private document: any) {
     this.el = this.elementRef.nativeElement;
   }
 

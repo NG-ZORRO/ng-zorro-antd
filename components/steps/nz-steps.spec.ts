@@ -34,14 +34,18 @@ describe('steps', () => {
       expect(innerSteps[ 1 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
       expect(innerSteps[ 2 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
     }));
-    it('should current change correct', () => {
+    it('should current change correct', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       testComponent.current = 1;
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-finish');
       expect(innerSteps[ 1 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-process');
       expect(innerSteps[ 2 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
-    });
+    }));
     it('should tail display correct', fakeAsync(() => {
       fixture.detectChanges();
       tick();
@@ -80,32 +84,48 @@ describe('steps', () => {
       fixture.detectChanges();
       expect(outStep.nativeElement.firstElementChild.className).toBe('ant-steps ant-steps-vertical');
     });
-    it('should status display correct', () => {
+    it('should status display correct', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       testComponent.status = 'wait';
       fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
       expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
       testComponent.status = 'finish';
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-finish');
       testComponent.status = 'error';
       testComponent.current = 1;
       fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
       expect(innerSteps[ 1 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-error');
       expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-finish ant-steps-next-error');
-    });
-    it('should processDot display correct', () => {
+    }));
+    it('should processDot display correct', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       testComponent.progressDot = true;
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       expect(outStep.nativeElement.firstElementChild.classList.contains('ant-steps-dot')).toBe(true);
       expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.classList.contains('ant-steps-icon-dot')).toBe(true);
       expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.classList.contains('ant-steps-icon-dot')).toBe(true);
       expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.classList.contains('ant-steps-icon-dot')).toBe(true);
-    });
-    it('should processDot template display correct', () => {
+    }));
+    it('should processDot template display correct', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       testComponent.progressDot = testComponent.progressTemplate;
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       expect(outStep.nativeElement.firstElementChild.classList.contains('ant-steps-dot')).toBe(true);
       expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.innerText).toBe('process0');
@@ -114,7 +134,23 @@ describe('steps', () => {
       expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').lastElementChild.classList.contains('ant-steps-icon-dot')).toBe(true);
       expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').lastElementChild.classList.contains('ant-steps-icon-dot')).toBe(true);
       expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').lastElementChild.classList.contains('ant-steps-icon-dot')).toBe(true);
-    });
+    }));
+    it('should support custom starting index', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      testComponent.startIndex = 3;
+      testComponent.current = 3;
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-process');
+      expect(innerSteps[ 1 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
+      expect(innerSteps[ 2 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
+      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').innerText).toBe('4');
+      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').innerText).toBe('5');
+      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').innerText).toBe('6');
+    }));
   });
   describe('inner step string', () => {
     let fixture;
@@ -191,13 +227,19 @@ describe('steps', () => {
     it('should title display correct', () => {
       TestBed.createComponent(NzTestStepForComponent).detectChanges();
     });
+    it('should push works correct', () => {
+      const comp = TestBed.createComponent(NzTestStepForComponent);
+      comp.detectChanges();
+      comp.debugElement.componentInstance.updateSteps();
+      comp.detectChanges();
+    });
   });
 });
 
 @Component({
   selector: 'nz-test-outer-steps',
   template: `
-    <nz-steps [nzCurrent]="current" [nzDirection]="direction" [nzSize]="size" [nzStatus]="status" [nzProgressDot]="progressDot">
+    <nz-steps [nzCurrent]="current" [nzDirection]="direction" [nzSize]="size" [nzStatus]="status" [nzProgressDot]="progressDot" [nzStartIndex]="startIndex">
       <nz-step nzTitle="0title" nzDescription="0description"></nz-step>
       <nz-step nzTitle="1title" nzDescription="1description"></nz-step>
       <nz-step nzTitle="2title" nzDescription="2description"></nz-step>
@@ -215,12 +257,13 @@ export class NzTestOuterStepsComponent {
   size = 'default';
   status = 'process';
   progressDot = false;
+  startIndex = 0;
 }
 
 @Component({
   selector: 'nz-test-inner-step-string',
   template: `
-    <nz-steps [nzCurrent]="1">
+    <nz-steps [nzCurrent]="current">
       <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status"></nz-step>
       <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status"></nz-step>
       <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status"></nz-step>
@@ -235,6 +278,7 @@ export class NzTestInnerStepStringComponent {
   @ViewChild('descriptionTemplate') descriptionTemplate: TemplateRef<void>;
   @ViewChild('iconTemplate') iconTemplate: TemplateRef<void>;
   status = 'process';
+  current = 1;
   icon = 'anticon anticon-user';
   title = 'title';
   description = 'description';
@@ -266,4 +310,8 @@ export class NzTestInnerStepTemplateComponent {
 })
 export class NzTestStepForComponent {
   steps = [ 1, 2, 3 ];
+
+  updateSteps(): void {
+    this.steps.push(4);
+  }
 }

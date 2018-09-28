@@ -5,10 +5,15 @@ import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/te
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { createFakeEvent, createMouseEvent, dispatchEvent, dispatchKeyboardEvent, dispatchMouseEvent } from '../core/testing';
+import {
+  createFakeEvent,
+  createMouseEvent,
+  dispatchEvent,
+  dispatchKeyboardEvent,
+  dispatchMouseEvent
+} from '../core/testing';
 
-// import { NzDemoCascaderBasicComponent } from './demo/basic';
-import { NzCascaderComponent } from './nz-cascader.component';
+import { CascaderOption, NzCascaderComponent, NzShowSearchOptions } from './nz-cascader.component';
 import { NzCascaderModule } from './nz-cascader.module';
 
 describe('cascader', () => {
@@ -96,7 +101,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText).toBe('');
       expect(testComponent.cascader.getSubmitValue().join(',')).toBe('');
-      testComponent.values = [1, 2, 3];
+      testComponent.values = [ 1, 2, 3 ];
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -109,7 +114,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText).toBe('');
       expect(testComponent.cascader.getSubmitValue().join(',')).toBe('');
-      testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
+      testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -129,7 +134,7 @@ describe('cascader', () => {
     it('should allowClear work', () => {
       fixture.detectChanges();
       const input: HTMLElement = cascader.nativeElement.querySelector('.ant-cascader-input');
-      testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
+      testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
       fixture.detectChanges();
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-clear')).toBeDefined();
       testComponent.nzAllowClear = false;
@@ -244,7 +249,7 @@ describe('cascader', () => {
     }));
     it('should mouse hover toggle open immediately', fakeAsync(() => {
       fixture.detectChanges();
-      testComponent.nzTriggerAction = ['hover'];
+      testComponent.nzTriggerAction = [ 'hover' ];
       testComponent.nzMouseEnterDelay = 0;
       testComponent.nzMouseLeaveDelay = 0;
       fixture.detectChanges();
@@ -265,7 +270,7 @@ describe('cascader', () => {
     it('should clear timer on option mouseenter and mouseleave', fakeAsync(() => {
       const mouseenter = createMouseEvent('mouseenter');
       const mouseleave = createMouseEvent('mouseleave');
-      const option = options1[0]; // zhejiang
+      const option = options1[ 0 ]; // zhejiang
 
       testComponent.nzExpandTrigger = 'hover';
       fixture.detectChanges();
@@ -358,7 +363,7 @@ describe('cascader', () => {
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
     }));
     it('should mouse leave not work when menu not open', fakeAsync(() => {
-      testComponent.nzTriggerAction = ['hover'];
+      testComponent.nzTriggerAction = [ 'hover' ];
       fixture.detectChanges();
       expect(testComponent.cascader.isMenuVisible()).toBe(false);
       dispatchMouseEvent(cascader.nativeElement, 'mouseleave');
@@ -371,7 +376,7 @@ describe('cascader', () => {
     it('should clear value work', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.nzAllowClear = true;
-      testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
+      testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
       fixture.detectChanges();
       flush();
       expect(testComponent.values.length).toBe(3);
@@ -382,7 +387,7 @@ describe('cascader', () => {
     }));
     it('should clear value work 2', fakeAsync(() => {
       fixture.detectChanges();
-      testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
+      testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
       fixture.detectChanges();
       flush();
       expect(testComponent.values.length).toBe(3);
@@ -470,7 +475,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(cascader.nativeElement.querySelector('.ant-cascader-input')).toBeNull();
       testComponent.nzAllowClear = true;
-      testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
+      testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -489,7 +494,7 @@ describe('cascader', () => {
     it('should create label work', fakeAsync(() => {
       fixture.detectChanges();
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText).toBe('');
-      testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
+      testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -498,7 +503,15 @@ describe('cascader', () => {
     it('should label template work', fakeAsync(() => {
       fixture.detectChanges();
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText).toBe('');
-      testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
+      testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
+      testComponent.nzLabelRender = testComponent.renderTpl;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText.trim()).toBe('Zhejiang | Hangzhou | West Lake');
+      // fix clear
+      testComponent.clearSelection();
+      testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
       testComponent.nzLabelRender = testComponent.renderTpl;
       fixture.detectChanges();
       flush();
@@ -522,49 +535,49 @@ describe('cascader', () => {
       control.writeValue('');
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(1);
-      expect(control.getSubmitValue()[0]).toBe('');
-      control.writeValue(['zhejiang']);
+      expect(control.getSubmitValue()[ 0 ]).toBe('');
+      control.writeValue([ 'zhejiang' ]);
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(1);
-      expect(control.getSubmitValue()[0]).toBe('zhejiang');
-      control.writeValue(['zhejiang', 'hangzhou', 'xihu']);
+      expect(control.getSubmitValue()[ 0 ]).toBe('zhejiang');
+      control.writeValue([ 'zhejiang', 'hangzhou', 'xihu' ]);
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(3);
       const values = control.getSubmitValue();
-      expect(values[0]).toBe('zhejiang');
-      expect(values[1]).toBe('hangzhou');
-      expect(values[2]).toBe('xihu');
+      expect(values[ 0 ]).toBe('zhejiang');
+      expect(values[ 1 ]).toBe('hangzhou');
+      expect(values[ 2 ]).toBe('xihu');
       control.writeValue([
-        {value: 'zhejiang', text: 'Zj'}, {value: 'hangzhou', text: 'Hz'}, {value: 'xihu', text: 'Xh'}
+        { value: 'zhejiang', text: 'Zj' }, { value: 'hangzhou', text: 'Hz' }, { value: 'xihu', text: 'Xh' }
       ]);
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(3);
       const values2 = control.getSubmitValue();
-      expect(values2[0]).toBe('zhejiang');
-      expect(values2[1]).toBe('hangzhou');
-      expect(values2[2]).toBe('xihu');
+      expect(values2[ 0 ]).toBe('zhejiang');
+      expect(values2[ 1 ]).toBe('hangzhou');
+      expect(values2[ 2 ]).toBe('xihu');
       expect(control.labelRenderText).toBe('Zhejiang / Hangzhou / West Lake');
 
       testComponent.nzOptions = []; // empty collection
       fixture.detectChanges();
-      control.writeValue(['zhejiang', 'hangzhou', 'xihu']); // so these values are not match
+      control.writeValue([ 'zhejiang', 'hangzhou', 'xihu' ]); // so these values are not match
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(3);
       const values3 = control.getSubmitValue();
-      expect(values3[0]).toBe('zhejiang');
-      expect(values3[1]).toBe('hangzhou');
-      expect(values3[2]).toBe('xihu');
+      expect(values3[ 0 ]).toBe('zhejiang');
+      expect(values3[ 1 ]).toBe('hangzhou');
+      expect(values3[ 2 ]).toBe('xihu');
       expect(control.labelRenderText).toBe('zhejiang / hangzhou / xihu');
 
       control.writeValue([
-        {value: 'zhejiang', label: 'ZJ'}, {value: 'hangzhou', label: 'HZ'}, {value: 'xihu', label: 'XH'}
+        { value: 'zhejiang', label: 'ZJ' }, { value: 'hangzhou', label: 'HZ' }, { value: 'xihu', label: 'XH' }
       ]); // so these values are not match
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(3);
       const values4 = control.getSubmitValue();
-      expect(values4[0]).toBe('zhejiang');
-      expect(values4[1]).toBe('hangzhou');
-      expect(values4[2]).toBe('xihu');
+      expect(values4[ 0 ]).toBe('zhejiang');
+      expect(values4[ 1 ]).toBe('hangzhou');
+      expect(values4[ 2 ]).toBe('xihu');
       expect(control.labelRenderText).toBe('ZJ / HZ / XH');
     }));
     it('should write value work on setting `nzOptions` asyn', fakeAsync(() => {
@@ -584,23 +597,23 @@ describe('cascader', () => {
       control.writeValue('');
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(1);
-      expect(control.getSubmitValue()[0]).toBe('');
+      expect(control.getSubmitValue()[ 0 ]).toBe('');
 
-      control.writeValue(['zhejiang']);
+      control.writeValue([ 'zhejiang' ]);
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(1);
-      expect(control.getSubmitValue()[0]).toBe('zhejiang');
+      expect(control.getSubmitValue()[ 0 ]).toBe('zhejiang');
       expect(control.labelRenderText).toBe('zhejiang');
       testComponent.nzOptions = options1; // update the nzOptions like asyn
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(1);
-      expect(control.getSubmitValue()[0]).toBe('zhejiang');
+      expect(control.getSubmitValue()[ 0 ]).toBe('zhejiang');
       expect(control.labelRenderText).toBe('Zhejiang');
     }));
     it('should write value work on setting `nzOptions` asyn (match)', fakeAsync(() => {
       const control = testComponent.cascader;
       testComponent.nzOptions = null;
-      testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
+      testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
       fixture.detectChanges();
       flush(); // force value to be write
       fixture.detectChanges();
@@ -609,15 +622,15 @@ describe('cascader', () => {
       testComponent.nzOptions = options1; // update the nzOptions like asyn
       fixture.detectChanges();
       const values = control.getSubmitValue();
-      expect(values[0]).toBe('zhejiang');
-      expect(values[1]).toBe('hangzhou');
-      expect(values[2]).toBe('xihu');
+      expect(values[ 0 ]).toBe('zhejiang');
+      expect(values[ 1 ]).toBe('hangzhou');
+      expect(values[ 2 ]).toBe('xihu');
       expect(control.labelRenderText).toBe('Zhejiang / Hangzhou / West Lake');
     }));
     it('should write value work on setting `nzOptions` asyn (not match)', fakeAsync(() => {
       const control = testComponent.cascader;
       testComponent.nzOptions = null;
-      testComponent.values = ['zhejiang2', 'hangzhou2', 'xihu2'];
+      testComponent.values = [ 'zhejiang2', 'hangzhou2', 'xihu2' ];
       fixture.detectChanges();
       flush(); // force value to be write
       fixture.detectChanges();
@@ -626,9 +639,9 @@ describe('cascader', () => {
       testComponent.nzOptions = options1; // update the nzOptions like asyn
       fixture.detectChanges();            // but still the values is not match
       const values = control.getSubmitValue();
-      expect(values[0]).toBe('zhejiang2');
-      expect(values[1]).toBe('hangzhou2');
-      expect(values[2]).toBe('xihu2');
+      expect(values[ 0 ]).toBe('zhejiang2');
+      expect(values[ 1 ]).toBe('hangzhou2');
+      expect(values[ 2 ]).toBe('xihu2');
       expect(control.labelRenderText).toBe('zhejiang2 / hangzhou2 / xihu2');
     }));
     it('should click option to expand', () => {
@@ -669,7 +682,7 @@ describe('cascader', () => {
     });
     it('should click option to change column count 2', fakeAsync(() => {
       const LEFT_ARROW = 37;
-      testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
+      testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
       fixture.detectChanges();
       cascader.nativeElement.click();
       fixture.detectChanges();
@@ -852,7 +865,7 @@ describe('cascader', () => {
     it('should navigate left when press LEFT_ARROW', fakeAsync(() => {
       const LEFT_ARROW = 37;
       fixture.detectChanges();
-      testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
+      testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
       flush(); // wait for cdk-overlay to open
@@ -912,9 +925,9 @@ describe('cascader', () => {
 
       expect(testComponent.values).toBeDefined();
       expect(testComponent.values.length).toBe(3);
-      expect(testComponent.values[0]).toBe('zhejiang');
-      expect(testComponent.values[1]).toBe('hangzhou');
-      expect(testComponent.values[2]).toBe('xihu');
+      expect(testComponent.values[ 0 ]).toBe('zhejiang');
+      expect(testComponent.values[ 1 ]).toBe('hangzhou');
+      expect(testComponent.values[ 2 ]).toBe('xihu');
       flush(); // wait for cdk-overlay to close
       fixture.detectChanges();
       expect(testComponent.cascader.isMenuVisible()).toBe(false);
@@ -986,7 +999,7 @@ describe('cascader', () => {
       const Z = 90;
       const ZERO = 48;
       const NINE = 57;
-      const keys = [PAGE_UP, PAGE_DOWN, TAB, HOME, END, SPACE, COMMA, DELETE];
+      const keys = [ PAGE_UP, PAGE_DOWN, TAB, HOME, END, SPACE, COMMA, DELETE ];
       for (let k = A; k <= Z; k++) {
         keys.push(k);
       }
@@ -1068,9 +1081,9 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(testComponent.values).toBeDefined();
       expect(testComponent.values.length).toBe(3);
-      expect(testComponent.values[0]).toBe('zhejiang');
-      expect(testComponent.values[1]).toBe('hangzhou');
-      expect(testComponent.values[2]).toBe('xihu');
+      expect(testComponent.values[ 0 ]).toBe('zhejiang');
+      expect(testComponent.values[ 1 ]).toBe('hangzhou');
+      expect(testComponent.values[ 2 ]).toBe('xihu');
       flush(); // wait for cdk-overlay to close
       fixture.detectChanges();
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0); // 0列
@@ -1127,7 +1140,7 @@ describe('cascader', () => {
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2); // 2列
       expect(testComponent.values).toBeDefined();
       expect(testComponent.values.length).toBe(1);
-      expect(testComponent.values[0]).toBe('zhejiang');
+      expect(testComponent.values[ 0 ]).toBe('zhejiang');
 
       const itemEl2 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)') as HTMLElement; // 第2列第1个
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
@@ -1141,8 +1154,8 @@ describe('cascader', () => {
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3); // 3列
       expect(testComponent.values).toBeDefined();
       expect(testComponent.values.length).toBe(2);
-      expect(testComponent.values[0]).toBe('zhejiang');
-      expect(testComponent.values[1]).toBe('hangzhou');
+      expect(testComponent.values[ 0 ]).toBe('zhejiang');
+      expect(testComponent.values[ 1 ]).toBe('hangzhou');
 
       const itemEl3 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)') as HTMLElement; // 第3列第1个
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
@@ -1155,15 +1168,15 @@ describe('cascader', () => {
 
       expect(testComponent.values).toBeDefined();
       expect(testComponent.values.length).toBe(3);
-      expect(testComponent.values[0]).toBe('zhejiang');
-      expect(testComponent.values[1]).toBe('hangzhou');
-      expect(testComponent.values[2]).toBe('xihu');
+      expect(testComponent.values[ 0 ]).toBe('zhejiang');
+      expect(testComponent.values[ 1 ]).toBe('hangzhou');
+      expect(testComponent.values[ 2 ]).toBe('xihu');
       flush(); // wait for cdk-overlay to close
       fixture.detectChanges();
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0); // 0列
       expect(testComponent.cascader.isMenuVisible()).toBe(false);
     }));
-    it('should change on hover work', fakeAsync(() => {
+    it('should not change on hover work', fakeAsync(() => {
       testComponent.nzChangeOnSelect = true;
       testComponent.nzExpandTrigger = 'hover';
       fixture.detectChanges();
@@ -1186,9 +1199,7 @@ describe('cascader', () => {
       expect(testComponent.cascader.isMenuVisible()).toBe(true);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2); // 2列
-      expect(testComponent.values).toBeDefined();
-      expect(testComponent.values.length).toBe(1);
-      expect(testComponent.values[0]).toBe('zhejiang');
+      expect(testComponent.values).toBeNull(); // mouseenter does not trigger selection
 
       const itemEl2 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)') as HTMLElement; // 第2列第1个
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
@@ -1202,10 +1213,7 @@ describe('cascader', () => {
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3); // 3列
-      expect(testComponent.values).toBeDefined();
-      expect(testComponent.values.length).toBe(2);
-      expect(testComponent.values[0]).toBe('zhejiang');
-      expect(testComponent.values[1]).toBe('hangzhou');
+      expect(testComponent.values).toBeNull(); // mouseenter does not trigger selection
 
       const itemEl3 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)') as HTMLElement; // 第3列第1个
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
@@ -1216,21 +1224,18 @@ describe('cascader', () => {
       tick(200);
       fixture.detectChanges();
 
-      expect(testComponent.values).toBeDefined();
-      expect(testComponent.values.length).toBe(2);
-      expect(testComponent.values[0]).toBe('zhejiang');
-      expect(testComponent.values[1]).toBe('hangzhou');
+      expect(testComponent.values).toBeNull(); // mouseenter does not trigger selection
 
       itemEl3.click();
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
 
-      expect(testComponent.values).toBeDefined();
+      expect(testComponent.values).toBeDefined(); // click trigger selection
       expect(testComponent.values.length).toBe(3);
-      expect(testComponent.values[0]).toBe('zhejiang');
-      expect(testComponent.values[1]).toBe('hangzhou');
-      expect(testComponent.values[2]).toBe('xihu');
+      expect(testComponent.values[ 0 ]).toBe('zhejiang');
+      expect(testComponent.values[ 1 ]).toBe('hangzhou');
+      expect(testComponent.values[ 2 ]).toBe('xihu');
       flush(); // wait for cdk-overlay to close
       fixture.detectChanges();
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0); // 0列
@@ -1265,7 +1270,7 @@ describe('cascader', () => {
       itemEl2 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)') as HTMLElement; // 第1列第2个
       expect(testComponent.values).toBeDefined();
       expect(testComponent.values.length).toBe(1);
-      expect(testComponent.values[0]).toBe('zhejiang');
+      expect(testComponent.values[ 0 ]).toBe('zhejiang');
     }));
     it('should position change correct', () => {
       const fakeTopEvent = {
@@ -1294,6 +1299,171 @@ describe('cascader', () => {
       testComponent.cascader.onPositionChange(fakeBottomEvent);
       fixture.detectChanges();
       expect(testComponent.cascader.dropDownPosition).toBe('bottom');
+    });
+    it('should support search', (done) => {
+      fixture.detectChanges();
+      testComponent.nzShowSearch = true;
+      fixture.detectChanges();
+      // const input: HTMLElement = cascader.nativeElement.querySelector('.ant-cascader-input');
+      const spy = spyOn(testComponent.cascader, 'focus');
+      cascader.nativeElement.click();
+      fixture.detectChanges();
+      // expect(document.activeElement).toBe(input);
+      expect(spy).toHaveBeenCalled();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearch).toBe(true);
+      expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+      itemEl1.click();
+      fixture.whenStable().then(() => {
+        expect(testComponent.cascader.inSearch).toBe(false);
+        expect(testComponent.cascader.menuVisible).toBe(false);
+        expect(testComponent.cascader.inputValue).toBe('');
+        expect(testComponent.values.join(',')).toBe('zhejiang,hangzhou,xihu');
+        done();
+      });
+    });
+    it('should support custom filter', (done) => {
+      testComponent.nzShowSearch = {
+        filter(inputValue: string, path: CascaderOption[]): boolean {
+          let flag = false;
+          path.forEach(p => {
+            if (p.label.indexOf(inputValue) > -1) { flag = true; }
+          });
+          return flag;
+        }
+      } as NzShowSearchOptions;
+      fixture.detectChanges();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearch).toBe(true);
+      expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+      itemEl1.click();
+      fixture.whenStable().then(() => {
+        expect(testComponent.cascader.inSearch).toBe(false);
+        expect(testComponent.cascader.menuVisible).toBe(false);
+        expect(testComponent.cascader.inputValue).toBe('');
+        expect(testComponent.values.join(',')).toBe('zhejiang,hangzhou,xihu');
+        done();
+      });
+    });
+    it('should support custom sorter', (done) => {
+      testComponent.nzShowSearch = {
+        sorter(a: CascaderOption[], b: CascaderOption[], inputValue: string): number {
+          return 1; // all reversed, just to be sure it works
+        }
+      } as NzShowSearchOptions;
+      fixture.detectChanges();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearch).toBe(true);
+      expect(itemEl1.innerText).toBe('Jiangsu / Nanjing / Zhong Hua Men');
+      itemEl1.click();
+      fixture.whenStable().then(() => {
+        expect(testComponent.cascader.inSearch).toBe(false);
+        expect(testComponent.cascader.menuVisible).toBe(false);
+        expect(testComponent.cascader.inputValue).toBe('');
+        expect(testComponent.values.join(',')).toBe('jiangsu,nanjing,zhonghuamen');
+        done();
+      });
+    });
+    it('should forbid disabled search options to be clicked', fakeAsync(() => {
+      testComponent.nzOptions = options4;
+      fixture.detectChanges();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+      expect(testComponent.cascader.nzColumns[0][0].disabled).toBe(true);
+      itemEl1.click();
+      tick(300);
+      fixture.detectChanges();
+      expect(testComponent.cascader.inSearch).toBe(true);
+      expect(testComponent.cascader.menuVisible).toBe(true);
+      expect(testComponent.cascader.inputValue).toBe('o');
+      expect(testComponent.values).toBe(null);
+    }));
+    it('should pass disabled property to children when searching', () => {
+      testComponent.nzOptions = options4;
+      fixture.detectChanges();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      expect(testComponent.cascader.nzColumns[0][0].disabled).toBe(true);
+      expect(testComponent.cascader.nzColumns[0][1].disabled).toBe(undefined);
+      expect(testComponent.cascader.nzColumns[0][2].disabled).toBe(true);
+    });
+    it('should support arrow in search mode', (done) => {
+      const DOWN_ARROW = 40;
+      const ENTER = 13;
+      testComponent.nzOptions = options2;
+      fixture.detectChanges();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl2 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)') as HTMLElement;
+      const itemEl4 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(4)') as HTMLElement;
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
+      fixture.detectChanges();
+      expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
+      fixture.detectChanges();
+      expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
+      expect(itemEl4.classList).toContain('ant-cascader-menu-item-active');
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', ENTER);
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(testComponent.values.join(',')).toBe('option1,option14');
+        done();
+      });
+    });
+    // How can I test BACKSPACE?
+    it('should not preventDefault left/right arrow in search mode', () => {
+      const LEFT_ARROW = 37;
+      const RIGHT_ARROW = 39;
+      fixture.detectChanges();
+      testComponent.nzShowSearch = true;
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      fixture.detectChanges();
+      expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
+      fixture.detectChanges();
+      expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
+    });
+    it('should support search a root node have no children ', (done) => {
+      fixture.detectChanges();
+      testComponent.nzShowSearch = true;
+      testComponent.nzOptions = options5;
+      fixture.detectChanges();
+      const spy = spyOn(testComponent.cascader, 'focus');
+      cascader.nativeElement.click();
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalled();
+      testComponent.cascader.inputValue = 'Roo';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearch).toBe(true);
+      expect(itemEl1.innerText).toBe('Root');
+      itemEl1.click();
+      fixture.whenStable().then(() => {
+        expect(testComponent.cascader.inSearch).toBe(false);
+        expect(testComponent.cascader.menuVisible).toBe(false);
+        expect(testComponent.cascader.inputValue).toBe('');
+        expect(testComponent.values.join(',')).toBe('root');
+        done();
+      });
     });
   });
 
@@ -1385,14 +1555,14 @@ describe('cascader', () => {
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(4);
       expect(testComponent.values).toBeDefined();
       expect(testComponent.values.length).toBe(3);
-      expect(testComponent.values[0]).toBe('zhejiang');
-      expect(testComponent.values[1]).toBe('hangzhou');
-      expect(testComponent.values[2]).toBe('xihu');
+      expect(testComponent.values[ 0 ]).toBe('zhejiang');
+      expect(testComponent.values[ 1 ]).toBe('hangzhou');
+      expect(testComponent.values[ 2 ]).toBe('xihu');
     }));
 
     it('should LOAD DATA work when specifies default value', fakeAsync(() => {
       spyOn(testComponent, 'addCallTimes');
-      testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
+      testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
       fixture.detectChanges();
       tick(3000);
       fixture.detectChanges();
@@ -1401,124 +1571,224 @@ describe('cascader', () => {
       expect(testComponent.values.join(',')).toBe('zhejiang,hangzhou,xihu');
     }));
 
+    it('should not emit error after clear search and reopen it', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      tick(1000); // wait for first row to load finish
+      fixture.detectChanges();
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement; // 第1列第1个
+      itemEl1.click();
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+      const itemEl2 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)') as HTMLElement; // 第2列第1个
+      itemEl2.click();
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+      const itemEl3 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)') as HTMLElement; // 第3列第1个
+      itemEl3.click();
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+      flush(); // wait for cdk-overlay to close
+      fixture.detectChanges();
+      itemEl3.click(); // re-click again, this time it is a leaf
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+      flush(); // wait for cdk-overlay to close
+      fixture.detectChanges();
+      cascader.nativeElement.querySelector('.ant-cascader-picker-clear').click();
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      expect(testComponent.values.length).toBe(0);
+    }));
+
   });
 });
 
-const ID_NAME_LIST = [{
-  id: 1,
-  name: 'Zhejiang',
-  children: [{
-    id: 2,
-    name: 'Hangzhou',
-    children: [{
-      id: 3,
-      name: 'West Lake',
+const ID_NAME_LIST = [ {
+  id      : 1,
+  name    : 'Zhejiang',
+  children: [ {
+    id      : 2,
+    name    : 'Hangzhou',
+    children: [ {
+      id    : 3,
+      name  : 'West Lake',
       isLeaf: true
-    }]
-  }]
-}];
+    } ]
+  } ]
+} ];
 
-const options1 = [{
-  value: 'zhejiang',
-  label: 'Zhejiang',
-  children: [{
-    value: 'hangzhou',
-    label: 'Hangzhou',
-    children: [{
-      value: 'xihu',
-      label: 'West Lake',
+const options1 = [ {
+  value   : 'zhejiang',
+  label   : 'Zhejiang',
+  children: [ {
+    value   : 'hangzhou',
+    label   : 'Hangzhou',
+    children: [ {
+      value : 'xihu',
+      label : 'West Lake',
       isLeaf: true
-    }]
+    } ]
   }, {
-    value: 'ningbo',
-    label: 'Ningbo',
+    value : 'ningbo',
+    label : 'Ningbo',
     isLeaf: true
-  }]
+  } ]
 }, {
-  value: 'jiangsu',
-  label: 'Jiangsu',
-  children: [{
-    value: 'nanjing',
-    label: 'Nanjing',
-    children: [{
-      value: 'zhonghuamen',
-      label: 'Zhong Hua Men',
+  value   : 'jiangsu',
+  label   : 'Jiangsu',
+  children: [ {
+    value   : 'nanjing',
+    label   : 'Nanjing',
+    children: [ {
+      value : 'zhonghuamen',
+      label : 'Zhong Hua Men',
       isLeaf: true
-    }]
-  }]
-}];
+    } ]
+  } ]
+} ];
 
-const options2 = [{
-  value: 'option1',
-  label: 'Option1',
-  children: [{
-    value: 'option11',
-    label: 'Option11',
+const options2 = [ {
+  value   : 'option1',
+  label   : 'Option1',
+  children: [ {
+    value   : 'option11',
+    label   : 'Option11',
     disabled: true,
+    isLeaf  : true
+  }, {
+    value : 'option12',
+    label : 'Option12',
     isLeaf: true
   }, {
-    value: 'option12',
-    label: 'Option12',
-    isLeaf: true
-  }, {
-    value: 'option13',
-    label: 'Option13',
+    value   : 'option13',
+    label   : 'Option13',
     disabled: true,
-    isLeaf: true
+    isLeaf  : true
   }, {
-    value: 'option14',
-    label: 'Option14',
+    value : 'option14',
+    label : 'Option14',
     isLeaf: true
-  }]
+  } ]
 }, {
-  value: 'option2',
-  label: 'Option2',
+  value   : 'option2',
+  label   : 'Option2',
   disabled: true,
-  children: [{
-    value: 'option21',
-    label: 'Option21',
+  children: [ {
+    value : 'option21',
+    label : 'Option21',
     isLeaf: true
   }, {
-    value: 'option22',
-    label: 'Option22',
+    value : 'option22',
+    label : 'Option22',
     isLeaf: true
-  }]
-}];
+  } ]
+} ];
 
-const options3 = [{
+const options3 = [ {
+  value   : 'zhejiang',
+  label   : 'Zhejiang',
+  children: [ {
+    value   : 'hangzhou',
+    label   : 'Hangzhou',
+    children: [ {
+      value : 'xihu',
+      label : 'West Lake',
+      isLeaf: true
+    } ]
+  }, {
+    value : 'ningbo',
+    label : 'Ningbo',
+    isLeaf: true
+  } ]
+}, {
+  value   : 'jiangsu',
+  label   : 'Jiangsu',
+  children: [ {
+    value   : 'nanjing',
+    label   : 'Nanjing',
+    children: [ {
+      value : 'zhonghuamen',
+      label : 'Zhong Hua Men',
+      isLeaf: true
+    } ]
+  }, {
+    value : 'suzhou',
+    label : 'Suzhou',
+    isLeaf: true
+  } ]
+} ];
+
+const options4 = [ {
   value: 'zhejiang',
   label: 'Zhejiang',
-  children: [{
+  children: [ {
     value: 'hangzhou',
     label: 'Hangzhou',
-    children: [{
+    disabled: true,
+    children: [ {
       value: 'xihu',
       label: 'West Lake',
       isLeaf: true
-    }]
+    } ]
   }, {
     value: 'ningbo',
     label: 'Ningbo',
     isLeaf: true
-  }]
+  } ]
 }, {
   value: 'jiangsu',
   label: 'Jiangsu',
-  children: [{
+  disabled: true,
+  children: [ {
     value: 'nanjing',
     label: 'Nanjing',
-    children: [{
+    children: [ {
       value: 'zhonghuamen',
       label: 'Zhong Hua Men',
       isLeaf: true
-    }]
-  }, {
-    value: 'suzhou',
-    label: 'Suzhou',
-    isLeaf: true
-  }]
-}];
+    } ]
+  } ]
+} ];
 
+const options5 = [ {
+  value   : 'zhejiang',
+  label   : 'Zhejiang',
+  children: [ {
+    value   : 'hangzhou',
+    label   : 'Hangzhou',
+    children: [ {
+      value : 'xihu',
+      label : 'West Lake',
+      isLeaf: true
+    } ]
+  }, {
+    value : 'ningbo',
+    label : 'Ningbo',
+    isLeaf: true
+  } ]
+}, {
+  value   : 'jiangsu',
+  label   : 'Jiangsu',
+  children: [ {
+    value   : 'nanjing',
+    label   : 'Nanjing',
+    children: [ {
+      value : 'zhonghuamen',
+      label : 'Zhong Hua Men',
+      isLeaf: true
+    } ]
+  } ]
+}, {
+  value   : 'root',
+  label   : 'Root',
+  isLeaf: true
+} ];
 @Component({
   selector: 'nz-demo-cascader-default',
   template: `
@@ -1539,6 +1809,7 @@ const options3 = [{
       [nzPrefixCls]="nzPrefixCls"
       [nzShowArrow]="nzShowArrow"
       [nzShowInput]="nzShowInput"
+      [nzShowSearch]="nzShowSearch"
       [nzSize]="nzSize"
       [nzTriggerAction]="nzTriggerAction"
       [nzMouseEnterDelay]="nzMouseEnterDelay"
@@ -1554,12 +1825,12 @@ const options3 = [{
         {{label}}{{isLast ? '' : ' | '}}
       </ng-container>
     </ng-template>
-    `,
+  `,
   styles  : [
-    `
-    .ant-cascader-picker {
-      width: 300px;
-    }
+      `
+      .ant-cascader-picker {
+        width: 300px;
+      }
     `
   ]
 })
@@ -1583,6 +1854,7 @@ export class NzDemoCascaderDefaultComponent {
   nzPrefixCls = 'ant-cascader';
   nzShowArrow = true;
   nzShowInput = true;
+  nzShowSearch: boolean | NzShowSearchOptions = false;
   nzSize = 'default';
   nzLabelRender = null;
   nzChangeOn = null;
@@ -1597,6 +1869,10 @@ export class NzDemoCascaderDefaultComponent {
   fakeChangeOn = (node: any, index: number): boolean => {
     return node.value === 'zhejiang';
   }
+
+  clearSelection(): void {
+    this.cascader.clearSelection();
+  }
 }
 
 @Component({
@@ -1609,12 +1885,12 @@ export class NzDemoCascaderDefaultComponent {
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)">
     </nz-cascader>
-    `,
+  `,
   styles  : [
-    `
-    .ant-cascader-picker {
-      width: 300px;
-    }
+      `
+      .ant-cascader-picker {
+        width: 300px;
+      }
     `
   ]
 })
@@ -1629,22 +1905,22 @@ export class NzDemoCascaderLoadDataComponent {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (index < 0) { // if index less than 0 it is root node
-          node.children = [{
+          node.children = [ {
             value: 'zhejiang',
             label: 'Zhejiang'
-          }];
+          } ];
           resolve();
         } else if (index === 0) {
-          node.children = [{
+          node.children = [ {
             value: 'hangzhou',
             label: 'Hangzhou'
-          }];
+          } ];
           resolve();
         } else if (index === 1) {
-          node.children = [{
+          node.children = [ {
             value: 'xihu',
             label: 'West Lake'
-          }];
+          } ];
           resolve();
         } else {
           reject();

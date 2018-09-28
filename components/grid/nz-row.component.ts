@@ -37,9 +37,7 @@ const responsiveMap: BreakpointMap = {
   selector           : 'nz-row',
   preserveWhitespaces: false,
   providers          : [ NzUpdateHostClassService ],
-  template           : `
-    <ng-content></ng-content>
-  `
+  templateUrl        : './nz-row.component.html'
 })
 export class NzRowComponent implements OnInit {
   private _gutter: number | object;

@@ -17,36 +17,7 @@ import { ListSize, NzListGrid } from './interface';
 
 @Component({
   selector           : 'nz-list',
-  template           : `
-    <ng-template #itemsTpl>
-      <ng-container *ngFor="let item of nzDataSource; let index = index">
-        <ng-template
-          [ngTemplateOutlet]="nzRenderItem"
-          [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
-      </ng-container>
-    </ng-template>
-    <div *ngIf="_isHeader" class="ant-list-header">
-      <ng-container *ngIf="_header; else _headerTpl">{{ _header }}</ng-container>
-    </div>
-    <nz-spin [nzSpinning]="nzLoading">
-      <div *ngIf="nzGrid; else itemsTpl" nz-row [nzGutter]="nzGrid.gutter">
-        <div nz-col [nzSpan]="nzGrid.span" [nzXs]="nzGrid.xs" [nzSm]="nzGrid.sm" [nzMd]="nzGrid.md" [nzLg]="nzGrid.lg" [nzXl]="nzGrid.xl" [nzXXl]="nzGrid.xxl"
-          *ngFor="let item of nzDataSource; let index = index">
-          <ng-template
-            [ngTemplateOutlet]="nzRenderItem"
-            [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
-        </div>
-      </div>
-    </nz-spin>
-    <ng-template [ngTemplateOutlet]="nzLoadMore"></ng-template>
-    <ng-content></ng-content>
-    <div *ngIf="nzPagination" class="ant-list-pagination">
-      <ng-template [ngTemplateOutlet]="nzPagination"></ng-template>
-    </div>
-    <div *ngIf="_isFooter" class="ant-list-footer">
-      <ng-container *ngIf="_footer; else _footerTpl">{{ _footer }}</ng-container>
-    </div>
-  `,
+  templateUrl        : './nz-list.component.html',
   providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,

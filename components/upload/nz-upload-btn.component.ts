@@ -1,30 +1,36 @@
-// tslint:disable:no-any
-import { HttpClient, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnChanges, OnDestroy, OnInit, Optional, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  SimpleChange,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
 import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
 
 @Component({
-  selector: '[nz-upload-btn]',
-  template: `
-  <input type="file" #file (change)="onChange($event)"
-    [attr.accept]="options.accept" [multiple]="options.multiple" style="display: none;">
-  <ng-content></ng-content>
-  `,
-  host: {
+  selector           : '[nz-upload-btn]',
+  templateUrl        : './nz-upload-btn.component.html',
+  host               : {
     '[attr.tabindex]': '"0"',
-    '[attr.role]': '"button"'
+    '[attr.role]'    : '"button"'
   },
   providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false
 })
 export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
-  /** @private */
-  reqs: { [key: string]: Subscription } = {};
+  reqs: { [ key: string ]: Subscription } = {};
   private inited = false;
   private destroy = false;
 
@@ -37,38 +43,75 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   // endregion
   @HostListener('click')
   onClick(): void {
-    if (this.options.disabled) { return; }
+    if (this.options.disabled) {
+      return;
+    }
     (this.file.nativeElement as HTMLInputElement).click();
   }
 
-  @HostListener('keydown', ['$event'])
+  @HostListener('keydown', [ '$event' ])
   onKeyDown(e: KeyboardEvent): void {
-    if (this.options.disabled) { return; }
+    if (this.options.disabled) {
+      return;
+    }
     if (e.key === 'Enter') {
       this.onClick();
     }
   }
 
-  @HostListener('drop', ['$event'])
-  @HostListener('dragover', ['$event'])
+  @HostListener('drop', [ '$event' ])
+  @HostListener('dragover', [ '$event' ])
   onFileDrop(e: DragEvent): void {
     if (this.options.disabled || e.type === 'dragover') {
       e.preventDefault();
       return;
     }
-    const files: File[] = Array.prototype.slice.call(e.dataTransfer.files).filter(
-      (file: File) => this.attrAccept(file, this.options.accept)
-    );
-    if (files.length) { this.uploadFiles(files); }
+    if (this.options.directory) {
+      this.traverseFileTree(e.dataTransfer.items);
+    } else {
+      const files: File[] = Array.prototype.slice.call(e.dataTransfer.files).filter(
+        (file: File) => this.attrAccept(file, this.options.accept)
+      );
+      if (files.length) {
+        this.uploadFiles(files);
+      }
+    }
 
     e.preventDefault();
   }
 
   onChange(e: Event): void {
-    if (this.options.disabled) { return; }
+    if (this.options.disabled) {
+      return;
+    }
     const hie = e.target as HTMLInputElement;
     this.uploadFiles(hie.files);
     hie.value = '';
+  }
+
+  // tslint:disable-next-line:no-any
+  private traverseFileTree(files: any): void {
+    // tslint:disable-next-line:no-any
+    const _traverseFileTree = (item: any, path: string) => {
+      if (item.isFile) {
+        item.file((file) => {
+          if (this.attrAccept(file, this.options.accept)) {
+            this.uploadFiles([file]);
+          }
+        });
+      } else if (item.isDirectory) {
+        const dirReader = item.createReader();
+
+        dirReader.readEntries((entries) => {
+          for (const entrieItem of entries) {
+            _traverseFileTree(entrieItem, `${path}${item.name}/`);
+          }
+        });
+      }
+    };
+    for (const file of files) {
+      _traverseFileTree(file.webkitGetAsEntry(), '');
+    }
   }
 
   private attrAccept(file: File, acceptedFiles: string | string[]): boolean {
@@ -99,7 +142,6 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     return file;
   }
 
-  /** @private */
   uploadFiles(fileList: FileList | File[]): void {
     let postFiles: UploadFile[] = Array.prototype.slice.call(fileList);
     this.options.filters.forEach(f => postFiles = f.fn(postFiles));
@@ -120,7 +162,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
         if (processedFileType === '[object File]' || processedFileType === '[object Blob]') {
           this.attachUid(processedFile);
           this.post(processedFile);
-        } else {
+        } else if (typeof processedFile === 'boolean' && processedFile !== false) {
           this.post(file);
         }
       });
@@ -130,58 +172,68 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private post(file: UploadFile): void {
-    if (this.destroy) { return; }
+    if (this.destroy) {
+      return;
+    }
     const opt = this.options;
     const { uid } = file;
     let { data, headers } = opt;
-    if (typeof data === 'function') { data = data(file); }
-    if (typeof headers === 'function') { headers = headers(file); }
+    if (typeof data === 'function') {
+      data = data(file);
+    }
+    if (typeof headers === 'function') {
+      headers = headers(file);
+    }
     const args: UploadXHRArgs = {
-      action: opt.action,
-      name: opt.name,
+      action         : opt.action,
+      name           : opt.name,
       headers,
       file,
       data,
       withCredentials: opt.withCredentials,
-      onProgress: opt.onProgress ? e => {
+      onProgress     : opt.onProgress ? e => {
         opt.onProgress(e, file);
       } : null,
-      onSuccess: (ret, xhr) => {
-        delete this.reqs[uid];
+      onSuccess      : (ret, xhr) => {
+        delete this.reqs[ uid ];
         opt.onSuccess(ret, file, xhr);
       },
-      onError: (xhr) => {
-        delete this.reqs[uid];
+      onError        : (xhr) => {
+        delete this.reqs[ uid ];
         opt.onError(xhr, file);
       }
     };
-    this.reqs[uid] = (opt.customRequest || this.xhr).call(this, args);
+    this.reqs[ uid ] = (opt.customRequest || this.xhr).call(this, args);
     opt.onStart(file);
   }
 
   private xhr(args: UploadXHRArgs): Subscription {
     const formData = new FormData();
+    // tslint:disable-next-line:no-any
     formData.append(args.name, args.file as any);
     if (args.data) {
       Object.keys(args.data).map(key => {
-        formData.append(key, args.data[key]);
+        formData.append(key, args.data[ key ]);
       });
     }
-    if (!args.headers) { args.headers = {}; }
-    if (args.headers['X-Requested-With'] !== null) {
-      args.headers['X-Requested-With'] = `XMLHttpRequest`;
+    if (!args.headers) {
+      args.headers = {};
+    }
+    if (args.headers[ 'X-Requested-With' ] !== null) {
+      args.headers[ 'X-Requested-With' ] = `XMLHttpRequest`;
     } else {
-      delete args.headers['X-Requested-With'];
+      delete args.headers[ 'X-Requested-With' ];
     }
     const req = new HttpRequest('POST', args.action, formData, {
-      reportProgress: true,
+      reportProgress : true,
       withCredentials: args.withCredentials,
-      headers: new HttpHeaders(args.headers)
+      headers        : new HttpHeaders(args.headers)
     });
-    return this.http.request(req).subscribe((event: any) => {
+    return this.http.request(req).subscribe((event: HttpEvent<{}>) => {
       if (event.type === HttpEventType.UploadProgress) {
         if (event.total > 0) {
-          event.percent = event.loaded / event.total * 100;
+          // tslint:disable-next-line:no-any
+          (event as any).percent = event.loaded / event.total * 100;
         }
         args.onProgress(event, args.file);
       } else if (event instanceof HttpResponse) {
@@ -195,15 +247,15 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
 
   abort(file?: UploadFile): void {
     if (file) {
-      const uid: any = file && file.uid;
-      if (this.reqs[uid]) {
-        this.reqs[uid].unsubscribe();
-        delete this.reqs[uid];
+      const uid = file && file.uid;
+      if (this.reqs[ uid ]) {
+        this.reqs[ uid ].unsubscribe();
+        delete this.reqs[ uid ];
       }
     } else {
       Object.keys(this.reqs).forEach((uid) => {
-        this.reqs[uid].unsubscribe();
-        delete this.reqs[uid];
+        this.reqs[ uid ].unsubscribe();
+        delete this.reqs[ uid ];
       });
     }
   }
@@ -213,8 +265,8 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
 
   setClassMap(): void {
     const classMap = {
-      [this.prefixCls]: true,
-      [`${this.prefixCls}-disabled`]: this.options.disabled,
+      [ this.prefixCls ]              : true,
+      [ `${this.prefixCls}-disabled` ]: this.options.disabled,
       ...this.classes
     };
     this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
@@ -223,7 +275,9 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
 
   // endregion
   constructor(@Optional() private http: HttpClient, private el: ElementRef, private updateHostClassService: NzUpdateHostClassService, private cd: ChangeDetectorRef) {
-    if (!http) { throw new Error(`Not found 'HttpClient', You can import 'HttpClientModel' in your root module.`); }
+    if (!http) {
+      throw new Error(`Not found 'HttpClient', You can import 'HttpClientModule' in your root module.`);
+    }
   }
 
   ngOnInit(): void {

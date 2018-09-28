@@ -1,0 +1,27 @@
+<span (cdkObserveContent)="checkContent()" #contentElement><ng-content></ng-content></span>
+<span class="ant-badge-status-dot ant-badge-status-{{nzStatus}}" *ngIf="nzStatus" [ngStyle]="nzStyle"></span>
+<span class="ant-badge-status-text" *ngIf="nzStatus">{{ nzText }}</span>
+<sup
+  *ngIf="showSup"
+  [@enterLeave]
+  [ngStyle]="nzStyle"
+  class="ant-scroll-number"
+  [class.ant-badge-count]="!nzDot"
+  [class.ant-badge-dot]="nzDot"
+  [class.ant-badge-multiple-words]="countArray.length>=2">
+  <ng-template
+    ngFor
+    [ngForOf]="maxNumberArray"
+    let-number
+    let-i="index">
+      <span
+        *ngIf="nzCount<=nzOverflowCount"
+        class="ant-scroll-number-only"
+        [style.transform]="'translateY('+((-countArray[i]*100))+'%)'">
+          <ng-template [ngIf]="(!nzDot)&&(countArray[i]!=null)">
+            <p *ngFor="let p of countSingleArray" [class.current]="p==countArray[i]">{{ p }}</p>
+          </ng-template>
+      </span>
+  </ng-template>
+  <ng-template [ngIf]="nzCount>nzOverflowCount">{{ nzOverflowCount }}+</ng-template>
+</sup>

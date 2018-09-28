@@ -12,9 +12,10 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { merge } from 'rxjs/operators/merge';
+
+import { merge, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { toBoolean } from '../core/util/convert';
 import { NzThComponent } from './nz-th.component';
 
@@ -22,19 +23,13 @@ import { NzTableComponent } from './nz-table.component';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'thead:not(.ant-table-thead)',
-  template: `
-    <ng-template #contentTemplate>
-      <ng-content></ng-content>
-    </ng-template>
-    <ng-container *ngIf="!nzTableComponent">
-      <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
-    </ng-container>
-  `
+  selector   : 'thead:not(.ant-table-thead)',
+  templateUrl: './nz-thead.component.html'
 })
 export class NzTheadComponent implements AfterContentInit, OnDestroy {
   private _singleSort = false;
-  private sortSubscription: Subscription;
+  private unsubscribe$ = new Subject<void>();
+
   @ViewChild('contentTemplate') template: TemplateRef<void>;
   @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
   @Output() nzSortChange = new EventEmitter<{ key: string, value: string }>();
@@ -60,10 +55,10 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy {
     const sortChangeArray = listOfTh.map(th => th.nzSortChangeWithKey);
     if (sortChangeArray.length) {
       sortChangeArray.forEach(sort => {
-        sortChange = sortChange.pipe(merge(sort.asObservable()));
+        sortChange = merge(sort.asObservable(), sortChange);
       });
     }
-    this.sortSubscription = sortChange.subscribe(data => {
+    sortChange.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.nzSortChange.emit(data);
       if (this.nzSingleSort) {
         listOfTh.forEach(th => th.nzSort = (th.nzSortKey === data.key ? th.nzSort : null));
@@ -72,9 +67,7 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.sortSubscription) {
-      this.sortSubscription.unsubscribe();
-      this.sortSubscription = null;
-    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

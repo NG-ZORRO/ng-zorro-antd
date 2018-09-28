@@ -1,4 +1,3 @@
-import { Overlay } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -8,135 +7,40 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  NgZone,
+  OnDestroy,
   OnInit,
   Output,
   QueryList,
+  Renderer2,
   TemplateRef,
   ViewChild
 } from '@angular/core';
+
+import { fromEvent, merge, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 import { isNotNil } from '../core/util/check';
-
 import { toBoolean } from '../core/util/convert';
-import { NzThComponent } from './nz-th.component';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 
+import { NzThComponent } from './nz-th.component';
 import { NzTheadComponent } from './nz-thead.component';
 
 @Component({
   selector           : 'nz-table',
   preserveWhitespaces: false,
-  template           : `
-    <ng-template #colGroupTemplate>
-      <colgroup *ngIf="!isWidthConfigSet">
-        <col [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth" *ngFor="let th of listOfNzThComponent">
-      </colgroup>
-      <colgroup *ngIf="isWidthConfigSet">
-        <col [style.width]="width" [style.minWidth]="width" *ngFor="let width of nzWidthConfig">
-      </colgroup>
-    </ng-template>
-    <ng-template #tableInnerTemplate>
-      <div
-        #tableHeaderElement
-        *ngIf="nzScroll.x || nzScroll.y"
-        class="ant-table-header"
-        (scroll)="syncScrollTable($event)"
-        [ngStyle]="headerBottomStyle">
-        <table
-          [class.ant-table-fixed]="nzScroll.x"
-          [style.width]="nzScroll.x">
-          <ng-template [ngTemplateOutlet]="colGroupTemplate"></ng-template>
-          <thead class="ant-table-thead" *ngIf="nzScroll.y">
-            <ng-template [ngTemplateOutlet]="nzTheadComponent?.template"></ng-template>
-          </thead>
-        </table>
-      </div>
-      <div
-        #tableBodyElement
-        class="ant-table-body"
-        (scroll)="syncScrollTable($event)"
-        [style.maxHeight]="nzScroll.y"
-        [style.overflow-y]="nzScroll.y?'scroll':''"
-        [style.overflow-x]="nzScroll.x?'auto':''">
-        <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
-          <ng-template [ngTemplateOutlet]="colGroupTemplate"></ng-template>
-          <thead class="ant-table-thead" *ngIf="!nzScroll.y">
-            <ng-template [ngTemplateOutlet]="nzTheadComponent?.template"></ng-template>
-          </thead>
-          <ng-content></ng-content>
-        </table>
-      </div>
-      <div class="ant-table-placeholder" *ngIf="(data.length==0)&&!nzLoading">
-        <span *ngIf="!nzNoResult">{{ 'Table.emptyText' | nzI18n }}</span>
-        <ng-container *ngIf="nzNoResult">
-          <ng-container *ngIf="isNoResultString; else noResultTemplate">{{ nzNoResult }}</ng-container>
-          <ng-template #noResultTemplate>
-            <ng-template [ngTemplateOutlet]="nzNoResult"></ng-template>
-          </ng-template>
-        </ng-container>
-      </div>
-      <div class="ant-table-footer" *ngIf="nzFooter">
-        <ng-container *ngIf="isFooterString; else footerTemplate">{{ nzFooter }}</ng-container>
-        <ng-template #footerTemplate>
-          <ng-template [ngTemplateOutlet]="nzFooter"></ng-template>
-        </ng-template>
-      </div>
-    </ng-template>
-    <div
-      class="ant-table-wrapper"
-      [class.ant-table-empty]="data.length==0">
-      <nz-spin
-        [nzDelay]="nzLoadingDelay"
-        [nzSpinning]="nzLoading">
-        <div>
-          <div
-            class="ant-table"
-            [class.ant-table-fixed-header]="nzScroll.x || nzScroll.y"
-            [class.ant-table-scroll-position-left]="scrollPosition==='left'"
-            [class.ant-table-scroll-position-right]="scrollPosition==='right'"
-            [class.ant-table-scroll-position-middle]="scrollPosition==='middle'"
-            [class.ant-table-bordered]="nzBordered"
-            [class.ant-table-large]="nzSize=='default'"
-            [class.ant-table-middle]="nzSize=='middle'"
-            [class.ant-table-small]="nzSize=='small'">
-            <div class="ant-table-title" *ngIf="nzTitle">
-              <ng-container *ngIf="isTitleString; else titleTemplate">{{ nzTitle }}</ng-container>
-              <ng-template #titleTemplate>
-                <ng-template [ngTemplateOutlet]="nzTitle"></ng-template>
-              </ng-template>
-            </div>
-            <div class="ant-table-content">
-              <ng-container *ngIf="nzScroll.x || nzScroll.y; else tableInnerTemplate">
-                <div class="ant-table-scroll">
-                  <ng-template [ngTemplateOutlet]="tableInnerTemplate"></ng-template>
-                </div>
-              </ng-container>
-            </div>
-          </div>
-        </div>
-        <nz-pagination
-          *ngIf="nzShowPagination&&data.length"
-          [nzInTable]="true"
-          [nzShowSizeChanger]="nzShowSizeChanger"
-          [nzPageSizeOptions]="nzPageSizeOptions"
-          [nzShowQuickJumper]="nzShowQuickJumper"
-          [nzShowTotal]="nzShowTotal"
-          [nzSize]="(nzSize=='middle'||nzSize=='small')?'small':''"
-          [nzPageSize]="nzPageSize"
-          (nzPageSizeChange)="emitPageSize($event)"
-          [nzTotal]="nzTotal"
-          [nzPageIndex]="nzPageIndex"
-          (nzPageIndexChange)="emitPageIndex($event)">
-        </nz-pagination>
-      </nz-spin>
-    </div>
-  `
+  templateUrl        : './nz-table.component.html'
 })
-export class NzTableComponent implements OnInit, AfterViewInit {
+export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
+  private unsubscribe$ = new Subject<void>();
   private _bordered = false;
   private _showPagination = true;
   private _loading = false;
   private _showSizeChanger = false;
   private _showQuickJumper = false;
+  private _hideOnSinglePage = false;
   private _scroll: { x: string; y: string } = { x: null, y: null };
   private _footer: string | TemplateRef<void>;
   private _title: string | TemplateRef<void>;
@@ -145,12 +49,14 @@ export class NzTableComponent implements OnInit, AfterViewInit {
   private _pageSize = 10;
   private _widthConfig: string[] = [];
   private _frontPagination = true;
+  private _simple = false;
+  /* tslint:disable-next-line:no-any */
+  locale: any = {};
   nzTheadComponent: NzTheadComponent;
   isFooterString: boolean;
   isTitleString: boolean;
   isNoResultString: boolean;
   el: HTMLElement;
-  scrollPosition: string;
   lastScrollLeft = 0;
   /* tslint:disable-next-line:no-any */
   rawData: any[] = [];
@@ -163,6 +69,7 @@ export class NzTableComponent implements OnInit, AfterViewInit {
   isWidthConfigSet = false;
   @ViewChild('tableHeaderElement') tableHeaderElement: ElementRef;
   @ViewChild('tableBodyElement') tableBodyElement: ElementRef;
+  @ViewChild('tableMainElement') tableMainElement: ElementRef;
   @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
 
   @Output() nzPageSizeChange: EventEmitter<number> = new EventEmitter();
@@ -176,6 +83,15 @@ export class NzTableComponent implements OnInit, AfterViewInit {
   @Input() nzPageSizeOptions = [ 10, 20, 30, 40, 50 ];
   @Input() nzLoadingDelay = 0;
   @Input() nzTotal: number;
+
+  @Input()
+  set nzSimple(value: boolean) {
+    this._simple = toBoolean(value);
+  }
+
+  get nzSimple(): boolean {
+    return this._simple;
+  }
 
   @Input()
   set nzFrontPagination(value: boolean) {
@@ -261,6 +177,15 @@ export class NzTableComponent implements OnInit, AfterViewInit {
 
   get nzShowSizeChanger(): boolean {
     return this._showSizeChanger;
+  }
+
+  @Input()
+  set nzHideOnSinglePage(value: boolean) {
+    this._hideOnSinglePage = toBoolean(value);
+  }
+
+  get nzHideOnSinglePage(): boolean {
+    return this._hideOnSinglePage;
   }
 
   @Input()
@@ -385,14 +310,25 @@ export class NzTableComponent implements OnInit, AfterViewInit {
   setScrollPositionClassName(): void {
     if (this.tableBodyElement && this.nzScroll && this.nzScroll.x) {
       if ((this.tableBodyElement.nativeElement.scrollWidth === this.tableBodyElement.nativeElement.clientWidth) && (this.tableBodyElement.nativeElement.scrollWidth !== 0)) {
-        this.scrollPosition = 'default';
+        this.setScrollName();
       } else if (this.tableBodyElement.nativeElement.scrollLeft === 0) {
-        this.scrollPosition = 'left';
+        this.setScrollName('left');
       } else if (this.tableBodyElement.nativeElement.scrollWidth === (this.tableBodyElement.nativeElement.scrollLeft + this.tableBodyElement.nativeElement.clientWidth)) {
-        this.scrollPosition = 'right';
+        this.setScrollName('right');
       } else {
-        this.scrollPosition = 'middle';
+        this.setScrollName('middle');
       }
+    }
+  }
+
+  setScrollName(position?: string): void {
+    const prefix = 'ant-table-scroll-position';
+    const classList = [ 'left', 'right', 'middle' ];
+    classList.forEach(name => {
+      this.renderer.removeClass(this.tableMainElement.nativeElement, `${prefix}-${name}`);
+    });
+    if (position) {
+      this.renderer.addClass(this.tableMainElement.nativeElement, `${prefix}-${position}`);
     }
   }
 
@@ -413,19 +349,33 @@ export class NzTableComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.locale = this.i18n.getLocaleData('Table'));
     this.fitScrollBar();
-    if (this.nzScroll && this.nzScroll.x && this.nzScroll.y) {
-      /** magic code to sync scroll **/
-      const overlay = this.overlay.create();
-      overlay.dispose();
-    }
   }
 
   ngAfterViewInit(): void {
     setTimeout(() => this.setScrollPositionClassName());
+    this.ngZone.runOutsideAngular(() => {
+      if (this.tableHeaderElement
+        && this.tableHeaderElement.nativeElement
+        && this.tableBodyElement
+        && this.tableBodyElement.nativeElement) {
+        merge(
+          fromEvent(this.tableHeaderElement.nativeElement, 'scroll'),
+          fromEvent(this.tableBodyElement.nativeElement, 'scroll')
+        ).pipe(takeUntil(this.unsubscribe$)).subscribe((data: MouseEvent) => {
+          this.syncScrollTable(data);
+        });
+      }
+    });
   }
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private overlay: Overlay, private nzMeasureScrollbarService: NzMeasureScrollbarService) {
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  constructor(private renderer: Renderer2, private ngZone: NgZone, private elementRef: ElementRef, private cdr: ChangeDetectorRef, private nzMeasureScrollbarService: NzMeasureScrollbarService, private i18n: NzI18nService) {
     this.el = this.elementRef.nativeElement;
   }
 }

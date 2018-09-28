@@ -18,10 +18,9 @@ title: Tag
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzMode | 设定标签工作的模式 | `'closeable'丨'default'丨'checkable'` | `default` |
-| nzAfterClose | 关闭动画完成后的回调，在 `nzMode="closable"` 时可用 | () => void | - |
-| nzOnClose | 关闭时的回调，在 `nzMode="closable"` 时可用 | (e:MouseEvent) => void | - |
-| nzChecked | 设置标签的选中状态，可双向绑定，在 `nzMode="checkable"` 时可用 | boolean | false |
-| nzCheckedChange | 设置标签的选中状态的回调，在 `nzMode="checkable"` 时可用 | (nzChecked:boolean)=>{} | -
- |
-| nzColor | 标签色 | string | - |
+| `[nzMode]` | 设定标签工作的模式 | `'closeable'丨'default'丨'checkable'` | `default` |
+| `[nzChecked]` | 设置标签的选中状态，可双向绑定，在 `nzMode="checkable"` 时可用 | boolean | false |
+| `[nzColor]` | 标签色 | string | - |
+| `(nzAfterClose)` | 关闭动画完成后的回调，在 `nzMode="closable"` 时可用 | `EventEmitter<void>` | - |
+| `(nzOnClose)` | 关闭时的回调，在 `nzMode="closable"` 时可用 | `EventEmitter<MouseEvent>` | - |
+| `(nzCheckedChange)` | 设置标签的选中状态的回调，在 `nzMode="checkable"` 时可用 | `EventEmitter<void>` | - |

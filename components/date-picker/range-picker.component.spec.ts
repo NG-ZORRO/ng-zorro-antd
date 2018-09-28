@@ -6,8 +6,8 @@ import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/cor
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import * as differenceInDays from 'date-fns/difference_in_days';
-import * as isSameDay from 'date-fns/is_same_day';
+import differenceInDays from 'date-fns/difference_in_days';
+import isSameDay from 'date-fns/is_same_day';
 
 import { dispatchMouseEvent } from '../core/testing';
 import { NzDatePickerModule } from './date-picker.module';
@@ -136,7 +136,7 @@ describe('NzRangePickerComponent', () => {
     it('should support nzClassName', () => {
       const className = fixtureInstance.nzClassName = 'my-test-class';
       fixture.detectChanges();
-      const picker = debugElement.query(By.css('.ant-calendar-picker')).nativeElement as HTMLElement;
+      const picker = debugElement.queryAll(By.css('.ant-calendar-picker'))[1].nativeElement as HTMLElement;
       expect(picker.classList.contains(className)).toBeTruthy();
     });
 
@@ -162,9 +162,9 @@ describe('NzRangePickerComponent', () => {
       expect(getPickerTrigger().querySelector('input:nth-of-type(1)').getAttribute('placeholder')).toBe(featureKey);
     });
 
-    it('should support nzPlaceholder', () => {
+    it('should support nzPlaceHolder', () => {
       const featureKey = 'RIGHT_PLACEHOLDER';
-      fixtureInstance.nzPlaceholder = [ 'Start', featureKey ];
+      fixtureInstance.nzPlaceHolder = [ 'Start', featureKey ];
       fixture.detectChanges();
       expect(getPickerTrigger().querySelector('input:nth-of-type(2)').getAttribute('placeholder')).toBe(featureKey);
     });
@@ -466,6 +466,22 @@ describe('NzRangePickerComponent', () => {
       expect(queryFromOverlay('.ant-calendar-range-right .ant-calendar-selected-end-date')).toBeDefined();
     }));
 
+    it('should display expected date when the range values are the same day (include the scenario of timepicker)', fakeAsync(() => {
+      fixtureInstance.modelValue = [ new Date('2018-05-15'), new Date('2018-05-15') ];
+      fixtureInstance.nzShowTime = true;
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      expect(queryFromOverlay('.ant-calendar-range-right .ant-calendar-month-select').textContent).toContain('6');
+
+      // Open time picker panel
+      dispatchMouseEvent(queryFromOverlay('.ant-calendar-time-picker-btn'), 'click');
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(queryFromOverlay('.ant-calendar-range-right .ant-calendar-month-select').textContent).toContain('5');
+    }));
+
     it('should support nzRanges', fakeAsync(() => {
       const today = new Date();
       fixtureInstance.nzRanges = { 'Today': [ today, today ] };
@@ -588,7 +604,7 @@ describe('NzRangePickerComponent', () => {
         [nzClassName]="nzClassName"
         [nzDisabledDate]="nzDisabledDate"
         [nzLocale]="nzLocale"
-        [nzPlaceholder]="nzPlaceholder"
+        [nzPlaceHolder]="nzPlaceHolder"
         [nzPopupStyle]="nzPopupStyle"
         [nzDropdownClassName]="nzDropdownClassName"
         [nzSize]="nzSize"
@@ -635,7 +651,7 @@ class NzTestRangePickerComponent {
   nzClassName;
   nzDisabledDate;
   nzLocale;
-  nzPlaceholder;
+  nzPlaceHolder;
   nzPopupStyle;
   nzDropdownClassName;
   nzSize;

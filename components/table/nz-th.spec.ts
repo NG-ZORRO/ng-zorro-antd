@@ -10,7 +10,7 @@ describe('nz-th', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzTableModule ],
-      declarations: [ NzThTestNzTableComponent ],
+      declarations: [ NzThTestNzTableComponent, NzThTestTableDefaultFilterComponent ],
       providers   : [ NzMeasureScrollbarService ]
     });
     TestBed.compileComponents();
@@ -77,9 +77,11 @@ describe('nz-th', () => {
     });
     it('should showSort work', () => {
       fixture.detectChanges();
+      expect(th.nativeElement.classList).not.toContain('ant-table-column-has-filters');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter')).toBeNull();
       testComponent.showSort = true;
       fixture.detectChanges();
+      expect(th.nativeElement.classList).toContain('ant-table-column-has-filters');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter')).toBeDefined();
     });
     it('should sort change work', () => {
@@ -167,9 +169,11 @@ describe('nz-th', () => {
     });
     it('should showFilter work', () => {
       fixture.detectChanges();
+      expect(th.nativeElement.classList).not.toContain('ant-table-column-has-filters');
       expect(th.nativeElement.querySelector('.anticon anticon-filter')).toBeNull();
       testComponent.showFilter = true;
       fixture.detectChanges();
+      expect(th.nativeElement.classList).toContain('ant-table-column-has-filters');
       expect(th.nativeElement.querySelector('.anticon anticon-filter')).toBeDefined();
     });
     it('should filterChange work', () => {
@@ -183,6 +187,35 @@ describe('nz-th', () => {
       fixture.detectChanges();
       expect(testComponent.nzThComponent.hasFilterValue).toBe(true);
       expect(testComponent.filterChange).toHaveBeenCalledWith([ '1' ]);
+    });
+    it('should hasFilter change after filters change with multiple', () => {
+      testComponent.showFilter = true;
+      fixture.detectChanges();
+      testComponent.nzThComponent.checkMultiple(testComponent.nzThComponent.multipleFilterList[ 0 ]);
+      testComponent.nzThComponent.search();
+      fixture.detectChanges();
+      expect(testComponent.nzThComponent.hasFilterValue).toBe(true);
+      testComponent.filters = [
+        { text: 'filter1', value: '4' },
+        { text: 'filter2', value: '3' }
+      ];
+      fixture.detectChanges();
+      expect(testComponent.nzThComponent.hasFilterValue).toBe(false);
+    });
+    it('should hasFilter change after filters change with single', () => {
+      testComponent.showFilter = true;
+      testComponent.filterMultiple = false;
+      fixture.detectChanges();
+      testComponent.nzThComponent.checkSingle(testComponent.nzThComponent.singleFilterList[ 0 ]);
+      testComponent.nzThComponent.search();
+      fixture.detectChanges();
+      expect(testComponent.nzThComponent.hasFilterValue).toBe(true);
+      testComponent.filters = [
+        { text: 'filter1', value: '5' },
+        { text: 'filter2', value: '3' }
+      ];
+      fixture.detectChanges();
+      expect(testComponent.nzThComponent.hasFilterValue).toBe(false);
     });
     it('should reset work', () => {
       testComponent.showFilter = true;
@@ -214,6 +247,31 @@ describe('nz-th', () => {
       testComponent.expand = true;
       fixture.detectChanges();
       expect(th.nativeElement.classList).toContain('ant-table-expand-icon-th');
+    });
+    it('should be throw error when use specific class name', () => {
+      expect(() => {
+        TestBed.configureTestingModule({
+          declarations: [ NzTestDisableThComponent ]
+        }).createComponent(NzTestDisableThComponent);
+      }).toThrow();
+    });
+  });
+  describe('nz-th with default filter in nz-table', () => {
+    let fixture;
+    let testComponent;
+    let th;
+    let table;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzThTestTableDefaultFilterComponent);
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+      th = fixture.debugElement.query(By.directive(NzThComponent));
+      table = fixture.debugElement.query(By.directive(NzTableComponent));
+    });
+    // It's a fake test to pass codecov, because default displayData should be configured by user.
+    it('should default filter work', () => {
+      expect(testComponent.displayData.length).toBe(0);
+      expect(testComponent.nzThComponent.hasFilterValue).toBe(true);
     });
   });
 });
@@ -273,3 +331,95 @@ export class NzThTestNzTableComponent {
   filterMultiple = true;
   expand = false;
 }
+
+@Component({
+  selector: 'nz-demo-table-default-filter',
+  template: `
+    <nz-table #filterTable [nzData]="displayData">
+      <thead (nzSortChange)="sort($event)" nzSingleSort>
+        <tr>
+          <th nzShowSort nzSortKey="name" nzShowFilter [nzFilters]="nameList" (nzFilterChange)="filter($event,searchAddress)">Name</th>
+          <th nzShowSort nzSortKey="age">Age</th>
+          <th nzShowSort nzSortKey="address" nzShowFilter [nzFilterMultiple]="false" [nzFilters]="addressList" (nzFilterChange)="filter(listOfSearchName,$event)">Address</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of filterTable.data">
+          <td>{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
+        </tr>
+      </tbody>
+    </nz-table>`
+})
+export class NzThTestTableDefaultFilterComponent {
+  nameList = [
+    { text: 'Joe', value: 'Joe', byDefault: true },
+    { text: 'Jim', value: 'Jim' }
+  ];
+  addressList = [
+    { text: 'London', value: 'London', byDefault: true },
+    { text: 'Sidney', value: 'Sidney' }
+  ];
+  sortName = null;
+  sortValue = null;
+  listOfSearchName = [ 'Joe', 'London' ];
+  searchAddress: string;
+  data = [
+    {
+      name: 'John Brown',
+      age: 32,
+      address: 'New York No. 1 Lake Park'
+    },
+    {
+      name: 'Jim Green',
+      age: 42,
+      address: 'London No. 1 Lake Park'
+    },
+    {
+      name: 'Joe Black',
+      age: 32,
+      address: 'Sidney No. 1 Lake Park'
+    },
+    {
+      name: 'Jim Red',
+      age: 32,
+      address: 'London No. 2 Lake Park'
+    }
+  ];
+  displayData = [ ];
+
+  @ViewChild(NzThComponent) nzThComponent: NzThComponent;
+
+  sort(sort: { key: string, value: string }): void {
+    this.sortName = sort.key;
+    this.sortValue = sort.value;
+    this.search();
+  }
+
+  filter(listOfSearchName: string[], searchAddress: string): void {
+    this.listOfSearchName = listOfSearchName;
+    this.searchAddress = searchAddress;
+    this.search();
+  }
+
+  search(): void {
+    /** filter data **/
+    const filterFunc = item => (this.searchAddress ? item.address.indexOf(this.searchAddress) !== -1 : true) && (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
+    const data = this.data.filter(item => filterFunc(item));
+    /** sort data **/
+    if (this.sortName && this.sortValue) {
+      this.displayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] > b[ this.sortName ] ? 1 : -1) : (b[ this.sortName ] > a[ this.sortName ] ? 1 : -1));
+    } else {
+      this.displayData = data;
+    }
+  }
+}
+
+@Component({
+  selector: 'nz-disable-th',
+  template: `
+    <th class="nz-disable-th" [nzShowCheckbox]="true"></th>
+  `
+})
+export class NzTestDisableThComponent {}

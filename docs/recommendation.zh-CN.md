@@ -10,7 +10,6 @@ title: 社区推荐
 类型 | 名称 | 描述
 ----|----|--------
 脚手架|[NG ALAIN](http://ng-alain.com/) | 基于 `ng-zorro-antd` 的 Admin 系统解决方案
-可视化|[Viser-NG](https://viserjs.github.io/docs.html) | G2 的 Angular 版本的官方实现
 可视化|[NGX-CHARTS](https://swimlane.github.io/ngx-charts/) | 基于 D3 的Angular 可视化组件库
 可视化|[NGX-CHARTS-DAG](https://swimlane.github.io/ngx-graph/) | 基于 Dagre 的有向无环图可视化组件库
 拖拽|[NGX-DND](https://swimlane.github.io/ngx-dnd/) | Angular 的拖拽组件库

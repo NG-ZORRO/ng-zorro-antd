@@ -36,6 +36,8 @@ subtitle: 通知提醒框
 
 ## API
 
+### NzNotificationService
+
 组件提供了一些服务方法，使用方式和参数如下：
 
 - `NzNotificationService.blank(title, content, [options])` // 不带图标的提示
@@ -43,7 +45,6 @@ subtitle: 通知提醒框
 - `NzNotificationService.error(title, content, [options])`
 - `NzNotificationService.info(title, content, [options])`
 - `NzNotificationService.warning(title, content, [options])`
-- `NzNotificationService.loading(title, content, [options])`
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

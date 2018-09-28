@@ -9,8 +9,6 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChange,
-  SimpleChanges,
   ViewChild
 } from '@angular/core';
 
@@ -20,9 +18,14 @@ import { toNumber } from '../core/util/convert';
 import { throttleByAnimationFrameDecorator } from '../core/util/throttleByAnimationFrame';
 
 @Component({
-  selector     : 'nz-affix',
-  template     : `<div #wrap><ng-content></ng-content></div>`,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector       : 'nz-affix',
+  templateUrl    : './nz-affix.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles         : [
+    `:host {
+      display: block;
+    }`
+  ]
 })
 export class NzAffixComponent implements OnInit, OnDestroy {
 
@@ -42,6 +45,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   @ViewChild('wrap') private wrap: ElementRef;
 
   private _target: Element | Window = window;
+
   @Input()
   set nzTarget(value: Element | Window) {
     this.clearEventListeners();
@@ -51,25 +55,33 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   }
 
   private _offsetTop: number;
+
   @Input()
   set nzOffsetTop(value: number) {
-    if (typeof value === 'undefined') { return; }
+    if (typeof value === 'undefined') {
+      return;
+    }
     this._offsetTop = toNumber(value, null);
   }
+
   get nzOffsetTop(): number {
     return this._offsetTop;
   }
 
   private _offsetBottom: number;
+
   @Input()
   set nzOffsetBottom(value: number) {
-    if (typeof value === 'undefined') { return; }
+    if (typeof value === 'undefined') {
+      return;
+    }
     this._offsetBottom = toNumber(value, null);
   }
 
   @Output() nzChange: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private scrollSrv: NzScrollService, private _el: ElementRef, private cd: ChangeDetectorRef) { }
+  constructor(private scrollSrv: NzScrollService, private _el: ElementRef, private cd: ChangeDetectorRef) {
+  }
 
   ngOnInit(): void {
     this.timeout = setTimeout(() => {
@@ -103,12 +115,11 @@ export class NzAffixComponent implements OnInit, OnDestroy {
       { top: 0, left: 0, bottom: 0 } as ClientRect;
   }
 
-  /** @private */
   getOffset(element: Element, target: Element | Window | null): {
-      top: number;
-      left: number;
-      width: number;
-      height: number;
+    top: number;
+    left: number;
+    width: number;
+    height: number;
   } {
     const elemRect = element.getBoundingClientRect();
     const targetRect = this.getTargetRect(target);
@@ -121,17 +132,19 @@ export class NzAffixComponent implements OnInit, OnDestroy {
     const clientLeft = docElem.clientLeft || 0;
 
     return {
-      top: elemRect.top - targetRect.top + scrollTop - clientTop,
-      left: elemRect.left - targetRect.left + scrollLeft - clientLeft,
-      width: elemRect.width,
+      top   : elemRect.top - targetRect.top + scrollTop - clientTop,
+      left  : elemRect.left - targetRect.left + scrollLeft - clientLeft,
+      width : elemRect.width,
       height: elemRect.height
     };
   }
 
   private genStyle(affixStyle: {}): string {
-    if (affixStyle == null) { return ''; }
+    if (affixStyle == null) {
+      return '';
+    }
     return Object.keys(affixStyle).map(key => {
-      const val = affixStyle[key];
+      const val = affixStyle[ key ];
       return `${key}:${typeof val === 'string' ? val : val + 'px'}`;
     }).join(';');
   }
@@ -139,8 +152,12 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   private setAffixStyle(e: any, affixStyle: {}): void {
     const originalAffixStyle = this.affixStyle;
     const isWindow = this._target === window;
-    if (e.type === 'scroll' && originalAffixStyle && affixStyle && isWindow) { return; }
-    if (shallowEqual(originalAffixStyle, affixStyle)) { return; }
+    if (e.type === 'scroll' && originalAffixStyle && affixStyle && isWindow) {
+      return;
+    }
+    if (shallowEqual(originalAffixStyle, affixStyle)) {
+      return;
+    }
 
     const fixed = !!affixStyle;
     const wrapEl = this.wrap.nativeElement as HTMLElement;
@@ -160,7 +177,9 @@ export class NzAffixComponent implements OnInit, OnDestroy {
 
   private setPlaceholderStyle(placeholderStyle: {}): void {
     const originalPlaceholderStyle = this.placeholderStyle;
-    if (shallowEqual(placeholderStyle, originalPlaceholderStyle)) { return; }
+    if (shallowEqual(placeholderStyle, originalPlaceholderStyle)) {
+      return;
+    }
     (this._el.nativeElement as HTMLElement).style.cssText = this.genStyle(placeholderStyle);
     this.placeholderStyle = placeholderStyle;
   }
@@ -174,11 +193,11 @@ export class NzAffixComponent implements OnInit, OnDestroy {
     const affixNode = this._el.nativeElement as HTMLElement;
     const elemOffset = this.getOffset(affixNode, targetNode);
     const elemSize = {
-      width: affixNode.offsetWidth,
+      width : affixNode.offsetWidth,
       height: affixNode.offsetHeight
     };
     const offsetMode = {
-      top: false,
+      top   : false,
       bottom: false
     };
     // Default to `offsetTop=0`.
@@ -191,14 +210,14 @@ export class NzAffixComponent implements OnInit, OnDestroy {
     }
     const targetRect = this.getTargetRect(targetNode);
     const targetInnerHeight =
-      (targetNode as Window).innerHeight || (targetNode as HTMLElement).clientHeight;
+            (targetNode as Window).innerHeight || (targetNode as HTMLElement).clientHeight;
     if (scrollTop > elemOffset.top - (offsetTop as number) && offsetMode.top) {
       const width = elemOffset.width;
       const top = targetRect.top + (offsetTop as number);
       this.setAffixStyle(e, {
-        position: 'fixed',
+        position : 'fixed',
         top,
-        left: targetRect.left + elemOffset.left,
+        left     : targetRect.left + elemOffset.left,
         maxHeight: `calc(100vh - ${top}px)`,
         width
       });
@@ -208,14 +227,14 @@ export class NzAffixComponent implements OnInit, OnDestroy {
       });
     } else if (
       scrollTop < elemOffset.top + elemSize.height + (this._offsetBottom as number) - targetInnerHeight &&
-        offsetMode.bottom
+      offsetMode.bottom
     ) {
       const targetBottomOffet = targetNode === window ? 0 : (window.innerHeight - targetRect.bottom);
       const width = elemOffset.width;
       this.setAffixStyle(e, {
         position: 'fixed',
-        bottom: targetBottomOffet + (this._offsetBottom as number),
-        left: targetRect.left + elemOffset.left,
+        bottom  : targetBottomOffet + (this._offsetBottom as number),
+        left    : targetRect.left + elemOffset.left,
         width
       });
       this.setPlaceholderStyle({

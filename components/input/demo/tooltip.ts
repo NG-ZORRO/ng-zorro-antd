@@ -5,7 +5,7 @@ import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/co
   encapsulation: ViewEncapsulation.None,
   template     : `
     <nz-tooltip nzTrigger="focus" nzPlacement="topLeft" nzOverlayClassName="numeric-input" [nzTitle]="title">
-      <input #inputElement nz-input nz-tooltip placeholder="Input a number" [ngModel]="value" (ngModelChange)="onChange($event)" (blur)="onBlur()">
+      <input #inputElement style="width: 120px" nz-input nz-tooltip placeholder="Input a number" [ngModel]="value" (ngModelChange)="onChange($event)" (blur)="onBlur()">
     </nz-tooltip>
   `,
   styles       : [

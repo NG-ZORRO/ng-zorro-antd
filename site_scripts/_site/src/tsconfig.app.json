@@ -18,5 +18,11 @@
   ],
   "include": [
     "../src/**/*"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": true,
+    "fullTemplateTypeCheck": true,
+    "strictMetadataEmit": true,
+    "strictInjectionParameters":true
+  }
 }

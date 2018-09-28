@@ -9,7 +9,9 @@ publish/
 integration/**/lib/
 integration/**/*.ngfactory.ts
 integration/**/*.ngsummary.json
-
+schematics/demo
+schematics/utils/custom-theme.ts
+schematics/utils/lib-versions.ts
 
 # dependencies
 node_modules

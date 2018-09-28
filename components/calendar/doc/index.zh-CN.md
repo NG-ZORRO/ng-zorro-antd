@@ -14,7 +14,7 @@ title: Calendar
 
 ## API
 
-**注意：**Calendar 的部分 locale 来自于 Angular 自身的[国际化支持](https://angular.io/guide/i18n)，需要在 `main.ts`文件中 引入相应的 Angular 语言包。
+**注意：**Calendar 的部分 locale 来自于 Angular 自身的[国际化支持](https://angular.io/guide/i18n)，需要在  `app.module.ts` 文件中 引入相应的 Angular 语言包。
 
 例如：
 ```typescript
@@ -35,14 +35,15 @@ registerLocaleData(zh);
 <ng-template #dateCellTpl>Bar</ng-template>
 ```
 
+### nz-calendar
+
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| ngModel | （可双向绑定）展示日期 | `Date` | 当前日期 |
-| nzValue | （可双向绑定）同 `ngModel`，用于非表单场景 | `Date` | 当前日期 |
-| nzMode | （可双向绑定）显示模式 | `'month'/'year'` | `'month'` |
-| nzFullscreen | 是否全屏显示 | `boolean` | `true` |
-| nzCard | 是否不全屏显示 | `boolean` | `false` |
-| nzDateCell | （可作为内容）自定义渲染日期单元格，模版内容会被追加到单元格 | `TemplateRef<Date>` | 无 |
-| nzDateFullCell | （可作为内容）自定义渲染日期单元格，模版内容覆盖单元格 | `TemplateRef<Date>` | 无 |
-| nzMonthCell | （可作为内容）自定义渲染月单元格，模版内容会被追加到单元格 | `TemplateRef<Date>` | 无 |
-| nzMonthFullCell | （可作为内容）自定义渲染月单元格，模版内容覆盖单元格 | `TemplateRef<Date>` | 无 |
+| `[(ngModel)]` | （可双向绑定）展示日期 | `Date` | 当前日期 |
+| `[(nzMode)]` | （可双向绑定）显示模式 | `'month'/'year'` | `'month'` |
+| `[nzFullscreen]` | 是否全屏显示 | `boolean` | `true` |
+| `[nzCard]` | 是否不全屏显示 | `boolean` | `false` |
+| `[nzDateCell]` | （可作为内容）自定义渲染日期单元格，模版内容会被追加到单元格 | `TemplateRef<Date>` | 无 |
+| `[nzDateFullCell]` | （可作为内容）自定义渲染日期单元格，模版内容覆盖单元格 | `TemplateRef<Date>` | 无 |
+| `[nzMonthCell]` | （可作为内容）自定义渲染月单元格，模版内容会被追加到单元格 | `TemplateRef<Date>` | 无 |
+| `[nzMonthFullCell]` | （可作为内容）自定义渲染月单元格，模版内容覆盖单元格 | `TemplateRef<Date>` | 无 |

@@ -8,7 +8,6 @@ title: Third-Party Libraries
 Category | Recommended Components
 ---------|-----------------------
 Scaffold  |[NG ALAIN](http://ng-alain.com/)
-Charts |[Viser-NG](https://viserjs.github.io/docs.html)
 Charts |[NGX-CHARTS](https://swimlane.github.io/ngx-charts/)
 Dag |[NGX-CHARTS-DAG](https://swimlane.github.io/ngx-graph/)
 Drag |[NGX-DND](https://swimlane.github.io/ngx-dnd/)

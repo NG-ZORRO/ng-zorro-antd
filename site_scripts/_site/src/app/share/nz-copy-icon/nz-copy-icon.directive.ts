@@ -43,7 +43,7 @@ export class NzCopyIconDirective {
 
   }
 
-  constructor(@Inject(DOCUMENT) private dom: Document) {
+  constructor(@Inject(DOCUMENT) private dom: any) {
 
   }
 }

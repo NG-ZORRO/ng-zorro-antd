@@ -3,28 +3,23 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-popover-triggerType',
   template: `
-    <nz-popover [nzTitle]="'Title'" [nzTrigger]="'click'">
-      <button nz-button nz-popover>Click me</button>
-      <ng-template #nzTemplate>
-        <div><p>Content</p>
-          <p>Content</p></div>
-      </ng-template>
-    </nz-popover>
-    <nz-popover [nzTitle]="'Title'" [nzTrigger]="'hover'">
-      <button nz-button nz-popover>Hover me</button>
-      <ng-template #nzTemplate>
-        <div><p>Content</p>
-          <p>Content</p></div>
-      </ng-template>
-    </nz-popover>
-    <nz-popover [nzTitle]="'Title'" [nzTrigger]="'focus'">
-      <button nz-button nz-popover>Focus me</button>
-      <ng-template #nzTemplate>
-        <div><p>Content</p>
-          <p>Content</p></div>
-      </ng-template>
-    </nz-popover>
-  `
+    <ng-template #contentTemplate>
+      <div>
+        <p>Content</p>
+        <p>Content</p>
+      </div>
+    </ng-template>
+    <button nz-button nz-popover nzTitle="Title" [nzContent]="contentTemplate" nzTrigger="click">Click me</button>
+    <button nz-button nz-popover nzTitle="Title" [nzContent]="contentTemplate" nzTrigger="hover">Hover me</button>
+    <button nz-button nz-popover nzTitle="Title" [nzContent]="contentTemplate" nzTrigger="focus">Focus me</button>
+  `,
+  styles  : [
+      `
+      button {
+        margin-right: 8px;
+      }
+    `
+  ]
 })
 export class NzDemoPopoverTriggerTypeComponent {
 }

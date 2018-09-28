@@ -30,14 +30,21 @@ When there is a need for autocomplete functionality.
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
-| nzAutocomplete | used to bind `nzAutocomplete` components | `NzAutocompleteComponent` | - |
+| `[nzAutocomplete]` | used to bind `nzAutocomplete` components | `NzAutocompleteComponent` | - |
 
 ### nz-autocomplete
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
-| nzBackfill | backfill selected item the input when using keyboard | `boolean` | `false` |
-| nzDataSource | Data source for autocomplete | `AutocompleteDataSource` | - |
-| nzDefaultActiveFirstOption | Whether active first option by default | `boolean` | `true` |
-| nzWidth | Custom width, unit px | `number` | trigger element width |
+| `[nzBackfill]` | backfill selected item the input when using keyboard | `boolean` | `false` |
+| `[nzDataSource]` | Data source for autocomplete | `AutocompleteDataSource` | - |
+| `[nzDefaultActiveFirstOption]` | Whether active first option by default | `boolean` | `true` |
+| `[nzWidth]` | Custom width, unit px | `number` | trigger element width |
 
+### nz-auto-option
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| `[nzValue]` | bind ngModel of the trigger element  | `any` | - |
+| `[nzLabel]` | display value of the trigger element  | `string` | - |
+| `[nzDisabled]` | disabled option | `boolean` | `false` |

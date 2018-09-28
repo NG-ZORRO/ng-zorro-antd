@@ -3,6 +3,7 @@ import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzDemoButtonBasicComponent } from './demo/basic';
+import { NzDemoButtonBlockComponent } from './demo/block';
 import { NzDemoButtonButtonGroupComponent } from './demo/button-group';
 import { NzDemoButtonDisabledComponent } from './demo/disabled';
 import { NzDemoButtonGhostComponent } from './demo/ghost';
@@ -246,6 +247,36 @@ describe('button', () => {
       expect(button.nativeElement.classList.contains('ant-input-search-button')).toBe(true);
     });
   });
+  describe('block', () => {
+    let buttons;
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports     : [ NzButtonModule ],
+        declarations: [ NzDemoButtonBlockComponent ],
+        providers   : []
+      }).compileComponents();
+    }));
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzDemoButtonBlockComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
+    });
+
+    it('should have correct style', () => {
+      fixture.detectChanges();
+      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-primary')).toBe(true);
+      expect(buttons[ 1 ].nativeElement.classList.contains('ant-btn-default')).toBe(true);
+      expect(buttons[ 2 ].nativeElement.classList.contains('ant-btn-dashed')).toBe(true);
+      expect(buttons[ 3 ].nativeElement.classList.contains('ant-btn-danger')).toBe(true);
+
+      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-block')).toBe(true);
+      expect(buttons[ 1 ].nativeElement.classList.contains('ant-btn-block')).toBe(true);
+      expect(buttons[ 2 ].nativeElement.classList.contains('ant-btn-block')).toBe(true);
+      expect(buttons[ 3 ].nativeElement.classList.contains('ant-btn-block')).toBe(true);
+    });
+  });
+
 });
 
 @Component({

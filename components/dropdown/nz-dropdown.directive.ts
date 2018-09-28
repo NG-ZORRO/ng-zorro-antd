@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener, OnInit, Renderer2 } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 @Directive({
   selector: '[nz-dropdown]',

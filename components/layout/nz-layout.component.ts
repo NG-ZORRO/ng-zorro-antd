@@ -3,11 +3,9 @@ import { Component } from '@angular/core';
 @Component({
   selector           : 'nz-layout',
   preserveWhitespaces: false,
-  template           : `
-    <ng-content></ng-content>
-  `,
+  templateUrl        : './nz-layout.component.html',
   host               : {
-    '[class.ant-layout]'                : 'true',
+    '[class.ant-layout]'          : 'true',
     '[class.ant-layout-has-sider]': 'hasSider'
   }
 })

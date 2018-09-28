@@ -11,7 +11,8 @@
       <div nz-col [nzXs]="0" [nzSm]="0" [nzMd]="16" [nzLg]="19" [nzXl]="19" [nzXXl]="20" class="nav nav-hide">
         <div id="search-box">
           <i class="anticon anticon-search"></i>
-          <nz-select [nzPlaceHolder]="language=='zh'?'搜索组件...':'Search Components...'" nzShowSearch [(ngModel)]="searchComponent" (ngModelChange)="navigateToPage($event)">
+          <input *ngIf="useDocsearch" nz-input #searchInput [placeholder]="language=='zh' ? '在 ng.ant.design 中搜索' : 'Search in ng.ant.design'">
+          <nz-select *ngIf="!useDocsearch" [nzPlaceHolder]="language=='zh'?'搜索组件...':'Search Components...'" nzShowSearch [(ngModel)]="searchComponent" (ngModelChange)="navigateToPage($event)">
             <ng-template [ngForOf]="componentList" ngFor let-component>
               <nz-option [nzValue]="component.path" [nzLabel]="component.label" nzCustomContent *ngIf="language==component.language">
                 <strong>{{component.label}}</strong>
@@ -21,8 +22,9 @@
           </nz-select>
         </div>
         <button nz-button nzGhost nzSize="small" class="header-lang-button" (click)="switchLanguage(language==='zh'?'en':'zh')">{{language=='zh'?'English':'中文'}}</button>
-        <nz-select nzSize="small" class="version" style="width: 68px;" [(ngModel)]="currentVersion" (ngModelChange)="navigateToVersion($event)">
-          <nz-option *ngFor="let version of versionList" [nzLabel]="version" [nzValue]="version"></nz-option>
+        <nz-select nzSize="small" class="version" style="width: 72px;" [ngModel]="currentVersion" (ngModelChange)="navigateToVersion($event)">
+          <nz-option *ngFor="let version of oldVersionList" [nzLabel]="version" [nzValue]="version"></nz-option>
+          <nz-option [nzLabel]="currentVersion" [nzValue]="currentVersion"></nz-option>
         </nz-select>
         <ul nz-menu [nzMode]="'horizontal'" id="nav">
           <li nz-menu-item nzSelected>
@@ -40,7 +42,7 @@
           <li *ngFor="let intro of routerList.intro" nz-menu-item routerLinkActive="ant-menu-item-selected" [hidden]="intro.language!=language">
             <a routerLink="{{intro.path}}">{{intro.label}}</a>
           </li>
-          <li nz-submenu nzOpen>
+          <li nz-submenu nzOpen routerLinkActive="ant-menu-submenu-selected">
             <span title><h4>Components</h4></span>
             <ul>
               <li nz-menu-group *ngFor="let group of routerList.components">
@@ -70,7 +72,7 @@
   <footer id="footer" class="dark">
     <div class="footer-wrap">
       <div nz-row>
-        <div nz-col [nzXs]="24" [nzSm]="24" [nzLg]="6">
+        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6">
           <div class="footer-center">
             <h2>Ant Design</h2>
             <div>
@@ -87,7 +89,7 @@
             </div>
           </div>
         </div>
-        <div nz-col [nzXs]="24" [nzSm]="24" [nzLg]="6">
+        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6">
           <div class="footer-center">
             <h2>{{language==='zh'?'资源链接':'Resources'}}</h2>
             <div>
@@ -101,21 +103,27 @@
             </div>
           </div>
         </div>
-        <div nz-col [nzXs]="24" [nzSm]="24" [nzLg]="6">
+        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6">
           <div class="footer-center">
             <h2>{{language==='zh'?'社区':'Community'}}</h2>
             <div>
-              <a href="#/changelog"><span>{{language==='zh'?'更新记录':'Change Log'}}</span></a>
+              <a *ngIf="language==='zh'" href="https://zhuanlan.zhihu.com/100000" target="_blank"><span>知乎专栏</span></a>
             </div>
             <div>
-              <a target="_blank" rel="noopener noreferrer" href="http://ng.ant.design/issue-helper/#/new-issue">
+              <a href="https://medium.com/ng-zorro" target="_blank"><span>Medium</span></a>
+            </div>
+            <div>
+              <a href="https://github.com/NG-ZORRO/ng-zorro-antd/releases" target="_blank"><span>{{language==='zh'?'更新记录':'Change Log'}}</span></a>
+            </div>
+            <div>
+              <a target="_blank" rel="noopener noreferrer" [href]="'http://ng.ant.design/issue-helper/#/'+language">
                 <span>{{language==='zh'?'报告 Bug':'Bug Report'}}</span>
               </a>
             </div>
           </div>
 
         </div>
-        <div nz-col [nzXs]="24" [nzSm]="24" [nzLg]="6">
+        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6">
           <div class="footer-center">
             <h2>
               <img class="title-icon" src="https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg" alt="">
@@ -140,17 +148,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div nz-row class="bottom-bar">
-      <div nz-col [nzSm]="24" [nzLg]="4"></div>
-      <div nz-col [nzSm]="24" [nzLg]="20">
-        <ng-template [ngIf]="language=='zh'">
-          <span style="line-height: 16px; padding-right: 12px; margin-right: 11px; border-right: 1px solid rgba(255, 255, 255, 0.55);"><a href="https://docs.alipay.com/policies/privacy/antfin" rel="noopener noreferrer" target="_blank"><span>隐私权政策</span></a></span><span style="margin-right: 24px;"><a href="https://render.alipay.com/p/f/fd-izto3cem/index.html" rel="noopener noreferrer" target="_blank"><span>权益保障承诺书</span></a></span><span style="margin-right: 12px;">ICP 证浙 B2-2-100257</span><span style="margin-right: 12px;">Copyright © <span>蚂蚁金融服务集团</span></span>
-        </ng-template>
-        <ng-template [ngIf]="language=='en'">
-          <span style="line-height: 16px; padding-right: 12px; margin-right: 11px; border-right: 1px solid rgba(255, 255, 255, 0.55);"><a href="https://docs.alipay.com/policies/privacy/antfin" rel="noopener noreferrer" target="_blank"><span>Privacy Policy</span></a></span><span style="margin-right: 24px;"><a href="https://render.alipay.com/p/f/fd-izto3cem/index.html" rel="noopener noreferrer" target="_blank"><span>Our Commitment to Customer Protection</span></a></span><span style="margin-right: 12px;">ICP 证浙 B2-2-100257</span><span style="margin-right: 12px;">Copyright © <span>Ant Financial</span></span>
-        </ng-template>
       </div>
     </div>
   </footer>

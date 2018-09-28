@@ -1,5 +1,4 @@
-import { ComponentRef, Type } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { NzModalComponent } from './nz-modal.component';
 

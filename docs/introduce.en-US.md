@@ -8,7 +8,7 @@ Following the Ant Design specification, we developed a Angular UI library `ng-zo
 <div class="pic-plus">
   <img width="150" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg">
   <span>+</span>
-  <img width="180" src="https://angular.cn/assets/images/logos/angular/angular.svg">
+  <img height="150" src="https://img.alicdn.com/tfs/TB1Z0PywTtYBeNjy1XdXXXXyVXa-186-200.svg">
 </div>
 
 <style>
@@ -23,8 +23,6 @@ Following the Ant Design specification, we developed a Angular UI library `ng-zo
 }
 </style>
 
----
-
 ## Features
 
 - An enterprise-class UI design language for web applications.
@@ -33,45 +31,51 @@ Following the Ant Design specification, we developed a Angular UI library `ng-zo
 
 ## Environment Support
 
-* Modern browsers and Internet Explorer 9+ (with [polyfills](https://angular.io/guide/browser-support))
+Modern browsers and Internet Explorer 9+ (with [polyfills](https://angular.io/guide/browser-support))
 
 ## Version
 
 [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 
-- 1.x (support Angular 6.x & Ant Design 3.x) will release soon
-- 0.7.x (support Angular 5.x & Ant Design 3.x) current version
-- 0.6.x (support Angular 5.x & Ant Design 2.x) **Not Under Maintenance**
+## Angular Support
+
+Now Supports Angular `^6.0.0`.
+
+## Design Specification
+
+`ng-zorro-antd` synchronizes design specification with [Ant Design](https://ant.design/docs/spec/introduce) on a regular basis, you can check the [log](https://nz-styles-syncer.now.sh/) online.
+
 
 ## Installation
 
-### Using npm or yarn
-
-**We recommend using npm or yarn to install**，it not only makes development easier，but also allow you to take advantage of the rich ecosystem of Javascript packages and tooling.
+**We recommend using `@angular/cli` to install**，it not only makes development easier，but also allow you to take advantage of the rich ecosystem of angular packages and tooling.
 
 ```bash
-$ npm install ng-zorro-antd --save
+$ ng new PROJECT_NAME
+$ cd PROJECT_NAME
+$ ng add ng-zorro-antd --i18n=en_US
 ```
+
+> More information about `@angular/cli` [here](https://github.com/angular/angular-cli).
+
+You can also install `ng-zorro-antd` with npm or yarn
 
 ```bash
-$ yarn add ng-zorro-antd
+$ npm install ng-zorro-antd
 ```
 
-If you are in a bad network environment，you can try other registries and tools like [cnpm](https://github.com/cnpm/cnpm).
-
-
-## Companies using antd
+## Companies using ng-zorro-antd
 
 - [Alibaba](http://www.alibaba.com/)
 - [Aliyun](http://www.aliyun.com/)
 
-> If your company or product uses NG-ZORRO, let us know [here](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142)!
+> If your company or product uses ng-zorro-antd, let us know [here](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142)!
 
 ## Contributing
 
 Please read our [CONTRIBUTING.md](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md) first.
 
-If you'd like to help us improve ng-zorro-antd, just create a [Pull Request](https://github.com/NG-ZORRO/ng-zorro-antd/pulls). Feel free to report bugs and issues [here](http://ng.ant.design/issue-helper/#/new-issue).
+If you'd like to help us improve ng-zorro-antd, just create a [Pull Request](https://github.com/NG-ZORRO/ng-zorro-antd/pulls). Feel free to report bugs and issues [here](http://ng.ant.design/issue-helper/#/en).
 
 > If you're new to posting issues, we ask that you read [*How To Ask Questions The Smart Way*](http://www.catb.org/~esr/faqs/smart-questions.html)(This guide does not provide actual support services for this project!) and [How to Ask a Question in Open Source Community](https://github.com/seajs/seajs/issues/545) and [How to Report Bugs Effectively](http://www.chiark.greenend.org.uk/~sgtatham/bugs.html) prior to posting. Well written bug reports help us help you!
 

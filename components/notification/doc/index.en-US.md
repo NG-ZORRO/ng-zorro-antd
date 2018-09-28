@@ -37,6 +37,8 @@ The default global configuration is:
 
 ## API
 
+### NzNotificationService
+
 The component provides a number of service methods using the following methods and parameters:
 
 - `NzNotificationService.blank(title, content, [options])` // Notification without icon
@@ -44,7 +46,6 @@ The component provides a number of service methods using the following methods a
 - `NzNotificationService.error(title, content, [options])`
 - `NzNotificationService.info(title, content, [options])`
 - `NzNotificationService.warning(title, content, [options])`
-- `NzNotificationService.loading(title, content, [options])`
 
 | Argument | Description | Type | Default |
 | --- | --- | --- | --- |

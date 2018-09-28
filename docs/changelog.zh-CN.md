@@ -4,6 +4,7 @@ title: 更新日志
 toc: false
 timeline: true
 ---
+`ng-zorro-antd` 严格遵循 [Semantic Versioning 2.0.0](http://semver.org/lang/zh-CN/) 语义化版本规范。
 
 #### 发布周期
 
@@ -13,230 +14,195 @@ timeline: true
 
 ---
 
-### 写给 `0.6.x` 版本用户
+## 1.6.0
+`2018-09-22`
 
-#### 我应该升级到最新版本的 `ng-zorro-antd` 吗？
+### Bug Fixes
 
-`0.7.0` 版本的 `ng-zorro-antd` 在以下几个方面做出了很大改进
+* **date-picker:** 修复在 input group 中的样式问题 ([#2136](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2136)) ([049212f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/049212f))
+* **calendar:** 修复年份列表选择器的问题 ([#2140](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2140)) ([e485d02](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e485d02)), closes [#2091](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2091)
+* **cascader:** 修复搜索问题 ([#2108](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2108)) ([28556e4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/28556e4)), closes [#2104](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2104)
+* **drawer:** 修复不能滚动问题 ([#2120](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2120)) ([e8dad8f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e8dad8f)), closes [#2119](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2119)
+* **steps:** 修复动态生成问题 ([#2149](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2149)) ([ee3fa7e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ee3fa7e)), closes [#2148](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2148)
+* **publish:** 增加版本校验 ([#2117](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2117)) ([bc1f6fa](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bc1f6fa))
+* **schematics:** 修复与 Angular CLI 6.2.0 的兼容问题 ([#2131](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2131)) ([ac428db](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ac428db))
+* **test:** 修复覆盖率问题 ([#2146](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2146)) ([310771f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/310771f))
+* **upload:** 修复提示错误 ([#2173](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2173)) ([69c5210](https://github.com/NG-ZORRO/ng-zorro-antd/commit/69c5210))
 
-* 更少的代码：简化了很多组件的使用方式，例如 `form` 表单同样功能下代码量会缩减1/3
-* 更强的功能：完善了很多组件的功能，无论是 `input` 还是 `date-picker` 等大量组件都有了更强大的功能可用
-* 更好的质量：增加了组件的单元测试，为了保证组件的质量我们目前为止增加了 1070 个测试用例，单测覆盖率达到了 `95%` 以上
-* 更新的规范：升级到 Ant Design 3.0 规范，并且支持像 `react` 版本一样自定义主题
 
-升级到 `0.7.0` 版本是最好的选择。
+### Features
 
-#### 为什么会有这么多 break change
+* **drawer:** 支持使用 service 创建 drawer ([#1981](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1981)) ([a232d59](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a232d59)), closes [#1937](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1937)
+* **upload:** 支持文件夹上传 ([#2164](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2164)) ([3ef8bcf](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3ef8bcf)), closes [#2167](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2167) [#2154](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2154)
+* **tree:** 支持更多常用属性，简化用法 ([#2121](https://github.com/NG-ZORRO/ng-zorro-antd/pull/2121))
+* **skeleton:** 增加 skeleton 组件 ([#1829](https://github.com/NG-ZORRO/ng-zorro-antd/pull/1829))
 
-就像上文所说的那样，为了能够提供更好的使用方式，我们对大量代码进行了简化，并对很多功能做了增强，在这个过程中不可避免的会引入破坏性更新，希望大家能够理解。
 
-#### 应该如何升级到最新版本
+### Build
 
-为了帮助用户从低版本升级，我们保留了低版本的文档系统，你可以随时对比文档中的差别，另外 `ng-alain` 也提供了从 `0.6.x` 版本升级到 `0.7.0` 的[在线模板工具](https://ng-alain.com/6to7)，大家可以根据需要使用。
+* **build:** 打包器切换至 ng-packagr ([#2126](https://github.com/NG-ZORRO/ng-zorro-antd/pull/2126))
 
-**请注意：** 由于 `@angular/cli` 的最新版本已经默认采用 `angular 6.0` 以上的版本，请使用 `@angular/cli` 1.7.4 及以下版本。
 
-### 写给 `0.7.0` 试用用户
+### Performance Improvements
 
-感谢在测试阶段升级到 `0.7.0 beta` 版本的所有用户，没有你们的协助就不会有 `0.7.0` 正式版本的诞生，推荐所有 `0.7.0 beta` 版本用户升级到该版本。
+* **table:** 提升固定表头时 table 的性能 ([#2157](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2157)) ([cde5fb0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cde5fb0))
 
-#### 如何从 `0.7.0` 测试版本迁移到正式版
 
-从 `0.7.0` 测试版本到 `0.7.0` 正式版本基本没有破坏性更新，更多的工作是在开发新的组件上，因此可以放心迁移。
+## 1.5.0
+`2018-09-09`
 
-```bash
-npm install ng-zorro-antd@0.7.0
-```
-命令即可升级至 `0.7.0` 正式版本
+### Bug Fixes
 
-#### 什么时候官方会支持 `Angular 6.0` 版本
+* **drawer:** 修复 Drawer 组件弹出导致body出现滚动条问题 ([#2095](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2095)) ([b993068](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b993068)), closes [#2070](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2070)
+* **modal:** 修复 nzComponentParams 类型支持 ([#1812](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1812)) ([6ef1185](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6ef1185))
 
-目前 `ng-zorro-antd` 已经全力在适配 `Angular 6.0` 版本，可以在[这里](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1406) 追踪我们的进度。
-我们会在 `1.0` 版本提供经过测试的 `Angular 6.0` 适配版本，届时我们还会同时支持 `@angular/cli` 最新版本的众多特性，`rxjs` 与 `cdk` 的依赖版本也会同步升级到 `6.0` 版本，提供更好更多的性能。
 
+### Features
 
-#### 如何在 0.7.0 版本下使用 `Angular 6.0`
+* **breadcrumb:** 支持通过配置 `router.data` 自动生成面包屑 ([#2050](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2050)) ([64d191c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/64d191c)), closes [#2001](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2001)
+* **button:** 支持将按钮宽度调整为其父宽度的选项 ([#2051](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2051)) ([2858ba1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2858ba1)), closes [#2047](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2047)
+* **drawer:** 支持从自定义位置弹出 ([#2039](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2039)) ([693b4eb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/693b4eb)), closes [#2015](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2015)
+* **modal:** 支持自定义 NZ_MODAL_CONFIG (当前包含属性 "autoBodyPadding") ([#2006](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2006)) ([1d5e06c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1d5e06c)), closes [#1720](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1720)
+* **select:** 支持键盘激活 select 弹出选项 ([#2038](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2038)) ([b2ea96a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b2ea96a)), closes [#1909](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1909)
+* **steps:** 支持自定义开始步骤 ([#2021](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2021)) ([bc7bf17](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bc7bf17)), closes [#1994](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1994)
+* **publish:** 自动发布脚本 ([#1979](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1979)) ([98cb651](https://github.com/NG-ZORRO/ng-zorro-antd/commit/98cb651)), closes [#1925](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1925)
 
-如果你希望在当前版本(0.7.0) 使用 `Angular 6.0`，你需要完成以下两部分工作
+## 1.4.1
+`2018-09-02`
 
-* 安装 `rxjs-compat` 用于兼容 `rxjs 5.x`
-* 降级到 `less 2.7` 版本，因为最新版本的 `@angular/cli` 依赖的 `less 3.0` 版本禁用了 `javascriptEnabled` 选项，相关工作可以在[这里](https://github.com/angular/angular-cli/issues/10430) 追踪
+### Bug Fixes
 
-最后，由于目前官方未对 `Angular 6.0` 版本进行全面的测试和兼容工作，并不建议用户在生产环境使用 `Angular 6.0` 版本。
+* **auto-complete:** 修复移动端不能选择选项的问题 ([#2054](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2054)) ([2e8e63d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2e8e63d)), closes [#2053](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2053)
+* **modal:** 修复 modal 可能在 Angular 生命周期结束之前被关闭的问题 ([#1769](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1769)) ([075c7a4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/075c7a4)), closes [#1663](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1663)
+* **pagination:** 修复 pagination 显示范围的问题 ([#2046](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2046)) ([30bccd1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/30bccd1)), closes [#2036](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2036)
+* **table:** 修复第一行 margin 的问题 ([#2061](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2061)) ([cb34983](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cb34983)), closes [#2059](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2059)
+* **tree-select:** 修复在使用 OnPush 策略的情况下无法关闭的问题 ([#2028](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2028)) ([fb83354](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fb83354)), closes [#2012](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2012)
 
-#### 从 `0.7.0` 到 `1.0.0` 还会有破坏性更新吗？
+## 1.4.0
+`2018-08-19`
 
-除了Angular 和 RxJS 升级带来的更新之外，`ng-zorro-antd` 不会再引入破坏性更新，可以安心使用当前版本。
+### Bug Fixes
 
----
+* **avatar:** 修复 src 错误时无法更新的问题 ([#2008](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2008)) ([d55cdf2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d55cdf2))
+* **carousel:** 修复桌面端无法滑动图像的问题 ([#1970](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1970)) ([02a84a9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/02a84a9))
+* **cascader:** 修复无法动态加载的问题 ([#1931](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1931)) ([d4d24fb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d4d24fb)), closes [#1927](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1927)
+* **cascader:** 修复 hover 触发 onChange 的问题 ([#1991](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1991)) ([577ae47](https://github.com/NG-ZORRO/ng-zorro-antd/commit/577ae47)), closes [#1966](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1966)
+* **select:** 修复使用 enter 选择后无法聚焦的问题 ([#1943](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1943)) ([a64d04c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a64d04c)), closes [#1940](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1940)
+* **tooltip,popconfirm,popover:** 修复 directive 模式下创建元素引起的问题 ([#1968](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1968)) ([fa40145](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fa40145)), closes [#1967](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1967)
+* **tree-select:** 修复设置 nodes 后没有更新选择框内容的问题 ([#1946](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1946)) ([cd928e1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cd928e1)), closes [#1934](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1934)
+* **tree:** 修复 loading 样式 ([#1942](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1942)) ([19fc2ee](https://github.com/NG-ZORRO/ng-zorro-antd/commit/19fc2ee))
 
-## 0.7.0
-`2018.05.15`
 
-0.7.0 作为 1.0 正式版 之前的最后一系列版本，涉及到了底层的大量重构与改动，API 将与 1.0 正式版本的内容保持一致，请大家放心升级
+### Features
 
-### 主要变化
+* **modal:** 添加智能识别是否添加为 body 添加 padding-right 的功能 ([#1877](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1877)) ([a5d631d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a5d631d)), closes [#1422](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1422)
+* **timeline:** 支持自定义圆点颜色 ([#1959](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1959)) ([fb3daa1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fb3daa1)), closes [#1956](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1956)
 
-- 同步Ant Design 3.0 的设计
-- 支持定制主题
-- 支持英文文档
-- 支持34种语言类型
-- 已有组件的功能与Ant Design React同步
-- 大量组件的性能优化与重构
-- 单元测试率提高到95以上%
-- 新的 Tree 组件
-- 新的 DatePicker 组件
-- 新的 TimePicker 组件
-- 新的 Mention 组件
-- 新的 AutoComplete 组件
-- 新的 Divider 组件
-- 新的 List 组件
 
-### 升级内容
+## 1.3.0
+`2018-08-03`
 
-#### 全局部分
+### Bug Fixes
 
-- 需要手动引入样式文件，支持自定义主题
-- 不再依赖 moment，新增加 date-fns 依赖
-- `forRoot` 方法不再接受字体配置，本地字体部署需要在定制主题中实现
+* **auto-complete:** 修复第一次打开时的位置问题 ([#1863](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1863)) ([c80bc8d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c80bc8d)), closes [#1840](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1840)
+* **date-picker:** 修复 31 号时月份选择问题 ([#1903](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1903)) ([3c654a5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3c654a5)), closes [#1899](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1899)
 
-#### Button
-- `nz-button` 内部不再需要加入`<span>`标签
 
-#### Icon
-- 新增部分iconfont
-- 本地字体部署需要在定制主题中实现
+### Features
 
-#### Grid
-- 栅格断点增加xxl
-- 栅格间隔支持根据不同屏幕宽度变化
+* **cascader:** 支持搜索功能 ([#1873](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1873)) ([633bc87](https://github.com/NG-ZORRO/ng-zorro-antd/commit/633bc87)), closes [#1773](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1773)
+* **date-picker:** 支持年份选择 ([#1906](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1906)) ([f1f5625](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f1f5625)), closes [#416](https://github.com/NG-ZORRO/ng-zorro-antd/issues/416)
+* **drawer:** 新增 Drawer 组件 ([#1789](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1789)) ([33aff47](https://github.com/NG-ZORRO/ng-zorro-antd/commit/33aff47)), closes [#1565](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1565)
+* **radio:** 支持 Solid 样式 ([#1892](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1892)) ([945a924](https://github.com/NG-ZORRO/ng-zorro-antd/commit/945a924)), closes [#1891](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1891)
+* **table:** 支持 filter 默认值([#1893](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1893)) ([cea0e51](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cea0e51)), closes [#1872](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1872)
 
-#### Layout
-- 支持 翻转折叠提示箭头的方向
-- 支持 自定义Trigger为模板变量
-
-#### Affix
-- 增加距离底部固钉
-- 增加目标占位符、更好的滚动性能
+## 1.2.0
+`2018-07-22`
 
-#### Breadcrumb
-- 自定义分隔符 支持传入模板
+### Bug Fixes
 
-#### Dropdown
-- 增加边界检测
-- 增加右键菜单支持
+* **carousel:** 修复窗口大小变化时的问题 ([#1815](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1815)) ([1e0a029](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1e0a029)), closes [#1811](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1811)
+* **input-number:** 修复 nzAutoFocus 未生效的问题 ([#1833](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1833)) ([739b353](https://github.com/NG-ZORRO/ng-zorro-antd/commit/739b353)), closes [#1706](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1706)
+* **tree:** 修复 checkedNodeList 同步问题 ([#1809](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1809)) ([5305723](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5305723)), closes [#1802](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1802)
+* **input:** 修复 addon 与 affix 混用时的样式问题 ([#1857](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1857)) ([ca2d7e0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ca2d7e0)), closes [#1795](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1795)
+* **input-number:** 修复 touched 事件未触发的问题 ([#1858](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1858)) ([7c90a72](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7c90a72)), closes [#1785](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1785)
+* **tabs:** 修复 focus 导致的样式问题 ([#1845](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1845)) ([bbcb0de](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bbcb0de)), closes [#1821](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1821)
+* **upload:** 修复 nzRemove 的问题 ([#1851](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1851)) ([3532bbe](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3532bbe)), closes [#1850](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1850)
 
-#### Menu
-- 支持菜单是否可选中功能
-- 增加子菜单选中事件
-- 支持二级菜单禁用
-- 增加自动边界检测
 
-#### Pagination
-- 支持自定义渲染页码结构
-- 支持只有一页时是否隐藏分页器
+### Features
 
-#### Steps
-- 支持传入模板可以自定义点状步骤条渲染内容
-- 自定义图标 支持传入 样式名称和模板两种方式，原有方式废弃
-- 自定义标题 支持传入模板和字符串
+* **carousel:** 支持 swipe 手势操作 ([#1856](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1856)) ([bb5bdd3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bb5bdd3)), closes [#1816](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1816)
+* **carousel:** 支持 dot 自定义渲染 ([#1860](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1860)) ([c1f15b6](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c1f15b6)), closes [#1743](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1743)
+* **form:** 支持 touched 状态下校验 ([#1861](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1861)) ([27ca5bc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/27ca5bc)), closes [#1665](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1665)
+* **tree-select:** 支持自定义显示 ([#1832](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1832)) ([1cc3646](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1cc3646)), closes [#1823](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1823)
 
+## 1.1.1
+`2018-07-02`
 
-#### Checkbox
-- label 内部不再需要写入 `span` 标签
-- 新增灵活布局的使用方式
+### Bug Fixes
 
-#### Form
-- 废弃原有 Directive 的使用方式，大幅度简化使用方式
+* **tree:** 修复 disabled 状态节点的问题 ([#1737](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1737)) ([92675e4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/92675e4)), closes [#1721](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1721)
+* **auto-complete, mention, tree-select:** 修复组件在 Firefox 下的问题 ([#1761](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1761)) ([82af2ff](https://github.com/NG-ZORRO/ng-zorro-antd/commit/82af2ff)), closes [#1756](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1756)
+* **date-picker:** 修复动态切换语言不生效的问题 ([#1768](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1768)) ([9caabb5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9caabb5)), closes [#1717](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1717)
+* **list:** 修复 loading 状态的问题 ([#1767](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1767)) ([336cc08](https://github.com/NG-ZORRO/ng-zorro-antd/commit/336cc08)), closes [#1739](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1739)
+* **radio:** 修复 radio group 状态冲突的问题 ([#1746](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1746)) ([86fc773](https://github.com/NG-ZORRO/ng-zorro-antd/commit/86fc773)), closes [#1734](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1734)
+* **radio:** 修复在 reactive form 下的问题 ([#1748](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1748)) ([b7a831d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b7a831d)), closes [#1735](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1735)
+* **select:** 修复在 IOS 上不触发键盘展开的问题 ([#1653](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1653)) ([#1751](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1751)) ([89d05f9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/89d05f9)), closes [#1752](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1752) [#1274](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1274)
+* **transfer:** 修复样式问题 ([#1745](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1745)) ([4005c7c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4005c7c)), closes [#1732](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1732)
+* **tree-select:** 修复不能设置为 null 的问题 ([#1760](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1760)) ([689f8b4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/689f8b4)), closes [#1740](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1740)
+* **tree-select:** 修复样式问题 ([#1775](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1775)) ([4eb039a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4eb039a)), closes [#1772](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1772)
+* **table:** 提供跳过组件渲染的方式 ([#1742](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1742)) ([aeb485f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/aeb485f)), closes [#1736](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1736)
 
-#### Input
-- 暴露原生 input 标签，大幅度简化使用方式
+### Features
 
-#### InputNumber
-- 重写了内部逻辑，与React版本逻辑保持一致
-- 支持更多快捷键操作
+* **carousel:** 支持手动设定 AutoSpeed ([#1741](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1741)) ([a516949](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a516949)), closes [#1711](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1711)
 
-#### Radio
-- 内部不再需要写入 `span` 标签
-- 支持nzName及更多快捷键操作
 
-#### Rate
-— 支持自定义字符
-- 支持清除模式
+## 1.1.0
+`2018-06-25`
 
-#### Select
-- 支持 option 分组功能
-- 支持 compareWith 方法
-- 支持 nzDropdownClassName、nzDropdownMatchSelectWidth、nzDropdownStyle等对样式定义的方法
-- option 自定义内容方式改变
-- 增加 nzFilterOption、nzServerSearch 等搜索定义API
 
-#### Switch
-- 自定义内容方式改变，nzCheckedChildren 与 nzUnCheckedChildren 支持传入 模板和字符串
-- 支持loading效果
+### Bug Fixes
 
-#### Card
-- 重写使用方式，大幅度降低使用成本
+* ** cascader:** 修复 nzClear 后不生效的问题 ([#1676](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1676)) ([c683bc3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c683bc3)), closes [#1646](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1646)
+* **autocomplete:** 修复 AutoComplete 在 AoT 编译下的问题 ([#1686](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1686)) ([a1f326d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a1f326d)), closes [#1683](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1683)
+* **card:** 修复 Card 的 loading 样式问题 ([#1696](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1696)) ([70cb591](https://github.com/NG-ZORRO/ng-zorro-antd/commit/70cb591)), closes [#1695](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1695)
+* **date-picker:** 修复 DatePicker 在跨日期选择下的时间展示问题 ([#1709](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1709)) ([b1a1235](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b1a1235)), closes [#1693](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1693)
+* **nz-alert:** 修复 close 事件的逻辑 ([#1667](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1667)) ([6b31ca3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6b31ca3)), closes [#1666](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1666)
+* **select:** 修复 select 在弹出框中的顺序问题 ([#1673](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1673)) ([442e3f3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/442e3f3)), closes [#1672](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1672) [#1643](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1643)
+* **table:** 修复 table 中 重置 filter 及 表头滚动条样式问题 ([#1674](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1674)) ([1a4332a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1a4332a)), closes [#1671](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1671) [#1660](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1660)
+* **tree-select:** 修复 TreeSelect 在弹出框中的下拉菜单定位问题 ([#1687](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1687)) ([43910f9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/43910f9)), closes [#1681](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1681)
+* **ng-add:** 修复使用 ng add 多次执行后的样式导入问题 ([#1655](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1655)) ([fc67ce5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fc67ce5))
+* **showcase:** 修复文档中 DatePicker 禁止时间范围的问题 ([#1648](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1648)) ([7d593e6](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7d593e6))
 
-#### Carousel
-- 支持动态调整所有属性，重写内部逻辑
 
-#### Collapse
-- selector名称改变
-- 面板头部内容支持模板和字符串变量
-- 增加是否展示箭头的方法
-- 增加展开回调函数
+### Features
 
-#### Table
-- 重写内部逻辑，大幅度简化使用方式
-- 支持React版本的全部功能
+* **table:** 支持 pagination 的 nzSimple 选项 ([#1699](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1699)) ([4868c41](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4868c41)), closes [#1599](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1599)
 
-#### Tabs
-- nzTitle 的传入方式改变，支持传入模板和字符串
-- nzTabBarExtraContent 的传入方式改变
-- 增加 nzTabBarGutter、nzOnNextClick、nzOnPrevClick、nzHideAll等多种方法
 
-#### Tags
-- 重写使用方式，增加 nzMode 选项
 
-#### Timeline
-- 幽灵节点的定义支持 模板 字符串和布尔类型
-- 支持自定义自定义时间轴点
+## 1.0.0
+`2018-06-11`
 
-#### Alert
-- 自定义图标类型、自定义关闭按钮、警告提示的辅助性文字介绍、	警告提示内容 全部支持传入模板
+更多内容见 NG ZORRO 1.0 [发布公告](https://zhuanlan.zhihu.com/p/37916702)。
 
-#### Modal
-- 重构，同一套代码，以模版方式支持普通模态框和确认框
-- 支持AntDesign的所有参数用法（部分参数有调整）
-- 额外支持设置确认/取消按钮的loading状态
-- 增强footer的自定义：支持配置方式设置按钮组
-- 更加便捷的方式进行内外组件与对话框的相互通信和调用
 
-#### Progress
-- 重写，支持React的全部功能
+10个月之前我们发布了 NG-ZORRO 的第一个版本，在这 10个月的时间里，我们接收了超过 35 个 contributor 的 386 次 Commit。
 
+**在经过了 35 个版本 的迭代之后，1.0 版本在今天正式发布。**
 
-#### Spin
-- 支持自定义 加载指示符
+1.0 版本基于最新的 Angular ^6.0.0 与 RxJS ^6.0.0 构建，与 @angular/cli 进行了深度整合，完善了文档系统，降低了上手难度，同步了最新的设计规范。除此之外，我们完成了与 Ant Design 所有组件（共51个）的完全同步工作，并对之前的部分组件进行了重构。
 
-#### Anchor
-- 增加 `nzAffix`、`nzShowInkInFixed`、`nzScroll` 等属性
+最重要的是，这些工作相对于上一个版本（0.7.1）没有引入任何破坏性更新，这意味着所有你需要做的只是要升级目前项目的 Angular 版本到 6.0。
+> 注：升级到最新的 Angular 6 版本只需要很少的工作就可以完成，具体的步骤可以参考官方的 [升级指南](https://update.angular.io)。
 
-#### Divider
-- 新组件：区隔内容的分割线
 
-#### List
-- 新组件：通用列表
 
-#### TimePicker
+Tooltip、Popover、PopConfirm 等组件在1.0版本中推荐使用 Directive 方式，原有的方式虽然不推荐，但是仍然可以继续使用。另外，借助与 Angular 6.0的部分新特性，原有的forRoot的使用方式不再必要，在任何位置都可以直接引入 `NgZorroAntdModule` 而不用再考虑当前是否是在根模块中。当然，原有的`forRoot`的方式也继续兼容。
 
-- 新增 `TimePicker` 组件
 
-#### Mention
+## 1.0 之前版本
 
-- 新增 Mention 组件
-
-## 之前版本
-
-之前版本的更新记录可以在 [Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases) 查看
+1.0 之前版本的更新记录可以在 [Github](https://github.com/NG-ZORRO/ng-zorro-antd/releases) 查看

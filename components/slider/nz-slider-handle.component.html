@@ -1,0 +1,4 @@
+<nz-tooltip *ngIf="nzTipFormatter !== null" #tooltip [nzTitle]="tooltipTitle" [nzTrigger]="null">
+  <div nz-tooltip [class]="nzClassName" [ngStyle]="style"></div>
+</nz-tooltip>
+<div *ngIf="nzTipFormatter === null" [class]="nzClassName" [ngStyle]="style"></div>

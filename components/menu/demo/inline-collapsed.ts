@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
         </i>
       </button>
       <ul nz-menu [nzMode]="'inline'" nzTheme='dark' [nzInlineCollapsed]="isCollapsed">
-        <li nz-menu-item>
+        <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="isCollapsed ? 'Navigation One' : ''">
           <span title>
             <i class="anticon anticon-mail"></i>
             <span>Navigation One</span>

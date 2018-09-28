@@ -2,9 +2,8 @@ import { Component, ContentChildren, Input, QueryList, TemplateRef } from '@angu
 import { NzOptionComponent } from './nz-option.component';
 
 @Component({
-  selector: 'nz-option-group',
-  template: `
-    <ng-content></ng-content>`
+  selector   : 'nz-option-group',
+  templateUrl: './nz-option-group.component.html'
 })
 export class NzOptionGroupComponent {
   _label: string | TemplateRef<void>;

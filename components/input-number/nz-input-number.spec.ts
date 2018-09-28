@@ -11,8 +11,8 @@ import { NzInputNumberModule } from './nz-input-number.module';
 describe('input number', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzInputNumberModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestInputNumberBasicComponent, NzTestInputNumberFormComponent ]
+      imports     : [NzInputNumberModule, FormsModule, ReactiveFormsModule],
+      declarations: [NzTestInputNumberBasicComponent, NzTestInputNumberFormComponent]
     });
     TestBed.compileComponents();
   }));
@@ -35,15 +35,19 @@ describe('input number', () => {
     it('should basic className correct', () => {
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number');
+      expect(inputElement.getAttribute('placeholder')).toBe('placeholder');
     });
     it('should focus className correct', () => {
       fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).toContain('ng-untouched');
       dispatchFakeEvent(inputElement, 'focus');
       fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).toContain('ng-untouched');
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number-focused');
       dispatchFakeEvent(inputElement, 'blur');
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
+      expect(inputNumber.nativeElement.classList).toContain('ng-touched');
     });
     it('should nzSize work', () => {
       testComponent.size = 'large';
@@ -56,7 +60,10 @@ describe('input number', () => {
     it('should autofocus work', () => {
       fixture.detectChanges();
       testComponent.autofocus = true;
+      testComponent.nzInputNumberComponent._autoFocus = true;
+      testComponent.nzInputNumberComponent.ngAfterViewInit();
       fixture.detectChanges();
+      expect(inputElement === document.activeElement).toBe(true);
       expect(inputElement.attributes.getNamedItem('autofocus').name).toBe('autofocus');
       testComponent.autofocus = false;
       fixture.detectChanges();
@@ -375,6 +382,21 @@ describe('input number', () => {
       fixture.detectChanges();
       expect(inputElement.value).toBe(newFormatter(initValue));
     }));
+    // #1449
+    it('should up and down focus input', (() => {
+      dispatchFakeEvent(upHandler, 'mousedown');
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-focused');
+      dispatchFakeEvent(inputElement, 'blur');
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
+      dispatchFakeEvent(downHandler, 'mousedown');
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-focused');
+      dispatchFakeEvent(inputElement, 'blur');
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
+    }));
   });
   describe('input number form', () => {
     let fixture;
@@ -431,6 +453,7 @@ describe('input number', () => {
       [nzSize]="size"
       [nzMin]="min"
       [nzMax]="max"
+      [nzPlaceHolder]="placeholder"
       [nzStep]="step"
       [nzFormatter]="formatter"
       [nzParser]="parser"
@@ -446,6 +469,7 @@ export class NzTestInputNumberBasicComponent {
   min = -1;
   max = 1;
   size = 'default';
+  placeholder = 'placeholder';
   step = 1;
   precision = 2;
   formatter = (value) => value;
@@ -466,7 +490,7 @@ export class NzTestInputNumberFormComponent {
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
-      inputNumber: [ 1 ]
+      inputNumber: [1]
     });
   }
 

@@ -15,13 +15,13 @@ All work on NG-ZORRO happens directly on [GitHub](https://github.com/NG-ZORRO/ng
 
 ## Bugs
 
-We are using [GitHub Issues](https://github.com/NG-ZORRO/ng-zorro-antd/issues) for bug tracing. The best way to get your bug fixed is using our [issue helper](https://ng.ant.design/issue-helper/#/new-issue) and provide a reprduction with this [template](https://stackblitz.com/edit/ng-zorro-antd-setup?file=app%2Fapp.component.ts).
+We are using [GitHub Issues](https://github.com/NG-ZORRO/ng-zorro-antd/issues) for bug tracing. The best way to get your bug fixed is using our [issue helper](https://ng.ant.design/issue-helper/#/en) and provide a reprduction with this [template](https://stackblitz.com/edit/ng-zorro-antd-setup?file=app%2Fapp.component.ts).
 
 Before you reporting a bug, please make sure you've searched exists issues, and read our [FAQ](docs/faq/en).
 
 ## Proposing a Change
 
-If you intend to change the public API or introduce new feature, we also recommend use our [issue helper](https://ng.ant.design/issue-helper/#/new-issue) to create a feature request issue.
+If you intend to change the public API or introduce new feature, we also recommend use our [issue helper](https://ng.ant.design/issue-helper/#/en) to create a feature request issue.
 
 ## Your First Pull Request
 
@@ -43,7 +43,7 @@ The core team is monitoring for pull requests. We will review your pull request 
 
 1. Run `npm install` in the repository root.
 2. If you’ve fixed a bug or added code that should be tested, add tests!
-3. Ensure the test suite passes (npm run test). 
+3. Ensure the test suite passes (npm run test).
 4. Make sure your code lints (npm run lint). Tip: Lint runs automatically when you `git commit`.
 5. Make sure rebase your code to keep the history clean.
 6. Make sure your commit message meet the [guidelines](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md#-commit-message-guidelines)
@@ -55,5 +55,4 @@ After cloning `ng-zorro-antd`, run `npm install` to fetch its dependencies. Then
 1. `npm run site:start` runs NG-ZORRO website locally.
 2. `npm run lint` checks the code style.
 3. `npm test` runs the complete test suite.
-4. `npm run compile` compiles TypeScript code to the `lib` and `es` directory.
 5. `npm run generate` creates build of `ng-zorro-antd`.
