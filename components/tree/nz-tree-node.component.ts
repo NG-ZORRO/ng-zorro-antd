@@ -45,6 +45,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges {
   @Input() @InputBoolean() nzCheckable: boolean;
   @Input() @InputBoolean() nzAsyncData: boolean;
   @Input() @InputBoolean() nzCheckStrictly: boolean;
+  @Input() @InputBoolean() nzHideUnMatched = false;
   @Input() nzTreeTemplate: TemplateRef<void>;
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
 
@@ -103,14 +104,10 @@ export class NzTreeNodeComponent implements OnInit, OnChanges {
   set nzSearchValue(value: string) {
     this.highlightKeys = [];
     if (value && this.nzTreeNode.title.includes(value)) {
-      this.nzTreeNode.isMatched = true;
       // match the search value
       const index = this.nzTreeNode.title.indexOf(value);
       this.highlightKeys.push(this.nzTreeNode.title.slice(0, index));
       this.highlightKeys.push(this.nzTreeNode.title.slice(index + value.length, this.nzTreeNode.title.length));
-    } else {
-      // close the node if title does't contain search value
-      this.nzTreeNode.isMatched = false;
     }
     this._searchValue = value;
   }
@@ -169,6 +166,11 @@ export class NzTreeNodeComponent implements OnInit, OnChanges {
 
   get isSwitcherClose(): boolean {
     return (!this.nzTreeNode.isExpanded && !this.nzTreeNode.isLeaf);
+  }
+
+  get displayStyle(): string {
+    // TODO
+    return (this.nzSearchValue && this.nzHideUnMatched && !this.nzTreeNode.isMatched && !this.nzTreeNode.isExpanded) ? 'none' : '';
   }
 
   /**

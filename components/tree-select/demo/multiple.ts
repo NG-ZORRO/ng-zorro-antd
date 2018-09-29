@@ -18,7 +18,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 
 export class NzDemoTreeSelectMultipleComponent implements OnInit {
 
-  value: string[] = [];
+  value: string[] = ['100'];
   nodes = [ {
     title   : 'parent 1',
     key     : '100',

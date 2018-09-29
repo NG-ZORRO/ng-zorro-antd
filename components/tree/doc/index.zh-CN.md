@@ -34,6 +34,7 @@ subtitle: 树形控件
 | `[nzCheckedKeys]` | 指定选中复选框的树节点,双向绑定 | string\[] | \[] |
 | `[nzSelectedKeys]` | 指定选中的树节点,双向绑定 | string\[] | \[] |
 | `[nzSearchValue]` | 按需筛选树高亮节点(参考可搜索的树),双向绑定 | string | null |
+| `[nzHideUnMatched]` | 隐藏未匹配的节点，与nzSearchValue配合使用 | boolean | false |
 | `[nzBeforeDrop]` | drop前二次校验,允许用户自行决定是否允许放置 | `(confirm: NzFormatBeforeDropEvent) => Observable<boolean>` | - |
 | `(nzClick)` | 点击树节点触发 | EventEmitter<NzFormatEmitEvent\> | - |
 | `(nzDblClick)` | 双击树节点触发 | EventEmitter<NzFormatEmitEvent\> | - |

@@ -32,14 +32,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import {
   merge,
-  of as observableOf,
+  of as observableOf, Subject,
   Subscription
 } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { filter, takeUntil, tap } from 'rxjs/operators';
 
 import { selectDropDownAnimation } from '../core/animation/select-dropdown-animations';
 import { selectTagAnimation } from '../core/animation/select-tag-animations';
 import { InputBoolean } from '../core/util/convert';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzFormatEmitEvent } from '../tree/interface';
 import { NzTreeNode } from '../tree/nz-tree-node';
 import { NzTreeComponent } from '../tree/nz-tree.component';
@@ -79,6 +80,14 @@ import { NzTreeComponent } from '../tree/nz-tree.component';
 export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy {
 
   private nodes = [];
+  private _noResult: string | TemplateRef<void>;
+  private unsubscribe$ = new Subject<void>();
+  searchChange$ = new Subject<NzFormatEmitEvent>();
+  isEmpty = false;
+  isNoResultString: boolean;
+  /* tslint:disable-next-line:no-any */
+  locale: any = {};
+
   isComposing = false;
   isDestroy = true;
   inputValue = '';
@@ -98,6 +107,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @InputBoolean() nzDropdownMatchSelectWidth = true;
   @Input() @InputBoolean() nzCheckable = false;
   @Input() @InputBoolean() nzShowSearch = false;
+  @Input() @InputBoolean() nzHideUnMatched = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzShowLine = false;
   @Input() @InputBoolean() nzAsyncData = false;
@@ -117,15 +127,32 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   @Output() nzTreeCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
 
   @Input()
-  set nzNodes(value: NzTreeNode[]) {
+  // tslint:disable-next-line:no-any
+  set nzNodes(value: any[]) {
     this.nodes = value;
+    if (value.length === 0) {
+      this.isEmpty = true;
+    } else {
+      this.isEmpty = false;
+    }
     if (this.treeRef) {
       setTimeout(() => this.updateSelectedNodes(), 0);
     }
   }
 
-  get nzNodes(): NzTreeNode[] {
+  // tslint:disable-next-line:no-any
+  get nzNodes(): any[] {
     return this.nodes;
+  }
+
+  @Input()
+  set nzNoResult(value: string | TemplateRef<void>) {
+    this.isNoResultString = !(value instanceof TemplateRef);
+    this._noResult = value;
+  }
+
+  get nzNoResult(): string | TemplateRef<void> {
+    return this._noResult;
   }
 
   @ViewChild('inputElement') inputElement: ElementRef;
@@ -175,7 +202,8 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef) {
+    private viewContainerRef: ViewContainerRef,
+    private i18n: NzI18nService) {
   }
 
   @HostListener('click')
@@ -422,6 +450,16 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   ngOnInit(): void {
     this.isDestroy = false;
     this.selectionChangeSubscription = this.subscribeSelectionChange();
+    // to set i18n
+    this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.locale = this.i18n.getLocaleData('Select'));
+    // to get search result
+    this.searchChange$.pipe(takeUntil(this.unsubscribe$)).subscribe((result) => {
+      if (result.nodes.length > 0 || !this.inputValue) {
+        this.isEmpty = false;
+      } else if (result.nodes.length === 0) {
+        this.isEmpty = true;
+      }
+    });
     Promise.resolve().then(() => {
       this.updateDropDownClassMap();
       this.updateCdkConnectedOverlayStatus();
@@ -431,6 +469,8 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   ngOnDestroy(): void {
     this.isDestroy = true;
     this.detachOverlay();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
     this.selectionChangeSubscription.unsubscribe();
     this.overlayBackdropClickSubscription.unsubscribe();
   }

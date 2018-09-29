@@ -4,8 +4,8 @@ import {
   ContentChild,
   EventEmitter,
   Input,
-  OnDestroy,
-  OnInit, Output, TemplateRef
+  OnChanges,
+  OnDestroy, OnInit, Output, SimpleChange, TemplateRef
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subject, Subscription } from 'rxjs';
@@ -28,7 +28,7 @@ import { NzTreeService } from './nz-tree.service';
   ]
 })
 
-export class NzTreeComponent implements OnInit, OnDestroy {
+export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzShowIcon = false;
   @Input() @InputBoolean() nzShowLine = false;
   @Input() @InputBoolean() nzCheckStrictly = false;
@@ -38,6 +38,7 @@ export class NzTreeComponent implements OnInit, OnDestroy {
   @Input() @InputBoolean() nzDraggable = false;
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzExpandAll: boolean = false;
+  @Input() @InputBoolean() nzHideUnMatched = false;
   /**
    * @deprecated use
    * nzExpandAll instead
@@ -48,7 +49,7 @@ export class NzTreeComponent implements OnInit, OnDestroy {
   @Input()
   // tslint:disable-next-line:no-any
   set nzData(value: any[]) {
-    if (Array.isArray(value) && value.length > 0) {
+    if (Array.isArray(value)) {
       if (!this.nzTreeService.isArrayOfNzTreeNode(value)) {
         // has not been new NzTreeNode
         this.nzNodes = value.map(item => (new NzTreeNode(item)));
@@ -59,7 +60,7 @@ export class NzTreeComponent implements OnInit, OnDestroy {
       this.nzTreeService.initTree(this.nzNodes);
     } else {
       if (value !== null) {
-        console.warn('ngModel only accepts an array and should be not empty');
+        console.warn('ngModel only accepts an array and must be not empty');
       }
     }
   }
@@ -159,7 +160,7 @@ export class NzTreeComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line:no-any
   @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<any>;
-  _searchValue = '';
+  _searchValue = null;
   // tslint:disable-next-line:no-any
   nzDefaultSubject = new Subject();
   nzDefaultSubscription: Subscription;
@@ -207,7 +208,7 @@ export class NzTreeComponent implements OnInit, OnDestroy {
   }
 
   writeValue(value: NzTreeNode[]): void {
-    if (Array.isArray(value) && value.length > 0) {
+    if (Array.isArray(value)) {
       this.nzNodes = value;
       this.nzTreeService.conductOption.isCheckStrictly = this.nzCheckStrictly;
       this.nzTreeService.initTree(this.nzNodes);
@@ -250,6 +251,12 @@ export class NzTreeComponent implements OnInit, OnDestroy {
           break;
       }
     });
+  }
+
+  ngOnChanges(changes: { [ propertyName: string ]: SimpleChange }): void {
+    if (changes.nzCheckStrictly) {
+      this.nzTreeService.conductOption.isCheckStrictly = changes.nzCheckStrictly.currentValue;
+    }
   }
 
   ngOnDestroy(): void {

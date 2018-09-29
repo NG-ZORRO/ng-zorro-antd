@@ -16,9 +16,11 @@
     [ngStyle]="nzDropdownStyle">
     <nz-tree
       #treeRef
+      [style.display]="isEmpty?'none':''"
       [nzData]="nzNodes"
       [nzMultiple]="nzMultiple"
       [nzSearchValue]="inputValue"
+      [nzHideUnMatched]="nzHideUnMatched"
       [nzCheckable]="nzCheckable"
       [nzAsyncData]="nzAsyncData"
       [nzShowExpand]="nzShowExpand"
@@ -29,8 +31,24 @@
       [nzSelectedKeys]="!nzCheckable ? value : []"
       (nzExpandChange)="nzExpandChange.emit($event)"
       (nzClick)="nzTreeClick.emit($event)"
-      (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)">
+      (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)"
+      (nzSearchValueChange)="searchChange$.next($event)">
     </nz-tree>
+    <ng-container *ngIf="isEmpty">
+      <div role="listbox" tabindex="-1">
+        <span class="ant-select-not-found">
+          <ng-container *ngIf="!nzNoResult">
+            {{locale.notFoundContent}}
+          </ng-container>
+          <ng-container *ngIf="nzNoResult">
+            <ng-container *ngIf="isNoResultString; else noResultTemplate">{{nzNoResult}}</ng-container>
+            <ng-template #noResultTemplate>
+              <ng-template [ngTemplateOutlet]="nzNoResult"></ng-template>
+            </ng-template>
+          </ng-container>
+        </span>
+      </div>
+    </ng-container>
   </div>
 </ng-template>
 

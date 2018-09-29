@@ -177,6 +177,55 @@ describe('tree-select component', () => {
       tick();
       expect(treeSelect.nativeElement.querySelector('.ant-select-search--inline')).toBeNull();
     }));
+
+    it('should set empty value work', fakeAsync(() => {
+      treeSelectComponent.updateSelectedNodes();
+      fixture.detectChanges();
+      testComponent.showSearch = true;
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      const inputEl = treeSelect.nativeElement.querySelector('.ant-select-search__field');
+      inputEl.value = 'test';
+      dispatchFakeEvent(inputEl, 'input');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
+      // test option empty
+      expect(overlayPane.querySelector('.ant-select-not-found')).toBeDefined();
+    }));
+
+    it('should set empty nodes work', fakeAsync(() => {
+      treeSelectComponent.updateSelectedNodes();
+      fixture.detectChanges();
+      testComponent.nodes = [];
+      tick(500);
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
+      expect(overlayPane.querySelector('.ant-select-not-found')).toBeDefined();
+    }));
+
+    it('should set nzNoResult work', fakeAsync(() => {
+      treeSelectComponent.updateSelectedNodes();
+      fixture.detectChanges();
+      testComponent.nodes = [];
+      testComponent.noResult = 'test';
+      tick(500);
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
+      expect(overlayPane.querySelector('.ant-select-not-found')).toBeDefined();
+      expect(overlayPane.querySelector('.ant-select-not-found').innerHTML).toContain('test');
+    }));
+
     it('should selectedValueDisplay style correct', fakeAsync(() => {
       testComponent.showSearch = true;
       fixture.detectChanges();
@@ -356,12 +405,14 @@ describe('tree-select component', () => {
       [nzDropdownMatchSelectWidth]="dropdownMatchSelectWidth"
       [nzDisabled]="disabled"
       [nzShowSearch]="showSearch"
+      [nzNoResult]="noResult"
       [nzDropdownStyle]="{ 'height': '120px' }">
     </nz-tree-select>
   `
 })
 export class NzTestTreeSelectBasicComponent {
   @ViewChild(NzTreeSelectComponent) nzSelectTreeComponent: NzTreeSelectComponent;
+  noResult = '';
   expandKeys = [ '1001', '10001' ];
   value = '10001';
   size = 'default';

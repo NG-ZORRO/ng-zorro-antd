@@ -1,6 +1,7 @@
 <li
   #dragElement
   role="treeitem"
+  [style.display]="displayStyle"
   [ngClass]="nzNodeClass"
   [class.ant-tree-treenode-switcher-open]="isSwitcherOpen"
   [class.ant-tree-treenode-switcher-close]="isSwitcherClose"
@@ -81,6 +82,7 @@
       [nzExpandAll]="nzExpandAll"
       [nzDefaultExpandAll]="nzDefaultExpandAll"
       [nzSearchValue]="nzSearchValue"
+      [nzHideUnMatched]="nzHideUnMatched"
       [nzBeforeDrop]="nzBeforeDrop"
       [nzCheckStrictly]="nzCheckStrictly"
       [nzTreeTemplate]="nzTreeTemplate"

@@ -33,6 +33,7 @@ Almost anything can be represented in a tree structure. Examples include directo
 | `[nzCheckedKeys]` | Specifies the keys of the default checked treeNodes, two-way binding | string\[] | \[] |
 | `[nzSelectedKeys]` | Specifies the keys of the default selected treeNodes, two-way binding | string\[] | \[] |
 | `[nzSearchValue]` | Filter (highlight) treeNodes (see demo `Searchable`), two-way binding | string | null |
+| `[nzHideUnMatched]` | hide unMatched(highlight) treeNodes(used with nzSearchValue) | boolean | false |
 | `[nzBeforeDrop]` | Drop before the second check, allowing the user to decide whether to allow placement | `(confirm: NzFormatBeforeDropEvent) => Observable<boolean>` | - |
 | `(nzClick)` | Callback function for when the user clicks a treeNode | EventEmitter<NzFormatEmitEvent\> | - |
 | `(nzDblClick)` | Callback function for when the user double clicks a treeNode | EventEmitter<NzFormatEmitEvent\> | - |
