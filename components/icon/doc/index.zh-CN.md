@@ -34,9 +34,9 @@ hasPageDemo: true
 | `fetchFromIconfont()` | 用于从 FontIcon 获取图标资源文件 | `NzIconfontOption` |
 | `changeAssetsSource()` | 用于修改动态加载 icon 的资源前缀，使得你可以部署图标资源到你想要的任何位置，例如 cdn | `string` |
 
-### Svg 图标
+### SVG 图标
 
-在 `1.7.0` 版本后，我们与 Ant Design `3.9.x` 同步，使用了 svg 图标替换了原先的 font 图标，从而带来了以下优势：
+从 `1.7.0` 版本开始，我们与 Ant Design `3.9.x` 同步，使用了 svg 图标替换了原先的 font 图标，从而带来了以下优势：
 
 - 完全离线化使用，不需要从支付宝 cdn 下载字体文件，图标不会因为网络问题呈现方块，也无需字体文件本地部署。
 - 在低端设备上 svg 有更好的清晰度。
@@ -64,15 +64,15 @@ NG-ZORRO 之前并没有图标组件，而是提供了基于字体文件的解�
 静态加载，通过在 `NzIconService` 中注册图标来实现静态引入，引入后的文件会被打包到 `.js` 文件中。可以全量引入，也可以按需引入，在 constructor 里或者在 `AppInitService` 里（推荐），例如：
 
 ```ts
-import { IconDefinition } from 'ant-icons-angular';
-import * as AllIcons from 'ant-icons-angular/icons';
+import { IconDefinition } from '@ant-design/icons-angular';
+import * as AllIcons from '@ant-design/icons-angular/icons';
 import { NzIconService } from 'ng-zorro-antd';
 
-// import { ApartmentOutline} from 'ant-icons-angular/icons';
+// import { ApartmentOutline } from '@ant-design/icons-angular/icons';
 
 export class AppComponent implements OnInit, AfterViewInit {
   constructor(private iconService: NzIconService) {
-    // 全量引入
+    // Import all.
     const antDesignIcons = AllIcons as {
       [key: string]: IconDefinition;
     };
@@ -80,7 +80,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       key => antDesignIcons[key])
     );
 
-    // 按需引入
+    // Import what you need.
     // this.iconService.addIcon(ApartmentOutline);
   }
 }
@@ -93,8 +93,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 ```json
 {
   "assets": [
-    "site/src/assets",
-    "site/src/favicon.ico",
     {
       "glob": "**/*",
       "input": "./node_modules/@ant-design/icons/inline-svg/",
@@ -104,7 +102,13 @@ export class AppComponent implements OnInit, AfterViewInit {
 }
 ```
 
+我们为你提供了一条指令，升级到 1.7.0 之后，执行 `{{ hsuanlee }}` 命令，就会自动添加以上配置。
+
 你可以通过 `NzIconService` 的 `changeAssetsSource()` 方法来修改图标资源的位置，这样你就可以部署这些资源到 cdn 上。你的参数会被直接添加到 `assets/` 的前面。
+
+例如，你在 `https://mycdn.alibaba-inc.com/assets` 目录下部署了静态资源文件，那么你就可以通过调用 `changeAssetsSource('https://mycdn.alibaba-inc.com/')`，来告诉 NG-ZORRO 从这个位置动态加载图标资源。
+
+请在 constructor 里或者在 `AppInitService` 里调用这个方法。
 
 ### 双色图标主色
 
@@ -112,7 +116,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
 ### 自定义 font 图标
 
-在 `1.7.0` 里，我们提供了一个 `fetchFromIconfont` 方法，方便开发者调用在 iconfont.cn 上自行管理的图标。
+从 `1.7.0` 版本开始，我们提供了一个 `fetchFromIconfont` 方法，方便开发者调用在 iconfont.cn 上自行管理的图标。
 
 ```ts
 this._iconService.fetchFromIconfont({

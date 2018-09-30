@@ -190,7 +190,7 @@ const newIconNames: string[] = [
       font-size: 18px;
     }`,
       `ul.anticons-list li .anticon {
-      font-size: 36px;
+      font-size: 24px;
     }`
   ]
 })

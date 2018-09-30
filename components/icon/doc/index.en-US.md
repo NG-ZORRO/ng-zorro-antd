@@ -35,7 +35,7 @@ All props of input supported by [w3c standards](https://www.w3schools.com/tags/t
 | `fetchFromIconfont()` | To get icon assets from fonticon | `NzIconfontOption` |
 | `changeAssetsSource()` |  To change the location of your icon assets, so that you can deploy these icons wherever you want | `string` |
 
-### Svg icons
+### SVG icons
 
 After `1.7.0` version，we synced to Ant Design `3.9.x` and replaced font icons with svg icons which bring benefits below:
 
@@ -65,11 +65,11 @@ As for icons provided by Ant Design, there are two ways of importing them into y
 Static loading. By registering icons to `NzIconService` you load icons statically. The icons would be compiled into your bundles. You can register all of them or icons that will really get rendered, and do that in constructors or `AppInitService` (recommended).
 
 ```ts
-import { IconDefinition } from 'ant-icons-angular';
-import * as AllIcons from 'ant-icons-angular/icons';
+import { IconDefinition } from '@ant-design/icons-angular';
+import * as AllIcons from '@ant-design/icons-angular/icons';
 import { NzIconService } from 'ng-zorro-antd';
 
-// import { ApartmentOutline} from 'ant-icons-angular/icons';
+// import { ApartmentOutline } from '@ant-design/icons-angular/icons';
 
 export class AppComponent implements OnInit, AfterViewInit {
   constructor(private iconService: NzIconService) {
@@ -94,8 +94,6 @@ Dynamic importing. This way would not increase your bundle's size. When NG-ZORRO
 ```json
 {
   "assets": [
-    "site/src/assets",
-    "site/src/favicon.ico",
     {
       "glob": "**/*",
       "input": "./node_modules/@ant-design/icons/inline-svg/",
@@ -105,7 +103,13 @@ Dynamic importing. This way would not increase your bundle's size. When NG-ZORRO
 }
 ```
 
+We provide a schematic to fix this. Just simply run `{{ hsuanlee }}` and we would add this config above for you!
+
 You can call `changeAssetsSource()` of `NzIconService` to change the location of your icon assets, so that you can deploy these icon assets to cdn. The parameter you passed would be add in front of `assets/`.
+
+Let's assume that you deploy static assets under `https://mycdn.alibaba-inc.com/assets`. You can call `changeAssetsSource('https://mycdn.alibaba-inc.com/')` to tell NG-ZORRO that all your resources are located there.
+
+Please call this in component's constructor or `AppInitService`.
 
 ### Set TwoTone Color
 
