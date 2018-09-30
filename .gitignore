@@ -2,10 +2,10 @@
 
 # compiled output
 dist/
-site/
+/site/
 tmp/
 out-tsc/
-publish/
+/publish/
 integration/**/lib/
 integration/**/*.ngfactory.ts
 integration/**/*.ngsummary.json

@@ -23,7 +23,7 @@ $ ng add ng-zorro-antd [--locale=zh-CN] [--theme] [--skipPackageJson]
 - `npm run schematic:build` 编译到 publish 文件夹
 - `npm run schematic:demo` 从 demo 生成 schematics
 - `node ./schematics_script/set-version.js` 从 package.json 设置版本号
-- `node ./schematics_script/set-theme.js` 从 site_scripts/_site/src/theme.less 设置自定义样式内容
+- `node ./schematics_script/set-theme.js` 从 scripts/site/_site/src/theme.less 设置自定义样式内容
 
 ### 首次运行
 
