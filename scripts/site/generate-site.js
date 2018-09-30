@@ -11,7 +11,7 @@ const getMeta = require('./utils/get-meta');
 const target = process.argv[2];
 const isSyncSpecific = target && (target !== 'init');
 // 创建site文件夹
-const showCasePath = path.resolve(__dirname, '../site');
+const showCasePath = path.resolve(__dirname, '../../site');
 
 if (!target) {
   fs.removeSync(`${showCasePath}/src`);
@@ -24,7 +24,7 @@ if (!target) {
 }
 const showCaseTargetPath = `${showCasePath}/src/app/`;
 // 读取components文件夹
-const rootPath = path.resolve(__dirname, '../components');
+const rootPath = path.resolve(__dirname, '../../components');
 const rootDir = fs.readdirSync(rootPath);
 const componentsMap = {};
 rootDir.forEach(componentName => {
@@ -79,7 +79,7 @@ rootDir.forEach(componentName => {
 
 if (!isSyncSpecific) {
   // 读取docs文件夹
-  const docsPath = path.resolve(__dirname, '../docs');
+  const docsPath = path.resolve(__dirname, '../../docs');
   const docsDir = fs.readdirSync(docsPath);
   let docsMap = {};
   let docsMeta = {};

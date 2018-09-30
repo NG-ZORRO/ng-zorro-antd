@@ -2,6 +2,10 @@ const fs = require('fs-extra');
 const path = require('path');
 const glob = require('glob').sync;
 
+const componentsPath = path.resolve(__dirname, '../../components');
+const demoDirPath = path.resolve(__dirname, '../../schematics/demo');
+const collectionPath = path.resolve(__dirname, '../../schematics/demo/collection.json');
+
 const TEST_FILE_CONTENT =
 `import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { <%= classify(name) %>Component } from './<%= dasherize(name) %>.component';
@@ -31,7 +35,7 @@ describe('<%= classify(name) %>Component', () => {
  * @returns {string[]}
  */
 function getComponentPaths() {
-  return glob(path.join(path.resolve(__dirname, '../components'), '**/demo/*.ts'))
+  return glob(path.join(componentsPath, '**/demo/*.ts'))
 }
 
 /**
@@ -106,10 +110,9 @@ function replaceTemplate(demoComponent) {
  * @param {{fileContent: string, componentName: string, demoName: string, template: string, styles: string, selector: string, className: string}} demoComponent
  */
 function createSchematic(demoComponent) {
-  const demoPath = path.resolve(__dirname, `../schematics/demo/${demoComponent.componentName}-${demoComponent.demoName}`);
+  const demoPath = path.resolve(demoDirPath, `./${demoComponent.componentName}-${demoComponent.demoName}`);
   const filesPath = path.resolve(__dirname, `${demoPath}/files/__path__/__name@dasherize@if-flat__`);
   const schemaPath = `${demoPath}/schema.json`;
-  const collectionPath = path.resolve(__dirname, `../schematics/demo/collection.json`);
   fs.mkdirsSync(filesPath);
   fs.copySync(path.resolve(__dirname, `./template`), demoPath);
 
