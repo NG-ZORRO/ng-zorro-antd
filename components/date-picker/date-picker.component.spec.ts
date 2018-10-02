@@ -59,7 +59,7 @@ describe('NzDatePickerComponent', () => {
 
     it('should open by click and close by click at outside', fakeAsync(() => {
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -79,7 +79,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(getPickerTrigger().placeholder).toBe('Select date');
 
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -90,7 +90,7 @@ describe('NzDatePickerComponent', () => {
     /* Issue https://github.com/NG-ZORRO/ng-zorro-antd/issues/1539 */
     it('should be openable after closed by "Escape" key', fakeAsync(() => {
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -102,7 +102,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
 
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -168,8 +168,6 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
       expect(queryFromOverlay('.cdk-overlay-backdrop')).toBeNull();
-      // dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
-      // expect(getPickerContainer()).not.toBeNull();
 
       fixtureInstance.nzOpen = false;
       fixture.detectChanges();
@@ -191,7 +189,7 @@ describe('NzDatePickerComponent', () => {
       fixtureInstance.nzValue = new Date('2018-11-11 12:12:12');
       fixtureInstance.nzDisabledDate = (current: Date) => isSameDay(current, compareDate);
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -215,7 +213,7 @@ describe('NzDatePickerComponent', () => {
     it('should support nzPopupStyle', fakeAsync(() => {
       fixtureInstance.nzPopupStyle = { color: 'red' };
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -225,7 +223,7 @@ describe('NzDatePickerComponent', () => {
     it('should support nzDropdownClassName', fakeAsync(() => {
       const keyCls = fixtureInstance.nzDropdownClassName = 'my-test-class';
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -251,7 +249,7 @@ describe('NzDatePickerComponent', () => {
     it('should support nzOnOpenChange', () => {
       const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
@@ -265,8 +263,8 @@ describe('NzDatePickerComponent', () => {
       const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
 
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
 
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
@@ -279,7 +277,7 @@ describe('NzDatePickerComponent', () => {
       fixtureInstance.nzOpen = false;
 
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
 
       expect(nzOnOpenChange).not.toHaveBeenCalledWith(true);
@@ -288,7 +286,7 @@ describe('NzDatePickerComponent', () => {
     it('should support nzValue', fakeAsync(() => {
       fixtureInstance.nzValue = new Date('2018-11-11');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -299,7 +297,7 @@ describe('NzDatePickerComponent', () => {
       fixtureInstance.nzValue = new Date('2018-11-11');
       const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -505,7 +503,7 @@ describe('NzDatePickerComponent', () => {
     it('should support nzDateRender', fakeAsync(() => {
       fixtureInstance.nzDateRender = fixtureInstance.tplDateRender;
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -516,7 +514,7 @@ describe('NzDatePickerComponent', () => {
       const featureKey = 'TEST_FIRST_DAY';
       fixtureInstance.nzDateRender = (d: Date) => d.getDate() === 1 ? featureKey : d.getDate();
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -718,6 +716,10 @@ describe('NzDatePickerComponent', () => {
     return debugElement.query(By.css('nz-picker input.ant-calendar-picker-input')).nativeElement as HTMLInputElement;
   }
 
+  function getPickerTriggerWrapper(): HTMLInputElement {
+    return debugElement.query(By.css('nz-picker .ant-calendar-picker')).nativeElement as HTMLInputElement;
+  }
+
   function getPickerContainer(): HTMLElement {
     return queryFromOverlay('.ant-calendar-picker-container') as HTMLElement;
   }
@@ -735,7 +737,7 @@ describe('NzDatePickerComponent', () => {
   }
 
   function openPickerByClickTrigger(): void {
-    dispatchMouseEvent(getPickerTrigger(), 'click');
+    dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();

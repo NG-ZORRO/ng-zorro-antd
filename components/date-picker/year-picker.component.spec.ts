@@ -55,7 +55,7 @@ describe('NzYearPickerComponent', () => {
 
     it('should open by click and close by click at outside', fakeAsync(() => {
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -178,7 +178,7 @@ describe('NzYearPickerComponent', () => {
     it('should support nzPopupStyle', fakeAsync(() => {
       fixtureInstance.nzPopupStyle = { color: 'red' };
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -188,7 +188,7 @@ describe('NzYearPickerComponent', () => {
     it('should support nzDropdownClassName', fakeAsync(() => {
       const keyCls = fixtureInstance.nzDropdownClassName = 'my-test-class';
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -214,7 +214,7 @@ describe('NzYearPickerComponent', () => {
     it('should support nzOnOpenChange', () => {
       const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
@@ -228,7 +228,7 @@ describe('NzYearPickerComponent', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -239,7 +239,7 @@ describe('NzYearPickerComponent', () => {
       fixtureInstance.nzValue = new Date('2018-11');
       const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -340,6 +340,10 @@ describe('NzYearPickerComponent', () => {
     return debugElement.query(By.css('nz-picker input.ant-calendar-picker-input')).nativeElement as HTMLInputElement;
   }
 
+  function getPickerTriggerWrapper(): HTMLInputElement {
+    return debugElement.query(By.css('nz-picker .ant-calendar-picker')).nativeElement as HTMLInputElement;
+  }
+
   function getPickerContainer(): HTMLElement {
     return queryFromOverlay('.ant-calendar-picker-container') as HTMLElement;
   }
@@ -357,7 +361,7 @@ describe('NzYearPickerComponent', () => {
   }
 
   function openPickerByClickTrigger(): void {
-    dispatchMouseEvent(getPickerTrigger(), 'click');
+    dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();
