@@ -1,4 +1,4 @@
-import { ESCAPE } from '@angular/cdk/keycodes';
+import { DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, PAGE_DOWN, PAGE_UP, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
@@ -9,7 +9,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import isSameDay from 'date-fns/is_same_day';
 
-import { dispatchKeyboardEvent, dispatchMouseEvent } from '../core/testing';
+import { dispatchEvent, dispatchKeyboardEvent, dispatchMouseEvent } from '../core/testing';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -708,6 +708,129 @@ describe('NzDatePickerComponent', () => {
     }));
   });
 
+  describe('hotkeys', () => {
+    beforeEach(() => fixtureInstance.useSuite = 4);
+
+    it('should do nothing when keyboard on the input element', fakeAsync(() => {
+      fixtureInstance.modelValue = new Date('2018-11-11');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      const selectedDayText = getSelectedDayCell().textContent.trim();
+      const input = queryFromOverlay('.ant-calendar-date-input-wrap input.ant-calendar-input') as HTMLInputElement;
+      input.focus();
+
+      triggerKeydown(input, RIGHT_ARROW);
+      fixture.detectChanges();
+      expect(getSelectedDayCell().textContent.trim()).toBe(selectedDayText);
+    }));
+
+    it('should add 1 day', fakeAsync(() => {
+      fixtureInstance.modelValue = new Date('2018-11-11');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      triggerKeydown(getPickerContainer(), RIGHT_ARROW);
+      fixture.detectChanges();
+      expect(getSelectedDayCell().textContent).toContain('12');
+    }));
+
+    it('should minus 1 day', fakeAsync(() => {
+      fixtureInstance.modelValue = new Date('2018-11-11');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      triggerKeydown(getPickerContainer(), LEFT_ARROW);
+      fixture.detectChanges();
+      expect(getSelectedDayCell().textContent).toContain('10');
+    }));
+
+    it('should add 1 week', fakeAsync(() => {
+      fixtureInstance.modelValue = new Date('2018-11-11');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      triggerKeydown(getPickerContainer(), DOWN_ARROW);
+      fixture.detectChanges();
+      expect(getSelectedDayCell().textContent).toContain('18');
+    }));
+
+    it('should minus 1 week', fakeAsync(() => {
+      fixtureInstance.modelValue = new Date('2018-11-11');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      triggerKeydown(getPickerContainer(), UP_ARROW);
+      fixture.detectChanges();
+      expect(getSelectedDayCell().textContent).toContain('4');
+    }));
+
+    it('should add 1 month', fakeAsync(() => {
+      fixtureInstance.modelValue = new Date('2018-11-11');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      triggerKeydown(getPickerContainer(), PAGE_DOWN);
+      fixture.detectChanges();
+      expect(queryFromOverlay('.ant-calendar-month-select').textContent).toContain('12');
+    }));
+
+    it('should minus 1 month', fakeAsync(() => {
+      fixtureInstance.modelValue = new Date('2018-11-11');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      triggerKeydown(getPickerContainer(), PAGE_UP);
+      fixture.detectChanges();
+      expect(queryFromOverlay('.ant-calendar-month-select').textContent).toContain('10');
+    }));
+
+    it('should add 1 year', fakeAsync(() => {
+      fixtureInstance.modelValue = new Date('2018-11-11');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      triggerKeydown(getPickerContainer(), RIGHT_ARROW, true);
+      fixture.detectChanges();
+      expect(queryFromOverlay('.ant-calendar-year-select').textContent).toContain('2019');
+    }));
+
+    it('should minus 1 year', fakeAsync(() => {
+      fixtureInstance.modelValue = new Date('2018-11-11');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      triggerKeydown(getPickerContainer(), LEFT_ARROW, false, true);
+      fixture.detectChanges();
+      expect(queryFromOverlay('.ant-calendar-year-select').textContent).toContain('2017');
+    }));
+
+    it('should change the output value by enter key', fakeAsync(() => {
+      fixtureInstance.nzDisabledDate = (date: Date) => date.getDate() === 22; // TODO: add testing for disabled date with enter
+      fixtureInstance.modelValue = new Date('2018-11-11');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      triggerKeydown(getPickerContainer(), RIGHT_ARROW, true);
+      fixture.detectChanges();
+      expect(fixtureInstance.modelValue.getFullYear()).not.toBe(2019);
+
+      triggerKeydown(getPickerContainer(), ENTER);
+      fixture.detectChanges();
+      expect(fixtureInstance.modelValue.getFullYear()).toBe(2019);
+    }));
+  });
+
   ////////////
 
   function getPicker(): HTMLElement {
@@ -739,6 +862,11 @@ describe('NzDatePickerComponent', () => {
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();
+  }
+
+  function triggerKeydown(node: Node, keyCode: number, ctrlKey: boolean = false, metaKey: boolean = false): void {
+    // tslint:disable-next-line:no-any
+    dispatchEvent(node, new KeyboardEvent('keydown', { keyCode, ctrlKey, metaKey } as any)); // NOTE: don't use `dispatchKeyboardEvent` (not reliable), it will always set `event.metaKey` tobe `true`
   }
 
 });
@@ -789,11 +917,14 @@ describe('NzDatePickerComponent', () => {
 
       <!-- Suite 3 -->
       <nz-date-picker *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-date-picker>
+
+      <!-- Suite 4 -->
+      <nz-date-picker *ngSwitchCase="4" nzOpen [(ngModel)]="modelValue" [nzDisabledDate]="nzDisabledDate"></nz-date-picker>
     </ng-container>
   `
 })
 class NzTestDatePickerComponent {
-  useSuite: 1 | 2 | 3;
+  useSuite: 1 | 2 | 3 | 4;
   @ViewChild('tplDateRender') tplDateRender: TemplateRef<Date>;
   @ViewChild('tplExtraFooter') tplExtraFooter: TemplateRef<void>;
 
@@ -836,5 +967,5 @@ class NzTestDatePickerComponent {
   nzOpen;
 
   // --- Suite 3
-  modelValue;
+  modelValue: Date;
 }

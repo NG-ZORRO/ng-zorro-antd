@@ -1,4 +1,8 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+
+import { DOWN_ARROW, ENTER, LEFT_ARROW, PAGE_DOWN, PAGE_UP, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
+import { OverlayRef } from '@angular/cdk/overlay';
+import { Subscription } from 'rxjs';
 
 import { FunctionProp } from '../../../core/types/common-wrap';
 import { valueFunctionProp } from '../../../core/util/convert';
@@ -20,7 +24,7 @@ import { getTimeConfig, isAllowedDate } from '../util';
   templateUrl: 'date-range-popup.component.html'
 })
 
-export class DateRangePopupComponent implements OnInit, OnChanges {
+export class DateRangePopupComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() isRange: boolean;
   @Input() showWeek: boolean;
 
@@ -36,6 +40,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   @Input() dateRender: FunctionProp<TemplateRef<Date> | string>;
   @Input() popupStyle: object;
   @Input() dropdownClassName: string;
+  @Input() overlayRef: OverlayRef;
 
   @Input() panelMode: PanelMode | PanelMode[];
   @Output() panelModeChange = new EventEmitter<PanelMode | PanelMode[]>();
@@ -45,20 +50,16 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
   @Output() resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
   @Output() closePicker = new EventEmitter<void>(); // Notify outside to close the picker panel
-  // @Output() selectDate = new EventEmitter<CandyDate>(); // Emitted when the date is selected by click the date panel (if isRange, the returned date is from one of the range parts)
+
+  @ViewChild('calendarBox') calendarBox: ElementRef;
 
   prefixCls: string = 'ant-calendar';
   showTimePicker: boolean = false;
   timeOptions: SupportTimeOptions | SupportTimeOptions[];
-  // valueForSelector: CandyDate[]; // Range ONLY
   valueForRangeShow: CandyDate[]; // Range ONLY
   selectedValue: CandyDate[]; // Range ONLY
   hoverValue: CandyDate[]; // Range ONLY
-  // initialValue: CandyDate = new CandyDate(); // Initial date to show when no value inputs
 
-  // get valueOrInitial(): CandyDate {
-  //   return this.value || this.initialValue;
-  // }
   get hasTimePicker(): boolean {
     return !!this.showTime;
   }
@@ -68,12 +69,15 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   }
 
   private partTypeMap = { 'left': 0, 'right': 1 };
+  private keyDownSubscription: Subscription;
 
   ngOnInit(): void {
     // Initialization for range properties to prevent errors while later assignment
     if (this.isRange) {
       [ 'placeholder', 'panelMode', 'selectedValue', 'hoverValue' ].forEach((prop) => this.initialArray(prop));
     }
+
+    this.keyDownSubscription = this.overlayRef.keydownEvents().subscribe(this.onKeyDown.bind(this));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -98,9 +102,76 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     }
   }
 
+  ngAfterViewInit(): void {
+    (this.calendarBox.nativeElement as HTMLElement).focus(); // Focus on the calendar panel to avoid focus on the <input> by default
+  }
+
+  ngOnDestroy(): void {
+    this.keyDownSubscription.unsubscribe();
+  }
+
+  onKeyDown(event: KeyboardEvent): void {
+    if (event.target && (event.target as HTMLElement).nodeName.toLowerCase() === 'input') {
+      return ;
+    }
+
+    const ctrlKey = event.ctrlKey || event.metaKey; // NOTE: metaKey is the "⌘ Command" key on `MAC` and the "⊞ Windows" key on `Windows`
+    switch (event.keyCode) {
+      case DOWN_ARROW:
+        this.gotoDateTime(1, 'week');
+        event.preventDefault();
+        break;
+
+      case UP_ARROW:
+        this.gotoDateTime(-1, 'week');
+        event.preventDefault();
+        break;
+
+      case LEFT_ARROW:
+        if (ctrlKey) {
+          this.gotoDateTime(-1, 'year');
+        } else {
+          this.gotoDateTime(-1, 'day');
+        }
+        event.preventDefault();
+        break;
+
+      case RIGHT_ARROW:
+        if (ctrlKey) {
+          this.gotoDateTime(1, 'year');
+        } else {
+          this.gotoDateTime(1, 'day');
+        }
+        event.preventDefault();
+        break;
+
+      case PAGE_DOWN:
+        this.gotoDateTime(1, 'month');
+        event.preventDefault();
+        break;
+
+      case PAGE_UP:
+        this.gotoDateTime(-1, 'month');
+        event.preventDefault();
+        break;
+
+      case ENTER:
+        let value: CandyDate;
+        if (this.isRange) {
+          value = this.hoverValue[ this.hoverValue.length - 1 ]; // Make the last "hoverValue" element into "selectedValue"
+        } else {
+          value = this.value as CandyDate;
+        }
+
+        if (value && (!this.disabledDate || !this.disabledDate(value.nativeDate))) {
+          this.changeValueFromSelect(value);
+        }
+        event.preventDefault();
+        break;
+    }
+  }
+
   onShowTimePickerChange(show: boolean): void {
-    // this.panelMode = show ? 'time' : 'date';
-    // this.panelModeChange.emit(this.panelMode);
     this.panelModeChange.emit(show ? 'time' : 'date');
   }
 
@@ -166,6 +237,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     }
   }
 
+  // Change from by selecting the inner popup's date panel
   changeValueFromSelect(value: CandyDate): void {
     if (this.isRange) {
       const [ left, right ] = this.selectedValue as CandyDate[]; // NOTE: the left/right maybe not the sequence it select at the date panels
@@ -301,6 +373,40 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
   getObjectKeys(obj: object): string[] {
     return obj ? Object.keys(obj) : [];
+  }
+
+  private gotoDateTime(amount: number, grain: 'year' | 'month' | 'week' | 'day'): void {
+    const defaultDate = new CandyDate();
+    if (this.isRange) {
+      let referValue: CandyDate;
+      const currentIndex = this.selectedValue.length % 2; // Index loop traversal (0 -> 1)
+
+      if (this.hoverValue[ currentIndex ]) { // Use current value to do accumulative operation if exist
+        referValue = this.hoverValue[ currentIndex ];
+      } else if (this.selectedValue[ currentIndex ]) { // NOTE: this situation happens when two values selected (so the "hoverValue" have been cleaned up by `changeValueFromSelect`)
+        referValue = this.selectedValue[ currentIndex ];
+      } else if (this.hoverValue[ currentIndex - 1 ]) { // Use previous value as initialization when choose the next part value
+        referValue = this.hoverValue[ currentIndex - 1 ];
+      } else { // Use default when choose the first left part
+        referValue = defaultDate;
+      }
+
+      this.hoverValue = this.hoverValue.slice(); // Clone to trigger change detection
+      this.hoverValue[ currentIndex ] = this.addDate(referValue, amount, grain);
+      this.valueForRangeShow = this.normalizeRangeValue(this.hoverValue); // To show the corresponding range panel when the date value exceeds
+    } else {
+      const referValue = this.value ? this.value as CandyDate : defaultDate;
+      this.value = this.addDate(referValue, amount, grain);
+    }
+  }
+
+  private addDate(value: CandyDate, amount: number, grain: 'year' | 'month' | 'week' | 'day'): CandyDate {
+    switch (grain) {
+      case 'year': return value.addYears(amount);
+      case 'month': return value.addMonths(amount);
+      case 'week': return value.addWeeks(amount);
+      case 'day': return value.addDays(amount);
+    }
   }
 
   private closePickerPanel(): void {

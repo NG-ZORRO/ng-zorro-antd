@@ -1,4 +1,5 @@
 import addMonths from 'date-fns/add_months';
+import addWeeks from 'date-fns/add_weeks';
 import addYears from 'date-fns/add_years';
 import endOfMonth from 'date-fns/end_of_month';
 import setDay from 'date-fns/set_day';
@@ -119,6 +120,10 @@ export class CandyDate {
 
   addMonths(amount: number): CandyDate {
     return new CandyDate(addMonths(this.nativeDate, amount));
+  }
+
+  addWeeks(amount: number): CandyDate {
+    return new CandyDate(addWeeks(this.nativeDate, amount));
   }
 
   setDay(day: number, options?: { weekStartsOn: number }): CandyDate {

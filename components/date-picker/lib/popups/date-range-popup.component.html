@@ -2,7 +2,7 @@
   class="{{ prefixCls }}-picker-container {{ dropdownClassName }} {{ prefixCls }}-picker-container-placement-bottomLeft"
   [ngStyle]="popupStyle">
 
-  <div class="{{ prefixCls }} {{ showWeek ? prefixCls + '-week-number': '' }} {{ hasTimePicker ? prefixCls + '-time' : '' }} {{ isRange ? prefixCls + '-range' : '' }}" tabindex="0">
+  <div #calendarBox class="{{ prefixCls }} {{ showWeek ? prefixCls + '-week-number': '' }} {{ hasTimePicker ? prefixCls + '-time' : '' }} {{ isRange ? prefixCls + '-range' : '' }}" tabindex="0">
     <div class="{{ prefixCls }}-panel">
       <ng-container *ngIf="!isRange"> <!-- Single ONLY -->
         <ng-container *ngTemplateOutlet="tplCalendarInput"></ng-container>

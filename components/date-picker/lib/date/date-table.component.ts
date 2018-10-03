@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, SimpleChange } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, TemplateRef } from '@angular/core';
 
 import { FunctionProp } from '../../../core/types/common-wrap';
 import { isNonEmptyString, isTemplateRef } from '../../../core/util/check';

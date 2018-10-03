@@ -9,7 +9,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import differenceInDays from 'date-fns/difference_in_days';
 import isSameDay from 'date-fns/is_same_day';
 
-import { dispatchMouseEvent } from '../core/testing';
+import { dispatchEvent, dispatchMouseEvent } from '../core/testing';
+import { ENTER, RIGHT_ARROW, UP_ARROW } from '../core/util';
 import { NzDatePickerModule } from './date-picker.module';
 import { CandyDate } from './lib/candy-date';
 
@@ -554,6 +555,32 @@ describe('NzRangePickerComponent', () => {
     }));
   });
 
+  describe('hotkeys', () => {
+    beforeEach(() => fixtureInstance.useSuite = 3);
+
+    it('should support hotkeys to perform selecting a date range', fakeAsync(() => {
+      fixtureInstance.modelValue = [ new Date('2018-11-11'), new Date('2018-12-12') ];
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+
+      triggerKeydown(getPickerContainer(), RIGHT_ARROW);
+      fixture.detectChanges();
+      triggerKeydown(getPickerContainer(), RIGHT_ARROW);
+      fixture.detectChanges();
+      triggerKeydown(getPickerContainer(), ENTER);
+      fixture.detectChanges();
+      expect(fixtureInstance.modelValue[ 0 ].getDate()).toBe(11); // Should not changed
+
+      triggerKeydown(getPickerContainer(), UP_ARROW, true);
+      fixture.detectChanges();
+      triggerKeydown(getPickerContainer(), ENTER);
+      fixture.detectChanges();
+      expect(fixtureInstance.modelValue[ 0 ].getDate()).toBe(6);
+      expect(fixtureInstance.modelValue[ 1 ].getDate()).toBe(13);
+    }));
+  });
+
   ////////////
 
   function getPicker(): HTMLElement {
@@ -591,6 +618,12 @@ describe('NzRangePickerComponent', () => {
     tick(500);
     fixture.detectChanges();
   }
+
+  function triggerKeydown(node: Node, keyCode: number, ctrlKey: boolean = false, metaKey: boolean = false): void {
+    // tslint:disable-next-line:no-any
+    dispatchEvent(node, new KeyboardEvent('keydown', { keyCode, ctrlKey, metaKey } as any)); // NOTE: don't use `dispatchKeyboardEvent` (not reliable), it will always set `event.metaKey` tobe `true`
+  }
+
 });
 
 @Component({
@@ -657,7 +690,7 @@ class NzTestRangePickerComponent {
   nzSize;
   nzStyle;
   nzOnOpenChange(open: boolean): void { }
-  modelValue;
+  modelValue: Date[];
   modelValueChange(d: Date): void { }
 
   nzDateRender;

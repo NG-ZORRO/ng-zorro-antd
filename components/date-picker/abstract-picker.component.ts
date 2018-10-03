@@ -43,7 +43,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
 
   @Input() nzValue: CompatibleValue;
 
-  @ViewChild(NzPickerComponent) protected picker: NzPickerComponent;
+  @ViewChild(NzPickerComponent) picker: NzPickerComponent;
 
   isRange: boolean = false; // Indicate whether the value is a range value
 
