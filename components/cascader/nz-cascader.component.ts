@@ -1202,7 +1202,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     this.nzDisabled = isDisabled;
   }
 
-  prepareSearchValue(): void {
+  private prepareSearchValue(): void {
     const results: CascaderSearchOption[] = [];
     const path: CascaderOption[] = [];
     const defaultFilter = (inputValue: string, p: CascaderOption[]): boolean => {
