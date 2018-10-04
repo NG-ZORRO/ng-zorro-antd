@@ -212,7 +212,8 @@ describe('nz-select component', () => {
       flush();
       fixture.detectChanges();
       expect(testComponent.open).toBe(true);
-      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', SPACE);
+      // #2201, space should not close select panel
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', TAB);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
