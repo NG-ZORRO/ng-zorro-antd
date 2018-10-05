@@ -47,7 +47,7 @@ Here is an example of `theme.less`
 ```
 
 
-All less vars can be checked [here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/site_scripts/_site/src/theme.less) is a sample of theme define file.
+All less vars can be checked [here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/scripts/site/_site/src/theme.less) is a sample of theme define file.
 
 
 ## Local deployment fonts
