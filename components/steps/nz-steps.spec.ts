@@ -304,12 +304,16 @@ export class NzTestInnerStepTemplateComponent {
   selector: 'nz-test-step-for',
   template: `
     <nz-steps>
-      <nz-step *ngFor="let step of steps"></nz-step>
+      <nz-step *ngFor="let step of steps;trackBy: trackById"></nz-step>
     </nz-steps>
   `
 })
 export class NzTestStepForComponent {
   steps = [ 1, 2, 3 ];
+
+  trackById(index: number): number {
+    return index;
+  }
 
   updateSteps(): void {
     this.steps.push(4);
