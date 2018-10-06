@@ -12,7 +12,7 @@ export class NzTimeValueAccessorDirective implements ControlValueAccessor {
 
   private _onChange: (value: Date) => void;
   private _onTouch: () => void;
-  @Input('nzTime') format: string;
+  @Input() nzTime: string;
 
   @HostListener('keyup')
   keyup(): void {
@@ -46,7 +46,7 @@ export class NzTimeValueAccessorDirective implements ControlValueAccessor {
   }
 
   writeValue(value: Date): void {
-    this.elementRef.nativeElement.value = this.i18n.formatDate(value, this.format);
+    this.elementRef.nativeElement.value = this.i18n.formatDate(value, this.nzTime);
   }
 
   registerOnChange(fn: (value: Date) => void): void {
