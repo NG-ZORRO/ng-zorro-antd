@@ -734,6 +734,9 @@ describe('NzDatePickerComponent', () => {
 
       triggerKeydown(getPickerContainer(), RIGHT_ARROW);
       fixture.detectChanges();
+      // tick(500);
+      flush();
+      fixture.detectChanges();
       expect(getSelectedDayCell().textContent).toContain('12');
     }));
 
@@ -865,9 +868,8 @@ describe('NzDatePickerComponent', () => {
   }
 
   function triggerKeydown(node: Node, keyCode: number, ctrlKey: boolean = false, metaKey: boolean = false): void {
-    // // tslint:disable-next-line:no-any
-    // dispatchEvent(node, new KeyboardEvent('keydown', { keyCode, ctrlKey, metaKey } as any)); // NOTE: don't use `dispatchKeyboardEvent` (not reliable), it will always set `event.metaKey` tobe `true`
-    dispatchKeyboardEvent(node, 'keydown', keyCode);
+    // tslint:disable-next-line:no-any
+    dispatchEvent(node, new KeyboardEvent('keydown', { keyCode, ctrlKey, metaKey } as any)); // NOTE: don't use `dispatchKeyboardEvent` (not reliable), it will always set `event.metaKey` tobe `true`
   }
 
 });
