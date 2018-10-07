@@ -1,5 +1,5 @@
 {
-  "name": "ng-zorro-antd-workspace",
+  "name": "ng-zorro-antd",
   "version": "0.0.0-NOT-USED",
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
@@ -67,6 +67,7 @@
     "core-js": "^2.5.4",
     "fs-extra": "^6.0.1",
     "hammerjs": "^2.0.8",
+    "husky": "^1.0.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~1.7.1",
@@ -100,5 +101,10 @@
     "typescript": "~2.9.2",
     "yaml-front-matter": "^3.4.0",
     "zone.js": "^0.8.26"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "node ./scripts/git/commit-msg.js -E HUSKY_GIT_PARAMS"
+    }
   }
 }
