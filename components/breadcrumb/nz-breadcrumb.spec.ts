@@ -5,6 +5,7 @@ import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { CommonModule } from '@angular/common';
+import { NzIconModule } from '../icon/nz-icon.module';
 import { NzDemoBreadcrumbBasicComponent } from './demo/basic';
 import { NzDemoBreadcrumbSeparatorComponent } from './demo/separator';
 import { NzBreadCrumbItemComponent } from './nz-breadcrumb-item.component';
@@ -46,7 +47,7 @@ describe('breadcrumb', () => {
     let breadcrumbs;
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzBreadCrumbModule ],
+        imports     : [ NzBreadCrumbModule, NzIconModule ],
         declarations: [ NzDemoBreadcrumbSeparatorComponent ],
         providers   : []
       }).compileComponents();

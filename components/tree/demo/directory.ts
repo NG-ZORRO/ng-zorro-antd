@@ -30,7 +30,7 @@ import {
             <span class="folder-desc">created by {{node?.origin?.author | lowercase}}</span>
           </span>
           <span *ngIf="node.isLeaf">
-            <i class="anticon anticon-file"></i>
+            <i nz-icon type="file"></i>
             <span class="file-name">{{node.title}}</span>
             <span class="file-desc">modified by {{node?.origin?.author | lowercase}}</span>
           </span>

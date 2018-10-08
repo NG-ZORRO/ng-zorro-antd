@@ -3,6 +3,7 @@ import { async, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzMatchMediaService } from '../core/services/nz-match-media.service';
+import { NzIconModule } from '../icon/nz-icon.module';
 
 import { NzDemoLayoutBasicComponent } from './demo/basic';
 import { NzDemoLayoutCustomTriggerComponent } from './demo/custom-trigger';
@@ -148,7 +149,7 @@ describe('layout', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzLayoutModule ],
+        imports     : [ NzLayoutModule, NzIconModule ],
         declarations: [ NzDemoLayoutCustomTriggerComponent ],
         providers   : [],
         schemas     : [ NO_ERRORS_SCHEMA ]

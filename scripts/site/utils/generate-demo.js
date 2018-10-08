@@ -3,7 +3,13 @@ const fs = require('fs');
 const capitalizeFirstLetter = require('./capitalize-first-letter');
 const camelCase = require('./camelcase');
 const PrismAngular = require('./angular-language-marked');
+
 module.exports = function (showCaseComponentPath, result) {
+  if (result.pageDemo) {
+    const pageDemoComponent = generatePageDemoComponent(result);
+    fs.writeFileSync(path.join(showCaseComponentPath, `zh.page.component.ts`), pageDemoComponent.zh);
+    fs.writeFileSync(path.join(showCaseComponentPath, `en.page.component.ts`), pageDemoComponent.en);
+  }
   const demoTemplate = generateTemplate(result);
   fs.writeFileSync(path.join(showCaseComponentPath, `zh.html`), demoTemplate.zh);
   fs.writeFileSync(path.join(showCaseComponentPath, `en.html`), demoTemplate.en);
@@ -33,6 +39,12 @@ function generateDemoModule(content) {
   imports += `import { NzDemo${componentName(component)}EnComponent } from './en.component';\n`;
   declarations += `\t\tNzDemo${componentName(component)}ZhComponent,\n`;
   declarations += `\t\tNzDemo${componentName(component)}EnComponent,\n`;
+  if (content.pageDemo) {
+    imports += `import { NzPageDemo${componentName(component)}ZhComponent } from './zh.page.component';\n`;
+    imports += `import { NzPageDemo${componentName(component)}EnComponent } from './en.page.component';\n`;
+    declarations += `\t\tNzPageDemo${componentName(component)}ZhComponent,\n`;
+    declarations += `\t\tNzPageDemo${componentName(component)}EnComponent,\n`;
+  }
   return demoModuleTemplate.replace(/{{imports}}/g, imports).replace(/{{declarations}}/g, declarations).replace(/{{component}}/g, componentName(component)).replace(/{{entryComponents}}/g, entryComponents.join(',\n'));
 }
 
@@ -44,6 +56,21 @@ function generateComponentName(component, language) {
   return `NzDemo${componentName(component)}${capitalizeFirstLetter(language)}Component`
 }
 
+function generatePageDemoComponent(content) {
+  const component = content.name;
+  let zhOutput = content.pageDemo.zhCode;
+  let enOutput = content.pageDemo.enCode;
+  zhOutput = zhOutput
+    .replace(`NzPageDemo${componentName(component)}Component`, `NzPageDemo${componentName(component)}ZhComponent`)
+    .replace(`nz-page-demo-${component}`, `nz-page-demo-${component}-zh`);
+  enOutput = enOutput
+    .replace(`NzPageDemo${componentName(component)}Component`, `NzPageDemo${componentName(component)}EnComponent`)
+    .replace(`nz-page-demo-${component}`, `nz-page-demo-${component}-en`);
+  return {
+    en: enOutput,
+    zh: zhOutput,
+  }
+}
 
 function generateDemoComponent(content) {
   const demoComponentTemplate = String(fs.readFileSync(path.resolve(__dirname, '../template/demo-component.template.ts')));
@@ -74,21 +101,16 @@ function generateDemoComponent(content) {
 
 function generateTemplate(result) {
   const generateTitle = require('./generate.title');
-  let zhCode = '';
-  let enCode = '';
-  for (const key in result.demoMap) {
-    zhCode += result.demoMap[key].zhCode;
-    enCode += result.demoMap[key].enCode;
-  }
   const innerMap = generateExample(result);
-
   const titleMap = {
     zh: generateTitle(result.docZh.meta.title, result.docZh.meta.subtitle, result.docZh.path),
     en: generateTitle(result.docEn.meta.title, '', result.docEn.path)
   };
+  const name = result.name;
+  const hasPageDemo = !!result.pageDemo;
   return {
-    zh: wrapperAll(generateToc('zh-CN', result.name, result.demoMap), wrapperHeader(titleMap.zh, result.docZh.whenToUse, 'zh', innerMap.zh) + wrapperAPI(result.docZh.api)),
-    en: wrapperAll(generateToc('en-US', result.name, result.demoMap), wrapperHeader(titleMap.en, result.docEn.whenToUse, 'en', innerMap.en) + wrapperAPI(result.docEn.api))
+    zh: wrapperAll(generateToc('zh-CN', result.name, result.demoMap), wrapperHeader(titleMap.zh, result.docZh.whenToUse, 'zh', innerMap.zh, hasPageDemo, name) + wrapperAPI(result.docZh.api)),
+    en: wrapperAll(generateToc('en-US', result.name, result.demoMap), wrapperHeader(titleMap.en, result.docEn.whenToUse, 'en', innerMap.en, hasPageDemo, name) + wrapperAPI(result.docEn.api))
   }
 };
 
@@ -96,16 +118,17 @@ function wrapperAPI(content) {
   return `<section class="markdown api-container" ngNonBindable>${content}</section>`
 }
 
-function wrapperHeader(title, whenToUse, language, example) {
+function wrapperHeader(title, whenToUse, language, example, hasPageDemo, name) {
   if (example) {
     return `<section class="markdown">
 	${title}
 	<section class="markdown" ngNonBindable>
 		${whenToUse}
 	</section>
+	${hasPageDemo ? `<section class="page-demo"><nz-page-demo-${name}-${language}></nz-page-demo-${name}-${language}></section>` : ''}
 	<h2>
 		<span>${language === 'zh' ? '代码演示' : 'Examples'}</span>
-		<i class="anticon anticon-appstore code-box-expand-trigger" title="${language === 'zh' ? '展开全部代码' : 'expand all code'}" (click)="expandAllCode()"></i>
+		<i nz-icon type="appstore" class="code-box-expand-trigger" title="${language === 'zh' ? '展开全部代码' : 'expand all code'}" (click)="expandAllCode()"></i>
 	</h2>
 </section>${example}`
   } else {
@@ -145,8 +168,6 @@ function generateExample(result) {
   const demoMap = result.demoMap;
   const isZhUnion = result.docZh.meta.cols;
   const isEnUnion = result.docEn.meta.cols;
-  const isEnIcon = result.docEn.meta.title === 'Icon';
-  const isZhIcon = result.docZh.meta.title === 'Icon';
   const templateSplit = String(fs.readFileSync(path.resolve(__dirname, '../template/example-split.template.html')));
   const templateUnion = String(fs.readFileSync(path.resolve(__dirname, '../template/example-union.template.html')));
   let demoList = [];
@@ -174,8 +195,8 @@ function generateExample(result) {
     }
   });
   return {
-    zh: isZhIcon ? '' : (isZhUnion ? templateUnion.replace(/{{content}}/g, zhPart) : templateSplit.replace(/{{first}}/g, firstZhPart).replace(/{{second}}/g, secondZhPart)),
-    en: isEnIcon ? '' : (isEnUnion ? templateUnion.replace(/{{content}}/g, enPart) : templateSplit.replace(/{{first}}/g, firstEnPart).replace(/{{second}}/g, secondEnPart))
+    zh: (isZhUnion ? templateUnion.replace(/{{content}}/g, zhPart) : templateSplit.replace(/{{first}}/g, firstZhPart).replace(/{{second}}/g, secondZhPart)),
+    en: (isEnUnion ? templateUnion.replace(/{{content}}/g, enPart) : templateSplit.replace(/{{first}}/g, firstEnPart).replace(/{{second}}/g, secondEnPart))
   }
 }
 

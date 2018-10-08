@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <a nz-tooltip [nzTitle]="titleTemplate">This Tooltip Have Icon</a>
     <ng-template #titleTemplate>
-      <i class="anticon anticon-file" style="margin-right: 8px"></i> <span>Tooltip With Icon</span>
+      <i nz-icon type="file" style="margin-right: 8px"></i> <span>Tooltip With Icon</span>
     </ng-template>
   `
 })

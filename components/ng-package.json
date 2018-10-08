@@ -8,6 +8,7 @@
   "whitelistedNonPeerDependencies": [
     "tslib",
     "angular",
-    "date-fns"
+    "date-fns",
+    "@ant-design/icons-angular"
   ]
 }

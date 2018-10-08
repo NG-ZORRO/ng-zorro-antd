@@ -55,7 +55,7 @@ import { Component, OnInit } from '@angular/core';
                       <span class="table-operation">
                         <nz-dropdown>
                           <a nz-dropdown class="operation">
-                            Pause <i class="anticon anticon-down"></i>
+                            Pause <i nz-icon type="down"></i>
                           </a>
                           <ul nz-menu>
                             <li nz-menu-item>

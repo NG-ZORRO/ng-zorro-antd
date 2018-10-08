@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
     <br>
     <ul nz-menu [nzMode]="'inline'" style="width: 240px;" [nzTheme]="theme?'dark':'light'">
       <li nz-submenu nzOpen>
-        <span title><i class="anticon anticon-mail"></i> Navigation One</span>
+        <span title><i nz-icon type="mail"></i> Navigation One</span>
         <ul>
           <li nz-menu-group>
             <span title>Item 1</span>
@@ -29,7 +29,7 @@ import { Component } from '@angular/core';
         </ul>
       </li>
       <li nz-submenu>
-        <span title><i class="anticon anticon-appstore"></i> Navigation Two</span>
+        <span title><i nz-icon type="appstore"></i> Navigation Two</span>
         <ul>
           <li nz-menu-item>Option 5</li>
           <li nz-menu-item>Option 6</li>
@@ -43,7 +43,7 @@ import { Component } from '@angular/core';
         </ul>
       </li>
       <li nz-submenu>
-        <span title><i class="anticon anticon-setting"></i> Navigation Three</span>
+        <span title><i nz-icon type="setting"></i> Navigation Three</span>
         <ul>
           <li nz-menu-item>Option 9</li>
           <li nz-menu-item>Option 10</li>

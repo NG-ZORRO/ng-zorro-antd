@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
           <th>
             Name
             <nz-dropdown nzTrigger="click" [nzClickHide]="false">
-              <i class="anticon anticon-smile-o ant-table-filter-icon" nz-dropdown></i>
+              <i nz-icon type="smile-o" class="ant-table-filter-icon" nz-dropdown></i>
               <div class="custom-filter-dropdown">
                 <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue">
                 <button nz-button [nzType]="'primary'" (click)="search()">Search</button>

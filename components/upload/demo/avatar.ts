@@ -12,7 +12,7 @@ import { NzMessageService, UploadFile } from 'ng-zorro-antd';
     [nzBeforeUpload]="beforeUpload"
     (nzChange)="handleChange($event)">
     <ng-container *ngIf="!avatarUrl">
-      <i class="anticon anticon-plus"></i>
+      <i nz-icon type="plus"></i>
       <div class="ant-upload-text">Upload</div>
     </ng-container>
     <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar">

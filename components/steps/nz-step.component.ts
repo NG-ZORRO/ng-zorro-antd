@@ -24,6 +24,7 @@ export class NzStepComponent {
   private _icon: StepNgClassType | TemplateRef<void>;
   private _title: string | TemplateRef<void>;
   private el: HTMLElement;
+  oldAPIIcon = true; // Make the user defined icon compatible to old API. Should be removed in 2.0.
   isCustomStatus = false;
   isDescriptionString = true;
   isTitleString = true;
@@ -48,7 +49,17 @@ export class NzStepComponent {
 
   @Input()
   set nzIcon(value: StepNgClassType | TemplateRef<void>) {
-    this.isIconString = !(value instanceof TemplateRef);
+    if (!(value instanceof TemplateRef)) {
+      this.isIconString = true;
+      if (typeof value === 'string') {
+        const str = value as string;
+        this.oldAPIIcon = str.indexOf('anticon') > -1;
+      } else {
+        this.oldAPIIcon = true;
+      }
+    } else {
+      this.isIconString = false;
+    }
     this._icon = value;
   }
 

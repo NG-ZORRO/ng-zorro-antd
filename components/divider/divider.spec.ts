@@ -2,6 +2,8 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { NzIconModule } from '../icon/nz-icon.module';
+
 import { NzDividerComponent } from './nz-divider.component';
 import { NzDividerModule } from './nz-divider.module';
 
@@ -11,7 +13,7 @@ describe('divider', () => {
   let dl: DebugElement;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ NzDividerModule ],
+      imports: [ NzDividerModule, NzIconModule ],
       declarations: [ TestDividerComponent, TestDividerTextTemplateComponent ]
     }).compileComponents();
     fixture = TestBed.createComponent(TestDividerComponent);
@@ -88,7 +90,7 @@ class TestDividerComponent {
 @Component({
   template: `
   <nz-divider nzDashed [nzText]="text">
-    <ng-template #text><i class="anticon anticon-plus"></i> Add</ng-template>
+    <ng-template #text><i nz-icon type="plus"></i> Add</ng-template>
   </nz-divider>
   `
 })

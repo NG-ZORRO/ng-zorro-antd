@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
         <ng-template #titleTemplate>
           <div>
             {{ tab }}
-            <i class="anticon anticon-close" (click)="closeTab(tab)"></i>
+            <i nz-icon type="close" (click)="closeTab(tab)"></i>
           </div>
         </ng-template>
         Content of {{ tab }}

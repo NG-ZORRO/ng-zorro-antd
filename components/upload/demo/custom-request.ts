@@ -10,7 +10,7 @@ import { forkJoin } from 'rxjs';
     nzAction="https://jsonplaceholder.typicode.com/posts/"
     [nzCustomRequest]="customReq">
     <button nz-button>
-      <i class="anticon anticon-upload"></i><span>Click to Upload</span>
+      <i nz-icon type="upload"></i><span>Click to Upload</span>
     </button>
   </nz-upload>
   `

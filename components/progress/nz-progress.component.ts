@@ -27,7 +27,8 @@ export class NzProgressComponent implements OnInit {
   trailPathStyle: { [ key: string ]: string };
   strokePathStyle: { [ key: string ]: string };
   pathString: string;
-  iconClassMap;
+  icon;
+  iconTheme;
   isStatusSet = false;
   isStrokeWidthSet = false;
   isFormatSet = false;
@@ -77,7 +78,7 @@ export class NzProgressComponent implements OnInit {
         this._status = this._cacheStatus;
       }
       this.updatePathStyles();
-      this.updateIconClassMap();
+      this.updateIcon();
     }
   }
 
@@ -104,7 +105,7 @@ export class NzProgressComponent implements OnInit {
       this._status = value;
       this._cacheStatus = value;
       this.isStatusSet = true;
-      this.updateIconClassMap();
+      this.updateIcon();
     }
   }
 
@@ -128,7 +129,7 @@ export class NzProgressComponent implements OnInit {
         this._gapDegree = 75;
       }
     }
-    this.updateIconClassMap();
+    this.updateIcon();
     this.updatePathStyles();
   }
 
@@ -208,19 +209,25 @@ export class NzProgressComponent implements OnInit {
     };
   }
 
-  updateIconClassMap(): void {
+  updateIcon(): void {
     const isCircle = (this.nzType === 'circle' || this.nzType === 'dashboard');
-    this.iconClassMap = {
-      'anticon-check'       : (this.nzStatus === 'success') && isCircle,
-      'anticon-cross'       : (this.nzStatus === 'exception') && isCircle,
-      'anticon-check-circle': (this.nzStatus === 'success') && !isCircle,
-      'anticon-cross-circle': (this.nzStatus === 'exception') && !isCircle
-    };
+    let ret = '';
+    if (this.nzStatus === 'success') { ret = 'check'; }
+    if (this.nzStatus === 'exception') { ret = 'close'; }
+    if (ret) {
+      if (!isCircle) {
+        ret += '-circle';
+        this.iconTheme = 'fill';
+      } else {
+        this.iconTheme = 'outline';
+      }
+    }
+    this.icon = ret;
   }
 
   ngOnInit(): void {
     this.updatePathStyles();
-    this.updateIconClassMap();
+    this.updateIcon();
   }
 
 }

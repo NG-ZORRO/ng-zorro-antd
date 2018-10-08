@@ -14,6 +14,10 @@
       [class.ant-tree-switcher_open]="isSwitcherOpen"
       [class.ant-tree-switcher_close]="isSwitcherClose"
       (click)="_clickExpand($event)">
+      <i *ngIf="!nzTreeNode.isLeaf && !nzShowLine" nz-icon type="caret-down" class="ant-tree-switcher-icon"></i>
+      <i *ngIf="nzShowLine && !nzTreeNode.isExpanded && !nzTreeNode.isLeaf" nz-icon type="plus-square" class="ant-tree-switcher-line-icon"></i>
+      <i *ngIf="nzShowLine && nzTreeNode.isExpanded && !nzTreeNode.isLeaf" nz-icon type="minus-square" class="ant-tree-switcher-line-icon"></i>
+      <i *ngIf="nzShowLine && nzTreeNode.isLeaf" nz-icon type="file" class="ant-tree-switcher-line-icon"></i>
     </span>
   </ng-container>
   <ng-container *ngIf="nzCheckable">
@@ -44,7 +48,7 @@
         [ngClass]="nzNodeContentLoadingClass">
         <span
           [ngClass]="nzNodeContentIconClass">
-          <i class="anticon" [ngClass]="nzTreeNode.origin.icon"></i>
+          <i nz-icon class="anticon" [ngClass]="nzTreeNode.origin.icon"></i>
         </span>
       </span>
       <span class="ant-tree-title">
