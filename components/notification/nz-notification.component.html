@@ -20,6 +20,8 @@
   </div>
   <ng-template [ngIf]="nzMessage.template" [ngTemplateOutlet]="nzMessage.template" [ngTemplateOutletContext]="{ $implicit: this }"></ng-template>
   <a tabindex="0" class="ant-notification-notice-close" (click)="close()">
-    <span class="ant-notification-notice-close-x"></span>
+    <span class="ant-notification-notice-close-x">
+      <i nz-icon type="close" class="ant-notification-close-icon"></i>
+    </span>
   </a>
 </div>

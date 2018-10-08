@@ -38,33 +38,31 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
       return;
     }
 
-    const classArr = className.split(/\s/);
-    const hasAnticonTag = className.indexOf('anticon') > -1;
     const autoSpin = className.indexOf('anticon-loading') > -1;
-    let anticonType = classArr.filter(cls => cls !== 'anticon' && cls !== 'anticon-spin' && cls.startsWith('anticon-'))[ 0 ];
+    const classArr = className.split(/\s/);
+    let anticonType = classArr.filter(cls => cls !== 'anticon' && cls !== 'anticon-spin' && cls.match(/^anticon\-\w/))[ 0 ];
 
-    if (!hasAnticonTag || !anticonType) {
+    if (!anticonType) {
       return;
     }
 
     anticonType = anticonType.replace('anticon-', '');
-
-    // This is misspelled in old versions...
     if (anticonType.indexOf('verticle') > -1) {
       console.error(`'verticle' is misspelled, would be corrected in the next major version.`);
       anticonType = anticonType.replace('verticle', 'vertical');
     }
-    // Add default outline theme.
     if (!(anticonType.endsWith('-o') || anticonType.endsWith('-fill') || anticonType.endsWith('-twotone'))) {
       anticonType += '-o';
     }
+
     this.spin = autoSpin || this.spin;
+
     if (this.type !== anticonType) {
       this.type = anticonType;
       this._changeIcon().then(svg => {
         this._addExtraModifications(svg);
-      }).catch(() => {
-        console.warn('[NG-ZORRO]', `You can find more about this error on http://ng.ant.design/components/icon/en`);
+      }).catch(err => {
+        console.warn('[NG-ZORRO]', `You can find more about this error on http://ng.ant.design/components/icon/en\n`, err);
       });
     }
   }
@@ -118,18 +116,17 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
    */
   ngOnInit(): void {
     const element = this._elementRef.nativeElement as HTMLElement;
-    if (element && element.className.indexOf('anticon') > -1 && !this.type) {
+    if (element && !this.type) {
       this._warnAPI();
-      this._classChangeHandler(element.className); // In case mutations didn't catch the init status.
+      this._classChangeHandler(element.className);
       this._classNameObserver = new MutationObserver((mutations: MutationRecord[]) => {
         mutations
         .filter((mutation: MutationRecord) => mutation.attributeName === 'class')
         .forEach((mutation: MutationRecord) => this._classChangeHandler((mutation.target as HTMLElement).className));
       });
       this._classNameObserver.observe(this._elementRef.nativeElement, { attributes: true });
-    } else {
-      this._renderer.addClass(this._elementRef.nativeElement, 'anticon');
     }
+    this._renderer.addClass(this._elementRef.nativeElement, 'anticon');
   }
 
   ngOnDestroy(): void {

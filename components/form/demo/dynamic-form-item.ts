@@ -15,7 +15,7 @@ import {
         <nz-form-label [nzXs]="24" [nzSm]="4" *ngIf="i==0" [nzFor]="control.controlInstance">Passengers</nz-form-label>
         <nz-form-control [nzXs]="24" [nzSm]="20" [nzOffset]="i==0?0:4">
           <input nz-input style="width: 60%; margin-right:8px;" placeholder="placeholder" [attr.id]="control.id" [formControlName]="control.controlInstance">
-          <i nz-icon type="minus-circle-o" type="dynamic-delete-button" (click)="removeField(control,$event)"></i>
+          <i nz-icon type="minus-circle-o" class="dynamic-delete-button" (click)="removeField(control,$event)"></i>
           <nz-form-explain *ngIf="getFormControl(control.controlInstance)?.dirty&&getFormControl(control.controlInstance)?.hasError('required')">
             Please input passenger's name or delete this field.
           </nz-form-explain>
