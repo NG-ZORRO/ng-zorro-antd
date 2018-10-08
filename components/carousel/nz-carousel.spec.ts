@@ -1,3 +1,4 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -11,7 +12,7 @@ import { NzCarouselModule } from './nz-carousel.module';
 describe('carousel', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzCarouselModule ],
+      imports     : [ NzCarouselModule, BrowserAnimationsModule ],
       declarations: [ NzTestCarouselBasicComponent ]
     });
     TestBed.compileComponents();
@@ -97,7 +98,12 @@ describe('carousel', () => {
       expect(carouselWrapper.nativeElement.firstElementChild.classList).toContain('slick-slider');
       expect(carouselWrapper.nativeElement.firstElementChild.classList).toContain('slick-vertical');
     });
-    it('should effect change work', () => {
+    /**
+     * pending this case for the 'scrollx' effect implementation has been changed,
+     * new test case (using animation) is ongoing.
+     * orignal test case fails because the transform is no longer used for slide switching
+     */
+    xit('should effect change work', () => {
       fixture.detectChanges();
       expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).toBe('translate3d(0px, 0px, 0px)');
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();

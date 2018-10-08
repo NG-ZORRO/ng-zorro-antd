@@ -19,6 +19,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { toBoolean, toNumber } from '../core/util/convert';
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
+import { AnimationFactory, animate, style, AnimationBuilder } from '@angular/animations';
 
 export type SwipeDirection = 'swipeleft' | 'swiperight';
 
@@ -145,20 +146,58 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
       const beforeIndex = this.slideContents.toArray().findIndex(slide => slide.isActive);
       this.nzBeforeChange.emit({ from: beforeIndex, to: i });
       this.activeIndex = i;
-      if (this.nzEffect === 'scrollx') {
-        if (this.nzVertical) {
-          this.transform = `translate3d(0px, ${-this.activeIndex * this.elementRef.nativeElement.offsetHeight}px, 0px)`;
-        } else {
-          this.transform = `translate3d(${-this.activeIndex * this.elementRef.nativeElement.offsetWidth}px, 0px, 0px)`;
-        }
-      } else {
-        this.transform = 'translate3d(0px, 0px, 0px)';
-      }
+      let myAnimation : AnimationFactory = this.animationBuilder.build(this.createAnimations(beforeIndex, i, this.slideContents.length, this.elementRef.nativeElement.offsetWidth, this.elementRef.nativeElement.offsetHeight));
+      let player = myAnimation.create(this.slickTrack.nativeElement);
+      player.play();
       this.slideContents.forEach(slide => slide.isActive = slide === content);
       this.nzAfterChange.emit(i);
     }
   }
-
+  /**
+   * create slide switch animations
+   * @author wanpeng2008@gmail.com
+   */
+  private createAnimations(fromIndex: number, toIndex: number, total: number, slideWidth: number, slideHeight: number) {
+    let animationSteps = [];
+    if (this.nzEffect === 'scrollx') {
+      /**
+       * decide the switch direction according to the distance,
+       * always get the shortest switch path
+       * if 2*Math.abs(fromIndex-toIndex)>total, the shortest path will cross the boundry,
+       * animations are needed to make sure the switching looks smooth.
+      */
+      if (2*Math.abs(fromIndex-toIndex)>total) {
+        /**
+         * animations:
+         * step1. move current slide half width/height slowly, towards the selected direction
+         * step2. replace current slide to destination one quickly, with half width/height offset
+         * step3. move destination slide to the correct postion slowly
+         * done
+         */
+        let slideOffset1 = fromIndex+0.5;
+        let slideOffset2 = toIndex+0.5;
+        if(fromIndex > toIndex) {
+          slideOffset1 = - slideOffset1;
+        }else {
+          slideOffset2 = - slideOffset2;
+        }
+        animationSteps = [
+          animate('250ms ease-in', style({transform: `translate3d(${this.nzVertical? `0px, ${slideOffset1 * slideHeight}px, 0px`: `${slideOffset1 * slideWidth}px, 0px, 0px`})`})),
+          animate('0.1ms', style({transform: `translate3d(${this.nzVertical? `0px, ${slideOffset2*slideHeight}px, 0px`: `${slideOffset2*slideWidth}px, 0px, 0px`})`})),
+          animate('250ms ease-in', style({transform: `translate3d(${this.nzVertical? `0px, ${-toIndex * slideHeight}px, 0px`: `${-toIndex * slideWidth}px, 0px, 0px`})`}))
+        ];
+      } else {
+        animationSteps = [
+          animate('500ms ease-in', style({transform: `translate3d(${this.nzVertical? `0px, ${-toIndex * slideHeight}px, 0px`: `${-toIndex * slideWidth}px, 0px, 0px`})`})),
+        ];
+      }
+    } else {
+      animationSteps = [
+        animate('500ms ease-in', style({transform: `translate3d(0px, 0px, 0px)`}))
+      ];
+    }
+    return animationSteps;
+  }
   renderContent(): void {
     if (this.slideContents && this.slideContents.length) {
       this.slideContents.forEach((content, i) => {
@@ -268,7 +307,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
     }
   }
 
-  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
+  constructor(public elementRef: ElementRef, private renderer: Renderer2, private animationBuilder : AnimationBuilder) {
   }
 
   ngAfterContentInit(): void {
@@ -278,12 +317,27 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
   }
 
   ngAfterViewInit(): void {
+    this.setBackgroundColor();
     this.slideContents.changes
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(() => {
       this.renderContent();
     });
     this.renderContent();
+  }
+
+  /**
+   * set the carousel content's background color
+   * this is to avoid a "white gap" during switching animations
+   * especially for switching from last slide to the first one
+   * @author wanpeng2008@gmail.com
+   */
+  private setBackgroundColor() {
+    const firstSlide = this.slickTrack.nativeElement.querySelector('[nz-carousel-content]');
+    if(firstSlide) {
+      let backgroundColor = window.getComputedStyle(firstSlide).getPropertyValue('background-color');
+      this.renderer.setStyle(this.slickList.nativeElement, 'backgroundColor', backgroundColor);
+    }
   }
 
   ngOnDestroy(): void {
