@@ -23,11 +23,11 @@ import { Component, OnInit } from '@angular/core';
               <div class="editable-cell-text-wrapper">
                 <ng-container *ngIf="!editCache[data.key].edit">
                   {{data.name}}
-                  <i class="anticon anticon-edit editable-cell-icon" (click)="startEdit(data.key)"></i>
+                  <i nz-icon type="edit" class="editable-cell-icon" (click)="startEdit(data.key)"></i>
                 </ng-container>
                 <ng-container *ngIf="editCache[data.key].edit">
                   <input type="text" nz-input [(ngModel)]="editCache[data.key].name">
-                  <i class="anticon anticon-check editable-cell-icon-check" (click)="finishEdit(data.key)"></i>
+                  <i nz-icon type="check editable-cell-icon-check" (click)="finishEdit(data.key)"></i>
                 </ng-container>
               </div>
             </div>

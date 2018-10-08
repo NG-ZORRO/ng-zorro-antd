@@ -64,12 +64,37 @@ rootDir.forEach(componentName => {
         }
       });
     }
+
+    // 处理components->${component}->page文件夹, 这是在代码演示之前的页面级别的 demo
+    let pageDemo = '';
+    const pageDirPath = path.join(componentDirPath, 'page');
+    if (fs.existsSync(pageDirPath)) {
+      const pageDir = fs.readdirSync(pageDirPath);
+      let zhLocale = '';
+      let enLocale = '';
+      pageDemo = {};
+      pageDir.forEach(file => {
+        if (/.ts$/.test(file)) {
+          pageDemo.raw = String(fs.readFileSync(path.join(pageDirPath, file)));
+        }
+        if (/^zh-CN.txt$/.test(file)) {
+          zhLocale = String(fs.readFileSync(path.join(pageDirPath, file)));
+        }
+        if (/^en-US.txt$/.test(file)) {
+          enLocale = String(fs.readFileSync(path.join(pageDirPath, file)));
+        }
+      });
+      pageDemo.enCode = pageDemo.raw.replace(/locale;/g, enLocale);
+      pageDemo.zhCode = pageDemo.raw.replace(/locale;/g, zhLocale);
+    }
+
     // 处理components->${component}->doc文件夹
     const result = {
       name   : componentName,
       docZh  : parseDocMdUtil(fs.readFileSync(path.join(componentDirPath, 'doc/index.zh-CN.md')), `components/${componentName}/doc/index.zh-CN.md`),
       docEn  : parseDocMdUtil(fs.readFileSync(path.join(componentDirPath, 'doc/index.en-US.md')), `components/${componentName}/doc/index.en-US.md`),
-      demoMap: demoMap
+      demoMap,
+      pageDemo
     };
     componentsMap[componentName] = result.docZh.meta;
 

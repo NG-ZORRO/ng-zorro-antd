@@ -1,7 +1,8 @@
 <ng-template #progressInfoTemplate>
   <span class="ant-progress-text" *ngIf="nzShowInfo">
     <ng-container *ngIf="(nzStatus=='exception')||(nzStatus=='success')&&(!isFormatSet); else formatTemplate">
-      <i class="anticon" [ngClass]="iconClassMap"></i>
+      <!-- Theme is handled in type here. -->
+      <i nz-icon [type]="icon" [theme]="iconTheme"></i>
     </ng-container>
     <ng-template #formatTemplate>
       {{ nzFormat(nzPercent) }}

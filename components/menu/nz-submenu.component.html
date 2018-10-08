@@ -9,7 +9,12 @@
   (click)="clickSubMenuTitle($event)"
   [style.paddingLeft.px]="(nzMenuDirective.nzMode === 'inline')?(level*nzMenuDirective.nzInlineIndent):null">
   <ng-content select="[title]"></ng-content>
-  <i [class.ant-dropdown-menu-submenu-arrow]="isInDropDown" [class.ant-menu-submenu-arrow]="!isInDropDown"></i>
+  <span *ngIf="isInDropDown; else notDropdownTpl" class="ant-dropdown-menu-submenu-arrow">
+    <i nz-icon type="right" class="anticon-right ant-dropdown-menu-submenu-arrow-icon"></i>
+  </span>
+  <ng-template #notDropdownTpl>
+    <i class="ant-menu-submenu-arrow"></i>
+  </ng-template>
 </div>
 <ul
   [class.ant-dropdown-menu]="isInDropDown"

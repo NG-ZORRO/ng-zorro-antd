@@ -15,13 +15,13 @@ import { Component } from '@angular/core';
     <button nz-button [nzSize]="size" nzType="dashed">Dashed</button>
     <button nz-button [nzSize]="size" nzType="danger">Danger</button>
     <br>
-    <button nz-button nzType="primary" [nzSize]="size" nzShape="circle"><i class="anticon anticon-download"></i>
+    <button nz-button nzType="primary" [nzSize]="size" nzShape="circle"><i nz-icon type="download"></i>
     </button>
-    <button nz-button nzType="primary" [nzSize]="size"><i class="anticon anticon-download"></i>Download</button>
+    <button nz-button nzType="primary" [nzSize]="size"><i nz-icon type="download"></i>Download</button>
     <br>
     <nz-button-group [nzSize]="size">
-      <button nz-button nzType="primary"><i class="anticon anticon-left"></i>Backward</button>
-      <button nz-button nzType="primary">Forward<i class="anticon anticon-right"></i></button>
+      <button nz-button nzType="primary"><i nz-icon type="left"></i>Backward</button>
+      <button nz-button nzType="primary">Forward<i nz-icon type="right"></i></button>
     </nz-button-group>
   `,
   styles  : [

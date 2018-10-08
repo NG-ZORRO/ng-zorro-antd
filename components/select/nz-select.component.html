@@ -19,7 +19,10 @@
     (nzListOfSelectedValueChange)="updateListOfSelectedValueFromTopControl($event)">
   </div>
   <span *ngIf="nzAllowClear" class="ant-select-selection__clear" nz-select-unselectable (click)="onClearSelection($event)"></span>
-  <span class="ant-select-arrow" nz-select-unselectable><b></b></span>
+  <span class="ant-select-arrow" nz-select-unselectable>
+    <i nz-icon type="down" class="ant-select-arrow-icon"></i>
+    <b></b>
+  </span>
 </div>
 <ng-template
   cdkConnectedOverlay

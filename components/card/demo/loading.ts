@@ -20,13 +20,13 @@ import { Component } from '@angular/core';
       <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
     </ng-template>
     <ng-template #actionSetting>
-      <i class="anticon anticon-setting"></i>
+      <i nz-icon type="setting"></i>
     </ng-template>
     <ng-template #actionEdit>
-      <i class="anticon anticon-edit"></i>
+      <i nz-icon type="edit"></i>
     </ng-template>
     <ng-template #actionEllipsis>
-      <i class="anticon anticon-ellipsis"></i>
+      <i nz-icon type="ellipsis"></i>
     </ng-template>
   `
 })

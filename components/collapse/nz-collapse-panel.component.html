@@ -3,7 +3,7 @@
   [attr.aria-expanded]="nzActive"
   class="ant-collapse-header"
   (click)="clickHeader()">
-  <i class="arrow" *ngIf="nzShowArrow"></i>
+  <i nz-icon type="right" class="arrow anticon-right" *ngIf="nzShowArrow"></i>
   <ng-container *ngIf="isHeaderString; else headerTemplate">{{ nzHeader }}</ng-container>
   <ng-template #headerTemplate>
     <ng-template [ngTemplateOutlet]="nzHeader"></ng-template>

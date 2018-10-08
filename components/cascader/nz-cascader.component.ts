@@ -550,8 +550,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
       [ `${this.prefixCls}-menu-item` ]         : true,
       [ `${this.prefixCls}-menu-item-expand` ]  : !option.isLeaf,
       [ `${this.prefixCls}-menu-item-active` ]  : this.isActivedOption(option, index),
-      [ `${this.prefixCls}-menu-item-disabled` ]: option.disabled,
-      [ `${this.prefixCls}-menu-item-loading` ] : option.loading
+      [ `${this.prefixCls}-menu-item-disabled` ]: option.disabled
     };
   }
 

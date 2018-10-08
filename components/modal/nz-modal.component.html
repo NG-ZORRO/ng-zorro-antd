@@ -26,7 +26,9 @@
     >
       <div class="ant-modal-content">
         <button *ngIf="nzClosable" (click)="onClickCloseBtn()" class="ant-modal-close" aria-label="Close">
-          <span class="ant-modal-close-x"></span>
+          <span class="ant-modal-close-x">
+            <i nz-icon type="close" class="ant-modal-close-icon"></i>
+          </span>
         </button>
         <ng-container [ngSwitch]="true">
           <ng-container *ngSwitchCase="isModalType('default')" [ngTemplateOutlet]="tplContentDefault"></ng-container>
@@ -91,7 +93,7 @@
   <div class="ant-modal-body" [ngStyle]="nzBodyStyle">
     <div class="ant-confirm-body-wrapper">
       <div class="ant-confirm-body">
-        <i class="anticon anticon-{{ nzIconType }}"></i>
+        <i nz-icon [type]="nzIconType"></i>
         <span class="ant-confirm-title">
           <ng-container [ngSwitch]="true">
             <ng-container *ngSwitchCase="isTemplateRef(nzTitle)" [ngTemplateOutlet]="nzTitle"></ng-container>

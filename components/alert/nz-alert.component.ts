@@ -19,7 +19,7 @@ import { toBoolean } from '../core/util/convert';
   preserveWhitespaces: false,
   templateUrl        : './nz-alert.component.html',
   styles             : [
-    `:host {
+      `:host {
       display: block;
     }`
   ]
@@ -146,14 +146,14 @@ export class NzAlertComponent implements OnInit {
 
   updateIconClassMap(): void {
     this.iconClassMap = {
-      'anticon-cross-circle-o'      : this.nzDescription && this.nzType === 'error',
-      'anticon-check-circle-o'      : this.nzDescription && this.nzType === 'success',
-      'anticon-info-circle-o'       : this.nzDescription && this.nzType === 'info',
-      'anticon-exclamation-circle-o': this.nzDescription && this.nzType === 'warning',
-      'anticon-cross-circle'        : (!this.nzDescription) && this.nzType === 'error',
-      'anticon-check-circle'        : (!this.nzDescription) && this.nzType === 'success',
-      'anticon-info-circle'         : (!this.nzDescription) && this.nzType === 'info',
-      'anticon-exclamation-circle'  : (!this.nzDescription) && this.nzType === 'warning'
+      'anticon-close-circle-o'         : this.nzDescription && this.nzType === 'error',
+      'anticon-check-circle-o'         : this.nzDescription && this.nzType === 'success',
+      'anticon-info-circle-o'          : this.nzDescription && this.nzType === 'info',
+      'anticon-exclamation-circle-o'   : this.nzDescription && this.nzType === 'warning',
+      'anticon-close-circle-fill'      : (!this.nzDescription) && this.nzType === 'error',
+      'anticon-check-circle-fill'      : (!this.nzDescription) && this.nzType === 'success',
+      'anticon-info-circle-fill'       : (!this.nzDescription) && this.nzType === 'info',
+      'anticon-exclamation-circle-fill': (!this.nzDescription) && this.nzType === 'warning'
     };
   }
 

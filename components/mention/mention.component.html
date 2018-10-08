@@ -12,7 +12,7 @@
     </li>
     <li class="ant-mention-dropdown-notfound ant-mention-dropdown-item"
         *ngIf="filteredSuggestions.length === 0">
-      <span *ngIf="nzLoading"><i class="anticon anticon-spin anticon-loading"></i></span>
+      <span *ngIf="nzLoading"><i nz-icon type="loading"></i></span>
       <span *ngIf="!nzLoading">{{ nzNotFoundContent }}</span>
     </li>
   </ul>
