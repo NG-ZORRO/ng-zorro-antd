@@ -49,7 +49,7 @@ You can join in [this dicussion of Ant Design](https://github.com/ant-design/ant
 NG-ZORRO hadn't provided an icon component. Instead, icon based on font files was provided. In `1.7.0`, we make this new directive compatible to old API. If you make no changes to your existing code, old icons would be dynamically loaded as `outline` icons. But the best pratice is always to use `nz-icon` directive and specify the `theme` prop.
 
 ```html
-<i nz-icon [type]="'star" [theme]="'fill"></i>
+<i nz-icon [type]="'star'" [theme]="'fill'"></i>
 ```
 
 All the icons will be rendered to `<svg>`, and styles and classes applied to `<i>` would work.

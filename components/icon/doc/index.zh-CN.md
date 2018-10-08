@@ -48,7 +48,7 @@ hasPageDemo: true
 NG-ZORRO 之前并没有图标组件，而是提供了基于字体文件的解决方案。新版本中我们提供了旧 API 兼容，如果你不修改既有的代码，所有的图标都会被动态加载成 `outline` 主题的图标，而最佳实践是使用新的指令 `nz-icon` 并传入 `theme` 以明确图标的主题风格，例如：
 
 ```html
-<i nz-icon [type]="'star" [theme]="'fill"></i>
+<i nz-icon [type]="'star'" [theme]="'fill'"></i>
 ```
 
 所有的图标都会以 `<svg>` 标签渲染，但是你还是可以用之前对 i 标签设置的样式和类来控制 svg 的样式，例如：
