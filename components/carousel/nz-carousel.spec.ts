@@ -140,7 +140,6 @@ describe('carousel', () => {
         'translate3d(-100px, 0px, 0px)',
         'translate3d(-200px, 0px, 0px)'
       ]);
-
       expect(NzCarouselComponent.createAnimations(1, 4, 5, 200, 100, 'scrollx', true).map(getTransform))
       .toEqual([
         'translate3d(0px, -50px, 0px)',
