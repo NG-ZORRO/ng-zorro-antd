@@ -1,3 +1,4 @@
+import { animate, style, AnimationAnimateMetadata, AnimationBuilder, AnimationFactory, AnimationMetadata } from '@angular/animations';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -19,7 +20,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { toBoolean, toNumber } from '../core/util/convert';
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
-import { AnimationFactory, animate, style, AnimationBuilder } from '@angular/animations';
 
 export type SwipeDirection = 'swipeleft' | 'swiperight';
 
@@ -74,6 +74,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
   @Output() nzAfterChange: EventEmitter<number> = new EventEmitter();
   @Output() nzBeforeChange: EventEmitter<{ from: number; to: number }> = new EventEmitter();
   @Input() nzEnableSwipe = true;
+  private preventSwipeInProgress = false;
 
   @HostListener('window:resize', [ '$event' ])
   onWindowResize(e: UIEvent): void {
@@ -146,8 +147,11 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
       const beforeIndex = this.slideContents.toArray().findIndex(slide => slide.isActive);
       this.nzBeforeChange.emit({ from: beforeIndex, to: i });
       this.activeIndex = i;
-      let myAnimation : AnimationFactory = this.animationBuilder.build(this.createAnimations(beforeIndex, i, this.slideContents.length, this.elementRef.nativeElement.offsetWidth, this.elementRef.nativeElement.offsetHeight));
-      let player = myAnimation.create(this.slickTrack.nativeElement);
+      const myAnimation: AnimationFactory = this.animationBuilder.build(
+        NzCarouselComponent.createAnimations(beforeIndex, i, this.slideContents.length,
+          this.elementRef.nativeElement.offsetWidth, this.elementRef.nativeElement.offsetHeight,
+          this.nzEffect, this.nzVertical));
+      const player = myAnimation.create(this.slickTrack.nativeElement);
       player.play();
       this.slideContents.forEach(slide => slide.isActive = slide === content);
       this.nzAfterChange.emit(i);
@@ -155,18 +159,18 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
   }
   /**
    * create slide switch animations
-   * @author wanpeng2008@gmail.com
    */
-  private createAnimations(fromIndex: number, toIndex: number, total: number, slideWidth: number, slideHeight: number) {
-    let animationSteps = [];
-    if (this.nzEffect === 'scrollx') {
+  static createAnimations(fromIndex: number, toIndex: number, total: number, slideWidth: number, slideHeight: number,
+                          effect: string = 'scrollx', vertical: boolean = false): AnimationAnimateMetadata[] {
+    let animationSteps: AnimationAnimateMetadata[];
+    if (effect === 'scrollx') {
       /**
        * decide the switch direction according to the distance,
        * always get the shortest switch path
        * if 2*Math.abs(fromIndex-toIndex)>total, the shortest path will cross the boundry,
        * animations are needed to make sure the switching looks smooth.
       */
-      if (2*Math.abs(fromIndex-toIndex)>total) {
+      if (Math.abs(fromIndex - toIndex) * 2 > total) {
         /**
          * animations:
          * step1. move current slide half width/height slowly, towards the selected direction
@@ -174,21 +178,23 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
          * step3. move destination slide to the correct postion slowly
          * done
          */
-        let slideOffset1 = fromIndex+0.5;
-        let slideOffset2 = toIndex+0.5;
-        if(fromIndex > toIndex) {
-          slideOffset1 = - slideOffset1;
-        }else {
-          slideOffset2 = - slideOffset2;
+        let slideOffset1;
+        let slideOffset2;
+        if (fromIndex > toIndex) {
+          slideOffset1 = -fromIndex - 0.5;
+          slideOffset2 = -toIndex + 0.5;
+        } else {
+          slideOffset1 = -fromIndex + 0.5;
+          slideOffset2 = -toIndex - 0.5;
         }
         animationSteps = [
-          animate('250ms ease-in', style({transform: `translate3d(${this.nzVertical? `0px, ${slideOffset1 * slideHeight}px, 0px`: `${slideOffset1 * slideWidth}px, 0px, 0px`})`})),
-          animate('0.1ms', style({transform: `translate3d(${this.nzVertical? `0px, ${slideOffset2*slideHeight}px, 0px`: `${slideOffset2*slideWidth}px, 0px, 0px`})`})),
-          animate('250ms ease-in', style({transform: `translate3d(${this.nzVertical? `0px, ${-toIndex * slideHeight}px, 0px`: `${-toIndex * slideWidth}px, 0px, 0px`})`}))
+          animate('250ms ease-in', style({transform: `translate3d(${vertical ? `0px, ${slideOffset1 * slideHeight}px, 0px` : `${slideOffset1 * slideWidth}px, 0px, 0px`})`})),
+          animate('0.1ms', style({transform: `translate3d(${vertical ? `0px, ${slideOffset2 * slideHeight}px, 0px` : `${slideOffset2 * slideWidth}px, 0px, 0px`})`})),
+          animate('250ms ease-in', style({transform: `translate3d(${vertical ? `0px, ${-toIndex * slideHeight}px, 0px` : `${-toIndex * slideWidth}px, 0px, 0px`})`}))
         ];
       } else {
         animationSteps = [
-          animate('500ms ease-in', style({transform: `translate3d(${this.nzVertical? `0px, ${-toIndex * slideHeight}px, 0px`: `${-toIndex * slideWidth}px, 0px, 0px`})`})),
+          animate('500ms ease-in', style({transform: `translate3d(${vertical ? `0px, ${-toIndex * slideHeight}px, 0px` : `${-toIndex * slideWidth}px, 0px, 0px`})`}))
         ];
       }
     } else {
@@ -281,23 +287,32 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
 
   swipe(action: SwipeDirection = 'swipeleft'): void {
     if (!this.nzEnableSwipe) { return; }
+    this.preventSwipeInProgress = true;
+    setTimeout(() => {this.preventSwipeInProgress = false; }, 1000);
     if (action === 'swipeleft') { this.next(); }
     if (action === 'swiperight') { this.pre(); }
   }
 
   /* tslint:disable:no-any */
   swipeInProgress(e: any): void {
+    if (this.preventSwipeInProgress) { return; }
     if (this.nzEffect === 'scrollx') {
       const final = e.isFinal;
       const scrollWidth = final ? 0 : e.deltaX * 1.2;
       const totalWidth = this.elementRef.nativeElement.offsetWidth;
-      if (this.nzVertical) {
-        const totalHeight = this.elementRef.nativeElement.offsetHeight;
-        const scrollPercent = scrollWidth / totalWidth;
-        const scrollHeight =  scrollPercent * totalHeight;
-        this.transform = `translate3d(0px, ${-this.activeIndex * totalHeight + scrollHeight}px, 0px)`;
-      } else {
-        this.transform = `translate3d(${-this.activeIndex * totalWidth + scrollWidth}px, 0px, 0px)`;
+      const scrollPercent = scrollWidth / totalWidth;
+      if (this.activeIndex > 0 || this.activeIndex < this.slideContents.length - 1 || Math.abs(scrollPercent) <= 0.5) {
+        let animations: AnimationMetadata[] = [];
+        if (this.nzVertical) {
+          const totalHeight = this.elementRef.nativeElement.offsetHeight;
+          const scrollHeight =  scrollPercent * totalHeight;
+          animations = [animate('500ms ease-in', style({transform: `translate3d(0px, ${-this.activeIndex * totalHeight + scrollHeight}px, 0px)`}))];
+        } else {
+          animations = [animate('500ms ease-in', style({transform: `translate3d(${-this.activeIndex * totalWidth + scrollWidth}px, 0px, 0px)`}))];
+        }
+        const myAnimation: AnimationFactory = this.animationBuilder.build(animations);
+        const player = myAnimation.create(this.slickTrack.nativeElement);
+        player.play();
       }
     }
     if (e.isFinal) {
@@ -307,7 +322,7 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
     }
   }
 
-  constructor(public elementRef: ElementRef, private renderer: Renderer2, private animationBuilder : AnimationBuilder) {
+  constructor(public elementRef: ElementRef, private renderer: Renderer2, private animationBuilder: AnimationBuilder) {
   }
 
   ngAfterContentInit(): void {
@@ -330,12 +345,11 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
    * set the carousel content's background color
    * this is to avoid a "white gap" during switching animations
    * especially for switching from last slide to the first one
-   * @author wanpeng2008@gmail.com
    */
-  private setBackgroundColor() {
+  private setBackgroundColor(): void {
     const firstSlide = this.slickTrack.nativeElement.querySelector('[nz-carousel-content]');
-    if(firstSlide) {
-      let backgroundColor = window.getComputedStyle(firstSlide).getPropertyValue('background-color');
+    if (firstSlide) {
+      const backgroundColor = window.getComputedStyle(firstSlide).getPropertyValue('background-color');
       this.renderer.setStyle(this.slickList.nativeElement, 'backgroundColor', backgroundColor);
     }
   }
