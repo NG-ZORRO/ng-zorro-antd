@@ -40,6 +40,7 @@ export interface Workspace {
   projects: {
     [k: string]: Project;
   };
+  defaultProject?: string;
 }
 
 /**
@@ -105,10 +106,15 @@ export function getProjectFromWorkspace(config: Workspace, projectName?: string)
     // If there is exactly one non-e2e project, use that. Otherwise, require that a specific
     // project be specified.
     const allProjectNames = Object.keys(config.projects).filter(p => !p.includes('e2e'));
+    const defaultProjectName = config.defaultProject;
     if (allProjectNames.length === 1) {
       const project = config.projects[allProjectNames[0]];
       // Set a non-enumerable project name to the project. We need the name for schematics
       // later on, but don't want to write it back out to the config file.
+      Object.defineProperty(project, 'name', {enumerable: false, value: projectName});
+      return project;
+    } else if (config.projects[defaultProjectName]) {
+      const project = config.projects[defaultProjectName];
       Object.defineProperty(project, 'name', {enumerable: false, value: projectName});
       return project;
     } else {

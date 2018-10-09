@@ -27,7 +27,7 @@ timeline: true
 * 支持多色图标。
 * 对于内建图标的更换可以提供更多 API，而不需要进行样式覆盖。
 
-我们尽可能地在不增加包体积的前提下对旧的 API 进行了兼容，你无需修改代码，但可能需要进行一些配置。关于 icon 的更多信息，请阅读 Icon API 的[“Svg 图标”](/components/icon/zh#svg-图标)和[“静态加载与动态加载”两节](/components/icon/zh#静态加载与动态加载)。
+我们尽可能地在不增加包体积的前提下对旧的 API 进行了兼容，你无需修改代码，但可能需要进行一些配置。关于 icon 的更多信息，请阅读 Icon API 的[“Svg 图标”](/components/icon/zh#svg-图标)和[“静态加载与动态加载”](/components/icon/zh#静态加载与动态加载)两节。
 
 ---
 

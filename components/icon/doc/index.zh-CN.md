@@ -8,6 +8,11 @@ hasPageDemo: true
 
 语义化的矢量图形。
 
+<blockquote style="border-color: orange;">
+<p><strong>如遇图标无法显示或控制台出现相关错误，请在项目下执行 <code>ng g ng-zorro-antd:fix-icon</code> 命令修复。</strong></p>
+<p>详情请查看 <a href="/components/icon/zh#%E9%9D%99%E6%80%81%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD">静态加载与动态加载</a> 部分。</p>
+</blockquote>
+
 ## 图标列表
 
 > 点击图标即可复制代码
@@ -102,7 +107,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 }
 ```
 
-我们为你提供了一条指令，升级到 1.7.0 之后，执行 `{{ hsuanlee }}` 命令，就会自动添加以上配置。
+我们为你提供了一条指令，升级到 1.7.0 之后，执行 `ng g ng-zorro-antd:fix-icon` 命令，就会自动添加以上配置。
 
 你可以通过 `NzIconService` 的 `changeAssetsSource()` 方法来修改图标资源的位置，这样你就可以部署这些资源到 cdn 上。你的参数会被直接添加到 `assets/` 的前面。
 

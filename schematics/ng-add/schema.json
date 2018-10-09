@@ -19,6 +19,10 @@
       "type": "boolean",
       "default": false,
       "description": "add theme.less"
+    },
+    "project": {
+      "type": "string",
+      "description": "Name of the project to target."
     }
   },
   "required": []
