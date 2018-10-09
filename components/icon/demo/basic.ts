@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
       <i nz-icon [type]="'smile'" [theme]="'outline'"></i>
       <i nz-icon [type]="'sync'" [spin]="true"></i>
       <i nz-icon [type]="'loading'"></i>
-      <br>
+      <br><br>
       <i class="anticon anticon-home"></i>
       <i class="anticon anticon-setting"></i>
       <i class="anticon anticon-smile"></i>
