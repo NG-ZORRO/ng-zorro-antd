@@ -30,19 +30,19 @@ describe('icon', () => {
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
-      expect(icons[ 0 ].nativeElement.querySelector('svg').outerHTML).toContain('anticon-spin');
+      expect(icons[ 0 ].nativeElement.classList.contains('anticon-spin')).toBe(true);
       testComponent.spin = false;
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
-      expect(icons[ 0 ].nativeElement.querySelector('svg').outerHTML).not.toContain('anticon-spin');
+      expect(icons[ 0 ].nativeElement.classList.contains('anticon-spin')).toBe(false);
     }));
 
     it('should make loading spin', fakeAsync(() => {
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
-      expect(icons[ 1 ].nativeElement.querySelector('svg').outerHTML).toContain('anticon-spin');
+      expect(icons[ 1 ].nativeElement.classList.contains('anticon-spin')).toBe(true);
     }));
   });
 
@@ -103,7 +103,7 @@ describe('icon', () => {
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
-      expect(icons[ 1 ].nativeElement.querySelector('svg').outerHTML).toContain('anticon-spin');
+      expect(icons[ 1 ].nativeElement.classList.contains('anticon-spin')).toBe(true);
     }));
   });
 });
