@@ -40,7 +40,7 @@ export class NzAlertComponent implements OnInit {
   isMessageString: boolean;
   isCloseTextString: boolean;
   outerClassMap;
-  iconClassMap;
+  iconType;
   @Output() nzOnClose: EventEmitter<boolean> = new EventEmitter();
   @Input() nzIconType: NgClassType;
 
@@ -145,16 +145,22 @@ export class NzAlertComponent implements OnInit {
   }
 
   updateIconClassMap(): void {
-    this.iconClassMap = {
-      'anticon-close-circle-o'         : this.nzDescription && this.nzType === 'error',
-      'anticon-check-circle-o'         : this.nzDescription && this.nzType === 'success',
-      'anticon-info-circle-o'          : this.nzDescription && this.nzType === 'info',
-      'anticon-exclamation-circle-o'   : this.nzDescription && this.nzType === 'warning',
-      'anticon-close-circle-fill'      : (!this.nzDescription) && this.nzType === 'error',
-      'anticon-check-circle-fill'      : (!this.nzDescription) && this.nzType === 'success',
-      'anticon-info-circle-fill'       : (!this.nzDescription) && this.nzType === 'info',
-      'anticon-exclamation-circle-fill': (!this.nzDescription) && this.nzType === 'warning'
+    const iconType = {
+      'close-circle-o'         : this.nzDescription && this.nzType === 'error',
+      'check-circle-o'         : this.nzDescription && this.nzType === 'success',
+      'info-circle-o'          : this.nzDescription && this.nzType === 'info',
+      'exclamation-circle-o'   : this.nzDescription && this.nzType === 'warning',
+      'close-circle-fill'      : (!this.nzDescription) && this.nzType === 'error',
+      'check-circle-fill'      : (!this.nzDescription) && this.nzType === 'success',
+      'info-circle-fill'       : (!this.nzDescription) && this.nzType === 'info',
+      'exclamation-circle-fill': (!this.nzDescription) && this.nzType === 'warning'
     };
+
+    Object.keys(iconType).forEach(key => {
+      if (iconType[ key ]) {
+        this.iconType = key;
+      }
+    });
   }
 
   ngOnInit(): void {

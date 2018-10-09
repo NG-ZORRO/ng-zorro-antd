@@ -84,8 +84,9 @@
           [attr.title]="nzDisplayWith(node)"
           [class.ant-select-selection__choice__disabled]="node.isDisabled"
           class="ant-select-selection__choice">
-               <span *ngIf="!node.isDisabled" class="ant-select-selection__choice__remove"
-                 (click)="removeSelected(node)"></span>
+               <span *ngIf="!node.isDisabled" class="ant-select-selection__choice__remove" (click)="removeSelected(node)">
+                 <i nz-icon type="close" class="ant-select-remove-icon"></i>
+               </span>
           <span class="ant-select-selection__choice__content">{{ nzDisplayWith(node) }}</span>
         </li>
       </ng-container>
@@ -94,7 +95,10 @@
       </li>
     </ul>
   </ng-container>
-  <span *ngIf="nzAllowClear" class="ant-select-selection__clear"
-    (click)="onClearSelection()"></span>
-  <span *ngIf="!isMultiple" class="ant-select-arrow"><b></b></span>
+  <span *ngIf="nzAllowClear" class="ant-select-selection__clear" (click)="onClearSelection()">
+    <i nz-icon type="close-circle" class="ant-select-clear-icon" theme="fill"></i>
+  </span>
+  <span *ngIf="!isMultiple" class="ant-select-arrow">
+    <i nz-icon type="down" class="ant-select-arrow-icon"></i>
+  </span>
 </div>

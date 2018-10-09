@@ -8,6 +8,7 @@ import {
   CheckCircleOutline,
   CheckOutline,
   ClockCircleOutline,
+  CloseCircleFill,
   CloseCircleOutline,
   CloseOutline,
   DoubleLeftOutline,
@@ -40,6 +41,8 @@ export class NzIconService extends IconService {
   private _iconfontCache = new Set<string>();
 
   warnedAboutAPI = false;
+  warnedAboutCross = false; // TODO: remove in 2.0
+  warnedAboutVertical = false;
 
   normalizeSvgElement(svg: SVGElement): void {
     if (!svg.getAttribute('viewBox')) {
@@ -84,6 +87,7 @@ export class NzIconService extends IconService {
       CheckOutline,
       ClockCircleOutline,
       CloseCircleOutline,
+      CloseCircleFill,
       CloseOutline,
       DoubleLeftOutline,
       DoubleRightOutline,

@@ -17,8 +17,6 @@ We are still adding two-tone icons right now, syncing to [antd](https://ant.desi
 
 ### [nz-icon]
 
-All props of input supported by [w3c standards](https://www.w3schools.com/tags/tag_input.asp) and Angular can used in `nz-input`.
-
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[type]` | Type of the ant design icon | string | - |
@@ -123,7 +121,7 @@ We added a `fetchFromIconfont` method function to help developer using their own
 
 ```ts
 this._iconService.fetchFromIconfont({
-  scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js'
+  scriptUrl: 'https://at.alicdn.com/t/font_8d5l8fzk5b87iudi.js'
 });
 ```
 

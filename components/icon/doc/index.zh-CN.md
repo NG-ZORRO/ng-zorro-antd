@@ -120,7 +120,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
 ```ts
 this._iconService.fetchFromIconfont({
-  scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js'
+  scriptUrl: 'https://at.alicdn.com/t/font_8d5l8fzk5b87iudi.js'
 });
 ```
 
