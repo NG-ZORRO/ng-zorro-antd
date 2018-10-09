@@ -7,7 +7,7 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start": "ng serve -port 0",
+    "start": "ng serve --port 0",
     "build": "node ./scripts/site/generate-site init && ng build",
     "test": "ng test --watch=false --code-coverage",
     "lint": "tslint -c tslint.json 'components/*/*.ts'",

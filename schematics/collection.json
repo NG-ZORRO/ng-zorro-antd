@@ -5,6 +5,11 @@
       "description": "add NG-ZORRO",
       "factory": "./ng-add",
       "schema": "./ng-add/schema.json"
+    },
+    "fix-icon": {
+      "description": "fix icon",
+      "factory": "./fix-icon",
+      "schema": "./fix-icon/schema.json"
     }
   }
 }

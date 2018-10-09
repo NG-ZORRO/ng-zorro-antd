@@ -18,12 +18,14 @@ import { addPackageToPackageJson } from '../utils/package';
 import { getProjectTargetOptions } from '../utils/project-targets';
 import { Schema } from './schema';
 
+import schematicsFixIcon from '../fix-icon/index';
+
 const ADD_CONFIG = {
-  LESS_VERSION: '^2.7.3',
-  CUSTOM_THEME_PATH: 'src/theme.less',
+  LESS_VERSION       : '^2.7.3',
+  CUSTOM_THEME_PATH  : 'src/theme.less',
   COMPILED_THEME_PATH: 'node_modules/ng-zorro-antd/ng-zorro-antd.min.css',
-  BOOT_PAGE_PATH: 'src/app/app.component.html',
-  BOOT_PAGE_HTML: `<!-- NG-ZORRO -->
+  BOOT_PAGE_PATH     : 'src/app/app.component.html',
+  BOOT_PAGE_HTML     : `<!-- NG-ZORRO -->
 <a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" style="display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;">
   <img height="300" src="https://img.alicdn.com/tfs/TB1NvvIwTtYBeNjy1XdXXXXyVXa-89-131.svg">
 </a>`
@@ -37,7 +39,8 @@ export default function (options: Schema): Rule {
     addThemeToAppStyles(options),
     addModulesToAppModule(options),
     addI18n(options),
-    (options && !options.skipPackageJson) || (options && !options.theme) ? installNodeDeps() : noop()
+    (options && !options.skipPackageJson) || (options && !options.theme) ? installNodeDeps() : noop(),
+    schematicsFixIcon(options)
   ]);
 }
 
@@ -49,7 +52,7 @@ function addI18n(options: Schema): (host: Tree) => Tree {
     const modulePath = getAppModulePath(host, getProjectTargetOptions(project, 'build').main);
     const moduleSource = getSourceFile(host, modulePath);
     const locale = options.i18n;
-    const localePrefix = locale.split('_')[0];
+    const localePrefix = locale.split('_')[ 0 ];
 
     if (!moduleSource) {
       throw new SchematicsException(`Module not found: ${modulePath}`);
@@ -90,7 +93,7 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
   const metadataField = 'providers';
   const nodes = getDecoratorMetadata(moduleSource, 'NgModule', '@angular/core');
   const addProvide = addSymbolToNgModuleMetadata(moduleSource, modulePath, 'providers', `{ provide: NZ_I18N, useValue: ${locale} }`, null);
-  let node: any = nodes[0];  // tslint:disable-line:no-any
+  let node: any = nodes[ 0 ];  // tslint:disable-line:no-any
 
   if (!node) {
     return [];
@@ -116,7 +119,7 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
   }
 
   if (matchingProperties.length) {
-    const assignment = matchingProperties[0] as ts.PropertyAssignment;
+    const assignment = matchingProperties[ 0 ] as ts.PropertyAssignment;
     if (assignment.initializer.kind !== ts.SyntaxKind.ArrayLiteralExpression) {
       return [];
     }
@@ -142,11 +145,11 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
   const allFun = findNodes(moduleSource, ts.SyntaxKind.ExpressionStatement);
   const registerLocaleDataFun = allFun.filter(node => {
     const fun = node.getChildren();
-    return fun[0].getChildren()[0] && fun[0].getChildren()[0].getText() === 'registerLocaleData';
+    return fun[ 0 ].getChildren()[ 0 ] && fun[ 0 ].getChildren()[ 0 ].getText() === 'registerLocaleData';
   });
-  return  registerLocaleDataFun.length === 0
+  return registerLocaleDataFun.length === 0
     ? insertAfterLastOccurrence(allImports, `\n\nregisterLocaleData(${locale});`, modulePath, 0)
-    : new ReplaceChange(modulePath, registerLocaleDataFun[0].getStart(), registerLocaleDataFun[0].getText(), `registerLocaleData(${locale});`);
+    : new ReplaceChange(modulePath, registerLocaleDataFun[ 0 ].getStart(), registerLocaleDataFun[ 0 ].getText(), `registerLocaleData(${locale});`);
 }
 
 /** 降级 less */
@@ -207,6 +210,7 @@ function insertCustomTheme(project: Project, host: Tree, workspace: Workspace): 
     host.create(themePath, createCustomTheme());
   }
 
+  // tslint:disable-next-line:no-any
   if ((project as any).targets || project.architect) {
     addStyleToTarget('build', host, workspace, project, themePath, ADD_CONFIG.COMPILED_THEME_PATH);
     addStyleToTarget('test', host, workspace, project, themePath, ADD_CONFIG.COMPILED_THEME_PATH);
@@ -235,6 +239,7 @@ function installNodeDeps(): (host: Tree, context: SchematicContext) => void {
 function insertCompiledTheme(project: Project, host: Tree, workspace: Workspace): void {
   const themePath = ADD_CONFIG.COMPILED_THEME_PATH;
 
+  // tslint:disable-next-line:no-any
   if ((project as any).targets || project.architect) {
     addStyleToTarget('build', host, workspace, project, themePath);
     addStyleToTarget('test', host, workspace, project, themePath);

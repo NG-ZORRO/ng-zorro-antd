@@ -7,6 +7,11 @@ hasPageDemo: true
 
 Semantic vector graphics.
 
+<blockquote style="border-color: orange;">
+<p><strong>If the icon cannot be displayed or the console has an error, please run the following command to fix it <code>ng g ng-zorro-antd:fix-icon</code>.</strong></p>
+<p>See <a href="/components/icon/en#static-loading-and-dynamic-loading">Static loading and dynamic loading</a> for details.</p>
+</blockquote>
+
 ## List of icons
 
 > Click the icon and copy the code.
@@ -101,7 +106,7 @@ Dynamic importing. This way would not increase your bundle's size. When NG-ZORRO
 }
 ```
 
-We provide a schematic to fix this. Just simply run `{{ hsuanlee }}` and we would add this config above for you!
+We provide a schematic to fix this. Just simply run `ng g ng-zorro-antd:fix-icon` and we would add this config above for you!
 
 You can call `changeAssetsSource()` of `NzIconService` to change the location of your icon assets, so that you can deploy these icon assets to cdn. The parameter you passed would be add in front of `assets/`.
 
