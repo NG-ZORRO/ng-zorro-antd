@@ -281,6 +281,43 @@ describe('button', () => {
       expect(buttons[ 3 ].nativeElement.classList.contains('ant-btn-block')).toBe(true);
     });
   });
+  describe('binding', () => {
+    let button;
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports     : [ NzButtonModule, NzIconModule ],
+        declarations: [ NzTestButtonBindingComponent ],
+        providers   : []
+      }).compileComponents();
+    }));
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestButtonBindingComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      button = fixture.debugElement.query(By.directive(NzButtonComponent));
+    });
+
+    it('should hide icon when loading correct', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
+      expect(button.nativeElement.firstElementChild.querySelector('svg')).toBe(null);
+      expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(false);
+      button.nativeElement.click();
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(true);
+      expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(true);
+      expect(button.nativeElement.querySelector('.anticon-poweroff').style.cssText).toBe('display: none;');
+      tick(5000);
+      fixture.detectChanges();
+      expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
+      expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(false);
+      expect(button.nativeElement.querySelector('.anticon-poweroff').style.cssText).toBe('display: inline-block;');
+    }));
+  });
 
 });
 
@@ -290,4 +327,21 @@ describe('button', () => {
     <button nz-button nzSearch></button>`
 })
 export class NzTestButtonSearchComponent {
+}
+
+/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/2191 **/
+@Component({
+  selector: 'nz-test-button-binding',
+  template: `<button nz-button nzType="primary" (click)="load()" [nzLoading]="loading"><i nz-icon type="poweroff"></i> {{'Click me!'}}</button>`
+})
+export class NzTestButtonBindingComponent {
+  loading = false;
+
+  load(): void {
+    this.loading = true;
+    setTimeout(_ => {
+      this.loading = false;
+    }, 5000);
+  }
+
 }
