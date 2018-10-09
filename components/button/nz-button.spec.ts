@@ -167,7 +167,7 @@ describe('button', () => {
       tick();
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(true);
-      expect(button.nativeElement.firstElementChild.querySelector('svg').classList.contains('anticon-spin')).toBe(true);
+      expect(button.nativeElement.firstElementChild.classList.contains('anticon-spin')).toBe(true);
       expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(true);
       expect(button.nativeElement.firstElementChild.localName).toBe('i');
       tick(5000);
@@ -179,7 +179,7 @@ describe('button', () => {
       const button = buttons[ 3 ];
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
-      expect(button.nativeElement.firstElementChild.querySelector('svg')).toBe(null);
+      expect(button.nativeElement.firstElementChild.classList.contains('anticon-apin')).toBe(false);
       expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(false);
       expect(button.nativeElement.firstElementChild.localName).toBe('i');
       button.nativeElement.click();
@@ -187,7 +187,7 @@ describe('button', () => {
       tick();
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(true);
-      expect(button.nativeElement.firstElementChild.querySelector('svg').classList.contains('anticon-spin')).toBe(true);
+      expect(button.nativeElement.firstElementChild.classList.contains('anticon-spin')).toBe(true);
       expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(true);
       expect(button.nativeElement.firstElementChild.localName).toBe('i');
       tick(5000);

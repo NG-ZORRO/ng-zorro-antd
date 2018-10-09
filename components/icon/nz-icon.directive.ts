@@ -28,6 +28,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
 
   // private _renderer: Renderer2;
   private _classNameObserver: MutationObserver;
+  private _el: HTMLElement;
 
   /**
    * In order to make this directive compatible to old API, we had do some ugly stuff here.
@@ -38,7 +39,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
       return;
     }
 
-    const autoSpin = className.indexOf('anticon-loading') > -1;
+    const forceSpin = className.indexOf('anticon-spin') > -1;
     const classArr = className.split(/\s/);
     let anticonType = classArr.filter(cls => cls !== 'anticon' && cls !== 'anticon-spin' && cls.match(/^anticon\-\w/))[ 0 ];
 
@@ -47,21 +48,36 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     }
 
     anticonType = anticonType.replace('anticon-', '');
-    if (anticonType.indexOf('verticle') > -1) {
-      console.error(`'verticle' is misspelled, would be corrected in the next major version.`);
+    if (anticonType.includes('verticle')) {
       anticonType = anticonType.replace('verticle', 'vertical');
+      if (!this._iconService.warnedAboutVertical) {
+        console.warn('[NG-ZORRO]', `'verticle' is misspelled, would be corrected in the next major version.`);
+        this._iconService.warnedAboutVertical = true;
+      }
+    }
+    if (anticonType.startsWith('cross')) {
+      anticonType = anticonType.replace('cross', 'close');
+      if (!this._iconService.warnedAboutCross) {
+        console.warn('[NG-ZORRO]', `'cross' icon is replaced by 'close' icon.`);
+        this._iconService.warnedAboutCross = true;
+      }
     }
     if (!(anticonType.endsWith('-o') || anticonType.endsWith('-fill') || anticonType.endsWith('-twotone'))) {
       anticonType += '-o';
     }
-
-    this.spin = autoSpin || this.spin;
+    if (anticonType.startsWith('loading') || forceSpin) {
+      this.spin = true;
+    } else {
+      this.spin = false;
+    }
 
     if (this.type !== anticonType) {
       this.type = anticonType;
-      this._changeIcon().then(svg => {
+      this._changeIcon()
+      .then(svg => {
         this._addExtraModifications(svg);
-      }).catch(err => {
+      })
+      .catch(err => {
         console.warn('[NG-ZORRO]', `You can find more about this error on http://ng.ant.design/components/icon/en\n`, err);
       });
     }
@@ -76,9 +92,9 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
 
   private _addExtraModifications(svg: SVGElement): void {
     if (this.spin || this.type === 'loading') {
-      this._renderer.addClass(svg, 'anticon-spin');
+      this._renderer.addClass(this._el, 'anticon-spin');
     } else {
-      this._renderer.removeClass(svg, 'anticon-spin');
+      this._renderer.removeClass(this._el, 'anticon-spin');
     }
   }
 
@@ -115,10 +131,10 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
    * Subscribe to DOM element attribute change events, so when user use ngClass or something the icon changes with it.
    */
   ngOnInit(): void {
-    const element = this._elementRef.nativeElement as HTMLElement;
-    if (element && !this.type) {
+    this._el = this._elementRef.nativeElement;
+    if (this._el && !this.type) {
       this._warnAPI();
-      this._classChangeHandler(element.className);
+      this._classChangeHandler(this._el.className);
       this._classNameObserver = new MutationObserver((mutations: MutationRecord[]) => {
         mutations
         .filter((mutation: MutationRecord) => mutation.attributeName === 'class')
