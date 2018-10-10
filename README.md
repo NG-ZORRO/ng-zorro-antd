@@ -93,7 +93,7 @@ And import style file link in `angular.json`.
 ```json
 {
   "styles": [
-    "node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css"
+    "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
   ]
 }
 ```
@@ -115,7 +115,7 @@ $ npm install
 $ npm run site:start
 ```
 
-Browser would open autometically at http://localhost:49152 .
+Browser would open automatically.
 
 ## 🤝 Contributing
 

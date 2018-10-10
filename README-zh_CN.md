@@ -86,7 +86,7 @@ export class AppModule {
 ```json
 {
   "styles": [
-    "node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css"
+    "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
   ]
 }
 ```
@@ -108,7 +108,7 @@ $ npm install
 $ npm run site:start
 ```
 
-浏览器会自动打开 http://localhost:49152 。
+浏览器会自动打开。
 
 ## 🤝 如何贡献
 
