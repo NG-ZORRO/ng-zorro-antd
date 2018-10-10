@@ -344,6 +344,7 @@
 @table-header-bg: @background-color-light;
 @table-header-color: @heading-color;
 @table-header-sort-bg: @background-color-base;
+@table-body-sort-bg: rgba(0, 0, 0, .01);
 @table-row-hover-bg: @primary-1;
 @table-selected-row-bg: #fafafa;
 @table-expanded-row-bg: #fbfbfb;
@@ -490,6 +491,10 @@
 // ---
 @skeleton-color:                      #f2f2f2;
 
+// Transfer
+// ---
+@transfer-disabled-bg:                @disabled-bg;
+
 // Message
 // ---
 @message-notice-content-padding:      10px 16px;
@@ -512,5 +517,14 @@
 @alert-error-border-color: ~`colorPalette("@{error-color}", 3)`;
 @alert-error-bg-color: ~`colorPalette("@{error-color}", 1)`;
 @alert-error-icon-color: @error-color;
+
+// List
+// ---
+@list-empty-text-padding:                    @padding-md;
+@list-item-padding:                          @padding-sm 0;
+@list-item-content-margin:                   0 0 @padding-md 0;
+@list-item-meta-margin-bottom:               @padding-md;
+@list-item-meta-avatar-margin-right:         @padding-md;
+@list-item-meta-title-margin-bottom:         @padding-sm;
 
 @import "./default.deperated.less";
