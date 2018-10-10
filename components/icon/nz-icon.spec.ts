@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { async, fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { LoadingOutline, QuestionCircleOutline, QuestionOutline } from '@ant-design/icons-angular/icons';
 import { NzIconDirective } from './nz-icon.directive';
@@ -19,12 +19,18 @@ describe('icon', () => {
     }).compileComponents();
   });
 
-  describe('expansions', () => {
+  describe('extensions', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestIconComponent);
       testComponent = fixture.debugElement.componentInstance;
       icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
     });
+
+    it('should get icon class name back', fakeAsync(() => {
+      fixture.detectChanges();
+      expect(icons[ 0 ].nativeElement.classList.contains('anticon-question'));
+      expect(icons[ 1 ].nativeElement.classList.contains('anticon-loading'));
+    }));
 
     it('should support spin and cancel', fakeAsync(() => {
       fixture.detectChanges();

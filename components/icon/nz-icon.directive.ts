@@ -74,12 +74,12 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     if (this.type !== anticonType) {
       this.type = anticonType;
       this._changeIcon()
-      .then(svg => {
-        this._addExtraModifications(svg);
-      })
-      .catch(err => {
-        console.warn('[NG-ZORRO]', `You can find more about this error on http://ng.ant.design/components/icon/en\n`, err);
-      });
+        .then(svg => {
+          this._addExtraModifications(svg);
+        })
+        .catch(err => {
+          console.warn('[NG-ZORRO]', `You can find more about this error on http://ng.ant.design/components/icon/en\n`, err);
+        });
     }
   }
 
@@ -100,13 +100,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
 
   private _getIconNameBack(): void {
     if (typeof this.type === 'string') {
-      let back = '';
-      if (this.theme && this.theme !== 'outline' && !this.type.endsWith('-o')) {
-        back = `anticon-${withSuffix(this.type, this.theme)}`;
-      } else {
-        back = `anticon-${this.type}`;
-      }
-      this._renderer.addClass(this._elementRef.nativeElement, back);
+      this._renderer.addClass(this._elementRef.nativeElement, `anticon-${this.type}`);
     }
   }
 
@@ -137,8 +131,8 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
       this._classChangeHandler(this._el.className);
       this._classNameObserver = new MutationObserver((mutations: MutationRecord[]) => {
         mutations
-        .filter((mutation: MutationRecord) => mutation.attributeName === 'class')
-        .forEach((mutation: MutationRecord) => this._classChangeHandler((mutation.target as HTMLElement).className));
+          .filter((mutation: MutationRecord) => mutation.attributeName === 'class')
+          .forEach((mutation: MutationRecord) => this._classChangeHandler((mutation.target as HTMLElement).className));
       });
       this._classNameObserver.observe(this._elementRef.nativeElement, { attributes: true });
     }
