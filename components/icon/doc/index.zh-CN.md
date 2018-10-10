@@ -66,32 +66,23 @@ NG-ZORRO 之前并没有图标组件，而是提供了基于字体文件的解�
 
 对于 Ant Design 提供的图标，我们提供了两种方式来加载图标资源文件。
 
-静态加载，通过在 `NzIconService` 中注册图标来实现静态引入，引入后的文件会被打包到 `.js` 文件中。可以全量引入，也可以按需引入，在 constructor 里或者在 `AppInitService` 里（推荐），例如：
+静态加载，通过在 `NzIconService` 中注册图标来实现静态引入，引入后的文件会被打包到 `.js` 文件中。在 constructor 里或者在 `AppInitService` 里（推荐），例如：
 
 ```ts
-import { IconDefinition } from '@ant-design/icons-angular';
-import * as AllIcons from '@ant-design/icons-angular/icons';
+import { ApartmentOutline } from '@ant-design/icons-angular/icons';
 import { NzIconService } from 'ng-zorro-antd';
-
-// import { ApartmentOutline } from '@ant-design/icons-angular/icons';
 
 export class AppComponent implements OnInit, AfterViewInit {
   constructor(private iconService: NzIconService) {
-    // Import all.
-    const antDesignIcons = AllIcons as {
-      [key: string]: IconDefinition;
-    };
-    this.iconService.addIcon(...Object.keys(antDesignIcons).map(
-      key => antDesignIcons[key])
-    );
-
     // Import what you need.
-    // this.iconService.addIcon(ApartmentOutline);
+    this.iconService.addIcon(ApartmentOutline);
   }
 }
 ```
 
-静态引入会增加包体积，我们非常不建议使用全量引入的方式，具体请看 Ant Design 的 [issue](https://github.com/ant-design/ant-design/issues/12011)。
+静态引入会增加包体积，所以我们建议尽可能地使用动态加载，如果要静态加载，也仅仅加载你需要用到的 icon，具体请看 Ant Design 的 [issue](https://github.com/ant-design/ant-design/issues/12011)。
+
+> 为了加快渲染速度，`NG-ZORRO` 本身用到的 icon 是静态引入的。而官网的图标是动态引入的。
 
 动态加载，这是为了减少包体积而提供的方式。当 NG-ZORRO 检测用户想要渲染的图标还没有静态引入时，会发起 HTTP 请求动态引入。你只需要配置 `angular.json` 文件：
 
@@ -100,7 +91,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   "assets": [
     {
       "glob": "**/*",
-      "input": "./node_modules/@ant-design/icons/inline-svg/",
+      "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
       "output": "/assets/"
     }
   ]

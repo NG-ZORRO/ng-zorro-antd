@@ -1,4 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
+
 import { NzAffixModule } from './affix/nz-affix.module';
 import { NzAlertModule } from './alert/nz-alert.module';
 import { NzAnchorModule } from './anchor/nz-anchor.module';
@@ -32,7 +33,6 @@ import { NzMenuModule } from './menu/nz-menu.module';
 import { NzMessageModule } from './message/nz-message.module';
 import { NzModalModule } from './modal/nz-modal.module';
 import { NzNotificationModule } from './notification/nz-notification.module';
-import { NzTreeSelectModule } from './tree-select/nz-tree-select.module';
 import { NzPaginationModule } from './pagination/nz-pagination.module';
 import { NzPopconfirmModule } from './popconfirm/nz-popconfirm.module';
 import { NzPopoverModule } from './popover/nz-popover.module';
@@ -52,6 +52,7 @@ import { NzTimePickerModule } from './time-picker/nz-time-picker.module';
 import { NzTimelineModule } from './timeline/nz-timeline.module';
 import { NzToolTipModule } from './tooltip/nz-tooltip.module';
 import { NzTransferModule } from './transfer/nz-transfer.module';
+import { NzTreeSelectModule } from './tree-select/nz-tree-select.module';
 import { NzTreeModule } from './tree/nz-tree.module';
 import { NzUploadModule } from './upload/nz-upload.module';
 

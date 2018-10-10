@@ -9,7 +9,7 @@ import {
   OnInit,
   Renderer2
 } from '@angular/core';
-import { withSuffix, IconDirective } from '@ant-design/icons-angular';
+import { IconDirective } from '@ant-design/icons-angular';
 import { NzIconService } from './nz-icon.service';
 
 /**
@@ -35,17 +35,13 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
    * Should be removed in next major version.
    */
   private _classChangeHandler(className: string): void {
-    if (!className) {
-      return;
-    }
+    if (!className) { return; }
 
     const forceSpin = className.indexOf('anticon-spin') > -1;
     const classArr = className.split(/\s/);
     let anticonType = classArr.filter(cls => cls !== 'anticon' && cls !== 'anticon-spin' && cls.match(/^anticon\-\w/))[ 0 ];
 
-    if (!anticonType) {
-      return;
-    }
+    if (!anticonType) { return; }
 
     anticonType = anticonType.replace('anticon-', '');
     if (anticonType.includes('verticle')) {
@@ -65,19 +61,10 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     if (!(anticonType.endsWith('-o') || anticonType.endsWith('-fill') || anticonType.endsWith('-twotone'))) {
       anticonType += '-o';
     }
-    if (anticonType.startsWith('loading') || forceSpin) {
-      this.spin = true;
-    } else {
-      this.spin = false;
-    }
 
     if (this.type !== anticonType) {
       this.type = anticonType;
-      this._changeIcon()
-        .then(svg => {
-          this._addExtraModifications(svg);
-        })
-        .catch(err => {
+      this._changeIcon().catch(err => {
           console.warn('[NG-ZORRO]', `You can find more about this error on http://ng.ant.design/components/icon/en\n`, err);
         });
     }

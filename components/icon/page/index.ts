@@ -1,7 +1,8 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-
-const mani = require('@ant-design/icons/lib/manifest').default;
+import { manifest } from '@ant-design/icons-angular';
+import { AccountBookFill } from '@ant-design/icons-angular/icons';
+import { NzIconService } from 'ng-zorro-antd';
 
 const categories = {
   direction : [
@@ -249,7 +250,7 @@ export class NzPageDemoIconComponent implements OnInit {
     const names = Object.keys(categories)
     .map(category => ({
       name : category,
-      icons: categories[ category ].filter(name => mani[ value ].indexOf(name) > -1)
+      icons: categories[ category ].filter(name => manifest[ value ].indexOf(name) > -1)
     }))
     .filter(({ icons }) => Boolean(icons.length));
 
@@ -258,7 +259,9 @@ export class NzPageDemoIconComponent implements OnInit {
     this.currentTheme = value;
   }
 
-  constructor(@Inject(DOCUMENT) private dom: any) {
+  constructor(@Inject(DOCUMENT) private dom: any, private _iconService: NzIconService) {
+    // This is to test that tree shake works!
+    this._iconService.addIcon(AccountBookFill);
   }
 
   ngOnInit() {

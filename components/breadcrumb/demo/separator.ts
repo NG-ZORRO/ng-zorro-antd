@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ArrowRightOutline } from '@ant-design/icons-angular/icons';
 
 @Component({
   selector: 'nz-demo-breadcrumb-separator',
