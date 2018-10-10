@@ -60,13 +60,17 @@ export class NzSpinComponent implements AfterViewInit {
 
   checkNested(): void {
     /** no way to detect empty https://github.com/angular/angular/issues/12530 **/
-    if (!isEmpty(this.containerElement.nativeElement)) {
-      this.isNested = true;
-      this.renderer.setStyle(this.el, 'display', 'block');
-    } else {
-      this.isNested = false;
-      this.renderer.removeStyle(this.el, 'display');
-    }
+    /** https://github.com/angular/material2/issues/11280 **/
+    this.zone.run(() => {
+      if (!isEmpty(this.containerElement.nativeElement)) {
+        this.isNested = true;
+        this.renderer.setStyle(this.el, 'display', 'block');
+      } else {
+        this.isNested = false;
+        this.renderer.removeStyle(this.el, 'display');
+      }
+    });
+
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2, private zone: NgZone) {
