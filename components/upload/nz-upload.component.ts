@@ -228,11 +228,14 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private genThumb(file: UploadFile): void {
-    if (typeof document === 'undefined' ||
+    if (
+      (this.nzListType !== 'picture' && this.nzListType !== 'picture-card') ||
+      typeof document === 'undefined' ||
       typeof window === 'undefined' ||
-      !(window as any).FileReader || !(window as any).File ||
+      !(window as any).FileReader ||
+      !(window as any).File ||
       !(file.originFileObj instanceof File) ||
-      file.thumbUrl !== undefined
+      file.thumbUrl != null
     ) {
       return;
     }

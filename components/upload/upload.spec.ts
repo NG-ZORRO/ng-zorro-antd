@@ -461,6 +461,25 @@ describe('upload', () => {
           expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT - 1);
         });
       });
+
+      describe('[nzListType]', () => {
+        describe(`should be only allow type is picture or picture-card generate thumbnail`, () => {
+          it('with text', () => {
+            instance.nzListType = 'text';
+            fixture.detectChanges();
+            pageObject.postSmall();
+            fixture.detectChanges();
+            expect(instance.comp.nzFileList[0].thumbUrl).toBeUndefined();
+          });
+          it('with picture', () => {
+            instance.nzListType = 'picture';
+            fixture.detectChanges();
+            pageObject.postSmall();
+            fixture.detectChanges();
+            expect(instance.comp.nzFileList[0].thumbUrl).not.toBeUndefined();
+          });
+        });
+      });
     });
 
     describe('CORS', () => {
