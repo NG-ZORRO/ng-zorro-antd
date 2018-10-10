@@ -64,16 +64,6 @@
             }
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "./components/test.ts",
-            "karmaConfig": "./components/karma.conf.js",
-            "polyfills": "./components/polyfills.ts",
-            "tsConfig": "./components/tsconfig.spec.json",
-            "scripts": []
-          }
-        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
@@ -102,6 +92,16 @@
           "options": {
             "tsConfig": "components/tsconfig.lib.json",
             "project": "components/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "components/test.ts",
+            "karmaConfig": "components/karma.conf.js",
+            "polyfills": "components/polyfills.ts",
+            "tsConfig": "components/tsconfig.spec.json",
+            "scripts": []
           }
         }
       }
