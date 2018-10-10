@@ -112,7 +112,5 @@ export class NzListComponent implements OnChanges {
 
   ngOnChanges(): void {
     this._setClassMap();
-    // Delayed detection refresh limited by nz-spin, issues [#11280](https://github.com/angular/material2/issues/11280)
-    setTimeout(() => this.cd.detectChanges());
   }
 }
