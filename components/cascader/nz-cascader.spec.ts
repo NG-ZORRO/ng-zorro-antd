@@ -1330,7 +1330,9 @@ describe('cascader', () => {
         filter(inputValue: string, path: CascaderOption[]): boolean {
           let flag = false;
           path.forEach(p => {
-            if (p.label.indexOf(inputValue) > -1) { flag = true; }
+            if (p.label.indexOf(inputValue) > -1) {
+              flag = true;
+            }
           });
           return flag;
         }
@@ -1381,7 +1383,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
-      expect(testComponent.cascader.nzColumns[0][0].disabled).toBe(true);
+      expect(testComponent.cascader.nzColumns[ 0 ][ 0 ].disabled).toBe(true);
       itemEl1.click();
       tick(300);
       fixture.detectChanges();
@@ -1396,9 +1398,9 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(testComponent.cascader.nzColumns[0][0].disabled).toBe(true);
-      expect(testComponent.cascader.nzColumns[0][1].disabled).toBe(undefined);
-      expect(testComponent.cascader.nzColumns[0][2].disabled).toBe(true);
+      expect(testComponent.cascader.nzColumns[ 0 ][ 0 ].disabled).toBe(true);
+      expect(testComponent.cascader.nzColumns[ 0 ][ 1 ].disabled).toBe(undefined);
+      expect(testComponent.cascader.nzColumns[ 0 ][ 2 ].disabled).toBe(true);
     });
     it('should support arrow in search mode', (done) => {
       const DOWN_ARROW = 40;
@@ -1424,7 +1426,6 @@ describe('cascader', () => {
         done();
       });
     });
-    // How can I test BACKSPACE?
     it('should not preventDefault left/right arrow in search mode', () => {
       const LEFT_ARROW = 37;
       const RIGHT_ARROW = 39;
@@ -1464,6 +1465,23 @@ describe('cascader', () => {
         expect(testComponent.values.join(',')).toBe('root');
         done();
       });
+    });
+    it('should re-prepare search results when nzOptions change', () => {
+      fixture.detectChanges();
+      testComponent.nzShowSearch = true;
+      cascader.nativeElement.click();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      let itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearch).toBe(true);
+      expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+      testComponent.nzOptions = options2;
+      fixture.detectChanges();
+      expect(testComponent.cascader.inSearch).toBe(true);
+      itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(itemEl1.innerText).toBe('Option1 / Option11');
+      console.log(testComponent.cascader.nzColumns[0], testComponent.cascader.nzOptions[0]);
     });
   });
 
@@ -1725,32 +1743,32 @@ const options3 = [ {
 } ];
 
 const options4 = [ {
-  value: 'zhejiang',
-  label: 'Zhejiang',
+  value   : 'zhejiang',
+  label   : 'Zhejiang',
   children: [ {
-    value: 'hangzhou',
-    label: 'Hangzhou',
+    value   : 'hangzhou',
+    label   : 'Hangzhou',
     disabled: true,
     children: [ {
-      value: 'xihu',
-      label: 'West Lake',
+      value : 'xihu',
+      label : 'West Lake',
       isLeaf: true
     } ]
   }, {
-    value: 'ningbo',
-    label: 'Ningbo',
+    value : 'ningbo',
+    label : 'Ningbo',
     isLeaf: true
   } ]
 }, {
-  value: 'jiangsu',
-  label: 'Jiangsu',
+  value   : 'jiangsu',
+  label   : 'Jiangsu',
   disabled: true,
   children: [ {
-    value: 'nanjing',
-    label: 'Nanjing',
+    value   : 'nanjing',
+    label   : 'Nanjing',
     children: [ {
-      value: 'zhonghuamen',
-      label: 'Zhong Hua Men',
+      value : 'zhonghuamen',
+      label : 'Zhong Hua Men',
       isLeaf: true
     } ]
   } ]
@@ -1785,10 +1803,11 @@ const options5 = [ {
     } ]
   } ]
 }, {
-  value   : 'root',
-  label   : 'Root',
+  value : 'root',
+  label : 'Root',
   isLeaf: true
 } ];
+
 @Component({
   selector: 'nz-demo-cascader-default',
   template: `
