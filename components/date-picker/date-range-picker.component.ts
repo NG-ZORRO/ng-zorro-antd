@@ -36,6 +36,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
     return !this.isRange && this.nzShowToday;
   }
 
+  pickerStyle: object; // Final picker style that contains width fix corrections etc.
   extraFooter: TemplateRef<void> | string;
 
   constructor(i18n: NzI18nService, private logger: LoggerService) {
@@ -60,6 +61,10 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
 
     if (changes.nzRenderExtraFooter) {
       this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter);
+    }
+
+    if (changes.nzShowTime || changes.nzStyle) {
+      this.setFixedPickerStyle();
     }
   }
 
@@ -92,5 +97,15 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
 
   onOpenChange(open: boolean): void {
     this.nzOnOpenChange.emit(open);
+  }
+
+  // Setup fixed style for picker
+  private setFixedPickerStyle(): void {
+    const showTimeFixes: { width?: string } = {};
+    if (this.nzShowTime) {
+      showTimeFixes.width = this.isRange ? '350px' : '195px';
+    }
+
+    this.pickerStyle = { ...showTimeFixes, ...this.nzStyle };
   }
 }
