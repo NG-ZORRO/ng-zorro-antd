@@ -271,7 +271,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
         event.preventDefault();
       }
     } else {
-      if (keyCode === SPACE || keyCode === TAB) {
+      if (keyCode === TAB) {
+      // if (keyCode === SPACE || keyCode === TAB) { // #2201
         this.nzOpen = false;
         this.nzOpenChange.emit(this.nzOpen);
         event.preventDefault();
