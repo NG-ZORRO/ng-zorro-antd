@@ -1,3 +1,4 @@
+import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -48,6 +49,8 @@ type AnimationState = 'enter' | 'leave' | null;
 // tslint:disable-next-line:no-any
 export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> implements OnInit, OnChanges, AfterViewInit, OnDestroy, ModalOptions<T> {
   private unsubscribe$ = new Subject<void>();
+  private previouslyFocusedElement: HTMLElement;
+  private focusTrap: FocusTrap;
 
   // tslint:disable-next-line:no-any
   locale: any = {};
@@ -125,6 +128,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     private viewContainer: ViewContainerRef,
     private nzMeasureScrollbarService: NzMeasureScrollbarService,
     private modalControl: NzModalControlService,
+    private focusTrapFactory: FocusTrapFactory,
     @Inject(NZ_MODAL_CONFIG) private config: NzModalConfig,
     @Inject(DOCUMENT) private document: any) { // tslint:disable-line:no-any
 
@@ -289,6 +293,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   private handleVisibleStateChange(visible: boolean, animation: boolean = true, closeResult?: R): Promise<void> {
     if (visible) { // Hide scrollbar at the first time when shown up
       this.changeBodyOverflow(1);
+      this.savePreviouslyFocusedElement();
+      this.trapFocus();
     }
 
     return Promise
@@ -298,6 +304,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
         this.nzAfterOpen.emit();
       } else {
         this.nzAfterClose.emit(closeResult);
+        this.restoreFocus();
         this.changeBodyOverflow(); // Show/hide scrollbar when animation is over
       }
     });
@@ -442,6 +449,29 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   private mergeDefaultConfig(config: NzModalConfig): NzModalConfig {
     return { ...NZ_MODAL_DEFAULT_CONFIG, ...config };
+  }
+
+  private savePreviouslyFocusedElement(): void {
+    if (this.document) {
+      this.previouslyFocusedElement = this.document.activeElement as HTMLElement;
+      this.previouslyFocusedElement.blur();
+    }
+  }
+
+  private trapFocus(): void {
+    if (!this.focusTrap) {
+      this.focusTrap = this.focusTrapFactory.create(this.elementRef.nativeElement);
+    }
+    this.focusTrap.focusInitialElementWhenReady();
+  }
+
+  private restoreFocus(): void {
+    if (this.previouslyFocusedElement) {
+      this.previouslyFocusedElement.focus();
+    }
+    if (this.focusTrap) {
+      this.focusTrap.destroy();
+    }
   }
 }
 
