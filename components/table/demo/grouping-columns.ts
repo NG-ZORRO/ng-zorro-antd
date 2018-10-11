@@ -11,23 +11,23 @@ import { Component, OnInit } from '@angular/core';
       [nzWidthConfig]="['100px','200px','200px','100px','100px',null,null,'60px']"
       [nzScroll]="{ x:'130%',y: '240px' }">
       <thead>
-        <tr style="height: 46px;">
+        <tr>
           <th rowspan="4" nzLeft="0px" nzShowFilter [nzFilters]="filterName" (nzFilterChange)="search($event)">Name</th>
           <th colspan="4">Other</th>
           <th colspan="2">Company</th>
           <th rowspan="4" nzRight="0px">Gender</th>
         </tr>
-        <tr style="height: 46px;">
+        <tr>
           <th rowspan="3" nzShowSort [(nzSort)]="sortValue" (nzSortChange)="search(searchName)">Age</th>
           <th colspan="3">Address</th>
           <th rowspan="3">Company Address</th>
           <th rowspan="3">Company Name</th>
         </tr>
-        <tr style="height: 46px;">
+        <tr>
           <th rowspan="2">Street</th>
           <th colspan="2">Block</th>
         </tr>
-        <tr style="height: 46px;">
+        <tr>
           <th>Building</th>
           <th>Door No.</th>
         </tr>
