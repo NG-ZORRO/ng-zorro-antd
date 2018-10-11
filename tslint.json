@@ -6,7 +6,7 @@
     "banana-in-box": true,
     "templates-no-negated-async": true,
     "no-life-cycle-call": false,
-    "prefer-output-readonly": false,
+    "prefer-output-readonly": true,
     "no-conflicting-life-cycle-hooks": false,
     "enforce-component-selector": false,
     "prefer-inline-decorator": true,
@@ -129,6 +129,10 @@
       "timeEnd",
       "trace"
     ],
+    "no-duplicate-variable": true,
+    "no-jasmine-focus": true,
+    "require-internal-with-underscore": true,
+    "rollup-config": true,
     "no-conditional-assignment": true,
     "no-construct": true,
     "no-debugger": true,
@@ -168,10 +172,30 @@
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "number-literal-format": true,
-    "object-literal-sort-keys": false,
+    "object-literal-sort-keys": [
+      true,
+      "ignore-case",
+      "match-declaration-order"
+    ],
     "object-literal-key-quotes": [
       true,
       "consistent"
+    ],
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          "public-static-field",
+          "public-instance-field",
+          "public-constructor",
+          "private-static-field",
+          "private-instance-field",
+          "private-constructor",
+          "public-instance-method",
+          "protected-instance-method",
+          "private-instance-method"
+        ]
+      }
     ],
     "object-literal-shorthand": true,
     "one-line": [
@@ -241,7 +265,12 @@
     "use-isnan": true,
     "variable-name": [
       true,
+      "ban-keywords",
       "allow-leading-underscore"
+    ],
+    "no-inner-declarations": [
+      true,
+      "function"
     ],
     "whitespace": [
       true,

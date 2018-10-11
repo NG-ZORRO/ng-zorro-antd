@@ -7,10 +7,10 @@ import {
   Input
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NzSizeLDSType } from '../core/types/size';
 import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
-export type NzRadioGroupSizeType = 'large' | 'default' | 'small';
 export type NzRadioButtonStyle = 'outline' | 'solid';
 
 import { NzRadioButtonComponent } from './nz-radio-button.component';
@@ -32,7 +32,7 @@ import { NzRadioComponent } from './nz-radio.component';
   ]
 })
 export class NzRadioGroupComponent implements AfterContentInit, ControlValueAccessor {
-  private _size: NzRadioGroupSizeType = 'default';
+  private _size: NzSizeLDSType = 'default';
   private _name: string;
   private _disabled: boolean;
   el: HTMLElement = this.elementRef.nativeElement;
@@ -45,11 +45,11 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
   radios: Array<NzRadioComponent | NzRadioButtonComponent> = [];
 
   @Input()
-  set nzSize(value: NzRadioGroupSizeType) {
+  set nzSize(value: NzSizeLDSType) {
     this._size = value;
   }
 
-  get nzSize(): NzRadioGroupSizeType {
+  get nzSize(): NzSizeLDSType {
     return this._size;
   }
 

@@ -9,10 +9,9 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NzSizeDSType } from '../core/types/size';
 
 import { toBoolean } from '../core/util/convert';
-
-export type NzSwitchSizeType = 'default' | 'small';
 
 @Component({
   selector           : 'nz-switch',
@@ -33,7 +32,7 @@ export type NzSwitchSizeType = 'default' | 'small';
 })
 export class NzSwitchComponent implements OnInit, ControlValueAccessor {
   private _disabled = false;
-  private _size: NzSwitchSizeType;
+  private _size: NzSizeDSType;
   private _loading = false;
   private _control = false;
   private _checkedChildren: string | TemplateRef<void>;
@@ -78,12 +77,12 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
   }
 
   @Input()
-  set nzSize(value: NzSwitchSizeType) {
+  set nzSize(value: NzSizeDSType) {
     this._size = value;
     this.setClassMap();
   }
 
-  get nzSize(): NzSwitchSizeType {
+  get nzSize(): NzSizeDSType {
     return this._size;
   }
 

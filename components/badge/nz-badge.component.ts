@@ -58,17 +58,6 @@ export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' |
   ]
 })
 export class NzBadgeComponent implements OnInit, AfterViewInit {
-  private _showDot = false;
-  private _showZero = false;
-  private _count: number;
-  maxNumberArray = [];
-  countArray = [];
-  countSingleArray = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
-  @ViewChild('contentElement') contentElement: ElementRef;
-  @Input() nzOverflowCount = 99;
-  @Input() nzText: string;
-  @Input() nzStyle: { [ key: string ]: string };
-  @Input() nzStatus: NzBadgeStatusType;
 
   @Input()
   set nzShowZero(value: boolean) {
@@ -105,6 +94,21 @@ export class NzBadgeComponent implements OnInit, AfterViewInit {
   get showSup(): boolean {
     return this.nzDot || this.nzCount > 0 || ((this.nzCount === 0) && this.nzShowZero);
   }
+  maxNumberArray = [];
+  countArray = [];
+  countSingleArray = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
+  @ViewChild('contentElement') contentElement: ElementRef;
+  @Input() nzOverflowCount = 99;
+  @Input() nzText: string;
+  @Input() nzStyle: { [ key: string ]: string };
+  @Input() nzStatus: NzBadgeStatusType;
+
+  constructor(private zone: NgZone, private renderer: Renderer2, private elementRef: ElementRef) {
+
+  }
+  private _showDot = false;
+  private _showZero = false;
+  private _count: number;
 
   checkContent(): void {
     if (isEmpty(this.contentElement.nativeElement)) {
@@ -112,10 +116,6 @@ export class NzBadgeComponent implements OnInit, AfterViewInit {
     } else {
       this.renderer.removeClass(this.elementRef.nativeElement, 'ant-badge-not-a-wrapper');
     }
-  }
-
-  constructor(private zone: NgZone, private renderer: Renderer2, private elementRef: ElementRef) {
-
   }
 
   ngOnInit(): void {

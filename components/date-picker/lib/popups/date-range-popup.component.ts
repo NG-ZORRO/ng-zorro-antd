@@ -237,11 +237,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     return this.selectedValue && !!this.selectedValue[ 1 ] && !!this.selectedValue[ 0 ];
   }
 
-  disabledStartTime = (value: Date): DisabledTimeConfig => {
+  disabledStartTime = (value: Date | Date[]): DisabledTimeConfig => {
     return this.disabledTime && this.disabledTime(value, 'start');
   }
 
-  disabledEndTime = (value: Date): DisabledTimeConfig => {
+  disabledEndTime = (value: Date | Date[]): DisabledTimeConfig => {
     return this.disabledTime && this.disabledTime(value, 'end');
   }
 

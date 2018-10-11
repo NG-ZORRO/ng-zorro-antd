@@ -15,6 +15,7 @@ import {
 } from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { NzSizeLDSType } from '../core/types/size';
 import { filterNotEmptyNode, isEmpty } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 import { NzWaveDirective } from '../core/wave/nz-wave.directive';
@@ -22,7 +23,6 @@ import { NzIconDirective } from '../icon/nz-icon.directive';
 
 export type NzButtonType = 'primary' | 'dashed' | 'danger';
 export type NzButtonShape = 'circle' | null ;
-export type NzButtonSize = 'small' | 'large' | 'default' ;
 
 @Component({
   selector           : '[nz-button]',
@@ -35,7 +35,7 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
   private _search = false;
   private _type: NzButtonType;
   private _shape: NzButtonShape;
-  private _size: NzButtonSize;
+  private _size: NzSizeLDSType;
   private _loading = false;
   private _block = false;
   private el: HTMLElement = this.elementRef.nativeElement;
@@ -97,12 +97,12 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
   }
 
   @Input()
-  set nzSize(value: NzButtonSize) {
+  set nzSize(value: NzSizeLDSType) {
     this._size = value;
     this.setClassMap();
   }
 
-  get nzSize(): NzButtonSize {
+  get nzSize(): NzSizeLDSType {
     return this._size;
   }
 

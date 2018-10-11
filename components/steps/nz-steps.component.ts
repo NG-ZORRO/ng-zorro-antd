@@ -11,6 +11,7 @@ import {
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NzSizeDSType } from '../core/types/size';
 
 import { toBoolean } from '../core/util/convert';
 
@@ -18,7 +19,6 @@ import { NzStepComponent } from './nz-step.component';
 
 export type NzDirectionType = 'horizontal' | 'vertical';
 export type NzStatusType = 'wait' | 'process' | 'finish' | 'error';
-export type NzSizeType = 'default' | 'small';
 
 @Component({
   selector           : 'nz-steps',
@@ -28,7 +28,7 @@ export type NzSizeType = 'default' | 'small';
 export class NzStepsComponent implements OnInit, OnDestroy, AfterContentInit {
   private _status: NzStatusType = 'process';
   private _current = 0;
-  private _size: NzSizeType = 'default';
+  private _size: NzSizeDSType = 'default';
   private _direction: NzDirectionType = 'horizontal';
   private _startIndex = 0;
   private unsubscribe$ = new Subject<void>();
@@ -38,12 +38,12 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterContentInit {
   customProcessDotTemplate: TemplateRef<{ $implicit: TemplateRef<void>, status: string, index: number }>;
   @ContentChildren(NzStepComponent) steps: QueryList<NzStepComponent>;
 
-  @Input() set nzSize(value: NzSizeType) {
+  @Input() set nzSize(value: NzSizeDSType) {
     this._size = value;
     this.updateClassMap();
   }
 
-  get nzSize(): NzSizeType {
+  get nzSize(): NzSizeDSType {
     return this._size;
   }
 

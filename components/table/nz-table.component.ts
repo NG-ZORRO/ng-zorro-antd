@@ -360,7 +360,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
         && this.tableHeaderElement.nativeElement
         && this.tableBodyElement
         && this.tableBodyElement.nativeElement) {
-        merge(
+        merge<MouseEvent>(
           fromEvent(this.tableHeaderElement.nativeElement, 'scroll'),
           fromEvent(this.tableBodyElement.nativeElement, 'scroll')
         ).pipe(takeUntil(this.unsubscribe$)).subscribe((data: MouseEvent) => {

@@ -12,10 +12,11 @@ import {
 import { Subscription } from 'rxjs';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { NzSizeLDSType } from '../core/types/size';
 import { InputBoolean } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
-import { ListSize, NzListGrid } from './interface';
+import { NzListGrid } from './interface';
 
 @Component({
   selector           : 'nz-list',
@@ -88,7 +89,7 @@ export class NzListComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() nzPagination: TemplateRef<void>;
 
-  @Input() nzSize: ListSize = 'default';
+  @Input() nzSize: NzSizeLDSType = 'default';
 
   @Input() @InputBoolean() nzSplit = true;
 

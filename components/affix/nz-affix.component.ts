@@ -29,6 +29,40 @@ import { throttleByAnimationFrameDecorator } from '../core/util/throttleByAnimat
 })
 export class NzAffixComponent implements OnInit, OnDestroy {
 
+  @Input()
+  set nzTarget(value: Element | Window) {
+    this.clearEventListeners();
+    this._target = value || window;
+    this.setTargetEventListeners();
+    this.updatePosition({});
+  }
+
+  @Input()
+  set nzOffsetTop(value: number) {
+    if (typeof value === 'undefined') {
+      return;
+    }
+    this._offsetTop = toNumber(value, null);
+  }
+
+  get nzOffsetTop(): number {
+    return this._offsetTop;
+  }
+
+  @Input()
+  set nzOffsetBottom(value: number) {
+    if (typeof value === 'undefined') {
+      return;
+    }
+    this._offsetBottom = toNumber(value, null);
+  }
+
+  @Output()
+  readonly nzChange: EventEmitter<boolean> = new EventEmitter();
+
+  constructor(private scrollSrv: NzScrollService, private _el: ElementRef, private cd: ChangeDetectorRef) {
+  }
+
   private timeout: any;
   private events = [
     'resize',
@@ -46,42 +80,9 @@ export class NzAffixComponent implements OnInit, OnDestroy {
 
   private _target: Element | Window = window;
 
-  @Input()
-  set nzTarget(value: Element | Window) {
-    this.clearEventListeners();
-    this._target = value || window;
-    this.setTargetEventListeners();
-    this.updatePosition({});
-  }
-
   private _offsetTop: number;
 
-  @Input()
-  set nzOffsetTop(value: number) {
-    if (typeof value === 'undefined') {
-      return;
-    }
-    this._offsetTop = toNumber(value, null);
-  }
-
-  get nzOffsetTop(): number {
-    return this._offsetTop;
-  }
-
   private _offsetBottom: number;
-
-  @Input()
-  set nzOffsetBottom(value: number) {
-    if (typeof value === 'undefined') {
-      return;
-    }
-    this._offsetBottom = toNumber(value, null);
-  }
-
-  @Output() nzChange: EventEmitter<boolean> = new EventEmitter();
-
-  constructor(private scrollSrv: NzScrollService, private _el: ElementRef, private cd: ChangeDetectorRef) {
-  }
 
   ngOnInit(): void {
     this.timeout = setTimeout(() => {
@@ -90,29 +91,10 @@ export class NzAffixComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setTargetEventListeners(): void {
-    this.clearEventListeners();
-    this.events.forEach((eventName: string) => {
-      this._target.addEventListener(eventName, this.updatePosition, false);
-    });
-  }
-
-  private clearEventListeners(): void {
-    this.events.forEach(eventName => {
-      this._target.removeEventListener(eventName, this.updatePosition, false);
-    });
-  }
-
   ngOnDestroy(): void {
     this.clearEventListeners();
     clearTimeout(this.timeout);
     (this.updatePosition as any).cancel();
-  }
-
-  private getTargetRect(target: Element | Window | null): ClientRect {
-    return target !== window ?
-      (target as HTMLElement).getBoundingClientRect() :
-      { top: 0, left: 0, bottom: 0 } as ClientRect;
   }
 
   getOffset(element: Element, target: Element | Window | null): {
@@ -137,51 +119,6 @@ export class NzAffixComponent implements OnInit, OnDestroy {
       width : elemRect.width,
       height: elemRect.height
     };
-  }
-
-  private genStyle(affixStyle: {}): string {
-    if (affixStyle == null) {
-      return '';
-    }
-    return Object.keys(affixStyle).map(key => {
-      const val = affixStyle[ key ];
-      return `${key}:${typeof val === 'string' ? val : val + 'px'}`;
-    }).join(';');
-  }
-
-  private setAffixStyle(e: any, affixStyle: {}): void {
-    const originalAffixStyle = this.affixStyle;
-    const isWindow = this._target === window;
-    if (e.type === 'scroll' && originalAffixStyle && affixStyle && isWindow) {
-      return;
-    }
-    if (shallowEqual(originalAffixStyle, affixStyle)) {
-      return;
-    }
-
-    const fixed = !!affixStyle;
-    const wrapEl = this.wrap.nativeElement as HTMLElement;
-    wrapEl.style.cssText = this.genStyle(affixStyle);
-    this.affixStyle = affixStyle;
-    const cls = 'ant-affix';
-    if (fixed) {
-      wrapEl.classList.add(cls);
-    } else {
-      wrapEl.classList.remove(cls);
-    }
-
-    if ((affixStyle && !originalAffixStyle) || (!affixStyle && originalAffixStyle)) {
-      this.nzChange.emit(fixed);
-    }
-  }
-
-  private setPlaceholderStyle(placeholderStyle: {}): void {
-    const originalPlaceholderStyle = this.placeholderStyle;
-    if (shallowEqual(placeholderStyle, originalPlaceholderStyle)) {
-      return;
-    }
-    (this._el.nativeElement as HTMLElement).style.cssText = this.genStyle(placeholderStyle);
-    this.placeholderStyle = placeholderStyle;
   }
 
   @throttleByAnimationFrameDecorator()
@@ -249,6 +186,70 @@ export class NzAffixComponent implements OnInit, OnDestroy {
       }
       this.setPlaceholderStyle(null);
     }
+  }
+
+  private setTargetEventListeners(): void {
+    this.clearEventListeners();
+    this.events.forEach((eventName: string) => {
+      this._target.addEventListener(eventName, this.updatePosition, false);
+    });
+  }
+
+  private clearEventListeners(): void {
+    this.events.forEach(eventName => {
+      this._target.removeEventListener(eventName, this.updatePosition, false);
+    });
+  }
+
+  private getTargetRect(target: Element | Window | null): ClientRect {
+    return target !== window ?
+      (target as HTMLElement).getBoundingClientRect() :
+      { top: 0, left: 0, bottom: 0 } as ClientRect;
+  }
+
+  private genStyle(affixStyle: {}): string {
+    if (affixStyle == null) {
+      return '';
+    }
+    return Object.keys(affixStyle).map(key => {
+      const val = affixStyle[ key ];
+      return `${key}:${typeof val === 'string' ? val : val + 'px'}`;
+    }).join(';');
+  }
+
+  private setAffixStyle(e: any, affixStyle: {}): void {
+    const originalAffixStyle = this.affixStyle;
+    const isWindow = this._target === window;
+    if (e.type === 'scroll' && originalAffixStyle && affixStyle && isWindow) {
+      return;
+    }
+    if (shallowEqual(originalAffixStyle, affixStyle)) {
+      return;
+    }
+
+    const fixed = !!affixStyle;
+    const wrapEl = this.wrap.nativeElement as HTMLElement;
+    wrapEl.style.cssText = this.genStyle(affixStyle);
+    this.affixStyle = affixStyle;
+    const cls = 'ant-affix';
+    if (fixed) {
+      wrapEl.classList.add(cls);
+    } else {
+      wrapEl.classList.remove(cls);
+    }
+
+    if ((affixStyle && !originalAffixStyle) || (!affixStyle && originalAffixStyle)) {
+      this.nzChange.emit(fixed);
+    }
+  }
+
+  private setPlaceholderStyle(placeholderStyle: {}): void {
+    const originalPlaceholderStyle = this.placeholderStyle;
+    if (shallowEqual(placeholderStyle, originalPlaceholderStyle)) {
+      return;
+    }
+    (this._el.nativeElement as HTMLElement).style.cssText = this.genStyle(placeholderStyle);
+    this.placeholderStyle = placeholderStyle;
   }
 
 }

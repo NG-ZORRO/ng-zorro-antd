@@ -13,16 +13,17 @@ import { NzUpdateHostClassService } from '../core/services/update-host-class.ser
 export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between';
 export type NzAlign = 'top' | 'middle' | 'bottom';
 export type NzType = 'flex' | null;
-export type Breakpoint = 'xxl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs';
 
-export interface BreakpointMap {
-  xs?: string;
-  sm?: string;
-  md?: string;
-  lg?: string;
-  xl?: string;
-  xxl?: string;
+export enum Breakpoint {
+  'xxl',
+  'xl',
+  'lg',
+  'md',
+  'sm',
+  'xs'
 }
+
+export type BreakpointMap = { [index in keyof typeof Breakpoint]: string };
 
 const responsiveMap: BreakpointMap = {
   xs : '(max-width: 575px)',
@@ -116,6 +117,7 @@ export class NzRowComponent implements OnInit {
   }
 
   watchMedia(): void {
+    // @ts-ignore
     Object.keys(responsiveMap).map((screen: Breakpoint) => {
       const matchBelow = matchMedia(responsiveMap[ screen ]).matches;
       if (matchBelow) {
