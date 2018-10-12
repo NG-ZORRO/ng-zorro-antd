@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "date-fns": "^1.29.0",
-    "@angular/cdk": "^6.0.0"
+    "@angular/cdk": "^6.0.0",
+    "@ant-design/icons-angular": "^0.0.1"
   },
   "peerDependencies": {
     "@angular/animations": "^6.0.0",
@@ -30,7 +31,6 @@
     "@angular/common": "^6.0.0",
     "@angular/core": "^6.0.0",
     "@angular/forms": "^6.0.0",
-    "@ng-zorro/icons": "^0.0.1",
     "tslib": "^1.9.0",
     "typescript": "~2.9.2"
   }
