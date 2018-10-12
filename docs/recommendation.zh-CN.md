@@ -12,6 +12,7 @@ title: 社区推荐
 脚手架|[NG ALAIN](http://ng-alain.com/) | 基于 `ng-zorro-antd` 的 Admin 系统解决方案
 可视化|[NGX-CHARTS](https://swimlane.github.io/ngx-charts/) | 基于 D3 的Angular 可视化组件库
 可视化|[NGX-CHARTS-DAG](https://swimlane.github.io/ngx-graph/) | 基于 Dagre 的有向无环图可视化组件库
+无线端|[NG-ZORRO-MOBILE](http://ng.mobile.ant.design/) | Ant Design Mobile 设计规范的 Angular 实现
 拖拽|[NGX-DND](https://swimlane.github.io/ngx-dnd/) | Angular 的拖拽组件库
 无限滚动|[NGX-INFINITE-SCROLL](https://github.com/orizens/ngx-infinite-scroll) | 无限滚动组件
 打包 |[Angular CLI](https://cli.angular.io/) | Angular 的配套打包工具
