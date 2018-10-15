@@ -31,20 +31,6 @@ export type NzButtonShape = 'circle' | null ;
   templateUrl        : './nz-button.component.html'
 })
 export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
-  private _ghost = false;
-  private _search = false;
-  private _type: NzButtonType;
-  private _shape: NzButtonShape;
-  private _size: NzSizeLDSType;
-  private _loading = false;
-  private _block = false;
-  private el: HTMLElement = this.elementRef.nativeElement;
-  private iconElement: HTMLElement;
-  private iconOnly = false;
-  private prefixCls = 'ant-btn';
-  private sizeMap = { large: 'lg', small: 'sm' };
-  @ViewChild('contentElement') contentElement: ElementRef;
-  @ContentChildren(NzIconDirective, { read: ElementRef }) listOfIconElement: QueryList<ElementRef>;
 
   @Input()
   set nzBlock(value: boolean) {
@@ -117,7 +103,27 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
     return this._loading;
   }
 
+  @ViewChild('contentElement') contentElement: ElementRef;
+  @ContentChildren(NzIconDirective, { read: ElementRef }) listOfIconElement: QueryList<ElementRef>;
   @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(this.ngZone, this.elementRef);
+
+  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService, private ngZone: NgZone) {
+    this.el = this.elementRef.nativeElement;
+    this.renderer.addClass(this.el, this.prefixCls);
+  }
+
+  private _ghost = false;
+  private _search = false;
+  private _type: NzButtonType;
+  private _shape: NzButtonShape;
+  private _size: NzSizeLDSType;
+  private _loading = false;
+  private _block = false;
+  private el: HTMLElement;
+  private iconElement: HTMLElement;
+  private iconOnly = false;
+  private prefixCls = 'ant-btn';
+  private sizeMap = { large: 'lg', small: 'sm' };
 
   updateIconDisplay(value: boolean): void {
     if (this.iconElement) {
@@ -194,15 +200,12 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
     return null;
   }
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService, private ngZone: NgZone) {
-  }
-
   ngAfterContentInit(): void {
     this.checkContent();
   }
 
   ngOnInit(): void {
-    this.renderer.addClass(this.el, this.prefixCls);
+    this.setClassMap();
     this.nzWave.ngOnInit();
   }
 
