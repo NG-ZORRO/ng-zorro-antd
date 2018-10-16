@@ -34,7 +34,7 @@ export type NzButtonShape = 'circle' | null ;
   templateUrl        : './nz-button.component.html'
 })
 export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
-  readonly el: HTMLElement;
+  readonly el: HTMLElement = this.elementRef.nativeElement;
   @ViewChild('contentElement') contentElement: ElementRef;
   @ContentChildren(NzIconDirective, { read: ElementRef }) listOfIconElement: QueryList<ElementRef>;
   @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(this.ngZone, this.elementRef);
@@ -111,7 +111,6 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
   }
 
   constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService, private ngZone: NgZone) {
-    this.el = this.elementRef.nativeElement;
   }
 
   private _ghost = false;

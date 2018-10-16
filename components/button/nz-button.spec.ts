@@ -60,7 +60,7 @@ describe('button', () => {
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(buttonGroup.nativeElement.firstElementChild.classList.contains('ant-btn-group')).toBe(true);
+      expect(buttonGroup.nativeElement.classList.contains('ant-btn-group')).toBe(true);
     });
     it('should have no white space', () => {
       fixture.detectChanges();
@@ -220,15 +220,15 @@ describe('button', () => {
     it('should have correct style', () => {
       fixture.detectChanges();
       expect(buttons.every(button => button.nativeElement.classList.contains('ant-btn-lg'))).toBe(true);
-      expect(buttonGroup.nativeElement.firstElementChild.classList.contains('ant-btn-group-lg')).toBe(true);
+      expect(buttonGroup.nativeElement.classList.contains('ant-btn-group-lg')).toBe(true);
       testComponent.size = 'default';
       fixture.detectChanges();
       expect(buttons.every(button => button.nativeElement.classList.contains('ant-btn-lg'))).toBe(false);
-      expect(buttonGroup.nativeElement.firstElementChild.classList.contains('ant-btn-group-lg')).toBe(false);
+      expect(buttonGroup.nativeElement.classList.contains('ant-btn-group-lg')).toBe(false);
       testComponent.size = 'small';
       fixture.detectChanges();
       expect(buttons.every(button => button.nativeElement.classList.contains('ant-btn-sm'))).toBe(true);
-      expect(buttonGroup.nativeElement.firstElementChild.classList.contains('ant-btn-group-sm')).toBe(true);
+      expect(buttonGroup.nativeElement.classList.contains('ant-btn-group-sm')).toBe(true);
     });
   });
   describe('icon', () => {
