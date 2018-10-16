@@ -1,5 +1,6 @@
 import {
   AfterContentInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
@@ -16,8 +17,9 @@ import {
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { NzSizeLDSType } from '../core/types/size';
-import { filterNotEmptyNode, isEmpty } from '../core/util/check';
+import { isEmpty } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
+import { findFirstNotEmptyNode, findLastNotEmptyNode } from '../core/util/dom';
 import { NzWaveDirective } from '../core/wave/nz-wave.directive';
 import { NzIconDirective } from '../icon/nz-icon.directive';
 
@@ -28,9 +30,14 @@ export type NzButtonShape = 'circle' | null ;
   selector           : '[nz-button]',
   providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
+  changeDetection    : ChangeDetectionStrategy.OnPush,
   templateUrl        : './nz-button.component.html'
 })
 export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
+  readonly el: HTMLElement;
+  @ViewChild('contentElement') contentElement: ElementRef;
+  @ContentChildren(NzIconDirective, { read: ElementRef }) listOfIconElement: QueryList<ElementRef>;
+  @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(this.ngZone, this.elementRef);
 
   @Input()
   set nzBlock(value: boolean) {
@@ -103,13 +110,8 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
     return this._loading;
   }
 
-  @ViewChild('contentElement') contentElement: ElementRef;
-  @ContentChildren(NzIconDirective, { read: ElementRef }) listOfIconElement: QueryList<ElementRef>;
-  @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(this.ngZone, this.elementRef);
-
   constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService, private ngZone: NgZone) {
     this.el = this.elementRef.nativeElement;
-    this.renderer.addClass(this.el, this.prefixCls);
   }
 
   private _ghost = false;
@@ -119,7 +121,6 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
   private _size: NzSizeLDSType;
   private _loading = false;
   private _block = false;
-  private el: HTMLElement;
   private iconElement: HTMLElement;
   private iconOnly = false;
   private prefixCls = 'ant-btn';
@@ -134,6 +135,7 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
   /** temp solution since no method add classMap to host https://github.com/angular/angular/issues/7289 */
   setClassMap(): void {
     const classMap = {
+      [ `${this.prefixCls}` ]                               : true,
       [ `${this.prefixCls}-${this.nzType}` ]                : this.nzType,
       [ `${this.prefixCls}-${this.nzShape}` ]               : this.nzShape,
       [ `${this.prefixCls}-${this.sizeMap[ this.nzSize ]}` ]: this.sizeMap[ this.nzSize ],
@@ -167,8 +169,8 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
 
   moveIcon(): void {
     if (this.listOfIconElement && this.listOfIconElement.length) {
-      const firstChildElement = this.findFirstNotEmptyNode(this.contentElement.nativeElement);
-      const lastChildElement = this.findLastNotEmptyNode(this.contentElement.nativeElement);
+      const firstChildElement = findFirstNotEmptyNode(this.contentElement.nativeElement);
+      const lastChildElement = findLastNotEmptyNode(this.contentElement.nativeElement);
       if (firstChildElement && (firstChildElement === this.listOfIconElement.first.nativeElement)) {
         this.renderer.insertBefore(this.el, firstChildElement, this.contentElement.nativeElement);
         this.iconElement = firstChildElement as HTMLElement;
@@ -176,28 +178,6 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
         this.renderer.appendChild(this.el, lastChildElement);
       }
     }
-  }
-
-  findFirstNotEmptyNode(element: HTMLElement): Node {
-    const children = element.childNodes;
-    for (let i = 0; i < children.length; i++) {
-      const node = children.item(i);
-      if (filterNotEmptyNode(node)) {
-        return node;
-      }
-    }
-    return null;
-  }
-
-  findLastNotEmptyNode(element: HTMLElement): Node {
-    const children = element.childNodes;
-    for (let i = children.length - 1; i >= 0; i--) {
-      const node = children.item(i);
-      if (filterNotEmptyNode(node)) {
-        return node;
-      }
-    }
-    return null;
   }
 
   ngAfterContentInit(): void {

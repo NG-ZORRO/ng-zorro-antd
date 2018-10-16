@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit } from '@angular/core';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { NzSizeLDSType } from '../core/types/size';
 
@@ -20,8 +20,6 @@ export class NzButtonGroupComponent implements OnInit {
     this._size = value;
     this.setClassMap();
   }
-
-  @ViewChild('groupWrapper') groupWrapper: ElementRef;
 
   constructor(private nzUpdateHostClassService: NzUpdateHostClassService, private elementRef: ElementRef) {
   }

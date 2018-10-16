@@ -1,12 +1,9 @@
-import {
-  Component,
-  Input,
-  TemplateRef
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TemplateRef } from '@angular/core';
 
 @Component({
   selector           : 'nz-card-meta',
   preserveWhitespaces: false,
+  changeDetection    : ChangeDetectionStrategy.OnPush,
   templateUrl        : './nz-card-meta.component.html',
   styles             : [ `
     :host {
@@ -20,9 +17,6 @@ import {
 export class NzCardMetaComponent {
   isDescriptionString: boolean;
   isTitleString: boolean;
-  private _title: string | TemplateRef<void>;
-  private _description: string | TemplateRef<void>;
-  @Input() nzAvatar: TemplateRef<void>;
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
@@ -43,4 +37,8 @@ export class NzCardMetaComponent {
   get nzDescription(): string | TemplateRef<void> {
     return this._description;
   }
+
+  @Input() nzAvatar: TemplateRef<void>;
+  private _title: string | TemplateRef<void>;
+  private _description: string | TemplateRef<void>;
 }
