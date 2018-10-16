@@ -5,7 +5,7 @@ import { Schema } from './schema';
 
 const ICON_ASSET_CONFIG = {
   'glob'  : '**/*',
-  'input' : './node_modules/@ant-design/icons/inline-svg/',
+  'input' : './node_modules/@ant-design/icons-angular/src/inline-svg/',
   'output': '/assets/'
 };
 

@@ -8,13 +8,14 @@ import { Component } from '@angular/core';
       <i nz-icon [type]="'setting'" [theme]="'fill'"></i>
       <i nz-icon [type]="'smile'" [theme]="'outline'"></i>
       <i nz-icon [type]="'sync'" [spin]="true"></i>
+      <!-- Loading with new API would spin automatically! -->
       <i nz-icon [type]="'loading'"></i>
       <br><br>
       <i class="anticon anticon-home"></i>
       <i class="anticon anticon-setting"></i>
       <i class="anticon anticon-smile"></i>
       <i class="anticon anticon-sync anticon-spin"></i>
-      <i class="anticon anticon-loading"></i>
+      <i class="anticon anticon-loading anticon-spin"></i>
     </div>
   `,
   styles: [ `

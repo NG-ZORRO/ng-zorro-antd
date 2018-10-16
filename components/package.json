@@ -23,7 +23,7 @@
   "dependencies": {
     "date-fns": "^1.29.0",
     "@angular/cdk": "^6.0.0",
-    "@ant-design/icons-angular": "0.0.1-alpha.1"
+    "@ant-design/icons-angular": "^0.0.1"
   },
   "peerDependencies": {
     "@angular/animations": "^6.0.0",
