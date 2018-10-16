@@ -65,32 +65,23 @@ All the icons will be rendered to `<svg>`, and styles and classes applied to `<i
 
 As for icons provided by Ant Design, there are two ways of importing them into your project.
 
-Static loading. By registering icons to `NzIconService` you load icons statically. The icons would be compiled into your bundles. You can register all of them or icons that will really get rendered, and do that in constructors or `AppInitService` (recommended).
+Static loading. By registering icons to `NzIconService` you load icons statically. The icons would be compiled into your bundles. Do it in constructors or `AppInitService` (recommended).
 
 ```ts
-import { IconDefinition } from '@ant-design/icons-angular';
-import * as AllIcons from '@ant-design/icons-angular/icons';
+import { ApartmentOutline } from '@ant-design/icons-angular/icons';
 import { NzIconService } from 'ng-zorro-antd';
-
-// import { ApartmentOutline } from '@ant-design/icons-angular/icons';
 
 export class AppComponent implements OnInit, AfterViewInit {
   constructor(private iconService: NzIconService) {
-    // Import all.
-    const antDesignIcons = AllIcons as {
-      [key: string]: IconDefinition;
-    };
-    this.iconService.addIcon(...Object.keys(antDesignIcons).map(
-      key => antDesignIcons[key])
-    );
-
     // Import what you need.
-    // this.iconService.addIcon(ApartmentOutline);
+    this.iconService.addIcon(ApartmentOutline);
   }
 }
 ```
 
-Static loading would increase your bundle's size so we strongly recommend you not to register all of the icons. You can track this [issue](https://github.com/ant-design/ant-design/issues/12011) of Ant Design for more details.
+Static loading would increase your bundle's size so we recommend use dynamic importing as much as you can. You can track this [issue](https://github.com/ant-design/ant-design/issues/12011) of Ant Design for more details.
+
+> Icons used by `NG-ZORRO` itself are imported statically to increase loading speed. However, icons demonstrated on the official website are loaded dynamically.
 
 Dynamic importing. This way would not increase your bundle's size. When NG-ZORRO detects that the icon you want to render hasn't been registered, it would fire a HTTP request to load it. All you have to do is to config your `angular.json` like this:
 
@@ -99,7 +90,7 @@ Dynamic importing. This way would not increase your bundle's size. When NG-ZORRO
   "assets": [
     {
       "glob": "**/*",
-      "input": "./node_modules/@ant-design/icons/inline-svg/",
+      "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
       "output": "/assets/"
     }
   ]

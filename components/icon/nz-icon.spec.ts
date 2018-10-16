@@ -15,13 +15,13 @@ describe('icon', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports     : [ CommonModule, NzIconModule ],
-      declarations: [ NzTestIconComponent, NzTestIconCustomComponent, NzTestIconIconfontComponent, NzTestIconOldApiComponent ]
+      declarations: [ NzTestIconExtensionsComponent, NzTestIconCustomComponent, NzTestIconIconfontComponent, NzTestIconOldApiComponent ]
     }).compileComponents();
   });
 
   describe('extensions', () => {
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestIconComponent);
+      fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
       testComponent = fixture.debugElement.componentInstance;
       icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
     });
@@ -77,7 +77,6 @@ describe('icon', () => {
 
     it('should support iconfont', async(() => {
       fixture.detectChanges();
-
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
@@ -104,24 +103,17 @@ describe('icon', () => {
       expect(icons[ 0 ].nativeElement.className).toContain('anticon');
       expect(icons[ 0 ].nativeElement.innerHTML).toContain('svg');
     });
-
-    it('should make loading spin', fakeAsync(() => {
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(icons[ 1 ].nativeElement.classList.contains('anticon-spin')).toBe(true);
-    }));
   });
 });
 
 @Component({
-  selector: 'nz-test-icon',
+  selector: 'nz-test-icon-extensions',
   template: `
     <i nz-icon [type]="type" [theme]="theme" [spin]="spin"></i>
     <i nz-icon [type]="'loading'" [theme]="theme"></i>
   `
 })
-export class NzTestIconComponent {
+export class NzTestIconExtensionsComponent {
   type = 'question';
   theme = 'outline';
   spin = true;
@@ -163,8 +155,10 @@ export class NzTestIconIconfontComponent {
 @Component({
   selector: 'nz-test-icon-old-api',
   template: `
-    <i nz-icon type="question"></i>
-    <i nz-icon type="loading"></i>
+    <i class="anticon anticon-question"></i>
+    <!-- Just to improve codecov. Compatibility code would be removed in 2.0.  -->
+    <i class="anticon anticon-verticle"></i>
+    <i class="anticon anticon-cross"></i>
   `
 })
 export class NzTestIconOldApiComponent {
