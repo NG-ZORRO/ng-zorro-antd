@@ -84,7 +84,7 @@
           [attr.title]="nzDisplayWith(node)"
           [class.ant-select-selection__choice__disabled]="node.isDisabled"
           class="ant-select-selection__choice">
-               <span *ngIf="!node.isDisabled" class="ant-select-selection__choice__remove" (click)="removeSelected(node)">
+               <span *ngIf="!node.isDisabled" class="ant-select-selection__choice__remove" (click)="removeSelected(node, true, $event)">
                  <i nz-icon type="close" class="ant-select-remove-icon"></i>
                </span>
           <span class="ant-select-selection__choice__content">{{ nzDisplayWith(node) }}</span>

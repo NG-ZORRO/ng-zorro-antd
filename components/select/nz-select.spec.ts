@@ -266,6 +266,20 @@ describe('nz-select component', () => {
       expect(testComponent.selectedValue.length).toBe(1);
       expect(testComponent.selectedValue[ 0 ]).toBe('jack');
     });
+    it('should prevent open the dropdown when click remove', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.nzSelectComponent.updateListOfSelectedValueFromTopControl([ 'jack' ]);
+      fixture.detectChanges();
+      expect(testComponent.selectedValue.length).toBe(1);
+      expect(testComponent.selectedValue[ 0 ]).toBe('jack');
+      select.nativeElement.querySelector('.ant-select-selection__choice__remove').click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.selectedValue.length).toBe(0);
+      expect(testComponent.nzSelectComponent.nzOpen).toBe(false);
+
+    }));
     it('should clear work', fakeAsync(() => {
       fixture.detectChanges();
       select.nativeElement.querySelector('.ant-select-selection__clear').click();
@@ -274,6 +288,7 @@ describe('nz-select component', () => {
       fixture.detectChanges();
       expect(testComponent.selectedValue.length).toBe(0);
     }));
+
   });
   describe('form', () => {
     let fixture;
