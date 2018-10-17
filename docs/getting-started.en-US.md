@@ -110,10 +110,28 @@ registerLocaleData(en);
 export class AppModule { }
 ```
 
-### 5. Add Styles
+### 5. Add Styles and SVG Assets
 
-Add `node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css` in your global style. You can get more info about how to customize styles at [customize theme](/docs/customize-theme/en) part.
+And import style and SVG icon assets file link in `angular.json`.
 
+You can get more info about how to customize styles at [customize theme](/docs/customize-theme/en) part.
+
+```json
+{
+  "assets": [
+    ...
+    {
+      "glob": "**/*",
+      "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+      "output": "/assets/"
+    }
+  ],
+  "styles": [
+    ...
+    "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
+  ]
+}
+```
 
 ## Customization
 * [Customize Theme](/docs/customize-theme/en)

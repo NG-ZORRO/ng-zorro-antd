@@ -115,9 +115,28 @@ export class AppModule { }
 ```
 这样就成功在全局引入了 `ng-zorro-antd`。
 
-### 3. 引入样式
+### 3. 引入样式与 SVG 资源
 
-在全局样式中引入 `node_modules/ng-zorro-antd/ng-zorro-antd.min.css` 文件。如果需要自定义主题样式，请参考[自定义主题](/docs/customize-theme/zh)部分。
+在 `angular.json` 文件中引入样式和 SVG icon 资源。
+
+如果需要自定义主题样式，请参考[自定义主题](/docs/customize-theme/zh)部分。
+
+```json
+{
+  "assets": [
+    ...
+    {
+      "glob": "**/*",
+      "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+      "output": "/assets/"
+    }
+  ],
+  "styles": [
+    ...
+    "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
+  ]
+}
+```
 
 ## 配置主题和字体
 

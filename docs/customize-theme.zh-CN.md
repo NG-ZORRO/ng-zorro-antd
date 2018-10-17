@@ -47,17 +47,3 @@ Ant Design 的样式使用了 [Less](http://lesscss.org/) 作为开发语言，�
 ```
 
 全部可被自定义 less 变量可以参考 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/scripts/site/_site/src/theme.less)。
-
-## 本地部署字体
-
-在 `src/theme.less` 文件中修改 `@icon-url` 变量， 可以将字体部署到本地，最新的 iconfont 可以在 [这里](https://github.com/ant-design/ant-design/releases/download/resource/iconfont-3.x.zip) 下载。
-
-例如通过以下设置可以将字体文件的部署位置指向 `assets/fonts` 文件夹下的 `iconfont` 文件
-
-```css
-// -------- 引入官方提供的 less 样式入口文件 -----------
-@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
-
-// -------- 自定义参数覆盖 -----------
-@icon-url               : "/assets/fonts/iconfont";
-```
