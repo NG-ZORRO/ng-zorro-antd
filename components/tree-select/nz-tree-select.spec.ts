@@ -300,9 +300,10 @@ describe('tree-select component', () => {
       expect(treeSelectComponent.nzOpen).toBe(true);
     }));
 
-
     it('should prevent open the dropdown when click remove', fakeAsync(() => {
       testComponent.value = ['1000122'];
+      fixture.detectChanges();
+      tick(200);
       fixture.detectChanges();
       expect(treeSelectComponent.selectedNodes.length).toBe(1);
       treeSelect.nativeElement.querySelector('.ant-select-selection__choice__remove').click();
