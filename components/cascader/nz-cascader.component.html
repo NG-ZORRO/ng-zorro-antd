@@ -18,7 +18,8 @@
       (change)="handlerInputChange($event)">
     <i *ngIf="showClearIcon"
       nz-icon
-      type="close"
+      type="close-circle"
+      theme="fill"
       [ngClass]="clearCls"
       [attr.title]="nzClearText"
       (click)="clearSelection($event)"></i>
