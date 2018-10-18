@@ -4,7 +4,7 @@
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=10.9.0 <11.0.0"
   },
   "scripts": {
     "start": "ng serve --port 0",
