@@ -81,12 +81,19 @@ export class AppModule {
 
 > `@angular/cli` 的用户不需要担心下面这项设置，但知道也挺有好处。
 
-然后在 `angular.json` 文件中引入样式。
+然后在 `angular.json` 文件中引入样式和 SVG icon 资源。
 
-```json
+```diff
 {
+  "assets": [
++   {
++     "glob": "**/*",
++     "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
++     "output": "/assets/"
++   }
+  ],
   "styles": [
-    "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
++   "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
   ]
 }
 ```

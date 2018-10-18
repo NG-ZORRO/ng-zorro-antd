@@ -88,12 +88,19 @@ export class AppModule {
 
 > `@angular/cli` users won't have to worried about things below but it's good to know.
 
-And import style file link in `angular.json`.
+And import style and SVG icon assets file link in `angular.json`.
 
-```json
+```diff
 {
+  "assets": [
++   {
++     "glob": "**/*",
++     "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
++     "output": "/assets/"
++   }
+  ],
   "styles": [
-    "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
++   "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
   ]
 }
 ```
