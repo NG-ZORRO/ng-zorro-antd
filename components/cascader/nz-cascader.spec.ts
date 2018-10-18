@@ -1481,7 +1481,6 @@ describe('cascader', () => {
       expect(testComponent.cascader.inSearch).toBe(true);
       itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
       expect(itemEl1.innerText).toBe('Option1 / Option11');
-      console.log(testComponent.cascader.nzColumns[0], testComponent.cascader.nzOptions[0]);
     });
   });
 

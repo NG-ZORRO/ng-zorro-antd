@@ -56,9 +56,8 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
       return breadcrumbs; // If there's no sub root, then stop the recurse and returns the generated breadcrumbs.
     }
     for (const child of children) {
-      if (child.outlet !== PRIMARY_OUTLET) {
-        continue; // Only parse components in primary router-outlet (in another word, router-outlet without a specific name).
-      } else {
+      if (child.outlet === PRIMARY_OUTLET) {
+        // Only parse components in primary router-outlet (in another word, router-outlet without a specific name).
         // Parse this layer and generate a breadcrumb item.
         const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
         const nextUrl = url + `/${routeURL}`;
@@ -76,7 +75,18 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private _injector: Injector) {}
+  navigate(url: string, e: MouseEvent): void {
+    e.preventDefault(); // Stop browsers' default navigation behavior.
+    try {
+      const router = this._injector.get(Router);
+      router.navigateByUrl(url);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  constructor(private _injector: Injector) {
+  }
 
   ngOnInit(): void {
     if (this.nzAutoGenerate) {
