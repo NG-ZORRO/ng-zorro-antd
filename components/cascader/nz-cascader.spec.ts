@@ -1325,6 +1325,27 @@ describe('cascader', () => {
         done();
       });
     });
+    it('should support nzLabelProperty', (done) => {
+      testComponent.nzShowSearch = true;
+      testComponent.nzLabelProperty = 'l';
+      fixture.detectChanges();
+      cascader.nativeElement.click();
+      fixture.detectChanges();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearch).toBe(true);
+      expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+      itemEl1.click();
+      fixture.whenStable().then(() => {
+        expect(testComponent.cascader.inSearch).toBe(false);
+        expect(testComponent.cascader.menuVisible).toBe(false);
+        expect(testComponent.cascader.inputValue).toBe('');
+        expect(testComponent.values.join(',')).toBe('zhejiang,hangzhou,xihu');
+        done();
+      });
+    });
     it('should support custom filter', (done) => {
       testComponent.nzShowSearch = {
         filter(inputValue: string, path: CascaderOption[]): boolean {
@@ -1643,28 +1664,35 @@ const ID_NAME_LIST = [ {
 const options1 = [ {
   value   : 'zhejiang',
   label   : 'Zhejiang',
+  l       : 'Zhejiang',
   children: [ {
     value   : 'hangzhou',
     label   : 'Hangzhou',
+    l       : 'Hangzhou',
     children: [ {
       value : 'xihu',
+      l     : 'West Lake',
       label : 'West Lake',
       isLeaf: true
     } ]
   }, {
     value : 'ningbo',
     label : 'Ningbo',
+    l     : 'Ningbo',
     isLeaf: true
   } ]
 }, {
   value   : 'jiangsu',
   label   : 'Jiangsu',
+  l       : 'Jiangsu',
   children: [ {
     value   : 'nanjing',
     label   : 'Nanjing',
+    l       : 'Nanjing',
     children: [ {
       value : 'zhonghuamen',
       label : 'Zhong Hua Men',
+      l     : 'Zhong Hua Men',
       isLeaf: true
     } ]
   } ]
