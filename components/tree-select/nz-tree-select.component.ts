@@ -239,7 +239,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     }
   }
 
-  removeSelected(node: NzTreeNode, emit: boolean = true): void {
+  removeSelected(node: NzTreeNode, emit: boolean = true, event?: MouseEvent): void {
     node.isSelected = false;
     node.isChecked = false;
     if (this.nzCheckable) {
@@ -250,6 +250,11 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     }
     if (emit) {
       this.nzRemoved.emit(node);
+    }
+
+    // Do not trigger the popup
+    if (event && event.stopPropagation) {
+      event.stopPropagation();
     }
   }
 

@@ -151,12 +151,17 @@ export class NzSelectTopControlComponent {
   }
 
   // tslint:disable-next-line:no-any
-  removeValueFormSelected(value: any): void {
+  removeValueFormSelected(value: any, event?: MouseEvent): void {
     if (this.nzDisabled || this.getPropertyFromValue(value, 'nzDisabled')) {
       return;
     }
     this._listOfSelectedValue = this.nzListOfSelectedValue.filter(item => item !== value);
     this.nzListOfSelectedValueChange.emit(this.nzListOfSelectedValue);
+
+    // Do not trigger the popup
+    if (event && event.stopPropagation) {
+      event.stopPropagation();
+    }
   }
 
   updateWidth(): void {
