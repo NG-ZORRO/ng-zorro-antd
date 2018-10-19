@@ -42,7 +42,7 @@ We are still adding two-tone icons right now, syncing to [antd](https://ant.desi
 
 After `1.7.0` version，we synced to Ant Design `3.9.x` and replaced font icons with svg icons which bring benefits below:
 
-- Complete offline usage of icon, no dependency of alipay cdn font icon file and no more empty square during downloading than no need to deploy icon font files locally either.
+- Complete offline usage of icon, no dependency of alipay cdn font icon file and no more empty square during downloading.
 - Much more display accuracy in lower-level screens.
 - Support multiple colors for icon.
 - No need to change built-in icons with overriding styles by providing more props in component.
