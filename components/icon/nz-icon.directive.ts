@@ -123,7 +123,10 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
       });
       this._classNameObserver.observe(this._elementRef.nativeElement, { attributes: true });
     }
-    this._renderer.addClass(this._elementRef.nativeElement, 'anticon');
+
+    if (!this._el.classList.contains('anticon')) {
+      this._renderer.setAttribute(this._el, 'class', `anticon ${this._el.className}`);
+    }
   }
 
   ngOnDestroy(): void {
