@@ -791,11 +791,11 @@ function generateUniqueId(): string {
 }
 
 function getButtonOk(modalElement: HTMLElement): HTMLButtonElement {
-  return isConfirmModal(modalElement) ? modalElement.querySelector('.ant-confirm-btns button:last-child') as HTMLButtonElement : modalElement.querySelector('.ant-modal-footer button:last-child') as HTMLButtonElement;
+  return isConfirmModal(modalElement) ? modalElement.querySelector('.ant-modal-confirm-btns button:last-child') as HTMLButtonElement : modalElement.querySelector('.ant-modal-footer button:last-child') as HTMLButtonElement;
 }
 
 function getButtonCancel(modalElement: HTMLElement): HTMLButtonElement {
-  return isConfirmModal(modalElement) ? modalElement.querySelector('.ant-confirm-btns button:first-child') as HTMLButtonElement : modalElement.querySelector('.ant-modal-footer button:first-child') as HTMLButtonElement;
+  return isConfirmModal(modalElement) ? modalElement.querySelector('.ant-modal-confirm-btns button:first-child') as HTMLButtonElement : modalElement.querySelector('.ant-modal-footer button:first-child') as HTMLButtonElement;
 }
 
 function getButtonClose(modalElement: HTMLElement): HTMLButtonElement { // For normal modal only
@@ -803,7 +803,7 @@ function getButtonClose(modalElement: HTMLElement): HTMLButtonElement { // For n
 }
 
 function isConfirmModal(modalElement: HTMLElement): boolean {
-  return !!modalElement.querySelector('.ant-confirm');
+  return !!modalElement.querySelector('.ant-modal-confirm');
 }
 
 function isButtonLoading(buttonElement: HTMLButtonElement): boolean {

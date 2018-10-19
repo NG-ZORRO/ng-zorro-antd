@@ -97,7 +97,7 @@ export class NzModalService {
     }
 
     options.nzModalType = 'confirm';
-    options.nzClassName = `ant-confirm ant-confirm-${confirmType} ${options.nzClassName || ''}`;
+    options.nzClassName = `ant-modal-confirm ant-modal-confirm-${confirmType} ${options.nzClassName || ''}`;
     options.nzMaskClosable = false;
     return this.create(options);
   }
