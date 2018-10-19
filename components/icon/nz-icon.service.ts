@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpBackend } from '@angular/common/http';
 import { Inject, Injectable, Optional, RendererFactory2 } from '@angular/core';
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
 import {
@@ -75,11 +75,11 @@ export class NzIconService extends IconService {
 
   constructor(
     protected _rendererFactory: RendererFactory2,
-    @Optional() protected _http: HttpClient,
+    @Optional() protected _handler: HttpBackend,
     // tslint:disable:no-any
     @Optional() @Inject(DOCUMENT) protected _document: any
   ) {
-    super(_rendererFactory, _http, _document);
+    super(_rendererFactory, _handler, _document);
     const iconsUsedByZorro: IconDefinition[] = [
       CalendarOutline,
       CheckCircleFill,
