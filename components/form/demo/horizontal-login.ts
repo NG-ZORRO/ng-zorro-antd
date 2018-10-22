@@ -11,7 +11,7 @@ import {
     <form nz-form [nzLayout]="'inline'" [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
         <nz-form-control>
-          <nz-input-group nzPrefixIcon="anticon anticon-user">
+          <nz-input-group [nzPrefix]="prefixUser">
             <input formControlName="userName" nz-input placeholder="Username">
           </nz-input-group>
           <nz-form-explain *ngIf="validateForm.get('userName').dirty && validateForm.get('userName').errors">Please input your username!</nz-form-explain>
@@ -19,7 +19,7 @@ import {
       </nz-form-item>
       <nz-form-item>
         <nz-form-control>
-          <nz-input-group nzPrefixIcon="anticon anticon-lock">
+          <nz-input-group [nzPrefix]="prefixLock">
             <input formControlName="password" nz-input type="password" placeholder="Password">
           </nz-input-group>
           <nz-form-explain *ngIf="validateForm.get('password').dirty && validateForm.get('password').errors">Please input your Password!</nz-form-explain>
@@ -30,7 +30,10 @@ import {
           <button nz-button nzType="primary" [disabled]="!validateForm.valid">Log in</button>
         </nz-form-control>
       </nz-form-item>
-    </form>`
+    </form>
+    <ng-template #prefixUser><i nz-icon type="user"></i></ng-template>
+    <ng-template #prefixLock><i nz-icon type="lock"></i></ng-template>
+`
 })
 export class NzDemoFormHorizontalLoginComponent implements OnInit {
   validateForm: FormGroup;

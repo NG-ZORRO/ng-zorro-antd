@@ -37,18 +37,11 @@ import { environment } from '../../../environments/environment';
       <section class="highlight-wrapper" [ngClass]="{'highlight-wrapper-expand':nzExpanded}">
         <div class="highlight">
           <div class="code-box-actions">
-            <nz-tooltip [nzTitle]="'Edit On StackBlitz'">
-              <i nz-tooltip class="anticon anticon-form code-box-code-copy" (click)="openOnStackBlitz()"></i>
-            </nz-tooltip>
-            <nz-tooltip [nzTitle]="'Copy Code'">
-              <i nz-tooltip class="anticon anticon-copy code-box-code-copy" [class.anticon-copy]="!_copied" [class.anticon-check]="_copied" [class.ant-tooltip-open]="_copied" (click)="copyCode(nzRawCode)"></i>
-            </nz-tooltip>
-            <nz-tooltip [nzTitle]="'Copy Generate Command'" *ngIf="nzGenerateCommand">
-              <i nz-tooltip class="anticon anticon-code-o code-box-code-copy" [class.anticon-code-o]="!_commandCopied" [class.anticon-check]="_commandCopied" [class.ant-tooltip-open]="_commandCopied" (click)="copyGenerateCommand(nzGenerateCommand)"></i>
-            </nz-tooltip>
+            <i [nzTitle]="'Edit On StackBlitz'" nz-tooltip nz-icon type="form" class="code-box-code-copy" (click)="openOnStackBlitz()"></i>
+            <i [nzTitle]="'Copy Code'" nz-tooltip nz-icon [type]="_copied?'check':'copy'" class="code-box-code-copy" [class.ant-tooltip-open]="_copied" (click)="copyCode(nzRawCode)"></i>
+            <i [nzTitle]="'Copy Generate Command'" *ngIf="nzGenerateCommand" nz-tooltip  nz-icon [type]="_commandCopied?'check':'code'" class="code-box-code-copy" [class.ant-tooltip-open]="_commandCopied" (click)="copyGenerateCommand(nzGenerateCommand)"></i>
           </div>
           <ng-content select="[code]"></ng-content>
-
           <nz-highlight [nzCode]="_code" [nzLanguage]="'typescript'"></nz-highlight>
         </div>
       </section>

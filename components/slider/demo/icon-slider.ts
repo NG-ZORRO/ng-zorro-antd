@@ -4,19 +4,19 @@ import { Component, OnInit } from '@angular/core';
   selector: 'nz-demo-slider-icon-slider',
   template: `
     <div class="icon-wrapper test-class">
-      <i [ngClass]="preIconClassMap"></i>
+      <i nz-icon type="frown" [class.icon-highlight]="preHighLight"></i>
       <nz-slider [nzMin]="0" [nzMax]="20" [(ngModel)]="sliderValue"></nz-slider>
-      <i [ngClass]="nextIconClassMap"></i>
+      <i nz-icon type="smile" [class.icon-highlight]="nextHighLight"></i>
     </div>
   `,
   styles  : [
-      `
+    `
       .icon-wrapper {
         position: relative;
         padding: 0px 30px;
       }
 
-      .icon-wrapper ::ng-deep .anticon {
+      [nz-icon] {
         position: absolute;
         top: -2px;
         width: 16px;
@@ -26,12 +26,16 @@ import { Component, OnInit } from '@angular/core';
         color: rgba(0, 0, 0, .25);
       }
 
-      .icon-wrapper ::ng-deep .anticon:first-child {
+      [nz-icon]:first-child {
         left: 0;
       }
 
-      .icon-wrapper ::ng-deep .anticon:last-child {
+      [nz-icon]:last-child {
         right: 0;
+      }
+
+      .icon-highlight{
+        color: rgba(0, 0, 0, 0.45);
       }
     `
   ]
@@ -41,15 +45,8 @@ export class NzDemoSliderIconSliderComponent implements OnInit {
   min = 0;
   max = 20;
   mid = parseFloat(((this.max - this.min) / 2).toFixed(5));
-  preIconClassMap = {
-    'anticon'        : true,
-    'anticon-frown-o': true
-  };
-  nextIconClassMap = {
-    'anticon'        : true,
-    'anticon-smile-o': true
-  };
-
+  preHighLight = false;
+  nextHighLight = false;
   _sliderValue;
   set sliderValue(value: number) {
     this._sliderValue = value;
@@ -66,8 +63,8 @@ export class NzDemoSliderIconSliderComponent implements OnInit {
 
   highlightIcon() {
     const lower = this._sliderValue >= this.mid;
-    this.preIconClassMap[ 'anticon-highlight' ] = !lower;
-    this.nextIconClassMap[ 'anticon-highlight' ] = lower;
+    this.preHighLight = !lower;
+    this.nextHighLight = lower;
   }
 
 }
