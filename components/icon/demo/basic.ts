@@ -18,12 +18,12 @@ import { Component } from '@angular/core';
       <i class="anticon anticon-loading anticon-spin"></i>
     </div>
   `,
-  styles: [ `
+  styles  : [ `
     .icons-list > .anticon {
       margin-right: 6px;
       font-size: 24px;
     }
-  `]
+  ` ]
 })
 export class NzDemoIconBasicComponent {
 }

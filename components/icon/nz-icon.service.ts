@@ -69,8 +69,7 @@ export class NzIconService extends IconService {
   }
 
   createIconfontIcon(type: string): SVGElement {
-    const svgString = `<svg><use xlink:href="${type}"></svg>`;
-    return this._createSVGElementFromString(svgString);
+    return this._createSVGElementFromString(`<svg><use xlink:href="${type}"></svg>`);
   }
 
   constructor(
