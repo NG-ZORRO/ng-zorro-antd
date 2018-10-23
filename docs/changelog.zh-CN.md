@@ -14,9 +14,19 @@ timeline: true
 
 ---
 
+## 1.7.1
+`2018-10-23`
+
+### Bug Fixes
+
+* **drawer:** 修复偏移量为百分比时的显示问题 ([#2334](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2334)) ([9e07702](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9e07702)), closes [#2333](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2333)
+* **icon:** 修复丢失图标问题 ([#2321](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2321)) ([af4ddfb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/af4ddfb)), closes [#2326](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2326)
+* **icon:** 修复图标使用方式更改引起的其他问题 ([#2325](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2325)) ([8a0d412](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8a0d412))
+* **schematics:** 修复 schematics 部分的问题 ([#2328](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2328)) ([a7beda8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a7beda8))
+
 ## 1.7.0
 
-`date`
+`2018-10-18`
 
 ### SVG icon 升级指南
 
