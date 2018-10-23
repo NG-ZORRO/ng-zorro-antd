@@ -1,3 +1,16 @@
+<a name="1.7.1"></a>
+## [1.7.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.7.0...1.7.1) (2018-10-23)
+
+
+### Bug Fixes
+
+* **drawer:** style error when the unit is percentage ([#2334](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2334)) ([9e07702](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9e07702)), closes [#2333](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2333)
+* **icon:** fix icon miss in components ([#2321](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2321)) ([af4ddfb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/af4ddfb)), closes [#2326](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2326)
+* **icon:** fix icons problems ([#2325](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2325)) ([8a0d412](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8a0d412))
+* **schematics:** fix object comparisons method ([#2328](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2328)) ([a7beda8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a7beda8))
+
+
+
 <a name="1.7.0"></a>
 # [1.7.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.6.0...1.7.0) (2018-10-18)
 
