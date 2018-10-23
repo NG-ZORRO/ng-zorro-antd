@@ -1916,7 +1916,7 @@ export class NzDemoCascaderDefaultComponent {
 
   fakeChangeOn = (node: any, index: number): boolean => {
     return node.value === 'zhejiang';
-  };
+  }
 
   clearSelection(): void {
     this.cascader.clearSelection();
@@ -1975,7 +1975,7 @@ export class NzDemoCascaderLoadDataComponent {
         }
       }, 500);
     });
-  };
+  }
 
   public addCallTimes(): void {
   }
