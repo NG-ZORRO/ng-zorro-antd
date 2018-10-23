@@ -109,7 +109,7 @@ See [Getting Started](https://ng.ant.design/docs/getting-started/en) for more de
 
 ## 🔗 Links
 
-* [ng-zorro-antd-mobile](https://github/NG-ZORRO/ng-zorro-antd-mobile)
+* [ng-zorro-antd-mobile](https://github.com/NG-ZORRO/ng-zorro-antd-mobile)
 * [ng-alain](https://github.com/ng-alain/ng-alain)
 * [Snippet extension for VSCode](https://marketplace.visualstudio.com/items?itemName=cipchk.ng-zorro-vscode)
 
