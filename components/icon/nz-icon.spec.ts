@@ -28,27 +28,43 @@ describe('icon', () => {
 
     it('should get icon class name back', fakeAsync(() => {
       fixture.detectChanges();
-      expect(icons[ 0 ].nativeElement.classList.contains('anticon-question'));
-      expect(icons[ 1 ].nativeElement.classList.contains('anticon-loading'));
+      tick(1000);
+      fixture.detectChanges();
+      expect(icons[ 0 ].nativeElement.classList.contains('anticon')).toBe(true);
+      expect(icons[ 0 ].nativeElement.classList.contains('anticon-question')).toBe(true);
+      expect(icons[ 1 ].nativeElement.classList.contains('anticon-loading')).toBe(true);
+    }));
+
+    it('should change class name when type changes', fakeAsync(() => {
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      testComponent.type = 'question-circle';
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      expect(icons[ 0 ].nativeElement.classList.contains('anticon')).toBe(true);
+      expect(icons[ 0 ].nativeElement.classList.contains('anticon-question-circle')).toBe(true);
+      expect(icons[ 0 ].nativeElement.classList.contains('anticon-question')).not.toBe(true);
     }));
 
     it('should support spin and cancel', fakeAsync(() => {
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
-      expect(icons[ 0 ].nativeElement.classList.contains('anticon-spin')).toBe(true);
+      expect(icons[ 0 ].nativeElement.firstChild.classList.contains('anticon-spin')).toBe(true);
       testComponent.spin = false;
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
-      expect(icons[ 0 ].nativeElement.classList.contains('anticon-spin')).toBe(false);
+      expect(icons[ 0 ].nativeElement.firstChild.classList.contains('anticon-spin')).toBe(false);
     }));
 
     it('should make loading spin', fakeAsync(() => {
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
-      expect(icons[ 1 ].nativeElement.classList.contains('anticon-spin')).toBe(true);
+      expect(icons[ 1 ].nativeElement.firstChild.classList.contains('anticon-spin')).toBe(true);
     }));
   });
 
