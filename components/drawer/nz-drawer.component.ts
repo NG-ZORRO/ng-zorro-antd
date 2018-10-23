@@ -54,19 +54,37 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     drawerRef: this as NzDrawerRef<R>
   };
 
+  get offsetTransform(): string {
+    if (!this.isOpen || (this.nzOffsetX + this.nzOffsetY) === 0) {
+      return null;
+    }
+    switch (this.nzPlacement) {
+      case 'left':
+        return `translateX(${this.nzOffsetX}px)`;
+      case 'right':
+        return `translateX(-${this.nzOffsetX}px)`;
+      case 'top':
+        return `translateY(${this.nzOffsetY}px)`;
+      case 'bottom':
+        return `translateY(-${this.nzOffsetY}px)`;
+    }
+  }
+
   get transform(): string {
+
+    if (this.isOpen) {
+      return null;
+    }
 
     switch (this.nzPlacement) {
       case 'left':
-        return this.isOpen ? `translateX(${this.nzOffsetX}px)` : `translateX(-${this.width})`;
+        return `translateX(-100%)`;
       case 'right':
-        return this.isOpen ? `translateX(-${this.nzOffsetX}px)` : `translateX(${this.width})`;
+        return `translateX(100%)`;
       case 'top':
-        return this.isOpen ? `translateY(${this.nzOffsetY}px)` : `translateY(-${this.height})`;
+        return `translateY(-100%)`;
       case 'bottom':
-        return this.isOpen ? `translateY(-${this.nzOffsetY}px)` : `translateY(${this.height})`;
-      default:
-        return '';
+        return `translateY(100%)`;
     }
   }
 
@@ -221,9 +239,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
       const childInjector = new PortalInjector(this.injector, new WeakMap([ [ NzDrawerRef, this ] ]));
       const componentPortal = new ComponentPortal<T>(this.nzContent, null, childInjector);
       const componentRef = this.bodyPortalOutlet.attachComponentPortal(componentPortal);
-      if (this.nzContentParams) {
-        Object.assign(componentRef.instance, this.nzContentParams);
-      }
+      Object.assign(componentRef.instance, this.nzContentParams);
       componentRef.changeDetectorRef.detectChanges();
     }
   }
