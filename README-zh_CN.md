@@ -102,7 +102,7 @@ export class AppModule {
 
 ## 🔗 链接
 
-* [ng-zorro-antd-mobile](https://github/NG-ZORRO/ng-zorro-antd-mobile)
+* [ng-zorro-antd-mobile](https://github.com/NG-ZORRO/ng-zorro-antd-mobile)
 * [ng-alain](https://github.com/ng-alain/ng-alain)
 * [VSCode 的 snippet 扩展](https://marketplace.visualstudio.com/items?itemName=cipchk.ng-zorro-vscode)
 
