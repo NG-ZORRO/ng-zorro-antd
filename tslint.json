@@ -20,7 +20,6 @@
     "no-output-rename": true,
     "no-output-on-prefix": true,
     "no-forward-ref": false,
-    "no-unused-css": true,
     "use-life-cycle-interface": true,
     "contextual-life-cycle": true,
     "trackBy-function": true,

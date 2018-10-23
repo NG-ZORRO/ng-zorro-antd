@@ -24,7 +24,7 @@ import { Component } from '@angular/core';
     </div>
   `,
   styles  : [ `
-    .icons-list > .anticon {
+    [nz-icon] {
       margin-right: 6px;
       font-size: 24px;
     }

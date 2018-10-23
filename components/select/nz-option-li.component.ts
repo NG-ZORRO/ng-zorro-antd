@@ -20,6 +20,7 @@ export class NzOptionLiComponent {
   active = false;
   @Input() nzOption: NzOptionComponent;
   @Input() nzShowActive = true;
+  @Input() nzMode = 'default';
   // tslint:disable-next-line:no-any
   @Input() compareWith: (o1: any, o2: any) => boolean;
 

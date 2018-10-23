@@ -10,20 +10,14 @@ import { Component } from '@angular/core';
       <i nz-icon [type]="'sync'" [spin]="true"></i>
       <!-- Loading with new API would spin automatically! -->
       <i nz-icon [type]="'loading'"></i>
-      <br><br>
-      <i class="anticon anticon-home"></i>
-      <i class="anticon anticon-setting"></i>
-      <i class="anticon anticon-smile"></i>
-      <i class="anticon anticon-sync anticon-spin"></i>
-      <i class="anticon anticon-loading anticon-spin"></i>
     </div>
   `,
-  styles  : [ `
-    .icons-list > .anticon {
+  styles: [ `
+    [nz-icon] {
       margin-right: 6px;
       font-size: 24px;
     }
-  ` ]
+  `]
 })
 export class NzDemoIconBasicComponent {
 }

@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
     <nz-badge nzDot><a>Link something</a></nz-badge>
   `,
   styles  : [
-      `.anticon-notification {
+      `[nz-icon] {
       width: 16px;
       height: 16px;
       line-height: 16px;
