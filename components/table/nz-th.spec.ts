@@ -77,11 +77,13 @@ describe('nz-th', () => {
     });
     it('should showSort work', () => {
       fixture.detectChanges();
-      expect(th.nativeElement.classList).not.toContain('ant-table-column-has-filters');
+      expect(th.nativeElement.classList).not.toContain('ant-table-column-has-actions');
+      expect(th.nativeElement.classList).not.toContain('ant-table-column-has-sorters');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter')).toBeNull();
       testComponent.showSort = true;
       fixture.detectChanges();
-      expect(th.nativeElement.classList).toContain('ant-table-column-has-filters');
+      expect(th.nativeElement.classList).toContain('ant-table-column-has-actions');
+      expect(th.nativeElement.classList).toContain('ant-table-column-has-sorters');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter')).toBeDefined();
     });
     it('should sort change work', () => {
@@ -112,19 +114,19 @@ describe('nz-th', () => {
       fixture.detectChanges();
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-up').classList).toContain('off');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-down').classList).toContain('off');
-      th.nativeElement.querySelector('.ant-table-column-sorter-up').firstElementChild.click();
+      th.nativeElement.querySelector('.ant-table-column-sorters').firstElementChild.click();
       fixture.detectChanges();
-      expect(testComponent.sort).toBe('ascend');
-      expect(testComponent.sortChange).toHaveBeenCalledTimes(1);
-      expect(th.nativeElement.querySelector('.ant-table-column-sorter-up').classList).toContain('on');
-      expect(th.nativeElement.querySelector('.ant-table-column-sorter-down').classList).toContain('off');
-      th.nativeElement.querySelector('.ant-table-column-sorter-down').firstElementChild.click();
-      fixture.detectChanges();
-      expect(testComponent.sortChange).toHaveBeenCalledTimes(2);
       expect(testComponent.sort).toBe('descend');
+      expect(testComponent.sortChange).toHaveBeenCalledTimes(1);
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-up').classList).toContain('off');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-down').classList).toContain('on');
-      th.nativeElement.querySelector('.ant-table-column-sorter-down').firstElementChild.click();
+      th.nativeElement.querySelector('.ant-table-column-sorters').firstElementChild.click();
+      fixture.detectChanges();
+      expect(testComponent.sortChange).toHaveBeenCalledTimes(2);
+      expect(testComponent.sort).toBe('ascend');
+      expect(th.nativeElement.querySelector('.ant-table-column-sorter-up').classList).toContain('on');
+      expect(th.nativeElement.querySelector('.ant-table-column-sorter-down').classList).toContain('off');
+      th.nativeElement.querySelector('.ant-table-column-sorters').firstElementChild.click();
       fixture.detectChanges();
       expect(testComponent.sortChange).toHaveBeenCalledTimes(3);
       expect(testComponent.sort).toBe(null);

@@ -47,7 +47,9 @@
       [class.ant-select-selection__choice__disabled]="getPropertyFromValue(value,'nzDisabled')"
       class="ant-select-selection__choice">
       <div class="ant-select-selection__choice__content">{{ getPropertyFromValue(value, 'nzLabel') || value }}</div>
-      <span *ngIf="!getPropertyFromValue(value,'nzDisabled')" class="ant-select-selection__choice__remove" (click)="removeValueFormSelected(value)"></span>
+      <span *ngIf="!getPropertyFromValue(value,'nzDisabled')" class="ant-select-selection__choice__remove" (click)="removeValueFormSelected(value, $event)">
+        <i nz-icon type="close" class="ant-select-remove-icon"></i>
+      </span>
     </li>
   </ng-container>
 

@@ -10,7 +10,7 @@ import { filter } from 'rxjs/operators';
     [(nzFileList)]="fileList"
     [nzBeforeUpload]="beforeUpload">
     <button nz-button>
-      <i class="anticon anticon-upload"></i><span>Select File</span>
+      <i nz-icon type="upload"></i><span>Select File</span>
     </button>
   </nz-upload>
   <button nz-button [nzType]="'primary'" [nzLoading]="uploading" (click)="handleUpload()" [disabled]="fileList.length == 0" style="margin-top: 16px">

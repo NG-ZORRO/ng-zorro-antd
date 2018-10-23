@@ -9,8 +9,8 @@ import { Component, ViewEncapsulation } from '@angular/core';
         <a class="head-example"></a>
       </nz-badge>
       <nz-button-group>
-        <button nz-button (click)="minCount()"><i class="anticon anticon-minus"></i></button>
-        <button nz-button (click)="addCount()"><i class="anticon anticon-plus"></i></button>
+        <button nz-button (click)="minCount()"><i nz-icon type="minus"></i></button>
+        <button nz-button (click)="addCount()"><i nz-icon type="plus"></i></button>
       </nz-button-group>
     </div>
 

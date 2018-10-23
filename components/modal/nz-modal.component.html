@@ -26,7 +26,9 @@
     >
       <div class="ant-modal-content">
         <button *ngIf="nzClosable" (click)="onClickCloseBtn()" class="ant-modal-close" aria-label="Close">
-          <span class="ant-modal-close-x"></span>
+          <span class="ant-modal-close-x">
+            <i nz-icon type="close" class="ant-modal-close-icon"></i>
+          </span>
         </button>
         <ng-container [ngSwitch]="true">
           <ng-container *ngSwitchCase="isModalType('default')" [ngTemplateOutlet]="tplContentDefault"></ng-container>
@@ -89,16 +91,16 @@
 <!-- [Predefined] Confirm Modal Content -->
 <ng-template #tplContentConfirm>
   <div class="ant-modal-body" [ngStyle]="nzBodyStyle">
-    <div class="ant-confirm-body-wrapper">
-      <div class="ant-confirm-body">
-        <i class="anticon anticon-{{ nzIconType }}"></i>
-        <span class="ant-confirm-title">
+    <div class="ant-modal-confirm-body-wrapper">
+      <div class="ant-modal-confirm-body">
+        <i nz-icon [type]="nzIconType"></i>
+        <span class="ant-modal-confirm-title">
           <ng-container [ngSwitch]="true">
             <ng-container *ngSwitchCase="isTemplateRef(nzTitle)" [ngTemplateOutlet]="nzTitle"></ng-container>
             <ng-container *ngSwitchCase="isNonEmptyString(nzTitle)"><span [innerHTML]="nzTitle"></span></ng-container>
           </ng-container>
         </span>
-        <div class="ant-confirm-content">
+        <div class="ant-modal-confirm-content">
           <ng-container #bodyContainer>
             <ng-container *ngIf="!isComponent(nzContent)" [ngSwitch]="true">
               <ng-container *ngSwitchCase="isTemplateRef(nzContent)" [ngTemplateOutlet]="nzContent"></ng-container>
@@ -108,7 +110,7 @@
           </ng-container>
         </div>
       </div>
-      <div class="ant-confirm-btns">
+      <div class="ant-modal-confirm-btns">
         <button nz-button *ngIf="nzCancelText!==null" (click)="onClickOkCancel('cancel')" [nzLoading]="nzCancelLoading">
           {{ cancelText }}
         </button>
@@ -116,7 +118,7 @@
           {{ okText }}
         </button>
       </div>
-    </div> <!-- /.ant-confirm-body-wrapper -->
+    </div> <!-- /.ant-modal-confirm-body-wrapper -->
   </div>
 </ng-template>
 <!-- /[Predefined] Confirm Modal Content -->

@@ -19,7 +19,12 @@
             "assets": [
               "site/src/assets",
               "site/src/favicon.ico",
-              "site/src/404.html"
+              "site/src/404.html",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "site/src/styles.less"
@@ -54,19 +59,9 @@
             "browserTarget": "ng-zorro-antd-doc:build"
           },
           "configurations": {
-            "prod": {
-              "browserTarget": "ng-zorro-antd-doc:build:prod"
+            "production": {
+              "browserTarget": "ng-zorro-antd-doc:build:production"
             }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "./components/test.ts",
-            "karmaConfig": "./components/karma.conf.js",
-            "polyfills": "./components/polyfills.ts",
-            "tsConfig": "./components/tsconfig.spec.json",
-            "scripts": []
           }
         },
         "lint": {
@@ -97,6 +92,16 @@
           "options": {
             "tsConfig": "components/tsconfig.lib.json",
             "project": "components/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "components/test.ts",
+            "karmaConfig": "components/karma.conf.js",
+            "polyfills": "components/polyfills.ts",
+            "tsConfig": "components/tsconfig.spec.json",
+            "scripts": []
           }
         }
       }

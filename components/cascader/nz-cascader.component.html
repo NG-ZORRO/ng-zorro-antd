@@ -17,22 +17,26 @@
       (focus)="handleInputFocus($event)"
       (change)="handlerInputChange($event)">
     <i *ngIf="showClearIcon"
-      [class]="'anticon anticon-cross-circle'"
+      nz-icon
+      type="close-circle"
+      theme="fill"
       [ngClass]="clearCls"
       [attr.title]="nzClearText"
       (click)="clearSelection($event)"></i>
     <i *ngIf="nzShowArrow && !isLoading"
-      class="anticon anticon-down"
+      nz-icon
+      type="down"
       [ngClass]="arrowCls"></i>
     <i *ngIf="isLoading"
-      class="anticon anticon-loading anticon-spin"
+      nz-icon
+      type="loading"
       [ngClass]="loadingCls"></i>
     <span [ngClass]="labelCls">
-          <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{ labelRenderText }}</ng-container>
-          <ng-template #labelTemplate>
-            <ng-template [ngTemplateOutlet]="nzLabelRender" [ngTemplateOutletContext]="labelRenderContext"></ng-template>
-          </ng-template>
-        </span>
+      <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{ labelRenderText }}</ng-container>
+      <ng-template #labelTemplate>
+        <ng-template [ngTemplateOutlet]="nzLabelRender" [ngTemplateOutletContext]="labelRenderContext"></ng-template>
+      </ng-template>
+    </span>
   </div>
   <ng-content></ng-content>
 </div>
@@ -63,6 +67,9 @@
         <ng-container *ngIf="!inSearch">
           {{ getOptionLabel(option) }}
         </ng-container>
+        <span *ngIf="!option.isLeaf || option.children && option.children.length || option.loading" class="ant-cascader-menu-item-expand-icon">
+          <i nz-icon [type]="option.loading ? 'loading' : 'right'"></i>
+        </span>
       </li>
       <li *ngIf="inSearch && !nzColumns[0].length" class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled">
         Not Found

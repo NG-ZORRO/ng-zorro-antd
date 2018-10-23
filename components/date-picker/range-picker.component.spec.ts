@@ -54,7 +54,7 @@ describe('NzRangePickerComponent', () => {
 
     it('should open by click and close by click at outside', fakeAsync(() => {
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -147,7 +147,7 @@ describe('NzRangePickerComponent', () => {
       fixtureInstance.nzDisabledDate = (current: Date) => isSameDay(current, compareDate);
       fixture.detectChanges();
 
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
@@ -172,7 +172,7 @@ describe('NzRangePickerComponent', () => {
     it('should support nzPopupStyle', fakeAsync(() => {
       fixtureInstance.nzPopupStyle = { color: 'red' };
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -182,7 +182,7 @@ describe('NzRangePickerComponent', () => {
     it('should support nzDropdownClassName', fakeAsync(() => {
       const keyCls = fixtureInstance.nzDropdownClassName = 'my-test-class';
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -208,7 +208,7 @@ describe('NzRangePickerComponent', () => {
     it('should support nzOnOpenChange', fakeAsync(() => {
       const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -564,6 +564,10 @@ describe('NzRangePickerComponent', () => {
     return debugElement.query(By.css('nz-picker .ant-calendar-picker-input')).nativeElement as HTMLElement;
   }
 
+  function getPickerTriggerWrapper(): HTMLInputElement {
+    return debugElement.query(By.css('nz-picker .ant-calendar-picker')).nativeElement as HTMLInputElement;
+  }
+
   function getPickerContainer(): HTMLElement {
     return queryFromOverlay('.ant-calendar-picker-container') as HTMLElement;
   }
@@ -586,7 +590,7 @@ describe('NzRangePickerComponent', () => {
   }
 
   function openPickerByClickTrigger(): void {
-    dispatchMouseEvent(getPickerTrigger(), 'click');
+    dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();

@@ -39,6 +39,7 @@ Almost anything can be represented in a tree structure. Examples include directo
 | `(nzContextMenu)` | Callback function for when the user right clicks a treeNode | EventEmitter<NzFormatEmitEvent\> | - |
 | `(nzCheckBoxChange)` | Callback function for when user clicks the Checkbox | EventEmitter<NzFormatEmitEvent\> | - |
 | `(nzExpandChange)` | Callback function for when a treeNode is expanded or collapsed |EventEmitter<NzFormatEmitEvent\> | - |
+| `(nzOnSearchNode)` | Callback function for when filter treeNodes(used with nzSearchValue)  <font color=red>`Deprecated`</font>| EventEmitter<NzFormatEmitEvent\> | - |
 | `(nzSearchValueChange)` | Callback function for when filter treeNodes(used with nzSearchValue) | EventEmitter<NzFormatEmitEvent\> | - |
 | `(nzOnDragStart)` | Callback function for when the onDragStart event occurs | EventEmitter<NzFormatEmitEvent\> | - |
 | `(nzOnDragEnter)` | Callback function for when the onDragEnter event occurs | EventEmitter<NzFormatEmitEvent\> | - |

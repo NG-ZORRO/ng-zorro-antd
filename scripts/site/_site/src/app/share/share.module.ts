@@ -9,7 +9,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ColorSketchModule } from 'ngx-color/sketch';
 
 import { NzCodeBoxModule } from './nz-codebox/nz-codebox.module';
-import { NzCopyIconModule } from './nz-copy-icon/nz-copy-icon.module';
 import { NzHighlightModule } from './nz-highlight/nz-highlight.module';
 import { NzNavBottomModule } from './nz-nav-bottom/nz-nav-bottom.module';
 
@@ -23,7 +22,6 @@ import { NzNavBottomModule } from './nz-nav-bottom/nz-nav-bottom.module';
     NzCodeBoxModule,
     NzHighlightModule,
     NzNavBottomModule,
-    NzCopyIconModule,
     // third libs
     ColorSketchModule
   ],
@@ -36,7 +34,6 @@ import { NzNavBottomModule } from './nz-nav-bottom/nz-nav-bottom.module';
     NzCodeBoxModule,
     NzHighlightModule,
     NzNavBottomModule,
-    NzCopyIconModule,
     // third libs
     InfiniteScrollModule,
     ColorSketchModule,

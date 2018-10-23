@@ -8,9 +8,9 @@ import { Component } from '@angular/core';
       <ng-template #item let-item>
         <nz-list-item [nzContent]="loading?' ':item.content" [nzActions]="loading?[]:[starAction,likeAction,msgAction]" [nzExtra]="loading?'':extra">
           <nz-skeleton [nzLoading]="loading" [nzActive]="true" [nzAvatar]="true">
-            <ng-template #starAction><i class="anticon anticon-star-o" style="margin-right: 8px;"></i> 156</ng-template>
-            <ng-template #likeAction><i class="anticon anticon-like-o" style="margin-right: 8px;"></i> 156</ng-template>
-            <ng-template #msgAction><i class="anticon anticon-message" style="margin-right: 8px;"></i> 2</ng-template>
+            <ng-template #starAction><i nz-icon type="star-o" style="margin-right: 8px;"></i> 156</ng-template>
+            <ng-template #likeAction><i nz-icon type="like-o" style="margin-right: 8px;"></i> 156</ng-template>
+            <ng-template #msgAction><i nz-icon type="message" style="margin-right: 8px;"></i> 2</ng-template>
             <nz-list-item-meta
               [nzAvatar]="item.avatar"
               [nzTitle]="nzTitle"

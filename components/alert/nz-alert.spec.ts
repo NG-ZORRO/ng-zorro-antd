@@ -43,7 +43,7 @@ describe('alert', () => {
       testComponent.closeable = true;
       fixture.detectChanges();
       expect(testComponent.onClose).toHaveBeenCalledTimes(0);
-      expect(alert.nativeElement.querySelector('.anticon-cross')).toBeDefined();
+      expect(alert.nativeElement.querySelector('.anticon-close')).toBeDefined();
       alert.nativeElement.querySelector('.ant-alert-close-icon').click();
       fixture.detectChanges();
       tick();

@@ -116,10 +116,12 @@ describe('NzNotification', () => {
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS');
   }));
 
-  it('should keep the balance of messages length and then remove all', () => {
+  it('should keep the balance of messages length and then remove all', fakeAsync(() => {
     [ 1, 2, 3 ].forEach(id => {
       const content = `SUCCESS-${id}`;
       messageService.success(null, content);
+      demoAppFixture.detectChanges();
+      tick();
       demoAppFixture.detectChanges();
 
       expect(overlayContainerElement.textContent).toContain(content);
@@ -133,7 +135,7 @@ describe('NzNotification', () => {
     demoAppFixture.detectChanges();
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS-3');
     expect((messageService as any)._container.messages.length).toBe(0); // tslint:disable-line:no-any
-  });
+  }));
 
   it('should destroy without animation', fakeAsync(() => {
     messageService.error(null, 'EXISTS', { nzDuration: 1000, nzAnimate: false });

@@ -25,9 +25,10 @@ If you intend to change the public API or introduce new feature, we also recomme
 
 ## Your First Pull Request
 
-Working on your first Pull Request? You can learn how from this free video series:
+Working on your first Pull Request? You can learn how from these resources:
 
-[How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
+* [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
+* [First Contributions](https://github.com/firstcontributions/first-contributions)
 
 To help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/NG-ZORRO/ng-zorro-antd/labels/good%20first%20issue) that contain bugs or small features that have a relatively limited scope. This is a great place to get started.
 

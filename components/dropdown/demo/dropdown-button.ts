@@ -33,7 +33,7 @@ import { Component } from '@angular/core';
         </ul>
       </nz-dropdown-button>
       <nz-dropdown>
-        <button nz-button nz-dropdown><span>Button</span> <i class="anticon anticon-down"></i></button>
+        <button nz-button nz-dropdown><span>Button</span> <i nz-icon type="down"></i></button>
         <ul nz-menu>
           <li nz-menu-item>
             <a>1st menu item</a>

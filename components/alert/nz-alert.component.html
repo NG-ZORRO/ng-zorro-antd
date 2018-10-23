@@ -2,28 +2,27 @@
   <ng-container *ngIf="nzShowIcon">
     <i class="ant-alert-icon" [ngClass]="nzIconType" *ngIf="nzIconType; else iconTemplate"></i>
     <ng-template #iconTemplate>
-      <i class="ant-alert-icon anticon" [ngClass]="iconClassMap">
-      </i>
+      <i nz-icon class="ant-alert-icon" [type]="iconType"></i>
     </ng-template>
   </ng-container>
   <span class="ant-alert-message" *ngIf="nzMessage">
-        <ng-container *ngIf="isMessageString; else messageTemplate">{{ nzMessage }}</ng-container>
-        <ng-template #messageTemplate>
-          <ng-template [ngTemplateOutlet]="nzMessage"></ng-template>
-        </ng-template>
-      </span>
+    <ng-container *ngIf="isMessageString; else messageTemplate">{{ nzMessage }}</ng-container>
+    <ng-template #messageTemplate>
+      <ng-template [ngTemplateOutlet]="nzMessage"></ng-template>
+    </ng-template>
+  </span>
   <span class="ant-alert-description" *ngIf="nzDescription">
-        <ng-container *ngIf="isDescriptionString; else descriptionTemplate">{{ nzDescription }}</ng-container>
-        <ng-template #descriptionTemplate>
-          <ng-template [ngTemplateOutlet]="nzDescription"></ng-template>
-        </ng-template>
-      </span>
+    <ng-container *ngIf="isDescriptionString; else descriptionTemplate">{{ nzDescription }}</ng-container>
+    <ng-template #descriptionTemplate>
+      <ng-template [ngTemplateOutlet]="nzDescription"></ng-template>
+    </ng-template>
+  </span>
   <a
     *ngIf="nzCloseable || nzCloseText"
     (click)="closeAlert()"
     class="ant-alert-close-icon">
     <ng-template #closeDefaultTemplate>
-      <i class="anticon anticon-cross"></i>
+      <i nz-icon type="close" class="anticon-close"></i>
     </ng-template>
     <ng-container *ngIf="nzCloseText; else closeDefaultTemplate">
       <ng-container *ngIf="isCloseTextString; else closeTextTemplate">{{ nzCloseText }}</ng-container>

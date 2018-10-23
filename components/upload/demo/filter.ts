@@ -11,7 +11,7 @@ import { UploadFile } from 'ng-zorro-antd';
     [nzLimit]="2"
     (nzChange)="handleChange($event)">
     <button nz-button>
-      <i class="anticon anticon-upload"></i><span>Upload</span>
+      <i nz-icon type="upload"></i><span>Upload</span>
     </button>
   </nz-upload>
   `

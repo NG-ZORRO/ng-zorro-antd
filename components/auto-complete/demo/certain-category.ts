@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@
         <input placeholder="input here" nz-input [(ngModel)]="inputValue" (ngModelChange)="onChange($event)" [nzAutocomplete]="auto"/>
       </nz-input-group>
       <ng-template #suffixIcon>
-        <i class="anticon anticon-search"></i>
+        <i nz-icon type="search"></i>
       </ng-template>
       <nz-autocomplete #auto>
         <nz-auto-optgroup *ngFor="let group of optionGroups" [nzLabel]="groupTitle">

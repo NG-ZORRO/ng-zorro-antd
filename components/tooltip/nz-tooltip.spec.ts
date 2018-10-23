@@ -4,6 +4,7 @@ import { fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
+import { NzIconModule } from '../icon/nz-icon.module';
 import { NzToolTipComponent } from './nz-tooltip.component';
 import { NzTooltipDirective } from './nz-tooltip.directive';
 import { NzToolTipModule } from './nz-tooltip.module';
@@ -16,7 +17,7 @@ describe('NzTooltip', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzToolTipModule, NoopAnimationsModule ],
+      imports     : [ NzToolTipModule, NoopAnimationsModule, NzIconModule ],
       declarations: [ NzTooltipTestWrapperComponent, NzTooltipTestNewComponent ]
     });
 
@@ -273,7 +274,7 @@ export class NzTooltipTestNewComponent {
     <nz-tooltip>
       <button #templateTrigger nz-tooltip>Show</button>
       <ng-template #nzTemplate>
-        <i class="anticon anticon-file"></i> <span>Show with icon</span>
+        <i nz-icon type="file"></i> <span>Show with icon</span>
       </ng-template>
     </nz-tooltip>
 

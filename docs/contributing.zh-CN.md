@@ -25,9 +25,10 @@ title: 贡献指南
 
 ## 第一次贡献
 
-如果你还不清楚怎么在 GitHub 上提 Pull Request ，可以阅读下面这篇文章来学习：
+如果你还不清楚怎么在 GitHub 上提 Pull Request ，可以阅读下面这些文章来学习：
 
-[如何为开源做贡献](https://opensource.guide/zh-cn/how-to-contribute/)
+* [如何为开源做贡献](https://opensource.guide/zh-cn/how-to-contribute/)
+* [第一次参与开源](https://github.com/firstcontributions/first-contributionshttps://github.com/firstcontributions/first-contributions/blob/master/translations/README.chs.md)
 
 为了能帮助你开始你的第一次尝试，我们用 [good first issues](https://github.com/NG-ZORRO/ng-zorro-antd/labels/good%20first%20issue) 标记了一些比较比较容易修复的 bug 和小功能。这些 issue 可以很好地做为你的首次尝试。
 

@@ -34,11 +34,6 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
   templateUrl        : './nz-dropdown.component.html',
   styles             : [
     `
-      :host {
-        position: relative;
-        display: inline-block;
-      }
-
       .ant-dropdown {
         top: 100%;
         left: 0;

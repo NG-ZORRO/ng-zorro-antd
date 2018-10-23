@@ -1,20 +1,22 @@
 <div class="ant-input-number-handler-wrap">
-  <a
+  <span
+    unselectable="unselectable"
     (mousedown)="up($event)"
     (mouseup)="stop()"
     (mouseleave)="stop()"
     class="ant-input-number-handler ant-input-number-handler-up"
     [class.ant-input-number-handler-up-disabled]="disabledUp">
-    <span class="ant-input-number-handler-up-inner" unselectable="unselectable" (click)="$event.preventDefault()"></span>
-  </a>
-  <a
+    <i nz-icon type="up" class="ant-input-number-handler-up-inner"></i>
+  </span>
+  <span
+    unselectable="unselectable"
     (mousedown)="down($event)"
     (mouseup)="stop()"
     (mouseleave)="stop()"
     class="ant-input-number-handler ant-input-number-handler-down"
     [class.ant-input-number-handler-down-disabled]="disabledDown">
-    <span class="ant-input-number-handler-down-inner" unselectable="unselectable" (click)="$event.preventDefault()"></span>
-  </a>
+    <i nz-icon type="down" class="ant-input-number-handler-down-inner"></i>
+  </span>
 </div>
 <div class="ant-input-number-input-wrap">
   <input

@@ -1,10 +1,13 @@
 {
-  "name": "ng-zorro-antd-workspace",
+  "name": "ng-zorro-antd",
   "version": "0.0.0-NOT-USED",
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
+  "engines": {
+    "node": ">=10.9.0 <11.0.0"
+  },
   "scripts": {
-    "start": "ng serve -port 0",
+    "start": "ng serve --port 0",
     "build": "node ./scripts/site/generate-site init && ng build",
     "test": "ng test --watch=false --code-coverage",
     "lint": "tslint -c tslint.json 'components/*/*.ts'",
@@ -31,6 +34,7 @@
   },
   "dependencies": {
     "@angular/cdk": "^6.0.0",
+    "@ant-design/icons-angular": "0.0.2",
     "date-fns": "^1.29.0"
   },
   "devDependencies": {
@@ -67,6 +71,7 @@
     "core-js": "^2.5.4",
     "fs-extra": "^6.0.1",
     "hammerjs": "^2.0.8",
+    "husky": "^1.0.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~1.7.1",
@@ -98,7 +103,13 @@
     "tslib": "^1.9.0",
     "tslint": "~5.11.0",
     "typescript": "~2.9.2",
+    "webpack-bundle-analyzer": "^3.0.2",
     "yaml-front-matter": "^3.4.0",
     "zone.js": "^0.8.26"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "node ./scripts/git/commit-msg.js -E HUSKY_GIT_PARAMS"
+    }
   }
 }
