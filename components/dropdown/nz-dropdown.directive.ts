@@ -24,6 +24,7 @@ export class NzDropDownDirective implements OnInit {
 
   @HostListener('click', [ '$event' ])
   onClick(e: MouseEvent): void {
+    e.stopPropagation();
     this.$click.next(e);
   }
 

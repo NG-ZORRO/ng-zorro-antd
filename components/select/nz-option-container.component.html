@@ -20,6 +20,7 @@
   </li>
   <li
     nz-option-li
+    [nzMode]="nzMode"
     [compareWith]="compareWith"
     *ngFor="let option of listOfNzOptionComponent | nzFilterOptionPipe : nzSearchValue : nzFilterOption : nzServerSearch "
     (click)="clickOption(option,false)"
@@ -41,6 +42,7 @@
     <ul class="ant-select-dropdown-menu-item-group-list">
       <li
         nz-option-li
+        [nzMode]="nzMode"
         [compareWith]="compareWith"
         *ngFor="let option of group.listOfNzOptionComponent | nzFilterOptionPipe : nzSearchValue : nzFilterOption : nzServerSearch"
         (click)="clickOption(option,false)"
@@ -53,6 +55,7 @@
   </li>
   <li
     nz-option-li
+    [nzMode]="nzMode"
     [compareWith]="compareWith"
     *ngFor="let option of listOfTagOption | nzFilterOptionPipe : nzSearchValue : nzFilterOption : nzServerSearch "
     (click)="clickOption(option,false)"
