@@ -58,15 +58,15 @@ describe('steps', () => {
     }));
     it('should title correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-title').innerText).toBe('0title');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-title').innerText).toBe('1title');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-title').innerText).toBe('2title');
+      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('0title');
+      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('1title');
+      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('2title');
     });
     it('should description correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-description').innerText).toBe('0description');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-description').innerText).toBe('1description');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-description').innerText).toBe('2description');
+      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('0description');
+      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('1description');
+      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('2description');
     });
     it('should icon display correct', () => {
       fixture.detectChanges();
@@ -130,9 +130,9 @@ describe('steps', () => {
       tick();
       fixture.detectChanges();
       expect(outStep.nativeElement.firstElementChild.classList.contains('ant-steps-dot')).toBe(true);
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.innerText).toBe('process0');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.innerText).toBe('wait1');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.innerText).toBe('wait2');
+      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.innerText.trim()).toBe('process0');
+      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.innerText.trim()).toBe('wait1');
+      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.innerText.trim()).toBe('wait2');
       expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').lastElementChild.classList.contains('ant-steps-icon-dot')).toBe(true);
       expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').lastElementChild.classList.contains('ant-steps-icon-dot')).toBe(true);
       expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').lastElementChild.classList.contains('ant-steps-icon-dot')).toBe(true);
@@ -149,9 +149,9 @@ describe('steps', () => {
       expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-process');
       expect(innerSteps[ 1 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
       expect(innerSteps[ 2 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').innerText).toBe('4');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').innerText).toBe('5');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').innerText).toBe('6');
+      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('4');
+      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('5');
+      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('6');
     }));
   });
   describe('inner step string', () => {
@@ -178,15 +178,15 @@ describe('steps', () => {
     });
     it('should title display correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-title').innerText).toBe('title');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-title').innerText).toBe('title');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-title').innerText).toBe('title');
+      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('title');
+      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('title');
+      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('title');
     });
     it('should description display correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-description').innerText).toBe('description');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-description').innerText).toBe('description');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-description').innerText).toBe('description');
+      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('description');
+      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('description');
+      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('description');
     });
     it('should icon display correct', () => {
       fixture.detectChanges();
@@ -208,15 +208,15 @@ describe('steps', () => {
     });
     it('should title display correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-title').innerText).toBe('titleTemplate');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-title').innerText).toBe('titleTemplate');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-title').innerText).toBe('titleTemplate');
+      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('titleTemplate');
+      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('titleTemplate');
+      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('titleTemplate');
     });
     it('should description display correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-description').innerText).toBe('descriptionTemplate');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-description').innerText).toBe('descriptionTemplate');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-description').innerText).toBe('descriptionTemplate');
+      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('descriptionTemplate');
+      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('descriptionTemplate');
+      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('descriptionTemplate');
     });
     it('should icon display correct', () => {
       fixture.detectChanges();

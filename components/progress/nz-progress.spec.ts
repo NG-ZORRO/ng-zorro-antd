@@ -30,15 +30,15 @@ describe('progress', () => {
     it('should percent work', () => {
       fixture.detectChanges();
       expect(progress.nativeElement.querySelector('.ant-progress-bg').style.cssText).toBe('width: 0%; height: 8px;');
-      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText).toBe('0%');
+      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('0%');
       testComponent.percent = 50;
       fixture.detectChanges();
       expect(progress.nativeElement.querySelector('.ant-progress-bg').style.cssText).toBe('width: 50%; height: 8px;');
-      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText).toBe('50%');
+      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('50%');
       testComponent.percent = 100;
       fixture.detectChanges();
       expect(progress.nativeElement.querySelector('.ant-progress-bg').style.cssText).toBe('width: 100%; height: 8px;');
-      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText).toBe('');
+      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('');
       expect(progress.nativeElement.querySelector('.anticon-check-circle')).toBeDefined();
     });
     it('should successPercent', () => {
@@ -51,10 +51,10 @@ describe('progress', () => {
     it('should format work', () => {
       testComponent.format = (percent) => `${percent} percent`;
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText).toBe('0 percent');
+      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('0 percent');
       testComponent.percent = 100;
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText).toBe('100 percent');
+      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('100 percent');
     });
     it('should status work', () => {
       fixture.detectChanges();
@@ -113,10 +113,10 @@ describe('progress', () => {
     it('should format work', () => {
       testComponent.format = (percent) => `${percent} percent`;
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText).toBe('0 percent');
+      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('0 percent');
       testComponent.percent = 100;
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText).toBe('100 percent');
+      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('100 percent');
     });
     it('should showInfo work', () => {
       fixture.detectChanges();
@@ -129,13 +129,13 @@ describe('progress', () => {
     });
     it('should percent work', () => {
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText).toBe('0%');
+      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('0%');
       testComponent.percent = 50;
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText).toBe('50%');
+      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('50%');
       testComponent.percent = 100;
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText).toBe('');
+      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('');
       expect(progress.nativeElement.querySelector('.anticon-check-circle')).toBeDefined();
     });
     it('should width work', () => {

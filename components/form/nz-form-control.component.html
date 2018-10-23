@@ -2,7 +2,7 @@
   <span class="ant-form-item-children">
     <ng-content></ng-content>
     <span class="ant-form-item-children-icon">
-      <i *ngIf="nzHasFeedback" nz-icon [type]="iconType"></i>
+      <i *ngIf="nzHasFeedback && iconType" nz-icon [type]="iconType"></i>
     </span>
   </span>
   <ng-content select="nz-form-explain"></ng-content>
