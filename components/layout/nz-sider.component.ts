@@ -144,7 +144,6 @@ export class NzSiderComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.watchMatchMedia();
     if (this.nzLayoutComponent) {
       this.nzLayoutComponent.hasSider = true;
     }
@@ -152,6 +151,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.isInit = true;
+    Promise.resolve().then(() => this.watchMatchMedia());
   }
 
 }
