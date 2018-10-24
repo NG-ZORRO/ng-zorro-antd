@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, tick , TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzMatchMediaService } from '../core/services/nz-match-media.service';
@@ -202,11 +202,11 @@ describe('layout', () => {
       testComponent = fixture.debugElement.componentInstance;
       sider = fixture.debugElement.query(By.directive(NzSiderComponent));
     });
-    it('should responsive work', () => {
+    it('should responsive work', fakeAsync(() => {
       fixture.detectChanges();
-      window.dispatchEvent(new Event('resize'));
+      tick();
       fixture.detectChanges();
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 0px; max-width: 0px; min-width: 0px; width: 0px;').toBe(true);
-    });
+      expect(sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;').toBe(true);
+    }));
   });
 });
