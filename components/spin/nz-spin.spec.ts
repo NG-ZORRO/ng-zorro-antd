@@ -65,9 +65,9 @@ describe('spin', () => {
     }));
     it('should wrapper work', async(() => {
       fixture.detectChanges();
-      expect(spin.nativeElement.querySelector('.ant-spin-container').attributes.getNamedItem('hidden').name).toBe('hidden');
-      testComponent.wrapper = true;
-      fixture.detectChanges();
+      expect(spin.nativeElement.querySelector('.ant-spin-container').style.display).toBe('none');
+      // testComponent.wrapper = true;
+      // fixture.detectChanges();
       // TODO: fix next line error
       // fixture.whenStable().then(() => {
       //  expect(spin.nativeElement.querySelector('.ant-spin-container').attributes.getNamedItem('hidden')).toBeNull();
