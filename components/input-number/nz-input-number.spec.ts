@@ -463,8 +463,8 @@ describe('input number', () => {
       [nzFormatter]="formatter"
       [nzParser]="parser"
       [nzPrecision]="precision"
-      (nzOnBlur)="onBlur($event)"
-      (nzOnFocus)="onFocus($event)">
+      (nzBlur)="onBlur($event)"
+      (nzFocus)="onFocus($event)">
     </nz-input-number>
   `
 })
