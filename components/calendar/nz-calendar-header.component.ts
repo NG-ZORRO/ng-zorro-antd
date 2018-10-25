@@ -15,11 +15,21 @@ export class NzCalendarHeaderComponent implements OnInit {
   @Output() modeChange: EventEmitter<'month' | 'year'> = new EventEmitter();
 
   @Input() fullscreen: boolean = true;
-  @Input() activeDate: Date = new Date();
+
+  @Input()
+  set activeDate(value: Date) {
+    this._activeDate = value;
+    this.setUpYears();
+  }
+
+  get activeDate(): Date {
+    return this._activeDate;
+  }
 
   @Output() yearChange: EventEmitter<number> = new EventEmitter();
   @Output() monthChange: EventEmitter<number> = new EventEmitter();
 
+  _activeDate = new Date();
   yearOffset: number = 10;
   yearTotal: number = 20;
   years: Array<{ label: string, value: number }>;
