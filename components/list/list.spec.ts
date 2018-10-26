@@ -1,11 +1,11 @@
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzIconModule } from '../icon/nz-icon.module';
 
-import { NzListModule } from './nz-list.module';
 import { NzListComponent } from './nz-list.component';
+import { NzListModule } from './nz-list.module';
 
 describe('list', () => {
   let fixture: ComponentFixture<TestListComponent>;
