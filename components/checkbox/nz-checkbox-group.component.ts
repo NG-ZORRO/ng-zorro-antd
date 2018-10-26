@@ -31,7 +31,7 @@ export interface NzCheckBoxOptionInterface {
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
   private _disabled = false;
-  private el: HTMLElement;
+  private el: HTMLElement = this.elementRef.nativeElement;
   private prefixCls = 'ant-checkbox-group';
   private onChange = Function.prototype;
   private onTouched = Function.prototype;
@@ -67,7 +67,6 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-    this.el = this.elementRef.nativeElement;
   }
 
   ngOnInit(): void {

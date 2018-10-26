@@ -23,7 +23,7 @@ export type NzAvatarSize = 'small' | 'large' | 'default';
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzAvatarComponent implements OnChanges {
-  private el: HTMLElement;
+  private el: HTMLElement = this.elementRef.nativeElement;
   private prefixCls = 'ant-avatar';
   private sizeMap = { large: 'lg', small: 'sm' };
   private _icon: string;
@@ -109,8 +109,7 @@ export class NzAvatarComponent implements OnChanges {
     return this;
   }
 
-  constructor(elementRef: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {
-    this.el = elementRef.nativeElement;
+  constructor(private elementRef: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
