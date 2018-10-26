@@ -3,7 +3,8 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-list-basic',
   template: `
-  <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+  <div style="margin-bottom: 8px;"><button nz-button (click)="change()">Switch Data</button></div>
+  <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'" [nzLoading]="loading">
     <ng-template #item let-item>
       <nz-list-item>
         <nz-list-item-meta
@@ -20,6 +21,7 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoListBasicComponent {
+  loading = false;
   data = [
     {
       title: 'Ant Design Title 1'
@@ -34,4 +36,32 @@ export class NzDemoListBasicComponent {
       title: 'Ant Design Title 4'
     }
   ];
+
+  change(): void {
+    this.loading = true;
+    if (this.data.length > 0) {
+      setTimeout(() => {
+        this.data = [];
+        this.loading = false;
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        this.data = [
+          {
+            title: 'Ant Design Title 1'
+          },
+          {
+            title: 'Ant Design Title 2'
+          },
+          {
+            title: 'Ant Design Title 3'
+          },
+          {
+            title: 'Ant Design Title 4'
+          }
+        ];
+        this.loading = false;
+      }, 1000);
+    }
+  }
 }
