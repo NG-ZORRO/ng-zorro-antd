@@ -11,7 +11,8 @@ import { environment } from '../../../environments/environment';
   template     : `
     <section class="code-box" [ngClass]="{'expand':nzExpanded}" [attr.id]="nzId">
       <section class="code-box-demo">
-        <div *ngIf="!showIframe" [class.simulate-iframe]="simulateIFrame" [class.browser-mockup]="simulateIFrame" [class.with-url]="simulateIFrame" [style.height.px]="simulateIFrame&&nzIframeHeight">
+        <div *ngIf="!showIframe" [class.simulate-iframe]="simulateIFrame" [class.browser-mockup]="simulateIFrame" [class.with-url]="simulateIFrame"
+             [style.height.px]="simulateIFrame&&nzIframeHeight">
           <ng-content select="[demo]"></ng-content>
         </div>
         <div class="browser-mockup with-url" *ngIf="showIframe">
@@ -29,8 +30,10 @@ import { environment } from '../../../environments/environment';
         <ng-content select="[intro]"></ng-content>
         <nz-tooltip [nzTitle]="nzExpanded?'Hide Code':'Show Code'">
         <span class="code-expand-icon" nz-tooltip (click)="nzExpanded=!nzExpanded">
-            <img alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/wSAkBuJFbdxsosKKpqyq.svg" [class.code-expand-icon-show]="nzExpanded" [class.code-expand-icon-hide]="!nzExpanded">
-            <img alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/OpROPHYqWmrMDBFMZtKF.svg" [class.code-expand-icon-show]="!nzExpanded" [class.code-expand-icon-hide]="nzExpanded">
+            <img alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/wSAkBuJFbdxsosKKpqyq.svg" [class.code-expand-icon-show]="nzExpanded"
+                 [class.code-expand-icon-hide]="!nzExpanded">
+            <img alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/OpROPHYqWmrMDBFMZtKF.svg" [class.code-expand-icon-show]="!nzExpanded"
+                 [class.code-expand-icon-hide]="nzExpanded">
           </span>
         </nz-tooltip>
       </section>
@@ -38,8 +41,10 @@ import { environment } from '../../../environments/environment';
         <div class="highlight">
           <div class="code-box-actions">
             <i [nzTitle]="'Edit On StackBlitz'" nz-tooltip nz-icon type="form" class="code-box-code-copy" (click)="openOnStackBlitz()"></i>
-            <i [nzTitle]="'Copy Code'" nz-tooltip nz-icon [type]="_copied?'check':'copy'" class="code-box-code-copy" [class.ant-tooltip-open]="_copied" (click)="copyCode(nzRawCode)"></i>
-            <i [nzTitle]="'Copy Generate Command'" *ngIf="nzGenerateCommand" nz-tooltip  nz-icon [type]="_commandCopied?'check':'code'" class="code-box-code-copy" [class.ant-tooltip-open]="_commandCopied" (click)="copyGenerateCommand(nzGenerateCommand)"></i>
+            <i [nzTitle]="'Copy Code'" nz-tooltip nz-icon [type]="_copied?'check':'copy'" class="code-box-code-copy" [class.ant-tooltip-open]="_copied"
+               (click)="copyCode(nzRawCode)"></i>
+            <i [nzTitle]="'Copy Generate Command'" *ngIf="nzGenerateCommand" nz-tooltip nz-icon [type]="_commandCopied?'check':'code'"
+               class="code-box-code-copy" [class.ant-tooltip-open]="_commandCopied" (click)="copyGenerateCommand(nzGenerateCommand)"></i>
           </div>
           <ng-content select="[code]"></ng-content>
           <nz-highlight [nzCode]="_code" [nzLanguage]="'typescript'"></nz-highlight>
@@ -137,7 +142,7 @@ export class NzCodeBoxComponent implements OnInit {
   openOnStackBlitz() {
     sdk.openProject({
       files: {
-        'angular.json'   : `{
+        'angular.json'            : `{
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
@@ -350,7 +355,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { NgZorroAntdModule, NZ_ICONS } from 'ng-zorro-antd';
+import { IconDefinition } from '@ant-design/icons-angular';
+import * as AllIcons from '@ant-design/icons-angular/icons';
 
 import { ${this.nzComponentName} } from './app.component';
 
@@ -359,15 +366,20 @@ import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 registerLocaleData(en);
 
+const antDesignIcons = AllIcons as {
+  [key: string]: IconDefinition;
+};
+const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
+
 @NgModule({
   imports:      [ BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule, NgZorroAntdModule, BrowserAnimationsModule ],
   declarations: [ ${this.nzComponentName} ],
   bootstrap:    [ ${this.nzComponentName} ],
-  providers   : [ { provide: NZ_I18N, useValue: en_US } ]
+  providers   : [ { provide: NZ_I18N, useValue: en_US }, { provide: NZ_ICONS, useValue: icons } ]
 })
 export class AppModule { }
 `,
-        'src/styles.css'         : `/* Add application styles & imports to this file! */;`
+        'src/styles.css'          : `/* Add application styles & imports to this file! */;`
       },
 
       title       : 'Dynamically Generated Project',
@@ -385,7 +397,10 @@ export class AppModule { }
         '@angular/common'                  : '^6.0.0',
         '@angular/router'                  : '^6.0.0',
         '@angular/animations'              : '^6.0.0',
+        '@ant-design/icons-angular'        : '^1.0.1',
         'date-fns'                         : '^1.29.0',
+        'tslib'                            : '^1.9.3',
+        'typescript'                       : '~2.9.2',
         'ng-zorro-antd'                    : '^1.7.1'
       },
       tags        : [ 'stackblitz', 'sdk' ]
