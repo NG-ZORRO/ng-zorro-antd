@@ -24,7 +24,8 @@ import { toBoolean } from '../core/util/convert';
 export class NzSpinComponent implements AfterViewInit {
   private _tip: string;
   private _delay = 0;
-  el: HTMLElement;
+  el: HTMLElement = this.elementRef.nativeElement;
+
   baseSpinning$ = new BehaviorSubject(true);
   resultSpinning$: Observable<boolean> = this.baseSpinning$.asObservable().pipe(debounceTime(this.nzDelay));
   @ViewChild('containerElement') containerElement: ElementRef;
@@ -75,7 +76,6 @@ export class NzSpinComponent implements AfterViewInit {
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2, private zone: NgZone) {
-    this.el = this.elementRef.nativeElement;
   }
 
   ngAfterViewInit(): void {

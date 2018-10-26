@@ -137,7 +137,8 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   private _menuCls: { [ name: string ]: any };
   private _menuColumnCls: { [ name: string ]: any };
 
-  public el: HTMLElement;
+  public el: HTMLElement = this.elementRef.nativeElement;
+
   private isFocused = false;
 
   /** 选择选项后，渲染显示文本 */
@@ -1119,7 +1120,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   constructor(private elementRef: ElementRef,
               private cdr: ChangeDetectorRef,
               private nzUpdateHostClassService: NzUpdateHostClassService) {
-    this.el = this.elementRef.nativeElement;
   }
 
   private findOption(option: any, index: number): CascaderOption {

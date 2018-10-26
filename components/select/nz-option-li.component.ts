@@ -15,7 +15,7 @@ import { NzOptionComponent } from './nz-option.component';
   }
 })
 export class NzOptionLiComponent {
-  el: Element;
+  el: HTMLElement = this.elementRef.nativeElement;
   selected = false;
   active = false;
   @Input() nzOption: NzOptionComponent;
@@ -40,6 +40,5 @@ export class NzOptionLiComponent {
   }
 
   constructor(private elementRef: ElementRef) {
-    this.el = elementRef.nativeElement;
   }
 }
