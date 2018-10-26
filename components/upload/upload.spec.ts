@@ -977,11 +977,11 @@ describe('upload', () => {
       });
 
       it('should be warn "Must return Subscription type in [nzCustomRequest] property"', () => {
-        spyOn(console, 'warn');
+        let warnMsg = '';
+        console.warn = jasmine.createSpy().and.callFake(res => warnMsg = res);
         comp.options.customRequest = ((item: UploadXHRArgs) => { }) as any;
-        expect(console.warn).not.toHaveBeenCalled();
         comp.onChange(PNGSMALL as any);
-        expect(console.warn).toHaveBeenCalled();
+        expect(warnMsg).toContain(`Must return Subscription type`);
       });
     });
   });
