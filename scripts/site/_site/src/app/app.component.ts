@@ -42,8 +42,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.hide = !this.hide;
   }
 
-  constructor(private router: Router, private title: Title, private nzI18nService: NzI18nService, private msg: NzMessageService, private iconService: NzIconService) {
-    this.iconService.twoToneColor = { primaryColor: '#1890ff' };
+  constructor(private router: Router, private title: Title, private nzI18nService: NzI18nService, private msg: NzMessageService) {
   }
 
   navigateToPage(url) {

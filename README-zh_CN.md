@@ -117,6 +117,10 @@ $ npm run site:start
 
 浏览器会自动打开。
 
+## 🗺 Road Map
+
+查看 [这个 issue](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2025) 来了解我们 2018 下半年的开发计划。
+
 ## 🤝 如何贡献
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/pulls)
