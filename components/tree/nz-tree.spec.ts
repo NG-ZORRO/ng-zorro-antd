@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,6 +35,9 @@ describe('nz-tree', () => {
 
     it('should set nzDefaultXXX correctly', fakeAsync(() => {
       fixture.detectChanges();
+      flush();
+      tick(300);
+      fixture.detectChanges();
       expect(treeInstance.treeComponent.getTreeNodes().length).toEqual(3);
       // checked
       expect(treeInstance.treeComponent.getCheckedNodeList().length).toEqual(1);
@@ -53,7 +56,7 @@ describe('nz-tree', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(treeInstance.treeComponent.getExpandedNodeList().length).toEqual(2);
+      expect(treeInstance.treeComponent.getExpandedNodeList().length).toEqual(0);
 
     }));
 
@@ -66,6 +69,8 @@ describe('nz-tree', () => {
     });
 
     it('test new NzTreeNode of nzData', fakeAsync(() => {
+      fixture.detectChanges();
+      flush();
       fixture.detectChanges();
       treeInstance.nodes = [ {
         title   : '0-0',
@@ -523,10 +528,11 @@ describe('nz-tree', () => {
     });
 
     it('should get correctly nodes', fakeAsync(() => {
+      treeInstance.modelNodes = treeInstance.nodes;
       fixture.detectChanges();
-      tick(200);
+      flush();
+      tick(300);
       fixture.detectChanges();
-      // unsupported type, will console `ngModel only accepts an array and should be not empty`
       expect(treeInstance.treeComponent.getCheckedNodeList().length).toEqual(1);
       expect(treeInstance.treeComponent.getCheckedNodeList()[ 0 ].key).toEqual('10001');
       expect(treeInstance.treeComponent.getExpandedNodeList().length).toEqual(2);
@@ -535,8 +541,8 @@ describe('nz-tree', () => {
       expect(treeInstance.treeComponent.getHalfCheckedNodeList()[ 0 ].key).toEqual('1001');
       expect(treeInstance.treeComponent.getSelectedNodeList().length).toEqual(2);
       // test clear children
-      treeInstance.treeComponent.getTreeNodes()[0].clearChildren();
-      expect(treeInstance.treeComponent.getTreeNodes()[0].getChildren().length).toEqual(0);
+      treeInstance.treeComponent.getTreeNodes()[ 0 ].clearChildren();
+      expect(treeInstance.treeComponent.getTreeNodes()[ 0 ].getChildren().length).toEqual(0);
 
     }));
 
@@ -652,10 +658,12 @@ export class NzTestTreeDraggableComponent {
   nodes = [ {
     title   : '0-0',
     key     : '00',
+    icon    : 'anticon anticon-smile',
     expanded: true,
     children: [ {
       title   : '0-0-0',
       key     : '000',
+      icon    : 'smile',
       expanded: true,
       children: [
         { title: '0-0-0-0', key: '0000', isLeaf: true },
@@ -727,7 +735,8 @@ export class NzTestTreeDraggableComponent {
   selector: 'nz-test-older-tree',
   template: `
     <nz-tree
-      [(ngModel)]="nodes"
+      [nzData]="nodes"
+      [(ngModel)]="modelNodes"
       [nzMultiple]="true"
       [nzDefaultExpandedKeys]="expandKeys"
       [nzDefaultCheckedKeys]="checkedKeys"
@@ -745,6 +754,7 @@ class NzTestTreeOlderComponent {
   expandDefault = false;
   showExpand = true;
   searchValue = '';
+  modelNodes = null;
   nodes = [
     new NzTreeNode({
       title   : 'root1',
