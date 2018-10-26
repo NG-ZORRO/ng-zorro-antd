@@ -1,5 +1,6 @@
 import { forwardRef, Component } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import { DateRangePickerComponent } from './date-range-picker.component';
 
@@ -18,4 +19,7 @@ import { DateRangePickerComponent } from './date-range-picker.component';
 
 export class NzWeekPickerComponent extends DateRangePickerComponent {
   showWeek: boolean = true;
+  constructor(i18n: NzI18nService) {
+    super(i18n);
+  }
 }

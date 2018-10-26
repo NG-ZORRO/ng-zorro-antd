@@ -1,7 +1,13 @@
+import { DOCUMENT } from '@angular/common';
 import {
   Component,
-  OnInit
+  Inject,
+  OnInit,
+  Optional,
+  Renderer2
 } from '@angular/core';
+
+import { NzRadioGroupComponent } from './nz-radio-group.component';
 import { NzRadioComponent } from './nz-radio.component';
 
 @Component({
@@ -16,4 +22,8 @@ import { NzRadioComponent } from './nz-radio.component';
 })
 export class NzRadioButtonComponent extends NzRadioComponent implements OnInit {
   prefixCls = 'ant-radio-button';
+  /* tslint:disable-next-line:no-any */
+  constructor(@Optional() nzRadioGroup: NzRadioGroupComponent, renderer: Renderer2, @Inject(DOCUMENT) document: any) {
+    super(nzRadioGroup, renderer, document);
+  }
 }

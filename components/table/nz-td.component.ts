@@ -21,7 +21,7 @@ export class NzTdComponent {
   private _expand = false;
   private _showCheckbox = false;
   isIndentSizeSet = false;
-  el: HTMLElement;
+  el: HTMLElement = this.elementRef.nativeElement;
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
@@ -108,6 +108,5 @@ export class NzTdComponent {
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-    this.el = this.elementRef.nativeElement;
   }
 }

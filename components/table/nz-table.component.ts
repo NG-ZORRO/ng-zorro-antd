@@ -56,7 +56,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   isFooterString: boolean;
   isTitleString: boolean;
   isNoResultString: boolean;
-  el: HTMLElement;
+  el: HTMLElement = this.elementRef.nativeElement;
   lastScrollLeft = 0;
   /* tslint:disable-next-line:no-any */
   rawData: any[] = [];
@@ -376,6 +376,5 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   constructor(private renderer: Renderer2, private ngZone: NgZone, private elementRef: ElementRef, private cdr: ChangeDetectorRef, private nzMeasureScrollbarService: NzMeasureScrollbarService, private i18n: NzI18nService) {
-    this.el = this.elementRef.nativeElement;
   }
 }
