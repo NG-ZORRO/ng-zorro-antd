@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 
 import { FunctionProp } from '../core/types/common-wrap';
 import { toBoolean, valueFunctionProp, InputBoolean } from '../core/util/convert';
-import { LoggerService } from '../core/util/logger/logger.service';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CandyDate } from './lib/candy-date';
 
@@ -39,7 +38,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   pickerStyle: object; // Final picker style that contains width fix corrections etc.
   extraFooter: TemplateRef<void> | string;
 
-  constructor(i18n: NzI18nService, private logger: LoggerService) {
+  constructor(i18n: NzI18nService) {
     super(i18n);
   }
 

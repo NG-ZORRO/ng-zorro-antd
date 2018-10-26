@@ -1,9 +1,21 @@
-import { AfterContentInit, Component, ContentChild, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChild,
+  ElementRef,
+  Host,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Renderer2 } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
 import { NzColComponent } from '../grid/nz-col.component';
+import { NzRowComponent } from '../grid/nz-row.component';
+import { NzRowDirective } from '../grid/nz-row.directive';
 
 @Component({
   selector           : 'nz-form-control',
@@ -98,6 +110,10 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
     } else {
       this.iconType = '';
     }
+  }
+
+  constructor(nzUpdateHostClassService: NzUpdateHostClassService, elementRef: ElementRef, @Optional() @Host() nzRowComponent: NzRowComponent, @Optional() @Host() nzRowDirective: NzRowDirective, renderer: Renderer2) {
+    super(nzUpdateHostClassService, elementRef, nzRowComponent, nzRowDirective, renderer);
   }
 
   ngOnInit(): void {
