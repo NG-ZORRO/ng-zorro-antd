@@ -28,6 +28,7 @@ If there are too many operations to display, you can wrap them in a `Dropdown`. 
 You should use [nz-menu](/components/menu/en) in `nz-dropdown`. The menu items and dividers are also available by using `nz-menu-item` and `nz-menu-divider`.
 
 > nz-menu of nz-dropdown is unselectable by default, you can make it selectable via `<ul nz-menu nzSelectable>`.
+> If you creating nz-menu dynamically ie with a `*ngFor` you need to make it known to the dropdown via `<ul nz-menu nzInDropDown>`
 
 ### [nz-dropdown]
 
