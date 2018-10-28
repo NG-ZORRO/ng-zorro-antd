@@ -361,8 +361,8 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
         && this.tableBodyElement
         && this.tableBodyElement.nativeElement) {
         merge<MouseEvent>(
-          fromEvent(this.tableHeaderElement.nativeElement, 'scroll'),
-          fromEvent(this.tableBodyElement.nativeElement, 'scroll')
+          fromEvent<MouseEvent>(this.tableHeaderElement.nativeElement, 'scroll'),
+          fromEvent<MouseEvent>(this.tableBodyElement.nativeElement, 'scroll')
         ).pipe(takeUntil(this.unsubscribe$)).subscribe((data: MouseEvent) => {
           this.syncScrollTable(data);
         });

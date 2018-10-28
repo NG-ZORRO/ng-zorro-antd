@@ -299,8 +299,8 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
 
   private subscribeOverlayBackdropClick(): Subscription {
     return merge<MouseEvent | TouchEvent>(
-      fromEvent(this.document, 'click'),
-      fromEvent(this.document, 'touchend')
+      fromEvent<MouseEvent>(this.document, 'click'),
+      fromEvent<TouchEvent>(this.document, 'touchend')
     )
     .subscribe((event: MouseEvent | TouchEvent) => {
       const clickTarget = event.target as HTMLElement;

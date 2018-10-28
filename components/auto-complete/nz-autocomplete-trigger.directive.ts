@@ -215,8 +215,8 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
    */
   private subscribeOverlayBackdropClick(): Subscription {
     return merge<MouseEvent | TouchEvent>(
-      fromEvent(this._document, 'click'),
-      fromEvent(this._document, 'touchend')
+      fromEvent<MouseEvent>(this._document, 'click'),
+      fromEvent<TouchEvent>(this._document, 'touchend')
     )
     .subscribe((event: MouseEvent | TouchEvent) => {
       const clickTarget = event.target as HTMLElement;
