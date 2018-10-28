@@ -150,11 +150,9 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Output() nzOnDrop: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
   @Output() nzOnDragEnd: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
 
-  // tslint:disable-next-line:no-any
   @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<any>;
   _searchValue = null;
-  // tslint:disable-next-line:no-any
-  nzDefaultSubject = new ReplaySubject(6);
+  nzDefaultSubject = new ReplaySubject< { type: string, keys: string[] }>(6);
   nzDefaultSubscription: Subscription;
   nzNodes: NzTreeNode[] = [];
   prefixCls = 'ant-tree';
