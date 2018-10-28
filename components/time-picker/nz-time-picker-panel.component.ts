@@ -64,7 +64,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   @Input() nzHideDisabledOptions = false;
   @Input() nzClearText: string;
   @Input() nzPlaceHolder: string;
-  @Output() timeClear = new EventEmitter<void>();
+  @Output() readonly timeClear = new EventEmitter<void>();
 
   @Input()
   set nzAllowEmpty(value: boolean) {

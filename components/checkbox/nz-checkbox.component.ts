@@ -47,7 +47,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   private inputElement: ElementRef;
   @ViewChild('contentElement') contentElement: ElementRef;
   classMap = {};
-  @Output() nzCheckedChange = new EventEmitter<boolean>();
+  @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Input() nzValue: string;
 
   @Input()

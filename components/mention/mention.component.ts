@@ -57,8 +57,8 @@ export interface MentionOnSearchTypes {
 
 export class NzMentionComponent implements OnDestroy, AfterContentInit {
 
-  @Output() nzOnSelect: EventEmitter<string | {}> = new EventEmitter();
-  @Output() nzOnSearchChange: EventEmitter<MentionOnSearchTypes> = new EventEmitter();
+  @Output() readonly nzOnSelect: EventEmitter<string | {}> = new EventEmitter();
+  @Output() readonly nzOnSearchChange: EventEmitter<MentionOnSearchTypes> = new EventEmitter();
 
   @Input() nzValueWith: (value: any) => string = value => value; // tslint:disable-line:no-any
   @Input() nzPrefix: string | string[] = '@';

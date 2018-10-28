@@ -74,7 +74,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   @Input() nzMax = 100;
   @Input() nzDefaultValue: SliderValue = null;
   @Input() nzTipFormatter: (value: number) => string;
-  @Output() nzOnAfterChange = new EventEmitter<SliderValue>();
+  @Output() readonly nzOnAfterChange = new EventEmitter<SliderValue>();
 
   @Input()
   set nzVertical(value: boolean) {

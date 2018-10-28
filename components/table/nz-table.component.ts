@@ -72,12 +72,12 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('tableMainElement') tableMainElement: ElementRef;
   @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
 
-  @Output() nzPageSizeChange: EventEmitter<number> = new EventEmitter();
-  @Output() nzPageIndexChange: EventEmitter<number> = new EventEmitter();
+  @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
+  @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
   @Input() nzShowTotal: TemplateRef<{ $implicit: number, range: [ number, number ] }>;
 
   /* tslint:disable-next-line:no-any */
-  @Output() nzCurrentPageDataChange: EventEmitter<any[]> = new EventEmitter();
+  @Output() readonly nzCurrentPageDataChange: EventEmitter<any[]> = new EventEmitter();
   @Input() nzSize: string = 'default';
   /** page size changer select values */
   @Input() nzPageSizeOptions = [ 10, 20, 30, 40, 50 ];

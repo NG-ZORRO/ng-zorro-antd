@@ -109,12 +109,12 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   @Input() nzDropdownStyle: { [ key: string ]: string; };
   @Input() nzDefaultExpandedKeys: string[] = [];
   @Input() nzDisplayWith: (node: NzTreeNode) => string = (node: NzTreeNode) => node.title;
-  @Output() nzOpenChange = new EventEmitter<boolean>();
-  @Output() nzCleared = new EventEmitter<void>();
-  @Output() nzRemoved = new EventEmitter<NzTreeNode>();
-  @Output() nzExpandChange = new EventEmitter<NzFormatEmitEvent>();
-  @Output() nzTreeClick = new EventEmitter<NzFormatEmitEvent>();
-  @Output() nzTreeCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOpenChange = new EventEmitter<boolean>();
+  @Output() readonly nzCleared = new EventEmitter<void>();
+  @Output() readonly nzRemoved = new EventEmitter<NzTreeNode>();
+  @Output() readonly nzExpandChange = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzTreeClick = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzTreeCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
 
   @Input()
   set nzNodes(value: NzTreeNode[]) {

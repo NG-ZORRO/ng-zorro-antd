@@ -50,7 +50,7 @@ export class NzAutocompleteOptionComponent {
     this.disabled = toBoolean(value);
   }
 
-  @Output() selectionChange = new EventEmitter<NzOptionSelectionChange>();
+  @Output() readonly selectionChange = new EventEmitter<NzOptionSelectionChange>();
 
   constructor(private changeDetectorRef: ChangeDetectorRef, private element: ElementRef) {
   }

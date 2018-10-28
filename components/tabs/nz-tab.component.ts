@@ -37,9 +37,9 @@ export class NzTabComponent implements OnDestroy, OnInit {
     return this._disabled;
   }
 
-  @Output() nzClick = new EventEmitter<void>();
-  @Output() nzSelect = new EventEmitter<void>();
-  @Output() nzDeselect = new EventEmitter<void>();
+  @Output() readonly nzClick = new EventEmitter<void>();
+  @Output() readonly nzSelect = new EventEmitter<void>();
+  @Output() readonly nzDeselect = new EventEmitter<void>();
   @ViewChild(TemplateRef) content: TemplateRef<void>;
 
   @Input()

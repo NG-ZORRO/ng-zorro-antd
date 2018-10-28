@@ -135,17 +135,17 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // Output
-  @Output() clickNode: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() dblClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() contextMenu: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() clickCheckBox: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() clickExpand: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDragStart: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDragEnter: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDragOver: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDragLeave: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDrop: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDragEnd: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly clickNode: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly dblClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly contextMenu: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly clickCheckBox: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly clickExpand: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzDragStart: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzDragEnter: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzDragOver: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzDragLeave: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzDrop: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzDragEnd: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
 
   // default var
   prefixCls = 'ant-tree';
