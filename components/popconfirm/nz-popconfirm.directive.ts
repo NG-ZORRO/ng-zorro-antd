@@ -32,8 +32,8 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit,
   _okType: string = 'primary';
   _cancelText: string;
 
-  @Output() nzOnCancel: EventEmitter<void> = new EventEmitter();
-  @Output() nzOnConfirm: EventEmitter<void> = new EventEmitter();
+  @Output() readonly nzOnCancel: EventEmitter<void> = new EventEmitter();
+  @Output() readonly nzOnConfirm: EventEmitter<void> = new EventEmitter();
 
   @Input()
   set nzOkText(value: string) {

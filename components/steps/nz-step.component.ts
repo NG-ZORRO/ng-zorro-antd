@@ -7,9 +7,7 @@ import {
 } from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-
-// tslint:disable-next-line:no-any
-export type StepNgClassType = string | string[] | Set<string> | { [ klass: string ]: any; };
+import { NgClassType } from '../core/types/ng-class';
 
 @Component({
   selector           : 'nz-step',
@@ -21,7 +19,7 @@ export class NzStepComponent {
   private _status = 'wait';
   private _currentIndex = 0;
   private _description: string | TemplateRef<void>;
-  private _icon: StepNgClassType | TemplateRef<void>;
+  private _icon: NgClassType | TemplateRef<void>;
   private _title: string | TemplateRef<void>;
   private el: HTMLElement = this.elementRef.nativeElement;
   oldAPIIcon = true; // Make the user defined icon compatible to old API. Should be removed in 2.0.
@@ -48,7 +46,7 @@ export class NzStepComponent {
   }
 
   @Input()
-  set nzIcon(value: StepNgClassType | TemplateRef<void>) {
+  set nzIcon(value: NgClassType | TemplateRef<void>) {
     if (!(value instanceof TemplateRef)) {
       this.isIconString = true;
       if (typeof value === 'string') {
@@ -63,7 +61,7 @@ export class NzStepComponent {
     this._icon = value;
   }
 
-  get nzIcon(): StepNgClassType | TemplateRef<void> {
+  get nzIcon(): NgClassType | TemplateRef<void> {
     return this._icon;
   }
 

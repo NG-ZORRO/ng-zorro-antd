@@ -39,7 +39,7 @@ Modern browsers and Internet Explorer 11+ (with [polyfills](https://angular.io/g
 
 ## Angular Support
 
-Now Supports Angular `^6.0.0`.
+Now Supports Angular `^7.0.0`.
 
 ## Design Specification
 

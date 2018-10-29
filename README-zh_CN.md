@@ -38,7 +38,7 @@ Ant Design 的 Angular 实现，开发和服务于企业级后台产品。
 
 ## 🖥 支持环境
 
-- Angular `^6.0.0`
+- Angular `^7.0.0`
 - 现代浏览器，以及 Internet Explorer 11+ （使用 [polyfills](https://angular.io/guide/browser-support)）
 - [Electron](http://electron.atom.io/)
 

@@ -98,9 +98,9 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
     this.registerScrollEvent();
   }
 
-  @Output() nzClick: EventEmitter<string> = new EventEmitter();
+  @Output() readonly nzClick: EventEmitter<string> = new EventEmitter();
 
-  @Output() nzScroll: EventEmitter<NzAnchorLinkComponent> = new EventEmitter();
+  @Output() readonly nzScroll: EventEmitter<NzAnchorLinkComponent> = new EventEmitter();
 
   // endregion
 

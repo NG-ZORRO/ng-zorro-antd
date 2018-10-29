@@ -5,15 +5,14 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  SimpleChanges, TemplateRef,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { StepNgClassType } from '../steps';
+import { NzSizeLDSType } from '../core/types/size';
 
 export type NzAvatarShape = 'square' | 'circle';
-export type NzAvatarSize = 'small' | 'large' | 'default';
 
 @Component({
   selector           : 'nz-avatar',
@@ -23,25 +22,6 @@ export type NzAvatarSize = 'small' | 'large' | 'default';
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzAvatarComponent implements OnChanges {
-  private el: HTMLElement = this.elementRef.nativeElement;
-  private prefixCls = 'ant-avatar';
-  private sizeMap = { large: 'lg', small: 'sm' };
-  private _icon: string;
-  oldAPIIcon = true; // Make the user defined icon compatible to old API. Should be removed in 2.0.
-  hasText: boolean = false;
-  hasSrc: boolean = true;
-  hasIcon: boolean = false;
-  textStyles: {};
-
-  @ViewChild('textEl') textEl: ElementRef;
-
-  @Input() nzShape: NzAvatarShape = 'circle';
-
-  @Input() nzSize: NzAvatarSize = 'default';
-
-  @Input() nzText: string;
-
-  @Input() nzSrc: string;
 
   @Input()
   set nzIcon(value: string) {
@@ -54,6 +34,28 @@ export class NzAvatarComponent implements OnChanges {
   get nzIcon(): string {
     return this._icon;
   }
+  oldAPIIcon = true; // Make the user defined icon compatible to old API. Should be removed in 2.0.
+  hasText: boolean = false;
+  hasSrc: boolean = true;
+  hasIcon: boolean = false;
+  textStyles: {};
+
+  @ViewChild('textEl') textEl: ElementRef;
+
+  @Input() nzShape: NzAvatarShape = 'circle';
+
+  @Input() nzSize: NzSizeLDSType = 'default';
+
+  @Input() nzText: string;
+
+  @Input() nzSrc: string;
+
+  constructor(private elementRef: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {
+  }
+  private el: HTMLElement = this.elementRef.nativeElement;
+  private prefixCls = 'ant-avatar';
+  private sizeMap = { large: 'lg', small: 'sm' };
+  private _icon: string;
 
   setClass(): this {
     const classMap = {
@@ -77,6 +79,14 @@ export class NzAvatarComponent implements OnChanges {
     } else if (this.nzText) {
       this.hasText = true;
     }
+    this.setClass().notifyCalc();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.hasText = !this.nzSrc && !!this.nzText;
+    this.hasIcon = !this.nzSrc && !!this.nzIcon;
+    this.hasSrc = !!this.nzSrc;
+
     this.setClass().notifyCalc();
   }
 
@@ -107,16 +117,5 @@ export class NzAvatarComponent implements OnChanges {
       this.calcStringSize();
     });
     return this;
-  }
-
-  constructor(private elementRef: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.hasText = !this.nzSrc && !!this.nzText;
-    this.hasIcon = !this.nzSrc && !!this.nzIcon;
-    this.hasSrc = !!this.nzSrc;
-
-    this.setClass().notifyCalc();
   }
 }

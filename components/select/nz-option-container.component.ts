@@ -38,10 +38,10 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   @Input() listOfNzOptionComponent: QueryList<NzOptionComponent>;
   @Input() listOfNzOptionGroupComponent: QueryList<NzOptionGroupComponent>;
   // tslint:disable-next-line:no-any
-  @Output() nzListOfSelectedValueChange = new EventEmitter<any[]>();
-  @Output() nzListOfTemplateOptionChange = new EventEmitter<NzOptionComponent[]>();
-  @Output() nzClickOption = new EventEmitter<void>();
-  @Output() nzScrollToBottom = new EventEmitter<void>();
+  @Output() readonly nzListOfSelectedValueChange = new EventEmitter<any[]>();
+  @Output() readonly nzListOfTemplateOptionChange = new EventEmitter<NzOptionComponent[]>();
+  @Output() readonly nzClickOption = new EventEmitter<void>();
+  @Output() readonly nzScrollToBottom = new EventEmitter<void>();
   @Input() nzMode = 'default';
   @Input() nzServerSearch = false;
   @Input() nzFilterOption: TFilterOption = defaultFilterOption;

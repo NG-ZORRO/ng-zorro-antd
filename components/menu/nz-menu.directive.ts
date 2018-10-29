@@ -37,7 +37,7 @@ export class NzMenuDirective implements AfterContentInit {
   @Input() nzTheme: 'light' | 'dark' = 'light';
   @Input() nzInlineIndent = 24;
   @Input() nzMode: NzMode = 'vertical';
-  @Output() nzClick = new EventEmitter<NzMenuItemDirective>();
+  @Output() readonly nzClick = new EventEmitter<NzMenuItemDirective>();
 
   @Input()
   set nzInDropDown(value: boolean) {

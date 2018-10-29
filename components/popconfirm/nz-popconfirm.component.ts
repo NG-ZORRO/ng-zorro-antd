@@ -25,8 +25,8 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';
   _trigger = 'click';
   _hasBackdrop = true;
-  @Output() nzOnCancel: EventEmitter<void> = new EventEmitter();
-  @Output() nzOnConfirm: EventEmitter<void> = new EventEmitter();
+  @Output() readonly nzOnCancel: EventEmitter<void> = new EventEmitter();
+  @Output() readonly nzOnConfirm: EventEmitter<void> = new EventEmitter();
 
   @Input() nzOkText: string;
   @Input() nzOkType: string = 'primary';

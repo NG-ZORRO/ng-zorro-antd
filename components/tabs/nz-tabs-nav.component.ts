@@ -53,8 +53,8 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   @ViewChild(NzTabsInkBarDirective) nzTabsInkBarDirective: NzTabsInkBarDirective;
   @ViewChild('navContainerElement') navContainerElement: ElementRef;
   @ViewChild('navListElement') navListElement: ElementRef;
-  @Output() nzOnNextClick = new EventEmitter<void>();
-  @Output() nzOnPrevClick = new EventEmitter<void>();
+  @Output() readonly nzOnNextClick = new EventEmitter<void>();
+  @Output() readonly nzOnPrevClick = new EventEmitter<void>();
   @Input() nzTabBarExtraContent: TemplateRef<void>;
 
   @Input()
