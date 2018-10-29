@@ -10,6 +10,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NzSizeLDSType } from '../core/types/size';
 
 import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
@@ -47,7 +48,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   onChange: (value: number) => void = () => null;
   onTouched: () => void = () => null;
   @ViewChild('inputElement') inputElement: ElementRef;
-  @Input() nzSize: 'small' | 'default' | 'large' = 'default';
+  @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzMin: number = -Infinity;
   @Input() nzMax: number = Infinity;
   @Input() nzParser = (value) => value;

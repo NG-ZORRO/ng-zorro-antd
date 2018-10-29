@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
 
 import { FunctionProp } from '../../../core/types/common-wrap';
-import { valueFunctionProp } from '../../../core/util/convert';
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
 import {
   DisabledDateFn,
@@ -237,11 +236,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     return this.selectedValue && !!this.selectedValue[ 1 ] && !!this.selectedValue[ 0 ];
   }
 
-  disabledStartTime = (value: Date): DisabledTimeConfig => {
+  disabledStartTime = (value: Date | Date[]): DisabledTimeConfig => {
     return this.disabledTime && this.disabledTime(value, 'start');
   }
 
-  disabledEndTime = (value: Date): DisabledTimeConfig => {
+  disabledEndTime = (value: Date | Date[]): DisabledTimeConfig => {
     return this.disabledTime && this.disabledTime(value, 'end');
   }
 
@@ -286,7 +285,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   }
 
   onClickPresetRange(val: Date[]): void {
-    const value = valueFunctionProp(val);
+    const value = val;
     this.setValue([ new CandyDate(value[ 0 ]), new CandyDate(value[ 1 ]) ]);
     this.resultOk.emit();
   }

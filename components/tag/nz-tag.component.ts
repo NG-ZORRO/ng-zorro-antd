@@ -46,9 +46,9 @@ export class NzTagComponent implements OnInit, AfterViewInit {
   classMap;
   closed = false;
   @ViewChild('wrapperElement') wrapperElement: ElementRef;
-  @Output() nzAfterClose = new EventEmitter<void>();
-  @Output() nzOnClose = new EventEmitter<MouseEvent>();
-  @Output() nzCheckedChange = new EventEmitter<boolean>();
+  @Output() readonly nzAfterClose = new EventEmitter<void>();
+  @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
+  @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
 
   @Input()
   set nzMode(value: TagType) {

@@ -50,7 +50,7 @@ export class NzToolTipComponent {
   visible$: Observable<boolean> = this.visibleSource.asObservable();
   @ContentChild('nzTemplate') _title: string | TemplateRef<void>;
   @ViewChild('overlay') overlay: CdkConnectedOverlay;
-  @Output() nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
+  @Output() readonly nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
 
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [ key: string ]: string } = {};

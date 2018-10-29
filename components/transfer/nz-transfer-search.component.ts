@@ -12,8 +12,8 @@ export class NzTransferSearchComponent {
   @Input() placeholder: string;
   @Input() value: string;
 
-  @Output() valueChanged = new EventEmitter<string>();
-  @Output() valueClear = new EventEmitter();
+  @Output() readonly valueChanged = new EventEmitter<string>();
+  @Output() readonly valueClear = new EventEmitter();
 
   // endregion
 

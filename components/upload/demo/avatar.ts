@@ -53,9 +53,9 @@ export class NzDemoUploadAvatarComponent {
     return isJPG && isLt2M;
   }
 
-  private getBase64(img: File, callback: (img: {}) => void): void {
+  private getBase64(img: File, callback: (img: string) => void): void {
     const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
+    reader.addEventListener('load', () => callback(reader.result.toString()));
     reader.readAsDataURL(img);
   }
 

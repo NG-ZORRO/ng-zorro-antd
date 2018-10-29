@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -6,32 +7,23 @@ import {
   Output,
   TemplateRef
 } from '@angular/core';
-
-// tslint:disable-next-line:no-any
-export type NgClassType = string | string[] | Set<string> | { [ klass: string ]: any; };
-
 import { fadeAnimation } from '../core/animation/fade-animations';
+import { NgClassType } from '../core/types/ng-class';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
   selector           : 'nz-alert',
   animations         : [ fadeAnimation ],
-  preserveWhitespaces: false,
   templateUrl        : './nz-alert.component.html',
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  preserveWhitespaces: false,
   styles             : [
-      `:host {
+    `:host {
       display: block;
     }`
   ]
 })
 export class NzAlertComponent implements OnInit {
-  private _banner = false;
-  private _closeable = false;
-  private _showIcon = false;
-  private _type = 'info';
-  private _description: string | TemplateRef<void>;
-  private _message: string | TemplateRef<void>;
-  private _closeText: string | TemplateRef<void>;
   display = true;
   isTypeSet = false;
   isShowIconSet = false;
@@ -39,10 +31,20 @@ export class NzAlertComponent implements OnInit {
   isDescriptionString: boolean;
   isMessageString: boolean;
   isCloseTextString: boolean;
-  outerClassMap;
-  iconType;
-  @Output() nzOnClose: EventEmitter<boolean> = new EventEmitter();
-  @Input() nzIconType: NgClassType;
+  outerClassMap: NgClassType;
+  iconType: string;
+  iconTheme: string;
+  @Output()
+  readonly nzOnClose: EventEmitter<boolean> = new EventEmitter();
+  @Input()
+  nzIconType: NgClassType;
+  private _banner = false;
+  private _closeable = false;
+  private _showIcon = false;
+  private _type = 'info';
+  private _description: string | TemplateRef<void>;
+  private _message: string | TemplateRef<void>;
+  private _closeText: string | TemplateRef<void>;
 
   @Input()
   set nzDescription(value: string | TemplateRef<void>) {
@@ -145,22 +147,25 @@ export class NzAlertComponent implements OnInit {
   }
 
   updateIconClassMap(): void {
-    const iconType = {
-      'close-circle-o'         : this.nzDescription && this.nzType === 'error',
-      'check-circle-o'         : this.nzDescription && this.nzType === 'success',
-      'info-circle-o'          : this.nzDescription && this.nzType === 'info',
-      'exclamation-circle-o'   : this.nzDescription && this.nzType === 'warning',
-      'close-circle-fill'      : (!this.nzDescription) && this.nzType === 'error',
-      'check-circle-fill'      : (!this.nzDescription) && this.nzType === 'success',
-      'info-circle-fill'       : (!this.nzDescription) && this.nzType === 'info',
-      'exclamation-circle-fill': (!this.nzDescription) && this.nzType === 'warning'
-    };
-
-    Object.keys(iconType).forEach(key => {
-      if (iconType[ key ]) {
-        this.iconType = key;
-      }
-    });
+    switch (this.nzType) {
+      case 'error':
+        this.iconType = 'close-circle';
+        break;
+      case 'success':
+        this.iconType = 'check-circle';
+        break;
+      case 'info':
+        this.iconType = 'info-circle';
+        break;
+      case 'warning':
+        this.iconType = 'exclamation-circle';
+        break;
+    }
+    if (this.nzDescription) {
+      this.iconTheme = 'outline';
+    } else {
+      this.iconTheme = `fill`;
+    }
   }
 
   ngOnInit(): void {

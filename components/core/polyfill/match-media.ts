@@ -7,12 +7,19 @@ function matchMediaFunc(): (mediaQuery: string) => MediaQueryList {
   } else {
     const matchMediaPolyfill = (mediaQuery: string): MediaQueryList => {
       return {
-        media  : mediaQuery,
-        matches: false,
+        media              : mediaQuery,
+        onchange           : () => {
+        },
+        addEventListener   : () => {
+        },
+        removeEventListener: () => {
+        },
+        dispatchEvent      : () => false,
+        matches            : false,
         addListener(): void {
         },
         removeListener(): void {
-        },
+        }
       };
     };
     return matchMediaPolyfill;

@@ -11,7 +11,7 @@ import { NzCheckboxComponent } from './nz-checkbox.component';
   }
 })
 export class NzCheckboxWrapperComponent {
-  @Output() nzOnChange = new EventEmitter<string[]>();
+  @Output() readonly nzOnChange = new EventEmitter<string[]>();
   private checkboxList: NzCheckboxComponent[] = [];
 
   addCheckbox(value: NzCheckboxComponent): void {

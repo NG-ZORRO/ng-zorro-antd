@@ -21,7 +21,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   @Input() @InputBoolean() nzShowToday: boolean = true;
   @Input() nzMode: PanelMode | PanelMode[];
   @Input() nzRanges: FunctionProp<PresetRanges>;
-  @Output() nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
+  @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
 
   private _showTime: object | boolean;
   @Input() get nzShowTime(): object | boolean { return this._showTime; }
@@ -29,7 +29,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
     this._showTime = typeof value === 'object' ? value : toBoolean(value);
   }
 
-  @Output() nzOnOk = new EventEmitter<CompatibleDate>();
+  @Output() readonly nzOnOk = new EventEmitter<CompatibleDate>();
 
   get realShowToday(): boolean { // Range not support nzShowToday currently
     return !this.isRange && this.nzShowToday;

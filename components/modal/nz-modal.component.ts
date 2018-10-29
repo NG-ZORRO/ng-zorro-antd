@@ -61,7 +61,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Input() nzGetContainer: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef) = () => this.overlay.create(); // [STATIC]
 
   @Input() @InputBoolean() nzVisible: boolean = false;
-  @Output() nzVisibleChange = new EventEmitter<boolean>();
+  @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   @Input() nzZIndex: number = 1000;
   @Input() nzWidth: number | string = 520;
@@ -76,8 +76,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Input() nzMaskStyle: object;
   @Input() nzBodyStyle: object;
 
-  @Output() nzAfterOpen = new EventEmitter<void>(); // Trigger when modal open(visible) after animations
-  @Output() nzAfterClose = new EventEmitter<R>(); // Trigger when modal leave-animation over
+  @Output() readonly nzAfterOpen = new EventEmitter<void>(); // Trigger when modal open(visible) after animations
+  @Output() readonly nzAfterClose = new EventEmitter<R>(); // Trigger when modal leave-animation over
   get afterOpen(): Observable<void> { // Observable alias for nzAfterOpen
     return this.nzAfterOpen.asObservable();
   }
@@ -95,7 +95,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   @Input() nzOkType = 'primary';
   @Input() @InputBoolean() nzOkLoading: boolean = false;
-  @Input() @Output() nzOnOk: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
+  @Input() @Output() readonly nzOnOk: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
   @ViewChild('autoFocusButtonOk', { read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
   @Input() nzCancelText: string;
 
@@ -104,7 +104,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   @Input() @InputBoolean() nzCancelLoading: boolean = false;
-  @Input() @Output() nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
+  @Input() @Output() readonly nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
   @ViewChild('modalContainer') modalContainer: ElementRef;
   @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
 

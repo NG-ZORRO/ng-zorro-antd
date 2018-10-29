@@ -1,38 +1,43 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   Input,
-  NgZone,
   OnInit,
   Renderer2,
   ViewChild
 } from '@angular/core';
 
-import {
-  animate,
-  style,
-  transition,
-  trigger
-} from '@angular/animations';
-
+import { AnimationCurves } from '../core/animation/animation';
 import { isEmpty } from '../core/util/check';
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
+
+const ANIMATION_TRANSITION_IN = `0.3s ${AnimationCurves.EASE_IN_BACK}`;
+const ANIMATION_TRANSITION_OUT = `0.3s ${AnimationCurves.EASE_IN_BACK}`;
 
 export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' | 'warning';
 
 @Component({
   selector           : 'nz-badge',
   preserveWhitespaces: false,
+  changeDetection    : ChangeDetectionStrategy.OnPush,
   animations         : [
-    trigger('enterLeave', [
-      transition('void => *', [
-        style({ opacity: 0 }),
-        animate('0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46)')
+    trigger('zoomAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'scale(0) translateX(50%)' }),
+        animate(ANIMATION_TRANSITION_IN, style({
+          opacity  : 1,
+          transform: 'scale(1) translateX(50%)'
+        }))
       ]),
-      transition('* => void', [
-        style({ opacity: 1 }),
-        animate('0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46)')
+      transition(':leave', [
+        style({ opacity: 1, transform: 'scale(1) translateX(50%)' }),
+        animate(ANIMATION_TRANSITION_OUT, style({
+          opacity  : 0,
+          transform: 'scale(0) translateX(50%)'
+        }))
       ])
     ])
   ],
@@ -40,53 +45,20 @@ export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' |
   host               : {
     '[class.ant-badge]'       : 'true',
     '[class.ant-badge-status]': 'nzStatus'
-  },
-  styles             : [
-    `
-      :host:not(.ant-badge-not-a-wrapper) .ant-badge-count {
-        position: absolute;
-        transform: translateX(50%);
-        right: 0;
-      }
-
-      :host .ant-badge-dot {
-        position: absolute;
-        transform: translateX(50%);
-        right: 0;
-      }
-    `
-  ]
+  }
 })
 export class NzBadgeComponent implements OnInit, AfterViewInit {
-  private _showDot = false;
-  private _showZero = false;
-  private _count: number;
   maxNumberArray = [];
   countArray = [];
   countSingleArray = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
   @ViewChild('contentElement') contentElement: ElementRef;
+  @Input() @InputBoolean() nzShowZero = false;
+  @Input() @InputBoolean() nzShowDot = true;
+  @Input() @InputBoolean() nzDot = false;
   @Input() nzOverflowCount = 99;
   @Input() nzText: string;
   @Input() nzStyle: { [ key: string ]: string };
   @Input() nzStatus: NzBadgeStatusType;
-
-  @Input()
-  set nzShowZero(value: boolean) {
-    this._showZero = toBoolean(value);
-  }
-
-  get nzShowZero(): boolean {
-    return this._showZero;
-  }
-
-  @Input()
-  set nzDot(value: boolean) {
-    this._showDot = toBoolean(value);
-  }
-
-  get nzDot(): boolean {
-    return this._showDot;
-  }
 
   @Input()
   set nzCount(value: number) {
@@ -103,8 +75,14 @@ export class NzBadgeComponent implements OnInit, AfterViewInit {
   }
 
   get showSup(): boolean {
-    return this.nzDot || this.nzCount > 0 || ((this.nzCount === 0) && this.nzShowZero);
+    return (this.nzShowDot && this.nzDot) || this.nzCount > 0 || ((this.nzCount === 0) && this.nzShowZero);
   }
+
+  constructor(private renderer: Renderer2, private elementRef: ElementRef) {
+
+  }
+
+  private _count: number;
 
   checkContent(): void {
     if (isEmpty(this.contentElement.nativeElement)) {
@@ -112,10 +90,6 @@ export class NzBadgeComponent implements OnInit, AfterViewInit {
     } else {
       this.renderer.removeClass(this.elementRef.nativeElement, 'ant-badge-not-a-wrapper');
     }
-  }
-
-  constructor(private zone: NgZone, private renderer: Renderer2, private elementRef: ElementRef) {
-
   }
 
   ngOnInit(): void {
