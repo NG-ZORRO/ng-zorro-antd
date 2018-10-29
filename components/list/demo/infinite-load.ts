@@ -8,28 +8,28 @@ const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,
 @Component({
   selector: 'nz-demo-list-infinite-load',
   template: `
-  <div class="demo-infinite-container"
-    infiniteScroll
-    [infiniteScrollDistance]="2"
-    [infiniteScrollThrottle]="50"
-    (scrolled)="onScroll()"
-    [scrollWindow]="false">
-    <nz-list [nzDataSource]="data" [nzRenderItem]="item">
-      <ng-template #item let-item>
-        <nz-list-item>
-          <nz-list-item-meta
-              [nzTitle]="nzTitle"
-              nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              [nzDescription]="item.email">
-              <ng-template #nzTitle>
-                  <a href="https://ng.ant.design">{{item.name.last}}</a>
-              </ng-template>
-          </nz-list-item-meta>
-        </nz-list-item>
-      </ng-template>
-      <nz-spin *ngIf="loading && hasMore" class="demo-loading"></nz-spin>
-    </nz-list>
-  </div>
+  <!--<div class="demo-infinite-container"-->
+    <!--infiniteScroll-->
+    <!--[infiniteScrollDistance]="2"-->
+    <!--[infiniteScrollThrottle]="50"-->
+    <!--(scrolled)="onScroll()"-->
+    <!--[scrollWindow]="false">-->
+    <!--<nz-list [nzDataSource]="data" [nzRenderItem]="item">-->
+      <!--<ng-template #item let-item>-->
+        <!--<nz-list-item>-->
+          <!--<nz-list-item-meta-->
+              <!--[nzTitle]="nzTitle"-->
+              <!--nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"-->
+              <!--[nzDescription]="item.email">-->
+              <!--<ng-template #nzTitle>-->
+                  <!--<a href="https://ng.ant.design">{{item.name.last}}</a>-->
+              <!--</ng-template>-->
+          <!--</nz-list-item-meta>-->
+        <!--</nz-list-item>-->
+      <!--</ng-template>-->
+      <!--<nz-spin *ngIf="loading && hasMore" class="demo-loading"></nz-spin>-->
+    <!--</nz-list>-->
+  <!--</div>-->
   `,
   styles: [ `
   :host ::ng-deep .demo-infinite-container {

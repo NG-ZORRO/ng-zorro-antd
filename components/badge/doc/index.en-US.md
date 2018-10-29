@@ -28,6 +28,7 @@ Badge normally appears in proximity to notifications or user avatars with eye-ca
 | -------- | ----------- | ---- | ------- |
 | `[nzCount]` | Number to show in badge | number |  |
 | `[nzDot]` | Whether to display a red dot instead of `count` | boolean | `false` |
+| `[nzShowDot]` | Whether to display the red dot | boolean | true |
 | `[nzOverflowCount]` | Max count to show | number | 99 |
 | `[nzShowZero]` | Whether to show badge when `count` is zero | boolean | `false` |
 | `[nzStatus]` | Set `nz-badge` as a status dot | `success` ｜ `processing` ｜ `default` ｜ `error` ｜ `warning` | `''` |

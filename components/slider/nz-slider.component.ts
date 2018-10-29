@@ -74,7 +74,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   @Input() nzMax = 100;
   @Input() nzDefaultValue: SliderValue = null;
   @Input() nzTipFormatter: (value: number) => string;
-  @Output() nzOnAfterChange = new EventEmitter<SliderValue>();
+  @Output() readonly nzOnAfterChange = new EventEmitter<SliderValue>();
 
   @Input()
   set nzVertical(value: boolean) {
@@ -376,7 +376,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       source.startPlucked$ = fromEvent(sliderDOM, start).pipe(
         filter(filterFunc),
         tap(this.utils.pauseEvent),
-        pluck(...pluckKey),
+        pluck<Event, number>(...pluckKey),
         map((position: number) => this.findClosestValue(position))
       );
       // end
@@ -385,7 +385,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       source.moveResolved$ = fromEvent(document, move).pipe(
         filter(filterFunc),
         tap(this.utils.pauseEvent),
-        pluck(...pluckKey),
+        pluck<Event, number>(...pluckKey),
         distinctUntilChanged(),
         map((position: number) => this.findClosestValue(position)),
         distinctUntilChanged(),

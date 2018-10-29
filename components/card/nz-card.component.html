@@ -27,7 +27,7 @@
   <nz-card-loading *ngIf="nzLoading"></nz-card-loading>
 </div>
 <ul class="ant-card-actions" *ngIf="nzActions.length">
-  <li *ngFor="let action of nzActions" [style.width.%]="100/nzActions.length">
+  <li *ngFor="let action of nzActions" [style.width.%]="100 / nzActions.length">
     <span><ng-template [ngTemplateOutlet]="action"></ng-template></span>
   </li>
 </ul>

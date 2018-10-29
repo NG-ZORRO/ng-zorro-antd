@@ -101,7 +101,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy {
   level = 1;
   triggerWidth = null;
   @ContentChildren(NzSubMenuComponent, { descendants: true }) subMenus: QueryList<NzSubMenuComponent>;
-  @Output() nzOpenChange: EventEmitter<boolean> = new EventEmitter();
+  @Output() readonly nzOpenChange: EventEmitter<boolean> = new EventEmitter();
   @ViewChild(CdkConnectedOverlay) cdkOverlay: CdkConnectedOverlay;
   @ViewChild('trigger') trigger: ElementRef;
 

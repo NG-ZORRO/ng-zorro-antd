@@ -63,9 +63,9 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzNotFoundContent: string;
 
   // events
-  @Output() nzChange: EventEmitter<TransferChange> = new EventEmitter();
-  @Output() nzSearchChange: EventEmitter<TransferSearchChange> = new EventEmitter();
-  @Output() nzSelectChange: EventEmitter<TransferSelectChange> = new EventEmitter();
+  @Output() readonly nzChange: EventEmitter<TransferChange> = new EventEmitter();
+  @Output() readonly nzSearchChange: EventEmitter<TransferSearchChange> = new EventEmitter();
+  @Output() readonly nzSelectChange: EventEmitter<TransferSelectChange> = new EventEmitter();
 
   // endregion
 

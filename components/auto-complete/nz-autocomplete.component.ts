@@ -120,7 +120,7 @@ export class NzAutocompleteComponent implements AfterViewInit {
   _dataSource: AutocompleteDataSource;
 
   /** 选择时发出的事件 */
-  @Output() selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<NzAutocompleteOptionComponent>();
+  @Output() readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<NzAutocompleteOptionComponent>();
 
   /** 用于组件内部监听 options 的选择变化 */
   readonly optionSelectionChanges: Observable<NzOptionSelectionChange> = defer(() => {

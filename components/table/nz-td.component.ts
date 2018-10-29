@@ -25,8 +25,8 @@ export class NzTdComponent {
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
-  @Output() nzCheckedChange = new EventEmitter<boolean>();
-  @Output() nzExpandChange = new EventEmitter<boolean>();
+  @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
+  @Output() readonly nzExpandChange = new EventEmitter<boolean>();
 
   @Input()
   set nzIndentSize(value: number) {

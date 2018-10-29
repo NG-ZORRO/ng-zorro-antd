@@ -75,8 +75,8 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
   @Input() nzHideAll = false;
   @Input() nzTabBarGutter: number;
   @Input() nzTabBarStyle: { [ key: string ]: string };
-  @Output() nzOnNextClick = new EventEmitter<void>();
-  @Output() nzOnPrevClick = new EventEmitter<void>();
+  @Output() readonly nzOnNextClick = new EventEmitter<void>();
+  @Output() readonly nzOnPrevClick = new EventEmitter<void>();
 
   @Input()
   set nzAnimated(value: NzAnimatedInterface | boolean) {
@@ -104,7 +104,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
     return this.nzSelectChange.pipe(map(event => event.index));
   }
 
-  @Output() nzSelectChange: EventEmitter<NzTabChangeEvent> = new EventEmitter<NzTabChangeEvent>(true);
+  @Output() readonly nzSelectChange: EventEmitter<NzTabChangeEvent> = new EventEmitter<NzTabChangeEvent>(true);
 
   @Input() set nzSize(value: string) {
     this._size = value;

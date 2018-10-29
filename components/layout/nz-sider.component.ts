@@ -84,7 +84,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit {
     return this._collapsed;
   }
 
-  @Output() nzCollapsedChange = new EventEmitter();
+  @Output() readonly nzCollapsedChange = new EventEmitter();
 
   @HostBinding('class.ant-layout-sider-zero-width')
   get setZeroClass(): boolean {

@@ -39,8 +39,8 @@ export class NzPaginationComponent implements OnInit, OnDestroy {
   @Input() nzShowTotal: TemplateRef<{ $implicit: number, range: [ number, number ] }>;
   @Input() nzInTable = false;
   @Input() nzSize: string;
-  @Output() nzPageSizeChange: EventEmitter<number> = new EventEmitter();
-  @Output() nzPageIndexChange: EventEmitter<number> = new EventEmitter();
+  @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
+  @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
 
   @Input()
   set nzItemRender(value: TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }>) {

@@ -12,7 +12,7 @@ import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
 })
 export class NzCalendarHeaderComponent implements OnInit {
   @Input() mode: 'month' | 'year' = 'month';
-  @Output() modeChange: EventEmitter<'month' | 'year'> = new EventEmitter();
+  @Output() readonly modeChange: EventEmitter<'month' | 'year'> = new EventEmitter();
 
   @Input() fullscreen: boolean = true;
 
@@ -26,8 +26,8 @@ export class NzCalendarHeaderComponent implements OnInit {
     return this._activeDate;
   }
 
-  @Output() yearChange: EventEmitter<number> = new EventEmitter();
-  @Output() monthChange: EventEmitter<number> = new EventEmitter();
+  @Output() readonly yearChange: EventEmitter<number> = new EventEmitter();
+  @Output() readonly monthChange: EventEmitter<number> = new EventEmitter();
 
   _activeDate = new Date();
   yearOffset: number = 10;

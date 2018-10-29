@@ -40,8 +40,8 @@ export class NzSelectTopControlComponent {
   isComposing = false;
   @ViewChild('inputElement') inputElement: ElementRef;
   // tslint:disable-next-line:no-any
-  @Output() nzListOfSelectedValueChange = new EventEmitter<any[]>();
-  @Output() nzOnSearch = new EventEmitter<{ value: string, emit: boolean }>();
+  @Output() readonly nzListOfSelectedValueChange = new EventEmitter<any[]>();
+  @Output() readonly nzOnSearch = new EventEmitter<{ value: string, emit: boolean }>();
   @Input() nzMode = 'default';
   @Input() nzShowSearch = false;
   @Input() nzDisabled = false;
