@@ -21,7 +21,7 @@
     "no-forward-ref": false,
     "use-life-cycle-interface": true,
     "contextual-life-cycle": true,
-    "trackBy-function": true,
+    "trackBy-function": false,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
