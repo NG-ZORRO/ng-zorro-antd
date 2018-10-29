@@ -2,7 +2,7 @@
   <ng-container *ngIf="nzShowIcon">
     <i class="ant-alert-icon" [ngClass]="nzIconType" *ngIf="nzIconType; else iconTemplate"></i>
     <ng-template #iconTemplate>
-      <i nz-icon class="ant-alert-icon" [type]="iconType"></i>
+      <i nz-icon class="ant-alert-icon" [type]="iconType" [theme]="iconTheme"></i>
     </ng-template>
   </ng-container>
   <span class="ant-alert-message" *ngIf="nzMessage">
@@ -17,10 +17,9 @@
       <ng-template [ngTemplateOutlet]="nzDescription"></ng-template>
     </ng-template>
   </span>
-  <a
-    *ngIf="nzCloseable || nzCloseText"
-    (click)="closeAlert()"
-    class="ant-alert-close-icon">
+  <a *ngIf="nzCloseable || nzCloseText"
+    class="ant-alert-close-icon"
+    (click)="closeAlert()">
     <ng-template #closeDefaultTemplate>
       <i nz-icon type="close" class="anticon-close"></i>
     </ng-template>

@@ -70,8 +70,8 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
   @ContentChildren(NzCarouselContentDirective) slideContents: QueryList<NzCarouselContentDirective>;
   @ViewChild('slickList') slickList: ElementRef;
   @ViewChild('slickTrack') slickTrack: ElementRef;
-  @Output() nzAfterChange: EventEmitter<number> = new EventEmitter();
-  @Output() nzBeforeChange: EventEmitter<{ from: number; to: number }> = new EventEmitter();
+  @Output() readonly nzAfterChange: EventEmitter<number> = new EventEmitter();
+  @Output() readonly nzBeforeChange: EventEmitter<{ from: number; to: number }> = new EventEmitter();
   @Input() nzEnableSwipe = true;
 
   @HostListener('window:resize', [ '$event' ])

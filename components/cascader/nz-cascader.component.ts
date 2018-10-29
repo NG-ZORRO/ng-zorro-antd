@@ -393,24 +393,24 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   @Input() nzLoadData: (node: CascaderOption, index?: number) => PromiseLike<any>;
 
   /** Event: emit on popup show or hide */
-  @Output() nzVisibleChange = new EventEmitter<boolean>();
+  @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   /** Event: emit on values changed */
-  @Output() nzChange = new EventEmitter<any[]>();
+  @Output() readonly nzChange = new EventEmitter<any[]>();
 
   /** Event: emit on values and selection changed */
-  @Output() nzSelectionChange = new EventEmitter<CascaderOption[]>();
+  @Output() readonly nzSelectionChange = new EventEmitter<CascaderOption[]>();
 
   /**
    * Event: emit on option selected, event data：{option: any, index: number}
    */
-  @Output() nzSelect = new EventEmitter<{
+  @Output() readonly nzSelect = new EventEmitter<{
     option: CascaderOption,
     index: number
   }>();
 
   /** Event: emit on the clear button clicked */
-  @Output() nzClear = new EventEmitter<void>();
+  @Output() readonly nzClear = new EventEmitter<void>();
 
   @ViewChild('input') input: ElementRef;
   /** 浮层菜单 */

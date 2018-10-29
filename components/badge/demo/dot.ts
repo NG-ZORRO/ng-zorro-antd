@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-badge-dot',
   template: `
     <nz-badge nzDot><i nz-icon type="notification"></i></nz-badge>
+    <nz-badge nzDot [nzShowDot]="false"><i nz-icon type="notification"></i></nz-badge>
     <nz-badge nzDot><a>Link something</a></nz-badge>
   `,
   styles  : [

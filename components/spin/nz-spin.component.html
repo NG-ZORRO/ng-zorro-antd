@@ -1,26 +1,26 @@
 <ng-template #defaultIndicatorTemplate>
   <span
     class="ant-spin-dot"
-    [class.ant-spin-dot-spin]="resultSpinning$|async">
+    [class.ant-spin-dot-spin]="(resultSpinning$|async) === true">
     <i></i><i></i><i></i><i></i>
   </span>
 </ng-template>
 <div #nestedElement>
-  <div [hidden]="!(resultSpinning$|async)">
+  <div [hidden]="!((resultSpinning$|async) === true)">
     <div
       class="ant-spin"
-      [class.ant-spin-spinning]="resultSpinning$|async"
+      [class.ant-spin-spinning]="(resultSpinning$|async) === true"
       [class.ant-spin-lg]="nzSize=='large'"
       [class.ant-spin-sm]="nzSize=='small'"
       [class.ant-spin-show-text]="nzTip">
-      <ng-template [ngTemplateOutlet]="nzIndicator||defaultIndicatorTemplate"></ng-template>
+      <ng-template [ngTemplateOutlet]="nzIndicator || defaultIndicatorTemplate"></ng-template>
       <div class="ant-spin-text" *ngIf="nzTip">{{ nzTip }}</div>
     </div>
   </div>
   <div
     #containerElement
     class="ant-spin-container"
-    [class.ant-spin-blur]="resultSpinning$|async"
+    [class.ant-spin-blur]="(resultSpinning$|async) === true"
     (cdkObserveContent)="checkNested()">
     <ng-content></ng-content>
   </div>

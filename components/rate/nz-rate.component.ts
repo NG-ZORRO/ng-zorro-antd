@@ -35,10 +35,10 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
   private _value = 0;
   private _autoFocus = false;
   @Input() nzCharacter: TemplateRef<void>;
-  @Output() nzOnBlur = new EventEmitter<FocusEvent>();
-  @Output() nzOnFocus = new EventEmitter<FocusEvent>();
-  @Output() nzOnKeyDown = new EventEmitter<KeyboardEvent>();
-  @Output() nzOnHoverChange = new EventEmitter<number>();
+  @Output() readonly nzOnBlur = new EventEmitter<FocusEvent>();
+  @Output() readonly nzOnFocus = new EventEmitter<FocusEvent>();
+  @Output() readonly nzOnKeyDown = new EventEmitter<KeyboardEvent>();
+  @Output() readonly nzOnHoverChange = new EventEmitter<number>();
   @ViewChild('ulElement') private ulElement: ElementRef;
   prefixCls = 'ant-rate';
   isInit = false;

@@ -127,8 +127,8 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     return this.isOpen;
   }
 
-  @Output() nzOnViewInit = new EventEmitter<void>();
-  @Output() nzOnClose = new EventEmitter<MouseEvent>();
+  @Output() readonly nzOnViewInit = new EventEmitter<void>();
+  @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
   nzAfterOpen = new Subject<void>();
   nzAfterClose = new Subject<R>();
 

@@ -58,7 +58,7 @@ export class NzCollapsePanelComponent implements OnDestroy, OnInit {
   private _header: string | TemplateRef<void>;
   isHeaderString: boolean;
   private el: HTMLElement = this.elementRef.nativeElement;
-  @Output() nzActiveChange = new EventEmitter<boolean>();
+  @Output() readonly nzActiveChange = new EventEmitter<boolean>();
 
   @Input() set nzShowArrow(value: boolean) {
     this._showArrow = toBoolean(value);

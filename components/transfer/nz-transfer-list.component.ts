@@ -56,9 +56,9 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
   @Input() footer: TemplateRef<void>;
 
   // events
-  @Output() handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() handleSelect: EventEmitter<TransferItem> = new EventEmitter();
-  @Output() filterChange: EventEmitter<{ direction: string, value: string }> = new EventEmitter();
+  @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() readonly handleSelect: EventEmitter<TransferItem> = new EventEmitter();
+  @Output() readonly filterChange: EventEmitter<{ direction: string, value: string }> = new EventEmitter();
 
   // endregion
 

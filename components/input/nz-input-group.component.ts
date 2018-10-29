@@ -8,12 +8,11 @@ import {
   QueryList,
   TemplateRef
 } from '@angular/core';
+import { NgClassType } from '../core/types/ng-class';
+import { NzSizeLDSType } from '../core/types/size';
 import { toBoolean } from '../core/util/convert';
 
 import { NzInputDirective } from './nz-input.directive';
-// tslint:disable-next-line:no-any
-export type TInputGroupIconClass = string | string[] | Set<string> | { [ klass: string ]: any; };
-export type NzInputGroupSizeType = 'large' | 'default' | 'small';
 
 @Component({
   selector           : 'nz-input-group',
@@ -26,7 +25,7 @@ export class NzInputGroupComponent implements AfterContentInit {
   private _addOnAfter: string | TemplateRef<void> = '';
   private _prefix: string | TemplateRef<void> = '';
   private _suffix: string | TemplateRef<void> = '';
-  private _size: NzInputGroupSizeType = 'default';
+  private _size: NzSizeLDSType = 'default';
   private _compact = false;
   private _search = false;
   isAddOnBeforeString: boolean;
@@ -34,17 +33,17 @@ export class NzInputGroupComponent implements AfterContentInit {
   isPrefixString: boolean;
   isSuffixString: boolean;
   @ContentChildren(NzInputDirective) nzInputDirectiveQueryList: QueryList<NzInputDirective>;
-  @Input() nzAddOnBeforeIcon: TInputGroupIconClass;
-  @Input() nzAddOnAfterIcon: TInputGroupIconClass;
-  @Input() nzPrefixIcon: TInputGroupIconClass;
-  @Input() nzSuffixIcon: TInputGroupIconClass;
+  @Input() nzAddOnBeforeIcon: NgClassType;
+  @Input() nzAddOnAfterIcon: NgClassType;
+  @Input() nzPrefixIcon: NgClassType;
+  @Input() nzSuffixIcon: NgClassType;
 
-  @Input() set nzSize(value: NzInputGroupSizeType) {
+  @Input() set nzSize(value: NzSizeLDSType) {
     this._size = value;
     this.updateChildrenInputSize();
   }
 
-  get nzSize(): NzInputGroupSizeType {
+  get nzSize(): NzSizeLDSType {
     return this._size;
   }
 

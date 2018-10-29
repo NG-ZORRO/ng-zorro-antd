@@ -74,7 +74,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzData: {} | ((file: UploadFile) => {});
   @Input() nzFilter: UploadFilter[] = [];
   @Input() nzFileList: UploadFile[] = [];
-  @Output() nzFileListChange: EventEmitter<UploadFile[]> = new EventEmitter<UploadFile[]>();
+  @Output() readonly nzFileListChange: EventEmitter<UploadFile[]> = new EventEmitter<UploadFile[]>();
 
   private _disabled = false;
 
@@ -139,7 +139,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzRemove: (file: UploadFile) => boolean | Observable<boolean>;
   @Input() nzPreview: (file: UploadFile) => void;
 
-  @Output() nzChange: EventEmitter<UploadChangeParam> = new EventEmitter<UploadChangeParam>();
+  @Output() readonly nzChange: EventEmitter<UploadChangeParam> = new EventEmitter<UploadChangeParam>();
 
   _btnOptions: ZipButtonOptions;
 

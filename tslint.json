@@ -6,10 +6,9 @@
     "banana-in-box": true,
     "templates-no-negated-async": true,
     "no-life-cycle-call": false,
-    "prefer-output-readonly": false,
+    "prefer-output-readonly": true,
     "no-conflicting-life-cycle-hooks": false,
     "enforce-component-selector": false,
-    "prefer-inline-decorator": true,
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": false,
@@ -22,7 +21,7 @@
     "no-forward-ref": false,
     "use-life-cycle-interface": true,
     "contextual-life-cycle": true,
-    "trackBy-function": true,
+    "trackBy-function": false,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
@@ -129,6 +128,7 @@
       "timeEnd",
       "trace"
     ],
+    "no-duplicate-variable": true,
     "no-conditional-assignment": true,
     "no-construct": true,
     "no-debugger": true,
@@ -168,7 +168,6 @@
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "number-literal-format": true,
-    "object-literal-sort-keys": false,
     "object-literal-key-quotes": [
       true,
       "consistent"
@@ -241,6 +240,7 @@
     "use-isnan": true,
     "variable-name": [
       true,
+      "ban-keywords",
       "allow-leading-underscore"
     ],
     "whitespace": [
