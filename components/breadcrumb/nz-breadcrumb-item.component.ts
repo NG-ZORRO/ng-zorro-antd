@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
 
 @Component({
+  changeDetection    : ChangeDetectionStrategy.OnPush,
   selector           : 'nz-breadcrumb-item',
   preserveWhitespaces: false,
   template           : `
@@ -17,19 +18,16 @@ import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
          {{ nzBreadCrumbComponent.nzSeparator }}
       </ng-template>
     </span>`,
-  styles             : [
-      `:host:last-child {
+  styles             : [ `
+    :host:last-child {
       color: rgba(0, 0, 0, 0.65);
     }
 
-    :host:last-child .ant-breadcrumb-separator{
+    :host:last-child .ant-breadcrumb-separator {
       display: none;
     }
-    `
-  ]
+  ` ]
 })
 export class NzBreadCrumbItemComponent {
-  constructor(public nzBreadCrumbComponent: NzBreadCrumbComponent) {
-  }
-
+  constructor(public nzBreadCrumbComponent: NzBreadCrumbComponent) { }
 }
