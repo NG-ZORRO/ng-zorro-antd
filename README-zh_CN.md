@@ -83,17 +83,17 @@ export class AppModule {
 
 然后在 `angular.json` 文件中引入样式和 SVG icon 资源。
 
-```diff
+```json
 {
   "assets": [
-+   {
-+     "glob": "**/*",
-+     "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
-+     "output": "/assets/"
-+   }
+    {
+      "glob": "**/*",
+      "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+      "output": "/assets/"
+    }
   ],
   "styles": [
-+   "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
+    "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
   ]
 }
 ```
