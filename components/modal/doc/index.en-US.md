@@ -16,6 +16,17 @@ and so on.
 
 It is recommended to use the `Component` way to pop up the Modal, so that the component logic of the popup layer can be completely isolated from the outer component, and can be reused at any time. In the popup layer component, you can obtain Modal's component instance by injecting `NzModalRef` to control the behavior of the modal box.
 
+## How To Use
+
+If you want to modify the global default configuration, you can modify the value of provider `NZ_MODAL_CONFIG`.
+(eg, add `{ provide: NZ_MODAL_CONFIG, useValue: { autoBodyPadding: false }}` to `providers` of your module, `NZ_MODAL_CONFIG` can be imported from `ng-zorro-antd`)
+
+The default global configuration is:
+```js
+{
+  autoBodyPadding: true, // Whether to automatically add "padding" and "overflow" the body to hide the scroll bar
+}
+```
 
 ## API
 
@@ -54,6 +65,8 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 #### Attentions
 
 > The default state of `<nz-modal>` will not be automatically cleared. If you wish to open new content each time, use the `NzModalService` service to create modals (when created as a service, the `nzAfterClose` event will be listened by default aim to destroy the modal).
+
+> Modals created through the `NzModalService` service need you to manage their own life cycle. For example, when you switch the page route, the modal box created by service will not be destroyed automatically. You need to use the modal box's reference to manually destroy it (`NzModalRef.close()` or `NzModalRef.destroy()`).
 
 #### Using service to create Normal Mode modal
 

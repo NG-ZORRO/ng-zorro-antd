@@ -32,6 +32,7 @@ The whole of the step bar.
 | `[nzProgressDot]` | Steps with progress dot style, customize the progress dot by setting it with TemplateRef | Boolean 丨 `TemplateRef<{ $implicit: TemplateRef<void>, status: string, index: number }>` | false |
 | `[nzSize]` | to specify the size of the step bar, `default` and `small` are currently supported | string | `default` |
 | `[nzStatus]` | to specify the status of current step, can be set to one of the following values: `wait` `process` `finish` `error` | string | `process` |
+| `[nzStartIndex]` | to specify the starting number | number | 0 |
 
 ### nz-step
 

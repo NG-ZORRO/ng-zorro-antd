@@ -8,6 +8,7 @@ import { delay, map } from 'rxjs/operators';
 
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
+import { NzIconModule } from '../icon/nz-icon.module';
 import { NzTransferComponent, NzTransferModule } from './index';
 import { TransferCanMove, TransferItem } from './interface';
 
@@ -23,7 +24,7 @@ describe('transfer', () => {
   let pageObject: TransferPageObject;
   beforeEach(() => {
     injector = TestBed.configureTestingModule({
-      imports     : [ NoopAnimationsModule, NzTransferModule ],
+      imports     : [ NoopAnimationsModule, NzTransferModule, NzIconModule ],
       declarations: [ TestTransferComponent, TestTransferCustomRenderComponent, Test996Component ]
     });
     fixture = TestBed.createComponent(TestTransferComponent);
@@ -342,7 +343,7 @@ class TestTransferComponent implements OnInit {
       [nzRender]="render"
       [nzDataSource]="nzDataSource">
       <ng-template #render let-item>
-        <i class="anticon anticon-{{item.icon}}"></i> {{ item.title }}
+        <i nz-icon type="{{item.icon}}"></i> {{ item.title }}
       </ng-template>
     </nz-transfer>
   `

@@ -5,11 +5,12 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  SimpleChanges,
+  SimpleChanges, TemplateRef,
   ViewChild
 } from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { StepNgClassType } from '../steps';
 
 export type NzAvatarShape = 'square' | 'circle';
 export type NzAvatarSize = 'small' | 'large' | 'default';
@@ -22,9 +23,11 @@ export type NzAvatarSize = 'small' | 'large' | 'default';
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzAvatarComponent implements OnChanges {
-  private el: HTMLElement;
+  private el: HTMLElement = this.elementRef.nativeElement;
   private prefixCls = 'ant-avatar';
   private sizeMap = { large: 'lg', small: 'sm' };
+  private _icon: string;
+  oldAPIIcon = true; // Make the user defined icon compatible to old API. Should be removed in 2.0.
   hasText: boolean = false;
   hasSrc: boolean = true;
   hasIcon: boolean = false;
@@ -40,7 +43,17 @@ export class NzAvatarComponent implements OnChanges {
 
   @Input() nzSrc: string;
 
-  @Input() nzIcon: string;
+  @Input()
+  set nzIcon(value: string) {
+    if (value) {
+      this.oldAPIIcon = value.indexOf('anticon') > -1;
+    }
+    this._icon = value;
+  }
+
+  get nzIcon(): string {
+    return this._icon;
+  }
 
   setClass(): this {
     const classMap = {
@@ -96,8 +109,7 @@ export class NzAvatarComponent implements OnChanges {
     return this;
   }
 
-  constructor(elementRef: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {
-    this.el = elementRef.nativeElement;
+  constructor(private elementRef: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {

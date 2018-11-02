@@ -45,7 +45,6 @@ subtitle: 通知提醒框
 - `NzNotificationService.error(title, content, [options])`
 - `NzNotificationService.info(title, content, [options])`
 - `NzNotificationService.warning(title, content, [options])`
-- `NzNotificationService.loading(title, content, [options])`
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

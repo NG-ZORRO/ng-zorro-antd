@@ -8,14 +8,14 @@ import { Component } from '@angular/core';
         <div class="logo">
         </div>
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'">
-          <li nz-menu-item><span><i class="anticon anticon-file"></i><span class="nav-text">nav 1</span></span></li>
-          <li nz-menu-item><span><i class="anticon anticon-video-camera"></i><span class="nav-text">nav 2</span></span></li>
-          <li nz-menu-item><span><i class="anticon anticon-upload"></i><span class="nav-text">nav 3</span></span></li>
-          <li nz-menu-item><span><i class="anticon anticon-bar-chart"></i><span class="nav-text">nav 4</span></span></li>
-          <li nz-menu-item><span><i class="anticon anticon-cloud-o"></i><span class="nav-text">nav 5</span></span></li>
-          <li nz-menu-item><span><i class="anticon anticon-appstore-o"></i><span class="nav-text">nav 6</span></span></li>
-          <li nz-menu-item><span><i class="anticon anticon-team"></i><span class="nav-text">nav 7</span></span></li>
-          <li nz-menu-item><span><i class="anticon anticon-shop"></i><span class="nav-text">nav 8</span></span></li>
+          <li nz-menu-item><span><i nz-icon type="file"></i><span class="nav-text">nav 1</span></span></li>
+          <li nz-menu-item><span><i nz-icon type="video-camera"></i><span class="nav-text">nav 2</span></span></li>
+          <li nz-menu-item><span><i nz-icon type="upload"></i><span class="nav-text">nav 3</span></span></li>
+          <li nz-menu-item><span><i nz-icon type="bar-chart"></i><span class="nav-text">nav 4</span></span></li>
+          <li nz-menu-item><span><i nz-icon type="cloud-o"></i><span class="nav-text">nav 5</span></span></li>
+          <li nz-menu-item><span><i nz-icon type="appstore-o"></i><span class="nav-text">nav 6</span></span></li>
+          <li nz-menu-item><span><i nz-icon type="team"></i><span class="nav-text">nav 7</span></span></li>
+          <li nz-menu-item><span><i nz-icon type="shop"></i><span class="nav-text">nav 8</span></span></li>
         </ul>
       </nz-sider>
       <nz-layout style="margin-left: 200">

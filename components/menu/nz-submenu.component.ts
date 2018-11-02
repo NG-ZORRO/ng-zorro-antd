@@ -1,7 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
-  AfterContentInit,
   ChangeDetectorRef,
   Component,
   ContentChildren,
@@ -89,7 +88,7 @@ import { NzMenuDirective } from './nz-menu.directive';
   ]
 })
 
-export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
+export class NzSubMenuComponent implements OnInit, OnDestroy {
   private _open = false;
   private _disabled = false;
   private $mouseSubject = new Subject<boolean>();
@@ -302,21 +301,14 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   ngOnInit(): void {
+    if (this.nzSubMenuComponent) {
+      this.level = this.nzSubMenuComponent.level + 1;
+      this.isInSubMenu = true;
+    }
     this.nzMenuDirective.subMenus.push(this);
     const $combineAll = combineLatest(this.$subOpen, this.$mouseSubject.asObservable()).pipe(map(value => value[ 0 ] || value[ 1 ]), auditTime(150));
     $combineAll.pipe(takeUntil(this.unsubscribe$)).subscribe(this.handleOpenEvent);
     this.isInDropDown = this.nzMenuDirective.nzInDropDown;
-  }
-
-  ngAfterContentInit(): void {
-    if (this.subMenus && this.subMenus.length) {
-      this.subMenus.filter(x => x !== this).forEach(menu => {
-        if (this.subMenuMode === 'inline') {
-          Promise.resolve().then(() => menu.level = this.level + 1);
-        }
-        menu.isInSubMenu = true;
-      });
-    }
   }
 
   ngOnDestroy(): void {

@@ -1,0 +1,158 @@
+<div class="page-wrapper">
+  <header id="header" class="clearfix">
+    <i nz-icon type="menu" class="nav-phone-icon" (click)="toggleHide()"></i>
+    <div nz-row>
+      <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8" [nzLg]="5" [nzXl]="5" [nzXXl]="4">
+        <a id="logo" href>
+          <img alt="logo" src="./assets/img/logo.svg">
+          <img alt="NG-ZORRO" src="./assets/img/zorro.svg">
+        </a>
+      </div>
+      <div nz-col [nzXs]="0" [nzSm]="0" [nzMd]="16" [nzLg]="19" [nzXl]="19" [nzXXl]="20" class="nav nav-hide">
+        <div id="search-box">
+          <i nz-icon type="search"></i>
+          <input *ngIf="useDocsearch" nz-input #searchInput [placeholder]="language=='zh' ? '在 ng.ant.design 中搜索' : 'Search in ng.ant.design'">
+          <nz-select *ngIf="!useDocsearch" [nzPlaceHolder]="language=='zh'?'搜索组件...':'Search Components...'" nzShowSearch [(ngModel)]="searchComponent" (ngModelChange)="navigateToPage($event)">
+            <ng-template [ngForOf]="componentList" ngFor let-component>
+              <nz-option [nzValue]="component.path" [nzLabel]="component.label" nzCustomContent *ngIf="language==component.language">
+                <strong>{{component.label}}</strong>
+                <span class="ant-component-decs">{{component.zh}}</span>
+              </nz-option>
+            </ng-template>
+          </nz-select>
+        </div>
+        <button nz-button nzGhost nzSize="small" class="header-lang-button" (click)="switchLanguage(language==='zh'?'en':'zh')">{{language=='zh'?'English':'中文'}}</button>
+        <nz-select nzSize="small" class="version" style="width: 72px;" [ngModel]="currentVersion" (ngModelChange)="navigateToVersion($event)">
+          <nz-option *ngFor="let version of oldVersionList" [nzLabel]="version" [nzValue]="version"></nz-option>
+          <nz-option [nzLabel]="currentVersion" [nzValue]="currentVersion"></nz-option>
+        </nz-select>
+        <ul nz-menu [nzMode]="'horizontal'" id="nav">
+          <li nz-menu-item nzSelected>
+            <a routerLink="/doc/introduce/zh" *ngIf="language=='zh'"><span>组件</span></a>
+            <a routerLink="/doc/introduce/en" *ngIf="language=='en'"><span>Components</span></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+  <div class="main-wrapper">
+    <div nz-row>
+      <div nz-col [class.hide-menu]="hide" [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="6" [nzXl]="5" [nzXXl]="4" class="main-menu">
+        <ul nz-menu [nzMode]="'inline'" class="aside-container menu-site" nzInlineIndent="40">
+          <li *ngFor="let intro of routerList.intro" nz-menu-item routerLinkActive="ant-menu-item-selected" [hidden]="intro.language!=language">
+            <a routerLink="{{intro.path}}">{{intro.label}}</a>
+          </li>
+          <li nz-submenu nzOpen routerLinkActive="ant-menu-submenu-selected">
+            <span title><h4>Components</h4></span>
+            <ul>
+              <li nz-menu-group *ngFor="let group of routerList.components">
+                <span title>{{group.name}}</span>
+                <ul>
+                  <li nz-menu-item routerLinkActive="ant-menu-item-selected" *ngFor="let component of group.children" [hidden]="component.language!=language">
+                    <a routerLink="{{component.path}}">
+                      <span>{{component.label}}</span><span class="chinese">{{component.zh}}</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div nz-col class="main-container main-container-component" [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="18" [nzXl]="19" [nzXXl]="20">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzXs]="{span:24}" [nzSm]="{span:24}" [nzMd]="{span:24}" [nzLg]="{span:18,offset:6}" [nzXl]="{span:19,offset:5}" [nzXXl]="{span:20,offset:4}">
+        <nz-nav-bottom></nz-nav-bottom>
+      </div>
+    </div>
+  </div>
+  <footer id="footer" class="dark">
+    <div class="footer-wrap">
+      <div nz-row>
+        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6">
+          <div class="footer-center">
+            <h2>Ant Design</h2>
+            <div>
+              <a target="_blank " href="https://github.com/NG-ZORRO/ng-zorro-antd"><span>GitHub</span></a>
+              <span> - </span><span><i nz-icon type="github"></i></span>
+            </div>
+            <div>
+              <a href="https://ant.design/docs/react/introduce-cn" target="_blank">Ant Design</a>
+              <span> - </span><span>React</span>
+            </div>
+            <div>
+              <a href="http://ng.mobile.ant.design" target="_blank">NG-ZORRO-MOBILE</a>
+              <span> - </span><span>Angular</span>
+            </div>
+            <div>
+              <a target="_blank " href="https://github.com/websemantics/awesome-ant-design">
+                <span>Awesome Ant Design</span></a>
+            </div>
+          </div>
+        </div>
+        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6">
+          <div class="footer-center">
+            <h2>{{language==='zh'?'资源链接':'Resources'}}</h2>
+            <div>
+              <a href="https://angular.cn" target="_blank">Angular</a>
+            </div>
+            <div>
+              <a href="https://cli.angular.io/" target="_blank">Angular CLI</a>
+            </div>
+            <div>
+              <a target="_blank" rel="noopener noreferrer" href="http://library.ant.design/">AntD Library</a>
+            </div>
+          </div>
+        </div>
+        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6">
+          <div class="footer-center">
+            <h2>{{language==='zh'?'社区':'Community'}}</h2>
+            <div>
+              <a *ngIf="language==='zh'" href="https://zhuanlan.zhihu.com/100000" target="_blank"><span>知乎专栏</span></a>
+            </div>
+            <div>
+              <a href="https://medium.com/ng-zorro" target="_blank"><span>Medium</span></a>
+            </div>
+            <div>
+              <a href="https://github.com/NG-ZORRO/ng-zorro-antd/releases" target="_blank"><span>{{language==='zh'?'更新记录':'Change Log'}}</span></a>
+            </div>
+            <div>
+              <a target="_blank" rel="noopener noreferrer" [href]="'http://ng.ant.design/issue-helper/#/'+language">
+                <span>{{language==='zh'?'报告 Bug':'Bug Report'}}</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6">
+          <div class="footer-center">
+            <h2>
+              <img class="title-icon" src="https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg" alt="">
+              <span>{{language==='zh'?'更多产品':'More Products'}}</span>
+            </h2>
+            <div>
+              <a target="_blank" rel="noopener noreferrer" href="https://antv.alipay.com/">AntV</a>
+              <span> - </span><span>{{language==='zh'?'数据可视化':'Data Visualization'}}</span></div>
+            <div>
+              <a target="_blank" rel="noopener noreferrer" href="https://eggjs.org/">Egg</a>
+              <span> - </span><span>{{language==='zh'?'企业级 Node 开发框架':'Enterprise Node Framework'}}</span>
+            </div>
+            <div style="margin-top: 20px;">
+              <nz-popover [nzTrigger]="'click'" nzOverlayClassName="theme-color-content">
+                <div class="theme-color" nz-popover>
+                  <div class="theme-color-value" [ngStyle]="{'background': color}"></div>
+                </div>
+                <ng-template #nzTemplate>
+                  <color-sketch [color]="color" (onChangeComplete)="changeColor($event)"></color-sketch>
+                </ng-template>
+              </nz-popover>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

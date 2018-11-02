@@ -1,9 +1,21 @@
-import { AfterContentInit, Component, ContentChild, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChild,
+  ElementRef,
+  Host,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Renderer2 } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
 import { NzColComponent } from '../grid/nz-col.component';
+import { NzRowComponent } from '../grid/nz-row.component';
+import { NzRowDirective } from '../grid/nz-row.directive';
 
 @Component({
   selector           : 'nz-form-control',
@@ -23,6 +35,7 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
   validateString: string;
   controlStatus: string;
   controlClassMap;
+  iconType: string;
   @ContentChild(NgControl) validateControl: FormControl;
 
   @Input()
@@ -85,6 +98,22 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
       [ `has-success` ]  : this.validateString === 'success' || this.controlStatus === 'VALID',
       [ `has-feedback` ] : this.nzHasFeedback
     };
+
+    if (this.controlClassMap[ 'has-warning' ]) {
+      this.iconType = 'exclamation-circle-fill';
+    } else if (this.controlClassMap[ 'is-validating' ]) {
+      this.iconType = 'loading';
+    } else if (this.controlClassMap['has-error']) {
+      this.iconType = 'close-circle-fill';
+    } else if (this.controlClassMap['has-success']) {
+      this.iconType = 'check-circle-fill';
+    } else {
+      this.iconType = '';
+    }
+  }
+
+  constructor(nzUpdateHostClassService: NzUpdateHostClassService, elementRef: ElementRef, @Optional() @Host() nzRowComponent: NzRowComponent, @Optional() @Host() nzRowDirective: NzRowDirective, renderer: Renderer2) {
+    super(nzUpdateHostClassService, elementRef, nzRowComponent, nzRowDirective, renderer);
   }
 
   ngOnInit(): void {

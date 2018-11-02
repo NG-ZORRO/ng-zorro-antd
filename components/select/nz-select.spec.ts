@@ -1,3 +1,4 @@
+import { DOWN_ARROW, SPACE, TAB } from '@angular/cdk/keycodes';
 import { Component, ViewChild } from '@angular/core';
 import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -15,7 +16,7 @@ describe('nz-select component', () => {
   let overlayContainerElement: HTMLElement;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
+      imports: [ NzSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
       declarations: [ NzTestSelectDefaultComponent, NzTestSelectTagsComponent, NzTestSelectFormComponent ]
     });
     TestBed.compileComponents();
@@ -193,17 +194,48 @@ describe('nz-select component', () => {
       expect(testComponent.onSearch).toHaveBeenCalledTimes(1);
     });
     it('should blur after user hits enter key in single mode', () => {
-        const spy = spyOn(testComponent.nzSelectComponent, 'blur');
-        testComponent.showSearch = true;
-        select.nativeElement.click();
-        fixture.detectChanges();
-        dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', 40);
-        fixture.detectChanges();
-        expect(spy).not.toHaveBeenCalled();
-        dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', 13);
-        fixture.detectChanges();
-        expect(spy).toHaveBeenCalled();
+      const spy = spyOn(testComponent.nzSelectComponent, 'blur');
+      testComponent.showSearch = true;
+      select.nativeElement.click();
+      fixture.detectChanges();
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', 40);
+      fixture.detectChanges();
+      expect(spy).not.toHaveBeenCalled();
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', 13);
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalled();
     });
+    it('should support keydown events to open and close select panel', fakeAsync(() => {
+      fixture.detectChanges();
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', SPACE);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.open).toBe(true);
+      // #2201, space should not close select panel
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', TAB);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.open).toBe(false);
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', DOWN_ARROW);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.open).toBe(true);
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', TAB);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.open).toBe(false);
+      testComponent.disabled = true;
+      fixture.detectChanges();
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', TAB);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.open).toBe(false);
+    }));
   });
   describe('tags', () => {
     let fixture;
@@ -234,6 +266,20 @@ describe('nz-select component', () => {
       expect(testComponent.selectedValue.length).toBe(1);
       expect(testComponent.selectedValue[ 0 ]).toBe('jack');
     });
+    it('should prevent open the dropdown when click remove', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.nzSelectComponent.updateListOfSelectedValueFromTopControl([ 'jack' ]);
+      fixture.detectChanges();
+      expect(testComponent.selectedValue.length).toBe(1);
+      expect(testComponent.selectedValue[ 0 ]).toBe('jack');
+      select.nativeElement.querySelector('.ant-select-selection__choice__remove').click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.selectedValue.length).toBe(0);
+      expect(testComponent.nzSelectComponent.nzOpen).toBe(false);
+
+    }));
     it('should clear work', fakeAsync(() => {
       fixture.detectChanges();
       select.nativeElement.querySelector('.ant-select-selection__clear').click();
@@ -242,6 +288,7 @@ describe('nz-select component', () => {
       fixture.detectChanges();
       expect(testComponent.selectedValue.length).toBe(0);
     }));
+
   });
   describe('form', () => {
     let fixture;

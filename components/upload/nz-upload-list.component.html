@@ -7,7 +7,7 @@
       </ng-container>
     </ng-container>
     <ng-template #defIcon>
-      <i class="anticon anticon-{{file.status === 'uploading' ? 'loading anticon-spin' : 'paper-clip'}}"></i>
+      <i nz-icon [type]="file.status === 'uploading' ? 'loading' : 'paper-clip'"></i>
     </ng-template>
     <ng-template #thumbIcon>
       <a class="ant-upload-list-item-thumbnail" target="_blank" rel="noopener noreferrer"
@@ -38,20 +38,20 @@
         <ng-template [ngTemplateOutlet]="preview"></ng-template>
       </span>
   </div>
-  <ng-container *ngIf="listType === 'picture-card' && file.status !== 'uploading'; else cross">
+  <ng-container *ngIf="listType === 'picture-card' && file.status !== 'uploading'; else close">
       <span class="ant-upload-list-item-actions">
         <a *ngIf="icons.showPreviewIcon" [href]="file.thumbUrl || file.url"
           target="_blank" rel="noopener noreferrer"
           title="{{ locale.previewFile }}"
           [ngStyle]="!(file.url || file.thumbUrl) && {'opacity': .5, 'pointer-events': 'none'}"
           (click)="handlePreview(file, $event)">
-            <i class="anticon anticon-eye-o"></i>
+            <i nz-icon type="eye-o"></i>
         </a>
         <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" class="anticon anticon-delete" title="{{ locale.removeFile }}"></i>
       </span>
   </ng-container>
-  <ng-template #cross>
-    <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" class="anticon anticon-cross" title="{{ locale.removeFile }}"></i>
+  <ng-template #close>
+    <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" nz-icon type="close" title="{{ locale.removeFile }}"></i>
   </ng-template>
   <div *ngIf="file.status === 'uploading'" class="ant-upload-list-item-progress">
     <nz-progress [nzPercent]="file.percent" [nzShowInfo]="false" [nzStrokeWidth]="2"></nz-progress>

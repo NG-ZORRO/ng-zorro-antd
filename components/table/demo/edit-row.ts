@@ -63,7 +63,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-table>
   `,
   styles  : [
-      `
+    `
       .editable-row-operations a {
         margin-right: 8px;
       }
@@ -85,7 +85,8 @@ export class NzDemoTableEditRowComponent implements OnInit {
 
   saveEdit(key: string): void {
     const index = this.dataSet.findIndex(item => item.key === key);
-    this.dataSet[ index ] = this.editCache[ key ].data;
+    Object.assign(this.dataSet[ index ], this.editCache[ key ].data);
+    // this.dataSet[ index ] = this.editCache[ key ].data;
     this.editCache[ key ].edit = false;
   }
 
@@ -94,7 +95,7 @@ export class NzDemoTableEditRowComponent implements OnInit {
       if (!this.editCache[ item.key ]) {
         this.editCache[ item.key ] = {
           edit: false,
-          data: item
+          data: { ...item }
         };
       }
     });
@@ -106,7 +107,7 @@ export class NzDemoTableEditRowComponent implements OnInit {
         key    : i.toString(),
         name   : `Edrward ${i}`,
         age    : 32,
-        address: `London Park no. ${i}`,
+        address: `London Park no. ${i}`
       });
     }
     this.updateEditCache();

@@ -2,12 +2,12 @@
   <ng-content></ng-content>
 </div>
 <span class="ant-layout-sider-zero-width-trigger" *ngIf="isZeroTrigger" (click)="toggleCollapse()">
-  <i class="anticon anticon-bars"></i>
+  <i nz-icon type="bars"></i>
 </span>
 <div class="ant-layout-sider-trigger" *ngIf="isSiderTrigger" (click)="toggleCollapse()" [style.width.px]="nzCollapsed?nzCollapsedWidth:nzWidth">
   <ng-template [ngTemplateOutlet]="nzTrigger"></ng-template>
 </div>
 <ng-template #defaultTrigger>
-  <i class="anticon" [class.anticon-left]="!nzCollapsed" [class.anticon-right]="nzCollapsed" *ngIf="!nzReverseArrow"></i>
-  <i class="anticon" [class.anticon-left]="nzCollapsed" [class.anticon-right]="!nzCollapsed" *ngIf="nzReverseArrow"></i>
+  <i nz-icon [type]="nzCollapsed ? 'right' : 'left'" *ngIf="!nzReverseArrow"></i>
+  <i nz-icon [type]="nzCollapsed ? 'left' : 'right'" *ngIf="nzReverseArrow"></i>
 </ng-template>

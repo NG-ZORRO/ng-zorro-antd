@@ -31,7 +31,7 @@
     "zone.js": "file:lib/zone.js"
   },
   "devDependencies": {
-    "@angular-devkit/build-optimizer": "0.0.18",
+    "@angular-devkit/build-optimizer": "0.6.8",
     "@angular/cli": "file:lib/@angular/cli",
     "@angular/compiler-cli": "file:lib/@angular/compiler-cli",
     "@ngtools/webpack": "^1.6.2",

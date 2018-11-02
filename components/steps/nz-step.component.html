@@ -7,12 +7,18 @@
 <div class="ant-steps-item-tail" *ngIf="last !== true"></div>
 <div class="ant-steps-item-icon">
   <ng-template [ngIf]="!showProcessDot">
-    <span class="ant-steps-icon anticon anticon-check" *ngIf="nzStatus === 'finish' && !nzIcon"></span>
-    <span class="ant-steps-icon anticon anticon-cross" *ngIf="nzStatus === 'error'"></span>
-    <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">{{ index + 1 }}</span>
+    <span class="ant-steps-icon" *ngIf="nzStatus === 'finish' && !nzIcon">
+      <i nz-icon type="check"></i>
+    </span>
+    <span class="ant-steps-icon" *ngIf="nzStatus === 'error'">
+      <i nz-icon type="close"></i>
+    </span>
+    <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">
+      {{ index + 1 }}
+    </span>
     <span class="ant-steps-icon" *ngIf="nzIcon">
       <ng-container *ngIf="isIconString; else iconTemplate">
-        <i [ngClass]="nzIcon"></i>
+        <i nz-icon [type]="!oldAPIIcon && nzIcon" [ngClass]="oldAPIIcon && nzIcon"></i>
       </ng-container>
       <ng-template #iconTemplate>
       <ng-template [ngTemplateOutlet]="nzIcon"></ng-template>

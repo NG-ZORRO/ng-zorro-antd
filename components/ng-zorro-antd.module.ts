@@ -1,4 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
+
 import { NzAffixModule } from './affix/nz-affix.module';
 import { NzAlertModule } from './alert/nz-alert.module';
 import { NzAnchorModule } from './anchor/nz-anchor.module';
@@ -14,6 +15,7 @@ import { NzCarouselModule } from './carousel/nz-carousel.module';
 import { NzCascaderModule } from './cascader/nz-cascader.module';
 import { NzCheckboxModule } from './checkbox/nz-checkbox.module';
 import { NzCollapseModule } from './collapse/nz-collapse.module';
+import { NzWaveModule } from './core/wave/nz-wave.module';
 import { NzDatePickerModule } from './date-picker/date-picker.module';
 import { NzDividerModule } from './divider/nz-divider.module';
 import { NzDrawerModule } from './drawer/nz-drawer.module';
@@ -21,6 +23,7 @@ import { NzDropDownModule } from './dropdown/nz-dropdown.module';
 import { NzFormModule } from './form/nz-form.module';
 import { NzGridModule } from './grid/nz-grid.module';
 import { NzI18nModule } from './i18n/nz-i18n.module';
+import { NzIconModule } from './icon/nz-icon.module';
 import { NzInputNumberModule } from './input-number/nz-input-number.module';
 import { NzInputModule } from './input/nz-input.module';
 import { NzLayoutModule } from './layout/nz-layout.module';
@@ -37,6 +40,7 @@ import { NzProgressModule } from './progress/nz-progress.module';
 import { NzRadioModule } from './radio/nz-radio.module';
 import { NzRateModule } from './rate/nz-rate.module';
 import { NzSelectModule } from './select/nz-select.module';
+import { NzSkeletonModule } from './skeleton/nz-skeleton.module';
 import { NzSliderModule } from './slider/nz-slider.module';
 import { NzSpinModule } from './spin/nz-spin.module';
 import { NzStepsModule } from './steps/nz-steps.module';
@@ -67,10 +71,13 @@ export * from './checkbox';
 export * from './collapse';
 export * from './date-picker';
 export * from './divider';
+export * from './drawer';
 export * from './dropdown';
+export * from './drawer';
 export * from './form';
 export * from './grid';
 export * from './i18n';
+export * from './icon';
 export * from './input';
 export * from './input-number';
 export * from './layout';
@@ -95,6 +102,7 @@ export * from './auto-complete';
 export * from './message';
 export * from './time-picker';
 export * from './tooltip';
+export * from './skeleton';
 export * from './slider';
 export * from './popover';
 export * from './notification';
@@ -105,6 +113,8 @@ export * from './tree';
 export * from './tree-select';
 export * from './time-picker';
 export * from './version';
+export * from './core/wave';
+export * from './core/util';
 
 @NgModule({
   exports: [
@@ -133,10 +143,10 @@ export * from './version';
     NzSpinModule,
     NzProgressModule,
     NzTabsModule,
+    NzIconModule,
     NzCardModule,
     NzAvatarModule,
     NzTimelineModule,
-    NzTimePickerModule,
     NzTransferModule,
     NzCarouselModule,
     NzCollapseModule,
@@ -160,7 +170,9 @@ export * from './version';
     NzCascaderModule,
     NzTreeModule,
     NzTreeSelectModule,
-    NzTimePickerModule
+    NzTimePickerModule,
+    NzWaveModule,
+    NzSkeletonModule
   ]
 })
 export class NgZorroAntdModule {

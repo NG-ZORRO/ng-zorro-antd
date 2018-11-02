@@ -3,6 +3,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { dispatchMouseEvent } from '../core/testing';
+import { NzIconModule } from '../icon/nz-icon.module';
 import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
 import { NzPopoverDirective } from './nz-popover.directive';
 import { NzPopoverModule } from './nz-popover.module';
@@ -15,7 +16,7 @@ describe('NzPopover', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzPopoverModule, NoopAnimationsModule, NzToolTipModule ],
+      imports     : [ NzPopoverModule, NoopAnimationsModule, NzToolTipModule, NzIconModule ],
       declarations: [ NzPopoverTestWrapperComponent, NzPopoverTestNewComponent ]
     });
 
@@ -214,7 +215,7 @@ export class NzPopoverTestNewComponent {
     <nz-popover>
       <button #templateTrigger nz-popover>Show</button>
       <ng-template #nzTemplate>
-        <i class="anticon anticon-file"></i> <span>Show with icon</span>
+        <i nz-icon type="file"></i> <span>Show with icon</span>
       </ng-template>
     </nz-popover>
 

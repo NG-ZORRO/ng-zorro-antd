@@ -20,6 +20,7 @@ import {
   typeInElement,
   MockNgZone
 } from '../core/testing';
+import { NzIconModule } from '../icon/nz-icon.module';
 
 import { NzInputModule } from '../input';
 import { NzMentionTriggerDirective } from './mention-trigger';
@@ -35,7 +36,7 @@ describe('mention', () => {
   beforeEach(async(() => {
     const dir = 'ltr';
     TestBed.configureTestingModule({
-      imports     : [ NzMentionModule, NzInputModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
+      imports     : [ NzMentionModule, NzInputModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconModule ],
       declarations: [
         NzTestSimpleMentionComponent,
         NzTestPropertyMentionComponent
@@ -392,6 +393,8 @@ describe('mention', () => {
       fixture.componentInstance.fetchSuggestions();
       fixture.detectChanges();
 
+      tick();
+      fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-mention-dropdown .anticon-loading'))
       .toBeTruthy();
       fixture.detectChanges();

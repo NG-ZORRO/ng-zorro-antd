@@ -6,7 +6,7 @@ import { NzUpdateHostClassService } from '../core/services/update-host-class.ser
   providers: [ NzUpdateHostClassService ]
 })
 export class NzFormDirective implements OnInit {
-  el: HTMLElement;
+  el: HTMLElement = this.elementRef.nativeElement;
   prefixCls = 'ant-form';
   private _layout = 'horizontal';
 
@@ -29,7 +29,6 @@ export class NzFormDirective implements OnInit {
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
-    this.el = this.elementRef.nativeElement;
   }
 
   ngOnInit(): void {

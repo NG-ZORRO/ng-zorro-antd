@@ -5,11 +5,11 @@
   <div class="ant-message-notice-content">
     <div class="ant-message-custom-content" [ngClass]="'ant-message-' + nzMessage.type">
       <ng-container [ngSwitch]="nzMessage.type">
-        <i *ngSwitchCase="'success'" class="anticon anticon-check-circle"></i>
-        <i *ngSwitchCase="'info'" class="anticon anticon-info-circle"></i>
-        <i *ngSwitchCase="'warning'" class="anticon anticon-exclamation-circle"></i>
-        <i *ngSwitchCase="'error'" class="anticon anticon-cross-circle"></i>
-        <i *ngSwitchCase="'loading'" class="anticon anticon-spin anticon-loading"></i>
+        <i *ngSwitchCase="'success'" nz-icon type="check-circle"></i>
+        <i *ngSwitchCase="'info'"  nz-icon type="info-circle"></i>
+        <i *ngSwitchCase="'warning'" nz-icon type="exclamation-circle"></i>
+        <i *ngSwitchCase="'error'" nz-icon type="close-circle"></i>
+        <i *ngSwitchCase="'loading'" nz-icon type="loading"></i>
       </ng-container>
       <span [innerHTML]="nzMessage.content"></span>
     </div>

@@ -1,3 +1,4 @@
+import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -31,15 +32,12 @@ import { InputBoolean } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import ModalUtil from './modal-util';
+import { NzModalConfig, NZ_MODAL_CONFIG, NZ_MODAL_DEFAULT_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
 import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './nz-modal.type';
 
 export const MODAL_ANIMATE_DURATION = 200; // Duration when perform animations (ms)
-
-interface ClassMap {
-  [ index: string ]: boolean;
-}
 
 type AnimationState = 'enter' | 'leave' | null;
 
@@ -49,14 +47,16 @@ type AnimationState = 'enter' | 'leave' | null;
 })
 
 // tslint:disable-next-line:no-any
-export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> implements OnInit, OnChanges, AfterViewInit, OnDestroy, ModalOptions {
+export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> implements OnInit, OnChanges, AfterViewInit, OnDestroy, ModalOptions<T> {
   private unsubscribe$ = new Subject<void>();
+  private previouslyFocusedElement: HTMLElement;
+  private focusTrap: FocusTrap;
 
   // tslint:disable-next-line:no-any
   locale: any = {};
   @Input() nzModalType: ModalType = 'default';
   @Input() nzContent: string | TemplateRef<{}> | Type<T>; // [STATIC] If not specified, will use <ng-content>
-  @Input() nzComponentParams: object; // [STATIC] ONLY avaliable when nzContent is a component
+  @Input() nzComponentParams: T; // [STATIC] ONLY avaliable when nzContent is a component
   @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>>; // [STATIC] Default Modal ONLY
   @Input() nzGetContainer: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef) = () => this.overlay.create(); // [STATIC]
 
@@ -128,9 +128,13 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     private viewContainer: ViewContainerRef,
     private nzMeasureScrollbarService: NzMeasureScrollbarService,
     private modalControl: NzModalControlService,
+    private focusTrapFactory: FocusTrapFactory,
+    @Inject(NZ_MODAL_CONFIG) private config: NzModalConfig,
     @Inject(DOCUMENT) private document: any) { // tslint:disable-line:no-any
 
     super();
+
+    this.config = this.mergeDefaultConfig(this.config);
   }
 
   ngOnInit(): void {
@@ -178,11 +182,17 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   ngOnDestroy(): void {
-    if (this.container instanceof OverlayRef) {
-      this.container.dispose();
-    }
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+    // Close self before destructing
+    this.changeVisibleFromInside(false).then(() => {
+      this.modalControl.deregisterModal(this);
+
+      if (this.container instanceof OverlayRef) {
+        this.container.dispose();
+      }
+
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
+    });
   }
 
   open(): void {
@@ -236,13 +246,13 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     return this.nzModalType === type;
   }
 
-  private onClickCloseBtn(): void {
+  public onClickCloseBtn(): void {
     if (this.nzVisible) {
       this.onClickOkCancel('cancel');
     }
   }
 
-  private onClickOkCancel(type: 'ok' | 'cancel'): void {
+  public onClickOkCancel(type: 'ok' | 'cancel'): void {
     const trigger = { 'ok': this.nzOnOk, 'cancel': this.nzOnCancel }[ type ];
     const loadingKey = { 'ok': 'nzOkLoading', 'cancel': 'nzCancelLoading' }[ type ];
     if (trigger instanceof EventEmitter) {
@@ -263,19 +273,19 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     }
   }
 
-  private isNonEmptyString(value: {}): boolean {
+  public isNonEmptyString(value: {}): boolean {
     return typeof value === 'string' && value !== '';
   }
 
-  private isTemplateRef(value: {}): boolean {
+  public isTemplateRef(value: {}): boolean {
     return value instanceof TemplateRef;
   }
 
-  private isComponent(value: {}): boolean {
+  public isComponent(value: {}): boolean {
     return value instanceof Type;
   }
 
-  private isModalButtons(value: {}): boolean {
+  public isModalButtons(value: {}): boolean {
     return Array.isArray(value) && value.length > 0;
   }
 
@@ -283,6 +293,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   private handleVisibleStateChange(visible: boolean, animation: boolean = true, closeResult?: R): Promise<void> {
     if (visible) { // Hide scrollbar at the first time when shown up
       this.changeBodyOverflow(1);
+      this.savePreviouslyFocusedElement();
+      this.trapFocus();
     }
 
     return Promise
@@ -292,6 +304,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
         this.nzAfterOpen.emit();
       } else {
         this.nzAfterClose.emit(closeResult);
+        this.restoreFocus();
         this.changeBodyOverflow(); // Show/hide scrollbar when animation is over
       }
     });
@@ -299,7 +312,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   // Lookup a button's property, if the prop is a function, call & then return the result, otherwise, return itself.
-  private getButtonCallableProp(options: ModalButtonOptions<T>, prop: string): {} {
+  public getButtonCallableProp(options: ModalButtonOptions<T>, prop: string): {} {
     const value = options[ prop ];
     const args = [];
     if (this.contentComponentRef) {
@@ -309,7 +322,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   // On nzFooter's modal button click
-  private onButtonClick(button: ModalButtonOptions<T>): void {
+  public onButtonClick(button: ModalButtonOptions<T>): void {
     const result = this.getButtonCallableProp(button, 'onClick'); // Call onClick directly
     if (isPromise(result)) {
       button.loading = true;
@@ -411,16 +424,18 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
    * @param plusNum The number that the openModals.length will increase soon
    */
   private changeBodyOverflow(plusNum: number = 0): void {
-    const openModals = this.modalControl.openModals;
+    if (this.config.autoBodyPadding) {
+      const openModals = this.modalControl.openModals;
 
-    if (openModals.length + plusNum > 0) {
-      if (this.hasBodyScrollBar()) { // Adding padding-right only when body's scrollbar is able to shown up
-        this.renderer.setStyle(this.document.body, 'padding-right', `${this.nzMeasureScrollbarService.scrollBarWidth}px`);
-        this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
+      if (openModals.length + plusNum > 0) {
+        if (this.hasBodyScrollBar()) { // Adding padding-right only when body's scrollbar is able to shown up
+          this.renderer.setStyle(this.document.body, 'padding-right', `${this.nzMeasureScrollbarService.scrollBarWidth}px`);
+          this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
+        }
+      } else { // NOTE: we need to always remove the padding due to the scroll bar may be disappear by window resizing before modal closed
+        this.renderer.removeStyle(this.document.body, 'padding-right');
+        this.renderer.removeStyle(this.document.body, 'overflow');
       }
-    } else { // NOTE: we need to always remove the padding due to the scroll bar may be disappear by window resizing before modal closed
-      this.renderer.removeStyle(this.document.body, 'padding-right');
-      this.renderer.removeStyle(this.document.body, 'overflow');
     }
   }
 
@@ -430,6 +445,33 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
    */
   private hasBodyScrollBar(): boolean {
     return this.document.body.scrollHeight > (window.innerHeight || this.document.documentElement.clientHeight);
+  }
+
+  private mergeDefaultConfig(config: NzModalConfig): NzModalConfig {
+    return { ...NZ_MODAL_DEFAULT_CONFIG, ...config };
+  }
+
+  private savePreviouslyFocusedElement(): void {
+    if (this.document) {
+      this.previouslyFocusedElement = this.document.activeElement as HTMLElement;
+      this.previouslyFocusedElement.blur();
+    }
+  }
+
+  private trapFocus(): void {
+    if (!this.focusTrap) {
+      this.focusTrap = this.focusTrapFactory.create(this.elementRef.nativeElement);
+    }
+    this.focusTrap.focusInitialElementWhenReady();
+  }
+
+  private restoreFocus(): void {
+    if (this.previouslyFocusedElement) {
+      this.previouslyFocusedElement.focus();
+    }
+    if (this.focusTrap) {
+      this.focusTrap.destroy();
+    }
   }
 }
 

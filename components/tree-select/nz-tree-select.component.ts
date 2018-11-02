@@ -12,6 +12,7 @@ import { DOCUMENT } from '@angular/common';
 import {
   forwardRef,
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -78,7 +79,6 @@ import { NzTreeComponent } from '../tree/nz-tree.component';
 export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy {
 
   private nodes = [];
-  isInit = false;
   isComposing = false;
   isDestroy = true;
   inputValue = '';
@@ -119,9 +119,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   @Input()
   set nzNodes(value: NzTreeNode[]) {
     this.nodes = value;
-    if (this.isInit) {
-      setTimeout(() => this.updateSelectedNodes(), 0);
-    }
+    setTimeout(() => this.updateSelectedNodes(), 0);
   }
 
   get nzNodes(): NzTreeNode[] {
@@ -173,6 +171,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     @Optional() @Inject(DOCUMENT) private document: any, // tslint:disable-line:no-any
     @Optional() private element: ElementRef,
     private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef) {
   }
@@ -204,6 +203,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     this.nzOpen = false;
     this.nzOpenChange.emit(this.nzOpen);
     this.updateCdkConnectedOverlayStatus();
+    this.cdr.markForCheck();
   }
 
   onKeyDownInput(e: KeyboardEvent): void {
@@ -237,17 +237,22 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     }
   }
 
-  removeSelected(node: NzTreeNode, emit: boolean = true): void {
+  removeSelected(node: NzTreeNode, emit: boolean = true, event?: MouseEvent): void {
     node.isSelected = false;
     node.isChecked = false;
     if (this.nzCheckable) {
-      this.treeRef.nzTreeService.checkTreeNode(node);
+      this.treeRef.nzTreeService.conduct(node);
       this.treeRef.nzTreeService.setCheckedNodeList(node);
     } else {
       this.treeRef.nzTreeService.setSelectedNodeList(node, this.nzMultiple);
     }
     if (emit) {
       this.nzRemoved.emit(node);
+    }
+
+    // Do not trigger the popup
+    if (event && event.stopPropagation) {
+      event.stopPropagation();
     }
   }
 
@@ -263,6 +268,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     this.portal = new TemplatePortal(this.dropdownTemplate, this.viewContainerRef);
     this.overlayRef = this.overlay.create(this.getOverlayConfig());
     this.overlayRef.attach(this.portal);
+    this.cdr.detectChanges();
     this.overlayBackdropClickSubscription = this.subscribeOverlayBackdropClick();
   }
 
@@ -303,7 +309,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
           const node = event.node;
           if (this.nzCheckable && !node.isDisabled && !node.isDisableCheckbox) {
             node.isChecked = !node.isChecked;
-            this.treeRef.nzTreeService.checkTreeNode(node);
+            this.treeRef.nzTreeService.conduct(node);
             this.treeRef.nzTreeService.setCheckedNodeList(node);
           }
           if (this.nzCheckable) {
@@ -338,7 +344,9 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   updateSelectedNodes(): void {
-    this.selectedNodes = [ ...(this.nzCheckable ? this.treeRef.getCheckedNodeList() : this.treeRef.getSelectedNodeList()) ];
+    if (this.treeRef) {
+      this.selectedNodes = [ ...(this.nzCheckable ? this.treeRef.getCheckedNodeList() : this.treeRef.getSelectedNodeList()) ];
+    }
   }
 
   updatePosition(): void {
@@ -364,8 +372,8 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   updateDropDownClassMap(): void {
-    if (this.treeRef && !this.treeRef.classMap[ 'ant-select-tree' ]) {
-      this.treeRef.classMap = { ...this.treeRef.classMap, [ 'ant-select-tree' ]: true };
+    if (this.treeRef && !this.treeRef.nzTreeClass[ 'ant-select-tree' ]) {
+      this.treeRef.nzTreeClass = { ...this.treeRef.nzTreeClass, [ 'ant-select-tree' ]: true };
     }
     this.dropDownClassMap = {
       [ 'ant-select-dropdown' ]                     : true,
@@ -399,7 +407,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
       } else {
         this.value = [ (value as string) ];
       }
-      setTimeout(() => this.updateSelectedNodes(), 100);
+      this.updateSelectedNodes();
     } else {
       this.value = [];
       this.selectedNodes.forEach(node => {
@@ -407,6 +415,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
       });
       this.selectedNodes = [];
     }
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (_: string[] | string) => void): void {
@@ -434,7 +443,6 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
 
   ngAfterViewInit(): void {
     this.attachOverlay();
-    this.isInit = true;
   }
 
   setDisabledState(isDisabled: boolean): void {

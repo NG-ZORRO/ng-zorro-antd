@@ -1,4 +1,11 @@
-<span cdkOverlayOrigin #origin="cdkOverlayOrigin" class="{{ prefixCls }}-picker {{ size ? prefixCls + '-picker-' + size : '' }} {{ className }}" [ngStyle]="style" tabindex="0">
+<span
+  cdkOverlayOrigin
+  #origin="cdkOverlayOrigin"
+  class="{{ prefixCls }}-picker {{ size ? prefixCls + '-picker-' + size : '' }} {{ className }}"
+  [ngStyle]="style"
+  tabindex="0"
+  (click)="onClickInputBox()"
+>
   <!-- Content of single picker -->
   <ng-container *ngIf="!isRange">
     <input
@@ -7,7 +14,6 @@
       [class.ant-input-lg]="size === 'large'"
       [class.ant-input-sm]="size === 'small'"
       [class.ant-input-disabled]="disabled"
-      (click)="onClickInputBox()"
 
       [disabled]="disabled"
       readonly
@@ -25,7 +31,6 @@
       [class.ant-input-lg]="size === 'large'"
       [class.ant-input-sm]="size === 'small'"
       [class.ant-input-disabled]="disabled"
-      (click)="onClickInputBox()"
     >
       <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
       <span class="{{ prefixCls }}-range-picker-separator"> ~ </span>
@@ -49,11 +54,16 @@
 <!-- Right operator icons -->
 <ng-template #tplRightRest>
   <i
+    nz-icon
+    type="close-circle"
+    theme="fill"
     *ngIf="!disabled && !isEmptyValue(value) && allowClear"
-    class="anticon anticon-cross-circle {{ prefixCls }}-picker-clear"
+    class="{{ prefixCls }}-picker-clear"
     (click)="onClickClear($event)"
   ></i>
-  <span class="{{ prefixCls }}-picker-icon"></span>
+  <span class="{{ prefixCls }}-picker-icon">
+    <i nz-icon type="calendar"></i>
+  </span>
 </ng-template>
 
 <!-- Overlay -->

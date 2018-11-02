@@ -74,6 +74,7 @@ export interface CascaderSearchOption extends CascaderOption {
 
 export interface NzShowSearchOptions {
   filter?(inputValue: string, path: CascaderOption[]): boolean;
+
   sorter?(a: CascaderOption[], b: CascaderOption[], inputValue: string): number;
 }
 
@@ -136,7 +137,8 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   private _menuCls: { [ name: string ]: any };
   private _menuColumnCls: { [ name: string ]: any };
 
-  public el: HTMLElement;
+  public el: HTMLElement = this.elementRef.nativeElement;
+
   private isFocused = false;
 
   /** 选择选项后，渲染显示文本 */
@@ -172,7 +174,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     if (!this.inSearch && willBeInSearch) {
       this.oldActivatedOptions = this.activatedOptions;
       this.activatedOptions = [];
-      this.searchWidthStyle = `${this.input.nativeElement.offsetWidth}px`;
     } else if (this.inSearch && !willBeInSearch) {
       this.activatedOptions = this.oldActivatedOptions;
     }
@@ -180,11 +181,13 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     // 搜索状态变更之后
     this.inSearch = !!willBeInSearch;
     if (this.inSearch) {
+      this.labelRenderText = '';
       this.prepareSearchValue();
     } else {
       if (this.showSearch) {
         this.nzColumns = this.oldColumnsHolder;
       }
+      this.buildDisplayLabel();
       this.searchWidthStyle = '';
     }
     this.setClassMap();
@@ -330,8 +333,12 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   /** Options for first column, sub column will be load async */
   @Input() set nzOptions(options: CascaderOption[] | null) {
     this.oldColumnsHolder = this.nzColumns = options && options.length ? [ options ] : [];
-    if (this.defaultValue && this.nzColumns.length) {
-      this.initOptions(0);
+    if (!this.inSearch) {
+      if (this.defaultValue && this.nzColumns.length) {
+        this.initOptions(0);
+      }
+    } else {
+      this.prepareSearchValue();
     }
   }
 
@@ -550,8 +557,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
       [ `${this.prefixCls}-menu-item` ]         : true,
       [ `${this.prefixCls}-menu-item-expand` ]  : !option.isLeaf,
       [ `${this.prefixCls}-menu-item-active` ]  : this.isActivedOption(option, index),
-      [ `${this.prefixCls}-menu-item-disabled` ]: option.disabled,
-      [ `${this.prefixCls}-menu-item-loading` ] : option.loading
+      [ `${this.prefixCls}-menu-item-disabled` ]: option.disabled
     };
   }
 
@@ -1114,7 +1120,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   constructor(private elementRef: ElementRef,
               private cdr: ChangeDetectorRef,
               private nzUpdateHostClassService: NzUpdateHostClassService) {
-    this.el = this.elementRef.nativeElement;
   }
 
   private findOption(option: any, index: number): CascaderOption {
@@ -1204,16 +1209,18 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     const defaultFilter = (inputValue: string, p: CascaderOption[]): boolean => {
       let flag = false;
       p.forEach(n => {
-        if (n.label.indexOf(inputValue) > -1) {
+        const labelName = this.nzLabelProperty;
+        if (n[ labelName ] && n[ labelName ].indexOf(inputValue) > -1) {
           flag = true;
         }
       });
       return flag;
     };
+
     const filter: (inputValue: string, p: CascaderOption[]) => boolean =
-      this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).filter ?
-        (this.nzShowSearch as NzShowSearchOptions).filter :
-        defaultFilter;
+      this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).filter
+        ? (this.nzShowSearch as NzShowSearchOptions).filter
+        : defaultFilter;
     const sorter: (a: CascaderOption[], b: CascaderOption[], inputValue: string) => number =
       this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).sorter;
     const loopParent = (node: CascaderOption, forceDisabled = false) => {
@@ -1227,7 +1234,7 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
         if (!sNode.isLeaf) {
           loopParent(sNode, disabled);
         }
-        if (sNode.isLeaf || !sNode.children) {
+        if (sNode.isLeaf || !sNode.children || !sNode.children.length) {
           loopChild(sNode, disabled);
         }
       });
@@ -1238,17 +1245,20 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
       const cPath = Array.from(path);
       if (filter(this._inputValue, cPath)) {
         const disabled = forceDisabled || node.disabled;
-        results.push({
+        const option: CascaderSearchOption = {
           disabled,
-          isLeaf: true,
-          path  : cPath,
-          label : cPath.map(p => p.label).join(' / ')
-        } as CascaderSearchOption);
+          isLeaf                             : true,
+          path                               : cPath,
+          [ this.nzLabelProperty ]: cPath.map(p => p.label).join(' / ')
+        };
+        results.push(option);
       }
       path.pop();
     };
 
-    this.oldColumnsHolder[ 0 ].forEach(node => loopParent(node));
+    this.oldColumnsHolder[ 0 ].forEach(node => (node.isLeaf || !node.children || !node.children.length)
+      ? loopChild(node)
+      : loopParent(node));
     if (sorter) {
       results.sort((a, b) => sorter(a.path, b.path, this._inputValue));
     }

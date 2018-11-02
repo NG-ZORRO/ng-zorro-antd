@@ -20,4 +20,16 @@ A breadcrumb displays the current location within a hierarchy. It allows going b
 | Property | Description | Type | Optional | Default |
 | -------- | ----------- | ---- | -------- | ------- |
 | `[nzSeparator]` | Custom separator | string丨`TemplateRef<void>` |  | `/` |
+| `[nzAutoGenerate]` | Auto generate breadcrumb | boolean |  | `false` |
 
+Using `[nzAutoGenerate]` by configuring `data` like this:
+
+```ts
+{
+  path: '/path',
+  component: SomeComponent,
+  data: {
+    breadcrumb: 'Display Name'
+  }
+}
+```

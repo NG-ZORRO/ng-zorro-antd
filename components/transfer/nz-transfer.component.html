@@ -15,10 +15,10 @@
   (handleSelectAll)="handleLeftSelectAll($event)"></nz-transfer-list>
 <div class="ant-transfer-operation">
   <button nz-button (click)="moveToLeft()" [disabled]="!leftActive" [nzType]="'primary'" [nzSize]="'small'">
-    <i class="anticon anticon-left"></i><span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
+    <i nz-icon type="left"></i><span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
   </button>
   <button nz-button (click)="moveToRight()" [disabled]="!rightActive" [nzType]="'primary'" [nzSize]="'small'">
-    <i class="anticon anticon-right"></i><span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
+    <i nz-icon type="right"></i><span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
   </button>
 </div>
 <nz-transfer-list class="ant-transfer-list" [ngStyle]="nzListStyle" data-direction="right"

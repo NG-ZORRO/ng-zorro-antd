@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ContentChild,
   TemplateRef
@@ -21,4 +22,7 @@ export class NzPopoverComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';
   @ContentChild('neverUsedTemplate') _title: string | TemplateRef<void>; // used to remove NzToolTipComponent @ContentChild('nzTemplate')
   @ContentChild('nzTemplate') _content: string | TemplateRef<void>;
+  constructor(cdr: ChangeDetectorRef) {
+    super(cdr);
+  }
 }

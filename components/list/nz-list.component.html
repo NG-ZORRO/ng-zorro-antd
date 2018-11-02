@@ -18,6 +18,9 @@
         [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
     </div>
   </div>
+  <div *ngIf="!nzLoading && nzDataSource.length === 0" class="ant-list-empty-text">
+    {{locale.emptyText}}
+  </div>
 </nz-spin>
 <ng-template [ngTemplateOutlet]="nzLoadMore"></ng-template>
 <ng-content></ng-content>

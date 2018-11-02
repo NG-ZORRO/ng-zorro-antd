@@ -42,7 +42,7 @@ ng g ng-zorro-antd:[template] --name=NAME [options]
 例如通过以下代码可以快速生成一个登陆框组件
 
 ```bash
-ng g ng-zorro-antd:form-normal-login -p app --styleext='less' --name=login
+ng g ng-zorro-antd:form-normal-login -p app --styleext=less --name=login
 ```
 
 ### 生成组件参数

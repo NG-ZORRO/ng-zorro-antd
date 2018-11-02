@@ -9,8 +9,6 @@ import {
   OnDestroy,
   OnInit,
   Optional,
-  SimpleChange,
-  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
@@ -66,11 +64,15 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
       e.preventDefault();
       return;
     }
-    const files: File[] = Array.prototype.slice.call(e.dataTransfer.files).filter(
-      (file: File) => this.attrAccept(file, this.options.accept)
-    );
-    if (files.length) {
-      this.uploadFiles(files);
+    if (this.options.directory) {
+      this.traverseFileTree(e.dataTransfer.items);
+    } else {
+      const files: File[] = Array.prototype.slice.call(e.dataTransfer.files).filter(
+        (file: File) => this.attrAccept(file, this.options.accept)
+      );
+      if (files.length) {
+        this.uploadFiles(files);
+      }
     }
 
     e.preventDefault();
@@ -83,6 +85,31 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     const hie = e.target as HTMLInputElement;
     this.uploadFiles(hie.files);
     hie.value = '';
+  }
+
+  // tslint:disable-next-line:no-any
+  private traverseFileTree(files: any): void {
+    // tslint:disable-next-line:no-any
+    const _traverseFileTree = (item: any, path: string) => {
+      if (item.isFile) {
+        item.file((file) => {
+          if (this.attrAccept(file, this.options.accept)) {
+            this.uploadFiles([file]);
+          }
+        });
+      } else if (item.isDirectory) {
+        const dirReader = item.createReader();
+
+        dirReader.readEntries((entries) => {
+          for (const entrieItem of entries) {
+            _traverseFileTree(entrieItem, `${path}${item.name}/`);
+          }
+        });
+      }
+    };
+    for (const file of files) {
+      _traverseFileTree(file.webkitGetAsEntry(), '');
+    }
   }
 
   private attrAccept(file: File, acceptedFiles: string | string[]): boolean {
@@ -133,7 +160,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
         if (processedFileType === '[object File]' || processedFileType === '[object Blob]') {
           this.attachUid(processedFile);
           this.post(processedFile);
-        } else {
+        } else if (typeof processedFile === 'boolean' && processedFile !== false) {
           this.post(file);
         }
       });
@@ -150,10 +177,10 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     const { uid } = file;
     let { data, headers } = opt;
     if (typeof data === 'function') {
-      data = data(file);
+      data = (data as (file: UploadFile) => {})(file);
     }
     if (typeof headers === 'function') {
-      headers = headers(file);
+      headers = (headers as (file: UploadFile) => {})(file);
     }
     const args: UploadXHRArgs = {
       action         : opt.action,
@@ -166,15 +193,19 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
         opt.onProgress(e, file);
       } : null,
       onSuccess      : (ret, xhr) => {
-        delete this.reqs[ uid ];
+        this.clean(uid);
         opt.onSuccess(ret, file, xhr);
       },
       onError        : (xhr) => {
-        delete this.reqs[ uid ];
+        this.clean(uid);
         opt.onError(xhr, file);
       }
     };
-    this.reqs[ uid ] = (opt.customRequest || this.xhr).call(this, args);
+    const req$ = (opt.customRequest || this.xhr).call(this, args);
+    if (!(req$ instanceof Subscription)) {
+      console.warn(`Must return Subscription type in '[nzCustomRequest]' property`);
+    }
+    this.reqs[ uid ] = req$;
     opt.onStart(file);
   }
 
@@ -216,18 +247,19 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
+  private clean(uid: string): void {
+    const req$ = this.reqs[ uid ];
+    if (req$ instanceof Subscription) {
+      req$.unsubscribe();
+    }
+    delete this.reqs[ uid ];
+  }
+
   abort(file?: UploadFile): void {
     if (file) {
-      const uid = file && file.uid;
-      if (this.reqs[ uid ]) {
-        this.reqs[ uid ].unsubscribe();
-        delete this.reqs[ uid ];
-      }
+      this.clean(file && file.uid);
     } else {
-      Object.keys(this.reqs).forEach((uid) => {
-        this.reqs[ uid ].unsubscribe();
-        delete this.reqs[ uid ];
-      });
+      Object.keys(this.reqs).forEach((uid) => this.clean(uid));
     }
   }
 
@@ -247,7 +279,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   // endregion
   constructor(@Optional() private http: HttpClient, private el: ElementRef, private updateHostClassService: NzUpdateHostClassService, private cd: ChangeDetectorRef) {
     if (!http) {
-      throw new Error(`Not found 'HttpClient', You can import 'HttpClientModel' in your root module.`);
+      throw new Error(`Not found 'HttpClient', You can import 'HttpClientModule' in your root module.`);
     }
   }
 
@@ -256,7 +288,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     this.setClassMap();
   }
 
-  ngOnChanges(changes: { [P in keyof this]?: SimpleChange } & SimpleChanges): void {
+  ngOnChanges(): void {
     if (this.inited) {
       this.setClassMap();
     }

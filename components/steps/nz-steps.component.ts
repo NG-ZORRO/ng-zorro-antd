@@ -30,6 +30,7 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterContentInit {
   private _current = 0;
   private _size: NzSizeType = 'default';
   private _direction: NzDirectionType = 'horizontal';
+  private _startIndex = 0;
   private unsubscribe$ = new Subject<void>();
 
   stepsClassMap: object;
@@ -44,6 +45,16 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterContentInit {
 
   get nzSize(): NzSizeType {
     return this._size;
+  }
+
+  @Input()
+  set nzStartIndex(value: number) {
+    this._startIndex = value;
+    this.updateChildrenSteps();
+  }
+
+  get nzStartIndex(): number {
+    return this._startIndex;
   }
 
   @Input()
@@ -102,16 +113,18 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterContentInit {
   updateChildrenSteps = () => {
     if (this.steps) {
       this.steps.toArray().forEach((step, index, arr) => {
-        step.outStatus = this.nzStatus;
-        step.showProcessDot = this.showProcessDot;
-        if (this.customProcessDotTemplate) {
-          step.customProcessTemplate = this.customProcessDotTemplate;
-        }
-        step.direction = this.nzDirection;
-        step.index = index;
-        step.currentIndex = this.nzCurrent;
-        step.last = arr.length === index + 1;
-        step.updateClassMap();
+        Promise.resolve().then(() => {
+          step.outStatus = this.nzStatus;
+          step.showProcessDot = this.showProcessDot;
+          if (this.customProcessDotTemplate) {
+            step.customProcessTemplate = this.customProcessDotTemplate;
+          }
+          step.direction = this.nzDirection;
+          step.index = index + this.nzStartIndex;
+          step.currentIndex = this.nzCurrent;
+          step.last = arr.length === index + 1;
+          step.updateClassMap();
+        });
       });
     }
   }
@@ -126,7 +139,7 @@ export class NzStepsComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    Promise.resolve().then(() => this.updateChildrenSteps());
+    this.updateChildrenSteps();
     if (this.steps) {
        this.steps.changes.pipe(takeUntil(this.unsubscribe$)).subscribe(this.updateChildrenSteps);
     }

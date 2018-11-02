@@ -1,8 +1,8 @@
 ---
-order: 1
+order: 6
 title:
   zh-CN: 连接线
-  en-US: tree with line
+  en-US: Tree With Line
 ---
 
 ## zh-CN
@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-Tree With Line
+Tree With Line.

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UploadFile } from 'ng-zorro-antd';
+import { UploadFile, UploadFilter, NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-upload-filter',
@@ -9,14 +9,32 @@ import { UploadFile } from 'ng-zorro-antd';
     [nzFileList]="fileList"
     nzMultiple
     [nzLimit]="2"
+    [nzFilter]="filters"
     (nzChange)="handleChange($event)">
     <button nz-button>
-      <i class="anticon anticon-upload"></i><span>Upload</span>
+      <i nz-icon type="upload"></i><span>Upload</span>
     </button>
   </nz-upload>
   `
 })
 export class NzDemoUploadFilterComponent {
+
+  constructor(private msg: NzMessageService) {}
+
+  filters: UploadFilter[] = [
+    {
+      name: 'type',
+      fn  : (fileList: UploadFile[]) => {
+        const filterFiles = fileList.filter(w => ~['image/png'].indexOf(w.type));
+        if (filterFiles.length !== fileList.length) {
+          this.msg.error(`包含文件格式不正确，只支持 png 格式`);
+          return filterFiles;
+        }
+        return fileList;
+      }
+    }
+  ];
+
   fileList = [
     {
       uid: -1,

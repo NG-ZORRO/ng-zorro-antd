@@ -78,7 +78,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzPageSizeOptions]` | 页数选择器可选值 | number[] | [ 10, 20, 30, 40, 50 ] |
 | `[nzShowQuickJumper]` | 是否可以快速跳转至某页 | boolean | false |
 | `[nzShowSizeChanger]` | 是否可以改变 `nzPageSize` | boolean | false |
-| `[nzShowTotal]` | 用于显示数据总量和当前数据范围 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
+| `[nzShowTotal]` | 用于显示数据总量和当前数据范围，与 Pagination 用法相同 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
 | `[nzHideOnSinglePage]` | 只有一页时是否隐藏分页器 | boolean | false |
 | `[nzSimple]` | 当添加该属性时，显示为简单分页 | boolean | - |
 | `(nzPageIndexChange)` | 当前页码改版时的回调函数 | `EventEmitter<number>` | - |

@@ -38,10 +38,13 @@ export class NzThComponent {
   private _showCheckbox = false;
   private _showRowSelection = false;
   private _hasDefaultFilter = false;
-  el: HTMLElement;
+  private _customFilter = false;
+  el: HTMLElement = this.elementRef.nativeElement;
   hasFilterValue = false;
+  filterVisible = false;
   multipleFilterList: NzThItemInterface[] = [];
   singleFilterList: NzThItemInterface[] = [];
+  @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
   /* tslint:disable-next-line:no-any */
   @Input() nzSelections: Array<{ text: string, onSelect: any }> = [];
   @Input() nzChecked = false;
@@ -51,15 +54,45 @@ export class NzThComponent {
   @Input() nzFilterMultiple = true;
   @Input() nzWidth: string;
   @Output() nzCheckedChange = new EventEmitter<boolean>();
-  @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
   @Output() nzSortChange = new EventEmitter<string>();
   @Output() nzSortChangeWithKey = new EventEmitter<{ key: string, value: string }>();
   /* tslint:disable-next-line:no-any */
   @Output() nzFilterChange = new EventEmitter<any[] | any>();
 
+  @HostBinding('class.ant-table-column-has-actions')
+  get hasActionsClass(): boolean {
+    return this.nzShowFilter || this.nzShowSort || this.nzCustomFilter;
+  }
+
   @HostBinding('class.ant-table-column-has-filters')
   get hasFiltersClass(): boolean {
-    return this.nzShowSort || this.nzShowFilter;
+    return this.nzShowFilter || this.nzCustomFilter;
+  }
+
+  @HostBinding('class.ant-table-column-has-sorters')
+  get hasSortersClass(): boolean {
+    return this.nzShowSort;
+  }
+
+  updateSortValue(): void {
+    if (this.nzShowSort) {
+      if (this.nzSort === 'descend') {
+        this.setSortValue('ascend');
+      } else if (this.nzSort === 'ascend') {
+        this.setSortValue(null);
+      } else {
+        this.setSortValue('descend');
+      }
+    }
+  }
+
+  @Input()
+  set nzCustomFilter(value: boolean) {
+    this._customFilter = toBoolean(value);
+  }
+
+  get nzCustomFilter(): boolean {
+    return this._customFilter;
   }
 
   @Input()
@@ -155,11 +188,7 @@ export class NzThComponent {
   }
 
   setSortValue(value: string): void {
-    if (this.nzSort === value) {
-      this.nzSort = null;
-    } else {
-      this.nzSort = value;
-    }
+    this.nzSort = value;
     this.nzSortChangeWithKey.emit({ key: this.nzSortKey, value: this.nzSort });
     this.nzSortChange.emit(this.nzSort);
   }
@@ -211,9 +240,11 @@ export class NzThComponent {
   hideDropDown(): void {
     this.nzDropDownComponent.nzVisible = false;
     this.nzDropDownComponent.hide();
+    this.filterVisible = false;
   }
 
   dropDownVisibleChange(value: boolean): void {
+    this.filterVisible = value;
     if (!value) {
       this.search();
     }
@@ -238,7 +269,9 @@ export class NzThComponent {
   initMultipleFilterList(force?: boolean): void {
     this.multipleFilterList = this.nzFilters.map(item => {
       const checked = force ? false : !!item.byDefault;
-      if (checked) { this._hasDefaultFilter = true; }
+      if (checked) {
+        this._hasDefaultFilter = true;
+      }
       return { text: item.text, value: item.value, checked };
     });
     this.checkDefaultFilters();
@@ -247,18 +280,21 @@ export class NzThComponent {
   initSingleFilterList(force?: boolean): void {
     this.singleFilterList = this.nzFilters.map(item => {
       const checked = force ? false : !!item.byDefault;
-      if (checked) { this._hasDefaultFilter = true; }
+      if (checked) {
+        this._hasDefaultFilter = true;
+      }
       return { text: item.text, value: item.value, checked };
     });
     this.checkDefaultFilters();
   }
 
   checkDefaultFilters(): void {
-    if (!this.nzFilters || this.nzFilters.length === 0 || !this._hasDefaultFilter) { return; }
+    if (!this.nzFilters || this.nzFilters.length === 0 || !this._hasDefaultFilter) {
+      return;
+    }
     this.updateFilterStatus();
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-    this.el = this.elementRef.nativeElement;
   }
 }

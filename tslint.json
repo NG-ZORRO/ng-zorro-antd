@@ -3,7 +3,58 @@
     "node_modules/codelyzer"
   ],
   "rules": {
-    "adjacent-overload-signatures": true,
+    "banana-in-box": true,
+    "templates-no-negated-async": true,
+    "no-life-cycle-call": false,
+    "prefer-output-readonly": false,
+    "no-conflicting-life-cycle-hooks": false,
+    "enforce-component-selector": false,
+    "prefer-inline-decorator": true,
+    "use-input-property-decorator": true,
+    "use-output-property-decorator": true,
+    "use-host-property-decorator": false,
+    "use-view-encapsulation": false,
+    "no-attribute-parameter-decorator": true,
+    "no-output-named-after-standard-event": true,
+    "no-input-rename": true,
+    "no-output-rename": true,
+    "no-output-on-prefix": true,
+    "no-forward-ref": false,
+    "use-life-cycle-interface": true,
+    "contextual-life-cycle": true,
+    "trackBy-function": true,
+    "use-pipe-transform-interface": true,
+    "component-class-suffix": true,
+    "directive-class-suffix": true,
+    "pipe-impure": true,
+    "angular-whitespace": [
+      false,
+      "check-interpolation",
+      "check-semicolon"
+    ],
+    "directive-selector": [
+      true,
+      "attribute",
+      [
+        "nz"
+      ],
+      [
+        "camelCase",
+        "kebab-case"
+      ]
+    ],
+    "component-selector": [
+      true,
+      [
+        "element",
+        "attribute"
+      ],
+      [
+        "nz",
+        "test"
+      ],
+      "kebab-case"
+    ],
     "callable-types": true,
     "class-name": true,
     "comment-format": [
@@ -202,42 +253,6 @@
       "check-type",
       "check-typecast",
       "check-preblock"
-    ],
-    "directive-selector": [
-      true,
-      "attribute",
-      [
-        "nz"
-      ],
-      [
-        "camelCase",
-        "kebab-case"
-      ]
-    ],
-    "component-selector": [
-      true,
-      [
-        "element",
-        "attribute"
-      ],
-      [
-        "nz",
-        "test"
-      ],
-      "kebab-case"
-    ],
-    "angular-whitespace": [
-      false,
-      "check-interpolation",
-      "check-semicolon"
-    ],
-    "no-output-on-prefix": true,
-    "use-input-property-decorator": true,
-    "use-output-property-decorator": true,
-    "use-host-property-decorator": false,
-    "use-life-cycle-interface": true,
-    "use-pipe-transform-interface": true,
-    "component-class-suffix": true,
-    "directive-class-suffix": true
+    ]
   }
 }

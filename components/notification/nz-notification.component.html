@@ -8,10 +8,10 @@
     <div class="ant-notification-notice-content" [ngClass]="{ 'ant-notification-notice-with-icon': nzMessage.type !== 'blank' }">
       <div [class.ant-notification-notice-with-icon]="nzMessage.type !== 'blank'">
         <ng-container [ngSwitch]="nzMessage.type">
-          <i *ngSwitchCase="'success'" class="ant-notification-notice-icon ant-notification-notice-icon-success anticon anticon-check-circle-o"></i>
-          <i *ngSwitchCase="'info'" class="ant-notification-notice-icon ant-notification-notice-icon-info anticon anticon-info-circle-o"></i>
-          <i *ngSwitchCase="'warning'" class="ant-notification-notice-icon ant-notification-notice-icon-warning anticon anticon-exclamation-circle-o"></i>
-          <i *ngSwitchCase="'error'" class="ant-notification-notice-icon ant-notification-notice-icon-error anticon anticon-cross-circle-o"></i>
+          <i *ngSwitchCase="'success'" nz-icon type="check-circle" class="ant-notification-notice-icon ant-notification-notice-icon-success"></i>
+          <i *ngSwitchCase="'info'" nz-icon type="info-circle" class="ant-notification-notice-icon ant-notification-notice-icon-info"></i>
+          <i *ngSwitchCase="'warning'" nz-icon type="exclamation-circle" class="ant-notification-notice-icon ant-notification-notice-icon-warning"></i>
+          <i *ngSwitchCase="'error'" nz-icon type="close-circle" class="ant-notification-notice-icon ant-notification-notice-icon-error"></i>
         </ng-container>
         <div class="ant-notification-notice-message" [innerHTML]="nzMessage.title"></div>
         <div class="ant-notification-notice-description" [innerHTML]="nzMessage.content"></div>
@@ -20,6 +20,8 @@
   </div>
   <ng-template [ngIf]="nzMessage.template" [ngTemplateOutlet]="nzMessage.template" [ngTemplateOutletContext]="{ $implicit: this }"></ng-template>
   <a tabindex="0" class="ant-notification-notice-close" (click)="close()">
-    <span class="ant-notification-notice-close-x"></span>
+    <span class="ant-notification-notice-close-x">
+      <i nz-icon type="close" class="ant-notification-close-icon"></i>
+    </span>
   </a>
 </div>

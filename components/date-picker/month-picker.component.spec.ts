@@ -7,8 +7,9 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import * as isBefore from 'date-fns/is_before';
+import isBefore from 'date-fns/is_before';
 import { dispatchMouseEvent } from '../core/testing';
+import { NzInputModule } from '../input/nz-input.module';
 import { NzDatePickerModule } from './date-picker.module';
 import { CandyDate } from './lib/candy-date';
 import { PickerResultSingle } from './standard-types';
@@ -24,7 +25,7 @@ describe('NzMonthPickerComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ FormsModule, NoopAnimationsModule, NzDatePickerModule ],
+      imports     : [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzInputModule ],
       providers   : [],
       declarations: [
         NzTestMonthPickerComponent
@@ -54,7 +55,7 @@ describe('NzMonthPickerComponent', () => {
 
     it('should open by click and close by click at outside', fakeAsync(() => {
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -146,8 +147,19 @@ describe('NzMonthPickerComponent', () => {
     it('should support nzClassName', () => {
       const className = fixtureInstance.nzClassName = 'my-test-class';
       fixture.detectChanges();
-      const picker = debugElement.query(By.css('.ant-calendar-picker')).nativeElement as HTMLElement;
+      const picker = debugElement.queryAll(By.css('.ant-calendar-picker'))[1].nativeElement as HTMLElement;
       expect(picker.classList.contains(className)).toBeTruthy();
+    });
+
+    it('should support nzCompact', () => {
+      fixtureInstance.useSuite = 4;
+
+      fixture.detectChanges();
+      const pickerInput = debugElement.query(By.css('input.ant-calendar-picker-input')).nativeElement as HTMLElement;
+      expect(pickerInput).not.toBeNull();
+      const compStyles = window.getComputedStyle(pickerInput);
+      expect(compStyles.getPropertyValue('border-top-right-radius') === '0px').toBeTruthy();
+      expect(compStyles.getPropertyValue('border-bottom-right-radius') === '0px').toBeTruthy();
     });
 
     it('should support nzDisabledDate', fakeAsync(() => {
@@ -159,7 +171,7 @@ describe('NzMonthPickerComponent', () => {
       flush();
       fixture.detectChanges();
 
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -184,7 +196,7 @@ describe('NzMonthPickerComponent', () => {
     it('should support nzPopupStyle', fakeAsync(() => {
       fixtureInstance.nzPopupStyle = { color: 'red' };
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -194,7 +206,7 @@ describe('NzMonthPickerComponent', () => {
     it('should support nzDropdownClassName', fakeAsync(() => {
       const keyCls = fixtureInstance.nzDropdownClassName = 'my-test-class';
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -220,7 +232,7 @@ describe('NzMonthPickerComponent', () => {
     it('should support nzOnOpenChange', () => {
       const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
@@ -234,7 +246,7 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -245,7 +257,7 @@ describe('NzMonthPickerComponent', () => {
       fixtureInstance.nzValue = new Date('2018-11');
       const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTrigger(), 'click');
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -382,6 +394,10 @@ describe('NzMonthPickerComponent', () => {
     return debugElement.query(By.css('nz-picker input.ant-calendar-picker-input')).nativeElement as HTMLInputElement;
   }
 
+  function getPickerTriggerWrapper(): HTMLInputElement {
+    return debugElement.query(By.css('nz-picker .ant-calendar-picker')).nativeElement as HTMLInputElement;
+  }
+
   function getPickerContainer(): HTMLElement {
     return queryFromOverlay('.ant-calendar-picker-container') as HTMLElement;
   }
@@ -399,7 +415,7 @@ describe('NzMonthPickerComponent', () => {
   }
 
   function openPickerByClickTrigger(): void {
-    dispatchMouseEvent(getPickerTrigger(), 'click');
+    dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();
@@ -441,11 +457,17 @@ describe('NzMonthPickerComponent', () => {
 
       <!-- Suite 3 -->
       <nz-month-picker *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-month-picker>
+
+      <!-- Suite 4 -->
+      <nz-input-group *ngSwitchCase="4" nzCompact>
+        <nz-month-picker style="width: 200px;"></nz-month-picker>
+        <input nz-input type="text" style="width: 200px;" />
+      </nz-input-group>
     </ng-container>
   `
 })
 class NzTestMonthPickerComponent {
-  useSuite: 1 | 2 | 3;
+  useSuite: 1 | 2 | 3 | 4;
   @ViewChild('tplExtraFooter') tplExtraFooter: TemplateRef<void>;
 
   // --- Suite 1

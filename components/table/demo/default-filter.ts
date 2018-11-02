@@ -31,8 +31,8 @@ export class NzDemoTableDefaultFilterComponent {
   ];
   sortName = null;
   sortValue = null;
-  listOfSearchName = [ 'Joe', 'London' ];  // You need to change it as well!
-  searchAddress: string;
+  listOfSearchName = [ 'Joe' ];  // You need to change it as well!
+  searchAddress = 'London';
   data = [
     {
       name: 'John Brown',

@@ -3,10 +3,14 @@
 </div>
 <div class="ant-tabs-nav-container" [class.ant-tabs-nav-container-scrolling]="showPaginationControls" #navContainerElement>
   <span class="ant-tabs-tab-prev" (click)="scrollHeader('before')" [class.ant-tabs-tab-btn-disabled]="disableScrollBefore" [class.ant-tabs-tab-arrow-show]="showPaginationControls">
-    <span class="ant-tabs-tab-prev-icon"></span>
+    <span class="ant-tabs-tab-prev-icon">
+      <i nz-icon [type]="nzPositionMode === 'horizontal' ? 'left' : 'up'" class="ant-tabs-tab-prev-icon-target"></i>
+    </span>
   </span>
   <span class="ant-tabs-tab-next" (click)="scrollHeader('after')" [class.ant-tabs-tab-btn-disabled]="disableScrollAfter" [class.ant-tabs-tab-arrow-show]="showPaginationControls">
-    <span class="ant-tabs-tab-next-icon"></span>
+    <span class="ant-tabs-tab-next-icon">
+      <i nz-icon [type]="nzPositionMode === 'horizontal' ? 'right' : 'down'" class="ant-tabs-tab-next-icon-target"></i>
+    </span>
   </span>
   <div class="ant-tabs-nav-wrap">
     <div class="ant-tabs-nav-scroll">

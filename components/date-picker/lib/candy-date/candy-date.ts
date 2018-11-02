@@ -1,9 +1,9 @@
-import * as addMonths from 'date-fns/add_months';
-import * as addYears from 'date-fns/add_years';
-import * as endOfMonth from 'date-fns/end_of_month';
-import * as setDay from 'date-fns/set_day';
-import * as setMonth from 'date-fns/set_month';
-// import * as setYear from 'date-fns/set_year';
+import addMonths from 'date-fns/add_months';
+import addYears from 'date-fns/add_years';
+import endOfMonth from 'date-fns/end_of_month';
+import setDay from 'date-fns/set_day';
+import setMonth from 'date-fns/set_month';
+// import setYear from 'date-fns/set_year';
 import { firstDayOfWeek } from './util';
 
 /**

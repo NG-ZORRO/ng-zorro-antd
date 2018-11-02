@@ -97,7 +97,7 @@ export class NzModalService {
     }
 
     options.nzModalType = 'confirm';
-    options.nzClassName = `ant-confirm ant-confirm-${confirmType} ${options.nzClassName || ''}`;
+    options.nzClassName = `ant-modal-confirm ant-modal-confirm-${confirmType} ${options.nzClassName || ''}`;
     options.nzMaskClosable = false;
     return this.create(options);
   }
@@ -123,7 +123,7 @@ export class NzModalService {
       options.nzIconType = {
         'info'   : 'info-circle',
         'success': 'check-circle',
-        'error'  : 'cross-circle',
+        'error'  : 'close-circle',
         'warning': 'exclamation-circle'
       }[ confirmType ];
     }

@@ -1,4 +1,3 @@
-// tslint:disable: no-any
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -6,12 +5,15 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  SimpleChanges,
+  OnDestroy,
+  OnInit,
   TemplateRef
 } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import { ListSize, NzListGrid } from './interface';
 
@@ -31,20 +33,16 @@ import { ListSize, NzListGrid } from './interface';
     }
   ` ]
 })
-export class NzListComponent implements OnChanges {
-  // region: fields
+export class NzListComponent implements OnInit, OnChanges, OnDestroy {
+  /* tslint:disable-next-line:no-any */
+  locale: any = {};
+  private i18n$: Subscription;
+
+  // #region fields
+  // tslint:disable-next-line:no-any
   @Input() nzDataSource: any[] = [];
 
-  private _bordered = false;
-
-  @Input()
-  set nzBordered(value: boolean) {
-    this._bordered = toBoolean(value);
-  }
-
-  get nzBordered(): boolean {
-    return this._bordered;
-  }
+  @Input() @InputBoolean() nzBordered = false;
 
   @Input() nzGrid: NzListGrid;
 
@@ -84,36 +82,19 @@ export class NzListComponent implements OnChanges {
 
   @Input() nzRenderItem: TemplateRef<void>;
 
-  private _loading = false;
-
-  @Input()
-  set nzLoading(value: boolean) {
-    this._loading = toBoolean(value);
-  }
-
-  get nzLoading(): boolean {
-    return this._loading;
-  }
+  @Input() @InputBoolean() nzLoading = false;
 
   @Input() nzLoadMore: TemplateRef<void>;
+
   @Input() nzPagination: TemplateRef<void>;
 
   @Input() nzSize: ListSize = 'default';
 
-  private _split = true;
+  @Input() @InputBoolean() nzSplit = true;
 
-  @Input()
-  set nzSplit(value: boolean) {
-    this._split = toBoolean(value);
-  }
+  // #endregion
 
-  get nzSplit(): boolean {
-    return this._split;
-  }
-
-  // endregion
-
-  // region: styles
+  // #region styles
 
   private prefixCls = 'ant-list';
 
@@ -130,16 +111,25 @@ export class NzListComponent implements OnChanges {
       [ `${this.prefixCls}-something-after-last-item` ]: !!(this.nzLoadMore || this.nzPagination || this._isFooter)
     };
     this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
-
-    this.cd.detectChanges();
   }
 
-  // endregion
+  // #endregion
 
-  constructor(private el: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {
+  constructor(private el: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService, private i18n: NzI18nService) {
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnInit(): void {
+    this.i18n$ = this.i18n.localeChange.subscribe(() => {
+      this.locale = this.i18n.getLocaleData('Table');
+      this.cd.detectChanges();
+    });
+  }
+
+  ngOnChanges(): void {
     this._setClassMap();
+  }
+
+  ngOnDestroy(): void {
+    this.i18n$.unsubscribe();
   }
 }

@@ -17,6 +17,18 @@ title: Modal
 
 在弹出层Component中可以通过依赖注入`NzModalRef`方式直接获取模态框的组件实例，用于控制在弹出层组件中控制模态框行为。
 
+## 如何使用
+
+如果要修改全局默认配置，你可以设置提供商 `NZ_MODAL_CONFIG` 的值来修改。
+（如：在你的模块的`providers`中加入 `{ provide: NZ_MODAL_CONFIG, useValue: { autoBodyPadding: false }}`，`NZ_MODAL_CONFIG` 可以从 `ng-zorro-antd` 中导入）
+
+默认全局配置为：
+```js
+{
+  autoBodyPadding: true, // 是否自动给body加上padding及overflow来隐藏滚动条
+}
+```
+
 ## API
 
 ### NzModalService
@@ -54,6 +66,8 @@ title: Modal
 #### 注意
 
 > `<nz-modal>` 默认关闭后状态不会自动清空, 如果希望每次打开都是新内容，请采用 `NzModalService` 服务方式创建对话框（当以服务方式创建时，默认会监听 `nzAfterClose` 并销毁对话框）。
+
+> 通过 `NzModalService` 服务方式创建的对话框需要自行管理其生命周期。比如你在页面路由切换时，服务方式创建的对话框并不会被销毁，你需要使用对话框引用来手动销毁（`NzModalRef.close()` 或 `NzModalRef.destroy()`）。
 
 #### 采用服务方式创建普通模式对话框
 

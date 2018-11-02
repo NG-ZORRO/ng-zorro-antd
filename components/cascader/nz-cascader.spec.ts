@@ -1325,12 +1325,35 @@ describe('cascader', () => {
         done();
       });
     });
+    it('should support nzLabelProperty', (done) => {
+      testComponent.nzShowSearch = true;
+      testComponent.nzLabelProperty = 'l';
+      fixture.detectChanges();
+      cascader.nativeElement.click();
+      fixture.detectChanges();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearch).toBe(true);
+      expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+      itemEl1.click();
+      fixture.whenStable().then(() => {
+        expect(testComponent.cascader.inSearch).toBe(false);
+        expect(testComponent.cascader.menuVisible).toBe(false);
+        expect(testComponent.cascader.inputValue).toBe('');
+        expect(testComponent.values.join(',')).toBe('zhejiang,hangzhou,xihu');
+        done();
+      });
+    });
     it('should support custom filter', (done) => {
       testComponent.nzShowSearch = {
         filter(inputValue: string, path: CascaderOption[]): boolean {
           let flag = false;
           path.forEach(p => {
-            if (p.label.indexOf(inputValue) > -1) { flag = true; }
+            if (p.label.indexOf(inputValue) > -1) {
+              flag = true;
+            }
           });
           return flag;
         }
@@ -1354,7 +1377,9 @@ describe('cascader', () => {
     it('should support custom sorter', (done) => {
       testComponent.nzShowSearch = {
         sorter(a: CascaderOption[], b: CascaderOption[], inputValue: string): number {
-          return 1; // all reversed, just to be sure it works
+          const l1 = a[ 0 ].label;
+          const l2 = b[ 0 ].label; // all reversed, just to be sure it works
+          return ('' + l1).localeCompare(l2);
         }
       } as NzShowSearchOptions;
       fixture.detectChanges();
@@ -1381,7 +1406,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
-      expect(testComponent.cascader.nzColumns[0][0].disabled).toBe(true);
+      expect(testComponent.cascader.nzColumns[ 0 ][ 0 ].disabled).toBe(true);
       itemEl1.click();
       tick(300);
       fixture.detectChanges();
@@ -1396,9 +1421,9 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(testComponent.cascader.nzColumns[0][0].disabled).toBe(true);
-      expect(testComponent.cascader.nzColumns[0][1].disabled).toBe(undefined);
-      expect(testComponent.cascader.nzColumns[0][2].disabled).toBe(true);
+      expect(testComponent.cascader.nzColumns[ 0 ][ 0 ].disabled).toBe(true);
+      expect(testComponent.cascader.nzColumns[ 0 ][ 1 ].disabled).toBe(undefined);
+      expect(testComponent.cascader.nzColumns[ 0 ][ 2 ].disabled).toBe(true);
     });
     it('should support arrow in search mode', (done) => {
       const DOWN_ARROW = 40;
@@ -1424,7 +1449,6 @@ describe('cascader', () => {
         done();
       });
     });
-    // How can I test BACKSPACE?
     it('should not preventDefault left/right arrow in search mode', () => {
       const LEFT_ARROW = 37;
       const RIGHT_ARROW = 39;
@@ -1440,6 +1464,46 @@ describe('cascader', () => {
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
+    });
+    it('should support search a root node have no children ', (done) => {
+      fixture.detectChanges();
+      testComponent.nzShowSearch = true;
+      testComponent.nzOptions = options5;
+      fixture.detectChanges();
+      const spy = spyOn(testComponent.cascader, 'focus');
+      cascader.nativeElement.click();
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalled();
+      testComponent.cascader.inputValue = 'Roo';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearch).toBe(true);
+      expect(itemEl1.innerText).toBe('Root');
+      itemEl1.click();
+      fixture.whenStable().then(() => {
+        expect(testComponent.cascader.inSearch).toBe(false);
+        expect(testComponent.cascader.menuVisible).toBe(false);
+        expect(testComponent.cascader.inputValue).toBe('');
+        expect(testComponent.values.join(',')).toBe('root');
+        done();
+      });
+    });
+    it('should re-prepare search results when nzOptions change', () => {
+      fixture.detectChanges();
+      testComponent.nzShowSearch = true;
+      cascader.nativeElement.click();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      let itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearch).toBe(true);
+      expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+      testComponent.nzOptions = options2;
+      fixture.detectChanges();
+      expect(testComponent.cascader.inSearch).toBe(true);
+      itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(itemEl1.innerText).toBe('Option1 / Option11');
     });
   });
 
@@ -1602,28 +1666,35 @@ const ID_NAME_LIST = [ {
 const options1 = [ {
   value   : 'zhejiang',
   label   : 'Zhejiang',
+  l       : 'Zhejiang',
   children: [ {
     value   : 'hangzhou',
     label   : 'Hangzhou',
+    l       : 'Hangzhou',
     children: [ {
       value : 'xihu',
+      l     : 'West Lake',
       label : 'West Lake',
       isLeaf: true
     } ]
   }, {
     value : 'ningbo',
     label : 'Ningbo',
+    l     : 'Ningbo',
     isLeaf: true
   } ]
 }, {
   value   : 'jiangsu',
   label   : 'Jiangsu',
+  l       : 'Jiangsu',
   children: [ {
     value   : 'nanjing',
     label   : 'Nanjing',
+    l       : 'Nanjing',
     children: [ {
       value : 'zhonghuamen',
       label : 'Zhong Hua Men',
+      l     : 'Zhong Hua Men',
       isLeaf: true
     } ]
   } ]
@@ -1701,36 +1772,71 @@ const options3 = [ {
 } ];
 
 const options4 = [ {
-  value: 'zhejiang',
-  label: 'Zhejiang',
+  value   : 'zhejiang',
+  label   : 'Zhejiang',
   children: [ {
-    value: 'hangzhou',
-    label: 'Hangzhou',
+    value   : 'hangzhou',
+    label   : 'Hangzhou',
     disabled: true,
     children: [ {
-      value: 'xihu',
-      label: 'West Lake',
+      value : 'xihu',
+      label : 'West Lake',
       isLeaf: true
     } ]
   }, {
-    value: 'ningbo',
-    label: 'Ningbo',
+    value : 'ningbo',
+    label : 'Ningbo',
     isLeaf: true
   } ]
 }, {
-  value: 'jiangsu',
-  label: 'Jiangsu',
+  value   : 'jiangsu',
+  label   : 'Jiangsu',
   disabled: true,
   children: [ {
-    value: 'nanjing',
-    label: 'Nanjing',
+    value   : 'nanjing',
+    label   : 'Nanjing',
     children: [ {
-      value: 'zhonghuamen',
-      label: 'Zhong Hua Men',
+      value : 'zhonghuamen',
+      label : 'Zhong Hua Men',
       isLeaf: true
     } ]
   } ]
 } ];
+
+const options5 = [ {
+  value   : 'zhejiang',
+  label   : 'Zhejiang',
+  children: [ {
+    value   : 'hangzhou',
+    label   : 'Hangzhou',
+    children: [ {
+      value : 'xihu',
+      label : 'West Lake',
+      isLeaf: true
+    } ]
+  }, {
+    value : 'ningbo',
+    label : 'Ningbo',
+    isLeaf: true
+  } ]
+}, {
+  value   : 'jiangsu',
+  label   : 'Jiangsu',
+  children: [ {
+    value   : 'nanjing',
+    label   : 'Nanjing',
+    children: [ {
+      value : 'zhonghuamen',
+      label : 'Zhong Hua Men',
+      isLeaf: true
+    } ]
+  } ]
+}, {
+  value : 'root',
+  label : 'Root',
+  isLeaf: true
+} ];
+
 @Component({
   selector: 'nz-demo-cascader-default',
   template: `

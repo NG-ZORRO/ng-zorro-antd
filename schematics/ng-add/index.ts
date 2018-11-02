@@ -15,14 +15,17 @@ import { getAppModulePath } from '../utils/devkit-utils/ng-ast-utils';
 import { insertImport } from '../utils/devkit-utils/route-utils';
 import { zorroVersion } from '../utils/lib-versions';
 import { addPackageToPackageJson } from '../utils/package';
+import { getProjectTargetOptions } from '../utils/project-targets';
 import { Schema } from './schema';
 
+import schematicsFixIcon from '../fix-icon/index';
+
 const ADD_CONFIG = {
-  LESS_VERSION: '^2.7.3',
-  CUSTOM_THEME_PATH: 'src/theme.less',
-  COMPILED_THEME_PATH: 'node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css',
-  BOOT_PAGE_PATH: 'src/app/app.component.html',
-  BOOT_PAGE_HTML: `<!-- NG-ZORRO -->
+  LESS_VERSION       : '^2.7.3',
+  CUSTOM_THEME_PATH  : 'src/theme.less',
+  COMPILED_THEME_PATH: 'node_modules/ng-zorro-antd/ng-zorro-antd.min.css',
+  BOOT_PAGE_PATH     : 'src/app/app.component.html',
+  BOOT_PAGE_HTML     : `<!-- NG-ZORRO -->
 <a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" style="display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;">
   <img height="300" src="https://img.alicdn.com/tfs/TB1NvvIwTtYBeNjy1XdXXXXyVXa-89-131.svg">
 </a>`
@@ -36,7 +39,8 @@ export default function (options: Schema): Rule {
     addThemeToAppStyles(options),
     addModulesToAppModule(options),
     addI18n(options),
-    (options && !options.skipPackageJson) || (options && !options.theme) ? installNodeDeps() : noop()
+    (options && !options.skipPackageJson) || (options && !options.theme) ? installNodeDeps() : noop(),
+    schematicsFixIcon(options)
   ]);
 }
 
@@ -45,10 +49,10 @@ function addI18n(options: Schema): (host: Tree) => Tree {
   return function (host: Tree): Tree {
     const workspace = getWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
-    const modulePath = getAppModulePath(host, project.architect.build.options.main);
+    const modulePath = getAppModulePath(host, getProjectTargetOptions(project, 'build').main);
     const moduleSource = getSourceFile(host, modulePath);
     const locale = options.i18n;
-    const localePrefix = locale.split('_')[0];
+    const localePrefix = locale.split('_')[ 0 ];
 
     if (!moduleSource) {
       throw new SchematicsException(`Module not found: ${modulePath}`);
@@ -89,7 +93,7 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
   const metadataField = 'providers';
   const nodes = getDecoratorMetadata(moduleSource, 'NgModule', '@angular/core');
   const addProvide = addSymbolToNgModuleMetadata(moduleSource, modulePath, 'providers', `{ provide: NZ_I18N, useValue: ${locale} }`, null);
-  let node: any = nodes[0];  // tslint:disable-line:no-any
+  let node: any = nodes[ 0 ];  // tslint:disable-line:no-any
 
   if (!node) {
     return [];
@@ -115,7 +119,7 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
   }
 
   if (matchingProperties.length) {
-    const assignment = matchingProperties[0] as ts.PropertyAssignment;
+    const assignment = matchingProperties[ 0 ] as ts.PropertyAssignment;
     if (assignment.initializer.kind !== ts.SyntaxKind.ArrayLiteralExpression) {
       return [];
     }
@@ -141,11 +145,11 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
   const allFun = findNodes(moduleSource, ts.SyntaxKind.ExpressionStatement);
   const registerLocaleDataFun = allFun.filter(node => {
     const fun = node.getChildren();
-    return fun[0].getChildren()[0] && fun[0].getChildren()[0].getText() === 'registerLocaleData';
+    return fun[ 0 ].getChildren()[ 0 ] && fun[ 0 ].getChildren()[ 0 ].getText() === 'registerLocaleData';
   });
-  return  registerLocaleDataFun.length === 0
+  return registerLocaleDataFun.length === 0
     ? insertAfterLastOccurrence(allImports, `\n\nregisterLocaleData(${locale});`, modulePath, 0)
-    : new ReplaceChange(modulePath, registerLocaleDataFun[0].getStart(), registerLocaleDataFun[0].getText(), `registerLocaleData(${locale});`);
+    : new ReplaceChange(modulePath, registerLocaleDataFun[ 0 ].getStart(), registerLocaleDataFun[ 0 ].getText(), `registerLocaleData(${locale});`);
 }
 
 /** 降级 less */
@@ -206,11 +210,12 @@ function insertCustomTheme(project: Project, host: Tree, workspace: Workspace): 
     host.create(themePath, createCustomTheme());
   }
 
-  if (project.architect) {
-    addStyleToTarget(project.architect.build, host, workspace, themePath, ADD_CONFIG.COMPILED_THEME_PATH);
-    addStyleToTarget(project.architect.test, host, workspace, themePath, ADD_CONFIG.COMPILED_THEME_PATH);
+  // tslint:disable-next-line:no-any
+  if ((project as any).targets || project.architect) {
+    addStyleToTarget('build', host, workspace, project, themePath, ADD_CONFIG.COMPILED_THEME_PATH);
+    addStyleToTarget('test', host, workspace, project, themePath, ADD_CONFIG.COMPILED_THEME_PATH);
   } else {
-    throw new SchematicsException(`${project.name} does not have an architect configuration`);
+    throw new SchematicsException(`${project.name} does not have an architect or targets configuration`);
   }
 }
 
@@ -234,37 +239,36 @@ function installNodeDeps(): (host: Tree, context: SchematicContext) => void {
 function insertCompiledTheme(project: Project, host: Tree, workspace: Workspace): void {
   const themePath = ADD_CONFIG.COMPILED_THEME_PATH;
 
-  if (project.architect) {
-    addStyleToTarget(project.architect.build, host, workspace, themePath);
-    addStyleToTarget(project.architect.test, host, workspace, themePath);
+  // tslint:disable-next-line:no-any
+  if ((project as any).targets || project.architect) {
+    addStyleToTarget('build', host, workspace, project, themePath);
+    addStyleToTarget('test', host, workspace, project, themePath);
   } else {
-    throw new SchematicsException(`${project.name} does not have an architect configuration`);
+    throw new SchematicsException(`${project.name} does not have an architect or targets configuration`);
   }
 }
 
 /** Adds a style entry to the given target. */
-function addStyleToTarget(target: any, host: Tree, workspace: Workspace, asset: string, exclude: string = ''): void {
+function addStyleToTarget(targetName: string, host: Tree, workspace: Workspace, project: Project, asset: string, exclude: string = ''): void {
   const styleEntry = asset;
-
+  const targetOptions = getProjectTargetOptions(project, targetName);
   // We can't assume that any of these properties are defined, so safely add them as we go
   // if necessary.
-  if (!target.options) {
-    target.options = { styles: [ styleEntry ] };
-  } else if (!target.options.styles) {
-    target.options.styles = [ styleEntry ];
+  if (!targetOptions.styles) {
+    targetOptions.styles = [ styleEntry ];
   } else {
-    const existingStyles = target.options.styles.map(s => typeof s === 'string' ? s : s.input);
+    const existingStyles = targetOptions.styles.map(s => typeof s === 'string' ? s : s.input);
     const hasGivenTheme = existingStyles.find(s => s.includes(asset));
 
     if (exclude) {
-      const removeIndex = target.options.styles.indexOf(exclude);
+      const removeIndex = targetOptions.styles.indexOf(exclude);
       if (removeIndex >= 0) {
-        target.options.styles.splice(removeIndex, 1);
+        targetOptions.styles.splice(removeIndex, 1);
       }
     }
 
     if (!hasGivenTheme) {
-      target.options.styles.splice(0, 0, styleEntry);
+      targetOptions.styles.splice(0, 0, styleEntry);
     }
   }
 

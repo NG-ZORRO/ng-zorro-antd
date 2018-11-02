@@ -35,7 +35,7 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
   private _size: NzRadioGroupSizeType = 'default';
   private _name: string;
   private _disabled: boolean;
-  el: HTMLElement;
+  el: HTMLElement = this.elementRef.nativeElement;
   value: string;
 
   // ngModel Access
@@ -130,7 +130,6 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
   }
 
   constructor(private elementRef: ElementRef) {
-    this.el = this.elementRef.nativeElement;
   }
 
   ngAfterContentInit(): void {
