@@ -21,6 +21,7 @@
   > i,
   > span {
     pointer-events: none;
+    display: inline-block;
   }
 
   &-primary {
@@ -149,7 +150,7 @@
     letter-spacing: .34em;
   }
 
-  &-two-chinese-chars > * {
+  &-two-chinese-chars > *:not(.@{iconfont-css-prefix}) {
     letter-spacing: .34em;
     margin-right: -.34em;
   }
@@ -176,6 +177,11 @@
 
   .christmas&-primary&-sm:before {
     background-size: 56px;
+  }
+
+  // https://github.com/ant-design/ant-design/issues/12681
+  &:empty {
+    vertical-align: top;
   }
 }
 
