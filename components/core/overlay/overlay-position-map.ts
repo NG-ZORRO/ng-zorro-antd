@@ -90,6 +90,7 @@ export const POSITION_MAP: { [key: string]: ConnectionPositionPair } = {
 // TODO: The whole logic does not make sense here, _objectValues just returns a copy of original array
 export const DEFAULT_4_POSITIONS = _objectValues([ POSITION_MAP.top, POSITION_MAP.right, POSITION_MAP.bottom, POSITION_MAP.left]);
 export const DEFAULT_DROPDOWN_POSITIONS = _objectValues([ POSITION_MAP.bottomLeft, POSITION_MAP.topLeft ]);
+export const EXPANDED_DROPDOWN_POSITIONS = _objectValues([ POSITION_MAP.bottomLeft, POSITION_MAP.bottomRight, POSITION_MAP.topLeft, POSITION_MAP.topRight ]);
 
 // export const DEFAULT_DATEPICKER_POSITIONS = [
 //   {
