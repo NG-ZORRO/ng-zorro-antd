@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { HttpBackend } from '@angular/common/http';
-import { isDevMode, Inject, Injectable, InjectionToken, Optional, RendererFactory2 } from '@angular/core';
+import { Inject, Injectable, InjectionToken, Optional, RendererFactory2 } from '@angular/core';
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
 import {
   CalendarOutline,
@@ -27,7 +27,6 @@ import {
   UploadOutline,
   UpOutline
 } from '@ant-design/icons-angular/icons';
-import { LoggerService } from '../core/util/logger';
 
 export interface NzIconfontOption {
   scriptUrl: string;
@@ -76,15 +75,15 @@ export class NzIconService extends IconService {
 
   warnAPI(type: 'old' | 'cross' | 'vertical'): void {
     if (type === 'old' && !this.warnedAboutAPI) {
-      this.loggerService.warn(`<i class="anticon"></i> would be deprecated soon. Please use <i nz-icon type=""></i> API.`);
+      console.warn(`[NG-ZORRO] <i class="anticon"></i> would be deprecated soon. Please use <i nz-icon type=""></i> API.`);
       this.warnedAboutAPI = true;
     }
     if (type === 'cross' && !this.warnedAboutCross) {
-      this.loggerService.warn(`'cross' icon is replaced by 'close' icon.`);
+      console.warn(`[NG-ZORRO]: 'cross' icon is replaced by 'close' icon.`);
       this.warnedAboutCross = true;
     }
     if (type === 'vertical' && !this.warnedAboutVertical) {
-      this.loggerService.warn(`'verticle' is misspelled, would be corrected in the next major version.`);
+      console.warn(`[NG-ZORRO]: 'verticle' is misspelled, would be corrected in the next major version.`);
       this.warnedAboutVertical = true;
     }
   }
@@ -123,8 +122,7 @@ export class NzIconService extends IconService {
     @Optional() protected handler: HttpBackend,
     @Optional() @Inject(DOCUMENT) protected document: any,
     @Optional() @Inject(NZ_ICONS) private icons: IconDefinition[],
-    @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private defaultColor: string,
-    private loggerService: LoggerService
+    @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private defaultColor: string
   ) {
     super(rendererFactory, handler, document);
 
@@ -135,7 +133,7 @@ export class NzIconService extends IconService {
       if (this.defaultColor.startsWith('#')) {
         primaryColor = this.defaultColor;
       } else {
-        this.loggerService.warn('twotone color must be a hex color!');
+        console.warn('[NG-ZORRO]: twotone color must be a hex color!');
       }
     }
     this.twoToneColor = { primaryColor };
