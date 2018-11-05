@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { HttpBackend } from '@angular/common/http';
-import { Inject, Injectable, Optional, RendererFactory2 } from '@angular/core';
+import { isDevMode, Inject, Injectable, InjectionToken, Optional, RendererFactory2 } from '@angular/core';
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
 import {
   CalendarOutline,
@@ -15,7 +15,7 @@ import {
   DoubleRightOutline,
   DownOutline,
   ExclamationCircleFill,
-  ExclamationCircleOutline,
+  ExclamationCircleOutline, FilterFill,
   InfoCircleFill,
   InfoCircleOutline,
   LeftOutline,
@@ -30,6 +30,10 @@ import {
 export interface NzIconfontOption {
   scriptUrl: string;
 }
+
+export const NZ_ICONS = new InjectionToken('nz_icons');
+export const NZ_ICON_DEFAULT_TWOTONE_COLOR = new InjectionToken('nz_icon_default_twotone_color');
+export const DEFAULT_TWOTONE_COLOR = '#1890ff';
 
 /**
  * It should be a global singleton, otherwise registered icons could not be found.
@@ -69,17 +73,19 @@ export class NzIconService extends IconService {
   }
 
   createIconfontIcon(type: string): SVGElement {
-    const svgString = `<svg><use xlink:href="${type}"></svg>`;
-    return this._createSVGElementFromString(svgString);
+    return this._createSVGElementFromString(`<svg><use xlink:href="${type}"></svg>`);
   }
 
+  // tslint:disable:no-any
   constructor(
     protected _rendererFactory: RendererFactory2,
     @Optional() protected _handler: HttpBackend,
-    // tslint:disable:no-any
-    @Optional() @Inject(DOCUMENT) protected _document: any
+    @Optional() @Inject(DOCUMENT) protected _document: any,
+    @Optional() @Inject(NZ_ICONS) private _icons: IconDefinition[],
+    @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private _defaultColor: string
   ) {
     super(_rendererFactory, _handler, _document);
+
     const iconsUsedByZorro: IconDefinition[] = [
       CalendarOutline,
       CheckCircleFill,
@@ -94,6 +100,7 @@ export class NzIconService extends IconService {
       DownOutline,
       ExclamationCircleFill,
       ExclamationCircleOutline,
+      FilterFill,
       InfoCircleFill,
       InfoCircleOutline,
       LeftOutline,
@@ -105,5 +112,17 @@ export class NzIconService extends IconService {
       UpOutline
     ];
     this.addIcon(...iconsUsedByZorro);
+
+    if (this._icons) { this.addIcon(...this._icons); }
+
+    let primaryColor = DEFAULT_TWOTONE_COLOR;
+    if (this._defaultColor) {
+      if (this._defaultColor.startsWith('#')) {
+        primaryColor = this._defaultColor;
+      } else {
+        if (isDevMode()) { console.error('[NG-ZORRO] twotone color must be a hex color!'); }
+      }
+    }
+    this.twoToneColor = { primaryColor };
   }
 }

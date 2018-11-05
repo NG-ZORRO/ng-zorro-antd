@@ -33,6 +33,13 @@ import { Component } from '@angular/core';
             <ul>
               <li nz-menu-item>Option 7</li>
               <li nz-menu-item>Option 8</li>
+              <li nz-submenu>
+                <span title>Submenu</span>
+                <ul>
+                  <li nz-menu-item>Option 9</li>
+                  <li nz-menu-item>Option 10</li>
+                </ul>
+              </li>
             </ul>
           </li>
         </ul>
@@ -40,9 +47,9 @@ import { Component } from '@angular/core';
       <li nz-submenu>
         <span title><i nz-icon type="setting"></i> Navigation Three</span>
         <ul>
-          <li nz-menu-item>Option 9</li>
-          <li nz-menu-item>Option 10</li>
           <li nz-menu-item>Option 11</li>
+          <li nz-menu-item>Option 12</li>
+          <li nz-menu-item>Option 13</li>
         </ul>
       </li>
     </ul>

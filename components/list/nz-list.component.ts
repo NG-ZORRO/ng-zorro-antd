@@ -5,11 +5,15 @@ import {
   ElementRef,
   Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
   TemplateRef
 } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { InputBoolean } from '../core/util/convert';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import { ListSize, NzListGrid } from './interface';
 
@@ -29,7 +33,11 @@ import { ListSize, NzListGrid } from './interface';
     }
   ` ]
 })
-export class NzListComponent implements OnChanges {
+export class NzListComponent implements OnInit, OnChanges, OnDestroy {
+  /* tslint:disable-next-line:no-any */
+  locale: any = {};
+  private i18n$: Subscription;
+
   // #region fields
   // tslint:disable-next-line:no-any
   @Input() nzDataSource: any[] = [];
@@ -107,10 +115,21 @@ export class NzListComponent implements OnChanges {
 
   // #endregion
 
-  constructor(private el: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {
+  constructor(private el: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService, private i18n: NzI18nService) {
+  }
+
+  ngOnInit(): void {
+    this.i18n$ = this.i18n.localeChange.subscribe(() => {
+      this.locale = this.i18n.getLocaleData('Table');
+      this.cd.detectChanges();
+    });
   }
 
   ngOnChanges(): void {
     this._setClassMap();
+  }
+
+  ngOnDestroy(): void {
+    this.i18n$.unsubscribe();
   }
 }

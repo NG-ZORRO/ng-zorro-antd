@@ -61,7 +61,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
   private _type: NzTabType = 'line';
   private _size = 'default';
   private _animated: NzAnimatedInterface | boolean = true;
-  el: HTMLElement;
+  el: HTMLElement = this.elementRef.nativeElement;
   prefixCls = 'ant-tabs';
   tabPositionMode: NzTabPositionMode = 'horizontal';
   inkBarAnimated = true;
@@ -247,7 +247,6 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
 
   // tslint:disable-next-line:no-any
   constructor(private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService, private elementRef: ElementRef, @Optional() @Inject(DOCUMENT) private document: any) {
-    this.el = this.elementRef.nativeElement;
   }
 
   ngAfterViewInit(): void {

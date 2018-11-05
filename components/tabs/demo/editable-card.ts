@@ -15,7 +15,7 @@ import { Component } from '@angular/core';
       </nz-tab>
     </nz-tabset>
     <ng-template #extraTemplate>
-      <i class="ant-tabs-new-tab anticon anticon-plus" (click)="newTab()"></i>
+      <i class="ant-tabs-new-tab" nz-icon type="plus" (click)="newTab()"></i>
     </ng-template>
   `
 })

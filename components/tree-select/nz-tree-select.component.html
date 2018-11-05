@@ -29,6 +29,8 @@
       [nzSelectedKeys]="!nzCheckable ? value : []"
       (nzExpandChange)="nzExpandChange.emit($event)"
       (nzClick)="nzTreeClick.emit($event)"
+      (nzCheckedKeysChange)="updateSelectedNodes()"
+      (nzSelectedKeysChange)="updateSelectedNodes()"
       (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)">
     </nz-tree>
   </div>

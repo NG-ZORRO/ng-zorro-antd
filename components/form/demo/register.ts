@@ -42,9 +42,7 @@ import {
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>
           <span>
             Nickname
-            <nz-tooltip nzTitle="What do you want other to call you">
-              <i nz-tooltip class="anticon anticon-question-circle-o"></i>
-            </nz-tooltip>
+            <i nz-icon nz-tooltip nzTitle="What do you want other to call you" type="question-circle" theme="outline"></i>
           </span>
         </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
@@ -104,7 +102,7 @@ import {
     </form>`,
 
   styles: [
-      `[nz-form] {
+    `[nz-form] {
       max-width: 600px;
     }`
   ]
@@ -124,13 +122,13 @@ export class NzDemoFormRegisterComponent implements OnInit {
     Promise.resolve().then(() => this.validateForm.controls.checkPassword.updateValueAndValidity());
   }
 
-  confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
+  confirmationValidator = (control: FormControl): { [ s: string ]: boolean } => {
     if (!control.value) {
       return { required: true };
     } else if (control.value !== this.validateForm.controls.password.value) {
       return { confirm: true, error: true };
     }
-  }
+  };
 
   getCaptcha(e: MouseEvent): void {
     e.preventDefault();

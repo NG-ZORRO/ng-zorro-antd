@@ -1,6 +1,7 @@
 <li
   #dragElement
   role="treeitem"
+  [style.display]="displayStyle"
   [ngClass]="nzNodeClass"
   [class.ant-tree-treenode-switcher-open]="isSwitcherOpen"
   [class.ant-tree-treenode-switcher-close]="isSwitcherClose"
@@ -14,10 +15,14 @@
       [class.ant-tree-switcher_open]="isSwitcherOpen"
       [class.ant-tree-switcher_close]="isSwitcherClose"
       (click)="_clickExpand($event)">
-      <i *ngIf="!nzTreeNode.isLeaf && !nzShowLine" nz-icon type="caret-down" class="ant-tree-switcher-icon"></i>
-      <i *ngIf="nzShowLine && !nzTreeNode.isExpanded && !nzTreeNode.isLeaf" nz-icon type="plus-square" class="ant-tree-switcher-line-icon"></i>
-      <i *ngIf="nzShowLine && nzTreeNode.isExpanded && !nzTreeNode.isLeaf" nz-icon type="minus-square" class="ant-tree-switcher-line-icon"></i>
-      <i *ngIf="nzShowLine && nzTreeNode.isLeaf" nz-icon type="file" class="ant-tree-switcher-line-icon"></i>
+      <ng-container *ngIf="isShowSwitchIcon">
+        <i *ngIf="!nzTreeNode.isLoading" nz-icon type="caret-down" class="ant-tree-switcher-icon"></i>
+        <i *ngIf="nzTreeNode.isLoading" nz-icon type="loading" [spin]="true" class="ant-tree-switcher-loading-icon"></i>
+      </ng-container>
+      <ng-container *ngIf="nzShowLine">
+        <i *ngIf="isShowLineIcon" nz-icon [type]="isSwitcherOpen ? 'minus-square' : 'plus-square'" class="ant-tree-switcher-line-icon"></i>
+        <i *ngIf="!isShowLineIcon" nz-icon type="file" class="ant-tree-switcher-line-icon"></i>
+      </ng-container>
     </span>
   </ng-container>
   <ng-container *ngIf="nzCheckable">
@@ -48,7 +53,7 @@
         [ngClass]="nzNodeContentLoadingClass">
         <span
           [ngClass]="nzNodeContentIconClass">
-          <i nz-icon class="anticon" [ngClass]="nzTreeNode.origin.icon"></i>
+          <i nz-icon *ngIf="nzIcon" [type]="!oldAPIIcon && nzIcon" [ngClass]="oldAPIIcon && nzIcon"></i>
         </span>
       </span>
       <span class="ant-tree-title">
@@ -85,6 +90,7 @@
       [nzExpandAll]="nzExpandAll"
       [nzDefaultExpandAll]="nzDefaultExpandAll"
       [nzSearchValue]="nzSearchValue"
+      [nzHideUnMatched]="nzHideUnMatched"
       [nzBeforeDrop]="nzBeforeDrop"
       [nzCheckStrictly]="nzCheckStrictly"
       [nzTreeTemplate]="nzTreeTemplate"

@@ -39,7 +39,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   actualValue: string | number;
   isFocused = false;
   value: string | number;
-  el: HTMLElement;
+  el: HTMLElement = this.elementRef.nativeElement;
   prefixCls = 'ant-input-number';
   disabledUp = false;
   disabledDown = false;
@@ -359,7 +359,6 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-    this.el = this.elementRef.nativeElement;
   }
 
   ngAfterViewInit(): void {

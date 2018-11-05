@@ -28,7 +28,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
       </nz-sider>
       <nz-layout>
         <nz-header style="background: #fff; padding:0;">
-          <i class="anticon trigger" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed" (click)="isCollapsed=!isCollapsed"></i>
+          <i class="trigger" nz-icon [type]="isCollapsed?'menu-unfold':'menu-fold'" (click)="isCollapsed=!isCollapsed"></i>
         </nz-header>
         <nz-content style="margin:0 16px;">
           <nz-breadcrumb style="margin:16px 0;">

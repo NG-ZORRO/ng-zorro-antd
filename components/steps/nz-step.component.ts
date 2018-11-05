@@ -23,7 +23,7 @@ export class NzStepComponent {
   private _description: string | TemplateRef<void>;
   private _icon: StepNgClassType | TemplateRef<void>;
   private _title: string | TemplateRef<void>;
-  private el: HTMLElement;
+  private el: HTMLElement = this.elementRef.nativeElement;
   oldAPIIcon = true; // Make the user defined icon compatible to old API. Should be removed in 2.0.
   isCustomStatus = false;
   isDescriptionString = true;
@@ -122,6 +122,5 @@ export class NzStepComponent {
   }
 
   constructor(private elementRef: ElementRef, private nzUpdateHostClassService: NzUpdateHostClassService) {
-    this.el = elementRef.nativeElement;
   }
 }

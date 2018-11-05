@@ -8,6 +8,6 @@
   <ng-template [ngTemplateOutlet]="nzTrigger"></ng-template>
 </div>
 <ng-template #defaultTrigger>
-  <i class="anticon" [class.anticon-left]="!nzCollapsed" [class.anticon-right]="nzCollapsed" *ngIf="!nzReverseArrow"></i>
-  <i class="anticon" [class.anticon-left]="nzCollapsed" [class.anticon-right]="!nzCollapsed" *ngIf="nzReverseArrow"></i>
+  <i nz-icon [type]="nzCollapsed ? 'right' : 'left'" *ngIf="!nzReverseArrow"></i>
+  <i nz-icon [type]="nzCollapsed ? 'left' : 'right'" *ngIf="nzReverseArrow"></i>
 </ng-template>

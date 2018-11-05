@@ -38,7 +38,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   private _indeterminate = false;
   private _autoFocus = false;
   private _checked = false;
-  private el: HTMLElement;
+  private el: HTMLElement = this.elementRef.nativeElement;
   private isInit = false;
   private prefixCls = 'ant-checkbox';
   private onChange = Function.prototype;
@@ -162,7 +162,6 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2, @Optional() private nzCheckboxWrapperComponent: NzCheckboxWrapperComponent) {
-    this.el = this.elementRef.nativeElement;
   }
 
   ngOnInit(): void {

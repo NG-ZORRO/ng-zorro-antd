@@ -4,11 +4,15 @@ import {
   ContentChild,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
-  OnInit, Output, TemplateRef
+  OnInit,
+  Output,
+  SimpleChange,
+  TemplateRef
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, Subscription } from 'rxjs';
 import { isNotNil } from '../core/util/check';
 import { InputBoolean } from '../core/util/convert';
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from '../tree/interface';
@@ -28,7 +32,7 @@ import { NzTreeService } from './nz-tree.service';
   ]
 })
 
-export class NzTreeComponent implements OnInit, OnDestroy {
+export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzShowIcon = false;
   @Input() @InputBoolean() nzShowLine = false;
   @Input() @InputBoolean() nzCheckStrictly = false;
@@ -38,6 +42,7 @@ export class NzTreeComponent implements OnInit, OnDestroy {
   @Input() @InputBoolean() nzDraggable = false;
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzExpandAll: boolean = false;
+  @Input() @InputBoolean() nzHideUnMatched = false;
   /**
    * @deprecated use
    * nzExpandAll instead
@@ -48,7 +53,7 @@ export class NzTreeComponent implements OnInit, OnDestroy {
   @Input()
   // tslint:disable-next-line:no-any
   set nzData(value: any[]) {
-    if (Array.isArray(value) && value.length > 0) {
+    if (Array.isArray(value)) {
       if (!this.nzTreeService.isArrayOfNzTreeNode(value)) {
         // has not been new NzTreeNode
         this.nzNodes = value.map(item => (new NzTreeNode(item)));
@@ -59,7 +64,7 @@ export class NzTreeComponent implements OnInit, OnDestroy {
       this.nzTreeService.initTree(this.nzNodes);
     } else {
       if (value !== null) {
-        console.warn('ngModel only accepts an array and should be not empty');
+        console.warn('ngModel only accepts an array and must be not empty');
       }
     }
   }
@@ -70,9 +75,7 @@ export class NzTreeComponent implements OnInit, OnDestroy {
    */
   @Input()
   set nzDefaultExpandedKeys(value: string[]) {
-    setTimeout(() => {
-      this.nzDefaultSubject.next({ type: 'nzExpandedKeys', keys: value });
-    });
+    this.nzDefaultSubject.next({ type: 'nzExpandedKeys', keys: value });
   }
 
   /**
@@ -81,9 +84,7 @@ export class NzTreeComponent implements OnInit, OnDestroy {
    */
   @Input()
   set nzDefaultSelectedKeys(value: string[]) {
-    setTimeout(() => {
-      this.nzDefaultSubject.next({ type: 'nzSelectedKeys', keys: value });
-    });
+    this.nzDefaultSubject.next({ type: 'nzSelectedKeys', keys: value });
   }
 
   /**
@@ -92,30 +93,22 @@ export class NzTreeComponent implements OnInit, OnDestroy {
    */
   @Input()
   set nzDefaultCheckedKeys(value: string[]) {
-    setTimeout(() => {
-      this.nzDefaultSubject.next({ type: 'nzCheckedKeys', keys: value });
-    });
+    this.nzDefaultSubject.next({ type: 'nzCheckedKeys', keys: value });
   }
 
   @Input()
   set nzExpandedKeys(value: string[]) {
-    setTimeout(() => {
-      this.nzDefaultSubject.next({ type: 'nzExpandedKeys', keys: value });
-    });
+    this.nzDefaultSubject.next({ type: 'nzExpandedKeys', keys: value });
   }
 
   @Input()
   set nzSelectedKeys(value: string[]) {
-    setTimeout(() => {
-      this.nzDefaultSubject.next({ type: 'nzSelectedKeys', keys: value });
-    });
+    this.nzDefaultSubject.next({ type: 'nzSelectedKeys', keys: value });
   }
 
   @Input()
   set nzCheckedKeys(value: string[]) {
-    setTimeout(() => {
-      this.nzDefaultSubject.next({ type: 'nzCheckedKeys', keys: value });
-    });
+    this.nzDefaultSubject.next({ type: 'nzCheckedKeys', keys: value });
   }
 
   @Input()
@@ -159,9 +152,9 @@ export class NzTreeComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line:no-any
   @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<any>;
-  _searchValue = '';
+  _searchValue = null;
   // tslint:disable-next-line:no-any
-  nzDefaultSubject = new Subject();
+  nzDefaultSubject = new ReplaySubject(6);
   nzDefaultSubscription: Subscription;
   nzNodes: NzTreeNode[] = [];
   prefixCls = 'ant-tree';
@@ -207,7 +200,7 @@ export class NzTreeComponent implements OnInit, OnDestroy {
   }
 
   writeValue(value: NzTreeNode[]): void {
-    if (Array.isArray(value) && value.length > 0) {
+    if (Array.isArray(value)) {
       this.nzNodes = value;
       this.nzTreeService.conductOption.isCheckStrictly = this.nzCheckStrictly;
       this.nzTreeService.initTree(this.nzNodes);
@@ -232,7 +225,7 @@ export class NzTreeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setClassMap();
     this.nzDefaultSubscription = this.nzDefaultSubject.subscribe((data: { type: string, keys: string[] }) => {
-      if (data.keys.length === 0) {
+      if (!data || !data.keys) {
         return;
       }
       switch (data.type) {
@@ -250,6 +243,12 @@ export class NzTreeComponent implements OnInit, OnDestroy {
           break;
       }
     });
+  }
+
+  ngOnChanges(changes: { [ propertyName: string ]: SimpleChange }): void {
+    if (changes.nzCheckStrictly) {
+      this.nzTreeService.conductOption.isCheckStrictly = changes.nzCheckStrictly.currentValue;
+    }
   }
 
   ngOnDestroy(): void {

@@ -15,7 +15,7 @@ import { NzIconModule } from '../icon/nz-icon.module';
 import { NzProgressModule } from '../progress/nz-progress.module';
 import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
 
-import { ShowUploadListInterface, UploadChangeParam, UploadFile, UploadFilter, UploadListType, UploadType, ZipButtonOptions } from './interface';
+import { ShowUploadListInterface, UploadChangeParam, UploadFile, UploadFilter, UploadListType, UploadType, UploadXHRArgs, ZipButtonOptions } from './interface';
 import { NzUploadBtnComponent } from './nz-upload-btn.component';
 import { NzUploadListComponent } from './nz-upload-list.component';
 import { NzUploadComponent } from './nz-upload.component';
@@ -503,6 +503,15 @@ describe('upload', () => {
       });
     });
 
+    describe('[test boundary]', () => {
+      it('clean a not exists request', () => {
+        instance.comp.upload.reqs.test = null;
+        instance.show = false;
+        fixture.detectChanges();
+        expect(true).toBe(true);
+      });
+    });
+
     class NzUploadPageObject {
       private files: any;
       constructor() {
@@ -966,13 +975,21 @@ describe('upload', () => {
         comp.onChange(PNGSMALL as any);
         expect(comp.options.customRequest).toHaveBeenCalled();
       });
+
+      it('should be warn "Must return Subscription type in [nzCustomRequest] property"', () => {
+        let warnMsg = '';
+        console.warn = jasmine.createSpy().and.callFake(res => warnMsg = res);
+        comp.options.customRequest = ((item: UploadXHRArgs) => { }) as any;
+        comp.onChange(PNGSMALL as any);
+        expect(warnMsg).toContain(`Must return Subscription type`);
+      });
     });
   });
 });
 
 @Component({
   template: `
-  <nz-upload #upload
+  <nz-upload #upload *ngIf="show"
     [nzType]="nzType"
     [nzLimit]="nzLimit"
     [nzSize]="nzSize"
@@ -1005,6 +1022,7 @@ describe('upload', () => {
 })
 class TestUploadComponent {
   @ViewChild('upload') comp: NzUploadComponent;
+  show = true;
   nzType: UploadType = 'select';
   nzLimit = 0;
   nzSize = 0;

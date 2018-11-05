@@ -29,7 +29,7 @@ function addIconToAssets(options: Schema): (host: Tree) => Tree {
       // tslint:disable-next-line
       for (let i = 0; i < targetOptions.assets.length; i++) {
         const asset = targetOptions.assets[ i ];
-        if (typeof asset === 'object' && equals(ICON_ASSET_CONFIG, asset)) {
+        if (typeof asset === 'object' && !Array.isArray(asset) && equalObjects(ICON_ASSET_CONFIG, asset)) {
           hasIconAssetConfig = true;
           break;
         }
@@ -44,11 +44,20 @@ function addIconToAssets(options: Schema): (host: Tree) => Tree {
   };
 }
 
-function equals(obj1: object, obj2: object): boolean {
-  Object.keys(obj1).forEach(k => {
-    if (!obj2.hasOwnProperty(k) || obj1[ k ] !== obj2[ k ]) {
+function equalObjects(object: object, other: object): boolean {
+  const objectKeys = Object.keys(object);
+  const otherKeys = Object.keys(other);
+
+  if (objectKeys.length !== otherKeys.length) {
+    return false;
+  }
+
+  for (let i = 0; i < otherKeys.length; i++) {
+    const key = objectKeys[i];
+    if (!other.hasOwnProperty(key) || object[key] !== other[key]) {
       return false;
     }
-  });
+  }
+
   return true;
 }

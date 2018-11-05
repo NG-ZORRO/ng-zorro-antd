@@ -1,5 +1,7 @@
 import {
-  Directive
+  Directive,
+  ElementRef,
+  Renderer2
 } from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
@@ -11,4 +13,7 @@ import { NzRowComponent } from './nz-row.component';
   providers: [ NzUpdateHostClassService ]
 })
 export class NzRowDirective extends NzRowComponent {
+  constructor(elementRef: ElementRef, renderer: Renderer2, nzUpdateHostClassService: NzUpdateHostClassService) {
+    super(elementRef, renderer, nzUpdateHostClassService);
+  }
 }

@@ -136,6 +136,8 @@ describe('Calendar Header', () => {
 
       expect(yearModel.model).toBe(2001);
       expect(monthModel.model).toBe(1);
+      const headerComponent = header.injector.get(NzCalendarHeaderComponent);
+      expect(headerComponent.years[0].value).toBe(1991);
     });
   });
 
