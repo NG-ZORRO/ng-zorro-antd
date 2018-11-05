@@ -32,7 +32,7 @@ export interface EmbeddedProperty {
   templateUrl        : './nz-col.component.html'
 })
 export class NzColComponent implements OnInit, OnChanges {
-  private el: HTMLElement;
+  private el: HTMLElement = this.elementRef.nativeElement;
   private prefixCls = 'ant-col';
 
   @HostBinding('style.padding-left.px')
@@ -100,7 +100,6 @@ export class NzColComponent implements OnInit, OnChanges {
   }
 
   constructor(private nzUpdateHostClassService: NzUpdateHostClassService, private elementRef: ElementRef, @Optional() @Host() public nzRowComponent: NzRowComponent, @Optional() @Host() public nzRowDirective: NzRowDirective, private renderer: Renderer2) {
-    this.el = this.elementRef.nativeElement;
   }
 
   ngOnInit(): void {

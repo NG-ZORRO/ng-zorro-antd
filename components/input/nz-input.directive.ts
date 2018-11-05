@@ -30,7 +30,7 @@ export class NzInputDirective implements DoCheck, AfterViewInit {
   private _size = 'default';
   private _disabled = false;
   private _autosize: boolean | AutoSizeType = false;
-  private el: HTMLTextAreaElement | HTMLInputElement;
+  private el: HTMLTextAreaElement | HTMLInputElement = this.elementRef.nativeElement;
   private previousValue: string;
   private previewsMinRows: number;
   private previewsMaxRows: number;
@@ -109,7 +109,6 @@ export class NzInputDirective implements DoCheck, AfterViewInit {
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2, @Optional() private ngModel: NgModel, @Optional() @Self() public ngControl: NgControl) {
-    this.el = this.elementRef.nativeElement;
   }
 
   ngDoCheck(): void {

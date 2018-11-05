@@ -25,7 +25,7 @@ import {
       <ng-template #nzTreeTemplate let-node>
         <span class="custom-node" [class.active]="activedNode?.key===node.key">
           <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event,contextTemplate)">
-            <i class="anticon" [ngClass]="node.isExpanded ? 'anticon-folder-open' : 'anticon-folder'" (click)="openFolder(node)"></i>
+            <i nz-icon [type]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
             <span class="folder-name">{{node.title}}</span>
             <span class="folder-desc">created by {{node?.origin?.author | lowercase}}</span>
           </span>

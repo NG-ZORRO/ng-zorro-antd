@@ -5,7 +5,7 @@
     <i></i><i></i><i></i><i></i>
   </span>
 </ng-template>
-<div [class.ant-spin-nested-loading]="isNested">
+<div #nestedElement>
   <div [hidden]="!(resultSpinning$|async)">
     <div
       class="ant-spin"
@@ -21,7 +21,6 @@
     #containerElement
     class="ant-spin-container"
     [class.ant-spin-blur]="resultSpinning$|async"
-    [hidden]="!isNested"
     (cdkObserveContent)="checkNested()">
     <ng-content></ng-content>
   </div>

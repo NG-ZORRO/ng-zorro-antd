@@ -38,7 +38,7 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
   private _size: NzButtonSize;
   private _loading = false;
   private _block = false;
-  private el: HTMLElement;
+  private el: HTMLElement = this.elementRef.nativeElement;
   private iconElement: HTMLElement;
   private iconOnly = false;
   private prefixCls = 'ant-btn';
@@ -195,8 +195,6 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
   }
 
   constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService, private ngZone: NgZone) {
-    this.el = this.elementRef.nativeElement;
-    this.renderer.addClass(this.el, this.prefixCls);
   }
 
   ngAfterContentInit(): void {
@@ -204,6 +202,7 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.renderer.addClass(this.el, this.prefixCls);
     this.nzWave.ngOnInit();
   }
 

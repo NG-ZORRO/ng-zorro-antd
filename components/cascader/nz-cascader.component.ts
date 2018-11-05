@@ -137,7 +137,8 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   private _menuCls: { [ name: string ]: any };
   private _menuColumnCls: { [ name: string ]: any };
 
-  public el: HTMLElement;
+  public el: HTMLElement = this.elementRef.nativeElement;
+
   private isFocused = false;
 
   /** 选择选项后，渲染显示文本 */
@@ -173,7 +174,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     if (!this.inSearch && willBeInSearch) {
       this.oldActivatedOptions = this.activatedOptions;
       this.activatedOptions = [];
-      this.searchWidthStyle = `${this.input.nativeElement.offsetWidth}px`;
     } else if (this.inSearch && !willBeInSearch) {
       this.activatedOptions = this.oldActivatedOptions;
     }
@@ -181,11 +181,13 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
     // 搜索状态变更之后
     this.inSearch = !!willBeInSearch;
     if (this.inSearch) {
+      this.labelRenderText = '';
       this.prepareSearchValue();
     } else {
       if (this.showSearch) {
         this.nzColumns = this.oldColumnsHolder;
       }
+      this.buildDisplayLabel();
       this.searchWidthStyle = '';
     }
     this.setClassMap();
@@ -1118,7 +1120,6 @@ export class NzCascaderComponent implements OnInit, OnDestroy, ControlValueAcces
   constructor(private elementRef: ElementRef,
               private cdr: ChangeDetectorRef,
               private nzUpdateHostClassService: NzUpdateHostClassService) {
-    this.el = this.elementRef.nativeElement;
   }
 
   private findOption(option: any, index: number): CascaderOption {

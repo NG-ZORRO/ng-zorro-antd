@@ -29,12 +29,8 @@ All props of input supported by [w3c standards](https://www.w3schools.com/tags/t
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzAddonAfter]` | The label text displayed after (on the right side of) the input field. | string 丨 `TemplateRef<void>` |  |
-| `[nzAddonAfterIcon]` | The label icon's ngClass displayed after. | `string 丨 string[] 丨 Set<string> 丨 { [klass: string]: any; }`  |  |
 | `[nzAddonBefore]` | The label text displayed before (on the left side of) the input field. | string 丨 `TemplateRef<void>` |  |
-| `[nzAddonBeforeIcon]` | The label icon's ngClass displayed before. | `string 丨 string[] 丨 Set<string> 丨 { [klass: string]: any; }` |  |
 | `[nzPrefix]` | The prefix icon for the Input. | string 丨 `TemplateRef<void>` |  |
-| `[nzPrefixIcon]` | The prefix icon's ngClass for the Input. | `string 丨 string[] 丨 Set<string> 丨 { [klass: string]: any; }` |  |
 | `[nzSuffix]` | The suffix icon for the Input. | string 丨 `TemplateRef<void>` |  |
-| `[nzSuffixIcon]` | The suffix icon's ngClass for the Input. | `string 丨 string[] 丨 Set<string> 丨 { [klass: string]: any; }` |  |
 | `[nzCompact]` | Whether use compact style | boolean | false |
 | `[nzSize]` | The size of `nz-input-group` specifies the size of the included `nz-input` fields. Available: `large` `default` `small` | string | `default` |

@@ -1,9 +1,10 @@
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzIconModule } from '../icon/nz-icon.module';
 
+import { NzListComponent } from './nz-list.component';
 import { NzListModule } from './nz-list.module';
 
 describe('list', () => {
@@ -19,6 +20,12 @@ describe('list', () => {
     context = fixture.componentInstance;
     dl = fixture.debugElement;
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    if (context.comp != null) {
+      context.comp.ngOnDestroy();
+    }
   });
 
   describe('[fields]', () => {
@@ -116,8 +123,17 @@ describe('list', () => {
       });
     });
 
-    it('#nzDataSource', () => {
-      expect(dl.queryAll(By.css('nz-list-item')).length).toBe(context.data.length);
+    describe('#nzDataSource', () => {
+      it('should working', () => {
+        expect(dl.queryAll(By.css('nz-list-item')).length).toBe(context.data.length);
+      });
+
+      it('should be render empty text when data source is empty', () => {
+        expect(dl.queryAll(By.css('.ant-list-empty-text')).length).toBe(0);
+        context.data = [];
+        fixture.detectChanges();
+        expect(dl.queryAll(By.css('.ant-list-empty-text')).length).toBe(1);
+      });
     });
 
     it('#nzGrid', () => {
@@ -204,6 +220,7 @@ describe('list', () => {
   `
 })
 class TestListComponent {
+  @ViewChild('comp') comp: NzListComponent;
   nzItemLayout = 'horizontal';
   nzBordered = false;
   nzFooter = 'footer';

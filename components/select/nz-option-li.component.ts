@@ -15,11 +15,12 @@ import { NzOptionComponent } from './nz-option.component';
   }
 })
 export class NzOptionLiComponent {
-  el: Element;
+  el: HTMLElement = this.elementRef.nativeElement;
   selected = false;
   active = false;
   @Input() nzOption: NzOptionComponent;
   @Input() nzShowActive = true;
+  @Input() nzMode = 'default';
   // tslint:disable-next-line:no-any
   @Input() compareWith: (o1: any, o2: any) => boolean;
 
@@ -39,6 +40,5 @@ export class NzOptionLiComponent {
   }
 
   constructor(private elementRef: ElementRef) {
-    this.el = elementRef.nativeElement;
   }
 }

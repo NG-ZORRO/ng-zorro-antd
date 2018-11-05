@@ -28,7 +28,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     '0.6.x',
     '0.7.x'
   ];
-  currentVersion = '1.7.0';
+  currentVersion = '1.8.0';
 
   @ViewChild('searchInput') searchInput: ElementRef<HTMLInputElement>;
 
@@ -42,8 +42,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.hide = !this.hide;
   }
 
-  constructor(private router: Router, private title: Title, private nzI18nService: NzI18nService, private msg: NzMessageService, private iconService: NzIconService) {
-    this.iconService.twoToneColor = { primaryColor: '#1890ff' };
+  constructor(private router: Router, private title: Title, private nzI18nService: NzI18nService, private msg: NzMessageService) {
   }
 
   navigateToPage(url) {

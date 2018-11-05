@@ -119,9 +119,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   @Input()
   set nzNodes(value: NzTreeNode[]) {
     this.nodes = value;
-    if (this.treeRef) {
-      setTimeout(() => this.updateSelectedNodes(), 0);
-    }
+    setTimeout(() => this.updateSelectedNodes(), 0);
   }
 
   get nzNodes(): NzTreeNode[] {
@@ -346,7 +344,9 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   updateSelectedNodes(): void {
-    this.selectedNodes = [ ...(this.nzCheckable ? this.treeRef.getCheckedNodeList() : this.treeRef.getSelectedNodeList()) ];
+    if (this.treeRef) {
+      this.selectedNodes = [ ...(this.nzCheckable ? this.treeRef.getCheckedNodeList() : this.treeRef.getSelectedNodeList()) ];
+    }
   }
 
   updatePosition(): void {
@@ -407,7 +407,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
       } else {
         this.value = [ (value as string) ];
       }
-      setTimeout(() => this.updateSelectedNodes(), 100);
+      this.updateSelectedNodes();
     } else {
       this.value = [];
       this.selectedNodes.forEach(node => {
@@ -415,6 +415,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
       });
       this.selectedNodes = [];
     }
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (_: string[] | string) => void): void {

@@ -57,7 +57,7 @@ export class NzCollapsePanelComponent implements OnDestroy, OnInit {
   private _active = false;
   private _header: string | TemplateRef<void>;
   isHeaderString: boolean;
-  private el: HTMLElement;
+  private el: HTMLElement = this.elementRef.nativeElement;
   @Output() nzActiveChange = new EventEmitter<boolean>();
 
   @Input() set nzShowArrow(value: boolean) {
@@ -110,7 +110,6 @@ export class NzCollapsePanelComponent implements OnDestroy, OnInit {
   }
 
   constructor(@Host() private nzCollapseComponent: NzCollapseComponent, private elementRef: ElementRef) {
-    this.el = this.elementRef.nativeElement;
   }
 
   ngOnInit(): void {

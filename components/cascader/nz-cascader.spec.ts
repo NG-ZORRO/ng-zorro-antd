@@ -1377,7 +1377,9 @@ describe('cascader', () => {
     it('should support custom sorter', (done) => {
       testComponent.nzShowSearch = {
         sorter(a: CascaderOption[], b: CascaderOption[], inputValue: string): number {
-          return 1; // all reversed, just to be sure it works
+          const l1 = a[ 0 ].label;
+          const l2 = b[ 0 ].label; // all reversed, just to be sure it works
+          return ('' + l1).localeCompare(l2);
         }
       } as NzShowSearchOptions;
       fixture.detectChanges();

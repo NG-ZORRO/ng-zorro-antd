@@ -13,6 +13,7 @@ import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd'
       [nzExpandedKeys]="defaultExpandedKeys"
       [nzSelectedKeys]="defaultSelectedKeys"
       (nzClick)="nzClick($event)"
+      (nzSelectedKeysChange)="nzSelect($event)"
       (nzCheckBoxChange)="nzCheck($event)">
     </nz-tree>
   `
@@ -45,17 +46,21 @@ export class NzDemoTreeBasicComponent implements OnInit {
   } ];
 
   nzClick(event: NzFormatEmitEvent): void {
-    console.log(event, event.selectedKeys, event.keys, event.nodes);
+    console.log(event, event.selectedKeys, event.keys, event.nodes, this.treeCom.getSelectedNodeList());
   }
 
   nzCheck(event: NzFormatEmitEvent): void {
     console.log(event, event.checkedKeys, event.keys, event.nodes);
   }
 
+  // nzSelectedKeys change
+  nzSelect(keys: string[]): void {
+    console.log(keys, this.treeCom.getSelectedNodeList());
+  }
+
   ngOnInit(): void {
     setTimeout(() => {
-      console.log(this.treeCom.getTreeNodes(), this.treeCom.getCheckedNodeList());
+      console.log(this.treeCom.getTreeNodes(), this.treeCom.getCheckedNodeList(), this.treeCom.getSelectedNodeList());
     }, 500);
-
   }
 }

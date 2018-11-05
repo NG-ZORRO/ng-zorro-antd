@@ -39,7 +39,7 @@ export class NzThComponent {
   private _showRowSelection = false;
   private _hasDefaultFilter = false;
   private _customFilter = false;
-  el: HTMLElement;
+  el: HTMLElement = this.elementRef.nativeElement;
   hasFilterValue = false;
   filterVisible = false;
   multipleFilterList: NzThItemInterface[] = [];
@@ -296,6 +296,5 @@ export class NzThComponent {
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-    this.el = this.elementRef.nativeElement;
   }
 }

@@ -47,32 +47,32 @@ export class NzTreeService {
    * get some list
    */
   getSelectedNodeList(): NzTreeNode[] {
-    return this.selectedNodeList;
+    return this.conductNodeState('select');
   }
 
   /**
    * return checked nodes
    */
   getCheckedNodeList(): NzTreeNode[] {
-    return this.conductCheck('check');
+    return this.conductNodeState('check');
   }
 
   getHalfCheckedNodeList(): NzTreeNode[] {
-    return this.conductCheck('halfCheck');
+    return this.conductNodeState('halfCheck');
   }
 
   /**
    * return expanded nodes
    */
   getExpandedNodeList(): NzTreeNode[] {
-    return this.expandedNodeList;
+    return this.conductNodeState('expand');
   }
 
   /**
    * return search matched nodes
    */
   getMatchedNodeList(): NzTreeNode[] {
-    return this.matchedNodeList;
+    return this.conductNodeState('match');
   }
 
   // tslint:disable-next-line:no-any
@@ -99,7 +99,6 @@ export class NzTreeService {
       });
     };
     calc(nzNodes);
-
   }
 
   /**
@@ -216,15 +215,15 @@ export class NzTreeService {
   }
 
   /**
-   * conduct checked keys
+   * conduct checked/selected/expanded keys
    */
-  conductCheck(type: string = 'check'): NzTreeNode[] {
-    const checkedNodeList = [];
+  conductNodeState(type: string = 'check'): NzTreeNode[] {
+    const resultNodesList = [];
     const loop = (node: NzTreeNode) => {
       switch (type) {
         case 'check':
           if (node.isChecked) {
-            checkedNodeList.push(node);
+            resultNodesList.push(node);
           }
           if (!this.conductOption.isCheckStrictly) {
             if (!node.isChecked) {
@@ -241,19 +240,43 @@ export class NzTreeService {
         case 'halfCheck':
           if (!this.conductOption.isCheckStrictly) {
             if (node.isHalfChecked) {
-              checkedNodeList.push(node);
+              resultNodesList.push(node);
               node.getChildren().forEach(child => {
                 loop(child);
               });
             }
           }
           break;
+        case 'select':
+          if (node.isSelected) {
+            resultNodesList.push(node);
+          }
+          node.getChildren().forEach(child => {
+            loop(child);
+          });
+          break;
+        case 'expand':
+          if (node.isExpanded) {
+            resultNodesList.push(node);
+          }
+          node.getChildren().forEach(child => {
+            loop(child);
+          });
+          break;
+        case 'match':
+          if (node.isMatched) {
+            resultNodesList.push(node);
+          }
+          node.getChildren().forEach(child => {
+            loop(child);
+          });
+          break;
       }
     };
     this.rootNodes.forEach(node => {
       loop(node);
     });
-    return checkedNodeList;
+    return resultNodesList;
   }
 
   /**
@@ -350,10 +373,12 @@ export class NzTreeService {
     const searchChild = (n: NzTreeNode) => {
       if (value && n.title.includes(value)) {
         // match the node
+        n.isMatched = true;
         this.matchedNodeList.push(n);
         // expand parentNode
         expandParent(n);
       } else {
+        n.isMatched = false;
         n.setExpanded(false);
         this.setExpandedNodeList(n);
       }
@@ -475,19 +500,16 @@ export class NzTreeService {
         break;
       case 'click':
       case 'dblclick':
-        // TODO: Deprecated
         Object.assign(emitStructure, { 'selectedKeys': this.getSelectedNodeList() });
         Object.assign(emitStructure, { 'nodes': this.getSelectedNodeList() });
         Object.assign(emitStructure, { 'keys': this.getSelectedNodeList().map(n => n.key) });
         break;
       case 'check':
-        // TODO: Deprecated
         Object.assign(emitStructure, { 'checkedKeys': this.getCheckedNodeList() });
         Object.assign(emitStructure, { 'nodes': this.getCheckedNodeList() });
         Object.assign(emitStructure, { 'keys': this.getCheckedNodeList().map(n => n.key) });
         break;
       case 'search':
-        // TODO: Deprecated
         Object.assign(emitStructure, { 'matchedKeys': this.getMatchedNodeList() });
         Object.assign(emitStructure, { 'nodes': this.getMatchedNodeList() });
         Object.assign(emitStructure, { 'keys': this.getMatchedNodeList().map(n => n.key) });

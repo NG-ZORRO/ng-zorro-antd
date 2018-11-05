@@ -231,8 +231,6 @@ describe('nz-table', () => {
     });
     it('should scroll body work', () => {
       fixture.detectChanges();
-      table.nativeElement.querySelector('.ant-spin-container').removeAttribute('hidden');
-      expect(table.nativeElement.querySelector('.ant-table').classList).toContain('ant-table-scroll-position-left');
       const event = { ...new MouseEvent('scroll') };
       const mouseEvent = event as MouseEvent;
       const tableBody = table.nativeElement.querySelector('.ant-table-body');
@@ -248,8 +246,6 @@ describe('nz-table', () => {
     });
     it('should scroll body back to zero work', () => {
       fixture.detectChanges();
-      table.nativeElement.querySelector('.ant-spin-container').removeAttribute('hidden');
-      expect(table.nativeElement.querySelector('.ant-table').classList).toContain('ant-table-scroll-position-left');
       const event = { ...new MouseEvent('scroll') };
       const mouseEvent = event as MouseEvent;
       const tableBody = table.nativeElement.querySelector('.ant-table-body');
@@ -273,7 +269,7 @@ describe('nz-table', () => {
     });
     it('should scroll header work', () => {
       fixture.detectChanges();
-      table.nativeElement.querySelector('.ant-spin-container').removeAttribute('hidden');
+      table.nativeElement.querySelector('.ant-spin-container').style.display = '';
       const tableHeader = table.nativeElement.querySelector('.ant-table-header');
       tableHeader.scrollLeft = 100;
       fixture.detectChanges();
@@ -288,9 +284,7 @@ describe('nz-table', () => {
     });
     it('should scroll to right class right', () => {
       fixture.detectChanges();
-      table.nativeElement.querySelector('.ant-spin-container').removeAttribute('hidden');
       const tableBody = table.nativeElement.querySelector('.ant-table-body');
-      expect(table.nativeElement.querySelector('.ant-table').classList).toContain('ant-table-scroll-position-left');
       tableBody.scrollLeft = tableBody.scrollWidth - tableBody.clientWidth;
       fixture.detectChanges();
       const event = { ...new MouseEvent('scroll') };
@@ -303,9 +297,6 @@ describe('nz-table', () => {
     });
     it('should change width affect scroll', () => {
       fixture.detectChanges();
-      table.nativeElement.querySelector('.ant-spin-container').removeAttribute('hidden');
-      fixture.detectChanges();
-      expect(table.nativeElement.querySelector('.ant-table').classList).toContain('ant-table-scroll-position-left');
       testComponent.width = 1000;
       window.dispatchEvent(new Event('resize'));
       fixture.detectChanges();
