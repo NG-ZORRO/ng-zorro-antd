@@ -40,7 +40,7 @@ export class NzListComponent implements OnInit, OnChanges, OnDestroy {
 
   // #region fields
   // tslint:disable-next-line:no-any
-  @Input() nzDataSource: any[] = [];
+  @Input() nzDataSource: any[];
 
   @Input() @InputBoolean() nzBordered = false;
 
