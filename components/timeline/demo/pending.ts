@@ -17,6 +17,5 @@ export class NzDemoTimelinePendingComponent {
 
   toggleReverse(): void {
     this.reverse = !this.reverse;
-    console.log(this.reverse);
   }
 }

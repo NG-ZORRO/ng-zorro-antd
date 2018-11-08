@@ -86,6 +86,12 @@ describe('steps', () => {
       fixture.detectChanges();
       expect(outStep.nativeElement.firstElementChild.className).toBe('ant-steps ant-steps-vertical');
     });
+    it('should label placement display correct', () => {
+      fixture.detectChanges();
+      testComponent.labelPlacement = 'vertical';
+      fixture.detectChanges();
+      expect(outStep.nativeElement.firstElementChild.classList).toContain('ant-steps-label-vertical');
+    });
     it('should status display correct', fakeAsync(() => {
       fixture.detectChanges();
       tick();
@@ -241,7 +247,7 @@ describe('steps', () => {
 @Component({
   selector: 'nz-test-outer-steps',
   template: `
-    <nz-steps [nzCurrent]="current" [nzDirection]="direction" [nzSize]="size" [nzStatus]="status" [nzProgressDot]="progressDot" [nzStartIndex]="startIndex">
+    <nz-steps [nzCurrent]="current" [nzDirection]="direction" [nzLabelPlacement]="labelPlacement" [nzSize]="size" [nzStatus]="status" [nzProgressDot]="progressDot" [nzStartIndex]="startIndex">
       <nz-step nzTitle="0title" nzDescription="0description"></nz-step>
       <nz-step nzTitle="1title" nzDescription="1description"></nz-step>
       <nz-step nzTitle="2title" nzDescription="2description"></nz-step>
@@ -256,6 +262,7 @@ export class NzTestOuterStepsComponent {
   @ViewChild('progressTemplate') progressTemplate: TemplateRef<void>;
   current = 0;
   direction = 'horizontal';
+  labelPlacement = 'horizontal';
   size = 'default';
   status = 'process';
   progressDot = false;

@@ -1,39 +1,19 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, TemplateRef, ViewChild } from '@angular/core';
 
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { classMapToString } from '../core/style/map';
 import { NgClassType } from '../core/types/ng-class';
 
 @Component({
+  changeDetection    : ChangeDetectionStrategy.OnPush,
   selector           : 'nz-step',
-  providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
-  templateUrl        : './nz-step.component.html'
+  templateUrl        : './nz-step.component.html',
+  host               : {
+    '[class]': 'classString'
+  }
 })
 export class NzStepComponent {
-  private _status = 'wait';
-  private _currentIndex = 0;
-  private _description: string | TemplateRef<void>;
-  private _icon: NgClassType | TemplateRef<void>;
-  private _title: string | TemplateRef<void>;
-  private el: HTMLElement = this.elementRef.nativeElement;
-  oldAPIIcon = true; // Make the user defined icon compatible to old API. Should be removed in 2.0.
-  isCustomStatus = false;
-  isDescriptionString = true;
-  isTitleString = true;
-  isIconString = true;
-  last = false;
-  showProcessDot = false;
-  direction = 'horizontal';
-  outStatus = 'process';
-  index = 0;
   @ViewChild('processDotTemplate') processDotTemplate: TemplateRef<void>;
-  customProcessTemplate: TemplateRef<{ $implicit: TemplateRef<void>, status: string, index: number }>;
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
@@ -44,6 +24,8 @@ export class NzStepComponent {
   get nzTitle(): string | TemplateRef<void> {
     return this._title;
   }
+
+  private _title: string | TemplateRef<void>;
 
   @Input()
   set nzIcon(value: NgClassType | TemplateRef<void>) {
@@ -65,16 +47,19 @@ export class NzStepComponent {
     return this._icon;
   }
 
+  private _icon: NgClassType | TemplateRef<void>;
+
   @Input()
   set nzStatus(status: string) {
     this._status = status;
     this.isCustomStatus = true;
-    this.updateClassMap();
   }
 
   get nzStatus(): string {
     return this._status;
   }
+
+  private _status = 'wait';
 
   @Input()
   set nzDescription(value: string | TemplateRef<void>) {
@@ -86,6 +71,20 @@ export class NzStepComponent {
     return this._description;
   }
 
+  private _description: string | TemplateRef<void>;
+
+  oldAPIIcon = true;
+  isCustomStatus = false;
+  isDescriptionString = true;
+  isTitleString = true;
+  isIconString = true;
+  last = false;
+  showProcessDot = false;
+  direction = 'horizontal';
+  outStatus = 'process';
+  index = 0;
+  customProcessTemplate: TemplateRef<{ $implicit: TemplateRef<void>, status: string, index: number }>; // Set by parent.
+
   get currentIndex(): number {
     return this._currentIndex;
   }
@@ -93,21 +92,18 @@ export class NzStepComponent {
   set currentIndex(current: number) {
     this._currentIndex = current;
     if (!this.isCustomStatus) {
-      if (current > this.index) {
-        this._status = 'finish';
-      } else if (current === this.index) {
-        if (this.outStatus) {
-          this._status = this.outStatus;
-        }
-      } else {
-        this._status = 'wait';
-      }
+      this._status = current > this.index
+        ? 'finish'
+        : current === this.index
+          ? this.outStatus || ''
+          : 'wait';
     }
-    this.updateClassMap();
   }
 
-  updateClassMap(): void {
-    const classMap = {
+  private _currentIndex = 0;
+
+  get classString(): string {
+    return classMapToString({
       [ 'ant-steps-item' ]        : true,
       [ `ant-steps-item-wait` ]   : this.nzStatus === 'wait',
       [ `ant-steps-item-process` ]: this.nzStatus === 'process',
@@ -115,10 +111,13 @@ export class NzStepComponent {
       [ `ant-steps-item-error` ]  : this.nzStatus === 'error',
       [ 'ant-steps-custom' ]      : !!this.nzIcon,
       [ 'ant-steps-next-error' ]  : (this.outStatus === 'error') && (this.currentIndex === this.index + 1)
-    };
-    this.nzUpdateHostClassService.updateHostClass(this.el, classMap);
+    });
   }
 
-  constructor(private elementRef: ElementRef, private nzUpdateHostClassService: NzUpdateHostClassService) {
+  detectChanges(): void {
+    this.cdr.detectChanges();
+  }
+
+  constructor(private cdr: ChangeDetectorRef) {
   }
 }
