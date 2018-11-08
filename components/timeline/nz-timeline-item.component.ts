@@ -1,38 +1,16 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnInit,
-  Renderer2,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit, Renderer2, TemplateRef, ViewChild } from '@angular/core';
+
+import { ClassMap } from '../core/interface/interface';
+import { NzTimelineMode } from './nz-timeline.component';
 
 @Component({
-  selector           : 'nz-timeline-item',
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  selector           : 'nz-timeline-item, [nz-timeline-item]',
   preserveWhitespaces: false,
   templateUrl        : './nz-timeline-item.component.html'
 })
 export class NzTimelineItemComponent implements OnInit {
-  private _dot: string | TemplateRef<void>;
-  private _color: string = 'blue';
-  private _isLast = false;
   @ViewChild('liTemplate') liTemplate: ElementRef;
-  isDotString: boolean;
-  classMap;
-
-  set isLast(value: boolean) {
-    this._isLast = value;
-    if (this.isLast) {
-      this.renderer.addClass(this.liTemplate.nativeElement, 'ant-timeline-item-last');
-    } else {
-      this.renderer.removeClass(this.liTemplate.nativeElement, 'ant-timeline-item-last');
-    }
-  }
-
-  get isLast(): boolean {
-    return this._isLast;
-  }
 
   @Input()
   set nzDot(value: string | TemplateRef<void>) {
@@ -44,18 +22,43 @@ export class NzTimelineItemComponent implements OnInit {
     return this._dot;
   }
 
+  private _dot: string | TemplateRef<void>;
+
   @Input()
   set nzColor(color: string) {
     this._color = color;
-    this.updateClassMap();
+    this.tryUpdateCustomColor();
   }
 
   get nzColor(): string {
     return this._color;
   }
 
-  updateClassMap(): void {
-    // Support custom color
+  private _color: string = 'blue';
+  private _prefixCls = 'ant-timeline-item';
+
+  isDotString: boolean;
+  isLast = false;
+  position: NzTimelineMode | undefined;
+
+  get timelineItemCls(): ClassMap {
+    return {
+      [ `${this._prefixCls}-right` ]: this.position === 'right',
+      [ `${this._prefixCls}-left` ]: this.position === 'left',
+      [ `${this._prefixCls}-last` ] : this.isLast
+    };
+  }
+
+  get timelineItemDotCls(): ClassMap {
+    return {
+      [ `${this._prefixCls}-head-red` ]   : this.nzColor === 'red',
+      [ `${this._prefixCls}-head-blue` ]  : this.nzColor === 'blue',
+      [ `${this._prefixCls}-head-green` ] : this.nzColor === 'green',
+      [ `${this._prefixCls}-head-custom` ]: !!this.nzDot
+    };
+  }
+
+  private tryUpdateCustomColor(): void {
     const defaultColors = [ 'blue', 'red', 'green' ];
     const circle = this.liTemplate.nativeElement.querySelector('.ant-timeline-item-head');
     if (defaultColors.indexOf(this._color) === -1) {
@@ -63,19 +66,20 @@ export class NzTimelineItemComponent implements OnInit {
     } else {
       this.renderer.removeStyle(circle, 'border-color');
     }
-
-    this.classMap = {
-      [ 'ant-timeline-item-head-green' ]: this.nzColor === 'green',
-      [ 'ant-timeline-item-head-red' ]  : this.nzColor === 'red',
-      [ 'ant-timeline-item-head-blue' ] : this.nzColor === 'blue'
-    };
   }
 
-  constructor(private renderer: Renderer2) {
+  /**
+   * Invoked by parent to detect changes. Because timeline items are content children not view children,
+   * they are not detected when parent invokes `cdr.detectChanges`.
+   */
+  detectChanges(): void {
+    this.cdr.detectChanges();
+  }
+
+  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
-    this.updateClassMap();
+    this.tryUpdateCustomColor();
   }
-
 }

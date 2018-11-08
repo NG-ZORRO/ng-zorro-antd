@@ -1,9 +1,16 @@
-<ul class="ant-timeline" [class.ant-timeline-pending]="nzPending">
+<ul [ngClass]="timelineCls" #timeline>
+  <!-- User inserted timeline dots. -->
   <ng-content></ng-content>
+  <!-- Pending dot. -->
   <li *ngIf="nzPending" class="ant-timeline-item ant-timeline-item-pending">
     <div class="ant-timeline-item-tail"></div>
     <div class="ant-timeline-item-head ant-timeline-item-head-custom ant-timeline-item-head-blue">
-      <i nz-icon type="spin anticon-loading"></i>
+      <ng-container *ngIf="!isPendingDotString; else pendingDotTemplate">
+        {{ nzPendingDot }}<i *ngIf="!nzPendingDot" nz-icon type="loading"></i>
+      </ng-container>
+      <ng-template #pendingDotTemplate>
+        <ng-template [ngTemplateOutlet]="nzPendingDot"></ng-template>
+      </ng-template>
     </div>
     <div class="ant-timeline-item-content">
       <ng-container *ngIf="isPendingString; else pendingTemplate">{{ isPendingBoolean ? '' : nzPending }}</ng-container>
