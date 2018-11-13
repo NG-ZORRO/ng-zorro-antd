@@ -510,13 +510,13 @@ describe('route link', () => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
-        expect(location.path()).toBe('/?tab=one');
+        expect(location.path()).toBe('/?tabs=one');
         expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(1);
-        router.navigate([ '.' ], { queryParams: { tab: 'two' } });
+        router.navigate([ '.' ], { queryParams: { tabs: 'two' } });
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
-        expect(location.path()).toBe('/?tab=two');
+        expect(location.path()).toBe('/?tabs=two');
         expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(2);
         titles[ 0 ].click();
         fixture.detectChanges();
