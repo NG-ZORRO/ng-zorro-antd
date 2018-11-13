@@ -48,3 +48,17 @@ Ant Design has 3 types of Tabs for different situations.
 | `(nzClick)` | title click callback | `EventEmitter<void>` | - |
 | `(nzSelect)` | title select callback | `EventEmitter<void>` | - |
 | `(nzDeselect)` | title deselect callback | `EventEmitter<void>` | - |
+
+## Router Linked
+
+If you want to use it, make sure you set `nzEnableRoute` to `true` before the component initializes. There are two modes, query string mode and child route mode. If you want to use child route mode, you should config `data.tabs` in your route definitions like this:
+
+```ts
+{
+  path: '/path',
+  component: SomeComponent,
+  data: {
+    tabs: 'identifier'
+  }
+}
+```

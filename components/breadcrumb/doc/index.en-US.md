@@ -22,7 +22,9 @@ A breadcrumb displays the current location within a hierarchy. It allows going b
 | `[nzSeparator]` | Custom separator | string丨`TemplateRef<void>` |  | `/` |
 | `[nzAutoGenerate]` | Auto generate breadcrumb | boolean |  | `false` |
 
-Using `[nzAutoGenerate]` by configuring `data` like this:
+## Auto Generate
+
+If you want to use it, make sure you set `nzAutoGenerate` to `true` before the component initializes, and config `data.breadcrumb` in your route definitions like this:
 
 ```ts
 {
@@ -33,5 +35,3 @@ Using `[nzAutoGenerate]` by configuring `data` like this:
   }
 }
 ```
-
-If you want to use it, make sure you set `nzAutoGenerate` to `true` before the component init.

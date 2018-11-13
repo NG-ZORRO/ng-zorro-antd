@@ -51,3 +51,18 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 | `(nzClick)` | title 被点击的回调函数 | `EventEmitter<void>` | - |
 | `(nzSelect)` | tab 被选中的回调函数 | `EventEmitter<void>` | - |
 | `(nzDeselect)` | tab 被取消选中的回调函数 | `EventEmitter<void>` | - |
+
+## 联动路由
+
+
+如果你想要使用联动路由，务必在组件初始化之前就将 `nzEnableRoute` 设置为 `true`。联动路由有两种模式，分别为查询字符串模式和子路由模式，如果你使用子路由模式，还需要在路由中定义 `data.tabs`:
+
+```ts
+{
+  path: '/path',
+  component: SomeComponent,
+  data: {
+    tabs: 'identifier'
+  }
+}
+```
