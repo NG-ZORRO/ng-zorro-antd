@@ -1,19 +1,11 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 
 import { toBoolean } from '../core/util/convert';
 
 import { NzTabSetComponent } from './nz-tabset.component';
 
 @Component({
+  changeDetection    : ChangeDetectionStrategy.OnPush,
   selector           : 'nz-tab',
   preserveWhitespaces: false,
   templateUrl        : './nz-tab.component.html',
@@ -22,11 +14,9 @@ import { NzTabSetComponent } from './nz-tabset.component';
   }
 })
 export class NzTabComponent implements OnDestroy, OnInit {
-  private _title: string | TemplateRef<void>;
-  private _disabled = false;
-  position: number | null = null;
-  origin: number | null = null;
-  isTitleString: boolean;
+  @ViewChild(TemplateRef) content: TemplateRef<void>;
+
+  @Input() nzPathOrParam: string; // Identifier of a tab.
 
   @Input()
   set nzDisabled(value: boolean) {
@@ -37,10 +27,7 @@ export class NzTabComponent implements OnDestroy, OnInit {
     return this._disabled;
   }
 
-  @Output() readonly nzClick = new EventEmitter<void>();
-  @Output() readonly nzSelect = new EventEmitter<void>();
-  @Output() readonly nzDeselect = new EventEmitter<void>();
-  @ViewChild(TemplateRef) content: TemplateRef<void>;
+  private _disabled = false;
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
@@ -48,11 +35,19 @@ export class NzTabComponent implements OnDestroy, OnInit {
     this._title = value;
   }
 
-  @Input() nzPathOrParam: string; // Identifier of a tab.
-
   get nzTitle(): string | TemplateRef<void> {
     return this._title;
   }
+
+  isTitleString: boolean;
+  private _title: string | TemplateRef<void>;
+
+  @Output() readonly nzClick = new EventEmitter<void>();
+  @Output() readonly nzSelect = new EventEmitter<void>();
+  @Output() readonly nzDeselect = new EventEmitter<void>();
+
+  position: number | null = null;
+  origin: number | null = null;
 
   constructor(private nzTabSetComponent: NzTabSetComponent) {
   }
@@ -64,5 +59,4 @@ export class NzTabComponent implements OnDestroy, OnInit {
   ngOnDestroy(): void {
     this.nzTabSetComponent.removeTab(this);
   }
-
 }

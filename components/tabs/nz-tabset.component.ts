@@ -5,6 +5,8 @@ import {
   AfterContentChecked,
   AfterContentInit,
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -47,8 +49,10 @@ export const NZ_ROUTE_DATA_TABS = 'tabs';
 export type NzTabPosition = 'top' | 'bottom' | 'left' | 'right';
 export type NzTabPositionMode = 'horizontal' | 'vertical';
 export type NzTabType = 'line' | 'card';
+export type NzTabSize = 'large' | 'default' | 'small';
 
 @Component({
+  changeDetection    : ChangeDetectionStrategy.OnPush,
   selector           : 'nz-tabset',
   preserveWhitespaces: false,
   providers          : [ NzUpdateHostClassService ],
@@ -72,26 +76,6 @@ export class NzTabSetComponent implements AfterContentInit, AfterContentChecked,
   @Input() nzTabBarGutter: number;
   @Input() nzTabBarStyle: { [ key: string ]: string };
   @Input() nzQueryParam: string;
-
-  @Output() readonly nzOnNextClick = new EventEmitter<void>();
-  @Output() readonly nzOnPrevClick = new EventEmitter<void>();
-
-  el: HTMLElement;
-  prefixCls = 'ant-tabs';
-  tabPositionMode: NzTabPositionMode = 'horizontal';
-  inkBarAnimated = true;
-  tabPaneAnimated = true;
-  isViewInit = false;
-  listOfNzTabComponent: NzTabComponent[] = [];
-
-  private _tabPosition: NzTabPosition = 'top';
-  private _indexToSelect: number | null = 0;
-  private _selectedIndex: number | null = null;
-  private _type: NzTabType = 'line';
-  private _size = 'default';
-  private _animated: NzAnimatedInterface | boolean = true;
-  private unsubscribe$ = new Subject();
-
   @Input() @InputBoolean() nzEnableRoute: boolean = false;
 
   @Input()
@@ -106,6 +90,11 @@ export class NzTabSetComponent implements AfterContentInit, AfterContentChecked,
     return this._animated;
   }
 
+  inkBarAnimated = true;
+  tabPaneAnimated = true;
+
+  private _animated: NzAnimatedInterface | boolean = true;
+
   @Input()
   set nzSelectedIndex(value: number | null) {
     this._indexToSelect = toNumber(value, null);
@@ -115,21 +104,17 @@ export class NzTabSetComponent implements AfterContentInit, AfterContentChecked,
     return this._selectedIndex;
   }
 
-  @Output()
-  get nzSelectedIndexChange(): Observable<number> {
-    return this.nzSelectChange.pipe(map(event => event.index));
-  }
-
-  @Output() readonly nzSelectChange: EventEmitter<NzTabChangeEvent> = new EventEmitter<NzTabChangeEvent>(true);
-
-  @Input() set nzSize(value: string) {
+  @Input()
+  set nzSize(value: NzTabSize) {
     this._size = value;
     this.setClassMap();
   }
 
-  get nzSize(): string {
+  get nzSize(): NzTabSize {
     return this._size;
   }
+
+  private _size: NzTabSize = 'default';
 
   @Input()
   set nzTabPosition(value: NzTabPosition) {
@@ -150,6 +135,8 @@ export class NzTabSetComponent implements AfterContentInit, AfterContentChecked,
     return this._tabPosition;
   }
 
+  private _tabPosition: NzTabPosition = 'top';
+
   @Input()
   set nzType(value: NzTabType) {
     if (this._type === value) {
@@ -166,6 +153,26 @@ export class NzTabSetComponent implements AfterContentInit, AfterContentChecked,
     return this._type;
   }
 
+  private _type: NzTabType = 'line';
+
+  @Output() get nzSelectedIndexChange(): Observable<number> {
+    return this.nzSelectChange.pipe(map(event => event.index));
+  }
+
+  @Output() readonly nzSelectChange: EventEmitter<NzTabChangeEvent> = new EventEmitter<NzTabChangeEvent>(true);
+  @Output() readonly nzOnNextClick = new EventEmitter<void>();
+  @Output() readonly nzOnPrevClick = new EventEmitter<void>();
+
+  el: HTMLElement;
+  prefixCls = 'ant-tabs';
+  tabPositionMode: NzTabPositionMode = 'horizontal';
+  isViewInit = false;
+  listOfNzTabComponent: NzTabComponent[] = [];
+
+  private _indexToSelect: number | null = 0;
+  private _selectedIndex: number | null = null;
+  private unsubscribe$ = new Subject();
+
   setPosition(value: NzTabPosition): void {
     if (this.isViewInit) {
       if (value === 'bottom') {
@@ -174,7 +181,6 @@ export class NzTabSetComponent implements AfterContentInit, AfterContentChecked,
         this.renderer.insertBefore(this.el, this.nzTabsNavComponent.elementRef.nativeElement, this.tabContent.nativeElement);
       }
     }
-
   }
 
   setClassMap(): void {
@@ -287,6 +293,7 @@ export class NzTabSetComponent implements AfterContentInit, AfterContentChecked,
   }
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
     private nzUpdateHostClassService: NzUpdateHostClassService,
     private elementRef: ElementRef,
@@ -331,6 +338,8 @@ export class NzTabSetComponent implements AfterContentInit, AfterContentChecked,
       }
     });
     this._selectedIndex = indexToSelect;
+    // When user dynamically insert a `nz-tab` into `nz-tabset`, should detect changes to let it show up.
+    this.cdr.detectChanges();
   }
 
   ngAfterViewInit(): void {

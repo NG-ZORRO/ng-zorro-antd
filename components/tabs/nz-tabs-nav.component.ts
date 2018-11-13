@@ -3,6 +3,7 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentChecked,
   AfterContentInit,
+  ChangeDetectionStrategy,
   Component,
   ContentChildren,
   ElementRef,
@@ -23,13 +24,14 @@ import { toBoolean } from '../core/util/convert';
 
 import { NzTabLabelDirective } from './nz-tab-label.directive';
 import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
-
-const EXAGGERATED_OVERSCROLL = 64;
-export type ScrollDirection = 'after' | 'before';
-
 import { NzTabPositionMode } from './nz-tabset.component';
 
+const EXAGGERATED_OVERSCROLL = 64;
+
+export type ScrollDirection = 'after' | 'before';
+
 @Component({
+  changeDetection    : ChangeDetectionStrategy.OnPush,
   selector           : '[nz-tabs-nav]',
   preserveWhitespaces: false,
   templateUrl        : './nz-tabs-nav.component.html'
