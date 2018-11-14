@@ -43,16 +43,16 @@
     [class.ant-menu-submenu-placement-bottomLeft]="subMenuMode=='horizontal'"
     [class.ant-menu-submenu-placement-rightTop]="(subMenuMode=='vertical')&&(placement=='rightTop')"
     [class.ant-menu-submenu-placement-leftTop]="(subMenuMode=='vertical')&&(placement=='leftTop')"
-    [@expandAnimation]="expandState">
+    [@expandAnimation]="expandState"
+    (mouseleave)="onMouseLeaveEvent($event)"
+    (mouseenter)="onMouseEnterEvent($event)">
     <ul
       [class.ant-dropdown-menu]="isInDropDown"
       [class.ant-menu]="!isInDropDown"
       [class.ant-dropdown-menu-vertical]="isInDropDown"
       [class.ant-menu-vertical]="!isInDropDown"
       [class.ant-dropdown-menu-sub]="isInDropDown"
-      [class.ant-menu-sub]="!isInDropDown"
-      (mouseleave)="onMouseLeaveEvent($event)"
-      (mouseenter)="onMouseEnterEvent($event)">
+      [class.ant-menu-sub]="!isInDropDown">
       <ng-template [ngTemplateOutlet]="subMenuTemplate"></ng-template>
     </ul>
   </div>
