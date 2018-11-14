@@ -31,6 +31,8 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
   @Input() nzOkText: string;
   @Input() nzOkType: string = 'primary';
   @Input() nzCancelText: string;
+  @Input() nzIcon: string;
+  @Input() nzIconColor: string;
 
   @Input()
   set nzCondition(value: boolean) {

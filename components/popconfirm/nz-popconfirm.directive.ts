@@ -31,6 +31,8 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit,
   _okText: string;
   _okType: string = 'primary';
   _cancelText: string;
+  _icon: string;
+  _iconColor: string;
 
   @Output() nzOnCancel: EventEmitter<void> = new EventEmitter();
   @Output() nzOnConfirm: EventEmitter<void> = new EventEmitter();
@@ -74,6 +76,26 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit,
   get nzCondition(): boolean {
     return this._condition;
   }
+  
+  @Input()
+  set nzIcon(value: string) {
+    this._icon = value;
+    this.updateCompValue('nzIcon', value);
+  }
+
+  get nzIcon(): string {
+    return this._icon;
+  }
+
+  @Input()
+  set nzIconColor(value: string) {
+    this._iconColor = value;
+    this.updateCompValue('nzIcon', value);
+  }
+
+  get nzIconColor(): string {
+    return this._iconColor;
+  }
 
   constructor(
     elementRef: ElementRef,
@@ -104,7 +126,9 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit,
         'nzOkText',
         'nzOkType',
         'nzCancelText',
-        'nzCondition' ];
+        'nzCondition',
+        'nzIcon',
+        'nzIconColor' ];
       properties.forEach(property => this.updateCompValue(property, this[ property ]));
       this.tooltip.nzVisibleChange.pipe(takeUntil(this.subclassUnsubscribe$), distinctUntilChanged()).subscribe(data => {
         this._visible = data;
