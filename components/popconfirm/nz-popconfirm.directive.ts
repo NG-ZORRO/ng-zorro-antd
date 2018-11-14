@@ -76,7 +76,7 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit,
   get nzCondition(): boolean {
     return this._condition;
   }
-  
+
   @Input()
   set nzIcon(value: string) {
     this._icon = value;
