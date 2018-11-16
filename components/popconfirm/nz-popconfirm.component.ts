@@ -3,7 +3,8 @@ import {
   Component,
   EventEmitter,
   Input,
-  Output
+  Output,
+  TemplateRef
 } from '@angular/core';
 import { fadeAnimation } from '../core/animation/fade-animations';
 import { toBoolean } from '../core/util/convert';
@@ -31,8 +32,7 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
   @Input() nzOkText: string;
   @Input() nzOkType: string = 'primary';
   @Input() nzCancelText: string;
-  @Input() nzIcon: string;
-  @Input() nzIconColor: string;
+  @Input() nzIcon: TemplateRef<void>;
 
   @Input()
   set nzCondition(value: boolean) {

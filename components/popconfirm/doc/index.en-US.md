@@ -25,6 +25,7 @@ The difference with the `confirm` modal dialog is that it's more lightweight tha
 | `[nzCondition]` | Whether to directly emit `onConfirm` without showing Popconfirm | boolean | false |
 | `(nzOnCancel)` | callback of cancel | `EventEmitter<void>` | - |
 | `(nzOnConfirm)` | callback of confirmation | `EventEmitter<void>` | - |
+| `[nzIcon]` | custom icon | `TemplateRef<void>` | `<i nz-icon type="exclamation-circle" theme="fill"></i>` |
 
 Consult [Tooltip's documentation](/components/tooltip/en#api) to find more APIs.
 

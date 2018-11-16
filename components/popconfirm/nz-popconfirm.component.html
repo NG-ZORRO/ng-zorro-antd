@@ -18,8 +18,10 @@
           <div class="ant-popover-inner-content">
             <div class="ant-popover-message">
               <ng-container *ngIf="isTitleString; else titleTemplate">
-                <i nz-icon *ngIf="nzIcon" [style.color]="nzIconColor" class="button-success" [type]="nzIcon" theme="fill"></i>
-                <i nz-icon *ngIf="!nzIcon" [style.color]="nzIconColor" type="exclamation-circle" theme="fill"></i>
+                <ng-container *ngIf="nzIcon">
+                  <ng-template [ngTemplateOutlet]="nzIcon"></ng-template>
+                </ng-container>
+                <i nz-icon *ngIf="!nzIcon" type="exclamation-circle" theme="fill"></i>
                 <div class="ant-popover-message-title">{{ nzTitle }}</div>
               </ng-container>
               <ng-template #titleTemplate>

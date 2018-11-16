@@ -10,6 +10,7 @@ import {
   Optional,
   Output,
   Renderer2,
+  TemplateRef,
   ViewContainerRef
 } from '@angular/core';
 
@@ -31,7 +32,7 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit,
   _okText: string;
   _okType: string = 'primary';
   _cancelText: string;
-  _icon: string;
+  _icon: TemplateRef<void>;
   _iconColor: string;
 
   @Output() nzOnCancel: EventEmitter<void> = new EventEmitter();
@@ -78,23 +79,12 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit,
   }
 
   @Input()
-  set nzIcon(value: string) {
+  set nzIcon(value: TemplateRef<void>) {
     this._icon = value;
-    this.updateCompValue('nzIcon', value);
   }
 
-  get nzIcon(): string {
+  get nzIcon(): TemplateRef<void> {
     return this._icon;
-  }
-
-  @Input()
-  set nzIconColor(value: string) {
-    this._iconColor = value;
-    this.updateCompValue('nzIcon', value);
-  }
-
-  get nzIconColor(): string {
-    return this._iconColor;
   }
 
   constructor(
@@ -127,8 +117,7 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit,
         'nzOkType',
         'nzCancelText',
         'nzCondition',
-        'nzIcon',
-        'nzIconColor' ];
+        'nzIcon' ];
       properties.forEach(property => this.updateCompValue(property, this[ property ]));
       this.tooltip.nzVisibleChange.pipe(takeUntil(this.subclassUnsubscribe$), distinctUntilChanged()).subscribe(data => {
         this._visible = data;

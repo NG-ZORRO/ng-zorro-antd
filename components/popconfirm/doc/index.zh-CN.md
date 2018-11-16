@@ -26,6 +26,7 @@ title: Popconfirm
 | `[nzCondition]` | 是否直接触发 `nzOnConfirm` 而不弹出框 | boolean | false |
 | `(nzOnCancel)` | 点击取消的回调 | `EventEmitter<void>` | 无 |
 | `(nzOnConfirm)` | 点击确认的回调 | `EventEmitter<void>` | 无 |
+| `[nzIcon]` | 自定义图标 | `TemplateRef<void>` | `<i nz-icon type="exclamation-circle" theme="fill"></i>` |
 
 更多属性请参考 [Tooltip](/components/tooltip/zh#api)。
 

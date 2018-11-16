@@ -4,7 +4,10 @@ import { NzMessageService } from 'ng-zorro-antd';
 @Component({
   selector: 'nz-demo-popconfirm-custom-icon',
   template: `
-    <a nz-popconfirm nzTitle="A smile!" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()" nzIcon="smile" nzIconColor="#40a9ff">Custom Icon</a>
+    <a nz-popconfirm nzTitle="A smile!" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()" [nzIcon]="customIcon">Custom Icon</a>
+    <ng-template #customIcon>
+      <i nz-icon type="smile" style="color: #40a9ff;" theme="outline"></i>
+    </ng-template>
   `
 })
 export class NzDemoPopconfirmCustomIconComponent {
