@@ -21,7 +21,7 @@ import { Schema } from './schema';
 import schematicsFixIcon from '../fix-icon/index';
 
 const ADD_CONFIG = {
-  LESS_VERSION       : '^2.7.3',
+  LESS_VERSION       : '^3.0.0',
   CUSTOM_THEME_PATH  : 'src/theme.less',
   COMPILED_THEME_PATH: 'node_modules/ng-zorro-antd/ng-zorro-antd.min.css',
   BOOT_PAGE_PATH     : 'src/app/app.component.html',

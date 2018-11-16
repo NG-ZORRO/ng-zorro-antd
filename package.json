@@ -80,7 +80,7 @@
     "karma-coverage-istanbul-reporter": "~1.4.2",
     "karma-jasmine": "~1.1.1",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "less": "^2.7.3",
+    "less": "^3.0.0",
     "less-plugin-clean-css": "^1.5.1",
     "marked": "^0.3.6",
     "ng-packagr": "^4.0.0",

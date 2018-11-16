@@ -11,7 +11,7 @@ function compileLess(content, savePath, min) {
       plugins.push(cleanCSSPlugin);
     }
     return less.render
-      .call(less, content, { plugins })
+      .call(less, content, { plugins, javascriptEnabled: true })
       .then(({ css }) => {
         fs.writeFileSync(savePath, css);
         resolve();
