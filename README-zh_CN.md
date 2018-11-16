@@ -70,7 +70,7 @@ $ ng add ng-zorro-antd
 在每一个需要使用组件的 module 中引入 `NgZorroAntdModule`。
 
 ```ts
-import { NgZorroAntModule } from 'ng-zorro-antd';
+import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 @NgModule({
   imports: [ NgZorroAntdModule ]
