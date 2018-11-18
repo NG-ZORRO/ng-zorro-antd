@@ -34,7 +34,7 @@ const ADD_CONFIG = {
 export default function (options: Schema): Rule {
   return chain([
     options && options.skipPackageJson ? noop() : addZorroToPackageJson(),
-    options && options.theme ? downgradeLess() : noop(),
+    options && options.theme ? installLess() : noop(),
     setBootstrapPage(),
     addThemeToAppStyles(options),
     addModulesToAppModule(options),
@@ -152,10 +152,10 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
     : new ReplaceChange(modulePath, registerLocaleDataFun[ 0 ].getStart(), registerLocaleDataFun[ 0 ].getText(), `registerLocaleData(${locale});`);
 }
 
-/** 降级 less */
-function downgradeLess(): (host: Tree) => Tree {
+/** install less */
+function installLess(): (host: Tree) => Tree {
   return (host: Tree) => {
-    addPackageToPackageJson(host, 'dependencies', 'less', ADD_CONFIG.LESS_VERSION);
+    addPackageToPackageJson(host, 'devDependencies', 'less', ADD_CONFIG.LESS_VERSION);
     return host;
   };
 }
