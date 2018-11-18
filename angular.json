@@ -101,7 +101,8 @@
             "karmaConfig": "components/karma.conf.js",
             "polyfills": "components/polyfills.ts",
             "tsConfig": "components/tsconfig.spec.json",
-            "scripts": []
+            "scripts": [],
+            "sourceMap": true
           }
         }
       }
