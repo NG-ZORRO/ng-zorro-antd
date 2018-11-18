@@ -38,10 +38,10 @@
     "date-fns": "^1.29.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.6.0",
-    "@angular-devkit/build-ng-packagr": "^0.6.8",
-    "@angular-devkit/core": "^0.6.0",
-    "@angular-devkit/schematics": "^0.6.0",
+    "@angular-devkit/build-angular": "^0.8.7",
+    "@angular-devkit/build-ng-packagr": "^0.8.7",
+    "@angular-devkit/core": "^0.8.7",
+    "@angular-devkit/schematics": "^0.8.7",
     "@angular/animations": "^6.0.0",
     "@angular/cli": "~6.2.1",
     "@angular/common": "^6.0.0",
@@ -54,7 +54,7 @@
     "@angular/platform-browser": "^6.0.0",
     "@angular/platform-browser-dynamic": "^6.0.0",
     "@angular/router": "^6.0.0",
-    "@schematics/angular": "^0.6.0",
+    "@schematics/angular": "^0.8.7",
     "@stackblitz/sdk": "^1.1.1",
     "@types/fs-extra": "^5.0.4",
     "@types/hammerjs": "^2.0.35",
