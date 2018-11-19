@@ -1,31 +1,26 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger
-} from '@angular/animations';
-import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
-  Host,
   HostBinding,
   Input,
-  OnDestroy,
-  OnInit,
   Output,
-  TemplateRef
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 
-import { toBoolean } from '../core/util/convert';
+import { Subject } from 'rxjs';
 
-import { NzCollapseComponent } from './nz-collapse.component';
+import { InputBoolean } from '../core/util/convert';
 
 @Component({
-  selector   : 'nz-collapse-panel',
-  templateUrl: './nz-collapse-panel.component.html',
-  animations : [
+  selector       : 'nz-collapse-panel',
+  templateUrl    : './nz-collapse-panel.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation  : ViewEncapsulation.None,
+  animations     : [
     trigger('collapseState', [
       state('inactive', style({
         opacity: '0',
@@ -39,84 +34,35 @@ import { NzCollapseComponent } from './nz-collapse.component';
       transition('active => inactive', animate('150ms ease-out'))
     ])
   ],
-  styles     : [
-    `
-      :host {
-        display: block
-      }`
+  styles         : [
+      ` nz-collapse-panel {
+      display: block
+    }`
   ],
-  host       : {
-    '[class.ant-collapse-item]': 'true',
-    '[attr.role]'              : '"tablist"'
+  host           : {
+    '[class.ant-collapse-item]'    : 'true',
+    '[class.ant-collapse-no-arrow]': '!nzShowArrow'
   }
 })
 
-export class NzCollapsePanelComponent implements OnDestroy, OnInit {
-  private _disabled = false;
-  private _showArrow = true;
-  private _active = false;
-  private _header: string | TemplateRef<void>;
-  isHeaderString: boolean;
-  private el: HTMLElement = this.elementRef.nativeElement;
+export class NzCollapsePanelComponent {
+  @Input() @InputBoolean() @HostBinding('class.ant-collapse-item-active') nzActive = false;
+  @Input() @InputBoolean() @HostBinding('class.ant-collapse-item-disabled') nzDisabled = false;
+  @Input() @InputBoolean() nzShowArrow = true;
+  @Input() nzHeader: string | TemplateRef<void>;
   @Output() readonly nzActiveChange = new EventEmitter<boolean>();
-
-  @Input() set nzShowArrow(value: boolean) {
-    this._showArrow = toBoolean(value);
-  }
-
-  get nzShowArrow(): boolean {
-    return this._showArrow;
-  }
-
-  @HostBinding('class.ant-collapse-no-arrow')
-  get isNoArrow(): boolean {
-    return !this.nzShowArrow;
-  }
-
-  @Input()
-  set nzHeader(value: string | TemplateRef<void>) {
-    this.isHeaderString = !(value instanceof TemplateRef);
-    this._header = value;
-  }
-
-  get nzHeader(): string | TemplateRef<void> {
-    return this._header;
-  }
-
-  @Input()
-  @HostBinding('class.ant-collapse-item-disabled')
-  set nzDisabled(value: boolean) {
-    this._disabled = toBoolean(value);
-  }
-
-  get nzDisabled(): boolean {
-    return this._disabled;
-  }
-
-  @Input()
-  @HostBinding('class.ant-collapse-item-active')
-  set nzActive(value: boolean) {
-    this._active = toBoolean(value);
-  }
-
-  get nzActive(): boolean {
-    return this._active;
-  }
+  click$ = new Subject<NzCollapsePanelComponent>();
 
   clickHeader(): void {
     if (!this.nzDisabled) {
-      this.nzCollapseComponent.click(this);
+      this.click$.next(this);
     }
   }
 
-  constructor(@Host() private nzCollapseComponent: NzCollapseComponent, private elementRef: ElementRef) {
+  markForCheck(): void {
+    this.cdr.markForCheck();
   }
 
-  ngOnInit(): void {
-    this.nzCollapseComponent.addCollapse(this);
-  }
-
-  ngOnDestroy(): void {
-    this.nzCollapseComponent.removeCollapse(this);
+  constructor(private cdr: ChangeDetectorRef) {
   }
 }
