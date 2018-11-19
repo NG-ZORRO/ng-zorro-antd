@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, ContentChild, HostBinding, Input, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChild,
+  HostBinding,
+  Input,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import { InputBoolean } from '../core/util/convert';
 import { NzCardTabComponent } from './nz-card-tab.component';
 
@@ -6,9 +14,10 @@ import { NzCardTabComponent } from './nz-card-tab.component';
   selector           : 'nz-card',
   preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-card.component.html',
   styles             : [ `
-    :host {
+    nz-card {
       display: block;
     }
   ` ],

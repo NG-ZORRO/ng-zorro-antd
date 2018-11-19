@@ -7,7 +7,8 @@ import {
   Input,
   OnInit,
   Renderer2,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { AnimationCurves } from '../core/animation/animation';
@@ -22,6 +23,7 @@ export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' |
 @Component({
   selector           : 'nz-badge',
   preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   animations         : [
     trigger('zoomAnimation', [
