@@ -12,7 +12,10 @@
 // Button styles
 // -----------------------------
 .@{btn-prefix-cls} {
-  line-height: @line-height-base;
+  // Fixing https://github.com/ant-design/ant-design/issues/12978
+  // It is a render problem of chrome, which is only happened in the codesandbox demo
+  // 0.001px solution works and I don't why
+  line-height: @line-height-base - 0.001;
   .btn;
   .btn-default;
 
@@ -21,6 +24,7 @@
   > i,
   > span {
     pointer-events: none;
+    display: inline-block;
   }
 
   &-primary {
@@ -149,7 +153,7 @@
     letter-spacing: .34em;
   }
 
-  &-two-chinese-chars > * {
+  &-two-chinese-chars > *:not(.@{iconfont-css-prefix}) {
     letter-spacing: .34em;
     margin-right: -.34em;
   }
@@ -176,6 +180,11 @@
 
   .christmas&-primary&-sm:before {
     background-size: 56px;
+  }
+
+  // https://github.com/ant-design/ant-design/issues/12681
+  &:empty {
+    vertical-align: top;
   }
 }
 
