@@ -8,6 +8,7 @@ import {
   ComponentRef,
   ElementRef,
   EventEmitter,
+  HostListener,
   Inject,
   Injector,
   Input,
@@ -31,6 +32,7 @@ import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar
 import { InputBoolean } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
+import { ESCAPE } from '@angular/cdk/keycodes';
 import ModalUtil from './modal-util';
 import { NzModalConfig, NZ_MODAL_CONFIG, NZ_MODAL_DEFAULT_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
@@ -107,6 +109,14 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Input() @Output() readonly nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
   @ViewChild('modalContainer') modalContainer: ElementRef;
   @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
+
+  @Input() @InputBoolean() nzKeyboard: boolean = true;
+  @HostListener('keydown', [ '$event' ])
+  public onKeyDown(event: KeyboardEvent): void {
+    if (event.keyCode === ESCAPE && this.nzKeyboard) {
+      this.onClickOkCancel('cancel');
+    }
+  }
 
   get hidden(): boolean {
     return !this.nzVisible && !this.animationState;
