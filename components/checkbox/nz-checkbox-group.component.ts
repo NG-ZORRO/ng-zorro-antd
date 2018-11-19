@@ -1,10 +1,8 @@
 import {
   forwardRef,
   Component,
-  ElementRef,
   Input,
-  OnInit,
-  Renderer2
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -20,6 +18,7 @@ export interface NzCheckBoxOptionInterface {
 @Component({
   selector           : 'nz-checkbox-group',
   preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-checkbox-group.component.html',
   providers          : [
     {
@@ -27,14 +26,17 @@ export interface NzCheckBoxOptionInterface {
       useExisting: forwardRef(() => NzCheckboxGroupComponent),
       multi      : true
     }
-  ]
+  ],
+  host               : {
+    '[class.ant-checkbox-group]': 'true'
+  }
 })
-export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
+export class NzCheckboxGroupComponent implements ControlValueAccessor {
   private _disabled = false;
-  private el: HTMLElement = this.elementRef.nativeElement;
-  private prefixCls = 'ant-checkbox-group';
-  private onChange = Function.prototype;
-  private onTouched = Function.prototype;
+  // tslint:disable-next-line:no-any
+  private onChange: (value: any) => void = () => {};
+  // tslint:disable-next-line:no-any
+  private onTouched: () => any = () => {};
   options: NzCheckBoxOptionInterface[];
 
   @Input()
@@ -66,10 +68,6 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
     this.nzDisabled = isDisabled;
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-  }
-
-  ngOnInit(): void {
-    this.renderer.addClass(this.el, `${this.prefixCls}`);
+  constructor() {
   }
 }

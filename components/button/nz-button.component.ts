@@ -12,7 +12,8 @@ import {
   OnInit,
   QueryList,
   Renderer2,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
@@ -31,6 +32,7 @@ export type NzButtonShape = 'circle' | null ;
   providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-button.component.html'
 })
 export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {

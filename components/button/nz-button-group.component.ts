@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { NzSizeLDSType } from '../core/types/size';
 
 @Component({
   selector           : 'nz-button-group',
   changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   preserveWhitespaces: false,
   providers          : [ NzUpdateHostClassService ],
   templateUrl        : './nz-button-group.component.html'

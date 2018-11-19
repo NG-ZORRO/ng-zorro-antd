@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
 
 import { NzCheckboxComponent } from './nz-checkbox.component';
 
 @Component({
   selector           : 'nz-checkbox-wrapper',
   preserveWhitespaces: false,
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-checkbox-wrapper.component.html',
   host               : {
     '[class.ant-checkbox-group]': 'true'

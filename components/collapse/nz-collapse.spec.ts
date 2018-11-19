@@ -98,6 +98,32 @@ describe('collapse', () => {
       expect(testComponent.active01Change).toHaveBeenCalledTimes(2);
       expect(testComponent.active02Change).toHaveBeenCalledTimes(1);
     });
+    it('should click to fold up work with accordion', () => {
+      testComponent.accordion = true;
+      fixture.detectChanges();
+      expect(panels[ 0 ].nativeElement.classList).not.toContain('ant-collapse-item-active');
+      expect(testComponent.active01).toBe(false);
+      panels[ 0 ].nativeElement.querySelector('.ant-collapse-header').click();
+      fixture.detectChanges();
+      panels[ 1 ].nativeElement.querySelector('.ant-collapse-header').click();
+      fixture.detectChanges();
+      panels[ 0 ].nativeElement.querySelector('.ant-collapse-header').click();
+      fixture.detectChanges();
+      expect(testComponent.active01).toBe(true);
+      expect(testComponent.active02).toBe(false);
+      expect(panels[ 0 ].nativeElement.classList).toContain('ant-collapse-item-active');
+      expect(panels[ 1 ].nativeElement.classList).not.toContain('ant-collapse-item-active');
+      expect(testComponent.active01Change).toHaveBeenCalledTimes(3);
+      expect(testComponent.active02Change).toHaveBeenCalledTimes(2);
+      panels[ 0 ].nativeElement.querySelector('.ant-collapse-header').click();
+      fixture.detectChanges();
+      expect(testComponent.active01).toBe(false);
+      expect(testComponent.active02).toBe(false);
+      expect(panels[ 0 ].nativeElement.classList).not.toContain('ant-collapse-item-active');
+      expect(panels[ 1 ].nativeElement.classList).not.toContain('ant-collapse-item-active');
+      expect(testComponent.active01Change).toHaveBeenCalledTimes(4);
+      expect(testComponent.active02Change).toHaveBeenCalledTimes(2);
+    });
     it('should header work', () => {
       fixture.detectChanges();
       expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-header').innerText).toBe('string');
