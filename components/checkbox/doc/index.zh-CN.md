@@ -44,6 +44,8 @@ title: Checkbox
 
 ### [nz-checkbox]
 
+通过ViewChild或其他方式获得 `nz-checkbox` 实例
+
 | 名称 | 描述 |
 | ---- | ----------- |
 | focus() | 获取焦点 |
