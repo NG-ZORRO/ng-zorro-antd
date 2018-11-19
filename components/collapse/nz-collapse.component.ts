@@ -43,7 +43,10 @@ export class NzCollapseComponent {
     if (this.nzAccordion) {
       this.listOfPanel.forEach(item => {
         const active = collapse === item;
-        if (item.nzActive !== active) {
+        if (active && item.nzActive === active) {
+          item.nzActive = false;
+          item.nzActiveChange.emit(item.nzActive);
+        } else if (item.nzActive !== active) {
           item.nzActive = active;
           item.nzActiveChange.emit(item.nzActive);
         }
