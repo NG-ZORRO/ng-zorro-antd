@@ -1,6 +1,9 @@
+import { FocusMonitor } from '@angular/cdk/a11y';
 import {
   forwardRef,
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -12,9 +15,12 @@ import {
   Optional,
   Output,
   Renderer2,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+import { NgClassType } from '../core/types/ng-class';
 
 import { isEmpty } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
@@ -24,6 +30,8 @@ import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
 @Component({
   selector           : '[nz-checkbox]',
   preserveWhitespaces: false,
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-checkbox.component.html',
   providers          : [
     {
@@ -31,22 +39,25 @@ import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
       useExisting: forwardRef(() => NzCheckboxComponent),
       multi      : true
     }
-  ]
+  ],
+  host               : {
+    '[class.ant-checkbox-wrapper]': 'true'
+  }
 })
 export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChanges, AfterViewInit, OnDestroy {
   private _disabled = false;
   private _indeterminate = false;
   private _autoFocus = false;
   private _checked = false;
-  private el: HTMLElement = this.elementRef.nativeElement;
   private isInit = false;
   private prefixCls = 'ant-checkbox';
-  private onChange = Function.prototype;
-  private onTouched = Function.prototype;
-  @ViewChild('inputElement')
-  private inputElement: ElementRef;
-  @ViewChild('contentElement') contentElement: ElementRef;
-  classMap = {};
+  // tslint:disable-next-line:no-any
+  private onChange: (value: any) => void = () => {};
+  // tslint:disable-next-line:no-any
+  private onTouched: () => any = () => {};
+  classMap: NgClassType = {};
+  @ViewChild('inputElement') private inputElement: ElementRef;
+  @ViewChild('contentElement') private contentElement: ElementRef;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Input() nzValue: string;
 
@@ -63,6 +74,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   @Input()
   set nzDisabled(value: boolean) {
     this._disabled = toBoolean(value);
+    this.cdr.markForCheck();
   }
 
   get nzDisabled(): boolean {
@@ -82,6 +94,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   set nzChecked(value: boolean) {
     this._checked = value;
     this.updateClassMap();
+    this.cdr.markForCheck();
   }
 
   get nzChecked(): boolean {
@@ -91,14 +104,10 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   @HostListener('click', [ '$event' ])
   onClick(e: MouseEvent): void {
     e.preventDefault();
-    this.inputElement.nativeElement.focus();
+    this.focus();
     if (!this.nzDisabled) {
       this.updateValue(!this.nzChecked);
     }
-  }
-
-  onBlur(): void {
-    this.onTouched();
   }
 
   updateAutoFocus(): void {
@@ -146,7 +155,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   }
 
   focus(): void {
-    this.inputElement.nativeElement.focus();
+    this.focusMonitor.focusVia(this.inputElement, 'keyboard');
   }
 
   blur(): void {
@@ -161,11 +170,20 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
     }
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Optional() private nzCheckboxWrapperComponent: NzCheckboxWrapperComponent) {
+  constructor(private elementRef: ElementRef<HTMLElement>, private renderer: Renderer2, @Optional() private nzCheckboxWrapperComponent: NzCheckboxWrapperComponent, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
   }
 
   ngOnInit(): void {
-    this.renderer.addClass(this.el, `${this.prefixCls}-wrapper`);
+    this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
+      if (!focusOrigin) {
+        // When a focused element becomes disabled, the browser *immediately* fires a blur event.
+        // Angular does not expect events to be raised during change detection, so any state change
+        // (such as a form control's 'ng-touched') will cause a changed-after-checked error.
+        // See https://github.com/angular/angular/issues/17793. To work around this, we defer
+        // telling the form control it has been touched until the next tick.
+        Promise.resolve().then(() => this.onTouched());
+      }
+    });
     this.updateClassMap();
     if (this.nzCheckboxWrapperComponent) {
       this.nzCheckboxWrapperComponent.addCheckbox(this);
@@ -183,6 +201,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   }
 
   ngOnDestroy(): void {
+    this.focusMonitor.stopMonitoring(this.elementRef);
     if (this.nzCheckboxWrapperComponent) {
       this.nzCheckboxWrapperComponent.removeCheckbox(this);
     }

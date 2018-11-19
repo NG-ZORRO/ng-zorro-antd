@@ -5,7 +5,8 @@ import {
   Input,
   OnInit,
   Output,
-  TemplateRef
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 import { fadeAnimation } from '../core/animation/fade-animations';
 import { NgClassType } from '../core/types/ng-class';
@@ -16,9 +17,10 @@ import { toBoolean } from '../core/util/convert';
   animations         : [ fadeAnimation ],
   templateUrl        : './nz-alert.component.html',
   changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   preserveWhitespaces: false,
   styles             : [
-    `:host {
+      `nz-alert {
       display: block;
     }`
   ]

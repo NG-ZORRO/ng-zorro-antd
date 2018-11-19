@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, Input, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector           : 'nz-card-meta',
   preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-card-meta.component.html',
   styles             : [ `
-    :host {
+    nz-card-meta {
       display: block;
     }
   ` ],
