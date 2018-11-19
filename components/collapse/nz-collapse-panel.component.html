@@ -1,16 +1,8 @@
-<div
-  role="tab"
-  [attr.aria-expanded]="nzActive"
-  class="ant-collapse-header"
-  (click)="clickHeader()">
+<div role="tab" [attr.aria-expanded]="nzActive" class="ant-collapse-header" (click)="clickHeader()">
   <i nz-icon type="right" class="arrow anticon-right" *ngIf="nzShowArrow"></i>
-  <ng-container *ngIf="isHeaderString; else headerTemplate">{{ nzHeader }}</ng-container>
-  <ng-template #headerTemplate>
-    <ng-template [ngTemplateOutlet]="nzHeader"></ng-template>
-  </ng-template>
+  <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
 </div>
-<div
-  class="ant-collapse-content"
+<div class="ant-collapse-content"
   [class.ant-collapse-content-active]="nzActive"
   [@collapseState]="nzActive?'active':'inactive'">
   <div class="ant-collapse-content-box">

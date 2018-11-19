@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
 
 export interface NzCheckBoxOptionInterface {
   label: string;
@@ -32,21 +32,12 @@ export interface NzCheckBoxOptionInterface {
   }
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor {
-  private _disabled = false;
   // tslint:disable-next-line:no-any
   private onChange: (value: any) => void = () => {};
   // tslint:disable-next-line:no-any
   private onTouched: () => any = () => {};
   options: NzCheckBoxOptionInterface[];
-
-  @Input()
-  set nzDisabled(value: boolean) {
-    this._disabled = toBoolean(value);
-  }
-
-  get nzDisabled(): boolean {
-    return this._disabled;
-  }
+  @Input() @InputBoolean() nzDisabled = false;
 
   onOptionChange(): void {
     this.onChange(this.options);
