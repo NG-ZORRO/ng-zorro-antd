@@ -1,72 +1,44 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
   OnChanges,
   OnInit,
   SimpleChanges,
-  TemplateRef
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util';
 
 @Component({
   selector           : 'nz-divider',
   templateUrl        : './nz-divider.component.html',
-  providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
+  providers          : [ NzUpdateHostClassService ],
+  encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzDividerComponent implements OnChanges, OnInit {
-  // region fields
-
-  isText = false;
-  textStr = '';
-  textTpl: TemplateRef<void>;
-
-  @Input()
-  set nzText(value: string | TemplateRef<void>) {
-    if (value instanceof TemplateRef) {
-      this.textStr = null;
-      this.textTpl = value;
-    } else {
-      this.textStr = value;
-    }
-    this.isText = !!value;
-  }
-
+  @Input() nzText: string | TemplateRef<void>;
   @Input() nzType: 'horizontal' | 'vertical' = 'horizontal';
-
   @Input() nzOrientation: 'left' | 'right' | '' = '';
+  @Input() @InputBoolean() nzDashed = false;
 
-  private _dashed = false;
-
-  @Input()
-  set nzDashed(value: boolean) {
-    this._dashed = toBoolean(value);
-  }
-
-  get nzDashed(): boolean {
-    return this._dashed;
-  }
-
-  // endregion
   private setClass(): void {
     const orientationPrefix = (this.nzOrientation.length > 0) ? '-' + this.nzOrientation : this.nzOrientation;
     const classMap = {
       [ 'ant-divider' ]                              : true,
       [ `ant-divider-${this.nzType}` ]               : true,
-      [ `ant-divider-with-text${orientationPrefix}` ]: this.isText,
+      [ `ant-divider-with-text${orientationPrefix}` ]: this.nzText,
       [ `ant-divider-dashed` ]                       : this.nzDashed
     };
-    this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
-    this.cd.detectChanges();
+    this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, classMap);
   }
 
-  constructor(private el: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {
+  constructor(private elementRef: ElementRef, private nzUpdateHostClassService: NzUpdateHostClassService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
