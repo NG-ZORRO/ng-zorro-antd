@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector           : 'nz-footer',
   preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None,
+  changeDetection    : ChangeDetectionStrategy.OnPush,
   templateUrl        : './nz-footer.component.html',
   styles             : [
-    `:host {
+      `nz-footer {
       display: block;
     }`
   ],
