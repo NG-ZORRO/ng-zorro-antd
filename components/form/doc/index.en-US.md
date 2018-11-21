@@ -75,6 +75,7 @@ The label of the form item, optional.
 | `[nzFor]`| The `for` property of `label` | string | -|
 
 ### nz-form-control
+> Note：Due to the lack of partial Observable in [Angular Form](https://github.com/angular/angular/issues/10887), you have to notify `nz-form-control` to update its status with `updateValueAndValidity` when you update form status using methods like `markAsDirty`.
 
 A form consists of one or more form fields whose type includes input, textarea, checkbox, radio, select, tag, and more.
 

@@ -69,7 +69,7 @@ import { Observable, Observer } from 'rxjs';
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>Comment</nz-form-label>
-        <nz-form-control [nzSpan]="12" >
+        <nz-form-control [nzSpan]="12">
           <textarea formControlName="comment" nz-input rows="2" placeholder="write any thing"></textarea>
           <nz-form-explain *ngIf="validateForm.get('comment').dirty&&validateForm.get('comment').hasError('required')">Please write something here!</nz-form-explain>
         </nz-form-control>
@@ -83,10 +83,11 @@ import { Observable, Observer } from 'rxjs';
     </form>`,
 
   styles: [
-    `
+      `
       [nz-form] {
         max-width: 600px;
       }
+
       button {
         margin-left: 8px;
       }
@@ -139,7 +140,7 @@ export class NzDemoFormValidateReactiveComponent {
   constructor(private fb: FormBuilder) {
     this.validateForm = this.fb.group({
       userName: [ '', [ Validators.required ], [ this.userNameAsyncValidator ] ],
-      email   : [ '', [ Validators.email ] ],
+      email   : [ '', [ Validators.email, Validators.required ] ],
       password: [ '', [ Validators.required ] ],
       confirm : [ '', [ this.confirmValidator ] ],
       comment : [ '', [ Validators.required ] ]
