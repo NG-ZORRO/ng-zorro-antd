@@ -1,8 +1,7 @@
+import { MediaMatcher } from '@angular/cdk/layout';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, fakeAsync, tick , TestBed } from '@angular/core/testing';
+import { async, discardPeriodicTasks, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-
-import { NzMatchMediaService } from '../core/services/nz-match-media.service';
 import { NzIconModule } from '../icon/nz-icon.module';
 
 import { NzDemoLayoutBasicComponent } from './demo/basic';
@@ -191,7 +190,7 @@ describe('layout', () => {
       }).overrideComponent(NzSiderComponent, {
         set: {
           providers: [
-            { provide: NzMatchMediaService, useClass: MatchMediaServiceSpy }
+            { provide: MediaMatcher, useClass: MatchMediaServiceSpy }
           ]
         }
       }).compileComponents();
@@ -204,7 +203,9 @@ describe('layout', () => {
     });
     it('should responsive work', fakeAsync(() => {
       fixture.detectChanges();
-      tick();
+      tick(1000);
+      fixture.detectChanges();
+      discardPeriodicTasks();
       fixture.detectChanges();
       expect(sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;').toBe(true);
     }));
