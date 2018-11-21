@@ -1,13 +1,22 @@
 import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
-  HostListener,
   Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
   OnInit,
-  Renderer2
+  Renderer2,
+  SimpleChanges,
+  ViewEncapsulation
 } from '@angular/core';
 
-import { matchMedia } from '../core/polyfill/match-media';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { Platform } from '@angular/cdk/platform';
+import { fromEvent, Subject } from 'rxjs';
+import { auditTime, takeUntil } from 'rxjs/operators';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
 export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between';
@@ -37,65 +46,21 @@ const responsiveMap: BreakpointMap = {
 @Component({
   selector           : 'nz-row',
   preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None,
+  changeDetection    : ChangeDetectionStrategy.OnPush,
   providers          : [ NzUpdateHostClassService ],
   templateUrl        : './nz-row.component.html'
 })
-export class NzRowComponent implements OnInit {
-
-  private _gutter: number | object;
-  private _type: NzType;
-  private _align: NzAlign = 'top';
-  private _justify: NzJustify = 'start';
+export class NzRowComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+  @Input() nzType: NzType;
+  @Input() nzAlign: NzAlign = 'top';
+  @Input() nzJustify: NzJustify = 'start';
+  @Input() nzGutter: number | object;
   private el: HTMLElement = this.elementRef.nativeElement;
   private prefixCls = 'ant-row';
   private breakPoint: Breakpoint;
   actualGutter: number;
-
-  @Input()
-  set nzType(value: NzType) {
-    this._type = value;
-    this.setClassMap();
-  }
-
-  get nzType(): NzType {
-    return this._type;
-  }
-
-  @Input()
-  set nzAlign(value: NzAlign) {
-    this._align = value;
-    this.setClassMap();
-  }
-
-  get nzAlign(): NzAlign {
-    return this._align;
-  }
-
-  @Input()
-  set nzJustify(value: NzJustify) {
-    this._justify = value;
-    this.setClassMap();
-  }
-
-  get nzJustify(): NzJustify {
-    return this._justify;
-  }
-
-  @Input()
-  get nzGutter(): number | object {
-    return this._gutter;
-  }
-
-  set nzGutter(value: number | object) {
-    this._gutter = value;
-    this.updateGutter();
-    this.setStyle();
-  }
-
-  setStyle(): void {
-    this.renderer.setStyle(this.el, 'margin-left', `-${this.actualGutter / 2}px`);
-    this.renderer.setStyle(this.el, 'margin-right', `-${this.actualGutter / 2}px`);
-  }
+  destroy$ = new Subject();
 
   calculateGutter(): number {
     if (typeof this.nzGutter !== 'object') {
@@ -109,23 +74,19 @@ export class NzRowComponent implements OnInit {
 
   updateGutter(): void {
     this.actualGutter = this.calculateGutter();
-  }
-
-  @HostListener('window:resize', [ '$event' ])
-  onWindowResize(e: UIEvent): void {
-    this.watchMedia();
+    this.renderer.setStyle(this.el, 'margin-left', `-${this.actualGutter / 2}px`);
+    this.renderer.setStyle(this.el, 'margin-right', `-${this.actualGutter / 2}px`);
   }
 
   watchMedia(): void {
     // @ts-ignore
     Object.keys(responsiveMap).map((screen: Breakpoint) => {
-      const matchBelow = matchMedia(responsiveMap[ screen ]).matches;
+      const matchBelow = this.mediaMatcher.matchMedia(responsiveMap[ screen ]).matches;
       if (matchBelow) {
         this.breakPoint = screen;
       }
     });
     this.updateGutter();
-    this.setStyle();
   }
 
   /** temp solution since no method add classMap to host https://github.com/angular/angular/issues/7289*/
@@ -139,11 +100,35 @@ export class NzRowComponent implements OnInit {
     this.nzUpdateHostClassService.updateHostClass(this.el, classMap);
   }
 
-  constructor(public elementRef: ElementRef, public renderer: Renderer2, public nzUpdateHostClassService: NzUpdateHostClassService) {
+  constructor(public elementRef: ElementRef, public renderer: Renderer2, public nzUpdateHostClassService: NzUpdateHostClassService, public mediaMatcher: MediaMatcher, public ngZone: NgZone, public platform: Platform) {
   }
 
   ngOnInit(): void {
     this.setClassMap();
     this.watchMedia();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzType || changes.nzAlign || changes.nzJustify) {
+      this.setClassMap();
+    }
+    if (changes.nzGutter) {
+      this.updateGutter();
+    }
+  }
+
+  ngAfterViewInit(): void {
+    if (this.platform.isBrowser) {
+      this.ngZone.runOutsideAngular(() => {
+        fromEvent(window, 'resize')
+        .pipe(auditTime(16), takeUntil(this.destroy$))
+        .subscribe(() => this.watchMedia());
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

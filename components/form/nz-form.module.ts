@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { LayoutModule } from '@angular/cdk/layout';
+import { PlatformModule } from '@angular/cdk/platform';
 import { NzGridModule } from '../grid/nz-grid.module';
 import { NzIconModule } from '../icon/nz-icon.module';
 import { NzFormControlComponent } from './nz-form-control.component';
@@ -32,7 +34,7 @@ import { NzFormDirective } from './nz-form.directive';
     NzFormTextComponent,
     NzFormSplitComponent
   ],
-  imports     : [ CommonModule, NzGridModule, NzIconModule ]
+  imports     : [ CommonModule, NzGridModule, NzIconModule, LayoutModule, PlatformModule ]
 })
 export class NzFormModule {
 }
