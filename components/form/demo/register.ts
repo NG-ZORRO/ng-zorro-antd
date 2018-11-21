@@ -102,7 +102,7 @@ import {
     </form>`,
 
   styles: [
-    `[nz-form] {
+      `[nz-form] {
       max-width: 600px;
     }`
   ]
@@ -139,7 +139,7 @@ export class NzDemoFormRegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      email            : [ null, [ Validators.email ] ],
+      email            : [ null, [ Validators.email, Validators.required ] ],
       password         : [ null, [ Validators.required ] ],
       checkPassword    : [ null, [ Validators.required, this.confirmationValidator ] ],
       nickname         : [ null, [ Validators.required ] ],
