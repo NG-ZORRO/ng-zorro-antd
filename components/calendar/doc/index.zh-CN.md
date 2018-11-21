@@ -32,7 +32,7 @@ registerLocaleData(zh);
   <div *dateCell>Foo</div>
 </nz-calendar>
 <!-- 传入 TemplateRef 的方式 -->
-<ng-template #dateCellTpl>Bar</ng-template>
+<ng-template #dateCellTpl let-date><span>{{ date.getDate() }}</span></ng-template>
 ```
 
 ### nz-calendar
