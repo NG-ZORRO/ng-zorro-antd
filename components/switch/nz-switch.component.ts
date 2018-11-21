@@ -1,3 +1,4 @@
+import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import {
   forwardRef,
   Component,
@@ -138,13 +139,13 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
 
   onKeyDown(e: KeyboardEvent): void {
     if (!this.nzControl) {
-      if (e.keyCode === 37) { // Left
+      if (e.keyCode === LEFT_ARROW) { // Left
         this.updateValue(false, true);
         e.preventDefault();
-      } else if (e.keyCode === 39) { // Right
+      } else if (e.keyCode === RIGHT_ARROW) { // Right
         this.updateValue(true, true);
         e.preventDefault();
-      } else if (e.keyCode === 32 || e.keyCode === 13) { // Space, Enter
+      } else if (e.keyCode === SPACE || e.keyCode === ENTER) { // Space, Enter
         this.updateValue(!this.checked, true);
         e.preventDefault();
       }

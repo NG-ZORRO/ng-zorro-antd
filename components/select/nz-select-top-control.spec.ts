@@ -1,3 +1,4 @@
+import { BACKSPACE } from '@angular/cdk/keycodes';
 import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -163,14 +164,14 @@ describe('nz-select top control', () => {
       expect(ul.children[ 0 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test1');
       expect(ul.children[ 1 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test2');
       expect(ul.children[ 2 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test3');
-      dispatchKeyboardEvent(tc.nativeElement.querySelector('.ant-select-search__field'), 'keydown', 8, tc.nativeElement.querySelector('.ant-select-search__field'));
+      dispatchKeyboardEvent(tc.nativeElement.querySelector('.ant-select-search__field'), 'keydown', BACKSPACE, tc.nativeElement.querySelector('.ant-select-search__field'));
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
       expect(ul.children.length).toBe(3);
       expect(ul.children[ 0 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test1');
       expect(ul.children[ 1 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test2');
-      dispatchKeyboardEvent(tc.nativeElement.querySelector('.ant-select-search__field'), 'keydown', 8, tc.nativeElement.querySelector('.ant-select-search__field'));
+      dispatchKeyboardEvent(tc.nativeElement.querySelector('.ant-select-search__field'), 'keydown', BACKSPACE, tc.nativeElement.querySelector('.ant-select-search__field'));
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
