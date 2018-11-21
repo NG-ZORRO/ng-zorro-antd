@@ -5,7 +5,6 @@ import {
   Host,
   Input,
   Optional,
-  Renderer2,
   ViewEncapsulation
 } from '@angular/core';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
@@ -29,7 +28,7 @@ export class NzFormLabelComponent extends NzColComponent {
   @Input() nzFor: string;
   @Input() @InputBoolean() nzRequired = false;
 
-  constructor(nzUpdateHostClassService: NzUpdateHostClassService, elementRef: ElementRef, @Optional() @Host() nzFormItemComponent: NzFormItemComponent, @Optional() @Host() nzRowDirective: NzRowDirective, renderer: Renderer2) {
-    super(nzUpdateHostClassService, elementRef, nzFormItemComponent, nzRowDirective, renderer);
+  constructor(nzUpdateHostClassService: NzUpdateHostClassService, elementRef: ElementRef, @Optional() @Host() nzFormItemComponent: NzFormItemComponent, @Optional() @Host() nzRowDirective: NzRowDirective) {
+    super(nzUpdateHostClassService, elementRef, nzFormItemComponent, nzRowDirective);
   }
 }

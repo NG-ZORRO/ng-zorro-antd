@@ -1,3 +1,5 @@
+import { MediaMatcher } from '@angular/cdk/layout';
+import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -6,12 +8,12 @@ import {
   ContentChildren,
   ElementRef,
   Input,
+  NgZone,
   OnDestroy,
   QueryList,
   Renderer2,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
@@ -40,7 +42,6 @@ import { NzFormExplainComponent } from './nz-form-explain.component';
 })
 export class NzFormItemComponent extends NzRowComponent implements AfterContentInit, OnDestroy {
   private _flex = false;
-  private destroy$ = new Subject();
   @ContentChildren(NzFormExplainComponent, { descendants: true }) listOfNzFormExplainComponent: QueryList<NzFormExplainComponent>;
 
   @Input()
@@ -53,8 +54,8 @@ export class NzFormItemComponent extends NzRowComponent implements AfterContentI
     }
   }
 
-  constructor(elementRef: ElementRef, renderer: Renderer2, nzUpdateHostClassService: NzUpdateHostClassService, private cdr: ChangeDetectorRef) {
-    super(elementRef, renderer, nzUpdateHostClassService);
+  constructor(elementRef: ElementRef, renderer: Renderer2, nzUpdateHostClassService: NzUpdateHostClassService, mediaMatcher: MediaMatcher, ngZone: NgZone, platform: Platform, private cdr: ChangeDetectorRef) {
+    super(elementRef, renderer, nzUpdateHostClassService, mediaMatcher, ngZone, platform);
   }
 
   ngAfterContentInit(): void {
@@ -63,10 +64,5 @@ export class NzFormItemComponent extends NzRowComponent implements AfterContentI
         this.cdr.markForCheck();
       });
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

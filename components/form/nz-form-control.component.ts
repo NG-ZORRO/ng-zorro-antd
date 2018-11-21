@@ -10,7 +10,6 @@ import {
   OnDestroy,
   OnInit,
   Optional,
-  Renderer2,
   ViewEncapsulation
 } from '@angular/core';
 import { FormControl, FormControlName, NgControl } from '@angular/forms';
@@ -123,8 +122,8 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
     }
   }
 
-  constructor(nzUpdateHostClassService: NzUpdateHostClassService, elementRef: ElementRef, @Optional() @Host() nzFormItemComponent: NzFormItemComponent, @Optional() @Host() nzRowDirective: NzRowDirective, renderer: Renderer2, private cdr: ChangeDetectorRef) {
-    super(nzUpdateHostClassService, elementRef, nzFormItemComponent, nzRowDirective, renderer);
+  constructor(nzUpdateHostClassService: NzUpdateHostClassService, elementRef: ElementRef, @Optional() @Host() nzFormItemComponent: NzFormItemComponent, @Optional() @Host() nzRowDirective: NzRowDirective, private cdr: ChangeDetectorRef) {
+    super(nzUpdateHostClassService, elementRef, nzFormItemComponent, nzRowDirective);
   }
 
   ngOnInit(): void {
