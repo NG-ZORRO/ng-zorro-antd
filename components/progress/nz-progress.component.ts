@@ -7,6 +7,7 @@ import {
 export type NzProgressGapPositionType = 'top' | 'bottom' | 'left' | 'right';
 export type NzProgressStatusType = 'success' | 'exception' | 'active' | 'normal';
 export type NzProgressTypeType = 'line' | 'circle' | 'dashboard';
+export type NzProgressStrokeLinecapType = 'round' | 'square';
 import { isNotNil } from '../core/util/check';
 
 @Component({
@@ -20,6 +21,7 @@ export class NzProgressComponent implements OnInit {
   private _percent = 0;
   private _status: NzProgressStatusType = 'normal';
   private _cacheStatus: NzProgressStatusType = 'normal';
+  private _strokeLinecap: NzProgressStrokeLinecapType = 'round';
   private _strokeWidth = 8;
   private _size = 'default';
   private _type: NzProgressTypeType = 'line';
@@ -42,6 +44,7 @@ export class NzProgressComponent implements OnInit {
   @Input() nzShowInfo = true;
   @Input() nzWidth = 132;
   @Input() nzSuccessPercent = 0;
+  @Input() nzStrokeColor: string;
 
   @Input()
   set nzSize(value: string) {
@@ -164,6 +167,16 @@ export class NzProgressComponent implements OnInit {
     return this._gapPosition;
   }
 
+  @Input()
+  set nzStrokeLinecap(value: NzProgressStrokeLinecapType) {
+    this._strokeLinecap = value;
+    this.updatePathStyles();
+  }
+
+  get nzStrokeLinecap(): NzProgressStrokeLinecapType {
+    return this._strokeLinecap;
+  }
+
   get isCirCleStyle(): boolean {
     return this.nzType === 'circle' || this.nzType === 'dashboard';
   }
@@ -212,8 +225,12 @@ export class NzProgressComponent implements OnInit {
   updateIcon(): void {
     const isCircle = (this.nzType === 'circle' || this.nzType === 'dashboard');
     let ret = '';
-    if (this.nzStatus === 'success') { ret = 'check'; }
-    if (this.nzStatus === 'exception') { ret = 'close'; }
+    if (this.nzStatus === 'success') {
+      ret = 'check';
+    }
+    if (this.nzStatus === 'exception') {
+      ret = 'close';
+    }
     if (ret) {
       if (!isCircle) {
         ret += '-circle';
