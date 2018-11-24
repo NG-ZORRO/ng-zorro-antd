@@ -56,6 +56,7 @@ title: Modal
 | nzTitle           | 标题。<i>留空表示不展示标题。TemplateRef的使用方法可参考案例</i> | string<br>TemplateRef | 无 |
 | nzVisible         | 对话框是否可见。<i>当以 `<nz-modal>` 标签使用时，请务必使用双向绑定，例如：`[(nzVisible)]="visible"`</i> | boolean | false |
 | nzWidth           | 宽度。<i>使用数字时，默认单位为px</i> | string<br>number | 520 |
+| nzClassName       | 对话框的类名 | string | 无 |
 | nzWrapClassName   | 对话框外层容器的类名 | string | 无 |
 | nzZIndex          | 设置 Modal 的 `z-index` | number | 1000 |
 | nzOnCancel        | 点击遮罩层或右上角叉或取消按钮的回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>注：当以`NzModalService.create`创建时，此参数应传入function（回调函数）。该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | EventEmitter | 无 |
