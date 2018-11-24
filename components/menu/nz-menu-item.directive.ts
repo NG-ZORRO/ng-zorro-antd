@@ -21,6 +21,7 @@ import { NzSubMenuComponent } from './nz-submenu.component';
 export class NzMenuItemDirective implements OnInit {
   private _disabled = false;
   private _selected = false;
+  private _initialized = false;
   level = 0;
   padding = null;
   isInDropDown = false;
@@ -37,10 +38,8 @@ export class NzMenuItemDirective implements OnInit {
   @Input()
   set nzSelected(value: boolean) {
     this._selected = toBoolean(value);
-    if (this._selected) {
-      this.renderer.addClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected');
-    } else {
-      this.renderer.removeClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected');
+    if (this._initialized) {
+      this.setClass();
     }
   }
 
@@ -112,5 +111,15 @@ export class NzMenuItemDirective implements OnInit {
       this.padding = parseInt(this.hostElement.nativeElement.style[ 'padding-left' ], 10);
     }
     this.isInDropDown = this.nzMenuDirective.nzInDropDown;
+    this.setClass();
+    this._initialized = true;
+  }
+
+  setClass(): void {
+    if (this._selected) {
+      this.renderer.addClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected');
+    } else {
+      this.renderer.removeClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected');
+    }
   }
 }
