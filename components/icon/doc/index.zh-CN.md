@@ -78,13 +78,16 @@ NG-ZORRO 之前并没有图标组件，而是提供了基于字体文件的解�
 
 ```ts
 import { IconDefinition } from '@ant-design/icons-angular';
-import { AccountBookFill, AlertFill, AlertOutline } from '@ant-design/icons-angular/icons';
 import { NgZorroAntdModule, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from 'ng-zorro-antd';
-// import * as AllIcons from '@ant-design/icons-angular/icons';
 
 // 引入你需要的图标，比如你需要 fill 主题的 AccountBook Alert 和 outline 主题的 Alert，推荐 ✔️
+import { AccountBookFill, AlertFill, AlertOutline } from '@ant-design/icons-angular/icons';
+
 const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
-// 全量引入，不推荐 ❌
+
+// 引入全部的图标，不推荐 ❌
+// import * as AllIcons from '@ant-design/icons-angular/icons';
+
 // const antDesignIcons = AllIcons as {
 //   [key: string]: IconDefinition;
 // };
@@ -109,7 +112,7 @@ export class AppModule {
 
 本质上是调用了 `NzIconService` 的 `addIcon` 方法，引入后的文件会被打包到 `.js` 文件中。静态引入会增加包体积，所以我们建议尽可能地使用动态加载，如果要静态加载，也仅仅加载你需要用到的图标，具体请看 Ant Design 的 [issue](https://github.com/ant-design/ant-design/issues/12011)。
 
-> 为了加快渲染速度，`NG-ZORRO` 本身用到的 icon 是静态引入的。而官网的图标是动态引入的。
+> 为了加快渲染速度，NG-ZORRO 本身用到的 icon 是静态引入的。而官网的图标是动态引入的。
 
 动态加载，这是为了减少包体积而提供的方式。当 NG-ZORRO 检测用户想要渲染的图标还没有静态引入时，会发起 HTTP 请求动态引入。你只需要配置 `angular.json` 文件：
 
@@ -164,3 +167,38 @@ this._iconService.fetchFromIconfont({
 在 scriptUrl 都设置有效的情况下，组件在渲染前会自动引入 [iconfont.cn](http://iconfont.cn/) 项目中的图标符号集，无需手动引入。
 
 见 [iconfont.cn](http://iconfont.cn/help/detail?spm=a313x.7781069.1998910419.15&helptype=code) 使用帮助 查看如何生成 js 地址。
+
+## 常见问题
+
+### 图标都不见了！
+
+你是不是没有阅读以上的文档？
+
+### 出现了两个图标，这是怎么回事？
+
+1.7.0 及之后与之前的版本在图标的实现上完全不同，旧版本的主题文件中，会引入字体文件，字体文件根据 CSS 类名，通过一个伪类元素将 icon 添加进来，加上新版的 SVG icon，就会出现两个 icon。
+
+如果发生了，请先删除 `node_modules` 然后重装，如果还是不行，仔细检查你是否在别处引用了旧版本的主题文件，全局查找 `@icon-url`，删除该行代码即可。
+
+### 我想静态引入全部的图标，该怎么做？
+
+实际上我们已经在 <a href="/components/icon/zh#%E9%9D%99%E6%80%81%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD">静态加载与动态加载</a> 部分演示过了：
+
+```ts
+// import * as AllIcons from '@ant-design/icons-angular/icons';
+
+// const antDesignIcons = AllIcons as {
+//   [key: string]: IconDefinition;
+// };
+// const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
+```
+
+然后通过 InjectionToken（1.8.0）或者 `NzIconService` 的 `addIcon` 方法引入。
+
+### 动态加载会不会影响网页的性能？
+
+我们用了多种手段来尽量减少动态请求，包括先静态后动态、缓存和相同 icon 的请求复用，用户很少能感知到 icon 是异步加载的。在网络环境尚可的情况下，即使是有三百多 icon 同时展示的 NG-ZORRO 官网，也基本没有卡顿。对于加载速度要求更高的用户，我们也支持 CDN。
+
+### 我怎么知道一个 icon 的静态引入名？
+
+很简单，大写驼峰加主题即为 icon 的引入名。比如，`alibaba` 的引入名就是 `AlibabaOutline`，事实上，编辑器的自动补全能帮助到你。
