@@ -1,3 +1,4 @@
+import { ENTER } from '@angular/cdk/keycodes';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import {
   ChangeDetectorRef,
@@ -52,7 +53,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     if (this.options.disabled) {
       return;
     }
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' || e.keyCode === ENTER) {
       this.onClick();
     }
   }

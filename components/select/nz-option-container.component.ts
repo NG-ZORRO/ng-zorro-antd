@@ -1,3 +1,4 @@
+import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   AfterContentInit,
   Component,
@@ -90,18 +91,18 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   }
 
   onKeyDownUl(e: KeyboardEvent): void {
-    if ([ 38, 40, 13 ].indexOf(e.keyCode) > -1) {
+    if ([ UP_ARROW, DOWN_ARROW, ENTER ].indexOf(e.keyCode) > -1) {
       e.preventDefault();
       const activeIndex = this.listOfFilterOption.findIndex(item => item === this.activatedOption);
-      if (e.keyCode === 38) {
+      if (e.keyCode === UP_ARROW) {
         // arrow up
         const preIndex = activeIndex > 0 ? (activeIndex - 1) : (this.listOfFilterOption.length - 1);
         this.setActiveOption(this.listOfFilterOption[ preIndex ]);
-      } else if (e.keyCode === 40) {
+      } else if (e.keyCode === DOWN_ARROW) {
         // arrow down
         const nextIndex = activeIndex < this.listOfFilterOption.length - 1 ? (activeIndex + 1) : 0;
         this.setActiveOption(this.listOfFilterOption[ nextIndex ]);
-      } else if (e.keyCode === 13) {
+      } else if (e.keyCode === ENTER) {
         // enter
         if (this.isTagsMode) {
           if (!this.isAddTagOptionDisplay) {

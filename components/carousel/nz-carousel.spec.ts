@@ -1,3 +1,4 @@
+import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -73,16 +74,16 @@ describe('carousel', () => {
       fixture.detectChanges();
       expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
       const list = carouselWrapper.nativeElement.querySelector('.slick-list');
-      dispatchKeyboardEvent(list, 'keydown', 37);
+      dispatchKeyboardEvent(list, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
       expect(carouselContents[ 3 ].nativeElement.classList).toContain('slick-active');
-      dispatchKeyboardEvent(list, 'keydown', 37);
+      dispatchKeyboardEvent(list, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
       expect(carouselContents[ 2 ].nativeElement.classList).toContain('slick-active');
-      dispatchKeyboardEvent(list, 'keydown', 39);
+      dispatchKeyboardEvent(list, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
       expect(carouselContents[ 3 ].nativeElement.classList).toContain('slick-active');
-      dispatchKeyboardEvent(list, 'keydown', 39);
+      dispatchKeyboardEvent(list, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
       expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
     });

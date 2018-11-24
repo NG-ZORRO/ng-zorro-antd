@@ -1,4 +1,17 @@
 // tslint:disable:no-any
+import {
+  A,
+  COMMA,
+  DELETE,
+  DOWN_ARROW, END,
+  ENTER,
+  ESCAPE, HOME,
+  LEFT_ARROW, NINE,
+  PAGE_DOWN,
+  PAGE_UP,
+  RIGHT_ARROW, SPACE, TAB,
+  UP_ARROW, Z, ZERO
+} from '@angular/cdk/keycodes';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/testing';
@@ -681,7 +694,6 @@ describe('cascader', () => {
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2); // 2列
     });
     it('should click option to change column count 2', fakeAsync(() => {
-      const LEFT_ARROW = 37;
       testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
       fixture.detectChanges();
       cascader.nativeElement.click();
@@ -780,7 +792,6 @@ describe('cascader', () => {
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0);
     }));
     it('should open menu when press DOWN_ARROW', fakeAsync(() => {
-      const DOWN_ARROW = 40;
       fixture.detectChanges();
       expect(testComponent.cascader.isMenuVisible()).toBe(false);
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
@@ -790,7 +801,6 @@ describe('cascader', () => {
       expect(testComponent.cascader.isMenuVisible()).toBe(true);
     }));
     it('should open menu when press UP_ARROW', fakeAsync(() => {
-      const UP_ARROW = 38;
       fixture.detectChanges();
       expect(testComponent.cascader.isMenuVisible()).toBe(false);
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', UP_ARROW);
@@ -799,20 +809,18 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(testComponent.cascader.isMenuVisible()).toBe(true);
     }));
-    it('should close menu when press ESC', fakeAsync(() => {
-      const ESC = 27;
+    it('should close menu when press ESCAPE', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
       expect(testComponent.cascader.isMenuVisible()).toBe(true);
-      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', ESC);
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', ESCAPE);
       fixture.detectChanges();
       flush(); // wait for cdk-overlay to close
       fixture.detectChanges();
       expect(testComponent.cascader.isMenuVisible()).toBe(false);
     }));
     it('should navigate up when press UP_ARROW', fakeAsync(() => {
-      const UP_ARROW = 38;
       fixture.detectChanges();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
@@ -829,7 +837,6 @@ describe('cascader', () => {
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
     }));
     it('should navigate down when press DOWN_ARROW', fakeAsync(() => {
-      const DOWN_ARROW = 40;
       fixture.detectChanges();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
@@ -840,8 +847,6 @@ describe('cascader', () => {
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
     }));
     it('should navigate right when press RIGHT_ARROW', fakeAsync(() => {
-      const DOWN_ARROW = 40;
-      const RIGHT_ARROW = 39;
       fixture.detectChanges();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
@@ -863,7 +868,6 @@ describe('cascader', () => {
       expect(itemEl3.classList).toContain('ant-cascader-menu-item-active');
     }));
     it('should navigate left when press LEFT_ARROW', fakeAsync(() => {
-      const LEFT_ARROW = 37;
       fixture.detectChanges();
       testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
       testComponent.cascader.setMenuVisible(true);
@@ -895,9 +899,6 @@ describe('cascader', () => {
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
     }));
     it('should select option when press ENTER', fakeAsync(() => {
-      const DOWN_ARROW = 40;
-      const RIGHT_ARROW = 39;
-      const ENTER = 13;
       fixture.detectChanges();
       expect(testComponent.values).toBeNull();
       testComponent.cascader.setMenuVisible(true);
@@ -933,9 +934,6 @@ describe('cascader', () => {
       expect(testComponent.cascader.isMenuVisible()).toBe(false);
     }));
     it('should key nav disabled option correct', fakeAsync(() => {
-      const DOWN_ARROW = 40;
-      const RIGHT_ARROW = 39;
-      const UP_ARROW = 38;
 
       testComponent.nzOptions = options2;
       fixture.detectChanges();
@@ -987,18 +985,6 @@ describe('cascader', () => {
       expect(optionEl14.classList).not.toContain('ant-cascader-menu-item-active');
     }));
     it('should ignore keyboardEvent on some key', fakeAsync(() => {
-      const PAGE_UP = 33;
-      const PAGE_DOWN = 34;
-      const TAB = 9;
-      const HOME = 36;
-      const END = 35;
-      const SPACE = 32;
-      const DELETE = 46;
-      const COMMA = 188;
-      const A = 65;
-      const Z = 90;
-      const ZERO = 48;
-      const NINE = 57;
       const keys = [ PAGE_UP, PAGE_DOWN, TAB, HOME, END, SPACE, COMMA, DELETE ];
       for (let k = A; k <= Z; k++) {
         keys.push(k);
@@ -1426,8 +1412,6 @@ describe('cascader', () => {
       expect(testComponent.cascader.nzColumns[ 0 ][ 2 ].disabled).toBe(true);
     });
     it('should support arrow in search mode', (done) => {
-      const DOWN_ARROW = 40;
-      const ENTER = 13;
       testComponent.nzOptions = options2;
       fixture.detectChanges();
       testComponent.cascader.inputValue = 'o';
@@ -1450,8 +1434,6 @@ describe('cascader', () => {
       });
     });
     it('should not preventDefault left/right arrow in search mode', () => {
-      const LEFT_ARROW = 37;
-      const RIGHT_ARROW = 39;
       fixture.detectChanges();
       testComponent.nzShowSearch = true;
       testComponent.cascader.inputValue = 'o';
