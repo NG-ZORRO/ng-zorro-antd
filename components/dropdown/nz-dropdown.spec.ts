@@ -133,6 +133,14 @@ describe('dropdown', () => {
       expect(items[ 0 ].classList.contains('ant-dropdown-menu-item')).toBe(true);
       expect(items[ 0 ].classList.contains('ant-dropdown-menu-item-selected')).toBe(false);
     });
+    it('should append the correct className', () => {
+      testComponent.visible = true;
+      testComponent.itemSelected = true;
+      fixture.detectChanges();
+      const items = overlayContainerElement.querySelectorAll('.ant-dropdown-menu-item') as NodeListOf<HTMLElement>;
+      expect(items[ 0 ].classList.contains('.ant-menu-item-selected')).toBe(false);
+      expect(items[ 0 ].classList.contains('ant-dropdown-menu-item-selected')).toBe(true);
+    });
     it('should backdrop work with click', () => {
       testComponent.trigger = 'click';
       fixture.detectChanges();
@@ -390,7 +398,7 @@ describe('dropdown', () => {
         Hover me <i nz-icon type="down"></i>
       </a>
       <ul nz-menu [nzSelectable]="selectable">
-        <li nz-menu-item>
+        <li nz-menu-item [nzSelected]="itemSelected">
           <a>1st menu item</a>
         </li>
         <li nz-menu-item>
@@ -413,6 +421,7 @@ export class NzTestDropdownComponent {
   @ViewChild(NzSubMenuComponent) nzSubMenuComponent: NzSubMenuComponent;
   visible = false;
   selectable = true;
+  itemSelected = false;
   trigger = 'hover';
   placement = 'bottomLeft';
   disabled = false;
