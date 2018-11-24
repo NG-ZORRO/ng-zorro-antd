@@ -1,10 +1,11 @@
 import {
+  Attribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
-  OnChanges,
+  OnChanges, Renderer2,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
@@ -13,6 +14,7 @@ import { NzUpdateHostClassService } from '../core/services/update-host-class.ser
 import { NzSizeLDSType } from '../core/types/size';
 
 export type NzAvatarShape = 'square' | 'circle';
+export type NzAvatarSize = NzSizeLDSType | number;
 
 @Component({
   selector           : 'nz-avatar',
@@ -44,13 +46,17 @@ export class NzAvatarComponent implements OnChanges {
 
   @Input() nzShape: NzAvatarShape = 'circle';
 
-  @Input() nzSize: NzSizeLDSType = 'default';
+  @Input() nzSize: NzAvatarSize = 'default';
 
   @Input() nzText: string;
 
   @Input() nzSrc: string;
 
-  constructor(private elementRef: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {
+  constructor(
+    private elementRef: ElementRef,
+    private cd: ChangeDetectorRef,
+    private updateHostClassService: NzUpdateHostClassService,
+    private  renderer: Renderer2) {
   }
   private el: HTMLElement = this.elementRef.nativeElement;
   private prefixCls = 'ant-avatar';
@@ -63,7 +69,7 @@ export class NzAvatarComponent implements OnChanges {
       [ `${this.prefixCls}-${this.sizeMap[ this.nzSize ]}` ]: this.sizeMap[ this.nzSize ],
       [ `${this.prefixCls}-${this.nzShape}` ]               : this.nzShape,
       [ `${this.prefixCls}-icon` ]                          : this.nzIcon,
-      [ `${this.prefixCls}-image` ]                         : this.nzSrc
+      [ `${this.prefixCls}-image` ]                         : this.hasSrc // downgrade after image error
     };
     this.updateHostClassService.updateHostClass(this.el, classMap);
     this.cd.detectChanges();
@@ -80,6 +86,7 @@ export class NzAvatarComponent implements OnChanges {
       this.hasText = true;
     }
     this.setClass().notifyCalc();
+    this.setSizeStyle();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -88,6 +95,7 @@ export class NzAvatarComponent implements OnChanges {
     this.hasSrc = !!this.nzSrc;
 
     this.setClass().notifyCalc();
+    this.setSizeStyle();
   }
 
   private calcStringSize(): void {
@@ -117,5 +125,17 @@ export class NzAvatarComponent implements OnChanges {
       this.calcStringSize();
     });
     return this;
+  }
+
+  private setSizeStyle(): void {
+    if (typeof this.nzSize === 'string') {
+      return;
+    }
+    this.renderer.setStyle(this.el, 'width', `${this.nzSize}px`);
+    this.renderer.setStyle(this.el, 'height', `${this.nzSize}px`);
+    this.renderer.setStyle(this.el, 'line-height', `${this.nzSize}px`);
+    if (this.hasIcon) {
+      this.renderer.setStyle(this.el, 'font-size', `${this.nzSize / 2}px`);
+    }
   }
 }
