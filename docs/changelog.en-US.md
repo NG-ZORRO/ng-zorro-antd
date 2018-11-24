@@ -13,6 +13,24 @@ timeline: true
 * Major version release is not included in this schedule for breadking change and new features.
 
 ---
+## [1.8.1]
+`2018-11-24`
+
+
+### Bug Fixes
+
+* **collapse:** can't fold up active panel with accordion ([#2440](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2440)) ([a17ea49](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a17ea49)), closes [#2437](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2437)
+* **list:** fix invalid render empty style when unspecified data source ([#2415](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2415)) ([7ae325f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7ae325f)), closes [#2385](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2385)
+* **menu:** fix dropdown menu item selected className ([#2434](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2434)) ([e6e2369](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e6e2369)), closes [#2433](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2433)
+* **menu:** fix fold menu ([#2454](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2454)) ([e41640a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e41640a)), closes [#2449](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2449)
+
+
+### Features
+
+* Adds danish locale ([#2486](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2486)) ([811a009](https://github.com/NG-ZORRO/ng-zorro-antd/commit/811a009)), closes [#2485](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2485)
+
+
+
 ## 1.8.0
 `2018-10-26`
 
