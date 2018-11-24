@@ -1,3 +1,4 @@
+import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import {
   forwardRef,
   AfterViewInit,
@@ -208,14 +209,14 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
 
   onKeyDown(e: KeyboardEvent): void {
     const code = e.code;
-    if ((code === 'ArrowRight' || e.keyCode === 39) && (this.nzValue < this.nzCount)) {
+    if ((code === 'ArrowRight' || e.keyCode === RIGHT_ARROW) && (this.nzValue < this.nzCount)) {
       if (this.nzAllowHalf) {
         this.nzValue += 0.5;
       } else {
         this.nzValue += 1;
       }
       this.onChange(this.nzValue);
-    } else if ((code === 'ArrowLeft' || e.keyCode === 37) && (this.nzValue > 0)) {
+    } else if ((code === 'ArrowLeft' || e.keyCode === LEFT_ARROW) && (this.nzValue > 0)) {
       if (this.nzAllowHalf) {
         this.nzValue -= 0.5;
       } else {
