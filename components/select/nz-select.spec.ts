@@ -1,4 +1,4 @@
-import { DOWN_ARROW, SPACE, TAB } from '@angular/cdk/keycodes';
+import { DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { Component, ViewChild } from '@angular/core';
 import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -170,7 +170,7 @@ describe('nz-select component', () => {
       fixture.detectChanges();
       select.nativeElement.click();
       fixture.detectChanges();
-      dispatchKeyboardEvent(document.body, 'keydown', 27);
+      dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -183,7 +183,7 @@ describe('nz-select component', () => {
     }));
     it('should keydown origin work', () => {
       spyOn(testComponent.nzSelectComponent.nzOptionContainerComponent, 'onKeyDownUl');
-      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', 38);
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', UP_ARROW);
       fixture.detectChanges();
       expect(testComponent.nzSelectComponent.nzOptionContainerComponent.onKeyDownUl).toHaveBeenCalledTimes(1);
     });
@@ -198,10 +198,10 @@ describe('nz-select component', () => {
       testComponent.showSearch = true;
       select.nativeElement.click();
       fixture.detectChanges();
-      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', 40);
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', DOWN_ARROW);
       fixture.detectChanges();
       expect(spy).not.toHaveBeenCalled();
-      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', 13);
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', ENTER);
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
     });

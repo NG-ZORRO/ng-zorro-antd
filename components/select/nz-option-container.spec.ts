@@ -1,3 +1,4 @@
+import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import { Component, QueryList, ViewChild } from '@angular/core';
 import { async, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -136,7 +137,7 @@ describe('nz-select option container', () => {
       const ul = oc.nativeElement.querySelector('.ant-select-dropdown-menu');
       fixture.detectChanges();
       fixture.whenStable().then(() => {
-        dispatchKeyboardEvent(ul, 'keydown', 38);
+        dispatchKeyboardEvent(ul, 'keydown', UP_ARROW);
         fixture.detectChanges();
         expect(oc.nativeElement.querySelector('.ant-select-dropdown-menu-item-active').innerText).toBe('sub2-3');
       });
@@ -146,8 +147,8 @@ describe('nz-select option container', () => {
       const ul = oc.nativeElement.querySelector('.ant-select-dropdown-menu');
       fixture.detectChanges();
       fixture.whenStable().then(() => {
-        dispatchKeyboardEvent(ul, 'keydown', 40);
-        dispatchKeyboardEvent(ul, 'keydown', 40);
+        dispatchKeyboardEvent(ul, 'keydown', DOWN_ARROW);
+        dispatchKeyboardEvent(ul, 'keydown', DOWN_ARROW);
         fixture.detectChanges();
         expect(oc.nativeElement.querySelector('.ant-select-dropdown-menu-item-active').innerText).toBe('test2');
       });
@@ -157,7 +158,7 @@ describe('nz-select option container', () => {
       const ul = oc.nativeElement.querySelector('.ant-select-dropdown-menu');
       fixture.detectChanges();
       fixture.whenStable().then(() => {
-        dispatchKeyboardEvent(ul, 'keydown', 13);
+        dispatchKeyboardEvent(ul, 'keydown', ENTER);
         fixture.detectChanges();
         expect(testComponent.clickOption).toHaveBeenCalledTimes(1);
         expect(testComponent.updateListOfSelectedValueFromOptionContainer).toHaveBeenCalledTimes(0);
@@ -168,10 +169,10 @@ describe('nz-select option container', () => {
       const ul = oc.nativeElement.querySelector('.ant-select-dropdown-menu');
       fixture.detectChanges();
       fixture.whenStable().then(() => {
-        dispatchKeyboardEvent(ul, 'keydown', 40);
-        dispatchKeyboardEvent(ul, 'keydown', 40);
+        dispatchKeyboardEvent(ul, 'keydown', DOWN_ARROW);
+        dispatchKeyboardEvent(ul, 'keydown', DOWN_ARROW);
         fixture.detectChanges();
-        dispatchKeyboardEvent(ul, 'keydown', 13);
+        dispatchKeyboardEvent(ul, 'keydown', ENTER);
         fixture.detectChanges();
         expect(testComponent.clickOption).toHaveBeenCalledTimes(1);
         expect(testComponent.listOfSelectedValue[ 0 ].value).toBe('test2');
@@ -183,8 +184,8 @@ describe('nz-select option container', () => {
       const ul = oc.nativeElement.querySelector('.ant-select-dropdown-menu');
       fixture.detectChanges();
       fixture.whenStable().then(() => {
-        dispatchKeyboardEvent(ul, 'keydown', 40);
-        dispatchKeyboardEvent(ul, 'keydown', 40);
+        dispatchKeyboardEvent(ul, 'keydown', DOWN_ARROW);
+        dispatchKeyboardEvent(ul, 'keydown', DOWN_ARROW);
         fixture.detectChanges();
         expect(oc.nativeElement.querySelector('.ant-select-dropdown-menu-item-active').innerText).toBe('test2');
         testComponent.nzOptionContainerComponent.resetActiveOption();
@@ -197,8 +198,8 @@ describe('nz-select option container', () => {
       const ul = oc.nativeElement.querySelector('.ant-select-dropdown-menu');
       fixture.detectChanges();
       fixture.whenStable().then(() => {
-        dispatchKeyboardEvent(ul, 'keydown', 40);
-        dispatchKeyboardEvent(ul, 'keydown', 40);
+        dispatchKeyboardEvent(ul, 'keydown', DOWN_ARROW);
+        dispatchKeyboardEvent(ul, 'keydown', DOWN_ARROW);
         fixture.detectChanges();
         expect(oc.nativeElement.querySelector('.ant-select-dropdown-menu-item-active').innerText).toBe('test2');
         testComponent.searchValue = 'sub1-1';
@@ -247,10 +248,10 @@ describe('nz-select option container', () => {
       fixture.whenStable().then(() => {
         expect(testComponent.nzOptionContainerComponent.listOfTagOption.length).toBe(1);
         const ul = oc.nativeElement.querySelector('.ant-select-dropdown-menu');
-        dispatchKeyboardEvent(ul, 'keydown', 38);
-        dispatchKeyboardEvent(ul, 'keydown', 38);
+        dispatchKeyboardEvent(ul, 'keydown', UP_ARROW);
+        dispatchKeyboardEvent(ul, 'keydown', UP_ARROW);
         fixture.detectChanges();
-        dispatchKeyboardEvent(ul, 'keydown', 13);
+        dispatchKeyboardEvent(ul, 'keydown', ENTER);
         fixture.detectChanges();
         expect(testComponent.nzOptionContainerComponent.listOfTagOption.length).toBe(1);
         expect(testComponent.listOfSelectedValue.length).toBe(3);
@@ -262,7 +263,7 @@ describe('nz-select option container', () => {
       fixture.whenStable().then(() => {
         expect(testComponent.nzOptionContainerComponent.listOfTagOption.length).toBe(1);
         const ul = oc.nativeElement.querySelector('.ant-select-dropdown-menu');
-        dispatchKeyboardEvent(ul, 'keydown', 13);
+        dispatchKeyboardEvent(ul, 'keydown', ENTER);
         fixture.detectChanges();
         expect(testComponent.nzOptionContainerComponent.listOfTagOption.length).toBe(2);
         expect(testComponent.listOfSelectedValue.length).toBe(3);

@@ -1,3 +1,4 @@
+import { DOWN_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   forwardRef,
   AfterViewInit,
@@ -320,11 +321,11 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    if (e.code === 'ArrowUp' || e.keyCode === 38) {
+    if (e.code === 'ArrowUp' || e.keyCode === UP_ARROW) {
       const ratio = this.getRatio(e);
       this.up(e, ratio);
       this.stop();
-    } else if (e.code === 'ArrowDown' || e.keyCode === 40) {
+    } else if (e.code === 'ArrowDown' || e.keyCode === DOWN_ARROW) {
       const ratio = this.getRatio(e);
       this.down(e, ratio);
       this.stop();
