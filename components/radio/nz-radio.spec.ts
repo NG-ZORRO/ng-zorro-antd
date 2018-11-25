@@ -151,11 +151,13 @@ describe('radio', () => {
       expect(testComponent.value).toBe('A');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
-    it('should name work', () => {
+    it('should name work', fakeAsync(() => {
       testComponent.name = 'test';
       fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
       expect(radios.every(radio => radio.nativeElement.querySelector('input').name === 'test')).toBe(true);
-    });
+    }));
   });
   describe('radio group disabled', () => {
     let fixture;
@@ -171,6 +173,8 @@ describe('radio', () => {
     });
     it('should group disable work', fakeAsync(() => {
       testComponent.disabled = true;
+      fixture.detectChanges();
+      flush();
       fixture.detectChanges();
       expect(testComponent.value).toBe('A');
       radios[ 1 ].nativeElement.click();
@@ -272,9 +276,11 @@ describe('radio', () => {
       expect(testComponent.formGroup.get('radioGroup').value).toBe('A');
       testComponent.disable();
       fixture.detectChanges();
-      tick();
+      flush();
       fixture.detectChanges();
       radios[ 1 ].nativeElement.click();
+      fixture.detectChanges();
+      flush();
       fixture.detectChanges();
       expect(testComponent.formGroup.get('radioGroup').value).toBe('A');
     }));
