@@ -56,7 +56,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
 
   breadcrumbs: BreadcrumbOption[] = [];
 
-  private $destroy = new Subject();
+  private unsubscribe$ = new Subject();
 
   constructor(private injector: Injector, private ngZone: NgZone, private cd: ChangeDetectorRef) {
   }
@@ -66,7 +66,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
       try {
         const activatedRoute = this.injector.get(ActivatedRoute);
         const router = this.injector.get(Router);
-        router.events.pipe(filter(e => e instanceof NavigationEnd), takeUntil(this.$destroy)).subscribe(() => {
+        router.events.pipe(filter(e => e instanceof NavigationEnd), takeUntil(this.unsubscribe$)).subscribe(() => {
           this.breadcrumbs = this.getBreadcrumbs(activatedRoute.root);
           this.cd.detectChanges();
         });
@@ -77,7 +77,8 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.$destroy.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: BreadcrumbOption[] = []): BreadcrumbOption[] {
