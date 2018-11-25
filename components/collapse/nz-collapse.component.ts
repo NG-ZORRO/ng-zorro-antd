@@ -9,8 +9,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { merge, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { merge, Subject, Subscription } from 'rxjs';
+import { startWith, takeUntil } from 'rxjs/operators';
 import { InputBoolean } from '../core/util/convert';
 import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
 
@@ -29,7 +29,8 @@ export class NzCollapseComponent implements AfterContentInit, OnDestroy {
   @ContentChildren(NzCollapsePanelComponent) listOfNzCollapsePanelComponent: QueryList<NzCollapsePanelComponent>;
   @Input() @InputBoolean() nzAccordion = false;
   @Input() @InputBoolean() nzBordered = true;
-  destroy$ = new Subject();
+  private destroy$ = new Subject();
+  private clickSubscription: Subscription;
 
   click(collapse: NzCollapsePanelComponent): void {
     if (this.nzAccordion && !collapse.nzActive) {
@@ -46,9 +47,20 @@ export class NzCollapseComponent implements AfterContentInit, OnDestroy {
   }
 
   ngAfterContentInit(): void {
-    merge(...this.listOfNzCollapsePanelComponent.map(item => item.click$)).pipe(takeUntil(this.destroy$)).subscribe((data) => {
-      this.click(data);
+    this.listOfNzCollapsePanelComponent.changes.pipe(
+      startWith(null),
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      if (this.clickSubscription) {
+        this.clickSubscription.unsubscribe();
+      }
+      this.clickSubscription = merge(...this.listOfNzCollapsePanelComponent.map(item => item.click$)).pipe(
+        takeUntil(this.destroy$)
+      ).subscribe((data) => {
+        this.click(data);
+      });
     });
+
   }
 
   ngOnDestroy(): void {

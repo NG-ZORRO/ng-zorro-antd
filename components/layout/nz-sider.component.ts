@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Host,
@@ -82,6 +83,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.below = matchBelow;
       this.nzCollapsed = matchBelow;
       this.nzCollapsedChange.emit(matchBelow);
+      this.cdr.markForCheck();
     }
   }
 
@@ -98,7 +100,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.nzCollapsible && this.nzTrigger && (this.nzCollapsedWidth !== 0);
   }
 
-  constructor(@Optional() @Host() private nzLayoutComponent: NzLayoutComponent, private mediaMatcher: MediaMatcher, private ngZone: NgZone, private platform: Platform) {
+  constructor(@Optional() @Host() private nzLayoutComponent: NzLayoutComponent, private mediaMatcher: MediaMatcher, private ngZone: NgZone, private platform: Platform, private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
