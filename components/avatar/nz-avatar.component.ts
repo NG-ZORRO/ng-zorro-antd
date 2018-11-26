@@ -106,15 +106,13 @@ export class NzAvatarComponent implements OnChanges {
     const childrenWidth = this.textEl.nativeElement.offsetWidth;
     const avatarWidth = this.el.getBoundingClientRect().width;
     const scale = avatarWidth - 8 < childrenWidth ? (avatarWidth - 8) / childrenWidth : 1;
-    if (scale === 1) {
-      this.textStyles = {};
-    } else {
-      this.textStyles = {
-        transform: `scale(${scale})`,
-        position : 'absolute',
-        display  : 'inline-block',
-        left     : `calc(50% - ${Math.round(childrenWidth / 2)}px)`
-      };
+    this.textStyles = {
+      transform: `scale(${scale}) translateX(-50%)`
+    };
+    if (typeof this.nzSize === 'number') {
+      Object.assign(this.textStyles, {
+        lineHeight: `${this.nzSize}px`
+      });
     }
     this.cd.detectChanges();
   }
