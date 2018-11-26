@@ -1,4 +1,14 @@
-<div [ngClass]="outerClassMap" *ngIf="display" [@fadeAnimation] (@fadeAnimation.done)="onFadeAnimationDone()">
+<div *ngIf="display"
+  class="ant-alert"
+  [class.ant-alert-success]="nzType === 'success'"
+  [class.ant-alert-info]="nzType === 'info'"
+  [class.ant-alert-warning]="nzType === 'warning'"
+  [class.ant-alert-error]="nzType === 'error'"
+  [class.ant-alert-no-icon]="!nzShowIcon"
+  [class.ant-alert-banner]="nzBanner"
+  [class.ant-alert-with-description]="!!nzDescription"
+  [@fadeAnimation]
+  (@fadeAnimation.done)="onFadeAnimationDone()">
   <ng-container *ngIf="nzShowIcon">
     <i class="ant-alert-icon" [ngClass]="nzIconType" *ngIf="nzIconType; else iconTemplate"></i>
     <ng-template #iconTemplate>
@@ -6,16 +16,10 @@
     </ng-template>
   </ng-container>
   <span class="ant-alert-message" *ngIf="nzMessage">
-    <ng-container *ngIf="isMessageString; else messageTemplate">{{ nzMessage }}</ng-container>
-    <ng-template #messageTemplate>
-      <ng-template [ngTemplateOutlet]="nzMessage"></ng-template>
-    </ng-template>
+    <ng-container *nzStringTemplateOutlet="nzMessage">{{ nzMessage }}</ng-container>
   </span>
   <span class="ant-alert-description" *ngIf="nzDescription">
-    <ng-container *ngIf="isDescriptionString; else descriptionTemplate">{{ nzDescription }}</ng-container>
-    <ng-template #descriptionTemplate>
-      <ng-template [ngTemplateOutlet]="nzDescription"></ng-template>
-    </ng-template>
+    <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
   </span>
   <a *ngIf="nzCloseable || nzCloseText"
     class="ant-alert-close-icon"
@@ -24,10 +28,7 @@
       <i nz-icon type="close" class="anticon-close"></i>
     </ng-template>
     <ng-container *ngIf="nzCloseText; else closeDefaultTemplate">
-      <ng-container *ngIf="isCloseTextString; else closeTextTemplate">{{ nzCloseText }}</ng-container>
-      <ng-template #closeTextTemplate>
-        <ng-template [ngTemplateOutlet]="nzCloseText"></ng-template>
-      </ng-template>
+      <ng-container *nzStringTemplateOutlet="nzCloseText">{{ nzCloseText }}</ng-container>
     </ng-container>
   </a>
 </div>
