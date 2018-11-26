@@ -72,14 +72,14 @@ describe('avatar', () => {
       context.nzText = 'a';
       fixture.detectChanges();
       tick();
-      const scale = +dl.nativeElement.querySelector('.ant-avatar-string').style.transform.replace(/[^\.0-9]/ig, '');
-      expect(scale).toBe(0);
+      const scale = +/(\w+)\(([^)]*)\)/g.exec(dl.nativeElement.querySelector('.ant-avatar-string').style.transform)[2];
+      expect(scale).toBe(1);
     }));
     it('should be autoset font-size', fakeAsync(() => {
       context.nzText = 'LongUsername';
       fixture.detectChanges();
       tick();
-      const scale = +dl.nativeElement.querySelector('.ant-avatar-string').style.transform.replace(/[^\.0-9]/ig, '');
+      const scale = +/(\w+)\(([^)]*)\)/g.exec(dl.nativeElement.querySelector('.ant-avatar-string').style.transform)[2];
       expect(scale).toBeLessThan(1);
     }));
   });
