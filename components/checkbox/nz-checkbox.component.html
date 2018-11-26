@@ -1,4 +1,7 @@
-<span [ngClass]="classMap">
+<span class="ant-checkbox"
+  [class.ant-checkbox-checked]="nzChecked && !nzIndeterminate"
+  [class.ant-checkbox-disabled]="nzDisabled"
+  [class.ant-checkbox-indeterminate]="nzIndeterminate">
   <input #inputElement
     [checked]="nzChecked"
     type="checkbox"
