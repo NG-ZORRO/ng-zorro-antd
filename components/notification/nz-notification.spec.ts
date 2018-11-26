@@ -1,4 +1,3 @@
-
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { fakeAsync, flush, flushMicrotasks, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -18,15 +17,15 @@ describe('NzNotification', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ NzNotificationModule, NoopAnimationsModule ],
-      declarations: [ DemoAppComponent ],
-      providers: [ { provide: NZ_NOTIFICATION_CONFIG, useValue: { nzMaxStack: 2 } } ] // Override default config
+      imports: [NzNotificationModule, NoopAnimationsModule],
+      declarations: [DemoAppComponent],
+      providers: [{provide: NZ_NOTIFICATION_CONFIG, useValue: {nzMaxStack: 2}}] // Override default config
     });
 
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([ NzNotificationService, OverlayContainer ], (m: NzNotificationService, oc: OverlayContainer) => {
+  beforeEach(inject([NzNotificationService, OverlayContainer], (m: NzNotificationService, oc: OverlayContainer) => {
     messageService = m;
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
@@ -81,7 +80,7 @@ describe('NzNotification', () => {
   }));
 
   it('should auto closed by 1s', fakeAsync(() => {
-    messageService.create(null, null, 'EXISTS', { nzDuration: 1000 });
+    messageService.create(null, null, 'EXISTS', {nzDuration: 1000});
     demoAppFixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('EXISTS');
@@ -91,7 +90,7 @@ describe('NzNotification', () => {
   }));
 
   it('should not destroy when hovered', fakeAsync(() => {
-    messageService.create(null, null, 'EXISTS', { nzDuration: 3000 });
+    messageService.create(null, null, 'EXISTS', {nzDuration: 3000});
     demoAppFixture.detectChanges();
 
     const messageElement = overlayContainerElement.querySelector('.ant-notification-notice');
@@ -105,7 +104,7 @@ describe('NzNotification', () => {
   }));
 
   it('should not destroyed automatically but manually', fakeAsync(() => {
-    const filledMessage = messageService.success('title', 'SUCCESS', { nzDuration: 0 });
+    const filledMessage = messageService.success('title', 'SUCCESS', {nzDuration: 0});
     demoAppFixture.detectChanges();
 
     tick(50000);
@@ -117,19 +116,20 @@ describe('NzNotification', () => {
   }));
 
   it('should call remove callback when nzOnClose', fakeAsync(() => {
-    let remove = false
-    const filledMessage = messageService.success('title', 'SUCCESS', { nzDuration: 0,nzOnClose: ()=>{
-       remove = true
-      } });
+    let remove = false;
+    const filledMessage = messageService.success('title', 'SUCCESS', {nzDuration: 0});
+    messageService.nzAfterClose.subscribe(data => {
+      remove = true;
+    });
     demoAppFixture.detectChanges();
     tick(50000);
     messageService.remove(filledMessage.messageId);
     demoAppFixture.detectChanges();
-    expect(remove).toEqual(true)
+    expect(remove).toEqual(true);
   }));
 
   it('should keep the balance of messages length and then remove all', fakeAsync(() => {
-    [ 1, 2, 3 ].forEach(id => {
+    [1, 2, 3].forEach(id => {
       const content = `SUCCESS-${id}`;
       messageService.success(null, content);
       demoAppFixture.detectChanges();
@@ -150,14 +150,14 @@ describe('NzNotification', () => {
   }));
 
   it('should destroy without animation', fakeAsync(() => {
-    messageService.error(null, 'EXISTS', { nzDuration: 1000, nzAnimate: false });
+    messageService.error(null, 'EXISTS', {nzDuration: 1000, nzAnimate: false});
     demoAppFixture.detectChanges();
     tick(1000 + 10);
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   }));
 
   it('should reset default config dynamically', fakeAsync(() => {
-    messageService.config({ nzDuration: 0 });
+    messageService.config({nzDuration: 0});
     messageService.create(null, 'loading', 'EXISTS');
     demoAppFixture.detectChanges();
     tick(50000);
@@ -165,7 +165,7 @@ describe('NzNotification', () => {
   }));
 
   it('should show with placement of topLeft', () => {
-    messageService.config({ nzPlacement: 'topLeft' });
+    messageService.config({nzPlacement: 'topLeft'});
     messageService.create(null, null, 'EXISTS');
     demoAppFixture.detectChanges();
     expect(overlayContainerElement.textContent).toContain('EXISTS');

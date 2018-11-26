@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
@@ -8,12 +8,17 @@ import { NzMessageService } from 'ng-zorro-antd';
   `,
   styles: []
 })
-export class NzDemoMessageCloseComponent {
+export class NzDemoMessageCloseComponent implements OnInit {
+
+  ngOnInit(): void {
+    this.message.nzAfterClose.subscribe(message => {
+      console.log(message);
+    });
+  }
+
   createBasicMessage(): void {
-    this.message.success('This is a prompt message for success, and it will disappear in 10 seconds', {
-      nzDuration: 3000, nzOnClose: (messageID) => {
-        alert('Message ' + messageID + ' has been closed');
-      }
+    this.message.success('This is a prompt message for success, and it will disappear in 3 seconds', {
+      nzDuration: 3000
     });
   }
 

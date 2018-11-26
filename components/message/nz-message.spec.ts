@@ -1,4 +1,3 @@
-
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component } from '@angular/core';
 import { fakeAsync, flush, flushMicrotasks, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -18,15 +17,15 @@ describe('NzMessage', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ NzMessageModule, NoopAnimationsModule ],
-      declarations: [ DemoAppComponent ],
-      providers: [ { provide: NZ_MESSAGE_CONFIG, useValue: { nzMaxStack: 2 } } ] // Override default config
+      imports: [NzMessageModule, NoopAnimationsModule],
+      declarations: [DemoAppComponent],
+      providers: [{provide: NZ_MESSAGE_CONFIG, useValue: {nzMaxStack: 2}}] // Override default config
     });
 
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([ NzMessageService, OverlayContainer ], (m: NzMessageService, oc: OverlayContainer) => {
+  beforeEach(inject([NzMessageService, OverlayContainer], (m: NzMessageService, oc: OverlayContainer) => {
     messageService = m;
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
@@ -47,6 +46,18 @@ describe('NzMessage', () => {
     expect((overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement).style.zIndex).toBe('1010');
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
     expect(overlayContainerElement.querySelector('.anticon-check-circle')).not.toBeNull();
+  }));
+  it('should call remove callback when nzOnClose', fakeAsync(() => {
+    let remove = false;
+    const filledMessage = messageService.success('title', {nzDuration: 0});
+    messageService.nzAfterClose.subscribe(data => {
+      remove = true;
+    });
+    demoAppFixture.detectChanges();
+    tick(50000);
+    messageService.remove(filledMessage.messageId);
+    demoAppFixture.detectChanges();
+    expect(remove).toEqual(true);
   }));
 
   it('should open a message box with error', (() => {
@@ -82,7 +93,7 @@ describe('NzMessage', () => {
   }));
 
   it('should auto closed by 1s', fakeAsync(() => {
-    messageService.create(null, 'EXISTS', { nzDuration: 1000 });
+    messageService.create(null, 'EXISTS', {nzDuration: 1000});
     demoAppFixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('EXISTS');
@@ -92,7 +103,7 @@ describe('NzMessage', () => {
   }));
 
   it('should not destroy when hovered', fakeAsync(() => {
-    messageService.create(null, 'EXISTS', { nzDuration: 3000 });
+    messageService.create(null, 'EXISTS', {nzDuration: 3000});
     demoAppFixture.detectChanges();
 
     const messageElement = overlayContainerElement.querySelector('.ant-message-notice');
@@ -106,7 +117,7 @@ describe('NzMessage', () => {
   }));
 
   it('should not destroyed automatically but manually', fakeAsync(() => {
-    const filledMessage = messageService.success('SUCCESS', { nzDuration: 0 });
+    const filledMessage = messageService.success('SUCCESS', {nzDuration: 0});
     demoAppFixture.detectChanges();
 
     tick(50000);
@@ -118,7 +129,7 @@ describe('NzMessage', () => {
   }));
 
   it('should keep the balance of messages length and then remove all', fakeAsync(() => {
-    [ 1, 2, 3 ].forEach(id => {
+    [1, 2, 3].forEach(id => {
       const content = `SUCCESS-${id}`;
       messageService.success(content);
       demoAppFixture.detectChanges();
@@ -139,14 +150,14 @@ describe('NzMessage', () => {
   }));
 
   it('should destroy without animation', fakeAsync(() => {
-    messageService.error('EXISTS', { nzDuration: 1000, nzAnimate: false });
+    messageService.error('EXISTS', {nzDuration: 1000, nzAnimate: false});
     demoAppFixture.detectChanges();
     tick(1000 + 10);
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   }));
 
   it('should reset default config dynamically', fakeAsync(() => {
-    messageService.config({ nzDuration: 0 });
+    messageService.config({nzDuration: 0});
     messageService.create('loading', 'EXISTS');
     demoAppFixture.detectChanges();
     tick(1000);
@@ -158,4 +169,5 @@ describe('NzMessage', () => {
   selector: 'nz-demo-app-component',
   template: ``
 })
-export class DemoAppComponent {}
+export class DemoAppComponent {
+}

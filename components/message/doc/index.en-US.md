@@ -51,11 +51,14 @@ The parameters that are set by the `options` support are as follows:
 | nzDuration | Duration (milliseconds), does not disappear when set to 0 | number |
 | nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true`  | boolean |
 | nzAnimate | Whether to turn on animation | boolean |
-| nzOnClose | Callback function that triggered when message closed | Function |
 
 Methods for destruction are also provided:
 
 - `message.remove(id)` // Remove the message with the specified id. When the id is empty, remove all messages (the message id is returned by the above method)
+
+Methods for after close hook are also provided:
+
+- `NzMessageService.nzAfterClose :Observable<NzMessageDataFilled>` //return the instance of the message that been removed(it will be empty if removeAll()
 
 ### Global configuration (NZ_MESSAGE_CONFIG)
 

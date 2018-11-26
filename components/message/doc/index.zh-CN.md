@@ -52,11 +52,14 @@ title: Message
 | nzDuration | 持续时间(毫秒)，当设置为0时不消失 | number |
 | nzPauseOnHover | 鼠标移上时禁止自动移除 | boolean |
 | nzAnimate | 开关动画效果 | boolean |
-| nzOnClose | 关闭回调用函数 | Function |
 
 还提供了全局销毁方法：
 
 - `NzMessageService.remove(id)` // 移除特定id的消息，当id为空时，移除所有消息（该消息id通过上述方法返回值中得到）
+
+还提供了全局销毁回调：
+
+- `NzMessageService.nzAfterClose :Observable<NzMessageDataFilled>` //返回一个被销毁的 message 实例，当全部销毁返回为空
 
 ### 全局配置（NZ_MESSAGE_CONFIG）
 

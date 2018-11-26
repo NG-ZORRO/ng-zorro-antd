@@ -1,7 +1,9 @@
-import { Component, Inject, Optional } from '@angular/core';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
 
+import { Subject } from 'rxjs';
 import { NzMessageConfig, NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG } from './nz-message-config';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
+import { NzMessageService } from './nz-message.service';
 
 @Component({
   selector: 'nz-message-container',
@@ -9,8 +11,11 @@ import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definiti
   templateUrl: './nz-message-container.component.html'
 })
 export class NzMessageContainerComponent {
+
   messages: NzMessageDataFilled[] = [];
   config: NzMessageConfig = {};
+
+  $nzAfterClose = new Subject<NzMessageDataFilled>();
 
   constructor(@Optional() @Inject(NZ_MESSAGE_DEFAULT_CONFIG) defaultConfig: NzMessageConfig,
               @Optional() @Inject(NZ_MESSAGE_CONFIG) config: NzMessageConfig) {
@@ -30,23 +35,25 @@ export class NzMessageContainerComponent {
     this.messages.push(message);
   }
 
-  // Remove a message by messageId
   removeMessage(messageId: string): void {
+    const removeMessage = this.messages.find((nzMessageDataFilled: NzMessageDataFilled) => nzMessageDataFilled.messageId === messageId);
     this.messages.some((message, index) => {
       if (message.messageId === messageId) {
-        message.options.nzOnClose ? message.options.nzOnClose(messageId) : null;
         this.messages.splice(index, 1);
         return true;
       }
     });
+    this.$removeMessage(removeMessage);
   }
 
   // Remove all messages
   removeMessageAll(): void {
-    this.messages.forEach((message: NzMessageDataFilled) => {
-      message.options.nzOnClose ? message.options.nzOnClose(message.messageId) : null;
-    });
     this.messages = [];
+    this.$removeMessage();
+  }
+
+  $removeMessage(message?: NzMessageDataFilled): void {
+    this.$nzAfterClose.next(message);
   }
 
   // Merge default options and cutom message options
