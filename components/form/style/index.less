@@ -80,6 +80,13 @@ input[type="checkbox"] {
     margin-bottom: -@form-item-margin-bottom;
   }
 
+  &[nzgutter] {
+    > .@{form-prefix-cls}-item-control-wrapper {
+      padding-right: 4px;
+      padding-left: 4px;
+    }
+  }
+
   &-control {
     line-height: @form-component-max-height - 0.0001px; // https://github.com/ant-design/ant-design/issues/8220
     position: relative;
