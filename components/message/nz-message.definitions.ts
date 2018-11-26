@@ -2,6 +2,7 @@ export interface NzMessageDataOptions {
   nzDuration?: number;
   nzAnimate?: boolean;
   nzPauseOnHover?: boolean;
+  nzOnClose?: (...rest: any[]) => any;
 }
 
 // Message data for terminal users

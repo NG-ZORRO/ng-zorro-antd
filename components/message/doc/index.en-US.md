@@ -51,6 +51,7 @@ The parameters that are set by the `options` support are as follows:
 | nzDuration | Duration (milliseconds), does not disappear when set to 0 | number |
 | nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true`  | boolean |
 | nzAnimate | Whether to turn on animation | boolean |
+| nzOnClose | Callback function that triggered when message closed | Function |
 
 Methods for destruction are also provided:
 

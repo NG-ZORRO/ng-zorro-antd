@@ -116,6 +116,18 @@ describe('NzNotification', () => {
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS');
   }));
 
+  it('should call remove callback when nzOnClose', fakeAsync(() => {
+    let remove = false
+    const filledMessage = messageService.success('title', 'SUCCESS', { nzDuration: 0,nzOnClose: ()=>{
+       remove = true
+      } });
+    demoAppFixture.detectChanges();
+    tick(50000);
+    messageService.remove(filledMessage.messageId);
+    demoAppFixture.detectChanges();
+    expect(remove).toEqual(true)
+  }));
+
   it('should keep the balance of messages length and then remove all', fakeAsync(() => {
     [ 1, 2, 3 ].forEach(id => {
       const content = `SUCCESS-${id}`;
