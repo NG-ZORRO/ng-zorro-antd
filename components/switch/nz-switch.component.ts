@@ -1,165 +1,111 @@
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import {
   forwardRef,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostListener,
   Input,
-  OnInit,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzSizeDSType } from '../core/types/size';
 
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
 
 @Component({
   selector           : 'nz-switch',
   preserveWhitespaces: false,
   templateUrl        : './nz-switch.component.html',
-  styles             : [ `
-    :host {
-      display: inline-block;
-    }
-  ` ],
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   providers          : [
     {
       provide    : NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzSwitchComponent),
       multi      : true
     }
+  ],
+  styles             : [ `
+    nz-switch {
+      display: inline-block;
+    }`
   ]
 })
-export class NzSwitchComponent implements OnInit, ControlValueAccessor {
-  private _disabled = false;
-  private _size: NzSizeDSType;
-  private _loading = false;
-  private _control = false;
-  private _checkedChildren: string | TemplateRef<void>;
-  private _unCheckedChildren: string | TemplateRef<void>;
-  prefixCls = 'ant-switch';
-  classMap;
+export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit {
   checked = false;
-  isCheckedChildrenString: boolean;
-  isUnCheckedChildrenString: boolean;
-  @ViewChild('switchElement')
-  private switchElement: ElementRef;
+  @ViewChild('switchElement') private switchElement: ElementRef;
   onChange: (value: boolean) => void = () => null;
   onTouched: () => void = () => null;
-
-  @Input()
-  set nzControl(value: boolean) {
-    this._control = toBoolean(value);
-  }
-
-  get nzControl(): boolean {
-    return this._control;
-  }
-
-  @Input()
-  set nzCheckedChildren(value: string | TemplateRef<void>) {
-    this.isCheckedChildrenString = !(value instanceof TemplateRef);
-    this._checkedChildren = value;
-  }
-
-  get nzCheckedChildren(): string | TemplateRef<void> {
-    return this._checkedChildren;
-  }
-
-  @Input()
-  set nzUnCheckedChildren(value: string | TemplateRef<void>) {
-    this.isUnCheckedChildrenString = !(value instanceof TemplateRef);
-    this._unCheckedChildren = value;
-  }
-
-  get nzUnCheckedChildren(): string | TemplateRef<void> {
-    return this._unCheckedChildren;
-  }
-
-  @Input()
-  set nzSize(value: NzSizeDSType) {
-    this._size = value;
-    this.setClassMap();
-  }
-
-  get nzSize(): NzSizeDSType {
-    return this._size;
-  }
-
-  @Input()
-  set nzLoading(value: boolean) {
-    this._loading = toBoolean(value);
-    this.setClassMap();
-  }
-
-  get nzLoading(): boolean {
-    return this._loading;
-  }
-
-  @Input()
-  set nzDisabled(value: boolean) {
-    this._disabled = toBoolean(value);
-    this.setClassMap();
-  }
-
-  get nzDisabled(): boolean {
-    return this._disabled;
-  }
+  @Input() @InputBoolean() nzLoading = false;
+  @Input() @InputBoolean() nzDisabled = false;
+  @Input() @InputBoolean() nzControl = false;
+  @Input() nzCheckedChildren: string | TemplateRef<void>;
+  @Input() nzUnCheckedChildren: string | TemplateRef<void>;
+  @Input() nzSize: NzSizeDSType;
 
   @HostListener('click', [ '$event' ])
   onClick(e: MouseEvent): void {
     e.preventDefault();
     if ((!this.nzDisabled) && (!this.nzLoading) && (!this.nzControl)) {
-      this.updateValue(!this.checked, true);
+      this.updateValue(!this.checked);
     }
   }
 
-  updateValue(value: boolean, emit: boolean): void {
-    if (this.checked === value) {
-      return;
-    }
-    this.checked = value;
-    this.setClassMap();
-    if (emit) {
+  updateValue(value: boolean): void {
+    if (this.checked !== value) {
+      this.checked = value;
       this.onChange(this.checked);
     }
   }
 
-  setClassMap(): void {
-    this.classMap = {
-      [ this.prefixCls ]              : true,
-      [ `${this.prefixCls}-checked` ] : this.checked,
-      [ `${this.prefixCls}-loading` ] : this.nzLoading,
-      [ `${this.prefixCls}-disabled` ]: this.nzDisabled,
-      [ `${this.prefixCls}-small` ]   : this.nzSize === 'small'
-    };
-  }
-
   onKeyDown(e: KeyboardEvent): void {
     if (!this.nzControl) {
-      if (e.keyCode === 37) { // Left
-        this.updateValue(false, true);
+      if (e.keyCode === LEFT_ARROW) { // Left
+        this.updateValue(false);
         e.preventDefault();
-      } else if (e.keyCode === 39) { // Right
-        this.updateValue(true, true);
+      } else if (e.keyCode === RIGHT_ARROW) { // Right
+        this.updateValue(true);
         e.preventDefault();
-      } else if (e.keyCode === 32 || e.keyCode === 13) { // Space, Enter
-        this.updateValue(!this.checked, true);
+      } else if (e.keyCode === SPACE || e.keyCode === ENTER) { // Space, Enter
+        this.updateValue(!this.checked);
         e.preventDefault();
       }
     }
   }
 
   focus(): void {
-    this.switchElement.nativeElement.focus();
+    this.focusMonitor.focusVia(this.switchElement.nativeElement, 'keyboard');
   }
 
   blur(): void {
     this.switchElement.nativeElement.blur();
   }
 
+  constructor(private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
+  }
+
+  ngAfterViewInit(): void {
+    this.focusMonitor.monitor(this.switchElement.nativeElement, true).subscribe(focusOrigin => {
+      if (!focusOrigin) {
+        // When a focused element becomes disabled, the browser *immediately* fires a blur event.
+        // Angular does not expect events to be raised during change detection, so any state change
+        // (such as a form control's 'ng-touched') will cause a changed-after-checked error.
+        // See https://github.com/angular/angular/issues/17793. To work around this, we defer
+        // telling the form control it has been touched until the next tick.
+        Promise.resolve().then(() => this.onTouched());
+      }
+    });
+  }
+
   writeValue(value: boolean): void {
-    this.updateValue(value, false);
+    this.checked = value;
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (_: boolean) => void): void {
@@ -172,9 +118,6 @@ export class NzSwitchComponent implements OnInit, ControlValueAccessor {
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
-  }
-
-  ngOnInit(): void {
-    this.setClassMap();
+    this.cdr.markForCheck();
   }
 }
