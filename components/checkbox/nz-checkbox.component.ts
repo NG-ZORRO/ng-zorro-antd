@@ -15,16 +15,13 @@ import {
   Optional,
   Output,
   Renderer2,
+  SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-import { NgClassType } from '../core/types/ng-class';
-
 import { isEmpty } from '../core/util/check';
-import { toBoolean } from '../core/util/convert';
-
+import { InputBoolean } from '../core/util/convert';
 import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
 
 @Component({
@@ -45,92 +42,44 @@ import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
   }
 })
 export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChanges, AfterViewInit, OnDestroy {
-  private _disabled = false;
-  private _indeterminate = false;
-  private _autoFocus = false;
-  private _checked = false;
-  private isInit = false;
-  private prefixCls = 'ant-checkbox';
   // tslint:disable-next-line:no-any
-  private onChange: (value: any) => void = () => {};
+  onChange: (value: any) => void = () => null;
   // tslint:disable-next-line:no-any
-  private onTouched: () => any = () => {};
-  classMap: NgClassType = {};
+  onTouched: () => any = () => null;
   @ViewChild('inputElement') private inputElement: ElementRef;
   @ViewChild('contentElement') private contentElement: ElementRef;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Input() nzValue: string;
-
-  @Input()
-  set nzAutoFocus(value: boolean) {
-    this._autoFocus = toBoolean(value);
-    this.updateAutoFocus();
-  }
-
-  get nzAutoFocus(): boolean {
-    return this._autoFocus;
-  }
-
-  @Input()
-  set nzDisabled(value: boolean) {
-    this._disabled = toBoolean(value);
-    this.cdr.markForCheck();
-  }
-
-  get nzDisabled(): boolean {
-    return this._disabled;
-  }
-
-  @Input()
-  set nzIndeterminate(value: boolean) {
-    this._indeterminate = toBoolean(value);
-  }
-
-  get nzIndeterminate(): boolean {
-    return this._indeterminate;
-  }
-
-  @Input()
-  set nzChecked(value: boolean) {
-    this._checked = value;
-    this.updateClassMap();
-    this.cdr.markForCheck();
-  }
-
-  get nzChecked(): boolean {
-    return this._checked;
-  }
+  @Input() @InputBoolean() nzAutoFocus = false;
+  @Input() @InputBoolean() nzDisabled = false;
+  @Input() @InputBoolean() nzIndeterminate = false;
+  @Input() @InputBoolean() nzChecked = false;
 
   @HostListener('click', [ '$event' ])
   onClick(e: MouseEvent): void {
     e.preventDefault();
     this.focus();
     if (!this.nzDisabled) {
-      this.updateValue(!this.nzChecked);
-    }
-  }
-
-  updateAutoFocus(): void {
-    if (this.isInit) {
-      if (this.nzAutoFocus) {
-        this.renderer.setAttribute(this.inputElement.nativeElement, 'autofocus', 'autofocus');
-      } else {
-        this.renderer.removeAttribute(this.inputElement.nativeElement, 'autofocus');
+      this.nzChecked = !this.nzChecked;
+      this.onChange(this.nzChecked);
+      this.nzCheckedChange.emit(this.nzChecked);
+      if (this.nzCheckboxWrapperComponent) {
+        this.nzCheckboxWrapperComponent.onChange();
       }
     }
   }
 
-  updateValue(value: boolean): void {
-    this.onChange(value);
-    this.nzCheckedChange.emit(value);
-    this.nzChecked = value;
-    if (this.nzCheckboxWrapperComponent) {
-      this.nzCheckboxWrapperComponent.onChange();
+  updateAutoFocus(): void {
+    if (this.inputElement && this.nzAutoFocus) {
+      this.renderer.setAttribute(this.inputElement.nativeElement, 'autofocus', 'autofocus');
+    } else {
+      this.renderer.removeAttribute(this.inputElement.nativeElement, 'autofocus');
     }
   }
 
   writeValue(value: boolean): void {
     this.nzChecked = value;
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (_: boolean) => {}): void {
@@ -143,15 +92,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
-  }
-
-  updateClassMap(): void {
-    this.classMap = {
-      [ this.prefixCls ]                   : true,
-      [ `${this.prefixCls}-checked` ]      : this.nzChecked && (!this.nzIndeterminate),
-      [ `${this.prefixCls}-disabled` ]     : this.nzDisabled,
-      [ `${this.prefixCls}-indeterminate` ]: this.nzIndeterminate
-    };
+    this.cdr.markForCheck();
   }
 
   focus(): void {
@@ -176,26 +117,21 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   ngOnInit(): void {
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
       if (!focusOrigin) {
-        // When a focused element becomes disabled, the browser *immediately* fires a blur event.
-        // Angular does not expect events to be raised during change detection, so any state change
-        // (such as a form control's 'ng-touched') will cause a changed-after-checked error.
-        // See https://github.com/angular/angular/issues/17793. To work around this, we defer
-        // telling the form control it has been touched until the next tick.
         Promise.resolve().then(() => this.onTouched());
       }
     });
-    this.updateClassMap();
     if (this.nzCheckboxWrapperComponent) {
       this.nzCheckboxWrapperComponent.addCheckbox(this);
     }
   }
 
-  ngOnChanges(): void {
-    this.updateClassMap();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzAutoFocus) {
+      this.updateAutoFocus();
+    }
   }
 
   ngAfterViewInit(): void {
-    this.isInit = true;
     this.updateAutoFocus();
     this.checkContent();
   }

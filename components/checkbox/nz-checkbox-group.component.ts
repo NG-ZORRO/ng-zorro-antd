@@ -1,10 +1,15 @@
 import {
   forwardRef,
   Component,
+  ElementRef,
   Input,
+  OnInit,
   ViewEncapsulation
 } from '@angular/core';
+
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+import { FocusMonitor } from '@angular/cdk/a11y';
 
 import { InputBoolean } from '../core/util/convert';
 
@@ -31,16 +36,27 @@ export interface NzCheckBoxOptionInterface {
     '[class.ant-checkbox-group]': 'true'
   }
 })
-export class NzCheckboxGroupComponent implements ControlValueAccessor {
+export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
   // tslint:disable-next-line:no-any
-  private onChange: (value: any) => void = () => {};
+  onChange: (value: any) => void = () => null;
   // tslint:disable-next-line:no-any
-  private onTouched: () => any = () => {};
+  onTouched: () => any = () => null;
   options: NzCheckBoxOptionInterface[];
   @Input() @InputBoolean() nzDisabled = false;
 
   onOptionChange(): void {
     this.onChange(this.options);
+  }
+
+  constructor(private elementRef: ElementRef, private focusMonitor: FocusMonitor) {
+  }
+
+  ngOnInit(): void {
+    this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
+      if (!focusOrigin) {
+        Promise.resolve().then(() => this.onTouched());
+      }
+    });
   }
 
   writeValue(value: NzCheckBoxOptionInterface[]): void {
@@ -57,8 +73,5 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor {
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
-  }
-
-  constructor() {
   }
 }
