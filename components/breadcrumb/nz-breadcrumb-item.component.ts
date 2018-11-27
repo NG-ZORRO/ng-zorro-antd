@@ -1,29 +1,19 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
 
 @Component({
   changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-breadcrumb-item',
   preserveWhitespaces: false,
-  template           : `
-    <span class="ant-breadcrumb-link">
-      <ng-content></ng-content>
-    </span>
-    <span class="ant-breadcrumb-separator">
-      <ng-container *ngIf="nzBreadCrumbComponent.isTemplateRef; else stringTemplate">
-        <ng-template [ngTemplateOutlet]="nzBreadCrumbComponent.nzSeparator"></ng-template>
-      </ng-container>
-      <ng-template #stringTemplate>
-         {{ nzBreadCrumbComponent.nzSeparator }}
-      </ng-template>
-    </span>`,
+  templateUrl        : 'nz-breadcrumb-item.component.html',
   styles             : [ `
-    :host:last-child {
+    nz-breadcrumb-item:last-child {
       color: rgba(0, 0, 0, 0.65);
     }
 
-    :host:last-child .ant-breadcrumb-separator {
+    nz-breadcrumb-item:last-child .ant-breadcrumb-separator {
       display: none;
     }
   ` ]
