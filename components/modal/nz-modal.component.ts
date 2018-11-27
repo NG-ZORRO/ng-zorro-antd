@@ -8,7 +8,6 @@ import {
   ComponentRef,
   ElementRef,
   EventEmitter,
-  HostListener,
   Inject,
   Injector,
   Input,
@@ -24,7 +23,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 
-import { Observable, Subject } from 'rxjs';
+import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
@@ -111,12 +110,6 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
 
   @Input() @InputBoolean() nzKeyboard: boolean = true;
-  @HostListener('keydown', [ '$event' ])
-  public onKeyDown(event: KeyboardEvent): void {
-    if (event.keyCode === ESCAPE && this.nzKeyboard) {
-      this.onClickOkCancel('cancel');
-    }
-  }
 
   get hidden(): boolean {
     return !this.nzVisible && !this.animationState;
@@ -149,6 +142,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.locale = this.i18n.getLocaleData('Modal'));
+
+    fromEvent<KeyboardEvent>(this.document.body, 'keydown').pipe(takeUntil(this.unsubscribe$)).subscribe(e => this.keydownListener(e));
 
     if (this.isComponent(this.nzContent)) {
       this.createDynamicComponent(this.nzContent as Type<T>); // Create component along without View
@@ -203,6 +198,12 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
       this.unsubscribe$.next();
       this.unsubscribe$.complete();
     });
+  }
+
+  keydownListener(event: KeyboardEvent): void {
+    if (event.keyCode === ESCAPE && this.nzKeyboard) {
+      this.onClickOkCancel('cancel');
+    }
   }
 
   open(): void {

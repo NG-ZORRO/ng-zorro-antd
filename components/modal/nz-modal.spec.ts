@@ -194,12 +194,12 @@ describe('modal testing (legacy)', () => {
 
     it('should be closed when clicking ESC', fakeAsync(() => {
       // click 'ESC' key
-      dispatchKeyboardEvent(modalElement, 'keydown', ESCAPE);
+      dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
       fixture.detectChanges();
       expectModalDestroyed(tempModalId, false);
 
       modalInstance.nzKeyboard = true;
-      dispatchKeyboardEvent(modalElement, 'keydown', ESCAPE);
+      dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
       flush();
       fixture.detectChanges();
       expectModalDestroyed(tempModalId, true);
