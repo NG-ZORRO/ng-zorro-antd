@@ -123,9 +123,9 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   positions: ConnectionPositionPair[] = [ ...EXPANDED_DROPDOWN_POSITIONS ];
   dropdownWidthStyle: string;
   isSearching = false;
+  isFocused = false;
 
   private isOpening = false;
-  private isFocused = false;
   private defaultValue; // Default value written by `[ngModel]`
   private value;
   private selectedOptions: CascaderOption[] = [];
