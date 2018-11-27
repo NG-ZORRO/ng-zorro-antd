@@ -62,7 +62,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   @Output()
   readonly nzChange: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private scrollSrv: NzScrollService, private _el: ElementRef, @Inject(DOCUMENT) private doc: Document, private cd: ChangeDetectorRef) {
+  constructor(private scrollSrv: NzScrollService, private _el: ElementRef, @Inject(DOCUMENT) private doc: any, private cd: ChangeDetectorRef) {
   }
 
   private timeout: any;
