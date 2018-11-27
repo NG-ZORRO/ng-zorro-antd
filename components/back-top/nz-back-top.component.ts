@@ -70,7 +70,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
 
   @Output() readonly nzClick: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: Document, private cd: ChangeDetectorRef) {
+  constructor(private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
