@@ -288,6 +288,15 @@ describe('affix', () => {
       fixture.detectChanges();
       expect(component.updatePosition).toHaveBeenCalled();
     });
+
+    it('should be a string value', () => {
+      spyOn(component, 'updatePosition');
+      expect(component.updatePosition).not.toHaveBeenCalled();
+      fixture.detectChanges();
+      context.fakeTarget = '#target';
+      fixture.detectChanges();
+      expect(component.updatePosition).toHaveBeenCalled();
+    });
   });
 
   describe('(nzChange)', () => {
@@ -486,14 +495,12 @@ describe('affix-extra', () => {
     <button id="content">Affix Button</button>
   </nz-affix>
   <div id="target"></div>
-  `,
-  styleUrls: [ './style/index.less' ],
-  encapsulation: ViewEncapsulation.None
+  `
 })
 class TestAffixComponent {
   @ViewChild(NzAffixComponent)
   nzAffixComponent: NzAffixComponent;
-  fakeTarget: Element | Window = null;
+  fakeTarget: string | Element | Window = null;
   newOffset: {};
   newOffsetBottom: {};
 }
