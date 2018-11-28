@@ -15,6 +15,7 @@ export interface UploadFile {
   uid: string;
   size: number;
   name: string;
+  message?: string;
   filename?: string;
   lastModified?: string;
   lastModifiedDate?: Date;

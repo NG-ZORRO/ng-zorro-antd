@@ -8,7 +8,7 @@
   (ngModelChange)="nzCheckedChange.emit($event)">
 </label>
 <span
-  *ngIf="!nzShowExpand && nzIndentSize != null"
+  *ngIf="!nzShowExpand && nzIndentSize >= 0"
   class="ant-table-row-expand-icon ant-table-row-spaced"></span>
 <span
   *ngIf="nzShowExpand"

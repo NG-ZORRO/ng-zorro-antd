@@ -35,7 +35,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy {
   private _total: number;
   private _pageIndex = 1;
   firstIndex = 1;
-  pages = [];
+  pages: Array<{index: number}> = [];
   @Input() nzShowTotal: TemplateRef<{ $implicit: number, range: [ number, number ] }>;
   @Input() nzInTable = false;
   @Input() nzSize: string;
@@ -231,7 +231,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy {
 
   /** generate indexes list */
   buildIndexes(): void {
-    const tmpPages = [];
+    const tmpPages: Array<{index: number}> = [];
     if (this.lastIndex <= 9) {
       for (let i = 2; i <= this.lastIndex - 1; i++) {
         tmpPages.push({ index: i });

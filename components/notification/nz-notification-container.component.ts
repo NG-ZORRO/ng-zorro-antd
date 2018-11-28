@@ -12,6 +12,8 @@ import { NzNotificationDataFilled } from './nz-notification.definitions';
   templateUrl        : './nz-notification-container.component.html'
 })
 export class NzNotificationContainerComponent extends NzMessageContainerComponent {
+  config: NzNotificationConfig = {};
+
   constructor(
     cdr: ChangeDetectorRef,
     @Optional() @Inject(NZ_NOTIFICATION_DEFAULT_CONFIG) defaultConfig: NzNotificationConfig,

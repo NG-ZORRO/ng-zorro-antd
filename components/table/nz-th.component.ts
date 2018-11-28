@@ -46,7 +46,7 @@ export class NzThComponent {
   singleFilterList: NzThItemInterface[] = [];
   @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
   /* tslint:disable-next-line:no-any */
-  @Input() nzSelections: Array<{ text: string, onSelect: any }> = [];
+  @Input() nzSelections: Array<{ text: string, onSelect(): any }> = [];
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
