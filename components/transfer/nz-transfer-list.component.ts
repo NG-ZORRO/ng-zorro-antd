@@ -1,11 +1,10 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
-  DoCheck,
   ElementRef,
   EventEmitter,
   Input,
-  IterableDiffer,
-  IterableDiffers,
   OnChanges,
   OnInit,
   Output,
@@ -14,7 +13,6 @@ import {
 } from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { toBoolean } from '../core/util/convert';
 
 import { TransferItem } from './interface';
 
@@ -22,12 +20,11 @@ import { TransferItem } from './interface';
   selector           : 'nz-transfer-list',
   preserveWhitespaces: false,
   providers          : [ NzUpdateHostClassService ],
-  templateUrl        : './nz-transfer-list.component.html'
+  templateUrl        : './nz-transfer-list.component.html',
+  changeDetection    : ChangeDetectionStrategy.OnPush
 })
-export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
-  private _showSearch = false;
-
-  // region: fields
+export class NzTransferListComponent implements OnChanges, OnInit {
+  // #region fields
 
   @Input() direction = '';
   @Input() titleText = '';
@@ -37,17 +34,8 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
   @Input() itemUnit = '';
   @Input() itemsUnit = '';
   @Input() filter = '';
-
-  // search
-  @Input()
-  set showSearch(value: boolean) {
-    this._showSearch = toBoolean(value);
-  }
-
-  get showSearch(): boolean {
-    return this._showSearch;
-  }
-
+  @Input() disabled: boolean;
+  @Input() showSearch: boolean;
   @Input() searchPlaceholder: string;
   @Input() notFoundContent: string;
   @Input() filterOption: (inputValue: string, item: TransferItem) => boolean;
@@ -60,9 +48,9 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
   @Output() readonly handleSelect: EventEmitter<TransferItem> = new EventEmitter();
   @Output() readonly filterChange: EventEmitter<{ direction: string, value: string }> = new EventEmitter();
 
-  // endregion
+  // #endregion
 
-  // region: styles
+  // #region styles
 
   prefixCls = 'ant-transfer-list';
 
@@ -74,9 +62,9 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
     this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
   }
 
-  // endregion
+  // #endregion
 
-  // region: select all
+  // #region select all
 
   stat = {
     checkAll  : false,
@@ -104,9 +92,9 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
     this.stat.checkHalf = this.stat.checkCount > 0 && !this.stat.checkAll;
   }
 
-  // endregion
+  // #endregion
 
-  // region: search
+  // #region search
 
   handleFilter(value: string): void {
     this.filter = value;
@@ -128,12 +116,9 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
     return item.title.includes(text);
   }
 
-  // endregion
+  // #endregion
 
-  listDiffer: IterableDiffer<{}>;
-
-  constructor(private el: ElementRef, private updateHostClassService: NzUpdateHostClassService, differs: IterableDiffers) {
-    this.listDiffer = differs.find([]).create(null);
+  constructor(private el: ElementRef, private updateHostClassService: NzUpdateHostClassService, private cdr: ChangeDetectorRef) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -146,15 +131,13 @@ export class NzTransferListComponent implements OnChanges, OnInit, DoCheck {
     this.setClassMap();
   }
 
-  ngDoCheck(): void {
-    const change = this.listDiffer.diff(this.dataSource);
-    if (change) {
-      this.updateCheckStatus();
-    }
+  markForCheck(): void {
+    this.updateCheckStatus();
+    this.cdr.markForCheck();
   }
 
   _handleSelect(item: TransferItem): void {
-    if (item.disabled) {
+    if (this.disabled || item.disabled) {
       return;
     }
     item.checked = !item.checked;

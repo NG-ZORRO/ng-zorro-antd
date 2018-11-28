@@ -123,6 +123,18 @@ describe('transfer', () => {
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(0);
     });
 
+    it('shoudl be disabled', () => {
+      instance.nzDisabled = true;
+      fixture.detectChanges();
+      expect(dl.queryAll(By.css('.ant-transfer-disabled')).length).toBe(1);
+      // All operation buttons muse be disabled
+      expect(dl.queryAll(By.css('.ant-transfer-operation .ant-btn[disabled]')).length).toBe(2);
+      // All item muse be disabled
+      expect(dl.queryAll(By.css('.ant-transfer-list-content-item-disabled')).length).toBe(COUNT);
+      // All checkbox (include 2 checkall) muse be disabled
+      expect(dl.queryAll(By.css('.ant-checkbox-disabled')).length).toBe(COUNT + 2);
+    });
+
     it('should be uncheck all when two verification error', () => {
       instance.canMove = (arg: TransferCanMove): Observable<TransferItem[]> => {
         return of(arg.list).pipe(map(() => {
@@ -269,6 +281,7 @@ describe('transfer', () => {
   template     : `
     <nz-transfer #comp
       [nzDataSource]="nzDataSource"
+      [nzDisabled]="nzDisabled"
       [nzTitles]="['Source', 'Target']"
       [nzOperations]="['to right', 'to left']"
       [nzItemUnit]="nzItemUnit"
@@ -294,6 +307,7 @@ describe('transfer', () => {
 class TestTransferComponent implements OnInit {
   @ViewChild('comp') comp: NzTransferComponent;
   nzDataSource: any[] = [];
+  nzDisabled = false;
   nzTitles = [ 'Source', 'Target' ];
   nzOperations = [ 'to right', 'to left' ];
   nzItemUnit = 'item';

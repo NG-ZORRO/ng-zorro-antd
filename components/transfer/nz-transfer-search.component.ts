@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector           : '[nz-transfer-search]',
   preserveWhitespaces: false,
-  templateUrl        : './nz-transfer-search.component.html'
+  templateUrl        : './nz-transfer-search.component.html',
+  changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzTransferSearchComponent {
 
