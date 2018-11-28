@@ -32,7 +32,6 @@ export class NzTreeService {
     this.selectedNodeList = [];
     this.halfCheckedNodeList = [];
     this.checkedNodeList = [];
-    this.expandedNodeList = [];
     this.matchedNodeList = [];
     setTimeout(() => {
       this.refreshCheckState(this.conductOption.isCheckStrictly);
