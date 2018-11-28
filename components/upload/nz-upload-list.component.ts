@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges } from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
@@ -23,7 +23,8 @@ import { ShowUploadListInterface, UploadFile, UploadListType } from './interface
   preserveWhitespaces: false
 })
 export class NzUploadListComponent implements OnChanges {
-  // region: fields
+  // #region fields
+
   // tslint:disable-next-line:no-any
   @Input() locale: any = {};
   @Input() listType: UploadListType;
@@ -32,11 +33,13 @@ export class NzUploadListComponent implements OnChanges {
   @Input() onPreview: (file: UploadFile) => void;
   @Input() onRemove: (file: UploadFile) => void;
 
-  // endregion
-  // region: styles
+  // #endregion
+
+  // #region styles
+
   private prefixCls = 'ant-upload-list';
 
-  setClassMap(): void {
+  private setClassMap(): void {
     const classMap = {
       [ this.prefixCls ]                      : true,
       [ `${this.prefixCls}-${this.listType}` ]: true
@@ -44,8 +47,9 @@ export class NzUploadListComponent implements OnChanges {
     this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
   }
 
-  // endregion
-  // region: render
+  // #endregion
+
+  // #region render
 
   handlePreview(file: UploadFile, e: Event): void {
     if (!this.onPreview) {
@@ -64,11 +68,12 @@ export class NzUploadListComponent implements OnChanges {
     return;
   }
 
-  // endregion
+  // #endregion
+
   constructor(private el: ElementRef, private updateHostClassService: NzUpdateHostClassService) {
   }
 
-  ngOnChanges(changes: { [P in keyof this]?: SimpleChange } & SimpleChanges): void {
+  ngOnChanges(): void {
     this.setClassMap();
   }
 }
