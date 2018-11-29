@@ -13,7 +13,7 @@ timeline: true
 * Major version release is not included in this schedule for breadking change and new features.
 
 ---
-## [1.8.1]
+## 1.8.1
 `2018-11-24`
 
 
