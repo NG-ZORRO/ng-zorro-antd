@@ -10,7 +10,8 @@ import {
   Input,
   OnDestroy,
   Output,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
@@ -30,6 +31,7 @@ const sharpMatcherRegx = /#([^#]+)$/;
   selector           : 'nz-anchor',
   preserveWhitespaces: false,
   templateUrl        : './nz-anchor.component.html',
+  encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzAnchorComponent implements OnDestroy, AfterViewInit {
