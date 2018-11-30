@@ -1,15 +1,17 @@
-// tslint:disable:no-any
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   OnDestroy,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
@@ -21,18 +23,19 @@ import { throttleByAnimationFrameDecorator } from '../core/util/throttleByAnimat
   selector       : 'nz-affix',
   templateUrl    : './nz-affix.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles         : [
-    `:host {
+  styles         : [ `
+    nz-affix {
       display: block;
-    }`
-  ]
+    }
+  ` ],
+  encapsulation  : ViewEncapsulation.None
 })
 export class NzAffixComponent implements OnInit, OnDestroy {
 
   @Input()
-  set nzTarget(value: Element | Window) {
+  set nzTarget(value: string | Element | Window) {
     this.clearEventListeners();
-    this._target = value || window;
+    this._target = typeof value === 'string' ? this.doc.querySelector(value) : value || window;
     this.setTargetEventListeners();
     this.updatePosition({});
   }
@@ -60,10 +63,11 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   @Output()
   readonly nzChange: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private scrollSrv: NzScrollService, private _el: ElementRef, private cd: ChangeDetectorRef) {
+  // tslint:disable-next-line:no-any
+  constructor(private scrollSrv: NzScrollService, private _el: ElementRef, @Inject(DOCUMENT) private doc: any, private cd: ChangeDetectorRef) {
   }
 
-  private timeout: any;
+  private timeout;
   private events = [
     'resize',
     'scroll',
@@ -73,8 +77,8 @@ export class NzAffixComponent implements OnInit, OnDestroy {
     'pageshow',
     'load'
   ];
-  private affixStyle: any;
-  private placeholderStyle: any;
+  private affixStyle;
+  private placeholderStyle;
 
   @ViewChild('wrap') private wrap: ElementRef;
 
@@ -94,6 +98,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.clearEventListeners();
     clearTimeout(this.timeout);
+    // tslint:disable-next-line:no-any
     (this.updatePosition as any).cancel();
   }
 
@@ -109,7 +114,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
     const scrollTop = this.scrollSrv.getScroll(target, true);
     const scrollLeft = this.scrollSrv.getScroll(target, false);
 
-    const docElem = window.document.body;
+    const docElem = this.doc.body;
     const clientTop = docElem.clientTop || 0;
     const clientLeft = docElem.clientLeft || 0;
 
@@ -121,7 +126,72 @@ export class NzAffixComponent implements OnInit, OnDestroy {
     };
   }
 
+  private setTargetEventListeners(): void {
+    this.clearEventListeners();
+    this.events.forEach((eventName: string) => {
+      this._target.addEventListener(eventName, this.updatePosition, false);
+    });
+  }
+
+  private clearEventListeners(): void {
+    this.events.forEach(eventName => {
+      this._target.removeEventListener(eventName, this.updatePosition, false);
+    });
+  }
+
+  private getTargetRect(target: Element | Window | null): ClientRect {
+    return target !== window ?
+      (target as HTMLElement).getBoundingClientRect() :
+      { top: 0, left: 0, bottom: 0 } as ClientRect;
+  }
+
+  private genStyle(affixStyle: {}): string {
+    if (affixStyle == null) {
+      return '';
+    }
+    return Object.keys(affixStyle).map(key => {
+      const val = affixStyle[ key ];
+      return `${key}:${typeof val === 'string' ? val : val + 'px'}`;
+    }).join(';');
+  }
+
+  private setAffixStyle(e: Event, affixStyle: {}): void {
+    const originalAffixStyle = this.affixStyle;
+    const isWindow = this._target === window;
+    if (e.type === 'scroll' && originalAffixStyle && affixStyle && isWindow) {
+      return;
+    }
+    if (shallowEqual(originalAffixStyle, affixStyle)) {
+      return;
+    }
+
+    const fixed = !!affixStyle;
+    const wrapEl = this.wrap.nativeElement as HTMLElement;
+    wrapEl.style.cssText = this.genStyle(affixStyle);
+    this.affixStyle = affixStyle;
+    const cls = 'ant-affix';
+    if (fixed) {
+      wrapEl.classList.add(cls);
+    } else {
+      wrapEl.classList.remove(cls);
+    }
+
+    if ((affixStyle && !originalAffixStyle) || (!affixStyle && originalAffixStyle)) {
+      this.nzChange.emit(fixed);
+    }
+  }
+
+  private setPlaceholderStyle(placeholderStyle: {}): void {
+    const originalPlaceholderStyle = this.placeholderStyle;
+    if (shallowEqual(placeholderStyle, originalPlaceholderStyle)) {
+      return;
+    }
+    (this._el.nativeElement as HTMLElement).style.cssText = this.genStyle(placeholderStyle);
+    this.placeholderStyle = placeholderStyle;
+  }
+
   @throttleByAnimationFrameDecorator()
+  // tslint:disable-next-line:no-any
   updatePosition(e: any): void {
     const targetNode = this._target;
     // Backwards support
@@ -187,69 +257,4 @@ export class NzAffixComponent implements OnInit, OnDestroy {
       this.setPlaceholderStyle(null);
     }
   }
-
-  private setTargetEventListeners(): void {
-    this.clearEventListeners();
-    this.events.forEach((eventName: string) => {
-      this._target.addEventListener(eventName, this.updatePosition, false);
-    });
-  }
-
-  private clearEventListeners(): void {
-    this.events.forEach(eventName => {
-      this._target.removeEventListener(eventName, this.updatePosition, false);
-    });
-  }
-
-  private getTargetRect(target: Element | Window | null): ClientRect {
-    return target !== window ?
-      (target as HTMLElement).getBoundingClientRect() :
-      { top: 0, left: 0, bottom: 0 } as ClientRect;
-  }
-
-  private genStyle(affixStyle: {}): string {
-    if (affixStyle == null) {
-      return '';
-    }
-    return Object.keys(affixStyle).map(key => {
-      const val = affixStyle[ key ];
-      return `${key}:${typeof val === 'string' ? val : val + 'px'}`;
-    }).join(';');
-  }
-
-  private setAffixStyle(e: any, affixStyle: {}): void {
-    const originalAffixStyle = this.affixStyle;
-    const isWindow = this._target === window;
-    if (e.type === 'scroll' && originalAffixStyle && affixStyle && isWindow) {
-      return;
-    }
-    if (shallowEqual(originalAffixStyle, affixStyle)) {
-      return;
-    }
-
-    const fixed = !!affixStyle;
-    const wrapEl = this.wrap.nativeElement as HTMLElement;
-    wrapEl.style.cssText = this.genStyle(affixStyle);
-    this.affixStyle = affixStyle;
-    const cls = 'ant-affix';
-    if (fixed) {
-      wrapEl.classList.add(cls);
-    } else {
-      wrapEl.classList.remove(cls);
-    }
-
-    if ((affixStyle && !originalAffixStyle) || (!affixStyle && originalAffixStyle)) {
-      this.nzChange.emit(fixed);
-    }
-  }
-
-  private setPlaceholderStyle(placeholderStyle: {}): void {
-    const originalPlaceholderStyle = this.placeholderStyle;
-    if (shallowEqual(placeholderStyle, originalPlaceholderStyle)) {
-      return;
-    }
-    (this._el.nativeElement as HTMLElement).style.cssText = this.genStyle(placeholderStyle);
-    this.placeholderStyle = placeholderStyle;
-  }
-
 }
