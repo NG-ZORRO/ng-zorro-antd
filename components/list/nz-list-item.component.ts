@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ContentChildren, Input, QueryList, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChildren, Input, QueryList, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { NzListItemMetaComponent } from './nz-list-item-meta.component';
 
@@ -6,6 +6,7 @@ import { NzListItemMetaComponent } from './nz-list-item-meta.component';
   selector           : 'nz-list-item',
   templateUrl        : './nz-list-item.component.html',
   preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   host               : {
     '[class.ant-list-item]': 'true'

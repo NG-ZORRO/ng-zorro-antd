@@ -7,7 +7,8 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  TemplateRef
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
@@ -23,6 +24,7 @@ import { NzListGrid } from './interface';
   templateUrl        : './nz-list.component.html',
   providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   styles             : [ `
     :host {

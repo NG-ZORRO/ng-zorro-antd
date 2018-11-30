@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector           : 'nz-list-item-meta',
   templateUrl        : './nz-list-item-meta.component.html',
   preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   host               : {
     '[class.ant-list-item-meta]': 'true'
   }
