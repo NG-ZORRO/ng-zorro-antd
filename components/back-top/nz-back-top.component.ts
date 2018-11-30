@@ -15,7 +15,8 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  TemplateRef
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { fromEvent, Subscription } from 'rxjs';
@@ -40,6 +41,7 @@ import { toNumber } from '../core/util/convert';
   ],
   templateUrl        : './nz-back-top.component.html',
   changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   preserveWhitespaces: false
 })
 export class NzBackTopComponent implements OnInit, OnDestroy {
