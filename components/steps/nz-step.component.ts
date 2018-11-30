@@ -1,124 +1,76 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { NgClassType } from '../core/types/ng-class';
 
 @Component({
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-step',
-  providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
-  templateUrl        : './nz-step.component.html'
+  templateUrl        : './nz-step.component.html',
+  host               : {
+    '[class.ant-steps-item]'        : 'true',
+    '[class.ant-steps-item-wait]'   : 'nzStatus === "wait"',
+    '[class.ant-steps-item-process]': 'nzStatus === "process"',
+    '[class.ant-steps-item-finish]' : 'nzStatus === "finish"',
+    '[class.ant-steps-item-error]'  : 'nzStatus === "error"',
+    '[class.ant-steps-custom]'      : '!!nzIcon',
+    '[class.ant-steps-next-error]'  : '(outStatus === "error") && (currentIndex === index + 1)'
+  }
 })
 export class NzStepComponent {
-  private _status = 'wait';
-  private _currentIndex = 0;
-  private _description: string | TemplateRef<void>;
-  private _icon: NgClassType | TemplateRef<void>;
-  private _title: string | TemplateRef<void>;
-  private el: HTMLElement = this.elementRef.nativeElement;
-  oldAPIIcon = true; // Make the user defined icon compatible to old API. Should be removed in 2.0.
-  isCustomStatus = false;
-  isDescriptionString = true;
-  isTitleString = true;
-  isIconString = true;
-  last = false;
-  showProcessDot = false;
-  direction = 'horizontal';
-  outStatus = 'process';
-  index = 0;
   @ViewChild('processDotTemplate') processDotTemplate: TemplateRef<void>;
-  customProcessTemplate: TemplateRef<{ $implicit: TemplateRef<void>, status: string, index: number }>;
+
+  @Input() nzTitle: string | TemplateRef<void>;
+  @Input() nzDescription: string | TemplateRef<void>;
 
   @Input()
-  set nzTitle(value: string | TemplateRef<void>) {
-    this.isTitleString = !(value instanceof TemplateRef);
-    this._title = value;
+  get nzStatus(): string { return this._status; }
+  set nzStatus(status: string) {
+    this._status = status;
+    this.isCustomStatus = true;
   }
-
-  get nzTitle(): string | TemplateRef<void> {
-    return this._title;
-  }
+  isCustomStatus = false;
+  private _status = 'wait';
 
   @Input()
+  get nzIcon(): NgClassType | TemplateRef<void> { return this._icon; }
   set nzIcon(value: NgClassType | TemplateRef<void>) {
     if (!(value instanceof TemplateRef)) {
       this.isIconString = true;
-      if (typeof value === 'string') {
-        const str = value as string;
-        this.oldAPIIcon = str.indexOf('anticon') > -1;
-      } else {
-        this.oldAPIIcon = true;
-      }
+      this.oldAPIIcon = typeof value === 'string' && value.indexOf('anticon') > -1;
     } else {
       this.isIconString = false;
     }
     this._icon = value;
   }
+  oldAPIIcon = true;
+  isIconString = true;
+  private _icon: NgClassType | TemplateRef<void>;
 
-  get nzIcon(): NgClassType | TemplateRef<void> {
-    return this._icon;
-  }
+  customProcessTemplate: TemplateRef<{ $implicit: TemplateRef<void>, status: string, index: number }>; // Set by parent.
+  direction = 'horizontal';
+  index = 0;
+  last = false;
+  outStatus = 'process';
+  showProcessDot = false;
 
-  @Input()
-  set nzStatus(status: string) {
-    this._status = status;
-    this.isCustomStatus = true;
-    this.updateClassMap();
-  }
-
-  get nzStatus(): string {
-    return this._status;
-  }
-
-  @Input()
-  set nzDescription(value: string | TemplateRef<void>) {
-    this.isDescriptionString = !(value instanceof TemplateRef);
-    this._description = value;
-  }
-
-  get nzDescription(): string | TemplateRef<void> {
-    return this._description;
-  }
-
-  get currentIndex(): number {
-    return this._currentIndex;
-  }
-
+  get currentIndex(): number { return this._currentIndex; }
   set currentIndex(current: number) {
     this._currentIndex = current;
     if (!this.isCustomStatus) {
-      if (current > this.index) {
-        this._status = 'finish';
-      } else if (current === this.index) {
-        if (this.outStatus) {
-          this._status = this.outStatus;
-        }
-      } else {
-        this._status = 'wait';
-      }
+      this._status = current > this.index
+        ? 'finish'
+        : current === this.index
+          ? this.outStatus || ''
+          : 'wait';
     }
-    this.updateClassMap();
   }
+  private _currentIndex = 0;
 
-  updateClassMap(): void {
-    const classMap = {
-      [ 'ant-steps-item' ]        : true,
-      [ `ant-steps-item-wait` ]   : this.nzStatus === 'wait',
-      [ `ant-steps-item-process` ]: this.nzStatus === 'process',
-      [ `ant-steps-item-finish` ] : this.nzStatus === 'finish',
-      [ `ant-steps-item-error` ]  : this.nzStatus === 'error',
-      [ 'ant-steps-custom' ]      : !!this.nzIcon,
-      [ 'ant-steps-next-error' ]  : (this.outStatus === 'error') && (this.currentIndex === this.index + 1)
-    };
-    this.nzUpdateHostClassService.updateHostClass(this.el, classMap);
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
-  constructor(private elementRef: ElementRef, private nzUpdateHostClassService: NzUpdateHostClassService) {
+  detectChanges(): void {
+    this.cdr.detectChanges();
   }
 }
