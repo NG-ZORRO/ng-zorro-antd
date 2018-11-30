@@ -1,16 +1,20 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Injector,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
-  TemplateRef
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-const ROUTE_DATA_BREADCRUMB = 'breadcrumb';
+export const NZ_ROUTE_DATA_BREADCRUMB = 'breadcrumb';
 
 export interface BreadcrumbOption {
   label: string;
@@ -19,6 +23,8 @@ export interface BreadcrumbOption {
 }
 
 @Component({
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-breadcrumb',
   preserveWhitespaces: false,
   templateUrl        : './nz-breadcrumb.component.html',
@@ -26,34 +32,51 @@ export interface BreadcrumbOption {
     '[class.ant-breadcrumb]': 'true'
   },
   styles             : [ `
-    :host {
+    nz-breadcrumb {
       display: block;
     }
   ` ]
 })
 export class NzBreadCrumbComponent implements OnInit, OnDestroy {
-  private _separator: string | TemplateRef<void> = '/';
-  private $destroy = new Subject();
-  isTemplateRef = false;
-
   @Input() nzAutoGenerate = false;
-
-  @Input()
-  set nzSeparator(value: string | TemplateRef<void>) {
-    this._separator = value;
-    this.isTemplateRef = value instanceof TemplateRef;
-  }
-
-  get nzSeparator(): string | TemplateRef<void> {
-    return this._separator;
-  }
+  @Input() nzSeparator: string | TemplateRef<void> = '/';
 
   breadcrumbs: BreadcrumbOption[] = [];
 
-  getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: BreadcrumbOption[] = []): BreadcrumbOption[] {
+  private destroy$ = new Subject<void>();
+
+  constructor(private injector: Injector, private ngZone: NgZone, private cd: ChangeDetectorRef) {}
+
+  ngOnInit(): void {
+    if (this.nzAutoGenerate) {
+      try {
+        const activatedRoute = this.injector.get(ActivatedRoute);
+        const router = this.injector.get(Router);
+        router.events.pipe(filter(e => e instanceof NavigationEnd), takeUntil(this.destroy$)).subscribe(() => {
+          this.breadcrumbs = this.getBreadcrumbs(activatedRoute.root);
+          this.cd.detectChanges();
+        });
+      } catch (e) {
+        throw new Error('[NG-ZORRO] You should import RouterModule if you want to use NzAutoGenerate');
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  navigate(url: string, e: MouseEvent): void {
+    e.preventDefault();
+    this.ngZone.run(() => this.injector.get(Router).navigateByUrl(url).then()).then();
+  }
+
+  private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: BreadcrumbOption[] = []): BreadcrumbOption[] {
     const children: ActivatedRoute[] = route.children;
+    // If there's no sub root, then stop the recurse and returns the generated breadcrumbs.
     if (children.length === 0) {
-      return breadcrumbs; // If there's no sub root, then stop the recurse and returns the generated breadcrumbs.
+      return breadcrumbs;
     }
     for (const child of children) {
       if (child.outlet === PRIMARY_OUTLET) {
@@ -62,9 +85,9 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
         const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
         const nextUrl = url + `/${routeURL}`;
         // If have data, go to generate a breadcrumb for it.
-        if (child.snapshot.data.hasOwnProperty(ROUTE_DATA_BREADCRUMB)) {
+        if (child.snapshot.data.hasOwnProperty(NZ_ROUTE_DATA_BREADCRUMB)) {
           const breadcrumb: BreadcrumbOption = {
-            label : child.snapshot.data[ ROUTE_DATA_BREADCRUMB ] || 'Breadcrumb',
+            label : child.snapshot.data[ NZ_ROUTE_DATA_BREADCRUMB ] || 'Breadcrumb',
             params: child.snapshot.params,
             url   : nextUrl
           };
@@ -73,37 +96,5 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
         return this.getBreadcrumbs(child, nextUrl, breadcrumbs);
       }
     }
-  }
-
-  navigate(url: string, e: MouseEvent): void {
-    e.preventDefault(); // Stop browsers' default navigation behavior.
-    try {
-      const router = this._injector.get(Router);
-      router.navigateByUrl(url);
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  constructor(private _injector: Injector) {
-  }
-
-  ngOnInit(): void {
-    if (this.nzAutoGenerate) {
-      try {
-        const activatedRoute = this._injector.get(ActivatedRoute);
-        const router = this._injector.get(Router);
-        router.events.pipe(filter(e => e instanceof NavigationEnd), takeUntil(this.$destroy)).subscribe(() => {
-          this.breadcrumbs = this.getBreadcrumbs(activatedRoute.root); // Build the breadcrumb tree from root route.
-        });
-      } catch (e) {
-        throw new Error('You should import RouterModule if you want to use NzAutoGenerate');
-      }
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.$destroy.next();
-    this.$destroy.complete();
   }
 }
