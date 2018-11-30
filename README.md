@@ -77,7 +77,7 @@ $ npm install ng-zorro-antd
 Import the module into every module where you want to use the components.
 
 ```ts
-import { NgZorroAntModule } from 'ng-zorro-antd';
+import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 @NgModule({
   imports: [ NgZorroAntdModule ]
