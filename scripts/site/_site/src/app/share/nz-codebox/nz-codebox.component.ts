@@ -401,7 +401,7 @@ export class AppModule { }
         'date-fns'                         : '^1.29.0',
         'tslib'                            : '^1.9.3',
         'typescript'                       : '~3.1.1',
-        'ng-zorro-antd'                    : '^7.0.0'
+        'ng-zorro-antd'                    : '^7.0.0-rc.0'
       },
       tags        : [ 'stackblitz', 'sdk' ]
     });
