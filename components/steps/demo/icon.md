@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-通过设置 `nz-step` 的 `nzIcon` 属性，可以启用自定义图标。旧的 API 仍然可用，但我们建议您迁移到新的 API。
+通过设置 `nz-step` 的 `nzIcon` 属性，可以启用自定义图标。
 
 ## en-US
 
