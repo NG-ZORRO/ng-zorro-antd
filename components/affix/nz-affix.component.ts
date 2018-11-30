@@ -24,7 +24,7 @@ import { throttleByAnimationFrameDecorator } from '../core/util/throttleByAnimat
   templateUrl    : './nz-affix.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles         : [ `
-    :host {
+    nz-affix {
       display: block;
     }
   ` ],
