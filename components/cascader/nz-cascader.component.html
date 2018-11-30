@@ -3,35 +3,40 @@
   #origin="cdkOverlayOrigin"
   #trigger>
   <div *ngIf="nzShowInput">
-    <input #input
+    <input
+      #input
       nz-input
+      class="ant-cascader-input"
+      [class.ant-cascader-input-disabled]="nzDisabled"
+      [class.ant-cascader-input-lg]="nzSize === 'large'"
+      [class.ant-cascader-input-sm]="nzSize === 'small'"
       [attr.autoComplete]="'off'"
       [attr.placeholder]="showPlaceholder ? nzPlaceHolder : null"
       [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"
       [readonly]="!nzShowSearch"
       [disabled]="nzDisabled"
       [nzSize]="nzSize"
-      [ngClass]="inputCls"
       [(ngModel)]="inputValue"
       (blur)="handleInputBlur($event)"
       (focus)="handleInputFocus($event)"
-      (change)="handlerInputChange($event)">
-    <i *ngIf="showClearIcon"
-      nz-icon
-      type="close-circle"
-      theme="fill"
-      [ngClass]="clearCls"
-      [attr.title]="nzClearText"
-      (click)="clearSelection($event)"></i>
+      (change)="$event.stopPropagation()">
+    <i *ngIf="clearIconVisible"
+       nz-icon
+       type="close-circle"
+       theme="fill"
+       class="ant-cascader-picker-clear"
+       (click)="clearSelection($event)"></i>
     <i *ngIf="nzShowArrow && !isLoading"
-      nz-icon
-      type="down"
-      [ngClass]="arrowCls"></i>
-    <i *ngIf="isLoading"
-      nz-icon
-      type="loading"
-      [ngClass]="loadingCls"></i>
-    <span [ngClass]="labelCls">
+       nz-icon
+       type="down"
+       class="ant-cascader-picker-arrow"
+       [class.ant-cascader-picker-arrow-expand]="menuVisible">
+    </i>
+    <i *ngIf="isLoading" nz-icon type="loading" class="ant-cascader-picker-arrow"></i>
+    <span
+      class="ant-cascader-picker-label"
+      [class.ant-cascader-show-search]="!!nzShowSearch"
+      [class.ant-focusd]="!!nzShowSearch && isFocused && !inputValue">
       <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{ labelRenderText }}</ng-container>
       <ng-template #labelTemplate>
         <ng-template [ngTemplateOutlet]="nzLabelRender" [ngTemplateOutletContext]="labelRenderContext"></ng-template>
@@ -49,30 +54,29 @@
   (detach)="closeMenu()"
   (positionChange)="onPositionChange($event)"
   [cdkConnectedOverlayOpen]="menuVisible">
-  <div #menu
-    [ngClass]="menuCls" [ngStyle]="nzMenuStyle"
+  <div
+    #menu
+    class="ant-cascader-menus"
+    [class.ant-cascader-menus-hidden]="!menuVisible"
+    [ngClass]="menuCls"
+    [ngStyle]="nzMenuStyle"
     [@dropDownAnimation]="dropDownPosition"
     (mouseleave)="onTriggerMouseLeave($event)">
-    <ul *ngFor="let options of nzColumns; let i = index;" [ngClass]="menuColumnCls"
-      [style.height]="inSearch && !nzColumns[0].length ? 'auto': ''" [style.width]="searchWidthStyle">
-      <li *ngFor="let option of options"
-        [attr.title]="option.title || getOptionLabel(option)"
-        [ngClass]="getOptionCls(option, i)"
+    <ul *ngFor="let options of columns; let i = index;" class="ant-cascader-menu" [ngClass]="menuColumnCls"
+        [style.height]="isSearching && !columns[0].length ? 'auto': ''" [style.width]="dropdownWidthStyle">
+      <li
+        nz-cascader-option
+        *ngFor="let option of options"
+        [nzLabelProperty]="nzLabelProperty"
+        [activated]="isOptionActivated(option, i)"
+        [highlightText]="isSearching ? inputValue : ''"
+        [option]="option"
         (mouseenter)="onOptionMouseEnter(option, i, $event)"
         (mouseleave)="onOptionMouseLeave(option, i, $event)"
         (click)="onOptionClick(option, i, $event)">
-        <ng-container *ngIf="inSearch">
-          <span [innerHTML]="renderSearchString(getOptionLabel(option))"></span>
-        </ng-container>
-        <ng-container *ngIf="!inSearch">
-          {{ getOptionLabel(option) }}
-        </ng-container>
-        <span *ngIf="!option.isLeaf || option.children && option.children.length || option.loading" class="ant-cascader-menu-item-expand-icon">
-          <i nz-icon [type]="option.loading ? 'loading' : 'right'"></i>
-        </span>
       </li>
-      <li *ngIf="inSearch && !nzColumns[0].length" class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled">
-        Not Found
+      <li *ngIf="isSearching && !columns[0].length" class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled">
+        {{ nzNotFoundContent || ('Select.notFoundContent' | nzI18n) }}
       </li>
     </ul>
   </div>
