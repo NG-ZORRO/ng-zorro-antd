@@ -182,6 +182,18 @@ describe('Component:nz-back-top', () => {
 
       expect(componentObject.backTopButton() === null).toBe(false);
     }));
+
+    it('element (use string id) scroll shows the button', fakeAsync(() => {
+      component.nzTarget = '#fakeTarget';
+
+      const throttleTime = 50;
+
+      componentObject.scrollTo(fakeTarget, defaultVisibilityHeight + 1);
+      tick(throttleTime + 1);
+      fixture.detectChanges();
+
+      expect(componentObject.backTopButton() === null).toBe(false);
+    }));
   });
 
   describe('#nzTemplate', () => {
