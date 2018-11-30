@@ -8,7 +8,6 @@ import {
   PositionStrategy
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { DOCUMENT } from '@angular/common';
 import {
   forwardRef,
   AfterViewInit,
@@ -17,13 +16,13 @@ import {
   ElementRef,
   EventEmitter,
   HostListener,
-  Inject,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   Renderer2,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewContainerRef
@@ -76,22 +75,7 @@ import { NzTreeComponent } from '../tree/nz-tree.component';
     }
   ` ]
 })
-export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy {
-
-  private nodes = [];
-  isComposing = false;
-  isDestroy = true;
-  inputValue = '';
-  dropDownClassMap: { [ className: string ]: boolean };
-  dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
-  overlayRef: OverlayRef;
-  portal: TemplatePortal<{}>;
-  positionStrategy: FlexibleConnectedPositionStrategy;
-  overlayBackdropClickSubscription: Subscription;
-  selectionChangeSubscription: Subscription;
-
-  selectedNodes: NzTreeNode[] = [];
-  value: string[] = [];
+export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy, OnChanges {
 
   @Input() @InputBoolean() nzAllowClear = true;
   @Input() @InputBoolean() nzShowExpand = true;
@@ -103,6 +87,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @InputBoolean() nzAsyncData = false;
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzDefaultExpandAll = false;
+  @Input() nzNodes: NzTreeNode[] = [];
   @Input() nzOpen = false;
   @Input() nzSize = 'default';
   @Input() nzPlaceHolder = '';
@@ -116,20 +101,23 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   @Output() readonly nzTreeClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzTreeCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
 
-  @Input()
-  set nzNodes(value: NzTreeNode[]) {
-    this.nodes = value;
-    setTimeout(() => this.updateSelectedNodes(), 0);
-  }
-
-  get nzNodes(): NzTreeNode[] {
-    return this.nodes;
-  }
-
   @ViewChild('inputElement') inputElement: ElementRef;
   @ViewChild('treeSelect') treeSelect: ElementRef;
   @ViewChild('dropdownTemplate', { read: TemplateRef }) dropdownTemplate;
   @ViewChild('treeRef') treeRef: NzTreeComponent;
+
+  isComposing = false;
+  isDestroy = true;
+  inputValue = '';
+  dropDownClassMap: { [ className: string ]: boolean };
+  dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
+  overlayRef: OverlayRef;
+  portal: TemplatePortal<{}>;
+  positionStrategy: FlexibleConnectedPositionStrategy;
+  overlayBackdropClickSubscription: Subscription;
+  selectionChangeSubscription: Subscription;
+  selectedNodes: NzTreeNode[] = [];
+  value: string[] = [];
 
   onChange: (value: string[] | string) => void;
   onTouched: () => void = () => null;
@@ -168,14 +156,67 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   constructor(
-    @Optional() @Inject(DOCUMENT) private document: any, // tslint:disable-line:no-any
-    @Optional() private element: ElementRef,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef) {
   }
 
+  ngOnInit(): void {
+    this.isDestroy = false;
+    this.selectionChangeSubscription = this.subscribeSelectionChange();
+    Promise.resolve().then(() => {
+      this.updateDropDownClassMap();
+      this.updateCdkConnectedOverlayStatus();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.isDestroy = true;
+    this.detachOverlay();
+    this.selectionChangeSubscription.unsubscribe();
+    this.overlayBackdropClickSubscription.unsubscribe();
+  }
+
+  ngAfterViewInit(): void {
+    this.attachOverlay();
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.nzDisabled = isDisabled;
+    this.closeDropDown();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.hasOwnProperty('nzNodes')) {
+      setTimeout(() => this.updateSelectedNodes(), 0);
+    }
+  }
+
+  writeValue(value: string[] | string): void {
+    if (value) {
+      if (this.isMultiple && Array.isArray(value)) {
+        this.value = value;
+      } else {
+        this.value = [ (value as string) ];
+      }
+      this.updateSelectedNodes();
+    } else {
+      this.value = [];
+      this.selectedNodes.forEach(node => {
+        this.removeSelected(node, false);
+      });
+      this.selectedNodes = [];
+    }
+    this.cdr.markForCheck();
+  }
+
+  registerOnChange(fn: (_: string[] | string) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+  }
   @HostListener('click')
   trigger(): void {
     if (this.nzDisabled || (!this.nzDisabled && this.nzOpen)) {
@@ -398,55 +439,5 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     } else {
       this.renderer.setStyle(this.overlayRef.backdropElement, 'display', 'none');
     }
-  }
-
-  writeValue(value: string[] | string): void {
-    if (value) {
-      if (this.isMultiple && Array.isArray(value)) {
-        this.value = value;
-      } else {
-        this.value = [ (value as string) ];
-      }
-      this.updateSelectedNodes();
-    } else {
-      this.value = [];
-      this.selectedNodes.forEach(node => {
-        this.removeSelected(node, false);
-      });
-      this.selectedNodes = [];
-    }
-    this.cdr.markForCheck();
-  }
-
-  registerOnChange(fn: (_: string[] | string) => void): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: () => void): void {
-  }
-
-  ngOnInit(): void {
-    this.isDestroy = false;
-    this.selectionChangeSubscription = this.subscribeSelectionChange();
-    Promise.resolve().then(() => {
-      this.updateDropDownClassMap();
-      this.updateCdkConnectedOverlayStatus();
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.isDestroy = true;
-    this.detachOverlay();
-    this.selectionChangeSubscription.unsubscribe();
-    this.overlayBackdropClickSubscription.unsubscribe();
-  }
-
-  ngAfterViewInit(): void {
-    this.attachOverlay();
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.nzDisabled = isDisabled;
-    this.closeDropDown();
   }
 }
