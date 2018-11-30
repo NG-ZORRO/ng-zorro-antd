@@ -18,6 +18,7 @@ title: Anchor
 | 成员 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzAffix]` | 固定模式 | boolean | true |
+| `[nzTarget]` | 锚点区最外层节点 | `TemplateRef<void>`  |
 | `[nzBounds]` | 锚点区域边界 | number | 5(px) |
 | `[nzOffsetBottom]` | 距离窗口底部达到指定偏移量后触发 | number |  |
 | `[nzOffsetTop]` | 距离窗口顶部达到指定偏移量后触发 | number |  |
