@@ -7,7 +7,8 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  TemplateRef
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
@@ -23,6 +24,7 @@ import { NzListGrid } from './interface';
   templateUrl        : './nz-list.component.html',
   providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   styles             : [ `
     :host {
@@ -41,43 +43,15 @@ export class NzListComponent implements OnInit, OnChanges, OnDestroy {
 
   // #region fields
   // tslint:disable-next-line:no-any
-  @Input() nzDataSource: any[] = [];
+  @Input() nzDataSource: any[];
 
   @Input() @InputBoolean() nzBordered = false;
 
   @Input() nzGrid: NzListGrid;
 
-  _isHeader = false;
-  _header = '';
-  _headerTpl: TemplateRef<void>;
+  @Input() nzHeader: string | TemplateRef<void>;
 
-  @Input()
-  set nzHeader(value: string | TemplateRef<void>) {
-    if (value instanceof TemplateRef) {
-      this._header = null;
-      this._headerTpl = value;
-    } else {
-      this._header = value;
-    }
-
-    this._isHeader = !!value;
-  }
-
-  _isFooter = false;
-  _footer = '';
-  _footerTpl: TemplateRef<void>;
-
-  @Input()
-  set nzFooter(value: string | TemplateRef<void>) {
-    if (value instanceof TemplateRef) {
-      this._footer = null;
-      this._footerTpl = value;
-    } else {
-      this._footer = value;
-    }
-
-    this._isFooter = !!value;
-  }
+  @Input() nzFooter: string | TemplateRef<void>;
 
   @Input() nzItemLayout: 'vertical' | 'horizontal' = 'horizontal';
 
@@ -109,7 +83,7 @@ export class NzListComponent implements OnInit, OnChanges, OnDestroy {
       [ `${this.prefixCls}-bordered` ]                 : this.nzBordered,
       [ `${this.prefixCls}-loading` ]                  : this.nzLoading,
       [ `${this.prefixCls}-grid` ]                     : this.nzGrid,
-      [ `${this.prefixCls}-something-after-last-item` ]: !!(this.nzLoadMore || this.nzPagination || this._isFooter)
+      [ `${this.prefixCls}-something-after-last-item` ]: !!(this.nzLoadMore || this.nzPagination || this.nzFooter)
     };
     this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
   }
@@ -124,6 +98,7 @@ export class NzListComponent implements OnInit, OnChanges, OnDestroy {
       this.locale = this.i18n.getLocaleData('Table');
       this.cd.detectChanges();
     });
+    this._setClassMap();
   }
 
   ngOnChanges(): void {
