@@ -22,6 +22,7 @@ title: Transfer
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzDataSource]` | 数据源，其中若数据属性 `direction: 'right'` 将会被渲染到右边一栏中 | TransferItem[] | [] |
+| `[nzDisabled]` | 是否禁用 | boolean | false |
 | `[nzTitles]` | 标题集合，顺序从左至右 | string[] | ['', ''] |
 | `[nzOperations]` | 操作文案集合，顺序从下至上 | string[] | ['', ''] |
 | `[nzListStyle]` | 两个穿梭框的自定义样式，等同 `ngStyle` | object |  |
