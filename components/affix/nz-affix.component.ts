@@ -1,4 +1,3 @@
-// tslint:disable:no-any
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -62,10 +61,11 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   @Output()
   readonly nzChange: EventEmitter<boolean> = new EventEmitter();
 
+  // tslint:disable-next-line:no-any
   constructor(private scrollSrv: NzScrollService, private _el: ElementRef, @Inject(DOCUMENT) private doc: any, private cd: ChangeDetectorRef) {
   }
 
-  private timeout: any;
+  private timeout;
   private events = [
     'resize',
     'scroll',
@@ -75,8 +75,8 @@ export class NzAffixComponent implements OnInit, OnDestroy {
     'pageshow',
     'load'
   ];
-  private affixStyle: any;
-  private placeholderStyle: any;
+  private affixStyle;
+  private placeholderStyle;
 
   @ViewChild('wrap') private wrap: ElementRef;
 
@@ -96,6 +96,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.clearEventListeners();
     clearTimeout(this.timeout);
+    // tslint:disable-next-line:no-any
     (this.updatePosition as any).cancel();
   }
 
@@ -152,7 +153,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
     }).join(';');
   }
 
-  private setAffixStyle(e: any, affixStyle: {}): void {
+  private setAffixStyle(e: Event, affixStyle: {}): void {
     const originalAffixStyle = this.affixStyle;
     const isWindow = this._target === window;
     if (e.type === 'scroll' && originalAffixStyle && affixStyle && isWindow) {
@@ -188,6 +189,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   }
 
   @throttleByAnimationFrameDecorator()
+  // tslint:disable-next-line:no-any
   updatePosition(e: any): void {
     const targetNode = this._target;
     // Backwards support
