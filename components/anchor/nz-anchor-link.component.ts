@@ -22,7 +22,7 @@ import { NzAnchorComponent } from './nz-anchor.component';
     '[class.ant-anchor-link]': 'true'
   },
   styles             : [ `
-    :host {
+    nz-link {
       display: block;
     }
   ` ],
