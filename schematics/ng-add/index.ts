@@ -21,7 +21,6 @@ import { Schema } from './schema';
 import schematicsFixIcon from '../fix-icon/index';
 
 const ADD_CONFIG = {
-  LESS_VERSION       : '^2.7.3',
   CUSTOM_THEME_PATH  : 'src/theme.less',
   COMPILED_THEME_PATH: 'node_modules/ng-zorro-antd/ng-zorro-antd.min.css',
   BOOT_PAGE_PATH     : 'src/app/app.component.html',
@@ -34,12 +33,11 @@ const ADD_CONFIG = {
 export default function (options: Schema): Rule {
   return chain([
     options && options.skipPackageJson ? noop() : addZorroToPackageJson(),
-    options && options.theme ? downgradeLess() : noop(),
     setBootstrapPage(),
     addThemeToAppStyles(options),
     addModulesToAppModule(options),
     addI18n(options),
-    (options && !options.skipPackageJson) || (options && !options.theme) ? installNodeDeps() : noop(),
+    (options && !options.skipPackageJson) ? installNodeDeps() : noop(),
     schematicsFixIcon(options)
   ]);
 }
@@ -150,14 +148,6 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
   return registerLocaleDataFun.length === 0
     ? insertAfterLastOccurrence(allImports, `\n\nregisterLocaleData(${locale});`, modulePath, 0)
     : new ReplaceChange(modulePath, registerLocaleDataFun[ 0 ].getStart(), registerLocaleDataFun[ 0 ].getText(), `registerLocaleData(${locale});`);
-}
-
-/** 降级 less */
-function downgradeLess(): (host: Tree) => Tree {
-  return (host: Tree) => {
-    addPackageToPackageJson(host, 'dependencies', 'less', ADD_CONFIG.LESS_VERSION);
-    return host;
-  };
 }
 
 /** 添加 ng-zorro-antd 到 package.json 的 dependencies */

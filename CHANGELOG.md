@@ -1,3 +1,24 @@
+# [7.0.0-rc.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.8.0...7.0.0-rc.0) (2018-11-30)
+
+
+### Bug Fixes
+
+* **menu:** fix dropdown menu item selected className ([#2434](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2434)) ([acbe5da](https://github.com/NG-ZORRO/ng-zorro-antd/commit/acbe5da)), closes [#2433](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2433)
+* **menu:** fix fold menu ([#2454](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2454)) ([f228013](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f228013)), closes [#2449](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2449)
+* **timeline:** fix loading icon ([#2386](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2386)) ([cebfff7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cebfff7)), closes [#2377](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2377)
+* **readme:** fix misspelling ([#2472](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2472)) ([e5535d2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e5535d2))
+
+
+### Features
+
+* Adds danish locale ([#2486](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2486)) ([1c7f983](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1c7f983)), closes [#2485](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2485)
+* **avatar:** support custom size ([#2416](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2416)) ([0bf8a36](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0bf8a36)), closes [#2380](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2380)
+* **drawer:** add input property in NzDrawerRef ([#2464](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2464)) ([9565cd5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9565cd5)), closes [#2403](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2403)
+* **modal:** support clicking ESC to close modal ([#2483](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2483)) ([c72f431](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c72f431)), closes [#1999](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1999)
+* **progress:** support custom strokeColor and strokeLinecap ([#2404](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2404)) ([167a110](https://github.com/NG-ZORRO/ng-zorro-antd/commit/167a110)), closes [#2378](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2378)
+
+
+
 <a name="1.8.1"></a>
 ## [1.8.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.8.0...1.8.1) (2018-11-24)
 

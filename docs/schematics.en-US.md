@@ -18,7 +18,7 @@ ng add ng-zorro-antd [options]
 
 ***--theme***
 
-`ng-zorro-antd` will [downgrade](https://github.com/angular/angular-cli/issues/10430) the version of `less` to `2.7` and create `theme.less` in `src` folder.
+`ng-zorro-antd` will create `theme.less` in `src` folder.
 
 You can get more information at the [Customize Theme](/docs/customize-theme/en) part.
 

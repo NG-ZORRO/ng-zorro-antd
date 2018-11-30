@@ -51,6 +51,7 @@ function changeVersion() {
 
   function checkVersionNumber(cur, next) {
     // Must be numbers and dots.
+    if (next.indexOf('rc') > -1) { return true; }
     if (!/^[1-9][0-9.]{1,10}[0-9]$/.test(next)) { return false; }
 
     const curArr = cur.split('.');
