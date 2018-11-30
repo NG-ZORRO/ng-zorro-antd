@@ -1,11 +1,16 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component, ElementRef, EventEmitter,
-  Input, Output
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewEncapsulation
 } from '@angular/core';
 
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
+import { scrollIntoView } from '../core/util/scroll-into-view-if-needed';
 
 export class NzOptionSelectionChange {
   constructor(
@@ -19,6 +24,7 @@ export class NzOptionSelectionChange {
   selector           : 'nz-auto-option',
   preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-autocomplete-option.component.html',
   host               : {
     'role'                                          : 'menuitem',
@@ -32,49 +38,37 @@ export class NzOptionSelectionChange {
   }
 })
 export class NzAutocompleteOptionComponent {
-  private disabled = false;
-
-  active = false;
-  selected = false;
 
   /* tslint:disable-next-line:no-any */
   @Input() nzValue: any;
   @Input() nzLabel: string;
-
-  @Input()
-  get nzDisabled(): boolean {
-    return this.disabled;
-  }
-
-  set nzDisabled(value: boolean) {
-    this.disabled = toBoolean(value);
-  }
-
+  @Input() @InputBoolean() nzDisabled = false;
   @Output() readonly selectionChange = new EventEmitter<NzOptionSelectionChange>();
+
+  active = false;
+  selected = false;
 
   constructor(private changeDetectorRef: ChangeDetectorRef, private element: ElementRef) {
   }
 
-  /** 选择 */
   select(): void {
     this.selected = true;
     this.changeDetectorRef.markForCheck();
     this.emitSelectionChangeEvent();
   }
 
-  /** 取消选择 */
   deselect(): void {
     this.selected = false;
     this.changeDetectorRef.markForCheck();
     this.emitSelectionChangeEvent();
   }
 
-  /** 获取用于显示的 label */
+  /** Git display label */
   getLabel(): string {
     return this.nzLabel || this.nzValue.toString();
   }
 
-  /** 设置激活样式 (仅限样式) */
+  /** Set active (only styles) */
   setActiveStyles(): void {
     if (!this.active) {
       this.active = true;
@@ -82,7 +76,7 @@ export class NzAutocompleteOptionComponent {
     }
   }
 
-  /** 设置非激活样式 (仅限样式) */
+  /** Unset active (only styles) */
   setInactiveStyles(): void {
     if (this.active) {
       this.active = false;
@@ -91,19 +85,11 @@ export class NzAutocompleteOptionComponent {
   }
 
   scrollIntoViewIfNeeded(): void {
-    /* tslint:disable-next-line:no-string-literal */
-    if (this.element.nativeElement && this.element.nativeElement['scrollIntoViewIfNeeded']) {
-      /* tslint:disable-next-line:no-string-literal */
-      setTimeout(() =>  this.element.nativeElement[ 'scrollIntoViewIfNeeded' ](false), 150);
-    }
-  }
-
-  private emitSelectionChangeEvent(isUserInput: boolean = false): void {
-    this.selectionChange.emit(new NzOptionSelectionChange(this, isUserInput));
+    scrollIntoView(this.element.nativeElement);
   }
 
   selectViaInteraction(): void {
-    if (!this.disabled) {
+    if (!this.nzDisabled) {
       this.selected = !this.selected;
       if (this.selected) {
         this.setActiveStyles();
@@ -113,6 +99,10 @@ export class NzAutocompleteOptionComponent {
       this.emitSelectionChangeEvent(true);
       this.changeDetectorRef.markForCheck();
     }
+  }
+
+  private emitSelectionChangeEvent(isUserInput: boolean = false): void {
+    this.selectionChange.emit(new NzOptionSelectionChange(this, isUserInput));
   }
 
 }
