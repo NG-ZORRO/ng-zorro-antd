@@ -1,6 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const { AngularCompilerPlugin } = require('@ngtools/webpack')
 
 function packageSort(packages) {
@@ -45,6 +45,11 @@ module.exports = {
       },
     ]
   },
+  optimization: {
+    minimizer: [new TerserPlugin({
+      parallel: true
+    })]
+  },
   resolve: {
     extensions: ['.js', '.ts'],
   },
@@ -54,7 +59,6 @@ module.exports = {
       entryModule: path.resolve(__dirname, 'src/app/app.module#AppModule'),
       sourceMap: true
     }),
-    new UglifyJSPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src/index.html'),
       chunksSortMode: packageSort(['polyfills', 'main']),
