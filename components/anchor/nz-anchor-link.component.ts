@@ -8,7 +8,8 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  TemplateRef
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { NzAnchorComponent } from './nz-anchor.component';
@@ -21,6 +22,7 @@ import { NzAnchorComponent } from './nz-anchor.component';
     '[class.ant-anchor-link]': 'true',
     'style'                  : 'display:block'
   },
+  encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzAnchorLinkComponent implements OnInit, OnDestroy {
