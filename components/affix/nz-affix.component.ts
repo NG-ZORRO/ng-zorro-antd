@@ -10,7 +10,8 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
@@ -22,11 +23,10 @@ import { throttleByAnimationFrameDecorator } from '../core/util/throttleByAnimat
   selector       : 'nz-affix',
   templateUrl    : './nz-affix.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles         : [
-    `:host {
-      display: block;
-    }`
-  ]
+  host           : {
+    'style'      : 'display:block'
+  },
+  encapsulation  : ViewEncapsulation.None
 })
 export class NzAffixComponent implements OnInit, OnDestroy {
 
