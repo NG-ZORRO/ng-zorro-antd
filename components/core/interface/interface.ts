@@ -1,3 +1,3 @@
 export interface ClassMap {
-   [ key: string ]: boolean;
+  [ key: string ]: boolean;
 }
