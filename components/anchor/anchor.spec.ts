@@ -45,10 +45,10 @@ describe('anchor', () => {
     });
 
     it('should hava remove listen when the component is destroyed', () => {
-      expect(context.comp.scroll$.closed).toBeFalsy();
+      expect(context.comp['scroll$'].closed).toBeFalsy();
       context.comp.ngOnDestroy();
       fixture.detectChanges();
-      expect(context.comp.scroll$.closed).toBeTruthy();
+      expect(context.comp['scroll$'].closed).toBeTruthy();
     });
 
     it('should actived when scrolling to the anchor', (done: () => void) => {
@@ -136,6 +136,22 @@ describe('anchor', () => {
         fixture.detectChanges();
         scrollTo();
         expect(dl.query(By.css('.fixed')) == null).toBe(true);
+      });
+    });
+
+    describe('[nzTarget]', () => {
+      it('with window', () => {
+        spyOn(window, 'addEventListener');
+        context.nzTarget = window;
+        fixture.detectChanges();
+        expect(window.addEventListener).toHaveBeenCalled();
+      });
+      it('with string', () => {
+        const el = document.querySelector('#target');
+        spyOn(el, 'addEventListener');
+        context.nzTarget = '#target';
+        fixture.detectChanges();
+        expect(el.addEventListener).toHaveBeenCalled();
       });
     });
 
@@ -243,6 +259,7 @@ describe('anchor', () => {
     </tr>
   </table>
   <div style="height: 1000px"></div>
+  <div id="target"></div>
   `
 })
 export class TestComponent {
