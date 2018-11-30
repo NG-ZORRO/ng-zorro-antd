@@ -1,7 +1,6 @@
 import { ENTER } from '@angular/cdk/keycodes';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import {
-  ChangeDetectorRef,
   Component,
   ElementRef,
   HostListener,
@@ -10,7 +9,8 @@ import {
   OnDestroy,
   OnInit,
   Optional,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
@@ -26,7 +26,8 @@ import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
     '[attr.role]'    : '"button"'
   },
   providers          : [ NzUpdateHostClassService ],
-  preserveWhitespaces: false
+  preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None
 })
 export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   reqs: { [ key: string ]: Subscription } = {};
@@ -35,14 +36,14 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('file') file: ElementRef;
 
-  // region: fields
+  // #region fields
   @Input() classes: {} = {};
   @Input() options: ZipButtonOptions;
+  // #endregion
 
-  // endregion
   @HostListener('click')
   onClick(): void {
-    if (this.options.disabled) {
+    if (this.options.disabled || !this.options.openFileDialogOnClick) {
       return;
     }
     (this.file.nativeElement as HTMLInputElement).click();
@@ -88,8 +89,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     hie.value = '';
   }
 
-  // tslint:disable-next-line:no-any
-  private traverseFileTree(files: any): void {
+  private traverseFileTree(files: DataTransferItemList): void {
     // tslint:disable-next-line:no-any
     const _traverseFileTree = (item: any, path: string) => {
       if (item.isFile) {
@@ -108,7 +108,8 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
         });
       }
     };
-    for (const file of files) {
+    // tslint:disable-next-line:no-any
+    for (const file of files as any) {
       _traverseFileTree(file.webkitGetAsEntry(), '');
     }
   }
@@ -264,21 +265,22 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  // region: styles
+  // #region styles
+
   private prefixCls = 'ant-upload';
 
-  setClassMap(): void {
+  private setClassMap(): void {
     const classMap = {
       [ this.prefixCls ]              : true,
       [ `${this.prefixCls}-disabled` ]: this.options.disabled,
       ...this.classes
     };
     this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
-    this.cd.detectChanges();
   }
 
-  // endregion
-  constructor(@Optional() private http: HttpClient, private el: ElementRef, private updateHostClassService: NzUpdateHostClassService, private cd: ChangeDetectorRef) {
+  // #endregion
+
+  constructor(@Optional() private http: HttpClient, private el: ElementRef, private updateHostClassService: NzUpdateHostClassService) {
     if (!http) {
       throw new Error(`Not found 'HttpClient', You can import 'HttpClientModule' in your root module.`);
     }

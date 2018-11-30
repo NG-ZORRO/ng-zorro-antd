@@ -42,6 +42,7 @@ title: Upload
 | `[nzShowUploadList]` | 是否展示 uploadList, 可设为一个对象，用于单独设定 showPreviewIcon 和 showRemoveIcon | `Boolean or { showPreviewIcon?: boolean, showRemoveIcon?: boolean }` | true |
 | `[nzShowButton]` | 是否展示上传按钮 | boolean | true |
 | `[nzWithCredentials]` | 上传请求时是否携带 cookie | boolean | false |
+| `[nzOpenFileDialogOnClick]` | 点击打开文件对话框 | boolean | true |
 | `[nzPreview]` | 点击文件链接或预览图标时的回调；注意：务必使用 `=>` 定义处理方法。 | `(file: UploadFile) => void` | - |
 | `[nzRemove]` | 点击移除文件时的回调，返回值为 false 时不移除。支持返回 `Observable` 对象；注意：务必使用 `=>` 定义处理方法。 | (file: UploadFile) => `boolean｜Observable` | 无   |
 | `(nzChange)` | 上传文件改变时的状态 | EventEmitter | - |

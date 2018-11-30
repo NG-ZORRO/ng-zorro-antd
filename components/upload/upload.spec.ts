@@ -674,11 +674,20 @@ describe('upload', () => {
       });
 
       describe('should be trigger upload', () => {
-        it('via onClick', () => {
-          spyOn(instance.comp.file.nativeElement, 'click');
-          expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
-          instance.comp.onClick();
-          expect(instance.comp.file.nativeElement.click).toHaveBeenCalled();
+        describe('via onClick', () => {
+          it('', () => {
+            spyOn(instance.comp.file.nativeElement, 'click');
+            expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
+            instance.comp.onClick();
+            expect(instance.comp.file.nativeElement.click).toHaveBeenCalled();
+          });
+          it(', when nzOpenFileDialogOnClick is false', () => {
+            instance.options.openFileDialogOnClick = false;
+            spyOn(instance.comp.file.nativeElement, 'click');
+            expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
+            instance.comp.onClick();
+            expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
+          });
         });
         describe('via onKeyDown', () => {
           it('normal', () => {
@@ -1120,6 +1129,8 @@ class TestUploadBtnComponent {
   @ViewChild('btn') comp: NzUploadBtnComponent;
   classes: string[] = ['test'];
   options: ZipButtonOptions = {
+    disabled: false,
+    openFileDialogOnClick: true,
     filters: [],
     customRequest: null,
     onStart: () => {},
