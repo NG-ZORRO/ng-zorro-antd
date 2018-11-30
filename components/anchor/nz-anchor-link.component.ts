@@ -19,9 +19,13 @@ import { NzAnchorComponent } from './nz-anchor.component';
   preserveWhitespaces: false,
   templateUrl        : './nz-anchor-link.component.html',
   host               : {
-    '[class.ant-anchor-link]': 'true',
-    'style'                  : 'display:block'
+    '[class.ant-anchor-link]': 'true'
   },
+  styles             : [ `
+    :host {
+      display: block;
+    }
+  ` ],
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
