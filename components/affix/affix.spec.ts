@@ -44,6 +44,8 @@ describe('affix', () => {
     new Event('pageshow'),
     new Event('load')
   ];
+  const height = 100;
+  const width = 100;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -109,13 +111,13 @@ describe('affix', () => {
       describe('when element gets shifted horizontally', () => {
         it('adjusts left position accordingly to maintain natural position', fakeAsync(() => {
           setupInitialState();
-          componentObject.offsetTo(componentObject.elementRef(), { top: startOffset, left: 10, width: 100, height: 100 });
+          componentObject.offsetTo(componentObject.elementRef(), { top: startOffset, left: 10, width, height });
           emitScroll(window, defaultOffsetTop + startOffset + 1);
 
           expect(componentObject.wrap().offsetLeft).toBe(10);
 
           emitScroll(window, defaultOffsetTop + startOffset - 1);
-          componentObject.offsetTo(componentObject.elementRef(), { top: startOffset, left: 100, width: 100, height: 100 });
+          componentObject.offsetTo(componentObject.elementRef(), { top: startOffset, left: 100, width, height });
           emitScroll(window, defaultOffsetTop + startOffset + 1);
 
           expect(componentObject.wrap().offsetLeft).toBe(100);
@@ -288,6 +290,15 @@ describe('affix', () => {
       fixture.detectChanges();
       expect(component.updatePosition).toHaveBeenCalled();
     });
+
+    it('should be a string value', () => {
+      spyOn(component, 'updatePosition');
+      expect(component.updatePosition).not.toHaveBeenCalled();
+      fixture.detectChanges();
+      context.fakeTarget = '#target';
+      fixture.detectChanges();
+      expect(component.updatePosition).toHaveBeenCalled();
+    });
   });
 
   describe('(nzChange)', () => {
@@ -318,11 +329,12 @@ describe('affix', () => {
     }));
   });
 
-  it('should adjust the width when resize', fakeAsync(() => {
+  it('should adjust placeholder width when resize', fakeAsync(() => {
     const offsetTop = 150;
     context.newOffset = offsetTop;
     setupInitialState({ offsetTop: offsetTop + 1 });
     emitScroll(window, 2);
+    expect(componentObject.elementRef().style.width).toBe(`${width}px`);
     componentObject.offsetYTo(componentObject.elementRef(), offsetTop + 2);
     tick(20);
     fixture.detectChanges();
@@ -330,7 +342,7 @@ describe('affix', () => {
     tick(20);
     fixture.detectChanges();
 
-    expect(componentObject.wrap().offsetTop).toBe(offsetTop);
+    expect(componentObject.elementRef().style.width).toBe(``);
 
     discardPeriodicTasks();
   }));
@@ -352,7 +364,7 @@ describe('affix', () => {
     }
 
     getOffset(el: Element): Offset {
-      return this.offsets[el.id] || { top: 10, left: 0, height: 100, width: 100 };
+      return this.offsets[el.id] || { top: 10, left: 0, height, width };
     }
 
     emitEvent(el: Element | Window, event: Event): void {
@@ -368,8 +380,8 @@ describe('affix', () => {
       this.offsets[this.getKey(el)] = {
         top: offset.top,
         left: offset.left,
-        height: 100,
-        width: 100
+        height,
+        width
       };
     }
 
@@ -379,8 +391,8 @@ describe('affix', () => {
         {
           top: offsetTop,
           left: 0,
-          height: 100,
-          width: 100
+          height,
+          width
         }
       );
     }
@@ -486,14 +498,12 @@ describe('affix-extra', () => {
     <button id="content">Affix Button</button>
   </nz-affix>
   <div id="target"></div>
-  `,
-  styleUrls: [ './style/index.less' ],
-  encapsulation: ViewEncapsulation.None
+  `
 })
 class TestAffixComponent {
   @ViewChild(NzAffixComponent)
   nzAffixComponent: NzAffixComponent;
-  fakeTarget: Element | Window = null;
+  fakeTarget: string | Element | Window = null;
   newOffset: {};
   newOffsetBottom: {};
 }
