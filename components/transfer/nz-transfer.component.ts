@@ -11,7 +11,8 @@ import {
   QueryList,
   SimpleChanges,
   TemplateRef,
-  ViewChildren
+  ViewChildren,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { of, Observable, Subject } from 'rxjs';
@@ -31,6 +32,7 @@ import { NzTransferListComponent } from './nz-transfer-list.component';
     '[class.ant-transfer]': 'true',
     '[class.ant-transfer-disabled]': 'nzDisabled'
   },
+  encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {

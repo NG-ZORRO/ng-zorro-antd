@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector           : '[nz-transfer-search]',
   preserveWhitespaces: false,
   templateUrl        : './nz-transfer-search.component.html',
+  encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzTransferSearchComponent implements OnChanges {

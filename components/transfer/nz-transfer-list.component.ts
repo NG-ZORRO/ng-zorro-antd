@@ -9,7 +9,8 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  TemplateRef
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
@@ -21,6 +22,7 @@ import { TransferItem } from './interface';
   preserveWhitespaces: false,
   providers          : [ NzUpdateHostClassService ],
   templateUrl        : './nz-transfer-list.component.html',
+  encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzTransferListComponent implements OnChanges, OnInit {
