@@ -10,7 +10,8 @@ import {
   Input,
   OnDestroy,
   Output,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
@@ -30,6 +31,7 @@ const sharpMatcherRegx = /#([^#]+)$/;
   selector           : 'nz-anchor',
   preserveWhitespaces: false,
   templateUrl        : './nz-anchor.component.html',
+  encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzAnchorComponent implements OnDestroy, AfterViewInit {
@@ -37,11 +39,10 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   private links: NzAnchorLinkComponent[] = [];
   private animating = false;
   private target: Element = null;
-  scroll$: Subscription = null;
+  private scroll$: Subscription = null;
+  @ViewChild('ink') private ink: ElementRef;
   visible = false;
   wrapperStyle: {} = { 'max-height': '100vh' };
-  @ViewChild('wrap') private wrap: ElementRef;
-  @ViewChild('ink') private ink: ElementRef;
 
   // region: fields
 
@@ -93,8 +94,8 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   }
 
   @Input()
-  set nzTarget(el: Element) {
-    this.target = el;
+  set nzTarget(el: string | Element) {
+    this.target = typeof el === 'string' ? this.doc.querySelector(el) : el;
     this.registerScrollEvent();
   }
 
@@ -130,8 +131,9 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
 
   private registerScrollEvent(): void {
     this.removeListen();
-    this.scroll$ = fromEvent(this.getTarget(), 'scroll').pipe(throttleTime(50), distinctUntilChanged())
-    .subscribe(e => this.handleScroll());
+    this.scroll$ = fromEvent(this.getTarget(), 'scroll')
+      .pipe(throttleTime(50), distinctUntilChanged())
+      .subscribe(() => this.handleScroll());
     // 由于页面刷新时滚动条位置的记忆
     // 倒置在dom未渲染完成，导致计算不正确
     setTimeout(() => this.handleScroll());
@@ -187,17 +189,21 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   }
 
   private clearActive(): void {
-    this.links.forEach(i => i.active = false);
+    this.links.forEach(i => {
+      i.active = false;
+      i.markForCheck();
+    });
   }
 
   private handleActive(comp: NzAnchorLinkComponent): void {
     this.clearActive();
 
     comp.active = true;
-    this.cd.detectChanges();
+    comp.markForCheck();
 
     const linkNode = (comp.el.nativeElement as HTMLDivElement).querySelector('.ant-anchor-link-title') as HTMLElement;
     this.ink.nativeElement.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
+    this.cd.detectChanges();
 
     this.nzScroll.emit(comp);
   }
