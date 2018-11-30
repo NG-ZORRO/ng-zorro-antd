@@ -23,9 +23,11 @@ import { throttleByAnimationFrameDecorator } from '../core/util/throttleByAnimat
   selector       : 'nz-affix',
   templateUrl    : './nz-affix.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host           : {
-    'style'      : 'display:block'
-  },
+  styles         : [ `
+    :host {
+      display: block;
+    }
+  ` ],
   encapsulation  : ViewEncapsulation.None
 })
 export class NzAffixComponent implements OnInit, OnDestroy {
