@@ -23,9 +23,9 @@ import {
 import { NzIconModule } from '../icon/nz-icon.module';
 
 import { NzInputModule } from '../input';
-import { NzMentionTriggerDirective } from './mention-trigger';
-import { NzMentionComponent } from './mention.component';
-import { NzMentionModule } from './mention.module';
+import { NzMentionTriggerDirective } from './nz-mention-trigger';
+import { NzMentionComponent } from './nz-mention.component';
+import { NzMentionModule } from './nz-mention.module';
 
 describe('mention', () => {
   let overlayContainer: OverlayContainer;
