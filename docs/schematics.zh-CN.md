@@ -19,7 +19,7 @@ ng add ng-zorro-antd [options]
 
 ***--theme***
 
-`ng-zorro-antd` 会[自动](https://github.com/angular/angular-cli/issues/10430)降级 `less` 版本至 `2.7` 并在 `src` 目录下生成 `theme.less` 的主题配置文件
+`ng-zorro-antd` 会在 `src` 目录下生成 `theme.less` 的主题配置文件
 
 详细的配置可以在[自定义主题](/docs/customize-theme/zh)中查看。
 

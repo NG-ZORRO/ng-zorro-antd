@@ -13,7 +13,24 @@ timeline: true
 * Major version release is not included in this schedule for breadking change and new features.
 
 ---
-## [1.8.1]
+
+## 7.0.0-rc.0
+`2018-11-30`
+
+**NO BREAK CHANGES**
+
+`ng-zorro-antd` will track the major version of `@angular/core` from `7.0.0-rc.0` like other angular libraries.
+
+* Support Angular 7.0
+* Work with latest `@angular/cdk`
+* Support OnPush in some components
+* Support SSR in some components
+* Fix some bugs
+
+We are still working on it now, you can track [this issue](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2381) to get more information.
+
+
+## 1.8.1
 `2018-11-24`
 
 
