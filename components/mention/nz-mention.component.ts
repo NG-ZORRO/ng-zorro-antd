@@ -8,41 +8,54 @@ import {
   PositionStrategy
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
+
+import { DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ContentChild,
   EventEmitter,
   Inject,
   Input,
   NgZone,
+  OnChanges,
   OnDestroy,
   Optional,
   Output,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-
-import { DOCUMENT } from '@angular/common';
 import { fromEvent, merge, Subscription } from 'rxjs';
 
 import { DEFAULT_MENTION_POSITIONS } from '../core/overlay/overlay-position-map';
+import { InputBoolean } from '../core/util';
 import { getMentions } from '../core/util/getMentions';
 import { getCaretCoordinates } from '../core/util/textarea-caret-position';
 
-import { NzMentionSuggestionDirective } from './mention-suggestions';
-import { NzMentionTriggerDirective } from './mention-trigger';
+import { NzMentionSuggestionDirective } from './nz-mention-suggestions';
+import { NzMentionTriggerDirective } from './nz-mention-trigger';
 
 export interface MentionOnSearchTypes {
   value: string;
   prefix: string;
 }
 
+export interface Mention {
+  startPos: number;
+  endPos: number;
+  mention: string;
+}
+
+export type MentionPlacement = 'top' | 'bottom';
+
 @Component({
   selector           : 'nz-mention',
-  templateUrl        : './mention.component.html',
+  templateUrl        : './nz-mention.component.html',
   preserveWhitespaces: false,
+  changeDetection    : ChangeDetectionStrategy.OnPush,
   styles             : [ `
     .ant-mention-dropdown {
       top: 100%;
@@ -55,38 +68,16 @@ export interface MentionOnSearchTypes {
   ` ]
 })
 
-export class NzMentionComponent implements OnDestroy, AfterContentInit {
-
-  @Output() readonly nzOnSelect: EventEmitter<string | {}> = new EventEmitter();
-  @Output() readonly nzOnSearchChange: EventEmitter<MentionOnSearchTypes> = new EventEmitter();
+export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChanges {
 
   @Input() nzValueWith: (value: any) => string = value => value; // tslint:disable-line:no-any
   @Input() nzPrefix: string | string[] = '@';
-  @Input() nzLoading: boolean = false;
+  @Input() @InputBoolean() nzLoading = false;
   @Input() nzNotFoundContent: string = '无匹配结果，轻敲空格完成输入';
-
-  @Input()
-  set nzSuggestions(value: string[]) {
-    this._suggestions = value;
-    if (this.isOpen) {
-      this.previousValue = null;
-      this.activeIndex = -1;
-      this.resetDropdown(false);
-    }
-  }
-
-  get nzSuggestions(): string[] {
-    return this._suggestions;
-  }
-
-  @Input()
-  set nzPlacement(value: MentionPlacement) {
-    this._placement = value;
-  }
-
-  get nzPlacement(): MentionPlacement {
-    return this._placement;
-  }
+  @Input() nzPlacement: MentionPlacement = 'bottom';
+  @Input() nzSuggestions: string[] = [];
+  @Output() readonly nzOnSelect: EventEmitter<string | {}> = new EventEmitter();
+  @Output() readonly nzOnSearchChange: EventEmitter<MentionOnSearchTypes> = new EventEmitter();
 
   @ContentChild(NzMentionTriggerDirective) trigger;
   @ViewChild(TemplateRef) suggestionsTemp;
@@ -99,13 +90,11 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
     }
   }
 
-  isOpen: boolean = false;
-  filteredSuggestions: string[];
+  isOpen = false;
+  filteredSuggestions: string[] = [];
   suggestionTemplate: TemplateRef<{ $implicit: any }> | null = null; // tslint:disable-line:no-any
-  activeIndex: number = -1;
+  activeIndex = -1;
 
-  private _suggestions: string[];
-  private _placement: MentionPlacement = 'bottom';
   private previousValue: string;
   private cursorMention: string;
   private cursorMentionStart: number;
@@ -119,10 +108,21 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
     return this.trigger.el.nativeElement;
   }
 
-  constructor(@Optional() @Inject(DOCUMENT) private document: any, // tslint:disable-line:no-any
+  constructor(@Optional() @Inject(DOCUMENT) private ngDocument: any, // tslint:disable-line:no-any
+              private changeDetectorRef: ChangeDetectorRef,
               private ngZone: NgZone,
               private overlay: Overlay,
               private viewContainerRef: ViewContainerRef) {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.hasOwnProperty('nzSuggestions')) {
+      if (this.isOpen) {
+        this.previousValue = null;
+        this.activeIndex = -1;
+        this.resetDropdown(false);
+      }
+    }
   }
 
   ngAfterContentInit(): void {
@@ -138,12 +138,14 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
       this.overlayRef.detach();
       this.overlayBackdropClickSubscription.unsubscribe();
       this.isOpen = false;
+      this.changeDetectorRef.markForCheck();
     }
   }
 
   openDropdown(): void {
     this.attachOverlay();
     this.isOpen = true;
+    this.changeDetectorRef.markForCheck();
   }
 
   getMentions(): string[] {
@@ -241,12 +243,14 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
     this.activeIndex = this.activeIndex + 1 <= this.filteredSuggestions.length - 1
       ? this.activeIndex + 1
       : 0;
+    this.changeDetectorRef.markForCheck();
   }
 
   private setPreviousItemActive(): void {
     this.activeIndex = this.activeIndex - 1 < 0
       ? this.filteredSuggestions.length - 1
       : this.activeIndex - 1;
+    this.changeDetectorRef.markForCheck();
   }
 
   private canOpen(): boolean {
@@ -299,8 +303,8 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
 
   private subscribeOverlayBackdropClick(): Subscription {
     return merge<MouseEvent | TouchEvent>(
-      fromEvent<MouseEvent>(this.document, 'click'),
-      fromEvent<TouchEvent>(this.document, 'touchend')
+      fromEvent<MouseEvent>(this.ngDocument, 'click'),
+      fromEvent<TouchEvent>(this.ngDocument, 'touchend')
     )
     .subscribe((event: MouseEvent | TouchEvent) => {
       const clickTarget = event.target as HTMLElement;
@@ -343,11 +347,3 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit {
   }
 
 }
-
-export interface Mention {
-  startPos: number;
-  endPos: number;
-  mention: string;
-}
-
-export type MentionPlacement = 'top' | 'bottom';
