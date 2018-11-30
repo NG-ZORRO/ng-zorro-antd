@@ -20,6 +20,7 @@ One or more elements can be selected from either column, one click on the proper
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzDataSource]` | Used for setting the source data. Except the elements whose keys are `direction: 'right'` prop. | TransferItem[] | [] |
+| `[nzDisabled]` | Whether disabled transfer | boolean | false |
 | `[nzTitles]` | A set of titles that are sorted from left to right. | string[] | ['', ''] |
 | `[nzOperations]` | A set of operations that are sorted from bottom to top. | string[] | ['', ''] |
 | `[nzListStyle]` | A custom CSS style used for rendering the transfer columns. equal `ngStyle` | object |  |
