@@ -134,6 +134,12 @@ describe('list', () => {
         fixture.detectChanges();
         expect(dl.queryAll(By.css('.ant-list-empty-text')).length).toBe(1);
       });
+
+      it('should be ingore empty text when unspecified data source', () => {
+        context.data = undefined;
+        fixture.detectChanges();
+        expect(dl.queryAll(By.css('.ant-list-empty-text')).length).toBe(0);
+      });
     });
 
     it('#nzGrid', () => {
