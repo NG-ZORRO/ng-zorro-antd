@@ -28,7 +28,7 @@ import { NzInputNumberModule } from './input-number/nz-input-number.module';
 import { NzInputModule } from './input/nz-input.module';
 import { NzLayoutModule } from './layout/nz-layout.module';
 import { NzListModule } from './list/nz-list.module';
-import { NzMentionModule } from './mention/mention.module';
+import { NzMentionModule } from './mention/nz-mention.module';
 import { NzMenuModule } from './menu/nz-menu.module';
 import { NzMessageModule } from './message/nz-message.module';
 import { NzModalModule } from './modal/nz-modal.module';

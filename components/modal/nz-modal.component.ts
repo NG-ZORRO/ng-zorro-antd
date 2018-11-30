@@ -23,7 +23,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 
-import { Observable, Subject } from 'rxjs';
+import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
@@ -31,6 +31,7 @@ import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar
 import { InputBoolean } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
+import { ESCAPE } from '@angular/cdk/keycodes';
 import ModalUtil from './modal-util';
 import { NzModalConfig, NZ_MODAL_CONFIG, NZ_MODAL_DEFAULT_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
@@ -108,6 +109,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @ViewChild('modalContainer') modalContainer: ElementRef;
   @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
 
+  @Input() @InputBoolean() nzKeyboard: boolean = true;
+
   get hidden(): boolean {
     return !this.nzVisible && !this.animationState;
   } // Indicate whether this dialog should hidden
@@ -139,6 +142,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.locale = this.i18n.getLocaleData('Modal'));
+
+    fromEvent<KeyboardEvent>(this.document.body, 'keydown').pipe(takeUntil(this.unsubscribe$)).subscribe(e => this.keydownListener(e));
 
     if (this.isComponent(this.nzContent)) {
       this.createDynamicComponent(this.nzContent as Type<T>); // Create component along without View
@@ -193,6 +198,12 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
       this.unsubscribe$.next();
       this.unsubscribe$.complete();
     });
+  }
+
+  keydownListener(event: KeyboardEvent): void {
+    if (event.keyCode === ESCAPE && this.nzKeyboard) {
+      this.onClickOkCancel('cancel');
+    }
   }
 
   open(): void {
