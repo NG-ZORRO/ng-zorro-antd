@@ -1,3 +1,4 @@
+import { ENTER } from '@angular/cdk/keycodes';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { async, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -75,7 +76,7 @@ describe('input', () => {
       });
       it('should resize when input change', fakeAsync(() => {
         const previousHeight = textarea.clientHeight;
-        dispatchKeyboardEvent(textarea, 'input', 13, textarea);
+        dispatchKeyboardEvent(textarea, 'input', ENTER, textarea);
         testComponent.value = '\n';
         fixture.detectChanges();
         flush();

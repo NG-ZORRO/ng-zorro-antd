@@ -77,13 +77,16 @@ Static loading. By registering icons to `AppModule` you load icons statically.
 
 ```ts
 import { IconDefinition } from '@ant-design/icons-angular';
-import { AccountBookFill, AlertFill, AlertOutline } from '@ant-design/icons-angular/icons';
 import { NgZorroAntdModule, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from 'ng-zorro-antd';
-// import * as AllIcons from '@ant-design/icons-angular/icons';
 
 // Import what you need. RECOMMENDED. ✔️
+import { AccountBookFill, AlertFill, AlertOutline } from '@ant-design/icons-angular/icons';
+
 const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
+
 // Import all. NOT RECOMMENDED. ❌
+// import * as AllIcons from '@ant-design/icons-angular/icons';
+
 // const antDesignIcons = AllIcons as {
 //   [key: string]: IconDefinition;
 // };
@@ -163,3 +166,34 @@ The following option are available:
 The property scriptUrl should be set to import the svg sprite symbols.
 
 See [iconfont.cn](http://iconfont.cn/help/detail?spm=a313x.7781069.1998910419.15&helptype=code) documents to learn about how to generate scriptUrl.
+
+## FAQ
+
+### All my icons are gone!
+
+Have you read the docs above?
+
+### There are two similar icons in a `<i></i>` tag. What happened?
+
+In older versions of NG-ZORRO, there was a font file which would use `:before` to insert a icon according to a `i` tag's `className`. So if you have two icons, try to remove `node_modules` and reinstall. If the problem is still there, search `@icon-url` and remove that line.
+
+### I want to import all icons statically. What should I do?
+
+Actually we demonstrate it here <a href="/components/icon/en#static-loading-and-dynamic-loading">Static loading and dynamic loading</a>:
+
+```ts
+// import * as AllIcons from '@ant-design/icons-angular/icons';
+
+// const antDesignIcons = AllIcons as {
+//   [key: string]: IconDefinition;
+// };
+// const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
+```
+
+### Does dynamic loading affect web pages' performance?
+
+We used several methods to reduce requests, like static cache, dynamic cache and reusable request. It's basically not noticeable for visitors that icons are loaded asynchronously assuming web connections are fairly good.
+
+### How do I know a icon's corresponding module to import?
+
+Capital camel-case `type & theme`, i.e. `alibaba` => `AlibabaOutline`.

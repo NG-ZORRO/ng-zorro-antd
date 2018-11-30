@@ -55,6 +55,7 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | nzTitle           | The modal dialog's title. <i>Leave blank to show no title. The usage of TemplateRef can refer to the case</i> | string / TemplateRef | - |
 | nzVisible         | Whether the modal dialog is visible or not. <i>When using the `<nz-modal>` tag, be sure to use two-way binding, for example: `[(nzVisible)]="visible"`.</i> | boolean | false |
 | nzWidth           | Width of the modal dialog. <i>When using numbers, the default unit is `px`</i> | string<br>number | 520 |
+| nzClassName       | The class name of the modal dialog | string | - |
 | nzWrapClassName   | The class name of the container of the modal dialog | string | - |
 | nzZIndex          | The z-index of the Modal | number | 1000 |
 | nzOnCancel        | Specify a function that will be called when a user clicks mask, close button on top right or Cancel button (If nzContent is Component, the Component instance will be put in as an argument). <i>Note: When created with `NzModalService.create`, this parameter should be passed into the type of function (callback function). This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | EventEmitter | - |
