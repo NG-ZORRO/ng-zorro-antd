@@ -10,7 +10,8 @@ import {
   Output,
   SimpleChange,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { of, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -34,6 +35,7 @@ import { NzUploadBtnComponent } from './nz-upload-btn.component';
   selector           : 'nz-upload',
   templateUrl        : './nz-upload.component.html',
   preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {

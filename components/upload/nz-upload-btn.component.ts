@@ -8,7 +8,8 @@ import {
   OnDestroy,
   OnInit,
   Optional,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
@@ -24,7 +25,8 @@ import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
     '[attr.role]'    : '"button"'
   },
   providers          : [ NzUpdateHostClassService ],
-  preserveWhitespaces: false
+  preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None
 })
 export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   reqs: { [ key: string ]: Subscription } = {};

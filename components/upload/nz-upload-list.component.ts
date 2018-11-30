@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, Input, OnChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, ViewEncapsulation } from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
@@ -20,7 +20,8 @@ import { ShowUploadListInterface, UploadFile, UploadListType } from './interface
       ])
     ])
   ],
-  preserveWhitespaces: false
+  preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None
 })
 export class NzUploadListComponent implements OnChanges {
   // #region fields
