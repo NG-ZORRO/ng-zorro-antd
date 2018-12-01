@@ -1,5 +1,8 @@
 ---
 order: 5
+iframe:
+  source: https://stackblitz.com/edit/ng-zorro-layout-responsive?embed=1&file=src/app/app.component.ts&hideExplorer=1&hideNavigation=1&view=preview
+  height: 360
 title:
   zh-CN: 响应式布局
   en-US: Responsive
