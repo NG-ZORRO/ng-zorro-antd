@@ -4,6 +4,8 @@ import { Inject, Injectable, InjectionToken, Optional, RendererFactory2 } from '
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
 import {
   CalendarOutline,
+  CaretDownFill,
+  CaretDownOutline,
   CheckCircleFill,
   CheckCircleOutline,
   CheckOutline,
@@ -16,6 +18,8 @@ import {
   DownOutline,
   ExclamationCircleFill,
   ExclamationCircleOutline,
+  FileFill,
+  FileOutline,
   FilterFill,
   InfoCircleFill,
   InfoCircleOutline,
@@ -37,6 +41,8 @@ export const NZ_ICON_DEFAULT_TWOTONE_COLOR = new InjectionToken('nz_icon_default
 export const DEFAULT_TWOTONE_COLOR = '#1890ff';
 export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   CalendarOutline,
+  CaretDownFill,
+  CaretDownOutline,
   CheckCircleFill,
   CheckCircleOutline,
   CheckOutline,
@@ -49,6 +55,8 @@ export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   DownOutline,
   ExclamationCircleFill,
   ExclamationCircleOutline,
+  FileFill,
+  FileOutline,
   FilterFill,
   InfoCircleFill,
   InfoCircleOutline,
