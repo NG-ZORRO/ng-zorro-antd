@@ -50,7 +50,7 @@ export class NzSelectTopControlComponent {
   @Input() nzOpen = false;
   // tslint:disable-next-line:no-any
   @Input() compareWith: (o1: any, o2: any) => boolean;
-
+  @Input() tabindex = 1;
   @Input()
   // tslint:disable-next-line:no-any
   set nzListOfSelectedValue(value: any[]) {

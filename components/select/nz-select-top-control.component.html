@@ -8,6 +8,7 @@
     (input)="updateWidth()"
     (keydown)="onKeyDownInput($event)"
     [ngModel]="inputValue"
+    [tabindex]="tabindex"
     (ngModelChange)="setInputValue($event,true)"
     [disabled]="nzDisabled">
 </ng-template>
