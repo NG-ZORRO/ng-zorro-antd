@@ -39,6 +39,7 @@ Select component to select value from options.
 | `[nzNotFoundContent]` | Specify content to show when no result matches.. | string | 'Not Found' |
 | `[nzPlaceHolder]` | Placeholder of select | string | - |
 | `[nzShowSearch]` | Whether show search input in single mode. | boolean | false |
+| `[tabindex]` | make nz-select can be set tabindex  attr | number | 1 |
 | `[nzSize]` | Size of Select input. `default` `large` `small` | string | default |
 | `(ngModelChange)` | Current selected nz-option value change callback. | `EventEmitter<any[]>` | - |
 | `(nzOpenChange)` | dropdown expand change callback | `EventEmitter<boolean>` | false |
