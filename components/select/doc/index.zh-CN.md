@@ -40,7 +40,7 @@ title: Select
 | `[nzNotFoundContent]` | 当下拉列表为空时显示的内容 | string | - |
 | `[nzPlaceHolder]` | 选择框默认文字 | string | - |
 | `[nzShowSearch]` | 使单选模式可搜索 | boolean | false |
-| `[tabindex]` | 使select可以设置tabindex | number | 1 |
+| `[tabindex]` | 使select可以设置tabindex | number | 0 |
 | `[nzSize]` | 选择框大小，可选 `large` `small` | string | default |
 | `(ngModelChange)` | 选中的 nz-option 发生变化时，调用此函数 | `EventEmitter<any[]>` | - |
 | `(nzOpenChange)` | 下拉菜单打开状态变化回调 | `EventEmitter<boolean>` | - |

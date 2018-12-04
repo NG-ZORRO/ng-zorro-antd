@@ -154,7 +154,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   /** https://github.com/angular/angular/pull/13349/files **/
     // tslint:disable-next-line:no-any
   @Input() compareWith = (o1: any, o2: any) => o1 === o2;
-  @Input() tabindex = 1;
+  @Input() tabindex = 0;
 
   @Input()
   set nzDropdownClassName(value: string) {
