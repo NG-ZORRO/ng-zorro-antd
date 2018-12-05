@@ -15,6 +15,7 @@ export class DrawerBuilderForService<R> {
   constructor(private overlay: Overlay, private options: NzDrawerOptions) {
     this.createDrawer();
     this.updateOptions(options);
+    this.drawerRef.instance.savePreviouslyFocusedElement();
     this.drawerRef.instance.nzOnViewInit
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(() => {

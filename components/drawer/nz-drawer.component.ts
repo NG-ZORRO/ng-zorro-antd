@@ -286,6 +286,10 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     if (this.document) {
       this.previouslyFocusedElement = this.document.activeElement as HTMLElement;
       this.previouslyFocusedElement.blur();
+
+      if (typeof this.elementRef.nativeElement.focus === 'function') {
+        Promise.resolve().then(() => this.elementRef.nativeElement.focus());
+      }
     }
   }
 
@@ -297,7 +301,8 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   }
 
   private restoreFocus(): void {
-    if (this.previouslyFocusedElement) {
+    // We need the extra check, because IE can set the `activeElement` to null in some cases.
+    if (this.previouslyFocusedElement && typeof this.previouslyFocusedElement.focus === 'function') {
       this.previouslyFocusedElement.focus();
     }
     if (this.focusTrap) {
