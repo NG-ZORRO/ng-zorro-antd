@@ -3,7 +3,10 @@ import { HttpBackend } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken, Optional, RendererFactory2 } from '@angular/core';
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
 import {
+  BarsOutline,
   CalendarOutline,
+  CaretDownFill,
+  CaretDownOutline,
   CheckCircleFill,
   CheckCircleOutline,
   CheckOutline,
@@ -14,8 +17,12 @@ import {
   DoubleLeftOutline,
   DoubleRightOutline,
   DownOutline,
+  EllipsisOutline,
   ExclamationCircleFill,
   ExclamationCircleOutline,
+  EyeOutline,
+  FileFill,
+  FileOutline,
   FilterFill,
   InfoCircleFill,
   InfoCircleOutline,
@@ -24,6 +31,7 @@ import {
   PaperClipOutline,
   QuestionCircleOutline,
   RightOutline,
+  SearchOutline,
   UploadOutline,
   UpOutline
 } from '@ant-design/icons-angular/icons';
@@ -36,7 +44,10 @@ export const NZ_ICONS = new InjectionToken('nz_icons');
 export const NZ_ICON_DEFAULT_TWOTONE_COLOR = new InjectionToken('nz_icon_default_twotone_color');
 export const DEFAULT_TWOTONE_COLOR = '#1890ff';
 export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
+  BarsOutline,
   CalendarOutline,
+  CaretDownFill,
+  CaretDownOutline,
   CheckCircleFill,
   CheckCircleOutline,
   CheckOutline,
@@ -47,8 +58,12 @@ export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   DoubleLeftOutline,
   DoubleRightOutline,
   DownOutline,
+  EllipsisOutline,
   ExclamationCircleFill,
   ExclamationCircleOutline,
+  EyeOutline,
+  FileFill,
+  FileOutline,
   FilterFill,
   InfoCircleFill,
   InfoCircleOutline,
@@ -57,6 +72,7 @@ export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   PaperClipOutline,
   QuestionCircleOutline,
   RightOutline,
+  SearchOutline,
   UploadOutline,
   UpOutline
 ];
