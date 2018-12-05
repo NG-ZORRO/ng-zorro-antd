@@ -333,14 +333,15 @@ describe('upload', () => {
             expect(instance._nzChange).toBeUndefined();
           });
           it('should be console.warn error', () => {
+            let warnMsg = '';
+            console.warn = jasmine.createSpy().and.callFake(res => warnMsg = res);
             expect(instance._nzChange).toBeUndefined();
             instance.beforeUpload = (file: UploadFile, fileList: UploadFile[]): Observable<any> => {
               return throwError('');
             };
             fixture.detectChanges();
-            const warnSpy = spyOn(console, 'warn');
             pageObject.postSmall();
-            expect(warnSpy.calls.mostRecent().args[0]).toBe(`Unhandled upload beforeUpload error`);
+            expect(warnMsg).toContain(`Unhandled upload beforeUpload error`);
           });
         });
       });
@@ -422,6 +423,8 @@ describe('upload', () => {
             expect(instance._beforeUploadList.length).toBe(1);
           });
           it('should be console.warn error', () => {
+            let warnMsg = '';
+            console.warn = jasmine.createSpy().and.callFake(res => warnMsg = res);
             instance.nzFilter = [
               {
                 name: 'f1',
@@ -433,9 +436,8 @@ describe('upload', () => {
               }
             ];
             fixture.detectChanges();
-            const warnSpy = spyOn(console, 'warn');
             pageObject.postFile(PNGSMALL.target.files);
-            expect(warnSpy.calls.mostRecent().args[0]).toBe(`Unhandled upload filter error`);
+            expect(warnMsg).toContain(`Unhandled upload filter error`);
           });
         });
       });
