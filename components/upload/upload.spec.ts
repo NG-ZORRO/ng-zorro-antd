@@ -6,7 +6,7 @@ import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testin
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { of, Observable } from 'rxjs';
+import { of, throwError, Observable, Observer } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 import { NzI18nModule, NzI18nService } from '../i18n';
@@ -332,6 +332,16 @@ describe('upload', () => {
             pageObject.postSmall();
             expect(instance._nzChange).toBeUndefined();
           });
+          it('should be console.warn error', () => {
+            expect(instance._nzChange).toBeUndefined();
+            instance.beforeUpload = (file: UploadFile, fileList: UploadFile[]): Observable<any> => {
+              return throwError('');
+            };
+            fixture.detectChanges();
+            const warnSpy = spyOn(console, 'warn');
+            pageObject.postSmall();
+            expect(warnSpy.calls.mostRecent().args[0]).toBe(`Unhandled upload beforeUpload error`);
+          });
         });
       });
 
@@ -379,6 +389,54 @@ describe('upload', () => {
           expect(instance._beforeUploadList.length).toBe(0);
           pageObject.postFile(JPGSMALL.target.files);
           expect(instance._beforeUploadList.length).toBe(0);
+        });
+        describe('with Observable', () => {
+          it('shoule working', () => {
+            instance.nzFilter = [
+              {
+                name: 'f1',
+                fn: (fileList: UploadFile[]) => {
+                  return new Observable((observer: Observer<UploadFile[]>) => {
+                    observer.next(fileList.slice(1));
+                    observer.complete();
+                  });
+                }
+              },
+              {
+                name: 'f2',
+                fn: (fileList: UploadFile[]) => {
+                  return new Observable((observer: Observer<UploadFile[]>) => {
+                    observer.next(fileList.slice(1));
+                    observer.complete();
+                  });
+                }
+              }
+            ];
+            fixture.detectChanges();
+            expect(instance._beforeUploadList.length).toBe(0);
+            pageObject.postFile([
+              ...PNGSMALL.target.files,
+              ...PNGSMALL.target.files,
+              ...PNGSMALL.target.files
+            ]);
+            expect(instance._beforeUploadList.length).toBe(1);
+          });
+          it('should be console.warn error', () => {
+            instance.nzFilter = [
+              {
+                name: 'f1',
+                fn: (fileList: UploadFile[]) => {
+                  return new Observable((observer: Observer<UploadFile[]>) => {
+                    observer.error('filter error');
+                  });
+                }
+              }
+            ];
+            fixture.detectChanges();
+            const warnSpy = spyOn(console, 'warn');
+            pageObject.postFile(PNGSMALL.target.files);
+            expect(warnSpy.calls.mostRecent().args[0]).toBe(`Unhandled upload filter error`);
+          });
         });
       });
 
