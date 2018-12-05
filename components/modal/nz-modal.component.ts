@@ -467,10 +467,6 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
       this.previouslyFocusedElement = this.document.activeElement as HTMLElement;
       this.previouslyFocusedElement.blur();
     }
-
-    if (typeof this.elementRef.nativeElement.focus === 'function') {
-      Promise.resolve().then(() => this.elementRef.nativeElement.focus());
-    }
   }
 
   private trapFocus(): void {
@@ -481,6 +477,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   private restoreFocus(): void {
+    // We need the extra check, because IE can set the `activeElement` to null in some cases.
     if (this.previouslyFocusedElement && typeof this.previouslyFocusedElement.focus === 'function') {
       this.previouslyFocusedElement.focus();
     }
