@@ -3,17 +3,16 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
+  EventEmitter, Host,
   HostBinding,
-  Input,
+  Input, OnDestroy, OnInit,
   Output,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
-import { Subject } from 'rxjs';
-
 import { InputBoolean } from '../core/util/convert';
+import { NzCollapseComponent } from './nz-collapse.component';
 
 @Component({
   selector       : 'nz-collapse-panel',
@@ -45,17 +44,16 @@ import { InputBoolean } from '../core/util/convert';
   }
 })
 
-export class NzCollapsePanelComponent {
+export class NzCollapsePanelComponent implements OnInit, OnDestroy {
   @Input() @InputBoolean() @HostBinding('class.ant-collapse-item-active') nzActive = false;
   @Input() @InputBoolean() @HostBinding('class.ant-collapse-item-disabled') nzDisabled = false;
   @Input() @InputBoolean() nzShowArrow = true;
   @Input() nzHeader: string | TemplateRef<void>;
   @Output() readonly nzActiveChange = new EventEmitter<boolean>();
-  click$ = new Subject<NzCollapsePanelComponent>();
 
   clickHeader(): void {
     if (!this.nzDisabled) {
-      this.click$.next(this);
+      this.nzCollapseComponent.click(this);
     }
   }
 
@@ -63,6 +61,14 @@ export class NzCollapsePanelComponent {
     this.cdr.markForCheck();
   }
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef, @Host() private nzCollapseComponent: NzCollapseComponent) {
+  }
+
+  ngOnInit(): void {
+    this.nzCollapseComponent.addPanel(this);
+  }
+
+  ngOnDestroy(): void {
+    this.nzCollapseComponent.removePanel(this);
   }
 }
