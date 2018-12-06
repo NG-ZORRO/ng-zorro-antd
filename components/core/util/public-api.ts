@@ -1,4 +1,3 @@
-export * from './calculate-node-height';
 export * from './check';
 export * from './convert';
 export * from './getMentions';
