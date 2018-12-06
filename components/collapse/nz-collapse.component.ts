@@ -1,16 +1,10 @@
 import {
-  AfterContentInit,
   ChangeDetectionStrategy,
   Component,
-  ContentChildren,
   Input,
-  OnDestroy,
-  QueryList,
   ViewEncapsulation
 } from '@angular/core';
-
-import { merge, Subject, Subscription } from 'rxjs';
-import { startWith, takeUntil } from 'rxjs/operators';
+import { NzCheckboxComponent } from '../checkbox';
 import { InputBoolean } from '../core/util/convert';
 import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
 
@@ -25,12 +19,18 @@ import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
     }`
   ]
 })
-export class NzCollapseComponent implements AfterContentInit, OnDestroy {
-  @ContentChildren(NzCollapsePanelComponent) listOfNzCollapsePanelComponent: QueryList<NzCollapsePanelComponent>;
+export class NzCollapseComponent {
+  private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
   @Input() @InputBoolean() nzAccordion = false;
   @Input() @InputBoolean() nzBordered = true;
-  private destroy$ = new Subject();
-  private clickSubscription: Subscription;
+
+  addPanel(value: NzCollapsePanelComponent): void {
+    this.listOfNzCollapsePanelComponent.push(value);
+  }
+
+  removePanel(value: NzCollapsePanelComponent): void {
+    this.listOfNzCollapsePanelComponent.splice(this.listOfNzCollapsePanelComponent.indexOf(value), 1);
+  }
 
   click(collapse: NzCollapsePanelComponent): void {
     if (this.nzAccordion && !collapse.nzActive) {
@@ -44,27 +44,5 @@ export class NzCollapseComponent implements AfterContentInit, OnDestroy {
     }
     collapse.nzActive = !collapse.nzActive;
     collapse.nzActiveChange.emit(collapse.nzActive);
-  }
-
-  ngAfterContentInit(): void {
-    this.listOfNzCollapsePanelComponent.changes.pipe(
-      startWith(null),
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
-      if (this.clickSubscription) {
-        this.clickSubscription.unsubscribe();
-      }
-      this.clickSubscription = merge(...this.listOfNzCollapsePanelComponent.map(item => item.click$)).pipe(
-        takeUntil(this.destroy$)
-      ).subscribe((data) => {
-        this.click(data);
-      });
-    });
-
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
