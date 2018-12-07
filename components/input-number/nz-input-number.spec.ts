@@ -60,7 +60,7 @@ describe('input number', () => {
     it('should autofocus work', () => {
       fixture.detectChanges();
       testComponent.autofocus = true;
-      testComponent.nzInputNumberComponent._autoFocus = true;
+      testComponent.nzInputNumberComponent.nzAutoFocus = true;
       testComponent.nzInputNumberComponent.ngAfterViewInit();
       fixture.detectChanges();
       expect(inputElement === document.activeElement).toBe(true);
