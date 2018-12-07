@@ -3,7 +3,13 @@
   "schematics": {
     "ng-add": {
       "description": "add NG-ZORRO",
-      "factory": "./ng-add",
+      "factory": "./ng-add/index",
+      "schema": "./ng-add/schema.json"
+    },
+    "ng-add-setup-project": {
+      "description": "Sets up the specified project after the ng-add dependencies have been installed.",
+      "private": true,
+      "factory": "./ng-add/setup-project/index",
       "schema": "./ng-add/schema.json"
     },
     "fix-icon": {

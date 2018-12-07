@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "ngAdd",
+  "title": "add NG-ZORRO",
+  "type": "object",
+  "properties": {
+    "skipPackageJson": {
+      "type": "boolean",
+      "default": false,
+      "description": "Do not add ng-zorro dependencies to package.json (e.g., --skipPackageJson)"
+    },
+    "i18n": {
+      "type": "string",
+      "default": "zh_CN",
+      "enum": ["ar_EG","bg_BG","ca_ES","cs_CZ","de_DE","el_GR","en_GB","en_US","es_ES","et_EE","fa_IR","fi_FI","fr_BE","fr_FR","is_IS","it_IT","ja_JP","ko_KR","nb_NO","nl_BE","nl_NL","pl_PL","pt_BR","pt_PT","sk_SK","sr_RS","sv_SE","th_TH","tr_TR","ru_RU","uk_UA","vi_VN","zh_CN","zh_TW"],
+      "description": "add locale code to module (e.g., --locale=en_US)"
+    },
+    "theme": {
+      "type": "boolean",
+      "default": false,
+      "description": "add theme.less"
+    },
+    "project": {
+      "type": "string",
+      "description": "Name of the project to target."
+    }
+  },
+  "required": []
+}
