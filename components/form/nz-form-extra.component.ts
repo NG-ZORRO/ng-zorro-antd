@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
 @Component({
   selector           : 'nz-form-extra',
   templateUrl        : './nz-form-extra.component.html',
-  preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   host               : {

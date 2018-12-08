@@ -17,7 +17,6 @@ import { toBoolean } from '../core/util/convert';
 
 @Component({
   selector           : 'nz-spin',
-  preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   templateUrl        : './nz-spin.component.html'

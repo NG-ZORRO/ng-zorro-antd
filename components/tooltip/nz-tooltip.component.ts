@@ -28,7 +28,6 @@ import { toBoolean } from '../core/util/convert';
   selector           : 'nz-tooltip',
   animations         : [ fadeAnimation ],
   templateUrl        : './nz-tooltip.component.html',
-  preserveWhitespaces: false,
   styles             : [ `
     .ant-tooltip {
       position: relative;

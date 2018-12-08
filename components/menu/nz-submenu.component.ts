@@ -30,7 +30,6 @@ import { NzMenuDirective } from './nz-menu.directive';
 
 @Component({
   selector           : '[nz-submenu]',
-  preserveWhitespaces: false,
   animations         : [
     trigger('expandAnimation', [
       state('expand', style({ height: '*' })),

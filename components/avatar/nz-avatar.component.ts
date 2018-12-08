@@ -21,7 +21,6 @@ export type NzAvatarSize = NzSizeLDSType | number;
   selector           : 'nz-avatar',
   templateUrl        : './nz-avatar.component.html',
   providers          : [ NzUpdateHostClassService ],
-  preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None
 

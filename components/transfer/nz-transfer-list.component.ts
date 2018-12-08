@@ -19,7 +19,6 @@ import { TransferItem } from './interface';
 
 @Component({
   selector           : 'nz-transfer-list',
-  preserveWhitespaces: false,
   providers          : [ NzUpdateHostClassService ],
   templateUrl        : './nz-transfer-list.component.html',
   encapsulation      : ViewEncapsulation.None,

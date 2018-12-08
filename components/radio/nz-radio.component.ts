@@ -22,7 +22,6 @@ import { InputBoolean } from '../core/util/convert';
 
 @Component({
   selector           : '[nz-radio]',
-  preserveWhitespaces: false,
   templateUrl        : './nz-radio.component.html',
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,

@@ -6,7 +6,6 @@ import { MarksArray } from './nz-slider-marks.component';
 
 @Component({
   selector           : 'nz-slider-step',
-  preserveWhitespaces: false,
   templateUrl        : './nz-slider-step.component.html'
 })
 export class NzSliderStepComponent implements OnChanges {

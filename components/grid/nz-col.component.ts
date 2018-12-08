@@ -31,7 +31,6 @@ export interface EmbeddedProperty {
   providers          : [ NzUpdateHostClassService ],
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
   templateUrl        : './nz-col.component.html'
 })
 export class NzColComponent implements OnInit, OnChanges {

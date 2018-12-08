@@ -31,7 +31,6 @@ const defaultDisplayRender = label => label.join(' / ');
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-cascader,[nz-cascader]',
-  preserveWhitespaces: false,
   templateUrl        : './nz-cascader.component.html',
   animations         : [ dropDownAnimation ],
   providers          : [

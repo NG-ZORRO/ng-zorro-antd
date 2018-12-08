@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 
 @Component({
   selector           : '[nz-transfer-search]',
-  preserveWhitespaces: false,
   templateUrl        : './nz-transfer-search.component.html',
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush

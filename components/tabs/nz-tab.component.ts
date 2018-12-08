@@ -15,7 +15,6 @@ import { NzTabSetComponent } from './nz-tabset.component';
 
 @Component({
   selector           : 'nz-tab',
-  preserveWhitespaces: false,
   templateUrl        : './nz-tab.component.html',
   host               : {
     '[class.ant-tabs-tabpane]': 'true'

@@ -11,7 +11,6 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 
 @Component({
   selector           : 'nz-popconfirm',
-  preserveWhitespaces: false,
   animations         : [ fadeAnimation ],
   templateUrl        : './nz-popconfirm.component.html',
   styles             : [ `

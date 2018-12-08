@@ -16,7 +16,6 @@ import { NzAnchorComponent } from './nz-anchor.component';
 
 @Component({
   selector           : 'nz-link',
-  preserveWhitespaces: false,
   templateUrl        : './nz-anchor-link.component.html',
   host               : {
     '[class.ant-anchor-link]': 'true'

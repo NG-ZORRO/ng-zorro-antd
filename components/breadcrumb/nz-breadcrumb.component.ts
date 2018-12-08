@@ -26,7 +26,6 @@ export interface BreadcrumbOption {
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-breadcrumb',
-  preserveWhitespaces: false,
   templateUrl        : './nz-breadcrumb.component.html',
   host               : {
     '[class.ant-breadcrumb]': 'true'

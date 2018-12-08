@@ -5,7 +5,6 @@ import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definiti
 
 @Component({
   selector           : 'nz-message-container',
-  preserveWhitespaces: false,
   templateUrl        : './nz-message-container.component.html'
 })
 export class NzMessageContainerComponent {

@@ -20,7 +20,6 @@ import { InputBoolean } from '../core/util/convert';
 
 @Component({
   selector           : 'nz-switch',
-  preserveWhitespaces: false,
   templateUrl        : './nz-switch.component.html',
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,

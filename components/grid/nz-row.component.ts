@@ -45,7 +45,6 @@ const responsiveMap: BreakpointMap = {
 
 @Component({
   selector           : 'nz-row',
-  preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   providers          : [ NzUpdateHostClassService ],

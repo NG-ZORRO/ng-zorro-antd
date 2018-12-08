@@ -26,7 +26,6 @@ export type NzTimelineMode = 'left' | 'alternate' | 'right';
 @Component({
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
-  preserveWhitespaces: false,
   selector           : 'nz-timeline',
   templateUrl        : './nz-timeline.component.html'
 })

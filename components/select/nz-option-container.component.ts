@@ -19,7 +19,6 @@ import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pi
 
 @Component({
   selector           : '[nz-option-container]',
-  preserveWhitespaces: false,
   templateUrl        : './nz-option-container.component.html'
 })
 export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {

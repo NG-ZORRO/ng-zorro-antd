@@ -27,7 +27,6 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
 
 @Component({
   selector           : 'nz-dropdown',
-  preserveWhitespaces: false,
   animations         : [
     dropDownAnimation
   ],

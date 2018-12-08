@@ -6,7 +6,6 @@ import { NzSizeLDSType } from '../core/types/size';
   selector           : 'nz-button-group',
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
-  preserveWhitespaces: false,
   providers          : [ NzUpdateHostClassService ],
   templateUrl        : './nz-button-group.component.html'
 })

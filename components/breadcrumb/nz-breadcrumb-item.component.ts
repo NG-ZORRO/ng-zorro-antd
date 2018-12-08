@@ -6,7 +6,6 @@ import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-breadcrumb-item',
-  preserveWhitespaces: false,
   templateUrl        : 'nz-breadcrumb-item.component.html',
   styles             : [ `
     nz-breadcrumb-item:last-child {

@@ -17,7 +17,6 @@ import { NzTimelineMode } from './nz-timeline.component';
 @Component({
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
-  preserveWhitespaces: false,
   selector           : 'nz-timeline-item, [nz-timeline-item]',
   templateUrl        : './nz-timeline-item.component.html'
 })

@@ -16,7 +16,6 @@ import { NzInputDirective } from './nz-input.directive';
 
 @Component({
   selector           : 'nz-input-group',
-  preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   templateUrl        : './nz-input-group.component.html',

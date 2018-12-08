@@ -4,7 +4,6 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
   selector           : 'nz-layout',
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
   templateUrl        : './nz-layout.component.html',
   host               : {
     '[class.ant-layout]': 'true'

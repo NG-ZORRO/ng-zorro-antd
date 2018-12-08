@@ -11,7 +11,6 @@ import { NzOptionComponent } from './nz-option.component';
 
 @Component({
   selector           : '[nz-select-top-control]',
-  preserveWhitespaces: false,
   animations         : [
     trigger('tagAnimation', [
       state('*', style({ opacity: 1, transform: 'scale(1)' })),

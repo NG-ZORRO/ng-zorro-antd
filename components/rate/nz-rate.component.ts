@@ -18,7 +18,6 @@ import { toBoolean } from '../core/util/convert';
 
 @Component({
   selector           : 'nz-rate',
-  preserveWhitespaces: false,
   templateUrl        : './nz-rate.component.html',
   providers          : [
     {

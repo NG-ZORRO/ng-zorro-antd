@@ -27,7 +27,6 @@ export type NzStatusType = 'wait' | 'process' | 'finish' | 'error';
 @Component({
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
-  preserveWhitespaces: false,
   selector           : 'nz-steps',
   templateUrl        : './nz-steps.component.html'
 })

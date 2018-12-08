@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
 @Component({
   selector           : 'nz-list-item-meta',
   templateUrl        : './nz-list-item-meta.component.html',
-  preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
   host               : {

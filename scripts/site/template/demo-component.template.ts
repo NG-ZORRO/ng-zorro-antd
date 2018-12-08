@@ -3,7 +3,6 @@ import { NzCodeBoxComponent } from '../share/nz-codebox/nz-codebox.component';
 
 @Component({
   selector     : 'nz-demo-{{component}}',
-  preserveWhitespaces: false,
   templateUrl  : './{{language}}.html'
 })
 export class {{componentName}} {

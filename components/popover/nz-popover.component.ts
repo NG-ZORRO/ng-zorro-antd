@@ -11,7 +11,6 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
   selector           : 'nz-popover',
   animations         : [ fadeAnimation ],
   templateUrl        : './nz-popover.component.html',
-  preserveWhitespaces: false,
   styles             : [ `
     .ant-popover {
       position: relative;

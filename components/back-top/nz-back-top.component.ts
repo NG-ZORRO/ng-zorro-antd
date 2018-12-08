@@ -41,8 +41,7 @@ import { toNumber } from '../core/util/convert';
   ],
   templateUrl        : './nz-back-top.component.html',
   changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  preserveWhitespaces: false
+  encapsulation      : ViewEncapsulation.None
 })
 export class NzBackTopComponent implements OnInit, OnDestroy {
 

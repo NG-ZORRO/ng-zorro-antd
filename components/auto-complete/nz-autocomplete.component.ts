@@ -29,7 +29,6 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
 
 @Component({
   selector           : 'nz-autocomplete',
-  preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-autocomplete.component.html',

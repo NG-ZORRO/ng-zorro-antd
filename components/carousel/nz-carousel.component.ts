@@ -25,7 +25,6 @@ export type SwipeDirection = 'swipeleft' | 'swiperight';
 
 @Component({
   selector           : 'nz-carousel',
-  preserveWhitespaces: false,
   templateUrl        : './nz-carousel.component.html',
   host               : {
     '[class.ant-carousel]': 'true'

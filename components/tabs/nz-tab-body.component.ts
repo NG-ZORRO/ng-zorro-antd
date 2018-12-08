@@ -6,7 +6,6 @@ import {
 
 @Component({
   selector           : '[nz-tab-body]',
-  preserveWhitespaces: false,
   templateUrl        : './nz-tab-body.component.html'
 })
 export class NzTabBodyComponent {

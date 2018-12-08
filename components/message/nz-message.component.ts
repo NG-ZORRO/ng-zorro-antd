@@ -17,7 +17,6 @@ import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definiti
 
 @Component({
   selector           : 'nz-message',
-  preserveWhitespaces: false,
   animations         : [
     trigger('enterLeave', [
       state('enter', style({ opacity: 1, transform: 'translateY(0)' })),

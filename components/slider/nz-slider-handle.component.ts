@@ -7,7 +7,6 @@ import { NzSliderComponent } from './nz-slider.component';
 
 @Component({
   selector           : 'nz-slider-handle',
-  preserveWhitespaces: false,
   templateUrl        : './nz-slider-handle.component.html'
 })
 export class NzSliderHandleComponent implements OnChanges {

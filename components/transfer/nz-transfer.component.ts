@@ -26,7 +26,6 @@ import { NzTransferListComponent } from './nz-transfer-list.component';
 
 @Component({
   selector           : 'nz-transfer',
-  preserveWhitespaces: false,
   templateUrl        : './nz-transfer.component.html',
   host               : {
     '[class.ant-transfer]': 'true',

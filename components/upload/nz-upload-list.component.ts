@@ -20,7 +20,6 @@ import { ShowUploadListInterface, UploadFile, UploadListType } from './interface
       ])
     ])
   ],
-  preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None
 })
 export class NzUploadListComponent implements OnChanges {

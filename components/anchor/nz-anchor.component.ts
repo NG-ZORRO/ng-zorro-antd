@@ -29,7 +29,6 @@ const sharpMatcherRegx = /#([^#]+)$/;
 
 @Component({
   selector           : 'nz-anchor',
-  preserveWhitespaces: false,
   templateUrl        : './nz-anchor.component.html',
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush

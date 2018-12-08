@@ -34,7 +34,6 @@ import { NzUploadBtnComponent } from './nz-upload-btn.component';
 @Component({
   selector           : 'nz-upload',
   templateUrl        : './nz-upload.component.html',
-  preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush
 })

@@ -34,7 +34,6 @@ import { NzSelectTopControlComponent } from './nz-select-top-control.component';
 
 @Component({
   selector           : 'nz-select',
-  preserveWhitespaces: false,
   providers          : [
     {
       provide    : NG_VALUE_ACCESSOR,

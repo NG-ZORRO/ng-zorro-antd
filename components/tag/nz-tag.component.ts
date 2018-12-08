@@ -23,7 +23,6 @@ import { toBoolean } from '../core/util/convert';
 
 @Component({
   selector           : 'nz-tag',
-  preserveWhitespaces: false,
   animations         : [ trigger('tagAnimation', [
     state('*', style({ opacity: 1 })),
     transition('void => *', [

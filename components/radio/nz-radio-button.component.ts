@@ -29,7 +29,6 @@ import { NzRadioComponent } from './nz-radio.component';
   ],
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
   templateUrl        : './nz-radio-button.component.html',
   host               : {
     '[class.ant-radio-button-wrapper]'         : 'true',

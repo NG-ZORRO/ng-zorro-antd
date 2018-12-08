@@ -4,7 +4,6 @@ import { NzCheckboxComponent } from './nz-checkbox.component';
 
 @Component({
   selector           : 'nz-checkbox-wrapper',
-  preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-checkbox-wrapper.component.html',

@@ -26,7 +26,6 @@ import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
 
 @Component({
   selector           : '[nz-checkbox]',
-  preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-checkbox.component.html',

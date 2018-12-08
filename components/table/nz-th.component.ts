@@ -27,7 +27,6 @@ export interface NzThItemInterface {
 @Component({
   // tslint:disable-next-line:component-selector
   selector           : 'th:not(.nz-disable-th)',
-  preserveWhitespaces: false,
   templateUrl        : './nz-th.component.html'
 })
 export class NzThComponent {

@@ -30,7 +30,6 @@ export type NzButtonShape = 'circle' | null ;
 @Component({
   selector           : '[nz-button]',
   providers          : [ NzUpdateHostClassService ],
-  preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-button.component.html'

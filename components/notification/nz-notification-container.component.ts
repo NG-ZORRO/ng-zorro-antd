@@ -6,7 +6,6 @@ import { NzNotificationConfig, NZ_NOTIFICATION_CONFIG, NZ_NOTIFICATION_DEFAULT_C
 
 @Component({
   selector           : 'nz-notification-container',
-  preserveWhitespaces: false,
   templateUrl        : './nz-notification-container.component.html'
 })
 export class NzNotificationContainerComponent extends NzMessageContainerComponent {

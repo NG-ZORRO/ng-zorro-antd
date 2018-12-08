@@ -23,7 +23,6 @@ import { NzListGrid } from './interface';
   selector           : 'nz-list',
   templateUrl        : './nz-list.component.html',
   providers          : [ NzUpdateHostClassService ],
-  preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   styles             : [ `

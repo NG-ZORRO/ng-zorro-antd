@@ -30,7 +30,6 @@ import { NzTheadComponent } from './nz-thead.component';
 
 @Component({
   selector           : 'nz-table',
-  preserveWhitespaces: false,
   templateUrl        : './nz-table.component.html'
 })
 export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {

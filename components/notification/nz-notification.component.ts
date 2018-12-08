@@ -14,7 +14,6 @@ import { NzNotificationDataFilled } from './nz-notification.definitions';
 
 @Component({
   selector           : 'nz-notification',
-  preserveWhitespaces: false,
   animations         : [
     trigger('enterLeave', [
       state('enterRight', style({ opacity: 1, transform: 'translateX(0)' })),

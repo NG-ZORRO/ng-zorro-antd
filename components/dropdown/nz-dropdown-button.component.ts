@@ -18,7 +18,6 @@ import { NzDropDownDirective } from './nz-dropdown.directive';
 
 @Component({
   selector           : 'nz-dropdown-button',
-  preserveWhitespaces: false,
   animations         : [
     dropDownAnimation
   ],

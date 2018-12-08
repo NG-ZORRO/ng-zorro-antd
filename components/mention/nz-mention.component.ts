@@ -54,7 +54,6 @@ export type MentionPlacement = 'top' | 'bottom';
 @Component({
   selector           : 'nz-mention',
   templateUrl        : './nz-mention.component.html',
-  preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   styles             : [ `
     .ant-mention-dropdown {

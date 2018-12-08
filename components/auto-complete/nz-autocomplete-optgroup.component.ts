@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
 
 @Component({
   selector           : 'nz-auto-optgroup',
-  preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-autocomplete-optgroup.component.html',

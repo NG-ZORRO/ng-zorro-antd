@@ -26,7 +26,6 @@ import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
     '[attr.role]'    : '"button"'
   },
   providers          : [ NzUpdateHostClassService ],
-  preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None
 })
 export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {

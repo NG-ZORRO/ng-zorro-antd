@@ -42,7 +42,6 @@ export type NzTabType = 'line' | 'card';
 
 @Component({
   selector           : 'nz-tabset',
-  preserveWhitespaces: false,
   providers          : [ NzUpdateHostClassService ],
   templateUrl        : './nz-tabset.component.html',
   host               : {

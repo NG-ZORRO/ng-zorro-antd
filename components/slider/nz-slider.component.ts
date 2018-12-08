@@ -44,7 +44,6 @@ interface MouseTouchObserverConfig {
 
 @Component({
   selector           : 'nz-slider',
-  preserveWhitespaces: false,
   providers          : [ {
     provide    : NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => NzSliderComponent),

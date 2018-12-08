@@ -22,7 +22,6 @@ export interface NzCheckBoxOptionInterface {
 
 @Component({
   selector           : 'nz-checkbox-group',
-  preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-checkbox-group.component.html',
   providers          : [

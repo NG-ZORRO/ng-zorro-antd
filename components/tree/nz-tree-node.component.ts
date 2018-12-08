@@ -26,7 +26,6 @@ import { NzTreeService } from './nz-tree.service';
 @Component({
   selector           : 'nz-tree-node',
   templateUrl        : './nz-tree-node.component.html',
-  preserveWhitespaces: false,
   animations         : [
     trigger('nodeState', [
       state('inactive', style({

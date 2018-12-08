@@ -22,7 +22,6 @@ export class NzOptionSelectionChange {
 
 @Component({
   selector           : 'nz-auto-option',
-  preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-autocomplete-option.component.html',

@@ -19,7 +19,6 @@ import { InputBoolean } from '../core/util/convert';
   templateUrl        : './nz-alert.component.html',
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
-  preserveWhitespaces: false,
   styles             : [
       `nz-alert {
       display: block;

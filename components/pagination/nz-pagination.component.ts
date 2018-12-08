@@ -18,7 +18,6 @@ import { NzI18nService } from '../i18n/nz-i18n.service';
 
 @Component({
   selector           : 'nz-pagination',
-  preserveWhitespaces: false,
   templateUrl        : './nz-pagination.component.html'
 })
 export class NzPaginationComponent implements OnInit, OnDestroy {

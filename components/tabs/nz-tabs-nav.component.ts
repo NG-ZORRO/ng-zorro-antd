@@ -31,7 +31,6 @@ import { NzTabPositionMode } from './nz-tabset.component';
 
 @Component({
   selector           : '[nz-tabs-nav]',
-  preserveWhitespaces: false,
   templateUrl        : './nz-tabs-nav.component.html'
 })
 export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit {

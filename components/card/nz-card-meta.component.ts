@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
 
 @Component({
   selector           : 'nz-card-meta',
-  preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-card-meta.component.html',

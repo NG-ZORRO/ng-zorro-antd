@@ -5,7 +5,6 @@ import { NzListItemMetaComponent } from './nz-list-item-meta.component';
 @Component({
   selector           : 'nz-list-item',
   templateUrl        : './nz-list-item.component.html',
-  preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   host               : {

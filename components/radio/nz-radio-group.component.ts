@@ -24,7 +24,6 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
 
 @Component({
   selector           : 'nz-radio-group',
-  preserveWhitespaces: false,
   templateUrl        : './nz-radio-group.component.html',
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,

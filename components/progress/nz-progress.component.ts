@@ -12,7 +12,6 @@ import { isNotNil } from '../core/util/check';
 
 @Component({
   selector           : 'nz-progress',
-  preserveWhitespaces: false,
   templateUrl        : './nz-progress.component.html'
 })
 export class NzProgressComponent implements OnInit {

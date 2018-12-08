@@ -4,7 +4,6 @@ import { toBoolean } from '../core/util/convert';
 
 @Component({
   selector           : 'nz-slider-track',
-  preserveWhitespaces: false,
   templateUrl        : './nz-slider-track.component.html'
 })
 export class NzSliderTrackComponent implements OnChanges {
