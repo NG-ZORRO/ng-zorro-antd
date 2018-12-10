@@ -16,8 +16,8 @@ export class NzNotificationService extends NzMessageBaseService<NzNotificationCo
     overlay: Overlay,
     injector: Injector,
     cfr: ComponentFactoryResolver,
-    appRef: ApplicationRef) {
-
+    appRef: ApplicationRef
+  ) {
     super(overlay, NzNotificationContainerComponent, injector, cfr, appRef, 'notification-');
   }
 
