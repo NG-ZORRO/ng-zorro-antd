@@ -14,30 +14,28 @@ import {
   QueryList,
   Renderer2,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { fromEvent, merge, of as observableOf, Subscription } from 'rxjs';
 import { auditTime, startWith } from 'rxjs/operators';
 
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
 
 import { NzTabLabelDirective } from './nz-tab-label.directive';
 import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
+import { NzTabPositionMode } from './nz-tabset.component';
 
 const EXAGGERATED_OVERSCROLL = 64;
 export type ScrollDirection = 'after' | 'before';
 
-import { NzTabPositionMode } from './nz-tabset.component';
-
 @Component({
   selector           : '[nz-tabs-nav]',
   preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-tabs-nav.component.html'
 })
 export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit {
-  private _animated = true;
-  private _hideBar = false;
-  private _showPagination = true;
   private _type = 'line';
   private _tabPositionMode: NzTabPositionMode = 'horizontal';
   private _scrollDistance = 0;
@@ -56,24 +54,9 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   @Output() readonly nzOnNextClick = new EventEmitter<void>();
   @Output() readonly nzOnPrevClick = new EventEmitter<void>();
   @Input() nzTabBarExtraContent: TemplateRef<void>;
-
-  @Input()
-  set nzAnimated(value: boolean) {
-    this._animated = toBoolean(value);
-  }
-
-  get nzAnimated(): boolean {
-    return this._animated;
-  }
-
-  @Input()
-  set nzHideBar(value: boolean) {
-    this._hideBar = toBoolean(value);
-  }
-
-  get nzHideBar(): boolean {
-    return this._hideBar;
-  }
+  @Input() @InputBoolean() nzAnimated = true;
+  @Input() @InputBoolean() nzHideBar = false;
+  @Input() @InputBoolean() nzShowPagination = true;
 
   @Input()
   set nzType(value: string) {
@@ -87,15 +70,6 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
 
   get nzType(): string {
     return this._type;
-  }
-
-  @Input()
-  set nzShowPagination(value: boolean) {
-    this._showPagination = toBoolean(value);
-  }
-
-  get nzShowPagination(): boolean {
-    return this._showPagination;
   }
 
   @Input()
