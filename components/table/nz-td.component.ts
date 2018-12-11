@@ -102,7 +102,8 @@ export class NzTdComponent {
     }
   }
 
-  expandChange(): void {
+  expandChange(e: Event): void {
+    e.stopPropagation();
     this.nzExpand = !this.nzExpand;
     this.nzExpandChange.emit(this.nzExpand);
   }

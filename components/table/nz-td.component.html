@@ -13,7 +13,7 @@
 <span
   *ngIf="nzShowExpand"
   class="ant-table-row-expand-icon"
-  (click)="expandChange()"
+  (click)="expandChange($event)"
   [class.ant-table-row-expanded]="nzExpand"
   [class.ant-table-row-collapsed]="!nzExpand"></span>
 <ng-content></ng-content>
