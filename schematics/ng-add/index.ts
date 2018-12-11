@@ -12,9 +12,9 @@ export default function (options: Schema): Rule {
       addPackageToPackageJson(host, 'hammerjs', hammerjsVersion);
     }
 
-    // const installTaskId = context.addTask(new NodePackageInstallTask());
+    const installTaskId = context.addTask(new NodePackageInstallTask());
 
-    context.addTask(new RunSchematicTask('ng-add-setup-project', options));
+    context.addTask(new RunSchematicTask('ng-add-setup-project', options), [installTaskId]);
     context.addTask(new RunSchematicTask('bootstrap', options));
   };
 }

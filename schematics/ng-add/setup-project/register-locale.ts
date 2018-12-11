@@ -22,7 +22,7 @@ export function registerLocale(options: Schema): Rule {
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
     const moduleSource = getSourceFile(host, appModulePath);
 
-    const locale = options.locale || 'en_US';
+    const locale = options.locale || options.i18n || 'en_US';
     const localePrefix = locale.split('_')[ 0 ];
 
     const recorder = host.beginUpdate(appModulePath);
