@@ -27,11 +27,7 @@ import { NzListGrid } from './interface';
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   styles             : [ `
-    :host {
-      display: block;
-    }
-
-    nz-spin {
+    nz-list, nz-list nz-spin {
       display: block;
     }
   ` ]
