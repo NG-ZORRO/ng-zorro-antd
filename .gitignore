@@ -10,8 +10,8 @@ integration/**/lib/
 integration/**/*.ngfactory.ts
 integration/**/*.ngsummary.json
 schematics/demo
-schematics/utils/custom-theme.ts
-schematics/utils/lib-versions.ts
+schematics/utils/create-custom-theme.ts
+schematics/utils/version-names.ts
 
 # dependencies
 node_modules
