@@ -1,4 +1,4 @@
-<div 
+<div
   class="ant-tabs-bar"
   nz-tabs-nav
   role="tablist"
@@ -21,10 +21,7 @@
     [disabled]="tab.nzDisabled"
     (click)="clickLabel(i,tab.nzDisabled)"
     *ngFor="let tab of listOfNzTabComponent; let i = index">
-    <ng-container *ngIf="tab.isTitleString; else titleTemplate">{{ tab.nzTitle }}</ng-container>
-    <ng-template #titleTemplate>
-      <ng-template [ngTemplateOutlet]="tab.nzTitle"></ng-template>
-    </ng-template>
+    <ng-container *nzStringTemplateOutlet="tab.nzTitle">{{ tab.nzTitle }}</ng-container>
   </div>
 </div>
 <div
@@ -34,10 +31,10 @@
   [class.ant-tabs-content-no-animated]="!tabPaneAnimated"
   [style.margin-left.%]="tabPaneAnimated&&(-nzSelectedIndex*100)">
   <div nz-tab-body
+    *ngFor="let tab of listOfNzTabComponent; let i = index"
     class="ant-tabs-tabpane"
-    [class.ant-tabs-tabpane-active]="(nzSelectedIndex == i) && !nzHideAll"
-    [class.ant-tabs-tabpane-inactive]="(nzSelectedIndex != i) || nzHideAll"
-    [content]="tab.content"
-    *ngFor="let tab of listOfNzTabComponent; let i = index">
+    [active]="(nzSelectedIndex == i) && !nzHideAll"
+    [forceRender]="tab.nzForceRender"
+    [content]="tab.content">
   </div>
 </div>

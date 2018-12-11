@@ -1,14 +1,17 @@
-import {
-  Component,
-  Input,
-  TemplateRef
-} from '@angular/core';
+import { Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector           : '[nz-tab-body]',
   preserveWhitespaces: false,
-  templateUrl        : './nz-tab-body.component.html'
+  encapsulation      : ViewEncapsulation.None,
+  templateUrl        : './nz-tab-body.component.html',
+  host               : {
+    '[class.ant-tabs-tabpane-active]'  : 'active',
+    '[class.ant-tabs-tabpane-inactive]': '!active'
+  }
 })
 export class NzTabBodyComponent {
   @Input() content: TemplateRef<void>;
+  @Input() active = false;
+  @Input() forceRender = false;
 }

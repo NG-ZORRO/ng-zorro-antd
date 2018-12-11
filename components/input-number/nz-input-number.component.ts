@@ -1,5 +1,5 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { DOWN_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
+import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   forwardRef,
   AfterViewInit,
@@ -128,11 +128,14 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     return Number(num);
   }
 
-  onBlur(): void {
-    this.onTouched();
-    this.isFocused = false;
+  setValidateValue(): void {
     const value = this.getCurrentValidValue(this.actualValue);
     this.setValue(value, `${this.value}` !== `${value}`);
+  }
+
+  onBlur(): void {
+    this.isFocused = false;
+    this.setValidateValue();
   }
 
   onFocus(): void {
@@ -292,6 +295,8 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
       const ratio = this.getRatio(e);
       this.down(e, ratio);
       this.stop();
+    } else if (e.keyCode === ENTER) {
+      this.setValidateValue();
     }
   }
 
