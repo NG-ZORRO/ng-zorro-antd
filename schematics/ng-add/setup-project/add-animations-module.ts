@@ -14,7 +14,7 @@ const browserAnimationsModuleName = 'BrowserAnimationsModule';
 const noopAnimationsModuleName = 'NoopAnimationsModule';
 const animationsModulePath = '@angular/platform-browser/animations';
 
-export default function (options: Schema): Rule {
+export function addAnimationsModule (options: Schema): Rule {
   return (host: Tree) => {
     const workspace = getWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
@@ -22,8 +22,9 @@ export default function (options: Schema): Rule {
 
     if (options.animations) {
       if (hasNgModuleImport(host, appModulePath, noopAnimationsModuleName)) {
-        return console.warn(chalk.red(`Could not set up "${chalk.bold(browserAnimationsModuleName)}" ` +
-          `because "${chalk.bold(noopAnimationsModuleName)}" is already imported. Please manually ` +
+        console.log();
+        return console.log(chalk.yellow(`Could not set up "${chalk.blue(browserAnimationsModuleName)}" ` +
+          `because "${chalk.blue(noopAnimationsModuleName)}" is already imported. Please manually ` +
           `set up browser animations.`));
       }
       addModuleImportToRootModule(host, browserAnimationsModuleName,

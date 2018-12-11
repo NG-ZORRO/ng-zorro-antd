@@ -10,8 +10,8 @@ import { InsertChange } from '@schematics/angular/utility/change';
 import { getWorkspace } from '@schematics/angular/utility/config';
 import chalk from 'chalk';
 import { join } from 'path';
+import { createCustomTheme } from '../../utils/create-custom-theme';
 import { Schema } from '../schema';
-import { createCustomTheme } from './create-custom-theme';
 
 const compiledThemePathSegment = 'ng-zorro-antd';
 const compiledThemePath = './node_modules/ng-zorro-antd/ng-zorro-antd.min.css';
@@ -60,7 +60,8 @@ function insertCustomTheme(project: WorkspaceProject, projectName: string, host:
     const customThemePath = normalize(join(project.sourceRoot, defaultCustomThemeFilename));
 
     if (host.exists(customThemePath)) {
-      console.warn(chalk.yellow(`Cannot create a custom Angular Material theme because
+      console.log();
+      console.warn(chalk.yellow(`Cannot create a custom NG-ZORRO theme because
           ${chalk.bold(customThemePath)} already exists. Skipping custom theme generation.`));
       return;
     }
@@ -110,10 +111,11 @@ function addThemeStyleToTarget(project: WorkspaceProject, targetName: 'test' | '
       // theme because these files can contain custom styles, while prebuilt themes are
       // always packaged and considered replaceable.
       if (stylePath.includes(defaultCustomThemeFilename)) {
-        console.warn(chalk.red(`Could not add the selected theme to the CLI project configuration ` +
+        console.log();
+        console.warn(chalk.yellow(`Could not style file to the CLI project configuration ` +
           `because there is already a custom theme file referenced.`));
-        console.warn(chalk.red(`Please manually add the following style file to your configuration:`));
-        console.warn(chalk.yellow(`    ${chalk.bold(assetPath)}`));
+        console.warn(chalk.yellow(`Please manually add the following style file to your configuration:`));
+        console.warn(chalk.cyan(`${chalk.bold(assetPath)}`));
         return;
       } else if (stylePath.includes(compiledThemePathSegment)) {
         targetOptions.styles.splice(index, 1);
@@ -137,15 +139,9 @@ function validateDefaultTargetBuilder(project: WorkspaceProject, targetName: 'bu
     project.targets && project.targets[ targetName ];
   const isDefaultBuilder = targetConfig && targetConfig.builder === defaultBuilder;
 
-  // Because the build setup for the Angular CLI can be customized by developers, we can't know
-  // where to put the theme file in the workspace configuration if custom builders are being
-  // used. In case the builder has been changed for the "build" target, we throw an error and
-  // exit because setting up a theme is a primary goal of `ng-add`. Otherwise if just the "test"
-  // builder has been changed, we warn because a theme is not mandatory for running tests
-  // with Material. See: https://github.com/angular/material2/issues/14176
   if (!isDefaultBuilder && targetName === 'build') {
     throw new SchematicsException(`Your project is not using the default builders for ` +
-      `"${targetName}". The Angular Material schematics cannot add a theme to the workspace ` +
+      `"${targetName}". The NG-ZORRO schematics cannot add a theme to the workspace ` +
       `configuration if the builder has been changed.`);
   } else if (!isDefaultBuilder) {
     console.warn(`Your project is not using the default builders for "${targetName}". This ` +

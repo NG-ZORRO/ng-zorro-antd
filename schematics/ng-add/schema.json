@@ -16,11 +16,17 @@
       "default": false,
       "description": "Do not add ng-zorro-antd dependencies to package.json (e.g., --skipPackageJson)"
     },
+    "dynamicIcon": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether icon assets should be add.",
+      "x-prompt": "Add icon assets [ Detail: https://ng.ant.design/components/icon/en ]"
+    },
     "theme": {
       "type": "boolean",
       "default": false,
       "description": "Whether custom theme file should be set up.",
-      "x-prompt": "Set up custom theme file [ Preview: https://ng.ant.design/docs/customize-theme/en ]"
+      "x-prompt": "Set up custom theme file [ Detail: https://ng.ant.design/docs/customize-theme/en ]"
     },
     "locale": {
       "type": "string",

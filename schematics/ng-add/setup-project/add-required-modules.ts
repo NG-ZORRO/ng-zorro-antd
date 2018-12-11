@@ -13,18 +13,18 @@ import { Schema } from '../schema';
 
 const modulesMap = {
   NgZorroAntdModule: 'ng-zorro-antd',
-  FormsModule: '@angular/forms',
-  HttpClientModule: '@angular/common/http'
+  FormsModule      : '@angular/forms',
+  HttpClientModule : '@angular/common/http'
 };
 
-export function addRequiredModules (options: Schema): Rule {
+export function addRequiredModules(options: Schema): Rule {
   return (host: Tree) => {
     const workspace = getWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
 
     for (const module in modulesMap) {
-      addModuleImportToApptModule(host, module, modulesMap[module],
+      addModuleImportToApptModule(host, module, modulesMap[ module ],
         project, appModulePath, options);
     }
 
@@ -36,17 +36,9 @@ function addModuleImportToApptModule(host: Tree, moduleName: string, src: string
                                      project: WorkspaceProject, appModulePath: string,
                                      options: Schema): void {
   if (hasNgModuleImport(host, appModulePath, moduleName)) {
-
-    // TODO
-    if (options.locale.includes('zh')) {
-      console.warn(chalk.yellow(`无法设置 "${chalk.bold(moduleName)}" ` +
-        `因为 "${chalk.bold(moduleName)}" 已经引入. 请手动 ` +
-        `检查 "${chalk.bold(appModulePath)}" 文件。`));
-    } else {
-      console.warn(chalk.yellow(`Could not set up "${chalk.bold(moduleName)}" ` +
-        `because "${chalk.bold(moduleName)}" is already imported. Please manually ` +
-        `check "${chalk.bold(appModulePath)}" file.`));
-    }
+    console.log(chalk.yellow(`Could not set up "${chalk.blue(moduleName)}" ` +
+      `because "${chalk.blue(moduleName)}" is already imported. Please manually ` +
+      `check "${chalk.blue(appModulePath)}" file.`));
     return;
   }
   addModuleImportToRootModule(host, moduleName, src, project);

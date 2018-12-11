@@ -23,19 +23,13 @@ export function addIconToAssets(options: Schema): Rule {
       const assets = targetOptions.assets as Array<string | object>;
       const assetsString = JSON.stringify(assets);
       if (!assetsString.includes(iconPathSegment)) {
-        assets.push({...iconAssetObject});
+        assets.push({ ...iconAssetObject });
       } else {
-        // TODO
-        if (options.locale.includes('zh')) {
-          console.warn(chalk.red(`无法将图标(icon)资源添加到 CLI 配置下的 assets 中`));
-          console.warn(chalk.red(`请手动将以下配置添加到项目 ${chalk.bold('angular.json')} 下的 assets 字段:`));
-          console.warn(chalk.yellow(`${chalk.bold(JSON.stringify(iconAssetObject, null, 2))}`));
-        } else {
-          console.warn(chalk.red(`Could not add the icon assets to the CLI project assets ` +
-            `because there is already a icon assets file referenced.`));
-          console.warn(chalk.red(`Please manually add the following config to your assets:`));
-          console.warn(chalk.yellow(`${chalk.bold(JSON.stringify(iconAssetObject, null, 2))}`));
-        }
+        console.log();
+        console.log(chalk.yellow(`Could not add the icon assets to the CLI project assets ` +
+          `because there is already a icon assets file referenced.`));
+        console.log(chalk.yellow(`Please manually add the following config to your assets:`));
+        console.log(chalk.cyan(JSON.stringify(iconAssetObject, null, 2)));
         return host;
       }
     }
