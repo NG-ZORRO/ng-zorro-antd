@@ -23,11 +23,19 @@ ng add ng-zorro-antd [options]
 
 详细的配置可以在[自定义主题](/docs/customize-theme/zh)中查看。
 
-***--i18n***
+***--locale***
 
-初始化配置时增加 `--i18n=[语言]` 参数，`ng-zorro-antd` 会自动引入支持的语言包以及 Angular 对应的 [i18n 文件](https://angular.io/guide/i18n)
+初始化配置时增加 `--locale=[语言]` 参数，`ng-zorro-antd` 会自动引入支持的语言包以及 Angular 对应的 [i18n 文件](https://angular.io/guide/i18n)
 
 默认的国际化配置为中文(zh_CN)，详细的可配置选项可以在[国际化](/docs/i18n/zh)中查看。
+
+***--animations***
+
+启用 `BrowserAnimationsModule`
+
+***--gestures***
+
+安装 `hammerjs` 并引入为项目添加手势支持
 
 ## 生成组件
 
