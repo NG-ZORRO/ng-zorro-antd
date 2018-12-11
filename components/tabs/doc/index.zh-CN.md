@@ -44,6 +44,7 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzTitle]` | 选项卡头显示文字 | string ｜ `TemplateRef<void>` | - |
+| `[nzForceRender]` | 被隐藏时是否渲染 DOM 结构 | boolean | false |
 | `[nzDisabled]` | 是否禁用 | boolean | - |
 | `(nzClick)` | title被点击的回调函数 | `EventEmitter<void>` | - |
 | `(nzSelect)` | tab被选中的回调函数 | `EventEmitter<void>` | - |

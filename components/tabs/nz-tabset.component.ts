@@ -14,7 +14,8 @@ import {
   Output,
   Renderer2,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -43,13 +44,14 @@ export type NzTabType = 'line' | 'card';
 @Component({
   selector           : 'nz-tabset',
   preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None,
   providers          : [ NzUpdateHostClassService ],
   templateUrl        : './nz-tabset.component.html',
   host               : {
     '(scroll)': 'onScroll($event)'
   },
   styles             : [ `
-    :host {
+    nz-tabset {
       display: block;
     }
   ` ]
