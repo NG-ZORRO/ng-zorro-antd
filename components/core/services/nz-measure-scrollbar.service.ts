@@ -30,6 +30,7 @@ export class NzMeasureScrollbarService {
         scrollDiv.style[ scrollProp ] = this.scrollbarMeasure[ scrollProp ];
       }
     }
+    scrollDiv.classList.add('nz-measure-scrollbar-placeholder');
     this.document.body.appendChild(scrollDiv);
     const width = scrollDiv.offsetWidth - scrollDiv.clientWidth;
     this.document.body.removeChild(scrollDiv);
