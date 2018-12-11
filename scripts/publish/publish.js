@@ -5,7 +5,7 @@ const path = require('path');
 
 /* Shortcut methods */
 const execSync = require('child_process').execSync;
-const versionNameRegex = /^(\d+)\.(\d+)\.(\d+)(?:-(alpha|beta|rc)\.(\d)+)?$/;
+const versionNameRegex = /^(\d+)\.(\d+)\.(\d+)(?:-(alpha|beta|rc)\.(\d+))?$/;
 const print = console.log;
 const log = {
   info   : (msg) => {
