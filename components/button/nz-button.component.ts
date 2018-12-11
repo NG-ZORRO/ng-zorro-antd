@@ -6,10 +6,11 @@ import {
   ContentChildren,
   ElementRef,
   HostBinding,
+  Inject,
   Input,
   NgZone,
   OnDestroy,
-  OnInit,
+  OnInit, Optional,
   QueryList,
   Renderer2,
   ViewChild,
@@ -21,7 +22,7 @@ import { NzSizeLDSType } from '../core/types/size';
 import { isEmpty } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 import { findFirstNotEmptyNode, findLastNotEmptyNode } from '../core/util/dom';
-import { NzWaveDirective } from '../core/wave/nz-wave.directive';
+import { NzWaveConfig, NzWaveDirective, NZ_WAVE_GLOBAL_CONFIG } from '../core/wave/nz-wave.directive';
 import { NzIconDirective } from '../icon/nz-icon.directive';
 
 export type NzButtonType = 'primary' | 'dashed' | 'danger';
@@ -39,7 +40,7 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
   readonly el: HTMLElement = this.elementRef.nativeElement;
   @ViewChild('contentElement') contentElement: ElementRef;
   @ContentChildren(NzIconDirective, { read: ElementRef }) listOfIconElement: QueryList<ElementRef>;
-  @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(this.ngZone, this.elementRef);
+  @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(this.ngZone, this.elementRef, this.waveConfig);
 
   @Input()
   set nzBlock(value: boolean) {
@@ -112,7 +113,9 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
     return this._loading;
   }
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService, private ngZone: NgZone) {
+  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private renderer: Renderer2,
+              private nzUpdateHostClassService: NzUpdateHostClassService, private ngZone: NgZone,
+              @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private waveConfig: NzWaveConfig) {
   }
 
   private _ghost = false;
