@@ -11,8 +11,8 @@ export default function (options: Schema): Rule {
   return chain([
     addRequiredModules(options),
     addAnimationsModule(options),
-    addThemeToAppStyles(options),
     registerLocale(options),
+    addThemeToAppStyles(options),
     options.dynamicIcon ? addIconToAssets(options) : noop(),
     options.gestures ? hammerjsImport(options) : noop()
   ]);

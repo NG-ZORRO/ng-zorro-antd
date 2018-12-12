@@ -22,7 +22,7 @@ export function registerLocale(options: Schema): Rule {
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
     const moduleSource = getSourceFile(host, appModulePath);
 
-    const locale = options.locale || 'en_US';
+    const locale = getCompatibleLocal(options);
     const localePrefix = locale.split('_')[ 0 ];
 
     const recorder = host.beginUpdate(appModulePath);
@@ -52,6 +52,22 @@ export function registerLocale(options: Schema): Rule {
   };
 }
 
+function getCompatibleLocal(options: Schema): string {
+  const defaultLocal = 'en_US';
+  if (options.locale === options.i18n) {
+    return options.locale;
+  } else if (options.locale === defaultLocal) {
+
+    console.log();
+    console.log(`${chalk.bgYellow('WARN')} ${chalk.cyan('--i18n')} option will be deprecated, ` +
+      `use ${chalk.cyan('--locale')} instead`);
+
+    return options.i18n;
+  } else {
+    return options.locale || defaultLocal;
+  }
+}
+
 function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, locale: string): Change {
   const allImports = findNodes(moduleSource, ts.SyntaxKind.ImportDeclaration);
   const allFun = findNodes(moduleSource, ts.SyntaxKind.ExpressionStatement);
@@ -62,7 +78,8 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
   });
 
   if (registerLocaleDataFun.length === 0) {
-    return insertAfterLastOccurrence(allImports, `\n\nregisterLocaleData(${locale});`, modulePath, 0) as InsertChange;
+    return insertAfterLastOccurrence(allImports, `\n\nregisterLocaleData(${locale});`,
+      modulePath, 0) as InsertChange;
   } else {
     console.log();
     console.log(chalk.yellow(`Could not add the registerLocaleData to your app.module file (${chalk.blue(modulePath)}).` +
@@ -76,7 +93,8 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
 function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string, locale: string): Change[] {
   const metadataField = 'providers';
   const nodes = getDecoratorMetadata(moduleSource, 'NgModule', '@angular/core');
-  const addProvide = addSymbolToNgModuleMetadata(moduleSource, modulePath, 'providers', `{ provide: NZ_I18N, useValue: ${locale} }`, null);
+  const addProvide = addSymbolToNgModuleMetadata(moduleSource, modulePath, 'providers',
+    `{ provide: NZ_I18N, useValue: ${locale} }`, null);
   let node: any = nodes[ 0 ];  // tslint:disable-line:no-any
 
   if (!node) {
