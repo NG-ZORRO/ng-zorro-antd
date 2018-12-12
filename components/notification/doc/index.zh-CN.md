@@ -56,7 +56,8 @@ subtitle: 通知提醒框
 
 | 参数 | 说明 | 类型 |
 | --- | --- | --- |
-| nzDuration | 持续时间(毫秒)，当设置为0时不消失 | number |
+| nzKey | 通知提示的唯一标识符 | string |
+| nzDuration | 持续时间(毫秒)，当设置为 0 时不消失 | number |
 | nzPauseOnHover | 鼠标移上时禁止自动移除 | boolean |
 | nzAnimate | 开关动画效果 | boolean |
 | nzStyle | 自定义内联样式 | object |
