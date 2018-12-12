@@ -14,7 +14,7 @@ const browserAnimationsModuleName = 'BrowserAnimationsModule';
 const noopAnimationsModuleName = 'NoopAnimationsModule';
 const animationsModulePath = '@angular/platform-browser/animations';
 
-export function addAnimationsModule (options: Schema): Rule {
+export function addAnimationsModule(options: Schema): Rule {
   return (host: Tree) => {
     const workspace = getWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
