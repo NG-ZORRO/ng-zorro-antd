@@ -40,7 +40,7 @@ export class NzMessageComponent implements OnInit, OnDestroy {
 
   constructor(
     private _messageContainer: NzMessageContainerComponent,
-    protected cdr: ChangeDetectorRef,
+    protected cdr: ChangeDetectorRef
   ) {
   }
 
