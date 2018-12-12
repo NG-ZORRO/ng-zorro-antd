@@ -5,6 +5,7 @@ const path = require('path');
 
 /* Shortcut methods */
 const execSync = require('child_process').execSync;
+const versionNameRegex = /^(\d+)\.(\d+)\.(\d+)(?:-(alpha|beta|rc)\.(\d+))?$/;
 const print = console.log;
 const log = {
   info   : (msg) => {
@@ -41,32 +42,53 @@ checkout();
 function changeVersion() {
   log.info('Updating version number...');
 
-  const packageJson = path.join(__dirname, '../../components/package.json');
-  const appComponent = path.join(__dirname, '../site/_site/src/app/app.component.ts') ;
-  const codeBox = path.join(__dirname, '../site/_site/src/app/share/nz-codebox/nz-codebox.component.ts');
-  const currentVersion = fs.readFileSync(packageJson, 'utf-8').match(/"version": "([0-9.]+)"/)[ 1 ];
+  const packageJsonPath = path.join(__dirname, '../../components/package.json');
+  const appComponentPath = path.join(__dirname, '../site/_site/src/app/app.component.ts') ;
+  const codeBoxPath = path.join(__dirname, '../site/_site/src/app/share/nz-codebox/nz-codebox.component.ts');
 
+  const packageJson = fs.readJsonSync(packageJsonPath);
+  const currentVersion = packageJson.version;
   let versionNumberValid = false;
   let version;
 
+  function parseVersion(version) {
+    const matches = version.match(versionNameRegex);
+
+    if (!matches) {
+      return null;
+    }
+
+    return {
+      major: Number(matches[1]),
+      minor: Number(matches[2]),
+      patch: Number(matches[3]),
+      preTag: matches[4],
+      pre: Number(matches[5]),
+    }
+  }
+
   function checkVersionNumber(cur, next) {
     // Must be numbers and dots.
-    if (next.indexOf('rc') > -1) { return true; }
-    if (!/^[1-9][0-9.]{1,10}[0-9]$/.test(next)) { return false; }
+    if (!versionNameRegex.test(next)) { return false; }
 
-    const curArr = cur.split('.');
-    const nextArr = next.split('.');
-    const length = curArr.length;
+    const curVersion = parseVersion(cur);
+    const nextVersion = parseVersion(next);
 
-    if (nextArr.length !== nextArr.length) {
-      return false;
+    for (k of ['major', 'minor', 'patch']) {
+      if (curVersion[k] < nextVersion[k]) {
+        return true;
+      }
+
+      if (curVersion[k] > nextVersion[k]) {
+        return false;
+      }
     }
 
-    for (let i = 0; i < length; i++) {
-      if (curArr[ i ] < nextArr[ i ]) { return true; }
-      if (curArr[ i ] > nextArr[ i ]) { return false; }
-      if (i === length - 1 && curArr[ i ] === nextArr[ i ]) { return false; }
+    if (curVersion.preTag !== nextVersion.preTag) {
+      return true;
     }
+
+    return curVersion.pre < nextVersion.pre
   }
 
   while (!versionNumberValid) {
@@ -79,14 +101,13 @@ function changeVersion() {
     }
   }
 
-  fs.writeFileSync(packageJson,
-    fs.readFileSync(packageJson, 'utf-8').replace(/"version": "[0-9.]+"/g, `"version": "${version}"`)
+  fs.writeJsonSync(packageJsonPath, {...packageJson, version: version}, {spaces: 2});
+  fs.writeFileSync(appComponentPath,
+    fs.readFileSync(appComponentPath, 'utf-8')
+      .replace(/currentVersion = '.+';/g, `currentVersion = '${version}';`)
   );
-  fs.writeFileSync(appComponent,
-    fs.readFileSync(appComponent, 'utf-8').replace(/currentVersion = '[0-9.]+';/g, `currentVersion = '${version}';`)
-  );
-  fs.writeFileSync(codeBox,
-    fs.readFileSync(codeBox, 'utf-8').replace(/'ng-zorro-antd' +: '\^[0-9.]+'/g, `'ng-zorro-antd'                    : '^${version}'`)
+  fs.writeFileSync(codeBoxPath,
+    fs.readFileSync(codeBoxPath, 'utf-8').replace(/'ng-zorro-antd' +: '.+'/g, `'ng-zorro-antd'                    : '^${version}'`)
   );
   log.success('Version updated!');
 }
