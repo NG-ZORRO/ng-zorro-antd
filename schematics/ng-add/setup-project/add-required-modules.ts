@@ -1,4 +1,4 @@
-import { WorkspaceProject } from '@angular-devkit/core/src/workspace'
+import { WorkspaceProject } from '@angular-devkit/core/src/workspace';
 import { Rule, Tree } from '@angular-devkit/schematics';
 import {
   addModuleImportToRootModule,
