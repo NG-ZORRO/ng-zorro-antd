@@ -12,7 +12,8 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { of, Observable, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
@@ -143,11 +144,20 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   uploadFiles(fileList: FileList | File[]): void {
-    let postFiles: UploadFile[] = Array.prototype.slice.call(fileList);
-    this.options.filters.forEach(f => postFiles = f.fn(postFiles));
-    postFiles.forEach((file: UploadFile) => {
-      this.attachUid(file);
-      this.upload(file, postFiles);
+    let filters$: Observable<UploadFile[]> = of(Array.prototype.slice.call(fileList));
+    this.options.filters.forEach(f => {
+      filters$ = filters$.pipe(switchMap(list => {
+        const fnRes = f.fn(list);
+        return fnRes instanceof Observable ? fnRes : of(fnRes);
+      }));
+    });
+    filters$.subscribe(list => {
+      list.forEach((file: UploadFile) => {
+        this.attachUid(file);
+        this.upload(file, list);
+      });
+    }, e => {
+      console.warn(`Unhandled upload filter error`, e);
     });
   }
 
@@ -165,6 +175,8 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
         } else if (typeof processedFile === 'boolean' && processedFile !== false) {
           this.post(file);
         }
+      }, e => {
+        console.warn(`Unhandled upload beforeUpload error`, e);
       });
     } else if (before !== false) {
       return this.post(file);

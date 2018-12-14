@@ -497,10 +497,12 @@ describe('tabs', () => {
         [nzHideAll]="hideAll">
         <nz-tab
           nzTitle="title"
+          [nzForceRender]="true"
           (nzDeselect)="deselect00()"
           (nzSelect)="select00()"
           (nzClick)="click00()">Content 1<!----></nz-tab>
         <nz-tab
+          [nzForceRender]="true"
           [nzTitle]="titleTemplate"
           (nzDeselect)="deselect01()"
           (nzSelect)="select01()"
@@ -510,6 +512,7 @@ describe('tabs', () => {
           <button></button>
         </nz-tab>
         <nz-tab
+          [nzForceRender]="true"
           nzTitle="add"
           *ngIf="add"
           (nzDeselect)="deselect02()"

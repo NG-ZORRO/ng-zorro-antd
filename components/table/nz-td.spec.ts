@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { createFakeEvent } from '../core/testing';
 import { NzTableModule } from './nz-table.module';
 import { NzTdComponent } from './nz-td.component';
 
@@ -99,6 +100,16 @@ describe('nz-td', () => {
       expect(testComponent.expand).toBe(true);
       expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-expanded');
       expect(testComponent.expandChange).toHaveBeenCalledTimes(1);
+    });
+    it('should click expand event stopPropagation', () => {
+      testComponent.showExpand = true;
+      fixture.detectChanges();
+      const input: HTMLElement = td.nativeElement.querySelector('.ant-table-row-expand-icon');
+      const fakeInputChangeEvent = createFakeEvent('click', true, true);
+      spyOn(fakeInputChangeEvent, 'stopPropagation');
+      input.dispatchEvent(fakeInputChangeEvent);
+      fixture.detectChanges();
+      expect(fakeInputChangeEvent.stopPropagation).toHaveBeenCalled();
     });
     it('should be row index when index-size is 0', () => {
       testComponent.indentSize = 0;

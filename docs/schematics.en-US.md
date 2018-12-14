@@ -22,11 +22,19 @@ ng add ng-zorro-antd [options]
 
 You can get more information at the [Customize Theme](/docs/customize-theme/en) part.
 
-***--i18n***
+***--locale***
 
-If you add `--i18n=[language]`，`ng-zorro-antd` import the language package and the [i18n](https://angular.io/guide/i18n) part of angular in the `app.module.ts`.
+If you add `--locale=[language]`，`ng-zorro-antd` import the language package and the [i18n](https://angular.io/guide/i18n) part of angular in the `app.module.ts`.
 
 The default i18n config of `ng-zorro-antd` is `zh_CN` now，you can get more information at the [Internationalization](/docs/i18n/en) part.
+
+***--animations***
+
+Enable the BrowserAnimationsModule your app module
+
+***--gestures***
+
+Install and import hammerjs for gesture support in your project
 
 ## Component Generation
 

@@ -1,5 +1,5 @@
 import { chain, Rule } from '@angular-devkit/schematics';
-import { buildComponent } from '../../utils/devkit-utils/component';
+import { buildComponent } from '@angular/cdk/schematics';
 import { Schema } from './schema';
 
 export default function (options: Schema): Rule {

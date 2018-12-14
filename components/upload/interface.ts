@@ -66,7 +66,7 @@ export interface ZipButtonOptions {
 
 export interface UploadFilter {
   name: string;
-  fn: (fileList: UploadFile[]) => UploadFile[];
+  fn: (fileList: UploadFile[]) => UploadFile[] | Observable<UploadFile[]>;
 }
 
 export interface UploadXHRArgs {

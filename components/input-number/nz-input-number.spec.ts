@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -37,18 +37,22 @@ describe('input number', () => {
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number');
       expect(inputElement.getAttribute('placeholder')).toBe('placeholder');
     });
-    it('should focus className correct', () => {
+    it('should focus className correct', fakeAsync(() => {
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).toContain('ng-untouched');
       dispatchFakeEvent(inputElement, 'focus');
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).toContain('ng-untouched');
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number-focused');
       dispatchFakeEvent(inputElement, 'blur');
       fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
       expect(inputNumber.nativeElement.classList).toContain('ng-touched');
-    });
+    }));
     it('should nzSize work', () => {
       testComponent.size = 'large';
       fixture.detectChanges();
