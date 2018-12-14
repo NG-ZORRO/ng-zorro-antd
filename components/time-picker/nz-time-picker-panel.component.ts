@@ -405,6 +405,8 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   writeValue(value: Date): void {
     this.time.value = value;
     this.buildTimes();
+
+    // Mark this component to be checked manually with internal properties changing (see: https://github.com/angular/angular/issues/10816)
     this.cdr.markForCheck();
   }
 
