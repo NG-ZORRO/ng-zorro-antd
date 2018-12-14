@@ -1,4 +1,6 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -25,6 +27,7 @@ function makeRange(length: number, step: number = 1): number[] {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector   : 'nz-time-picker-panel',
   templateUrl: './nz-time-picker-panel.component.html',
   providers  : [
@@ -378,7 +381,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     });
   }
 
-  constructor(private element: ElementRef, private updateCls: UpdateCls) {
+  constructor(private element: ElementRef, private updateCls: UpdateCls, private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -402,6 +405,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   writeValue(value: Date): void {
     this.time.value = value;
     this.buildTimes();
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (value: Date) => void): void {

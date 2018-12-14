@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
 import { NzI18nService } from '../../../i18n/nz-i18n.service';
 import { CandyDate } from '../candy-date';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // tslint:disable-next-line:component-selector
   selector: 'today-button',
   templateUrl: 'today-button.component.html'
 })
@@ -12,10 +14,9 @@ import { CandyDate } from '../candy-date';
 export class TodayButtonComponent implements OnInit, OnChanges {
   @Input() locale: NzCalendarI18nInterface;
   @Input() hasTimePicker: boolean = false;
-  // @Input() disabled: boolean = false;
   @Input() disabledDate: (d: Date) => boolean;
 
-  @Output() clickToday = new EventEmitter<CandyDate>();
+  @Output() readonly clickToday = new EventEmitter<CandyDate>();
 
   prefixCls: string = 'ant-calendar';
   isDisabled: boolean = false;

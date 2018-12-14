@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -58,7 +59,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   protected destroyed$: Subject<void> = new Subject();
   protected isCustomPlaceHolder: boolean = false;
 
-  constructor(protected i18n: NzI18nService) {
+  constructor(protected i18n: NzI18nService, protected cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -159,6 +160,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   private setLocale(): void {
     this.nzLocale = this.i18n.getLocaleData('DatePicker', {});
     this.setDefaultPlaceHolder();
+    this.cdr.markForCheck();
   }
 
   private setDefaultPlaceHolder(): void {

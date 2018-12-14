@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 
 import { FunctionProp } from '../core/types/common-wrap';
 import { valueFunctionProp } from '../core/util/convert';
@@ -27,8 +27,8 @@ export class HeaderPickerComponent extends AbstractPickerComponent implements On
 
   private supportPanels: PanelMode[];
 
-  constructor(i18n: NzI18nService) {
-    super(i18n);
+  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef) {
+    super(i18n, cdr);
   }
 
   ngOnInit(): void {
