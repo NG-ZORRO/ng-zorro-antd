@@ -23,6 +23,8 @@ If there are too many operations to display, you can wrap them in a `Dropdown`. 
 | `[nzTrigger]` | the trigger mode which executes the drop-down action | `click`丨`hover` | `hover` |
 | `[nzClickHide]` | whether hide menu when click | boolean | true |
 | `[nzVisible]` | whether the dropdown menu is visible, double binding | boolean | - |
+| `[nzOverlayClassName]` | Class name of the dropdown root element | string | - |
+| `[nzOverlayStyle]` | Style of the dropdown root element | object | - |
 | `(nzVisibleChange)` | a callback function takes an argument: `nzVisible`, is executed when the visible state is changed | `EventEmitter<boolean>` | - |
 
 You should use [nz-menu](/components/menu/en) in `nz-dropdown`. The menu items and dividers are also available by using `nz-menu-item` and `nz-menu-divider`.

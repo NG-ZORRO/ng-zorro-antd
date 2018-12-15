@@ -52,6 +52,8 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
 export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
 
   @Input() nzWidth: number;
+  @Input() nzOverlayClassName = '';
+  @Input() nzOverlayStyle: { [ key: string ]: string } = {};
   @Input() @InputBoolean() nzDefaultActiveFirstOption = true;
   @Input() @InputBoolean() nzBackfill = false;
   @Input() nzDataSource: AutocompleteDataSource;
