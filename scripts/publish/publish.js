@@ -113,7 +113,8 @@ function changeVersion() {
     fs.readFileSync(codeBoxPath, 'utf-8').replace(/'ng-zorro-antd' +: '.+'/g, `'ng-zorro-antd'                    : '^${version}'`)
   );
   fs.writeFileSync(zorroVersionPath,
-    fs.readFileSync(zorroVersionPath, 'utf-8').replace('0.0.0-PLACEHOLDER', version)
+    fs.readFileSync(zorroVersionPath, 'utf-8')
+      .replace(/Version\('.+'\);/g, `Version('${version}');`)
   );
   log.success('Version updated!');
 }
