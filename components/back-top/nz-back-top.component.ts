@@ -96,7 +96,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
       return;
     }
     this.visible = !this.visible;
-    this.cd.detectChanges();
+    this.cd.markForCheck();
   }
 
   private removeListen(): void {
