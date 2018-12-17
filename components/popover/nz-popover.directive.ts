@@ -21,7 +21,8 @@ export class NzPopoverDirective extends NzTooltipDirective {
     hostView: ViewContainerRef,
     resolver: ComponentFactoryResolver,
     renderer: Renderer2,
-    @Optional() tooltip: NzPopoverComponent) {
+    @Optional() tooltip: NzPopoverComponent
+  ) {
     super(elementRef, hostView, resolver, renderer, tooltip);
   }
 }
