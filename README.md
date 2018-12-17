@@ -85,7 +85,7 @@ export class AppModule {
 }
 ```
 
-> `@angular/cli` users won't have to worried about things below but it's good to know.
+> `@angular/cli` users won't have to worry about things below but it's good to know.
 
 And import style and SVG icon assets file link in `angular.json`.
 
