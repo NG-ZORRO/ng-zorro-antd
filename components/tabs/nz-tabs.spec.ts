@@ -1,6 +1,9 @@
-import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { Component, NgZone, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { Router, Routes } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { dispatchFakeEvent } from '../core/testing';
 
 import { NzTabsModule } from './nz-tabs.module';
@@ -472,6 +475,116 @@ describe('tabs', () => {
   });
 });
 
+describe('route link', () => {
+  beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
+      imports     : [ CommonModule, NzTabsModule, RouterTestingModule.withRoutes(routes) ],
+      declarations: [ NzTestTabsQueryParamComponent, NzTestTabsNullComponent, NzTestTabsChildRouteComponent ]
+    });
+    TestBed.compileComponents();
+  }));
+
+  describe('auto tabs', () => {
+    let fixture;
+    let testComponent;
+    let tabsComponent;
+    let router: Router;
+    let location: Location;
+    let zone;
+
+    it('should query param mode work', fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestTabsQueryParamComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      tabsComponent = fixture.debugElement.query(By.directive(NzTabSetComponent));
+      router = TestBed.get(Router);
+      location = TestBed.get(Location);
+      zone = TestBed.get(NgZone);
+
+      zone.run(() => {
+        router.initialNavigation();
+        fixture.detectChanges();
+        const titles = tabsComponent.nativeElement.querySelectorAll('.ant-tabs-tab');
+        expect(location.path()).toBe('');
+        expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(0);
+        titles[ 1 ].click();
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+        expect(location.path()).toBe('/?tabs=one');
+        expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(1);
+        router.navigate([ '.' ], { queryParams: { tabs: 'two' } });
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+        expect(location.path()).toBe('/?tabs=two');
+        expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(2);
+        titles[ 0 ].click();
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+        expect(location.path()).toBe('/');
+        expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(0);
+      });
+    }));
+
+    it('should child route mode work', fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestTabsChildRouteComponent);
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+      tabsComponent = fixture.debugElement.query(By.directive(NzTabSetComponent));
+      router = TestBed.get(Router);
+      location = TestBed.get(Location);
+      zone = TestBed.get(NgZone);
+
+      zone.run(() => {
+        router.initialNavigation();
+        fixture.detectChanges();
+        const titles = tabsComponent.nativeElement.querySelectorAll('.ant-tabs-tab');
+        // expect(location.path()).toBe('');
+        expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(0);
+        router.navigate([ '/one' ]);
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+        expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(1);
+        titles[ 2 ].click();
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+        expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(2);
+        titles[ 0 ].click();
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+        expect((tabsComponent.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(0);
+      });
+
+    }));
+  });
+});
+
+describe('route link failed', () => {
+  beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
+      imports     : [ CommonModule, NzTabsModule ],
+      declarations: [ NzTestTabsNullComponent, NzTestTabsChildRouteInvalidComponent ]
+    });
+    TestBed.compileComponents();
+  }));
+
+  let fixture;
+  let testComponent;
+
+  it('should raise error when RouterModule is not included', fakeAsync(() => {
+    expect(() => {
+      TestBed.compileComponents();
+      fixture = TestBed.createComponent(NzTestTabsChildRouteInvalidComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      fixture.detectChanges();
+    }).toThrowError();
+  }));
+});
+
 @Component({
   selector     : 'nz-test-tabs-basic',
   encapsulation: ViewEncapsulation.None,
@@ -554,7 +667,6 @@ export class NzTestTabsBasicComponent {
   array = [];
 }
 
-/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1964 **/
 @Component({
   selector: 'nz-test-tabs-tab-position-left',
   template: `
@@ -566,5 +678,91 @@ export class NzTestTabsBasicComponent {
   `
 })
 export class NzTestTabsTabPositionLeftComponent {
-  tabs = [1, 2, 3];
+  tabs = [ 1, 2, 3 ];
 }
+
+@Component({
+  selector: 'nz-test-tabs-query-param',
+  template: `
+    <nz-tabset [nzEnableRouteLink]="true" [nzQueryParam]="'tabs'">
+      <nz-tab nzTitle="Zero">I have no param.</nz-tab>
+      <nz-tab nzTitle="One" nzPathOrParam="one">I have a param One. Try refresh this page and you will see me again!
+      </nz-tab>
+      <nz-tab nzTitle="Two" nzPathOrParam="two">I have a param Two.</nz-tab>
+      <nz-tab nzTitle="Three" nzPathOrParam="three">I have a param Three.</nz-tab>
+    </nz-tabset>
+    <router-outlet></router-outlet>
+  `
+})
+export class NzTestTabsQueryParamComponent {
+}
+
+@Component({
+  selector: 'nz-test-tabs-child-route',
+  template: `
+    <nz-tabset [nzEnableRouteLink]="true">
+      <nz-tab nzTitle="Zero" nzPathOrParam="">I have no param.</nz-tab>
+      <nz-tab nzTitle="One" nzPathOrParam="one">I have a param One. Try refresh this page and you will see me again!
+      </nz-tab>
+      <nz-tab nzTitle="Two" nzPathOrParam="two">I have a param Two.</nz-tab>
+      <nz-tab nzTitle="Three" nzPathOrParam="three">I have a param Three.</nz-tab>
+    </nz-tabset>
+    <router-outlet></router-outlet>
+  `
+})
+export class NzTestTabsChildRouteComponent {
+}
+
+@Component({
+  selector: 'nz-test-tabs-child-invalid-route',
+  template: `
+    <nz-tabset [nzEnableRouteLink]="true">
+      <nz-tab nzTitle="Zero" nzPathOrParam="">I have no param.</nz-tab>
+      <nz-tab nzTitle="One" nzPathOrParam="one">I have a param One. Try refresh this page and you will see me again!
+      </nz-tab>
+      <nz-tab nzTitle="Two" nzPathOrParam="two">I have a param Two.</nz-tab>
+      <nz-tab nzTitle="Three" nzPathOrParam="three">I have a param Three.</nz-tab>
+    </nz-tabset>
+  `
+})
+export class NzTestTabsChildRouteInvalidComponent {
+
+}
+
+@Component({
+  selector: 'nz-test-tabs-null',
+  template: ''
+})
+export class NzTestTabsNullComponent {
+}
+
+const routes: Routes = [
+  {
+    path     : '',
+    component: NzTestTabsNullComponent,
+    data     : {
+      tabs: ''
+    }
+  },
+  {
+    path     : 'one',
+    component: NzTestTabsNullComponent,
+    data     : {
+      tabs: 'one'
+    }
+  },
+  {
+    path     : 'two',
+    component: NzTestTabsNullComponent,
+    data     : {
+      tabs: 'two'
+    }
+  },
+  {
+    path     : 'three',
+    component: NzTestTabsNullComponent,
+    data     : {
+      tabs: 'two'
+    }
+  }
+];

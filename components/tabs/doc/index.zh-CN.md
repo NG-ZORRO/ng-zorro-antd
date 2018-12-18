@@ -34,6 +34,8 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 | `[nzTabBarGutter]` | tabs 之间的间隙 | number | 无 |
 | `[nzHideAll]` | 是否隐藏所有tab内容 | boolean | false |
 | `[nzShowPagination]` | 是否超出范围时显示pre和next按钮 | boolean | true |
+| `[nzEnableRoute]` | 启用联动路由 tab | boolean | false |
+| `[nzQueryParam]` | 联动路由 tab 使用查询字符串模式并定义字段的 key，不传入即为子路由模式 | string | 无 |
 | `(nzSelectedIndexChange)` | 当前激活 tab 面板的 序列号变更回调函数 | `EventEmitter<number>` | 无 |
 | `(nzSelectChange)` | 当前激活 tab 面板变更回调函数 | `EventEmitter<{nzSelectedIndex: number,tab: NzTabComponent}>` | 无 |
 | `(nzOnNextClick)` | next 按钮被点击的回调 | `EventEmitter<void>` | 无 |
@@ -46,6 +48,22 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 | `[nzTitle]` | 选项卡头显示文字 | string ｜ `TemplateRef<void>` | - |
 | `[nzForceRender]` | 被隐藏时是否渲染 DOM 结构 | boolean | false |
 | `[nzDisabled]` | 是否禁用 | boolean | - |
-| `(nzClick)` | title被点击的回调函数 | `EventEmitter<void>` | - |
-| `(nzSelect)` | tab被选中的回调函数 | `EventEmitter<void>` | - |
-| `(nzDeselect)` | tab被取消选中的回调函数 | `EventEmitter<void>` | - |
+| `[nzPathOrParam] ` | 使用联动路由模式时 tab 的标识符 | string | - |
+| `(nzClick)` | title 被点击的回调函数 | `EventEmitter<void>` | - |
+| `(nzSelect)` | tab 被选中的回调函数 | `EventEmitter<void>` | - |
+| `(nzDeselect)` | tab 被取消选中的回调函数 | `EventEmitter<void>` | - |
+
+## 联动路由
+
+
+如果你想要使用联动路由，务必在组件初始化之前就将 `nzEnableRoute` 设置为 `true`。联动路由有两种模式，分别为查询字符串模式和子路由模式，如果你使用子路由模式，还需要在路由中定义 `data.tabs`:
+
+```ts
+{
+  path: '/path',
+  component: SomeComponent,
+  data: {
+    path: 'identifier'
+  }
+}
+```

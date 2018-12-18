@@ -19,8 +19,8 @@
     [style.margin-right.px]="nzTabBarGutter"
     [class.ant-tabs-tab-active]="(nzSelectedIndex == i) && !nzHideAll"
     [disabled]="tab.nzDisabled"
-    (click)="clickLabel(i,tab.nzDisabled)"
-    *ngFor="let tab of listOfNzTabComponent; let i = index">
+    (click)="onLabelClick(i,tab.nzDisabled)"
+    *ngFor="let tab of tabComponents; let i = index">
     <ng-container *nzStringTemplateOutlet="tab.nzTitle">{{ tab.nzTitle }}</ng-container>
   </div>
 </div>
@@ -31,7 +31,7 @@
   [class.ant-tabs-content-no-animated]="!tabPaneAnimated"
   [style.margin-left.%]="tabPaneAnimated&&(-nzSelectedIndex*100)">
   <div nz-tab-body
-    *ngFor="let tab of listOfNzTabComponent; let i = index"
+    *ngFor="let tab of tabComponents; let i = index"
     class="ant-tabs-tabpane"
     [active]="(nzSelectedIndex == i) && !nzHideAll"
     [forceRender]="tab.nzForceRender"
