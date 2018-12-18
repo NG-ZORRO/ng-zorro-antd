@@ -1,5 +1,6 @@
 <ng-template #renderItemTemplate let-type let-page="page">
-  <a class="ant-pagination-item-link" *ngIf="type!='page'"></a>
+  <a class="ant-pagination-item-link" *ngIf="type==='pre'"><i nz-icon type="left"></i></a>
+  <a class="ant-pagination-item-link" *ngIf="type==='next'"><i nz-icon type="right"></i></a>
   <a *ngIf="type=='page'">{{page}}</a>
 </ng-template>
 <ng-container *ngIf="(nzHideOnSinglePage&&(nzTotal>nzPageSize))||!nzHideOnSinglePage">
@@ -36,12 +37,12 @@
     [class.mini]="nzSize=='small'"
     [class.ant-table-pagination]="nzInTable"
     class="ant-pagination">
-      <span class="ant-pagination-total-text" *ngIf="nzShowTotal">
-        <ng-template
-          [ngTemplateOutlet]="nzShowTotal"
-          [ngTemplateOutletContext]="{ $implicit: nzTotal,range:[(nzPageIndex-1)*nzPageSize+1, min(nzPageIndex*nzPageSize, nzTotal)] }">
-        </ng-template>
-      </span>
+    <li class="ant-pagination-total-text" *ngIf="nzShowTotal">
+      <ng-template
+        [ngTemplateOutlet]="nzShowTotal"
+        [ngTemplateOutletContext]="{ $implicit: nzTotal,range:[(nzPageIndex-1)*nzPageSize+1, min(nzPageIndex*nzPageSize, nzTotal)] }">
+      </ng-template>
+    </li>
     <li
       title="{{ locale.prev_page }}"
       class="ant-pagination-prev"
@@ -61,7 +62,12 @@
       (click)="jumpPreFive()"
       class="ant-pagination-jump-prev"
       *ngIf="(lastIndex >9)&&(nzPageIndex-3>firstIndex)">
-      <a></a>
+      <a class="ant-pagination-item-link">
+        <div class="ant-pagination-item-container">
+          <i nz-icon type="double-left" class="ant-pagination-item-link-icon"></i>
+          <span class="ant-pagination-item-ellipsis">•••</span>
+        </div>
+      </a>
     </li>
     <li
       *ngFor="let page of pages"
@@ -74,9 +80,14 @@
     <li
       [attr.title]="locale.next_5"
       (click)="jumpNextFive()"
-      class="ant-pagination-jump-next"
+      class="ant-pagination-jump-next ant-pagination-item-link-icon"
       *ngIf="(lastIndex >9)&&(nzPageIndex+3<lastIndex)">
-      <a></a>
+      <a class="ant-pagination-item-link">
+        <div class="ant-pagination-item-container">
+          <i nz-icon type="double-right" class="ant-pagination-item-link-icon"></i>
+          <span class="ant-pagination-item-ellipsis">•••</span>
+        </div>
+      </a>
     </li>
     <li
       [attr.title]="lastIndex"

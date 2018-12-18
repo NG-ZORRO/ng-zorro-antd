@@ -43,9 +43,9 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
   @Input() style: object;
 
   @Input() value: CandyDate | CandyDate[];
-  @Output() valueChange = new EventEmitter<CandyDate | CandyDate[]>();
+  @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[]>();
 
-  @Output() openChange = new EventEmitter<boolean>(); // Emitted when overlay's open state change
+  @Output() readonly openChange = new EventEmitter<boolean>(); // Emitted when overlay's open state change
 
   @ViewChild('origin') origin: CdkOverlayOrigin;
   @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
@@ -182,7 +182,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
     return this.isRange ? this.placeholder[ this.getPartTypeIndex(partType) ] : this.placeholder as string;
   }
 
-  isEmptyValue(value: CandyDate[]): boolean {
+  isEmptyValue(value: CandyDate[] | CandyDate): boolean {
     if (this.isRange) {
       return !value || !Array.isArray(value) || value.every((val) => !val);
     } else {

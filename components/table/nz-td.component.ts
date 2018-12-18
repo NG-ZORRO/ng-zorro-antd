@@ -21,12 +21,12 @@ export class NzTdComponent {
   private _expand = false;
   private _showCheckbox = false;
   isIndentSizeSet = false;
-  el: HTMLElement;
+  el: HTMLElement = this.elementRef.nativeElement;
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
-  @Output() nzCheckedChange = new EventEmitter<boolean>();
-  @Output() nzExpandChange = new EventEmitter<boolean>();
+  @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
+  @Output() readonly nzExpandChange = new EventEmitter<boolean>();
 
   @Input()
   set nzIndentSize(value: number) {
@@ -102,12 +102,12 @@ export class NzTdComponent {
     }
   }
 
-  expandChange(): void {
+  expandChange(e: Event): void {
+    e.stopPropagation();
     this.nzExpand = !this.nzExpand;
     this.nzExpandChange.emit(this.nzExpand);
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-    this.el = this.elementRef.nativeElement;
   }
 }

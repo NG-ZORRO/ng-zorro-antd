@@ -4,6 +4,7 @@ export type ColumnType = 'gutter' | 'column' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 export interface NzListGrid {
     gutter?: number;
+    span?: number;
     column?: ColumnCount;
     xs?: ColumnCount;
     sm?: ColumnCount;
@@ -12,5 +13,3 @@ export interface NzListGrid {
     xl?: ColumnCount;
     xxl?: ColumnCount;
 }
-
-export type ListSize = 'small' | 'default' | 'large';

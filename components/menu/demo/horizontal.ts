@@ -4,10 +4,10 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-menu-horizontal',
   template: `
     <ul nz-menu [nzMode]="'horizontal'">
-      <li nz-menu-item><i class="anticon anticon-mail"></i> Navigation One</li>
-      <li nz-menu-item nzDisabled><i class="anticon anticon-appstore"></i> Navigation Two</li>
+      <li nz-menu-item><i nz-icon type="mail"></i> Navigation One</li>
+      <li nz-menu-item nzDisabled><i nz-icon type="appstore"></i> Navigation Two</li>
       <li nz-submenu>
-        <span title><i class="anticon anticon-setting"></i> Navigation Three - Submenu</span>
+        <span title><i nz-icon type="setting"></i> Navigation Three - Submenu</span>
         <ul>
           <li nz-menu-group>
             <span title>Item 1</span>

@@ -29,6 +29,7 @@ title: Badge
 | --- | --- | --- | --- |
 | `[nzCount]` | 展示的数字，大于 nzOverflowCount 时显示为 `${nzOverflowCount}+`，为 0 时隐藏 | number |  |
 | `[nzDot]` | 不展示数字，只有一个小红点 | boolean | false |
+| `[nzShowDot]` | 是否展示小红点 | boolean | true |
 | `[nzOverflowCount]` | 展示封顶的数字值 | number | 99 |
 | `[nzShowZero]` | 当数值为 0 时，是否展示 Badge | boolean | false |
 | `[nzStatus]` | 设置 `nz-badge` 为状态点 | Enum{ 'success', 'processing', 'default', 'error', 'warning' } | '' |

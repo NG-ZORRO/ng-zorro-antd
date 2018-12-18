@@ -9,7 +9,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
         <input placeholder="input here" nz-input [(ngModel)]="inputValue" (ngModelChange)="onChange($event)" [nzAutocomplete]="auto"/>
       </nz-input-group>
       <ng-template #suffixIconButton>
-        <button nz-button nzType="primary" nzSize="large" nzSearch><i class="anticon anticon-search"></i></button>
+        <button nz-button nzType="primary" nzSize="large" nzSearch><i nz-icon type="search" theme="outline"></i></button>
       </ng-template>
       <nz-autocomplete #auto>
         <nz-auto-option *ngFor="let option of options" [nzValue]="option.category">

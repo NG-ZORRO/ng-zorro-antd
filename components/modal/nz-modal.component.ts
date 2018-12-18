@@ -1,3 +1,4 @@
+import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -22,7 +23,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 
-import { Observable, Subject } from 'rxjs';
+import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
@@ -30,6 +31,7 @@ import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar
 import { InputBoolean } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
+import { ESCAPE } from '@angular/cdk/keycodes';
 import ModalUtil from './modal-util';
 import { NzModalConfig, NZ_MODAL_CONFIG, NZ_MODAL_DEFAULT_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
@@ -48,6 +50,8 @@ type AnimationState = 'enter' | 'leave' | null;
 // tslint:disable-next-line:no-any
 export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> implements OnInit, OnChanges, AfterViewInit, OnDestroy, ModalOptions<T> {
   private unsubscribe$ = new Subject<void>();
+  private previouslyFocusedElement: HTMLElement;
+  private focusTrap: FocusTrap;
 
   // tslint:disable-next-line:no-any
   locale: any = {};
@@ -58,7 +62,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Input() nzGetContainer: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef) = () => this.overlay.create(); // [STATIC]
 
   @Input() @InputBoolean() nzVisible: boolean = false;
-  @Output() nzVisibleChange = new EventEmitter<boolean>();
+  @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   @Input() nzZIndex: number = 1000;
   @Input() nzWidth: number | string = 520;
@@ -73,8 +77,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Input() nzMaskStyle: object;
   @Input() nzBodyStyle: object;
 
-  @Output() nzAfterOpen = new EventEmitter<void>(); // Trigger when modal open(visible) after animations
-  @Output() nzAfterClose = new EventEmitter<R>(); // Trigger when modal leave-animation over
+  @Output() readonly nzAfterOpen = new EventEmitter<void>(); // Trigger when modal open(visible) after animations
+  @Output() readonly nzAfterClose = new EventEmitter<R>(); // Trigger when modal leave-animation over
   get afterOpen(): Observable<void> { // Observable alias for nzAfterOpen
     return this.nzAfterOpen.asObservable();
   }
@@ -92,7 +96,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   @Input() nzOkType = 'primary';
   @Input() @InputBoolean() nzOkLoading: boolean = false;
-  @Input() @Output() nzOnOk: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
+  @Input() @Output() readonly nzOnOk: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
   @ViewChild('autoFocusButtonOk', { read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
   @Input() nzCancelText: string;
 
@@ -101,9 +105,11 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   @Input() @InputBoolean() nzCancelLoading: boolean = false;
-  @Input() @Output() nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
+  @Input() @Output() readonly nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
   @ViewChild('modalContainer') modalContainer: ElementRef;
   @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
+
+  @Input() @InputBoolean() nzKeyboard: boolean = true;
 
   get hidden(): boolean {
     return !this.nzVisible && !this.animationState;
@@ -125,6 +131,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     private viewContainer: ViewContainerRef,
     private nzMeasureScrollbarService: NzMeasureScrollbarService,
     private modalControl: NzModalControlService,
+    private focusTrapFactory: FocusTrapFactory,
     @Inject(NZ_MODAL_CONFIG) private config: NzModalConfig,
     @Inject(DOCUMENT) private document: any) { // tslint:disable-line:no-any
 
@@ -135,6 +142,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.locale = this.i18n.getLocaleData('Modal'));
+
+    fromEvent<KeyboardEvent>(this.document.body, 'keydown').pipe(takeUntil(this.unsubscribe$)).subscribe(e => this.keydownListener(e));
 
     if (this.isComponent(this.nzContent)) {
       this.createDynamicComponent(this.nzContent as Type<T>); // Create component along without View
@@ -191,6 +200,12 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     });
   }
 
+  keydownListener(event: KeyboardEvent): void {
+    if (event.keyCode === ESCAPE && this.nzKeyboard) {
+      this.onClickOkCancel('cancel');
+    }
+  }
+
   open(): void {
     this.changeVisibleFromInside(true);
   }
@@ -242,13 +257,13 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     return this.nzModalType === type;
   }
 
-  private onClickCloseBtn(): void {
+  public onClickCloseBtn(): void {
     if (this.nzVisible) {
       this.onClickOkCancel('cancel');
     }
   }
 
-  private onClickOkCancel(type: 'ok' | 'cancel'): void {
+  public onClickOkCancel(type: 'ok' | 'cancel'): void {
     const trigger = { 'ok': this.nzOnOk, 'cancel': this.nzOnCancel }[ type ];
     const loadingKey = { 'ok': 'nzOkLoading', 'cancel': 'nzCancelLoading' }[ type ];
     if (trigger instanceof EventEmitter) {
@@ -269,19 +284,19 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     }
   }
 
-  private isNonEmptyString(value: {}): boolean {
+  public isNonEmptyString(value: {}): boolean {
     return typeof value === 'string' && value !== '';
   }
 
-  private isTemplateRef(value: {}): boolean {
+  public isTemplateRef(value: {}): boolean {
     return value instanceof TemplateRef;
   }
 
-  private isComponent(value: {}): boolean {
+  public isComponent(value: {}): boolean {
     return value instanceof Type;
   }
 
-  private isModalButtons(value: {}): boolean {
+  public isModalButtons(value: {}): boolean {
     return Array.isArray(value) && value.length > 0;
   }
 
@@ -289,6 +304,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   private handleVisibleStateChange(visible: boolean, animation: boolean = true, closeResult?: R): Promise<void> {
     if (visible) { // Hide scrollbar at the first time when shown up
       this.changeBodyOverflow(1);
+      this.savePreviouslyFocusedElement();
+      this.trapFocus();
     }
 
     return Promise
@@ -298,6 +315,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
         this.nzAfterOpen.emit();
       } else {
         this.nzAfterClose.emit(closeResult);
+        this.restoreFocus();
         this.changeBodyOverflow(); // Show/hide scrollbar when animation is over
       }
     });
@@ -305,7 +323,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   // Lookup a button's property, if the prop is a function, call & then return the result, otherwise, return itself.
-  private getButtonCallableProp(options: ModalButtonOptions<T>, prop: string): {} {
+  public getButtonCallableProp(options: ModalButtonOptions<T>, prop: string): {} {
     const value = options[ prop ];
     const args = [];
     if (this.contentComponentRef) {
@@ -315,7 +333,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   // On nzFooter's modal button click
-  private onButtonClick(button: ModalButtonOptions<T>): void {
+  public onButtonClick(button: ModalButtonOptions<T>): void {
     const result = this.getButtonCallableProp(button, 'onClick'); // Call onClick directly
     if (isPromise(result)) {
       button.loading = true;
@@ -442,6 +460,30 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   private mergeDefaultConfig(config: NzModalConfig): NzModalConfig {
     return { ...NZ_MODAL_DEFAULT_CONFIG, ...config };
+  }
+
+  private savePreviouslyFocusedElement(): void {
+    if (this.document) {
+      this.previouslyFocusedElement = this.document.activeElement as HTMLElement;
+      this.previouslyFocusedElement.blur();
+    }
+  }
+
+  private trapFocus(): void {
+    if (!this.focusTrap) {
+      this.focusTrap = this.focusTrapFactory.create(this.elementRef.nativeElement);
+    }
+    this.focusTrap.focusInitialElementWhenReady();
+  }
+
+  private restoreFocus(): void {
+    // We need the extra check, because IE can set the `activeElement` to null in some cases.
+    if (this.previouslyFocusedElement && typeof this.previouslyFocusedElement.focus === 'function') {
+      this.previouslyFocusedElement.focus();
+    }
+    if (this.focusTrap) {
+      this.focusTrap.destroy();
+    }
   }
 }
 

@@ -1,3 +1,4 @@
+import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -70,8 +71,8 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
   @ContentChildren(NzCarouselContentDirective) slideContents: QueryList<NzCarouselContentDirective>;
   @ViewChild('slickList') slickList: ElementRef;
   @ViewChild('slickTrack') slickTrack: ElementRef;
-  @Output() nzAfterChange: EventEmitter<number> = new EventEmitter();
-  @Output() nzBeforeChange: EventEmitter<{ from: number; to: number }> = new EventEmitter();
+  @Output() readonly nzAfterChange: EventEmitter<number> = new EventEmitter();
+  @Output() readonly nzBeforeChange: EventEmitter<{ from: number; to: number }> = new EventEmitter();
   @Input() nzEnableSwipe = true;
 
   @HostListener('window:resize', [ '$event' ])
@@ -231,10 +232,10 @@ export class NzCarouselComponent implements AfterViewInit, OnDestroy, AfterConte
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    if (e.keyCode === 37) { // Left
+    if (e.keyCode === LEFT_ARROW) { // Left
       this.pre();
       e.preventDefault();
-    } else if (e.keyCode === 39) { // Right
+    } else if (e.keyCode === RIGHT_ARROW) { // Right
       this.next();
       e.preventDefault();
     }

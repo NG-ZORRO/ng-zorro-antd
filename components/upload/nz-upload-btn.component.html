@@ -1,3 +1,6 @@
 <input type="file" #file (change)="onChange($event)"
-  [attr.accept]="options.accept" [multiple]="options.multiple" style="display: none;">
+  [attr.accept]="options.accept"
+  [attr.directory]="options.directory ? 'directory': null"
+  [attr.webkitdirectory]="options.directory ? 'webkitdirectory': null"
+  [multiple]="options.multiple" style="display: none;">
 <ng-content></ng-content>

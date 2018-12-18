@@ -8,6 +8,7 @@ import { delay, map } from 'rxjs/operators';
 
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
+import { NzIconModule } from '../icon/nz-icon.module';
 import { NzTransferComponent, NzTransferModule } from './index';
 import { TransferCanMove, TransferItem } from './interface';
 
@@ -23,7 +24,7 @@ describe('transfer', () => {
   let pageObject: TransferPageObject;
   beforeEach(() => {
     injector = TestBed.configureTestingModule({
-      imports     : [ NoopAnimationsModule, NzTransferModule ],
+      imports     : [ NoopAnimationsModule, NzTransferModule, NzIconModule ],
       declarations: [ TestTransferComponent, TestTransferCustomRenderComponent, Test996Component ]
     });
     fixture = TestBed.createComponent(TestTransferComponent);
@@ -120,6 +121,36 @@ describe('transfer', () => {
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(COUNT - LEFTCOUNT - DISABLED);
       btn.click();
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(0);
+    });
+
+    describe('#nzDisabled', () => {
+      it('should working', () => {
+        instance.nzDisabled = true;
+        fixture.detectChanges();
+        expect(dl.queryAll(By.css('.ant-transfer-disabled')).length).toBe(1);
+        // All operation buttons muse be disabled
+        expect(dl.queryAll(By.css('.ant-transfer-operation .ant-btn[disabled]')).length).toBe(2);
+        // All search input muse be disabled
+        expect(dl.queryAll(By.css('.ant-input-disabled')).length).toBe(2);
+        // All item muse be disabled
+        expect(dl.queryAll(By.css('.ant-transfer-list-content-item-disabled')).length).toBe(COUNT);
+        // All checkbox (include 2 checkall) muse be disabled
+        expect(dl.queryAll(By.css('.ant-checkbox-disabled')).length).toBe(COUNT + 2);
+      });
+      it('should be disabled clear', () => {
+        pageObject.expectLeft(LEFTCOUNT).search('left', '1');
+        expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
+        instance.nzDisabled = true;
+        fixture.detectChanges();
+        (pageObject.leftList.querySelector('.ant-transfer-list-search-action') as HTMLElement).click();
+        fixture.detectChanges();
+        expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
+      });
+      it('should be disabled check all when search result is empty', () => {
+        pageObject.expectLeft(LEFTCOUNT).search('left', '模拟');
+        const selectorPath = '[data-direction="left"] .ant-transfer-list-header .ant-checkbox-disabled';
+        expect(pageObject.leftList.querySelectorAll(selectorPath).length).toBe(1);
+      });
     });
 
     it('should be uncheck all when two verification error', () => {
@@ -268,6 +299,7 @@ describe('transfer', () => {
   template     : `
     <nz-transfer #comp
       [nzDataSource]="nzDataSource"
+      [nzDisabled]="nzDisabled"
       [nzTitles]="['Source', 'Target']"
       [nzOperations]="['to right', 'to left']"
       [nzItemUnit]="nzItemUnit"
@@ -293,6 +325,7 @@ describe('transfer', () => {
 class TestTransferComponent implements OnInit {
   @ViewChild('comp') comp: NzTransferComponent;
   nzDataSource: any[] = [];
+  nzDisabled = false;
   nzTitles = [ 'Source', 'Target' ];
   nzOperations = [ 'to right', 'to left' ];
   nzItemUnit = 'item';
@@ -342,7 +375,7 @@ class TestTransferComponent implements OnInit {
       [nzRender]="render"
       [nzDataSource]="nzDataSource">
       <ng-template #render let-item>
-        <i class="anticon anticon-{{item.icon}}"></i> {{ item.title }}
+        <i nz-icon type="{{item.icon}}"></i> {{ item.title }}
       </ng-template>
     </nz-transfer>
   `

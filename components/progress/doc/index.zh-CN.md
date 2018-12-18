@@ -30,3 +30,5 @@ title: Progress
 | `[nzStrokeWidth]` `(nzType=circle)` | 圆形进度条线的宽度，单位是进度条画布宽度的百分比 | number | 6 |
 | `[nzType]` | 类型，可选 `line` `circle` `dashboard` | string | line |
 | `[nzWidth]` `(nzType=circle)` | 圆形进度条画布宽度，单位 px | number | 132 |
+| `[nzStrokeLinecap]` | 进度条端点形状 | `round` `square` | `round` |
+| `[nzStrokeColor]` | 进度条颜色 | string | - |

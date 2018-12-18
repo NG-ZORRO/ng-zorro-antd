@@ -19,7 +19,7 @@ import { Component } from '@angular/core';
       </thead>
       <tbody>
         <tr *ngFor="let data of rowSelectionTable.data">
-          <td nzShowCheckbox [(nzChecked)]="data.checked" [nzDisabled]="data.disabled" (nzCheckedChange)="refreshStatus($event)"></td>
+          <td nzShowCheckbox [(nzChecked)]="data.checked" [nzDisabled]="data.disabled" (nzCheckedChange)="refreshStatus()"></td>
           <td>{{data.name}}</td>
           <td>{{data.age}}</td>
           <td>{{data.address}}</td>

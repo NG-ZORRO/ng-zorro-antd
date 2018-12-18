@@ -10,7 +10,7 @@ describe('tabs', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzTabsModule ],
-      declarations: [ NzTestTabsBasicComponent ]
+      declarations: [ NzTestTabsBasicComponent, NzTestTabsTabPositionLeftComponent ]
     });
     TestBed.compileComponents();
   }));
@@ -461,6 +461,15 @@ describe('tabs', () => {
       expect(tabs.nativeElement.scrollLeft).toBe(0);
     }));
   });
+
+  describe('init nzTabPosition to left', () => {
+    it('should next and prev buttons display abnormal', () => {
+      const fixture = TestBed.createComponent(NzTestTabsTabPositionLeftComponent);
+      fixture.detectChanges();
+      const tabs = fixture.debugElement.query(By.directive(NzTabSetComponent));
+      expect(tabs.nativeElement.querySelector('.ant-tabs-nav-container').classList).not.toContain('ant-tabs-nav-container-scrolling');
+    });
+  });
 });
 
 @Component({
@@ -488,10 +497,12 @@ describe('tabs', () => {
         [nzHideAll]="hideAll">
         <nz-tab
           nzTitle="title"
+          [nzForceRender]="true"
           (nzDeselect)="deselect00()"
           (nzSelect)="select00()"
           (nzClick)="click00()">Content 1<!----></nz-tab>
         <nz-tab
+          [nzForceRender]="true"
           [nzTitle]="titleTemplate"
           (nzDeselect)="deselect01()"
           (nzSelect)="select01()"
@@ -501,6 +512,7 @@ describe('tabs', () => {
           <button></button>
         </nz-tab>
         <nz-tab
+          [nzForceRender]="true"
           nzTitle="add"
           *ngIf="add"
           (nzDeselect)="deselect02()"
@@ -540,4 +552,19 @@ export class NzTestTabsBasicComponent {
   select02 = jasmine.createSpy('select02 callback');
   deselect02 = jasmine.createSpy('deselect02 callback');
   array = [];
+}
+
+/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1964 **/
+@Component({
+  selector: 'nz-test-tabs-tab-position-left',
+  template: `
+    <nz-tabset nzTabPosition="left">
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab'+ tab">
+        Content of tab {{ tab }}
+      </nz-tab>
+    </nz-tabset>
+  `
+})
+export class NzTestTabsTabPositionLeftComponent {
+  tabs = [1, 2, 3];
 }

@@ -2,13 +2,15 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { async, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { NzIconModule } from '../icon/nz-icon.module';
+
 import { NzSpinComponent } from './nz-spin.component';
 import { NzSpinModule } from './nz-spin.module';
 
 describe('spin', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzSpinModule ],
+      imports     : [ NzSpinModule, NzIconModule ],
       declarations: [ NzTestSpinBasicComponent ]
     });
     TestBed.compileComponents();
@@ -63,9 +65,9 @@ describe('spin', () => {
     }));
     it('should wrapper work', async(() => {
       fixture.detectChanges();
-      expect(spin.nativeElement.querySelector('.ant-spin-container').attributes.getNamedItem('hidden').name).toBe('hidden');
-      testComponent.wrapper = true;
-      fixture.detectChanges();
+      expect(spin.nativeElement.querySelector('.ant-spin-container').style.display).toBe('none');
+      // testComponent.wrapper = true;
+      // fixture.detectChanges();
       // TODO: fix next line error
       // fixture.whenStable().then(() => {
       //  expect(spin.nativeElement.querySelector('.ant-spin-container').attributes.getNamedItem('hidden')).toBeNull();
@@ -84,7 +86,7 @@ describe('spin', () => {
 @Component({
   selector: 'nz-test-spin-basic',
   template: `
-    <ng-template #indicatorTemplate><i class="anticon anticon-spin anticon-loading" style="font-size: 24px;"></i>
+    <ng-template #indicatorTemplate><i nz-icon type="loading" style="font-size: 24px;"></i>
     </ng-template>
     <nz-spin
       [nzTip]="tip"

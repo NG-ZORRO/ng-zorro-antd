@@ -140,9 +140,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   /** should move to nz-option-container when https://github.com/angular/angular/issues/20810 resolved **/
   @ContentChildren(NzOptionComponent) listOfNzOptionComponent: QueryList<NzOptionComponent>;
   @ContentChildren(NzOptionGroupComponent) listOfNzOptionGroupComponent: QueryList<NzOptionGroupComponent>;
-  @Output() nzOnSearch = new EventEmitter<string>();
-  @Output() nzScrollToBottom = new EventEmitter<void>();
-  @Output() nzOpenChange = new EventEmitter<boolean>();
+  @Output() readonly nzOnSearch = new EventEmitter<string>();
+  @Output() readonly nzScrollToBottom = new EventEmitter<void>();
+  @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Input() nzSize = 'default';
   @Input() nzServerSearch = false;
   @Input() nzMode: 'default' | 'multiple' | 'tags' = 'default';
@@ -259,7 +259,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   @HostListener('keydown', [ '$event' ])
-  private _handleKeydown(event: KeyboardEvent): void {
+  _handleKeydown(event: KeyboardEvent): void {
     if (this._disabled) { return; }
 
     const keyCode = event.keyCode;
@@ -271,7 +271,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
         event.preventDefault();
       }
     } else {
-      if (keyCode === SPACE || keyCode === TAB) {
+      if (keyCode === TAB) {
+      // if (keyCode === SPACE || keyCode === TAB) { // #2201
         this.nzOpen = false;
         this.nzOpenChange.emit(this.nzOpen);
         event.preventDefault();

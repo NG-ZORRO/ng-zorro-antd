@@ -1,3 +1,4 @@
+import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import {
   forwardRef,
   AfterViewInit,
@@ -35,10 +36,10 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
   private _value = 0;
   private _autoFocus = false;
   @Input() nzCharacter: TemplateRef<void>;
-  @Output() nzOnBlur = new EventEmitter<FocusEvent>();
-  @Output() nzOnFocus = new EventEmitter<FocusEvent>();
-  @Output() nzOnKeyDown = new EventEmitter<KeyboardEvent>();
-  @Output() nzOnHoverChange = new EventEmitter<number>();
+  @Output() readonly nzOnBlur = new EventEmitter<FocusEvent>();
+  @Output() readonly nzOnFocus = new EventEmitter<FocusEvent>();
+  @Output() readonly nzOnKeyDown = new EventEmitter<KeyboardEvent>();
+  @Output() readonly nzOnHoverChange = new EventEmitter<number>();
   @ViewChild('ulElement') private ulElement: ElementRef;
   prefixCls = 'ant-rate';
   isInit = false;
@@ -208,14 +209,14 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
 
   onKeyDown(e: KeyboardEvent): void {
     const code = e.code;
-    if ((code === 'ArrowRight' || e.keyCode === 39) && (this.nzValue < this.nzCount)) {
+    if ((code === 'ArrowRight' || e.keyCode === RIGHT_ARROW) && (this.nzValue < this.nzCount)) {
       if (this.nzAllowHalf) {
         this.nzValue += 0.5;
       } else {
         this.nzValue += 1;
       }
       this.onChange(this.nzValue);
-    } else if ((code === 'ArrowLeft' || e.keyCode === 37) && (this.nzValue > 0)) {
+    } else if ((code === 'ArrowLeft' || e.keyCode === LEFT_ARROW) && (this.nzValue > 0)) {
       if (this.nzAllowHalf) {
         this.nzValue -= 0.5;
       } else {

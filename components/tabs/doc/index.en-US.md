@@ -41,6 +41,7 @@ Ant Design has 3 types of Tabs for different situations.
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzTitle]` | Show text in tab's head | string｜`TemplateRef<void>` | - |
+| `[nzForceRender]` | Forced render of content in tabs, not lazy render after clicking on tabs | boolean | false |
 | `[nzDisabled]` | tab disable | boolean | - |
 | `(nzClick)` | title click callback | `EventEmitter<void>` | - |
 | `(nzSelect)` | title select callback | `EventEmitter<void>` | - |

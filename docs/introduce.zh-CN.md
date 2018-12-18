@@ -32,7 +32,7 @@ title: Ant Design of Angular
 
 ## 支持环境
 
-现代浏览器和 IE9 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）。
+现代浏览器和 IE11 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）。
 
 ## 当前版本
 
@@ -40,7 +40,7 @@ title: Ant Design of Angular
 
 ## 支持 Angular 版本
 
-目前支持 Angular `^6.0.0` 版本。
+目前支持 Angular `^7.0.0` 版本。
 
 ## 设计规范
 

@@ -19,7 +19,7 @@ export class NzCarouselContentDirective implements OnInit {
   private _left: number;
   private _top: number;
   private _fadeMode = false;
-  el: HTMLElement;
+  el: HTMLElement = this.elementRef.nativeElement;
 
   set width(value: number) {
     this._width = value;
@@ -91,7 +91,6 @@ export class NzCarouselContentDirective implements OnInit {
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-    this.el = this.elementRef.nativeElement;
   }
 
   ngOnInit(): void {

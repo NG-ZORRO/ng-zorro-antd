@@ -1,11 +1,13 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
   OnDestroy,
   OnInit,
   Output,
+  Renderer2,
   ViewChild
 } from '@angular/core';
 
@@ -42,7 +44,7 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
   @Input() nzSize = 'default';
   @Input() nzType = 'default';
   @ViewChild('content') content;
-  @Output() nzClick = new EventEmitter<MouseEvent>();
+  @Output() readonly nzClick = new EventEmitter<MouseEvent>();
   @ViewChild(NzDropDownDirective) nzOrigin;
 
   onVisibleChange = (visible: boolean) => {
@@ -57,6 +59,10 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
       this.nzVisibleChange.emit(this.nzVisible);
     }
     this.changeDetector.markForCheck();
+  }
+
+  constructor(renderer: Renderer2, changeDetector: ChangeDetectorRef) {
+    super(renderer, changeDetector);
   }
 
   /** rewrite afterViewInit hook */

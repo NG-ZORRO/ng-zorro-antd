@@ -3,7 +3,7 @@ import { NgZone } from '@angular/core';
 
 export class NzWaveRenderer {
 
-  readonly waveTransitionDuration = 400;
+  private waveTransitionDuration = 400;
   private styleForPseudo: HTMLStyleElement | null;
   private extraNode: HTMLDivElement | null;
   private lastTime = 0;

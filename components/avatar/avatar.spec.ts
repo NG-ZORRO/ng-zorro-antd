@@ -2,6 +2,8 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { NzIconModule } from '../icon/nz-icon.module';
+
 import { NzAvatarComponent } from './nz-avatar.component';
 import { NzAvatarModule } from './nz-avatar.module';
 
@@ -18,7 +20,7 @@ describe('avatar', () => {
   let dl: DebugElement;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ NzAvatarModule ],
+      imports: [ NzAvatarModule, NzIconModule ],
       declarations: [ TestAvatarComponent ]
     }).compileComponents();
     fixture = TestBed.createComponent(TestAvatarComponent);
@@ -70,14 +72,14 @@ describe('avatar', () => {
       context.nzText = 'a';
       fixture.detectChanges();
       tick();
-      const scale = +dl.nativeElement.querySelector('.ant-avatar-string').style.transform.replace(/[^\.0-9]/ig, '');
-      expect(scale).toBe(0);
+      const scale = +/(\w+)\(([^)]*)\)/g.exec(dl.nativeElement.querySelector('.ant-avatar-string').style.transform)[2];
+      expect(scale).toBe(1);
     }));
     it('should be autoset font-size', fakeAsync(() => {
       context.nzText = 'LongUsername';
       fixture.detectChanges();
       tick();
-      const scale = +dl.nativeElement.querySelector('.ant-avatar-string').style.transform.replace(/[^\.0-9]/ig, '');
+      const scale = +/(\w+)\(([^)]*)\)/g.exec(dl.nativeElement.querySelector('.ant-avatar-string').style.transform)[2];
       expect(scale).toBeLessThan(1);
     }));
   });
@@ -100,6 +102,24 @@ describe('avatar', () => {
         expect(dl.query(By.css(`.ant-avatar-${item.cls}`)) !== null).toBe(true);
       });
     }
+
+    it('custom size', () => {
+      context.nzSize = 64;
+      context.nzIcon = null;
+      context.nzSrc = null;
+      fixture.detectChanges();
+      const size = `${64}px`;
+      const hostStyle = dl.nativeElement.querySelector('nz-avatar').style;
+      expect(hostStyle.height === size).toBe(true);
+      expect(hostStyle.width === size).toBe(true);
+      expect(hostStyle.lineHeight === size).toBe(true);
+      expect(hostStyle.fontSize === ``).toBe(true);
+
+      context.nzIcon = 'user';
+      fixture.detectChanges();
+      expect(hostStyle.fontSize === `${context.nzSize / 2}px`).toBe(true);
+    });
+
   });
 
   describe('order: image > icon > text', () => {
@@ -149,7 +169,7 @@ describe('avatar', () => {
 class TestAvatarComponent {
   @ViewChild('comp') comp: NzAvatarComponent;
   nzShape = 'square';
-  nzSize = 'large';
+  nzSize: string | number = 'large';
   nzIcon = 'anticon anticon-user';
   nzText = 'A';
   nzSrc = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==`;

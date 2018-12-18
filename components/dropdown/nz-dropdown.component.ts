@@ -34,11 +34,6 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
   templateUrl        : './nz-dropdown.component.html',
   styles             : [
     `
-      :host {
-        position: relative;
-        display: inline-block;
-      }
-
       .ant-dropdown {
         top: 100%;
         left: 0;
@@ -67,7 +62,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   @ContentChild(NzDropDownDirective) nzOrigin: NzDropDownDirective;
   @ContentChild(NzMenuDirective) nzMenu: NzMenuDirective;
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
-  @Output() nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
+  @Output() readonly nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
   @ViewChild(CdkConnectedOverlay) cdkOverlay: CdkConnectedOverlay;
 
   @Input()

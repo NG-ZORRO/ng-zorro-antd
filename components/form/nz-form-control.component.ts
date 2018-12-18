@@ -1,29 +1,53 @@
-import { AfterContentInit, Component, ContentChild, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, NgControl } from '@angular/forms';
+import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChild,
+  ElementRef,
+  Host,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  ViewEncapsulation
+} from '@angular/core';
+import { FormControl, FormControlName, NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { NgClassType } from '../core/types/ng-class';
 import { toBoolean } from '../core/util/convert';
 import { NzColComponent } from '../grid/nz-col.component';
+import { NzRowDirective } from '../grid/nz-row.directive';
+import { NzFormItemComponent } from './nz-form-item.component';
 
 @Component({
   selector           : 'nz-form-control',
-  providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None,
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  providers          : [ NzUpdateHostClassService ],
   templateUrl        : './nz-form-control.component.html',
   host               : {
     '[class.ant-form-item-control-wrapper]': 'true'
   },
-  styles             : [ `:host {
-    display: block;
-  }` ]
+  styles             : [
+      `
+      nz-form-control {
+        display: block;
+      }
+    `
+  ]
 })
 export class NzFormControlComponent extends NzColComponent implements OnDestroy, OnInit, AfterContentInit {
   private _hasFeedback = false;
   validateChanges: Subscription;
   validateString: string;
-  controlStatus: string;
-  controlClassMap;
-  @ContentChild(NgControl) validateControl: FormControl;
+  controlClassMap: NgClassType = {};
+  iconType: string;
+  validateControl: FormControl;
+  @ContentChild(NgControl) defaultValidateControl: FormControlName;
 
   @Input()
   set nzHasFeedback(value: boolean) {
@@ -36,17 +60,18 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
   }
 
   @Input()
-  set nzValidateStatus(value: string | FormControl) {
+  set nzValidateStatus(value: string | FormControl | FormControlName) {
     if (value instanceof FormControl) {
       this.validateControl = value;
       this.validateString = null;
-      this.controlStatus = null;
-      this.setControlClassMap();
+      this.watchControl();
+    } else if (value instanceof FormControlName) {
+      this.validateControl = value.control;
+      this.validateString = null;
       this.watchControl();
     } else {
       this.validateString = value;
       this.validateControl = null;
-      this.removeSubscribe();
       this.setControlClassMap();
     }
   }
@@ -58,37 +83,51 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
     }
   }
 
-  updateValidateStatus(status: string): void {
-    if (this.validateControl.dirty || this.validateControl.touched) {
-      this.controlStatus = status;
-      this.setControlClassMap();
-    } else {
-      this.controlStatus = null;
-      this.setControlClassMap();
-    }
-  }
-
   watchControl(): void {
     this.removeSubscribe();
     /** miss detect https://github.com/angular/angular/issues/10887 **/
     if (this.validateControl && this.validateControl.statusChanges) {
-      this.validateChanges = this.validateControl.statusChanges.subscribe(data => this.updateValidateStatus(data));
+      this.validateChanges = this.validateControl.statusChanges.pipe(
+        startWith(null)
+      ).subscribe(() => {
+        this.setControlClassMap();
+        this.cdr.markForCheck();
+      });
     }
+  }
 
+  validateControlStatus(status: string): boolean {
+    return this.validateControl && (this.validateControl.dirty || this.validateControl.touched) && (this.validateControl.status === status);
   }
 
   setControlClassMap(): void {
     this.controlClassMap = {
       [ `has-warning` ]  : this.validateString === 'warning',
-      [ `is-validating` ]: this.validateString === 'validating' || this.validateString === 'pending' || this.controlStatus === 'PENDING',
-      [ `has-error` ]    : this.validateString === 'error' || this.controlStatus === 'INVALID',
-      [ `has-success` ]  : this.validateString === 'success' || this.controlStatus === 'VALID',
+      [ `is-validating` ]: this.validateString === 'validating' || this.validateString === 'pending' || this.validateControlStatus('PENDING'),
+      [ `has-error` ]    : this.validateString === 'error' || this.validateControlStatus('INVALID'),
+      [ `has-success` ]  : this.validateString === 'success' || this.validateControlStatus('VALID'),
       [ `has-feedback` ] : this.nzHasFeedback
     };
+
+    if (this.controlClassMap[ 'has-warning' ]) {
+      this.iconType = 'exclamation-circle-fill';
+    } else if (this.controlClassMap[ 'is-validating' ]) {
+      this.iconType = 'loading';
+    } else if (this.controlClassMap[ 'has-error' ]) {
+      this.iconType = 'close-circle-fill';
+    } else if (this.controlClassMap[ 'has-success' ]) {
+      this.iconType = 'check-circle-fill';
+    } else {
+      this.iconType = '';
+    }
+  }
+
+  constructor(nzUpdateHostClassService: NzUpdateHostClassService, elementRef: ElementRef, @Optional() @Host() nzFormItemComponent: NzFormItemComponent, @Optional() @Host() nzRowDirective: NzRowDirective, private cdr: ChangeDetectorRef) {
+    super(nzUpdateHostClassService, elementRef, nzFormItemComponent, nzRowDirective);
   }
 
   ngOnInit(): void {
-    this.setClassMap();
+    super.ngOnInit();
     this.setControlClassMap();
   }
 
@@ -97,9 +136,8 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
   }
 
   ngAfterContentInit(): void {
-    this.watchControl();
-    if (this.validateControl) {
-      this.updateValidateStatus(this.validateControl.status);
+    if (this.defaultValidateControl && (!this.validateControl) && (!this.validateString)) {
+      this.nzValidateStatus = this.defaultValidateControl;
     }
   }
 }

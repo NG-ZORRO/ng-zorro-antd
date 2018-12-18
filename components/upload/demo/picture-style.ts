@@ -10,7 +10,7 @@ import { NzMessageService, UploadFile } from 'ng-zorro-antd';
       nzListType="picture"
       [(nzFileList)]="fileList1">
       <button nz-button>
-        <i class="anticon anticon-upload"></i><span>Upload</span>
+        <i nz-icon type="upload"></i><span>Upload</span>
       </button>
     </nz-upload>
   </div>
@@ -21,7 +21,7 @@ import { NzMessageService, UploadFile } from 'ng-zorro-antd';
       nzListType="picture"
       [(nzFileList)]="fileList2">
       <button nz-button>
-        <span><i class="anticon anticon-upload"></i> Upload</span>
+        <span><i nz-icon type="upload"></i> Upload</span>
       </button>
     </nz-upload>
   </div>

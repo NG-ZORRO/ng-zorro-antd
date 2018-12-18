@@ -4,11 +4,14 @@ import {
   ElementRef,
   Input,
   OnInit,
-  Renderer2
+  ViewEncapsulation
 } from '@angular/core';
+
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { toBoolean } from '../core/util/convert';
+import { FocusMonitor } from '@angular/cdk/a11y';
+
+import { InputBoolean } from '../core/util/convert';
 
 export interface NzCheckBoxOptionInterface {
   label: string;
@@ -20,6 +23,7 @@ export interface NzCheckBoxOptionInterface {
 @Component({
   selector           : 'nz-checkbox-group',
   preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-checkbox-group.component.html',
   providers          : [
     {
@@ -27,27 +31,32 @@ export interface NzCheckBoxOptionInterface {
       useExisting: forwardRef(() => NzCheckboxGroupComponent),
       multi      : true
     }
-  ]
+  ],
+  host               : {
+    '[class.ant-checkbox-group]': 'true'
+  }
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
-  private _disabled = false;
-  private el: HTMLElement;
-  private prefixCls = 'ant-checkbox-group';
-  private onChange = Function.prototype;
-  private onTouched = Function.prototype;
+  // tslint:disable-next-line:no-any
+  onChange: (value: any) => void = () => null;
+  // tslint:disable-next-line:no-any
+  onTouched: () => any = () => null;
   options: NzCheckBoxOptionInterface[];
-
-  @Input()
-  set nzDisabled(value: boolean) {
-    this._disabled = toBoolean(value);
-  }
-
-  get nzDisabled(): boolean {
-    return this._disabled;
-  }
+  @Input() @InputBoolean() nzDisabled = false;
 
   onOptionChange(): void {
     this.onChange(this.options);
+  }
+
+  constructor(private elementRef: ElementRef, private focusMonitor: FocusMonitor) {
+  }
+
+  ngOnInit(): void {
+    this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
+      if (!focusOrigin) {
+        Promise.resolve().then(() => this.onTouched());
+      }
+    });
   }
 
   writeValue(value: NzCheckBoxOptionInterface[]): void {
@@ -64,13 +73,5 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
-  }
-
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-    this.el = this.elementRef.nativeElement;
-  }
-
-  ngOnInit(): void {
-    this.renderer.addClass(this.el, `${this.prefixCls}`);
   }
 }

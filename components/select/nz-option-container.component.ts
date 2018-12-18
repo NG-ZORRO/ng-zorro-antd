@@ -1,3 +1,4 @@
+import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   AfterContentInit,
   Component,
@@ -38,10 +39,10 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   @Input() listOfNzOptionComponent: QueryList<NzOptionComponent>;
   @Input() listOfNzOptionGroupComponent: QueryList<NzOptionGroupComponent>;
   // tslint:disable-next-line:no-any
-  @Output() nzListOfSelectedValueChange = new EventEmitter<any[]>();
-  @Output() nzListOfTemplateOptionChange = new EventEmitter<NzOptionComponent[]>();
-  @Output() nzClickOption = new EventEmitter<void>();
-  @Output() nzScrollToBottom = new EventEmitter<void>();
+  @Output() readonly nzListOfSelectedValueChange = new EventEmitter<any[]>();
+  @Output() readonly nzListOfTemplateOptionChange = new EventEmitter<NzOptionComponent[]>();
+  @Output() readonly nzClickOption = new EventEmitter<void>();
+  @Output() readonly nzScrollToBottom = new EventEmitter<void>();
   @Input() nzMode = 'default';
   @Input() nzServerSearch = false;
   @Input() nzFilterOption: TFilterOption = defaultFilterOption;
@@ -90,18 +91,18 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   }
 
   onKeyDownUl(e: KeyboardEvent): void {
-    if ([ 38, 40, 13 ].indexOf(e.keyCode) > -1) {
+    if ([ UP_ARROW, DOWN_ARROW, ENTER ].indexOf(e.keyCode) > -1) {
       e.preventDefault();
       const activeIndex = this.listOfFilterOption.findIndex(item => item === this.activatedOption);
-      if (e.keyCode === 38) {
+      if (e.keyCode === UP_ARROW) {
         // arrow up
         const preIndex = activeIndex > 0 ? (activeIndex - 1) : (this.listOfFilterOption.length - 1);
         this.setActiveOption(this.listOfFilterOption[ preIndex ]);
-      } else if (e.keyCode === 40) {
+      } else if (e.keyCode === DOWN_ARROW) {
         // arrow down
         const nextIndex = activeIndex < this.listOfFilterOption.length - 1 ? (activeIndex + 1) : 0;
         this.setActiveOption(this.listOfFilterOption[ nextIndex ]);
-      } else if (e.keyCode === 13) {
+      } else if (e.keyCode === ENTER) {
         // enter
         if (this.isTagsMode) {
           if (!this.isAddTagOptionDisplay) {
@@ -213,7 +214,7 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   }
 
   updateListOfFilterOption(): void {
-    this.listOfFilterOption = new NzOptionPipe().transform(this.listOfAllTemplateOption.concat(this.listOfTagOption), this.nzSearchValue, this.nzFilterOption, this.nzServerSearch);
+    this.listOfFilterOption = new NzOptionPipe().transform(this.listOfAllTemplateOption.concat(this.listOfTagOption), this.nzSearchValue, this.nzFilterOption, this.nzServerSearch) as NzOptionComponent[];
     if (this.nzSearchValue) {
       this.setActiveOption(this.listOfFilterOption[ 0 ]);
     }

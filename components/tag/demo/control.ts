@@ -13,7 +13,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
       *ngIf="!inputVisible"
       class="editable-tag"
       (click)="showInput()">
-      <i class="anticon anticon-plus"></i> New Tag
+      <i nz-icon type="plus"></i> New Tag
     </nz-tag>
     <input
       #inputElement

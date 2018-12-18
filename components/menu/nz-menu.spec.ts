@@ -8,6 +8,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
 import { dispatchFakeEvent } from '../core/testing';
+import { NzIconModule } from '../icon/nz-icon.module';
 
 import { NzDemoMenuHorizontalComponent } from './demo/horizontal';
 import { NzDemoMenuInlineComponent } from './demo/inline';
@@ -27,7 +28,7 @@ describe('menu', () => {
   beforeEach(async(() => {
     const dir = 'ltr';
     TestBed.configureTestingModule({
-      imports     : [ NzMenuModule, NoopAnimationsModule, NoopAnimationsModule ],
+      imports     : [ NzMenuModule, NoopAnimationsModule, NoopAnimationsModule, NzIconModule ],
       declarations: [ NzDemoMenuHorizontalComponent, NzDemoMenuInlineComponent, NzDemoMenuInlineCollapsedComponent, NzDemoMenuSiderCurrentComponent, NzDemoMenuThemeComponent, NzDemoMenuSwitchModeComponent, NzTestMenuHorizontalComponent, NzTestMenuInlineComponent, NzDemoMenuNgForComponent ],
       schemas     : [ NO_ERRORS_SCHEMA ],
       providers   : [
@@ -436,7 +437,7 @@ describe('menu', () => {
   template: `
     <ul nz-menu [nzMode]="'horizontal'">
       <li nz-submenu [nzOpen]="open" [style.width.px]="width">
-        <span title><i class="anticon anticon-setting"></i> Navigation Three - Submenu</span>
+        <span title><i nz-icon type="setting"></i> Navigation Three - Submenu</span>
         <ul>
           <li nz-menu-group>
             <span title>Item 1</span>
@@ -485,7 +486,7 @@ export class NzTestMenuHorizontalComponent {
   template: `
     <ul nz-menu [nzMode]="'inline'" [nzInlineCollapsed]="collapse">
       <li nz-submenu [nzDisabled]="disabled">
-        <span title><i class="anticon anticon-mail"></i> Navigation One</span>
+        <span title><i nz-icon type="mail"></i> Navigation One</span>
         <ul>
           <li nz-menu-item style="padding-left:0px;">Option 1</li>
           <li nz-menu-item>Option 2</li>
@@ -507,7 +508,7 @@ export class NzTestMenuInlineComponent {
   template: `
     <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
       <li *ngFor="let l1 of menus" nz-submenu>
-        <span title><i class="anticon anticon-appstore"></i> {{l1.text}}</span>
+        <span title><i nz-icon type="appstore"></i> {{l1.text}}</span>
         <ul>
           <li *ngFor="let l2 of l1.children" nz-submenu>
             <span title>{{l2.text}}</span>

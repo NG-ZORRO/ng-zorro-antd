@@ -1,43 +1,46 @@
 import {
   AfterContentInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChildren,
   ElementRef,
   HostBinding,
-  Input, NgZone, OnDestroy, OnInit,
+  Inject,
+  Input,
+  NgZone,
+  OnDestroy,
+  OnInit, Optional,
+  QueryList,
   Renderer2,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { NzSizeLDSType } from '../core/types/size';
 import { isEmpty } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
-import { NzWaveDirective } from '../core/wave/nz-wave.directive';
+import { findFirstNotEmptyNode, findLastNotEmptyNode } from '../core/util/dom';
+import { NzWaveConfig, NzWaveDirective, NZ_WAVE_GLOBAL_CONFIG } from '../core/wave/nz-wave.directive';
+import { NzIconDirective } from '../icon/nz-icon.directive';
 
 export type NzButtonType = 'primary' | 'dashed' | 'danger';
 export type NzButtonShape = 'circle' | null ;
-export type NzButtonSize = 'small' | 'large' | 'default' ;
 
 @Component({
   selector           : '[nz-button]',
   providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-button.component.html'
 })
 export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
-  private _ghost = false;
-  private _search = false;
-  private _type: NzButtonType;
-  private _shape: NzButtonShape;
-  private _size: NzButtonSize;
-  private _loading = false;
-  private _block = false;
-  private el: HTMLElement;
-  private iconElement: HTMLElement;
-  private iconOnly = false;
-  private prefixCls = 'ant-btn';
-  private sizeMap = { large: 'lg', small: 'sm' };
+  readonly el: HTMLElement = this.elementRef.nativeElement;
   @ViewChild('contentElement') contentElement: ElementRef;
+  @ContentChildren(NzIconDirective, { read: ElementRef }) listOfIconElement: QueryList<ElementRef>;
+  @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(this.ngZone, this.elementRef, this.waveConfig);
 
   @Input()
   set nzBlock(value: boolean) {
@@ -70,32 +73,32 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
   }
 
   @Input()
-  get nzType(): NzButtonType {
-    return this._type;
-  }
-
   set nzType(value: NzButtonType) {
     this._type = value;
     this.setClassMap();
   }
 
-  @Input()
-  get nzShape(): NzButtonShape {
-    return this._shape;
+  get nzType(): NzButtonType {
+    return this._type;
   }
 
+  @Input()
   set nzShape(value: NzButtonShape) {
     this._shape = value;
     this.setClassMap();
   }
 
+  get nzShape(): NzButtonShape {
+    return this._shape;
+  }
+
   @Input()
-  set nzSize(value: NzButtonSize) {
+  set nzSize(value: NzSizeLDSType) {
     this._size = value;
     this.setClassMap();
   }
 
-  get nzSize(): NzButtonSize {
+  get nzSize(): NzSizeLDSType {
     return this._size;
   }
 
@@ -110,7 +113,22 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
     return this._loading;
   }
 
-  @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(this.ngZone, this.elementRef);
+  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private renderer: Renderer2,
+              private nzUpdateHostClassService: NzUpdateHostClassService, private ngZone: NgZone,
+              @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private waveConfig: NzWaveConfig) {
+  }
+
+  private _ghost = false;
+  private _search = false;
+  private _type: NzButtonType;
+  private _shape: NzButtonShape;
+  private _size: NzSizeLDSType;
+  private _loading = false;
+  private _block = false;
+  private iconElement: HTMLElement;
+  private iconOnly = false;
+  private prefixCls = 'ant-btn';
+  private sizeMap = { large: 'lg', small: 'sm' };
 
   updateIconDisplay(value: boolean): void {
     if (this.iconElement) {
@@ -121,25 +139,29 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
   /** temp solution since no method add classMap to host https://github.com/angular/angular/issues/7289 */
   setClassMap(): void {
     const classMap = {
+      [ `${this.prefixCls}` ]                               : true,
       [ `${this.prefixCls}-${this.nzType}` ]                : this.nzType,
       [ `${this.prefixCls}-${this.nzShape}` ]               : this.nzShape,
       [ `${this.prefixCls}-${this.sizeMap[ this.nzSize ]}` ]: this.sizeMap[ this.nzSize ],
       [ `${this.prefixCls}-loading` ]                       : this.nzLoading,
       [ `${this.prefixCls}-icon-only` ]                     : this.iconOnly,
       [ `${this.prefixCls}-background-ghost` ]              : this.nzGhost,
-      [ `ant-input-search-button` ]                         : this.nzSearch,
-      [ `ant-btn-block` ]                                   : this.nzBlock
+      [ `${this.prefixCls}-block` ]                         : this.nzBlock,
+      [ `ant-input-search-button` ]                         : this.nzSearch
     };
     this.nzUpdateHostClassService.updateHostClass(this.el, classMap);
   }
 
   checkContent(): void {
-    this.moveIcon();
+    const hasIcon = this.listOfIconElement && this.listOfIconElement.length;
+    if (hasIcon) {
+      this.moveIcon();
+    }
     this.renderer.removeStyle(this.contentElement.nativeElement, 'display');
     /** https://github.com/angular/angular/issues/12530 **/
     if (isEmpty(this.contentElement.nativeElement)) {
       this.renderer.setStyle(this.contentElement.nativeElement, 'display', 'none');
-      this.iconOnly = !!this.iconElement;
+      this.iconOnly = !!hasIcon;
     } else {
       this.renderer.removeStyle(this.contentElement.nativeElement, 'display');
       this.iconOnly = false;
@@ -150,48 +172,16 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
   }
 
   moveIcon(): void {
-    const firstChildElement = this.findFirstNotEmptyNode(this.contentElement.nativeElement);
-    const lastChildElement = this.findLastNotEmptyNode(this.contentElement.nativeElement);
-    if (firstChildElement && (firstChildElement.nodeName === 'I')) {
-      this.renderer.insertBefore(this.el, firstChildElement, this.contentElement.nativeElement);
-      this.iconElement = firstChildElement as HTMLElement;
-    } else if (lastChildElement && (lastChildElement.nodeName === 'I')) {
-      this.renderer.appendChild(this.el, lastChildElement);
-      this.iconElement = lastChildElement as HTMLElement;
-    } else {
-      this.iconElement = null;
-    }
-  }
-
-  findFirstNotEmptyNode(value: HTMLElement): Node {
-    const children = value.childNodes;
-    for (let i = 0; i < children.length; i++) {
-      const node = children.item(i);
-      if (node && (node.nodeType === 1) && ((node as HTMLElement).outerHTML.toString().trim().length !== 0)) {
-        return node;
-      } else if (node && (node.nodeType === 3) && ((node.textContent.toString().trim().length !== 0))) {
-        return node;
+    if (this.listOfIconElement && this.listOfIconElement.length) {
+      const firstChildElement = findFirstNotEmptyNode(this.contentElement.nativeElement);
+      const lastChildElement = findLastNotEmptyNode(this.contentElement.nativeElement);
+      if (firstChildElement && (firstChildElement === this.listOfIconElement.first.nativeElement)) {
+        this.renderer.insertBefore(this.el, firstChildElement, this.contentElement.nativeElement);
+        this.iconElement = firstChildElement as HTMLElement;
+      } else if (lastChildElement && (lastChildElement === this.listOfIconElement.last.nativeElement)) {
+        this.renderer.appendChild(this.el, lastChildElement);
       }
     }
-    return null;
-  }
-
-  findLastNotEmptyNode(value: HTMLElement): Node {
-    const children = value.childNodes;
-    for (let i = children.length - 1; i >= 0; i--) {
-      const node = children.item(i);
-      if (node && (node.nodeType === 1) && ((node as HTMLElement).outerHTML.toString().trim().length !== 0)) {
-        return node;
-      } else if (node && (node.nodeType === 3) && ((node.textContent.toString().trim().length !== 0))) {
-        return node;
-      }
-    }
-    return null;
-  }
-
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService, private ngZone: NgZone) {
-    this.el = this.elementRef.nativeElement;
-    this.renderer.addClass(this.el, this.prefixCls);
   }
 
   ngAfterContentInit(): void {
@@ -199,6 +189,7 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.setClassMap();
     this.nzWave.ngOnInit();
   }
 

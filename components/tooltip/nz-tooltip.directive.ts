@@ -42,7 +42,7 @@ export class NzTooltipDirective implements AfterViewInit, OnInit, OnDestroy {
   _trigger: string;
   _placement: string;
   factory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
-  @Output() nzVisibleChange = new EventEmitter<boolean>();
+  @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   @Input('nz-tooltip')
   set nzTitle(title: string | TemplateRef<void>) {

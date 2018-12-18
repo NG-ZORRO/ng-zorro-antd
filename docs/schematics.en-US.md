@@ -18,15 +18,23 @@ ng add ng-zorro-antd [options]
 
 ***--theme***
 
-`ng-zorro-antd` will [downgrade](https://github.com/angular/angular-cli/issues/10430) the version of `less` to `2.7` and create `theme.less` in `src` folder.
+`ng-zorro-antd` will create `theme.less` in `src` folder.
 
 You can get more information at the [Customize Theme](/docs/customize-theme/en) part.
 
-***--i18n***
+***--locale***
 
-If you add `--i18n=[language]`，`ng-zorro-antd` import the language package and the [i18n](https://angular.io/guide/i18n) part of angular in the `app.module.ts`.
+If you add `--locale=[language]`，`ng-zorro-antd` import the language package and the [i18n](https://angular.io/guide/i18n) part of angular in the `app.module.ts`.
 
 The default i18n config of `ng-zorro-antd` is `zh_CN` now，you can get more information at the [Internationalization](/docs/i18n/en) part.
+
+***--animations***
+
+Enable the BrowserAnimationsModule your app module
+
+***--gestures***
+
+Install and import hammerjs for gesture support in your project
 
 ## Component Generation
 
@@ -41,7 +49,7 @@ ng g ng-zorro-antd:[template] --name=NAME [options]
 For example, you can generate an login form with the follow command.
 
 ```bash
-ng g ng-zorro-antd:form-normal-login -p app --styleext='less' --name=login
+ng g ng-zorro-antd:form-normal-login -p app --styleext=less --name=login
 ```
 
 ### Options

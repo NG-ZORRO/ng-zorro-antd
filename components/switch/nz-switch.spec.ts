@@ -1,9 +1,11 @@
+import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { dispatchKeyboardEvent } from '../core/testing';
+import { NzIconModule } from '../icon/nz-icon.module';
 
 import { NzSwitchComponent } from './nz-switch.component';
 import { NzSwitchModule } from './nz-switch.module';
@@ -11,7 +13,7 @@ import { NzSwitchModule } from './nz-switch.module';
 describe('switch', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzSwitchModule, FormsModule, ReactiveFormsModule ],
+      imports     : [ NzSwitchModule, FormsModule, ReactiveFormsModule, NzIconModule ],
       declarations: [ NzTestSwitchBasicComponent, NzTestSwitchFormComponent, NzTestSwitchTemplateComponent ]
     });
     TestBed.compileComponents();
@@ -98,30 +100,30 @@ describe('switch', () => {
       fixture.detectChanges();
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       expect(testComponent.value).toBe(true);
-      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', 39);
+      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
       expect(testComponent.value).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
-      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', 37);
+      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', LEFT_ARROW);
 
       fixture.detectChanges();
       expect(testComponent.value).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
-      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', 37);
+      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
       expect(testComponent.value).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
-      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', 32);
+      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', SPACE);
       fixture.detectChanges();
       expect(testComponent.value).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(3);
-      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', 13);
+      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', ENTER);
       fixture.detectChanges();
       expect(testComponent.value).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
       testComponent.control = true;
       fixture.detectChanges();
-      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', 13);
+      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', ENTER);
       fixture.detectChanges();
       expect(testComponent.value).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
@@ -162,7 +164,7 @@ describe('switch', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList).toContain('anticon-cross');
+      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList).toContain('anticon-close');
       switchElement.nativeElement.click();
       fixture.detectChanges();
       flush();
@@ -212,8 +214,8 @@ describe('switch', () => {
 @Component({
   selector: 'nz-test-switch-basic',
   template: `
-    <ng-template #checkedChildrenTemplate><i class="anticon anticon-check"></i></ng-template>
-    <ng-template #unCheckedChildrenTemplate><i class="anticon anticon-cross"></i></ng-template>
+    <ng-template #checkedChildrenTemplate><i nz-icon type="check"></i></ng-template>
+    <ng-template #unCheckedChildrenTemplate><i nz-icon type="closs"></i></ng-template>
     <nz-switch
       [(ngModel)]="value"
       (ngModelChange)="modelChange($event)"
@@ -242,8 +244,8 @@ export class NzTestSwitchBasicComponent {
 @Component({
   selector: 'nz-test-switch-template',
   template: `
-    <ng-template #checkedChildrenTemplate><i class="anticon anticon-check"></i></ng-template>
-    <ng-template #unCheckedChildrenTemplate><i class="anticon anticon-cross"></i></ng-template>
+    <ng-template #checkedChildrenTemplate><i nz-icon type="check"></i></ng-template>
+    <ng-template #unCheckedChildrenTemplate><i nz-icon type="close"></i></ng-template>
     <nz-switch
       [nzCheckedChildren]="checkedChildrenTemplate"
       [nzUnCheckedChildren]="unCheckedChildrenTemplate">

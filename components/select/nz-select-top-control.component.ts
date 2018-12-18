@@ -40,8 +40,8 @@ export class NzSelectTopControlComponent {
   isComposing = false;
   @ViewChild('inputElement') inputElement: ElementRef;
   // tslint:disable-next-line:no-any
-  @Output() nzListOfSelectedValueChange = new EventEmitter<any[]>();
-  @Output() nzOnSearch = new EventEmitter<{ value: string, emit: boolean }>();
+  @Output() readonly nzListOfSelectedValueChange = new EventEmitter<any[]>();
+  @Output() readonly nzOnSearch = new EventEmitter<{ value: string, emit: boolean }>();
   @Input() nzMode = 'default';
   @Input() nzShowSearch = false;
   @Input() nzDisabled = false;
@@ -151,12 +151,17 @@ export class NzSelectTopControlComponent {
   }
 
   // tslint:disable-next-line:no-any
-  removeValueFormSelected(value: any): void {
+  removeValueFormSelected(value: any, event?: MouseEvent): void {
     if (this.nzDisabled || this.getPropertyFromValue(value, 'nzDisabled')) {
       return;
     }
     this._listOfSelectedValue = this.nzListOfSelectedValue.filter(item => item !== value);
     this.nzListOfSelectedValueChange.emit(this.nzListOfSelectedValue);
+
+    // Do not trigger the popup
+    if (event && event.stopPropagation) {
+      event.stopPropagation();
+    }
   }
 
   updateWidth(): void {

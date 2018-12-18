@@ -46,7 +46,6 @@ The component provides a number of service methods using the following methods a
 - `NzNotificationService.error(title, content, [options])`
 - `NzNotificationService.info(title, content, [options])`
 - `NzNotificationService.warning(title, content, [options])`
-- `NzNotificationService.loading(title, content, [options])`
 
 | Argument | Description | Type | Default |
 | --- | --- | --- | --- |
@@ -58,6 +57,7 @@ The parameters that are set by the `options` support are as follows:
 
 | Argument | Description | Type |
 | --- | --- | --- |
+| nzKey | 	The unique identifier of the Notification | string |
 | nzDuration | Duration (milliseconds), does not disappear when set to 0 | number |
 | nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | boolean |
 | nzAnimate | Whether to turn on animation | boolean |

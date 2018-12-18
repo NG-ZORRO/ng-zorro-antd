@@ -9,7 +9,12 @@
   (click)="clickSubMenuTitle($event)"
   [style.paddingLeft.px]="(nzMenuDirective.nzMode === 'inline')?(level*nzMenuDirective.nzInlineIndent):null">
   <ng-content select="[title]"></ng-content>
-  <i [class.ant-dropdown-menu-submenu-arrow]="isInDropDown" [class.ant-menu-submenu-arrow]="!isInDropDown"></i>
+  <span *ngIf="isInDropDown; else notDropdownTpl" class="ant-dropdown-menu-submenu-arrow">
+    <i nz-icon type="right" class="anticon-right ant-dropdown-menu-submenu-arrow-icon"></i>
+  </span>
+  <ng-template #notDropdownTpl>
+    <i class="ant-menu-submenu-arrow"></i>
+  </ng-template>
 </div>
 <ul
   [class.ant-dropdown-menu]="isInDropDown"
@@ -38,16 +43,16 @@
     [class.ant-menu-submenu-placement-bottomLeft]="subMenuMode=='horizontal'"
     [class.ant-menu-submenu-placement-rightTop]="(subMenuMode=='vertical')&&(placement=='rightTop')"
     [class.ant-menu-submenu-placement-leftTop]="(subMenuMode=='vertical')&&(placement=='leftTop')"
-    [@expandAnimation]="expandState">
+    [@expandAnimation]="expandState"
+    (mouseleave)="onMouseLeaveEvent($event)"
+    (mouseenter)="onMouseEnterEvent($event)">
     <ul
       [class.ant-dropdown-menu]="isInDropDown"
       [class.ant-menu]="!isInDropDown"
       [class.ant-dropdown-menu-vertical]="isInDropDown"
       [class.ant-menu-vertical]="!isInDropDown"
       [class.ant-dropdown-menu-sub]="isInDropDown"
-      [class.ant-menu-sub]="!isInDropDown"
-      (mouseleave)="onMouseLeaveEvent($event)"
-      (mouseenter)="onMouseEnterEvent($event)">
+      [class.ant-menu-sub]="!isInDropDown">
       <ng-template [ngTemplateOutlet]="subMenuTemplate"></ng-template>
     </ul>
   </div>

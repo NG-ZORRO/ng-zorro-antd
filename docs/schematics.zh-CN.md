@@ -19,15 +19,23 @@ ng add ng-zorro-antd [options]
 
 ***--theme***
 
-`ng-zorro-antd` 会[自动](https://github.com/angular/angular-cli/issues/10430)降级 `less` 版本至 `2.7` 并在 `src` 目录下生成 `theme.less` 的主题配置文件
+`ng-zorro-antd` 会在 `src` 目录下生成 `theme.less` 的主题配置文件
 
 详细的配置可以在[自定义主题](/docs/customize-theme/zh)中查看。
 
-***--i18n***
+***--locale***
 
-初始化配置时增加 `--i18n=[语言]` 参数，`ng-zorro-antd` 会自动引入支持的语言包以及 Angular 对应的 [i18n 文件](https://angular.io/guide/i18n)
+初始化配置时增加 `--locale=[语言]` 参数，`ng-zorro-antd` 会自动引入支持的语言包以及 Angular 对应的 [i18n 文件](https://angular.io/guide/i18n)
 
 默认的国际化配置为中文(zh_CN)，详细的可配置选项可以在[国际化](/docs/i18n/zh)中查看。
+
+***--animations***
+
+启用 `BrowserAnimationsModule`
+
+***--gestures***
+
+安装 `hammerjs` 并引入为项目添加手势支持
 
 ## 生成组件
 
@@ -42,7 +50,7 @@ ng g ng-zorro-antd:[template] --name=NAME [options]
 例如通过以下代码可以快速生成一个登陆框组件
 
 ```bash
-ng g ng-zorro-antd:form-normal-login -p app --styleext='less' --name=login
+ng g ng-zorro-antd:form-normal-login -p app --styleext=less --name=login
 ```
 
 ### 生成组件参数

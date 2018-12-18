@@ -1,7 +1,7 @@
 import { Directive, ElementRef, Input, NgZone, Renderer2 } from '@angular/core';
 
 import { reqAnimFrame } from '../core/polyfill/request-animation';
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
 
 import { NzTabPositionMode } from './nz-tabset.component';
 
@@ -14,16 +14,8 @@ import { NzTabPositionMode } from './nz-tabset.component';
   }
 })
 export class NzTabsInkBarDirective {
-  private _animated = false;
 
-  @Input()
-  set nzAnimated(value: boolean) {
-    this._animated = toBoolean(value);
-  }
-
-  get nzAnimated(): boolean {
-    return this._animated;
-  }
+  @Input() @InputBoolean() nzAnimated = false;
 
   @Input() nzPositionMode: NzTabPositionMode = 'horizontal';
 

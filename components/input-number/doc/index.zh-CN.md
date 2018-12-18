@@ -31,8 +31,12 @@ title: InputNumber
 | `[nzStep]` | 每次改变步数，可以为小数 | number ｜ string | 1 |
 | `[nzPlaceHolder]` | 选择框默认文字 | string | - |
 | `(ngModelChange)` | 数值改变时回调 | `EventEmitter<number>` | - |
+| `(nzFocus)` | focus时回调 | `EventEmitter<void>` | - |
+| `(nzBlur)` | blur时回调 | `EventEmitter<void>` | - |
 
 #### 方法
+
+通过 `ViewChild` 等方法获得实例后调用
 
 | 名称 | 描述 |
 | ---- | ----------- |

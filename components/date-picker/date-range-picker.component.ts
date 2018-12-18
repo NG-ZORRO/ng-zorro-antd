@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 
 import { FunctionProp } from '../core/types/common-wrap';
 import { toBoolean, valueFunctionProp, InputBoolean } from '../core/util/convert';
-import { LoggerService } from '../core/util/logger/logger.service';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CandyDate } from './lib/candy-date';
 
@@ -22,7 +21,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   @Input() @InputBoolean() nzShowToday: boolean = true;
   @Input() nzMode: PanelMode | PanelMode[];
   @Input() nzRanges: FunctionProp<PresetRanges>;
-  @Output() nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
+  @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
 
   private _showTime: object | boolean;
   @Input() get nzShowTime(): object | boolean { return this._showTime; }
@@ -30,15 +29,16 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
     this._showTime = typeof value === 'object' ? value : toBoolean(value);
   }
 
-  @Output() nzOnOk = new EventEmitter<CompatibleDate>();
+  @Output() readonly nzOnOk = new EventEmitter<CompatibleDate>();
 
   get realShowToday(): boolean { // Range not support nzShowToday currently
     return !this.isRange && this.nzShowToday;
   }
 
+  pickerStyle: object; // Final picker style that contains width fix corrections etc.
   extraFooter: TemplateRef<void> | string;
 
-  constructor(i18n: NzI18nService, private logger: LoggerService) {
+  constructor(i18n: NzI18nService) {
     super(i18n);
   }
 
@@ -60,6 +60,10 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
 
     if (changes.nzRenderExtraFooter) {
       this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter);
+    }
+
+    if (changes.nzShowTime || changes.nzStyle) {
+      this.setFixedPickerStyle();
     }
   }
 
@@ -92,5 +96,15 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
 
   onOpenChange(open: boolean): void {
     this.nzOnOpenChange.emit(open);
+  }
+
+  // Setup fixed style for picker
+  private setFixedPickerStyle(): void {
+    const showTimeFixes: { width?: string } = {};
+    if (this.nzShowTime) {
+      showTimeFixes.width = this.isRange ? '350px' : '195px';
+    }
+
+    this.pickerStyle = { ...showTimeFixes, ...this.nzStyle };
   }
 }

@@ -1,27 +1,23 @@
 <ng-template #defaultIndicatorTemplate>
-  <span
-    class="ant-spin-dot"
-    [class.ant-spin-dot-spin]="resultSpinning$|async">
+  <span class="ant-spin-dot"
+    [class.ant-spin-dot-spin]="(debounceSpinning$ | async) === true">
     <i></i><i></i><i></i><i></i>
   </span>
 </ng-template>
-<div [class.ant-spin-nested-loading]="isNested">
-  <div [hidden]="!(resultSpinning$|async)">
-    <div
-      class="ant-spin"
-      [class.ant-spin-spinning]="resultSpinning$|async"
-      [class.ant-spin-lg]="nzSize=='large'"
-      [class.ant-spin-sm]="nzSize=='small'"
+<div #nestedElement>
+  <div [hidden]="!((debounceSpinning$ | async) === true)">
+    <div class="ant-spin"
+      [class.ant-spin-spinning]="(debounceSpinning$ | async) === true"
+      [class.ant-spin-lg]="nzSize === 'large'"
+      [class.ant-spin-sm]="nzSize === 'small'"
       [class.ant-spin-show-text]="nzTip">
-      <ng-template [ngTemplateOutlet]="nzIndicator||defaultIndicatorTemplate"></ng-template>
+      <ng-template [ngTemplateOutlet]="nzIndicator || defaultIndicatorTemplate"></ng-template>
       <div class="ant-spin-text" *ngIf="nzTip">{{ nzTip }}</div>
     </div>
   </div>
-  <div
-    #containerElement
+  <div #containerElement
     class="ant-spin-container"
-    [class.ant-spin-blur]="resultSpinning$|async"
-    [hidden]="!isNested"
+    [class.ant-spin-blur]="(debounceSpinning$ | async) === true"
     (cdkObserveContent)="checkNested()">
     <ng-content></ng-content>
   </div>
