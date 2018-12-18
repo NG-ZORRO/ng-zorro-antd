@@ -1,7 +1,10 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
-  OnInit
+  OnInit,
+  ViewEncapsulation
 } from '@angular/core';
 
 export type NzProgressGapPositionType = 'top' | 'bottom' | 'left' | 'right';
@@ -11,9 +14,11 @@ export type NzProgressStrokeLinecapType = 'round' | 'square';
 import { isNotNil } from '../core/util/check';
 
 @Component({
-  selector           : 'nz-progress',
+  selector: 'nz-progress',
   preserveWhitespaces: false,
-  templateUrl        : './nz-progress.component.html'
+  templateUrl: './nz-progress.component.html',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzProgressComponent implements OnInit {
   private _gapDegree = 0;
@@ -26,8 +31,8 @@ export class NzProgressComponent implements OnInit {
   private _size = 'default';
   private _type: NzProgressTypeType = 'line';
   private _format = (percent: number): string => `${percent}%`;
-  trailPathStyle: { [ key: string ]: string };
-  strokePathStyle: { [ key: string ]: string };
+  trailPathStyle: { [key: string]: string };
+  strokePathStyle: { [key: string]: string };
   pathString: string;
   icon;
   iconTheme;
@@ -37,9 +42,9 @@ export class NzProgressComponent implements OnInit {
   isGapDegreeSet = false;
   isGapPositionSet = false;
   statusColorMap = {
-    normal   : '#108ee9',
+    normal: '#108ee9',
     exception: '#ff5500',
-    success  : '#87d068'
+    success: '#87d068'
   };
   @Input() nzShowInfo = true;
   @Input() nzWidth = 132;
@@ -211,15 +216,16 @@ export class NzProgressComponent implements OnInit {
      a ${radius},${radius} 0 1 1 ${-endPositionX},${endPositionY}`;
     const len = Math.PI * 2 * radius;
     this.trailPathStyle = {
-      strokeDasharray : `${len - this.nzGapDegree}px ${len}px`,
+      strokeDasharray: `${len - this.nzGapDegree}px ${len}px`,
       strokeDashoffset: `-${this.nzGapDegree / 2}px`,
-      transition      : 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s'
+      transition: 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s'
     };
     this.strokePathStyle = {
-      strokeDasharray : `${(this.nzPercent / 100) * (len - this.nzGapDegree)}px ${len}px`,
+      strokeDasharray: `${(this.nzPercent / 100) * (len - this.nzGapDegree)}px ${len}px`,
       strokeDashoffset: `-${this.nzGapDegree / 2}px`,
-      transition      : 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s, stroke-width .06s ease .3s' // eslint-disable-line
+      transition: 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s, stroke-width .06s ease .3s' // eslint-disable-line
     };
+    this.cdr.markForCheck();
   }
 
   updateIcon(): void {
@@ -240,6 +246,11 @@ export class NzProgressComponent implements OnInit {
       }
     }
     this.icon = ret;
+    this.cdr.markForCheck();
+  }
+
+  constructor(private cdr: ChangeDetectorRef) {
+
   }
 
   ngOnInit(): void {

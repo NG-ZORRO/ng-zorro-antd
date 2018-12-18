@@ -2,6 +2,8 @@ import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import {
   forwardRef,
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -10,23 +12,26 @@ import {
   Output,
   Renderer2,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { toBoolean } from '../core/util/convert';
 
 @Component({
-  selector           : 'nz-rate',
+  selector: 'nz-rate',
   preserveWhitespaces: false,
-  templateUrl        : './nz-rate.component.html',
-  providers          : [
+  templateUrl: './nz-rate.component.html',
+  providers: [
     {
-      provide    : NG_VALUE_ACCESSOR,
+      provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzRateComponent),
-      multi      : true
+      multi: true
     }
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewInit {
   private _allowClear = true;
@@ -124,9 +129,10 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
 
   setClassMap(): void {
     this.classMap = {
-      [ this.prefixCls ]              : true,
-      [ `${this.prefixCls}-disabled` ]: this.nzDisabled
+      [this.prefixCls]: true,
+      [`${this.prefixCls}-disabled`]: this.nzDisabled
     };
+    this.cdr.markForCheck();
   }
 
   updateAutoFocus(): void {
@@ -192,11 +198,13 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
   onFocus(e: FocusEvent): void {
     this.isFocused = true;
     this.nzOnFocus.emit(e);
+    this.cdr.markForCheck();
   }
 
   onBlur(e: FocusEvent): void {
     this.isFocused = false;
     this.nzOnBlur.emit(e);
+    this.cdr.markForCheck();
   }
 
   focus(): void {
@@ -226,16 +234,17 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
     }
     this.nzOnKeyDown.emit(e);
     e.preventDefault();
+    this.cdr.markForCheck();
   }
 
   setClasses(i: number): object {
     return {
-      [ this.innerPrefixCls ]             : true,
-      [ `${this.innerPrefixCls}-full` ]   : (i + 1 < this.hoverValue) || (!this.hasHalf) && (i + 1 === this.hoverValue),
-      [ `${this.innerPrefixCls}-half` ]   : (this.hasHalf) && (i + 1 === this.hoverValue),
-      [ `${this.innerPrefixCls}-active` ] : (this.hasHalf) && (i + 1 === this.hoverValue),
-      [ `${this.innerPrefixCls}-zero` ]   : (i + 1 > this.hoverValue),
-      [ `${this.innerPrefixCls}-focused` ]: (this.hasHalf) && (i + 1 === this.hoverValue) && this.isFocused
+      [this.innerPrefixCls]: true,
+      [`${this.innerPrefixCls}-full`]: (i + 1 < this.hoverValue) || (!this.hasHalf) && (i + 1 === this.hoverValue),
+      [`${this.innerPrefixCls}-half`]: (this.hasHalf) && (i + 1 === this.hoverValue),
+      [`${this.innerPrefixCls}-active`]: (this.hasHalf) && (i + 1 === this.hoverValue),
+      [`${this.innerPrefixCls}-zero`]: (i + 1 > this.hoverValue),
+      [`${this.innerPrefixCls}-focused`]: (this.hasHalf) && (i + 1 === this.hoverValue) && this.isFocused
     };
   }
 
@@ -249,10 +258,12 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
 
   writeValue(value: number | null): void {
     this.nzValue = value || 0;
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (_: number) => void): void {
     this.onChange = fn;
+    this.cdr.markForCheck();
   }
 
   registerOnTouched(fn: () => void): void {
@@ -261,9 +272,10 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
+    this.cdr.markForCheck();
   }
 
-  constructor(private renderer: Renderer2) {
+  constructor(private cdr: ChangeDetectorRef, private renderer: Renderer2) {
   }
 
   ngOnInit(): void {

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -11,8 +11,8 @@ import { NzRateModule } from './nz-rate.module';
 describe('rate', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzRateModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestRateBasicComponent, NzTestRateFormComponent ]
+      imports: [NzRateModule, FormsModule, ReactiveFormsModule],
+      declarations: [NzTestRateBasicComponent, NzTestRateFormComponent]
     });
     TestBed.compileComponents();
   }));
@@ -20,137 +20,139 @@ describe('rate', () => {
     let fixture;
     let testComponent;
     let rate;
+    let cd;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestRateBasicComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       rate = fixture.debugElement.query(By.directive(NzRateComponent));
+      cd = fixture.componentRef.injector.get(ChangeDetectorRef);
     });
     it('should className correct', () => {
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(rate.nativeElement.firstElementChild.classList).toContain('ant-rate');
     });
     it('should set ngModel work', fakeAsync(() => {
-      fixture.detectChanges();
+      cd.detectChanges();
       const children = Array.prototype.slice.call(rate.nativeElement.firstElementChild.children);
       expect(children.every(item => item.classList.contains('ant-rate-star-zero'))).toBe(true);
       testComponent.value = 5;
-      fixture.detectChanges();
+      cd.detectChanges();
       flush();
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(children.every(item => item.classList.contains('ant-rate-star-full'))).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
     it('should click work', fakeAsync(() => {
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(0);
-      rate.nativeElement.firstElementChild.children[ 3 ].firstElementChild.click();
-      fixture.detectChanges();
+      rate.nativeElement.firstElementChild.children[3].firstElementChild.click();
+      cd.detectChanges();
       flush();
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     }));
     it('should allow half work', fakeAsync(() => {
       testComponent.allowHalf = true;
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(0);
-      rate.nativeElement.firstElementChild.children[ 3 ].firstElementChild.click();
-      fixture.detectChanges();
+      rate.nativeElement.firstElementChild.children[3].firstElementChild.click();
+      cd.detectChanges();
       flush();
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(3.5);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     }));
     it('should allow clear work', fakeAsync(() => {
       testComponent.allowClear = false;
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(0);
-      rate.nativeElement.firstElementChild.children[ 3 ].firstElementChild.click();
-      fixture.detectChanges();
+      rate.nativeElement.firstElementChild.children[3].firstElementChild.click();
+      cd.detectChanges();
       flush();
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
-      rate.nativeElement.firstElementChild.children[ 3 ].firstElementChild.click();
-      fixture.detectChanges();
+      rate.nativeElement.firstElementChild.children[3].firstElementChild.click();
+      cd.detectChanges();
       flush();
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       testComponent.allowClear = true;
-      fixture.detectChanges();
-      rate.nativeElement.firstElementChild.children[ 3 ].firstElementChild.click();
-      fixture.detectChanges();
+      cd.detectChanges();
+      rate.nativeElement.firstElementChild.children[3].firstElementChild.click();
+      cd.detectChanges();
       flush();
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(0);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
     }));
     it('should disable work', fakeAsync(() => {
       testComponent.disabled = true;
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(0);
-      rate.nativeElement.firstElementChild.children[ 3 ].firstElementChild.click();
-      fixture.detectChanges();
+      rate.nativeElement.firstElementChild.children[3].firstElementChild.click();
+      cd.detectChanges();
       flush();
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(0);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
     it('should count work', fakeAsync(() => {
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(rate.nativeElement.firstElementChild.children.length).toBe(5);
       expect(testComponent.value).toBe(0);
-      rate.nativeElement.firstElementChild.children[ 3 ].firstElementChild.click();
-      fixture.detectChanges();
+      rate.nativeElement.firstElementChild.children[3].firstElementChild.click();
+      cd.detectChanges();
       flush();
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       testComponent.count = 10;
-      fixture.detectChanges();
+      cd.detectChanges();
       flush();
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(rate.nativeElement.firstElementChild.children.length).toBe(10);
       expect(testComponent.value).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     }));
     it('should autofocus work', () => {
-      fixture.detectChanges();
+      cd.detectChanges();
       testComponent.autoFocus = true;
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(rate.nativeElement.querySelector('ul').attributes.getNamedItem('autofocus').name).toBe('autofocus');
       testComponent.autoFocus = false;
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(rate.nativeElement.querySelector('ul').attributes.getNamedItem('autofocus')).toBe(null);
     });
     it('should focus and blur function work', () => {
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(rate.nativeElement.querySelector('ul') === document.activeElement).toBe(false);
       testComponent.nzRateComponent.focus();
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(rate.nativeElement.querySelector('ul') === document.activeElement).toBe(true);
       testComponent.nzRateComponent.blur();
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(rate.nativeElement.querySelector('ul') === document.activeElement).toBe(false);
     });
     it('should hover rate work', () => {
-      fixture.detectChanges();
-      dispatchFakeEvent(rate.nativeElement.firstElementChild.children[ 3 ].firstElementChild, 'mouseover');
-      fixture.detectChanges();
-      expect(rate.nativeElement.firstElementChild.children[ 3 ].classList).toContain('ant-rate-star-full');
+      cd.detectChanges();
+      dispatchFakeEvent(rate.nativeElement.firstElementChild.children[3].firstElementChild, 'mouseover');
+      cd.detectChanges();
+      expect(rate.nativeElement.firstElementChild.children[3].classList).toContain('ant-rate-star-full');
       expect(testComponent.onHoverChange).toHaveBeenCalledWith(4);
       expect(testComponent.onHoverChange).toHaveBeenCalledTimes(1);
-      dispatchFakeEvent(rate.nativeElement.firstElementChild.children[ 3 ].firstElementChild, 'mouseover');
-      fixture.detectChanges();
+      dispatchFakeEvent(rate.nativeElement.firstElementChild.children[3].firstElementChild, 'mouseover');
+      cd.detectChanges();
       expect(testComponent.onHoverChange).toHaveBeenCalledTimes(1);
       dispatchFakeEvent(rate.nativeElement.firstElementChild, 'mouseleave');
-      fixture.detectChanges();
-      expect(rate.nativeElement.firstElementChild.children[ 3 ].classList).toContain('ant-rate-star-zero');
+      cd.detectChanges();
+      expect(rate.nativeElement.firstElementChild.children[3].classList).toContain('ant-rate-star-zero');
       testComponent.disabled = true;
-      fixture.detectChanges();
-      dispatchFakeEvent(rate.nativeElement.firstElementChild.children[ 2 ].firstElementChild, 'mouseover');
+      cd.detectChanges();
+      dispatchFakeEvent(rate.nativeElement.firstElementChild.children[2].firstElementChild, 'mouseover');
       expect(testComponent.onHoverChange).toHaveBeenCalledTimes(1);
     });
     it('should keydown work', () => {
@@ -160,28 +162,28 @@ describe('rate', () => {
       const rightArrowEvent = new KeyboardEvent('keydown', {
         code: 'ArrowRight'
       });
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(0);
       dispatchEvent(rate.nativeElement.firstElementChild, leftArrowEvent);
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(0);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
       dispatchEvent(rate.nativeElement.firstElementChild, rightArrowEvent);
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(1);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       dispatchEvent(rate.nativeElement.firstElementChild, leftArrowEvent);
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(0);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
       testComponent.allowHalf = true;
-      fixture.detectChanges();
+      cd.detectChanges();
       dispatchEvent(rate.nativeElement.firstElementChild, rightArrowEvent);
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(0.5);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(3);
       dispatchEvent(rate.nativeElement.firstElementChild, leftArrowEvent);
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(0);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
     });
@@ -190,11 +192,11 @@ describe('rate', () => {
         code: 'ArrowRight'
       });
       testComponent.value = 5;
-      fixture.detectChanges();
+      cd.detectChanges();
       flush();
-      fixture.detectChanges();
+      cd.detectChanges();
       dispatchEvent(rate.nativeElement.firstElementChild, rightArrowEvent);
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.value).toBe(5);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
@@ -203,6 +205,7 @@ describe('rate', () => {
     let fixture;
     let testComponent;
     let rate;
+    let cd;
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestRateFormComponent);
       fixture.detectChanges();
@@ -210,6 +213,7 @@ describe('rate', () => {
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       rate = fixture.debugElement.query(By.directive(NzRateComponent));
+      cd = fixture.componentRef.injector.get(ChangeDetectorRef);
     }));
     it('should be in pristine, untouched, and valid states initially', fakeAsync(() => {
       flush();
@@ -221,18 +225,18 @@ describe('rate', () => {
       flush();
       expect(testComponent.formGroup.get('rate').value).toBe(1);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.click();
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.formGroup.get('rate').value).toBe(4);
-      fixture.detectChanges();
+      cd.detectChanges();
       flush();
-      fixture.detectChanges();
+      cd.detectChanges();
       testComponent.formGroup.get('rate').setValue(2);
       testComponent.disable();
-      fixture.detectChanges();
+      cd.detectChanges();
       flush();
-      fixture.detectChanges();
+      cd.detectChanges();
       rate.nativeElement.firstElementChild.children[3].firstElementChild.click();
-      fixture.detectChanges();
+      cd.detectChanges();
       expect(testComponent.formGroup.get('rate').value).toBe(2);
     }));
   });
@@ -253,7 +257,8 @@ describe('rate', () => {
       [nzAllowClear]="allowClear"
       [nzDisabled]="disabled"
       [nzAutoFocus]="autoFocus">
-    </nz-rate>`
+    </nz-rate>`,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzTestRateBasicComponent {
   @ViewChild(NzRateComponent) nzRateComponent: NzRateComponent;
@@ -276,14 +281,15 @@ export class NzTestRateBasicComponent {
     <form [formGroup]="formGroup">
       <nz-rate formControlName="rate"></nz-rate>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzTestRateFormComponent {
   formGroup: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
-      rate: [ 1 ]
+      rate: [1]
     });
   }
 
