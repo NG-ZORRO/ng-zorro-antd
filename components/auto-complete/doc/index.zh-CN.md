@@ -41,6 +41,8 @@ subtitle: 自动完成
 | `[nzDataSource]` | 自动完成的数据源 | `AutocompleteDataSource` | - |
 | `[nzDefaultActiveFirstOption]` | 是否默认高亮第一个选项。 | `boolean` | `true` |
 | `[nzWidth]` | 自定义宽度单位 px | `number` | 触发元素宽度 |
+| `[nzOverlayClassName]` | 下拉根元素的类名称 | string | - |
+| `[nzOverlayStyle]` | 下拉根元素的样式 | object | - |
 
 ### nz-auto-option
 
