@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ContentChild, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { fadeAnimation } from '../core/animation/fade-animations';
-import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 import { isNotNil } from '../core/util';
+import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 
 @Component({
   selector           : 'nz-popover',
