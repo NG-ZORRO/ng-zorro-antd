@@ -3,6 +3,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
   ComponentRef,
@@ -132,6 +133,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     private nzMeasureScrollbarService: NzMeasureScrollbarService,
     private modalControl: NzModalControlService,
     private focusTrapFactory: FocusTrapFactory,
+    private cd: ChangeDetectorRef,
     @Inject(NZ_MODAL_CONFIG) private config: NzModalConfig,
     @Inject(DOCUMENT) private document: any) { // tslint:disable-line:no-any
 
@@ -317,9 +319,10 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
         this.nzAfterClose.emit(closeResult);
         this.restoreFocus();
         this.changeBodyOverflow(); // Show/hide scrollbar when animation is over
+        // Mark the for check so it can react if the view container is using OnPush change detection.
+        this.cd.markForCheck();
       }
     });
-    // .then(() => this.changeBodyOverflow());
   }
 
   // Lookup a button's property, if the prop is a function, call & then return the result, otherwise, return itself.
