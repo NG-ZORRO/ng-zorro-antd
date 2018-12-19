@@ -320,10 +320,12 @@ export class NzTestRadioButtonComponent {
   selector: 'nz-test-radio-group',
   template: `
     <nz-radio-group [(ngModel)]="value" [nzName]="name" [nzDisabled]="disabled" (ngModelChange)="modelChange($event)" [nzSize]="size">
-      <label nz-radio-button nzValue="A">A</label>
-      <label nz-radio-button nzValue="B">B</label>
-      <label nz-radio-button nzValue="C">C</label>
-      <label nz-radio-button nzValue="D">D</label>
+      <ng-container [ngClass]>
+        <label nz-radio-button nzValue="A">A</label>
+        <label nz-radio-button nzValue="B">B</label>
+        <label nz-radio-button nzValue="C">C</label>
+        <label nz-radio-button nzValue="D">D</label>
+      </ng-container>
     </nz-radio-group>`
 })
 
