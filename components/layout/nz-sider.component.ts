@@ -20,7 +20,7 @@ import {
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
 import { fromEvent, Subject } from 'rxjs';
-import { auditTime, startWith, takeUntil } from 'rxjs/operators';
+import { auditTime, takeUntil } from 'rxjs/operators';
 import { InputBoolean } from '../core/util/convert';
 import { NzLayoutComponent } from './nz-layout.component';
 
@@ -111,9 +111,10 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     if (this.platform.isBrowser) {
+      Promise.resolve().then(() => this.watchMatchMedia());
       this.ngZone.runOutsideAngular(() => {
         fromEvent(window, 'resize')
-        .pipe(startWith(null), auditTime(16), takeUntil(this.destroy$))
+        .pipe(auditTime(16), takeUntil(this.destroy$))
         .subscribe(() => this.watchMatchMedia());
       });
     }
