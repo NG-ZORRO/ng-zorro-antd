@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { fromEvent, Subject } from 'rxjs';
-import { auditTime, startWith, takeUntil } from 'rxjs/operators';
+import { auditTime, takeUntil } from 'rxjs/operators';
 
 export interface AutoSizeType {
   minRows?: number;
