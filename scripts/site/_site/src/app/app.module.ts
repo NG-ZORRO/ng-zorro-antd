@@ -28,7 +28,7 @@ const icons: IconDefinition[] = [ LeftOutline, RightOutline ];
     HttpClientModule,
     ShareModule,
     NgZorroAntdModule,
-    RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules } : {})
+    RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules } : {}),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers   : [
