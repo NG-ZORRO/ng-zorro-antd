@@ -50,7 +50,7 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
   private touchedSubscription: Subscription;
   onChange: (_: string) => void = () => null;
   onTouched: () => void = () => null;
-  @ContentChildren(forwardRef(() => NzRadioComponent)) radios: QueryList<NzRadioComponent>;
+  @ContentChildren(forwardRef(() => NzRadioComponent), { descendants: true }) radios: QueryList<NzRadioComponent>;
   @Input() @InputBoolean() nzDisabled: boolean;
   @Input() nzButtonStyle: NzRadioButtonStyle = 'outline';
   @Input() nzSize: NzSizeLDSType = 'default';

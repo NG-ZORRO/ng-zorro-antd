@@ -28,6 +28,7 @@ export { default as pt_BR } from './languages/pt_BR';
 export { default as pt_PT } from './languages/pt_PT';
 export { default as ru_RU } from './languages/ru_RU';
 export { default as sk_SK } from './languages/sk_SK';
+export { default as sl_SI } from './languages/sl_SI';
 export { default as sr_RS } from './languages/sr_RS';
 export { default as sv_SE } from './languages/sv_SE';
 export { default as th_TH } from './languages/th_TH';
