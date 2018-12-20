@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@angular/cdk": "^7.0.0",
+    "@angular/pwa": "^0.11.3",
     "@ant-design/icons-angular": "2.0.0-beta.1",
     "date-fns": "^1.29.0"
   },
@@ -54,6 +55,7 @@
     "@angular/platform-browser": "~7.0.0",
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
+    "@angular/service-worker": "~7.0.0",
     "@schematics/angular": "~7.0.0",
     "@stackblitz/sdk": "^1.1.1",
     "@types/fs-extra": "^5.0.4",
@@ -79,6 +81,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "less": "^3.9.0",
     "less-plugin-clean-css": "^1.5.1",
     "marked": "^0.5.1",
     "ng-packagr": "^4.0.0",
