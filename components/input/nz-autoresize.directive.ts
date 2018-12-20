@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { fromEvent, Subject } from 'rxjs';
-import { auditTime, takeUntil } from 'rxjs/operators';
+import { auditTime, startWith, takeUntil } from 'rxjs/operators';
 
 export interface AutoSizeType {
   minRows?: number;
@@ -19,7 +19,12 @@ export interface AutoSizeType {
 }
 
 @Directive({
-  selector: 'textarea[nzAutosize]'
+  selector: 'textarea[nzAutosize]',
+  host    : {
+    // Textarea elements that have the directive applied should have a single row by default.
+    // Browsers normally show two rows by default and therefore this limits the minRows binding.
+    rows: '1'
+  }
 })
 export class NzAutoResizeDirective implements AfterViewInit, OnDestroy {
   private _autosize: boolean | AutoSizeType = false;
@@ -30,6 +35,7 @@ export class NzAutoResizeDirective implements AfterViewInit, OnDestroy {
   private minRows: number;
   private maxRows: number;
   private destroy$ = new Subject();
+  private inputGap = 10;
 
   @Input()
   set nzAutosize(value: string | boolean | AutoSizeType) {
@@ -74,10 +80,7 @@ export class NzAutoResizeDirective implements AfterViewInit, OnDestroy {
     // need to be removed temporarily.
     textarea.classList.add('cdk-textarea-autosize-measuring');
     textarea.placeholder = '';
-
-    // The cdk-textarea-autosize-measuring class includes a 2px padding to workaround an issue with
-    // Chrome, so we account for that extra space here by subtracting 4 (2px top + 2px bottom).
-    const height = textarea.scrollHeight - 4;
+    const height = Math.round((textarea.scrollHeight - this.inputGap) / this.cachedLineHeight) * this.cachedLineHeight + this.inputGap;
 
     // Use the scrollHeight to know how large the textarea *would* be if fit its entire value.
     textarea.style.height = `${height}px`;
@@ -134,7 +137,7 @@ export class NzAutoResizeDirective implements AfterViewInit, OnDestroy {
     textareaClone.style.overflow = 'hidden';
 
     this.el.parentNode.appendChild(textareaClone);
-    this.cachedLineHeight = textareaClone.clientHeight;
+    this.cachedLineHeight = textareaClone.clientHeight - this.inputGap - 1;
     this.el.parentNode.removeChild(textareaClone);
 
     // Min and max heights have to be re-calculated if the cached line height changes
@@ -144,7 +147,7 @@ export class NzAutoResizeDirective implements AfterViewInit, OnDestroy {
 
   setMinHeight(): void {
     const minHeight = this.minRows && this.cachedLineHeight ?
-      `${this.minRows * this.cachedLineHeight}px` : null;
+      `${this.minRows * this.cachedLineHeight + this.inputGap}px` : null;
 
     if (minHeight) {
       this.el.style.minHeight = minHeight;
@@ -153,7 +156,7 @@ export class NzAutoResizeDirective implements AfterViewInit, OnDestroy {
 
   setMaxHeight(): void {
     const maxHeight = this.maxRows && this.cachedLineHeight ?
-      `${this.maxRows * this.cachedLineHeight}px` : null;
+      `${this.maxRows * this.cachedLineHeight + this.inputGap}px` : null;
 
     if (maxHeight) {
       this.el.style.maxHeight = maxHeight;
@@ -166,6 +169,7 @@ export class NzAutoResizeDirective implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     if (this.nzAutosize && this.platform.isBrowser) {
       if (this.ngControl) {
+        this.resizeToFitContent();
         this.ngZone.runOutsideAngular(() => {
           fromEvent(window, 'resize')
           .pipe(auditTime(16), takeUntil(this.destroy$))
