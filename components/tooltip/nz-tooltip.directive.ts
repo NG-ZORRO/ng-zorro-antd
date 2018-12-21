@@ -5,7 +5,6 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
-  HostBinding,
   Input,
   OnChanges,
   OnDestroy,
@@ -24,7 +23,10 @@ import { isNotNil } from '../core/util/check';
 import { NzToolTipComponent } from './nz-tooltip.component';
 
 @Directive({
-  selector: '[nz-tooltip]'
+  selector: '[nz-tooltip]',
+  host: {
+    '[class.ant-tooltip-open]': 'isTooltipOpen'
+  }
 })
 export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   // [NOTE] Here hard coded, and nzTitle used only under NzTooltipDirective currently.
@@ -34,7 +36,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   visible: boolean;
   factory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
 
-  /** Names of properties that should be proxied to child component. */
+  /** Names of properties that should be proxy to child component. */
   protected needProxyProperties = [
     'nzTitle',
     'nzContent',
@@ -61,11 +63,6 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   @Input() nzTrigger: string;
   @Input() nzVisible: boolean;
   @Input() nzPlacement: string;
-
-  @HostBinding('class.ant-tooltip-open')
-  get isOpen(): boolean {
-    return this.isTooltipOpen;
-  }
 
   constructor(
     public elementRef: ElementRef,

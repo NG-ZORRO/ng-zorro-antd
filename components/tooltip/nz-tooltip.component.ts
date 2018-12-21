@@ -42,27 +42,18 @@ export class NzToolTipComponent {
   _prefix = 'ant-tooltip-placement';
   _positions: ConnectionPositionPair[] = [ ...DEFAULT_4_POSITIONS ];
   _classMap = {};
-  _content: string | TemplateRef<void>; // Never used in tooltip, a placeholder for subclass components.
   _placement = 'top';
   _trigger = 'hover';
   overlayOrigin: CdkOverlayOrigin;
   visibleSource = new BehaviorSubject<boolean>(false);
   visible$: Observable<boolean> = this.visibleSource.asObservable();
-  @ContentChild('nzTemplate') _title: string | TemplateRef<void>;
   @ViewChild('overlay') overlay: CdkConnectedOverlay;
 
+  @Input() @ContentChild('nzTemplate') nzTitle: string | TemplateRef<void>;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [ key: string ]: string } = {};
   @Input() nzMouseEnterDelay = 0.15; // second
   @Input() nzMouseLeaveDelay = 0.1; // second
-
-  @Input()
-  get nzTitle(): string | TemplateRef<void> { return this._title; }
-  set nzTitle(value: string | TemplateRef<void>) { this._title = value; }
-
-  @Input()
-  get nzContent(): string | TemplateRef<void> { return this._content; }
-  set nzContent(value: string | TemplateRef<void>) { this._content = value; }
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 

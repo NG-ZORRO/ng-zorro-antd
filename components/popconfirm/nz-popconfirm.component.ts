@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { fadeAnimation } from '../core/animation/fade-animations';
 import { InputBoolean } from '../core/util/convert';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
@@ -28,6 +28,10 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
 
   @Output() readonly nzOnCancel: EventEmitter<void> = new EventEmitter();
   @Output() readonly nzOnConfirm: EventEmitter<void> = new EventEmitter();
+
+  constructor(cdr: ChangeDetectorRef) {
+    super(cdr);
+  }
 
   show(): void {
     if (!this.nzCondition) {
