@@ -51,8 +51,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
     if (this.nzAutoGenerate) {
       try {
         const activatedRoute = this.injector.get(ActivatedRoute);
-        const router = this.injector.get(Router);
-        router.events.pipe(filter(e => e instanceof NavigationEnd), takeUntil(this.destroy$)).subscribe(() => {
+        activatedRoute.url.pipe(takeUntil(this.destroy$)).subscribe(() => {
           this.breadcrumbs = this.getBreadcrumbs(activatedRoute.root);
           this.cd.markForCheck();
         });
