@@ -11,7 +11,10 @@ import { NzTooltipDirective } from '../tooltip/nz-tooltip.directive';
 import { NzPopoverComponent } from './nz-popover.component';
 
 @Directive({
-  selector: '[nz-popover]'
+  selector: '[nz-popover]',
+  host: {
+    '[class.ant-popover-open]': 'isTooltipOpen'
+  }
 })
 export class NzPopoverDirective extends NzTooltipDirective {
   factory: ComponentFactory<NzPopoverComponent> = this.resolver.resolveComponentFactory(NzPopoverComponent);

@@ -19,7 +19,10 @@ import { NzTooltipDirective } from '../tooltip/nz-tooltip.directive';
 import { NzPopconfirmComponent } from './nz-popconfirm.component';
 
 @Directive({
-  selector: '[nz-popconfirm]'
+  selector: '[nz-popconfirm]',
+  host: {
+    '[class.ant-popover-open]': 'isTooltipOpen'
+  }
 })
 export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit {
   factory: ComponentFactory<NzPopconfirmComponent> = this.resolver.resolveComponentFactory(NzPopconfirmComponent);
