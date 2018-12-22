@@ -19,8 +19,10 @@
         [class.ant-tabs-nav-animated]="nzAnimated"
         #navListElement
         (cdkObserveContent)="onContentChanges()">
+        <div>
+          <ng-content></ng-content>
+        </div>
         <div nz-tabs-ink-bar [hidden]="nzHideBar" [nzAnimated]="nzAnimated" [nzPositionMode]="nzPositionMode" style="display: block;"></div>
-        <ng-content></ng-content>
       </div>
     </div>
   </div>

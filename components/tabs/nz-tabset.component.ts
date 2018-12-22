@@ -47,9 +47,6 @@ export type NzTabType = 'line' | 'card';
   encapsulation      : ViewEncapsulation.None,
   providers          : [ NzUpdateHostClassService ],
   templateUrl        : './nz-tabset.component.html',
-  host               : {
-    '(scroll)': 'onScroll($event)'
-  },
   styles             : [ `
     nz-tabset {
       display: block;
@@ -233,18 +230,6 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
 
   removeTab(value: NzTabComponent): void {
     this.listOfNzTabComponent.splice(this.listOfNzTabComponent.indexOf(value), 1);
-  }
-
-  // From https://github.com/react-component/tabs/blob/master/src/Tabs.js
-  // Prevent focus to make the Tabs scroll offset
-  onScroll($event: Event): void {
-    const target: Element = $event.target as Element;
-    if (target.scrollLeft > 0) {
-      target.scrollLeft = 0;
-      if (this.document && this.document.activeElement) {
-        (this.document.activeElement as HTMLElement).blur();
-      }
-    }
   }
 
   // tslint:disable-next-line:no-any

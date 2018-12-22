@@ -1,7 +1,6 @@
 import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
+import { fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { dispatchFakeEvent } from '../core/testing';
 
 import { NzTabsModule } from './nz-tabs.module';
 import { NzTabSetComponent } from './nz-tabset.component';
@@ -449,26 +448,17 @@ describe('tabs', () => {
       expect(testComponent.select02).toHaveBeenCalledTimes(0);
       expect(testComponent.deselect02).toHaveBeenCalledTimes(0);
     }));
-    it('should prevent focus scroll', fakeAsync(() => {
-      fixture.detectChanges();
-      expect(tabs.nativeElement.scrollLeft).toBe(0);
-      const input: HTMLInputElement = tabs.nativeElement.querySelector('button');
-      input.focus();
-      expect(tabs.nativeElement.scrollLeft > 0).toBe(true);
-      dispatchFakeEvent(tabs.nativeElement, 'scroll');
-      flush();
-      fixture.detectChanges();
-      expect(tabs.nativeElement.scrollLeft).toBe(0);
-    }));
   });
 
   describe('init nzTabPosition to left', () => {
-    it('should next and prev buttons display abnormal', () => {
+    it('should next and prev buttons display abnormal', fakeAsync(() => {
       const fixture = TestBed.createComponent(NzTestTabsTabPositionLeftComponent);
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       const tabs = fixture.debugElement.query(By.directive(NzTabSetComponent));
       expect(tabs.nativeElement.querySelector('.ant-tabs-nav-container').classList).not.toContain('ant-tabs-nav-container-scrolling');
-    });
+    }));
   });
 });
 
