@@ -123,14 +123,14 @@ describe('carousel', () => {
       fixture.detectChanges();
       expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
       fixture.detectChanges();
-      tick(3000 + 10);
+      tick(5000);
       fixture.detectChanges();
       expect(carouselContents[ 1 ].nativeElement.classList).toContain('slick-active');
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
       fixture.detectChanges();
-      tick(3000 + 10);
+      tick(5000);
       fixture.detectChanges();
-      testComponent.nzCarouselComponent.clearTimeout();
+      testComponent.nzCarouselComponent.clearTimeout(); // Manually stop the auto play to quit this test.
       expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
     }));
     it('should autoplay speed work', fakeAsync(() => {
