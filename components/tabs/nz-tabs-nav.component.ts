@@ -77,7 +77,9 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     this._tabPositionMode = value;
     this.alignInkBarToSelectedTab();
     if (this.nzShowPagination) {
-      this.updatePagination();
+      Promise.resolve().then(() => {
+        this.updatePagination();
+      });
     }
   }
 
@@ -175,9 +177,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   }
 
   checkPaginationEnabled(): void {
-    this.showPaginationControls =
-      this.tabListScrollWidthHeightPix > this.elementRefOffSetWidthHeight;
-
+    this.showPaginationControls = this.tabListScrollWidthHeightPix > this.elementRefOffSetWidthHeight;
     if (!this.showPaginationControls) {
       this.scrollDistance = 0;
     }

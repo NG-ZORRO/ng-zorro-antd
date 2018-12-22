@@ -1,5 +1,13 @@
 <div
   class="ant-tabs-bar"
+  [class.ant-tabs-card-bar]="nzType === 'card'"
+  [class.ant-tabs-top-bar]="nzTabPosition === 'top'"
+  [class.ant-tabs-bottom-bar]="nzTabPosition === 'bottom'"
+  [class.ant-tabs-left-bar]="nzTabPosition === 'left'"
+  [class.ant-tabs-right-bar]="nzTabPosition === 'right'"
+  [class.ant-tabs-small-bar]="nzSize === 'small'"
+  [class.ant-tabs-default-bar]="nzSize === 'default'"
+  [class.ant-tabs-large-bar]="nzSize === 'large'"
   nz-tabs-nav
   role="tablist"
   tabindex="0"
@@ -24,9 +32,12 @@
     <ng-container *nzStringTemplateOutlet="tab.nzTitle">{{ tab.nzTitle }}</ng-container>
   </div>
 </div>
-<div
-  class="ant-tabs-content"
+<div class="ant-tabs-content"
   #tabContent
+  [class.ant-tabs-top-content]="nzTabPosition === 'top'"
+  [class.ant-tabs-bottom-content]="nzTabPosition === 'bottom'"
+  [class.ant-tabs-left-content]="nzTabPosition === 'left'"
+  [class.ant-tabs-right-content]="nzTabPosition === 'right'"
   [class.ant-tabs-content-animated]="tabPaneAnimated"
   [class.ant-tabs-content-no-animated]="!tabPaneAnimated"
   [style.margin-left.%]="tabPaneAnimated&&(-nzSelectedIndex*100)">
