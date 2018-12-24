@@ -43,58 +43,62 @@ You can get component generation code in our doc after expand the code panel bel
 ### Command
 
 ```bash
-ng g ng-zorro-antd:[template] --name=NAME [options]
+ng g ng-zorro-antd:[schematic] <name> [options]
 ```
 
 For example, you can generate an login form with the follow command.
 
 ```bash
-ng g ng-zorro-antd:form-normal-login -p app --styleext=less --name=login
+ng g ng-zorro-antd:form-normal-login login
 ```
 
 ### Options
 
-***--name***
+***--entry-component***
 
-Specify the component name(required)
-
-***--styleext***
-
-The type of style file（default css).
-
-***--prefix***, ***-p***
-
-The prefix name of the component.
-
-***--inlineStyle***, ***-s***
-
-Using inline style.
-
-***--inlineTemplate***, ***-t***
-
-Using inline template.
-
-***--path***
-
-Specify the path of the created component.
-
-***--spec***
-
-Create test file.
-
-***--skipImport***
-
-Skip module import.
-
-***--selector***
-
-The name of selector.
+Specifies if the component is an entry component of declaring module.
 
 ***--export***
 
-Should add component to `exports` part.
+Specifies if declaring module exports the component.
 
-***--module***, ***-m***
+***--flat***
 
-Specify the module name.
+Flag to indicate if a dir is created.
+
+***--inline-style (-s)***
+
+Specifies if the style will be in the ts file.
+
+***--inline-template (-t)***
+
+Specifies if the template will be in the ts file.
+
+***--module (-m)***
+
+Allows specification of the declaring module.
+
+***--prefix (-p)***
+
+The prefix to apply to generated selectors.
+
+***--project***
+
+The name of the project.
+
+***--selector***
+
+The selector to use for the component.
+
+***--skip-import***
+
+Flag to skip the module import.
+
+***--spec***
+
+Specifies if a spec file is generated.
+
+***--styleext***
+
+The file extension to be used for style files.
 

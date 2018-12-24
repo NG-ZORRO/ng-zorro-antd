@@ -1,13 +1,9 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "AddNgZorroTable",
-  "title": "Add NG-ZORRO Table",
+  "id": "PLACEHOLDER_SCHEMATICS_ID",
+  "title": "PLACEHOLDER_SCHEMATICS_TITLE",
   "type": "object",
   "properties": {
-    "name": {
-      "type": "string",
-      "description": "The name of the component."
-    },
     "path": {
       "type": "string",
       "format": "path",
@@ -17,7 +13,18 @@
     "project": {
       "type": "string",
       "description": "The name of the project.",
-      "visible": false
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the component.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What should be the name of the component?"
     },
     "inlineStyle": {
       "description": "Specifies if the style will be in the ts file.",
@@ -39,13 +46,11 @@
     },
     "styleext": {
       "description": "The file extension to be used for style files.",
-      "type": "string",
-      "default": "css"
+      "type": "string"
     },
     "spec": {
       "type": "boolean",
-      "description": "Specifies if a spec file is generated.",
-      "default": true
+      "description": "Specifies if a spec file is generated."
     },
     "flat": {
       "type": "boolean",
@@ -62,7 +67,7 @@
       "format": "html-selector",
       "description": "The selector to use for the component."
     },
-    "module":  {
+    "module": {
       "type": "string",
       "description": "Allows specification of the declaring module.",
       "alias": "m"
@@ -71,6 +76,11 @@
       "type": "boolean",
       "default": false,
       "description": "Specifies if declaring module exports the component."
+    },
+    "entryComponent": {
+      "type": "boolean",
+      "default": false,
+      "description": "Specifies if the component is an entry component of declaring module."
     }
   },
   "required": [
