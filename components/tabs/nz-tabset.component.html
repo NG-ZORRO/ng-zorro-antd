@@ -1,51 +1,51 @@
-<div
-  class="ant-tabs-bar"
-  [class.ant-tabs-card-bar]="nzType === 'card'"
-  [class.ant-tabs-top-bar]="nzTabPosition === 'top'"
-  [class.ant-tabs-bottom-bar]="nzTabPosition === 'bottom'"
-  [class.ant-tabs-left-bar]="nzTabPosition === 'left'"
-  [class.ant-tabs-right-bar]="nzTabPosition === 'right'"
-  [class.ant-tabs-small-bar]="nzSize === 'small'"
-  [class.ant-tabs-default-bar]="nzSize === 'default'"
-  [class.ant-tabs-large-bar]="nzSize === 'large'"
-  nz-tabs-nav
-  role="tablist"
-  tabindex="0"
-  [nzType]="nzType"
-  [nzShowPagination]="nzShowPagination"
-  [nzPositionMode]="tabPositionMode"
-  [nzAnimated]="inkBarAnimated"
-  [ngStyle]="nzTabBarStyle"
-  [nzHideBar]="nzHideAll"
-  [nzTabBarExtraContent]="nzTabBarExtraContent"
-  [selectedIndex]="nzSelectedIndex"
-  (nzOnNextClick)="nzOnNextClick.emit()"
-  (nzOnPrevClick)="nzOnPrevClick.emit()">
-  <div
-    nz-tab-label
-    role="tab"
-    [style.margin-right.px]="nzTabBarGutter"
-    [class.ant-tabs-tab-active]="(nzSelectedIndex == i) && !nzHideAll"
-    [disabled]="tab.nzDisabled"
-    (click)="clickLabel(i,tab.nzDisabled)"
-    *ngFor="let tab of listOfNzTabComponent; let i = index">
-    <ng-container *nzStringTemplateOutlet="tab.nzTitle">{{ tab.nzTitle }}</ng-container>
+<ng-container *ngIf="listOfNzTabComponent">
+  <div nz-tabs-nav
+    role="tablist"
+    tabindex="0"
+    class="ant-tabs-bar"
+    [class.ant-tabs-card-bar]="nzType === 'card'"
+    [class.ant-tabs-top-bar]="nzTabPosition === 'top'"
+    [class.ant-tabs-bottom-bar]="nzTabPosition === 'bottom'"
+    [class.ant-tabs-left-bar]="nzTabPosition === 'left'"
+    [class.ant-tabs-right-bar]="nzTabPosition === 'right'"
+    [class.ant-tabs-small-bar]="nzSize === 'small'"
+    [class.ant-tabs-default-bar]="nzSize === 'default'"
+    [class.ant-tabs-large-bar]="nzSize === 'large'"
+    [nzType]="nzType"
+    [nzShowPagination]="nzShowPagination"
+    [nzPositionMode]="tabPositionMode"
+    [nzAnimated]="inkBarAnimated"
+    [ngStyle]="nzTabBarStyle"
+    [nzHideBar]="nzHideAll"
+    [nzTabBarExtraContent]="nzTabBarExtraContent"
+    [selectedIndex]="nzSelectedIndex"
+    (nzOnNextClick)="nzOnNextClick.emit()"
+    (nzOnPrevClick)="nzOnPrevClick.emit()">
+    <div nz-tab-label
+      role="tab"
+      [style.margin-right.px]="nzTabBarGutter"
+      [class.ant-tabs-tab-active]="(nzSelectedIndex == i) && !nzHideAll"
+      [disabled]="tab.nzDisabled"
+      (click)="clickLabel(i,tab.nzDisabled)"
+      *ngFor="let tab of listOfNzTabComponent; let i = index">
+      <ng-container *nzStringTemplateOutlet="tab.nzTitle">{{ tab.nzTitle }}</ng-container>
+    </div>
   </div>
-</div>
-<div class="ant-tabs-content"
-  #tabContent
-  [class.ant-tabs-top-content]="nzTabPosition === 'top'"
-  [class.ant-tabs-bottom-content]="nzTabPosition === 'bottom'"
-  [class.ant-tabs-left-content]="nzTabPosition === 'left'"
-  [class.ant-tabs-right-content]="nzTabPosition === 'right'"
-  [class.ant-tabs-content-animated]="tabPaneAnimated"
-  [class.ant-tabs-content-no-animated]="!tabPaneAnimated"
-  [style.margin-left.%]="tabPaneAnimated&&(-nzSelectedIndex*100)">
-  <div nz-tab-body
-    *ngFor="let tab of listOfNzTabComponent; let i = index"
-    class="ant-tabs-tabpane"
-    [active]="(nzSelectedIndex == i) && !nzHideAll"
-    [forceRender]="tab.nzForceRender"
-    [content]="tab.content">
+  <div #tabContent
+    class="ant-tabs-content"
+    [class.ant-tabs-top-content]="nzTabPosition === 'top'"
+    [class.ant-tabs-bottom-content]="nzTabPosition === 'bottom'"
+    [class.ant-tabs-left-content]="nzTabPosition === 'left'"
+    [class.ant-tabs-right-content]="nzTabPosition === 'right'"
+    [class.ant-tabs-content-animated]="tabPaneAnimated"
+    [class.ant-tabs-content-no-animated]="!tabPaneAnimated"
+    [style.margin-left.%]="tabPaneAnimated && (-nzSelectedIndex*100)">
+    <div nz-tab-body
+      class="ant-tabs-tabpane"
+      *ngFor="let tab of listOfNzTabComponent; let i = index"
+      [active]="(nzSelectedIndex == i) && !nzHideAll"
+      [forceRender]="tab.nzForceRender"
+      [content]="tab.content">
+    </div>
   </div>
-</div>
+</ng-container>
