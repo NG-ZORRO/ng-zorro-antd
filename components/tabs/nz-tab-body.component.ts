@@ -1,9 +1,10 @@
-import { Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector           : '[nz-tab-body]',
   preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None,
+  changeDetection    : ChangeDetectionStrategy.OnPush,
   templateUrl        : './nz-tab-body.component.html',
   host               : {
     '[class.ant-tabs-tabpane-active]'  : 'active',
