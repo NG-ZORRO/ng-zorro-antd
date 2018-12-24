@@ -364,6 +364,19 @@ describe('auto-complete', () => {
 
     }));
 
+    it('should overlayClassName & overlayStyle work', () => {
+      fixture.componentInstance.overlayClassName = 'testClass';
+      fixture.componentInstance.overlayStyle = { color: 'rgb(1, 2, 3)' };
+      fixture.detectChanges();
+
+      fixture.componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+
+      const dropdown = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+      expect(dropdown.classList.contains(`testClass`)).toBe(true);
+      expect(dropdown.style.color).toBe(`rgb(1, 2, 3)`);
+    });
+
   });
 
   describe('value', () => {
@@ -929,7 +942,7 @@ class NzTestSimpleAutocompleteComponent {
   <div>
       <input [(ngModel)]="inputValue"
              [nzAutocomplete]="auto">
-      <nz-autocomplete [nzWidth]="width" [nzDataSource]="options" [nzDefaultActiveFirstOption]="false" nzBackfill #auto>
+      <nz-autocomplete [nzWidth]="width" [nzOverlayClassName]="overlayClassName" [nzOverlayStyle]="overlayStyle" [nzDataSource]="options" [nzDefaultActiveFirstOption]="false" nzBackfill #auto>
       </nz-autocomplete>
   </div>
   `
@@ -937,6 +950,8 @@ class NzTestSimpleAutocompleteComponent {
 class NzTestAutocompletePropertyComponent {
   inputValue: string;
   width: number;
+  overlayClassName = '';
+  overlayStyle = {};
   options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
   @ViewChild(NzAutocompleteComponent) panel: NzAutocompleteComponent;
   @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;

@@ -1,6 +1,4 @@
-import {
-  AnimationEvent
-} from '@angular/animations';
+import { AnimationEvent } from '@angular/animations';
 import {
   CdkConnectedOverlay,
   CdkOverlayOrigin,
@@ -8,6 +6,7 @@ import {
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -15,7 +14,8 @@ import {
   Input,
   Output,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -25,6 +25,8 @@ import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-tooltip',
   animations         : [ fadeAnimation ],
   templateUrl        : './nz-tooltip.component.html',
@@ -42,39 +44,18 @@ export class NzToolTipComponent {
   _classMap = {};
   _placement = 'top';
   _trigger = 'hover';
-  _content: string | TemplateRef<void>;
   overlayOrigin: CdkOverlayOrigin;
-  isContentString: boolean;
-  isTitleString: boolean;
   visibleSource = new BehaviorSubject<boolean>(false);
   visible$: Observable<boolean> = this.visibleSource.asObservable();
-  @ContentChild('nzTemplate') _title: string | TemplateRef<void>;
   @ViewChild('overlay') overlay: CdkConnectedOverlay;
-  @Output() readonly nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
 
+  @Input() @ContentChild('nzTemplate') nzTitle: string | TemplateRef<void>;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [ key: string ]: string } = {};
-  @Input() nzMouseEnterDelay = 0.15; // Unit: second
-  @Input() nzMouseLeaveDelay = 0.1; // Unit: second
-  @Input()
-  set nzContent(value: string | TemplateRef<void>) {
-    this.isContentString = !(value instanceof TemplateRef);
-    this._content = value;
-  }
+  @Input() nzMouseEnterDelay = 0.15; // second
+  @Input() nzMouseLeaveDelay = 0.1; // second
 
-  get nzContent(): string | TemplateRef<void> {
-    return this._content;
-  }
-
-  @Input()
-  set nzTitle(value: string | TemplateRef<void>) {
-    this.isTitleString = !(value instanceof TemplateRef);
-    this._title = value;
-  }
-
-  get nzTitle(): string | TemplateRef<void> {
-    return this._title;
-  }
+  @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   @Input()
   set nzVisible(value: boolean) {
@@ -160,10 +141,9 @@ export class NzToolTipComponent {
     this.overlayOrigin = origin;
   }
 
-  constructor(public cdr: ChangeDetectorRef) {
-  }
+  constructor(public cdr: ChangeDetectorRef) {}
 
-  isContentEmpty(): boolean {
-    return this.isTitleString ? (this.nzTitle === '' || !isNotNil(this.nzTitle)) : false; // Pity, can't detect whether nzTemplate is empty due to can't get it's content before shown up
+  protected isContentEmpty(): boolean {
+    return this.nzTitle instanceof TemplateRef ? false : (this.nzTitle === '' || !isNotNil(this.nzTitle));
   }
 }

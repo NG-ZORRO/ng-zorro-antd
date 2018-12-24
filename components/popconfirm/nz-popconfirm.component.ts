@@ -1,15 +1,11 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { fadeAnimation } from '../core/animation/fade-animations';
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 
 @Component({
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-popconfirm',
   preserveWhitespaces: false,
   animations         : [ fadeAnimation ],
@@ -21,24 +17,20 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
   ` ]
 })
 export class NzPopconfirmComponent extends NzToolTipComponent {
-  _condition = false;
   _prefix = 'ant-popover-placement';
   _trigger = 'click';
   _hasBackdrop = true;
-  @Output() readonly nzOnCancel: EventEmitter<void> = new EventEmitter();
-  @Output() readonly nzOnConfirm: EventEmitter<void> = new EventEmitter();
 
   @Input() nzOkText: string;
   @Input() nzOkType: string = 'primary';
   @Input() nzCancelText: string;
+  @Input() @InputBoolean() nzCondition = false;
 
-  @Input()
-  set nzCondition(value: boolean) {
-    this._condition = toBoolean(value);
-  }
+  @Output() readonly nzOnCancel: EventEmitter<void> = new EventEmitter();
+  @Output() readonly nzOnConfirm: EventEmitter<void> = new EventEmitter();
 
-  get nzCondition(): boolean {
-    return this._condition;
+  constructor(cdr: ChangeDetectorRef) {
+    super(cdr);
   }
 
   show(): void {
@@ -58,9 +50,4 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
     this.nzOnConfirm.emit();
     this.nzVisible = false;
   }
-
-  constructor(cdr: ChangeDetectorRef) {
-    super(cdr);
-  }
-
 }

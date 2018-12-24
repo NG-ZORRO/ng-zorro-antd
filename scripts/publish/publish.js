@@ -43,8 +43,9 @@ function changeVersion() {
   log.info('Updating version number...');
 
   const packageJsonPath = path.join(__dirname, '../../components/package.json');
-  const appComponentPath = path.join(__dirname, '../site/_site/src/app/app.component.ts') ;
+  const appComponentPath = path.join(__dirname, '../site/_site/src/app/app.component.ts');
   const codeBoxPath = path.join(__dirname, '../site/_site/src/app/share/nz-codebox/nz-codebox.component.ts');
+  const zorroVersionPath = path.join(__dirname, '../../components/version.ts');
 
   const packageJson = fs.readJsonSync(packageJsonPath);
   const currentVersion = packageJson.version;
@@ -59,17 +60,19 @@ function changeVersion() {
     }
 
     return {
-      major: Number(matches[1]),
-      minor: Number(matches[2]),
-      patch: Number(matches[3]),
+      major : Number(matches[1]),
+      minor : Number(matches[2]),
+      patch : Number(matches[3]),
       preTag: matches[4],
-      pre: Number(matches[5]),
+      pre   : Number(matches[5]),
     }
   }
 
   function checkVersionNumber(cur, next) {
     // Must be numbers and dots.
-    if (!versionNameRegex.test(next)) { return false; }
+    if (!versionNameRegex.test(next)) {
+      return false;
+    }
 
     const curVersion = parseVersion(cur);
     const nextVersion = parseVersion(next);
@@ -109,6 +112,10 @@ function changeVersion() {
   fs.writeFileSync(codeBoxPath,
     fs.readFileSync(codeBoxPath, 'utf-8').replace(/'ng-zorro-antd' +: '.+'/g, `'ng-zorro-antd'                    : '^${version}'`)
   );
+  fs.writeFileSync(zorroVersionPath,
+    fs.readFileSync(zorroVersionPath, 'utf-8')
+      .replace(/Version\('.+'\);/g, `Version('${version}');`)
+  );
   log.success('Version updated!');
 }
 
@@ -138,9 +145,8 @@ function generatingPublishNote() {
 }
 
 function preRelease() {
-  // FIXME: No command line output???
   log.info('Running pre-release script... Be patient...');
-  execSync('npm run pre-release');
+  execSync('npm run pre-release', {stdio: [0, 1, 2]});
   log.info('pre-release completed!');
 }
 
