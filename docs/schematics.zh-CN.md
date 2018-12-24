@@ -9,13 +9,13 @@ title: 脚手架
 
 自动完成 `ng-zorro-antd` 的初始化配置，包括引入国际化文件，导入模块，引入样式文件等工作。
 
-### 初始化命令
+### 命令
 
 ```bash
 ng add ng-zorro-antd [options]
 ```
 
-### 初始化参数
+### 参数
 
 ***--theme***
 
@@ -41,62 +41,64 @@ ng add ng-zorro-antd [options]
 
 快速生成模板代码，每个官网的代码演示都附有可生成的模板，开发者可以通过展开每个组件的代码演示部分获取其生成代码。
 
-### 生成组件命令
+### 命令
 
 ```bash
-ng g ng-zorro-antd:[template] --name=NAME [options]
+ng g ng-zorro-antd:[schematic] <name> [options]
 ```
 
 例如通过以下代码可以快速生成一个登陆框组件
 
 ```bash
-ng g ng-zorro-antd:form-normal-login -p app --styleext=less --name=login
+ng g ng-zorro-antd:form-normal-login login
 ```
 
-### 生成组件参数
+### 参数
 
-***--name***
+***--entry-component***
 
-组件名称(必选)
-
-***--styleext***
-
-样式文件扩展名（默认 css）
-
-***--prefix***, ***-p***
-
-组件选择器前缀
-
-***--inlineStyle***, ***-s***
-
-使用行内样式
-
-***--inlineTemplate***, ***-t***
-
-使用行内模版
-
-***--path***
-
-指定组件创建目录（相当于执行时所在的目录）
-
-***--spec***
-
-是否生成 `.spec` 测试文件
-
-***--skipImport***
-
-是否跳过模块引入（及导入所属模块）
-
-***--selector***
-
-选择器名称（默认根据 `name` 自动生成）
+组件是否在模块的 `entryComponents` 声明
 
 ***--export***
 
-是否将组件声明在模块的 `exports`
+组件是否在模块的 `exports` 声明
 
+***--flat***
 
-***--module***, ***-m***
+指定是否创建目录
 
-指定要声明的模块名
+***--inline-style (-s)***
 
+指定是否使用行内样式
+
+***--inline-template (-t)***
+
+指定是否使用行内模版
+
+***--module (-m)***
+
+指定声明的模块
+
+***--prefix (-p)***
+
+组件选择器前缀
+
+***--project***
+
+指定声明到的项目名
+
+***--selector***
+
+组件的选择器名称
+
+***--skip-import***
+
+指定是否跳过模块引入
+
+***--spec***
+
+指定是否生成 `.spec` 测试文件
+
+***--styleext***
+
+指定样式文件扩展名
