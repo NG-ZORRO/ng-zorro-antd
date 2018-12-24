@@ -13,6 +13,7 @@ import { environment } from '../environments/environment';
 import { DEMOComponent } from './_demo/demo.component';
 import { AppComponent } from './app.component';
 import { routes } from './app.routing.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 const icons: IconDefinition[] = [ LeftOutline, RightOutline ];
 
@@ -27,7 +28,8 @@ const icons: IconDefinition[] = [ LeftOutline, RightOutline ];
     HttpClientModule,
     ShareModule,
     NgZorroAntdModule,
-    RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules } : {})
+    RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules } : {}),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers   : [
     Title,
