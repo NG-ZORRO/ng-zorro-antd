@@ -56,4 +56,4 @@ After cloning `ng-zorro-antd`, run `npm install` to fetch its dependencies. Then
 1. `npm run site:start` runs NG-ZORRO website locally.
 2. `npm run lint` checks the code style.
 3. `npm test` runs the complete test suite.
-5. `npm run generate` creates build of `ng-zorro-antd`.
+4. `npm run generate` creates build of `ng-zorro-antd`.
