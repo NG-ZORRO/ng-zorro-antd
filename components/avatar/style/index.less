@@ -1,7 +1,7 @@
-@import '../../style/themes/default';
-@import '../../style/mixins/index';
+@import "../../style/themes/default";
+@import "../../style/mixins/index";
 
-@avatar-prefix-cls: ~'@{ant-prefix}-avatar';
+@avatar-prefix-cls: ~"@{ant-prefix}-avatar";
 
 .@{avatar-prefix-cls} {
   .reset-component;
@@ -45,10 +45,8 @@
   line-height: @size;
   border-radius: 50%;
 
-  &-string {
-    position: absolute;
-    left: 50%;
-    transform-origin: 0 center;
+  & > * {
+    line-height: @size;
   }
 
   &.@{avatar-prefix-cls}-icon {
