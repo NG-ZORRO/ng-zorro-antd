@@ -13,7 +13,16 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
-# 7.0.0-rc.2
+# 7.0.0-rc.3
+`2018-12-26`
+
+### Bug Fixes
+
+* **table:** 修复 table 的 sticky 躺尸 ([#2688](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2688)) ([50d4fc4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/50d4fc4))
+* **transfer:** 修复 `Not Found` 的异常显示 ([#2687](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2687)) ([3df5779](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3df5779)), closes [#2686](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2686)
+
+
+# 7.0.0-rc.2 [deprecated]
 `2018-12-24`
 
 ### Bug Fixes
