@@ -13,8 +13,8 @@ timeline: true
 * Major version release is not included in this schedule for breadking change and new features.
 
 ---
-# 7.0.0-rc.2
-`2018-12-24`
+# 7.0.0-rc.3
+`2018-12-27`
 
 ### Bug Fixes
 
