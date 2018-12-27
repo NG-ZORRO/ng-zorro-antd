@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+
 import { fadeAnimation } from '../core/animation/fade-animations';
 import { isNotNil } from '../core/util';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
@@ -19,7 +20,8 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 export class NzPopoverComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';
 
-  @Input() @ContentChild('neverUsedTemplate') nzTitle: string | TemplateRef<void>; // used to remove NzToolTipComponent @ContentChild('nzTemplate')
+  /** Used to remove NzToolTipComponent @ContentChild('nzTemplate') */
+  @Input() @ContentChild('neverUsedTemplate') nzTitle: string | TemplateRef<void>;
   @Input() @ContentChild('nzTemplate') nzContent: string | TemplateRef<void>;
 
   constructor(cdr: ChangeDetectorRef) {

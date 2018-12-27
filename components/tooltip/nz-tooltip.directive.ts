@@ -24,7 +24,7 @@ import { NzToolTipComponent } from './nz-tooltip.component';
 
 @Directive({
   selector: '[nz-tooltip]',
-  host: {
+  host    : {
     '[class.ant-tooltip-open]': 'isTooltipOpen'
   }
 })
@@ -165,6 +165,11 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
           this.updateCompValue(key, change.currentValue);
         }
       });
+
+      if (changes.setTitle) {
+        this.nzTitle = changes.setTitle.currentValue;
+        this.updateCompValue('nzTitle', changes.setTitle.currentValue);
+      }
     }
   }
 }
