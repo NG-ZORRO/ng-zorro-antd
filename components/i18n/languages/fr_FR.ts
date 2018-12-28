@@ -14,8 +14,8 @@ export default {
     filterConfirm: 'OK',
     filterReset: 'Réinitialiser',
     emptyText: 'Aucune donnée',
-      selectAll: 'tout sélectionner',
-      selectInvert: 'sélectionnez inverser',
+    selectAll: 'tout sélectionner',
+    selectInvert: 'sélectionnez inverser',
   },
   Modal: {
     okText: 'OK',
@@ -35,10 +35,10 @@ export default {
   Select: {
     notFoundContent: 'Pas de résultat',
   },
-    Upload: {
-        uploading: 'upload de fichier',
-        removeFile: 'supprimer le fichier',
-        uploadError: ' erreur d\'upload de fichier',
-        previewFile: 'prévisualiser le fichier',
-    },
+  Upload: {
+    uploading: 'upload de fichier',
+    removeFile: 'supprimer le fichier',
+    uploadError: 'erreur d\'upload de fichier',
+    previewFile: 'prévisualiser le fichier',
+  },
 };
