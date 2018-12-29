@@ -33,7 +33,7 @@ export class NzMessageContainerComponent {
     }
     message.options = this._mergeMessageOptions(message.options);
     this.messages.push(message);
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
   }
 
   // Remove a message by messageId
@@ -41,7 +41,7 @@ export class NzMessageContainerComponent {
     this.messages.some((message, index) => {
       if (message.messageId === messageId) {
         this.messages.splice(index, 1);
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
         return true;
       }
     });
@@ -50,7 +50,7 @@ export class NzMessageContainerComponent {
   // Remove all messages
   removeMessageAll(): void {
     this.messages = [];
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
   }
 
   // Merge default options and custom message options

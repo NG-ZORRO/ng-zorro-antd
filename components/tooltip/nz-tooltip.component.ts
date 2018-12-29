@@ -108,7 +108,7 @@ export class NzToolTipComponent {
     }
     this.setClassMap();
     /** TODO may cause performance problem */
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
   }
 
   show(): void {

@@ -41,8 +41,8 @@ export class NzTimelineItemComponent implements OnInit, OnChanges {
     }
   }
 
-  detectChanges(): void {
-    this.cdr.detectChanges();
+  checkSelf(): void {
+    this.cdr.markForCheck();
   }
 
   private tryUpdateCustomColor(): void {

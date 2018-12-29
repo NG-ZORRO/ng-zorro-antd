@@ -44,7 +44,7 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
       }
       this.messages.push(notification);
     }
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
   }
 
   private replaceNotification(old: NzNotificationDataFilled, _new: NzNotificationDataFilled): void {

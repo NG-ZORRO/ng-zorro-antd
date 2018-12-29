@@ -164,7 +164,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
       }
       this.delayMenuTimer = setTimeout(() => {
         this.setMenuVisible(visible);
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
         this.clearDelayMenuTimer();
         if (visible) {
           setTimeout(() => {
@@ -184,7 +184,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
 
     if (this.menuVisible !== visible) {
       this.menuVisible = visible;
-      this.cdr.detectChanges();
+      this.cdr.markForCheck();
       if (visible) {
         this.loadRootOptions();
       }
@@ -292,7 +292,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
       this.setOptionSelected(option, columnIndex);
     }
 
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
   }
 
   private loadChildrenAsync(option: CascaderOption, columnIndex: number, success?: () => void, failure?: () => void): void {
@@ -304,7 +304,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
         if (option.children) {
           option.children.forEach(child => child.parent = columnIndex < 0 ? undefined : option);
           this.setColumnData(option.children, columnIndex + 1);
-          this.cdr.detectChanges();
+          this.cdr.markForCheck();
         }
         if (success) {
           success();
@@ -312,7 +312,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
       }, () => {
         option.loading = this.isLoading = false;
         option.isLeaf = true;
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
         if (failure) {
           failure();
         }
@@ -766,7 +766,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
       this.labelRenderText = defaultDisplayRender.call(this, labels, selectedOptions);
     }
     // When components inits with default value, this would make display label appear correctly.
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
   }
 
   //#endregion
@@ -816,7 +816,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     const newValue = position.connectionPair.originY === 'bottom' ? 'bottom' : 'top';
     if (this.dropDownPosition !== newValue) {
       this.dropDownPosition = newValue;
-      this.cdr.detectChanges();
+      this.cdr.markForCheck();
     }
   }
 }

@@ -86,7 +86,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
           : this.nzMode === 'right'
             ? 'right'
             : this.nzMode === 'alternate' && index % 2 === 0 ? 'left' : 'right';
-        item.detectChanges();
+        item.checkSelf();
       });
       this.cdr.markForCheck();
     }

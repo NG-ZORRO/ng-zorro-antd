@@ -70,7 +70,7 @@ export class NzStepComponent {
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  detectChanges(): void {
-    this.cdr.detectChanges();
+  checkSelf(): void {
+    this.cdr.markForCheck();
   }
 }

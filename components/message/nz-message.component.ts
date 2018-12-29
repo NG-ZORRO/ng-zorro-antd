@@ -82,7 +82,7 @@ export class NzMessageComponent implements OnInit, OnDestroy {
   protected _destroy(): void {
     if (this._options.nzAnimate) {
       this.nzMessage.state = 'leave';
-      this.cdr.detectChanges();
+      this.cdr.markForCheck();
       setTimeout(() => this._messageContainer.removeMessage(this.nzMessage.messageId), 200);
     } else {
       this._messageContainer.removeMessage(this.nzMessage.messageId);
