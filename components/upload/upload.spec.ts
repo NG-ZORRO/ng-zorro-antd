@@ -691,6 +691,36 @@ describe('upload', () => {
         expect(actions.length).toBe(0);
         expect(instance._onRemove).toBe(false);
       });
+      it('should be hide preview when is invalid image url', fakeAsync(() => {
+        instance.icons = {
+          showPreviewIcon: true,
+          showRemoveIcon: true,
+          hidePreviewIconInNonImage: false
+        };
+        instance.items = [
+          { url: '1.pdf' }
+        ];
+        fixture.detectChanges();
+        tick();
+        fixture.detectChanges();
+        const actions = dl.queryAll(By.css('.ant-upload-list-item-actions a'));
+        expect(actions.length).toBe(1);
+      }));
+      it('should be hide preview when is invalid image url', fakeAsync(() => {
+        instance.icons = {
+          showPreviewIcon: true,
+          showRemoveIcon: true,
+          hidePreviewIconInNonImage: true
+        };
+        instance.items = [
+          { url: '1.pdf' }
+        ];
+        fixture.detectChanges();
+        tick();
+        fixture.detectChanges();
+        const actions = dl.queryAll(By.css('.ant-upload-list-item-actions a'));
+        expect(actions.length).toBe(0);
+      }));
     });
 
     describe('[onPreview]', () => {
@@ -803,7 +833,9 @@ describe('upload', () => {
         expect(instance.items[0].thumbUrl).toBe('1');
       });
       it('should be ingore thumb when is invalid image data', () => {
-        spyOn(window as any, 'FileReader').and.returnValue(new MockFR());
+        const mockFR = new MockFR();
+        mockFR.result = '';
+        spyOn(window as any, 'FileReader').and.returnValue(mockFR);
         instance.listType = 'picture';
         instance.items = [ { originFileObj: new File([''], '1.pdf', { type: 'pdf' }), thumbUrl: undefined } ];
         fixture.detectChanges();

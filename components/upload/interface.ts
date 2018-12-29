@@ -42,6 +42,7 @@ export interface UploadChangeParam {
 export interface ShowUploadListInterface {
   showRemoveIcon?: boolean;
   showPreviewIcon?: boolean;
+  hidePreviewIconInNonImage?: boolean;
 }
 
 export interface ZipButtonOptions {

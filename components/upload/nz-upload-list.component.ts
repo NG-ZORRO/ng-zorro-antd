@@ -100,7 +100,6 @@ export class NzUploadListComponent implements OnChanges {
   private previewFile(file: File | Blob, callback: (dataUrl: string) => void): void {
     if (file.type && this.imageTypes.indexOf(file.type) === -1) {
       callback('');
-      return ;
     }
     const reader = new FileReader();
     // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
@@ -129,6 +128,14 @@ export class NzUploadListComponent implements OnChanges {
           this.detectChanges();
         });
       });
+  }
+
+  showPreview(file: UploadFile): boolean {
+    const { showPreviewIcon, hidePreviewIconInNonImage } = this.icons;
+    if (!showPreviewIcon) {
+      return false;
+    }
+    return this.isImageUrl(file) ? true : !hidePreviewIconInNonImage;
   }
 
   handlePreview(file: UploadFile, e: Event): void {

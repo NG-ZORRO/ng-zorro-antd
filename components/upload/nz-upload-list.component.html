@@ -38,7 +38,7 @@
   </div>
   <ng-container *ngIf="listType === 'picture-card' && file.status !== 'uploading'; else close">
     <span class="ant-upload-list-item-actions">
-      <a *ngIf="icons.showPreviewIcon" [href]="file.thumbUrl || file.url"
+      <a *ngIf="showPreview(file)" [href]="file.thumbUrl || file.url"
         target="_blank" rel="noopener noreferrer"
         title="{{ locale.previewFile }}"
         [ngStyle]="!(file.url || file.thumbUrl) && {'opacity': .5, 'pointer-events': 'none'}"

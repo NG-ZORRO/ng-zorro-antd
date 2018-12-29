@@ -114,7 +114,8 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     if (typeof this.nzShowUploadList === 'boolean' && this.nzShowUploadList) {
       this.nzShowUploadList = {
         showPreviewIcon: true,
-        showRemoveIcon : true
+        showRemoveIcon : true,
+        hidePreviewIconInNonImage: false
       };
     }
     // filters
