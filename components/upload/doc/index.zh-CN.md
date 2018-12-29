@@ -68,7 +68,8 @@ title: Upload
       uid: 'uid',      // 文件唯一标识
       name: 'xx.png'   // 文件名
       status: 'done', // 状态有：uploading done error removed
-      response: '{"status": "success"}' // 服务端响应内容
+      response: '{"status": "success"}', // 服务端响应内容
+      linkProps: '{"download": "image"}', // 下载链接额外的 HTML 属性
    }
    ```
 

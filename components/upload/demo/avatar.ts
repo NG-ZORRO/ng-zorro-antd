@@ -13,7 +13,7 @@ import { Observable, Observer } from 'rxjs';
     [nzBeforeUpload]="beforeUpload"
     (nzChange)="handleChange($event)">
     <ng-container *ngIf="!avatarUrl">
-      <i nz-icon type="plus"></i>
+      <i nz-icon [type]="loading ? 'loading' : 'plus'"></i>
       <div class="ant-upload-text">Upload</div>
     </ng-container>
     <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar">
@@ -90,16 +90,21 @@ export class NzDemoUploadAvatarComponent {
   }
 
   handleChange(info: { file: UploadFile }): void {
-    if (info.file.status === 'uploading') {
-      this.loading = true;
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      this.getBase64(info.file.originFileObj, (img: string) => {
+    switch (info.file.status) {
+      case 'uploading':
+        this.loading = true;
+        break;
+      case 'done':
+        // Get this url from response in real world.
+        this.getBase64(info.file.originFileObj, (img: string) => {
+          this.loading = false;
+          this.avatarUrl = img;
+        });
+        break;
+      case 'error':
+        this.msg.error('Network error');
         this.loading = false;
-        this.avatarUrl = img;
-      });
+        break;
     }
   }
 }

@@ -1,8 +1,8 @@
 <ng-template #list>
-  <nz-upload-list *ngIf="nzShowUploadList"
+  <nz-upload-list #listComp [style.display]="nzShowUploadList ? '' : 'none'"
     [locale]="locale"
     [listType]="nzListType"
-    [items]="nzFileList"
+    [items]="nzFileList || []"
     [icons]="nzShowUploadList"
     [onPreview]="nzPreview"
     [onRemove]="onRemove"></nz-upload-list>
@@ -10,7 +10,7 @@
 <ng-template #con><ng-content></ng-content></ng-template>
 <ng-template #btn>
   <div [ngClass]="classList" [style.display]="nzShowButton ? '' : 'none'">
-    <div nz-upload-btn #upload [options]="_btnOptions">
+    <div nz-upload-btn #uploadComp [options]="_btnOptions">
       <ng-template [ngTemplateOutlet]="con"></ng-template>
     </div>
   </div>

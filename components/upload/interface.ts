@@ -25,7 +25,7 @@ export interface UploadFile {
   thumbUrl?: string;
   response?: any;
   error?: any;
-  linkProps?: any;
+  linkProps?: { download: string };
   type: string;
 
   [ key: string ]: any;
