@@ -36,13 +36,7 @@
     </table>
   </div>
   <div class="ant-table-placeholder" *ngIf="(data.length==0)&&!nzLoading">
-    <span *ngIf="!nzNoResult">{{ locale.emptyText }}</span>
-    <ng-container *ngIf="nzNoResult">
-      <ng-container *ngIf="isNoResultString; else noResultTemplate">{{ nzNoResult }}</ng-container>
-      <ng-template #noResultTemplate>
-        <ng-template [ngTemplateOutlet]="nzNoResult"></ng-template>
-      </ng-template>
-    </ng-container>
+    <nz-embed-empty [nzComponentName]="'table'" [specificContent]="nzNoResult"></nz-embed-empty>
   </div>
   <div class="ant-table-footer" *ngIf="nzFooter">
     <ng-container *ngIf="isFooterString; else footerTemplate">{{ nzFooter }}</ng-container>

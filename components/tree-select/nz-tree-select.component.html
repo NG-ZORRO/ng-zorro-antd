@@ -13,7 +13,7 @@
 
 <ng-template #dropdownTemplate>
   <div [ngClass]="dropDownClassMap" [@selectDropDownAnimation]="nzOpen ? dropDownPosition : 'hidden'"
-    [ngStyle]="nzDropdownStyle">
+       [ngStyle]="nzDropdownStyle">
     <nz-tree
       #treeRef
       [hidden]="isNotFound"
@@ -35,8 +35,8 @@
       (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)"
       (nzSearchValueChange)="setSearchValues($event)">
     </nz-tree>
-    <span *ngIf="isNotFound" class="ant-select-not-found">
-          {{ nzNotFoundContent ? nzNotFoundContent : ('Select.notFoundContent' | nzI18n) }}
+    <span *ngIf="nzNodes.length === 0 || isNotFound" class="ant-select-not-found">
+      <nz-embed-empty [nzComponentName]="'tree-select'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
     </span>
   </div>
 </ng-template>
@@ -91,7 +91,8 @@
           [attr.title]="nzDisplayWith(node)"
           [class.ant-select-selection__choice__disabled]="node.isDisabled"
           class="ant-select-selection__choice">
-               <span *ngIf="!node.isDisabled" class="ant-select-selection__choice__remove" (click)="removeSelected(node, true, $event)">
+               <span *ngIf="!node.isDisabled" class="ant-select-selection__choice__remove"
+                     (click)="removeSelected(node, true, $event)">
                  <i nz-icon type="close" class="ant-select-remove-icon"></i>
                </span>
           <span class="ant-select-selection__choice__content">{{ nzDisplayWith(node) }}</span>
