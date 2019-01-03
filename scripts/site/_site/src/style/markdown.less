@@ -222,6 +222,14 @@
     font-size: @font-size-base - 1px;
     color: @magenta-7;
     word-break: break-all;
+  }
+  td:last-child {
+    width: 13%;
+    font-size: @font-size-base - 1px;
+  }
+  // 移除【类型】与【默认值】栏的代码样式
+  td:nth-child(3),
+  td:last-child {
     code {
       background: none;
       border: none;
@@ -229,10 +237,6 @@
       margin: 0;
       font-size: inherit;
     }
-  }
-  td:last-child {
-    width: 13%;
-    font-size: @font-size-base - 1px;
   }
 }
 
