@@ -18,12 +18,12 @@ A carousel component. Scales with its container.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzAutoPlay]` | Whether to scroll automatically | boolean | `false` |
-| `[nzAutoPlaySpeed]` | Duration (milliseconds), does not scroll when set to 0 | number | 3000 |
-| `[nzDots]` | Whether to show the dots at the bottom of the gallery | boolean | `true` |
+| `[nzAutoPlay]` | Whether to scroll automatically | `boolean` | `false` |
+| `[nzAutoPlaySpeed]` | Duration (milliseconds), does not scroll when set to 0 | `number` | `3000` |
+| `[nzDots]` | Whether to show the dots at the bottom of the gallery | `boolean` | `true` |
 | `[nzDotRender]` | Dot render template | `TemplateRef<{ $implicit: number }>` | - |
-| `[nzEffect]` | Transition effect | `scrollx` ｜ `fade` | `scrollx` |
-| `[nzVertical]` | Whether to use a vertical display | boolean | `false` |
+| `[nzEffect]` | Transition effect | `'scrollx'｜'fade'` | `'scrollx'` |
+| `[nzVertical]` | Whether to use a vertical display | `boolean` | `false` |
 | `(nzAfterChange)` | Callback function called after the current index changes | `EventEmitter<number>` | - |
 | `(nzBeforeChange)` | Callback function called before the current index changes | `EventEmitter{ from: number; to: number }>` | - |
 | `[nzEnableSwipe]` | Whether to support swipe gesture (would work if only you import hammer.js in your project)  | `boolean` | `true` |

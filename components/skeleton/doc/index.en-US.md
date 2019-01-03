@@ -18,29 +18,29 @@ Provide a placeholder at the place which need waiting for loading.
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
-| `[nzActive]` | Show animation effect | boolean | false |
-| `[nzAvatar]` | Show avatar placeholder | boolean ｜ NzSkeletonAvatar | false |
-| `[nzLoading]` | Display the skeleton when `true` | boolean | - |
-| `[nzParagraph]` | Show paragraph placeholder | boolean ｜ NzSkeletonParagraph | true |
-| `[nzTitle]` | Show title placeholder | boolean ｜ NzSkeletonTitle | true |
+| `[nzActive]` | Show animation effect | `boolean` | `false` |
+| `[nzAvatar]` | Show avatar placeholder | `boolean｜NzSkeletonAvatar` | `false` |
+| `[nzLoading]` | Display the skeleton when `true` | `boolean` | - |
+| `[nzParagraph]` | Show paragraph placeholder | `boolean｜NzSkeletonParagraph` | `true` |
+| `[nzTitle]` | Show title placeholder | `boolean｜NzSkeletonTitle` | `true` |
 
 
 ### NzSkeletonAvatar
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
-| `size` | Set the size of avatar | Enum{ 'large', 'small', 'default' } | - |
-| `shape` | Set the shape of avatar | Enum{ 'circle', 'square' } | - |
+| `size` | Set the size of avatar | `'large'｜'small'｜'default'` | - |
+| `shape` | Set the shape of avatar | `'circle'｜'square'` | - |
 
 ### NzSkeletonTitle
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
-| `width` | Set the width of title | number ｜ string | - |
+| `width` | Set the width of title | `number｜string` | - |
 
 ### NzSkeletonParagraph
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
-| `rows` | Set the row count of paragraph | number | - |
-| `width` | Set the width of paragraph. When width is an Array, it can set the width of each row. Otherwise only set the last row width | number ｜ string ｜ Array<number ｜ string> | - |
+| `rows` | Set the row count of paragraph | `number` | - |
+| `width` | Set the width of paragraph. When width is an Array, it can set the width of each row. Otherwise only set the last row width | `number｜string｜Array<number｜string>` | - |

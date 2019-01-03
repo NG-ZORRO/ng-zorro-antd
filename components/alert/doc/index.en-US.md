@@ -23,6 +23,6 @@ Alert component for feedback.
 | `[nzDescription]` | Additional content of Alert | `string｜TemplateRef<void>` | - |
 | `[nzMessage]` | Content of Alert | `string｜TemplateRef<void>` | - |
 | `[nzShowIcon]` | Whether to show icon, in `nzBanner` mode default is `true` | `boolean` | `false` |
-| `[nzIconType]` | Icon type, effective when `nzShowIcon` is `true` | `string丨string[]丨Set<string>丨{ [klass: string]: any; }` | - |
-| `[nzType]` | Type of Alert styles, in `nzBanner` mode default is `warning` | `success丨info丨warning丨error` | `info` |
+| `[nzIconType]` | Icon type, effective when `nzShowIcon` is `true` | `string丨string[]丨Set<string>｜{ [klass: string]: any; }` | - |
+| `[nzType]` | Type of Alert styles, in `nzBanner` mode default is `'warning'` | `'success'｜'info'｜'warning'｜'error'` | `'info'` |
 | `(nzOnClose)` | Callback when Alert is closed | `EventEmitter<void>` | - |

@@ -25,11 +25,11 @@ title: Drawer
 | `[nzMask]` | 是否展示遮罩 | `boolean` | `true` |
 | `[nzMaskStyle]` | 遮罩样式 | `object` | `{}` |
 | `[nzBodyStyle]` | Drawer body 样式 | `object` | `{}` |
-| `[nzTitle]` | 标题 | `string`  `TemplateRef<{}>` | - |
+| `[nzTitle]` | 标题 | `string｜TemplateRef<void>` | - |
 | `[nzVisible]` | Drawer 是否可见 | `boolean` | - |
-| `[nzPlacement]` | 抽屉的方向 | `'top'` `'right'` `'bottom'` `'left'` | `'right'` |
-| `[nzWidth]` | 宽度, 只在方向为 `'right'`或`'left'` 时生效 | `number` `string` | `256` |
-| `[nzHeight]` | 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number` `string` | `256` |
+| `[nzPlacement]` | 抽屉的方向 | `'top'｜'right'｜'bottom'｜'left'` | `'right'` |
+| `[nzWidth]` | 宽度, 只在方向为 `'right'`或`'left'` 时生效 | `number｜string` | `256` |
+| `[nzHeight]` | 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number｜string` | `256` |
 | `[nzOffsetX]` | x 坐标移量(px), 只在方向为 `'right'`或`'left'` 时生效 | `number` | `0` |
 | `[nzOffsetY]` | y 坐标移量(px), 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number` | `0` |
 | `[nzWrapClassName]` | 对话框外层容器的类名 | `string` | - |
@@ -46,19 +46,19 @@ title: Drawer
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzContent | Drawer body 的内容 | `TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef }>`, ` Type<T>` | - |
+| nzContent | Drawer body 的内容 | `TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef }>｜ Type<T>` | - |
 | nzContentParams | 内容组件的输入参数 / Template的 context | `D` | - |
 | nzClosable | 是否显示右上角的关闭按钮 | `boolean` | `true` |
 | nzMaskClosable | 点击蒙层是否允许关闭 | `boolean` | `true` |
 | nzMask | 是否展示遮罩 | `boolean` | `true` |
 | nzMaskStyle | 遮罩样式 | `object` | `{}` |
 | nzBodyStyle | Modal body 样式 | `object` | `{}` |
-| nzTitle | 标题 | `string`  `TemplateRef<{}>` | - |
-| nzWidth | 宽度 | `number` `string` | `256` |
-| nzHeight | 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number` `string` | `256` |
+| nzTitle | 标题 | `string｜TemplateRef<void>` | - |
+| nzWidth | 宽度 | `number｜string` | `256` |
+| nzHeight | 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number｜string` | `256` |
 | nzWrapClassName | 对话框外层容器的类名 | `string` | - |
 | nzZIndex| 设置 Drawer 的 `z-index` | `number` | `1000` |
-| nzPlacement | 抽屉的方向 | `'top'` `'right'` `'bottom'` `'left'` | `'right'` |
+| nzPlacement | 抽屉的方向 | `'top'｜'right'｜'bottom'｜'left'` | `'right'` |
 | nzOffsetX | x 坐标移量(px) | `number` | `0` |
 | nzOffsetY | y 坐标移量(px), 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number` | `0` |
 
@@ -82,11 +82,11 @@ title: Drawer
 | nzMask | 是否展示遮罩 | `boolean` | `true` |
 | nzMaskStyle | 遮罩样式 | `object` | `{}` |
 | nzBodyStyle | Modal body 样式 | `object` | `{}` |
-| nzTitle | 标题 | `string`  `TemplateRef<{}>` | - |
-| nzWidth | 宽度 | `number` `string` | `256` |
-| nzHeight | 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number` `string` | `256` |
+| nzTitle | 标题 | `string｜TemplateRef<void>` | - |
+| nzWidth | 宽度 | `number｜string` | `256` |
+| nzHeight | 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number｜string` | `256` |
 | nzWrapClassName | 对话框外层容器的类名 | `string` | - |
 | nzZIndex| 设置 Drawer 的 `z-index` | `number` | `1000` |
-| nzPlacement | 抽屉的方向 | `'top'` `'right'` `'bottom'` `'left'` | `'right'` |
+| nzPlacement | 抽屉的方向 | `'top'｜'right'｜'bottom'｜'left'` | `'right'` |
 | nzOffsetX | x 坐标移量(px) | `number` | `0` |
 | nzOffsetY | y 坐标移量(px), 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number` | `0` |
