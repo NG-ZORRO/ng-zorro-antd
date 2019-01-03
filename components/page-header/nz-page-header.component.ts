@@ -8,7 +8,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzPageHeaderFooterDirective } from './nz-page-header-cells'
+import { NzPageHeaderFooterDirective } from './nz-page-header-cells';
 
 @Component({
   selector       : 'nz-page-header',

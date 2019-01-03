@@ -1,13 +1,13 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core'
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser'
-import { NzDemoPageHeaderActionsComponent } from './demo/actions'
-import { NzDemoPageHeaderBasicComponent } from './demo/basic'
-import { NzDemoPageHeaderBreadcrumbComponent } from './demo/breadcrumb'
-import { NzDemoPageHeaderContentComponent } from './demo/content'
+import { By } from '@angular/platform-browser';
+import { NzDemoPageHeaderActionsComponent } from './demo/actions';
+import { NzDemoPageHeaderBasicComponent } from './demo/basic';
+import { NzDemoPageHeaderBreadcrumbComponent } from './demo/breadcrumb';
+import { NzDemoPageHeaderContentComponent } from './demo/content';
 
 import { NzPageHeaderComponent } from './nz-page-header.component';
-import { NzPageHeaderModule } from './nz-page-header.module'
+import { NzPageHeaderModule } from './nz-page-header.module';
 
 describe('NzPageHeaderComponent', () => {
 
