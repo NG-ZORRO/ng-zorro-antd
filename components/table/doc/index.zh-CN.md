@@ -179,7 +179,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `(nzSortChange)` | 排序改变时的回调函数，需要与 `th` 上的 `nzSortKey` 同时使用，非受控排序下使用 | `EventEmitter<{ nzSortKey: string, value: 'descend'丨'ascend'丨null }>` | - |
 
 
-### nz-tr
+### tr
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

@@ -168,7 +168,7 @@ Other property
 | `[nzSingleSort]` | Whether single column sort mode | boolean | false |
 | `(nzSortChange)` | sort change callback，should used with `nzSortKey` of `th` | `EventEmitter<{ nzSortKey: string, value: 'descend'丨'ascend'丨null }>` | - |
 
-### nz-tr
+### tr
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |

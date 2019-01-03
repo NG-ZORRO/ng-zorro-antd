@@ -15,6 +15,8 @@ title: Tooltip
 
 ## API
 
+### nz-tooltip
+
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzTitle]` | 提示文字 | string丨`TemplateRef<void>` | 无 |

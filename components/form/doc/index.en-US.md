@@ -45,7 +45,7 @@ A form consists of one or more form fields whose type includes input, textarea, 
 
 ## API
 
-### Form
+### nz-form
 
 
 | Property | Description | Type | Default Value |

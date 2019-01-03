@@ -13,6 +13,8 @@ A simple text popup tip.
 
 ## API
 
+### nz-tooltip
+
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzTitle]` | The text shown in the tooltip | string丨`TemplateRef<void>` | - |
