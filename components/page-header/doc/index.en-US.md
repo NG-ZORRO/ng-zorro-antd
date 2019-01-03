@@ -3,7 +3,6 @@ category: Components
 type: Navigation
 title: PageHeader
 cols: 1
-subtitle: PageHeader
 ---
 
 The header is used to declare the theme of the page, which contains the most important information that the user is concerned about.
@@ -14,7 +13,25 @@ Use when you need the user to quickly understand what the current page is and wh
 
 ## API
 
+```html
+<nz-page-header nzTitle="Page Title"></nz-page-header>
+```
+
+### nz-page-header
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |
+| title | title string | `string`, `TemplateRef<void>` | - |
+| subTitle | subTitle string | `string`, `TemplateRef<void>` | - |
 | backIcon | custom back icon | `string`, `TemplateRef<void>` | - |
 | nzBack | back icon click event | `EventEmitter<void>` | - |
+
+### Page header sections
+| Element | Description |
+| ----- | ----------- | ---- | ------------- |
+| `<nz-page-header-title>` | Title section |
+| `<nz-page-header-subtitle>` | Subtitle section |
+| `<nz-page-header-content>` | Content section |
+| `<nz-page-header-footer>` | Footer section |
+| `<nz-page-header-tags>` |  Tags container after the title |
+| `<nz-page-header-extra>` | Operating area, at the end of the line of the title line |
+| `<nz-breadcrumb nz-page-header-breadcrumb>` | Breadcrumb section |

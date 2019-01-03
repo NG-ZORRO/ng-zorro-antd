@@ -7,12 +7,12 @@ import { Component } from '@angular/core';
       <nz-page-header-title>Page Title</nz-page-header-title>
       <nz-page-header-subtitle>The Page Subtitle</nz-page-header-subtitle>
       <nz-page-header-tags>
-        <nz-tag [nzColor]="'red'">警告</nz-tag>
+        <nz-tag [nzColor]="'red'">Warning</nz-tag>
       </nz-page-header-tags>
       <nz-page-header-extra>
-        <button nz-button>次操作</button>
-        <button nz-button>次操作</button>
-        <button nz-button nzType="primary">主操作</button>
+        <button nz-button>Action</button>
+        <button nz-button>Action</button>
+        <button nz-button nzType="primary">Action</button>
       </nz-page-header-extra>
       <nz-page-header-content>
         <div class="wrap">

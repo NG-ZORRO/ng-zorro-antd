@@ -7,13 +7,13 @@
 </div>
 
 <div class="ant-page-header-title-view">
-  <ng-container *ngIf="nzTitle">
+  <span class="ant-page-header-title" *ngIf="nzTitle">
     <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-  </ng-container>
+  </span>
   <ng-content *ngIf="!nzTitle" select="nz-page-header-title, [nz-page-header-title]"></ng-content>
-  <ng-container *ngIf="nzSubtitle">
+  <span class="ant-page-header-sub-title" *ngIf="nzSubtitle">
     <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
-  </ng-container>
+  </span>
   <ng-content *ngIf="!nzSubtitle" select="nz-page-header-subtitle, [nz-page-header-subtitle]"></ng-content>
   <ng-content select="nz-page-header-tags, [nz-page-header-tags]"></ng-content>
   <ng-content select="nz-page-header-extra, [nz-page-header-extra]"></ng-content>

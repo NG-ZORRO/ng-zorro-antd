@@ -17,8 +17,8 @@ import { NzPageHeaderFooterDirective } from './nz-page-header-cells'
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation  : ViewEncapsulation.None,
   host           : {
-    '[class.ant-page-header]': 'true',
-    '[class.have-footer]'    : 'nzPageHeaderFooter'
+    'class'                              : 'ant-page-header',
+    '[class.ant-page-header-have-footer]': 'nzPageHeaderFooter'
   }
 })
 export class NzPageHeaderComponent implements OnInit, OnChanges {

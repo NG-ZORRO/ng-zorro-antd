@@ -1,14 +1,14 @@
 ---
 order: 3
 title:
-  zh-CN: 带面包屑页头
-  en-US: Breadcrumb Page Header
+  zh-CN: 内容
+  en-US: Content
 ---
 
 ## zh-CN
 
-与面包屑一起使用
+你可以使用 `<nz-page-header-content>` 添加内容。
 
 ## en-US
 
-Breadcrumb Page Header
+You can use `<nz-page-header-content>` to add content.

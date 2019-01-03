@@ -3,27 +3,22 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-page-header-breadcrumb',
   template: `
-    <nz-page-header>
-      <nz-page-header-title>Page Title</nz-page-header-title>
+    <nz-page-header nzBackIcon nzTitle="Page Title">
       <nz-breadcrumb nz-page-header-breadcrumb>
+        <nz-breadcrumb-item>First-level</nz-breadcrumb-item>
         <nz-breadcrumb-item>
-          Home
+          <a>Second-level</a>
         </nz-breadcrumb-item>
-        <nz-breadcrumb-item>
-          <a>Application List</a>
-        </nz-breadcrumb-item>
-        <nz-breadcrumb-item>
-          An Application
-        </nz-breadcrumb-item>
+        <nz-breadcrumb-item>Third-level</nz-breadcrumb-item>
       </nz-breadcrumb>
     </nz-page-header>
 
   `,
-  styles  : [`
+  styles  : [ `
     nz-page-header {
       border: 1px solid rgb(235, 237, 240);
     }
-  `]
+  ` ]
 })
 export class NzDemoPageHeaderBreadcrumbComponent {
 }

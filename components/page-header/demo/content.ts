@@ -3,35 +3,30 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-page-header-content',
   template: `
-    <nz-page-header>
-      <nz-page-header-title>Page Title</nz-page-header-title>
+    <nz-page-header nzTitle="Page Title">
       <nz-breadcrumb nz-page-header-breadcrumb>
+        <nz-breadcrumb-item>First-level</nz-breadcrumb-item>
         <nz-breadcrumb-item>
-          Home
+          <a>Second-level</a>
         </nz-breadcrumb-item>
-        <nz-breadcrumb-item>
-          <a>Application List</a>
-        </nz-breadcrumb-item>
-        <nz-breadcrumb-item>
-          An Application
-        </nz-breadcrumb-item>
+        <nz-breadcrumb-item>Third-level</nz-breadcrumb-item>
       </nz-breadcrumb>
       <nz-page-header-content>
         <div class="wrap">
           <div class="content">
             <div class="content">
-              <p>Ant Design 将色彩体系解读成两个层面：系统级色彩体系和产品级色彩体系。</p>
-              <p>Ant Design 的设计团队倾向于采用 HSB 色彩模型进行设计，该模型更便于设计师在调整色彩时对于颜色有明确的心理预期，同时也方便团队间的沟通。</p>
-              <p>Ant Design 的基础色板共计 120 个颜色，包含 12 个主色以及衍生色。这些颜色基本可以满足中后台设计中对于颜色的需求</p>
+              <p>Ant Design, a design language for background applications, is refined by Ant UED Team.</p>
+              <p>We supply a series of design principles, practical patterns and high quality design resources
+                (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.</p>
               <p class="content-link">
                 <a>
-                  <img src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" alt="start">快速开始
+                  <img src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" alt="start">Set Up
                 </a>
                 <a>
-                  <img src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" alt="info">产品简介
+                  <img src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" alt="info">Information
                 </a>
                 <a>
-                  <img src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" alt="doc">产品文档
+                  <img src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" alt="doc">Document
                 </a>
               </p>
             </div>
