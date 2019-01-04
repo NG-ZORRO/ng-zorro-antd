@@ -1,67 +1,52 @@
-<ul
-  #dropdownUl
+<ul #dropdownUl
   class="ant-select-dropdown-menu ant-select-dropdown-menu-root ant-select-dropdown-menu-vertical"
   role="menu"
-  (keydown)="onKeyDownUl($event)"
   (scroll)="dropDownScroll($event,dropdownUl)"
   tabindex="0">
-  <li
-    *ngIf="isNotFoundDisplay"
+  <li *ngIf="isNotFoundDisplay"
     nz-select-unselectable
     class="ant-select-dropdown-menu-item ant-select-dropdown-menu-item-disabled">
     <nz-embed-empty [nzComponentName]="'select'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
   </li>
-  <li
-    *ngIf="isAddTagOptionDisplay"
+  <li *ngIf="isAddTagOptionDisplay"
     nz-select-unselectable
     (click)="addTagOption()"
     class="ant-select-dropdown-menu-item ant-select-dropdown-menu-item-active">
-    {{ nzSearchValue }}
+    {{ searchValue }}
   </li>
-  <li
-    nz-option-li
-    [nzMode]="nzMode"
-    [compareWith]="compareWith"
-    *ngFor="let option of listOfNzOptionComponent | nzFilterOptionPipe : nzSearchValue : nzFilterOption : nzServerSearch "
+  <li nz-option-li
+    *ngFor="let option of listOfNzOptionComponent | nzFilterOptionPipe : searchValue : nzFilterOption : nzServerSearch "
     (click)="clickOption(option,false)"
+    [compareWith]="compareWith"
+    [nzMode]="nzMode"
     [nzActiveOption]="activatedOption"
-    [nzOption]="option"
-    [nzListOfSelectedValue]="nzListOfSelectedValue">
+    [nzOption]="option">
   </li>
-  <li
-    *ngFor="let group of listOfNzOptionGroupComponent | nzSubFilterOptionPipe : nzSearchValue : nzFilterOption : nzServerSearch"
-    class="ant-select-dropdown-menu-item-group">
-    <div
-      class="ant-select-dropdown-menu-item-group-title"
+  <li class="ant-select-dropdown-menu-item-group"
+    *ngFor="let group of listOfNzOptionGroupComponent | nzSubFilterOptionPipe : searchValue : nzFilterOption : nzServerSearch">
+    <div class="ant-select-dropdown-menu-item-group-title"
       [attr.title]="group.isLabelString ? group.nzLabel : ''">
-      <ng-container *ngIf="group.isLabelString; else labelTemplate">{{ group.nzLabel }}</ng-container>
-      <ng-template #labelTemplate>
-        <ng-template [ngTemplateOutlet]="group.nzLabel"></ng-template>
-      </ng-template>
+      <ng-container *nzStringTemplateOutlet="group.nzLabel"> {{group.nzLabel}} </ng-container>
     </div>
     <ul class="ant-select-dropdown-menu-item-group-list">
-      <li
-        nz-option-li
-        [nzMode]="nzMode"
-        [compareWith]="compareWith"
-        *ngFor="let option of group.listOfNzOptionComponent | nzFilterOptionPipe : nzSearchValue : nzFilterOption : nzServerSearch"
+      <li nz-option-li
+        *ngFor="let option of group.listOfNzOptionComponent | nzFilterOptionPipe : searchValue : nzFilterOption : nzServerSearch"
         (click)="clickOption(option,false)"
         [nzActiveOption]="activatedOption"
+        [compareWith]="compareWith"
+        [nzMode]="nzMode"
         [nzShowActive]="!isAddTagOptionDisplay"
-        [nzOption]="option"
-        [nzListOfSelectedValue]="nzListOfSelectedValue">
+        [nzOption]="option">
       </li>
     </ul>
   </li>
-  <li
-    nz-option-li
-    [nzMode]="nzMode"
-    [compareWith]="compareWith"
-    *ngFor="let option of listOfTagOption | nzFilterOptionPipe : nzSearchValue : nzFilterOption : nzServerSearch "
+  <li nz-option-li
+    *ngFor="let option of listOfTagOption | nzFilterOptionPipe : searchValue : nzFilterOption : nzServerSearch "
     (click)="clickOption(option,false)"
     [nzActiveOption]="activatedOption"
+    [compareWith]="compareWith"
+    [nzMode]="nzMode"
     [nzShowActive]="!isAddTagOptionDisplay"
-    [nzOption]="option"
-    [nzListOfSelectedValue]="nzListOfSelectedValue">
+    [nzOption]="option">
   </li>
 </ul>

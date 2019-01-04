@@ -2,10 +2,10 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
-import { NzEmptyModule } from '../empty/nz-empty.module';
+import { NzAddOnModule } from '../core/addon/addon.module';
+import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzIconModule } from '../icon/nz-icon.module';
-
+import { NzEmptyModule } from '../empty/nz-empty.module';
 import { NzOptionContainerComponent } from './nz-option-container.component';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionLiComponent } from './nz-option-li.component';
@@ -21,6 +21,7 @@ import { NzSelectComponent } from './nz-select.component';
     FormsModule,
     OverlayModule,
     NzIconModule,
+    NzAddOnModule,
     NzEmptyModule
   ],
   declarations: [

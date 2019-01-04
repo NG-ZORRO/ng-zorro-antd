@@ -1,11 +1,14 @@
-import { Component, ElementRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { isNotNil } from '../core/util/check';
 import { NzOptionComponent } from './nz-option.component';
+import { NzSelectService } from './nz-select.service';
 
 @Component({
-  selector   : '[nz-option-li]',
-  templateUrl: './nz-option-li.component.html',
-  host       : {
+  selector       : '[nz-option-li]',
+  templateUrl    : './nz-option-li.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation  : ViewEncapsulation.None,
+  host           : {
     '[class.ant-select-dropdown-menu-item]'         : 'true',
     '[class.ant-select-dropdown-menu-item-selected]': 'selected && !nzOption.nzDisabled',
     '[class.ant-select-dropdown-menu-item-disabled]': 'nzOption.nzDisabled',
@@ -14,15 +17,15 @@ import { NzOptionComponent } from './nz-option.component';
     '[style.user-select]'                           : '"none"'
   }
 })
-export class NzOptionLiComponent {
+export class NzOptionLiComponent implements OnInit {
   el: HTMLElement = this.elementRef.nativeElement;
   selected = false;
   active = false;
   @Input() nzOption: NzOptionComponent;
   @Input() nzShowActive = true;
-  @Input() nzMode = 'default';
+  @Input() nzMode: 'default' | 'multiple' | 'tags' = 'default';
   // tslint:disable-next-line:no-any
-  @Input() compareWith: (o1: any, o2: any) => boolean;
+  @Input() compareWith = (o1: any, o2: any) => o1 === o2;
 
   @Input()
   set nzActiveOption(value: NzOptionComponent) {
@@ -33,12 +36,12 @@ export class NzOptionLiComponent {
     }
   }
 
-  @Input()
-  // tslint:disable-next-line:no-any
-  set nzListOfSelectedValue(valueList: any[]) {
-    this.selected = isNotNil(valueList.find(v => this.compareWith(v, this.nzOption.nzValue)));
+  constructor(private elementRef: ElementRef, public nzSelectService: NzSelectService) {
   }
 
-  constructor(private elementRef: ElementRef) {
+  ngOnInit(): void {
+    this.nzSelectService.listOfSelectedValue$.subscribe(data => {
+      this.selected = isNotNil(data.find(v => this.compareWith(v, this.nzOption.nzValue)));
+    });
   }
 }

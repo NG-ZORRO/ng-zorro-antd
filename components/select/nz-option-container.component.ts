@@ -1,10 +1,9 @@
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import {
-  AfterContentInit,
   Component,
   EventEmitter,
   Input,
-  OnDestroy,
+  OnDestroy, OnInit,
   Output,
   QueryList,
   ViewChildren
@@ -13,24 +12,21 @@ import { isNotNil } from '../core/util/check';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
 
-import { merge, Subject, Subscription } from 'rxjs';
 import { NzOptionLiComponent } from './nz-option-li.component';
 import { defaultFilterOption, NzOptionPipe, TFilterOption } from './nz-option.pipe';
+import { NzSelectService } from './nz-select.service';
 
 @Component({
   selector           : '[nz-option-container]',
   preserveWhitespaces: false,
   templateUrl        : './nz-option-container.component.html'
 })
-export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
-  // tslint:disable-next-line:no-any
-  private _listOfSelectedValue: any[];
-  private _searchValue: string;
-  isInit = false;
+export class NzOptionContainerComponent implements OnDestroy, OnInit {
+  searchValue: string;
   isAddTagOptionDisplay = false;
   listOfAllTemplateOption: NzOptionComponent[] = [];
-  optionSubscription: Subscription;
-  groupSubscription: Subscription;
+  // tslint:disable-next-line:no-any
+  listOfSelectedValue: any[] = [];
   listOfTagOption: NzOptionComponent[] = [];
   listOfFilterOption: NzOptionComponent[] = [];
   activatedOption: NzOptionComponent;
@@ -39,49 +35,29 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   @Input() listOfNzOptionComponent: QueryList<NzOptionComponent>;
   @Input() listOfNzOptionGroupComponent: QueryList<NzOptionGroupComponent>;
   // tslint:disable-next-line:no-any
-  @Output() readonly nzListOfSelectedValueChange = new EventEmitter<any[]>();
-  @Output() readonly nzListOfTemplateOptionChange = new EventEmitter<NzOptionComponent[]>();
   @Output() readonly nzClickOption = new EventEmitter<void>();
   @Output() readonly nzScrollToBottom = new EventEmitter<void>();
-  @Input() nzMode = 'default';
   @Input() nzServerSearch = false;
   @Input() nzFilterOption: TFilterOption = defaultFilterOption;
   @Input() nzMaxMultipleCount = Infinity;
   @Input() nzNotFoundContent: string;
   // tslint:disable-next-line:no-any
   @Input() compareWith = (o1: any, o2: any) => o1 === o2;
+  @Input() nzMode: 'default' | 'multiple' | 'tags' = 'default';
 
-  @Input()
-  set nzSearchValue(value: string) {
-    this._searchValue = value;
-    this.updateAddTagOptionDisplay();
-    this.updateListOfFilterOption();
+  get isTagsMode(): boolean {
+    return this.nzMode === 'tags';
   }
 
-  get nzSearchValue(): string {
-    return this._searchValue;
-  }
-
-  @Input()
-  // tslint:disable-next-line:no-any
-  set nzListOfSelectedValue(value: any[]) {
-    if (this._listOfSelectedValue !== value) {
-      this._listOfSelectedValue = value;
-      /** should clear activedOption when listOfSelectedValue change **/
-      this.clearActivatedOption();
-      this.refreshAllOptionStatus(false);
-    }
-  }
-
-  // tslint:disable-next-line:no-any
-  get nzListOfSelectedValue(): any[] {
-    return this._listOfSelectedValue;
+  get isMultipleOrTags(): boolean {
+    return this.nzMode === 'tags' || this.nzMode === 'multiple';
   }
 
   addTagOption(): void {
-    if (this.nzListOfSelectedValue.length < this.nzMaxMultipleCount) {
-      this.nzListOfSelectedValue = [ ...this.nzListOfSelectedValue, this.nzSearchValue ];
-      this.nzListOfSelectedValueChange.emit(this.nzListOfSelectedValue);
+    if (this.listOfSelectedValue.length < this.nzMaxMultipleCount) {
+      this.listOfSelectedValue = [ ...this.listOfSelectedValue, this.searchValue ];
+      this.nzSelectService.updateListOfSelectedValue(this.listOfSelectedValue, true);
+      this.nzSelectService.clearInput(false);
     }
   }
 
@@ -90,7 +66,7 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
     this.nzClickOption.emit();
   }
 
-  onKeyDownUl(e: KeyboardEvent): void {
+  onKeyDown(e: KeyboardEvent): void {
     if ([ UP_ARROW, DOWN_ARROW, ENTER ].indexOf(e.keyCode) > -1) {
       e.preventDefault();
       const activeIndex = this.listOfFilterOption.findIndex(item => item === this.activatedOption);
@@ -106,25 +82,21 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
         // enter
         if (this.isTagsMode) {
           if (!this.isAddTagOptionDisplay) {
-            this.clickOption(this.activatedOption, true);
+            this.updateSelectedOption(this.activatedOption, true);
           } else {
             this.addTagOption();
-            this.nzClickOption.emit();
           }
         } else {
-          this.clickOption(this.activatedOption, true);
+          this.updateSelectedOption(this.activatedOption, true);
         }
+        this.nzClickOption.emit();
       }
     }
   }
 
   resetActiveOption(): void {
-    const firstActiveOption = this.listOfAllTemplateOption.concat(this.listOfTagOption).find(item => this.compareWith(item.nzValue, this.nzListOfSelectedValue[ 0 ]));
+    const firstActiveOption = this.listOfAllTemplateOption.concat(this.listOfTagOption).find(item => this.compareWith(item.nzValue, this.listOfSelectedValue[ 0 ]));
     this.setActiveOption(firstActiveOption);
-  }
-
-  clearActivatedOption(): void {
-    this.setActiveOption(null);
   }
 
   setActiveOption(option: NzOptionComponent, scroll: boolean = true): void {
@@ -146,11 +118,11 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
   }
 
   updateSelectedOption(option: NzOptionComponent, isPressEnter: boolean): void {
-    /** update listOfSelectedOption -> update nzListOfSelectedValue -> emit nzListOfSelectedValueChange **/
+    /** update listOfSelectedOption -> update listOfSelectedValue -> next listOfSelectedValue$ **/
     if (option && !option.nzDisabled) {
       let changed = false;
       this.setActiveOption(option);
-      let listOfSelectedValue = [ ...this.nzListOfSelectedValue ];
+      let listOfSelectedValue = [ ...this.listOfSelectedValue ];
       if (this.isMultipleOrTags) {
         const targetValue = listOfSelectedValue.find(o => this.compareWith(o, option.nzValue));
         if (isNotNil(targetValue)) {
@@ -159,7 +131,7 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
             listOfSelectedValue.splice(listOfSelectedValue.indexOf(targetValue), 1);
             changed = true;
           }
-        } else if (this.nzListOfSelectedValue.length < this.nzMaxMultipleCount) {
+        } else if (this.listOfSelectedValue.length < this.nzMaxMultipleCount) {
           listOfSelectedValue.push(option.nzValue);
           changed = true;
         }
@@ -169,10 +141,11 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
       }
       /** update selectedValues when click option **/
       if (changed) {
-        this._listOfSelectedValue = listOfSelectedValue;
-        this.nzListOfSelectedValueChange.emit(this.nzListOfSelectedValue);
+        this.listOfSelectedValue = listOfSelectedValue;
+        this.nzSelectService.updateListOfSelectedValue(this.listOfSelectedValue, true);
+        this.nzSelectService.clearInput(false);
         if (this.isTagsMode) {
-          this.refreshAllOptionStatus(false);
+          this.refreshAllOptionStatus();
         }
       }
     }
@@ -182,7 +155,7 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
     if (this.isTagsMode) {
       /** refresh tags option **/
       const listOfTagsOption = [];
-      this.nzListOfSelectedValue.forEach(value => {
+      this.listOfSelectedValue.forEach(value => {
         const existedOption = this.listOfAllTemplateOption.find(o => this.compareWith(o.nzValue, value));
         if (!existedOption) {
           const nzOptionComponent = new NzOptionComponent();
@@ -193,67 +166,20 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
       });
       this.listOfTagOption = listOfTagsOption;
     }
-
   }
 
-  refreshListOfAllTemplateOption(): void {
-    this.listOfAllTemplateOption = this.listOfNzOptionComponent.toArray().concat(this.listOfNzOptionGroupComponent.toArray().reduce((pre, cur) => [ ...pre, ...cur.listOfNzOptionComponent.toArray() ], []));
-    Promise.resolve().then(() => this.nzListOfTemplateOptionChange.emit(this.listOfAllTemplateOption));
-  }
-
-  refreshAllOptionStatus(isTemplateOptionChange: boolean): void {
-    /** update nzListOfSelectedValue | update option list -> update listOfAllTemplateOption -> update listOfSelectedOption -> update activatedOption **/
-    if (this.isInit) {
-      if (isTemplateOptionChange) {
-        this.refreshListOfAllTemplateOption();
-      }
-      this.refreshListOfTagOption();
-      this.updateListOfFilterOption();
-      this.updateAddTagOptionDisplay();
-    }
+  refreshAllOptionStatus(): void {
+    /** update listOfSelectedValue | update option list -> update listOfAllTemplateOption -> update listOfSelectedOption -> update activatedOption **/
+    this.refreshListOfTagOption();
+    this.updateListOfFilterOption();
+    this.updateAddTagOptionDisplay();
   }
 
   updateListOfFilterOption(): void {
-    this.listOfFilterOption = new NzOptionPipe().transform(this.listOfAllTemplateOption.concat(this.listOfTagOption), this.nzSearchValue, this.nzFilterOption, this.nzServerSearch) as NzOptionComponent[];
-    if (this.nzSearchValue) {
+    this.listOfFilterOption = new NzOptionPipe().transform(this.listOfAllTemplateOption.concat(this.listOfTagOption), this.searchValue, this.nzFilterOption, this.nzServerSearch) as NzOptionComponent[];
+    if (this.searchValue) {
       this.setActiveOption(this.listOfFilterOption[ 0 ]);
     }
-  }
-
-  /** watch options change in option group **/
-  watchSubOptionChanges(): void {
-    this.unsubscribeOption();
-    let optionChanges$ = merge(
-      new Subject().asObservable(),
-      this.listOfNzOptionGroupComponent.changes,
-      this.listOfNzOptionComponent.changes
-    );
-    if (this.listOfNzOptionGroupComponent.length) {
-      this.listOfNzOptionGroupComponent.forEach(group => optionChanges$ = group.listOfNzOptionComponent ? merge(group.listOfNzOptionComponent.changes, optionChanges$) : optionChanges$);
-    }
-    this.optionSubscription = optionChanges$.subscribe(() => this.refreshAllOptionStatus(true));
-  }
-
-  unsubscribeGroup(): void {
-    if (this.groupSubscription) {
-      this.groupSubscription.unsubscribe();
-      this.groupSubscription = null;
-    }
-  }
-
-  unsubscribeOption(): void {
-    if (this.optionSubscription) {
-      this.optionSubscription.unsubscribe();
-      this.optionSubscription = null;
-    }
-  }
-
-  get isTagsMode(): boolean {
-    return this.nzMode === 'tags';
-  }
-
-  get isMultipleOrTags(): boolean {
-    return this.nzMode === 'tags' || this.nzMode === 'multiple';
   }
 
   get isNotFoundDisplay(): boolean {
@@ -262,8 +188,8 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
 
   updateAddTagOptionDisplay(): void {
     const listOfAllOption = this.listOfAllTemplateOption.concat(this.listOfTagOption).map(item => item.nzLabel);
-    const isMatch = listOfAllOption.indexOf(this.nzSearchValue) > -1;
-    this.isAddTagOptionDisplay = this.isTagsMode && this.nzSearchValue && (!isMatch);
+    const isMatch = listOfAllOption.indexOf(this.searchValue) > -1;
+    this.isAddTagOptionDisplay = this.isTagsMode && this.searchValue && (!isMatch);
   }
 
   dropDownScroll(e: MouseEvent, ul: HTMLUListElement): void {
@@ -274,15 +200,37 @@ export class NzOptionContainerComponent implements AfterContentInit, OnDestroy {
     }
   }
 
-  ngAfterContentInit(): void {
-    this.isInit = true;
-    this.refreshAllOptionStatus(true);
-    this.watchSubOptionChanges();
-    this.groupSubscription = this.listOfNzOptionGroupComponent.changes.subscribe(() => this.watchSubOptionChanges());
+  constructor(private nzSelectService: NzSelectService) {
+
+  }
+
+  ngOnInit(): void {
+    this.nzSelectService.listOfSelectedValue$.subscribe(data => {
+      this.listOfSelectedValue = data;
+      this.setActiveOption(null);
+      this.refreshAllOptionStatus();
+    });
+    this.nzSelectService.listOfTemplateOption$.subscribe((data) => {
+      this.listOfAllTemplateOption = data;
+      this.refreshAllOptionStatus();
+    });
+    this.nzSelectService.searchValue$.subscribe(data => {
+      this.searchValue = data;
+      this.updateAddTagOptionDisplay();
+      this.updateListOfFilterOption();
+    });
+    this.nzSelectService.open$.subscribe(data => {
+      if (data) {
+        this.scrollIntoView();
+      } else {
+        this.resetActiveOption();
+      }
+    });
+    this.nzSelectService.keydown$.subscribe(data => {
+      this.onKeyDown(data);
+    });
   }
 
   ngOnDestroy(): void {
-    this.unsubscribeGroup();
-    this.unsubscribeOption();
   }
 }

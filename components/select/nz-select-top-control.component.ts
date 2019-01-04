@@ -5,9 +5,10 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { Component, ElementRef, EventEmitter, Input, Output, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { isNotNil } from '../core/util/check';
 import { NzOptionComponent } from './nz-option.component';
+import { NzSelectService } from './nz-select.service';
 
 @Component({
   selector           : '[nz-select-top-control]',
@@ -31,46 +32,32 @@ import { NzOptionComponent } from './nz-option.component';
     '[class.ant-select-selection__rendered]': 'true'
   }
 })
-export class NzSelectTopControlComponent {
+export class NzSelectTopControlComponent implements OnInit {
   // tslint:disable-next-line:no-any
-  private _listOfSelectedValue: any[];
-  private _listTemplateOfOption: NzOptionComponent[] = [];
+  nzListOfSelectedValue: any[] = [];
+  nzListTemplateOfOption: NzOptionComponent[] = [];
   listOfCachedSelectedOption: NzOptionComponent[] = [];
   inputValue: string;
   isComposing = false;
   @ViewChild('inputElement') inputElement: ElementRef;
-  // tslint:disable-next-line:no-any
-  @Output() readonly nzListOfSelectedValueChange = new EventEmitter<any[]>();
-  @Output() readonly nzOnSearch = new EventEmitter<{ value: string, emit: boolean }>();
-  @Input() nzMode = 'default';
   @Input() nzShowSearch = false;
   @Input() nzDisabled = false;
-
   @Input() nzPlaceHolder: string;
   @Input() nzOpen = false;
   // tslint:disable-next-line:no-any
-  @Input() compareWith: (o1: any, o2: any) => boolean;
+  @Input() compareWith = (o1: any, o2: any) => o1 === o2;
+  @Input() nzMode: 'default' | 'multiple' | 'tags' = 'default';
 
-  @Input()
-  // tslint:disable-next-line:no-any
-  set nzListOfSelectedValue(value: any[]) {
-    this._listOfSelectedValue = value;
-    this.updateListOfCachedOption();
+  get isSingleMode(): boolean {
+    return this.nzMode === 'default';
   }
 
-  // tslint:disable-next-line:no-any
-  get nzListOfSelectedValue(): any[] {
-    return this._listOfSelectedValue;
+  get isTagsMode(): boolean {
+    return this.nzMode === 'tags';
   }
 
-  @Input()
-  set nzListTemplateOfOption(value: NzOptionComponent[]) {
-    this._listTemplateOfOption = value;
-    this.updateListOfCachedOption();
-  }
-
-  get nzListTemplateOfOption(): NzOptionComponent[] {
-    return this._listTemplateOfOption;
+  get isMultipleOrTags(): boolean {
+    return this.nzMode === 'tags' || this.nzMode === 'multiple';
   }
 
   /** cached selected option list **/
@@ -91,15 +78,9 @@ export class NzSelectTopControlComponent {
   setInputValue(value: string, emit: boolean): void {
     this.inputValue = value;
     this.updateWidth();
-    this.nzOnSearch.emit({ value, emit });
-  }
-
-  get isSingleMode(): boolean {
-    return this.nzMode === 'default';
-  }
-
-  get isMultipleOrTags(): boolean {
-    return this.nzMode === 'tags' || this.nzMode === 'multiple';
+    if (emit) {
+      this.nzSelectService.searchValue$.next(value);
+    }
   }
 
   get placeHolderDisplay(): string {
@@ -147,7 +128,7 @@ export class NzSelectTopControlComponent {
 
   // tslint:disable-next-line:no-any
   isOptionDisplay(value: any): boolean {
-    return (this.nzMode === 'tags') || !!this.getPropertyFromValue(value, 'nzLabel');
+    return this.isTagsMode || !!this.getPropertyFromValue(value, 'nzLabel');
   }
 
   // tslint:disable-next-line:no-any
@@ -155,8 +136,9 @@ export class NzSelectTopControlComponent {
     if (this.nzDisabled || this.getPropertyFromValue(value, 'nzDisabled')) {
       return;
     }
-    this._listOfSelectedValue = this.nzListOfSelectedValue.filter(item => item !== value);
-    this.nzListOfSelectedValueChange.emit(this.nzListOfSelectedValue);
+    this.nzListOfSelectedValue = this.nzListOfSelectedValue.filter(item => item !== value);
+    this.nzSelectService.clearInput(false);
+    this.nzSelectService.updateListOfSelectedValue(this.nzListOfSelectedValue, true);
 
     // Do not trigger the popup
     if (event && event.stopPropagation) {
@@ -174,7 +156,7 @@ export class NzSelectTopControlComponent {
     }
   }
 
-  onKeyDownInput(e: KeyboardEvent): void {
+  onKeyDown(e: KeyboardEvent): void {
     const keyCode = e.keyCode;
     const eventTarget = e.target as HTMLInputElement;
     if (
@@ -190,7 +172,32 @@ export class NzSelectTopControlComponent {
     }
   }
 
-  constructor(private renderer: Renderer2) {
+  constructor(private renderer: Renderer2, public nzSelectService: NzSelectService) {
 
+  }
+
+  ngOnInit(): void {
+    this.nzSelectService.listOfTemplateOption$.subscribe(data => {
+      this.nzListTemplateOfOption = data;
+      this.updateListOfCachedOption();
+    });
+    this.nzSelectService.listOfSelectedValue$.subscribe(data => {
+      this.nzListOfSelectedValue = data;
+      this.updateListOfCachedOption();
+    });
+    this.nzSelectService.open$.subscribe(data => {
+      if (data) {
+        this.focusOnInput();
+        this.nzSelectService.clearInput(true);
+      } else {
+        this.nzSelectService.clearInput(false);
+      }
+    });
+    this.nzSelectService.clearInput$.subscribe(data => {
+      this.setInputValue('', data);
+    });
+    this.nzSelectService.keydown$.subscribe(data => {
+      this.onKeyDown(data);
+    });
   }
 }

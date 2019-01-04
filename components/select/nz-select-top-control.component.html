@@ -1,18 +1,15 @@
 <ng-template #inputTemplate>
-  <input
-    #inputElement
+  <input #inputElement
     autocomplete="something-new"
     class="ant-select-search__field"
     (compositionstart)="isComposing = true"
     (compositionend)="isComposing = false"
     (input)="updateWidth()"
-    (keydown)="onKeyDownInput($event)"
     [ngModel]="inputValue"
     (ngModelChange)="setInputValue($event,true)"
     [disabled]="nzDisabled">
 </ng-template>
-<div
-  *ngIf="nzPlaceHolder"
+<div *ngIf="nzPlaceHolder"
   nz-select-unselectable
   [style.display]="placeHolderDisplay"
   (click)="focusOnInput()"
@@ -40,8 +37,7 @@
 <!--multiple or tags mode-->
 <ul *ngIf="isMultipleOrTags">
   <ng-container *ngFor="let value of nzListOfSelectedValue">
-    <li
-      *ngIf="isOptionDisplay(value)"
+    <li *ngIf="isOptionDisplay(value)"
       [@tagAnimation]
       [attr.title]="getPropertyFromValue(value,'nzLabel')"
       [class.ant-select-selection__choice__disabled]="getPropertyFromValue(value,'nzDisabled')"

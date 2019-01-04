@@ -1,4 +1,3 @@
-/* tslint:disable:no-any */
 import { Pipe, PipeTransform, QueryList } from '@angular/core';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
