@@ -14,6 +14,8 @@ export default {
     filterConfirm: 'OK',
     filterReset: 'Réinitialiser',
     emptyText: 'Aucune donnée',
+    selectAll: 'Tout sélectionner',
+    selectInvert: 'Inverser la sélection',
   },
   Modal: {
     okText: 'OK',
@@ -32,5 +34,11 @@ export default {
   },
   Select: {
     notFoundContent: 'Pas de résultat',
+  },
+  Upload: {
+    uploading: 'Téléversement en cours...',
+    removeFile: 'Supprimer',
+    uploadError: 'Erreur de téléversement',
+    previewFile: 'Afficher l\'aperçu du fichier',
   },
 };
