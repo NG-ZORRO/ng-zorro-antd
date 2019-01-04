@@ -16,6 +16,7 @@
     [ngStyle]="nzDropdownStyle">
     <nz-tree
       #treeRef
+      [hidden]="isNotFound"
       [nzData]="nzNodes"
       [nzMultiple]="nzMultiple"
       [nzSearchValue]="inputValue"
@@ -31,8 +32,12 @@
       (nzClick)="nzTreeClick.emit($event)"
       (nzCheckedKeysChange)="updateSelectedNodes()"
       (nzSelectedKeysChange)="updateSelectedNodes()"
-      (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)">
+      (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)"
+      (nzSearchValueChange)="setSearchValues($event)">
     </nz-tree>
+    <span *ngIf="isNotFound" class="ant-select-not-found">
+          {{ nzNotFoundContent ? nzNotFoundContent : ('Select.notFoundContent' | nzI18n) }}
+    </span>
   </div>
 </ng-template>
 
