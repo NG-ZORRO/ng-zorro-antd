@@ -8,8 +8,8 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
-  HostListener,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   Output,
@@ -20,7 +20,8 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { InputBoolean, InputNumber } from '../core/util/convert';
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 
@@ -94,7 +95,8 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
     return this.activeIndex > 0 ? (this.activeIndex - 1) : (this.slideContents.length - 1);
   }
 
-  constructor(public elementRef: ElementRef, private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
+  constructor(public elementRef: ElementRef, private renderer: Renderer2, private cdr: ChangeDetectorRef, private ngZone: NgZone) {
+  }
 
   ngAfterContentInit(): void {
     if (this.slideContents && this.slideContents.length) {
@@ -107,6 +109,14 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
     this.subs_.add(this.slideContents.changes.subscribe(() => {
       this.renderContent();
     }));
+
+    this.ngZone.runOutsideAngular(() => {
+      this.subs_.add(fromEvent(window, 'resize').pipe(debounceTime(50)).subscribe(() => {
+        this.renderContent();
+        this.setTransition();
+      }));
+    });
+
     // When used in modals (drawers maybe too), it should render itself asynchronously.
     // Refer to https://github.com/NG-ZORRO/ng-zorro-antd/issues/2387
     Promise.resolve().then(() => {
@@ -126,12 +136,6 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
   ngOnDestroy(): void {
     this.subs_.unsubscribe();
     this.clearTimeout();
-  }
-
-  @HostListener('window:resize', [ '$event' ])
-  onWindowResize(): void {
-    this.renderContent();
-    this.setTransition();
   }
 
   setContentActive(index: number): void {
@@ -181,9 +185,15 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
   }
 
   swipe(action: SwipeDirection = 'swipeleft'): void {
-    if (!this.nzEnableSwipe) { return; }
-    if (action === 'swipeleft') { this.next(); }
-    if (action === 'swiperight') { this.pre(); }
+    if (!this.nzEnableSwipe) {
+      return;
+    }
+    if (action === 'swipeleft') {
+      this.next();
+    }
+    if (action === 'swiperight') {
+      this.pre();
+    }
   }
 
   /* tslint:disable-next-line:no-any */
