@@ -30,7 +30,7 @@ cols: 1
 | `[nzHoverable]` | 鼠标移过时可浮起 | `boolean` | `false` |
 | `[nzLoading]` | 当卡片内容还在加载中时，可以用 loading 展示一个占位 | `boolean` | `false` |
 | `[nzTitle]` | 卡片标题 | `string｜TemplateRef<void>` | - |
-| `[nzType]` | 卡片类型，可设置为 `inner` 或 不设置 | `string` | - |
+| `[nzType]` | 卡片类型，可设置为 `inner` 或 不设置 | `'inner'` | - |
 
 ### nz-card-meta
 

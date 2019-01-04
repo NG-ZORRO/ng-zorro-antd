@@ -29,7 +29,7 @@ A card can be used to display content related to a single subject. The content c
 | `[nzHoverable]` | Lift up when hovering card | `boolean` | `false` |
 | `[nzLoading]` | Shows a loading indicator while the contents of the card are being fetched | `boolean` | `false` |
 | `[nzTitle]` | Card title | `string｜TemplateRef<void>` | - |
-| `[nzType]` | Card style type, can be set to `inner` or not set | `string` | - |
+| `[nzType]` | Card style type, can be set to `inner` or not set | `'inner'` | - |
 
 
 ### nz-card-meta

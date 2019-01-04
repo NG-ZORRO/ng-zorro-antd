@@ -41,8 +41,8 @@ mark the element that trigger dropdown
 | -------- | ----------- | ---- | ------- |
 | `[nzDisabled]` | whether the dropdown menu is disabled | `boolean` | - |
 | `[nzPlacement]` | placement of pop menu | `'bottomLeft'｜'bottomCenter'｜'bottomRight'｜'topLeft'｜'topCenter'｜'topRight'` | `'bottomLeft'` |
-| `[nzSize]` | size of the button, the same as [nz-buutton](/components/button/en) | `string` | `'default'` |
-| `[nzType]` | type of the button, the same as [nz-button](/components/button/en) | `string` | `'default'` |
+| `[nzSize]` | size of the button, the same as [nz-buutton](/components/button/en) | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzType]` | type of the button, the same as [nz-button](/components/button/en) | `'primary'｜'ghost'｜'dashed'｜'danger'｜'default'` | `'default'` |
 | `[nzTrigger]` | the trigger mode which executes the drop-down action | `'click'｜'hover'` | `'hover'` |
 | `[nzClickHide]` | whether hide menu when click | `boolean` | `true` |
 | `[nzVisible]` | whether the dropdown menu is visible | `boolean` | - |

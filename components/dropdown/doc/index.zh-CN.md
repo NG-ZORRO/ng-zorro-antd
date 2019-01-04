@@ -43,8 +43,8 @@ title: Dropdown
 | --- | --- | --- | --- |
 | `[nzDisabled]` | 菜单是否禁用 | `boolean` | - |
 | `[nzPlacement]` | 菜单弹出位置 | `'bottomLeft'｜'bottomCenter'｜'bottomRight'｜'topLeft'｜'topCenter'｜'topRight'` | `'bottomLeft'` |
-| `[nzSize]` | 按钮大小，和 [nz-button](/components/button/zh) 一致 | `string` | `'default'` |
-| `[nzType]` | 按钮类型，和 [nz-button](/components/button/zh) 一致 | `string` | `'default'` |
+| `[nzSize]` | 按钮大小，和 [nz-button](/components/button/zh) 一致 | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzType]` | 按钮类型，和 [nz-button](/components/button/zh) 一致 | `'primary'｜'ghost'｜'dashed'｜'danger'｜'default'` | `'default'` |
 | `[nzTrigger]` | 触发下拉的行为 | `'click'｜'hover'` | `'hover'` |
 | `[nzClickHide]` | 点击后是否隐藏菜单 | `boolean` | `true` |
 | `[nzVisible]` | 菜单是否显示 | `boolean` | - |
