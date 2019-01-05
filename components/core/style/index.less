@@ -79,6 +79,22 @@
   background: @component-background;
 }
 
+.ant-table-tbody {
+  & > tr {
+    &:hover {
+      & > td {
+        &.ant-table-td-left-sticky {
+          background: @table-row-hover-bg;
+        }
+
+        &.ant-table-td-right-sticky {
+          background: @table-row-hover-bg;
+        }
+      }
+    }
+  }
+}
+
 .ant-table-scroll-position-middle {
   .box-shadow-right;
   .box-shadow-left;
