@@ -14,6 +14,8 @@ Comparing with `Tooltip`, besides information `Popover` card can also provide ac
 
 ## API
 
+### [nz-popover]
+
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |
 | nzTitle | Title of the card | `string｜TemplateRef<void>` | - |
