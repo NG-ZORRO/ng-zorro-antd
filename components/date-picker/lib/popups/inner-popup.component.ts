@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { FunctionProp } from '../../../core/types/common-wrap';
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
@@ -6,6 +6,7 @@ import { DisabledDateFn, PanelMode } from '../../standard-types';
 import { CandyDate } from '../candy-date';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'inner-popup',

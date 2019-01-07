@@ -1,10 +1,11 @@
-import { forwardRef, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { forwardRef, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, ViewEncapsulation } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import { HeaderPickerComponent, SupportHeaderPanel } from './header-picker.component';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-month-picker',
   templateUrl: './header-picker.component.html',

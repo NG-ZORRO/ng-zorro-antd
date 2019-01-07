@@ -17,7 +17,8 @@ import {
   Output,
   Renderer2,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion } from '../core/animation/slide';
@@ -26,6 +27,7 @@ import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector   : 'nz-time-picker',
   templateUrl: './nz-time-picker.component.html',

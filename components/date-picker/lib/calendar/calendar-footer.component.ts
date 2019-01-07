@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { isNonEmptyString, isTemplateRef } from '../../../core/util/check';
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
 import { CandyDate } from '../candy-date';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'calendar-footer',

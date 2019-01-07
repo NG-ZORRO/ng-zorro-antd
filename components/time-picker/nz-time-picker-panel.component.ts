@@ -9,7 +9,8 @@ import {
   OnInit,
   Output,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -27,6 +28,7 @@ function makeRange(length: number, step: number = 1): number[] {
 }
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector   : 'nz-time-picker-panel',
   templateUrl: './nz-time-picker-panel.component.html',

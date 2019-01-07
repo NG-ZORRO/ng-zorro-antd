@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
 import { NzI18nService } from '../../../i18n/nz-i18n.service';
 import { CandyDate } from '../candy-date';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'calendar-input',

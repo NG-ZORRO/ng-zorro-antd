@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { FunctionProp } from '../../../core/types/common-wrap';
 import { isNonEmptyString, isTemplateRef } from '../../../core/util/check';
@@ -10,6 +10,7 @@ const DATE_ROW_NUM = 6;
 const DATE_COL_NUM = 7;
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'date-table',

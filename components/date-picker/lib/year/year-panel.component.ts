@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
 import { CandyDate } from '../candy-date';
@@ -7,6 +7,7 @@ const MAX_ROW = 4;
 const MAX_COL = 3;
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'year-panel',

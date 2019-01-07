@@ -1,10 +1,11 @@
-import { forwardRef, ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { forwardRef, ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import { DateRangePickerComponent } from './date-range-picker.component';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-range-picker',
   templateUrl: './date-range-picker.component.html',

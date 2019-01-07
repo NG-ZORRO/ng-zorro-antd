@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { FunctionProp } from '../../../core/types/common-wrap';
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
@@ -15,6 +15,7 @@ import { CandyDate } from '../candy-date';
 import { getTimeConfig, isAllowedDate } from '../util';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector   : 'date-range-popup',
