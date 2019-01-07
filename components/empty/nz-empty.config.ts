@@ -3,7 +3,7 @@ import { InjectionToken, TemplateRef, Type } from '@angular/core';
 export type NzEmptySize = 'normal' | 'small' | '';
 
 // tslint:disable-next-line:no-any
-export type NzEmptyCustomContent = Type<any> | TemplateRef<void> | string;
+export type NzEmptyCustomContent = Type<any> | TemplateRef<any> | string;
 
 // tslint:disable-next-line:no-any
 export const NZ_DEFAULT_EMPTY_CONTENT = new InjectionToken<Type<any>>('nz-empty-content');

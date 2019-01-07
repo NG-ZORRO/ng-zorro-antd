@@ -38,10 +38,10 @@ import { NzEmptyService } from 'ng-zorro-antd';
     <h3>List</h3>
     <nz-list [nzDataSource]="[]"></nz-list>
 
-    <ng-template #customTpl>
+    <ng-template #customTpl let-name>
       <div style="text-align: center;">
         <i nz-icon type="smile" style="font-size: 20px;"></i>
-        <p>Data Not Found</p>
+        <p>Data Not Found in {{ name }}</p>
       </div>
     </ng-template>
   `,
@@ -52,7 +52,7 @@ import { NzEmptyService } from 'ng-zorro-antd';
   ]
 })
 export class NzDemoEmptyConfigComponent {
-  @ViewChild('customTpl') customTpl: TemplateRef<void>;
+  @ViewChild('customTpl') customTpl: TemplateRef<any>; // tslint:disable-line:no-any
 
   customize = false;
   options = [
@@ -92,7 +92,7 @@ export class NzDemoEmptyConfigComponent {
 
   onConfigChange(): void {
     if (this.customize) {
-      this.nzEmptyService.setDefaultContent(this.customize as any); // tslint:disable-line:no-any
+      this.nzEmptyService.setDefaultContent(this.customTpl); // tslint:disable-line:no-any
     } else {
       this.nzEmptyService.resetDefault();
     }
