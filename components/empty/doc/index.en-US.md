@@ -23,10 +23,10 @@ When there is no data provided, display for friendly tips.
 
 ### NzEmptyService
 
-| Methods/Properties | Description | Parameters | Return |
+| Methods/Properties | Description | Parameters |
 | -------- | ----------- | ---- |
-| `setDefaultContent` | To set the default empty content. The parent component name would be passed to the template. | `TemplateRef<string>` ｜ `string` | `void` |
-| `resetDefault` | Reset default empty content | - | - |
+| `setDefaultContent` | To set the default empty content. The parent component name would be passed to the template. | `TemplateRef<string>` ｜ `string` |
+| `resetDefault` | Reset default empty content | - |
 
 ### InjectionToken
 

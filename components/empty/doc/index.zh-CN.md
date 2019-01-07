@@ -24,10 +24,10 @@ cols: 1
 
 ### NzEmptyService
 
-| 属性/方法 | 说明 | 参数 | 返回 |
+| 属性/方法 | 说明 | 参数 |
 | -------- | ----------- | ---- |
-| `setDefaultEmptyContent` | 设置全局空内容，空组件的父组件名称将会被传递给模板 | `TemplateRef<string>` ｜ `string` | void |
-| `resetDefault` | 重置默认空内容 | - | - |
+| `setDefaultEmptyContent` | 设置全局空内容，空组件的父组件名称将会被传递给模板 | `TemplateRef<string>` ｜ `string` |
+| `resetDefault` | 重置默认空内容 | - |
 
 ### InjectionToken
 
