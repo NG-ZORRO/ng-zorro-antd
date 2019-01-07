@@ -38,7 +38,7 @@ Uploading is the process of publishing information (web pages, text, pictures, v
 | `[nzListType]` | Built-in stylesheets, support for three types: `text`, `picture` or `picture-card` | `'text'｜'picture'｜'picture-card'` | `'text'` |
 | `[nzMultiple]` | Whether to support selected multiple file. `IE10+` supported. You can select multiple files with CTRL holding down while multiple is set to be true | `boolean` | `false` |
 | `[nzName]` | The name of uploading file | `string` | `'file'` |
-| `[nzShowUploadList]` | Whether to show default upload list, could be an object to specify `showPreviewIcon` and `showRemoveIcon` individually | `boolean or { showPreviewIcon?: boolean, showRemoveIcon?: boolean }` | `true` |
+| `[nzShowUploadList]` | Whether to show default upload list, could be an object to specify `showPreviewIcon` and `showRemoveIcon` individually | `boolean｜{ showPreviewIcon?: boolean, showRemoveIcon?: boolean }` | `true` |
 | `[nzShowButton]` | Show upload button | `boolean` | `true` |
 | `[nzWithCredentials]` | ajax upload with cookie sent | `boolean` | `false` |
 | `[nzOpenFileDialogOnClick]` | click open file dialog | `boolean` | `true` |
