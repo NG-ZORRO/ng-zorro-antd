@@ -21,6 +21,7 @@ title: TreeSelect
 | `[nzPlaceHolder]` | 选择框默认文字 | string | - |
 | `[nzDisabled]` | 禁用选择器 | boolean | false |
 | `[nzShowSearch]` | 显示搜索框 | boolean | false |
+| `[nzNotFoundContent]` | 当下拉列表为空时显示的内容 | string | - |
 | `[nzDropdownMatchSelectWidth]` | 下拉菜单和选择器同宽 | boolean | true |
 | `[nzDropdownStyle]` | 下拉菜单的样式 | { [key: string]: string; } | - |
 | `[nzMultiple]` | 支持多选（当设置 nzCheckable 时自动变为true） | boolean | false |
