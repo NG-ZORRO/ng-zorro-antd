@@ -177,6 +177,23 @@ describe('tree-select component', () => {
       tick();
       expect(treeSelect.nativeElement.querySelector('.ant-select-search--inline')).toBeNull();
     }));
+    it('should display no data', fakeAsync(() => {
+      treeSelectComponent.updateSelectedNodes();
+      fixture.detectChanges();
+      testComponent.showSearch = true;
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('nz-tree').getAttribute('hidden')).toBeNull();
+      expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeFalsy();
+      fixture.detectChanges();
+      treeSelectComponent.inputValue = 'invalid_value';
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('nz-tree').getAttribute('hidden')).toBe('');
+      expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeTruthy();
+    }));
     it('should selectedValueDisplay style correct', fakeAsync(() => {
       testComponent.showSearch = true;
       fixture.detectChanges();
@@ -313,6 +330,25 @@ describe('tree-select component', () => {
       expect(treeSelectComponent.selectedNodes.length).toBe(0);
       expect(treeSelectComponent.nzOpen).toBe(false);
     }));
+
+    it('should display no data', fakeAsync(() => {
+      treeSelectComponent.updateSelectedNodes();
+      fixture.detectChanges();
+      testComponent.showSearch = true;
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('nz-tree').getAttribute('hidden')).toBeNull();
+      expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeFalsy();
+      fixture.detectChanges();
+      treeSelectComponent.inputValue = 'invalid_value';
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('nz-tree').getAttribute('hidden')).toBe('');
+      expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeTruthy();
+    }));
+
   });
 
   describe('form', () => {

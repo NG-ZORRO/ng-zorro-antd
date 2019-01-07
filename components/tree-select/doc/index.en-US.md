@@ -21,6 +21,7 @@ Any data whose entries are defined in a hierarchical manner is fit to use this c
 | `[nzPlaceHolder]` | Placeholder of the select input | string | - |
 | `[nzDisabled]` | Disabled or not | boolean | false |
 | `[nzShowSearch]` | Whether to display a search input in the dropdown menu(valid only in the single mode) | boolean | false |
+| `[nzNotFoundContent]` | Specify content to show when no result matches. | string | - |
 | `[nzDropdownMatchSelectWidth]` | Determine whether the dropdown menu and the select input are the same width | boolean | true |
 | `[nzDropdownStyle]` | To set the style of the dropdown menu | object | - |
 | `[nzMultiple]` | Support multiple or not, will be `true` when enable `nzCheckable`. | boolean | false |
