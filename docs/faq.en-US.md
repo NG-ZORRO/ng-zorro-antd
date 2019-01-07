@@ -5,7 +5,7 @@ title: FAQ
 
 ### Why individually importing is not supported?
 
-In fact, from the first version of `ng-zorro-antd`, all its code is wriitten in TypeScript. Tree Shaking strategy is used to reduce the size of your bundle and unused modules would not be bundled. Consequently, individually importing is unnecessary.
+In fact, from the first version of `ng-zorro-antd`, all its code is written in TypeScript. Tree Shaking strategy is used to reduce the size of your bundle and unused modules would not be bundled. Consequently, individually importing is unnecessary.
 
 ![](https://img.alicdn.com/tfs/TB1D8MXdTtYBeNjy1XdXXXXyVXa-2864-1592.jpg)
 
@@ -15,7 +15,7 @@ In fact, from the first version of `ng-zorro-antd`, all its code is wriitten in 
 
 ### The bundle is too big in size
 
-Please make sure you use `ng build --prod` correctly to compile. If other third-party component kits other than `ng-zorro-antd` are imported, you could generate a sourcemap file using this command `ng build --prod --sourcemaps` to check every dependecy's bundled size. You can check [this link](https://angular.io/guide/deployment#inspect-the-bundles) for furthur instructions.
+Please make sure you use `ng build --prod` correctly to compile. If other third-party component kits other than `ng-zorro-antd` are imported, you could generate a sourcemap file using this command `ng build --prod --sourcemaps` to check every dependency's bundled size. You can check [this link](https://angular.io/guide/deployment#inspect-the-bundles) for further instructions.
 
 ###  Browser compatibility
 
@@ -27,7 +27,7 @@ Please make sure you use [Angular](https://angular.io/guide/lifecycle-hooks#onch
 
 ### Why my issue is closed?
 
-Issue is designed for maintainers and users to track the development process of the project, which means only bug reports and feature requests are accepted and usage questions are not. And to give priority to well-explained jobs, issues that are not written in the given format would be closed autometically by the bot right away.
+Issue is designed for maintainers and users to track the development process of the project, which means only bug reports and feature requests are accepted and usage questions are not. And to give priority to well-explained jobs, issues that are not written in the given format would be closed automatically by the bot right away.
 
 ### Where can I get help with Angular?
 
