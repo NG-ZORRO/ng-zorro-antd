@@ -6,7 +6,7 @@
     (compositionend)="isComposing = false"
     (input)="updateWidth()"
     [ngModel]="inputValue"
-    (ngModelChange)="setInputValue($event,true)"
+    (ngModelChange)="setInputValue($event)"
     [disabled]="nzDisabled">
 </ng-template>
 <div *ngIf="nzPlaceHolder"
@@ -15,10 +15,10 @@
   (click)="focusOnInput()"
   class="ant-select-selection__placeholder">{{ nzPlaceHolder }}</div>
 <!--single mode-->
-<ng-container *ngIf="isSingleMode">
+<ng-container *ngIf="nzSelectService.isSingleMode">
   <!--selected label-->
   <div
-    *ngIf="nzListOfSelectedValue.length"
+    *ngIf="nzSelectService.listOfSelectedValue.length"
     class="ant-select-selection-selected-value"
     [attr.title]="singleValueLabel"
     [ngStyle]="selectedValueDisplay">
@@ -35,8 +35,8 @@
   </div>
 </ng-container>
 <!--multiple or tags mode-->
-<ul *ngIf="isMultipleOrTags">
-  <ng-container *ngFor="let value of nzListOfSelectedValue">
+<ul *ngIf="nzSelectService.isMultipleOrTags">
+  <ng-container *ngFor="let value of nzSelectService.listOfSelectedValue">
     <li *ngIf="isOptionDisplay(value)"
       [@tagAnimation]
       [attr.title]="getPropertyFromValue(value,'nzLabel')"

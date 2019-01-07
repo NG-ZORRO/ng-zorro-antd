@@ -15,18 +15,16 @@ import {
   ContentChildren,
   EventEmitter,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
   QueryList,
   Renderer2,
-  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { merge, EMPTY, Subscription } from 'rxjs';
-import { distinctUntilChanged, filter, flatMap, map, startWith } from 'rxjs/operators';
+import { merge, EMPTY } from 'rxjs';
+import { distinctUntilChanged, flatMap, startWith } from 'rxjs/operators';
 import { isNotNil } from '../core/util/check';
 import { toBoolean, InputBoolean } from '../core/util/convert';
 import { NzOptionGroupComponent } from './nz-option-group.component';
@@ -116,9 +114,10 @@ import { NzSelectService } from './nz-select.service';
     }
   ` ]
 })
-export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy, OnChanges, AfterContentInit {
+export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy, AfterContentInit {
   private _disabled = false;
   private _open = false;
+  private _autoFocus = false;
   onChange: (value: string | string[]) => void = () => null;
   onTouched: () => void = () => null;
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
@@ -137,19 +136,46 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Input() nzSize = 'default';
   @Input() nzDropdownClassName: string;
-  @Input() nzServerSearch = false;
   @Input() nzDropdownMatchSelectWidth = true;
-  @Input() nzFilterOption: TFilterOption = defaultFilterOption;
-  @Input() nzMaxMultipleCount = Infinity;
   @Input() nzDropdownStyle: { [ key: string ]: string; };
   @Input() nzNotFoundContent: string;
   @Input() @InputBoolean() nzAllowClear = false;
   @Input() @InputBoolean() nzShowSearch = false;
   @Input() nzPlaceHolder: string;
-  @Input() nzMode: 'default' | 'multiple' | 'tags' = 'default';
+
+  @Input() set nzMaxMultipleCount(value: number) {
+    this.nzSelectService.maxMultipleCount = value;
+  }
+
+  @Input()
+  set nzServerSearch(value: boolean) {
+    this.nzSelectService.serverSearch = value;
+  }
+
+  @Input()
+  set nzMode(value: 'default' | 'multiple' | 'tags') {
+    this.nzSelectService.mode = value;
+  }
+
+  @Input() set nzFilterOption(value: TFilterOption) {
+    this.nzSelectService.filterOption = value;
+  }
+
+  @Input()
   // tslint:disable-next-line:no-any
-  @Input() compareWith: (o1: any, o2: any) => boolean = (o1: any, o2: any) => o1 === o2;
-  @Input() @InputBoolean() nzAutoFocus = false;
+  set compareWith(value: (o1: any, o2: any) => boolean) {
+    this.nzSelectService.compareWith = value;
+  }
+
+  @Input()
+  set nzAutoFocus(value: boolean) {
+    this._autoFocus = toBoolean(value);
+    this.updateAutoFocus();
+  }
+
+  get nzAutoFocus(): boolean {
+    return this._autoFocus;
+  }
 
   @Input()
   set nzOpen(value: boolean) {
@@ -197,7 +223,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   onKeyDown(event: KeyboardEvent): void {
-    this.nzSelectService.keydown$.next(event);
+    this.nzSelectService.onKeyDown(event);
     if (!this.nzDisabled) {
       const keyCode = event.keyCode;
       if (keyCode === SPACE || keyCode === DOWN_ARROW) {
@@ -242,14 +268,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this.dropDownPosition = position.connectionPair.originY;
   }
 
-  onClickOptionFromOptionContainer(): void {
-    if (this.isSingleMode) {
-      this.closeDropDown();
-    } else if (this.isTagsMode) {
-      this.nzSelectService.clearInput(true);
-    }
-  }
-
   updateCdkConnectedOverlayStatus(): void {
     // TODO
     setTimeout(() => {
@@ -273,18 +291,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   onClearSelection(e: MouseEvent): void {
     e.stopPropagation();
     this.nzSelectService.updateListOfSelectedValue([], true);
-  }
-
-  get isSingleMode(): boolean {
-    return this.nzMode === 'default';
-  }
-
-  get isTagsMode(): boolean {
-    return this.nzMode === 'tags';
-  }
-
-  get isMultipleOrTags(): boolean {
-    return this.nzMode === 'tags' || this.nzMode === 'multiple';
   }
 
   constructor(private renderer: Renderer2, public nzSelectService: NzSelectService) {
@@ -318,12 +324,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   ngOnInit(): void {
-    this.nzSelectService.searchValue$.pipe(distinctUntilChanged()).subscribe(data => {
+    this.nzSelectService.searchValue$.subscribe(data => {
       this.nzOnSearch.emit(data);
     });
     this.nzSelectService.listOfSelectedValueShouldEmit$.subscribe(selectedList => {
       let modelValue = null;
-      if (this.isSingleMode) {
+      if (this.nzSelectService.isSingleMode) {
         if (selectedList.length) {
           modelValue = selectedList[ 0 ];
         }
@@ -334,6 +340,13 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
       if (modelValue !== this.value) {
         this.value = modelValue;
         this.onChange(this.value);
+      }
+    });
+    this.nzSelectService.clickOption$.subscribe(() => {
+      if (this.nzSelectService.isSingleMode) {
+        this.closeDropDown();
+      } else if (this.nzSelectService.isTagsMode) {
+        this.nzSelectService.clearInput();
       }
     });
   }
@@ -348,18 +361,10 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
       this.listOfNzOptionComponent.changes,
       ...this.listOfNzOptionGroupComponent.map(group => group.listOfNzOptionComponent ? group.listOfNzOptionComponent.changes : EMPTY)
     ).pipe(startWith(true)))).subscribe(() => {
-      this.nzSelectService.listOfTemplateOption$.next(
-        this.listOfNzOptionComponent.toArray().concat(this.listOfNzOptionGroupComponent.toArray().reduce((pre, cur) => [ ...pre, ...cur.listOfNzOptionComponent.toArray() ], []))
-      );
+      this.nzSelectService.updateTemplateOption(this.listOfNzOptionComponent.toArray(), this.listOfNzOptionGroupComponent.toArray());
     });
   }
 
   ngOnDestroy(): void {
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzAutoFocus) {
-      this.updateAutoFocus();
-    }
   }
 }

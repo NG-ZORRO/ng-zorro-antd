@@ -16,10 +16,17 @@ import { NzOptionComponent } from './nz-option.component';
   templateUrl    : './nz-option-group.component.html'
 })
 export class NzOptionGroupComponent {
+  isLabelString = false;
+  label: string | TemplateRef<void>;
   @ContentChildren(NzOptionComponent) listOfNzOptionComponent: QueryList<NzOptionComponent>;
-  @Input() nzLabel: string | TemplateRef<void>;
 
-  get isLabelString(): boolean {
-    return !(this.nzLabel instanceof TemplateRef);
+  @Input()
+  set nzLabel(value: string | TemplateRef<void>) {
+    this.label = value;
+    this.isLabelString = !(this.nzLabel instanceof TemplateRef);
+  }
+
+  get nzLabel(): string | TemplateRef<void> {
+    return this.label;
   }
 }

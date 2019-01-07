@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component, ElementRef,
+  Input, OnDestroy,
+  OnInit,
+  ViewEncapsulation
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { isNotNil } from '../core/util/check';
 import { NzOptionComponent } from './nz-option.component';
 import { NzSelectService } from './nz-select.service';
@@ -12,36 +21,46 @@ import { NzSelectService } from './nz-select.service';
     '[class.ant-select-dropdown-menu-item]'         : 'true',
     '[class.ant-select-dropdown-menu-item-selected]': 'selected && !nzOption.nzDisabled',
     '[class.ant-select-dropdown-menu-item-disabled]': 'nzOption.nzDisabled',
-    '[class.ant-select-dropdown-menu-item-active]'  : 'active && !nzOption.nzDisabled && nzShowActive && !selected',
+    '[class.ant-select-dropdown-menu-item-active]'  : 'active && !nzOption.nzDisabled',
     '[attr.unselectable]'                           : '"unselectable"',
-    '[style.user-select]'                           : '"none"'
+    '[style.user-select]'                           : '"none"',
+    '(click)'                                       : 'clickOption()'
   }
 })
-export class NzOptionLiComponent implements OnInit {
+export class NzOptionLiComponent implements OnInit, OnDestroy {
   el: HTMLElement = this.elementRef.nativeElement;
   selected = false;
   active = false;
+  destroy$ = new Subject();
   @Input() nzOption: NzOptionComponent;
-  @Input() nzShowActive = true;
-  @Input() nzMode: 'default' | 'multiple' | 'tags' = 'default';
-  // tslint:disable-next-line:no-any
-  @Input() compareWith = (o1: any, o2: any) => o1 === o2;
 
-  @Input()
-  set nzActiveOption(value: NzOptionComponent) {
-    if (value) {
-      this.active = this.compareWith(value.nzValue, this.nzOption.nzValue);
-    } else {
-      this.active = false;
+  clickOption(): void {
+    if (!this.nzOption.nzDisabled) {
+      this.nzSelectService.updateSelectedOption(this.nzOption);
+      this.nzSelectService.clickOption$.next();
     }
   }
 
-  constructor(private elementRef: ElementRef, public nzSelectService: NzSelectService) {
+  constructor(private elementRef: ElementRef, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
-    this.nzSelectService.listOfSelectedValue$.subscribe(data => {
-      this.selected = isNotNil(data.find(v => this.compareWith(v, this.nzOption.nzValue)));
+    this.nzSelectService.listOfSelectedValue$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+      this.selected = isNotNil(data.find(v => this.nzSelectService.compareWith(v, this.nzOption.nzValue)));
+      this.cdr.markForCheck();
     });
+    this.nzSelectService.activatedOption$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+      if (data) {
+        this.active = this.nzSelectService.compareWith(data.nzValue, this.nzOption.nzValue);
+      } else {
+        this.active = false;
+      }
+      this.cdr.markForCheck();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -1,15 +1,13 @@
 <div cdkOverlayOrigin
   tabindex="0"
   class="ant-select-selection"
-  [class.ant-select-selection--single]="isSingleMode"
-  [class.ant-select-selection--multiple]="isMultipleOrTags"
+  [class.ant-select-selection--single]="nzSelectService.isSingleMode"
+  [class.ant-select-selection--multiple]="nzSelectService.isMultipleOrTags"
   (keydown)="onKeyDown($event)">
   <div nz-select-top-control
     [nzOpen]="nzOpen"
-    [compareWith]="compareWith"
     [nzPlaceHolder]="nzPlaceHolder"
     [nzShowSearch]="nzShowSearch"
-    [nzMode]="nzMode"
     [nzDisabled]="nzDisabled">
   </div>
   <span *ngIf="nzAllowClear" class="ant-select-selection__clear" nz-select-unselectable (click)="onClearSelection($event)">
@@ -32,8 +30,8 @@
   [cdkConnectedOverlayOpen]="nzOpen">
   <div
     class="ant-select-dropdown"
-    [class.ant-select-dropdown--single]="isSingleMode"
-    [class.ant-select-dropdown--multiple]="isMultipleOrTags"
+    [class.ant-select-dropdown--single]="nzSelectService.isSingleMode"
+    [class.ant-select-dropdown--multiple]="nzSelectService.isMultipleOrTags"
     [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
     [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
     [nzClassListAdd]="[nzDropdownClassName]"
@@ -41,16 +39,8 @@
     <div style="overflow: auto"
       nz-option-container
       (keydown)="onKeyDown($event)"
-      [listOfNzOptionComponent]="listOfNzOptionComponent"
-      [listOfNzOptionGroupComponent]="listOfNzOptionGroupComponent"
-      [nzFilterOption]="nzFilterOption"
-      [nzMode]="nzMode"
-      [nzServerSearch]="nzServerSearch"
       [nzNotFoundContent]="nzNotFoundContent"
-      [compareWith]="compareWith"
-      [nzMaxMultipleCount]="nzMaxMultipleCount"
-      (nzScrollToBottom)="nzScrollToBottom.emit()"
-      (nzClickOption)="onClickOptionFromOptionContainer()">
+      (nzScrollToBottom)="nzScrollToBottom.emit()">
     </div>
   </div>
 </ng-template>
