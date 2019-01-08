@@ -7,13 +7,15 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  QueryList,
+  QueryList, TemplateRef,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionLiComponent } from './nz-option-li.component';
+import { NzOptionComponent } from './nz-option.component';
 import { NzSelectService } from './nz-select.service';
 
 @Component({
@@ -50,6 +52,15 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
     if (ul && (ul.scrollHeight - ul.scrollTop === ul.clientHeight)) {
       this.nzScrollToBottom.emit();
     }
+  }
+
+  trackLabel(index: number, option: NzOptionGroupComponent): string | TemplateRef<void> {
+    return option.nzLabel;
+  }
+
+  // tslint:disable-next-line:no-any
+  trackValue(index: number, option: NzOptionComponent): any {
+    return option.nzValue;
   }
 
   constructor(public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef) {

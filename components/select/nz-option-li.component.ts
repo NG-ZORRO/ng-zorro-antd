@@ -37,7 +37,7 @@ export class NzOptionLiComponent implements OnInit, OnDestroy {
   clickOption(): void {
     if (!this.nzOption.nzDisabled) {
       this.nzSelectService.updateSelectedOption(this.nzOption);
-      this.nzSelectService.clickOption$.next();
+      this.nzSelectService.clickOption();
     }
   }
 

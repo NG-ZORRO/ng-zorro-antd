@@ -15,21 +15,6 @@ export class NzFilterOptionPipe implements PipeTransform {
   }
 }
 
-@Pipe({ name: 'nzFilterAddOption' })
-export class NzFilterAddOptionPipe implements PipeTransform {
-  transform(options: NzOptionComponent[], searchValue: string, isTagMode: boolean): NzOptionComponent[] {
-    const isMatch = options.find(item => item.nzLabel === searchValue);
-    if (isTagMode && searchValue && !isMatch) {
-      const option = new NzOptionComponent();
-      option.nzValue = searchValue;
-      option.nzLabel = searchValue;
-      return [ option ];
-    } else {
-      return [];
-    }
-  }
-}
-
 @Pipe({ name: 'nzFilterGroupOption' })
 export class NzFilterGroupOptionPipe implements PipeTransform {
   transform(groups: NzOptionGroupComponent[], searchValue: string, filterOption: TFilterOption, serverSearch: boolean): NzOptionGroupComponent[] {

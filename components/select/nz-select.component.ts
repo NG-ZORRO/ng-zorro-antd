@@ -5,7 +5,6 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { DOWN_ARROW, SPACE, TAB } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import {
   forwardRef,
@@ -23,13 +22,13 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { merge, EMPTY } from 'rxjs';
-import { distinctUntilChanged, flatMap, startWith } from 'rxjs/operators';
+import { merge, EMPTY, Subject } from 'rxjs';
+import { distinctUntilChanged, flatMap, startWith, takeUntil } from 'rxjs/operators';
 import { isNotNil } from '../core/util/check';
 import { toBoolean, InputBoolean } from '../core/util/convert';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
-import { defaultFilterOption, TFilterOption } from './nz-option.pipe';
+import { TFilterOption } from './nz-option.pipe';
 import { NzSelectTopControlComponent } from './nz-select-top-control.component';
 import { NzSelectService } from './nz-select.service';
 
@@ -60,7 +59,7 @@ import { NzSelectService } from './nz-select.service';
         transform      : 'scaleY(1)',
         transformOrigin: '0% 100%'
       })),
-      transition('hidden => bottom', [
+      transition('void => bottom', [
         style({
           opacity        : 0,
           transform      : 'scaleY(0.8)',
@@ -68,14 +67,14 @@ import { NzSelectService } from './nz-select.service';
         }),
         animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)')
       ]),
-      transition('bottom => hidden', [
+      transition('bottom => void', [
         animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)', style({
           opacity        : 0,
           transform      : 'scaleY(0.8)',
           transformOrigin: '0% 0%'
         }))
       ]),
-      transition('hidden => top', [
+      transition('void => top', [
         style({
           opacity        : 0,
           transform      : 'scaleY(0.8)',
@@ -83,7 +82,7 @@ import { NzSelectService } from './nz-select.service';
         }),
         animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)')
       ]),
-      transition('top => hidden', [
+      transition('top => void', [
         animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)', style({
           opacity        : 0,
           transform      : 'scaleY(0.8)',
@@ -118,13 +117,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   private _disabled = false;
   private _open = false;
   private _autoFocus = false;
+  private destroy$ = new Subject();
   onChange: (value: string | string[]) => void = () => null;
   onTouched: () => void = () => null;
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   // tslint:disable-next-line:no-any
   value: any | any[];
-  overlayWidth: number;
-  overlayMinWidth: number;
   @ViewChild(CdkOverlayOrigin) cdkOverlayOrigin: CdkOverlayOrigin;
   @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
   @ViewChild(NzSelectTopControlComponent) nzSelectTopControlComponent: NzSelectTopControlComponent;
@@ -143,7 +141,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() @InputBoolean() nzShowSearch = false;
   @Input() nzPlaceHolder: string;
 
-  @Input() set nzMaxMultipleCount(value: number) {
+  @Input()
+  set nzMaxMultipleCount(value: number) {
     this.nzSelectService.maxMultipleCount = value;
   }
 
@@ -157,7 +156,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this.nzSelectService.mode = value;
   }
 
-  @Input() set nzFilterOption(value: TFilterOption) {
+  @Input()
+  set nzFilterOption(value: TFilterOption) {
     this.nzSelectService.filterOption = value;
   }
 
@@ -180,8 +180,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input()
   set nzOpen(value: boolean) {
     this._open = value;
-    this.updateCdkConnectedOverlayStatus();
-    this.nzSelectService.open$.next(value);
+    this.nzSelectService.setOpenState(value);
   }
 
   get nzOpen(): boolean {
@@ -191,6 +190,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input()
   set nzDisabled(value: boolean) {
     this._disabled = toBoolean(value);
+    this.nzSelectService.disabled = this._disabled;
     if (this.nzDisabled) {
       this.closeDropDown();
     }
@@ -224,44 +224,16 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   onKeyDown(event: KeyboardEvent): void {
     this.nzSelectService.onKeyDown(event);
-    if (!this.nzDisabled) {
-      const keyCode = event.keyCode;
-      if (keyCode === SPACE || keyCode === DOWN_ARROW) {
-        this.openDropDown();
-        event.preventDefault();
-      }
-      if (keyCode === TAB) {
-        // if (keyCode === SPACE || keyCode === TAB) { // #2201
-        this.closeDropDown();
-        event.preventDefault();
-      }
-    }
   }
 
   toggleDropDown(): void {
     if (!this.nzDisabled) {
-      if (this.nzOpen) {
-        this.closeDropDown();
-      } else {
-        this.openDropDown();
-      }
-    }
-  }
-
-  openDropDown(): void {
-    if (!this.nzOpen) {
-      this.nzOpen = true;
-      this.nzOpenChange.emit(this.nzOpen);
+      this.nzSelectService.setOpenState(!this.nzOpen);
     }
   }
 
   closeDropDown(): void {
-    if (this.nzOpen) {
-      this.nzOpen = false;
-      this.nzOpenChange.emit(this.nzOpen);
-      this.blur();
-      this.onTouched();
-    }
+    this.nzSelectService.setOpenState(false);
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
@@ -269,15 +241,13 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   updateCdkConnectedOverlayStatus(): void {
-    // TODO
     setTimeout(() => {
       if (this.nzOpen && this.cdkOverlayOrigin && this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
+        const triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
         if (this.nzDropdownMatchSelectWidth) {
-          this.overlayWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
-          this.cdkConnectedOverlay.overlayRef.updateSize({ width: this.overlayWidth });
+          this.cdkConnectedOverlay.overlayRef.updateSize({ width: triggerWidth });
         } else {
-          this.overlayMinWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
-          this.cdkConnectedOverlay.overlayRef.updateSize({ minWidth: this.overlayMinWidth });
+          this.cdkConnectedOverlay.overlayRef.updateSize({ minWidth: triggerWidth });
         }
       }
     });
@@ -324,10 +294,10 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   ngOnInit(): void {
-    this.nzSelectService.searchValue$.subscribe(data => {
+    this.nzSelectService.searchValue$.pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.nzOnSearch.emit(data);
     });
-    this.nzSelectService.listOfSelectedValueShouldEmit$.subscribe(selectedList => {
+    this.nzSelectService.listOfSelectedValueShouldEmit$.pipe(takeUntil(this.destroy$)).subscribe(selectedList => {
       let modelValue = null;
       if (this.nzSelectService.isSingleMode) {
         if (selectedList.length) {
@@ -342,12 +312,23 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
         this.onChange(this.value);
       }
     });
-    this.nzSelectService.clickOption$.subscribe(() => {
+    this.nzSelectService.clickOption$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       if (this.nzSelectService.isSingleMode) {
         this.closeDropDown();
       } else if (this.nzSelectService.isTagsMode) {
         this.nzSelectService.clearInput();
       }
+    });
+    this.nzSelectService.open$.pipe(takeUntil(this.destroy$), distinctUntilChanged()).subscribe((value) => {
+      if (this._open !== value) {
+        this.nzOpenChange.emit(value);
+      }
+      if (!value) {
+        this.blur();
+        this.onTouched();
+      }
+      this._open = value;
+      this.updateCdkConnectedOverlayStatus();
     });
   }
 
@@ -366,5 +347,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

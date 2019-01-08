@@ -10,7 +10,7 @@ import { NzOptionContainerComponent } from './nz-option-container.component';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionLiComponent } from './nz-option-li.component';
 import { NzOptionComponent } from './nz-option.component';
-import { NzFilterAddOptionPipe, NzFilterGroupOptionPipe, NzFilterOptionPipe } from './nz-option.pipe';
+import { NzFilterGroupOptionPipe, NzFilterOptionPipe } from './nz-option.pipe';
 import { NzSelectTopControlComponent } from './nz-select-top-control.component';
 import { NzSelectUnselectableDirective } from './nz-select-unselectable.directive';
 import { NzSelectComponent } from './nz-select.component';

@@ -1,14 +1,18 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger
-} from '@angular/animations';
-import { Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { isNotNil } from '../core/util/check';
 import { NzOptionComponent } from './nz-option.component';
 import { NzSelectService } from './nz-select.service';
 
@@ -29,35 +33,24 @@ import { NzSelectService } from './nz-select.service';
       ])
     ])
   ],
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-select-top-control.component.html',
   host               : {
     '[class.ant-select-selection__rendered]': 'true'
   }
 })
 export class NzSelectTopControlComponent implements OnInit, OnDestroy {
-  listOfCachedSelectedOption: NzOptionComponent[] = [];
   inputValue: string;
   isComposing = false;
-  destroy$ = new Subject();
+  private destroy$ = new Subject();
   @ViewChild('inputElement') inputElement: ElementRef;
   @Input() nzShowSearch = false;
-  @Input() nzDisabled = false;
   @Input() nzPlaceHolder: string;
   @Input() nzOpen = false;
 
-  /** cached selected option list **/
-  updateListOfCachedOption(): void {
-    if (this.nzSelectService.isSingleMode) {
-      const selectedOption = this.nzSelectService.listOfTemplateOption.find(o => this.nzSelectService.compareWith(o.nzValue, this.nzSelectService.listOfSelectedValue[ 0 ]));
-      if (isNotNil(selectedOption)) {
-        this.listOfCachedSelectedOption = [ selectedOption ];
-      }
-    } else {
-      const listOfCachedOptionFromLatestTemplate = this.nzSelectService.listOfTemplateOption.filter(o => isNotNil(this.nzSelectService.listOfSelectedValue.find(v => this.nzSelectService.compareWith(v, o.nzValue))));
-      const restSelectedValue = this.nzSelectService.listOfSelectedValue.filter(v => !isNotNil(listOfCachedOptionFromLatestTemplate.find(o => this.nzSelectService.compareWith(o.nzValue, v))));
-      const listOfCachedOptionFromOld = this.listOfCachedSelectedOption.filter(o => isNotNil(restSelectedValue.find(v => this.nzSelectService.compareWith(o.nzValue, v))));
-      this.listOfCachedSelectedOption = listOfCachedOptionFromLatestTemplate.concat(listOfCachedOptionFromOld);
-    }
+  updateComposition(value: boolean): void {
+    this.isComposing = value;
   }
 
   setInputValue(value: string): void {
@@ -91,10 +84,6 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
     };
   }
 
-  get singleValueLabel(): string {
-    return this.getPropertyFromValue(this.nzSelectService.listOfSelectedValue[ 0 ], 'nzLabel');
-  }
-
   focusOnInput(): void {
     setTimeout(() => {
       if (this.inputElement) {
@@ -104,29 +93,8 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   }
 
   // tslint:disable-next-line:no-any
-  getPropertyFromValue(value: any, prop: string): string {
-    const targetOption = this.listOfCachedSelectedOption.find(item => this.nzSelectService.compareWith(item.nzValue, value));
-    return targetOption ? targetOption[ prop ] : '';
-  }
-
-  // tslint:disable-next-line:no-any
-  isOptionDisplay(value: any): boolean {
-    return this.nzSelectService.isTagsMode || !!this.getPropertyFromValue(value, 'nzLabel');
-  }
-
-  // tslint:disable-next-line:no-any
-  removeValueFormSelected(value: any, event?: MouseEvent): void {
-    if (this.nzDisabled || this.getPropertyFromValue(value, 'nzDisabled')) {
-      return;
-    }
-    const listOfSelectedValue = this.nzSelectService.listOfSelectedValue.filter(item => item !== value);
-    this.nzSelectService.clearInput();
-    this.nzSelectService.updateListOfSelectedValue(listOfSelectedValue, true);
-
-    // Do not trigger the popup
-    if (event && event.stopPropagation) {
-      event.stopPropagation();
-    }
+  trackValue(index: number, option: NzOptionComponent): any {
+    return option.nzValue;
   }
 
   updateWidth(): void {
@@ -139,41 +107,28 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
     }
   }
 
-  onKeyDown(e: KeyboardEvent): void {
-    const keyCode = e.keyCode;
-    const eventTarget = e.target as HTMLInputElement;
-    if (
-      this.nzSelectService.isMultipleOrTags &&
-      !eventTarget.value &&
-      // BackSpace
-      keyCode === 8
-    ) {
-      e.preventDefault();
-      if (this.nzSelectService.listOfSelectedValue.length) {
-        this.removeValueFormSelected(this.nzSelectService.listOfSelectedValue[ this.nzSelectService.listOfSelectedValue.length - 1 ]);
-      }
-    }
+  removeSelectedValue(option: NzOptionComponent, e: KeyboardEvent): void {
+    this.nzSelectService.removeValueFormSelected(option);
+    event.stopPropagation();
   }
 
-  constructor(private renderer: Renderer2, public nzSelectService: NzSelectService) {
-
+  constructor(private renderer: Renderer2, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
     this.nzSelectService.valueOrOption$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.updateListOfCachedOption();
+      this.cdr.markForCheck();
     });
-    this.nzSelectService.open$.pipe(takeUntil(this.destroy$)).subscribe(data => {
-      if (data) {
+    this.nzSelectService.open$.pipe(takeUntil(this.destroy$)).subscribe(open => {
+      if (open) {
         this.focusOnInput();
       }
       this.nzSelectService.clearInput();
+      this.cdr.markForCheck();
     });
     this.nzSelectService.clearInput$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.setInputValue('');
-    });
-    this.nzSelectService.keydown$.pipe(takeUntil(this.destroy$)).subscribe(data => {
-      this.onKeyDown(data);
+      this.cdr.markForCheck();
     });
   }
 
