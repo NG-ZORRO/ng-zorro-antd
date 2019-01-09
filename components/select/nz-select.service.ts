@@ -1,6 +1,6 @@
 import { BACKSPACE, DOWN_ARROW, ENTER, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { Injectable } from '@angular/core';
-import { combineLatest, BehaviorSubject, Subject } from 'rxjs';
+import { combineLatest, merge, BehaviorSubject, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, share, tap } from 'rxjs/operators';
 import { isNotNil } from '../core/util';
 import { NzOptionGroupComponent } from './nz-option-group.component';
@@ -34,28 +34,47 @@ export class NzSelectService {
   // searchValue Change
   private searchValueRaw$ = new BehaviorSubject<string>('');
   private listOfFilteredOption: NzOptionComponent[] = [];
+  private openRaw$ = new Subject<boolean>();
+  private checkRaw$ = new Subject();
   clearInput$ = new Subject<boolean>();
   searchValue = '';
   isShowNotFound = false;
   // open
-  open$ = new Subject<boolean>();
-  // global keydown event
-  keydown$ = new Subject<KeyboardEvent>();
+  open$ = this.openRaw$.pipe(
+    distinctUntilChanged(),
+    share(),
+    tap(() => this.clearInput())
+  );
   activatedOption: NzOptionComponent;
   activatedOption$ = new BehaviorSubject<NzOptionComponent>(null);
   listOfSelectedValue$ = this.listOfSelectedValueWithEmit$.pipe(map(data => data.value));
-  listOfSelectedValueShouldEmit$ = this.listOfSelectedValueWithEmit$.pipe(
+  modelChange$ = this.listOfSelectedValueWithEmit$.pipe(
     filter(item => item.emit),
-    map(data => data.value)
+    map(data => {
+      const selectedList = data.value;
+      let modelValue = null;
+      if (this.isSingleMode) {
+        if (selectedList.length) {
+          modelValue = selectedList[ 0 ];
+        }
+      } else {
+        modelValue = selectedList;
+      }
+      return modelValue;
+    }),
+    distinctUntilChanged()
   );
-  clickOption$ = new Subject();
-  searchValue$ = this.searchValueRaw$.pipe(distinctUntilChanged(), tap((value) => {
-    this.searchValue = value;
-    if (value) {
-      this.updateActivatedOption(this.listOfFilteredOption[ 0 ]);
-    }
-    this.updateListOfFilteredOption();
-  }));
+  searchValue$ = this.searchValueRaw$.pipe(
+    distinctUntilChanged(),
+    share(),
+    tap((value) => {
+      this.searchValue = value;
+      if (value) {
+        this.updateActivatedOption(this.listOfFilteredOption[ 0 ]);
+      }
+      this.updateListOfFilteredOption();
+    })
+  );
   // tslint:disable-next-line:no-any
   listOfSelectedValue: any[] = [];
   // flat ViewChildren
@@ -88,9 +107,23 @@ export class NzSelectService {
       this.updateListOfCachedOption();
     }),
     share());
+  check$ = merge(
+    this.checkRaw$,
+    this.valueOrOption$,
+    this.searchValue$,
+    this.activatedOption$,
+    this.open$,
+    this.modelChange$
+  ).pipe(
+    share()
+  );
 
   clickOption(): void {
-    this.clickOption$.next();
+    if (this.isSingleMode) {
+      this.setOpenState(false);
+    } else if (this.isTagsMode) {
+      this.clearInput();
+    }
   }
 
   updateListOfCachedOption(): void {
@@ -136,6 +169,7 @@ export class NzSelectService {
       option.nzValue = this.searchValue;
       option.nzLabel = this.searchValue;
       this.addTagOption = option;
+      this.updateActivatedOption(option);
     } else {
       this.addTagOption = null;
     }
@@ -200,10 +234,9 @@ export class NzSelectService {
       if (this.isMultipleOrTags) {
         const targetValue = listOfSelectedValue.find(o => this.compareWith(o, option.nzValue));
         if (isNotNil(targetValue)) {
-          /** should not toggle option when press enter **/
           listOfSelectedValue.splice(listOfSelectedValue.indexOf(targetValue), 1);
           this.updateListOfSelectedValue(listOfSelectedValue, true);
-        } else if (this.listOfSelectedValue.length < this.maxMultipleCount) {
+        } else if (listOfSelectedValue.length < this.maxMultipleCount) {
           listOfSelectedValue.push(option.nzValue);
           this.updateListOfSelectedValue(listOfSelectedValue, true);
         }
@@ -215,7 +248,6 @@ export class NzSelectService {
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    this.keydown$.next(e);
     const keyCode = e.keyCode;
     if ([ UP_ARROW, DOWN_ARROW, ENTER ].indexOf(keyCode) > -1) {
       e.preventDefault();
@@ -230,7 +262,7 @@ export class NzSelectService {
       } else if (keyCode === ENTER) {
         if (this.activatedOption && !this.activatedOption.nzDisabled) {
           this.updateSelectedOption(this.activatedOption);
-          this.clickOption$.next();
+          this.clickOption();
         }
       }
     }
@@ -269,7 +301,11 @@ export class NzSelectService {
   }
 
   setOpenState(value: boolean): void {
-    this.open$.next(value);
+    this.openRaw$.next(value);
+  }
+
+  check(): void {
+    this.checkRaw$.next();
   }
 
   get isSingleMode(): boolean {

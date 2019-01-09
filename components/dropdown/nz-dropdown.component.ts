@@ -16,7 +16,7 @@ import {
 import { combineLatest, merge, BehaviorSubject, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, mapTo, takeUntil } from 'rxjs/operators';
 
-import { dropDownAnimation } from '../core/animation/dropdown-animations';
+import { slideMotion } from '../core/animation/slide';
 import { DEFAULT_DROPDOWN_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position-map';
 import { toBoolean } from '../core/util/convert';
 import { NzMenuDirective } from '../menu/nz-menu.directive';
@@ -29,7 +29,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
   selector           : 'nz-dropdown',
   preserveWhitespaces: false,
   animations         : [
-    dropDownAnimation
+    slideMotion
   ],
   templateUrl        : './nz-dropdown.component.html',
   styles             : [

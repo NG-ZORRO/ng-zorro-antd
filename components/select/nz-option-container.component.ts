@@ -67,17 +67,19 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.nzSelectService.valueOrOption$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.nzSelectService.valueOrOption$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
       this.scrollIntoViewIfNeeded();
-      this.cdr.markForCheck();
-    });
-    this.nzSelectService.searchValue$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.cdr.markForCheck();
     });
     this.nzSelectService.activatedOption$.pipe(
       takeUntil(this.destroy$)
     ).subscribe(() => {
       this.scrollIntoViewIfNeeded();
+    });
+    this.nzSelectService.check$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
       this.cdr.markForCheck();
     });
   }

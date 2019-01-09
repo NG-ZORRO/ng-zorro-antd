@@ -5,8 +5,10 @@
   [class.ant-select-selection--multiple]="nzSelectService.isMultipleOrTags"
   (keydown)="onKeyDown($event)">
   <div nz-select-top-control
-    [nzOpen]="nzOpen"
+    [nzOpen]="open"
+    [maxTagPlaceholder]="maxTagPlaceholder"
     [nzPlaceHolder]="nzPlaceHolder"
+    [nzMaxTagCount]="nzMaxTagCount"
     [nzShowSearch]="nzShowSearch">
   </div>
   <span *ngIf="nzAllowClear" class="ant-select-selection__clear" nz-select-unselectable (click)="onClearSelection($event)">
@@ -24,7 +26,7 @@
   (backdropClick)="closeDropDown()"
   (detach)="closeDropDown();"
   (positionChange)="onPositionChange($event)"
-  [cdkConnectedOverlayOpen]="nzOpen">
+  [cdkConnectedOverlayOpen]="open">
   <div
     class="ant-select-dropdown"
     [class.ant-select-dropdown--single]="nzSelectService.isSingleMode"
@@ -32,7 +34,7 @@
     [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
     [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
     [nzClassListAdd]="[nzDropdownClassName]"
-    [@dropDownAnimation]="dropDownPosition"
+    [@slideMotion]="dropDownPosition"
     [ngStyle]="nzDropdownStyle">
     <div style="overflow: auto"
       nz-option-container

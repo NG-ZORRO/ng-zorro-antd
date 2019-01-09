@@ -1,4 +1,3 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,32 +6,20 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Renderer2,
+  Renderer2, TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { zoomMotion } from '../core/animation/zoom';
 import { NzOptionComponent } from './nz-option.component';
 import { NzSelectService } from './nz-select.service';
 
 @Component({
   selector           : '[nz-select-top-control]',
   preserveWhitespaces: false,
-  animations         : [
-    trigger('tagAnimation', [
-      state('*', style({ opacity: 1, transform: 'scale(1)' })),
-      transition('void => *', [
-        style({ opacity: 0, transform: 'scale(0)' }),
-        animate('150ms linear')
-      ]),
-      state('void', style({ opacity: 0, transform: 'scale(0)' })),
-      transition('* => void', [
-        style({ opacity: 1, transform: 'scale(1)' }),
-        animate('150ms linear')
-      ])
-    ])
-  ],
+  animations         : [ zoomMotion ],
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-select-top-control.component.html',
@@ -48,7 +35,9 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   @Input() nzShowSearch = false;
   @Input() nzPlaceHolder: string;
   @Input() nzOpen = false;
-
+  @Input() nzMaxTagCount: number;
+  // tslint:disable-next-line:no-any
+  @Input() maxTagPlaceholder: TemplateRef<{$implicit: any[]}>;
   updateComposition(value: boolean): void {
     this.isComposing = value;
   }
@@ -116,18 +105,21 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.nzSelectService.valueOrOption$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.cdr.markForCheck();
-    });
-    this.nzSelectService.open$.pipe(takeUntil(this.destroy$)).subscribe(open => {
+    this.nzSelectService.open$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(open => {
       if (open) {
         this.focusOnInput();
       }
-      this.nzSelectService.clearInput();
-      this.cdr.markForCheck();
     });
-    this.nzSelectService.clearInput$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.nzSelectService.clearInput$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
       this.setInputValue('');
+    });
+    this.nzSelectService.check$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
       this.cdr.markForCheck();
     });
   }
