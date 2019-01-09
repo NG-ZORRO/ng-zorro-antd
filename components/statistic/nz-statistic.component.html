@@ -1,0 +1,15 @@
+<div class="ant-statistic-title">
+  <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+</div>
+<div class="ant-statistic-content" [ngStyle]="nzValueStyle">
+  <span *ngIf="nzPrefix" class="ant-statistic-content-prefix">
+    <ng-container *nzStringTemplateOutlet="nzPrefix">{{ nzPrefix }}</ng-container>
+  </span>
+  <nz-statistic-number
+    [nzValue]="nzValue"
+    [nzValueTemplate]="nzValueTemplate">
+  </nz-statistic-number>
+  <span *ngIf="nzSuffix" class="ant-statistic-content-suffix">
+    <ng-container *nzStringTemplateOutlet="nzSuffix">{{ nzSuffix }}</ng-container>
+  </span>
+</div>
