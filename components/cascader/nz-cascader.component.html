@@ -76,7 +76,7 @@
         (click)="onOptionClick(option, i, $event)">
       </li>
       <li *ngIf="isSearching && !columns[0].length" class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled">
-        {{ nzNotFoundContent || ('Select.notFoundContent' | nzI18n) }}
+        <nz-embed-empty [nzComponentName]="'cascader'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
       </li>
     </ul>
   </div>

@@ -66,7 +66,6 @@ export interface NzI18nInterface {
     filterTitle: string;
     filterConfirm: string;
     filterReset: string;
-    emptyText: string;
     selectAll: string;
     selectInvert: string;
   };
@@ -81,18 +80,17 @@ export interface NzI18nInterface {
   };
   Transfer: {
     titles?: string[];
-    notFoundContent: string;
     searchPlaceholder: string;
     itemUnit: string;
     itemsUnit: string;
-  };
-  Select: {
-    notFoundContent: string;
   };
   Upload: {
     uploading: string;
     removeFile: string;
     uploadError: string;
     previewFile: string;
+  };
+  Empty: {
+    description: string;
   };
 }

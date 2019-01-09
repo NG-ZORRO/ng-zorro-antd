@@ -13,32 +13,30 @@ export default {
     filterTitle: 'Filtermenu',
     filterConfirm: 'OK',
     filterReset: 'Nulstil',
-    emptyText: 'Ingen data',
     selectAll: 'Vælg alle',
     selectInvert: 'Inverter valg',
   },
   Modal: {
     okText: 'OK',
-    cancelText: 'Annuller',
+    cancelText: 'Afbryd',
     justOkText: 'OK',
   },
   Popconfirm: {
     okText: 'OK',
-    cancelText: 'Annuller',
+    cancelText: 'Afbryd',
   },
   Transfer: {
-    notFoundContent: 'Intet match',
     searchPlaceholder: 'Søg her',
     itemUnit: 'element',
     itemsUnit: 'elementer',
-  },
-  Select: {
-    notFoundContent: 'Intet match',
   },
   Upload: {
     uploading: 'Uploader...',
     removeFile: 'Fjern fil',
     uploadError: 'Fejl ved upload',
     previewFile: 'Forhåndsvisning',
+  },
+  Empty: {
+    description: 'Ingen data',
   },
 };
