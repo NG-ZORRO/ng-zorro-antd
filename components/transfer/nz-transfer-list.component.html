@@ -28,7 +28,9 @@
       </li>
     </ng-container>
   </ul>
-  <div *ngIf="dataSource.length === 0" class="ant-transfer-list-body-not-found">{{ notFoundContent }}</div>
+  <div *ngIf="dataSource.length === 0" class="ant-transfer-list-body-not-found">
+    <nz-embed-empty [nzComponentName]="'transfer'" [specificContent]="notFoundContent"></nz-embed-empty>
+  </div>
 </div>
 <div *ngIf="footer" class="ant-transfer-list-footer">
   <ng-template [ngTemplateOutlet]="footer" [ngTemplateOutletContext]="{ $implicit: direction }"></ng-template>
