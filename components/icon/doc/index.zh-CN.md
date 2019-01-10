@@ -25,11 +25,11 @@ hasPageDemo: true
 
 | 参数 | 说明 | 类型 | 默认值 |
 | -------- | ----------- | ---- | ------- |
-| `[type]` | 图标类型，遵循图标的命名规范 | string | - |
-| `[theme]` | 图标主题风格。可选实心、描线、双色等主题风格，适用于官方图标 | `fill 丨 outline 丨 twotone` | `outline` |
+| `[type]` | 图标类型，遵循图标的命名规范 | `string` | - |
+| `[theme]` | 图标主题风格。可选实心、描线、双色等主题风格，适用于官方图标 | `'fill'｜'outline'｜'twotone'` | `'outline'` |
 | `[spin]` | 是否有旋转动画 | `boolean` | `false` |
 | `[twoToneColor]` | 仅适用双色图标，设置双色图标的主要颜色，仅对当前 icon 生效 | `string (十六进制颜色)` | - |
-| `[iconfont]` | 指定来自 IconFont 的图标类型 | string | - |
+| `[iconfont]` | 指定来自 IconFont 的图标类型 | `string` | - |
 
 ### NzIconService
 
@@ -162,7 +162,7 @@ this._iconService.fetchFromIconfont({
 
 | 参数 | 说明 | 类型 | 默认值 |
 | -------- | ----------- | ---- | ------- |
-| `scriptUrl` | [iconfont.cn](http://iconfont.cn/) 项目在线生成的 `js` 地址，在 `namespace` 也设置的情况下有效| string | - |
+| `scriptUrl` | [iconfont.cn](http://iconfont.cn/) 项目在线生成的 `js` 地址，在 `namespace` 也设置的情况下有效| `string` | - |
 
 在 scriptUrl 都设置有效的情况下，组件在渲染前会自动引入 [iconfont.cn](http://iconfont.cn/) 项目中的图标符号集，无需手动引入。
 

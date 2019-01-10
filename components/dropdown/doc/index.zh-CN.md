@@ -20,13 +20,13 @@ title: Dropdown
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzDisabled]` | 菜单是否禁用 | boolean | - |
-| `[nzPlacement]` | 菜单弹出位置：`bottomLeft ｜ bottomCenter ｜ bottomRight ｜ topLeft ｜ topCenter ｜ topRight` | String | `bottomLeft` |
-| `[nzTrigger]` | 触发下拉的行为 | `click`丨`hover` | `hover` |
-| `[nzClickHide]` | 点击后是否隐藏菜单 | boolean | true |
-| `[nzVisible]` | 菜单是否显示，可双向绑定 | boolean | - |
-| `[nzOverlayClassName]` | 下拉根元素的类名称 | string | - |
-| `[nzOverlayStyle]` | 下拉根元素的样式 | object | - |
+| `[nzDisabled]` | 菜单是否禁用 | `boolean` | - |
+| `[nzPlacement]` | 菜单弹出位置 | `'bottomLeft'｜'bottomCenter'｜'bottomRight'｜'topLeft'｜'topCenter'｜'topRight'` | `'bottomLeft'` |
+| `[nzTrigger]` | 触发下拉的行为 | `'click'｜'hover'` | `'hover'` |
+| `[nzClickHide]` | 点击后是否隐藏菜单 | `boolean` | `true` |
+| `[nzVisible]` | 菜单是否显示，可双向绑定 | `boolean` | - |
+| `[nzOverlayClassName]` | 下拉根元素的类名称 | `string` | - |
+| `[nzOverlayStyle]` | 下拉根元素的样式 | `object` | - |
 | `(nzVisibleChange)` | 菜单显示状态改变时调用，参数为 nzVisible | `EventEmitter<boolean>` | - |
 
 菜单使用 [nz-menu](/components/menu/zh)，还包括菜单项 `[nz-menu-item]`，分割线 `[nz-menu-divider]`。
@@ -41,13 +41,13 @@ title: Dropdown
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzDisabled]` | 菜单是否禁用 | boolean | - |
-| `[nzPlacement]` | 菜单弹出位置：`bottomLeft ｜ bottomCenter ｜ bottomRight ｜ topLeft ｜ topCenter ｜ topRight` | String | `bottomLeft` |
-| `[nzSize]` | 按钮大小，和 [nz-button](/components/button/zh) 一致 | string | 'default' |
-| `[nzType]` | 按钮类型，和 [nz-button](/components/button/zh) 一致 | string | 'default' |
-| `[nzTrigger]` | 触发下拉的行为 | `click`丨`hover` | `hover` |
-| `[nzClickHide]` | 点击后是否隐藏菜单 | boolean | true |
-| `[nzVisible]` | 菜单是否显示 | boolean | - |
+| `[nzDisabled]` | 菜单是否禁用 | `boolean` | - |
+| `[nzPlacement]` | 菜单弹出位置 | `'bottomLeft'｜'bottomCenter'｜'bottomRight'｜'topLeft'｜'topCenter'｜'topRight'` | `'bottomLeft'` |
+| `[nzSize]` | 按钮大小，和 [nz-button](/components/button/zh) 一致 | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzType]` | 按钮类型，和 [nz-button](/components/button/zh) 一致 | `'primary'｜'ghost'｜'dashed'｜'danger'｜'default'` | `'default'` |
+| `[nzTrigger]` | 触发下拉的行为 | `'click'｜'hover'` | `'hover'` |
+| `[nzClickHide]` | 点击后是否隐藏菜单 | `boolean` | `true` |
+| `[nzVisible]` | 菜单是否显示 | `boolean` | - |
 | `(nzVisibleChange)` | 菜单显示状态改变时调用，参数为 nzVisible | `EventEmitter<boolean>` | - |
 | `(nzClick)` | 点击左侧按钮的回调 | `EventEmitter<MouseEvent>` | - |
 
@@ -57,5 +57,5 @@ title: Dropdown
 
 | 参数 | 说明 | 参数 | 返回 |
 | --- | --- | --- | --- |
-| create | 创建右键菜单 | `($event:MouseEvent, template:TemplateRef<void>)` | NzDropdownContextComponent |
-| close | 关闭右键菜单 | | |
+| create | 创建右键菜单 | `($event:MouseEvent, template:TemplateRef<void>)` | `NzDropdownContextComponent` |
+| close | 关闭右键菜单 | - | - |

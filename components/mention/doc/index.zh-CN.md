@@ -27,14 +27,14 @@ title: Mention
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzMentionTrigger]` | 用于指定提及的触发元素 **(必须)** | `HTMLTextAreaElement` `HTMLInputElement` | - |
+| `[nzMentionTrigger]` | 用于指定提及的触发元素 **(必须)** | `HTMLTextAreaElement｜HTMLInputElement` | - |
 | `[nzMentionSuggestion]` | 自定义建议渲染模板 | `TemplateRef<any>` | - |
 | `[nzLoading]` | 加载中 | `boolean` | `false` |
 | `[nzNotFoundContent]` | 未找到时的内容 | `string` | `'无匹配结果，轻敲空格完成输入'` |
-| `[nzPlacement]` | 建议框位置 | `'button'` `'top'` | `'bottom'` |
-| `[nzPrefix]` | 触发弹出下拉框的字符 | `'string'` `'string[]'` | `'@'` |
+| `[nzPlacement]` | 建议框位置 | `'button'｜'top'` | `'bottom'` |
+| `[nzPrefix]` | 触发弹出下拉框的字符 | `string｜string[]` | `'@'` |
 | `[nzSuggestions]` | 建议内容 | `any[]` | `[]` |
-| `[nzValueWith]` | 建议选项的取值方法  | `(any) => string` | `(value: string) => string` |
+| `[nzValueWith]` | 建议选项的取值方法  | `(any) => string｜(value: string) => string` |
 | `(nzOnSelect)` | 下拉框选择建议时回调 | `EventEmitter<any>` | - |
 | `(onSearchChange)` | 输入框中 @ 变化时回调 | `EventEmitter<MentionOnSearchTypes>` | - |
 
@@ -77,5 +77,5 @@ title: Mention
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| value | 搜索关键词 | string | - |
-| prefix | 触发前缀 | string | - |
+| value | 搜索关键词 | `string` | - |
+| prefix | 触发前缀 | `string` | - |
