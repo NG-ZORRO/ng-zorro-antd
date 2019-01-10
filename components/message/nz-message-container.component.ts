@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { Component, Inject, OnInit, Optional } from '@angular/core';
-=======
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Optional, ViewEncapsulation } from '@angular/core';
->>>>>>> 8906dff75d811e92e8239d5e943715c0cfdac3ea
 
 import { Subject } from 'rxjs';
 import { NzMessageConfig, NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG } from './nz-message-config';
@@ -10,13 +6,9 @@ import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definiti
 import { NzMessageService } from './nz-message.service';
 
 @Component({
-<<<<<<< HEAD
-  selector: 'nz-message-container',
-=======
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-message-container',
->>>>>>> 8906dff75d811e92e8239d5e943715c0cfdac3ea
   preserveWhitespaces: false,
   templateUrl: './nz-message-container.component.html'
 })
@@ -24,21 +16,13 @@ export class NzMessageContainerComponent {
 
   messages: NzMessageDataFilled[] = [];
   config: NzMessageConfig = {};
-
-<<<<<<< HEAD
   $nzAfterClose = new Subject<NzMessageDataFilled>();
-
-  constructor(@Optional() @Inject(NZ_MESSAGE_DEFAULT_CONFIG) defaultConfig: NzMessageConfig,
-              @Optional() @Inject(NZ_MESSAGE_CONFIG) config: NzMessageConfig) {
-    this.setConfig({...defaultConfig, ...config});
-=======
   constructor(
     protected cdr: ChangeDetectorRef,
     @Optional() @Inject(NZ_MESSAGE_DEFAULT_CONFIG) defaultConfig: NzMessageConfig,
     @Optional() @Inject(NZ_MESSAGE_CONFIG) config: NzMessageConfig
   ) {
     this.setConfig({ ...defaultConfig, ...config });
->>>>>>> 8906dff75d811e92e8239d5e943715c0cfdac3ea
   }
 
   setConfig(config: NzMessageConfig): void {
@@ -70,15 +54,12 @@ export class NzMessageContainerComponent {
   // Remove all messages
   removeMessageAll(): void {
     this.messages = [];
-<<<<<<< HEAD
     this.$removeMessage();
+    this.cdr.detectChanges();
   }
 
   $removeMessage(message?: NzMessageDataFilled): void {
     this.$nzAfterClose.next(message);
-=======
-    this.cdr.detectChanges();
->>>>>>> 8906dff75d811e92e8239d5e943715c0cfdac3ea
   }
 
   // Merge default options and custom message options

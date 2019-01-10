@@ -17,15 +17,9 @@ describe('NzNotification', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-<<<<<<< HEAD
-      imports: [NzNotificationModule, NoopAnimationsModule],
-      declarations: [DemoAppComponent],
-      providers: [{provide: NZ_NOTIFICATION_CONFIG, useValue: {nzMaxStack: 2}}] // Override default config
-=======
       imports     : [ NzNotificationModule, NoopAnimationsModule ],
       declarations: [ DemoAppComponent ],
       providers   : [ { provide: NZ_NOTIFICATION_CONFIG, useValue: { nzMaxStack: 2 } } ] // Override default config
->>>>>>> 8906dff75d811e92e8239d5e943715c0cfdac3ea
     });
 
     TestBed.compileComponents();

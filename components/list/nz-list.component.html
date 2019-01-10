@@ -10,17 +10,6 @@
   <ng-container *ngIf="nzDataSource">
     <div *ngIf="nzLoading && nzDataSource.length === 0" [style.min-height.px]="53"></div>
     <div *ngIf="nzGrid; else itemsTpl" nz-row [nzGutter]="nzGrid.gutter">
-<<<<<<< HEAD
-      <div nz-col [nzSpan]="nzGrid.span" [nzXs]="nzGrid.xs" [nzSm]="nzGrid.sm" [nzMd]="nzGrid.md" [nzLg]="nzGrid.lg" [nzXl]="nzGrid.xl" [nzXXl]="nzGrid.xxl"
-        *ngFor="let item of nzDataSource; let index = index">
-        <ng-template
-          [ngTemplateOutlet]="nzRenderItem"
-          [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
-      </div>
-    </div>
-    <div *ngIf="!nzLoading && nzDataSource.length === 0" class="ant-list-empty-text">
-      {{locale.emptyText}}
-=======
       <div nz-col [nzSpan]="nzGrid.span" [nzXs]="nzGrid.xs" [nzSm]="nzGrid.sm" [nzMd]="nzGrid.md" [nzLg]="nzGrid.lg" [nzXl]="nzGrid.xl"
            [nzXXl]="nzGrid.xxl" *ngFor="let item of nzDataSource; let index = index">
         <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
@@ -28,18 +17,12 @@
     </div>
     <div *ngIf="!nzLoading && nzDataSource.length === 0" class="ant-list-empty-text">
       <nz-embed-empty [nzComponentName]="'list'" [specificContent]="nzNoResult"></nz-embed-empty>
->>>>>>> 8906dff75d811e92e8239d5e943715c0cfdac3ea
     </div>
   </ng-container>
   <ng-content></ng-content>
 </nz-spin>
-<<<<<<< HEAD
-<div *ngIf="_isFooter" class="ant-list-footer">
-  <ng-container *ngIf="_footer; else _footerTpl">{{ _footer }}</ng-container>
-=======
 <div *ngIf="nzFooter" class="ant-list-footer">
   <ng-container *nzStringTemplateOutlet="nzFooter">{{ nzFooter }}</ng-container>
->>>>>>> 8906dff75d811e92e8239d5e943715c0cfdac3ea
 </div>
 <ng-template [ngTemplateOutlet]="nzLoadMore"></ng-template>
 <div *ngIf="nzPagination" class="ant-list-pagination">
