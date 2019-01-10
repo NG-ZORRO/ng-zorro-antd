@@ -1,10 +1,11 @@
-<span [ngClass]="classMap">
-      <input
-        #inputElement
-        [checked]="nzChecked"
-        type="checkbox"
-        class="ant-checkbox-input"
-        (blur)="onBlur()">
-      <span class="ant-checkbox-inner"></span>
-    </span>
+<span class="ant-checkbox"
+  [class.ant-checkbox-checked]="nzChecked && !nzIndeterminate"
+  [class.ant-checkbox-disabled]="nzDisabled"
+  [class.ant-checkbox-indeterminate]="nzIndeterminate">
+  <input #inputElement
+    [checked]="nzChecked"
+    type="checkbox"
+    class="ant-checkbox-input">
+  <span class="ant-checkbox-inner"></span>
+</span>
 <span #contentElement (cdkObserveContent)="checkContent()"><ng-content></ng-content></span>

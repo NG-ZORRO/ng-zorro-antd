@@ -53,11 +53,11 @@ export class NzThComponent {
   @Input() nzSortKey: string;
   @Input() nzFilterMultiple = true;
   @Input() nzWidth: string;
-  @Output() nzCheckedChange = new EventEmitter<boolean>();
-  @Output() nzSortChange = new EventEmitter<string>();
-  @Output() nzSortChangeWithKey = new EventEmitter<{ key: string, value: string }>();
+  @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
+  @Output() readonly nzSortChange = new EventEmitter<string>();
+  @Output() readonly nzSortChangeWithKey = new EventEmitter<{ key: string, value: string }>();
   /* tslint:disable-next-line:no-any */
-  @Output() nzFilterChange = new EventEmitter<any[] | any>();
+  @Output() readonly nzFilterChange = new EventEmitter<any[] | any>();
 
   @HostBinding('class.ant-table-column-has-actions')
   get hasActionsClass(): boolean {

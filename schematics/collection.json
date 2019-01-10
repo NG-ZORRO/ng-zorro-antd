@@ -3,13 +3,26 @@
   "schematics": {
     "ng-add": {
       "description": "add NG-ZORRO",
-      "factory": "./ng-add",
+      "factory": "./ng-add/index",
       "schema": "./ng-add/schema.json"
     },
-    "fix-icon": {
-      "description": "fix icon",
-      "factory": "./fix-icon",
-      "schema": "./fix-icon/schema.json"
+    "ng-add-setup-project": {
+      "description": "Sets up the specified project after the ng-add dependencies have been installed.",
+      "private": true,
+      "factory": "./ng-add/setup-project/index",
+      "schema": "./ng-add/schema.json"
+    },
+    "bootstrap": {
+      "description": "Set bootstrap page",
+      "private": true,
+      "factory": "./ng-generate/bootstrap/index",
+      "schema": "./ng-generate/bootstrap/schema.json"
+    },
+    "add-icon-assets": {
+      "description": "Add icon assets into CLI config",
+      "factory": "./ng-add/setup-project/add-icon-assets#addIconToAssets",
+      "schema": "./ng-generate/bootstrap/schema.json",
+      "aliases": ["fix-icon"]
     }
   }
 }

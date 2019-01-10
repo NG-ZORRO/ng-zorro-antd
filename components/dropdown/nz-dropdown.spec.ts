@@ -225,6 +225,15 @@ describe('dropdown', () => {
       expect(nestedCallback).toHaveBeenCalledWith(false);
       expect(nestedCallback).toHaveBeenCalledTimes(1);
     });
+    it('should overlayClassName & overlayStyle work', () => {
+      testComponent.visible = true;
+      testComponent.overlayClassName = 'testClass';
+      testComponent.overlayStyle = { color: 'rgb(1, 2, 3)' };
+      fixture.detectChanges();
+      const dropdown = overlayContainerElement.querySelector('.ant-dropdown') as HTMLElement;
+      expect(dropdown.classList.contains(`testClass`)).toBe(true);
+      expect(dropdown.style.color).toBe(`rgb(1, 2, 3)`);
+    });
   });
   describe('nz-dropdown-component-button', () => {
     let fixture;
@@ -393,7 +402,8 @@ describe('dropdown', () => {
 @Component({
   selector: 'nz-test-dropdown',
   template: `
-    <nz-dropdown [(nzVisible)]="visible" [nzClickHide]="clickHide" [nzPlacement]="placement" (nzVisibleChange)="visibleChange($event)" [nzTrigger]="trigger" [nzDisabled]="disabled">
+    <nz-dropdown [(nzVisible)]="visible" [nzClickHide]="clickHide" [nzPlacement]="placement" (nzVisibleChange)="visibleChange($event)" [nzTrigger]="trigger" [nzDisabled]="disabled"
+      [nzOverlayClassName]="overlayClassName" [nzOverlayStyle]="overlayStyle">
       <a nz-dropdown>
         Hover me <i nz-icon type="down"></i>
       </a>
@@ -427,6 +437,8 @@ export class NzTestDropdownComponent {
   disabled = false;
   clickHide = true;
   visibleChange = jasmine.createSpy('visibleChange callback');
+  overlayClassName = '';
+  overlayStyle = {};
 }
 
 @Component({

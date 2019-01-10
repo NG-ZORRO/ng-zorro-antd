@@ -73,6 +73,8 @@ title: Form
 
 ### nz-form-control
 
+> 注意：由于 Angular Form 目前提供的[状态变更订阅](https://github.com/angular/angular/issues/10887)不完整。手动更改表单状态时，例如 `markAsDirty` 后，需要执行 `updateValueAndValidity` 通知 `nz-form-control` 进行状态变更。
+
 表单一定会包含表单域，表单域可以是输入控件，标准表单域，标签，下拉菜单，文本域等。
 
 > 所有 [nz-col](/components/grid/zh) 的参数在 `nz-form-control` 上均可直接使用。

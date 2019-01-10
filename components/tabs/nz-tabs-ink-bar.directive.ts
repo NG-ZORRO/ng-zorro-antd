@@ -1,7 +1,6 @@
 import { Directive, ElementRef, Input, NgZone, Renderer2 } from '@angular/core';
 
-import { reqAnimFrame } from '../core/polyfill/request-animation';
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
 
 import { NzTabPositionMode } from './nz-tabset.component';
 
@@ -14,16 +13,8 @@ import { NzTabPositionMode } from './nz-tabset.component';
   }
 })
 export class NzTabsInkBarDirective {
-  private _animated = false;
 
-  @Input()
-  set nzAnimated(value: boolean) {
-    this._animated = toBoolean(value);
-  }
-
-  get nzAnimated(): boolean {
-    return this._animated;
-  }
+  @Input() @InputBoolean() nzAnimated = false;
 
   @Input() nzPositionMode: NzTabPositionMode = 'horizontal';
 
@@ -33,35 +24,31 @@ export class NzTabsInkBarDirective {
   }
 
   alignToElement(element: HTMLElement): void {
-    this.show();
-
-    this.ngZone.runOutsideAngular(() => {
-      reqAnimFrame(() => {
-        /** when horizontal remove height style and add transform left **/
-        if (this.nzPositionMode === 'horizontal') {
-          this.renderer.removeStyle(this.elementRef.nativeElement, 'height');
-          this.renderer.setStyle(this.elementRef.nativeElement, 'transform',
-            `translate3d(${this.getLeftPosition(element)}, 0px, 0px)`);
-          this.renderer.setStyle(this.elementRef.nativeElement, 'width',
-            this.getElementWidth(element));
-        } else {
-          /** when vertical remove width style and add transform top **/
-          this.renderer.removeStyle(this.elementRef.nativeElement, 'width');
-          this.renderer.setStyle(this.elementRef.nativeElement, 'transform',
-            `translate3d(0px, ${this.getTopPosition(element)}, 0px)`);
-          this.renderer.setStyle(this.elementRef.nativeElement, 'height',
-            this.getElementHeight(element));
-        }
+    if (typeof requestAnimationFrame !== 'undefined') {
+      this.ngZone.runOutsideAngular(() => {
+        requestAnimationFrame(() => this.setStyles(element));
       });
-    });
+    } else {
+      this.setStyles(element);
+    }
   }
 
-  show(): void {
-    this.renderer.setStyle(this.elementRef.nativeElement, 'visibility', 'visible');
-  }
-
-  setDisplay(value: string): void {
-    this.renderer.setStyle(this.elementRef.nativeElement, 'display', value);
+  setStyles(element: HTMLElement): void {
+    /** when horizontal remove height style and add transform left **/
+    if (this.nzPositionMode === 'horizontal') {
+      this.renderer.removeStyle(this.elementRef.nativeElement, 'height');
+      this.renderer.setStyle(this.elementRef.nativeElement, 'transform',
+        `translate3d(${this.getLeftPosition(element)}, 0px, 0px)`);
+      this.renderer.setStyle(this.elementRef.nativeElement, 'width',
+        this.getElementWidth(element));
+    } else {
+      /** when vertical remove width style and add transform top **/
+      this.renderer.removeStyle(this.elementRef.nativeElement, 'width');
+      this.renderer.setStyle(this.elementRef.nativeElement, 'transform',
+        `translate3d(0px, ${this.getTopPosition(element)}, 0px)`);
+      this.renderer.setStyle(this.elementRef.nativeElement, 'height',
+        this.getElementHeight(element));
+    }
   }
 
   getLeftPosition(element: HTMLElement): string {

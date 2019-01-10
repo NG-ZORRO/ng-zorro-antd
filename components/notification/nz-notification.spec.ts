@@ -17,9 +17,15 @@ describe('NzNotification', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
+<<<<<<< HEAD
       imports: [NzNotificationModule, NoopAnimationsModule],
       declarations: [DemoAppComponent],
       providers: [{provide: NZ_NOTIFICATION_CONFIG, useValue: {nzMaxStack: 2}}] // Override default config
+=======
+      imports     : [ NzNotificationModule, NoopAnimationsModule ],
+      declarations: [ DemoAppComponent ],
+      providers   : [ { provide: NZ_NOTIFICATION_CONFIG, useValue: { nzMaxStack: 2 } } ] // Override default config
+>>>>>>> 8906dff75d811e92e8239d5e943715c0cfdac3ea
     });
 
     TestBed.compileComponents();
@@ -176,6 +182,16 @@ describe('NzNotification', () => {
     messageService.template(demoAppFixture.componentInstance.demoTemplateRef);
     demoAppFixture.detectChanges();
     expect(overlayContainerElement.textContent).toContain('test template content');
+  });
+
+  it('should update an existing notification when keys are matched', () => {
+    messageService.create(null, null, 'EXISTS', { nzKey: 'exists' });
+    expect(overlayContainerElement.textContent).toContain('EXISTS');
+    messageService.create('success', 'Title', 'SHOULD NOT CHANGE', { nzKey: 'exists' });
+    expect(overlayContainerElement.textContent).not.toContain('EXISTS');
+    expect(overlayContainerElement.textContent).toContain('Title');
+    expect(overlayContainerElement.textContent).toContain('SHOULD NOT CHANGE');
+    expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-success')).not.toBeNull();
   });
 });
 

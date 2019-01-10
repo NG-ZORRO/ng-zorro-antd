@@ -1,29 +1,45 @@
 import { DOCUMENT } from '@angular/common';
 import {
+  forwardRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  ElementRef,
   Inject,
-  OnInit,
-  Optional,
-  Renderer2
+  Renderer2,
+  ViewEncapsulation
 } from '@angular/core';
 
-import { NzRadioGroupComponent } from './nz-radio-group.component';
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzRadioComponent } from './nz-radio.component';
 
 @Component({
   selector           : '[nz-radio-button]',
+  providers          : [
+    {
+      provide    : NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => NzRadioComponent),
+      multi      : true
+    },
+    {
+      provide    : NzRadioComponent,
+      useExisting: forwardRef(() => NzRadioButtonComponent)
+    }
+  ],
+  encapsulation      : ViewEncapsulation.None,
+  changeDetection    : ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
   templateUrl        : './nz-radio-button.component.html',
   host               : {
     '[class.ant-radio-button-wrapper]'         : 'true',
-    '[class.ant-radio-button-wrapper-checked]' : 'nzChecked',
+    '[class.ant-radio-button-wrapper-checked]' : 'checked',
     '[class.ant-radio-button-wrapper-disabled]': 'nzDisabled'
   }
 })
-export class NzRadioButtonComponent extends NzRadioComponent implements OnInit {
-  prefixCls = 'ant-radio-button';
+export class NzRadioButtonComponent extends NzRadioComponent {
   /* tslint:disable-next-line:no-any */
-  constructor(@Optional() nzRadioGroup: NzRadioGroupComponent, renderer: Renderer2, @Inject(DOCUMENT) document: any) {
-    super(nzRadioGroup, renderer, document);
+  constructor(elementRef: ElementRef, renderer: Renderer2, @Inject(DOCUMENT) document: any, cdr: ChangeDetectorRef, focusMonitor: FocusMonitor) {
+    super(elementRef, renderer, document, cdr, focusMonitor);
   }
 }

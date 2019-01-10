@@ -80,6 +80,8 @@ export class NzDemoTableEditRowComponent implements OnInit {
   }
 
   cancelEdit(key: string): void {
+    const index = this.dataSet.findIndex(item => item.key === key);
+    Object.assign(this.editCache[ key ].data, this.dataSet[ index ]);
     this.editCache[ key ].edit = false;
   }
 

@@ -18,15 +18,23 @@ ng add ng-zorro-antd [options]
 
 ***--theme***
 
-`ng-zorro-antd` will [downgrade](https://github.com/angular/angular-cli/issues/10430) the version of `less` to `2.7` and create `theme.less` in `src` folder.
+`ng-zorro-antd` will create `theme.less` in `src` folder.
 
 You can get more information at the [Customize Theme](/docs/customize-theme/en) part.
 
-***--i18n***
+***--locale***
 
-If you add `--i18n=[language]`，`ng-zorro-antd` import the language package and the [i18n](https://angular.io/guide/i18n) part of angular in the `app.module.ts`.
+If you add `--locale=[language]`，`ng-zorro-antd` import the language package and the [i18n](https://angular.io/guide/i18n) part of angular in the `app.module.ts`.
 
 The default i18n config of `ng-zorro-antd` is `zh_CN` now，you can get more information at the [Internationalization](/docs/i18n/en) part.
+
+***--animations***
+
+Enable the BrowserAnimationsModule your app module
+
+***--gestures***
+
+Install and import hammerjs for gesture support in your project
 
 ## Component Generation
 
@@ -35,58 +43,62 @@ You can get component generation code in our doc after expand the code panel bel
 ### Command
 
 ```bash
-ng g ng-zorro-antd:[template] --name=NAME [options]
+ng g ng-zorro-antd:[schematic] <name> [options]
 ```
 
 For example, you can generate an login form with the follow command.
 
 ```bash
-ng g ng-zorro-antd:form-normal-login -p app --styleext=less --name=login
+ng g ng-zorro-antd:form-normal-login login
 ```
 
 ### Options
 
-***--name***
+***--entry-component***
 
-Specify the component name(required)
-
-***--styleext***
-
-The type of style file（default css).
-
-***--prefix***, ***-p***
-
-The prefix name of the component.
-
-***--inlineStyle***, ***-s***
-
-Using inline style.
-
-***--inlineTemplate***, ***-t***
-
-Using inline template.
-
-***--path***
-
-Specify the path of the created component.
-
-***--spec***
-
-Create test file.
-
-***--skipImport***
-
-Skip module import.
-
-***--selector***
-
-The name of selector.
+Specifies if the component is an entry component of declaring module.
 
 ***--export***
 
-Should add component to `exports` part.
+Specifies if declaring module exports the component.
 
-***--module***, ***-m***
+***--flat***
 
-Specify the module name.
+Flag to indicate if a dir is created.
+
+***--inline-style (-s)***
+
+Specifies if the style will be in the ts file.
+
+***--inline-template (-t)***
+
+Specifies if the template will be in the ts file.
+
+***--module (-m)***
+
+Allows specification of the declaring module.
+
+***--prefix (-p)***
+
+The prefix to apply to generated selectors.
+
+***--project***
+
+The name of the project.
+
+***--selector***
+
+The selector to use for the component.
+
+***--skip-import***
+
+Flag to skip the module import.
+
+***--spec***
+
+Specifies if a spec file is generated.
+
+***--styleext***
+
+The file extension to be used for style files.
 

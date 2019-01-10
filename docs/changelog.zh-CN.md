@@ -13,7 +13,70 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
-## [1.8.1]
+# 7.0.0-rc.3
+`2018-12-26`
+
+### Bug Fixes
+
+* **table:** 修复 table 的 sticky 躺尸 ([#2688](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2688)) ([50d4fc4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/50d4fc4))
+* **transfer:** 修复 `Not Found` 的异常显示 ([#2687](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2687)) ([3df5779](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3df5779)), closes [#2686](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2686)
+
+
+# 7.0.0-rc.2 [deprecated]
+`2018-12-24`
+
+### Bug Fixes
+
+* **input:** 修复 autoresize ([#2662](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2662)) ([0621ce8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0621ce8)), closes [#2646](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2646)
+* **layout:** 修复关于 nzBreakPoint 的错误([#2665](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2665)) ([4fbfccb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4fbfccb)), closes [#2603](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2603)
+* **radio:** 修复 ContentChildren 的错误 ([#2660](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2660)) ([36b2099](https://github.com/NG-ZORRO/ng-zorro-antd/commit/36b2099)), closes [#2206](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2206) [#2611](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2611)
+* **tabs:** 修复 tabs 样式的错误 ([#2673](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2673)) ([458c062](https://github.com/NG-ZORRO/ng-zorro-antd/commit/458c062))
+
+
+### Features
+
+* **autocomplete,dropdown:** 支持 overlay pabel 自定义类和样式 ([#2639](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2639)) ([b7f41f8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b7f41f8)), closes [#2634](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2634)
+* **i18n:** 增加斯洛文尼亚语支持, [#2545](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2545) ([#2652](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2652)) ([d0b9a2a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d0b9a2a))
+* 官网现在是 PWA 了 ([#2661](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2661)) ([4f48ecd](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4f48ecd))
+
+
+
+## 7.0.0-rc.1
+`2018-12-11`
+
+### Bug Fixes
+
+* **drawer, modal:** 修复 IE 的 BUG ([#2589](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2589)) ([0458604](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0458604)), closes [#2388](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2388)
+* **collapse:** 修复无法改变状态的问题 ([#2597](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2597)) ([5bb1a99](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5bb1a99)), closes [#2567](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2567)
+* **icon:** 修复缺少的图标的静态引入 ([ef10595](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ef10595))
+* **select:** 修复 title 属性([#2575](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2575)) ([3444634](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3444634)), closes [#1974](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1974)
+* **table:** 修复单击事件冒泡的问题 ([#2618](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2618)) ([88be1c3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/88be1c3)), closes [#2419](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2419)
+* **schematics:** 兼容旧版选项 ([#2622](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2622)) ([bb1489b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bb1489b))
+
+
+### Features
+
+* **tabs:** 添加支持 `nzForceRender` ([#2619](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2619)) ([fa9160c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fa9160c))
+* **upload:** `nzFilter` 支持 `Observable` ([#2590](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2590)) ([c664c6f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c664c6f)), closes [#2389](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2389)
+
+
+## 7.0.0-rc.0
+`2018-11-30`
+
+**该版本不包含任何破坏性更新**
+
+从这个版本开始，`ng-zorro-antd` 将和其他 Angular 第三方库一样，保持与 Angular 的主版本号一致。当前版本已经完成了
+
+* 支持 Angular 7.0
+* 使用了 Angular CDK 7.0 的最新特性
+* 部分组件支持 OnPush
+* 部分组件支持了SSR的功能
+* 修复了部分 Bug
+
+整体的工作仍然还在推进之中，用户可以通过追踪[相关ISSUE](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2381)来获得最新的进度更新
+
+
+## 1.8.1
 `2018-11-24`
 
 

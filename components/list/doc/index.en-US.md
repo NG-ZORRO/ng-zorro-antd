@@ -26,6 +26,7 @@ A list can be used to display content related to a single subject. The content c
 | `[nzItemLayout]` | The layout of list, default is `horizontal`, If a vertical list is desired, set the itemLayout property to `vertical` | string | - |
 | `[nzLoading]` | Shows a loading indicator while the contents of the list are being fetched | boolean | false |
 | `[nzLoadMore]` | Shows a load more content | `TemplateRef<void>` | - |
+| `[nzNoResult]` | Specify content to show when list is empty | `string` ｜ `TemplateRef<void>` | - |
 | `[nzPagination]` | Shows a pagination content | `TemplateRef<void>` | - |
 | `[nzSize]` | Size of list | `default,small,large` | `default` |
 | `[nzSplit]` | Toggles rendering of the split under the list item | boolean | true |

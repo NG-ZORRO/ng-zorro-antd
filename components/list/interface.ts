@@ -13,5 +13,3 @@ export interface NzListGrid {
     xl?: ColumnCount;
     xxl?: ColumnCount;
 }
-
-export type ListSize = 'small' | 'default' | 'large';

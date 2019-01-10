@@ -6,7 +6,7 @@ import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testin
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { of, Observable } from 'rxjs';
+import { of, throwError, Observable, Observer } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 import { NzI18nModule, NzI18nService } from '../i18n';
@@ -332,6 +332,17 @@ describe('upload', () => {
             pageObject.postSmall();
             expect(instance._nzChange).toBeUndefined();
           });
+          it('should be console.warn error', () => {
+            let warnMsg = '';
+            console.warn = jasmine.createSpy().and.callFake(res => warnMsg = res);
+            expect(instance._nzChange).toBeUndefined();
+            instance.beforeUpload = (file: UploadFile, fileList: UploadFile[]): Observable<any> => {
+              return throwError('');
+            };
+            fixture.detectChanges();
+            pageObject.postSmall();
+            expect(warnMsg).toContain(`Unhandled upload beforeUpload error`);
+          });
         });
       });
 
@@ -379,6 +390,55 @@ describe('upload', () => {
           expect(instance._beforeUploadList.length).toBe(0);
           pageObject.postFile(JPGSMALL.target.files);
           expect(instance._beforeUploadList.length).toBe(0);
+        });
+        describe('with Observable', () => {
+          it('shoule working', () => {
+            instance.nzFilter = [
+              {
+                name: 'f1',
+                fn: (fileList: UploadFile[]) => {
+                  return new Observable((observer: Observer<UploadFile[]>) => {
+                    observer.next(fileList.slice(1));
+                    observer.complete();
+                  });
+                }
+              },
+              {
+                name: 'f2',
+                fn: (fileList: UploadFile[]) => {
+                  return new Observable((observer: Observer<UploadFile[]>) => {
+                    observer.next(fileList.slice(1));
+                    observer.complete();
+                  });
+                }
+              }
+            ];
+            fixture.detectChanges();
+            expect(instance._beforeUploadList.length).toBe(0);
+            pageObject.postFile([
+              ...PNGSMALL.target.files,
+              ...PNGSMALL.target.files,
+              ...PNGSMALL.target.files
+            ]);
+            expect(instance._beforeUploadList.length).toBe(1);
+          });
+          it('should be console.warn error', () => {
+            let warnMsg = '';
+            console.warn = jasmine.createSpy().and.callFake(res => warnMsg = res);
+            instance.nzFilter = [
+              {
+                name: 'f1',
+                fn: (fileList: UploadFile[]) => {
+                  return new Observable((observer: Observer<UploadFile[]>) => {
+                    observer.error('filter error');
+                  });
+                }
+              }
+            ];
+            fixture.detectChanges();
+            pageObject.postFile(PNGSMALL.target.files);
+            expect(warnMsg).toContain(`Unhandled upload filter error`);
+          });
         });
       });
 
@@ -674,11 +734,20 @@ describe('upload', () => {
       });
 
       describe('should be trigger upload', () => {
-        it('via onClick', () => {
-          spyOn(instance.comp.file.nativeElement, 'click');
-          expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
-          instance.comp.onClick();
-          expect(instance.comp.file.nativeElement.click).toHaveBeenCalled();
+        describe('via onClick', () => {
+          it('', () => {
+            spyOn(instance.comp.file.nativeElement, 'click');
+            expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
+            instance.comp.onClick();
+            expect(instance.comp.file.nativeElement.click).toHaveBeenCalled();
+          });
+          it(', when nzOpenFileDialogOnClick is false', () => {
+            instance.options.openFileDialogOnClick = false;
+            spyOn(instance.comp.file.nativeElement, 'click');
+            expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
+            instance.comp.onClick();
+            expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
+          });
         });
         describe('via onKeyDown', () => {
           it('normal', () => {
@@ -1120,6 +1189,8 @@ class TestUploadBtnComponent {
   @ViewChild('btn') comp: NzUploadBtnComponent;
   classes: string[] = ['test'];
   options: ZipButtonOptions = {
+    disabled: false,
+    openFileDialogOnClick: true,
     filters: [],
     customRequest: null,
     onStart: () => {},

@@ -126,35 +126,33 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // model bind
-  @Output() nzExpandedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
-  @Output() nzSelectedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
-  @Output() nzCheckedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() readonly nzExpandedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() readonly nzSelectedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() readonly nzCheckedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
 
-  @Output() nzSearchValueChange: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzSearchValueChange: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
   /**
    * @deprecated use
    * nzSearchValueChange instead
    */
-  @Output() nzOnSearchNode: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzOnSearchNode: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
 
-  @Output() nzClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzDblClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzContextMenu: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzCheckBoxChange: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzExpandChange: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzDblClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzContextMenu: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzCheckBoxChange: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzExpandChange: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
 
-  @Output() nzOnDragStart: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzOnDragEnter: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzOnDragOver: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzOnDragLeave: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzOnDrop: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() nzOnDragEnd: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-
+  @Output() readonly nzOnDragStart: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzOnDragEnter: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzOnDragOver: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzOnDragLeave: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzOnDrop: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzOnDragEnd: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
   // tslint:disable-next-line:no-any
   @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<any>;
   _searchValue = null;
-  // tslint:disable-next-line:no-any
-  nzDefaultSubject = new ReplaySubject(6);
+  nzDefaultSubject = new ReplaySubject< { type: string, keys: string[] }>(6);
   nzDefaultSubscription: Subscription;
   nzNodes: NzTreeNode[] = [];
   prefixCls = 'ant-tree';

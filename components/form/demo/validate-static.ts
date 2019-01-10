@@ -20,8 +20,8 @@ import { Component } from '@angular/core';
       <nz-form-item>
         <nz-form-label [nzSpan]="5">Validating</nz-form-label>
         <nz-form-control [nzSpan]="12" nzValidateStatus="validating" nzHasFeedback>
-          <input nz-input [ngModel]="'The content is being validating'" name="validating">
-          <nz-form-explain>I'm the content is being validating</nz-form-explain>
+          <input nz-input [ngModel]="'The content is being validated'" name="validating">
+          <nz-form-explain>I'm validating the content</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>

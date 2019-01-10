@@ -1,3 +1,73 @@
+# [7.0.0-rc.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.0.0-rc.2...7.0.0-rc.3) (2018-12-26)
+
+
+### Bug Fixes
+
+* **table:** fix table sticky style ([#2688](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2688)) ([50d4fc4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/50d4fc4))
+* **transfer:** fix the `Not Found` display condition ([#2687](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2687)) ([3df5779](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3df5779)), closes [#2686](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2686)
+
+
+
+# [7.0.0-rc.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.0.0-rc.1...7.0.0-rc.2) (2018-12-24) [deprecated]
+
+
+### Bug Fixes
+
+* **input:** fix input autoresize ([#2662](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2662)) ([0621ce8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0621ce8)), closes [#2646](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2646)
+* **layout:** fix sider nzBreakPoint ([#2665](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2665)) ([4fbfccb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4fbfccb)), closes [#2603](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2603)
+* **radio:** fix radio ContentChildren error ([#2660](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2660)) ([36b2099](https://github.com/NG-ZORRO/ng-zorro-antd/commit/36b2099)), closes [#2206](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2206) [#2611](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2611)
+* **tabs:** fix tabs style error ([#2673](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2673)) ([458c062](https://github.com/NG-ZORRO/ng-zorro-antd/commit/458c062))
+
+
+### Features
+
+* **autocomplete,dropdown:** add class & style properties in overlay panel ([#2639](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2639)) ([b7f41f8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b7f41f8)), closes [#2634](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2634)
+* **i18n:** add Slovenian support, ICU locale sl_SI, [#2545](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2545) ([#2652](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2652)) ([d0b9a2a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d0b9a2a))
+* make the doc website a pwa ([#2661](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2661)) ([4f48ecd](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4f48ecd))
+
+
+
+# [7.0.0-rc.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.0.0-rc.0...7.0.0-rc.1) (2018-12-12)
+
+
+### Bug Fixes
+
+* **drawer, modal:** fix focus bug of IE ([#2589](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2589)) ([0458604](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0458604)), closes [#2388](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2388)
+* **collapse:** fix collapse ([#2597](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2597)) ([5bb1a99](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5bb1a99)), closes [#2567](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2567)
+* **icon:** add missing icons used by ng-zorro-ant itself ([ef10595](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ef10595))
+* **select:** add title property for select component ([#2575](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2575)) ([3444634](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3444634)), closes [#1974](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1974)
+* **table:** should prevent tr click trigger when clicking expand ([#2618](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2618)) ([88be1c3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/88be1c3)), closes [#2419](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2419)
+* **schematics:** compatible with old version options ([#2622](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2622)) ([bb1489b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bb1489b))
+
+
+### Features
+
+* **tabs:** support forceRender in tabs ([#2619](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2619)) ([fa9160c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fa9160c))
+* **upload:** support Observable in nzFilter ([#2590](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2590)) ([c664c6f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c664c6f)), closes [#2389](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2389)
+
+
+
+# [7.0.0-rc.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.8.0...7.0.0-rc.0) (2018-11-30)
+
+
+### Bug Fixes
+
+* **menu:** fix dropdown menu item selected className ([#2434](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2434)) ([acbe5da](https://github.com/NG-ZORRO/ng-zorro-antd/commit/acbe5da)), closes [#2433](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2433)
+* **menu:** fix fold menu ([#2454](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2454)) ([f228013](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f228013)), closes [#2449](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2449)
+* **timeline:** fix loading icon ([#2386](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2386)) ([cebfff7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cebfff7)), closes [#2377](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2377)
+* **readme:** fix misspelling ([#2472](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2472)) ([e5535d2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e5535d2))
+
+
+### Features
+
+* Adds danish locale ([#2486](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2486)) ([1c7f983](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1c7f983)), closes [#2485](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2485)
+* **avatar:** support custom size ([#2416](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2416)) ([0bf8a36](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0bf8a36)), closes [#2380](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2380)
+* **drawer:** add input property in NzDrawerRef ([#2464](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2464)) ([9565cd5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9565cd5)), closes [#2403](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2403)
+* **modal:** support clicking ESC to close modal ([#2483](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2483)) ([c72f431](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c72f431)), closes [#1999](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1999)
+* **progress:** support custom strokeColor and strokeLinecap ([#2404](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2404)) ([167a110](https://github.com/NG-ZORRO/ng-zorro-antd/commit/167a110)), closes [#2378](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2378)
+
+
+
 <a name="1.8.1"></a>
 ## [1.8.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.8.0...1.8.1) (2018-11-24)
 
