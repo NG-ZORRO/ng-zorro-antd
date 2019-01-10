@@ -4,66 +4,66 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-page-header-actions',
   template: `
     <nz-page-header nzBackIcon>
-      <nz-page-header-title>Page Title</nz-page-header-title>
-      <nz-page-header-subtitle>The Page Subtitle</nz-page-header-subtitle>
+      <nz-page-header-title>Title</nz-page-header-title>
+      <nz-page-header-subtitle>This is a subtitle</nz-page-header-subtitle>
       <nz-page-header-tags>
         <nz-tag [nzColor]="'red'">Warning</nz-tag>
       </nz-page-header-tags>
       <nz-page-header-extra>
-        <button nz-button>Action</button>
-        <button nz-button>Action</button>
-        <button nz-button nzType="primary">Action</button>
+        <button nz-button>Operation</button>
+        <button nz-button>Operation</button>
+        <button nz-button nzType="primary">Primary</button>
       </nz-page-header-extra>
       <nz-page-header-content>
         <div class="wrap">
           <div nz-row class="content padding">
             <div nz-col nzSpan="12">
               <div class="description">
-                <span class="term">创建</span>
-                <p class="detail">曲丽丽</p>
+                <span class="term">Created</span>
+                <p class="detail">Lili Qu</p>
               </div>
             </div>
             <div nz-col nzSpan="12">
               <div class="description">
-                <span class="term">关联单据</span>
+                <span class="term">Association</span>
                 <a>421421</a>
               </div>
             </div>
             <div nz-col nzSpan="12">
               <div class="description">
-                <span class="term">创建时间</span>
+                <span class="term">Creation Time</span>
                 <p class="detail">2017-01-10</p>
               </div>
             </div>
             <div nz-col nzSpan="12">
               <div class="description">
-                <span class="term">生效日期</span>
+                <span class="term">Effective Time</span>
                 <p class="detail">2017-01-10</p>
               </div>
             </div>
             <div nz-col nzSpan="12">
               <div class="description">
-                <span class="term">单据备注</span>
-                <p class="detail">浙江省杭州市西湖区工专路</p>
+                <span class="term">Remarks</span>
+                <p class="detail">Gonghu Road, Xihu District, Hangzhou, Zhejiang, China</p>
               </div>
             </div>
           </div>
           <div nz-row class="extra-content">
             <div nz-col nzSpan="12">
-              <span class="label">状态</span>
-              <p class="detail">待审批</p>
+              <span class="label">Status</span>
+              <p class="detail">Pending</p>
             </div>
             <div nz-col nzSpan="12">
-              <span class="label"> 订单价格</span>
-              <p class="detail">¥ 568.08</p>
+              <span class="label"> Price</span>
+              <p class="detail">$ 568.08</p>
             </div>
           </div>
         </div>
       </nz-page-header-content>
       <nz-page-header-footer>
         <nz-tabset [nzSelectedIndex]="1">
-          <nz-tab nzTitle="详情"></nz-tab>
-          <nz-tab nzTitle="规则"></nz-tab>
+          <nz-tab nzTitle="Details"></nz-tab>
+          <nz-tab nzTitle="Rule"></nz-tab>
         </nz-tabset>
       </nz-page-header-footer>
     </nz-page-header>

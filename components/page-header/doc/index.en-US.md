@@ -20,9 +20,9 @@ Use when you need the user to quickly understand what the current page is and wh
 ### nz-page-header
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |
-| title | title string | `string`, `TemplateRef<void>` | - |
-| subTitle | subTitle string | `string`, `TemplateRef<void>` | - |
-| backIcon | custom back icon | `string`, `TemplateRef<void>` | - |
+| nzTitle | title string | `string｜TemplateRef<void>` | - |
+| nzSubTitle | subTitle string | `string｜TemplateRef<void>` | - |
+| nzBackIcon | custom back icon | `string｜TemplateRef<void>` | - |
 | nzBack | back icon click event | `EventEmitter<void>` | - |
 
 ### Page header sections

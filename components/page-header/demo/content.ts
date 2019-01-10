@@ -5,28 +5,30 @@ import { Component } from '@angular/core';
   template: `
     <nz-page-header nzTitle="Page Title">
       <nz-breadcrumb nz-page-header-breadcrumb>
-        <nz-breadcrumb-item>First-level</nz-breadcrumb-item>
+        <nz-breadcrumb-item>First-level Menu</nz-breadcrumb-item>
         <nz-breadcrumb-item>
-          <a>Second-level</a>
+          <a>Second-level Menu</a>
         </nz-breadcrumb-item>
-        <nz-breadcrumb-item>Third-level</nz-breadcrumb-item>
+        <nz-breadcrumb-item>Third-level Menu</nz-breadcrumb-item>
       </nz-breadcrumb>
       <nz-page-header-content>
         <div class="wrap">
           <div class="content">
             <div class="content">
-              <p>Ant Design, a design language for background applications, is refined by Ant UED Team.</p>
-              <p>We supply a series of design principles, practical patterns and high quality design resources
-                (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.</p>
+              <p>Ant Design interprets the color system into two levels: a system-level color system and a product-level
+                color system.</p>
+              <p>Ant Design's design team preferred to design with the HSB color model, which makes it easier for
+                designers to have a clear psychological expectation of color when adjusting colors, as well as
+                facilitate communication in teams.</p>
               <p class="content-link">
                 <a>
-                  <img src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" alt="start">Set Up
+                  <img src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" alt="start">Quick Start
                 </a>
                 <a>
-                  <img src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" alt="info">Information
+                  <img src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" alt="info">Product Info
                 </a>
                 <a>
-                  <img src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" alt="doc">Document
+                  <img src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" alt="doc">Product Doc
                 </a>
               </p>
             </div>

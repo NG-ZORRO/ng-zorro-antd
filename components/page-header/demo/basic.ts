@@ -6,8 +6,8 @@ import { Component } from '@angular/core';
     <nz-page-header
       (nzBack)="onBack()"
       nzBackIcon
-      nzTitle="Page Title"
-      nzSubtitle="The Page Subtitle">
+      nzTitle="Title"
+      nzSubtitle="This is a subtitle">
     </nz-page-header>
   `,
   styles  : [
