@@ -12,8 +12,8 @@ Avatars can be used to represent people or objects. It supports images, `Icon`s,
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzIcon]` | the `Icon` type for an icon avatar, see `Icon` | string | - |
-| `[nzShape]` | the shape of avatar | `circle` ｜ `square` | `circle` |
-| `[nzSize]` | the size of the avatar | `large` ｜ `small` ｜ `default` ｜ number | `default` |
-| `[nzSrc]` | the address of the image for an image avatar | string | - |
-| `[nzText]` | letter type avatar | string | - |
+| `[nzIcon]` | the `Icon` type for an icon avatar, see `Icon` | `string` | - |
+| `[nzShape]` | the shape of avatar | `'circle'｜'square'` | `'circle'` |
+| `[nzSize]` | the size of the avatar | `'large'｜'small'｜'default'｜number` | `'default'` |
+| `[nzSrc]` | the address of the image for an image avatar | `string` | - |
+| `[nzText]` | letter type avatar | `string` | - |

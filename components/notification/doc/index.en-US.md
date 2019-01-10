@@ -49,20 +49,20 @@ The component provides a number of service methods using the following methods a
 
 | Argument | Description | Type | Default |
 | --- | --- | --- | --- |
-| title | Title | string | - |
-| content | Notification content | string | - |
-| options | Support setting the parameters for the current notification box, see the table below | object | - |
+| title | Title | `string` | - |
+| content | Notification content | `string` | - |
+| options | Support setting the parameters for the current notification box, see the table below | `object` | - |
 
 The parameters that are set by the `options` support are as follows:
 
 | Argument | Description | Type |
 | --- | --- | --- |
-| nzKey | 	The unique identifier of the Notification | string |
-| nzDuration | Duration (milliseconds), does not disappear when set to 0 | number |
-| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | boolean |
-| nzAnimate | Whether to turn on animation | boolean |
-| nzStyle | Custom inline style | object |
-| nzClass | Custom CSS class | object |
+| nzKey | 	The unique identifier of the Notification | `string` |
+| nzDuration | Duration (milliseconds), does not disappear when set to 0 | `number` |
+| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | `boolean` |
+| nzAnimate | Whether to turn on animation | `boolean` |
+| nzStyle | Custom inline style | `object` |
+| nzClass | Custom CSS class | `object` |
 
 Methods for destruction are also provided:
 
@@ -72,10 +72,10 @@ Methods for destruction are also provided:
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzDuration | Duration (milliseconds), does not disappear when set to 0 | number | 4500 |
-| nzMaxStack | The maximum number of notifications that can be displayed at the same time | number | 8 |
-| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | boolean | true |
-| nzAnimate | Whether to turn on animation | boolean | true |
-| nzTop | The top of the notification when it pops up from the top. | string | 24px |
-| nzBottom | The bottom of the notification when it pops up from the bottom. | string | 24px |
-| nzPlacement | Popup position, optional `topLeft` `topRight` `bottomLeft` `bottomRight` | string | `topRight` |
+| nzDuration | Duration (milliseconds), does not disappear when set to 0 | `number` | 4500 |
+| nzMaxStack | The maximum number of notifications that can be displayed at the same time | `number` | 8 |
+| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | `boolean` | `true` |
+| nzAnimate | Whether to turn on animation | `boolean` | `true` |
+| nzTop | The top of the notification when it pops up from the top. | `string` | 24px |
+| nzBottom | The bottom of the notification when it pops up from the bottom. | `string` | 24px |
+| nzPlacement | Popup position, optional `topLeft` `topRight` `bottomLeft` `bottomRight` | `string` | `topRight` |

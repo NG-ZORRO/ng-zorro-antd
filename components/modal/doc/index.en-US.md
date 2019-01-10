@@ -38,31 +38,31 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 |----|----|----|----|
 | nzAfterOpen      | Specify a EventEmitter that will be emitted when modal opened | EventEmitter | - |
 | nzAfterClose      | Specify a EventEmitter that will be emitted when modal is closed completely (Can listen for parameters passed in the close/destroy method) | EventEmitter | - |
-| nzBodyStyle       | Body style for modal body element. Such as height, padding etc. | object | - |
-| nzCancelText      | Text of the Cancel button. <i>Set to null to show no cancel button (this value is invalid if the nzFooter parameter is used in normal mode)</i> | string | Cancel |
-| nzClosable        | Whether a close (x) button is visible on top right of the modal dialog or not. <i>Invalid value in confirm box mode (default will be hidden)</i> | boolean | true |
-| nzOkLoading       | Whether to apply loading visual effect for OK button or not | boolean | false |
-| nzCancelLoading   | Whether to apply loading visual effect for Cancel button or not | boolean | false |
+| nzBodyStyle       | Body style for modal body element. Such as height, padding etc. | `object` | - |
+| nzCancelText      | Text of the Cancel button. <i>Set to null to show no cancel button (this value is invalid if the nzFooter parameter is used in normal mode)</i> | `string` | Cancel |
+| nzClosable        | Whether a close (x) button is visible on top right of the modal dialog or not. <i>Invalid value in confirm box mode (default will be hidden)</i> | `boolean` | `true` |
+| nzOkLoading       | Whether to apply loading visual effect for OK button or not | `boolean` | `false` |
+| nzCancelLoading   | Whether to apply loading visual effect for Cancel button or not | `boolean` | `false` |
 | nzFooter          | Footer content, set as footer=null when you don't need default buttons. <i>1. Only valid in normal mode.<br>2. You can customize the buttons to the maximum extent by passing a `ModalButtonOptions` configuration (see the case or the instructions below).</i> | string<br>TemplateRef<br>ModalButtonOptions | OK and Cancel buttons |
 | nzGetContainer    | The mount node for Modal | HTMLElement / () => HTMLElement| A default container |
-| nzKeyboard        | Whether support press esc to close | boolean | true |
-| nzMask            | Whether show mask or not. | boolean | true |
-| nzMaskClosable    | Whether to close the modal dialog when the mask (area outside the modal) is clicked | boolean | true |
-| nzMaskStyle       | Style for modal's mask element. | object | - |
-| nzOkText          | Text of the OK button. <i>Set to null to show no cancel button (this value is invalid if the nzFooter parameter is used in normal mode)</i> | string | OK |
-| nzOkType          | Button type of the OK button. <i>Consistent with the type of the `nz-button`.</i> | string | primary |
-| nzStyle           | Style of floating layer, typically used at least for adjusting the position. | object | - |
+| nzKeyboard        | Whether support press esc to close | `boolean` | `true` |
+| nzMask            | Whether show mask or not. | `boolean` | `true` |
+| nzMaskClosable    | Whether to close the modal dialog when the mask (area outside the modal) is clicked | `boolean` | `true` |
+| nzMaskStyle       | Style for modal's mask element. | `object` | - |
+| nzOkText          | Text of the OK button. <i>Set to null to show no cancel button (this value is invalid if the nzFooter parameter is used in normal mode)</i> | `string` | OK |
+| nzOkType          | Button type of the OK button. <i>Consistent with the type of the `nz-button`.</i> | `string` | primary |
+| nzStyle           | Style of floating layer, typically used at least for adjusting the position. | `object` | - |
 | nzTitle           | The modal dialog's title. <i>Leave blank to show no title. The usage of TemplateRef can refer to the case</i> | string / TemplateRef | - |
-| nzVisible         | Whether the modal dialog is visible or not. <i>When using the `<nz-modal>` tag, be sure to use two-way binding, for example: `[(nzVisible)]="visible"`.</i> | boolean | false |
+| nzVisible         | Whether the modal dialog is visible or not. <i>When using the `<nz-modal>` tag, be sure to use two-way binding, for example: `[(nzVisible)]="visible"`.</i> | `boolean` | `false` |
 | nzWidth           | Width of the modal dialog. <i>When using numbers, the default unit is `px`</i> | string<br>number | 520 |
-| nzClassName       | The class name of the modal dialog | string | - |
-| nzWrapClassName   | The class name of the container of the modal dialog | string | - |
-| nzZIndex          | The z-index of the Modal | number | 1000 |
+| nzClassName       | The class name of the modal dialog | `string` | - |
+| nzWrapClassName   | The class name of the container of the modal dialog | `string` | - |
+| nzZIndex          | The z-index of the Modal | `number` | 1000 |
 | nzOnCancel        | Specify a function that will be called when a user clicks mask, close button on top right or Cancel button (If nzContent is Component, the Component instance will be put in as an argument). <i>Note: When created with `NzModalService.create`, this parameter should be passed into the type of function (callback function). This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | EventEmitter | - |
-| nzOnOk            | Specify a EventEmitter that will be emitted when a user clicks the OK button (If nzContent is Component, the Component instance will be put in as an argument). <i>Note: When created with `NzModalService.create`, this parameter should be passed into the type of function (callback function). This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | EventEmitter | 无 |
+| nzOnOk            | Specify a EventEmitter that will be emitted when a user clicks the OK button (If nzContent is Component, the Component instance will be put in as an argument). <i>Note: When created with `NzModalService.create`, this parameter should be passed into the type of function (callback function). This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | EventEmitter | - |
 | nzContent         | Content | string / TemplateRef / Component / ng-content | - |
-| nzComponentParams | When nzContent is a Component, the attributes in this parameter will be passed to the nzContent instance | object | - |
-| nzIconType        | Icon type of the Icon component. <i>Only valid in confirm box mode</i> | string | question-circle |
+| nzComponentParams | When nzContent is a Component, the attributes in this parameter will be passed to the nzContent instance | `object` | - |
+| nzIconType        | Icon type of the Icon component. <i>Only valid in confirm box mode</i> | `string` | question-circle |
 
 #### Attentions
 
@@ -92,7 +92,7 @@ Consistent with the above API, some property types or initial values are differe
 | nzOnOk          | Specify a EventEmitter that will be emitted when a user clicks the OK button (If nzContent is Component, the Component instance will be put in as an argument.). <i>This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | function | - |
 | nzOnCancel      | Specify a function that will be called when a user clicks mask, close button on top right or Cancel button (If nzContent is Component, the Component instance will be put in as an argument.). <i>This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | function | - |
 | nzWidth         | Width of the modal dialog | string / number | 416 |
-| nzMaskClosable  | Whether to close the modal dialog when the mask (area outside the modal) is clicked | boolean | false |
+| nzMaskClosable  | Whether to close the modal dialog when the mask (area outside the modal) is clicked | `boolean` | `false` |
 
 All the `NzModalService.method`s will return a reference, and then we can close the popup by the reference.
 
