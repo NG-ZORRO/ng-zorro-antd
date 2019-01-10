@@ -14,8 +14,9 @@ import {
   Output,
   QueryList,
   Renderer2,
+  TemplateRef,
   ViewChild,
-  ViewEncapsulation, TemplateRef
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { merge, EMPTY, Subject } from 'rxjs';
@@ -50,6 +51,7 @@ import { NzSelectService } from './nz-select.service';
     '[class.ant-select-lg]'         : 'nzSize==="large"',
     '[class.ant-select-sm]'         : 'nzSize==="small"',
     '[class.ant-select-enabled]'    : '!nzDisabled',
+    '[class.ant-select-no-arrow]'   : '!nzShowArrow',
     '[class.ant-select-disabled]'   : 'nzDisabled',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-open]'       : 'open',
@@ -92,21 +94,32 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() nzNotFoundContent: string;
   @Input() @InputBoolean() nzAllowClear = false;
   @Input() @InputBoolean() nzShowSearch = false;
+  @Input() @InputBoolean() nzLoading = false;
   @Input() nzPlaceHolder: string;
   @Input() nzMaxTagCount: number;
+  @Input() nzDropdownRender: TemplateRef<void>;
+  @Input() nzSuffixIcon: TemplateRef<void>;
+  @Input() nzClearIcon: TemplateRef<void>;
+  @Input() nzRemoveIcon: TemplateRef<void>;
+  @Input() nzMenuItemSelectedIcon: TemplateRef<void>;
+  @Input() nzShowArrow = true;
+  @Input() nzTokenSeparators: string[] = [];
   // tslint:disable-next-line:no-any
-  @Input() maxTagPlaceholder: TemplateRef<{$implicit: any[]}>;
+  @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: any[] }>;
+
+  @Input()
+  set nzAutoClearSearchValue(value: boolean) {
+    this.nzSelectService.autoClearSearchValue = value;
+  }
 
   @Input()
   set nzMaxMultipleCount(value: number) {
     this.nzSelectService.maxMultipleCount = value;
-    this.nzSelectService.check();
   }
 
   @Input()
   set nzServerSearch(value: boolean) {
     this.nzSelectService.serverSearch = value;
-    this.nzSelectService.check();
   }
 
   @Input()
@@ -118,14 +131,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input()
   set nzFilterOption(value: TFilterOption) {
     this.nzSelectService.filterOption = value;
-    this.nzSelectService.check();
   }
 
   @Input()
   // tslint:disable-next-line:no-any
   set compareWith(value: (o1: any, o2: any) => boolean) {
     this.nzSelectService.compareWith = value;
-    this.nzSelectService.check();
   }
 
   @Input()
@@ -200,7 +211,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   updateCdkConnectedOverlayStatus(): void {
     setTimeout(() => {
-      if (this.cdkOverlayOrigin && this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
+      if (this.cdkOverlayOrigin &&
+        this.cdkConnectedOverlay &&
+        this.cdkConnectedOverlay.overlayRef) {
         const triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
         if (this.nzDropdownMatchSelectWidth) {
           this.cdkConnectedOverlay.overlayRef.updateSize({ width: triggerWidth });
@@ -212,12 +225,11 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   updateCdkConnectedOverlayPositions(): void {
-    setTimeout(() => this.cdkConnectedOverlay.overlayRef.updatePosition());
-  }
-
-  onClearSelection(e: MouseEvent): void {
-    e.stopPropagation();
-    this.nzSelectService.updateListOfSelectedValue([], true);
+    setTimeout(() => {
+      if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
+        this.cdkConnectedOverlay.overlayRef.updatePosition();
+      }
+    });
   }
 
   constructor(private renderer: Renderer2, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef) {

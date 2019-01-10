@@ -10,6 +10,7 @@ import { defaultFilterOption, NzFilterOptionPipe, TFilterOption } from './nz-opt
 @Injectable()
 export class NzSelectService {
   // Input params
+  autoClearSearchValue = true;
   serverSearch = false;
   filterOption: TFilterOption = defaultFilterOption;
   mode: 'default' | 'multiple' | 'tags' = 'default';
@@ -121,7 +122,7 @@ export class NzSelectService {
   clickOption(): void {
     if (this.isSingleMode) {
       this.setOpenState(false);
-    } else if (this.isTagsMode) {
+    } else if (this.autoClearSearchValue) {
       this.clearInput();
     }
   }
@@ -147,19 +148,17 @@ export class NzSelectService {
 
   updateListOfTagOption(): void {
     if (this.isTagsMode) {
-      const listOfTagsOption = [];
-      this.listOfSelectedValue.forEach(value => {
-        const existedOption = this.listOfTemplateOption.find(o => this.compareWith(o.nzValue, value));
-        if (!existedOption) {
-          const nzOptionComponent = new NzOptionComponent();
-          nzOptionComponent.nzValue = value;
-          nzOptionComponent.nzLabel = value;
-          listOfTagsOption.push(nzOptionComponent);
-        }
+      const listOfMissValue = this.listOfSelectedValue.filter(value => !this.listOfTemplateOption.find(o => this.compareWith(o.nzValue, value)));
+      this.listOfTagOption = listOfMissValue.map(value => {
+        const nzOptionComponent = new NzOptionComponent();
+        nzOptionComponent.nzValue = value;
+        nzOptionComponent.nzLabel = value;
+        return nzOptionComponent;
       });
-      this.listOfTagOption = listOfTagsOption;
+      this.listOfTagAndTemplateOption = [ ...this.listOfTemplateOption.concat(this.listOfTagOption) ];
+    } else {
+      this.listOfTagAndTemplateOption = [ ...this.listOfTemplateOption ];
     }
-    this.listOfTagAndTemplateOption = this.listOfTemplateOption.concat(this.listOfTagOption);
   }
 
   updateAddTagOption(): void {
@@ -247,6 +246,23 @@ export class NzSelectService {
     }
   }
 
+  updateSelectedValueByLabelList(listOfLabel: string[]): void {
+    const listOfSelectedValue = [ ...this.listOfSelectedValue ];
+    const listOfMatchOptionValue = this.listOfTagAndTemplateOption
+    .filter(item => listOfLabel.indexOf(item.nzLabel) !== -1)
+    .map(item => item.nzValue)
+    .filter(item => !isNotNil(this.listOfSelectedValue.find(v => this.compareWith(v, item))));
+    if (this.isMultipleMode) {
+      this.updateListOfSelectedValue([ ...listOfSelectedValue, ...listOfMatchOptionValue ], true);
+    } else {
+      const listOfUnMatchOptionValue = listOfLabel
+      .filter(label => this.listOfTagAndTemplateOption
+        .map(item => item.nzLabel).indexOf(label) === -1
+      );
+      this.updateListOfSelectedValue([ ...listOfSelectedValue, ...listOfMatchOptionValue, ...listOfUnMatchOptionValue ], true);
+    }
+  }
+
   onKeyDown(e: KeyboardEvent): void {
     const keyCode = e.keyCode;
     if ([ UP_ARROW, DOWN_ARROW, ENTER ].indexOf(keyCode) > -1) {
@@ -314,6 +330,10 @@ export class NzSelectService {
 
   get isTagsMode(): boolean {
     return this.mode === 'tags';
+  }
+
+  get isMultipleMode(): boolean {
+    return this.mode === 'multiple';
   }
 
   get isMultipleOrTags(): boolean {

@@ -1,26 +1,24 @@
 <div cdkOverlayOrigin
+  nz-select-top-control
   tabindex="0"
   class="ant-select-selection"
+  [nzOpen]="open"
+  [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
+  [nzPlaceHolder]="nzPlaceHolder"
+  [nzAllowClear]="nzAllowClear"
+  [nzMaxTagCount]="nzMaxTagCount"
+  [nzShowArrow]="nzShowArrow"
+  [nzLoading]="nzLoading"
+  [nzSuffixIcon]="nzSuffixIcon"
+  [nzClearIcon]="nzClearIcon"
+  [nzRemoveIcon]="nzRemoveIcon"
+  [nzShowSearch]="nzShowSearch"
+  [nzTokenSeparators]="nzTokenSeparators"
   [class.ant-select-selection--single]="nzSelectService.isSingleMode"
   [class.ant-select-selection--multiple]="nzSelectService.isMultipleOrTags"
   (keydown)="onKeyDown($event)">
-  <div nz-select-top-control
-    [nzOpen]="open"
-    [maxTagPlaceholder]="maxTagPlaceholder"
-    [nzPlaceHolder]="nzPlaceHolder"
-    [nzMaxTagCount]="nzMaxTagCount"
-    [nzShowSearch]="nzShowSearch">
-  </div>
-  <span *ngIf="nzAllowClear" class="ant-select-selection__clear" nz-select-unselectable (click)="onClearSelection($event)">
-    <i nz-icon type="close-circle" theme="fill" class="ant-select-close-icon"></i>
-  </span>
-  <span class="ant-select-arrow" nz-select-unselectable>
-    <i nz-icon type="down" class="ant-select-arrow-icon"></i>
-    <b></b>
-  </span>
 </div>
-<ng-template
-  cdkConnectedOverlay
+<ng-template cdkConnectedOverlay
   [cdkConnectedOverlayHasBackdrop]="true"
   [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
   (backdropClick)="closeDropDown()"
@@ -36,12 +34,14 @@
     [nzClassListAdd]="[nzDropdownClassName]"
     [@slideMotion]="dropDownPosition"
     [ngStyle]="nzDropdownStyle">
-    <div style="overflow: auto"
-      nz-option-container
+    <div nz-option-container
+      style="overflow: auto;transform: translateZ(0px);"
       (keydown)="onKeyDown($event)"
+      [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
       [nzNotFoundContent]="nzNotFoundContent"
       (nzScrollToBottom)="nzScrollToBottom.emit()">
     </div>
+    <ng-template [ngTemplateOutlet]="nzDropdownRender"></ng-template>
   </div>
 </ng-template>
 <!--can not use ViewChild since it will match sub options in option group -->

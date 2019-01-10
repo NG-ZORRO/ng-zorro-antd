@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
@@ -28,6 +28,7 @@ const icons: IconDefinition[] = [ LeftOutline, RightOutline ];
     HttpClientModule,
     ShareModule,
     NgZorroAntdModule,
+    HttpClientJsonpModule,
     RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules } : {}),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],

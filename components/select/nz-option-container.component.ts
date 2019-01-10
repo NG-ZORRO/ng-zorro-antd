@@ -2,16 +2,20 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
   Output,
-  QueryList, TemplateRef,
+  QueryList,
+  TemplateRef,
+  ViewChild,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionLiComponent } from './nz-option-li.component';
@@ -28,13 +32,21 @@ import { NzSelectService } from './nz-select.service';
 export class NzOptionContainerComponent implements OnDestroy, OnInit {
   private destroy$ = new Subject();
   @ViewChildren(NzOptionLiComponent) listOfNzOptionLiComponent: QueryList<NzOptionLiComponent>;
+  @ViewChild('dropdownUl') dropdownUl: ElementRef;
   @Input() nzNotFoundContent: string;
+  @Input() nzMenuItemSelectedIcon: TemplateRef<void>;
   @Output() readonly nzScrollToBottom = new EventEmitter<void>();
 
   scrollIntoViewIfNeeded(): void {
     setTimeout(() => {
-      if (this.listOfNzOptionLiComponent && this.listOfNzOptionLiComponent.length && this.nzSelectService.activatedOption) {
-        const targetOption = this.listOfNzOptionLiComponent.find(o => this.nzSelectService.compareWith(o.nzOption.nzValue, this.nzSelectService.activatedOption.nzValue));
+      if (this.listOfNzOptionLiComponent &&
+        this.listOfNzOptionLiComponent.length &&
+        this.nzSelectService.activatedOption) {
+        const targetOption = this.listOfNzOptionLiComponent.find(
+          o => this.nzSelectService.compareWith(
+            o.nzOption.nzValue, this.nzSelectService.activatedOption.nzValue
+          )
+        );
         /* tslint:disable-next-line:no-string-literal */
         if (targetOption && targetOption.el && targetOption.el[ 'scrollIntoViewIfNeeded' ]) {
           /* tslint:disable-next-line:no-string-literal */
@@ -42,16 +54,6 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
         }
       }
     }, 150);
-
-  }
-
-  dropDownScroll(e: MouseEvent, ul: HTMLUListElement): void {
-    e.preventDefault();
-    e.stopPropagation();
-    // TODO
-    if (ul && (ul.scrollHeight - ul.scrollTop === ul.clientHeight)) {
-      this.nzScrollToBottom.emit();
-    }
   }
 
   trackLabel(index: number, option: NzOptionGroupComponent): string | TemplateRef<void> {
@@ -63,15 +65,10 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
     return option.nzValue;
   }
 
-  constructor(public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef) {
+  constructor(public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef, private ngZone: NgZone) {
   }
 
   ngOnInit(): void {
-    this.nzSelectService.valueOrOption$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
-      this.scrollIntoViewIfNeeded();
-    });
     this.nzSelectService.activatedOption$.pipe(
       takeUntil(this.destroy$)
     ).subscribe(() => {
@@ -81,6 +78,20 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
       takeUntil(this.destroy$)
     ).subscribe(() => {
       this.cdr.markForCheck();
+    });
+    this.ngZone.runOutsideAngular(() => {
+      const ul = this.dropdownUl.nativeElement;
+      fromEvent<MouseEvent>(ul, 'scroll').pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(e => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (ul && (ul.scrollHeight < (ul.clientHeight + ul.scrollTop + 10))) {
+          this.ngZone.run(() => {
+            this.nzScrollToBottom.emit();
+          });
+        }
+      });
     });
   }
 

@@ -6,7 +6,8 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Renderer2, TemplateRef,
+  Renderer2,
+  TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -22,10 +23,7 @@ import { NzSelectService } from './nz-select.service';
   animations         : [ zoomMotion ],
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
-  templateUrl        : './nz-select-top-control.component.html',
-  host               : {
-    '[class.ant-select-selection__rendered]': 'true'
-  }
+  templateUrl        : './nz-select-top-control.component.html'
 })
 export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   inputValue: string;
@@ -36,16 +34,58 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   @Input() nzPlaceHolder: string;
   @Input() nzOpen = false;
   @Input() nzMaxTagCount: number;
+  @Input() nzAllowClear = false;
+  @Input() nzShowArrow = true;
+  @Input() nzLoading = false;
+  @Input() nzSuffixIcon: TemplateRef<void>;
+  @Input() nzClearIcon: TemplateRef<void>;
+  @Input() nzRemoveIcon: TemplateRef<void>;
   // tslint:disable-next-line:no-any
-  @Input() maxTagPlaceholder: TemplateRef<{$implicit: any[]}>;
+  @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: any[] }>;
+  @Input() nzTokenSeparators: string[] = [];
+
   updateComposition(value: boolean): void {
     this.isComposing = value;
   }
 
+  onClearSelection(e: MouseEvent): void {
+    e.stopPropagation();
+    this.nzSelectService.updateListOfSelectedValue([], true);
+  }
+
+  includesSeparators(str: string | string[], separators: string[]): boolean {
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < separators.length; ++i) {
+      if (str.lastIndexOf(separators[ i ]) > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  splitBySeparators(str: string | string[], separators: string[]): string[] {
+    const reg = new RegExp(`[${separators.join()}]`);
+    const array = (str as string).split(reg).filter(token => token);
+    return Array.from(new Set(array));
+  }
+
   setInputValue(value: string): void {
+    if (this.inputElement) {
+      this.inputElement.nativeElement.value = value;
+    }
     this.inputValue = value;
     this.updateWidth();
     this.nzSelectService.updateSearchValue(value);
+    // auto tokenSeparators
+    if (this.inputValue &&
+      this.inputValue.length &&
+      this.nzTokenSeparators.length &&
+      this.nzSelectService.isMultipleOrTags &&
+      this.includesSeparators(this.inputValue, this.nzTokenSeparators)) {
+      const listOfLabel = this.splitBySeparators(this.inputValue, this.nzTokenSeparators);
+      this.nzSelectService.updateSelectedValueByLabelList(listOfLabel);
+      this.nzSelectService.clearInput();
+    }
   }
 
   get placeHolderDisplay(): string {

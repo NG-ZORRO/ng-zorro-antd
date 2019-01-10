@@ -3,7 +3,7 @@ import {
   ChangeDetectorRef,
   Component, ElementRef,
   Input, OnDestroy,
-  OnInit,
+  OnInit, TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -33,6 +33,7 @@ export class NzOptionLiComponent implements OnInit, OnDestroy {
   active = false;
   destroy$ = new Subject();
   @Input() nzOption: NzOptionComponent;
+  @Input() nzMenuItemSelectedIcon: TemplateRef<void>;
 
   clickOption(): void {
     if (!this.nzOption.nzDisabled) {
@@ -45,11 +46,15 @@ export class NzOptionLiComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.nzSelectService.listOfSelectedValue$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+    this.nzSelectService.listOfSelectedValue$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(data => {
       this.selected = isNotNil(data.find(v => this.nzSelectService.compareWith(v, this.nzOption.nzValue)));
       this.cdr.markForCheck();
     });
-    this.nzSelectService.activatedOption$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+    this.nzSelectService.activatedOption$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(data => {
       if (data) {
         this.active = this.nzSelectService.compareWith(data.nzValue, this.nzOption.nzValue);
       } else {

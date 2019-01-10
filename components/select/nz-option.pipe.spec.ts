@@ -1,7 +1,7 @@
 import { QueryList } from '@angular/core';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
-import { defaultFilterOption, NzFilterOptionPipe, NzFilterGroupOptionPipe } from './nz-option.pipe';
+import { defaultFilterOption, NzFilterGroupOptionPipe, NzFilterOptionPipe } from './nz-option.pipe';
 
 // tslint:disable-next-line:no-any
 function generateOption(value: any, label: string): NzOptionComponent {
