@@ -27,7 +27,7 @@ import { Component, OnInit } from '@angular/core';
                 </ng-container>
                 <ng-container *ngIf="editCache[data.key].edit">
                   <input type="text" nz-input [(ngModel)]="editCache[data.key].name">
-                  <i nz-icon type="check editable-cell-icon-check" (click)="finishEdit(data.key)"></i>
+                  <i nz-icon type="check" class="editable-cell-icon-check" (click)="finishEdit(data.key)"></i>
                 </ng-container>
               </div>
             </div>
