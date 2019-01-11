@@ -2,6 +2,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ApplicationRef, ComponentFactoryResolver, EmbeddedViewRef, Injectable, Injector, Type } from '@angular/core';
 
+import { Observable, Subject } from 'rxjs';
 import { NzMessageConfig } from './nz-message-config';
 import { NzMessageContainerComponent } from './nz-message-container.component';
 import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
@@ -25,7 +26,7 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
 
   remove(messageId?: string): void {
     if (messageId) {
-      this._container.removeMessage(messageId);
+      this._container.removeMessageInside(messageId);
     } else {
       this._container.removeMessageAll();
     }
@@ -33,10 +34,18 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
 
   createMessage(message: MessageData, options?: NzMessageDataOptions): NzMessageDataFilled {
     // TODO: spread on literal has been disallow on latest proposal
+    if (options && typeof options.nzOnClose !== 'function') {
+      options.nzOnClose = () => {
+      }; // Leave a empty function to close this message by default
+    }
     const resultMessage: NzMessageDataFilled = {
       ...(message as {}), ...{
         messageId: this._generateMessageId(),
         options,
+        $nzAfterClose: new Subject<NzMessageDataFilled>(),
+        get nzAfterClose(): Observable<NzMessageDataFilled> {
+          return this.$nzAfterClose.asObservable();
+        },
         createdAt: new Date()
       }
     };
@@ -62,7 +71,7 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
     this.appRef.attachView(componentRef.hostView); // Load view into app root
     const overlayPane = this.overlay.create().overlayElement;
     overlayPane.style.zIndex = '1010'; // Patching: assign the same zIndex of ant-message to it's parent overlay panel, to the ant-message's zindex work.
-    overlayPane.appendChild((componentRef.hostView as EmbeddedViewRef<{}>).rootNodes[ 0 ] as HTMLElement);
+    overlayPane.appendChild((componentRef.hostView as EmbeddedViewRef<{}>).rootNodes[0] as HTMLElement);
 
     return componentRef.instance;
   }
@@ -84,26 +93,26 @@ export class NzMessageService extends NzMessageBaseService<NzMessageContainerCom
 
   // Shortcut methods
   success(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
-    return this.createMessage({ type: 'success', content }, options);
+    return this.createMessage({type: 'success', content}, options);
   }
 
   error(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
-    return this.createMessage({ type: 'error', content }, options);
+    return this.createMessage({type: 'error', content}, options);
   }
 
   info(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
-    return this.createMessage({ type: 'info', content }, options);
+    return this.createMessage({type: 'info', content}, options);
   }
 
   warning(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
-    return this.createMessage({ type: 'warning', content }, options);
+    return this.createMessage({type: 'warning', content}, options);
   }
 
   loading(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
-    return this.createMessage({ type: 'loading', content }, options);
+    return this.createMessage({type: 'loading', content}, options);
   }
 
   create(type: 'success' | 'info' | 'warning' | 'error' | 'loading' | string, content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
-    return this.createMessage({ type, content }, options);
+    return this.createMessage({type, content}, options);
   }
 }

@@ -1,5 +1,6 @@
 import { TemplateRef } from '@angular/core';
 
+import { Observable, Subject } from 'rxjs';
 import { NzMessageData, NzMessageDataOptions } from '../message/nz-message.definitions';
 
 export interface NzNotificationData extends NzMessageData {
@@ -23,4 +24,6 @@ export interface NzNotificationDataFilled extends NzNotificationData {
   state?: 'enter' | 'leave';
   options?: NzNotificationDataOptions;
   createdAt: Date; // Auto created
+  nzAfterClose?: Observable<NzNotificationDataFilled>;
+  $nzAfterClose?: Subject<NzNotificationDataFilled>;
 }

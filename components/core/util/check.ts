@@ -5,6 +5,10 @@ export function isNotNil(value: any): boolean {
   return (typeof(value) !== 'undefined') && value !== null;
 }
 
+export function isPromise(obj: {} | void): boolean {
+  return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof (obj as Promise<{}>).then === 'function' && typeof (obj as Promise<{}>).catch === 'function';
+}
+
 /** 校验对象是否相等 */
 export function shallowEqual(objA: {}, objB: {}): boolean {
   if (objA === objB) {

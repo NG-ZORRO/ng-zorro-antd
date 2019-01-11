@@ -1,29 +1,38 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation
+} from '@angular/core';
 
+import { isPromise } from '../core/util';
 import { NzMessageContainerComponent } from './nz-message-container.component';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-message',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-message',
   preserveWhitespaces: false,
-  animations         : [
+  animations: [
     trigger('enterLeave', [
-      state('enter', style({ opacity: 1, transform: 'translateY(0)' })),
+      state('enter', style({opacity: 1, transform: 'translateY(0)'})),
       transition('* => enter', [
-        style({ opacity: 0, transform: 'translateY(-50%)' }),
+        style({opacity: 0, transform: 'translateY(-50%)'}),
         animate('100ms linear')
       ]),
-      state('leave', style({ opacity: 0, transform: 'translateY(-50%)' })),
+      state('leave', style({opacity: 0, transform: 'translateY(-50%)'})),
       transition('* => leave', [
-        style({ opacity: 1, transform: 'translateY(0)' }),
+        style({opacity: 1, transform: 'translateY(0)'}),
         animate('100ms linear')
       ])
     ])
   ],
-  templateUrl        : './nz-message.component.html'
+  templateUrl: './nz-message.component.html'
 })
 export class NzMessageComponent implements OnInit, OnDestroy {
 
@@ -79,13 +88,35 @@ export class NzMessageComponent implements OnInit, OnDestroy {
   }
 
   // Remove self
-  protected _destroy(): void {
+  protected removeInside(): Promise<void> {
     if (this._options.nzAnimate) {
       this.nzMessage.state = 'leave';
       this.cdr.detectChanges();
       setTimeout(() => this._messageContainer.removeMessage(this.nzMessage.messageId), 200);
     } else {
       this._messageContainer.removeMessage(this.nzMessage.messageId);
+    }
+    return Promise.resolve();
+  }
+
+  protected _destroy(): void {
+    if (this.nzMessage.options && typeof this.nzMessage.options.nzOnClose === 'function') {
+      const result = this.nzMessage.options.nzOnClose(this.nzMessage);
+      const caseClose = (doClose: boolean | void | {}) => {
+        if (doClose !== false) {
+          this.removeInside();
+        }
+      }; // Users can return "false" to prevent closing by default
+      if (isPromise(result)) {
+        const handleThen = (doClose) => {
+          caseClose(doClose);
+        };
+        (result as Promise<void>).then(handleThen).catch(handleThen);
+      } else {
+        caseClose(result);
+      }
+    } else {
+      this.removeInside();
     }
   }
 

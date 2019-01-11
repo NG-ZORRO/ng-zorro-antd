@@ -30,6 +30,19 @@ title: Message
 
 ## API
 
+### NzMessageDataFilled
+
+创建消息时返回的数据结构
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| messageId | message 的id | `string` | - |
+| state | 当前动画状态 | `enter | leave` | - |
+| nzAfterClose | 关闭后触发的回调 | `Observable<NzMessageDataFilled>` | - |
+| createdAt | 创建时间 | `Date` | - |
+| options | 创建时的option | `NzMessageDataOptions` | - |
+
+
 ### NzMessageService
 
 组件提供了一些服务方法，使用方式和参数如下：

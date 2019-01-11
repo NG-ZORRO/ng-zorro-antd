@@ -1,7 +1,11 @@
+import { Observable, Subject } from 'rxjs';
+import { OnClickCallback } from '../modal';
+
 export interface NzMessageDataOptions {
   nzDuration?: number;
   nzAnimate?: boolean;
   nzPauseOnHover?: boolean;
+  nzOnClose?: OnClickCallback<NzMessageDataFilled>;
 }
 
 // Message data for terminal users
@@ -16,5 +20,7 @@ export interface NzMessageDataFilled extends NzMessageData {
   messageId: string; // Service-wide unique id, auto generated
   state?: 'enter' | 'leave';
   options?: NzMessageDataOptions;
+  nzAfterClose?: Observable<NzMessageDataFilled>;
+  $nzAfterClose?: Subject<NzMessageDataFilled>;
   createdAt: Date; // Auto created
 }

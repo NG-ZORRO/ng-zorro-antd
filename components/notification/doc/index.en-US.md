@@ -37,6 +37,19 @@ The default global configuration is:
 
 ## API
 
+### NzNotificationDataFilled
+
+The structure of instance that create notification returned
+
+| Argument | Description | Type | Default |
+| --- | --- | --- | --- |
+| messageId | message instance id | `string` | - |
+| state | the state of animation | `enter | leave` | - |
+| nzAfterClose | the hook that after message closed | `Observable<NzNotificationDataFilled>` | - |
+| createdAt | create time | Date | - |
+| options | the option of message | `NzMessageDataOptions` | - |
+
+
 ### NzNotificationService
 
 The component provides a number of service methods using the following methods and parameters:

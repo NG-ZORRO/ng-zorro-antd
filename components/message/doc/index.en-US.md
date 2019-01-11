@@ -29,6 +29,19 @@ The default global configuration is:
 
 ## API
 
+### NzMessageDataFilled
+
+The structure of instance that create message returned
+
+| Argument | Description | Type | Default |
+| --- | --- | --- | --- |
+| messageId | message instance id | `string` | - |
+| state | the state of animation | `enter | leave` | - |
+| nzAfterClose | the hook that after message closed | `Observable<NzMessageDataFilled>` | - |
+| createdAt | create time | Date | - |
+| options | the option of message | `NzMessageDataOptions` | - |
+
+
 ### NzMessageService
 
 This components provides some service methods, with usage and arguments as following:

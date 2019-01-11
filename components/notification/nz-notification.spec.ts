@@ -17,15 +17,15 @@ describe('NzNotification', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzNotificationModule, NoopAnimationsModule ],
-      declarations: [ DemoAppComponent ],
-      providers   : [ { provide: NZ_NOTIFICATION_CONFIG, useValue: { nzMaxStack: 2 } } ] // Override default config
+      imports: [NzNotificationModule, NoopAnimationsModule],
+      declarations: [DemoAppComponent],
+      providers: [{provide: NZ_NOTIFICATION_CONFIG, useValue: {nzMaxStack: 2}}] // Override default config
     });
 
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([ NzNotificationService, OverlayContainer ], (m: NzNotificationService, oc: OverlayContainer) => {
+  beforeEach(inject([NzNotificationService, OverlayContainer], (m: NzNotificationService, oc: OverlayContainer) => {
     messageService = m;
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
@@ -80,7 +80,7 @@ describe('NzNotification', () => {
   }));
 
   it('should auto closed by 1s', fakeAsync(() => {
-    messageService.create(null, null, 'EXISTS', { nzDuration: 1000 });
+    messageService.create(null, null, 'EXISTS', {nzDuration: 1000});
     demoAppFixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('EXISTS');
@@ -90,7 +90,7 @@ describe('NzNotification', () => {
   }));
 
   it('should not destroy when hovered', fakeAsync(() => {
-    messageService.create(null, null, 'EXISTS', { nzDuration: 3000 });
+    messageService.create(null, null, 'EXISTS', {nzDuration: 3000});
     demoAppFixture.detectChanges();
 
     const messageElement = overlayContainerElement.querySelector('.ant-notification-notice');
@@ -104,7 +104,7 @@ describe('NzNotification', () => {
   }));
 
   it('should not destroyed automatically but manually', fakeAsync(() => {
-    const filledMessage = messageService.success('title', 'SUCCESS', { nzDuration: 0 });
+    const filledMessage = messageService.success('title', 'SUCCESS', {nzDuration: 0});
     demoAppFixture.detectChanges();
 
     tick(50000);
@@ -116,7 +116,7 @@ describe('NzNotification', () => {
   }));
 
   it('should keep the balance of messages length and then remove all', fakeAsync(() => {
-    [ 1, 2, 3 ].forEach(id => {
+    [1, 2, 3].forEach(id => {
       const content = `SUCCESS-${id}`;
       messageService.success(null, content);
       demoAppFixture.detectChanges();
@@ -131,20 +131,21 @@ describe('NzNotification', () => {
     });
 
     messageService.remove();
+    tick(50000);
     demoAppFixture.detectChanges();
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS-3');
     expect((messageService as any)._container.messages.length).toBe(0); // tslint:disable-line:no-any
   }));
 
   it('should destroy without animation', fakeAsync(() => {
-    messageService.error(null, 'EXISTS', { nzDuration: 1000, nzAnimate: false });
+    messageService.error(null, 'EXISTS', {nzDuration: 1000, nzAnimate: false});
     demoAppFixture.detectChanges();
     tick(1000 + 10);
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   }));
 
   it('should reset default config dynamically', fakeAsync(() => {
-    messageService.config({ nzDuration: 0 });
+    messageService.config({nzDuration: 0});
     messageService.create(null, 'loading', 'EXISTS');
     demoAppFixture.detectChanges();
     tick(50000);
@@ -152,7 +153,7 @@ describe('NzNotification', () => {
   }));
 
   it('should show with placement of topLeft', () => {
-    messageService.config({ nzPlacement: 'topLeft' });
+    messageService.config({nzPlacement: 'topLeft'});
     messageService.create(null, null, 'EXISTS');
     demoAppFixture.detectChanges();
     expect(overlayContainerElement.textContent).toContain('EXISTS');
@@ -166,9 +167,9 @@ describe('NzNotification', () => {
   });
 
   it('should update an existing notification when keys are matched', () => {
-    messageService.create(null, null, 'EXISTS', { nzKey: 'exists' });
+    messageService.create(null, null, 'EXISTS', {nzKey: 'exists'});
     expect(overlayContainerElement.textContent).toContain('EXISTS');
-    messageService.create('success', 'Title', 'SHOULD NOT CHANGE', { nzKey: 'exists' });
+    messageService.create('success', 'Title', 'SHOULD NOT CHANGE', {nzKey: 'exists'});
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
     expect(overlayContainerElement.textContent).toContain('Title');
     expect(overlayContainerElement.textContent).toContain('SHOULD NOT CHANGE');

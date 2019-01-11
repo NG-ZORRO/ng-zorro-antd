@@ -32,6 +32,7 @@ import { InputBoolean } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import { ESCAPE } from '@angular/cdk/keycodes';
+import { isPromise } from '../core/util';
 import ModalUtil from './modal-util';
 import { NzModalConfig, NZ_MODAL_CONFIG, NZ_MODAL_DEFAULT_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
@@ -485,10 +486,4 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
       this.focusTrap.destroy();
     }
   }
-}
-
-////////////
-
-function isPromise(obj: {} | void): boolean {
-  return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof (obj as Promise<{}>).then === 'function' && typeof (obj as Promise<{}>).catch === 'function';
 }
