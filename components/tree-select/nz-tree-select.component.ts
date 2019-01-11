@@ -238,6 +238,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
       this.updateCdkConnectedOverlayStatus();
       this.updatePosition();
       this.updateDropDownClassMap();
+      this.updateStackingOrder();
     }
   }
 
@@ -307,6 +308,14 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     });
   }
 
+  updateStackingOrder(): void {
+    if (this.renderer.nextSibling(this.overlayRef.hostElement)) {
+      const parentNode = this.renderer.parentNode(this.overlayRef.hostElement);
+      this.renderer.appendChild(parentNode, this.overlayRef.backdropElement);
+      this.renderer.appendChild(parentNode, this.overlayRef.hostElement);
+    }
+  }
+
   attachOverlay(): void {
     this.portal = new TemplatePortal(this.dropdownTemplate, this.viewContainerRef);
     this.overlayRef = this.overlay.create(this.getOverlayConfig());
@@ -331,18 +340,18 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
       new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
     ];
     this.positionStrategy = this.overlay.position()
-    .flexibleConnectedTo(this.treeSelect)
-    .withPositions(positions)
-    .withFlexibleDimensions(false)
-    .withPush(false);
+      .flexibleConnectedTo(this.treeSelect)
+      .withPositions(positions)
+      .withFlexibleDimensions(false)
+      .withPush(false);
     return this.positionStrategy;
   }
 
   subscribeOverlayBackdropClick(): Subscription {
     return this.overlayRef.backdropClick()
-    .subscribe(() => {
-      this.closeDropDown();
-    });
+      .subscribe(() => {
+        this.closeDropDown();
+      });
   }
 
   subscribeSelectionChange(): Subscription {
