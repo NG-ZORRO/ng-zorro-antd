@@ -1,0 +1,33 @@
+<!-- Icon -->
+<div class="ant-result-icon-view" [ngClass]="iconCls">
+  <ng-container *ngIf="nzIcon">
+    <ng-container *nzStringTemplateOutlet="nzIcon">
+      <i nz-icon [type]="iconName" theme="fill"></i>
+    </ng-container>
+  </ng-container>
+  <ng-content *ngIf="!nzIcon" select="[nz-result-icon]"></ng-content>
+</div>
+<!-- Title and subtitle -->
+<div class="ant-result-title-view">
+  <ng-container *ngIf="nzTitle">
+    <div class="ant-result-title-view-title" *nzStringTemplateOutlet="nzTitle">
+      {{ nzTitle }}
+    </div>
+  </ng-container>
+  <ng-content *ngIf="!nzTitle" select="nz-result-title, [nz-result-title]"></ng-content>
+  <ng-container *ngIf="nzSubTitle">
+    <div class="ant-result-title-view-subtitle" *nzStringTemplateOutlet="nzSubTitle">
+      {{ nzSubTitle }}
+    </div>
+  </ng-container>
+  <ng-content *ngIf="!nzSubTitle" select="nz-result-subtitle, [nz-result-subtitle]"></ng-content>
+</div>
+<!-- Content -->
+<ng-content select="nz-result-content, [nz-result-content]"></ng-content>
+<!-- Extra -->
+<div class="ant-result-extra-view" *ngIf="nzExtra">
+  <ng-container *nzStringTemplateOutlet="nzExtra">
+    {{ nzExtra }}
+  </ng-container>
+</div>
+<ng-content *ngIf="!nzExtra" select="nz-result-extra, [nz-result-extra]"></ng-content>
