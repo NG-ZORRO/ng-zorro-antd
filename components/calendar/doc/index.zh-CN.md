@@ -40,10 +40,10 @@ registerLocaleData(zh);
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[(ngModel)]` | （可双向绑定）展示日期 | `Date` | 当前日期 |
-| `[(nzMode)]` | （可双向绑定）显示模式 | `'month'/'year'` | `'month'` |
+| `[(nzMode)]` | （可双向绑定）显示模式 | `'month'｜'year'` | `'month'` |
 | `[nzFullscreen]` | 是否全屏显示 | `boolean` | `true` |
 | `[nzCard]` | 是否不全屏显示 | `boolean` | `false` |
-| `[nzDateCell]` | （可作为内容）自定义渲染日期单元格，模版内容会被追加到单元格 | `TemplateRef<Date>` | 无 |
-| `[nzDateFullCell]` | （可作为内容）自定义渲染日期单元格，模版内容覆盖单元格 | `TemplateRef<Date>` | 无 |
-| `[nzMonthCell]` | （可作为内容）自定义渲染月单元格，模版内容会被追加到单元格 | `TemplateRef<Date>` | 无 |
-| `[nzMonthFullCell]` | （可作为内容）自定义渲染月单元格，模版内容覆盖单元格 | `TemplateRef<Date>` | 无 |
+| `[nzDateCell]` | （可作为内容）自定义渲染日期单元格，模版内容会被追加到单元格 | `TemplateRef<Date>` | - |
+| `[nzDateFullCell]` | （可作为内容）自定义渲染日期单元格，模版内容覆盖单元格 | `TemplateRef<Date>` | - |
+| `[nzMonthCell]` | （可作为内容）自定义渲染月单元格，模版内容会被追加到单元格 | `TemplateRef<Date>` | - |
+| `[nzMonthFullCell]` | （可作为内容）自定义渲染月单元格，模版内容覆盖单元格 | `TemplateRef<Date>` | - |

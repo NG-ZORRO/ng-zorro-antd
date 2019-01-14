@@ -22,27 +22,27 @@ Cascade selection box.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[ngModel]` | selected value | any[] | - |
-| `[nzAllowClear]` | whether allow clear | boolean | true |
-| `[nzAutoFocus]` | whether auto focus the input box | boolean | false |
-| `[nzChangeOn]` | change value on each selection if this function return `true` | function(option: any, index: number) =&gt; boolean | - |
-| `[nzChangeOnSelect]` | change value on each selection if set to true, see above demo for details | boolean | false |
-| `[nzColumnClassName]` | additional className of column in the popup overlay | string | - |
-| `[nzDisabled]` | whether disabled select | boolean | false |
-| `[nzExpandTrigger]` | expand current item when click or hover, one of 'click' 'hover' | string | 'click' |
-| `[nzMenuClassName]` | additional className of popup overlay | string | - |
-| `[nzMenuStyle]` | additional css style of popup overlay | object | - |
-| `[nzNotFoundContent]` | Specify content to show when no result matches. | string | - |
-| `[nzLabelProperty]` | the label property name of options | string | 'label' |
-| `[nzLabelRender]` | render template of displaying selected options | TemplateRef&lt;any&gt; | - |
-| `[nzLoadData]` | To load option lazily. If setting `ngModel` with an array value and `nzOptions` is not setting, lazy load will be call immediately | (option: any, index?: index) => PromiseLike&lt;any&gt; | - |
-| `[nzOptions]` | data options of cascade | object[] | - |
-| `[nzPlaceHolder]` | input placeholder | string | 'Please select' |
-| `[nzShowArrow]` | Whether show arrow | boolean | true |
-| `[nzShowInput]` | Whether show input | boolean | true |
-| `[nzShowSearch]` | Whether support search. Cannot be used with `[nzLoadData]` at the same time | `boolean` `NzShowSearchOptions` | `false` |
-| `[nzSize]` | input size, one of `large` `default` `small` | string | `default` |
-| `[nzValueProperty]` | the value property name of options | string | 'value' |
+| `[ngModel]` | selected value | `any[]` | - |
+| `[nzAllowClear]` | whether allow clear | `boolean` | `true` |
+| `[nzAutoFocus]` | whether auto focus the input box | `boolean` | `false` |
+| `[nzChangeOn]` | change value on each selection if this function return `true` | `function(option: any, index: number) => boolean` | - |
+| `[nzChangeOnSelect]` | change value on each selection if set to true, see above demo for details | `boolean` | `false` |
+| `[nzColumnClassName]` | additional className of column in the popup overlay | `string` | - |
+| `[nzDisabled]` | whether disabled select | `boolean` | `false` |
+| `[nzExpandTrigger]` | expand current item when click or hover, one of 'click' 'hover' | `'click'｜'hover'` | `'click'` |
+| `[nzMenuClassName]` | additional className of popup overlay | `string` | - |
+| `[nzMenuStyle]` | additional css style of popup overlay | `object` | - |
+| `[nzNotFoundContent]` | Specify content to show when no result matches. | `string` | - |
+| `[nzLabelProperty]` | the label property name of options | `string` | `'label'` |
+| `[nzLabelRender]` | render template of displaying selected options | `TemplateRef<any>` | - |
+| `[nzLoadData]` | To load option lazily. If setting `ngModel` with an array value and `nzOptions` is not setting, lazy load will be call immediately | `(option: any, index?: index) => PromiseLike<any>` | - |
+| `[nzOptions]` | data options of cascade | `object[]` | - |
+| `[nzPlaceHolder]` | input placeholder | `string` | `'Please select'` |
+| `[nzShowArrow]` | Whether show arrow | `boolean` | `true` |
+| `[nzShowInput]` | Whether show input | `boolean` | `true` |
+| `[nzShowSearch]` | Whether support search. Cannot be used with `[nzLoadData]` at the same time | `boolean｜NzShowSearchOptions` | `false` |
+| `[nzSize]` | input size, one of `large` `default` `small` | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzValueProperty]` | the value property name of options | `string` | `'value'` |
 | `(ngModelChange)` | Emit on values change | `EventEmitter<any[]>` | - |
 | `(nzClear)` | Emit on clear values | `EventEmitter<void>` | - |
 | `(nzVisibleChange)` | Emit on popup menu visible or hide | `EventEmitter<boolean>` | - |

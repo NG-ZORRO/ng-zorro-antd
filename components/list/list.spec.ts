@@ -22,12 +22,6 @@ describe('list', () => {
     fixture.detectChanges();
   });
 
-  afterEach(() => {
-    if (context.comp != null) {
-      context.comp.ngOnDestroy();
-    }
-  });
-
   describe('[fields]', () => {
 
     describe('#nzItemLayout', () => {

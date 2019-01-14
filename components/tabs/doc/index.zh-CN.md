@@ -24,28 +24,28 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzSelectedIndex]` | 当前激活 tab 面板的 序列号，可双向绑定 | number | 无 |
-| `[nzAnimated]` | 是否使用动画切换 Tabs，在 nzTabPosition=top丨bottom 时有效 | boolean丨{inkBar:boolean, tabPane:boolean} | true, 当 type="card" 时为 false |
-| `[nzSize]` | 大小，提供 `large` `default` 和 `small` 三种大小 | string | 'default' |
-| `[nzTabBarExtraContent]` | tab bar 上额外的元素 | `TemplateRef<void>` | 无 |
-| `[nzTabBarStyle]` | tab bar 的样式对象 | object | - |
-| `[nzTabPosition]` | 页签位置，可选值有 `top` `right` `bottom` `left` | string | 'top' |
-| `[nzType]` | 页签的基本样式，可选 `line`、`card` 类型 | string | 'line' |
-| `[nzTabBarGutter]` | tabs 之间的间隙 | number | 无 |
-| `[nzHideAll]` | 是否隐藏所有tab内容 | boolean | false |
-| `[nzShowPagination]` | 是否超出范围时显示pre和next按钮 | boolean | true |
-| `(nzSelectedIndexChange)` | 当前激活 tab 面板的 序列号变更回调函数 | `EventEmitter<number>` | 无 |
-| `(nzSelectChange)` | 当前激活 tab 面板变更回调函数 | `EventEmitter<{nzSelectedIndex: number,tab: NzTabComponent}>` | 无 |
-| `(nzOnNextClick)` | next 按钮被点击的回调 | `EventEmitter<void>` | 无 |
-| `(nzOnPrevClick)` | prev 按钮被点击的回调 | `EventEmitter<void>` | 无 |
+| `[nzSelectedIndex]` | 当前激活 tab 面板的 序列号，可双向绑定 | `number` | - |
+| `[nzAnimated]` | 是否使用动画切换 Tabs，在 nzTabPosition=top｜bottom 时有效 | `boolean｜{inkBar:boolean, tabPane:boolean}` | `true`, 当 `type="card"` 时为 `false` |
+| `[nzSize]` | 大小，提供 `large` `default` 和 `small` 三种大小 | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzTabBarExtraContent]` | tab bar 上额外的元素 | `TemplateRef<void>` | - |
+| `[nzTabBarStyle]` | tab bar 的样式对象 | `object` | - |
+| `[nzTabPosition]` | 页签位置，可选值有 `top` `right` `bottom` `left` | `'top'｜'right'｜'bottom'｜'left'` | `'top'` |
+| `[nzType]` | 页签的基本样式，可选 `line`、`card` 类型 | `'line'｜'card'` | `'line'` |
+| `[nzTabBarGutter]` | tabs 之间的间隙 | `number` | - |
+| `[nzHideAll]` | 是否隐藏所有tab内容 | `boolean` | `false` |
+| `[nzShowPagination]` | 是否超出范围时显示pre和next按钮 | `boolean` | `true` |
+| `(nzSelectedIndexChange)` | 当前激活 tab 面板的 序列号变更回调函数 | `EventEmitter<number>` | - |
+| `(nzSelectChange)` | 当前激活 tab 面板变更回调函数 | `EventEmitter<{nzSelectedIndex: number,tab: NzTabComponent}>` | - |
+| `(nzOnNextClick)` | next 按钮被点击的回调 | `EventEmitter<void>` | - |
+| `(nzOnPrevClick)` | prev 按钮被点击的回调 | `EventEmitter<void>` | - |
 
 ### nz-tab
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzTitle]` | 选项卡头显示文字 | string ｜ `TemplateRef<void>` | - |
-| `[nzForceRender]` | 被隐藏时是否渲染 DOM 结构 | boolean | false |
-| `[nzDisabled]` | 是否禁用 | boolean | - |
+| `[nzTitle]` | 选项卡头显示文字 | `string｜TemplateRef<void>` | - |
+| `[nzForceRender]` | 被隐藏时是否渲染 DOM 结构 | `boolean` | `false` |
+| `[nzDisabled]` | 是否禁用 | `boolean` | - |
 | `(nzClick)` | title被点击的回调函数 | `EventEmitter<void>` | - |
 | `(nzSelect)` | tab被选中的回调函数 | `EventEmitter<void>` | - |
 | `(nzDeselect)` | tab被取消选中的回调函数 | `EventEmitter<void>` | - |
