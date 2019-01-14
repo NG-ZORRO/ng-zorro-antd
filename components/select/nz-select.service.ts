@@ -1,7 +1,7 @@
 import { BACKSPACE, DOWN_ARROW, ENTER, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { Injectable } from '@angular/core';
-import { combineLatest, merge, BehaviorSubject, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, map, share, tap } from 'rxjs/operators';
+import { combineLatest, merge, BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
+import { distinctUntilChanged, filter, map, share, skip, tap } from 'rxjs/operators';
 import { isNotNil } from '../core/util';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
@@ -37,6 +37,7 @@ export class NzSelectService {
   private listOfFilteredOption: NzOptionComponent[] = [];
   private openRaw$ = new Subject<boolean>();
   private checkRaw$ = new Subject();
+  private open = false;
   clearInput$ = new Subject<boolean>();
   searchValue = '';
   isShowNotFound = false;
@@ -47,7 +48,7 @@ export class NzSelectService {
     tap(() => this.clearInput())
   );
   activatedOption: NzOptionComponent;
-  activatedOption$ = new BehaviorSubject<NzOptionComponent>(null);
+  activatedOption$ = new ReplaySubject<NzOptionComponent>(1);
   listOfSelectedValue$ = this.listOfSelectedValueWithEmit$.pipe(map(data => data.value));
   modelChange$ = this.listOfSelectedValueWithEmit$.pipe(
     filter(item => item.emit),
@@ -67,6 +68,7 @@ export class NzSelectService {
   );
   searchValue$ = this.searchValueRaw$.pipe(
     distinctUntilChanged(),
+    skip(1),
     share(),
     tap((value) => {
       this.searchValue = value;
@@ -88,7 +90,7 @@ export class NzSelectService {
   listOfNzOptionComponent: NzOptionComponent[] = [];
   listOfNzOptionGroupComponent: NzOptionGroupComponent[] = [];
   // click or enter add tag option
-  addTagOption: NzOptionComponent;
+  addedTagOption: NzOptionComponent;
   // display in top control
   listOfCachedSelectedOption: NzOptionComponent[] = [];
   // selected value or ViewChildren change
@@ -119,11 +121,29 @@ export class NzSelectService {
     share()
   );
 
-  clickOption(): void {
-    if (this.isSingleMode) {
-      this.setOpenState(false);
-    } else if (this.autoClearSearchValue) {
-      this.clearInput();
+  clickOption(option: NzOptionComponent): void {
+    /** update listOfSelectedOption -> update listOfSelectedValue -> next listOfSelectedValue$ **/
+    if (!option.nzDisabled) {
+      this.updateActivatedOption(option);
+      let listOfSelectedValue = [ ...this.listOfSelectedValue ];
+      if (this.isMultipleOrTags) {
+        const targetValue = listOfSelectedValue.find(o => this.compareWith(o, option.nzValue));
+        if (isNotNil(targetValue)) {
+          listOfSelectedValue.splice(listOfSelectedValue.indexOf(targetValue), 1);
+          this.updateListOfSelectedValue(listOfSelectedValue, true);
+        } else if (listOfSelectedValue.length < this.maxMultipleCount) {
+          listOfSelectedValue.push(option.nzValue);
+          this.updateListOfSelectedValue(listOfSelectedValue, true);
+        }
+      } else if (!this.compareWith(listOfSelectedValue[ 0 ], option.nzValue)) {
+        listOfSelectedValue = [ option.nzValue ];
+        this.updateListOfSelectedValue(listOfSelectedValue, true);
+      }
+      if (this.isSingleMode) {
+        this.setOpenState(false);
+      } else if (this.autoClearSearchValue) {
+        this.clearInput();
+      }
     }
   }
 
@@ -167,10 +187,10 @@ export class NzSelectService {
       const option = new NzOptionComponent();
       option.nzValue = this.searchValue;
       option.nzLabel = this.searchValue;
-      this.addTagOption = option;
+      this.addedTagOption = option;
       this.updateActivatedOption(option);
     } else {
-      this.addTagOption = null;
+      this.addedTagOption = null;
     }
   }
 
@@ -182,7 +202,7 @@ export class NzSelectService {
       this.filterOption,
       this.serverSearch
     );
-    this.listOfFilteredOption = this.addTagOption ? [ this.addTagOption, ...listOfFilteredOption ] : [ ...listOfFilteredOption ];
+    this.listOfFilteredOption = this.addedTagOption ? [ this.addedTagOption, ...listOfFilteredOption ] : [ ...listOfFilteredOption ];
     this.isShowNotFound = !this.isTagsMode && !this.listOfFilteredOption.length;
   }
 
@@ -198,6 +218,35 @@ export class NzSelectService {
   updateActivatedOption(option: NzOptionComponent): void {
     this.activatedOption$.next(option);
     this.activatedOption = option;
+  }
+
+  tokenSeparate(inputValue: string, tokenSeparators: string[]): void {
+    // auto tokenSeparators
+    if (inputValue &&
+      inputValue.length &&
+      tokenSeparators.length &&
+      this.isMultipleOrTags &&
+      this.includesSeparators(inputValue, tokenSeparators)) {
+      const listOfLabel = this.splitBySeparators(inputValue, tokenSeparators);
+      this.updateSelectedValueByLabelList(listOfLabel);
+      this.clearInput();
+    }
+  }
+
+  includesSeparators(str: string | string[], separators: string[]): boolean {
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < separators.length; ++i) {
+      if (str.lastIndexOf(separators[ i ]) > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  splitBySeparators(str: string | string[], separators: string[]): string[] {
+    const reg = new RegExp(`[${separators.join()}]`);
+    const array = (str as string).split(reg).filter(token => token);
+    return Array.from(new Set(array));
   }
 
   resetActivatedOptionIfNeeded(): void {
@@ -225,27 +274,6 @@ export class NzSelectService {
     this.searchValueRaw$.next(value);
   }
 
-  updateSelectedOption(option: NzOptionComponent): void {
-    /** update listOfSelectedOption -> update listOfSelectedValue -> next listOfSelectedValue$ **/
-    if (option && !option.nzDisabled) {
-      this.updateActivatedOption(option);
-      let listOfSelectedValue = [ ...this.listOfSelectedValue ];
-      if (this.isMultipleOrTags) {
-        const targetValue = listOfSelectedValue.find(o => this.compareWith(o, option.nzValue));
-        if (isNotNil(targetValue)) {
-          listOfSelectedValue.splice(listOfSelectedValue.indexOf(targetValue), 1);
-          this.updateListOfSelectedValue(listOfSelectedValue, true);
-        } else if (listOfSelectedValue.length < this.maxMultipleCount) {
-          listOfSelectedValue.push(option.nzValue);
-          this.updateListOfSelectedValue(listOfSelectedValue, true);
-        }
-      } else if (!this.compareWith(listOfSelectedValue[ 0 ], option.nzValue)) {
-        listOfSelectedValue = [ option.nzValue ];
-        this.updateListOfSelectedValue(listOfSelectedValue, true);
-      }
-    }
-  }
-
   updateSelectedValueByLabelList(listOfLabel: string[]): void {
     const listOfSelectedValue = [ ...this.listOfSelectedValue ];
     const listOfMatchOptionValue = this.listOfTagAndTemplateOption
@@ -265,44 +293,48 @@ export class NzSelectService {
 
   onKeyDown(e: KeyboardEvent): void {
     const keyCode = e.keyCode;
-    if ([ UP_ARROW, DOWN_ARROW, ENTER ].indexOf(keyCode) > -1) {
-      e.preventDefault();
-      const listOfFilteredOptionWithoutDisabled = this.listOfFilteredOption.filter(item => !item.nzDisabled);
-      const activatedIndex = listOfFilteredOptionWithoutDisabled.findIndex(item => item === this.activatedOption);
-      if (keyCode === UP_ARROW) {
+    const eventTarget = e.target as HTMLInputElement;
+    const listOfFilteredOptionWithoutDisabled = this.listOfFilteredOption.filter(item => !item.nzDisabled);
+    const activatedIndex = listOfFilteredOptionWithoutDisabled.findIndex(item => item === this.activatedOption);
+    switch (keyCode) {
+      case UP_ARROW:
+        e.preventDefault();
         const preIndex = activatedIndex > 0 ? (activatedIndex - 1) : (listOfFilteredOptionWithoutDisabled.length - 1);
         this.updateActivatedOption(listOfFilteredOptionWithoutDisabled[ preIndex ]);
-      } else if (keyCode === DOWN_ARROW) {
+        break;
+      case DOWN_ARROW:
+        e.preventDefault();
         const nextIndex = activatedIndex < listOfFilteredOptionWithoutDisabled.length - 1 ? (activatedIndex + 1) : 0;
         this.updateActivatedOption(listOfFilteredOptionWithoutDisabled[ nextIndex ]);
-      } else if (keyCode === ENTER) {
-        if (this.activatedOption && !this.activatedOption.nzDisabled) {
-          this.updateSelectedOption(this.activatedOption);
-          this.clickOption();
+        if (!this.disabled && !this.open) {
+          this.setOpenState(true);
         }
-      }
-    }
-    const eventTarget = e.target as HTMLInputElement;
-    if (
-      this.isMultipleOrTags &&
-      !eventTarget.value &&
-      keyCode === BACKSPACE
-    ) {
-      e.preventDefault();
-      if (this.listOfCachedSelectedOption.length) {
-        this.removeValueFormSelected(this.listOfCachedSelectedOption[ this.listOfCachedSelectedOption.length - 1 ]);
-      }
-    }
-    if (!this.disabled) {
-      if (keyCode === SPACE || keyCode === DOWN_ARROW) {
-        this.setOpenState(true);
-        event.preventDefault();
-      }
-      if (keyCode === TAB) {
-        // if (keyCode === SPACE || keyCode === TAB) { // #2201
+        break;
+      case ENTER:
+        e.preventDefault();
+        if (this.open) {
+          if (this.activatedOption && !this.activatedOption.nzDisabled) {
+            this.clickOption(this.activatedOption);
+          }
+        } else {
+          this.setOpenState(true);
+        }
+        break;
+      case BACKSPACE:
+        if (this.isMultipleOrTags && !eventTarget.value && this.listOfCachedSelectedOption.length) {
+          e.preventDefault();
+          this.removeValueFormSelected(this.listOfCachedSelectedOption[ this.listOfCachedSelectedOption.length - 1 ]);
+        }
+        break;
+      case SPACE:
+        if (!this.disabled && !this.open) {
+          this.setOpenState(true);
+          event.preventDefault();
+        }
+        break;
+      case TAB:
         this.setOpenState(false);
-        event.preventDefault();
-      }
+        break;
     }
   }
 
@@ -311,13 +343,14 @@ export class NzSelectService {
     if (this.disabled || option.nzDisabled) {
       return;
     }
-    const listOfSelectedValue = this.listOfSelectedValue.filter(item => item !== option.nzValue);
+    const listOfSelectedValue = this.listOfSelectedValue.filter(item => !this.compareWith(item, option.nzValue));
     this.updateListOfSelectedValue(listOfSelectedValue, true);
     this.clearInput();
   }
 
   setOpenState(value: boolean): void {
     this.openRaw$.next(value);
+    this.open = value;
   }
 
   check(): void {

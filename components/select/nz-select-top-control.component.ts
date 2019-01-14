@@ -44,29 +44,9 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: any[] }>;
   @Input() nzTokenSeparators: string[] = [];
 
-  updateComposition(value: boolean): void {
-    this.isComposing = value;
-  }
-
   onClearSelection(e: MouseEvent): void {
     e.stopPropagation();
     this.nzSelectService.updateListOfSelectedValue([], true);
-  }
-
-  includesSeparators(str: string | string[], separators: string[]): boolean {
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < separators.length; ++i) {
-      if (str.lastIndexOf(separators[ i ]) > 0) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  splitBySeparators(str: string | string[], separators: string[]): string[] {
-    const reg = new RegExp(`[${separators.join()}]`);
-    const array = (str as string).split(reg).filter(token => token);
-    return Array.from(new Set(array));
   }
 
   setInputValue(value: string): void {
@@ -76,23 +56,14 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
     this.inputValue = value;
     this.updateWidth();
     this.nzSelectService.updateSearchValue(value);
-    // auto tokenSeparators
-    if (this.inputValue &&
-      this.inputValue.length &&
-      this.nzTokenSeparators.length &&
-      this.nzSelectService.isMultipleOrTags &&
-      this.includesSeparators(this.inputValue, this.nzTokenSeparators)) {
-      const listOfLabel = this.splitBySeparators(this.inputValue, this.nzTokenSeparators);
-      this.nzSelectService.updateSelectedValueByLabelList(listOfLabel);
-      this.nzSelectService.clearInput();
-    }
+    this.nzSelectService.tokenSeparate(this.inputValue, this.nzTokenSeparators);
   }
 
   get placeHolderDisplay(): string {
     return this.inputValue || this.isComposing || this.nzSelectService.listOfSelectedValue.length ? 'none' : 'block';
   }
 
-  get selectedValueDisplay(): { [ key: string ]: string } {
+  get selectedValueStyle(): { [ key: string ]: string } {
     let showSelectedValue = false;
     let opacity = 1;
     if (!this.nzShowSearch) {
@@ -113,14 +84,6 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
     };
   }
 
-  focusOnInput(): void {
-    setTimeout(() => {
-      if (this.inputElement) {
-        this.inputElement.nativeElement.focus();
-      }
-    });
-  }
-
   // tslint:disable-next-line:no-any
   trackValue(index: number, option: NzOptionComponent): any {
     return option.nzValue;
@@ -138,7 +101,7 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
 
   removeSelectedValue(option: NzOptionComponent, e: KeyboardEvent): void {
     this.nzSelectService.removeValueFormSelected(option);
-    event.stopPropagation();
+    e.stopPropagation();
   }
 
   constructor(private renderer: Renderer2, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef) {
@@ -148,8 +111,8 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
     this.nzSelectService.open$.pipe(
       takeUntil(this.destroy$)
     ).subscribe(open => {
-      if (open) {
-        this.focusOnInput();
+      if (this.inputElement && open) {
+        this.inputElement.nativeElement.focus();
       }
     });
     this.nzSelectService.clearInput$.pipe(

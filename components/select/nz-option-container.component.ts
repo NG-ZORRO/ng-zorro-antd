@@ -37,15 +37,12 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
   @Input() nzMenuItemSelectedIcon: TemplateRef<void>;
   @Output() readonly nzScrollToBottom = new EventEmitter<void>();
 
-  scrollIntoViewIfNeeded(): void {
+  scrollIntoViewIfNeeded(option: NzOptionComponent): void {
+    // delay after open
     setTimeout(() => {
-      if (this.listOfNzOptionLiComponent &&
-        this.listOfNzOptionLiComponent.length &&
-        this.nzSelectService.activatedOption) {
+      if (this.listOfNzOptionLiComponent && this.listOfNzOptionLiComponent.length && option) {
         const targetOption = this.listOfNzOptionLiComponent.find(
-          o => this.nzSelectService.compareWith(
-            o.nzOption.nzValue, this.nzSelectService.activatedOption.nzValue
-          )
+          o => this.nzSelectService.compareWith(o.nzOption.nzValue, option.nzValue)
         );
         /* tslint:disable-next-line:no-string-literal */
         if (targetOption && targetOption.el && targetOption.el[ 'scrollIntoViewIfNeeded' ]) {
@@ -53,7 +50,7 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
           targetOption.el[ 'scrollIntoViewIfNeeded' ](false);
         }
       }
-    }, 150);
+    });
   }
 
   trackLabel(index: number, option: NzOptionGroupComponent): string | TemplateRef<void> {
@@ -71,8 +68,8 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.nzSelectService.activatedOption$.pipe(
       takeUntil(this.destroy$)
-    ).subscribe(() => {
-      this.scrollIntoViewIfNeeded();
+    ).subscribe((option) => {
+      this.scrollIntoViewIfNeeded(option);
     });
     this.nzSelectService.check$.pipe(
       takeUntil(this.destroy$)

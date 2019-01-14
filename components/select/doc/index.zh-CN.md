@@ -53,7 +53,8 @@ title: Select
 | `(nzOpenChange)` | 下拉菜单打开状态变化回调 | `EventEmitter<boolean>` | - |
 | `(nzScrollToBottom)` | 下拉列表滚动到底部的回调 | `EventEmitter<void>` | - |
 | `(nzOnSearch)` | 文本框值变化时回调 | `EventEmitter<string>` | - |
-
+| `(nzFocus)` | focus时回调 | `EventEmitter<void>` | - |
+| `(nzBlur)` | blur时回调 | `EventEmitter<void>` | - |
 
 ### nz-option
 

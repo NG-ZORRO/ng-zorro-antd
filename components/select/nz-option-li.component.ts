@@ -36,10 +36,7 @@ export class NzOptionLiComponent implements OnInit, OnDestroy {
   @Input() nzMenuItemSelectedIcon: TemplateRef<void>;
 
   clickOption(): void {
-    if (!this.nzOption.nzDisabled) {
-      this.nzSelectService.updateSelectedOption(this.nzOption);
-      this.nzSelectService.clickOption();
-    }
+    this.nzSelectService.clickOption(this.nzOption);
   }
 
   constructor(private elementRef: ElementRef, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef) {
@@ -48,15 +45,15 @@ export class NzOptionLiComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.nzSelectService.listOfSelectedValue$.pipe(
       takeUntil(this.destroy$)
-    ).subscribe(data => {
-      this.selected = isNotNil(data.find(v => this.nzSelectService.compareWith(v, this.nzOption.nzValue)));
+    ).subscribe(list => {
+      this.selected = isNotNil(list.find(v => this.nzSelectService.compareWith(v, this.nzOption.nzValue)));
       this.cdr.markForCheck();
     });
     this.nzSelectService.activatedOption$.pipe(
       takeUntil(this.destroy$)
-    ).subscribe(data => {
-      if (data) {
-        this.active = this.nzSelectService.compareWith(data.nzValue, this.nzOption.nzValue);
+    ).subscribe(option => {
+      if (option) {
+        this.active = this.nzSelectService.compareWith(option.nzValue, this.nzOption.nzValue);
       } else {
         this.active = false;
       }

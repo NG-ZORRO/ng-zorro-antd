@@ -1,3 +1,4 @@
+import { FocusMonitor } from '@angular/cdk/a11y';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import {
   forwardRef,
@@ -87,6 +88,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Output() readonly nzOnSearch = new EventEmitter<string>();
   @Output() readonly nzScrollToBottom = new EventEmitter<void>();
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
+  @Output() readonly nzBlur = new EventEmitter<void>();
+  @Output() readonly nzFocus = new EventEmitter<void>();
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzDropdownClassName: string;
   @Input() nzDropdownMatchSelectWidth = true;
@@ -109,7 +112,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   @Input()
   set nzAutoClearSearchValue(value: boolean) {
-    this.nzSelectService.autoClearSearchValue = value;
+    this.nzSelectService.autoClearSearchValue = toBoolean(value);
   }
 
   @Input()
@@ -119,7 +122,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   @Input()
   set nzServerSearch(value: boolean) {
-    this.nzSelectService.serverSearch = value;
+    this.nzSelectService.serverSearch = toBoolean(value);
   }
 
   @Input()
@@ -181,13 +184,15 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   focus(): void {
     if (this.nzSelectTopControlComponent.inputElement) {
-      this.nzSelectTopControlComponent.inputElement.nativeElement.focus();
+      this.focusMonitor.focusVia(this.nzSelectTopControlComponent.inputElement, 'keyboard');
+      this.nzFocus.emit();
     }
   }
 
   blur(): void {
     if (this.nzSelectTopControlComponent.inputElement) {
       this.nzSelectTopControlComponent.inputElement.nativeElement.blur();
+      this.nzBlur.emit();
     }
   }
 
@@ -232,7 +237,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     });
   }
 
-  constructor(private renderer: Renderer2, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef) {
+  constructor(private renderer: Renderer2, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
   }
 
   /** update ngModel -> update listOfSelectedValue **/
@@ -269,6 +274,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
       takeUntil(this.destroy$)
     ).subscribe(data => {
       this.nzOnSearch.emit(data);
+      this.updateCdkConnectedOverlayPositions();
     });
     this.nzSelectService.modelChange$.pipe(
       takeUntil(this.destroy$)
@@ -284,6 +290,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
         this.nzOpenChange.emit(value);
       }
       if (value) {
+        this.focus();
         this.updateCdkConnectedOverlayStatus();
       } else {
         this.blur();

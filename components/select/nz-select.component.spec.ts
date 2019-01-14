@@ -1,5 +1,5 @@
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -8,6 +8,7 @@ import { dispatchKeyboardEvent } from '../core/testing';
 import { NzOptionComponent } from './nz-option.component';
 
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { defaultFilterOption } from './nz-option.pipe';
 import { NzSelectComponent } from './nz-select.component';
 import { NzSelectModule } from './nz-select.module';
 
@@ -16,8 +17,8 @@ describe('nz-select component', () => {
   let overlayContainerElement: HTMLElement;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ NzSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestSelectDefaultComponent, NzTestSelectTagsComponent, NzTestSelectFormComponent ]
+      imports     : [ NzSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
+      declarations: [ NzTestSelectDefaultComponent, NzTestSelectTagsComponent, NzTestSelectFormComponent, NzTestOptionChangeComponent ]
     });
     TestBed.compileComponents();
     inject([ OverlayContainer ], (oc: OverlayContainer) => {
@@ -33,11 +34,13 @@ describe('nz-select component', () => {
     let fixture;
     let testComponent;
     let select;
+    let selectComponent;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSelectDefaultComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       select = fixture.debugElement.query(By.directive(NzSelectComponent));
+      selectComponent = select.injector.get(NzSelectComponent);
     });
     it('should className correct', () => {
       fixture.detectChanges();
@@ -92,15 +95,6 @@ describe('nz-select component', () => {
       expect(testComponent.open).toBe(false);
       expect(testComponent.openChange).toHaveBeenCalledTimes(0);
     }));
-    it('should clear value work', fakeAsync(() => {
-      testComponent.allowClear = true;
-      fixture.detectChanges();
-      select.nativeElement.querySelector('.ant-select-selection__clear').click();
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      expect(select.selectedValue).toBe(undefined);
-    }));
     it('should autofocus work', () => {
       testComponent.showSearch = true;
       fixture.detectChanges();
@@ -116,10 +110,10 @@ describe('nz-select component', () => {
       select.nativeElement.click();
       fixture.detectChanges();
       expect(select.nativeElement.querySelector('input') === document.activeElement).toBe(false);
-      testComponent.nzSelectComponent.focus();
+      selectComponent.focus();
       fixture.detectChanges();
       expect(select.nativeElement.querySelector('input') === document.activeElement).toBe(true);
-      testComponent.nzSelectComponent.blur();
+      selectComponent.blur();
       fixture.detectChanges();
       expect(select.nativeElement.querySelector('input') === document.activeElement).toBe(false);
     });
@@ -138,24 +132,30 @@ describe('nz-select component', () => {
       const targetElement = overlayContainerElement.querySelector('.test-class') as HTMLElement;
       expect(targetElement.style.height).toBe('120px');
     });
-    it('should dropdownMatchSelectWidth true work', () => {
+    it('should dropdownMatchSelectWidth true work', fakeAsync(() => {
       fixture.detectChanges();
       select.nativeElement.click();
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       expect(testComponent.open).toBe(true);
       const targetElement = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
       expect(targetElement.style.width).toBe('10px');
-    });
-    it('should dropdownMatchSelectWidth false work', () => {
+    }));
+    it('should dropdownMatchSelectWidth false work', fakeAsync(() => {
       testComponent.dropdownMatchSelectWidth = false;
       fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
       select.nativeElement.click();
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       expect(testComponent.open).toBe(true);
       const targetElement = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
       expect(targetElement.style.width).toBe('');
       expect(targetElement.style.minWidth).toBe('10px');
-    });
+    }));
     it('should click option close dropdown', () => {
       testComponent.showSearch = true;
       select.nativeElement.click();
@@ -179,22 +179,16 @@ describe('nz-select component', () => {
       flush();
       fixture.detectChanges();
       expect(testComponent.open).toBe(true);
-      expect(testComponent.nzSelectComponent.cdkConnectedOverlay.overlayRef.backdropElement).toBeDefined();
+      expect(selectComponent.cdkConnectedOverlay.overlayRef.backdropElement).toBeDefined();
     }));
     it('should keydown origin work', () => {
-      spyOn(testComponent.nzSelectComponent.nzOptionContainerComponent, 'onKeyDownUl');
+      const keyDownSpy = spyOn(selectComponent, 'onKeyDown');
       dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', UP_ARROW);
       fixture.detectChanges();
-      expect(testComponent.nzSelectComponent.nzOptionContainerComponent.onKeyDownUl).toHaveBeenCalledTimes(1);
-    });
-    it('should onSearch work', () => {
-      fixture.detectChanges();
-      testComponent.nzSelectComponent.onSearch('test', true);
-      fixture.detectChanges();
-      expect(testComponent.onSearch).toHaveBeenCalledTimes(1);
+      expect(keyDownSpy).toHaveBeenCalledTimes(1);
     });
     it('should blur after user hits enter key in single mode', () => {
-      const spy = spyOn(testComponent.nzSelectComponent, 'blur');
+      const spy = spyOn(selectComponent, 'blur');
       testComponent.showSearch = true;
       select.nativeElement.click();
       fixture.detectChanges();
@@ -241,11 +235,13 @@ describe('nz-select component', () => {
     let fixture;
     let testComponent;
     let select;
+    let selectComponent;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSelectTagsComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       select = fixture.debugElement.query(By.directive(NzSelectComponent));
+      selectComponent = select.injector.get(NzSelectComponent);
     });
     it('should click option correct', fakeAsync(() => {
       fixture.detectChanges();
@@ -259,30 +255,18 @@ describe('nz-select component', () => {
       expect(testComponent.selectedValue.length).toBe(1);
       expect(testComponent.selectedValue[ 0 ]).toBe('jack');
     }));
-    it('should remove from top control work', () => {
+    it('should remove from top control work', fakeAsync(() => {
       fixture.detectChanges();
-      testComponent.nzSelectComponent.updateListOfSelectedValueFromTopControl([ 'jack' ]);
-      fixture.detectChanges();
-      expect(testComponent.selectedValue.length).toBe(1);
-      expect(testComponent.selectedValue[ 0 ]).toBe('jack');
-    });
-    it('should prevent open the dropdown when click remove', fakeAsync(() => {
-      fixture.detectChanges();
-      testComponent.nzSelectComponent.updateListOfSelectedValueFromTopControl([ 'jack' ]);
-      fixture.detectChanges();
-      expect(testComponent.selectedValue.length).toBe(1);
-      expect(testComponent.selectedValue[ 0 ]).toBe('jack');
-      select.nativeElement.querySelector('.ant-select-selection__choice__remove').click();
+      selectComponent.nzSelectService.updateListOfSelectedValue([ 'jack' ], true);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.selectedValue.length).toBe(0);
-      expect(testComponent.nzSelectComponent.nzOpen).toBe(false);
-
+      expect(testComponent.selectedValue.length).toBe(1);
+      expect(testComponent.selectedValue[ 0 ]).toBe('jack');
     }));
     it('should clear work', fakeAsync(() => {
       fixture.detectChanges();
-      select.nativeElement.querySelector('.ant-select-selection__clear').click();
+      selectComponent.nzSelectService.updateListOfSelectedValue([], true);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -294,11 +278,13 @@ describe('nz-select component', () => {
     let fixture;
     let testComponent;
     let select;
+    let selectComponent;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSelectFormComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       select = fixture.debugElement.query(By.directive(NzSelectComponent));
+      selectComponent = select.injector.get(NzSelectComponent);
     });
     it('should set disabled work', fakeAsync(() => {
       fixture.detectChanges();
@@ -312,10 +298,37 @@ describe('nz-select component', () => {
       expect(select.nativeElement.classList).toContain('ant-select-disabled');
     }));
   });
+  describe('option change', () => {
+    let fixture;
+    let testComponent;
+    let select;
+    let selectComponent;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestOptionChangeComponent);
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+      select = fixture.debugElement.query(By.directive(NzSelectComponent));
+      selectComponent = select.injector.get(NzSelectComponent);
+    });
+    it('should option change work', () => {
+      fixture.detectChanges();
+      const changeSpy = spyOn(selectComponent.nzSelectService, 'updateTemplateOption');
+      fixture.detectChanges();
+      expect(changeSpy).toHaveBeenCalledTimes(0);
+      testComponent.displaySingle = true;
+      fixture.detectChanges();
+      expect(changeSpy).toHaveBeenCalledTimes(1);
+      testComponent.displayGroup = true;
+      fixture.detectChanges();
+      expect(changeSpy).toHaveBeenCalledTimes(3);
+      testComponent.displayGroupInner = true;
+      fixture.detectChanges();
+      expect(changeSpy).toHaveBeenCalledTimes(4);
+    });
+  });
 });
 
 @Component({
-  selector: 'nz-test-select-default',
   template: `
     <nz-select
       style="width:10px;position: relative;display: block;"
@@ -325,9 +338,14 @@ describe('nz-select component', () => {
       (nzOpenChange)="openChange($event)"
       [nzDisabled]="disabled"
       [nzMode]="mode"
+      [nzAutoClearSearchValue]="true"
+      [nzServerSearch]="false"
       [nzShowSearch]="showSearch"
       [nzAutoFocus]="autoFocus"
       [(nzOpen)]="open"
+      [nzMaxMultipleCount]="10"
+      [compareWith]="compareWith"
+      [nzFilterOption]="filterOption"
       [nzDropdownMatchSelectWidth]="dropdownMatchSelectWidth"
       [nzDropdownStyle]="dropdownStyle"
       [nzDropdownClassName]="'test-class'"
@@ -340,17 +358,18 @@ describe('nz-select component', () => {
   `
 })
 export class NzTestSelectDefaultComponent {
-  @ViewChild(NzSelectComponent) nzSelectComponent: NzSelectComponent;
   selectedValue = 'lucy';
   allowClear = false;
   open = false;
   size = 'default';
   mode = 'default';
   autoFocus = false;
+  compareWith = (o1, o2) => o1 === o2;
   disabled = false;
   onSearch = jasmine.createSpy('on search');
   showSearch = false;
   placeholder = 'placeholder';
+  filterOption = defaultFilterOption;
   dropdownMatchSelectWidth = true;
   openChange = jasmine.createSpy('open change');
   dropdownStyle = { height: '120px' };
@@ -364,7 +383,6 @@ export class NzTestSelectDefaultComponent {
 }
 
 @Component({
-  selector: 'nz-test-select-tags',
   template: `
     <nz-select
       [(ngModel)]="selectedValue"
@@ -377,13 +395,11 @@ export class NzTestSelectDefaultComponent {
   `
 })
 export class NzTestSelectTagsComponent {
-  @ViewChild(NzSelectComponent) nzSelectComponent: NzSelectComponent;
   selectedValue = [ 'lucy', 'jack' ];
   allowClear = false;
 }
 
 @Component({
-  selector: 'nz-test-select-form',
   template: `
     <form [formGroup]="formGroup">
       <nz-select
@@ -407,4 +423,24 @@ export class NzTestSelectFormComponent {
   disable(): void {
     this.formGroup.disable();
   }
+}
+
+@Component({
+  template: `
+    <nz-select>
+      <nz-option nzValue="lily" nzLabel="Lily" *ngIf="displaySingle"></nz-option>
+      <nz-option-group nzLabel="Manager" *ngIf="displayGroup">
+        <nz-option nzValue="jack" nzLabel="Jack" *ngIf="displayGroupInner"></nz-option>
+        <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
+      </nz-option-group>
+      <nz-option-group nzLabel="Engineer">
+        <nz-option nzValue="Tom" nzLabel="tom"></nz-option>
+      </nz-option-group>
+    </nz-select>
+  `
+})
+export class NzTestOptionChangeComponent {
+  displaySingle = false;
+  displayGroup = false;
+  displayGroupInner = false;
 }

@@ -52,6 +52,8 @@ Select component to select value from options.
 | `(nzOpenChange)` | dropdown expand change callback | `EventEmitter<boolean>` | `false` |
 | `(nzScrollToBottom)` | Called when dropdown scrolls to bottom | `EventEmitter<void>` | - |
 | `(nzOnSearch)` | Callback function that is fired when input changed. | `EventEmitter<string>` | - |
+| `(nzFocus)` | focus callback | `EventEmitter<void>` | - |
+| `(nzBlur)` | blur callback | `EventEmitter<void>` | - |
 
 ### nz-option
 
