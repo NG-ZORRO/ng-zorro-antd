@@ -40,8 +40,8 @@ When there is a need for autocomplete functionality.
 | `[nzDataSource]` | Data source for autocomplete | `AutocompleteDataSource` | - |
 | `[nzDefaultActiveFirstOption]` | Whether active first option by default | `boolean` | `true` |
 | `[nzWidth]` | Custom width, unit px | `number` | trigger element width |
-| `[nzOverlayClassName]` | Class name of the dropdown root element | string | - |
-| `[nzOverlayStyle]` | Style of the dropdown root element | object | - |
+| `[nzOverlayClassName]` | Class name of the dropdown root element | `string` | - |
+| `[nzOverlayStyle]` | Style of the dropdown root element | `object` | - |
 
 ### nz-auto-option
 

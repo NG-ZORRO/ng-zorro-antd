@@ -75,8 +75,8 @@ export class NzCodeBoxComponent implements OnInit {
   @Input() nzGenerateCommand = '';
 
   @Input() set nzIframeSource(value: string) {
-    this.showIframe = (value != 'null') && environment.production;
-    this.simulateIFrame = (value != 'null') && !environment.production;
+    this.showIframe = (value !== 'null') && environment.production;
+    this.simulateIFrame = (value !== 'null') && !environment.production;
     this.iframe = this.sanitizer.bypassSecurityTrustResourceUrl(value);
   }
 
@@ -386,7 +386,7 @@ export class AppModule { }
       description : 'Created with <3 by the StackBlitz SDK!',
       template    : 'angular-cli',
       dependencies: {
-        'rxjs'                             : '^7.0.0',
+        'rxjs'                             : '^6.3.3',
         '@angular/cdk'                     : '^7.0.0',
         '@angular/core'                    : '^7.0.0',
         '@angular/forms'                   : '^7.0.0',
@@ -397,11 +397,11 @@ export class AppModule { }
         '@angular/common'                  : '^7.0.0',
         '@angular/router'                  : '^7.0.0',
         '@angular/animations'              : '^7.0.0',
-        '@ant-design/icons-angular'        : '^2.0.0-beta.1',
+        '@ant-design/icons-angular'        : '^2.0.1',
         'date-fns'                         : '^1.29.0',
         'tslib'                            : '^1.9.3',
         'typescript'                       : '~3.1.1',
-        'ng-zorro-antd'                    : '^7.0.0-rc.1'
+        'ng-zorro-antd'                    : '^7.0.0-rc.3'
       },
       tags        : [ 'stackblitz', 'sdk' ]
     });

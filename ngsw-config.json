@@ -22,5 +22,8 @@
         ]
       }
     }
+  ],
+  "navigationUrls": [
+    "!/**/(version|issue-helper)/**"
   ]
 }

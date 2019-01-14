@@ -8,12 +8,13 @@
   [disabled]="nzDisabled"
   [showSearch]="nzShowSearch"
   [searchPlaceholder]="nzSearchPlaceholder || locale.searchPlaceholder"
-  [notFoundContent]="nzNotFoundContent || locale.notFoundContent"
+  [notFoundContent]="nzNotFoundContent"
   [itemUnit]="nzItemUnit || locale.itemUnit"
   [itemsUnit]="nzItemsUnit || locale.itemsUnit"
   [footer]="nzFooter"
   (handleSelect)="handleLeftSelect($event)"
-  (handleSelectAll)="handleLeftSelectAll($event)"></nz-transfer-list>
+  (handleSelectAll)="handleLeftSelectAll($event)">
+</nz-transfer-list>
 <div class="ant-transfer-operation">
   <button nz-button (click)="moveToLeft()" [disabled]="nzDisabled || !leftActive" [nzType]="'primary'" [nzSize]="'small'">
     <i nz-icon type="left"></i><span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
@@ -32,9 +33,10 @@
   [disabled]="nzDisabled"
   [showSearch]="nzShowSearch"
   [searchPlaceholder]="nzSearchPlaceholder || locale.searchPlaceholder"
-  [notFoundContent]="nzNotFoundContent || locale.notFoundContent"
+  [notFoundContent]="nzNotFoundContent"
   [itemUnit]="nzItemUnit || locale.itemUnit"
   [itemsUnit]="nzItemsUnit || locale.itemsUnit"
   [footer]="nzFooter"
   (handleSelect)="handleRightSelect($event)"
-  (handleSelectAll)="handleRightSelectAll($event)"></nz-transfer-list>
+  (handleSelectAll)="handleRightSelectAll($event)">
+</nz-transfer-list>

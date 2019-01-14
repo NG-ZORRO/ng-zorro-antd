@@ -41,16 +41,16 @@ This components provides some service methods, with usage and arguments as follo
 
 | Argument | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| content | The content of message | string | - |
-| options | Support setting the parameters for the current message box, see the table below | object | - |
+| content | The content of message | `string` | - |
+| options | Support setting the parameters for the current message box, see the table below | `object` | - |
 
 The parameters that are set by the `options` support are as follows:
 
 | Argument | Description | Type |
 | --- | --- | --- |
-| nzDuration | Duration (milliseconds), does not disappear when set to 0 | number |
-| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true`  | boolean |
-| nzAnimate | Whether to turn on animation | boolean |
+| nzDuration | Duration (milliseconds), does not disappear when set to 0 | `number` |
+| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true`  | `boolean` |
+| nzAnimate | Whether to turn on animation | `boolean` |
 
 Methods for destruction are also provided:
 
@@ -60,7 +60,7 @@ Methods for destruction are also provided:
 
 | Argument | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzDuration | Duration (milliseconds), does not disappear when set to 0 | number | 3000 |
-| nzMaxStack | The maximum number of messages that can be displayed at the same time | number | 8 |
-| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | boolean | true |
-| nzAnimate | Whether to turn on animation | boolean | true |
+| nzDuration | Duration (milliseconds), does not disappear when set to 0 | `number` | `3000` |
+| nzMaxStack | The maximum number of messages that can be displayed at the same time | `number` | `8` |
+| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | `boolean` | `true` |
+| nzAnimate | Whether to turn on animation | `boolean` | `true` |

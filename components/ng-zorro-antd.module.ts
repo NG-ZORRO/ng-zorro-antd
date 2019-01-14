@@ -20,6 +20,7 @@ import { NzDatePickerModule } from './date-picker/date-picker.module';
 import { NzDividerModule } from './divider/nz-divider.module';
 import { NzDrawerModule } from './drawer/nz-drawer.module';
 import { NzDropDownModule } from './dropdown/nz-dropdown.module';
+import { NzEmptyModule } from './empty/nz-empty.module';
 import { NzFormModule } from './form/nz-form.module';
 import { NzGridModule } from './grid/nz-grid.module';
 import { NzI18nModule } from './i18n/nz-i18n.module';
@@ -74,6 +75,7 @@ export * from './divider';
 export * from './drawer';
 export * from './dropdown';
 export * from './drawer';
+export * from './empty';
 export * from './form';
 export * from './grid';
 export * from './i18n';
@@ -172,7 +174,8 @@ export * from './core/util';
     NzTreeSelectModule,
     NzTimePickerModule,
     NzWaveModule,
-    NzSkeletonModule
+    NzSkeletonModule,
+    NzEmptyModule
   ]
 })
 export class NgZorroAntdModule {

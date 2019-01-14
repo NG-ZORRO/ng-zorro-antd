@@ -19,7 +19,7 @@ A divider line separates different content.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzDashed]` | whether line is dasded | Boolean | false |
-| `[nzType]` | direction type of divider | enum: `horizontal` `vertical` | `horizontal` |
-| `[nzText]` | inner text of divider | `string丨TemplateRef<void>` | - |
-| `[nzOrientation]` | inner text orientation | enum: `left` `right` | - |
+| `[nzDashed]` | whether line is dasded | `boolean` | `false` |
+| `[nzType]` | direction type of divider | `'horizontal'｜'vertical'` | `'horizontal'` |
+| `[nzText]` | inner text of divider | `string｜TemplateRef<void>` | - |
+| `[nzOrientation]` | inner text orientation | `'left'｜'right'` | - |

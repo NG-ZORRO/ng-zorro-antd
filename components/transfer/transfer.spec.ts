@@ -123,6 +123,33 @@ describe('transfer', () => {
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(0);
     });
 
+    describe('#notFoundContent', () => {
+      it('should be the left and right list have data', () => {
+        instance.nzDataSource = [ { title: `content0`, direction: 'right' }, { title: `content1` } ];
+        fixture.detectChanges();
+        expect(pageObject.rightList.querySelector('.ant-transfer-list-body-not-found')).toBeFalsy();
+        expect(pageObject.leftList.querySelector('.ant-transfer-list-body-not-found')).toBeFalsy();
+      });
+      it('should be the right list is no data', () => {
+        instance.nzDataSource = [ { title: `content0` }, { title: `content1` } ];
+        fixture.detectChanges();
+        expect(pageObject.rightList.querySelector('.ant-transfer-list-body-not-found')).toBeTruthy();
+        expect(pageObject.leftList.querySelector('.ant-transfer-list-body-not-found')).toBeFalsy();
+      });
+      it('should be the left list is no data', () => {
+        instance.nzDataSource = [ { title: `content0`, direction: 'right' } ];
+        fixture.detectChanges();
+        expect(pageObject.rightList.querySelector('.ant-transfer-list-body-not-found')).toBeFalsy();
+        expect(pageObject.leftList.querySelector('.ant-transfer-list-body-not-found')).toBeTruthy();
+      });
+      it('should be the left and right list is no data', () => {
+        instance.nzDataSource = [ ];
+        fixture.detectChanges();
+        expect(pageObject.rightList.querySelector('.ant-transfer-list-body-not-found')).toBeTruthy();
+        expect(pageObject.leftList.querySelector('.ant-transfer-list-body-not-found')).toBeTruthy();
+      });
+    });
+
     describe('#nzDisabled', () => {
       it('should working', () => {
         instance.nzDisabled = true;

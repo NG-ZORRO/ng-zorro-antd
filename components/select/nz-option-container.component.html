@@ -9,7 +9,7 @@
     *ngIf="isNotFoundDisplay"
     nz-select-unselectable
     class="ant-select-dropdown-menu-item ant-select-dropdown-menu-item-disabled">
-    {{ nzNotFoundContent ? nzNotFoundContent : ('Select.notFoundContent' | nzI18n) }}
+    <nz-embed-empty [nzComponentName]="'select'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
   </li>
   <li
     *ngIf="isAddTagOptionDisplay"
