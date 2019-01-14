@@ -17,3 +17,10 @@ Comments can be used to enable discussions on an entity such as a page, blog pos
 | -------- | ----------- | ---- | ------- |
 | [nzAuthor] | The element to display as the comment author | `string｜TemplateRef<void>` | - |
 | [nzDatetime] | A datetime element containing the time to be displayed | `string｜TemplateRef<void>` | - |
+
+### Comment sections
+| Element | Description |
+| ----- | ----------- |
+| `<nz-avatar nz-comment-avatar>` | The element to display as the comment avatar |
+| `<nz-comment-content>` | The main content of the comment |
+| `<nz-comment-action>` | The element items rendered below the comment content |

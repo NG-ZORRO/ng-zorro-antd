@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { addDays, distanceInWords } from 'date-fns';
 
 @Component({
   selector: 'nz-demo-comment-list',
@@ -24,14 +25,14 @@ export class NzDemoCommentListComponent {
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       content: 'We supply a series of design principles, practical patterns and high quality design resources' +
         '(Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      datetime: '1 天前'
+      datetime: distanceInWords(new Date(), addDays(new Date(), 1))
     },
     {
       author: 'Han Solo',
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       content: 'We supply a series of design principles, practical patterns and high quality design resources' +
         '(Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      datetime: '2 天前'
+      datetime: distanceInWords(new Date(), addDays(new Date(), 2))
     }
   ];
 }

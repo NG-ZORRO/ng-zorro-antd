@@ -45,13 +45,13 @@ export class NzDemoCommentNestedComponent {
             author: 'Han Solo',
             avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
             content: 'We supply a series of design principles, practical patterns and high quality design resources' +
-              '(Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+              '(Sketch and Axure), to help people create their product prototypes beautifully and efficiently.'
           },
           {
             author: 'Han Solo',
             avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
             content: 'We supply a series of design principles, practical patterns and high quality design resources' +
-              '(Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+              '(Sketch and Axure), to help people create their product prototypes beautifully and efficiently.'
           }
         ]
       }

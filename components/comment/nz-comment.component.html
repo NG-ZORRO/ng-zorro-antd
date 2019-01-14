@@ -12,7 +12,7 @@
       </span>
     </div>
     <ng-content select="nz-comment-content"></ng-content>
-    <ul class="ant-comment-actions">
+    <ul class="ant-comment-actions" *ngIf="actions?.length">
       <li *ngFor="let action of actions">
         <span><ng-template [nzCommentActionHost]="action.content"></ng-template></span>
       </li>

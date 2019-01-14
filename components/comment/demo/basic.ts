@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { distanceInWords } from 'date-fns';
 
 @Component({
   selector: 'nz-demo-comment-basic',
   template: `
-    <nz-comment nzAuthor="Han Solo" nzDatetime="几秒前">
+    <nz-comment nzAuthor="Han Solo" [nzDatetime]="time">
       <nz-avatar nz-comment-avatar nzIcon="user" nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
       <nz-comment-content>
         <p>We supply a series of design principles, practical patterns and high quality design resources
@@ -12,11 +13,11 @@ import { Component } from '@angular/core';
       </nz-comment-content>
       <nz-comment-action>
         <i nz-tooltip nzTitle="Like" nz-icon type="like" [theme]="likes > 0 ? 'twotone' : 'outline'" (click)="like()"></i>
-        <span class="count">{{likes}}</span>
+        <span class="count like">{{likes}}</span>
       </nz-comment-action>
       <nz-comment-action>
         <i nz-tooltip nzTitle="Dislike" nz-icon type="dislike" [theme]="dislikes > 0 ? 'twotone' : 'outline'" (click)="dislike()"></i>
-        <span class="count">{{dislikes}}</span>
+        <span class="count dislike">{{dislikes}}</span>
       </nz-comment-action>
       <nz-comment-action>Reply to</nz-comment-action>
     </nz-comment>
@@ -31,6 +32,7 @@ import { Component } from '@angular/core';
 export class NzDemoCommentBasicComponent {
   likes = 0;
   dislikes = 0;
+  time = distanceInWords(new Date(), new Date());
 
   like(): void {
     this.likes = 1;

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { distanceInWords } from 'date-fns';
 
 @Component({
   selector: 'nz-demo-comment-editor',
   template: `
     <nz-list *ngIf="data.length" [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
       <ng-template #item let-item>
-        <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.datetime">
+        <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.displayTime">
           <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
           <nz-comment-content>
             <p>{{item.content}}</p>
@@ -44,10 +45,16 @@ export class NzDemoCommentEditorComponent {
     this.inputValue = '';
     setTimeout(() => {
       this.submitting = false;
-      this.data = this.data.concat({
+      this.data = [...this.data, {
         ...this.user,
         content,
-        datetime: new Date().toLocaleString()
+        datetime: new Date(),
+        displayTime: distanceInWords(new Date(), new Date())
+      }].map(e => {
+        return {
+          ...e,
+          displayTime: distanceInWords(new Date(), e.datetime)
+        };
       });
     }, 800);
   }
