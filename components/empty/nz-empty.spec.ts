@@ -175,6 +175,15 @@ describe('nz-empty', () => {
         expect(embedComponent.nativeElement.innerText).toBe('');
       }));
 
+      it('should raise error when set a invalid default value', () => {
+        expect(() => {
+          testComponent.changeToInvalid();
+          fixture.detectChanges();
+          tick();
+          fixture.detectChanges();
+        }).toThrowError();
+      });
+
       it('should support string, template and component', fakeAsync(() => {
         const refresh = () => {
           fixture.detectChanges();
