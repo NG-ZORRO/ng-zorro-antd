@@ -43,6 +43,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzRateModule } from 'ng-zorro-antd/rate';
+import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
@@ -106,6 +107,7 @@ export * from 'ng-zorro-antd/popover';
 export * from 'ng-zorro-antd/progress';
 export * from 'ng-zorro-antd/radio';
 export * from 'ng-zorro-antd/rate';
+export * from 'ng-zorro-antd/result';
 export * from 'ng-zorro-antd/select';
 export * from 'ng-zorro-antd/skeleton';
 export * from 'ng-zorro-antd/slider';
@@ -192,7 +194,8 @@ export * from './version';
     NzStatisticModule,
     NzEmptyModule,
     NzDescriptionsModule,
-    NzTypographyModule
+    NzTypographyModule,
+    NzResultModule
   ]
 })
 export class NgZorroAntdModule {
