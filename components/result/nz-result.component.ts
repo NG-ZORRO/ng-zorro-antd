@@ -34,7 +34,7 @@ export const IconMap = {
   ]
 })
 export class NzResultComponent implements OnChanges {
-  @Input() nzIcon: NzResultIcon | TemplateRef<void> = 'info';
+  @Input() nzIcon: NzResultIcon | TemplateRef<void>;
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() nzSubTitle: string | TemplateRef<void>;
   @Input() nzExtra: string | TemplateRef<void>;
@@ -42,17 +42,13 @@ export class NzResultComponent implements OnChanges {
   iconName = '';
   iconCls = {};
 
-  mapIcon(status: NzResultIcon): string {
-    return IconMap[ status ];
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzIcon && typeof changes.nzIcon.currentValue === 'string') {
+    if (changes.nzIcon) {
       const icon = changes.nzIcon.currentValue;
       if (typeof icon === 'string') {
         this.iconName = IconMap[ changes.nzIcon.currentValue ];
         this.iconCls = { [ changes.nzIcon.currentValue ]: true };
-      } else if (!icon) {
+      } else {
         this.iconName = '';
         this.iconCls = {};
       }
