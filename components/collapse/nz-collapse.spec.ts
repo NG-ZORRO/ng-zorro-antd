@@ -11,7 +11,7 @@ describe('collapse', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzCollapseModule, NoopAnimationsModule ],
-      declarations: [ NzTestCollapseBasicComponent, NzTestCollapseTemplateComponent ]
+      declarations: [ NzTestCollapseBasicComponent, NzTestCollapseTemplateComponent, NzTestCollapseIconComponent ]
     });
     TestBed.compileComponents();
   }));
@@ -41,10 +41,10 @@ describe('collapse', () => {
     });
     it('should showArrow work', () => {
       fixture.detectChanges();
-      expect(panels[ 0 ].nativeElement.querySelector('.arrow')).toBeDefined();
+      expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-arrow').firstElementChild).toBeDefined();
       testComponent.showArrow = false;
       fixture.detectChanges();
-      expect(panels[ 0 ].nativeElement.querySelector('.arrow')).toBeNull();
+      expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-arrow').firstElementChild).toBeNull();
     });
     it('should active work', () => {
       fixture.detectChanges();
@@ -152,7 +152,7 @@ describe('collapse', () => {
     let iconElFirst;
     let iconElSecond;
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestCollapseTemplateComponent);
+      fixture = TestBed.createComponent(NzTestCollapseIconComponent);
       fixture.detectChanges();
       panels = fixture.debugElement.queryAll(By.directive(NzCollapsePanelComponent));
       iconElFirst = panels[ 0 ].nativeElement.querySelector('.ant-collapse-arrow');
@@ -160,8 +160,8 @@ describe('collapse', () => {
     });
     it('should icon work', () => {
       fixture.detectChanges();
-      expect(iconElFirst.firstElementChild.getAttribute('type')).toBe('"right"');
-      expect(iconElSecond.firstElementChild.getAttribute('type')).toBe('"caret-right"');
+      expect(iconElFirst.firstElementChild.getAttribute('type')).toBe('right');
+      expect(iconElSecond.firstElementChild.getAttribute('type')).toBe('caret-right');
     });
   });
 });
