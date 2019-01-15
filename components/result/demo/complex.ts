@@ -47,7 +47,7 @@ import { Component } from '@angular/core';
       display: inline-block;
       margin-top: 3px;
     }
-    #components-result-demo-complex .ant-result .ant-result-content .desc a {
+    .ant-result .ant-result-content .desc a {
       margin-left: 16px;
     }`
   ]
