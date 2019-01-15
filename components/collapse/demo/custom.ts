@@ -4,10 +4,13 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-collapse-custom',
   template: `
     <nz-collapse [nzBordered]="false">
-      <nz-collapse-panel *ngFor="let panel of panels" [nzHeader]="panel.name" [nzActive]="panel.active"
-        [ngStyle]="panel.customStyle">
+      <nz-collapse-panel *ngFor="let panel of panels; let isLast = last" [nzHeader]="panel.name" [nzActive]="panel.active"
+        [nzDisabled]="panel.disabled" [ngStyle]="panel.customStyle" [nzExpandedIcon]="isLast && expandedIcon">
         <p>{{panel.name}} content</p>
       </nz-collapse-panel>
+      <ng-template #expandedIcon>
+        <i nz-icon type="caret-right"></i>
+      </ng-template>
     </nz-collapse>
   `,
   styles  : []

@@ -146,6 +146,24 @@ describe('collapse', () => {
       expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-header').innerText).toBe('template');
     });
   });
+  describe('collapse icon', () => {
+    let fixture;
+    let panels;
+    let iconElFirst;
+    let iconElSecond;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestCollapseTemplateComponent);
+      fixture.detectChanges();
+      panels = fixture.debugElement.queryAll(By.directive(NzCollapsePanelComponent));
+      iconElFirst = panels[ 0 ].nativeElement.querySelector('.ant-collapse-arrow');
+      iconElSecond = panels[ 1 ].nativeElement.querySelector('.ant-collapse-arrow');
+    });
+    it('should icon work', () => {
+      fixture.detectChanges();
+      expect(iconElFirst.firstElementChild.getAttribute('type')).toBe('"right"');
+      expect(iconElSecond.firstElementChild.getAttribute('type')).toBe('"caret-right"');
+    });
+  });
 });
 
 @Component({
@@ -187,4 +205,23 @@ export class NzTestCollapseBasicComponent {
   `
 })
 export class NzTestCollapseTemplateComponent {
+}
+
+@Component({
+  selector: 'nz-test-collapse-icon',
+  template: `
+    <nz-collapse>
+      <nz-collapse-panel>
+        <p>Panel01</p>
+      </nz-collapse-panel>
+      <nz-collapse-panel [nzExpandedIcon]="expandedIcon">
+        <p>Panel02</p>
+      </nz-collapse-panel>
+      <ng-template #expandedIcon>
+        <i nz-icon type="caret-right"></i>
+      </ng-template>
+    </nz-collapse>
+  `
+})
+export class NzTestCollapseIconComponent {
 }
