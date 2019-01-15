@@ -466,3 +466,18 @@ class NzTestCalendarMonthCellComponent { }
   `
 })
 class NzTestCalendarMonthFullCellComponent { }
+
+@Component({
+  template: `
+    <nz-calendar
+      (nzPanelChange)="panelChange($event)"
+      (nzSelectChange)="selectChange($event)"
+      (nzValueChange)="valueChange($event)">
+    </nz-calendar>
+  `
+})
+class NzTestCalendarBasicComponent {
+  panelChange = jasmine.createSpy('panelChange callback');
+  selectChange = jasmine.createSpy('selectChange callback');
+  valueChange = jasmine.createSpy('valueChange callback');
+}

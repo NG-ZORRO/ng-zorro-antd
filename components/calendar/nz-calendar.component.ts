@@ -19,6 +19,8 @@ import startOfYear from 'date-fns/start_of_year';
 import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
 import { NzDateCellDirective as DateCell, NzDateFullCellDirective as DateFullCell, NzMonthCellDirective as MonthCell, NzMonthFullCellDirective as MonthFullCell } from './nz-calendar-cells';
 
+export type ModeType = 'month' | 'year';
+
 @Component({
   selector: 'nz-calendar',
   templateUrl: './nz-calendar.component.html',
@@ -27,8 +29,11 @@ import { NzDateCellDirective as DateCell, NzDateFullCellDirective as DateFullCel
   ]
 })
 export class NzCalendarComponent implements ControlValueAccessor, OnInit {
-  @Input() nzMode: 'month'|'year' = 'month';
-  @Output() readonly nzModeChange: EventEmitter<'month'|'year'> = new EventEmitter();
+  @Input() nzMode: ModeType = 'month';
+  @Output() readonly nzModeChange: EventEmitter<ModeType> = new EventEmitter();
+  @Output() readonly nzPanelChange: EventEmitter<{date: Date, mode: ModeType}> = new EventEmitter();
+
+  @Output() readonly nzSelectChange: EventEmitter<Date> = new EventEmitter();
 
   @Input() set nzValue(value: Date) { this.updateDate(value, false); }
   @Output() readonly nzValueChange: EventEmitter<Date> = new EventEmitter();
@@ -106,22 +111,26 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     this.calculateActiveMonth();
   }
 
-  onModeChange(mode: 'month'|'year'): void {
+  onModeChange(mode: ModeType): void {
     this.nzModeChange.emit(mode);
+    this.nzPanelChange.emit({'date': this.activeDate, 'mode': mode});
   }
 
   onDateSelect(date: Date): void {
     this.updateDate(date);
+    this.nzSelectChange.emit(date);
   }
 
   onYearSelect(year: number): void {
     const date = setYear(this.activeDate, year);
     this.updateDate(date);
+    this.nzPanelChange.emit({'date': date, 'mode': this.nzMode});
   }
 
   onMonthSelect(month: number): void {
     const date = setMonth(this.activeDate, month);
     this.updateDate(date);
+    this.nzPanelChange.emit({'date': date, 'mode': this.nzMode});
   }
 
   writeValue(value: Date|null): void {
@@ -142,7 +151,6 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     const yearChanged = !isSameYear(date, this.activeDate);
 
     this.activeDate = date;
-
     if (dayChanged) {
       this.calculateActiveDate();
     }
