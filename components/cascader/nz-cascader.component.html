@@ -57,27 +57,31 @@
   <div
     #menu
     class="ant-cascader-menus"
+    *ngIf="nzOptions.length || isSearching"
     [class.ant-cascader-menus-hidden]="!menuVisible"
     [ngClass]="menuCls"
     [ngStyle]="nzMenuStyle"
     [@dropDownAnimation]="dropDownPosition"
     (mouseleave)="onTriggerMouseLeave($event)">
-    <ul *ngFor="let options of columns; let i = index;" class="ant-cascader-menu" [ngClass]="menuColumnCls"
-        [style.height]="isSearching && !columns[0].length ? 'auto': ''" [style.width]="dropdownWidthStyle">
-      <li
-        nz-cascader-option
-        *ngFor="let option of options"
-        [nzLabelProperty]="nzLabelProperty"
-        [activated]="isOptionActivated(option, i)"
-        [highlightText]="isSearching ? inputValue : ''"
-        [option]="option"
-        (mouseenter)="onOptionMouseEnter(option, i, $event)"
-        (mouseleave)="onOptionMouseLeave(option, i, $event)"
-        (click)="onOptionClick(option, i, $event)">
-      </li>
-      <li *ngIf="isSearching && !columns[0].length" class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled">
-        <nz-embed-empty [nzComponentName]="'cascader'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
-      </li>
-    </ul>
+    <ul
+      *ngFor="let options of columns; let i = index;" class="ant-cascader-menu"
+      [ngClass]="menuColumnCls"
+      [style.height]="isSearching && !columns[0].length ? 'auto': ''"
+      [style.width]="dropdownWidthStyle">
+    <li
+      nz-cascader-option
+      *ngFor="let option of options"
+      [nzLabelProperty]="nzLabelProperty"
+      [activated]="isOptionActivated(option, i)"
+      [highlightText]="isSearching ? inputValue : ''"
+      [option]="option"
+      (mouseenter)="onOptionMouseEnter(option, i, $event)"
+      (mouseleave)="onOptionMouseLeave(option, i, $event)"
+      (click)="onOptionClick(option, i, $event)">
+    </li>
+    <li *ngIf="isSearching && !columns[0].length" class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled">
+      <nz-embed-empty [nzComponentName]="'cascader'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
+    </li>
+  </ul>
   </div>
 </ng-template>

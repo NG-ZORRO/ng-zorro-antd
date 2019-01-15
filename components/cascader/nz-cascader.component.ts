@@ -95,7 +95,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   @Input()
   get nzOptions(): CascaderOption[] { return this.columns[ 0 ]; }
   set nzOptions(options: CascaderOption[] | null) {
-    this.columnsSnapshot = this.columns = options && options.length ? [ options ] : [];
+    this.columnsSnapshot = this.columns = options && options.length ? [ options ] : [ [] ];
     if (!this.isSearching) {
       if (this.defaultValue && this.columns.length) {
         this.initOptions(0);
@@ -647,6 +647,10 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   private prepareSearchValue(): void {
     const results: CascaderSearchOption[] = [];
     const path: CascaderOption[] = [];
+
+    // if (!this.nzOptions.length) {
+    //   return;
+    // }
 
     const defaultFilter = (inputValue: string, p: CascaderOption[]): boolean => {
       return p.some(n => {
