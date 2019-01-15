@@ -17,7 +17,7 @@ Use when important operations need to inform the user to process the results and
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzIcon]` | A big icon displayed on the top  | `NzResultIcon｜TemplateRef<void>` | info |
+| `[nzIcon]` | A big icon displayed on the top  | `NzResultIcon｜TemplateRef<void>` | - |
 | `[nzTitle]` | Title | `string｜TemplateRef<void>` | - |
 | `[nzSubtitle]` | Subtitle | `string｜TemplateRef<void>` | - |
 | `[nzExtra]` | Extra content, usually an operating area | `string｜TemplateRef<void>` | - |

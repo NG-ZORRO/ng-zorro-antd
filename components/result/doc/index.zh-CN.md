@@ -14,28 +14,11 @@ cols: 1
 
 ## API
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
----
-category: Components
-type: Feedback
-title: Result
-cols: 1
----
-
-Used to feed back the results of a series of operational tasks.
-
-## When To Use
-
-Use when important operations need to inform the user to process the results and the feedback is more complicated.
-
-## API
-
 ### nz-result
 
 | 参数 | 说明 | 类型 | 默认值 |
 | -------- | ----------- | ---- | ------- |
-| `[nzIcon]` | 展示在顶部的 icon  | `NzResultIcon｜TemplateRef<void>` | info |
+| `[nzIcon]` | 展示在顶部的 icon  | `NzResultIcon｜TemplateRef<void>` | - |
 | `[nzTitle]` | 标题 | `string｜TemplateRef<void>` | - |
 | `[nzSubtitle]` | 副标题 | `string｜TemplateRef<void>` | - |
 | `[nzExtra]` | 附加内容，通常是一个可交互的区域 | `string｜TemplateRef<void>` | - |
