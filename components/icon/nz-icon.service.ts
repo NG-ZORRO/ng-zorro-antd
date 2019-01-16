@@ -76,6 +76,7 @@ export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   RightOutline,
   StarFill,
   SearchOutline,
+  StarFill,
   UploadOutline,
   UpOutline
 ];
