@@ -62,7 +62,7 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  constructor( private cdr: ChangeDetectorRef, @Host() private nzCollapseComponent: NzCollapseComponent) {
+  constructor(private cdr: ChangeDetectorRef, @Host() private nzCollapseComponent: NzCollapseComponent) {
   }
 
   ngOnInit(): void {

@@ -44,7 +44,7 @@ describe('collapse', () => {
       expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-arrow').firstElementChild).toBeDefined();
       testComponent.showArrow = false;
       fixture.detectChanges();
-      expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-arrow').firstElementChild).toBeNull();
+      expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-arrow')).toBeNull();
     });
     it('should active work', () => {
       fixture.detectChanges();
