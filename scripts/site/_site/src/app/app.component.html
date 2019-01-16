@@ -1,6 +1,16 @@
-<div class="page-wrapper">
+<div class="page-wrapper" [style.transform]="isDrawerOpen ? 'translateX(245px)' : null ">
   <header id="header" class="clearfix">
-    <i nz-icon type="menu" class="nav-phone-icon" (click)="toggleHide()"></i>
+    <ng-template #languageAndVersionTpl>
+      <div>
+        <nz-select nzSize="small" style="width: 180px;" [ngModel]="currentVersion" (ngModelChange)="navigateToVersion($event)">
+          <nz-option *ngFor="let version of oldVersionList" [nzLabel]="version" [nzValue]="version"></nz-option>
+          <nz-option [nzLabel]="currentVersion" [nzValue]="currentVersion"></nz-option>
+        </nz-select>
+        <button nz-button style="margin-left: 8px;" nzSize="small" (click)="switchLanguage(language==='zh'?'en':'zh')">{{language=='zh'?'English':'中文'}}</button>
+      </div>
+    </ng-template>
+    <i nz-icon type="menu" class="nav-phone-icon" nz-popover [nzTitle]="'Change language or version'" nzPlacement="bottomRight" [nzContent]="languageAndVersionTpl">
+    </i>
     <div nz-row>
       <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8" [nzLg]="5" [nzXl]="5" [nzXXl]="4">
         <a id="logo" href>
@@ -37,27 +47,8 @@
   </header>
   <div class="main-wrapper">
     <div nz-row>
-      <div nz-col [class.hide-menu]="hide" [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="6" [nzXl]="5" [nzXXl]="4" class="main-menu">
-        <ul nz-menu [nzMode]="'inline'" class="aside-container menu-site" nzInlineIndent="40">
-          <li *ngFor="let intro of routerList.intro" nz-menu-item routerLinkActive="ant-menu-item-selected" [hidden]="intro.language!=language">
-            <a routerLink="{{intro.path}}">{{intro.label}}</a>
-          </li>
-          <li nz-submenu nzOpen routerLinkActive="ant-menu-submenu-selected">
-            <span title><h4>Components</h4></span>
-            <ul>
-              <li nz-menu-group *ngFor="let group of routerList.components">
-                <span title>{{group.name}}</span>
-                <ul>
-                  <li nz-menu-item routerLinkActive="ant-menu-item-selected" *ngFor="let component of group.children" [hidden]="component.language!=language">
-                    <a routerLink="{{component.path}}">
-                      <span>{{component.label}}</span><span class="chinese">{{component.zh}}</span>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ul>
+      <div nz-col *ngIf="!showDrawer" [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="6" [nzXl]="5" [nzXXl]="4" class="main-menu">
+        <ng-template [ngTemplateOutlet]="sideOrDrawerTpl"></ng-template>
       </div>
       <div nz-col class="main-container main-container-component" [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="18" [nzXl]="19" [nzXXl]="20">
         <router-outlet></router-outlet>
@@ -156,3 +147,40 @@
     </div>
   </footer>
 </div>
+
+<div class="drawer-wrapper" *ngIf="showDrawer">
+  <div class="drawer drawer-left" [class.drawer-open]="isDrawerOpen">
+    <div class="drawer-mask" (click)="isDrawerOpen = false"></div>
+    <div class="drawer-content-wrapper" [style.transform]="isDrawerOpen ? null : 'translateX(-100%)'">
+      <div class="drawer-content">
+        <ng-container [ngTemplateOutlet]="sideOrDrawerTpl"></ng-container>
+      </div>
+      <div class="drawer-handle" (click)="isDrawerOpen = !isDrawerOpen">
+        <i class="drawer-handle-icon"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #sideOrDrawerTpl>
+  <ul nz-menu [nzMode]="'inline'" class="aside-container menu-site" nzInlineIndent="40">
+    <li *ngFor="let intro of routerList.intro" nz-menu-item routerLinkActive="ant-menu-item-selected" [hidden]="intro.language!=language">
+      <a routerLink="{{intro.path}}">{{intro.label}}</a>
+    </li>
+    <li nz-submenu nzOpen routerLinkActive="ant-menu-submenu-selected">
+      <span title><h4>Components</h4></span>
+      <ul>
+        <li nz-menu-group *ngFor="let group of routerList.components">
+          <span title>{{group.name}}</span>
+          <ul>
+            <li nz-menu-item routerLinkActive="ant-menu-item-selected" *ngFor="let component of group.children" [hidden]="component.language!=language">
+              <a routerLink="{{component.path}}">
+                <span>{{component.label}}</span><span class="chinese">{{component.zh}}</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</ng-template>

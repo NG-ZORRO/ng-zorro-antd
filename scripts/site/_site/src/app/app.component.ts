@@ -1,7 +1,9 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
-import { en_US, zh_CN, NzI18nService, NzIconService, NzMessageService } from 'ng-zorro-antd';
+import { en_US, zh_CN, NzI18nService, NzMessageService } from 'ng-zorro-antd';
+import { fromEvent } from 'rxjs';
+import { debounceTime, map, startWith } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { ROUTER_LIST } from './router';
 
@@ -12,7 +14,12 @@ declare const docsearch: any;
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  hide = true;
+  /**
+   * When the screen size is smaller that 768 pixel, show the drawer and hide
+   * the navigation on the side.
+   **/
+  showDrawer = false;
+  isDrawerOpen = false;
   routerList = ROUTER_LIST;
   componentList = [];
   searchComponent = null;
@@ -39,11 +46,18 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.router.navigateByUrl(url.join('/') + '/' + language);
   }
 
-  toggleHide() {
-    this.hide = !this.hide;
+  toggleMenu(): void {
+    if (this.showDrawer) {
+
+    }
   }
 
-  constructor(private router: Router, private title: Title, private nzI18nService: NzI18nService, private msg: NzMessageService) {
+  constructor(
+    private router: Router,
+    private title: Title,
+    private nzI18nService: NzI18nService,
+    private msg: NzMessageService,
+    private ngZone: NgZone) {
   }
 
   navigateToPage(url) {
@@ -103,6 +117,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     if (this.useDocsearch) {
       this.initDocsearch();
     }
+
+    this.addWindowWidthListener();
   }
 
   initDocsearch() {
@@ -180,4 +196,18 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   // endregion
+  private addWindowWidthListener(): void {
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(window, 'resize').pipe(
+        startWith(true),
+        debounceTime(50),
+        map(() => window.innerWidth)
+      ).subscribe(width => {
+        const showDrawer = width <= 768;
+        if (this.showDrawer !== showDrawer) {
+          this.showDrawer = showDrawer;
+        }
+      });
+    });
+  }
 }
