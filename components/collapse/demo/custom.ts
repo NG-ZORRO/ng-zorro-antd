@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-collapse-custom',
   template: `
     <nz-collapse [nzBordered]="false">
-      <nz-collapse-panel *ngFor="let panel of panels; let isLast = last" [nzHeader]="panel.name" [nzActive]="panel.active"
-        [nzDisabled]="panel.disabled" [ngStyle]="panel.customStyle" [nzExpandedIcon]="isLast && expandedIcon">
+      <nz-collapse-panel *ngFor="let panel of panels; let isFirst = first" [nzHeader]="panel.name" [nzActive]="panel.active"
+        [ngStyle]="panel.customStyle" [nzExpandedIcon]="!isFirst && (panel.icon || expandedIcon)">
         <p>{{panel.name}} content</p>
       </nz-collapse-panel>
       <ng-template #expandedIcon>
@@ -32,6 +32,7 @@ export class NzDemoCollapseCustomComponent {
       active     : false,
       disabled   : true,
       name       : 'This is panel header 2',
+      icon       : 'double-right',
       customStyle: {
         'background'   : '#f7f7f7',
         'border-radius': '4px',

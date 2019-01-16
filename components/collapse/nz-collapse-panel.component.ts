@@ -1,17 +1,13 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter, Host,
   HostBinding,
   Input, OnDestroy, OnInit,
   Output,
-  Renderer2,
   TemplateRef,
-  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 
@@ -48,23 +44,13 @@ import { NzCollapseComponent } from './nz-collapse.component';
   }
 })
 
-export class NzCollapsePanelComponent implements OnInit, AfterViewInit, OnDestroy {
+export class NzCollapsePanelComponent implements OnInit, OnDestroy {
   @Input() @InputBoolean() @HostBinding('class.ant-collapse-item-active') nzActive = false;
   @Input() @InputBoolean() @HostBinding('class.ant-collapse-item-disabled') nzDisabled = false;
   @Input() @InputBoolean() nzShowArrow = true;
   @Input() nzHeader: string | TemplateRef<void>;
+  @Input() nzExpandedIcon: string | TemplateRef<void>;
   @Output() readonly nzActiveChange = new EventEmitter<boolean>();
-  @Input() set nzExpandedIcon(value: TemplateRef<void>) {
-    if (value instanceof TemplateRef) {
-      this._nzExpandedIcon = value;
-    }
-  }
-  get nzExpandedIcon (): TemplateRef<void> {
-    return this._nzExpandedIcon;
-  }
-  private _nzExpandedIcon: TemplateRef<void>;
-  private prefixCls: string = 'ant-collapse';
-  @ViewChild('iconContainer') private iconContainerEl: ElementRef;
 
   clickHeader(): void {
     if (!this.nzDisabled) {
@@ -76,21 +62,11 @@ export class NzCollapsePanelComponent implements OnInit, AfterViewInit, OnDestro
     this.cdr.markForCheck();
   }
 
-  private addIconClass(): void {
-    const el = this.iconContainerEl.nativeElement;
-    const name = `${this.prefixCls}-arrow`;
-    this.renderer.addClass(el, name);
-  }
-
-  constructor( private renderer: Renderer2, private cdr: ChangeDetectorRef, @Host() private nzCollapseComponent: NzCollapseComponent) {
+  constructor( private cdr: ChangeDetectorRef, @Host() private nzCollapseComponent: NzCollapseComponent) {
   }
 
   ngOnInit(): void {
     this.nzCollapseComponent.addPanel(this);
-  }
-
-  ngAfterViewInit(): void {
-    this.addIconClass();
   }
 
   ngOnDestroy(): void {

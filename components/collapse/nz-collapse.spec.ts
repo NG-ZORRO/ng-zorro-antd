@@ -160,7 +160,7 @@ describe('collapse', () => {
     });
     it('should icon work', () => {
       fixture.detectChanges();
-      expect(iconElFirst.firstElementChild.getAttribute('type')).toBe('right');
+      expect(iconElFirst.firstElementChild.getAttribute('type')).toBe('double-right');
       expect(iconElSecond.firstElementChild.getAttribute('type')).toBe('caret-right');
     });
   });
@@ -211,7 +211,7 @@ export class NzTestCollapseTemplateComponent {
   selector: 'nz-test-collapse-icon',
   template: `
     <nz-collapse>
-      <nz-collapse-panel>
+      <nz-collapse-panel [nzExpandedIcon]="'double-right'">
         <p>Panel01</p>
       </nz-collapse-panel>
       <nz-collapse-panel [nzExpandedIcon]="expandedIcon">

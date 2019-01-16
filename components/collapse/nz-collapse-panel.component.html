@@ -1,10 +1,12 @@
 <div role="tab" [attr.aria-expanded]="nzActive" class="ant-collapse-header" (click)="clickHeader()">
-  <div #iconContainer>
+  <div class="ant-collapse-arrow" *ngIf="nzShowArrow">
     <ng-container *ngIf="nzExpandedIcon;else defaultIcon">
-      <ng-template [ngTemplateOutlet]="nzExpandedIcon"></ng-template>
+      <ng-container *nzStringTemplateOutlet="nzExpandedIcon">
+        <i nz-icon [type]="nzExpandedIcon"></i>
+      </ng-container>
     </ng-container>
     <ng-template #defaultIcon>
-      <i nz-icon type="right" *ngIf="nzShowArrow"></i>
+      <i nz-icon type="right"></i>
     </ng-template>
   </div>
   <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
