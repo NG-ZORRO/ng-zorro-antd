@@ -149,19 +149,15 @@ describe('collapse', () => {
   describe('collapse icon', () => {
     let fixture;
     let panels;
-    let iconElFirst;
-    let iconElSecond;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCollapseIconComponent);
       fixture.detectChanges();
       panels = fixture.debugElement.queryAll(By.directive(NzCollapsePanelComponent));
-      iconElFirst = panels[ 0 ].nativeElement.querySelector('.ant-collapse-arrow');
-      iconElSecond = panels[ 1 ].nativeElement.querySelector('.ant-collapse-arrow');
     });
     it('should icon work', () => {
       fixture.detectChanges();
-      expect(iconElFirst.firstElementChild.getAttribute('type')).toBe('double-right');
-      expect(iconElSecond.firstElementChild.getAttribute('type')).toBe('caret-right');
+      expect(panels[ 0 ].nativeElement.querySelector('.anticon-double-right')).toBeDefined();
+      expect(panels[ 1 ].nativeElement.querySelector('.anticon-caret-right')).toBeDefined();
     });
   });
 });
@@ -187,7 +183,7 @@ export class NzTestCollapseBasicComponent {
   disabled = false;
   active01 = false;
   active02 = false;
-  showArrow = false;
+  showArrow = true;
   header = 'string';
   active01Change = jasmine.createSpy('active01 callback');
   active02Change = jasmine.createSpy('active02 callback');

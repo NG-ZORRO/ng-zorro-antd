@@ -2,11 +2,11 @@
   <div class="ant-collapse-arrow" *ngIf="nzShowArrow">
     <ng-container *ngIf="nzExpandedIcon;else defaultIcon">
       <ng-container *nzStringTemplateOutlet="nzExpandedIcon">
-        <i nz-icon [type]="nzExpandedIcon"></i>
+        <i nz-icon type="{{ nzExpandedIcon }}"></i>
       </ng-container>
     </ng-container>
     <ng-template #defaultIcon>
-      <i nz-icon type="right"></i>
+      <i nz-icon type="right" ></i>
     </ng-template>
   </div>
   <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
