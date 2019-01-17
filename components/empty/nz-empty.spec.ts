@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, NgModule, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Inject, NgModule, TemplateRef, ViewChild } from '@angular/core';
 import { fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzListModule } from '../list';
 import { NzEmbedEmptyComponent } from './nz-embed-empty.component';
+import { NZ_DEFAULT_EMPTY_CONTENT, NZ_EMPTY_COMPONENT_NAME } from './nz-empty-config';
 import { NzEmptyComponent } from './nz-empty.component';
-import { NZ_DEFAULT_EMPTY_CONTENT, NZ_EMPTY_COMPONENT_NAME } from './nz-empty.config';
 import { NzEmptyModule } from './nz-empty.module';
 import { NzEmptyService } from './nz-empty.service';
 
@@ -145,6 +145,13 @@ describe('nz-empty', () => {
         expect(embedComponent).toBeTruthy();
         expect(emptyComponent).toBeFalsy();
         expect(embedComponent.nativeElement.innerText).toBe('list');
+
+        // Null.
+        testComponent.noResult = null;
+        refresh();
+        expect(embedComponent).toBeTruthy();
+        expect(emptyComponent).toBeFalsy();
+        expect(embedComponent.nativeElement.innerText).toBe('');
       }));
 
       it('should support string, template and component', fakeAsync(() => {
@@ -279,7 +286,7 @@ export class NzEmptyTestBasicComponent {
 export class NzEmptyTestServiceComponent {
   @ViewChild('tpl') template: TemplateRef<void>;
 
-  noResult = null;
+  noResult = undefined;
 
   constructor(private emptyService: NzEmptyService) {
   }

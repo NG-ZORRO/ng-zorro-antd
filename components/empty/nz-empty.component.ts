@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
-import { emptyImage } from './nz-empty.config';
+import { emptyImage } from './nz-empty-config';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
