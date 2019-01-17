@@ -180,8 +180,9 @@ describe('button', () => {
       const button = buttons[ 3 ];
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
-      expect(button.nativeElement.firstElementChild.querySelector('svg')).toBe(null);
+      expect(button.nativeElement.firstElementChild.querySelector('svg')).not.toBe(null);
       expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(false);
+      expect(button.nativeElement.firstElementChild.classList.contains('anticon-poweroff')).toBe(true);
       expect(button.nativeElement.firstElementChild.localName).toBe('i');
       button.nativeElement.click();
       fixture.detectChanges();
@@ -194,8 +195,9 @@ describe('button', () => {
       tick(5000);
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
-      expect(button.nativeElement.firstElementChild.querySelector('svg')).toBe(null);
-      expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(false);
+      expect(button.nativeElement.firstElementChild.querySelector('svg')).not.toBe(null);
+      expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(false);309
+      expect(button.nativeElement.firstElementChild.classList.contains('anticon-poweroff')).toBe(true);
       expect(button.nativeElement.firstElementChild.localName).toBe('i');
     }));
   });
@@ -303,7 +305,8 @@ describe('button', () => {
       tick();
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
-      expect(button.nativeElement.firstElementChild.querySelector('svg')).toBe(null);
+      expect(button.nativeElement.firstElementChild.querySelector('svg')).not.toBe(null);
+      expect(button.nativeElement.firstElementChild.classList.contains('anticon-poweroff')).toBe(true);
       expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(false);
       button.nativeElement.click();
       fixture.detectChanges();
