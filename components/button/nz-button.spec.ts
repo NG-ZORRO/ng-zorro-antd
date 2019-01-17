@@ -196,7 +196,7 @@ describe('button', () => {
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
       expect(button.nativeElement.firstElementChild.querySelector('svg')).not.toBe(null);
-      expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(false);309
+      expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(false);
       expect(button.nativeElement.firstElementChild.classList.contains('anticon-poweroff')).toBe(true);
       expect(button.nativeElement.firstElementChild.localName).toBe('i');
     }));
