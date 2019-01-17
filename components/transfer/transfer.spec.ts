@@ -4,11 +4,11 @@ import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, Observable } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzTransferComponent, NzTransferModule } from './index';
 import { TransferCanMove, TransferItem } from './interface';
 
@@ -24,7 +24,7 @@ describe('transfer', () => {
   let pageObject: TransferPageObject;
   beforeEach(() => {
     injector = TestBed.configureTestingModule({
-      imports     : [ NoopAnimationsModule, NzTransferModule, NzIconModule ],
+      imports     : [ NoopAnimationsModule, NzTransferModule, NzIconTestModule ],
       declarations: [ TestTransferComponent, TestTransferCustomRenderComponent, Test996Component ]
     });
     fixture = TestBed.createComponent(TestTransferComponent);

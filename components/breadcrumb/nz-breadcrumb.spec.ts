@@ -1,14 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, NgZone } from '@angular/core';
+import { Component } from '@angular/core';
 import { async, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ArrowRightOutline } from '@ant-design/icons-angular/icons';
 
 import { dispatchMouseEvent } from '../core/testing';
-import { NzIconModule } from '../icon/nz-icon.module';
-import { NZ_ICONS } from '../icon/nz-icon.service';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
 import { NzDemoBreadcrumbBasicComponent } from './demo/basic';
 import { NzDemoBreadcrumbSeparatorComponent } from './demo/separator';
@@ -51,9 +49,8 @@ describe('breadcrumb', () => {
     let breadcrumbs;
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzBreadCrumbModule, NzIconModule ],
-        declarations: [ NzDemoBreadcrumbSeparatorComponent ],
-        providers   : [ { provide: NZ_ICONS, useValue: [ ArrowRightOutline ] } ]
+        imports     : [ NzBreadCrumbModule, NzIconTestModule ],
+        declarations: [ NzDemoBreadcrumbSeparatorComponent ]
       }).compileComponents();
     }));
 

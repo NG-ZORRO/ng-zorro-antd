@@ -12,10 +12,10 @@ import { NzButtonModule } from '../button/nz-button.module';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 
 import { ESCAPE } from '@angular/cdk/keycodes';
-import { createKeyboardEvent, dispatchKeyboardEvent } from '../core/testing';
+import { dispatchKeyboardEvent } from '../core/testing';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { CssUnitPipe } from './css-unit.pipe';
 import { NZ_MODAL_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
@@ -123,7 +123,7 @@ describe('modal testing (legacy)', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [ NoopAnimationsModule, NzModalModule, NzIconModule ],
+        imports: [ NoopAnimationsModule, NzModalModule, NzIconTestModule ],
         declarations: [ TestBasicServiceComponent ],
         providers   : [ NzMeasureScrollbarService ]
       }).compileComponents();

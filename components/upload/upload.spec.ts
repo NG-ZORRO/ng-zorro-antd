@@ -11,7 +11,7 @@ import { delay } from 'rxjs/operators';
 
 import { NzI18nModule, NzI18nService } from '../i18n';
 import en_US from '../i18n/languages/en_US';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzProgressModule } from '../progress/nz-progress.module';
 import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
 
@@ -54,7 +54,7 @@ describe('upload', () => {
     let httpMock: HttpTestingController;
     beforeEach(() => {
       injector = TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, HttpClientTestingModule, CommonModule, FormsModule, NzToolTipModule, NzProgressModule, NzI18nModule, NzIconModule],
+        imports: [NoopAnimationsModule, HttpClientTestingModule, CommonModule, FormsModule, NzToolTipModule, NzProgressModule, NzI18nModule, NzIconTestModule],
         declarations: [NzUploadComponent, NzUploadListComponent, TestUploadComponent, NzUploadBtnComponent]
       });
       fixture = TestBed.createComponent(TestUploadComponent);
@@ -631,7 +631,7 @@ describe('upload', () => {
     let instance: TestUploadListComponent;
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [CommonModule, FormsModule, NzToolTipModule, NzProgressModule, NzI18nModule, NoopAnimationsModule, NzIconModule ],
+        imports: [CommonModule, FormsModule, NzToolTipModule, NzProgressModule, NzI18nModule, NoopAnimationsModule, NzIconTestModule ],
         declarations: [NzUploadListComponent, TestUploadListComponent]
       });
       fixture = TestBed.createComponent(TestUploadListComponent);
@@ -851,7 +851,7 @@ describe('upload', () => {
       let instance: TestUploadBtnComponent;
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [HttpClientTestingModule, NzIconModule],
+          imports: [HttpClientTestingModule, NzIconTestModule],
           declarations: [NzUploadBtnComponent, TestUploadBtnComponent]
         });
         fixture = TestBed.createComponent(TestUploadBtnComponent);

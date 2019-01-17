@@ -2,7 +2,7 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
 import { NzAvatarComponent } from './nz-avatar.component';
 import { NzAvatarModule } from './nz-avatar.module';
@@ -20,7 +20,7 @@ describe('avatar', () => {
   let dl: DebugElement;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ NzAvatarModule, NzIconModule ],
+      imports: [ NzAvatarModule, NzIconTestModule ],
       declarations: [ TestAvatarComponent ]
     }).compileComponents();
     fixture = TestBed.createComponent(TestAvatarComponent);
