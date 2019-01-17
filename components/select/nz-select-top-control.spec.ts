@@ -1,19 +1,39 @@
-import { BACKSPACE } from '@angular/cdk/keycodes';
-import { Component, ViewChild } from '@angular/core';
-import { fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzOptionComponent } from './nz-option.component';
+import { Subject } from 'rxjs';
+import { dispatchFakeEvent } from '../core/testing';
+import { createListOfOption } from './nz-option-container.spec';
 import { NzSelectTopControlComponent } from './nz-select-top-control.component';
 import { NzSelectModule } from './nz-select.module';
-
-import { dispatchFakeEvent, dispatchKeyboardEvent } from '../core/testing';
+import { NzSelectService } from './nz-select.service';
 
 describe('nz-select top control', () => {
   beforeEach(fakeAsync(() => {
+    let nzSelectServiceStub: Partial<NzSelectService>;
+    nzSelectServiceStub = {
+      check$                    : new Subject(),
+      listOfSelectedValue$      : new Subject(),
+      open$                     : new Subject(),
+      clearInput$               : new Subject(),
+      listOfSelectedValue       : [ 1, 2, 3 ],
+      listOfCachedSelectedOption: createListOfOption(10),
+      isMultipleOrTags          : true,
+      removeValueFormSelected   : () => {
+      },
+      tokenSeparate             : () => {
+      },
+      updateSearchValue         : () => {
+      },
+      updateListOfSelectedValue : () => {
+      },
+      compareWith               : (o1, o2) => o1 === o2
+    };
     TestBed.configureTestingModule({
+      providers   : [ { provide: NzSelectService, useValue: nzSelectServiceStub } ],
       imports     : [ NzSelectModule, NoopAnimationsModule ],
-      declarations: [ NzTestSelectTopControlMultipleComponent, NzTestSelectTopControlSingleComponent ]
+      declarations: [ NzTestSelectTopControlComponent ]
     });
     TestBed.compileComponents();
   }));
@@ -21,69 +41,36 @@ describe('nz-select top control', () => {
     let fixture;
     let testComponent;
     let tc;
+    let tcComponent;
+    let nzSelectService;
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestSelectTopControlSingleComponent);
+      fixture = TestBed.createComponent(NzTestSelectTopControlComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       tc = fixture.debugElement.query(By.directive(NzSelectTopControlComponent));
+      tcComponent = tc.injector.get(NzSelectTopControlComponent);
+      nzSelectService = fixture.debugElement.injector.get(NzSelectService);
     });
-    it('should showSearch work', () => {
+    it('should clear selection work', () => {
       fixture.detectChanges();
-      expect(tc.nativeElement.querySelector('.ant-select-search--inline')).toBeNull();
-      testComponent.showSearch = true;
+      const clearSpy = spyOn(nzSelectService, 'updateListOfSelectedValue');
       fixture.detectChanges();
-      expect(tc.nativeElement.querySelector('.ant-select-search--inline')).not.toBeNull();
+      expect(clearSpy).toHaveBeenCalledTimes(0);
+      dispatchFakeEvent(tc.nativeElement.querySelector('.ant-select-selection__clear'), 'click');
+      fixture.detectChanges();
+      expect(clearSpy).toHaveBeenCalledTimes(1);
     });
-    it('should focus work', fakeAsync(() => {
-      testComponent.showSearch = true;
-      testComponent.open = true;
+    it('should setInputValue work', () => {
       fixture.detectChanges();
-      const inputEl = tc.nativeElement.querySelector('.ant-select-search__field');
-      expect(inputEl === document.activeElement).toBe(false);
-      testComponent.nzSelectTopControlComponent.focusOnInput();
+      const setInputSpy = spyOn(tcComponent, 'setInputValue');
       fixture.detectChanges();
-      tick();
+      expect(setInputSpy).toHaveBeenCalledTimes(0);
+      nzSelectService.clearInput$.next();
       fixture.detectChanges();
-      expect(inputEl === document.activeElement).toBe(true);
-    }));
-    it('should selectedValueDisplay style correct', fakeAsync(() => {
-      testComponent.showSearch = true;
-      fixture.detectChanges();
-      const selectedValueEl = tc.nativeElement.querySelector('.ant-select-selection-selected-value');
-      const inputEl = tc.nativeElement.querySelector('.ant-select-search__field');
-      expect(selectedValueEl.style.display).toBe('block');
-      expect(selectedValueEl.style.opacity).toBe('1');
-      testComponent.open = true;
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      expect(selectedValueEl.style.display).toBe('block');
-      expect(selectedValueEl.style.opacity).toBe('0.4');
-      inputEl.value = 'test';
-      dispatchFakeEvent(inputEl, 'input');
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      expect(selectedValueEl.style.display).toBe('none');
-      expect(selectedValueEl.style.opacity).toBe('1');
-    }));
-  });
-
-  describe('multiple', () => {
-    let fixture;
-    let testComponent;
-    let tc;
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestSelectTopControlMultipleComponent);
-      fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-      tc = fixture.debugElement.query(By.directive(NzSelectTopControlComponent));
+      expect(setInputSpy).toHaveBeenCalledTimes(1);
+      expect(setInputSpy).toHaveBeenCalledWith('');
     });
-    it('should className correct', () => {
-      fixture.detectChanges();
-      expect(tc.nativeElement.classList).toContain('ant-select-selection__rendered');
-    });
-    it('should input width sync', fakeAsync(() => {
+    it('should input work', fakeAsync(() => {
       fixture.detectChanges();
       const inputEl = tc.nativeElement.querySelector('.ant-select-search__field');
       inputEl.value = 'test';
@@ -99,166 +86,114 @@ describe('nz-select top control', () => {
       fixture.detectChanges();
       expect(inputEl.style.width).toBe('');
     }));
-    it('should placeholder display', () => {
+    it('should selectedValueDisplay', () => {
       fixture.detectChanges();
-      expect(tc.nativeElement.querySelector('.ant-select-selection__placeholder').innerText).toBe('placeholder');
-      testComponent.placeHolder = '';
+      tcComponent.nzShowSearch = false;
       fixture.detectChanges();
-      expect(tc.nativeElement.querySelector('.ant-select-selection__placeholder')).toBeNull();
+      expect(tcComponent.selectedValueStyle.display).toBe('block');
+      expect(tcComponent.selectedValueStyle.opacity).toBe('1');
+      tcComponent.nzShowSearch = true;
+      tcComponent.nzOpen = false;
+      fixture.detectChanges();
+      expect(tcComponent.selectedValueStyle.display).toBe('block');
+      expect(tcComponent.selectedValueStyle.opacity).toBe('1');
+      tcComponent.nzShowSearch = true;
+      tcComponent.nzOpen = true;
+      tcComponent.inputValue = true;
+      tcComponent.isComposing = true;
+      fixture.detectChanges();
+      expect(tcComponent.selectedValueStyle.display).toBe('none');
+      expect(tcComponent.selectedValueStyle.opacity).toBe('1');
+      tcComponent.nzShowSearch = true;
+      tcComponent.nzOpen = true;
+      tcComponent.inputValue = true;
+      tcComponent.isComposing = false;
+      fixture.detectChanges();
+      expect(tcComponent.selectedValueStyle.display).toBe('none');
+      expect(tcComponent.selectedValueStyle.opacity).toBe('1');
+      tcComponent.nzShowSearch = true;
+      tcComponent.nzOpen = true;
+      tcComponent.inputValue = false;
+      tcComponent.isComposing = true;
+      fixture.detectChanges();
+      expect(tcComponent.selectedValueStyle.display).toBe('none');
+      expect(tcComponent.selectedValueStyle.opacity).toBe('1');
+      tcComponent.nzShowSearch = true;
+      tcComponent.nzOpen = true;
+      tcComponent.inputValue = false;
+      tcComponent.isComposing = false;
+      fixture.detectChanges();
+      expect(tcComponent.selectedValueStyle.display).toBe('block');
+      expect(tcComponent.selectedValueStyle.opacity).toBe('0.4');
     });
-    it('should display label correct', () => {
+    it('should open focus', () => {
       fixture.detectChanges();
-      const ul = tc.nativeElement.querySelector('ul');
-      expect(ul.children.length).toBe(3);
-      expect(ul.children[ 0 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test1');
-      expect(ul.children[ 1 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test2');
+      expect(tc.nativeElement.querySelector('.ant-select-search__field') === document.activeElement).toBeFalsy();
+      nzSelectService.open$.next(false);
+      fixture.detectChanges();
+      expect(tc.nativeElement.querySelector('.ant-select-search__field') === document.activeElement).toBeFalsy();
+      nzSelectService.open$.next(true);
+      fixture.detectChanges();
+      expect(tc.nativeElement.querySelector('.ant-select-search__field') === document.activeElement).toBeTruthy();
     });
-    it('should change listOfTemplateOption work', fakeAsync(() => {
+    it('should destroy piped', () => {
       fixture.detectChanges();
-      const ul = tc.nativeElement.querySelector('ul');
-      expect(ul.children.length).toBe(3);
-      testComponent.listOfTemplateOption = [ testComponent.generateOption({ value: 'test1' }, 'test1', false), testComponent.generateOption({ value: 'test2' }, 'test2', true), testComponent.generateOption({ value: 'test3' }, 'test3', true) ];
-      testComponent.listOfSelectedValue = [ { value: 'test1' }, { value: 'test2' }, { value: 'test3' } ];
+      const checkSpy = spyOn(tcComponent.cdr, 'markForCheck');
       fixture.detectChanges();
-      tick();
+      expect(checkSpy).toHaveBeenCalledTimes(0);
+      nzSelectService.check$.next();
       fixture.detectChanges();
-      expect(ul.children.length).toBe(4);
-      expect(ul.children[ 0 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test1');
-      expect(ul.children[ 1 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test2');
-      expect(ul.children[ 2 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test3');
-    }));
-    it('should label disable work', () => {
+      expect(checkSpy).toHaveBeenCalledTimes(1);
+      testComponent.destroy = true;
       fixture.detectChanges();
-      const ul = tc.nativeElement.querySelector('ul');
-      expect(ul.children[ 0 ].classList).not.toContain('ant-select-selection__choice__disabled');
-      expect(ul.children[ 0 ].querySelector('.ant-select-selection__choice__remove')).toBeDefined();
-      expect(ul.children[ 1 ].classList).toContain('ant-select-selection__choice__disabled');
-      expect(ul.children[ 1 ].querySelector('.ant-select-selection__choice__remove')).toBeNull();
+      nzSelectService.check$.next();
+      fixture.detectChanges();
+      expect(checkSpy).toHaveBeenCalledTimes(1);
     });
-    it('should remove label work', fakeAsync(() => {
+    it('should remove option call', () => {
       fixture.detectChanges();
-      expect(testComponent.updateListOfSelectedValueFromTopControl).toHaveBeenCalledTimes(0);
-      const ul = tc.nativeElement.querySelector('ul');
-      ul.children[ 0 ].querySelector('.ant-select-selection__choice__remove').click();
+      const removeSpy = spyOn(nzSelectService, 'removeValueFormSelected');
       fixture.detectChanges();
-      tick();
+      expect(removeSpy).toHaveBeenCalledTimes(0);
+      dispatchFakeEvent(tc.nativeElement.querySelector('.ant-select-selection__choice__remove'), 'click');
       fixture.detectChanges();
-      expect(ul.children.length).toBe(2);
-      expect(testComponent.updateListOfSelectedValueFromTopControl).toHaveBeenCalledTimes(1);
-    }));
-    it('should disabled work', () => {
-      fixture.detectChanges();
-      testComponent.disabled = true;
-      expect(testComponent.updateListOfSelectedValueFromTopControl).toHaveBeenCalledTimes(0);
-      const ul = tc.nativeElement.querySelector('ul');
-      expect(ul.children[ 1 ].querySelector('.ant-select-selection__choice__remove')).toBeNull();
+      expect(removeSpy).toHaveBeenCalledTimes(1);
     });
-    it('should backSpace press work', fakeAsync(() => {
-      testComponent.listOfTemplateOption = [ testComponent.generateOption({ value: 'test1' }, 'test1', false), testComponent.generateOption({ value: 'test2' }, 'test2', true), testComponent.generateOption({ value: 'test3' }, 'test3', false) ];
-      testComponent.listOfSelectedValue = [ { value: 'test1' }, { value: 'test2' }, { value: 'test3' } ];
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      const ul = tc.nativeElement.querySelector('ul');
-      expect(ul.children.length).toBe(4);
-      expect(ul.children[ 0 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test1');
-      expect(ul.children[ 1 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test2');
-      expect(ul.children[ 2 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test3');
-      dispatchKeyboardEvent(tc.nativeElement.querySelector('.ant-select-search__field'), 'keydown', BACKSPACE, tc.nativeElement.querySelector('.ant-select-search__field'));
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      expect(ul.children.length).toBe(3);
-      expect(ul.children[ 0 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test1');
-      expect(ul.children[ 1 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test2');
-      dispatchKeyboardEvent(tc.nativeElement.querySelector('.ant-select-search__field'), 'keydown', BACKSPACE, tc.nativeElement.querySelector('.ant-select-search__field'));
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      expect(ul.children.length).toBe(3);
-      expect(ul.children[ 0 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test1');
-      expect(ul.children[ 1 ].querySelector('.ant-select-selection__choice__content').innerText).toBe('test2');
-    }));
   });
+
 });
 
 @Component({
-  selector: 'nz-test-select-top-control-multiple',
   template: `
-    <div
-      nz-select-top-control
+    <div nz-select-top-control
+      *ngIf="!destroy"
       [nzOpen]="open"
-      [compareWith]="compareFn"
-      [nzPlaceHolder]="placeHolder"
-      [nzDisabled]="disabled"
-      [nzMode]="mode"
-      [nzListTemplateOfOption]="listOfTemplateOption"
-      [nzListOfSelectedValue]="listOfSelectedValue"
-      (nzOnSearch)="onSearch($event.value,$event.emit)"
-      (nzListOfSelectedValueChange)="updateListOfSelectedValueFromTopControl($event)">
+      [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
+      [nzPlaceHolder]="nzPlaceHolder"
+      [nzAllowClear]="nzAllowClear"
+      [nzMaxTagCount]="nzMaxTagCount"
+      [nzShowArrow]="nzShowArrow"
+      [nzLoading]="nzLoading"
+      [nzSuffixIcon]="nzSuffixIcon"
+      [nzClearIcon]="nzClearIcon"
+      [nzRemoveIcon]="nzRemoveIcon"
+      [nzShowSearch]="nzShowSearch"
+      [nzTokenSeparators]="nzTokenSeparators">
     </div>
+    <ng-template #nzMaxTagPlaceholder>nzMaxTagPlaceholder</ng-template>
+    <ng-template #nzSuffixIcon>nzSuffixIcon</ng-template>
+    <ng-template #nzClearIcon>nzClearIcon</ng-template>
+    <ng-template #nzRemoveIcon>nzRemoveIcon</ng-template>
   `
 })
-export class NzTestSelectTopControlMultipleComponent {
+export class NzTestSelectTopControlComponent {
+  destroy = false;
   open = false;
-  // tslint:disable-next-line:no-any
-  compareFn = (o1: any, o2: any) => o1 && o2 ? o1.value === o2.value : o1 === o2;
-  placeHolder = 'placeholder';
-  disabled = false;
-  mode = 'multiple';
-  listOfTemplateOption = [ this.generateOption({ value: 'test1' }, 'test1', false), this.generateOption({ value: 'test2' }, 'test2', true) ];
-  listOfSelectedValue = [ { value: 'test1' }, { value: 'test2' } ];
-  onSearch = jasmine.createSpy('on search change');
-  updateListOfSelectedValueFromTopControl = jasmine.createSpy('on selected value change');
-
-  // tslint:disable-next-line:no-any
-  generateOption(value: any, label: string, disabled: boolean): NzOptionComponent {
-    const option = new NzOptionComponent();
-    option.nzValue = value;
-    option.nzLabel = label;
-    option.nzDisabled = disabled;
-    return option;
-  }
-}
-
-@Component({
-  selector: 'nz-test-select-top-control-single',
-  template: `
-    <div
-      nz-select-top-control
-      [nzOpen]="open"
-      [compareWith]="compareFn"
-      [nzPlaceHolder]="placeHolder"
-      [nzDisabled]="disabled"
-      [nzMode]="mode"
-      [nzShowSearch]="showSearch"
-      [nzListTemplateOfOption]="listOfTemplateOption"
-      [nzListOfSelectedValue]="listOfSelectedValue"
-      (nzOnSearch)="onSearch($event.value,$event.emit)"
-      (nzListOfSelectedValueChange)="updateListOfSelectedValueFromTopControl($event)">
-    </div>
-  `
-})
-export class NzTestSelectTopControlSingleComponent {
-  @ViewChild(NzSelectTopControlComponent) nzSelectTopControlComponent: NzSelectTopControlComponent;
-  open = false;
-  // tslint:disable-next-line:no-any
-  compareFn = (o1: any, o2: any) => o1 && o2 ? o1.value === o2.value : o1 === o2;
-  placeHolder = 'placeholder';
-  disabled = false;
-  showSearch = false;
-  mode = 'default';
-  listOfTemplateOption = [ this.generateOption({ value: 'test1' }, 'test1', false), this.generateOption({ value: 'test2' }, 'test2', true) ];
-  listOfSelectedValue = [ { value: 'test1' } ];
-  onSearch = jasmine.createSpy('on search change');
-  updateListOfSelectedValueFromTopControl = jasmine.createSpy('on selected value change');
-
-  // tslint:disable-next-line:no-any
-  generateOption(value: any, label: string, disabled: boolean): NzOptionComponent {
-    const option = new NzOptionComponent();
-    option.nzValue = value;
-    option.nzLabel = label;
-    option.nzDisabled = disabled;
-    return option;
-  }
+  nzPlaceHolder = 'placeholder';
+  nzAllowClear = true;
+  nzMaxTagCount = 3;
+  nzShowArrow = true;
+  nzLoading = false;
+  nzShowSearch = false;
+  nzTokenSeparators = [ ',' ];
 }

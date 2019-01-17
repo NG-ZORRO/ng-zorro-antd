@@ -22,7 +22,7 @@ timeline: true
 * **transfer:** fix the `Not Found` display condition ([#2687](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2687)) ([3df5779](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3df5779)), closes [#2686](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2686)
 
 
-# 7.0.0-rc.2 [deprecated]
+## 7.0.0-rc.2 deprecated
 `2018-12-24`
 
 ### Bug Fixes

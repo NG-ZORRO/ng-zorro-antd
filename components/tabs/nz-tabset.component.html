@@ -39,7 +39,7 @@
     [class.ant-tabs-right-content]="nzTabPosition === 'right'"
     [class.ant-tabs-content-animated]="tabPaneAnimated"
     [class.ant-tabs-content-no-animated]="!tabPaneAnimated"
-    [style.margin-left.%]="tabPaneAnimated && (-nzSelectedIndex*100)">
+    [style.margin-left.%]="(tabPositionMode === 'horizontal') && tabPaneAnimated && (-nzSelectedIndex*100)">
     <div nz-tab-body
       class="ant-tabs-tabpane"
       *ngFor="let tab of listOfNzTabComponent; let i = index"

@@ -17,7 +17,7 @@ import {
   ViewChild
 } from '@angular/core';
 
-import { dropDownAnimation } from '../core/animation/dropdown-animations';
+import { slideMotion } from '../core/animation/slide';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CandyDate } from './lib/candy-date';
 
@@ -25,7 +25,7 @@ import { CandyDate } from './lib/candy-date';
   selector       : 'nz-picker',
   templateUrl    : './picker.component.html',
   animations     : [
-    dropDownAnimation
+    slideMotion
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

@@ -10,13 +10,9 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
-import { AnimationCurves } from '../core/animation/animation';
+import { zoomBadgeMotion } from '../core/animation/zoom';
 import { isEmpty } from '../core/util/check';
 import { InputBoolean } from '../core/util/convert';
-
-const ANIMATION_TRANSITION_IN = `0.3s ${AnimationCurves.EASE_IN_BACK}`;
-const ANIMATION_TRANSITION_OUT = `0.3s ${AnimationCurves.EASE_IN_BACK}`;
 
 export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' | 'warning';
 
@@ -25,24 +21,7 @@ export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' |
   preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
-  animations         : [
-    trigger('zoomAnimation', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'scale(0) translateX(50%)' }),
-        animate(ANIMATION_TRANSITION_IN, style({
-          opacity  : 1,
-          transform: 'scale(1) translateX(50%)'
-        }))
-      ]),
-      transition(':leave', [
-        style({ opacity: 1, transform: 'scale(1) translateX(50%)' }),
-        animate(ANIMATION_TRANSITION_OUT, style({
-          opacity  : 0,
-          transform: 'scale(0) translateX(50%)'
-        }))
-      ])
-    ])
-  ],
+  animations         : [ zoomBadgeMotion ],
   templateUrl        : './nz-badge.component.html',
   host               : {
     '[class.ant-badge]'       : 'true',

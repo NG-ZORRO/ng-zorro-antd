@@ -13,7 +13,7 @@
     "lint": "tslint -c tslint.json 'components/*/*.ts'",
     "release": "node ./scripts/publish/publish.js",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s --pkg components/package.json && node ./scripts/site/replace-scope-prefix.js",
-    "doc": "npm run site:init && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer",
+    "doc": "npm run site:init && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod",
     "helper": "bash ./scripts/release-helper.sh",
     "migration-styles": "node ./scripts/build/migration-styles.js",
     "ng": "ng",
