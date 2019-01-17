@@ -130,6 +130,16 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(null);
     }));
+    it('should update index when overlay pane have sibling node', fakeAsync(() => {
+      const fixture_next = TestBed.createComponent(NzTestTreeSelectBasicComponent);
+      fixture_next.detectChanges();
+      const dropdownBeforePane = overlayContainerElement.querySelectorAll('.cdk-overlay-pane')[0];
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      tick();
+      const dropdownAfterPane = overlayContainerElement.querySelectorAll('.cdk-overlay-pane')[1];
+      expect(dropdownAfterPane.getAttribute('id')).toBe(dropdownBeforePane.getAttribute('id'));
+    }));
     it('should set null value work', fakeAsync(() => {
       fixture.detectChanges();
       expect(testComponent.value).toBe('10001');
