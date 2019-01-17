@@ -1,12 +1,14 @@
-import { coerceBooleanProperty, coerceCssPixelValue, coerceNumberProperty } from '@angular/cdk/coercion';
+import { coerceBooleanProperty, coerceCssPixelValue, _isNumberValue } from '@angular/cdk/coercion';
 import { FunctionProp } from '../types/common-wrap';
 
 export function toBoolean(value: boolean | string): boolean {
   return coerceBooleanProperty(value);
 }
 
-export function toNumber<D>(value: number | string, fallback: D): number | D {
-  return coerceNumberProperty(value, fallback);
+export function toNumber(value: number | string): number;
+export function toNumber<D>(value: number | string, fallback: D): number | D;
+export function toNumber(value: number | string, fallbackValue: number = 0): number {
+  return _isNumberValue(value) ? Number(value) : fallbackValue;
 }
 
 export function toCssPixel(value: number | string): string {
@@ -70,4 +72,8 @@ export function InputBoolean(): any { // tslint:disable-line: no-any
 
 export function InputCssPixel(): any { // tslint:disable-line: no-any
   return propDecoratorFactory('InputCssPixel', toCssPixel);
+}
+
+export function InputNumber(): any { // tslint:disable-line: no-any
+  return propDecoratorFactory('InputNumber', toNumber);
 }
