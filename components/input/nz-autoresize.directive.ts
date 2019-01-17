@@ -10,8 +10,8 @@ import {
   Self
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { fromEvent, Subject } from 'rxjs';
-import { auditTime, takeUntil } from 'rxjs/operators';
+import { fromEvent, merge, Subject } from 'rxjs';
+import { auditTime, take, takeUntil } from 'rxjs/operators';
 
 export interface AutoSizeType {
   minRows?: number;
@@ -175,7 +175,9 @@ export class NzAutoResizeDirective implements AfterViewInit, OnDestroy {
           .pipe(auditTime(16), takeUntil(this.destroy$))
           .subscribe(() => this.resizeToFitContent(true));
         });
-        this.ngControl.control.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.resizeToFitContent());
+        merge( this.ngControl.control.valueChanges.pipe(takeUntil(this.destroy$)),
+          this.ngZone.onStable.pipe(take(1)))
+          .subscribe(() => this.resizeToFitContent());
       } else {
         console.warn('nzAutosize must work with ngModel or ReactiveForm');
       }
