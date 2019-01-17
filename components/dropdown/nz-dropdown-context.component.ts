@@ -1,13 +1,13 @@
 import { AfterViewInit, Component, TemplateRef } from '@angular/core';
 
-import { dropDownAnimation } from '../core/animation/dropdown-animations';
+import { slideMotion } from '../core/animation/slide';
 
 import { NzDropdownService } from './nz-dropdown.service';
 
 @Component({
   selector   : 'nz-dropdown-context',
   animations : [
-    dropDownAnimation
+    slideMotion
   ],
   templateUrl: './nz-dropdown-context.component.html',
   styles     : [

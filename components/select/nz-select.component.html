@@ -1,60 +1,47 @@
-<div
-  cdkOverlayOrigin
+<div cdkOverlayOrigin
+  nz-select-top-control
+  tabindex="0"
   class="ant-select-selection"
-  [class.ant-select-selection--single]="isSingleMode"
-  [class.ant-select-selection--multiple]="isMultipleOrTags"
-  (keydown)="onKeyDownCdkOverlayOrigin($event)"
-  tabindex="0">
-  <div
-    nz-select-top-control
-    [nzOpen]="nzOpen"
-    [compareWith]="compareWith"
-    [nzPlaceHolder]="nzPlaceHolder"
-    [nzShowSearch]="nzShowSearch"
-    [nzDisabled]="nzDisabled"
-    [nzMode]="nzMode"
-    [nzListTemplateOfOption]="listOfTemplateOption"
-    [nzListOfSelectedValue]="listOfSelectedValue"
-    (nzOnSearch)="onSearch($event.value,$event.emit)"
-    (nzListOfSelectedValueChange)="updateListOfSelectedValueFromTopControl($event)">
-  </div>
-  <span *ngIf="nzAllowClear" class="ant-select-selection__clear" nz-select-unselectable (click)="onClearSelection($event)">
-    <i nz-icon type="close-circle" theme="fill" class="ant-select-close-icon"></i>
-  </span>
-  <span class="ant-select-arrow" nz-select-unselectable>
-    <i nz-icon type="down" class="ant-select-arrow-icon"></i>
-    <b></b>
-  </span>
+  [nzOpen]="open"
+  [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
+  [nzPlaceHolder]="nzPlaceHolder"
+  [nzAllowClear]="nzAllowClear"
+  [nzMaxTagCount]="nzMaxTagCount"
+  [nzShowArrow]="nzShowArrow"
+  [nzLoading]="nzLoading"
+  [nzSuffixIcon]="nzSuffixIcon"
+  [nzClearIcon]="nzClearIcon"
+  [nzRemoveIcon]="nzRemoveIcon"
+  [nzShowSearch]="nzShowSearch"
+  [nzTokenSeparators]="nzTokenSeparators"
+  [class.ant-select-selection--single]="nzSelectService.isSingleMode"
+  [class.ant-select-selection--multiple]="nzSelectService.isMultipleOrTags"
+  (keydown)="onKeyDown($event)">
 </div>
-<ng-template
-  cdkConnectedOverlay
+<ng-template cdkConnectedOverlay
   [cdkConnectedOverlayHasBackdrop]="true"
   [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
   (backdropClick)="closeDropDown()"
   (detach)="closeDropDown();"
   (positionChange)="onPositionChange($event)"
-  [cdkConnectedOverlayWidth]="overlayWidth"
-  [cdkConnectedOverlayMinWidth]="overlayMinWidth"
-  [cdkConnectedOverlayOpen]="!isDestroy">
-  <div [ngClass]="dropDownClassMap" [@dropDownAnimation]="nzOpen ? dropDownPosition : 'hidden' " [ngStyle]="nzDropdownStyle">
-    <div
-      style="overflow: auto"
-      nz-option-container
-      [listOfNzOptionComponent]="listOfNzOptionComponent"
-      [listOfNzOptionGroupComponent]="listOfNzOptionGroupComponent"
-      [nzSearchValue]="searchValue"
-      [nzFilterOption]="nzFilterOption"
-      [nzServerSearch]="nzServerSearch"
-      [compareWith]="compareWith"
+  [cdkConnectedOverlayOpen]="open">
+  <div
+    class="ant-select-dropdown"
+    [class.ant-select-dropdown--single]="nzSelectService.isSingleMode"
+    [class.ant-select-dropdown--multiple]="nzSelectService.isMultipleOrTags"
+    [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
+    [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
+    [nzClassListAdd]="[nzDropdownClassName]"
+    [@slideMotion]="dropDownPosition"
+    [ngStyle]="nzDropdownStyle">
+    <div nz-option-container
+      style="overflow: auto;transform: translateZ(0px);"
+      (keydown)="onKeyDown($event)"
+      [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
       [nzNotFoundContent]="nzNotFoundContent"
-      [nzMaxMultipleCount]="nzMaxMultipleCount"
-      [nzMode]="nzMode"
-      (nzScrollToBottom)="nzScrollToBottom.emit()"
-      (nzClickOption)="onClickOptionFromOptionContainer()"
-      (nzListOfTemplateOptionChange)="listOfTemplateOptionChange($event)"
-      (nzListOfSelectedValueChange)="updateListOfSelectedValueFromOptionContainer($event)"
-      [nzListOfSelectedValue]="listOfSelectedValue">
+      (nzScrollToBottom)="nzScrollToBottom.emit()">
     </div>
+    <ng-template [ngTemplateOutlet]="nzDropdownRender"></ng-template>
   </div>
 </ng-template>
 <!--can not use ViewChild since it will match sub options in option group -->

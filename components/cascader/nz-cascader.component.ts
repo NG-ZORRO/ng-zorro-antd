@@ -17,7 +17,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { dropDownAnimation } from '../core/animation/dropdown-animations';
+import { slideMotion } from '../core/animation/slide';
 import { ClassMap } from '../core/interface/interface';
 import { EXPANDED_DROPDOWN_POSITIONS } from '../core/overlay/overlay-position-map';
 import { arrayEquals, toArray } from '../core/util/array';
@@ -33,7 +33,7 @@ const defaultDisplayRender = label => label.join(' / ');
   selector           : 'nz-cascader,[nz-cascader]',
   preserveWhitespaces: false,
   templateUrl        : './nz-cascader.component.html',
-  animations         : [ dropDownAnimation ],
+  animations         : [ slideMotion ],
   providers          : [
     {
       provide    : NG_VALUE_ACCESSOR,

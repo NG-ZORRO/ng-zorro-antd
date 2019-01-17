@@ -11,7 +11,7 @@ import {
   ViewChild
 } from '@angular/core';
 
-import { dropDownAnimation } from '../core/animation/dropdown-animations';
+import { slideMotion } from '../core/animation/slide';
 
 import { NzDropDownComponent } from './nz-dropdown.component';
 import { NzDropDownDirective } from './nz-dropdown.directive';
@@ -20,7 +20,7 @@ import { NzDropDownDirective } from './nz-dropdown.directive';
   selector           : 'nz-dropdown-button',
   preserveWhitespaces: false,
   animations         : [
-    dropDownAnimation
+    slideMotion
   ],
   templateUrl        : './nz-dropdown-button.component.html',
   styles             : [ `

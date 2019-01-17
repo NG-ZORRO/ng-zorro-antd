@@ -1,38 +1,36 @@
-/* tslint:disable:no-any */
-import { Pipe, PipeTransform, QueryList } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
 
 export type TFilterOption = (input?: string, option?: NzOptionComponent) => boolean;
 
-// TODO: can not dynamic change pipe pure yet
-@Pipe({ name: 'nzFilterOptionPipe' })
-export class NzOptionPipe implements PipeTransform {
-  transform(options: NzOptionComponent[] | QueryList<NzOptionComponent>, input: string, filterOption: TFilterOption, serverSearch: boolean): NzOptionComponent[] | QueryList<NzOptionComponent> {
-    if (serverSearch || !input) {
+@Pipe({ name: 'nzFilterOption' })
+export class NzFilterOptionPipe implements PipeTransform {
+  transform(options: NzOptionComponent[], searchValue: string, filterOption: TFilterOption, serverSearch: boolean): NzOptionComponent[] {
+    if (serverSearch || !searchValue) {
       return options;
     } else {
-      return (options as NzOptionComponent[]).filter(o => filterOption(input, o));
+      return (options as NzOptionComponent[]).filter(o => filterOption(searchValue, o));
     }
   }
 }
 
-@Pipe({ name: 'nzSubFilterOptionPipe' })
-export class NzSubOptionPipe implements PipeTransform {
-  transform(groups: NzOptionGroupComponent[] | QueryList<NzOptionGroupComponent>, input: string, filterOption: TFilterOption, serverSearch: boolean): NzOptionGroupComponent[] | QueryList<NzOptionGroupComponent> {
-    if (serverSearch || !input) {
+@Pipe({ name: 'nzFilterGroupOption' })
+export class NzFilterGroupOptionPipe implements PipeTransform {
+  transform(groups: NzOptionGroupComponent[], searchValue: string, filterOption: TFilterOption, serverSearch: boolean): NzOptionGroupComponent[] {
+    if (serverSearch || !searchValue) {
       return groups;
     } else {
       return (groups as NzOptionGroupComponent[]).filter(g => {
-        return g.listOfNzOptionComponent.some(o => filterOption(input, o));
+        return g.listOfNzOptionComponent.some(o => filterOption(searchValue, o));
       });
     }
   }
 }
 
-export function defaultFilterOption(input: string, option: NzOptionComponent): boolean {
+export function defaultFilterOption(searchValue: string, option: NzOptionComponent): boolean {
   if (option && option.nzLabel) {
-    return option.nzLabel.toLowerCase().indexOf(input.toLowerCase()) > -1;
+    return option.nzLabel.toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
   } else {
     return false;
   }

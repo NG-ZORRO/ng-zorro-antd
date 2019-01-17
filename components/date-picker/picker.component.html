@@ -78,9 +78,9 @@
   (detach)="onOverlayDetach()"
 >
   <div
-    [@dropDownAnimation]="dropdownAnimation"
-    (@dropDownAnimation.start)="animationStart()"
-    (@dropDownAnimation.done)="animationDone()"
+    [@slideMotion]="dropdownAnimation"
+    (@slideMotion.start)="animationStart()"
+    (@slideMotion.done)="animationDone()"
     style="position: relative;"
     [style.left]="currentPositionX === 'start' ? '-2px' : '2px'"
     [style.top]="currentPositionY === 'top' ? '-2px' : '2px'"
