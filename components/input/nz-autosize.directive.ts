@@ -144,7 +144,7 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
     textareaClone.style.overflow = 'hidden';
 
     this.el.parentNode!.appendChild(textareaClone);
-    this.cachedLineHeight = textareaClone.clientHeight - this.inputGap - 1;
+    this.cachedLineHeight = textareaClone.clientHeight;
     this.el.parentNode!.removeChild(textareaClone);
 
     // Min and max heights have to be re-calculated if the cached line height changes
