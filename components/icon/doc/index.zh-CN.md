@@ -23,28 +23,29 @@ hasPageDemo: true
 
 ### [nz-icon]
 
-| 参数 | 说明 | 类型 | 默认值 |
-| -------- | ----------- | ---- | ------- |
-| `[type]` | 图标类型，遵循图标的命名规范 | `string` | - |
-| `[theme]` | 图标主题风格。可选实心、描线、双色等主题风格，适用于官方图标 | `'fill'｜'outline'｜'twotone'` | `'outline'` |
-| `[spin]` | 是否有旋转动画 | `boolean` | `false` |
-| `[twoToneColor]` | 仅适用双色图标，设置双色图标的主要颜色，仅对当前 icon 生效 | `string (十六进制颜色)` | - |
-| `[iconfont]` | 指定来自 IconFont 的图标类型 | `string` | - |
+| 参数             | 说明                                                         | 类型                         | 默认值    |
+| ---------------- | ------------------------------------------------------------ | ---------------------------- | --------- |
+| `[type]`         | 图标类型，遵循图标的命名规范                                 | string                       | -         |
+| `[theme]`        | 图标主题风格。可选实心、描线、双色等主题风格，适用于官方图标 | `fill 丨 outline 丨 twotone` | `outline` |
+| `[spin]`         | 是否有旋转动画                                               | `boolean`                    | `false`   |
+| `[twoToneColor]` | 仅适用双色图标，设置双色图标的主要颜色，仅对当前 icon 生效   | `string (十六进制颜色)`      | -         |
+| `[iconfont]`     | 指定来自 IconFont 的图标类型                                 | string                       | -         |
 
 ### NzIconService
 
-| 方法/属性 | 说明 | 参数 |
-| -------- | ----------- | ---- |
-| `twoToneColor` |  用于设置双色图标的默认主题色，不设置即为 Ant Design 原生主题蓝色 | `TwoToneColorPaletteSetter` |
-| `addIcon()` | 用于静态引入图标，可传入多个值（或者用数组解构赋值） | `IconDefinition` |
-| `fetchFromIconfont()` | 用于从 FontIcon 获取图标资源文件 | `NzIconfontOption` |
-| `changeAssetsSource()` | 用于修改动态加载 icon 的资源前缀，使得你可以部署图标资源到你想要的任何位置，例如 cdn | `string` |
+| 方法/属性              | 说明                                                                                 | 参数                        |
+| ---------------------- | ------------------------------------------------------------------------------------ | --------------------------- |
+| `twoToneColor`         | 用于设置双色图标的默认主题色，不设置即为 Ant Design 原生主题蓝色                     | `TwoToneColorPaletteSetter` |
+| `addIcon()`            | 用于静态引入图标，可传入多个值（或者用数组解构赋值）                                 | `IconDefinition`            |
+| `addIconLiteral()`     | 用于静态引入用户自定义图标                                                           | `string`, `string (SVG)`    |
+| `fetchFromIconfont()`  | 用于从 FontIcon 获取图标资源文件                                                     | `NzIconfontOption`          |
+| `changeAssetsSource()` | 用于修改动态加载 icon 的资源前缀，使得你可以部署图标资源到你想要的任何位置，例如 cdn | `string`                    |
 
 ### InjectionToken
 
-| Token | 说明 | 参数 |
-| ----- | --- | ---- |
-| `NZ_ICONS` | 用于静态引入图标，传入数组 | `IconDefinition[]`, `useValue` |
+| Token                           | 说明                                                             | 参数                                |
+| ------------------------------- | ---------------------------------------------------------------- | ----------------------------------- |
+| `NZ_ICONS`                      | 用于静态引入图标，传入数组                                       | `IconDefinition[]`, `useValue`      |
 | `NZ_ICON_DEFAULT_TWOTONE_COLOR` | 用于设置双色图标的默认主题色，不设置即为 Ant Design 原生主题蓝色 | `string (十六进制颜色)`, `useValue` |
 
 ### SVG 图标
@@ -160,13 +161,21 @@ this._iconService.fetchFromIconfont({
 
 `options` 的配置项如下：
 
-| 参数 | 说明 | 类型 | 默认值 |
-| -------- | ----------- | ---- | ------- |
-| `scriptUrl` | [iconfont.cn](http://iconfont.cn/) 项目在线生成的 `js` 地址，在 `namespace` 也设置的情况下有效| `string` | - |
+| 参数        | 说明                                                                                           | 类型   | 默认值 |
+| ----------- | ---------------------------------------------------------------------------------------------- | ------ | ------ |
+| `scriptUrl` | [iconfont.cn](http://iconfont.cn/) 项目在线生成的 `js` 地址，在 `namespace` 也设置的情况下有效 | string | -      |
 
 在 scriptUrl 都设置有效的情况下，组件在渲染前会自动引入 [iconfont.cn](http://iconfont.cn/) 项目中的图标符号集，无需手动引入。
 
 见 [iconfont.cn](http://iconfont.cn/help/detail?spm=a313x.7781069.1998910419.15&helptype=code) 使用帮助 查看如何生成 js 地址。
+
+### 命名空间
+
+从 `7.0.0-rc.4` 版本开始提供命名空间功能，用户可以使用该功能方便地添加自己的 icon。在渲染一个自定义 icon 时，只需要将 `type` 指定为 `namespace:name` 的形式，icon 组件就会在用户自行添加的图标中进行检索并渲染。同时支持静态和动态引入。
+
+静态引入，只需要调用 `NzIconService` 的 `addIconLiteral` 方法即可。
+
+动态引入，只需要保证 SVG 资源文件放到了相应的目录，即 `assets/${namespace}` 即可。例如你在 `zoo` 命名空间下有一个 `panda` 图标，你需要做的就是将 `panda.svg` 放到 `assets/zoo` 目录底下。
 
 ## 常见问题
 

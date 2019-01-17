@@ -8,7 +8,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
 import { createMouseEvent, dispatchFakeEvent } from '../core/testing';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzMenuModule } from '../menu/nz-menu.module';
 import { NzSubMenuComponent } from '../menu/nz-submenu.component';
 
@@ -25,7 +25,7 @@ describe('dropdown', () => {
   beforeEach(async(() => {
     const dir = 'ltr';
     TestBed.configureTestingModule({
-      imports     : [ NzMenuModule, NoopAnimationsModule, NzDropDownModule, NoopAnimationsModule, NzIconModule ],
+      imports     : [ NzMenuModule, NoopAnimationsModule, NzDropDownModule, NoopAnimationsModule, NzIconTestModule ],
       declarations: [ NzTestDropdownComponent, NzTestDropdownButtonComponent, NzTestDropdownWithButtonComponent, NzTestDropdownContextmenuComponent ],
       providers   : [
         NzDropdownService,

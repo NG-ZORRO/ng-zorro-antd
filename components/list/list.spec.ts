@@ -2,7 +2,7 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
 import { NzListComponent } from './nz-list.component';
 import { NzListModule } from './nz-list.module';
@@ -13,7 +13,7 @@ describe('list', () => {
   let dl: DebugElement;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ NzListModule, NzIconModule ],
+      imports: [ NzListModule, NzIconTestModule ],
       declarations: [ TestListComponent, TestListWithTemplateComponent, TestListItemComponent ]
     }).compileComponents();
     fixture = TestBed.createComponent(TestListComponent);

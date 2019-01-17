@@ -2,7 +2,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, discardPeriodicTasks, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
 import { NzDemoLayoutBasicComponent } from './demo/basic';
 import { NzDemoLayoutCustomTriggerComponent } from './demo/custom-trigger';
@@ -148,7 +148,7 @@ describe('layout', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzLayoutModule, NzIconModule ],
+        imports     : [ NzLayoutModule, NzIconTestModule ],
         declarations: [ NzDemoLayoutCustomTriggerComponent ],
         providers   : [],
         schemas     : [ NO_ERRORS_SCHEMA ]

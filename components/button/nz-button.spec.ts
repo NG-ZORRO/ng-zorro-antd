@@ -1,7 +1,8 @@
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzIconModule } from '../icon/nz-icon.module';
+
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
 import { NzDemoButtonBasicComponent } from './demo/basic';
 import { NzDemoButtonBlockComponent } from './demo/block';
@@ -116,7 +117,7 @@ describe('button', () => {
     let buttons;
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule, NzIconModule ],
+        imports     : [ NzButtonModule, NzIconTestModule ],
         declarations: [ NzDemoButtonIconComponent ],
         providers   : []
       }).compileComponents();
@@ -141,7 +142,7 @@ describe('button', () => {
     let buttons;
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule, NzIconModule ],
+        imports     : [ NzButtonModule, NzIconTestModule ],
         declarations: [ NzDemoButtonLoadingComponent ],
         providers   : []
       }).compileComponents();
@@ -285,7 +286,7 @@ describe('button', () => {
     let button;
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule, NzIconModule ],
+        imports     : [ NzButtonModule, NzIconTestModule ],
         declarations: [ NzTestButtonBindingComponent ],
         providers   : []
       }).compileComponents();

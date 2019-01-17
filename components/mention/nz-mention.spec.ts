@@ -20,7 +20,7 @@ import {
   typeInElement,
   MockNgZone
 } from '../core/testing';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
 import { NzInputModule } from '../input';
 import { NzMentionTriggerDirective } from './nz-mention-trigger';
@@ -36,7 +36,7 @@ describe('mention', () => {
   beforeEach(async(() => {
     const dir = 'ltr';
     TestBed.configureTestingModule({
-      imports     : [ NzMentionModule, NzInputModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconModule ],
+      imports     : [ NzMentionModule, NzInputModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
       declarations: [
         NzTestSimpleMentionComponent,
         NzTestPropertyMentionComponent

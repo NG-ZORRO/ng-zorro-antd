@@ -30,20 +30,22 @@ We are still adding two-tone icons right now, syncing to [antd](https://ant.desi
 | `[twoToneColor]` | Only support the two-tone icon. Specific the primary color. | `string (hex color)` | - |
 | `[iconfont]` | Type of the icon from iconfont | `string` | - |
 
+
 ### NzIconService
 
-| Methods/Properties | Description | Parameters |
-| -------- | ----------- | ---- |
-| `twoToneColor` | To set the default primary color of twotone icons, use Ant Design's official blue by default | `TwoToneColorPaletteSetter` |
-| `addIcon()` | To import icons statically | `IconDefinition` |
-| `fetchFromIconfont()` | To get icon assets from fonticon | `NzIconfontOption` |
-| `changeAssetsSource()` |  To change the location of your icon assets, so that you can deploy these icons wherever you want | `string` |
+| Methods/Properties     | Description                                                                                      | Parameters                  |
+| ---------------------- | ------------------------------------------------------------------------------------------------ | --------------------------- |
+| `twoToneColor`         | To set the default primary color of twotone icons, use Ant Design's official blue by default     | `TwoToneColorPaletteSetter` |
+| `addIcon()`            | To import icons statically                                                                       | `IconDefinition`            |
+| `addIconLiteral()`     | To statically import custom icons                                                                | `string`, `string (SVG)`    |
+| `fetchFromIconfont()`  | To get icon assets from fonticon                                                                 | `NzIconfontOption`          |
+| `changeAssetsSource()` | To change the location of your icon assets, so that you can deploy these icons wherever you want | `string`                    |
 
 ### InjectionToken
 
-| Token | Description | Parameters |
-| ----- | --- | ---- |
-| `NZ_ICONS` | To import icons statically | `IconDefinition[]`, `useValue` |
+| Token                           | Description                                                                                  | Parameters                       |
+| ------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------- |
+| `NZ_ICONS`                      | To import icons statically                                                                   | `IconDefinition[]`, `useValue`   |
 | `NZ_ICON_DEFAULT_TWOTONE_COLOR` | To set the default primary color of twotone icons, use Ant Design's official blue by default | `string (hex color)`, `useValue` |
 
 ### SVG icons
@@ -166,6 +168,14 @@ The following option are available:
 The property scriptUrl should be set to import the svg sprite symbols.
 
 See [iconfont.cn](http://iconfont.cn/help/detail?spm=a313x.7781069.1998910419.15&helptype=code) documents to learn about how to generate scriptUrl.
+
+### Namespace
+
+After `7.0.0-rc.4`, we introduced namespace so you could add your own icons in a convenient way. When you wan to render an icon, you could assign `type` `namespace:name`. Dynamic importing and static importing are both supported.
+
+Static importing. Invoke `addIconLiteral` of `NzIconService`.
+
+Dynamic importing. Make sure that you have put your SVG resources in dir like `assets/${namespace}`. For example, if you have a `panda` icon and in `zoo` namespace, you should put `panda.svg` in `assets/zoo`.
 
 ## FAQ
 

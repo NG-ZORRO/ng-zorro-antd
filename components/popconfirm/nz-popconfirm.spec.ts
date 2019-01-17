@@ -4,7 +4,7 @@ import { fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
 import { NzPopconfirmModule } from './nz-popconfirm.module';
 
@@ -16,7 +16,7 @@ describe('NzPopconfirm', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzPopconfirmModule, NoopAnimationsModule, NzToolTipModule, NzIconModule ],
+      imports     : [ NzPopconfirmModule, NoopAnimationsModule, NzToolTipModule, NzIconTestModule ],
       declarations: [ NzpopconfirmTestWrapperComponent, NzpopconfirmTestNewComponent ]
     });
 
