@@ -67,7 +67,8 @@ When uploading state change, it returns:
       uid: 'uid',      // unique identifier
       name: 'xx.png'   // file name
       status: 'done', // options：uploading, done, error, removed
-      response: '{"status": "success"}' // response from server
+      response: '{"status": "success"}', // response from server
+      linkProps: '{"download": "image"}', // additional html props of file link
    }
    ```
 
