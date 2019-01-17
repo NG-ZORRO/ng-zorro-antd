@@ -1,6 +1,7 @@
-import { Inject, Injectable, Optional, Type } from '@angular/core';
+import { Inject, Injectable, Optional, TemplateRef, Type } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { NzEmptyCustomContent, NZ_DEFAULT_EMPTY_CONTENT } from './nz-empty.config';
+import { NzEmptyCustomContent, NZ_DEFAULT_EMPTY_CONTENT } from './nz-empty-config';
+import { getEmptyContentTypeError } from './nz-empty-error';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,16 @@ export class NzEmptyService<T = any> { // tslint:disable-line:no-any
   }
 
   setDefaultContent(content?: NzEmptyCustomContent): void {
-    this.userDefaultContent$.next(content);
+    if (typeof content === 'string'
+      || content === undefined
+      || content === null
+      || content instanceof TemplateRef
+      || content instanceof Type
+    ) {
+      this.userDefaultContent$.next(content);
+    } else {
+      throw getEmptyContentTypeError(content);
+    }
   }
 
   resetDefault(): void {
