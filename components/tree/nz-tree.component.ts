@@ -56,7 +56,10 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
     if (Array.isArray(value)) {
       if (!this.nzTreeService.isArrayOfNzTreeNode(value)) {
         // has not been new NzTreeNode
-        this.nzNodes = value.map(item => (new NzTreeNode(item)));
+        this.nzNodes = value.map(item => {
+          item.checkStrictly = this.nzCheckStrictly;
+          return new NzTreeNode(item);
+        });
       } else {
         this.nzNodes = value;
       }
@@ -152,7 +155,7 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
   // tslint:disable-next-line:no-any
   @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<any>;
   _searchValue = null;
-  nzDefaultSubject = new ReplaySubject< { type: string, keys: string[] }>(6);
+  nzDefaultSubject = new ReplaySubject<{ type: string, keys: string[] }>(6);
   nzDefaultSubscription: Subscription;
   nzNodes: NzTreeNode[] = [];
   prefixCls = 'ant-tree';

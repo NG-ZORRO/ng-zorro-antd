@@ -22,7 +22,6 @@ export class NzDemoTreeBasicControlledComponent implements OnInit {
   defaultCheckedKeys = [ '0-0-0' ];
   defaultSelectedKeys = [];
   defaultExpandedKeys = [ '0-0', '0-0-0', '0-0-1' ];
-
   nodes = [ {
     title   : '0-0',
     key     : '0-0',

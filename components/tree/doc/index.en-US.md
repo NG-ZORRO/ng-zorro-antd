@@ -29,10 +29,10 @@ Almost anything can be represented in a tree structure. Examples include directo
 | `[nzMultiple]` | Allows selecting multiple treeNodes | `boolean` | `false` |
 | `[nzCheckStrictly]` | Check treeNode precisely; parent treeNode and children treeNodes are not associated | `boolean` | `false` |
 | `[nzExpandAll]` | Whether to expand all treeNodes | `boolean` | `false` |
-| `[nzExpandedKeys]` | Specify the keys of the default expanded treeNodes, two-way binding | `string[]` | `[]` |
-| `[nzCheckedKeys]` | Specifies the keys of the default checked treeNodes, two-way binding | `string[]` | `[]` |
-| `[nzSelectedKeys]` | Specifies the keys of the default selected treeNodes, two-way binding | `string[]` | `[]` |
-| `[nzSearchValue]` | Filter (highlight) treeNodes (see demo `Searchable`), two-way binding | `string` | `null` |
+| `[nzExpandedKeys]` | Specify the keys of the default expanded treeNodes | `string[]` | `[]` |
+| `[nzCheckedKeys]` | Specifies the keys of the default checked treeNodes | `string[]` | `[]` |
+| `[nzSelectedKeys]` | Specifies the keys of the default selected treeNodes | `string[]` | `[]` |
+| `[nzSearchValue]` | Filter (highlight) treeNodes (see demo `Searchable`) | `string` | `null` |
 | `[nzBeforeDrop]` | Drop before the second check, allowing the user to decide whether to allow placement | `(confirm: NzFormatBeforeDropEvent) => Observable<boolean>` | - |
 | `(nzClick)` | Callback function for when the user clicks a treeNode | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzDblClick)` | Callback function for when the user double clicks a treeNode | `EventEmitter<NzFormatEmitEvent>` | - |
@@ -119,7 +119,8 @@ Almost anything can be represented in a tree structure. Examples include directo
 | isMatched | Whether treeNode's title contains nzSearchValue | `boolean` | `true` / `false` |
 | getChildren | Get all children | function | NzTreeNode[] |
 | addChildren | Add child nodes, receive NzTreeNode or NzTreeNodeOptions array, the second parameter is the inserted index position | (children: array, index?: number )=>{} | void |
-| clearChildren | clear the treeNode's children | function | void |
+| clearChildren | Clear the treeNode's children | function | void |
+| remove | Delete self node(except root node) | function | void |
 | setChecked | set isChecked & isHalfChecked state，params: checked , halfChecked | (checked: boolean, halfChecked: boolean=false)=>{} | void |
 | setExpanded | set isExpanded state | (value: boolean)=>{} | void |
 | setSelected | set isSelected state | (value: boolean)=>{} | void |

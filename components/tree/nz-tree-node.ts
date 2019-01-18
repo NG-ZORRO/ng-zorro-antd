@@ -10,6 +10,7 @@ export interface NzTreeNodeOptions {
   disableCheckbox?: boolean;
   expanded?: boolean;
   children?: NzTreeNodeOptions[];
+  checkStrictly?: boolean;
 
   // tslint:disable-next-line:no-any
   [ key: string ]: any;
@@ -35,6 +36,7 @@ export class NzTreeNode {
   isSelected: boolean;
   isLoading: boolean;
   isMatched: boolean;
+  isCheckStrictly: boolean = false;
 
   constructor(option: NzTreeNodeOptions, parent: NzTreeNode = null) {
     this.title = option.title || '---';
@@ -54,6 +56,7 @@ export class NzTreeNode {
     this.isSelected = (!option.disabled && option.selected) || false;
     this.isLoading = false;
     this.isMatched = false;
+    this.isCheckStrictly = option.checkStrictly || false;
 
     /**
      * parent's checked status will affect children while initializing
@@ -66,7 +69,8 @@ export class NzTreeNode {
     if (typeof(option.children) !== 'undefined' && option.children !== null) {
       option.children.forEach(
         (nodeOptions) => {
-          if (option.checked && !option.disabled && !nodeOptions.disabled && !nodeOptions.disableCheckbox) {
+          nodeOptions.checkStrictly = this.isCheckStrictly;
+          if (!this.isCheckStrictly && option.checked && !option.disabled && !nodeOptions.disabled && !nodeOptions.disableCheckbox) {
             nodeOptions.checked = option.checked;
           }
           this.children.push(new NzTreeNode(nodeOptions, this));
@@ -119,7 +123,11 @@ export class NzTreeNode {
           let child = node;
           if (child instanceof NzTreeNode) {
             child.parentNode = this;
+            // to implements parent
+            child.isCheckStrictly = this.isCheckStrictly;
+            child.origin.checkStrictly = this.isCheckStrictly;
           } else {
+            node.checkStrictly = this.isCheckStrictly;
             child = new NzTreeNode(node, this);
           }
           child.level = this.level + 1;
@@ -139,5 +147,11 @@ export class NzTreeNode {
 
   public clearChildren(): void {
     this.children = [];
+  }
+
+  public remove(): void {
+    if (this.getParentNode()) {
+      this.getParentNode().getChildren().splice(this.getParentNode().getChildren().findIndex(v => v.key === this.key), 1);
+    }
   }
 }

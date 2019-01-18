@@ -4,10 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, Observable } from 'rxjs';
-
 import { dispatchMouseEvent, dispatchTouchEvent } from '../core/testing';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
-
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from './interface';
 import { NzTreeNode } from './nz-tree-node';
 import { NzTreeComponent } from './nz-tree.component';
@@ -23,7 +21,7 @@ describe('nz-tree', () => {
   describe('basic tree', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
+        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
         declarations: [ NzTestTreeBasicControlledComponent ]
       }).compileComponents();
       fixture = TestBed.createComponent(NzTestTreeBasicControlledComponent);
@@ -336,7 +334,7 @@ describe('nz-tree', () => {
   describe('test draggable node', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
+        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
         declarations: [ NzTestTreeDraggableComponent ],
         providers   : [
           NzTreeService
@@ -502,7 +500,7 @@ describe('nz-tree', () => {
   describe('test older node property', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
+        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
         declarations: [ NzTestTreeOlderComponent ],
         providers   : [
           NzTreeService
@@ -543,6 +541,9 @@ describe('nz-tree', () => {
       expect(treeInstance.treeComponent.getHalfCheckedNodeList().length).toEqual(1);
       expect(treeInstance.treeComponent.getHalfCheckedNodeList()[ 0 ].key).toEqual('1001');
       expect(treeInstance.treeComponent.getSelectedNodeList().length).toEqual(2);
+      // remove one node
+      treeInstance.treeComponent.getTreeNodes()[ 0 ].getChildren()[ 0 ].remove();
+      expect(treeInstance.treeComponent.getTreeNodes()[ 0 ].getChildren().length).toEqual(1);
       // test clear children
       treeInstance.treeComponent.getTreeNodes()[ 0 ].clearChildren();
       expect(treeInstance.treeComponent.getTreeNodes()[ 0 ].getChildren().length).toEqual(0);
@@ -560,6 +561,7 @@ describe('nz-tree', () => {
       #treeComponent
       [nzData]="nodes"
       [nzCheckable]="true"
+      [nzShowIcon]="true"
       [nzCheckStrictly]="checkStrictly"
       [nzCheckedKeys]="defaultCheckedKeys"
       [nzExpandedKeys]="defaultExpandedKeys"
@@ -593,6 +595,7 @@ export class NzTestTreeBasicControlledComponent {
     title   : '0-0',
     key     : '0-0',
     expanded: true,
+    icon    : 'smile',
     children: [ {
       title   : '0-0-0',
       key     : '0-0-0',
@@ -617,6 +620,7 @@ export class NzTestTreeBasicControlledComponent {
   }, {
     title   : '0-1',
     key     : '0-1',
+    icon    : 'anticon anticon-frown-o',
     children: [
       { title: '0-1-0-0', key: '0-1-0-0', isLeaf: true },
       { title: '0-1-0-1', key: '0-1-0-1', isLeaf: true },

@@ -30,10 +30,10 @@ subtitle: 树形控件
 | `[nzMultiple]` | 支持点选多个节点（节点本身） | `boolean` | `false` |
 | `[nzCheckStrictly]` | checkable状态下节点选择完全受控（父子节点选中状态不再关联） | `boolean` | `false` |
 | `[nzExpandAll]` | 默认展开所有树节点 | `boolean` | `false` |
-| `[nzExpandedKeys]` | 展开指定的树节点,双向绑定 | `string[]` | `[]` |
-| `[nzCheckedKeys]` | 指定选中复选框的树节点,双向绑定 | `string[]` | `[]` |
-| `[nzSelectedKeys]` | 指定选中的树节点,双向绑定 | `string[]` | `[]` |
-| `[nzSearchValue]` | 按需筛选树高亮节点(参考可搜索的树),双向绑定 | `string` | `null` |
+| `[nzExpandedKeys]` | 展开指定的树节点 | `string[]` | `[]` |
+| `[nzCheckedKeys]` | 指定选中复选框的树节点 | `string[]` | `[]` |
+| `[nzSelectedKeys]` | 指定选中的树节点 | `string[]` | `[]` |
+| `[nzSearchValue]` | 按需筛选树高亮节点(参考可搜索的树) | `string` | `null` |
 | `[nzBeforeDrop]` | drop前二次校验,允许用户自行决定是否允许放置 | `(confirm: NzFormatBeforeDropEvent) => Observable<boolean>` | - |
 | `(nzClick)` | 点击树节点触发 | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzDblClick)` | 双击树节点触发 | `EventEmitter<NzFormatEmitEvent>` | - |
@@ -124,6 +124,7 @@ subtitle: 树形控件
 | getChildren | 获取子节点,返回NzTreeNode数组 | function | NzTreeNode[] |
 | addChildren | 添加子节点,接收NzTreeNode或NzTreeNodeOptions数组,第二个参数为插入的索引位置,默认插入末尾 | (children: array, index?: number )=>{} | void |
 | clearChildren | 清除子节点 | function | void |
+| remove | 删除自身节点(仅支持非根节点的node) | function | void |
 | setChecked | 设置checked状态，参数为checked和halfChecked | (checked: boolean, halfChecked: boolean=false)=>{} | void |
 | setExpanded | 设置expanded状态 | (value: boolean)=>{} | void |
 | setSelected | 设置selected状态 | (value: boolean)=>{} | void |
