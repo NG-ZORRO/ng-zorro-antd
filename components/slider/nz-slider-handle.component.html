@@ -1,4 +1,7 @@
-<nz-tooltip *ngIf="nzTipFormatter !== null" #tooltip [nzTitle]="tooltipTitle" [nzTrigger]="null">
-  <div nz-tooltip [class]="nzClassName" [ngStyle]="style"></div>
+<nz-tooltip
+  *ngIf="nzTipFormatter !== null && nzTooltipVisible !== 'never'"
+  [nzTitle]="tooltipTitle"
+  [nzTrigger]="null">
+  <div nz-tooltip class="ant-slider-handle" [ngStyle]="style"></div>
 </nz-tooltip>
-<div *ngIf="nzTipFormatter === null" [class]="nzClassName" [ngStyle]="style"></div>
+<div *ngIf="nzTipFormatter === null || nzTooltipVisible === 'never'" class="ant-slider-handle" [ngStyle]="style"></div>

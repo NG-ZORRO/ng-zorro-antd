@@ -1,89 +1,66 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
 
-import { MarksArray } from './nz-slider-marks.component';
+import { DisplayedStep, ExtendedMark } from './nz-slider-definitions';
 
 @Component({
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-slider-step',
   preserveWhitespaces: false,
   templateUrl        : './nz-slider-step.component.html'
 })
 export class NzSliderStepComponent implements OnChanges {
-  private _vertical = false;
-  private _included = false;
-
-  // Dynamic properties
   @Input() nzLowerBound: number = null;
   @Input() nzUpperBound: number = null;
-  @Input() nzMarksArray: MarksArray;
+  @Input() nzMarksArray: ExtendedMark[];
+  @Input() @InputBoolean() nzVertical = false;
+  @Input() @InputBoolean() nzIncluded = false;
 
-  // Static properties
-  @Input() nzPrefixCls: string;
-
-  @Input()
-  set nzVertical(value: boolean) { // Required
-    this._vertical = toBoolean(value);
-  }
-
-  get nzVertical(): boolean {
-    return this._vertical;
-  }
-
-  @Input()
-  set nzIncluded(value: boolean) {
-    this._included = toBoolean(value);
-  }
-
-  get nzIncluded(): boolean {
-    return this._included;
-  }
-
-  // TODO: using named interface
-  attrs: Array<{ id: number, value: number, offset: number, classes: { [ key: string ]: boolean }, style: object }>;
+  steps: DisplayedStep[];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzMarksArray) {
-      this.buildAttrs();
+      this.buildSteps();
     }
     if (changes.nzMarksArray || changes.nzLowerBound || changes.nzUpperBound) {
       this.togglePointActive();
     }
   }
 
-  trackById(index: number, attr: { id: number, value: number, offset: number, classes: { [ key: string ]: boolean }, style: object }): number {
-    return attr.id;
+  trackById(index: number, step: DisplayedStep): number {
+    return step.value;
   }
 
-  buildAttrs(): void {
+  private buildSteps(): void {
     const orient = this.nzVertical ? 'bottom' : 'left';
-    const prefixCls = this.nzPrefixCls;
-    this.attrs = this.nzMarksArray.map(mark => {
-      const { value, offset } = mark;
+
+    this.steps = this.nzMarksArray.map(mark => {
+      const { value, offset, config } = mark;
+
       return {
-        id     : value,
         value,
         offset,
-        style  : {
+        config,
+        active: false,
+        style : {
           [ orient ]: `${offset}%`
-        },
-        classes: {
-          [ `${prefixCls}-dot` ]       : true,
-          [ `${prefixCls}-dot-active` ]: false
         }
       };
     });
   }
 
-  togglePointActive(): void {
-    if (this.attrs && this.nzLowerBound !== null && this.nzUpperBound !== null) {
-      this.attrs.forEach(attr => {
-        const value = attr.value;
-        const isActive = (!this.nzIncluded && value === this.nzUpperBound) ||
+  private togglePointActive(): void {
+    if (this.steps && this.nzLowerBound !== null && this.nzUpperBound !== null) {
+      this.steps.forEach(step => {
+        const value = step.value;
+        const isActive =
+          (!this.nzIncluded && value === this.nzUpperBound) ||
           (this.nzIncluded && value <= this.nzUpperBound && value >= this.nzLowerBound);
-        attr.classes[ `${this.nzPrefixCls}-dot-active` ] = isActive;
+
+        step.active = isActive;
       });
     }
   }
-
 }
