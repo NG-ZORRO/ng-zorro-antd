@@ -220,7 +220,7 @@ describe('dropdown', () => {
       const submenu = testComponent.nzSubMenuComponent;
       submenu.nzOpen = true;
       submenu.handleOpenEvent(false);
-      testComponent.nzDropDownComponent.$subOpen.subscribe(nestedCallback);
+      testComponent.nzDropDownComponent.subMenuOpen$.subscribe(nestedCallback);
       fixture.detectChanges();
       expect(nestedCallback).toHaveBeenCalledWith(false);
       expect(nestedCallback).toHaveBeenCalledTimes(1);
@@ -314,7 +314,7 @@ describe('dropdown', () => {
       const submenu = testComponent.nzSubMenuComponent;
       submenu.nzOpen = true;
       submenu.handleOpenEvent(false);
-      testComponent.nzDropDownButtonComponent.$subOpen.subscribe(nestedCallback);
+      testComponent.nzDropDownButtonComponent.subMenuOpen$.subscribe(nestedCallback);
       fixture.detectChanges();
       expect(nestedCallback).toHaveBeenCalledWith(false);
       expect(nestedCallback).toHaveBeenCalledTimes(1);

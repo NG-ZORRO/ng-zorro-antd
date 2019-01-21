@@ -1,32 +1,30 @@
 <div
-  #trigger
   cdkOverlayOrigin
   #origin="cdkOverlayOrigin"
-  [class.ant-dropdown-menu-submenu-title]="isInDropDown"
-  [class.ant-menu-submenu-title]="!isInDropDown"
-  (mouseenter)="onMouseEnterEvent($event)"
-  (mouseleave)="onMouseLeaveEvent($event)"
-  (click)="clickSubMenuTitle($event)"
-  [style.paddingLeft.px]="(nzMenuDirective.nzMode === 'inline')?(level*nzMenuDirective.nzInlineIndent):null">
+  [class.ant-dropdown-menu-submenu-title]="nzMenuService.isInDropDown"
+  [class.ant-menu-submenu-title]="!nzMenuService.isInDropDown"
+  (mouseenter)="setMouseEnterState(true)"
+  (mouseleave)="setMouseEnterState(false)"
+  (click)="clickSubMenuTitle()"
+  [style.paddingLeft.px]="nzMenuService.mode === 'inline'? nzSubmenuService.level * nzMenuService.inlineIndent : null">
   <ng-content select="[title]"></ng-content>
-  <span *ngIf="isInDropDown; else notDropdownTpl" class="ant-dropdown-menu-submenu-arrow">
+  <span *ngIf="nzMenuService.isInDropDown; else notDropdownTpl" class="ant-dropdown-menu-submenu-arrow">
     <i nz-icon type="right" class="anticon-right ant-dropdown-menu-submenu-arrow-icon"></i>
   </span>
   <ng-template #notDropdownTpl>
     <i class="ant-menu-submenu-arrow"></i>
   </ng-template>
 </div>
-<ul
-  [class.ant-dropdown-menu]="isInDropDown"
-  [@expandAnimation]="expandState"
-  [class.ant-menu]="!isInDropDown"
-  [class.ant-dropdown-menu-vertical]="isInDropDown"
-  [class.ant-menu-inline]="!isInDropDown"
-  [class.ant-dropdown-menu-sub]="isInDropDown"
-  [class.ant-menu-sub]="!isInDropDown"
-  (mouseleave)="onMouseLeaveEvent($event)"
-  (mouseenter)="onMouseEnterEvent($event)"
-  *ngIf="(nzMenuDirective.nzMode=='inline')">
+<ul *ngIf="nzMenuService.mode === 'inline'"
+  [class.ant-dropdown-menu]="nzMenuService.isInDropDown"
+  [@collapseMotion]="expandState"
+  [class.ant-menu]="!nzMenuService.isInDropDown"
+  [class.ant-dropdown-menu-vertical]="nzMenuService.isInDropDown"
+  [class.ant-menu-inline]="!nzMenuService.isInDropDown"
+  [class.ant-dropdown-menu-sub]="nzMenuService.isInDropDown"
+  [class.ant-menu-sub]="!nzMenuService.isInDropDown"
+  (mouseleave)="setMouseEnterState(false)"
+  (mouseenter)="setMouseEnterState(true)">
   <ng-template [ngTemplateOutlet]="subMenuTemplate"></ng-template>
 </ul>
 <ng-template
@@ -35,24 +33,24 @@
   [cdkConnectedOverlayOrigin]="origin"
   [cdkConnectedOverlayWidth]="triggerWidth"
   (positionChange)="onPositionChange($event)"
-  [cdkConnectedOverlayOpen]="nzOpen&&(nzMenuDirective.nzMode!='inline')">
-  <div
-    class="ant-menu-submenu ant-menu-submenu-popup"
-    [class.ant-menu-light]="nzMenuDirective.nzTheme=='light'"
-    [class.ant-menu-dark]="nzMenuDirective.nzTheme=='dark'"
-    [class.ant-menu-submenu-placement-bottomLeft]="subMenuMode=='horizontal'"
-    [class.ant-menu-submenu-placement-rightTop]="(subMenuMode=='vertical')&&(placement=='rightTop')"
-    [class.ant-menu-submenu-placement-leftTop]="(subMenuMode=='vertical')&&(placement=='leftTop')"
-    [@expandAnimation]="expandState"
-    (mouseleave)="onMouseLeaveEvent($event)"
-    (mouseenter)="onMouseEnterEvent($event)">
+  [cdkConnectedOverlayOpen]="nzOpen && nzMenuService.mode !== 'inline'">
+  <div class="ant-menu-submenu ant-menu-submenu-popup"
+    [class.ant-menu-light]="nzMenuService.theme === 'light'"
+    [class.ant-menu-dark]="nzMenuService.theme === 'dark'"
+    [class.ant-menu-submenu-placement-bottomLeft]="nzSubmenuService.mode === 'horizontal'"
+    [class.ant-menu-submenu-placement-rightTop]="nzSubmenuService.mode === 'vertical' && placement === 'rightTop'"
+    [class.ant-menu-submenu-placement-leftTop]="nzSubmenuService.mode === 'vertical' && placement === 'leftTop'"
+    [@slideMotion]="expandState"
+    [@zoomBigMotion]="expandState"
+    (mouseleave)="setMouseEnterState(false)"
+    (mouseenter)="setMouseEnterState(true)">
     <ul
-      [class.ant-dropdown-menu]="isInDropDown"
-      [class.ant-menu]="!isInDropDown"
-      [class.ant-dropdown-menu-vertical]="isInDropDown"
-      [class.ant-menu-vertical]="!isInDropDown"
-      [class.ant-dropdown-menu-sub]="isInDropDown"
-      [class.ant-menu-sub]="!isInDropDown">
+      [class.ant-dropdown-menu]="nzMenuService.isInDropDown"
+      [class.ant-menu]="!nzMenuService.isInDropDown"
+      [class.ant-dropdown-menu-vertical]="nzMenuService.isInDropDown"
+      [class.ant-menu-vertical]="!nzMenuService.isInDropDown"
+      [class.ant-dropdown-menu-sub]="nzMenuService.isInDropDown"
+      [class.ant-menu-sub]="!nzMenuService.isInDropDown">
       <ng-template [ngTemplateOutlet]="subMenuTemplate"></ng-template>
     </ul>
   </div>

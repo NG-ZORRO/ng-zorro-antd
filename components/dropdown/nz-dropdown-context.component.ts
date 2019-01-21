@@ -3,6 +3,7 @@ import { AfterViewInit, Component, TemplateRef } from '@angular/core';
 import { slideMotion } from '../core/animation/slide';
 
 import { NzDropdownService } from './nz-dropdown.service';
+import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 
 @Component({
   selector   : 'nz-dropdown-context',
@@ -10,8 +11,9 @@ import { NzDropdownService } from './nz-dropdown.service';
     slideMotion
   ],
   templateUrl: './nz-dropdown-context.component.html',
+  providers  : [ NzMenuDropdownService ],
   styles     : [
-    `
+      `
       .ant-dropdown {
         top: 100%;
         left: 0;

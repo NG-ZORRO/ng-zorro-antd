@@ -5,7 +5,6 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
-  OnInit,
   Output,
   Renderer2,
   ViewChild
@@ -15,6 +14,7 @@ import { slideMotion } from '../core/animation/slide';
 
 import { NzDropDownComponent } from './nz-dropdown.component';
 import { NzDropDownDirective } from './nz-dropdown.directive';
+import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 
 @Component({
   selector           : 'nz-dropdown-button',
@@ -22,6 +22,7 @@ import { NzDropDownDirective } from './nz-dropdown.directive';
   animations         : [
     slideMotion
   ],
+  providers          : [ NzMenuDropdownService ],
   templateUrl        : './nz-dropdown-button.component.html',
   styles             : [ `
     :host {
@@ -40,7 +41,7 @@ import { NzDropDownDirective } from './nz-dropdown.directive';
   ` ]
 })
 
-export class NzDropDownButtonComponent extends NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
+export class NzDropDownButtonComponent extends NzDropDownComponent implements OnDestroy, AfterViewInit {
   @Input() nzSize = 'default';
   @Input() nzType = 'default';
   @ViewChild('content') content;
@@ -61,8 +62,8 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
     this.changeDetector.markForCheck();
   }
 
-  constructor(renderer: Renderer2, changeDetector: ChangeDetectorRef) {
-    super(renderer, changeDetector);
+  constructor(renderer: Renderer2, changeDetector: ChangeDetectorRef, nzMenuDropdownService: NzMenuDropdownService) {
+    super(renderer, changeDetector, nzMenuDropdownService);
   }
 
   /** rewrite afterViewInit hook */

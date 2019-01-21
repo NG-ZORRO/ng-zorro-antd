@@ -7,7 +7,6 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
-  OnInit,
   Output,
   Renderer2,
   ViewChild
@@ -22,18 +21,20 @@ import { toBoolean } from '../core/util/convert';
 import { NzMenuDirective } from '../menu/nz-menu.directive';
 
 import { NzDropDownDirective } from './nz-dropdown.directive';
+import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 
 export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 
 @Component({
   selector           : 'nz-dropdown',
   preserveWhitespaces: false,
+  providers          : [ NzMenuDropdownService ],
   animations         : [
     slideMotion
   ],
   templateUrl        : './nz-dropdown.component.html',
   styles             : [
-    `
+      `
       .ant-dropdown {
         top: 100%;
         left: 0;
@@ -46,7 +47,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
   ]
 })
 
-export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
+export class NzDropDownComponent implements OnDestroy, AfterViewInit {
   private _clickHide = true;
   private _visible = false;
   private _disabled = false;
@@ -57,7 +58,6 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
   placement: NzPlacement = 'bottomLeft';
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   positions: ConnectionPositionPair[] = [ ...DEFAULT_DROPDOWN_POSITIONS ];
-  $subOpen = new BehaviorSubject<boolean>(false);
   $visibleChange = new Subject<boolean>();
   @ContentChild(NzDropDownDirective) nzOrigin: NzDropDownDirective;
   @ContentChild(NzMenuDirective) nzMenu: NzMenuDirective;
@@ -158,7 +158,7 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
       const $menuItemClick = this.nzMenu.nzClick.asObservable().pipe(mapTo(false));
       $pre = merge($pre, $menuItemClick);
     }
-    const final$ = combineLatest($pre, this.$subOpen).pipe(map(value => value[ 0 ] || value[ 1 ]), debounceTime(50), distinctUntilChanged());
+    const final$ = combineLatest($pre, this.nzMenuDropdownService.menuOpen$).pipe(map(value => value[ 0 ] || value[ 1 ]), debounceTime(50), distinctUntilChanged());
     final$.pipe(takeUntil(this.unsubscribe$)).subscribe(this.onVisibleChange);
   }
 
@@ -171,12 +171,6 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
       this.nzVisibleChange.emit(this.nzVisible);
     }
     this.changeDetector.markForCheck();
-  }
-
-  ngOnInit(): void {
-    if (this.nzMenu) {
-      this.nzMenu.nzInDropDown = true;
-    }
   }
 
   ngOnDestroy(): void {
@@ -202,6 +196,6 @@ export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.nzTrigger === 'click';
   }
 
-  constructor(private renderer: Renderer2, protected changeDetector: ChangeDetectorRef) {
+  constructor(private renderer: Renderer2, protected changeDetector: ChangeDetectorRef, private nzMenuDropdownService: NzMenuDropdownService) {
   }
 }

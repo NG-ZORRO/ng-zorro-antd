@@ -9,8 +9,7 @@
   [cdkConnectedOverlayMinWidth]="triggerWidth"
   (positionChange)="onPositionChange($event)"
   [cdkConnectedOverlayOpen]="nzVisible">
-  <div
-    class="{{'ant-dropdown ant-dropdown-placement-'+nzPlacement}}"
+  <div class="{{'ant-dropdown ant-dropdown-placement-'+nzPlacement}}"
     [ngClass]="nzOverlayClassName" [ngStyle]="nzOverlayStyle"
     [@slideMotion]="dropDownPosition"
     (mouseenter)="onMouseEnterEvent()"
