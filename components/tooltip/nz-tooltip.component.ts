@@ -89,7 +89,7 @@ export class NzToolTipComponent implements OnChanges {
 
   constructor(public cdr: ChangeDetectorRef) {}
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     Promise.resolve().then(() => {
       this.updatePosition();
     });
