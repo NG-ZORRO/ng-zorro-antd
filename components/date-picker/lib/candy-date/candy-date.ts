@@ -3,8 +3,6 @@ import addYears from 'date-fns/add_years';
 import endOfMonth from 'date-fns/end_of_month';
 import setDay from 'date-fns/set_day';
 import setMonth from 'date-fns/set_month';
-// import setYear from 'date-fns/set_year';
-import { firstDayOfWeek } from './util';
 
 /**
  * Wrapping kind APIs for date operating and unify
@@ -260,13 +258,6 @@ export class CandyDate {
 
   isInvalid(): boolean {
     return isNaN(this.nativeDate.valueOf());
-  }
-
-  /**
-   * 0-6 (Sunday to Saturday)
-   */
-  firstDayOfWeek(locale?: string): number {
-    return firstDayOfWeek(locale);
   }
 
   private toNativeDate(date: CandyDate | Date = this): Date {

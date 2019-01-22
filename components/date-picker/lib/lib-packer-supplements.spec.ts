@@ -1,9 +1,10 @@
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { fakeAsync, inject, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { fakeAsync, inject, TestBed } from '@angular/core/testing';
+
+import { DateHelperService } from '../../i18n/date-helper.service';
 import { NzI18nService } from '../../i18n/nz-i18n.service';
-
 import { AbstractPickerComponent } from '../abstract-picker.component';
 import { CalendarHeaderComponent } from './calendar/calendar-header.component';
 import { TodayButtonComponent } from './calendar/today-button.component';
@@ -18,6 +19,7 @@ registerLocaleData(zh);
 
 describe('Coverage supplements', () => {
   let componentInstance: any; // tslint:disable-line:no-any
+  let dateHelper: DateHelperService;
   let i18n: NzI18nService;
 
   beforeEach(fakeAsync(() => {
@@ -28,14 +30,15 @@ describe('Coverage supplements', () => {
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([ NzI18nService ], (service) => {
-    i18n = service;
+  beforeEach(inject([ NzI18nService, DateHelperService ], (i18nService, dateHelperService) => {
+    dateHelper = dateHelperService;
+    i18n = i18nService;
   }));
 
   describe('CalendarHeader', () => {
 
     beforeEach(() => {
-      componentInstance = new CalendarHeaderComponent(i18n);
+      componentInstance = new CalendarHeaderComponent(dateHelper);
     });
 
     it('should not render if no relative changes', () => { // Currently: value/showTimePicker/panelMode will trigger render()
@@ -43,15 +46,6 @@ describe('Coverage supplements', () => {
       componentInstance.ngOnChanges({});
       expect(componentInstance.render).not.toHaveBeenCalled();
     });
-
-    // it('should work with forceToMonth branch', () => {
-    //   componentInstance.forceToMonth = true;
-    //   spyOn(componentInstance, 'changePanel');
-    //   componentInstance.onChooseDecade(new CandyDate());
-    //   expect(componentInstance.changePanel).toHaveBeenCalledWith('year');
-    //   componentInstance.onChooseYear(new CandyDate());
-    //   expect(componentInstance.changePanel).toHaveBeenCalledWith('month');
-    // });
 
     it('should step into yearToMonth branch', () => {
       const testDate = new CandyDate();
@@ -91,7 +85,7 @@ describe('Coverage supplements', () => {
   describe('TodayButton', () => {
 
     beforeEach(() => {
-      componentInstance = new TodayButtonComponent(i18n);
+      componentInstance = new TodayButtonComponent(dateHelper);
     });
 
     it('should cover untouched branches', () => {
@@ -105,7 +99,7 @@ describe('Coverage supplements', () => {
   describe('DateTable', () => {
 
     beforeEach(() => {
-      componentInstance = new DateTableComponent(i18n);
+      componentInstance = new DateTableComponent(i18n, dateHelper);
     });
 
     it('should cover untouched branches', () => {
@@ -122,7 +116,7 @@ describe('Coverage supplements', () => {
   describe('MonthTable', () => {
 
     beforeEach(() => {
-      componentInstance = new MonthTableComponent(i18n);
+      componentInstance = new MonthTableComponent(dateHelper);
     });
 
     it('should cover untouched branches', () => {

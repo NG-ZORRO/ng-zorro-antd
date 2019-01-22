@@ -29,6 +29,7 @@
 
 <div class="{{ prefixCls }}-body">
   <date-table
+    [locale]="locale"
     [showWeek]="showWeek"
     [value]="value"
     (valueChange)="onSelectDate($event)"

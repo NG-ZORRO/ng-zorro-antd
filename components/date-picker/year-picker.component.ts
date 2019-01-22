@@ -11,6 +11,7 @@ import {
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
+import { DateHelperService } from '../i18n/date-helper.service';
 import { HeaderPickerComponent, SupportHeaderPanel } from './header-picker.component';
 
 @Component({
@@ -30,8 +31,8 @@ export class NzYearPickerComponent extends HeaderPickerComponent {
 
   endPanelMode: SupportHeaderPanel = 'year';
 
-  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef) {
-    super(i18n, cdr);
+  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, dateHelper: DateHelperService, renderer: Renderer2, elementRef: ElementRef) {
+    super(i18n, cdr, dateHelper);
     renderer.addClass(elementRef.nativeElement, 'ant-calendar-picker');
   }
 }

@@ -1,20 +1,15 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import * as isBefore from 'date-fns/is_before';
 import { dispatchMouseEvent } from '../core/testing';
 import { NzInputModule } from '../input/nz-input.module';
 import { NzDatePickerModule } from './date-picker.module';
 import { CandyDate } from './lib/candy-date';
 import { PickerResultSingle } from './standard-types';
-
-registerLocaleData(zh);
 
 describe('NzYearPickerComponent', () => {
   let fixture: ComponentFixture<NzTestYearPickerComponent>;
