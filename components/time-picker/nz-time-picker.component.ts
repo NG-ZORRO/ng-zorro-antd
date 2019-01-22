@@ -9,6 +9,7 @@ import { CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -200,7 +201,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   constructor(private element: ElementRef,
               private renderer: Renderer2,
-              private updateCls: UpdateCls) {
+              private updateCls: UpdateCls,
+              private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -215,6 +217,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   writeValue(time: Date | null): void {
     this._value = time;
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (time: Date) => void): void {
@@ -227,5 +230,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
+    this.cdr.markForCheck();
   }
 }
