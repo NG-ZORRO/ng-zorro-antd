@@ -1,5 +1,5 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { forwardRef, Component, ContentChild, EventEmitter, HostBinding, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { forwardRef, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, EventEmitter, HostBinding, Input, OnInit, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import addDays from 'date-fns/add_days';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
@@ -20,6 +20,8 @@ import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
 import { NzDateCellDirective as DateCell, NzDateFullCellDirective as DateFullCell, NzMonthCellDirective as MonthCell, NzMonthFullCellDirective as MonthFullCell } from './nz-calendar-cells';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-calendar',
   templateUrl: './nz-calendar.component.html',
   providers: [
@@ -94,7 +96,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     return startOfWeek(startOfMonth(this.activeDate));
   }
 
-  constructor(private i18n: I18n) { }
+  constructor(private i18n: I18n, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.setUpDaysInWeek();
@@ -126,6 +128,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
 
   writeValue(value: Date|null): void {
     this.updateDate(value || new Date(), false);
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (date: Date) => void): void {
