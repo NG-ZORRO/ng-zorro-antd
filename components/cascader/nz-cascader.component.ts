@@ -159,13 +159,13 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
 
   get menuCls(): ClassMap {
     return {
-      [ `${ this.nzMenuClassName }` ]: !!this.nzMenuClassName
+      [ `${this.nzMenuClassName}` ]: !!this.nzMenuClassName
     };
   }
 
   get menuColumnCls(): ClassMap {
     return {
-      [ `${ this.nzColumnClassName }` ]: !!this.nzColumnClassName
+      [ `${this.nzColumnClassName}` ]: !!this.nzColumnClassName
     };
   }
 
@@ -243,8 +243,8 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     let option = this.findOption(value, index);
     if (!option) {
       option = typeof value === 'object' ? value : {
-        [ `${ this.nzValueProperty }` ]: value,
-        [ `${ this.nzLabelProperty }` ]: value
+        [ `${this.nzValueProperty}` ]: value,
+        [ `${this.nzLabelProperty}` ]: value
       };
     }
     this.setOptionActivated(option, index, false, false);
@@ -641,7 +641,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
 
       if (this.input) {
         const width = this.input.nativeElement.offsetWidth;
-        this.dropdownWidthStyle = `${ width }px`;
+        this.dropdownWidthStyle = `${width}px`;
       }
     }
 
@@ -844,7 +844,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   }
 
   /**
-   * Reposition the cascader panel. When a menu opens, the cascader expanded
+   * Reposition the cascader panel. When a menu opens, the cascader expands
    * and may exceed the browser boundary.
    */
   private reposition(): void {
