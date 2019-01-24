@@ -56,7 +56,6 @@ describe('anchor', () => {
       page.scrollTo();
       setTimeout(() => {
         const inkNode = page.getEl('.ant-anchor-ink-ball');
-        debugger;
         expect(+inkNode.style.top.replace('px', '')).toBeGreaterThan(0);
         expect(context._scroll).toHaveBeenCalled();
         done();
