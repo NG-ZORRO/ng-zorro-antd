@@ -69,6 +69,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective: QueryList<NzMenuItemDirective>;
   @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
   @ViewChild(CdkOverlayOrigin, { read: ElementRef }) cdkOverlayOrigin: ElementRef;
+  @Input() nzPaddingLeft: number;
   @Input() @InputBoolean() nzOpen = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Output() readonly nzOpenChange: EventEmitter<boolean> = new EventEmitter();
@@ -78,7 +79,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   }
 
   clickSubMenuTitle(): void {
-    if (!this.nzDisabled && this.nzSubmenuService.mode === 'inline' && !this.nzMenuService.isInDropDown) {
+    if (this.nzSubmenuService.mode === 'inline' && !this.nzMenuService.isInDropDown && !this.nzDisabled) {
       this.setOpenState(!this.nzOpen);
     }
   }
@@ -139,27 +140,18 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
       } else {
         this.expandState = 'collapsed';
       }
-    });
-    this.nzSubmenuService.mode$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(mode => {
       this.overlayPositions = mode === 'horizontal' ? [ POSITION_MAP.bottomLeft ] : [ POSITION_MAP.rightTop, POSITION_MAP.leftTop ];
-      this.setClassMap();
-    });
-    this.nzSubmenuService.menuOpen$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe((data: boolean) => {
-      this.nzMenuService.menuOpen$.next(data);
-    });
-    this.nzSubmenuService.open$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(open => {
       if (open !== this.nzOpen) {
         this.nzOpen = open;
         this.nzOpenChange.emit(this.nzOpen);
       }
       this.setClassMap();
       this.setTriggerWidth();
+    });
+    this.nzSubmenuService.menuOpen$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe((data: boolean) => {
+      this.nzMenuService.menuOpen$.next(data);
     });
     merge(
       this.nzMenuService.mode$,

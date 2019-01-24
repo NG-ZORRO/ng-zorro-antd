@@ -55,12 +55,13 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   private listOfOpenedNzSubMenuComponent: NzSubMenuComponent[] = [];
   @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective: QueryList<NzMenuItemDirective>;
   @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent: QueryList<NzSubMenuComponent>;
-  @Output() readonly nzClick = new EventEmitter<NzMenuItemDirective>();
   @Input() nzInlineIndent = 24;
   @Input() nzTheme: 'light' | 'dark' = 'light';
   @Input() nzMode: NzDirectionVHIType = 'vertical';
+  @Input() @InputBoolean() nzInDropDown = false;
   @Input() @InputBoolean() nzInlineCollapsed = false;
-  @Input() @InputBoolean() nzSelectable = true;
+  @Input() @InputBoolean() nzSelectable = !this.nzMenuService.isInDropDown;
+  @Output() readonly nzClick = new EventEmitter<NzMenuItemDirective>();
 
   updateInlineCollapse(): void {
     if (this.listOfNzMenuItemDirective) {
@@ -118,11 +119,17 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
     if (changes.nzInlineIndent) {
       this.nzMenuService.setInlineIndent(this.nzInlineIndent);
     }
+    if (changes.nzInDropDown) {
+      this.nzMenuService.isInDropDown = this.nzInDropDown;
+    }
     if (changes.nzTheme) {
       this.nzMenuService.setTheme(this.nzTheme);
     }
     if (changes.nzMode) {
       this.nzMenuService.setMode(this.nzMode);
+      if (!changes.nzMode.isFirstChange() && this.listOfNzSubMenuComponent) {
+        this.listOfNzSubMenuComponent.forEach(submenu => submenu.setOpenState(false));
+      }
     }
     if (changes.nzTheme || changes.nzMode || changes.nzInlineCollapsed) {
       this.setClassMap();

@@ -239,7 +239,7 @@ export class NzThComponent {
 
   hideDropDown(): void {
     this.nzDropDownComponent.nzVisible = false;
-    this.nzDropDownComponent.hide();
+    this.nzDropDownComponent.setVisibleStateWhen(false);
     this.filterVisible = false;
   }
 

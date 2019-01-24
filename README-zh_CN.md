@@ -14,7 +14,6 @@ Ant Design 的 Angular 实现，开发和服务于企业级后台产品。
 
 [![Travis branch](https://img.shields.io/travis/NG-ZORRO/ng-zorro-antd/master.svg?style=flat-square)](https://travis-ci.org/NG-ZORRO/ng-zorro-antd)
 [![Codecov](https://img.shields.io/codecov/c/github/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://codecov.io/gh/NG-ZORRO/ng-zorro-antd)
-[![Dependencies](https://img.shields.io/david/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://david-dm.org/NG-ZORRO/ng-zorro-antd)
 [![GitHub Release Date](https://img.shields.io/github/release-date/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/releases)
 [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-atnd)
 [![NPM downloads](http://img.shields.io/npm/dm/ng-zorro-antd.svg?style=flat-square)](https://npmjs.org/package/ng-zorro-antd)

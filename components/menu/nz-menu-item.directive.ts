@@ -12,6 +12,7 @@ import {
 import { merge, EMPTY, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { isNotNil } from '../core/util';
 
 import { InputBoolean } from '../core/util/convert';
 import { NzMenuService } from './nz-menu.service';
@@ -29,6 +30,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject();
   private originalPadding = null;
   selected$ = new Subject<boolean>();
+  @Input() nzPaddingLeft: number;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzSelected = false;
 
@@ -81,8 +83,12 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy {
     ).subscribe(() => {
       let padding = null;
       if (this.nzMenuService.mode === 'inline') {
-        const level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
-        padding = level * this.nzMenuService.inlineIndent;
+        if (isNotNil(this.nzPaddingLeft)) {
+          padding = this.nzPaddingLeft;
+        } else {
+          const level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
+          padding = level * this.nzMenuService.inlineIndent;
+        }
       } else {
         padding = this.originalPadding;
       }
