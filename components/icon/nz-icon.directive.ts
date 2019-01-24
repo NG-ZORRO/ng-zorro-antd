@@ -65,7 +65,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     if (ret) {
       let type = ret.name.replace('anticon-', '');
       if (type.includes('verticle')) {
-        type = type.replace('verticle', 'vertical');
+        type = 'up';
         this.iconService.warnAPI('cross');
       }
       if (type.startsWith('cross')) {
@@ -101,7 +101,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   }
 
   private setSVGData(svg: SVGElement): void {
-    if (typeof this.type === 'string') {
+    if (typeof this.type === 'string' && svg) {
       this.renderer.setAttribute(svg, 'data-icon', this.type);
       this.renderer.setAttribute(svg, 'aria-hidden', 'true');
     }

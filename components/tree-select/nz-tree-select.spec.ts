@@ -130,6 +130,16 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(null);
     }));
+    it('should update index when overlay pane have sibling node', fakeAsync(() => {
+      const fixture_next = TestBed.createComponent(NzTestTreeSelectBasicComponent);
+      fixture_next.detectChanges();
+      const dropdownBeforePane = overlayContainerElement.querySelectorAll('.cdk-overlay-pane')[0];
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      tick();
+      const dropdownAfterPane = overlayContainerElement.querySelectorAll('.cdk-overlay-pane')[1];
+      expect(dropdownAfterPane.getAttribute('id')).toBe(dropdownBeforePane.getAttribute('id'));
+    }));
     it('should set null value work', fakeAsync(() => {
       fixture.detectChanges();
       expect(testComponent.value).toBe('10001');
@@ -176,6 +186,23 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       tick();
       expect(treeSelect.nativeElement.querySelector('.ant-select-search--inline')).toBeNull();
+    }));
+    it('should display no data', fakeAsync(() => {
+      treeSelectComponent.updateSelectedNodes();
+      fixture.detectChanges();
+      testComponent.showSearch = true;
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('nz-tree').getAttribute('hidden')).toBeNull();
+      expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeFalsy();
+      fixture.detectChanges();
+      treeSelectComponent.inputValue = 'invalid_value';
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('nz-tree').getAttribute('hidden')).toBe('');
+      expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeTruthy();
     }));
     it('should selectedValueDisplay style correct', fakeAsync(() => {
       testComponent.showSearch = true;
@@ -313,6 +340,25 @@ describe('tree-select component', () => {
       expect(treeSelectComponent.selectedNodes.length).toBe(0);
       expect(treeSelectComponent.nzOpen).toBe(false);
     }));
+
+    it('should display no data', fakeAsync(() => {
+      treeSelectComponent.updateSelectedNodes();
+      fixture.detectChanges();
+      testComponent.showSearch = true;
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('nz-tree').getAttribute('hidden')).toBeNull();
+      expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeFalsy();
+      fixture.detectChanges();
+      treeSelectComponent.inputValue = 'invalid_value';
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('nz-tree').getAttribute('hidden')).toBe('');
+      expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeTruthy();
+    }));
+
   });
 
   describe('form', () => {

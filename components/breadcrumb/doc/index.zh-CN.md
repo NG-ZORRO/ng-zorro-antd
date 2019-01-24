@@ -17,10 +17,10 @@ title: Breadcrumb
 
 ### nz-breadcrumb
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| --- | --- | --- | --- | --- |
-| `[nzSeparator]` | 分隔符自定义 | string丨`TemplateRef<void>` |  | '/' |
-| `[nzAutoGenerate]` | 自动生成 Breadcrumb | boolean |  | `false` |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `[nzSeparator]` | 分隔符自定义 | `string｜TemplateRef<void>` | `'/'` |
+| `[nzAutoGenerate]` | 自动生成 Breadcrumb | `boolean` | `false` |
 
 使用 `[nzAutoGenerate]` 时，需要在路由类中定义 `data`:
 

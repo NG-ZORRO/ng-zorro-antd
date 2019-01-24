@@ -6,12 +6,21 @@ import {
   trigger,
   AnimationTriggerMetadata
 } from '@angular/animations';
+import { AnimationCurves, AnimationDuration } from './animation';
 
-export const dropDownAnimation: AnimationTriggerMetadata = trigger('dropDownAnimation', [
+const ANIMATION_TRANSITION_IN = `${AnimationDuration.BASE} ${AnimationCurves.EASE_OUT_QUINT}`;
+const ANIMATION_TRANSITION_OUT = `${AnimationDuration.BASE} ${AnimationCurves.EASE_IN_QUINT}`;
+
+export const slideMotion: AnimationTriggerMetadata = trigger('slideMotion', [
   state('bottom', style({
     opacity        : 1,
     transform      : 'scaleY(1)',
     transformOrigin: '0% 0%'
+  })),
+  state('top', style({
+    opacity        : 1,
+    transform      : 'scaleY(1)',
+    transformOrigin: '0% 100%'
   })),
   transition('void => bottom', [
     style({
@@ -19,30 +28,25 @@ export const dropDownAnimation: AnimationTriggerMetadata = trigger('dropDownAnim
       transform      : 'scaleY(0.8)',
       transformOrigin: '0% 0%'
     }),
-    animate('150ms cubic-bezier(0.23, 1, 0.32, 1)')
+    animate(ANIMATION_TRANSITION_IN)
   ]),
   transition('bottom => void', [
-    animate('150ms cubic-bezier(0.23, 1, 0.32, 1)', style({
+    animate(ANIMATION_TRANSITION_OUT, style({
       opacity        : 0,
       transform      : 'scaleY(0.8)',
       transformOrigin: '0% 0%'
     }))
   ]),
-  state('top', style({
-    opacity        : 1,
-    transform      : 'scaleY(1)',
-    transformOrigin: '0% 100%'
-  })),
   transition('void => top', [
     style({
       opacity        : 0,
       transform      : 'scaleY(0.8)',
       transformOrigin: '0% 100%'
     }),
-    animate('150ms cubic-bezier(0.23, 1, 0.32, 1)')
+    animate(ANIMATION_TRANSITION_IN)
   ]),
   transition('top => void', [
-    animate('150ms cubic-bezier(0.23, 1, 0.32, 1)', style({
+    animate(ANIMATION_TRANSITION_OUT, style({
       opacity        : 0,
       transform      : 'scaleY(0.8)',
       transformOrigin: '0% 100%'

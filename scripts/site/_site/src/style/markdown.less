@@ -227,6 +227,17 @@
     width: 13%;
     font-size: @font-size-base - 1px;
   }
+  // 移除【类型】与【默认值】栏的代码样式
+  td:nth-child(3),
+  td:last-child {
+    code {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      font-size: inherit;
+    }
+  }
 }
 
 .grid-demo,

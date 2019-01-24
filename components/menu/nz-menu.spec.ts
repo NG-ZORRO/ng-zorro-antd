@@ -8,7 +8,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
 import { dispatchFakeEvent } from '../core/testing';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
 import { NzDemoMenuHorizontalComponent } from './demo/horizontal';
 import { NzDemoMenuInlineComponent } from './demo/inline';
@@ -28,7 +28,7 @@ describe('menu', () => {
   beforeEach(async(() => {
     const dir = 'ltr';
     TestBed.configureTestingModule({
-      imports     : [ NzMenuModule, NoopAnimationsModule, NoopAnimationsModule, NzIconModule ],
+      imports     : [ NzMenuModule, NoopAnimationsModule, NoopAnimationsModule, NzIconTestModule ],
       declarations: [ NzDemoMenuHorizontalComponent, NzDemoMenuInlineComponent, NzDemoMenuInlineCollapsedComponent, NzDemoMenuSiderCurrentComponent, NzDemoMenuThemeComponent, NzDemoMenuSwitchModeComponent, NzTestMenuHorizontalComponent, NzTestMenuInlineComponent, NzDemoMenuNgForComponent ],
       schemas     : [ NO_ERRORS_SCHEMA ],
       providers   : [

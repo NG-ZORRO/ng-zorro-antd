@@ -87,6 +87,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @InputBoolean() nzAsyncData = false;
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzDefaultExpandAll = false;
+  @Input() nzNotFoundContent: string;
   @Input() nzNodes: NzTreeNode[] = [];
   @Input() nzOpen = false;
   @Input() nzSize = 'default';
@@ -108,6 +109,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
 
   isComposing = false;
   isDestroy = true;
+  isNotFound = false;
   inputValue = '';
   dropDownClassMap: { [ className: string ]: boolean };
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
@@ -223,7 +225,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
       this.closeDropDown();
     } else {
       this.openDropdown();
-      if (this.nzShowSearch) {
+      if (this.nzShowSearch || this.isMultiple) {
         this.focusOnInput();
       }
     }
@@ -236,6 +238,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
       this.updateCdkConnectedOverlayStatus();
       this.updatePosition();
       this.updateDropDownClassMap();
+      this.updateStackingOrder();
     }
   }
 
@@ -305,6 +308,14 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     });
   }
 
+  updateStackingOrder(): void {
+    if (this.renderer.nextSibling(this.overlayRef.hostElement)) {
+      const parentNode = this.renderer.parentNode(this.overlayRef.hostElement);
+      this.renderer.appendChild(parentNode, this.overlayRef.backdropElement);
+      this.renderer.appendChild(parentNode, this.overlayRef.hostElement);
+    }
+  }
+
   attachOverlay(): void {
     this.portal = new TemplatePortal(this.dropdownTemplate, this.viewContainerRef);
     this.overlayRef = this.overlay.create(this.getOverlayConfig());
@@ -329,18 +340,18 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
       new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
     ];
     this.positionStrategy = this.overlay.position()
-    .flexibleConnectedTo(this.treeSelect)
-    .withPositions(positions)
-    .withFlexibleDimensions(false)
-    .withPush(false);
+      .flexibleConnectedTo(this.treeSelect)
+      .withPositions(positions)
+      .withFlexibleDimensions(false)
+      .withPush(false);
     return this.positionStrategy;
   }
 
   subscribeOverlayBackdropClick(): Subscription {
     return this.overlayRef.backdropClick()
-    .subscribe(() => {
-      this.closeDropDown();
-    });
+      .subscribe(() => {
+        this.closeDropDown();
+      });
   }
 
   subscribeSelectionChange(): Subscription {
@@ -368,14 +379,13 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
       this.updateSelectedNodes();
       const value = this.selectedNodes.map(node => node.key);
       this.value = [ ...value ];
-      if (this.nzShowSearch) {
+      if (this.nzShowSearch || this.isMultiple) {
         this.inputValue = '';
+        this.isNotFound = false;
       }
       if (this.isMultiple) {
         this.onChange(value);
-        if (this.nzShowSearch) {
-          this.focusOnInput();
-        }
+        this.focusOnInput();
       } else {
         this.closeDropDown();
         this.onChange(value.length ? value[ 0 ] : null);
@@ -410,6 +420,14 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     });
     this.nzCleared.emit();
     this.closeDropDown();
+  }
+
+  setSearchValues($event: NzFormatEmitEvent): void {
+    Promise.resolve().then(() => {
+      this.isNotFound = (this.nzShowSearch || this.isMultiple)
+        && this.inputValue
+        && $event.matchedKeys.length === 0;
+    });
   }
 
   updateDropDownClassMap(): void {

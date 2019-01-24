@@ -91,4 +91,4 @@ $ ng add ng-zorro-antd
 3. [![Gitter](https://img.shields.io/gitter/room/ng-zorro/ng-zorro-antd.svg?style=flat-square)](https://gitter.im/ng-zorro/ng-zorro-antd)
 4. 加入钉钉 NG-ZORRO 自助服务群（中文）
 
-<img src="https://img.alicdn.com/tfs/TB17P11r_qWBKNjSZFxXXcpLpXa-750-990.jpg" width="300">
+<img src="https://img.alicdn.com/tfs/TB1eF.gzSzqK1RjSZFjXXblCFXa-750-990.jpg" width="300">

@@ -1,104 +1,62 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger
-} from '@angular/animations';
-import { DOWN_ARROW, SPACE, TAB } from '@angular/cdk/keycodes';
+import { FocusMonitor } from '@angular/cdk/a11y';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import {
   forwardRef,
+  AfterContentInit,
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   EventEmitter,
-  HostListener,
   Input,
   OnDestroy,
   OnInit,
   Output,
   QueryList,
   Renderer2,
-  SimpleChange,
-  ViewChild
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { merge, EMPTY, Subject } from 'rxjs';
+import { flatMap, startWith, takeUntil } from 'rxjs/operators';
+import { slideMotion } from '../core/animation/slide';
+import { NzSizeLDSType } from '../core/types/size';
 import { isNotNil } from '../core/util/check';
-import { toBoolean } from '../core/util/convert';
-import { NzOptionContainerComponent } from './nz-option-container.component';
+import { toBoolean, InputBoolean } from '../core/util/convert';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
-import { defaultFilterOption, TFilterOption } from './nz-option.pipe';
+import { TFilterOption } from './nz-option.pipe';
 import { NzSelectTopControlComponent } from './nz-select-top-control.component';
+import { NzSelectService } from './nz-select.service';
 
 @Component({
   selector           : 'nz-select',
   preserveWhitespaces: false,
   providers          : [
+    NzSelectService,
     {
       provide    : NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzSelectComponent),
       multi      : true
     }
   ],
-  animations         : [
-    trigger('dropDownAnimation', [
-      state('hidden', style({
-        opacity: 0,
-        display: 'none'
-      })),
-      state('bottom', style({
-        opacity        : 1,
-        transform      : 'scaleY(1)',
-        transformOrigin: '0% 0%'
-      })),
-      state('top', style({
-        opacity        : 1,
-        transform      : 'scaleY(1)',
-        transformOrigin: '0% 100%'
-      })),
-      transition('hidden => bottom', [
-        style({
-          opacity        : 0,
-          transform      : 'scaleY(0.8)',
-          transformOrigin: '0% 0%'
-        }),
-        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)')
-      ]),
-      transition('bottom => hidden', [
-        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)', style({
-          opacity        : 0,
-          transform      : 'scaleY(0.8)',
-          transformOrigin: '0% 0%'
-        }))
-      ]),
-      transition('hidden => top', [
-        style({
-          opacity        : 0,
-          transform      : 'scaleY(0.8)',
-          transformOrigin: '0% 100%'
-        }),
-        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)')
-      ]),
-      transition('top => hidden', [
-        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)', style({
-          opacity        : 0,
-          transform      : 'scaleY(0.8)',
-          transformOrigin: '0% 100%'
-        }))
-      ])
-    ])
-  ],
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
+  animations         : [ slideMotion ],
   templateUrl        : './nz-select.component.html',
   host               : {
     '[class.ant-select]'            : 'true',
     '[class.ant-select-lg]'         : 'nzSize==="large"',
     '[class.ant-select-sm]'         : 'nzSize==="small"',
     '[class.ant-select-enabled]'    : '!nzDisabled',
+    '[class.ant-select-no-arrow]'   : '!nzShowArrow',
     '[class.ant-select-disabled]'   : 'nzDisabled',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
-    '[class.ant-select-open]'       : 'nzOpen'
+    '[class.ant-select-open]'       : 'open',
+    '(click)'                       : 'toggleDropDown()'
   },
   styles             : [ `
     .ant-select-dropdown {
@@ -111,58 +69,77 @@ import { NzSelectTopControlComponent } from './nz-select-top-control.component';
     }
   ` ]
 })
-export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy {
+export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy, AfterContentInit {
   private _disabled = false;
-  private _allowClear = false;
-  private _showSearch = false;
-  private _open = false;
-  private _placeholder: string;
   private _autoFocus = false;
-  private _dropdownClassName: string;
+  private destroy$ = new Subject();
   onChange: (value: string | string[]) => void = () => null;
   onTouched: () => void = () => null;
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   // tslint:disable-next-line:no-any
-  listOfSelectedValue: any[] = [];
-  listOfTemplateOption: NzOptionComponent[] = [];
-  // tslint:disable-next-line:no-any
   value: any | any[];
-  overlayWidth: number;
-  overlayMinWidth: number;
-  searchValue: string = '';
-  isDestroy = true;
-  isInit = false;
-  dropDownClassMap;
+  open = false;
   @ViewChild(CdkOverlayOrigin) cdkOverlayOrigin: CdkOverlayOrigin;
   @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
   @ViewChild(NzSelectTopControlComponent) nzSelectTopControlComponent: NzSelectTopControlComponent;
-  @ViewChild(NzOptionContainerComponent) nzOptionContainerComponent: NzOptionContainerComponent;
   /** should move to nz-option-container when https://github.com/angular/angular/issues/20810 resolved **/
   @ContentChildren(NzOptionComponent) listOfNzOptionComponent: QueryList<NzOptionComponent>;
   @ContentChildren(NzOptionGroupComponent) listOfNzOptionGroupComponent: QueryList<NzOptionGroupComponent>;
   @Output() readonly nzOnSearch = new EventEmitter<string>();
   @Output() readonly nzScrollToBottom = new EventEmitter<void>();
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
-  @Input() nzSize = 'default';
-  @Input() nzServerSearch = false;
-  @Input() nzMode: 'default' | 'multiple' | 'tags' = 'default';
+  @Output() readonly nzBlur = new EventEmitter<void>();
+  @Output() readonly nzFocus = new EventEmitter<void>();
+  @Input() nzSize: NzSizeLDSType = 'default';
+  @Input() nzDropdownClassName: string;
   @Input() nzDropdownMatchSelectWidth = true;
-  @Input() nzFilterOption: TFilterOption = defaultFilterOption;
-  @Input() nzMaxMultipleCount = Infinity;
   @Input() nzDropdownStyle: { [ key: string ]: string; };
   @Input() nzNotFoundContent: string;
-  /** https://github.com/angular/angular/pull/13349/files **/
-    // tslint:disable-next-line:no-any
-  @Input() compareWith = (o1: any, o2: any) => o1 === o2;
+  @Input() @InputBoolean() nzAllowClear = false;
+  @Input() @InputBoolean() nzShowSearch = false;
+  @Input() @InputBoolean() nzLoading = false;
+  @Input() nzPlaceHolder: string;
+  @Input() nzMaxTagCount: number;
+  @Input() nzDropdownRender: TemplateRef<void>;
+  @Input() nzSuffixIcon: TemplateRef<void>;
+  @Input() nzClearIcon: TemplateRef<void>;
+  @Input() nzRemoveIcon: TemplateRef<void>;
+  @Input() nzMenuItemSelectedIcon: TemplateRef<void>;
+  @Input() nzShowArrow = true;
+  @Input() nzTokenSeparators: string[] = [];
+  // tslint:disable-next-line:no-any
+  @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: any[] }>;
 
   @Input()
-  set nzDropdownClassName(value: string) {
-    this._dropdownClassName = value;
-    this.updateDropDownClassMap();
+  set nzAutoClearSearchValue(value: boolean) {
+    this.nzSelectService.autoClearSearchValue = toBoolean(value);
   }
 
-  get nzDropdownClassName(): string {
-    return this._dropdownClassName;
+  @Input()
+  set nzMaxMultipleCount(value: number) {
+    this.nzSelectService.maxMultipleCount = value;
+  }
+
+  @Input()
+  set nzServerSearch(value: boolean) {
+    this.nzSelectService.serverSearch = toBoolean(value);
+  }
+
+  @Input()
+  set nzMode(value: 'default' | 'multiple' | 'tags') {
+    this.nzSelectService.mode = value;
+    this.nzSelectService.check();
+  }
+
+  @Input()
+  set nzFilterOption(value: TFilterOption) {
+    this.nzSelectService.filterOption = value;
+  }
+
+  @Input()
+  // tslint:disable-next-line:no-any
+  set compareWith(value: (o1: any, o2: any) => boolean) {
+    this.nzSelectService.compareWith = value;
   }
 
   @Input()
@@ -177,43 +154,15 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   @Input()
   set nzOpen(value: boolean) {
-    this._open = value;
-    this.handleEscBug();
-    this.updateCdkConnectedOverlayStatus();
-    this.updateDropDownClassMap();
-    if (this.nzOpen) {
-      if (this.nzSelectTopControlComponent) {
-        this.nzSelectTopControlComponent.focusOnInput();
-        this.nzSelectTopControlComponent.setInputValue('', true);
-      }
-      if (this.nzOptionContainerComponent) {
-        this.nzOptionContainerComponent.scrollIntoView();
-      }
-      if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
-        this.cdkConnectedOverlay.overlayRef.updatePosition();
-        const backdropElement = this.cdkConnectedOverlay.overlayRef.backdropElement;
-        const parentNode = this.renderer.parentNode(backdropElement);
-        const hostElement = this.cdkConnectedOverlay.overlayRef.hostElement;
-        this.renderer.appendChild(parentNode, backdropElement);
-        this.renderer.appendChild(parentNode, hostElement);
-      }
-    } else {
-      if (this.nzSelectTopControlComponent) {
-        this.nzSelectTopControlComponent.setInputValue('', false);
-      }
-      if (this.nzOptionContainerComponent) {
-        this.nzOptionContainerComponent.resetActiveOption();
-      }
-    }
-  }
-
-  get nzOpen(): boolean {
-    return this._open;
+    this.open = value;
+    this.nzSelectService.setOpenState(value);
   }
 
   @Input()
   set nzDisabled(value: boolean) {
     this._disabled = toBoolean(value);
+    this.nzSelectService.disabled = this._disabled;
+    this.nzSelectService.check();
     if (this.nzDisabled) {
       this.closeDropDown();
     }
@@ -223,65 +172,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     return this._disabled;
   }
 
-  @Input()
-  set nzAllowClear(value: boolean) {
-    this._allowClear = toBoolean(value);
-  }
-
-  get nzAllowClear(): boolean {
-    return this._allowClear;
-  }
-
-  @Input()
-  set nzShowSearch(value: boolean) {
-    this._showSearch = toBoolean(value);
-  }
-
-  get nzShowSearch(): boolean {
-    return this._showSearch;
-  }
-
-  @Input()
-  set nzPlaceHolder(value: string) {
-    this._placeholder = value;
-  }
-
-  get nzPlaceHolder(): string {
-    return this._placeholder;
-  }
-
-  @HostListener('click')
-  onClick(): void {
-    if (!this.nzDisabled) {
-      this.nzOpen = !this.nzOpen;
-      this.nzOpenChange.emit(this.nzOpen);
-    }
-  }
-
-  @HostListener('keydown', [ '$event' ])
-  _handleKeydown(event: KeyboardEvent): void {
-    if (this._disabled) { return; }
-
-    const keyCode = event.keyCode;
-
-    if (!this._open) {
-      if (keyCode === SPACE || keyCode === DOWN_ARROW) {
-        this.nzOpen = true;
-        this.nzOpenChange.emit(this.nzOpen);
-        event.preventDefault();
-      }
-    } else {
-      if (keyCode === TAB) {
-      // if (keyCode === SPACE || keyCode === TAB) { // #2201
-        this.nzOpen = false;
-        this.nzOpenChange.emit(this.nzOpen);
-        event.preventDefault();
-      }
-    }
-  }
-
   updateAutoFocus(): void {
-    if (this.isInit && this.nzSelectTopControlComponent.inputElement) {
+    if (this.nzSelectTopControlComponent.inputElement) {
       if (this.nzAutoFocus) {
         this.renderer.setAttribute(this.nzSelectTopControlComponent.inputElement.nativeElement, 'autofocus', 'autofocus');
       } else {
@@ -292,183 +184,76 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   focus(): void {
     if (this.nzSelectTopControlComponent.inputElement) {
-      this.nzSelectTopControlComponent.inputElement.nativeElement.focus();
+      this.focusMonitor.focusVia(this.nzSelectTopControlComponent.inputElement, 'keyboard');
+      this.nzFocus.emit();
     }
   }
 
   blur(): void {
     if (this.nzSelectTopControlComponent.inputElement) {
       this.nzSelectTopControlComponent.inputElement.nativeElement.blur();
+      this.nzBlur.emit();
     }
   }
 
-  /** overlay can not be always open , reopen overlay after press esc **/
-  handleEscBug(): void {
-    if (this.nzOpen && this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef && !this.cdkConnectedOverlay.overlayRef.backdropElement) {
-      this.cdkConnectedOverlay.open = true;
-      this.cdkConnectedOverlay.ngOnChanges({ open: new SimpleChange(false, true, false) });
-    }
+  onKeyDown(event: KeyboardEvent): void {
+    this.nzSelectService.onKeyDown(event);
   }
 
-  onKeyDownCdkOverlayOrigin(e: KeyboardEvent): void {
-    if (this.nzOptionContainerComponent) {
-      this.nzOptionContainerComponent.onKeyDownUl(e);
+  toggleDropDown(): void {
+    if (!this.nzDisabled) {
+      this.nzSelectService.setOpenState(!this.open);
     }
   }
 
   closeDropDown(): void {
-    if (this.nzOpen) {
-      this.onTouched();
-      this.nzOpen = false;
-      this.nzOpenChange.emit(this.nzOpen);
-      this.blur();
-    }
+    this.nzSelectService.setOpenState(false);
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     this.dropDownPosition = position.connectionPair.originY;
-    this.updateDropDownClassMap();
-  }
-
-  onClickOptionFromOptionContainer(): void {
-    if (this.isSingleMode) {
-      this.closeDropDown();
-    } else if (this.nzMode === 'tags') {
-      this.onSearch('', true);
-    }
   }
 
   updateCdkConnectedOverlayStatus(): void {
-    if (this.isInit && this.nzOpen && this.cdkOverlayOrigin) {
-      if (this.nzDropdownMatchSelectWidth) {
-        this.overlayWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
-        this.cdkConnectedOverlay.overlayRef.updateSize({ width: this.overlayWidth });
-      } else {
-        this.overlayMinWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
-        this.cdkConnectedOverlay.overlayRef.updateSize({ minWidth: this.overlayMinWidth });
+    setTimeout(() => {
+      if (this.cdkOverlayOrigin &&
+        this.cdkConnectedOverlay &&
+        this.cdkConnectedOverlay.overlayRef) {
+        const triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+        if (this.nzDropdownMatchSelectWidth) {
+          this.cdkConnectedOverlay.overlayRef.updateSize({ width: triggerWidth });
+        } else {
+          this.cdkConnectedOverlay.overlayRef.updateSize({ minWidth: triggerWidth });
+        }
       }
-
-    }
-    this.updateCdkConnectedOverlayPositions();
-    if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef && this.cdkConnectedOverlay.overlayRef.backdropElement) {
-      if (this.nzOpen) {
-        this.renderer.removeStyle(this.cdkConnectedOverlay.overlayRef.backdropElement, 'display');
-      } else {
-        this.renderer.setStyle(this.cdkConnectedOverlay.overlayRef.backdropElement, 'display', 'none');
-      }
-    }
+    });
   }
 
   updateCdkConnectedOverlayPositions(): void {
-    /** wait for input size change **/
-    setTimeout(() => this.cdkConnectedOverlay.overlayRef.updatePosition(), 160);
-  }
-
-  get isSingleMode(): boolean {
-    return this.nzMode === 'default';
-  }
-
-  get isMultipleOrTags(): boolean {
-    return this.nzMode === 'tags' || this.nzMode === 'multiple';
-  }
-
-  /** option container nzListOfSelectedValueChange -> update ngModel **/
-  // tslint:disable-next-line:no-any
-  updateListOfSelectedValueFromOptionContainer(value: any[]): void {
-    this.clearSearchValue();
-    this.updateFromSelectedList(value);
-  }
-
-  /** option container nzListOfSelectedValueChange -> update ngModel **/
-  // tslint:disable-next-line:no-any
-  updateListOfSelectedValueFromTopControl(value: any[]): void {
-    this.clearSearchValue();
-    this.updateFromSelectedList(value);
-  }
-
-  // tslint:disable-next-line:no-any
-  updateFromSelectedList(value: any[]): void {
-    let modelValue;
-    if (this.isSingleMode) {
-      if (value.length) {
-        modelValue = value[ 0 ];
+    setTimeout(() => {
+      if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
+        this.cdkConnectedOverlay.overlayRef.updatePosition();
       }
-    } else {
-      modelValue = value;
-      this.updateCdkConnectedOverlayPositions();
-    }
-    this.updateNgModel(value, modelValue);
+    });
   }
 
-  onSearch(value: string, emit: boolean): void {
-    if (emit && (this.searchValue !== value)) {
-      this.nzOnSearch.emit(value);
-      this.searchValue = value;
-    }
-  }
-
-  clearNgModel(): void {
-    if (this.isSingleMode) {
-      this.updateNgModel([], null);
-    } else {
-      this.updateNgModel([], []);
-    }
-  }
-
-  // tslint:disable-next-line:no-any
-  updateNgModel(list: any[], value: string | string[]): void {
-    this.listOfSelectedValue = list;
-    if (value !== this.value) {
-      this.value = value;
-      this.onChange(this.value);
-    }
-  }
-
-  listOfTemplateOptionChange(value: NzOptionComponent[]): void {
-    this.listOfTemplateOption = value;
-  }
-
-  updateDropDownClassMap(): void {
-    this.dropDownClassMap = {
-      [ 'ant-select-dropdown' ]                     : true,
-      [ `ant-select-dropdown--single` ]             : this.isSingleMode,
-      [ `ant-select-dropdown--multiple` ]           : this.isMultipleOrTags,
-      [ `ant-select-dropdown-placement-bottomLeft` ]: this.dropDownPosition === 'bottom',
-      [ `ant-select-dropdown-placement-topLeft` ]   : this.dropDownPosition === 'top',
-      [ `${this.nzDropdownClassName}` ]             : !!this.nzDropdownClassName
-    };
-  }
-
-  onClearSelection(e: MouseEvent): void {
-    // TODO: should not clear disabled option ?
-    e.stopPropagation();
-    this.clearNgModel();
-  }
-
-  clearSearchValue(): void {
-    if (this.isSingleMode) {
-      this.nzSelectTopControlComponent.setInputValue('', false);
-    } else {
-      this.nzSelectTopControlComponent.setInputValue('', false);
-    }
-  }
-
-  constructor(private renderer: Renderer2) {
+  constructor(private renderer: Renderer2, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
   }
 
   /** update ngModel -> update listOfSelectedValue **/
   // tslint:disable-next-line:no-any
   writeValue(value: any | any[]): void {
     this.value = value;
+    let listValue = [];
     if (isNotNil(value)) {
       if (Array.isArray(value)) {
-        this.listOfSelectedValue = value;
+        listValue = value;
       } else {
-        this.listOfSelectedValue = [ value ];
+        listValue = [ value ];
       }
-    } else {
-      this.listOfSelectedValue = [];
     }
+    this.nzSelectService.updateListOfSelectedValue(listValue, false);
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (value: string | string[]) => void): void {
@@ -481,19 +266,69 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
+    this.cdr.markForCheck();
   }
 
   ngOnInit(): void {
-    this.isDestroy = false;
-    this.updateDropDownClassMap();
+    this.nzSelectService.searchValue$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(data => {
+      this.nzOnSearch.emit(data);
+      this.updateCdkConnectedOverlayPositions();
+    });
+    this.nzSelectService.modelChange$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(modelValue => {
+      this.value = modelValue;
+      this.onChange(this.value);
+      this.updateCdkConnectedOverlayPositions();
+    });
+    this.nzSelectService.open$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe((value) => {
+      if (this.open !== value) {
+        this.nzOpenChange.emit(value);
+      }
+      if (value) {
+        this.focus();
+        this.updateCdkConnectedOverlayStatus();
+      } else {
+        this.blur();
+        this.onTouched();
+      }
+      this.open = value;
+    });
+    this.nzSelectService.check$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.cdr.markForCheck();
+    });
   }
 
   ngAfterViewInit(): void {
-    this.isInit = true;
-    Promise.resolve().then(() => this.updateCdkConnectedOverlayStatus());
+    this.updateCdkConnectedOverlayStatus();
+  }
+
+  ngAfterContentInit(): void {
+    this.listOfNzOptionGroupComponent.changes.pipe(
+      startWith(true),
+      flatMap(() => merge(
+        this.listOfNzOptionGroupComponent.changes,
+        this.listOfNzOptionComponent.changes,
+        ...this.listOfNzOptionGroupComponent.map(group => group.listOfNzOptionComponent ? group.listOfNzOptionComponent.changes : EMPTY)
+      ).pipe(
+        startWith(true)
+      ))
+    ).subscribe(() => {
+      this.nzSelectService.updateTemplateOption(
+        this.listOfNzOptionComponent.toArray(),
+        this.listOfNzOptionGroupComponent.toArray()
+      );
+    });
   }
 
   ngOnDestroy(): void {
-    this.isDestroy = true;
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

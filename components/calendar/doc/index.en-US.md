@@ -39,7 +39,7 @@ registerLocaleData(en);
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[(ngModel)]` | (Two-way bindable) The current selected date | `Date` | current date |
-| `[(nzMode)]` | The display mode of the calendar (two-way bindable) | `'month'/'year'` | `'month'` |
+| `[(nzMode)]` | The display mode of the calendar (two-way bindable) | `'month'｜'year'` | `'month'` |
 | `[nzFullscreen]` | Whether to display in full-screen | `boolean` | `true` |
 | `[nzCard]` | Whether to not display in full-screen | `boolean` | `false` |
 | `[nzDateCell]` | (Contentable) Customize the display of the date cell, the template content will be appended to the cell | `TemplateRef<Date>` | - |

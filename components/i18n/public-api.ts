@@ -6,6 +6,7 @@ export { default as ar_EG } from './languages/ar_EG';
 export { default as bg_BG } from './languages/bg_BG';
 export { default as ca_ES } from './languages/ca_ES';
 export { default as cs_CZ } from './languages/cs_CZ';
+export { default as da_DK } from './languages/da_DK';
 export { default as de_DE } from './languages/de_DE';
 export { default as el_GR } from './languages/el_GR';
 export { default as en_GB } from './languages/en_GB';

@@ -4,7 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, Observable } from 'rxjs';
+
 import { dispatchMouseEvent, dispatchTouchEvent } from '../core/testing';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
+
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from './interface';
 import { NzTreeNode } from './nz-tree-node';
 import { NzTreeComponent } from './nz-tree.component';
@@ -333,7 +336,7 @@ describe('nz-tree', () => {
   describe('test draggable node', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
+        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
         declarations: [ NzTestTreeDraggableComponent ],
         providers   : [
           NzTreeService
@@ -499,7 +502,7 @@ describe('nz-tree', () => {
   describe('test older node property', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
+        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
         declarations: [ NzTestTreeOlderComponent ],
         providers   : [
           NzTreeService

@@ -2,7 +2,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { async, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
 import { NzSpinComponent } from './nz-spin.component';
 import { NzSpinModule } from './nz-spin.module';
@@ -10,7 +10,7 @@ import { NzSpinModule } from './nz-spin.module';
 describe('spin', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzSpinModule, NzIconModule ],
+      imports     : [ NzSpinModule, NzIconTestModule ],
       declarations: [ NzTestSpinBasicComponent ]
     });
     TestBed.compileComponents();

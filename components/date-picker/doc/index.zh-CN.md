@@ -37,75 +37,75 @@ registerLocaleData(zh);
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzAllowClear]` | 是否显示清除按钮 | boolean | true |
-| `[nzAutoFocus]` | 自动获取焦点 | boolean | false |
-| `[nzClassName]` | 选择器 className | string | '' |
-| `[nzDateRender]` | 自定义日期单元格的内容（month-picker/year-picker不支持） | TemplateRef&lt;Date&gt; / string or (d: Date) => TemplateRef&lt;Date&gt; / string | - |
-| `[nzDisabled]` | 禁用 | boolean | false |
-| `[nzDisabledDate]` | 不可选择的日期（year-picker不支持） | (current: Date) => boolean | 无 |
-| `[nzLocale]` | 国际化配置 | object | [默认配置](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
-| `[nzOpen]` | 控制弹层是否展开 | boolean | - |
-| `[nzPopupStyle]` | 额外的弹出日历样式 | object | {} |
-| `[nzDropdownClassName]` | 额外的弹出日历 className | string | - |
-| `[nzSize]` | 输入框大小，`large` 高度为 40px，`small` 为 24px，默认是 32px | string | 无 |
-| `[nzStyle]` | 自定义输入框样式 | object | {} |
-| `(nzOnOpenChange)` | 弹出日历和关闭日历的回调 | `EventEmitter<boolean>` | 无 |
+| `[nzAllowClear]` | 是否显示清除按钮 | `boolean` | `true` |
+| `[nzAutoFocus]` | 自动获取焦点 | `boolean` | `false` |
+| `[nzClassName]` | 选择器 className | `string` | `''` |
+| `[nzDateRender]` | 自定义日期单元格的内容（month-picker/year-picker不支持） | `TemplateRef<Date>｜string｜((d: Date) => TemplateRef<Date>｜string)` | - |
+| `[nzDisabled]` | 禁用 | `boolean` | `false` |
+| `[nzDisabledDate]` | 不可选择的日期（year-picker不支持） | `(current: Date) => boolean` | - |
+| `[nzLocale]` | 国际化配置 | `object` | [默认配置](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
+| `[nzOpen]` | 控制弹层是否展开 | `boolean` | - |
+| `[nzPopupStyle]` | 额外的弹出日历样式 | `object` | `{}` |
+| `[nzDropdownClassName]` | 额外的弹出日历 className | `string` | - |
+| `[nzSize]` | 输入框大小，`large` 高度为 40px，`small` 为 24px，默认是 32px | `'large'｜'small'` | - |
+| `[nzStyle]` | 自定义输入框样式 | `object` | `{}` |
+| `(nzOnOpenChange)` | 弹出日历和关闭日历的回调 | `EventEmitter<boolean>` | - |
 
 ### nz-date-picker
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[ngModel]` | 日期 | Date | 无 |
-| `[nzDisabledTime]` | 不可选择的时间 | (current: Date) => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds } | 无 |
-| `[nzFormat]` | 展示的日期格式，配置参考 [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-MM-dd" |
-| `[nzRenderExtraFooter]` | 在面板中添加额外的页脚 | TemplateRef / string or () => TemplateRef / string | - |
-| `[nzShowTime]` | 增加时间选择功能 | object / boolean | [TimePicker Options](/components/time-picker/zh#api) |
-| `[nzShowToday]` | 是否展示“今天”按钮 | boolean | true |
-| `[nzPlaceHolder]` | 输入框提示文字 | string | - |
+| `[ngModel]` | 日期 | `Date` | - |
+| `[nzDisabledTime]` | 不可选择的时间 | `(current: Date) => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
+| `[nzFormat]` | 展示的日期格式，配置参考 [DatePipe](https://angular.io/api/common/DatePipe) | `string` | `"yyyy-MM-dd"` |
+| `[nzRenderExtraFooter]` | 在面板中添加额外的页脚 | `TemplateRef｜string｜(() => TemplateRef｜string)` | - |
+| `[nzShowTime]` | 增加时间选择功能 | `object｜boolean` | [TimePicker Options](/components/time-picker/zh#api) |
+| `[nzShowToday]` | 是否展示“今天”按钮 | `boolean` | `true` |
+| `[nzPlaceHolder]` | 输入框提示文字 | `string` | - |
 | `(nzOnOk)` | 点击确定按钮的回调 | `EventEmitter<Date>` | - |
-| `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | 无 |
+| `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | - |
 
 ### nz-year-picker
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[ngModel]` | 日期 | Date | 无 |
-| `[nzFormat]` | 展示的日期格式，配置参考 [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy" |
-| `[nzRenderExtraFooter]` | 在面板中添加额外的页脚 | TemplateRef / string or () => TemplateRef / string | - |
-| `[nzPlaceHolder]` | 输入框提示文字 | string | - |
-| `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | 无 |
+| `[ngModel]` | 日期 | `Date` | - |
+| `[nzFormat]` | 展示的日期格式，配置参考 [DatePipe](https://angular.io/api/common/DatePipe) | `string` | `"yyyy"` |
+| `[nzRenderExtraFooter]` | 在面板中添加额外的页脚 | `TemplateRef｜string｜(() => TemplateRef｜string)` | - |
+| `[nzPlaceHolder]` | 输入框提示文字 | `string` | - |
+| `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | - |
 
 ### nz-month-picker
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[ngModel]` | 日期 | Date | 无 |
-| `[nzFormat]` | 展示的日期格式，配置参考 [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-MM" |
-| `[nzRenderExtraFooter]` | 在面板中添加额外的页脚 | TemplateRef / string or () => TemplateRef / string | - |
-| `[nzPlaceHolder]` | 输入框提示文字 | string | - |
-| `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | 无 |
+| `[ngModel]` | 日期 | `Date` | - |
+| `[nzFormat]` | 展示的日期格式，配置参考 [DatePipe](https://angular.io/api/common/DatePipe) | `string` | `"yyyy-MM"` |
+| `[nzRenderExtraFooter]` | 在面板中添加额外的页脚 | `TemplateRef｜string｜(() => TemplateRef｜string)` | - |
+| `[nzPlaceHolder]` | 输入框提示文字 | `string` | - |
+| `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | - |
 
 ### nz-week-picker
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[ngModel]` | 日期 | Date | 无 |
-| `[nzFormat]` | 展示的日期格式，配置参考 [DatePipe](https://angular.io/api/common/DatePipe) | string | "yyyy-ww" |
-| `[nzPlaceHolder]` | 输入框提示文字 | string | - |
-| `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | 无 |
+| `[ngModel]` | 日期 | `Date` | - |
+| `[nzFormat]` | 展示的日期格式，配置参考 [DatePipe](https://angular.io/api/common/DatePipe) | `string` | `"yyyy-ww"` |
+| `[nzPlaceHolder]` | 输入框提示文字 | `string` | - |
+| `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | - |
 
 ### nz-range-picker
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[ngModel]` | 日期 | Date[] | 无 |
-| `[nzDisabledTime]` | 不可选择的时间 | (current: Date, partial: 'start' / 'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds } | 无 |
-| `[nzFormat]` | 展示的日期格式 | string | "yyyy-MM-dd" |
-| `[nzRanges]`       | 预设时间范围快捷选择 | { [ key: string ]: Date[] } | 无 |
-| `[nzRenderExtraFooter]` | 在面板中添加额外的页脚 | TemplateRef / string or () => TemplateRef / string | - |
-| `[nzShowTime]` | 增加时间选择功能 | object / boolean | [TimePicker Options](/components/time-picker/zh#api) |
-| `[nzPlaceHolder]` | 输入框提示文字 | string[] | - |
+| `[ngModel]` | 日期 | `Date[]` | - |
+| `[nzDisabledTime]` | 不可选择的时间 | `(current: Date, partial: 'start'｜'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
+| `[nzFormat]` | 展示的日期格式 | `string` | `"yyyy-MM-dd"` |
+| `[nzRanges]`       | 预设时间范围快捷选择 | `{ [ key: string ]: Date[] }` | - |
+| `[nzRenderExtraFooter]` | 在面板中添加额外的页脚 | `TemplateRef｜string｜(() => TemplateRef｜string)` | - |
+| `[nzShowTime]` | 增加时间选择功能 | `object｜boolean` | [TimePicker Options](/components/time-picker/zh#api) |
+| `[nzPlaceHolder]` | 输入框提示文字 | `string[]` | - |
 | `(nzOnOk)` | 点击确定按钮的回调 | `EventEmitter<Date[]>` | - |
-| `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date[]>` | 无 |
+| `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date[]>` | - |
 
 > `nzShowTime` 中当前支持的 `nz-time-picker` 参数有：`nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`

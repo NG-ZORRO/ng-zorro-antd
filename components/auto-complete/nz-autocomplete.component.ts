@@ -15,7 +15,7 @@ import {
 import { defer, merge, Observable, Subscription } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 
-import { dropDownAnimation } from '../core/animation/dropdown-animations';
+import { slideMotion } from '../core/animation/slide';
 import { NzDropDownPosition } from '../core/types/drop-down-position';
 import { InputBoolean } from '../core/util/convert';
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './nz-autocomplete-option.component';
@@ -34,7 +34,7 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
   encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-autocomplete.component.html',
   animations         : [
-    dropDownAnimation
+    slideMotion
   ],
   styles             : [
       `

@@ -60,7 +60,7 @@ English | [简体中文](README-zh_CN.md)
 ```bash
 $ ng new PROJECT_NAME
 $ cd PROJECT_NAME
-$ ng add ng-zorro-antd --i18n=en_US
+$ ng add ng-zorro-antd
 ```
 
 > More information about `@angular/cli` [here](https://github.com/angular/angular-cli).

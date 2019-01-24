@@ -151,7 +151,7 @@ describe('pagination', () => {
         testComponent.showSizeChanger = true;
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-          expect(paginationElement.children.length).toBe(12);
+          expect(paginationElement.children.length).toBe(10);
           expect(paginationElement.lastElementChild.classList.contains('ant-pagination-options')).toBe(true);
         });
       }));

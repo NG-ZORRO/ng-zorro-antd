@@ -1,0 +1,11 @@
+<ng-container *ngIf="!content && specificContent !== null" [ngSwitch]="size">
+  <nz-empty *ngSwitchCase="'normal'" class="ant-empty-normal" [nzNotFoundImage]="defaultSvg"></nz-empty>
+  <nz-empty *ngSwitchCase="'small'" class="ant-empty-small" [nzNotFoundImage]="defaultSvg"></nz-empty>
+  <nz-empty *ngSwitchDefault></nz-empty>
+</ng-container>
+<ng-container *ngIf="content">
+  <ng-template *ngIf="contentType !== 'string'" [cdkPortalOutlet]="contentPortal"></ng-template>
+  <ng-container *ngIf="contentType === 'string'">
+    {{ content }}
+  </ng-container>
+</ng-container>

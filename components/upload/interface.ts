@@ -25,7 +25,7 @@ export interface UploadFile {
   thumbUrl?: string;
   response?: any;
   error?: any;
-  linkProps?: any;
+  linkProps?: { download: string };
   type: string;
 
   [ key: string ]: any;
@@ -42,6 +42,7 @@ export interface UploadChangeParam {
 export interface ShowUploadListInterface {
   showRemoveIcon?: boolean;
   showPreviewIcon?: boolean;
+  hidePreviewIconInNonImage?: boolean;
 }
 
 export interface ZipButtonOptions {

@@ -1,8 +1,6 @@
-<ng-container *ngIf="nzOption.nzCustomContent">
-  <ng-template [ngTemplateOutlet]="nzOption.template"></ng-template>
-  <i nz-icon *ngIf="nzMode !== 'default'" type="check" class="ant-select-selected-icon"></i>
-</ng-container>
-<ng-container *ngIf="!nzOption.nzCustomContent">
+<ng-container *ngIf="!nzOption.nzCustomContent; else nzOption.template">
   {{nzOption.nzLabel}}
-  <i nz-icon *ngIf="nzMode !== 'default'" type="check" class="ant-select-selected-icon"></i>
+</ng-container>
+<ng-container *ngIf="nzSelectService.isMultipleOrTags">
+  <i nz-icon type="check" class="ant-select-selected-icon" *ngIf="!nzMenuItemSelectedIcon; else nzMenuItemSelectedIcon"></i>
 </ng-container>
