@@ -283,7 +283,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     if (this.nzPositionMode === 'horizontal') {
       return this.scrollListElement.nativeElement.offsetWidth;
     } else {
-      return this.scrollListElement.nativeElement.offsetHeight;
+      return this.elementRef.nativeElement.offsetHeight;
     }
   }
 

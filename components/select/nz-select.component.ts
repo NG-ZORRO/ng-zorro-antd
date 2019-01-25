@@ -70,15 +70,15 @@ import { NzSelectService } from './nz-select.service';
   ` ]
 })
 export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy, AfterContentInit {
-  private _disabled = false;
-  private _autoFocus = false;
-  private destroy$ = new Subject();
+  open = false;
+  // tslint:disable-next-line:no-any
+  value: any | any[];
   onChange: (value: string | string[]) => void = () => null;
   onTouched: () => void = () => null;
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
-  // tslint:disable-next-line:no-any
-  value: any | any[];
-  open = false;
+  private _disabled = false;
+  private _autoFocus = false;
+  private destroy$ = new Subject();
   @ViewChild(CdkOverlayOrigin) cdkOverlayOrigin: CdkOverlayOrigin;
   @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
   @ViewChild(NzSelectTopControlComponent) nzSelectTopControlComponent: NzSelectTopControlComponent;
