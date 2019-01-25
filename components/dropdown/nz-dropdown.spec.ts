@@ -2,7 +2,7 @@ import { Directionality } from '@angular/cdk/bidi';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { async, fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
@@ -57,14 +57,14 @@ describe('dropdown', () => {
     });
     it('should mouseenter event trigger', fakeAsync(() => {
       const mouseenterCallback = jasmine.createSpy('mouseenter callback');
-      testComponent.nzDropDownDirective.$mouseenter.subscribe(mouseenterCallback);
+      testComponent.nzDropDownDirective.hover$.subscribe(mouseenterCallback);
       dispatchFakeEvent(link.nativeElement, 'mouseenter');
       fixture.detectChanges();
       expect(mouseenterCallback).toHaveBeenCalledTimes(1);
     }));
     it('should mouseleave event trigger', fakeAsync(() => {
       const mouseleaveCallback = jasmine.createSpy('mouseleave callback');
-      testComponent.nzDropDownDirective.$mouseleave.subscribe(mouseleaveCallback);
+      testComponent.nzDropDownDirective.hover$.subscribe(mouseleaveCallback);
       dispatchFakeEvent(link.nativeElement, 'mouseleave');
       fixture.detectChanges();
       expect(mouseleaveCallback).toHaveBeenCalledTimes(1);
@@ -150,7 +150,7 @@ describe('dropdown', () => {
       expect(overlayContainerElement.textContent).not.toBe('');
       fixture.detectChanges();
       const backdropCallback = jasmine.createSpy('backdrop callback');
-      testComponent.nzDropDownComponent.$visibleChange.subscribe(backdropCallback);
+      testComponent.nzDropDownComponent.visible$.subscribe(backdropCallback);
       const backdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop') as HTMLElement;
       backdrop.click();
       fixture.detectChanges();
@@ -178,7 +178,7 @@ describe('dropdown', () => {
       fixture.detectChanges();
       const dropdown = overlayContainerElement.querySelector('.ant-dropdown') as HTMLElement;
       const mouseenterCallback = jasmine.createSpy('mouseenter callback');
-      testComponent.nzDropDownComponent.$visibleChange.subscribe(mouseenterCallback);
+      testComponent.nzDropDownComponent.visible$.subscribe(mouseenterCallback);
       dispatchFakeEvent(dropdown, 'mouseenter');
       fixture.detectChanges();
       expect(mouseenterCallback).toHaveBeenCalledWith(true);
@@ -189,38 +189,37 @@ describe('dropdown', () => {
       fixture.detectChanges();
       const dropdown = overlayContainerElement.querySelector('.ant-dropdown') as HTMLElement;
       const mouseleaveCallback = jasmine.createSpy('mouseleave callback');
-      testComponent.nzDropDownComponent.$visibleChange.subscribe(mouseleaveCallback);
+      testComponent.nzDropDownComponent.visible$.subscribe(mouseleaveCallback);
       dispatchFakeEvent(dropdown, 'mouseleave');
       fixture.detectChanges();
       expect(mouseleaveCallback).toHaveBeenCalledWith(false);
       expect(mouseleaveCallback).toHaveBeenCalledTimes(1);
     });
-    it('should nzVisibleChange event trigger correct', () => {
+    it('should nzVisibleChange event trigger correct', fakeAsync(() => {
+      fixture.detectChanges();
       testComponent.visible = true;
       fixture.detectChanges();
       expect(testComponent.visibleChange).toHaveBeenCalledTimes(0);
       testComponent.visible = false;
       fixture.detectChanges();
       expect(testComponent.visibleChange).toHaveBeenCalledTimes(0);
-      testComponent.nzDropDownComponent.onVisibleChange(true);
+      testComponent.nzDropDownComponent.nzMenuDropdownService.menuOpen$.next(true);
+      fixture.detectChanges();
+      tick(100);
       fixture.detectChanges();
       expect(testComponent.visibleChange).toHaveBeenCalledTimes(1);
-      testComponent.nzDropDownComponent.onVisibleChange(false);
       fixture.detectChanges();
-      expect(testComponent.visibleChange).toHaveBeenCalledTimes(2);
-      testComponent.visible = true;
-      testComponent.nzDropDownComponent.onVisibleChange(false);
+      tick(100);
       fixture.detectChanges();
-      expect(testComponent.visibleChange).toHaveBeenCalledTimes(2);
-    });
+    }));
     it('should submenu event trigger', () => {
       testComponent.visible = true;
       fixture.detectChanges();
       const nestedCallback = jasmine.createSpy('nested callback');
       const submenu = testComponent.nzSubMenuComponent;
       submenu.nzOpen = true;
-      submenu.handleOpenEvent(false);
-      testComponent.nzDropDownComponent.$subOpen.subscribe(nestedCallback);
+      submenu.nzSubmenuService.open$.next(false);
+      testComponent.nzDropDownComponent.nzMenuDropdownService.menuOpen$.subscribe(nestedCallback);
       fixture.detectChanges();
       expect(nestedCallback).toHaveBeenCalledWith(false);
       expect(nestedCallback).toHaveBeenCalledTimes(1);
@@ -257,7 +256,7 @@ describe('dropdown', () => {
       const buttonItem = button.nativeElement.querySelector('.ant-btn-icon-only');
       expect(!!buttonItem.attributes.getNamedItem('disabled')).toBe(false);
       const clickCallback = jasmine.createSpy('click callback');
-      testComponent.nzDropDownButtonComponent.$visibleChange.subscribe(clickCallback);
+      testComponent.nzDropDownButtonComponent.visible$.subscribe(clickCallback);
       buttonItem.click();
       fixture.detectChanges();
       expect(testComponent.click).toHaveBeenCalledTimes(0);
@@ -270,33 +269,30 @@ describe('dropdown', () => {
       const buttonItem = button.nativeElement.querySelector('.ant-btn');
       expect(!!buttonItem.attributes.getNamedItem('disabled')).toBe(true);
       const clickCallback = jasmine.createSpy('click callback');
-      testComponent.nzDropDownButtonComponent.$visibleChange.subscribe(clickCallback);
+      testComponent.nzDropDownButtonComponent.visible$.subscribe(clickCallback);
       buttonItem.click();
       fixture.detectChanges();
       expect(testComponent.click).toHaveBeenCalledTimes(0);
       expect(clickCallback).toHaveBeenCalledTimes(0);
-      testComponent.nzDropDownButtonComponent.onVisibleChange(true);
+      testComponent.nzDropDownButtonComponent.nzMenuDropdownService.menuOpen$.next(true);
       fixture.detectChanges();
       expect(testComponent.visibleChange).toHaveBeenCalledTimes(0);
     });
-    it('should nzVisibleChange event trigger correct', () => {
+    it('should nzVisibleChange event trigger correct', fakeAsync(() => {
+      fixture.detectChanges();
       testComponent.visible = true;
       fixture.detectChanges();
       expect(testComponent.visibleChange).toHaveBeenCalledTimes(0);
       testComponent.visible = false;
       fixture.detectChanges();
       expect(testComponent.visibleChange).toHaveBeenCalledTimes(0);
-      testComponent.nzDropDownButtonComponent.onVisibleChange(true);
+      testComponent.nzDropDownButtonComponent.nzMenuDropdownService.menuOpen$.next(true);
       fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
+      flush();
       expect(testComponent.visibleChange).toHaveBeenCalledTimes(1);
-      testComponent.nzDropDownButtonComponent.onVisibleChange(false);
-      fixture.detectChanges();
-      expect(testComponent.visibleChange).toHaveBeenCalledTimes(2);
-      testComponent.visible = true;
-      testComponent.nzDropDownButtonComponent.onVisibleChange(false);
-      fixture.detectChanges();
-      expect(testComponent.visibleChange).toHaveBeenCalledTimes(2);
-    });
+    }));
     it('should placement work', () => {
       const placementArray = [ 'bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight' ];
       testComponent.visible = true;
@@ -313,8 +309,8 @@ describe('dropdown', () => {
       const nestedCallback = jasmine.createSpy('nested callback');
       const submenu = testComponent.nzSubMenuComponent;
       submenu.nzOpen = true;
-      submenu.handleOpenEvent(false);
-      testComponent.nzDropDownButtonComponent.$subOpen.subscribe(nestedCallback);
+      submenu.nzSubmenuService.open$.next(false);
+      testComponent.nzDropDownButtonComponent.nzMenuDropdownService.menuOpen$.subscribe(nestedCallback);
       fixture.detectChanges();
       expect(nestedCallback).toHaveBeenCalledWith(false);
       expect(nestedCallback).toHaveBeenCalledTimes(1);
@@ -336,7 +332,7 @@ describe('dropdown', () => {
       // https://github.com/angular/material2/pull/12119
       // TODO: fix
       // expect(window.getComputedStyle(overlayPane, null).top).toBe(`${300 - overlayContainerElement.getBoundingClientRect().top}px`);
-      testComponent.nzDropdownService.close();
+      testComponent.nzDropdownService.dispose();
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toBe('');
     });

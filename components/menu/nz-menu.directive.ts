@@ -1,172 +1,143 @@
 import {
   AfterContentInit,
+  ContentChildren,
   Directive,
   ElementRef,
   EventEmitter,
-  HostBinding,
   Input,
-  Output
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Output,
+  QueryList,
+  SimpleChanges,
+  SkipSelf
 } from '@angular/core';
-
-import { toBoolean } from '../core/util/convert';
-
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { NzDirectionVHIType } from '../core/types/direction';
+import { InputBoolean } from '../core/util/convert';
+import { NzMenuDropdownService } from '../dropdown/nz-menu-dropdown.service';
 import { NzMenuItemDirective } from './nz-menu-item.directive';
+import { NzMenuMenuService } from './nz-menu-menu.service';
+import { NzMenuService } from './nz-menu.service';
 import { NzSubMenuComponent } from './nz-submenu.component';
 
-export type NzMode = 'vertical' | 'horizontal' | 'inline';
+export function NzMenuFactory(dropService: NzMenuDropdownService, menuService: NzMenuMenuService): NzMenuService {
+  return dropService ? dropService : menuService;
+}
 
 @Directive({
-  selector: '[nz-menu]'
+  selector : '[nz-menu]',
+  providers: [
+    NzUpdateHostClassService,
+    NzMenuMenuService,
+    {
+      provide   : NzMenuService,
+      useFactory: NzMenuFactory,
+      deps      : [
+        [
+          new SkipSelf(),
+          new Optional(),
+          NzMenuDropdownService
+        ],
+        NzMenuMenuService
+      ]
+    }
+  ]
 })
 
-export class NzMenuDirective implements AfterContentInit {
-  private _selectable = true;
-  private _inlineCollapsed = false;
-  private _inDropDown = false;
-  /** view init flat */
-  private isInit = false;
-  /** cache mode */
-  private cacheMode: NzMode;
-  /** opened index of array */
-  private subMenusOpenIndex = [];
-
-  /** collection of menu item */
-  menuItems: NzMenuItemDirective[] = [];
-  /** collection of sub menu */
-  subMenus: NzSubMenuComponent[] = [];
-  @Input() nzTheme: 'light' | 'dark' = 'light';
+export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnDestroy {
+  private destroy$ = new Subject();
+  private cacheMode: NzDirectionVHIType;
+  private listOfOpenedNzSubMenuComponent: NzSubMenuComponent[] = [];
+  @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective: QueryList<NzMenuItemDirective>;
+  @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent: QueryList<NzSubMenuComponent>;
   @Input() nzInlineIndent = 24;
-  @Input() nzMode: NzMode = 'vertical';
+  @Input() nzTheme: 'light' | 'dark' = 'light';
+  @Input() nzMode: NzDirectionVHIType = 'vertical';
+  @Input() @InputBoolean() nzInDropDown = false;
+  @Input() @InputBoolean() nzInlineCollapsed = false;
+  @Input() @InputBoolean() nzSelectable = !this.nzMenuService.isInDropDown;
   @Output() readonly nzClick = new EventEmitter<NzMenuItemDirective>();
 
-  @Input()
-  set nzInDropDown(value: boolean) {
-    this._inDropDown = toBoolean(value);
-    this.nzSelectable = !this._inDropDown;
-    this.menuItems.forEach(menu => menu.isInDropDown = this._inDropDown);
-    this.subMenus.forEach(subMenu => subMenu.isInDropDown = this._inDropDown);
-  }
-
-  get nzInDropDown(): boolean {
-    return this._inDropDown;
-  }
-
-  @Input()
-  set nzSelectable(value: boolean) {
-    this._selectable = toBoolean(value);
-  }
-
-  get nzSelectable(): boolean {
-    return this._selectable;
-  }
-
-  @Input()
-  set nzInlineCollapsed(value: boolean) {
-    this._inlineCollapsed = toBoolean(value);
-    if (this.isInit) {
-      this.updateInlineCollapse();
-    }
-  }
-
-  get nzInlineCollapsed(): boolean {
-    return this._inlineCollapsed;
-  }
-
   updateInlineCollapse(): void {
-    if (this._inlineCollapsed) {
-      this.hideSubMenus();
-      this.nzMode = 'vertical';
-    } else {
-      this.reductionSubMenus();
-      this.nzMode = this.cacheMode;
+    if (this.listOfNzMenuItemDirective) {
+      if (this.nzInlineCollapsed) {
+        this.listOfOpenedNzSubMenuComponent = this.listOfNzSubMenuComponent.filter(submenu => submenu.nzOpen);
+        this.listOfNzSubMenuComponent.forEach(submenu => submenu.setOpenState(false));
+        this.nzMode = 'vertical';
+      } else {
+        this.listOfOpenedNzSubMenuComponent.forEach(submenu => submenu.setOpenState(true));
+        this.listOfOpenedNzSubMenuComponent = [];
+        this.nzMode = this.cacheMode;
+      }
+      this.nzMenuService.setMode(this.nzMode);
     }
   }
 
-  /** define host class */
-  @HostBinding('class.ant-dropdown-menu')
-  @HostBinding('class.ant-menu-dropdown-vertical')
-  @HostBinding('class.ant-dropdown-menu-root')
-  get isInDropDownClass(): boolean {
-    return this.nzInDropDown;
+  setClassMap(): void {
+    const prefixName = this.nzMenuService.isInDropDown ? 'ant-dropdown-menu' : 'ant-menu';
+    this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
+      [ `${prefixName}` ]                 : true,
+      [ `${prefixName}-root` ]            : true,
+      [ `${prefixName}-${this.nzTheme}` ] : true,
+      [ `${prefixName}-${this.nzMode}` ]  : true,
+      [ `${prefixName}-inline-collapsed` ]: this.nzInlineCollapsed
+    });
   }
 
-  @HostBinding('class.ant-menu')
-  @HostBinding('class.ant-menu-root')
-  get isNotInDropDownClass(): boolean {
-    return !this.nzInDropDown;
+  constructor(public elementRef: ElementRef,
+              private nzMenuService: NzMenuService,
+              private nzUpdateHostClassService: NzUpdateHostClassService) {
+
   }
 
-  @HostBinding('class.ant-dropdown-menu-light')
-  get setDropDownThemeLightClass(): boolean {
-    return this.nzInDropDown && (this.nzTheme === 'light');
-  }
-
-  @HostBinding('class.ant-dropdown-menu-dark')
-  get setDropDownThemeDarkClass(): boolean {
-    return this.nzInDropDown && (this.nzTheme === 'dark');
-  }
-
-  @HostBinding('class.ant-menu-light')
-  get setMenuThemeLightClass(): boolean {
-    return (!this.nzInDropDown) && (this.nzTheme === 'light');
-  }
-
-  @HostBinding('class.ant-menu-dark')
-  get setMenuThemeDarkClass(): boolean {
-    return (!this.nzInDropDown) && (this.nzTheme === 'dark');
-  }
-
-  @HostBinding('class.ant-menu-vertical')
-  get setMenuVerticalClass(): boolean {
-    return (!this.nzInDropDown) && (this.nzMode === 'vertical');
-  }
-
-  @HostBinding('class.ant-menu-horizontal')
-  get setMenuHorizontalClass(): boolean {
-    return (!this.nzInDropDown) && (this.nzMode === 'horizontal');
-  }
-
-  @HostBinding('class.ant-menu-inline')
-  get setMenuInlineClass(): boolean {
-    return (!this.nzInDropDown) && (this.nzMode === 'inline');
-  }
-
-  @HostBinding('class.ant-menu-inline-collapsed')
-  get setMenuInlineCollapsedClass(): boolean {
-    return (!this.nzInDropDown) && (this.nzMode !== 'horizontal') && this.nzInlineCollapsed;
-  }
-
-  constructor(public el: ElementRef) {
-
+  ngOnInit(): void {
+    this.setClassMap();
+    this.nzMenuService.menuItemClick$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(menu => {
+      this.nzClick.emit(menu);
+      if (this.nzSelectable) {
+        this.listOfNzMenuItemDirective.forEach(item => item.setSelectedState(item === menu));
+      }
+    });
   }
 
   ngAfterContentInit(): void {
-    this.isInit = true;
     this.cacheMode = this.nzMode;
     this.updateInlineCollapse();
   }
 
-  /** trigger when menu item clicked */
-  clearAllSelected(): void {
-    this.menuItems.forEach(menu => menu.nzSelected = false);
-  }
-
-  hideSubMenus(): void {
-    this.subMenusOpenIndex = [];
-    this.subMenus.forEach((submenu, index) => {
-      if (submenu.nzOpen) {
-        this.subMenusOpenIndex.push(index);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzInlineCollapsed) {
+      this.updateInlineCollapse();
+    }
+    if (changes.nzInlineIndent) {
+      this.nzMenuService.setInlineIndent(this.nzInlineIndent);
+    }
+    if (changes.nzInDropDown) {
+      this.nzMenuService.isInDropDown = this.nzInDropDown;
+    }
+    if (changes.nzTheme) {
+      this.nzMenuService.setTheme(this.nzTheme);
+    }
+    if (changes.nzMode) {
+      this.nzMenuService.setMode(this.nzMode);
+      if (!changes.nzMode.isFirstChange() && this.listOfNzSubMenuComponent) {
+        this.listOfNzSubMenuComponent.forEach(submenu => submenu.setOpenState(false));
       }
-      submenu.nzOpen = false;
-    });
+    }
+    if (changes.nzTheme || changes.nzMode || changes.nzInlineCollapsed) {
+      this.setClassMap();
+    }
   }
 
-  reductionSubMenus(): void {
-    this.subMenusOpenIndex.forEach(i => this.subMenus[ i ].nzOpen = true);
-    this.subMenusOpenIndex = [];
-  }
-
-  clickItem(value: NzMenuItemDirective): void {
-    this.nzClick.emit(value);
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

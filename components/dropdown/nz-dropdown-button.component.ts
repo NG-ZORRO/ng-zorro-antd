@@ -1,30 +1,33 @@
 import {
-  AfterViewInit,
+  AfterContentInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
-  OnInit,
   Output,
   Renderer2,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { slideMotion } from '../core/animation/slide';
-
 import { NzDropDownComponent } from './nz-dropdown.component';
 import { NzDropDownDirective } from './nz-dropdown.directive';
+import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 
 @Component({
   selector           : 'nz-dropdown-button',
   preserveWhitespaces: false,
-  animations         : [
-    slideMotion
-  ],
+  animations         : [ slideMotion ],
+  encapsulation      : ViewEncapsulation.None,
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  providers          : [ NzMenuDropdownService ],
   templateUrl        : './nz-dropdown-button.component.html',
   styles             : [ `
-    :host {
+    nz-dropdown-button {
       position: relative;
       display: inline-block;
     }
@@ -40,33 +43,18 @@ import { NzDropDownDirective } from './nz-dropdown.directive';
   ` ]
 })
 
-export class NzDropDownButtonComponent extends NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
+export class NzDropDownButtonComponent extends NzDropDownComponent implements OnDestroy, AfterContentInit, OnChanges {
   @Input() nzSize = 'default';
   @Input() nzType = 'default';
-  @ViewChild('content') content;
   @Output() readonly nzClick = new EventEmitter<MouseEvent>();
-  @ViewChild(NzDropDownDirective) nzOrigin;
+  @ViewChild(NzDropDownDirective) nzDropDownDirective: NzDropDownDirective;
 
-  onVisibleChange = (visible: boolean) => {
-    if (this.nzDisabled) {
-      return;
-    }
-    if (visible) {
-      this.setTriggerWidth();
-    }
-    if (this.nzVisible !== visible) {
-      this.nzVisible = visible;
-      this.nzVisibleChange.emit(this.nzVisible);
-    }
-    this.changeDetector.markForCheck();
-  }
-
-  constructor(renderer: Renderer2, changeDetector: ChangeDetectorRef) {
-    super(renderer, changeDetector);
+  constructor(renderer: Renderer2, cdr: ChangeDetectorRef, nzMenuDropdownService: NzMenuDropdownService) {
+    super(renderer, cdr, nzMenuDropdownService);
   }
 
   /** rewrite afterViewInit hook */
-  ngAfterViewInit(): void {
-    this.startSubscribe(this.$visibleChange);
+  ngAfterContentInit(): void {
+    this.startSubscribe(this.visible$);
   }
 }

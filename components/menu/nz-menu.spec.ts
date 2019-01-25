@@ -72,11 +72,13 @@ describe('menu', () => {
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-horizontal');
       });
       it('should menu item select', () => {
+        fixture.detectChanges();
         items[ 0 ].nativeElement.click();
         fixture.detectChanges();
         expect(items[ 0 ].nativeElement.classList.contains('ant-menu-item-selected')).toBe(true);
       });
       it('should menu disabled work', () => {
+        fixture.detectChanges();
         items[ 1 ].nativeElement.click();
         fixture.detectChanges();
         expect(items[ 0 ].nativeElement.classList.contains('ant-menu-item-selected')).toBe(false);
@@ -232,7 +234,7 @@ describe('menu', () => {
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-inline');
         testComponent.theme = false;
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-inline ant-menu-light');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-inline');
       });
     });
     describe('swich-mode', () => {
@@ -282,7 +284,7 @@ describe('menu', () => {
         const mouseenterCallback = jasmine.createSpy('mouseenter callback');
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
-        subs[ 0 ].$mouseSubject.subscribe(mouseenterCallback);
+        subs[ 0 ].nzSubmenuService.mouseEnterLeave$.subscribe(mouseenterCallback);
         dispatchFakeEvent(title, 'mouseenter');
         fixture.detectChanges();
         expect(mouseenterCallback).toHaveBeenCalledWith(true);
@@ -293,7 +295,7 @@ describe('menu', () => {
         const mouseleaveCallback = jasmine.createSpy('mouseleave callback');
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
-        subs[ 0 ].$mouseSubject.subscribe(mouseleaveCallback);
+        subs[ 0 ].nzSubmenuService.mouseEnterLeave$.subscribe(mouseleaveCallback);
         dispatchFakeEvent(title, 'mouseleave');
         fixture.detectChanges();
         expect(mouseleaveCallback).toHaveBeenCalledWith(false);
@@ -304,12 +306,12 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        subs[ 0 ].$subOpen.subscribe(nestedCallback);
+        subs[ 0 ].nzSubmenuService.subMenuOpen$.subscribe(nestedCallback);
         subs[ 1 ].nzOpen = true;
-        subs[ 1 ].handleOpenEvent(false);
+        subs[ 1 ].nzSubmenuService.open$.next(false);
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledWith(false);
-        expect(nestedCallback).toHaveBeenCalledTimes(2);
+        expect(nestedCallback).toHaveBeenCalledTimes(1);
       });
       it('should nested submenu disabled work', () => {
         testComponent.open = true;
@@ -317,9 +319,9 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        subs[ 0 ].$subOpen.subscribe(nestedCallback);
+        subs[ 0 ].nzSubmenuService.subMenuOpen$.subscribe(nestedCallback);
         subs[ 1 ].nzOpen = true;
-        subs[ 1 ].handleOpenEvent(false);
+        subs[ 1 ].nzSubmenuService.open$.next(false);
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledTimes(1);
       });
@@ -330,7 +332,7 @@ describe('menu', () => {
         const subs = testComponent.subs.toArray();
         subs[ 1 ].nzOpen = true;
         fixture.detectChanges();
-        subs[ 1 ].$mouseSubject.subscribe(nestedCallback);
+        subs[ 1 ].nzSubmenuService.mouseEnterLeave$.subscribe(nestedCallback);
         testComponent.menuitem.nativeElement.click();
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledWith(false);
@@ -341,7 +343,7 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        subs[ 1 ].$mouseSubject.subscribe(nestedCallback);
+        subs[ 1 ].nzSubmenuService.mouseEnterLeave$.subscribe(nestedCallback);
         subs[ 1 ].nzOpen = true;
         testComponent.disableditem.nativeElement.click();
         fixture.detectChanges();
