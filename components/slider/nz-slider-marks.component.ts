@@ -1,46 +1,26 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { toBoolean } from '../core/util/convert';
+import { StyleMap } from '../core/interface/interface';
+import { InputBoolean } from '../core/util/convert';
+import { DisplayedMark, ParsedMark } from './nz-slider-definition';
 
 @Component({
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-slider-marks',
   preserveWhitespaces: false,
   templateUrl        : './nz-slider-marks.component.html'
 })
 export class NzSliderMarksComponent implements OnChanges {
-  private _vertical = false;
-  private _included = false;
-
-  // Dynamic properties
+  @Input() @InputBoolean() nzVertical = false;
+  @Input() @InputBoolean() nzIncluded = false;
   @Input() nzLowerBound: number = null;
   @Input() nzUpperBound: number = null;
-  @Input() nzMarksArray: MarksArray;
+  @Input() nzMarksArray: ParsedMark[];
+  @Input() nzMin: number;
+  @Input() nzMax: number;
 
-  // Static properties
-  @Input() nzClassName: string;
-  @Input() nzMin: number; // Required
-  @Input() nzMax: number; // Required
-
-  @Input()
-  set nzVertical(value: boolean) { // Required
-    this._vertical = toBoolean(value);
-  }
-
-  get nzVertical(): boolean {
-    return this._vertical;
-  }
-
-  @Input()
-  set nzIncluded(value: boolean) {
-    this._included = toBoolean(value);
-  }
-
-  get nzIncluded(): boolean {
-    return this._included;
-  }
-
-  // TODO: using named interface
-  attrs: Array<{ id: number, value: number, offset: number, classes: { [ key: string ]: boolean }, style: object, label: Mark }>; // points for inner use
+  marks: DisplayedMark[];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzMarksArray) {
@@ -51,81 +31,56 @@ export class NzSliderMarksComponent implements OnChanges {
     }
   }
 
-  trackById(index: number, attr: { id: number, value: number, offset: number, classes: { [ key: string ]: boolean }, style: object, label: Mark }): number {
-    return attr.id;
+  trackById(index: number, attr: DisplayedMark): number {
+    return attr.value;
   }
 
-  buildAttrs(): void {
-    const range = this.nzMax - this.nzMin;
-    this.attrs = this.nzMarksArray.map(mark => {
+  private buildAttrs(): void {
+    this.marks = this.nzMarksArray.map(mark => {
       const { value, offset, config } = mark;
-      // calc styles
-      let label = config;
-      let style: object;
-      if (this.nzVertical) {
-        style = {
-          marginBottom: '-50%',
-          bottom      : `${(value - this.nzMin) / range * 100}%`
-        };
-      } else {
-        const marksCount = this.nzMarksArray.length;
-        const unit = 100 / (marksCount - 1);
-        const markWidth = unit * 0.9;
-        style = {
-          width     : `${markWidth}%`,
-          marginLeft: `${-markWidth / 2}%`,
-          left      : `${(value - this.nzMin) / range * 100}%`
-        };
-      }
-      // custom configuration
-      if (typeof config === 'object') {
-        label = config.label;
-        if (config.style) {
-          style = { ...style, ...config.style };
-        }
-      }
+      const style = this.prepareStyles(value, this.nzMax - this.nzMin);
+      const label = typeof config === 'object' ? config.label : config;
+      const passedStyle = typeof config === 'object' ? { ...style, ...config.style } : style;
+
       return {
-        id     : value,
         value,
         offset,
-        classes: {
-          [ `${this.nzClassName}-text` ]: true
-        },
-        style,
-        label
+        label,
+        style : passedStyle,
+        active: false
       };
-    }); // END - map
+    });
   }
 
-  togglePointActive(): void {
-    if (this.attrs && this.nzLowerBound !== null && this.nzUpperBound !== null) {
-      this.attrs.forEach(attr => {
+  private prepareStyles(value: number, range: number): StyleMap {
+    let style: StyleMap;
+
+    if (this.nzVertical) {
+      style = {
+        marginBottom: '-50%',
+        bottom      : `${(value - this.nzMin) / range * 100}%`
+      };
+    } else {
+      const marksCount = this.nzMarksArray.length;
+      const unit = 100 / (marksCount - 1);
+      const markWidth = unit * 0.9;
+      style = {
+        width     : `${markWidth}%`,
+        marginLeft: `${-markWidth / 2}%`,
+        left      : `${(value - this.nzMin) / range * 100}%`
+      };
+    }
+
+    return style;
+  }
+
+  private togglePointActive(): void {
+    if (this.marks && this.nzLowerBound !== null && this.nzUpperBound !== null) {
+      this.marks.forEach(attr => {
         const value = attr.value;
-        const isActive = (!this.nzIncluded && value === this.nzUpperBound) ||
+        attr.active = (!this.nzIncluded && value === this.nzUpperBound) ||
           (this.nzIncluded && value <= this.nzUpperBound && value >= this.nzLowerBound);
-        attr.classes[ `${this.nzClassName}-text-active` ] = isActive;
       });
     }
-  }
-
-}
-
-// DEFINITIONS
-
-export type Mark = string | {
-  style: object;
-  label: string;
-};
-
-export class Marks {
-  number: Mark;
-}
-
-// TODO: extends Array could cause unexpected behavior when targeting es5 or below
-export class MarksArray extends Array<{ value: number, offset: number, config: Mark }> {
-  [ index: number ]: {
-    value: number;
-    offset: number;
-    config: Mark;
   }
 }

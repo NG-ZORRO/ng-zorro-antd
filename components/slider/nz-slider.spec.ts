@@ -6,13 +6,14 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
+import { NzSliderShowTooltip } from './nz-slider-definition';
 import { NzSliderComponent } from './nz-slider.component';
 import { NzSliderModule } from './nz-slider.module';
 
 describe('NzSlider', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule ],
+      imports     : [ NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule ],
       declarations: [
         StandardSliderComponent,
         DisableSliderComponent,
@@ -23,7 +24,8 @@ describe('NzSlider', () => {
         SliderWithValueGreaterThanMaxComponent,
         VerticalSliderComponent,
         MixedSliderComponent,
-        SliderWithFormControlComponent
+        SliderWithFormControlComponent,
+        SliderShowTooltipComponent
       ]
     });
 
@@ -121,10 +123,6 @@ describe('NzSlider', () => {
       fixture.detectChanges();
 
       expect(onChangeSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('should pass un-covered code testing', () => {
-      expect(sliderInstance.getValueToOffset()).toBe(sliderInstance.value);
     });
   });
 
@@ -461,6 +459,69 @@ describe('NzSlider', () => {
     });
   });
 
+  describe('show tooltip', () => {
+    let fixture: ComponentFixture<SliderShowTooltipComponent>;
+    let sliderDebugElement: DebugElement;
+    let sliderNativeElement: HTMLElement;
+    let trackFillElement: HTMLElement;
+    let sliderInstance: NzSliderComponent;
+    let testComponent: SliderShowTooltipComponent;
+    let overlayContainer: OverlayContainer;
+    let overlayContainerElement: HTMLElement;
+
+    beforeEach(inject([ OverlayContainer ], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    }));
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(SliderShowTooltipComponent);
+      fixture.detectChanges();
+
+      testComponent = fixture.debugElement.componentInstance;
+      sliderDebugElement = fixture.debugElement.query(By.directive(NzSliderComponent));
+      sliderInstance = sliderDebugElement.injector.get<NzSliderComponent>(NzSliderComponent);
+      sliderNativeElement = sliderInstance.sliderDOM;
+      trackFillElement = sliderNativeElement.querySelector('.ant-slider-track') as HTMLElement;
+    });
+
+    it('should always display tooltips if set to `always`', fakeAsync(() => {
+      const handlerHost = sliderNativeElement.querySelector('nz-slider-handle');
+
+      testComponent.show = 'always';
+      tick(400);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('0');
+
+      dispatchClickEventSequence(sliderNativeElement, 0.13);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('13');
+
+      // Always show tooltip even when handle is not hovered.
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('13');
+
+      tick(400);
+     }));
+
+    it('should never display tooltips if set to `never`', fakeAsync(() => {
+      const handlerHost = sliderNativeElement.querySelector('nz-slider-handle');
+
+      testComponent.show = 'never';
+      tick(400);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).not.toContain('0');
+
+      dispatchClickEventSequence(sliderNativeElement, 0.13);
+      fixture.detectChanges();
+
+      // Do not show tooltip even when handle is hovered.
+      dispatchMouseEvent(handlerHost, 'mouseenter');
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).not.toContain('13');
+    }));
+  });
+
   describe('mixed slider usage', () => {
     let fixture: ComponentFixture<MixedSliderComponent>;
     let sliderDebugElement: DebugElement;
@@ -674,22 +735,26 @@ const styles = `
 `;
 
 @Component({
-  template: `<nz-slider></nz-slider>`,
-  styles: [ styles ]
+  template: `
+    <nz-slider></nz-slider>`,
+  styles  : [ styles ]
 })
-class StandardSliderComponent { }
+class StandardSliderComponent {
+}
 
 @Component({
-  template: `<nz-slider [nzDisabled]="disable"></nz-slider>`,
-  styles: [ styles ]
+  template: `
+    <nz-slider [nzDisabled]="disable"></nz-slider>`,
+  styles  : [ styles ]
 })
 class DisableSliderComponent {
   disable = true;
 }
 
 @Component({
-  template: `<nz-slider [nzMin]="min" [nzMax]="max"></nz-slider>`,
-  styles: [ styles ]
+  template: `
+    <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider>`,
+  styles  : [ styles ]
 })
 class SliderWithMinAndMaxComponent {
   min = 4;
@@ -697,40 +762,60 @@ class SliderWithMinAndMaxComponent {
 }
 
 @Component({
-  template: `<nz-slider [ngModel]="26"></nz-slider>`,
-  styles: [ styles ]
+  template: `
+    <nz-slider [ngModel]="26"></nz-slider>`,
+  styles  : [ styles ]
 })
-class SliderWithValueComponent { }
+class SliderWithValueComponent {
+}
 
 @Component({
-  template: `<nz-slider [nzStep]="step"></nz-slider>`,
-  styles: [ styles ]
+  template: `
+    <nz-slider [nzStep]="step"></nz-slider>`,
+  styles  : [ styles ]
 })
 class SliderWithStepComponent {
   step = 25;
 }
 
 @Component({
-  template: `<nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider>`,
-  styles: [ styles ]
+  template: `
+    <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider>`,
+  styles  : [ styles ]
 })
-class SliderWithValueSmallerThanMinComponent { }
+class SliderWithValueSmallerThanMinComponent {
+}
 
 @Component({
-  template: `<nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider>`,
-  styles: [ styles ]
+  template: `
+    <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider>`,
+  styles  : [ styles ]
 })
-class SliderWithValueGreaterThanMaxComponent { }
+class SliderWithValueGreaterThanMaxComponent {
+}
 
 @Component({
-  template: `<nz-slider nzVertical></nz-slider>`,
-  styles: [ styles ]
+  template: `
+    <nz-slider nzVertical></nz-slider>`,
+  styles  : [ styles ]
 })
-class VerticalSliderComponent { }
+class VerticalSliderComponent {
+}
 
 @Component({
-  template: `<nz-slider [nzRange]="range" [nzStep]="step" [nzMarks]="marks" [nzDots]="dots" [nzIncluded]="included" [nzTipFormatter]="tipFormatter"></nz-slider>`,
-  styles: [ styles ]
+  template: `
+    <nz-slider [nzShowTooltip]="show" [ngModel]="value"></nz-slider>`
+})
+class SliderShowTooltipComponent {
+  show: NzSliderShowTooltip = 'default';
+  value = 0;
+}
+
+@Component({
+  template: `
+    <nz-slider [nzRange]="range" [nzStep]="step" [nzMarks]="marks" [nzDots]="dots" [nzIncluded]="included"
+               [nzTipFormatter]="tipFormatter"></nz-slider>`,
+  styles  : [ styles ]
 })
 class MixedSliderComponent {
   range = false;
@@ -750,12 +835,13 @@ class MixedSliderComponent {
       <nz-slider formControlName="slider"></nz-slider>
     </form>
   `,
-  styles: [ styles ]
+  styles  : [ styles ]
 })
 class SliderWithFormControlComponent implements OnInit {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {
+  }
 
   ngOnInit(): void {
     this.form = this.fb.group({

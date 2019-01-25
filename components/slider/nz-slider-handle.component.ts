@@ -1,74 +1,103 @@
-import { Component, HostListener, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  HostListener,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
+import { StyleMap } from '../core/interface/interface';
 
-import { toBoolean } from '../core/util/convert';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
+import { NzSliderShowTooltip } from './nz-slider-definition';
 
 import { NzSliderComponent } from './nz-slider.component';
 
 @Component({
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-slider-handle',
   preserveWhitespaces: false,
   templateUrl        : './nz-slider-handle.component.html'
 })
-export class NzSliderHandleComponent implements OnChanges {
+export class NzSliderHandleComponent implements OnChanges, AfterViewInit {
+  @ViewChild('tooltip') tooltip: NzToolTipComponent;
 
-  // Static properties
-  @Input() nzClassName: string;
+  @Input() nzActive: boolean = false;
   @Input() nzVertical: string;
   @Input() nzOffset: number;
-  @Input() nzValue: number; // [For tooltip]
-  @Input() nzTipFormatter: (value: number) => string; // [For tooltip]
-  @Input() set nzActive(value: boolean) { // [For tooltip]
-    const show = toBoolean(value);
-    if (this.tooltip) {
-      if (show) {
-        this.tooltip.show();
-      } else {
-        this.tooltip.hide();
-      }
-    }
-  }
+  @Input() nzValue: number;
+  @Input() nzShowTooltip: NzSliderShowTooltip = 'default';
+  @Input() nzTipFormatter: (value: number) => string;
 
-  // Locals
-  @ViewChild('tooltip') tooltip: NzToolTipComponent; // [For tooltip]
-  tooltipTitle: string; // [For tooltip]
-  style: object = {};
+  tooltipTitle: string;
+  style: StyleMap = {};
 
   constructor(private _slider: NzSliderComponent) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzOffset) {
+    const { nzOffset, nzValue, nzActive, nzShowTooltip } = changes;
+
+    if (nzOffset) {
       this._updateStyle();
     }
-    if (changes.nzValue) {
-      this._updateTooltipTitle(); // [For tooltip]
-      this._updateTooltipPosition(); // [For tooltip]
+    if (nzValue) {
+      this._updateTooltipTitle();
+      this._updateTooltipPosition();
+    }
+    if (nzActive && this.nzShowTooltip === 'default') {
+      this.toggleTooltipVisible(nzActive.currentValue);
+    }
+    if (nzShowTooltip && !nzShowTooltip.isFirstChange()) {
+      this.toggleTooltipVisible(nzShowTooltip.currentValue === 'always', true);
     }
   }
 
-  // Hover to toggle tooltip when not dragging
+  ngAfterViewInit(): void {
+    if (this.nzShowTooltip === 'always') {
+      Promise.resolve().then(() => {
+        this.toggleTooltipVisible(true, true);
+      });
+    }
+  }
+
   @HostListener('mouseenter', [ '$event' ])
   onMouseEnter($event: MouseEvent): void {
     if (!this._slider.isDragging) {
-      this.nzActive = true;
+      this.toggleTooltipVisible(true);
     }
   }
 
   @HostListener('mouseleave', [ '$event' ])
   onMouseLeave($event: MouseEvent): void {
     if (!this._slider.isDragging) {
-      this.nzActive = false;
+      this.toggleTooltipVisible(false);
     }
   }
 
-  private _updateTooltipTitle(): void { // [For tooltip]
+  private toggleTooltipVisible(visible: boolean = false, force: boolean = false): void {
+    if (!force && this.nzShowTooltip !== 'default' || !this.tooltip) {
+      return;
+    }
+
+    if (visible) {
+      this.tooltip.show();
+    } else {
+      this.tooltip.hide();
+    }
+  }
+
+  private _updateTooltipTitle(): void {
     this.tooltipTitle = this.nzTipFormatter ? this.nzTipFormatter(this.nzValue) : `${this.nzValue}`;
   }
 
-  private _updateTooltipPosition(): void { // [For tooltip]
+  private _updateTooltipPosition(): void {
     if (this.tooltip) {
-      window.setTimeout(() => this.tooltip.updatePosition(), 0); // MAY use ngAfterViewChecked? but this will be called so many times.
+      window.setTimeout(() => this.tooltip.updatePosition(), 0);
     }
   }
 

@@ -1,3 +1,15 @@
+/**
+ * @module Array
+ */
+
+/**
+ * Wrap something into an array.
+ *
+ * @export
+ * @template T
+ * @param {(T | T[])} value If it's an array it just gets returned
+ * @returns {T[]}
+ */
 export function toArray<T>(value: T | T[]): T[] {
   let ret: T[];
   if (value == null) {
@@ -22,4 +34,16 @@ export function arrayEquals<T>(array1: T[], array2: T[]): boolean {
     }
   }
   return true;
+}
+
+/**
+ * Create a shallow copy of an array.
+ *
+ * @export
+ * @template T
+ * @param {T[]} arr
+ * @returns {T[]}
+ */
+export function shallowClone<T>(arr: T[]): T[] {
+  return arr.slice();
 }

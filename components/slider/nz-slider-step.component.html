@@ -1,3 +1,6 @@
-<div class="{{nzPrefixCls}}-step">
-  <span *ngFor="let attr of attrs; trackBy: trackById" [ngClass]="attr.classes" [ngStyle]="attr.style"></span>
+<div class="ant-slider-step">
+  <span *ngFor="let step of steps; trackBy: trackById"
+        class="ant-slider-dot"
+        [class.ant-slider-dot-active]="step.active"
+        [ngStyle]="step.style"></span>
 </div>
