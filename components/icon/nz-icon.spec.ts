@@ -2,7 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { LeftOutline, LoadingOutline, QuestionCircleOutline, QuestionOutline, RightOutline } from '@ant-design/icons-angular/icons';
+import {
+  LeftOutline,
+  LoadingOutline,
+  QuestionCircleOutline,
+  QuestionOutline,
+  RightOutline
+} from '@ant-design/icons-angular/icons';
 import { NzIconDirective } from './nz-icon.directive';
 import { NzIconModule } from './nz-icon.module';
 import { NzIconService, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from './nz-icon.service';
@@ -15,7 +21,12 @@ describe('icon', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports     : [ CommonModule, NzIconModule ],
-      declarations: [ NzTestIconExtensionsComponent, NzTestIconCustomComponent, NzTestIconIconfontComponent, NzTestIconOldApiComponent ]
+      declarations: [
+        NzTestIconExtensionsComponent,
+        NzTestIconCustomComponent,
+        NzTestIconIconfontComponent,
+        NzTestIconOldApiComponent
+      ]
     }).compileComponents();
   });
 
@@ -72,7 +83,6 @@ describe('icon', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestIconCustomComponent);
       testComponent = fixture.debugElement.componentInstance;
-
     });
 
     it('should support custom svg element', () => {
@@ -119,6 +129,13 @@ describe('icon', () => {
       expect(icons[ 0 ].nativeElement.className).toContain('anticon');
       expect(icons[ 0 ].nativeElement.innerHTML).toContain('svg');
     });
+
+    it('should type support old API', () => {
+      fixture.detectChanges();
+      expect(icons[ 2 ].nativeElement.className).toContain('anticon');
+      expect(icons[ 2 ].nativeElement.className).toContain('anticon-cross');
+      expect(icons[ 2 ].nativeElement.innerHTML).toContain('svg');
+    });
   });
 });
 
@@ -131,7 +148,10 @@ describe('icon static importing', () => {
     TestBed.configureTestingModule({
       imports     : [ CommonModule, NzIconModule ],
       declarations: [ NzTestIconExtensionsComponent ],
-      providers   : [ { provide: NZ_ICONS, useValue: [ LeftOutline, RightOutline ] }, { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '#3344cc' } ]
+      providers   : [ {
+        provide : NZ_ICONS,
+        useValue: [ LeftOutline, RightOutline ]
+      }, { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '#3344cc' } ]
     });
 
     fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
@@ -157,7 +177,10 @@ describe('icon static importing', () => {
     TestBed.configureTestingModule({
       imports     : [ CommonModule, NzIconModule ],
       declarations: [ NzTestIconExtensionsComponent ],
-      providers   : [ { provide: NZ_ICONS, useValue: [ LeftOutline, RightOutline ] }, { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '3344cc' } ]
+      providers   : [ {
+        provide : NZ_ICONS,
+        useValue: [ LeftOutline, RightOutline ]
+      }, { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '3344cc' } ]
     });
 
     fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
@@ -178,6 +201,7 @@ describe('icon static importing', () => {
   template: `
     <i nz-icon [type]="type" [theme]="theme" [spin]="spin"></i>
     <i nz-icon [type]="'loading'" [theme]="theme"></i>
+    <i nz-icon type="anticon anticon-close"></i>
   `
 })
 export class NzTestIconExtensionsComponent {
@@ -224,7 +248,6 @@ export class NzTestIconIconfontComponent {
   selector: 'nz-test-icon-old-api',
   template: `
     <i class="anticon anticon-question"></i>
-    <!-- Just to improve codecov. Compatibility code would be removed in 2.0.  -->
     <i class="anticon anticon-verticle"></i>
     <i class="anticon anticon-cross"></i>
   `

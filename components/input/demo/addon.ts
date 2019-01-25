@@ -28,12 +28,9 @@ import { Component } from '@angular/core';
       </ng-template>
     </div>
     <div style="margin-bottom: 16px;">
-      <nz-input-group [nzAddOnAfter]="addOnAfterIconTemplate">
+      <nz-input-group  [nzAddOnAfterIcon]="'setting'">
         <input type="text" nz-input [(ngModel)]="inputValue">
       </nz-input-group>
-      <ng-template #addOnAfterIconTemplate>
-        <i nz-icon type="setting"></i>
-      </ng-template>
     </div>
   `
 })
