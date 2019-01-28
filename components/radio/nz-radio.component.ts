@@ -63,9 +63,11 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     }
   }
 
-  @HostListener('click')
-  onClick(): void {
-    this.focus();
+  @HostListener('click', ['$event'])
+  onClick(event: MouseEvent): void {
+    // Prevent label click triggered twice.
+    event.stopPropagation();
+    event.preventDefault();
     if (!this.nzDisabled && !this.checked) {
       this.select$.next(this);
       if (this.isNgModel) {
