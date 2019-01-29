@@ -81,7 +81,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     }
     this._changeIcon().then(svg => {
       this.setSVGData(svg);
-      if (!oldAPI) {
+      if (!oldAPI && svg) {
         this.toggleSpin(svg);
       }
     }).catch((err) => {
