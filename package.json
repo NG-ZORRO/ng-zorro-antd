@@ -9,7 +9,7 @@
   "scripts": {
     "start": "ng serve --port 0",
     "build": "node ./scripts/site/generate-site init && ng build",
-    "test": "ng test --watch=true --code-coverage",
+    "test": "ng test --watch=false --code-coverage",
     "lint": "tslint -c tslint.json 'components/*/*.ts'",
     "release": "node ./scripts/publish/publish.js",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s --pkg components/package.json && node ./scripts/site/replace-scope-prefix.js",

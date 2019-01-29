@@ -79,17 +79,19 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     if (!oldAPI) {
       this.setClassName();
     }
-    this._changeIcon().then(svg => {
-      this.setSVGData(svg);
-      if (!oldAPI && svg) {
-        this.toggleSpin(svg);
-      }
-    }).catch((err) => {
-      if (err) {
-        console.error(err);
-        console.warn('[NG-ZORRO]', `You can find more about this error on http://ng.ant.design/components/icon/en`);
-      }
-    });
+    this._changeIcon()
+      .then(svg => {
+        this.setSVGData(svg);
+        if (!oldAPI && svg) {
+          this.toggleSpin(svg);
+        }
+      })
+      .catch(err => {
+        if (err) {
+          console.error(err);
+          console.warn('[NG-ZORRO]', `You can find more about this error on http://ng.ant.design/components/icon/en`);
+        }
+      });
   }
 
   private classChangeHandler(className: string): void {
