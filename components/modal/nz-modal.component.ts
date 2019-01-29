@@ -103,7 +103,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   get cancelText(): string {
     return this.nzCancelText || this.locale.cancelText;
   }
-
+  @Input() nzOkDisabled: boolean = false;
+  @Input() nzCancelDisabled: boolean = false;
   @Input() @InputBoolean() nzCancelLoading: boolean = false;
   @Input() @Output() readonly nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
   @ViewChild('modalContainer') modalContainer: ElementRef;
