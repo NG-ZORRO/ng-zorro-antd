@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCheckboxModule } from '../checkbox/nz-checkbox.module';
+import { NzAddOnModule } from '../core/addon/addon.module';
 import { NzDropDownModule } from '../dropdown/nz-dropdown.module';
 import { NzEmptyModule } from '../empty/nz-empty.module';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
@@ -25,6 +26,7 @@ import { NzTrDirective } from './nz-tr.directive';
   imports     : [
     NzMenuModule,
     FormsModule,
+    NzAddOnModule,
     NzRadioModule,
     NzCheckboxModule,
     NzDropDownModule,

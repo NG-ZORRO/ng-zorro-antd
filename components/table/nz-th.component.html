@@ -1,7 +1,6 @@
 <ng-template #checkboxTemplate>
-  <label
+  <label nz-checkbox
     [class.ant-table-selection-select-all-custom]="nzShowRowSelection"
-    nz-checkbox
     [(ngModel)]="nzChecked"
     [nzDisabled]="nzDisabled"
     [nzIndeterminate]="nzIndeterminate"
