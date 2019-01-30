@@ -32,6 +32,7 @@ The following APIs are shared by `nz-tooltip`, `nz-popconfirm`, `nz-popover`.
 | `[nzPlacement]` | The position of the tooltip relative to the target | `'top'｜'left'｜'right'｜'bottom'｜'topLeft'｜'topRight'｜'bottomLeft'｜'bottomRight'｜'leftTop'｜'leftBottom'｜'rightTop'｜'rightBottom'` | `'top'` |
 | `[nzTrigger]` | Tooltip trigger mode | `'click'｜'focus'｜'hover'` | `'hover'` |
 | `[nzVisible]` | Whether the floating tooltip card is visible or not | `boolean` | `false` |
+| `[nzDefaultVisible]` | Whether should the tooltip shows when it gets rendered. Only valid when `nzVisible` is not set | `boolean` | `false` |
 | `(nzVisibleChange)` | Callback executed when visibility of the tooltip card is changed | `EventEmitter<boolean>` | - |
 
 ## Note

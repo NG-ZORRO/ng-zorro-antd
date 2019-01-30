@@ -34,6 +34,7 @@ title: Tooltip
 | `[nzPlacement]` | 气泡框位置 | `'top'｜'left'｜'right'｜'bottom'｜'topLeft'｜'topRight'｜'bottomLeft'｜'bottomRight'｜'leftTop'｜'leftBottom'｜'rightTop'｜'rightBottom'` | `'top'` |
 | `[nzTrigger]` | 触发行为，可选 `hover/focus/click` | `'click'｜'focus'｜'hover'` | `'hover'` |
 | `[nzVisible]` | 用于手动控制浮层显隐 | `boolean` | `false` |
+| `[nzDefaultVisible]` | 当 Tooltip 首次渲染时是否显示，仅当未设置 `nzVisible` 时有效 | `boolean` | `false` |
 | `(nzVisibleChange)` | 显示隐藏的回调 | `EventEmitter<boolean>` | - |
 
 ## 注意

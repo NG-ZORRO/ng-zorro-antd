@@ -19,6 +19,7 @@ import {
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
+import { InputBoolean } from '../core/util';
 import { isNotNil } from '../core/util/check';
 import { NzToolTipComponent } from './nz-tooltip.component';
 
@@ -54,15 +55,23 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   @Input('nz-tooltip') nzTitle: string | TemplateRef<void>;
-  @Input('nzTitle') set setTitle(title: string | TemplateRef<void>) { this.nzTitle = title; }
+
+  @Input('nzTitle') set setTitle(title: string | TemplateRef<void>) {
+    this.nzTitle = title;
+  }
+
+  @Input() @InputBoolean() nzDefaultVisible = false;
+  @Input() @InputBoolean() nzVisible = false;
   @Input() nzContent: string | TemplateRef<void>;
   @Input() nzMouseEnterDelay: number;
   @Input() nzMouseLeaveDelay: number;
   @Input() nzOverlayClassName: string;
   @Input() nzOverlayStyle: { [ key: string ]: string };
-  @Input() nzTrigger: string;
-  @Input() nzVisible: boolean;
   @Input() nzPlacement: string;
+  @Input() nzTrigger: string;
+
+  /** A flag the if user has assigned a value to `nzVisible` */
+  private _isVisibleTouched = false;
 
   constructor(
     public elementRef: ElementRef,
@@ -74,6 +83,10 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzVisible) {
+      this._isVisibleTouched = true;
+    }
+
     this.updateProxies(changes);
   }
 
@@ -96,6 +109,28 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   }
 
   ngAfterViewInit(): void {
+    this.initHandles();
+
+    if (!this._isVisibleTouched && this.nzDefaultVisible) {
+      Promise.resolve().then(() => {
+        this.nzVisible = true;
+        this.show();
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subs_.unsubscribe();
+  }
+
+  // tslint:disable-next-line:no-any
+  protected updateCompValue(key: string, value: any): void {
+    if (this.isDynamicTooltip && isNotNil(value)) {
+      this.tooltip[ key ] = value;
+    }
+  }
+
+  private initHandles(): void {
     if (this.tooltip.nzTrigger === 'hover') {
       let overlayElement;
       this.renderer.listen(this.elementRef.nativeElement, 'mouseenter', () => this.delayEnterLeave(true, true, this.tooltip.nzMouseEnterDelay));
@@ -115,17 +150,6 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
         e.preventDefault();
         this.show();
       });
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.subs_.unsubscribe();
-  }
-
-  // tslint:disable-next-line:no-any
-  protected updateCompValue(key: string, value: any): void {
-    if (this.isDynamicTooltip && isNotNil(value)) {
-      this.tooltip[ key ] = value;
     }
   }
 

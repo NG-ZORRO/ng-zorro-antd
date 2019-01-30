@@ -19,7 +19,11 @@ describe('NzTooltip', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzToolTipModule, NoopAnimationsModule, NzIconTestModule ],
-      declarations: [ NzTooltipTestWrapperComponent, NzTooltipTestNewComponent ]
+      declarations: [
+        NzTooltipTestComponentUsageComponent,
+        NzTooltipTestDirectiveUsageComponent,
+        NzTooltipTestDefaultVisibleComponent
+      ]
     });
 
     TestBed.compileComponents();
@@ -33,9 +37,14 @@ describe('NzTooltip', () => {
   afterEach(() => {
     overlayContainer.ngOnDestroy();
   });
-  describe('should bring no break change', () => {
+
+  /**
+   * Component usage is not recommend and its API is not listed on the official website, but we should bring no
+   * break changes to users who are stick with earlier versions.
+   */
+  describe('should support component usage', () => {
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTooltipTestWrapperComponent);
+      fixture = TestBed.createComponent(NzTooltipTestComponentUsageComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -153,9 +162,13 @@ describe('NzTooltip', () => {
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
     }));
   });
+
+  /**
+   * New features are allowed to be only tested here.
+   */
   describe('should support directive usage', () => {
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTooltipTestNewComponent);
+      fixture = TestBed.createComponent(NzTooltipTestDirectiveUsageComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -246,16 +259,27 @@ describe('NzTooltip', () => {
       fixture.detectChanges();
       expect(tooltipComponent.nzTitle).toBe('changed!');
     });
+  });
 
+  describe('default visible', () => {
+    it('should show tooltip if `nzDefaultVisible` is set to true and `nzVisible` is not assigned', fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTooltipTestDefaultVisibleComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+
+      tick(150);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('Title');
+    }));
   });
 
 });
 
 @Component({
-  selector: 'nz-tooltip-test-new',
+  selector: 'nz-tooltip-test-directive-usage',
   template: `
     <a #titleString nz-tooltip [nzTitle]="title" nzTrigger="hover" nzPlacement="topLeft" nzOverlayClassName="testClass" [nzOverlayStyle]="{color:'#000'}"
-       [nzMouseEnterDelay]="0.15" [nzMouseLeaveDelay]="0.1">Show</a>
+       [nzMouseEnterDelay]="0.15" [nzMouseLeaveDelay]="0.1" [nzDefaultVisible]="true">Show</a>
     <a #titleTemplate nz-tooltip [nzTitle]="template">Show</a>
     <ng-template #template>
       title-template
@@ -267,7 +291,7 @@ describe('NzTooltip', () => {
     </div>
   `
 })
-export class NzTooltipTestNewComponent {
+export class NzTooltipTestDirectiveUsageComponent {
   @ViewChild('titleString') titleString: ElementRef;
   @ViewChild('titleString', { read: NzTooltipDirective }) titleStringNzTooltipDirective: NzTooltipDirective;
   @ViewChild('titleTemplate') titleTemplate: ElementRef;
@@ -279,7 +303,7 @@ export class NzTooltipTestNewComponent {
 }
 
 @Component({
-  selector: 'nz-tooltip-test-wrapper',
+  selector: 'nz-tooltip-test-component-usage',
   template: `
     <a #mostSimpleTrigger nz-tooltip="MOST-SIMPLE">Show</a>
 
@@ -299,7 +323,7 @@ export class NzTooltipTestNewComponent {
     <nz-tooltip nzTitle="VISIBLE" [(nzVisible)]="visible"><span #visibleTrigger nz-tooltip>Show</span></nz-tooltip>
   `
 })
-export class NzTooltipTestWrapperComponent {
+export class NzTooltipTestComponentUsageComponent {
   @ViewChild('normalTrigger') normalTrigger: ElementRef;
 
   @ViewChild('templateTrigger') templateTrigger: ElementRef;
@@ -312,4 +336,17 @@ export class NzTooltipTestWrapperComponent {
 
   @ViewChild('mostSimpleTrigger') mostSimpleTrigger: ElementRef;
   @ViewChild('mostSimpleTrigger', { read: NzTooltipDirective }) mostSimpleDirective: NzTooltipDirective;
+}
+
+@Component({
+  selector: 'nz-tooltip-test-default-visible',
+  template: `
+    <a #titleString
+      nz-tooltip
+      [nzTitle]="'Title'"
+      [nzDefaultVisible]="true"
+    >Show</a>
+  `
+})
+export class NzTooltipTestDefaultVisibleComponent {
 }
