@@ -54,7 +54,8 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   @Input()
   set type(value: string) {
     if (value && value.startsWith('anticon')) {
-      const type = normalizeType(getIconTypeClass(value).name).type;
+      const rawClass = getIconTypeClass(value);
+      const type = rawClass ? normalizeType(rawClass.name).type : '';
       if (type && this.type !== type) {
         this._type = type;
       }
@@ -84,12 +85,6 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
         this.setSVGData(svg);
         if (!oldAPI && svg) {
           this.toggleSpin(svg);
-        }
-      })
-      .catch(err => {
-        if (err) {
-          console.error(err);
-          console.warn('[NG-ZORRO]', `You can find more about this error on http://ng.ant.design/components/icon/en`);
         }
       });
   }
