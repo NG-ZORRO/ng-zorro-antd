@@ -21,6 +21,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   @Input() @InputBoolean() nzShowToday: boolean = true;
   @Input() nzMode: PanelMode | PanelMode[];
   @Input() nzRanges: FunctionProp<PresetRanges>;
+  @Input() nzShowPreMonth: boolean = false;
   @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
 
   private _showTime: object | boolean;

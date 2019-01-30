@@ -29,6 +29,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   @Input() disabledDate: DisabledDateFn;
   @Input() disabledTime: DisabledTimeFn; // This will lead to rebuild time options
   @Input() showToday: boolean;
+  @Input() showPreMonth: boolean;
   @Input() showTime: SupportTimeOptions | boolean;
   @Input() extraFooter: TemplateRef<void> | string;
   @Input() ranges: FunctionProp<PresetRanges>;
@@ -371,8 +372,12 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
   private normalizeRangeValue(value: CandyDate[]): CandyDate[] {
     const [ start, end ] = value;
-    const newStart = start || new CandyDate();
-    const newEnd = end && end.isSame(newStart, 'month') ? end.addMonths(1) : end || newStart.addMonths(1);
+    let newStart = start || new CandyDate();
+    let newEnd = newStart.addMonths(1);
+    if (this.showPreMonth) {
+        newEnd = end || new CandyDate();
+        newStart = newEnd.addMonths(-1);
+    }
     return [ newStart, newEnd ];
   }
 
