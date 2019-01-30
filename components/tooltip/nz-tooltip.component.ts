@@ -12,6 +12,7 @@ import {
   ContentChild,
   EventEmitter,
   Input,
+  OnChanges,
   Output,
   TemplateRef,
   ViewChild,
@@ -37,7 +38,7 @@ import { toBoolean } from '../core/util/convert';
     }
   ` ]
 })
-export class NzToolTipComponent {
+export class NzToolTipComponent implements OnChanges {
   _hasBackdrop = false;
   _prefix = 'ant-tooltip-placement';
   _positions: ConnectionPositionPair[] = [ ...DEFAULT_4_POSITIONS ];
@@ -55,8 +56,6 @@ export class NzToolTipComponent {
   @Input() nzMouseEnterDelay = 0.15; // second
   @Input() nzMouseLeaveDelay = 0.1; // second
 
-  @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
-
   @Input()
   set nzVisible(value: boolean) {
     const visible = toBoolean(value);
@@ -66,9 +65,7 @@ export class NzToolTipComponent {
     }
   }
 
-  get nzVisible(): boolean {
-    return this.visibleSource.value;
-  }
+  get nzVisible(): boolean { return this.visibleSource.value; }
 
   @Input()
   set nzTrigger(value: string) {
@@ -76,9 +73,7 @@ export class NzToolTipComponent {
     this._hasBackdrop = this._trigger === 'click';
   }
 
-  get nzTrigger(): string {
-    return this._trigger;
-  }
+  get nzTrigger(): string { return this._trigger; }
 
   @Input()
   set nzPlacement(value: string) {
@@ -88,8 +83,16 @@ export class NzToolTipComponent {
     }
   }
 
-  get nzPlacement(): string {
-    return this._placement;
+  get nzPlacement(): string { return this._placement; }
+
+  @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
+
+  constructor(public cdr: ChangeDetectorRef) {}
+
+  ngOnChanges(): void {
+    Promise.resolve().then(() => {
+      this.updatePosition();
+    });
   }
 
   // Manually force updating current overlay's position
@@ -107,8 +110,7 @@ export class NzToolTipComponent {
       }
     }
     this.setClassMap();
-    /** TODO may cause performance problem */
-    this.cdr.detectChanges();
+    this.cdr.detectChanges(); // TODO: performance?
   }
 
   show(): void {
@@ -140,8 +142,6 @@ export class NzToolTipComponent {
   setOverlayOrigin(origin: CdkOverlayOrigin): void {
     this.overlayOrigin = origin;
   }
-
-  constructor(public cdr: ChangeDetectorRef) {}
 
   protected isContentEmpty(): boolean {
     return this.nzTitle instanceof TemplateRef ? false : (this.nzTitle === '' || !isNotNil(this.nzTitle));
