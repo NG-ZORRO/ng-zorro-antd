@@ -62,6 +62,19 @@ describe('anchor', () => {
       }, throttleTime);
     });
 
+    it('should clean actived when leave all anchor', fakeAsync(() => {
+      spyOn(context.comp, 'clearActive' as any);
+      page.scrollTo();
+      tick(throttleTime);
+      fixture.detectChanges();
+      expect(context.comp['clearActive']).not.toHaveBeenCalled();
+      window.scrollTo(0, 0);
+      window.dispatchEvent(new Event('scroll'));
+      tick(throttleTime);
+      fixture.detectChanges();
+      expect(context.comp['clearActive']).toHaveBeenCalled();
+    }));
+
     it(`won't scolling when is not exists link`, () => {
       spyOn(srv, 'getScroll');
       expect(context._scroll).not.toHaveBeenCalled();
