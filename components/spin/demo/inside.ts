@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-spin-inside',
   template: `
     <div class="example">
-      <nz-spin></nz-spin>
+      <nz-spin nzSimple></nz-spin>
     </div>
   `,
   styles  : [

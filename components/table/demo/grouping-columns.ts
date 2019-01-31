@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
       [nzData]="displayData"
       nzBordered
       nzSize="middle"
-      [nzWidthConfig]="['100px','200px','200px','100px','100px',null,null,'60px']"
+      [nzWidthConfig]="['100px','200px','200px','100px','100px',null,null,'80px']"
       [nzScroll]="{ x:'130%',y: '240px' }">
       <thead>
         <tr>

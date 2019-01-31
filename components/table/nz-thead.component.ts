@@ -1,8 +1,9 @@
 import {
-  AfterContentInit,
+  AfterContentInit, AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
   Host,
   Input,
@@ -10,6 +11,7 @@ import {
   Optional,
   Output,
   QueryList,
+  Renderer2,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -28,14 +30,15 @@ import { NzThComponent } from './nz-th.component';
   encapsulation  : ViewEncapsulation.None,
   templateUrl    : './nz-thead.component.html'
 })
-export class NzTheadComponent implements AfterContentInit, OnDestroy {
+export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewInit {
   private destroy$ = new Subject<void>();
-  @ViewChild('contentTemplate') template: TemplateRef<void>;
+  @ViewChild('contentTemplate') templateRef: TemplateRef<void>;
   @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
   @Input() @InputBoolean() nzSingleSort = false;
   @Output() readonly nzSortChange = new EventEmitter<{ key: string, value: string }>();
 
-  constructor(@Host() @Optional() public nzTableComponent: NzTableComponent) {
+  // tslint:disable-next-line:no-any
+  constructor(@Host() @Optional() public nzTableComponent: NzTableComponent, private elementRef: ElementRef, private renderer: Renderer2) {
     if (this.nzTableComponent) {
       this.nzTableComponent.nzTheadComponent = this;
     }
@@ -55,6 +58,12 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy {
         });
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    if (this.nzTableComponent) {
+      this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), this.elementRef.nativeElement);
+    }
   }
 
   ngOnDestroy(): void {

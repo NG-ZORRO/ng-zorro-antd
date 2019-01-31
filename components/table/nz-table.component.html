@@ -12,7 +12,7 @@
     <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
       <ng-template [ngTemplateOutlet]="colGroupTemplate"></ng-template>
       <thead class="ant-table-thead" *ngIf="nzScroll.y">
-        <ng-template [ngTemplateOutlet]="nzTheadComponent?.template"></ng-template>
+        <ng-template [ngTemplateOutlet]="nzTheadComponent?.templateRef"></ng-template>
       </thead>
     </table>
   </div>
@@ -24,7 +24,7 @@
     <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
       <ng-template [ngTemplateOutlet]="colGroupTemplate"></ng-template>
       <thead class="ant-table-thead" *ngIf="!nzScroll.y">
-        <ng-template [ngTemplateOutlet]="nzTheadComponent?.template"></ng-template>
+        <ng-template [ngTemplateOutlet]="nzTheadComponent?.templateRef"></ng-template>
       </thead>
       <ng-content></ng-content>
     </table>
@@ -36,42 +36,38 @@
     <ng-container *nzStringTemplateOutlet="nzFooter">{{ nzFooter }}</ng-container>
   </div>
 </ng-template>
-<div class="ant-table-wrapper" [class.ant-table-empty]="data.length === 0">
-  <nz-spin [nzDelay]="nzLoadingDelay" [nzSpinning]="nzLoading">
-    <div>
-      <div #tableMainElement
-        class="ant-table"
-        [class.ant-table-fixed-header]="nzScroll.x || nzScroll.y"
-        [class.ant-table-bordered]="nzBordered"
-        [class.ant-table-large]="nzSize === 'default'"
-        [class.ant-table-middle]="nzSize === 'middle'"
-        [class.ant-table-small]="nzSize === 'small'">
-        <div class="ant-table-title" *ngIf="nzTitle">
-          <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-        </div>
-        <div class="ant-table-content">
-          <ng-container *ngIf="nzScroll.x || nzScroll.y; else tableInnerTemplate">
-            <div class="ant-table-scroll">
-              <ng-template [ngTemplateOutlet]="tableInnerTemplate"></ng-template>
-            </div>
-          </ng-container>
-        </div>
-      </div>
+<nz-spin [nzDelay]="nzLoadingDelay" [nzSpinning]="nzLoading">
+  <div #tableMainElement
+    class="ant-table"
+    [class.ant-table-fixed-header]="nzScroll.x || nzScroll.y"
+    [class.ant-table-bordered]="nzBordered"
+    [class.ant-table-default]="nzSize === 'default'"
+    [class.ant-table-middle]="nzSize === 'middle'"
+    [class.ant-table-small]="nzSize === 'small'">
+    <div class="ant-table-title" *ngIf="nzTitle">
+      <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
     </div>
-    <nz-pagination *ngIf="nzShowPagination && data.length"
-      [nzInTable]="true"
-      [nzShowSizeChanger]="nzShowSizeChanger"
-      [nzPageSizeOptions]="nzPageSizeOptions"
-      [nzShowQuickJumper]="nzShowQuickJumper"
-      [nzHideOnSinglePage]="nzHideOnSinglePage"
-      [nzShowTotal]="nzShowTotal"
-      [nzSize]="(nzSize === 'middle' || nzSize=='small') ? 'small' : ''"
-      [nzPageSize]="nzPageSize"
-      [nzTotal]="nzTotal"
-      [nzSimple]="nzSimple"
-      [nzPageIndex]="nzPageIndex"
-      (nzPageSizeChange)="emitPageSize($event)"
-      (nzPageIndexChange)="emitPageIndex($event)">
-    </nz-pagination>
-  </nz-spin>
-</div>
+    <div class="ant-table-content">
+      <ng-container *ngIf="nzScroll.x || nzScroll.y; else tableInnerTemplate">
+        <div class="ant-table-scroll">
+          <ng-template [ngTemplateOutlet]="tableInnerTemplate"></ng-template>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <nz-pagination *ngIf="nzShowPagination && data.length"
+    [nzInTable]="true"
+    [nzShowSizeChanger]="nzShowSizeChanger"
+    [nzPageSizeOptions]="nzPageSizeOptions"
+    [nzShowQuickJumper]="nzShowQuickJumper"
+    [nzHideOnSinglePage]="nzHideOnSinglePage"
+    [nzShowTotal]="nzShowTotal"
+    [nzSize]="(nzSize === 'middle' || nzSize=='small') ? 'small' : ''"
+    [nzPageSize]="nzPageSize"
+    [nzTotal]="nzTotal"
+    [nzSimple]="nzSimple"
+    [nzPageIndex]="nzPageIndex"
+    (nzPageSizeChange)="emitPageSize($event)"
+    (nzPageIndexChange)="emitPageIndex($event)">
+  </nz-pagination>
+</nz-spin>

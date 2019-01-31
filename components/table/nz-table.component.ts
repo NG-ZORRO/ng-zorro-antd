@@ -32,7 +32,18 @@ import { NzTheadComponent } from './nz-thead.component';
   preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
-  templateUrl        : './nz-table.component.html'
+  templateUrl        : './nz-table.component.html',
+  host               : {
+    '[class.ant-table-wrapper]': 'true',
+    '[class.ant-table-empty]'  : 'data.length === 0'
+  },
+  styles             : [
+      `
+      nz-table {
+        display: block
+      }
+    `
+  ]
 })
 export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   /** public data for ngFor tr */
