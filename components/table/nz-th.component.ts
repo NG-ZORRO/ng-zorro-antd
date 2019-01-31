@@ -3,15 +3,19 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy, OnInit,
   Output,
   SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { isNotNil } from '../core/util/check';
 import { InputBoolean } from '../core/util/convert';
 import { NzDropDownComponent } from '../dropdown/nz-dropdown.component';
+import { NzI18nInterface } from '../i18n/nz-i18n.interface';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 
 /* tslint:disable-next-line:no-any */
 export type NzThFilterType = Array<{ text: string; value: any; byDefault?: boolean }>;
@@ -41,15 +45,20 @@ export interface NzThItemInterface {
     '[class.ant-table-th-right-sticky]'        : 'nzRight',
     '[class.ant-table-column-sort]'            : `nzSort === 'descend' || nzSort === 'ascend'`,
     '[style.left]'                             : 'nzLeft',
-    '[style.right]'                            : 'nzRight'
+    '[style.right]'                            : 'nzRight',
+    '[style.text-align]'                       : 'nzAlign'
   }
 })
-export class NzThComponent implements OnChanges {
+export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   hasFilterValue = false;
   filterVisible = false;
   multipleFilterList: NzThItemInterface[] = [];
   singleFilterList: NzThItemInterface[] = [];
-  private _hasDefaultFilter = false;
+  /* tslint:disable-next-line:no-any */
+  locale: NzI18nInterface['Table'] = {} as NzI18nInterface['Table'];
+  nzWidthChange$ = new Subject();
+  private destroy$ = new Subject();
+  private hasDefaultFilter = false;
   @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
   /* tslint:disable-next-line:no-any */
   @Input() nzSelections: Array<{ text: string, onSelect(...args: any[]): any; }> = [];
@@ -61,6 +70,7 @@ export class NzThComponent implements OnChanges {
   @Input() nzWidth: string;
   @Input() nzLeft: string;
   @Input() nzRight: string;
+  @Input() nzAlign: 'left' | 'right' | 'center';
   @Input() nzSort: 'ascend' | 'descend' = null;
   @Input() nzFilters: NzThFilterType = [];
   @Input() @InputBoolean() nzExpand = false;
@@ -153,7 +163,7 @@ export class NzThComponent implements OnChanges {
     this.multipleFilterList = this.nzFilters.map(item => {
       const checked = force ? false : !!item.byDefault;
       if (checked) {
-        this._hasDefaultFilter = true;
+        this.hasDefaultFilter = true;
       }
       return { text: item.text, value: item.value, checked };
     });
@@ -164,7 +174,7 @@ export class NzThComponent implements OnChanges {
     this.singleFilterList = this.nzFilters.map(item => {
       const checked = force ? false : !!item.byDefault;
       if (checked) {
-        this._hasDefaultFilter = true;
+        this.hasDefaultFilter = true;
       }
       return { text: item.text, value: item.value, checked };
     });
@@ -172,7 +182,7 @@ export class NzThComponent implements OnChanges {
   }
 
   checkDefaultFilters(): void {
-    if (!this.nzFilters || this.nzFilters.length === 0 || !this._hasDefaultFilter) {
+    if (!this.nzFilters || this.nzFilters.length === 0 || !this.hasDefaultFilter) {
       return;
     }
     this.updateFilterStatus();
@@ -182,7 +192,14 @@ export class NzThComponent implements OnChanges {
     this.cdr.markForCheck();
   }
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService) {
+  }
+
+  ngOnInit(): void {
+    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.locale = this.i18n.getLocaleData('Table');
+      this.cdr.markForCheck();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -191,5 +208,13 @@ export class NzThComponent implements OnChanges {
       this.initSingleFilterList();
       this.updateFilterStatus();
     }
+    if (changes.nzWidth) {
+      this.nzWidthChange$.next(this.nzWidth);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -66,7 +66,9 @@ import { Component, OnInit } from '@angular/core';
                             </li>
                           </ul>
                         </nz-dropdown>
+                        <nz-divider nzType="vertical"></nz-divider>
                         <a class="operation">Stop</a>
+                        <nz-divider nzType="vertical"></nz-divider>
                         <a>More</a>
                       </span>
                     </td>
@@ -78,39 +80,7 @@ import { Component, OnInit } from '@angular/core';
         </ng-template>
       </tbody>
     </nz-table>
-  `,
-  styles  : [
-      `
-
-      :host ::ng-deep .ant-table-expanded-row > td:last-child {
-        padding: 0 48px 0 8px;
-      }
-
-      :host ::ng-deep .ant-table-expanded-row > td:last-child .ant-table-thead th {
-        border-bottom: 1px solid #e9e9e9;
-      }
-
-      :host ::ng-deep .ant-table-expanded-row > td:last-child .ant-table-thead th:first-child {
-        padding-left: 0;
-      }
-
-      :host ::ng-deep .ant-table-expanded-row > td:last-child .ant-table-row td:first-child {
-        padding-left: 0;
-      }
-
-      :host ::ng-deep .ant-table-expanded-row .ant-table-row:last-child td {
-        border: none;
-      }
-
-      :host ::ng-deep .ant-table-expanded-row .ant-table-thead > tr > th {
-        background: none;
-      }
-
-      :host ::ng-deep .table-operation a.operation {
-        margin-right: 24px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoTableNestedTableComponent implements OnInit {
   nestedTableData = [];

@@ -1,4 +1,5 @@
 import {
+  AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -20,8 +21,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { fromEvent, merge, Subject } from 'rxjs';
-import { startWith, takeUntil } from 'rxjs/operators';
+import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
+import { NzSizeMDSType } from '../core/types/size';
 import { InputBoolean } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzThComponent } from './nz-th.component';
@@ -45,7 +47,7 @@ import { NzTheadComponent } from './nz-thead.component';
     `
   ]
 })
-export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
+export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges, AfterContentInit {
   /** public data for ngFor tr */
   data = [];
   /* tslint:disable-next-line:no-any */
@@ -54,10 +56,11 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   lastScrollLeft = 0;
   headerBottomStyle = {};
   private destroy$ = new Subject<void>();
+  @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
   @ViewChild('tableHeaderElement') tableHeaderElement: ElementRef;
   @ViewChild('tableBodyElement') tableBodyElement: ElementRef;
   @ViewChild('tableMainElement') tableMainElement: ElementRef;
-  @Input() nzSize: string = 'default';
+  @Input() nzSize: NzSizeMDSType = 'default';
   @Input() nzShowTotal: TemplateRef<{ $implicit: number, range: [ number, number ] }>;
   @Input() nzPageSizeOptions = [ 10, 20, 30, 40, 50 ];
   @Input() nzLoadingDelay = 0;
@@ -68,8 +71,10 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   @Input() nzWidthConfig: string[] = [];
   @Input() nzPageIndex = 1;
   @Input() nzPageSize = 10;
-  /* tslint:disable-next-line:no-any */
   @Input() nzData = [];
+  @Input() nzPaginationPosition: 'top' | 'bottom' | 'both' = 'bottom';
+  @Input() nzScroll: { x: string; y: string } = { x: null, y: null };
+  @Input() @ViewChild('renderItemTemplate') nzItemRender: TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }>;
   @Input() @InputBoolean() nzFrontPagination = true;
   @Input() @InputBoolean() nzBordered = false;
   @Input() @InputBoolean() nzShowPagination = true;
@@ -78,25 +83,21 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   @Input() @InputBoolean() nzHideOnSinglePage = false;
   @Input() @InputBoolean() nzShowQuickJumper = false;
   @Input() @InputBoolean() nzSimple = false;
-
-  @Input() nzScroll: { x: string; y: string } = { x: null, y: null };
-
-  @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
   @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
   @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
   /* tslint:disable-next-line:no-any */
   @Output() readonly nzCurrentPageDataChange: EventEmitter<any[]> = new EventEmitter();
 
-  emitPageIndex(index: number): void {
-    this.nzPageIndex = index;
+  emitPageSizeOrIndex(size: number, index: number): void {
+    if (this.nzPageSize !== size) {
+      this.nzPageSize = size;
+      this.nzPageSizeChange.emit(this.nzPageSize);
+    }
+    if (this.nzPageIndex !== index) {
+      this.nzPageIndex = index;
+      this.nzPageIndexChange.emit(this.nzPageIndex);
+    }
     this.updateFrontPaginationDataIfNeeded();
-    this.nzPageIndexChange.emit(this.nzPageIndex);
-  }
-
-  emitPageSize(size: number): void {
-    this.nzPageSize = size;
-    this.updateFrontPaginationDataIfNeeded();
-    this.nzPageSizeChange.emit(this.nzPageSize);
   }
 
   syncScrollTable(e: MouseEvent): void {
@@ -169,8 +170,10 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   }
 
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => this.locale = this.i18n.getLocaleData('Table'));
-    this.fitScrollBar();
+    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.locale = this.i18n.getLocaleData('Table');
+      this.cdr.markForCheck();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -212,6 +215,16 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
         this.fitScrollBar();
         this.setScrollPositionClassName();
       });
+    });
+  }
+
+  ngAfterContentInit(): void {
+    this.listOfNzThComponent.changes.pipe(
+      startWith(true),
+      flatMap(() => merge(this.listOfNzThComponent.changes, ...this.listOfNzThComponent.map(th => th.nzWidthChange$))),
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.cdr.markForCheck();
     });
   }
 

@@ -13,7 +13,7 @@ import {
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
 import { isNotNil } from '../core/util/check';
-import { InputBoolean, InputNumber } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -23,8 +23,9 @@ import { InputBoolean, InputNumber } from '../core/util/convert';
   encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-td.component.html',
   host               : {
-    '[style.left]' : 'nzLeft',
-    '[style.right]': 'nzRight'
+    '[style.left]'      : 'nzLeft',
+    '[style.right]'     : 'nzRight',
+    '[style.text-align]': 'nzAlign'
   }
 })
 export class NzTdComponent implements OnChanges {
@@ -33,8 +34,9 @@ export class NzTdComponent implements OnChanges {
   @Input() nzIndeterminate = false;
   @Input() nzLeft: string;
   @Input() nzRight: string;
+  @Input() nzAlign: 'left' | 'right' | 'center';
+  @Input() nzIndentSize: number;
   @Input() @InputBoolean() nzExpand = false;
-  @Input() @InputNumber() nzIndentSize: number;
   @Input() @InputBoolean() nzShowExpand = false;
   @Input() @InputBoolean() nzShowCheckbox = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();

@@ -84,13 +84,16 @@
   }
 }
 
-.ant-table-td-right-sticky + .ant-table-td-right-sticky {
-  box-shadow: none;
+.ant-table-scroll-position-middle, .ant-table-scroll-position-left {
+  .ant-table-td-right-sticky + .ant-table-td-right-sticky {
+    box-shadow: none;
+  }
+
+  .ant-table-th-right-sticky + .ant-table-th-right-sticky {
+    box-shadow: none;
+  }
 }
 
-.ant-table-th-right-sticky + .ant-table-th-right-sticky {
-  box-shadow: none;
-}
 
 .ant-table-th-left-sticky, .ant-table-th-right-sticky, .ant-table-td-right-sticky, .ant-table-td-left-sticky {
   position: sticky !important;
@@ -159,6 +162,7 @@
         margin: 22px 0;
       }
     }
+
     .ant-tree-child-tree > nz-tree-node:last-child {
       > li:before {
         content: ' ';
@@ -171,6 +175,7 @@
       }
     }
   }
+
   .font-highlight {
     color: @highlight-color;
   }

@@ -1,3 +1,8 @@
+<ng-template #renderItemTemplate let-type let-page="page">
+  <a class="ant-pagination-item-link" *ngIf="type==='pre'"><i nz-icon type="left"></i></a>
+  <a class="ant-pagination-item-link" *ngIf="type==='next'"><i nz-icon type="right"></i></a>
+  <a *ngIf="type=='page'">{{ page }}</a>
+</ng-template>
 <ng-template #colGroupTemplate>
   <colgroup>
     <col [style.width]="width" [style.minWidth]="width" *ngFor="let width of nzWidthConfig">
@@ -36,7 +41,28 @@
     <ng-container *nzStringTemplateOutlet="nzFooter">{{ nzFooter }}</ng-container>
   </div>
 </ng-template>
+<ng-template #paginationTemplate>
+  <nz-pagination *ngIf="nzShowPagination && data.length"
+    [nzInTable]="true"
+    [nzShowSizeChanger]="nzShowSizeChanger"
+    [nzPageSizeOptions]="nzPageSizeOptions"
+    [nzItemRender]="nzItemRender"
+    [nzShowQuickJumper]="nzShowQuickJumper"
+    [nzHideOnSinglePage]="nzHideOnSinglePage"
+    [nzShowTotal]="nzShowTotal"
+    [nzSize]="(nzSize === 'middle' || nzSize=='small') ? 'small' : ''"
+    [nzPageSize]="nzPageSize"
+    [nzTotal]="nzTotal"
+    [nzSimple]="nzSimple"
+    [nzPageIndex]="nzPageIndex"
+    (nzPageSizeChange)="emitPageSizeOrIndex($event,nzPageIndex)"
+    (nzPageIndexChange)="emitPageSizeOrIndex(nzPageSize,$event)">
+  </nz-pagination>
+</ng-template>
 <nz-spin [nzDelay]="nzLoadingDelay" [nzSpinning]="nzLoading">
+  <ng-container *ngIf="nzPaginationPosition === 'both' || nzPaginationPosition === 'top'">
+    <ng-template [ngTemplateOutlet]="paginationTemplate"></ng-template>
+  </ng-container>
   <div #tableMainElement
     class="ant-table"
     [class.ant-table-fixed-header]="nzScroll.x || nzScroll.y"
@@ -55,19 +81,7 @@
       </ng-container>
     </div>
   </div>
-  <nz-pagination *ngIf="nzShowPagination && data.length"
-    [nzInTable]="true"
-    [nzShowSizeChanger]="nzShowSizeChanger"
-    [nzPageSizeOptions]="nzPageSizeOptions"
-    [nzShowQuickJumper]="nzShowQuickJumper"
-    [nzHideOnSinglePage]="nzHideOnSinglePage"
-    [nzShowTotal]="nzShowTotal"
-    [nzSize]="(nzSize === 'middle' || nzSize=='small') ? 'small' : ''"
-    [nzPageSize]="nzPageSize"
-    [nzTotal]="nzTotal"
-    [nzSimple]="nzSimple"
-    [nzPageIndex]="nzPageIndex"
-    (nzPageSizeChange)="emitPageSize($event)"
-    (nzPageIndexChange)="emitPageIndex($event)">
-  </nz-pagination>
+  <ng-container *ngIf="nzPaginationPosition === 'both' || nzPaginationPosition === 'bottom'">
+    <ng-template [ngTemplateOutlet]="paginationTemplate"></ng-template>
+  </ng-container>
 </nz-spin>

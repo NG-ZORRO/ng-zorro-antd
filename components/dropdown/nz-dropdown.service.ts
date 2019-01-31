@@ -39,7 +39,7 @@ export class NzDropdownService {
     const positionChanges = (this.overlayRef.getConfig().positionStrategy as FlexibleConnectedPositionStrategy).positionChanges;
     const instance = this.overlayRef.attach(new ComponentPortal(NzDropdownContextComponent)).instance;
     fromEvent<MouseEvent>(document, 'click').pipe(
-      filter(event => !this.overlayRef.overlayElement.contains(event.target as HTMLElement)),
+      filter(event => !!this.overlayRef && !this.overlayRef.overlayElement.contains(event.target as HTMLElement)),
       take(1)
     ).subscribe(() => instance.close());
     instance.init(true, templateRef, positionChanges, this);
