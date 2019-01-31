@@ -40,6 +40,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   private animating = false;
   private target: Element = null;
   private scroll$: Subscription = null;
+  private destroyed = false;
   @ViewChild('ink') private ink: ElementRef;
   visible = false;
   wrapperStyle: {} = { 'max-height': '100vh' };
@@ -106,7 +107,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   // endregion
 
   /* tslint:disable-next-line:no-any */
-  constructor(private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any, private cd: ChangeDetectorRef) {
+  constructor(private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any, private cdr: ChangeDetectorRef) {
   }
 
   registerLink(link: NzAnchorLinkComponent): void {
@@ -126,6 +127,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
+    this.destroyed = true;
     this.removeListen();
   }
 
@@ -134,8 +136,8 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
     this.scroll$ = fromEvent(this.getTarget(), 'scroll')
       .pipe(throttleTime(50), distinctUntilChanged())
       .subscribe(() => this.handleScroll());
-    // 由于页面刷新时滚动条位置的记忆
-    // 倒置在dom未渲染完成，导致计算不正确
+    // 浏览器在刷新时保持滚动位置，会倒置在dom未渲染完成时计算不正确，因此延迟重新计算
+    // 与之相对应可能会引起组件移除后依然触发 `handleScroll` 的 `detectChanges`
     setTimeout(() => this.handleScroll());
   }
 
@@ -157,7 +159,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   }
 
   handleScroll(): void {
-    if (this.animating) {
+    if (this.destroyed || this.animating) {
       return;
     }
 
@@ -181,7 +183,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
     this.visible = !!sections.length;
     if (!this.visible) {
       this.clearActive();
-      this.cd.detectChanges();
+      this.cdr.detectChanges();
     } else {
       const maxSection = sections.reduce((prev, curr) => curr.top > prev.top ? curr : prev);
       this.handleActive(maxSection.comp);
@@ -203,7 +205,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
 
     const linkNode = (comp.el.nativeElement as HTMLDivElement).querySelector('.ant-anchor-link-title') as HTMLElement;
     this.ink.nativeElement.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
-    this.cd.detectChanges();
+    this.cdr.detectChanges();
 
     this.nzScroll.emit(comp);
   }
