@@ -161,6 +161,8 @@ describe('modal testing (legacy)', () => {
       expect(isButtonLoading(getButtonCancel(modalElement))).not.toBeFalsy();
       expect(modalElement.querySelector('.ant-modal-close')).toBeFalsy();
       expect(modalElement.querySelector('.ant-modal-mask')).toBeFalsy();
+      expect(getButtonOk(modalElement).disabled).toBeFalsy();
+      expect(getButtonCancel(modalElement).disabled).toBeFalsy();
 
       // click ok button
       getButtonOk(modalElement).click();
@@ -690,6 +692,8 @@ class TestBasicServiceComponent {
       nzOkText: 'custom ok',
       nzOkType: 'success',
       nzOkLoading: false,
+      nzOkDisabled: false,
+      nzCancelDisabled: false,
       nzOnOk: () => { console.log('click ok'); return false; },
       nzCancelText: 'custom cancel',
       nzCancelLoading: true,
