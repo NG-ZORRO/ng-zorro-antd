@@ -4,7 +4,7 @@ import {
   ViewChild
 } from '@angular/core';
 
-import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
@@ -378,7 +378,7 @@ describe('NzDrawerService', () => {
 
 @Component({
   selector: 'nz-test-drawer',
-  template: `    
+  template: `
     <button (click)="open()">Open</button>
     <ng-template #customTitle>
       <span class="custom-title">title</span>
