@@ -76,10 +76,10 @@
         >{{ button.label }}</button>
       </ng-container>
       <ng-container *ngSwitchDefault>
-        <button *ngIf="nzCancelText!==null" nz-button (click)="onClickOkCancel('cancel')" [nzLoading]="nzCancelLoading">
+        <button *ngIf="nzCancelText!==null" nz-button (click)="onClickOkCancel('cancel')" [nzLoading]="nzCancelLoading" [disabled]="nzCancelDisabled">
           {{ cancelText }}
         </button>
-        <button *ngIf="nzOkText!==null" nz-button [nzType]="nzOkType" (click)="onClickOkCancel('ok')" [nzLoading]="nzOkLoading">
+        <button *ngIf="nzOkText!==null" nz-button [nzType]="nzOkType" (click)="onClickOkCancel('ok')" [nzLoading]="nzOkLoading" [disabled]="nzOkDisabled">
           {{ okText }}
         </button>
       </ng-container>
