@@ -19,10 +19,7 @@
           [style.height]="isLeftOrRight ? '100%' : null">
           <div *ngIf="nzTitle" class="ant-drawer-header">
             <div class="ant-drawer-title">
-              <ng-container [ngSwitch]="true">
-                <ng-container *ngSwitchCase="isTemplateRef(nzTitle)" [ngTemplateOutlet]="nzTitle"></ng-container>
-                <ng-container *ngSwitchCase="isNonEmptyString(nzTitle)"><div [innerHTML]="nzTitle"></div></ng-container>
-              </ng-container>
+              <ng-container *nzStringTemplateOutlet="nzTitle"><div [innerHTML]="nzTitle"></div></ng-container>
             </div>
           </div>
           <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close">
