@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { async, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzInputDirective } from './nz-input.directive';
 import { NzInputModule } from './nz-input.module';
 
@@ -10,7 +11,7 @@ describe('input', () => {
   let fixture;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzInputModule, FormsModule, ReactiveFormsModule ],
+      imports     : [ NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
       declarations: [ NzTestInputWithInputComponent, NzTestInputWithTextAreaComponent, NzTestInputFormComponent ],
       providers   : []
     }).compileComponents();
