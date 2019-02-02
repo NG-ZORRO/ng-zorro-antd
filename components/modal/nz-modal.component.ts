@@ -45,8 +45,7 @@ type AnimationState = 'enter' | 'leave' | null;
 
 @Component({
   selector   : 'nz-modal',
-  templateUrl: './nz-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './nz-modal.component.html'
 })
 
 // tslint:disable-next-line:no-any
