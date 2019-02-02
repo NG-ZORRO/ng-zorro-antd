@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzTableComponent } from './nz-table.component';
 import { NzTableModule } from './nz-table.module';
 import { NzTheadComponent } from './nz-thead.component';
@@ -9,7 +10,7 @@ import { NzTheadComponent } from './nz-thead.component';
 describe('nz-thead', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzTableModule ],
+      imports     : [ NzTableModule, NzIconTestModule ],
       declarations: [ NzTheadTestNzTableComponent ],
       providers   : [ NzMeasureScrollbarService ]
     });
