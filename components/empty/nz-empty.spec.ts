@@ -5,7 +5,6 @@ import { By } from '@angular/platform-browser';
 
 import { NzI18nService } from '../i18n';
 import en_US from '../i18n/languages/en_US';
-import zh_CN from '../i18n/languages/zh_CN';
 import { NzListModule } from '../list';
 
 import { NzEmbedEmptyComponent } from './nz-embed-empty.component';
@@ -120,8 +119,6 @@ describe('nz-empty', () => {
       testBed.get(NzI18nService).setLocale(en_US);
       fixture.detectChanges();
       expect(contentEl.innerText.trim()).toBe('No Data');
-
-      testBed.get(NzI18nService).setLocale(zh_CN);
     });
   });
 
