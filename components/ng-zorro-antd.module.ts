@@ -19,6 +19,7 @@ import { NzCommentModule } from './comment/nz-comment.module';
 import { NzNoAnimationModule } from './core/no-animation/nz-no-animation.module';
 import { NzWaveModule } from './core/wave/nz-wave.module';
 import { NzDatePickerModule } from './date-picker/date-picker.module';
+import { NzDescriptionListModule } from './description-list/nz-description-list.module';
 import { NzDividerModule } from './divider/nz-divider.module';
 import { NzDrawerModule } from './drawer/nz-drawer.module';
 import { NzDropDownModule } from './dropdown/nz-dropdown.module';
@@ -75,6 +76,7 @@ export * from './checkbox';
 export * from './collapse';
 export * from './comment';
 export * from './date-picker';
+export * from './description-list';
 export * from './divider';
 export * from './drawer';
 export * from './dropdown';
@@ -185,6 +187,8 @@ export * from './core/no-animation';
     NzSkeletonModule,
     NzStatisticModule,
     NzEmptyModule
+    NzEmptyModule,
+    NzDescriptionListModule
   ]
 })
 export class NgZorroAntdModule {
