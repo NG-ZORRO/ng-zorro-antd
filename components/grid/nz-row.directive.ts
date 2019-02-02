@@ -24,22 +24,11 @@ import { Platform } from '@angular/cdk/platform';
 import { fromEvent, Subject } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
 
-import { IndexableObject, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { Breakpoint, BreakpointMap, IndexableObject, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between';
 export type NzAlign = 'top' | 'middle' | 'bottom';
 export type NzType = 'flex' | null;
-
-export enum Breakpoint {
-  'xxl',
-  'xl',
-  'lg',
-  'md',
-  'sm',
-  'xs'
-}
-
-export type BreakpointMap = { [index in keyof typeof Breakpoint]: string };
 
 const responsiveMap: BreakpointMap = {
   xs: '(max-width: 575px)',
