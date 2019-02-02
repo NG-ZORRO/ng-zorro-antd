@@ -6,6 +6,7 @@ import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
   ComponentRef,
@@ -45,7 +46,8 @@ type AnimationState = 'enter' | 'leave' | null;
 
 @Component({
   selector   : 'nz-modal',
-  templateUrl: './nz-modal.component.html'
+  templateUrl: './nz-modal.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 // tslint:disable-next-line:no-any
@@ -132,6 +134,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     private nzMeasureScrollbarService: NzMeasureScrollbarService,
     private modalControl: NzModalControlService,
     private focusTrapFactory: FocusTrapFactory,
+    private cdr: ChangeDetectorRef,
     @Inject(NZ_MODAL_CONFIG) private config: NzModalConfig,
     @Inject(DOCUMENT) private document: any) { // tslint:disable-line:no-any
 
@@ -142,7 +145,10 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.locale = this.i18n.getLocaleData('Modal') as { okText: string, cancelText: string });
+    this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+      this.locale = this.i18n.getLocaleData('Modal') as { okText: string, cancelText: string };
+      this.cdr.markForCheck();
+    });
 
     fromEvent<KeyboardEvent>(this.document.body, 'keydown').pipe(takeUntil(this.unsubscribe$)).subscribe(e => this.keydownListener(e));
 
@@ -318,9 +324,10 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
         this.nzAfterClose.emit(closeResult);
         this.restoreFocus();
         this.scrollStrategy.disable();
+        // Mark the for check so it can react if the view container is using OnPush change detection.
+        this.cdr.markForCheck();
       }
     });
-    // .then(() => this.changeBodyOverflow());
   }
 
   // Lookup a button's property, if the prop is a function, call & then return the result, otherwise, return itself.
@@ -422,9 +429,6 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     if (lastPosition) {
       this.transformOrigin = `${lastPosition.x - modalElement.offsetLeft}px ${lastPosition.y - modalElement.offsetTop}px 0px`;
     }
-    // else {
-    //   this.transformOrigin = '0px 0px 0px';
-    // }
   }
 
   private mergeDefaultConfig(config: NzModalConfig): NzModalConfig {
