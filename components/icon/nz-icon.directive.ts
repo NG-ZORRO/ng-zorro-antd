@@ -1,5 +1,4 @@
 import {
-  isDevMode,
   AfterContentChecked,
   Directive,
   ElementRef,
@@ -20,8 +19,22 @@ const getIconTypeClass = (className: string): { name: string, index: number } =>
   } else {
     const classArr = className.split(/\s/);
     const index = classArr.findIndex((cls => cls !== 'anticon' && cls !== 'anticon-spin' && !!cls.match(iconTypeRE)));
-    return index === -1 ? undefined : { name: classArr[index], index };
+    return index === -1 ? undefined : { name: classArr[ index ], index };
   }
+};
+
+const normalizeType = (rawType: string): { type: string, crossError: boolean, verticalError: boolean } => {
+  const ret = { type: rawType, crossError: false, verticalError: false };
+  ret.type = rawType ? rawType.replace('anticon-', '') : '';
+  if (ret.type.includes('verticle')) {
+    ret.type = 'up';
+    ret.verticalError = true;
+  }
+  if (ret.type.startsWith('cross')) {
+    ret.type = 'close';
+    ret.crossError = true;
+  }
+  return ret;
 };
 
 /**
@@ -38,42 +51,56 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   @Input() spin = false;
   @Input() iconfont: string;
 
+  @Input()
+  set type(value: string) {
+    if (value && value.startsWith('anticon')) {
+      const rawClass = getIconTypeClass(value);
+      const type = rawClass ? normalizeType(rawClass.name).type : '';
+      if (type && this.type !== type) {
+        this._type = type;
+      }
+    } else {
+      this._type = value;
+    }
+  }
+
+  get type(): string {
+    return this._type;
+  }
+
   private classNameObserver: MutationObserver;
   private el = this.elementRef.nativeElement;
+  private _type: string;
 
   /**
    * Replacement of `changeIcon` for more modifications.
    * @param oldAPI
    */
   private changeIcon2(oldAPI: boolean = false): void {
-    if (!oldAPI) { this.setClassName(); }
-    this._changeIcon().then(svg => {
-      this.setSVGData(svg);
-      if (!oldAPI) {
-        this.toggleSpin(svg);
-      }
-    }).catch((err) => {
-      if (err) {
-        console.error(err);
-        console.warn('[NG-ZORRO]', `You can find more about this error on http://ng.ant.design/components/icon/en`);
-      }
-    });
+    if (!oldAPI) {
+      this.setClassName();
+    }
+    this._changeIcon()
+      .then(svg => {
+        this.setSVGData(svg);
+        if (!oldAPI && svg) {
+          this.toggleSpin(svg);
+        }
+      });
   }
 
   private classChangeHandler(className: string): void {
     const ret = getIconTypeClass(className);
     if (ret) {
-      let type = ret.name.replace('anticon-', '');
-      if (type.includes('verticle')) {
-        type = 'up';
+      const { type, crossError, verticalError } = normalizeType(ret.name);
+      if (crossError) {
         this.iconService.warnAPI('cross');
       }
-      if (type.startsWith('cross')) {
-        type = type.replace('cross', 'close');
+      if (verticalError) {
         this.iconService.warnAPI('vertical');
       }
       if (this.type !== type) {
-        this.type = type;
+        this._type = type;
         this.changeIcon2(true);
       }
     }
@@ -153,7 +180,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     let length = children.length;
     if (!this.type && children.length) {
       while (length--) {
-        const child = children[length];
+        const child = children[ length ];
         if (child.tagName.toLowerCase() === 'svg') {
           this.iconService.normalizeSvgElement(child as SVGElement);
         }

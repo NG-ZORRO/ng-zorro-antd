@@ -2,12 +2,19 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { LeftOutline, LoadingOutline, QuestionCircleOutline, QuestionOutline, RightOutline } from '@ant-design/icons-angular/icons';
+import {
+  LeftOutline,
+  LoadingOutline,
+  QuestionCircleOutline,
+  QuestionOutline,
+  RightOutline
+} from '@ant-design/icons-angular/icons';
+
 import { NzIconDirective } from './nz-icon.directive';
 import { NzIconModule } from './nz-icon.module';
 import { NzIconService, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from './nz-icon.service';
 
-describe('icon', () => {
+describe('nz icon', () => {
   let testComponent;
   let fixture;
   let icons;
@@ -15,10 +22,18 @@ describe('icon', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports     : [ CommonModule, NzIconModule ],
-      declarations: [ NzTestIconExtensionsComponent, NzTestIconCustomComponent, NzTestIconIconfontComponent, NzTestIconOldApiComponent ]
+      declarations: [
+        NzTestIconExtensionsComponent,
+        NzTestIconCustomComponent,
+        NzTestIconIconfontComponent,
+        NzTestIconOldApiComponent
+      ]
     }).compileComponents();
   });
 
+  /**
+   * Text features built on `@ant-design/icons-angular`.
+   */
   describe('extensions', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
@@ -66,13 +81,27 @@ describe('icon', () => {
       fixture.detectChanges();
       expect(icons[ 1 ].nativeElement.firstChild.classList.contains('anticon-spin')).toBe(true);
     }));
+
+    it('should type support old API', () => {
+      testComponent.type = 'anticon anticon-cross';
+      fixture.detectChanges();
+      expect(icons[ 0 ].nativeElement.className).toContain('anticon');
+      expect(icons[ 0 ].nativeElement.className).toContain('anticon-close');
+      expect(icons[ 0 ].nativeElement.innerHTML).toContain('svg');
+
+      // An invalid type should not affect the actual type.
+      testComponent.type = 'anticon';
+      fixture.detectChanges();
+      expect(icons[ 0 ].nativeElement.className).toContain('anticon');
+      expect(icons[ 0 ].nativeElement.className).toContain('anticon-close');
+      expect(icons[ 0 ].nativeElement.innerHTML).toContain('svg');
+    });
   });
 
   describe('custom', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestIconCustomComponent);
       testComponent = fixture.debugElement.componentInstance;
-
     });
 
     it('should support custom svg element', () => {
@@ -122,7 +151,7 @@ describe('icon', () => {
   });
 });
 
-describe('icon static importing', () => {
+describe('service injection', () => {
   let testComponent;
   let fixture;
   let icons;
@@ -131,7 +160,10 @@ describe('icon static importing', () => {
     TestBed.configureTestingModule({
       imports     : [ CommonModule, NzIconModule ],
       declarations: [ NzTestIconExtensionsComponent ],
-      providers   : [ { provide: NZ_ICONS, useValue: [ LeftOutline, RightOutline ] }, { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '#3344cc' } ]
+      providers   : [ {
+        provide : NZ_ICONS,
+        useValue: [ LeftOutline, RightOutline ]
+      }, { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '#3344cc' } ]
     });
 
     fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
@@ -157,7 +189,10 @@ describe('icon static importing', () => {
     TestBed.configureTestingModule({
       imports     : [ CommonModule, NzIconModule ],
       declarations: [ NzTestIconExtensionsComponent ],
-      providers   : [ { provide: NZ_ICONS, useValue: [ LeftOutline, RightOutline ] }, { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '3344cc' } ]
+      providers   : [ {
+        provide : NZ_ICONS,
+        useValue: [ LeftOutline, RightOutline ]
+      }, { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '3344cc' } ]
     });
 
     fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
@@ -224,7 +259,6 @@ export class NzTestIconIconfontComponent {
   selector: 'nz-test-icon-old-api',
   template: `
     <i class="anticon anticon-question"></i>
-    <!-- Just to improve codecov. Compatibility code would be removed in 2.0.  -->
     <i class="anticon anticon-verticle"></i>
     <i class="anticon anticon-cross"></i>
   `

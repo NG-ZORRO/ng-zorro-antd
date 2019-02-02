@@ -1,39 +1,41 @@
 import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
-  AfterViewInit,
+  AfterContentInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
-  OnInit,
   Output,
   Renderer2,
-  ViewChild
+  SimpleChanges,
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
-
-import { combineLatest, merge, BehaviorSubject, Observable, Subject } from 'rxjs';
+import { combineLatest, merge, EMPTY, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, mapTo, takeUntil } from 'rxjs/operators';
-
 import { slideMotion } from '../core/animation/slide';
 import { DEFAULT_DROPDOWN_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position-map';
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
 import { NzMenuDirective } from '../menu/nz-menu.directive';
-
 import { NzDropDownDirective } from './nz-dropdown.directive';
+import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 
 export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 
 @Component({
   selector           : 'nz-dropdown',
   preserveWhitespaces: false,
-  animations         : [
-    slideMotion
-  ],
+  providers          : [ NzMenuDropdownService ],
+  animations         : [ slideMotion ],
+  encapsulation      : ViewEncapsulation.None,
+  changeDetection    : ChangeDetectionStrategy.OnPush,
   templateUrl        : './nz-dropdown.component.html',
   styles             : [
-    `
+      `
       .ant-dropdown {
         top: 100%;
         left: 0;
@@ -46,162 +48,89 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
   ]
 })
 
-export class NzDropDownComponent implements OnInit, OnDestroy, AfterViewInit {
-  private _clickHide = true;
-  private _visible = false;
-  private _disabled = false;
-  private unsubscribe$ = new Subject<void>();
-
-  @Input() hasFilterButton = false;
+export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChanges {
   triggerWidth = 0;
-  placement: NzPlacement = 'bottomLeft';
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   positions: ConnectionPositionPair[] = [ ...DEFAULT_DROPDOWN_POSITIONS ];
-  $subOpen = new BehaviorSubject<boolean>(false);
-  $visibleChange = new Subject<boolean>();
-  @ContentChild(NzDropDownDirective) nzOrigin: NzDropDownDirective;
-  @ContentChild(NzMenuDirective) nzMenu: NzMenuDirective;
+  visible$ = new Subject<boolean>();
+  private destroy$ = new Subject<void>();
+  @ContentChild(NzDropDownDirective) nzDropDownDirective: NzDropDownDirective;
+  @ContentChild(NzMenuDirective) nzMenuDirective: NzMenuDirective;
+  @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
+  @Input() hasFilterButton = false;
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [ key: string ]: string } = {};
+  @Input() nzPlacement: NzPlacement = 'bottomLeft';
+  @Input() @InputBoolean() nzClickHide = true;
+  @Input() @InputBoolean() nzDisabled = false;
+  @Input() @InputBoolean() nzVisible = false;
   @Output() readonly nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
-  @ViewChild(CdkConnectedOverlay) cdkOverlay: CdkConnectedOverlay;
 
-  @Input()
-  set nzClickHide(value: boolean) {
-    this._clickHide = toBoolean(value);
-  }
-
-  get nzClickHide(): boolean {
-    return this._clickHide;
-  }
-
-  @Input()
-  set nzDisabled(value: boolean) {
-    this._disabled = toBoolean(value);
-    if (this._disabled) {
-      this.renderer.setAttribute(this.nzOrigin.elementRef.nativeElement, 'disabled', '');
-    } else {
-      this.renderer.removeAttribute(this.nzOrigin.elementRef.nativeElement, 'disabled');
+  setVisibleStateWhen(visible: boolean, trigger: 'click' | 'hover' | 'all' = 'all'): void {
+    if (this.nzTrigger === trigger || trigger === 'all') {
+      this.visible$.next(visible);
     }
-  }
-
-  get nzDisabled(): boolean {
-    return this._disabled;
-  }
-
-  @Input()
-  set nzVisible(value: boolean) {
-    this._visible = toBoolean(value);
-    /** handle nzVisible change with mouse event **/
-    this.$visibleChange.next(this._visible);
-  }
-
-  get nzVisible(): boolean {
-    return this._visible;
-  }
-
-  @Input()
-  set nzPlacement(value: NzPlacement) {
-    this.placement = value;
-    this.dropDownPosition = (this.nzPlacement.indexOf('top') !== -1) ? 'top' : 'bottom';
-    this.positions.unshift(POSITION_MAP[ this.placement ] as ConnectionPositionPair);
-  }
-
-  get nzPlacement(): NzPlacement {
-    return this.placement;
-  }
-
-  onClickEvent(): void {
-    if (this.nzTrigger === 'click') {
-      this.show();
-    }
-  }
-
-  onMouseEnterEvent(): void {
-    if (this.nzTrigger === 'hover') {
-      this.show();
-    }
-  }
-
-  onMouseLeaveEvent(): void {
-    if (this.nzTrigger === 'hover') {
-      this.hide();
-    }
-  }
-
-  hide(): void {
-    this.$visibleChange.next(false);
-  }
-
-  show(): void {
-    this.$visibleChange.next(true);
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     this.dropDownPosition = position.connectionPair.originY;
-  }
-
-  setTriggerWidth(): void {
-    this.triggerWidth = this.nzOrigin.elementRef.nativeElement.getBoundingClientRect().width;
-    /** should remove after https://github.com/angular/material2/pull/8765 merged **/
-    if (this.cdkOverlay && this.cdkOverlay.overlayRef) {
-      this.cdkOverlay.overlayRef.updateSize({
-        minWidth: this.triggerWidth
-      });
-    }
+    this.cdr.markForCheck();
   }
 
   startSubscribe(observable$: Observable<boolean>): void {
-    let $pre = observable$;
-    if (this.nzClickHide && this.nzMenu) {
-      const $menuItemClick = this.nzMenu.nzClick.asObservable().pipe(mapTo(false));
-      $pre = merge($pre, $menuItemClick);
-    }
-    const final$ = combineLatest($pre, this.$subOpen).pipe(map(value => value[ 0 ] || value[ 1 ]), debounceTime(50), distinctUntilChanged());
-    final$.pipe(takeUntil(this.unsubscribe$)).subscribe(this.onVisibleChange);
+    const click$ = this.nzClickHide ? this.nzMenuDropdownService.menuItemClick$.pipe(mapTo(false)) : EMPTY;
+    combineLatest(
+      merge(observable$, click$),
+      this.nzMenuDropdownService.menuOpen$
+    ).pipe(
+      map(value => value[ 0 ] || value[ 1 ]),
+      debounceTime(50),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe((visible) => {
+      if (!this.nzDisabled && this.nzVisible !== visible) {
+        this.nzVisible = visible;
+        this.nzVisibleChange.emit(this.nzVisible);
+        this.triggerWidth = this.nzDropDownDirective.elementRef.nativeElement.getBoundingClientRect().width;
+        this.cdr.markForCheck();
+      }
+    });
   }
 
-  onVisibleChange = (visible: boolean) => {
-    if (visible) {
-      this.setTriggerWidth();
+  updateDisabledState(): void {
+    if (this.nzDropDownDirective) {
+      this.nzDropDownDirective.setDisabled(this.nzDisabled);
     }
-    if (this.nzVisible !== visible) {
-      this.nzVisible = visible;
-      this.nzVisibleChange.emit(this.nzVisible);
-    }
-    this.changeDetector.markForCheck();
   }
 
-  ngOnInit(): void {
-    if (this.nzMenu) {
-      this.nzMenu.nzInDropDown = true;
-    }
+  adjustPosition(): void {
+    this.dropDownPosition = this.nzPlacement.indexOf('top') !== -1 ? 'top' : 'bottom';
+    this.positions.unshift(POSITION_MAP[ this.nzPlacement ] as ConnectionPositionPair);
+  }
+
+  constructor(private renderer: Renderer2, protected cdr: ChangeDetectorRef, private nzMenuDropdownService: NzMenuDropdownService) {
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  ngAfterViewInit(): void {
-    let mouse$: Observable<boolean>;
-    if (this.nzTrigger === 'hover') {
-      const mouseEnterOrigin$ = this.nzOrigin.$mouseenter.pipe(mapTo(true));
-      const mouseLeaveOrigin$ = this.nzOrigin.$mouseleave.pipe(mapTo(false));
-      mouse$ = merge(mouseLeaveOrigin$, mouseEnterOrigin$);
+  ngAfterContentInit(): void {
+    this.startSubscribe(merge(this.visible$, this.nzTrigger === 'hover' ? this.nzDropDownDirective.hover$ : this.nzDropDownDirective.$click));
+    this.updateDisabledState();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzVisible) {
+      this.visible$.next(this.nzVisible);
     }
-    if (this.nzTrigger === 'click') {
-      mouse$ = this.nzOrigin.$click.pipe(mapTo(true));
+    if (changes.nzDisabled) {
+      this.updateDisabledState();
     }
-    const observable$ = merge(this.$visibleChange, mouse$);
-    this.startSubscribe(observable$);
-  }
-
-  get hasBackdrop(): boolean {
-    return this.nzTrigger === 'click';
-  }
-
-  constructor(private renderer: Renderer2, protected changeDetector: ChangeDetectorRef) {
+    if (changes.nzPlacement) {
+      this.adjustPosition();
+    }
   }
 }

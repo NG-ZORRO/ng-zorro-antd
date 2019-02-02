@@ -94,6 +94,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   @Input()
+  /** TODO: https://stackblitz.com/edit/angular-djgyuz-6bmruf?file=src/app/app.component.ts **/
   set nzFrontPagination(value: boolean) {
     this._frontPagination = toBoolean(value);
     this.parseInputData();

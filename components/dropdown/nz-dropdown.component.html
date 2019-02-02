@@ -1,21 +1,20 @@
 <ng-content select="[nz-dropdown]"></ng-content>
-<ng-template
-  cdkConnectedOverlay
-  [cdkConnectedOverlayHasBackdrop]="hasBackdrop"
+<ng-template cdkConnectedOverlay
+  [cdkConnectedOverlayHasBackdrop]="nzTrigger === 'click'"
   [cdkConnectedOverlayPositions]="positions"
-  [cdkConnectedOverlayOrigin]="nzOrigin"
-  (backdropClick)="hide()"
-  (detach)="hide()"
+  [cdkConnectedOverlayOrigin]="nzDropDownDirective"
   [cdkConnectedOverlayMinWidth]="triggerWidth"
-  (positionChange)="onPositionChange($event)"
-  [cdkConnectedOverlayOpen]="nzVisible">
-  <div
-    class="{{'ant-dropdown ant-dropdown-placement-'+nzPlacement}}"
-    [ngClass]="nzOverlayClassName" [ngStyle]="nzOverlayStyle"
+  [cdkConnectedOverlayOpen]="nzVisible"
+  (backdropClick)="setVisibleStateWhen(false)"
+  (detach)="setVisibleStateWhen(false)"
+  (positionChange)="onPositionChange($event)">
+  <div class="{{'ant-dropdown ant-dropdown-placement-'+nzPlacement}}"
+    [ngClass]="nzOverlayClassName"
+    [ngStyle]="nzOverlayStyle"
     [@slideMotion]="dropDownPosition"
-    (mouseenter)="onMouseEnterEvent()"
-    (mouseleave)="onMouseLeaveEvent()"
-    [style.minWidth.px]="triggerWidth">
+    [style.minWidth.px]="triggerWidth"
+    (mouseenter)="setVisibleStateWhen(true,'hover')"
+    (mouseleave)="setVisibleStateWhen(false,'hover')">
     <div [class.ant-table-filter-dropdown]="hasFilterButton">
       <ng-content select="[nz-menu]"></ng-content>
       <ng-content select=".ant-table-filter-dropdown-btns"></ng-content>
