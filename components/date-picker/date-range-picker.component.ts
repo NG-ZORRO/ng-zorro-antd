@@ -5,7 +5,7 @@ import { toBoolean, valueFunctionProp, InputBoolean } from '../core/util/convert
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CandyDate } from './lib/candy-date';
 
-import { AbstractPickerComponent, CompatibleDate } from './abstract-picker.component';
+import { AbstractPickerComponent, CompatibleDate, CompatibleValue } from './abstract-picker.component';
 import { DisabledTimeFn, PanelMode, PresetRanges } from './standard-types';
 
 @Component({
@@ -22,6 +22,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   @Input() nzMode: PanelMode | PanelMode[];
   @Input() nzRanges: FunctionProp<PresetRanges>;
   @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
+  @Output() readonly nzOnCalendarChange = new EventEmitter<Date[]>();
 
   private _showTime: object | boolean;
   @Input() get nzShowTime(): object | boolean { return this._showTime; }
@@ -68,11 +69,15 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   }
 
   // If has no timepicker and the user select a date by date panel, then close picker
-  onValueChange(value: CandyDate): void {
-    super.onValueChange(value);
-
-    if (!this.nzShowTime) {
-      this.closeOverlay();
+  onValueChange(value: CompatibleValue): void {
+    // Emit nzOnCalendarChange when select the first date by nz-range-picker
+    if (this.isRange && (value as CandyDate[]).length === 1) {
+      this.nzOnCalendarChange.emit([value[0].nativeDate]);
+    } else {
+      if (!this.nzShowTime) {
+        this.closeOverlay();
+        super.onValueChange(value);
+      }
     }
   }
 

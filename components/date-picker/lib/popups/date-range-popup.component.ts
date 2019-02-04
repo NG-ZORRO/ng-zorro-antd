@@ -171,6 +171,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
       if ((!left && !right) || (left && right)) { // If totally full or empty, clean up && re-assign left first
         this.hoverValue = this.selectedValue = [ value ];
+        this.setValue([value.clone()]);
       } else if (left && !right) { // If one of them is empty, assign the other one and sort, then set the final values
         this.clearHoverValue(); // Clean up
         this.setRangeValue('selectedValue', 'right', value);
