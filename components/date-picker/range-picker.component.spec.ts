@@ -229,6 +229,21 @@ describe('NzRangePickerComponent', () => {
       expect(getFirstSelectedDayCell().textContent.trim()).toBe('11');
     }));
 
+    it('should support nzOnCalendarChange', fakeAsync(() => {
+      const nzOnCalendarChange = spyOn(fixtureInstance, 'nzOnCalendarChange');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      const left = getFirstCell('left');
+      const leftText = left.textContent.trim();
+      dispatchMouseEvent(left, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(nzOnCalendarChange).toHaveBeenCalled();
+      const result = nzOnCalendarChange.calls.allArgs()[0][0];
+      expect(result[0].getDate()).toBe(+leftText);
+    }));
+
     it('should support nzOnChange', fakeAsync(() => {
       fixtureInstance.modelValue = [ new Date('2018-11-11'), new Date('2018-11-11') ];
       const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
@@ -624,6 +639,7 @@ describe('NzRangePickerComponent', () => {
         [nzMode]="nzMode"
         [nzRanges]="nzRanges"
         (nzOnPanelChange)="nzOnPanelChange($event)"
+        (nzOnCalendarChange)="nzOnCalendarChange($event)"
         [nzShowTime]="nzShowTime"
         (nzOnOk)="nzOnOk($event)"
       ></nz-range-picker>
@@ -672,6 +688,7 @@ class NzTestRangePickerComponent {
   nzMode;
   nzRanges;
   nzOnPanelChange(): void {}
+  nzOnCalendarChange(): void {}
   nzOnOk(): void {}
 
   // --- Suite 2
