@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "nz-ng-generate-bootstrap",
-  "title": "Ant Design of Angular(NG-ZORRO) bootstrap schematic",
+  "id": "nz-ng-generate-boot",
+  "title": "Ant Design of Angular(NG-ZORRO) boot page schematic",
   "type": "object",
   "properties": {
     "project": {

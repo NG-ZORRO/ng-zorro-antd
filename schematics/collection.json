@@ -12,11 +12,11 @@
       "factory": "./ng-add/setup-project/index",
       "schema": "./ng-add/schema.json"
     },
-    "bootstrap": {
-      "description": "Set bootstrap page",
+    "boot-page": {
+      "description": "Set up boot page",
       "private": true,
-      "factory": "./ng-generate/bootstrap/index",
-      "schema": "./ng-generate/bootstrap/schema.json"
+      "factory": "./ng-generate/boot-page/index",
+      "schema": "./ng-generate/boot-page/schema.json"
     },
     "add-icon-assets": {
       "description": "Add icon assets into CLI config",
