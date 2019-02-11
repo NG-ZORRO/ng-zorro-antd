@@ -7,8 +7,8 @@
   [class.ant-alert-no-icon]="!nzShowIcon"
   [class.ant-alert-banner]="nzBanner"
   [class.ant-alert-with-description]="!!nzDescription"
-  [@fadeAnimation]
-  (@fadeAnimation.done)="onFadeAnimationDone()">
+  [@slideAlertMotion]
+  (@slideAlertMotion.done)="onFadeAnimationDone()">
   <ng-container *ngIf="nzShowIcon">
     <i class="ant-alert-icon" [ngClass]="nzIconType" *ngIf="nzIconType; else iconTemplate"></i>
     <ng-template #iconTemplate>

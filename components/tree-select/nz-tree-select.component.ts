@@ -37,7 +37,7 @@ import {
 import { filter, tap } from 'rxjs/operators';
 
 import { selectDropDownAnimation } from '../core/animation/select-dropdown-animations';
-import { selectTagAnimation } from '../core/animation/select-tag-animations';
+import { zoomMotion } from '../core/animation/zoom';
 import { InputBoolean } from '../core/util/convert';
 import { NzFormatEmitEvent } from '../tree/interface';
 import { NzTreeNode } from '../tree/nz-tree-node';
@@ -45,7 +45,7 @@ import { NzTreeComponent } from '../tree/nz-tree.component';
 
 @Component({
   selector   : 'nz-tree-select',
-  animations : [ selectDropDownAnimation, selectTagAnimation ],
+  animations : [ selectDropDownAnimation, zoomMotion ],
   templateUrl: './nz-tree-select.component.html',
   providers  : [
     {

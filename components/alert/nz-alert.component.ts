@@ -9,13 +9,13 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { fadeAnimation } from '../core/animation/fade-animations';
+import { slideAlertMotion } from '../core/animation/slide';
 import { NgClassType } from '../core/types/ng-class';
 import { InputBoolean } from '../core/util/convert';
 
 @Component({
   selector           : 'nz-alert',
-  animations         : [ fadeAnimation ],
+  animations         : [ slideAlertMotion ],
   templateUrl        : './nz-alert.component.html',
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,

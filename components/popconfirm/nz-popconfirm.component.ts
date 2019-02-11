@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
-import { fadeAnimation } from '../core/animation/fade-animations';
+import { zoomBigMotion } from '../core/animation/zoom';
 import { InputBoolean } from '../core/util/convert';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 
@@ -8,7 +8,7 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
   encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-popconfirm',
   preserveWhitespaces: false,
-  animations         : [ fadeAnimation ],
+  animations         : [ zoomBigMotion ],
   templateUrl        : './nz-popconfirm.component.html',
   styles             : [ `
     .ant-popover {
