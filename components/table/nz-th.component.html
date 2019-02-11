@@ -1,7 +1,6 @@
 <ng-template #checkboxTemplate>
-  <label
+  <label nz-checkbox
     [class.ant-table-selection-select-all-custom]="nzShowRowSelection"
-    nz-checkbox
     [(ngModel)]="nzChecked"
     [nzDisabled]="nzDisabled"
     [nzIndeterminate]="nzIndeterminate"
@@ -55,10 +54,10 @@
   </ul>
   <div class="ant-table-filter-dropdown-btns">
     <a class="ant-table-filter-dropdown-link confirm" (click)="hideDropDown()">
-      <span (click)="search()">{{'Table.filterConfirm' | nzI18n}}</span>
+      <span (click)="search()">{{ locale.filterConfirm }}</span>
     </a>
     <a class="ant-table-filter-dropdown-link clear" (click)="hideDropDown()">
-      <span (click)="reset()">{{'Table.filterReset' | nzI18n}}</span>
+      <span (click)="reset()">{{ locale.filterReset }}</span>
     </a>
   </div>
 </nz-dropdown>

@@ -370,27 +370,24 @@ describe('dropdown', () => {
       testComponent.nzDropdownService.create(fakeEvent, testComponent.template);
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).not.toBe('');
-      const backdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop') as HTMLElement;
-      backdrop.click();
+      document.body.click();
       tick(500);
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toBe('');
     }));
-    it('should prevent contextmenu after create', fakeAsync(() => {
+    it('should change contextmenu after create', fakeAsync(() => {
       const fakeEvent = createMouseEvent('contextmenu', 100, 100);
       testComponent.nzDropdownService.create(fakeEvent, testComponent.template);
+      fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      const backdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop') as HTMLElement;
       const fakeContextEvent = createMouseEvent('contextmenu', 200, 200);
-      spyOn(fakeContextEvent, 'preventDefault');
-      backdrop.dispatchEvent(fakeContextEvent);
-      tick(500);
+      testComponent.nzDropdownService.create(fakeContextEvent, testComponent.template);
       fixture.detectChanges();
-      expect(fakeContextEvent.preventDefault).toHaveBeenCalled();
-      tick(500);
+      tick(1000);
       fixture.detectChanges();
-      expect(overlayContainerElement.textContent).not.toBe('');
+      const overlayElement = testComponent.nzDropdownService.overlayRef.overlayElement;
+      expect(overlayElement.textContent).not.toBe('');
     }));
   });
 });

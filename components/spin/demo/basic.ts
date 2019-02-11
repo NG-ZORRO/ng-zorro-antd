@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-spin-basic',
   template: `
-    <nz-spin></nz-spin>`
+    <nz-spin nzSimple></nz-spin>`
 })
 export class NzDemoSpinBasicComponent {
 }

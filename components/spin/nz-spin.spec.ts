@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { async, fakeAsync, TestBed } from '@angular/core/testing';
+import { fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
@@ -25,11 +25,16 @@ describe('spin', () => {
       testComponent = fixture.debugElement.componentInstance;
       spin = fixture.debugElement.query(By.directive(NzSpinComponent));
     });
-    it('should className correct', async(() => {
+    it('should className correct', fakeAsync(() => {
       fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      console.log(spin.nativeElement);
       expect(spin.nativeElement.querySelector('.ant-spin').firstElementChild.classList).toContain('ant-spin-dot');
     }));
-    it('should size work', async(() => {
+    it('should size work', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       testComponent.size = 'small';
       fixture.detectChanges();
@@ -38,15 +43,20 @@ describe('spin', () => {
       fixture.detectChanges();
       expect(spin.nativeElement.querySelector('.ant-spin').classList).toContain('ant-spin-lg');
     }));
-    it('should spinning work', async(() => {
+    it('should spinning work', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       testComponent.spinning = false;
-      fixture.whenStable().then(() => {
-        expect(spin.nativeElement.querySelector('.ant-spin').classList).not.toContain('ant-spin-spinning');
-        testComponent.spinning = true;
-        fixture.detectChanges();
-        expect(spin.nativeElement.querySelector('.ant-spin').classList).toContain('ant-spin-spinning');
-      });
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
+      testComponent.spinning = true;
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(spin.nativeElement.querySelector('.ant-spin')).toBeDefined();
     }));
     it('should indicator work', () => {
       fixture.detectChanges();
@@ -56,24 +66,34 @@ describe('spin', () => {
       expect(spin.nativeElement.querySelector('.ant-spin-dot')).toBeNull();
       expect(spin.nativeElement.querySelector('.anticon-loading')).toBeDefined();
     });
-    it('should delay work', async(() => {
-      testComponent.delay = 500;
+    it('should delay work', fakeAsync(() => {
       fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      testComponent.delay = 500;
       testComponent.spinning = false;
       fixture.detectChanges();
-      expect(spin.nativeElement.querySelector('.ant-spin').classList).not.toContain('ant-spin-spinning');
-    }));
-    it('should wrapper work', async(() => {
+      tick();
       fixture.detectChanges();
-      expect(spin.nativeElement.querySelector('.ant-spin-container').style.display).toBe('none');
-      // testComponent.wrapper = true;
-      // fixture.detectChanges();
-      // TODO: fix next line error
-      // fixture.whenStable().then(() => {
-      //  expect(spin.nativeElement.querySelector('.ant-spin-container').attributes.getNamedItem('hidden')).toBeNull();
-      // });
+      expect(spin.nativeElement.querySelector('.ant-spin')).toBeDefined();
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
     }));
-    it('should tip work', async(() => {
+    it('should wrapper work', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(spin.nativeElement.querySelector('.ant-spin').classList).toContain('ant-spin-spinning');
+      expect(spin.nativeElement.querySelector('.ant-spin-container')).toBeDefined();
+      testComponent.simple = true;
+      fixture.detectChanges();
+      expect(spin.nativeElement.querySelector('.ant-spin-container')).toBeNull();
+    }));
+    it('should tip work', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       expect(spin.nativeElement.querySelector('.ant-spin-text')).toBeNull();
       testComponent.tip = 'tip';
@@ -93,16 +113,17 @@ describe('spin', () => {
       [nzSize]="size"
       [nzDelay]="delay"
       [nzSpinning]="spinning"
+      [nzSimple]="simple"
       [nzIndicator]="indicator">
-      <div *ngIf="wrapper">test</div>
+      <div>test</div>
     </nz-spin>`
 })
 export class NzTestSpinBasicComponent {
   @ViewChild('indicatorTemplate') indicatorTemplate: TemplateRef<void>;
   size = 'default';
-  delay;
+  delay = 0;
   spinning = true;
   indicator;
   tip;
-  wrapper = false;
+  simple = false;
 }

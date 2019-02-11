@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzTableComponent } from './nz-table.component';
@@ -9,11 +9,11 @@ import { NzTableModule } from './nz-table.module';
 
 describe('nz-table', () => {
   let injector: Injector;
-  beforeEach(fakeAsync(() => {
+  beforeEach(async(() => {
     injector = TestBed.configureTestingModule({
       imports     : [ NzTableModule ],
       declarations: [ NzTestTableBasicComponent, NzTestTableScrollComponent ],
-      providers   : [ NzMeasureScrollbarService ]
+      providers   : [ NzUpdateHostClassService ]
     });
     TestBed.compileComponents();
   }));
@@ -29,7 +29,7 @@ describe('nz-table', () => {
     });
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(table.nativeElement.firstElementChild.classList).toContain('ant-table-wrapper');
+      expect(table.nativeElement.classList).toContain('ant-table-wrapper');
     });
     it('should pageIndex set work', () => {
       fixture.detectChanges();
@@ -113,14 +113,6 @@ describe('nz-table', () => {
       expect(testComponent.pageSizeChange).toHaveBeenCalledTimes(0);
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
     }));
-    it('should warn if nzData is not array', () => {
-      console.warn = jasmine.createSpy('warn');
-      fixture.detectChanges();
-      expect(console.warn).toHaveBeenCalledTimes(0);
-      testComponent.dataSet = null;
-      fixture.detectChanges();
-      expect(console.warn).toHaveBeenCalledTimes(1);
-    });
     it('should pagination simple work', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-pagination-simple')).toBeNull();
@@ -147,7 +139,7 @@ describe('nz-table', () => {
     it('should emitPageSize work', () => {
       fixture.detectChanges();
       expect(testComponent.pageSizeChange).toHaveBeenCalledTimes(0);
-      testComponent.nzTableComponent.emitPageSize(10);
+      testComponent.nzTableComponent.emitPageSizeOrIndex(100, 1);
       expect(testComponent.pageSizeChange).toHaveBeenCalledTimes(1);
     });
     it('should size work', () => {
@@ -159,7 +151,7 @@ describe('nz-table', () => {
       expect(table.nativeElement.querySelector('.ant-table').classList).toContain('ant-table-middle');
       testComponent.size = 'default';
       fixture.detectChanges();
-      expect(table.nativeElement.querySelector('.ant-table').classList).toContain('ant-table-large');
+      expect(table.nativeElement.querySelector('.ant-table').classList).toContain('ant-table-default');
     });
     it('should footer & title work', () => {
       fixture.detectChanges();
@@ -187,7 +179,7 @@ describe('nz-table', () => {
     });
     it('should width config', () => {
       fixture.detectChanges();
-      expect(table.nativeElement.querySelectorAll('col').length).toBe(0);
+      expect(table.nativeElement.querySelectorAll('col').length).toBe(4);
       testComponent.widthConfig = [ '100px', '50px' ];
       fixture.detectChanges();
       expect(table.nativeElement.querySelectorAll('col')[ 0 ].style.width).toBe('100px');

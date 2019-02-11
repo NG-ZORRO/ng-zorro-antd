@@ -33,7 +33,7 @@
     "pre-release": "npm run site:init && bash ./scripts/build/replace-publish.sh && npm run generate && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod && npm run helper"
   },
   "dependencies": {
-    "@angular/cdk": "^7.2.0",
+    "@angular/cdk": "^7.3.0",
     "@angular/pwa": "^0.12.2",
     "@ant-design/icons-angular": "^2.0.1",
     "date-fns": "^1.29.0"
