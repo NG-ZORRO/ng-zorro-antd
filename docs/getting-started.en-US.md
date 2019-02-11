@@ -100,7 +100,7 @@ registerLocaleData(en);
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    /** import ng-zorro-antd root module，you should import NgZorroAntdModule instead in sub module **/
+    /** import ng-zorro-antd root module，you should import NgZorroAntdModule and avoid importing sub modules directly **/
     NgZorroAntdModule
   ],
   bootstrap: [ AppComponent ],

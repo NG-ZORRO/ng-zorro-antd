@@ -1,11 +1,14 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -23,15 +26,12 @@ import { NzI18nService } from '../i18n/nz-i18n.service';
   changeDetection    : ChangeDetectionStrategy.OnPush,
   templateUrl        : './nz-pagination.component.html'
 })
-export class NzPaginationComponent implements OnInit, OnDestroy {
+export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   // tslint:disable-next-line:no-any
   locale: any = {};
   firstIndex = 1;
-  pages = [];
+  pages: number[] = [];
   private $destroy = new Subject<void>();
-  private _pageSize = 10;
-  private _pageIndex = 1;
-  private _total = 0;
   @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
   @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
   @Input() nzShowTotal: TemplateRef<{ $implicit: number, range: [ number, number ] }>;
@@ -43,44 +43,9 @@ export class NzPaginationComponent implements OnInit, OnDestroy {
   @Input() @InputBoolean() nzHideOnSinglePage = false;
   @Input() @InputBoolean() nzShowQuickJumper = false;
   @Input() @InputBoolean() nzSimple = false;
-
-  @Input() @InputNumber()
-  set nzTotal(value: number) {
-    this._total = value;
-    this.buildIndexes();
-  }
-
-  get nzTotal(): number {
-    return this._total;
-  }
-
-  @Input() @InputNumber()
-  set nzPageIndex(value: number) {
-    if (this._pageIndex !== value) {
-      this._pageIndex = this.validatePageIndex(value);
-      this.buildIndexes();
-    }
-  }
-
-  get nzPageIndex(): number {
-    return this._pageIndex;
-  }
-
-  @Input() @InputNumber()
-  set nzPageSize(value: number) {
-    if (value !== this._pageSize) {
-      this._pageSize = value;
-      if (this.nzPageIndex > this.lastIndex) {
-        this.nzPageIndex = this.lastIndex;
-        this.nzPageIndexChange.emit(this.lastIndex);
-      }
-      this.buildIndexes();
-    }
-  }
-
-  get nzPageSize(): number {
-    return this._pageSize;
-  }
+  @Input() @InputNumber() nzTotal = 0;
+  @Input() @InputNumber() nzPageIndex = 1;
+  @Input() @InputNumber() nzPageSize = 10;
 
   validatePageIndex(value: number): number {
     if (value > this.lastIndex) {
@@ -90,6 +55,10 @@ export class NzPaginationComponent implements OnInit, OnDestroy {
     } else {
       return value;
     }
+  }
+
+  isPageIndexValid(value: number): boolean {
+    return this.validatePageIndex(value) === value;
   }
 
   jumpPage(index: number): void {
@@ -109,15 +78,17 @@ export class NzPaginationComponent implements OnInit, OnDestroy {
   onPageSizeChange($event: number): void {
     this.nzPageSize = $event;
     this.nzPageSizeChange.emit($event);
+    this.buildIndexes();
+    if (this.nzPageIndex > this.lastIndex) {
+      this.nzPageIndex = this.lastIndex;
+      this.nzPageIndexChange.emit(this.lastIndex);
+    }
   }
 
   handleKeyDown(e: KeyboardEvent, input: HTMLInputElement, clearInputValue: boolean): void {
     const target = input;
     const page = toNumber(target.value, this.nzPageIndex);
-    if (isInteger(page) &&
-      (page >= 1) &&
-      (page !== this.nzPageIndex) &&
-      (page <= this.lastIndex)) {
+    if (isInteger(page) && this.isPageIndexValid(page) && page !== this.nzPageIndex) {
       this.nzPageIndex = page;
       this.nzPageIndexChange.emit(this.nzPageIndex);
     }
@@ -187,5 +158,11 @@ export class NzPaginationComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.$destroy.next();
     this.$destroy.complete();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzTotal || changes.nzPageSize || changes.nzPageIndex) {
+      this.buildIndexes();
+    }
   }
 }

@@ -1,18 +1,21 @@
 import {
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
-  HostBinding,
   Input,
+  OnChanges, OnDestroy, OnInit,
   Output,
-  Renderer2,
-  ViewChild
+  SimpleChanges,
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { isNotNil } from '../core/util/check';
-
-import { toBoolean } from '../core/util/convert';
-
+import { InputBoolean } from '../core/util/convert';
 import { NzDropDownComponent } from '../dropdown/nz-dropdown.component';
+import { NzI18nInterface } from '../i18n/nz-i18n.interface';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 
 /* tslint:disable-next-line:no-any */
 export type NzThFilterType = Array<{ text: string; value: any; byDefault?: boolean }>;
@@ -28,51 +31,59 @@ export interface NzThItemInterface {
   // tslint:disable-next-line:component-selector
   selector           : 'th:not(.nz-disable-th)',
   preserveWhitespaces: false,
-  templateUrl        : './nz-th.component.html'
+  encapsulation      : ViewEncapsulation.None,
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  templateUrl        : './nz-th.component.html',
+  host               : {
+    '[class.ant-table-column-has-actions]'     : 'nzShowFilter || nzShowSort || nzCustomFilter',
+    '[class.ant-table-column-has-filters]'     : 'nzShowFilter || nzCustomFilter',
+    '[class.ant-table-column-has-sorters]'     : 'nzShowSort',
+    '[class.ant-table-selection-column-custom]': 'nzShowRowSelection',
+    '[class.ant-table-selection-column]'       : 'nzShowCheckbox',
+    '[class.ant-table-expand-icon-th]'         : 'nzExpand',
+    '[class.ant-table-th-left-sticky]'         : 'nzLeft',
+    '[class.ant-table-th-right-sticky]'        : 'nzRight',
+    '[class.ant-table-column-sort]'            : `nzSort === 'descend' || nzSort === 'ascend'`,
+    '[style.left]'                             : 'nzLeft',
+    '[style.right]'                            : 'nzRight',
+    '[style.text-align]'                       : 'nzAlign'
+  }
 })
-export class NzThComponent {
-  private _sort = null;
-  private _filters: NzThFilterType = [];
-  private _showSort = false;
-  private _showFilter = false;
-  private _showCheckbox = false;
-  private _showRowSelection = false;
-  private _hasDefaultFilter = false;
-  private _customFilter = false;
-  el: HTMLElement = this.elementRef.nativeElement;
+export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   hasFilterValue = false;
   filterVisible = false;
   multipleFilterList: NzThItemInterface[] = [];
   singleFilterList: NzThItemInterface[] = [];
+  /* tslint:disable-next-line:no-any */
+  locale: NzI18nInterface['Table'] = {} as NzI18nInterface['Table'];
+  nzWidthChange$ = new Subject();
+  private destroy$ = new Subject();
+  private hasDefaultFilter = false;
   @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
   /* tslint:disable-next-line:no-any */
-  @Input() nzSelections: Array<{ text: string, onSelect: any }> = [];
+  @Input() nzSelections: Array<{ text: string, onSelect(...args: any[]): any; }> = [];
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
   @Input() nzSortKey: string;
   @Input() nzFilterMultiple = true;
   @Input() nzWidth: string;
+  @Input() nzLeft: string;
+  @Input() nzRight: string;
+  @Input() nzAlign: 'left' | 'right' | 'center';
+  @Input() nzSort: 'ascend' | 'descend' = null;
+  @Input() nzFilters: NzThFilterType = [];
+  @Input() @InputBoolean() nzExpand = false;
+  @Input() @InputBoolean() nzShowCheckbox = false;
+  @Input() @InputBoolean() nzCustomFilter = false;
+  @Input() @InputBoolean() nzShowSort = false;
+  @Input() @InputBoolean() nzShowFilter = false;
+  @Input() @InputBoolean() nzShowRowSelection = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Output() readonly nzSortChange = new EventEmitter<string>();
   @Output() readonly nzSortChangeWithKey = new EventEmitter<{ key: string, value: string }>();
   /* tslint:disable-next-line:no-any */
   @Output() readonly nzFilterChange = new EventEmitter<any[] | any>();
-
-  @HostBinding('class.ant-table-column-has-actions')
-  get hasActionsClass(): boolean {
-    return this.nzShowFilter || this.nzShowSort || this.nzCustomFilter;
-  }
-
-  @HostBinding('class.ant-table-column-has-filters')
-  get hasFiltersClass(): boolean {
-    return this.nzShowFilter || this.nzCustomFilter;
-  }
-
-  @HostBinding('class.ant-table-column-has-sorters')
-  get hasSortersClass(): boolean {
-    return this.nzShowSort;
-  }
 
   updateSortValue(): void {
     if (this.nzShowSort) {
@@ -86,108 +97,7 @@ export class NzThComponent {
     }
   }
 
-  @Input()
-  set nzCustomFilter(value: boolean) {
-    this._customFilter = toBoolean(value);
-  }
-
-  get nzCustomFilter(): boolean {
-    return this._customFilter;
-  }
-
-  @Input()
-  set nzShowSort(value: boolean) {
-    this._showSort = toBoolean(value);
-  }
-
-  get nzShowSort(): boolean {
-    return this._showSort;
-  }
-
-  @Input()
-  set nzShowFilter(value: boolean) {
-    this._showFilter = toBoolean(value);
-  }
-
-  get nzShowFilter(): boolean {
-    return this._showFilter;
-  }
-
-  @Input()
-  set nzShowRowSelection(value: boolean) {
-    this._showRowSelection = toBoolean(value);
-    if (this._showRowSelection) {
-      this.renderer.addClass(this.el, 'ant-table-selection-column-custom');
-    } else {
-      this.renderer.removeClass(this.el, 'ant-table-selection-column-custom');
-    }
-  }
-
-  get nzShowRowSelection(): boolean {
-    return this._showRowSelection;
-  }
-
-  @Input()
-  set nzLeft(value: string) {
-    if (isNotNil(value)) {
-      this.renderer.addClass(this.el, 'ant-table-th-left-sticky');
-      this.renderer.setStyle(this.el, 'left', value);
-    } else {
-      this.renderer.removeClass(this.el, 'ant-table-th-left-sticky');
-      this.renderer.removeStyle(this.el, 'left');
-    }
-  }
-
-  @Input()
-  set nzRight(value: string) {
-    if (isNotNil(value)) {
-      this.renderer.addClass(this.el, 'ant-table-th-right-sticky');
-      this.renderer.setStyle(this.el, 'right', value);
-    } else {
-      this.renderer.removeClass(this.el, 'ant-table-th-right-sticky');
-      this.renderer.removeStyle(this.el, 'right');
-    }
-  }
-
-  @Input()
-  set nzExpand(value: boolean) {
-    const isExpand = toBoolean(value);
-    if (isExpand) {
-      this.renderer.addClass(this.el, 'ant-table-expand-icon-th');
-    } else {
-      this.renderer.removeClass(this.el, 'ant-table-expand-icon-th');
-    }
-  }
-
-  @Input()
-  set nzShowCheckbox(value: boolean) {
-    this._showCheckbox = toBoolean(value);
-    if (this._showCheckbox) {
-      this.renderer.addClass(this.el, 'ant-table-selection-column');
-    } else {
-      this.renderer.removeClass(this.el, 'ant-table-selection-column');
-    }
-  }
-
-  get nzShowCheckbox(): boolean {
-    return this._showCheckbox;
-  }
-
-  @Input()
-  set nzSort(value: string) {
-    this._sort = value;
-    if ((value !== 'ascend') && (value !== 'descend')) {
-      this.renderer.removeClass(this.el, 'ant-table-column-sort');
-    } else {
-      this.renderer.addClass(this.el, 'ant-table-column-sort');
-    }
-  }
-
-  get nzSort(): string {
-    return this._sort;
-  }
-
-  setSortValue(value: string): void {
+  setSortValue(value: 'ascend' | 'descend'): void {
     this.nzSort = value;
     this.nzSortChangeWithKey.emit({ key: this.nzSortKey, value: this.nzSort });
     this.nzSortChange.emit(this.nzSort);
@@ -238,7 +148,6 @@ export class NzThComponent {
   }
 
   hideDropDown(): void {
-    this.nzDropDownComponent.nzVisible = false;
     this.nzDropDownComponent.setVisibleStateWhen(false);
     this.filterVisible = false;
   }
@@ -250,27 +159,11 @@ export class NzThComponent {
     }
   }
 
-  @Input()
-  set nzFilters(value: NzThFilterType) {
-    if (Array.isArray(value)) {
-      this._filters = value;
-      this.initMultipleFilterList();
-      this.initSingleFilterList();
-      this.updateFilterStatus();
-    } else {
-      console.warn('nzFilters only accept type of Array<{ text: string; value: any }>');
-    }
-  }
-
-  get nzFilters(): NzThFilterType {
-    return this._filters;
-  }
-
   initMultipleFilterList(force?: boolean): void {
     this.multipleFilterList = this.nzFilters.map(item => {
       const checked = force ? false : !!item.byDefault;
       if (checked) {
-        this._hasDefaultFilter = true;
+        this.hasDefaultFilter = true;
       }
       return { text: item.text, value: item.value, checked };
     });
@@ -281,7 +174,7 @@ export class NzThComponent {
     this.singleFilterList = this.nzFilters.map(item => {
       const checked = force ? false : !!item.byDefault;
       if (checked) {
-        this._hasDefaultFilter = true;
+        this.hasDefaultFilter = true;
       }
       return { text: item.text, value: item.value, checked };
     });
@@ -289,12 +182,39 @@ export class NzThComponent {
   }
 
   checkDefaultFilters(): void {
-    if (!this.nzFilters || this.nzFilters.length === 0 || !this._hasDefaultFilter) {
+    if (!this.nzFilters || this.nzFilters.length === 0 || !this.hasDefaultFilter) {
       return;
     }
     this.updateFilterStatus();
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+  marForCheck(): void {
+    this.cdr.markForCheck();
+  }
+
+  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService) {
+  }
+
+  ngOnInit(): void {
+    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.locale = this.i18n.getLocaleData('Table');
+      this.cdr.markForCheck();
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzFilters) {
+      this.initMultipleFilterList();
+      this.initSingleFilterList();
+      this.updateFilterStatus();
+    }
+    if (changes.nzWidth) {
+      this.nzWidthChange$.next(this.nzWidth);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

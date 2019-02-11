@@ -8,8 +8,8 @@ import { Component, OnInit } from '@angular/core';
       [nzData]="displayData"
       nzBordered
       nzSize="middle"
-      [nzWidthConfig]="['100px','200px','200px','100px','100px',null,null,'60px']"
-      [nzScroll]="{ x:'130%',y: '240px' }">
+      [nzWidthConfig]="['100px','200px','200px','100px','100px','200px','200px','100px']"
+      [nzScroll]="{ x:'1200px',y: '240px' }">
       <thead>
         <tr>
           <th rowspan="4" nzLeft="0px" nzShowFilter [nzFilters]="filterName" (nzFilterChange)="search($event)">Name</th>
