@@ -1,0 +1,16 @@
+<div class="ant-rate-star-second"
+  (mouseover)="hoverRate(false); $event.stopPropagation();"
+  (click)="clickRate(false); $event.stopPropagation();">
+  <ng-template [ngTemplateOutlet]="character || defaultCharacter"></ng-template>
+</div>
+<div class="ant-rate-star-first"
+  (mouseover)="hoverRate(true); $event.stopPropagation();"
+  (click)="clickRate(true); $event.stopPropagation();">
+  <ng-template [ngTemplateOutlet]="character || defaultCharacter"></ng-template>
+</div>
+
+<ng-template #defaultCharacter>
+  <i nz-icon
+    type="star"
+    theme="fill"></i>
+</ng-template>
