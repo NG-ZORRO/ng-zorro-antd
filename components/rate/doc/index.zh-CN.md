@@ -24,6 +24,7 @@ title: Rate
 | `[nzCharacter]` | 自定义字符 | `TemplateRef<void>` | `<i nz-icon type="star"></i>` |
 | `[nzCount]` | star 总数 | `number` | `5` |
 | `[nzDisabled]` | 只读，无法进行交互 | `boolean` | `false` |
+| `[nzTooltips]` | 自定义每项的提示信息 | `string[]` | `[]` |
 | `[ngModel]` | 当前数，可以双向绑定 | `number` | `0` |
 | `(ngModelChange)` | 当前数改变时的回调 | `EventEmitter<number>` | - |
 | `(nzOnBlur)` | 失去焦点时的回调 | `EventEmitter<FocusEvent>` | - |
