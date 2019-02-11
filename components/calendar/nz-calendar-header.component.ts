@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import setMonth from 'date-fns/set_month';
 import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector   : 'nz-calendar-header',
   templateUrl: './nz-calendar-header.component.html',
   host       : {
