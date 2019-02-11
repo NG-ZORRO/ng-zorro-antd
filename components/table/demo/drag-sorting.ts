@@ -1,13 +1,10 @@
+import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-table-bordered',
+  selector: 'nz-demo-table-drag-sorting',
   template: `
-    <nz-table #borderedTable
-      nzBordered
-      nzFooter="Footer"
-      nzTitle="Header"
-      [nzData]="dataSet">
+    <nz-table [nzData]="dataSet" [nzFrontPagination]="false" [nzShowPagination]="false">
       <thead>
         <tr>
           <th>Name</th>
@@ -15,17 +12,29 @@ import { Component } from '@angular/core';
           <th>Address</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let data of borderedTable.data">
+      <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+        <tr *ngFor="let data of dataSet" cdkDrag>
           <td>{{data.name}}</td>
           <td>{{data.age}}</td>
           <td>{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>
-  `
+  `,
+  styles  : [
+    `
+      ::ng-deep .cdk-drag-preview {
+        display: table;
+      }
+
+      ::ng-deep .cdk-drag-placeholder {
+        opacity: 0;
+      }
+
+    `
+  ]
 })
-export class NzDemoTableBorderedComponent {
+export class NzDemoTableDragSortingComponent {
   dataSet = [
     {
       key    : '1',
@@ -46,4 +55,8 @@ export class NzDemoTableBorderedComponent {
       address: 'Sidney No. 1 Lake Park'
     }
   ];
+
+  drop(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.dataSet, event.previousIndex, event.currentIndex);
+  }
 }

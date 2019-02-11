@@ -65,6 +65,7 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | `[nzPageIndex]` | pageIndex , double binding | `number` | - |
 | `[nzPageSize]` | pageSize, double binding | `number` | - |
 | `[nzShowPagination]` | Whether show pagination component in bottom of the table | `boolean` | `true` |
+| `[nzPaginationPosition]` | Specify the position of Pagination | `'top'｜'bottom'｜'both'` | `bottom` |
 | `[nzBordered]` | Whether to show all table borders | `boolean` | `false` |
 | `[nzWidthConfig]` | Set col width can not used with `nzWidth` of `th` | `string[]` | - |
 | `[nzSize]` | Size of table | `'middle'｜'small'｜'default'` | `'default'` |
@@ -77,7 +78,8 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | `[nzPageSizeOptions]` | Specify the sizeChanger options | `number[]` | `[10, 20, 30, 40]` |
 | `[nzShowQuickJumper]` | Determine whether you can jump to pages directly | `boolean` | `false` |
 | `[nzShowSizeChanger]` | Determine whether `nzPageSize` can be changed | `boolean` | `false` |
-| `[nzShowTotal]` | To display the total number and range, same as Pagination	 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
+| `[nzShowTotal]` | To display Pagination total number and range, same as Pagination	 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
+| `[nzItemRender]` | to customize Pagination item, same as Pagination | `TemplateRef<{ $implicit: 'page'｜'prev'｜'next', page: number }>` | - |
 | `[nzHideOnSinglePage]` | Whether to hide pager on single page | `boolean` | `false` |
 | `[nzSimple]` | whether to use simple mode | `boolean` | - |
 | `(nzPageIndexChange)` | pageIndex change callback | `EventEmitter<number>` | - |
@@ -121,6 +123,7 @@ Style property
 | `[nzWidth]` | Specify the column width, can not used when grouping columns | `string` | - |
 | `[nzLeft]` | Left pixels, used to fixed column to left | `string` | - |
 | `[nzRight]` | Right pixels, used to fixed column to right | `string` | - |
+| `[nzAlign]` | Specify how content is aligned | `'left'｜'right'｜'center'` | - |
 
 Other property
 
@@ -154,6 +157,7 @@ Style property
 | -------- | ----------- | ---- | ------- |
 | `[nzLeft]` | Left pixels, used to fixed column to left | `string` | - |
 | `[nzRight]` | Right pixels, used to fixed column to right | `string` | - |
+| `[nzAlign]` | Specify how content is aligned | `'left'｜'right'｜'center'` | - |
 
 Other property
 
