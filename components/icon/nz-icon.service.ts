@@ -8,6 +8,8 @@ import {
   CalendarOutline,
   CaretDownFill,
   CaretDownOutline,
+  CaretUpFill,
+  CaretUpOutline,
   CheckCircleFill,
   CheckCircleOutline,
   CheckOutline,
@@ -43,11 +45,16 @@ export interface NzIconfontOption {
 }
 
 export const NZ_ICONS = new InjectionToken('nz_icons');
+
 export const NZ_ICON_DEFAULT_TWOTONE_COLOR = new InjectionToken('nz_icon_default_twotone_color');
+
 export const DEFAULT_TWOTONE_COLOR = '#1890ff';
+
 export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   BarsOutline,
   CalendarOutline,
+  CaretUpFill,
+  CaretUpOutline,
   CaretDownFill,
   CaretDownOutline,
   CheckCircleFill,

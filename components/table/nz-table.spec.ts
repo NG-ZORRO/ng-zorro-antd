@@ -216,8 +216,7 @@ describe('nz-table', () => {
       expect(table.nativeElement.querySelector('.ant-table-placeholder').innerText.trim()).toBe('暂无数据');
       injector.get(NzI18nService).setLocale(en_US);
       fixture.detectChanges();
-      // TODO: deal with i18n test with a unified way later
-      expect(table.nativeElement.querySelector('.ant-table-placeholder').innerText.trim()).toBe('暂无数据');
+      expect(table.nativeElement.querySelector('.ant-table-placeholder').innerText.trim()).toBe('No Data');
     });
   });
   describe('scroll nz-table', () => {
