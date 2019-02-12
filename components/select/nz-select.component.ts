@@ -76,6 +76,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   onChange: (value: string | string[]) => void = () => null;
   onTouched: () => void = () => null;
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
+  triggerWidth: number;
   private _disabled = false;
   private _autoFocus = false;
   private destroy$ = new Subject();
@@ -215,18 +216,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   updateCdkConnectedOverlayStatus(): void {
-    setTimeout(() => {
-      if (this.cdkOverlayOrigin &&
-        this.cdkConnectedOverlay &&
-        this.cdkConnectedOverlay.overlayRef) {
-        const triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
-        if (this.nzDropdownMatchSelectWidth) {
-          this.cdkConnectedOverlay.overlayRef.updateSize({ width: triggerWidth });
-        } else {
-          this.cdkConnectedOverlay.overlayRef.updateSize({ minWidth: triggerWidth });
-        }
-      }
-    });
+    this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
   }
 
   updateCdkConnectedOverlayPositions(): void {
