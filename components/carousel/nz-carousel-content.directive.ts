@@ -84,12 +84,6 @@ export class NzCarouselContentDirective implements OnInit {
     return this._fadeMode;
   }
 
-  updateOpacity(): void {
-    if (this.fadeMode) {
-      this.renderer.setStyle(this.el, 'opacity', this.isActive ? 1 : 0);
-    }
-  }
-
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
   }
 
@@ -97,4 +91,9 @@ export class NzCarouselContentDirective implements OnInit {
     this.renderer.setStyle(this.el, 'transition', 'opacity 500ms ease');
   }
 
+  private updateOpacity(): void {
+    if (this.fadeMode) {
+      this.renderer.setStyle(this.el, 'opacity', this.isActive ? 1 : 0);
+    }
+  }
 }
