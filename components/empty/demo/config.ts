@@ -20,7 +20,7 @@ import { NzEmptyService } from 'ng-zorro-antd';
     <nz-tree-select style="width: 200px;"></nz-tree-select>
 
     <h3>Cascader</h3>
-    <nz-cascader style="width: 200px;" [nzShowSearch]="true" [nzOptions]="options"></nz-cascader>
+    <nz-cascader style="width: 200px;" [nzShowSearch]="true" [nzOptions]="[]"></nz-cascader>
 
     <h3>Transfer</h3>
     <nz-transfer></nz-transfer>
@@ -55,37 +55,6 @@ export class NzDemoEmptyConfigComponent {
   @ViewChild('customTpl') customTpl: TemplateRef<any>; // tslint:disable-line:no-any
 
   customize = false;
-  options = [
-    {
-      value   : 'zhejiang',
-      label   : 'Zhejiang',
-      children: [ {
-        value   : 'hangzhou',
-        label   : 'Hangzhou',
-        children: [ {
-          value : 'xihu',
-          label : 'West Lake',
-          isLeaf: true
-        } ]
-      }, {
-        value : 'ningbo',
-        label : 'Ningbo',
-        isLeaf: true
-      } ]
-    }, {
-      value   : 'jiangsu',
-      label   : 'Jiangsu',
-      children: [ {
-        value   : 'nanjing',
-        label   : 'Nanjing',
-        children: [ {
-          value : 'zhonghuamen',
-          label : 'Zhong Hua Men',
-          isLeaf: true
-        } ]
-      } ]
-    }
-  ];
 
   constructor(private nzEmptyService: NzEmptyService) {
   }
