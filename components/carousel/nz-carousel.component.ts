@@ -85,6 +85,7 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
   transform = 'translate3d(0px, 0px, 0px)';
   transitionAction;
 
+  private el = this.elementRef.nativeElement;
   private subs_ = new Subscription();
 
   get nextIndex(): number {
@@ -156,8 +157,11 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
       ? 'translate3d(0px, 0px, 0px)'
       : this.nzVertical
         // `Scrollx` mode.
-        ? `translate3d(0px, ${-this.activeIndex * this.elementRef.nativeElement.offsetHeight}px, 0px)`
-        : `translate3d(${-this.activeIndex * this.elementRef.nativeElement.offsetWidth}px, 0px, 0px)`;
+        ? `translate3d(0px, ${-this.activeIndex * this.el.offsetHeight}px, 0px)`
+        : `translate3d(${-this.activeIndex * this.el.offsetWidth}px, 0px, 0px)`;
+    if (this.slickTrack) {
+      this.renderer.setStyle(this.slickTrack.nativeElement, 'transform', this.transform);
+    }
   }
 
   next(): void {
@@ -201,14 +205,17 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
     if (this.nzEffect === 'scrollx') {
       const final = e.isFinal;
       const scrollWidth = final ? 0 : e.deltaX * 1.2;
-      const totalWidth = this.elementRef.nativeElement.offsetWidth;
+      const totalWidth = this.el.offsetWidth;
       if (this.nzVertical) {
-        const totalHeight = this.elementRef.nativeElement.offsetHeight;
+        const totalHeight = this.el.offsetHeight;
         const scrollPercent = scrollWidth / totalWidth;
         const scrollHeight = scrollPercent * totalHeight;
         this.transform = `translate3d(0px, ${-this.activeIndex * totalHeight + scrollHeight}px, 0px)`;
       } else {
         this.transform = `translate3d(${-this.activeIndex * totalWidth + scrollWidth}px, 0px, 0px)`;
+      }
+      if (this.slickTrack) {
+        this.renderer.setStyle(this.slickTrack.nativeElement, 'transform', this.transform);
       }
     }
     if (e.isFinal) {
@@ -245,13 +252,15 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
   }
 
   private renderContent(): void {
+    const slickTrackElement = this.slickTrack.nativeElement;
+    const slickListElement = this.slickList.nativeElement;
     if (this.slideContents && this.slideContents.length) {
       this.slideContents.forEach((content, i) => {
-        content.width = this.elementRef.nativeElement.offsetWidth;
+        content.width = this.el.offsetWidth;
         if (this.nzEffect === 'fade') {
           content.fadeMode = true;
           if (this.nzVertical) {
-            content.top = -i * this.elementRef.nativeElement.offsetHeight;
+            content.top = -i * this.el.offsetHeight;
           } else {
             content.left = -i * content.width;
           }
@@ -262,15 +271,15 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
         }
       });
       if (this.nzVertical) {
-        this.renderer.removeStyle(this.slickTrack.nativeElement, 'width');
-        this.renderer.removeStyle(this.slickList.nativeElement, 'width');
-        this.renderer.setStyle(this.slickList.nativeElement, 'height', `${this.slideContents.first.el.offsetHeight}px`);
-        this.renderer.setStyle(this.slickTrack.nativeElement, 'height', `${this.slideContents.length * this.elementRef.nativeElement.offsetHeight}px`);
+        this.renderer.removeStyle(slickTrackElement, 'width');
+        this.renderer.removeStyle(slickListElement, 'width');
+        this.renderer.setStyle(slickListElement, 'height', `${this.slideContents.first.el.offsetHeight}px`);
+        this.renderer.setStyle(slickTrackElement, 'height', `${this.slideContents.length * this.el.offsetHeight}px`);
       } else {
-        this.renderer.removeStyle(this.slickTrack.nativeElement, 'height');
-        this.renderer.removeStyle(this.slickList.nativeElement, 'height');
-        this.renderer.removeStyle(this.slickTrack.nativeElement, 'width'); // This is necessary to prevent carousel items to overflow.
-        this.renderer.setStyle(this.slickTrack.nativeElement, 'width', `${this.slideContents.length * this.elementRef.nativeElement.offsetWidth}px`);
+        this.renderer.removeStyle(slickTrackElement, 'height');
+        this.renderer.removeStyle(slickListElement, 'height');
+        this.renderer.removeStyle(slickTrackElement, 'width'); // This is necessary to prevent carousel items to overflow.
+        this.renderer.setStyle(slickTrackElement, 'width', `${this.slideContents.length * this.el.offsetWidth}px`);
       }
       this.setUpNextScroll();
       this.cdr.markForCheck();

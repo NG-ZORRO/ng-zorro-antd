@@ -100,10 +100,10 @@ describe('carousel', () => {
     });
     it('should effect change work', () => {
       fixture.detectChanges();
-      expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).toBe('translate3d(0px, 0px, 0px)');
+      expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).toBe('');
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
       fixture.detectChanges();
-      expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe('translate3d(0px, 0px, 0px)');
+      expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe('');
       testComponent.effect = 'fade';
       testComponent.vertical = true;
       fixture.detectChanges();
