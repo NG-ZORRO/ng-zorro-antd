@@ -125,7 +125,7 @@ export class NzDemoTreeDirectoryComponent {
     this.dropdown = this.nzDropdownService.create($event, template);
   }
 
-  selectDropdown(type: string): void {
+  selectDropdown(_type: string): void {
     this.dropdown.close();
     // do something
   }

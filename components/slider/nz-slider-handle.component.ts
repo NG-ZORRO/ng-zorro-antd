@@ -48,15 +48,15 @@ export class NzSliderHandleComponent implements OnChanges {
   }
 
   // Hover to toggle tooltip when not dragging
-  @HostListener('mouseenter', [ '$event' ])
-  onMouseEnter($event: MouseEvent): void {
+  @HostListener('mouseenter')
+  onMouseEnter(): void {
     if (!this._slider.isDragging) {
       this.nzActive = true;
     }
   }
 
-  @HostListener('mouseleave', [ '$event' ])
-  onMouseLeave($event: MouseEvent): void {
+  @HostListener('mouseleave')
+  onMouseLeave(): void {
     if (!this._slider.isDragging) {
       this.nzActive = false;
     }

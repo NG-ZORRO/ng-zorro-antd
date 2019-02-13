@@ -426,11 +426,11 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     }
   }
 
-  handleInputBlur(event: Event): void {
+  handleInputBlur(): void {
     this.menuVisible ? this.focus() : this.blur();
   }
 
-  handleInputFocus(event: Event): void {
+  handleInputFocus(): void {
     this.focus();
   }
 
@@ -476,8 +476,8 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     }
   }
 
-  @HostListener('click', [ '$event' ])
-  onTriggerClick(event: MouseEvent): void {
+  @HostListener('click')
+  onTriggerClick(): void {
     if (this.nzDisabled) {
       return;
     }
@@ -490,8 +490,8 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     this.onTouched();
   }
 
-  @HostListener('mouseenter', [ '$event' ])
-  onTriggerMouseEnter(event: MouseEvent): void {
+  @HostListener('mouseenter')
+  onTriggerMouseEnter(): void {
     if (this.nzDisabled) {
       return;
     }

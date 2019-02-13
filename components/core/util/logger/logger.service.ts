@@ -1,53 +1,56 @@
-/* tslint:disable:no-any */
 import { Inject, Injectable, InjectionToken, Optional, Provider, SkipSelf } from '@angular/core';
+
+export const NG_ZORRO_CONSOLE_PREFIX = '[NG-ZORRO]';
 
 @Injectable()
 export class LoggerService {
-  constructor(@Inject(NZ_LOGGER_STATE) private _loggerState: boolean) {}
+  constructor(@Inject(NZ_LOGGER_STATE) private _loggerState: boolean) {
+  }
 
+  // tslint:disable-next-line:no-any
   log(...args: any[]): void {
     if (this._loggerState) {
-      // console.log(...args);
-      console.log.apply(console, arguments);
+      console.log(...args);
     }
   }
 
+  // tslint:disable-next-line:no-any
   warn(...args: any[]): void {
     if (this._loggerState) {
-      // console.warn(...args);
-      console.warn.apply(console, arguments);
+      console.warn(NG_ZORRO_CONSOLE_PREFIX, ...args);
     }
   }
 
+  // tslint:disable-next-line:no-any
   error(...args: any[]): void {
     if (this._loggerState) {
-      // console.error(...args);
-      console.error.apply(console, arguments);
+      console.error(NG_ZORRO_CONSOLE_PREFIX, ...args);
     }
   }
 
+  // tslint:disable-next-line:no-any
   info(...args: any[]): void {
     if (this._loggerState) {
-      // console.log(...args);
-      console.log.apply(console, arguments);
+      console.log(NG_ZORRO_CONSOLE_PREFIX, ...args);
     }
   }
 
+  // tslint:disable-next-line:no-any
   debug(...args: any[]): void {
     if (this._loggerState) {
-      // console.log('[NG-ZORRO-DEBUG]', ...args);
-      const arrs = Array.prototype.slice.call(arguments);
-      console.log.apply(console, ['[NG-ZORRO-DEBUG]'].concat(arrs));
+      console.log(NG_ZORRO_CONSOLE_PREFIX, ...args);
     }
   }
 }
 
 export const NZ_LOGGER_STATE = new InjectionToken<boolean>('nz-logger-state'); // Whether print the log
 
-export function LOGGER_SERVICE_PROVIDER_FACTORY(exist: LoggerService, loggerState: boolean): LoggerService { return exist || new LoggerService(loggerState); }
+export function LOGGER_SERVICE_PROVIDER_FACTORY(exist: LoggerService, loggerState: boolean): LoggerService {
+  return exist || new LoggerService(loggerState);
+}
 
 export const LOGGER_SERVICE_PROVIDER: Provider = {
-  provide: LoggerService,
+  provide   : LoggerService,
   useFactory: LOGGER_SERVICE_PROVIDER_FACTORY,
-  deps: [ [ new Optional(), new SkipSelf(), LoggerService ], NZ_LOGGER_STATE ]
+  deps      : [ [ new Optional(), new SkipSelf(), LoggerService ], NZ_LOGGER_STATE ]
 };

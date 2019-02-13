@@ -51,7 +51,7 @@ export class NzSliderMarksComponent implements OnChanges {
     }
   }
 
-  trackById(index: number, attr: { id: number, value: number, offset: number, classes: { [ key: string ]: boolean }, style: object, label: Mark }): number {
+  trackById(_index: number, attr: { id: number, value: number, offset: number, classes: { [ key: string ]: boolean }, style: object, label: Mark }): number {
     return attr.id;
   }
 

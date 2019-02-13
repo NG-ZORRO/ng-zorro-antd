@@ -98,7 +98,7 @@ export class NzColComponent implements OnInit, OnChanges {
     return this.nzRowComponent || this.nzRowDirective;
   }
 
-  ngOnChanges(changes: { [ propertyName: string ]: SimpleChange }): void {
+  ngOnChanges(): void {
     this.setClassMap();
   }
 

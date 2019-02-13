@@ -432,7 +432,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     this.setClassMap();
   }
 
-  ngOnChanges(changes: { [ propertyName: string ]: SimpleChange }): void {
+  ngOnChanges(): void {
     this.setClassMap();
   }
 
