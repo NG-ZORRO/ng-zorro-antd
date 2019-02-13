@@ -375,7 +375,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     } else {
       this.maskAnimationClassMap = this.modalAnimationClassMap = null;
     }
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
   }
 
   private animateTo(isVisible: boolean): Promise<void> {
