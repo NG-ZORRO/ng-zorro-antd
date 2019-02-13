@@ -5,9 +5,11 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { CdkOverlayOrigin, ConnectionPositionPair, Overlay, OverlayPositionBuilder } from '@angular/cdk/overlay';
+import { CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -16,16 +18,18 @@ import {
   Output,
   Renderer2,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion } from '../core/animation/slide';
 import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
 import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
-import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector   : 'nz-time-picker',
   templateUrl: './nz-time-picker.component.html',
   animations : [
@@ -197,10 +201,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   constructor(private element: ElementRef,
               private renderer: Renderer2,
-              private overlay: Overlay,
-              private positionBuilder: OverlayPositionBuilder,
-              private i18n: I18n,
-              private updateCls: UpdateCls) {
+              private updateCls: UpdateCls,
+              private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -215,6 +217,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   writeValue(time: Date | null): void {
     this._value = time;
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (time: Date) => void): void {
@@ -227,5 +230,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
+    this.cdr.markForCheck();
   }
 }

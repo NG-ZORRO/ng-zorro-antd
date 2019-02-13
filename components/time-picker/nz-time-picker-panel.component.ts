@@ -1,4 +1,6 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -7,7 +9,8 @@ import {
   OnInit,
   Output,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -25,6 +28,8 @@ function makeRange(length: number, step: number = 1): number[] {
 }
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector   : 'nz-time-picker-panel',
   templateUrl: './nz-time-picker-panel.component.html',
   providers  : [
@@ -378,7 +383,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     });
   }
 
-  constructor(private element: ElementRef, private updateCls: UpdateCls) {
+  constructor(private element: ElementRef, private updateCls: UpdateCls, private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -402,6 +407,9 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   writeValue(value: Date): void {
     this.time.value = value;
     this.buildTimes();
+
+    // Mark this component to be checked manually with internal properties changing (see: https://github.com/angular/angular/issues/10816)
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (value: Date) => void): void {

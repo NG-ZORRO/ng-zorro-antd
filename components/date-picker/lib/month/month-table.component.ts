@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
 import { NzI18nService } from '../../../i18n/nz-i18n.service';
 import { CandyDate } from '../candy-date';
@@ -7,13 +7,16 @@ const MAX_ROW = 4;
 const MAX_COL = 3;
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // tslint:disable-next-line:component-selector
   selector: 'month-table',
   templateUrl: 'month-table.component.html'
 })
 
 export class MonthTableComponent implements OnInit, OnChanges {
   @Input() value: CandyDate;
-  @Output() valueChange = new EventEmitter<CandyDate>();
+  @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   @Input() disabledDate: (date: Date) => boolean;
 
