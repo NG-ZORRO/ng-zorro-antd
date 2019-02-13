@@ -171,10 +171,6 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     }
   }
 
-  private formatDate(date: CandyDate): string {
-    return date ? this.i18n.formatDateCompatible(date.nativeDate, this.nzFormat) : '';
-  }
-
   // Safe way of setting value with default
   private setValue(value: CompatibleDate): void {
     if (this.isRange) {

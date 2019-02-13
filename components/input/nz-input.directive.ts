@@ -32,7 +32,7 @@ export class NzInputDirective {
     return this._disabled;
   }
 
-  constructor(@Optional() @Self() public ngControl: NgControl, renderer: Renderer2, elementRef: ElementRef) {
-    renderer.addClass(elementRef.nativeElement, 'ant-input');
+  constructor(@Optional() @Self() public ngControl: NgControl, private renderer: Renderer2, elementRef: ElementRef) {
+    this.renderer.addClass(elementRef.nativeElement, 'ant-input');
   }
 }

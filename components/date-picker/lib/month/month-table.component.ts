@@ -33,7 +33,7 @@ export class MonthTableComponent implements OnInit, OnChanges {
     }
   }
 
-  trackPanelMonth(index: number, monthData: PanelMonthData): number {
+  trackPanelMonth(_index: number, monthData: PanelMonthData): number {
     return monthData.month;
   }
 
@@ -49,30 +49,30 @@ export class MonthTableComponent implements OnInit, OnChanges {
     const today = new CandyDate();
 
     let monthValue = 0;
-    for (let rowIndex = 0; rowIndex < MAX_ROW; rowIndex ++) {
-      months[rowIndex] = [];
-      for (let colIndex = 0; colIndex < MAX_COL; colIndex ++) {
+    for (let rowIndex = 0; rowIndex < MAX_ROW; rowIndex++) {
+      months[ rowIndex ] = [];
+      for (let colIndex = 0; colIndex < MAX_COL; colIndex++) {
         const month = this.value.setMonth(monthValue);
         const disabled = this.disabledDate ? this.disabledDate(this.value.setMonth(monthValue).nativeDate) : false;
         const content = this.i18n.formatDateCompatible(month.nativeDate, 'MMM');
 
-        const cell = months[rowIndex][colIndex] = {
+        const cell = months[ rowIndex ][ colIndex ] = {
           disabled,
           content,
-          month: monthValue,
-          title: content,
+          month   : monthValue,
+          title   : content,
           classMap: null,
-          onClick: () => this.chooseMonth(cell.month)
+          onClick : () => this.chooseMonth(cell.month)
         };
 
         cell.classMap = {
-          [`${this.prefixCls}-cell`]: true,
-          [`${this.prefixCls}-cell-disabled`]: disabled,
-          [`${this.prefixCls}-selected-cell`]: cell.month === currentMonth,
-          [`${this.prefixCls}-current-cell`]: today.getYear() === this.value.getYear() && cell.month === today.getMonth()
+          [ `${this.prefixCls}-cell` ]         : true,
+          [ `${this.prefixCls}-cell-disabled` ]: disabled,
+          [ `${this.prefixCls}-selected-cell` ]: cell.month === currentMonth,
+          [ `${this.prefixCls}-current-cell` ] : today.getYear() === this.value.getYear() && cell.month === today.getMonth()
         };
 
-        monthValue ++;
+        monthValue++;
       }
     }
     return months;
@@ -91,5 +91,6 @@ export interface PanelMonthData {
   month: number;
   title: string;
   classMap: object;
+
   onClick(): void;
 }

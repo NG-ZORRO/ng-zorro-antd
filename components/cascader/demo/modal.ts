@@ -69,7 +69,7 @@ export class NzDemoCascaderModalComponent {
     this.isVisible = true;
   }
 
-  handleOk($event: MouseEvent): void {
+  handleOk(_event: MouseEvent): void {
     console.log('Button ok clicked!', this.values);
     this.isVisible = false;
   }

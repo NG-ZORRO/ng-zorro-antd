@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NzMessageService, TransferCanMove, TransferItem } from 'ng-zorro-antd';
+import { TransferCanMove, TransferItem } from 'ng-zorro-antd';
 import { of, Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
 

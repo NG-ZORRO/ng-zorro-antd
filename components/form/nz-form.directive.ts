@@ -15,7 +15,7 @@ export class NzFormDirective implements OnInit, OnChanges {
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
-    renderer.addClass(elementRef.nativeElement, 'ant-form');
+    this.renderer.addClass(elementRef.nativeElement, 'ant-form');
   }
 
   ngOnInit(): void {

@@ -16,7 +16,7 @@
         <ng-template [ngTemplateOutlet]="nzItemRender" [ngTemplateOutletContext]="{ $implicit: 'pre'}"></ng-template>
       </li>
       <li [attr.title]="nzPageIndex+'/'+lastIndex" class="ant-pagination-simple-pager">
-        <input #simplePagerInput [value]="nzPageIndex" (keydown.enter)="handleKeyDown($event,simplePagerInput,false)" size="3">
+        <input #simplePagerInput [value]="nzPageIndex" (keydown.enter)="handleKeyDown(simplePagerInput, false)" size="3">
         <span class="ant-pagination-slash">／</span>
         {{ lastIndex }}
       </li>
@@ -102,7 +102,7 @@
         </nz-select>
         <div class="ant-pagination-options-quick-jumper" *ngIf="nzShowQuickJumper">
           {{ locale.jump_to }}
-          <input #quickJumperInput (keydown.enter)="handleKeyDown($event,quickJumperInput,true)">
+          <input #quickJumperInput (keydown.enter)="handleKeyDown(quickJumperInput, true)">
           {{ locale.page }}
         </div>
       </div>

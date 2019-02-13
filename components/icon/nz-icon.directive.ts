@@ -13,7 +13,7 @@ import { NzIconService } from './nz-icon.service';
 
 const iconTypeRE = /^anticon\-\w/;
 
-const getIconTypeClass = (className: string): { name: string, index: number } => {
+const getIconTypeClass = (className: string): { name: string, index: number } | undefined => {
   if (!className) {
     return undefined;
   } else {
@@ -127,7 +127,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     }
   }
 
-  private setSVGData(svg: SVGElement): void {
+  private setSVGData(svg: SVGElement | null): void {
     if (typeof this.type === 'string' && svg) {
       this.renderer.setAttribute(svg, 'data-icon', this.type);
       this.renderer.setAttribute(svg, 'aria-hidden', 'true');

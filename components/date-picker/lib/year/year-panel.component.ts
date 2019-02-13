@@ -16,18 +16,19 @@ const MAX_COL = 3;
 
 export class YearPanelComponent implements OnChanges {
   @Input() locale: NzCalendarI18nInterface;
-
   @Input() value: CandyDate;
-  @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
+  @Output() readonly valueChange = new EventEmitter<CandyDate>();
   @Output() readonly decadePanelShow = new EventEmitter<void>();
 
   get currentYear(): number {
     return this.value.getYear();
   }
+
   get startYear(): number {
     return parseInt(`${this.currentYear / 10}`, 10) * 10;
   }
+
   get endYear(): number {
     return this.startYear + 9;
   }
@@ -51,7 +52,7 @@ export class YearPanelComponent implements OnChanges {
     this.gotoYear(10);
   }
 
-  trackPanelYear(index: number, yearData: PanelYearData): string {
+  trackPanelYear(_index: number, yearData: PanelYearData): string {
     return yearData.content;
   }
 
@@ -81,28 +82,28 @@ export class YearPanelComponent implements OnChanges {
     const endYear = this.endYear;
     const previousYear = startYear - 1;
     let index = 0;
-    for (let rowIndex = 0; rowIndex < MAX_ROW; rowIndex ++) {
-      years[rowIndex] = [];
-      for (let colIndex = 0; colIndex < MAX_COL; colIndex ++) {
+    for (let rowIndex = 0; rowIndex < MAX_ROW; rowIndex++) {
+      years[ rowIndex ] = [];
+      for (let colIndex = 0; colIndex < MAX_COL; colIndex++) {
         const year = previousYear + index;
         const content = String(year);
 
-        const cell = years[rowIndex][colIndex] = {
+        const cell = years[ rowIndex ][ colIndex ] = {
           content,
           year,
-          title: content,
-          isCurrent: year === currentYear,
+          title           : content,
+          isCurrent       : year === currentYear,
           isLowerThanStart: year < startYear,
-          isBiggerThanEnd: year > endYear,
-          classMap: null,
-          onClick: null
+          isBiggerThanEnd : year > endYear,
+          classMap        : null,
+          onClick         : null
         };
 
         cell.classMap = {
-          [`${this.prefixCls}-cell`]: true,
-          [`${this.prefixCls}-selected-cell`]: cell.isCurrent,
-          [`${this.prefixCls}-last-decade-cell`]: cell.isLowerThanStart,
-          [`${this.prefixCls}-next-decade-cell`]: cell.isBiggerThanEnd
+          [ `${this.prefixCls}-cell` ]            : true,
+          [ `${this.prefixCls}-selected-cell` ]   : cell.isCurrent,
+          [ `${this.prefixCls}-last-decade-cell` ]: cell.isLowerThanStart,
+          [ `${this.prefixCls}-next-decade-cell` ]: cell.isBiggerThanEnd
         };
 
         if (cell.isLowerThanStart) {
@@ -113,7 +114,7 @@ export class YearPanelComponent implements OnChanges {
           cell.onClick = () => this.chooseYear(cell.year);
         }
 
-        index ++;
+        index++;
       }
     }
     return years;
@@ -128,5 +129,6 @@ export interface PanelYearData {
   isLowerThanStart: boolean;
   isBiggerThanEnd: boolean;
   classMap: object;
+
   onClick(): void;
 }

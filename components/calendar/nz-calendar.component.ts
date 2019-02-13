@@ -1,5 +1,18 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { forwardRef, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, EventEmitter, HostBinding, Input, OnInit, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  forwardRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChild,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import addDays from 'date-fns/add_days';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
@@ -17,7 +30,12 @@ import startOfMonth from 'date-fns/start_of_month';
 import startOfWeek from 'date-fns/start_of_week';
 import startOfYear from 'date-fns/start_of_year';
 import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
-import { NzDateCellDirective as DateCell, NzDateFullCellDirective as DateFullCell, NzMonthCellDirective as MonthCell, NzMonthFullCellDirective as MonthFullCell } from './nz-calendar-cells';
+import {
+  NzDateCellDirective as DateCell,
+  NzDateFullCellDirective as DateFullCell,
+  NzMonthCellDirective as MonthCell,
+  NzMonthFullCellDirective as MonthFullCell
+} from './nz-calendar-cells';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -29,43 +47,80 @@ import { NzDateCellDirective as DateCell, NzDateFullCellDirective as DateFullCel
   ]
 })
 export class NzCalendarComponent implements ControlValueAccessor, OnInit {
-  @Input() nzMode: 'month'|'year' = 'month';
-  @Output() readonly nzModeChange: EventEmitter<'month'|'year'> = new EventEmitter();
+  @Input() nzMode: 'month' | 'year' = 'month';
+  @Output() readonly nzModeChange: EventEmitter<'month' | 'year'> = new EventEmitter();
 
-  @Input() set nzValue(value: Date) { this.updateDate(value, false); }
+  @Input() set nzValue(value: Date) {
+    this.updateDate(value, false);
+  }
+
   @Output() readonly nzValueChange: EventEmitter<Date> = new EventEmitter();
 
   @Input()
-  set nzDateCell(value: TemplateRef<{$implicit: Date}>) { this.dateCell = value; }
+  set nzDateCell(value: TemplateRef<{ $implicit: Date }>) {
+    this.dateCell = value;
+  }
 
   @Input()
-  set nzDateFullCell(value: TemplateRef<{$implicit: Date}>) { this.dateFullCell = value; }
+  set nzDateFullCell(value: TemplateRef<{ $implicit: Date }>) {
+    this.dateFullCell = value;
+  }
 
   @Input()
-  set nzMonthCell(value: TemplateRef<{$implicit: Date}>) { this.monthCell = value; }
+  set nzMonthCell(value: TemplateRef<{ $implicit: Date }>) {
+    this.monthCell = value;
+  }
 
   @Input()
-  set nzMonthFullCell(value: TemplateRef<{$implicit: Date}>) { this.monthFullCell = value; }
+  set nzMonthFullCell(value: TemplateRef<{ $implicit: Date }>) {
+    this.monthFullCell = value;
+  }
 
   @Input()
-  set nzFullscreen(value: boolean) { this.fullscreen = coerceBooleanProperty(value); }
-  get nzFullscreen(): boolean { return this.fullscreen; }
+  set nzFullscreen(value: boolean) {
+    this.fullscreen = coerceBooleanProperty(value);
+  }
+
+  get nzFullscreen(): boolean {
+    return this.fullscreen;
+  }
 
   @Input()
-  set nzCard(value: boolean) { this.fullscreen = !coerceBooleanProperty(value); }
-  get nzCard(): boolean { return !this.fullscreen; }
+  set nzCard(value: boolean) {
+    this.fullscreen = !coerceBooleanProperty(value);
+  }
 
-  @ContentChild(DateCell, {read: TemplateRef})
-  set dateCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.dateCell = value; } }
+  get nzCard(): boolean {
+    return !this.fullscreen;
+  }
 
-  @ContentChild(DateFullCell, {read: TemplateRef})
-  set dateFullCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.dateFullCell = value; } }
+  @ContentChild(DateCell, { read: TemplateRef })
+  set dateCellChild(value: TemplateRef<{ $implicit: Date }>) {
+    if (value) {
+      this.dateCell = value;
+    }
+  }
 
-  @ContentChild(MonthCell, {read: TemplateRef})
-  set monthCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.monthCell = value; } }
+  @ContentChild(DateFullCell, { read: TemplateRef })
+  set dateFullCellChild(value: TemplateRef<{ $implicit: Date }>) {
+    if (value) {
+      this.dateFullCell = value;
+    }
+  }
 
-  @ContentChild(MonthFullCell, {read: TemplateRef})
-  set monthFullCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.monthFullCell = value; } }
+  @ContentChild(MonthCell, { read: TemplateRef })
+  set monthCellChild(value: TemplateRef<{ $implicit: Date }>) {
+    if (value) {
+      this.monthCell = value;
+    }
+  }
+
+  @ContentChild(MonthFullCell, { read: TemplateRef })
+  set monthFullCellChild(value: TemplateRef<{ $implicit: Date }>) {
+    if (value) {
+      this.monthFullCell = value;
+    }
+  }
 
   @HostBinding('class.ant-fullcalendar--fullscreen')
   fullscreen = true;
@@ -82,21 +137,23 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   currentMonthCol: number = -1;
   activeMonthRow: number = -1;
   activeMonthCol: number = -1;
-  dateCell: TemplateRef<{$implicit: Date}>|null = null;
-  dateFullCell: TemplateRef<{$implicit: Date}>|null = null;
-  monthCell: TemplateRef<{$implicit: Date}>|null = null;
-  monthFullCell: TemplateRef<{$implicit: Date}>|null = null;
+  dateCell: TemplateRef<{ $implicit: Date }> | null = null;
+  dateFullCell: TemplateRef<{ $implicit: Date }> | null = null;
+  monthCell: TemplateRef<{ $implicit: Date }> | null = null;
+  monthFullCell: TemplateRef<{ $implicit: Date }> | null = null;
 
-  private prefixCls = 'ant-fullcalendar';
   private currentDate = new Date();
-  private onChangeFn: (date: Date) => void = () => {};
-  private onTouchFn: () => void = () => {};
+  private onChangeFn: (date: Date) => void = () => {
+  }
+  private onTouchFn: () => void = () => {
+  }
 
   private get calendarStart(): Date {
     return startOfWeek(startOfMonth(this.activeDate));
   }
 
-  constructor(private i18n: I18n, private cdr: ChangeDetectorRef) { }
+  constructor(private i18n: I18n, private cdr: ChangeDetectorRef) {
+  }
 
   ngOnInit(): void {
     this.setUpDaysInWeek();
@@ -108,7 +165,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     this.calculateActiveMonth();
   }
 
-  onModeChange(mode: 'month'|'year'): void {
+  onModeChange(mode: 'month' | 'year'): void {
     this.nzModeChange.emit(mode);
   }
 
@@ -126,7 +183,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     this.updateDate(date);
   }
 
-  writeValue(value: Date|null): void {
+  writeValue(value: Date | null): void {
     this.updateDate(value || new Date(), false);
     this.cdr.markForCheck();
   }
@@ -172,7 +229,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
       const date = addDays(weekStart, i);
       const title = this.i18n.formatDate(date, 'E');
       const label = this.i18n.formatDate(date, 'EEEEEE');
-      this.daysInWeek.push({title, label});
+      this.daysInWeek.push({ title, label });
     }
   }
 
@@ -183,7 +240,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
       const title = this.i18n.formatDate(date, 'MMM');
       const label = this.i18n.formatDate(date, 'MMM');
       const start = startOfMonth(date);
-      this.monthsInYear.push({title, label, start});
+      this.monthsInYear.push({ title, label, start });
     }
   }
 
@@ -203,7 +260,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
         const title = this.i18n.formatDate(date, 'longDate');
         const label = this.i18n.formatDate(date, 'dd');
         const rel = monthDiff === 0 ? 'current' : monthDiff < 0 ? 'last' : 'next';
-        row.push({title, label, rel, value: date});
+        row.push({ title, label, rel, value: date });
       }
       this.dateMatrix.push(row);
     }
@@ -256,6 +313,6 @@ export interface MonthCellContext {
 export interface DateCellContext {
   title: string;
   label: string;
-  rel: 'last'|'current'|'next';
+  rel: 'last' | 'current' | 'next';
   value: Date;
 }

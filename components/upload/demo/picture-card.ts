@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzMessageService, UploadFile } from 'ng-zorro-antd';
+import { UploadFile } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-upload-picture-card',
@@ -52,7 +52,7 @@ export class NzDemoUploadPictureCardComponent {
   previewImage = '';
   previewVisible = false;
 
-  constructor(private msg: NzMessageService) {}
+  constructor() {}
 
   handlePreview = (file: UploadFile) => {
     this.previewImage = file.url || file.thumbUrl;

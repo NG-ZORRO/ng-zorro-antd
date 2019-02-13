@@ -8,7 +8,6 @@ import {
   OnChanges,
   OnInit,
   Optional,
-  SimpleChange,
   ViewEncapsulation
 } from '@angular/core';
 
@@ -98,7 +97,7 @@ export class NzColComponent implements OnInit, OnChanges {
     return this.nzRowComponent || this.nzRowDirective;
   }
 
-  ngOnChanges(changes: { [ propertyName: string ]: SimpleChange }): void {
+  ngOnChanges(): void {
     this.setClassMap();
   }
 

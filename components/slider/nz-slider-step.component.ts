@@ -51,7 +51,7 @@ export class NzSliderStepComponent implements OnChanges {
     }
   }
 
-  trackById(index: number, attr: { id: number, value: number, offset: number, classes: { [ key: string ]: boolean }, style: object }): number {
+  trackById(_index: number, attr: { id: number, value: number, offset: number, classes: { [ key: string ]: boolean }, style: object }): number {
     return attr.id;
   }
 

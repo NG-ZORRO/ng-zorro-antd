@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
 })
 export class NzDemoTagBasicComponent {
 
-  onClose(e: MouseEvent): void {
+  onClose(_event: MouseEvent): void {
     console.log('tag was closed.');
   }
 

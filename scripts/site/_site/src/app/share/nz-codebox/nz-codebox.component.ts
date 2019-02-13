@@ -1,7 +1,6 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, Inject, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
 import sdk from '@stackblitz/sdk';
 import { environment } from '../../../environments/environment';
 
@@ -98,11 +97,11 @@ export class NzCodeBoxComponent implements OnInit {
     this._code = value;
   }
 
-  navigateToFragment() {
+  navigateToFragment(): void {
     window.location.hash = this.nzLink;
   }
 
-  copyCode(code) {
+  copyCode(code: string): void {
     this.copy(code).then(() => {
       this._copied = true;
       setTimeout(() => {
@@ -111,7 +110,7 @@ export class NzCodeBoxComponent implements OnInit {
     });
   }
 
-  copyGenerateCommand(command) {
+  copyGenerateCommand(command: string): void {
     this.copy(command).then(() => {
       this._commandCopied = true;
       setTimeout(() => {
@@ -123,7 +122,7 @@ export class NzCodeBoxComponent implements OnInit {
   copy(value: string): Promise<string> {
 
     const promise = new Promise<string>(
-      (resolve, reject): void => {
+      (resolve): void => {
         let copyTextArea = null as HTMLTextAreaElement;
         try {
           copyTextArea = this.dom.createElement('textarea');
@@ -416,10 +415,10 @@ export class AppModule { }
     });
   }
 
-  constructor(@Inject(DOCUMENT) private dom: any, private sanitizer: DomSanitizer, private _el: ElementRef, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(@Inject(DOCUMENT) private dom: any, private sanitizer: DomSanitizer) {
 
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 }
