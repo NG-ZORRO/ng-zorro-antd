@@ -48,7 +48,8 @@ type AnimationState = 'enter' | 'leave' | null;
 @Component({
   selector   : 'nz-modal',
   templateUrl: './nz-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // Using OnPush for modal caused footer can not to detect changes. we can fix it when 8.x.
+  changeDetection: ChangeDetectionStrategy.Default
 })
 
 // tslint:disable-next-line:no-any
@@ -148,7 +149,6 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Modal') as { okText: string, cancelText: string };
-      this.cdr.markForCheck();
     });
 
     fromEvent<KeyboardEvent>(this.document.body, 'keydown').pipe(takeUntil(this.unsubscribe$)).subscribe(e => this.keydownListener(e));
@@ -375,7 +375,6 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     } else {
       this.maskAnimationClassMap = this.modalAnimationClassMap = null;
     }
-    this.cdr.markForCheck();
   }
 
   private animateTo(isVisible: boolean): Promise<void> {
