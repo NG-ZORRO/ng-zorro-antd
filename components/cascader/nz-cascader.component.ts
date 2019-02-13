@@ -713,6 +713,11 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
       path.pop();
     };
 
+    if (!this.columnsSnapshot.length) {
+      this.columns = [ [] ];
+      return;
+    }
+
     this.columnsSnapshot[ 0 ].forEach(node => (node.isLeaf || !node.children || !node.children.length)
       ? loopChild(node)
       : loopParent(node));
