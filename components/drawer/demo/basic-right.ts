@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-drawer-basic-right',
   template: `
     <button nz-button nzType="primary" (click)="open()">Open</button>
-    <button nz-button nzType="primary" (click)="open()"><i nz-icon type="question-circle" theme="outline"></i></button>
     <nz-drawer [nzClosable]="false" [nzVisible]="visible" nzPlacement="right" nzTitle="Basic Drawer" (nzOnClose)="close()">
       <p>Some contents...</p>
       <p>Some contents...</p>

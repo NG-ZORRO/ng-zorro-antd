@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-modal-basic',
   template: `
     <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
-    <button nz-button [nzType]="'primary'" (click)="showModal()"><i nz-icon type="question-circle" theme="outline"></i></button>
     <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
       <p>Content one</p>
       <p>Content two</p>
