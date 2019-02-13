@@ -1,5 +1,5 @@
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
-import { ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   forwardRef,
   ChangeDetectionStrategy,
@@ -23,7 +23,14 @@ import { EXPANDED_DROPDOWN_POSITIONS } from '../core/overlay/overlay-position-ma
 import { arrayEquals, toArray } from '../core/util/array';
 import { InputBoolean } from '../core/util/convert';
 
-import { CascaderOption, CascaderSearchOption, NzCascaderExpandTrigger, NzCascaderSize, NzCascaderTriggerType, NzShowSearchOptions } from './types';
+import {
+  CascaderOption,
+  CascaderSearchOption,
+  NzCascaderExpandTrigger,
+  NzCascaderSize,
+  NzCascaderTriggerType,
+  NzShowSearchOptions
+} from './types';
 
 const defaultDisplayRender = label => label.join(' / ');
 
@@ -66,6 +73,7 @@ const defaultDisplayRender = label => label.join(' / ');
 export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   @ViewChild('input') input: ElementRef;
   @ViewChild('menu') menu: ElementRef;
+  @ViewChild(CdkConnectedOverlay) overlay: CdkConnectedOverlay;
 
   @Input() @InputBoolean() nzShowInput = true;
   @Input() @InputBoolean() nzShowArrow = true;
@@ -93,7 +101,10 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   @Input() nzLoadData: (node: CascaderOption, index?: number) => PromiseLike<any>;
 
   @Input()
-  get nzOptions(): CascaderOption[] { return this.columns[ 0 ]; }
+  get nzOptions(): CascaderOption[] {
+    return this.columns[ 0 ];
+  }
+
   set nzOptions(options: CascaderOption[] | null) {
     this.columnsSnapshot = this.columns = options && options.length ? [ options ] : [];
     if (!this.isSearching) {
@@ -139,7 +150,11 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     this._inputValue = inputValue;
     this.toggleSearchMode();
   }
-  get inputValue(): string { return this._inputValue; }
+
+  get inputValue(): string {
+    return this._inputValue;
+  }
+
   private _inputValue = '';
 
   get menuCls(): ClassMap {
@@ -293,6 +308,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     }
 
     this.cdr.detectChanges();
+    this.reposition();
   }
 
   private loadChildrenAsync(option: CascaderOption, columnIndex: number, success?: () => void, failure?: () => void): void {
@@ -305,6 +321,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
           option.children.forEach(child => child.parent = columnIndex < 0 ? undefined : option);
           this.setColumnData(option.children, columnIndex + 1);
           this.cdr.detectChanges();
+          this.reposition();
         }
         if (success) {
           success();
@@ -667,9 +684,15 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
       const disabled = forceDisabled || node.disabled;
       path.push(node);
       node.children.forEach((sNode) => {
-        if (!sNode.parent) { sNode.parent = node; } // Build parent reference when doing searching
-        if (!sNode.isLeaf) { loopParent(sNode, disabled); }
-        if (sNode.isLeaf || !sNode.children || !sNode.children.length) { loopChild(sNode, disabled); }
+        if (!sNode.parent) {
+          sNode.parent = node;
+        } // Build parent reference when doing searching
+        if (!sNode.isLeaf) {
+          loopParent(sNode, disabled);
+        }
+        if (sNode.isLeaf || !sNode.children || !sNode.children.length) {
+          loopChild(sNode, disabled);
+        }
       });
       path.pop();
     };
@@ -817,6 +840,18 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     if (this.dropDownPosition !== newValue) {
       this.dropDownPosition = newValue;
       this.cdr.detectChanges();
+    }
+  }
+
+  /**
+   * Reposition the cascader panel. When a menu opens, the cascader expands
+   * and may exceed the browser boundary.
+   */
+  private reposition(): void {
+    if (this.overlay && this.overlay.overlayRef && this.menuVisible) {
+      Promise.resolve().then(() => {
+        this.overlay.overlayRef.updatePosition();
+      });
     }
   }
 }
