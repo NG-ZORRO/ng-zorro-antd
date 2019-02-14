@@ -1,8 +1,12 @@
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+
+import { ESCAPE } from '@angular/cdk/keycodes';
+import { BlockScrollStrategy, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
   ComponentRef,
@@ -29,9 +33,8 @@ import { takeUntil } from 'rxjs/operators';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 
 import { InputBoolean } from '../core/util/convert';
+import { isPromise } from '../core/util/is-promise';
 import { NzI18nService } from '../i18n/nz-i18n.service';
-
-import { ESCAPE } from '@angular/cdk/keycodes';
 import ModalUtil from './modal-util';
 import { NzModalConfig, NZ_MODAL_CONFIG, NZ_MODAL_DEFAULT_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
@@ -44,41 +47,52 @@ type AnimationState = 'enter' | 'leave' | null;
 
 @Component({
   selector   : 'nz-modal',
-  templateUrl: './nz-modal.component.html'
+  templateUrl: './nz-modal.component.html',
+  // Using OnPush for modal caused footer can not to detect changes. we can fix it when 8.x.
+  changeDetection: ChangeDetectionStrategy.Default
 })
 
 // tslint:disable-next-line:no-any
 export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> implements OnInit, OnChanges, AfterViewInit, OnDestroy, ModalOptions<T> {
-  private unsubscribe$ = new Subject<void>();
-  private previouslyFocusedElement: HTMLElement;
-  private focusTrap: FocusTrap;
 
-  // tslint:disable-next-line:no-any
-  locale: any = {};
-  @Input() nzModalType: ModalType = 'default';
+  @Input() @InputBoolean() nzVisible: boolean = false;
+  @Input() @InputBoolean() nzClosable: boolean = true;
+  @Input() @InputBoolean() nzMask: boolean = true;
+  @Input() @InputBoolean() nzMaskClosable: boolean = true;
+  @Input() @InputBoolean() nzOkLoading: boolean = false;
+  @Input() @InputBoolean() nzOkDisabled: boolean = false;
+  @Input() @InputBoolean() nzCancelDisabled: boolean = false;
+  @Input() @InputBoolean() nzCancelLoading: boolean = false;
+  @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() nzContent: string | TemplateRef<{}> | Type<T>; // [STATIC] If not specified, will use <ng-content>
   @Input() nzComponentParams: T; // [STATIC] ONLY avaliable when nzContent is a component
   @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>>; // [STATIC] Default Modal ONLY
   @Input() nzGetContainer: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef) = () => this.overlay.create(); // [STATIC]
-
-  @Input() @InputBoolean() nzVisible: boolean = false;
-  @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
-
   @Input() nzZIndex: number = 1000;
   @Input() nzWidth: number | string = 520;
   @Input() nzWrapClassName: string;
   @Input() nzClassName: string;
   @Input() nzStyle: object;
-  @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzTitle: string | TemplateRef<{}>;
-  @Input() @InputBoolean() nzClosable: boolean = true;
-  @Input() @InputBoolean() nzMask: boolean = true;
-  @Input() @InputBoolean() nzMaskClosable: boolean = true;
   @Input() nzMaskStyle: object;
   @Input() nzBodyStyle: object;
+  @Input() nzOkText: string;
+  @Input() nzCancelText: string;
+  @Input() nzOkType = 'primary';
+  @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
+  @Input() nzModalType: ModalType = 'default';
+
+  @Input() @Output() readonly nzOnOk: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
+  @Input() @Output() readonly nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
 
   @Output() readonly nzAfterOpen = new EventEmitter<void>(); // Trigger when modal open(visible) after animations
   @Output() readonly nzAfterClose = new EventEmitter<R>(); // Trigger when modal leave-animation over
+  @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
+
+  @ViewChild('modalContainer') modalContainer: ElementRef;
+  @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
+  @ViewChild('autoFocusButtonOk', { read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
+
   get afterOpen(): Observable<void> { // Observable alias for nzAfterOpen
     return this.nzAfterOpen.asObservable();
   }
@@ -87,34 +101,19 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     return this.nzAfterClose.asObservable();
   }
 
-  // --- Predefined OK & Cancel buttons
-  @Input() nzOkText: string;
+  get cancelText(): string {
+    return this.nzCancelText || this.locale.cancelText;
+  }
 
   get okText(): string {
     return this.nzOkText || this.locale.okText;
   }
 
-  @Input() nzOkType = 'primary';
-  @Input() @InputBoolean() nzOkLoading: boolean = false;
-  @Input() @Output() readonly nzOnOk: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
-  @ViewChild('autoFocusButtonOk', { read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
-  @Input() nzCancelText: string;
-
-  get cancelText(): string {
-    return this.nzCancelText || this.locale.cancelText;
-  }
-  @Input() @InputBoolean() nzOkDisabled: boolean = false;
-  @Input() @InputBoolean() nzCancelDisabled: boolean = false;
-  @Input() @InputBoolean() nzCancelLoading: boolean = false;
-  @Input() @Output() readonly nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
-  @ViewChild('modalContainer') modalContainer: ElementRef;
-  @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
-
-  @Input() @InputBoolean() nzKeyboard: boolean = true;
-
   get hidden(): boolean {
     return !this.nzVisible && !this.animationState;
   } // Indicate whether this dialog should hidden
+
+  locale: { okText?: string, cancelText?: string } = {};
   maskAnimationClassMap: object;
   modalAnimationClassMap: object;
   transformOrigin = '0px 0px 0px'; // The origin point that animation based on
@@ -122,6 +121,10 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   private contentComponentRef: ComponentRef<T>; // Handle the reference when using nzContent as Component
   private animationState: AnimationState; // Current animation state
   private container: HTMLElement | OverlayRef;
+  private unsubscribe$ = new Subject<void>();
+  private previouslyFocusedElement: HTMLElement;
+  private focusTrap: FocusTrap;
+  private scrollStrategy: BlockScrollStrategy;
 
   constructor(
     private overlay: Overlay,
@@ -133,16 +136,20 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     private nzMeasureScrollbarService: NzMeasureScrollbarService,
     private modalControl: NzModalControlService,
     private focusTrapFactory: FocusTrapFactory,
+    private cdr: ChangeDetectorRef,
     @Inject(NZ_MODAL_CONFIG) private config: NzModalConfig,
     @Inject(DOCUMENT) private document: any) { // tslint:disable-line:no-any
 
     super();
 
     this.config = this.mergeDefaultConfig(this.config);
+    this.scrollStrategy = this.overlay.scrollStrategies.block();
   }
 
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.locale = this.i18n.getLocaleData('Modal'));
+    this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+      this.locale = this.i18n.getLocaleData('Modal') as { okText: string, cancelText: string };
+    });
 
     fromEvent<KeyboardEvent>(this.document.body, 'keydown').pipe(takeUntil(this.unsubscribe$)).subscribe(e => this.keydownListener(e));
 
@@ -304,7 +311,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   // Do rest things when visible state changed
   private handleVisibleStateChange(visible: boolean, animation: boolean = true, closeResult?: R): Promise<void> {
     if (visible) { // Hide scrollbar at the first time when shown up
-      this.changeBodyOverflow(1);
+      this.scrollStrategy.enable();
       this.savePreviouslyFocusedElement();
       this.trapFocus();
     }
@@ -317,10 +324,11 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
       } else {
         this.nzAfterClose.emit(closeResult);
         this.restoreFocus();
-        this.changeBodyOverflow(); // Show/hide scrollbar when animation is over
+        this.scrollStrategy.disable();
+        // Mark the for check so it can react if the view container is using OnPush change detection.
+        this.cdr.markForCheck();
       }
     });
-    // .then(() => this.changeBodyOverflow());
   }
 
   // Lookup a button's property, if the prop is a function, call & then return the result, otherwise, return itself.
@@ -383,21 +391,17 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   private formatModalButtons(buttons: Array<ModalButtonOptions<T>>): Array<ModalButtonOptions<T>> {
     return buttons.map((button) => {
-      const mixedButton = {
+      return {
         ...{
-          type       : 'default',
-          size       : 'default',
+          type: 'default',
+          size: 'default',
           autoLoading: true,
-          show       : true,
-          loading    : false,
-          disabled   : false
+          show: true,
+          loading: false,
+          disabled: false
         },
         ...button
       };
-
-      // if (mixedButton.autoLoading) { mixedButton.loading = false; } // Force loading to false when autoLoading=true
-
-      return mixedButton;
     });
   }
 
@@ -426,37 +430,6 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     if (lastPosition) {
       this.transformOrigin = `${lastPosition.x - modalElement.offsetLeft}px ${lastPosition.y - modalElement.offsetTop}px 0px`;
     }
-    // else {
-    //   this.transformOrigin = '0px 0px 0px';
-    // }
-  }
-
-  /**
-   * Take care of the body's overflow to decide the existense of scrollbar
-   * @param plusNum The number that the openModals.length will increase soon
-   */
-  private changeBodyOverflow(plusNum: number = 0): void {
-    if (this.config.autoBodyPadding) {
-      const openModals = this.modalControl.openModals;
-
-      if (openModals.length + plusNum > 0) {
-        if (this.hasBodyScrollBar()) { // Adding padding-right only when body's scrollbar is able to shown up
-          this.renderer.setStyle(this.document.body, 'padding-right', `${this.nzMeasureScrollbarService.scrollBarWidth}px`);
-          this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
-        }
-      } else { // NOTE: we need to always remove the padding due to the scroll bar may be disappear by window resizing before modal closed
-        this.renderer.removeStyle(this.document.body, 'padding-right');
-        this.renderer.removeStyle(this.document.body, 'overflow');
-      }
-    }
-  }
-
-  /**
-   * Check whether the body element is able to has the scroll bar (if the body content height exceeds the window's height)
-   * Exceptional Cases: users can show the scroll bar by their own permanently (eg. overflow: scroll)
-   */
-  private hasBodyScrollBar(): boolean {
-    return this.document.body.scrollHeight > (window.innerHeight || this.document.documentElement.clientHeight);
   }
 
   private mergeDefaultConfig(config: NzModalConfig): NzModalConfig {
@@ -466,7 +439,6 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   private savePreviouslyFocusedElement(): void {
     if (this.document) {
       this.previouslyFocusedElement = this.document.activeElement as HTMLElement;
-      this.previouslyFocusedElement.blur();
     }
   }
 
@@ -486,10 +458,4 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
       this.focusTrap.destroy();
     }
   }
-}
-
-////////////
-
-function isPromise(obj: {} | void): boolean {
-  return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof (obj as Promise<{}>).then === 'function' && typeof (obj as Promise<{}>).catch === 'function';
 }
