@@ -24,9 +24,19 @@ export class NzDemoCheckboxCheckAllComponent {
   updateAllChecked(): void {
     this.indeterminate = false;
     if (this.allChecked) {
-      this.checkOptionsOne.forEach(item => item.checked = true);
+      this.checkOptionsOne = this.checkOptionsOne.map(item => {
+        return {
+          ...item,
+          checked: true
+        };
+      });
     } else {
-      this.checkOptionsOne.forEach(item => item.checked = false);
+      this.checkOptionsOne = this.checkOptionsOne.map(item => {
+        return {
+          ...item,
+          checked: false
+        };
+      });
     }
   }
 

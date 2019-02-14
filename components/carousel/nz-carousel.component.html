@@ -7,7 +7,7 @@
     (swipeleft)="swipe('swipeleft')"
     (swiperight)="swipe('swiperight')"
     (pan)="swipeInProgress($event);">
-    <div class="slick-track" [style.transform]="transform" #slickTrack>
+    <div class="slick-track" #slickTrack>
       <ng-content></ng-content>
     </div>
   </div>

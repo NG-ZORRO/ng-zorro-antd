@@ -53,3 +53,14 @@ export const slideMotion: AnimationTriggerMetadata = trigger('slideMotion', [
     }))
   ])
 ]);
+
+export const slideAlertMotion: AnimationTriggerMetadata = trigger('slideAlertMotion', [
+  transition(':leave', [
+    style({ opacity: 1, transform: 'scaleY(1)', transformOrigin: '0% 0%' }),
+    animate(`${AnimationDuration.SLOW} ${AnimationCurves.EASE_IN_OUT_CIRC}`, style({
+      opacity        : 0,
+      transform      : 'scaleY(0)',
+      transformOrigin: '0% 0%'
+    }))
+  ])
+]);

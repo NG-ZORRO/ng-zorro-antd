@@ -11,7 +11,8 @@ import {
   OnInit,
   Optional,
   Output,
-  Renderer2, SimpleChanges,
+  Renderer2,
+  SimpleChanges,
   TemplateRef,
   ViewContainerRef
 } from '@angular/core';
@@ -54,7 +55,11 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   @Input('nz-tooltip') nzTitle: string | TemplateRef<void>;
-  @Input('nzTitle') set setTitle(title: string | TemplateRef<void>) { this.nzTitle = title; }
+
+  @Input('nzTitle') set setTitle(title: string | TemplateRef<void>) {
+    this.nzTitle = title;
+  }
+
   @Input() nzContent: string | TemplateRef<void>;
   @Input() nzMouseEnterDelay: number;
   @Input() nzMouseLeaveDelay: number;
