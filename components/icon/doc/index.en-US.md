@@ -29,7 +29,9 @@ We are still adding two-tone icons right now, syncing to [antd](https://ant.desi
 | `[spin]` | Rotate icon with animation | `boolean` | `false` |
 | `[twoToneColor]` | Only support the two-tone icon. Specific the primary color. | `string (hex color)` | - |
 | `[iconfont]` | Type of the icon from iconfont | `string` | - |
+| `[nzRotate]` | Rotate degrees (since 7.0.0) | `number` | - |
 
+<blockquote style="border-color: red;"><p><strong>API that is not started with nz and old API that is based on icon class names would be deprecated in 8.0.0. Please migrate.</strong></p></blockquote>
 
 ### NzIconService
 

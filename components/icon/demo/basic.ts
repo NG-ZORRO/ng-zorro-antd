@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
       <i nz-icon [type]="'setting'" [theme]="'fill'"></i>
       <i nz-icon [type]="'smile'" [theme]="'outline'"></i>
       <i nz-icon [type]="'sync'" [spin]="true"></i>
+      <i nz-icon [type]="'smile'" [theme]="'outline'" [nzRotate]="180"></i>
       <!-- Loading with new API would spin automatically! -->
       <i nz-icon [type]="'loading'"></i>
     </div>
