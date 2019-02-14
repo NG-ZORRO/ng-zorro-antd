@@ -17,7 +17,6 @@ import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { CssUnitPipe } from './css-unit.pipe';
-import { NZ_MODAL_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
 import { NzModalComponent } from './nz-modal.component';
@@ -404,6 +403,7 @@ describe('NzModal', () => {
       fixture = TestBed.createComponent(ModalByServiceComponent);
     });
     afterEach(fakeAsync(() => { // wait all openModals tobe closed to clean up the ModalManager as it is globally static
+      document.documentElement.classList.remove('cdk-global-scrollblock');
       modalService.closeAll();
       fixture.detectChanges();
       tick(1000);
@@ -539,56 +539,27 @@ describe('NzModal', () => {
       expect(spyCancel).toHaveBeenCalled();
     });
 
-    it('should add/remove padding-left depends on current scrollbar (just functions mockup)', () => {
+    it('should block body scroll', fakeAsync(() => {
+      console.log(document.documentElement.classList);
+      const forceScrollElement = document.createElement('div');
+      document.body.appendChild(forceScrollElement);
+      forceScrollElement.style.width = '100px';
+      forceScrollElement.style.height = '3000px';
+      forceScrollElement.style.background = 'rebeccapurple';
+
       const modalRef = modalService.create();
-      const modalInstance = modalRef.getInstance();
-      spyOnProperty(window, 'innerHeight').and.returnValue(null); // Disable innerHeight to test another branch
-      // tslint:disable-next-line:no-string-literal
-      spyOnProperty(modalInstance['document'].body, 'scrollHeight').and.returnValue(200);
-      // tslint:disable-next-line:no-string-literal
-      spyOnProperty(modalInstance['document'].documentElement, 'clientHeight').and.returnValue(100);
-      // tslint:disable-next-line:no-string-literal
-      expect(modalInstance['hasBodyScrollBar']()).toBeTruthy();
+      tick(600);
+      fixture.detectChanges();
 
-      // tslint:disable-next-line:no-string-literal
-      const spySetStyle = spyOn(modalInstance['renderer'], 'setStyle');
-      // tslint:disable-next-line:no-string-literal
-      modalInstance['changeBodyOverflow'](1);
-      expect(spySetStyle).toHaveBeenCalled();
-    });
-  });
-});
+      expect(document.documentElement.classList).toContain('cdk-global-scrollblock');
 
-describe('NzModal with config settled', () => {
-  let modalService: NzModalService;
+      modalRef.close();
+      tick(600);
+      fixture.detectChanges();
 
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [ NzModalModule ],
-      providers: [{
-        provide: NZ_MODAL_CONFIG,
-        useValue: {
-          autoBodyPadding: false // Disable body padding
-        }
-      }]
-    }).compileComponents();
-  }));
-
-  beforeEach(inject([ NzModalService ], (ms: NzModalService) => {
-    modalService = ms;
-  }));
-
-  it('should disable body padding', () => {
-    const modalInstance = modalService.create().getInstance();
-    // Both style operating should not be called
-    // tslint:disable-next-line:no-string-literal
-    const setStyle = spyOn(modalInstance['renderer'], 'setStyle');
-    // tslint:disable-next-line:no-string-literal
-    const removeStyle = spyOn(modalInstance['renderer'], 'removeStyle');
-    // tslint:disable-next-line:no-string-literal
-    modalInstance['changeBodyOverflow']();
-    expect(setStyle).not.toHaveBeenCalled();
-    expect(removeStyle).not.toHaveBeenCalled();
+      expect(document.documentElement.classList).not.toContain('cdk-global-scrollblock');
+      document.body.removeChild(forceScrollElement);
+    }));
   });
 });
 

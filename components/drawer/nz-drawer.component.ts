@@ -282,7 +282,10 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   savePreviouslyFocusedElement(): void {
     if (this.document && !this.previouslyFocusedElement) {
       this.previouslyFocusedElement = this.document.activeElement as HTMLElement;
-      this.previouslyFocusedElement.blur();
+      // We need the extra check, because IE's svg element has no blur method.
+      if (this.previouslyFocusedElement && typeof this.previouslyFocusedElement.blur === 'function') {
+        this.previouslyFocusedElement.blur();
+      }
     }
   }
 
