@@ -1,10 +1,3 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger
-} from '@angular/animations';
 import { CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
@@ -28,39 +21,12 @@ import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
+  encapsulation  : ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector   : 'nz-time-picker',
-  templateUrl: './nz-time-picker.component.html',
-  animations : [
-    trigger('slideMotion', [
-      state('void', style({
-        opacity: 0,
-        display: 'none'
-      })),
-      state('*', style({
-        opacity        : 1,
-        transform      : 'scaleY(1)',
-        transformOrigin: '0% 0%'
-      })),
-      transition('void => *', [
-        style({
-          opacity        : 0,
-          transform      : 'scaleY(0.8)',
-          transformOrigin: '0% 0%'
-        }),
-        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)')
-      ]),
-      transition('* => void', [
-        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)', style({
-          opacity        : 0,
-          transform      : 'scaleY(0.8)',
-          transformOrigin: '0% 0%'
-        }))
-      ])
-    ])
-  ],
-  providers  : [
+  selector       : 'nz-time-picker',
+  templateUrl    : './nz-time-picker.component.html',
+  animations     : [ slideMotion ],
+  providers      : [
     UpdateCls,
     { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }
   ]

@@ -5,7 +5,6 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -29,19 +28,18 @@ export class NzDividerComponent implements OnChanges, OnInit {
 
   private setClass(): void {
     const orientationPrefix = (this.nzOrientation.length > 0) ? '-' + this.nzOrientation : this.nzOrientation;
-    const classMap = {
+    this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
       [ 'ant-divider' ]                              : true,
       [ `ant-divider-${this.nzType}` ]               : true,
       [ `ant-divider-with-text${orientationPrefix}` ]: this.nzText,
       [ `ant-divider-dashed` ]                       : this.nzDashed
-    };
-    this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, classMap);
+    });
   }
 
   constructor(private elementRef: ElementRef, private nzUpdateHostClassService: NzUpdateHostClassService) {
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.setClass();
   }
 

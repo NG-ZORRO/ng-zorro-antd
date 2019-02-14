@@ -1,6 +1,13 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation
+} from '@angular/core';
+import { moveUpMotion } from '../core/animation/move';
 import { NzMessageContainerComponent } from './nz-message-container.component';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
@@ -9,20 +16,7 @@ import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definiti
   encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-message',
   preserveWhitespaces: false,
-  animations         : [
-    trigger('enterLeave', [
-      state('enter', style({ opacity: 1, transform: 'translateY(0)' })),
-      transition('* => enter', [
-        style({ opacity: 0, transform: 'translateY(-50%)' }),
-        animate('100ms linear')
-      ]),
-      state('leave', style({ opacity: 0, transform: 'translateY(-50%)' })),
-      transition('* => leave', [
-        style({ opacity: 1, transform: 'translateY(0)' }),
-        animate('100ms linear')
-      ])
-    ])
-  ],
+  animations         : [ moveUpMotion ],
   templateUrl        : './nz-message.component.html'
 })
 export class NzMessageComponent implements OnInit, OnDestroy {
