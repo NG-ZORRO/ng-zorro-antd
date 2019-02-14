@@ -20,7 +20,7 @@ To get a customized button, just set `nzType`/`nzShape`/`nzSize`/`nzLoading`/`di
 | -------- | ----------- | ---- | ------- |
 | `[nzGhost]` | make background transparent and invert text and border colors | `boolean` | `false` |
 | `[nzLoading]` | set the loading status of button | `boolean` | `false` |
-| `[nzShape]` | can be set to `circle` or omitted | `'circle'` | - |
+| `[nzShape]` | can be set to `circle` `round` or omitted | `'circle'｜'round'` | - |
 | `[nzSize]` | can be set to `small` `large` or omitted | `'large'｜'small'｜'default'` | `'default'` |
-| `[nzType]` | can be set to `primary` `ghost` `dashed` `danger` or omitted (meaning `default`) | `'primary'｜'ghost'｜'dashed'｜'danger'｜'default'` | `'default'` |
+| `[nzType]` | can be set to `primary` `dashed` `danger` or omitted (meaning `default`) | `'primary'｜'dashed'｜'danger'｜'default'` | `'default'` |
 | `[nzBlock]` | option to fit button width to its parent width | `boolean` | `false` |

@@ -20,6 +20,8 @@
 </div>
 <ng-template cdkConnectedOverlay
   [cdkConnectedOverlayHasBackdrop]="true"
+  [cdkConnectedOverlayMinWidth]="nzDropdownMatchSelectWidth? null : triggerWidth"
+  [cdkConnectedOverlayWidth]="nzDropdownMatchSelectWidth? triggerWidth : null"
   [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
   (backdropClick)="closeDropDown()"
   (detach)="closeDropDown();"

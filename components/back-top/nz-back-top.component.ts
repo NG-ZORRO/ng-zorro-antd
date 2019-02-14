@@ -1,9 +1,3 @@
-import {
-  animate,
-  style,
-  transition,
-  trigger
-} from '@angular/animations';
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -21,24 +15,14 @@ import {
 
 import { fromEvent, Subscription } from 'rxjs';
 import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
+import { fadeMotion } from '../core/animation/fade';
 
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
 import { toNumber } from '../core/util/convert';
 
 @Component({
   selector           : 'nz-back-top',
-  animations         : [
-    trigger('enterLeave', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate(300, style({ opacity: 1 }))
-      ]),
-      transition(':leave', [
-        style({ opacity: 1 }),
-        animate(300, style({ opacity: 0 }))
-      ])
-    ])
-  ],
+  animations         : [ fadeMotion ],
   templateUrl        : './nz-back-top.component.html',
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,

@@ -7,7 +7,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -38,7 +37,8 @@ import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
     }
   ],
   host               : {
-    '[class.ant-checkbox-wrapper]': 'true'
+    '[class.ant-checkbox-wrapper]': 'true',
+    '(click)'                     : 'hostClick($event)'
   }
 })
 export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChanges, AfterViewInit, OnDestroy {
@@ -55,8 +55,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   @Input() @InputBoolean() nzIndeterminate = false;
   @Input() @InputBoolean() nzChecked = false;
 
-  @HostListener('click', [ '$event' ])
-  onClick(e: MouseEvent): void {
+  hostClick(e: MouseEvent): void {
     e.preventDefault();
     this.focus();
     if (!this.nzDisabled) {

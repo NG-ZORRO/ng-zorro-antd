@@ -13,8 +13,8 @@
     class="ant-tooltip"
     [ngClass]="_classMap"
     [ngStyle]="nzOverlayStyle"
-    [@fadeAnimation]="''+(visible$ | async)"
-    (@fadeAnimation.done)="_afterVisibilityAnimation($event)">
+    [@zoomBigMotion]="'active'"
+    (@zoomBigMotion.done)="_afterVisibilityAnimation($event)">
     <div class="ant-tooltip-content">
       <div class="ant-tooltip-arrow"></div>
       <div class="ant-tooltip-inner">

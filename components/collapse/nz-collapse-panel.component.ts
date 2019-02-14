@@ -1,4 +1,3 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,6 +9,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { collapseMotion } from '../core/animation/collapse';
 
 import { InputBoolean } from '../core/util/convert';
 import { NzCollapseComponent } from './nz-collapse.component';
@@ -19,20 +19,7 @@ import { NzCollapseComponent } from './nz-collapse.component';
   templateUrl    : './nz-collapse-panel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation  : ViewEncapsulation.None,
-  animations     : [
-    trigger('collapseState', [
-      state('inactive', style({
-        opacity: '0',
-        height : 0
-      })),
-      state('active', style({
-        opacity: '1',
-        height : '*'
-      })),
-      transition('inactive => active', animate('150ms ease-in')),
-      transition('active => inactive', animate('150ms ease-out'))
-    ])
-  ],
+  animations     : [ collapseMotion ],
   styles         : [
       ` nz-collapse-panel {
       display: block

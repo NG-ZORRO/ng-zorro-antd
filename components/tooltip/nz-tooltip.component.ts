@@ -19,17 +19,16 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-
-import { fadeAnimation } from '../core/animation/fade-animations';
+import { zoomBigMotion } from '../core/animation/zoom';
 import { DEFAULT_4_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position-map';
 import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
+  selector           : 'nz-tooltip',
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-tooltip',
-  animations         : [ fadeAnimation ],
+  animations         : [ zoomBigMotion ],
   templateUrl        : './nz-tooltip.component.html',
   preserveWhitespaces: false,
   styles             : [ `
@@ -49,7 +48,6 @@ export class NzToolTipComponent implements OnChanges {
   visibleSource = new BehaviorSubject<boolean>(false);
   visible$: Observable<boolean> = this.visibleSource.asObservable();
   @ViewChild('overlay') overlay: CdkConnectedOverlay;
-
   @Input() @ContentChild('nzTemplate') nzTitle: string | TemplateRef<void>;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [ key: string ]: string } = {};
@@ -65,7 +63,9 @@ export class NzToolTipComponent implements OnChanges {
     }
   }
 
-  get nzVisible(): boolean { return this.visibleSource.value; }
+  get nzVisible(): boolean {
+    return this.visibleSource.value;
+  }
 
   @Input()
   set nzTrigger(value: string) {
@@ -73,7 +73,9 @@ export class NzToolTipComponent implements OnChanges {
     this._hasBackdrop = this._trigger === 'click';
   }
 
-  get nzTrigger(): string { return this._trigger; }
+  get nzTrigger(): string {
+    return this._trigger;
+  }
 
   @Input()
   set nzPlacement(value: string) {
@@ -83,11 +85,14 @@ export class NzToolTipComponent implements OnChanges {
     }
   }
 
-  get nzPlacement(): string { return this._placement; }
+  get nzPlacement(): string {
+    return this._placement;
+  }
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  constructor(public cdr: ChangeDetectorRef) {}
+  constructor(public cdr: ChangeDetectorRef) {
+  }
 
   ngOnChanges(): void {
     Promise.resolve().then(() => {

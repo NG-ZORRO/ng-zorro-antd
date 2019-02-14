@@ -5,15 +5,22 @@ import { Component } from '@angular/core';
   template: `
     <nz-badge nzDot><i nz-icon type="notification"></i></nz-badge>
     <nz-badge nzDot [nzShowDot]="false"><i nz-icon type="notification"></i></nz-badge>
-    <nz-badge nzDot><a>Link something</a></nz-badge>
+    <nz-badge nzDot>
+      <a>Link something</a>
+    </nz-badge>
   `,
   styles  : [
-      `[nz-icon] {
-      width: 16px;
-      height: 16px;
-      line-height: 16px;
-      font-size: 16px;
-    }`
+      `
+      nz-badge {
+        margin-right: 20px;
+      }
+
+      [nz-icon] {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        font-size: 16px;
+      }`
   ]
 })
 export class NzDemoBadgeDotComponent {
