@@ -1,7 +1,6 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, Inject, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
 import sdk from '@stackblitz/sdk';
 import { environment } from '../../../environments/environment';
 
@@ -416,7 +415,7 @@ export class AppModule { }
     });
   }
 
-  constructor(@Inject(DOCUMENT) private dom: any, private sanitizer: DomSanitizer, private _el: ElementRef, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(@Inject(DOCUMENT) private dom: any, private sanitizer: DomSanitizer) {
 
   }
 

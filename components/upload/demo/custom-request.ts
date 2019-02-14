@@ -1,6 +1,6 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { NzMessageService, UploadXHRArgs } from 'ng-zorro-antd';
+import { UploadXHRArgs } from 'ng-zorro-antd';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -17,7 +17,7 @@ import { forkJoin } from 'rxjs';
 })
 export class NzDemoUploadCustomRequestComponent {
 
-  constructor(private http: HttpClient, private msg: NzMessageService) {
+  constructor(private http: HttpClient) {
   }
 
   customReq = (item: UploadXHRArgs) => {
@@ -77,5 +77,5 @@ export class NzDemoUploadCustomRequestComponent {
       // 处理失败
       item.onError(err, item.file);
     });
-  };
+  }
 }

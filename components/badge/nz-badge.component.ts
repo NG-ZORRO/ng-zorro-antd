@@ -1,11 +1,15 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  Input, OnChanges,
+  Input,
+  OnChanges,
   OnInit,
-  Renderer2, SimpleChanges, TemplateRef,
+  Renderer2,
+  SimpleChanges,
+  TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -27,8 +31,8 @@ export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' |
   }
 })
 export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges {
-  maxNumberArray = [];
-  countArray = [];
+  maxNumberArray: string[] = [];
+  countArray: string[] = [];
   countSingleArray = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
   count: number;
   @ViewChild('contentElement') contentElement: ElementRef;

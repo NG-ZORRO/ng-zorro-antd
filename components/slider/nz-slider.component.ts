@@ -1,4 +1,3 @@
-/* tslint:disable:variable-name */
 import {
   forwardRef,
   Component,
@@ -18,7 +17,7 @@ import { distinctUntilChanged, filter, map, pluck, takeUntil, tap } from 'rxjs/o
 
 import { toBoolean } from '../core/util/convert';
 
-import { Marks, MarksArray } from './nz-slider-marks.component';
+import { Marks } from './nz-slider-marks.component';
 import { NzSliderService } from './nz-slider.service';
 
 export type SliderValue = number[] | number;
@@ -151,20 +150,11 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   setValue(val: SliderValue, isWriteValue: boolean = false): void {
     if (isWriteValue) { // [ngModel-writeValue]: Formatting before setting value, always update current value, but trigger onValueChange ONLY when the "formatted value" not equals "input value"
       this.value = this.formatValue(val);
-      this.log(`[ngModel:setValue/writeValue]Update track & handles`);
       this.updateTrackAndHandles();
-      // if (!this.isValueEqual(this.value, val)) {
-      //   this.log(`[ngModel:setValue/writeValue]onValueChange`, val);
-      //   if (this.onValueChange) { // NOTE: onValueChange will be unavailable when writeValue() called at the first time
-      //     this.onValueChange(this.value);
-      //   }
-      // }
     } else { // [Normal]: setting value, ONLY check changed, then update and trigger onValueChange
       if (!this.isValueEqual(this.value, val)) {
         this.value = val;
-        this.log(`[Normal:setValue]Update track & handles`);
         this.updateTrackAndHandles();
-        this.log(`[Normal:setValue]onValueChange`, val);
         if (this.onValueChange) { // NOTE: onValueChange will be unavailable when writeValue() called at the first time
           this.onValueChange(this.value);
         }
@@ -193,7 +183,6 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   writeValue(val: SliderValue): void {
-    this.log(`[ngModel/writeValue]current writing value = `, val);
     this.setValue(val, true);
   }
 
@@ -330,7 +319,6 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   // |--------------------------------------------------------------------------------------------
 
   onDragStart(value: number): void {
-    this.log('[onDragStart]dragging value = ', value);
     this.toggleDragMoving(true);
     // cache DOM layout/reflow operations
     this.cacheSliderProperty();
@@ -342,13 +330,11 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   onDragMove(value: number): void {
-    this.log('[onDragMove]dragging value = ', value);
     // trigger drag moving
     this.setActiveValue(value);
   }
 
   onDragEnd(): void {
-    this.log('[onDragEnd]');
     this.toggleDragMoving(false);
     this.nzOnAfterChange.emit(this.getValue(true));
     // remove cache DOM layout/reflow operations
@@ -402,7 +388,6 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   subscribeDrag(periods: string[] = [ 'start', 'move', 'end' ]): void {
-    this.log('[subscribeDrag]this.dragstart$ = ', this.dragstart$);
     if (periods.indexOf('start') !== -1 && this.dragstart$ && !this.dragstart_) {
       this.dragstart_ = this.dragstart$.subscribe(this.onDragStart.bind(this));
     }
@@ -417,7 +402,6 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   unsubscribeDrag(periods: string[] = [ 'start', 'move', 'end' ]): void {
-    this.log('[unsubscribeDrag]this.dragstart_ = ', this.dragstart_);
     if (periods.indexOf('start') !== -1 && this.dragstart_) {
       this.dragstart_.unsubscribe();
       this.dragstart_ = null;
@@ -557,19 +541,9 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     }
   }
 
-  // print debug info
-  // TODO: should not kept in component
-  /* tslint:disable-next-line:no-any */
-  log(...messages: any[]): void {
-    if (this.nzDebugId !== null) {
-      const args = [ `[nz-slider][#${this.nzDebugId}] ` ].concat(Array.prototype.slice.call(arguments));
-      console.log.apply(null, args);
-    }
-  }
-
   // Show one handle's tooltip and hide others'
   private _showHandleTooltip(handleIndex: number = 0): void {
-    this.handles.forEach((handle, index) => {
+    this.handles.forEach((_, index) => {
       this.handles[ index ].active = index === handleIndex;
     });
   }

@@ -11,7 +11,6 @@ import {
   OnInit,
   Output,
   Renderer2,
-  SimpleChange,
   TemplateRef,
   ViewChild
 } from '@angular/core';

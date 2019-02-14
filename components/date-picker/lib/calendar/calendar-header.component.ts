@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
 import { NzI18nService } from '../../../i18n/nz-i18n.service';
@@ -33,9 +43,11 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   prefixCls: string = 'ant-calendar';
   yearMonthDaySelectors: YearMonthDaySelector[];
 
-  private yearToMonth: boolean = false; // Indicate whether should change to month panel when current is year panel (if referer=month, it should show month panel when choosed a year)
+  private yearToMonth: boolean = false; // Indicate whether should change to month panel when current is year panel
+  // (if referer=month, it should show month panel when choosing a year)
 
-  constructor(private i18n: NzI18nService) { }
+  constructor(private i18n: NzI18nService) {
+  }
 
   ngOnInit(): void {
     if (!this.value) {
@@ -127,22 +139,22 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
 
     year = {
       className: `${this.prefixCls}-year-select`,
-      title: this.locale.yearSelect,
-      onClick: () => this.showTimePicker ? null : this.changePanel('year'),
-      label: this.formatDateTime(this.locale.yearFormat)
+      title    : this.locale.yearSelect,
+      onClick  : () => this.showTimePicker ? null : this.changePanel('year'),
+      label    : this.formatDateTime(this.locale.yearFormat)
     };
 
     month = {
       className: `${this.prefixCls}-month-select`,
-      title: this.locale.monthSelect,
-      onClick: () => this.showTimePicker ? null : this.changeToMonthPanel(),
-      label: this.locale.monthFormat ? this.formatDateTime(this.locale.monthFormat) : this.i18n.formatDate(this.value.nativeDate, 'MMM')
+      title    : this.locale.monthSelect,
+      onClick  : () => this.showTimePicker ? null : this.changeToMonthPanel(),
+      label    : this.locale.monthFormat ? this.formatDateTime(this.locale.monthFormat) : this.i18n.formatDate(this.value.nativeDate, 'MMM')
     };
 
     if (this.showTimePicker) {
       day = {
         className: `${this.prefixCls}-day-select`,
-        label: this.formatDateTime(this.locale.dayFormat)
+        label    : this.formatDateTime(this.locale.dayFormat)
       };
     }
 
@@ -162,5 +174,6 @@ export interface YearMonthDaySelector {
   className: string;
   title?: string;
   label: string;
+
   onClick?(): void;
 }

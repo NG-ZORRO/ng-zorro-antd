@@ -1,10 +1,12 @@
 import {
   ChangeDetectionStrategy,
-  Component, ElementRef,
+  Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges, OnDestroy,
-  Output, Renderer2,
+  Output,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -22,20 +24,25 @@ import { InputBoolean } from '../core/util/convert';
   templateUrl        : './nz-tab.component.html'
 })
 export class NzTabComponent implements OnChanges, OnDestroy {
-  position: number = null;
-  origin: number = null;
-  isActive = false;
-  readonly stateChanges = new Subject<void>();
-  @ViewChild(TemplateRef) private content: TemplateRef<void>;
+  /** This would be accessed by tabset component to render content of every tab. */
+  @ViewChild(TemplateRef) public content: TemplateRef<void>;
+
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() @InputBoolean() nzForceRender = false;
   @Input() @InputBoolean() nzDisabled = false;
+
   @Output() readonly nzClick = new EventEmitter<void>();
   @Output() readonly nzSelect = new EventEmitter<void>();
   @Output() readonly nzDeselect = new EventEmitter<void>();
 
+  position: number = null;
+  origin: number = null;
+  isActive = false;
+
+  readonly stateChanges = new Subject<void>();
+
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'ant-tabs-tabpane');
+    this.renderer.addClass(elementRef.nativeElement, 'ant-tabs-tabpane');
   }
 
   ngOnChanges(changes: SimpleChanges): void {
