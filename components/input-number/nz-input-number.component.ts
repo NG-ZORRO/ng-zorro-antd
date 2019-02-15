@@ -45,7 +45,7 @@ import { InputBoolean } from '../core/util/convert';
   }
 })
 export class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
-  private autoStepTimer;
+  private autoStepTimer: number;
   private actualValue: string | number;
   private value: string | number;
   displayValue: string | number;

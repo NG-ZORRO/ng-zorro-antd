@@ -98,7 +98,7 @@ export class NzMessageComponent implements OnInit, OnDestroy {
     if (this._eraseTTL > 0) {
       this._clearEraseTimeout(); // To prevent calling _startEraseTimeout() more times to create more timer
       // TODO: `window` should be removed in milestone II
-      this._eraseTimer = window.setTimeout(() => this._destroy(), this._eraseTTL);
+      this._eraseTimer = setTimeout(() => this._destroy(), this._eraseTTL);
       this._eraseTimingStart = Date.now();
     } else {
       this._destroy();
@@ -107,7 +107,7 @@ export class NzMessageComponent implements OnInit, OnDestroy {
 
   private _clearEraseTimeout(): void {
     if (this._eraseTimer !== null) {
-      window.clearTimeout(this._eraseTimer);
+      clearTimeout(this._eraseTimer);
       this._eraseTimer = null;
     }
   }
