@@ -23,7 +23,7 @@ import { flatMap, map, startWith, takeUntil } from 'rxjs/operators';
 import { collapseMotion } from '../core/animation/collapse';
 import { slideMotion } from '../core/animation/slide';
 import { zoomBigMotion } from '../core/animation/zoom';
-import { POSITION_MAP } from '../core/overlay/overlay-position-map';
+import { getPlacementName, DEFAULT_SUBMENU_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { InputBoolean } from '../core/util/convert';
 import { NzMenuItemDirective } from './nz-menu-item.directive';
@@ -62,7 +62,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   placement = 'rightTop';
   triggerWidth: number;
   expandState = 'collapsed';
-  overlayPositions = [ POSITION_MAP.rightTop, POSITION_MAP.leftTop ];
+  overlayPositions = [ ...DEFAULT_SUBMENU_POSITIONS ];
   private destroy$ = new Subject<void>();
   private isChildMenuSelected = false;
   @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent: QueryList<NzSubMenuComponent>;
@@ -95,12 +95,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    const keyList = [ 'originX', 'originY', 'overlayX', 'overlayY' ];
-    if (keyList.every(key => position.connectionPair[ key ] === POSITION_MAP.leftTop[ key ])) {
-      this.placement = 'leftTop';
-    } else if (keyList.every(key => position.connectionPair[ key ] === POSITION_MAP.rightTop[ key ])) {
-      this.placement = 'rightTop';
-    }
+    this.placement = getPlacementName(position);
     this.cdr.markForCheck();
   }
 

@@ -379,11 +379,11 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   private animateTo(isVisible: boolean): Promise<void> {
     if (isVisible) { // Figure out the lastest click position when shows up
-      window.setTimeout(() => this.updateTransformOrigin()); // [NOTE] Using timeout due to the document.click event is fired later than visible change, so if not postponed to next event-loop, we can't get the lastest click position
+      setTimeout(() => this.updateTransformOrigin()); // [NOTE] Using timeout due to the document.click event is fired later than visible change, so if not postponed to next event-loop, we can't get the lastest click position
     }
 
     this.changeAnimationState(isVisible ? 'enter' : 'leave');
-    return new Promise((resolve) => window.setTimeout(() => { // Return when animation is over
+    return new Promise((resolve) => setTimeout(() => { // Return when animation is over
       this.changeAnimationState(null);
       resolve();
     }, MODAL_ANIMATE_DURATION));

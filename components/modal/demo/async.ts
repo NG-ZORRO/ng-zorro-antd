@@ -22,7 +22,7 @@ export class NzDemoModalAsyncComponent {
 
   handleOk(): void {
     this.isOkLoading = true;
-    window.setTimeout(() => {
+    setTimeout(() => {
       this.isVisible = false;
       this.isOkLoading = false;
     }, 3000);

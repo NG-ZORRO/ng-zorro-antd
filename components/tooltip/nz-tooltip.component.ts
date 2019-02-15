@@ -20,7 +20,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { zoomBigMotion } from '../core/animation/zoom';
-import { DEFAULT_4_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position-map';
+import { getPlacementName, DEFAULT_TOOLTIP_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position';
 import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
@@ -40,7 +40,7 @@ import { toBoolean } from '../core/util/convert';
 export class NzToolTipComponent implements OnChanges {
   _hasBackdrop = false;
   _prefix = 'ant-tooltip-placement';
-  _positions: ConnectionPositionPair[] = [ ...DEFAULT_4_POSITIONS ];
+  _positions: ConnectionPositionPair[] = [ ...DEFAULT_TOOLTIP_POSITIONS ];
   _classMap = {};
   _placement = 'top';
   _trigger = 'hover';
@@ -81,7 +81,7 @@ export class NzToolTipComponent implements OnChanges {
   set nzPlacement(value: string) {
     if (value !== this._placement) {
       this._placement = value;
-      this._positions.unshift(POSITION_MAP[ this.nzPlacement ] as ConnectionPositionPair);
+      this._positions = [ POSITION_MAP[ this.nzPlacement ], ...this._positions ];
     }
   }
 
@@ -107,13 +107,8 @@ export class NzToolTipComponent implements OnChanges {
     }
   }
 
-  onPositionChange($event: ConnectedOverlayPositionChange): void {
-    for (const key in POSITION_MAP) {
-      if (JSON.stringify($event.connectionPair) === JSON.stringify(POSITION_MAP[ key ])) {
-        this.nzPlacement = key;
-        break;
-      }
-    }
+  onPositionChange(position: ConnectedOverlayPositionChange): void {
+    this.nzPlacement = getPlacementName(position);
     this.setClassMap();
     this.cdr.detectChanges(); // TODO: performance?
   }

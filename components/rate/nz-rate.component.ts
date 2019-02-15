@@ -18,8 +18,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NgClassType } from '../core/types/ng-class';
 
-import { ClassMap } from '../core/interface/interface';
 import { InputBoolean } from '../core/util/convert';
 
 @Component({
@@ -50,7 +50,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
   @Output() readonly nzOnHoverChange = new EventEmitter<number>();
   @Output() readonly nzOnKeyDown = new EventEmitter<KeyboardEvent>();
 
-  classMap: ClassMap;
+  classMap: NgClassType;
   hasHalf = false;
   hoverValue = 0;
   prefixCls = 'ant-rate';
