@@ -76,14 +76,14 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(false);
     });
-    it('should close when the outside clicks', fakeAsync(() => {
+    it('should close when the outside clicks', (() => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       dispatchFakeEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop'), 'click');
       fixture.detectChanges();
-      tick();
       expect(treeSelectComponent.nzOpen).toBe(false);
+      fixture.detectChanges();
     }));
     it('should disabled work', fakeAsync(() => {
       expect(treeSelect.nativeElement.classList).toContain('ant-select-enabled');
@@ -101,7 +101,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       tick();
     }));
-    it('should dropdownMatchSelectWidth work', fakeAsync(() => {
+    it('should dropdownMatchSelectWidth work', (() => {
       testComponent.dropdownMatchSelectWidth = true;
       fixture.detectChanges();
       treeSelect.nativeElement.click();
@@ -129,16 +129,6 @@ describe('tree-select component', () => {
       flush();
       fixture.detectChanges();
       expect(testComponent.value).toBe(null);
-    }));
-    it('should update index when overlay pane have sibling node', fakeAsync(() => {
-      const fixture_next = TestBed.createComponent(NzTestTreeSelectBasicComponent);
-      fixture_next.detectChanges();
-      const dropdownBeforePane = overlayContainerElement.querySelectorAll('.cdk-overlay-pane')[0];
-      treeSelect.nativeElement.click();
-      fixture.detectChanges();
-      tick();
-      const dropdownAfterPane = overlayContainerElement.querySelectorAll('.cdk-overlay-pane')[1];
-      expect(dropdownAfterPane.getAttribute('id')).toBe(dropdownBeforePane.getAttribute('id'));
     }));
     it('should set null value work', fakeAsync(() => {
       fixture.detectChanges();

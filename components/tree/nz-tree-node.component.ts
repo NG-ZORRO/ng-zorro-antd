@@ -18,9 +18,9 @@ import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { InputBoolean } from '../core/util/convert';
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from '../tree/interface';
+import { NzTreeBaseService } from './nz-tree-base.service';
 import { NzTreeNode } from './nz-tree-node';
 import { isCheckDisabled } from './nz-tree-util';
-import { NzTreeService } from './nz-tree.service';
 
 @Component({
   selector           : 'nz-tree-node',
@@ -53,6 +53,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzAsyncData: boolean;
   @Input() @InputBoolean() nzCheckStrictly: boolean;
   @Input() @InputBoolean() nzHideUnMatched = false;
+  @Input() @InputBoolean() nzNoopAnimations = false;
   @Input() nzTreeTemplate: TemplateRef<void>;
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
 
@@ -228,10 +229,6 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     };
     this.nzNodeContentLoadingClass = {
       [ `${this.prefixCls}-iconEle` ]: true
-    };
-    this.nzNodeChildrenClass = {
-      [ `${this.prefixCls}-child-tree` ]     : true,
-      [ `${this.prefixCls}-child-tree-open` ]: true
     };
   }
 
@@ -424,7 +421,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  constructor(private nzTreeService: NzTreeService, private ngZone: NgZone, private renderer: Renderer2, private elRef: ElementRef) {
+  constructor(private nzTreeService: NzTreeBaseService, private ngZone: NgZone, private renderer: Renderer2, private elRef: ElementRef) {
   }
 
   ngOnInit(): void {

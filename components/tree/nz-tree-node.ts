@@ -17,7 +17,7 @@ export interface NzTreeNodeOptions {
 
 export class NzTreeNode {
   title?: string;
-  key?: string;
+  key: string;
   level: number = 0;
   children: NzTreeNode[];
   isLeaf: boolean;
@@ -36,7 +36,10 @@ export class NzTreeNode {
   isLoading: boolean;
   isMatched: boolean;
 
-  constructor(option: NzTreeNodeOptions, parent: NzTreeNode = null) {
+  constructor(option: NzTreeNodeOptions | NzTreeNode, parent: NzTreeNode = null) {
+    if (option instanceof NzTreeNode) {
+      return option;
+    }
     this.title = option.title || '---';
     this.key = option.key || null;
     this.isLeaf = option.isLeaf || false;

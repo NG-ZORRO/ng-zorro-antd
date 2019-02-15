@@ -8,7 +8,7 @@ import {
 } from '@angular/animations';
 
 export const selectDropDownAnimation: AnimationTriggerMetadata = trigger('selectDropDownAnimation', [
-  state('hidden', style({
+  state('void', style({
     opacity: 0,
     display: 'none'
   })),
@@ -22,7 +22,7 @@ export const selectDropDownAnimation: AnimationTriggerMetadata = trigger('select
     transform      : 'scaleY(1)',
     transformOrigin: '0% 100%'
   })),
-  transition('hidden => bottom', [
+  transition('void => bottom', [
     style({
       opacity        : 0,
       transform      : 'scaleY(0.8)',
@@ -30,14 +30,14 @@ export const selectDropDownAnimation: AnimationTriggerMetadata = trigger('select
     }),
     animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)')
   ]),
-  transition('bottom => hidden', [
+  transition('bottom => void', [
     animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)', style({
       opacity        : 0,
       transform      : 'scaleY(0.8)',
       transformOrigin: '0% 0%'
     }))
   ]),
-  transition('hidden => top', [
+  transition('void => top', [
     style({
       opacity        : 0,
       transform      : 'scaleY(0.8)',
@@ -45,7 +45,7 @@ export const selectDropDownAnimation: AnimationTriggerMetadata = trigger('select
     }),
     animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)')
   ]),
-  transition('top => hidden', [
+  transition('top => void', [
     animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)', style({
       opacity        : 0,
       transform      : 'scaleY(0.8)',

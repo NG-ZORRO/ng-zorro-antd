@@ -7,23 +7,41 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
-  SimpleChange,
-  TemplateRef
+  SimpleChange, SkipSelf, TemplateRef
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, ReplaySubject, Subscription } from 'rxjs';
 import { isNotNil } from '../core/util/check';
 import { InputBoolean } from '../core/util/convert';
+import { NzTreeSelectService } from '../tree-select/nz-tree-select.service';
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from '../tree/interface';
+import { NzTreeBaseService } from './nz-tree-base.service';
 import { NzTreeNode } from './nz-tree-node';
 import { NzTreeService } from './nz-tree.service';
+
+export function NzTreeServiceFactory(treeSelectService: NzTreeSelectService, treeService: NzTreeService): NzTreeBaseService {
+  return treeSelectService ? treeSelectService : treeService;
+}
 
 @Component({
   selector   : 'nz-tree',
   templateUrl: './nz-tree.component.html',
   providers  : [
     NzTreeService,
+    {
+      provide   : NzTreeBaseService,
+      useFactory: NzTreeServiceFactory,
+      deps      : [
+        [
+          new SkipSelf(),
+          new Optional(),
+          NzTreeSelectService
+        ],
+        NzTreeService
+      ]
+    },
     {
       provide    : NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzTreeComponent),
@@ -43,6 +61,8 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzExpandAll: boolean = false;
   @Input() @InputBoolean() nzHideUnMatched = false;
+  @Input() @InputBoolean() nzNoopAnimations = false;
+
   /**
    * @deprecated use
    * nzExpandAll instead
@@ -152,7 +172,7 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
   // tslint:disable-next-line:no-any
   @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<any>;
   _searchValue = null;
-  nzDefaultSubject = new ReplaySubject< { type: string, keys: string[] }>(6);
+  nzDefaultSubject = new ReplaySubject<{ type: string, keys: string[] }>(6);
   nzDefaultSubscription: Subscription;
   nzNodes: NzTreeNode[] = [];
   prefixCls = 'ant-tree';
@@ -217,7 +237,7 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
     this.onTouched = fn;
   }
 
-  constructor(public nzTreeService: NzTreeService) {
+  constructor(public nzTreeService: NzTreeBaseService) {
   }
 
   ngOnInit(): void {
