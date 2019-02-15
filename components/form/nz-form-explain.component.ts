@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsulation } from '@angular/core';
 import { helpMotion } from '../core/animation/help';
 
 @Component({
@@ -8,9 +8,6 @@ import { helpMotion } from '../core/animation/help';
   changeDetection    : ChangeDetectionStrategy.OnPush,
   animations         : [ helpMotion ],
   templateUrl        : './nz-form-explain.component.html',
-  host               : {
-    '[class.ant-form-explain]': 'true'
-  },
   styles             : [
       `nz-form-explain {
       display: block;
@@ -18,4 +15,7 @@ import { helpMotion } from '../core/animation/help';
   ]
 })
 export class NzFormExplainComponent {
+  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-form-explain');
+  }
 }

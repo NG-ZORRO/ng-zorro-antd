@@ -1,14 +1,14 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector           : '[nz-menu-group]',
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-menu-group.component.html',
-  preserveWhitespaces: false,
-  host               : {
-    '[class.ant-menu-item-group]': 'true'
-  }
+  preserveWhitespaces: false
 })
 export class NzMenuGroupComponent {
+  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-menu-item-group');
+  }
 }

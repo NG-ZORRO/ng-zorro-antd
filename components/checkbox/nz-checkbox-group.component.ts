@@ -6,6 +6,7 @@ import {
   ElementRef,
   Input,
   OnInit,
+  Renderer2,
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -29,10 +30,7 @@ export interface NzCheckBoxOptionInterface {
       useExisting: forwardRef(() => NzCheckboxGroupComponent),
       multi      : true
     }
-  ],
-  host               : {
-    '[class.ant-checkbox-group]': 'true'
-  }
+  ]
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
   // tslint:disable-next-line:no-any
@@ -50,7 +48,8 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
     return option.value;
   }
 
-  constructor(private elementRef: ElementRef, private focusMonitor: FocusMonitor, private cdr: ChangeDetectorRef) {
+  constructor(private elementRef: ElementRef, private focusMonitor: FocusMonitor, private cdr: ChangeDetectorRef, renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-checkbox-group');
   }
 
   ngOnInit(): void {

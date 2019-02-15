@@ -1,10 +1,10 @@
 import {
   ChangeDetectionStrategy,
-  Component,
+  Component, ElementRef,
   EventEmitter,
   Input,
   OnChanges, OnDestroy,
-  Output,
+  Output, Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -19,10 +19,7 @@ import { InputBoolean } from '../core/util/convert';
   preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
-  templateUrl        : './nz-tab.component.html',
-  host               : {
-    '[class.ant-tabs-tabpane]': 'true'
-  }
+  templateUrl        : './nz-tab.component.html'
 })
 export class NzTabComponent implements OnChanges, OnDestroy {
   position: number = null;
@@ -36,6 +33,10 @@ export class NzTabComponent implements OnChanges, OnDestroy {
   @Output() readonly nzClick = new EventEmitter<void>();
   @Output() readonly nzSelect = new EventEmitter<void>();
   @Output() readonly nzDeselect = new EventEmitter<void>();
+
+  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-tabs-tabpane');
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzTitle || changes.nzForceRender || changes.nzDisabled) {

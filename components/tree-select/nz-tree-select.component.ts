@@ -55,7 +55,6 @@ import { NzTreeComponent } from '../tree/nz-tree.component';
     }
   ],
   host       : {
-    '[class.ant-select]'            : 'true',
     '[class.ant-select-lg]'         : 'nzSize==="large"',
     '[class.ant-select-sm]'         : 'nzSize==="small"',
     '[class.ant-select-enabled]'    : '!nzDisabled',
@@ -161,7 +160,9 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef) {
+    private viewContainerRef: ViewContainerRef,
+    elementRef: ElementRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-select');
   }
 
   ngOnInit(): void {
@@ -219,6 +220,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
 
   registerOnTouched(fn: () => void): void {
   }
+
   @HostListener('click')
   trigger(): void {
     if (this.nzDisabled || (!this.nzDisabled && this.nzOpen)) {
@@ -340,18 +342,18 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
       new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
     ];
     this.positionStrategy = this.overlay.position()
-      .flexibleConnectedTo(this.treeSelect)
-      .withPositions(positions)
-      .withFlexibleDimensions(false)
-      .withPush(false);
+    .flexibleConnectedTo(this.treeSelect)
+    .withPositions(positions)
+    .withFlexibleDimensions(false)
+    .withPush(false);
     return this.positionStrategy;
   }
 
   subscribeOverlayBackdropClick(): Subscription {
     return this.overlayRef.backdropClick()
-      .subscribe(() => {
-        this.closeDropDown();
-      });
+    .subscribe(() => {
+      this.closeDropDown();
+    });
   }
 
   subscribeSelectionChange(): Subscription {

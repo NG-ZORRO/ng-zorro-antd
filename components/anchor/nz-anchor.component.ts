@@ -203,7 +203,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
     comp.active = true;
     comp.markForCheck();
 
-    const linkNode = (comp.el.nativeElement as HTMLDivElement).querySelector('.ant-anchor-link-title') as HTMLElement;
+    const linkNode = (comp.elementRef.nativeElement as HTMLDivElement).querySelector('.ant-anchor-link-title') as HTMLElement;
     this.ink.nativeElement.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
     this.cdr.detectChanges();
 

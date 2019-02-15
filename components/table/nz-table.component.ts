@@ -36,8 +36,7 @@ import { NzTheadComponent } from './nz-thead.component';
   encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-table.component.html',
   host               : {
-    '[class.ant-table-wrapper]': 'true',
-    '[class.ant-table-empty]'  : 'data.length === 0'
+    '[class.ant-table-empty]': 'data.length === 0'
   },
   styles             : [
       `
@@ -166,7 +165,8 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     }
   }
 
-  constructor(private renderer: Renderer2, private ngZone: NgZone, private cdr: ChangeDetectorRef, private nzMeasureScrollbarService: NzMeasureScrollbarService, private i18n: NzI18nService) {
+  constructor(private renderer: Renderer2, private ngZone: NgZone, private cdr: ChangeDetectorRef, private nzMeasureScrollbarService: NzMeasureScrollbarService, private i18n: NzI18nService, elementRef: ElementRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-table-wrapper');
   }
 
   ngOnInit(): void {

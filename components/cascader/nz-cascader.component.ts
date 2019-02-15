@@ -11,6 +11,7 @@ import {
   Input,
   OnDestroy,
   Output,
+  Renderer2,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -50,8 +51,6 @@ const defaultDisplayRender = label => label.join(' / ');
   ],
   host               : {
     '[attr.tabIndex]'                       : '"0"',
-    '[class.ant-cascader]'                  : 'true',
-    '[class.ant-cascader-picker]'           : 'true',
     '[class.ant-cascader-lg]'               : 'nzSize === "large"',
     '[class.ant-cascader-sm]'               : 'nzSize === "small"',
     '[class.ant-cascader-picker-disabled]'  : 'nzDisabled',
@@ -812,7 +811,9 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     this.setMenuVisible(false);
   }
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef) {
+  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-cascader');
+    renderer.addClass(elementRef.nativeElement, 'ant-cascader-picker');
   }
 
   ngOnDestroy(): void {

@@ -7,7 +7,7 @@ import {
   HostBinding,
   Input,
   OnDestroy,
-  OnInit,
+  OnInit, Renderer2,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -19,7 +19,7 @@ import { NzAnchorComponent } from './nz-anchor.component';
   preserveWhitespaces: false,
   templateUrl        : './nz-anchor-link.component.html',
   host               : {
-    '[class.ant-anchor-link]': 'true'
+    '[class.ant-anchor-link-active]': 'active'
   },
   styles             : [ `
     nz-link {
@@ -35,6 +35,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
 
   titleStr = '';
   titleTpl: TemplateRef<void>;
+  active: boolean = false;
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
@@ -48,9 +49,8 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
 
   @ContentChild('nzTemplate') nzTemplate: TemplateRef<void>;
 
-  @HostBinding('class.ant-anchor-link-active') active: boolean = false;
-
-  constructor(public el: ElementRef, private anchorComp: NzAnchorComponent, private cdr: ChangeDetectorRef) {
+  constructor(public elementRef: ElementRef, private anchorComp: NzAnchorComponent, private cdr: ChangeDetectorRef, renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-anchor-link');
   }
 
   ngOnInit(): void {

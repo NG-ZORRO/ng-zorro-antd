@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector           : 'nz-content',
@@ -10,10 +10,10 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
       `nz-content {
       display: block;
     }`
-  ],
-  host               : {
-    '[class.ant-layout-content]': 'true'
-  }
+  ]
 })
 export class NzContentComponent {
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-layout-content');
+  }
 }
