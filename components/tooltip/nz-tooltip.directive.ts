@@ -33,7 +33,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   // [NOTE] Here hard coded, and nzTitle used only under NzTooltipDirective currently.
   isTooltipOpen: boolean = false;
   isDynamicTooltip = false; // Indicate whether current tooltip is dynamic created
-  delayTimer; // Timer for delay enter/leave
+  delayTimer: number; // Timer for delay enter/leave
   visible: boolean;
   factory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
 
@@ -146,10 +146,10 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
 
   private delayEnterLeave(isOrigin: boolean, isEnter: boolean, delay: number = -1): void {
     if (this.delayTimer) { // Clear timer during the delay time
-      window.clearTimeout(this.delayTimer);
+      clearTimeout(this.delayTimer);
       this.delayTimer = null;
     } else if (delay > 0) {
-      this.delayTimer = window.setTimeout(() => {
+      this.delayTimer = setTimeout(() => {
         this.delayTimer = null;
         isEnter ? this.show() : this.hide();
       }, delay * 1000);

@@ -83,7 +83,7 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
 
   activeIndex = 0;
   transform = 'translate3d(0px, 0px, 0px)';
-  transitionAction;
+  transitionAction: number;
 
   private el = this.elementRef.nativeElement;
   private subs_ = new Subscription();

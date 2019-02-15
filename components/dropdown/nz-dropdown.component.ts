@@ -18,7 +18,7 @@ import {
 import { combineLatest, merge, EMPTY, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, mapTo, takeUntil } from 'rxjs/operators';
 import { slideMotion } from '../core/animation/slide';
-import { DEFAULT_DROPDOWN_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position-map';
+import { DEFAULT_DROPDOWN_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position';
 import { InputBoolean } from '../core/util/convert';
 import { NzMenuDirective } from '../menu/nz-menu.directive';
 import { NzDropDownDirective } from './nz-dropdown.directive';
@@ -104,11 +104,6 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
     }
   }
 
-  adjustPosition(): void {
-    this.dropDownPosition = this.nzPlacement.indexOf('top') !== -1 ? 'top' : 'bottom';
-    this.positions.unshift(POSITION_MAP[ this.nzPlacement ] as ConnectionPositionPair);
-  }
-
   constructor(private renderer: Renderer2, protected cdr: ChangeDetectorRef, private nzMenuDropdownService: NzMenuDropdownService) {
   }
 
@@ -130,7 +125,8 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
       this.updateDisabledState();
     }
     if (changes.nzPlacement) {
-      this.adjustPosition();
+      this.dropDownPosition = this.nzPlacement.indexOf('top') !== -1 ? 'top' : 'bottom';
+      this.positions = [ POSITION_MAP[ this.nzPlacement ], ...this.positions ];
     }
   }
 }

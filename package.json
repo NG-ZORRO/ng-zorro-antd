@@ -62,7 +62,6 @@
     "@types/hammerjs": "^2.0.35",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~10.12.0",
     "antd-theme-generator": "^1.0.7",
     "chalk": "^2.4.1",
     "classlist.js": "^1.1.20150312",

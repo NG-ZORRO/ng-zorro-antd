@@ -12,7 +12,7 @@ import { environment } from '../../../environments/environment';
     <section class="code-box" [ngClass]="{'expand':nzExpanded}" [attr.id]="nzId">
       <section class="code-box-demo">
         <div *ngIf="!showIframe" [class.simulate-iframe]="simulateIFrame" [class.browser-mockup]="simulateIFrame" [class.with-url]="simulateIFrame"
-             [style.height.px]="simulateIFrame&&nzIframeHeight">
+          [style.height.px]="simulateIFrame&&nzIframeHeight">
           <ng-content select="[demo]"></ng-content>
         </div>
         <div class="browser-mockup with-url" *ngIf="showIframe">
@@ -31,9 +31,9 @@ import { environment } from '../../../environments/environment';
         <nz-tooltip [nzTitle]="nzExpanded?'Hide Code':'Show Code'">
         <span class="code-expand-icon" nz-tooltip (click)="nzExpanded=!nzExpanded">
             <img alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/wSAkBuJFbdxsosKKpqyq.svg" [class.code-expand-icon-show]="nzExpanded"
-                 [class.code-expand-icon-hide]="!nzExpanded">
+              [class.code-expand-icon-hide]="!nzExpanded">
             <img alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/OpROPHYqWmrMDBFMZtKF.svg" [class.code-expand-icon-show]="!nzExpanded"
-                 [class.code-expand-icon-hide]="nzExpanded">
+              [class.code-expand-icon-hide]="nzExpanded">
           </span>
         </nz-tooltip>
       </section>
@@ -42,9 +42,9 @@ import { environment } from '../../../environments/environment';
           <div class="code-box-actions">
             <i [nzTitle]="'Edit On StackBlitz'" nz-tooltip nz-icon type="form" class="code-box-code-copy" (click)="openOnStackBlitz()"></i>
             <i [nzTitle]="'Copy Code'" nz-tooltip nz-icon [type]="_copied?'check':'copy'" class="code-box-code-copy" [class.ant-tooltip-open]="_copied"
-               (click)="copyCode(nzRawCode)"></i>
+              (click)="copyCode(nzRawCode)"></i>
             <i [nzTitle]="'Copy Generate Command'" *ngIf="nzGenerateCommand" nz-tooltip nz-icon [type]="_commandCopied?'check':'code'"
-               class="code-box-code-copy" [class.ant-tooltip-open]="_commandCopied" (click)="copyGenerateCommand(nzGenerateCommand)"></i>
+              class="code-box-code-copy" [class.ant-tooltip-open]="_commandCopied" (click)="copyGenerateCommand(nzGenerateCommand)"></i>
           </div>
           <ng-content select="[code]"></ng-content>
           <nz-highlight [nzCode]="_code" [nzLanguage]="'typescript'"></nz-highlight>
@@ -58,6 +58,7 @@ import { environment } from '../../../environments/environment';
 })
 export class NzCodeBoxComponent implements OnInit {
   _code: string;
+  _rawCode: string;
   _copied = false;
   _commandCopied = false;
   showIframe: boolean;
@@ -69,7 +70,6 @@ export class NzCodeBoxComponent implements OnInit {
   @Input() nzLink: string;
   @Input() nzId: string;
   @Input() nzIframeHeight = 360;
-  @Input() nzRawCode = '';
   @Input() nzComponentName = '';
   @Input() nzSelector = '';
   @Input() nzGenerateCommand = '';
@@ -78,6 +78,15 @@ export class NzCodeBoxComponent implements OnInit {
     this.showIframe = (value !== 'null') && environment.production;
     this.simulateIFrame = (value !== 'null') && !environment.production;
     this.iframe = this.sanitizer.bypassSecurityTrustResourceUrl(value);
+  }
+
+  @Input()
+  get nzRawCode(): string {
+    return this._rawCode;
+  }
+
+  set nzRawCode(value: string) {
+    this._rawCode = decodeURIComponent(value).trim();
   }
 
   @Input()

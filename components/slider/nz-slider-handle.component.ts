@@ -68,7 +68,7 @@ export class NzSliderHandleComponent implements OnChanges {
 
   private _updateTooltipPosition(): void { // [For tooltip]
     if (this.tooltip) {
-      window.setTimeout(() => this.tooltip.updatePosition(), 0); // MAY use ngAfterViewChecked? but this will be called so many times.
+      setTimeout(() => this.tooltip.updatePosition(), 0); // MAY use ngAfterViewChecked? but this will be called so many times.
     }
   }
 

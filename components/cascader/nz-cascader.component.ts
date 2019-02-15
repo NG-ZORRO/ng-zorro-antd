@@ -18,8 +18,8 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { slideMotion } from '../core/animation/slide';
-import { ClassMap } from '../core/interface/interface';
-import { EXPANDED_DROPDOWN_POSITIONS } from '../core/overlay/overlay-position-map';
+import { DEFAULT_CASCADER_POSITIONS } from '../core/overlay/overlay-position';
+import { NgClassType } from '../core/types/ng-class';
 import { arrayEquals, toArray } from '../core/util/array';
 import { InputBoolean } from '../core/util/convert';
 
@@ -131,7 +131,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   columns: CascaderOption[][] = [];
   onChange = Function.prototype;
   onTouched = Function.prototype;
-  positions: ConnectionPositionPair[] = [ ...EXPANDED_DROPDOWN_POSITIONS ];
+  positions: ConnectionPositionPair[] = [ ...DEFAULT_CASCADER_POSITIONS ];
   dropdownWidthStyle: string;
   isSearching = false;
   isFocused = false;
@@ -143,8 +143,8 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   private activatedOptions: CascaderOption[] = [];
   private columnsSnapshot: CascaderOption[][];
   private activatedOptionsSnapshot: CascaderOption[];
-  private delayMenuTimer;
-  private delaySelectTimer;
+  private delayMenuTimer: number;
+  private delaySelectTimer: number;
 
   set inputValue(inputValue: string) {
     this._inputValue = inputValue;
@@ -157,13 +157,13 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
 
   private _inputValue = '';
 
-  get menuCls(): ClassMap {
+  get menuCls(): NgClassType {
     return {
       [ `${this.nzMenuClassName}` ]: !!this.nzMenuClassName
     };
   }
 
-  get menuColumnCls(): ClassMap {
+  get menuColumnCls(): NgClassType {
     return {
       [ `${this.nzColumnClassName}` ]: !!this.nzColumnClassName
     };
@@ -673,12 +673,12 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     };
 
     const filter: (inputValue: string, p: CascaderOption[]) => boolean =
-      this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).filter
-        ? (this.nzShowSearch as NzShowSearchOptions).filter
-        : defaultFilter;
+            this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).filter
+              ? (this.nzShowSearch as NzShowSearchOptions).filter
+              : defaultFilter;
 
     const sorter: (a: CascaderOption[], b: CascaderOption[], inputValue: string) => number =
-      this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).sorter;
+            this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).sorter;
 
     const loopParent = (node: CascaderOption, forceDisabled = false) => {
       const disabled = forceDisabled || node.disabled;

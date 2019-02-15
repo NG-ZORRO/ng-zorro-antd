@@ -30,7 +30,7 @@ import {
 } from '@angular/core';
 import { fromEvent, merge, Subscription } from 'rxjs';
 
-import { DEFAULT_MENTION_POSITIONS } from '../core/overlay/overlay-position-map';
+import { DEFAULT_MENTION_POSITIONS } from '../core/overlay/overlay-position';
 import { InputBoolean } from '../core/util';
 import { getMentions } from '../core/util/getMentions';
 import { getCaretCoordinates } from '../core/util/textarea-caret-position';
