@@ -1,12 +1,12 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
+  Component, ElementRef,
   Injector,
   Input,
   NgZone,
   OnDestroy,
-  OnInit,
+  OnInit, Renderer2,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -28,9 +28,6 @@ export interface BreadcrumbOption {
   selector           : 'nz-breadcrumb',
   preserveWhitespaces: false,
   templateUrl        : './nz-breadcrumb.component.html',
-  host               : {
-    '[class.ant-breadcrumb]': 'true'
-  },
   styles             : [ `
     nz-breadcrumb {
       display: block;
@@ -45,7 +42,9 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private injector: Injector, private ngZone: NgZone, private cd: ChangeDetectorRef) {}
+  constructor(private injector: Injector, private ngZone: NgZone, private cd: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-breadcrumb');
+  }
 
   ngOnInit(): void {
     if (this.nzAutoGenerate) {

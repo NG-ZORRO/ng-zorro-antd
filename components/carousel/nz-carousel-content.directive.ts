@@ -8,10 +8,7 @@ import {
 import { isNotNil } from '../core/util/check';
 
 @Directive({
-  selector: '[nz-carousel-content]',
-  host    : {
-    '[class.slick-slide]': 'true'
-  }
+  selector: '[nz-carousel-content]'
 })
 export class NzCarouselContentDirective implements OnInit {
   private _active = false;
@@ -85,6 +82,7 @@ export class NzCarouselContentDirective implements OnInit {
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'slick-slide');
   }
 
   ngOnInit(): void {

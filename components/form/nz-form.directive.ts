@@ -3,10 +3,7 @@ import { NzUpdateHostClassService } from '../core/services/update-host-class.ser
 
 @Directive({
   selector : '[nz-form]',
-  providers: [ NzUpdateHostClassService ],
-  host     : {
-    '[class.ant-form]': 'true'
-  }
+  providers: [ NzUpdateHostClassService ]
 })
 export class NzFormDirective implements OnInit, OnChanges {
   @Input() nzLayout = 'horizontal';
@@ -18,6 +15,7 @@ export class NzFormDirective implements OnInit, OnChanges {
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
+    renderer.addClass(elementRef.nativeElement, 'ant-form');
   }
 
   ngOnInit(): void {

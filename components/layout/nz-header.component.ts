@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector           : 'nz-header',
@@ -10,10 +10,10 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
       `nz-header {
       display: block;
     }`
-  ],
-  host               : {
-    '[class.ant-layout-header]': 'true'
-  }
+  ]
 })
 export class NzHeaderComponent {
+  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-layout-header');
+  }
 }

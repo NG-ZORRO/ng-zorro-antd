@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector           : 'nz-form-extra',
@@ -6,9 +6,6 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
-  host               : {
-    '[class.ant-form-extra]': 'true'
-  },
   styles             : [
       `
       nz-form-extra {
@@ -18,4 +15,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   ]
 })
 export class NzFormExtraComponent {
+  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-form-extra');
+  }
 }

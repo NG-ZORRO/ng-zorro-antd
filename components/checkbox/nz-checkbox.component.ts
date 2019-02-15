@@ -37,7 +37,6 @@ import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
     }
   ],
   host               : {
-    '[class.ant-checkbox-wrapper]': 'true',
     '(click)'                     : 'hostClick($event)'
   }
 })
@@ -111,6 +110,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   }
 
   constructor(private elementRef: ElementRef<HTMLElement>, private renderer: Renderer2, @Optional() private nzCheckboxWrapperComponent: NzCheckboxWrapperComponent, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
+    renderer.addClass(elementRef.nativeElement, 'ant-checkbox-wrapper');
   }
 
   ngOnInit(): void {

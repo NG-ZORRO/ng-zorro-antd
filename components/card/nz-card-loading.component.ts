@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector           : 'nz-card-loading',
@@ -6,9 +6,6 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
-  host               : {
-    '[class.ant-card-loading-content]': 'true'
-  },
   styles             : [ `
     nz-card-loading {
       display: block;
@@ -16,5 +13,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   ` ]
 })
 export class NzCardLoadingComponent {
-
+  constructor(elementRef: ElementRef, renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-card-loading-content');
+  }
 }

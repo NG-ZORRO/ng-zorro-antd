@@ -34,7 +34,6 @@ import { InputBoolean } from '../core/util/convert';
     }
   ],
   host               : {
-    '[class.ant-radio-wrapper]'         : 'true',
     '[class.ant-radio-wrapper-checked]' : 'checked',
     '[class.ant-radio-wrapper-disabled]': 'nzDisabled'
   }
@@ -91,6 +90,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
 
   /* tslint:disable-next-line:no-any */
   constructor(private elementRef: ElementRef, private renderer: Renderer2, @Inject(DOCUMENT) private document: any, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
+    renderer.addClass(elementRef.nativeElement, 'ant-radio-wrapper');
   }
 
   setDisabledState(isDisabled: boolean): void {

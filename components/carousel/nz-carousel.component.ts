@@ -36,7 +36,6 @@ export type SwipeDirection = 'swipeleft' | 'swiperight';
   preserveWhitespaces: false,
   templateUrl        : './nz-carousel.component.html',
   host               : {
-    '[class.ant-carousel]'         : 'true',
     '[class.ant-carousel-vertical]': 'nzVertical'
   },
   styles             : [
@@ -97,6 +96,7 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
   }
 
   constructor(public elementRef: ElementRef, private renderer: Renderer2, private cdr: ChangeDetectorRef, private ngZone: NgZone) {
+    renderer.addClass(elementRef.nativeElement, 'ant-carousel');
   }
 
   ngAfterContentInit(): void {
