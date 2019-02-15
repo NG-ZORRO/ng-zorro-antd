@@ -37,7 +37,6 @@ import { InputBoolean } from '../core/util/convert';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation  : ViewEncapsulation.None,
   host           : {
-    '[class.ant-input-number]'         : 'true',
     '[class.ant-input-number-focused]' : 'isFocused',
     '[class.ant-input-number-lg]'      : `nzSize === 'large'`,
     '[class.ant-input-number-sm]'      : `nzSize === 'small'`,
@@ -331,6 +330,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
+    renderer.addClass(elementRef.nativeElement, 'ant-input-number');
   }
 
   ngOnInit(): void {

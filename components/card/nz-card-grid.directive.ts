@@ -1,10 +1,10 @@
-import { Directive } from '@angular/core';
+import { Directive, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[nz-card-grid]',
-  host    : {
-    '[class.ant-card-grid]': 'true'
-  }
+  selector: '[nz-card-grid]'
 })
 export class NzCardGridDirective {
+  constructor(elementRef: ElementRef, renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-card-grid');
+  }
 }

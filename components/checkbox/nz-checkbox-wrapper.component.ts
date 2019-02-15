@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Output,
+  Renderer2,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { NzCheckboxComponent } from './nz-checkbox.component';
 
@@ -7,10 +15,7 @@ import { NzCheckboxComponent } from './nz-checkbox.component';
   preserveWhitespaces: false,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,
-  templateUrl        : './nz-checkbox-wrapper.component.html',
-  host               : {
-    '[class.ant-checkbox-group]': 'true'
-  }
+  templateUrl        : './nz-checkbox-wrapper.component.html'
 })
 export class NzCheckboxWrapperComponent {
   @Output() readonly nzOnChange = new EventEmitter<string[]>();
@@ -31,5 +36,9 @@ export class NzCheckboxWrapperComponent {
 
   onChange(): void {
     this.nzOnChange.emit(this.outputValue());
+  }
+
+  constructor(renderer: Renderer2, elementRef: ElementRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-checkbox-group');
   }
 }

@@ -23,7 +23,6 @@ export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' |
   animations         : [ zoomBadgeMotion ],
   templateUrl        : './nz-badge.component.html',
   host               : {
-    '[class.ant-badge]'       : 'true',
     '[class.ant-badge-status]': 'nzStatus'
   }
 })
@@ -59,6 +58,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   constructor(private renderer: Renderer2, private elementRef: ElementRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-badge');
   }
 
   ngOnInit(): void {

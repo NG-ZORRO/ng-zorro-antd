@@ -1,14 +1,14 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
+  Component, ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
-  QueryList,
+  QueryList, Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChildren,
@@ -29,7 +29,6 @@ import { NzTransferListComponent } from './nz-transfer-list.component';
   preserveWhitespaces: false,
   templateUrl        : './nz-transfer.component.html',
   host               : {
-    '[class.ant-transfer]': 'true',
     '[class.ant-transfer-disabled]': 'nzDisabled'
   },
   encapsulation      : ViewEncapsulation.None,
@@ -155,12 +154,13 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   // #endregion
 
-  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService) {
+  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService, renderer: Renderer2, elementRef: ElementRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-transfer');
   }
 
   private markForCheckAllList(): void {
     if (!this.lists) {
-      return ;
+      return;
     }
     this.lists.forEach(i => i.markForCheck());
   }

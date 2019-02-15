@@ -1,11 +1,11 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
+  Component, ElementRef,
   EventEmitter, Host,
   HostBinding,
   Input, OnDestroy, OnInit,
-  Output,
+  Output, Renderer2,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -26,7 +26,6 @@ import { NzCollapseComponent } from './nz-collapse.component';
     }`
   ],
   host           : {
-    '[class.ant-collapse-item]'    : 'true',
     '[class.ant-collapse-no-arrow]': '!nzShowArrow'
   }
 })
@@ -48,7 +47,8 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  constructor(private cdr: ChangeDetectorRef, @Host() private nzCollapseComponent: NzCollapseComponent) {
+  constructor(private cdr: ChangeDetectorRef, @Host() private nzCollapseComponent: NzCollapseComponent, elementRef: ElementRef, renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-collapse-item');
   }
 
   ngOnInit(): void {

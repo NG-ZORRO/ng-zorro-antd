@@ -1,8 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ContentChild,
-  Input,
+  ContentChild, ElementRef,
+  Input, Renderer2,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -21,7 +21,6 @@ import { NzCardTabComponent } from './nz-card-tab.component';
     }
   ` ],
   host               : {
-    '[class.ant-card]'             : 'true',
     '[class.ant-card-loading]'     : 'nzLoading',
     '[class.ant-card-bordered]'    : 'nzBordered',
     '[class.ant-card-hoverable]'   : 'nzHoverable',
@@ -40,4 +39,8 @@ export class NzCardComponent {
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() nzExtra: string | TemplateRef<void>;
   @ContentChild(NzCardTabComponent) tab: NzCardTabComponent;
+
+  constructor(renderer: Renderer2, elementRef: ElementRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-card');
+  }
 }

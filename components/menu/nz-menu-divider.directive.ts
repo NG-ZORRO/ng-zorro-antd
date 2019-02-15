@@ -1,10 +1,10 @@
-import { Directive } from '@angular/core';
+import { Directive, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[nz-menu-divider]',
-  host    : {
-    '[class.ant-dropdown-menu-item-divider]': 'true'
-  }
+  selector: '[nz-menu-divider]'
 })
 export class NzMenuDividerDirective {
+  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-dropdown-menu-item-divider');
+  }
 }

@@ -8,6 +8,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
@@ -48,7 +49,6 @@ import { NzSelectService } from './nz-select.service';
   animations         : [ slideMotion ],
   templateUrl        : './nz-select.component.html',
   host               : {
-    '[class.ant-select]'            : 'true',
     '[class.ant-select-lg]'         : 'nzSize==="large"',
     '[class.ant-select-sm]'         : 'nzSize==="small"',
     '[class.ant-select-enabled]'    : '!nzDisabled',
@@ -227,7 +227,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     });
   }
 
-  constructor(private renderer: Renderer2, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
+  constructor(private renderer: Renderer2, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor, elementRef: ElementRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-select');
   }
 
   /** update ngModel -> update listOfSelectedValue **/

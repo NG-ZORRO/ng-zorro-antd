@@ -7,7 +7,6 @@ import { NzTabPositionMode } from './nz-tabset.component';
 @Directive({
   selector: '[nz-tabs-ink-bar]',
   host    : {
-    '[class.ant-tabs-ink-bar]'            : 'true',
     '[class.ant-tabs-ink-bar-animated]'   : 'nzAnimated',
     '[class.ant-tabs-ink-bar-no-animated]': '!nzAnimated'
   }
@@ -21,6 +20,7 @@ export class NzTabsInkBarDirective {
   constructor(private renderer: Renderer2,
               private elementRef: ElementRef,
               private ngZone: NgZone) {
+    renderer.addClass(elementRef.nativeElement, 'ant-tabs-ink-bar');
   }
 
   alignToElement(element: HTMLElement): void {
