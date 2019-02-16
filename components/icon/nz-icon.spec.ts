@@ -264,8 +264,8 @@ describe('nz icon twotone color injection', () => {
 @Component({
   selector: 'nz-test-icon-extensions',
   template: `
-    <i nz-icon [type]="type" [theme]="theme" [spin]="spin" [nzRotate]="rotate"></i>
-    <i nz-icon [type]="'loading'" [theme]="theme"></i>
+    <i nz-icon [nzType]="type" [nzTheme]="theme" [nzSpin]="spin" [nzRotate]="rotate"></i>
+    <i nz-icon [nzType]="'loading'" [nzTheme]="theme"></i>
   `
 })
 export class NzTestIconExtensionsComponent {
@@ -304,9 +304,9 @@ export class NzTestIconCustomComponent {
 @Component({
   selector: 'nz-test-icon-iconfont',
   template: `
-    <i nz-icon [iconfont]="'icon-tuichu'"></i>
-    <i nz-icon [iconfont]="'icon-facebook'"></i>
-    <i nz-icon [iconfont]="'icon-twitter'"></i>
+    <i nz-icon [nzIconfont]="'icon-tuichu'"></i>
+    <i nz-icon [nzIconfont]="'icon-facebook'"></i>
+    <i nz-icon [nzIconfont]="'icon-twitter'"></i>
   `
 })
 export class NzTestIconIconfontComponent {

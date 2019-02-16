@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-可以通过设置 `theme` 属性为 `twotone` 来渲染双色图标，并且可以设置主题色。
+可以通过设置 `nzTheme` 属性为 `twotone` 来渲染双色图标，并且可以设置主题色。
 
 ## en-US
 
