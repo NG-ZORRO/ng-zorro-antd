@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-Specify property `theme` to `twotone` to render two-tone icons. You can also set the primary color.
+Specify property `nzTheme` to `twotone` to render two-tone icons. You can also set the primary color.
