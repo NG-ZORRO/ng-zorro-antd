@@ -15,6 +15,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { slideMotion } from '../core/animation/slide';
 import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
 import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
