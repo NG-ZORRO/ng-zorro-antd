@@ -41,10 +41,10 @@ describe('collapse', () => {
     });
     it('should showArrow work', () => {
       fixture.detectChanges();
-      expect(panels[ 0 ].nativeElement.querySelector('.arrow').firstElementChild).toBeDefined();
+      expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-arrow').firstElementChild).toBeDefined();
       testComponent.showArrow = false;
       fixture.detectChanges();
-      expect(panels[ 0 ].nativeElement.querySelector('.arrow')).toBeNull();
+      expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-arrow')).toBeNull();
     });
     it('should active work', () => {
       fixture.detectChanges();
@@ -156,8 +156,9 @@ describe('collapse', () => {
     });
     it('should icon work', () => {
       fixture.detectChanges();
-      expect(panels[ 0 ].nativeElement.querySelector('.anticon-double-right')).toBeDefined();
-      expect(panels[ 1 ].nativeElement.querySelector('.anticon-caret-right')).toBeDefined();
+      expect(panels[ 0 ].nativeElement.querySelector('.anticon-right')).toBeDefined();
+      expect(panels[ 1 ].nativeElement.querySelector('.anticon-double-right')).toBeDefined();
+      expect(panels[ 2 ].nativeElement.querySelector('.anticon-caret-right')).toBeDefined();
     });
   });
 });
@@ -207,14 +208,17 @@ export class NzTestCollapseTemplateComponent {
   selector: 'nz-test-collapse-icon',
   template: `
     <nz-collapse>
-      <nz-collapse-panel [nzExpandedIcon]="'double-right'">
+      <nz-collapse-panel>
         <p>Panel01</p>
       </nz-collapse-panel>
-      <nz-collapse-panel [nzExpandedIcon]="expandedIcon">
+      <nz-collapse-panel [nzExpandedIcon]="'double-right'">
         <p>Panel02</p>
       </nz-collapse-panel>
+      <nz-collapse-panel [nzExpandedIcon]="expandedIcon">
+        <p>Panel01</p>
+      </nz-collapse-panel>
       <ng-template #expandedIcon>
-        <i nz-icon type="caret-right"></i>
+        <i nz-icon type="caret-right" class="ant-collapse-arrow"></i>
       </ng-template>
     </nz-collapse>
   `

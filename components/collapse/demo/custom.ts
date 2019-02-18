@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
         <p>{{panel.name}} content</p>
       </nz-collapse-panel>
       <ng-template #expandedIcon>
-        <i nz-icon type="caret-right"></i>
+        <i nz-icon type="caret-right" class="ant-collapse-arrow"></i>
       </ng-template>
     </nz-collapse>
   `,
