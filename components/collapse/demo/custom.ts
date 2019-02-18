@@ -1,21 +1,29 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-collapse-custom',
   template: `
     <nz-collapse [nzBordered]="false">
-      <nz-collapse-panel *ngFor="let panel of panels; let isFirst = first" [nzHeader]="panel.name" [nzActive]="panel.active"
-        [ngStyle]="panel.customStyle" [nzExpandedIcon]="!isFirst && (panel.icon || expandedIcon)">
+      <nz-collapse-panel #p *ngFor="let panel of panels; let isFirst = first" [nzHeader]="panel.name" [nzActive]="panel.active"
+        [ngStyle]="panel.customStyle" [nzExpandedIcon]="!isFirst && (panel.icon || expandedIcon)"
+        (click)="forceRefresh()">
         <p>{{panel.name}} content</p>
+        <ng-template #expandedIcon let-active>
+          {{ active }}
+          <i nz-icon type="caret-right" class="ant-collapse-arrow" [nzRotate]="p.nzActive ? 90 : -90"></i>
+        </ng-template>
       </nz-collapse-panel>
-      <ng-template #expandedIcon>
-        <i nz-icon type="caret-right" class="ant-collapse-arrow"></i>
-      </ng-template>
     </nz-collapse>
   `,
   styles  : []
 })
 export class NzDemoCollapseCustomComponent {
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  forceRefresh(): void {
+    this.cdr.markForCheck();
+  }
+
   panels = [
     {
       active     : true,
