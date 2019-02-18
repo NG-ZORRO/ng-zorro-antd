@@ -21,8 +21,7 @@ import { Component } from '@angular/core';
           <td *ngIf="i!=4">{{data.address}}</td>
         </tr>
       </tbody>
-    </nz-table>`,
-  styles  : []
+    </nz-table>`
 })
 export class NzDemoTableColspanRowspanComponent {
   dataSet = [

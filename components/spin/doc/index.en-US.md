@@ -20,4 +20,5 @@ When part of the page is waiting for asynchronous data or during a rendering pro
 | `[nzIndicator]` | React node of the spinning indicator | `TemplateRef<void>` | - |
 | `[nzSize]` | size of Spin | `'large'｜'small'｜'default'` | `'default'` |
 | `[nzSpinning]` | whether Spin is spinning | `boolean` | `true` |
+| `[nzSimple]` | whether Spin has no children | `boolean` | `false` |
 | `[nzTip]` | customize description content when Spin has children | `string` | - |

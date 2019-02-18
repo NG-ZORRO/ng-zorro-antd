@@ -1,13 +1,8 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger
-} from '@angular/animations';
-import { CdkOverlayOrigin, ConnectionPositionPair, Overlay, OverlayPositionBuilder } from '@angular/cdk/overlay';
+import { CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -16,47 +11,22 @@ import {
   Output,
   Renderer2,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { dropDownAnimation } from '../core/animation/dropdown-animations';
+import { slideMotion } from '../core/animation/slide';
 import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
 import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
-import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
 
 @Component({
-  selector   : 'nz-time-picker',
-  templateUrl: './nz-time-picker.component.html',
-  animations : [
-    trigger('dropDownAnimation', [
-      state('void', style({
-        opacity: 0,
-        display: 'none'
-      })),
-      state('*', style({
-        opacity        : 1,
-        transform      : 'scaleY(1)',
-        transformOrigin: '0% 0%'
-      })),
-      transition('void => *', [
-        style({
-          opacity        : 0,
-          transform      : 'scaleY(0.8)',
-          transformOrigin: '0% 0%'
-        }),
-        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)')
-      ]),
-      transition('* => void', [
-        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)', style({
-          opacity        : 0,
-          transform      : 'scaleY(0.8)',
-          transformOrigin: '0% 0%'
-        }))
-      ])
-    ])
-  ],
-  providers  : [
+  encapsulation  : ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector       : 'nz-time-picker',
+  templateUrl    : './nz-time-picker.component.html',
+  animations     : [ slideMotion ],
+  providers      : [
     UpdateCls,
     { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }
   ]
@@ -197,10 +167,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   constructor(private element: ElementRef,
               private renderer: Renderer2,
-              private overlay: Overlay,
-              private positionBuilder: OverlayPositionBuilder,
-              private i18n: I18n,
-              private updateCls: UpdateCls) {
+              private updateCls: UpdateCls,
+              private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -215,6 +183,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   writeValue(time: Date | null): void {
     this._value = time;
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (time: Date) => void): void {
@@ -227,5 +196,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
+    this.cdr.markForCheck();
   }
 }

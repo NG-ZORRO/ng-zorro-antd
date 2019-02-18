@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -58,7 +59,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   protected destroyed$: Subject<void> = new Subject();
   protected isCustomPlaceHolder: boolean = false;
 
-  constructor(protected i18n: NzI18nService) {
+  constructor(protected i18n: NzI18nService, protected cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -137,6 +138,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
 
   writeValue(value: CompatibleDate): void {
     this.setValue(value);
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: any): void { // tslint:disable-line:no-any
@@ -149,6 +151,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
 
   setDisabledState(disabled: boolean): void {
     this.nzDisabled = disabled;
+    this.cdr.markForCheck();
   }
 
   // ------------------------------------------------------------------------
@@ -159,6 +162,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   private setLocale(): void {
     this.nzLocale = this.i18n.getLocaleData('DatePicker', {});
     this.setDefaultPlaceHolder();
+    this.cdr.markForCheck();
   }
 
   private setDefaultPlaceHolder(): void {

@@ -33,6 +33,7 @@ describe('badge', () => {
       expect(badgeElement.nativeElement.querySelector('sup').classList).toContain('ant-scroll-number');
       expect(badgeElement.nativeElement.querySelector('sup').classList).toContain('ant-badge-count');
       expect(badgeElement.nativeElement.querySelector('sup').classList).not.toContain('ant-badge-multiple-words');
+      console.log(badgeElement.nativeElement);
       expect(badgeElement.nativeElement.querySelector('.current').innerText).toBe('5');
       testComponent.count = 10;
       fixture.detectChanges();

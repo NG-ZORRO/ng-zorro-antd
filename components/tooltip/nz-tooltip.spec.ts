@@ -2,11 +2,10 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FileOutline } from '@ant-design/icons-angular/icons';
 
 import { dispatchMouseEvent } from '../core/testing';
 import { NZ_ICONS } from '../icon';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzToolTipComponent } from './nz-tooltip.component';
 import { NzTooltipDirective } from './nz-tooltip.directive';
 import { NzToolTipModule } from './nz-tooltip.module';
@@ -19,9 +18,8 @@ describe('NzTooltip', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzToolTipModule, NoopAnimationsModule, NzIconModule ],
-      declarations: [ NzTooltipTestWrapperComponent, NzTooltipTestNewComponent ],
-      providers   : [ { provide: NZ_ICONS, useValue: [ FileOutline ] } ]
+      imports     : [ NzToolTipModule, NoopAnimationsModule, NzIconTestModule ],
+      declarations: [ NzTooltipTestWrapperComponent, NzTooltipTestNewComponent ]
     });
 
     TestBed.compileComponents();
@@ -239,6 +237,16 @@ describe('NzTooltip', () => {
       expect(triggerElement.nextSibling.tagName).toBe('BUTTON');
     }));
 
+    it('should set `setTitle` proxy to `nzTitle`', () => {
+      fixture.detectChanges();
+      const tooltipComponent = (component.titleStringNzTooltipDirective as any).tooltip as NzToolTipComponent; // tslint:disable-line:no-any
+      expect(tooltipComponent.nzTitle).toBe('title-string');
+
+      component.title = 'changed!';
+      fixture.detectChanges();
+      expect(tooltipComponent.nzTitle).toBe('changed!');
+    });
+
   });
 
 });
@@ -246,7 +254,7 @@ describe('NzTooltip', () => {
 @Component({
   selector: 'nz-tooltip-test-new',
   template: `
-    <a #titleString nz-tooltip nzTitle="title-string" nzTrigger="hover" nzPlacement="topLeft" nzOverlayClassName="testClass" [nzOverlayStyle]="{color:'#000'}"
+    <a #titleString nz-tooltip [nzTitle]="title" nzTrigger="hover" nzPlacement="topLeft" nzOverlayClassName="testClass" [nzOverlayStyle]="{color:'#000'}"
        [nzMouseEnterDelay]="0.15" [nzMouseLeaveDelay]="0.1">Show</a>
     <a #titleTemplate nz-tooltip [nzTitle]="template">Show</a>
     <ng-template #template>
@@ -265,6 +273,8 @@ export class NzTooltipTestNewComponent {
   @ViewChild('titleTemplate') titleTemplate: ElementRef;
   @ViewChild('titleTemplate', { read: NzTooltipDirective }) titleTemplateNzTooltipDirective: NzTooltipDirective;
   @ViewChild('inBtnGroup') inBtnGroup: ElementRef;
+
+  title = 'title-string';
 
 }
 

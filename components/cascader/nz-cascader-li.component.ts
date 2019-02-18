@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, SecurityContext, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input, Renderer2,
+  SecurityContext,
+  ViewEncapsulation
+} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CascaderOption } from './types';
 
@@ -9,7 +16,6 @@ import { CascaderOption } from './types';
   templateUrl    : './nz-cascader-li.component.html',
   host           : {
     '[attr.title]'                           : 'option.title || getOptionLabel()',
-    '[class.ant-cascader-menu-item]'         : 'true',
     '[class.ant-cascader-menu-item-active]'  : 'activated',
     '[class.ant-cascader-menu-item-expand]'  : '!option.isLeaf',
     '[class.ant-cascader-menu-item-disabled]': 'option.disabled'
@@ -21,7 +27,9 @@ export class NzCascaderOptionComponent {
   @Input() highlightText: string;
   @Input() nzLabelProperty = 'label';
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private sanitizer: DomSanitizer, elementRef: ElementRef, renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
+  }
 
   getOptionLabel(): string {
     return this.option ? this.option[ this.nzLabelProperty ] : '';

@@ -1,12 +1,15 @@
 import { DOCUMENT } from '@angular/common';
 import { HttpBackend } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken, Optional, RendererFactory2 } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
 import {
   BarsOutline,
   CalendarOutline,
   CaretDownFill,
   CaretDownOutline,
+  CaretUpFill,
+  CaretUpOutline,
   CheckCircleFill,
   CheckCircleOutline,
   CheckOutline,
@@ -32,6 +35,7 @@ import {
   QuestionCircleOutline,
   RightOutline,
   SearchOutline,
+  StarFill,
   UploadOutline,
   UpOutline
 } from '@ant-design/icons-angular/icons';
@@ -41,11 +45,16 @@ export interface NzIconfontOption {
 }
 
 export const NZ_ICONS = new InjectionToken('nz_icons');
+
 export const NZ_ICON_DEFAULT_TWOTONE_COLOR = new InjectionToken('nz_icon_default_twotone_color');
+
 export const DEFAULT_TWOTONE_COLOR = '#1890ff';
+
 export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   BarsOutline,
   CalendarOutline,
+  CaretUpFill,
+  CaretUpOutline,
   CaretDownFill,
   CaretDownOutline,
   CheckCircleFill,
@@ -72,7 +81,9 @@ export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   PaperClipOutline,
   QuestionCircleOutline,
   RightOutline,
+  StarFill,
   SearchOutline,
+  StarFill,
   UploadOutline,
   UpOutline
 ];
@@ -134,13 +145,14 @@ export class NzIconService extends IconService {
 
   constructor(
     protected rendererFactory: RendererFactory2,
+    protected sanitizer: DomSanitizer,
     @Optional() protected handler: HttpBackend,
     // tslint:disable-next-line:no-any
     @Optional() @Inject(DOCUMENT) protected document: any,
     @Optional() @Inject(NZ_ICONS) private icons: IconDefinition[],
     @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private defaultColor: string
   ) {
-    super(rendererFactory, handler, document);
+    super(rendererFactory, handler, document, sanitizer);
 
     this.addIcon(...NZ_ICONS_USED_BY_ZORRO, ...(this.icons || []));
 

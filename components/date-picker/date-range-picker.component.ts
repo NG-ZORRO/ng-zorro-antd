@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
 
 import { FunctionProp } from '../core/types/common-wrap';
 import { toBoolean, valueFunctionProp, InputBoolean } from '../core/util/convert';
@@ -38,8 +38,8 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   pickerStyle: object; // Final picker style that contains width fix corrections etc.
   extraFooter: TemplateRef<void> | string;
 
-  constructor(i18n: NzI18nService) {
-    super(i18n);
+  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef) {
+    super(i18n, cdr);
   }
 
   ngOnInit(): void {

@@ -2,7 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
+  Component, ElementRef,
   EventEmitter,
   Host,
   HostBinding,
@@ -11,7 +11,7 @@ import {
   OnDestroy,
   OnInit,
   Optional,
-  Output,
+  Output, Renderer2,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -33,7 +33,6 @@ export type NzBreakPoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
   changeDetection    : ChangeDetectionStrategy.OnPush,
   templateUrl        : './nz-sider.component.html',
   host               : {
-    '[class.ant-layout-sider]'           : 'true',
     '[class.ant-layout-sider-zero-width]': 'nzCollapsed && (nzCollapsedWidth===0)',
     '[style.flex]'                       : 'flexSetting',
     '[style.max-width.px]'               : 'widthSetting',
@@ -100,7 +99,8 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.nzCollapsible && this.nzTrigger && (this.nzCollapsedWidth !== 0);
   }
 
-  constructor(@Optional() @Host() private nzLayoutComponent: NzLayoutComponent, private mediaMatcher: MediaMatcher, private ngZone: NgZone, private platform: Platform, private cdr: ChangeDetectorRef) {
+  constructor(@Optional() @Host() private nzLayoutComponent: NzLayoutComponent, private mediaMatcher: MediaMatcher, private ngZone: NgZone, private platform: Platform, private cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-layout-sider');
   }
 
   ngOnInit(): void {

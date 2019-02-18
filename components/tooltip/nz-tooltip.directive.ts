@@ -11,7 +11,8 @@ import {
   OnInit,
   Optional,
   Output,
-  Renderer2, SimpleChanges,
+  Renderer2,
+  SimpleChanges,
   TemplateRef,
   ViewContainerRef
 } from '@angular/core';
@@ -24,7 +25,7 @@ import { NzToolTipComponent } from './nz-tooltip.component';
 
 @Directive({
   selector: '[nz-tooltip]',
-  host: {
+  host    : {
     '[class.ant-tooltip-open]': 'isTooltipOpen'
   }
 })
@@ -32,7 +33,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   // [NOTE] Here hard coded, and nzTitle used only under NzTooltipDirective currently.
   isTooltipOpen: boolean = false;
   isDynamicTooltip = false; // Indicate whether current tooltip is dynamic created
-  delayTimer; // Timer for delay enter/leave
+  delayTimer: number; // Timer for delay enter/leave
   visible: boolean;
   factory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
 
@@ -54,7 +55,11 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   @Input('nz-tooltip') nzTitle: string | TemplateRef<void>;
-  @Input('nzTitle') set setTitle(title: string | TemplateRef<void>) { this.nzTitle = title; }
+
+  @Input('nzTitle') set setTitle(title: string | TemplateRef<void>) {
+    this.nzTitle = title;
+  }
+
   @Input() nzContent: string | TemplateRef<void>;
   @Input() nzMouseEnterDelay: number;
   @Input() nzMouseLeaveDelay: number;
@@ -141,10 +146,10 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
 
   private delayEnterLeave(isOrigin: boolean, isEnter: boolean, delay: number = -1): void {
     if (this.delayTimer) { // Clear timer during the delay time
-      window.clearTimeout(this.delayTimer);
+      clearTimeout(this.delayTimer);
       this.delayTimer = null;
     } else if (delay > 0) {
-      this.delayTimer = window.setTimeout(() => {
+      this.delayTimer = setTimeout(() => {
         this.delayTimer = null;
         isEnter ? this.show() : this.hide();
       }, delay * 1000);
@@ -165,6 +170,11 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
           this.updateCompValue(key, change.currentValue);
         }
       });
+
+      if (changes.setTitle) {
+        this.nzTitle = changes.setTitle.currentValue;
+        this.updateCompValue('nzTitle', changes.setTitle.currentValue);
+      }
     }
   }
 }

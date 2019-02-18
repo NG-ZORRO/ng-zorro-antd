@@ -9,7 +9,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Optional,
+  Optional, Renderer2,
   ViewEncapsulation
 } from '@angular/core';
 import { FormControl, FormControlName, NgControl } from '@angular/forms';
@@ -29,9 +29,6 @@ import { NzFormItemComponent } from './nz-form-item.component';
   changeDetection    : ChangeDetectionStrategy.OnPush,
   providers          : [ NzUpdateHostClassService ],
   templateUrl        : './nz-form-control.component.html',
-  host               : {
-    '[class.ant-form-item-control-wrapper]': 'true'
-  },
   styles             : [
       `
       nz-form-control {
@@ -122,8 +119,9 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
     }
   }
 
-  constructor(nzUpdateHostClassService: NzUpdateHostClassService, elementRef: ElementRef, @Optional() @Host() nzFormItemComponent: NzFormItemComponent, @Optional() @Host() nzRowDirective: NzRowDirective, private cdr: ChangeDetectorRef) {
+  constructor(nzUpdateHostClassService: NzUpdateHostClassService, elementRef: ElementRef, @Optional() @Host() nzFormItemComponent: NzFormItemComponent, @Optional() @Host() nzRowDirective: NzRowDirective, private cdr: ChangeDetectorRef, renderer: Renderer2) {
     super(nzUpdateHostClassService, elementRef, nzFormItemComponent, nzRowDirective);
+    renderer.addClass(elementRef.nativeElement, 'ant-form-item-control-wrapper');
   }
 
   ngOnInit(): void {

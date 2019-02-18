@@ -1,5 +1,5 @@
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
-import { ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   forwardRef,
   ChangeDetectionStrategy,
@@ -11,19 +11,27 @@ import {
   Input,
   OnDestroy,
   Output,
+  Renderer2,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { dropDownAnimation } from '../core/animation/dropdown-animations';
-import { ClassMap } from '../core/interface/interface';
-import { EXPANDED_DROPDOWN_POSITIONS } from '../core/overlay/overlay-position-map';
+import { slideMotion } from '../core/animation/slide';
+import { DEFAULT_CASCADER_POSITIONS } from '../core/overlay/overlay-position';
+import { NgClassType } from '../core/types/ng-class';
 import { arrayEquals, toArray } from '../core/util/array';
 import { InputBoolean } from '../core/util/convert';
 
-import { CascaderOption, CascaderSearchOption, NzCascaderExpandTrigger, NzCascaderSize, NzCascaderTriggerType, NzShowSearchOptions } from './types';
+import {
+  CascaderOption,
+  CascaderSearchOption,
+  NzCascaderExpandTrigger,
+  NzCascaderSize,
+  NzCascaderTriggerType,
+  NzShowSearchOptions
+} from './types';
 
 const defaultDisplayRender = label => label.join(' / ');
 
@@ -33,7 +41,7 @@ const defaultDisplayRender = label => label.join(' / ');
   selector           : 'nz-cascader,[nz-cascader]',
   preserveWhitespaces: false,
   templateUrl        : './nz-cascader.component.html',
-  animations         : [ dropDownAnimation ],
+  animations         : [ slideMotion ],
   providers          : [
     {
       provide    : NG_VALUE_ACCESSOR,
@@ -43,8 +51,6 @@ const defaultDisplayRender = label => label.join(' / ');
   ],
   host               : {
     '[attr.tabIndex]'                       : '"0"',
-    '[class.ant-cascader]'                  : 'true',
-    '[class.ant-cascader-picker]'           : 'true',
     '[class.ant-cascader-lg]'               : 'nzSize === "large"',
     '[class.ant-cascader-sm]'               : 'nzSize === "small"',
     '[class.ant-cascader-picker-disabled]'  : 'nzDisabled',
@@ -66,6 +72,7 @@ const defaultDisplayRender = label => label.join(' / ');
 export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   @ViewChild('input') input: ElementRef;
   @ViewChild('menu') menu: ElementRef;
+  @ViewChild(CdkConnectedOverlay) overlay: CdkConnectedOverlay;
 
   @Input() @InputBoolean() nzShowInput = true;
   @Input() @InputBoolean() nzShowArrow = true;
@@ -93,7 +100,10 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   @Input() nzLoadData: (node: CascaderOption, index?: number) => PromiseLike<any>;
 
   @Input()
-  get nzOptions(): CascaderOption[] { return this.columns[ 0 ]; }
+  get nzOptions(): CascaderOption[] {
+    return this.columns[ 0 ];
+  }
+
   set nzOptions(options: CascaderOption[] | null) {
     this.columnsSnapshot = this.columns = options && options.length ? [ options ] : [];
     if (!this.isSearching) {
@@ -120,7 +130,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   columns: CascaderOption[][] = [];
   onChange = Function.prototype;
   onTouched = Function.prototype;
-  positions: ConnectionPositionPair[] = [ ...EXPANDED_DROPDOWN_POSITIONS ];
+  positions: ConnectionPositionPair[] = [ ...DEFAULT_CASCADER_POSITIONS ];
   dropdownWidthStyle: string;
   isSearching = false;
   isFocused = false;
@@ -132,23 +142,27 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   private activatedOptions: CascaderOption[] = [];
   private columnsSnapshot: CascaderOption[][];
   private activatedOptionsSnapshot: CascaderOption[];
-  private delayMenuTimer;
-  private delaySelectTimer;
+  private delayMenuTimer: number;
+  private delaySelectTimer: number;
 
   set inputValue(inputValue: string) {
     this._inputValue = inputValue;
     this.toggleSearchMode();
   }
-  get inputValue(): string { return this._inputValue; }
+
+  get inputValue(): string {
+    return this._inputValue;
+  }
+
   private _inputValue = '';
 
-  get menuCls(): ClassMap {
+  get menuCls(): NgClassType {
     return {
       [ `${this.nzMenuClassName}` ]: !!this.nzMenuClassName
     };
   }
 
-  get menuColumnCls(): ClassMap {
+  get menuColumnCls(): NgClassType {
     return {
       [ `${this.nzColumnClassName}` ]: !!this.nzColumnClassName
     };
@@ -293,6 +307,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     }
 
     this.cdr.detectChanges();
+    this.reposition();
   }
 
   private loadChildrenAsync(option: CascaderOption, columnIndex: number, success?: () => void, failure?: () => void): void {
@@ -305,6 +320,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
           option.children.forEach(child => child.parent = columnIndex < 0 ? undefined : option);
           this.setColumnData(option.children, columnIndex + 1);
           this.cdr.detectChanges();
+          this.reposition();
         }
         if (success) {
           success();
@@ -656,20 +672,26 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     };
 
     const filter: (inputValue: string, p: CascaderOption[]) => boolean =
-      this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).filter
-        ? (this.nzShowSearch as NzShowSearchOptions).filter
-        : defaultFilter;
+            this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).filter
+              ? (this.nzShowSearch as NzShowSearchOptions).filter
+              : defaultFilter;
 
     const sorter: (a: CascaderOption[], b: CascaderOption[], inputValue: string) => number =
-      this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).sorter;
+            this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).sorter;
 
     const loopParent = (node: CascaderOption, forceDisabled = false) => {
       const disabled = forceDisabled || node.disabled;
       path.push(node);
       node.children.forEach((sNode) => {
-        if (!sNode.parent) { sNode.parent = node; } // Build parent reference when doing searching
-        if (!sNode.isLeaf) { loopParent(sNode, disabled); }
-        if (sNode.isLeaf || !sNode.children || !sNode.children.length) { loopChild(sNode, disabled); }
+        if (!sNode.parent) {
+          sNode.parent = node;
+        } // Build parent reference when doing searching
+        if (!sNode.isLeaf) {
+          loopParent(sNode, disabled);
+        }
+        if (sNode.isLeaf || !sNode.children || !sNode.children.length) {
+          loopChild(sNode, disabled);
+        }
       });
       path.pop();
     };
@@ -689,6 +711,11 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
       }
       path.pop();
     };
+
+    if (!this.columnsSnapshot.length) {
+      this.columns = [ [] ];
+      return;
+    }
 
     this.columnsSnapshot[ 0 ].forEach(node => (node.isLeaf || !node.children || !node.children.length)
       ? loopChild(node)
@@ -784,7 +811,9 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     this.setMenuVisible(false);
   }
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef) {
+  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-cascader');
+    renderer.addClass(elementRef.nativeElement, 'ant-cascader-picker');
   }
 
   ngOnDestroy(): void {
@@ -817,6 +846,18 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     if (this.dropDownPosition !== newValue) {
       this.dropDownPosition = newValue;
       this.cdr.detectChanges();
+    }
+  }
+
+  /**
+   * Reposition the cascader panel. When a menu opens, the cascader expands
+   * and may exceed the browser boundary.
+   */
+  private reposition(): void {
+    if (this.overlay && this.overlay.overlayRef && this.menuVisible) {
+      Promise.resolve().then(() => {
+        this.overlay.overlayRef.updatePosition();
+      });
     }
   }
 }

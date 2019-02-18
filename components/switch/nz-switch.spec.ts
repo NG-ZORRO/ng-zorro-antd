@@ -5,7 +5,7 @@ import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angul
 import { By } from '@angular/platform-browser';
 
 import { dispatchKeyboardEvent } from '../core/testing';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
 import { NzSwitchComponent } from './nz-switch.component';
 import { NzSwitchModule } from './nz-switch.module';
@@ -13,7 +13,7 @@ import { NzSwitchModule } from './nz-switch.module';
 describe('switch', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzSwitchModule, FormsModule, ReactiveFormsModule, NzIconModule ],
+      imports     : [ NzSwitchModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
       declarations: [ NzTestSwitchBasicComponent, NzTestSwitchFormComponent, NzTestSwitchTemplateComponent ]
     });
     TestBed.compileComponents();
@@ -122,6 +122,21 @@ describe('switch', () => {
       expect(testComponent.value).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
       testComponent.control = true;
+      fixture.detectChanges();
+      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', ENTER);
+      fixture.detectChanges();
+      expect(testComponent.value).toBe(false);
+      expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
+      testComponent.control = false;
+      testComponent.loading = true;
+      fixture.detectChanges();
+      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', ENTER);
+      fixture.detectChanges();
+      expect(testComponent.value).toBe(false);
+      expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
+      testComponent.control = false;
+      testComponent.loading = false;
+      testComponent.disabled = true;
       fixture.detectChanges();
       dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', ENTER);
       fixture.detectChanges();

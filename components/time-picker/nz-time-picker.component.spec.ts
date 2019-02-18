@@ -8,6 +8,10 @@ import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzTimePickerComponent } from './nz-time-picker.component';
 import { NzTimePickerModule } from './nz-time-picker.module';
 
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
+registerLocaleData(zh);
+
 describe('time-picker', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;

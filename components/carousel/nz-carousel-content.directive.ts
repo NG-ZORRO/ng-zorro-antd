@@ -8,10 +8,7 @@ import {
 import { isNotNil } from '../core/util/check';
 
 @Directive({
-  selector: '[nz-carousel-content]',
-  host    : {
-    '[class.slick-slide]': 'true'
-  }
+  selector: '[nz-carousel-content]'
 })
 export class NzCarouselContentDirective implements OnInit {
   private _active = false;
@@ -84,17 +81,17 @@ export class NzCarouselContentDirective implements OnInit {
     return this._fadeMode;
   }
 
-  updateOpacity(): void {
-    if (this.fadeMode) {
-      this.renderer.setStyle(this.el, 'opacity', this.isActive ? 1 : 0);
-    }
-  }
-
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'slick-slide');
   }
 
   ngOnInit(): void {
     this.renderer.setStyle(this.el, 'transition', 'opacity 500ms ease');
   }
 
+  private updateOpacity(): void {
+    if (this.fadeMode) {
+      this.renderer.setStyle(this.el, 'opacity', this.isActive ? 1 : 0);
+    }
+  }
 }

@@ -1,91 +1,101 @@
 import { Component } from '@angular/core';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ReplaySubject, Subject } from 'rxjs';
+import { dispatchFakeEvent } from '../core/testing';
 import { NzOptionLiComponent } from './nz-option-li.component';
 import { NzOptionComponent } from './nz-option.component';
+import { NzSelectService } from './nz-select.service';
 
 describe('select option li', () => {
   beforeEach(fakeAsync(() => {
+    let nzSelectServiceStub: Partial<NzSelectService>;
+    nzSelectServiceStub = {
+      activatedOption$    : new ReplaySubject(1),
+      listOfSelectedValue$: new Subject(),
+      compareWith         : (o1, o2) => o1 === o2,
+      clickOption         : () => {
+      }
+    };
     TestBed.configureTestingModule({
-      imports     : [],
+      providers   : [ { provide: NzSelectService, useValue: nzSelectServiceStub } ],
       declarations: [ NzTestSelectOptionLiComponent, NzOptionLiComponent ]
     });
     TestBed.compileComponents();
   }));
-  describe('basic select option li', () => {
+  describe('default', () => {
     let fixture;
     let testComponent;
     let li;
+    let liComponent;
+    let nzSelectService;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSelectOptionLiComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       li = fixture.debugElement.query(By.directive(NzOptionLiComponent));
-    });
-    it('should class and style correct', () => {
-      fixture.detectChanges();
-      const element = li.nativeElement;
-      expect(element.classList).toContain('ant-select-dropdown-menu-item');
-      expect(element.attributes.getNamedItem('unselectable').name).toBe('unselectable');
-      expect(element.style.userSelect).toBe('none');
-    });
-    it('should disabled work', () => {
-      testComponent.option.nzDisabled = true;
-      fixture.detectChanges();
-      expect(li.nativeElement.classList).toContain('ant-select-dropdown-menu-item-disabled');
+      liComponent = li.injector.get(NzOptionLiComponent);
+      nzSelectService = fixture.debugElement.injector.get(NzSelectService);
     });
     it('should selected work', () => {
-      testComponent.option.nzValue = { value: 'test' };
-      testComponent.listOfSelectedValue = [ { value: 'test' } ];
       fixture.detectChanges();
-      expect(li.nativeElement.classList).toContain('ant-select-dropdown-menu-item-selected');
+      expect(liComponent.selected).toBe(false);
+      nzSelectService.listOfSelectedValue$.next([ '01_value' ]);
+      fixture.detectChanges();
+      expect(liComponent.selected).toBe(true);
+      nzSelectService.listOfSelectedValue$.next([ '01_label' ]);
+      fixture.detectChanges();
+      expect(liComponent.selected).toBe(false);
     });
-    /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1229 **/
-    it('should zero value work', () => {
-      testComponent.option.nzValue = { value: 0 };
-      testComponent.listOfSelectedValue = [ { value: 0 } ];
+    it('should active work', () => {
       fixture.detectChanges();
-      expect(li.nativeElement.classList).toContain('ant-select-dropdown-menu-item-selected');
+      expect(liComponent.active).toBe(false);
+      const option01 = new NzOptionComponent();
+      option01.nzLabel = '01_label';
+      option01.nzValue = '01_value';
+      nzSelectService.activatedOption$.next(option01);
+      fixture.detectChanges();
+      expect(liComponent.active).toBe(true);
+      nzSelectService.activatedOption$.next(null);
+      fixture.detectChanges();
+      expect(liComponent.active).toBe(false);
     });
-    it('should activeOption null work', () => {
-      testComponent.option.nzValue = { value: 'test' };
-      testComponent.activeOption = null;
+    it('should destroy piped', () => {
       fixture.detectChanges();
-      expect(li.nativeElement.classList).not.toContain('ant-select-dropdown-menu-item-active');
+      const checkSpy = spyOn(liComponent.cdr, 'markForCheck');
+      expect(checkSpy).toHaveBeenCalledTimes(0);
+      nzSelectService.listOfSelectedValue$.next([ '01_value' ]);
+      fixture.detectChanges();
+      expect(checkSpy).toHaveBeenCalledTimes(1);
+      testComponent.destroy = true;
+      fixture.detectChanges();
+      nzSelectService.listOfSelectedValue$.next([ '01_value' ]);
+      fixture.detectChanges();
+      expect(checkSpy).toHaveBeenCalledTimes(1);
     });
-    it('should activeOption set work', () => {
-      testComponent.option.nzValue = { value: 'test' };
-      testComponent.activeOption.nzValue = { value: 'test' };
+    it('should host click trigger', () => {
       fixture.detectChanges();
-      expect(li.nativeElement.classList).toContain('ant-select-dropdown-menu-item-active');
-    });
-    it('should nzShowActive work', () => {
-      testComponent.option.nzValue = { value: 'test' };
-      testComponent.activeOption.nzValue = { value: 'test' };
-      testComponent.showActive = false;
+      const clickSpy = spyOn(nzSelectService, 'clickOption');
       fixture.detectChanges();
-      expect(li.nativeElement.classList).not.toContain('ant-select-dropdown-menu-item-active');
+      expect(clickSpy).toHaveBeenCalledTimes(0);
+      dispatchFakeEvent(li.nativeElement, 'click');
+      expect(clickSpy).toHaveBeenCalledTimes(1);
     });
   });
 });
 
 @Component({
-  selector: 'nz-test-select-option-li',
   template: `
-    <li
-      nz-option-li
-      [compareWith]="compareFn"
-      [nzOption]="option"
-      [nzListOfSelectedValue]="listOfSelectedValue"
-      [nzShowActive]="showActive"
-      [nzActiveOption]="activeOption">
-    </li>`
+    <li nz-option-li *ngIf="!destroy" [nzOption]="option" [nzMenuItemSelectedIcon]="icon"></li>
+    <ng-template #icon>icon</ng-template>
+  `
 })
 export class NzTestSelectOptionLiComponent {
   option = new NzOptionComponent();
-  showActive = true;
-  listOfSelectedValue = [];
-  activeOption = new NzOptionComponent();
-  // tslint:disable-next-line:no-any
-  compareFn = (o1: any, o2: any) => o1 && o2 ? o1.value === o2.value : o1 === o2;
+  destroy = false;
+
+  constructor() {
+    this.option.nzLabel = '01_label';
+    this.option.nzValue = '01_value';
+  }
 }

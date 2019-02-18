@@ -34,7 +34,6 @@ import { InputBoolean } from '../core/util/convert';
     }
   ],
   host               : {
-    '[class.ant-radio-wrapper]'         : 'true',
     '[class.ant-radio-wrapper-checked]' : 'checked',
     '[class.ant-radio-wrapper-disabled]': 'nzDisabled'
   }
@@ -63,9 +62,11 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     }
   }
 
-  @HostListener('click')
-  onClick(): void {
-    this.focus();
+  @HostListener('click', ['$event'])
+  onClick(event: MouseEvent): void {
+    // Prevent label click triggered twice.
+    event.stopPropagation();
+    event.preventDefault();
     if (!this.nzDisabled && !this.checked) {
       this.select$.next(this);
       if (this.isNgModel) {
@@ -89,6 +90,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
 
   /* tslint:disable-next-line:no-any */
   constructor(private elementRef: ElementRef, private renderer: Renderer2, @Inject(DOCUMENT) private document: any, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
+    renderer.addClass(elementRef.nativeElement, 'ant-radio-wrapper');
   }
 
   setDisabledState(isDisabled: boolean): void {

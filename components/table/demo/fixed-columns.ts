@@ -3,19 +3,19 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-fixed-columns',
   template: `
-    <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" [nzScroll]="{x:'1300px'}">
+    <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" [nzScroll]="{x:'1100px'}">
       <thead>
         <tr>
           <th nzWidth="100px" nzLeft="0px">Full Name</th>
           <th nzWidth="100px" nzLeft="100px">Age</th>
-          <th>Column 1</th>
-          <th>Column 2</th>
-          <th>Column 3</th>
-          <th>Column 4</th>
-          <th>Column 5</th>
-          <th>Column 6</th>
-          <th>Column 7</th>
-          <th>Column 8</th>
+          <th nzWidth="100px">Column 1</th>
+          <th nzWidth="100px">Column 2</th>
+          <th nzWidth="100px">Column 3</th>
+          <th nzWidth="100px">Column 4</th>
+          <th nzWidth="100px">Column 5</th>
+          <th nzWidth="100px">Column 6</th>
+          <th nzWidth="100px">Column 7</th>
+          <th nzRight="100px" nzWidth="100px">Column 8</th>
           <th nzWidth="100px" nzRight="0px">Action</th>
         </tr>
       </thead>
@@ -30,7 +30,7 @@ import { Component } from '@angular/core';
           <td>{{data.address}}</td>
           <td>{{data.address}}</td>
           <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
+          <td nzRight="100px">{{data.address}}</td>
           <td nzRight="0px">
             <a>action</a>
           </td>

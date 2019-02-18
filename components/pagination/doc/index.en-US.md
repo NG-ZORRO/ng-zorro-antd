@@ -28,7 +28,7 @@ A long list can be divided into several pages by `Pagination`, and only one page
 | `[nzShowQuickJumper]` | determine whether you can jump to pages directly | `boolean` | `false` |
 | `[nzShowSizeChanger]` | determine whether `nzPageSize` can be changed | `boolean` | `false` |
 | `[nzSimple]` | whether to use simple mode | `boolean` | - |
-| `[nzSize]` | specify the size of `nz-pagination`, can be set to `small` | `'small'` | `""` |
+| `[nzSize]` | specify the size of `nz-pagination`, can be set to `small` | `'small'` | `'default'` |
 | `[nzPageSizeOptions]` | specify the sizeChanger options | `number[]` | `[10, 20, 30, 40]` |
 | `[nzItemRender]` | to customize item | `TemplateRef<{ $implicit: 'page'｜'prev'｜'next', page: number }>` | - |
 | `[nzShowTotal]` | to display the total number and range | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |

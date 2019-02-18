@@ -1,22 +1,17 @@
-import { animate, style, transition, trigger } from '@angular/animations';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  Input,
+  Input, OnChanges,
   OnInit,
-  Renderer2,
+  Renderer2, SimpleChanges, TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
-import { AnimationCurves } from '../core/animation/animation';
+import { zoomBadgeMotion } from '../core/animation/zoom';
 import { isEmpty } from '../core/util/check';
 import { InputBoolean } from '../core/util/convert';
-
-const ANIMATION_TRANSITION_IN = `0.3s ${AnimationCurves.EASE_IN_BACK}`;
-const ANIMATION_TRANSITION_OUT = `0.3s ${AnimationCurves.EASE_IN_BACK}`;
 
 export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' | 'warning';
 
@@ -25,34 +20,17 @@ export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' |
   preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
-  animations         : [
-    trigger('zoomAnimation', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'scale(0) translateX(50%)' }),
-        animate(ANIMATION_TRANSITION_IN, style({
-          opacity  : 1,
-          transform: 'scale(1) translateX(50%)'
-        }))
-      ]),
-      transition(':leave', [
-        style({ opacity: 1, transform: 'scale(1) translateX(50%)' }),
-        animate(ANIMATION_TRANSITION_OUT, style({
-          opacity  : 0,
-          transform: 'scale(0) translateX(50%)'
-        }))
-      ])
-    ])
-  ],
+  animations         : [ zoomBadgeMotion ],
   templateUrl        : './nz-badge.component.html',
   host               : {
-    '[class.ant-badge]'       : 'true',
     '[class.ant-badge-status]': 'nzStatus'
   }
 })
-export class NzBadgeComponent implements OnInit, AfterViewInit {
+export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges {
   maxNumberArray = [];
   countArray = [];
   countSingleArray = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
+  count: number;
   @ViewChild('contentElement') contentElement: ElementRef;
   @Input() @InputBoolean() nzShowZero = false;
   @Input() @InputBoolean() nzShowDot = true;
@@ -61,30 +39,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit {
   @Input() nzText: string;
   @Input() nzStyle: { [ key: string ]: string };
   @Input() nzStatus: NzBadgeStatusType;
-
-  @Input()
-  set nzCount(value: number) {
-    if (value < 0) {
-      this._count = 0;
-    } else {
-      this._count = value;
-    }
-    this.countArray = this._count.toString().split('');
-  }
-
-  get nzCount(): number {
-    return this._count;
-  }
-
-  get showSup(): boolean {
-    return (this.nzShowDot && this.nzDot) || this.nzCount > 0 || ((this.nzCount === 0) && this.nzShowZero);
-  }
-
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) {
-
-  }
-
-  private _count: number;
+  @Input() nzCount: number | TemplateRef<void>;
 
   checkContent(): void {
     if (isEmpty(this.contentElement.nativeElement)) {
@@ -94,11 +49,34 @@ export class NzBadgeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngOnInit(): void {
+  get showSup(): boolean {
+    return (this.nzShowDot && this.nzDot) || this.count > 0 || (this.count === 0 && this.nzShowZero);
+  }
+
+  generateMaxNumberArray(): void {
     this.maxNumberArray = this.nzOverflowCount.toString().split('');
+  }
+
+  constructor(private renderer: Renderer2, private elementRef: ElementRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-badge');
+  }
+
+  ngOnInit(): void {
+    this.generateMaxNumberArray();
   }
 
   ngAfterViewInit(): void {
     this.checkContent();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzOverflowCount, nzCount } = changes;
+    if (nzCount && !(nzCount.currentValue instanceof TemplateRef)) {
+      this.count = Math.max(0, nzCount.currentValue);
+      this.countArray = this.count.toString().split('').map(item => +item);
+    }
+    if (nzOverflowCount) {
+      this.generateMaxNumberArray();
+    }
   }
 }

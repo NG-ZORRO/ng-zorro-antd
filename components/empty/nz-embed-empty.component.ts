@@ -16,8 +16,8 @@ import {
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 
-import { simpleEmptyImage, NzEmptyCustomContent, NzEmptySize, NZ_EMPTY_COMPONENT_NAME } from './nz-empty.config';
-import { NzEmptyContentTypeError } from './nz-empty.error';
+import { simpleEmptyImage, NzEmptyCustomContent, NzEmptySize, NZ_EMPTY_COMPONENT_NAME } from './nz-empty-config';
+import { getEmptyContentTypeError } from './nz-empty-error';
 import { NzEmptyService } from './nz-empty.service';
 
 @Component({
@@ -88,9 +88,7 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   private renderEmpty(): void {
     const content = this.content;
 
-    if (content === undefined || content === null) {
-      // Do nothing.
-    } else if (typeof content === 'string') {
+    if (typeof content === 'string') {
       this.contentType = 'string';
     } else if (content instanceof TemplateRef) {
       const context = { $implicit: this.nzComponentName } as any; // tslint:disable-line:no-any
@@ -102,7 +100,8 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
       this.contentType = 'component';
       this.contentPortal = new ComponentPortal(content, this.viewContainerRef, injector);
     } else {
-      throw NzEmptyContentTypeError(content);
+      this.contentType = 'string';
+      this.contentPortal = undefined;
     }
 
     this.cdr.markForCheck();

@@ -7,7 +7,6 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  HostListener,
   Input,
   TemplateRef,
   ViewChild,
@@ -31,6 +30,9 @@ import { InputBoolean } from '../core/util/convert';
       multi      : true
     }
   ],
+  host               : {
+    '(click)': 'hostClick($event)'
+  },
   styles             : [ `
     nz-switch {
       display: inline-block;
@@ -39,9 +41,9 @@ import { InputBoolean } from '../core/util/convert';
 })
 export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit {
   checked = false;
-  @ViewChild('switchElement') private switchElement: ElementRef;
   onChange: (value: boolean) => void = () => null;
   onTouched: () => void = () => null;
+  @ViewChild('switchElement') private switchElement: ElementRef;
   @Input() @InputBoolean() nzLoading = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzControl = false;
@@ -49,10 +51,9 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit {
   @Input() nzUnCheckedChildren: string | TemplateRef<void>;
   @Input() nzSize: NzSizeDSType;
 
-  @HostListener('click', [ '$event' ])
-  onClick(e: MouseEvent): void {
+  hostClick(e: MouseEvent): void {
     e.preventDefault();
-    if ((!this.nzDisabled) && (!this.nzLoading) && (!this.nzControl)) {
+    if (!this.nzDisabled && !this.nzLoading && !this.nzControl) {
       this.updateValue(!this.checked);
     }
   }
@@ -65,14 +66,14 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit {
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    if (!this.nzControl) {
-      if (e.keyCode === LEFT_ARROW) { // Left
+    if (!this.nzControl && !this.nzDisabled && !this.nzLoading) {
+      if (e.keyCode === LEFT_ARROW) {
         this.updateValue(false);
         e.preventDefault();
-      } else if (e.keyCode === RIGHT_ARROW) { // Right
+      } else if (e.keyCode === RIGHT_ARROW) {
         this.updateValue(true);
         e.preventDefault();
-      } else if (e.keyCode === SPACE || e.keyCode === ENTER) { // Space, Enter
+      } else if (e.keyCode === SPACE || e.keyCode === ENTER) {
         this.updateValue(!this.checked);
         e.preventDefault();
       }

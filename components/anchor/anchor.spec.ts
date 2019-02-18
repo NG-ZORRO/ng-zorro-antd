@@ -62,6 +62,19 @@ describe('anchor', () => {
       }, throttleTime);
     });
 
+    it('should clean actived when leave all anchor', fakeAsync(() => {
+      spyOn(context.comp, 'clearActive' as any);
+      page.scrollTo();
+      tick(throttleTime);
+      fixture.detectChanges();
+      expect(context.comp['clearActive']).not.toHaveBeenCalled();
+      window.scrollTo(0, 0);
+      window.dispatchEvent(new Event('scroll'));
+      tick(throttleTime);
+      fixture.detectChanges();
+      expect(context.comp['clearActive']).toHaveBeenCalled();
+    }));
+
     it(`won't scolling when is not exists link`, () => {
       spyOn(srv, 'getScroll');
       expect(context._scroll).not.toHaveBeenCalled();
@@ -198,12 +211,12 @@ describe('anchor', () => {
       expect(el).not.toBeNull();
       return el.nativeElement as HTMLElement;
     }
-    to(href: string = '#何时使用'): this {
+    to(href: string = '#basic'): this {
       this.getEl(`nz-affix [href="${href}"]`).click();
       fixture.detectChanges();
       return this;
     }
-    scrollTo(href: string = '#何时使用'): this {
+    scrollTo(href: string = '#basic'): this {
       const toNode = dl.query(By.css(href));
       (toNode.nativeElement as HTMLElement).scrollIntoView();
       fixture.detectChanges();

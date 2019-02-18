@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzTableComponent } from './nz-table.component';
 import { NzTableModule } from './nz-table.module';
 import { NzThComponent } from './nz-th.component';
@@ -9,9 +10,9 @@ import { NzThComponent } from './nz-th.component';
 describe('nz-th', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzTableModule ],
+      imports     : [ NzTableModule, NzIconTestModule ],
       declarations: [ NzThTestNzTableComponent, NzThTestTableDefaultFilterComponent ],
-      providers   : [ NzMeasureScrollbarService ]
+      providers   : [ NzUpdateHostClassService ]
     });
     TestBed.compileComponents();
   }));
@@ -160,14 +161,6 @@ describe('nz-th', () => {
       testComponent.showRowSelection = true;
       fixture.detectChanges();
       expect(th.nativeElement.querySelector('.ant-table-selection-down')).toBeDefined();
-    });
-    it('should filters not array warn', () => {
-      console.warn = jasmine.createSpy('warn');
-      fixture.detectChanges();
-      expect(console.warn).toHaveBeenCalledTimes(0);
-      testComponent.filters = null;
-      fixture.detectChanges();
-      expect(console.warn).toHaveBeenCalledTimes(1);
     });
     it('should showFilter work', () => {
       fixture.detectChanges();
@@ -369,27 +362,27 @@ export class NzThTestTableDefaultFilterComponent {
   searchAddress: string;
   data = [
     {
-      name: 'John Brown',
-      age: 32,
+      name   : 'John Brown',
+      age    : 32,
       address: 'New York No. 1 Lake Park'
     },
     {
-      name: 'Jim Green',
-      age: 42,
+      name   : 'Jim Green',
+      age    : 42,
       address: 'London No. 1 Lake Park'
     },
     {
-      name: 'Joe Black',
-      age: 32,
+      name   : 'Joe Black',
+      age    : 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      name: 'Jim Red',
-      age: 32,
+      name   : 'Jim Red',
+      age    : 32,
       address: 'London No. 2 Lake Park'
     }
   ];
-  displayData = [ ];
+  displayData = [];
 
   @ViewChild(NzThComponent) nzThComponent: NzThComponent;
 
@@ -424,4 +417,5 @@ export class NzThTestTableDefaultFilterComponent {
     <th class="nz-disable-th" [nzShowCheckbox]="true"></th>
   `
 })
-export class NzTestDisableThComponent {}
+export class NzTestDisableThComponent {
+}

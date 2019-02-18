@@ -167,7 +167,8 @@ describe('Coverage supplements', () => {
   describe('AbstractPicker', () => {
 
     beforeEach(() => {
-      componentInstance = new (AbstractPickerComponent as any)(); // tslint:disable-line:no-any
+      const fakeCdr = { markForCheck: () => void 0 };
+      componentInstance = new (AbstractPickerComponent as any)(i18n, fakeCdr); // tslint:disable-line:no-any
     });
 
     it('should cover untouched branches', () => {

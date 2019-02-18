@@ -1,106 +1,46 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   Output,
-  Renderer2
+  Renderer2,
+  SimpleChanges,
+  ViewEncapsulation
 } from '@angular/core';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
 import { isNotNil } from '../core/util/check';
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector   : 'td:not(.nz-disable-td)',
-  templateUrl: './nz-td.component.html'
+  selector           : 'td:not(.nz-disable-td)',
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  preserveWhitespaces: false,
+  encapsulation      : ViewEncapsulation.None,
+  templateUrl        : './nz-td.component.html',
+  host               : {
+    '[style.left]'      : 'nzLeft',
+    '[style.right]'     : 'nzRight',
+    '[style.text-align]': 'nzAlign'
+  }
 })
-export class NzTdComponent {
-  private _showExpand = false;
-  private _indentSize: number;
-  private _expand = false;
-  private _showCheckbox = false;
-  isIndentSizeSet = false;
-  el: HTMLElement = this.elementRef.nativeElement;
+export class NzTdComponent implements OnChanges {
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
+  @Input() nzLeft: string;
+  @Input() nzRight: string;
+  @Input() nzAlign: 'left' | 'right' | 'center';
+  @Input() nzIndentSize: number;
+  @Input() @InputBoolean() nzExpand = false;
+  @Input() @InputBoolean() nzShowExpand = false;
+  @Input() @InputBoolean() nzShowCheckbox = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Output() readonly nzExpandChange = new EventEmitter<boolean>();
-
-  @Input()
-  set nzIndentSize(value: number) {
-    this._indentSize = value;
-    this.isIndentSizeSet = isNotNil(value);
-    this.updateExpandIconClass();
-  }
-
-  get nzIndentSize(): number {
-    return this._indentSize;
-  }
-
-  @Input()
-  set nzExpand(value: boolean) {
-    this._expand = toBoolean(value);
-  }
-
-  get nzExpand(): boolean {
-    return this._expand;
-  }
-
-  @Input()
-  set nzShowExpand(value: boolean) {
-    this._showExpand = toBoolean(value);
-    this.updateExpandIconClass();
-  }
-
-  get nzShowExpand(): boolean {
-    return this._showExpand;
-  }
-
-  @Input()
-  set nzShowCheckbox(value: boolean) {
-    this._showCheckbox = toBoolean(value);
-    if (this._showCheckbox) {
-      this.renderer.addClass(this.el, 'ant-table-selection-column');
-    } else {
-      this.renderer.removeClass(this.el, 'ant-table-selection-column');
-    }
-  }
-
-  get nzShowCheckbox(): boolean {
-    return this._showCheckbox;
-  }
-
-  @Input()
-  set nzLeft(value: string) {
-    if (isNotNil(value)) {
-      this.renderer.addClass(this.el, 'ant-table-td-left-sticky');
-      this.renderer.setStyle(this.el, 'left', value);
-    } else {
-      this.renderer.removeClass(this.el, 'ant-table-td-left-sticky');
-      this.renderer.removeStyle(this.el, 'left');
-    }
-  }
-
-  @Input()
-  set nzRight(value: string) {
-    if (isNotNil(value)) {
-      this.renderer.addClass(this.el, 'ant-table-td-right-sticky');
-      this.renderer.setStyle(this.el, 'right', value);
-    } else {
-      this.renderer.removeClass(this.el, 'ant-table-td-right-sticky');
-      this.renderer.removeStyle(this.el, 'right');
-    }
-  }
-
-  updateExpandIconClass(): void {
-    if (this.nzShowExpand && !this.isIndentSizeSet) {
-      this.renderer.addClass(this.el, 'ant-table-row-expand-icon-cell');
-    } else {
-      this.renderer.removeClass(this.el, 'ant-table-row-expand-icon-cell');
-    }
-  }
 
   expandChange(e: Event): void {
     e.stopPropagation();
@@ -108,6 +48,21 @@ export class NzTdComponent {
     this.nzExpandChange.emit(this.nzExpand);
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+  setClassMap(): void {
+    this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
+      [ `ant-table-row-expand-icon-cell` ]: this.nzShowExpand && !isNotNil(this.nzIndentSize),
+      [ `ant-table-selection-column` ]    : this.nzShowCheckbox,
+      [ `ant-table-td-left-sticky` ]      : isNotNil(this.nzLeft),
+      [ `ant-table-td-right-sticky` ]     : isNotNil(this.nzRight)
+    });
+  }
+
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzIndentSize || changes.nzShowExpand || changes.nzShowCheckbox || changes.nzRight || changes.nzLeft) {
+      this.setClassMap();
+    }
   }
 }

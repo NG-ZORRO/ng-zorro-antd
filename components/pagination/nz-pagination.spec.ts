@@ -113,15 +113,6 @@ describe('pagination', () => {
         fixture.detectChanges();
         expect(paginationElement.children.length).toBe(9);
       });
-      it('should total pageIndex limit', () => {
-        console.log(testComponent.nzPaginationComponent.lastIndex);
-        testComponent.pageIndex = -1;
-        fixture.detectChanges();
-        expect(testComponent.nzPaginationComponent.nzPageIndex).toBe(1);
-        testComponent.pageIndex = 10;
-        fixture.detectChanges();
-        expect(testComponent.nzPaginationComponent.nzPageIndex).toBe(5);
-      });
       it('should next five work', () => {
         testComponent.total = 500;
         fixture.detectChanges();
@@ -151,7 +142,7 @@ describe('pagination', () => {
         testComponent.showSizeChanger = true;
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-          expect(paginationElement.children.length).toBe(12);
+          expect(paginationElement.children.length).toBe(10);
           expect(paginationElement.lastElementChild.classList.contains('ant-pagination-options')).toBe(true);
         });
       }));

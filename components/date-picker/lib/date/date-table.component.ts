@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, SimpleChange } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { FunctionProp } from '../../../core/types/common-wrap';
 import { isNonEmptyString, isTemplateRef } from '../../../core/util/check';
@@ -10,6 +10,9 @@ const DATE_ROW_NUM = 6;
 const DATE_COL_NUM = 7;
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // tslint:disable-next-line:component-selector
   selector: 'date-table',
   templateUrl: 'date-table.component.html'
 })
@@ -19,13 +22,13 @@ export class DateTableComponent implements OnInit, OnChanges {
   @Input() hoverValue: CandyDate[]; // Range ONLY
 
   @Input() value: CandyDate;
-  @Output() valueChange = new EventEmitter<CandyDate>();
+  @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   @Input() showWeek: boolean;
   @Input() disabledDate: (d: Date) => boolean;
   @Input() dateRender: FunctionProp<TemplateRef<Date> | string>; // Customize date content while rendering
 
-  @Output() dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
+  @Output() readonly dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
 
   prefixCls: string = 'ant-calendar';
   headWeekDays: WeekDayLabel[];
@@ -75,9 +78,6 @@ export class DateTableComponent implements OnInit, OnChanges {
 
   private changeValueFromInside(value: CandyDate): void {
     if (this.value !== value) {
-      // this.value = value;
-      // this.valueChange.emit(this.value);
-      // this.render();
       this.valueChange.emit(value);
     }
   }
@@ -101,11 +101,9 @@ export class DateTableComponent implements OnInit, OnChanges {
   }
 
   private makeWeekRows(): WeekRow[] {
-    // let justRendered = true;
     const weekRows: WeekRow[] = [];
     const firstDayOfWeek = this.getFirstDayOfWeek();
     const firstDateOfMonth = this.value.setDate(1);
-    // const firstDateToShow = firstDateOfMonth.setDay(firstDayOfWeek, { weekStartsOn: firstDayOfWeek });
     const firstDateOffset = (firstDateOfMonth.getDay() + 7 - firstDayOfWeek) % 7;
     const firstDateToShow = firstDateOfMonth.addDays(0 - firstDateOffset);
 
@@ -131,12 +129,6 @@ export class DateTableComponent implements OnInit, OnChanges {
           content: `${current.getDate()}`,
           onClick: () => this.changeValueFromInside(current),
           onMouseEnter: () => this.dayHover.emit(cell.value)
-          // onMouseEnter: () => {
-            // if (!justRendered) { // [Hack] To prevent the immediately "mouseenter" event when it just rendered, or the "hoverValue" may always said as changed
-              // this.dayHover.emit(cell.value);
-            // }
-            // justRendered = false;
-          // }
         };
 
         if (this.showWeek && !week.weekNum) {

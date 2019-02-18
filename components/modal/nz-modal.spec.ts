@@ -12,12 +12,11 @@ import { NzButtonModule } from '../button/nz-button.module';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 
 import { ESCAPE } from '@angular/cdk/keycodes';
-import { createKeyboardEvent, dispatchKeyboardEvent } from '../core/testing';
+import { dispatchKeyboardEvent } from '../core/testing';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { CssUnitPipe } from './css-unit.pipe';
-import { NZ_MODAL_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
 import { NzModalComponent } from './nz-modal.component';
@@ -123,7 +122,7 @@ describe('modal testing (legacy)', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [ NoopAnimationsModule, NzModalModule, NzIconModule ],
+        imports: [ NoopAnimationsModule, NzModalModule, NzIconTestModule ],
         declarations: [ TestBasicServiceComponent ],
         providers   : [ NzMeasureScrollbarService ]
       }).compileComponents();
@@ -161,6 +160,8 @@ describe('modal testing (legacy)', () => {
       expect(isButtonLoading(getButtonCancel(modalElement))).not.toBeFalsy();
       expect(modalElement.querySelector('.ant-modal-close')).toBeFalsy();
       expect(modalElement.querySelector('.ant-modal-mask')).toBeFalsy();
+      expect(getButtonOk(modalElement).disabled).toBeFalsy();
+      expect(getButtonCancel(modalElement).disabled).toBeFalsy();
 
       // click ok button
       getButtonOk(modalElement).click();
@@ -402,6 +403,7 @@ describe('NzModal', () => {
       fixture = TestBed.createComponent(ModalByServiceComponent);
     });
     afterEach(fakeAsync(() => { // wait all openModals tobe closed to clean up the ModalManager as it is globally static
+      document.documentElement.classList.remove('cdk-global-scrollblock');
       modalService.closeAll();
       fixture.detectChanges();
       tick(1000);
@@ -537,56 +539,27 @@ describe('NzModal', () => {
       expect(spyCancel).toHaveBeenCalled();
     });
 
-    it('should add/remove padding-left depends on current scrollbar (just functions mockup)', () => {
+    it('should block body scroll', fakeAsync(() => {
+      console.log(document.documentElement.classList);
+      const forceScrollElement = document.createElement('div');
+      document.body.appendChild(forceScrollElement);
+      forceScrollElement.style.width = '100px';
+      forceScrollElement.style.height = '3000px';
+      forceScrollElement.style.background = 'rebeccapurple';
+
       const modalRef = modalService.create();
-      const modalInstance = modalRef.getInstance();
-      spyOnProperty(window, 'innerHeight').and.returnValue(null); // Disable innerHeight to test another branch
-      // tslint:disable-next-line:no-string-literal
-      spyOnProperty(modalInstance['document'].body, 'scrollHeight').and.returnValue(200);
-      // tslint:disable-next-line:no-string-literal
-      spyOnProperty(modalInstance['document'].documentElement, 'clientHeight').and.returnValue(100);
-      // tslint:disable-next-line:no-string-literal
-      expect(modalInstance['hasBodyScrollBar']()).toBeTruthy();
+      tick(600);
+      fixture.detectChanges();
 
-      // tslint:disable-next-line:no-string-literal
-      const spySetStyle = spyOn(modalInstance['renderer'], 'setStyle');
-      // tslint:disable-next-line:no-string-literal
-      modalInstance['changeBodyOverflow'](1);
-      expect(spySetStyle).toHaveBeenCalled();
-    });
-  });
-});
+      expect(document.documentElement.classList).toContain('cdk-global-scrollblock');
 
-describe('NzModal with config settled', () => {
-  let modalService: NzModalService;
+      modalRef.close();
+      tick(600);
+      fixture.detectChanges();
 
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [ NzModalModule ],
-      providers: [{
-        provide: NZ_MODAL_CONFIG,
-        useValue: {
-          autoBodyPadding: false // Disable body padding
-        }
-      }]
-    }).compileComponents();
-  }));
-
-  beforeEach(inject([ NzModalService ], (ms: NzModalService) => {
-    modalService = ms;
-  }));
-
-  it('should disable body padding', () => {
-    const modalInstance = modalService.create().getInstance();
-    // Both style operating should not be called
-    // tslint:disable-next-line:no-string-literal
-    const setStyle = spyOn(modalInstance['renderer'], 'setStyle');
-    // tslint:disable-next-line:no-string-literal
-    const removeStyle = spyOn(modalInstance['renderer'], 'removeStyle');
-    // tslint:disable-next-line:no-string-literal
-    modalInstance['changeBodyOverflow']();
-    expect(setStyle).not.toHaveBeenCalled();
-    expect(removeStyle).not.toHaveBeenCalled();
+      expect(document.documentElement.classList).not.toContain('cdk-global-scrollblock');
+      document.body.removeChild(forceScrollElement);
+    }));
   });
 });
 
@@ -627,7 +600,7 @@ class NzDemoModalAsyncComponent {
 
   handleOk(): void {
     this.isOkLoading = true;
-    window.setTimeout(() => {
+    setTimeout(() => {
       this.isVisible = false;
       this.isOkLoading = false;
     }, 3000);
@@ -690,6 +663,8 @@ class TestBasicServiceComponent {
       nzOkText: 'custom ok',
       nzOkType: 'success',
       nzOkLoading: false,
+      nzOkDisabled: false,
+      nzCancelDisabled: false,
       nzOnOk: () => { console.log('click ok'); return false; },
       nzCancelText: 'custom cancel',
       nzCancelLoading: true,

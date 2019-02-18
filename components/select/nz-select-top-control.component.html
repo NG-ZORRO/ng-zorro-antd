@@ -1,59 +1,83 @@
 <ng-template #inputTemplate>
-  <input
-    #inputElement
+  <input #inputElement
     autocomplete="something-new"
     class="ant-select-search__field"
     (compositionstart)="isComposing = true"
     (compositionend)="isComposing = false"
     (input)="updateWidth()"
-    (keydown)="onKeyDownInput($event)"
     [ngModel]="inputValue"
-    (ngModelChange)="setInputValue($event,true)"
-    [disabled]="nzDisabled">
+    (ngModelChange)="setInputValue($event)"
+    [disabled]="nzSelectService.disabled">
 </ng-template>
-<div
-  *ngIf="nzPlaceHolder"
-  nz-select-unselectable
-  [style.display]="placeHolderDisplay"
-  (click)="focusOnInput()"
-  class="ant-select-selection__placeholder">{{ nzPlaceHolder }}</div>
-<!--single mode-->
-<ng-container *ngIf="isSingleMode">
-  <!--selected label-->
-  <div
-    *ngIf="nzListOfSelectedValue.length"
-    class="ant-select-selection-selected-value"
-    [attr.title]="singleValueLabel"
-    [ngStyle]="selectedValueDisplay">
-    {{ singleValueLabel }}
-  </div>
-  <!--show search-->
-  <div
-    *ngIf="nzShowSearch"
-    class="ant-select-search ant-select-search--inline">
-    <div class="ant-select-search__field__wrap">
-      <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>
-      <span class="ant-select-search__field__mirror">{{inputValue}}&nbsp;</span>
+<div class="ant-select-selection__rendered">
+  <div *ngIf="nzPlaceHolder"
+    nz-select-unselectable
+    [style.display]="placeHolderDisplay"
+    class="ant-select-selection__placeholder">{{ nzPlaceHolder }}</div>
+  <!--single mode-->
+  <ng-container *ngIf="nzSelectService.isSingleMode">
+    <!--selected label-->
+    <div
+      *ngIf="nzSelectService.listOfSelectedValue.length"
+      class="ant-select-selection-selected-value"
+      [attr.title]="nzSelectService.listOfCachedSelectedOption[0].nzLabel"
+      [ngStyle]="selectedValueStyle">
+      {{ nzSelectService.listOfCachedSelectedOption[0].nzLabel }}
     </div>
-  </div>
-</ng-container>
-<!--multiple or tags mode-->
-<ul *ngIf="isMultipleOrTags">
-  <ng-container *ngFor="let value of nzListOfSelectedValue">
-    <li
-      *ngIf="isOptionDisplay(value)"
-      [@tagAnimation]
-      [attr.title]="getPropertyFromValue(value,'nzLabel')"
-      [class.ant-select-selection__choice__disabled]="getPropertyFromValue(value,'nzDisabled')"
-      class="ant-select-selection__choice">
-      <div class="ant-select-selection__choice__content">{{ getPropertyFromValue(value, 'nzLabel') || value }}</div>
-      <span *ngIf="!getPropertyFromValue(value,'nzDisabled')" class="ant-select-selection__choice__remove" (click)="removeValueFormSelected(value, $event)">
-        <i nz-icon type="close" class="ant-select-remove-icon"></i>
-      </span>
-    </li>
+    <!--show search-->
+    <div
+      *ngIf="nzShowSearch"
+      class="ant-select-search ant-select-search--inline">
+      <div class="ant-select-search__field__wrap">
+        <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>
+        <span class="ant-select-search__field__mirror">{{inputValue}}&nbsp;</span>
+      </div>
+    </div>
   </ng-container>
-
-  <li class="ant-select-search ant-select-search--inline">
-    <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>
-  </li>
-</ul>
+  <!--multiple or tags mode-->
+  <ul *ngIf="nzSelectService.isMultipleOrTags">
+    <ng-container *ngFor="let option of nzSelectService.listOfCachedSelectedOption | slice: 0 : nzMaxTagCount;trackBy:trackValue;">
+      <li [@zoomMotion]
+        [attr.title]="option.nzLabel"
+        [class.ant-select-selection__choice__disabled]="option.nzDisabled"
+        class="ant-select-selection__choice">
+        <div class="ant-select-selection__choice__content">{{ option.nzLabel }}</div>
+        <span *ngIf="!option.nzDisabled"
+          class="ant-select-selection__choice__remove"
+          (click)="removeSelectedValue(option, $event)">
+          <i nz-icon type="close" class="ant-select-remove-icon" *ngIf="!nzRemoveIcon; else nzRemoveIcon"></i>
+        </span>
+      </li>
+    </ng-container>
+    <li [@zoomMotion]
+      *ngIf="nzSelectService.listOfCachedSelectedOption.length > nzMaxTagCount"
+      class="ant-select-selection__choice">
+      <div class="ant-select-selection__choice__content">
+        <ng-container *ngIf="nzMaxTagPlaceholder">
+          <ng-template
+            [ngTemplateOutlet]="nzMaxTagPlaceholder"
+            [ngTemplateOutletContext]="{ $implicit: nzSelectService.listOfSelectedValue | slice: nzMaxTagCount}">
+          </ng-template>
+        </ng-container>
+        <ng-container *ngIf="!nzMaxTagPlaceholder">
+          + {{ nzSelectService.listOfCachedSelectedOption.length - nzMaxTagCount }} ...
+        </ng-container>
+      </div>
+    </li>
+    <li class="ant-select-search ant-select-search--inline">
+      <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>
+    </li>
+  </ul>
+</div>
+<span *ngIf="nzAllowClear && nzSelectService.listOfSelectedValue.length"
+  class="ant-select-selection__clear"
+  nz-select-unselectable
+  (click)="onClearSelection($event)">
+    <i nz-icon type="close-circle" theme="fill" *ngIf="!nzClearIcon; else nzClearIcon" class="ant-select-close-icon"></i>
+  </span>
+<span class="ant-select-arrow" nz-select-unselectable *ngIf="nzShowArrow">
+  <i nz-icon type="loading" *ngIf="nzLoading; else defaultArrow"></i>
+  <ng-template #defaultArrow>
+    <i nz-icon type="down" class="ant-select-arrow-icon" *ngIf="!nzSuffixIcon; else nzSuffixIcon"></i>
+  </ng-template>
+</span>

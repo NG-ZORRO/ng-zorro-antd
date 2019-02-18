@@ -30,6 +30,7 @@ import {
   ZipButtonOptions
 } from './interface';
 import { NzUploadBtnComponent } from './nz-upload-btn.component';
+import { NzUploadListComponent } from './nz-upload-list.component';
 
 @Component({
   selector           : 'nz-upload',
@@ -40,7 +41,8 @@ import { NzUploadBtnComponent } from './nz-upload-btn.component';
 })
 export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   private i18n$: Subscription;
-  @ViewChild('upload') upload: NzUploadBtnComponent;
+  @ViewChild('uploadComp') uploadComp: NzUploadBtnComponent;
+  @ViewChild('listComp') listComp: NzUploadListComponent;
   // tslint:disable-next-line:no-any
   locale: any = {};
 
@@ -112,7 +114,8 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     if (typeof this.nzShowUploadList === 'boolean' && this.nzShowUploadList) {
       this.nzShowUploadList = {
         showPreviewIcon: true,
-        showRemoveIcon : true
+        showRemoveIcon : true,
+        hidePreviewIconInNonImage: false
       };
     }
     // filters
@@ -195,39 +198,16 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
       (file.error && file.error.statusText) || this.locale.uploadError;
   }
 
-  private genThumb(file: UploadFile): void {
-    // tslint:disable-next-line:no-any
-    const win = window as any;
-    if (
-      (this.nzListType !== 'picture' && this.nzListType !== 'picture-card') ||
-      typeof document === 'undefined' ||
-      typeof win === 'undefined' ||
-      !win.FileReader ||
-      !win.File ||
-      !(file.originFileObj instanceof File) ||
-      file.thumbUrl != null
-    ) {
-      return;
-    }
-
-    file.thumbUrl = '';
-
-    const reader = new FileReader();
-    reader.onloadend = () => file.thumbUrl = reader.result as string;
-    reader.readAsDataURL(file.originFileObj);
-  }
-
   private onStart = (file: UploadFile): void => {
     if (!this.nzFileList) {
       this.nzFileList = [];
     }
     const targetItem = this.fileToObject(file);
     targetItem.status = 'uploading';
-    this.nzFileList.push(targetItem);
-    this.genThumb(targetItem);
+    this.nzFileList = this.nzFileList.concat(targetItem);
     this.nzFileListChange.emit(this.nzFileList);
     this.nzChange.emit({ file: targetItem, fileList: this.nzFileList, type: 'start' });
-    this.cdr.markForCheck();
+    this.detectChangesList();
   }
 
   private onProgress = (e: { percent: number }, file: UploadFile): void => {
@@ -240,7 +220,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
       fileList: this.nzFileList,
       type    : 'progress'
     });
-    this.cdr.detectChanges();
+    this.detectChangesList();
   }
 
   private onSuccess = (res: {}, file: UploadFile): void => {
@@ -253,7 +233,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
       fileList,
       type: 'success'
     });
-    this.cdr.detectChanges();
+    this.detectChangesList();
   }
 
   private onError = (err: {}, file: UploadFile): void => {
@@ -267,7 +247,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
       fileList,
       type: 'error'
     });
-    this.cdr.detectChanges();
+    this.detectChangesList();
   }
 
   // #endregion
@@ -288,8 +268,13 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   // #region list
 
+  private detectChangesList(): void {
+    this.cdr.detectChanges();
+    this.listComp.detectChanges();
+  }
+
   onRemove = (file: UploadFile): void => {
-    this.upload.abort(file);
+    this.uploadComp.abort(file);
     file.status = 'removed';
     const fnRes = typeof this.nzRemove === 'function' ?
       this.nzRemove(file) : this.nzRemove == null ? true : this.nzRemove;
@@ -342,7 +327,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.i18n$ = this.i18n.localeChange.subscribe(() => {
       this.locale = this.i18n.getLocaleData('Upload');
-      this.cdr.detectChanges();
+      this.detectChangesList();
     });
   }
 

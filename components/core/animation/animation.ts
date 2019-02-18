@@ -1,3 +1,9 @@
+export class AnimationDuration {
+  static SLOW = '0.3s'; // Modal
+  static BASE = '0.2s';
+  static FAST = '0.1s'; // Tooltip
+}
+
 export class AnimationCurves {
   static EASE_BASE_OUT = 'cubic-bezier(0.7, 0.3, 0.1, 1)';
   static EASE_BASE_IN = 'cubic-bezier(0.9, 0, 0.3, 0.7)';

@@ -25,6 +25,7 @@ Select component to select value from options.
 | -------- | ----------- | ---- | ------- |
 | `[ngModel]` | Current selected nz-option value, double binding. | `any｜any[]` | - |
 | `[compareWith]` | Same as [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection) | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |
+| `[nzAutoClearSearchValue]` | Whether the current search will be cleared on selecting an item. Only applies when `mode` is set to `multiple` or `tags`. | boolean | `true` |
 | `[nzAllowClear]` | Show clear button. | `boolean` | `false` |
 | `[nzOpen]` | dropdown expand state, double binding | `boolean` | `false` |
 | `[nzAutoFocus]` | Get focus by default | `boolean` | `false` |
@@ -38,12 +39,21 @@ Select component to select value from options.
 | `[nzMode]` | Set mode of Select | `'multiple'｜'tags'｜'default'` | `'default'` |
 | `[nzNotFoundContent]` | Specify content to show when no result matches.. | `string` | `'Not Found'` |
 | `[nzPlaceHolder]` | Placeholder of select | `string` | - |
+| `[nzShowArrow]` | Whether to show the drop-down arrow | boolean | `true` |
 | `[nzShowSearch]` | Whether show search input in single mode. | `boolean` | `false` |
 | `[nzSize]` | Size of Select input | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzSuffixIcon]` | The custom suffix icon | `TemplateRef<void>` | - |
+| `[nzRemoveIcon]` | The custom remove icon | `TemplateRef<void>` | - |
+| `[nzClearIcon]` | The custom clear icon | `TemplateRef<void>` | - |
+| `[nzMenuItemSelectedIcon]` | The custom menuItemSelected icon | `TemplateRef<void>` | - |
+| `[nzTokenSeparators]` | Separator used to tokenize on tag/multiple mode | `string[]` | `[]` |
+| `[nzLoading]` | indicate loading state | boolean | false |
 | `(ngModelChange)` | Current selected nz-option value change callback. | `EventEmitter<any[]>` | - |
 | `(nzOpenChange)` | dropdown expand change callback | `EventEmitter<boolean>` | `false` |
 | `(nzScrollToBottom)` | Called when dropdown scrolls to bottom | `EventEmitter<void>` | - |
 | `(nzOnSearch)` | Callback function that is fired when input changed. | `EventEmitter<string>` | - |
+| `(nzFocus)` | focus callback | `EventEmitter<void>` | - |
+| `(nzBlur)` | blur callback | `EventEmitter<void>` | - |
 
 ### nz-option
 

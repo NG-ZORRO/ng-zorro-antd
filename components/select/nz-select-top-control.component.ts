@@ -1,112 +1,69 @@
 import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger
-} from '@angular/animations';
-import { Component, ElementRef, EventEmitter, Input, Output, Renderer2, ViewChild } from '@angular/core';
-import { isNotNil } from '../core/util/check';
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { zoomMotion } from '../core/animation/zoom';
 import { NzOptionComponent } from './nz-option.component';
+import { NzSelectService } from './nz-select.service';
 
 @Component({
   selector           : '[nz-select-top-control]',
   preserveWhitespaces: false,
-  animations         : [
-    trigger('tagAnimation', [
-      state('*', style({ opacity: 1, transform: 'scale(1)' })),
-      transition('void => *', [
-        style({ opacity: 0, transform: 'scale(0)' }),
-        animate('150ms linear')
-      ]),
-      state('void', style({ opacity: 0, transform: 'scale(0)' })),
-      transition('* => void', [
-        style({ opacity: 1, transform: 'scale(1)' }),
-        animate('150ms linear')
-      ])
-    ])
-  ],
-  templateUrl        : './nz-select-top-control.component.html',
-  host               : {
-    '[class.ant-select-selection__rendered]': 'true'
-  }
+  animations         : [ zoomMotion ],
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
+  templateUrl        : './nz-select-top-control.component.html'
 })
-export class NzSelectTopControlComponent {
-  // tslint:disable-next-line:no-any
-  private _listOfSelectedValue: any[];
-  private _listTemplateOfOption: NzOptionComponent[] = [];
-  listOfCachedSelectedOption: NzOptionComponent[] = [];
+export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   inputValue: string;
   isComposing = false;
+  private destroy$ = new Subject();
   @ViewChild('inputElement') inputElement: ElementRef;
-  // tslint:disable-next-line:no-any
-  @Output() readonly nzListOfSelectedValueChange = new EventEmitter<any[]>();
-  @Output() readonly nzOnSearch = new EventEmitter<{ value: string, emit: boolean }>();
-  @Input() nzMode = 'default';
   @Input() nzShowSearch = false;
-  @Input() nzDisabled = false;
-
   @Input() nzPlaceHolder: string;
   @Input() nzOpen = false;
+  @Input() nzMaxTagCount: number;
+  @Input() nzAllowClear = false;
+  @Input() nzShowArrow = true;
+  @Input() nzLoading = false;
+  @Input() nzSuffixIcon: TemplateRef<void>;
+  @Input() nzClearIcon: TemplateRef<void>;
+  @Input() nzRemoveIcon: TemplateRef<void>;
   // tslint:disable-next-line:no-any
-  @Input() compareWith: (o1: any, o2: any) => boolean;
+  @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: any[] }>;
+  @Input() nzTokenSeparators: string[] = [];
 
-  @Input()
-  // tslint:disable-next-line:no-any
-  set nzListOfSelectedValue(value: any[]) {
-    this._listOfSelectedValue = value;
-    this.updateListOfCachedOption();
+  onClearSelection(e: MouseEvent): void {
+    e.stopPropagation();
+    this.nzSelectService.updateListOfSelectedValue([], true);
   }
 
-  // tslint:disable-next-line:no-any
-  get nzListOfSelectedValue(): any[] {
-    return this._listOfSelectedValue;
-  }
-
-  @Input()
-  set nzListTemplateOfOption(value: NzOptionComponent[]) {
-    this._listTemplateOfOption = value;
-    this.updateListOfCachedOption();
-  }
-
-  get nzListTemplateOfOption(): NzOptionComponent[] {
-    return this._listTemplateOfOption;
-  }
-
-  /** cached selected option list **/
-  updateListOfCachedOption(): void {
-    if (this.isSingleMode) {
-      const selectedOption = this.nzListTemplateOfOption.find(o => this.compareWith(o.nzValue, this.nzListOfSelectedValue[ 0 ]));
-      if (isNotNil(selectedOption)) {
-        this.listOfCachedSelectedOption = [ selectedOption ];
-      }
-    } else {
-      const listOfCachedOptionFromLatestTemplate = this.nzListTemplateOfOption.filter(o => isNotNil(this.nzListOfSelectedValue.find(v => this.compareWith(v, o.nzValue))));
-      const restSelectedValue = this.nzListOfSelectedValue.filter(v => !isNotNil(listOfCachedOptionFromLatestTemplate.find(o => this.compareWith(o.nzValue, v))));
-      const listOfCachedOptionFromOld = this.listOfCachedSelectedOption.filter(o => isNotNil(restSelectedValue.find(v => this.compareWith(o.nzValue, v))));
-      this.listOfCachedSelectedOption = listOfCachedOptionFromLatestTemplate.concat(listOfCachedOptionFromOld);
+  setInputValue(value: string): void {
+    if (this.inputElement) {
+      this.inputElement.nativeElement.value = value;
     }
-  }
-
-  setInputValue(value: string, emit: boolean): void {
     this.inputValue = value;
     this.updateWidth();
-    this.nzOnSearch.emit({ value, emit });
-  }
-
-  get isSingleMode(): boolean {
-    return this.nzMode === 'default';
-  }
-
-  get isMultipleOrTags(): boolean {
-    return this.nzMode === 'tags' || this.nzMode === 'multiple';
+    this.nzSelectService.updateSearchValue(value);
+    this.nzSelectService.tokenSeparate(this.inputValue, this.nzTokenSeparators);
   }
 
   get placeHolderDisplay(): string {
-    return this.inputValue || this.isComposing || this.nzListOfSelectedValue.length ? 'none' : 'block';
+    return this.inputValue || this.isComposing || this.nzSelectService.listOfSelectedValue.length ? 'none' : 'block';
   }
 
-  get selectedValueDisplay(): { [ key: string ]: string } {
+  get selectedValueStyle(): { [ key: string ]: string } {
     let showSelectedValue = false;
     let opacity = 1;
     if (!this.nzShowSearch) {
@@ -127,45 +84,13 @@ export class NzSelectTopControlComponent {
     };
   }
 
-  get singleValueLabel(): string {
-    return this.getPropertyFromValue(this.nzListOfSelectedValue[ 0 ], 'nzLabel');
-  }
-
-  focusOnInput(): void {
-    setTimeout(() => {
-      if (this.inputElement) {
-        this.inputElement.nativeElement.focus();
-      }
-    });
-  }
-
   // tslint:disable-next-line:no-any
-  getPropertyFromValue(value: any, prop: string): string {
-    const targetOption = this.listOfCachedSelectedOption.find(item => this.compareWith(item.nzValue, value));
-    return targetOption ? targetOption[ prop ] : '';
-  }
-
-  // tslint:disable-next-line:no-any
-  isOptionDisplay(value: any): boolean {
-    return (this.nzMode === 'tags') || !!this.getPropertyFromValue(value, 'nzLabel');
-  }
-
-  // tslint:disable-next-line:no-any
-  removeValueFormSelected(value: any, event?: MouseEvent): void {
-    if (this.nzDisabled || this.getPropertyFromValue(value, 'nzDisabled')) {
-      return;
-    }
-    this._listOfSelectedValue = this.nzListOfSelectedValue.filter(item => item !== value);
-    this.nzListOfSelectedValueChange.emit(this.nzListOfSelectedValue);
-
-    // Do not trigger the popup
-    if (event && event.stopPropagation) {
-      event.stopPropagation();
-    }
+  trackValue(index: number, option: NzOptionComponent): any {
+    return option.nzValue;
   }
 
   updateWidth(): void {
-    if (this.isMultipleOrTags && this.inputElement) {
+    if (this.nzSelectService.isMultipleOrTags && this.inputElement) {
       if (this.inputValue || this.isComposing) {
         this.renderer.setStyle(this.inputElement.nativeElement, 'width', `${this.inputElement.nativeElement.scrollWidth}px`);
       } else {
@@ -174,23 +99,36 @@ export class NzSelectTopControlComponent {
     }
   }
 
-  onKeyDownInput(e: KeyboardEvent): void {
-    const keyCode = e.keyCode;
-    const eventTarget = e.target as HTMLInputElement;
-    if (
-      this.isMultipleOrTags &&
-      !eventTarget.value &&
-      // BackSpace
-      keyCode === 8
-    ) {
-      e.preventDefault();
-      if (this.nzListOfSelectedValue.length) {
-        this.removeValueFormSelected(this.nzListOfSelectedValue[ this.nzListOfSelectedValue.length - 1 ]);
-      }
-    }
+  removeSelectedValue(option: NzOptionComponent, e: KeyboardEvent): void {
+    this.nzSelectService.removeValueFormSelected(option);
+    e.stopPropagation();
   }
 
-  constructor(private renderer: Renderer2) {
+  constructor(private renderer: Renderer2, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef) {
+  }
 
+  ngOnInit(): void {
+    this.nzSelectService.open$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(open => {
+      if (this.inputElement && open) {
+        this.inputElement.nativeElement.focus();
+      }
+    });
+    this.nzSelectService.clearInput$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.setInputValue('');
+    });
+    this.nzSelectService.check$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.cdr.markForCheck();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

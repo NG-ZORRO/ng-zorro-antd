@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
 import { NzI18nService } from '../../../i18n/nz-i18n.service';
@@ -6,6 +6,9 @@ import { PanelMode } from '../../standard-types';
 import { CandyDate } from '../candy-date';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // tslint:disable-next-line:component-selector
   selector: 'calendar-header',
   templateUrl: 'calendar-header.component.html'
 })
@@ -18,14 +21,14 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Input() showTimePicker: boolean = false;
 
   @Input() value: CandyDate;
-  @Output() valueChange = new EventEmitter<CandyDate>();
+  @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   @Input() panelMode: PanelMode;
-  @Output() panelModeChange = new EventEmitter<PanelMode>();
+  @Output() readonly panelModeChange = new EventEmitter<PanelMode>();
 
-  @Output() chooseDecade = new EventEmitter<CandyDate>();
-  @Output() chooseYear = new EventEmitter<CandyDate>();
-  @Output() chooseMonth = new EventEmitter<CandyDate>();
+  @Output() readonly chooseDecade = new EventEmitter<CandyDate>();
+  @Output() readonly chooseYear = new EventEmitter<CandyDate>();
+  @Output() readonly chooseMonth = new EventEmitter<CandyDate>();
 
   prefixCls: string = 'ant-calendar';
   yearMonthDaySelectors: YearMonthDaySelector[];

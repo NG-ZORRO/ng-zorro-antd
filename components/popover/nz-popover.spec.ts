@@ -2,10 +2,9 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FileOutline } from '@ant-design/icons-angular/icons';
 
 import { dispatchMouseEvent } from '../core/testing';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NZ_ICONS } from '../icon/nz-icon.service';
 import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
 import { NzPopoverDirective } from './nz-popover.directive';
@@ -19,9 +18,8 @@ describe('NzPopover', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzPopoverModule, NoopAnimationsModule, NzToolTipModule, NzIconModule ],
-      declarations: [ NzPopoverTestWrapperComponent, NzPopoverTestNewComponent ],
-      providers   : [ { provide: NZ_ICONS, useValue: [ FileOutline ] } ]
+      imports     : [ NzPopoverModule, NoopAnimationsModule, NzToolTipModule, NzIconTestModule ],
+      declarations: [ NzPopoverTestWrapperComponent, NzPopoverTestNewComponent ]
     });
 
     TestBed.compileComponents();

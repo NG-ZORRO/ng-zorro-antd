@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
 import { CandyDate } from '../candy-date';
@@ -7,6 +7,9 @@ const MAX_ROW = 4;
 const MAX_COL = 3;
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // tslint:disable-next-line:component-selector
   selector: 'decade-panel',
   templateUrl: 'decade-panel.component.html'
 })
@@ -15,7 +18,7 @@ export class DecadePanelComponent implements OnChanges {
   @Input() locale: NzCalendarI18nInterface;
 
   @Input() value: CandyDate;
-  @Output() valueChange = new EventEmitter<CandyDate>();
+  @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   get startYear(): number {
     return parseInt(`${this.value.getYear() / 100}`, 10) * 100;

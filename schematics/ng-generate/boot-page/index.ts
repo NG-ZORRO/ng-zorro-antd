@@ -4,7 +4,7 @@ import { getWorkspace } from '@schematics/angular/utility/config';
 import chalk from 'chalk';
 import { Schema } from './schema';
 
-const bootstrapHTML = `<!-- NG-ZORRO -->
+const bootPageHTML = `<!-- NG-ZORRO -->
 <a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" style="display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;">
   <img height="300" src="https://img.alicdn.com/tfs/TB1NvvIwTtYBeNjy1XdXXXXyVXa-89-131.svg">
 </a>`;
@@ -22,7 +22,7 @@ export default function (options: Schema): Rule {
         `workspace config`));
       return;
     }
-    host.overwrite(appHTMLFile, bootstrapHTML);
+    host.overwrite(appHTMLFile, bootPageHTML);
     return host;
   };
 }
