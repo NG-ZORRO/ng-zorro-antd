@@ -1,5 +1,5 @@
 import {
-  AfterContentInit,
+  AfterContentInit, AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -18,7 +18,7 @@ import { startWith } from 'rxjs/operators';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { NgClassType } from '../core/types/ng-class';
 import { toBoolean } from '../core/util/convert';
-import { NzColComponent } from '../grid/nz-col.component';
+import { NzColDirective } from '../grid/nz-col.directive';
 import { NzRowDirective } from '../grid/nz-row.directive';
 import { NzFormItemComponent } from './nz-form-item.component';
 
@@ -37,7 +37,7 @@ import { NzFormItemComponent } from './nz-form-item.component';
     `
   ]
 })
-export class NzFormControlComponent extends NzColComponent implements OnDestroy, OnInit, AfterContentInit {
+export class NzFormControlComponent extends NzColDirective implements OnDestroy, OnInit, AfterContentInit, AfterViewInit, OnDestroy {
   private _hasFeedback = false;
   validateChanges: Subscription;
   validateString: string;
@@ -120,7 +120,7 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
   }
 
   constructor(nzUpdateHostClassService: NzUpdateHostClassService, elementRef: ElementRef, @Optional() @Host() nzFormItemComponent: NzFormItemComponent, @Optional() @Host() nzRowDirective: NzRowDirective, private cdr: ChangeDetectorRef, renderer: Renderer2) {
-    super(nzUpdateHostClassService, elementRef, nzFormItemComponent, nzRowDirective);
+    super(nzUpdateHostClassService, elementRef, nzFormItemComponent || nzRowDirective, renderer);
     renderer.addClass(elementRef.nativeElement, 'ant-form-item-control-wrapper');
   }
 
@@ -131,11 +131,16 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
 
   ngOnDestroy(): void {
     this.removeSubscribe();
+    super.ngOnDestroy();
   }
 
   ngAfterContentInit(): void {
     if (this.defaultValidateControl && (!this.validateControl) && (!this.validateString)) {
       this.nzValidateStatus = this.defaultValidateControl;
     }
+  }
+
+  ngAfterViewInit(): void {
+    super.ngAfterViewInit();
   }
 }
