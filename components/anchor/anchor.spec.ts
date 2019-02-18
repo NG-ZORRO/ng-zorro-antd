@@ -4,7 +4,6 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NzAnchorModule } from './nz-anchor.module';
 import { NzAnchorComponent } from './nz-anchor.component';
-import { NzAnchorLinkComponent } from './nz-anchor-link.component';
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
 
 const throttleTime = 51;
@@ -32,9 +31,9 @@ describe('anchor', () => {
   describe('[default]', () => {
     it(`should scolling to target via click a link`, () => {
       spyOn(srv, 'scrollTo').and.callFake((
-        containerEl: Element | Window,
-        targetTopValue: number = 0,
-        easing?: any,
+        _containerEl: Element | Window,
+        _targetTopValue: number = 0,
+        _easing?: any,
         callback?: () => void
       ) => {
         callback();

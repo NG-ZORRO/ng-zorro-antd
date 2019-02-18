@@ -101,7 +101,6 @@ describe('nz icon', () => {
   describe('custom', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestIconCustomComponent);
-      testComponent = fixture.debugElement.componentInstance;
     });
 
     it('should support custom svg element', () => {
@@ -117,7 +116,6 @@ describe('nz icon', () => {
   describe('iconfont', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestIconIconfontComponent);
-      testComponent = fixture.debugElement.componentInstance;
     });
 
     it('should support iconfont', async(() => {
@@ -139,7 +137,6 @@ describe('nz icon', () => {
   describe('old api', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestIconOldApiComponent);
-      testComponent = fixture.debugElement.componentInstance;
       icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
     });
 
@@ -196,7 +193,6 @@ describe('service injection', () => {
     });
 
     fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
-    testComponent = fixture.debugElement.componentInstance;
     icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
 
     fixture.detectChanges();

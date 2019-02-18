@@ -193,7 +193,7 @@ describe('upload', () => {
     describe('property', () => {
       describe('[nzData]', () => {
         it('should custom form data vis function', () => {
-          instance.nzData = (file: any) => {
+          instance.nzData = (_file: any) => {
             return { a: 1 };
           };
           fixture.detectChanges();
@@ -295,14 +295,14 @@ describe('upload', () => {
         describe('using observable', () => {
           it('can return true', () => {
             spyOn(instance, 'nzChange');
-            instance.beforeUpload = (file: UploadFile, fileList: UploadFile[]): Observable<any> => of(true);
+            instance.beforeUpload = (_file: UploadFile, _fileList: UploadFile[]): Observable<any> => of(true);
             fixture.detectChanges();
             pageObject.postSmall();
             expect(instance.nzChange).toHaveBeenCalled();
           });
           it('can return same file', () => {
             let ret = false;
-            instance.beforeUpload = (file: UploadFile, fileList: UploadFile[]): Observable<any> => {
+            instance.beforeUpload = (file: UploadFile, _fileList: UploadFile[]): Observable<any> => {
               ret = true;
               return of(file);
             };
@@ -312,7 +312,7 @@ describe('upload', () => {
           });
           it('can return a string file', () => {
             let ret = false;
-            instance.beforeUpload = (file: UploadFile, fileList: UploadFile[]): Observable<any> => {
+            instance.beforeUpload = (_file: UploadFile, _fileList: UploadFile[]): Observable<any> => {
               ret = true;
               return of('file');
             };
@@ -322,7 +322,7 @@ describe('upload', () => {
           });
           it('can return a blob file', () => {
             let ret = false;
-            instance.beforeUpload = (file: UploadFile, fileList: UploadFile[]): Observable<any> => {
+            instance.beforeUpload = (_file: UploadFile, _fileList: UploadFile[]): Observable<any> => {
               ret = true;
               return of(new Blob([JSON.stringify(1, null, 2)], {type : 'application/json'}));
             };
@@ -330,9 +330,9 @@ describe('upload', () => {
             pageObject.postSmall();
             expect(ret).toBe(true);
           });
-          it('cancel upload when returan a false value', () => {
+          it('cancel upload when return a false value', () => {
             expect(instance._nzChange).toBeUndefined();
-            instance.beforeUpload = (file: UploadFile, fileList: UploadFile[]): Observable<any> => {
+            instance.beforeUpload = (_file: UploadFile, _fileList: UploadFile[]): Observable<any> => {
               return of(false);
             };
             fixture.detectChanges();
@@ -343,7 +343,7 @@ describe('upload', () => {
             let warnMsg = '';
             console.warn = jasmine.createSpy().and.callFake(res => warnMsg = res);
             expect(instance._nzChange).toBeUndefined();
-            instance.beforeUpload = (file: UploadFile, fileList: UploadFile[]): Observable<any> => {
+            instance.beforeUpload = (_file: UploadFile, _fileList: UploadFile[]): Observable<any> => {
               return throwError('');
             };
             fixture.detectChanges();
@@ -435,7 +435,7 @@ describe('upload', () => {
             instance.nzFilter = [
               {
                 name: 'f1',
-                fn: (fileList: UploadFile[]) => {
+                fn: (_fileList: UploadFile[]) => {
                   return new Observable((observer: Observer<UploadFile[]>) => {
                     observer.error('filter error');
                   });
@@ -497,7 +497,7 @@ describe('upload', () => {
         });
         it('should be return a Observable includes a delay operation', (done: () => void) => {
           const DELAY = 20;
-          instance.onRemove = (file: UploadFile) => of(true).pipe(delay(DELAY));
+          instance.onRemove = (_: UploadFile) => of(true).pipe(delay(DELAY));
           fixture.detectChanges();
           expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT);
           dl.query(By.css('.anticon-close')).nativeElement.click();
@@ -820,7 +820,7 @@ describe('upload', () => {
     describe('[genThumb]', () => {
       class MockFR {
         result = '1';
-        onloadend(dataUrl: string): void { }
+        onloadend(_dataUrl: string): void { }
         readAsDataURL(): void {
           this.onloadend('1');
         }
@@ -1096,7 +1096,7 @@ describe('upload', () => {
           multiple: true,
           withCredentials: true,
           beforeUpload: () => true,
-          onStart: (file: {}) => {},
+          onStart: (_file: {}) => {},
           onProgress: () => {},
           onSuccess: () => {},
           onError: () => {}
@@ -1175,7 +1175,7 @@ describe('upload', () => {
       it('should be warn "Must return Subscription type in [nzCustomRequest] property"', () => {
         let warnMsg = '';
         console.warn = jasmine.createSpy().and.callFake(res => warnMsg = res);
-        comp.options.customRequest = ((item: UploadXHRArgs) => { }) as any;
+        comp.options.customRequest = ((_item: UploadXHRArgs) => { }) as any;
         comp.onChange(PNGSMALL as any);
         expect(warnMsg).toContain(`Must return Subscription type`);
       });
@@ -1227,7 +1227,7 @@ class TestUploadComponent {
   nzAction = '/upload';
   _beforeUpload = false;
   _beforeUploadList: UploadFile[] = [];
-  beforeUpload: any = (file: UploadFile, fileList: UploadFile[]): any => {
+  beforeUpload: any = (_file: UploadFile, fileList: UploadFile[]): any => {
     this._beforeUpload = true;
     this._beforeUploadList = fileList;
     return true;
@@ -1245,11 +1245,11 @@ class TestUploadComponent {
   nzShowButton = true;
   nzWithCredentials = false;
   _onPreview = false;
-  onPreview = (file: UploadFile): void => {
+  onPreview = (): void => {
     this._onPreview = true;
   }
   _onRemove = false;
-  onRemove: (file: UploadFile) => boolean | Observable<boolean> = (file: UploadFile): boolean => {
+  onRemove: (file: UploadFile) => boolean | Observable<boolean> = (): boolean => {
     this._onRemove = true;
     return true;
   }
@@ -1299,11 +1299,11 @@ class TestUploadListComponent {
     showRemoveIcon: true
   };
   _onPreview = false;
-  onPreview = (file: UploadFile): void => {
+  onPreview = (): void => {
     this._onPreview = true;
   }
   _onRemove = false;
-  onRemove: any = (file: UploadFile): void => {
+  onRemove: any = (): void => {
     this._onRemove = true;
   }
 }
