@@ -78,7 +78,7 @@
         (mouseleave)="onOptionMouseLeave(option, i, $event)"
         (click)="onOptionClick(option, i, $event)">
       </li>
-      <li *ngIf="isSearching"
+      <li *ngIf="isSearching && !columns[0].length"
           class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled">
         <nz-embed-empty [nzComponentName]="'cascader'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
       </li>
