@@ -89,25 +89,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   @Input() nzSize = 'default';
   @Input() nzPlaceHolder = '';
   @Input() nzDropdownStyle: { [ key: string ]: string; };
-
-  @Input()
-  get nzDefaultExpandedKeys(): string[] {
-    return this.expandedKeys;
-  }
-
-  set nzDefaultExpandedKeys(value: string[]) {
-    this.expandedKeys = value;
-  }
-
-  @Input()
-  get nzExpandedKeys(): string[] {
-    return this.expandedKeys;
-  }
-
-  set nzExpandedKeys(value: string[]) {
-    this.expandedKeys = value;
-  }
-
+  @Input() nzDefaultExpandedKeys: string[];
   @Input() nzDisplayWith: (node: NzTreeNode) => string = (node: NzTreeNode) => node.title;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Output() readonly nzCleared = new EventEmitter<void>();
@@ -130,7 +112,6 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   selectionChangeSubscription: Subscription;
   selectedNodes: NzTreeNode[] = [];
   value: string[] = [];
-  expandedKeys: string[] = [];
 
   onChange: (value: string[] | string) => void;
   onTouched: () => void = () => null;
@@ -180,9 +161,6 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   ngOnInit(): void {
     this.isDestroy = false;
     this.selectionChangeSubscription = this.subscribeSelectionChange();
-    Promise.resolve().then(() => {
-      this.updateTreeClass();
-    });
   }
 
   ngOnDestroy(): void {
@@ -244,7 +222,6 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
       this.nzOpen = true;
       this.nzOpenChange.emit(this.nzOpen);
       this.updateCdkConnectedOverlayStatus();
-      this.updateTreeClass();
       this.updatePosition();
     }
   }
@@ -273,7 +250,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
 
   onExpandedKeysChange(value: NzFormatEmitEvent): void {
     this.nzExpandChange.emit(value);
-    this.expandedKeys = [ ...value.keys ];
+    this.nzDefaultExpandedKeys = [ ...value.keys ];
   }
 
   setInputValue(value: string): void {
@@ -401,12 +378,6 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
         && this.inputValue
         && $event.matchedKeys.length === 0;
     });
-  }
-
-  updateTreeClass(): void {
-    if (this.treeRef && !this.treeRef.nzTreeClass[ 'ant-select-tree' ]) {
-      this.treeRef.nzTreeClass = { ...this.treeRef.nzTreeClass, [ 'ant-select-tree' ]: true };
-    }
   }
 
   updateCdkConnectedOverlayStatus(): void {

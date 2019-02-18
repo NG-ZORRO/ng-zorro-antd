@@ -62,6 +62,7 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzExpandAll: boolean = false;
   @Input() @InputBoolean() nzHideUnMatched = false;
   @Input() @InputBoolean() nzNoopAnimations = false;
+  @Input() @InputBoolean() nzSelectMode = false;
 
   /**
    * @deprecated use
@@ -176,7 +177,7 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
   nzDefaultSubscription: Subscription;
   nzNodes: NzTreeNode[] = [];
   prefixCls = 'ant-tree';
-  nzTreeClass = {};
+  classMap = {};
 
   onChange: (value: NzTreeNode[]) => void = () => null;
   onTouched: () => void = () => null;
@@ -209,11 +210,12 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   setClassMap(): void {
-    this.nzTreeClass = {
+    this.classMap = {
       [ this.prefixCls ]               : true,
       [ this.prefixCls + '-show-line' ]: this.nzShowLine,
       [ `${this.prefixCls}-icon-hide` ]: !this.nzShowIcon,
-      [ 'draggable-tree' ]             : this.nzDraggable
+      [ 'draggable-tree' ]             : this.nzDraggable,
+      [ 'ant-select-tree' ]            : this.nzSelectMode
     };
   }
 
