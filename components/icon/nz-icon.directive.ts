@@ -51,7 +51,7 @@ const normalizeType = (rawType: string): { type: string, crossError: boolean, ve
  * - properties that not started with `nz`.
  */
 @Directive({
-  selector: 'i.anticon, [nz-icon]',
+  selector: 'i.anticon, [nz-icon]'
 })
 export class NzIconDirective extends IconDirective implements OnInit, OnChanges, OnDestroy, AfterContentChecked {
   /** Properties with `nz` prefix. */
@@ -134,7 +134,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
 
   private handleRotate(svg: SVGElement): void {
     if (this.nzRotate) {
-      this.renderer.setAttribute(svg, 'el', `transform: rotate(${this.nzRotate}deg)`);
+      this.renderer.setAttribute(svg, 'style', `transform: rotate(${this.nzRotate}deg)`);
     }
   }
 

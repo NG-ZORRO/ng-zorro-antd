@@ -114,19 +114,19 @@ describe('nz icon', () => {
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
-      expect(icons[ 0 ].nativeElement.firstElement.style.transform).toBeFalsy();
+      expect(icons[ 0 ].nativeElement.firstChild.style.transform).toBeFalsy();
 
       testComponent.rotate = 120;
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
-      expect(icons[ 0 ].nativeElement.firstElement.style.transform).toBe('rotate(120deg)');
+      expect(icons[ 0 ].nativeElement.firstChild.style.transform).toBe('rotate(120deg)');
 
       testComponent.rotate = 0;
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
-      expect(icons[ 0 ].nativeElement.firstElement.style.transform).toBeFalsy();
+      expect(icons[ 0 ].nativeElement.firstChild.style.transform).toBeFalsy();
     }));
   });
 
