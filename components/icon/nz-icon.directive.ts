@@ -6,7 +6,8 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Renderer2
+  Renderer2,
+  SimpleChanges
 } from '@angular/core';
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
 import { InputBoolean } from '../core/util';
@@ -135,6 +136,8 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   private handleRotate(svg: SVGElement): void {
     if (this.nzRotate) {
       this.renderer.setAttribute(svg, 'style', `transform: rotate(${this.nzRotate}deg)`);
+    } else {
+      this.renderer.removeAttribute(svg, 'style');
     }
   }
 
@@ -162,9 +165,13 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     super(iconService, elementRef, renderer);
   }
 
-  ngOnChanges(): void {
-    if (!this.iconfont) {
+  ngOnChanges(changes: SimpleChanges): void {
+    const { type, nzType, nzTwotoneColor, twoToneColor, spin, nzSpin, theme, nzTheme, nzRotate } = changes;
+
+    if (type || nzType || nzTwotoneColor || twoToneColor || spin || nzSpin || theme || nzTheme) {
       this.changeIcon2();
+    } else if (nzRotate) {
+      this.handleRotate(this.el.firstChild);
     } else {
       this._setSVGElement(this.iconService.createIconfontIcon(`#${this.iconfont}`));
     }
