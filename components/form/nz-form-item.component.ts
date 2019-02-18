@@ -17,7 +17,7 @@ import {
 import { takeUntil } from 'rxjs/operators';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { toBoolean } from '../core/util/convert';
-import { NzRowComponent } from '../grid/nz-row.component';
+import { NzRowDirective } from '../grid/nz-row.directive';
 import { NzFormExplainComponent } from './nz-form-explain.component';
 
 /** should add nz-row directive to host, track https://github.com/angular/angular/issues/8785 **/
@@ -39,7 +39,7 @@ import { NzFormExplainComponent } from './nz-form-explain.component';
     `
   ]
 })
-export class NzFormItemComponent extends NzRowComponent implements AfterContentInit, OnDestroy {
+export class NzFormItemComponent extends NzRowDirective implements AfterContentInit, OnDestroy {
   private _flex = false;
   @ContentChildren(NzFormExplainComponent, { descendants: true }) listOfNzFormExplainComponent: QueryList<NzFormExplainComponent>;
 
