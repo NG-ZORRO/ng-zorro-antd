@@ -110,18 +110,24 @@ describe('nz icon', () => {
       expect(icons[ 0 ].nativeElement.innerHTML).toContain('svg');
     });
 
-    it('should rotate work', () => {
+    it('should rotate work', fakeAsync(() => {
       fixture.detectChanges();
-      expect(icons[ 0 ].nativeElement.style.transform).toBeFalsy();
+      tick(1000);
+      fixture.detectChanges();
+      expect(icons[ 0 ].nativeElement.firstChild.style.transform).toBeFalsy();
 
       testComponent.rotate = 120;
       fixture.detectChanges();
-      expect(icons[ 0 ].nativeElement.style.transform).toBe('rotate(120deg)');
+      tick(1000);
+      fixture.detectChanges();
+      expect(icons[ 0 ].nativeElement.firstChild.style.transform).toBe('rotate(120deg)');
 
       testComponent.rotate = 0;
       fixture.detectChanges();
-      expect(icons[ 0 ].nativeElement.style.transform).toBeFalsy();
-    });
+      tick(1000);
+      fixture.detectChanges();
+      expect(icons[ 0 ].nativeElement.firstChild.style.transform).toBeFalsy();
+    }));
   });
 
   describe('custom', () => {
