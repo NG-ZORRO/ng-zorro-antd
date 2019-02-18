@@ -30,7 +30,7 @@ import {
 } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
-import { selectDropDownAnimation } from '../core/animation/select-dropdown-animations';
+import { slideMotion } from '../core/animation/slide';
 import { zoomMotion } from '../core/animation/zoom';
 import { InputBoolean } from '../core/util/convert';
 import { NzFormatEmitEvent } from '../tree/interface';
@@ -40,7 +40,7 @@ import { NzTreeSelectService } from './nz-tree-select.service';
 
 @Component({
   selector   : 'nz-tree-select',
-  animations : [ selectDropDownAnimation, zoomMotion ],
+  animations : [ slideMotion, zoomMotion ],
   templateUrl: './nz-tree-select.component.html',
   providers  : [
     NzTreeSelectService,
@@ -56,7 +56,8 @@ import { NzTreeSelectService } from './nz-tree-select.service';
     '[class.ant-select-enabled]'    : '!nzDisabled',
     '[class.ant-select-disabled]'   : 'nzDisabled',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
-    '[class.ant-select-open]'       : 'nzOpen'
+    '[class.ant-select-open]'       : 'nzOpen',
+    '(click)'                       : 'trigger()'
   },
   styles     : [ `
     .ant-select-dropdown {
@@ -227,7 +228,6 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
     this.onTouched = fn;
   }
 
-  @HostListener('click')
   trigger(): void {
     if (this.nzDisabled || (!this.nzDisabled && this.nzOpen)) {
       this.closeDropDown();

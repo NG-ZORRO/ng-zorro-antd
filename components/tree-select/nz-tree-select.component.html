@@ -21,7 +21,7 @@
   (backdropClick)="closeDropDown()"
   (detach)="closeDropDown()">
   <div class="ant-select-dropdown ant-select-tree-dropdown"
-    [@selectDropDownAnimation]="nzOpen ? dropDownPosition : 'void'"
+    [@slideMotion]="nzOpen ? dropDownPosition : 'void'"
     [class.ant-select-dropdown--single]="!nzMultiple"
     [class.ant-select-dropdown--multiple]="nzMultiple"
     [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
