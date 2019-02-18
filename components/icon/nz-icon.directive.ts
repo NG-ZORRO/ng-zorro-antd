@@ -52,9 +52,6 @@ const normalizeType = (rawType: string): { type: string, crossError: boolean, ve
  */
 @Directive({
   selector: 'i.anticon, [nz-icon]',
-  host    : {
-    '[style.transform]': 'nzRotate !== 0 ? "rotate(" + nzRotate + "deg)" : null'
-  }
 })
 export class NzIconDirective extends IconDirective implements OnInit, OnChanges, OnDestroy, AfterContentChecked {
   /** Properties with `nz` prefix. */
@@ -105,6 +102,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
         this.setSVGData(svg);
         if (!oldAPI && svg) {
           this.handleSpin(svg);
+          this.handleRotate(svg);
         }
       });
   }
@@ -131,6 +129,12 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
       this.renderer.addClass(svg, 'anticon-spin');
     } else {
       this.renderer.removeClass(svg, 'anticon-spin');
+    }
+  }
+
+  private handleRotate(svg: SVGElement): void {
+    if (this.nzRotate) {
+      this.renderer.setAttribute(svg, 'el', `transform: rotate(${this.nzRotate}deg)`);
     }
   }
 
