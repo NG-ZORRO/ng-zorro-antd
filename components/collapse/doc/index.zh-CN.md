@@ -31,3 +31,4 @@ cols: 1
 | `[nzShowArrow]` | 是否展示箭头 | `boolean` | `true` |
 | `[nzActive]` | 面板是否展开，可双向绑定 | `boolean` | - |
 | `(nzActiveChange)` | 面板展开回调 | `EventEmitter<boolean>` | - |
+| `[nzExpandedIcon]` | 自定义切换图标 | `string｜TemplateRef<void>` | - |

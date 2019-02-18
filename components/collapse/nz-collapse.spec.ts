@@ -11,7 +11,7 @@ describe('collapse', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzCollapseModule, NoopAnimationsModule ],
-      declarations: [ NzTestCollapseBasicComponent, NzTestCollapseTemplateComponent ]
+      declarations: [ NzTestCollapseBasicComponent, NzTestCollapseTemplateComponent, NzTestCollapseIconComponent ]
     });
     TestBed.compileComponents();
   }));
@@ -41,10 +41,10 @@ describe('collapse', () => {
     });
     it('should showArrow work', () => {
       fixture.detectChanges();
-      expect(panels[ 0 ].nativeElement.querySelector('.arrow')).toBeDefined();
+      expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-arrow').firstElementChild).toBeDefined();
       testComponent.showArrow = false;
       fixture.detectChanges();
-      expect(panels[ 0 ].nativeElement.querySelector('.arrow')).toBeNull();
+      expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-arrow')).toBeNull();
     });
     it('should active work', () => {
       fixture.detectChanges();
@@ -146,6 +146,21 @@ describe('collapse', () => {
       expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-header').innerText).toBe('template');
     });
   });
+  describe('collapse icon', () => {
+    let fixture;
+    let panels;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestCollapseIconComponent);
+      fixture.detectChanges();
+      panels = fixture.debugElement.queryAll(By.directive(NzCollapsePanelComponent));
+    });
+    it('should icon work', () => {
+      fixture.detectChanges();
+      expect(panels[ 0 ].nativeElement.querySelector('.anticon-right')).toBeDefined();
+      expect(panels[ 1 ].nativeElement.querySelector('.anticon-double-right')).toBeDefined();
+      expect(panels[ 2 ].nativeElement.querySelector('.anticon-caret-right')).toBeDefined();
+    });
+  });
 });
 
 @Component({
@@ -169,7 +184,7 @@ export class NzTestCollapseBasicComponent {
   disabled = false;
   active01 = false;
   active02 = false;
-  showArrow = false;
+  showArrow = true;
   header = 'string';
   active01Change = jasmine.createSpy('active01 callback');
   active02Change = jasmine.createSpy('active02 callback');
@@ -187,4 +202,26 @@ export class NzTestCollapseBasicComponent {
   `
 })
 export class NzTestCollapseTemplateComponent {
+}
+
+@Component({
+  selector: 'nz-test-collapse-icon',
+  template: `
+    <nz-collapse>
+      <nz-collapse-panel>
+        <p>Panel01</p>
+      </nz-collapse-panel>
+      <nz-collapse-panel [nzExpandedIcon]="'double-right'">
+        <p>Panel02</p>
+      </nz-collapse-panel>
+      <nz-collapse-panel [nzExpandedIcon]="expandedIcon">
+        <p>Panel01</p>
+      </nz-collapse-panel>
+      <ng-template #expandedIcon>
+        <i nz-icon type="caret-right" class="ant-collapse-arrow"></i>
+      </ng-template>
+    </nz-collapse>
+  `
+})
+export class NzTestCollapseIconComponent {
 }
