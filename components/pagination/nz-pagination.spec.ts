@@ -236,12 +236,10 @@ describe('pagination', () => {
   });
   describe('pagination render items', () => {
     let fixture;
-    let testComponent;
     let pagination;
     let paginationElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestPaginationRenderComponent);
-      testComponent = fixture.debugElement.componentInstance;
       pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
       paginationElement = pagination.nativeElement.firstElementChild;

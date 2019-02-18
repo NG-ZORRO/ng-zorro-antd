@@ -216,7 +216,7 @@ describe('upload', () => {
 
         it('should comst fileter', () => {
           instance.nzFilter = [
-            { name: 'custom', fn: (a: any) => [] }
+            { name: 'custom', fn: () => [] }
           ];
           fixture.detectChanges();
           expect(instance._beforeUploadList.length).toBe(0);
@@ -233,7 +233,7 @@ describe('upload', () => {
 
       describe('[nzHeaders]', () => {
         it('should custom form data vis function', () => {
-          instance.nzHeaders = (file: any) => {
+          instance.nzHeaders = () => {
             return { a: '1' };
           };
           fixture.detectChanges();

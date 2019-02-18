@@ -1,6 +1,6 @@
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { fakeAsync, inject, ComponentFixture, TestBed } from '@angular/core/testing';
+import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 
 import { NzI18nService } from '../../i18n/nz-i18n.service';
 

@@ -9,7 +9,6 @@ describe('NzScrollService', () => {
   const TOP: number = 10;
   let injector: ReflectiveInjector;
   let document: MockDocument;
-  let location: MockPlatformLocation;
   let scrollService: NzScrollService;
 
   class MockDocument {

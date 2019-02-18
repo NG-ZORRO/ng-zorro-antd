@@ -16,12 +16,10 @@ describe('nz-tbody', () => {
   }));
   describe('nz-tbody in table', () => {
     let fixture;
-    let testComponent;
     let tbody;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTbodyTestTableComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       tbody = fixture.debugElement.query(By.directive(NzTbodyDirective));
     });
     it('should not add class', () => {
@@ -31,12 +29,10 @@ describe('nz-tbody', () => {
   });
   describe('nz-tbody in nz-table', () => {
     let fixture;
-    let testComponent;
     let tbody;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTbodyTestNzTableComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       tbody = fixture.debugElement.query(By.directive(NzTbodyDirective));
     });
     it('should not add class', () => {

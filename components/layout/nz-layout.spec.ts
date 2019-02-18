@@ -144,8 +144,6 @@ describe('layout', () => {
     });
   });
   describe('custom-trigger', () => {
-    let sider;
-
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzLayoutModule, NzIconTestModule ],
@@ -158,7 +156,6 @@ describe('layout', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoLayoutCustomTriggerComponent);
       testComponent = fixture.debugElement.componentInstance;
-      sider = fixture.debugElement.query(By.directive(NzSiderComponent)).injector.get(NzSiderComponent);
     });
     it('should not display trigger', () => {
       fixture.detectChanges();

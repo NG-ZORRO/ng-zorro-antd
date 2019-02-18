@@ -275,11 +275,9 @@ describe('Calendar', () => {
 
   describe('dateCell', () => {
     let fixture: ComponentFixture<NzTestCalendarDateCellComponent>;
-    let component: NzTestCalendarDateCellComponent;
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(NzTestCalendarDateCellComponent);
-      component = fixture.componentInstance;
     }));
 
     it('should work when passed via property', () => {
@@ -303,11 +301,9 @@ describe('Calendar', () => {
 
   describe('dateFullCell', () => {
     let fixture: ComponentFixture<NzTestCalendarDateFullCellComponent>;
-    let component: NzTestCalendarDateFullCellComponent;
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(NzTestCalendarDateFullCellComponent);
-      component = fixture.componentInstance;
     }));
 
     it('should work when passed via property', () => {
@@ -331,11 +327,9 @@ describe('Calendar', () => {
 
   describe('monthCell', () => {
     let fixture: ComponentFixture<NzTestCalendarMonthCellComponent>;
-    let component: NzTestCalendarMonthCellComponent;
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(NzTestCalendarMonthCellComponent);
-      component = fixture.componentInstance;
     }));
 
     it('should work when passed via property', () => {
@@ -359,11 +353,9 @@ describe('Calendar', () => {
 
   describe('monthFullCell', () => {
     let fixture: ComponentFixture<NzTestCalendarMonthFullCellComponent>;
-    let component: NzTestCalendarMonthFullCellComponent;
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(NzTestCalendarMonthFullCellComponent);
-      component = fixture.componentInstance;
     }));
 
     it('should work when passed via property', () => {

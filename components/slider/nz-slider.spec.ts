@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, OnInit, ViewEncapsulation } from '@angular/core';
-import { fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, OnInit } from '@angular/core';
+import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -133,7 +133,6 @@ describe('NzSlider', () => {
     let sliderDebugElement: DebugElement;
     let sliderNativeElement: HTMLElement;
     let sliderInstance: NzSliderComponent;
-    let trackFillElement: HTMLElement;
     let testComponent: DisableSliderComponent;
 
     beforeEach(() => {
@@ -144,7 +143,6 @@ describe('NzSlider', () => {
       sliderDebugElement = fixture.debugElement.query(By.directive(NzSliderComponent));
       sliderInstance = sliderDebugElement.componentInstance;
       sliderNativeElement = sliderInstance.sliderDOM;
-      trackFillElement = sliderNativeElement.querySelector('.ant-slider-track') as HTMLElement;
     });
 
     it('should/shouldn\'t be disabled', () => {
@@ -191,7 +189,6 @@ describe('NzSlider', () => {
     let sliderDebugElement: DebugElement;
     let sliderNativeElement: HTMLElement;
     let sliderInstance: NzSliderComponent;
-    let testComponent: SliderWithMinAndMaxComponent;
     let trackFillElement: HTMLElement;
 
     beforeEach(() => {
@@ -199,7 +196,6 @@ describe('NzSlider', () => {
       fixture.detectChanges();
 
       sliderDebugElement = fixture.debugElement.query(By.directive(NzSliderComponent));
-      testComponent = fixture.debugElement.componentInstance;
       sliderInstance = sliderDebugElement.componentInstance;
       sliderNativeElement = sliderInstance.sliderDOM;
       trackFillElement = sliderNativeElement.querySelector('.ant-slider-track') as HTMLElement;
@@ -426,13 +422,11 @@ describe('NzSlider', () => {
     let sliderNativeElement: HTMLElement;
     let trackFillElement: HTMLElement;
     let sliderInstance: NzSliderComponent;
-    let testComponent: VerticalSliderComponent;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(VerticalSliderComponent);
       fixture.detectChanges();
 
-      testComponent = fixture.debugElement.componentInstance;
       sliderDebugElement = fixture.debugElement.query(By.directive(NzSliderComponent));
       sliderInstance = sliderDebugElement.injector.get<NzSliderComponent>(NzSliderComponent);
       sliderNativeElement = sliderInstance.sliderDOM;
@@ -468,7 +462,6 @@ describe('NzSlider', () => {
     let trackFillElement: HTMLElement;
     let sliderInstance: NzSliderComponent;
     let testComponent: MixedSliderComponent;
-    let overlayContainer: OverlayContainer;
     let overlayContainerElement: HTMLElement;
 
     beforeEach(() => {
@@ -483,7 +476,6 @@ describe('NzSlider', () => {
     });
 
     beforeEach(inject([ OverlayContainer ], (oc: OverlayContainer) => {
-      overlayContainer = oc;
       overlayContainerElement = oc.getContainerElement();
     }));
 

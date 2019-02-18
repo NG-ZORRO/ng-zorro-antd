@@ -449,7 +449,6 @@ describe('nz-tree', () => {
     it('test wrong drag event', fakeAsync(() => {
       // drop node self
       fixture.detectChanges();
-      const dragStartSpy = spyOn(treeInstance, 'onDragStart');
       const dropSpy = spyOn(treeInstance, 'onDrop');
       const dragEndSpy = spyOn(treeInstance, 'onDragEnd');
       const dragNode = treeElement.querySelector('[title=\'0-1\']');
@@ -480,10 +479,9 @@ describe('nz-tree', () => {
     }));
 
     it('test drag event nzBeforeDrop', () => {
-      const dropSpy = spyOn(treeInstance, 'onDrop');
       const dragNode = treeElement.querySelector('[title=\'0-2\']');
       let dropNode = treeElement.querySelector('[title=\'0-1\']');
-      treeInstance.beforeDrop = (arg: NzFormatBeforeDropEvent): Observable<boolean> => {
+      treeInstance.beforeDrop = (_arg: NzFormatBeforeDropEvent): Observable<boolean> => {
         return of(true);
       };
       fixture.detectChanges();
@@ -629,8 +627,7 @@ export class NzTestTreeBasicControlledComponent {
     isLeaf  : true
   } ];
 
-  nzEvent(event: NzFormatEmitEvent): void {
-    // console.log(event.eventName, event);
+  nzEvent(): void {
   }
 
 }
@@ -712,22 +709,22 @@ export class NzTestTreeDraggableComponent {
   } ];
   beforeDrop;
 
-  onDragStart(event: NzFormatEmitEvent): void {
+  onDragStart(_event: NzFormatEmitEvent): void {
   }
 
-  onDragEnter(event: NzFormatEmitEvent): void {
+  onDragEnter(_event: NzFormatEmitEvent): void {
   }
 
-  onDragOver(event: NzFormatEmitEvent): void {
+  onDragOver(_event: NzFormatEmitEvent): void {
   }
 
-  onDragLeave(event: NzFormatEmitEvent): void {
+  onDragLeave(_event: NzFormatEmitEvent): void {
   }
 
-  onDrop(event: NzFormatEmitEvent): void {
+  onDrop(_event: NzFormatEmitEvent): void {
   }
 
-  onDragEnd(event: NzFormatEmitEvent): void {
+  onDragEnd(_event: NzFormatEmitEvent): void {
   }
 }
 

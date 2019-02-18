@@ -385,13 +385,13 @@ class TestTransferComponent implements OnInit {
     this.nzDataSource = ret;
   }
 
-  search(ret: {}): void {
+  search(_ret: {}): void {
   }
 
-  select(ret: {}): void {
+  select(_ret: {}): void {
   }
 
-  change(ret: {}): void {
+  change(_ret: {}): void {
   }
 }
 

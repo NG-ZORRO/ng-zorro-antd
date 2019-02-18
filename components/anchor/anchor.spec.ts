@@ -1,5 +1,5 @@
 // tslint:disable
-import { fakeAsync, tick, TestBed, ComponentFixture, async } from '@angular/core/testing';
+import { fakeAsync, tick, TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NzAnchorModule } from './nz-anchor.module';

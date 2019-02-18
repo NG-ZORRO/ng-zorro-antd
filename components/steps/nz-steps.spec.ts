@@ -163,12 +163,10 @@ describe('steps', () => {
   describe('inner step string', () => {
     let fixture;
     let testComponent;
-    let outStep;
     let innerSteps;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestInnerStepStringComponent);
       testComponent = fixture.debugElement.componentInstance;
-      outStep = fixture.debugElement.query(By.directive(NzStepsComponent));
       innerSteps = fixture.debugElement.queryAll(By.directive(NzStepComponent));
     });
     it('should status display correct', () => {
@@ -203,13 +201,9 @@ describe('steps', () => {
   });
   describe('inner step template', () => {
     let fixture;
-    let testComponent;
-    let outStep;
     let innerSteps;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestInnerStepTemplateComponent);
-      testComponent = fixture.debugElement.componentInstance;
-      outStep = fixture.debugElement.query(By.directive(NzStepsComponent));
       innerSteps = fixture.debugElement.queryAll(By.directive(NzStepComponent));
     });
     it('should title display correct', () => {

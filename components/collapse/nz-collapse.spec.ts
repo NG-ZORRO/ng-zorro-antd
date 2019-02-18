@@ -131,14 +131,10 @@ describe('collapse', () => {
   });
   describe('collapse template', () => {
     let fixture;
-    let testComponent;
-    let collapse;
     let panels;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCollapseTemplateComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-      collapse = fixture.debugElement.query(By.directive(NzCollapseComponent));
       panels = fixture.debugElement.queryAll(By.directive(NzCollapsePanelComponent));
     });
     it('should header work', () => {
