@@ -62,6 +62,8 @@ subtitle: 通知提醒框
 | nzAnimate | 开关动画效果 | `boolean` |
 | nzStyle | 自定义内联样式 | `object` |
 | nzClass | 自定义 CSS class | `object` |
+| nzData | 任何想要在模板中作为上下文的数据 | `any` |
+
 
 还提供了全局销毁方法：
 
