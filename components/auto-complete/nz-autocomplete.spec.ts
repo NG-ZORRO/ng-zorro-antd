@@ -163,6 +163,20 @@ describe('auto-complete', () => {
       .toBe(false);
     }));
 
+    it('should close the panel when the trigger blur', fakeAsync(() => {
+      dispatchFakeEvent(input, 'focusin');
+      fixture.detectChanges();
+      flush();
+
+      expect(fixture.componentInstance.trigger.panelOpen)
+      .toBe(true);
+
+      dispatchFakeEvent(input, 'blur');
+
+      expect(fixture.componentInstance.trigger.panelOpen)
+      .toBe(false);
+    }));
+
     it('should not close the panel when the user clicks this input', fakeAsync(() => {
       dispatchFakeEvent(input, 'focusin');
       fixture.detectChanges();
