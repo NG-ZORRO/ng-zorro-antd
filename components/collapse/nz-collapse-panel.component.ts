@@ -36,6 +36,7 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
   @Input() @InputBoolean() nzShowArrow = true;
   @Input() nzHeader: string | TemplateRef<void>;
   @Input() nzExpandedIcon: string | TemplateRef<void>;
+  @Input() nzExtra: string | TemplateRef<void>;
   @Output() readonly nzActiveChange = new EventEmitter<boolean>();
 
   clickHeader(): void {
