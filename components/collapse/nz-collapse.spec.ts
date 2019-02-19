@@ -39,6 +39,14 @@ describe('collapse', () => {
       fixture.detectChanges();
       expect(collapse.nativeElement.firstElementChild.classList).toContain('ant-collapse-borderless');
     });
+    it('should extra work', () => {
+      expect(collapse.nativeElement.querySelector('.ant-collapse-extra')).toBeNull();
+      testComponent.showExtra = 'extra';
+      fixture.detectChanges();
+      const extra = collapse.nativeElement.querySelector('.ant-collapse-extra');
+      expect(extra).toBeDefined();
+      expect(extra.innerText).toBe('extra');
+    });
     it('should showArrow work', () => {
       fixture.detectChanges();
       expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-arrow').firstElementChild).toBeDefined();
@@ -168,7 +176,7 @@ describe('collapse', () => {
   template: `
     <ng-template #headerTemplate>template</ng-template>
     <nz-collapse [nzAccordion]="accordion" [nzBordered]="bordered">
-      <nz-collapse-panel [(nzActive)]="active01" (nzActiveChange)="active01Change($event)" [nzHeader]="header" [nzShowArrow]="showArrow">
+      <nz-collapse-panel [(nzActive)]="active01" (nzActiveChange)="active01Change($event)" [nzHeader]="header" [nzShowArrow]="showArrow" [nzExtra]="showExtra">
         <p>Panel01</p>
       </nz-collapse-panel>
       <nz-collapse-panel [(nzActive)]="active02" (nzActiveChange)="active02Change($event)" [nzDisabled]="disabled">
@@ -185,6 +193,7 @@ export class NzTestCollapseBasicComponent {
   active01 = false;
   active02 = false;
   showArrow = true;
+  showExtra = '';
   header = 'string';
   active01Change = jasmine.createSpy('active01 callback');
   active02Change = jasmine.createSpy('active02 callback');
