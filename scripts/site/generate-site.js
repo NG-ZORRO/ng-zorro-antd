@@ -17,15 +17,15 @@ const isSyncSpecific = target && (target !== 'init');
 const showCasePath = path.resolve(__dirname, '../../site');
 
 if (!target) {
-  fs.removeSync(`${showCasePath}/src`);
-  fs.copySync(path.resolve(__dirname, '_site/src'), `${showCasePath}/src`);
+  fs.removeSync(`${showCasePath}/doc`);
+  fs.copySync(path.resolve(__dirname, '_site/doc'), `${showCasePath}/doc`);
 } else if (target === 'init') {
   fs.removeSync(`${showCasePath}`);
   fs.copySync(path.resolve(__dirname, '_site'), `${showCasePath}`);
 } else {
-  fs.removeSync(`${showCasePath}/src/app/${target}`);
+  fs.removeSync(`${showCasePath}/doc/app/${target}`);
 }
-const showCaseTargetPath = `${showCasePath}/src/app/`;
+const showCaseTargetPath = `${showCasePath}/doc/app/`;
 const iframeTargetPath = `${showCasePath}/iframe/app/`;
 // read components folder
 const rootPath = path.resolve(__dirname, '../../components');
@@ -43,7 +43,7 @@ rootDir.forEach(componentName => {
     return;
   }
   if (fs.statSync(componentDirPath).isDirectory()) {
-    // create site/src/app->${component} folder
+    // create site/doc/app->${component} folder
     const showCaseComponentPath = path.join(showCaseTargetPath, componentName);
     fs.mkdirSync(showCaseComponentPath);
 
