@@ -23,6 +23,7 @@ Almost anything can be represented in a tree structure. Examples include directo
 | `[nzCheckable]` | Adds a Checkbox before the treeNodes| `boolean` | `false` |
 | `[nzShowExpand]` | Show a Expand Icon before the treeNodes | `boolean` | `true` |
 | `[nzShowLine]` | Shows a connecting line | `boolean` | `false` |
+| `[nzExpandedIcon]` | Customize a Expand Icon | `string｜TemplateRef<void>` | - |
 | `[nzShowIcon]` | Shows the icon before a TreeNode's title. There is no default style | `boolean` | `false` |
 | `[nzAsyncData]` | Load data asynchronously (should be used with NzTreeNode.addChildren(...)) | `boolean` | `false` |
 | `[nzDraggable]` | Specifies whether this Tree is draggable (IE > 8) | `boolean` | `false` |

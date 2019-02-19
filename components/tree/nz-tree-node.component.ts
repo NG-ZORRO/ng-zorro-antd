@@ -49,6 +49,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() @InputBoolean() nzShowLine: boolean;
   @Input() @InputBoolean() nzShowExpand: boolean;
+  @Input() nzExpandedIcon: string | TemplateRef<void>;
   @Input() @InputBoolean() nzMultiple: boolean;
   @Input() @InputBoolean() nzCheckable: boolean;
   @Input() @InputBoolean() nzAsyncData: boolean;

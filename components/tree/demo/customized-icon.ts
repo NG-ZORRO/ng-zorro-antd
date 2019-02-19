@@ -6,8 +6,17 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
   template: `
     <nz-tree
       [nzData]="nodes"
-      nzShowIcon="true">
+      nzShowIcon="true"
+      [nzExpandedIcon]="'down'">
     </nz-tree>
+    <nz-tree
+      [nzData]="nodes"
+      nzShowIcon="true"
+      [nzExpandedIcon]='expandedIcon'>
+    </nz-tree>
+    <ng-template #expandedIcon >
+      <i nz-icon type="arrow-down" class="ant-tree-switcher-icon"></i>
+    </ng-template>
   `
 })
 

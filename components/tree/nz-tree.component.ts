@@ -34,10 +34,11 @@ import { NzTreeService } from './nz-tree.service';
 
 export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzShowIcon = false;
+  @Input() @InputBoolean() nzShowExpand = true;
   @Input() @InputBoolean() nzShowLine = false;
+  @Input() nzExpandedIcon: string | TemplateRef<void>;
   @Input() @InputBoolean() nzCheckStrictly = false;
   @Input() @InputBoolean() nzCheckable = false;
-  @Input() @InputBoolean() nzShowExpand = true;
   @Input() @InputBoolean() nzAsyncData = false;
   @Input() @InputBoolean() nzDraggable = false;
   @Input() @InputBoolean() nzMultiple = false;

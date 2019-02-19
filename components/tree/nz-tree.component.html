@@ -5,10 +5,11 @@
   <nz-tree-node
     *ngFor="let node of nzNodes"
     [nzTreeNode]="node"
+    [nzShowExpand]="nzShowExpand"
     [nzShowLine]="nzShowLine"
+    [nzExpandedIcon]='nzExpandedIcon'
     [nzDraggable]="nzDraggable"
     [nzCheckable]="nzCheckable"
-    [nzShowExpand]="nzShowExpand"
     [nzAsyncData]="nzAsyncData"
     [nzMultiple]="nzMultiple"
     [nzSearchValue]="nzSearchValue"

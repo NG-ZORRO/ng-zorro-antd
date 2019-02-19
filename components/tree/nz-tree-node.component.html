@@ -16,7 +16,11 @@
       [class.ant-tree-switcher_close]="isSwitcherClose"
       (click)="_clickExpand($event)">
       <ng-container *ngIf="isShowSwitchIcon">
-        <i *ngIf="!nzTreeNode.isLoading" nz-icon type="caret-down" class="ant-tree-switcher-icon"></i>
+        <ng-container *ngIf="!nzTreeNode.isLoading">
+          <ng-container *nzStringTemplateOutlet="nzExpandedIcon">
+            <i nz-icon [type]="nzExpandedIcon || 'caret-down'" class="ant-tree-switcher-icon"></i>
+          </ng-container>
+        </ng-container>
         <i *ngIf="nzTreeNode.isLoading" nz-icon type="loading" [spin]="true" class="ant-tree-switcher-loading-icon"></i>
       </ng-container>
       <ng-container *ngIf="nzShowLine">
@@ -81,10 +85,11 @@
     <nz-tree-node
       *ngFor="let node of nzTreeNode.getChildren()"
       [nzTreeNode]="node"
+      [nzShowExpand]="nzShowExpand"
       [nzShowLine]="nzShowLine"
+      [nzExpandedIcon]='nzExpandedIcon'
       [nzDraggable]="nzDraggable"
       [nzCheckable]="nzCheckable"
-      [nzShowExpand]="nzShowExpand"
       [nzAsyncData]="nzAsyncData"
       [nzMultiple]="nzMultiple"
       [nzExpandAll]="nzExpandAll"

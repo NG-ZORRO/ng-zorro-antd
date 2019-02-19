@@ -23,7 +23,7 @@ describe('nz-tree', () => {
   describe('basic tree', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
+        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
         declarations: [ NzTestTreeBasicControlledComponent ]
       }).compileComponents();
       fixture = TestBed.createComponent(NzTestTreeBasicControlledComponent);
@@ -275,6 +275,19 @@ describe('nz-tree', () => {
       fixture.detectChanges();
       // all parent node will be expanded
       expect(fixture.componentInstance.treeComponent.getExpandedNodeList().length).toEqual(4);
+    }));
+
+    it('test customized icon', fakeAsync(() => {
+      fixture.detectChanges();
+      // default icon
+      expect(treeElement.querySelectorAll('.anticon-caret-down').length).toEqual(4);
+      fixture.detectChanges();
+      // customized icon
+      fixture.componentInstance.expandedIcon = 'arrow-down';
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(treeElement.querySelectorAll('.anticon-arrow-down').length).toEqual(4);
     }));
 
     it('test search value', fakeAsync(() => {
@@ -567,6 +580,7 @@ describe('nz-tree', () => {
       [nzMultiple]="multiple"
       [nzSearchValue]="searchValue"
       [nzExpandAll]="expandAll"
+      [nzExpandedIcon]="expandedIcon"
       [nzAsyncData]="asyncData"
       (nzSearchValueChange)="nzEvent($event)"
       (nzClick)="nzEvent($event)"
@@ -583,6 +597,7 @@ export class NzTestTreeBasicControlledComponent {
   searchValue;
   multiple = true;
   expandAll = false;
+  expandedIcon = undefined;
   asyncData = false;
   checkStrictly = false;
   defaultCheckedKeys = [ '0-0-0' ];
