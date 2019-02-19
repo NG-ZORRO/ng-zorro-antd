@@ -1,7 +1,6 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, Inject, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, Input, ViewEncapsulation } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
 import sdk from '@stackblitz/sdk';
 import { environment } from '../../../environments/environment';
 
@@ -41,13 +40,13 @@ import { environment } from '../../../environments/environment';
         <div class="highlight">
           <div class="code-box-actions">
             <i [nzTitle]="'Edit On StackBlitz'" nz-tooltip nz-icon type="form" class="code-box-code-copy" (click)="openOnStackBlitz()"></i>
-            <i [nzTitle]="'Copy Code'" nz-tooltip nz-icon [type]="_copied?'check':'copy'" class="code-box-code-copy" [class.ant-tooltip-open]="_copied"
+            <i [nzTitle]="'Copy Code'" nz-tooltip nz-icon [type]="copied?'check':'copy'" class="code-box-code-copy" [class.ant-tooltip-open]="copied"
               (click)="copyCode(nzRawCode)"></i>
-            <i [nzTitle]="'Copy Generate Command'" *ngIf="nzGenerateCommand" nz-tooltip nz-icon [type]="_commandCopied?'check':'code'"
-              class="code-box-code-copy" [class.ant-tooltip-open]="_commandCopied" (click)="copyGenerateCommand(nzGenerateCommand)"></i>
+            <i [nzTitle]="'Copy Generate Command'" *ngIf="nzGenerateCommand" nz-tooltip nz-icon [type]="commandCopied?'check':'code'"
+              class="code-box-code-copy" [class.ant-tooltip-open]="commandCopied" (click)="copyGenerateCommand(nzGenerateCommand)"></i>
           </div>
           <ng-content select="[code]"></ng-content>
-          <nz-highlight [nzCode]="_code" [nzLanguage]="'typescript'"></nz-highlight>
+          <nz-highlight [nzCode]="nzCode" [nzLanguage]="'typescript'"></nz-highlight>
         </div>
       </section>
     </section>
@@ -56,14 +55,14 @@ import { environment } from '../../../environments/environment';
     './nz-codebox.less'
   ]
 })
-export class NzCodeBoxComponent implements OnInit {
-  _code: string;
-  _rawCode: string;
-  _copied = false;
-  _commandCopied = false;
+export class NzCodeBoxComponent {
+  rawCode: string;
+  copied = false;
+  commandCopied = false;
   showIframe: boolean;
   simulateIFrame: boolean;
   iframe: SafeUrl;
+  @Input() nzCode: string;
   @Input() nzTitle: string;
   @Input() nzExpanded = false;
   @Input() nzHref: string;
@@ -74,7 +73,8 @@ export class NzCodeBoxComponent implements OnInit {
   @Input() nzSelector = '';
   @Input() nzGenerateCommand = '';
 
-  @Input() set nzIframeSource(value: string) {
+  @Input()
+  set nzIframeSource(value: string) {
     this.showIframe = (value !== 'null') && environment.production;
     this.simulateIFrame = (value !== 'null') && !environment.production;
     this.iframe = this.sanitizer.bypassSecurityTrustResourceUrl(value);
@@ -82,40 +82,31 @@ export class NzCodeBoxComponent implements OnInit {
 
   @Input()
   get nzRawCode(): string {
-    return this._rawCode;
+    return this.rawCode;
   }
 
   set nzRawCode(value: string) {
-    this._rawCode = decodeURIComponent(value).trim();
+    this.rawCode = decodeURIComponent(value).trim();
   }
 
-  @Input()
-  get nzCode(): string {
-    return this._code;
-  }
-
-  set nzCode(value: string) {
-    this._code = value;
-  }
-
-  navigateToFragment() {
+  navigateToFragment(): void {
     window.location.hash = this.nzLink;
   }
 
-  copyCode(code) {
+  copyCode(code: string): void {
     this.copy(code).then(() => {
-      this._copied = true;
+      this.copied = true;
       setTimeout(() => {
-        this._copied = false;
+        this.copied = false;
       }, 1000);
     });
   }
 
   copyGenerateCommand(command) {
     this.copy(command).then(() => {
-      this._commandCopied = true;
+      this.commandCopied = true;
       setTimeout(() => {
-        this._commandCopied = false;
+        this.commandCopied = false;
       }, 1000);
     });
   }
@@ -416,10 +407,6 @@ export class AppModule { }
     });
   }
 
-  constructor(@Inject(DOCUMENT) private dom: any, private sanitizer: DomSanitizer, private _el: ElementRef, private activatedRoute: ActivatedRoute, private router: Router) {
-
-  }
-
-  ngOnInit() {
+  constructor(@Inject(DOCUMENT) private dom: any, private sanitizer: DomSanitizer) {
   }
 }

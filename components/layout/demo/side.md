@@ -1,7 +1,6 @@
 ---
 order: 3
 iframe:
-  source: https://stackblitz.com/edit/ng-zorro-layout-sider?embed=1&file=src/main.ts&hideExplorer=1&hideNavigation=1&view=preview
   height: 360
 title:
   zh-CN: 侧边布局

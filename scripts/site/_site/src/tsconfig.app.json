@@ -15,7 +15,8 @@
     "**/*.spec.ts"
   ],
   "include": [
-    "../src/**/*"
+    "../src/**/*",
+    "../iframe/**/*"
   ],
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,
