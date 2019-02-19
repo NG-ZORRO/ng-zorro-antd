@@ -1,6 +1,25 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { toBoolean } from '../core/util/convert';
+// DEFINITIONS
+
+export type Mark = string | {
+  style: object;
+  label: string;
+};
+
+export class Marks {
+  number: Mark;
+}
+
+// TODO: extends Array could cause unexpected behavior when targeting es5 or below
+export class MarksArray extends Array<{ value: number, offset: number, config: Mark }> {
+  [ index: number ]: {
+    value: number;
+    offset: number;
+    config: Mark;
+  }
+}
 
 @Component({
   selector           : 'nz-slider-marks',
@@ -108,24 +127,4 @@ export class NzSliderMarksComponent implements OnChanges {
     }
   }
 
-}
-
-// DEFINITIONS
-
-export type Mark = string | {
-  style: object;
-  label: string;
-};
-
-export class Marks {
-  number: Mark;
-}
-
-// TODO: extends Array could cause unexpected behavior when targeting es5 or below
-export class MarksArray extends Array<{ value: number, offset: number, config: Mark }> {
-  [ index: number ]: {
-    value: number;
-    offset: number;
-    config: Mark;
-  }
 }
