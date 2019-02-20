@@ -1,7 +1,7 @@
 ---
 category: Components
 type: Data Display
-title: Description List
+title: Descriptions
 cols: 1
 ---
 
@@ -19,8 +19,8 @@ When there is no data provided, display for friendly tips.
 | -------- | ----------- | ---- | ------- |
 | `[nzTitle]` | Describe the title of the list, displayed at the top | `string｜TemplateRef<void>` | `false` |
 | `[nzBorder]` | Whether to display the border | `boolean` | `false` |
-| `[nzColumn]` | The number of `nz-description-list-item` in a row | `string｜TemplateRef<void>` | - |
-| `[nzSize]` | Set the size of the list. | `default｜middle｜small` | `default` |
+| `[nzColumn]` | The number of `nz-descriptions-item` in a row | `string｜TemplateRef<void>` | - |
+| `[nzSize]` | Set the size of the list. | `'default'｜'middle'｜'small'` | `'default'` |
 
 
 ### nz-description-list-item

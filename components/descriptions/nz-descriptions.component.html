@@ -1,13 +1,13 @@
-<div *ngIf="nzTitle" class="ant-description-list-title">
+<div *ngIf="nzTitle" class="ant-descriptions-title">
   <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
 </div>
-<div class="ant-description-list-view">
+<div class="ant-descriptions-view">
   <table>
-    <tr class="ant-description-list-item" *ngFor="let row of itemMatrix; let i = index" [attr.key]="i">
+    <tr class="ant-descriptions-item" *ngFor="let row of itemMatrix; let i = index" [attr.key]="i">
       <ng-container *ngFor="let item of row; let isLast = last">
-        <td class="ant-description-list-item-label" *nzStringTemplateOutlet="item.title">{{ item.title }}</td>
+        <td class="ant-descriptions-item-label" *nzStringTemplateOutlet="item.title">{{ item.title }}</td>
         <!-- The last content in a row should take all the space left. -->
-        <td class="ant-description-list-item-content"
+        <td class="ant-descriptions-item-content"
             [colSpan]="isLast ? (nzColumn - (row.length - 1)) * 2 - 1 : item.span">
           <ng-template [ngTemplateOutlet]="item.content"></ng-template>
         </td>

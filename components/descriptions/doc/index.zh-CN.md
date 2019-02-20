@@ -1,7 +1,7 @@
 ---
 category: Components
 type: Other
-title: Description List
+title: Descriptions
 subtitle: 描述列表
 cols: 1
 ---
@@ -20,8 +20,8 @@ cols: 1
 | -------- | ----------- | ---- | ------- |
 | `[nzTitle]` | 描述列表的标题，显示在最顶部 | `string｜TemplateRef<void>` | `false` |
 | `[nzBorder]` | 是否展示边框 | `boolean` | `false` |
-| `[nzColumn]` | 一行的 `nz-description-list-item` 的数量 | `string｜TemplateRef<void>` | - |
-| `[nzSize]` | 设置列表的大小 | `default｜middle｜small` | `default` |
+| `[nzColumn]` | 一行的 `nz-descriptions-item` 的数量 | `string｜TemplateRef<void>` | - |
+| `[nzSize]` | 设置列表的大小 | `'default'｜'middle'｜'small'` | `'default'` |
 
 
 ### nz-description-list-item

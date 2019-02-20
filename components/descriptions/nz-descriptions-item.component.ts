@@ -11,10 +11,10 @@ import { InputNumber } from '../core/util';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation  : ViewEncapsulation.None,
-  selector       : 'nz-description-list-item',
-  templateUrl    : './nz-description-list-item.component.html'
+  selector       : 'nz-descriptions-item',
+  templateUrl    : './nz-descriptions-item.component.html'
 })
-export class NzDescriptionListItemComponent {
+export class NzDescriptionsItemComponent {
   @ViewChild(TemplateRef) content: TemplateRef<void>;
 
   @Input() @InputNumber() nzSpan = 1;
