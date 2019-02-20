@@ -87,7 +87,9 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.below = matchBelow;
       this.nzCollapsed = matchBelow;
       this.nzCollapsedChange.emit(matchBelow);
-      this.cdr.markForCheck();
+      this.ngZone.run(() => {
+        this.cdr.markForCheck();
+      });
     }
   }
 

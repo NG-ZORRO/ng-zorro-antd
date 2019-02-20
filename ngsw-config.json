@@ -28,6 +28,6 @@
     "!/**/*.*",
     "!/**/*__*",
     "!/**/*__*/**",
-    "!/**/(version|issue-helper)/**"
+    "!/**/(version|issue-helper|iframe)/**"
   ]
 }

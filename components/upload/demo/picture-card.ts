@@ -24,11 +24,11 @@ import { NzMessageService, UploadFile } from 'ng-zorro-antd';
   `,
   styles: [
     `
-  :host ::ng-deep i {
+  i[nz-icon] {
     font-size: 32px;
     color: #999;
   }
-  :host ::ng-deep .ant-upload-text {
+  .ant-upload-text {
     margin-top: 8px;
     color: #666;
   }

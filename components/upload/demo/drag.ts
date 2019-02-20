@@ -16,13 +16,7 @@ import { NzMessageService, UploadFile } from 'ng-zorro-antd';
     <p class="ant-upload-text">Click or drag file to this area to upload</p>
     <p class="ant-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files</p>
   </nz-upload>
-  `,
-  styles: [
-    `
-  :host ::ng-deep nz-upload { display: block; }
-  :host ::ng-deep .ant-upload.ant-upload-drag { height: 180px; }
   `
-  ]
 })
 export class NzDemoUploadDragComponent {
   constructor(private msg: NzMessageService) {}
