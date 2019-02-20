@@ -118,11 +118,11 @@ import { Component, OnInit } from '@angular/core';
   styles  : [
       `
       .components-table-demo-control-bar {
-        margin-bottom: 10px;
+        margin-bottom: 12px;
       }
 
-      .components-table-demo-control-bar ::ng-deep .ant-form-item {
-        margin-right: 15px;
+      .nz-form-item {
+        margin-right: 16px;
         margin-bottom: 8px;
       }
     `

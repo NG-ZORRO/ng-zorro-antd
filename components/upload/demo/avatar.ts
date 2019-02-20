@@ -13,7 +13,7 @@ import { Observable, Observer } from 'rxjs';
     [nzBeforeUpload]="beforeUpload"
     (nzChange)="handleChange($event)">
     <ng-container *ngIf="!avatarUrl">
-      <i nz-icon [type]="loading ? 'loading' : 'plus'"></i>
+      <i class="upload-icon" nz-icon [type]="loading ? 'loading' : 'plus'"></i>
       <div class="ant-upload-text">Upload</div>
     </ng-container>
     <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar">
@@ -21,15 +21,15 @@ import { Observable, Observer } from 'rxjs';
   `,
   styles: [
     `
-    :host ::ng-deep .avatar-uploader > .ant-upload, :host ::ng-deep .avatar {
+    .avatar {
       width: 128px;
       height: 128px;
     }
-    :host ::ng-deep .ant-upload-select-picture-card i {
+    .upload-icon {
       font-size: 32px;
       color: #999;
     }
-    :host ::ng-deep .ant-upload-select-picture-card .ant-upload-text {
+    .ant-upload-text {
       margin-top: 8px;
       color: #666;
     }

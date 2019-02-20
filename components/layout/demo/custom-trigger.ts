@@ -39,7 +39,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
             Bill is a cat.
           </div>
         </nz-content>
-        <nz-footer style="text-align: center;">Ant Design ©2017 Implement By Angular</nz-footer>
+        <nz-footer style="text-align: center;">Ant Design ©2019 Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
     <ng-template #trigger>
@@ -48,7 +48,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
   `,
   styles  : [
       `
-      :host ::ng-deep .trigger {
+      .trigger {
         font-size: 18px;
         line-height: 64px;
         padding: 0 24px;
@@ -56,11 +56,11 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
         transition: color .3s;
       }
 
-      :host ::ng-deep .trigger:hover {
+      .trigger:hover {
         color: #1890ff;
       }
 
-      :host ::ng-deep .logo {
+      .logo {
         height: 32px;
         background: rgba(255, 255, 255, .2);
         margin: 16px;

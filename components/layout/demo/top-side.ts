@@ -52,7 +52,7 @@ import { Component } from '@angular/core';
           </nz-sider>
           <nz-content style="padding: 0 24px; min-height: 280px;">Content</nz-content>
         </nz-layout>
-        <nz-footer style="text-align: center;">Ant Design ©2017 Implement By Angular</nz-footer>
+        <nz-footer style="text-align: center;">Ant Design ©2019 Implement By Angular</nz-footer>
       </nz-content>
     </nz-layout>
   `,
