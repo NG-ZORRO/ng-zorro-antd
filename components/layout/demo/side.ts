@@ -37,13 +37,13 @@ import { Component } from '@angular/core';
             Bill is a cat.
           </div>
         </nz-content>
-        <nz-footer style="text-align: center;">Ant Design ©2017 Implement By Angular</nz-footer>
+        <nz-footer style="text-align: center;">Ant Design ©2019 Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
   `,
   styles  : [
       `
-      :host ::ng-deep .logo {
+      .logo {
         height: 32px;
         background: rgba(255, 255, 255, .2);
         margin: 16px;

@@ -37,7 +37,7 @@ import { Component } from '@angular/core';
           content
         </div>
         </nz-content>
-        <nz-footer style="text-align: center;">Ant Design ©2017 Implement By Angular</nz-footer>
+        <nz-footer style="text-align: center;">Ant Design ©2019 Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
   `,

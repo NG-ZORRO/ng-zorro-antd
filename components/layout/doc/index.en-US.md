@@ -82,6 +82,7 @@ The sidebar.
 | `[nzCollapsed]` | the collapsed status can be double binding | `boolean` | `false` |
 | `[nzReverseArrow]` | reverse direction of arrow, for a sider that expands from the right | `boolean` | `false` |
 | `[nzTrigger]` | specify the customized trigger, set to null to hide the trigger | `string｜TemplateRef<void>` | - |
+| `[nzZeroTrigger]` | specify the customized trigger when nzCollapsedWidth setting to `0` | `TemplateRef<void>` | - |
 | `[nzWidth]` | width of the sidebar | `number｜string` | `200` |
 | `[nzTheme]` | color theme of the sidebar | `'light'｜'dark'` | `dark` |
 | `(nzCollapsedChange)` | the callback function | `EventEmitter<boolean>` | - |
