@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzTableComponent } from './nz-table.component';
 import { NzTableModule } from './nz-table.module';
@@ -11,8 +10,7 @@ describe('nz-th', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzTableModule, NzIconTestModule ],
-      declarations: [ NzThTestNzTableComponent, NzThTestTableDefaultFilterComponent ],
-      providers   : [ NzUpdateHostClassService ]
+      declarations: [ NzThTestNzTableComponent, NzThTestTableDefaultFilterComponent ]
     });
     TestBed.compileComponents();
   }));

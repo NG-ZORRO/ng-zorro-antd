@@ -1,14 +1,6 @@
+import { AnimationEvent } from '@angular/animations';
 import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-  AnimationEvent
-} from '@angular/animations';
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -18,46 +10,38 @@ import {
   Output,
   Renderer2,
   SimpleChanges,
-  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
-export type TagType = 'default' | 'closeable' | 'checkable';
+import { fadeMotion } from '../core/animation/fade';
+import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { InputBoolean } from '../core/util/convert';
 
 @Component({
   selector           : 'nz-tag',
   preserveWhitespaces: false,
-  animations         : [ trigger('tagAnimation', [
-    state('*', style({ opacity: 1 })),
-    transition('void => *', [
-      style({ opacity: 0 }),
-      animate('300ms cubic-bezier(0.78, 0.14, 0.15, 0.86)')
-    ]),
-    state('void', style({ opacity: 0 })),
-    transition('* => void', [
-      style({ opacity: 1 }),
-      animate('300ms cubic-bezier(0.78, 0.14, 0.15, 0.86)')
-    ])
-  ]) ],
+  providers          : [ NzUpdateHostClassService ],
+  animations         : [ fadeMotion ],
   templateUrl        : './nz-tag.component.html',
   changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None
+  encapsulation      : ViewEncapsulation.None,
+  host               : {
+    '[@fadeMotion]'           : '',
+    '[@.disabled]'            : 'nzNoAnimation',
+    '(@fadeMotion.done)'      : 'afterAnimation($event)',
+    '(click)'                 : 'updateCheckedStatus()',
+    '[style.background-color]': 'presetColor? null : nzColor'
+  }
 })
-export class NzTagComponent implements OnInit, OnChanges, AfterViewInit {
-  classMap;
-  closed = false;
 
-  @ViewChild('wrapperElement') private wrapperElement: ElementRef;
-
-  @Input() nzMode: TagType = 'default';
+export class NzTagComponent implements OnInit, OnChanges {
+  presetColor = false;
+  @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
   @Input() nzColor: string;
   @Input() @InputBoolean() nzChecked: boolean = false;
+  @Input() @InputBoolean() nzNoAnimation: boolean = false;
   @Output() readonly nzAfterClose = new EventEmitter<void>();
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
-
-  constructor(private renderer: Renderer2) { }
 
   private isPresetColor(color?: string): boolean {
     if (!color) {
@@ -70,24 +54,15 @@ export class NzTagComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private updateClassMap(): void {
-    const isPresetColor = this.isPresetColor(this.nzColor);
-    this.classMap = {
-      [ `ant-tag` ]                  : true,
-      [ `ant-tag-has-color` ]        : this.nzColor && !isPresetColor,
-      [ `ant-tag-${this.nzColor}` ]  : isPresetColor,
-      [ `ant-tag-checkable` ]        : this.nzMode === 'checkable',
-      [ `ant-tag-checkable-checked` ]: this.nzChecked
-    };
-  }
-
-  private updateColorStatus(): void {
-    if (this.wrapperElement && this.nzColor) {
-      if (this.isPresetColor(this.nzColor)) {
-        this.renderer.removeStyle(this.wrapperElement.nativeElement, 'background-color');
-      } else {
-        this.renderer.setStyle(this.wrapperElement.nativeElement, 'background-color', this.nzColor);
-      }
-    }
+    this.presetColor = this.isPresetColor(this.nzColor);
+    const prefix = 'ant-tag';
+    this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
+      [ `${prefix}` ]                  : true,
+      [ `${prefix}-has-color` ]        : this.nzColor && !this.presetColor,
+      [ `${prefix}-${this.nzColor}` ]  : this.presetColor,
+      [ `${prefix}-checkable` ]        : this.nzMode === 'checkable',
+      [ `${prefix}-checkable-checked` ]: this.nzChecked
+    });
   }
 
   updateCheckedStatus(): void {
@@ -101,14 +76,17 @@ export class NzTagComponent implements OnInit, OnChanges, AfterViewInit {
   closeTag(e: MouseEvent): void {
     this.nzOnClose.emit(e);
     if (!e.defaultPrevented) {
-      this.closed = true;
+      this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), this.elementRef.nativeElement);
     }
   }
 
   afterAnimation(e: AnimationEvent): void {
-    if (this.closed && !e.fromState) {
+    if (e.toState === 'void') {
       this.nzAfterClose.emit();
     }
+  }
+
+  constructor(private renderer: Renderer2, private elementRef: ElementRef, private nzUpdateHostClassService: NzUpdateHostClassService) {
   }
 
   ngOnInit(): void {
@@ -116,13 +94,6 @@ export class NzTagComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzColor) {
-      this.updateColorStatus();
-    }
     this.updateClassMap();
-  }
-
-  ngAfterViewInit(): void {
-    this.updateColorStatus();
   }
 }

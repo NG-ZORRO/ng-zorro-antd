@@ -25,23 +25,23 @@ describe('tag', () => {
     });
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(tag.nativeElement.firstElementChild.classList).toContain('ant-tag');
+      expect(tag.nativeElement.classList).toContain('ant-tag');
     });
     it('should checkable work', () => {
       fixture.detectChanges();
-      expect(tag.nativeElement.firstElementChild.classList).not.toContain('ant-tag-checkable');
+      expect(tag.nativeElement.classList).not.toContain('ant-tag-checkable');
       testComponent.mode = 'checkable';
       fixture.detectChanges();
       expect(testComponent.checked).toBe(false);
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
-      expect(tag.nativeElement.firstElementChild.classList).toContain('ant-tag-checkable');
-      expect(tag.nativeElement.firstElementChild.classList).not.toContain('ant-tag-checkable-checked');
-      tag.nativeElement.firstElementChild.click();
+      expect(tag.nativeElement.classList).toContain('ant-tag-checkable');
+      expect(tag.nativeElement.classList).not.toContain('ant-tag-checkable-checked');
+      tag.nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.checked).toBe(true);
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(1);
-      expect(tag.nativeElement.firstElementChild.classList).toContain('ant-tag-checkable');
-      expect(tag.nativeElement.firstElementChild.classList).toContain('ant-tag-checkable-checked');
+      expect(tag.nativeElement.classList).toContain('ant-tag-checkable');
+      expect(tag.nativeElement.classList).toContain('ant-tag-checkable-checked');
     });
     it('should closeable work', fakeAsync(() => {
       fixture.detectChanges();
@@ -56,33 +56,34 @@ describe('tag', () => {
       tick(1000);
       fixture.detectChanges();
       expect(testComponent.afterClose).toHaveBeenCalledTimes(1);
-      expect(tag.nativeElement.querySelector('.anticon-close')).toBeNull();
+      tag = fixture.debugElement.query(By.directive(NzTagComponent));
+      expect(tag).toBeNull();
     }));
     it('should color work', () => {
       fixture.detectChanges();
-      expect(tag.nativeElement.firstElementChild.classList).not.toContain('ant-tag-has-color');
+      expect(tag.nativeElement.classList).not.toContain('ant-tag-has-color');
       testComponent.color = 'green';
       fixture.detectChanges();
-      expect(tag.nativeElement.firstElementChild.classList).toContain('ant-tag-green');
+      expect(tag.nativeElement.classList).toContain('ant-tag-green');
       testComponent.color = '#f50';
       fixture.detectChanges();
-      expect(tag.nativeElement.firstElementChild.classList).not.toContain('ant-tag-green');
-      expect(tag.nativeElement.firstElementChild.style.backgroundColor).toBe('rgb(255, 85, 0)');
+      expect(tag.nativeElement.classList).not.toContain('ant-tag-green');
+      expect(tag.nativeElement.style.backgroundColor).toBe('rgb(255, 85, 0)');
       testComponent.color = 'green';
       fixture.detectChanges();
-      expect(tag.nativeElement.firstElementChild.classList).toContain('ant-tag-green');
-      expect(tag.nativeElement.firstElementChild.style.backgroundColor).toBe('');
+      expect(tag.nativeElement.classList).toContain('ant-tag-green');
+      expect(tag.nativeElement.style.backgroundColor).toBe('');
     });
     it('issues #1176', () => {
       testComponent.color = 'green';
       fixture.detectChanges();
-      expect(tag.nativeElement.firstElementChild.classList).toContain('ant-tag-green');
+      expect(tag.nativeElement.classList).toContain('ant-tag-green');
       testComponent.color = '';
       fixture.detectChanges();
-      expect(tag.nativeElement.firstElementChild.classList).not.toContain('ant-tag-has-color');
+      expect(tag.nativeElement.classList).not.toContain('ant-tag-has-color');
       testComponent.color = undefined;
       fixture.detectChanges();
-      expect(tag.nativeElement.firstElementChild.classList).not.toContain('ant-tag-has-color');
+      expect(tag.nativeElement.classList).not.toContain('ant-tag-has-color');
     });
   });
   describe('prevent tag', () => {
@@ -131,11 +132,7 @@ export class NzTestTagBasicComponent {
 
 @Component({
   template: `
-    <nz-tag
-      nzMode="closeable"
-      (nzOnClose)="onClose($event)">
-      Tag 1
-    </nz-tag>
+    <nz-tag nzMode="closeable" (nzOnClose)="onClose($event)">Tag 1</nz-tag>
   `
 })
 export class NzTestTagPreventComponent {
