@@ -23,11 +23,6 @@
   position: absolute;
   pointer-events: auto;
   z-index: 1000;
-
-  &.cdk-overlay-backdrop-showing {
-    opacity: 0;
-  }
-
 }
 
 .cdk-overlay-pane {
@@ -62,6 +57,12 @@
   // https://github.com/angular/material2/issues/15051
   body {
     overflow-x: visible;
+  }
+}
+
+.nz-overlay-transparent-backdrop {
+  &, &.cdk-overlay-backdrop-showing {
+    opacity: 0;
   }
 }
 

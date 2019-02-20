@@ -18,7 +18,9 @@
   [class.ant-select-selection--multiple]="nzSelectService.isMultipleOrTags"
   (keydown)="onKeyDown($event)">
 </div>
-<ng-template cdkConnectedOverlay
+<ng-template
+  cdkConnectedOverlay
+  nzConnectedOverlay
   [cdkConnectedOverlayHasBackdrop]="true"
   [cdkConnectedOverlayMinWidth]="nzDropdownMatchSelectWidth? null : triggerWidth"
   [cdkConnectedOverlayWidth]="nzDropdownMatchSelectWidth? triggerWidth : null"
