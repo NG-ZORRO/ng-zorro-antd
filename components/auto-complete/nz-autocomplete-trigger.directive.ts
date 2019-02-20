@@ -185,6 +185,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   }
 
   handleBlur(): void {
+    this.closePanel();
     this._onTouched();
   }
 

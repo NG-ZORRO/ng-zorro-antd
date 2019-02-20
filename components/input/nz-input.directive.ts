@@ -1,7 +1,7 @@
 import {
-  Directive,
+  Directive, ElementRef,
   Input,
-  Optional,
+  Optional, Renderer2,
   Self
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
@@ -11,7 +11,6 @@ import { toBoolean } from '../core/util/convert';
 @Directive({
   selector: '[nz-input]',
   host    : {
-    '[class.ant-input]'         : 'true',
     '[class.ant-input-disabled]': 'disabled',
     '[class.ant-input-lg]'      : `nzSize === 'large'`,
     '[class.ant-input-sm]'      : `nzSize === 'small'`
@@ -33,6 +32,7 @@ export class NzInputDirective {
     return this._disabled;
   }
 
-  constructor(@Optional() @Self() public ngControl: NgControl) {
+  constructor(@Optional() @Self() public ngControl: NgControl, renderer: Renderer2, elementRef: ElementRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-input');
   }
 }

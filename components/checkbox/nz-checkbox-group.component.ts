@@ -1,16 +1,15 @@
+import { FocusMonitor } from '@angular/cdk/a11y';
 import {
   forwardRef,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
   OnInit,
+  Renderer2,
   ViewEncapsulation
 } from '@angular/core';
-
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-import { FocusMonitor } from '@angular/cdk/a11y';
-
 import { InputBoolean } from '../core/util/convert';
 
 export interface NzCheckBoxOptionInterface {
@@ -31,24 +30,26 @@ export interface NzCheckBoxOptionInterface {
       useExisting: forwardRef(() => NzCheckboxGroupComponent),
       multi      : true
     }
-  ],
-  host               : {
-    '[class.ant-checkbox-group]': 'true'
-  }
+  ]
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
   // tslint:disable-next-line:no-any
   onChange: (value: any) => void = () => null;
   // tslint:disable-next-line:no-any
   onTouched: () => any = () => null;
-  options: NzCheckBoxOptionInterface[];
+  options: NzCheckBoxOptionInterface[] = [];
   @Input() @InputBoolean() nzDisabled = false;
 
   onOptionChange(): void {
     this.onChange(this.options);
   }
 
-  constructor(private elementRef: ElementRef, private focusMonitor: FocusMonitor) {
+  trackByOption(index: number, option: NzCheckBoxOptionInterface): string {
+    return option.value;
+  }
+
+  constructor(private elementRef: ElementRef, private focusMonitor: FocusMonitor, private cdr: ChangeDetectorRef, renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-checkbox-group');
   }
 
   ngOnInit(): void {
@@ -61,6 +62,7 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
 
   writeValue(value: NzCheckBoxOptionInterface[]): void {
     this.options = value;
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (_: NzCheckBoxOptionInterface[]) => {}): void {
@@ -73,5 +75,6 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
+    this.cdr.markForCheck();
   }
 }

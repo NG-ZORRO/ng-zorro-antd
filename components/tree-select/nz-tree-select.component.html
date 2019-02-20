@@ -86,8 +86,8 @@
       </div>
       <ng-container *ngFor="let node of selectedNodes">
         <li
-          [@selectTagAnimation]
-          (@selectTagAnimation.done)="updatePosition()"
+          [@zoomMotion]
+          (@zoomMotion.done)="updatePosition()"
           [attr.title]="nzDisplayWith(node)"
           [class.ant-select-selection__choice__disabled]="node.isDisabled"
           class="ant-select-selection__choice">

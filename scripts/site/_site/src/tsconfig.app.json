@@ -4,9 +4,7 @@
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
     "module": "es2015",
-    "types": [
-      "node"
-    ],
+    "types": [],
     "paths": {
       "ng-zorro-antd": [ "../../components/ng-zorro-antd.module.ts" ],
       "ngx-color/sketch": [ "../../node_modules/ngx-color/sketch" ]

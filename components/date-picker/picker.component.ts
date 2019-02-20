@@ -14,7 +14,8 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { slideMotion } from '../core/animation/slide';
@@ -22,6 +23,7 @@ import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CandyDate } from './lib/candy-date';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   selector       : 'nz-picker',
   templateUrl    : './picker.component.html',
   animations     : [

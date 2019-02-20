@@ -66,6 +66,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzPageIndex]` | 当前页码，可双向绑定 | `number` | - |
 | `[nzPageSize]` | 每页展示多少数据，可双向绑定 | `number` | - |
 | `[nzShowPagination]` | 是否显示分页器 | `boolean` | `true` |
+| `[nzPaginationPosition]` | 指定分页显示的位置 | `'top'｜'bottom'｜'both'` | `bottom` |
 | `[nzBordered]` | 是否展示外边框和列边框 | `boolean` | `false` |
 | `[nzWidthConfig]` | 表头分组时指定每列宽度，与 `th` 的 `nzWidth` 不可混用 | `string[]` | - |
 | `[nzSize]` | 正常或迷你类型 | `'middle'｜'small'｜'default'` | `'default'` |
@@ -78,7 +79,8 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzPageSizeOptions]` | 页数选择器可选值 | `number[]` | `[ 10, 20, 30, 40, 50 ]` |
 | `[nzShowQuickJumper]` | 是否可以快速跳转至某页 | `boolean` | `false` |
 | `[nzShowSizeChanger]` | 是否可以改变 `nzPageSize` | `boolean` | `false` |
-| `[nzShowTotal]` | 用于显示数据总量和当前数据范围，与 Pagination 用法相同 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
+| `[nzShowTotal]` | 用于显示数据总量和当前数据范围，用法参照 Pagination 组件 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
+| `[nzItemRender]` | 用于自定义页码的结构，用法参照 Pagination 组件 | `TemplateRef<{ $implicit: 'page'｜'prev'｜'next', page: number }>` | - |
 | `[nzHideOnSinglePage]` | 只有一页时是否隐藏分页器 | `boolean` | `false` |
 | `[nzSimple]` | 当添加该属性时，显示为简单分页 | `boolean` | - |
 | `(nzPageIndexChange)` | 当前页码改版时的回调函数 | `EventEmitter<number>` | - |
@@ -129,6 +131,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzWidth]` | 指定该列宽度，表头未分组时可用 | `string` | - |
 | `[nzLeft]` | 左侧距离，用于固定左侧列 | `string` | - |
 | `[nzRight]` | 右侧距离，用于固定右侧列 | `string` | - |
+| `[nzAlign]` | 设置列内容的对齐方式 | `'left'｜'right'｜'center'` | - |
 
 其他
 
@@ -162,7 +165,7 @@ Table 组件同时具备了易用性和高度可定制性
 | --- | --- | --- | --- |
 | `[nzLeft]` | 左侧距离，用于固定左侧列 | `string` | - |
 | `[nzRight]` | 右侧距离，用于固定右侧列 | `string` | - |
-
+| `[nzAlign]` | 设置列内容的对齐方式 | `'left'｜'right'｜'center'` | - |
 
 其他
 

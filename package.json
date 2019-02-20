@@ -33,18 +33,18 @@
     "pre-release": "npm run site:init && bash ./scripts/build/replace-publish.sh && npm run generate && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod && npm run helper"
   },
   "dependencies": {
-    "@angular/cdk": "^7.2.0",
+    "@angular/cdk": "^7.3.0",
     "@angular/pwa": "^0.12.2",
     "@ant-design/icons-angular": "^2.0.1",
     "date-fns": "^1.29.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.12.0",
-    "@angular-devkit/build-ng-packagr": "~0.12.0",
+    "@angular-devkit/build-angular": "~0.13.0",
+    "@angular-devkit/build-ng-packagr": "~0.13.0",
     "@angular-devkit/core": "~7.2.0",
     "@angular-devkit/schematics": "~7.2.0",
     "@angular/animations": "~7.2.0",
-    "@angular/cli": "~7.2.2",
+    "@angular/cli": "~7.3.1",
     "@angular/common": "~7.2.0",
     "@angular/compiler": "~7.2.0",
     "@angular/compiler-cli": "~7.2.0",
@@ -62,7 +62,6 @@
     "@types/hammerjs": "^2.0.35",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~10.12.0",
     "antd-theme-generator": "^1.0.7",
     "chalk": "^2.4.1",
     "classlist.js": "^1.1.20150312",

@@ -5,10 +5,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
   encapsulation      : ViewEncapsulation.None,
   changeDetection    : ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
-  templateUrl        : './nz-layout.component.html',
-  host               : {
-    '[class.ant-layout]': 'true'
-  }
+  templateUrl        : './nz-layout.component.html'
 })
 export class NzLayoutComponent {
 
@@ -21,5 +18,6 @@ export class NzLayoutComponent {
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-layout');
   }
 }

@@ -211,12 +211,12 @@ describe('anchor', () => {
       expect(el).not.toBeNull();
       return el.nativeElement as HTMLElement;
     }
-    to(href: string = '#何时使用'): this {
+    to(href: string = '#basic'): this {
       this.getEl(`nz-affix [href="${href}"]`).click();
       fixture.detectChanges();
       return this;
     }
-    scrollTo(href: string = '#何时使用'): this {
+    scrollTo(href: string = '#basic'): this {
       const toNode = dl.query(By.css(href));
       (toNode.nativeElement as HTMLElement).scrollIntoView();
       fixture.detectChanges();

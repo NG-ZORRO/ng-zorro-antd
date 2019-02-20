@@ -58,7 +58,7 @@ export class NzDemoModalServiceComponent {
       nzTitle: 'Modal Title',
       nzContent: 'string, will close after 1 sec',
       nzClosable: false,
-      nzOnOk: () => new Promise((resolve) => window.setTimeout(resolve, 1000))
+      nzOnOk: () => new Promise((resolve) => setTimeout(resolve, 1000))
     });
   }
 
@@ -75,7 +75,7 @@ export class NzDemoModalServiceComponent {
 
   destroyTplModal(): void {
     this.tplModalButtonLoading = true;
-    window.setTimeout(() => {
+    setTimeout(() => {
       this.tplModalButtonLoading = false;
       this.tplModal.destroy();
     }, 1000);
@@ -103,7 +103,7 @@ export class NzDemoModalServiceComponent {
     modal.afterClose.subscribe((result) => console.log('[afterClose] The result is:', result));
 
     // delay until modal instance created
-    window.setTimeout(() => {
+    setTimeout(() => {
       const instance = modal.getContentComponent();
       instance.subtitle = 'sub title is changed';
     }, 2000);
@@ -130,8 +130,8 @@ export class NzDemoModalServiceComponent {
           loading: false,
           onClick(): void {
             this.loading = true;
-            window.setTimeout(() => this.loading = false, 1000);
-            window.setTimeout(() => {
+            setTimeout(() => this.loading = false, 1000);
+            setTimeout(() => {
               this.loading = false;
               this.disabled = true;
               this.label = 'can not be clicked！';
@@ -141,7 +141,7 @@ export class NzDemoModalServiceComponent {
         {
           label: 'async load',
           type: 'dashed',
-          onClick: () => new Promise(resolve => window.setTimeout(resolve, 2000))
+          onClick: () => new Promise(resolve => setTimeout(resolve, 2000))
         }
       ]
     });
@@ -161,7 +161,7 @@ export class NzDemoModalServiceComponent {
 
     this.modalService.afterAllClose.subscribe(() => console.log('afterAllClose emitted!'));
 
-    window.setTimeout(() => this.modalService.closeAll(), 2000);
+    setTimeout(() => this.modalService.closeAll(), 2000);
   }
 }
 

@@ -113,15 +113,6 @@ describe('pagination', () => {
         fixture.detectChanges();
         expect(paginationElement.children.length).toBe(9);
       });
-      it('should total pageIndex limit', () => {
-        console.log(testComponent.nzPaginationComponent.lastIndex);
-        testComponent.pageIndex = -1;
-        fixture.detectChanges();
-        expect(testComponent.nzPaginationComponent.nzPageIndex).toBe(1);
-        testComponent.pageIndex = 10;
-        fixture.detectChanges();
-        expect(testComponent.nzPaginationComponent.nzPageIndex).toBe(5);
-      });
       it('should next five work', () => {
         testComponent.total = 500;
         fixture.detectChanges();

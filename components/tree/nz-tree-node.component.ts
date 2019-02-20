@@ -160,7 +160,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * drag var
    */
-  destory$ = new Subject();
+  destroy$ = new Subject();
   dragPos = 2;
   dragPosClass: object = {
     '0' : 'drag-over',
@@ -411,16 +411,16 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   handDragEvent(): void {
     this.ngZone.runOutsideAngular(() => {
       if (this.nzDraggable) {
-        this.destory$ = new Subject();
-        fromEvent<DragEvent>(this.elRef.nativeElement, 'dragstart').pipe(takeUntil(this.destory$)).subscribe((e: DragEvent) => this.handleDragStart(e));
-        fromEvent<DragEvent>(this.elRef.nativeElement, 'dragenter').pipe(takeUntil(this.destory$)).subscribe((e: DragEvent) => this.handleDragEnter(e));
-        fromEvent<DragEvent>(this.elRef.nativeElement, 'dragover').pipe(takeUntil(this.destory$)).subscribe((e: DragEvent) => this.handleDragOver(e));
-        fromEvent<DragEvent>(this.elRef.nativeElement, 'dragleave').pipe(takeUntil(this.destory$)).subscribe((e: DragEvent) => this.handleDragLeave(e));
-        fromEvent<DragEvent>(this.elRef.nativeElement, 'drop').pipe(takeUntil(this.destory$)).subscribe((e: DragEvent) => this.handleDragDrop(e));
-        fromEvent<DragEvent>(this.elRef.nativeElement, 'dragend').pipe(takeUntil(this.destory$)).subscribe((e: DragEvent) => this.handleDragEnd(e));
+        this.destroy$ = new Subject();
+        fromEvent<DragEvent>(this.elRef.nativeElement, 'dragstart').pipe(takeUntil(this.destroy$)).subscribe((e: DragEvent) => this.handleDragStart(e));
+        fromEvent<DragEvent>(this.elRef.nativeElement, 'dragenter').pipe(takeUntil(this.destroy$)).subscribe((e: DragEvent) => this.handleDragEnter(e));
+        fromEvent<DragEvent>(this.elRef.nativeElement, 'dragover').pipe(takeUntil(this.destroy$)).subscribe((e: DragEvent) => this.handleDragOver(e));
+        fromEvent<DragEvent>(this.elRef.nativeElement, 'dragleave').pipe(takeUntil(this.destroy$)).subscribe((e: DragEvent) => this.handleDragLeave(e));
+        fromEvent<DragEvent>(this.elRef.nativeElement, 'drop').pipe(takeUntil(this.destroy$)).subscribe((e: DragEvent) => this.handleDragDrop(e));
+        fromEvent<DragEvent>(this.elRef.nativeElement, 'dragend').pipe(takeUntil(this.destroy$)).subscribe((e: DragEvent) => this.handleDragEnd(e));
       } else {
-        this.destory$.next();
-        this.destory$.complete();
+        this.destroy$.next();
+        this.destroy$.complete();
       }
     });
   }
@@ -437,7 +437,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destory$.next();
-    this.destory$.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

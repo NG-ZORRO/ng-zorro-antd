@@ -63,6 +63,7 @@ The parameters that are set by the `options` support are as follows:
 | nzAnimate | Whether to turn on animation | `boolean` |
 | nzStyle | Custom inline style | `object` |
 | nzClass | Custom CSS class | `object` |
+| nzData | Anything that would be used as template context | `any` |
 
 Methods for destruction are also provided:
 

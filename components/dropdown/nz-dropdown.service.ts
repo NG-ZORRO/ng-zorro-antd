@@ -7,8 +7,9 @@ import {
   OverlayRef
 } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { DOCUMENT } from '@angular/common';
-import { ElementRef, Inject, Injectable, NgZone, TemplateRef } from '@angular/core';
+import { Injectable, TemplateRef } from '@angular/core';
+import { fromEvent } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
 import { NzDropdownContextComponent } from './nz-dropdown-context.component';
 
 @Injectable({
@@ -16,61 +17,39 @@ import { NzDropdownContextComponent } from './nz-dropdown-context.component';
 })
 export class NzDropdownService {
   private overlayRef: OverlayRef;
-  private fakePoint: HTMLElement;
-  private positions = [
-    new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'top' }),
-    new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' }),
-    new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'end', overlayY: 'bottom' }),
-    new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'end', overlayY: 'top' })
-  ];
 
-  /* tslint:disable-next-line:no-any */
-  constructor(private overlay: Overlay, @Inject(DOCUMENT) private document: any, private zone: NgZone) {
-  }
-
-  private createFakePoint(e: MouseEvent): ElementRef {
-    if (!this.fakePoint) {
-      const container = this.document.createElement('span');
-      this.document.body.appendChild(container);
-      this.fakePoint = container;
-    }
-    this.fakePoint.style.position = `fixed`;
-    this.fakePoint.style.top = `${e.clientY}px`;
-    this.fakePoint.style.left = `${e.clientX}px`;
-    return new ElementRef(this.fakePoint);
-  }
-
-  private removeFakePoint(): void {
-    if (this.fakePoint) {
-      this.document.body.removeChild(this.fakePoint);
-      this.fakePoint = null;
-    }
+  constructor(private overlay: Overlay) {
   }
 
   create($event: MouseEvent, templateRef: TemplateRef<void>): NzDropdownContextComponent {
     $event.preventDefault();
     this.dispose();
     this.overlayRef = this.overlay.create(new OverlayConfig({
-      hasBackdrop     : true,
       scrollStrategy  : this.overlay.scrollStrategies.close(),
-      positionStrategy: this.overlay.position().flexibleConnectedTo(this.createFakePoint($event)).withPositions(this.positions)
+      positionStrategy: this.overlay.position().flexibleConnectedTo({
+        x: $event.x,
+        y: $event.y
+      }).withPositions([
+        new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'top' }),
+        new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' }),
+        new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'end', overlayY: 'bottom' }),
+        new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'end', overlayY: 'top' })
+      ])
     }));
-    setTimeout(() => {
-      this.zone.runOutsideAngular(() => {
-        this.overlayRef.backdropElement.addEventListener('contextmenu', (e: MouseEvent) => e.preventDefault());
-      });
-    });
     const positionChanges = (this.overlayRef.getConfig().positionStrategy as FlexibleConnectedPositionStrategy).positionChanges;
     const instance = this.overlayRef.attach(new ComponentPortal(NzDropdownContextComponent)).instance;
-    this.overlayRef.backdropClick().subscribe(() => instance.close());
+    fromEvent<MouseEvent>(document, 'click').pipe(
+      filter(event => !!this.overlayRef && !this.overlayRef.overlayElement.contains(event.target as HTMLElement)),
+      take(1)
+    ).subscribe(() => instance.close());
     instance.init(true, templateRef, positionChanges, this);
     return instance;
   }
 
   dispose(): void {
-    this.removeFakePoint();
     if (this.overlayRef && this.overlayRef.hasAttached()) {
       this.overlayRef.dispose();
+      this.overlayRef = null;
     }
   }
 }

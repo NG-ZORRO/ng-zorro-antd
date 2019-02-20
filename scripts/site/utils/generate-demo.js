@@ -80,8 +80,8 @@ function generateDemoComponent(content) {
   let rawCode = '';
   for (const key in demoMap) {
     const angularCode = encodeURIComponent(PrismAngular.highlight(demoMap[key].ts, Prism.languages['angular']));
-    code += `\t${camelCase(key)} = \`${angularCode}\`\n`;
-    rawCode += `\t${camelCase(key)}Raw = require('!!raw-loader!./${key}.ts');\n`;
+    code += `\t${camelCase(key)} = \`${angularCode}\`;\n`;
+    rawCode += `\t${camelCase(key)}Raw = \`${encodeURIComponent(demoMap[key].ts)}\`;\n`;
   }
   let output = demoComponentTemplate;
   output = output.replace(/{{component}}/g, component);

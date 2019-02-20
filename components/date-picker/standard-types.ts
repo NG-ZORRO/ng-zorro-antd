@@ -1,7 +1,5 @@
-import { EventEmitter, TemplateRef } from '@angular/core';
+import { TemplateRef } from '@angular/core';
 
-import { FunctionProp } from '../core/types/common-wrap';
-import { NzDatePickerI18nInterface } from '../i18n/nz-i18n.interface';
 import { CandyDate } from './lib/candy-date';
 
 // The common result data format (the range-picker's props can be result as array)

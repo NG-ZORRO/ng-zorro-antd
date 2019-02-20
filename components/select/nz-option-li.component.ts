@@ -3,7 +3,7 @@ import {
   ChangeDetectorRef,
   Component, ElementRef,
   Input, OnDestroy,
-  OnInit, TemplateRef,
+  OnInit, Renderer2, TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -18,7 +18,6 @@ import { NzSelectService } from './nz-select.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation  : ViewEncapsulation.None,
   host           : {
-    '[class.ant-select-dropdown-menu-item]'         : 'true',
     '[class.ant-select-dropdown-menu-item-selected]': 'selected && !nzOption.nzDisabled',
     '[class.ant-select-dropdown-menu-item-disabled]': 'nzOption.nzDisabled',
     '[class.ant-select-dropdown-menu-item-active]'  : 'active && !nzOption.nzDisabled',
@@ -39,7 +38,8 @@ export class NzOptionLiComponent implements OnInit, OnDestroy {
     this.nzSelectService.clickOption(this.nzOption);
   }
 
-  constructor(private elementRef: ElementRef, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef) {
+  constructor(private elementRef: ElementRef, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef, renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-select-dropdown-menu-item');
   }
 
   ngOnInit(): void {

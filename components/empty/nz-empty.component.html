@@ -5,7 +5,7 @@
 </div>
 <p class="ant-empty-description">
   <ng-container *nzStringTemplateOutlet="nzNotFoundContent">
-    {{ nzNotFoundContent || ('Empty.description' | nzI18n) }}
+    {{ shouldRenderContent ? nzNotFoundContent : locale['description'] }}
   </ng-container>
 </p>
 <div class="ant-empty-footer" *ngIf="nzNotFoundFooter">

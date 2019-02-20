@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
-import { fadeAnimation } from '../core/animation/fade-animations';
+import { zoomBigMotion } from '../core/animation/zoom';
 import { isNotNil } from '../core/util';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 
 @Component({
   selector           : 'nz-popover',
-  animations         : [ fadeAnimation ],
+  animations         : [ zoomBigMotion ],
   templateUrl        : './nz-popover.component.html',
   changeDetection    : ChangeDetectionStrategy.OnPush,
   encapsulation      : ViewEncapsulation.None,

@@ -4,10 +4,17 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-collapse-custom',
   template: `
     <nz-collapse [nzBordered]="false">
-      <nz-collapse-panel *ngFor="let panel of panels" [nzHeader]="panel.name" [nzActive]="panel.active"
-        [ngStyle]="panel.customStyle">
+      <nz-collapse-panel #p *ngFor="let panel of panels; let isFirst = first" [nzHeader]="panel.name" [nzActive]="panel.active"
+        [ngStyle]="panel.customStyle" [nzExpandedIcon]="!isFirst && (panel.icon || expandedIcon)" [nzExtra]="isFirst && extraTpl">
         <p>{{panel.name}} content</p>
+        <ng-template #expandedIcon let-active>
+          {{ active }}
+          <i nz-icon type="caret-right" class="ant-collapse-arrow" [nzRotate]="p.nzActive ? 90 : -90"></i>
+        </ng-template>
       </nz-collapse-panel>
+      <ng-template #extraTpl>
+        <i nz-icon [nzType]="'smile'"></i>
+      </ng-template>
     </nz-collapse>
   `,
   styles  : []
@@ -29,6 +36,7 @@ export class NzDemoCollapseCustomComponent {
       active     : false,
       disabled   : true,
       name       : 'This is panel header 2',
+      icon       : 'double-right',
       customStyle: {
         'background'   : '#f7f7f7',
         'border-radius': '4px',

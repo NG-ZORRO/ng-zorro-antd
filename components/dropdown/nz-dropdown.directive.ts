@@ -3,10 +3,7 @@ import { fromEvent, merge, Observable } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 
 @Directive({
-  selector: '[nz-dropdown]',
-  host    : {
-    '[class.ant-dropdown-trigger]': 'true'
-  }
+  selector: '[nz-dropdown]'
 })
 export class NzDropDownDirective {
   el: HTMLElement = this.elementRef.nativeElement;
@@ -25,5 +22,6 @@ export class NzDropDownDirective {
   }
 
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-dropdown-trigger');
   }
 }

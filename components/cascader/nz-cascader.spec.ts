@@ -1473,15 +1473,8 @@ describe('cascader', () => {
       fixture.detectChanges();
       const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
       expect(testComponent.cascader.isSearching).toBe(true);
-      expect(itemEl1.innerText).toBe('Root');
-      itemEl1.click();
-      fixture.detectChanges();
+      expect(itemEl1.innerText.trim()).toBe('暂无数据');
       flush();
-      fixture.detectChanges();
-      expect(testComponent.cascader.isSearching).toBe(false);
-      expect(testComponent.cascader.menuVisible).toBe(false);
-      expect(testComponent.cascader.inputValue).toBe('');
-      expect(testComponent.values.join(',')).toBe('root');
     }));
     it('should re-prepare search results when nzOptions change', () => {
       fixture.detectChanges();
@@ -1797,39 +1790,7 @@ const options4 = [ {
   } ]
 } ];
 
-const options5 = [ {
-  value   : 'zhejiang',
-  label   : 'Zhejiang',
-  children: [ {
-    value   : 'hangzhou',
-    label   : 'Hangzhou',
-    children: [ {
-      value : 'xihu',
-      label : 'West Lake',
-      isLeaf: true
-    } ]
-  }, {
-    value : 'ningbo',
-    label : 'Ningbo',
-    isLeaf: true
-  } ]
-}, {
-  value   : 'jiangsu',
-  label   : 'Jiangsu',
-  children: [ {
-    value   : 'nanjing',
-    label   : 'Nanjing',
-    children: [ {
-      value : 'zhonghuamen',
-      label : 'Zhong Hua Men',
-      isLeaf: true
-    } ]
-  } ]
-}, {
-  value : 'root',
-  label : 'Root',
-  isLeaf: true
-} ];
+const options5 = [];
 
 @Component({
   selector: 'nz-demo-cascader-default',

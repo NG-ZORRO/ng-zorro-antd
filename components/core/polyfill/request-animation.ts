@@ -6,7 +6,7 @@ function requestAnimationFramePolyfill(): typeof requestAnimationFrame {
   return function (callback: FrameRequestCallback): number {
     const currTime = new Date().getTime();
     const timeToCall = Math.max(0, 16 - (currTime - lastTime));
-    const id = window.setTimeout(() => {
+    const id = setTimeout(() => {
       callback(currTime + timeToCall);
     }, timeToCall);
     lastTime = currTime + timeToCall;
