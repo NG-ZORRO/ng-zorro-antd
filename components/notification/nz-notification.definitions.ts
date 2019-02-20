@@ -9,12 +9,13 @@ export interface NzNotificationData extends NzMessageData {
   title?: string;
 }
 
-export interface NzNotificationDataOptions extends NzMessageDataOptions {
+export interface NzNotificationDataOptions<T = {}> extends NzMessageDataOptions {
   nzKey?: string;
-  /* tslint:disable-next-line:no-any */
-  nzStyle?: any;
-  /* tslint:disable-next-line:no-any */
-  nzClass?: any;
+  nzStyle?: any; // tslint:disable-line:no-any
+  nzClass?: any; // tslint:disable-line:no-any
+
+  /** Anything user wants renderer into a template. */
+  nzData?: T;
 }
 
 // Filled version of NzMessageData (includes more private properties)

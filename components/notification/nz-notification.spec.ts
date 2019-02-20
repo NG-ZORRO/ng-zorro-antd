@@ -159,10 +159,11 @@ describe('NzNotification', () => {
     expect(overlayContainerElement.querySelector('.ant-notification-topLeft')).not.toBeNull();
   });
 
+  // Should support nzData as context.
   it('should open a message box with template ref', () => {
-    messageService.template(demoAppFixture.componentInstance.demoTemplateRef);
+    messageService.template(demoAppFixture.componentInstance.demoTemplateRef, { nzData: 'data' });
     demoAppFixture.detectChanges();
-    expect(overlayContainerElement.textContent).toContain('test template content');
+    expect(overlayContainerElement.textContent).toContain('test template contentdata');
   });
 
   it('should update an existing notification when keys are matched', () => {
@@ -179,7 +180,7 @@ describe('NzNotification', () => {
 @Component({
   selector: 'nz-demo-app-component',
   template: `
-    <ng-template>{{ 'test template content' }}</ng-template>
+    <ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template>
   `
 })
 export class DemoAppComponent {
