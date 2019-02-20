@@ -157,6 +157,7 @@ describe('NzSlider', () => {
       const handlerHost = sliderNativeElement.querySelector('nz-slider-handle');
 
       testComponent.show = 'always';
+      fixture.detectChanges();
       tick(400);
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain('0');
