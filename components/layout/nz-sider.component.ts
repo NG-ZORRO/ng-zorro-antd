@@ -2,7 +2,8 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component, ElementRef,
+  Component,
+  ElementRef,
   EventEmitter,
   Host,
   HostBinding,
@@ -11,7 +12,8 @@ import {
   OnDestroy,
   OnInit,
   Optional,
-  Output, Renderer2,
+  Output,
+  Renderer2,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -33,7 +35,8 @@ export type NzBreakPoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
   changeDetection    : ChangeDetectionStrategy.OnPush,
   templateUrl        : './nz-sider.component.html',
   host               : {
-    '[class.ant-layout-sider-zero-width]': 'nzCollapsed && (nzCollapsedWidth===0)',
+    '[class.ant-layout-sider-zero-width]': 'nzCollapsed && nzCollapsedWidth === 0',
+    '[class.ant-layout-sider-light]'     : `nzTheme === 'light'`,
     '[style.flex]'                       : 'flexSetting',
     '[style.max-width.px]'               : 'widthSetting',
     '[style.min-width.px]'               : 'widthSetting',
@@ -52,6 +55,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
     xxl: '1600px'
   };
   @Input() nzWidth = 200;
+  @Input() nzTheme: 'light' | 'dark' = 'dark';
   @Input() nzCollapsedWidth = 80;
   @Input() nzBreakpoint: NzBreakPoint;
   @Input() @InputBoolean() nzReverseArrow = false;

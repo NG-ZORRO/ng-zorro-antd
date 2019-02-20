@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "ng serve --port 0",
-    "build": "node ./scripts/site/generate-site init && ng build",
+    "build-site": "node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod",
+    "build-iframe": "node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --project=ng-zorro-antd-iframe --prod --base-href ./",
     "test": "ng test --watch=false --code-coverage",
     "lint": "tslint -c tslint.json 'components/*/*.ts'",
     "release": "node ./scripts/publish/publish.js",
@@ -30,7 +31,7 @@
     "integration-rollup": "npm run generate && cd integration/rollup && npm run integration",
     "postgenerate": "node ./scripts/build/generate-less.js && cp README.md publish/README.md && npm run migration-styles && npm run schematic:generate",
     "generate": "ng build ng-zorro-antd-lib",
-    "pre-release": "npm run site:init && bash ./scripts/build/replace-publish.sh && npm run generate && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod && npm run helper"
+    "pre-release": "npm run site:init && bash ./scripts/build/replace-publish.sh && npm run generate && npm run build-site && npm run build-iframe && npm run helper"
   },
   "dependencies": {
     "@angular/cdk": "^7.3.0",
