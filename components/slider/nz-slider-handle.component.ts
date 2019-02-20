@@ -1,6 +1,6 @@
 import {
-  AfterViewInit,
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -11,7 +11,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { InputBoolean } from '../core/util/convert';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
@@ -30,7 +30,7 @@ import { NzSliderComponent } from './nz-slider.component';
     '(mouseleave)': 'leaveHandle()'
   }
 })
-export class NzSliderHandleComponent implements OnChanges, AfterViewInit, OnDestroy {
+export class NzSliderHandleComponent implements OnChanges, OnDestroy {
   @ViewChild(NzToolTipComponent) tooltip: NzToolTipComponent;
 
   @Input() nzVertical: string;
@@ -70,14 +70,8 @@ export class NzSliderHandleComponent implements OnChanges, AfterViewInit, OnDest
         this.toggleTooltip(false);
       }
     }
-    if (nzTooltipVisible && !nzTooltipVisible.isFirstChange() && this.tooltip) {
-      this.tooltip.show();
-    }
-  }
-
-  ngAfterViewInit(): void {
-    if (this.nzTooltipVisible === 'always' && this.tooltip) {
-      Promise.resolve().then(() => this.tooltip.show());
+    if (nzTooltipVisible && nzTooltipVisible.currentValue === 'always') {
+      Promise.resolve().then(() => this.toggleTooltip(true, true));
     }
   }
 
@@ -100,8 +94,8 @@ export class NzSliderHandleComponent implements OnChanges, AfterViewInit, OnDest
     }
   }
 
-  private toggleTooltip(show: boolean): void {
-    if (this.nzTooltipVisible !== 'default' || !this.tooltip) {
+  private toggleTooltip(show: boolean, force: boolean = false): void {
+    if (!force && (this.nzTooltipVisible !== 'default' || !this.tooltip)) {
       return;
     }
 
