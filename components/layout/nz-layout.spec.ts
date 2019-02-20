@@ -207,7 +207,9 @@ describe('layout', () => {
       fixture.detectChanges();
       discardPeriodicTasks();
       fixture.detectChanges();
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;').toBe(true);
+      console.log(sider.nativeElement.style.cssText);
+      expect(sider.nativeElement.style.cssText === 'flex: 0 0 0px; max-width: 0px; min-width: 0px; width: 0px;').toBe(true);
+      expect(sider.nativeElement.querySelector('.ant-layout-sider-zero-width-trigger').firstElementChild.getAttribute('type')).toBe('menu-fold');
     }));
   });
 });

@@ -41,34 +41,33 @@ import { Component } from '@angular/core';
       text-align: center;
     }
 
-    :host ::ng-deep .ant-layout-header,
-    :host ::ng-deep .ant-layout-footer {
+    nz-header,nz-footer {
       background: #7dbcea;
       color: #fff;
     }
 
-    :host ::ng-deep .ant-layout-footer {
+    nz-footer {
       line-height: 1.5;
     }
 
-    :host ::ng-deep .ant-layout-sider {
+    nz-sider {
       background: #3ba0e9;
       color: #fff;
       line-height: 120px;
     }
 
-    :host ::ng-deep .ant-layout-content {
+    nz-content {
       background: rgba(16, 142, 233, 1);
       color: #fff;
       min-height: 120px;
       line-height: 120px;
     }
 
-    :host > ::ng-deep .ant-layout {
+    nz-layout {
       margin-bottom: 48px;
     }
 
-    :host ::ng-deep .ant-layout:last-child {
+    nz-layout:last-child {
       margin: 0;
     }
   ` ]
