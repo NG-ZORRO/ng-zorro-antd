@@ -13,7 +13,7 @@ When there is no data provided, display for friendly tips.
 
 ## API
 
-### nz-description-list
+### nz-descriptions
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
@@ -23,7 +23,7 @@ When there is no data provided, display for friendly tips.
 | `[nzSize]` | Set the size of the list. | `'default'｜'middle'｜'small'` | `'default'` |
 
 
-### nz-description-list-item
+### nz-descriptions-item
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |

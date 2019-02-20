@@ -1,8 +1,8 @@
 import { TemplateRef } from '@angular/core';
 
-export type NzDescriptionListSize = 'default' | 'middle' | 'small';
+export type NzDescriptionsSize = 'default' | 'middle' | 'small';
 
-export interface NzDescriptionItemRenderProps {
+export interface NzDescriptionsItemRenderProps {
   title: string | TemplateRef<void>;
   span: number;
   content: TemplateRef<void>;

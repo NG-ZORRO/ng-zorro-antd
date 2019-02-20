@@ -13,7 +13,7 @@ import {
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 import { InputBoolean, InputNumber } from '../core/util';
-import { NzDescriptionItemRenderProps, NzDescriptionListSize } from './nz-descriptions-definition';
+import { NzDescriptionsItemRenderProps, NzDescriptionsSize } from './nz-descriptions-definition';
 import { NzDescriptionsItemComponent } from './nz-descriptions-item.component';
 
 @Component({
@@ -37,10 +37,10 @@ export class NzDescriptionsComponent implements OnDestroy, AfterContentInit {
   @ContentChildren(NzDescriptionsItemComponent) items: QueryList<NzDescriptionsItemComponent>;
   @Input() @InputBoolean() nzBorder = false;
   @Input() @InputNumber() nzColumn = 3;
-  @Input() nzSize: NzDescriptionListSize = 'small';
+  @Input() nzSize: NzDescriptionsSize = 'small';
   @Input() nzTitle: string | TemplateRef<void> = '';
 
-  itemMatrix: NzDescriptionItemRenderProps[][] = [];
+  itemMatrix: NzDescriptionsItemRenderProps[][] = [];
 
   private destroy$ = new Subject<void>();
 
@@ -66,9 +66,9 @@ export class NzDescriptionsComponent implements OnDestroy, AfterContentInit {
    * Prepare the render matrix according to description items' spans.
    */
   private prepareMatrix(items: NzDescriptionsItemComponent[]): void {
-    let currentRow: NzDescriptionItemRenderProps[] = [];
+    let currentRow: NzDescriptionsItemRenderProps[] = [];
     let width = 0;
-    const matrix: NzDescriptionItemRenderProps[][] = [];
+    const matrix: NzDescriptionsItemRenderProps[][] = [];
     const flushRow = () => {
       matrix.push(currentRow);
       currentRow = [];

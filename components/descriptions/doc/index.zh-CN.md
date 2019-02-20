@@ -14,7 +14,7 @@ cols: 1
 
 ## API
 
-### nz-description-list
+### nz-descriptions
 
 | 参数 | 说明 | 类型 | 默认值 |
 | -------- | ----------- | ---- | ------- |
@@ -24,7 +24,7 @@ cols: 1
 | `[nzSize]` | 设置列表的大小 | `'default'｜'middle'｜'small'` | `'default'` |
 
 
-### nz-description-list-item
+### nz-descriptions-item
 
 | 参数 | 说明 | 类型 | 默认值 |
 | -------- | ----------- | ---- | ------- |

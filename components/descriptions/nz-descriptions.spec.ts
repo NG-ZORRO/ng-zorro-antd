@@ -4,16 +4,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NzDescriptionsComponent } from './nz-descriptions.component';
 import { NzDescriptionsModule } from './nz-descriptions.module';
 
-describe('nz description list', () => {
-  let testComponent: NzTestDescriptionListComponent;
+describe('nz descriptions', () => {
+  let testComponent: NzTestDescriptionsComponent;
   let componentElement: HTMLElement;
-  let fixture: ComponentFixture<NzTestDescriptionListComponent>;
+  let fixture: ComponentFixture<NzTestDescriptionsComponent>;
   let descriptionComponent: NzDescriptionsComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports     : [ CommonModule, NzDescriptionsModule ],
-      declarations: [ NzTestDescriptionListComponent ]
+      declarations: [ NzTestDescriptionsComponent ]
     }).compileComponents();
   });
 
@@ -21,7 +21,7 @@ describe('nz description list', () => {
     let rows;
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestDescriptionListComponent);
+      fixture = TestBed.createComponent(NzTestDescriptionsComponent);
       testComponent = fixture.componentInstance;
       descriptionComponent = testComponent.descriptionComponent;
       componentElement = fixture.debugElement.nativeElement;
@@ -83,7 +83,7 @@ describe('nz description list', () => {
     </nz-descriptions>
   `
 })
-export class NzTestDescriptionListComponent {
+export class NzTestDescriptionsComponent {
   @ViewChild(NzDescriptionsComponent) descriptionComponent: NzDescriptionsComponent;
   border = false;
   colspanArray: number[] = [ 1, 1, 1 ];
