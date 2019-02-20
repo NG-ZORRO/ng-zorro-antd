@@ -390,6 +390,50 @@ describe('tree-select component', () => {
     }));
   });
 
+  describe('tree component', () => {
+    let fixture;
+    let testComponent: NzTestTreeSelectCheckableComponent;
+    let treeSelectComponent: NzTreeSelectComponent;
+    let treeSelect;
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestTreeSelectCheckableComponent);
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+      treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
+      treeSelectComponent = treeSelect.componentInstance;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+    }));
+
+    it('should keep expand state', (() => {
+      testComponent.expandKeys = [];
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      expect(treeSelectComponent.nzDefaultExpandedKeys.length === 0).toBe(true);
+      expect(treeSelectComponent.nzOpen).toBe(true);
+      let targetSwitcher = overlayContainerElement.querySelector('.ant-tree-switcher');
+      expect(targetSwitcher.classList.contains('ant-tree-switcher_close')).toBe(true);
+      fixture.detectChanges();
+      dispatchMouseEvent(targetSwitcher, 'click');
+      fixture.detectChanges();
+      expect(targetSwitcher.classList.contains('ant-tree-switcher_open')).toBe(true);
+      expect(treeSelectComponent.nzDefaultExpandedKeys[0] === '1001').toBe(true);
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      expect(treeSelectComponent.nzOpen).toBe(false);
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      targetSwitcher = overlayContainerElement.querySelector('.ant-tree-switcher');
+      expect(treeSelectComponent.nzOpen).toBe(true);
+      expect(targetSwitcher.classList.contains('ant-tree-switcher_open')).toBe(true);
+      expect(treeSelectComponent.nzDefaultExpandedKeys[0] === '1001').toBe(true);
+    }));
+  });
+
 });
 
 @Component({

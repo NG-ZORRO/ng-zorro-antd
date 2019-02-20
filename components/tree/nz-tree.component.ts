@@ -61,7 +61,7 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzExpandAll: boolean = false;
   @Input() @InputBoolean() nzHideUnMatched = false;
-  @Input() @InputBoolean() nzNoopAnimations = false;
+  @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzSelectMode = false;
 
   /**

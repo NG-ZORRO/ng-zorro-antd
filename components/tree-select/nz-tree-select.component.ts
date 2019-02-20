@@ -89,7 +89,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   @Input() nzSize = 'default';
   @Input() nzPlaceHolder = '';
   @Input() nzDropdownStyle: { [ key: string ]: string; };
-  @Input() nzDefaultExpandedKeys: string[];
+  @Input() nzDefaultExpandedKeys: string[] = [];
   @Input() nzDisplayWith: (node: NzTreeNode) => string = (node: NzTreeNode) => node.title;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Output() readonly nzCleared = new EventEmitter<void>();
@@ -176,7 +176,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('nzNodes')) {
-      setTimeout(() => this.updateSelectedNodes(true), 0);
+      this.updateSelectedNodes(true);
     }
   }
 
