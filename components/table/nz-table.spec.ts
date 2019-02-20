@@ -1,7 +1,6 @@
 import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzTableComponent } from './nz-table.component';
@@ -12,8 +11,7 @@ describe('nz-table', () => {
   beforeEach(async(() => {
     injector = TestBed.configureTestingModule({
       imports     : [ NzTableModule ],
-      declarations: [ NzTestTableBasicComponent, NzTestTableScrollComponent ],
-      providers   : [ NzUpdateHostClassService ]
+      declarations: [ NzTestTableBasicComponent, NzTestTableScrollComponent ]
     });
     TestBed.compileComponents();
   }));

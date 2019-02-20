@@ -3,7 +3,6 @@ import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NzCheckboxModule } from '../checkbox';
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { createFakeEvent } from '../core/testing';
 import { NzTdComponent } from './nz-td.component';
 
@@ -11,8 +10,7 @@ describe('nz-td', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzCheckboxModule, FormsModule ],
-      declarations: [ NzTestTdComponent, NzTdComponent ],
-      providers   : [ NzUpdateHostClassService ]
+      declarations: [ NzTestTdComponent, NzTdComponent ]
     });
     TestBed.compileComponents();
   }));
