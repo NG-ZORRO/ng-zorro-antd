@@ -84,6 +84,7 @@ title: Layout
 | `[nzReverseArrow]` | 翻转折叠提示箭头的方向，当 Sider 在右边时可以使用 | `boolean` | `false` |
 | `[nzTrigger]` | 自定义 trigger，设置为 null 时隐藏 trigger | `string｜TemplateRef<void>` | - |
 | `[nzWidth]` | 宽度 | `number｜string` | `200` |
+| `[nzTheme]` | 主题颜色 | `'light'｜'dark'` | `dark` |
 | `(nzCollapsedChange)` | 展开-收起时的回调函数 | `EventEmitter<boolean>` | - |
 
 #### breakpoint width
