@@ -19,6 +19,7 @@ import { InputBoolean } from '../core/util/convert';
   // tslint:disable-next-line:component-selector
   selector           : 'td:not(.nz-disable-td)',
   changeDetection    : ChangeDetectionStrategy.OnPush,
+  providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-td.component.html',
