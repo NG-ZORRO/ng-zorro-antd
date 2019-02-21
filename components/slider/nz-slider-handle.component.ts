@@ -1,78 +1,122 @@
-import { Component, HostListener, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
+import { Subscription } from 'rxjs';
 
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 
+import { SliderShowTooltip } from './nz-slider-definitions';
 import { NzSliderComponent } from './nz-slider.component';
 
 @Component({
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-slider-handle',
   preserveWhitespaces: false,
-  templateUrl        : './nz-slider-handle.component.html'
+  templateUrl        : './nz-slider-handle.component.html',
+  host               : {
+    '(mouseenter)': 'enterHandle()',
+    '(mouseleave)': 'leaveHandle()'
+  }
 })
-export class NzSliderHandleComponent implements OnChanges {
+export class NzSliderHandleComponent implements OnChanges, OnDestroy {
+  @ViewChild(NzToolTipComponent) tooltip: NzToolTipComponent;
 
-  // Static properties
-  @Input() nzClassName: string;
   @Input() nzVertical: string;
   @Input() nzOffset: number;
-  @Input() nzValue: number; // [For tooltip]
-  @Input() nzTipFormatter: (value: number) => string; // [For tooltip]
-  @Input() set nzActive(value: boolean) { // [For tooltip]
-    const show = toBoolean(value);
-    if (this.tooltip) {
-      if (show) {
-        this.tooltip.show();
-      } else {
-        this.tooltip.hide();
-      }
-    }
-  }
+  @Input() nzValue: number;
+  @Input() nzTooltipVisible: SliderShowTooltip = 'default';
+  @Input() nzTipFormatter: (value: number) => string;
+  @Input() @InputBoolean() nzActive = false;
 
-  // Locals
-  @ViewChild('tooltip') tooltip: NzToolTipComponent; // [For tooltip]
-  tooltipTitle: string; // [For tooltip]
+  tooltipTitle: string;
   style: object = {};
 
-  constructor(private _slider: NzSliderComponent) {
+  private hovers_ = new Subscription();
+
+  constructor(
+    private sliderComponent: NzSliderComponent,
+    private ngZone: NgZone,
+    private el: ElementRef,
+    private cdr: ChangeDetectorRef
+  ) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzOffset) {
-      this._updateStyle();
+    const { nzOffset, nzValue, nzActive, nzTooltipVisible } = changes;
+
+    if (nzOffset) {
+      this.updateStyle();
     }
-    if (changes.nzValue) {
-      this._updateTooltipTitle(); // [For tooltip]
-      this._updateTooltipPosition(); // [For tooltip]
+    if (nzValue) {
+      this.updateTooltipTitle();
+      this.updateTooltipPosition();
+    }
+    if (nzActive) {
+      if (nzActive.currentValue) {
+        this.toggleTooltip(true);
+      } else {
+        this.toggleTooltip(false);
+      }
+    }
+    if (nzTooltipVisible && nzTooltipVisible.currentValue === 'always') {
+      Promise.resolve().then(() => this.toggleTooltip(true, true));
     }
   }
 
-  // Hover to toggle tooltip when not dragging
-  @HostListener('mouseenter', [ '$event' ])
-  onMouseEnter($event: MouseEvent): void {
-    if (!this._slider.isDragging) {
-      this.nzActive = true;
+  ngOnDestroy(): void {
+    this.hovers_.unsubscribe();
+  }
+
+  enterHandle = () => {
+    if (!this.sliderComponent.isDragging) {
+      this.toggleTooltip(true);
+      this.updateTooltipPosition();
+      this.cdr.detectChanges();
     }
   }
 
-  @HostListener('mouseleave', [ '$event' ])
-  onMouseLeave($event: MouseEvent): void {
-    if (!this._slider.isDragging) {
-      this.nzActive = false;
+  leaveHandle = () => {
+    if (!this.sliderComponent.isDragging) {
+      this.toggleTooltip(false);
+      this.cdr.detectChanges();
     }
   }
 
-  private _updateTooltipTitle(): void { // [For tooltip]
+  private toggleTooltip(show: boolean, force: boolean = false): void {
+    if (!force && (this.nzTooltipVisible !== 'default' || !this.tooltip)) {
+      return;
+    }
+
+    if (show) {
+      this.tooltip.show();
+    } else {
+      this.tooltip.hide();
+    }
+  }
+
+  private updateTooltipTitle(): void {
     this.tooltipTitle = this.nzTipFormatter ? this.nzTipFormatter(this.nzValue) : `${this.nzValue}`;
   }
 
-  private _updateTooltipPosition(): void { // [For tooltip]
+  private updateTooltipPosition(): void {
     if (this.tooltip) {
-      setTimeout(() => this.tooltip.updatePosition(), 0); // MAY use ngAfterViewChecked? but this will be called so many times.
+      Promise.resolve().then(() => this.tooltip.updatePosition());
     }
   }
 
-  private _updateStyle(): void {
+  private updateStyle(): void {
     this.style[ this.nzVertical ? 'bottom' : 'left' ] = `${this.nzOffset}%`;
   }
 }
