@@ -18,6 +18,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Input() enablePrev: boolean = true;
   @Input() enableNext: boolean = true;
   @Input() disabledMonth: (date: Date) => boolean;
+  @Input() disabledYear: (date: Date) => boolean;
   @Input() showTimePicker: boolean = false;
 
   @Input() value: CandyDate;

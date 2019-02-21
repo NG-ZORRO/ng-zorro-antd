@@ -11,7 +11,17 @@ const MAX_COL = 3;
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'year-panel',
-  templateUrl: 'year-panel.component.html'
+  templateUrl: 'year-panel.component.html',
+  styles: [
+    // Support disabledDate
+    `
+      .ant-calendar-year-panel-cell-disabled .ant-calendar-year-panel-year, .ant-calendar-year-panel-cell-disabled .ant-calendar-year-panel-year:hover {
+        color: rgba(0,0,0,0.25);
+        background: #f5f5f5;
+        cursor: not-allowed;
+      }
+    `
+  ]
 })
 
 export class YearPanelComponent implements OnChanges {
@@ -19,6 +29,8 @@ export class YearPanelComponent implements OnChanges {
 
   @Input() value: CandyDate;
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
+
+  @Input() disabledDate: (date: Date) => boolean;
 
   @Output() readonly decadePanelShow = new EventEmitter<void>();
 
@@ -38,7 +50,7 @@ export class YearPanelComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value) {
+    if (changes.value || changes.disabledDate) {
       this.render();
     }
   }
@@ -86,8 +98,10 @@ export class YearPanelComponent implements OnChanges {
       for (let colIndex = 0; colIndex < MAX_COL; colIndex ++) {
         const year = previousYear + index;
         const content = String(year);
+        const disabled = this.disabledDate ? this.disabledDate(this.value.setYear(year).nativeDate) : false;
 
         const cell = years[rowIndex][colIndex] = {
+          disabled,
           content,
           year,
           title: content,
@@ -101,6 +115,7 @@ export class YearPanelComponent implements OnChanges {
         cell.classMap = {
           [`${this.prefixCls}-cell`]: true,
           [`${this.prefixCls}-selected-cell`]: cell.isCurrent,
+          [`${this.prefixCls}-cell-disabled`]: disabled,
           [`${this.prefixCls}-last-decade-cell`]: cell.isLowerThanStart,
           [`${this.prefixCls}-next-decade-cell`]: cell.isBiggerThanEnd
         };
@@ -121,6 +136,7 @@ export class YearPanelComponent implements OnChanges {
 }
 
 export interface PanelYearData {
+  disabled: boolean;
   content: string;
   year: number;
   title: string;

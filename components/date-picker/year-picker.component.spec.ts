@@ -157,6 +157,22 @@ describe('NzYearPickerComponent', () => {
       expect(compStyles.getPropertyValue('border-bottom-right-radius') === '0px').toBeTruthy();
     });
 
+    it('should support nzDisabledDate', fakeAsync(() => {
+      fixture.detectChanges();
+      fixtureInstance.nzValue = new Date('2018-11-11 12:12:12');
+      fixtureInstance.nzDisabledDate = (current: Date) => current.getFullYear() === 2013;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      const disabledCell = overlayContainerElement.querySelector('tbody.ant-calendar-year-panel-tbody tr td.ant-calendar-year-panel-cell-disabled');
+      expect(disabledCell.textContent).toContain('2013');
+    }));
+
     it('should support nzLocale', () => {
       const featureKey = 'TEST_PLACEHOLDER';
       fixtureInstance.nzLocale = { lang: { placeholder: featureKey } };
@@ -372,6 +388,7 @@ describe('NzYearPickerComponent', () => {
         [nzAllowClear]="nzAllowClear"
         [nzAutoFocus]="nzAutoFocus"
         [nzDisabled]="nzDisabled"
+        [nzDisabledDate]="nzDisabledDate"
         [nzClassName]="nzClassName"
         [nzLocale]="nzLocale"
         [nzPlaceHolder]="nzPlaceHolder"
@@ -415,6 +432,7 @@ class NzTestYearPickerComponent {
   nzAllowClear;
   nzAutoFocus;
   nzDisabled;
+  nzDisabledDate;
   nzClassName;
   nzLocale;
   nzPlaceHolder;
