@@ -10,7 +10,7 @@ export function toArray<T>(value: T | T[]): T[] {
   return ret;
 }
 
-export function arrayEquals<T>(array1: T[], array2: T[]): boolean {
+export function arraysEqual<T>(array1: T[], array2: T[]): boolean {
   if (!array1 || !array2 || array1.length !== array2.length) {
     return false;
   }
@@ -22,4 +22,8 @@ export function arrayEquals<T>(array1: T[], array2: T[]): boolean {
     }
   }
   return true;
+}
+
+export function shallowCopyArray<T>(source: T[]): T[] {
+  return source.slice();
 }

@@ -21,7 +21,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion } from '../core/animation/slide';
 import { DEFAULT_CASCADER_POSITIONS } from '../core/overlay/overlay-position';
 import { NgClassType } from '../core/types/ng-class';
-import { arrayEquals, toArray } from '../core/util/array';
+import { arraysEqual, toArray } from '../core/util/array';
 import { InputBoolean } from '../core/util/convert';
 
 import {
@@ -355,7 +355,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   }
 
   private setColumnData(options: CascaderOption[], columnIndex: number): void {
-    if (!arrayEquals(this.columns[ columnIndex ], options)) {
+    if (!arraysEqual(this.columns[ columnIndex ], options)) {
       this.columns[ columnIndex ] = options;
       if (columnIndex < this.columns.length - 1) {
         this.columns = this.columns.slice(0, columnIndex + 1);
@@ -390,7 +390,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
 
   private onValueChange(): void {
     const value = this.getSubmitValue();
-    if (!arrayEquals(this.value, value)) {
+    if (!arraysEqual(this.value, value)) {
       this.defaultValue = null;
       this.value = value;
       this.onChange(value);
@@ -410,7 +410,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
 
   //#endregion
 
-  //#region Mouse and keyboard event handlers, view children
+  //#region Mouse and keyboard event handles, view children
 
   focus(): void {
     if (!this.isFocused) {
