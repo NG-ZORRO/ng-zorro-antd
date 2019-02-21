@@ -9,8 +9,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError, Observable, Observer } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-import { NzI18nModule, NzI18nService } from '../i18n';
 import en_US from '../i18n/languages/en_US';
+import { NzI18nModule } from '../i18n/nz-i18n.module';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzProgressModule } from '../progress/nz-progress.module';
 import { NzToolTipModule } from '../tooltip/nz-tooltip.module';

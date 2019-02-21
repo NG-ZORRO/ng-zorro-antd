@@ -41,7 +41,6 @@ import { NzYearPickerComponent } from './year-picker.component';
     NzYearPickerComponent,
     NzWeekPickerComponent,
     NzRangePickerComponent
-  ],
-  providers: []
+  ]
 })
 export class NzDatePickerModule { }

@@ -14,10 +14,10 @@ title: Calendar
 
 ## API
 
-**注意：**Calendar 的部分 locale 来自于 Angular 自身的[国际化支持](https://angular.io/guide/i18n)，需要在  `app.module.ts` 文件中 引入相应的 Angular 语言包。
+**注意：**Calendar 的部分 locale 来自于 Angular 自身的国际化支持，需要在 app.module.ts 文件中 引入相应的 Angular 语言包。
 
 例如：
-```typescript
+```typescript	
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);

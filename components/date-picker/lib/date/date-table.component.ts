@@ -3,6 +3,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnI
 import { FunctionProp } from '../../../core/types/common-wrap';
 import { isNonEmptyString, isTemplateRef } from '../../../core/util/check';
 import { valueFunctionProp } from '../../../core/util/convert';
+import { DateHelperByDatePipe, DateHelperService } from '../../../i18n/date-helper.service';
+import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
 import { NzI18nService } from '../../../i18n/nz-i18n.service';
 import { CandyDate } from '../candy-date';
 
@@ -18,6 +20,7 @@ const DATE_COL_NUM = 7;
 })
 
 export class DateTableComponent implements OnInit, OnChanges {
+  @Input() locale: NzCalendarI18nInterface;
   @Input() selectedValue: CandyDate[]; // Range ONLY
   @Input() hoverValue: CandyDate[]; // Range ONLY
 
@@ -37,7 +40,7 @@ export class DateTableComponent implements OnInit, OnChanges {
   isTemplateRef = isTemplateRef;
   isNonEmptyString = isNonEmptyString;
 
-  constructor(private i18n: NzI18nService) { }
+  constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) { }
 
   ngOnInit(): void { }
 
@@ -84,25 +87,28 @@ export class DateTableComponent implements OnInit, OnChanges {
 
   private makeHeadWeekDays(): WeekDayLabel[] {
     const weekDays: WeekDayLabel[] = [];
-    const firstDayOfWeek = this.getFirstDayOfWeek();
+    const firstDayOfWeek = this.dateHelper.getFirstDayOfWeek();
     for (let colIndex = 0; colIndex < DATE_COL_NUM; colIndex ++) {
       const day = (firstDayOfWeek + colIndex) % DATE_COL_NUM;
       const tempDate = this.value.setDay(day);
       weekDays[ colIndex ] = {
-        short: this.i18n.formatDate(tempDate.nativeDate, 'E'), // eg. Tue
-        veryShort: this.i18n.formatDate(tempDate.nativeDate, this.getVeryShortWeekFormat()) // eg. Tu
+        short: this.dateHelper.format(tempDate.nativeDate, this.dateHelper.relyOnDatePipe ? 'E' : 'ddd'), // eg. Tue
+        veryShort: this.dateHelper.format(tempDate.nativeDate, this.getVeryShortWeekFormat()) // eg. Tu
       };
     }
     return weekDays;
   }
 
   private getVeryShortWeekFormat(): string {
-    return this.i18n.getLocaleId().toLowerCase().indexOf('zh') === 0 ? 'EEEEE' : 'EEEEEE'; // Use extreme short for chinese
+    if (this.dateHelper.relyOnDatePipe) {
+      return this.i18n.getLocaleId().toLowerCase().indexOf('zh') === 0 ? 'EEEEE' : 'EEEEEE'; // Use extreme short for chinese
+    }
+    return 'dd';
   }
 
   private makeWeekRows(): WeekRow[] {
     const weekRows: WeekRow[] = [];
-    const firstDayOfWeek = this.getFirstDayOfWeek();
+    const firstDayOfWeek = this.dateHelper.getFirstDayOfWeek();
     const firstDateOfMonth = this.value.setDate(1);
     const firstDateOffset = (firstDateOfMonth.getDay() + 7 - firstDayOfWeek) % 7;
     const firstDateToShow = firstDateOfMonth.addDays(0 - firstDateOffset);
@@ -193,16 +199,17 @@ export class DateTableComponent implements OnInit, OnChanges {
     return weekRows;
   }
 
-  private getFirstDayOfWeek(): number {
-    return this.value.firstDayOfWeek(this.i18n.getLocaleId());
-  }
-
   private getDateTitle(date: CandyDate): string {
-    return this.i18n.formatDate(date.nativeDate, 'longDate');
+    // NOTE: Compat for DatePipe formatting rules
+    let dateFormat: string = (this.locale && this.locale.dateFormat) || 'YYYY-MM-DD';
+    if (this.dateHelper.relyOnDatePipe) {
+      dateFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(dateFormat);
+    }
+    return this.dateHelper.format(date.nativeDate, dateFormat);
   }
 
   private getWeekNum(date: CandyDate): number {
-    return +this.i18n.formatDate(date.nativeDate, 'w');
+    return this.dateHelper.getISOWeek(date.nativeDate);
   }
 
   private isBeforeMonthYear(current: CandyDate, target: CandyDate): boolean {

@@ -16,7 +16,8 @@ import setYear from 'date-fns/set_year';
 import startOfMonth from 'date-fns/start_of_month';
 import startOfWeek from 'date-fns/start_of_week';
 import startOfYear from 'date-fns/start_of_year';
-import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
+import { DateHelperService } from '../i18n/date-helper.service';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzDateCellDirective as DateCell, NzDateFullCellDirective as DateFullCell, NzMonthCellDirective as MonthCell, NzMonthFullCellDirective as MonthFullCell } from './nz-calendar-cells';
 
 @Component({
@@ -93,10 +94,10 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   private onTouchFn: () => void = () => {};
 
   private get calendarStart(): Date {
-    return startOfWeek(startOfMonth(this.activeDate));
+    return startOfWeek(startOfMonth(this.activeDate), { weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
   }
 
-  constructor(private i18n: I18n, private cdr: ChangeDetectorRef) { }
+  constructor(private i18n: NzI18nService, private cdr: ChangeDetectorRef, private dateHelper: DateHelperService) { }
 
   ngOnInit(): void {
     this.setUpDaysInWeek();
@@ -167,11 +168,11 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
 
   private setUpDaysInWeek(): void {
     this.daysInWeek = [];
-    const weekStart = startOfWeek(this.activeDate);
+    const weekStart = startOfWeek(this.activeDate, { weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
     for (let i = 0; i < 7; i++) {
       const date = addDays(weekStart, i);
-      const title = this.i18n.formatDate(date, 'E');
-      const label = this.i18n.formatDate(date, 'EEEEEE');
+      const title = this.dateHelper.format(date, this.dateHelper.relyOnDatePipe ? 'E' : 'ddd');
+      const label = this.dateHelper.format(date, this.dateHelper.relyOnDatePipe ? 'EEEEEE' : 'dd');
       this.daysInWeek.push({title, label});
     }
   }
@@ -180,8 +181,8 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     this.monthsInYear = [];
     for (let i = 0; i < 12; i++) {
       const date = setMonth(this.activeDate, i);
-      const title = this.i18n.formatDate(date, 'MMM');
-      const label = this.i18n.formatDate(date, 'MMM');
+      const title = this.dateHelper.format(date, 'MMM');
+      const label = this.dateHelper.format(date, 'MMM');
       const start = startOfMonth(date);
       this.monthsInYear.push({title, label, start});
     }
@@ -191,7 +192,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     this.dateMatrix = [];
     const monthStart = startOfMonth(this.activeDate);
     const monthEnd = endOfMonth(this.activeDate);
-    const weekDiff = differenceInCalendarWeeks(monthEnd, monthStart) + 2;
+    const weekDiff = differenceInCalendarWeeks(monthEnd, monthStart, { weekStartsOn: this.dateHelper.getFirstDayOfWeek() }) + 2;
 
     for (let week = 0; week < weekDiff; week++) {
       const row: DateCellContext[] = [];
@@ -200,8 +201,9 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
       for (let day = 0; day < 7; day++) {
         const date = addDays(weekStart, day);
         const monthDiff = differenceInCalendarMonths(date, this.activeDate);
-        const title = this.i18n.formatDate(date, 'longDate');
-        const label = this.i18n.formatDate(date, 'dd');
+        const dateFormat = this.dateHelper.relyOnDatePipe ? 'longDate' : this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD');
+        const title = this.dateHelper.format(date, dateFormat);
+        const label = this.dateHelper.format(date, this.dateHelper.relyOnDatePipe ? 'dd' : 'DD');
         const rel = monthDiff === 0 ? 'current' : monthDiff < 0 ? 'last' : 'next';
         row.push({title, label, rel, value: date});
       }
@@ -211,7 +213,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
 
   private calculateCurrentDate(): void {
     if (isThisMonth(this.activeDate)) {
-      this.currentDateRow = differenceInCalendarWeeks(this.currentDate, this.calendarStart);
+      this.currentDateRow = differenceInCalendarWeeks(this.currentDate, this.calendarStart, { weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
       this.currentDateCol = differenceInCalendarDays(this.currentDate, addDays(this.calendarStart, this.currentDateRow * 7));
     } else {
       this.currentDateRow = -1;
@@ -220,7 +222,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   private calculateActiveDate(): void {
-    this.activeDateRow = differenceInCalendarWeeks(this.activeDate, this.calendarStart);
+    this.activeDateRow = differenceInCalendarWeeks(this.activeDate, this.calendarStart, { weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
     this.activeDateCol = differenceInCalendarDays(this.activeDate, addDays(this.calendarStart, this.activeDateRow * 7));
   }
 

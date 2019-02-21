@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { NzI18nService } from '../../../i18n/nz-i18n.service';
+import { DateHelperService } from '../../../i18n/date-helper.service';
 import { CandyDate } from '../candy-date';
 
 const MAX_ROW = 4;
@@ -23,7 +23,7 @@ export class MonthTableComponent implements OnInit, OnChanges {
   prefixCls: string = 'ant-calendar-month-panel';
   panelMonths: PanelMonthData[][];
 
-  constructor(private i18n: NzI18nService) { }
+  constructor(private dateHelper: DateHelperService) { }
 
   ngOnInit(): void { }
 
@@ -54,7 +54,7 @@ export class MonthTableComponent implements OnInit, OnChanges {
       for (let colIndex = 0; colIndex < MAX_COL; colIndex ++) {
         const month = this.value.setMonth(monthValue);
         const disabled = this.disabledDate ? this.disabledDate(this.value.setMonth(monthValue).nativeDate) : false;
-        const content = this.i18n.formatDateCompatible(month.nativeDate, 'MMM');
+        const content = this.dateHelper.format(month.nativeDate, 'MMM');
 
         const cell = months[rowIndex][colIndex] = {
           disabled,

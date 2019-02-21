@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
+import { DateHelperByDatePipe, DateHelperService } from '../../../i18n/date-helper.service';
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
-import { NzI18nService } from '../../../i18n/nz-i18n.service';
 import { PanelMode } from '../../standard-types';
 import { CandyDate } from '../candy-date';
 
@@ -35,7 +35,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
 
   private yearToMonth: boolean = false; // Indicate whether should change to month panel when current is year panel (if referer=month, it should show month panel when choosed a year)
 
-  constructor(private i18n: NzI18nService) { }
+  constructor(private dateHelper: DateHelperService) { }
 
   ngOnInit(): void {
     if (!this.value) {
@@ -117,7 +117,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   }
 
   private formatDateTime(localeFormat: string): string {
-    return this.i18n.formatDateCompatible(this.value.nativeDate, localeFormat);
+    return this.dateHelper.format(this.value.nativeDate, localeFormat);
   }
 
   private createYearMonthDaySelectors(): YearMonthDaySelector[] {
@@ -125,24 +125,34 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
     let month: YearMonthDaySelector;
     let day: YearMonthDaySelector;
 
+    // NOTE: Compat for DatePipe formatting rules
+    let yearFormat: string = this.locale.yearFormat;
+    if (this.dateHelper.relyOnDatePipe) {
+      yearFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(yearFormat);
+    }
     year = {
       className: `${this.prefixCls}-year-select`,
       title: this.locale.yearSelect,
       onClick: () => this.showTimePicker ? null : this.changePanel('year'),
-      label: this.formatDateTime(this.locale.yearFormat)
+      label: this.formatDateTime(yearFormat)
     };
 
     month = {
       className: `${this.prefixCls}-month-select`,
       title: this.locale.monthSelect,
       onClick: () => this.showTimePicker ? null : this.changeToMonthPanel(),
-      label: this.locale.monthFormat ? this.formatDateTime(this.locale.monthFormat) : this.i18n.formatDate(this.value.nativeDate, 'MMM')
+      label: this.formatDateTime(this.locale.monthFormat || 'MMM')
     };
 
+    // NOTE: Compat for DatePipe formatting rules
+    let dayFormat: string = this.locale.dayFormat;
+    if (this.dateHelper.relyOnDatePipe) {
+      dayFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(dayFormat);
+    }
     if (this.showTimePicker) {
       day = {
         className: `${this.prefixCls}-day-select`,
-        label: this.formatDateTime(this.locale.dayFormat)
+        label: this.formatDateTime(dayFormat)
       };
     }
 

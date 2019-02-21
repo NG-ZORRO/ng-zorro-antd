@@ -9,7 +9,9 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import isSameDay from 'date-fns/is_same_day';
 
+import en from 'date-fns/locale/en';
 import { dispatchKeyboardEvent, dispatchMouseEvent } from '../core/testing';
+import { NZ_DATE_CONFIG } from '../i18n/date-config';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -29,7 +31,9 @@ describe('NzDatePickerComponent', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule ],
-      providers   : [],
+      providers   : [
+        // { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 1 } }
+      ],
       declarations: [
         NzTestDatePickerComponent
       ]
@@ -76,6 +80,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(getPickerTrigger().placeholder).toBe('请选择日期');
       i18nService.setLocale(en_US);
+      // i18nService.setDateLocale(en);
       fixture.detectChanges();
       expect(getPickerTrigger().placeholder).toBe('Select date');
 
