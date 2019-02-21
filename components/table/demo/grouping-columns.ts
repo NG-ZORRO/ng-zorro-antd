@@ -3,13 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-grouping-columns',
   template: `
-    <nz-table
-      #groupingTable
-      [nzData]="displayData"
-      nzBordered
-      nzSize="middle"
-      [nzWidthConfig]="['100px','200px','200px','100px','100px','200px','200px','100px']"
-      [nzScroll]="{ x:'1200px',y: '240px' }">
+    <nz-table #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="middle" [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig">
       <thead>
         <tr>
           <th rowspan="4" nzLeft="0px" nzShowFilter [nzFilters]="filterName" (nzFilterChange)="search($event)">Name</th>
@@ -44,12 +38,13 @@ import { Component, OnInit } from '@angular/core';
           <td nzRight="0px">{{data.gender}}</td>
         </tr>
       </tbody>
-    </nz-table>`,
-  styles  : []
+    </nz-table>`
 })
 export class NzDemoTableGroupingColumnsComponent implements OnInit {
-  displayData = [];
-  data = [];
+  widthConfig = [ '100px', '200px', '200px', '100px', '100px', '200px', '200px', '100px' ];
+  scrollConfig = { x: '1200px', y: '240px' };
+  listOfDisplayData = [];
+  listOfData = [];
   sortValue = null;
   filterName = [
     { text: 'Joe', value: 'Joe' },
@@ -62,13 +57,13 @@ export class NzDemoTableGroupingColumnsComponent implements OnInit {
     const filterFunc = (item) => {
       return this.searchName.length ? this.searchName.some(name => item.name.indexOf(name) !== -1) : true;
     };
-    const data = this.data.filter(item => filterFunc(item));
-    this.displayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a.age > b.age ? 1 : -1) : (b.age > a.age ? 1 : -1));
+    const listOfData = this.listOfData.filter(item => filterFunc(item));
+    this.listOfDisplayData = listOfData.sort((a, b) => (this.sortValue === 'ascend') ? (a.age > b.age ? 1 : -1) : (b.age > a.age ? 1 : -1));
   }
 
   ngOnInit(): void {
     for (let i = 0; i < 100; i++) {
-      this.displayData.push({
+      this.listOfData.push({
         name          : 'John Brown',
         age           : i + 1,
         street        : 'Lake Park',
@@ -79,6 +74,6 @@ export class NzDemoTableGroupingColumnsComponent implements OnInit {
         gender        : 'M'
       });
     }
-    this.data = [ ...this.displayData ];
+    this.listOfDisplayData = [ ...this.listOfData ];
   }
 }

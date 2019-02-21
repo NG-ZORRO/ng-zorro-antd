@@ -3,28 +3,26 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-expand',
   template: `
-    <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10">
+    <nz-table #nzTable [nzData]="listOfData">
       <thead>
         <tr>
           <th nzShowExpand></th>
           <th>Name</th>
           <th>Age</th>
           <th>Address</th>
-          <th>Action</th>
         </tr>
       </thead>
       <tbody>
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr>
-            <td nzShowExpand [(nzExpand)]="data.expand"></td>
+            <td nzShowExpand [(nzExpand)]="mapOfExpandData[data.id]"></td>
             <td>{{data.name}}</td>
             <td>{{data.age}}</td>
             <td>{{data.address}}</td>
-            <td><a href="#">Delete</a></td>
           </tr>
-          <tr [nzExpand]="data.expand">
+          <tr [nzExpand]="mapOfExpandData[data.id]">
             <td></td>
-            <td colspan="4">{{data.description}}</td>
+            <td colspan="3">{{data.description}}</td>
           </tr>
         </ng-template>
       </tbody>
@@ -32,8 +30,10 @@ import { Component } from '@angular/core';
   styles  : []
 })
 export class NzDemoTableExpandComponent {
-  dataSet = [
+  mapOfExpandData = {};
+  listOfData = [
     {
+      id         : 1,
       name       : 'John Brown',
       age        : 32,
       expand     : false,
@@ -41,6 +41,7 @@ export class NzDemoTableExpandComponent {
       description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
     },
     {
+      id         : 2,
       name       : 'Jim Green',
       age        : 42,
       expand     : false,
@@ -48,6 +49,7 @@ export class NzDemoTableExpandComponent {
       description: 'My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.'
     },
     {
+      id         : 3,
       name       : 'Joe Black',
       age        : 32,
       expand     : false,
