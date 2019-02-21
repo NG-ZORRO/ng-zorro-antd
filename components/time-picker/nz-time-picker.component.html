@@ -10,6 +10,17 @@
 <span class="ant-time-picker-icon">
   <i nz-icon type="clock-circle"></i>
 </span>
+<i
+  *ngIf="nzAllowEmpty && value"
+  nz-icon
+  type="close-circle"
+  theme="fill"
+  class="anticon anticon-close-circle ant-time-picker-clear"
+  tabindex="-1"
+  [attr.aria-label]="nzClearText"
+  [attr.title]="nzClearText"
+  (click)="onClickClearBtn()"
+></i>
 
 <ng-template
   cdkConnectedOverlay
@@ -37,7 +48,6 @@
     [opened]="nzOpen"
     [nzClearText]="nzClearText"
     [nzAllowEmpty]="nzAllowEmpty"
-    (timeClear)="close()"
     [(ngModel)]="value">
   </nz-time-picker-panel>
 </ng-template>

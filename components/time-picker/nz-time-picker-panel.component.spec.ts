@@ -29,15 +29,6 @@ describe('time-picker-panel', () => {
       fixture.detectChanges();
       expect(panelElement.nativeElement.classList).toContain('ant-time-picker-panel');
     });
-    it('should clear work', fakeAsync(() => {
-      fixture.detectChanges();
-      testComponent.value = new Date(0, 0, 0, 0, 0, 0);
-      panelElement.nativeElement.querySelector('.ant-time-picker-panel-clear-btn').click();
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      expect(testComponent.value).toBeUndefined();
-    }));
     it('should format work', () => {
       fixture.detectChanges();
       expect(testComponent.nzTimePickerPanelComponent.hourEnabled).toBe(true);
