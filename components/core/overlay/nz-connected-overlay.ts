@@ -9,7 +9,7 @@ export class NzConnectedOverlayDirective {
 
   constructor(private cdkConnectedOverlay: CdkConnectedOverlay) {
     const config = new NzOverlayConfig();
-    this.cdkConnectedOverlay.backdropClass = config.backdropClass.toString();
+    this.cdkConnectedOverlay.backdropClass = config.backdropClass as string; // This can only be string
   }
 
 }
