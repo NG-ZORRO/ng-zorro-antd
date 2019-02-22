@@ -77,7 +77,7 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
     if (Array.isArray(value)) {
       if (!this.nzTreeService.isArrayOfNzTreeNode(value)) {
         // has not been new NzTreeNode
-        this.nzNodes = value.map(item => (new NzTreeNode(item)));
+        this.nzNodes = value.map(item => (new NzTreeNode(item, null, this.nzTreeService)));
       } else {
         this.nzNodes = value;
       }
