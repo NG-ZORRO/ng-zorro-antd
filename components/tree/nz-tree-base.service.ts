@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { isNotNil } from '../core/util/check';
 import { NzFormatEmitEvent } from './interface';
 import { NzTreeNode } from './nz-tree-node';
 import { isCheckDisabled, isInArray } from './nz-tree-util';
 
 @Injectable()
-export class NzTreeBaseService {
+export class NzTreeBaseService implements OnDestroy {
   DRAG_SIDE_RANGE = 0.25;
   DRAG_MIN_GAP = 2;
 
@@ -22,6 +23,11 @@ export class NzTreeBaseService {
   checkedNodeList: NzTreeNode[] = [];
   halfCheckedNodeList: NzTreeNode[] = [];
   matchedNodeList: NzTreeNode[] = [];
+  $statusChange = new Subject<NzFormatEmitEvent>();
+
+  statusChanged(): Observable<NzFormatEmitEvent> {
+    return this.$statusChange.asObservable();
+  }
 
   /**
    * reset tree nodes will clear default node list
@@ -520,6 +526,11 @@ export class NzTreeBaseService {
         break;
     }
     return emitStructure;
+  }
+
+  ngOnDestroy(): void {
+    this.$statusChange.complete();
+    this.$statusChange = null;
   }
 
 }
