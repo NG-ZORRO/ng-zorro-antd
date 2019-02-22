@@ -13,7 +13,7 @@ export interface TreeNodeInterface {
 @Component({
   selector: 'nz-demo-table-expand-children',
   template: `
-    <nz-table #nzTable [nzData]="data">
+    <nz-table #expandTable [nzData]="listOfMapData">
       <thead>
         <tr>
           <th nzWidth="40%">Name</th>
@@ -22,23 +22,26 @@ export interface TreeNodeInterface {
         </tr>
       </thead>
       <tbody>
-        <ng-template ngFor let-data [ngForOf]="nzTable.data">
-          <ng-template ngFor let-item [ngForOf]="expandDataCache[data.key]">
-            <tr *ngIf="(item.parent&&item.parent.expand)||!(item.parent)">
-              <td [nzIndentSize]="item.level*20" [nzShowExpand]="!!item.children" [(nzExpand)]="item.expand" (nzExpandChange)="collapse(expandDataCache[data.key],item,$event)">
+        <ng-container *ngFor="let data of expandTable.data">
+          <ng-container *ngFor="let item of mapOfExpandedData[data.key]">
+            <tr *ngIf="item.parent && item.parent.expand || !item.parent">
+              <td
+                [nzIndentSize]="item.level * 20"
+                [nzShowExpand]="!!item.children"
+                [(nzExpand)]="item.expand"
+                (nzExpandChange)="collapse(mapOfExpandedData[data.key],item,$event)">
                 {{item.name}}
               </td>
               <td>{{item.age}}</td>
               <td>{{item.address}}</td>
             </tr>
-          </ng-template>
-        </ng-template>
+          </ng-container>
+        </ng-container>
       </tbody>
-    </nz-table>`,
-  styles  : []
+    </nz-table>`
 })
 export class NzDemoTableExpandChildrenComponent implements OnInit {
-  data = [
+  listOfMapData = [
     {
       key     : 1,
       name    : 'John Brown sr.',
@@ -100,7 +103,7 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
       address: 'Sidney No. 1 Lake Park'
     }
   ];
-  expandDataCache = {};
+  mapOfExpandedData = {};
 
   collapse(array: TreeNodeInterface[], data: TreeNodeInterface, $event: boolean): void {
     if ($event === false) {
@@ -143,8 +146,8 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.data.forEach(item => {
-      this.expandDataCache[ item.key ] = this.convertTreeToList(item);
+    this.listOfMapData.forEach(item => {
+      this.mapOfExpandedData[ item.key ] = this.convertTreeToList(item);
     });
   }
 }

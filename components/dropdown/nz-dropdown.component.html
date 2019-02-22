@@ -15,10 +15,9 @@
     [style.minWidth.px]="triggerWidth"
     (mouseenter)="setVisibleStateWhen(true,'hover')"
     (mouseleave)="setVisibleStateWhen(false,'hover')">
-    <div [class.ant-table-filter-dropdown]="hasFilterButton">
+    <div [class.ant-table-filter-dropdown]="nzTableFilter">
       <ng-content select="[nz-menu]"></ng-content>
-      <ng-content select=".ant-table-filter-dropdown-btns"></ng-content>
+      <ng-content></ng-content>
     </div>
-    <ng-content></ng-content>
   </div>
 </ng-template>

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-fixed-header',
   template: `
-    <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="50" [nzScroll]="{ y: '240px' }">
+    <nz-table #headerTable [nzData]="listOfData" [nzPageSize]="50" [nzScroll]="{ y: '240px' }">
       <thead>
         <tr>
           <th nzWidth="150px">Name</th>
@@ -12,21 +12,20 @@ import { Component, OnInit } from '@angular/core';
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of nzTable.data">
+        <tr *ngFor="let data of headerTable.data">
           <td>{{data.name}}</td>
           <td>{{data.age}}</td>
           <td>{{data.address}}</td>
         </tr>
       </tbody>
-    </nz-table>`,
-  styles  : []
+    </nz-table>`
 })
 export class NzDemoTableFixedHeaderComponent implements OnInit {
-  dataSet = [];
+  listOfData = [];
 
   ngOnInit(): void {
     for (let i = 0; i < 100; i++) {
-      this.dataSet.push({
+      this.listOfData.push({
         name   : `Edward King ${i}`,
         age    : 32,
         address: `London, Park Lane no. ${i}`

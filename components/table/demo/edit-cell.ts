@@ -1,13 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { NzInputDirective } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-table-edit-cell',
   template: `
-    <button nz-button (click)="addRow()" class="editable-add-btn">Add</button>
-    <nz-table
-      #editRowTable
-      nzBordered
-      [nzData]="dataSet">
+    <button nz-button (click)="addRow()" nzType="primary">Add</button>
+    <nz-table #editRowTable nzBordered [nzData]="listOfData">
       <thead>
         <tr>
           <th nzWidth="30%">Name</th>
@@ -17,27 +15,21 @@ import { Component, OnInit } from '@angular/core';
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of editRowTable.data">
+        <tr *ngFor="let data of editRowTable.data" class="editable-row">
           <td>
-            <div class="editable-cell">
-              <div class="editable-cell-text-wrapper">
-                <ng-container *ngIf="!editCache[data.key].edit">
-                  {{data.name}}
-                  <i nz-icon type="edit" class="editable-cell-icon" (click)="startEdit(data.key)"></i>
-                </ng-container>
-                <ng-container *ngIf="editCache[data.key].edit">
-                  <input type="text" nz-input [(ngModel)]="editCache[data.key].name">
-                  <i nz-icon type="check" class="editable-cell-icon-check" (click)="finishEdit(data.key)"></i>
-                </ng-container>
+            <div class="editable-cell" *ngIf="editId !== data.id; else editTpl">
+              <div class="editable-cell-value-wrap" (click)="startEdit(data.id,$event)">
+                {{data.name}}
               </div>
             </div>
+            <ng-template #editTpl>
+              <input type="text" nz-input [(ngModel)]="data.name">
+            </ng-template>
           </td>
           <td>{{data.age}}</td>
           <td>{{data.address}}</td>
           <td>
-            <nz-popconfirm [nzTitle]="'Sure to delete?'" (nzOnConfirm)="deleteRow(data.key)">
-              <a nz-popconfirm>Delete</a>
-            </nz-popconfirm>
+            <a nz-popconfirm nzTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.key)">Delete</a>
           </td>
         </tr>
       </tbody>
@@ -45,106 +37,62 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles  : [
       `
+      button {
+        margin-bottom: 16px;
+      }
+
       .editable-cell {
         position: relative;
       }
 
-      .editable-cell-input-wrapper,
-      .editable-cell-text-wrapper {
-        padding-right: 24px;
-      }
-
-      .editable-cell-text-wrapper {
-        padding: 5px 24px 5px 5px;
-      }
-
-      .editable-cell-icon,
-      .editable-cell-icon-check {
-        position: absolute;
-        right: 0;
-        width: 20px;
+      .editable-cell-value-wrap {
+        padding: 5px 12px;
         cursor: pointer;
       }
 
-      .editable-cell-icon {
-        line-height: 18px;
-        display: none;
-      }
-
-      .editable-cell-icon-check {
-        line-height: 28px;
-      }
-
-      .editable-cell:hover .editable-cell-icon {
-        display: inline-block;
-      }
-
-      .editable-cell-icon:hover,
-      .editable-cell-icon-check:hover {
-        color: #108ee9;
-      }
-
-      .editable-add-btn {
-        margin-bottom: 8px;
+      .editable-row:hover .editable-cell-value-wrap {
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+        padding: 4px 11px;
       }
     `
   ]
 })
 export class NzDemoTableEditCellComponent implements OnInit {
-  i = 1;
-  editCache = {};
-  dataSet = [
-    {
-      key    : '0',
-      name   : 'Edward King 0',
-      age    : '32',
-      address: 'London, Park Lane no. 0'
-    },
-    {
-      key    : '1',
-      name   : 'Edward King 1',
-      age    : '32',
-      address: 'London, Park Lane no. 1'
+  i = 0;
+  editId: string;
+  listOfData = [];
+  @ViewChild(NzInputDirective, { read: ElementRef }) inputElement: ElementRef;
+
+  @HostListener('window:click', [ '$event' ])
+  handleClick(e: MouseEvent): void {
+    if (this.editId && this.inputElement && this.inputElement.nativeElement !== e.target) {
+      this.editId = null;
     }
-  ];
+  }
 
   addRow(): void {
-    this.i++;
-    this.dataSet = [ ...this.dataSet, {
-      key    : `${this.i}`,
+    this.listOfData = [ ...this.listOfData, {
+      id     : `${this.i}`,
       name   : `Edward King ${this.i}`,
       age    : '32',
       address: `London, Park Lane no. ${this.i}`
     } ];
-    this.updateEditCache();
+    this.i++;
   }
 
-  deleteRow(i: string): void {
-    const dataSet = this.dataSet.filter(d => d.key !== i);
-    this.dataSet = dataSet;
+  deleteRow(id: string): void {
+    this.listOfData = this.listOfData.filter(d => d.id !== id);
   }
 
-  startEdit(key: string): void {
-    this.editCache[ key ].edit = true;
-  }
-
-  finishEdit(key: string): void {
-    this.editCache[ key ].edit = false;
-    this.dataSet.find(item => item.key === key).name = this.editCache[ key ].name;
-  }
-
-  updateEditCache(): void {
-    this.dataSet.forEach(item => {
-      if (!this.editCache[ item.key ]) {
-        this.editCache[ item.key ] = {
-          edit: false,
-          name: item.name
-        };
-      }
-    });
+  startEdit(id: string, event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.editId = id;
   }
 
   ngOnInit(): void {
-    this.updateEditCache();
+    this.addRow();
+    this.addRow();
   }
 }

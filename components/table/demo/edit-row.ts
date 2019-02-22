@@ -3,10 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-edit-row',
   template: `
-    <nz-table
-      #editRowTable
-      nzBordered
-      [nzData]="dataSet">
+    <nz-table #editRowTable nzBordered [nzData]="listOfData">
       <thead>
         <tr>
           <th nzWidth="25%">Name</th>
@@ -18,44 +15,38 @@ import { Component, OnInit } from '@angular/core';
       <tbody>
         <tr *ngFor="let data of editRowTable.data">
           <td>
-            <div class="editable-cell">
-              <div class="editable-cell-text-wrapper">
-                <ng-container *ngIf="!editCache[data.key].edit">
-                  {{data.name}}
-                </ng-container>
-                <ng-container *ngIf="editCache[data.key].edit">
-                  <input type="text" nz-input [(ngModel)]="editCache[data.key].data.name">
-                </ng-container>
-              </div>
-            </div>
+            <ng-container *ngIf="!editCache[data.id].edit; else nameInputTpl">
+              {{data.name}}
+            </ng-container>
+            <ng-template #nameInputTpl>
+              <input type="text" nz-input [(ngModel)]="editCache[data.id].data.name">
+            </ng-template>
           </td>
           <td>
-            <ng-container *ngIf="!editCache[data.key].edit">
+            <ng-container *ngIf="!editCache[data.id].edit; else ageInputTpl">
               {{data.age}}
             </ng-container>
-            <ng-container *ngIf="editCache[data.key].edit">
-              <input type="text" nz-input [(ngModel)]="editCache[data.key].data.age">
-            </ng-container>
+            <ng-template #ageInputTpl>
+              <input type="text" nz-input [(ngModel)]="editCache[data.id].data.age">
+            </ng-template>
           </td>
           <td>
-            <ng-container *ngIf="!editCache[data.key].edit">
+            <ng-container *ngIf="!editCache[data.id].edit; else addressInputTpl">
               {{data.address}}
             </ng-container>
-            <ng-container *ngIf="editCache[data.key].edit">
-              <input type="text" nz-input [(ngModel)]="editCache[data.key].data.address">
-            </ng-container>
+            <ng-template #addressInputTpl>
+              <input type="text" nz-input [(ngModel)]="editCache[data.id].data.address">
+            </ng-template>
           </td>
           <td>
             <div class="editable-row-operations">
-              <ng-container *ngIf="!editCache[data.key].edit">
-                <a (click)="startEdit(data.key)">Edit</a>
+              <ng-container *ngIf="!editCache[data.id].edit; else saveTpl">
+                <a (click)="startEdit(data.id)">Edit</a>
               </ng-container>
-              <ng-container *ngIf="editCache[data.key].edit">
-                <a (click)="saveEdit(data.key)">Save</a>
-                <nz-popconfirm [nzTitle]="'Sure to cancel?'" (nzOnConfirm)="cancelEdit(data.key)">
-                  <a nz-popconfirm>Cancel</a>
-                </nz-popconfirm>
-              </ng-container>
+              <ng-template #saveTpl>
+                <a (click)="saveEdit(data.id)">Save</a>
+                <a nz-popconfirm nzTitle="Sure to cancel?" (nzOnConfirm)="cancelEdit(data.id)">Cancel</a>
+              </ng-template>
             </div>
           </td>
         </tr>
@@ -63,7 +54,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-table>
   `,
   styles  : [
-    `
+      `
       .editable-row-operations a {
         margin-right: 8px;
       }
@@ -71,42 +62,40 @@ import { Component, OnInit } from '@angular/core';
   ]
 })
 export class NzDemoTableEditRowComponent implements OnInit {
-  i = 1;
   editCache = {};
-  dataSet = [];
+  listOfData = [];
 
-  startEdit(key: string): void {
-    this.editCache[ key ].edit = true;
+  startEdit(id: string): void {
+    this.editCache[ id ].edit = true;
   }
 
-  cancelEdit(key: string): void {
-    const index = this.dataSet.findIndex(item => item.key === key);
-    Object.assign(this.editCache[ key ].data, this.dataSet[ index ]);
-    this.editCache[ key ].edit = false;
+  cancelEdit(id: string): void {
+    const index = this.listOfData.findIndex(item => item.id === id);
+    this.editCache[ id ] = {
+      data: { ...this.listOfData[ index ] },
+      edit: false
+    };
   }
 
-  saveEdit(key: string): void {
-    const index = this.dataSet.findIndex(item => item.key === key);
-    Object.assign(this.dataSet[ index ], this.editCache[ key ].data);
-    // this.dataSet[ index ] = this.editCache[ key ].data;
-    this.editCache[ key ].edit = false;
+  saveEdit(id: string): void {
+    const index = this.listOfData.findIndex(item => item.id === id);
+    Object.assign(this.listOfData[ index ], this.editCache[ id ].data);
+    this.editCache[ id ].edit = false;
   }
 
   updateEditCache(): void {
-    this.dataSet.forEach(item => {
-      if (!this.editCache[ item.key ]) {
-        this.editCache[ item.key ] = {
-          edit: false,
-          data: { ...item }
-        };
-      }
+    this.listOfData.forEach(item => {
+      this.editCache[ item.id ] = {
+        edit: false,
+        data: { ...item }
+      };
     });
   }
 
   ngOnInit(): void {
     for (let i = 0; i < 100; i++) {
-      this.dataSet.push({
-        key    : i.toString(),
+      this.listOfData.push({
+        id     : `${i}`,
         name   : `Edrward ${i}`,
         age    : 32,
         address: `London Park no. ${i}`
