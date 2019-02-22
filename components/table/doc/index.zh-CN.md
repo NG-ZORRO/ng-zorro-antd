@@ -83,6 +83,10 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzItemRender]` | 用于自定义页码的结构，用法参照 Pagination 组件 | `TemplateRef<{ $implicit: 'page'｜'prev'｜'next', page: number }>` | - |
 | `[nzHideOnSinglePage]` | 只有一页时是否隐藏分页器 | `boolean` | `false` |
 | `[nzSimple]` | 当添加该属性时，显示为简单分页 | `boolean` | - |
+| `[nzVirtualScroll]` | 是否启用虚拟滚动模式，与 `[nzScroll]` 配合使用 | `boolean` | `false` |
+| `[nzVirtualItemSize]` | 虚拟滚动时每一列的高度，与 [cdk itemSize](https://material.angular.io/cdk/scrolling/api) 相同 | `number` | `0` |
+| `[nzVirtualMaxBufferPx]` | 缓冲区最大像素高度，与 [cdk maxBufferPx](https://material.angular.io/cdk/scrolling/api) 相同 | `number` | `200` |
+| `[nzVirtualMinBufferPx]` | 缓冲区最小像素高度，低于该值时将加载新结构，与 [cdk minBufferPx](https://material.angular.io/cdk/scrolling/api) 相同 | `number` | `100` |
 | `(nzPageIndexChange)` | 当前页码改版时的回调函数 | `EventEmitter<number>` | - |
 | `(nzPageSizeChange)` | 页数改变时的回调函数 | `EventEmitter<number>` | - |
 | `(nzCurrentPageDataChange)` | 当前页面展示数据改变的回调函数 | `EventEmitter<any[]>` | - |
@@ -187,6 +191,10 @@ Table 组件同时具备了易用性和高度可定制性
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzExpand]` | 当前列是否展开，与 `td` 上的 `nzExpand` 属性配合使用 | `boolean` | - |
+
+### [nz-virtual-scroll]
+
+虚拟滚动时配合 `ng-template` 使用, 格式为： `TemplateRef<{ $implicit: any, index: number }>`.
 
 
 ## 注意

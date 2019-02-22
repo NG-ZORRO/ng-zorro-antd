@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-colspan-rowspan',
   template: `
-    <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" nzBordered>
+    <nz-table #colSpanTable [nzData]="listOfData"nzBordered>
       <thead>
         <tr>
           <th>Name</th>
@@ -13,18 +13,18 @@ import { Component } from '@angular/core';
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of nzTable.data; index as i;">
-          <td>{{data.name}}</td>
-          <td [attr.colspan]="i==4?5:1">{{data.age}}</td>
-          <td [attr.rowspan]="i==2?2:1" *ngIf="(i!=3)&&(i!=4)">{{data.tel}}</td>
-          <td *ngIf="i!=4">{{data.phone}}</td>
-          <td *ngIf="i!=4">{{data.address}}</td>
+        <tr *ngFor="let data of colSpanTable.data; index as i;">
+          <td>{{ data.name }}</td>
+          <td [attr.colspan]="i === 4 ? 5 : 1">{{ data.age }}</td>
+          <td [attr.rowspan]="i === 2 ? 2 : 1" *ngIf="i !== 3 && i !== 4">{{ data.tel }}</td>
+          <td *ngIf="i !== 4">{{data.phone}}</td>
+          <td *ngIf="i !== 4">{{data.address}}</td>
         </tr>
       </tbody>
     </nz-table>`
 })
 export class NzDemoTableColspanRowspanComponent {
-  dataSet = [
+  listOfData = [
     {
       key    : '1',
       name   : 'John Brown',
