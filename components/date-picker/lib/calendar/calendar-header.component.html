@@ -51,6 +51,7 @@
       <year-panel
         [locale]="locale"
         [value]="value"
+        [disabledDate]="disabledYear"
         (valueChange)="onChooseYear($event)"
         (decadePanelShow)="changePanel('decade')"
       ></year-panel>
