@@ -41,7 +41,7 @@ registerLocaleData(zh);
 | `[nzClassName]` | 选择器 className | `string` | `''` |
 | `[nzDateRender]` | 自定义日期单元格的内容（month-picker/year-picker不支持） | `TemplateRef<Date>｜string｜((d: Date) => TemplateRef<Date>｜string)` | - |
 | `[nzDisabled]` | 禁用 | `boolean` | `false` |
-| `[nzDisabledDate]` | 不可选择的日期（year-picker不支持） | `(current: Date) => boolean` | - |
+| `[nzDisabledDate]` | 不可选择的日期 | `(current: Date) => boolean` | - |
 | `[nzLocale]` | 国际化配置 | `object` | [默认配置](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
 | `[nzOpen]` | 控制弹层是否展开 | `boolean` | - |
 | `[nzPopupStyle]` | 额外的弹出日历样式 | `object` | `{}` |

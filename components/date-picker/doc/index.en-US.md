@@ -41,7 +41,7 @@ The following APIs are shared by nz-date-picker, nz-month-picker, nz-range-picke
 | `[nzClassName]` | picker className | `string` | `''` |
 | `[nzDateRender]` | custom rendering function for date cells (Not support by month-picker/year-picker) | `TemplateRef<Date>｜string｜((d: Date) => TemplateRef<Date>｜string)` | - |
 | `[nzDisabled]` | determine whether the nz-date-picker is disabled | `boolean` | `false` |
-| `[nzDisabledDate]` | specify the date that cannot be selected (Not support by year-picker) | `(current: Date) => boolean` | - |
+| `[nzDisabledDate]` | specify the date that cannot be selected | `(current: Date) => boolean` | - |
 | `[nzLocale]` | localization configuration | `object` | [default](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
 | `[nzOpen]` | open state of picker | `boolean` | - |
 | `[nzPopupStyle]` | to customize the style of the popup calendar | `object` | `{}` |
