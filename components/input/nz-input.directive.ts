@@ -20,6 +20,11 @@ export class NzInputDirective {
   private _disabled = false;
   @Input() nzSize: NzSizeLDSType = 'default';
 
+  @Input('type')
+  set type(value: string) {
+    this.attrType = value;
+  }
+
   @Input()
   set disabled(value: boolean) {
     this._disabled = toBoolean(value);
@@ -32,7 +37,15 @@ export class NzInputDirective {
     return this._disabled;
   }
 
-  constructor(@Optional() @Self() public ngControl: NgControl, renderer: Renderer2, elementRef: ElementRef) {
-    renderer.addClass(elementRef.nativeElement, 'ant-input');
+  attrType = 'text';
+
+  constructor(@Optional() @Self() public ngControl: NgControl, private renderer: Renderer2, private elementRef: ElementRef) {
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-input');
+  }
+
+  setPasswordVisual(visuale: boolean): void {
+    if (this.attrType === 'password') {
+      this.renderer.setAttribute(this.elementRef.nativeElement, 'type', visuale ? 'text' : 'password');
+    }
   }
 }

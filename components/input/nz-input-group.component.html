@@ -22,6 +22,9 @@
     <ng-container *nzStringTemplateOutlet="nzPrefix">{{ nzPrefix }}</ng-container>
   </span>
   <ng-template *ngTemplateOutlet="contentTemplate"></ng-template>
+  <span class="ant-input-suffix" *ngIf="nzPassword" (click)="setPasswordVisible()">
+    <i nz-icon [type]="passwordVisible ? 'eye-invisible' : 'eye'" class="ant-input-password-icon" tabindex="-1"></i>
+  </span>
   <span class="ant-input-suffix" *ngIf="nzSuffix || nzSuffixIcon">
     <i nz-icon [type]="nzSuffixIcon" *ngIf="nzSuffixIcon"></i>
     <ng-container *nzStringTemplateOutlet="nzSuffix">{{ nzSuffix }}</ng-container>

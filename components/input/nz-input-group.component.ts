@@ -24,6 +24,7 @@ import { NzInputDirective } from './nz-input.directive';
     '[class.ant-input-group-compact]'      : 'nzCompact',
     '[class.ant-input-search-enter-button]': 'nzSearch',
     '[class.ant-input-search]'             : 'nzSearch',
+    '[class.ant-input-password]'           : 'nzPassword',
     '[class.ant-input-search-sm]'          : 'isSmallSearch',
     '[class.ant-input-affix-wrapper]'      : 'isAffixWrapper',
     '[class.ant-input-group-wrapper]'      : 'isAddOn',
@@ -41,6 +42,7 @@ import { NzInputDirective } from './nz-input.directive';
 export class NzInputGroupComponent implements AfterContentInit {
   @ContentChildren(NzInputDirective) listOfNzInputDirective: QueryList<NzInputDirective>;
   private _size: NzSizeLDSType = 'default';
+  passwordVisible = false;
   @Input() nzAddOnBeforeIcon: NgClassType;
   @Input() nzAddOnAfterIcon: NgClassType;
   @Input() nzPrefixIcon: NgClassType;
@@ -50,6 +52,7 @@ export class NzInputGroupComponent implements AfterContentInit {
   @Input() nzPrefix: string | TemplateRef<void>;
   @Input() nzSuffix: string | TemplateRef<void>;
   @Input() @InputBoolean() nzSearch = false;
+  @Input() @InputBoolean() nzPassword = false;
   @Input() @InputBoolean() nzCompact = false;
 
   @Input() set nzSize(value: NzSizeLDSType) {
@@ -70,7 +73,7 @@ export class NzInputGroupComponent implements AfterContentInit {
   }
 
   get isAffix(): boolean {
-    return (!!(this.nzSuffix || this.nzPrefix || this.nzPrefixIcon || this.nzSuffixIcon));
+    return (!!(this.nzSuffix || this.nzPrefix || this.nzPrefixIcon || this.nzSuffixIcon || this.nzPassword));
   }
 
   get isAddOn(): boolean {
@@ -120,6 +123,13 @@ export class NzInputGroupComponent implements AfterContentInit {
   updateChildrenInputSize(): void {
     if (this.listOfNzInputDirective) {
       this.listOfNzInputDirective.forEach(item => item.nzSize = this.nzSize);
+    }
+  }
+
+  setPasswordVisible(): void {
+    this.passwordVisible = !this.passwordVisible;
+    if (this.listOfNzInputDirective) {
+      this.listOfNzInputDirective.forEach(item => item.setPasswordVisual(this.passwordVisible));
     }
   }
 
