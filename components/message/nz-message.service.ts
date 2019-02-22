@@ -5,7 +5,7 @@ import { NzMessageConfig } from './nz-message-config';
 import { NzMessageContainerComponent } from './nz-message-container.component';
 import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
-let globalCounter = 0; // global ID counter for messages
+let globalCounter = 0;
 
 export class NzMessageBaseService<ContainerClass extends NzMessageContainerComponent, MessageData, MessageConfig extends NzMessageConfig> {
   protected _container: ContainerClass;
@@ -16,9 +16,8 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
     private injector: Injector,
     private cfr: ComponentFactoryResolver,
     private appRef: ApplicationRef,
-    private _idPrefix: string = '') {
-
-    // this._container = overlay.create().attach(new ComponentPortal(containerClass)).instance;
+    private _idPrefix: string = ''
+  ) {
     this._container = this.createContainer();
   }
 
@@ -33,7 +32,8 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
   createMessage(message: MessageData, options?: NzMessageDataOptions): NzMessageDataFilled {
     // TODO: spread on literal has been disallow on latest proposal
     const resultMessage: NzMessageDataFilled = {
-      ...(message as {}), ...{
+      ...(message as {}),
+      ...{
         messageId: this._generateMessageId(),
         options,
         createdAt: new Date()

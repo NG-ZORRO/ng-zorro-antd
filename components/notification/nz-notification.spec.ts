@@ -175,6 +175,24 @@ describe('NzNotification', () => {
     expect(overlayContainerElement.textContent).toContain('SHOULD NOT CHANGE');
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-success')).not.toBeNull();
   });
+
+  it('should receive `true` when it is closed by user', fakeAsync(() => {
+    let onCloseFlag = false;
+
+    messageService.create(null, null, 'close').onClose.subscribe(user => {
+      if (user) {
+        onCloseFlag = true;
+      }
+    });
+
+    demoAppFixture.detectChanges();
+    tick(1000);
+    const closeEl = overlayContainerElement.querySelector('.ant-notification-notice-close');
+    dispatchMouseEvent(closeEl, 'click');
+    tick(1000);
+    expect(onCloseFlag).toBeTruthy();
+    tick(50000);
+  }));
 });
 
 @Component({

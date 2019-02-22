@@ -152,6 +152,20 @@ describe('NzMessage', () => {
     tick(1000);
     expect(overlayContainerElement.textContent).toContain('EXISTS');
   }));
+
+  it('should emit event when message close', fakeAsync(() => {
+    let onCloseFlag = false;
+
+    const msg = messageService.create('loading', 'CLOSE');
+    msg.onClose.subscribe(() => {
+      onCloseFlag = true;
+    });
+
+    demoAppFixture.detectChanges();
+    tick(50000);
+
+    expect(onCloseFlag).toBeTruthy();
+  }));
 });
 
 @Component({
