@@ -485,7 +485,7 @@ describe('auto-complete', () => {
 
     it('should set disabled work', () => {
       const componentInstance = fixture.componentInstance;
-      const formControl = (componentInstance.form as FormGroup).get('formControl');
+      const formControl = (componentInstance.form as FormGroup).get('formControl')!;
       fixture.detectChanges();
 
       expect(input.disabled).toBe(false);
@@ -499,7 +499,7 @@ describe('auto-complete', () => {
 
     it('should close the panel when the input is disabled', () => {
       const componentInstance = fixture.componentInstance;
-      const formControl = (componentInstance.form as FormGroup).get('formControl');
+      const formControl = (componentInstance.form as FormGroup).get('formControl')!;
       fixture.detectChanges();
 
       componentInstance.trigger.openPanel();

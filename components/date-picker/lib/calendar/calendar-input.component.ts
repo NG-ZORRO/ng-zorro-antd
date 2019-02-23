@@ -45,7 +45,7 @@ export class CalendarInputComponent implements OnInit {
     return value ? this.dateHelper.format(value.nativeDate, this.format) : '';
   }
 
-  private checkValidInputDate(event: Event): CandyDate {
+  private checkValidInputDate(event: Event): CandyDate | null {
     const input = (event.target as HTMLInputElement).value;
     const date = new CandyDate(input);
 

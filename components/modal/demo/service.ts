@@ -92,7 +92,7 @@ export class NzDemoModalServiceComponent {
       nzFooter: [{
         label: 'change component tilte from outside',
         onClick: (componentInstance) => {
-          componentInstance.title = 'title in inner component is changed';
+          componentInstance!.title = 'title in inner component is changed';
         }
       }]
     });

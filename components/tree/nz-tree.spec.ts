@@ -109,7 +109,7 @@ describe('nz-tree', () => {
           { title: '0-1-0-2', key: '0-1-0-2', isLeaf: true }
         ]
       } ].map(v => {
-        return (new NzTreeNode(v, null, treeService));
+        return (new NzTreeNode(v, undefined, treeService));
       });
       fixture.detectChanges();
       tick(100);
@@ -336,7 +336,7 @@ describe('nz-tree', () => {
       expect(treeElement.querySelectorAll('[title=\'0-0-reset\']').length).toEqual(1);
       node.isDisabled = true;
       fixture.detectChanges();
-      expect(treeElement.querySelector('.ant-tree-treenode-disabled').querySelectorAll('[title=\'0-0-reset\']').length).toEqual(1);
+      expect(treeElement.querySelector('.ant-tree-treenode-disabled')!.querySelectorAll('[title=\'0-0-reset\']').length).toEqual(1);
     }));
   });
 
@@ -372,42 +372,42 @@ describe('nz-tree', () => {
       const dragLeaveSpy = spyOn(treeInstance, 'onDragLeave');
       const dropSpy = spyOn(treeInstance, 'onDrop');
       const dragEndSpy = spyOn(treeInstance, 'onDragEnd');
-      let dragNode = treeElement.querySelector('[title=\'0-1\']');
-      let dropNode = treeElement.querySelector('[title=\'0-0\']');
-      let passNode = treeElement.querySelector('[title=\'0-0-0\']');
+      let dragNode = treeElement.querySelector('[title=\'0-1\']')!;
+      let dropNode = treeElement.querySelector('[title=\'0-0\']')!;
+      let passNode = treeElement.querySelector('[title=\'0-0-0\']')!;
 
       dispatchTouchEvent(dragNode, 'dragstart');
       dispatchTouchEvent(dropNode, 'dragenter');
       fixture.detectChanges();
 
       // drag - dragenter
-      dragNode = treeElement.querySelector('[title=\'0-1\']');
-      dropNode = treeElement.querySelector('[title=\'0-0\']');
-      expect(dragNode.previousElementSibling.classList).toContain('ant-tree-switcher_close');
-      expect(dropNode.previousElementSibling.classList).toContain('ant-tree-switcher_open');
+      dragNode = treeElement.querySelector('[title=\'0-1\']')!;
+      dropNode = treeElement.querySelector('[title=\'0-0\']')!;
+      expect(dragNode.previousElementSibling!.classList).toContain('ant-tree-switcher_close');
+      expect(dropNode.previousElementSibling!.classList).toContain('ant-tree-switcher_open');
       expect(dragStartSpy).toHaveBeenCalledTimes(1);
       expect(dragEnterSpy).toHaveBeenCalledTimes(1);
 
       // dragover
       dispatchTouchEvent(passNode, 'dragover');
       fixture.detectChanges();
-      passNode = treeElement.querySelector('[title=\'0-0-0\']');
-      expect(passNode.parentElement.classList).toContain('drag-over');
+      passNode = treeElement.querySelector('[title=\'0-0-0\']')!;
+      expect(passNode.parentElement!.classList).toContain('drag-over');
       expect(dragOverSpy).toHaveBeenCalledTimes(1);
 
       // dragleave
       dispatchTouchEvent(passNode, 'dragleave');
       fixture.detectChanges();
-      passNode = treeElement.querySelector('[title=\'0-0-0\']');
-      expect(passNode.parentElement.classList.contains('drag-over')).toEqual(false);
+      passNode = treeElement.querySelector('[title=\'0-0-0\']')!;
+      expect(passNode.parentElement!.classList.contains('drag-over')).toEqual(false);
       expect(dragLeaveSpy).toHaveBeenCalledTimes(1);
 
       // drop 0-1 to 0-0
       dispatchTouchEvent(dropNode, 'drop');
       fixture.detectChanges();
-      dropNode = treeElement.querySelector('[title=\'0-0\']');
+      dropNode = treeElement.querySelector('[title=\'0-0\']')!;
       expect(dropSpy).toHaveBeenCalledTimes(1);
-      expect(dropNode.parentElement.querySelector('[title=\'0-1\']')).toBeDefined();
+      expect(dropNode.parentElement!.querySelector('[title=\'0-1\']')).toBeDefined();
 
       // dragend
       dispatchTouchEvent(dropNode, 'dragend');
@@ -415,15 +415,15 @@ describe('nz-tree', () => {
       expect(dragEndSpy).toHaveBeenCalledTimes(1);
 
       // drag 0-0 child node to 0-1
-      dragNode = treeElement.querySelector('[title=\'0-0-0\']');
-      dropNode = treeElement.querySelector('[title=\'0-1\']');
+      dragNode = treeElement.querySelector('[title=\'0-0-0\']')!;
+      dropNode = treeElement.querySelector('[title=\'0-1\']')!;
       dispatchTouchEvent(dragNode, 'dragstart');
       dispatchTouchEvent(dropNode, 'dragover');
       dispatchTouchEvent(dropNode, 'drop');
       fixture.detectChanges();
-      dropNode = treeElement.querySelector('[title=\'0-1\']');
+      dropNode = treeElement.querySelector('[title=\'0-1\']')!;
       expect(dropSpy).toHaveBeenCalledTimes(2);
-      expect(dropNode.parentElement.querySelector('[title=\'0-0-0\']')).toBeDefined();
+      expect(dropNode.parentElement!.querySelector('[title=\'0-0-0\']')).toBeDefined();
     }));
 
     // can not dispatchTouchEvent with pos, test alone
@@ -459,17 +459,17 @@ describe('nz-tree', () => {
       fixture.detectChanges();
       const dropSpy = spyOn(treeInstance, 'onDrop');
       const dragEndSpy = spyOn(treeInstance, 'onDragEnd');
-      const dragNode = treeElement.querySelector('[title=\'0-1\']');
-      let dropNode = treeElement.querySelector('[title=\'0-2\']');
+      const dragNode = treeElement.querySelector('[title=\'0-1\']')!;
+      let dropNode = treeElement.querySelector('[title=\'0-2\']')!;
 
       // drop 0-1 to 0-2(leaf node)
       dispatchTouchEvent(dragNode, 'dragstart');
       dispatchTouchEvent(dropNode, 'dragover');
       dispatchTouchEvent(dropNode, 'drop');
       fixture.detectChanges();
-      dropNode = treeElement.querySelector('[title=\'0-2\']');
+      dropNode = treeElement.querySelector('[title=\'0-2\']')!;
       expect(dropSpy).toHaveBeenCalledTimes(0);
-      expect(dropNode.parentElement.querySelector('[title=\'0-1\']')).toBeNull();
+      expect(dropNode.parentElement!.querySelector('[title=\'0-1\']')).toBeNull();
       // dragend
       dispatchTouchEvent(dropNode, 'dragend');
       fixture.detectChanges();
@@ -487,8 +487,8 @@ describe('nz-tree', () => {
     }));
 
     it('test drag event nzBeforeDrop', () => {
-      const dragNode = treeElement.querySelector('[title=\'0-2\']');
-      let dropNode = treeElement.querySelector('[title=\'0-1\']');
+      const dragNode = treeElement.querySelector('[title=\'0-2\']')!;
+      let dropNode = treeElement.querySelector('[title=\'0-1\']')!;
       treeInstance.beforeDrop = (): Observable<boolean> => {
         return of(true);
       };
@@ -499,8 +499,8 @@ describe('nz-tree', () => {
       // drop 0-2 to 0-1
       dispatchTouchEvent(dropNode, 'drop');
       fixture.detectChanges();
-      dropNode = treeElement.querySelector('[title=\'0-1\']');
-      expect(dropNode.parentElement.querySelector('[title=\'0-2\']')).toBeDefined();
+      dropNode = treeElement.querySelector('[title=\'0-1\']')!;
+      expect(dropNode.parentElement!.querySelector('[title=\'0-2\']')).toBeDefined();
     });
 
   });
@@ -784,7 +784,7 @@ export class NzTestTreeOlderComponent implements OnInit {
   expandDefault = false;
   showExpand = true;
   searchValue = '';
-  modelNodes = null;
+  modelNodes: any = null; // tslint:disable-line:no-any
 
   ngOnInit(): void {
     this.modelNodes = [
@@ -864,7 +864,7 @@ export class NzTestTreeOlderComponent implements OnInit {
       },
       { title: 'root3', key: '1003' }
     ].map(n => {
-      return new NzTreeNode(n, null, this.treeComponent.nzTreeService);
+      return new NzTreeNode(n, undefined, this.treeComponent.nzTreeService);
     });
   }
 }

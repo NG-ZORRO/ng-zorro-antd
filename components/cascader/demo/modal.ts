@@ -53,19 +53,15 @@ const options = [{
   ]
 })
 export class NzDemoCascaderModalComponent {
-  /** init data */
-  public nzOptions = options;
+  nzOptions = options;
+  values: any[] | null = null;
+  isVisible = false;
 
-  /** ngModel value */
-  public values: any[] = null;
-
-  public isVisible = false;
-
-  public onChanges(values: any): void {
+  onChanges(values: any): void {
     console.log(values, this.values);
   }
 
-  public open(): void {
+  open(): void {
     this.isVisible = true;
   }
 
@@ -78,5 +74,4 @@ export class NzDemoCascaderModalComponent {
     console.log('Button cancel clicked!', $event);
     this.isVisible = false;
   }
-
 }

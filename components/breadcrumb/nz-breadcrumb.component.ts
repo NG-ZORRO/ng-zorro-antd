@@ -38,7 +38,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
   @Input() nzAutoGenerate = false;
   @Input() nzSeparator: string | TemplateRef<void> = '/';
 
-  breadcrumbs: BreadcrumbOption[] = [];
+  breadcrumbs: BreadcrumbOption[] | undefined = [];
 
   private destroy$ = new Subject<void>();
 
@@ -71,7 +71,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
     this.ngZone.run(() => this.injector.get(Router).navigateByUrl(url).then()).then();
   }
 
-  private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: BreadcrumbOption[] = []): BreadcrumbOption[] {
+  private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: BreadcrumbOption[] = []): BreadcrumbOption[] | undefined {
     const children: ActivatedRoute[] = route.children;
     // If there's no sub root, then stop the recurse and returns the generated breadcrumbs.
     if (children.length === 0) {

@@ -21,12 +21,12 @@ import { Component } from '@angular/core';
     </nz-table>`
 })
 export class NzDemoTableHeadComponent {
-  sortName = null;
-  sortValue = null;
+  sortName: string | null = null;
+  sortValue: string | null = null;
   searchAddress: string;
   listOfName = [ { text: 'Joe', value: 'Joe' }, { text: 'Jim', value: 'Jim' } ];
   listOfAddress = [ { text: 'London', value: 'London' }, { text: 'Sidney', value: 'Sidney' } ];
-  listOfSearchName = [];
+  listOfSearchName: string[] = [];
   listOfData = [
     {
       name   : 'John Brown',
@@ -49,7 +49,7 @@ export class NzDemoTableHeadComponent {
       address: 'London No. 2 Lake Park'
     }
   ];
-  listOfDisplayData = [ ...this.listOfData ];
+  listOfDisplayData: any[] = [ ...this.listOfData ];
 
   sort(sort: { key: string, value: string }): void {
     this.sortName = sort.key;
@@ -69,7 +69,7 @@ export class NzDemoTableHeadComponent {
     const data = this.listOfData.filter(item => filterFunc(item));
     /** sort data **/
     if (this.sortName && this.sortValue) {
-      this.listOfDisplayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] > b[ this.sortName ] ? 1 : -1) : (b[ this.sortName ] > a[ this.sortName ] ? 1 : -1));
+      this.listOfDisplayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName! ] > b[ this.sortName! ] ? 1 : -1) : (b[ this.sortName! ] > a[ this.sortName! ] ? 1 : -1));
     } else {
       this.listOfDisplayData = data;
     }

@@ -59,10 +59,8 @@ const options = [ {
   ]
 })
 export class NzDemoCascaderReactiveFormComponent {
-  /** init data */
+  form: FormGroup;
   nzOptions = options;
-
-  public form: FormGroup;
 
   constructor(private fb: FormBuilder) {
     this.createForm();
@@ -74,16 +72,16 @@ export class NzDemoCascaderReactiveFormComponent {
     });
   }
 
-  public reset(): void {
+  reset(): void {
     this.form.reset();
     console.log(this.form.value);
   }
 
-  public submit(): void {
+  submit(): void {
     console.log(this.form.value);
   }
 
-  public onChanges(values: any): void {
+  onChanges(values: any): void {
     console.log(values);
   }
 }

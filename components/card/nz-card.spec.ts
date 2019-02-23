@@ -56,14 +56,14 @@ describe('card', () => {
     const fixture = TestBed.createComponent(NzDemoCardSimpleComponent);
     const card = fixture.debugElement.query(By.directive(NzCardComponent));
     fixture.detectChanges();
-    expect(card.nativeElement.firstElementChild.classList).toContain('ant-card-body');
+    expect(card.nativeElement.firstElementChild!.classList).toContain('ant-card-body');
   });
   it('should flexible content work', () => {
     const fixture = TestBed.createComponent(NzDemoCardFlexibleContentComponent);
     const card = fixture.debugElement.query(By.directive(NzCardComponent));
     fixture.detectChanges();
     expect(card.nativeElement.classList).toContain('ant-card-hoverable');
-    expect(card.nativeElement.firstElementChild.classList).toContain('ant-card-cover');
+    expect(card.nativeElement.firstElementChild!.classList).toContain('ant-card-cover');
     expect(card.nativeElement.querySelector('.ant-card-meta-title').innerText).toBe('Europe Street beat');
     expect(card.nativeElement.querySelector('.ant-card-meta-description').innerText).toBe('www.instagram.com');
   });
@@ -84,7 +84,7 @@ describe('card', () => {
     const fixture = TestBed.createComponent(NzDemoCardGridCardComponent);
     const card = fixture.debugElement.query(By.directive(NzCardComponent));
     fixture.detectChanges();
-    expect(card.nativeElement.querySelector('.ant-card-body').firstElementChild.classList).toContain('ant-card-grid');
+    expect(card.nativeElement.querySelector('.ant-card-body').firstElementChild!.classList).toContain('ant-card-grid');
   });
   it('should inner work', () => {
     const fixture = TestBed.createComponent(NzDemoCardInnerComponent);
@@ -98,9 +98,9 @@ describe('card', () => {
     const cards = fixture.debugElement.queryAll(By.directive(NzCardComponent));
     fixture.detectChanges();
     expect(cards[ 0 ].nativeElement.classList).toContain('ant-card-contain-tabs');
-    expect(cards[ 0 ].nativeElement.firstElementChild.firstElementChild.classList).toContain('ant-card-head-wrapper');
+    expect(cards[ 0 ].nativeElement.firstElementChild.firstElementChild!.classList).toContain('ant-card-head-wrapper');
     expect(cards[ 1 ].nativeElement.classList).toContain('ant-card-contain-tabs');
-    expect(cards[ 1 ].nativeElement.firstElementChild.firstElementChild.classList).toContain('ant-card-head-wrapper');
+    expect(cards[ 1 ].nativeElement.firstElementChild.firstElementChild!.classList).toContain('ant-card-head-wrapper');
   });
   it('should meta work', () => {
     const fixture = TestBed.createComponent(NzDemoCardMetaComponent);

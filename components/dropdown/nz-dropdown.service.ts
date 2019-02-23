@@ -16,7 +16,7 @@ import { NzDropdownContextComponent } from './nz-dropdown-context.component';
   providedIn: 'root'
 })
 export class NzDropdownService {
-  private overlayRef: OverlayRef;
+  private overlayRef: OverlayRef | null;
 
   constructor(private overlay: Overlay) {
   }
@@ -47,7 +47,7 @@ export class NzDropdownService {
   }
 
   dispose(): void {
-    if (this.overlayRef && this.overlayRef.hasAttached()) {
+    if (this.overlayRef) {
       this.overlayRef.dispose();
       this.overlayRef = null;
     }

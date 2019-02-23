@@ -67,7 +67,7 @@ export function getCaretCoordinates(element: HTMLInputElement | HTMLTextAreaElem
   const debug = options && options.debug || false;
   if (debug) {
     const el = document.querySelector('#input-textarea-caret-position-mirror-div');
-    if (el) { el.parentNode.removeChild(el); }
+    if (el) { el.parentNode!.removeChild(el); }
   }
 
   // The mirror div will replicate the textarea's style

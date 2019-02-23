@@ -116,6 +116,7 @@ export class NzCodeBoxComponent {
 
     const promise = new Promise<string>(
       (resolve): void => {
+        // @ts-ignore
         let copyTextArea = null as HTMLTextAreaElement;
         try {
           copyTextArea = this.dom.createElement('textarea');

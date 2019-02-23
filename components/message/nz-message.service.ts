@@ -30,7 +30,6 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
   }
 
   createMessage(message: MessageData, options?: NzMessageDataOptions): NzMessageDataFilled {
-    // TODO: spread on literal has been disallow on latest proposal
     const resultMessage: NzMessageDataFilled = {
       ...(message as {}),
       ...{

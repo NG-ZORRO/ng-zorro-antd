@@ -162,7 +162,7 @@ describe('nz-select component', () => {
       fixture.detectChanges();
       expect(testComponent.open).toBe(true);
       fixture.detectChanges();
-      overlayContainerElement.querySelector('li').click();
+      overlayContainerElement.querySelector('li')!.click();
       fixture.detectChanges();
       expect(testComponent.open).toBe(false);
     });
@@ -248,7 +248,7 @@ describe('nz-select component', () => {
       expect(select.nativeElement.classList).toContain('ant-select');
       select.nativeElement.click();
       fixture.detectChanges();
-      overlayContainerElement.querySelector('li').click();
+      overlayContainerElement.querySelector('li')!.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -308,7 +308,7 @@ describe('nz-select component', () => {
       expect(testComponent.formGroup.value.select).toBe(null);
       select.nativeElement.click();
       fixture.detectChanges();
-      overlayContainerElement.querySelector('li').click();
+      overlayContainerElement.querySelector('li')!.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -320,7 +320,7 @@ describe('nz-select component', () => {
       expect(testComponent.formGroup.value.select).toBe(null);
       select.nativeElement.click();
       fixture.detectChanges();
-      overlayContainerElement.querySelector('li').click();
+      overlayContainerElement.querySelector('li')!.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();

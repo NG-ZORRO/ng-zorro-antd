@@ -36,7 +36,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   private _value: Date | null = null;
   private _allowEmpty = true;
   private _autoFocus = false;
-  private _onChange: (value: Date) => void;
+  private _onChange: (value: Date | null) => void;
   private _onTouched: () => void;
   private _hideDisabledOptions = false;
   isInit = false;
@@ -190,7 +190,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     this.cdr.markForCheck();
   }
 
-  registerOnChange(fn: (time: Date) => void): void {
+  registerOnChange(fn: (time: Date | null) => void): void {
     this._onChange = fn;
   }
 

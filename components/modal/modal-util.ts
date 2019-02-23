@@ -4,7 +4,7 @@ export interface ClickPosition {
 }
 
 export class ModalUtil {
-  private lastPosition: ClickPosition = null;
+  private lastPosition: ClickPosition | null = null;
 
   constructor(private document: Document) {
     this.listenDocumentClick();

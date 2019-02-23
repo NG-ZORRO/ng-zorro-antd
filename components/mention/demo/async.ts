@@ -19,7 +19,7 @@ import { MentionOnSearchTypes } from 'ng-zorro-antd';
 export class NzDemoMentionAsyncComponent {
   inputValue: string;
   loading = false;
-  suggestions = [];
+  suggestions: string[] = [];
 
   onSearchChange({value}: MentionOnSearchTypes): void {
     console.log(`search: ${value}`);

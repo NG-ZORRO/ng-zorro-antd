@@ -83,7 +83,7 @@ export class DecadePanelComponent implements OnChanges {
         const end = previousYear + index * 10 + 9;
         const content = `${start}-${end}`;
 
-        const cell = decades[rowIndex][colIndex] = {
+        const cell: PanelDecadeData = decades[rowIndex][colIndex] = {
           content,
           title: content,
           isCurrent: currentYear >= start && currentYear <= end,
@@ -121,6 +121,6 @@ export interface PanelDecadeData {
   isCurrent: boolean;
   isLowerThanStart: boolean;
   isBiggerThanEnd: boolean;
-  classMap: object;
-  onClick(): void;
+  classMap?: object | null;
+  onClick: VoidFunction | null;
 }

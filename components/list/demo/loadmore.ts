@@ -54,8 +54,8 @@ const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,
 export class NzDemoListLoadmoreComponent implements OnInit {
   initLoading = true; // bug
   loadingMore = false;
-  data = [];
-  list = [];
+  data: any[] = [];
+  list: Array<{ loading: boolean, name: any }> = [];
 
   constructor(private http: HttpClient, private msg: NzMessageService) {}
 

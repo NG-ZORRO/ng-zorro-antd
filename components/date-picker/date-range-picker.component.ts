@@ -31,7 +31,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
     this._showTime = typeof value === 'object' ? value : toBoolean(value);
   }
 
-  @Output() readonly nzOnOk = new EventEmitter<CompatibleDate>();
+  @Output() readonly nzOnOk = new EventEmitter<CompatibleDate | null>();
 
   get realShowToday(): boolean { // Range not support nzShowToday currently
     return !this.isRange && this.nzShowToday;
@@ -86,7 +86,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   onResultOk(): void {
     if (this.isRange) {
       if ((this.nzValue as CandyDate[]).length) {
-        this.nzOnOk.emit([ this.nzValue[ 0 ].nativeDate, this.nzValue[ 1 ].nativeDate ]);
+        this.nzOnOk.emit([ this.nzValue![ 0 ].nativeDate, this.nzValue![ 1 ].nativeDate ]);
       } else {
         this.nzOnOk.emit([]);
       }

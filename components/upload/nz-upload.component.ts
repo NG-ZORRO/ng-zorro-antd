@@ -16,7 +16,7 @@ import {
 import { of, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { toBoolean, toNumber, InputBoolean } from '../core/util/convert';
+import { toBoolean, InputBoolean, InputNumber } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import {
@@ -49,28 +49,8 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   // #region fields
 
   @Input() nzType: UploadType = 'select';
-
-  private _limit: number = 0;
-
-  @Input()
-  set nzLimit(value: number) {
-    this._limit = toNumber(value, null);
-  }
-
-  get nzLimit(): number {
-    return this._limit;
-  }
-
-  private _size: number = 0;
-
-  @Input()
-  set nzSize(value: number) {
-    this._size = toNumber(value, null);
-  }
-
-  get nzSize(): number {
-    return this._size;
-  }
+  @Input() @InputNumber() nzLimit = 0;
+  @Input() @InputNumber() nzSize = 0;
 
   @Input() nzFileType: string;
   @Input() nzAccept: string | string[];
@@ -302,10 +282,12 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   private setClassMap(): void {
     let subCls: string[] = [];
     if (this.nzType === 'drag') {
-      subCls = [
-        this.nzFileList.some(file => file.status === 'uploading') && `${this.prefixCls}-drag-uploading`,
-        this.dragState === 'dragover' && `${this.prefixCls}-drag-hover`
-      ];
+      if (this.nzFileList.some(file => file.status === 'uploading')) {
+        subCls.push(`${this.prefixCls}-drag-uploading`);
+      }
+      if (this.dragState === 'dragover') {
+        subCls.push(`${this.prefixCls}-drag-hover`);
+      }
     } else {
       subCls = [
         `${this.prefixCls}-select-${this.nzListType}`
@@ -316,7 +298,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
       this.prefixCls,
       `${this.prefixCls}-${this.nzType}`,
       ...subCls,
-      this.nzDisabled && `${this.prefixCls}-disabled`
+      this.nzDisabled && `${this.prefixCls}-disabled` || ''
     ].filter(item => !!item);
 
     this.cdr.detectChanges();

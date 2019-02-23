@@ -35,8 +35,8 @@ describe('pagination', () => {
       it('should className correct', () => {
         fixture.detectChanges();
         expect(paginationElement.classList.contains('ant-pagination')).toBe(true);
-        expect(paginationElement.firstElementChild.classList.contains('ant-pagination-prev')).toBe(true);
-        expect(paginationElement.firstElementChild.classList.contains('ant-pagination-disabled')).toBe(true);
+        expect(paginationElement.firstElementChild!.classList.contains('ant-pagination-prev')).toBe(true);
+        expect(paginationElement.firstElementChild!.classList.contains('ant-pagination-disabled')).toBe(true);
         expect(paginationElement.lastElementChild.classList.contains('ant-pagination-next')).toBe(true);
         const length = paginationElement.children.length;
         const array = Array.prototype.slice.call(paginationElement.children).slice(1, length - 1);
@@ -207,7 +207,7 @@ describe('pagination', () => {
       });
       it('should simple className work', () => {
         expect(paginationElement.classList.contains('ant-pagination-simple')).toBe(true);
-        expect(paginationElement.firstElementChild.classList.contains('ant-pagination-prev')).toBe(true);
+        expect(paginationElement.firstElementChild!.classList.contains('ant-pagination-prev')).toBe(true);
         expect(paginationElement.lastElementChild.classList.contains('ant-pagination-next')).toBe(true);
       });
       it('should simple pager jump', () => {

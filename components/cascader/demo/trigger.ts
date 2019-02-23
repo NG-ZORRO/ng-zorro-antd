@@ -53,19 +53,15 @@ const options = [{
   ]
 })
 export class NzDemoCascaderTriggerComponent {
-  /** init data */
   nzOptions = options;
+  values: any[] | null = null;
+  text = 'Unselect';
 
-  /** ngModel value */
-  public values: any[] = null;
-
-  public text = 'Unselect';
-
-  public onChanges(values: any): void {
+  onChanges(values: any): void {
     console.log(values, this.values);
   }
 
-  public onSelectionChange(selectedOptions: any[]): void {
+  onSelectionChange(selectedOptions: any[]): void {
     this.text = selectedOptions.map(o => o.label).join(', ');
   }
 }

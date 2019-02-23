@@ -38,13 +38,13 @@ describe('nz-td', () => {
     it('should checked work', fakeAsync(() => {
       testComponent.showCheckbox = true;
       fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList).not.toContain('ant-checkbox-checked');
+      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList).not.toContain('ant-checkbox-checked');
       testComponent.checked = true;
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
       expect(testComponent.checked).toBe(true);
-      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList).toContain('ant-checkbox-checked');
+      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList).toContain('ant-checkbox-checked');
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
     }));
     it('should disabled work', () => {
@@ -53,12 +53,12 @@ describe('nz-td', () => {
       testComponent.disabled = true;
       fixture.detectChanges();
       expect(testComponent.checked).toBe(false);
-      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList.contains('ant-checkbox-checked')).toBe(false);
+      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList.contains('ant-checkbox-checked')).toBe(false);
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
       td.nativeElement.querySelector('.ant-checkbox-wrapper').click();
       fixture.detectChanges();
       expect(testComponent.checked).toBe(false);
-      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList.contains('ant-checkbox-checked')).toBe(false);
+      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList.contains('ant-checkbox-checked')).toBe(false);
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
     });
     it('should indeterminate work', () => {
@@ -67,10 +67,10 @@ describe('nz-td', () => {
       fixture.detectChanges();
       testComponent.indeterminate = true;
       fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList.contains('ant-checkbox-indeterminate')).toBe(true);
+      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList.contains('ant-checkbox-indeterminate')).toBe(true);
       testComponent.checked = true;
       fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList.contains('ant-checkbox-indeterminate')).toBe(true);
+      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList.contains('ant-checkbox-indeterminate')).toBe(true);
     });
     it('should showExpand work', () => {
       fixture.detectChanges();

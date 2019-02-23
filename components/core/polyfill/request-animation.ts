@@ -16,7 +16,7 @@ function requestAnimationFramePolyfill(): typeof requestAnimationFrame {
 
 function getRequestAnimationFrame(): typeof requestAnimationFrame {
   if (typeof window === 'undefined') {
-    return () => null;
+    return () => 0;
   }
   if (window.requestAnimationFrame) {
     // https://github.com/vuejs/vue/issues/4465

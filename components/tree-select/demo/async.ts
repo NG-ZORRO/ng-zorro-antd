@@ -39,7 +39,7 @@ export class NzDemoTreeSelectAsyncComponent implements OnInit {
     key  : '0-1'
   } ];
 
-  onExpandChange(e: NzFormatEmitEvent): void {
+  onExpandChange(e: Required<NzFormatEmitEvent>): void {
     if (e.node.getChildren().length === 0 && e.node.isExpanded) {
       this.loadNode().then(data => {
         e.node.addChildren(data);

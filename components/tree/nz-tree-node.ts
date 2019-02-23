@@ -20,7 +20,7 @@ export interface NzTreeNodeOptions {
 
 export class NzTreeNode {
   private _title: string;
-  key: string;
+  key?: string;
   private _icon: string;
   level: number = 0;
   private _children: NzTreeNode[];
@@ -28,7 +28,7 @@ export class NzTreeNode {
   // tslint:disable-next-line:no-any
   origin: any;
   // Parent Node
-  parentNode: NzTreeNode;
+  parentNode?: NzTreeNode;
   private _isChecked: boolean;
   private _isSelectable: boolean;
   private _isDisabled: boolean;
@@ -37,12 +37,12 @@ export class NzTreeNode {
   private _isHalfChecked: boolean;
   private _isSelected: boolean;
   private _isLoading: boolean;
+  private _service?: NzTreeBaseService;
+
+  component: NzTreeNodeComponent;
   isMatched: boolean;
 
-  private _service: NzTreeBaseService;
-  component: NzTreeNodeComponent;
-
-  get treeService(): NzTreeBaseService {
+  get treeService(): NzTreeBaseService | undefined {
     if (this._service) {
       return this._service;
     } else if (this.parentNode) {
@@ -50,13 +50,13 @@ export class NzTreeNode {
     }
   }
 
-  constructor(option: NzTreeNodeOptions | NzTreeNode, parent: NzTreeNode = null, service?: NzTreeBaseService) {
+  constructor(option: NzTreeNodeOptions | NzTreeNode, parent?: NzTreeNode, service?: NzTreeBaseService) {
     if (option instanceof NzTreeNode) {
       return option;
     }
     this._service = service;
     this._title = option.title || '---';
-    this.key = option.key || null;
+    this.key = option.key || undefined;
     this._icon = option.icon || '';
     this._isLeaf = option.isLeaf || false;
     this.origin = option;
@@ -98,11 +98,11 @@ export class NzTreeNode {
    * get
    * set
    */
-  get service(): NzTreeBaseService {
+  get service(): NzTreeBaseService | undefined {
     return this._service;
   }
 
-  set service(value: NzTreeBaseService) {
+  set service(value: NzTreeBaseService | undefined) {
     this._service = value;
   }
 
@@ -149,7 +149,7 @@ export class NzTreeNode {
   set isChecked(value: boolean) {
     this._isChecked = value;
     this.origin.checked = value;
-    this.treeService.setCheckedNodeList(this);
+    this.treeService!.setCheckedNodeList(this);
     this.update();
   }
 
@@ -159,7 +159,7 @@ export class NzTreeNode {
 
   set isHalfChecked(value: boolean) {
     this._isHalfChecked = value;
-    this.treeService.setHalfCheckedNodeList(this);
+    this.treeService!.setHalfCheckedNodeList(this);
     this.update();
   }
 
@@ -197,7 +197,7 @@ export class NzTreeNode {
   set isExpanded(value: boolean) {
     this._isExpanded = value;
     this.origin.expanded = value;
-    this.treeService.setExpandedNodeList(this);
+    this.treeService!.setExpandedNodeList(this);
     this.update();
   }
 
@@ -208,7 +208,7 @@ export class NzTreeNode {
   set isSelected(value: boolean) {
     this._isSelected = value;
     this.origin.selected = value;
-    this.treeService.setNodeActive(this);
+    this.treeService!.setNodeActive(this);
     this.update();
   }
 
@@ -227,7 +227,7 @@ export class NzTreeNode {
    * set
    */
 
-  public getParentNode(): NzTreeNode {
+  public getParentNode(): NzTreeNode | undefined {
     return this.parentNode;
   }
 
@@ -245,7 +245,7 @@ export class NzTreeNode {
         (node) => {
           const refreshLevel = (n: NzTreeNode) => {
             n.getChildren().forEach(c => {
-              c.level = c.getParentNode().level + 1;
+              c.level = c.getParentNode()!.level + 1;
               // flush origin
               c.origin.level = c.level;
               refreshLevel(c);
@@ -269,7 +269,7 @@ export class NzTreeNode {
       this.origin.children = this.getChildren().map(v => v.origin);
       // remove loading state
       this.isLoading = false;
-      this.treeService.triggerEventChange$.next({
+      this.treeService!.triggerEventChange$!.next({
         'eventName': 'addChildren',
         'node'     : this
       });
@@ -278,21 +278,22 @@ export class NzTreeNode {
 
   public clearChildren(): void {
     this.getChildren().forEach((n) => {
-      this.treeService.afterRemove(n, false);
+      this.treeService!.afterRemove(n, false);
     });
     this.getChildren().splice(0, this.getChildren().length);
     this.origin.children = [];
     // refresh checked state
-    this.treeService.calcCheckedKeys(this.treeService.checkedNodeList.map(v => v.key), this.treeService.rootNodes, this.treeService.isCheckStrictly);
+    this.treeService!.calcCheckedKeys(this.treeService!.checkedNodeList.map(v => v.key!), this.treeService!.rootNodes, this.treeService!.isCheckStrictly);
     this.update();
   }
 
   public remove(): void {
-    if (this.getParentNode()) {
-      const index = this.getParentNode().getChildren().findIndex(n => n.key === this.key);
-      this.getParentNode().getChildren().splice(index, 1);
-      this.getParentNode().origin.children.splice(index, 1);
-      this.treeService.afterRemove(this);
+    const parentNode = this.getParentNode();
+    if (parentNode) {
+      const index = parentNode.getChildren().findIndex(n => n.key === this.key);
+      parentNode.getChildren().splice(index, 1);
+      parentNode.origin.children.splice(index, 1);
+      this.treeService!.afterRemove(this);
       this.update();
     }
   }

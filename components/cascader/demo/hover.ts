@@ -49,13 +49,10 @@ const options = [{
     ]
 })
 export class NzDemoCascaderHoverComponent {
-  /** init data */
   nzOptions = options;
+  values: any[] | null = null;
 
-  /** ngModel value */
-  public values: any[] = null;
-
-  public onChanges(values: any): void {
+  onChanges(values: any): void {
     console.log(values, this.values);
   }
 }

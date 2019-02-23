@@ -133,7 +133,7 @@ export class CandyDate {
     return this.setDate(this.getDate() + amount);
   }
 
-  endOf(grain: 'month'): CandyDate {
+  endOf(grain: 'month'): CandyDate | null {
     switch (grain) {
       case 'month': return new CandyDate(endOfMonth(this.nativeDate));
     }
@@ -177,7 +177,7 @@ export class CandyDate {
     return false;
   }
 
-  isAfter(date: CandyDate | Date, grain: CandyDateCompareGrain): boolean { // TODO: Precipitate into a function "compare()"
+  isAfter(date: CandyDate | Date | null, grain: CandyDateCompareGrain): boolean { // TODO: Precipitate into a function "compare()"
     if (date) {
       const left = this.toNativeDate();
       const right = this.toNativeDate(date);
@@ -214,7 +214,8 @@ export class CandyDate {
     return false;
   }
 
-  isBefore(date: CandyDate | Date, grain: CandyDateCompareGrain): boolean { // TODO: Precipitate into a function "compare()"
+  // TODO: Precipitate into a function "compare()"
+  isBefore(date: CandyDate | Date | null, grain: CandyDateCompareGrain): boolean {
     if (date) {
       const left = this.toNativeDate();
       const right = this.toNativeDate(date);
