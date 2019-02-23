@@ -110,7 +110,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     this.setValue(val, true);
   }
 
-  onValueChange(value: SliderValue): void {
+  onValueChange(_value: SliderValue): void {
   }
 
   onTouched(): void {

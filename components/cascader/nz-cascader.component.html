@@ -17,8 +17,8 @@
       [disabled]="nzDisabled"
       [nzSize]="nzSize"
       [(ngModel)]="inputValue"
-      (blur)="handleInputBlur($event)"
-      (focus)="handleInputFocus($event)"
+      (blur)="handleInputBlur()"
+      (focus)="handleInputFocus()"
       (change)="$event.stopPropagation()">
     <i *ngIf="clearIconVisible"
        nz-icon

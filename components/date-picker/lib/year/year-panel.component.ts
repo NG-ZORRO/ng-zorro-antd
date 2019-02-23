@@ -51,7 +51,7 @@ export class YearPanelComponent implements OnChanges {
     this.gotoYear(10);
   }
 
-  trackPanelYear(index: number, yearData: PanelYearData): string {
+  trackPanelYear(_index: number, yearData: PanelYearData): string {
     return yearData.content;
   }
 

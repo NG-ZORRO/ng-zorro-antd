@@ -8,7 +8,6 @@ import { of, Observable } from 'rxjs';
 import { dispatchMouseEvent, dispatchTouchEvent } from '../core/testing';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
-import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from './interface';
 import { NzTreeNode } from './nz-tree-node';
 import { NzTreeComponent } from './nz-tree.component';
 import { NzTreeModule } from './nz-tree.module';
@@ -481,7 +480,7 @@ describe('nz-tree', () => {
     it('test drag event nzBeforeDrop', () => {
       const dragNode = treeElement.querySelector('[title=\'0-2\']');
       let dropNode = treeElement.querySelector('[title=\'0-1\']');
-      treeInstance.beforeDrop = (arg: NzFormatBeforeDropEvent): Observable<boolean> => {
+      treeInstance.beforeDrop = (): Observable<boolean> => {
         return of(true);
       };
       fixture.detectChanges();
@@ -627,8 +626,7 @@ export class NzTestTreeBasicControlledComponent {
     isLeaf  : true
   } ];
 
-  nzEvent(event: NzFormatEmitEvent): void {
-    // console.log(event.eventName, event);
+  nzEvent(): void {
   }
 
 }
@@ -710,22 +708,22 @@ export class NzTestTreeDraggableComponent {
   } ];
   beforeDrop;
 
-  onDragStart(event: NzFormatEmitEvent): void {
+  onDragStart(): void {
   }
 
-  onDragEnter(event: NzFormatEmitEvent): void {
+  onDragEnter(): void {
   }
 
-  onDragOver(event: NzFormatEmitEvent): void {
+  onDragOver(): void {
   }
 
-  onDragLeave(event: NzFormatEmitEvent): void {
+  onDragLeave(): void {
   }
 
-  onDrop(event: NzFormatEmitEvent): void {
+  onDrop(): void {
   }
 
-  onDragEnd(event: NzFormatEmitEvent): void {
+  onDragEnd(): void {
   }
 }
 

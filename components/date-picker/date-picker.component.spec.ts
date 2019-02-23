@@ -14,7 +14,6 @@ import en_US from '../i18n/languages/en_US';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzDatePickerModule } from './date-picker.module';
-import { PickerResultSingle } from './standard-types';
 
 registerLocaleData(zh);
 
@@ -565,7 +564,7 @@ describe('NzDatePickerComponent', () => {
 
     it('should support nzDisabledTime and nzShowTime.nzHideDisabledOptions', fakeAsync(() => {
       fixtureInstance.nzShowTime = true;
-      fixtureInstance.nzDisabledTime = (current: Date) => {
+      fixtureInstance.nzDisabledTime = () => {
         return {
           nzDisabledHours  : () => [ 0, 1, 2 ],
           nzDisabledMinutes: () => [ 0, 1 ],
@@ -814,10 +813,10 @@ class NzTestDatePickerComponent {
   nzSize;
   nzStyle;
 
-  nzOnOpenChange(d: Date): void {
+  nzOnOpenChange(): void {
   }
 
-  nzOnChange(result: PickerResultSingle): void {
+  nzOnChange(): void {
   }
 
   nzValue;

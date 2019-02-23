@@ -43,7 +43,7 @@ export class NzDemoListVerticalComponent implements OnInit {
   }
 
   loadData(pi: number): void {
-    this.data = new Array(5).fill({}).map((i, index) => {
+    this.data = new Array(5).fill({}).map((_, index) => {
       return {
         href: 'http://ant.design',
         title: `ant design part ${index} (page: ${pi})`,

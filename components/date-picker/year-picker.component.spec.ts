@@ -8,8 +8,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { dispatchMouseEvent } from '../core/testing';
 import { NzInputModule } from '../input/nz-input.module';
 import { NzDatePickerModule } from './date-picker.module';
-import { CandyDate } from './lib/candy-date';
-import { PickerResultSingle } from './standard-types';
 
 describe('NzYearPickerComponent', () => {
   let fixture: ComponentFixture<NzTestYearPickerComponent>;
@@ -421,10 +419,10 @@ class NzTestYearPickerComponent {
   nzSize;
   nzStyle;
 
-  nzOnOpenChange(d: CandyDate): void {
+  nzOnOpenChange(): void {
   }
 
-  nzOnChange(result: PickerResultSingle): void {
+  nzOnChange(): void {
   }
 
   nzValue;

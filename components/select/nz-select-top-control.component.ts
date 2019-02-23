@@ -85,7 +85,7 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   }
 
   // tslint:disable-next-line:no-any
-  trackValue(index: number, option: NzOptionComponent): any {
+  trackValue(_index: number, option: NzOptionComponent): any {
     return option.nzValue;
   }
 
