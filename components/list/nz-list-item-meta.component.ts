@@ -35,6 +35,6 @@ export class NzListItemMetaComponent {
   @Input() nzDescription: string | TemplateRef<void>;
 
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'ant-list-item-meta');
+    this.renderer.addClass(elementRef.nativeElement, 'ant-list-item-meta');
   }
 }

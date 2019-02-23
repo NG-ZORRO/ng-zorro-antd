@@ -8,7 +8,6 @@ import {
   OnChanges,
   OnDestroy,
   Output,
-  Renderer2,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -49,8 +48,8 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
   @Output() readonly nzClick = new EventEmitter<MouseEvent>();
   @ViewChild(NzDropDownDirective) nzDropDownDirective: NzDropDownDirective;
 
-  constructor(renderer: Renderer2, cdr: ChangeDetectorRef, nzMenuDropdownService: NzMenuDropdownService) {
-    super(renderer, cdr, nzMenuDropdownService);
+  constructor(cdr: ChangeDetectorRef, nzMenuDropdownService: NzMenuDropdownService) {
+    super(cdr, nzMenuDropdownService);
   }
 
   /** rewrite afterViewInit hook */

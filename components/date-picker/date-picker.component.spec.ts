@@ -9,9 +9,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import isSameDay from 'date-fns/is_same_day';
 
-import en from 'date-fns/locale/en';
 import { dispatchKeyboardEvent, dispatchMouseEvent } from '../core/testing';
-import { NZ_DATE_CONFIG } from '../i18n/date-config';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -527,7 +525,6 @@ describe('NzDatePickerComponent', () => {
     }));
 
     it('should support nzShowTime', fakeAsync(() => {
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
       fixtureInstance.nzValue = new Date('2018-11-11 11:22:33');
       fixtureInstance.nzShowTime = true;
       fixture.detectChanges();

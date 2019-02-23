@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzMessageService, UploadFile } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-upload-drag',

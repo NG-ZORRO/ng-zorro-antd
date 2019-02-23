@@ -15,7 +15,6 @@ describe('NzYearPickerComponent', () => {
   let fixture: ComponentFixture<NzTestYearPickerComponent>;
   let fixtureInstance: NzTestYearPickerComponent;
   let debugElement: DebugElement;
-  let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
   beforeEach(fakeAsync(() => {
@@ -37,7 +36,6 @@ describe('NzYearPickerComponent', () => {
   });
 
   beforeEach(inject([ OverlayContainer ], (oc: OverlayContainer) => {
-    overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
 

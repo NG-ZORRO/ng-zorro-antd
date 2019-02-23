@@ -25,6 +25,6 @@ export class NzListItemComponent {
   @Input() nzExtra: TemplateRef<void>;
 
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'ant-list-item');
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-list-item');
   }
 }

@@ -126,7 +126,6 @@ describe('cascader', () => {
     it('should showArrow work', () => {
       testComponent.nzShowArrow = true;
       fixture.detectChanges();
-      const arrow: HTMLElement = cascader.nativeElement.querySelector('.ant-cascader-picker-arrow');
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-arrow')).toBeDefined();
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-arrow').classList).toContain('anticon-down');
       testComponent.nzShowArrow = false;
@@ -135,7 +134,6 @@ describe('cascader', () => {
     });
     it('should allowClear work', () => {
       fixture.detectChanges();
-      const input: HTMLElement = cascader.nativeElement.querySelector('.ant-cascader-input');
       testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
       fixture.detectChanges();
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-clear')).toBeDefined();

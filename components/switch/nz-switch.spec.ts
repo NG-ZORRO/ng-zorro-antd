@@ -167,12 +167,10 @@ describe('switch', () => {
   });
   describe('template switch', () => {
     let fixture;
-    let testComponent;
     let switchElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSwitchTemplateComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
     });
     it('should children template work', fakeAsync(() => {

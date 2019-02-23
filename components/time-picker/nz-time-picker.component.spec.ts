@@ -14,7 +14,6 @@ registerLocaleData(zh);
 
 describe('time-picker', () => {
   let overlayContainer: OverlayContainer;
-  let overlayContainerElement: HTMLElement;
   let testComponent;
   let fixture;
   beforeEach(async(() => {
@@ -26,7 +25,6 @@ describe('time-picker', () => {
     TestBed.compileComponents();
     inject([ OverlayContainer ], (oc: OverlayContainer) => {
       overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
     })();
   }));
   afterEach(inject([ OverlayContainer ], (currentOverlayContainer: OverlayContainer) => {

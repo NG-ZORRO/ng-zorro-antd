@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd';
+import { NzFormatEmitEvent, NzTreeNodeOptions } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-tree-basic',

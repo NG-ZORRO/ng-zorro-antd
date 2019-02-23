@@ -131,13 +131,11 @@ describe('nz icon', () => {
   });
 
   describe('custom', () => {
-    let testComponent: NzTestIconCustomComponent;
     let fixture: ComponentFixture<NzTestIconCustomComponent>;
     let icons: DebugElement[];
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestIconCustomComponent);
-      testComponent = fixture.debugElement.componentInstance;
     });
 
     it('should support custom svg element', () => {
@@ -151,13 +149,11 @@ describe('nz icon', () => {
   });
 
   describe('iconfont', () => {
-    let testComponent: NzTestIconIconfontComponent;
     let fixture: ComponentFixture<NzTestIconIconfontComponent>;
     let icons: DebugElement[];
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestIconIconfontComponent);
-      testComponent = fixture.debugElement.componentInstance;
     });
 
     it('should support iconfont', async(() => {
@@ -174,13 +170,11 @@ describe('nz icon', () => {
   });
 
   describe('old api', () => {
-    let testComponent: NzTestIconOldApiComponent;
     let fixture: ComponentFixture<NzTestIconOldApiComponent>;
     let icons: DebugElement[];
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestIconOldApiComponent);
-      testComponent = fixture.debugElement.componentInstance;
       icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
     });
 
@@ -192,13 +186,11 @@ describe('nz icon', () => {
   });
 
   describe('prefix', () => {
-    let testComponent: NzTestIconPrefixComponent;
     let fixture: ComponentFixture<NzTestIconPrefixComponent>;
     let icons: DebugElement[];
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestIconPrefixComponent);
-      testComponent = fixture.debugElement.componentInstance;
       icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
     });
 
@@ -212,7 +204,6 @@ describe('nz icon', () => {
 });
 
 describe('nz icon twotone color injection', () => {
-  let testComponent: NzTestIconExtensionsComponent;
   let fixture: ComponentFixture<NzTestIconExtensionsComponent>;
   let icons: DebugElement[];
 
@@ -233,7 +224,6 @@ describe('nz icon twotone color injection', () => {
     });
 
     fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
-    testComponent = fixture.debugElement.componentInstance;
     fixture.detectChanges();
 
     icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
@@ -258,7 +248,6 @@ describe('nz icon twotone color injection', () => {
     });
 
     fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
-    testComponent = fixture.debugElement.componentInstance;
     icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
 
     fixture.detectChanges();

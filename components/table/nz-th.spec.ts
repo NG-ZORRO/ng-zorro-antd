@@ -252,14 +252,10 @@ describe('nz-th', () => {
   describe('nz-th with default filter in nz-table', () => {
     let fixture;
     let testComponent;
-    let th;
-    let table;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzThTestTableDefaultFilterComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
-      th = fixture.debugElement.query(By.directive(NzThComponent));
-      table = fixture.debugElement.query(By.directive(NzTableComponent));
     });
     // It's a fake test to pass codecov, because default displayData should be configured by user.
     it('should default filter work', () => {

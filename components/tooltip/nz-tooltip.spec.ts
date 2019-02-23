@@ -4,7 +4,6 @@ import { fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
-import { NZ_ICONS } from '../icon';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzToolTipComponent } from './nz-tooltip.component';
 import { NzTooltipDirective } from './nz-tooltip.directive';
