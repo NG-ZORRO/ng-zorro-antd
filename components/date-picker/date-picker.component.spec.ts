@@ -10,6 +10,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import isSameDay from 'date-fns/is_same_day';
 
 import { dispatchKeyboardEvent, dispatchMouseEvent } from '../core/testing';
+import { NGStyleInterface } from '../core/types/ng-class';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -763,10 +764,8 @@ describe('NzDatePickerComponent', () => {
         [nzSize]="nzSize"
         [nzStyle]="nzStyle"
         (nzOnOpenChange)="nzOnOpenChange($event)"
-
         [ngModel]="nzValue"
         (ngModelChange)="nzOnChange($event)"
-
         [nzDateRender]="nzDateRender"
         [nzDisabledTime]="nzDisabledTime"
         [nzRenderExtraFooter]="nzRenderExtraFooter"
@@ -801,17 +800,17 @@ class NzTestDatePickerComponent {
   @ViewChild('tplExtraFooter') tplExtraFooter: TemplateRef<void>;
 
   // --- Suite 1
-  nzAllowClear;
-  nzAutoFocus;
-  nzDisabled;
-  nzClassName;
-  nzDisabledDate;
-  nzLocale;
-  nzPlaceHolder;
-  nzPopupStyle;
-  nzDropdownClassName;
-  nzSize;
-  nzStyle;
+  nzAllowClear: boolean;
+  nzAutoFocus: boolean;
+  nzDisabled: boolean;
+  nzClassName: string;
+  nzDisabledDate: (d: Date) => boolean;
+  nzLocale: any; // tslint:disable-line:no-any
+  nzPlaceHolder: string;
+  nzPopupStyle: NGStyleInterface;
+  nzDropdownClassName: string;
+  nzSize: string;
+  nzStyle: NGStyleInterface;
 
   nzOnOpenChange(): void {
   }
@@ -819,14 +818,14 @@ class NzTestDatePickerComponent {
   nzOnChange(): void {
   }
 
-  nzValue;
+  nzValue: Date | null;
 
-  nzDateRender;
+  nzDateRender: any; // tslint:disable-line:no-any
   nzShowTime: boolean | object = false;
-  nzDisabledTime;
-  nzRenderExtraFooter;
+  nzDisabledTime: any; // tslint:disable-line:no-any
+  nzRenderExtraFooter: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
-  nzMode;
+  nzMode: string;
 
   // nzRanges;
   nzOnPanelChange(): void {
@@ -836,8 +835,8 @@ class NzTestDatePickerComponent {
   }
 
   // --- Suite 2
-  nzOpen;
+  nzOpen: boolean;
 
   // --- Suite 3
-  modelValue;
+  modelValue: Date;
 }

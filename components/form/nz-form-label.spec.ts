@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzFormLabelComponent } from './nz-form-label.component';
@@ -13,9 +13,9 @@ describe('nz-form-label', () => {
     TestBed.compileComponents();
   }));
   describe('default', () => {
-    let fixture;
-    let testComponent;
-    let label;
+    let fixture: ComponentFixture<NzTestFormLabelComponent>;
+    let testComponent: NzTestFormLabelComponent;
+    let label: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestFormLabelComponent);
       fixture.detectChanges();

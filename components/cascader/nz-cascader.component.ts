@@ -42,7 +42,7 @@ import {
   NzShowSearchOptions
 } from './types';
 
-const defaultDisplayRender = label => label.join(' / ');
+const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
 
 @Component({
   changeDetection    : ChangeDetectionStrategy.OnPush,
@@ -146,8 +146,8 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   isFocused = false;
 
   private isOpening = false;
-  private defaultValue; // Default value written by `[ngModel]`
-  private value;
+  private defaultValue: any; // tslint:disable-line:no-any // Default value written by `[ngModel]`
+  private value: any; // tslint:disable-line:no-any
   private selectedOptions: CascaderOption[] = [];
   private activatedOptions: CascaderOption[] = [];
   private columnsSnapshot: CascaderOption[][];

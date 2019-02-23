@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
+import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
@@ -12,8 +12,6 @@ import { NzPopoverModule } from './nz-popover.module';
 describe('NzPopover', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  let fixture;
-  let component;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -34,6 +32,9 @@ describe('NzPopover', () => {
   });
 
   describe('should not bring break changes', () => {
+    let fixture: ComponentFixture<NzPopoverTestWrapperComponent>;
+    let component: NzPopoverTestWrapperComponent;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzPopoverTestWrapperComponent);
       component = fixture.componentInstance;
@@ -120,6 +121,9 @@ describe('NzPopover', () => {
     }));
   });
   describe('should support directive usage', () => {
+    let fixture: ComponentFixture<NzPopoverTestNewComponent>;
+    let component: NzPopoverTestNewComponent;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzPopoverTestNewComponent);
       component = fixture.componentInstance;

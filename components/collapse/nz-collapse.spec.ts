@@ -1,5 +1,5 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -16,10 +16,11 @@ describe('collapse', () => {
     TestBed.compileComponents();
   }));
   describe('collapse basic', () => {
-    let fixture;
-    let testComponent;
-    let collapse;
-    let panels;
+    let fixture: ComponentFixture<NzTestCollapseBasicComponent>;
+    let testComponent: NzTestCollapseBasicComponent;
+    let collapse: DebugElement;
+    let panels: DebugElement[];
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCollapseBasicComponent);
       fixture.detectChanges();
@@ -130,8 +131,8 @@ describe('collapse', () => {
     });
   });
   describe('collapse template', () => {
-    let fixture;
-    let panels;
+    let fixture: ComponentFixture<NzTestCollapseTemplateComponent>;
+    let panels: DebugElement[];
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCollapseTemplateComponent);
       fixture.detectChanges();
@@ -142,9 +143,10 @@ describe('collapse', () => {
       expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-header').innerText).toBe('template');
     });
   });
+
   describe('collapse icon', () => {
-    let fixture;
-    let panels;
+    let fixture: ComponentFixture<NzTestCollapseIconComponent>;
+    let panels: DebugElement[];
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCollapseIconComponent);
       fixture.detectChanges();
@@ -164,7 +166,8 @@ describe('collapse', () => {
   template: `
     <ng-template #headerTemplate>template</ng-template>
     <nz-collapse [nzAccordion]="accordion" [nzBordered]="bordered">
-      <nz-collapse-panel [(nzActive)]="active01" (nzActiveChange)="active01Change($event)" [nzHeader]="header" [nzShowArrow]="showArrow">
+      <nz-collapse-panel [(nzActive)]="active01" (nzActiveChange)="active01Change($event)" [nzHeader]="header"
+                         [nzShowArrow]="showArrow">
         <p>Panel01</p>
       </nz-collapse-panel>
       <nz-collapse-panel [(nzActive)]="active02" (nzActiveChange)="active02Change($event)" [nzDisabled]="disabled">

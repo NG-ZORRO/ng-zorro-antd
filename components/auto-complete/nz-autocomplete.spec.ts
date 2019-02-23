@@ -11,7 +11,7 @@ import {
   ViewChild,
   ViewChildren
 } from '@angular/core';
-import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -74,8 +74,8 @@ describe('auto-complete', () => {
   }));
 
   describe('toggling', () => {
-    let fixture;
-    let input;
+    let fixture: ComponentFixture<NzTestSimpleAutocompleteComponent>;
+    let input: HTMLInputElement;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSimpleAutocompleteComponent);
@@ -196,6 +196,7 @@ describe('auto-complete', () => {
 
       trigger.openPanel();
       fixture.detectChanges();
+      // @ts-ignore
       trigger.destroyPanel();
 
       expect(() => trigger.closePanel()).not.toThrow();
@@ -271,8 +272,8 @@ describe('auto-complete', () => {
   });
 
   describe('property', () => {
-    let fixture;
-    let input;
+    let fixture: ComponentFixture<NzTestAutocompletePropertyComponent>;
+    let input: HTMLInputElement;
     let DOWN_ARROW_EVENT: KeyboardEvent;
     let ENTER_EVENT: KeyboardEvent;
     let TAB_EVENT: KeyboardEvent;
@@ -394,8 +395,8 @@ describe('auto-complete', () => {
   });
 
   describe('value', () => {
-    let fixture;
-    let input;
+    let fixture: ComponentFixture<NzTestSimpleAutocompleteComponent>;
+    let input: HTMLInputElement;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSimpleAutocompleteComponent);
@@ -465,7 +466,7 @@ describe('auto-complete', () => {
   });
 
   describe('form', () => {
-    let fixture;
+    let fixture: ComponentFixture<NzTestAutocompleteWithFormComponent>;
     let input: HTMLInputElement;
 
     beforeEach(() => {
@@ -477,7 +478,7 @@ describe('auto-complete', () => {
     it('should set the value with form', () => {
       const componentInstance = fixture.componentInstance;
       fixture.detectChanges();
-      expect(componentInstance.form.get('formControl').value)
+      expect(componentInstance.form.get('formControl')!.value)
         .toContain('Burns');
       expect(input.value)
         .toContain('Burns');
@@ -517,8 +518,8 @@ describe('auto-complete', () => {
   });
 
   describe('option groups', () => {
-    let fixture;
-    let input;
+    let fixture: ComponentFixture<NzTestAutocompleteGroupComponent>;
+    let input: HTMLInputElement;
     let DOWN_ARROW_EVENT: KeyboardEvent;
     let ENTER_EVENT: KeyboardEvent;
 
@@ -561,7 +562,7 @@ describe('auto-complete', () => {
   });
 
   describe('Option selection', () => {
-    let fixture;
+    let fixture: ComponentFixture<NzTestSimpleAutocompleteComponent>;
 
     beforeEach((() => {
       fixture = TestBed.createComponent(NzTestSimpleAutocompleteComponent);
@@ -627,8 +628,8 @@ describe('auto-complete', () => {
   });
 
   describe('keyboard events', () => {
-    let fixture;
-    let input;
+    let fixture: ComponentFixture<NzTestSimpleAutocompleteComponent>;
+    let input: HTMLInputElement;
     let DOWN_ARROW_EVENT: KeyboardEvent;
     let UP_ARROW_EVENT: KeyboardEvent;
     let ENTER_EVENT: KeyboardEvent;
@@ -830,7 +831,7 @@ describe('auto-complete', () => {
   });
 
   describe('Fallback positions', () => {
-    let fixture;
+    let fixture: ComponentFixture<NzTestSimpleAutocompleteComponent>;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSimpleAutocompleteComponent);
@@ -877,7 +878,7 @@ describe('auto-complete', () => {
   });
 
   describe('misc', () => {
-    let fixture;
+    let fixture: ComponentFixture<NzTestAutocompleteWithoutPanelComponent>;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestAutocompleteWithoutPanelComponent);
@@ -932,9 +933,9 @@ describe('auto-complete', () => {
 })
 class NzTestSimpleAutocompleteComponent {
   inputValue: string;
-  filteredOptions: string[];
+  filteredOptions: Array<string | number>;
   inputControl = new FormControl();
-  options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
+  options: Array<string | number> = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
 
   @ViewChild(NzAutocompleteComponent) panel: NzAutocompleteComponent;
   @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
@@ -945,7 +946,7 @@ class NzTestSimpleAutocompleteComponent {
   }
 
   onInput(value: string): void {
-    this.filteredOptions = this.options.filter(s => new RegExp(value, 'gi').test(s));
+    this.filteredOptions = this.options.filter(s => new RegExp(value, 'gi').test(`${s}`));
   }
 }
 

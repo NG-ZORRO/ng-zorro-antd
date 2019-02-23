@@ -78,8 +78,8 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
   @Output() readonly nzOnSelect: EventEmitter<string | {}> = new EventEmitter();
   @Output() readonly nzOnSearchChange: EventEmitter<MentionOnSearchTypes> = new EventEmitter();
 
-  @ContentChild(NzMentionTriggerDirective) trigger;
-  @ViewChild(TemplateRef) suggestionsTemp;
+  @ContentChild(NzMentionTriggerDirective) trigger: NzMentionTriggerDirective;
+  @ViewChild(TemplateRef) suggestionsTemp: TemplateRef<void>;
 
   @ContentChild(NzMentionSuggestionDirective, { read: TemplateRef })
   // tslint:disable-next-line:no-any
@@ -99,7 +99,7 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
   private cursorMentionStart: number;
   private cursorMentionEnd: number;
   private overlayRef: OverlayRef | null;
-  private portal: TemplatePortal<{}>;
+  private portal: TemplatePortal<void>;
   private positionStrategy: FlexibleConnectedPositionStrategy;
   private overlayBackdropClickSubscription: Subscription;
 
@@ -203,8 +203,8 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
   }
 
   private bindTriggerEvents(): void {
-    this.trigger.onInput.subscribe((e) => this.handleInput(e));
-    this.trigger.onKeydown.subscribe((e) => this.handleKeydown(e));
+    this.trigger.onInput.subscribe((e: KeyboardEvent) => this.handleInput(e));
+    this.trigger.onKeydown.subscribe((e: KeyboardEvent) => this.handleKeydown(e));
     this.trigger.onClick.subscribe(() => this.handleClick());
   }
 

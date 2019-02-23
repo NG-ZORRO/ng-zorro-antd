@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzFormDirective } from './nz-form.directive';
@@ -13,9 +13,9 @@ describe('nz-form', () => {
     TestBed.compileComponents();
   }));
   describe('default', () => {
-    let fixture;
-    let testComponent;
-    let form;
+    let fixture: ComponentFixture<NzTestFormDirectiveComponent>;
+    let testComponent: NzTestFormDirectiveComponent;
+    let form: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestFormDirectiveComponent);
       fixture.detectChanges();

@@ -438,15 +438,12 @@ class NzTestDrawerComponent {
   `
 })
 class NzTestDrawerWithServiceComponent {
-  @ViewChild('drawerTemplate') drawerTemplate;
+  @ViewChild('drawerTemplate') drawerTemplate: TemplateRef<{ $implicit: number, drawerRef: NzDrawerRef}>;
   templateOpenSpy = jasmine.createSpy('template afterOpen spy');
   templateCloseSpy = jasmine.createSpy('template afterClose spy');
   templateDrawerRef: NzDrawerRef;
 
-  constructor(
-    private drawerService: NzDrawerService
-  ) {
-  }
+  constructor(private drawerService: NzDrawerService) {}
 
   openTemplate(): void {
     this.templateDrawerRef = this.drawerService.create({
@@ -457,7 +454,6 @@ class NzTestDrawerWithServiceComponent {
     this.templateDrawerRef.afterOpen.subscribe(this.templateOpenSpy);
     this.templateDrawerRef.afterClose.subscribe(this.templateCloseSpy);
   }
-
 }
 
 @Component({
@@ -470,12 +466,9 @@ class NzTestDrawerWithServiceComponent {
   `
 })
 export class NzDrawerCustomComponent {
+  @Input() value: any; // tslint:disable-line:no-any
 
-  @Input() value;
-  constructor(
-    private drawerRef: NzDrawerRef
-  ) {
-  }
+  constructor(private drawerRef: NzDrawerRef) {}
 
   close(): void {
     this.drawerRef.close(this.value);

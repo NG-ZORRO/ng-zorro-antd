@@ -27,14 +27,14 @@ export class NzDemoButtonLoadingComponent {
 
   loadOne(): void {
     this.isLoadingOne = true;
-    setTimeout(_ => {
+    setTimeout(() => {
       this.isLoadingOne = false;
     }, 5000);
   }
 
   loadTwo(): void {
     this.isLoadingTwo = true;
-    setTimeout(_ => {
+    setTimeout(() => {
       this.isLoadingTwo = false;
     }, 5000);
   }

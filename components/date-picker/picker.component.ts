@@ -166,7 +166,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
   getReadableValue(partType?: RangePartType): string | null {
     let value: CandyDate;
     if (this.isRange) {
-      value = this.value![ this.getPartTypeIndex(partType as RangePartType) ];
+      value = (this.value as CandyDate[])[ this.getPartTypeIndex(partType as RangePartType) ];
     } else {
       value = this.value as CandyDate;
     }

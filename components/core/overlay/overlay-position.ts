@@ -71,6 +71,7 @@ export const DEFAULT_MENTION_POSITIONS = [ POSITION_MAP.bottomLeft, new Connecti
 export function getPlacementName(position: ConnectedOverlayPositionChange): string | undefined {
   const keyList = [ 'originX', 'originY', 'overlayX', 'overlayY' ];
   for (const placement in POSITION_MAP) {
+    // @ts-ignore
     if (keyList.every(key => position.connectionPair[ key ] === POSITION_MAP[ placement ][ key ])) {
       return placement;
     }

@@ -10,6 +10,7 @@ import differenceInDays from 'date-fns/difference_in_days';
 import isSameDay from 'date-fns/is_same_day';
 
 import { dispatchMouseEvent } from '../core/testing';
+import { NGStyleInterface } from '../core/types/ng-class';
 import { NzDatePickerModule } from './date-picker.module';
 import { CandyDate } from './lib/candy-date';
 
@@ -548,8 +549,8 @@ describe('NzRangePickerComponent', () => {
       const rightText = right.textContent!.trim();
       dispatchMouseEvent(right, 'click');
       fixture.detectChanges();
-      expect(fixtureInstance.modelValue[0].getDate()).toBe(+leftText);
-      expect(fixtureInstance.modelValue[1].getDate()).toBe(+rightText);
+      expect(fixtureInstance.modelValue[0]!.getDate()).toBe(+leftText);
+      expect(fixtureInstance.modelValue[1]!.getDate()).toBe(+rightText);
     }));
   });
 
@@ -648,31 +649,32 @@ class NzTestRangePickerComponent {
   @ViewChild('tplExtraFooter') tplExtraFooter: TemplateRef<void>;
 
   // --- Suite 1
-  nzAllowClear;
-  nzAutoFocus;
-  nzDisabled;
-  nzClassName;
-  nzDisabledDate;
-  nzLocale;
-  nzPlaceHolder;
-  nzPopupStyle;
-  nzDropdownClassName;
-  nzSize;
-  nzStyle;
+  nzAllowClear: boolean;
+  nzAutoFocus: boolean;
+  nzDisabled: boolean;
+  nzClassName: string;
+  nzDisabledDate: (d: Date) => boolean;
+  nzLocale: any; // tslint:disable-line:no-any
+  nzPlaceHolder: string[];
+  nzPopupStyle: NGStyleInterface;
+  nzDropdownClassName: string;
+  nzSize: string;
+  nzStyle: NGStyleInterface;
   nzOnOpenChange(): void { }
-  modelValue;
+  modelValue: Array<Date | null>;
   modelValueChange(): void { }
 
-  nzDateRender;
+  nzDateRender: any; // tslint:disable-line:no-any
   nzShowTime: boolean | object = false;
-  nzDisabledTime;
-  nzRenderExtraFooter;
+  nzDisabledTime: any; // tslint:disable-line:no-any
+  nzRenderExtraFooter: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
-  nzMode;
-  nzRanges;
+  nzMode: string[];
+
+  nzRanges: any; // tslint:disable-line:no-any
   nzOnPanelChange(): void {}
   nzOnOk(): void {}
 
   // --- Suite 2
-  nzOpen;
+  nzOpen: boolean;
 }

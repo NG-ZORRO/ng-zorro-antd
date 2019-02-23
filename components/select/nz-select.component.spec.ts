@@ -1,6 +1,6 @@
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
-import { Component } from '@angular/core';
-import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,10 +31,10 @@ describe('nz-select component', () => {
     overlayContainer.ngOnDestroy();
   }));
   describe('default', () => {
-    let fixture;
-    let testComponent;
-    let select;
-    let selectComponent;
+    let fixture: ComponentFixture<NzTestSelectDefaultComponent>;
+    let testComponent: NzTestSelectDefaultComponent;
+    let select: DebugElement;
+    let selectComponent: NzSelectComponent;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSelectDefaultComponent);
       fixture.detectChanges();
@@ -232,10 +232,11 @@ describe('nz-select component', () => {
     }));
   });
   describe('tags', () => {
-    let fixture;
-    let testComponent;
-    let select;
-    let selectComponent;
+    let fixture: ComponentFixture<NzTestSelectTagsComponent>;
+    let testComponent: NzTestSelectTagsComponent;
+    let select: DebugElement;
+    let selectComponent: NzSelectComponent;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSelectTagsComponent);
       fixture.detectChanges();
@@ -274,10 +275,12 @@ describe('nz-select component', () => {
     }));
 
   });
+
   describe('form', () => {
-    let fixture;
-    let testComponent;
-    let select;
+    let fixture: ComponentFixture<NzTestSelectFormComponent>;
+    let testComponent: NzTestSelectFormComponent;
+    let select: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSelectFormComponent);
       fixture.detectChanges();
@@ -327,18 +330,21 @@ describe('nz-select component', () => {
       expect(testComponent.formGroup.value.select).toBe('jack');
     }));
   });
+
   describe('option change', () => {
-    let fixture;
-    let testComponent;
-    let select;
-    let selectComponent;
+    let fixture: ComponentFixture<NzTestOptionChangeComponent>;
+    let testComponent: NzTestOptionChangeComponent;
+    let select: DebugElement;
+    let selectComponent: NzSelectComponent;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestOptionChangeComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       select = fixture.debugElement.query(By.directive(NzSelectComponent));
-      selectComponent = select.injector.get(NzSelectComponent);
+      selectComponent = select.injector.get(NzSelectComponent)!;
     });
+
     it('should option change work', () => {
       fixture.detectChanges();
       const changeSpy = spyOn(selectComponent.nzSelectService, 'updateTemplateOption');
@@ -393,7 +399,7 @@ export class NzTestSelectDefaultComponent {
   size = 'default';
   mode = 'default';
   autoFocus = false;
-  compareWith = (o1, o2) => o1 === o2;
+  compareWith = (o1: any, o2: any) => o1 === o2; // tslint:disable-line:no-any
   disabled = false;
   onSearch = jasmine.createSpy('on search');
   showSearch = false;

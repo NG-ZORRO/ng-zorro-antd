@@ -172,7 +172,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   constructor(private element: ElementRef,
               private renderer: Renderer2,
               private updateCls: UpdateCls,
-              private cdr: ChangeDetectorRef) {
+              public cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {

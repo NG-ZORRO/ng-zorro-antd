@@ -2,6 +2,7 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzSkeletonModule } from './nz-skeleton.module';
+import { NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle } from './nz-skeleton.type';
 
 describe('skeleton', () => {
   let fixture: ComponentFixture<NzTestSkeletonComponent>;
@@ -70,14 +71,14 @@ describe('skeleton', () => {
     });
     for (const type of ['square', 'circle']) {
       it(`should customize shape ${type} work`, () => {
-        testComp.nzAvatar = { shape: type };
+        testComp.nzAvatar = { shape: type } as NzSkeletonAvatar;
         fixture.detectChanges();
         expect(dl.query(By.css(`.ant-skeleton-avatar-${type}`)) !== null).toBe(true);
       });
     }
     for (const type of [{ size: 'large', cls: 'lg' }, { size: 'small', cls: 'sm' }]) {
       it(`should customize size ${type.size} work`, () => {
-        testComp.nzAvatar = { size: type.size };
+        testComp.nzAvatar = { size: type.size } as NzSkeletonAvatar;
         fixture.detectChanges();
         expect(dl.query(By.css(`.ant-skeleton-avatar-${type.cls}`)) !== null).toBe(true);
       });
@@ -143,8 +144,8 @@ describe('skeleton', () => {
   `
 })
 export class NzTestSkeletonComponent {
-  nzActive;
-  nzAvatar;
-  nzTitle;
-  nzParagraph;
+  nzActive: boolean;
+  nzAvatar: NzSkeletonAvatar | boolean;
+  nzTitle: NzSkeletonTitle | boolean;
+  nzParagraph: NzSkeletonParagraph | boolean ;
 }

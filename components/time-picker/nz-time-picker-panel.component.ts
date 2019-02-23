@@ -1,7 +1,7 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
+  Component, DebugElement,
   ElementRef,
   Input,
   OnDestroy,
@@ -61,9 +61,9 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   minuteRange: ReadonlyArray<{ index: number, disabled: boolean }>;
   secondRange: ReadonlyArray<{ index: number, disabled: boolean }>;
   @ViewChild(NzTimeValueAccessorDirective) nzTimeValueAccessorDirective: NzTimeValueAccessorDirective;
-  @ViewChild('hourListElement') hourListElement;
-  @ViewChild('minuteListElement') minuteListElement;
-  @ViewChild('secondListElement') secondListElement;
+  @ViewChild('hourListElement') hourListElement: DebugElement;
+  @ViewChild('minuteListElement') minuteListElement: DebugElement;
+  @ViewChild('secondListElement') secondListElement: DebugElement;
   @Input() nzInDatePicker: boolean = false; // If inside a date-picker, more diff works need to be done
   @Input() nzAddOn: TemplateRef<void>;
   @Input() nzHideDisabledOptions = false;

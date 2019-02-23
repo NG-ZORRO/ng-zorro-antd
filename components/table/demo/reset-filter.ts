@@ -1,5 +1,13 @@
 import { Component } from '@angular/core';
 
+interface Data {
+  name: string;
+  age: number;
+  address: string;
+
+  [ key: string ]: any;
+}
+
 @Component({
   selector: 'nz-demo-table-reset-filter',
   template: `
@@ -47,7 +55,7 @@ export class NzDemoTableResetFilterComponent {
     { text: 'London', value: 'London' },
     { text: 'Sidney', value: 'Sidney' }
   ];
-  listOfData = [
+  listOfData: Data[] = [
     {
       name   : 'John Brown',
       age    : 32,
@@ -70,7 +78,7 @@ export class NzDemoTableResetFilterComponent {
     }
   ];
   listOfDisplayData = [ ...this.listOfData ];
-  mapOfSort = {
+  mapOfSort: { [ key: string ]: any } = {
     name   : null,
     age    : null,
     address: null
@@ -90,8 +98,8 @@ export class NzDemoTableResetFilterComponent {
   search(listOfSearchName: string[], listOfSearchAddress: string[]): void {
     this.listOfSearchName = listOfSearchName;
     this.listOfSearchAddress = listOfSearchAddress;
-    const filterFunc = item => (this.listOfSearchAddress.length ? this.listOfSearchAddress.some(address => item.address.indexOf(address) !== -1) : true) && (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
-    const listOfData = this.listOfData.filter(item => filterFunc(item));
+    const filterFunc = (item: Data) => (this.listOfSearchAddress.length ? this.listOfSearchAddress.some(address => item.address.indexOf(address) !== -1) : true) && (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
+    const listOfData = this.listOfData.filter((item: Data) => filterFunc(item));
     if (this.sortName && this.sortValue) {
       this.listOfDisplayData = listOfData.sort((a, b) => (this.sortValue === 'ascend')
         ? (a[ this.sortName! ] > b[ this.sortName! ] ? 1 : -1)

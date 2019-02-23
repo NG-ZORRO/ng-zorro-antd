@@ -94,6 +94,8 @@ export class NzToolTipComponent implements OnChanges {
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
+  [ property: string ]: any // tslint:disable-line:no-any
+
   constructor(public cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
   }
 

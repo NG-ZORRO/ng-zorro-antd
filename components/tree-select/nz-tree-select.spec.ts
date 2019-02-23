@@ -1,7 +1,7 @@
 import { BACKSPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, ViewChild } from '@angular/core';
-import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, ViewChild } from '@angular/core';
+import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,6 +13,7 @@ import { NzTreeSelectModule } from './nz-tree-select.module';
 describe('tree-select component', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports     : [ NzTreeSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
@@ -24,16 +25,17 @@ describe('tree-select component', () => {
       overlayContainerElement = oc.getContainerElement();
     })();
   }));
+
   afterEach(inject([ OverlayContainer ], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
 
   describe('basic', () => {
-    let fixture;
+    let fixture: ComponentFixture<NzTestTreeSelectBasicComponent>;
     let testComponent: NzTestTreeSelectBasicComponent;
     let treeSelectComponent: NzTreeSelectComponent;
-    let treeSelect;
+    let treeSelect: DebugElement;
 
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestTreeSelectBasicComponent);
@@ -226,17 +228,17 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(treeSelect.nativeElement.querySelectorAll('.ant-select-selection__choice').length).toBe(3);
       const maxTagPlaceholderElement = treeSelect.nativeElement.querySelectorAll('.ant-select-selection__choice')[ 2 ]
-      .querySelector('.ant-select-selection__choice__content');
+        .querySelector('.ant-select-selection__choice__content');
       expect(maxTagPlaceholderElement).toBeTruthy();
       expect(maxTagPlaceholderElement.innerText.trim()).toBe(`+ ${testComponent.value.length - testComponent.maxTagCount} ...`);
     }));
   });
 
   describe('checkable', () => {
-    let fixture;
+    let fixture: ComponentFixture<NzTestTreeSelectCheckableComponent>;
     let testComponent: NzTestTreeSelectCheckableComponent;
     let treeSelectComponent: NzTreeSelectComponent;
-    let treeSelect;
+    let treeSelect: DebugElement;
 
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestTreeSelectCheckableComponent);
@@ -365,10 +367,11 @@ describe('tree-select component', () => {
   });
 
   describe('form', () => {
-    let fixture;
-    let testComponent;
-    let treeSelect;
+    let fixture: ComponentFixture<NzTestTreeSelectFormComponent>;
+    let testComponent: NzTestTreeSelectFormComponent;
+    let treeSelect: DebugElement;
     let treeSelectComponent: NzTreeSelectComponent;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTreeSelectFormComponent);
       fixture.detectChanges();
@@ -392,22 +395,22 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('select').value).toBe('10021');
+      expect(testComponent.formGroup.get('select')!.value).toBe('10021');
       testComponent.setNull();
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('select').value).toBe(null);
+      expect(testComponent.formGroup.get('select')!.value).toBe(null);
       expect(treeSelectComponent.selectedNodes.length).toBe(0);
       expect(treeSelectComponent.value.length).toBe(0);
     }));
   });
 
   describe('tree component', () => {
-    let fixture;
+    let fixture: ComponentFixture<NzTestTreeSelectCheckableComponent>;
     let testComponent: NzTestTreeSelectCheckableComponent;
     let treeSelectComponent: NzTreeSelectComponent;
-    let treeSelect;
+    let treeSelect: DebugElement;
 
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestTreeSelectCheckableComponent);

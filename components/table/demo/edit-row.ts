@@ -62,7 +62,7 @@ import { Component, OnInit } from '@angular/core';
   ]
 })
 export class NzDemoTableEditRowComponent implements OnInit {
-  editCache = {};
+  editCache: { [ key: string ]: any } = {};
   listOfData: any[] = [];
 
   startEdit(id: string): void {

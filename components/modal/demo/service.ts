@@ -50,6 +50,7 @@ export class NzDemoModalServiceComponent {
   tplModal: NzModalRef;
   tplModalButtonLoading = false;
   htmlModalVisible = false;
+  disabled = false;
 
   constructor(private modalService: NzModalService) { }
 
@@ -110,7 +111,7 @@ export class NzDemoModalServiceComponent {
   }
 
   createCustomButtonModal(): void {
-    const modal = this.modalService.create({
+    const modal: NzModalRef = this.modalService.create({
       nzTitle: 'custom button demo',
       nzContent: 'pass array of button config to nzFooter to create multiple buttons',
       nzFooter: [
@@ -150,6 +151,7 @@ export class NzDemoModalServiceComponent {
   openAndCloseAll(): void {
     let pos = 0;
 
+    // @ts-ignore
     [ 'create', 'info', 'success', 'error' ].forEach((method) => this.modalService[method]({
       nzMask: false,
       nzTitle: `Test ${method} title`,

@@ -14,6 +14,7 @@ import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { NgClassInterface } from '../core/types/ng-class';
 import { isNotNil } from '../core/util/check';
 
 import { NzRowDirective } from './nz-row.directive';
@@ -47,6 +48,8 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   @Input() nzXl: number | EmbeddedProperty;
   @Input() nzXXl: number | EmbeddedProperty;
 
+  [ property: string ]: any // tslint:disable-line:no-any
+
   /** temp solution since no method add classMap to host https://github.com/angular/angular/issues/7289*/
   setClassMap(): void {
     const classMap = {
@@ -62,7 +65,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
 
   generateClass(): object {
     const listOfSizeInputName = [ 'nzXs', 'nzSm', 'nzMd', 'nzLg', 'nzXl', 'nzXXl' ];
-    const listClassMap = {};
+    const listClassMap: NgClassInterface = {};
     listOfSizeInputName.forEach(name => {
       const sizeName = name.replace('nz', '').toLowerCase();
       if (isNotNil(this[ name ])) {

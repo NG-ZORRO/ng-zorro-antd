@@ -30,7 +30,7 @@ export class NzDemoMentionCustomTagComponent {
     { name: 'Django', type: 'Python' }
   ];
 
-  valueWith = data => data.name;
+  valueWith = (data: { name: string, type: string }) => data.name;
 
   onSelect(value: string): void {
     console.log(value);

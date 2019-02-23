@@ -1,6 +1,6 @@
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -19,9 +19,9 @@ describe('switch', () => {
     TestBed.compileComponents();
   }));
   describe('basic switch', () => {
-    let fixture;
-    let testComponent;
-    let switchElement;
+    let fixture: ComponentFixture<NzTestSwitchBasicComponent>;
+    let testComponent: NzTestSwitchBasicComponent;
+    let switchElement: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSwitchBasicComponent);
       fixture.detectChanges();
@@ -166,8 +166,8 @@ describe('switch', () => {
     });
   });
   describe('template switch', () => {
-    let fixture;
-    let switchElement;
+    let fixture: ComponentFixture<NzTestSwitchTemplateComponent>;
+    let switchElement: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSwitchTemplateComponent);
       fixture.detectChanges();
@@ -186,9 +186,10 @@ describe('switch', () => {
     }));
   });
   describe('switch form', () => {
-    let fixture;
-    let testComponent;
-    let switchElement;
+    let fixture: ComponentFixture<NzTestSwitchFormComponent>;
+    let testComponent: NzTestSwitchFormComponent;
+    let switchElement: DebugElement;
+
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestSwitchFormComponent);
       fixture.detectChanges();
@@ -205,21 +206,21 @@ describe('switch', () => {
     }));
     it('should set disabled work', fakeAsync(() => {
       flush();
-      expect(testComponent.formGroup.get('switchValue').value).toBe(true);
+      expect(testComponent.formGroup.get('switchValue')!.value).toBe(true);
       switchElement.nativeElement.click();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('switchValue').value).toBe(false);
+      expect(testComponent.formGroup.get('switchValue')!.value).toBe(false);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      testComponent.formGroup.get('switchValue').setValue(true);
+      testComponent.formGroup.get('switchValue')!.setValue(true);
       testComponent.disable();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
       switchElement.nativeElement.click();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('switchValue').value).toBe(true);
+      expect(testComponent.formGroup.get('switchValue')!.value).toBe(true);
     }));
   });
 });

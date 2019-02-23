@@ -15,28 +15,28 @@ export interface TreeNodeInterface {
   template: `
     <nz-table #expandTable [nzData]="listOfMapData">
       <thead>
-        <tr>
-          <th nzWidth="40%">Name</th>
-          <th nzWidth="30%">Age</th>
-          <th>Address</th>
-        </tr>
+      <tr>
+        <th nzWidth="40%">Name</th>
+        <th nzWidth="30%">Age</th>
+        <th>Address</th>
+      </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let data of expandTable.data">
-          <ng-container *ngFor="let item of mapOfExpandedData[data.key]">
-            <tr *ngIf="item.parent && item.parent.expand || !item.parent">
-              <td
-                [nzIndentSize]="item.level * 20"
-                [nzShowExpand]="!!item.children"
-                [(nzExpand)]="item.expand"
-                (nzExpandChange)="collapse(mapOfExpandedData[data.key],item,$event)">
-                {{item.name}}
-              </td>
-              <td>{{item.age}}</td>
-              <td>{{item.address}}</td>
-            </tr>
-          </ng-container>
+      <ng-container *ngFor="let data of expandTable.data">
+        <ng-container *ngFor="let item of mapOfExpandedData[data.key]">
+          <tr *ngIf="item.parent && item.parent.expand || !item.parent">
+            <td
+              [nzIndentSize]="item.level * 20"
+              [nzShowExpand]="!!item.children"
+              [(nzExpand)]="item.expand"
+              (nzExpandChange)="collapse(mapOfExpandedData[data.key],item,$event)">
+              {{item.name}}
+            </td>
+            <td>{{item.age}}</td>
+            <td>{{item.address}}</td>
+          </tr>
         </ng-container>
+      </ng-container>
       </tbody>
     </nz-table>`
 })
@@ -103,7 +103,7 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
       address: 'Sidney No. 1 Lake Park'
     }
   ];
-  mapOfExpandedData = {};
+  mapOfExpandedData: { [ key: string ]: TreeNodeInterface[] } = {};
 
   collapse(array: TreeNodeInterface[], data: TreeNodeInterface, $event: boolean): void {
     if ($event === false) {
@@ -138,7 +138,7 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
     return array;
   }
 
-  visitNode(node: TreeNodeInterface, hashMap: object, array: TreeNodeInterface[]): void {
+  visitNode(node: TreeNodeInterface, hashMap: { [ key: string ]: any }, array: TreeNodeInterface[]): void {
     if (!hashMap[ node.key ]) {
       hashMap[ node.key ] = true;
       array.push(node);

@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, ViewChild } from '@angular/core';
+import { fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -17,10 +17,12 @@ describe('rate', () => {
     });
     TestBed.compileComponents();
   }));
+
   describe('basic rate', () => {
-    let fixture;
-    let testComponent;
-    let rate;
+    let fixture: ComponentFixture<NzTestRateBasicComponent>;
+    let testComponent: NzTestRateBasicComponent;
+    let rate: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestRateBasicComponent);
       fixture.detectChanges();
@@ -34,12 +36,12 @@ describe('rate', () => {
     it('should set ngModel work', fakeAsync(() => {
       fixture.detectChanges();
       const children = Array.prototype.slice.call(rate.nativeElement.firstElementChild.children);
-      expect(children.every(item => item.classList.contains('ant-rate-star-zero'))).toBe(true);
+      expect(children.every((item: HTMLElement) => item.classList.contains('ant-rate-star-zero'))).toBe(true);
       testComponent.value = 5;
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(children.every(item => item.classList.contains('ant-rate-star-full'))).toBe(true);
+      expect(children.every((item: HTMLElement) => item.classList.contains('ant-rate-star-full'))).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
     it('should click work', fakeAsync(() => {
@@ -192,9 +194,10 @@ describe('rate', () => {
     }));
   });
   describe('rate form', () => {
-    let fixture;
-    let testComponent;
-    let rate;
+    let fixture: ComponentFixture<NzTestRateFormComponent>;
+    let testComponent: NzTestRateFormComponent;
+    let rate: DebugElement;
+
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestRateFormComponent);
       fixture.detectChanges();
@@ -211,21 +214,21 @@ describe('rate', () => {
     }));
     it('should set disabled work', fakeAsync(() => {
       flush();
-      expect(testComponent.formGroup.get('rate').value).toBe(1);
-      rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
+      expect(testComponent.formGroup.get('rate')!.value).toBe(1);
+      rate.nativeElement.firstElementChild.children[ 3 ].firstElementChild.firstElementChild.click();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('rate').value).toBe(4);
+      expect(testComponent.formGroup.get('rate')!.value).toBe(4);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      testComponent.formGroup.get('rate').setValue(2);
+      testComponent.formGroup.get('rate')!.setValue(2);
       testComponent.disable();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
+      rate.nativeElement.firstElementChild.children[ 3 ].firstElementChild.firstElementChild.click();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('rate').value).toBe(2);
+      expect(testComponent.formGroup.get('rate')!.value).toBe(2);
     }));
   });
 });

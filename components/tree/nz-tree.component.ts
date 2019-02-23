@@ -170,25 +170,25 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
   @Output() readonly nzSelectedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() readonly nzCheckedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
 
-  @Output() readonly nzSearchValueChange: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzSearchValueChange = new EventEmitter<NzFormatEmitEvent>();
   /**
    * @deprecated use
    * nzSearchValueChange instead
    */
-  @Output() readonly nzOnSearchNode: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzOnSearchNode = new EventEmitter<NzFormatEmitEvent>();
 
-  @Output() readonly nzClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzDblClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzContextMenu: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzCheckBoxChange: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzExpandChange: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzClick = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzDblClick = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzContextMenu = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzExpandChange = new EventEmitter<NzFormatEmitEvent>();
 
-  @Output() readonly nzOnDragStart: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzOnDragEnter: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzOnDragOver: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzOnDragLeave: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzOnDrop: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzOnDragEnd: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzOnDragStart = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOnDragEnter = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOnDragOver = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOnDragLeave = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOnDrop = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOnDragEnd = new EventEmitter<NzFormatEmitEvent>();
   // tslint:disable-next-line:no-any
   @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<any>;
   _searchValue = '';

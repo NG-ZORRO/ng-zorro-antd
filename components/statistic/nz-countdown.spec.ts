@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzCountdownComponent } from './nz-countdown.component';
 import { NzStatisticModule } from './nz-statistic.module';
 
 describe('nz-countdown', () => {
-  let fixture;
-  let testComponent;
-  let countdownEl;
+  let fixture: ComponentFixture<NzTestCountdownComponent>;
+  let testComponent: NzTestCountdownComponent;
+  let countdownEl: DebugElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -75,9 +75,9 @@ export class NzTestCountdownComponent {
   @ViewChild(NzCountdownComponent) countdown: NzCountdownComponent;
   @ViewChild('tpl') tpl: TemplateRef<number>;
 
-  format;
-  value;
-  template;
+  format: string;
+  value: number;
+  template: TemplateRef<number>;
 
   resetTimerWithFormat(format: string): void {
     this.format = format;

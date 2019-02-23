@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ReplaySubject, Subject } from 'rxjs';
 import { dispatchFakeEvent } from '../core/testing';
@@ -24,11 +24,11 @@ describe('select option li', () => {
     TestBed.compileComponents();
   }));
   describe('default', () => {
-    let fixture;
-    let testComponent;
-    let li;
-    let liComponent;
-    let nzSelectService;
+    let fixture: ComponentFixture<NzTestSelectOptionLiComponent>;
+    let testComponent: NzTestSelectOptionLiComponent;
+    let li: DebugElement;
+    let liComponent: NzOptionLiComponent;
+    let nzSelectService: NzSelectService;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSelectOptionLiComponent);
       fixture.detectChanges();
@@ -40,9 +40,11 @@ describe('select option li', () => {
     it('should selected work', () => {
       fixture.detectChanges();
       expect(liComponent.selected).toBe(false);
+      // @ts-ignore
       nzSelectService.listOfSelectedValue$.next([ '01_value' ]);
       fixture.detectChanges();
       expect(liComponent.selected).toBe(true);
+      // @ts-ignore
       nzSelectService.listOfSelectedValue$.next([ '01_label' ]);
       fixture.detectChanges();
       expect(liComponent.selected).toBe(false);
@@ -62,13 +64,16 @@ describe('select option li', () => {
     });
     it('should destroy piped', () => {
       fixture.detectChanges();
+      // @ts-ignore
       const checkSpy = spyOn(liComponent.cdr, 'markForCheck');
       expect(checkSpy).toHaveBeenCalledTimes(0);
+      // @ts-ignore
       nzSelectService.listOfSelectedValue$.next([ '01_value' ]);
       fixture.detectChanges();
       expect(checkSpy).toHaveBeenCalledTimes(1);
       testComponent.destroy = true;
       fixture.detectChanges();
+      // @ts-ignore
       nzSelectService.listOfSelectedValue$.next([ '01_value' ]);
       fixture.detectChanges();
       expect(checkSpy).toHaveBeenCalledTimes(1);

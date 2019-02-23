@@ -25,7 +25,7 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
   randomUserUrl = 'https://api.randomuser.me/?results=5';
   searchChange$ = new BehaviorSubject('');
   optionList: string[] = [];
-  selectedUser;
+  selectedUser = '';
   isLoading = false;
 
   onSearch(value: string): void {
@@ -39,7 +39,7 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
   ngOnInit(): void {
     // tslint:disable-next-line:no-any
     const getRandomNameList = (name: string) => this.http.get(`${this.randomUserUrl}`).pipe(map((res: any) => res.results)).pipe(map((list: any) => {
-      return list.map(item => `${item.name.first} ${name}`);
+      return list.map((item: any) => `${item.name.first} ${name}`);
     }));
     const optionList$: Observable<string[]> = this.searchChange$.asObservable().pipe(debounceTime(500)).pipe(switchMap(getRandomNameList));
     optionList$.subscribe(data => {

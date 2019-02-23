@@ -47,17 +47,18 @@ export class NzDemoSliderIconSliderComponent implements OnInit {
   mid = parseFloat(((this.max - this.min) / 2).toFixed(5));
   preHighLight = false;
   nextHighLight = false;
-  _sliderValue;
+  _sliderValue = 0;
+
   set sliderValue(value: number) {
     this._sliderValue = value;
     this.highlightIcon();
   }
 
-  get sliderValue() {
+  get sliderValue(): number {
     return this._sliderValue;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.sliderValue = 0;
   }
 
