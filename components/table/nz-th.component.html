@@ -38,7 +38,7 @@
       [class.off]="nzSort != 'descend'"></i>
   </div>
 </div>
-<nz-dropdown nzTrigger="click" *ngIf="nzShowFilter" [nzClickHide]="false" [hasFilterButton]="true" (nzVisibleChange)="dropDownVisibleChange($event)">
+<nz-dropdown nzTrigger="click" *ngIf="nzShowFilter" [nzClickHide]="false" nzTableFilter (nzVisibleChange)="dropDownVisibleChange($event)">
   <i nz-icon type="filter" theme="fill" [class.ant-table-filter-selected]="hasFilterValue" [class.ant-table-filter-open]="filterVisible" nz-dropdown></i>
   <ul nz-menu>
     <ng-container *ngIf="nzFilterMultiple">
@@ -48,7 +48,7 @@
     </ng-container>
     <ng-container *ngIf="!nzFilterMultiple">
       <li nz-menu-item *ngFor="let filter of singleFilterList" (click)="checkSingle(filter)">
-        <label nz-radio [ngModel]="filter.checked">{{filter.text}}</label>
+        <label nz-radio [ngModel]="filter.checked" (ngModelChange)="checkSingle(filter)">{{filter.text}}</label>
       </li>
     </ng-container>
   </ul>

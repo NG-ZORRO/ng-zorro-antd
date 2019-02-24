@@ -9,6 +9,12 @@
     <col [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth" *ngFor="let th of listOfNzThComponent">
   </colgroup>
 </ng-template>
+<ng-template #headerTemplate>
+  <ng-template [ngTemplateOutlet]="colGroupTemplate"></ng-template>
+  <thead class="ant-table-thead" *ngIf="!nzScroll.y">
+    <ng-template [ngTemplateOutlet]="nzTheadComponent?.templateRef"></ng-template>
+  </thead>
+</ng-template>
 <ng-template #tableInnerTemplate>
   <div #tableHeaderElement
     *ngIf="nzScroll.x || nzScroll.y"
@@ -21,20 +27,34 @@
       </thead>
     </table>
   </div>
-  <div #tableBodyElement
+  <div #tableBodyElement *ngIf="!nzVirtualScroll;else scrollViewTpl"
     class="ant-table-body"
     [style.maxHeight]="nzScroll.y"
     [style.overflow-y]="nzScroll.y ? 'scroll' : ''"
     [style.overflow-x]="nzScroll.x ? 'auto' : ''">
     <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
-      <ng-template [ngTemplateOutlet]="colGroupTemplate"></ng-template>
-      <thead class="ant-table-thead" *ngIf="!nzScroll.y">
-        <ng-template [ngTemplateOutlet]="nzTheadComponent?.templateRef"></ng-template>
-      </thead>
+      <ng-template [ngIf]="!nzVirtualScroll" [ngTemplateOutlet]="headerTemplate"></ng-template>
       <ng-content></ng-content>
     </table>
   </div>
-  <div class="ant-table-placeholder" *ngIf="data.length === 0 && !nzLoading">
+  <ng-template #scrollViewTpl>
+    <cdk-virtual-scroll-viewport
+      class="ant-table-body"
+      [itemSize]="nzVirtualItemSize"
+      [maxBufferPx]="nzVirtualMaxBufferPx"
+      [minBufferPx]="nzVirtualMinBufferPx"
+      [style.height]="nzScroll.y">
+      <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
+        <ng-template [ngIf]="nzVirtualScroll" [ngTemplateOutlet]="headerTemplate"></ng-template>
+        <tbody>
+          <ng-container *cdkVirtualFor="let item of data; let i = index">
+            <ng-template [ngTemplateOutlet]="nzVirtualScrollDirective?.templateRef" [ngTemplateOutletContext]="{$implicit:item, index:i}"></ng-template>
+          </ng-container>
+        </tbody>
+      </table>
+    </cdk-virtual-scroll-viewport>
+  </ng-template>
+  <div class="ant-table-placeholder" *ngIf="data.length === 0 && !nzLoading && !nzTemplateMode">
     <nz-embed-empty [nzComponentName]="'table'" [specificContent]="nzNoResult"></nz-embed-empty>
   </div>
   <div class="ant-table-footer" *ngIf="nzFooter">

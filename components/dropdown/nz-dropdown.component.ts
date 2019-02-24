@@ -56,7 +56,6 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
   @ContentChild(NzDropDownDirective) nzDropDownDirective: NzDropDownDirective;
   @ContentChild(NzMenuDirective) nzMenuDirective: NzMenuDirective;
   @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
-  @Input() hasFilterButton = false;
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [ key: string ]: string } = {};
@@ -64,6 +63,7 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzVisible = false;
+  @Input() @InputBoolean() nzTableFilter = false;
   @Output() readonly nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
 
   setVisibleStateWhen(visible: boolean, trigger: 'click' | 'hover' | 'all' = 'all'): void {

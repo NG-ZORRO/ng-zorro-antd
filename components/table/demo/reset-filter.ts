@@ -8,12 +8,12 @@ import { Component } from '@angular/core';
       <button nz-button (click)="resetFilters()">Clear filters</button>
       <button nz-button (click)="resetSortAndFilters()">Clear filters and sorters</button>
     </div>
-    <nz-table #filterTable [nzData]="displayData">
+    <nz-table #filterTable [nzData]="listOfDisplayData">
       <thead>
         <tr>
-          <th nzShowSort nzShowFilter [(nzSort)]="sortMap.name" (nzSortChange)="sort('name',$event)" [nzFilters]="filterNameList" (nzFilterChange)="search($event,searchAddressList)">Name</th>
-          <th nzShowSort [(nzSort)]="sortMap.age" (nzSortChange)="sort('age',$event)">Age</th>
-          <th nzShowSort nzShowFilter [(nzSort)]="sortMap.address" (nzSortChange)="sort('address',$event)" [nzFilters]="filterAddressList" (nzFilterChange)="search(searchNameList,$event)">Address</th>
+          <th nzShowSort nzShowFilter [(nzSort)]="mapOfSort.name" (nzSortChange)="sort('name',$event)" [nzFilters]="listOfFilterName" (nzFilterChange)="search($event,listOfSearchAddress)">Name</th>
+          <th nzShowSort [(nzSort)]="mapOfSort.age" (nzSortChange)="sort('age',$event)">Age</th>
+          <th nzShowSort nzShowFilter [(nzSort)]="mapOfSort.address" (nzSortChange)="sort('address',$event)" [nzFilters]="listOfFilterAddress" (nzFilterChange)="search(listOfSearchName,$event)">Address</th>
         </tr>
       </thead>
       <tbody>
@@ -37,25 +37,17 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoTableResetFilterComponent {
-  searchNameList = [];
-  searchAddressList = [];
-  filterNameList = [
+  listOfSearchName = [];
+  listOfSearchAddress = [];
+  listOfFilterName = [
     { text: 'Joe', value: 'Joe' },
     { text: 'Jim', value: 'Jim' }
   ];
-  filterAddressList = [
+  listOfFilterAddress = [
     { text: 'London', value: 'London' },
     { text: 'Sidney', value: 'Sidney' }
   ];
-  sortMap = {
-    name   : null,
-    age    : null,
-    address: null
-  };
-  sortName = null;
-  sortValue = null;
-
-  data = [
+  listOfData = [
     {
       name   : 'John Brown',
       age    : 32,
@@ -77,52 +69,59 @@ export class NzDemoTableResetFilterComponent {
       address: 'London No. 2 Lake Park'
     }
   ];
-  displayData = [ ...this.data ];
+  listOfDisplayData = [ ...this.listOfData ];
+  mapOfSort = {
+    name   : null,
+    age    : null,
+    address: null
+  };
+  sortName = null;
+  sortValue = null;
 
   sort(sortName: string, value: string): void {
     this.sortName = sortName;
     this.sortValue = value;
-    for (const key in this.sortMap) {
-      this.sortMap[ key ] = (key === sortName ? value : null);
+    for (const key in this.mapOfSort) {
+      this.mapOfSort[ key ] = (key === sortName ? value : null);
     }
-    this.search(this.searchNameList, this.searchAddressList);
+    this.search(this.listOfSearchName, this.listOfSearchAddress);
   }
 
-  search(searchNameList: string[], searchAddressList: string[]): void {
-    this.searchNameList = searchNameList;
-    this.searchAddressList = searchAddressList;
-    const filterFunc = item => (this.searchAddressList.length ? this.searchAddressList.some(address => item.address.indexOf(address) !== -1) : true) && (this.searchNameList.length ? this.searchNameList.some(name => item.name.indexOf(name) !== -1) : true);
-    const data = this.data.filter(item => filterFunc(item));
+  search(listOfSearchName: string[], listOfSearchAddress: string[]): void {
+    this.listOfSearchName = listOfSearchName;
+    this.listOfSearchAddress = listOfSearchAddress;
+    const filterFunc = item => (this.listOfSearchAddress.length ? this.listOfSearchAddress.some(address => item.address.indexOf(address) !== -1) : true) && (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
+    const listOfData = this.listOfData.filter(item => filterFunc(item));
     if (this.sortName && this.sortValue) {
-      this.displayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] > b[ this.sortName ] ? 1 : -1) : (b[ this.sortName ] > a[ this.sortName ] ? 1 : -1));
+      this.listOfDisplayData = listOfData.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] > b[ this.sortName ] ? 1 : -1) : (b[ this.sortName ] > a[ this.sortName ] ? 1 : -1));
     } else {
-      this.displayData = data;
+      this.listOfDisplayData = listOfData;
     }
   }
 
   resetFilters(): void {
-    this.filterNameList = [
+    this.listOfFilterName = [
       { text: 'Joe', value: 'Joe' },
       { text: 'Jim', value: 'Jim' }
     ];
-    this.filterAddressList = [
+    this.listOfFilterAddress = [
       { text: 'London', value: 'London' },
       { text: 'Sidney', value: 'Sidney' }
     ];
-    this.searchNameList = [];
-    this.searchAddressList = [];
-    this.search(this.searchNameList, this.searchAddressList);
+    this.listOfSearchName = [];
+    this.listOfSearchAddress = [];
+    this.search(this.listOfSearchName, this.listOfSearchAddress);
   }
 
   resetSortAndFilters(): void {
     this.sortName = null;
     this.sortValue = null;
-    this.sortMap = {
+    this.mapOfSort = {
       name   : null,
       age    : null,
       address: null
     };
     this.resetFilters();
-    this.search(this.searchNameList, this.searchAddressList);
+    this.search(this.listOfSearchName, this.listOfSearchAddress);
   }
 }

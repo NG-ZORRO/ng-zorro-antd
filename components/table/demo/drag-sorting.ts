@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-drag-sorting',
   template: `
-    <nz-table [nzData]="dataSet" [nzFrontPagination]="false" [nzShowPagination]="false">
+    <nz-table [nzData]="listOfData" [nzFrontPagination]="false" [nzShowPagination]="false">
       <thead>
         <tr>
           <th>Name</th>
@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
         </tr>
       </thead>
       <tbody cdkDropList (cdkDropListDropped)="drop($event)">
-        <tr *ngFor="let data of dataSet" cdkDrag>
+        <tr *ngFor="let data of listOfData" cdkDrag>
           <td>{{data.name}}</td>
           <td>{{data.age}}</td>
           <td>{{data.address}}</td>
@@ -35,7 +35,7 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoTableDragSortingComponent {
-  dataSet = [
+  listOfData = [
     {
       key    : '1',
       name   : 'John Brown',
@@ -57,6 +57,6 @@ export class NzDemoTableDragSortingComponent {
   ];
 
   drop(event: CdkDragDrop<string[]>): void {
-    moveItemInArray(this.dataSet, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.listOfData, event.previousIndex, event.currentIndex);
   }
 }
