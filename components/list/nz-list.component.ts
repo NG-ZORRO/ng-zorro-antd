@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -82,7 +81,7 @@ export class NzListComponent implements OnInit, OnChanges {
 
   // #endregion
 
-  constructor(private el: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {
+  constructor(private el: ElementRef, private updateHostClassService: NzUpdateHostClassService) {
   }
 
   ngOnInit(): void {

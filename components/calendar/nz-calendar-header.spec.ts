@@ -109,11 +109,9 @@ describe('Calendar Header', () => {
 
   describe('activeDate', () => {
     let fixture: ComponentFixture<NzTestCalendarHeaderActiveDateComponent>;
-    let component: NzTestCalendarHeaderActiveDateComponent;
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(NzTestCalendarHeaderActiveDateComponent);
-      component = fixture.componentInstance;
     }));
 
     it('should be now by default', () => {
@@ -164,7 +162,7 @@ describe('Calendar Header', () => {
     it('should emit monthChange when month changed', () => {
       fixture.detectChanges();
       const header = fixture.debugElement.queryAll(By.directive(CalendarHeader))[0];
-      const [_, monthModel] = header.queryAll(By.directive(Select)).map(x => x.injector.get(NgModel));
+      const monthModel = header.queryAll(By.directive(Select)).map(x => x.injector.get(NgModel))[1];
 
       monthModel.viewToModelUpdate(2);
 

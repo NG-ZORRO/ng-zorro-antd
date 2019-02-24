@@ -1,7 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -66,7 +65,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   readonly nzChange: EventEmitter<boolean> = new EventEmitter();
 
   // tslint:disable-next-line:no-any
-  constructor(_el: ElementRef, private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any, private cd: ChangeDetectorRef) {
+  constructor(_el: ElementRef, private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any) {
     this.placeholderNode = _el.nativeElement;
   }
 

@@ -3,11 +3,9 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
-  Output,
   TemplateRef,
   ViewChild,
   ViewEncapsulation

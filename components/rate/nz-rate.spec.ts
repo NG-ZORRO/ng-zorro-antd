@@ -1,9 +1,9 @@
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { dispatchEvent, dispatchFakeEvent, dispatchKeyboardEvent } from '../core/testing';
+import { dispatchFakeEvent, dispatchKeyboardEvent } from '../core/testing';
 
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { NzRateComponent } from './nz-rate.component';

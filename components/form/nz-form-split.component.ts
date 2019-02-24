@@ -9,6 +9,6 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 })
 export class NzFormSplitComponent {
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'ant-form-split');
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-form-split');
   }
 }

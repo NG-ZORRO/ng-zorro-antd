@@ -1,6 +1,6 @@
+import { HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { HttpRequest, HttpClient, HttpEventType, HttpEvent, HttpResponse } from '@angular/common/http';
-import { NzMessageService, UploadXHRArgs } from 'ng-zorro-antd';
+import { UploadXHRArgs } from 'ng-zorro-antd';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -17,7 +17,7 @@ import { forkJoin } from 'rxjs';
 })
 export class NzDemoUploadCustomRequestComponent {
 
-  constructor(private http: HttpClient, private msg: NzMessageService) {}
+  constructor(private http: HttpClient) {}
 
   customReq = (item: UploadXHRArgs) => {
     // 构建一个 FormData 对象，用于存储文件或其他参数

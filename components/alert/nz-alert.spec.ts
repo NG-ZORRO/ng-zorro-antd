@@ -101,14 +101,14 @@ describe('alert', () => {
   });
   describe('banner alert', () => {
     let fixture;
-    let testComponent;
     let alert;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoTestBannerComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       alert = fixture.debugElement.query(By.directive(NzAlertComponent));
     });
+
     it('should banner work', () => {
       fixture.detectChanges();
       expect(alert.nativeElement.querySelector('.ant-alert').classList).toContain(`ant-alert-warning`);

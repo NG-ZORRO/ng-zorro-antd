@@ -26,7 +26,7 @@ export class NzTabComponent implements OnChanges, OnDestroy {
   origin: number = null;
   isActive = false;
   readonly stateChanges = new Subject<void>();
-  @ViewChild(TemplateRef) private content: TemplateRef<void>;
+  @ViewChild(TemplateRef) content: TemplateRef<void>;
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() @InputBoolean() nzForceRender = false;
   @Input() @InputBoolean() nzDisabled = false;
@@ -35,7 +35,7 @@ export class NzTabComponent implements OnChanges, OnDestroy {
   @Output() readonly nzDeselect = new EventEmitter<void>();
 
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'ant-tabs-tabpane');
+    this.renderer.addClass(elementRef.nativeElement, 'ant-tabs-tabpane');
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -14,12 +14,10 @@ describe('nz-form-text', () => {
   }));
   describe('default', () => {
     let fixture;
-    let testComponent;
     let text;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestFormTextComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       text = fixture.debugElement.query(By.directive(NzFormTextComponent));
     });
     it('should className correct', () => {

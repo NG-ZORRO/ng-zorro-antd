@@ -11,7 +11,6 @@ const EXTRA_NODE_CLASS_NAME = '.ant-click-animating-node';
 describe('nz-wave', () => {
   let fixture: ComponentFixture<WaveContainerWithButtonComponent | WaveContainerWithExtraNodeComponent>;
   let waveTarget: HTMLElement;
-  let waveDirective: NzWaveDirective;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -29,7 +28,6 @@ describe('nz-wave', () => {
       fixture = TestBed.createComponent(WaveContainerWithButtonComponent);
       fixture.detectChanges();
       waveTarget = fixture.componentInstance.trigger.nativeElement;
-      waveDirective = fixture.componentInstance.wave;
     });
 
     it('should create wave on click', () => {
@@ -114,7 +112,6 @@ describe('nz-wave', () => {
       fixture = TestBed.createComponent(WaveContainerWithExtraNodeComponent);
       fixture.detectChanges();
       waveTarget = fixture.componentInstance.trigger.nativeElement;
-      waveDirective = fixture.componentInstance.wave;
     });
 
     it('should create wave on click', () => {

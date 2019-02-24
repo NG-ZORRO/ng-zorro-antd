@@ -406,9 +406,7 @@ describe('input number', () => {
     let fixture;
     let testComponent;
     let inputNumber;
-    let inputElement;
     let upHandler;
-    let downHandler;
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestInputNumberFormComponent);
       fixture.detectChanges();
@@ -416,9 +414,7 @@ describe('input number', () => {
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
-      inputElement = inputNumber.nativeElement.querySelector('input') as HTMLInputElement;
       upHandler = inputNumber.nativeElement.querySelector('.ant-input-number-handler-up');
-      downHandler = inputNumber.nativeElement.querySelector('.ant-input-number-handler-down');
     }));
     it('should be in pristine, untouched, and valid states initially', fakeAsync(() => {
       flush();

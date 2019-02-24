@@ -58,8 +58,6 @@ export class NzCalendarHeaderComponent implements OnInit {
     return this.i18n.getLocale().Calendar.month;
   }
 
-  private prefixCls = 'ant-fullcalendar';
-
   constructor(private i18n: I18n, private dateHelper: DateHelperService) {
   }
 

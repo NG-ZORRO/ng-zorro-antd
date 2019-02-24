@@ -10,7 +10,6 @@ import {
   OnChanges,
   OnDestroy,
   Output,
-  Renderer2,
   SimpleChanges,
   ViewChild,
   ViewEncapsulation
@@ -104,7 +103,7 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
     }
   }
 
-  constructor(private renderer: Renderer2, protected cdr: ChangeDetectorRef, private nzMenuDropdownService: NzMenuDropdownService) {
+  constructor(protected cdr: ChangeDetectorRef, private nzMenuDropdownService: NzMenuDropdownService) {
   }
 
   ngOnDestroy(): void {

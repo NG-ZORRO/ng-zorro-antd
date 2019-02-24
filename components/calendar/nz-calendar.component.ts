@@ -88,7 +88,6 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   monthCell: TemplateRef<{$implicit: Date}>|null = null;
   monthFullCell: TemplateRef<{$implicit: Date}>|null = null;
 
-  private prefixCls = 'ant-fullcalendar';
   private currentDate = new Date();
   private onChangeFn: (date: Date) => void = () => {};
   private onTouchFn: () => void = () => {};

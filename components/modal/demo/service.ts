@@ -1,6 +1,6 @@
 /* entryComponents: NzModalCustomComponent */
 
-import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, TemplateRef } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 
 @Component({

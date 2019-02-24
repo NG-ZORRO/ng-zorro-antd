@@ -20,7 +20,6 @@ import { NzBackTopModule } from './nz-back-top.module';
 describe('Component:nz-back-top', () => {
   let scrollService: MockNzScrollService;
   let fixture: ComponentFixture<TestBackTopComponent>;
-  let context: TestBackTopComponent;
   let debugElement: DebugElement;
   let component: NzBackTopComponent;
   let componentObject: NzBackTopPageObject;
@@ -57,7 +56,6 @@ describe('Component:nz-back-top', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestBackTopComponent);
-    context = fixture.componentInstance;
     component = fixture.componentInstance.nzBackTopComponent;
     componentObject = new NzBackTopPageObject();
     debugElement = fixture.debugElement;
@@ -199,9 +197,7 @@ describe('Component:nz-back-top', () => {
   describe('#nzTemplate', () => {
     it(`should show custom template`, fakeAsync(() => {
       let fixtureTemplate: ComponentFixture<TestBackTopTemplateComponent>;
-      let contextTemplate: TestBackTopTemplateComponent;
       fixtureTemplate = TestBed.createComponent(TestBackTopTemplateComponent);
-      contextTemplate = fixture.componentInstance;
 
       componentObject.scrollTo(window, defaultVisibilityHeight + 1);
       tick();

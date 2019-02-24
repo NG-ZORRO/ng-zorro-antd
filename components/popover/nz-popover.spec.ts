@@ -5,7 +5,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
-import { NZ_ICONS } from '../icon/nz-icon.service';
 import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
 import { NzPopoverDirective } from './nz-popover.directive';
 import { NzPopoverModule } from './nz-popover.module';
