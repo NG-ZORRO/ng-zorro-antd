@@ -20,6 +20,8 @@ import { DateHelperService } from '../i18n/date-helper.service';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzDateCellDirective as DateCell, NzDateFullCellDirective as DateFullCell, NzMonthCellDirective as MonthCell, NzMonthFullCellDirective as MonthFullCell } from './nz-calendar-cells';
 
+export type ModeType = 'month' | 'year';
+
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,8 +32,11 @@ import { NzDateCellDirective as DateCell, NzDateFullCellDirective as DateFullCel
   ]
 })
 export class NzCalendarComponent implements ControlValueAccessor, OnInit {
-  @Input() nzMode: 'month'|'year' = 'month';
-  @Output() readonly nzModeChange: EventEmitter<'month'|'year'> = new EventEmitter();
+  @Input() nzMode: ModeType = 'month';
+  @Output() readonly nzModeChange: EventEmitter<ModeType> = new EventEmitter();
+  @Output() readonly nzPanelChange: EventEmitter<{date: Date, mode: ModeType}> = new EventEmitter();
+
+  @Output() readonly nzSelectChange: EventEmitter<Date> = new EventEmitter();
 
   @Input() set nzValue(value: Date) { this.updateDate(value, false); }
   @Output() readonly nzValueChange: EventEmitter<Date> = new EventEmitter();
@@ -108,22 +113,26 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     this.calculateActiveMonth();
   }
 
-  onModeChange(mode: 'month'|'year'): void {
+  onModeChange(mode: ModeType): void {
     this.nzModeChange.emit(mode);
+    this.nzPanelChange.emit({'date': this.activeDate, 'mode': mode});
   }
 
   onDateSelect(date: Date): void {
     this.updateDate(date);
+    this.nzSelectChange.emit(date);
   }
 
   onYearSelect(year: number): void {
     const date = setYear(this.activeDate, year);
     this.updateDate(date);
+    this.nzSelectChange.emit(date);
   }
 
   onMonthSelect(month: number): void {
     const date = setMonth(this.activeDate, month);
     this.updateDate(date);
+    this.nzSelectChange.emit(date);
   }
 
   writeValue(value: Date|null): void {
