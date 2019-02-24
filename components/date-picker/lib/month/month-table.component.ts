@@ -33,7 +33,7 @@ export class MonthTableComponent implements OnInit, OnChanges {
     }
   }
 
-  trackPanelMonth(index: number, monthData: PanelMonthData): number {
+  trackPanelMonth(_index: number, monthData: PanelMonthData): number {
     return monthData.month;
   }
 

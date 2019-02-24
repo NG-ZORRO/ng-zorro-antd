@@ -11,8 +11,6 @@ import isBefore from 'date-fns/is_before';
 import { dispatchMouseEvent } from '../core/testing';
 import { NzInputModule } from '../input/nz-input.module';
 import { NzDatePickerModule } from './date-picker.module';
-import { CandyDate } from './lib/candy-date';
-import { PickerResultSingle } from './standard-types';
 
 registerLocaleData(zh);
 
@@ -481,10 +479,10 @@ class NzTestMonthPickerComponent {
   nzSize;
   nzStyle;
 
-  nzOnOpenChange(d: CandyDate): void {
+  nzOnOpenChange(): void {
   }
 
-  nzOnChange(result: PickerResultSingle): void {
+  nzOnChange(): void {
   }
 
   nzValue;

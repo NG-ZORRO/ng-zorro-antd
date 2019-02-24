@@ -46,7 +46,7 @@ export class DecadePanelComponent implements OnChanges {
     this.gotoYear(100);
   }
 
-  trackPanelDecade(index: number, decadeData: PanelDecadeData): string {
+  trackPanelDecade(_index: number, decadeData: PanelDecadeData): string {
     return decadeData.content;
   }
 

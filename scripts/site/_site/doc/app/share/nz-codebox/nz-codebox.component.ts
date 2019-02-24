@@ -114,7 +114,7 @@ export class NzCodeBoxComponent {
   copy(value: string): Promise<string> {
 
     const promise = new Promise<string>(
-      (resolve, reject): void => {
+      (resolve): void => {
         let copyTextArea = null as HTMLTextAreaElement;
         try {
           copyTextArea = this.dom.createElement('textarea');

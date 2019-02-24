@@ -97,7 +97,7 @@ describe('Component:nz-back-top', () => {
         componentObject.clickBackTop();
         tick();
 
-        expect(scrollService.getScroll(window)).toEqual(0);
+        expect(scrollService.getScroll()).toEqual(0);
       }));
     });
   });
@@ -236,15 +236,13 @@ class TestBackTopTemplateComponent {
 class MockNzScrollService {
   mockTopOffset: number;
 
-  getScroll(el?: Element | Window, top: boolean = true): number {
+  getScroll(): number {
     return this.mockTopOffset;
   }
 
   scrollTo(
-    containerEl: Element | Window,
-    targetTopValue: number = 0,
-    easing?: {},
-    callback?: {}
+    _containerEl: Element | Window,
+    targetTopValue: number = 0
   ): void {
     this.mockTopOffset = targetTopValue;
   }

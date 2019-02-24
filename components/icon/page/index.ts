@@ -201,7 +201,7 @@ export class NzPageDemoIconComponent implements OnInit {
   currentTheme = 'outline';
   localeObj = locale;
 
-  trackByFn = (index: number, item: string) => {
+  trackByFn = (_index: number, item: string) => {
     return `${item}-${this.currentTheme}`;
   }
 
@@ -221,7 +221,7 @@ export class NzPageDemoIconComponent implements OnInit {
   }
 
   private _copy(value: string): Promise<string> {
-    const promise = new Promise<string>((resolve, reject): void => {
+    const promise = new Promise<string>((resolve): void => {
         let copyTextArea = null as HTMLTextAreaElement;
         try {
           copyTextArea = this.dom.createElement('textarea');

@@ -31,9 +31,9 @@ describe('anchor', () => {
   describe('[default]', () => {
     it(`should scolling to target via click a link`, () => {
       spyOn(srv, 'scrollTo').and.callFake((
-        containerEl: Element | Window,
-        targetTopValue: number = 0,
-        easing?: any,
+        _containerEl: Element | Window,
+        _targetTopValue: number = 0,
+        _easing?: any,
         callback?: () => void
       ) => {
         callback();

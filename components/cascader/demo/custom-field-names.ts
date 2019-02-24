@@ -66,7 +66,7 @@ export class NzDemoCascaderCustomFieldNamesComponent {
     console.log(values, this.values);
   }
 
-  public validate(option: any, index: number): boolean {
+  public validate(option: any, _index: number): boolean {
     const value = option.value;
     return ['hangzhou', 'xihu', 'nanjing', 'zhonghuamen'].indexOf(value) >= 0;
   }

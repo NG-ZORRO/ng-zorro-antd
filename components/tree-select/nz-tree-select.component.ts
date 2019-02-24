@@ -219,6 +219,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
   }
 
   @HostListener('click')

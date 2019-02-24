@@ -38,7 +38,7 @@ export class NzDemoAutoCompleteUncertainCategoryComponent {
 
   onChange(value: string): void {
     this.options = new Array(this.getRandomInt(15, 5)).join('.').split('.')
-    .map((item, idx) => ({
+    .map((_item, idx) => ({
       value,
       category: `${value}${idx}`,
       count: this.getRandomInt(200, 100),
