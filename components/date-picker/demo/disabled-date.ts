@@ -55,7 +55,7 @@ export class NzDemoDatePickerDisabledDateComponent {
     };
   };
 
-  disabledRangeTime = (value: Date[], type: 'start' | 'end'): object => {
+  disabledRangeTime = (_value: Date[], type: 'start' | 'end'): object => {
     if (type === 'start') {
       return {
         nzDisabledHours  : () => this.range(0, 60).splice(4, 20),

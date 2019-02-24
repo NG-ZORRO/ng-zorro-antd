@@ -9,7 +9,6 @@ import {
   OnInit,
   Output,
   Renderer2,
-  SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 import { fadeMotion } from '../core/animation/fade';
@@ -93,7 +92,7 @@ export class NzTagComponent implements OnInit, OnChanges {
     this.updateClassMap();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.updateClassMap();
   }
 }

@@ -343,7 +343,7 @@ describe('NzRangePickerComponent', () => {
     it('should support nzDisabledTime and nzShowTime.nzHideDisabledOptions', fakeAsync(() => {
       fixtureInstance.modelValue = [ new Date('2018-11-11 11:11:11'), new Date('2018-12-12 12:12:12') ];
       fixtureInstance.nzShowTime = true;
-      fixtureInstance.nzDisabledTime = (current: Date, partial: 'start' | 'end') => {
+      fixtureInstance.nzDisabledTime = (_current: Date, partial: 'start' | 'end') => {
         return partial === 'start' ? {
           nzDisabledHours: () => [ 0, 1, 2],
           nzDisabledMinutes: () => [ 0, 1 ],
@@ -659,9 +659,9 @@ class NzTestRangePickerComponent {
   nzDropdownClassName;
   nzSize;
   nzStyle;
-  nzOnOpenChange(open: boolean): void { }
+  nzOnOpenChange(): void { }
   modelValue;
-  modelValueChange(d: Date): void { }
+  modelValueChange(): void { }
 
   nzDateRender;
   nzShowTime: boolean | object = false;

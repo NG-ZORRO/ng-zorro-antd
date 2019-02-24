@@ -53,12 +53,12 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
     });
   }
 
-  trackLabel(index: number, option: NzOptionGroupComponent): string | TemplateRef<void> {
+  trackLabel(_index: number, option: NzOptionGroupComponent): string | TemplateRef<void> {
     return option.nzLabel;
   }
 
   // tslint:disable-next-line:no-any
-  trackValue(index: number, option: NzOptionComponent): any {
+  trackValue(_index: number, option: NzOptionComponent): any {
     return option.nzValue;
   }
 

@@ -1368,7 +1368,7 @@ describe('cascader', () => {
     }));
     it('should support custom sorter', fakeAsync(() => {
       testComponent.nzShowSearch = {
-        sorter(a: CascaderOption[], b: CascaderOption[], inputValue: string): number {
+        sorter(a: CascaderOption[], b: CascaderOption[], _inputValue: string): number {
           const l1 = a[ 0 ].label;
           const l2 = b[ 0 ].label; // all reversed, just to be sure it works
           return ('' + l1).localeCompare(l2);
@@ -1865,7 +1865,7 @@ export class NzDemoCascaderDefaultComponent {
   onVisibleChange = jasmine.createSpy('open change');
   onValueChanges = jasmine.createSpy('value change');
 
-  fakeChangeOn = (node: any, index: number): boolean => {
+  fakeChangeOn = (node: any, _index: number): boolean => {
     return node.value === 'zhejiang';
   }
 

@@ -85,7 +85,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  handleKeyDown(e: KeyboardEvent, input: HTMLInputElement, clearInputValue: boolean): void {
+  handleKeyDown(_: KeyboardEvent, input: HTMLInputElement, clearInputValue: boolean): void {
     const target = input;
     const page = toNumber(target.value, this.nzPageIndex);
     if (isInteger(page) && this.isPageIndexValid(page) && page !== this.nzPageIndex) {

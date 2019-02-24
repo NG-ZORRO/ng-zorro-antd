@@ -44,7 +44,7 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
     this.onChange(this.options);
   }
 
-  trackByOption(index: number, option: NzCheckBoxOptionInterface): string {
+  trackByOption(_index: number, option: NzCheckBoxOptionInterface): string {
     return option.value;
   }
 

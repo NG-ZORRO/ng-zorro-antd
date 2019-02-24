@@ -346,7 +346,7 @@ describe('affix', () => {
       });
     });
 
-    it(`emit true when is affixed`, fakeAsync((done) => {
+    it(`emit true when is affixed`, fakeAsync(() => {
       setupInitialState();
       emitScroll(window, defaultOffsetTop + startOffset + 1);
 
@@ -355,7 +355,7 @@ describe('affix', () => {
       discardPeriodicTasks();
     }));
 
-    it(`emit false when is unaffixed`, fakeAsync((done) => {
+    it(`emit false when is unaffixed`, fakeAsync(() => {
       setupInitialState();
       emitScroll(window, defaultOffsetTop + startOffset + 1);
       emitScroll(window, defaultOffsetTop + startOffset - 1);

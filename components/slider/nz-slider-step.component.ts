@@ -29,7 +29,7 @@ export class NzSliderStepComponent implements OnChanges {
     }
   }
 
-  trackById(index: number, step: DisplayedStep): number {
+  trackById(_index: number, step: DisplayedStep): number {
     return step.value;
   }
 

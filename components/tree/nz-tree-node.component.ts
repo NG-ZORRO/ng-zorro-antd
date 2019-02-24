@@ -11,7 +11,6 @@ import {
   OnInit,
   Output,
   Renderer2,
-  SimpleChange,
   TemplateRef,
   ViewChild
 } from '@angular/core';
@@ -432,7 +431,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     this.setClassMap();
   }
 
-  ngOnChanges(changes: { [ propertyName: string ]: SimpleChange }): void {
+  ngOnChanges(): void {
     this.setClassMap();
   }
 
