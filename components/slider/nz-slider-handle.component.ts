@@ -2,9 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   SimpleChanges,
@@ -47,8 +45,6 @@ export class NzSliderHandleComponent implements OnChanges, OnDestroy {
 
   constructor(
     private sliderComponent: NzSliderComponent,
-    private ngZone: NgZone,
-    private el: ElementRef,
     private cdr: ChangeDetectorRef
   ) {
   }

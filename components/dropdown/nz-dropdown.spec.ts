@@ -328,7 +328,6 @@ describe('dropdown', () => {
       testComponent.nzDropdownService.create(fakeEvent, testComponent.template);
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).not.toBe('');
-      const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
       // https://github.com/angular/material2/pull/12119
       // TODO: fix
       // expect(window.getComputedStyle(overlayPane, null).top).toBe(`${300 - overlayContainerElement.getBoundingClientRect().top}px`);

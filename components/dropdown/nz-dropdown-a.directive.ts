@@ -5,6 +5,6 @@ import { Directive, ElementRef, Renderer2 } from '@angular/core';
 })
 export class NzDropDownADirective {
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'ant-dropdown-link');
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-dropdown-link');
   }
 }

@@ -831,12 +831,10 @@ describe('auto-complete', () => {
 
   describe('Fallback positions', () => {
     let fixture;
-    let input: HTMLInputElement;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSimpleAutocompleteComponent);
       fixture.detectChanges();
-      input = fixture.debugElement.query(By.css('input')).nativeElement;
     });
 
     it('should use bottom positioning by default', fakeAsync(() => {

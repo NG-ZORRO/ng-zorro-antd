@@ -16,6 +16,6 @@ import { helpMotion } from '../core/animation/help';
 })
 export class NzFormExplainComponent {
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'ant-form-explain');
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-form-explain');
   }
 }

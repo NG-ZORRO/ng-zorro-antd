@@ -9,6 +9,6 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 })
 export class NzFormTextComponent {
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'ant-form-text');
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-form-text');
   }
 }

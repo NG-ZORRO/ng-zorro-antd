@@ -1,6 +1,6 @@
 import { AnimationEvent } from '@angular/animations';
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,

@@ -449,7 +449,6 @@ describe('nz-tree', () => {
     it('test wrong drag event', fakeAsync(() => {
       // drop node self
       fixture.detectChanges();
-      const dragStartSpy = spyOn(treeInstance, 'onDragStart');
       const dropSpy = spyOn(treeInstance, 'onDrop');
       const dragEndSpy = spyOn(treeInstance, 'onDragEnd');
       const dragNode = treeElement.querySelector('[title=\'0-1\']');
@@ -480,7 +479,6 @@ describe('nz-tree', () => {
     }));
 
     it('test drag event nzBeforeDrop', () => {
-      const dropSpy = spyOn(treeInstance, 'onDrop');
       const dragNode = treeElement.querySelector('[title=\'0-2\']');
       let dropNode = treeElement.querySelector('[title=\'0-1\']');
       treeInstance.beforeDrop = (arg: NzFormatBeforeDropEvent): Observable<boolean> => {

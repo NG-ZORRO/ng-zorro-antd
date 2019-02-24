@@ -9,6 +9,6 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 })
 export class NzMenuGroupComponent {
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'ant-menu-item-group');
+    this.renderer.addClass(elementRef.nativeElement, 'ant-menu-item-group');
   }
 }

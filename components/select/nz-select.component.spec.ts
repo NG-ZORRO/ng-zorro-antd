@@ -278,13 +278,11 @@ describe('nz-select component', () => {
     let fixture;
     let testComponent;
     let select;
-    let selectComponent;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSelectFormComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       select = fixture.debugElement.query(By.directive(NzSelectComponent));
-      selectComponent = select.injector.get(NzSelectComponent);
     });
     it('should set disabled work', fakeAsync(() => {
       fixture.detectChanges();

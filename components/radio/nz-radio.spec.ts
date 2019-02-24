@@ -86,12 +86,10 @@ describe('radio', () => {
   });
   describe('single radio button', () => {
     let fixture;
-    let testComponent;
     let radio;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestRadioButtonComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       radio = fixture.debugElement.query(By.directive(NzRadioButtonComponent));
     });
     it('should className correct', () => {
@@ -163,13 +161,11 @@ describe('radio', () => {
     let fixture;
     let testComponent;
     let radios;
-    let radioGroup;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestRadioGroupDisabledComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       radios = fixture.debugElement.queryAll(By.directive(NzRadioButtonComponent));
-      radioGroup = fixture.debugElement.query(By.directive(NzRadioGroupComponent));
     });
     it('should group disable work', fakeAsync(() => {
       testComponent.disabled = true;

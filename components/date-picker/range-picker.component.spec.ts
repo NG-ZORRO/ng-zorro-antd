@@ -305,7 +305,6 @@ describe('NzRangePickerComponent', () => {
     }));
 
     it('should support nzShowTime', fakeAsync(() => {
-      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
       fixtureInstance.modelValue = [ new Date('2018-11-11 11:22:33'), new Date('2018-12-12 11:22:33') ];
       fixtureInstance.nzShowTime = true;
       fixture.detectChanges();

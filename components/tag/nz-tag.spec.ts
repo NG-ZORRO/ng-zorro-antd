@@ -88,12 +88,10 @@ describe('tag', () => {
   });
   describe('prevent tag', () => {
     let fixture;
-    let testComponent;
     let tag;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTagPreventComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       tag = fixture.debugElement.query(By.directive(NzTagComponent));
     });
     it('should close prevent default', fakeAsync(() => {

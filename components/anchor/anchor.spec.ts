@@ -1,10 +1,9 @@
 // tslint:disable
-import { fakeAsync, tick, TestBed, ComponentFixture, async } from '@angular/core/testing';
+import { fakeAsync, tick, TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NzAnchorModule } from './nz-anchor.module';
 import { NzAnchorComponent } from './nz-anchor.component';
-import { NzAnchorLinkComponent } from './nz-anchor-link.component';
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
 
 const throttleTime = 51;

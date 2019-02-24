@@ -1,8 +1,4 @@
-import {
-  Component, Input,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 
 import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 

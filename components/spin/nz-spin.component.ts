@@ -9,7 +9,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { NzSizeLDSType } from '../core/types/size';
 
-import { toBoolean, InputBoolean, InputNumber } from '../core/util/convert';
+import { InputBoolean, InputNumber } from '../core/util/convert';
 
 @Component({
   selector           : 'nz-spin',

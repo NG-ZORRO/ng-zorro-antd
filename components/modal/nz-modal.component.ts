@@ -19,7 +19,6 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  Renderer2,
   SimpleChanges,
   TemplateRef,
   Type,
@@ -29,8 +28,6 @@ import {
 
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
-import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 
 import { InputBoolean } from '../core/util/convert';
 import { isPromise } from '../core/util/is-promise';
@@ -129,11 +126,9 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   constructor(
     private overlay: Overlay,
     private i18n: NzI18nService,
-    private renderer: Renderer2,
     private cfr: ComponentFactoryResolver,
     private elementRef: ElementRef,
     private viewContainer: ViewContainerRef,
-    private nzMeasureScrollbarService: NzMeasureScrollbarService,
     private modalControl: NzModalControlService,
     private focusTrapFactory: FocusTrapFactory,
     private cdr: ChangeDetectorRef,

@@ -6,7 +6,6 @@ import {
   Input,
   OnChanges,
   Output,
-  Renderer2,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
@@ -58,7 +57,7 @@ export class NzTdComponent implements OnChanges {
     });
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
+  constructor(private elementRef: ElementRef, private nzUpdateHostClassService: NzUpdateHostClassService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
