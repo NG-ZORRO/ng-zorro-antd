@@ -22,7 +22,9 @@
           <div class="ant-popover-inner-content">
             <div class="ant-popover-message">
               <ng-container *nzStringTemplateOutlet="nzTitle">
-                <i nz-icon type="exclamation-circle" theme="fill"></i>
+                <ng-container *nzStringTemplateOutlet="nzIcon">
+                  <i nz-icon [nzType]="nzIcon || 'exclamation-circle'" nzTheme="fill"></i>
+                </ng-container>
                 <div class="ant-popover-message-title">{{ nzTitle }}</div>
               </ng-container>
             </div>
