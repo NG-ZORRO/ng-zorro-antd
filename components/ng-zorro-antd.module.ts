@@ -45,6 +45,7 @@ import { NzSelectModule } from './select/nz-select.module';
 import { NzSkeletonModule } from './skeleton/nz-skeleton.module';
 import { NzSliderModule } from './slider/nz-slider.module';
 import { NzSpinModule } from './spin/nz-spin.module';
+import { NzStatisticModule } from './statistic/nz-statistic.module';
 import { NzStepsModule } from './steps/nz-steps.module';
 import { NzSwitchModule } from './switch/nz-switch.module';
 import { NzTableModule } from './table/nz-table.module';
@@ -94,6 +95,7 @@ export * from './radio';
 export * from './rate';
 export * from './select';
 export * from './spin';
+export * from './statistic';
 export * from './steps';
 export * from './switch';
 export * from './table';
@@ -178,6 +180,7 @@ export * from './core/util';
     NzTimePickerModule,
     NzWaveModule,
     NzSkeletonModule,
+    NzStatisticModule,
     NzEmptyModule
   ]
 })

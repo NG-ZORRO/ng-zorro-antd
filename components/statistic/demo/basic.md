@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-一个简单的 loading 状态。
+简单的展示。
 
 ## en-US
 
-A simple loading status.
+Simplest Usage.
