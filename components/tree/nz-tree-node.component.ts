@@ -18,9 +18,9 @@ import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { InputBoolean } from '../core/util/convert';
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from '../tree/interface';
+import { NzTreeBaseService } from './nz-tree-base.service';
 import { NzTreeNode } from './nz-tree-node';
 import { isCheckDisabled } from './nz-tree-util';
-import { NzTreeService } from './nz-tree.service';
 
 @Component({
   selector           : 'nz-tree-node',
@@ -53,6 +53,8 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzAsyncData: boolean;
   @Input() @InputBoolean() nzCheckStrictly: boolean;
   @Input() @InputBoolean() nzHideUnMatched = false;
+  @Input() @InputBoolean() nzNoAnimation = false;
+  @Input() @InputBoolean() nzSelectMode = false;
   @Input() nzTreeTemplate: TemplateRef<void>;
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
 
@@ -152,6 +154,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   nzNodeClass = {};
   nzNodeSwitcherClass = {};
   nzNodeContentClass = {};
+  nzNodeCheckboxClass = {};
   nzNodeContentIconClass = {};
   nzNodeContentLoadingClass = {};
   nzNodeChildrenClass = {};
@@ -212,15 +215,35 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
    * reset node class
    */
   setClassMap(): void {
+    this.prefixCls = this.nzSelectMode ? 'ant-select-tree' : 'ant-tree';
     this.nzNodeClass = {
-      [ `${this.prefixCls}-treenode-disabled` ]: this.nzTreeNode.isDisabled
+      [ `${this.prefixCls}-treenode-disabled` ]              : this.nzTreeNode.isDisabled,
+      [ `${this.prefixCls}-treenode-switcher-open` ]         : this.isSwitcherOpen,
+      [ `${this.prefixCls}-treenode-switcher-close` ]        : this.isSwitcherClose,
+      [ `${this.prefixCls}-treenode-checkbox-checked` ]      : this.nzTreeNode.isChecked,
+      [ `${this.prefixCls}-treenode-checkbox-indeterminate` ]: this.nzTreeNode.isHalfChecked,
+      [ `${this.prefixCls}-treenode-selected` ]              : this.nzTreeNode.isSelected,
+      [ `${this.prefixCls}-treenode-loading` ]               : this.nzTreeNode.isLoading
     };
     this.nzNodeSwitcherClass = {
-      [ `${this.prefixCls}-switcher` ]     : true,
-      [ `${this.prefixCls}-switcher-noop` ]: this.nzTreeNode.isLeaf
+      [ `${this.prefixCls}-switcher` ]      : true,
+      [ `${this.prefixCls}-switcher-noop` ] : this.nzTreeNode.isLeaf,
+      [ `${this.prefixCls}-switcher_open` ] : this.isSwitcherOpen,
+      [ `${this.prefixCls}-switcher_close` ]: this.isSwitcherClose
     };
+
+    this.nzNodeCheckboxClass = {
+      [ `${this.prefixCls}-checkbox` ]              : true,
+      [ `${this.prefixCls}-checkbox-checked` ]      : this.nzTreeNode.isChecked,
+      [ `${this.prefixCls}-checkbox-indeterminate` ]: this.nzTreeNode.isHalfChecked,
+      [ `${this.prefixCls}-checkbox-disabled` ]     : this.nzTreeNode.isDisabled || this.nzTreeNode.isDisableCheckbox
+    };
+
     this.nzNodeContentClass = {
-      [ `${this.prefixCls}-node-content-wrapper` ]: true
+      [ `${this.prefixCls}-node-content-wrapper` ]      : true,
+      [ `${this.prefixCls}-node-content-wrapper-open` ] : this.isSwitcherOpen,
+      [ `${this.prefixCls}-node-content-wrapper-close` ]: this.isSwitcherClose,
+      [ `${this.prefixCls}-node-selected` ]             : this.nzTreeNode.isSelected
     };
     this.nzNodeContentIconClass = {
       [ `${this.prefixCls}-iconEle` ]        : true,
@@ -228,10 +251,6 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     };
     this.nzNodeContentLoadingClass = {
       [ `${this.prefixCls}-iconEle` ]: true
-    };
-    this.nzNodeChildrenClass = {
-      [ `${this.prefixCls}-child-tree` ]     : true,
-      [ `${this.prefixCls}-child-tree-open` ]: true
     };
   }
 
@@ -245,7 +264,10 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     if (this.nzTreeNode.isSelectable) {
       this.nzTreeService.setNodeActive(this.nzTreeNode, this.nzMultiple);
     }
-    this.clickNode.emit(this.nzTreeService.formatEvent('click', this.nzTreeNode, event));
+    const clockEvent = this.nzTreeService.formatEvent('click', this.nzTreeNode, event);
+    this.clickNode.emit(clockEvent);
+    this.nzTreeService.$statusChange.next(clockEvent);
+
   }
 
   @HostListener('dblclick', [ '$event' ])
@@ -279,7 +301,9 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
       }
       this.nzTreeNode.setExpanded(!this.nzTreeNode.isExpanded);
       this.nzTreeService.setExpandedNodeList(this.nzTreeNode);
-      this.clickExpand.emit(this.nzTreeService.formatEvent('expand', this.nzTreeNode, event));
+      const expandEvent = this.nzTreeService.formatEvent('expand', this.nzTreeNode, event);
+      this.clickExpand.emit(expandEvent);
+      this.nzTreeService.$statusChange.next(expandEvent);
     }
   }
 
@@ -299,7 +323,9 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.nzCheckStrictly) {
       this.nzTreeService.conduct(this.nzTreeNode);
     }
-    this.clickCheckBox.emit(this.nzTreeService.formatEvent('check', this.nzTreeNode, event));
+    const checkBoxChange = this.nzTreeService.formatEvent('check', this.nzTreeNode, event);
+    this.clickCheckBox.emit(checkBoxChange);
+    this.nzTreeService.$statusChange.next(checkBoxChange);
   }
 
   /**
@@ -424,11 +450,14 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  constructor(private nzTreeService: NzTreeService, private ngZone: NgZone, private renderer: Renderer2, private elRef: ElementRef) {
+  constructor(private nzTreeService: NzTreeBaseService, private ngZone: NgZone, private renderer: Renderer2, private elRef: ElementRef) {
   }
 
   ngOnInit(): void {
     this.setClassMap();
+    this.nzTreeService.statusChanged().pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.setClassMap();
+    });
   }
 
   ngOnChanges(): void {

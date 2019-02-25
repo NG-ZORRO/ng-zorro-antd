@@ -2,21 +2,17 @@
   #dragElement
   role="treeitem"
   [style.display]="displayStyle"
-  [ngClass]="nzNodeClass"
-  [class.ant-tree-treenode-switcher-open]="isSwitcherOpen"
-  [class.ant-tree-treenode-switcher-close]="isSwitcherClose"
-  [class.ant-tree-treenode-checkbox-checked]="nzTreeNode.isChecked"
-  [class.ant-tree-treenode-checkbox-indeterminate]="nzTreeNode.isHalfChecked"
-  [class.ant-tree-treenode-selected]="nzTreeNode.isSelected"
-  [class.ant-tree-treenode-loading]="nzTreeNode.isLoading">
+  [ngClass]="nzNodeClass">
   <ng-container *ngIf="nzShowExpand">
     <span
       [ngClass]="nzNodeSwitcherClass"
-      [class.ant-tree-switcher_open]="isSwitcherOpen"
-      [class.ant-tree-switcher_close]="isSwitcherClose"
       (click)="_clickExpand($event)">
       <ng-container *ngIf="isShowSwitchIcon">
-        <i *ngIf="!nzTreeNode.isLoading" nz-icon type="caret-down" class="ant-tree-switcher-icon"></i>
+        <i *ngIf="!nzTreeNode.isLoading"
+          nz-icon
+          type="caret-down"
+          [class.ant-select-switcher-icon]="nzSelectMode"
+          [class.ant-tree-switcher-icon]="!nzSelectMode"></i>
         <i *ngIf="nzTreeNode.isLoading" nz-icon type="loading" [spin]="true" class="ant-tree-switcher-loading-icon"></i>
       </ng-container>
       <ng-container *ngIf="nzShowLine">
@@ -27,12 +23,10 @@
   </ng-container>
   <ng-container *ngIf="nzCheckable">
     <span
-      class="ant-tree-checkbox"
-      [class.ant-tree-checkbox-checked]="nzTreeNode.isChecked"
-      [class.ant-tree-checkbox-indeterminate]="nzTreeNode.isHalfChecked"
-      [class.ant-tree-checkbox-disabled]="(nzTreeNode.isDisabled || nzTreeNode.isDisableCheckbox)"
+      [ngClass]="nzNodeCheckboxClass"
       (click)="_clickCheckBox($event)">
-      <span class="ant-tree-checkbox-inner"></span>
+      <span [class.ant-tree-checkbox-inner]="!nzSelectMode"
+            [class.ant-select-tree-checkbox-inner]="nzSelectMode"></span>
     </span>
   </ng-container>
   <ng-container *ngIf="!nzTreeTemplate">
@@ -41,9 +35,6 @@
       [attr.draggable]="canDraggable"
       [attr.aria-grabbed]="canDraggable"
       [ngClass]="nzNodeContentClass"
-      [class.ant-tree-node-content-wrapper-open]="isSwitcherOpen"
-      [class.ant-tree-node-content-wrapper-close]="isSwitcherClose"
-      [class.ant-tree-node-selected]="nzTreeNode.isSelected"
       [class.draggable]="canDraggable">
       <span
         *ngIf="nzTreeNode.origin.icon"
@@ -75,12 +66,16 @@
 
   <ul
     role="group"
+    class="ant-tree-child-tree"
+    [class.ant-tree-child-tree-open]="nzTreeNode.isExpanded"
     [attr.data-expanded]="nzTreeNode.isExpanded"
     [ngClass]="nzNodeChildrenClass"
+    [@.disabled]="nzNoAnimation"
     [@nodeState]="nzTreeNode.isExpanded ? 'active' : 'inactive'">
     <nz-tree-node
       *ngFor="let node of nzTreeNode.getChildren()"
       [nzTreeNode]="node"
+      [nzSelectMode]="nzSelectMode"
       [nzShowLine]="nzShowLine"
       [nzDraggable]="nzDraggable"
       [nzCheckable]="nzCheckable"
