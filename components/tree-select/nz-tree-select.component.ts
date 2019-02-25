@@ -10,7 +10,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -18,8 +17,7 @@ import {
   Output,
   Renderer2,
   SimpleChanges,
-  ViewChild,
-  ViewContainerRef
+  ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -153,9 +151,8 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private nzTreeService: NzTreeSelectService,
-    private viewContainerRef: ViewContainerRef,
-    elementRef: ElementRef) {
-    renderer.addClass(elementRef.nativeElement, 'ant-select');
+    private elementRef: ElementRef) {
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
   }
 
   ngOnInit(): void {
@@ -384,8 +381,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
     this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
   }
 
-  // tslint:disable-next-line:no-any
-  trackValue(index: number, option: NzTreeNode): any {
+  trackValue(_index: number, option: NzTreeNode): string {
     return option.key;
   }
 }
