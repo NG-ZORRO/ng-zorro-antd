@@ -7,7 +7,7 @@ import { padStart, timeUnits } from '../core/util';
 })
 export class NzTimeRangePipe implements PipeTransform {
   transform(value: string | number, format: string = 'HH:mm:ss'): string {
-    let duration = Number(value);
+    let duration = Number(value || 0);
 
     return timeUnits.reduce((current, [ name, unit ]) => {
       if (current.indexOf(name) !== -1) {
