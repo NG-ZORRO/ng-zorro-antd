@@ -85,7 +85,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   @Input() nzValueProperty = 'value';
   @Input() nzLabelRender: TemplateRef<void>;
   @Input() nzLabelProperty = 'label';
-  @Input() nzNotFoundContent: string;
+  @Input() nzNotFoundContent: string | TemplateRef<void>;
   @Input() nzSize: NzCascaderSize = 'default';
   @Input() nzShowSearch: boolean | NzShowSearchOptions;
   @Input() nzPlaceHolder = 'Please select';

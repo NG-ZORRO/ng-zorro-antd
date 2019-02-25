@@ -33,7 +33,7 @@ subtitle: 级联选择
 | `[nzExpandTrigger]` | 次级菜单的展开方式，可选 'click' 和 'hover' | `'click'｜'hover'` | `'click'` |
 | `[nzMenuClassName]` | 自定义浮层类名 | `string` | - |
 | `[nzMenuStyle]` | 自定义浮层样式 | `object` | - |
-| `[nzNotFoundContent]` | 当下拉列表为空时显示的内容 | `string` | - |
+| `[nzNotFoundContent]` | 当下拉列表为空时显示的内容 | `string｜TemplateRef<void>` | - |
 | `[nzLabelProperty]` | 选项的显示值的属性名 | `string` | `'label'` |
 | `[nzLabelRender]` | 选择后展示的渲染模板 | `TemplateRef<any>` | - |
 | `[nzLoadData]` | 用于动态加载选项。如果提供了`ngModel`初始值，且未提供`nzOptions`值，则会立即触发动态加载。 | `(option: any, index?: index) => PromiseLike<any>` | - |
