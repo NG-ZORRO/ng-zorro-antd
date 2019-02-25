@@ -15,6 +15,7 @@ import { NzCarouselModule } from './carousel/nz-carousel.module';
 import { NzCascaderModule } from './cascader/nz-cascader.module';
 import { NzCheckboxModule } from './checkbox/nz-checkbox.module';
 import { NzCollapseModule } from './collapse/nz-collapse.module';
+import { NzCommentModule } from './comment/nz-comment.module';
 import { NzWaveModule } from './core/wave/nz-wave.module';
 import { NzDatePickerModule } from './date-picker/date-picker.module';
 import { NzDividerModule } from './divider/nz-divider.module';
@@ -70,6 +71,7 @@ export * from './card';
 export * from './carousel';
 export * from './checkbox';
 export * from './collapse';
+export * from './comment';
 export * from './date-picker';
 export * from './divider';
 export * from './drawer';
@@ -152,6 +154,7 @@ export * from './core/util';
     NzTransferModule,
     NzCarouselModule,
     NzCollapseModule,
+    NzCommentModule,
     NzTableModule,
     NzDatePickerModule,
     NzDividerModule,
