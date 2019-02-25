@@ -3,7 +3,7 @@ import { NzTreeNode } from './nz-tree-node';
 export interface NzFormatEmitEvent {
   eventName: string;
   node: NzTreeNode;
-  event: MouseEvent | DragEvent;
+  event?: MouseEvent | DragEvent;
   dragNode?: NzTreeNode;
   selectedKeys?: NzTreeNode[];
   checkedKeys?: NzTreeNode[];

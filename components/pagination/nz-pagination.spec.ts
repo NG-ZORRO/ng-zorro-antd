@@ -268,10 +268,10 @@ describe('pagination', () => {
       expect(paginationElement.firstElementChild.innerText.trim()).toBe('1-20 of 85 items');
       testComponent.pageIndex = 2;
       fixture.detectChanges();
-      expect(paginationElement.firstElementChild.innerText).toBe('21-40 of 85 items');
+      expect(paginationElement.firstElementChild.innerText.trim()).toBe('21-40 of 85 items');
       testComponent.pageIndex = 5;
       fixture.detectChanges();
-      expect(paginationElement.firstElementChild.innerText).toBe('81-85 of 85 items');
+      expect(paginationElement.firstElementChild.innerText.trim()).toBe('81-85 of 85 items');
     });
   });
 

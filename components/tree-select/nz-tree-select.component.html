@@ -11,12 +11,29 @@
     [disabled]="nzDisabled">
 </ng-template>
 
-<ng-template #dropdownTemplate>
-  <div [ngClass]="dropDownClassMap" [@selectDropDownAnimation]="nzOpen ? dropDownPosition : 'hidden'"
-       [ngStyle]="nzDropdownStyle">
+<ng-template
+  cdkConnectedOverlay
+  nzConnectedOverlay
+  [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
+  [cdkConnectedOverlayOpen]="nzOpen"
+  [cdkConnectedOverlayHasBackdrop]="true"
+  [cdkConnectedOverlayMinWidth]="nzDropdownMatchSelectWidth? null : triggerWidth"
+  [cdkConnectedOverlayWidth]="nzDropdownMatchSelectWidth? triggerWidth : null"
+  (backdropClick)="closeDropDown()"
+  (detach)="closeDropDown()"
+  (positionChange)="onPositionChange($event)">
+  <div class="ant-select-dropdown ant-select-tree-dropdown"
+    [@slideMotion]="nzOpen ? dropDownPosition : 'void'"
+    [class.ant-select-dropdown--single]="!nzMultiple"
+    [class.ant-select-dropdown--multiple]="nzMultiple"
+    [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
+    [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
+    [ngStyle]="nzDropdownStyle">
     <nz-tree
       #treeRef
       [hidden]="isNotFound"
+      nzNoAnimation
+      nzSelectMode
       [nzData]="nzNodes"
       [nzMultiple]="nzMultiple"
       [nzSearchValue]="inputValue"
@@ -28,7 +45,7 @@
       [nzExpandedKeys]="nzDefaultExpandedKeys"
       [nzCheckedKeys]="nzCheckable ? value : []"
       [nzSelectedKeys]="!nzCheckable ? value : []"
-      (nzExpandChange)="nzExpandChange.emit($event)"
+      (nzExpandChange)="onExpandedKeysChange($event)"
       (nzClick)="nzTreeClick.emit($event)"
       (nzCheckedKeysChange)="updateSelectedNodes()"
       (nzSelectedKeysChange)="updateSelectedNodes()"
@@ -42,7 +59,7 @@
 </ng-template>
 
 <div
-  #treeSelect
+  cdkOverlayOrigin
   class="ant-select-selection"
   [class.ant-select-selection--single]="!isMultiple"
   [class.ant-select-selection--multiple]="isMultiple"
@@ -84,15 +101,14 @@
         class="ant-select-selection__placeholder">
         {{ nzPlaceHolder }}
       </div>
-      <ng-container *ngFor="let node of selectedNodes">
+      <ng-container *ngFor="let node of selectedNodes; trackBy:trackValue">
         <li
           [@zoomMotion]
-          (@zoomMotion.done)="updatePosition()"
           [attr.title]="nzDisplayWith(node)"
           [class.ant-select-selection__choice__disabled]="node.isDisabled"
           class="ant-select-selection__choice">
                <span *ngIf="!node.isDisabled" class="ant-select-selection__choice__remove"
-                     (click)="removeSelected(node, true, $event)">
+                 (click)="removeSelected(node, true, $event)">
                  <i nz-icon type="close" class="ant-select-remove-icon"></i>
                </span>
           <span class="ant-select-selection__choice__content">{{ nzDisplayWith(node) }}</span>
@@ -103,7 +119,7 @@
       </li>
     </ul>
   </ng-container>
-  <span *ngIf="nzAllowClear" class="ant-select-selection__clear" (click)="onClearSelection()">
+  <span *ngIf="nzAllowClear" class="ant-select-selection__clear" (click)="onClearSelection($event)">
     <i nz-icon type="close-circle" class="ant-select-clear-icon" theme="fill"></i>
   </span>
   <span *ngIf="!isMultiple" class="ant-select-arrow">

@@ -8,17 +8,17 @@ import { of, Observable } from 'rxjs';
 import { dispatchMouseEvent, dispatchTouchEvent } from '../core/testing';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
+import { NzTreeBaseService } from './nz-tree-base.service';
 import { NzTreeNode } from './nz-tree-node';
 import { NzTreeComponent } from './nz-tree.component';
 import { NzTreeModule } from './nz-tree.module';
-import { NzTreeService } from './nz-tree.service';
 
 describe('nz-tree', () => {
   let treeInstance;
   let treeElement: HTMLElement;
   let component;
   let fixture;
-  let treeService: NzTreeService;
+  let treeService: NzTreeBaseService;
   describe('basic tree', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
@@ -338,7 +338,7 @@ describe('nz-tree', () => {
         imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
         declarations: [ NzTestTreeDraggableComponent ],
         providers   : [
-          NzTreeService
+          NzTreeBaseService
         ]
       }).compileComponents();
     }));
@@ -502,7 +502,7 @@ describe('nz-tree', () => {
         imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
         declarations: [ NzTestTreeOlderComponent ],
         providers   : [
-          NzTreeService
+          NzTreeBaseService
         ]
       }).compileComponents();
     }));
