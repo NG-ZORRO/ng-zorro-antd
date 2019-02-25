@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import { zoomBigMotion } from '../core/animation/zoom';
 import { InputBoolean } from '../core/util/convert';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
@@ -25,6 +34,7 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
   @Input() nzOkType: string = 'primary';
   @Input() nzCancelText: string;
   @Input() @InputBoolean() nzCondition = false;
+  @Input() nzIcon: string | TemplateRef<void>;
 
   @Output() readonly nzOnCancel: EventEmitter<void> = new EventEmitter();
   @Output() readonly nzOnConfirm: EventEmitter<void> = new EventEmitter();

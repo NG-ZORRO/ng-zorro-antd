@@ -18,13 +18,14 @@ The difference with the `confirm` modal dialog is that it's more lightweight tha
 
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |
-| `[nzCancelText]` | text of the Cancel button | `string` | `'Cancel'` |
-| `[nzOkText]` | text of the Confirm button | `string` | `'Confirm'` |
+| `[nzCancelText]` | Text of the Cancel button | `string` | `'Cancel'` |
+| `[nzOkText]` | Text of the Confirm button | `string` | `'Confirm'` |
 | `[nzOkType]` | Button `type` of the Confirm button | `'primary'｜'ghost'｜'dashed'｜'danger'｜'default'` | `'primary'` |
-| `[nzTitle]` | title of the confirmation box | `string｜TemplateRef<void>` | - |
+| `[nzTitle]` | Title of the confirmation box | `string｜TemplateRef<void>` | - |
 | `[nzCondition]` | Whether to directly emit `onConfirm` without showing Popconfirm | `boolean` | `false` |
-| `(nzOnCancel)` | callback of cancel | `EventEmitter<void>` | - |
-| `(nzOnConfirm)` | callback of confirmation | `EventEmitter<void>` | - |
+| `[nzIcon]` | Customize icon of confirmation  | `string｜TemplateRef<void>` | - |
+| `(nzOnCancel)` | Callback of cancel | `EventEmitter<void>` | - |
+| `(nzOnConfirm)` | Callback of confirmation | `EventEmitter<void>` | - |
 
 Consult [Tooltip's documentation](/components/tooltip/en#api) to find more APIs.
 

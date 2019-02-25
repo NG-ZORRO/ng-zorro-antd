@@ -8,7 +8,7 @@ import {
   OnInit,
   Optional,
   Output,
-  Renderer2,
+  Renderer2, TemplateRef,
   ViewContainerRef
 } from '@angular/core';
 
@@ -40,12 +40,14 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit 
     'nzOkText',
     'nzOkType',
     'nzCancelText',
-    'nzCondition'
+    'nzCondition',
+    'nzIcon'
   ];
 
   @Input() nzOkText: string;
   @Input() nzOkType: string;
   @Input() nzCancelText: string;
+  @Input() nzIcon: string | TemplateRef<void>;
   @Input() @InputBoolean() nzCondition: boolean;
   @Output() readonly nzOnCancel = new EventEmitter<void>();
   @Output() readonly nzOnConfirm = new EventEmitter<void>();
