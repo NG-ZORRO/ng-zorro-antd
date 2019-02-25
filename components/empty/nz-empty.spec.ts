@@ -9,7 +9,6 @@ import { NzListModule } from '../list';
 
 import { NzEmbedEmptyComponent } from './nz-embed-empty.component';
 import { NZ_DEFAULT_EMPTY_CONTENT, NZ_EMPTY_COMPONENT_NAME } from './nz-empty-config';
-import { getEmptyContentTypeError } from './nz-empty-error';
 import { NzEmptyComponent } from './nz-empty.component';
 import { NzEmptyModule } from './nz-empty.module';
 import { NzEmptyService } from './nz-empty.service';
@@ -177,9 +176,14 @@ describe('nz-empty', () => {
       }));
 
       it('should raise error when set a invalid default value', () => {
+
         expect(() => {
-          testComponent.changeToInvalid();
-        }).toThrowError(getEmptyContentTypeError(false).message);
+          // tslint:disable-next-line:no-any
+          testComponent.emptyService.setDefaultContent(false as any);
+          fixture.detectChanges();
+          tick();
+          fixture.detectChanges();
+        }).toThrowError();
       });
 
       it('should support string, template and component', fakeAsync(() => {
