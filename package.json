@@ -84,7 +84,7 @@
     "less": "^3.9.0",
     "less-plugin-clean-css": "^1.5.1",
     "marked": "^0.5.1",
-    "ng-packagr": "^4.2.0",
+    "ng-packagr": "^4.7.1",
     "ngx-color": "^2.0.5",
     "node-prismjs": "^0.1.1",
     "prismjs": "^1.10.0",
