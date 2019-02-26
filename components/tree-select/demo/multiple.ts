@@ -4,14 +4,19 @@ import { Component, OnInit } from '@angular/core';
   selector: 'nz-demo-tree-select-multiple',
   template: `
     <nz-tree-select style="width: 250px"
+      nzPlaceHolder="Please select"
+      [nzMaxTagCount]="3"
+      [nzMaxTagPlaceholder]="omittedPlaceHolder"
       [nzNodes]="nodes"
       [nzDefaultExpandAll]="true"
       [nzAllowClear]="false"
-      nzPlaceHolder="Please select"
       [(ngModel)]="value"
       [nzMultiple]="true"
       (ngModelChange)="onChange($event)">
     </nz-tree-select>
+    <ng-template #omittedPlaceHolder let-omittedValues>
+      and {{omittedValues.length}} more...
+    </ng-template>
   `
 })
 

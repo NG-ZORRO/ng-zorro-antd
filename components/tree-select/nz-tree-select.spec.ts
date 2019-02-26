@@ -217,6 +217,23 @@ describe('tree-select component', () => {
       expect(selectedValueEl.style.display).toBe('none');
       expect(selectedValueEl.style.opacity).toBe('1');
     }));
+    it('should max tag count work', fakeAsync(() => {
+      testComponent.multiple = true;
+      testComponent.value = [ '1001', '10001', '100011', '100012' ];
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+      expect(treeSelect.nativeElement.querySelectorAll('.ant-select-selection__choice').length).toBe(4);
+      testComponent.maxTagCount = 2;
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+      expect(treeSelect.nativeElement.querySelectorAll('.ant-select-selection__choice').length).toBe(3);
+      const maxTagPlaceholderElement = treeSelect.nativeElement.querySelectorAll('.ant-select-selection__choice')[2]
+      .querySelector('.ant-select-selection__choice__content');
+      expect(maxTagPlaceholderElement).toBeTruthy();
+      expect(maxTagPlaceholderElement.innerText.trim()).toBe(`+ ${testComponent.value.length - testComponent.maxTagCount} ...`);
+    }));
   });
 
   describe('checkable', () => {
@@ -450,6 +467,8 @@ describe('tree-select component', () => {
       [nzDropdownMatchSelectWidth]="dropdownMatchSelectWidth"
       [nzDisabled]="disabled"
       [nzShowSearch]="showSearch"
+      [nzMultiple]="multiple"
+      [nzMaxTagCount]="maxTagCount"
       [nzDropdownStyle]="{ 'height': '120px' }">
     </nz-tree-select>
   `
@@ -457,12 +476,14 @@ describe('tree-select component', () => {
 export class NzTestTreeSelectBasicComponent {
   @ViewChild(NzTreeSelectComponent) nzSelectTreeComponent: NzTreeSelectComponent;
   expandKeys = [ '1001', '10001' ];
-  value = '10001';
+  value: string | string[] = '10001';
   size = 'default';
   allowClear = false;
   disabled = false;
   showSearch = false;
   dropdownMatchSelectWidth = true;
+  multiple = false;
+  maxTagCount = Infinity;
   nodes = [
     new NzTreeNode({
       title   : 'root1',
