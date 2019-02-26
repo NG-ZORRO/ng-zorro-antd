@@ -27,7 +27,10 @@ registerLocaleData(zh);
 <nz-calendar
   [nzDateCell]="dateCellTpl"
   [(ngModel)]="selectedDate"
-  [(nzMode)]="mode">
+  [(nzMode)]="mode"
+  (nzPanelChange)="panelChange($event)"
+  (nzSelectChange)="selectChange($event)"
+  (nzValueChange)="valueChange($event)">
   <!-- 定义 Cell 的另一种方式 -->
   <div *dateCell>Foo</div>
 </nz-calendar>
@@ -47,3 +50,6 @@ registerLocaleData(zh);
 | `[nzDateFullCell]` | （可作为内容）自定义渲染日期单元格，模版内容覆盖单元格 | `TemplateRef<Date>` | - |
 | `[nzMonthCell]` | （可作为内容）自定义渲染月单元格，模版内容会被追加到单元格 | `TemplateRef<Date>` | - |
 | `[nzMonthFullCell]` | （可作为内容）自定义渲染月单元格，模版内容覆盖单元格 | `TemplateRef<Date>` | - |
+| `(nzPanelChange)` | 面板变化的回调 | `EventEmitter<{ date: Date, mode: 'month'｜'year' }>` | - |
+| `(nzSelectChange)` | 选择日期的回调 | `EventEmitter<Date>` | - |
+| `(nzValueChange)` | 日期变化的回调 | `EventEmitter<Date>` | - |
