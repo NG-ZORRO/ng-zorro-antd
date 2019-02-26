@@ -10,15 +10,17 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
+  Host,
   Input,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   QueryList,
   Renderer2,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation, Optional, Host
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { merge, EMPTY, Subject } from 'rxjs';
