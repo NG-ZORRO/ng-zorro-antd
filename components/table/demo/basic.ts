@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { NzTableComponent } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-table-basic',
@@ -27,7 +28,8 @@ import { Component } from '@angular/core';
     </nz-table>
   `
 })
-export class NzDemoTableBasicComponent {
+export class NzDemoTableBasicComponent implements AfterViewInit {
+  @ViewChild(NzTableComponent) nzTableComponent: NzTableComponent;
   listOfData = [
     {
       key    : '1',
@@ -48,4 +50,8 @@ export class NzDemoTableBasicComponent {
       address: 'Sidney No. 1 Lake Park'
     }
   ];
+
+  ngAfterViewInit(): void {
+    console.log(this.nzTableComponent);
+  }
 }

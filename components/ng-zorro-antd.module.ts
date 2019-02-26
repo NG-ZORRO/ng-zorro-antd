@@ -59,6 +59,7 @@ import { NzTreeSelectModule } from './tree-select/nz-tree-select.module';
 import { NzTreeModule } from './tree/nz-tree.module';
 import { NzUploadModule } from './upload/nz-upload.module';
 
+export { NzTableComponent } from './table/nz-table.component';
 export * from './affix';
 export * from './alert';
 export * from './anchor';
