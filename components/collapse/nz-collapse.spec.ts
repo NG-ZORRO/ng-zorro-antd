@@ -39,14 +39,6 @@ describe('collapse', () => {
       fixture.detectChanges();
       expect(collapse.nativeElement.firstElementChild.classList).toContain('ant-collapse-borderless');
     });
-    // it('should extra work', () => {
-    //   expect(collapse.nativeElement.querySelector('.ant-collapse-extra')).toBeNull();
-    //   testComponent.showExtra = 'extra';
-    //   fixture.detectChanges();
-    //   const extra = collapse.nativeElement.querySelector('.ant-collapse-extra');
-    //   expect(extra).toBeDefined();
-    //   expect(extra.innerText).toBe('extra');
-    // });
     it('should showArrow work', () => {
       fixture.detectChanges();
       expect(panels[ 0 ].nativeElement.querySelector('.ant-collapse-arrow').firstElementChild).toBeDefined();
