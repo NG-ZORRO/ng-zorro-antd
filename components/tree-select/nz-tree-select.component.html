@@ -101,7 +101,7 @@
         class="ant-select-selection__placeholder">
         {{ nzPlaceHolder }}
       </div>
-      <ng-container *ngFor="let node of selectedNodes; trackBy:trackValue">
+      <ng-container *ngFor="let node of selectedNodes | slice: 0 : nzMaxTagCount; trackBy:trackValue">
         <li
           [@zoomMotion]
           [attr.title]="nzDisplayWith(node)"
@@ -114,6 +114,21 @@
           <span class="ant-select-selection__choice__content">{{ nzDisplayWith(node) }}</span>
         </li>
       </ng-container>
+      <li [@zoomMotion]
+        *ngIf="selectedNodes.length > nzMaxTagCount"
+        class="ant-select-selection__choice">
+        <div class="ant-select-selection__choice__content">
+          <ng-container *ngIf="nzMaxTagPlaceholder">
+            <ng-template
+              [ngTemplateOutlet]="nzMaxTagPlaceholder"
+              [ngTemplateOutletContext]="{ $implicit: selectedNodes | slice: nzMaxTagCount}">
+            </ng-template>
+          </ng-container>
+          <ng-container *ngIf="!nzMaxTagPlaceholder">
+            + {{ selectedNodes.length - nzMaxTagCount }} ...
+          </ng-container>
+        </div>
+      </li>
       <li class="ant-select-search ant-select-search--inline">
         <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>
       </li>

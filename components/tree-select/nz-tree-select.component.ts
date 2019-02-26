@@ -17,6 +17,7 @@ import {
   Output,
   Renderer2,
   SimpleChanges,
+  TemplateRef,
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -30,6 +31,7 @@ import { filter, tap } from 'rxjs/operators';
 
 import { slideMotion } from '../core/animation/slide';
 import { zoomMotion } from '../core/animation/zoom';
+import { NzSizeLDSType } from '../core/types/size';
 import { InputBoolean } from '../core/util/convert';
 import { NzFormatEmitEvent } from '../tree/interface';
 import { NzTreeNode, NzTreeNodeOptions } from '../tree/nz-tree-node';
@@ -84,11 +86,13 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   @Input() nzNotFoundContent: string;
   @Input() nzNodes: Array<NzTreeNode | NzTreeNodeOptions> = [];
   @Input() nzOpen = false;
-  @Input() nzSize = 'default';
+  @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzPlaceHolder = '';
   @Input() nzDropdownStyle: { [ key: string ]: string; };
   @Input() nzDefaultExpandedKeys: string[] = [];
   @Input() nzDisplayWith: (node: NzTreeNode) => string = (node: NzTreeNode) => node.title;
+  @Input() nzMaxTagCount: number;
+  @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzTreeNode[] }>;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Output() readonly nzCleared = new EventEmitter<void>();
   @Output() readonly nzRemoved = new EventEmitter<NzTreeNode>();
@@ -240,7 +244,12 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
     ) {
       e.preventDefault();
       if (this.selectedNodes.length) {
-        this.removeSelected(this.selectedNodes[ this.selectedNodes.length - 1 ]);
+        const removeNode = this.selectedNodes[ this.selectedNodes.length - 1 ];
+        this.removeSelected(removeNode);
+        this.nzTreeService.$statusChange.next({
+          'eventName': 'removeSelect',
+          'node'     : removeNode
+        });
       }
     }
   }
