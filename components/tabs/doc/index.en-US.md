@@ -46,3 +46,7 @@ Ant Design has 3 types of Tabs for different situations.
 | `(nzClick)` | title click callback | `EventEmitter<void>` | - |
 | `(nzSelect)` | title select callback | `EventEmitter<void>` | - |
 | `(nzDeselect)` | title deselect callback | `EventEmitter<void>` | - |
+
+### [nz-tab]
+
+Tab contents can be lazy loaded by declaring the body in a `ng-template` with the `[nz-tab]` attribute.
