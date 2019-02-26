@@ -3,12 +3,15 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  Host,
   Input,
+  Optional,
   Output,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 import { zoomBigMotion } from '../core/animation/zoom';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { InputBoolean } from '../core/util/convert';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 
@@ -39,8 +42,8 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
   @Output() readonly nzOnCancel: EventEmitter<void> = new EventEmitter();
   @Output() readonly nzOnConfirm: EventEmitter<void> = new EventEmitter();
 
-  constructor(cdr: ChangeDetectorRef) {
-    super(cdr);
+  constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+    super(cdr, noAnimation);
   }
 
   show(): void {

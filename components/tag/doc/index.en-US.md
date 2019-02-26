@@ -21,7 +21,6 @@ Tag for categorizing or markup.
 | `[nzMode]` | Mode of tag | `'closeable'｜'default'｜'checkable'` | `'default'` |
 | `[nzChecked]` | Checked status of Tag, double binding, only works when `nzMode="checkable"` | `boolean` | `false` |
 | `[nzColor]` | Color of the Tag | `string` | - |
-| `[nzNoAnimation]` | whether disabled animation | `boolean` | `false` |
 | `(nzAfterClose)` | Callback executed when close animation is completed, only works when `nzMode="closable"` | `EventEmitter<void>` | - |
 | `(nzOnClose)` | Callback executed when tag is closed, only works when `nzMode="closable"`| `EventEmitter<MouseEvent>` | - |
 | `(nzCheckedChange)` | Checked status change call back, only works when `nzMode="checkable"` | `EventEmitter<boolean>` | - |

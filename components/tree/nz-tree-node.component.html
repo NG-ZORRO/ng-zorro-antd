@@ -70,11 +70,12 @@
     [class.ant-tree-child-tree-open]="nzTreeNode.isExpanded"
     [attr.data-expanded]="nzTreeNode.isExpanded"
     [ngClass]="nzNodeChildrenClass"
-    [@.disabled]="nzNoAnimation"
+    [@.disabled]="noAnimation?.nzNoAnimation"
     [@nodeState]="nzTreeNode.isExpanded ? 'active' : 'inactive'">
     <nz-tree-node
       *ngFor="let node of nzTreeNode.getChildren()"
       [nzTreeNode]="node"
+      [nzNoAnimation]="noAnimation?.nzNoAnimation"
       [nzSelectMode]="nzSelectMode"
       [nzShowLine]="nzShowLine"
       [nzDraggable]="nzDraggable"

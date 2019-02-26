@@ -33,6 +33,7 @@ import { CandyDate } from './lib/candy-date';
 })
 
 export class NzPickerComponent implements OnInit, AfterViewInit {
+  @Input() noAnimation: boolean = false;
   @Input() isRange: boolean = false;
   @Input() open: boolean = undefined; // "undefined" = this value will be not used
   @Input() disabled: boolean;

@@ -6,9 +6,11 @@ import {
   ElementRef,
   Input,
   Renderer2,
-  ViewEncapsulation
+  ViewEncapsulation, Host, Optional
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import { DateHelperService } from '../i18n/date-helper.service';
@@ -31,8 +33,9 @@ export class NzMonthPickerComponent extends HeaderPickerComponent {
 
   endPanelMode: SupportHeaderPanel = 'month';
 
-  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, dateHelper: DateHelperService, renderer: Renderer2, elementRef: ElementRef) {
-    super(i18n, cdr, dateHelper);
+  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, dateHelper: DateHelperService, renderer: Renderer2, elementRef: ElementRef,
+              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+    super(i18n, cdr, dateHelper, noAnimation);
     renderer.addClass(elementRef.nativeElement, 'ant-calendar-picker');
   }
 }

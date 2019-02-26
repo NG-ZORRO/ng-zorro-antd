@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { FunctionProp } from '../core/types/common-wrap';
 import { valueFunctionProp } from '../core/util/convert';
 import { DateHelperService } from '../i18n/date-helper.service';
@@ -28,8 +29,8 @@ export class HeaderPickerComponent extends AbstractPickerComponent implements On
 
   private supportPanels: PanelMode[];
 
-  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, dateHelper: DateHelperService) {
-    super(i18n, cdr, dateHelper);
+  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, dateHelper: DateHelperService, noAnimation: NzNoAnimationDirective) {
+    super(i18n, cdr, dateHelper, noAnimation);
   }
 
   ngOnInit(): void {

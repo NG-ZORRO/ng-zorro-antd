@@ -79,6 +79,7 @@
   (detach)="onOverlayDetach()"
 >
   <div
+    [nzNoAnimation]="noAnimation"
     [@slideMotion]="dropdownAnimation"
     (@slideMotion.start)="animationStart()"
     (@slideMotion.done)="animationDone()"

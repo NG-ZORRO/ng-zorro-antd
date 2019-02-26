@@ -5,10 +5,10 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
-  EventEmitter,
+  EventEmitter, Host,
   Input,
   OnChanges,
-  OnDestroy,
+  OnDestroy, Optional,
   Output,
   SimpleChanges,
   ViewChild,
@@ -17,6 +17,7 @@ import {
 import { combineLatest, merge, EMPTY, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, mapTo, takeUntil } from 'rxjs/operators';
 import { slideMotion } from '../core/animation/slide';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { DEFAULT_DROPDOWN_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position';
 import { InputBoolean } from '../core/util/convert';
 import { NzMenuDirective } from '../menu/nz-menu.directive';
@@ -103,7 +104,8 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
     }
   }
 
-  constructor(protected cdr: ChangeDetectorRef, private nzMenuDropdownService: NzMenuDropdownService) {
+  constructor(protected cdr: ChangeDetectorRef, private nzMenuDropdownService: NzMenuDropdownService,
+              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
   }
 
   ngOnDestroy(): void {

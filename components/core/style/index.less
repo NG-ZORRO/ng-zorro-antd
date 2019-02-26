@@ -195,3 +195,59 @@ textarea.cdk-textarea-autosize-measuring {
   padding: 2px 0 !important;
   box-sizing: content-box !important;
 }
+
+
+.nz-animate-disabled {
+
+  // drawer
+  &.ant-drawer {
+    &.ant-drawer-open .ant-drawer-mask {
+      animation: none;
+      transition: none;
+    }
+    & > * {
+      transition: none;
+    }
+  }
+
+  // modal
+  .ant-modal-mask, .ant-modal {
+    animation: none;
+    transition: none;
+    &.zoom-enter, &.zoom-leave,
+    &.zoom-enter-active, &.zoom-leave-active {
+      animation: none;
+      transition: none;
+    }
+  }
+
+  // menu
+  &.ant-menu {
+    transition: none;
+    .ant-menu-item, .ant-menu-submenu-title {
+      transition: none;
+    }
+    .ant-menu-item .anticon, .ant-menu-submenu-title .anticon {
+      transition: none;
+      & + span {
+        transition: none;
+      }
+    }
+  }
+
+  // tabs
+  &.ant-tabs {
+    .ant-tabs-top-content.ant-tabs-content-animated,
+    .ant-tabs-bottom-content.ant-tabs-content-animated,
+    .ant-tabs-top-content > .ant-tabs-tabpane,
+    .ant-tabs-bottom-content > .ant-tabs-tabpane,
+    &.ant-tabs-left .ant-tabs-ink-bar-animated,
+    &.ant-tabs-right .ant-tabs-ink-bar-animated,
+    &.ant-tabs-top .ant-tabs-ink-bar-animated,
+    &.ant-tabs-bottom .ant-tabs-ink-bar-animated {
+      transition: none;
+    }
+  }
+
+
+}

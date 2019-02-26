@@ -45,6 +45,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   @Input() @InputBoolean() nzClosable = true;
   @Input() @InputBoolean() nzMaskClosable = true;
   @Input() @InputBoolean() nzMask = true;
+  @Input() @InputBoolean() nzNoAnimation = false;
   @Input() nzTitle: string | TemplateRef<{}>;
   @Input() nzPlacement: NzDrawerPlacement = 'right';
   @Input() nzMaskStyle: object = {};
@@ -183,13 +184,17 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
         setTimeout(() => {
           this.updateBodyOverflow();
           this.restoreFocus();
-        }, DRAWER_ANIMATE_DURATION);
+        }, this.getAnimationDuration());
       }
     }
   }
 
   ngOnDestroy(): void {
     this.disposeOverlay();
+  }
+
+  private getAnimationDuration(): number {
+    return this.nzNoAnimation ? 0 : DRAWER_ANIMATE_DURATION;
   }
 
   close(result?: R): void {
@@ -201,7 +206,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
       this.restoreFocus();
       this.nzAfterClose.next(result);
       this.nzAfterClose.complete();
-    }, DRAWER_ANIMATE_DURATION);
+    }, this.getAnimationDuration());
   }
 
   open(): void {
@@ -213,7 +218,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     this.changeDetectorRef.detectChanges();
     setTimeout(() => {
       this.nzAfterOpen.next();
-    }, DRAWER_ANIMATE_DURATION);
+    }, this.getAnimationDuration());
   }
 
   closeClick(): void {

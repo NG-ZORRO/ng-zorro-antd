@@ -6,16 +6,23 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
-  Input, NgZone, OnDestroy,
+  Host,
+  Input,
+  NgZone,
+  OnDestroy,
+  Optional,
   Output,
   QueryList,
   TemplateRef,
-  ViewChild, ViewChildren, ViewEncapsulation
+  ViewChild,
+  ViewChildren,
+  ViewEncapsulation
 } from '@angular/core';
 import { defer, merge, Observable, Subscription } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 
 import { slideMotion } from '../core/animation/slide';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { NzDropDownPosition } from '../core/types/drop-down-position';
 import { InputBoolean } from '../core/util/convert';
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './nz-autocomplete-option.component';
@@ -37,7 +44,7 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
     slideMotion
   ],
   styles             : [
-      `
+    `
       .ant-select-dropdown {
         top: 100%;
         left: 0;
@@ -99,7 +106,8 @@ export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
     .pipe(take(1), switchMap(() => this.optionSelectionChanges));
   });
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private ngZone: NgZone) {
+  constructor(private changeDetectorRef: ChangeDetectorRef, private ngZone: NgZone,
+              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
   }
 
   ngAfterViewInit(): void {

@@ -3,7 +3,7 @@ import {
   ComponentFactoryResolver,
   Directive,
   ElementRef,
-  EventEmitter,
+  EventEmitter, Host,
   Input,
   OnInit,
   Optional,
@@ -14,6 +14,7 @@ import {
 
 import { distinctUntilChanged } from 'rxjs/operators';
 
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { InputBoolean } from '../core/util/convert';
 import { NzTooltipDirective } from '../tooltip/nz-tooltip.directive';
 import { NzPopconfirmComponent } from './nz-popconfirm.component';
@@ -57,15 +58,17 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit 
     hostView: ViewContainerRef,
     resolver: ComponentFactoryResolver,
     renderer: Renderer2,
-    @Optional() tooltip: NzPopconfirmComponent
+    @Optional() tooltip: NzPopconfirmComponent,
+    @Host() @Optional() public noAnimation: NzNoAnimationDirective
   ) {
-    super(elementRef, hostView, resolver, renderer, tooltip);
+    super(elementRef, hostView, resolver, renderer, tooltip, noAnimation);
   }
 
   ngOnInit(): void {
     if (!this.tooltip) {
       const tooltipComponent = this.hostView.createComponent(this.factory);
       this.tooltip = tooltipComponent.instance;
+      this.tooltip.noAnimation = this.noAnimation;
       // Remove element when use directive https://github.com/NG-ZORRO/ng-zorro-antd/issues/1967
       this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), tooltipComponent.location.nativeElement);
       this.isDynamicTooltip = true;

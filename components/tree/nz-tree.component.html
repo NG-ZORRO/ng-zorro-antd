@@ -19,7 +19,7 @@
     [nzExpandAll]="nzExpandAll"
     [nzDefaultExpandAll]="nzDefaultExpandAll"
     [nzTreeTemplate]="nzTreeTemplate"
-    [nzNoAnimation]="nzNoAnimation"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
     (clickNode)="nzClick.emit($event)"
     (dblClick)="nzDblClick.emit($event)"
     (contextMenu)="nzContextMenu.emit($event)"

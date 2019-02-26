@@ -13,6 +13,7 @@
   <div class="ant-popover"
     [ngClass]="_classMap"
     [ngStyle]="nzOverlayStyle"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
     [@zoomBigMotion]="'active'"
     (@zoomBigMotion.done)="_afterVisibilityAnimation($event)">
     <div class="ant-popover-content">

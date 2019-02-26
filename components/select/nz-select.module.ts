@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzAddOnModule } from '../core/addon/addon.module';
+import { NzNoAnimationModule } from '../core/no-animation/nz-no-animation.module';
 import { NzOverlayModule } from '../core/overlay/nz-overlay.module';
 import { NzEmptyModule } from '../empty/nz-empty.module';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
@@ -25,7 +26,8 @@ import { NzSelectComponent } from './nz-select.component';
     NzIconModule,
     NzAddOnModule,
     NzEmptyModule,
-    NzOverlayModule
+    NzOverlayModule,
+    NzNoAnimationModule
   ],
   declarations: [
     NzFilterGroupOptionPipe,
