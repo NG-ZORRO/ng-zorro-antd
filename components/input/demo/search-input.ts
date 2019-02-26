@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
     </ng-template>
     <br>
     <br>
-    <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
       <input type="text" nz-input placeholder="input search text">
     </nz-input-group>
     <ng-template #suffixIconButton>
@@ -19,7 +19,7 @@ import { Component } from '@angular/core';
     </ng-template>
     <br>
     <br>
-    <nz-input-group nzSearch nzSize="large" [nzSuffix]="suffixButton">
+    <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixButton">
       <input type="text" nz-input placeholder="input search text">
     </nz-input-group>
     <ng-template #suffixButton>
