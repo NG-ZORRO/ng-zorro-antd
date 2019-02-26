@@ -11,7 +11,6 @@ import {
 import { NgClassType } from '../core/types/ng-class';
 import { NzSizeLDSType } from '../core/types/size';
 import { InputBoolean } from '../core/util/convert';
-
 import { NzInputDirective } from './nz-input.directive';
 
 @Component({
@@ -121,9 +120,6 @@ export class NzInputGroupComponent implements AfterContentInit {
     if (this.listOfNzInputDirective) {
       this.listOfNzInputDirective.forEach(item => item.nzSize = this.nzSize);
     }
-  }
-
-  constructor() {
   }
 
   ngAfterContentInit(): void {
