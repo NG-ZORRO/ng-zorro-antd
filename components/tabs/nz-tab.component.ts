@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy,
-  Component, ElementRef,
+  Component, ContentChild, ElementRef,
   EventEmitter,
   Input,
   OnChanges, OnDestroy,
@@ -13,6 +13,7 @@ import {
 import { Subject } from 'rxjs';
 
 import { InputBoolean } from '../core/util/convert';
+import { NzTabDirective } from './nz-tab.directive';
 
 @Component({
   selector           : 'nz-tab',
@@ -27,6 +28,7 @@ export class NzTabComponent implements OnChanges, OnDestroy {
   isActive = false;
   readonly stateChanges = new Subject<void>();
   @ViewChild(TemplateRef) content: TemplateRef<void>;
+  @ContentChild(NzTabDirective, { read: TemplateRef }) template: TemplateRef<void>;
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() @InputBoolean() nzForceRender = false;
   @Input() @InputBoolean() nzDisabled = false;
