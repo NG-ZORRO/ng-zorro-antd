@@ -68,7 +68,7 @@ title: Message
 
 ### NzMessageDataFilled
 
-It's the object that returned when you call `NzMessageService.success` and others.
+当你调用 `NzMessageService.success` 或其他方法时会返回该对象。
 
 ```ts
 export interface NzMessageDataFilled {
