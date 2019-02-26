@@ -34,4 +34,6 @@ Any data whose entries are defined in a hierarchical manner is fit to use this c
 | `[nzDefaultExpandAll]` | Whether to expand all treeNodes by default | `boolean` | `false` |
 | `[nzDefaultExpandedKeys]` | Default expanded treeNodes | `string[]` | - |
 | `[nzDisplayWith]` | How to display the selected node value in the trigger | `(node: NzTreeNode) => string` | `(node: NzTreeNode) => node.title` |
+| `[nzMaxTagCount]` | Max tag count to show| number | - |
+| `[nzMaxTagPlaceholder]` | Placeholder for not showing tags | TemplateRef<{ $implicit: NzTreeNode[] }> | - |
 | `(nzExpandChange)` | Callback function for when a treeNode is expanded or collapsed |`EventEmitter<NzFormatEmitEvent>` | - |
