@@ -65,3 +65,13 @@ title: Message
 | nzMaxStack | 同一时间可展示的最大提示数量 | `number` | `8` |
 | nzPauseOnHover | 鼠标移上时禁止自动移除 | `boolean` | `true` |
 | nzAnimate | 开关动画效果 | `boolean` | `true` |
+
+### NzMessageDataFilled
+
+当你调用 `NzMessageService.success` 或其他方法时会返回该对象。
+
+```ts
+export interface NzMessageDataFilled {
+  onClose: Subject<false>; // 当 message 关闭时它会派发一个事件
+}
+```

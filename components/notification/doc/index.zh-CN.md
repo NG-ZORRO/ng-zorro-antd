@@ -80,3 +80,13 @@ subtitle: 通知提醒框
 | nzTop | 消息从顶部弹出时，距离顶部的位置。 | `string` | 24px |
 | nzBottom | 消息从底部弹出时，距离底部的位置。 | `string` | 24px |
 | nzPlacement | 弹出位置，可选 `topLeft` `topRight` `bottomLeft` `bottomRight` | `string` | `topRight` |
+
+### NzNotificationDataFilled
+
+当你调用 `NzNotificationService.success` 或其他方法时会返回该对象。
+
+```ts
+export interface NzNotificationDataFilled {
+  onClose: Subject<boolean>; // 当 notification 关闭时它会派发一个事件，如果为用户手动关闭会派发 `true`
+}
+```

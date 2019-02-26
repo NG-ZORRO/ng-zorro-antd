@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Optional, ViewEncapsulation } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { NzMessageConfig, NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG } from './nz-message-config';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
@@ -26,34 +27,49 @@ export class NzMessageContainerComponent {
     this.config = { ...this.config, ...config };
   }
 
-  // Create a new message
+  /**
+   * Create a new message.
+   * @param message Parsed message configuration.
+   */
   createMessage(message: NzMessageDataFilled): void {
     if (this.messages.length >= this.config.nzMaxStack) {
       this.messages.splice(0, 1);
     }
     message.options = this._mergeMessageOptions(message.options);
+    message.onClose = new Subject<boolean>();
     this.messages.push(message);
     this.cdr.detectChanges();
   }
 
-  // Remove a message by messageId
-  removeMessage(messageId: string): void {
+  /**
+   * Remove a message by `messageId`.
+   * @param messageId Id of the message to be removed.
+   * @param userAction Whether this is closed by user interaction.
+   */
+  removeMessage(messageId: string, userAction: boolean = false): void {
     this.messages.some((message, index) => {
       if (message.messageId === messageId) {
         this.messages.splice(index, 1);
         this.cdr.detectChanges();
+        message.onClose.next(userAction);
+        message.onClose.complete();
         return true;
       }
     });
   }
 
-  // Remove all messages
+  /**
+   * Remove all messages.
+   */
   removeMessageAll(): void {
     this.messages = [];
     this.cdr.detectChanges();
   }
 
-  // Merge default options and custom message options
+  /**
+   * Merge default options and custom message options
+   * @param options
+   */
   protected _mergeMessageOptions(options: NzMessageDataOptions): NzMessageDataOptions {
     const defaultOptions: NzMessageDataOptions = {
       nzDuration    : this.config.nzDuration,

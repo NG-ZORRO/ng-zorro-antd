@@ -1,4 +1,5 @@
 import { TemplateRef } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { NzMessageData, NzMessageDataOptions } from '../message/nz-message.definitions';
 
@@ -21,7 +22,9 @@ export interface NzNotificationDataOptions<T = {}> extends NzMessageDataOptions 
 // Filled version of NzMessageData (includes more private properties)
 export interface NzNotificationDataFilled extends NzNotificationData {
   messageId: string; // Service-wide unique id, auto generated
+  createdAt: Date; // Auto created
+
   state?: 'enter' | 'leave';
   options?: NzNotificationDataOptions;
-  createdAt: Date; // Auto created
+  onClose?: Subject<boolean>;
 }
