@@ -17,7 +17,7 @@ export class NzNoAnimationDirective implements OnChanges, AfterViewInit {
 
   constructor(private element: ElementRef,
               private renderer: Renderer2,
-              @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: 'NoopAnimations' | 'BrowserAnimations') {
+              @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string) {
   }
 
   ngOnChanges(): void {
