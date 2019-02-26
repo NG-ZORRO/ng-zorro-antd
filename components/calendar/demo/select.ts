@@ -5,8 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <nz-alert nzMessage="Your selected date: {{ selectedValue | date:'yyyy-MM-dd' }}"></nz-alert>
     <nz-calendar [(ngModel)]="selectedValue"
-      (selectChange)="selectChange($event)"
-      (nzValueChange)="valueChange($event)"
+      (nzSelectChange)="selectChange($event)"
     ></nz-calendar>
   `
 })
@@ -15,9 +14,5 @@ export class NzDemoCalendarSelectComponent {
 
   selectChange(select: Date): void {
     console.log(`Select value: ${select}`);
-  }
-
-  valueChange(value: Date): void {
-    console.log(`Current value: ${value}`);
   }
 }
