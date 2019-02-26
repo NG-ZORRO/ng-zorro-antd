@@ -45,7 +45,7 @@
       *ngFor="let tab of listOfNzTabComponent; let i = index"
       [active]="(nzSelectedIndex == i) && !nzHideAll"
       [forceRender]="tab.nzForceRender"
-      [content]="tab.content">
+      [content]="tab.template || tab.content">
     </div>
   </div>
 </ng-container>
