@@ -73,13 +73,13 @@ export class NzMessageComponent implements OnInit, OnDestroy {
   }
 
   // Remove self
-  protected _destroy(): void {
+  protected _destroy(userAction: boolean = false): void {
     if (this._options.nzAnimate) {
       this.nzMessage.state = 'leave';
       this.cdr.detectChanges();
-      setTimeout(() => this._messageContainer.removeMessage(this.nzMessage.messageId), 200);
+      setTimeout(() => this._messageContainer.removeMessage(this.nzMessage.messageId, userAction), 200);
     } else {
-      this._messageContainer.removeMessage(this.nzMessage.messageId);
+      this._messageContainer.removeMessage(this.nzMessage.messageId, userAction);
     }
   }
 
