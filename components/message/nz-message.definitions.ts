@@ -26,5 +26,4 @@ export interface NzMessageDataFilled extends NzMessageData {
   options?: NzMessageDataOptions;
   state?: 'enter' | 'leave';
   onClose?: Subject<boolean>;
-  onClick?: Subject<MouseEvent>;
 }
