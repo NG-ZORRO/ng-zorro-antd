@@ -8,7 +8,7 @@ import { delay } from 'rxjs/operators';
   template: `
     <nz-tree
       [nzData]="nodes"
-      nzDraggable="true"
+      nzDraggable
       (nzExpandChange)="nzAction($event)"
       [nzBeforeDrop]="beforeDrop"
       (nzOnDragStart)="nzAction($event)"

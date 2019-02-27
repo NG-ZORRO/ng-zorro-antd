@@ -340,12 +340,12 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
 
   updateSelectedNodes(init: boolean = false): void {
     if (init) {
-      const nodes = this.nzNodes.map(item => new NzTreeNode(item));
+      const nodes = this.nzNodes.map(item => new NzTreeNode(item, null, this.nzTreeService));
       this.nzTreeService.initTree(nodes);
       if (this.nzCheckable) {
         this.nzTreeService.calcCheckedKeys(this.value, nodes);
       } else {
-        this.nzTreeService.calcSelectedKeys(this.value, nodes);
+        this.nzTreeService.calcSelectedKeys(this.value, nodes, this.isMultiple);
       }
     }
     this.selectedNodes = [ ...(this.nzCheckable ? this.nzTreeService.getCheckedNodeList() : this.nzTreeService.getSelectedNodeList()) ];
