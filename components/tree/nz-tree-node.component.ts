@@ -43,7 +43,10 @@ import { isCheckDisabled } from './nz-tree-util';
       transition('inactive => active', animate('100ms ease-in')),
       transition('active => inactive', animate('100ms ease-out'))
     ])
-  ]
+  ],
+  host: {
+    '(mousedown)': 'nzSelectMode && $event.preventDefault()'
+  }
 })
 
 export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
