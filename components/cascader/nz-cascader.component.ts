@@ -7,9 +7,11 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Host,
   HostListener,
   Input,
   OnDestroy,
+  Optional,
   Output,
   Renderer2,
   TemplateRef,
@@ -19,6 +21,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { slideMotion } from '../core/animation/slide';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { DEFAULT_CASCADER_POSITIONS } from '../core/overlay/overlay-position';
 import { NgClassType } from '../core/types/ng-class';
 import { arraysEqual, toArray } from '../core/util/array';
@@ -811,7 +814,8 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     this.setMenuVisible(false);
   }
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, renderer: Renderer2) {
+  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, renderer: Renderer2,
+              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader');
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-picker');
   }

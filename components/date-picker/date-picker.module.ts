@@ -2,6 +2,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { NzNoAnimationModule } from '../core/no-animation/nz-no-animation.module';
 import { NzOverlayModule } from '../core/overlay/nz-overlay.module';
 import { NzIconModule } from '../icon/nz-icon.module';
 
@@ -22,7 +23,8 @@ import { NzYearPickerComponent } from './year-picker.component';
     OverlayModule,
     LibPackerModule,
     NzIconModule,
-    NzOverlayModule
+    NzOverlayModule,
+    NzNoAnimationModule
   ],
   exports: [
     NzDatePickerComponent,

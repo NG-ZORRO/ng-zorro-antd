@@ -61,6 +61,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Input() @InputBoolean() nzCancelDisabled: boolean = false;
   @Input() @InputBoolean() nzCancelLoading: boolean = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
+  @Input() @InputBoolean() nzNoAnimation = false;
   @Input() nzContent: string | TemplateRef<{}> | Type<T>; // [STATIC] If not specified, will use <ng-content>
   @Input() nzComponentParams: T; // [STATIC] ONLY avaliable when nzContent is a component
   @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>>; // [STATIC] Default Modal ONLY
@@ -381,7 +382,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     return new Promise((resolve) => setTimeout(() => { // Return when animation is over
       this.changeAnimationState(null);
       resolve();
-    }, MODAL_ANIMATE_DURATION));
+    }, this.nzNoAnimation ? 0 : MODAL_ANIMATE_DURATION));
   }
 
   private formatModalButtons(buttons: Array<ModalButtonOptions<T>>): Array<ModalButtonOptions<T>> {

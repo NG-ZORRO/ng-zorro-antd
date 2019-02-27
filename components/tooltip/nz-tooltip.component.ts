@@ -11,8 +11,10 @@ import {
   Component,
   ContentChild,
   EventEmitter,
+  Host,
   Input,
   OnChanges,
+  Optional,
   Output,
   TemplateRef,
   ViewChild,
@@ -20,6 +22,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { zoomBigMotion } from '../core/animation/zoom';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { getPlacementName, DEFAULT_TOOLTIP_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position';
 import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
@@ -91,7 +94,7 @@ export class NzToolTipComponent implements OnChanges {
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  constructor(public cdr: ChangeDetectorRef) {
+  constructor(public cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
   }
 
   ngOnChanges(): void {

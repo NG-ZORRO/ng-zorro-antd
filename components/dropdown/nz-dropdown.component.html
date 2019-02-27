@@ -12,6 +12,7 @@
     [ngClass]="nzOverlayClassName"
     [ngStyle]="nzOverlayStyle"
     [@slideMotion]="dropDownPosition"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
     [style.minWidth.px]="triggerWidth"
     (mouseenter)="setVisibleStateWhen(true,'hover')"
     (mouseleave)="setVisibleStateWhen(false,'hover')">

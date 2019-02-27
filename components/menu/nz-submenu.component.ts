@@ -7,10 +7,12 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
+  Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   QueryList,
   SimpleChanges,
@@ -23,6 +25,7 @@ import { flatMap, map, startWith, takeUntil } from 'rxjs/operators';
 import { collapseMotion } from '../core/animation/collapse';
 import { slideMotion } from '../core/animation/slide';
 import { zoomBigMotion } from '../core/animation/zoom';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { getPlacementName, DEFAULT_SUBMENU_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { InputBoolean } from '../core/util/convert';
@@ -114,7 +117,8 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
               public nzMenuService: NzMenuService,
               private cdr: ChangeDetectorRef,
               public nzSubmenuService: NzSubmenuService,
-              private nzUpdateHostClassService: NzUpdateHostClassService) {
+              private nzUpdateHostClassService: NzUpdateHostClassService,
+              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
   }
 
   ngOnInit(): void {

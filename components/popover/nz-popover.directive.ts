@@ -3,10 +3,13 @@ import {
   ComponentFactoryResolver,
   Directive,
   ElementRef,
+  Host,
   Optional,
   Renderer2,
   ViewContainerRef
 } from '@angular/core';
+
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { NzTooltipDirective } from '../tooltip/nz-tooltip.directive';
 import { NzPopoverComponent } from './nz-popover.component';
 
@@ -24,8 +27,9 @@ export class NzPopoverDirective extends NzTooltipDirective {
     hostView: ViewContainerRef,
     resolver: ComponentFactoryResolver,
     renderer: Renderer2,
-    @Optional() tooltip: NzPopoverComponent
+    @Optional() tooltip: NzPopoverComponent,
+    @Host() @Optional() public noAnimation: NzNoAnimationDirective
   ) {
-    super(elementRef, hostView, resolver, renderer, tooltip);
+    super(elementRef, hostView, resolver, renderer, tooltip, noAnimation);
   }
 }
