@@ -37,7 +37,7 @@
       [ngClass]="nzNodeContentClass"
       [class.draggable]="canDraggable">
       <span
-        *ngIf="nzTreeNode.origin.icon"
+        *ngIf="nzTreeNode.origin.icon && nzShowIcon"
         [class.ant-tree-icon__open]="isSwitcherOpen"
         [class.ant-tree-icon__close]="isSwitcherClose"
         [class.ant-tree-icon_loading]="nzTreeNode.isLoading"
@@ -73,7 +73,7 @@
     [@.disabled]="noAnimation?.nzNoAnimation"
     [@nodeState]="nzTreeNode.isExpanded ? 'active' : 'inactive'">
     <nz-tree-node
-      *ngFor="let node of nzTreeNode.getChildren()"
+      *ngFor="let node of nzTreeNode.getChildren(); trackBy: trackByFn"
       [nzTreeNode]="node"
       [nzNoAnimation]="noAnimation?.nzNoAnimation"
       [nzSelectMode]="nzSelectMode"
@@ -85,6 +85,7 @@
       [nzMultiple]="nzMultiple"
       [nzExpandAll]="nzExpandAll"
       [nzDefaultExpandAll]="nzDefaultExpandAll"
+      [nzShowIcon]="nzShowIcon"
       [nzSearchValue]="nzSearchValue"
       [nzHideUnMatched]="nzHideUnMatched"
       [nzBeforeDrop]="nzBeforeDrop"

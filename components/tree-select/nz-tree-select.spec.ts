@@ -5,14 +5,7 @@ import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/te
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  createKeyboardEvent,
-  dispatchFakeEvent,
-  dispatchMouseEvent,
-  typeInElement
-} from '../core/testing';
-
-import { NzTreeNode } from '../tree/nz-tree-node';
+import { createKeyboardEvent, dispatchFakeEvent, dispatchMouseEvent, typeInElement } from '../core/testing';
 import { NzTreeSelectComponent } from './nz-tree-select.component';
 import { NzTreeSelectModule } from './nz-tree-select.module';
 
@@ -335,7 +328,7 @@ describe('tree-select component', () => {
     }));
 
     it('should prevent open the dropdown when click remove', fakeAsync(() => {
-      testComponent.value = ['1000122'];
+      testComponent.value = [ '1000122' ];
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
@@ -438,7 +431,7 @@ describe('tree-select component', () => {
       dispatchMouseEvent(targetSwitcher, 'click');
       fixture.detectChanges();
       expect(targetSwitcher.classList.contains('ant-select-tree-switcher_open')).toBe(true);
-      expect(treeSelectComponent.nzDefaultExpandedKeys[0] === '1001').toBe(true);
+      expect(treeSelectComponent.nzDefaultExpandedKeys[ 0 ] === '1001').toBe(true);
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(false);
@@ -447,7 +440,7 @@ describe('tree-select component', () => {
       targetSwitcher = overlayContainerElement.querySelector('.ant-select-tree-switcher');
       expect(treeSelectComponent.nzOpen).toBe(true);
       expect(targetSwitcher.classList.contains('ant-select-tree-switcher_open')).toBe(true);
-      expect(treeSelectComponent.nzDefaultExpandedKeys[0] === '1001').toBe(true);
+      expect(treeSelectComponent.nzDefaultExpandedKeys[ 0 ] === '1001').toBe(true);
     }));
   });
 
@@ -485,7 +478,7 @@ export class NzTestTreeSelectBasicComponent {
   multiple = false;
   maxTagCount = Infinity;
   nodes = [
-    new NzTreeNode({
+    {
       title   : 'root1',
       key     : '1001',
       children: [
@@ -518,8 +511,8 @@ export class NzTestTreeSelectBasicComponent {
           ]
         }
       ]
-    }),
-    new NzTreeNode({
+    },
+    {
       title   : 'root2',
       key     : '1002',
       children: [
@@ -541,7 +534,7 @@ export class NzTestTreeSelectBasicComponent {
           ]
         }
       ]
-    })
+    }
   ];
 
   setNull(): void {
@@ -569,7 +562,7 @@ export class NzTestTreeSelectCheckableComponent {
   value = [ '1000122' ];
   showSearch = false;
   nodes = [
-    new NzTreeNode({
+    {
       title   : 'root1',
       key     : '1001',
       children: [
@@ -602,8 +595,8 @@ export class NzTestTreeSelectCheckableComponent {
           ]
         }
       ]
-    }),
-    new NzTreeNode({
+    },
+    {
       title   : 'root2',
       key     : '1002',
       children: [
@@ -625,7 +618,7 @@ export class NzTestTreeSelectCheckableComponent {
           ]
         }
       ]
-    })
+    }
   ];
 
   setNull(): void {
@@ -648,7 +641,7 @@ export class NzTestTreeSelectCheckableComponent {
 export class NzTestTreeSelectFormComponent {
   formGroup: FormGroup;
   nodes = [
-    new NzTreeNode({
+    {
       title   : 'root2',
       key     : '1002',
       children: [
@@ -661,7 +654,7 @@ export class NzTestTreeSelectFormComponent {
           key  : '10022'
         }
       ]
-    })
+    }
   ];
 
   constructor(private fb: FormBuilder) {
