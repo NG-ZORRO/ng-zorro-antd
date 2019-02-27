@@ -9,6 +9,7 @@ import {
   OnInit,
   Optional
 } from '@angular/core';
+import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 import { NzWaveRenderer } from './nz-wave-renderer';
 
 export interface NzWaveConfig {
@@ -39,9 +40,13 @@ export class NzWaveDirective implements OnInit, OnDestroy {
 
   constructor(private ngZone: NgZone,
               private elementRef: ElementRef,
-              @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) config: NzWaveConfig) {
+              @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) config: NzWaveConfig,
+              @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string) {
     if (config && typeof config.disabled === 'boolean') {
       this.waveDisabled = config.disabled;
+    }
+    if (this.animationType === 'NoopAnimations') {
+      this.waveDisabled = true;
     }
   }
 
