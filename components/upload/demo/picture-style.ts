@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NzMessageService, UploadFile } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-upload-picture-style',
@@ -56,6 +55,4 @@ export class NzDemoUploadPictureStyleComponent {
 
   fileList1 = [...this.defaultFileList];
   fileList2 = [...this.defaultFileList];
-
-  constructor(private msg: NzMessageService) {}
 }

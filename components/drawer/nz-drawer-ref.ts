@@ -1,5 +1,5 @@
 import { TemplateRef } from '@angular/core';
-import { Observable } from 'rxjs/index';
+import { Observable } from 'rxjs';
 import { NzDrawerPlacement } from './nz-drawer-options';
 
 // tslint:disable-next-line:no-any
@@ -11,6 +11,7 @@ export abstract class NzDrawerRef<R = any> {
   abstract open(): void;
 
   abstract nzClosable: boolean;
+  abstract nzNoAnimation: boolean;
   abstract nzMaskClosable: boolean;
   abstract nzMask: boolean;
   abstract nzTitle: string | TemplateRef<{}>;

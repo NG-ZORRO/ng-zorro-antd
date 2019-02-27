@@ -5,7 +5,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   template     : `
     <div class="example-input">
-      <nz-input-group nzSearch nzSize="large" [nzSuffix]="suffixIconButton">
+      <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixIconButton">
         <input placeholder="input here" nz-input [(ngModel)]="inputValue" (ngModelChange)="onChange($event)" [nzAutocomplete]="auto"/>
       </nz-input-group>
       <ng-template #suffixIconButton>
@@ -38,7 +38,7 @@ export class NzDemoAutoCompleteUncertainCategoryComponent {
 
   onChange(value: string): void {
     this.options = new Array(this.getRandomInt(15, 5)).join('.').split('.')
-    .map((item, idx) => ({
+    .map((_item, idx) => ({
       value,
       category: `${value}${idx}`,
       count: this.getRandomInt(200, 100),

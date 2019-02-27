@@ -12,7 +12,7 @@ title:
 
 > 固定列使用了 `sticky` 属性，浏览器支持情况可以参考[这里](https://caniuse.com/#feat=css-sticky)。
 
-> 若列头与内容不对齐或出现列重复，请指定 `th` 的宽度 `nzWidth`。
+> 若列头与内容不对齐或出现列重复，请指定每一列的 `th` 的宽度 `nzWidth`。
 
 > 建议指定 `nzScroll.x` 为大于表格宽度的固定值或百分比。注意，且非固定列宽度之和不要超过 `nzScroll.x`。
 

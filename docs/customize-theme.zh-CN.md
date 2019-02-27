@@ -43,4 +43,4 @@ Ant Design 的样式使用了 [Less](http://lesscss.org/) 作为开发语言，�
 @primary-color          : #f5222d;
 ```
 
-全部可被自定义 less 变量可以参考 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/scripts/site/_site/src/theme.less)。
+全部可被自定义 less 变量可以参考 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/scripts/site/_site/doc/theme.less)。

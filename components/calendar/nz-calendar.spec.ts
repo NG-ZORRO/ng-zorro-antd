@@ -1,3 +1,4 @@
+
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component } from '@angular/core';
@@ -5,6 +6,7 @@ import { async, fakeAsync, flush, ComponentFixture , TestBed } from '@angular/co
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NZ_DATE_CONFIG } from '../i18n/date-config';
 import { NzCalendarHeaderComponent as CalendarHeader } from './nz-calendar-header.component';
 import { NzCalendarComponent as Calendar } from './nz-calendar.component';
 import { NzCalendarModule } from './nz-calendar.module';
@@ -26,8 +28,10 @@ describe('Calendar', () => {
         NzTestCalendarDateCellComponent,
         NzTestCalendarDateFullCellComponent,
         NzTestCalendarMonthCellComponent,
-        NzTestCalendarMonthFullCellComponent
-      ]
+        NzTestCalendarMonthFullCellComponent,
+        NzTestCalendarChangesComponent
+      ],
+      providers: [ { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } } ]
     }).compileComponents();
   }));
 
@@ -275,11 +279,9 @@ describe('Calendar', () => {
 
   describe('dateCell', () => {
     let fixture: ComponentFixture<NzTestCalendarDateCellComponent>;
-    let component: NzTestCalendarDateCellComponent;
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(NzTestCalendarDateCellComponent);
-      component = fixture.componentInstance;
     }));
 
     it('should work when passed via property', () => {
@@ -303,11 +305,9 @@ describe('Calendar', () => {
 
   describe('dateFullCell', () => {
     let fixture: ComponentFixture<NzTestCalendarDateFullCellComponent>;
-    let component: NzTestCalendarDateFullCellComponent;
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(NzTestCalendarDateFullCellComponent);
-      component = fixture.componentInstance;
     }));
 
     it('should work when passed via property', () => {
@@ -331,11 +331,9 @@ describe('Calendar', () => {
 
   describe('monthCell', () => {
     let fixture: ComponentFixture<NzTestCalendarMonthCellComponent>;
-    let component: NzTestCalendarMonthCellComponent;
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(NzTestCalendarMonthCellComponent);
-      component = fixture.componentInstance;
     }));
 
     it('should work when passed via property', () => {
@@ -359,11 +357,9 @@ describe('Calendar', () => {
 
   describe('monthFullCell', () => {
     let fixture: ComponentFixture<NzTestCalendarMonthFullCellComponent>;
-    let component: NzTestCalendarMonthFullCellComponent;
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(NzTestCalendarMonthFullCellComponent);
-      component = fixture.componentInstance;
     }));
 
     it('should work when passed via property', () => {
@@ -384,6 +380,46 @@ describe('Calendar', () => {
       expect(content.nativeElement.textContent.trim()).toBe('Bar');
     });
   });
+
+  describe('changes', () => {
+    let fixture: ComponentFixture<NzTestCalendarChangesComponent>;
+    let component: NzTestCalendarChangesComponent;
+
+    beforeEach(async(() => {
+      fixture = TestBed.createComponent(NzTestCalendarChangesComponent);
+      component = fixture.componentInstance;
+    }));
+
+    it('should panelChange work', fakeAsync(() => {
+      fixture.detectChanges();
+
+      expect(component.panelChange).toHaveBeenCalledTimes(0);
+
+      const calendar = fixture.debugElement.queryAll(By.directive(Calendar))[0].injector.get(Calendar);
+      calendar.onModeChange('year');
+      fixture.detectChanges();
+
+      expect(component.panelChange).toHaveBeenCalledTimes(1);
+    }));
+
+    it('should selectChange work', () => {
+      fixture.detectChanges();
+
+      expect(component.panelChange).toHaveBeenCalledTimes(0);
+
+      const calendar = fixture.debugElement.queryAll(By.directive(Calendar))[0].injector.get(Calendar);
+      calendar.onYearSelect(2019);
+      fixture.detectChanges();
+
+      expect(component.selectChange).toHaveBeenCalledTimes(1);
+
+      calendar.onMonthSelect(2);
+      fixture.detectChanges();
+
+      expect(component.selectChange).toHaveBeenCalledTimes(2);
+    });
+  });
+
 });
 
 @Component({
@@ -466,3 +502,20 @@ class NzTestCalendarMonthCellComponent { }
   `
 })
 class NzTestCalendarMonthFullCellComponent { }
+
+@Component({
+  template: `
+    <nz-calendar
+      [(nzMode)]="mode"
+      [(ngModel)]="date0"
+      (nzPanelChange)="panelChange($event)"
+      (nzSelectChange)="selectChange($event)">
+    </nz-calendar>
+  `
+})
+class NzTestCalendarChangesComponent {
+  mode: 'month'|'year' = 'month';
+  date0 = new Date(2014, 3, 14);
+  panelChange = jasmine.createSpy('panelChange callback');
+  selectChange = jasmine.createSpy('selectChange callback');
+}

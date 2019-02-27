@@ -19,7 +19,7 @@ export class NzNotificationComponent extends NzMessageComponent {
   }
 
   close(): void {
-    this._destroy();
+    this._destroy(true);
   }
 
   get state(): string {

@@ -18,6 +18,10 @@ import { Component, OnInit } from '@angular/core';
           <nz-form-control><nz-switch [(ngModel)]="pagination" name="pagination"></nz-switch></nz-form-control>
         </nz-form-item>
         <nz-form-item>
+          <nz-form-label><label>PageSizeChanger</label></nz-form-label>
+          <nz-form-control><nz-switch [(ngModel)]="sizeChanger" name="sizeChanger"></nz-switch></nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
           <nz-form-label><label>Title</label></nz-form-label>
           <nz-form-control><nz-switch [(ngModel)]="title" name="title"></nz-switch></nz-form-control>
         </nz-form-item>
@@ -73,11 +77,12 @@ import { Component, OnInit } from '@angular/core';
     </div>
     <nz-table #dynamicTable
       [nzScroll]="fixHeader ? { y: '240px' } : null"
-      [nzData]="dataSet"
+      [nzData]="listOfData"
       [nzBordered]="bordered"
       [nzSimple]="simple"
       [nzLoading]="loading"
       [nzPaginationPosition]="position"
+      [nzShowSizeChanger]="sizeChanger"
       [nzFrontPagination]="pagination"
       [nzShowPagination]="pagination"
       [nzFooter]="footer?'Here is Footer':null"
@@ -118,20 +123,21 @@ import { Component, OnInit } from '@angular/core';
   styles  : [
       `
       .components-table-demo-control-bar {
-        margin-bottom: 10px;
+        margin-bottom: 12px;
       }
 
-      .components-table-demo-control-bar ::ng-deep .ant-form-item {
-        margin-right: 15px;
+      .nz-form-item {
+        margin-right: 16px;
         margin-bottom: 8px;
       }
     `
   ]
 })
 export class NzDemoTableDynamicSettingsComponent implements OnInit {
-  dataSet = [];
+  listOfData = [];
   bordered = false;
   loading = false;
+  sizeChanger = false;
   pagination = true;
   header = true;
   title = true;
@@ -170,8 +176,8 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    for (let i = 1; i <= 20; i++) {
-      this.dataSet.push({
+    for (let i = 1; i <= 100; i++) {
+      this.listOfData.push({
         name       : 'John Brown',
         age        : `${i}2`,
         address    : `New York No. ${i} Lake Park`,
@@ -183,7 +189,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   }
 
   noResultChange(status: boolean): void {
-    this.dataSet = [];
+    this.listOfData = [];
     if (!status) {
       this.ngOnInit();
     }

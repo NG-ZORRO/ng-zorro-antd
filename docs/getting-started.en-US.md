@@ -86,7 +86,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
 import { AppComponent } from './app.component';
 
-/** config angular i18n **/
+/** config angular i18n **/	
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 registerLocaleData(en);
@@ -104,8 +104,10 @@ registerLocaleData(en);
     NgZorroAntdModule
   ],
   bootstrap: [ AppComponent ],
-  /** config ng-zorro-antd i18n **/
-  providers   : [ { provide: NZ_I18N, useValue: en_US } ]
+  /** config ng-zorro-antd i18n (language && date) **/
+  providers   : [
+    { provide: NZ_I18N, useValue: en_US }
+  ]
 })
 export class AppModule { }
 ```

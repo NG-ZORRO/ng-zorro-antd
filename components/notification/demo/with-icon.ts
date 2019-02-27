@@ -11,7 +11,7 @@ import { NzNotificationService } from 'ng-zorro-antd';
   `,
   styles  : [
     `
-      :host ::ng-deep .ant-btn {
+      button {
         margin-right: 1em;
       }
     `

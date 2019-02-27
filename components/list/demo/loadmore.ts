@@ -40,10 +40,10 @@ const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,
   </nz-list>
   `,
   styles: [ `
-  :host ::ng-deep .demo-loadmore-list {
+  .demo-loadmore-list {
     min-height: 350px;
   }
-  :host ::ng-deep .loadmore {
+  .loadmore {
     text-align: center;
     margin-top: 12px;
     height: 32px;

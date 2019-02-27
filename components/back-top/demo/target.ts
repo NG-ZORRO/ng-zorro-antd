@@ -12,21 +12,21 @@ import { Component } from '@angular/core';
     </div>
   `,
   styles  : [ `
-    :host ::ng-deep .long-div {
+    .long-div {
       height: 300px;
       overflow-y: scroll;
       background-image: url(//zos.alipayobjects.com/rmsportal/RmjwQiJorKyobvI.jpg);
     }
 
-    :host ::ng-deep .long-div-inner {
+    .long-div-inner {
       height: 1500px;
     }
 
-    :host ::ng-deep .long-div .ant-back-top {
+    nz-back-top {
       right: 150px;
     }
 
-    :host ::ng-deep strong {
+    strong {
       color: rgba(64, 64, 64, 0.6);
     }
   ` ]

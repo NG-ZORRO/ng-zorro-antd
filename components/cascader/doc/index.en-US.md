@@ -32,7 +32,7 @@ Cascade selection box.
 | `[nzExpandTrigger]` | expand current item when click or hover, one of 'click' 'hover' | `'click'｜'hover'` | `'click'` |
 | `[nzMenuClassName]` | additional className of popup overlay | `string` | - |
 | `[nzMenuStyle]` | additional css style of popup overlay | `object` | - |
-| `[nzNotFoundContent]` | Specify content to show when no result matches. | `string` | - |
+| `[nzNotFoundContent]` | Specify content to show when no result matches. | `string｜TemplateRef<void>` | - |
 | `[nzLabelProperty]` | the label property name of options | `string` | `'label'` |
 | `[nzLabelRender]` | render template of displaying selected options | `TemplateRef<any>` | - |
 | `[nzLoadData]` | To load option lazily. If setting `ngModel` with an array value and `nzOptions` is not setting, lazy load will be call immediately | `(option: any, index?: index) => PromiseLike<any>` | - |

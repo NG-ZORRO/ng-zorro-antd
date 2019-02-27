@@ -7,9 +7,11 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Host,
   HostListener,
   Input,
   OnDestroy,
+  Optional,
   Output,
   Renderer2,
   TemplateRef,
@@ -19,9 +21,10 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { slideMotion } from '../core/animation/slide';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { DEFAULT_CASCADER_POSITIONS } from '../core/overlay/overlay-position';
 import { NgClassType } from '../core/types/ng-class';
-import { arrayEquals, toArray } from '../core/util/array';
+import { arraysEqual, toArray } from '../core/util/array';
 import { InputBoolean } from '../core/util/convert';
 
 import {
@@ -85,7 +88,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   @Input() nzValueProperty = 'value';
   @Input() nzLabelRender: TemplateRef<void>;
   @Input() nzLabelProperty = 'label';
-  @Input() nzNotFoundContent: string;
+  @Input() nzNotFoundContent: string | TemplateRef<void>;
   @Input() nzSize: NzCascaderSize = 'default';
   @Input() nzShowSearch: boolean | NzShowSearchOptions;
   @Input() nzPlaceHolder = 'Please select';
@@ -355,7 +358,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   }
 
   private setColumnData(options: CascaderOption[], columnIndex: number): void {
-    if (!arrayEquals(this.columns[ columnIndex ], options)) {
+    if (!arraysEqual(this.columns[ columnIndex ], options)) {
       this.columns[ columnIndex ] = options;
       if (columnIndex < this.columns.length - 1) {
         this.columns = this.columns.slice(0, columnIndex + 1);
@@ -390,7 +393,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
 
   private onValueChange(): void {
     const value = this.getSubmitValue();
-    if (!arrayEquals(this.value, value)) {
+    if (!arraysEqual(this.value, value)) {
       this.defaultValue = null;
       this.value = value;
       this.onChange(value);
@@ -410,7 +413,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
 
   //#endregion
 
-  //#region Mouse and keyboard event handlers, view children
+  //#region Mouse and keyboard event handles, view children
 
   focus(): void {
     if (!this.isFocused) {
@@ -426,11 +429,11 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     }
   }
 
-  handleInputBlur(event: Event): void {
+  handleInputBlur(): void {
     this.menuVisible ? this.focus() : this.blur();
   }
 
-  handleInputFocus(event: Event): void {
+  handleInputFocus(): void {
     this.focus();
   }
 
@@ -476,8 +479,8 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     }
   }
 
-  @HostListener('click', [ '$event' ])
-  onTriggerClick(event: MouseEvent): void {
+  @HostListener('click')
+  onTriggerClick(): void {
     if (this.nzDisabled) {
       return;
     }
@@ -490,8 +493,8 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     this.onTouched();
   }
 
-  @HostListener('mouseenter', [ '$event' ])
-  onTriggerMouseEnter(event: MouseEvent): void {
+  @HostListener('mouseenter')
+  onTriggerMouseEnter(): void {
     if (this.nzDisabled) {
       return;
     }
@@ -811,7 +814,8 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     this.setMenuVisible(false);
   }
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, renderer: Renderer2) {
+  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, renderer: Renderer2,
+              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader');
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-picker');
   }

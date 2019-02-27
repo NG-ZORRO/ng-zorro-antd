@@ -89,7 +89,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd';
 import { AppComponent } from './app.component';
 
-/** 配置 angular i18n **/
+/** 配置 angular i18n **/	
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
@@ -107,8 +107,10 @@ registerLocaleData(zh);
     NgZorroAntdModule
   ],
   bootstrap: [ AppComponent ],
-  /** 配置 ng-zorro-antd 国际化 **/
-  providers   : [ { provide: NZ_I18N, useValue: zh_CN } ]
+  /** 配置 ng-zorro-antd 国际化（文案 及 日期） **/
+  providers   : [
+    { provide: NZ_I18N, useValue: zh_CN }
+  ]
 })
 export class AppModule { }
 

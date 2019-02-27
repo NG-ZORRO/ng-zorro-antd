@@ -16,6 +16,6 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 })
 export class NzFormExtraComponent {
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'ant-form-extra');
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-form-extra');
   }
 }

@@ -19,7 +19,6 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  Renderer2,
   SimpleChanges,
   TemplateRef,
   Type,
@@ -29,8 +28,6 @@ import {
 
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
-import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 
 import { InputBoolean } from '../core/util/convert';
 import { isPromise } from '../core/util/is-promise';
@@ -64,6 +61,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Input() @InputBoolean() nzCancelDisabled: boolean = false;
   @Input() @InputBoolean() nzCancelLoading: boolean = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
+  @Input() @InputBoolean() nzNoAnimation = false;
   @Input() nzContent: string | TemplateRef<{}> | Type<T>; // [STATIC] If not specified, will use <ng-content>
   @Input() nzComponentParams: T; // [STATIC] ONLY avaliable when nzContent is a component
   @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>>; // [STATIC] Default Modal ONLY
@@ -129,11 +127,9 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   constructor(
     private overlay: Overlay,
     private i18n: NzI18nService,
-    private renderer: Renderer2,
     private cfr: ComponentFactoryResolver,
     private elementRef: ElementRef,
     private viewContainer: ViewContainerRef,
-    private nzMeasureScrollbarService: NzMeasureScrollbarService,
     private modalControl: NzModalControlService,
     private focusTrapFactory: FocusTrapFactory,
     private cdr: ChangeDetectorRef,
@@ -386,7 +382,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     return new Promise((resolve) => setTimeout(() => { // Return when animation is over
       this.changeAnimationState(null);
       resolve();
-    }, MODAL_ANIMATE_DURATION));
+    }, this.nzNoAnimation ? 0 : MODAL_ANIMATE_DURATION));
   }
 
   private formatModalButtons(buttons: Array<ModalButtonOptions<T>>): Array<ModalButtonOptions<T>> {

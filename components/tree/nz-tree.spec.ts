@@ -8,18 +8,17 @@ import { of, Observable } from 'rxjs';
 import { dispatchMouseEvent, dispatchTouchEvent } from '../core/testing';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
-import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from './interface';
+import { NzTreeBaseService } from './nz-tree-base.service';
 import { NzTreeNode } from './nz-tree-node';
 import { NzTreeComponent } from './nz-tree.component';
 import { NzTreeModule } from './nz-tree.module';
-import { NzTreeService } from './nz-tree.service';
 
 describe('nz-tree', () => {
   let treeInstance;
   let treeElement: HTMLElement;
   let component;
   let fixture;
-  let treeService: NzTreeService;
+  let treeService: NzTreeBaseService;
   describe('basic tree', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
@@ -352,7 +351,7 @@ describe('nz-tree', () => {
         imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
         declarations: [ NzTestTreeDraggableComponent ],
         providers   : [
-          NzTreeService
+          NzTreeBaseService
         ]
       }).compileComponents();
     }));
@@ -462,7 +461,6 @@ describe('nz-tree', () => {
     it('test wrong drag event', fakeAsync(() => {
       // drop node self
       fixture.detectChanges();
-      const dragStartSpy = spyOn(treeInstance, 'onDragStart');
       const dropSpy = spyOn(treeInstance, 'onDrop');
       const dragEndSpy = spyOn(treeInstance, 'onDragEnd');
       const dragNode = treeElement.querySelector('[title=\'0-1\']');
@@ -493,10 +491,9 @@ describe('nz-tree', () => {
     }));
 
     it('test drag event nzBeforeDrop', () => {
-      const dropSpy = spyOn(treeInstance, 'onDrop');
       const dragNode = treeElement.querySelector('[title=\'0-2\']');
       let dropNode = treeElement.querySelector('[title=\'0-1\']');
-      treeInstance.beforeDrop = (arg: NzFormatBeforeDropEvent): Observable<boolean> => {
+      treeInstance.beforeDrop = (): Observable<boolean> => {
         return of(true);
       };
       fixture.detectChanges();
@@ -518,7 +515,7 @@ describe('nz-tree', () => {
         imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
         declarations: [ NzTestTreeOlderComponent ],
         providers   : [
-          NzTreeService
+          NzTreeBaseService
         ]
       }).compileComponents();
     }));
@@ -644,8 +641,7 @@ export class NzTestTreeBasicControlledComponent {
     isLeaf  : true
   } ];
 
-  nzEvent(event: NzFormatEmitEvent): void {
-    // console.log(event.eventName, event);
+  nzEvent(): void {
   }
 
 }
@@ -727,22 +723,22 @@ export class NzTestTreeDraggableComponent {
   } ];
   beforeDrop;
 
-  onDragStart(event: NzFormatEmitEvent): void {
+  onDragStart(): void {
   }
 
-  onDragEnter(event: NzFormatEmitEvent): void {
+  onDragEnter(): void {
   }
 
-  onDragOver(event: NzFormatEmitEvent): void {
+  onDragOver(): void {
   }
 
-  onDragLeave(event: NzFormatEmitEvent): void {
+  onDragLeave(): void {
   }
 
-  onDrop(event: NzFormatEmitEvent): void {
+  onDrop(): void {
   }
 
-  onDragEnd(event: NzFormatEmitEvent): void {
+  onDragEnd(): void {
   }
 }
 

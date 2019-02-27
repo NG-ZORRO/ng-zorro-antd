@@ -10,9 +10,11 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
+  Host,
   Input,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -24,6 +26,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { merge, EMPTY, Subject } from 'rxjs';
 import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 import { slideMotion } from '../core/animation/slide';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { NzSizeLDSType } from '../core/types/size';
 import { isNotNil } from '../core/util/check';
 import { toBoolean, InputBoolean } from '../core/util/convert';
@@ -227,7 +230,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     });
   }
 
-  constructor(private renderer: Renderer2, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor, elementRef: ElementRef) {
+  constructor(private renderer: Renderer2,
+              public nzSelectService: NzSelectService,
+              private cdr: ChangeDetectorRef,
+              private focusMonitor: FocusMonitor,
+              elementRef: ElementRef,
+              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
     renderer.addClass(elementRef.nativeElement, 'ant-select');
   }
 

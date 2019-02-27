@@ -1,7 +1,7 @@
 
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component } from '@angular/core';
-import { fakeAsync, flush, flushMicrotasks, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
@@ -151,6 +151,20 @@ describe('NzMessage', () => {
     demoAppFixture.detectChanges();
     tick(1000);
     expect(overlayContainerElement.textContent).toContain('EXISTS');
+  }));
+
+  it('should emit event when message close', fakeAsync(() => {
+    let onCloseFlag = false;
+
+    const msg = messageService.create('loading', 'CLOSE');
+    msg.onClose.subscribe(() => {
+      onCloseFlag = true;
+    });
+
+    demoAppFixture.detectChanges();
+    tick(50000);
+
+    expect(onCloseFlag).toBeTruthy();
   }));
 });
 

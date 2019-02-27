@@ -38,20 +38,23 @@
   <ul *ngIf="nzSelectService.isMultipleOrTags">
     <ng-container *ngFor="let option of nzSelectService.listOfCachedSelectedOption | slice: 0 : nzMaxTagCount;trackBy:trackValue;">
       <li [@zoomMotion]
-        [attr.title]="option.nzLabel"
-        [class.ant-select-selection__choice__disabled]="option.nzDisabled"
-        class="ant-select-selection__choice">
+          [nzNoAnimation]="noAnimation?.nzNoAnimation"
+          [attr.title]="option.nzLabel"
+          [class.ant-select-selection__choice__disabled]="option.nzDisabled"
+          class="ant-select-selection__choice">
         <div class="ant-select-selection__choice__content">{{ option.nzLabel }}</div>
         <span *ngIf="!option.nzDisabled"
           class="ant-select-selection__choice__remove"
+          (mousedown)="$event.preventDefault()"
           (click)="removeSelectedValue(option, $event)">
           <i nz-icon type="close" class="ant-select-remove-icon" *ngIf="!nzRemoveIcon; else nzRemoveIcon"></i>
         </span>
       </li>
     </ng-container>
-    <li [@zoomMotion]
-      *ngIf="nzSelectService.listOfCachedSelectedOption.length > nzMaxTagCount"
-      class="ant-select-selection__choice">
+    <li *ngIf="nzSelectService.listOfCachedSelectedOption.length > nzMaxTagCount"
+        [@zoomMotion]
+        [nzNoAnimation]="noAnimation?.nzNoAnimation"
+        class="ant-select-selection__choice">
       <div class="ant-select-selection__choice__content">
         <ng-container *ngIf="nzMaxTagPlaceholder">
           <ng-template
@@ -72,6 +75,7 @@
 <span *ngIf="nzAllowClear && nzSelectService.listOfSelectedValue.length"
   class="ant-select-selection__clear"
   nz-select-unselectable
+  (mousedown)="$event.preventDefault()"
   (click)="onClearSelection($event)">
     <i nz-icon type="close-circle" theme="fill" *ngIf="!nzClearIcon; else nzClearIcon" class="ant-select-close-icon"></i>
   </span>

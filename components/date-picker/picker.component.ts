@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 
 import { slideMotion } from '../core/animation/slide';
-import { NzI18nService } from '../i18n/nz-i18n.service';
+import { DateHelperService } from '../i18n/date-helper.service';
 import { CandyDate } from './lib/candy-date';
 
 @Component({
@@ -33,6 +33,7 @@ import { CandyDate } from './lib/candy-date';
 })
 
 export class NzPickerComponent implements OnInit, AfterViewInit {
+  @Input() noAnimation: boolean = false;
   @Input() isRange: boolean = false;
   @Input() open: boolean = undefined; // "undefined" = this value will be not used
   @Input() disabled: boolean;
@@ -89,14 +90,11 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
   dropdownAnimation: 'top' | 'bottom' = 'bottom';
   currentPositionX: 'start' | 'end' = 'start';
   currentPositionY: 'top' | 'bottom' = 'top';
-  // get valueReadable(): string {
-  //   return this.value && this.i18n.formatDateCompatible(this.value.nativeDate, this.format);
-  // }
   get realOpenState(): boolean { // The value that really decide the open state of overlay
     return this.isOpenHandledByUser() ? this.open : this.overlayOpen;
   }
 
-  constructor(private i18n: NzI18nService, private changeDetector: ChangeDetectorRef) {
+  constructor(private dateHelper: DateHelperService, private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -173,7 +171,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
     } else {
       value = this.value as CandyDate;
     }
-    return value ? this.i18n.formatDateCompatible(value.nativeDate, this.format) : null;
+    return value ? this.dateHelper.format(value.nativeDate, this.format) : null;
   }
 
   getPartTypeIndex(partType: RangePartType): number {

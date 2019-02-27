@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { async, inject, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,7 +14,6 @@ registerLocaleData(zh);
 
 describe('time-picker', () => {
   let overlayContainer: OverlayContainer;
-  let overlayContainerElement: HTMLElement;
   let testComponent;
   let fixture;
   beforeEach(async(() => {
@@ -26,7 +25,6 @@ describe('time-picker', () => {
     TestBed.compileComponents();
     inject([ OverlayContainer ], (oc: OverlayContainer) => {
       overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
     })();
   }));
   afterEach(inject([ OverlayContainer ], (currentOverlayContainer: OverlayContainer) => {
@@ -87,13 +85,23 @@ describe('time-picker', () => {
       expect(testComponent.openChange).toHaveBeenCalledTimes(3);
       expect(testComponent.open).toBe(true);
     });
+    it('should clear work', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.date = new Date('2018-11-11 11:11:11');
+      fixture.detectChanges();
+      tick(500);
+      testComponent.nzTimePickerComponent.cdr.detectChanges();
+      timeElement.nativeElement.querySelector('.ant-time-picker-clear').click();
+      fixture.detectChanges();
+      expect(testComponent.date).toBeNull();
+    }));
   });
 });
 
 @Component({
   selector: 'nz-test-time-picker',
   template: `
-    <nz-time-picker [nzAutoFocus]="autoFocus" [(ngModel)]="date" [nzAllowEmpty]="false" [(nzOpen)]="open" (nzOpenChange)="openChange($event)" [nzDisabled]="disabled"></nz-time-picker>`
+    <nz-time-picker [nzAutoFocus]="autoFocus" [(ngModel)]="date" [(nzOpen)]="open" (nzOpenChange)="openChange($event)" [nzDisabled]="disabled"></nz-time-picker>`
 })
 export class NzTestTimePickerComponent {
   open = false;

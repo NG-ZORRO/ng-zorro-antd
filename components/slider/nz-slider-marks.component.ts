@@ -1,130 +1,95 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { toBoolean } from '../core/util/convert';
-// DEFINITIONS
+import { InputBoolean } from '../core/util/convert';
 
-export type Mark = string | {
-  style: object;
-  label: string;
-};
-
-export class Marks {
-  number: Mark;
-}
-
-// TODO: extends Array could cause unexpected behavior when targeting es5 or below
-export class MarksArray extends Array<{ value: number, offset: number, config: Mark }> {
-  [ index: number ]: {
-    value: number;
-    offset: number;
-    config: Mark;
-  }
-}
+import { isConfigAObject, DisplayedMark, ExtendedMark, Mark } from './nz-slider-definitions';
 
 @Component({
-  selector           : 'nz-slider-marks',
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   preserveWhitespaces: false,
+  selector           : 'nz-slider-marks',
   templateUrl        : './nz-slider-marks.component.html'
 })
 export class NzSliderMarksComponent implements OnChanges {
-  private _vertical = false;
-  private _included = false;
-
-  // Dynamic properties
   @Input() nzLowerBound: number = null;
   @Input() nzUpperBound: number = null;
-  @Input() nzMarksArray: MarksArray;
+  @Input() nzMarksArray: ExtendedMark[];
+  @Input() nzMin: number;
+  @Input() nzMax: number;
+  @Input() @InputBoolean() nzVertical = false;
+  @Input() @InputBoolean() nzIncluded = false;
 
-  // Static properties
-  @Input() nzClassName: string;
-  @Input() nzMin: number; // Required
-  @Input() nzMax: number; // Required
-
-  @Input()
-  set nzVertical(value: boolean) { // Required
-    this._vertical = toBoolean(value);
-  }
-
-  get nzVertical(): boolean {
-    return this._vertical;
-  }
-
-  @Input()
-  set nzIncluded(value: boolean) {
-    this._included = toBoolean(value);
-  }
-
-  get nzIncluded(): boolean {
-    return this._included;
-  }
-
-  // TODO: using named interface
-  attrs: Array<{ id: number, value: number, offset: number, classes: { [ key: string ]: boolean }, style: object, label: Mark }>; // points for inner use
+  marks: DisplayedMark[];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzMarksArray) {
-      this.buildAttrs();
+      this.buildMarks();
     }
     if (changes.nzMarksArray || changes.nzLowerBound || changes.nzUpperBound) {
       this.togglePointActive();
     }
   }
 
-  trackById(index: number, attr: { id: number, value: number, offset: number, classes: { [ key: string ]: boolean }, style: object, label: Mark }): number {
-    return attr.id;
+  trackById(_index: number, mark: DisplayedMark): number {
+    return mark.value;
   }
 
-  buildAttrs(): void {
+  private buildMarks(): void {
     const range = this.nzMax - this.nzMin;
-    this.attrs = this.nzMarksArray.map(mark => {
+
+    this.marks = this.nzMarksArray.map(mark => {
       const { value, offset, config } = mark;
-      // calc styles
-      let label = config;
-      let style: object;
-      if (this.nzVertical) {
-        style = {
-          marginBottom: '-50%',
-          bottom      : `${(value - this.nzMin) / range * 100}%`
-        };
-      } else {
-        const marksCount = this.nzMarksArray.length;
-        const unit = 100 / (marksCount - 1);
-        const markWidth = unit * 0.9;
-        style = {
-          width     : `${markWidth}%`,
-          marginLeft: `${-markWidth / 2}%`,
-          left      : `${(value - this.nzMin) / range * 100}%`
-        };
-      }
-      // custom configuration
-      if (typeof config === 'object') {
-        label = config.label;
-        if (config.style) {
-          style = { ...style, ...config.style };
-        }
-      }
+      const style = this.buildStyles(value, range, config);
+      const label = isConfigAObject(config) ? config.label : config;
+
       return {
-        id     : value,
-        value,
+        label,
         offset,
-        classes: {
-          [ `${this.nzClassName}-text` ]: true
-        },
         style,
-        label
+        value,
+        config,
+        active: false
       };
-    }); // END - map
+    });
   }
 
-  togglePointActive(): void {
-    if (this.attrs && this.nzLowerBound !== null && this.nzUpperBound !== null) {
-      this.attrs.forEach(attr => {
-        const value = attr.value;
-        const isActive = (!this.nzIncluded && value === this.nzUpperBound) ||
+  private buildStyles(value: number, range: number, config: Mark): { [ key: string ]: string } {
+    let style;
+
+    if (this.nzVertical) {
+      style = {
+        marginBottom: '-50%',
+        bottom      : `${(value - this.nzMin) / range * 100}%`
+      };
+    } else {
+      const marksCount = this.nzMarksArray.length;
+      const unit = 100 / (marksCount - 1);
+      const markWidth = unit * 0.9;
+      style = {
+        width     : `${markWidth}%`,
+        marginLeft: `${-markWidth / 2}%`,
+        left      : `${(value - this.nzMin) / range * 100}%`
+      };
+    }
+
+    if (isConfigAObject(config) && config.style) {
+      style = { ...style, ...config.style };
+    }
+
+    return style;
+  }
+
+  private togglePointActive(): void {
+    if (this.marks && this.nzLowerBound !== null && this.nzUpperBound !== null) {
+      this.marks.forEach(mark => {
+        const value = mark.value;
+        const isActive =
+          (!this.nzIncluded && value === this.nzUpperBound) ||
           (this.nzIncluded && value <= this.nzUpperBound && value >= this.nzLowerBound);
-        attr.classes[ `${this.nzClassName}-text-active` ] = isActive;
+
+        mark.active = isActive;
       });
     }
   }
-
 }

@@ -1,3 +1,5 @@
+import { NzTreeBaseService } from './nz-tree-base.service';
+
 export interface NzTreeNodeOptions {
   title: string;
   key: string;
@@ -17,7 +19,7 @@ export interface NzTreeNodeOptions {
 
 export class NzTreeNode {
   title?: string;
-  key?: string;
+  key: string;
   level: number = 0;
   children: NzTreeNode[];
   isLeaf: boolean;
@@ -36,7 +38,21 @@ export class NzTreeNode {
   isLoading: boolean;
   isMatched: boolean;
 
-  constructor(option: NzTreeNodeOptions, parent: NzTreeNode = null) {
+  private service: NzTreeBaseService;
+
+  get treeService(): NzTreeBaseService {
+    if (this.service) {
+      return this.service;
+    } else if (this.parentNode) {
+      return this.parentNode.treeService;
+    }
+  }
+
+  constructor(option: NzTreeNodeOptions | NzTreeNode, parent: NzTreeNode = null, service?: NzTreeBaseService) {
+    if (option instanceof NzTreeNode) {
+      return option;
+    }
+    this.service = service;
     this.title = option.title || '---';
     this.key = option.key || null;
     this.isLeaf = option.isLeaf || false;
@@ -134,6 +150,10 @@ export class NzTreeNode {
       this.origin.children = this.getChildren().map(v => v.origin);
       // remove loading state
       this.isLoading = false;
+      this.treeService.$statusChange.next({
+        'eventName': 'addChildren',
+        'node'     : this
+      });
     }
   }
 

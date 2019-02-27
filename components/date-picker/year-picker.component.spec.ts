@@ -1,26 +1,18 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import * as isBefore from 'date-fns/is_before';
 import { dispatchMouseEvent } from '../core/testing';
 import { NzInputModule } from '../input/nz-input.module';
 import { NzDatePickerModule } from './date-picker.module';
-import { CandyDate } from './lib/candy-date';
-import { PickerResultSingle } from './standard-types';
-
-registerLocaleData(zh);
 
 describe('NzYearPickerComponent', () => {
   let fixture: ComponentFixture<NzTestYearPickerComponent>;
   let fixtureInstance: NzTestYearPickerComponent;
   let debugElement: DebugElement;
-  let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
   beforeEach(fakeAsync(() => {
@@ -42,7 +34,6 @@ describe('NzYearPickerComponent', () => {
   });
 
   beforeEach(inject([ OverlayContainer ], (oc: OverlayContainer) => {
-    overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
 
@@ -161,6 +152,22 @@ describe('NzYearPickerComponent', () => {
       expect(compStyles.getPropertyValue('border-top-right-radius') === '0px').toBeTruthy();
       expect(compStyles.getPropertyValue('border-bottom-right-radius') === '0px').toBeTruthy();
     });
+
+    it('should support nzDisabledDate', fakeAsync(() => {
+      fixture.detectChanges();
+      fixtureInstance.nzValue = new Date('2018-11-11 12:12:12');
+      fixtureInstance.nzDisabledDate = (current: Date) => current.getFullYear() === 2013;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      const disabledCell = overlayContainerElement.querySelector('tbody.ant-calendar-year-panel-tbody tr td.ant-calendar-year-panel-cell-disabled');
+      expect(disabledCell.textContent).toContain('2013');
+    }));
 
     it('should support nzLocale', () => {
       const featureKey = 'TEST_PLACEHOLDER';
@@ -377,6 +384,7 @@ describe('NzYearPickerComponent', () => {
         [nzAllowClear]="nzAllowClear"
         [nzAutoFocus]="nzAutoFocus"
         [nzDisabled]="nzDisabled"
+        [nzDisabledDate]="nzDisabledDate"
         [nzClassName]="nzClassName"
         [nzLocale]="nzLocale"
         [nzPlaceHolder]="nzPlaceHolder"
@@ -420,6 +428,7 @@ class NzTestYearPickerComponent {
   nzAllowClear;
   nzAutoFocus;
   nzDisabled;
+  nzDisabledDate;
   nzClassName;
   nzLocale;
   nzPlaceHolder;
@@ -428,10 +437,10 @@ class NzTestYearPickerComponent {
   nzSize;
   nzStyle;
 
-  nzOnOpenChange(d: CandyDate): void {
+  nzOnOpenChange(): void {
   }
 
-  nzOnChange(result: PickerResultSingle): void {
+  nzOnChange(): void {
   }
 
   nzValue;

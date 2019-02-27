@@ -69,6 +69,7 @@
 <!-- Overlay -->
 <ng-template
   cdkConnectedOverlay
+  nzConnectedOverlay
   [cdkConnectedOverlayOrigin]="origin"
   [cdkConnectedOverlayOpen]="realOpenState"
   [cdkConnectedOverlayHasBackdrop]="!isOpenHandledByUser()"
@@ -78,6 +79,7 @@
   (detach)="onOverlayDetach()"
 >
   <div
+    [nzNoAnimation]="noAnimation"
     [@slideMotion]="dropdownAnimation"
     (@slideMotion.start)="animationStart()"
     (@slideMotion.done)="animationDone()"

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-transfer-search',

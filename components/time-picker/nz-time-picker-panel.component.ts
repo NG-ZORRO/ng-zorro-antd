@@ -3,11 +3,9 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
-  Output,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -69,7 +67,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   @Input() nzHideDisabledOptions = false;
   @Input() nzClearText: string;
   @Input() nzPlaceHolder: string;
-  @Output() readonly timeClear = new EventEmitter<void>();
 
   @Input()
   set nzAllowEmpty(value: boolean) {
@@ -317,11 +314,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     } else {
       return index;
     }
-  }
-
-  clear(): void {
-    this.time.clear();
-    this.timeClear.emit();
   }
 
   protected changed(): void {

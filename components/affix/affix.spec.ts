@@ -1,4 +1,4 @@
-import { Component, DebugElement, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, DebugElement, ViewChild } from '@angular/core';
 import {
   discardPeriodicTasks,
   fakeAsync,
@@ -188,7 +188,6 @@ describe('affix', () => {
 
   describe('[nzOffsetTop]', () => {
     const offsetTop = 150;
-    const componentOffset = 160;
 
     beforeEach(() => {
       context.newOffset = offsetTop;
@@ -347,7 +346,7 @@ describe('affix', () => {
       });
     });
 
-    it(`emit true when is affixed`, fakeAsync((done) => {
+    it(`emit true when is affixed`, fakeAsync(() => {
       setupInitialState();
       emitScroll(window, defaultOffsetTop + startOffset + 1);
 
@@ -356,7 +355,7 @@ describe('affix', () => {
       discardPeriodicTasks();
     }));
 
-    it(`emit false when is unaffixed`, fakeAsync((done) => {
+    it(`emit false when is unaffixed`, fakeAsync(() => {
       setupInitialState();
       emitScroll(window, defaultOffsetTop + startOffset + 1);
       emitScroll(window, defaultOffsetTop + startOffset - 1);
@@ -466,8 +465,7 @@ describe('affix-extra', () => {
   let fixture: ComponentFixture<TestAffixComponent>;
   let context: TestAffixComponent;
   let dl: DebugElement;
-  let component: NzAffixComponent;
-  let page: PageObject;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NzAffixModule],
@@ -475,9 +473,7 @@ describe('affix-extra', () => {
     }).compileComponents();
     fixture = TestBed.createComponent(TestAffixComponent);
     context = fixture.componentInstance;
-    component = context.nzAffixComponent;
     dl = fixture.debugElement;
-    page = new PageObject();
   });
   it('#getOffset', () => {
     const ret = fixture.componentInstance.nzAffixComponent.getOffset(fixture.debugElement.query(By.css('#affix')).nativeElement, window);
@@ -504,9 +500,6 @@ describe('affix-extra', () => {
     const ret = +(el.querySelector('.ant-affix') as HTMLElement).style.bottom.replace('px', '');
     expect(ret).toBe(value);
   }));
-  class PageObject {
-
-  }
 });
 
 @Component({

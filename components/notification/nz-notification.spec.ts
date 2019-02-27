@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, flush, flushMicrotasks, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
@@ -159,10 +159,11 @@ describe('NzNotification', () => {
     expect(overlayContainerElement.querySelector('.ant-notification-topLeft')).not.toBeNull();
   });
 
+  // Should support nzData as context.
   it('should open a message box with template ref', () => {
-    messageService.template(demoAppFixture.componentInstance.demoTemplateRef);
+    messageService.template(demoAppFixture.componentInstance.demoTemplateRef, { nzData: 'data' });
     demoAppFixture.detectChanges();
-    expect(overlayContainerElement.textContent).toContain('test template content');
+    expect(overlayContainerElement.textContent).toContain('test template contentdata');
   });
 
   it('should update an existing notification when keys are matched', () => {
@@ -174,12 +175,30 @@ describe('NzNotification', () => {
     expect(overlayContainerElement.textContent).toContain('SHOULD NOT CHANGE');
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-success')).not.toBeNull();
   });
+
+  it('should receive `true` when it is closed by user', fakeAsync(() => {
+    let onCloseFlag = false;
+
+    messageService.create(null, null, 'close').onClose.subscribe(user => {
+      if (user) {
+        onCloseFlag = true;
+      }
+    });
+
+    demoAppFixture.detectChanges();
+    tick(1000);
+    const closeEl = overlayContainerElement.querySelector('.ant-notification-notice-close');
+    dispatchMouseEvent(closeEl, 'click');
+    tick(1000);
+    expect(onCloseFlag).toBeTruthy();
+    tick(50000);
+  }));
 });
 
 @Component({
   selector: 'nz-demo-app-component',
   template: `
-    <ng-template>{{ 'test template content' }}</ng-template>
+    <ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template>
   `
 })
 export class DemoAppComponent {

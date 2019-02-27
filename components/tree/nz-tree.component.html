@@ -1,11 +1,12 @@
 <ul
   role="tree"
   unselectable="on"
-  [ngClass]="nzTreeClass">
+  [ngClass]="classMap">
   <nz-tree-node
     *ngFor="let node of nzNodes"
     [nzTreeNode]="node"
     [nzShowExpand]="nzShowExpand"
+    [nzSelectMode]="nzSelectMode"
     [nzShowLine]="nzShowLine"
     [nzExpandedIcon]='nzExpandedIcon'
     [nzDraggable]="nzDraggable"
@@ -19,6 +20,7 @@
     [nzExpandAll]="nzExpandAll"
     [nzDefaultExpandAll]="nzDefaultExpandAll"
     [nzTreeTemplate]="nzTreeTemplate"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
     (clickNode)="nzClick.emit($event)"
     (dblClick)="nzDblClick.emit($event)"
     (contextMenu)="nzContextMenu.emit($event)"

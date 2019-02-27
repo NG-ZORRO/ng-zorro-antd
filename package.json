@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "ng serve --port 0",
-    "build": "node ./scripts/site/generate-site init && ng build",
+    "build-site": "node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod",
+    "build-iframe": "node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --project=ng-zorro-antd-iframe --prod --base-href ./",
     "test": "ng test --watch=false --code-coverage",
     "lint": "tslint -c tslint.json 'components/*/*.ts'",
     "release": "node ./scripts/publish/publish.js",
@@ -30,7 +31,7 @@
     "integration-rollup": "npm run generate && cd integration/rollup && npm run integration",
     "postgenerate": "node ./scripts/build/generate-less.js && cp README.md publish/README.md && npm run migration-styles && npm run schematic:generate",
     "generate": "ng build ng-zorro-antd-lib",
-    "pre-release": "npm run site:init && bash ./scripts/build/replace-publish.sh && npm run generate && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod && npm run helper"
+    "pre-release": "npm run site:init && bash ./scripts/build/replace-publish.sh && npm run generate && npm run build-site && npm run build-iframe && npm run helper"
   },
   "dependencies": {
     "@angular/cdk": "^7.3.0",
@@ -74,12 +75,12 @@
     "hammerjs": "^2.0.8",
     "husky": "^1.0.1",
     "jasmine-core": "~2.99.1",
-    "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.0.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-spec-reporter": "0.0.32",
     "less": "^3.9.0",
     "less-plugin-clean-css": "^1.5.1",
     "marked": "^0.5.1",

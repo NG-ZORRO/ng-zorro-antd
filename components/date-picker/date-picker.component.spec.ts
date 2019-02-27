@@ -14,7 +14,6 @@ import en_US from '../i18n/languages/en_US';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzDatePickerModule } from './date-picker.module';
-import { PickerResultSingle } from './standard-types';
 
 registerLocaleData(zh);
 
@@ -29,7 +28,9 @@ describe('NzDatePickerComponent', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule ],
-      providers   : [],
+      providers   : [
+        // { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 1 } }
+      ],
       declarations: [
         NzTestDatePickerComponent
       ]
@@ -76,6 +77,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(getPickerTrigger().placeholder).toBe('请选择日期');
       i18nService.setLocale(en_US);
+      // i18nService.setDateLocale(en);
       fixture.detectChanges();
       expect(getPickerTrigger().placeholder).toBe('Select date');
 
@@ -522,7 +524,6 @@ describe('NzDatePickerComponent', () => {
     }));
 
     it('should support nzShowTime', fakeAsync(() => {
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
       fixtureInstance.nzValue = new Date('2018-11-11 11:22:33');
       fixtureInstance.nzShowTime = true;
       fixture.detectChanges();
@@ -563,7 +564,7 @@ describe('NzDatePickerComponent', () => {
 
     it('should support nzDisabledTime and nzShowTime.nzHideDisabledOptions', fakeAsync(() => {
       fixtureInstance.nzShowTime = true;
-      fixtureInstance.nzDisabledTime = (current: Date) => {
+      fixtureInstance.nzDisabledTime = () => {
         return {
           nzDisabledHours  : () => [ 0, 1, 2 ],
           nzDisabledMinutes: () => [ 0, 1 ],
@@ -812,10 +813,10 @@ class NzTestDatePickerComponent {
   nzSize;
   nzStyle;
 
-  nzOnOpenChange(d: Date): void {
+  nzOnOpenChange(): void {
   }
 
-  nzOnChange(result: PickerResultSingle): void {
+  nzOnChange(): void {
   }
 
   nzValue;

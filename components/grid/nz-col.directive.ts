@@ -4,10 +4,11 @@ import {
   ElementRef,
   Host,
   Input,
-  OnChanges, OnDestroy,
+  OnChanges,
+  OnDestroy,
   OnInit,
-  Optional, Renderer2,
-  SimpleChange
+  Optional,
+  Renderer2
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -87,7 +88,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   ) {
   }
 
-  ngOnChanges(changes: { [ propertyName: string ]: SimpleChange }): void {
+  ngOnChanges(): void {
     this.setClassMap();
   }
 

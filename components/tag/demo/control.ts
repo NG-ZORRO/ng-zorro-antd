@@ -12,6 +12,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
     <nz-tag
       *ngIf="!inputVisible"
       class="editable-tag"
+      nzNoAnimation
       (click)="showInput()">
       <i nz-icon type="plus"></i> New Tag
     </nz-tag>
@@ -26,7 +27,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
       (keydown.enter)="handleInputConfirm()">
   `,
   styles  : [
-      `.editable-tag ::ng-deep .ant-tag {
+      `.editable-tag {
       background: rgb(255, 255, 255);
       border-style: dashed;
     }`
@@ -57,7 +58,7 @@ export class NzDemoTagControlComponent {
 
   handleInputConfirm(): void {
     if (this.inputValue && this.tags.indexOf(this.inputValue) === -1) {
-      this.tags.push(this.inputValue);
+      this.tags = [ ...this.tags, this.inputValue ];
     }
     this.inputValue = '';
     this.inputVisible = false;

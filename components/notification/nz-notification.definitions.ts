@@ -1,4 +1,5 @@
 import { TemplateRef } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { NzMessageData, NzMessageDataOptions } from '../message/nz-message.definitions';
 
@@ -9,18 +10,21 @@ export interface NzNotificationData extends NzMessageData {
   title?: string;
 }
 
-export interface NzNotificationDataOptions extends NzMessageDataOptions {
+export interface NzNotificationDataOptions<T = {}> extends NzMessageDataOptions {
   nzKey?: string;
-  /* tslint:disable-next-line:no-any */
-  nzStyle?: any;
-  /* tslint:disable-next-line:no-any */
-  nzClass?: any;
+  nzStyle?: any; // tslint:disable-line:no-any
+  nzClass?: any; // tslint:disable-line:no-any
+
+  /** Anything user wants renderer into a template. */
+  nzData?: T;
 }
 
 // Filled version of NzMessageData (includes more private properties)
 export interface NzNotificationDataFilled extends NzNotificationData {
   messageId: string; // Service-wide unique id, auto generated
+  createdAt: Date; // Auto created
+
   state?: 'enter' | 'leave';
   options?: NzNotificationDataOptions;
-  createdAt: Date; // Auto created
+  onClose?: Subject<boolean>;
 }

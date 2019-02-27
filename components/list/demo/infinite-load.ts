@@ -36,7 +36,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
   `,
   styles: [
     `
-      :host ::ng-deep .demo-infinite-container {
+      .demo-infinite-container {
         height: 300px;
         border: 1px solid #e8e8e8;
         border-radius: 4px;
