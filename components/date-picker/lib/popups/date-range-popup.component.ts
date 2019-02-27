@@ -41,6 +41,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
   @Input() value: CandyDate | CandyDate[];
   @Output() valueChange = new EventEmitter<CandyDate | CandyDate[]>();
+  @Output() readonly calendarChange = new EventEmitter<CandyDate | CandyDate[]>();
 
   @Output() resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
   @Output() closePicker = new EventEmitter<void>(); // Notify outside to close the picker panel
@@ -171,7 +172,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
       if ((!left && !right) || (left && right)) { // If totally full or empty, clean up && re-assign left first
         this.hoverValue = this.selectedValue = [ value ];
-        this.setValue([value.clone()]);
+        this.calendarChange.emit([value.clone()]);
       } else if (left && !right) { // If one of them is empty, assign the other one and sort, then set the final values
         this.clearHoverValue(); // Clean up
         this.setRangeValue('selectedValue', 'right', value);
