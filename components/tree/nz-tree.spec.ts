@@ -276,19 +276,6 @@ describe('nz-tree', () => {
       expect(fixture.componentInstance.treeComponent.getExpandedNodeList().length).toEqual(4);
     }));
 
-    it('test customized icon', fakeAsync(() => {
-      fixture.detectChanges();
-      // default icon
-      expect(treeElement.querySelectorAll('.anticon-caret-down').length).toEqual(4);
-      fixture.detectChanges();
-      // customized icon
-      fixture.componentInstance.expandedIcon = 'arrow-down';
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      expect(treeElement.querySelectorAll('.anticon-arrow-down').length).toEqual(4);
-    }));
-
     it('test search value', fakeAsync(() => {
       fixture.detectChanges();
       fixture.componentInstance.searchValue = '0-0';
@@ -561,6 +548,35 @@ describe('nz-tree', () => {
 
   });
 
+  describe('test older node property', () => {
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
+        declarations: [ NzTestTreeCustomizedIconComponent ]
+      }).compileComponents();
+      fixture = TestBed.createComponent(NzTestTreeCustomizedIconComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+      treeInstance = fixture.debugElement.componentInstance;
+      treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
+    }));
+
+    it('test customized icon', fakeAsync(() => {
+      fixture.detectChanges();
+      // default icon
+      expect(treeElement.querySelectorAll('.anticon-caret-down').length).toEqual(1);
+      fixture.detectChanges();
+      // customized string icon
+      fixture.componentInstance.expandedIcon = 'arrow-down';
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(treeElement.querySelectorAll('.anticon-arrow-down').length).toEqual(1);
+      // customized template icon
+      expect(treeElement.querySelectorAll('.anticon-smile-o').length).toEqual(1);
+
+    }));
+  });
 });
 
 @Component({
@@ -594,7 +610,6 @@ export class NzTestTreeBasicControlledComponent {
   searchValue;
   multiple = true;
   expandAll = false;
-  expandedIcon = undefined;
   asyncData = false;
   checkStrictly = false;
   defaultCheckedKeys = [ '0-0-0' ];
@@ -845,5 +860,40 @@ class NzTestTreeOlderComponent {
       ]
     }),
     new NzTreeNode({ title: 'root3', key: '1003' })
+  ];
+}
+
+@Component({
+  selector: 'nz-demo-tree-customized-icon',
+  template: `
+    <nz-tree
+      [nzData]="nodes"
+      nzShowIcon="true"
+      [nzExpandedIcon]="expandedIcon">
+    </nz-tree>
+    <nz-tree
+      [nzData]="nodes"
+      nzShowIcon="true"
+      [nzExpandedIcon]='expandedIconTpl'>
+      <ng-template #expandedIconTpl let-node>
+        <i nz-icon [type]="node.origin.icon" class="ant-tree-switcher-icon"></i>
+      </ng-template>
+    </nz-tree>
+  `
+})
+
+class NzTestTreeCustomizedIconComponent {
+  expandedIcon = undefined;
+  nodes = [
+    {
+      title   : 'parent 1',
+      key     : '100',
+      expanded: true,
+      icon    : 'anticon anticon-smile-o',
+      children: [
+        { title: 'leaf', key: '1001', icon: 'anticon anticon-meh-o', isLeaf: true },
+        { title: 'leaf', key: '1002', icon: 'anticon anticon-frown-o', isLeaf: true }
+      ]
+    }
   ];
 }

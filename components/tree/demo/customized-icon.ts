@@ -12,10 +12,10 @@ import { Component, OnInit } from '@angular/core';
       [nzData]="nodes"
       nzShowIcon="true"
       [nzExpandedIcon]='expandedIcon'>
+      <ng-template #expandedIcon let-node>
+        <i nz-icon [type]="node.origin.icon" class="ant-tree-switcher-icon"></i>
+      </ng-template>
     </nz-tree>
-    <ng-template #expandedIcon >
-      <i nz-icon type="arrow-down" class="ant-tree-switcher-icon"></i>
-    </ng-template>
   `
 })
 

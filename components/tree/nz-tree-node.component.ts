@@ -54,7 +54,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() @InputBoolean() nzShowLine: boolean;
   @Input() @InputBoolean() nzShowExpand: boolean;
-  @Input() nzExpandedIcon: string | TemplateRef<void>;
+  @Input() nzExpandedIcon: string | TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() @InputBoolean() nzMultiple: boolean;
   @Input() @InputBoolean() nzCheckable: boolean;
   @Input() @InputBoolean() nzAsyncData: boolean;
@@ -454,6 +454,10 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
         this.destroy$.complete();
       }
     });
+  }
+
+  isTemplateRef(value: {}): boolean {
+    return value instanceof TemplateRef;
   }
 
   constructor(private nzTreeService: NzTreeBaseService, private ngZone: NgZone, private renderer: Renderer2, private elRef: ElementRef,

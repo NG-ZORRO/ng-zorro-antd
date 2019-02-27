@@ -79,7 +79,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   @Input() @InputBoolean() nzAllowClear = true;
   @Input() @InputBoolean() nzShowExpand = true;
   @Input() @InputBoolean() nzShowLine = false;
-  @Input() nzExpandedIcon: string | TemplateRef<void>;
+  @Input() nzExpandedIcon: string | TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() @InputBoolean() nzDropdownMatchSelectWidth = true;
   @Input() @InputBoolean() nzCheckable = false;
   @Input() @InputBoolean() nzShowSearch = false;
