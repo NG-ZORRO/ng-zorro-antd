@@ -4,3 +4,4 @@ export * from './nz-slider-handle.component';
 export * from './nz-slider-marks.component';
 export * from './nz-slider-step.component';
 export * from './nz-slider-track.component';
+export * from './nz-slider-definitions';
