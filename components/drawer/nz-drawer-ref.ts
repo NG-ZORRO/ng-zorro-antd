@@ -1,5 +1,5 @@
 import { TemplateRef } from '@angular/core';
-import { Observable } from 'rxjs/index';
+import { Observable } from 'rxjs';
 import { NzDrawerPlacement } from './nz-drawer-options';
 
 // tslint:disable-next-line:no-any

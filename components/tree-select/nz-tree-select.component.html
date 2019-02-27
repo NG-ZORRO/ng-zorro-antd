@@ -110,6 +110,7 @@
           [class.ant-select-selection__choice__disabled]="node.isDisabled"
           class="ant-select-selection__choice">
                <span *ngIf="!node.isDisabled" class="ant-select-selection__choice__remove"
+                 (mousedown)="$event.preventDefault()"
                  (click)="removeSelected(node, true, $event)">
                  <i nz-icon type="close" class="ant-select-remove-icon"></i>
                </span>
@@ -136,7 +137,9 @@
       </li>
     </ul>
   </ng-container>
-  <span *ngIf="nzAllowClear" class="ant-select-selection__clear" (click)="onClearSelection($event)">
+  <span *ngIf="nzAllowClear" class="ant-select-selection__clear"
+    (mousedown)="$event.preventDefault()"
+    (click)="onClearSelection($event)">
     <i nz-icon type="close-circle" class="ant-select-clear-icon" theme="fill"></i>
   </span>
   <span *ngIf="!isMultiple" class="ant-select-arrow">

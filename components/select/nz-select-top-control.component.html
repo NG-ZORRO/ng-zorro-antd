@@ -45,6 +45,7 @@
         <div class="ant-select-selection__choice__content">{{ option.nzLabel }}</div>
         <span *ngIf="!option.nzDisabled"
           class="ant-select-selection__choice__remove"
+          (mousedown)="$event.preventDefault()"
           (click)="removeSelectedValue(option, $event)">
           <i nz-icon type="close" class="ant-select-remove-icon" *ngIf="!nzRemoveIcon; else nzRemoveIcon"></i>
         </span>
@@ -74,6 +75,7 @@
 <span *ngIf="nzAllowClear && nzSelectService.listOfSelectedValue.length"
   class="ant-select-selection__clear"
   nz-select-unselectable
+  (mousedown)="$event.preventDefault()"
   (click)="onClearSelection($event)">
     <i nz-icon type="close-circle" theme="fill" *ngIf="!nzClearIcon; else nzClearIcon" class="ant-select-close-icon"></i>
   </span>
