@@ -1,7 +1,16 @@
-import { AfterViewInit, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostListener,
+  NgZone,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
-import { en_US, zh_CN, NzI18nService, NzMessageService } from 'ng-zorro-antd';
+import { en_US, NzI18nService, NzMessageService, zh_CN } from 'ng-zorro-antd';
 import { fromEvent } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { environment } from '../environments/environment';
@@ -11,6 +20,7 @@ declare const docsearch: any;
 
 @Component({
   selector   : 'app-root',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit, AfterViewInit {

@@ -9,13 +9,7 @@ import { delay } from 'rxjs/operators';
     <nz-tree
       [nzData]="nodes"
       nzDraggable
-      (nzExpandChange)="nzAction($event)"
-      [nzBeforeDrop]="beforeDrop"
-      (nzOnDragStart)="nzAction($event)"
-      (nzOnDragEnter)="nzAction($event)"
-      (nzOnDragLeave)="nzAction($event)"
-      (nzOnDrop)="nzAction($event)"
-      (nzOnDragEnd)="nzAction($event)">
+      [nzBeforeDrop]="beforeDrop">
     </nz-tree>
   `
 })
@@ -40,10 +34,6 @@ export class NzDemoTreeDraggableConfirmComponent implements OnInit {
       ]
     } ]
   } ];
-
-  nzAction(event: NzFormatEmitEvent): void {
-    console.log(event);
-  }
 
   beforeDrop(arg: NzFormatBeforeDropEvent): Observable<boolean> {
     // if insert node into another node, wait 1s

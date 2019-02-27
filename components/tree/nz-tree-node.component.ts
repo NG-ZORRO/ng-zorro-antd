@@ -46,10 +46,7 @@ import { isCheckDisabled } from './nz-tree-util';
       transition('inactive => active', animate('100ms ease-in')),
       transition('active => inactive', animate('100ms ease-out'))
     ])
-  ],
-  host: {
-    '(mousedown)': 'nzSelectMode && $event.preventDefault()'
-  }
+  ]
 })
 
 export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
@@ -264,6 +261,13 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     this.nzNodeContentLoadingClass = {
       [ `${this.prefixCls}-iconEle` ]: true
     };
+  }
+
+  @HostListener('mousedown', [ '$event' ])
+  onMousedown(event: MouseEvent): void {
+    if (this.nzSelectMode) {
+      event.preventDefault();
+    }
   }
 
   /**

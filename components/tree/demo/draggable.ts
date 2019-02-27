@@ -6,12 +6,7 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd';
   template: `
     <nz-tree
       [nzData]="nodes"
-      nzDraggable="true"
-      (nzOnDragStart)="nzEvent($event)"
-      (nzOnDragEnter)="nzEvent($event)"
-      (nzOnDragLeave)="nzEvent($event)"
-      (nzOnDrop)="nzEvent($event)"
-      (nzOnDragEnd)="nzEvent($event)">
+      nzDraggable="true">
     </nz-tree>
   `,
   styles  : [ `
@@ -72,10 +67,6 @@ export class NzDemoTreeDraggableComponent implements OnInit {
     key   : '02',
     isLeaf: true
   } ];
-
-  nzEvent(event: NzFormatEmitEvent): void {
-    console.log(event);
-  }
 
   ngOnInit(): void {
   }
