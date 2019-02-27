@@ -13,7 +13,11 @@ import { Component } from '@angular/core';
     button.
   `,
   styles  : [ `
-    .ant-back-top-inner {
+    :host ::ng-deep .ant-back-top {
+      bottom: 100px;
+    }
+
+    :host ::ng-deep .ant-back-top-inner {
       height: 40px;
       width: 40px;
       line-height: 40px;
@@ -24,7 +28,7 @@ import { Component } from '@angular/core';
       font-size: 20px;
     }
 
-    strong {
+    :host ::ng-deep strong {
       color: #1088e9;
     }
   ` ]

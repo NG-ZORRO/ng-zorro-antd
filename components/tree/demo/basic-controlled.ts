@@ -6,8 +6,8 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd';
   template: `
     <nz-tree
       [nzData]="nodes"
-      nzCheckable="true"
-      nzMultiple="true"
+      nzCheckable
+      nzMultiple
       [nzCheckedKeys]="defaultCheckedKeys"
       [nzExpandedKeys]="defaultExpandedKeys"
       [nzSelectedKeys]="defaultSelectedKeys"
@@ -20,7 +20,7 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd';
 
 export class NzDemoTreeBasicControlledComponent implements OnInit {
   defaultCheckedKeys = [ '0-0-0' ];
-  defaultSelectedKeys = [];
+  defaultSelectedKeys = [ '0-0-0' ];
   defaultExpandedKeys = [ '0-0', '0-0-0', '0-0-1' ];
 
   nodes = [ {

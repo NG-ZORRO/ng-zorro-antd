@@ -69,7 +69,7 @@ export class NzDemoTreeSearchComponent implements OnInit {
   } ];
 
   nzEvent(event: NzFormatEmitEvent): void {
-    console.log(event, this.treeCom.getMatchedNodeList().map(v => v.title));
+    console.log(event, this.treeCom.getMatchedNodeList().map(v => v.title), this.treeCom.getExpandedNodeList());
   }
 
   ngOnInit(): void {

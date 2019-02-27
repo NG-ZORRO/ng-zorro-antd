@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, Input, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, ViewEncapsulation } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import sdk from '@stackblitz/sdk';
 import { environment } from '../../../environments/environment';
@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 @Component({
   selector     : 'nz-code-box',
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template     : `
     <section class="code-box" [ngClass]="{'expand':nzExpanded}" [attr.id]="nzId">
       <section class="code-box-demo">
