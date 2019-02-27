@@ -40,6 +40,7 @@ export interface ModalOptions<T = any, R = any> { // tslint:disable-line:no-any
   nzOnOk?: EventEmitter<T> | OnClickCallback<T>; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
   nzCancelText?: string;
   nzCancelLoading?: boolean;
+  nzNoAnimation?: boolean;
   nzOnCancel?: EventEmitter<T> | OnClickCallback<T>; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
 }
 

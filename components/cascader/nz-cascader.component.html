@@ -62,6 +62,7 @@
     [class.ant-cascader-menus-hidden]="!menuVisible"
     [ngClass]="menuCls"
     [ngStyle]="nzMenuStyle"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
     [@slideMotion]="dropDownPosition"
     (mouseleave)="onTriggerMouseLeave($event)">
     <ul *ngFor="let options of columns; let i = index;" class="ant-cascader-menu"

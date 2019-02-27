@@ -19,6 +19,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 import { NzSizeLDSType } from '../core/types/size';
@@ -45,7 +46,7 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
   private iconOnly = false;
   @ViewChild('contentElement') contentElement: ElementRef;
   @ContentChildren(NzIconDirective, { read: ElementRef }) listOfIconElement: QueryList<ElementRef>;
-  @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(this.ngZone, this.elementRef, this.waveConfig);
+  @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(this.ngZone, this.elementRef, this.waveConfig, this.animationType);
   @Input() @InputBoolean() nzBlock = false;
   @Input() @InputBoolean() nzGhost = false;
   @Input() @InputBoolean() nzSearch = false;
@@ -114,7 +115,8 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
               private renderer: Renderer2,
               private nzUpdateHostClassService: NzUpdateHostClassService,
               private ngZone: NgZone,
-              @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private waveConfig: NzWaveConfig) {
+              @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private waveConfig: NzWaveConfig,
+              @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string) {
   }
 
   ngAfterContentInit(): void {

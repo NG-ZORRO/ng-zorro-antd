@@ -5,6 +5,7 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
+  Host,
   Input,
   OnChanges,
   OnDestroy,
@@ -20,6 +21,7 @@ import {
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { isNotNil } from '../core/util/check';
 import { NzToolTipComponent } from './nz-tooltip.component';
 
@@ -74,7 +76,8 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
     public hostView: ViewContainerRef,
     public resolver: ComponentFactoryResolver,
     public renderer: Renderer2,
-    @Optional() public tooltip: NzToolTipComponent
+    @Optional() public tooltip: NzToolTipComponent,
+    @Host() @Optional() public noAnimation: NzNoAnimationDirective
   ) {
   }
 
@@ -87,6 +90,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
     if (!this.tooltip) {
       const tooltipComponent = this.hostView.createComponent(this.factory);
       this.tooltip = tooltipComponent.instance;
+      this.tooltip.noAnimation = this.noAnimation;
       // Remove element when use directive https://github.com/NG-ZORRO/ng-zorro-antd/issues/1967
       this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), tooltipComponent.location.nativeElement);
       this.isDynamicTooltip = true;

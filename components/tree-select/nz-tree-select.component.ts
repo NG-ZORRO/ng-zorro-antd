@@ -10,10 +10,12 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -31,6 +33,7 @@ import { filter, tap } from 'rxjs/operators';
 
 import { slideMotion } from '../core/animation/slide';
 import { zoomMotion } from '../core/animation/zoom';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { NzSizeLDSType } from '../core/types/size';
 import { InputBoolean } from '../core/util/convert';
 import { NzFormatEmitEvent } from '../tree/interface';
@@ -155,7 +158,8 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private nzTreeService: NzTreeSelectService,
-    private elementRef: ElementRef) {
+    private elementRef: ElementRef,
+    @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
   }
 

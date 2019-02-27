@@ -25,7 +25,6 @@ import { InputBoolean } from '../core/util/convert';
   encapsulation      : ViewEncapsulation.None,
   host               : {
     '[@fadeMotion]'           : '',
-    '[@.disabled]'            : 'nzNoAnimation',
     '(@fadeMotion.done)'      : 'afterAnimation($event)',
     '(click)'                 : 'updateCheckedStatus()',
     '[style.background-color]': 'presetColor? null : nzColor'

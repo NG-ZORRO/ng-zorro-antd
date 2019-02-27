@@ -3,16 +3,20 @@ import {
   Component,
   ContentChild,
   EventEmitter,
+  Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Output,
-  SimpleChange, SkipSelf, TemplateRef
+  SimpleChange,
+  SkipSelf,
+  TemplateRef
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, ReplaySubject, Subscription } from 'rxjs';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { isNotNil } from '../core/util/check';
 import { InputBoolean } from '../core/util/convert';
 import { NzTreeSelectService } from '../tree-select/nz-tree-select.service';
@@ -61,7 +65,6 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzExpandAll: boolean = false;
   @Input() @InputBoolean() nzHideUnMatched = false;
-  @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzSelectMode = false;
 
   /**
@@ -239,7 +242,7 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy {
     this.onTouched = fn;
   }
 
-  constructor(public nzTreeService: NzTreeBaseService) {
+  constructor(public nzTreeService: NzTreeBaseService, @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
   }
 
   ngOnInit(): void {

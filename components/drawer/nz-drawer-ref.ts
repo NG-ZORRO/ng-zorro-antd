@@ -11,6 +11,7 @@ export abstract class NzDrawerRef<R = any> {
   abstract open(): void;
 
   abstract nzClosable: boolean;
+  abstract nzNoAnimation: boolean;
   abstract nzMaskClosable: boolean;
   abstract nzMask: boolean;
   abstract nzTitle: string | TemplateRef<{}>;

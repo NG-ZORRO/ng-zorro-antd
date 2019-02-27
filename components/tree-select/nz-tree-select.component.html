@@ -24,6 +24,7 @@
   (positionChange)="onPositionChange($event)">
   <div class="ant-select-dropdown ant-select-tree-dropdown"
     [@slideMotion]="nzOpen ? dropDownPosition : 'void'"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
     [class.ant-select-dropdown--single]="!nzMultiple"
     [class.ant-select-dropdown--multiple]="nzMultiple"
     [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
@@ -104,6 +105,7 @@
       <ng-container *ngFor="let node of selectedNodes | slice: 0 : nzMaxTagCount; trackBy:trackValue">
         <li
           [@zoomMotion]
+          [nzNoAnimation]="noAnimation?.nzNoAnimation"
           [attr.title]="nzDisplayWith(node)"
           [class.ant-select-selection__choice__disabled]="node.isDisabled"
           class="ant-select-selection__choice">

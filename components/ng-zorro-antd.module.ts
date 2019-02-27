@@ -16,6 +16,7 @@ import { NzCascaderModule } from './cascader/nz-cascader.module';
 import { NzCheckboxModule } from './checkbox/nz-checkbox.module';
 import { NzCollapseModule } from './collapse/nz-collapse.module';
 import { NzCommentModule } from './comment/nz-comment.module';
+import { NzNoAnimationModule } from './core/no-animation/nz-no-animation.module';
 import { NzWaveModule } from './core/wave/nz-wave.module';
 import { NzDatePickerModule } from './date-picker/date-picker.module';
 import { NzDividerModule } from './divider/nz-divider.module';
@@ -121,6 +122,7 @@ export * from './time-picker';
 export * from './version';
 export * from './core/wave';
 export * from './core/util';
+export * from './core/no-animation';
 
 @NgModule({
   exports: [
@@ -179,6 +181,7 @@ export * from './core/util';
     NzTreeSelectModule,
     NzTimePickerModule,
     NzWaveModule,
+    NzNoAnimationModule,
     NzSkeletonModule,
     NzStatisticModule,
     NzEmptyModule

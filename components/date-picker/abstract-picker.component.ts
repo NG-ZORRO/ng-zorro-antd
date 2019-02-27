@@ -13,6 +13,7 @@ import { ControlValueAccessor } from '@angular/forms';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { InputBoolean } from '../core/util/convert';
 import { DateHelperService } from '../i18n/date-helper.service';
 import { NzDatePickerI18nInterface } from '../i18n/nz-i18n.interface';
@@ -60,7 +61,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   protected destroyed$: Subject<void> = new Subject();
   protected isCustomPlaceHolder: boolean = false;
 
-  constructor(protected i18n: NzI18nService, protected cdr: ChangeDetectorRef, protected dateHelper: DateHelperService) { }
+  constructor(protected i18n: NzI18nService, protected cdr: ChangeDetectorRef, protected dateHelper: DateHelperService, public noAnimation: NzNoAnimationDirective) { }
 
   ngOnInit(): void {
     // Subscribe the every locale change if the nzLocale is not handled by user
