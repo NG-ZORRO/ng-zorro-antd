@@ -5,41 +5,45 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'nz-demo-list-infinite-load',
-  template: `
-  <div>
-    <cdk-virtual-scroll-viewport
-      itemSize="73"
-      class="demo-infinite-container"
-    >
-      <nz-list>
-        <nz-list-item *cdkVirtualFor="let item of ds">
-          <nz-skeleton
-            *ngIf="!item"
-            [nzAvatar]="true"
-            [nzParagraph]="{ rows: 1 }"
-          ></nz-skeleton>
-          <nz-list-item-meta
-            *ngIf="item"
-            [nzTitle]="nzTitle"
-            nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            [nzDescription]="item.email"
-          >
-            <ng-template #nzTitle>
-              <a href="https://ng.ant.design">{{item.name.last}}</a>
-            </ng-template>
-          </nz-list-item-meta>
-        </nz-list-item>
-      </nz-list>
-    </cdk-virtual-scroll-viewport>
-  </div>
+  selector       : 'nz-demo-list-infinite-load',
+  template       : `
+    <div>
+      <cdk-virtual-scroll-viewport
+        itemSize="73"
+        class="demo-infinite-container"
+      >
+        <nz-list>
+          <nz-list-item *cdkVirtualFor="let item of ds">
+            <nz-skeleton
+              *ngIf="!item"
+              [nzAvatar]="true"
+              [nzParagraph]="{ rows: 1 }"
+            ></nz-skeleton>
+            <nz-list-item-meta
+              *ngIf="item"
+              [nzTitle]="nzTitle"
+              nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              [nzDescription]="item.email"
+            >
+              <ng-template #nzTitle>
+                <a href="https://ng.ant.design">{{item.name.last}}</a>
+              </ng-template>
+            </nz-list-item-meta>
+          </nz-list-item>
+        </nz-list>
+      </cdk-virtual-scroll-viewport>
+    </div>
   `,
-  styles: [
-    `
+  styles         : [
+      `
       .demo-infinite-container {
         height: 300px;
         border: 1px solid #e8e8e8;
         border-radius: 4px;
+      }
+
+      nz-list {
+        padding: 24px;
       }
     `
   ],
@@ -48,7 +52,8 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 export class NzDemoListInfiniteLoadComponent {
   ds = new MyDataSource(this.http);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 }
 
 class MyDataSource extends DataSource<string | undefined> {
@@ -91,18 +96,18 @@ class MyDataSource extends DataSource<string | undefined> {
     this.fetchedPages.add(page);
 
     this.http
-      .get(
-        `https://randomuser.me/api/?results=${
-          this.pageSize
+    .get(
+      `https://randomuser.me/api/?results=${
+        this.pageSize
         }&inc=name,gender,email,nat&noinfo`
-      )
-      .subscribe((res: any) => {
-        this.cachedData.splice(
-          page * this.pageSize,
-          this.pageSize,
-          ...res.results
-        );
-        this.dataStream.next(this.cachedData);
-      });
+    )
+    .subscribe((res: any) => {
+      this.cachedData.splice(
+        page * this.pageSize,
+        this.pageSize,
+        ...res.results
+      );
+      this.dataStream.next(this.cachedData);
+    });
   }
 }
