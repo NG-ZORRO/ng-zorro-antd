@@ -107,7 +107,7 @@ export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
   });
 
   constructor(private changeDetectorRef: ChangeDetectorRef, private ngZone: NgZone,
-              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
   }
 
   ngAfterViewInit(): void {

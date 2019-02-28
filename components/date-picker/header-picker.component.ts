@@ -29,7 +29,7 @@ export class HeaderPickerComponent extends AbstractPickerComponent implements On
 
   private supportPanels: PanelMode[];
 
-  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, dateHelper: DateHelperService, noAnimation: NzNoAnimationDirective) {
+  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, dateHelper: DateHelperService, noAnimation?: NzNoAnimationDirective) {
     super(i18n, cdr, dateHelper, noAnimation);
   }
 

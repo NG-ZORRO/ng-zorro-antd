@@ -110,7 +110,7 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   constructor(private renderer: Renderer2,
               public nzSelectService: NzSelectService,
               private cdr: ChangeDetectorRef,
-              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
   }
 
   ngOnInit(): void {
