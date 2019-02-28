@@ -178,7 +178,7 @@
       <span title><h4>Components</h4></span>
       <ul>
         <li nz-menu-group *ngFor="let group of routerList.components">
-          <span title>{{group.name}}</span>
+          <span title>{{language==='zh'?group.zhName:group.name}}</span>
           <ul>
             <li nz-menu-item routerLinkActive="ant-menu-item-selected" *ngFor="let component of group.children" [hidden]="component.language!=language">
               <a routerLink="{{component.path}}">

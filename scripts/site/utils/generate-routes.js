@@ -24,6 +24,16 @@ module.exports = function generateRoutes(showCaseTargetPath, componentsMap, docs
   intro.sort((pre, next) => pre.order - next.order);
   fs.writeFileSync(path.join(showCaseTargetPath, `intros.json`), JSON.stringify(intro, null, 2));
   const reverseMap = {};
+  const typeMap = {
+    General       : '通用',
+    Layout        : '布局',
+    Navigation    : '导航',
+    'Data Entry'  : '数据录入',
+    'Data Display': '数据展示',
+    Feedback      : '反馈',
+    Localization  : '本地化',
+    Other         : '其他',
+  };
   for (const key in componentsMap) {
     const zh = {
       label   : componentsMap[key].title,
@@ -49,6 +59,7 @@ module.exports = function generateRoutes(showCaseTargetPath, componentsMap, docs
   for (const key in reverseMap) {
     components.push({
       name    : key,
+      zhName  : typeMap[key] || null,
       children: reverseMap[key]
     })
   }
