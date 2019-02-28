@@ -42,7 +42,7 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
   @Output() readonly nzOnCancel: EventEmitter<void> = new EventEmitter();
   @Output() readonly nzOnConfirm: EventEmitter<void> = new EventEmitter();
 
-  constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+  constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);
   }
 

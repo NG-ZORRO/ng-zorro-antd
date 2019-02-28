@@ -478,7 +478,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     private renderer: Renderer2,
     private elRef: ElementRef,
     private cdr: ChangeDetectorRef,
-    @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
   }
 
   ngOnInit(): void {

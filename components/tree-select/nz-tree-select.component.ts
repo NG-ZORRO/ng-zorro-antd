@@ -159,7 +159,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
     private cdr: ChangeDetectorRef,
     private nzTreeService: NzTreeSelectService,
     private elementRef: ElementRef,
-    @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
   }
 

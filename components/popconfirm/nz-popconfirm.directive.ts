@@ -59,7 +59,7 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit 
     resolver: ComponentFactoryResolver,
     renderer: Renderer2,
     @Optional() tooltip: NzPopconfirmComponent,
-    @Host() @Optional() public noAnimation: NzNoAnimationDirective
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     super(elementRef, hostView, resolver, renderer, tooltip, noAnimation);
   }

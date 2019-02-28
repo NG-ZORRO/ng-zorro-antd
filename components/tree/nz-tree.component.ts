@@ -275,7 +275,7 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
   constructor(
     public nzTreeService: NzTreeBaseService,
     private cdr: ChangeDetectorRef,
-    @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
   }
 
   ngOnInit(): void {
