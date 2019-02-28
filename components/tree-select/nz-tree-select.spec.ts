@@ -6,6 +6,7 @@ import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angul
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { createKeyboardEvent, dispatchFakeEvent, dispatchMouseEvent, typeInElement } from '../core/testing';
+import { NzTreeNode } from '../tree';
 import { NzTreeSelectComponent } from './nz-tree-select.component';
 import { NzTreeSelectModule } from './nz-tree-select.module';
 
@@ -222,7 +223,7 @@ describe('tree-select component', () => {
       tick(200);
       fixture.detectChanges();
       expect(treeSelect.nativeElement.querySelectorAll('.ant-select-selection__choice').length).toBe(3);
-      const maxTagPlaceholderElement = treeSelect.nativeElement.querySelectorAll('.ant-select-selection__choice')[2]
+      const maxTagPlaceholderElement = treeSelect.nativeElement.querySelectorAll('.ant-select-selection__choice')[ 2 ]
       .querySelector('.ant-select-selection__choice__content');
       expect(maxTagPlaceholderElement).toBeTruthy();
       expect(maxTagPlaceholderElement.innerText.trim()).toBe(`+ ${testComponent.value.length - testComponent.maxTagCount} ...`);
@@ -655,7 +656,7 @@ export class NzTestTreeSelectFormComponent {
         }
       ]
     }
-  ];
+  ].map(item => new NzTreeNode(item));
 
   constructor(private fb: FormBuilder) {
     this.formGroup = this.fb.group({
