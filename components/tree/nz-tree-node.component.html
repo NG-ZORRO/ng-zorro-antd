@@ -66,7 +66,8 @@
 
   <ul
     role="group"
-    class="ant-tree-child-tree ant-tree-child-tree-open"
+    class="ant-tree-child-tree"
+    [class.ant-tree-child-tree-open]="!nzSelectMode || nzTreeNode.isExpanded"
     data-expanded="true"
     [@.disabled]="noAnimation?.nzNoAnimation"
     [@collapseMotion]="nzTreeNode.isExpanded ? 'expanded' : 'collapsed'">
