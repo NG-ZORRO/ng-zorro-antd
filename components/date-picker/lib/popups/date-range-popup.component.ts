@@ -177,9 +177,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
         this.clearHoverValue(); // Clean up
         this.setRangeValue('selectedValue', 'right', value);
         this.sortRangeValue('selectedValue'); // Sort
-
         this.valueForRangeShow = this.normalizeRangeValue(this.selectedValue);
         this.setValue(this.cloneRangeDate(this.selectedValue));
+        this.calendarChange.emit(this.cloneRangeDate(this.selectedValue));
       }
     } else {
       this.setValue(value);

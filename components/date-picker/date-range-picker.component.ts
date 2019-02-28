@@ -69,17 +69,19 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   }
 
   // If has no timepicker and the user select a date by date panel, then close picker
-  onValueChange(value: CompatibleValue): void {
+  onValueChange(value: CandyDate): void {
+    super.onValueChange(value);
+
     if (!this.nzShowTime) {
       this.closeOverlay();
-      super.onValueChange(value);
     }
   }
 
   // Emit nzOnCalendarChange when select the first date by nz-range-picker
-  OnCalendarChange(value: CompatibleValue): void {
+  onCalendarChange(value: CandyDate[]): void {
     if (this.isRange) {
-      this.nzOnCalendarChange.emit([value[0].nativeDate]);
+      const rangeValue = value.map(x => x.nativeDate);
+      this.nzOnCalendarChange.emit(rangeValue);
     }
   }
 
