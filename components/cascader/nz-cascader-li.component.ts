@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ElementRef,
   Input, Renderer2,
@@ -27,7 +27,7 @@ export class NzCascaderOptionComponent {
   @Input() highlightText: string;
   @Input() nzLabelProperty = 'label';
 
-  constructor(private sanitizer: DomSanitizer, elementRef: ElementRef, renderer: Renderer2) {
+  constructor(private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
   }
 
@@ -41,5 +41,9 @@ export class NzCascaderOptionComponent {
       throw new Error(`[NG-ZORRO] Input value "${this.highlightText}" is not considered security.`);
     }
     return str.replace(new RegExp(this.highlightText, 'g'), safeHtml);
+  }
+
+  markForCheck(): void {
+    this.cdr.markForCheck();
   }
 }

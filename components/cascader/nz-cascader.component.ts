@@ -13,9 +13,11 @@ import {
   OnDestroy,
   Optional,
   Output,
+  QueryList,
   Renderer2,
   TemplateRef,
   ViewChild,
+  ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -26,6 +28,7 @@ import { DEFAULT_CASCADER_POSITIONS } from '../core/overlay/overlay-position';
 import { NgClassType } from '../core/types/ng-class';
 import { arraysEqual, toArray } from '../core/util/array';
 import { InputBoolean } from '../core/util/convert';
+import { NzCascaderOptionComponent } from './nz-cascader-li.component';
 
 import {
   CascaderOption,
@@ -76,6 +79,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   @ViewChild('input') input: ElementRef;
   @ViewChild('menu') menu: ElementRef;
   @ViewChild(CdkConnectedOverlay) overlay: CdkConnectedOverlay;
+  @ViewChildren(NzCascaderOptionComponent) cascaderItems: QueryList<NzCascaderOptionComponent>;
 
   @Input() @InputBoolean() nzShowInput = true;
   @Input() @InputBoolean() nzShowArrow = true;
@@ -318,16 +322,17 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
       this.isLoading = columnIndex < 0;
       option.loading = true;
       this.nzLoadData(option, columnIndex).then(() => {
-        option.loading = this.isLoading = false;
         if (option.children) {
           option.children.forEach(child => child.parent = columnIndex < 0 ? undefined : option);
           this.setColumnData(option.children, columnIndex + 1);
-          this.cdr.detectChanges();
-          this.reposition();
         }
         if (success) {
           success();
         }
+        option.loading = this.isLoading = false; // Need to check children.
+        this.checkChildren();
+        // Reposition in the next tick, because we use markForCheck above.
+        Promise.resolve().then(() => this.reposition());
       }, () => {
         option.loading = this.isLoading = false;
         option.isLeaf = true;
@@ -675,12 +680,12 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     };
 
     const filter: (inputValue: string, p: CascaderOption[]) => boolean =
-            this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).filter
-              ? (this.nzShowSearch as NzShowSearchOptions).filter
-              : defaultFilter;
+      this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).filter
+        ? (this.nzShowSearch as NzShowSearchOptions).filter
+        : defaultFilter;
 
     const sorter: (a: CascaderOption[], b: CascaderOption[], inputValue: string) => number =
-            this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).sorter;
+      this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).sorter;
 
     const loopParent = (node: CascaderOption, forceDisabled = false) => {
       const disabled = forceDisabled || node.disabled;
@@ -863,5 +868,9 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
         this.overlay.overlayRef.updatePosition();
       });
     }
+  }
+
+  private checkChildren(): void {
+    this.cascaderItems.forEach(item => item.markForCheck());
   }
 }
