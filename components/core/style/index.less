@@ -110,6 +110,12 @@
   background: @component-background;
 }
 
+.ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th ,.ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-thead > tr > th {
+  &.ant-table-th-left-sticky, &.ant-table-th-right-sticky {
+    background: @component-background;
+  }
+}
+
 .ant-table-tbody {
   & > tr {
     &:hover {
@@ -124,6 +130,10 @@
       }
     }
   }
+}
+
+.ant-table-thead > tr > th .ant-table-column-sorters > nz-dropdown {
+  position: static !important;
 }
 
 .ant-table-scroll-position-middle {
@@ -205,6 +215,7 @@ textarea.cdk-textarea-autosize-measuring {
       animation: none;
       transition: none;
     }
+
     & > * {
       transition: none;
     }
@@ -214,6 +225,7 @@ textarea.cdk-textarea-autosize-measuring {
   .ant-modal-mask, .ant-modal {
     animation: none;
     transition: none;
+
     &.zoom-enter, &.zoom-leave,
     &.zoom-enter-active, &.zoom-leave-active {
       animation: none;
@@ -224,11 +236,14 @@ textarea.cdk-textarea-autosize-measuring {
   // menu
   &.ant-menu {
     transition: none;
+
     .ant-menu-item, .ant-menu-submenu-title {
       transition: none;
     }
+
     .ant-menu-item .anticon, .ant-menu-submenu-title .anticon {
       transition: none;
+
       & + span {
         transition: none;
       }
