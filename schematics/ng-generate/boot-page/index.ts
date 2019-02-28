@@ -6,7 +6,7 @@ import { Schema } from './schema';
 
 const bootPageHTML = `<!-- NG-ZORRO -->
 <a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" style="display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;">
-  <img height="300" src="https://img.alicdn.com/tfs/TB15yFwHq6qK1RjSZFmXXX0PFXa-89-131.svg">
+  <img height="300" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
 </a>`;
 
 export default function (options: Schema): Rule {

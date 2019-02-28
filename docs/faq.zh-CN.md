@@ -5,9 +5,7 @@ title: 常见问题
 
 ### 为什么不提供模块单独引入
 
-事实上，从 `ng-zorro-antd` 的第一个版本开始，所有的 `ng-zorro-antd` 代码就完全由 TypeScript 编写，打包时会根据代码中使用的模块 Tree Shaking，未使用的模块并不会打包进生成的应用中，因此单模块引入是完全没有任何必要的。
-
-![](https://img.alicdn.com/tfs/TB1D8MXdTtYBeNjy1XdXXXXyVXa-2864-1592.jpg)
+事实上，从 `ng-zorro-antd` 的第一个版本开始，所有的 `ng-zorro-antd` 代码就完全由 TypeScript 编写，打包时会根据代码中使用的模块 Tree Shaking，未使用的模块并不会打包进生成的应用中，因此单模块引入是没有必要的，更多可以参考[这篇文章](https://blog.kevinyang.net/2018/11/20/ng-treeshaking/)。
 
 ### 有些特性为什么不会被支持
 
@@ -21,9 +19,25 @@ title: 常见问题
 
 首先请确定浏览器版本得到了 Angular 的[官方支持](https://github.com/angular/angular)，并正确引入了 [polyfill](https://angular.io/guide/browser-support) 文件，另外有些组件的部分使用方式不支持部分浏览器（例如 flex显示方式），如果不是以上问题，请提 ISSUE 给我们。
 
+### 官网能正常工作，相同的用法本地运行有问题，是组件库的 BUG 吗？
+
+不会，NG-ZORRO 的官网使用在 npm 上发布的相同版本构建，所有的构建日志都可以在 [Travis](https://travis-ci.org/NG-ZORRO/ng-zorro-antd) 查看，请仔细检查本地运行环境（版本，其他依赖包）等问题。
+
+### Can't Bind to since it isn't a known property of
+
+如果使用多 Module 管理方式，NgZorroAntdModule 需要在每个子 Module 中都要 import，或者在 `ShareModule` 中 export，可以参考[官方文档](https://angular.io/guide/sharing-ngmodules)。
+
+### Expression Changed After It Has Been Checked Error 错误
+
+Angular 下常见错误，[这篇文章](https://blog.angularindepth.com/everything-you-need-to-know-about-the-expressionchangedafterithasbeencheckederror-error-e3fd9ce7dbb4) 会帮助你理解原因。
+
+### Can't bind to 'formGroup' since it isn't a known property of 'form'
+
+Angular 下常见错误，使用 Reactive Forms 需要额外引入 `ReactiveFormsModule`，可以参考[官方文档](https://angular.io/guide/reactive-forms)。
+
 ### 数据修改后页面为什么没有更新
 
-请确认按照正确方式使用了 [Angular](https://angular.io/guide/lifecycle-hooks#onchanges)
+NG ZORRO 组件默认在 OnPush 模式下工作，mutate 对象或者数组不会触发 Angular 的变更检测，请使用 immutable 方式。
 
 ### 为什么我的 ISSUE 会被关闭
 
