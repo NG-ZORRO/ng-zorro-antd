@@ -4,6 +4,13 @@
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "schematics": "./schematics/collection.json",
+  "ng-update": {
+    "migrations": "./schematics/migration.json",
+    "packageGroup": [
+      "ng-zorro-antd",
+      "@angular/cdk"
+    ]
+  },
   "keywords": [
     "ant",
     "design",
