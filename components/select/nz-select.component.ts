@@ -235,7 +235,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
               private cdr: ChangeDetectorRef,
               private focusMonitor: FocusMonitor,
               elementRef: ElementRef,
-              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     renderer.addClass(elementRef.nativeElement, 'ant-select');
   }
 

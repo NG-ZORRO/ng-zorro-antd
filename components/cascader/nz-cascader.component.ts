@@ -815,7 +815,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   }
 
   constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, renderer: Renderer2,
-              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader');
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-picker');
   }

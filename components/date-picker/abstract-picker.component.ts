@@ -61,7 +61,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   protected destroyed$: Subject<void> = new Subject();
   protected isCustomPlaceHolder: boolean = false;
 
-  constructor(protected i18n: NzI18nService, protected cdr: ChangeDetectorRef, protected dateHelper: DateHelperService, public noAnimation: NzNoAnimationDirective) { }
+  constructor(protected i18n: NzI18nService, protected cdr: ChangeDetectorRef, protected dateHelper: DateHelperService, public noAnimation?: NzNoAnimationDirective) { }
 
   ngOnInit(): void {
     // Subscribe the every locale change if the nzLocale is not handled by user

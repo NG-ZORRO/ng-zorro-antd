@@ -94,7 +94,7 @@ export class NzToolTipComponent implements OnChanges {
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  constructor(public cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+  constructor(public cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
   }
 
   ngOnChanges(): void {

@@ -77,7 +77,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
     public resolver: ComponentFactoryResolver,
     public renderer: Renderer2,
     @Optional() public tooltip: NzToolTipComponent,
-    @Host() @Optional() public noAnimation: NzNoAnimationDirective
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
   }
 

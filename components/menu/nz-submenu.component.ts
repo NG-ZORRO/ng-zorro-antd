@@ -118,7 +118,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
               private cdr: ChangeDetectorRef,
               public nzSubmenuService: NzSubmenuService,
               private nzUpdateHostClassService: NzUpdateHostClassService,
-              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
   }
 
   ngOnInit(): void {

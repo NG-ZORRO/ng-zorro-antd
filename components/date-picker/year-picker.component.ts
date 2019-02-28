@@ -36,7 +36,7 @@ export class NzYearPickerComponent extends HeaderPickerComponent {
   endPanelMode: SupportHeaderPanel = 'year';
 
   constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, dateHelper: DateHelperService, renderer: Renderer2, elementRef: ElementRef,
-              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(i18n, cdr, dateHelper, noAnimation);
     renderer.addClass(elementRef.nativeElement, 'ant-calendar-picker');
   }
