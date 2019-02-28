@@ -1,4 +1,3 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -20,6 +19,7 @@ import {
 } from '@angular/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { collapseMotion } from '../core/animation/collapse';
 import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { InputBoolean } from '../core/util/convert';
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from '../tree/interface';
@@ -32,21 +32,7 @@ import { isCheckDisabled } from './nz-tree-util';
   templateUrl        : './nz-tree-node.component.html',
   changeDetection    : ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
-  animations         : [
-    trigger('nodeState', [
-      state('inactive', style({
-        opacity: '0',
-        height : '0',
-        display: 'none'
-      })),
-      state('active', style({
-        opacity: '1',
-        height : '*'
-      })),
-      transition('inactive => active', animate('100ms ease-in')),
-      transition('active => inactive', animate('100ms ease-out'))
-    ])
-  ]
+  animations         : [ collapseMotion ]
 })
 
 export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
@@ -162,7 +148,6 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   nzNodeCheckboxClass = {};
   nzNodeContentIconClass = {};
   nzNodeContentLoadingClass = {};
-  nzNodeChildrenClass = {};
 
   /**
    * drag var

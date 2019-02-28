@@ -66,12 +66,10 @@
 
   <ul
     role="group"
-    class="ant-tree-child-tree"
-    [class.ant-tree-child-tree-open]="nzTreeNode.isExpanded"
-    [attr.data-expanded]="nzTreeNode.isExpanded"
-    [ngClass]="nzNodeChildrenClass"
+    class="ant-tree-child-tree ant-tree-child-tree-open"
+    data-expanded="true"
     [@.disabled]="noAnimation?.nzNoAnimation"
-    [@nodeState]="nzTreeNode.isExpanded ? 'active' : 'inactive'">
+    [@collapseMotion]="nzTreeNode.isExpanded ? 'expanded' : 'collapsed'">
     <nz-tree-node
       *ngFor="let node of nzTreeNode.getChildren(); trackBy: trackByFn"
       [nzTreeNode]="node"
