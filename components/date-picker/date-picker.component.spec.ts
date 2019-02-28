@@ -296,6 +296,7 @@ describe('NzDatePickerComponent', () => {
     it('should support nzOnChange', fakeAsync(() => {
       fixtureInstance.nzValue = new Date('2018-11-11');
       const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      const nzOnCalendarChange = spyOn(fixtureInstance, 'nzOnCalendarChange');
       fixture.detectChanges();
       dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
@@ -309,6 +310,7 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
+      expect(nzOnCalendarChange).not.toHaveBeenCalled();
       const result = nzOnChange.calls.allArgs()[ 0 ][ 0 ];
       expect(result.getDate()).toBe(+cellText);
     }));
@@ -772,6 +774,7 @@ describe('NzDatePickerComponent', () => {
         [nzShowToday]="nzShowToday"
         [nzMode]="nzMode"
         (nzOnPanelChange)="nzOnPanelChange($event)"
+        (nzOnCalendarChange)="nzOnCalendarChange($event)"
         [nzShowTime]="nzShowTime"
         (nzOnOk)="nzOnOk($event)"
       ></nz-date-picker>
@@ -817,7 +820,7 @@ class NzTestDatePickerComponent {
 
   nzOnChange(result: PickerResultSingle): void {
   }
-
+  nzOnCalendarChange(): void {}
   nzValue;
 
   nzDateRender;
