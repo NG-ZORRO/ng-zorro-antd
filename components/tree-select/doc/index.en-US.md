@@ -30,7 +30,7 @@ Any data whose entries are defined in a hierarchical manner is fit to use this c
 | `[nzShowExpand]` | Show a Expand Icon before the treeNodes | `boolean` | `true` |
 | `[nzShowLine]` | Shows a connecting line | `boolean` | `false` |
 | `[nzAsyncData]` | Load data asynchronously (should be used with NzTreeNode.addChildren(...)) | `boolean` | `false` |
-| `[nzNodes]` | Data of the treeNodes | `NzTreeNode[]` | `[]` |
+| `[nzNodes]` | Data of the treeNodes | `NzTreeNodeOptions[]` | `[]` |
 | `[nzDefaultExpandAll]` | Whether to expand all treeNodes by default | `boolean` | `false` |
 | `[nzDefaultExpandedKeys]` | Default expanded treeNodes | `string[]` | - |
 | `[nzDisplayWith]` | How to display the selected node value in the trigger | `(node: NzTreeNode) => string` | `(node: NzTreeNode) => node.title` |
