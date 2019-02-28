@@ -17,16 +17,14 @@
   <!--single mode-->
   <ng-container *ngIf="nzSelectService.isSingleMode">
     <!--selected label-->
-    <div
-      *ngIf="nzSelectService.listOfSelectedValue.length"
+    <div *ngIf="nzSelectService.listOfCachedSelectedOption.length && nzSelectService.listOfSelectedValue.length"
       class="ant-select-selection-selected-value"
-      [attr.title]="nzSelectService.listOfCachedSelectedOption[0].nzLabel"
+      [attr.title]="nzSelectService.listOfCachedSelectedOption[0]?.nzLabel"
       [ngStyle]="selectedValueStyle">
-      {{ nzSelectService.listOfCachedSelectedOption[0].nzLabel }}
+      {{ nzSelectService.listOfCachedSelectedOption[0]?.nzLabel }}
     </div>
     <!--show search-->
-    <div
-      *ngIf="nzShowSearch"
+    <div *ngIf="nzShowSearch"
       class="ant-select-search ant-select-search--inline">
       <div class="ant-select-search__field__wrap">
         <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>
