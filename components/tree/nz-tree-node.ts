@@ -194,6 +194,7 @@ export class NzTreeNode {
       this.treeService.afterRemove(n, false);
     });
     this.getChildren().splice(0, this.getChildren().length);
+    this.origin.children = [];
     // refresh checked state
     this.treeService.calcCheckedKeys(this.treeService.checkedNodeList.map(v => v.key), this.treeService.rootNodes, this.treeService.isCheckStrictly);
     if (this.component) {
@@ -205,6 +206,7 @@ export class NzTreeNode {
     if (this.getParentNode()) {
       const index = this.getParentNode().getChildren().findIndex(n => n.key === this.key);
       this.getParentNode().getChildren().splice(index, 1);
+      this.getParentNode().origin.children.splice(index, 1);
       this.treeService.afterRemove(this);
       if (this.component) {
         this.component.markForCheck();
