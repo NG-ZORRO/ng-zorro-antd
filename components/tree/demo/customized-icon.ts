@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <nz-tree
       [nzData]="nodes"
-      nzShowIcon="true">
+      nzShowIcon>
     </nz-tree>
   `
 })

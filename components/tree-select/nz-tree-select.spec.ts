@@ -212,7 +212,9 @@ describe('tree-select component', () => {
       expect(selectedValueEl.style.opacity).toBe('1');
     }));
     it('should max tag count work', fakeAsync(() => {
+      fixture.detectChanges();
       testComponent.multiple = true;
+      fixture.detectChanges();
       testComponent.value = [ '1001', '10001', '100011', '100012' ];
       fixture.detectChanges();
       tick(200);
