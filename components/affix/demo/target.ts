@@ -14,12 +14,12 @@ import { Component } from '@angular/core';
   </div>
   `,
   styles: [`
-  :host ::ng-deep .scrollable-container {
+  .scrollable-container {
     height: 100px;
     overflow-y: scroll;
   }
 
-  :host ::ng-deep .background {
+  .background {
     padding-top: 60px;
     height: 300px;
     background-image: url(//zos.alipayobjects.com/rmsportal/RmjwQiJorKyobvI.jpg);

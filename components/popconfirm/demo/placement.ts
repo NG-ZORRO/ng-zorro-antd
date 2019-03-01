@@ -26,14 +26,6 @@ import { NzMessageService } from 'ng-zorro-antd';
     </div>
   `,
   styles  : [ `
-    :host ::ng-deep .demo {
-      overflow: auto;
-    }
-
-    :host ::ng-deep .ant-popover-wrap > a {
-      margin-right: 8px;
-    }
-
     button {
       margin-right: 8px;
       margin-bottom: 8px;

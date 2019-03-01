@@ -13,12 +13,10 @@ describe('select unselectable', () => {
   }));
   describe('basic select unselectable', () => {
     let fixture;
-    let testComponent;
     let unselectable;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSelectUnselectableComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       unselectable = fixture.debugElement.query(By.directive(NzSelectUnselectableDirective));
     });
     it('should unselectable style work', () => {

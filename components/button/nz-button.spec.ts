@@ -216,7 +216,7 @@ describe('button', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoButtonSizeComponent);
       testComponent = fixture.debugElement.componentInstance;
-      buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent)).filter((item, index) => index < 6);
+      buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent)).filter((_, index) => index < 6);
       buttonGroup = fixture.debugElement.query(By.directive(NzButtonGroupComponent));
     });
 

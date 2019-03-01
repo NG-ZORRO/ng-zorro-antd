@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-nested-table',
   template: `
-    <nz-table #nestedTable [nzData]="nestedTableData" [nzPageSize]="10">
+    <nz-table #nestedTable [nzData]="listOfParentData" [nzPageSize]="10">
       <thead>
         <tr>
           <th nzShowExpand></th>
@@ -33,25 +33,25 @@ import { Component, OnInit } from '@angular/core';
           <tr [nzExpand]="data.expand">
             <td></td>
             <td colspan="7">
-              <nz-table #innerTable [nzData]="innerTableData" nzSize="middle" [nzShowPagination]="false">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Upgrade Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let data of innerTable.data">
-                    <td>{{data.date}}</td>
-                    <td>{{data.name}}</td>
-                    <td>
-                      <nz-badge [nzStatus]="'success'" [nzText]="'Finished'"></nz-badge>
-                    </td>
-                    <td>{{data.upgradeNum}}</td>
-                    <td>
+              <nz-table #innerTable [nzData]="listOfChildrenData" nzSize="middle" [nzShowPagination]="false">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Upgrade Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of innerTable.data">
+          <td>{{data.date}}</td>
+          <td>{{data.name}}</td>
+          <td>
+            <nz-badge [nzStatus]="'success'" [nzText]="'Finished'"></nz-badge>
+          </td>
+          <td>{{data.upgradeNum}}</td>
+          <td>
                       <span class="table-operation">
                         <nz-dropdown>
                           <a nz-dropdown class="operation">
@@ -66,59 +66,29 @@ import { Component, OnInit } from '@angular/core';
                             </li>
                           </ul>
                         </nz-dropdown>
+                        <nz-divider nzType="vertical"></nz-divider>
                         <a class="operation">Stop</a>
+                        <nz-divider nzType="vertical"></nz-divider>
                         <a>More</a>
                       </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </nz-table>
-            </td>
-          </tr>
-        </ng-template>
+          </td>
+        </tr>
       </tbody>
     </nz-table>
-  `,
-  styles  : [
-      `
-
-      :host ::ng-deep .ant-table-expanded-row > td:last-child {
-        padding: 0 48px 0 8px;
-      }
-
-      :host ::ng-deep .ant-table-expanded-row > td:last-child .ant-table-thead th {
-        border-bottom: 1px solid #e9e9e9;
-      }
-
-      :host ::ng-deep .ant-table-expanded-row > td:last-child .ant-table-thead th:first-child {
-        padding-left: 0;
-      }
-
-      :host ::ng-deep .ant-table-expanded-row > td:last-child .ant-table-row td:first-child {
-        padding-left: 0;
-      }
-
-      :host ::ng-deep .ant-table-expanded-row .ant-table-row:last-child td {
-        border: none;
-      }
-
-      :host ::ng-deep .ant-table-expanded-row .ant-table-thead > tr > th {
-        background: none;
-      }
-
-      :host ::ng-deep .table-operation a.operation {
-        margin-right: 24px;
-      }
-    `
-  ]
+    </td>
+    </tr>
+    </ng-template>
+    </tbody>
+    </nz-table>
+  `
 })
 export class NzDemoTableNestedTableComponent implements OnInit {
-  nestedTableData = [];
-  innerTableData = [];
+  listOfParentData = [];
+  listOfChildrenData = [];
 
   ngOnInit(): void {
     for (let i = 0; i < 3; ++i) {
-      this.nestedTableData.push({
+      this.listOfParentData.push({
         key       : i,
         name      : 'Screem',
         platform  : 'iOS',
@@ -130,11 +100,11 @@ export class NzDemoTableNestedTableComponent implements OnInit {
       });
     }
     for (let i = 0; i < 3; ++i) {
-      this.innerTableData.push({
+      this.listOfChildrenData.push({
         key       : i,
         date      : '2014-12-24 23:12:00',
         name      : 'This is production name',
-        upgradeNum: 'Upgraded: 56',
+        upgradeNum: 'Upgraded: 56'
       });
     }
   }

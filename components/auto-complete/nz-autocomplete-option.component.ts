@@ -34,7 +34,8 @@ export class NzOptionSelectionChange {
     '[class.ant-select-dropdown-menu-item-disabled]': 'nzDisabled',
     '[attr.aria-selected]'                          : 'selected.toString()',
     '[attr.aria-disabled]'                          : 'nzDisabled.toString()',
-    '(click)'                                       : 'selectViaInteraction()'
+    '(click)'                                       : 'selectViaInteraction()',
+    '(mousedown)'                                   : '$event.preventDefault()'
   }
 })
 export class NzAutocompleteOptionComponent {

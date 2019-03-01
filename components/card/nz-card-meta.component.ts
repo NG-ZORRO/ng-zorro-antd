@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  Renderer2,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 
 @Component({
   selector           : 'nz-card-meta',
@@ -10,13 +18,14 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
     nz-card-meta {
       display: block;
     }
-  ` ],
-  host               : {
-    '[class.ant-card-meta]': 'true'
-  }
+  ` ]
 })
 export class NzCardMetaComponent {
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() nzDescription: string | TemplateRef<void>;
   @Input() nzAvatar: TemplateRef<void>;
+
+  constructor(elementRef: ElementRef, renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-card-meta');
+  }
 }

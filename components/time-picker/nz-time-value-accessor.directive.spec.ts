@@ -6,6 +6,10 @@ import { dispatchFakeEvent } from '../core/testing';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzTimeValueAccessorDirective } from './nz-time-value-accessor.directive';
 
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
+registerLocaleData(zh);
+
 describe('input-time', () => {
   let testComponent;
   let fixture;

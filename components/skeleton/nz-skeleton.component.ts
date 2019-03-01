@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component, ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  Renderer2,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { toCssPixel } from '../core/util';
 import { AvatarShape, AvatarSize, NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle } from './nz-skeleton.type';
@@ -9,7 +19,6 @@ import { AvatarShape, AvatarSize, NzSkeletonAvatar, NzSkeletonParagraph, NzSkele
   selector       : 'nz-skeleton',
   templateUrl    : './nz-skeleton.component.html',
   host           : {
-    '[class.ant-skeleton]'            : 'true',
     '[class.ant-skeleton-with-avatar]': '!!nzAvatar',
     '[class.ant-skeleton-active]'     : 'nzActive'
   }
@@ -27,7 +36,9 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   rowsList: number[] = [];
   widthList: Array<number | string> = [];
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-skeleton');
+  }
 
   toCSSUnit(value: number | string = ''): string {
     return toCssPixel(value);

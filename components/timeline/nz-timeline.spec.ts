@@ -96,13 +96,9 @@ describe('timeline', () => {
   });
   describe('custom color timeline', () => {
     let fixture;
-    let testComponent;
-    let timeline;
     let items;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimelineCustomColorComponent);
-      testComponent = fixture.debugElement.componentInstance;
-      timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
       items = fixture.debugElement.queryAll(By.directive(NzTimelineItemComponent));
     });
     it('should support custom color', () => {
@@ -115,14 +111,10 @@ describe('timeline', () => {
   });
   describe('pending timeline', () => {
     let fixture;
-    let testComponent;
     let timeline;
-    let items;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimelinePendingComponent);
-      testComponent = fixture.debugElement.componentInstance;
       timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
-      items = fixture.debugElement.queryAll(By.directive(NzTimelineItemComponent));
     });
     it('should pending work', () => {
       fixture.detectChanges();

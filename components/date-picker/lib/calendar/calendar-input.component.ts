@@ -1,11 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 
-import { InputBoolean } from '../../../core/util/convert';
+import { DateHelperService } from '../../../i18n/date-helper.service';
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
-import { NzI18nService } from '../../../i18n/nz-i18n.service';
 import { CandyDate } from '../candy-date';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // tslint:disable-next-line:component-selector
   selector: 'calendar-input',
   templateUrl: 'calendar-input.component.html'
 })
@@ -17,12 +19,12 @@ export class CalendarInputComponent implements OnInit {
   @Input() disabledDate: (d: Date) => boolean;
 
   @Input() value: CandyDate;
-  @Output() valueChange = new EventEmitter<CandyDate>();
+  @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   prefixCls: string = 'ant-calendar';
   invalidInputClass: string = '';
 
-  constructor(private i18n: NzI18nService) { }
+  constructor(private dateHelper: DateHelperService) { }
 
   ngOnInit(): void { }
 
@@ -40,7 +42,7 @@ export class CalendarInputComponent implements OnInit {
   }
 
   toReadableInput(value: CandyDate): string {
-    return value ? this.i18n.formatDateCompatible(value.nativeDate, this.format) : '';
+    return value ? this.dateHelper.format(value.nativeDate, this.format) : '';
   }
 
   private checkValidInputDate(event: Event): CandyDate {

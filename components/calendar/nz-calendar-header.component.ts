@@ -1,8 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import setMonth from 'date-fns/set_month';
+import { DateHelperService } from '../i18n/date-helper.service';
 import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector   : 'nz-calendar-header',
   templateUrl: './nz-calendar-header.component.html',
   host       : {
@@ -55,9 +58,7 @@ export class NzCalendarHeaderComponent implements OnInit {
     return this.i18n.getLocale().Calendar.month;
   }
 
-  private prefixCls = 'ant-fullcalendar';
-
-  constructor(private i18n: I18n) {
+  constructor(private i18n: I18n, private dateHelper: DateHelperService) {
   }
 
   ngOnInit(): void {
@@ -85,7 +86,7 @@ export class NzCalendarHeaderComponent implements OnInit {
 
     for (let i = 0; i < 12; i++) {
       const dateInMonth = setMonth(this.activeDate, i);
-      const monthText = this.i18n.formatDate(dateInMonth, 'MMM');
+      const monthText = this.dateHelper.format(dateInMonth, 'MMM');
       this.months.push({ label: monthText, value: i });
     }
   }

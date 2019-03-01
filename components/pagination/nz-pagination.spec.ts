@@ -113,15 +113,6 @@ describe('pagination', () => {
         fixture.detectChanges();
         expect(paginationElement.children.length).toBe(9);
       });
-      it('should total pageIndex limit', () => {
-        console.log(testComponent.nzPaginationComponent.lastIndex);
-        testComponent.pageIndex = -1;
-        fixture.detectChanges();
-        expect(testComponent.nzPaginationComponent.nzPageIndex).toBe(1);
-        testComponent.pageIndex = 10;
-        fixture.detectChanges();
-        expect(testComponent.nzPaginationComponent.nzPageIndex).toBe(5);
-      });
       it('should next five work', () => {
         testComponent.total = 500;
         fixture.detectChanges();
@@ -245,12 +236,10 @@ describe('pagination', () => {
   });
   describe('pagination render items', () => {
     let fixture;
-    let testComponent;
     let pagination;
     let paginationElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestPaginationRenderComponent);
-      testComponent = fixture.debugElement.componentInstance;
       pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
       paginationElement = pagination.nativeElement.firstElementChild;
@@ -279,10 +268,10 @@ describe('pagination', () => {
       expect(paginationElement.firstElementChild.innerText.trim()).toBe('1-20 of 85 items');
       testComponent.pageIndex = 2;
       fixture.detectChanges();
-      expect(paginationElement.firstElementChild.innerText).toBe('21-40 of 85 items');
+      expect(paginationElement.firstElementChild.innerText.trim()).toBe('21-40 of 85 items');
       testComponent.pageIndex = 5;
       fixture.detectChanges();
-      expect(paginationElement.firstElementChild.innerText).toBe('81-85 of 85 items');
+      expect(paginationElement.firstElementChild.innerText.trim()).toBe('81-85 of 85 items');
     });
   });
 

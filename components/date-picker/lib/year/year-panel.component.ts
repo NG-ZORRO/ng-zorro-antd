@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
 import { CandyDate } from '../candy-date';
@@ -7,17 +7,32 @@ const MAX_ROW = 4;
 const MAX_COL = 3;
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // tslint:disable-next-line:component-selector
   selector: 'year-panel',
-  templateUrl: 'year-panel.component.html'
+  templateUrl: 'year-panel.component.html',
+  styles: [
+    // Support disabledDate
+    `
+      .ant-calendar-year-panel-cell-disabled .ant-calendar-year-panel-year, .ant-calendar-year-panel-cell-disabled .ant-calendar-year-panel-year:hover {
+        color: rgba(0,0,0,0.25);
+        background: #f5f5f5;
+        cursor: not-allowed;
+      }
+    `
+  ]
 })
 
 export class YearPanelComponent implements OnChanges {
   @Input() locale: NzCalendarI18nInterface;
 
   @Input() value: CandyDate;
-  @Output() valueChange = new EventEmitter<CandyDate>();
+  @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
-  @Output() decadePanelShow = new EventEmitter<void>();
+  @Input() disabledDate: (date: Date) => boolean;
+
+  @Output() readonly decadePanelShow = new EventEmitter<void>();
 
   get currentYear(): number {
     return this.value.getYear();
@@ -35,7 +50,7 @@ export class YearPanelComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value) {
+    if (changes.value || changes.disabledDate) {
       this.render();
     }
   }
@@ -48,7 +63,7 @@ export class YearPanelComponent implements OnChanges {
     this.gotoYear(10);
   }
 
-  trackPanelYear(index: number, yearData: PanelYearData): string {
+  trackPanelYear(_index: number, yearData: PanelYearData): string {
     return yearData.content;
   }
 
@@ -83,8 +98,10 @@ export class YearPanelComponent implements OnChanges {
       for (let colIndex = 0; colIndex < MAX_COL; colIndex ++) {
         const year = previousYear + index;
         const content = String(year);
+        const disabled = this.disabledDate ? this.disabledDate(this.value.setYear(year).nativeDate) : false;
 
         const cell = years[rowIndex][colIndex] = {
+          disabled,
           content,
           year,
           title: content,
@@ -98,6 +115,7 @@ export class YearPanelComponent implements OnChanges {
         cell.classMap = {
           [`${this.prefixCls}-cell`]: true,
           [`${this.prefixCls}-selected-cell`]: cell.isCurrent,
+          [`${this.prefixCls}-cell-disabled`]: disabled,
           [`${this.prefixCls}-last-decade-cell`]: cell.isLowerThanStart,
           [`${this.prefixCls}-next-decade-cell`]: cell.isBiggerThanEnd
         };
@@ -118,6 +136,7 @@ export class YearPanelComponent implements OnChanges {
 }
 
 export interface PanelYearData {
+  disabled: boolean;
   content: string;
   year: number;
   title: string;

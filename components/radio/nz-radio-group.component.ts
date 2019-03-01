@@ -5,10 +5,12 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  ElementRef,
   Input,
   OnChanges,
   OnDestroy,
   QueryList,
+  Renderer2,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
@@ -36,7 +38,6 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
     }
   ],
   host               : {
-    '[class.ant-radio-group]'      : 'true',
     '[class.ant-radio-group-large]': `nzSize === 'large'`,
     '[class.ant-radio-group-small]': `nzSize === 'small'`,
     '[class.ant-radio-group-solid]': `nzButtonStyle === 'solid'`
@@ -73,7 +74,8 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
     }
   }
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-radio-group');
   }
 
   ngAfterContentInit(): void {

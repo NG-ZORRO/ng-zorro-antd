@@ -30,3 +30,4 @@ A content area which can be collapsed and expanded.
 | `[nzShowArrow]` | Display arrow or not | `boolean` | `true` |
 | `[nzActive]` | Active status of panel, double binding | `boolean` | - |
 | `(nzActiveChange)` | Callback function of the active status | `EventEmitter<boolean>` | - |
+| `[nzExpandedIcon]` | Customize an icon for toggle | `string｜TemplateRef<void>` | - |

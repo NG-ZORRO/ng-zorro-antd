@@ -5,7 +5,9 @@ export function isNotNil(value: any): boolean {
   return (typeof(value) !== 'undefined') && value !== null;
 }
 
-/** 校验对象是否相等 */
+/**
+ * Examine if two objects are shallowly equaled.
+ */
 export function shallowEqual(objA: {}, objB: {}): boolean {
   if (objA === objB) {
     return true;

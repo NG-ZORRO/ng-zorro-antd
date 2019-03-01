@@ -1,5 +1,5 @@
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
-import { ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   forwardRef,
   ChangeDetectionStrategy,
@@ -7,23 +7,37 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Host,
   HostListener,
   Input,
   OnDestroy,
+  Optional,
   Output,
+  QueryList,
+  Renderer2,
   TemplateRef,
   ViewChild,
+  ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { slideMotion } from '../core/animation/slide';
-import { ClassMap } from '../core/interface/interface';
-import { EXPANDED_DROPDOWN_POSITIONS } from '../core/overlay/overlay-position-map';
-import { arrayEquals, toArray } from '../core/util/array';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
+import { DEFAULT_CASCADER_POSITIONS } from '../core/overlay/overlay-position';
+import { NgClassType } from '../core/types/ng-class';
+import { arraysEqual, toArray } from '../core/util/array';
 import { InputBoolean } from '../core/util/convert';
+import { NzCascaderOptionComponent } from './nz-cascader-li.component';
 
-import { CascaderOption, CascaderSearchOption, NzCascaderExpandTrigger, NzCascaderSize, NzCascaderTriggerType, NzShowSearchOptions } from './types';
+import {
+  CascaderOption,
+  CascaderSearchOption,
+  NzCascaderExpandTrigger,
+  NzCascaderSize,
+  NzCascaderTriggerType,
+  NzShowSearchOptions
+} from './types';
 
 const defaultDisplayRender = label => label.join(' / ');
 
@@ -43,8 +57,6 @@ const defaultDisplayRender = label => label.join(' / ');
   ],
   host               : {
     '[attr.tabIndex]'                       : '"0"',
-    '[class.ant-cascader]'                  : 'true',
-    '[class.ant-cascader-picker]'           : 'true',
     '[class.ant-cascader-lg]'               : 'nzSize === "large"',
     '[class.ant-cascader-sm]'               : 'nzSize === "small"',
     '[class.ant-cascader-picker-disabled]'  : 'nzDisabled',
@@ -66,6 +78,8 @@ const defaultDisplayRender = label => label.join(' / ');
 export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   @ViewChild('input') input: ElementRef;
   @ViewChild('menu') menu: ElementRef;
+  @ViewChild(CdkConnectedOverlay) overlay: CdkConnectedOverlay;
+  @ViewChildren(NzCascaderOptionComponent) cascaderItems: QueryList<NzCascaderOptionComponent>;
 
   @Input() @InputBoolean() nzShowInput = true;
   @Input() @InputBoolean() nzShowArrow = true;
@@ -78,7 +92,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   @Input() nzValueProperty = 'value';
   @Input() nzLabelRender: TemplateRef<void>;
   @Input() nzLabelProperty = 'label';
-  @Input() nzNotFoundContent: string;
+  @Input() nzNotFoundContent: string | TemplateRef<void>;
   @Input() nzSize: NzCascaderSize = 'default';
   @Input() nzShowSearch: boolean | NzShowSearchOptions;
   @Input() nzPlaceHolder = 'Please select';
@@ -93,7 +107,10 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   @Input() nzLoadData: (node: CascaderOption, index?: number) => PromiseLike<any>;
 
   @Input()
-  get nzOptions(): CascaderOption[] { return this.columns[ 0 ]; }
+  get nzOptions(): CascaderOption[] {
+    return this.columns[ 0 ];
+  }
+
   set nzOptions(options: CascaderOption[] | null) {
     this.columnsSnapshot = this.columns = options && options.length ? [ options ] : [];
     if (!this.isSearching) {
@@ -120,7 +137,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   columns: CascaderOption[][] = [];
   onChange = Function.prototype;
   onTouched = Function.prototype;
-  positions: ConnectionPositionPair[] = [ ...EXPANDED_DROPDOWN_POSITIONS ];
+  positions: ConnectionPositionPair[] = [ ...DEFAULT_CASCADER_POSITIONS ];
   dropdownWidthStyle: string;
   isSearching = false;
   isFocused = false;
@@ -132,23 +149,27 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   private activatedOptions: CascaderOption[] = [];
   private columnsSnapshot: CascaderOption[][];
   private activatedOptionsSnapshot: CascaderOption[];
-  private delayMenuTimer;
-  private delaySelectTimer;
+  private delayMenuTimer: number;
+  private delaySelectTimer: number;
 
   set inputValue(inputValue: string) {
     this._inputValue = inputValue;
     this.toggleSearchMode();
   }
-  get inputValue(): string { return this._inputValue; }
+
+  get inputValue(): string {
+    return this._inputValue;
+  }
+
   private _inputValue = '';
 
-  get menuCls(): ClassMap {
+  get menuCls(): NgClassType {
     return {
       [ `${this.nzMenuClassName}` ]: !!this.nzMenuClassName
     };
   }
 
-  get menuColumnCls(): ClassMap {
+  get menuColumnCls(): NgClassType {
     return {
       [ `${this.nzColumnClassName}` ]: !!this.nzColumnClassName
     };
@@ -293,6 +314,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     }
 
     this.cdr.detectChanges();
+    this.reposition();
   }
 
   private loadChildrenAsync(option: CascaderOption, columnIndex: number, success?: () => void, failure?: () => void): void {
@@ -300,15 +322,17 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
       this.isLoading = columnIndex < 0;
       option.loading = true;
       this.nzLoadData(option, columnIndex).then(() => {
-        option.loading = this.isLoading = false;
         if (option.children) {
           option.children.forEach(child => child.parent = columnIndex < 0 ? undefined : option);
           this.setColumnData(option.children, columnIndex + 1);
-          this.cdr.detectChanges();
         }
         if (success) {
           success();
         }
+        option.loading = this.isLoading = false; // Need to check children.
+        this.checkChildren();
+        // Reposition in the next tick, because we use markForCheck above.
+        Promise.resolve().then(() => this.reposition());
       }, () => {
         option.loading = this.isLoading = false;
         option.isLeaf = true;
@@ -339,7 +363,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   }
 
   private setColumnData(options: CascaderOption[], columnIndex: number): void {
-    if (!arrayEquals(this.columns[ columnIndex ], options)) {
+    if (!arraysEqual(this.columns[ columnIndex ], options)) {
       this.columns[ columnIndex ] = options;
       if (columnIndex < this.columns.length - 1) {
         this.columns = this.columns.slice(0, columnIndex + 1);
@@ -374,7 +398,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
 
   private onValueChange(): void {
     const value = this.getSubmitValue();
-    if (!arrayEquals(this.value, value)) {
+    if (!arraysEqual(this.value, value)) {
       this.defaultValue = null;
       this.value = value;
       this.onChange(value);
@@ -394,7 +418,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
 
   //#endregion
 
-  //#region Mouse and keyboard event handlers, view children
+  //#region Mouse and keyboard event handles, view children
 
   focus(): void {
     if (!this.isFocused) {
@@ -410,11 +434,11 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     }
   }
 
-  handleInputBlur(event: Event): void {
+  handleInputBlur(): void {
     this.menuVisible ? this.focus() : this.blur();
   }
 
-  handleInputFocus(event: Event): void {
+  handleInputFocus(): void {
     this.focus();
   }
 
@@ -460,8 +484,8 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     }
   }
 
-  @HostListener('click', [ '$event' ])
-  onTriggerClick(event: MouseEvent): void {
+  @HostListener('click')
+  onTriggerClick(): void {
     if (this.nzDisabled) {
       return;
     }
@@ -474,8 +498,8 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     this.onTouched();
   }
 
-  @HostListener('mouseenter', [ '$event' ])
-  onTriggerMouseEnter(event: MouseEvent): void {
+  @HostListener('mouseenter')
+  onTriggerMouseEnter(): void {
     if (this.nzDisabled) {
       return;
     }
@@ -667,9 +691,15 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
       const disabled = forceDisabled || node.disabled;
       path.push(node);
       node.children.forEach((sNode) => {
-        if (!sNode.parent) { sNode.parent = node; } // Build parent reference when doing searching
-        if (!sNode.isLeaf) { loopParent(sNode, disabled); }
-        if (sNode.isLeaf || !sNode.children || !sNode.children.length) { loopChild(sNode, disabled); }
+        if (!sNode.parent) {
+          sNode.parent = node;
+        } // Build parent reference when doing searching
+        if (!sNode.isLeaf) {
+          loopParent(sNode, disabled);
+        }
+        if (sNode.isLeaf || !sNode.children || !sNode.children.length) {
+          loopChild(sNode, disabled);
+        }
       });
       path.pop();
     };
@@ -689,6 +719,11 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
       }
       path.pop();
     };
+
+    if (!this.columnsSnapshot.length) {
+      this.columns = [ [] ];
+      return;
+    }
 
     this.columnsSnapshot[ 0 ].forEach(node => (node.isLeaf || !node.children || !node.children.length)
       ? loopChild(node)
@@ -784,7 +819,10 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     this.setMenuVisible(false);
   }
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef) {
+  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, renderer: Renderer2,
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+    renderer.addClass(elementRef.nativeElement, 'ant-cascader');
+    renderer.addClass(elementRef.nativeElement, 'ant-cascader-picker');
   }
 
   ngOnDestroy(): void {
@@ -818,5 +856,21 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
       this.dropDownPosition = newValue;
       this.cdr.detectChanges();
     }
+  }
+
+  /**
+   * Reposition the cascader panel. When a menu opens, the cascader expands
+   * and may exceed the browser boundary.
+   */
+  private reposition(): void {
+    if (this.overlay && this.overlay.overlayRef && this.menuVisible) {
+      Promise.resolve().then(() => {
+        this.overlay.overlayRef.updatePosition();
+      });
+    }
+  }
+
+  private checkChildren(): void {
+    this.cascaderItems.forEach(item => item.markForCheck());
   }
 }

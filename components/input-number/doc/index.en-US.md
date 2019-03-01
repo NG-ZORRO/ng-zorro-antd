@@ -6,6 +6,8 @@ title: InputNumber
 
 Enter a number within certain range with the mouse or keyboard.
 
+> Note：InputNumber will validate the input value only when `(blur)` and `(keydown.enter)` happened other than when user input character to avoid error `ngModelChange` output (-0.02001 or -1.0e28)
+
 ## When To Use
 
 When a numeric value needs to be provided.

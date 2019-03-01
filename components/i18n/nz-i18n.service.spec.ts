@@ -1,12 +1,9 @@
-import { DatePipe } from '@angular/common';
 import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { filter } from 'rxjs/operators';
 import en_US from './languages/en_US';
 import zh_CN from './languages/zh_CN';
 import { NzI18nModule } from './nz-i18n.module';
-import { NzI18nService, NZ_I18N_SERVICE_PROVIDER } from './nz-i18n.service';
-import { NZ_I18N } from './nz-i18n.token';
+import { NzI18nService } from './nz-i18n.service';
 
 describe('nz-i18n.service', () => {
   let injector: Injector;

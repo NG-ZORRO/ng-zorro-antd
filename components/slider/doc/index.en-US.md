@@ -16,7 +16,6 @@ To input a value in a range.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzDefaultValue]` | The default value of slider. When `range` is `false`, use `number`, otherwise, use `[number, number]` | `number｜number[]` | `0｜[0, 0]` |
 | `[nzDisabled]` | If true, the slider will not be interactable. | `boolean` | `false` |
 | `[nzDots]` | Whether the thumb can drag over tick only. | `boolean` | `false` |
 | `[nzIncluded]` | Make effect when `marks` not null，`true` means containment and `false` means coordinative | `boolean` | `true` |
@@ -28,5 +27,6 @@ To input a value in a range.
 | `[nzTipFormatter]` | Slider will pass its value to `tipFormatter`, and display its value in Tooltip, and hide Tooltip when return value is null. | `(value: number) => string` | - |
 | `[ngModel]` | The value of slider. When `range` is `false`, use `number`, otherwise, use `[number, number]` | `number｜number[]` | - |
 | `[nzVertical]` | If true, the slider will be vertical. | `boolean` | `false` |
+| `[nzTooltipVisible]` | When set to `always` tooltips are always displayed. When set to `never` they are never displayed | `'default'｜'always'｜'never'` | `default` |
 | `(nzOnAfterChange)` | Fire when `onmouseup` is fired. | `EventEmitter<number[] ｜ number>` | - |
 | `(ngModelChange)` | Callback function that is fired when the user changes the slider's value. | `EventEmitter<number[] ｜ number>` | - |

@@ -5,13 +5,15 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
+  Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Output,
-  Renderer2, SimpleChanges,
+  Renderer2,
+  SimpleChanges,
   TemplateRef,
   ViewContainerRef
 } from '@angular/core';
@@ -19,6 +21,7 @@ import {
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { isNotNil } from '../core/util/check';
 import { NzToolTipComponent } from './nz-tooltip.component';
 
@@ -32,7 +35,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   // [NOTE] Here hard coded, and nzTitle used only under NzTooltipDirective currently.
   isTooltipOpen: boolean = false;
   isDynamicTooltip = false; // Indicate whether current tooltip is dynamic created
-  delayTimer; // Timer for delay enter/leave
+  delayTimer: number; // Timer for delay enter/leave
   visible: boolean;
   factory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
 
@@ -54,7 +57,11 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   @Input('nz-tooltip') nzTitle: string | TemplateRef<void>;
-  @Input('nzTitle') set setTitle(title: string | TemplateRef<void>) { this.nzTitle = title; }
+
+  @Input('nzTitle') set setTitle(title: string | TemplateRef<void>) {
+    this.nzTitle = title;
+  }
+
   @Input() nzContent: string | TemplateRef<void>;
   @Input() nzMouseEnterDelay: number;
   @Input() nzMouseLeaveDelay: number;
@@ -69,7 +76,8 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
     public hostView: ViewContainerRef,
     public resolver: ComponentFactoryResolver,
     public renderer: Renderer2,
-    @Optional() public tooltip: NzToolTipComponent
+    @Optional() public tooltip: NzToolTipComponent,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
   }
 
@@ -82,6 +90,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
     if (!this.tooltip) {
       const tooltipComponent = this.hostView.createComponent(this.factory);
       this.tooltip = tooltipComponent.instance;
+      this.tooltip.noAnimation = this.noAnimation;
       // Remove element when use directive https://github.com/NG-ZORRO/ng-zorro-antd/issues/1967
       this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), tooltipComponent.location.nativeElement);
       this.isDynamicTooltip = true;
@@ -141,10 +150,10 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
 
   private delayEnterLeave(isOrigin: boolean, isEnter: boolean, delay: number = -1): void {
     if (this.delayTimer) { // Clear timer during the delay time
-      window.clearTimeout(this.delayTimer);
+      clearTimeout(this.delayTimer);
       this.delayTimer = null;
     } else if (delay > 0) {
-      this.delayTimer = window.setTimeout(() => {
+      this.delayTimer = setTimeout(() => {
         this.delayTimer = null;
         isEnter ? this.show() : this.hide();
       }, delay * 1000);

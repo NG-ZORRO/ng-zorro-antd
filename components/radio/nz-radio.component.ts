@@ -1,5 +1,4 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { DOCUMENT } from '@angular/common';
 import {
   forwardRef,
   AfterViewInit,
@@ -8,7 +7,6 @@ import {
   Component,
   ElementRef,
   HostListener,
-  Inject,
   Input,
   OnChanges,
   Renderer2,
@@ -34,7 +32,6 @@ import { InputBoolean } from '../core/util/convert';
     }
   ],
   host               : {
-    '[class.ant-radio-wrapper]'         : 'true',
     '[class.ant-radio-wrapper-checked]' : 'checked',
     '[class.ant-radio-wrapper-disabled]': 'nzDisabled'
   }
@@ -90,7 +87,8 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   }
 
   /* tslint:disable-next-line:no-any */
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Inject(DOCUMENT) private document: any, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
+    this.renderer.addClass(elementRef.nativeElement, 'ant-radio-wrapper');
   }
 
   setDisabledState(isDisabled: boolean): void {

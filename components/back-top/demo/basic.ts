@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
     button.
   `,
   styles  : [ `
-    :host ::ng-deep strong {
+    strong {
       color: rgba(64, 64, 64, 0.6);
     }
   ` ]

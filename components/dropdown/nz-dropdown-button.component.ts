@@ -3,17 +3,17 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
+  EventEmitter, Host,
   Input,
   OnChanges,
-  OnDestroy,
+  OnDestroy, Optional,
   Output,
-  Renderer2,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 
 import { slideMotion } from '../core/animation/slide';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { NzDropDownComponent } from './nz-dropdown.component';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 import { NzMenuDropdownService } from './nz-menu-dropdown.service';
@@ -49,8 +49,9 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
   @Output() readonly nzClick = new EventEmitter<MouseEvent>();
   @ViewChild(NzDropDownDirective) nzDropDownDirective: NzDropDownDirective;
 
-  constructor(renderer: Renderer2, cdr: ChangeDetectorRef, nzMenuDropdownService: NzMenuDropdownService) {
-    super(renderer, cdr, nzMenuDropdownService);
+  constructor(cdr: ChangeDetectorRef, nzMenuDropdownService: NzMenuDropdownService,
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+    super(cdr, nzMenuDropdownService, noAnimation);
   }
 
   /** rewrite afterViewInit hook */

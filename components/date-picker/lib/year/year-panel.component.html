@@ -28,7 +28,7 @@
             <td *ngFor="let yearCell of row; trackBy: trackPanelYear"
               role="gridcell"
               title="{{ yearCell.title }}"
-              (click)="yearCell.onClick()"
+              (click)="yearCell.disabled ? null : yearCell.onClick()"
               [ngClass]="yearCell.classMap"
             >
               <a class="{{ prefixCls }}-year">{{ yearCell.content }}</a>

@@ -3,15 +3,16 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Host,
-  HostBinding,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
   Optional,
   Output,
+  Renderer2,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -33,8 +34,9 @@ export type NzBreakPoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
   changeDetection    : ChangeDetectionStrategy.OnPush,
   templateUrl        : './nz-sider.component.html',
   host               : {
-    '[class.ant-layout-sider]'           : 'true',
-    '[class.ant-layout-sider-zero-width]': 'nzCollapsed && (nzCollapsedWidth===0)',
+    '[class.ant-layout-sider-zero-width]': 'nzCollapsed && nzCollapsedWidth === 0',
+    '[class.ant-layout-sider-light]'     : `nzTheme === 'light'`,
+    '[class.ant-layout-sider-collapsed]' : 'nzCollapsed',
     '[style.flex]'                       : 'flexSetting',
     '[style.max-width.px]'               : 'widthSetting',
     '[style.min-width.px]'               : 'widthSetting',
@@ -53,12 +55,14 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
     xxl: '1600px'
   };
   @Input() nzWidth = 200;
+  @Input() nzTheme: 'light' | 'dark' = 'dark';
   @Input() nzCollapsedWidth = 80;
   @Input() nzBreakpoint: NzBreakPoint;
+  @Input() nzZeroTrigger: TemplateRef<void>;
+  @Input() @ViewChild('defaultTrigger') nzTrigger: TemplateRef<void>;
   @Input() @InputBoolean() nzReverseArrow = false;
   @Input() @InputBoolean() nzCollapsible = false;
-  @Input() @ViewChild('defaultTrigger') nzTrigger: TemplateRef<void>;
-  @Input() @InputBoolean() @HostBinding('class.ant-layout-sider-collapsed') nzCollapsed = false;
+  @Input() @InputBoolean() nzCollapsed = false;
   @Output() readonly nzCollapsedChange = new EventEmitter();
 
   get flexSetting(): string {
@@ -83,7 +87,9 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.below = matchBelow;
       this.nzCollapsed = matchBelow;
       this.nzCollapsedChange.emit(matchBelow);
-      this.cdr.markForCheck();
+      this.ngZone.run(() => {
+        this.cdr.markForCheck();
+      });
     }
   }
 
@@ -93,14 +99,15 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get isZeroTrigger(): boolean {
-    return this.nzCollapsible && this.nzTrigger && (this.nzCollapsedWidth === 0) && ((this.nzBreakpoint && this.below) || (!this.nzBreakpoint));
+    return this.nzCollapsible && this.nzTrigger && this.nzCollapsedWidth === 0 && ((this.nzBreakpoint && this.below) || (!this.nzBreakpoint));
   }
 
   get isSiderTrigger(): boolean {
-    return this.nzCollapsible && this.nzTrigger && (this.nzCollapsedWidth !== 0);
+    return this.nzCollapsible && this.nzTrigger && this.nzCollapsedWidth !== 0;
   }
 
-  constructor(@Optional() @Host() private nzLayoutComponent: NzLayoutComponent, private mediaMatcher: MediaMatcher, private ngZone: NgZone, private platform: Platform, private cdr: ChangeDetectorRef) {
+  constructor(@Optional() @Host() private nzLayoutComponent: NzLayoutComponent, private mediaMatcher: MediaMatcher, private ngZone: NgZone, private platform: Platform, private cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-layout-sider');
   }
 
   ngOnInit(): void {

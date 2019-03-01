@@ -1,42 +1,29 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from '../core/util/convert';
+
+export interface NzSliderTrackStyle {
+  bottom?: string;
+  height?: string;
+  left?: string;
+  width?: string;
+  visibility?: string;
+}
 
 @Component({
+  changeDetection    : ChangeDetectionStrategy.OnPush,
+  encapsulation      : ViewEncapsulation.None,
   selector           : 'nz-slider-track',
   preserveWhitespaces: false,
   templateUrl        : './nz-slider-track.component.html'
 })
 export class NzSliderTrackComponent implements OnChanges {
-  private _vertical = false;
-  private _included = false;
-
-  // Dynamic properties
   @Input() nzOffset;
   @Input() nzLength;
+  @Input() @InputBoolean() nzVertical = false;
+  @Input() @InputBoolean() nzIncluded = false;
 
-  // Static properties
-  @Input() nzClassName;
-
-  @Input()
-  set nzVertical(value: boolean) { // Required
-    this._vertical = toBoolean(value);
-  }
-
-  get nzVertical(): boolean {
-    return this._vertical;
-  }
-
-  @Input()
-  set nzIncluded(value: boolean) {
-    this._included = toBoolean(value);
-  }
-
-  get nzIncluded(): boolean {
-    return this._included;
-  }
-
-  style: { bottom?: string, height?: string, left?: string, width?: string, visibility?: string } = {};
+  style: NzSliderTrackStyle = {};
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzIncluded) {
@@ -46,11 +33,14 @@ export class NzSliderTrackComponent implements OnChanges {
       if (this.nzVertical) {
         this.style.bottom = `${this.nzOffset}%`;
         this.style.height = `${this.nzLength}%`;
+        this.style.left = null;
+        this.style.width = null;
       } else {
         this.style.left = `${this.nzOffset}%`;
         this.style.width = `${this.nzLength}%`;
+        this.style.bottom = null;
+        this.style.height = null;
       }
     }
   }
-
 }

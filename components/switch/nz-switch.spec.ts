@@ -127,6 +127,21 @@ describe('switch', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
+      testComponent.control = false;
+      testComponent.loading = true;
+      fixture.detectChanges();
+      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', ENTER);
+      fixture.detectChanges();
+      expect(testComponent.value).toBe(false);
+      expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
+      testComponent.control = false;
+      testComponent.loading = false;
+      testComponent.disabled = true;
+      fixture.detectChanges();
+      dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', ENTER);
+      fixture.detectChanges();
+      expect(testComponent.value).toBe(false);
+      expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
     });
     it('should children work', fakeAsync(() => {
       fixture.detectChanges();
@@ -152,12 +167,10 @@ describe('switch', () => {
   });
   describe('template switch', () => {
     let fixture;
-    let testComponent;
     let switchElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSwitchTemplateComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
     });
     it('should children template work', fakeAsync(() => {

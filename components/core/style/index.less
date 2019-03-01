@@ -56,7 +56,13 @@
 
   // https://github.com/angular/material2/issues/15051
   body {
-    overflow-x: unset;
+    overflow-x: visible;
+  }
+}
+
+.nz-overlay-transparent-backdrop {
+  &, &.cdk-overlay-backdrop-showing {
+    opacity: 0;
   }
 }
 
@@ -84,13 +90,16 @@
   }
 }
 
-.ant-table-td-right-sticky + .ant-table-td-right-sticky {
-  box-shadow: none;
+.ant-table-scroll-position-middle, .ant-table-scroll-position-left {
+  .ant-table-td-right-sticky + .ant-table-td-right-sticky {
+    box-shadow: none;
+  }
+
+  .ant-table-th-right-sticky + .ant-table-th-right-sticky {
+    box-shadow: none;
+  }
 }
 
-.ant-table-th-right-sticky + .ant-table-th-right-sticky {
-  box-shadow: none;
-}
 
 .ant-table-th-left-sticky, .ant-table-th-right-sticky, .ant-table-td-right-sticky, .ant-table-td-left-sticky {
   position: sticky !important;
@@ -99,6 +108,12 @@
 
 .ant-table-td-left-sticky, .ant-table-td-right-sticky {
   background: @component-background;
+}
+
+.ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th ,.ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-thead > tr > th {
+  &.ant-table-th-left-sticky, &.ant-table-th-right-sticky {
+    background: @component-background;
+  }
 }
 
 .ant-table-tbody {
@@ -115,6 +130,10 @@
       }
     }
   }
+}
+
+.ant-table-thead > tr > th .ant-table-column-sorters > nz-dropdown {
+  position: static !important;
 }
 
 .ant-table-scroll-position-middle {
@@ -159,6 +178,7 @@
         margin: 22px 0;
       }
     }
+
     .ant-tree-child-tree > nz-tree-node:last-child {
       > li:before {
         content: ' ';
@@ -171,6 +191,7 @@
       }
     }
   }
+
   .font-highlight {
     color: @highlight-color;
   }
@@ -183,4 +204,65 @@ textarea.cdk-textarea-autosize-measuring {
   // measurement. We just have to account for it later and subtract it off the final result.
   padding: 2px 0 !important;
   box-sizing: content-box !important;
+}
+
+
+.nz-animate-disabled {
+
+  // drawer
+  &.ant-drawer {
+    &.ant-drawer-open .ant-drawer-mask {
+      animation: none;
+      transition: none;
+    }
+
+    & > * {
+      transition: none;
+    }
+  }
+
+  // modal
+  .ant-modal-mask, .ant-modal {
+    animation: none;
+    transition: none;
+
+    &.zoom-enter, &.zoom-leave,
+    &.zoom-enter-active, &.zoom-leave-active {
+      animation: none;
+      transition: none;
+    }
+  }
+
+  // menu
+  &.ant-menu {
+    transition: none;
+
+    .ant-menu-item, .ant-menu-submenu-title {
+      transition: none;
+    }
+
+    .ant-menu-item .anticon, .ant-menu-submenu-title .anticon {
+      transition: none;
+
+      & + span {
+        transition: none;
+      }
+    }
+  }
+
+  // tabs
+  &.ant-tabs {
+    .ant-tabs-top-content.ant-tabs-content-animated,
+    .ant-tabs-bottom-content.ant-tabs-content-animated,
+    .ant-tabs-top-content > .ant-tabs-tabpane,
+    .ant-tabs-bottom-content > .ant-tabs-tabpane,
+    &.ant-tabs-left .ant-tabs-ink-bar-animated,
+    &.ant-tabs-right .ant-tabs-ink-bar-animated,
+    &.ant-tabs-top .ant-tabs-ink-bar-animated,
+    &.ant-tabs-bottom .ant-tabs-ink-bar-animated {
+      transition: none;
+    }
+  }
+
+
 }

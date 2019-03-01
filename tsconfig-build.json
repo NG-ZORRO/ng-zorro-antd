@@ -8,9 +8,7 @@
     "module": "es2015",
     "sourceMap": true,
     "target": "es2015",
-    "types": [
-      "node"
-    ]
+    "types": []
   },
   "files": [
     "./__gen_components/ng-zorro-antd.module.ts"

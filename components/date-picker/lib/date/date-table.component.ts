@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, SimpleChange } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { FunctionProp } from '../../../core/types/common-wrap';
 import { isNonEmptyString, isTemplateRef } from '../../../core/util/check';
 import { valueFunctionProp } from '../../../core/util/convert';
+import { DateHelperByDatePipe, DateHelperService } from '../../../i18n/date-helper.service';
+import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
 import { NzI18nService } from '../../../i18n/nz-i18n.service';
 import { CandyDate } from '../candy-date';
 
@@ -10,22 +12,26 @@ const DATE_ROW_NUM = 6;
 const DATE_COL_NUM = 7;
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // tslint:disable-next-line:component-selector
   selector: 'date-table',
   templateUrl: 'date-table.component.html'
 })
 
 export class DateTableComponent implements OnInit, OnChanges {
+  @Input() locale: NzCalendarI18nInterface;
   @Input() selectedValue: CandyDate[]; // Range ONLY
   @Input() hoverValue: CandyDate[]; // Range ONLY
 
   @Input() value: CandyDate;
-  @Output() valueChange = new EventEmitter<CandyDate>();
+  @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   @Input() showWeek: boolean;
   @Input() disabledDate: (d: Date) => boolean;
   @Input() dateRender: FunctionProp<TemplateRef<Date> | string>; // Customize date content while rendering
 
-  @Output() dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
+  @Output() readonly dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
 
   prefixCls: string = 'ant-calendar';
   headWeekDays: WeekDayLabel[];
@@ -34,7 +40,7 @@ export class DateTableComponent implements OnInit, OnChanges {
   isTemplateRef = isTemplateRef;
   isNonEmptyString = isNonEmptyString;
 
-  constructor(private i18n: NzI18nService) { }
+  constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) { }
 
   ngOnInit(): void { }
 
@@ -75,37 +81,35 @@ export class DateTableComponent implements OnInit, OnChanges {
 
   private changeValueFromInside(value: CandyDate): void {
     if (this.value !== value) {
-      // this.value = value;
-      // this.valueChange.emit(this.value);
-      // this.render();
       this.valueChange.emit(value);
     }
   }
 
   private makeHeadWeekDays(): WeekDayLabel[] {
     const weekDays: WeekDayLabel[] = [];
-    const firstDayOfWeek = this.getFirstDayOfWeek();
+    const firstDayOfWeek = this.dateHelper.getFirstDayOfWeek();
     for (let colIndex = 0; colIndex < DATE_COL_NUM; colIndex ++) {
       const day = (firstDayOfWeek + colIndex) % DATE_COL_NUM;
       const tempDate = this.value.setDay(day);
       weekDays[ colIndex ] = {
-        short: this.i18n.formatDate(tempDate.nativeDate, 'E'), // eg. Tue
-        veryShort: this.i18n.formatDate(tempDate.nativeDate, this.getVeryShortWeekFormat()) // eg. Tu
+        short: this.dateHelper.format(tempDate.nativeDate, this.dateHelper.relyOnDatePipe ? 'E' : 'ddd'), // eg. Tue
+        veryShort: this.dateHelper.format(tempDate.nativeDate, this.getVeryShortWeekFormat()) // eg. Tu
       };
     }
     return weekDays;
   }
 
   private getVeryShortWeekFormat(): string {
-    return this.i18n.getLocaleId().toLowerCase().indexOf('zh') === 0 ? 'EEEEE' : 'EEEEEE'; // Use extreme short for chinese
+    if (this.dateHelper.relyOnDatePipe) {
+      return this.i18n.getLocaleId().toLowerCase().indexOf('zh') === 0 ? 'EEEEE' : 'EEEEEE'; // Use extreme short for chinese
+    }
+    return 'dd';
   }
 
   private makeWeekRows(): WeekRow[] {
-    // let justRendered = true;
     const weekRows: WeekRow[] = [];
-    const firstDayOfWeek = this.getFirstDayOfWeek();
+    const firstDayOfWeek = this.dateHelper.getFirstDayOfWeek();
     const firstDateOfMonth = this.value.setDate(1);
-    // const firstDateToShow = firstDateOfMonth.setDay(firstDayOfWeek, { weekStartsOn: firstDayOfWeek });
     const firstDateOffset = (firstDateOfMonth.getDay() + 7 - firstDayOfWeek) % 7;
     const firstDateToShow = firstDateOfMonth.addDays(0 - firstDateOffset);
 
@@ -131,12 +135,6 @@ export class DateTableComponent implements OnInit, OnChanges {
           content: `${current.getDate()}`,
           onClick: () => this.changeValueFromInside(current),
           onMouseEnter: () => this.dayHover.emit(cell.value)
-          // onMouseEnter: () => {
-            // if (!justRendered) { // [Hack] To prevent the immediately "mouseenter" event when it just rendered, or the "hoverValue" may always said as changed
-              // this.dayHover.emit(cell.value);
-            // }
-            // justRendered = false;
-          // }
         };
 
         if (this.showWeek && !week.weekNum) {
@@ -201,16 +199,17 @@ export class DateTableComponent implements OnInit, OnChanges {
     return weekRows;
   }
 
-  private getFirstDayOfWeek(): number {
-    return this.value.firstDayOfWeek(this.i18n.getLocaleId());
-  }
-
   private getDateTitle(date: CandyDate): string {
-    return this.i18n.formatDate(date.nativeDate, 'longDate');
+    // NOTE: Compat for DatePipe formatting rules
+    let dateFormat: string = (this.locale && this.locale.dateFormat) || 'YYYY-MM-DD';
+    if (this.dateHelper.relyOnDatePipe) {
+      dateFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(dateFormat);
+    }
+    return this.dateHelper.format(date.nativeDate, dateFormat);
   }
 
   private getWeekNum(date: CandyDate): number {
-    return +this.i18n.formatDate(date.nativeDate, 'w');
+    return this.dateHelper.getISOWeek(date.nativeDate);
   }
 
   private isBeforeMonthYear(current: CandyDate, target: CandyDate): boolean {

@@ -26,7 +26,7 @@ Badge normally appears in proximity to notifications or user avatars with eye-ca
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzCount]` | Number to show in badge | `number` | - |
+| `[nzCount]` | Number to show in badge | `number｜TemplateRef<void>` | - |
 | `[nzDot]` | Whether to display a red dot instead of `count` | `boolean` | `false` |
 | `[nzShowDot]` | Whether to display the red dot | `boolean` | `true` |
 | `[nzOverflowCount]` | Max count to show | `number` | `99` |

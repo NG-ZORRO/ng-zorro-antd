@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { async, fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -8,18 +8,17 @@ import { of, Observable } from 'rxjs';
 import { dispatchMouseEvent, dispatchTouchEvent } from '../core/testing';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
-import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from './interface';
+import { NzTreeBaseService } from './nz-tree-base.service';
 import { NzTreeNode } from './nz-tree-node';
 import { NzTreeComponent } from './nz-tree.component';
 import { NzTreeModule } from './nz-tree.module';
-import { NzTreeService } from './nz-tree.service';
 
 describe('nz-tree', () => {
   let treeInstance;
   let treeElement: HTMLElement;
   let component;
   let fixture;
-  let treeService: NzTreeService;
+  let treeService: NzTreeBaseService;
   describe('basic tree', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
@@ -28,6 +27,7 @@ describe('nz-tree', () => {
       }).compileComponents();
       fixture = TestBed.createComponent(NzTestTreeBasicControlledComponent);
       component = fixture.componentInstance;
+      treeService = fixture.componentInstance.treeComponent.nzTreeService;
       fixture.detectChanges();
       treeInstance = fixture.debugElement.componentInstance;
       treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
@@ -112,9 +112,10 @@ describe('nz-tree', () => {
           { title: '0-1-0-2', key: '0-1-0-2', isLeaf: true }
         ]
       } ].map(v => {
-        return (new NzTreeNode(v));
+        return (new NzTreeNode(v, null, treeService));
       });
       fixture.detectChanges();
+      flush();
       tick(1000);
       fixture.detectChanges();
       // reset node will clear default value except checked nodes list
@@ -339,7 +340,7 @@ describe('nz-tree', () => {
         imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
         declarations: [ NzTestTreeDraggableComponent ],
         providers   : [
-          NzTreeService
+          NzTreeBaseService
         ]
       }).compileComponents();
     }));
@@ -422,7 +423,7 @@ describe('nz-tree', () => {
     // can not dispatchTouchEvent with pos, test alone
     it('test drag drop with dragPos', () => {
       // init selected node
-      treeService = treeInstance.treeComponent.nzTreeService;
+      treeService = treeInstance.treeComponent.nzTreeService.rootNodes[ 0 ].treeService;
       const dragNode = treeElement.querySelectorAll('li')[ 1 ];
       dispatchTouchEvent(dragNode, 'dragstart');
       fixture.detectChanges();
@@ -449,7 +450,6 @@ describe('nz-tree', () => {
     it('test wrong drag event', fakeAsync(() => {
       // drop node self
       fixture.detectChanges();
-      const dragStartSpy = spyOn(treeInstance, 'onDragStart');
       const dropSpy = spyOn(treeInstance, 'onDrop');
       const dragEndSpy = spyOn(treeInstance, 'onDragEnd');
       const dragNode = treeElement.querySelector('[title=\'0-1\']');
@@ -480,10 +480,9 @@ describe('nz-tree', () => {
     }));
 
     it('test drag event nzBeforeDrop', () => {
-      const dropSpy = spyOn(treeInstance, 'onDrop');
       const dragNode = treeElement.querySelector('[title=\'0-2\']');
       let dropNode = treeElement.querySelector('[title=\'0-1\']');
-      treeInstance.beforeDrop = (arg: NzFormatBeforeDropEvent): Observable<boolean> => {
+      treeInstance.beforeDrop = (): Observable<boolean> => {
         return of(true);
       };
       fixture.detectChanges();
@@ -505,7 +504,7 @@ describe('nz-tree', () => {
         imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
         declarations: [ NzTestTreeOlderComponent ],
         providers   : [
-          NzTreeService
+          NzTreeBaseService
         ]
       }).compileComponents();
     }));
@@ -526,29 +525,42 @@ describe('nz-tree', () => {
     it('test unCorrectly ngModel', () => {
       fixture.detectChanges();
       // unsupported type, will console `ngModel only accepts an array and should be not empty`
-      treeInstance.nodes = 'string';
+      treeInstance.modelNodes = 'string';
       fixture.detectChanges();
     });
 
-    it('should get correctly nodes', fakeAsync(() => {
-      treeInstance.modelNodes = treeInstance.nodes;
+    it('should get correctly nodes', () => {
       fixture.detectChanges();
-      flush();
-      tick(300);
+      fixture.componentInstance.checkedKeys = [ ...fixture.componentInstance.checkedKeys ];
+      fixture.componentInstance.expandKeys = [ ...fixture.componentInstance.expandKeys ];
+      fixture.componentInstance.selectedKeys = [ ...fixture.componentInstance.selectedKeys ];
       fixture.detectChanges();
-      expect(treeInstance.treeComponent.getCheckedNodeList().length).toEqual(1);
-      expect(treeInstance.treeComponent.getCheckedNodeList()[ 0 ].key).toEqual('10001');
-      expect(treeInstance.treeComponent.getExpandedNodeList().length).toEqual(2);
+      setTimeout(() => {
+        expect(fixture.componentInstance.treeComponent.getCheckedNodeList().length).toEqual(1);
+        expect(fixture.componentInstance.treeComponent.getCheckedNodeList()[ 0 ].key).toEqual('10001');
+        expect(treeInstance.treeComponent.getHalfCheckedNodeList().length).toEqual(1);
+        expect(treeInstance.treeComponent.getHalfCheckedNodeList()[ 0 ].key).toEqual('1001');
+        expect(fixture.componentInstance.treeComponent.getExpandedNodeList().length).toEqual(2);
+        expect(fixture.componentInstance.treeComponent.getSelectedNodeList().length).toEqual(2);
+      });
+    });
 
-      expect(treeInstance.treeComponent.getHalfCheckedNodeList().length).toEqual(1);
-      expect(treeInstance.treeComponent.getHalfCheckedNodeList()[ 0 ].key).toEqual('1001');
-      expect(treeInstance.treeComponent.getSelectedNodeList().length).toEqual(2);
+    it('test node function', () => {
+      fixture.detectChanges();
+      fixture.componentInstance.checkedKeys = [ ...fixture.componentInstance.checkedKeys ];
+      fixture.componentInstance.expandKeys = [ ...fixture.componentInstance.expandKeys ];
+      fixture.componentInstance.selectedKeys = [ ...fixture.componentInstance.selectedKeys ];
+      fixture.detectChanges();
+      // get node by key
+      expect(fixture.componentInstance.treeComponent.getTreeNodeByKey('10001').title).toEqual('child1');
       // test clear children
-      treeInstance.treeComponent.getTreeNodes()[ 0 ].clearChildren();
-      expect(treeInstance.treeComponent.getTreeNodes()[ 0 ].getChildren().length).toEqual(0);
-
-    }));
-
+      const node = fixture.componentInstance.treeComponent.getTreeNodes()[ 0 ].getChildren()[ 0 ]; // child1 10001
+      node.clearChildren();
+      expect(node.getChildren().length).toEqual(0);
+      // remove self
+      node.remove();
+      expect(node.getParentNode().getChildren().findIndex(v => v.key === node.key)).toEqual(-1);
+    });
   });
 
 });
@@ -629,8 +641,7 @@ export class NzTestTreeBasicControlledComponent {
     isLeaf  : true
   } ];
 
-  nzEvent(event: NzFormatEmitEvent): void {
-    // console.log(event.eventName, event);
+  nzEvent(): void {
   }
 
 }
@@ -712,22 +723,22 @@ export class NzTestTreeDraggableComponent {
   } ];
   beforeDrop;
 
-  onDragStart(event: NzFormatEmitEvent): void {
+  onDragStart(): void {
   }
 
-  onDragEnter(event: NzFormatEmitEvent): void {
+  onDragEnter(): void {
   }
 
-  onDragOver(event: NzFormatEmitEvent): void {
+  onDragOver(): void {
   }
 
-  onDragLeave(event: NzFormatEmitEvent): void {
+  onDragLeave(): void {
   }
 
-  onDrop(event: NzFormatEmitEvent): void {
+  onDrop(): void {
   }
 
-  onDragEnd(event: NzFormatEmitEvent): void {
+  onDragEnd(): void {
   }
 }
 
@@ -738,7 +749,6 @@ export class NzTestTreeDraggableComponent {
   selector: 'nz-test-older-tree',
   template: `
     <nz-tree
-      [nzData]="nodes"
       [(ngModel)]="modelNodes"
       [nzMultiple]="true"
       [nzDefaultExpandedKeys]="expandKeys"
@@ -748,7 +758,7 @@ export class NzTestTreeDraggableComponent {
     </nz-tree>
   `
 })
-class NzTestTreeOlderComponent {
+export class NzTestTreeOlderComponent implements OnInit {
   @ViewChild(NzTreeComponent) treeComponent: NzTreeComponent;
   expandKeys = [ '1001', '10001' ];
   checkedKeys = [ '10001' ];
@@ -758,81 +768,86 @@ class NzTestTreeOlderComponent {
   showExpand = true;
   searchValue = '';
   modelNodes = null;
-  nodes = [
-    new NzTreeNode({
-      title   : 'root1',
-      key     : '1001',
-      children: [
-        {
-          title   : 'child1',
-          key     : '10001',
-          children: [
-            {
-              title   : 'child1.1',
-              key     : '100011',
-              children: []
-            },
-            {
-              title   : 'child1.2',
-              key     : '100012',
-              disabled: true,
-              children: [
-                {
-                  title : 'grandchild1.2.1',
-                  key   : '1000121',
-                  isLeaf: true
-                },
-                {
-                  title          : 'grandchild1.2.2',
-                  key            : '1000122',
-                  isLeaf         : true,
-                  disableCheckbox: true
-                }
-              ]
-            }
-          ]
-        },
-        {
-          title: 'child2',
-          key  : '10002'
-        }
-      ]
-    }),
-    new NzTreeNode({
-      title   : 'root2',
-      key     : '1002',
-      children: [
-        {
-          title          : 'child2.1',
-          key            : '10021',
-          disableCheckbox: true,
-          children       : [
-            {
-              title          : 'grandchild2.1.1',
-              key            : '100211',
-              isLeaf         : true,
-              disableCheckbox: true
-            },
-            {
-              title          : 'grandchild2.1.2',
-              key            : '1002112',
-              isLeaf         : true,
-              disableCheckbox: true
-            }
-          ]
-        },
-        {
-          title   : 'child2.2',
-          key     : '10022',
-          children: [
-            {
-              title: 'grandchild2.2.1',
-              key  : '100221'
-            }
-          ]
-        }
-      ]
-    }),
-    new NzTreeNode({ title: 'root3', key: '1003' })
-  ];
+
+  ngOnInit(): void {
+    this.modelNodes = [
+      {
+        title   : 'root1',
+        key     : '1001',
+        children: [
+          {
+            title   : 'child1',
+            key     : '10001',
+            children: [
+              {
+                title   : 'child1.1',
+                key     : '100011',
+                children: []
+              },
+              {
+                title   : 'child1.2',
+                key     : '100012',
+                disabled: true,
+                children: [
+                  {
+                    title : 'grandchild1.2.1',
+                    key   : '1000121',
+                    isLeaf: true
+                  },
+                  {
+                    title          : 'grandchild1.2.2',
+                    key            : '1000122',
+                    isLeaf         : true,
+                    disableCheckbox: true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            title: 'child2',
+            key  : '10002'
+          }
+        ]
+      },
+      {
+        title   : 'root2',
+        key     : '1002',
+        children: [
+          {
+            title          : 'child2.1',
+            key            : '10021',
+            disableCheckbox: true,
+            children       : [
+              {
+                title          : 'grandchild2.1.1',
+                key            : '100211',
+                isLeaf         : true,
+                disableCheckbox: true
+              },
+              {
+                title          : 'grandchild2.1.2',
+                key            : '1002112',
+                isLeaf         : true,
+                disableCheckbox: true
+              }
+            ]
+          },
+          {
+            title   : 'child2.2',
+            key     : '10022',
+            children: [
+              {
+                title: 'grandchild2.2.1',
+                key  : '100221'
+              }
+            ]
+          }
+        ]
+      },
+      { title: 'root3', key: '1003' }
+    ].map(n => {
+      return new NzTreeNode(n, null, this.treeComponent.nzTreeService);
+    });
+  }
 }

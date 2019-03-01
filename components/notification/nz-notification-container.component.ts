@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Optional, ViewEncapsulation } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { NzMessageContainerComponent } from '../message/nz-message-container.component';
 import { NzNotificationConfig, NZ_NOTIFICATION_CONFIG, NZ_NOTIFICATION_DEFAULT_CONFIG } from './nz-notification-config';
@@ -34,6 +35,7 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
    */
   createMessage(notification: NzNotificationDataFilled): void {
     notification.options = this._mergeMessageOptions(notification.options);
+    notification.onClose = new Subject<boolean>();
     const key = notification.options.nzKey;
     const notificationWithSameKey = this.messages.find(msg => msg.options.nzKey === notification.options.nzKey);
     if (key && notificationWithSameKey) {
