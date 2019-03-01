@@ -4,7 +4,6 @@ import {
   Input,
   ViewEncapsulation
 } from '@angular/core';
-import { NzCheckboxComponent } from '../checkbox';
 import { InputBoolean } from '../core/util/convert';
 import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
 

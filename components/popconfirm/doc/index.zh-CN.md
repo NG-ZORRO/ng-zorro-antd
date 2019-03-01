@@ -24,6 +24,7 @@ title: Popconfirm
 | `[nzOkType]` | 确认按钮类型 | `'primary'｜'ghost'｜'dashed'｜'danger'｜'default'` | `'primary'` |
 | `[nzTitle]` | 确认框的描述 | `string｜TemplateRef<void>` | - |
 | `[nzCondition]` | 是否直接触发 `nzOnConfirm` 而不弹出框 | `boolean` | `false` |
+| `[nzIcon]` | 自定义弹出框的 icon  | `string｜TemplateRef<void>` | - |
 | `(nzOnCancel)` | 点击取消的回调 | `EventEmitter<void>` | - |
 | `(nzOnConfirm)` | 点击确认的回调 | `EventEmitter<void>` | - |
 

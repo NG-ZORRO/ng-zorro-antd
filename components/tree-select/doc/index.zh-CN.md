@@ -30,8 +30,10 @@ title: TreeSelect
 | `[nzShowExpand]` | 节点前添加展开图标 | `boolean` | `true` |
 | `[nzShowLine]` | 是否展示连接线 | `boolean` | `false` |
 | `[nzAsyncData]` | 是否异步加载(显示加载状态) | `boolean` | `false` |
-| `[nzNodes]` | treeNodes 数据 | `NzTreeNode[]` | `[]` |
+| `[nzNodes]` | treeNodes 数据 | `NzTreeNodeOptions[]` | `[]` |
 | `[nzDefaultExpandAll]` | 默认展开所有树节点 | `boolean` | `false` |
 | `[nzDefaultExpandedKeys]` | 默认展开指定的树节点 | `string[]` | - |
 | `[nzDisplayWith]` | 如何在输入框显示所选的节点值的方法 | `(node: NzTreeNode) => string` | `(node: NzTreeNode) => node.title` |
+| `[nzMaxTagCount]` | 最多显示多少个 tag | number | - |
+| `[nzMaxTagPlaceholder]` | 隐藏 tag 时显示的内容 | TemplateRef<{ $implicit: NzTreeNode[] }> | - |
 | `(nzExpandChange)` | 点击展开树节点图标调用 | `EventEmitter<NzFormatEmitEvent>` | - |

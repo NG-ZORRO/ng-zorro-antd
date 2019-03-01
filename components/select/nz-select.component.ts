@@ -8,10 +8,13 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
+  Host,
   Input,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -23,6 +26,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { merge, EMPTY, Subject } from 'rxjs';
 import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 import { slideMotion } from '../core/animation/slide';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { NzSizeLDSType } from '../core/types/size';
 import { isNotNil } from '../core/util/check';
 import { toBoolean, InputBoolean } from '../core/util/convert';
@@ -48,7 +52,6 @@ import { NzSelectService } from './nz-select.service';
   animations         : [ slideMotion ],
   templateUrl        : './nz-select.component.html',
   host               : {
-    '[class.ant-select]'            : 'true',
     '[class.ant-select-lg]'         : 'nzSize==="large"',
     '[class.ant-select-sm]'         : 'nzSize==="small"',
     '[class.ant-select-enabled]'    : '!nzDisabled',
@@ -76,6 +79,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   onChange: (value: string | string[]) => void = () => null;
   onTouched: () => void = () => null;
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
+  triggerWidth: number;
   private _disabled = false;
   private _autoFocus = false;
   private destroy$ = new Subject();
@@ -215,18 +219,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   updateCdkConnectedOverlayStatus(): void {
-    setTimeout(() => {
-      if (this.cdkOverlayOrigin &&
-        this.cdkConnectedOverlay &&
-        this.cdkConnectedOverlay.overlayRef) {
-        const triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
-        if (this.nzDropdownMatchSelectWidth) {
-          this.cdkConnectedOverlay.overlayRef.updateSize({ width: triggerWidth });
-        } else {
-          this.cdkConnectedOverlay.overlayRef.updateSize({ minWidth: triggerWidth });
-        }
-      }
-    });
+    this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
   }
 
   updateCdkConnectedOverlayPositions(): void {
@@ -237,7 +230,13 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     });
   }
 
-  constructor(private renderer: Renderer2, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
+  constructor(private renderer: Renderer2,
+              public nzSelectService: NzSelectService,
+              private cdr: ChangeDetectorRef,
+              private focusMonitor: FocusMonitor,
+              elementRef: ElementRef,
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+    renderer.addClass(elementRef.nativeElement, 'ant-select');
   }
 
   /** update ngModel -> update listOfSelectedValue **/

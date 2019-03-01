@@ -11,6 +11,7 @@
   [placeholder]="nzPlaceHolder"
   [size]="nzSize"
   [style]="pickerStyle"
+  [noAnimation]="noAnimation?.nzNoAnimation"
   (openChange)="onOpenChange($event)"
 >
   <date-range-popup *ngIf="realOpenState"

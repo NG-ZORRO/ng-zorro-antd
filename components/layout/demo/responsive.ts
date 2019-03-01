@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-layout-responsive',
   template: `
     <nz-layout>
-      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzBreakpoint]="'lg'">
+      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzBreakpoint]="'lg'" [nzCollapsedWidth]="0" [nzZeroTrigger]="zeroTrigger">
         <div class="logo">
         </div>
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
@@ -22,13 +22,16 @@ import { Component } from '@angular/core';
             Content
           </div>
         </nz-content>
-        <nz-footer style="text-align: center;">Ant Design ©2017 Implement By Angular</nz-footer>
+        <nz-footer style="text-align: center;">Ant Design ©2019 Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
+    <ng-template #zeroTrigger>
+      <i nz-icon type="menu-fold" theme="outline"></i>
+    </ng-template>
   `,
   styles  : [
     `
-      :host ::ng-deep .logo {
+      .logo {
         height: 32px;
         background: rgba(255,255,255,.2);
         margin: 16px;

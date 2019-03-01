@@ -23,6 +23,7 @@ Rate component.
 | `[nzCharacter]` | custom character of rate | `TemplateRef<void>` | `<i nz-icon type="star"></i>` |
 | `[nzCount]` | star count | `number` | `5` |
 | `[nzDisabled]` | read only, unable to interact | `boolean` | `false` |
+| `[nzTooltips]` | Customize tooltip by each character | `string[]` | `[]` |
 | `[ngModel]` | current value , double binding | `number` | - |
 | `(ngModelChange)` | callback when select value | `EventEmitter<number>` | - |
 | `(nzOnBlur)` | callback when component lose focus | `EventEmitter<FocusEvent>` | - |

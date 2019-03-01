@@ -24,12 +24,14 @@ We are still adding two-tone icons right now, syncing to [antd](https://ant.desi
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[type]` | Type of the ant design icon | `string` | - |
-| `[theme]` | Type of the ant design icon | `'fill'｜'outline'｜'twotone'` | `'outline'` |
-| `[spin]` | Rotate icon with animation | `boolean` | `false` |
-| `[twoToneColor]` | Only support the two-tone icon. Specific the primary color. | `string (hex color)` | - |
-| `[iconfont]` | Type of the icon from iconfont | `string` | - |
+| `[nzType]` | Type of the ant design icon | `string` | - |
+| `[nzTheme]` | Type of the ant design icon | `'fill'｜'outline'｜'twotone'` | `'outline'` |
+| `[nzSpin]` | Rotate icon with animation | `boolean` | `false` |
+| `[nzTwotoneColor]` | Only support the two-tone icon. Specific the primary color. | `string (hex color)` | - |
+| `[nzIconfont]` | Type of the icon from iconfont | `string` | - |
+| `[nzRotate]` | Rotate degrees (since 7.0.0) | `number` | - |
 
+<blockquote style="border-color: red;"><p><strong>API that is not started with nz and old API that is based on icon class names would be deprecated in 8.0.0. Please migrate.</strong></p></blockquote>
 
 ### NzIconService
 

@@ -91,7 +91,7 @@ import { Component } from '@angular/core';
     </div>`,
   styles  : [
       `
-      :host ::ng-deep .ant-btn {
+      [nz-button] {
         margin-right: 8px;
         margin-bottom: 8px;
       }

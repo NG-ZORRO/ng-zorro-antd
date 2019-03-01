@@ -9,8 +9,9 @@ export const NZ_MODAL_CONFIG = new InjectionToken<NzModalConfig>('NzModalConfig'
   factory: () => NZ_MODAL_DEFAULT_CONFIG // Default config
 });
 
-////////////
-
 export interface NzModalConfig {
-  autoBodyPadding: boolean; // Whether add the padding-right and overflow to body automatically to play smoothly
+  /**
+   * @deprecated used {@link BlockScrollStrategy} instead.
+   */
+  autoBodyPadding?: boolean; // Whether add the padding-right and overflow to body automatically to play smoothly
 }

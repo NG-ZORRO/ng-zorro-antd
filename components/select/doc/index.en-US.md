@@ -48,6 +48,8 @@ Select component to select value from options.
 | `[nzMenuItemSelectedIcon]` | The custom menuItemSelected icon | `TemplateRef<void>` | - |
 | `[nzTokenSeparators]` | Separator used to tokenize on tag/multiple mode | `string[]` | `[]` |
 | `[nzLoading]` | indicate loading state | boolean | false |
+| `[nzMaxTagCount]` | Max tag count to show| number | - |
+| `[nzMaxTagPlaceholder]` | Placeholder for not showing tags | TemplateRef<{ $implicit: any[] }> | - |
 | `(ngModelChange)` | Current selected nz-option value change callback. | `EventEmitter<any[]>` | - |
 | `(nzOpenChange)` | dropdown expand change callback | `EventEmitter<boolean>` | `false` |
 | `(nzScrollToBottom)` | Called when dropdown scrolls to bottom | `EventEmitter<void>` | - |

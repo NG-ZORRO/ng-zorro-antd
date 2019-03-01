@@ -6,97 +6,55 @@ import { Component, OnInit } from '@angular/core';
     <div class="components-table-demo-control-bar">
       <form nz-form nzLayout="inline">
         <nz-form-item>
-          <nz-form-label>
-            <label>Bordered</label>
-          </nz-form-label>
-          <nz-form-control>
-            <nz-switch [(ngModel)]="bordered" name="bordered"></nz-switch>
-          </nz-form-control>
+          <nz-form-label><label>Bordered</label></nz-form-label>
+          <nz-form-control><nz-switch [(ngModel)]="bordered" name="bordered"></nz-switch></nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>
-            <label>Loading</label>
-          </nz-form-label>
-          <nz-form-control>
-            <nz-switch [(ngModel)]="loading" name="loading"></nz-switch>
-          </nz-form-control>
+          <nz-form-label><label>Loading</label></nz-form-label>
+          <nz-form-control><nz-switch [(ngModel)]="loading" name="loading"></nz-switch></nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>
-            <label>Pagination</label>
-          </nz-form-label>
-          <nz-form-control>
-            <nz-switch [(ngModel)]="pagination" name="pagination"></nz-switch>
-          </nz-form-control>
+          <nz-form-label><label>Pagination</label></nz-form-label>
+          <nz-form-control><nz-switch [(ngModel)]="pagination" name="pagination"></nz-switch></nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>
-            <label>Title</label>
-          </nz-form-label>
-          <nz-form-control>
-            <nz-switch [(ngModel)]="title" name="title"></nz-switch>
-          </nz-form-control>
+          <nz-form-label><label>PageSizeChanger</label></nz-form-label>
+          <nz-form-control><nz-switch [(ngModel)]="sizeChanger" name="sizeChanger"></nz-switch></nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>
-            <label>Column Header</label>
-          </nz-form-label>
-          <nz-form-control>
-            <nz-switch [(ngModel)]="header" name="header"></nz-switch>
-          </nz-form-control>
+          <nz-form-label><label>Title</label></nz-form-label>
+          <nz-form-control><nz-switch [(ngModel)]="title" name="title"></nz-switch></nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>
-            <label>Footer</label>
-          </nz-form-label>
-          <nz-form-control>
-            <nz-switch [(ngModel)]="footer" name="footer"></nz-switch>
-          </nz-form-control>
+          <nz-form-label><label>Column Header</label></nz-form-label>
+          <nz-form-control><nz-switch [(ngModel)]="header" name="header"></nz-switch></nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>
-            <label>Expandable</label>
-          </nz-form-label>
-          <nz-form-control>
-            <nz-switch [(ngModel)]="expandable" name="expandable"></nz-switch>
-          </nz-form-control>
+          <nz-form-label><label>Footer</label></nz-form-label>
+          <nz-form-control><nz-switch [(ngModel)]="footer" name="footer"></nz-switch></nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>
-            <label>Checkbox</label>
-          </nz-form-label>
-          <nz-form-control>
-            <nz-switch [(ngModel)]="checkbox" name="checkbox"></nz-switch>
-          </nz-form-control>
+          <nz-form-label><label>Expandable</label></nz-form-label>
+          <nz-form-control><nz-switch [(ngModel)]="expandable" name="expandable"></nz-switch></nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>
-            <label>Fixed Header</label>
-          </nz-form-label>
-          <nz-form-control>
-            <nz-switch [(ngModel)]="fixHeader" name="fixHeader"></nz-switch>
-          </nz-form-control>
+          <nz-form-label><label>Checkbox</label></nz-form-label>
+          <nz-form-control><nz-switch [(ngModel)]="checkbox" name="checkbox"></nz-switch></nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>
-            <label>No Result</label>
-          </nz-form-label>
-          <nz-form-control>
-            <nz-switch [(ngModel)]="noResult" (ngModelChange)="noResultChange($event)" name="noResult"></nz-switch>
-          </nz-form-control>
+          <nz-form-label><label>Fixed Header</label></nz-form-label>
+          <nz-form-control><nz-switch [(ngModel)]="fixHeader" name="fixHeader"></nz-switch></nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>
-            <label>Simple Pagination</label>
-          </nz-form-label>
-          <nz-form-control>
-            <nz-switch [(ngModel)]="simple" name="simple"></nz-switch>
-          </nz-form-control>
+          <nz-form-label><label>No Result</label></nz-form-label>
+          <nz-form-control><nz-switch [(ngModel)]="noResult" (ngModelChange)="noResultChange($event)" name="noResult"></nz-switch></nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>
-            <label>Size</label>
-          </nz-form-label>
+          <nz-form-label><label>Simple Pagination</label></nz-form-label>
+          <nz-form-control><nz-switch [(ngModel)]="simple" name="simple"></nz-switch></nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label><label>Size</label></nz-form-label>
           <nz-form-control>
             <nz-radio-group [(ngModel)]="size" name="size">
               <label nz-radio-button nzValue="default">Default</label>
@@ -105,21 +63,32 @@ import { Component, OnInit } from '@angular/core';
             </nz-radio-group>
           </nz-form-control>
         </nz-form-item>
+        <nz-form-item>
+          <nz-form-label><label>Pagination Position</label></nz-form-label>
+          <nz-form-control>
+            <nz-radio-group [(ngModel)]="position" name="position">
+              <label nz-radio-button nzValue="top">Top</label>
+              <label nz-radio-button nzValue="bottom">Bottom</label>
+              <label nz-radio-button nzValue="both">Both</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
       </form>
     </div>
-    <nz-table
-      #dynamicTable
-      (nzCurrentPageDataChange)="currentPageDataChange($event)"
-      [nzScroll]="fixHeader?{ y: '240px' }:null"
-      [nzData]="dataSet"
+    <nz-table #dynamicTable
+      [nzScroll]="fixHeader ? { y: '240px' } : null"
+      [nzData]="listOfData"
       [nzBordered]="bordered"
       [nzSimple]="simple"
       [nzLoading]="loading"
+      [nzPaginationPosition]="position"
+      [nzShowSizeChanger]="sizeChanger"
       [nzFrontPagination]="pagination"
       [nzShowPagination]="pagination"
       [nzFooter]="footer?'Here is Footer':null"
       [nzTitle]="title?'Here is Title':null"
-      [nzSize]="size">
+      [nzSize]="size"
+      (nzCurrentPageDataChange)="currentPageDataChange($event)">
       <thead>
         <tr *ngIf="header">
           <th nzWidth="50px" nzShowExpand *ngIf="expandable"></th>
@@ -154,20 +123,21 @@ import { Component, OnInit } from '@angular/core';
   styles  : [
       `
       .components-table-demo-control-bar {
-        margin-bottom: 10px;
+        margin-bottom: 12px;
       }
 
-      .components-table-demo-control-bar ::ng-deep .ant-form-item {
-        margin-right: 15px;
+      .nz-form-item {
+        margin-right: 16px;
         margin-bottom: 8px;
       }
     `
   ]
 })
 export class NzDemoTableDynamicSettingsComponent implements OnInit {
-  dataSet = [];
+  listOfData = [];
   bordered = false;
   loading = false;
+  sizeChanger = false;
   pagination = true;
   header = true;
   title = true;
@@ -181,6 +151,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   displayData = [];
   simple = false;
   noResult = false;
+  position = 'bottom';
 
   currentPageDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean; expand: boolean; description: string; }>): void {
     this.displayData = $event;
@@ -205,8 +176,8 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    for (let i = 1; i <= 20; i++) {
-      this.dataSet.push({
+    for (let i = 1; i <= 100; i++) {
+      this.listOfData.push({
         name       : 'John Brown',
         age        : `${i}2`,
         address    : `New York No. ${i} Lake Park`,
@@ -218,7 +189,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   }
 
   noResultChange(status: boolean): void {
-    this.dataSet = [];
+    this.listOfData = [];
     if (!status) {
       this.ngOnInit();
     }

@@ -17,6 +17,6 @@ export class NzDemoModalManualComponent {
       nzContent: 'This modal will be destroyed after 1 second'
     });
 
-    window.setTimeout(() => modal.destroy(), 1000);
+    setTimeout(() => modal.destroy(), 1000);
   }
 }

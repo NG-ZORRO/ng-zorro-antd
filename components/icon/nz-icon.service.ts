@@ -8,6 +8,8 @@ import {
   CalendarOutline,
   CaretDownFill,
   CaretDownOutline,
+  CaretUpFill,
+  CaretUpOutline,
   CheckCircleFill,
   CheckCircleOutline,
   CheckOutline,
@@ -48,6 +50,8 @@ export const DEFAULT_TWOTONE_COLOR = '#1890ff';
 export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   BarsOutline,
   CalendarOutline,
+  CaretUpFill,
+  CaretUpOutline,
   CaretDownFill,
   CaretDownOutline,
   CheckCircleFill,
@@ -76,6 +80,7 @@ export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   RightOutline,
   StarFill,
   SearchOutline,
+  StarFill,
   UploadOutline,
   UpOutline
 ];

@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-calendar-card',
   template: `
     <div [ngStyle]="{ width: '300px', border: '1px solid #d9d9d9', borderRadius: '4px' }">
-      <nz-calendar nzCard (nzValueChange)="onValueChange($event)" (nzModeChange)="onModeChange($event)"></nz-calendar>
+      <nz-calendar nzCard (nzSelectChange)="onValueChange($event)" (nzPanelChange)="onPanelChange($event)"></nz-calendar>
     </div>
   `
 })
@@ -13,7 +13,8 @@ export class NzDemoCalendarCardComponent {
     console.log(`Current value: ${value}`);
   }
 
-  onModeChange(mode: 'month'|'year'): void {
-    console.log(`Current mode: ${mode}`);
+  onPanelChange(change: {date: Date, mode: string}): void {
+    console.log(`Current value: ${change.date}`);
+    console.log(`Current mode: ${change.mode}`);
   }
 }

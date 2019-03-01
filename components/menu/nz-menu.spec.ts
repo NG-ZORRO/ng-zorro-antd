@@ -52,13 +52,11 @@ describe('menu', () => {
   describe('demo', () => {
     describe('horizontal', () => {
       let fixture;
-      let testComponent;
       let items;
       let submenu;
       let menu;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuHorizontalComponent);
-        testComponent = fixture.debugElement.componentInstance;
         items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
         submenu = fixture.debugElement.query(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
@@ -86,13 +84,11 @@ describe('menu', () => {
     });
     describe('inline', () => {
       let fixture;
-      let testComponent;
       let items;
       let submenus;
       let menu;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuInlineComponent);
-        testComponent = fixture.debugElement.componentInstance;
         items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
@@ -130,13 +126,11 @@ describe('menu', () => {
     describe('inline-collapsed', () => {
       let fixture;
       let testComponent;
-      let items;
       let submenus;
       let menu;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuInlineCollapsedComponent);
         testComponent = fixture.debugElement.componentInstance;
-        items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
@@ -173,16 +167,10 @@ describe('menu', () => {
     });
     describe('slider-current', () => {
       let fixture;
-      let testComponent;
-      let items;
       let submenus;
-      let menu;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuSiderCurrentComponent);
-        testComponent = fixture.debugElement.componentInstance;
-        items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
-        menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
       it('should collapsed self work', fakeAsync(() => {
         fixture.detectChanges();
@@ -219,14 +207,10 @@ describe('menu', () => {
     describe('theme', () => {
       let fixture;
       let testComponent;
-      let items;
-      let submenus;
       let menu;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuThemeComponent);
         testComponent = fixture.debugElement.componentInstance;
-        items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
-        submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
       it('should className correct', () => {
@@ -240,13 +224,11 @@ describe('menu', () => {
     describe('swich-mode', () => {
       let fixture;
       let testComponent;
-      let items;
       let submenus;
       let menu;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuSwitchModeComponent);
         testComponent = fixture.debugElement.componentInstance;
-        items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });

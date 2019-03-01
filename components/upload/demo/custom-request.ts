@@ -1,6 +1,6 @@
+import { HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { HttpRequest, HttpClient, HttpEventType, HttpEvent, HttpResponse } from '@angular/common/http';
-import { NzMessageService, UploadXHRArgs } from 'ng-zorro-antd';
+import { UploadXHRArgs } from 'ng-zorro-antd';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -17,7 +17,7 @@ import { forkJoin } from 'rxjs';
 })
 export class NzDemoUploadCustomRequestComponent {
 
-  constructor(private http: HttpClient, private msg: NzMessageService) {}
+  constructor(private http: HttpClient) {}
 
   customReq = (item: UploadXHRArgs) => {
     // 构建一个 FormData 对象，用于存储文件或其他参数
@@ -53,7 +53,7 @@ export class NzDemoUploadCustomRequestComponent {
     const size = item.file.size;
     const chunkSize = parseInt((size / 3) + '', 10);
     const maxChunk = Math.ceil(size / chunkSize);
-    const reqs = Array(maxChunk).fill(0).map((v: {}, index: number) => {
+    const reqs = Array(maxChunk).fill(0).map((_: {}, index: number) => {
       const start = index * chunkSize;
       let end = start + chunkSize;
       if (size - end < 0) {
@@ -69,7 +69,7 @@ export class NzDemoUploadCustomRequestComponent {
       });
       return this.http.request(req);
     });
-    return forkJoin(...reqs).subscribe(resules => {
+    return forkJoin(...reqs).subscribe(() => {
       // 处理成功
       item.onSuccess({}, item.file, event);
     }, (err) => {

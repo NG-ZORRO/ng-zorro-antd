@@ -10,11 +10,14 @@
     "experimentalDecorators": true,
     "target": "es5",
     "typeRoots": [
-      "node_modules/@types"
+      "../../node_modules/@types/!(node)"
     ],
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true
   }
 }

@@ -28,7 +28,7 @@ import { Component } from '@angular/core';
 })
 export class NzDemoSkeletonListComponent {
   loading = true;
-  listData = new Array(3).fill({}).map((i, index) => {
+  listData = new Array(3).fill({}).map((_i, index) => {
     return {
       href: 'http://ng.ant.design',
       title: `ant design part ${index}`,

@@ -3,9 +3,11 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  Host,
   Input,
   OnDestroy,
   OnInit,
+  Optional,
   Renderer2,
   TemplateRef,
   ViewChild,
@@ -14,6 +16,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { zoomMotion } from '../core/animation/zoom';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { NzOptionComponent } from './nz-option.component';
 import { NzSelectService } from './nz-select.service';
 
@@ -85,7 +88,7 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   }
 
   // tslint:disable-next-line:no-any
-  trackValue(index: number, option: NzOptionComponent): any {
+  trackValue(_index: number, option: NzOptionComponent): any {
     return option.nzValue;
   }
 
@@ -104,7 +107,10 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
     e.stopPropagation();
   }
 
-  constructor(private renderer: Renderer2, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef) {
+  constructor(private renderer: Renderer2,
+              public nzSelectService: NzSelectService,
+              private cdr: ChangeDetectorRef,
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
   }
 
   ngOnInit(): void {

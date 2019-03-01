@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
 import { fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { NzCheckboxModule } from '../checkbox';
 import { createFakeEvent } from '../core/testing';
-import { NzTableModule } from './nz-table.module';
 import { NzTdComponent } from './nz-td.component';
 
 describe('nz-td', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzTableModule ],
-      declarations: [ NzTestTdComponent ]
+      imports     : [ NzCheckboxModule, FormsModule ],
+      declarations: [ NzTestTdComponent, NzTdComponent ]
     });
     TestBed.compileComponents();
   }));
@@ -191,4 +192,5 @@ export class NzTestTdComponent {
     <td class="nz-disable-td" [nzShowCheckbox]="true"></td>
   `
 })
-export class NzTestDisableTdComponent {}
+export class NzTestDisableTdComponent {
+}

@@ -7,8 +7,6 @@ title: FAQ
 
 In fact, from the first version of `ng-zorro-antd`, all its code is written in TypeScript. Tree Shaking strategy is used to reduce the size of your bundle and unused modules would not be bundled. Consequently, individually importing is unnecessary.
 
-![](https://img.alicdn.com/tfs/TB1D8MXdTtYBeNjy1XdXXXXyVXa-2864-1592.jpg)
-
 ### Why some features are not supported?
 
 `ng-zorro-antd` is an implementation of Ant Design for Angular, which means only features supported by Ant Design would be implemented by `ng-zorro-antd`.
@@ -21,9 +19,21 @@ Please make sure you use `ng build --prod` correctly to compile. If other third-
 
 Please make sure your browser is [supported by Angular](https://github.com/angular/angular) and you have imported the [polyfill](https://angular.io/guide/browser-support) file correctly. And some components' usages are not supported by some browsers (i.e `flex` property). Please submit an issue if none of these is your case.
 
+### Can't Bind to since it isn't a known property of
+
+Please make sure you have export `NgZorroAntdModule` in `ShareModule` if you have more than one module in your angular project, [ref](https://angular.io/guide/sharing-ngmodules).
+
+### Expression Changed After It Has Been Checked Error
+
+This [doc](https://blog.angularindepth.com/everything-you-need-to-know-about-the-expressionchangedafterithasbeencheckederror-error-e3fd9ce7dbb4) will help you.
+
+### Can't bind to 'formGroup' since it isn't a known property of 'form'
+
+Don't forget to import `ReactiveFormsModule`, [ref](https://angular.io/guide/reactive-forms).
+
 ### Why my page content is not updated after I change the data?
 
-Please make sure you use [Angular](https://angular.io/guide/lifecycle-hooks#onchanges) in the correct way.
+Components of NG-ZORRO works default in `OnPush` mode, mutate `@Input` data won't work, please use immutable data.
 
 ### Why my issue is closed?
 

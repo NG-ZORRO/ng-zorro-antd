@@ -2,6 +2,7 @@
 <ng-template
   #overlay="cdkConnectedOverlay"
   cdkConnectedOverlay
+  nzConnectedOverlay
   [cdkConnectedOverlayOrigin]="overlayOrigin"
   [cdkConnectedOverlayOpen]="visible$ | async"
   [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
@@ -13,8 +14,9 @@
     class="ant-tooltip"
     [ngClass]="_classMap"
     [ngStyle]="nzOverlayStyle"
-    [@fadeAnimation]="''+(visible$ | async)"
-    (@fadeAnimation.done)="_afterVisibilityAnimation($event)">
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
+    [@zoomBigMotion]="'active'"
+    (@zoomBigMotion.done)="_afterVisibilityAnimation($event)">
     <div class="ant-tooltip-content">
       <div class="ant-tooltip-arrow"></div>
       <div class="ant-tooltip-inner">

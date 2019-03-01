@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzInputGroupComponent } from './nz-input-group.component';
-import { NzInputDirective } from './nz-input.directive';
 import { NzInputModule } from './nz-input.module';
 
 describe('input-group', () => {
@@ -131,13 +130,11 @@ describe('input-group', () => {
     });
     describe('multiple', () => {
       let inputGroupElement;
-      let inputs;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestInputGroupMultipleComponent);
         testComponent = fixture.debugElement.componentInstance;
         fixture.detectChanges();
         inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
-        inputs = fixture.debugElement.queryAll(By.directive(NzInputDirective));
       });
       it('should compact work', () => {
         expect(inputGroupElement.classList).not.toContain('ant-input-group-compact');

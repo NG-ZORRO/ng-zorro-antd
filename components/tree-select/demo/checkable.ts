@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-tree-select-checkable',

@@ -32,7 +32,7 @@ export class RandomUserService {
       #ajaxTable
       nzShowSizeChanger
       [nzFrontPagination]="false"
-      [nzData]="dataSet"
+      [nzData]="listOfData"
       [nzLoading]="loading"
       [nzTotal]="total"
       [(nzPageIndex)]="pageIndex"
@@ -59,7 +59,7 @@ export class NzDemoTableAjaxComponent implements OnInit {
   pageIndex = 1;
   pageSize = 10;
   total = 1;
-  dataSet = [];
+  listOfData = [];
   loading = true;
   sortValue = null;
   sortKey = null;
@@ -86,7 +86,7 @@ export class NzDemoTableAjaxComponent implements OnInit {
     this.randomUserService.getUsers(this.pageIndex, this.pageSize, this.sortKey, this.sortValue, this.searchGenderList).subscribe((data: any) => {
       this.loading = false;
       this.total = 200;
-      this.dataSet = data.results;
+      this.listOfData = data.results;
     });
   }
 

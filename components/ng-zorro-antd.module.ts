@@ -15,6 +15,8 @@ import { NzCarouselModule } from './carousel/nz-carousel.module';
 import { NzCascaderModule } from './cascader/nz-cascader.module';
 import { NzCheckboxModule } from './checkbox/nz-checkbox.module';
 import { NzCollapseModule } from './collapse/nz-collapse.module';
+import { NzCommentModule } from './comment/nz-comment.module';
+import { NzNoAnimationModule } from './core/no-animation/nz-no-animation.module';
 import { NzWaveModule } from './core/wave/nz-wave.module';
 import { NzDatePickerModule } from './date-picker/date-picker.module';
 import { NzDividerModule } from './divider/nz-divider.module';
@@ -44,6 +46,7 @@ import { NzSelectModule } from './select/nz-select.module';
 import { NzSkeletonModule } from './skeleton/nz-skeleton.module';
 import { NzSliderModule } from './slider/nz-slider.module';
 import { NzSpinModule } from './spin/nz-spin.module';
+import { NzStatisticModule } from './statistic/nz-statistic.module';
 import { NzStepsModule } from './steps/nz-steps.module';
 import { NzSwitchModule } from './switch/nz-switch.module';
 import { NzTableModule } from './table/nz-table.module';
@@ -70,6 +73,7 @@ export * from './card';
 export * from './carousel';
 export * from './checkbox';
 export * from './collapse';
+export * from './comment';
 export * from './date-picker';
 export * from './divider';
 export * from './drawer';
@@ -92,6 +96,7 @@ export * from './radio';
 export * from './rate';
 export * from './select';
 export * from './spin';
+export * from './statistic';
 export * from './steps';
 export * from './switch';
 export * from './table';
@@ -117,6 +122,7 @@ export * from './time-picker';
 export * from './version';
 export * from './core/wave';
 export * from './core/util';
+export * from './core/no-animation';
 
 @NgModule({
   exports: [
@@ -152,6 +158,7 @@ export * from './core/util';
     NzTransferModule,
     NzCarouselModule,
     NzCollapseModule,
+    NzCommentModule,
     NzTableModule,
     NzDatePickerModule,
     NzDividerModule,
@@ -174,7 +181,9 @@ export * from './core/util';
     NzTreeSelectModule,
     NzTimePickerModule,
     NzWaveModule,
+    NzNoAnimationModule,
     NzSkeletonModule,
+    NzStatisticModule,
     NzEmptyModule
   ]
 })

@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
   <nz-avatar nzIcon="user" style="background-color:#87d068;"></nz-avatar>
   `,
   styles: [`
-    :host ::ng-deep .ant-avatar {
+    nz-avatar {
       margin-top: 16px;
       margin-right: 16px;
     }

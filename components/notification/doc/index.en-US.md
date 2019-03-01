@@ -63,6 +63,7 @@ The parameters that are set by the `options` support are as follows:
 | nzAnimate | Whether to turn on animation | `boolean` |
 | nzStyle | Custom inline style | `object` |
 | nzClass | Custom CSS class | `object` |
+| nzData | Anything that would be used as template context | `any` |
 
 Methods for destruction are also provided:
 
@@ -79,3 +80,13 @@ Methods for destruction are also provided:
 | nzTop | The top of the notification when it pops up from the top. | `string` | 24px |
 | nzBottom | The bottom of the notification when it pops up from the bottom. | `string` | 24px |
 | nzPlacement | Popup position, optional `topLeft` `topRight` `bottomLeft` `bottomRight` | `string` | `topRight` |
+
+### NzNotificationDataFilled
+
+It's the object that returned when you call `NzNotificationService.success` and others.
+
+```ts
+export interface NzNotificationDataFilled {
+  onClose: Subject<boolean>; // It would emit an event when the notification is closed, and emit a `true` if it's closed by user
+}
+```

@@ -49,3 +49,8 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 | `(nzClick)` | title被点击的回调函数 | `EventEmitter<void>` | - |
 | `(nzSelect)` | tab被选中的回调函数 | `EventEmitter<void>` | - |
 | `(nzDeselect)` | tab被取消选中的回调函数 | `EventEmitter<void>` | - |
+
+
+### [nz-tab]
+
+与 `ng-template` 一同使用，用于标记需要懒加载的 `tab` 内容，具体用法见示例。

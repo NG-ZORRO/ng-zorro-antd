@@ -15,7 +15,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { ClassMap } from '../core/interface/interface';
+import { NgClassType } from '../core/types/ng-class';
 import { NzSizeDSType } from '../core/types/size';
 import { toBoolean } from '../core/util/convert';
 
@@ -54,7 +54,7 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   showProcessDot = false;
   customProcessDotTemplate: TemplateRef<{ $implicit: TemplateRef<void>, status: string, index: number }>;
 
-  classMap: ClassMap;
+  classMap: NgClassType;
 
   private destroy$ = new Subject<void>();
 

@@ -14,12 +14,10 @@ describe('nz-form-split', () => {
   }));
   describe('default', () => {
     let fixture;
-    let testComponent;
     let split;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestFormSplitComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       split = fixture.debugElement.query(By.directive(NzFormSplitComponent));
     });
     it('should className correct', () => {

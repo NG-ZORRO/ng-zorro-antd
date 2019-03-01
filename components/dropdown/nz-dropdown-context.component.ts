@@ -23,9 +23,8 @@ import { NzMenuDropdownService } from './nz-menu-dropdown.service';
   providers          : [ NzMenuDropdownService ],
   styles             : [
       `
-      /* fix https://github.com/NG-ZORRO/ng-zorro-antd/issues/2834 */
       nz-dropdown-context {
-        position: absolute;
+        display: block;
       }
 
       .ant-dropdown {

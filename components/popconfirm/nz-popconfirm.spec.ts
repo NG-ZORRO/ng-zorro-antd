@@ -245,18 +245,50 @@ describe('NzPopconfirm', () => {
       const triggerElement = component.inBtnGroup.nativeElement;
       expect(triggerElement.nextSibling.tagName).toBe('BUTTON');
     }));
+    it('should support custom icon', fakeAsync(() => {
+      component.icon = 'question-circle';
+      const triggerElement = component.iconTemplate.nativeElement;
+      dispatchMouseEvent(triggerElement, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.anticon-exclamation-circle')).toBeFalsy();
+      expect(overlayContainerElement.querySelector('.anticon-question-circle')).toBeTruthy();
+    }));
   });
 });
 
 @Component({
   selector: 'nz-popconfirm-test-new',
   template: `
-    <a nz-popconfirm #stringTemplate nzTitle="title-string" nzOkText="ok-text" nzCancelText="cancel-text" nzOkType="default" [nzCondition]="condition" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">Delete</a>
-    <a nz-popconfirm #templateTemplate [nzTitle]="titleTemplate" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">Delete</a>
+    <a nz-popconfirm
+       #stringTemplate
+       nzTitle="title-string"
+       nzOkText="ok-text"
+       nzCancelText="cancel-text"
+       nzOkType="default"
+       [nzCondition]="condition"
+       (nzOnConfirm)="confirm()"
+       (nzOnCancel)="cancel()">
+      Delete
+    </a>
+    <a nz-popconfirm
+       #templateTemplate
+       [nzIcon]="icon"
+       [nzTitle]="titleTemplate"
+       (nzOnConfirm)="confirm()"
+       (nzOnCancel)="cancel()">
+      Delete
+    </a>
+    <a nz-popconfirm
+       #iconTemplate
+       [nzIcon]="icon">
+      Delete
+    </a>
     <ng-template #titleTemplate>title-template</ng-template>
     <div>
       <button>A</button>
-      <button #inBtnGroup nz-popconfirm nzTitle="title-string" >B</button>
+      <button #inBtnGroup nz-popconfirm nzTitle="title-string">B</button>
       <button>C</button>
     </div>
   `
@@ -265,17 +297,19 @@ export class NzpopconfirmTestNewComponent {
   confirm = jasmine.createSpy('confirm');
   cancel = jasmine.createSpy('cancel');
   condition = false;
+  icon: string = undefined;
   @ViewChild('stringTemplate') stringTemplate: ElementRef;
   @ViewChild('templateTemplate') templateTemplate: ElementRef;
   @ViewChild('inBtnGroup') inBtnGroup: ElementRef;
-
+  @ViewChild('iconTemplate') iconTemplate: ElementRef<void>;
 }
 
 @Component({
   selector: 'nz-popconfirm-test-wrapper',
   template: `
     <nz-popconfirm [nzOkType]="nzOkType" [nzTitle]="'NORMAL'" [nzTrigger]="'hover'">
-      <span #normalTrigger nz-popconfirm>Show</span></nz-popconfirm>
+      <span #normalTrigger nz-popconfirm>Show</span>
+    </nz-popconfirm>
 
     <nz-popconfirm [nzTrigger]="'hover'">
       <button #templateTrigger nz-popconfirm>Show</button>
@@ -291,7 +325,8 @@ export class NzpopconfirmTestNewComponent {
     <nz-popconfirm nzTitle="VISIBLE" [(nzVisible)]="visible"><span #visibleTrigger nz-popconfirm>Show</span>
     </nz-popconfirm>
 
-    <nz-popconfirm nzTitle="EXECUTE" [nzCondition]="executeCondition" (nzOnConfirm)="onConfirm()" (nzOnCancel)="onCancel()">
+    <nz-popconfirm nzTitle="EXECUTE" [nzCondition]="executeCondition" (nzOnConfirm)="onConfirm()"
+                   (nzOnCancel)="onCancel()">
       <span #executeTrigger nz-popconfirm>Show</span>
     </nz-popconfirm>
   `
