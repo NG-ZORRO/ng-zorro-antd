@@ -37,7 +37,7 @@ import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
     }
   ],
   host               : {
-    '(click)'                     : 'hostClick($event)'
+    '(click)': 'hostClick($event)'
   }
 })
 export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChanges, AfterViewInit, OnDestroy {
@@ -57,8 +57,12 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   hostClick(e: MouseEvent): void {
     e.preventDefault();
     this.focus();
+    this.innerCheckedChange(!this.nzChecked);
+  }
+
+  innerCheckedChange(checked: boolean): void {
     if (!this.nzDisabled) {
-      this.nzChecked = !this.nzChecked;
+      this.nzChecked = checked;
       this.onChange(this.nzChecked);
       this.nzCheckedChange.emit(this.nzChecked);
       if (this.nzCheckboxWrapperComponent) {
