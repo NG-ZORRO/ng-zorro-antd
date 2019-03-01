@@ -11,7 +11,7 @@ describe('nz-table', () => {
   beforeEach(async(() => {
     injector = TestBed.configureTestingModule({
       imports     : [ NzTableModule ],
-      declarations: [ NzTestTableBasicComponent, NzTestTableScrollComponent ]
+      declarations: [ NzTestTableBasicComponent, NzTestTableScrollComponent, NzTableSpecCrashComponent ]
     });
     TestBed.compileComponents();
   }));
@@ -294,6 +294,19 @@ describe('nz-table', () => {
       expect(tableBody.scrollWidth).toBe(tableBody.clientWidth);
     });
   });
+  describe('double binding nz-table', () => {
+    let fixture;
+    let testComponent;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTableSpecCrashComponent);
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+    });
+    it('should not crash when double binding pageSize and pageIndex', () => {
+      fixture.detectChanges();
+      expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
+    });
+  });
 });
 
 @Component({
@@ -439,5 +452,43 @@ export class NzTestTableScrollComponent implements OnInit {
         address: `London, Park Lane no. ${i}`
       });
     }
+  }
+}
+
+/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/3004 **/
+@Component({
+  template: `
+    <nz-table #nzTable [nzData]="data" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="pageIndexChange">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>NAME</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let item of nzTable.data">
+          <tr>
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </nz-table>
+  `
+})
+export class NzTableSpecCrashComponent {
+  data = [];
+  pageIndex = 1;
+  pageSize = 10;
+  pageIndexChange = jasmine.createSpy('pageSize callback');
+
+  constructor() {
+    setTimeout(() => {
+      this.data = new Array(100).fill(1).map((_, i) => ({
+        id  : i + 1,
+        name: `name ${i + 1}`
+      }));
+    }, 1000);
+
   }
 }
