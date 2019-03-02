@@ -240,8 +240,18 @@ describe('NzRangePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(nzOnCalendarChange).toHaveBeenCalled();
-      const result = nzOnCalendarChange.calls.allArgs()[0][0];
+      let result = nzOnCalendarChange.calls.allArgs()[0][0];
       expect(result[0].getDate()).toBe(+leftText);
+      const right = getFirstCell('right');
+      const rightText = right.textContent.trim();
+      dispatchMouseEvent(right, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(nzOnCalendarChange).toHaveBeenCalled();
+      result = nzOnCalendarChange.calls.allArgs()[1][0];
+      expect(result[0].getDate()).toBe(+leftText);
+      expect(result[1].getDate()).toBe(+rightText);
     }));
 
     it('should support nzOnChange', fakeAsync(() => {
