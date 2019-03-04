@@ -18,6 +18,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -33,7 +34,7 @@ import { InputBoolean } from '../core/util/convert';
 import { isPromise } from '../core/util/is-promise';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import ModalUtil from './modal-util';
-import { NzModalConfig, NZ_MODAL_CONFIG, NZ_MODAL_DEFAULT_CONFIG } from './nz-modal-config';
+import { NzModalConfig, NZ_MODAL_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
 import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './nz-modal.type';
@@ -54,8 +55,6 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   @Input() @InputBoolean() nzVisible: boolean = false;
   @Input() @InputBoolean() nzClosable: boolean = true;
-  @Input() @InputBoolean() nzMask: boolean = true;
-  @Input() @InputBoolean() nzMaskClosable: boolean = true;
   @Input() @InputBoolean() nzOkLoading: boolean = false;
   @Input() @InputBoolean() nzOkDisabled: boolean = false;
   @Input() @InputBoolean() nzCancelDisabled: boolean = false;
@@ -79,6 +78,38 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Input() nzOkType = 'primary';
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzModalType: ModalType = 'default';
+
+  @Input() @InputBoolean()
+  get nzMask(): boolean {
+    if (this.nzMaskDetect.dirty) {
+      return this.nzMaskDetect.value;
+    } else if (this.globalConfig) {
+      return this.globalConfig.nzMask;
+    } else {
+      return true;
+    }
+  }
+
+  set nzMask(value: boolean) {
+    this.nzMaskDetect.value = value;
+    this.nzMaskDetect.dirty = true;
+  }
+
+  @Input() @InputBoolean()
+  get nzMaskClosable(): boolean {
+    if (this.nzMaskCloseableDetect.dirty) {
+      return this.nzMaskCloseableDetect.value;
+    } else if (this.globalConfig) {
+      return this.globalConfig.nzMaskClosable;
+    } else {
+      return true;
+    }
+  }
+
+  set nzMaskClosable(value: boolean) {
+    this.nzMaskCloseableDetect.value = value;
+    this.nzMaskCloseableDetect.dirty = true;
+  }
 
   @Input() @Output() readonly nzOnOk: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
   @Input() @Output() readonly nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
@@ -123,6 +154,14 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   private previouslyFocusedElement: HTMLElement;
   private focusTrap: FocusTrap;
   private scrollStrategy: BlockScrollStrategy;
+  private globalConfig: NzModalConfig;
+  private nzMaskDetect: { dirty: boolean, value?: boolean } = {
+    dirty: false
+  };
+
+  private nzMaskCloseableDetect: { dirty: boolean, value?: boolean } = {
+    dirty: false
+  };
 
   constructor(
     private overlay: Overlay,
@@ -133,12 +172,11 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     private modalControl: NzModalControlService,
     private focusTrapFactory: FocusTrapFactory,
     private cdr: ChangeDetectorRef,
-    @Inject(NZ_MODAL_CONFIG) private config: NzModalConfig,
+    @Optional() @Inject(NZ_MODAL_CONFIG) globalConfig: NzModalConfig,
     @Inject(DOCUMENT) private document: any) { // tslint:disable-line:no-any
 
     super();
-
-    this.config = this.mergeDefaultConfig(this.config);
+    this.globalConfig = globalConfig;
     this.scrollStrategy = this.overlay.scrollStrategies.block();
   }
 
@@ -426,10 +464,6 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     if (lastPosition) {
       this.transformOrigin = `${lastPosition.x - modalElement.offsetLeft}px ${lastPosition.y - modalElement.offsetTop}px 0px`;
     }
-  }
-
-  private mergeDefaultConfig(config: NzModalConfig): NzModalConfig {
-    return { ...NZ_MODAL_DEFAULT_CONFIG, ...config };
   }
 
   private savePreviouslyFocusedElement(): void {
