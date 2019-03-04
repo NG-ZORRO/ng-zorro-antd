@@ -97,8 +97,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   @Input() @InputBoolean()
   get nzMaskClosable(): boolean {
-    if (this.nzMaskCloseableDetect.dirty) {
-      return this.nzMaskCloseableDetect.value;
+    if (this.nzMaskClosableDetect.dirty) {
+      return this.nzMaskClosableDetect.value;
     } else if (this.globalConfig) {
       return this.globalConfig.nzMaskClosable;
     } else {
@@ -107,8 +107,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   set nzMaskClosable(value: boolean) {
-    this.nzMaskCloseableDetect.value = value;
-    this.nzMaskCloseableDetect.dirty = true;
+    this.nzMaskClosableDetect.value = value;
+    this.nzMaskClosableDetect.dirty = true;
   }
 
   @Input() @Output() readonly nzOnOk: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
@@ -159,7 +159,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     dirty: false
   };
 
-  private nzMaskCloseableDetect: { dirty: boolean, value?: boolean } = {
+  private nzMaskClosableDetect: { dirty: boolean, value?: boolean } = {
     dirty: false
   };
 
