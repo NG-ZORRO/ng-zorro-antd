@@ -2,7 +2,7 @@
   role="tree"
   unselectable="on"
   [ngClass]="classMap">
-  <ng-container *ngFor="let node of nzNodes; trackBy: trackByFn">
+  <ng-container *ngFor="let node of nzNodes">
     <nz-tree-node
       [nzTreeNode]="node"
       [nzSelectMode]="nzSelectMode"
@@ -11,7 +11,6 @@
       [nzCheckable]="nzCheckable"
       [nzShowExpand]="nzShowExpand"
       [nzAsyncData]="nzAsyncData"
-      [nzMultiple]="nzMultiple"
       [nzSearchValue]="nzSearchValue"
       [nzHideUnMatched]="nzHideUnMatched"
       [nzBeforeDrop]="nzBeforeDrop"
@@ -20,18 +19,7 @@
       [nzDefaultExpandAll]="nzDefaultExpandAll"
       [nzShowIcon]="nzShowIcon"
       [nzTreeTemplate]="nzTreeTemplate"
-      [nzNoAnimation]="noAnimation?.nzNoAnimation"
-      (clickNode)="nzClick.emit($event)"
-      (dblClick)="nzDblClick.emit($event)"
-      (contextMenu)="nzContextMenu.emit($event)"
-      (clickExpand)="nzExpandChange.emit($event)"
-      (clickCheckBox)="nzCheckBoxChange.emit($event)"
-      (nzDragStart)="nzOnDragStart.emit($event)"
-      (nzDragEnter)="nzOnDragEnter.emit($event)"
-      (nzDragOver)="nzOnDragOver.emit($event)"
-      (nzDragLeave)="nzOnDragLeave.emit($event)"
-      (nzDrop)="nzOnDrop.emit($event)"
-      (nzDragEnd)="nzOnDragEnd.emit($event)">
+      [nzNoAnimation]="noAnimation?.nzNoAnimation">
     </nz-tree-node>
   </ng-container>
 </ul>

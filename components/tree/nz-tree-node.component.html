@@ -37,14 +37,14 @@
       [ngClass]="nzNodeContentClass"
       [class.draggable]="canDraggable">
       <span
-        *ngIf="nzTreeNode.origin.icon && nzShowIcon"
+        *ngIf="nzTreeNode.icon && nzShowIcon"
         [class.ant-tree-icon__open]="isSwitcherOpen"
         [class.ant-tree-icon__close]="isSwitcherClose"
         [class.ant-tree-icon_loading]="nzTreeNode.isLoading"
         [ngClass]="nzNodeContentLoadingClass">
         <span
           [ngClass]="nzNodeContentIconClass">
-          <i nz-icon *ngIf="nzIcon" [type]="!oldAPIIcon && nzIcon" [ngClass]="oldAPIIcon && nzIcon"></i>
+          <i nz-icon *ngIf="nzIcon" [type]="nzIcon"></i>
         </span>
       </span>
       <span class="ant-tree-title">
@@ -72,7 +72,7 @@
     [@.disabled]="noAnimation?.nzNoAnimation"
     [@collapseMotion]="nzTreeNode.isExpanded ? 'expanded' : 'collapsed'">
     <nz-tree-node
-      *ngFor="let node of nzTreeNode.getChildren(); trackBy: trackByFn"
+      *ngFor="let node of nzTreeNode.getChildren()"
       [nzTreeNode]="node"
       [nzNoAnimation]="noAnimation?.nzNoAnimation"
       [nzSelectMode]="nzSelectMode"
@@ -81,7 +81,6 @@
       [nzCheckable]="nzCheckable"
       [nzShowExpand]="nzShowExpand"
       [nzAsyncData]="nzAsyncData"
-      [nzMultiple]="nzMultiple"
       [nzExpandAll]="nzExpandAll"
       [nzDefaultExpandAll]="nzDefaultExpandAll"
       [nzShowIcon]="nzShowIcon"
@@ -89,18 +88,7 @@
       [nzHideUnMatched]="nzHideUnMatched"
       [nzBeforeDrop]="nzBeforeDrop"
       [nzCheckStrictly]="nzCheckStrictly"
-      [nzTreeTemplate]="nzTreeTemplate"
-      (clickNode)="clickNode.emit($event)"
-      (dblClick)="dblClick.emit($event)"
-      (contextMenu)="contextMenu.emit($event)"
-      (clickExpand)="clickExpand.emit($event)"
-      (clickCheckBox)="clickCheckBox.emit($event)"
-      (nzDragStart)="nzDragStart.emit($event)"
-      (nzDragEnter)="nzDragEnter.emit($event)"
-      (nzDragOver)="nzDragOver.emit($event)"
-      (nzDragLeave)="nzDragLeave.emit($event)"
-      (nzDrop)="nzDrop.emit($event)"
-      (nzDragEnd)="nzDragEnd.emit($event)">
+      [nzTreeTemplate]="nzTreeTemplate">
     </nz-tree-node>
   </ul>
 </li>

@@ -13,11 +13,12 @@ import {
     <nz-tree
       #treeCom
       [nzData]="nodes"
-      (nzClick)="activeNode($event)">
+      (nzClick)="activeNode($event)"
+      (nzDblClick)="openFolder($event)">
       <ng-template #contextTemplate>
         <ul nz-menu nzInDropDown>
-          <li nz-menu-item (click)="selectDropdown('file')">新建文件</li>
-          <li nz-menu-item (click)="selectDropdown('folder')">新建文件夹</li>
+          <li nz-menu-item (click)="selectDropdown()">Action 1</li>
+          <li nz-menu-item (click)="selectDropdown()">Action 2</li>
         </ul>
       </ng-template>
       <ng-template #nzTreeTemplate let-node>
@@ -27,7 +28,7 @@ import {
             <span class="folder-name">{{node.title}}</span>
             <span class="folder-desc">created by {{node?.origin?.author | lowercase}}</span>
           </span>
-          <span *ngIf="node.isLeaf">
+          <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event,contextTemplate)">
             <i nz-icon type="file"></i>
             <span class="file-name">{{node.title}}</span>
             <span class="file-desc">modified by {{node?.origin?.author | lowercase}}</span>
@@ -102,14 +103,13 @@ export class NzDemoTreeDirectoryComponent {
   openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
     // do something if u want
     if (data instanceof NzTreeNode) {
-      data.setExpanded(!data.isExpanded);
+      data.isExpanded = !data.isExpanded;
     } else {
-      data.node.setExpanded(!data.node.isExpanded);
+      data.node.isExpanded = !data.node.isExpanded;
     }
   }
 
   activeNode(data: NzFormatEmitEvent): void {
-    data.node.setExpanded(true);
     this.activedNode = data.node;
   }
 
@@ -117,7 +117,7 @@ export class NzDemoTreeDirectoryComponent {
     this.dropdown = this.nzDropdownService.create($event, template);
   }
 
-  selectDropdown(_type: string): void {
+  selectDropdown(): void {
     this.dropdown.close();
     // do something
   }

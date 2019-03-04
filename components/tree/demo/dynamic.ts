@@ -6,7 +6,7 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd';
   template: `
     <nz-tree
       [nzData]="nodes"
-      nzAsyncData="true"
+      nzAsyncData
       (nzClick)="nzEvent($event)"
       (nzExpandChange)="nzEvent($event)">
     </nz-tree>
