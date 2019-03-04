@@ -1,0 +1,40 @@
+<ng-template #drawerTemplate>
+  <div
+    class="ant-drawer"
+    [nzNoAnimation]="nzNoAnimation"
+    [class.ant-drawer-open]="isOpen"
+    [class.ant-drawer-top]="nzPlacement === 'top'"
+    [class.ant-drawer-bottom]="nzPlacement === 'bottom'"
+    [class.ant-drawer-right]="nzPlacement === 'right'"
+    [class.ant-drawer-left]="nzPlacement === 'left'"
+    [style.transform]="offsetTransform">
+    <div  class="ant-drawer-mask" (click)="maskClick()" *ngIf="nzMask" [style.zIndex]="nzZIndex" [ngStyle]="nzMaskStyle"></div>
+    <div class="ant-drawer-content-wrapper {{ nzWrapClassName }}"
+         [style.zIndex]="nzZIndex"
+         [style.width]="width"
+         [style.height]="height"
+         [style.transform]="transform">
+      <div class="ant-drawer-content">
+        <div class="ant-drawer-wrapper-body"
+          [style.overflow]="isLeftOrRight ? 'auto' : null"
+          [style.height]="isLeftOrRight ? '100%' : null">
+          <div *ngIf="nzTitle" class="ant-drawer-header">
+            <div class="ant-drawer-title">
+              <ng-container *nzStringTemplateOutlet="nzTitle"><div [innerHTML]="nzTitle"></div></ng-container>
+            </div>
+          </div>
+          <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close">
+            <span class="ant-drawer-close-x"><i nz-icon type="close"></i></span>
+          </button>
+          <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
+            <ng-template cdkPortalOutlet></ng-template>
+            <ng-container *ngIf="isTemplateRef(nzContent)">
+              <ng-container *ngTemplateOutlet="nzContent; context: templateContext"></ng-container>
+            </ng-container>
+            <ng-content *ngIf="!nzContent"></ng-content>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,22 @@
+<ng-container *ngIf="nzLoading">
+  <div class="ant-skeleton-header">
+    <span
+      *ngIf="!!nzAvatar"
+      class="ant-skeleton-avatar"
+      [class.ant-skeleton-avatar-lg]="avatar.size === 'large'"
+      [class.ant-skeleton-avatar-sm]="avatar.size === 'small'"
+      [class.ant-skeleton-avatar-circle]="avatar.shape === 'circle'"
+      [class.ant-skeleton-avatar-square]="avatar.shape === 'square'">
+    </span>
+  </div>
+  <div class="ant-skeleton-content">
+    <h3 *ngIf="!!nzTitle" class="ant-skeleton-title" [style.width]="toCSSUnit(title.width)"></h3>
+    <ul *ngIf="!!nzParagraph" class="ant-skeleton-paragraph">
+      <li *ngFor="let row of rowsList; let i=index" [style.width]="toCSSUnit(widthList[i])">
+      </li>
+    </ul>
+  </div>
+</ng-container>
+<ng-container *ngIf="!nzLoading">
+  <ng-content></ng-content>
+</ng-container>

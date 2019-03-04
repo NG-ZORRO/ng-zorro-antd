@@ -1,0 +1,107 @@
+<ng-template #renderItemTemplate let-type let-page="page">
+  <a class="ant-pagination-item-link" *ngIf="type==='pre'"><i nz-icon type="left"></i></a>
+  <a class="ant-pagination-item-link" *ngIf="type==='next'"><i nz-icon type="right"></i></a>
+  <a *ngIf="type=='page'">{{ page }}</a>
+</ng-template>
+<ng-template #colGroupTemplate>
+  <colgroup>
+    <col [style.width]="width" [style.minWidth]="width" *ngFor="let width of nzWidthConfig">
+    <col [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth" *ngFor="let th of listOfNzThComponent">
+  </colgroup>
+</ng-template>
+<ng-template #headerTemplate>
+  <ng-template [ngTemplateOutlet]="colGroupTemplate"></ng-template>
+  <thead class="ant-table-thead" *ngIf="!nzScroll.y">
+    <ng-template [ngTemplateOutlet]="nzTheadComponent?.templateRef"></ng-template>
+  </thead>
+</ng-template>
+<ng-template #tableInnerTemplate>
+  <div #tableHeaderElement
+    *ngIf="nzScroll.x || nzScroll.y"
+    [ngStyle]="headerBottomStyle"
+    class="ant-table-header">
+    <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
+      <ng-template [ngTemplateOutlet]="colGroupTemplate"></ng-template>
+      <thead class="ant-table-thead" *ngIf="nzScroll.y">
+        <ng-template [ngTemplateOutlet]="nzTheadComponent?.templateRef"></ng-template>
+      </thead>
+    </table>
+  </div>
+  <div #tableBodyElement *ngIf="!nzVirtualScroll;else scrollViewTpl"
+    class="ant-table-body"
+    [style.maxHeight]="nzScroll.y"
+    [style.overflow-y]="nzScroll.y ? 'scroll' : ''"
+    [style.overflow-x]="nzScroll.x ? 'auto' : ''">
+    <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
+      <ng-template [ngIf]="!nzVirtualScroll" [ngTemplateOutlet]="headerTemplate"></ng-template>
+      <ng-content></ng-content>
+    </table>
+  </div>
+  <ng-template #scrollViewTpl>
+    <cdk-virtual-scroll-viewport
+      class="ant-table-body"
+      [itemSize]="nzVirtualItemSize"
+      [maxBufferPx]="nzVirtualMaxBufferPx"
+      [minBufferPx]="nzVirtualMinBufferPx"
+      [style.height]="nzScroll.y">
+      <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
+        <ng-template [ngIf]="nzVirtualScroll" [ngTemplateOutlet]="headerTemplate"></ng-template>
+        <tbody>
+          <ng-container *cdkVirtualFor="let item of data; let i = index">
+            <ng-template [ngTemplateOutlet]="nzVirtualScrollDirective?.templateRef" [ngTemplateOutletContext]="{$implicit:item, index:i}"></ng-template>
+          </ng-container>
+        </tbody>
+      </table>
+    </cdk-virtual-scroll-viewport>
+  </ng-template>
+  <div class="ant-table-placeholder" *ngIf="data.length === 0 && !nzLoading && !nzTemplateMode">
+    <nz-embed-empty [nzComponentName]="'table'" [specificContent]="nzNoResult"></nz-embed-empty>
+  </div>
+  <div class="ant-table-footer" *ngIf="nzFooter">
+    <ng-container *nzStringTemplateOutlet="nzFooter">{{ nzFooter }}</ng-container>
+  </div>
+</ng-template>
+<ng-template #paginationTemplate>
+  <nz-pagination *ngIf="nzShowPagination && data.length"
+    [nzInTable]="true"
+    [nzShowSizeChanger]="nzShowSizeChanger"
+    [nzPageSizeOptions]="nzPageSizeOptions"
+    [nzItemRender]="nzItemRender"
+    [nzShowQuickJumper]="nzShowQuickJumper"
+    [nzHideOnSinglePage]="nzHideOnSinglePage"
+    [nzShowTotal]="nzShowTotal"
+    [nzSize]="(nzSize === 'middle' || nzSize=='small') ? 'small' : ''"
+    [nzPageSize]="nzPageSize"
+    [nzTotal]="nzTotal"
+    [nzSimple]="nzSimple"
+    [nzPageIndex]="nzPageIndex"
+    (nzPageSizeChange)="emitPageSizeOrIndex($event,nzPageIndex)"
+    (nzPageIndexChange)="emitPageSizeOrIndex(nzPageSize,$event)">
+  </nz-pagination>
+</ng-template>
+<nz-spin [nzDelay]="nzLoadingDelay" [nzSpinning]="nzLoading">
+  <ng-container *ngIf="nzPaginationPosition === 'both' || nzPaginationPosition === 'top'">
+    <ng-template [ngTemplateOutlet]="paginationTemplate"></ng-template>
+  </ng-container>
+  <div #tableMainElement
+    class="ant-table"
+    [class.ant-table-fixed-header]="nzScroll.x || nzScroll.y"
+    [class.ant-table-bordered]="nzBordered"
+    [class.ant-table-default]="nzSize === 'default'"
+    [class.ant-table-middle]="nzSize === 'middle'"
+    [class.ant-table-small]="nzSize === 'small'">
+    <div class="ant-table-title" *ngIf="nzTitle">
+      <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+    </div>
+    <div class="ant-table-content">
+      <ng-container *ngIf="nzScroll.x || nzScroll.y; else tableInnerTemplate">
+        <div class="ant-table-scroll">
+          <ng-template [ngTemplateOutlet]="tableInnerTemplate"></ng-template>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <ng-container *ngIf="nzPaginationPosition === 'both' || nzPaginationPosition === 'bottom'">
+    <ng-template [ngTemplateOutlet]="paginationTemplate"></ng-template>
+  </ng-container>
+</nz-spin>

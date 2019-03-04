@@ -1,0 +1,30 @@
+@import '../../style/themes/default';
+@import '../../style/mixins/index';
+@import '../../button/style/mixin';
+@import './mixin';
+
+@search-prefix: ~'@{ant-prefix}-input-search';
+
+.@{search-prefix} {
+  &-icon {
+    color: @text-color-secondary;
+    cursor: pointer;
+    transition: all 0.3s;
+    &:hover {
+      color: fade(@black, 80%);
+    }
+  }
+
+  &-enter-button {
+    .@{ant-prefix}-input-group-addon {
+      padding: 0;
+      border: 0;
+
+      .@{search-prefix}-button {
+        width: 100%;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
+}

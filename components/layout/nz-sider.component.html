@@ -1,0 +1,19 @@
+<div class="ant-layout-sider-children">
+  <ng-content></ng-content>
+</div>
+<span class="ant-layout-sider-zero-width-trigger" *ngIf="isZeroTrigger" (click)="toggleCollapse()">
+  <ng-template [ngTemplateOutlet]="nzZeroTrigger || zeroTrigger"></ng-template>
+</span>
+<div class="ant-layout-sider-trigger"
+  *ngIf="isSiderTrigger"
+  (click)="toggleCollapse()"
+  [style.width.px]="nzCollapsed ? nzCollapsedWidth : nzWidth">
+  <ng-template [ngTemplateOutlet]="nzTrigger"></ng-template>
+</div>
+<ng-template #defaultTrigger>
+  <i nz-icon [type]="nzCollapsed ? 'right' : 'left'" *ngIf="!nzReverseArrow"></i>
+  <i nz-icon [type]="nzCollapsed ? 'left' : 'right'" *ngIf="nzReverseArrow"></i>
+</ng-template>
+<ng-template #zeroTrigger>
+  <i nz-icon type="bars"></i>
+</ng-template>

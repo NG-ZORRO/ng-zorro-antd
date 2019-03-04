@@ -1,0 +1,8 @@
+<span class="ant-checkbox"
+  [class.ant-checkbox-checked]="nzChecked && !nzIndeterminate"
+  [class.ant-checkbox-disabled]="nzDisabled"
+  [class.ant-checkbox-indeterminate]="nzIndeterminate">
+  <input #inputElement [checked]="nzChecked" [ngModel]="nzChecked" [disabled]="nzDisabled" (ngModelChange)="innerCheckedChange($event)" (click)="$event.stopPropagation();" type="checkbox" class="ant-checkbox-input">
+  <span class="ant-checkbox-inner"></span>
+</span>
+<span #contentElement (cdkObserveContent)="checkContent()"><ng-content></ng-content></span>

@@ -1,0 +1,39 @@
+<div class="ant-btn-group ant-dropdown-button" nz-dropdown>
+  <button nz-button
+    type="button"
+    [disabled]="nzDisabled"
+    [nzType]="nzType"
+    [nzSize]="nzSize"
+    (click)="nzClick.emit($event)">
+    <span><ng-content></ng-content></span>
+  </button>
+  <button nz-button
+    type="button"
+    class="ant-dropdown-trigger"
+    [nzType]="nzType"
+    [nzSize]="nzSize"
+    [disabled]="nzDisabled"
+    (click)="setVisibleStateWhen(true,'click')"
+    (mouseenter)="setVisibleStateWhen(true,'hover')"
+    (mouseleave)="setVisibleStateWhen(false,'hover')">
+    <i nz-icon type="ellipsis"></i>
+  </button>
+</div>
+<ng-template cdkConnectedOverlay
+  [cdkConnectedOverlayHasBackdrop]="nzTrigger === 'click'"
+  [cdkConnectedOverlayPositions]="positions"
+  [cdkConnectedOverlayOrigin]="nzDropDownDirective"
+  (backdropClick)="setVisibleStateWhen(false)"
+  (detach)="setVisibleStateWhen(false)"
+  [cdkConnectedOverlayMinWidth]="triggerWidth"
+  (positionChange)="onPositionChange($event)"
+  [cdkConnectedOverlayOpen]="nzVisible">
+  <div class="{{'ant-dropdown ant-dropdown-placement-'+nzPlacement}}"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
+    [@slideMotion]="dropDownPosition"
+    (mouseenter)="setVisibleStateWhen(true,'hover')"
+    (mouseleave)="setVisibleStateWhen(false,'hover')"
+    [style.minWidth.px]="triggerWidth">
+    <ng-content select="[nz-menu]"></ng-content>
+  </div>
+</ng-template>

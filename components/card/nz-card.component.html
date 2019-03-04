@@ -1,0 +1,27 @@
+<div class="ant-card-head" *ngIf="nzTitle || nzExtra || tab">
+  <div class="ant-card-head-wrapper">
+    <div class="ant-card-head-title" *ngIf="nzTitle">
+      <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+    </div>
+    <div class="ant-card-extra" *ngIf="nzExtra">
+      <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
+    </div>
+  </div>
+  <ng-container *ngIf="tab">
+    <ng-template [ngTemplateOutlet]="tab.template"></ng-template>
+  </ng-container>
+</div>
+<div class="ant-card-cover" *ngIf="nzCover">
+  <ng-template [ngTemplateOutlet]="nzCover"></ng-template>
+</div>
+<div class="ant-card-body" [ngStyle]="nzBodyStyle">
+  <ng-container *ngIf="!nzLoading">
+    <ng-content></ng-content>
+  </ng-container>
+  <nz-card-loading *ngIf="nzLoading"></nz-card-loading>
+</div>
+<ul class="ant-card-actions" *ngIf="nzActions.length">
+  <li *ngFor="let action of nzActions" [style.width.%]="100 / nzActions.length">
+    <span><ng-template [ngTemplateOutlet]="action"></ng-template></span>
+  </li>
+</ul>

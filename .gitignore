@@ -1,19 +1,27 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/dist
-/doc
-/tmp
-/out-tsc
+dist/
+/site/
+tmp/
+out-tsc/
+/publish/
+integration/**/lib/
+integration/**/*.ngfactory.ts
+integration/**/*.ngsummary.json
+schematics/demo
+schematics/utils/create-custom-theme.ts
+schematics/utils/version-names.ts
 
-
-
-/src/release
 # dependencies
-/node_modules
+node_modules
+node_modules.*/
+package-lock.json
+integration/**/package-lock.json
+yarn.lock
 
 # IDEs and editors
-/.idea
+.idea/
 .project
 .classpath
 .c9/

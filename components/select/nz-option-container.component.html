@@ -1,0 +1,39 @@
+<ul #dropdownUl
+  class="ant-select-dropdown-menu ant-select-dropdown-menu-root ant-select-dropdown-menu-vertical"
+  role="menu"
+  tabindex="0">
+  <li *ngIf="nzSelectService.isShowNotFound"
+    nz-select-unselectable
+    class="ant-select-dropdown-menu-item ant-select-dropdown-menu-item-disabled">
+    <nz-embed-empty [nzComponentName]="'select'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
+  </li>
+  <li nz-option-li
+    *ngIf="nzSelectService.addedTagOption"
+    [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
+    [nzOption]="nzSelectService.addedTagOption">
+  </li>
+  <li nz-option-li
+    *ngFor="let option of nzSelectService.listOfNzOptionComponent | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption : nzSelectService.serverSearch; trackBy: trackValue"
+    [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
+    [nzOption]="option">
+  </li>
+  <li class="ant-select-dropdown-menu-item-group"
+    *ngFor="let group of nzSelectService.listOfNzOptionGroupComponent | nzFilterGroupOption : nzSelectService.searchValue : nzSelectService.filterOption :nzSelectService.serverSearch; trackBy: trackLabel">
+    <div class="ant-select-dropdown-menu-item-group-title"
+      [attr.title]="group.isLabelString ? group.nzLabel : ''">
+      <ng-container *nzStringTemplateOutlet="group.nzLabel"> {{group.nzLabel}} </ng-container>
+    </div>
+    <ul class="ant-select-dropdown-menu-item-group-list">
+      <li nz-option-li
+        *ngFor="let option of group.listOfNzOptionComponent | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption :nzSelectService.serverSearch; trackBy: trackValue"
+        [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
+        [nzOption]="option">
+      </li>
+    </ul>
+  </li>
+  <li nz-option-li
+    *ngFor="let option of nzSelectService.listOfTagOption | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption : nzSelectService.serverSearch; trackBy: trackValue "
+    [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
+    [nzOption]="option">
+  </li>
+</ul>

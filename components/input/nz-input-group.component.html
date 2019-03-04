@@ -1,0 +1,33 @@
+<span class="ant-input-wrapper ant-input-group" *ngIf="isAddOn">
+  <span class="ant-input-group-addon" *ngIf="nzAddOnBefore || nzAddOnBeforeIcon">
+    <i nz-icon [type]="nzAddOnBeforeIcon" *ngIf="nzAddOnBeforeIcon"></i>
+    <ng-container *nzStringTemplateOutlet="nzAddOnBefore">{{ nzAddOnBefore }}</ng-container>
+  </span>
+  <ng-template [ngIf]="!isAffix" *ngTemplateOutlet="contentTemplate"></ng-template>
+  <span class="ant-input-affix-wrapper" [class.ant-input-affix-wrapper-sm]="isSmall" [class.ant-input-affix-wrapper-lg]="isLarge" *ngIf="isAffix">
+    <ng-template *ngTemplateOutlet="affixTemplate"></ng-template>
+  </span>
+  <span class="ant-input-group-addon" *ngIf="nzAddOnAfter || nzAddOnAfterIcon">
+    <i nz-icon [type]="nzAddOnAfterIcon" *ngIf="nzAddOnAfterIcon"></i>
+    <ng-container *nzStringTemplateOutlet="nzAddOnAfter">{{ nzAddOnAfter }}</ng-container>
+  </span>
+</span>
+<ng-container *ngIf="isAffix && !isAddOn">
+  <ng-template *ngTemplateOutlet="affixTemplate"></ng-template>
+</ng-container>
+<ng-template #affixTemplate>
+  <span class="ant-input-prefix" *ngIf="nzPrefix || nzPrefixIcon">
+    <!-- TODO: should have a class to set its color, cc: antd-->
+    <i nz-icon [type]="nzPrefixIcon" *ngIf="nzPrefixIcon" style="color: rgba(0, 0, 0, 0.25)"></i>
+    <ng-container *nzStringTemplateOutlet="nzPrefix">{{ nzPrefix }}</ng-container>
+  </span>
+  <ng-template *ngTemplateOutlet="contentTemplate"></ng-template>
+  <span class="ant-input-suffix" *ngIf="nzSuffix || nzSuffixIcon">
+    <i nz-icon [type]="nzSuffixIcon" *ngIf="nzSuffixIcon"></i>
+    <ng-container *nzStringTemplateOutlet="nzSuffix">{{ nzSuffix }}</ng-container>
+  </span>
+</ng-template>
+<ng-template [ngIf]="isGroup" *ngTemplateOutlet="contentTemplate"></ng-template>
+<ng-template #contentTemplate>
+  <ng-content></ng-content>
+</ng-template>

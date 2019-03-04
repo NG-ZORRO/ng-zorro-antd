@@ -1,0 +1,27 @@
+<ng-content></ng-content>
+<ng-template
+  #overlay="cdkConnectedOverlay"
+  cdkConnectedOverlay
+  nzConnectedOverlay
+  [cdkConnectedOverlayOrigin]="overlayOrigin"
+  [cdkConnectedOverlayOpen]="visible$ | async"
+  [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
+  [cdkConnectedOverlayPositions]="_positions"
+  (backdropClick)="hide()"
+  (detach)="hide()"
+  (positionChange)="onPositionChange($event)">
+  <div
+    class="ant-tooltip"
+    [ngClass]="_classMap"
+    [ngStyle]="nzOverlayStyle"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
+    [@zoomBigMotion]="'active'"
+    (@zoomBigMotion.done)="_afterVisibilityAnimation($event)">
+    <div class="ant-tooltip-content">
+      <div class="ant-tooltip-arrow"></div>
+      <div class="ant-tooltip-inner">
+        <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+      </div>
+    </div>
+  </div>
+</ng-template>

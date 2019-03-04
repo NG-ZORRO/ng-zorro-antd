@@ -1,0 +1,55 @@
+<input
+  type="text"
+  [nzTime]="nzFormat"
+  class="ant-time-picker-input"
+  [placeholder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
+  [(ngModel)]="value"
+  readonly="readonly"
+  (click)="open()"
+  #inputElement>
+<span class="ant-time-picker-icon">
+  <i nz-icon type="clock-circle"></i>
+</span>
+<i
+  *ngIf="nzAllowEmpty && value"
+  nz-icon
+  type="close-circle"
+  theme="fill"
+  class="anticon anticon-close-circle ant-time-picker-clear"
+  tabindex="-1"
+  [attr.aria-label]="nzClearText"
+  [attr.title]="nzClearText"
+  (click)="onClickClearBtn()"
+></i>
+
+<ng-template
+  cdkConnectedOverlay
+  nzConnectedOverlay
+  cdkConnectedOverlayHasBackdrop
+  [cdkConnectedOverlayPositions]="overlayPositions"
+  [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayOpen]="nzOpen"
+  [cdkConnectedOverlayOffsetY]="-2"
+  (detach)="close()"
+  (backdropClick)="close()">
+  <nz-time-picker-panel
+    [ngClass]="nzPopupClassName"
+    [@slideMotion]="'bottom'"
+    [format]="nzFormat"
+    [nzHourStep]="nzHourStep"
+    [nzMinuteStep]="nzMinuteStep"
+    [nzSecondStep]="nzSecondStep"
+    [nzDisabledHours]="nzDisabledHours"
+    [nzDisabledMinutes]="nzDisabledMinutes"
+    [nzDisabledSeconds]="nzDisabledSeconds"
+    [nzPlaceHolder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
+    [nzHideDisabledOptions]="nzHideDisabledOptions"
+    [nzDefaultOpenValue]="nzDefaultOpenValue"
+    [nzAddOn]="nzAddOn"
+    [opened]="nzOpen"
+    [nzClearText]="nzClearText"
+    [nzAllowEmpty]="nzAllowEmpty"
+    [(ngModel)]="value">
+  </nz-time-picker-panel>
+</ng-template>
+

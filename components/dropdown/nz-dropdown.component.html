@@ -1,0 +1,24 @@
+<ng-content select="[nz-dropdown]"></ng-content>
+<ng-template cdkConnectedOverlay
+  [cdkConnectedOverlayHasBackdrop]="nzTrigger === 'click'"
+  [cdkConnectedOverlayPositions]="positions"
+  [cdkConnectedOverlayOrigin]="nzDropDownDirective"
+  [cdkConnectedOverlayMinWidth]="triggerWidth"
+  [cdkConnectedOverlayOpen]="nzVisible"
+  (backdropClick)="setVisibleStateWhen(false)"
+  (detach)="setVisibleStateWhen(false)"
+  (positionChange)="onPositionChange($event)">
+  <div class="{{'ant-dropdown ant-dropdown-placement-'+nzPlacement}}"
+    [ngClass]="nzOverlayClassName"
+    [ngStyle]="nzOverlayStyle"
+    [@slideMotion]="dropDownPosition"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
+    [style.minWidth.px]="triggerWidth"
+    (mouseenter)="setVisibleStateWhen(true,'hover')"
+    (mouseleave)="setVisibleStateWhen(false,'hover')">
+    <div [class.ant-table-filter-dropdown]="nzTableFilter">
+      <ng-content select="[nz-menu]"></ng-content>
+      <ng-content></ng-content>
+    </div>
+  </div>
+</ng-template>

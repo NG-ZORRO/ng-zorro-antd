@@ -1,0 +1,92 @@
+<span
+  cdkOverlayOrigin
+  #origin="cdkOverlayOrigin"
+  class="{{ prefixCls }}-picker {{ size ? prefixCls + '-picker-' + size : '' }} {{ className }}"
+  [ngStyle]="style"
+  tabindex="0"
+  (click)="onClickInputBox()"
+>
+  <!-- Content of single picker -->
+  <ng-container *ngIf="!isRange">
+    <input
+      #pickerInput
+      class="{{ prefixCls }}-picker-input ant-input"
+      [class.ant-input-lg]="size === 'large'"
+      [class.ant-input-sm]="size === 'small'"
+      [class.ant-input-disabled]="disabled"
+
+      [disabled]="disabled"
+      readonly
+      value="{{ getReadableValue() }}"
+      placeholder="{{ getPlaceholder() }}"
+    />
+    <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
+  </ng-container>
+
+  <!-- Content of range picker -->
+  <ng-container *ngIf="isRange">
+    <span
+      #pickerInput
+      class="{{ prefixCls }}-picker-input ant-input"
+      [class.ant-input-lg]="size === 'large'"
+      [class.ant-input-sm]="size === 'small'"
+      [class.ant-input-disabled]="disabled"
+    >
+      <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
+      <span class="{{ prefixCls }}-range-picker-separator"> ~ </span>
+      <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
+      <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
+    </span>
+  </ng-container>
+</span>
+
+<!-- Input for Range ONLY -->
+<ng-template #tplRangeInput let-partType="partType">
+  <input
+    class="{{ prefixCls }}-range-picker-input"
+    [disabled]="disabled"
+    readonly
+    value="{{ getReadableValue(partType) }}"
+    placeholder="{{ getPlaceholder(partType) }}"
+  />
+</ng-template>
+
+<!-- Right operator icons -->
+<ng-template #tplRightRest>
+  <i
+    nz-icon
+    type="close-circle"
+    theme="fill"
+    *ngIf="!disabled && !isEmptyValue(value) && allowClear"
+    class="{{ prefixCls }}-picker-clear"
+    (click)="onClickClear($event)"
+  ></i>
+  <span class="{{ prefixCls }}-picker-icon">
+    <i nz-icon type="calendar"></i>
+  </span>
+</ng-template>
+
+<!-- Overlay -->
+<ng-template
+  cdkConnectedOverlay
+  nzConnectedOverlay
+  [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayOpen]="realOpenState"
+  [cdkConnectedOverlayHasBackdrop]="!isOpenHandledByUser()"
+  [cdkConnectedOverlayPositions]="overlayPositions"
+  (positionChange)="onPositionChange($event)"
+  (backdropClick)="onClickBackdrop()"
+  (detach)="onOverlayDetach()"
+>
+  <div
+    [nzNoAnimation]="noAnimation"
+    [@slideMotion]="dropdownAnimation"
+    (@slideMotion.start)="animationStart()"
+    (@slideMotion.done)="animationDone()"
+    style="position: relative;"
+    [style.left]="currentPositionX === 'start' ? '-2px' : '2px'"
+    [style.top]="currentPositionY === 'top' ? '-2px' : '2px'"
+  > <!-- Compatible for overlay that not support offset dynamically and immediately -->
+    <ng-content></ng-content>
+  </div>
+</ng-template>

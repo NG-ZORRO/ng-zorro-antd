@@ -1,0 +1,35 @@
+<div *ngIf="!destroy"
+  class="ant-alert"
+  [class.ant-alert-success]="nzType === 'success'"
+  [class.ant-alert-info]="nzType === 'info'"
+  [class.ant-alert-warning]="nzType === 'warning'"
+  [class.ant-alert-error]="nzType === 'error'"
+  [class.ant-alert-no-icon]="!nzShowIcon"
+  [class.ant-alert-banner]="nzBanner"
+  [class.ant-alert-closable]="nzCloseable"
+  [class.ant-alert-with-description]="!!nzDescription"
+  [@slideAlertMotion]
+  (@slideAlertMotion.done)="onFadeAnimationDone()">
+  <ng-container *ngIf="nzShowIcon">
+    <i class="ant-alert-icon" [ngClass]="nzIconType" *ngIf="nzIconType; else iconTemplate"></i>
+    <ng-template #iconTemplate>
+      <i nz-icon class="ant-alert-icon" [type]="iconType" [theme]="iconTheme"></i>
+    </ng-template>
+  </ng-container>
+  <span class="ant-alert-message" *ngIf="nzMessage">
+    <ng-container *nzStringTemplateOutlet="nzMessage">{{ nzMessage }}</ng-container>
+  </span>
+  <span class="ant-alert-description" *ngIf="nzDescription">
+    <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
+  </span>
+  <a *ngIf="nzCloseable || nzCloseText"
+    class="ant-alert-close-icon"
+    (click)="closeAlert()">
+    <ng-template #closeDefaultTemplate>
+      <i nz-icon type="close" class="anticon-close"></i>
+    </ng-template>
+    <ng-container *ngIf="nzCloseText; else closeDefaultTemplate">
+      <ng-container *nzStringTemplateOutlet="nzCloseText">{{ nzCloseText }}</ng-container>
+    </ng-container>
+  </a>
+</div>

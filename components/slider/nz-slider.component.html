@@ -1,0 +1,36 @@
+<div #slider
+  class="ant-slider"
+  [class.ant-slider-disabled]="nzDisabled"
+  [class.ant-slider-vertical]="nzVertical"
+  [class.ant-slider-with-marks]="marksArray">
+  <div class="ant-slider-rail"></div>
+  <nz-slider-track
+    [nzVertical]="nzVertical"
+    [nzIncluded]="nzIncluded"
+    [nzOffset]="track.offset"
+    [nzLength]="track.length"></nz-slider-track>
+  <nz-slider-step
+    *ngIf="marksArray"
+    [nzVertical]="nzVertical"
+    [nzLowerBound]="bounds.lower"
+    [nzUpperBound]="bounds.upper"
+    [nzMarksArray]="marksArray"
+    [nzIncluded]="nzIncluded"></nz-slider-step>
+  <nz-slider-handle
+    *ngFor="let handle of handles"
+    [nzVertical]="nzVertical"
+    [nzOffset]="handle.offset"
+    [nzValue]="handle.value"
+    [nzActive]="handle.active"
+    [nzTipFormatter]="nzTipFormatter"
+    [nzTooltipVisible]="nzTooltipVisible"></nz-slider-handle>
+  <nz-slider-marks 
+    *ngIf="marksArray"
+    [nzVertical]="nzVertical"
+    [nzMin]="nzMin"
+    [nzMax]="nzMax"
+    [nzLowerBound]="bounds.lower"
+    [nzUpperBound]="bounds.upper"
+    [nzMarksArray]="marksArray"
+    [nzIncluded]="nzIncluded"></nz-slider-marks>
+</div>

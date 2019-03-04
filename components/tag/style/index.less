@@ -1,0 +1,124 @@
+@import '../../style/themes/default';
+@import '../../style/mixins/index';
+
+@tag-prefix-cls: ~'@{ant-prefix}-tag';
+
+.@{tag-prefix-cls} {
+  .reset-component;
+  display: inline-block;
+  height: 22px;
+  margin-right: 8px;
+  padding: 0 7px;
+  font-size: @tag-font-size;
+  line-height: 20px;
+  white-space: nowrap;
+  background: @tag-default-bg;
+  border: @border-width-base @border-style-base @border-color-base;
+  border-radius: @border-radius-base;
+  cursor: pointer;
+  opacity: 1;
+  transition: all 0.3s @ease-out;
+
+  &:hover {
+    opacity: 0.85;
+  }
+
+  &,
+  a,
+  a:hover {
+    color: @tag-default-color;
+  }
+
+  > a:first-child:last-child {
+    display: inline-block;
+    margin: 0 -8px;
+    padding: 0 8px;
+  }
+
+  .@{iconfont-css-prefix}-close {
+    .iconfont-size-under-12px(10px);
+    margin-left: 3px;
+    color: @text-color-secondary;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      color: @heading-color;
+    }
+  }
+
+  &-has-color {
+    border-color: transparent;
+    &,
+    a,
+    a:hover,
+    .@{iconfont-css-prefix}-close,
+    .@{iconfont-css-prefix}-close:hover {
+      color: @text-color-inverse;
+    }
+  }
+
+  &-checkable {
+    background-color: transparent;
+    border-color: transparent;
+    &:not(&-checked):hover {
+      color: @primary-color;
+    }
+    &:active,
+    &-checked {
+      color: @text-color-inverse;
+    }
+    &-checked {
+      background-color: @primary-6;
+    }
+    &:active {
+      background-color: @primary-7;
+    }
+  }
+
+  &-close {
+    width: 0 !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  &-zoom-enter,
+  &-zoom-appear {
+    animation: antFadeIn 0.2s @ease-in-out-circ;
+    animation-fill-mode: both;
+  }
+
+  &-zoom-leave {
+    animation: antZoomOut 0.3s @ease-in-out-circ;
+    animation-fill-mode: both;
+  }
+
+  &-hidden {
+    display: none;
+  }
+
+  @colors: pink, magenta, red, volcano, orange, yellow, gold, cyan, lime, green, blue, geekblue,
+    purple;
+
+  // mixin to iterate over colors and create CSS class for each one
+  .make-color-classes(@i: length(@colors)) when (@i > 0) {
+    .make-color-classes(@i - 1);
+    @color: extract(@colors, @i);
+    @lightColor: '@{color}-1';
+    @lightBorderColor: '@{color}-3';
+    @darkColor: '@{color}-6';
+    &-@{color} {
+      color: @@darkColor;
+      background: @@lightColor;
+      border-color: @@lightBorderColor;
+    }
+    &-@{color}-inverse {
+      color: @text-color-inverse;
+      background: @@darkColor;
+      border-color: @@darkColor;
+    }
+  }
+
+  .make-color-classes();
+}

@@ -1,0 +1,9 @@
+{
+  chooseTheme: 'Select the Icon Theme',
+  direction: 'Directional Icons',
+  suggestion: 'Suggested Icons',
+  edit: 'Editor Icons',
+  data: 'Data Icons',
+  other: 'Application Icons',
+  logo: 'Brand and Logos'
+}

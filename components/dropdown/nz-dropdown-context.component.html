@@ -1,0 +1,6 @@
+<div *ngIf="open"
+  class="ant-dropdown ant-dropdown-placement-bottomLeft"
+  [@slideMotion]="dropDownPosition"
+  (@slideMotion.done)="afterAnimation()">
+  <ng-template [ngTemplateOutlet]="templateRef"></ng-template>
+</div>

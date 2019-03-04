@@ -1,0 +1,56 @@
+<div cdkOverlayOrigin
+  nz-select-top-control
+  tabindex="0"
+  class="ant-select-selection"
+  [nzOpen]="open"
+  [nzNoAnimation]="noAnimation?.nzNoAnimation"
+  [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
+  [nzPlaceHolder]="nzPlaceHolder"
+  [nzAllowClear]="nzAllowClear"
+  [nzMaxTagCount]="nzMaxTagCount"
+  [nzShowArrow]="nzShowArrow"
+  [nzLoading]="nzLoading"
+  [nzSuffixIcon]="nzSuffixIcon"
+  [nzClearIcon]="nzClearIcon"
+  [nzRemoveIcon]="nzRemoveIcon"
+  [nzShowSearch]="nzShowSearch"
+  [nzTokenSeparators]="nzTokenSeparators"
+  [class.ant-select-selection--single]="nzSelectService.isSingleMode"
+  [class.ant-select-selection--multiple]="nzSelectService.isMultipleOrTags"
+  (keydown)="onKeyDown($event)">
+</div>
+<ng-template
+  cdkConnectedOverlay
+  nzConnectedOverlay
+  [cdkConnectedOverlayHasBackdrop]="true"
+  [cdkConnectedOverlayMinWidth]="nzDropdownMatchSelectWidth? null : triggerWidth"
+  [cdkConnectedOverlayWidth]="nzDropdownMatchSelectWidth? triggerWidth : null"
+  [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
+  (backdropClick)="closeDropDown()"
+  (detach)="closeDropDown();"
+  (positionChange)="onPositionChange($event)"
+  [cdkConnectedOverlayOpen]="open">
+  <div
+    class="ant-select-dropdown"
+    [class.ant-select-dropdown--single]="nzSelectService.isSingleMode"
+    [class.ant-select-dropdown--multiple]="nzSelectService.isMultipleOrTags"
+    [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
+    [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
+    [nzClassListAdd]="[nzDropdownClassName]"
+    [@slideMotion]="dropDownPosition"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
+    [ngStyle]="nzDropdownStyle">
+    <div nz-option-container
+      style="overflow: auto;transform: translateZ(0px);"
+      (keydown)="onKeyDown($event)"
+      [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
+      [nzNotFoundContent]="nzNotFoundContent"
+      (nzScrollToBottom)="nzScrollToBottom.emit()">
+    </div>
+    <ng-template [ngTemplateOutlet]="nzDropdownRender"></ng-template>
+  </div>
+</ng-template>
+<!--can not use ViewChild since it will match sub options in option group -->
+<ng-template>
+  <ng-content></ng-content>
+</ng-template>

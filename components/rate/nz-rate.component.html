@@ -1,0 +1,22 @@
+<ul #ulElement
+  class="ant-rate"
+  [class.ant-rate-disabled]="nzDisabled"
+  [ngClass]="classMap"
+  (blur)="onBlur($event)"
+  (focus)="onFocus($event)"
+  (keydown)="onKeyDown($event); $event.preventDefault();"
+  (mouseleave)="onRateLeave(); $event.stopPropagation();"
+  [tabindex]="nzDisabled ? -1 : 1">
+  <li *ngFor="let star of starArray; let i = index"
+    class="ant-rate-star"
+    [ngClass]="setClasses(star)"
+    nz-tooltip
+    [nzTitle]="nzTooltips[ i ]">
+    <div nz-rate-item
+      [allowHalf]="nzAllowHalf"
+      [character]="nzCharacter"
+      (itemHover)="onItemHover(i, $event)"
+      (itemClick)="onItemClick(i, $event)">
+    </div>
+  </li>
+</ul>

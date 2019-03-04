@@ -1,0 +1,13 @@
+<div *ngIf="avatarStr || avatarTpl" class="ant-list-item-meta-avatar">
+  <ng-container *ngIf="avatarStr; else avatarTpl">
+    <nz-avatar [nzSrc]="avatarStr"></nz-avatar>
+  </ng-container>
+</div>
+<div *ngIf="nzTitle || nzDescription" class="ant-list-item-meta-content">
+  <h4 *ngIf="nzTitle" class="ant-list-item-meta-title">
+    <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+  </h4>
+  <div *ngIf="nzDescription" class="ant-list-item-meta-description">
+    <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
+  </div>
+</div>

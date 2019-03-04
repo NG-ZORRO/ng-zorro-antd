@@ -1,0 +1,23 @@
+<div class="slick-initialized slick-slider" [class.slick-vertical]="nzVertical">
+  <div
+    class="slick-list"
+    #slickList
+    tabindex="-1"
+    (keydown)="onKeyDown($event)"
+    (swipeleft)="swipe('swipeleft')"
+    (swiperight)="swipe('swiperight')"
+    (pan)="swipeInProgress($event);">
+    <div class="slick-track" #slickTrack>
+      <ng-content></ng-content>
+    </div>
+  </div>
+  <ul class="slick-dots" *ngIf="nzDots">
+    <li *ngFor="let content of slideContents; let i = index" [class.slick-active]="content.isActive" (click)="goTo(i)">
+      <ng-template [ngTemplateOutlet]="nzDotRender || renderDotTemplate" [ngTemplateOutletContext]="{ $implicit: i }"></ng-template>
+    </li>
+  </ul>
+</div>
+
+<ng-template #renderDotTemplate let-index>
+  <button>{{index + 1}}</button>
+</ng-template>

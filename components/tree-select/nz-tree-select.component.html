@@ -1,0 +1,148 @@
+<ng-template #inputTemplate>
+  <input
+    #inputElement
+    autocomplete="off"
+    class="ant-select-search__field"
+    (compositionstart)="isComposing = true"
+    (compositionend)="isComposing = false"
+    (keydown)="onKeyDownInput($event)"
+    [ngModel]="inputValue"
+    (ngModelChange)="setInputValue($event)"
+    [disabled]="nzDisabled">
+</ng-template>
+
+<ng-template
+  cdkConnectedOverlay
+  nzConnectedOverlay
+  [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
+  [cdkConnectedOverlayOpen]="nzOpen"
+  [cdkConnectedOverlayHasBackdrop]="true"
+  [cdkConnectedOverlayMinWidth]="nzDropdownMatchSelectWidth? null : triggerWidth"
+  [cdkConnectedOverlayWidth]="nzDropdownMatchSelectWidth? triggerWidth : null"
+  (backdropClick)="closeDropDown()"
+  (detach)="closeDropDown()"
+  (positionChange)="onPositionChange($event)">
+  <div class="ant-select-dropdown ant-select-tree-dropdown"
+    [@slideMotion]="nzOpen ? dropDownPosition : 'void'"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
+    [class.ant-select-dropdown--single]="!nzMultiple"
+    [class.ant-select-dropdown--multiple]="nzMultiple"
+    [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
+    [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
+    [ngStyle]="nzDropdownStyle">
+    <nz-tree
+      #treeRef
+      [hidden]="isNotFound"
+      nzNoAnimation
+      nzSelectMode
+      [nzData]="nzNodes"
+      [nzMultiple]="nzMultiple"
+      [nzSearchValue]="inputValue"
+      [nzCheckable]="nzCheckable"
+      [nzAsyncData]="nzAsyncData"
+      [nzShowExpand]="nzShowExpand"
+      [nzShowLine]="nzShowLine"
+      [nzExpandAll]="nzDefaultExpandAll"
+      [nzExpandedKeys]="nzDefaultExpandedKeys"
+      [nzCheckedKeys]="nzCheckable ? value : []"
+      [nzSelectedKeys]="!nzCheckable ? value : []"
+      (nzExpandChange)="onExpandedKeysChange($event)"
+      (nzClick)="nzTreeClick.emit($event)"
+      (nzCheckedKeysChange)="updateSelectedNodes()"
+      (nzSelectedKeysChange)="updateSelectedNodes()"
+      (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)"
+      (nzSearchValueChange)="setSearchValues($event)">
+    </nz-tree>
+    <span *ngIf="nzNodes.length === 0 || isNotFound" class="ant-select-not-found">
+      <nz-embed-empty [nzComponentName]="'tree-select'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
+    </span>
+  </div>
+</ng-template>
+
+<div
+  cdkOverlayOrigin
+  class="ant-select-selection"
+  [class.ant-select-selection--single]="!isMultiple"
+  [class.ant-select-selection--multiple]="isMultiple"
+  tabindex="0">
+  <ng-container *ngIf="!isMultiple">
+    <div class="ant-select-selection__rendered">
+      <div
+        *ngIf="nzPlaceHolder && selectedNodes.length === 0"
+        [style.display]="placeHolderDisplay"
+        class="ant-select-selection__placeholder">
+        {{ nzPlaceHolder }}
+      </div>
+
+      <div
+        *ngIf="selectedNodes.length === 1"
+        class="ant-select-selection-selected-value"
+        [attr.title]="nzDisplayWith(selectedNodes[0])"
+        [ngStyle]="selectedValueDisplay">
+        {{ nzDisplayWith(selectedNodes[0]) }}
+      </div>
+
+      <div
+        *ngIf="nzShowSearch"
+        [style.display]="searchDisplay"
+        class="ant-select-search ant-select-search--inline">
+        <div class="ant-select-search__field__wrap">
+          <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>
+          <span class="ant-select-search__field__mirror">{{inputValue}}&nbsp;</span>
+        </div>
+      </div>
+
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isMultiple">
+    <ul class="ant-select-selection__rendered">
+      <div
+        *ngIf="nzPlaceHolder && selectedNodes.length === 0"
+        [style.display]="placeHolderDisplay"
+        class="ant-select-selection__placeholder">
+        {{ nzPlaceHolder }}
+      </div>
+      <ng-container *ngFor="let node of selectedNodes | slice: 0 : nzMaxTagCount; trackBy:trackValue">
+        <li
+          [@zoomMotion]
+          [nzNoAnimation]="noAnimation?.nzNoAnimation"
+          [attr.title]="nzDisplayWith(node)"
+          [class.ant-select-selection__choice__disabled]="node.isDisabled"
+          class="ant-select-selection__choice">
+               <span *ngIf="!node.isDisabled" class="ant-select-selection__choice__remove"
+                 (mousedown)="$event.preventDefault()"
+                 (click)="removeSelected(node, true, $event)">
+                 <i nz-icon type="close" class="ant-select-remove-icon"></i>
+               </span>
+          <span class="ant-select-selection__choice__content">{{ nzDisplayWith(node) }}</span>
+        </li>
+      </ng-container>
+      <li [@zoomMotion]
+        *ngIf="selectedNodes.length > nzMaxTagCount"
+        class="ant-select-selection__choice">
+        <div class="ant-select-selection__choice__content">
+          <ng-container *ngIf="nzMaxTagPlaceholder">
+            <ng-template
+              [ngTemplateOutlet]="nzMaxTagPlaceholder"
+              [ngTemplateOutletContext]="{ $implicit: selectedNodes | slice: nzMaxTagCount}">
+            </ng-template>
+          </ng-container>
+          <ng-container *ngIf="!nzMaxTagPlaceholder">
+            + {{ selectedNodes.length - nzMaxTagCount }} ...
+          </ng-container>
+        </div>
+      </li>
+      <li class="ant-select-search ant-select-search--inline">
+        <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>
+      </li>
+    </ul>
+  </ng-container>
+  <span *ngIf="nzAllowClear" class="ant-select-selection__clear"
+    (mousedown)="$event.preventDefault()"
+    (click)="onClearSelection($event)">
+    <i nz-icon type="close-circle" class="ant-select-clear-icon" theme="fill"></i>
+  </span>
+  <span *ngIf="!isMultiple" class="ant-select-arrow">
+    <i nz-icon type="down" class="ant-select-arrow-icon"></i>
+  </span>
+</div>

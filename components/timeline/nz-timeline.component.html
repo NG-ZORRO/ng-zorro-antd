@@ -1,0 +1,24 @@
+<ul
+  class="ant-timeline"
+  [class.ant-timeline-right]="nzMode === 'right'"
+  [class.ant-timeline-alternate]="nzMode === 'alternate'"
+  [class.ant-timeline-pending]="!!nzPending"
+  [class.ant-timeline-reverse]="nzReverse"
+  #timeline>
+  <!-- User inserted timeline dots. -->
+  <ng-content></ng-content>
+  <!-- Pending dot. -->
+  <li *ngIf="nzPending" class="ant-timeline-item ant-timeline-item-pending">
+    <div class="ant-timeline-item-tail"></div>
+    <div class="ant-timeline-item-head ant-timeline-item-head-custom ant-timeline-item-head-blue">
+      <ng-container *nzStringTemplateOutlet="nzPendingDot">
+        {{ nzPendingDot }}<i *ngIf="!nzPendingDot" nz-icon type="loading"></i>
+      </ng-container>
+    </div>
+    <div class="ant-timeline-item-content">
+      <ng-container *nzStringTemplateOutlet="nzPending">
+        {{ isPendingBoolean ? '' : nzPending }}
+      </ng-container>
+    </div>
+  </li>
+</ul>

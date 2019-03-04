@@ -1,0 +1,40 @@
+<nz-picker
+  [isRange]="false"
+  [value]="nzValue"
+  (valueChange)="onValueChange($event)"
+  [open]="nzOpen"
+  [disabled]="nzDisabled"
+  [format]="nzFormat"
+  [allowClear]="nzAllowClear"
+  [autoFocus]="nzAutoFocus"
+  [className]="nzClassName"
+  [placeholder]="nzPlaceHolder"
+  [size]="nzSize"
+  [style]="nzStyle"
+  [noAnimation]="noAnimation?.nzNoAnimation"
+  (openChange)="onOpenChange($event)"
+>
+  <div *ngIf="realOpenState">
+    <div class="ant-calendar-picker-container {{ nzDropdownClassName }} ant-calendar-picker-container-placement-bottomLeft" [ngStyle]="nzPopupStyle">
+      <div class="ant-calendar ant-calendar-month ant-calendar-month-calendar" tabindex="0">
+        <div class="ant-calendar-month-calendar-content">
+          <div class="ant-calendar-month-header-wrap">
+            <calendar-header
+              [disabledMonth]="nzDisabledDate"
+              [disabledYear]="nzDisabledDate"
+              [panelMode]="panelMode"
+              (panelModeChange)="onPanelModeChange($event)"
+              [value]="nzValue"
+              (chooseYear)="onChooseValue('year', $event)"
+              (chooseMonth)="onChooseValue('month', $event)"
+              [locale]="nzLocale.lang"
+              [enablePrev]="true"
+              [enableNext]="true"
+            ></calendar-header>
+          </div>
+          <calendar-footer *ngIf="extraFooter" [extraFooter]="extraFooter"></calendar-footer>
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-picker>

@@ -1,0 +1,111 @@
+<ng-template #renderItemTemplate let-type let-page="page">
+  <a class="ant-pagination-item-link" *ngIf="type==='pre'"><i nz-icon type="left"></i></a>
+  <a class="ant-pagination-item-link" *ngIf="type==='next'"><i nz-icon type="right"></i></a>
+  <a *ngIf="type=='page'">{{ page }}</a>
+</ng-template>
+<ng-container *ngIf="nzHideOnSinglePage && (nzTotal > nzPageSize) || !nzHideOnSinglePage">
+  <ul class="ant-pagination"
+    [class.ant-table-pagination]="nzInTable"
+    [class.ant-pagination-simple]="nzSimple"
+    [class.mini]="(nzSize === 'small') && !nzSimple">
+    <ng-container *ngIf="nzSimple; else normalTemplate">
+      <li class="ant-pagination-prev"
+        [attr.title]="locale.prev_page"
+        [class.ant-pagination-disabled]="isFirstIndex"
+        (click)="jumpDiff(-1)">
+        <ng-template [ngTemplateOutlet]="nzItemRender" [ngTemplateOutletContext]="{ $implicit: 'pre'}"></ng-template>
+      </li>
+      <li [attr.title]="nzPageIndex+'/'+lastIndex" class="ant-pagination-simple-pager">
+        <input #simplePagerInput [value]="nzPageIndex" (keydown.enter)="handleKeyDown($event,simplePagerInput,false)" size="3">
+        <span class="ant-pagination-slash">／</span>
+        {{ lastIndex }}
+      </li>
+      <li class="ant-pagination-next"
+        [attr.title]="locale.next_page"
+        [class.ant-pagination-disabled]="isLastIndex"
+        (click)="jumpDiff(1)">
+        <ng-template [ngTemplateOutlet]="nzItemRender" [ngTemplateOutletContext]="{ $implicit: 'next'}"></ng-template>
+      </li>
+    </ng-container>
+    <ng-template #normalTemplate>
+      <li class="ant-pagination-total-text" *ngIf="nzShowTotal">
+        <ng-template [ngTemplateOutlet]="nzShowTotal" [ngTemplateOutletContext]="{ $implicit: nzTotal,range:ranges }"></ng-template>
+      </li>
+      <li class="ant-pagination-prev"
+        [attr.title]="locale.prev_page"
+        [class.ant-pagination-disabled]="isFirstIndex"
+        (click)="jumpDiff(-1)">
+        <ng-template [ngTemplateOutlet]="nzItemRender" [ngTemplateOutletContext]="{ $implicit: 'pre'}"></ng-template>
+      </li>
+      <li class="ant-pagination-item"
+        [attr.title]="firstIndex"
+        [class.ant-pagination-item-active]="isFirstIndex"
+        (click)="jumpPage(firstIndex)">
+        <ng-template [ngTemplateOutlet]="nzItemRender" [ngTemplateOutletContext]="{ $implicit: 'page',page: firstIndex }"></ng-template>
+      </li>
+      <li class="ant-pagination-jump-prev"
+        *ngIf="(lastIndex > 9) && (nzPageIndex - 3 > firstIndex)"
+        [attr.title]="locale.prev_5"
+        (click)="jumpDiff(-5)">
+        <a class="ant-pagination-item-link">
+          <div class="ant-pagination-item-container">
+            <i nz-icon type="double-left" class="ant-pagination-item-link-icon"></i>
+            <span class="ant-pagination-item-ellipsis">•••</span>
+          </div>
+        </a>
+      </li>
+      <li class="ant-pagination-item"
+        *ngFor="let page of pages"
+        [attr.title]="page"
+        [class.ant-pagination-item-active]="nzPageIndex === page"
+        (click)="jumpPage(page)">
+        <ng-template [ngTemplateOutlet]="nzItemRender" [ngTemplateOutletContext]="{ $implicit: 'page',page: page }"></ng-template>
+      </li>
+      <li class="ant-pagination-jump-next ant-pagination-item-link-icon"
+        [attr.title]="locale.next_5"
+        (click)="jumpDiff(5)"
+        *ngIf="(lastIndex > 9) && (nzPageIndex + 3 < lastIndex)">
+        <a class="ant-pagination-item-link">
+          <div class="ant-pagination-item-container">
+            <i nz-icon type="double-right" class="ant-pagination-item-link-icon"></i>
+            <span class="ant-pagination-item-ellipsis">•••</span>
+          </div>
+        </a>
+      </li>
+      <li class="ant-pagination-item"
+        [attr.title]="lastIndex"
+        (click)="jumpPage(lastIndex)"
+        *ngIf="(lastIndex > 0) && (lastIndex !== firstIndex)"
+        [class.ant-pagination-item-active]="isLastIndex">
+        <ng-template [ngTemplateOutlet]="nzItemRender" [ngTemplateOutletContext]="{ $implicit: 'page',page: lastIndex }"></ng-template>
+      </li>
+      <li class="ant-pagination-next"
+        [title]="locale.next_page"
+        [class.ant-pagination-disabled]="isLastIndex"
+        (click)="jumpDiff(1)">
+        <ng-template [ngTemplateOutlet]="nzItemRender" [ngTemplateOutletContext]="{ $implicit: 'next'}"></ng-template>
+      </li>
+      <div class="ant-pagination-options" *ngIf="nzShowQuickJumper || nzShowSizeChanger">
+        <nz-select class="ant-pagination-options-size-changer"
+          *ngIf="nzShowSizeChanger"
+          [nzSize]="nzSize"
+          [ngModel]="nzPageSize"
+          (ngModelChange)="onPageSizeChange($event)">
+          <nz-option *ngFor="let option of nzPageSizeOptions"
+            [nzLabel]="option + locale.items_per_page"
+            [nzValue]="option">
+          </nz-option>
+          <nz-option *ngIf="showAddOption"
+            [nzLabel]="nzPageSize + locale.items_per_page"
+            [nzValue]="nzPageSize">
+          </nz-option>
+        </nz-select>
+        <div class="ant-pagination-options-quick-jumper" *ngIf="nzShowQuickJumper">
+          {{ locale.jump_to }}
+          <input #quickJumperInput (keydown.enter)="handleKeyDown($event,quickJumperInput,true)">
+          {{ locale.page }}
+        </div>
+      </div>
+    </ng-template>
+  </ul>
+</ng-container>

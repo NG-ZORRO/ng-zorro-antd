@@ -1,0 +1,89 @@
+<div
+  cdkOverlayOrigin
+  #origin="cdkOverlayOrigin"
+  #trigger>
+  <div *ngIf="nzShowInput">
+    <input
+      #input
+      nz-input
+      class="ant-cascader-input"
+      [class.ant-cascader-input-disabled]="nzDisabled"
+      [class.ant-cascader-input-lg]="nzSize === 'large'"
+      [class.ant-cascader-input-sm]="nzSize === 'small'"
+      [attr.autoComplete]="'off'"
+      [attr.placeholder]="showPlaceholder ? nzPlaceHolder : null"
+      [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"
+      [readonly]="!nzShowSearch"
+      [disabled]="nzDisabled"
+      [nzSize]="nzSize"
+      [(ngModel)]="inputValue"
+      (blur)="handleInputBlur()"
+      (focus)="handleInputFocus()"
+      (change)="$event.stopPropagation()">
+    <i *ngIf="clearIconVisible"
+       nz-icon
+       type="close-circle"
+       theme="fill"
+       class="ant-cascader-picker-clear"
+       (click)="clearSelection($event)"></i>
+    <i *ngIf="nzShowArrow && !isLoading"
+       nz-icon
+       type="down"
+       class="ant-cascader-picker-arrow"
+       [class.ant-cascader-picker-arrow-expand]="menuVisible">
+    </i>
+    <i *ngIf="isLoading" nz-icon type="loading" class="ant-cascader-picker-arrow"></i>
+    <span
+      class="ant-cascader-picker-label"
+      [class.ant-cascader-show-search]="!!nzShowSearch"
+      [class.ant-focusd]="!!nzShowSearch && isFocused && !inputValue">
+      <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{ labelRenderText }}</ng-container>
+      <ng-template #labelTemplate>
+        <ng-template [ngTemplateOutlet]="nzLabelRender" [ngTemplateOutletContext]="labelRenderContext"></ng-template>
+      </ng-template>
+    </span>
+  </div>
+  <ng-content></ng-content>
+</div>
+<ng-template
+  cdkConnectedOverlay
+  nzConnectedOverlay
+  cdkConnectedOverlayHasBackdrop
+  [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayPositions]="positions"
+  (backdropClick)="closeMenu()"
+  (detach)="closeMenu()"
+  (positionChange)="onPositionChange($event)"
+  [cdkConnectedOverlayOpen]="menuVisible">
+  <div
+    #menu
+    class="ant-cascader-menus"
+    *ngIf="nzOptions && nzOptions.length || isSearching"
+    [class.ant-cascader-menus-hidden]="!menuVisible"
+    [ngClass]="menuCls"
+    [ngStyle]="nzMenuStyle"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
+    [@slideMotion]="dropDownPosition"
+    (mouseleave)="onTriggerMouseLeave($event)">
+    <ul *ngFor="let options of columns; let i = index;" class="ant-cascader-menu"
+        [ngClass]="menuColumnCls"
+        [style.height]="isSearching && !columns[0].length ? 'auto': ''"
+        [style.width]="dropdownWidthStyle">
+      <li
+        nz-cascader-option
+        *ngFor="let option of options"
+        [nzLabelProperty]="nzLabelProperty"
+        [activated]="isOptionActivated(option, i)"
+        [highlightText]="isSearching ? inputValue : ''"
+        [option]="option"
+        (mouseenter)="onOptionMouseEnter(option, i, $event)"
+        (mouseleave)="onOptionMouseLeave(option, i, $event)"
+        (click)="onOptionClick(option, i, $event)">
+      </li>
+      <li *ngIf="isSearching && !columns[0].length"
+          class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled">
+        <nz-embed-empty [nzComponentName]="'cascader'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
+      </li>
+    </ul>
+  </div>
+</ng-template>
