@@ -39,7 +39,7 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | nzMask            | Whether show mask or not. | `boolean` | `true` |
 | nzMaskClosable    | Whether to close the modal dialog when the mask (area outside the modal) is clicked | `boolean` | `true` |
 | nzMaskStyle       | Style for modal's mask element. | `object` | - |
-| nzOkText          | Text of the OK button. <i>Set to null to show no cancel button (this value is invalid if the nzFooter parameter is used in normal mode)</i> | `string` | OK |
+| nzOkText          | Text of the OK button. <i>Set to null to show no ok button (this value is invalid if the nzFooter parameter is used in normal mode)</i> | `string` | OK |
 | nzOkType          | Button type of the OK button. <i>Consistent with the type of the `nz-button`.</i> | `string` | primary |
 | nzStyle           | Style of floating layer, typically used at least for adjusting the position. | `object` | - |
 | nzTitle           | The modal dialog's title. <i>Leave blank to show no title. The usage of TemplateRef can refer to the case</i> | string / TemplateRef | - |

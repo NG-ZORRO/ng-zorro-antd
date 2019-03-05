@@ -17,7 +17,6 @@ title: Slider
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzDefaultValue]` | 设置初始取值。当 `range` 为 `false` 时，使用 `number`，否则用 `[number, number]` | `number｜number[]` | `0｜[0, 0]` |
 | `[nzDisabled]` | 值为 `true` 时，滑块为禁用状态 | `boolean` | `false` |
 | `[nzDots]` | 是否只能拖拽到刻度上 | `boolean` | `false` |
 | `[nzIncluded]` | `marks` 不为空对象时有效，值为 true 时表示值为包含关系，false 表示并列 | `boolean` | `true` |

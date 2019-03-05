@@ -11,7 +11,8 @@ import { NzTreeComponent } from './nz-tree.component';
     CommonModule,
     NzAddOnModule,
     NzIconModule,
-    NzNoAnimationModule
+    NzNoAnimationModule,
+    NzAddOnModule
   ],
   declarations: [
     NzTreeComponent,

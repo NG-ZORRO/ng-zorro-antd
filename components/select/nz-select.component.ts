@@ -235,7 +235,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
               private cdr: ChangeDetectorRef,
               private focusMonitor: FocusMonitor,
               elementRef: ElementRef,
-              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     renderer.addClass(elementRef.nativeElement, 'ant-select');
   }
 
@@ -278,9 +278,11 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this.nzSelectService.modelChange$.pipe(
       takeUntil(this.destroy$)
     ).subscribe(modelValue => {
-      this.value = modelValue;
-      this.onChange(this.value);
-      this.updateCdkConnectedOverlayPositions();
+      if (this.value !== modelValue) {
+        this.value = modelValue;
+        this.onChange(this.value);
+        this.updateCdkConnectedOverlayPositions();
+      }
     });
     this.nzSelectService.open$.pipe(
       takeUntil(this.destroy$)

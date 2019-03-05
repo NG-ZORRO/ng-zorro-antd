@@ -57,7 +57,7 @@ $ ng add ng-zorro-antd
 $ ng serve --port 0 --open
 ```
 
-<img style="display: block;padding: 30px 30%;height: 260px;" src="https://img.alicdn.com/tfs/TB1MGSRv21TBuNjy0FjXXajyXXa-89-131.svg">
+<img style="display: block;padding: 30px 30%;height: 260px;" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
 
 
 ### 5. 构建和部署
@@ -89,7 +89,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd';
 import { AppComponent } from './app.component';
 
-/** 配置 angular i18n **/	
+/** 配置 angular i18n **/
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);

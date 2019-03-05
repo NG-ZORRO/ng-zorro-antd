@@ -105,7 +105,7 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
   }
 
   constructor(protected cdr: ChangeDetectorRef, private nzMenuDropdownService: NzMenuDropdownService,
-              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
   }
 
   ngOnDestroy(): void {

@@ -295,6 +295,37 @@ describe('nz-select component', () => {
       fixture.detectChanges();
       expect(select.nativeElement.classList).toContain('ant-select-disabled');
     }));
+    /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/3014 **/
+    it('should reset form works', fakeAsync(() => {
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.formGroup.value.select).toBe('jack');
+      testComponent.reset();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.formGroup.value.select).toBe(null);
+      select.nativeElement.click();
+      fixture.detectChanges();
+      overlayContainerElement.querySelector('li').click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.formGroup.value.select).toBe('jack');
+      testComponent.reset();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.formGroup.value.select).toBe(null);
+      select.nativeElement.click();
+      fixture.detectChanges();
+      overlayContainerElement.querySelector('li').click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.formGroup.value.select).toBe('jack');
+    }));
   });
   describe('option change', () => {
     let fixture;
@@ -401,6 +432,7 @@ export class NzTestSelectTagsComponent {
   template: `
     <form [formGroup]="formGroup">
       <nz-select
+        nzShowSearch
         formControlName="select">
         <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
         <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
@@ -420,6 +452,10 @@ export class NzTestSelectFormComponent {
 
   disable(): void {
     this.formGroup.disable();
+  }
+
+  reset(): void {
+    this.formGroup.reset();
   }
 }
 

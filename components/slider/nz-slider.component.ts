@@ -47,13 +47,15 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   @Input() @InputBoolean() nzIncluded: boolean = true;
   @Input() @InputBoolean() nzRange: boolean = false;
   @Input() @InputBoolean() nzVertical: boolean = false;
-  @Input() nzDefaultValue: SliderValue = null;
   @Input() nzMarks: Marks = null;
   @Input() nzMax = 100;
   @Input() nzMin = 0;
   @Input() nzStep = 1;
   @Input() nzTooltipVisible: SliderShowTooltip = 'default';
   @Input() nzTipFormatter: (value: number) => string;
+
+  /** @deprecated 8.0.0, This API is redundant for Angular. */
+  @Input() nzDefaultValue: SliderValue = null;
 
   @Output() readonly nzOnAfterChange = new EventEmitter<SliderValue>();
 
@@ -78,7 +80,6 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.assertValueTypeMatch(this.nzDefaultValue);
     this.handles = this.generateHandles(this.nzRange ? 2 : 1);
     this.sliderDOM = this.slider.nativeElement;
     this.marksArray = this.nzMarks ? this.generateMarkItems(this.nzMarks) : null;

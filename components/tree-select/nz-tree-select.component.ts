@@ -160,7 +160,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
     private cdr: ChangeDetectorRef,
     private nzTreeService: NzTreeSelectService,
     private elementRef: ElementRef,
-    @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
   }
 
@@ -251,7 +251,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
       if (this.selectedNodes.length) {
         const removeNode = this.selectedNodes[ this.selectedNodes.length - 1 ];
         this.removeSelected(removeNode);
-        this.nzTreeService.$statusChange.next({
+        this.nzTreeService.triggerEventChange$.next({
           'eventName': 'removeSelect',
           'node'     : removeNode
         });
@@ -275,7 +275,6 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
     node.isChecked = false;
     if (this.nzCheckable) {
       this.nzTreeService.conduct(node);
-      this.nzTreeService.setCheckedNodeList(node);
     } else {
       this.nzTreeService.setSelectedNodeList(node, this.nzMultiple);
     }
@@ -306,7 +305,6 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
           if (this.nzCheckable && !node.isDisabled && !node.isDisableCheckbox) {
             node.isChecked = !node.isChecked;
             this.nzTreeService.conduct(node);
-            this.nzTreeService.setCheckedNodeList(node);
           }
           if (this.nzCheckable) {
             node.isSelected = false;
@@ -341,7 +339,14 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
 
   updateSelectedNodes(init: boolean = false): void {
     if (init) {
-      const nodes = this.nzNodes.map(item => new NzTreeNode(item, null, this.nzTreeService));
+      let nodes;
+      this.nzTreeService.isMultiple = this.isMultiple;
+      if (!this.nzTreeService.isArrayOfNzTreeNode(this.nzNodes)) {
+        // has not been new NzTreeNode
+        nodes = this.nzNodes.map(item => (new NzTreeNode(item, null, this.nzTreeService)));
+      } else {
+        nodes = this.nzNodes.map(item => (new NzTreeNode({ ...item.origin }, null, this.nzTreeService)));
+      }
       this.nzTreeService.initTree(nodes);
       if (this.nzCheckable) {
         this.nzTreeService.calcCheckedKeys(this.value, nodes);

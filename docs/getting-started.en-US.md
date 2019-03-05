@@ -55,7 +55,7 @@ Run your project now, you can see the img below now.
 $ ng serve --port 0 --open
 ```
 
-<img style="display: block;padding: 30px 30%;height: 260px;" src="https://img.alicdn.com/tfs/TB1MGSRv21TBuNjy0FjXXajyXXa-89-131.svg">
+<img style="display: block;padding: 30px 30%;height: 260px;" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
 
 ### 5. Building & Deployment
 
@@ -86,7 +86,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
 import { AppComponent } from './app.component';
 
-/** config angular i18n **/	
+/** config angular i18n **/
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 registerLocaleData(en);
