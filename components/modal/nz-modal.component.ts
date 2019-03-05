@@ -30,6 +30,7 @@ import {
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { isNotNil } from '../core/util';
 import { InputBoolean } from '../core/util/convert';
 import { isPromise } from '../core/util/is-promise';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -83,7 +84,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   get nzMask(): boolean {
     if (this.nzMaskDetect.dirty) {
       return this.nzMaskDetect.value;
-    } else if (this.globalConfig) {
+    } else if (isNotNil(this.globalConfig) && isNotNil(this.globalConfig.nzMask)) {
       return this.globalConfig.nzMask;
     } else {
       return true;
@@ -99,7 +100,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   get nzMaskClosable(): boolean {
     if (this.nzMaskClosableDetect.dirty) {
       return this.nzMaskClosableDetect.value;
-    } else if (this.globalConfig) {
+    } else if (isNotNil(this.globalConfig) && isNotNil(this.globalConfig.nzMaskClosable)) {
       return this.globalConfig.nzMaskClosable;
     } else {
       return true;
