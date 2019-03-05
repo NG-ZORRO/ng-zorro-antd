@@ -595,18 +595,8 @@ describe('nz-tree', () => {
 
     it('test customized icon', fakeAsync(() => {
       fixture.detectChanges();
-      // default icon
-      expect(treeElement.querySelectorAll('.anticon-caret-down').length).toEqual(1);
-      fixture.detectChanges();
-      // customized string icon
-      fixture.componentInstance.expandedIcon = 'arrow-down';
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      expect(treeElement.querySelectorAll('.anticon-arrow-down').length).toEqual(1);
       // customized template icon
       expect(treeElement.querySelectorAll('.anticon-smile-o').length).toEqual(1);
-
     }));
   });
 });
@@ -905,11 +895,6 @@ export class NzTestTreeOlderComponent implements OnInit {
     <nz-tree
       [nzData]="nodes"
       nzShowIcon="true"
-      [nzExpandedIcon]="expandedIcon">
-    </nz-tree>
-    <nz-tree
-      [nzData]="nodes"
-      nzShowIcon="true"
       [nzExpandedIcon]='expandedIconTpl'>
       <ng-template #expandedIconTpl let-node>
         <i nz-icon [type]="node.origin.icon" class="ant-tree-switcher-icon"></i>
@@ -919,7 +904,6 @@ export class NzTestTreeOlderComponent implements OnInit {
 })
 
 class NzTestTreeCustomizedIconComponent {
-  expandedIcon = undefined;
   nodes = [
     {
       title   : 'parent 1',

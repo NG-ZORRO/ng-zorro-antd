@@ -5,15 +5,19 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <nz-tree
       [nzData]="nodes"
-      nzShowIcon="true"
-      [nzExpandedIcon]="'down'">
+      [nzShowIcon]="true"
+      [nzExpandedIcon]='expandedIcon1'>
+      <ng-template #expandedIcon1 let-node>
+        <i nz-icon [type]="node.origin.icon" class="ant-tree-switcher-icon"></i>
+      </ng-template>
     </nz-tree>
     <nz-tree
       [nzData]="nodes"
-      nzShowIcon="true"
-      [nzExpandedIcon]='expandedIcon'>
-      <ng-template #expandedIcon let-node>
-        <i nz-icon [type]="node.origin.icon" class="ant-tree-switcher-icon"></i>
+      [nzShowLine]="true"
+      [nzExpandedIcon]='expandedIcon2'>
+      <ng-template #expandedIcon2 let-node>
+        <i *ngIf="!node.origin.isLeaf" nz-icon [type]="node.isExpanded ? 'folder-open' : 'folder'" class="ant-tree-switcher-line-icon"></i>
+        <i *ngIf="node.origin.isLeaf" nz-icon type="file" class="ant-tree-switcher-line-icon"></i>
       </ng-template>
     </nz-tree>
   `
