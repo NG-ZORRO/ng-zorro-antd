@@ -15,7 +15,8 @@ import { NzNoAnimationModule } from 'ng-zorro-antd/core';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { CssUnitPipe } from './css-unit.pipe';
+import { NzModalControlService } from './nz-modal-control.service';
+import { NzModalFooterDirective } from './nz-modal-footer.directive';
 import { NzModalControlServiceModule } from './nz-modal-control.service.module';
 import { NzModalComponent } from './nz-modal.component';
 import { NzModalServiceModule } from './nz-modal.service.module';
@@ -31,8 +32,8 @@ import { NzModalServiceModule } from './nz-modal.service.module';
     NzModalServiceModule,
     NzModalControlServiceModule
   ],
-  exports: [NzModalComponent],
-  declarations: [NzModalComponent, CssUnitPipe],
+  exports: [NzModalComponent, NzModalFooterDirective],
+  declarations: [NzModalComponent, NzModalFooterDirective, CssUnitPipe],
   entryComponents: [NzModalComponent]
 })
 export class NzModalModule {}

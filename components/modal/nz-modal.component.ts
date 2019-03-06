@@ -18,6 +18,7 @@ import {
   Component,
   ComponentFactoryResolver,
   ComponentRef,
+  ContentChild,
   ElementRef,
   EventEmitter,
   Inject,
@@ -43,6 +44,7 @@ import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzModalConfig, NZ_MODAL_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
+import { NzModalFooterDirective } from './nz-modal-footer.directive';
 import { NzModalRef } from './nz-modal-ref.class';
 import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './nz-modal.type';
 
@@ -97,6 +99,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   @Output() readonly nzAfterClose = new EventEmitter<R>(); // Trigger when modal leave-animation over
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
+  @ContentChild(NzModalFooterDirective, { static: true }) nzModalFooterDirective: NzModalFooterDirective;
   @ViewChild('modalContainer', { static: true }) modalContainer: ElementRef;
   @ViewChild('bodyContainer', { static: false, read: ViewContainerRef }) bodyContainer: ViewContainerRef;
   @ViewChild('autoFocusButtonOk', { static: false, read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
