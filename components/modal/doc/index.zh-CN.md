@@ -120,6 +120,29 @@ constructor(modal: NzModalService) {
 | triggerOk()               | 手动触发nzOnOk |
 | triggerCancel()           | 手动触发nzOnCancel |
 
+
+### 全局配置
+
+全局配置（NZ_MODAL_CONFIG）
+如果要进行全局默认配置，你可以设置提供商 `NZ_MODAL_CONFIG` 的值来实现。
+（如：在你的模块的`providers`中加入 `{ provide: NZ_MODAL_CONFIG, useValue: { nzMask: false }}`，`NZ_MODAL_CONFIG` 可以从 `ng-zorro-antd` 中导入）
+
+全局配置，组件默认值，组件层级配置之间的权重如下：
+
+组件层级配置 > 全局配置 > 组件默认值
+
+当前支持的全局配置
+```ts
+{
+    provide: NZ_MODAL_CONFIG,
+    useValue: {
+        nzMask?: boolean; // 是否展示遮罩
+        nzMaskClosable?: boolean; // 点击蒙层是否允许关闭
+    }
+}
+```
+注：全局配置并无默认值，因为nzMask和nzMaskClosable默认值存在于组件中
+
 #### ModalButtonOptions（用于自定义底部按钮）
 
 可将此类型数组传入 `nzFooter`，用于自定义底部按钮。

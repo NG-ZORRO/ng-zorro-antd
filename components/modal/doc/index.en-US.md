@@ -120,6 +120,30 @@ The dialog created by the service method `NzModalService.xxx()` will return a `N
 | triggerOk()               | Manually trigger nzOnOk |
 | triggerCancel()           | Manually trigger nzOnCancel |
 
+
+###  Global Configuration
+
+Global Configuration（NZ_MODAL_CONFIG）
+
+if your want to set global configuration, you can use the value of provide `NZ_MODAL_CONFIG` to accomplish it.
+(eg, add `{ provide: NZ_MODAL_CONFIG, useValue: { nzMask: false }}` to `providers` of your module, you can import `NZ_MODAL_CONFIG` from `ng-zorro-antd`)
+
+The weight of global configuration, component default value, component input value:
+
+component input value > global configuration > component default value
+
+supported global configuration item
+```ts
+{
+    provide: NZ_MODAL_CONFIG,
+    useValue: {
+        nzMask?: boolean; // Whether show mask or not.
+        nzMaskClosable?: boolean; // Whether to close the modal dialog when the mask (area outside the modal) is clicked
+    }
+}
+```
+> Note: global configuration does not have default value which component has it.
+
 #### ModalButtonOptions (used to customize the bottom button)
 
 An array of `ModalButtonOptions` type can be passed to `nzFooter` for custom bottom buttons.
