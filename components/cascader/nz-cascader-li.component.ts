@@ -9,7 +9,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { CascaderOption } from './types';
+import { CascaderOption } from './nz-cascader-definitions';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
