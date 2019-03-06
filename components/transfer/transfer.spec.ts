@@ -250,7 +250,7 @@ describe('transfer', () => {
       fixture.detectChanges();
       expect(pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList).not.toContain('ant-checkbox-checked');
       pageObject.checkItem('right', 1);
-      tick();
+      tick(50);
       fixture.detectChanges();
       expect(pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList).toContain('ant-checkbox-checked');
     }));
@@ -293,7 +293,7 @@ describe('transfer', () => {
       if (!Array.isArray(index)) {
         index = [ index ];
       }
-      const items = (direction === 'left' ? this.leftList : this.rightList).querySelectorAll('.ant-transfer-list-content-item');
+      const items = (direction === 'left' ? this.leftList : this.rightList).querySelectorAll('.ant-transfer-list-content-item label');
       for (const idx of index) {
         (items[ idx ] as HTMLElement).click();
         fixture.detectChanges();
