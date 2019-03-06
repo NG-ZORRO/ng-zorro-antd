@@ -18,7 +18,6 @@ import {
   EventEmitter,
   Inject,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   Optional,
@@ -110,7 +109,6 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
 
   constructor(@Optional() @Inject(DOCUMENT) private ngDocument: any, // tslint:disable-line:no-any
               private changeDetectorRef: ChangeDetectorRef,
-              private ngZone: NgZone,
               private overlay: Overlay,
               private viewContainerRef: ViewContainerRef) {
   }

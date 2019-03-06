@@ -26,12 +26,14 @@ registerLocaleData(en);
 <nz-calendar
   [nzDateCell]="dateCellTpl"
   [(ngModel)]="selectedDate"
-  [(nzMode)]="mode">
+  [(nzMode)]="mode"
+  (nzPanelChange)="panelChange($event)"
+  (nzSelectChange)="selectChange($event)">
   <!-- Another method for cell definition -->
   <div *nzDateCell>Foo</div>
 </nz-calendar>
 <!-- Passing TemplateRef -->
-<ng-template #dateCellTpl>Bar</ng-template>
+<ng-template #dateCellTpl let-date><span>{{ date | date:'d'}}</span></ng-template>
 ```
 
 ### nz-calendar
@@ -46,3 +48,4 @@ registerLocaleData(en);
 | `[nzDateFullCell]` | (Contentable) Customize the display of the date cell, the template content will override the cell | `TemplateRef<Date>` | - |
 | `[nzMonthCell]` | (Contentable) Customize the display of the month cell, the template content will be appended to the cell | `TemplateRef<Date>` | - |
 | `[nzMonthFullCell]` | (Contentable) Customize the display of the month cell, the template content will override the cell | `TemplateRef<Date>` | - |
+| `(nzPanelChange)` | Callback for when panel changes | `EventEmitter<{ date: Date, mode: 'month'｜'year' }>` | - |

@@ -5,7 +5,6 @@ import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzTableComponent } from './nz-table.component';
 import { NzTableModule } from './nz-table.module';
-import { NzTheadComponent } from './nz-thead.component';
 
 describe('nz-thead', () => {
   beforeEach(fakeAsync(() => {
@@ -19,13 +18,11 @@ describe('nz-thead', () => {
   describe('nz-thead in nz-table', () => {
     let fixture;
     let testComponent;
-    let thead;
     let table;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTheadTestNzTableComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
-      thead = fixture.debugElement.query(By.directive(NzTheadComponent));
       table = fixture.debugElement.query(By.directive(NzTableComponent));
     });
     it('should sort change', () => {

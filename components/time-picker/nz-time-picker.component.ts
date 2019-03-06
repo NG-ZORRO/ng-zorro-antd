@@ -146,6 +146,10 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
   }
 
+  onClickClearBtn(): void {
+    this.value = null;
+  }
+
   private setClassMap(): void {
     this.updateCls.updateHostClass(this.element.nativeElement, {
       [ `ant-time-picker` ]               : true,

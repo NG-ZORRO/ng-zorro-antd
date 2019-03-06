@@ -1,6 +1,5 @@
 /** get some code from https://github.com/angular/material2 */
 
-import { DOCUMENT } from '@angular/common';
 import {
   AfterContentChecked, AfterContentInit,
   AfterViewInit,
@@ -10,11 +9,9 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   OnChanges, OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -168,9 +165,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
     private renderer: Renderer2,
     private nzUpdateHostClassService: NzUpdateHostClassService,
     private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef,
-    // tslint:disable-next-line:no-any
-    @Optional() @Inject(DOCUMENT) private document: any) {
+    private cdr: ChangeDetectorRef) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {

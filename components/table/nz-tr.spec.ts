@@ -16,12 +16,10 @@ describe('nz-tr', () => {
   }));
   describe('nz-tr in table', () => {
     let fixture;
-    let testComponent;
     let tr;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTrTestTableComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       tr = fixture.debugElement.query(By.directive(NzTrDirective));
     });
     it('should not add class', () => {

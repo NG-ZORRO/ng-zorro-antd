@@ -14,6 +14,6 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 })
 export class NzFooterComponent {
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'ant-layout-footer');
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-layout-footer');
   }
 }

@@ -18,7 +18,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { reverseChildNodes } from '../core/dom/reverse';
+import { reverseChildNodes } from '../core/util/dom';
 import { NzTimelineItemComponent } from './nz-timeline-item.component';
 
 export type NzTimelineMode = 'left' | 'alternate' | 'right';

@@ -11,6 +11,7 @@
   [placeholder]="nzPlaceHolder"
   [size]="nzSize"
   [style]="nzStyle"
+  [noAnimation]="noAnimation?.nzNoAnimation"
   (openChange)="onOpenChange($event)"
 >
   <div *ngIf="realOpenState">
@@ -20,6 +21,7 @@
           <div class="ant-calendar-month-header-wrap">
             <calendar-header
               [disabledMonth]="nzDisabledDate"
+              [disabledYear]="nzDisabledDate"
               [panelMode]="panelMode"
               (panelModeChange)="onPanelModeChange($event)"
               [value]="nzValue"

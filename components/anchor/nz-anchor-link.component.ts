@@ -4,7 +4,6 @@ import {
   Component,
   ContentChild,
   ElementRef,
-  HostBinding,
   Input,
   OnDestroy,
   OnInit, Renderer2,

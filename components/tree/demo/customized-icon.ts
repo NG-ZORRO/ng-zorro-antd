@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-tree-customized-icon',
   template: `
     <nz-tree
       [nzData]="nodes"
-      nzShowIcon="true">
+      nzShowIcon>
     </nz-tree>
   `
 })

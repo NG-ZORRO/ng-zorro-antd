@@ -15,6 +15,9 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true
   }
 }

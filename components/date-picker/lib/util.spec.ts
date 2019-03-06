@@ -9,8 +9,8 @@ describe('util.ts coverage supplements', () => {
     const disabledTime = () => {
       return {
         nzDisabledHours: () => [ 1 ],
-        nzDisabledMinutes: (hour) => [ 2 ],
-        nzDisabledSeconds: (hour, minute) => [ 3 ]
+        nzDisabledMinutes: () => [ 2 ],
+        nzDisabledSeconds: () => [ 3 ]
       };
     };
     expect(isAllowedDate(new CandyDate('2000-11-11 01:11:11'), null, disabledTime)).toBeFalsy();

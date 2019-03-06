@@ -5,16 +5,13 @@ import { Component } from '@angular/core';
   template: `
     <nz-collapse [nzBordered]="false">
       <nz-collapse-panel #p *ngFor="let panel of panels; let isFirst = first" [nzHeader]="panel.name" [nzActive]="panel.active"
-        [ngStyle]="panel.customStyle" [nzExpandedIcon]="!isFirst && (panel.icon || expandedIcon)" [nzExtra]="isFirst && extraTpl">
+        [ngStyle]="panel.customStyle" [nzExpandedIcon]="!isFirst && (panel.icon || expandedIcon)">
         <p>{{panel.name}} content</p>
         <ng-template #expandedIcon let-active>
           {{ active }}
           <i nz-icon type="caret-right" class="ant-collapse-arrow" [nzRotate]="p.nzActive ? 90 : -90"></i>
         </ng-template>
       </nz-collapse-panel>
-      <ng-template #extraTpl>
-        <i nz-icon [nzType]="'smile'"></i>
-      </ng-template>
     </nz-collapse>
   `,
   styles  : []

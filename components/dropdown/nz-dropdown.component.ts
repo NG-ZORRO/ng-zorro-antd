@@ -5,12 +5,11 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
-  EventEmitter,
+  EventEmitter, Host,
   Input,
   OnChanges,
-  OnDestroy,
+  OnDestroy, Optional,
   Output,
-  Renderer2,
   SimpleChanges,
   ViewChild,
   ViewEncapsulation
@@ -18,6 +17,7 @@ import {
 import { combineLatest, merge, EMPTY, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, mapTo, takeUntil } from 'rxjs/operators';
 import { slideMotion } from '../core/animation/slide';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { DEFAULT_DROPDOWN_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position';
 import { InputBoolean } from '../core/util/convert';
 import { NzMenuDirective } from '../menu/nz-menu.directive';
@@ -57,7 +57,6 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
   @ContentChild(NzDropDownDirective) nzDropDownDirective: NzDropDownDirective;
   @ContentChild(NzMenuDirective) nzMenuDirective: NzMenuDirective;
   @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
-  @Input() hasFilterButton = false;
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [ key: string ]: string } = {};
@@ -65,6 +64,7 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzVisible = false;
+  @Input() @InputBoolean() nzTableFilter = false;
   @Output() readonly nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
 
   setVisibleStateWhen(visible: boolean, trigger: 'click' | 'hover' | 'all' = 'all'): void {
@@ -104,7 +104,8 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
     }
   }
 
-  constructor(private renderer: Renderer2, protected cdr: ChangeDetectorRef, private nzMenuDropdownService: NzMenuDropdownService) {
+  constructor(protected cdr: ChangeDetectorRef, private nzMenuDropdownService: NzMenuDropdownService,
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
   }
 
   ngOnDestroy(): void {

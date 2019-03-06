@@ -143,12 +143,10 @@ describe('nz-form-control', () => {
   });
   describe('reactive init status', () => {
     let fixture;
-    let testComponent;
     let formControl;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestReactiveFormControlInitStatusComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       formControl = fixture.debugElement.query(By.directive(NzFormControlComponent));
     });
     it('should init status correct', fakeAsync(() => {

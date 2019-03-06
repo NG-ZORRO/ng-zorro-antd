@@ -13,7 +13,9 @@ import { ControlValueAccessor } from '@angular/forms';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { InputBoolean } from '../core/util/convert';
+import { DateHelperService } from '../i18n/date-helper.service';
 import { NzDatePickerI18nInterface } from '../i18n/nz-i18n.interface';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CandyDate } from './lib/candy-date';
@@ -59,8 +61,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   protected destroyed$: Subject<void> = new Subject();
   protected isCustomPlaceHolder: boolean = false;
 
-  constructor(protected i18n: NzI18nService, protected cdr: ChangeDetectorRef) {
-  }
+  constructor(protected i18n: NzI18nService, protected cdr: ChangeDetectorRef, protected dateHelper: DateHelperService, public noAnimation?: NzNoAnimationDirective) { }
 
   ngOnInit(): void {
     // Subscribe the every locale change if the nzLocale is not handled by user
@@ -169,10 +170,6 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     if (!this.isCustomPlaceHolder && this.nzLocale) {
       this.nzPlaceHolder = this.isRange ? this.nzLocale.lang.rangePlaceholder : this.nzLocale.lang.placeholder;
     }
-  }
-
-  private formatDate(date: CandyDate): string {
-    return date ? this.i18n.formatDateCompatible(date.nativeDate, this.nzFormat) : '';
   }
 
   // Safe way of setting value with default

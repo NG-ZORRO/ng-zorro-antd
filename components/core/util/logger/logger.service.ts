@@ -1,4 +1,3 @@
-/* tslint:disable:no-any */
 import { Inject, Injectable, InjectionToken, Optional, Provider, SkipSelf } from '@angular/core';
 
 export const NZ_LOGGER_STATE = new InjectionToken<boolean>('nz-logger-state'); // Whether print the log
@@ -7,39 +6,38 @@ export const NZ_LOGGER_STATE = new InjectionToken<boolean>('nz-logger-state'); /
 export class LoggerService {
   constructor(@Inject(NZ_LOGGER_STATE) private _loggerState: boolean) {}
 
+  // tslint:disable-next-line:no-any
   log(...args: any[]): void {
     if (this._loggerState) {
-      // console.log(...args);
-      console.log.apply(console, arguments);
+      console.log(...args);
     }
   }
 
+  // tslint:disable-next-line:no-any
   warn(...args: any[]): void {
     if (this._loggerState) {
-      // console.warn(...args);
-      console.warn.apply(console, arguments);
+      console.warn(...args);
     }
   }
 
+  // tslint:disable-next-line:no-any
   error(...args: any[]): void {
     if (this._loggerState) {
-      // console.error(...args);
-      console.error.apply(console, arguments);
+      console.error(...args);
     }
   }
 
+  // tslint:disable-next-line:no-any
   info(...args: any[]): void {
     if (this._loggerState) {
-      // console.log(...args);
-      console.log.apply(console, arguments);
+      console.log(...args);
     }
   }
 
+  // tslint:disable-next-line:no-any
   debug(...args: any[]): void {
     if (this._loggerState) {
-      // console.log('[NG-ZORRO-DEBUG]', ...args);
-      const arrs = Array.prototype.slice.call(arguments);
-      console.log.apply(console, ['[NG-ZORRO-DEBUG]'].concat(arrs));
+      console.log('[NG-ZORRO-DEBUG]', ...args);
     }
   }
 }

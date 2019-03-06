@@ -4,6 +4,7 @@
     <li class="ant-mention-dropdown-item"
         *ngFor="let suggestion of filteredSuggestions; let i = index"
         [class.focus]="i === activeIndex"
+        (mousedown)="$event.preventDefault()"
         (click)="selectSuggestion(suggestion)">
       <ng-container *ngIf="suggestionTemplate else defaultSuggestion">
         <ng-container *ngTemplateOutlet="suggestionTemplate; context: {$implicit: suggestion}"></ng-container>

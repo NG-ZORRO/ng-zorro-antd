@@ -17,7 +17,6 @@ title: Slider
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzDefaultValue]` | 设置初始取值。当 `range` 为 `false` 时，使用 `number`，否则用 `[number, number]` | `number｜number[]` | `0｜[0, 0]` |
 | `[nzDisabled]` | 值为 `true` 时，滑块为禁用状态 | `boolean` | `false` |
 | `[nzDots]` | 是否只能拖拽到刻度上 | `boolean` | `false` |
 | `[nzIncluded]` | `marks` 不为空对象时有效，值为 true 时表示值为包含关系，false 表示并列 | `boolean` | `true` |
@@ -29,5 +28,6 @@ title: Slider
 | `[nzTipFormatter]` | Slider 会把当前值传给 `nzTipFormatter`，并在 Tooltip 中显示 `nzTipFormatter` 的返回值，若为 null，则隐藏 Tooltip。 | `(value: number) => string` | - |
 | `[ngModel]` | 设置当前取值。当 `range` 为 `false` 时，使用 `number`，否则用 `[number, number]` | `number｜number[]` | - |
 | `[nzVertical]` | 值为 `true` 时，Slider 为垂直方向 | `boolean` | `false` |
+| `[nzTooltipVisible]` | 值为 `always` 时总是显示，值为 `never` 时在任何情况下都不显示 | `'default'｜'always'｜'never'` | `default` |
 | `(nzOnAfterChange)` | 与 `onmouseup` 触发时机一致，把当前值作为参数传入。 | `EventEmitter<number[] ｜ number>` | - |
 | `(ngModelChange)` | 当 Slider 的值发生改变时，会触发 ngModelChange 事件，并把改变后的值作为参数传入。 | `EventEmitter<number[] ｜ number>>` | - |

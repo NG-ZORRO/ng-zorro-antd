@@ -6,7 +6,6 @@ import {
   Input,
   OnChanges,
   Output,
-  Renderer2,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
@@ -19,6 +18,7 @@ import { InputBoolean } from '../core/util/convert';
   // tslint:disable-next-line:component-selector
   selector           : 'td:not(.nz-disable-td)',
   changeDetection    : ChangeDetectionStrategy.OnPush,
+  providers          : [ NzUpdateHostClassService ],
   preserveWhitespaces: false,
   encapsulation      : ViewEncapsulation.None,
   templateUrl        : './nz-td.component.html',
@@ -57,7 +57,7 @@ export class NzTdComponent implements OnChanges {
     });
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
+  constructor(private elementRef: ElementRef, private nzUpdateHostClassService: NzUpdateHostClassService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -5,30 +5,30 @@
   "projects": {
     "ng-zorro-antd-doc": {
       "root": "",
-      "sourceRoot": "site/src",
+      "sourceRoot": "site/doc",
       "projectType": "application",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist",
-            "index": "./site/src/index.html",
-            "main": "./site/src/main.ts",
-            "tsConfig": "./site/src/tsconfig.app.json",
-            "polyfills": "./site/src/polyfills.ts",
+            "index": "./site/doc/index.html",
+            "main": "./site/doc/main.ts",
+            "tsConfig": "./site/doc/tsconfig.app.json",
+            "polyfills": "./site/doc/polyfills.ts",
             "assets": [
-              "site/src/assets",
-              "site/src/favicon.ico",
-              "site/src/404.html",
+              "site/doc/assets",
+              "site/doc/favicon.ico",
+              "site/doc/404.html",
               {
                 "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
                 "output": "/assets/"
               },
-              "site/src/manifest.json"
+              "site/doc/manifest.json"
             ],
             "styles": [
-              "site/src/styles.less"
+              "site/doc/styles.less"
             ],
             "scripts": [
               "node_modules/hammerjs/hammer.min.js"
@@ -39,8 +39,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "./site/src/environments/environment.ts",
-                  "with": "./site/src/environments/environment.prod.ts"
+                  "replace": "./site/doc/environments/environment.ts",
+                  "with": "./site/doc/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -71,7 +71,77 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "site/src/tsconfig.app.json"
+              "site/doc/tsconfig.app.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "ng-zorro-antd-iframe": {
+      "root": "",
+      "sourceRoot": "site/iframe",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/iframe",
+            "index": "./site/iframe/index.html",
+            "main": "./site/iframe/main.ts",
+            "tsConfig": "./site/iframe/tsconfig.app.json",
+            "polyfills": "./site/iframe/polyfills.ts",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
+            ],
+            "styles": [
+              "components/ng-zorro-antd.less"
+            ],
+            "es5BrowserSupport": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "./site/iframe/environments/environment.ts",
+                  "with": "./site/iframe/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "serviceWorker": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ng-zorro-antd-iframe:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ng-zorro-antd-iframe:build:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "site/iframe/tsconfig.app.json"
             ],
             "exclude": [
               "**/node_modules/**"

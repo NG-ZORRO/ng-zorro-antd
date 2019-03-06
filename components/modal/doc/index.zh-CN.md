@@ -40,7 +40,7 @@ title: Modal
 | nzMask            | 是否展示遮罩 | `boolean` | `true` |
 | nzMaskClosable    | 点击蒙层是否允许关闭 | `boolean` | `true` |
 | nzMaskStyle       | 遮罩样式 | `object` | - |
-| nzOkText          | 确认按钮文字。<i>设为 null 表示不显示取消按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | `string` | 确定 |
+| nzOkText          | 确认按钮文字。<i>设为 null 表示不显示确认按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | `string` | 确定 |
 | nzOkType          | 确认按钮类型。<i>与button的type类型值一致</i> | `string` | primary |
 | nzStyle           | 可用于设置浮层的样式，调整浮层位置等 | `object` | - |
 | nzTitle           | 标题。<i>留空表示不展示标题。TemplateRef的使用方法可参考案例</i> | string<br>TemplateRef | - |

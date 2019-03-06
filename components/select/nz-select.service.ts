@@ -63,8 +63,7 @@ export class NzSelectService {
         modelValue = selectedList;
       }
       return modelValue;
-    }),
-    distinctUntilChanged()
+    })
   );
   searchValue$ = this.searchValueRaw$.pipe(
     distinctUntilChanged(),

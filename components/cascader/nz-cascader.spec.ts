@@ -126,7 +126,6 @@ describe('cascader', () => {
     it('should showArrow work', () => {
       testComponent.nzShowArrow = true;
       fixture.detectChanges();
-      const arrow: HTMLElement = cascader.nativeElement.querySelector('.ant-cascader-picker-arrow');
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-arrow')).toBeDefined();
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-arrow').classList).toContain('anticon-down');
       testComponent.nzShowArrow = false;
@@ -135,7 +134,6 @@ describe('cascader', () => {
     });
     it('should allowClear work', () => {
       fixture.detectChanges();
-      const input: HTMLElement = cascader.nativeElement.querySelector('.ant-cascader-input');
       testComponent.values = [ 'zhejiang', 'hangzhou', 'xihu' ];
       fixture.detectChanges();
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-clear')).toBeDefined();
@@ -1370,7 +1368,7 @@ describe('cascader', () => {
     }));
     it('should support custom sorter', fakeAsync(() => {
       testComponent.nzShowSearch = {
-        sorter(a: CascaderOption[], b: CascaderOption[], inputValue: string): number {
+        sorter(a: CascaderOption[], b: CascaderOption[], _inputValue: string): number {
           const l1 = a[ 0 ].label;
           const l2 = b[ 0 ].label; // all reversed, just to be sure it works
           return ('' + l1).localeCompare(l2);
@@ -1867,7 +1865,7 @@ export class NzDemoCascaderDefaultComponent {
   onVisibleChange = jasmine.createSpy('open change');
   onValueChanges = jasmine.createSpy('value change');
 
-  fakeChangeOn = (node: any, index: number): boolean => {
+  fakeChangeOn = (node: any, _index: number): boolean => {
     return node.value === 'zhejiang';
   }
 

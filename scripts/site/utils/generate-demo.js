@@ -201,7 +201,7 @@ function generateExample(result) {
 }
 
 function retrieveEntryComponents(plainCode) {
-  var matches = (plainCode + '').match(/^\/\*\s*?entryComponents:\s*([^\n]+?)\*\//) || [];
+  const matches = (plainCode + '').match(/^\/\*\s*?entryComponents:\s*([^\n]+?)\*\//) || [];
   if (matches[1]) {
     return matches[1].split(',').map(className => className.trim()).filter((value, index, self) => value && self.indexOf(value) === index);
   }

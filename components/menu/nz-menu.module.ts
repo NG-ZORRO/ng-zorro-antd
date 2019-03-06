@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { NzNoAnimationModule } from '../core/no-animation/nz-no-animation.module';
+
 import { NzButtonModule } from '../button/nz-button.module';
 import { NzIconModule } from '../icon/nz-icon.module';
 import { NzMenuDividerDirective } from '../menu/nz-menu-divider.directive';
@@ -12,7 +14,7 @@ import { NzMenuDirective } from '../menu/nz-menu.directive';
 import { NzSubMenuComponent } from '../menu/nz-submenu.component';
 
 @NgModule({
-  imports     : [ CommonModule, FormsModule, NzButtonModule, OverlayModule, NzIconModule ],
+  imports     : [ CommonModule, FormsModule, NzButtonModule, OverlayModule, NzIconModule, NzNoAnimationModule ],
   declarations: [ NzMenuDirective, NzMenuItemDirective, NzSubMenuComponent, NzMenuDividerDirective, NzMenuGroupComponent ],
   exports     : [ NzMenuDirective, NzMenuItemDirective, NzSubMenuComponent, NzMenuDividerDirective, NzMenuGroupComponent ]
 })

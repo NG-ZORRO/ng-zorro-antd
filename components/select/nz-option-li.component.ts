@@ -23,7 +23,8 @@ import { NzSelectService } from './nz-select.service';
     '[class.ant-select-dropdown-menu-item-active]'  : 'active && !nzOption.nzDisabled',
     '[attr.unselectable]'                           : '"unselectable"',
     '[style.user-select]'                           : '"none"',
-    '(click)'                                       : 'clickOption()'
+    '(click)'                                       : 'clickOption()',
+    '(mousedown)'                                   : '$event.preventDefault()'
   }
 })
 export class NzOptionLiComponent implements OnInit, OnDestroy {

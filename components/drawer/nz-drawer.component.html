@@ -1,6 +1,7 @@
 <ng-template #drawerTemplate>
   <div
     class="ant-drawer"
+    [nzNoAnimation]="nzNoAnimation"
     [class.ant-drawer-open]="isOpen"
     [class.ant-drawer-top]="nzPlacement === 'top'"
     [class.ant-drawer-bottom]="nzPlacement === 'bottom'"

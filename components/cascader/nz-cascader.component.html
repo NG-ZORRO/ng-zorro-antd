@@ -17,8 +17,8 @@
       [disabled]="nzDisabled"
       [nzSize]="nzSize"
       [(ngModel)]="inputValue"
-      (blur)="handleInputBlur($event)"
-      (focus)="handleInputFocus($event)"
+      (blur)="handleInputBlur()"
+      (focus)="handleInputFocus()"
       (change)="$event.stopPropagation()">
     <i *ngIf="clearIconVisible"
        nz-icon
@@ -47,6 +47,7 @@
 </div>
 <ng-template
   cdkConnectedOverlay
+  nzConnectedOverlay
   cdkConnectedOverlayHasBackdrop
   [cdkConnectedOverlayOrigin]="origin"
   [cdkConnectedOverlayPositions]="positions"
@@ -61,6 +62,7 @@
     [class.ant-cascader-menus-hidden]="!menuVisible"
     [ngClass]="menuCls"
     [ngStyle]="nzMenuStyle"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
     [@slideMotion]="dropDownPosition"
     (mouseleave)="onTriggerMouseLeave($event)">
     <ul *ngFor="let options of columns; let i = index;" class="ant-cascader-menu"

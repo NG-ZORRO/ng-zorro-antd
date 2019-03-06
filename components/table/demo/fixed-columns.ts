@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-fixed-columns',
   template: `
-    <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" [nzScroll]="{x:'1100px'}">
+    <nz-table #columnTable [nzData]="listOfData" [nzScroll]="{x:'1100px'}">
       <thead>
         <tr>
           <th nzWidth="100px" nzLeft="0px">Full Name</th>
@@ -20,7 +20,7 @@ import { Component } from '@angular/core';
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of nzTable.data">
+        <tr *ngFor="let data of columnTable.data">
           <td nzLeft="0px">{{data.name}}</td>
           <td nzLeft="100px">{{data.age}}</td>
           <td>{{data.address}}</td>
@@ -36,22 +36,21 @@ import { Component } from '@angular/core';
           </td>
         </tr>
       </tbody>
-    </nz-table>`,
-  styles  : []
+    </nz-table>`
 })
 export class NzDemoTableFixedColumnsComponent {
-  dataSet = [
+  listOfData = [
     {
       key    : '1',
       name   : 'John Brown',
       age    : 32,
-      address: 'New York Park',
+      address: 'New York'
     },
     {
       key    : '2',
       name   : 'Jim Green',
       age    : 40,
-      address: 'London Park',
+      address: 'London'
     }
   ];
 }

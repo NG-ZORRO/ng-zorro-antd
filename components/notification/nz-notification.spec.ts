@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, flush, flushMicrotasks, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
@@ -175,6 +175,24 @@ describe('NzNotification', () => {
     expect(overlayContainerElement.textContent).toContain('SHOULD NOT CHANGE');
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-success')).not.toBeNull();
   });
+
+  it('should receive `true` when it is closed by user', fakeAsync(() => {
+    let onCloseFlag = false;
+
+    messageService.create(null, null, 'close').onClose.subscribe(user => {
+      if (user) {
+        onCloseFlag = true;
+      }
+    });
+
+    demoAppFixture.detectChanges();
+    tick(1000);
+    const closeEl = overlayContainerElement.querySelector('.ant-notification-notice-close');
+    dispatchMouseEvent(closeEl, 'click');
+    tick(1000);
+    expect(onCloseFlag).toBeTruthy();
+    tick(50000);
+  }));
 });
 
 @Component({

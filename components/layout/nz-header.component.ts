@@ -14,6 +14,6 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 })
 export class NzHeaderComponent {
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'ant-layout-header');
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-layout-header');
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd';
+import { NzFormatEmitEvent, NzTreeNodeOptions, NzTreeComponent } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-tree-basic',
@@ -7,22 +7,21 @@ import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd'
     <nz-tree
       #treeCom
       [nzData]="nodes"
-      nzCheckable="true"
-      nzMultiple="true"
+      nzCheckable
       [nzCheckedKeys]="defaultCheckedKeys"
       [nzExpandedKeys]="defaultExpandedKeys"
       [nzSelectedKeys]="defaultSelectedKeys"
       (nzClick)="nzClick($event)"
-      (nzSelectedKeysChange)="nzSelect($event)"
-      (nzCheckBoxChange)="nzCheck($event)">
+      (nzCheckBoxChange)="nzCheck($event)"
+      (nzExpandChange)="nzCheck($event)">
     </nz-tree>
   `
 })
 
 export class NzDemoTreeBasicComponent implements OnInit {
-  @ViewChild('treeCom') treeCom;
-  defaultCheckedKeys = [ '1001', '1002' ];
-  defaultSelectedKeys = [ '10011' ];
+  @ViewChild('treeCom') treeCom: NzTreeComponent;
+  defaultCheckedKeys = [ '10020' ];
+  defaultSelectedKeys = [ '10010' ];
   defaultExpandedKeys = [ '100', '1001' ];
 
   nodes: NzTreeNodeOptions[] = [ {
@@ -34,23 +33,24 @@ export class NzDemoTreeBasicComponent implements OnInit {
       disabled: true,
       children: [
         { title: 'leaf 1-0-0', key: '10010', disableCheckbox: true, isLeaf: true },
-        { title: 'leaf 1-0-1', key: '10011', isLeaf: true, checked: true }
+        { title: 'leaf 1-0-1', key: '10011', isLeaf: true }
       ]
     }, {
       title   : 'parent 1-1',
       key     : '1002',
       children: [
-        { title: 'leaf 1-1-0', key: '10020', isLeaf: true }
+        { title: 'leaf 1-1-0', key: '10020', isLeaf: true },
+        { title: 'leaf 1-1-1', key: '10021', isLeaf: true }
       ]
     } ]
   } ];
 
   nzClick(event: NzFormatEmitEvent): void {
-    console.log(event, event.selectedKeys, event.keys, event.nodes, this.treeCom.getSelectedNodeList());
+    console.log(event);
   }
 
   nzCheck(event: NzFormatEmitEvent): void {
-    console.log(event, event.checkedKeys, event.keys, event.nodes);
+    console.log(event);
   }
 
   // nzSelectedKeys change
@@ -60,7 +60,8 @@ export class NzDemoTreeBasicComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => {
-      console.log(this.treeCom.getTreeNodes(), this.treeCom.getCheckedNodeList(), this.treeCom.getSelectedNodeList());
-    }, 500);
+      console.log(this.treeCom.getTreeNodeByKey('10011'), 'get nzTreeNode with key');
+      console.log(this.treeCom.getTreeNodes(), this.treeCom.getCheckedNodeList(), this.treeCom.getSelectedNodeList(), this.treeCom.getExpandedNodeList());
+    }, 1500);
   }
 }

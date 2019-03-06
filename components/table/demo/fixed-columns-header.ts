@@ -3,11 +3,11 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-fixed-columns-header',
   template: `
-    <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" [nzScroll]="{ x:'1100px',y: '240px' }">
+    <nz-table #fixedTable [nzData]="listOfData" [nzScroll]="{ x:'1150px',y: '240px' }">
       <thead>
         <tr>
-          <th nzWidth="100px" nzLeft="0px">Full Name</th>
-          <th nzWidth="100px" nzLeft="100px">Age</th>
+          <th nzWidth="150px" nzLeft="0px">Full Name</th>
+          <th nzWidth="100px" nzLeft="150px">Age</th>
           <th nzWidth="100px">Column 1</th>
           <th nzWidth="100px">Column 2</th>
           <th nzWidth="100px">Column 3</th>
@@ -20,9 +20,9 @@ import { Component, OnInit } from '@angular/core';
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of nzTable.data">
+        <tr *ngFor="let data of fixedTable.data">
           <td nzLeft="0px">{{data.name}}</td>
-          <td nzLeft="100px">{{data.age}}</td>
+          <td nzLeft="150px">{{data.age}}</td>
           <td>{{data.address}}</td>
           <td>{{data.address}}</td>
           <td>{{data.address}}</td>
@@ -36,18 +36,17 @@ import { Component, OnInit } from '@angular/core';
           </td>
         </tr>
       </tbody>
-    </nz-table>`,
-  styles  : []
+    </nz-table>`
 })
 export class NzDemoTableFixedColumnsHeaderComponent implements OnInit {
-  dataSet = [];
+  listOfData = [];
 
   ngOnInit(): void {
     for (let i = 0; i < 100; i++) {
-      this.dataSet.push({
+      this.listOfData.push({
         name   : `Edward King ${i}`,
         age    : 32,
-        address: `London, Park Lane no. ${i}`
+        address: `London`
       });
     }
   }

@@ -45,6 +45,20 @@ describe('checkbox', () => {
       expect(checkbox.nativeElement.firstElementChild.classList.contains('ant-checkbox-checked')).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     });
+    it('should click input a11y correct', () => {
+      fixture.detectChanges();
+      const inputElement = checkbox.nativeElement.querySelector('input');
+      expect(testComponent.checked).toBe(false);
+      expect(inputElement.checked).toBe(false);
+      expect(checkbox.nativeElement.firstElementChild.classList.contains('ant-checkbox-checked')).toBe(false);
+      expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
+      inputElement.click();
+      fixture.detectChanges();
+      expect(testComponent.checked).toBe(true);
+      expect(checkbox.nativeElement.firstElementChild.classList.contains('ant-checkbox-checked')).toBe(true);
+      expect(inputElement.checked).toBe(true);
+      expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
+    });
     it('should ngModel change', fakeAsync(() => {
       testComponent.checked = true;
       fixture.detectChanges();

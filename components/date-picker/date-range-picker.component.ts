@@ -1,10 +1,12 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
 
+import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { FunctionProp } from '../core/types/common-wrap';
 import { toBoolean, valueFunctionProp, InputBoolean } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { CandyDate } from './lib/candy-date';
 
+import { DateHelperService } from '../i18n/date-helper.service';
 import { AbstractPickerComponent, CompatibleDate } from './abstract-picker.component';
 import { DisabledTimeFn, PanelMode, PresetRanges } from './standard-types';
 
@@ -38,8 +40,8 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   pickerStyle: object; // Final picker style that contains width fix corrections etc.
   extraFooter: TemplateRef<void> | string;
 
-  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef) {
-    super(i18n, cdr);
+  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, dateHelper: DateHelperService, noAnimation?: NzNoAnimationDirective) {
+    super(i18n, cdr, dateHelper, noAnimation);
   }
 
   ngOnInit(): void {
@@ -48,9 +50,13 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
     // Default format when it's empty
     if (!this.nzFormat) {
       if (this.showWeek) {
-        this.nzFormat = 'yyyy-ww'; // Format for week
+        this.nzFormat = this.dateHelper.relyOnDatePipe ? 'yyyy-ww' : 'YYYY-WW'; // Format for week
       } else {
-        this.nzFormat = this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd';
+        if (this.dateHelper.relyOnDatePipe) {
+          this.nzFormat = this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd';
+        } else {
+          this.nzFormat = this.nzShowTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
+        }
       }
     }
   }
