@@ -62,7 +62,7 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
   @Input() @InputBoolean() nzShowIcon = false;
   @Input() @InputBoolean() nzShowExpand = true;
   @Input() @InputBoolean() nzShowLine = false;
-  @Input() nzExpandedIcon: string | TemplateRef<{ $implicit: NzTreeNode }>;
+  @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() @InputBoolean() nzCheckStrictly = false;
   @Input() @InputBoolean() nzCheckable = false;
   @Input() @InputBoolean() nzAsyncData = false;
