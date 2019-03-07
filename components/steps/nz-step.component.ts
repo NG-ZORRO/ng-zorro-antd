@@ -93,6 +93,6 @@ export class NzStepComponent {
   }
 
   detectChanges(): void {
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
   }
 }
