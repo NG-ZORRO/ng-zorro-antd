@@ -11,6 +11,15 @@ import { Subject } from 'rxjs';
 import { NzMessageContainerComponent } from '../message/nz-message-container.component';
 import { NzNotificationConfig, NZ_NOTIFICATION_CONFIG, NZ_NOTIFICATION_DEFAULT_CONFIG } from './nz-notification-config';
 import { NzNotificationDataFilled, NzNotificationDataOptions } from './nz-notification.definitions';
+import {
+  NzNotificationConfig,
+  NZ_NOTIFICATION_CONFIG,
+  NZ_NOTIFICATION_DEFAULT_CONFIG
+} from './nz-notification-config';
+
+import { toCssPixel } from '../core/util';
+
+import { NzNotificationDataFilled } from './nz-notification.definitions';
 
 @Component({
   changeDetection    : ChangeDetectionStrategy.OnPush,
@@ -20,6 +29,14 @@ import { NzNotificationDataFilled, NzNotificationDataOptions } from './nz-notifi
   templateUrl        : './nz-notification-container.component.html'
 })
 export class NzNotificationContainerComponent extends NzMessageContainerComponent {
+  config: NzNotificationConfig;
+  bottom: string;
+
+  /**
+   * @override
+   */
+  messages: Array<Required<NzNotificationDataFilled>> = [];
+
   constructor(
     cdr: ChangeDetectorRef,
     @Optional() @Inject(NZ_NOTIFICATION_DEFAULT_CONFIG) defaultConfig: NzNotificationConfig,
@@ -35,8 +52,26 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
   messages: Array<Required<NzNotificationDataFilled>> = [];
 
   /**
+   * @override
+   */
+  setConfig(config: NzNotificationConfig): void {
+    const newConfig = this.config = { ...this.config, ...config };
+    const placement = this.config.nzPlacement;
+
+    this.top = placement === 'topLeft' || placement === 'topRight'
+      ? toCssPixel(newConfig.nzTop)
+      : null;
+    this.bottom = placement === 'bottomLeft' || placement === 'bottomRight'
+      ? toCssPixel(newConfig.nzBottom)
+      : null;
+
+    this.cdr.markForCheck();
+  }
+
+  /**
    * Create a new notification.
-   * If there's a notification whose `nzKey` is same with `nzKey` in `NzNotificationDataFilled`, replace its content instead of create a new one.
+   * If there's a notification whose `nzKey` is same with `nzKey` in `NzNotificationDataFilled`,
+   * replace its content instead of create a new one.
    * @override
    * @param notification
    */
@@ -59,7 +94,10 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
     this.cdr.detectChanges();
   }
 
-  private replaceNotification(old: NzNotificationDataFilled, _new: NzNotificationDataFilled): void {
+  private replaceNotification(
+    old: NzNotificationDataFilled,
+    _new: NzNotificationDataFilled
+  ): void {
     old.title = _new.title;
     old.content = _new.content;
     old.template = _new.template;

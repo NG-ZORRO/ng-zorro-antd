@@ -14,13 +14,13 @@ describe('NzMessage', () => {
   let messageService: NzMessageService;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  let demoAppFixture: ComponentFixture<DemoAppComponent>;
+  let demoAppFixture: ComponentFixture<NzTestMessageBasicComponent>;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [ NzMessageModule, NoopAnimationsModule ],
-      declarations: [ DemoAppComponent ],
-      providers: [ { provide: NZ_MESSAGE_CONFIG, useValue: { nzMaxStack: 2 } } ] // Override default config
+      declarations: [ NzTestMessageBasicComponent ],
+      providers: [ { provide: NZ_MESSAGE_CONFIG, useValue: { nzMaxStack: 2, nzTop: 24 } } ]
     });
 
     TestBed.compileComponents();
@@ -37,7 +37,7 @@ describe('NzMessage', () => {
   });
 
   beforeEach(() => {
-    demoAppFixture = TestBed.createComponent(DemoAppComponent);
+    demoAppFixture = TestBed.createComponent(NzTestMessageBasicComponent);
   });
 
   it('should open a message box with success', (() => {
@@ -155,16 +155,23 @@ describe('NzMessage', () => {
 
   it('should emit event when message close', fakeAsync(() => {
     let onCloseFlag = false;
-
     const msg = messageService.create('loading', 'CLOSE');
     msg.onClose!.subscribe(() => {
       onCloseFlag = true;
     });
-
     demoAppFixture.detectChanges();
     tick(50000);
-
     expect(onCloseFlag).toBeTruthy();
+  }));
+
+  it('should container top to configured', fakeAsync(() => {
+    messageService.create('top', 'CHANGE');
+    demoAppFixture.detectChanges();
+
+    const messageContainerElement = overlayContainerElement.querySelector('.ant-message') as HTMLElement;
+    expect(messageContainerElement.style.top).toBe('24px');
+
+    tick(50000);
   }));
 });
 
@@ -172,4 +179,4 @@ describe('NzMessage', () => {
   selector: 'nz-demo-app-component',
   template: ``
 })
-export class DemoAppComponent {}
+export class NzTestMessageBasicComponent {}
