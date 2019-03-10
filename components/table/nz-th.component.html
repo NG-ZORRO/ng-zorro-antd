@@ -1,10 +1,10 @@
 <ng-template #checkboxTemplate>
   <label nz-checkbox
-    [class.ant-table-selection-select-all-custom]="nzShowRowSelection"
-    [(ngModel)]="nzChecked"
-    [nzDisabled]="nzDisabled"
-    [nzIndeterminate]="nzIndeterminate"
-    (ngModelChange)="nzCheckedChange.emit($event)">
+         [class.ant-table-selection-select-all-custom]="nzShowRowSelection"
+         [(ngModel)]="nzChecked"
+         [nzDisabled]="nzDisabled"
+         [nzIndeterminate]="nzIndeterminate"
+         (ngModelChange)="nzCheckedChange.emit($event)">
   </label>
 </ng-template>
 <div [class.ant-table-column-sorters]="nzShowSort" (click)="updateSortValue()">
@@ -27,23 +27,26 @@
   <ng-content></ng-content>
   <div class="ant-table-column-sorter" *ngIf="nzShowSort">
     <i nz-icon
-      type="caret-up"
-      class="ant-table-column-sorter-up"
-      [class.on]="nzSort == 'ascend'"
-      [class.off]="nzSort != 'ascend'"></i>
+       type="caret-up"
+       class="ant-table-column-sorter-up"
+       [class.on]="nzSort == 'ascend'"
+       [class.off]="nzSort != 'ascend'"></i>
     <i nz-icon
-      type="caret-down"
-      class="ant-table-column-sorter-down"
-      [class.on]="nzSort == 'descend'"
-      [class.off]="nzSort != 'descend'"></i>
+       type="caret-down"
+       class="ant-table-column-sorter-down"
+       [class.on]="nzSort == 'descend'"
+       [class.off]="nzSort != 'descend'"></i>
   </div>
 </div>
-<nz-dropdown nzTrigger="click" *ngIf="nzShowFilter" [nzClickHide]="false" nzTableFilter (nzVisibleChange)="dropDownVisibleChange($event)">
-  <i nz-icon type="filter" theme="fill" [class.ant-table-filter-selected]="hasFilterValue" [class.ant-table-filter-open]="filterVisible" nz-dropdown></i>
+<nz-dropdown nzTrigger="click" *ngIf="nzShowFilter" [nzClickHide]="false" nzTableFilter
+             (nzVisibleChange)="dropDownVisibleChange($event)">
+  <i nz-icon type="filter" theme="fill" [class.ant-table-filter-selected]="hasFilterValue"
+     [class.ant-table-filter-open]="filterVisible" nz-dropdown></i>
   <ul nz-menu>
     <ng-container *ngIf="nzFilterMultiple">
       <li nz-menu-item *ngFor="let filter of multipleFilterList" (click)="checkMultiple(filter)">
-        <label nz-checkbox [ngModel]="filter.checked"></label><span>{{filter.text}}</span>
+        <label nz-checkbox (nzCheckedChange)="checkMultiple(filter)"
+               [ngModel]="filter.checked"></label><span>{{filter.text}}</span>
       </li>
     </ng-container>
     <ng-container *ngIf="!nzFilterMultiple">
