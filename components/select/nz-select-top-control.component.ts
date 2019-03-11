@@ -36,7 +36,12 @@ import { NzSelectService } from './nz-select.service';
   animations: [zoomMotion],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './nz-select-top-control.component.html'
+  templateUrl: './nz-select-top-control.component.html',
+  host               : {
+    '[class.ant-select-selection--single]'         : '!nzCustomTemplate && nzSelectService.isSingleMode',
+    '[class.ant-select-selection--multiple]'       : 'nzCustomTemplate || nzSelectService.isMultipleOrTags',
+    '[style.cursor]'                               : 'nzShowSearch ? "inherit" : "pointer"'
+  }
 })
 export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   inputValue: string;
@@ -50,6 +55,7 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   @Input() nzAllowClear = false;
   @Input() nzShowArrow = true;
   @Input() nzLoading = false;
+  @Input() nzCustomTemplate: TemplateRef<void>;
   @Input() nzSuffixIcon: TemplateRef<void>;
   @Input() nzClearIcon: TemplateRef<void>;
   @Input() nzRemoveIcon: TemplateRef<void>;

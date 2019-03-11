@@ -21,7 +21,12 @@
       class="ant-select-selection-selected-value"
       [attr.title]="nzSelectService.listOfCachedSelectedOption[0]?.nzLabel"
       [ngStyle]="selectedValueStyle">
-      {{ nzSelectService.listOfCachedSelectedOption[0]?.nzLabel }}
+      <ng-container *ngIf="nzCustomTemplate; else noTemplate">
+        <ng-template [ngTemplateOutlet]="nzCustomTemplate" [ngTemplateOutletContext]="{ $implicit: nzSelectService.listOfCachedSelectedOption[0] }"></ng-template>
+      </ng-container>
+      <ng-template #noTemplate>
+        {{ nzSelectService.listOfCachedSelectedOption[0]?.nzLabel }}
+      </ng-template>
     </div>
     <!--show search-->
     <div *ngIf="nzShowSearch"

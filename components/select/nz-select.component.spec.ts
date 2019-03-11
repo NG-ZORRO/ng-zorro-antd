@@ -162,6 +162,16 @@ describe('nz-select component', () => {
       expect(targetElement.style.width).toBe('');
       expect(targetElement.style.minWidth).toBe('10px');
     }));
+    it('should custom template work', () => {
+      select.nativeElement.click();
+      fixture.detectChanges();
+      expect(testComponent.open).toBe(true);
+      fixture.detectChanges();
+      overlayContainerElement.querySelector('li').click();
+      fixture.detectChanges();
+      const selection = select.nativeElement.querySelector('.ant-select-selection') as HTMLElement;
+      expect(selection.textContent).toContain('Label: Jack  Value: jack');
+    });
     it('should click option close dropdown', () => {
       testComponent.showSearch = true;
       select.nativeElement.click();
@@ -406,6 +416,7 @@ describe('nz-select component', () => {
       [nzDropdownMatchSelectWidth]="dropdownMatchSelectWidth"
       [nzDropdownStyle]="dropdownStyle"
       [nzDropdownClassName]="'test-class'"
+      [nzCustomTemplate]="custom"
       (nzOnSearch)="onSearch($event)"
       [nzPlaceHolder]="placeholder"
     >
@@ -413,6 +424,14 @@ describe('nz-select component', () => {
       <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
       <nz-option nzValue="disabled" nzLabel="Disabled" nzDisabled></nz-option>
     </nz-select>
+    <ng-template #custom let-selected>
+      <div>
+        Label: {{selected.nzLabel}}
+      </div>
+      <div>
+        Value: {{ selected.nzValue }}
+      </div>
+    </ng-template>
   `
 })
 export class NzTestSelectDefaultComponent {
