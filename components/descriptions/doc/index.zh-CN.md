@@ -20,7 +20,7 @@ cols: 1
 | -------- | ----------- | ---- | ------- |
 | `[nzTitle]` | 描述列表的标题，显示在最顶部 | `string｜TemplateRef<void>` | `false` |
 | `[nzBorder]` | 是否展示边框 | `boolean` | `false` |
-| `[nzColumn]` | 一行的 `nz-descriptions-item` 的数量 | `string｜TemplateRef<void>` | - |
+| `[nzColumn]` | 一行的 `nz-descriptions-item` 的数量，可以写成像素值或支持响应式的对象写法 `{ xs: 8, sm: 16, md: 24}` | `string｜TemplateRef<void>` | - |
 | `[nzSize]` | 设置列表的大小 | `'default'｜'middle'｜'small'` | `'default'` |
 
 

@@ -12,8 +12,8 @@ describe('nz descriptions', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports     : [ CommonModule, NzDescriptionsModule ],
-      declarations: [ NzTestDescriptionsComponent ]
+      imports: [CommonModule, NzDescriptionsModule],
+      declarations: [NzTestDescriptionsComponent]
     }).compileComponents();
   });
 
@@ -48,23 +48,29 @@ describe('nz descriptions', () => {
       rows = componentElement.querySelectorAll('.ant-descriptions-item');
       expect(rows.length).toBe(1);
 
-      testComponent.colspanArray = [ 1, 1, 1, 2, 3, 1, 5 ];
+      testComponent.colspanArray = [1, 1, 1, 2, 3, 1, 5];
       fixture.detectChanges();
       rows = componentElement.querySelectorAll('.ant-descriptions-item');
       expect(rows.length).toBe(3);
       expect(spyOnWarn).toHaveBeenCalledTimes(2);
-      expect(spyOnWarn).toHaveBeenCalledWith('"nzColumn" is 3 but we have row length 5');
-      expect(spyOnWarn).toHaveBeenCalledWith('"nzColumn" is 3 but we have row length 6');
+      expect(spyOnWarn).toHaveBeenCalledWith(
+        '"nzColumn" is 3 but we have row length 5'
+      );
+      expect(spyOnWarn).toHaveBeenCalledWith(
+        '"nzColumn" is 3 but we have row length 6'
+      );
 
       testComponent.column = 5;
-      testComponent.colspanArray = [ 1, 2, 3 ];
+      testComponent.colspanArray = [1, 2, 3];
       fixture.detectChanges();
       rows = componentElement.querySelectorAll('.ant-descriptions-item');
       expect(rows.length).toBe(1);
       expect(spyOnWarn).toHaveBeenCalledTimes(3);
-      expect(spyOnWarn).toHaveBeenCalledWith('"nzColumn" is 5 but we have row length 6');
+      expect(spyOnWarn).toHaveBeenCalledWith(
+        '"nzColumn" is 5 but we have row length 6'
+      );
 
-      testComponent.colspanArray = [ 1, 2, 2 ];
+      testComponent.colspanArray = [1, 2, 2];
       fixture.detectChanges();
       rows = componentElement.querySelectorAll('.ant-descriptions-item');
       expect(rows.length).toBe(1);
@@ -76,17 +82,20 @@ describe('nz descriptions', () => {
   selector: 'nz-test-descriptions',
   template: `
     <nz-descriptions [nzTitle]="title" [nzBorder]="border" [nzColumn]="column">
-      <nz-descriptions-item *ngFor="let col of colspanArray; let i = index"
-                                [nzTitle]="'Title' + i"
-                                [nzSpan]="col">
+      <nz-descriptions-item
+        *ngFor="let col of colspanArray; let i = index"
+        [nzTitle]="'Title' + i"
+        [nzSpan]="col"
+      >
       </nz-descriptions-item>
     </nz-descriptions>
   `
 })
 export class NzTestDescriptionsComponent {
-  @ViewChild(NzDescriptionsComponent) descriptionComponent: NzDescriptionsComponent;
+  @ViewChild(NzDescriptionsComponent)
+  descriptionComponent: NzDescriptionsComponent;
   border = false;
-  colspanArray: number[] = [ 1, 1, 1 ];
+  colspanArray: number[] = [1, 1, 1];
   column = 3;
   title = 'Title';
 }

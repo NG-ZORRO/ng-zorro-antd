@@ -10,9 +10,9 @@ import { InputNumber } from '../core/util';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation  : ViewEncapsulation.None,
-  selector       : 'nz-descriptions-item',
-  templateUrl    : './nz-descriptions-item.component.html'
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-descriptions-item',
+  templateUrl: './nz-descriptions-item.component.html'
 })
 export class NzDescriptionsItemComponent {
   @ViewChild(TemplateRef) content: TemplateRef<void>;

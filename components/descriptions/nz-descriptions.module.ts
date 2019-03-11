@@ -5,18 +5,8 @@ import { NzDescriptionsItemComponent } from './nz-descriptions-item.component';
 import { NzDescriptionsComponent } from './nz-descriptions.component';
 
 @NgModule({
-  imports     : [
-    CommonModule,
-    NzAddOnModule
-  ],
-  declarations: [
-    NzDescriptionsComponent,
-    NzDescriptionsItemComponent
-  ],
-  exports: [
-    NzDescriptionsComponent,
-    NzDescriptionsItemComponent
-  ]
+  imports: [CommonModule, NzAddOnModule],
+  declarations: [NzDescriptionsComponent, NzDescriptionsItemComponent],
+  exports: [NzDescriptionsComponent, NzDescriptionsItemComponent]
 })
-export class NzDescriptionsModule {
-}
+export class NzDescriptionsModule {}
