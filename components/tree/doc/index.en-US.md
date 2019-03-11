@@ -114,6 +114,7 @@ Almost anything can be represented in a tree structure. Examples include directo
 | isSelected | Whether treeNode is selected | `boolean` | `true` / `false` |
 | isLoading | Whether treeNode is loading(when nzAsyncData is true) | `boolean` | `true` / `false` |
 | isMatched | Whether treeNode's title contains nzSearchValue | `boolean` | `true` / `false` |
+| setSyncChecked | set isChecked value and sync other nodes' state of checkBox | function | void |
 | getChildren | Get all children | function | NzTreeNode[] |
 | addChildren | Add child nodes, receive NzTreeNode or NzTreeNodeOptions array, the second parameter is the inserted index position | (children: array, index?: number )=>{} | void |
 | clearChildren | Clear the treeNode's children | function | void |

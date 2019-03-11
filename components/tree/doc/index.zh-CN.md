@@ -118,6 +118,7 @@ subtitle: 树形控件
 | isSelected | 是否已选中 | `boolean` | `true` 或 `false` |
 | isLoading | 是否异步加载状态(影响展开图标展示) | `boolean` | `true` 或 `false` |
 | isMatched | title是否包含nzSearchValue(搜索使用) | `boolean` | `true` 或 `false` |
+| setSyncChecked | 设置 checked 状态并同步其他节点状态 | function | void |
 | getChildren | 获取子节点,返回NzTreeNode数组 | function | NzTreeNode[] |
 | addChildren | 添加子节点,接收NzTreeNode或NzTreeNodeOptions数组,第二个参数为插入的索引位置,默认插入末尾 | (children: array, index?: number )=>{} | void |
 | clearChildren | 清除子节点 | function | void |
