@@ -9,8 +9,8 @@ import { NzThComponent } from './nz-th.component';
 describe('nz-th', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzTableModule, NzIconTestModule ],
-      declarations: [ NzThTestNzTableComponent, NzThTestTableDefaultFilterComponent ]
+      imports: [NzTableModule, NzIconTestModule],
+      declarations: [NzThTestNzTableComponent, NzThTestTableDefaultFilterComponent]
     });
     TestBed.compileComponents();
   }));
@@ -175,22 +175,22 @@ describe('nz-th', () => {
       testComponent.nzThComponent.dropDownVisibleChange(true);
       fixture.detectChanges();
       expect(testComponent.filterChange).toHaveBeenCalledTimes(0);
-      testComponent.nzThComponent.checkMultiple(testComponent.nzThComponent.multipleFilterList[ 0 ]);
+      testComponent.nzThComponent.checkMultiple(testComponent.nzThComponent.multipleFilterList[0]);
       testComponent.nzThComponent.dropDownVisibleChange(false);
       fixture.detectChanges();
       expect(testComponent.nzThComponent.hasFilterValue).toBe(true);
-      expect(testComponent.filterChange).toHaveBeenCalledWith([ '1' ]);
+      expect(testComponent.filterChange).toHaveBeenCalledWith(['1']);
     });
     it('should hasFilter change after filters change with multiple', () => {
       testComponent.showFilter = true;
       fixture.detectChanges();
-      testComponent.nzThComponent.checkMultiple(testComponent.nzThComponent.multipleFilterList[ 0 ]);
+      testComponent.nzThComponent.checkMultiple(testComponent.nzThComponent.multipleFilterList[0]);
       testComponent.nzThComponent.search();
       fixture.detectChanges();
       expect(testComponent.nzThComponent.hasFilterValue).toBe(true);
       testComponent.filters = [
-        { text: 'filter1', value: '4' },
-        { text: 'filter2', value: '3' }
+        {text: 'filter1', value: '4'},
+        {text: 'filter2', value: '3'}
       ];
       fixture.detectChanges();
       expect(testComponent.nzThComponent.hasFilterValue).toBe(false);
@@ -199,13 +199,13 @@ describe('nz-th', () => {
       testComponent.showFilter = true;
       testComponent.filterMultiple = false;
       fixture.detectChanges();
-      testComponent.nzThComponent.checkSingle(testComponent.nzThComponent.singleFilterList[ 0 ]);
+      testComponent.nzThComponent.checkSingle(testComponent.nzThComponent.singleFilterList[0]);
       testComponent.nzThComponent.search();
       fixture.detectChanges();
       expect(testComponent.nzThComponent.hasFilterValue).toBe(true);
       testComponent.filters = [
-        { text: 'filter1', value: '5' },
-        { text: 'filter2', value: '3' }
+        {text: 'filter1', value: '5'},
+        {text: 'filter2', value: '3'}
       ];
       fixture.detectChanges();
       expect(testComponent.nzThComponent.hasFilterValue).toBe(false);
@@ -228,7 +228,7 @@ describe('nz-th', () => {
       testComponent.nzThComponent.dropDownVisibleChange(true);
       fixture.detectChanges();
       expect(testComponent.filterChange).toHaveBeenCalledTimes(0);
-      testComponent.nzThComponent.checkSingle(testComponent.nzThComponent.singleFilterList[ 0 ]);
+      testComponent.nzThComponent.checkSingle(testComponent.nzThComponent.singleFilterList[0]);
       testComponent.nzThComponent.dropDownVisibleChange(false);
       fixture.detectChanges();
       expect(testComponent.filterChange).toHaveBeenCalledWith('1');
@@ -244,9 +244,20 @@ describe('nz-th', () => {
     it('should be throw error when use specific class name', () => {
       expect(() => {
         TestBed.configureTestingModule({
-          declarations: [ NzTestDisableThComponent ]
+          declarations: [NzTestDisableThComponent]
         }).createComponent(NzTestDisableThComponent);
       }).toThrow();
+    });
+    it('should filterChange be called after check the checkbox', () => {
+      testComponent.showFilter = true;
+      fixture.detectChanges();
+      testComponent.nzThComponent.dropDownVisibleChange(true);
+      fixture.detectChanges();
+      expect(testComponent.filterChange).toHaveBeenCalledTimes(0);
+      testComponent.nzThComponent.multipleFilterList[0].checked = !testComponent.nzThComponent.multipleFilterList[0].checked;
+      testComponent.nzThComponent.dropDownVisibleChange(false);
+      fixture.detectChanges();
+      expect(testComponent.filterChange).toHaveBeenCalled();
     });
   });
   describe('nz-th with default filter in nz-table', () => {
@@ -307,13 +318,13 @@ export class NzThTestNzTableComponent {
   showRowSelection = false;
   selections = [
     {
-      text    : 'select one',
+      text: 'select one',
       onSelect: jasmine.createSpy('select change')
     }
   ];
   filters = [
-    { text: 'filter1', value: '1' },
-    { text: 'filter2', value: '2' }
+    {text: 'filter1', value: '1'},
+    {text: 'filter2', value: '2'}
   ];
   filterChange = jasmine.createSpy('filter change');
   showFilter = false;
@@ -326,53 +337,57 @@ export class NzThTestNzTableComponent {
   template: `
     <nz-table #filterTable [nzData]="displayData">
       <thead (nzSortChange)="sort($event)" nzSingleSort>
-        <tr>
-          <th nzShowSort nzSortKey="name" nzShowFilter [nzFilters]="nameList" (nzFilterChange)="filter($event,searchAddress)">Name</th>
-          <th nzShowSort nzSortKey="age">Age</th>
-          <th nzShowSort nzSortKey="address" nzShowFilter [nzFilterMultiple]="false" [nzFilters]="addressList" (nzFilterChange)="filter(listOfSearchName,$event)">Address</th>
-        </tr>
+      <tr>
+        <th nzShowSort nzSortKey="name" nzShowFilter [nzFilters]="nameList"
+            (nzFilterChange)="filter($event,searchAddress)">Name
+        </th>
+        <th nzShowSort nzSortKey="age">Age</th>
+        <th nzShowSort nzSortKey="address" nzShowFilter [nzFilterMultiple]="false" [nzFilters]="addressList"
+            (nzFilterChange)="filter(listOfSearchName,$event)">Address
+        </th>
+      </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of filterTable.data">
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
-        </tr>
+      <tr *ngFor="let data of filterTable.data">
+        <td>{{data.name}}</td>
+        <td>{{data.age}}</td>
+        <td>{{data.address}}</td>
+      </tr>
       </tbody>
     </nz-table>`
 })
 export class NzThTestTableDefaultFilterComponent {
   nameList = [
-    { text: 'Joe', value: 'Joe', byDefault: true },
-    { text: 'Jim', value: 'Jim' }
+    {text: 'Joe', value: 'Joe', byDefault: true},
+    {text: 'Jim', value: 'Jim'}
   ];
   addressList = [
-    { text: 'London', value: 'London', byDefault: true },
-    { text: 'Sidney', value: 'Sidney' }
+    {text: 'London', value: 'London', byDefault: true},
+    {text: 'Sidney', value: 'Sidney'}
   ];
   sortName = null;
   sortValue = null;
-  listOfSearchName = [ 'Joe', 'London' ];
+  listOfSearchName = ['Joe', 'London'];
   searchAddress: string;
   data = [
     {
-      name   : 'John Brown',
-      age    : 32,
+      name: 'John Brown',
+      age: 32,
       address: 'New York No. 1 Lake Park'
     },
     {
-      name   : 'Jim Green',
-      age    : 42,
+      name: 'Jim Green',
+      age: 42,
       address: 'London No. 1 Lake Park'
     },
     {
-      name   : 'Joe Black',
-      age    : 32,
+      name: 'Joe Black',
+      age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      name   : 'Jim Red',
-      age    : 32,
+      name: 'Jim Red',
+      age: 32,
       address: 'London No. 2 Lake Park'
     }
   ];
@@ -398,7 +413,7 @@ export class NzThTestTableDefaultFilterComponent {
     const data = this.data.filter(item => filterFunc(item));
     /** sort data **/
     if (this.sortName && this.sortValue) {
-      this.displayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] > b[ this.sortName ] ? 1 : -1) : (b[ this.sortName ] > a[ this.sortName ] ? 1 : -1));
+      this.displayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[this.sortName] > b[this.sortName] ? 1 : -1) : (b[this.sortName] > a[this.sortName] ? 1 : -1));
     } else {
       this.displayData = data;
     }
