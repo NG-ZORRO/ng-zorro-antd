@@ -14,7 +14,7 @@ import { NzModalService, NzModalRef } from 'ng-zorro-antd';
     <button nz-button nzType="primary" (click)="showModal2()">
       <span>In Component</span>
     </button>
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="Custom Modal Title" [nzContent]="modalContent" (nzOnCancel)="handleCancel()">
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="Custom Modal Title" (nzOnCancel)="handleCancel()">
       <div>
         <p>Modal Content</p>
         <p>Modal Content</p>
