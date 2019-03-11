@@ -112,7 +112,7 @@ export class NzAutoResizeDirective implements AfterViewInit, OnDestroy, DoCheck 
   }
 
   private cacheTextareaLineHeight(): void {
-    if (this.cachedLineHeight || !this.el.parentNode) {
+    if (this.cachedLineHeight >= 0 || !this.el.parentNode) {
       return;
     }
 
