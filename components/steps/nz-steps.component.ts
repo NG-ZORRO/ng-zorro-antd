@@ -98,7 +98,7 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
           step.index = index + this.nzStartIndex;
           step.currentIndex = this.nzCurrent;
           step.last = length === index + 1;
-          step.detectChanges();
+          step.markForCheck();
         });
       });
     }
