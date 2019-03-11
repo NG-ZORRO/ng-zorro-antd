@@ -8,12 +8,11 @@ describe('nz descriptions', () => {
   let testComponent: NzTestDescriptionsComponent;
   let componentElement: HTMLElement;
   let fixture: ComponentFixture<NzTestDescriptionsComponent>;
-  let descriptionComponent: NzDescriptionsComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, NzDescriptionsModule],
-      declarations: [NzTestDescriptionsComponent]
+      imports     : [ CommonModule, NzDescriptionsModule ],
+      declarations: [ NzTestDescriptionsComponent ]
     }).compileComponents();
   });
 
@@ -23,7 +22,6 @@ describe('nz descriptions', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestDescriptionsComponent);
       testComponent = fixture.componentInstance;
-      descriptionComponent = testComponent.descriptionComponent;
       componentElement = fixture.debugElement.nativeElement;
 
       fixture.detectChanges();
@@ -48,7 +46,7 @@ describe('nz descriptions', () => {
       rows = componentElement.querySelectorAll('.ant-descriptions-item');
       expect(rows.length).toBe(1);
 
-      testComponent.colspanArray = [1, 1, 1, 2, 3, 1, 5];
+      testComponent.colspanArray = [ 1, 1, 1, 2, 3, 1, 5 ];
       fixture.detectChanges();
       rows = componentElement.querySelectorAll('.ant-descriptions-item');
       expect(rows.length).toBe(3);
@@ -61,7 +59,7 @@ describe('nz descriptions', () => {
       );
 
       testComponent.column = 5;
-      testComponent.colspanArray = [1, 2, 3];
+      testComponent.colspanArray = [ 1, 2, 3 ];
       fixture.detectChanges();
       rows = componentElement.querySelectorAll('.ant-descriptions-item');
       expect(rows.length).toBe(1);
@@ -70,10 +68,19 @@ describe('nz descriptions', () => {
         '"nzColumn" is 5 but we have row length 6'
       );
 
-      testComponent.colspanArray = [1, 2, 2];
+      testComponent.colspanArray = [ 1, 2, 2 ];
       fixture.detectChanges();
       rows = componentElement.querySelectorAll('.ant-descriptions-item');
       expect(rows.length).toBe(1);
+    });
+
+    it('should support responsive', () => {
+      testComponent.colspanArray = [ 4, 2, 1, 1, 2, 2];
+      testComponent.column = { xxl: 4, xl: 3, md: 2, xs: 1, sm: 1 };
+
+      fixture.detectChanges();
+      rows = componentElement.querySelectorAll('.ant-descriptions-item');
+      expect(rows.length).toBe(4);
     });
   });
 });
@@ -95,7 +102,7 @@ export class NzTestDescriptionsComponent {
   @ViewChild(NzDescriptionsComponent)
   descriptionComponent: NzDescriptionsComponent;
   border = false;
-  colspanArray: number[] = [1, 1, 1];
-  column = 3;
+  colspanArray: number[] = [ 1, 1, 1 ];
+  column: number | { [ key: string ]: number } = 3;
   title = 'Title';
 }

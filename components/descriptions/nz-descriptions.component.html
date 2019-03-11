@@ -9,16 +9,9 @@
       [attr.key]="i"
     >
       <ng-container *ngFor="let item of row; let isLast = last">
-        <td
-          class="ant-descriptions-item-label"
-          *nzStringTemplateOutlet="item.title"
-        >
-          {{ item.title }}
-        </td>
-        <td
-          class="ant-descriptions-item-content"
-          [colSpan]="isLast ? (nzColumn - (row.length - 1)) * 2 - 1 : item.span"
-        >
+        <td class="ant-descriptions-item-label" *nzStringTemplateOutlet="item.title">{{ item.title }}</td>
+        <td class="ant-descriptions-item-content"
+            [colSpan]="isLast ? (realColumn - (row.length - 1)) * 2 - 1 : item.span">
           <ng-template [ngTemplateOutlet]="item.content"></ng-template>
         </td>
       </ng-container>

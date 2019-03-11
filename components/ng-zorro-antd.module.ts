@@ -186,7 +186,6 @@ export * from './core/no-animation';
     NzNoAnimationModule,
     NzSkeletonModule,
     NzStatisticModule,
-    NzEmptyModule
     NzEmptyModule,
     NzDescriptionsModule
   ]
