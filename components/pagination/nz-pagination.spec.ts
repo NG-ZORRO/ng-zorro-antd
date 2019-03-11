@@ -66,6 +66,15 @@ describe('pagination', () => {
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
       });
+      it('should change pageIndex change pages list', () => {
+        fixture.detectChanges();
+        testComponent.total = 500;
+        fixture.detectChanges();
+        expect(paginationElement.children.length).toBe(9);
+        testComponent.pageIndex = 5;
+        fixture.detectChanges();
+        expect(paginationElement.children.length).toBe(11);
+      });
       it('should pre button disabled', () => {
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
