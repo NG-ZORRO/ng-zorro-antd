@@ -26,7 +26,7 @@ A carousel component. Scales with its container.
 | `[nzVertical]` | Whether to use a vertical display | `boolean` | `false` |
 | `(nzAfterChange)` | Callback function called after the current index changes | `EventEmitter<number>` | - |
 | `(nzBeforeChange)` | Callback function called before the current index changes | `EventEmitter{ from: number; to: number }>` | - |
-| `[nzEnableSwipe]` | Whether to support swipe gesture (would work if only you import hammer.js in your project)  | `boolean` | `true` |
+| `[nzEnableSwipe]` | Whether to support swipe gesture | `boolean` | `true` |
 
 #### Methods
 
