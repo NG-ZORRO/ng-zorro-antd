@@ -30,6 +30,7 @@ export class NzTreeNode {
   // Parent Node
   parentNode?: NzTreeNode;
   private _isChecked: boolean;
+  private _isAllChecked: boolean;
   private _isSelectable: boolean;
   private _isDisabled: boolean;
   private _isDisableCheckbox: boolean;
@@ -155,9 +156,18 @@ export class NzTreeNode {
 
   set isChecked(value: boolean) {
     this._isChecked = value;
+    this._isAllChecked = value;
     this.origin.checked = value;
     this.treeService!.setCheckedNodeList(this);
     this.update();
+  }
+
+  get isAllChecked(): boolean {
+    return this._isAllChecked;
+  }
+
+  set isAllChecked(value: boolean) {
+    this._isAllChecked = value;
   }
 
   get isHalfChecked(): boolean {
@@ -233,6 +243,30 @@ export class NzTreeNode {
    * get
    * set
    */
+  public setSyncChecked(checked: boolean = false, halfChecked: boolean = false): void {
+    this.setChecked(checked, halfChecked);
+    if (!this.treeService.isCheckStrictly) {
+      this.treeService.conduct(this);
+    }
+  }
+
+  public setChecked(checked: boolean = false, halfChecked: boolean = false): void {
+    this.origin.checked = checked;
+    this.isChecked = checked;
+    this.isAllChecked = checked;
+    this.isHalfChecked = halfChecked;
+  }
+
+  public setExpanded(value: boolean): void {
+    this.isExpanded = value;
+  }
+
+  public setSelected(value: boolean): void {
+    if (this.isDisabled) {
+      return;
+    }
+    this.isSelected = value;
+  }
 
   public getParentNode(): NzTreeNode | undefined {
     return this.parentNode;
