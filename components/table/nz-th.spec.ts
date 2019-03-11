@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzTableComponent } from './nz-table.component';
 import { NzTableModule } from './nz-table.module';
@@ -9,7 +10,7 @@ import { NzThComponent } from './nz-th.component';
 describe('nz-th', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzTableModule, NzIconTestModule ],
+      imports     : [ NzTableModule, NzIconTestModule, NoopAnimationsModule ],
       declarations: [ NzThTestNzTableComponent, NzThTestTableDefaultFilterComponent ]
     });
     TestBed.compileComponents();
@@ -163,11 +164,11 @@ describe('nz-th', () => {
     it('should showFilter work', () => {
       fixture.detectChanges();
       expect(th.nativeElement.classList).not.toContain('ant-table-column-has-filters');
-      expect(th.nativeElement.querySelector('.anticon anticon-filter')).toBeNull();
+      expect(th.nativeElement.querySelector('.anticon.anticon-filter')).toBeNull();
       testComponent.showFilter = true;
       fixture.detectChanges();
       expect(th.nativeElement.classList).toContain('ant-table-column-has-filters');
-      expect(th.nativeElement.querySelector('.anticon anticon-filter')).toBeDefined();
+      expect(th.nativeElement.querySelector('.anticon.anticon-filter')).toBeDefined();
     });
     it('should filterChange work', () => {
       testComponent.showFilter = true;
@@ -217,6 +218,7 @@ describe('nz-th', () => {
       fixture.detectChanges();
       expect(testComponent.filterChange).toHaveBeenCalledTimes(0);
       testComponent.nzThComponent.reset();
+      testComponent.nzThComponent.dropDownVisibleChange(false);
       fixture.detectChanges();
       expect(testComponent.filterChange).toHaveBeenCalledWith([]);
       expect(testComponent.nzThComponent.hasFilterValue).toBe(false);
@@ -248,6 +250,31 @@ describe('nz-th', () => {
         }).createComponent(NzTestDisableThComponent);
       }).toThrow();
     });
+    it('should filter multiple check work', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.showFilter = true;
+      fixture.detectChanges();
+      th.nativeElement.querySelector('.anticon.anticon-filter').click();
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      expect(testComponent.filterChange).toHaveBeenCalledTimes(0);
+      (document.querySelector('.ant-checkbox-input') as HTMLInputElement).click();
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      (document.querySelector('.confirm') as HTMLInputElement).click();
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      expect(testComponent.filterChange).toHaveBeenCalledTimes(1);
+      expect(testComponent.filterChange.calls.mostRecent().args[0][0]).toBe('1');
+      // flush all microtask
+      testComponent.destroy = true;
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+    }));
   });
   describe('nz-th with default filter in nz-table', () => {
     let fixture;
@@ -268,7 +295,7 @@ describe('nz-th', () => {
 @Component({
   selector: 'nz-th-test-nz-table',
   template: `
-    <nz-table>
+    <nz-table *ngIf="!destroy">
       <th
         [nzExpand]="expand"
         [nzShowCheckbox]="showCheckbox"
@@ -293,6 +320,7 @@ describe('nz-th', () => {
 })
 export class NzThTestNzTableComponent {
   @ViewChild(NzThComponent) nzThComponent: NzThComponent;
+  destroy = false;
   showCheckbox = false;
   checked = false;
   checkedChange = jasmine.createSpy('show change');

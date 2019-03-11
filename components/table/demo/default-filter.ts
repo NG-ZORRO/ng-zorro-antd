@@ -58,6 +58,7 @@ export class NzDemoTableDefaultFilterComponent {
   }
 
   filter(listOfSearchName: string[], searchAddress: string): void {
+    console.log(listOfSearchName, searchAddress);
     this.listOfSearchName = listOfSearchName;
     this.searchAddress = searchAddress;
     this.search();

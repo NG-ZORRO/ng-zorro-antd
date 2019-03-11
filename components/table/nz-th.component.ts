@@ -129,14 +129,11 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
     } else {
       this.nzFilterChange.emit(this.filterValue);
     }
-    this.hideDropDown();
   }
 
   reset(): void {
     this.initMultipleFilterList(true);
     this.initSingleFilterList(true);
-    this.search();
-    this.hideDropDown();
     this.hasFilterValue = false;
   }
 
