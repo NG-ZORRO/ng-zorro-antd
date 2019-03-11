@@ -14,7 +14,7 @@ module.exports = function generateCodeBox(component, demoName, key, title, doc, 
     if (iframe.source) {
       output = output.replace(/{{iframeSource}}/g, iframe.source);
     } else {
-      output = output.replace(/{{iframeSource}}/g, `/iframe/index.html/#/${component}-${key}`);
+      output = output.replace(/{{iframeSource}}/g, `/iframe/#/${component}-${key}`);
     }
     if (iframe.height) {
       output = output.replace(/{{iframeHeight}}/g, iframe.height);
