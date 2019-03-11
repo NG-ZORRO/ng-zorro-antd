@@ -43,7 +43,7 @@
   <ul nz-menu>
     <ng-container *ngIf="nzFilterMultiple">
       <li nz-menu-item *ngFor="let filter of multipleFilterList" (click)="checkMultiple(filter)">
-        <label nz-checkbox [ngModel]="filter.checked"></label><span>{{filter.text}}</span>
+        <label nz-checkbox [ngModel]="filter.checked" (ngModelChange)="checkMultiple(filter)"></label><span>{{filter.text}}</span>
       </li>
     </ng-container>
     <ng-container *ngIf="!nzFilterMultiple">
@@ -54,10 +54,10 @@
   </ul>
   <div class="ant-table-filter-dropdown-btns">
     <a class="ant-table-filter-dropdown-link confirm" (click)="hideDropDown()">
-      <span (click)="search()">{{ locale.filterConfirm }}</span>
+      <span>{{ locale.filterConfirm }}</span>
     </a>
-    <a class="ant-table-filter-dropdown-link clear" (click)="hideDropDown()">
-      <span (click)="reset()">{{ locale.filterReset }}</span>
+    <a class="ant-table-filter-dropdown-link clear" (click)="reset();hideDropDown()">
+      <span>{{ locale.filterReset }}</span>
     </a>
   </div>
 </nz-dropdown>
