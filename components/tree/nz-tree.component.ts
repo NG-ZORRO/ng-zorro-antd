@@ -7,10 +7,12 @@ import {
   EventEmitter,
   Host,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Output,
+  SimpleChange,
   SkipSelf,
   TemplateRef
 } from '@angular/core';
@@ -56,7 +58,7 @@ export function NzTreeServiceFactory(treeSelectService: NzTreeSelectService, tre
   ]
 })
 
-export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor {
+export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
   @Input() @InputBoolean() nzShowIcon = false;
   @Input() @InputBoolean() nzShowLine = false;
   @Input() @InputBoolean() nzCheckable = false;
@@ -66,7 +68,7 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor 
   @Input() @InputBoolean() nzExpandAll = false;
   @Input() @InputBoolean() nzHideUnMatched = false;
   @Input() @InputBoolean() nzSelectMode = false;
-  @Input() @InputBoolean() nzCheckStrictly: false;
+  @Input() @InputBoolean() nzCheckStrictly = false;
   /**
    * @deprecated use
    * nzExpandAll instead
@@ -352,6 +354,15 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor 
           break;
       }
     });
+  }
+
+  ngOnChanges(changes: { [ propertyName: string ]: SimpleChange }): void {
+    if (changes.nzCheckStrictly) {
+      this.nzTreeService.isCheckStrictly = toBoolean(changes.nzCheckStrictly.currentValue);
+    }
+    if (changes.nzMultiple) {
+      this.nzTreeService.isMultiple = toBoolean(changes.nzMultiple.currentValue);
+    }
   }
 
   ngOnDestroy(): void {

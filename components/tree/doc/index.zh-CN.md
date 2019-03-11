@@ -37,7 +37,6 @@ subtitle: 树形控件
 | `(nzCheckBoxChange)` | 点击树节点 Checkbox 触发 | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzExpandChange)` | 点击展开树节点图标触发 | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzSearchValueChange)` | 搜索节点时调用(与nzSearchValue配合使用) | `EventEmitter<NzFormatEmitEvent>` | - |
-| `(nzOnSearchNode)` | 搜索节点时调用(与nzSearchValue配合使用) <font color=red>`Deprecated`</font> | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzOnDragStart)` | 开始拖拽时调用 | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzOnDragEnter)` | dragenter 触发时调用 | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzOnDragOver)` | dragover 触发时调用 | `EventEmitter<NzFormatEmitEvent>` | - |
