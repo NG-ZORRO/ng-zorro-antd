@@ -37,8 +37,8 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoTableResetFilterComponent {
-  listOfSearchName = [];
-  listOfSearchAddress = [];
+  listOfSearchName: string[] = [];
+  listOfSearchAddress: string[] = [];
   listOfFilterName = [
     { text: 'Joe', value: 'Joe' },
     { text: 'Jim', value: 'Jim' }
@@ -75,8 +75,8 @@ export class NzDemoTableResetFilterComponent {
     age    : null,
     address: null
   };
-  sortName = null;
-  sortValue = null;
+  sortName: string | null = null;
+  sortValue: string | null = null;
 
   sort(sortName: string, value: string): void {
     this.sortName = sortName;
@@ -93,7 +93,10 @@ export class NzDemoTableResetFilterComponent {
     const filterFunc = item => (this.listOfSearchAddress.length ? this.listOfSearchAddress.some(address => item.address.indexOf(address) !== -1) : true) && (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
     const listOfData = this.listOfData.filter(item => filterFunc(item));
     if (this.sortName && this.sortValue) {
-      this.listOfDisplayData = listOfData.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] > b[ this.sortName ] ? 1 : -1) : (b[ this.sortName ] > a[ this.sortName ] ? 1 : -1));
+      this.listOfDisplayData = listOfData.sort((a, b) => (this.sortValue === 'ascend')
+        ? (a[ this.sortName! ] > b[ this.sortName! ] ? 1 : -1)
+        : (b[ this.sortName! ] > a[ this.sortName! ] ? 1 : -1)
+      );
     } else {
       this.listOfDisplayData = listOfData;
     }

@@ -429,7 +429,7 @@ const newIconNames: string[] = [
 })
 export class NzPageDemoIconComponent implements OnInit {
   displayedNames = {};
-  categoryNames = [];
+  categoryNames: string[] = [];
   currentTheme = 'outline';
   localeObj = locale;
 
@@ -454,7 +454,7 @@ export class NzPageDemoIconComponent implements OnInit {
 
   private _copy(value: string): Promise<string> {
     const promise = new Promise<string>((resolve): void => {
-        let copyTextArea = null as HTMLTextAreaElement;
+        let copyTextArea = null as any as HTMLTextAreaElement; // tslint:disable-line:no-any
         try {
           copyTextArea = this.dom.createElement('textarea');
           copyTextArea.style.height = '0px';

@@ -31,14 +31,14 @@ export abstract class DateHelperService {
   abstract getFirstDayOfWeek(): WeekDayIndex;
   abstract format(date: Date, formatStr: string): string;
 
-  parseDate(text: string): Date {
+  parseDate(text: string): Date | undefined {
     if (!text) {
       return;
     }
     return fnsParse(text);
   }
 
-  parseTime(text: string): Date {
+  parseTime(text: string): Date | undefined {
     if (!text) {
       return;
     }
@@ -87,7 +87,7 @@ export class DateHelperByDatePipe extends DateHelperService {
   }
 
   getFirstDayOfWeek(): WeekDayIndex {
-    if (this.config.firstDayOfWeek == null) {
+    if (this.config.firstDayOfWeek === undefined) {
       const locale = this.i18n.getLocaleId();
       return locale && [ 'zh-cn', 'zh-tw' ].indexOf(locale.toLowerCase()) > -1 ? 1 : 0;
     }
@@ -95,7 +95,9 @@ export class DateHelperByDatePipe extends DateHelperService {
   }
 
   format(date: Date, formatStr: string): string {
-    return date ? this.datePipe.transform(date, formatStr, null, this.i18n.getLocaleId()) : '';
+    return date
+      ? this.datePipe.transform(date, formatStr, undefined, this.i18n.getLocaleId())!
+      : '';
   }
 
   /**

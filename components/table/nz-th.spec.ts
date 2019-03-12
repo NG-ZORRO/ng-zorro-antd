@@ -41,13 +41,13 @@ describe('nz-th', () => {
     it('should checked work', fakeAsync(() => {
       testComponent.showCheckbox = true;
       fixture.detectChanges();
-      expect(th.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList).not.toContain('ant-checkbox-checked');
+      expect(th.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList).not.toContain('ant-checkbox-checked');
       testComponent.checked = true;
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
       expect(testComponent.checked).toBe(true);
-      expect(th.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList).toContain('ant-checkbox-checked');
+      expect(th.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList).toContain('ant-checkbox-checked');
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
     }));
     it('should disabled work', () => {
@@ -56,12 +56,12 @@ describe('nz-th', () => {
       testComponent.disabled = true;
       fixture.detectChanges();
       expect(testComponent.checked).toBe(false);
-      expect(th.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList.contains('ant-checkbox-checked')).toBe(false);
+      expect(th.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList.contains('ant-checkbox-checked')).toBe(false);
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
       th.nativeElement.querySelector('.ant-checkbox-wrapper').click();
       fixture.detectChanges();
       expect(testComponent.checked).toBe(false);
-      expect(th.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList.contains('ant-checkbox-checked')).toBe(false);
+      expect(th.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList.contains('ant-checkbox-checked')).toBe(false);
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
     });
     it('should indeterminate work', () => {
@@ -70,10 +70,10 @@ describe('nz-th', () => {
       fixture.detectChanges();
       testComponent.indeterminate = true;
       fixture.detectChanges();
-      expect(th.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList.contains('ant-checkbox-indeterminate')).toBe(true);
+      expect(th.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList.contains('ant-checkbox-indeterminate')).toBe(true);
       testComponent.checked = true;
       fixture.detectChanges();
-      expect(th.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList.contains('ant-checkbox-indeterminate')).toBe(true);
+      expect(th.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList.contains('ant-checkbox-indeterminate')).toBe(true);
     });
     it('should showSort work', () => {
       fixture.detectChanges();
@@ -378,8 +378,8 @@ export class NzThTestTableDefaultFilterComponent {
     { text: 'London', value: 'London', byDefault: true },
     { text: 'Sidney', value: 'Sidney' }
   ];
-  sortName = null;
-  sortValue = null;
+  sortName: string | null = null;
+  sortValue: string | null = null;
   listOfSearchName = [ 'Joe', 'London' ];
   searchAddress: string;
   data = [
@@ -404,7 +404,7 @@ export class NzThTestTableDefaultFilterComponent {
       address: 'London No. 2 Lake Park'
     }
   ];
-  displayData = [];
+  displayData: Array<{ name: string, age: number, address: string }> = [];
 
   @ViewChild(NzThComponent) nzThComponent: NzThComponent;
 
@@ -426,7 +426,7 @@ export class NzThTestTableDefaultFilterComponent {
     const data = this.data.filter(item => filterFunc(item));
     /** sort data **/
     if (this.sortName && this.sortValue) {
-      this.displayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] > b[ this.sortName ] ? 1 : -1) : (b[ this.sortName ] > a[ this.sortName ] ? 1 : -1));
+      this.displayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName! ] > b[ this.sortName! ] ? 1 : -1) : (b[ this.sortName! ] > a[ this.sortName! ] ? 1 : -1));
     } else {
       this.displayData = data;
     }

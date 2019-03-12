@@ -80,7 +80,7 @@ describe('NzNotification', () => {
   }));
 
   it('should auto closed by 1s', fakeAsync(() => {
-    messageService.create(null, null, 'EXISTS', { nzDuration: 1000 });
+    messageService.create('', '', 'EXISTS', { nzDuration: 1000 });
     demoAppFixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('EXISTS');
@@ -90,10 +90,10 @@ describe('NzNotification', () => {
   }));
 
   it('should not destroy when hovered', fakeAsync(() => {
-    messageService.create(null, null, 'EXISTS', { nzDuration: 3000 });
+    messageService.create('', '', 'EXISTS', { nzDuration: 3000 });
     demoAppFixture.detectChanges();
 
-    const messageElement = overlayContainerElement.querySelector('.ant-notification-notice');
+    const messageElement = overlayContainerElement.querySelector('.ant-notification-notice')!;
     dispatchMouseEvent(messageElement, 'mouseenter');
     tick(50000);
     expect(overlayContainerElement.textContent).toContain('EXISTS');
@@ -118,7 +118,7 @@ describe('NzNotification', () => {
   it('should keep the balance of messages length and then remove all', fakeAsync(() => {
     [ 1, 2, 3 ].forEach(id => {
       const content = `SUCCESS-${id}`;
-      messageService.success(null, content);
+      messageService.success('', content);
       demoAppFixture.detectChanges();
       tick();
       demoAppFixture.detectChanges();
@@ -137,7 +137,7 @@ describe('NzNotification', () => {
   }));
 
   it('should destroy without animation', fakeAsync(() => {
-    messageService.error(null, 'EXISTS', { nzDuration: 1000, nzAnimate: false });
+    messageService.error('', 'EXISTS', { nzDuration: 1000, nzAnimate: false });
     demoAppFixture.detectChanges();
     tick(1000 + 10);
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
@@ -145,7 +145,7 @@ describe('NzNotification', () => {
 
   it('should reset default config dynamically', fakeAsync(() => {
     messageService.config({ nzDuration: 0 });
-    messageService.create(null, 'loading', 'EXISTS');
+    messageService.create('', 'loading', 'EXISTS');
     demoAppFixture.detectChanges();
     tick(50000);
     expect(overlayContainerElement.textContent).toContain('EXISTS');
@@ -153,7 +153,7 @@ describe('NzNotification', () => {
 
   it('should show with placement of topLeft', () => {
     messageService.config({ nzPlacement: 'topLeft' });
-    messageService.create(null, null, 'EXISTS');
+    messageService.create('', '', 'EXISTS');
     demoAppFixture.detectChanges();
     expect(overlayContainerElement.textContent).toContain('EXISTS');
     expect(overlayContainerElement.querySelector('.ant-notification-topLeft')).not.toBeNull();
@@ -167,7 +167,7 @@ describe('NzNotification', () => {
   });
 
   it('should update an existing notification when keys are matched', () => {
-    messageService.create(null, null, 'EXISTS', { nzKey: 'exists' });
+    messageService.create('', '', 'EXISTS', { nzKey: 'exists' });
     expect(overlayContainerElement.textContent).toContain('EXISTS');
     messageService.create('success', 'Title', 'SHOULD NOT CHANGE', { nzKey: 'exists' });
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
@@ -179,7 +179,7 @@ describe('NzNotification', () => {
   it('should receive `true` when it is closed by user', fakeAsync(() => {
     let onCloseFlag = false;
 
-    messageService.create(null, null, 'close').onClose.subscribe(user => {
+    messageService.create('', '', 'close').onClose!.subscribe(user => {
       if (user) {
         onCloseFlag = true;
       }
@@ -187,7 +187,7 @@ describe('NzNotification', () => {
 
     demoAppFixture.detectChanges();
     tick(1000);
-    const closeEl = overlayContainerElement.querySelector('.ant-notification-notice-close');
+    const closeEl = overlayContainerElement.querySelector('.ant-notification-notice-close')!;
     dispatchMouseEvent(closeEl, 'click');
     tick(1000);
     expect(onCloseFlag).toBeTruthy();

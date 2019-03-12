@@ -69,7 +69,7 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
     this.nzSelectService.activatedOption$.pipe(
       takeUntil(this.destroy$)
     ).subscribe((option) => {
-      this.scrollIntoViewIfNeeded(option);
+      this.scrollIntoViewIfNeeded(option!);
     });
     this.nzSelectService.check$.pipe(
       takeUntil(this.destroy$)

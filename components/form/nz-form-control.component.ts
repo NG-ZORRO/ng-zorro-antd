@@ -39,11 +39,11 @@ import { NzFormItemComponent } from './nz-form-item.component';
 })
 export class NzFormControlComponent extends NzColDirective implements OnDestroy, OnInit, AfterContentInit, AfterViewInit, OnDestroy {
   private _hasFeedback = false;
-  validateChanges: Subscription;
-  validateString: string;
+  validateChanges: Subscription | null;
+  validateString: string | null;
   controlClassMap: NgClassType = {};
   iconType: string;
-  validateControl: FormControl;
+  validateControl: FormControl | null;
   @ContentChild(NgControl) defaultValidateControl: FormControlName;
 
   @Input()
@@ -94,7 +94,9 @@ export class NzFormControlComponent extends NzColDirective implements OnDestroy,
   }
 
   validateControlStatus(status: string): boolean {
-    return this.validateControl && (this.validateControl.dirty || this.validateControl.touched) && (this.validateControl.status === status);
+    return !!this.validateControl
+      && (this.validateControl.dirty || this.validateControl.touched)
+      && (this.validateControl.status === status);
   }
 
   setControlClassMap(): void {

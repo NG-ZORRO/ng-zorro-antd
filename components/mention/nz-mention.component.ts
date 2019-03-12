@@ -94,8 +94,8 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
   suggestionTemplate: TemplateRef<{ $implicit: any }> | null = null; // tslint:disable-line:no-any
   activeIndex = -1;
 
-  private previousValue: string;
-  private cursorMention: string;
+  private previousValue: string | null = null;
+  private cursorMention: string | null;
   private cursorMentionStart: number;
   private cursorMentionEnd: number;
   private overlayRef: OverlayRef | null;
@@ -216,8 +216,8 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
     this.previousValue = value;
     if (emit) {
       this.nzOnSearchChange.emit({
-        value : this.cursorMention.substring(1),
-        prefix: this.cursorMention[ 0 ]
+        value : this.cursorMention!.substring(1),
+        prefix: this.cursorMention![ 0 ]
       });
     }
     const searchValue = suggestions.toLowerCase();
@@ -258,7 +258,7 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
 
   private resetCursorMention(): void {
     const value = this.triggerNativeElement.value.replace(/[\r\n]/g, ' ') || '';
-    const selectionStart = this.triggerNativeElement.selectionStart;
+    const selectionStart = this.triggerNativeElement.selectionStart!;
     const prefix = typeof this.nzPrefix === 'string' ? [ this.nzPrefix ] : this.nzPrefix;
     let i = prefix.length;
     while (i >= 0) {

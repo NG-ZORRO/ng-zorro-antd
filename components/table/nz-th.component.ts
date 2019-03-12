@@ -72,7 +72,7 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzLeft: string;
   @Input() nzRight: string;
   @Input() nzAlign: 'left' | 'right' | 'center';
-  @Input() nzSort: 'ascend' | 'descend' = null;
+  @Input() nzSort: 'ascend' | 'descend'| null = null;
   @Input() nzFilters: NzThFilterType = [];
   @Input() @InputBoolean() nzExpand = false;
   @Input() @InputBoolean() nzShowCheckbox = false;
@@ -81,8 +81,8 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   @Input() @InputBoolean() nzShowFilter = false;
   @Input() @InputBoolean() nzShowRowSelection = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
-  @Output() readonly nzSortChange = new EventEmitter<string>();
-  @Output() readonly nzSortChangeWithKey = new EventEmitter<{ key: string, value: string }>();
+  @Output() readonly nzSortChange = new EventEmitter<string | null>();
+  @Output() readonly nzSortChangeWithKey = new EventEmitter<{ key: string, value: string | null }>();
   /* tslint:disable-next-line:no-any */
   @Output() readonly nzFilterChange = new EventEmitter<any[] | any>();
 
@@ -98,7 +98,7 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  setSortValue(value: 'ascend' | 'descend'): void {
+  setSortValue(value: 'ascend' | 'descend' | null): void {
     this.nzSort = value;
     this.nzSortChangeWithKey.emit({ key: this.nzSortKey, value: this.nzSort });
     this.nzSortChange.emit(this.nzSort);

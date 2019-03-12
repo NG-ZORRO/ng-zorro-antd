@@ -75,16 +75,16 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
 
   previouslyFocusedElement: HTMLElement;
   nzContentParams: D; // only service
-  overlayRef: OverlayRef;
+  overlayRef: OverlayRef | null;
   portal: TemplatePortal;
   focusTrap: FocusTrap;
   isOpen = false;
-  templateContext: { $implicit: D; drawerRef: NzDrawerRef<R> } = {
+  templateContext: { $implicit: D | undefined; drawerRef: NzDrawerRef<R> } = {
     $implicit: undefined,
     drawerRef: this as NzDrawerRef<R>
   };
 
-  get offsetTransform(): string {
+  get offsetTransform(): string | null {
     if (!this.isOpen || (this.nzOffsetX + this.nzOffsetY) === 0) {
       return null;
     }
@@ -100,7 +100,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     }
   }
 
-  get transform(): string {
+  get transform(): string | null {
 
     if (this.isOpen) {
       return null;
@@ -118,11 +118,11 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     }
   }
 
-  get width(): string {
+  get width(): string | null {
     return this.isLeftOrRight ? toCssPixel(this.nzWidth) : null;
   }
 
-  get height(): string {
+  get height(): string | null {
     return !this.isLeftOrRight ? toCssPixel(this.nzHeight) : null;
   }
 
@@ -277,9 +277,9 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   private updateBodyOverflow(): void {
     if (this.overlayRef) {
       if (this.isOpen) {
-        this.overlayRef.getConfig().scrollStrategy.enable();
+        this.overlayRef.getConfig().scrollStrategy!.enable();
       } else {
-        this.overlayRef.getConfig().scrollStrategy.disable();
+        this.overlayRef.getConfig().scrollStrategy!.disable();
       }
     }
   }
@@ -296,7 +296,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
 
   private trapFocus(): void {
     if (!this.focusTrap) {
-      this.focusTrap = this.focusTrapFactory.create(this.overlayRef.overlayElement);
+      this.focusTrap = this.focusTrapFactory.create(this.overlayRef!.overlayElement);
     }
     this.focusTrap.focusInitialElement();
   }

@@ -49,13 +49,11 @@ const options = [{
   ]
 })
 export class NzDemoCascaderDefaultValueComponent {
-  /** init data */
-  public nzOptions = options;
+  nzOptions = options;
 
-  /** ngModel value */
-  public values: any[] = ['zhejiang', 'hangzhou', 'xihu'];
+  values: any[] = ['zhejiang', 'hangzhou', 'xihu'];
   /* // or like this:
-  public values: any[] = [{
+  values: any[] = [{
     value: 'zhejiang',
     label: 'Zhejiang'
   }, {
@@ -66,7 +64,7 @@ export class NzDemoCascaderDefaultValueComponent {
     label: 'West Lake'
   }]; */
 
-  public onChanges(values: any): void {
+  onChanges(values: any): void {
     console.log(values, this.values);
   }
 }

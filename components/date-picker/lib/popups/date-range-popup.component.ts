@@ -42,7 +42,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   @Input() panelMode: PanelMode | PanelMode[];
   @Output() readonly panelModeChange = new EventEmitter<PanelMode | PanelMode[]>();
 
-  @Input() value: CandyDate | CandyDate[];
+  @Input() value: CandyDate | CandyDate[] | null;
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[]>();
 
   @Output() readonly resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
@@ -50,7 +50,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
   prefixCls: string = 'ant-calendar';
   showTimePicker: boolean = false;
-  timeOptions: SupportTimeOptions | SupportTimeOptions[];
+  timeOptions: SupportTimeOptions | SupportTimeOptions[] | null;
   valueForRangeShow: CandyDate[]; // Range ONLY
   selectedValue: CandyDate[]; // Range ONLY
   hoverValue: CandyDate[]; // Range ONLY
@@ -63,7 +63,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     return this.showToday || this.hasTimePicker || !!this.extraFooter || !!this.ranges;
   }
 
-  private partTypeMap = { 'left': 0, 'right': 1 };
+  private partTypeMap: { [ key: string]: number } = { 'left': 0, 'right': 1 };
 
   ngOnInit(): void {
     // Initialization for range properties to prevent errors while later assignment
@@ -142,10 +142,10 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     if (this.isRange) {
       const newValue = this.cloneRangeDate(this.value as CandyDate[]);
       const index = this.getPartTypeIndex(partType);
-      newValue[ index ] = this.overrideHms(value, newValue[ index ]);
+      newValue[ index ] = this.overrideHms(value, newValue[ index ])!;
       this.setValue(newValue);
     } else {
-      this.setValue(this.overrideHms(value, (this.value as CandyDate) || new CandyDate())); // If not select a date currently, use today
+      this.setValue(this.overrideHms(value, (this.value as CandyDate) || new CandyDate())!); // If not select a date currently, use today
     }
   }
 
@@ -206,7 +206,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   // Get single value or part value of a range
   getValue(partType?: RangePartType): CandyDate {
     if (this.isRange) {
-      return this.value[ this.getPartTypeIndex(partType) ];
+      return this.value![ this.getPartTypeIndex(partType) ];
     } else {
       return this.value as CandyDate;
     }
@@ -215,14 +215,14 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   getValueBySelector(partType?: RangePartType): CandyDate {
     if (this.isRange) {
       const valueShow = this.showTimePicker ? this.value : this.valueForRangeShow; // Use the real time value that without decorations when timepicker is shown up
-      return valueShow[ this.getPartTypeIndex(partType) ];
+      return valueShow![ this.getPartTypeIndex(partType) ];
     } else {
       return this.value as CandyDate;
     }
   }
 
-  getPartTypeIndex(partType: RangePartType): number {
-    return this.partTypeMap[ partType ];
+  getPartTypeIndex(partType?: RangePartType): number {
+    return this.partTypeMap[ partType! ];
   }
 
   getPlaceholder(partType?: RangePartType): string {
@@ -274,7 +274,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     }
   }
 
-  getTimeOptions(partType?: RangePartType): SupportTimeOptions {
+  getTimeOptions(partType?: RangePartType): SupportTimeOptions | null {
     if (this.showTime && this.timeOptions) {
       return this.isRange ? this.timeOptions[ this.getPartTypeIndex(partType) ] : this.timeOptions;
     }
@@ -311,7 +311,10 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     if (this.showTime) {
       const showTime = typeof this.showTime === 'object' ? this.showTime : {};
       if (this.isRange) {
-        this.timeOptions = [ this.overrideTimeOptions(showTime, this.value[ 0 ], 'start'), this.overrideTimeOptions(showTime, this.value[ 1 ], 'end') ];
+        this.timeOptions = [
+          this.overrideTimeOptions(showTime, this.value![ 0 ], 'start'),
+          this.overrideTimeOptions(showTime, this.value![ 1 ], 'end')
+         ];
       } else {
         this.timeOptions = this.overrideTimeOptions(showTime, this.value as CandyDate);
       }
@@ -349,7 +352,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     this.buildTimeOptions();
   }
 
-  private overrideHms(from: CandyDate, to: CandyDate): CandyDate {
+  private overrideHms(from: CandyDate, to: CandyDate): CandyDate | null {
     if (!from || !to) {
       return null;
     }

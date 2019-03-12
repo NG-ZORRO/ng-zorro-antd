@@ -27,10 +27,10 @@ describe('timeline', () => {
     });
     it('should init className correct', () => {
       fixture.detectChanges();
-      expect(timeline.nativeElement.firstElementChild.classList).toContain('ant-timeline');
-      expect(items.every(item => item.nativeElement.firstElementChild.classList.contains('ant-timeline-item'))).toBe(true);
-      expect(items[ 0 ].nativeElement.firstElementChild.classList).not.toContain('ant-timeline-item-last');
-      expect(items[ 3 ].nativeElement.firstElementChild.classList).toContain('ant-timeline-item-last');
+      expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline');
+      expect(items.every(item => item.nativeElement.firstElementChild!.classList.contains('ant-timeline-item'))).toBe(true);
+      expect(items[ 0 ].nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-item-last');
+      expect(items[ 3 ].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-last');
     });
     it('should color work', () => {
       fixture.detectChanges();
@@ -54,7 +54,7 @@ describe('timeline', () => {
       fixture.detectChanges();
       items = fixture.debugElement.queryAll(By.directive(NzTimelineItemComponent));
       expect(items.length).toBe(5);
-      expect(items[ 4 ].nativeElement.firstElementChild.classList).toContain('ant-timeline-item-last');
+      expect(items[ 4 ].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-last');
     });
     it('should pending work', () => {
       fixture.detectChanges();
@@ -71,27 +71,27 @@ describe('timeline', () => {
       testComponent.pending = true;
       testComponent.reverse = true;
       fixture.detectChanges();
-      expect(timeline.nativeElement.firstElementChild.firstElementChild.classList).toContain('ant-timeline-item-pending');
-      expect(items[ 0 ].nativeElement.firstElementChild.classList).toContain('ant-timeline-item-last');
-      expect(items[ 3 ].nativeElement.firstElementChild.classList).not.toContain('ant-timeline-item-last');
+      expect(timeline.nativeElement.firstElementChild.firstElementChild!.classList).toContain('ant-timeline-item-pending');
+      expect(items[ 0 ].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-last');
+      expect(items[ 3 ].nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-item-last');
     });
     it('should alternate position work', () => {
       fixture.detectChanges();
       testComponent.mode = 'alternate';
       fixture.detectChanges();
-      expect(timeline.nativeElement.firstElementChild.classList).toContain('ant-timeline-alternate');
-      expect(items[ 0 ].nativeElement.firstElementChild.classList).toContain('ant-timeline-item-left');
-      expect(items[ 1 ].nativeElement.firstElementChild.classList).toContain('ant-timeline-item-right');
-      expect(items[ 2 ].nativeElement.firstElementChild.classList).toContain('ant-timeline-item-left');
+      expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-alternate');
+      expect(items[ 0 ].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-left');
+      expect(items[ 1 ].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-right');
+      expect(items[ 2 ].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-left');
     });
     it('should alternate right position work', () => {
       fixture.detectChanges();
       testComponent.mode = 'right';
       fixture.detectChanges();
-      expect(timeline.nativeElement.firstElementChild.classList).toContain('ant-timeline-right');
-      expect(items[ 0 ].nativeElement.firstElementChild.classList).toContain('ant-timeline-item-right');
-      expect(items[ 1 ].nativeElement.firstElementChild.classList).toContain('ant-timeline-item-right');
-      expect(items[ 2 ].nativeElement.firstElementChild.classList).toContain('ant-timeline-item-right');
+      expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-right');
+      expect(items[ 0 ].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-right');
+      expect(items[ 1 ].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-right');
+      expect(items[ 2 ].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-right');
     });
   });
   describe('custom color timeline', () => {

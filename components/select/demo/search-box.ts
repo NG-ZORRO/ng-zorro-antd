@@ -22,16 +22,15 @@ import { Component } from '@angular/core';
 })
 export class NzDemoSelectSearchBoxComponent {
   selectedValue;
-  listOfOption = [];
+  listOfOption: Array<{ value: string, text: string  }> = [];
   nzFilterOption = () => true;
 
   constructor(private httpClient: HttpClient) {
-
   }
 
   search(value: string): void {
     this.httpClient.jsonp<{ result: Array<[ string, string ]> }>(`https://suggest.taobao.com/sug?code=utf-8&q=${value}`, 'callback').subscribe(data => {
-      const listOfOption = [];
+      const listOfOption: Array<{ value: string, text: string  }> = [];
       data.result.forEach(item => {
         listOfOption.push({
           value: item[ 0 ],

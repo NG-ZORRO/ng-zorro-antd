@@ -7,6 +7,7 @@ import { NzAnchorComponent } from './nz-anchor.component';
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
 
 const throttleTime = 51;
+
 describe('anchor', () => {
   let fixture: ComponentFixture<TestComponent>;
   let dl: DebugElement;
@@ -36,7 +37,7 @@ describe('anchor', () => {
         _easing?: any,
         callback?: () => void
       ) => {
-        callback();
+        if (callback) { callback(); }
       });
       expect(context._scroll).not.toHaveBeenCalled();
       page.to('#何时使用');
@@ -44,10 +45,10 @@ describe('anchor', () => {
     });
 
     it('should hava remove listen when the component is destroyed', () => {
-      expect(context.comp['scroll$'].closed).toBeFalsy();
+      expect(context.comp['scroll$']!.closed).toBeFalsy();
       context.comp.ngOnDestroy();
       fixture.detectChanges();
-      expect(context.comp['scroll$'].closed).toBeTruthy();
+      expect(context.comp['scroll$']!.closed).toBeTruthy();
     });
 
     it('should actived when scrolling to the anchor', (done: () => void) => {
@@ -55,7 +56,7 @@ describe('anchor', () => {
       page.scrollTo();
       setTimeout(() => {
         const inkNode = page.getEl('.ant-anchor-ink-ball');
-        expect(+inkNode.style.top.replace('px', '')).toBeGreaterThan(0);
+        expect(+inkNode.style.top!.replace('px', '')).toBeGreaterThan(0);
         expect(context._scroll).toHaveBeenCalled();
         done();
       }, throttleTime);
@@ -71,14 +72,14 @@ describe('anchor', () => {
       window.dispatchEvent(new Event('scroll'));
       tick(throttleTime);
       fixture.detectChanges();
-      expect(context.comp['clearActive']).toHaveBeenCalled();
+      expect(context.comp['clearActive']!).toHaveBeenCalled();
     }));
 
     it(`won't scolling when is not exists link`, () => {
       spyOn(srv, 'getScroll');
       expect(context._scroll).not.toHaveBeenCalled();
       expect(srv.getScroll).not.toHaveBeenCalled();
-      page.to('#invalid');
+      page!.to('#invalid');
       expect(srv.getScroll).not.toHaveBeenCalled();
     });
 
@@ -159,7 +160,7 @@ describe('anchor', () => {
         expect(window.addEventListener).toHaveBeenCalled();
       });
       it('with string', () => {
-        const el = document.querySelector('#target');
+        const el = document.querySelector('#target')!;
         spyOn(el, 'addEventListener');
         context.nzTarget = '#target';
         fixture.detectChanges();
@@ -189,9 +190,9 @@ describe('anchor', () => {
 
   describe('**boundary**', () => {
     it('#getOffsetTop', (done: () => void) => {
-      const el1 = document.getElementById('何时使用');
+      const el1 = document.getElementById('何时使用')!;
       spyOn(el1, 'getClientRects').and.returnValue([]);
-      const el2 = document.getElementById('parallel1');
+      const el2 = document.getElementById('parallel1')!;
       spyOn(el2, 'getBoundingClientRect').and.returnValue({
         top: 0
       });
@@ -280,7 +281,7 @@ export class TestComponent {
   nzBounds = 5;
   nzOffsetTop = 0;
   nzShowInkInFixed = false;
-  nzTarget = null;
+  nzTarget: any = null;
   _click() {}
   _scroll() {}
 }

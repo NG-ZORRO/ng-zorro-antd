@@ -13,14 +13,14 @@ import {
         <nz-form-label [nzSpan]="4" nzRequired nzFor="name">Name</nz-form-label>
         <nz-form-control [nzSpan]="8">
           <input type="text" nz-input formControlName="name" placeholder="Please input your name">
-          <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors">Please input your name</nz-form-explain>
+          <nz-form-explain *ngIf="validateForm.get('name')?.dirty && validateForm.get('name')?.errors">Please input your name</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="4" nzFor="nickname" [nzRequired]="validateForm.get('required')?.value">Nickname</nz-form-label>
         <nz-form-control [nzSpan]="8">
           <input type="text" nz-input formControlName="nickname" placeholder="Please input your nickname">
-          <nz-form-explain *ngIf="validateForm.get('nickname').dirty && validateForm.get('nickname').errors">Please input your nickname</nz-form-explain>
+          <nz-form-explain *ngIf="validateForm.get('nickname')?.dirty && validateForm.get('nickname')?.errors">Please input your nickname</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -48,13 +48,13 @@ export class NzDemoFormDynamicRuleComponent implements OnInit {
 
   requiredChange(required: boolean): void {
     if (!required) {
-      this.validateForm.get('nickname').clearValidators();
-      this.validateForm.get('nickname').markAsPristine();
+      this.validateForm.get('nickname')!.clearValidators();
+      this.validateForm.get('nickname')!.markAsPristine();
     } else {
-      this.validateForm.get('nickname').setValidators(Validators.required);
-      this.validateForm.get('nickname').markAsDirty();
+      this.validateForm.get('nickname')!.setValidators(Validators.required);
+      this.validateForm.get('nickname')!.markAsDirty();
     }
-    this.validateForm.get('nickname').updateValueAndValidity();
+    this.validateForm.get('nickname')!.updateValueAndValidity();
   }
 
   constructor(private fb: FormBuilder) {

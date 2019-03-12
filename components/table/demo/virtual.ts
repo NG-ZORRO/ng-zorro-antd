@@ -47,7 +47,7 @@ import { Component, OnInit } from '@angular/core';
   `
 })
 export class NzDemoTableVirtualComponent implements OnInit {
-  listOfData = [];
+  listOfData: any[] = [];
 
   ngOnInit(): void {
     for (let i = 0; i < 20000; i++) {

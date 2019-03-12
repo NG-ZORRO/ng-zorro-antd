@@ -16,7 +16,7 @@ const tagsFromServer = [ 'Movie', 'Books', 'Music', 'Sports' ];
 export class NzDemoTagHotTagsComponent {
 
   hotTags = tagsFromServer;
-  selectedTags = [];
+  selectedTags: string[] = [];
 
   handleChange(checked: boolean, tag: string): void {
     if (checked) {

@@ -51,7 +51,7 @@ export class NzWaveRenderer {
       this.styleForPseudo = null;
     }
     if (this.insertExtraNode && this.triggerElement.contains(this.extraNode)) {
-      this.triggerElement.removeChild(this.extraNode);
+      this.triggerElement.removeChild(this.extraNode as Node);
     }
   }
 
@@ -95,7 +95,7 @@ export class NzWaveRenderer {
   }
 
   private isValidColor(color: string): boolean {
-    return color
+    return !!color
       && color !== '#ffffff'
       && color !== 'rgb(255, 255, 255)'
       && this.isNotGrey(color)

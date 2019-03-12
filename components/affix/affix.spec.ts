@@ -241,7 +241,7 @@ describe('affix', () => {
           setupInitialState();
           emitScroll(target, 5000);
           const wrapEl = componentObject.wrap();
-          expect(+wrapEl.style.bottom.replace('px', '')).toBe(0);
+          expect(+wrapEl.style.bottom!.replace('px', '')).toBe(0);
 
           discardPeriodicTasks();
         }));
@@ -259,7 +259,7 @@ describe('affix', () => {
           setupInitialState();
           emitScroll(target, 0);
           const wrapEl = componentObject.wrap();
-          expect(+wrapEl.style.bottom.replace('px', '')).toBeGreaterThan(0);
+          expect(+wrapEl.style.bottom!.replace('px', '')).toBeGreaterThan(0);
 
           discardPeriodicTasks();
         }));
@@ -270,7 +270,7 @@ describe('affix', () => {
           setupInitialState();
           emitScroll(target, 5000);
           const wrapEl = componentObject.wrap();
-          expect(+wrapEl.style.bottom.replace('px', '')).toBe(0);
+          expect(+wrapEl.style.bottom!.replace('px', '')).toBe(0);
 
           discardPeriodicTasks();
         }));
@@ -432,7 +432,7 @@ describe('affix', () => {
       return debugElement.query(By.css('#target')).nativeElement;
     }
 
-    private getKey(el: Element | Window): string {
+    private getKey(el?: Element | Window): string {
       let key: string;
       if (el instanceof Window) {
         key = 'window';
@@ -497,7 +497,7 @@ describe('affix-extra', () => {
     window.dispatchEvent(new Event('scroll'));
     tick(30);
     fixture.detectChanges();
-    const ret = +(el.querySelector('.ant-affix') as HTMLElement).style.bottom.replace('px', '');
+    const ret = +(el.querySelector('.ant-affix') as HTMLElement).style.bottom!.replace('px', '');
     expect(ret).toBe(value);
   }));
 });
@@ -516,7 +516,7 @@ describe('affix-extra', () => {
 class TestAffixComponent {
   @ViewChild(NzAffixComponent)
   nzAffixComponent: NzAffixComponent;
-  fakeTarget: string | Element | Window = null;
+  fakeTarget: string | Element | Window | null = null;
   newOffset: {};
   newOffsetBottom: {};
 }

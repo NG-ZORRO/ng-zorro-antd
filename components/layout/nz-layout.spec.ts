@@ -129,17 +129,17 @@ describe('layout', () => {
       testComponent.isCollapsed = false;
       fixture.detectChanges();
       trigger = fixture.debugElement.query(By.css('.ant-layout-sider-trigger'));
-      expect(trigger.nativeElement.firstElementChild.classList.contains('anticon-left')).toBe(true);
+      expect(trigger.nativeElement.firstElementChild!.classList.contains('anticon-left')).toBe(true);
       testComponent.isCollapsed = true;
       fixture.detectChanges();
-      expect(trigger.nativeElement.firstElementChild.classList.contains('anticon-right')).toBe(true);
+      expect(trigger.nativeElement.firstElementChild!.classList.contains('anticon-right')).toBe(true);
       testComponent.isReverseArrow = true;
       testComponent.isCollapsed = false;
       fixture.detectChanges();
-      expect(trigger.nativeElement.firstElementChild.classList.contains('anticon-right')).toBe(true);
+      expect(trigger.nativeElement.firstElementChild!.classList.contains('anticon-right')).toBe(true);
       testComponent.isCollapsed = true;
       fixture.detectChanges();
-      expect(trigger.nativeElement.firstElementChild.classList.contains('anticon-left')).toBe(true);
+      expect(trigger.nativeElement.firstElementChild!.classList.contains('anticon-left')).toBe(true);
 
     });
   });
@@ -166,7 +166,7 @@ describe('layout', () => {
       testComponent.changeTrigger();
       fixture.detectChanges();
       const trigger = fixture.debugElement.query(By.css('.ant-layout-sider-trigger'));
-      expect(trigger.nativeElement.firstElementChild.classList.contains('anticon-up')).toBe(true);
+      expect(trigger.nativeElement.firstElementChild!.classList.contains('anticon-up')).toBe(true);
       expect(trigger).not.toBeNull();
     });
   });

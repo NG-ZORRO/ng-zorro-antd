@@ -28,7 +28,7 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   diff: number;
 
   private target: number;
-  private updater_: Subscription;
+  private updater_: Subscription | null;
 
   constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone) {
     super();

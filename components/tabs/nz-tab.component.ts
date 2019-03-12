@@ -23,8 +23,8 @@ import { NzTabDirective } from './nz-tab.directive';
   templateUrl        : './nz-tab.component.html'
 })
 export class NzTabComponent implements OnChanges, OnDestroy {
-  position: number = null;
-  origin: number = null;
+  position: number | null = null;
+  origin: number | null = null;
   isActive = false;
   readonly stateChanges = new Subject<void>();
   @ViewChild(TemplateRef) content: TemplateRef<void>;

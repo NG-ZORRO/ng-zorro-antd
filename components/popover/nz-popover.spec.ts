@@ -98,7 +98,7 @@ describe('NzPopover', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain(featureKey);
 
-      dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop')!, 'click');
       tick();
       fixture.detectChanges();
       tick(500); // Wait for animations
@@ -138,8 +138,8 @@ describe('NzPopover', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-popover-title').textContent).toContain('title-string');
-      expect(overlayContainerElement.querySelector('.ant-popover-inner-content').textContent).toContain('content-string');
+      expect(overlayContainerElement.querySelector('.ant-popover-title')!.textContent).toContain('title-string');
+      expect(overlayContainerElement.querySelector('.ant-popover-inner-content')!.textContent).toContain('content-string');
 
       // Move out from the trigger element to hide it
       dispatchMouseEvent(triggerElement, 'mouseleave');
@@ -162,8 +162,8 @@ describe('NzPopover', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-popover-title').textContent).toContain('title-template');
-      expect(overlayContainerElement.querySelector('.ant-popover-inner-content').textContent).toContain('content-template');
+      expect(overlayContainerElement.querySelector('.ant-popover-title')!.textContent).toContain('title-template');
+      expect(overlayContainerElement.querySelector('.ant-popover-inner-content')!.textContent).toContain('content-template');
 
       // Move out from the trigger element to hide it
       dispatchMouseEvent(triggerElement, 'mouseleave');

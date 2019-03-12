@@ -243,7 +243,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   // tslint:disable-next-line:no-any
   writeValue(value: any | any[]): void {
     this.value = value;
-    let listValue = [];
+    let listValue: any[] = []; // tslint:disable-line:no-any
     if (isNotNil(value)) {
       if (Array.isArray(value)) {
         listValue = value;

@@ -96,7 +96,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
       this.updatePageIndexValue(page);
     }
     if (clearInputValue) {
-      target.value = null;
+      target.value = '';
     } else {
       target.value = `${this.nzPageIndex}`;
     }
@@ -104,7 +104,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
 
   /** generate indexes list */
   buildIndexes(): void {
-    const pages = [];
+    const pages: number[] = [];
     if (this.lastIndex <= 9) {
       for (let i = 2; i <= this.lastIndex - 1; i++) {
         pages.push(i);

@@ -35,10 +35,10 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   @Input() @InputNumber() nzDelay = 0;
   @Input() @InputBoolean() nzSimple = false;
   @Input() @InputBoolean() nzSpinning = true;
+  loading = true;
   private spinning$ = new BehaviorSubject(this.nzSpinning);
   private loading$: Observable<boolean> = this.spinning$.pipe(debounceTime(this.nzDelay));
-  private loading_: Subscription;
-  loading = true;
+  private loading_: Subscription | null;
 
   subscribeLoading(): void {
     this.unsubscribeLoading();

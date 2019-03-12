@@ -14,7 +14,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 })
 export class NzDemoAutoCompleteOptionsComponent {
   inputValue: string;
-  options = [];
+  options: string[] = [];
 
   onChange(value: string): void {
     if (!value || value.indexOf('@') >= 0) {

@@ -40,8 +40,8 @@ export type SliderShowTooltip = 'always' | 'never' | 'default';
 export type SliderValue = number[] | number;
 
 export interface SliderHandler {
-  offset: number;
-  value: number;
+  offset: number | null;
+  value: number | null;
   active: boolean;
 }
 

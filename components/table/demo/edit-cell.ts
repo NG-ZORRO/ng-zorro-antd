@@ -60,8 +60,8 @@ import { NzInputDirective } from 'ng-zorro-antd';
 })
 export class NzDemoTableEditCellComponent implements OnInit {
   i = 0;
-  editId: string;
-  listOfData = [];
+  editId: string | null;
+  listOfData: any[] = [];
   @ViewChild(NzInputDirective, { read: ElementRef }) inputElement: ElementRef;
 
   @HostListener('window:click', [ '$event' ])

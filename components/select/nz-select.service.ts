@@ -2,7 +2,7 @@ import { BACKSPACE, DOWN_ARROW, ENTER, SPACE, TAB, UP_ARROW } from '@angular/cdk
 import { Injectable } from '@angular/core';
 import { combineLatest, merge, BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, share, skip, tap } from 'rxjs/operators';
-import { isNotNil } from '../core/util';
+import { isNil, isNotNil } from '../core/util';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
 import { defaultFilterOption, NzFilterOptionPipe, TFilterOption } from './nz-option.pipe';
@@ -47,14 +47,14 @@ export class NzSelectService {
     share(),
     tap(() => this.clearInput())
   );
-  activatedOption: NzOptionComponent;
-  activatedOption$ = new ReplaySubject<NzOptionComponent>(1);
+  activatedOption: NzOptionComponent | null;
+  activatedOption$ = new ReplaySubject<NzOptionComponent | null>(1);
   listOfSelectedValue$ = this.listOfSelectedValueWithEmit$.pipe(map(data => data.value));
   modelChange$ = this.listOfSelectedValueWithEmit$.pipe(
     filter(item => item.emit),
     map(data => {
       const selectedList = data.value;
-      let modelValue = null;
+      let modelValue: any[] | null = null; // tslint:disable-line:no-any
       if (this.isSingleMode) {
         if (selectedList.length) {
           modelValue = selectedList[ 0 ];
@@ -89,7 +89,7 @@ export class NzSelectService {
   listOfNzOptionComponent: NzOptionComponent[] = [];
   listOfNzOptionGroupComponent: NzOptionGroupComponent[] = [];
   // click or enter add tag option
-  addedTagOption: NzOptionComponent;
+  addedTagOption: NzOptionComponent | null;
   // display in top control
   listOfCachedSelectedOption: NzOptionComponent[] = [];
   // selected value or ViewChildren change
@@ -100,7 +100,7 @@ export class NzSelectService {
       this.listOfNzOptionGroupComponent = data[ 1 ].listOfNzOptionGroupComponent;
       this.listOfTemplateOption = this.listOfNzOptionComponent.concat(
         this.listOfNzOptionGroupComponent.reduce(
-          (pre, cur) => [ ...pre, ...cur.listOfNzOptionComponent.toArray() ], []
+          (pre, cur) => [ ...pre, ...cur.listOfNzOptionComponent.toArray() ], [] as NzOptionComponent[]
         )
       );
       this.updateListOfTagOption();
@@ -149,11 +149,11 @@ export class NzSelectService {
   updateListOfCachedOption(): void {
     if (this.isSingleMode) {
       const selectedOption = this.listOfTemplateOption.find(o => this.compareWith(o.nzValue, this.listOfSelectedValue[ 0 ]));
-      if (isNotNil(selectedOption)) {
+      if (!isNil(selectedOption)) {
         this.listOfCachedSelectedOption = [ selectedOption ];
       }
     } else {
-      const listOfCachedSelectedOption = [];
+      const listOfCachedSelectedOption: NzOptionComponent[] = [];
       this.listOfSelectedValue.forEach(v => {
         const listOfMixedOption = [ ...this.listOfTagAndTemplateOption, ...this.listOfCachedSelectedOption ];
         const option = listOfMixedOption.find(o => this.compareWith(o.nzValue, v));
@@ -214,7 +214,7 @@ export class NzSelectService {
     this.listOfSelectedValueWithEmit$.next({ value, emit });
   }
 
-  updateActivatedOption(option: NzOptionComponent): void {
+  updateActivatedOption(option: NzOptionComponent | null): void {
     this.activatedOption$.next(option);
     this.activatedOption = option;
   }
@@ -255,8 +255,8 @@ export class NzSelectService {
     };
     if (this.activatedOption) {
       if (
-        !this.listOfFilteredOption.find(item => this.compareWith(item.nzValue, this.activatedOption.nzValue)) ||
-        !this.listOfSelectedValue.find(item => this.compareWith(item, this.activatedOption.nzValue))
+        !this.listOfFilteredOption.find(item => this.compareWith(item.nzValue, this.activatedOption!.nzValue)) ||
+        !this.listOfSelectedValue.find(item => this.compareWith(item, this.activatedOption!.nzValue))
       ) {
         resetActivatedOption();
       }
@@ -328,7 +328,7 @@ export class NzSelectService {
       case SPACE:
         if (!this.disabled && !this.open) {
           this.setOpenState(true);
-          event.preventDefault();
+          e.preventDefault();
         }
         break;
       case TAB:

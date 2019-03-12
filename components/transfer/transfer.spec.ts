@@ -37,33 +37,33 @@ describe('transfer', () => {
   describe('[default]', () => {
     it('should be from left to right', () => {
       pageObject.expectLeft(LEFTCOUNT)
-      .transfer('right', 0)
-      .expectLeft(LEFTCOUNT - 1)
-      .expectRight(COUNT - LEFTCOUNT + 1);
+        .transfer('right', 0)
+        .expectLeft(LEFTCOUNT - 1)
+        .expectRight(COUNT - LEFTCOUNT + 1);
     });
 
     it('should be from right to left', () => {
       pageObject.expectRight(COUNT - LEFTCOUNT)
-      .transfer('left', [ 0, 1 ])
-      .expectRight(COUNT - LEFTCOUNT - 2)
-      .expectLeft(LEFTCOUNT + 2);
+        .transfer('left', [ 0, 1 ])
+        .expectRight(COUNT - LEFTCOUNT - 2)
+        .expectLeft(LEFTCOUNT + 2);
     });
 
     it('should be from left to right when via search found items', () => {
       pageObject.expectLeft(LEFTCOUNT)
-      .search('left', '1')
-      .transfer('right', 0)
-      .expectLeft(LEFTCOUNT - 1)
-      .expectRight(COUNT - LEFTCOUNT + 1);
+        .search('left', '1')
+        .transfer('right', 0)
+        .expectLeft(LEFTCOUNT - 1)
+        .expectRight(COUNT - LEFTCOUNT + 1);
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(0);
     });
 
     it('should be from right to left when via search found items', () => {
       pageObject.expectRight(COUNT - LEFTCOUNT)
-      .search('right', '2')
-      .transfer('left', [ 0, 1 ])
-      .expectLeft(LEFTCOUNT + 2)
-      .expectRight(COUNT - LEFTCOUNT - 2);
+        .search('right', '2')
+        .transfer('left', [ 0, 1 ])
+        .expectLeft(LEFTCOUNT + 2)
+        .expectRight(COUNT - LEFTCOUNT - 2);
       expect(pageObject.rightList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(DISABLED);
     });
 
@@ -143,7 +143,7 @@ describe('transfer', () => {
         expect(pageObject.leftList.querySelector('.ant-transfer-list-body-not-found')).toBeTruthy();
       });
       it('should be the left and right list is no data', () => {
-        instance.nzDataSource = [ ];
+        instance.nzDataSource = [];
         fixture.detectChanges();
         expect(pageObject.rightList.querySelector('.ant-transfer-list-body-not-found')).toBeTruthy();
         expect(pageObject.leftList.querySelector('.ant-transfer-list-body-not-found')).toBeTruthy();
@@ -188,9 +188,9 @@ describe('transfer', () => {
       };
       fixture.detectChanges();
       pageObject.expectLeft(LEFTCOUNT)
-      .transfer('right', [ 0, 1 ])
-      .expectLeft(LEFTCOUNT)
-      .expectRight(COUNT - LEFTCOUNT);
+        .transfer('right', [ 0, 1 ])
+        .expectLeft(LEFTCOUNT)
+        .expectRight(COUNT - LEFTCOUNT);
     });
 
     it('should be custom render item', () => {
@@ -209,7 +209,7 @@ describe('transfer', () => {
       tempFixture.detectChanges();
       injector.get(NzI18nService).setLocale(en_US);
       tempFixture.detectChanges();
-      const searchPhText = (tempFixture.debugElement.query(By.css('.ant-transfer-list-search')).nativeElement as HTMLElement).attributes.getNamedItem('placeholder').textContent;
+      const searchPhText = (tempFixture.debugElement.query(By.css('.ant-transfer-list-search')).nativeElement as HTMLElement).attributes.getNamedItem('placeholder')!.textContent;
       expect(searchPhText).toBe(en_US.Transfer.searchPlaceholder);
     });
   });
@@ -222,9 +222,9 @@ describe('transfer', () => {
       pageObject = new TransferPageObject();
       fixture.detectChanges();
       pageObject.expectLeft(LEFTCOUNT)
-      .transfer('right', 0)
-      .expectLeft(LEFTCOUNT - 1)
-      .expectRight(COUNT - LEFTCOUNT + 1);
+        .transfer('right', 0)
+        .expectLeft(LEFTCOUNT - 1)
+        .expectRight(COUNT - LEFTCOUNT + 1);
     });
     it('should be from left to right when two verification', () => {
       instance.canMove = (arg: TransferCanMove): Observable<TransferItem[]> => {
@@ -235,9 +235,9 @@ describe('transfer', () => {
       };
       fixture.detectChanges();
       pageObject.expectLeft(LEFTCOUNT)
-      .transfer('right', [ 0, 1 ])
-      .expectLeft(LEFTCOUNT - 1)
-      .expectRight(COUNT - LEFTCOUNT + 1);
+        .transfer('right', [ 0, 1 ])
+        .expectLeft(LEFTCOUNT - 1)
+        .expectRight(COUNT - LEFTCOUNT + 1);
     });
   });
 
@@ -325,22 +325,22 @@ describe('transfer', () => {
 @Component({
   template     : `
     <nz-transfer #comp
-      [nzDataSource]="nzDataSource"
-      [nzDisabled]="nzDisabled"
-      [nzTitles]="['Source', 'Target']"
-      [nzOperations]="['to right', 'to left']"
-      [nzItemUnit]="nzItemUnit"
-      [nzItemsUnit]="nzItemsUnit"
-      [nzListStyle]="nzListStyle"
-      [nzShowSearch]="nzShowSearch"
-      [nzFilterOption]="nzFilterOption"
-      [nzSearchPlaceholder]="nzSearchPlaceholder"
-      [nzNotFoundContent]="nzNotFoundContent"
-      [nzCanMove]="canMove"
-      [nzFooter]="footer"
-      (nzSearchChange)="search($event)"
-      (nzSelectChange)="select($event)"
-      (nzChange)="change($event)">
+                 [nzDataSource]="nzDataSource"
+                 [nzDisabled]="nzDisabled"
+                 [nzTitles]="['Source', 'Target']"
+                 [nzOperations]="['to right', 'to left']"
+                 [nzItemUnit]="nzItemUnit"
+                 [nzItemsUnit]="nzItemsUnit"
+                 [nzListStyle]="nzListStyle"
+                 [nzShowSearch]="nzShowSearch"
+                 [nzFilterOption]="nzFilterOption"
+                 [nzSearchPlaceholder]="nzSearchPlaceholder"
+                 [nzNotFoundContent]="nzNotFoundContent"
+                 [nzCanMove]="canMove"
+                 [nzFooter]="footer"
+                 (nzSearchChange)="search($event)"
+                 (nzSelectChange)="select($event)"
+                 (nzChange)="change($event)">
       <ng-template #footer>
         <p id="transfer-footer">footer</p>
       </ng-template>
@@ -359,7 +359,7 @@ class TestTransferComponent implements OnInit {
   nzItemsUnit = 'items';
   nzListStyle = { 'width.px': 300, 'height.px': 300 };
   nzShowSearch = true;
-  nzFilterOption = null;
+  nzFilterOption: null | ((inputValue: string, item: any) => boolean) = null;
   nzSearchPlaceholder = '请输入搜索内容';
   nzNotFoundContent = '列表为空';
 
@@ -371,7 +371,7 @@ class TestTransferComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const ret = [];
+    const ret: Array<{ key: string, title: string, description: string, direction: string, icon: string, disabled: boolean }> = [];
     for (let i = 0; i < COUNT; i++) {
       ret.push({
         key        : i.toString(),
@@ -398,9 +398,9 @@ class TestTransferComponent implements OnInit {
 @Component({
   template: `
     <nz-transfer #comp
-      nzShowSearch
-      [nzRender]="render"
-      [nzDataSource]="nzDataSource">
+                 nzShowSearch
+                 [nzRender]="render"
+                 [nzDataSource]="nzDataSource">
       <ng-template #render let-item>
         <i nz-icon type="{{item.icon}}"></i> {{ item.title }}
       </ng-template>
@@ -409,10 +409,10 @@ class TestTransferComponent implements OnInit {
 })
 class TestTransferCustomRenderComponent implements OnInit {
   @ViewChild('comp') comp: NzTransferComponent;
-  nzDataSource: any[] = [];
+  nzDataSource: Array<{ key: string, title: string, description: string, direction: string, icon: string }> = [];
 
   ngOnInit(): void {
-    const ret = [];
+    const ret: Array<{ key: string, title: string, description: string, direction: string, icon: string }> = [];
     for (let i = 0; i < COUNT; i++) {
       ret.push({
         key        : i.toString(),
@@ -427,7 +427,8 @@ class TestTransferCustomRenderComponent implements OnInit {
 }
 
 @Component({
-  template: `<nz-transfer [nzDataSource]="list"></nz-transfer>`
+  template: `
+    <nz-transfer [nzDataSource]="list"></nz-transfer>`
 })
 class Test996Component implements OnInit {
   // tslint:disable-next-line:no-any

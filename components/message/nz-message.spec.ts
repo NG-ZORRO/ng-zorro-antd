@@ -82,7 +82,7 @@ describe('NzMessage', () => {
   }));
 
   it('should auto closed by 1s', fakeAsync(() => {
-    messageService.create(null, 'EXISTS', { nzDuration: 1000 });
+    messageService.create('', 'EXISTS', { nzDuration: 1000 });
     demoAppFixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('EXISTS');
@@ -92,10 +92,10 @@ describe('NzMessage', () => {
   }));
 
   it('should not destroy when hovered', fakeAsync(() => {
-    messageService.create(null, 'EXISTS', { nzDuration: 3000 });
+    messageService.create('', 'EXISTS', { nzDuration: 3000 });
     demoAppFixture.detectChanges();
 
-    const messageElement = overlayContainerElement.querySelector('.ant-message-notice');
+    const messageElement = overlayContainerElement.querySelector('.ant-message-notice')!;
     dispatchMouseEvent(messageElement, 'mouseenter');
     tick(1000);
     expect(overlayContainerElement.textContent).toContain('EXISTS');
@@ -157,7 +157,7 @@ describe('NzMessage', () => {
     let onCloseFlag = false;
 
     const msg = messageService.create('loading', 'CLOSE');
-    msg.onClose.subscribe(() => {
+    msg.onClose!.subscribe(() => {
       onCloseFlag = true;
     });
 

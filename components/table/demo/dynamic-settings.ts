@@ -134,7 +134,7 @@ import { Component, OnInit } from '@angular/core';
   ]
 })
 export class NzDemoTableDynamicSettingsComponent implements OnInit {
-  listOfData = [];
+  listOfData: any[] = [];
   bordered = false;
   loading = false;
   sizeChanger = false;
@@ -148,7 +148,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   checkbox = true;
   allChecked = false;
   indeterminate = false;
-  displayData = [];
+  displayData: any[] = [];
   simple = false;
   noResult = false;
   position = 'bottom';

@@ -28,5 +28,5 @@ export interface TransferSelectChange {
   direction: string;
   checked: boolean;
   list: TransferItem[];
-  item: TransferItem;
+  item?: TransferItem;
 }

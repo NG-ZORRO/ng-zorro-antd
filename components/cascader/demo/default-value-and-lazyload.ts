@@ -55,16 +55,14 @@ const scenicspots = {
   ]
 })
 export class NzDemoCascaderDefaultValueAndLazyloadComponent {
+  values: any[] = ['zhejiang', 'hangzhou', 'xihu'];
 
-  /** ngModel value */
-  public values: any[] = ['zhejiang', 'hangzhou', 'xihu'];
-
-  public onChanges(values: any): void {
+  onChanges(values: any): void {
     console.log(values, this.values);
   }
 
   /** load data async execute by `nzLoadData` method */
-  public loadData(node: any, index: number): PromiseLike<any> {
+  loadData(node: any, index: number): PromiseLike<any> {
     return new Promise((resolve) => {
       setTimeout(() => {
         if (index < 0) { // if index less than 0 it is root node
@@ -78,5 +76,4 @@ export class NzDemoCascaderDefaultValueAndLazyloadComponent {
       }, 1000);
     });
   }
-
 }

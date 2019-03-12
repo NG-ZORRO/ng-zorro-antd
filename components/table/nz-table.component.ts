@@ -80,7 +80,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   @Input() nzPageSize = 10;
   @Input() nzData = [];
   @Input() nzPaginationPosition: 'top' | 'bottom' | 'both' = 'bottom';
-  @Input() nzScroll: { x: string; y: string } = { x: null, y: null };
+  @Input() nzScroll: { x: string | null; y: string | null } = { x: null, y: null };
   @Input() @ViewChild('renderItemTemplate') nzItemRender: TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }>;
   @Input() @InputBoolean() nzFrontPagination = true;
   @Input() @InputBoolean() nzTemplateMode = false;
