@@ -16,7 +16,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 })
 export class NzDemoAutoCompleteBasicComponent {
   inputValue: string;
-  options = [];
+  options: string[] = [];
 
   onInput(value: string): void {
     this.options = value ? [

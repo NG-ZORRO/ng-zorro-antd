@@ -168,7 +168,7 @@ describe('NzSlider', () => {
     }));
 
     it('should never display tooltips if set to `never`', fakeAsync(() => {
-      const handlerHost = sliderNativeElement.querySelector('nz-slider-handle');
+      const handlerHost = sliderNativeElement.querySelector('nz-slider-handle')!;
 
       testComponent.show = 'never';
       tick(400);
@@ -393,7 +393,7 @@ describe('NzSlider', () => {
         fixture.detectChanges();
         dispatchSlideEventSequence(sliderNativeElement, 0, 0.333333);
 
-        expect(sliderInstance.value.toString()).toBe(expected);
+        expect(sliderInstance.value!.toString()).toBe(expected);
       };
 
       testStep(1, '33');
@@ -504,7 +504,7 @@ describe('NzSlider', () => {
       dispatchClickEventSequence(sliderNativeElement, 0.39);
       fixture.detectChanges();
 
-      expect(parseInt(trackFillElement.style.height, 10)).toBeCloseTo(62, -1);
+      expect(parseInt(trackFillElement.style.height!, 10)).toBeCloseTo(62, -1);
     });
 
     it('should have ant-slider-vertical class', () => {
@@ -591,7 +591,7 @@ describe('NzSlider', () => {
     });
 
     it('should show/hide tooltip when enter/leave a handler', fakeAsync(() => {
-      const handlerHost = sliderNativeElement.querySelector('nz-slider-handle');
+      const handlerHost = sliderNativeElement.querySelector('nz-slider-handle')!;
 
       dispatchClickEventSequence(sliderNativeElement, 0.13);
       fixture.detectChanges();
@@ -798,7 +798,7 @@ class VerticalSliderComponent {
 })
 class MixedSliderComponent {
   range = false;
-  step = 1;
+  step: number | null = 1;
   marks = { 22: '(22%)', 36: '(36%)' };
   dots = false;
   included = true;
@@ -847,7 +847,7 @@ class SliderShowTooltipComponent {
  * physical location of the click.
  */
 function dispatchClickEventSequence(sliderElement: HTMLElement, percentage: number): void {
-  const trackElement = sliderElement.querySelector('.ant-slider-rail');
+  const trackElement = sliderElement.querySelector('.ant-slider-rail')!;
   const dimensions = trackElement.getBoundingClientRect();
   const x = dimensions.left + (dimensions.width * percentage);
   const y = dimensions.top + (dimensions.height * percentage);
@@ -881,7 +881,7 @@ function dispatchSlideEventSequence(sliderElement: HTMLElement, startPercent: nu
  * @param percent The percentage of the slider where the slide will happen.
  */
 function dispatchSlideEvent(sliderElement: HTMLElement, percent: number): void {
-  const trackElement = sliderElement.querySelector('.ant-slider-rail');
+  const trackElement = sliderElement.querySelector('.ant-slider-rail')!;
   const dimensions = trackElement.getBoundingClientRect();
   const x = dimensions.left + (dimensions.width * percent);
   const y = dimensions.top + (dimensions.height * percent);
@@ -895,7 +895,7 @@ function dispatchSlideEvent(sliderElement: HTMLElement, percent: number): void {
  * @param percent The percentage of the slider where the slide will begin.
  */
 function dispatchSlideStartEvent(sliderElement: HTMLElement, percent: number): void {
-  const trackElement = sliderElement.querySelector('.ant-slider-rail');
+  const trackElement = sliderElement.querySelector('.ant-slider-rail')!;
   const dimensions = trackElement.getBoundingClientRect();
   const x = dimensions.left + (dimensions.width * percent);
   const y = dimensions.top + (dimensions.height * percent);
@@ -911,7 +911,7 @@ function dispatchSlideStartEvent(sliderElement: HTMLElement, percent: number): v
  * @param percent The percentage of the slider where the slide will end.
  */
 function dispatchSlideEndEvent(sliderElement: HTMLElement, percent: number): void {
-  const trackElement = sliderElement.querySelector('.ant-slider-rail');
+  const trackElement = sliderElement.querySelector('.ant-slider-rail')!;
   const dimensions = trackElement.getBoundingClientRect();
   const x = dimensions.left + (dimensions.width * percent);
   const y = dimensions.top + (dimensions.height * percent);

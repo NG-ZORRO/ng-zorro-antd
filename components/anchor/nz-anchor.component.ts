@@ -16,7 +16,8 @@ import {
 import { fromEvent, Subscription } from 'rxjs';
 import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
-import { toBoolean, toNumber } from '../core/util/convert';
+import { NGStyleInterface } from '../core/types/ng-class';
+import { toNumber, InputBoolean, InputNumber } from '../core/util/convert';
 
 import { NzAnchorLinkComponent } from './nz-anchor-link.component';
 
@@ -35,41 +36,11 @@ const sharpMatcherRegx = /#([^#]+)$/;
   changeDetection    : ChangeDetectionStrategy.OnPush
 })
 export class NzAnchorComponent implements OnDestroy, AfterViewInit {
-
-  private links: NzAnchorLinkComponent[] = [];
-  private animating = false;
-  private target: Element = null;
-  private scroll$: Subscription = null;
-  private destroyed = false;
   @ViewChild('ink') private ink: ElementRef;
-  visible = false;
-  wrapperStyle: {} = { 'max-height': '100vh' };
 
-  // region: fields
-
-  private _affix: boolean = true;
-
-  @Input()
-  set nzAffix(value: boolean) {
-    this._affix = toBoolean(value);
-  }
-
-  get nzAffix(): boolean {
-    return this._affix;
-  }
-
-  private _bounds: number = 5;
-
-  @Input()
-  set nzBounds(value: number) {
-    this._bounds = toNumber(value, 5);
-  }
-
-  get nzBounds(): number {
-    return this._bounds;
-  }
-
-  private _offsetTop: number;
+  @Input() @InputBoolean() nzAffix = true;
+  @Input() @InputBoolean() nzShowInkInFixed = false;
+  @Input() @InputNumber() nzBounds: number = 5;
 
   @Input()
   set nzOffsetTop(value: number) {
@@ -83,16 +54,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
     return this._offsetTop;
   }
 
-  private _showInkInFixed: boolean = false;
-
-  @Input()
-  set nzShowInkInFixed(value: boolean) {
-    this._showInkInFixed = toBoolean(value);
-  }
-
-  get nzShowInkInFixed(): boolean {
-    return this._showInkInFixed;
-  }
+  private _offsetTop: number;
 
   @Input()
   set nzTarget(el: string | Element) {
@@ -100,11 +62,17 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
     this.registerScrollEvent();
   }
 
-  @Output() readonly nzClick: EventEmitter<string> = new EventEmitter();
+  @Output() readonly nzClick = new EventEmitter<string>();
+  @Output() readonly nzScroll = new EventEmitter<NzAnchorLinkComponent>();
 
-  @Output() readonly nzScroll: EventEmitter<NzAnchorLinkComponent> = new EventEmitter();
+  visible = false;
+  wrapperStyle: NGStyleInterface = { 'max-height': '100vh' };
 
-  // endregion
+  private links: NzAnchorLinkComponent[] = [];
+  private animating = false;
+  private target: Element | null = null;
+  private scroll$: Subscription | null = null;
+  private destroyed = false;
 
   /* tslint:disable-next-line:no-any */
   constructor(private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any, private cdr: ChangeDetectorRef) {
@@ -155,7 +123,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
     if (!rect.width && !rect.height) {
       return rect.top;
     }
-    return rect.top - element.ownerDocument.documentElement.clientTop;
+    return rect.top - element.ownerDocument!.documentElement!.clientTop;
   }
 
   handleScroll(): void {
@@ -220,7 +188,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
     const containerScrollTop = this.scrollSrv.getScroll(this.getTarget());
     const elOffsetTop = this.scrollSrv.getOffset(el).top;
     const targetScrollTop = containerScrollTop + elOffsetTop - (this.nzOffsetTop || 0);
-    this.scrollSrv.scrollTo(this.getTarget(), targetScrollTop, null, () => {
+    this.scrollSrv.scrollTo(this.getTarget(), targetScrollTop, undefined, () => {
       this.animating = false;
       this.handleActive(linkComp);
     });

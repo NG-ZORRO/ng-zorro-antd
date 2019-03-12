@@ -1,9 +1,16 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Optional, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  Optional,
+  ViewEncapsulation
+} from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { NzMessageContainerComponent } from '../message/nz-message-container.component';
 import { NzNotificationConfig, NZ_NOTIFICATION_CONFIG, NZ_NOTIFICATION_DEFAULT_CONFIG } from './nz-notification-config';
-import { NzNotificationDataFilled } from './nz-notification.definitions';
+import { NzNotificationDataFilled, NzNotificationDataOptions } from './nz-notification.definitions';
 
 @Component({
   changeDetection    : ChangeDetectionStrategy.OnPush,
@@ -25,7 +32,7 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
    * A list of notifications displayed on the screen.
    * @override
    */
-  messages: NzNotificationDataFilled[] = [];
+  messages: Array<Required<NzNotificationDataFilled>> = [];
 
   /**
    * Create a new notification.
@@ -37,14 +44,17 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
     notification.options = this._mergeMessageOptions(notification.options);
     notification.onClose = new Subject<boolean>();
     const key = notification.options.nzKey;
-    const notificationWithSameKey = this.messages.find(msg => msg.options.nzKey === notification.options.nzKey);
+    const notificationWithSameKey = this.messages.find(
+      msg => msg.options.nzKey === (notification.options as Required<NzNotificationDataOptions>).nzKey
+    );
+
     if (key && notificationWithSameKey) {
       this.replaceNotification(notificationWithSameKey, notification);
     } else {
       if (this.messages.length >= this.config.nzMaxStack) {
         this.messages.splice(0, 1);
       }
-      this.messages.push(notification);
+      this.messages.push(notification as Required<NzNotificationDataFilled>);
     }
     this.cdr.detectChanges();
   }

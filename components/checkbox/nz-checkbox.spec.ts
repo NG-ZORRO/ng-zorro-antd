@@ -29,20 +29,20 @@ describe('checkbox', () => {
     it('should className correct', () => {
       fixture.detectChanges();
       expect(checkbox.nativeElement.classList.contains('ant-checkbox-wrapper')).toBe(true);
-      expect(checkbox.nativeElement.firstElementChild.classList.contains('ant-checkbox')).toBe(true);
-      expect(checkbox.nativeElement.firstElementChild.firstElementChild.classList.contains('ant-checkbox-input')).toBe(true);
+      expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox')).toBe(true);
+      expect(checkbox.nativeElement.firstElementChild.firstElementChild!.classList.contains('ant-checkbox-input')).toBe(true);
       expect(checkbox.nativeElement.firstElementChild.lastElementChild.classList.contains('ant-checkbox-inner')).toBe(true);
       expect(checkbox.nativeElement.lastElementChild.innerText).toBe('Checkbox');
     });
     it('should click change', () => {
       fixture.detectChanges();
       expect(testComponent.checked).toBe(false);
-      expect(checkbox.nativeElement.firstElementChild.classList.contains('ant-checkbox-checked')).toBe(false);
+      expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox-checked')).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
       checkbox.nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.checked).toBe(true);
-      expect(checkbox.nativeElement.firstElementChild.classList.contains('ant-checkbox-checked')).toBe(true);
+      expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox-checked')).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     });
     it('should click input a11y correct', () => {
@@ -65,7 +65,7 @@ describe('checkbox', () => {
       flush();
       fixture.detectChanges();
       expect(testComponent.checked).toBe(true);
-      expect(checkbox.nativeElement.firstElementChild.classList.contains('ant-checkbox-checked')).toBe(true);
+      expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox-checked')).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
     it('should disabled work', () => {
@@ -73,22 +73,22 @@ describe('checkbox', () => {
       testComponent.disabled = true;
       fixture.detectChanges();
       expect(testComponent.checked).toBe(false);
-      expect(checkbox.nativeElement.firstElementChild.classList.contains('ant-checkbox-checked')).toBe(false);
+      expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox-checked')).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
       checkbox.nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.checked).toBe(false);
-      expect(checkbox.nativeElement.firstElementChild.classList.contains('ant-checkbox-checked')).toBe(false);
+      expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox-checked')).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     });
     it('should indeterminate work', () => {
       fixture.detectChanges();
       testComponent.indeterminate = true;
       fixture.detectChanges();
-      expect(checkbox.nativeElement.firstElementChild.classList.contains('ant-checkbox-indeterminate')).toBe(true);
+      expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox-indeterminate')).toBe(true);
       testComponent.checked = true;
       fixture.detectChanges();
-      expect(checkbox.nativeElement.firstElementChild.classList.contains('ant-checkbox-indeterminate')).toBe(true);
+      expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox-indeterminate')).toBe(true);
     });
     it('should autofocus work', () => {
       fixture.detectChanges();
@@ -129,10 +129,10 @@ describe('checkbox', () => {
       flush();
       fixture.detectChanges();
       expect(checkboxGroup.nativeElement.classList).toContain('ant-checkbox-group');
-      expect(checkboxs[ 0 ].firstElementChild.classList).toContain('ant-checkbox-checked');
-      expect(checkboxs[ 1 ].firstElementChild.classList).toContain('ant-checkbox-disabled');
-      expect(checkboxs[ 1 ].firstElementChild.classList).not.toContain('ant-checkbox-checked');
-      expect(checkboxs[ 2 ].firstElementChild.classList).not.toContain('ant-checkbox-checked');
+      expect(checkboxs[ 0 ].firstElementChild!.classList).toContain('ant-checkbox-checked');
+      expect(checkboxs[ 1 ].firstElementChild!.classList).toContain('ant-checkbox-disabled');
+      expect(checkboxs[ 1 ].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
+      expect(checkboxs[ 2 ].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
     }));
     it('should click correct', () => {
       fixture.detectChanges();
@@ -140,7 +140,7 @@ describe('checkbox', () => {
       checkboxs[ 0 ].click();
       fixture.detectChanges();
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
-      expect(checkboxs[ 0 ].firstElementChild.classList).not.toContain('ant-checkbox-checked');
+      expect(checkboxs[ 0 ].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
     });
     it('should sub disabled work', () => {
       fixture.detectChanges();
@@ -148,7 +148,7 @@ describe('checkbox', () => {
       checkboxs[ 1 ].click();
       fixture.detectChanges();
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
-      expect(checkboxs[ 1 ].firstElementChild.classList).not.toContain('ant-checkbox-checked');
+      expect(checkboxs[ 1 ].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
     });
     it('should all disabled work', () => {
       testComponent.disabled = true;
@@ -157,7 +157,7 @@ describe('checkbox', () => {
       checkboxs[ 2 ].click();
       fixture.detectChanges();
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
-      expect(checkboxs[ 2 ].firstElementChild.classList).not.toContain('ant-checkbox-checked');
+      expect(checkboxs[ 2 ].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
     });
     it('should ngModel work', fakeAsync(() => {
       fixture.detectChanges();
@@ -165,7 +165,7 @@ describe('checkbox', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(checkboxs[ 0 ].firstElementChild.classList).not.toContain('ant-checkbox-checked');
+      expect(checkboxs[ 0 ].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
   });

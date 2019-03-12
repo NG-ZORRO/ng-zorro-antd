@@ -29,38 +29,38 @@ describe('radio', () => {
     it('should className correct', () => {
       fixture.detectChanges();
       expect(radio.nativeElement.classList).toContain('ant-radio-wrapper');
-      expect(radio.nativeElement.firstElementChild.classList).toContain('ant-radio');
+      expect(radio.nativeElement.firstElementChild!.classList).toContain('ant-radio');
       expect(radio.nativeElement.firstElementChild.lastElementChild.classList).toContain('ant-radio-inner');
     });
     it('should click work', fakeAsync(() => {
       fixture.detectChanges();
-      expect(radio.nativeElement.firstElementChild.classList).not.toContain('ant-radio-checked');
+      expect(radio.nativeElement.firstElementChild!.classList).not.toContain('ant-radio-checked');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
       radio.nativeElement.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(radio.nativeElement.firstElementChild.classList).toContain('ant-radio-checked');
+      expect(radio.nativeElement.firstElementChild!.classList).toContain('ant-radio-checked');
       expect(testComponent.value).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       radio.nativeElement.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(radio.nativeElement.firstElementChild.classList).toContain('ant-radio-checked');
+      expect(radio.nativeElement.firstElementChild!.classList).toContain('ant-radio-checked');
       expect(testComponent.value).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     }));
     it('should disabled work', fakeAsync(() => {
       testComponent.disabled = true;
       fixture.detectChanges();
-      expect(radio.nativeElement.firstElementChild.classList).not.toContain('ant-radio-checked');
+      expect(radio.nativeElement.firstElementChild!.classList).not.toContain('ant-radio-checked');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
       radio.nativeElement.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(radio.nativeElement.firstElementChild.classList).not.toContain('ant-radio-checked');
+      expect(radio.nativeElement.firstElementChild!.classList).not.toContain('ant-radio-checked');
       expect(testComponent.value).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
@@ -95,7 +95,7 @@ describe('radio', () => {
     it('should className correct', () => {
       fixture.detectChanges();
       expect(radio.nativeElement.classList).toContain('ant-radio-button-wrapper');
-      expect(radio.nativeElement.firstElementChild.classList).toContain('ant-radio-button');
+      expect(radio.nativeElement.firstElementChild!.classList).toContain('ant-radio-button');
       expect(radio.nativeElement.firstElementChild.lastElementChild.classList).toContain('ant-radio-button-inner');
     });
   });
@@ -123,8 +123,8 @@ describe('radio', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(radios[ 0 ].nativeElement.firstElementChild.classList).not.toContain('ant-radio-button-checked');
-      expect(radios[ 1 ].nativeElement.firstElementChild.classList).toContain('ant-radio-button-checked');
+      expect(radios[ 0 ].nativeElement.firstElementChild!.classList).not.toContain('ant-radio-button-checked');
+      expect(radios[ 1 ].nativeElement.firstElementChild!.classList).toContain('ant-radio-button-checked');
       expect(testComponent.value).toBe('B');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       radios[ 1 ].nativeElement.click();
@@ -145,7 +145,7 @@ describe('radio', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(radios[ 1 ].nativeElement.firstElementChild.classList).not.toContain('ant-radio-button-checked');
+      expect(radios[ 1 ].nativeElement.firstElementChild!.classList).not.toContain('ant-radio-button-checked');
       expect(testComponent.value).toBe('A');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
@@ -177,7 +177,7 @@ describe('radio', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(radios[ 1 ].nativeElement.firstElementChild.classList).not.toContain('ant-radio-button-checked');
+      expect(radios[ 1 ].nativeElement.firstElementChild!.classList).not.toContain('ant-radio-button-checked');
       expect(testComponent.value).toBe('A');
     }));
     it('should single disable work', fakeAsync(() => {
@@ -190,7 +190,7 @@ describe('radio', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(radios[ 2 ].nativeElement.firstElementChild.classList).not.toContain('ant-radio-button-checked');
+      expect(radios[ 2 ].nativeElement.firstElementChild!.classList).not.toContain('ant-radio-button-checked');
       expect(testComponent.value).toBe('A');
     }));
   });

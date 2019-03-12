@@ -63,7 +63,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     } else if (this.breakPoint && this.nzGutter[ this.breakPoint ]) {
       return this.nzGutter[ this.breakPoint ];
     } else {
-      return;
+      return 0;
     }
   }
 

@@ -12,7 +12,7 @@ import { NzSelectModule } from './nz-select.module';
 import { NzSelectService } from './nz-select.service';
 
 export const createListOfOption = (count, prefix = 'option') => {
-  const list = [];
+  const list: NzOptionComponent[] = [];
   for (let i = 0; i < count; i++) {
     const option = new NzOptionComponent();
     option.nzValue = `${prefix}_value_${i}`;
@@ -22,7 +22,7 @@ export const createListOfOption = (count, prefix = 'option') => {
   return list;
 };
 export const createListOfGroupOption = (groupCount, optionCount) => {
-  const list = [];
+  const list: NzOptionGroupComponent[] = [];
   for (let i = 0; i < groupCount; i++) {
     const queryList = new QueryList<NzOptionComponent>();
     queryList.reset(createListOfOption(optionCount, `${i}_inner_option`));

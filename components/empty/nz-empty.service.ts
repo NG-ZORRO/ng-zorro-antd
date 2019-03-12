@@ -7,7 +7,7 @@ import { getEmptyContentTypeError } from './nz-empty-error';
   providedIn: 'root'
 })
 export class NzEmptyService<T = any> { // tslint:disable-line:no-any
-  userDefaultContent$ = new BehaviorSubject<NzEmptyCustomContent>(undefined);
+  userDefaultContent$ = new BehaviorSubject<NzEmptyCustomContent | undefined>(undefined);
 
   constructor(@Inject(NZ_DEFAULT_EMPTY_CONTENT) @Optional() private defaultEmptyContent: Type<T>) {
     if (this.defaultEmptyContent) {

@@ -131,7 +131,7 @@ describe('NzTooltip', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain(featureKey);
 
-      dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop')!, 'click');
       tick();
       fixture.detectChanges();
       tick(500); // Wait for animations
@@ -174,7 +174,7 @@ describe('NzTooltip', () => {
       tick();
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain(featureKey);
-      expect(overlayContainerElement.querySelector('.ant-tooltip').classList).toContain('testClass');
+      expect(overlayContainerElement.querySelector('.ant-tooltip')!.classList).toContain('testClass');
 
       // NOTE: the overlayElement is only available after tooltip shown up
       const overlayElement = (component.titleStringNzTooltipDirective as any).tooltip.overlay.overlayRef.overlayElement; // tslint:disable-line:no-any

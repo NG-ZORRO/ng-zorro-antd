@@ -100,7 +100,7 @@ export class YearPanelComponent implements OnChanges {
         const content = String(year);
         const disabled = this.disabledDate ? this.disabledDate(this.value.setYear(year).nativeDate) : false;
 
-        const cell = years[rowIndex][colIndex] = {
+        const cell: PanelYearData = years[rowIndex][colIndex] = {
           disabled,
           content,
           year,
@@ -143,6 +143,6 @@ export interface PanelYearData {
   isCurrent: boolean;
   isLowerThanStart: boolean;
   isBiggerThanEnd: boolean;
-  classMap: object;
-  onClick(): void;
+  classMap: object | null;
+  onClick: VoidFunction | null;
 }

@@ -83,8 +83,8 @@ import { Component, OnInit } from '@angular/core';
   `
 })
 export class NzDemoTableNestedTableComponent implements OnInit {
-  listOfParentData = [];
-  listOfChildrenData = [];
+  listOfParentData: any[] = [];
+  listOfChildrenData: any[] = [];
 
   ngOnInit(): void {
     for (let i = 0; i < 3; ++i) {

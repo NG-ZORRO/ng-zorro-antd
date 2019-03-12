@@ -49,13 +49,10 @@ const options = [{
   ]
 })
 export class NzDemoCascaderDefaultValueAndAsynOptionsComponent implements OnInit {
-  /** init data */
-  public nzOptions = null;
+  nzOptions: any[] | null = null;
+  values: any[] = ['zhejiang', 'hangzhou', 'xihu'];
 
-  /** ngModel value */
-  public values: any[] = ['zhejiang', 'hangzhou', 'xihu'];
-
-  public onChanges(values: any): void {
+  onChanges(values: any): void {
     console.log(values, this.values);
   }
 

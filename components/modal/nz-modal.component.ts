@@ -100,11 +100,11 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   get cancelText(): string {
-    return this.nzCancelText || this.locale.cancelText;
+    return this.nzCancelText || this.locale.cancelText!;
   }
 
   get okText(): string {
-    return this.nzOkText || this.locale.okText;
+    return this.nzOkText || this.locale.okText!;
   }
 
   get hidden(): boolean {
@@ -112,8 +112,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   } // Indicate whether this dialog should hidden
 
   locale: { okText?: string, cancelText?: string } = {};
-  maskAnimationClassMap: object;
-  modalAnimationClassMap: object;
+  maskAnimationClassMap: object | null;
+  modalAnimationClassMap: object | null;
   transformOrigin = '0px 0px 0px'; // The origin point that animation based on
 
   private contentComponentRef: ComponentRef<T>; // Handle the reference when using nzContent as Component
@@ -134,10 +134,9 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     private focusTrapFactory: FocusTrapFactory,
     private cdr: ChangeDetectorRef,
     @Inject(NZ_MODAL_CONFIG) private config: NzModalConfig,
-    @Inject(DOCUMENT) private document: any) { // tslint:disable-line:no-any
-
+    @Inject(DOCUMENT) private document: any // tslint:disable-line:no-any
+  ) {
     super();
-
     this.config = this.mergeDefaultConfig(this.config);
     this.scrollStrategy = this.overlay.scrollStrategies.block();
   }
@@ -313,7 +312,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     }
 
     return Promise
-    .resolve(animation && this.animateTo(visible))
+    .resolve(animation ? this.animateTo(visible) : undefined)
     .then(() => { // Emit open/close event after animations over
       if (visible) {
         this.nzAfterOpen.emit();
@@ -330,7 +329,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   // Lookup a button's property, if the prop is a function, call & then return the result, otherwise, return itself.
   public getButtonCallableProp(options: ModalButtonOptions<T>, prop: string): {} {
     const value = options[ prop ];
-    const args = [];
+    const args: T[] = [];
     if (this.contentComponentRef) {
       args.push(this.contentComponentRef.instance);
     }

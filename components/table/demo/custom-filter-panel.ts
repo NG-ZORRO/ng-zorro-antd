@@ -53,13 +53,13 @@ import { Component } from '@angular/core';
 })
 export class NzDemoTableCustomFilterPanelComponent {
   searchValue = '';
-  sortName = null;
-  sortValue = null;
+  sortName: string | null = null;
+  sortValue: string | null = null;
   listOfFilterAddress = [
     { text: 'London', value: 'London' },
     { text: 'Sidney', value: 'Sidney' }
   ];
-  listOfSearchAddress = [];
+  listOfSearchAddress: string[] = [];
   listOfData = [
     {
       name   : 'John Brown',
@@ -89,7 +89,7 @@ export class NzDemoTableCustomFilterPanelComponent {
     this.search();
   }
 
-  sort(sortName: string, value: boolean): void {
+  sort(sortName: string, value: string): void {
     this.sortName = sortName;
     this.sortValue = value;
     this.search();
@@ -106,6 +106,6 @@ export class NzDemoTableCustomFilterPanelComponent {
         (item.name.indexOf(this.searchValue) !== -1);
     };
     const data = this.listOfData.filter(item => filterFunc(item));
-    this.listOfDisplayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] > b[ this.sortName ] ? 1 : -1) : (b[ this.sortName ] > a[ this.sortName ] ? 1 : -1));
+    this.listOfDisplayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName! ] > b[ this.sortName! ] ? 1 : -1) : (b[ this.sortName! ] > a[ this.sortName! ] ? 1 : -1));
   }
 }

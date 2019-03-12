@@ -165,7 +165,7 @@ describe('NzYearPickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      const disabledCell = overlayContainerElement.querySelector('tbody.ant-calendar-year-panel-tbody tr td.ant-calendar-year-panel-cell-disabled');
+      const disabledCell = overlayContainerElement.querySelector('tbody.ant-calendar-year-panel-tbody tr td.ant-calendar-year-panel-cell-disabled')!;
       expect(disabledCell.textContent).toContain('2013');
     }));
 
@@ -252,7 +252,7 @@ describe('NzYearPickerComponent', () => {
       fixture.detectChanges();
 
       const cell = getSecondYearCell(); // Use the second cell
-      const cellText = cell.textContent.trim();
+      const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
       fixture.detectChanges();
       tick(500);
@@ -307,11 +307,11 @@ describe('NzYearPickerComponent', () => {
       fixture.detectChanges();
 
       openPickerByClickTrigger();
-      expect(overlayContainerElement.textContent.indexOf('TEST_EXTRA_FOOTER') > -1).toBeTruthy();
+      expect(overlayContainerElement.textContent!.indexOf('TEST_EXTRA_FOOTER') > -1).toBeTruthy();
 
       fixtureInstance.nzRenderExtraFooter = 'TEST_EXTRA_FOOTER_STRING';
       fixture.detectChanges();
-      expect(overlayContainerElement.textContent.indexOf(fixtureInstance.nzRenderExtraFooter) > -1).toBeTruthy();
+      expect(overlayContainerElement.textContent!.indexOf(fixtureInstance.nzRenderExtraFooter) > -1).toBeTruthy();
     }));
 
   }); // /specified date picker testing
@@ -328,7 +328,7 @@ describe('NzYearPickerComponent', () => {
 
       // Click the first cell to change ngModel
       const cell = getSecondYearCell();
-      const cellText = cell.textContent.trim();
+      const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
       fixture.detectChanges();
       tick(500);

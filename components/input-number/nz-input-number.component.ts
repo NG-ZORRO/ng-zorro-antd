@@ -98,7 +98,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
       isNaN(num as number) ||
       num === '' ||
       num === null ||
-      (num && num.toString().indexOf('.') === num.toString().length - 1)
+      !!(num && num.toString().indexOf('.') === num.toString().length - 1)
     );
   }
 

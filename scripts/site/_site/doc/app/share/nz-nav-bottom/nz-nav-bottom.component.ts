@@ -17,7 +17,7 @@ import { ROUTER_LIST } from '../../router';
   `
 })
 export class NzNavBottomComponent implements OnInit {
-  list = [];
+  list: any[] = []; // tslint:disable-line:no-any
   index = 0;
   language = 'en';
 
@@ -32,7 +32,7 @@ export class NzNavBottomComponent implements OnInit {
         this.language = this.router.url.split('/')[ this.router.url.split('/').length - 1 ].split('#')[ 0 ];
         const componentsList = ROUTER_LIST.components.reduce((pre, cur) => {
           return pre.concat(cur.children);
-        }, []);
+        }, [] as any[]);
         this.list = [ ...ROUTER_LIST.intro.filter(item => item.language === this.language), ...componentsList.filter(item => item.language === this.language) ];
         this.index = this.list.findIndex(item => item.path === url);
       }

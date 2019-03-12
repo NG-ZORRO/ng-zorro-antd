@@ -119,7 +119,7 @@ describe('list', () => {
 
     describe('#nzDataSource', () => {
       it('should working', () => {
-        expect(dl.queryAll(By.css('nz-list-item')).length).toBe(context.data.length);
+        expect(dl.queryAll(By.css('nz-list-item')).length).toBe(context.data!.length);
       });
 
       it('should be render empty text when data source is empty', () => {
@@ -138,7 +138,7 @@ describe('list', () => {
 
     it('#nzGrid', () => {
       const colCls = `.ant-col-${context.nzGrid.span}`;
-      expect(dl.queryAll(By.css(colCls)).length).toBe(context.data.length);
+      expect(dl.queryAll(By.css(colCls)).length).toBe(context.data!.length);
     });
 
     it('#loadMore', () => {
@@ -228,7 +228,7 @@ class TestListComponent {
   nzLoading = false;
   nzSize = 'default';
   nzSplit = true;
-  data = [
+  data?: string[] = [
     'Racing car sprays burning fuel into crowd.',
     'Japanese princess to wed commoner.',
     'Racing car sprays burning fuel into crowd.',

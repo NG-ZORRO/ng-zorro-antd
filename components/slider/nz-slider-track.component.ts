@@ -3,10 +3,10 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, Vi
 import { InputBoolean } from '../core/util/convert';
 
 export interface NzSliderTrackStyle {
-  bottom?: string;
-  height?: string;
-  left?: string;
-  width?: string;
+  bottom?: string | null;
+  height?: string | null;
+  left?: string | null;
+  width?: string | null;
   visibility?: string;
 }
 

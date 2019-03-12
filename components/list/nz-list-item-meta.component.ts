@@ -23,7 +23,7 @@ export class NzListItemMetaComponent {
   @Input()
   set nzAvatar(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
-      this.avatarStr = null;
+      this.avatarStr = '';
       this.avatarTpl = value;
     } else {
       this.avatarStr = value;

@@ -62,9 +62,9 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzNotFoundContent: string;
 
   // events
-  @Output() readonly nzChange: EventEmitter<TransferChange> = new EventEmitter();
-  @Output() readonly nzSearchChange: EventEmitter<TransferSearchChange> = new EventEmitter();
-  @Output() readonly nzSelectChange: EventEmitter<TransferSelectChange> = new EventEmitter();
+  @Output() readonly nzChange = new EventEmitter<TransferChange>();
+  @Output() readonly nzSearchChange = new EventEmitter<TransferSearchChange>();
+  @Output() readonly nzSelectChange = new EventEmitter<TransferSelectChange>();
 
   // #endregion
 
@@ -95,8 +95,8 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   handleLeftSelectAll = (checked: boolean) => this.handleSelect('left', checked);
   handleRightSelectAll = (checked: boolean) => this.handleSelect('right', checked);
 
-  handleLeftSelect = (item: TransferItem) => this.handleSelect('left', item.checked, item);
-  handleRightSelect = (item: TransferItem) => this.handleSelect('right', item.checked, item);
+  handleLeftSelect = (item: TransferItem) => this.handleSelect('left', !!item.checked, item);
+  handleRightSelect = (item: TransferItem) => this.handleSelect('right', !!item.checked, item);
 
   handleSelect(direction: 'left' | 'right', checked: boolean, item?: TransferItem): void {
     const list = this.getCheckedData(direction);

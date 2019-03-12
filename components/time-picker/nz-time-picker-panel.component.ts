@@ -25,6 +25,8 @@ function makeRange(length: number, step: number = 1): number[] {
   return new Array(Math.ceil(length / step)).fill(0).map((_, i) => i * step);
 }
 
+export type NzTimePickerUnit = 'hour' | 'minute' | 'second';
+
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -223,7 +225,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.minuteRange = makeRange(60, this.nzMinuteStep).map(r => {
         return {
           index   : r,
-          disabled: this.nzDisabledMinutes && (this.nzDisabledMinutes(this.time.hours).indexOf(r) !== -1)
+          disabled: this.nzDisabledMinutes && (this.nzDisabledMinutes(this.time.hours!).indexOf(r) !== -1)
         };
       }
     );
@@ -233,7 +235,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.secondRange = makeRange(60, this.nzSecondStep).map(r => {
         return {
           index   : r,
-          disabled: this.nzDisabledSeconds && (this.nzDisabledSeconds(this.time.hours, this.time.minutes).indexOf(r) !== -1)
+          disabled: this.nzDisabledSeconds && (this.nzDisabledSeconds(this.time.hours!, this.time.minutes!).indexOf(r) !== -1)
         };
       }
     );
@@ -270,21 +272,21 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.scrollToSelected(this.secondListElement.nativeElement, second.index, 120, 'second');
   }
 
-  scrollToSelected(instance: HTMLElement, index: number, duration: number = 0, unit: string): void {
+  scrollToSelected(instance: HTMLElement, index: number, duration: number = 0, unit: NzTimePickerUnit): void {
     const transIndex = this.translateIndex(index, unit);
     const currentOption = (instance.children[ 0 ].children[ transIndex ] || instance.children[ 0 ].children[ 0 ]) as HTMLElement;
     this.scrollTo(instance, currentOption.offsetTop, duration);
   }
 
-  translateIndex(index: number, unit: string): number {
+  translateIndex(index: number, unit: NzTimePickerUnit): number {
     if (unit === 'hour') {
       const disabledHours = this.nzDisabledHours && this.nzDisabledHours();
       return this.calcIndex(disabledHours, this.hourRange.map(item => item.index).indexOf(index));
     } else if (unit === 'minute') {
-      const disabledMinutes = this.nzDisabledMinutes && this.nzDisabledMinutes(this.time.hours);
+      const disabledMinutes = this.nzDisabledMinutes && this.nzDisabledMinutes(this.time.hours!);
       return this.calcIndex(disabledMinutes, this.minuteRange.map(item => item.index).indexOf(index));
-    } else if (unit === 'second') {
-      const disabledSeconds = this.nzDisabledSeconds && this.nzDisabledSeconds(this.time.hours, this.time.minutes);
+    } else { // second
+      const disabledSeconds = this.nzDisabledSeconds && this.nzDisabledSeconds(this.time.hours!, this.time.minutes!);
       return this.calcIndex(disabledSeconds, this.secondRange.map(item => item.index).indexOf(index));
     }
   }
@@ -318,7 +320,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   protected changed(): void {
     if (this.onChange) {
-      this.onChange(this.time.value);
+      this.onChange(this.time.value!);
     }
   }
 
@@ -353,21 +355,21 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     setTimeout(() => {
       if (this.hourEnabled && this.hourListElement) {
         if (isNotNil(this.time.hours)) {
-          this.scrollToSelected(this.hourListElement.nativeElement, this.time.hours, 0, 'hour');
+          this.scrollToSelected(this.hourListElement.nativeElement, this.time.hours!, 0, 'hour');
         } else {
           this.scrollToSelected(this.hourListElement.nativeElement, this.time.defaultHours, 0, 'hour');
         }
       }
       if (this.minuteEnabled && this.minuteListElement) {
         if (isNotNil(this.time.minutes)) {
-          this.scrollToSelected(this.minuteListElement.nativeElement, this.time.minutes, 0, 'minute');
+          this.scrollToSelected(this.minuteListElement.nativeElement, this.time.minutes!, 0, 'minute');
         } else {
           this.scrollToSelected(this.minuteListElement.nativeElement, this.time.defaultMinutes, 0, 'minute');
         }
       }
       if (this.secondEnabled && this.secondListElement) {
         if (isNotNil(this.time.seconds)) {
-          this.scrollToSelected(this.secondListElement.nativeElement, this.time.seconds, 0, 'second');
+          this.scrollToSelected(this.secondListElement.nativeElement, this.time.seconds!, 0, 'second');
         } else {
           this.scrollToSelected(this.secondListElement.nativeElement, this.time.defaultSeconds, 0, 'second');
         }

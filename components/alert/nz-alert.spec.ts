@@ -26,16 +26,16 @@ describe('alert', () => {
     });
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(alert.nativeElement.firstElementChild.classList).toContain('ant-alert');
+      expect(alert.nativeElement.firstElementChild!.classList).toContain('ant-alert');
     });
     it('should banner work', () => {
       fixture.detectChanges();
-      expect(alert.nativeElement.firstElementChild.classList).not.toContain('ant-alert-banner');
+      expect(alert.nativeElement.firstElementChild!.classList).not.toContain('ant-alert-banner');
       expect(alert.nativeElement.querySelector('.ant-alert').classList).toContain(`ant-alert-info`);
       expect(alert.nativeElement.querySelector('.ant-alert-icon')).toBeNull();
       testComponent.banner = true;
       fixture.detectChanges();
-      expect(alert.nativeElement.firstElementChild.classList).toContain('ant-alert-banner');
+      expect(alert.nativeElement.firstElementChild!.classList).toContain('ant-alert-banner');
       expect(alert.nativeElement.querySelector('.ant-alert').classList).toContain(`ant-alert-info`);
       expect(alert.nativeElement.querySelector('.ant-alert-icon')).toBeNull();
     });

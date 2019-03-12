@@ -13,26 +13,23 @@ interface RegisteredMeta {
 export class NzModalControlService {
   // Track singleton afterAllClose through over the injection tree
   get afterAllClose(): Subject<void> {
-    return this.parentService ? this.parentService.afterAllClose : this.rootAfterAllClose;
+    return this.parentService ? this.parentService.afterAllClose : this.rootAfterAllClose!;
   }
 
   // Track singleton openModals array through over the injection tree
   get openModals(): NzModalRef[] {
-    return this.parentService ? this.parentService.openModals : this.rootOpenModals;
+    return this.parentService ? this.parentService.openModals : this.rootOpenModals!;
   }
 
-  private rootOpenModals: NzModalRef[] = this.parentService ? null : [];
-  private rootAfterAllClose: Subject<void> = this.parentService ? null : new Subject<void>();
-
-  private rootRegisteredMetaMap: Map<NzModalRef, RegisteredMeta> = this.parentService ? null : new Map();
+  private rootOpenModals: NzModalRef[] | null = this.parentService ? null : [];
+  private rootAfterAllClose: Subject<void> | null = this.parentService ? null : new Subject<void>();
+  private rootRegisteredMetaMap: Map<NzModalRef, RegisteredMeta> | null = this.parentService ? null : new Map();
 
   private get registeredMetaMap(): Map<NzModalRef, RegisteredMeta> { // Registered modal for later usage
-    return this.parentService ? this.parentService.registeredMetaMap : this.rootRegisteredMetaMap;
+    return this.parentService ? this.parentService.registeredMetaMap : this.rootRegisteredMetaMap!;
   }
 
-  constructor(
-    @Optional() @SkipSelf() private parentService: NzModalControlService) {
-  }
+  constructor(@Optional() @SkipSelf() private parentService: NzModalControlService) {}
 
   // Register a modal to listen its open/close
   registerModal(modalRef: NzModalRef): void {

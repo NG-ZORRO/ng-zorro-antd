@@ -109,7 +109,7 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
     if ($event === false) {
       if (data.children) {
         data.children.forEach(d => {
-          const target = array.find(a => a.key === d.key);
+          const target = array.find(a => a.key === d.key)!;
           target.expand = false;
           this.collapse(array, target, false);
         });
@@ -120,8 +120,8 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
   }
 
   convertTreeToList(root: object): TreeNodeInterface[] {
-    const stack = [];
-    const array = [];
+    const stack: any[] = [];
+    const array: any[] = [];
     const hashMap = {};
     stack.push({ ...root, level: 0, expand: false });
 

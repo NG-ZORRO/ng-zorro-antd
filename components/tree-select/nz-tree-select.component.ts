@@ -118,7 +118,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   selectedNodes: NzTreeNode[] = [];
   value: string[] = [];
 
-  onChange: (value: string[] | string) => void;
+  onChange: (value: string[] | string | null) => void;
   onTouched: () => void = () => null;
 
   get placeHolderDisplay(): string {
@@ -203,7 +203,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
     this.cdr.markForCheck();
   }
 
-  registerOnChange(fn: (_: string[] | string) => void): void {
+  registerOnChange(fn: (_: string[] | string | null) => void): void {
     this.onChange = fn;
   }
 
@@ -250,7 +250,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
       if (this.selectedNodes.length) {
         const removeNode = this.selectedNodes[ this.selectedNodes.length - 1 ];
         this.removeSelected(removeNode);
-        this.nzTreeService.triggerEventChange$.next({
+        this.nzTreeService!.triggerEventChange$!.next({
           'eventName': 'removeSelect',
           'node'     : removeNode
         });
@@ -260,7 +260,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
 
   onExpandedKeysChange(value: NzFormatEmitEvent): void {
     this.nzExpandChange.emit(value);
-    this.nzDefaultExpandedKeys = [ ...value.keys ];
+    this.nzDefaultExpandedKeys = [ ...value.keys! ];
   }
 
   setInputValue(value: string): void {
@@ -300,7 +300,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
     return merge(
       this.nzTreeClick.pipe(
         tap((event: NzFormatEmitEvent) => {
-          const node = event.node;
+          const node = event.node!;
           if (this.nzCheckable && !node.isDisabled && !node.isDisableCheckbox) {
             node.isChecked = !node.isChecked;
             this.nzTreeService.conduct(node);
@@ -310,7 +310,8 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
           }
         }),
         filter((event: NzFormatEmitEvent) => {
-          return this.nzCheckable ? (!event.node.isDisabled && !event.node.isDisableCheckbox) : !event.node.isDisabled;
+          const node = event.node!;
+          return this.nzCheckable ? (!node.isDisabled && !node.isDisableCheckbox) : !node.isDisabled;
         })
       ),
       this.nzCheckable ? this.nzTreeCheckBoxChange : observableOf(),
@@ -318,7 +319,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
       this.nzRemoved
     ).subscribe(() => {
       this.updateSelectedNodes();
-      const value = this.selectedNodes.map(node => node.key);
+      const value = this.selectedNodes.map(node => node.key!);
       this.value = [ ...value ];
       if (this.nzShowSearch || this.isMultiple) {
         this.inputValue = '';
@@ -342,9 +343,9 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
       this.nzTreeService.isMultiple = this.isMultiple;
       if (!this.nzTreeService.isArrayOfNzTreeNode(this.nzNodes)) {
         // has not been new NzTreeNode
-        nodes = this.nzNodes.map(item => (new NzTreeNode(item, null, this.nzTreeService)));
+        nodes = this.nzNodes.map(item => (new NzTreeNode(item, undefined, this.nzTreeService)));
       } else {
-        nodes = this.nzNodes.map(item => (new NzTreeNode({ ...item.origin }, null, this.nzTreeService)));
+        nodes = this.nzNodes.map(item => (new NzTreeNode({ ...item.origin }, undefined, this.nzTreeService)));
       }
       this.nzTreeService.initTree(nodes);
       if (this.nzCheckable) {
@@ -390,8 +391,8 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   setSearchValues($event: NzFormatEmitEvent): void {
     Promise.resolve().then(() => {
       this.isNotFound = (this.nzShowSearch || this.isMultiple)
-        && this.inputValue
-        && $event.matchedKeys.length === 0;
+        && !!this.inputValue
+        && $event.matchedKeys!.length === 0;
     });
   }
 
@@ -400,6 +401,6 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   }
 
   trackValue(_index: number, option: NzTreeNode): string {
-    return option.key;
+    return option.key!;
   }
 }

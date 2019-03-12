@@ -31,10 +31,13 @@ import { InputBoolean } from '../core/util/convert';
 import { NzCascaderOptionComponent } from './nz-cascader-li.component';
 
 import {
+  isNzShowSearchOptions,
   CascaderOption,
   CascaderSearchOption,
   NzCascaderExpandTrigger,
+  NzCascaderFilterFunction,
   NzCascaderSize,
+  NzCascaderSorterFunction,
   NzCascaderTriggerType,
   NzShowSearchOptions
 } from './types';
@@ -107,7 +110,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   @Input() nzLoadData: (node: CascaderOption, index?: number) => PromiseLike<any>;
 
   @Input()
-  get nzOptions(): CascaderOption[] {
+  get nzOptions(): CascaderOption[] | null {
     return this.columns[ 0 ];
   }
 
@@ -216,7 +219,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   private clearDelayMenuTimer(): void {
     if (this.delayMenuTimer) {
       clearTimeout(this.delayMenuTimer);
-      this.delayMenuTimer = null;
+      this.delayMenuTimer = 0;
     }
   }
 
@@ -235,13 +238,13 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     return this.columns[ index ] && this.columns[ index ].length > 0;
   }
 
-  private findOption(option: CascaderOption, index: number): CascaderOption {
+  private findOption(option: CascaderOption, index: number): CascaderOption | undefined {
     const options: CascaderOption[] = this.columns[ index ];
     if (options) {
       const value = typeof option === 'object' ? this.getOptionValue(option) : option;
       return options.find(o => value === this.getOptionValue(o));
     }
-    return null;
+    return undefined;
   }
 
   // tslint:disable-next-line:no-any
@@ -253,7 +256,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
         [ `${this.nzLabelProperty}` ]: value
       };
     }
-    this.setOptionActivated(option, index, false, false);
+    this.setOptionActivated(option!, index, false, false);
   }
 
   private initOptions(index: number): void {
@@ -292,7 +295,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     // Set parent option and all ancestor options as active.
     for (let i = columnIndex - 1; i >= 0; i--) {
       if (!this.activatedOptions[ i ]) {
-        this.activatedOptions[ i ] = this.activatedOptions[ i + 1 ].parent;
+        this.activatedOptions[ i ] = this.activatedOptions[ i + 1 ].parent!;
       }
     }
 
@@ -389,7 +392,8 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
 
   // tslint:disable-next-line:no-any
   getSubmitValue(): any[] {
-    const values = [];
+    // tslint:disable-next-line:no-any
+    const values: any[] = [];
     this.selectedOptions.forEach(option => {
       values.push(this.getOptionValue(option));
     });
@@ -534,7 +538,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
       : this.nzTriggerAction.indexOf(action) !== -1;
   }
 
-  onOptionClick(option: CascaderOption, columnIndex: number, event: Event): void {
+  onOptionClick(option: CascaderOption, columnIndex: number, event?: Event): void {
     if (event) {
       event.preventDefault();
     }
@@ -552,7 +556,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     const option = this.activatedOptions[ columnIndex ];
     if (option && !option.disabled) {
       this.isSearching
-        ? this.setSearchOptionActivated(option as CascaderSearchOption, null)
+        ? this.setSearchOptionActivated(option as CascaderSearchOption)
         : this.setOptionSelected(option, columnIndex);
     }
   }
@@ -618,7 +622,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   private clearDelaySelectTimer(): void {
     if (this.delaySelectTimer) {
       clearTimeout(this.delaySelectTimer);
-      this.delaySelectTimer = null;
+      this.delaySelectTimer = 0;
     }
   }
 
@@ -627,7 +631,7 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
     if (doSelect) {
       this.delaySelectTimer = setTimeout(() => {
         this.setOptionActivated(option, index);
-        this.delaySelectTimer = null;
+        this.delaySelectTimer = 0;
       }, 150);
     }
   }
@@ -671,26 +675,20 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
   private prepareSearchValue(): void {
     const results: CascaderSearchOption[] = [];
     const path: CascaderOption[] = [];
-
     const defaultFilter = (inputValue: string, p: CascaderOption[]): boolean => {
       return p.some(n => {
         const label = this.getOptionLabel(n);
         return label && label.indexOf(inputValue) !== -1;
       });
     };
-
-    const filter: (inputValue: string, p: CascaderOption[]) => boolean =
-      this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).filter
-        ? (this.nzShowSearch as NzShowSearchOptions).filter
-        : defaultFilter;
-
-    const sorter: (a: CascaderOption[], b: CascaderOption[], inputValue: string) => number =
-      this.nzShowSearch instanceof Object && (this.nzShowSearch as NzShowSearchOptions).sorter;
-
+    const filter: NzCascaderFilterFunction =
+      isNzShowSearchOptions(this.nzShowSearch) && this.nzShowSearch.filter ? this.nzShowSearch.filter : defaultFilter;
+    const sorter: NzCascaderSorterFunction | undefined =
+      isNzShowSearchOptions(this.nzShowSearch) ? (this.nzShowSearch as NzShowSearchOptions).sorter : undefined;
     const loopParent = (node: CascaderOption, forceDisabled = false) => {
       const disabled = forceDisabled || node.disabled;
       path.push(node);
-      node.children.forEach((sNode) => {
+      node.children!.forEach((sNode) => {
         if (!sNode.parent) {
           sNode.parent = node;
         } // Build parent reference when doing searching
@@ -703,7 +701,6 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
       });
       path.pop();
     };
-
     const loopChild = (node: CascaderOption, forceDisabled = false) => {
       path.push(node);
       const cPath = Array.from(path);
@@ -727,14 +724,15 @@ export class NzCascaderComponent implements OnDestroy, ControlValueAccessor {
 
     this.columnsSnapshot[ 0 ].forEach(node => (node.isLeaf || !node.children || !node.children.length)
       ? loopChild(node)
-      : loopParent(node));
-    if (sorter) {
-      results.sort((a, b) => sorter(a.path, b.path, this._inputValue));
-    }
+      : loopParent(node)
+    );
+
+    if (sorter) { results.sort((a, b) => sorter(a.path, b.path, this._inputValue)); }
+
     this.columns = [ results ];
   }
 
-  setSearchOptionActivated(result: CascaderSearchOption, event: Event): void {
+  setSearchOptionActivated(result: CascaderSearchOption, event?: Event): void {
     this.activatedOptions = [ result ];
     this.delaySetMenuVisible(false, 200);
 

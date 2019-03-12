@@ -83,7 +83,7 @@ class TestDividerComponent {
   @ViewChild('comp') comp: NzDividerComponent;
   nzDashed = false;
   nzType = 'horizontal';
-  nzText = 'with text';
+  nzText?: string = 'with text';
   nzOrientation: string = '';
 }
 

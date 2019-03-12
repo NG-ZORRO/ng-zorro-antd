@@ -56,7 +56,7 @@ export class MonthTableComponent implements OnInit, OnChanges {
         const disabled = this.disabledDate ? this.disabledDate(this.value.setMonth(monthValue).nativeDate) : false;
         const content = this.dateHelper.format(month.nativeDate, 'MMM');
 
-        const cell = months[rowIndex][colIndex] = {
+        const cell: PanelMonthData = months[rowIndex][colIndex] = {
           disabled,
           content,
           month: monthValue,
@@ -90,6 +90,6 @@ export interface PanelMonthData {
   content: string;
   month: number;
   title: string;
-  classMap: object;
-  onClick(): void;
+  classMap: object | null;
+  onClick: VoidFunction | null;
 }

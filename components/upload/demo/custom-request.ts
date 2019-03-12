@@ -25,26 +25,26 @@ export class NzDemoUploadCustomRequestComponent {
     // tslint:disable-next-line:no-any
     formData.append('file', item.file as any);
     formData.append('id', '1000');
-    const req = new HttpRequest('POST', item.action, formData, {
+    const req = new HttpRequest('POST', item.action!, formData, {
       reportProgress : true,
       withCredentials: true
     });
     // 始终返回一个 `Subscription` 对象，nz-upload 会在适当时机自动取消订阅
     return this.http.request(req).subscribe((event: HttpEvent<{}>) => {
       if (event.type === HttpEventType.UploadProgress) {
-        if (event.total > 0) {
+        if (event.total! > 0) {
           // tslint:disable-next-line:no-any
-          (event as any).percent = event.loaded / event.total * 100;
+          (event as any).percent = event.loaded / event.total! * 100;
         }
         // 处理上传进度条，必须指定 `percent` 属性来表示进度
-        item.onProgress(event, item.file);
+        item.onProgress!(event, item.file!);
       } else if (event instanceof HttpResponse) {
         // 处理成功
-        item.onSuccess(event.body, item.file, event);
+        item.onSuccess!(event.body, item.file!, event);
       }
     }, (err) => {
       // 处理失败
-      item.onError(err, item.file);
+      item.onError!(err, item.file!);
     });
   }
 
@@ -64,17 +64,17 @@ export class NzDemoUploadCustomRequestComponent {
       formData.append('start', start.toString());
       formData.append('end', end.toString());
       formData.append('index', index.toString());
-      const req = new HttpRequest('POST', item.action, formData, {
+      const req = new HttpRequest('POST', item.action!, formData, {
         withCredentials: true
       });
       return this.http.request(req);
     });
     return forkJoin(...reqs).subscribe(() => {
       // 处理成功
-      item.onSuccess({}, item.file, event);
+      item.onSuccess!({}, item.file!, event);
     }, (err) => {
       // 处理失败
-      item.onError(err, item.file);
+      item.onError!(err, item.file!);
     });
   }
 }

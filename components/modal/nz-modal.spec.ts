@@ -252,7 +252,7 @@ describe('modal testing (legacy)', () => {
       expect(isButtonLoading(lastButton)).toBe(false); // stopped immediately
 
       // destroy from inside
-      contentElement.querySelector('button').click();
+      contentElement.querySelector('button')!.click();
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
@@ -342,9 +342,9 @@ describe('modal testing (legacy)', () => {
     fixture.detectChanges();
     injector.get(NzI18nService).setLocale(en_US);
     fixture.detectChanges();
-    const cancelText = (fixture.debugElement.query(By.css('nz-modal .ant-btn')).nativeElement as HTMLElement).textContent.trim();
+    const cancelText = (fixture.debugElement.query(By.css('nz-modal .ant-btn')).nativeElement as HTMLElement).textContent!.trim();
     expect(cancelText).toBe(en_US.Modal.cancelText);
-    const okText = (fixture.debugElement.query(By.css('nz-modal .ant-btn-primary')).nativeElement as HTMLElement).textContent.trim();
+    const okText = (fixture.debugElement.query(By.css('nz-modal .ant-btn-primary')).nativeElement as HTMLElement).textContent!.trim();
     expect(okText).toBe(en_US.Modal.okText);
   });
 });
@@ -403,7 +403,7 @@ describe('NzModal', () => {
       fixture = TestBed.createComponent(ModalByServiceComponent);
     });
     afterEach(fakeAsync(() => { // wait all openModals tobe closed to clean up the ModalManager as it is globally static
-      document.documentElement.classList.remove('cdk-global-scrollblock');
+      document.documentElement!.classList.remove('cdk-global-scrollblock');
       modalService.closeAll();
       fixture.detectChanges();
       tick(1000);
@@ -540,7 +540,6 @@ describe('NzModal', () => {
     });
 
     it('should block body scroll', fakeAsync(() => {
-      console.log(document.documentElement.classList);
       const forceScrollElement = document.createElement('div');
       document.body.appendChild(forceScrollElement);
       forceScrollElement.style.width = '100px';
@@ -551,13 +550,13 @@ describe('NzModal', () => {
       tick(600);
       fixture.detectChanges();
 
-      expect(document.documentElement.classList).toContain('cdk-global-scrollblock');
+      expect(document.documentElement!.classList).toContain('cdk-global-scrollblock');
 
       modalRef.close();
       tick(600);
       fixture.detectChanges();
 
-      expect(document.documentElement.classList).not.toContain('cdk-global-scrollblock');
+      expect(document.documentElement!.classList).not.toContain('cdk-global-scrollblock');
       document.body.removeChild(forceScrollElement);
     }));
   });
@@ -687,7 +686,7 @@ class TestVaryServiceComponent {
         {
           label: 'change title from outside',
           onClick: (componentInstance) => {
-            componentInstance.title = 'internal title changed';
+            componentInstance!.title = 'internal title changed';
             return Promise.resolve();
           }
         },
@@ -772,7 +771,7 @@ function expectModalHidden(modalElement: HTMLElement, hidden: boolean): void {
   } else {
     expect(display).not.toBe('none');
   }
-  expect(modalElement.querySelector('.ant-modal-mask').classList.contains('ant-modal-mask-hidden')).toBe(hidden);
+  expect(modalElement.querySelector('.ant-modal-mask')!.classList.contains('ant-modal-mask-hidden')).toBe(hidden);
 }
 
 function expectModalDestroyed(classId: string, destroyed: boolean): void {
