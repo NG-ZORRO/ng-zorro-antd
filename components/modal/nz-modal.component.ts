@@ -314,7 +314,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     }
 
     return Promise
-      .resolve(() => animation ? this.animateTo(visible) : undefined)
+      .resolve(animation ? this.animateTo(visible) : undefined)
       .then(() => { // Emit open/close event after animations over
         if (visible) {
           this.nzAfterOpen.emit();

@@ -140,6 +140,8 @@ describe('modal testing (legacy)', () => {
     });
 
     it('should correctly render all basic props', fakeAsync(() => {
+      spyOn(console, 'log');
+
       // [Hack] Codes that can't be covered by normal operations
       // @ts-ignore
       expect(modalInstance.changeVisibleFromInside(true) instanceof Promise).toBe(true);
