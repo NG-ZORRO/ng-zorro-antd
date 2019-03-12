@@ -89,14 +89,14 @@ describe('carousel', () => {
     });
     it('should vertical work', () => {
       fixture.detectChanges();
-      expect(carouselWrapper.nativeElement.firstElementChild.classList).toContain('slick-initialized');
-      expect(carouselWrapper.nativeElement.firstElementChild.classList).toContain('slick-slider');
-      expect(carouselWrapper.nativeElement.firstElementChild.classList).not.toContain('slick-vertical');
+      expect(carouselWrapper.nativeElement.firstElementChild!.classList).toContain('slick-initialized');
+      expect(carouselWrapper.nativeElement.firstElementChild!.classList).toContain('slick-slider');
+      expect(carouselWrapper.nativeElement.firstElementChild!.classList).not.toContain('slick-vertical');
       testComponent.vertical = true;
       fixture.detectChanges();
-      expect(carouselWrapper.nativeElement.firstElementChild.classList).toContain('slick-initialized');
-      expect(carouselWrapper.nativeElement.firstElementChild.classList).toContain('slick-slider');
-      expect(carouselWrapper.nativeElement.firstElementChild.classList).toContain('slick-vertical');
+      expect(carouselWrapper.nativeElement.firstElementChild!.classList).toContain('slick-initialized');
+      expect(carouselWrapper.nativeElement.firstElementChild!.classList).toContain('slick-slider');
+      expect(carouselWrapper.nativeElement.firstElementChild!.classList).toContain('slick-vertical');
     });
     it('should effect change work', () => {
       fixture.detectChanges();

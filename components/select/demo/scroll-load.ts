@@ -21,7 +21,7 @@ import { map } from 'rxjs/operators';
 })
 export class NzDemoSelectScrollLoadComponent implements OnInit {
   randomUserUrl = 'https://api.randomuser.me/?results=10';
-  optionList = [];
+  optionList: string[] = [];
   selectedUser;
   isLoading = false;
   // tslint:disable-next-line:no-any

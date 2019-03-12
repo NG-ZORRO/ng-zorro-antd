@@ -80,7 +80,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   @Input() nzPageSize = 10;
   @Input() nzData = [];
   @Input() nzPaginationPosition: 'top' | 'bottom' | 'both' = 'bottom';
-  @Input() nzScroll: { x: string; y: string } = { x: null, y: null };
+  @Input() nzScroll: { x: string | null; y: string | null } = { x: null, y: null };
   @Input() @ViewChild('renderItemTemplate') nzItemRender: TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }>;
   @Input() @InputBoolean() nzFrontPagination = true;
   @Input() @InputBoolean() nzTemplateMode = false;
@@ -122,7 +122,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
         this.nzPageIndex = index;
         this.nzPageIndexChange.emit(this.nzPageIndex);
       }
-      this.updateFrontPaginationDataIfNeeded();
+      this.updateFrontPaginationDataIfNeeded(this.nzPageSize !== size);
     }
   }
 
@@ -177,15 +177,17 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     }
   }
 
-  updateFrontPaginationDataIfNeeded(): void {
+  updateFrontPaginationDataIfNeeded(isPageSizeOrDataChange: boolean = false): void {
     let data = [];
     if (this.nzFrontPagination) {
       this.nzTotal = this.nzData.length;
-      const maxPageIndex = Math.ceil(this.nzData.length / this.nzPageSize);
-      const pageIndex = !this.nzPageIndex ? 1 : (this.nzPageIndex > maxPageIndex ? maxPageIndex : this.nzPageIndex);
-      if (pageIndex !== this.nzPageIndex) {
-        this.nzPageIndex = pageIndex;
-        Promise.resolve().then(() => this.nzPageIndexChange.emit(pageIndex));
+      if (isPageSizeOrDataChange) {
+        const maxPageIndex = Math.ceil(this.nzData.length / this.nzPageSize) || 1;
+        const pageIndex = this.nzPageIndex > maxPageIndex ? maxPageIndex : this.nzPageIndex;
+        if (pageIndex !== this.nzPageIndex) {
+          this.nzPageIndex = pageIndex;
+          Promise.resolve().then(() => this.nzPageIndexChange.emit(pageIndex));
+        }
       }
       data = this.nzData.slice((this.nzPageIndex - 1) * this.nzPageSize, this.nzPageIndex * this.nzPageSize);
     } else {
@@ -216,7 +218,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
       this.setScrollPositionClassName();
     }
     if (changes.nzPageIndex || changes.nzPageSize || changes.nzFrontPagination || changes.nzData) {
-      this.updateFrontPaginationDataIfNeeded();
+      this.updateFrontPaginationDataIfNeeded(!!(changes.nzPageSize || changes.nzData));
     }
 
   }

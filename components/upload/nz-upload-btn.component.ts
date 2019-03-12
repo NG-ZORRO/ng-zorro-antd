@@ -1,5 +1,12 @@
 import { ENTER } from '@angular/cdk/keycodes';
-import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpEvent,
+  HttpEventType,
+  HttpHeaders,
+  HttpRequest,
+  HttpResponse
+} from '@angular/common/http';
 import {
   Component,
   ElementRef,
@@ -40,6 +47,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   // #region fields
   @Input() classes: {} = {};
   @Input() options: ZipButtonOptions;
+
   // #endregion
 
   @HostListener('click')
@@ -68,9 +76,9 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
     if (this.options.directory) {
-      this.traverseFileTree(e.dataTransfer.items);
+      this.traverseFileTree(e.dataTransfer!.items);
     } else {
-      const files: File[] = Array.prototype.slice.call(e.dataTransfer.files).filter(
+      const files: File[] = Array.prototype.slice.call(e.dataTransfer!.files).filter(
         (file: File) => this.attrAccept(file, this.options.accept)
       );
       if (files.length) {
@@ -86,7 +94,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
     const hie = e.target as HTMLInputElement;
-    this.uploadFiles(hie.files);
+    this.uploadFiles(hie.files!);
     hie.value = '';
   }
 
@@ -96,7 +104,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
       if (item.isFile) {
         item.file((file) => {
           if (this.attrAccept(file, this.options.accept)) {
-            this.uploadFiles([file]);
+            this.uploadFiles([ file ]);
           }
         });
       } else if (item.isDirectory) {
@@ -115,7 +123,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private attrAccept(file: File, acceptedFiles: string | string[]): boolean {
+  private attrAccept(file: File, acceptedFiles?: string | string[]): boolean {
     if (file && acceptedFiles) {
       const acceptedFilesArray = Array.isArray(acceptedFiles) ? acceptedFiles : acceptedFiles.split(',');
       const fileName = '' + file.name;
@@ -145,12 +153,14 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
 
   uploadFiles(fileList: FileList | File[]): void {
     let filters$: Observable<UploadFile[]> = of(Array.prototype.slice.call(fileList));
-    this.options.filters.forEach(f => {
-      filters$ = filters$.pipe(switchMap(list => {
-        const fnRes = f.fn(list);
-        return fnRes instanceof Observable ? fnRes : of(fnRes);
-      }));
-    });
+    if (this.options.filters) {
+      this.options.filters.forEach(f => {
+        filters$ = filters$.pipe(switchMap(list => {
+          const fnRes = f.fn(list);
+          return fnRes instanceof Observable ? fnRes : of(fnRes);
+        }));
+      });
+    }
     filters$.subscribe(list => {
       list.forEach((file: UploadFile) => {
         this.attachUid(file);
@@ -204,15 +214,15 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
       data,
       withCredentials: opt.withCredentials,
       onProgress     : opt.onProgress ? e => {
-        opt.onProgress(e, file);
-      } : null,
+        opt.onProgress!(e, file);
+      } : undefined,
       onSuccess      : (ret, xhr) => {
         this.clean(uid);
-        opt.onSuccess(ret, file, xhr);
+        opt.onSuccess!(ret, file, xhr);
       },
       onError        : (xhr) => {
         this.clean(uid);
-        opt.onError(xhr, file);
+        opt.onError!(xhr, file);
       }
     };
     const req$ = (opt.customRequest || this.xhr).call(this, args);
@@ -220,16 +230,16 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
       console.warn(`Must return Subscription type in '[nzCustomRequest]' property`);
     }
     this.reqs[ uid ] = req$;
-    opt.onStart(file);
+    opt.onStart!(file);
   }
 
   private xhr(args: UploadXHRArgs): Subscription {
     const formData = new FormData();
     // tslint:disable-next-line:no-any
-    formData.append(args.name, args.file as any);
+    formData.append(args.name!, args.file as any);
     if (args.data) {
       Object.keys(args.data).map(key => {
-        formData.append(key, args.data[ key ]);
+        formData.append(key, args.data![ key ]);
       });
     }
     if (!args.headers) {
@@ -240,24 +250,24 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       delete args.headers[ 'X-Requested-With' ];
     }
-    const req = new HttpRequest('POST', args.action, formData, {
+    const req = new HttpRequest('POST', args.action!, formData, {
       reportProgress : true,
       withCredentials: args.withCredentials,
       headers        : new HttpHeaders(args.headers)
     });
     return this.http.request(req).subscribe((event: HttpEvent<{}>) => {
       if (event.type === HttpEventType.UploadProgress) {
-        if (event.total > 0) {
+        if (event.total! > 0) {
           // tslint:disable-next-line:no-any
-          (event as any).percent = event.loaded / event.total * 100;
+          (event as any).percent = event.loaded / event.total! * 100;
         }
-        args.onProgress(event, args.file);
+        args.onProgress!(event, args.file);
       } else if (event instanceof HttpResponse) {
-        args.onSuccess(event.body, args.file, event);
+        args.onSuccess!(event.body, args.file, event);
       }
     }, (err) => {
       this.abort(args.file);
-      args.onError(err, args.file);
+      args.onError!(err, args.file);
     });
   }
 

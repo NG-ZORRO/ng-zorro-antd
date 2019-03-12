@@ -114,7 +114,6 @@ subtitle: 树形控件
 | isDisableCheckbox | 是否禁用 checkBox | `boolean` | `true` 或 `false` |
 | isSelectable | 是否可选中 | `boolean` | `true` 或 `false` |
 | isChecked | 是否选中 checkBox | `boolean` | `true` 或 `false` |
-| isAllChecked | 子节点是否全选 | `boolean` | `true` 或 `false` |
 | isHalfChecked | 子节点有选中但未全选 | `boolean` | `true` 或 `false` |
 | isSelected | 是否已选中 | `boolean` | `true` 或 `false` |
 | isLoading | 是否异步加载状态(影响展开图标展示) | `boolean` | `true` 或 `false` |
@@ -123,10 +122,6 @@ subtitle: 树形控件
 | addChildren | 添加子节点,接收NzTreeNode或NzTreeNodeOptions数组,第二个参数为插入的索引位置,默认插入末尾 | (children: array, index?: number )=>{} | void |
 | clearChildren | 清除子节点 | function | void |
 | remove | 清除当前节点(非根节点) | function | void |
-| setSyncChecked | 设置checked状态(同步树组件节点 checked 状态) | (checked: boolean, halfChecked: boolean=false)=>{} | void |
-| setChecked | 设置checked状态，参数为checked和halfChecked | (checked: boolean, halfChecked: boolean=false)=>{} | void |
-| setExpanded | 设置expanded状态 | (value: boolean)=>{} | void |
-| setSelected | 设置selected状态 | (value: boolean)=>{} | void |
 
 
 ## 注意

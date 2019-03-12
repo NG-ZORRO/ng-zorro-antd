@@ -28,7 +28,7 @@ export class NzScrollService {
   setScrollTop(el: Element | Window, topValue: number = 0): void {
     if (el === window) {
       this.doc.body.scrollTop = topValue;
-      this.doc.documentElement.scrollTop = topValue;
+      this.doc.documentElement!.scrollTop = topValue;
     } else {
       (el as Element).scrollTop = topValue;
     }
@@ -40,13 +40,13 @@ export class NzScrollService {
       top : 0,
       left: 0
     };
-    if (!el || !el.getClientRects().length) return ret;
+    if (!el || !el.getClientRects().length) { return ret; }
 
     const rect = el.getBoundingClientRect();
     if (rect.width || rect.height) {
-      const doc = el.ownerDocument.documentElement;
-      ret.top = rect.top - doc.clientTop;
-      ret.left = rect.left - doc.clientLeft;
+      const doc = el.ownerDocument!.documentElement;
+      ret.top = rect.top - doc!.clientTop;
+      ret.left = rect.left - doc!.clientLeft;
     } else {
       ret.top = rect.top;
       ret.left = rect.left;
@@ -64,7 +64,7 @@ export class NzScrollService {
     const isWindow = target === window;
     let ret = isWindow ? target[ prop ] : target[ method ];
     if (isWindow && typeof ret !== 'number') {
-      ret = this.doc.documentElement[ method ];
+      ret = this.doc.documentElement![ method ];
     }
     return ret;
   }
@@ -93,7 +93,7 @@ export class NzScrollService {
       if (time < 450) {
         reqAnimFrame(frameFunc);
       } else {
-        if (callback) callback();
+        if (callback) { callback(); }
       }
     };
     reqAnimFrame(frameFunc);

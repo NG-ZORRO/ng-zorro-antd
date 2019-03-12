@@ -17,15 +17,14 @@ import { NzMessageService } from 'ng-zorro-antd';
   `
 })
 export class NzDemoTransferCustomItemComponent implements OnInit {
-  // tslint:disable-next-line:no-any
-  list: any[] = [];
+  list: Array<{ key: string, title: string, description: string, direction: string, icon: string }> = [];
 
   ngOnInit(): void {
     this.getData();
   }
 
   getData(): void {
-    const ret = [];
+    const ret: Array<{ key: string, title: string, description: string, direction: string, icon: string }> = [];
     for (let i = 0; i < 20; i++) {
       ret.push({
         key        : i.toString(),

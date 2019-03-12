@@ -243,7 +243,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   // tslint:disable-next-line:no-any
   writeValue(value: any | any[]): void {
     this.value = value;
-    let listValue = [];
+    let listValue: any[] = []; // tslint:disable-line:no-any
     if (isNotNil(value)) {
       if (Array.isArray(value)) {
         listValue = value;
@@ -278,9 +278,11 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this.nzSelectService.modelChange$.pipe(
       takeUntil(this.destroy$)
     ).subscribe(modelValue => {
-      this.value = modelValue;
-      this.onChange(this.value);
-      this.updateCdkConnectedOverlayPositions();
+      if (this.value !== modelValue) {
+        this.value = modelValue;
+        this.onChange(this.value);
+        this.updateCdkConnectedOverlayPositions();
+      }
     });
     this.nzSelectService.open$.pipe(
       takeUntil(this.destroy$)

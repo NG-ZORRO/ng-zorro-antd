@@ -30,17 +30,17 @@ describe('switch', () => {
     });
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.classList).toContain('ant-switch');
+      expect(switchElement.nativeElement.firstElementChild!.classList).toContain('ant-switch');
     });
     it('should ngModel work', fakeAsync(() => {
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.classList).not.toContain('ant-switch-checked');
+      expect(switchElement.nativeElement.firstElementChild!.classList).not.toContain('ant-switch-checked');
       expect(testComponent.value).toBe(false);
       testComponent.value = true;
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.classList).toContain('ant-switch-checked');
+      expect(switchElement.nativeElement.firstElementChild!.classList).toContain('ant-switch-checked');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
     it('should click work', fakeAsync(() => {
@@ -80,7 +80,7 @@ describe('switch', () => {
     it('should loading work', fakeAsync(() => {
       testComponent.loading = true;
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.classList).toContain('ant-switch-loading');
+      expect(switchElement.nativeElement.firstElementChild!.classList).toContain('ant-switch-loading');
       expect(testComponent.value).toBe(false);
       switchElement.nativeElement.click();
       fixture.detectChanges();
@@ -92,7 +92,7 @@ describe('switch', () => {
     it('should size work', () => {
       testComponent.size = 'small';
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.classList).toContain('ant-switch-small');
+      expect(switchElement.nativeElement.firstElementChild!.classList).toContain('ant-switch-small');
     });
     it('should key down work', () => {
       expect(testComponent.value).toBe(false);
@@ -177,12 +177,12 @@ describe('switch', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList).toContain('anticon-close');
+      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild!.classList).toContain('anticon-close');
       switchElement.nativeElement.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList).toContain('anticon-check');
+      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild!.classList).toContain('anticon-check');
     }));
   });
   describe('switch form', () => {

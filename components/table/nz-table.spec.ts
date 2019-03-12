@@ -11,7 +11,7 @@ describe('nz-table', () => {
   beforeEach(async(() => {
     injector = TestBed.configureTestingModule({
       imports     : [ NzTableModule ],
-      declarations: [ NzTestTableBasicComponent, NzTestTableScrollComponent ]
+      declarations: [ NzTestTableBasicComponent, NzTestTableScrollComponent, NzTableSpecCrashComponent ]
     });
     TestBed.compileComponents();
   }));
@@ -294,6 +294,19 @@ describe('nz-table', () => {
       expect(tableBody.scrollWidth).toBe(tableBody.clientWidth);
     });
   });
+  describe('double binding nz-table', () => {
+    let fixture;
+    let testComponent;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTableSpecCrashComponent);
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+    });
+    it('should not crash when double binding pageSize and pageIndex', () => {
+      fixture.detectChanges();
+      expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
+    });
+  });
 });
 
 @Component({
@@ -321,25 +334,25 @@ describe('nz-table', () => {
       [nzTitle]="title?'Here is Title':null"
       [nzSize]="size">
       <thead *ngIf="header">
-        <tr>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Address</th>
-          <th>Action</th>
-        </tr>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Address</th>
+        <th>Action</th>
+      </tr>
       </thead>
       <tbody>
-        <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
-          <tr>
-            <td>{{data.name}}</td>
-            <td>{{data.age}}</td>
-            <td>{{data.address}}</td>
-            <td>
-              <a href="#">Action 一 {{data.name}}</a>
-              <a href="#">Delete</a>
-            </td>
-          </tr>
-        </ng-template>
+      <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
+        <tr>
+          <td>{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
+          <td>
+            <a href="#">Action 一 {{data.name}}</a>
+            <a href="#">Delete</a>
+          </td>
+        </tr>
+      </ng-template>
       </tbody>
     </nz-table>
   `
@@ -350,7 +363,7 @@ export class NzTestTableBasicComponent implements OnInit {
   pageIndexChange = jasmine.createSpy('pageIndex callback');
   pageSize = 10;
   pageSizeChange = jasmine.createSpy('pageSize callback');
-  dataSet = [];
+  dataSet: Array<{ name: string, age: string, address: string, description: string, checked: boolean, expand: boolean }> = [];
   noResult = '';
   showSizeChanger = false;
   showQuickJumper = false;
@@ -386,36 +399,36 @@ export class NzTestTableBasicComponent implements OnInit {
     <div style="display: block;" [style.width.px]="width">
       <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" [nzScroll]="{ x:'600px',y: '240px' }">
         <thead>
-          <tr>
-            <th>Full Name</th>
-            <th>Age</th>
-            <th>Column 1</th>
-            <th>Column 2</th>
-            <th>Column 3</th>
-            <th>Column 4</th>
-            <th>Column 5</th>
-            <th>Column 6</th>
-            <th>Column 7</th>
-            <th>Column 8</th>
-            <th>Action</th>
-          </tr>
+        <tr>
+          <th>Full Name</th>
+          <th>Age</th>
+          <th>Column 1</th>
+          <th>Column 2</th>
+          <th>Column 3</th>
+          <th>Column 4</th>
+          <th>Column 5</th>
+          <th>Column 6</th>
+          <th>Column 7</th>
+          <th>Column 8</th>
+          <th>Action</th>
+        </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of nzTable.data">
-            <td>{{data.name}}</td>
-            <td>{{data.age}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>
-              <a>action</a>
-            </td>
-          </tr>
+        <tr *ngFor="let data of nzTable.data">
+          <td>{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>
+            <a>action</a>
+          </td>
+        </tr>
         </tbody>
       </nz-table>
     </div>`,
@@ -428,7 +441,7 @@ export class NzTestTableBasicComponent implements OnInit {
 })
 export class NzTestTableScrollComponent implements OnInit {
   @ViewChild(NzTableComponent) nzTableComponent: NzTableComponent;
-  dataSet = [];
+  dataSet: Array<{ name: string, age: number, address: string }> = [];
   width = 300;
 
   ngOnInit(): void {
@@ -439,5 +452,43 @@ export class NzTestTableScrollComponent implements OnInit {
         address: `London, Park Lane no. ${i}`
       });
     }
+  }
+}
+
+/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/3004 **/
+@Component({
+  template: `
+    <nz-table #nzTable [nzData]="data" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="pageIndexChange">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>NAME</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let item of nzTable.data">
+          <tr>
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </nz-table>
+  `
+})
+export class NzTableSpecCrashComponent {
+  data: Array<{ id: number, name: string }> = [];
+  pageIndex = 1;
+  pageSize = 10;
+  pageIndexChange = jasmine.createSpy('pageSize callback');
+
+  constructor() {
+    setTimeout(() => {
+      this.data = new Array(100).fill(1).map((_, i) => ({
+        id  : i + 1,
+        name: `name ${i + 1}`
+      }));
+    }, 1000);
+
   }
 }

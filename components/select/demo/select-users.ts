@@ -24,7 +24,7 @@ import { debounceTime, map, switchMap } from 'rxjs/operators';
 export class NzDemoSelectSelectUsersComponent implements OnInit {
   randomUserUrl = 'https://api.randomuser.me/?results=5';
   searchChange$ = new BehaviorSubject('');
-  optionList = [];
+  optionList: string[] = [];
   selectedUser;
   isLoading = false;
 

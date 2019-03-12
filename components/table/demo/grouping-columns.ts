@@ -43,14 +43,14 @@ import { Component, OnInit } from '@angular/core';
 export class NzDemoTableGroupingColumnsComponent implements OnInit {
   widthConfig = [ '100px', '200px', '200px', '100px', '100px', '200px', '200px', '100px' ];
   scrollConfig = { x: '1200px', y: '240px' };
-  listOfDisplayData = [];
-  listOfData = [];
-  sortValue = null;
+  listOfDisplayData: any[] = [];
+  listOfData: any[] = [];
+  sortValue: string | null = null;
   filterName = [
     { text: 'Joe', value: 'Joe' },
     { text: 'John', value: 'John' }
   ];
-  searchName = [];
+  searchName: string[] = [];
 
   search(searchName: string[]): void {
     this.searchName = searchName;

@@ -259,7 +259,7 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
 
       const cell = getFirstMonthCell(); // Use the first cell
-      const cellText = cell.textContent.trim();
+      const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
       fixture.detectChanges();
       tick(500);
@@ -350,11 +350,11 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
 
       openPickerByClickTrigger();
-      expect(overlayContainerElement.textContent.indexOf('TEST_EXTRA_FOOTER') > -1).toBeTruthy();
+      expect(overlayContainerElement.textContent!.indexOf('TEST_EXTRA_FOOTER') > -1).toBeTruthy();
 
       fixtureInstance.nzRenderExtraFooter = 'TEST_EXTRA_FOOTER_STRING';
       fixture.detectChanges();
-      expect(overlayContainerElement.textContent.indexOf(fixtureInstance.nzRenderExtraFooter) > -1).toBeTruthy();
+      expect(overlayContainerElement.textContent!.indexOf(fixtureInstance.nzRenderExtraFooter) > -1).toBeTruthy();
     }));
 
   }); // /specified date picker testing
@@ -371,7 +371,7 @@ describe('NzMonthPickerComponent', () => {
 
       // Click the first cell to change ngModel
       const cell = getFirstMonthCell();
-      const cellText = cell.textContent.trim();
+      const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
       fixture.detectChanges();
       tick(500);

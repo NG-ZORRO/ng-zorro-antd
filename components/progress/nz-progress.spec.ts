@@ -63,22 +63,22 @@ describe('progress', () => {
     });
     it('should status work', () => {
       fixture.detectChanges();
-      expect(progress.nativeElement.firstElementChild.classList).toContain('ant-progress-status-normal');
+      expect(progress.nativeElement.firstElementChild!.classList).toContain('ant-progress-status-normal');
       const listOfStatus = [ 'success', 'exception', 'active', 'normal' ];
       testComponent.percent = 100;
       listOfStatus.forEach(status => {
         testComponent.status = status;
         fixture.detectChanges();
-        expect(progress.nativeElement.firstElementChild.classList).toContain(`ant-progress-status-${status}`);
+        expect(progress.nativeElement.firstElementChild!.classList).toContain(`ant-progress-status-${status}`);
       });
     });
     it('should showInfo work', () => {
       fixture.detectChanges();
-      expect(progress.nativeElement.firstElementChild.classList).toContain('ant-progress-show-info');
+      expect(progress.nativeElement.firstElementChild!.classList).toContain('ant-progress-show-info');
       expect(progress.nativeElement.querySelector('.ant-progress-text')).toBeDefined();
       testComponent.showInfo = false;
       fixture.detectChanges();
-      expect(progress.nativeElement.firstElementChild.classList).not.toContain('ant-progress-show-info');
+      expect(progress.nativeElement.firstElementChild!.classList).not.toContain('ant-progress-show-info');
       expect(progress.nativeElement.querySelector('.ant-progress-text')).toBeNull();
     });
     it('should strokeWidth work', () => {
@@ -96,7 +96,7 @@ describe('progress', () => {
       expect(progress.nativeElement.querySelector('.ant-progress-success-bg').style.height).toBe('8px');
       testComponent.size = 'small';
       fixture.detectChanges();
-      expect(progress.nativeElement.firstElementChild.classList).toContain('ant-progress-small');
+      expect(progress.nativeElement.firstElementChild!.classList).toContain('ant-progress-small');
       expect(progress.nativeElement.querySelector('.ant-progress-bg').style.height).toBe('6px');
       expect(progress.nativeElement.querySelector('.ant-progress-success-bg').style.height).toBe('6px');
     });
@@ -141,11 +141,11 @@ describe('progress', () => {
     });
     it('should showInfo work', () => {
       fixture.detectChanges();
-      expect(progress.nativeElement.firstElementChild.classList).toContain('ant-progress-show-info');
+      expect(progress.nativeElement.firstElementChild!.classList).toContain('ant-progress-show-info');
       expect(progress.nativeElement.querySelector('.ant-progress-text')).toBeDefined();
       testComponent.showInfo = false;
       fixture.detectChanges();
-      expect(progress.nativeElement.firstElementChild.classList).not.toContain('ant-progress-show-info');
+      expect(progress.nativeElement.firstElementChild!.classList).not.toContain('ant-progress-show-info');
       expect(progress.nativeElement.querySelector('.ant-progress-text')).toBeNull();
     });
     it('should percent work', () => {

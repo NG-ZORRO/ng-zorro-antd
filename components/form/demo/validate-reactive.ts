@@ -17,14 +17,14 @@ import { Observable, Observer } from 'rxjs';
         <nz-form-label [nzSpan]="7" nzRequired>Username</nz-form-label>
         <nz-form-control [nzSpan]="12" nzHasFeedback>
           <input nz-input formControlName="userName" placeholder="async validate try to write JasonWood">
-          <nz-form-explain *ngIf="validateForm.get('userName').dirty && validateForm.get('userName').errors || validateForm.get('userName').pending ">
-            <ng-container *ngIf="validateForm.get('userName').hasError('required')">
+          <nz-form-explain *ngIf="validateForm.get('userName')?.dirty && validateForm.get('userName')?.errors || validateForm.get('userName')?.pending ">
+            <ng-container *ngIf="validateForm.get('userName')?.hasError('required')">
               Please input your username!
             </ng-container>
-            <ng-container *ngIf="validateForm.get('userName').hasError('duplicated')">
+            <ng-container *ngIf="validateForm.get('userName')?.hasError('duplicated')">
               The username is redundant!
             </ng-container>
-            <ng-container *ngIf="validateForm.get('userName').pending">
+            <ng-container *ngIf="validateForm.get('userName')?.pending">
               Validating...
             </ng-container>
           </nz-form-explain>
@@ -34,11 +34,11 @@ import { Observable, Observer } from 'rxjs';
         <nz-form-label [nzSpan]="7" nzRequired>E-mail</nz-form-label>
         <nz-form-control [nzSpan]="12" nzHasFeedback>
           <input nz-input formControlName="email" placeholder="email" type="email">
-          <nz-form-explain *ngIf="validateForm.get('email').dirty&&validateForm.get('email').errors">
-            <ng-container *ngIf="validateForm.get('email').hasError('email')">
+          <nz-form-explain *ngIf="validateForm.get('email')?.dirty&&validateForm.get('email')?.errors">
+            <ng-container *ngIf="validateForm.get('email')?.hasError('email')">
               The input is not valid E-mail!
             </ng-container>
-            <ng-container *ngIf="validateForm.get('email').hasError('required')">
+            <ng-container *ngIf="validateForm.get('email')?.hasError('required')">
               Please input your E-mail!
             </ng-container>
           </nz-form-explain>
@@ -49,7 +49,7 @@ import { Observable, Observer } from 'rxjs';
         <div>
           <nz-form-control [nzSpan]="12" nzHasFeedback>
             <input nz-input type="password" formControlName="password" (ngModelChange)="validateConfirmPassword()">
-            <nz-form-explain *ngIf="validateForm.get('password').dirty&&validateForm.get('password').hasError('required')">Please input your password!</nz-form-explain>
+            <nz-form-explain *ngIf="validateForm.get('password')?.dirty&&validateForm.get('password')?.hasError('required')">Please input your password!</nz-form-explain>
           </nz-form-control>
         </div>
       </nz-form-item>
@@ -57,11 +57,11 @@ import { Observable, Observer } from 'rxjs';
         <nz-form-label [nzSpan]="7" nzRequired>Confirm Password</nz-form-label>
         <nz-form-control [nzSpan]="12" nzHasFeedback>
           <input nz-input type="password" formControlName="confirm" placeholder="confirm your password">
-          <nz-form-explain *ngIf="validateForm.get('confirm').dirty&&validateForm.get('confirm').errors">
-            <ng-container *ngIf="validateForm.get('confirm').hasError('required')">
+          <nz-form-explain *ngIf="validateForm.get('confirm')?.dirty&&validateForm.get('confirm')?.errors">
+            <ng-container *ngIf="validateForm.get('confirm')?.hasError('required')">
               Please confirm your password!
             </ng-container>
-            <ng-container *ngIf="validateForm.get('confirm').hasError('confirm')">
+            <ng-container *ngIf="validateForm.get('confirm')?.hasError('confirm')">
               Password is inconsistent!
             </ng-container>
           </nz-form-explain>
@@ -71,7 +71,7 @@ import { Observable, Observer } from 'rxjs';
         <nz-form-label [nzSpan]="7" nzRequired>Comment</nz-form-label>
         <nz-form-control [nzSpan]="12">
           <textarea formControlName="comment" nz-input rows="2" placeholder="write any thing"></textarea>
-          <nz-form-explain *ngIf="validateForm.get('comment').dirty&&validateForm.get('comment').hasError('required')">Please write something here!</nz-form-explain>
+          <nz-form-explain *ngIf="validateForm.get('comment')?.dirty&&validateForm.get('comment')?.hasError('required')">Please write something here!</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -103,7 +103,7 @@ export class NzDemoFormValidateReactiveComponent {
       this.validateForm.controls[ key ].updateValueAndValidity();
     }
     console.log(value);
-  };
+  }
 
   resetForm(e: MouseEvent): void {
     e.preventDefault();
@@ -118,7 +118,7 @@ export class NzDemoFormValidateReactiveComponent {
     setTimeout(() => this.validateForm.controls.confirm.updateValueAndValidity());
   }
 
-  userNameAsyncValidator = (control: FormControl) => Observable.create((observer: Observer<ValidationErrors>) => {
+  userNameAsyncValidator = (control: FormControl) => Observable.create((observer: Observer<ValidationErrors | null>) => {
     setTimeout(() => {
       if (control.value === 'JasonWood') {
         observer.next({ error: true, duplicated: true });
@@ -127,7 +127,7 @@ export class NzDemoFormValidateReactiveComponent {
       }
       observer.complete();
     }, 1000);
-  });
+  })
 
   confirmValidator = (control: FormControl): { [ s: string ]: boolean } => {
     if (!control.value) {
@@ -135,7 +135,8 @@ export class NzDemoFormValidateReactiveComponent {
     } else if (control.value !== this.validateForm.controls.password.value) {
       return { confirm: true, error: true };
     }
-  };
+    return {};
+  }
 
   constructor(private fb: FormBuilder) {
     this.validateForm = this.fb.group({

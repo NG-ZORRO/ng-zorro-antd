@@ -26,13 +26,13 @@ describe('input-group', () => {
         inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
       });
       it('should not show addon without before and after content', () => {
-        expect(inputGroupElement.firstElementChild.classList).not.toContain('ant-input-group');
-        expect(inputGroupElement.firstElementChild.classList).toContain('ant-input');
+        expect(inputGroupElement.firstElementChild!.classList).not.toContain('ant-input-group');
+        expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input');
       });
       it('should before content string work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
-        expect(inputGroupElement.firstElementChild.classList).toContain('ant-input-group');
+        expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input-group');
         expect(inputGroupElement.firstElementChild.children.length).toBe(2);
         expect(inputGroupElement.firstElementChild.lastElementChild.classList).toContain('ant-input');
         expect(inputGroupElement.firstElementChild.firstElementChild.innerText).toBe('before');
@@ -40,7 +40,7 @@ describe('input-group', () => {
       it('should before content template work', () => {
         testComponent.beforeContent = testComponent.beforeTemplate;
         fixture.detectChanges();
-        expect(inputGroupElement.firstElementChild.classList).toContain('ant-input-group');
+        expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input-group');
         expect(inputGroupElement.firstElementChild.children.length).toBe(2);
         expect(inputGroupElement.firstElementChild.lastElementChild.classList).toContain('ant-input');
         expect(inputGroupElement.firstElementChild.firstElementChild.innerText).toBe('beforeTemplate');
@@ -48,17 +48,17 @@ describe('input-group', () => {
       it('should after content string work', () => {
         testComponent.afterContent = 'after';
         fixture.detectChanges();
-        expect(inputGroupElement.firstElementChild.classList).toContain('ant-input-group');
+        expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input-group');
         expect(inputGroupElement.firstElementChild.children.length).toBe(2);
-        expect(inputGroupElement.firstElementChild.firstElementChild.classList).toContain('ant-input');
+        expect(inputGroupElement.firstElementChild.firstElementChild!.classList).toContain('ant-input');
         expect(inputGroupElement.firstElementChild.lastElementChild.innerText).toBe('after');
       });
       it('should after content template work', () => {
         testComponent.afterContent = testComponent.afterTemplate;
         fixture.detectChanges();
-        expect(inputGroupElement.firstElementChild.classList).toContain('ant-input-group');
+        expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input-group');
         expect(inputGroupElement.firstElementChild.children.length).toBe(2);
-        expect(inputGroupElement.firstElementChild.firstElementChild.classList).toContain('ant-input');
+        expect(inputGroupElement.firstElementChild.firstElementChild!.classList).toContain('ant-input');
         expect(inputGroupElement.firstElementChild.lastElementChild.innerText).toBe('afterTemplate');
       });
       it('should size work', () => {
@@ -82,12 +82,12 @@ describe('input-group', () => {
         inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
       });
       it('should not show addon without before and after content', () => {
-        expect(inputGroupElement.firstElementChild.classList).toContain('ant-input');
+        expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input');
       });
       it('should before content string work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
-        expect(inputGroupElement.firstElementChild.classList).toContain('ant-input-prefix');
+        expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input-prefix');
         expect(inputGroupElement.children.length).toBe(2);
         expect(inputGroupElement.lastElementChild.classList).toContain('ant-input');
         expect(inputGroupElement.firstElementChild.innerText).toBe('before');
@@ -95,7 +95,7 @@ describe('input-group', () => {
       it('should before content template work', () => {
         testComponent.beforeContent = testComponent.beforeTemplate;
         fixture.detectChanges();
-        expect(inputGroupElement.firstElementChild.classList).toContain('ant-input-prefix');
+        expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input-prefix');
         expect(inputGroupElement.children.length).toBe(2);
         expect(inputGroupElement.lastElementChild.classList).toContain('ant-input');
         expect(inputGroupElement.firstElementChild.innerText).toBe('beforeTemplate');
@@ -105,7 +105,7 @@ describe('input-group', () => {
         fixture.detectChanges();
         expect(inputGroupElement.lastElementChild.classList).toContain('ant-input-suffix');
         expect(inputGroupElement.children.length).toBe(2);
-        expect(inputGroupElement.firstElementChild.classList).toContain('ant-input');
+        expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input');
         expect(inputGroupElement.lastElementChild.innerText).toBe('after');
       });
       it('should after content template work', () => {
@@ -113,7 +113,7 @@ describe('input-group', () => {
         fixture.detectChanges();
         expect(inputGroupElement.lastElementChild.classList).toContain('ant-input-suffix');
         expect(inputGroupElement.children.length).toBe(2);
-        expect(inputGroupElement.firstElementChild.classList).toContain('ant-input');
+        expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input');
         expect(inputGroupElement.lastElementChild.innerText).toBe('afterTemplate');
       });
       it('should size work', () => {

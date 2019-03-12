@@ -83,8 +83,8 @@ describe('SelectService', () => {
       service.listOfTemplateOption = createListOfOption(3);
       service.searchValue = 'abc';
       service.updateAddTagOption();
-      expect(service.addedTagOption.nzValue).toEqual('abc');
-      expect(service.addedTagOption.nzLabel).toEqual('abc');
+      expect(service.addedTagOption!.nzValue).toEqual('abc');
+      expect(service.addedTagOption!.nzLabel).toEqual('abc');
     });
   });
   describe('token', () => {

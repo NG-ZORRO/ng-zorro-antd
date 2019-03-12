@@ -14,13 +14,13 @@ import { Component, ViewEncapsulation } from '@angular/core';
 })
 export class NzDemoAutoCompleteCustomComponent {
   inputValue: string;
-  options = [];
+  options: string[] = [];
 
   onInput(value: string): void {
     this.options = value ? [
       value,
       value + value,
-      value + value + value,
+      value + value + value
     ] : [];
   }
 }

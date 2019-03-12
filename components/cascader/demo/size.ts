@@ -62,15 +62,12 @@ const options = [{
   ]
 })
 export class NzDemoCascaderSizeComponent {
-  /** init data */
   nzOptions = options;
+  value1: any[] | null = null;
+  value2: any[] | null = null;
+  value3: any[] | null = null;
 
-  /** ngModel value */
-  public value1: any[] = null;
-  public value2: any[] = null;
-  public value3: any[] = null;
-
-  public onChanges(values: any): void {
+  onChanges(values: any): void {
     console.log(values);
   }
 }

@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
 
-export type TFilterOption = (input?: string, option?: NzOptionComponent) => boolean;
+export type TFilterOption = (input: string, option: NzOptionComponent) => boolean;
 
 @Pipe({ name: 'nzFilterOption' })
 export class NzFilterOptionPipe implements PipeTransform {

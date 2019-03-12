@@ -98,7 +98,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    this.placement = getPlacementName(position);
+    this.placement = getPlacementName(position)!;
     this.cdr.markForCheck();
   }
 

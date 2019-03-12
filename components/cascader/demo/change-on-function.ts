@@ -53,17 +53,14 @@ const options = [{
   ]
 })
 export class NzDemoCascaderChangeOnFunctionComponent {
-  /** init data */
   nzOptions = options;
+  values: any[] | null = null;
 
-  /** ngModel value */
-  public values: any[] = null;
-
-  public onChanges(values: any): void {
+  onChanges(values: any): void {
     console.log(values, this.values);
   }
 
-  public validate(option: any, _index: number): boolean {
+  validate(option: any, _index: number): boolean {
     const value = option.value;
     return ['hangzhou', 'xihu', 'nanjing', 'zhonghuamen'].indexOf(value) >= 0;
   }

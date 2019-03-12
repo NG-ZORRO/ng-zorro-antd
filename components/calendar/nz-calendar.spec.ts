@@ -1,4 +1,3 @@
-
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component } from '@angular/core';
@@ -172,10 +171,10 @@ describe('Calendar', () => {
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[0];
       const cells = host.queryAll(By.css('td'));
-      const today = cells.find(x => x.nativeElement.className.indexOf('ant-fullcalendar-today') > 0);
+      const today = cells.find(x => x.nativeElement.className.indexOf('ant-fullcalendar-today') > 0)!;
 
       expect(today).toBeDefined();
-      expect(parseInt(today.nativeElement.textContent, 10)).toBe(now.getDate());
+      expect(parseInt(today.nativeElement.textContent!, 10)).toBe(now.getDate());
     });
 
     it('should mark active date in month mode', () => {
@@ -183,10 +182,10 @@ describe('Calendar', () => {
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
       const cells = host.queryAll(By.css('td'));
-      const active = cells.find(x => x.nativeElement.className.indexOf('ant-fullcalendar-selected-day') > 0);
+      const active = cells.find(x => x.nativeElement.className.indexOf('ant-fullcalendar-selected-day') > 0)!;
 
       expect(active).toBeDefined();
-      expect(parseInt(active.nativeElement.textContent, 10)).toBe(3);
+      expect(parseInt(active.nativeElement.textContent!, 10)).toBe(3);
     });
 
     it('should mark previous/next month date in month mode', () => {
@@ -316,7 +315,7 @@ describe('Calendar', () => {
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[0];
       const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-date'));
 
-      expect(content.nativeElement.textContent.trim()).toBe('Foo');
+      expect(content.nativeElement.textContent!.trim()).toBe('Foo');
     });
 
     it('should work when passed via content child', () => {
@@ -325,7 +324,7 @@ describe('Calendar', () => {
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
       const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-date'));
 
-      expect(content.nativeElement.textContent.trim()).toBe('Bar');
+      expect(content.nativeElement.textContent!.trim()).toBe('Bar');
     });
   });
 
@@ -368,7 +367,7 @@ describe('Calendar', () => {
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[0];
       const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-month'));
 
-      expect(content.nativeElement.textContent.trim()).toBe('Foo');
+      expect(content.nativeElement.textContent!.trim()).toBe('Foo');
     });
 
     it('should work when passed via content child', () => {
@@ -377,7 +376,7 @@ describe('Calendar', () => {
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
       const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-month'));
 
-      expect(content.nativeElement.textContent.trim()).toBe('Bar');
+      expect(content.nativeElement.textContent!.trim()).toBe('Bar');
     });
   });
 

@@ -29,15 +29,15 @@ describe('collapse', () => {
     });
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(collapse.nativeElement.firstElementChild.classList).toContain('ant-collapse');
+      expect(collapse.nativeElement.firstElementChild!.classList).toContain('ant-collapse');
       expect(panels.every(panel => panel.nativeElement.classList.contains('ant-collapse-item'))).toBe(true);
     });
     it('should border work', () => {
       fixture.detectChanges();
-      expect(collapse.nativeElement.firstElementChild.classList).not.toContain('ant-collapse-borderless');
+      expect(collapse.nativeElement.firstElementChild!.classList).not.toContain('ant-collapse-borderless');
       testComponent.bordered = false;
       fixture.detectChanges();
-      expect(collapse.nativeElement.firstElementChild.classList).toContain('ant-collapse-borderless');
+      expect(collapse.nativeElement.firstElementChild!.classList).toContain('ant-collapse-borderless');
     });
     it('should showArrow work', () => {
       fixture.detectChanges();

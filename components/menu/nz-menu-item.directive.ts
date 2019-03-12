@@ -28,7 +28,7 @@ import { NzSubmenuService } from './nz-submenu.service';
 export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy {
   private el: HTMLElement = this.elementRef.nativeElement;
   private destroy$ = new Subject();
-  private originalPadding = null;
+  private originalPadding: number | null = null;
   selected$ = new Subject<boolean>();
   @Input() nzPaddingLeft: number;
   @Input() @InputBoolean() nzDisabled = false;
@@ -81,7 +81,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy {
     ).pipe(
       takeUntil(this.destroy$)
     ).subscribe(() => {
-      let padding = null;
+      let padding: number | null = null;
       if (this.nzMenuService.mode === 'inline') {
         if (isNotNil(this.nzPaddingLeft)) {
           padding = this.nzPaddingLeft;

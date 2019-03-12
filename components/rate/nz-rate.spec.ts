@@ -29,7 +29,7 @@ describe('rate', () => {
     });
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(rate.nativeElement.firstElementChild.classList).toContain('ant-rate');
+      expect(rate.nativeElement.firstElementChild!.classList).toContain('ant-rate');
     });
     it('should set ngModel work', fakeAsync(() => {
       fixture.detectChanges();

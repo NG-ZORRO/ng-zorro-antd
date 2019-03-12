@@ -31,7 +31,7 @@ import { distanceInWords } from 'date-fns';
   styles  : []
 })
 export class NzDemoCommentEditorComponent {
-  data = [];
+  data: any[] = [];
   submitting = false;
   user = {
     author: 'Han Solo',

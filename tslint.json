@@ -154,7 +154,7 @@
       true,
       "allow-declarations"
     ],
-    "no-non-null-assertion": true,
+    "no-non-null-assertion": false,
     "no-shadowed-variable": true,
     "no-sparse-arrays": true,
     "no-string-literal": true,

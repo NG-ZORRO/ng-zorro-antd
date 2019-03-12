@@ -45,8 +45,8 @@ export class NzDemoTableRowSelectionAndOperationComponent implements OnInit {
   isAllDisplayDataChecked = false;
   isOperating = false;
   isIndeterminate = false;
-  listOfDisplayData = [];
-  listOfAllData = [];
+  listOfDisplayData: any[] = [];
+  listOfAllData: any[] = [];
   mapOfCheckedId = {};
   numberOfChecked = 0;
 

@@ -68,7 +68,7 @@ export const DEFAULT_MENTION_POSITIONS = [ POSITION_MAP.bottomLeft, new Connecti
   originY: 'bottom'
 }, { overlayX: 'start', overlayY: 'bottom' }) ];
 
-export function getPlacementName(position: ConnectedOverlayPositionChange): string {
+export function getPlacementName(position: ConnectedOverlayPositionChange): string | undefined {
   const keyList = [ 'originX', 'originY', 'overlayX', 'overlayY' ];
   for (const placement in POSITION_MAP) {
     if (keyList.every(key => position.connectionPair[ key ] === POSITION_MAP[ placement ][ key ])) {

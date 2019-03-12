@@ -5,10 +5,15 @@ export function isNotNil(value: any): boolean {
   return (typeof(value) !== 'undefined') && value !== null;
 }
 
+// tslint:disable-next-line:no-any
+export function isNil(value: any): value is null | undefined {
+  return (typeof(value) === 'undefined') || value === null;
+}
+
 /**
  * Examine if two objects are shallowly equaled.
  */
-export function shallowEqual(objA: {}, objB: {}): boolean {
+export function shallowEqual(objA?: {}, objB?: {}): boolean {
   if (objA === objB) {
     return true;
   }
@@ -56,12 +61,12 @@ export function isEmpty(element: HTMLElement): boolean {
   return true;
 }
 
-export function filterNotEmptyNode(node: Node): Node {
+export function filterNotEmptyNode(node: Node): Node | null {
   if (node) {
     if ((node.nodeType === 1) && ((node as HTMLElement).outerHTML.toString().trim().length !== 0)) {
       // ELEMENT_NODE
       return node;
-    } else if ((node.nodeType === 3) && (node.textContent.toString().trim().length !== 0)) {
+    } else if ((node.nodeType === 3) && (node.textContent!.toString().trim().length !== 0)) {
       // TEXT_NODE
       return node;
     }

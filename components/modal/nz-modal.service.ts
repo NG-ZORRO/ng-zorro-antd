@@ -12,22 +12,22 @@ import { ConfirmType, ModalOptions, ModalOptionsForService } from './nz-modal.ty
 
 // A builder used for managing service creating modals
 export class ModalBuilderForService {
-  private modalRef: ComponentRef<NzModalComponent>; // Modal ComponentRef, "null" means it has been destroyed
+  private modalRef: ComponentRef<NzModalComponent> | null; // Modal ComponentRef, "null" means it has been destroyed
   private overlayRef: OverlayRef;
 
   constructor(private overlay: Overlay, options: ModalOptionsForService = {}) {
     this.createModal();
 
     if (!('nzGetContainer' in options)) { // As we use CDK to create modal in service by force, there is no need to use nzGetContainer
-      options.nzGetContainer = null; // Override nzGetContainer's default value to prevent creating another overlay
+      options.nzGetContainer = undefined; // Override nzGetContainer's default value to prevent creating another overlay
     }
 
     this.changeProps(options);
-    this.modalRef.instance.open();
-    this.modalRef.instance.nzAfterClose.subscribe(() => this.destroyModal()); // [NOTE] By default, close equals destroy when using as Service
+    this.modalRef!.instance.open();
+    this.modalRef!.instance.nzAfterClose.subscribe(() => this.destroyModal()); // [NOTE] By default, close equals destroy when using as Service
   }
 
-  getInstance(): NzModalComponent {
+  getInstance(): NzModalComponent | null {
     return this.modalRef && this.modalRef.instance;
   }
 
@@ -79,7 +79,8 @@ export class NzModalService {
       }; // Leave a empty function to close this modal by default
     }
 
-    const modalRef = new ModalBuilderForService(this.overlay, options).getInstance(); // NOTE: use NzModalComponent as the NzModalRef by now, we may need archive the real NzModalRef object in the future
+    // NOTE: use NzModalComponent as the NzModalRef by now, we may need archive the real NzModalRef object in the future
+    const modalRef = new ModalBuilderForService(this.overlay, options).getInstance()!;
 
     return modalRef;
   }
@@ -128,7 +129,7 @@ export class NzModalService {
       }[ confirmType ];
     }
     if (!('nzCancelText' in options)) { // Remove the Cancel button if the user not specify a Cancel button
-      options.nzCancelText = null;
+      options.nzCancelText = undefined;
     }
     return this.confirm(options, confirmType);
   }

@@ -30,8 +30,8 @@ import { toNumber } from '../core/util/convert';
 })
 export class NzBackTopComponent implements OnInit, OnDestroy {
 
-  private scroll$: Subscription = null;
-  private target: HTMLElement = null;
+  private scroll$: Subscription | null = null;
+  private target: HTMLElement | null = null;
 
   visible: boolean = false;
 
@@ -92,8 +92,10 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
   private registerScrollEvent(): void {
     this.removeListen();
     this.handleScroll();
-    this.scroll$ = fromEvent(this.getTarget(), 'scroll').pipe(throttleTime(50), distinctUntilChanged())
-    .subscribe(() => this.handleScroll());
+    this.scroll$ = fromEvent(this.getTarget(), 'scroll').pipe(
+      throttleTime(50),
+      distinctUntilChanged()
+    ).subscribe(() => this.handleScroll());
   }
 
   ngOnDestroy(): void {

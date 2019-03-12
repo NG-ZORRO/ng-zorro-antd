@@ -12,8 +12,8 @@ import { isConfigAObject, DisplayedMark, ExtendedMark, Mark } from './nz-slider-
   templateUrl        : './nz-slider-marks.component.html'
 })
 export class NzSliderMarksComponent implements OnChanges {
-  @Input() nzLowerBound: number = null;
-  @Input() nzUpperBound: number = null;
+  @Input() nzLowerBound: number | null = null;
+  @Input() nzUpperBound: number | null = null;
   @Input() nzMarksArray: ExtendedMark[];
   @Input() nzMin: number;
   @Input() nzMax: number;
@@ -86,7 +86,7 @@ export class NzSliderMarksComponent implements OnChanges {
         const value = mark.value;
         const isActive =
           (!this.nzIncluded && value === this.nzUpperBound) ||
-          (this.nzIncluded && value <= this.nzUpperBound && value >= this.nzLowerBound);
+          (this.nzIncluded && value <= this.nzUpperBound! && value >= this.nzLowerBound!);
 
         mark.active = isActive;
       });

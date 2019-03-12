@@ -30,7 +30,7 @@ describe('spin', () => {
       tick(1000);
       fixture.detectChanges();
       console.log(spin.nativeElement);
-      expect(spin.nativeElement.querySelector('.ant-spin').firstElementChild.classList).toContain('ant-spin-dot');
+      expect(spin.nativeElement.querySelector('.ant-spin').firstElementChild!.classList).toContain('ant-spin-dot');
     }));
     it('should size work', fakeAsync(() => {
       fixture.detectChanges();
