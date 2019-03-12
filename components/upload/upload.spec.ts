@@ -1268,7 +1268,7 @@ class TestUploadComponent {
     this._beforeUpload = true;
     this._beforeUploadList = fileList;
     return true;
-  };
+  }
   nzCustomRequest: any;
   nzData: any;
   nzFilter: UploadFilter[] = [];
@@ -1284,12 +1284,12 @@ class TestUploadComponent {
   _onPreview = false;
   onPreview = (): void => {
     this._onPreview = true;
-  };
+  }
   _onRemove = false;
   onRemove: null | ((file: UploadFile) => boolean | Observable<boolean>) = (): boolean => {
     this._onRemove = true;
     return true;
-  };
+  }
   _nzChange: UploadChangeParam;
 
   nzChange(value: UploadChangeParam): void { this._nzChange = value; }
@@ -1343,11 +1343,11 @@ class TestUploadListComponent {
   _onPreview = false;
   onPreview: VoidFunction | null = (): void => {
     this._onPreview = true;
-  };
+  }
   _onRemove = false;
   onRemove: any = (): void => {
     this._onRemove = true;
-  };
+  }
 }
 
 @Component({
