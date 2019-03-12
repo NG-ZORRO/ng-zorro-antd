@@ -60,10 +60,7 @@
       </ng-container>
     </ng-container>
   </div>
-  <div *ngIf="nzModalFooterDirective" class="ant-modal-footer">
-    <ng-container [ngTemplateOutlet]="nzModalFooterDirective.templateRef"></ng-container>
-  </div>
-  <div *ngIf="nzFooter !== null && !nzModalFooterDirective" class="ant-modal-footer">
+  <div *ngIf="nzFooter !== null" class="ant-modal-footer">
     <ng-container [ngSwitch]="true">
       <ng-container *ngSwitchCase="isTemplateRef(nzFooter)" [ngTemplateOutlet]="nzFooter"></ng-container>
       <ng-container *ngSwitchCase="isNonEmptyString(nzFooter)"><div [innerHTML]="nzFooter"></div></ng-container>

@@ -104,6 +104,13 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   @ViewChild('bodyContainer', { static: false, read: ViewContainerRef }) bodyContainer: ViewContainerRef;
   @ViewChild('autoFocusButtonOk', { static: false, read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
 
+  @ContentChild(NzModalFooterDirective)
+  set modalFooter(value: NzModalFooterDirective) {
+    if (value && value.templateRef) {
+      this.nzFooter = value.templateRef;
+    }
+  }
+
   get afterOpen(): Observable<void> {
     // Observable alias for nzAfterOpen
     return this.nzAfterOpen.asObservable();

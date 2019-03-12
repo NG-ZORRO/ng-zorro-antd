@@ -1,64 +1,32 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, ElementRef, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-import { fakeAsync, inject, tick, TestBed, async } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations'
+import { Component } from '@angular/core';
+import { async, fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
-import { NzModalRef } from './nz-modal-ref.class';
 import { NzModalModule } from './nz-modal.module';
-import { NzModalService } from './nz-modal.service';
-
-@Component({
-  template: `
-    <div>
-      <p>Modal Content</p>
-    </div>
-    <div *nzModalFooter>
-      <!--<button class="destroy-btn" nz-button nzType="default" (click)="destroyModal()">destroy</button>-->
-    </div>
-  `
-})
-export class TestServiceCustomComponent {
-
-  constructor(private modal: NzModalRef, public elementRef: ElementRef) {
-  }
-
-  destroyModal(): void {
-    this.modal.destroy();
-  }
-}
-
-@NgModule({
-  declarations   : [ TestServiceCustomComponent ],
-  entryComponents: [ TestServiceCustomComponent ]
-})
-class TestModule {
-}
 
 describe('modal footer directive', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  let modalService: NzModalService;
   let fixture;
   let testComponent: TestDirectiveFooterInTemplateComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ TestModule, NzModalModule, NoopAnimationsModule ],
+      imports     : [ NzModalModule, NoopAnimationsModule ],
       declarations: [ TestDirectiveFooterInTemplateComponent ],
-      providers   : [ NzMeasureScrollbarService ],
-      schemas     : [ NO_ERRORS_SCHEMA ]
+      providers   : [ NzMeasureScrollbarService ]
     });
     TestBed.compileComponents();
   }));
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     fixture = TestBed.createComponent(TestDirectiveFooterInTemplateComponent);
     testComponent = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
-  beforeEach(inject([ NzModalService, OverlayContainer ], (ms: NzModalService, oc: OverlayContainer) => {
-    modalService = ms;
+  beforeEach(inject([ OverlayContainer ], (oc: OverlayContainer) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
@@ -68,7 +36,6 @@ describe('modal footer directive', () => {
   });
 
   afterEach(fakeAsync(() => {
-    modalService.closeAll();
     fixture.detectChanges();
     tick(1000);
   }));
@@ -83,21 +50,6 @@ describe('modal footer directive', () => {
     fixture.detectChanges();
     expect(testComponent.isVisible).toBe(false);
   });
-
-  it('should work in service component', fakeAsync(() => {
-    const spy = jasmine.createSpy('afterOpen spy');
-    const modalRef = modalService.create({
-      nzTitle  : 'Service',
-      nzContent: TestServiceCustomComponent
-    });
-    modalRef.afterOpen.subscribe(spy);
-
-    fixture.detectChanges();
-    tick(600);
-    expect(spy).toHaveBeenCalled();
-    fixture.detectChanges();
-    console.log(modalRef.getInstance().nzModalFooterDirective)
-  }));
 
 });
 
@@ -126,4 +78,3 @@ class TestDirectiveFooterInTemplateComponent {
     this.isVisible = true;
   }
 }
-

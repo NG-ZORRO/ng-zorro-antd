@@ -7,11 +7,9 @@ import { NzModalRef } from './nz-modal-ref.class';
 export class NzModalFooterDirective {
 
   constructor(@Optional() private nzModalRef: NzModalRef,
-              // tslint:disable-next-line:no-any
-              public templateRef: TemplateRef<any>) {
-    console.log(this.nzModalRef);
+              public templateRef: TemplateRef<void>) {
     if (this.nzModalRef) {
-      this.nzModalRef.getInstance().nzModalFooterDirective = this;
+      this.nzModalRef.getInstance().nzFooter = this.templateRef;
     }
   }
 
