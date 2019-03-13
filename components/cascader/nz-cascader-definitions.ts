@@ -57,12 +57,3 @@ export interface NzCascaderComponentAsSource {
   // tslint:disable-next-line:no-any
   nzLoadData?(node: CascaderOption, index?: number): PromiseLike<any>;
 }
-
-export type NzCascaderSorterFunction = (a: CascaderOption[], b: CascaderOption[], inputValue: string) => number;
-
-export type NzCascaderFilterFunction = (inputValue: string, p: CascaderOption[]) => boolean;
-
-export interface NzShowSearchOptions {
-  filter?: NzCascaderFilterFunction;
-  sorter?: NzCascaderSorterFunction;
-}
