@@ -5,5 +5,5 @@ export function isChildOption(o: CascaderOption): boolean {
 }
 
 export function isParentOption(o: CascaderOption): boolean {
-  return o.children && o.children.length && !o.isLeaf;
+  return !!o.children && !!o.children.length && !o.isLeaf;
 }
