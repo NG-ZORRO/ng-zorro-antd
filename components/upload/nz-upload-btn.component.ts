@@ -102,7 +102,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     // tslint:disable-next-line:no-any
     const _traverseFileTree = (item: any, path: string) => {
       if (item.isFile) {
-        item.file((file) => {
+        item.file((file: File) => {
           if (this.attrAccept(file, this.options.accept)) {
             this.uploadFiles([ file ]);
           }
@@ -110,7 +110,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
       } else if (item.isDirectory) {
         const dirReader = item.createReader();
 
-        dirReader.readEntries((entries) => {
+        dirReader.readEntries((entries: any) => { // tslint:disable-line:no-any
           for (const entrieItem of entries) {
             _traverseFileTree(entrieItem, `${path}${item.name}/`);
           }

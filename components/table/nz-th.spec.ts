@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, ViewChild } from '@angular/core';
+import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
@@ -16,10 +16,10 @@ describe('nz-th', () => {
     TestBed.compileComponents();
   }));
   describe('nz-th in nz-table', () => {
-    let fixture;
-    let testComponent;
-    let th;
-    let table;
+    let fixture: ComponentFixture<NzThTestNzTableComponent>;
+    let testComponent: NzThTestNzTableComponent;
+    let th: DebugElement;
+    let table: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzThTestNzTableComponent);
       fixture.detectChanges();
@@ -277,8 +277,8 @@ describe('nz-th', () => {
     }));
   });
   describe('nz-th with default filter in nz-table', () => {
-    let fixture;
-    let testComponent;
+    let fixture: ComponentFixture<NzThTestTableDefaultFilterComponent>;
+    let testComponent: NzThTestTableDefaultFilterComponent;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzThTestTableDefaultFilterComponent);
       fixture.detectChanges();
@@ -326,11 +326,11 @@ export class NzThTestNzTableComponent {
   checkedChange = jasmine.createSpy('show change');
   indeterminate = false;
   disabled = false;
-  left;
-  right;
-  width;
+  left: string | number;
+  right: string | number;
+  width: string | number;
   showSort = false;
-  sort = null;
+  sort: string | null = null;
   sortChange = jasmine.createSpy('sort change');
   showRowSelection = false;
   selections = [
@@ -354,18 +354,22 @@ export class NzThTestNzTableComponent {
   template: `
     <nz-table #filterTable [nzData]="displayData">
       <thead (nzSortChange)="sort($event)" nzSingleSort>
-        <tr>
-          <th nzShowSort nzSortKey="name" nzShowFilter [nzFilters]="nameList" (nzFilterChange)="filter($event,searchAddress)">Name</th>
-          <th nzShowSort nzSortKey="age">Age</th>
-          <th nzShowSort nzSortKey="address" nzShowFilter [nzFilterMultiple]="false" [nzFilters]="addressList" (nzFilterChange)="filter(listOfSearchName,$event)">Address</th>
-        </tr>
+      <tr>
+        <th nzShowSort nzSortKey="name" nzShowFilter [nzFilters]="nameList"
+            (nzFilterChange)="filter($event,searchAddress)">Name
+        </th>
+        <th nzShowSort nzSortKey="age">Age</th>
+        <th nzShowSort nzSortKey="address" nzShowFilter [nzFilterMultiple]="false" [nzFilters]="addressList"
+            (nzFilterChange)="filter(listOfSearchName,$event)">Address
+        </th>
+      </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of filterTable.data">
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
-        </tr>
+      <tr *ngFor="let data of filterTable.data">
+        <td>{{data.name}}</td>
+        <td>{{data.age}}</td>
+        <td>{{data.address}}</td>
+      </tr>
       </tbody>
     </nz-table>`
 })
@@ -422,10 +426,15 @@ export class NzThTestTableDefaultFilterComponent {
 
   search(): void {
     /** filter data **/
-    const filterFunc = item => (this.searchAddress ? item.address.indexOf(this.searchAddress) !== -1 : true) && (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
+    const filterFunc = (item: { name: string; address: string; age: number }) => (
+      this.searchAddress
+        ? item.address.indexOf(this.searchAddress) !== -1 : true) && (this.listOfSearchName.length
+      ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1)
+      : true);
     const data = this.data.filter(item => filterFunc(item));
     /** sort data **/
     if (this.sortName && this.sortValue) {
+      // @ts-ignore
       this.displayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName! ] > b[ this.sortName! ] ? 1 : -1) : (b[ this.sortName! ] > a[ this.sortName! ] ? 1 : -1));
     } else {
       this.displayData = data;

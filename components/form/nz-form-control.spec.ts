@@ -1,6 +1,14 @@
-import { Component } from '@angular/core';
-import { fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
-import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  FormsModule,
+  FormBuilder,
+  FormControl,
+  FormControlName,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzFormControlComponent } from './nz-form-control.component';
@@ -15,9 +23,9 @@ describe('nz-form-control', () => {
     TestBed.compileComponents();
   }));
   describe('static status', () => {
-    let fixture;
-    let testComponent;
-    let formControl;
+    let fixture: ComponentFixture<NzTestStaticFormControlComponent>;
+    let testComponent: NzTestStaticFormControlComponent;
+    let formControl: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestStaticFormControlComponent);
       fixture.detectChanges();
@@ -38,7 +46,7 @@ describe('nz-form-control', () => {
     it('should status work', () => {
       fixture.detectChanges();
       const statusList = [ 'warning', 'validating', 'pending', 'error', 'success' ];
-      const statusMap = {
+      const statusMap: { [ key: string ]: string } = {
         'warning'   : 'has-warning',
         'validating': 'is-validating',
         'pending'   : 'is-validating',
@@ -53,9 +61,9 @@ describe('nz-form-control', () => {
     });
   });
   describe('reactive status', () => {
-    let fixture;
-    let testComponent;
-    let formControls;
+    let fixture: ComponentFixture<NzTestReactiveFormControlComponent>;
+    let testComponent: NzTestReactiveFormControlComponent;
+    let formControls: DebugElement[];
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestReactiveFormControlComponent);
       fixture.detectChanges();
@@ -70,15 +78,15 @@ describe('nz-form-control', () => {
       expect(formControls[ 1 ].nativeElement.querySelector('.ant-form-item-control').className).toBe('ant-form-item-control');
     }));
     it('should valid work', fakeAsync(() => {
-      testComponent.formGroup.get('input').markAsDirty();
-      testComponent.formGroup.get('input2').markAsDirty();
+      testComponent.formGroup.get('input')!.markAsDirty();
+      testComponent.formGroup.get('input2')!.markAsDirty();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      testComponent.formGroup.get('input').setValue('123');
-      testComponent.formGroup.get('input2').setValue('123');
-      testComponent.formGroup.get('input').updateValueAndValidity();
-      testComponent.formGroup.get('input2').updateValueAndValidity();
+      testComponent.formGroup.get('input')!.setValue('123');
+      testComponent.formGroup.get('input2')!.setValue('123');
+      testComponent.formGroup.get('input')!.updateValueAndValidity();
+      testComponent.formGroup.get('input2')!.updateValueAndValidity();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -88,15 +96,15 @@ describe('nz-form-control', () => {
       expect(formControls[ 1 ].nativeElement.querySelector('.ant-form-item-control').classList).toContain('has-success');
     }));
     it('should invalid work', fakeAsync(() => {
-      testComponent.formGroup.get('input').markAsDirty();
-      testComponent.formGroup.get('input2').markAsDirty();
+      testComponent.formGroup.get('input')!.markAsDirty();
+      testComponent.formGroup.get('input2')!.markAsDirty();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      testComponent.formGroup.get('input').setValue('');
-      testComponent.formGroup.get('input2').setValue('');
-      testComponent.formGroup.get('input').updateValueAndValidity();
-      testComponent.formGroup.get('input2').updateValueAndValidity();
+      testComponent.formGroup.get('input')!.setValue('');
+      testComponent.formGroup.get('input2')!.setValue('');
+      testComponent.formGroup.get('input')!.updateValueAndValidity();
+      testComponent.formGroup.get('input2')!.updateValueAndValidity();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -104,25 +112,25 @@ describe('nz-form-control', () => {
       expect(formControls[ 1 ].nativeElement.querySelector('.ant-form-item-control').classList).toContain('has-error');
     }));
     it('should dirty work', fakeAsync(() => {
-      testComponent.formGroup.get('input').markAsDirty();
-      testComponent.formGroup.get('input2').markAsDirty();
+      testComponent.formGroup.get('input')!.markAsDirty();
+      testComponent.formGroup.get('input2')!.markAsDirty();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      testComponent.formGroup.get('input').updateValueAndValidity();
-      testComponent.formGroup.get('input2').updateValueAndValidity();
+      testComponent.formGroup.get('input')!.updateValueAndValidity();
+      testComponent.formGroup.get('input2')!.updateValueAndValidity();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
       expect(formControls[ 0 ].nativeElement.querySelector('.ant-form-item-control').classList).toContain('has-error');
       expect(formControls[ 1 ].nativeElement.querySelector('.ant-form-item-control').classList).toContain('has-error');
-      testComponent.formGroup.get('input').markAsPristine();
-      testComponent.formGroup.get('input2').markAsPristine();
+      testComponent.formGroup.get('input')!.markAsPristine();
+      testComponent.formGroup.get('input2')!.markAsPristine();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      testComponent.formGroup.get('input').updateValueAndValidity();
-      testComponent.formGroup.get('input2').updateValueAndValidity();
+      testComponent.formGroup.get('input')!.updateValueAndValidity();
+      testComponent.formGroup.get('input2')!.updateValueAndValidity();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -130,11 +138,11 @@ describe('nz-form-control', () => {
       expect(formControls[ 1 ].nativeElement.querySelector('.ant-form-item-control').classList).not.toContain('has-error');
     }));
     it('should pending work', fakeAsync(() => {
-      testComponent.formGroup.get('input2').markAsDirty();
+      testComponent.formGroup.get('input2')!.markAsDirty();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      testComponent.formGroup.get('input2').updateValueAndValidity();
+      testComponent.formGroup.get('input2')!.updateValueAndValidity();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -142,8 +150,8 @@ describe('nz-form-control', () => {
     }));
   });
   describe('reactive init status', () => {
-    let fixture;
-    let formControl;
+    let fixture: ComponentFixture<NzTestReactiveFormControlInitStatusComponent>;
+    let formControl: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestReactiveFormControlInitStatusComponent);
       fixture.detectChanges();
@@ -182,7 +190,7 @@ export class NzTestStaticFormControlComponent {
 })
 export class NzTestReactiveFormControlComponent {
   formGroup: FormGroup;
-  validateStatus;
+  validateStatus: string | FormControlName | FormControl;
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
@@ -190,7 +198,7 @@ export class NzTestReactiveFormControlComponent {
       input2: [ '', [ Validators.required ] ],
       input3: [ '', [ Validators.required ] ]
     });
-    this.validateStatus = this.formGroup.get('input2');
+    this.validateStatus = this.formGroup.get('input2') as FormControl;
   }
 }
 
@@ -209,7 +217,7 @@ export class NzTestReactiveFormControlInitStatusComponent {
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
-      input : [ '', [ Validators.required ] ]
+      input: [ '', [ Validators.required ] ]
     });
     this.formGroup.controls.input.markAsDirty();
   }

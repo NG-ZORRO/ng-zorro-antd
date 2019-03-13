@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzStatisticComponent } from './nz-statistic.component';
 import { NzStatisticModule } from './nz-statistic.module';
 
 describe('nz-statistic', () => {
-  let fixture;
-  let testComponent;
-  let statisticEl;
+  let fixture: ComponentFixture<NzTestStatisticComponent>;
+  let testComponent: NzTestStatisticComponent;
+  let statisticEl: DebugElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

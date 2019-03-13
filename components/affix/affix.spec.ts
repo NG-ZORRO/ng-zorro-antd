@@ -339,9 +339,9 @@ describe('affix', () => {
   });
 
   describe('(nzChange)', () => {
-    let changeValue;
+    let changeValue: boolean;
     beforeEach(() => {
-      component.nzChange.subscribe((returnValue) => {
+      component.nzChange.subscribe((returnValue: boolean) => {
         changeValue = returnValue;
       });
     });

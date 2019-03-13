@@ -26,6 +26,7 @@ function getRequestAnimationFrame(): typeof requestAnimationFrame {
   const prefix = availablePrefixs.filter(key => `${key}RequestAnimationFrame` in window)[ 0 ];
 
   return prefix
+    // @ts-ignore
     ? window[ `${prefix}RequestAnimationFrame` ]
     : requestAnimationFramePolyfill();
 }
@@ -45,6 +46,7 @@ export function cancelRequestAnimationFrame(id: number): any {
     (
       (window as any)[ `${prefix}CancelAnimationFrame` ] ||
       (window as any)[ `${prefix}CancelRequestAnimationFrame` ]
+      // @ts-ignore
     ).call(this, id) : clearTimeout(id);
 }
 

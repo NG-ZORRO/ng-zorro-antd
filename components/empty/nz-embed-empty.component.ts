@@ -1,4 +1,4 @@
-import { ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
+import { ComponentPortal, Portal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -29,9 +29,9 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzComponentName: string;
   @Input() specificContent: NzEmptyCustomContent;
 
-  content;
+  content?: NzEmptyCustomContent;
   contentType: 'component' | 'template' | 'string' = 'string';
-  contentPortal;
+  contentPortal?: Portal<any>; // tslint:disable-line:no-any
   defaultSvg = this.sanitizer.bypassSecurityTrustResourceUrl(simpleEmptyImage);
   size: NzEmptySize = '';
   subs_ = new Subscription();

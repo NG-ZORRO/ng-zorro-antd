@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzStatisticNumberComponent } from './nz-statistic-number.component';
 import { NzStatisticModule } from './nz-statistic.module';
 
 describe('nz-number', () => {
-  let fixture;
-  let testComponent;
-  let numberEl;
+  let fixture: ComponentFixture<NzTestNumberComponent>;
+  let testComponent: NzTestNumberComponent;
+  let numberEl: DebugElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -51,9 +51,7 @@ describe('nz-number', () => {
 @Component({
   selector: 'nz-test-number-component',
   template: `
-    <nz-statistic-number
-      [nzValue]="value | number"
-      [nzValueTemplate]="template"></nz-statistic-number>
+    <nz-statistic-number [nzValue]="value | number" [nzValueTemplate]="template"></nz-statistic-number>
     <ng-template #tpl let-value>It's {{ value }}</ng-template>
   `
 })
@@ -61,5 +59,5 @@ export class NzTestNumberComponent {
   @ViewChild('tpl') tpl: TemplateRef<void>;
 
   value = 1;
-  template;
+  template: TemplateRef<void>;
 }

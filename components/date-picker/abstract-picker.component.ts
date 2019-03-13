@@ -105,8 +105,9 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   onValueChange(value: CompatibleValue): void {
     this.nzValue = value;
     if (this.isRange) {
-      if ((this.nzValue as CandyDate[]).length) {
-        this.onChangeFn([ this.nzValue[ 0 ].nativeDate, this.nzValue[ 1 ].nativeDate ]);
+      const vAsRange = this.nzValue as CandyDate[];
+      if (vAsRange.length) {
+        this.onChangeFn([ vAsRange[ 0 ].nativeDate, vAsRange[ 1 ].nativeDate ]);
       } else {
         this.onChangeFn([]);
       }

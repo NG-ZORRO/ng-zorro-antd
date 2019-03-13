@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
+import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -17,9 +17,10 @@ describe('radio', () => {
     TestBed.compileComponents();
   }));
   describe('single radio basic', () => {
-    let fixture;
-    let testComponent;
-    let radio;
+    let fixture: ComponentFixture<NzTestRadioSingleComponent>;
+    let testComponent: NzTestRadioSingleComponent;
+    let radio: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestRadioSingleComponent);
       fixture.detectChanges();
@@ -85,8 +86,9 @@ describe('radio', () => {
     });
   });
   describe('single radio button', () => {
-    let fixture;
-    let radio;
+    let fixture: ComponentFixture<NzTestRadioButtonComponent>;
+    let radio: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestRadioButtonComponent);
       fixture.detectChanges();
@@ -99,11 +101,13 @@ describe('radio', () => {
       expect(radio.nativeElement.firstElementChild.lastElementChild.classList).toContain('ant-radio-button-inner');
     });
   });
+
   describe('radio group', () => {
-    let fixture;
-    let testComponent;
-    let radios;
-    let radioGroup;
+    let fixture: ComponentFixture<NzTestRadioGroupComponent>;
+    let testComponent: NzTestRadioGroupComponent;
+    let radios: DebugElement[];
+    let radioGroup: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestRadioGroupComponent);
       fixture.detectChanges();
@@ -158,9 +162,9 @@ describe('radio', () => {
     }));
   });
   describe('radio group disabled', () => {
-    let fixture;
-    let testComponent;
-    let radios;
+    let fixture: ComponentFixture<NzTestRadioGroupDisabledComponent>;
+    let testComponent: NzTestRadioGroupDisabledComponent;
+    let radios: DebugElement[];
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestRadioGroupDisabledComponent);
       fixture.detectChanges();
@@ -195,8 +199,8 @@ describe('radio', () => {
     }));
   });
   describe('radio group solid', () => {
-    let fixture;
-    let radioGroup;
+    let fixture: ComponentFixture<NzTestRadioGroupSolidComponent>;
+    let radioGroup: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestRadioGroupSolidComponent);
       fixture.detectChanges();
@@ -208,10 +212,10 @@ describe('radio', () => {
     });
   });
   describe('radio form', () => {
-    let fixture;
-    let testComponent;
-    let radio;
-    let inputElement;
+    let fixture: ComponentFixture<NzTestRadioFormComponent>;
+    let testComponent: NzTestRadioFormComponent;
+    let radio: DebugElement;
+    let inputElement: HTMLElement;
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestRadioFormComponent);
       fixture.detectChanges();
@@ -229,27 +233,28 @@ describe('radio', () => {
     }));
     it('should set disabled work', fakeAsync(() => {
       flush();
-      expect(testComponent.formGroup.get('radio').value).toBe(false);
+      expect(testComponent.formGroup.get('radio')!.value).toBe(false);
       inputElement.click();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('radio').value).toBe(true);
+      expect(testComponent.formGroup.get('radio')!.value).toBe(true);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      testComponent.formGroup.get('radio').setValue(false);
+      testComponent.formGroup.get('radio')!.setValue(false);
       testComponent.disable();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
       inputElement.click();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('radio').value).toBe(false);
+      expect(testComponent.formGroup.get('radio')!.value).toBe(false);
     }));
   });
   describe('radio group form', () => {
-    let fixture;
-    let testComponent;
-    let radios;
+    let fixture: ComponentFixture<NzTestRadioGroupFormComponent>;
+    let testComponent: NzTestRadioGroupFormComponent;
+    let radios: DebugElement[];
+
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestRadioGroupFormComponent);
       fixture.detectChanges();
@@ -266,10 +271,10 @@ describe('radio', () => {
     }));
     it('should set disabled work', fakeAsync(() => {
       flush();
-      expect(testComponent.formGroup.get('radioGroup').value).toBe('B');
+      expect(testComponent.formGroup.get('radioGroup')!.value).toBe('B');
       radios[ 0 ].nativeElement.click();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('radioGroup').value).toBe('A');
+      expect(testComponent.formGroup.get('radioGroup')!.value).toBe('A');
       testComponent.disable();
       fixture.detectChanges();
       flush();
@@ -278,7 +283,7 @@ describe('radio', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('radioGroup').value).toBe('A');
+      expect(testComponent.formGroup.get('radioGroup')!.value).toBe('A');
     }));
   });
   describe('radio group disable form', () => {
@@ -294,7 +299,8 @@ describe('radio', () => {
 @Component({
   selector: 'nz-test-radio-single',
   template: `
-    <label nz-radio [(ngModel)]="value" (ngModelChange)="modelChange($event)" [nzDisabled]="disabled" [nzAutoFocus]="autoFocus">Radio</label>`
+    <label nz-radio [(ngModel)]="value" (ngModelChange)="modelChange($event)" [nzDisabled]="disabled"
+           [nzAutoFocus]="autoFocus">Radio</label>`
 })
 export class NzTestRadioSingleComponent {
   @ViewChild(NzRadioComponent) nzRadioComponent: NzRadioComponent;
@@ -315,7 +321,8 @@ export class NzTestRadioButtonComponent {
 @Component({
   selector: 'nz-test-radio-group',
   template: `
-    <nz-radio-group [(ngModel)]="value" [nzName]="name" [nzDisabled]="disabled" (ngModelChange)="modelChange($event)" [nzSize]="size">
+    <nz-radio-group [(ngModel)]="value" [nzName]="name" [nzDisabled]="disabled" (ngModelChange)="modelChange($event)"
+                    [nzSize]="size">
       <ng-container [ngClass]>
         <label nz-radio-button nzValue="A">A</label>
         <label nz-radio-button nzValue="B">B</label>

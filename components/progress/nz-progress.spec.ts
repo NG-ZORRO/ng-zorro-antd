@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzProgressComponent } from './nz-progress.component';
+import { NzProgressComponent, NzProgressGapPositionType } from './nz-progress.component';
 import { NzProgressModule } from './nz-progress.module';
 
 describe('progress', () => {
@@ -14,9 +14,10 @@ describe('progress', () => {
     TestBed.compileComponents();
   }));
   describe('progress line', () => {
-    let fixture;
-    let testComponent;
-    let progress;
+    let fixture: ComponentFixture<NzTestProgressLineComponent>;
+    let testComponent: NzTestProgressLineComponent;
+    let progress: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestProgressLineComponent);
       fixture.detectChanges();
@@ -54,7 +55,7 @@ describe('progress', () => {
       expect(progress.nativeElement.querySelector('.ant-progress-success-bg').style.height).toBe('8px');
     });
     it('should format work', () => {
-      testComponent.format = (percent) => `${percent} percent`;
+      testComponent.format = (percent: number) => `${percent} percent`;
       fixture.detectChanges();
       expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('0 percent');
       testComponent.percent = 100;
@@ -118,9 +119,9 @@ describe('progress', () => {
     });
   });
   describe('progress dashboard', () => {
-    let fixture;
-    let testComponent;
-    let progress;
+    let fixture: ComponentFixture<NzTestProgressDashBoardComponent>;
+    let testComponent: NzTestProgressDashBoardComponent;
+    let progress: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestProgressDashBoardComponent);
       fixture.detectChanges();
@@ -132,7 +133,7 @@ describe('progress', () => {
       expect(progress.nativeElement.firstElementChild.className).toBe('ant-progress ant-progress-status-normal ant-progress-show-info ant-progress-circle');
     });
     it('should format work', () => {
-      testComponent.format = (percent) => `${percent} percent`;
+      testComponent.format = (percent: number) => `${percent} percent`;
       fixture.detectChanges();
       expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('0 percent');
       testComponent.percent = 100;
@@ -182,9 +183,10 @@ describe('progress', () => {
     });
   });
   describe('progress circle', () => {
-    let fixture;
-    let testComponent;
-    let progress;
+    let fixture: ComponentFixture<NzTestProgressCircleComponent>;
+    let testComponent: NzTestProgressCircleComponent;
+    let progress: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestProgressCircleComponent);
       fixture.detectChanges();
@@ -252,15 +254,15 @@ describe('progress', () => {
   `
 })
 export class NzTestProgressLineComponent {
-  size;
-  status;
-  format;
-  strokeWidth;
+  size: string;
+  status: string;
+  format: (percent: number) => string;
+  strokeWidth: number;
   percent = 0;
   successPercent = 0;
   showInfo = true;
   strokeLinecap = 'round';
-  strokeColor;
+  strokeColor: string;
 }
 
 @Component({
@@ -279,11 +281,10 @@ export class NzTestProgressLineComponent {
   `
 })
 export class NzTestProgressDashBoardComponent {
-  status;
-  format;
-  strokeWidth;
+  status: string;
+  format: (percent: number) => string;
+  strokeWidth: number;
   percent = 0;
-  successPercent = 0;
   showInfo = true;
   width = 132;
   strokeLinecap = 'round';
@@ -302,8 +303,8 @@ export class NzTestProgressDashBoardComponent {
   `
 })
 export class NzTestProgressCircleComponent {
-  gapDegree;
-  gapPosition;
+  gapDegree: number;
+  gapPosition: NzProgressGapPositionType;
   strokeLinecap = 'round';
-  strokeColor;
+  strokeColor: string;
 }

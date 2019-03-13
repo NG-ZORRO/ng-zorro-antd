@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 import { NzTableModule } from './nz-table.module';
@@ -15,21 +15,25 @@ describe('nz-tbody', () => {
     TestBed.compileComponents();
   }));
   describe('nz-tbody in table', () => {
-    let fixture;
-    let tbody;
+    let fixture: ComponentFixture<NzTbodyTestTableComponent>;
+    let tbody: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTbodyTestTableComponent);
       fixture.detectChanges();
       tbody = fixture.debugElement.query(By.directive(NzTbodyDirective));
     });
+
     it('should not add class', () => {
       fixture.detectChanges();
       expect(tbody.nativeElement.classList).not.toContain('ant-table-tbody');
     });
   });
+
   describe('nz-tbody in nz-table', () => {
-    let fixture;
-    let tbody;
+    let fixture: ComponentFixture<NzTbodyTestNzTableComponent>;
+    let tbody: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTbodyTestNzTableComponent);
       fixture.detectChanges();

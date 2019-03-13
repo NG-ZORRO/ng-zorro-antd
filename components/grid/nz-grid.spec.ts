@@ -1,5 +1,5 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzDemoGridBasicComponent } from './demo/basic';
@@ -17,11 +17,11 @@ import { NzGridModule } from './nz-grid.module';
 import { NzRowDirective } from './nz-row.directive';
 
 describe('grid', () => {
-  let testComponent;
-  let fixture;
   describe('basic', () => {
-    let rows;
-    let cols;
+    let fixture: ComponentFixture<NzDemoGridBasicComponent>;
+    let rows: DebugElement[];
+    let cols: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzGridModule ],
@@ -32,7 +32,6 @@ describe('grid', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoGridBasicComponent);
-      testComponent = fixture.debugElement.componentInstance;
       rows = fixture.debugElement.queryAll(By.directive(NzRowDirective));
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
     });
@@ -52,8 +51,10 @@ describe('grid', () => {
     });
   });
   describe('flex', () => {
-    let rows;
-    let cols;
+    let fixture: ComponentFixture<NzDemoGridFlexComponent>;
+    let rows: DebugElement[];
+    let cols: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzGridModule ],
@@ -64,7 +65,6 @@ describe('grid', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoGridFlexComponent);
-      testComponent = fixture.debugElement.componentInstance;
       rows = fixture.debugElement.queryAll(By.directive(NzRowDirective));
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
     });
@@ -79,9 +79,12 @@ describe('grid', () => {
       expect(cols.every(col => col.nativeElement.classList.contains('ant-col-4'))).toBe(true);
     });
   });
+
   describe('flex-align', () => {
-    let rows;
-    let cols;
+    let fixture: ComponentFixture<NzDemoGridFlexAlignComponent>;
+    let rows: DebugElement[];
+    let cols: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzGridModule ],
@@ -92,7 +95,6 @@ describe('grid', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoGridFlexAlignComponent);
-      testComponent = fixture.debugElement.componentInstance;
       rows = fixture.debugElement.queryAll(By.directive(NzRowDirective));
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
     });
@@ -105,8 +107,11 @@ describe('grid', () => {
       expect(cols.every(col => col.nativeElement.classList.contains('ant-col-4'))).toBe(true);
     });
   });
+
   describe('flex-order', () => {
-    let row;
+    let fixture: ComponentFixture<NzDemoGridFlexOrderComponent>;
+    let row: DebugElement;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzGridModule ],
@@ -117,7 +122,6 @@ describe('grid', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoGridFlexOrderComponent);
-      testComponent = fixture.debugElement.componentInstance;
       row = fixture.debugElement.query(By.directive(NzRowDirective));
     });
 
@@ -141,8 +145,10 @@ describe('grid', () => {
   });
 
   describe('gutter', () => {
-    let rows;
-    let cols;
+    let fixture: ComponentFixture<NzDemoGridGutterComponent>;
+    let rows: DebugElement[];
+    let cols: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzGridModule ],
@@ -153,16 +159,17 @@ describe('grid', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoGridGutterComponent);
-      testComponent = fixture.debugElement.componentInstance;
       rows = fixture.debugElement.queryAll(By.directive(NzRowDirective));
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
     });
+
     it('should number work', () => {
       fixture.detectChanges();
       expect(rows[ 0 ].nativeElement.style.cssText).toBe('margin-left: -8px; margin-right: -8px;');
       expect(cols.slice(0, 4).every(col => col.nativeElement.style.cssText === 'padding-left: 8px; padding-right: 8px;')).toBe(true);
       expect(cols.slice(0, 4).every(col => col.nativeElement.classList.contains('gutter-row'))).toBe(true);
     });
+
     it('should responsive work', () => {
       // TODO: fake media query
       fixture.detectChanges();
@@ -176,9 +183,11 @@ describe('grid', () => {
       expect(cols.slice(4, 8).every(col => col.nativeElement.classList.contains('gutter-row'))).toBe(true);
     });
   });
+
   describe('offset', () => {
-    let rows;
-    let cols;
+    let fixture: ComponentFixture<NzDemoGridOffsetComponent>;
+    let rows: DebugElement[];
+    let cols: DebugElement[];
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzGridModule ],
@@ -189,7 +198,6 @@ describe('grid', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoGridOffsetComponent);
-      testComponent = fixture.debugElement.componentInstance;
       rows = fixture.debugElement.queryAll(By.directive(NzRowDirective));
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
     });
@@ -205,7 +213,9 @@ describe('grid', () => {
   });
 
   describe('responsive', () => {
-    let cols;
+    let fixture: ComponentFixture<NzDemoGridResponsiveComponent>;
+    let cols: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzGridModule ],
@@ -216,9 +226,9 @@ describe('grid', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoGridResponsiveComponent);
-      testComponent = fixture.debugElement.componentInstance;
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
     });
+
     it('should have correct style', () => {
       fixture.detectChanges();
       expect(cols[ 0 ].nativeElement.className).toBe('ant-col-xs-2 ant-col-sm-4 ant-col-md-6 ant-col-lg-8 ant-col-xl-10');
@@ -228,7 +238,9 @@ describe('grid', () => {
   });
 
   describe('responsive-more', () => {
-    let cols;
+    let fixture: ComponentFixture<NzDemoGridResponsiveMoreComponent>;
+    let cols: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzGridModule ],
@@ -239,7 +251,6 @@ describe('grid', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoGridResponsiveMoreComponent);
-      testComponent = fixture.debugElement.componentInstance;
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
     });
     it('should have correct style', () => {
@@ -251,7 +262,9 @@ describe('grid', () => {
   });
 
   describe('sort', () => {
-    let cols;
+    let fixture: ComponentFixture<NzDemoGridSortComponent>;
+    let cols: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzGridModule ],
@@ -262,9 +275,9 @@ describe('grid', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoGridSortComponent);
-      testComponent = fixture.debugElement.componentInstance;
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
     });
+
     it('should have correct style', () => {
       fixture.detectChanges();
       expect(cols[ 0 ].nativeElement.className).toBe('ant-col-18 ant-col-push-6');
@@ -273,6 +286,9 @@ describe('grid', () => {
   });
 
   describe('playground', () => {
+    let fixture: ComponentFixture<NzDemoGridPlaygroundComponent>;
+    let testComponent: NzDemoGridPlaygroundComponent;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzGridModule ],
@@ -286,6 +302,7 @@ describe('grid', () => {
       fixture = TestBed.createComponent(NzDemoGridPlaygroundComponent);
       testComponent = fixture.debugElement.componentInstance;
     });
+
     it('should update gutter and count correctly', () => {
       fixture.detectChanges();
       const row = fixture.debugElement.query(By.directive(NzRowDirective));

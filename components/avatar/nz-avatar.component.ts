@@ -12,10 +12,14 @@ import {
 } from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { NzSizeLDSType } from '../core/types/size';
+import { NzSizeLDSType, NzSizeMap } from '../core/types/size';
 
 export type NzAvatarShape = 'square' | 'circle';
 export type NzAvatarSize = NzSizeLDSType | number;
+
+export interface NzAvatarSizeMap {
+  [ size: string ]: string;
+}
 
 @Component({
   selector           : 'nz-avatar',
@@ -44,7 +48,7 @@ export class NzAvatarComponent implements OnChanges {
 
   private el: HTMLElement = this.elementRef.nativeElement;
   private prefixCls = 'ant-avatar';
-  private sizeMap = { large: 'lg', small: 'sm' };
+  private sizeMap: NzSizeMap = { large: 'lg', small: 'sm' };
 
   constructor(
     private elementRef: ElementRef,

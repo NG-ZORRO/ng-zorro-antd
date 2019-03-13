@@ -66,10 +66,11 @@ export class NzDemoTableDefaultFilterComponent {
 
   search(): void {
     /** filter data **/
-    const filterFunc = item => (this.searchAddress ? item.address.indexOf(this.searchAddress) !== -1 : true) && (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
+    const filterFunc = (item: { name: string, age: number, address: string }) => (this.searchAddress ? item.address.indexOf(this.searchAddress) !== -1 : true) && (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
     const data = this.listOfData.filter(item => filterFunc(item));
     /** sort data **/
     if (this.sortName && this.sortValue) {
+      // @ts-ignore
       this.listOfDisplayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName! ] > b[ this.sortName! ] ? 1 : -1) : (b[ this.sortName! ] > a[ this.sortName! ] ? 1 : -1));
     } else {
       this.listOfDisplayData = data;

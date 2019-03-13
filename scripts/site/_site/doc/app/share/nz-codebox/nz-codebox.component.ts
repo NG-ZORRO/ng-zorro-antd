@@ -103,7 +103,7 @@ export class NzCodeBoxComponent {
     });
   }
 
-  copyGenerateCommand(command) {
+  copyGenerateCommand(command: string): void {
     this.copy(command).then(() => {
       this.commandCopied = true;
       setTimeout(() => {

@@ -99,6 +99,7 @@ export function getCaretCoordinates(element: HTMLInputElement | HTMLTextAreaElem
       // Special case for <input>s because text is rendered centered and line height may be != height
       style.lineHeight = computed.height;
     } else {
+      // @ts-ignore
       style[prop] = computed[prop];
     }
   });

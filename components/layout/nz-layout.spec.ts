@@ -1,6 +1,6 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, discardPeriodicTasks, fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, discardPeriodicTasks, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
@@ -16,14 +16,14 @@ import { NzLayoutModule } from './nz-layout.module';
 import { NzSiderComponent } from './nz-sider.component';
 
 describe('layout', () => {
-  let testComponent;
-  let fixture;
   describe('basic', () => {
-    let headers;
-    let contents;
-    let footers;
-    let siders;
-    let layouts;
+    let fixture: ComponentFixture<NzDemoLayoutBasicComponent>;
+    let headers: DebugElement[];
+    let contents: DebugElement[];
+    let footers: DebugElement[];
+    let siders: DebugElement[];
+    let layouts: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzLayoutModule ],
@@ -34,7 +34,6 @@ describe('layout', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoLayoutBasicComponent);
-      testComponent = fixture.debugElement.componentInstance;
       headers = fixture.debugElement.queryAll(By.directive(NzHeaderComponent));
       contents = fixture.debugElement.queryAll(By.directive(NzContentComponent));
       footers = fixture.debugElement.queryAll(By.directive(NzFooterComponent));
@@ -56,8 +55,11 @@ describe('layout', () => {
     });
   });
   describe('side', () => {
-    let sider;
-    let trigger;
+    let fixture: ComponentFixture<NzDemoLayoutSideComponent>;
+    let testComponent: NzDemoLayoutSideComponent;
+    let sider: DebugElement;
+    let trigger: DebugElement;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzLayoutModule ],
@@ -144,6 +146,9 @@ describe('layout', () => {
     });
   });
   describe('custom-trigger', () => {
+    let fixture: ComponentFixture<NzDemoLayoutCustomTriggerComponent>;
+    let testComponent: NzDemoLayoutCustomTriggerComponent;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzLayoutModule, NzIconTestModule ],
@@ -171,7 +176,8 @@ describe('layout', () => {
     });
   });
   describe('responsive', () => {
-    let sider;
+    let fixture: ComponentFixture<NzDemoLayoutResponsiveComponent>;
+    let sider: DebugElement;
 
     class MatchMediaServiceSpy {
       matchMedia = jasmine.createSpy('matchMedia').and.returnValue({
@@ -195,9 +201,9 @@ describe('layout', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoLayoutResponsiveComponent);
-      testComponent = fixture.debugElement.componentInstance;
       sider = fixture.debugElement.query(By.directive(NzSiderComponent));
     });
+
     it('should responsive work', fakeAsync(() => {
       fixture.detectChanges();
       tick(1000);

@@ -9,7 +9,7 @@ const provinces = [{
   label: 'Jiangsu'
 }];
 
-const cities = {
+const cities: { [ key: string ]: Array<{ value: string, label: string, isLeaf?: boolean }> } = {
   zhejiang: [{
     value: 'hangzhou',
     label: 'Hangzhou'
@@ -24,7 +24,7 @@ const cities = {
   }]
 };
 
-const scenicspots = {
+const scenicspots: { [ key: string ]: Array<{ value: string, label: string, isLeaf?: boolean }> } = {
   hangzhou: [{
     value: 'xihu',
     label: 'West Lake',

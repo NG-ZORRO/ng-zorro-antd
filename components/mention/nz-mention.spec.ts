@@ -7,7 +7,7 @@ import {
   NgZone,
   ViewChild
 } from '@angular/core';
-import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -64,8 +64,8 @@ describe('mention', () => {
   }));
 
   describe('toggling', () => {
-    let fixture;
-    let textarea;
+    let fixture: ComponentFixture<NzTestSimpleMentionComponent>;
+    let textarea: HTMLTextAreaElement;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSimpleMentionComponent);
@@ -161,8 +161,8 @@ describe('mention', () => {
   });
 
   describe('keyboard events', () => {
-    let fixture;
-    let textarea;
+    let fixture: ComponentFixture<NzTestSimpleMentionComponent>;
+    let textarea: HTMLTextAreaElement;
     let DOWN_ARROW_EVENT: KeyboardEvent;
     let UP_ARROW_EVENT: KeyboardEvent;
     let ENTER_EVENT: KeyboardEvent;
@@ -376,8 +376,8 @@ describe('mention', () => {
   });
 
   describe('property', () => {
-    let fixture;
-    let textarea;
+    let fixture: ComponentFixture<NzTestPropertyMentionComponent>;
+    let textarea: HTMLTextAreaElement;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestPropertyMentionComponent);
@@ -502,7 +502,7 @@ class NzTestPropertyMentionComponent {
   ];
   loading = false;
   prefix: string | string[]  = '@';
-  valueWith = data => data.name;
+  valueWith = (data: { name: string; type: string }) => data.name;
   @ViewChild(NzMentionComponent) mention: NzMentionComponent;
   @ViewChild(NzMentionTriggerDirective) trigger: NzMentionTriggerDirective;
 

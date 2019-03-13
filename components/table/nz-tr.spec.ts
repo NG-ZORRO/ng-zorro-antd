@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 import { NzTableModule } from './nz-table.module';
@@ -14,33 +14,40 @@ describe('nz-tr', () => {
     });
     TestBed.compileComponents();
   }));
+
   describe('nz-tr in table', () => {
-    let fixture;
-    let tr;
+    let fixture: ComponentFixture<NzTrTestTableComponent>;
+    let tr: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTrTestTableComponent);
       fixture.detectChanges();
       tr = fixture.debugElement.query(By.directive(NzTrDirective));
     });
+
     it('should not add class', () => {
       fixture.detectChanges();
       expect(tr.nativeElement.classList).not.toContain('ant-table-row');
     });
   });
+
   describe('nz-tr in nz-table', () => {
-    let fixture;
-    let testComponent;
-    let tr;
+    let fixture: ComponentFixture<NzTrTestNzTableComponent>;
+    let testComponent: NzTrTestNzTableComponent;
+    let tr: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTrTestNzTableComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       tr = fixture.debugElement.query(By.directive(NzTrDirective));
     });
+
     it('should not add class', () => {
       fixture.detectChanges();
       expect(tr.nativeElement.classList).toContain('ant-table-row');
     });
+
     it('should expand work', () => {
       fixture.detectChanges();
       testComponent.expand = true;

@@ -52,7 +52,7 @@ export class NzDemoTableRowSelectionCustomComponent implements OnInit {
   isIndeterminate = false;
   listOfDisplayData: any[] = [];
   listOfAllData: any[] = [];
-  mapOfCheckedId = {};
+  mapOfCheckedId: { [ key: string ]: boolean } = {};
 
   currentPageDataChange($event: Array<{ id: number, name: string; age: number; address: string}>): void {
     this.listOfDisplayData = $event;

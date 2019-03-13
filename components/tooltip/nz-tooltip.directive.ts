@@ -23,6 +23,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 
 import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { isNotNil } from '../core/util/check';
+
 import { NzToolTipComponent } from './nz-tooltip.component';
 
 @Directive({
@@ -71,6 +72,8 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   @Input() nzVisible: boolean;
   @Input() nzPlacement: string;
 
+  [ property: string ]: any // tslint:disable-line:no-any
+
   constructor(
     public elementRef: ElementRef,
     public hostView: ViewContainerRef,
@@ -106,7 +109,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
 
   ngAfterViewInit(): void {
     if (this.tooltip.nzTrigger === 'hover') {
-      let overlayElement;
+      let overlayElement: HTMLElement;
       this.renderer.listen(this.elementRef.nativeElement, 'mouseenter', () => this.delayEnterLeave(true, true, this.tooltip.nzMouseEnterDelay));
       this.renderer.listen(this.elementRef.nativeElement, 'mouseleave', () => {
         this.delayEnterLeave(true, false, this.tooltip.nzMouseLeaveDelay);

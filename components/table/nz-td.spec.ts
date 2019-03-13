@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NzCheckboxModule } from '../checkbox';
@@ -15,9 +15,9 @@ describe('nz-td', () => {
     TestBed.compileComponents();
   }));
   describe('basic nz-td', () => {
-    let fixture;
-    let testComponent;
-    let td;
+    let fixture: ComponentFixture<NzTestTdComponent>;
+    let testComponent: NzTestTdComponent;
+    let td: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTdComponent);
       fixture.detectChanges();
@@ -181,9 +181,9 @@ export class NzTestTdComponent {
   showExpand = false;
   expand = false;
   expandChange = jasmine.createSpy('expand change');
-  indentSize;
-  left;
-  right;
+  indentSize: number;
+  left: string | number;
+  right: string | number;
 }
 
 @Component({

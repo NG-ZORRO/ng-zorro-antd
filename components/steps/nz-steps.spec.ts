@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
-import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
@@ -17,10 +17,11 @@ describe('steps', () => {
     TestBed.compileComponents();
   }));
   describe('outer steps', () => {
-    let fixture;
-    let testComponent;
-    let outStep;
-    let innerSteps;
+    let fixture: ComponentFixture<NzTestOuterStepsComponent>;
+    let testComponent: NzTestOuterStepsComponent;
+    let outStep: DebugElement;
+    let innerSteps: DebugElement[];
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestOuterStepsComponent);
       testComponent = fixture.debugElement.componentInstance;
@@ -171,9 +172,10 @@ describe('steps', () => {
     }));
   });
   describe('inner step string', () => {
-    let fixture;
-    let testComponent;
-    let innerSteps;
+    let fixture: ComponentFixture<NzTestInnerStepStringComponent>;
+    let testComponent: NzTestInnerStepStringComponent;
+    let innerSteps: DebugElement[];
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestInnerStepStringComponent);
       testComponent = fixture.debugElement.componentInstance;
@@ -210,8 +212,9 @@ describe('steps', () => {
     });
   });
   describe('inner step template', () => {
-    let fixture;
-    let innerSteps;
+    let fixture: ComponentFixture<NzTestInnerStepTemplateComponent>;
+    let innerSteps: DebugElement[];
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestInnerStepTemplateComponent);
       innerSteps = fixture.debugElement.queryAll(By.directive(NzStepComponent));
@@ -251,7 +254,8 @@ describe('steps', () => {
 @Component({
   selector: 'nz-test-outer-steps',
   template: `
-    <nz-steps [nzCurrent]="current" [nzDirection]="direction" [nzLabelPlacement]="labelPlacement" [nzSize]="size" [nzStatus]="status" [nzProgressDot]="progressDot" [nzStartIndex]="startIndex">
+    <nz-steps [nzCurrent]="current" [nzDirection]="direction" [nzLabelPlacement]="labelPlacement" [nzSize]="size"
+              [nzStatus]="status" [nzProgressDot]="progressDot" [nzStartIndex]="startIndex">
       <nz-step nzTitle="0title" nzDescription="0description"></nz-step>
       <nz-step nzTitle="1title" nzDescription="1description"></nz-step>
       <nz-step nzTitle="2title" nzDescription="2description"></nz-step>
@@ -270,7 +274,7 @@ export class NzTestOuterStepsComponent {
   labelPlacement = 'horizontal';
   size = 'default';
   status = 'process';
-  progressDot = false;
+  progressDot: boolean | TemplateRef<void> = false;
   startIndex = 0;
   constructor (public cdr: ChangeDetectorRef) {}
 }

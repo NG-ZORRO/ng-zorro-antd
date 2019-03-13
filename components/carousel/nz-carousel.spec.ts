@@ -1,6 +1,6 @@
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
-import { Component, ViewChild } from '@angular/core';
-import { fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, ViewChild } from '@angular/core';
+import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { dispatchKeyboardEvent } from '../core/testing';
@@ -18,10 +18,10 @@ describe('carousel', () => {
     TestBed.compileComponents();
   }));
   describe('carousel basic', () => {
-    let fixture;
-    let testComponent;
-    let carouselWrapper;
-    let carouselContents;
+    let fixture: ComponentFixture<NzTestCarouselBasicComponent>;
+    let testComponent: NzTestCarouselBasicComponent;
+    let carouselWrapper: DebugElement;
+    let carouselContents: DebugElement[];
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCarouselBasicComponent);
       fixture.detectChanges();
@@ -162,6 +162,7 @@ describe('carousel', () => {
       expect(carouselContents[ 2 ].nativeElement.classList).toContain('slick-active');
     });
     it('should resize content after window resized', fakeAsync(() => {
+      // @ts-ignore
       const resizeSpy = spyOn(testComponent.nzCarouselComponent, 'renderContent');
       window.dispatchEvent(new Event('resize'));
       tick(200);

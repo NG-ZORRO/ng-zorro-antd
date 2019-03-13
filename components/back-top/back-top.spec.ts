@@ -147,7 +147,7 @@ describe('Component:nz-back-top', () => {
 
     describe('when clicked', () => {
       it(`emit event on nzClick`, fakeAsync(() => {
-        component.nzClick.subscribe((returnValue) => {
+        component.nzClick.subscribe((returnValue: boolean) => {
           expect(returnValue).toBe(true);
         });
 

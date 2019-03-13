@@ -1,5 +1,5 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
@@ -16,9 +16,9 @@ describe('spin', () => {
     TestBed.compileComponents();
   }));
   describe('spin basic', () => {
-    let fixture;
-    let testComponent;
-    let spin;
+    let fixture: ComponentFixture<NzTestSpinBasicComponent>;
+    let testComponent: NzTestSpinBasicComponent;
+    let spin: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSpinBasicComponent);
       fixture.detectChanges();
@@ -123,7 +123,7 @@ export class NzTestSpinBasicComponent {
   size = 'default';
   delay = 0;
   spinning = true;
-  indicator;
-  tip;
+  indicator: TemplateRef<void>;
+  tip: string;
   simple = false;
 }

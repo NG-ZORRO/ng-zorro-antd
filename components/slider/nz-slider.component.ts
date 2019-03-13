@@ -24,7 +24,14 @@ import { getElementOffset, silentEvent, MouseTouchObserverConfig } from '../core
 import { arraysEqual, shallowCopyArray } from '../core/util/array';
 import { ensureNumberInRange, getPercent, getPrecision } from '../core/util/number';
 
-import { isValueARange, ExtendedMark, Marks, SliderHandler, SliderShowTooltip, SliderValue } from './nz-slider-definitions';
+import {
+  isValueARange,
+  ExtendedMark,
+  Marks,
+  SliderHandler,
+  SliderShowTooltip,
+  SliderValue
+} from './nz-slider-definitions';
 import { getValueTypeNotMatchError } from './nz-slider-error';
 
 @Component({
@@ -62,7 +69,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   cacheSliderStart: number | null = null;
   cacheSliderLength: number | null = null;
   activeValueIndex: number | undefined = undefined; // Current activated handle's index ONLY for range=true
-  track = { offset: null, length: null }; // Track's offset and length
+  track: { offset: null | number, length: null | number } = { offset: null, length: null }; // Track's offset and length
   handles: SliderHandler[]; // Handles' offset
   marksArray: ExtendedMark[] | null; // "steps" in array type with more data & FILTER out the invalid mark
   bounds: { lower: SliderValue | null, upper: SliderValue | null } = { lower: null, upper: null }; // now for nz-slider-step
@@ -167,9 +174,9 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   private setActiveValueIndex(pointerValue: number): void {
     const value = this.getValue();
     if (isValueARange(value)) {
-      let minimal = null;
-      let gap;
-      let activeIndex;
+      let minimal: number | null = null;
+      let gap: number;
+      let activeIndex = -1;
       value.forEach((val, index) => {
         gap = Math.abs(pointerValue - val);
         if (minimal === null || gap < minimal!) {
@@ -199,12 +206,14 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     const offset = this.getValueToOffset(value);
     const valueSorted = this.getValue(true);
     const offsetSorted = this.getValueToOffset(valueSorted);
-    const boundParts = this.nzRange ? valueSorted as number[] : [ 0, valueSorted ];
-    const trackParts = this.nzRange ? [ offsetSorted[ 0 ], offsetSorted[ 1 ] - offsetSorted[ 0 ] ] : [ 0, offsetSorted ];
+    const boundParts = isValueARange(valueSorted) ? valueSorted : [ 0, valueSorted ];
+    const trackParts = isValueARange(offsetSorted)
+      ? [ offsetSorted[ 0 ], offsetSorted[ 1 ] - offsetSorted[ 0 ] ]
+      : [ 0, offsetSorted ];
 
     this.handles.forEach((handle, index) => {
-      handle.offset = this.nzRange ? offset[ index ] : offset;
-      handle.value = this.nzRange ? value[ index ] : value || 0;
+      handle.offset = isValueARange(offset) ? offset[ index ] : offset;
+      handle.value = isValueARange(value) ? value[ index ] : value || 0;
     });
 
     [ this.bounds.lower, this.bounds.upper ] = boundParts;

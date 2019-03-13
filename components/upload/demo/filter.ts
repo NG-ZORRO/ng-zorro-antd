@@ -63,7 +63,8 @@ export class NzDemoUploadFilterComponent {
       info.file.url = info.file.response.url;
     }
     // 3. filter successfully uploaded files according to response from server
-    this.fileList = fileList.filter(item => {
+    // tslint:disable-next-line:no-any
+    this.fileList = fileList.filter((item: any) => {
       if (item.response) {
         return item.response.status === 'success';
       }

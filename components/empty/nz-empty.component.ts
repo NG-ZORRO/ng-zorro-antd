@@ -37,7 +37,7 @@ export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
 
   defaultSvg = this.sanitizer.bypassSecurityTrustResourceUrl(emptyImage);
   isContentString = false;
-  locale = {};
+  locale: { [ key: string ]: string } = {};
 
   get shouldRenderContent(): boolean {
     const content = this.nzNotFoundContent;

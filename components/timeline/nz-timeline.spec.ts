@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzTimelineItemComponent } from './nz-timeline-item.component';
@@ -15,16 +15,18 @@ describe('timeline', () => {
     TestBed.compileComponents();
   }));
   describe('basic timeline', () => {
-    let fixture;
-    let testComponent;
-    let timeline;
-    let items;
+    let fixture: ComponentFixture<NzTestTimelineBasicComponent>;
+    let testComponent: NzTestTimelineBasicComponent;
+    let timeline: DebugElement;
+    let items: DebugElement[];
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimelineBasicComponent);
       testComponent = fixture.debugElement.componentInstance;
       timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
       items = fixture.debugElement.queryAll(By.directive(NzTimelineItemComponent));
     });
+
     it('should init className correct', () => {
       fixture.detectChanges();
       expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline');
@@ -32,6 +34,7 @@ describe('timeline', () => {
       expect(items[ 0 ].nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-item-last');
       expect(items[ 3 ].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-last');
     });
+
     it('should color work', () => {
       fixture.detectChanges();
       expect(items[ 0 ].nativeElement.querySelector('.ant-timeline-item-head').classList).toContain('ant-timeline-item-head-blue');
@@ -42,11 +45,13 @@ describe('timeline', () => {
       fixture.detectChanges();
       expect(items[ 0 ].nativeElement.querySelector('.ant-timeline-item-head').classList).toContain('ant-timeline-item-head-green');
     });
+
     it('should dot work', () => {
       fixture.detectChanges();
       expect(items[ 0 ].nativeElement.querySelector('.ant-timeline-item-head').innerText).toBe('dot');
       expect(items[ 1 ].nativeElement.querySelector('.ant-timeline-item-head').innerText).toBe('template');
     });
+
     it('should last work', () => {
       fixture.detectChanges();
       expect(items.length).toBe(4);
@@ -56,6 +61,7 @@ describe('timeline', () => {
       expect(items.length).toBe(5);
       expect(items[ 4 ].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-last');
     });
+
     it('should pending work', () => {
       fixture.detectChanges();
       expect(timeline.nativeElement.querySelector('.ant-timeline-item-pending')).toBeNull();
@@ -95,12 +101,14 @@ describe('timeline', () => {
     });
   });
   describe('custom color timeline', () => {
-    let fixture;
-    let items;
+    let fixture: ComponentFixture<NzTestTimelineCustomColorComponent>;
+    let items: DebugElement[];
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimelineCustomColorComponent);
       items = fixture.debugElement.queryAll(By.directive(NzTimelineItemComponent));
     });
+
     it('should support custom color', () => {
       fixture.detectChanges();
       expect(items[ 0 ].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('grey');
@@ -109,9 +117,10 @@ describe('timeline', () => {
       expect(items[ 3 ].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('');
     });
   });
+
   describe('pending timeline', () => {
-    let fixture;
-    let timeline;
+    let fixture: ComponentFixture<NzTestTimelinePendingComponent>;
+    let timeline: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimelinePendingComponent);
       timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
@@ -138,7 +147,7 @@ describe('timeline', () => {
 export class NzTestTimelineBasicComponent {
   color = 'blue';
   dot = 'dot';
-  pending = false;
+  pending: boolean | string = false;
   last = false;
   reverse = false;
   mode = 'left';

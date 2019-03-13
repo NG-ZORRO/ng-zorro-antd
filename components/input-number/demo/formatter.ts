@@ -16,8 +16,8 @@ import { Component } from '@angular/core';
 })
 export class NzDemoInputNumberFormatterComponent {
   demoValue = 100;
-  formatterPercent = value => `${value} %`;
-  parserPercent = value => value.replace(' %', '');
-  formatterDollar = value => `$ ${value}`;
-  parserDollar = value => value.replace('$ ', '');
+  formatterPercent = (value: number) => `${value} %`;
+  parserPercent = (value: string) => value.replace(' %', '');
+  formatterDollar = (value: number) => `$ ${value}`;
+  parserDollar = (value: string) => value.replace('$ ', '');
 }

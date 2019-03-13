@@ -56,7 +56,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   @ViewChild('searchInput') searchInput: ElementRef<HTMLInputElement>;
 
-  switchLanguage(language) {
+  switchLanguage(language: string): void {
     const url = this.router.url.split('/');
     url.splice(-1);
     this.router.navigateByUrl(url.join('/') + '/' + language);
@@ -145,8 +145,8 @@ export class AppComponent implements OnInit, AfterViewInit {
         indexName     : 'dev_ng_zorro',
         inputSelector : '#search-box input',
         algoliaOptions: { hitsPerPage: 5, facetFilters: [ `tags:${this.language}` ] },
-        transformData(hits) {
-          hits.forEach((hit) => {
+        transformData(hits: any) { // tslint:disable-line:no-any
+          hits.forEach((hit: any) => { // tslint:disable-line:no-any
             hit.url = hit.url.replace('ng.ant.design', location.host);
             hit.url = hit.url.replace('https:', location.protocol);
           });

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzSelectUnselectableDirective } from './nz-select-unselectable.directive';
 
@@ -12,8 +12,8 @@ describe('select unselectable', () => {
     TestBed.compileComponents();
   }));
   describe('basic select unselectable', () => {
-    let fixture;
-    let unselectable;
+    let fixture: ComponentFixture<NzTestSelectUnselectableComponent>;
+    let unselectable: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSelectUnselectableComponent);
       fixture.detectChanges();

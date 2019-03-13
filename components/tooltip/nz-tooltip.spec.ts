@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
+import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
@@ -12,8 +12,6 @@ import { NzToolTipModule } from './nz-tooltip.module';
 describe('NzTooltip', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  let fixture;
-  let component;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -32,7 +30,11 @@ describe('NzTooltip', () => {
   afterEach(() => {
     overlayContainer.ngOnDestroy();
   });
+
   describe('should bring no break change', () => {
+    let fixture: ComponentFixture<NzTooltipTestWrapperComponent>;
+    let component: NzTooltipTestWrapperComponent;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTooltipTestWrapperComponent);
       component = fixture.componentInstance;
@@ -153,6 +155,9 @@ describe('NzTooltip', () => {
     }));
   });
   describe('should support directive usage', () => {
+    let fixture: ComponentFixture<NzTooltipTestNewComponent>;
+    let component: NzTooltipTestNewComponent;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTooltipTestNewComponent);
       component = fixture.componentInstance;
@@ -253,7 +258,8 @@ describe('NzTooltip', () => {
 @Component({
   selector: 'nz-tooltip-test-new',
   template: `
-    <a #titleString nz-tooltip [nzTitle]="title" nzTrigger="hover" nzPlacement="topLeft" nzOverlayClassName="testClass" [nzOverlayStyle]="{color:'#000'}"
+    <a #titleString nz-tooltip [nzTitle]="title" nzTrigger="hover" nzPlacement="topLeft" nzOverlayClassName="testClass"
+       [nzOverlayStyle]="{color:'#000'}"
        [nzMouseEnterDelay]="0.15" [nzMouseLeaveDelay]="0.1">Show</a>
     <a #titleTemplate nz-tooltip [nzTitle]="template">Show</a>
     <ng-template #template>
@@ -274,7 +280,6 @@ export class NzTooltipTestNewComponent {
   @ViewChild('inBtnGroup') inBtnGroup: ElementRef;
 
   title = 'title-string';
-
 }
 
 @Component({

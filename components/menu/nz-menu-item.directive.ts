@@ -71,8 +71,9 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     /** store origin padding in padding */
-    if (this.el.style[ 'padding-left' ]) {
-      this.originalPadding = parseInt(this.el.style[ 'padding-left' ], 10);
+    const paddingLeft = this.el.style.paddingLeft;
+    if (paddingLeft) {
+      this.originalPadding = parseInt(paddingLeft, 10);
     }
     merge(
       this.nzMenuService.mode$,

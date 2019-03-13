@@ -1,7 +1,7 @@
 // tslint:disable:no-any
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,13 +18,14 @@ import { NzCascaderModule } from './nz-cascader.module';
 import { CascaderOption, NzShowSearchOptions } from './types';
 
 describe('cascader', () => {
-  let fixture;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
   describe('default', () => {
-    let cascader;
+    let fixture: ComponentFixture<NzDemoCascaderDefaultComponent>;
+    let cascader: DebugElement;
     let testComponent: NzDemoCascaderDefaultComponent;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule ],
@@ -1493,7 +1494,8 @@ describe('cascader', () => {
   });
 
   describe('load data lazily', () => {
-    let cascader;
+    let fixture: ComponentFixture<NzDemoCascaderLoadDataComponent>;
+    let cascader: DebugElement;
     let testComponent: NzDemoCascaderLoadDataComponent;
     beforeEach(async(() => {
       TestBed.configureTestingModule({
@@ -1788,7 +1790,7 @@ const options4 = [ {
   } ]
 } ];
 
-const options5 = [];
+const options5: any[] = []; // tslint:disable-line:no-any
 
 @Component({
   selector: 'nz-demo-cascader-default',

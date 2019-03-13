@@ -10,6 +10,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { NGStyleInterface } from '../core/types/ng-class';
 
 import { InputBoolean } from '../core/util/convert';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
@@ -39,7 +40,7 @@ export class NzSliderHandleComponent implements OnChanges, OnDestroy {
   @Input() @InputBoolean() nzActive = false;
 
   tooltipTitle: string;
-  style: object = {};
+  style: NGStyleInterface = {};
 
   private hovers_ = new Subscription();
 

@@ -12,7 +12,7 @@ import { Observable, Observer } from 'rxjs';
 @Component({
   selector: 'nz-demo-form-validate-reactive',
   template: `
-    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm($event,validateForm.value)">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm($event, validateForm.value)">
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>Username</nz-form-label>
         <nz-form-control [nzSpan]="12" nzHasFeedback>
@@ -96,7 +96,7 @@ import { Observable, Observer } from 'rxjs';
 })
 export class NzDemoFormValidateReactiveComponent {
   validateForm: FormGroup;
-  submitForm = ($event, value) => {
+  submitForm = ($event: any, value: any) => {
     $event.preventDefault();
     for (const key in this.validateForm.controls) {
       this.validateForm.controls[ key ].markAsDirty();
