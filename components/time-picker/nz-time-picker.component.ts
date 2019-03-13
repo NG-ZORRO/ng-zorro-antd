@@ -64,6 +64,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() nzDisabledSeconds: (hour: number, minute: number) => number[];
   @Input() nzFormat = 'HH:mm:ss';
   @Input() nzOpen = false;
+  @Input() nzUse12Hours = false;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
 
   @Input()
