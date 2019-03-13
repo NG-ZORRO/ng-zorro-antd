@@ -87,7 +87,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzVirtualItemSize]` | 虚拟滚动时每一列的高度，与 [cdk itemSize](https://material.angular.io/cdk/scrolling/api) 相同 | `number` | `0` |
 | `[nzVirtualMaxBufferPx]` | 缓冲区最大像素高度，与 [cdk maxBufferPx](https://material.angular.io/cdk/scrolling/api) 相同 | `number` | `200` |
 | `[nzVirtualMinBufferPx]` | 缓冲区最小像素高度，低于该值时将加载新结构，与 [cdk minBufferPx](https://material.angular.io/cdk/scrolling/api) 相同 | `number` | `100` |
-| `(nzPageIndexChange)` | 当前页码改版时的回调函数 | `EventEmitter<number>` | - |
+| `(nzPageIndexChange)` | 当前页码改变时的回调函数 | `EventEmitter<number>` | - |
 | `(nzPageSizeChange)` | 页数改变时的回调函数 | `EventEmitter<number>` | - |
 | `(nzCurrentPageDataChange)` | 当前页面展示数据改变的回调函数 | `EventEmitter<any[]>` | - |
 
