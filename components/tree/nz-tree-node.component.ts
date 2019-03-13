@@ -93,7 +93,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   set nzSearchValue(value: string) {
     this.highlightKeys = [];
-    if (value && this.nzTreeNode.title.includes(value)) {
+    if (value && this.nzTreeNode.title!.includes(value)) {
       // match the search value
       const index = this.nzTreeNode.title.indexOf(value);
       this.highlightKeys = [ this.nzTreeNode.title.slice(0, index), this.nzTreeNode.title.slice(index + value.length, this.nzTreeNode.title.length) ];

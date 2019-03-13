@@ -93,7 +93,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   @Input() nzPlaceHolder = '';
   @Input() nzDropdownStyle: { [ key: string ]: string; };
   @Input() nzDefaultExpandedKeys: string[] = [];
-  @Input() nzDisplayWith: (node: NzTreeNode) => string = (node: NzTreeNode) => node.title;
+  @Input() nzDisplayWith: (node: NzTreeNode) => string | undefined = (node: NzTreeNode) => node.title;
   @Input() nzMaxTagCount: number;
   @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzTreeNode[] }>;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
@@ -333,7 +333,6 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
         this.closeDropDown();
         this.onChange(value.length ? value[ 0 ] : null);
       }
-
     });
   }
 

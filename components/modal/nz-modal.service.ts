@@ -2,6 +2,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { IndexableObject } from '../core/types/indexable';
 
 import { LoggerService } from '../core/util/logger/logger.service';
 
@@ -120,13 +121,14 @@ export class NzModalService {
   }
 
   private simpleConfirm<T>(options: ModalOptionsForService<T> = {}, confirmType: ConfirmType): NzModalRef<T> {
+    const iconMap: IndexableObject = {
+      'info'   : 'info-circle',
+      'success': 'check-circle',
+      'error'  : 'close-circle',
+      'warning': 'exclamation-circle'
+    };
     if (!('nzIconType' in options)) {
-      options.nzIconType = {
-        'info'   : 'info-circle',
-        'success': 'check-circle',
-        'error'  : 'close-circle',
-        'warning': 'exclamation-circle'
-      }[ confirmType ];
+      options.nzIconType = iconMap[ confirmType ];
     }
     if (!('nzCancelText' in options)) { // Remove the Cancel button if the user not specify a Cancel button
       options.nzCancelText = undefined;

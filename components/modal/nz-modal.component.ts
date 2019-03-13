@@ -43,8 +43,8 @@ export const MODAL_ANIMATE_DURATION = 200; // Duration when perform animations (
 type AnimationState = 'enter' | 'leave' | null;
 
 @Component({
-  selector   : 'nz-modal',
-  templateUrl: './nz-modal.component.html',
+  selector       : 'nz-modal',
+  templateUrl    : './nz-modal.component.html',
   // Using OnPush for modal caused footer can not to detect changes. we can fix it when 8.x.
   changeDetection: ChangeDetectionStrategy.Default
 })
@@ -123,6 +123,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   private previouslyFocusedElement: HTMLElement;
   private focusTrap: FocusTrap;
   private scrollStrategy: BlockScrollStrategy;
+
+  [ key: string ]: any // tslint:disable-line:no-any
 
   constructor(
     private overlay: Overlay,
@@ -276,7 +278,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
       const caseClose = (doClose: boolean | void | {}) => (doClose !== false) && this.close(doClose as R); // Users can return "false" to prevent closing by default
       if (isPromise(result)) {
         this[ loadingKey ] = true;
-        const handleThen = (doClose) => {
+        const handleThen = (doClose: boolean | void | {}) => {
           this[ loadingKey ] = false;
           caseClose(doClose);
         };
@@ -312,18 +314,18 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     }
 
     return Promise
-    .resolve(animation ? this.animateTo(visible) : undefined)
-    .then(() => { // Emit open/close event after animations over
-      if (visible) {
-        this.nzAfterOpen.emit();
-      } else {
-        this.nzAfterClose.emit(closeResult);
-        this.restoreFocus();
-        this.scrollStrategy.disable();
-        // Mark the for check so it can react if the view container is using OnPush change detection.
-        this.cdr.markForCheck();
-      }
-    });
+      .resolve(animation ? this.animateTo(visible) : undefined)
+      .then(() => { // Emit open/close event after animations over
+        if (visible) {
+          this.nzAfterOpen.emit();
+        } else {
+          this.nzAfterClose.emit(closeResult);
+          this.restoreFocus();
+          this.scrollStrategy.disable();
+          // Mark the for check so it can react if the view container is using OnPush change detection.
+          this.cdr.markForCheck();
+        }
+      });
   }
 
   // Lookup a button's property, if the prop is a function, call & then return the result, otherwise, return itself.
@@ -388,12 +390,12 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     return buttons.map((button) => {
       return {
         ...{
-          type: 'default',
-          size: 'default',
+          type       : 'default',
+          size       : 'default',
           autoLoading: true,
-          show: true,
-          loading: false,
-          disabled: false
+          show       : true,
+          loading    : false,
+          disabled   : false
         },
         ...button
       };

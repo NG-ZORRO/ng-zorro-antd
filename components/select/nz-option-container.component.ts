@@ -44,11 +44,11 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
         const targetOption = this.listOfNzOptionLiComponent.find(
           o => this.nzSelectService.compareWith(o.nzOption.nzValue, option.nzValue)
         );
-        /* tslint:disable-next-line:no-string-literal */
-        if (targetOption && targetOption.el && targetOption.el[ 'scrollIntoViewIfNeeded' ]) {
-          /* tslint:disable-next-line:no-string-literal */
-          targetOption.el[ 'scrollIntoViewIfNeeded' ](false);
+        /* tslint:disable:no-any */
+        if (targetOption && targetOption.el && (targetOption.el as any).scrollIntoViewIfNeeded) {
+          (targetOption.el as any).scrollIntoViewIfNeeded(false);
         }
+        /* tslint:enable:no-any */
       }
     });
   }

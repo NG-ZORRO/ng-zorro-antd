@@ -20,5 +20,5 @@ import { Component } from '@angular/core';
 })
 export class NzDemoInputPasswordInputComponent {
   passwordVisible = false;
-  password;
+  password: string;
 }

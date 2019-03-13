@@ -20,8 +20,8 @@ import { NzMessageService } from 'ng-zorro-antd';
 })
 export class NzDemoUploadDragComponent {
   constructor(private msg: NzMessageService) {}
-  // tslint:disable-next-line:typedef
-  handleChange({ file, fileList }): void {
+  // tslint:disable-next-line:no-any
+  handleChange({ file, fileList }: { [ key: string ]: any }): void {
     const status = file.status;
     if (status !== 'uploading') {
       console.log(file, fileList);

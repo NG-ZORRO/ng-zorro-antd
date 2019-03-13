@@ -44,7 +44,7 @@ export class NzDemoMentionControlledComponent implements OnInit {
 
   suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
   validateForm: FormGroup;
-  @ViewChild('mentions') mentionChild;
+  @ViewChild('mentions') mentionChild: any;
 
   get mention(): AbstractControl { return  this.validateForm.get('mention')!; }
 

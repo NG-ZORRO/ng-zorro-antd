@@ -12,5 +12,5 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoInputAutosizeTextareaComponent {
-  value;
+  value: string;
 }

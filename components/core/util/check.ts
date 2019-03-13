@@ -1,4 +1,5 @@
 import { TemplateRef, Type } from '@angular/core';
+import { IndexableObject } from '../types/indexable';
 
 // tslint:disable-next-line:no-any
 export function isNotNil(value: any): boolean {
@@ -13,7 +14,7 @@ export function isNil(value: any): value is null | undefined {
 /**
  * Examine if two objects are shallowly equaled.
  */
-export function shallowEqual(objA?: {}, objB?: {}): boolean {
+export function shallowEqual(objA?: IndexableObject, objB?: IndexableObject): boolean {
   if (objA === objB) {
     return true;
   }

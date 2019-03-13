@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
+import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
@@ -11,8 +11,6 @@ import { NzPopconfirmModule } from './nz-popconfirm.module';
 describe('NzPopconfirm', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  let fixture;
-  let component;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -27,11 +25,15 @@ describe('NzPopconfirm', () => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
+
   afterEach(() => {
     overlayContainer.ngOnDestroy();
   });
 
   describe('should not bring break changes', () => {
+    let fixture: ComponentFixture<NzpopconfirmTestWrapperComponent>;
+    let component: NzpopconfirmTestWrapperComponent;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzpopconfirmTestWrapperComponent);
       component = fixture.componentInstance;
@@ -155,11 +157,15 @@ describe('NzPopconfirm', () => {
     }));
   });
   describe('should support directive usage', () => {
+    let fixture: ComponentFixture<NzpopconfirmTestNewComponent>;
+    let component: NzpopconfirmTestNewComponent;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzpopconfirmTestNewComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
+
     it('should show/hide with title string', fakeAsync(() => {
       const triggerElement = component.stringTemplate.nativeElement;
       dispatchMouseEvent(triggerElement, 'click');
@@ -301,7 +307,7 @@ export class NzpopconfirmTestNewComponent {
   @ViewChild('stringTemplate') stringTemplate: ElementRef;
   @ViewChild('templateTemplate') templateTemplate: ElementRef;
   @ViewChild('inBtnGroup') inBtnGroup: ElementRef;
-  @ViewChild('iconTemplate') iconTemplate: ElementRef<void>;
+  @ViewChild('iconTemplate') iconTemplate: ElementRef;
 }
 
 @Component({

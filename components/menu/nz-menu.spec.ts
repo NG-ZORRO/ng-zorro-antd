@@ -1,8 +1,16 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { Component, ElementRef, NO_ERRORS_SCHEMA, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { async, fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
+import {
+  Component,
+  DebugElement,
+  ElementRef,
+  NO_ERRORS_SCHEMA,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
+import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
@@ -51,10 +59,10 @@ describe('menu', () => {
   }));
   describe('demo', () => {
     describe('horizontal', () => {
-      let fixture;
-      let items;
-      let submenu;
-      let menu;
+      let fixture: ComponentFixture<NzDemoMenuHorizontalComponent>;
+      let items: DebugElement[];
+      let submenu: DebugElement;
+      let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuHorizontalComponent);
         items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
@@ -83,10 +91,10 @@ describe('menu', () => {
       });
     });
     describe('inline', () => {
-      let fixture;
-      let items;
-      let submenus;
-      let menu;
+      let fixture: ComponentFixture<NzDemoMenuInlineComponent>;
+      let items: DebugElement[];
+      let submenus: DebugElement[];
+      let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuInlineComponent);
         items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
@@ -124,10 +132,10 @@ describe('menu', () => {
       }));
     });
     describe('inline-collapsed', () => {
-      let fixture;
-      let testComponent;
-      let submenus;
-      let menu;
+      let fixture: ComponentFixture<NzDemoMenuInlineCollapsedComponent>;
+      let testComponent: NzDemoMenuInlineCollapsedComponent;
+      let submenus: DebugElement[];
+      let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuInlineCollapsedComponent);
         testComponent = fixture.debugElement.componentInstance;
@@ -166,8 +174,8 @@ describe('menu', () => {
       });
     });
     describe('slider-current', () => {
-      let fixture;
-      let submenus;
+      let fixture: ComponentFixture<NzDemoMenuSiderCurrentComponent>;
+      let submenus: DebugElement[];
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuSiderCurrentComponent);
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
@@ -205,9 +213,9 @@ describe('menu', () => {
       }));
     });
     describe('theme', () => {
-      let fixture;
-      let testComponent;
-      let menu;
+      let fixture: ComponentFixture<NzDemoMenuThemeComponent>;
+      let testComponent: NzDemoMenuThemeComponent;
+      let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuThemeComponent);
         testComponent = fixture.debugElement.componentInstance;
@@ -222,10 +230,10 @@ describe('menu', () => {
       });
     });
     describe('swich-mode', () => {
-      let fixture;
-      let testComponent;
-      let submenus;
-      let menu;
+      let fixture: ComponentFixture<NzDemoMenuSwitchModeComponent>;
+      let testComponent: NzDemoMenuSwitchModeComponent;
+      let submenus: DebugElement[];
+      let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuSwitchModeComponent);
         testComponent = fixture.debugElement.componentInstance;
@@ -246,9 +254,9 @@ describe('menu', () => {
   });
   describe('coverage', () => {
     describe('horizontal submenu', () => {
-      let fixture;
-      let testComponent;
-      let submenu;
+      let fixture: ComponentFixture<NzTestMenuHorizontalComponent>;
+      let testComponent: NzTestMenuHorizontalComponent;
+      let submenu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestMenuHorizontalComponent);
         testComponent = fixture.debugElement.componentInstance;
@@ -376,9 +384,9 @@ describe('menu', () => {
       });
     });
     describe('inline submenu', () => {
-      let fixture;
-      let testComponent;
-      let submenu;
+      let fixture: ComponentFixture<NzTestMenuInlineComponent>;
+      let testComponent: NzTestMenuInlineComponent;
+      let submenu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestMenuInlineComponent);
         testComponent = fixture.debugElement.componentInstance;

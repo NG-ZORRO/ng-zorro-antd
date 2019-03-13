@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzTagComponent } from './nz-tag.component';
@@ -14,9 +14,10 @@ describe('tag', () => {
     TestBed.compileComponents();
   }));
   describe('basic tag', () => {
-    let fixture;
-    let testComponent;
-    let tag;
+    let fixture: ComponentFixture<NzTestTagBasicComponent>;
+    let testComponent: NzTestTagBasicComponent;
+    let tag: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTagBasicComponent);
       fixture.detectChanges();
@@ -87,8 +88,9 @@ describe('tag', () => {
     });
   });
   describe('prevent tag', () => {
-    let fixture;
-    let tag;
+    let fixture: ComponentFixture<NzTestTagPreventComponent>;
+    let tag: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTagPreventComponent);
       fixture.detectChanges();
@@ -121,7 +123,7 @@ describe('tag', () => {
 })
 export class NzTestTagBasicComponent {
   mode = 'default';
-  color;
+  color: string | undefined;
   checked = false;
   onClose = jasmine.createSpy('on close');
   afterClose = jasmine.createSpy('after close');

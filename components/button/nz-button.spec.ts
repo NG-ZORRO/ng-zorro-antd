@@ -1,5 +1,5 @@
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
@@ -17,10 +17,10 @@ import { NzButtonComponent } from './nz-button.component';
 import { NzButtonModule } from './nz-button.module';
 
 describe('button', () => {
-  let testComponent;
-  let fixture;
   describe('basic', () => {
-    let buttons;
+    let fixture: ComponentFixture<NzDemoButtonBasicComponent>;
+    let buttons: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzButtonModule ],
@@ -31,7 +31,6 @@ describe('button', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoButtonBasicComponent);
-      testComponent = fixture.debugElement.componentInstance;
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
@@ -43,8 +42,11 @@ describe('button', () => {
       expect(buttons[ 3 ].nativeElement.classList.contains('ant-btn-danger')).toBe(true);
     });
   });
+
   describe('button-group', () => {
-    let buttonGroup;
+    let fixture: ComponentFixture<NzDemoButtonButtonGroupComponent>;
+    let buttonGroup: DebugElement;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzButtonModule ],
@@ -55,7 +57,6 @@ describe('button', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoButtonButtonGroupComponent);
-      testComponent = fixture.debugElement.componentInstance;
       buttonGroup = fixture.debugElement.query(By.directive(NzButtonGroupComponent));
     });
 
@@ -65,11 +66,15 @@ describe('button', () => {
     });
     it('should have no white space', () => {
       fixture.detectChanges();
+      // @ts-ignore
       expect(Array.from(buttonGroup.nativeElement.firstElementChild).some((node: HTMLElement) => node.nodeType === 3)).toBe(false);
     });
   });
+
   describe('disabled', () => {
-    let buttons;
+    let fixture: ComponentFixture<NzDemoButtonDisabledComponent>;
+    let buttons: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzButtonModule ],
@@ -80,7 +85,6 @@ describe('button', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoButtonDisabledComponent);
-      testComponent = fixture.debugElement.componentInstance;
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
@@ -89,8 +93,11 @@ describe('button', () => {
       expect(!!buttons[ 1 ].nativeElement.attributes.getNamedItem('disabled')).toBe(true);
     });
   });
+
   describe('ghost', () => {
-    let buttons;
+    let fixture: ComponentFixture<NzDemoButtonGhostComponent>;
+    let buttons: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzButtonModule ],
@@ -101,7 +108,6 @@ describe('button', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoButtonGhostComponent);
-      testComponent = fixture.debugElement.componentInstance;
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
@@ -113,8 +119,11 @@ describe('button', () => {
       expect(buttons[ 3 ].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
     });
   });
+
   describe('icon', () => {
-    let buttons;
+    let fixture: ComponentFixture<NzDemoButtonIconComponent>;
+    let buttons: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzButtonModule, NzIconTestModule ],
@@ -125,7 +134,6 @@ describe('button', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoButtonIconComponent);
-      testComponent = fixture.debugElement.componentInstance;
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
@@ -138,8 +146,11 @@ describe('button', () => {
       expect(buttons[ 1 ].nativeElement.firstElementChild.style.cssText).toBe('display: inline-block;');
     });
   });
+
   describe('loading', () => {
-    let buttons;
+    let fixture: ComponentFixture<NzDemoButtonLoadingComponent>;
+    let buttons: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzButtonModule, NzIconTestModule ],
@@ -150,7 +161,6 @@ describe('button', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoButtonLoadingComponent);
-      testComponent = fixture.debugElement.componentInstance;
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
@@ -158,6 +168,7 @@ describe('button', () => {
       fixture.detectChanges();
       expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-loading')).toBe(true);
     });
+
     it('should loading when click without icon', fakeAsync(() => {
       const button = buttons[ 2 ];
       fixture.detectChanges();
@@ -176,6 +187,7 @@ describe('button', () => {
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
       expect(button.nativeElement.firstElementChild.localName).toBe('span');
     }));
+
     it('should loading when click with icon', fakeAsync(() => {
       const button = buttons[ 3 ];
       fixture.detectChanges();
@@ -201,9 +213,13 @@ describe('button', () => {
       expect(button.nativeElement.firstElementChild.localName).toBe('i');
     }));
   });
+
   describe('size', () => {
-    let buttons;
-    let buttonGroup;
+    let fixture: ComponentFixture<NzDemoButtonSizeComponent>;
+    let testComponent: NzDemoButtonSizeComponent;
+    let buttons: DebugElement[];
+    let buttonGroup: DebugElement;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzButtonModule ],
@@ -234,8 +250,11 @@ describe('button', () => {
       expect(buttonGroup.nativeElement.classList.contains('ant-btn-group-sm')).toBe(true);
     });
   });
+
   describe('icon', () => {
-    let button;
+    let fixture: ComponentFixture<NzTestButtonSearchComponent>;
+    let button: DebugElement;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzButtonModule ],
@@ -246,7 +265,6 @@ describe('button', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestButtonSearchComponent);
-      testComponent = fixture.debugElement.componentInstance;
       button = fixture.debugElement.query(By.directive(NzButtonComponent));
     });
 
@@ -255,8 +273,11 @@ describe('button', () => {
       expect(button.nativeElement.classList.contains('ant-input-search-button')).toBe(true);
     });
   });
+
   describe('block', () => {
-    let buttons;
+    let fixture: ComponentFixture<NzDemoButtonBlockComponent>;
+    let buttons: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzButtonModule ],
@@ -267,7 +288,6 @@ describe('button', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoButtonBlockComponent);
-      testComponent = fixture.debugElement.componentInstance;
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
@@ -284,8 +304,11 @@ describe('button', () => {
       expect(buttons[ 3 ].nativeElement.classList.contains('ant-btn-block')).toBe(true);
     });
   });
+
   describe('binding', () => {
-    let button;
+    let fixture: ComponentFixture<NzTestButtonBindingComponent>;
+    let button: DebugElement;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzButtonModule, NzIconTestModule ],
@@ -296,7 +319,6 @@ describe('button', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestButtonBindingComponent);
-      testComponent = fixture.debugElement.componentInstance;
       button = fixture.debugElement.query(By.directive(NzButtonComponent));
     });
 
@@ -322,7 +344,6 @@ describe('button', () => {
       expect(button.nativeElement.querySelector('.anticon-poweroff').style.cssText).toBe('display: inline-block;');
     }));
   });
-
 });
 
 @Component({
@@ -333,7 +354,7 @@ describe('button', () => {
 export class NzTestButtonSearchComponent {
 }
 
-/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/2191 **/
+// https://github.com/NG-ZORRO/ng-zorro-antd/issues/2191
 @Component({
   selector: 'nz-test-button-binding',
   template: `<button nz-button nzType="primary" (click)="load()" [nzLoading]="loading"><i nz-icon type="poweroff"></i> {{'Click me!'}}</button>`
@@ -343,9 +364,6 @@ export class NzTestButtonBindingComponent {
 
   load(): void {
     this.loading = true;
-    setTimeout(_ => {
-      this.loading = false;
-    }, 5000);
+    setTimeout(() => this.loading = false, 5000);
   }
-
 }

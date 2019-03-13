@@ -1,9 +1,10 @@
-import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NGStyleInterface } from '../core/types/ng-class';
 
 import { NzTabsModule } from './nz-tabs.module';
-import { NzTabSetComponent } from './nz-tabset.component';
+import { NzAnimatedInterface, NzTabSetComponent } from './nz-tabset.component';
 
 describe('tabs', () => {
   beforeEach(fakeAsync(() => {
@@ -14,19 +15,22 @@ describe('tabs', () => {
     TestBed.compileComponents();
   }));
   describe('basic tabs', () => {
-    let fixture;
-    let testComponent;
-    let tabs;
+    let fixture: ComponentFixture<NzTestTabsBasicComponent>;
+    let testComponent: NzTestTabsBasicComponent;
+    let tabs: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTabsBasicComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       tabs = fixture.debugElement.query(By.directive(NzTabSetComponent));
     });
+
     it('should className correct', () => {
       fixture.detectChanges();
       expect(tabs.nativeElement.className).toBe('ant-tabs ant-tabs-top ant-tabs-line');
     });
+
     it('should size work', () => {
       fixture.detectChanges();
       testComponent.size = 'large';
@@ -36,6 +40,7 @@ describe('tabs', () => {
       fixture.detectChanges();
       expect(tabs.nativeElement.classList).toContain('ant-tabs-small');
     });
+
     it('should type work', () => {
       fixture.detectChanges();
       expect(tabs.nativeElement.classList).toContain('ant-tabs-line');
@@ -43,6 +48,7 @@ describe('tabs', () => {
       fixture.detectChanges();
       expect(tabs.nativeElement.classList).toContain('ant-tabs-card');
     });
+
     it('should tabBarExtraContent work', () => {
       fixture.detectChanges();
       expect(tabs.nativeElement.querySelector('.ant-tabs-extra-content')).toBeNull();
@@ -50,6 +56,7 @@ describe('tabs', () => {
       fixture.detectChanges();
       expect(tabs.nativeElement.querySelector('.ant-tabs-extra-content').innerText).toBe('extra');
     });
+
     it('should tabBarStyle work', () => {
       fixture.detectChanges();
       expect(tabs.nativeElement.querySelector('[nz-tabs-nav]').style.cssText).toBe('');
@@ -57,6 +64,7 @@ describe('tabs', () => {
       fixture.detectChanges();
       expect(tabs.nativeElement.querySelector('[nz-tabs-nav]').style.cssText).toBe('top: 0px;');
     });
+
     it('should animated work', () => {
       fixture.detectChanges();
       expect(tabs.nativeElement.querySelector('.ant-tabs-content').classList).toContain('ant-tabs-content-animated');
@@ -74,6 +82,7 @@ describe('tabs', () => {
       expect(tabs.nativeElement.querySelector('.ant-tabs-content').classList).toContain('ant-tabs-content-animated');
       expect(tabs.nativeElement.querySelector('.ant-tabs-ink-bar').classList).toContain('ant-tabs-ink-bar-no-animated');
     });
+
     it('should tabPosition work', () => {
       fixture.detectChanges();
       expect(tabs.nativeElement.className).toBe('ant-tabs ant-tabs-top ant-tabs-line');
@@ -87,6 +96,7 @@ describe('tabs', () => {
       fixture.detectChanges();
       expect(tabs.nativeElement.className).toBe('ant-tabs ant-tabs-bottom ant-tabs-line');
     });
+
     it('should tabBarGutter work', () => {
       fixture.detectChanges();
       expect(tabs.nativeElement.querySelector('.ant-tabs-tab').style.marginRight).toBe('');
@@ -94,6 +104,7 @@ describe('tabs', () => {
       fixture.detectChanges();
       expect(tabs.nativeElement.querySelector('.ant-tabs-tab').style.marginRight).toBe('10px');
     });
+
     it('should hideAll work', () => {
       fixture.detectChanges();
       expect(tabs.nativeElement.querySelector('.ant-tabs-tabpane').classList).toContain('ant-tabs-tabpane-active');
@@ -103,18 +114,21 @@ describe('tabs', () => {
       expect(tabs.nativeElement.querySelector('.ant-tabs-tabpane').classList).toContain('ant-tabs-tabpane-inactive');
       expect(tabs.nativeElement.querySelector('.ant-tabs-ink-bar').attributes.getNamedItem('hidden').name).toBe('hidden');
     });
+
     it('should title work', () => {
       fixture.detectChanges();
       const titles = tabs.nativeElement.querySelectorAll('.ant-tabs-tab');
       expect(titles[ 0 ].innerText).toBe('title');
       expect(titles[ 1 ].innerText).toBe('template');
     });
+
     it('should content work', () => {
       fixture.detectChanges();
       const contents = tabs.nativeElement.querySelectorAll('.ant-tabs-tabpane');
       expect(contents[ 0 ].innerText).toBe('Content 1');
       expect(contents[ 1 ].innerText).toBe('Content 2');
     });
+
     it('should selectedIndex work', fakeAsync(() => {
       fixture.detectChanges();
       tick();
@@ -521,13 +535,13 @@ export class NzTestTabsBasicComponent {
   selectedIndex = 0;
   selectedIndexChange = jasmine.createSpy('selectedIndex callback');
   selectChange = jasmine.createSpy('selectedIndex callback');
-  animated = true;
+  animated: NzAnimatedInterface | boolean = true;
   size = 'default';
-  tabBarExtraContent;
-  tabBarStyle;
+  tabBarExtraContent: TemplateRef<void>;
+  tabBarStyle: NGStyleInterface;
   tabPosition = 'top';
   type = 'line';
-  tabBarGutter;
+  tabBarGutter: number;
   hideAll = false;
   disabled = false;
   click00 = jasmine.createSpy('click00 callback');
@@ -556,5 +570,5 @@ export class NzTestTabsBasicComponent {
   `
 })
 export class NzTestTabsTabPositionLeftComponent {
-  tabs = [1, 2, 3];
+  tabs = [ 1, 2, 3 ];
 }

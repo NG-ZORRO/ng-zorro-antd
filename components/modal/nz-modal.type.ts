@@ -63,4 +63,7 @@ export interface ModalButtonOptions<T = any> { // tslint:disable-line:no-any
   loading?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean); // This prop CAN'T use with autoLoading=true
   disabled?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean);
   onClick?(this: ModalButtonOptions<T>, contentComponentInstance?: T): (void | {}) | Promise<(void | {})>;
+
+  // tslint:disable-next-line:no-any
+  [ key: string ]: any;
 }

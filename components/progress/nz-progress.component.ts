@@ -3,6 +3,7 @@ import {
   Input,
   OnInit
 } from '@angular/core';
+import { ThemeType } from '@ant-design/icons-angular';
 
 export type NzProgressGapPositionType = 'top' | 'bottom' | 'left' | 'right';
 export type NzProgressStatusType = 'success' | 'exception' | 'active' | 'normal';
@@ -29,14 +30,14 @@ export class NzProgressComponent implements OnInit {
   trailPathStyle: { [ key: string ]: string };
   strokePathStyle: { [ key: string ]: string };
   pathString: string;
-  icon;
-  iconTheme;
+  icon: string;
+  iconTheme: ThemeType;
   isStatusSet = false;
   isStrokeWidthSet = false;
   isFormatSet = false;
   isGapDegreeSet = false;
   isGapPositionSet = false;
-  statusColorMap = {
+  statusColorMap: { [ key: string ]: string } = {
     normal   : '#108ee9',
     exception: '#ff5500',
     success  : '#87d068'

@@ -15,7 +15,7 @@ export class NzDemoMessageLoadingComponent {
 
   createBasicMessage(): void {
     const id = this.message.loading('Action in progress..', { nzDuration: 0 }).messageId;
-    setTimeout(_ => {
+    setTimeout(() => {
       this.message.remove(id);
     }, 2500);
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { async, fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,26 +14,26 @@ import { NzTreeComponent } from './nz-tree.component';
 import { NzTreeModule } from './nz-tree.module';
 
 describe('nz-tree', () => {
-  let treeInstance;
   let treeElement: HTMLElement;
-  let component;
-  let fixture;
   let treeService: NzTreeBaseService;
+
   describe('basic tree', () => {
+    let fixture: ComponentFixture<NzTestTreeBasicControlledComponent>;
+    let treeInstance: NzTestTreeBasicControlledComponent;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
         declarations: [ NzTestTreeBasicControlledComponent ]
       }).compileComponents();
       fixture = TestBed.createComponent(NzTestTreeBasicControlledComponent);
-      component = fixture.componentInstance;
       treeService = fixture.componentInstance.treeComponent.nzTreeService;
       fixture.detectChanges();
       treeInstance = fixture.debugElement.componentInstance;
       treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
     }));
     it('should create', () => {
-      expect(component).toBeDefined();
+      expect(treeInstance).toBeDefined();
     });
 
     it('should set nzDefaultXXX correctly', fakeAsync(() => {
@@ -330,7 +330,7 @@ describe('nz-tree', () => {
 
     it('test set nzTreeNode', fakeAsync(() => {
       // get 0-0 node
-      const node = fixture.componentInstance.treeComponent.getTreeNodeByKey('0-0');
+      const node = fixture.componentInstance.treeComponent.getTreeNodeByKey('0-0')!;
       node.title = '0-0-reset';
       fixture.detectChanges();
       expect(treeElement.querySelectorAll('[title=\'0-0-reset\']').length).toEqual(1);
@@ -341,6 +341,9 @@ describe('nz-tree', () => {
   });
 
   describe('test draggable node', () => {
+    let fixture: ComponentFixture<NzTestTreeDraggableComponent>;
+    let treeInstance: NzTestTreeDraggableComponent;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
@@ -353,7 +356,6 @@ describe('nz-tree', () => {
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(NzTestTreeDraggableComponent);
-      component = fixture.componentInstance;
       treeService = fixture.componentInstance.treeComponent.nzTreeService;
       fixture.detectChanges();
       treeInstance = fixture.debugElement.componentInstance;
@@ -435,7 +437,7 @@ describe('nz-tree', () => {
       fixture.detectChanges();
       // drop 0-0-0 to 0-0 pre
       let targetNode = treeNodes[ 0 ]; // 0-0
-      treeService = treeNodes[ 1 ].treeService;
+      treeService = treeNodes[ 1 ].treeService!;
       treeService.dropAndApply(targetNode, -1);
       expect(treeNodes[ 0 ].title).toEqual('0-0-0');
       expect(treeNodes[ 0 ].level).toEqual(0);
@@ -506,6 +508,9 @@ describe('nz-tree', () => {
   });
 
   describe('test older node property', () => {
+    let fixture: ComponentFixture<NzTestTreeOlderComponent>;
+    let treeInstance: NzTestTreeOlderComponent;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports     : [ NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
@@ -518,7 +523,6 @@ describe('nz-tree', () => {
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(NzTestTreeOlderComponent);
-      component = fixture.componentInstance;
       treeService = fixture.componentInstance.treeComponent.nzTreeService;
       fixture.detectChanges();
       treeInstance = fixture.debugElement.componentInstance;
@@ -559,16 +563,16 @@ describe('nz-tree', () => {
       fixture.componentInstance.selectedKeys = [ ...fixture.componentInstance.selectedKeys ];
       fixture.detectChanges();
       // get node by key
-      let node = fixture.componentInstance.treeComponent.getTreeNodeByKey('10001');
+      let node = fixture.componentInstance.treeComponent.getTreeNodeByKey('10001')!;
       expect(node.title).toEqual('child1');
       // test clear children
       node.clearChildren();
       expect(node.getChildren().length).toEqual(0);
       // remove self
       node.remove();
-      expect(node.getParentNode().getChildren().findIndex(v => v.key === node.key)).toEqual(-1);
+      expect(node.getParentNode()!.getChildren().findIndex(v => v.key === node.key)).toEqual(-1);
       // test selectable false and click it
-      node = fixture.componentInstance.treeComponent.getTreeNodeByKey('1001');
+      node = fixture.componentInstance.treeComponent.getTreeNodeByKey('1001')!;
       node.isSelectable = false;
       fixture.detectChanges();
       // add nzTreeNode children to clear loading state, root click will not change
@@ -609,7 +613,7 @@ describe('nz-tree', () => {
 
 export class NzTestTreeBasicControlledComponent {
   @ViewChild('treeComponent') treeComponent: NzTreeComponent;
-  searchValue;
+  searchValue: null | string;
   multiple = true;
   expandAll = false;
   asyncData = false;
@@ -618,7 +622,8 @@ export class NzTestTreeBasicControlledComponent {
   defaultSelectedKeys = [ '0-0-0-0' ];
   defaultExpandedKeys = [ '0-0-0', '0-0-1' ];
 
-  nodes = [ {
+  // tslint:disable-next-line:no-any
+  nodes: any = [ {
     title   : '0-0',
     key     : '0-0',
     expanded: true,
@@ -738,7 +743,7 @@ export class NzTestTreeDraggableComponent {
     key   : '02',
     isLeaf: true
   } ];
-  beforeDrop;
+  beforeDrop: () => Observable<boolean>;
 
   onDragStart(): void {
   }

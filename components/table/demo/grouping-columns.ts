@@ -54,7 +54,7 @@ export class NzDemoTableGroupingColumnsComponent implements OnInit {
 
   search(searchName: string[]): void {
     this.searchName = searchName;
-    const filterFunc = (item) => {
+    const filterFunc = (item: any) => {
       return this.searchName.length ? this.searchName.some(name => item.name.indexOf(name) !== -1) : true;
     };
     const listOfData = this.listOfData.filter(item => filterFunc(item));

@@ -22,7 +22,7 @@ import {
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { NzSizeLDSType } from '../core/types/size';
+import { NzSizeLDSType, NzSizeMap } from '../core/types/size';
 import { isEmpty } from '../core/util/check';
 import { InputBoolean } from '../core/util/convert';
 import { findFirstNotEmptyNode, findLastNotEmptyNode } from '../core/util/dom';
@@ -58,7 +58,7 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
   /** temp solution since no method add classMap to host https://github.com/angular/angular/issues/7289 */
   setClassMap(): void {
     const prefixCls = 'ant-btn';
-    const sizeMap = { large: 'lg', small: 'sm' };
+    const sizeMap: NzSizeMap = { large: 'lg', small: 'sm' };
     this.nzUpdateHostClassService.updateHostClass(this.el, {
       [ `${prefixCls}` ]                          : true,
       [ `${prefixCls}-${this.nzType}` ]           : this.nzType,

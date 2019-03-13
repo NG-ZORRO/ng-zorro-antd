@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { FunctionProp } from '../../../core/types/common-wrap';
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
@@ -18,7 +29,7 @@ import { getTimeConfig, isAllowedDate } from '../util';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
-  selector   : 'date-range-popup',
+  selector: 'date-range-popup',
   templateUrl: 'date-range-popup.component.html'
 })
 
@@ -34,7 +45,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   @Input() showToday: boolean;
   @Input() showTime: SupportTimeOptions | boolean;
   @Input() extraFooter: TemplateRef<void> | string;
-  @Input() ranges: FunctionProp<PresetRanges>;
+  @Input() ranges: PresetRanges;
   @Input() dateRender: FunctionProp<TemplateRef<Date> | string>;
   @Input() popupStyle: object;
   @Input() dropdownClassName: string;
@@ -63,7 +74,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     return this.showToday || this.hasTimePicker || !!this.extraFooter || !!this.ranges;
   }
 
-  private partTypeMap: { [ key: string]: number } = { 'left': 0, 'right': 1 };
+  private partTypeMap: { [ key: string ]: number } = { 'left': 0, 'right': 1 };
+
+  [ property: string ]: any // tslint:disable-line:no-any
 
   ngOnInit(): void {
     // Initialization for range properties to prevent errors while later assignment
@@ -206,7 +219,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   // Get single value or part value of a range
   getValue(partType?: RangePartType): CandyDate {
     if (this.isRange) {
-      return this.value![ this.getPartTypeIndex(partType) ];
+      return (this.value as CandyDate[])[ this.getPartTypeIndex(partType) ];
     } else {
       return this.value as CandyDate;
     }
@@ -215,7 +228,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   getValueBySelector(partType?: RangePartType): CandyDate {
     if (this.isRange) {
       const valueShow = this.showTimePicker ? this.value : this.valueForRangeShow; // Use the real time value that without decorations when timepicker is shown up
-      return valueShow![ this.getPartTypeIndex(partType) ];
+      return (valueShow as CandyDate[])[ this.getPartTypeIndex(partType) ];
     } else {
       return this.value as CandyDate;
     }
@@ -276,7 +289,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
   getTimeOptions(partType?: RangePartType): SupportTimeOptions | null {
     if (this.showTime && this.timeOptions) {
-      return this.isRange ? this.timeOptions[ this.getPartTypeIndex(partType) ] : this.timeOptions;
+      return this.timeOptions instanceof Array
+        ? this.timeOptions[ this.getPartTypeIndex(partType) ]
+        : this.timeOptions;
     }
     return null;
   }
@@ -311,10 +326,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     if (this.showTime) {
       const showTime = typeof this.showTime === 'object' ? this.showTime : {};
       if (this.isRange) {
+        const value = this.value as CandyDate[];
         this.timeOptions = [
-          this.overrideTimeOptions(showTime, this.value![ 0 ], 'start'),
-          this.overrideTimeOptions(showTime, this.value![ 1 ], 'end')
-         ];
+          this.overrideTimeOptions(showTime, value[ 0 ], 'start'),
+          this.overrideTimeOptions(showTime, value[ 1 ], 'end')
+        ];
       } else {
         this.timeOptions = this.overrideTimeOptions(showTime, this.value as CandyDate);
       }

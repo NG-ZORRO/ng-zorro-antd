@@ -26,16 +26,14 @@ import { NzModalService } from './nz-modal.service';
 let counter = 0;
 
 describe('modal testing (legacy)', () => {
-  let instance;
-  let fixture: ComponentFixture<{}>;
-
   describe('demo-async', () => {
+    let fixture: ComponentFixture<NzDemoModalAsyncComponent>;
     let modalElement: HTMLElement;
     let buttonShow: HTMLButtonElement;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [ NoopAnimationsModule, NzButtonModule, NzModalModule ],
+        imports     : [ NoopAnimationsModule, NzButtonModule, NzModalModule ],
         declarations: [ NzDemoModalAsyncComponent ],
         providers   : [ NzMeasureScrollbarService ]
       }).compileComponents();
@@ -43,7 +41,6 @@ describe('modal testing (legacy)', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoModalAsyncComponent);
-      instance = fixture.debugElement.componentInstance;
       modalElement = fixture.debugElement.query(By.directive(NzModalComponent)).nativeElement;
       buttonShow = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
     });
@@ -69,12 +66,14 @@ describe('modal testing (legacy)', () => {
 
   describe('demo-confirm-promise', () => {
     const tempModalId = generateUniqueId(); // Temp unique id to mark the confirm modal that created by service
+    let fixture: ComponentFixture<NzDemoModalConfirmPromiseComponent>;
+    let instance: NzDemoModalConfirmPromiseComponent;
     let modalAgent: NzModalRef;
     let buttonShow: HTMLButtonElement;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [ NoopAnimationsModule, NzButtonModule, NzModalModule ],
+        imports     : [ NoopAnimationsModule, NzButtonModule, NzModalModule ],
         declarations: [ NzDemoModalConfirmPromiseComponent ],
         providers   : [ NzMeasureScrollbarService ]
       }).compileComponents();
@@ -115,14 +114,16 @@ describe('modal testing (legacy)', () => {
   }); // /confirm-promise
 
   describe('NormalModal: created by service with most APIs', () => {
-    let tempModalId; // Temp unique id to mark the confirm modal that created by service
+    let tempModalId: string; // Temp unique id to mark the confirm modal that created by service
+    let fixture: ComponentFixture<TestBasicServiceComponent>;
+    let instance: TestBasicServiceComponent;
     let modalAgent: NzModalRef;
     let modalElement: HTMLElement;
-    let modalInstance;
+    let modalInstance: NzModalComponent;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [ NoopAnimationsModule, NzModalModule, NzIconTestModule ],
+        imports     : [ NoopAnimationsModule, NzModalModule, NzIconTestModule ],
         declarations: [ TestBasicServiceComponent ],
         providers   : [ NzMeasureScrollbarService ]
       }).compileComponents();
@@ -140,9 +141,10 @@ describe('modal testing (legacy)', () => {
 
     it('should correctly render all basic props', fakeAsync(() => {
       spyOn(console, 'log');
+
       // [Hack] Codes that can't be covered by normal operations
-      // tslint:disable-next-line:no-any
-      expect((modalInstance as any).changeVisibleFromInside(true) instanceof Promise).toBe(true);
+      // @ts-ignore
+      expect(modalInstance.changeVisibleFromInside(true) instanceof Promise).toBe(true);
 
       expect((modalElement.querySelector('.ant-modal-wrap') as HTMLElement).style.zIndex).toBe('1888');
       expect((modalElement.querySelector('.ant-modal-wrap') as HTMLElement).classList.contains('test-wrap-class-name')).toBe(true);
@@ -209,12 +211,14 @@ describe('modal testing (legacy)', () => {
 
   describe('NormalModal: created by service with vary nzContent and nzFooter', () => {
     const tempModalId = generateUniqueId(); // Temp unique id to mark the confirm modal that created by service
+    let fixture: ComponentFixture<TestVaryServiceComponent>;
+    let instance: TestVaryServiceComponent;
     let modalAgent: NzModalRef<TestVaryServiceCustomComponent>;
     let modalElement: HTMLElement;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [ NoopAnimationsModule, NzModalModule ],
+        imports     : [ NoopAnimationsModule, NzModalModule ],
         declarations: [ TestVaryServiceComponent, TestVaryServiceCustomComponent ],
         providers   : [ NzMeasureScrollbarService ]
       });
@@ -261,9 +265,12 @@ describe('modal testing (legacy)', () => {
   });
 
   describe('ConfirmModal: should apply options correctly', () => {
+    let fixture: ComponentFixture<TestConfirmModalComponent>;
+    let instance: TestConfirmModalComponent;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [ NoopAnimationsModule, NzModalModule ],
+        imports     : [ NoopAnimationsModule, NzModalModule ],
         declarations: [ TestConfirmModalComponent ],
         providers   : [ NzMeasureScrollbarService ]
       }).compileComponents();
@@ -275,6 +282,7 @@ describe('modal testing (legacy)', () => {
     });
 
     it('boundary detection for options', fakeAsync(() => {
+      // @ts-ignore
       const logger = instance.modalService.logger;
       spyOn(logger, 'warn');
 
@@ -303,11 +311,12 @@ describe('modal testing (legacy)', () => {
   });
 
   describe('css-unit.pipe', () => {
+    let fixture: ComponentFixture<TestCssUnitPipeComponent>;
     let testElement: HTMLDivElement;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [ NoopAnimationsModule ],
+        imports     : [ NoopAnimationsModule ],
         declarations: [ CssUnitPipe, TestCssUnitPipeComponent ]
       }).compileComponents();
     }));
@@ -331,8 +340,10 @@ describe('modal testing (legacy)', () => {
   });
 
   it('#i18n', () => {
+    let fixture: ComponentFixture<NzDemoModalAsyncComponent>;
+
     const injector = TestBed.configureTestingModule({
-      imports: [ NoopAnimationsModule, NzButtonModule, NzModalModule ],
+      imports     : [ NoopAnimationsModule, NzButtonModule, NzModalModule ],
       declarations: [ NzDemoModalAsyncComponent ],
       providers   : [ NzMeasureScrollbarService ]
     });
@@ -356,8 +367,8 @@ describe('NzModal', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ NoopAnimationsModule, NzModalModule ],
-      providers: [ NzMeasureScrollbarService ],
+      imports     : [ NoopAnimationsModule, NzModalModule ],
+      providers   : [ NzMeasureScrollbarService ],
       declarations: [
         NzDemoModalBasicComponent,
         ModalByServiceComponent
@@ -482,7 +493,8 @@ describe('NzModal', () => {
       modalService.afterAllClose.subscribe(spy);
 
       fixture.componentInstance.nonServiceModalVisible = true; // Show non-service modal
-      modalMethods.forEach(method => modalService[method]({ nzWrapClassName: uniqueId(method) })); // Service modals
+      // @ts-ignore
+      modalMethods.forEach(method => modalService[ method ]({ nzWrapClassName: uniqueId(method) })); // Service modals
 
       fixture.detectChanges();
       tick(600);
@@ -526,7 +538,7 @@ describe('NzModal', () => {
       const spyOk = jasmine.createSpy('ok spy');
       const spyCancel = jasmine.createSpy('cancel spy');
       const modalRef: NzModalRef = modalService.create({
-        nzOnOk: spyOk,
+        nzOnOk    : spyOk,
         nzOnCancel: spyCancel
       });
 
@@ -583,11 +595,12 @@ class NzDemoModalBasicComponent {
     <button nz-button nzType="primary" (click)="showModal()">
       <span>show modal</span>
     </button>
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="title" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" [nzOkLoading]="isOkLoading">
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="title" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+              [nzOkLoading]="isOkLoading">
       <p>content</p>
     </nz-modal>
   `,
-  styles: []
+  styles  : []
 })
 class NzDemoModalAsyncComponent {
   isVisible = false;
@@ -624,9 +637,9 @@ class NzDemoModalConfirmPromiseComponent {
 
   showConfirm(): void {
     this.confirmModal = this.modal.confirm({
-      nzTitle: 'Do you Want to delete these items?',
+      nzTitle  : 'Do you Want to delete these items?',
       nzContent: 'When clicked the OK button, this dialog will be closed after 1 second',
-      nzOnOk: () => new Promise((resolve, reject) => {
+      nzOnOk   : () => new Promise((resolve, reject) => {
         setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
       }).catch(() => console.log('Oops errors!'))
     });
@@ -644,30 +657,33 @@ class TestBasicServiceComponent {
 
     // Testing for creating modal immediately
     this.basicModal = this.modalService.create({
-      nzGetContainer: () => document.body,
-      nzZIndex: 1888,
-      nzWidth: 250,
-      nzWrapClassName: 'test-wrap-class-name',
-      nzClassName: 'test-class-name',
-      nzStyle: { left: '10px', top: '20pt', border: '2px solid red' },
-      nzTitle: '<b>TEST BOLD TITLE</b>',
-      nzContent: '<p>test html content</p>',
-      nzClosable: false,
-      nzKeyboard: false,
-      nzMask: false,
-      nzMaskClosable: false,
-      nzMaskStyle: { opacity: 0.4 },
-      nzBodyStyle: { background: 'gray' },
+      nzGetContainer  : () => document.body,
+      nzZIndex        : 1888,
+      nzWidth         : 250,
+      nzWrapClassName : 'test-wrap-class-name',
+      nzClassName     : 'test-class-name',
+      nzStyle         : { left: '10px', top: '20pt', border: '2px solid red' },
+      nzTitle         : '<b>TEST BOLD TITLE</b>',
+      nzContent       : '<p>test html content</p>',
+      nzClosable      : false,
+      nzKeyboard      : false,
+      nzMask          : false,
+      nzMaskClosable  : false,
+      nzMaskStyle     : { opacity: 0.4 },
+      nzBodyStyle     : { background: 'gray' },
       // nzFooter: '<div>custom html footer: <i>OK</i></div>',
-      nzOkText: 'custom ok',
-      nzOkType: 'success',
-      nzOkLoading: false,
-      nzOkDisabled: false,
+      nzOkText        : 'custom ok',
+      nzOkType        : 'success',
+      nzOkLoading     : false,
+      nzOkDisabled    : false,
       nzCancelDisabled: false,
-      nzOnOk: () => { console.log('click ok'); return false; },
-      nzCancelText: 'custom cancel',
-      nzCancelLoading: true,
-      nzOnCancel: () => console.log('click cancel')
+      nzOnOk          : () => {
+        console.log('click ok');
+        return false;
+      },
+      nzCancelText    : 'custom cancel',
+      nzCancelLoading : true,
+      nzOnCancel      : () => console.log('click cancel')
     });
   }
 }
@@ -680,18 +696,18 @@ class TestVaryServiceComponent {
 
   createWithVary(): NzModalRef<TestVaryServiceCustomComponent> {
     const modal = this.modalService.create({
-      nzContent: TestVaryServiceCustomComponent,
+      nzContent        : TestVaryServiceCustomComponent,
       nzComponentParams: { title: 'internal title', subtitle: 'subtitle' },
-      nzFooter: [
+      nzFooter         : [
         {
-          label: 'change title from outside',
+          label  : 'change title from outside',
           onClick: (componentInstance) => {
             componentInstance!.title = 'internal title changed';
             return Promise.resolve();
           }
         },
         {
-          label: 'show loading',
+          label  : 'show loading',
           onClick: () => Promise.reject(null)
         }
       ]
@@ -700,6 +716,7 @@ class TestVaryServiceComponent {
     return modal;
   }
 }
+
 @Component({
   template: `
     <h2>{{ title }}</h2><h4>{{ subtitle }}</h4>
@@ -737,21 +754,24 @@ export class TestConfirmModalComponent {
   createOtherModals(): string[] {
     return [ 'info', 'success', 'error', 'warning' ].map(type => {
       const modalId = generateUniqueId();
-      this.modalService[type]({ nzClassName: modalId });
-      this.modalService[type]();  // [Testing Required] Only for coverage temporarily
+      // @ts-ignore
+      this.modalService[ type ]({ nzClassName: modalId });
+      // @ts-ignore
+      this.modalService[ type ]();  // [Testing Required] Only for coverage temporarily
       return modalId;
     });
   }
 }
 
 @Component({
-  template: `<div [style.width]="100 | toCssUnit" [style.height]="'100px' | toCssUnit" [style.top]="100 | toCssUnit:'pt'"></div>`
+  template: `
+    <div [style.width]="100 | toCssUnit" [style.height]="'100px' | toCssUnit" [style.top]="100 | toCssUnit:'pt'"></div>`
 })
-class TestCssUnitPipeComponent { }
+class TestCssUnitPipeComponent {}
 
 @Component({
-  selector: 'nz-modal-by-service',
-  template: `
+  selector : 'nz-modal-by-service',
+  template : `
     <nz-modal [(nzVisible)]="nonServiceModalVisible" nzWrapClassName="__NON_SERVICE_ID_SUFFIX__"></nz-modal>
   `,
   providers: [ NzModalControlService ] // Testing for service with parent service

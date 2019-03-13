@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
@@ -7,8 +7,6 @@ import { NzInputGroupComponent } from './nz-input-group.component';
 import { NzInputModule } from './nz-input.module';
 
 describe('input-group', () => {
-  let testComponent;
-  let fixture;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports     : [ NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
@@ -18,7 +16,10 @@ describe('input-group', () => {
   }));
   describe('input group', () => {
     describe('addon', () => {
-      let inputGroupElement;
+      let testComponent: NzTestInputGroupAddonComponent;
+      let fixture: ComponentFixture<NzTestInputGroupAddonComponent>;
+      let inputGroupElement: HTMLElement;
+
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestInputGroupAddonComponent);
         testComponent = fixture.debugElement.componentInstance;
@@ -33,33 +34,33 @@ describe('input-group', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
         expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input-group');
-        expect(inputGroupElement.firstElementChild.children.length).toBe(2);
-        expect(inputGroupElement.firstElementChild.lastElementChild.classList).toContain('ant-input');
-        expect(inputGroupElement.firstElementChild.firstElementChild.innerText).toBe('before');
+        expect(inputGroupElement.firstElementChild!.children.length).toBe(2);
+        expect(inputGroupElement.firstElementChild!.lastElementChild!.classList).toContain('ant-input');
+        expect((inputGroupElement.firstElementChild!.firstElementChild as HTMLElement).innerText).toBe('before');
       });
       it('should before content template work', () => {
         testComponent.beforeContent = testComponent.beforeTemplate;
         fixture.detectChanges();
         expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input-group');
-        expect(inputGroupElement.firstElementChild.children.length).toBe(2);
-        expect(inputGroupElement.firstElementChild.lastElementChild.classList).toContain('ant-input');
-        expect(inputGroupElement.firstElementChild.firstElementChild.innerText).toBe('beforeTemplate');
+        expect(inputGroupElement.firstElementChild!.children.length).toBe(2);
+        expect(inputGroupElement.firstElementChild!.lastElementChild!.classList).toContain('ant-input');
+        expect((inputGroupElement.firstElementChild!.firstElementChild as HTMLElement).innerText).toBe('beforeTemplate');
       });
       it('should after content string work', () => {
         testComponent.afterContent = 'after';
         fixture.detectChanges();
         expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input-group');
-        expect(inputGroupElement.firstElementChild.children.length).toBe(2);
-        expect(inputGroupElement.firstElementChild.firstElementChild!.classList).toContain('ant-input');
-        expect(inputGroupElement.firstElementChild.lastElementChild.innerText).toBe('after');
+        expect(inputGroupElement.firstElementChild!.children.length).toBe(2);
+        expect(inputGroupElement.firstElementChild!.firstElementChild!.classList).toContain('ant-input');
+        expect((inputGroupElement.firstElementChild!.lastElementChild as HTMLElement).innerText).toBe('after');
       });
       it('should after content template work', () => {
         testComponent.afterContent = testComponent.afterTemplate;
         fixture.detectChanges();
         expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input-group');
-        expect(inputGroupElement.firstElementChild.children.length).toBe(2);
-        expect(inputGroupElement.firstElementChild.firstElementChild!.classList).toContain('ant-input');
-        expect(inputGroupElement.firstElementChild.lastElementChild.innerText).toBe('afterTemplate');
+        expect(inputGroupElement.firstElementChild!.children.length).toBe(2);
+        expect(inputGroupElement.firstElementChild!.firstElementChild!.classList).toContain('ant-input');
+        expect((inputGroupElement.firstElementChild!.lastElementChild as HTMLElement).innerText).toBe('afterTemplate');
       });
       it('should size work', () => {
         testComponent.beforeContent = 'before';
@@ -74,48 +75,57 @@ describe('input-group', () => {
       });
     });
     describe('affix', () => {
-      let inputGroupElement;
+      let fixture: ComponentFixture<NzTestInputGroupAffixComponent>;
+      let testComponent: NzTestInputGroupAffixComponent;
+      let inputGroupElement: HTMLElement;
+
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestInputGroupAffixComponent);
         testComponent = fixture.debugElement.componentInstance;
         fixture.detectChanges();
         inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
       });
+
       it('should not show addon without before and after content', () => {
         expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input');
       });
+
       it('should before content string work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
         expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input-prefix');
         expect(inputGroupElement.children.length).toBe(2);
-        expect(inputGroupElement.lastElementChild.classList).toContain('ant-input');
-        expect(inputGroupElement.firstElementChild.innerText).toBe('before');
+        expect(inputGroupElement.lastElementChild!.classList).toContain('ant-input');
+        expect((inputGroupElement.firstElementChild as HTMLElement).innerText).toBe('before');
       });
+
       it('should before content template work', () => {
         testComponent.beforeContent = testComponent.beforeTemplate;
         fixture.detectChanges();
         expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input-prefix');
         expect(inputGroupElement.children.length).toBe(2);
-        expect(inputGroupElement.lastElementChild.classList).toContain('ant-input');
-        expect(inputGroupElement.firstElementChild.innerText).toBe('beforeTemplate');
+        expect(inputGroupElement.lastElementChild!.classList).toContain('ant-input');
+        expect((inputGroupElement.firstElementChild as HTMLElement).innerText).toBe('beforeTemplate');
       });
+
       it('should after content string work', () => {
         testComponent.afterContent = 'after';
         fixture.detectChanges();
-        expect(inputGroupElement.lastElementChild.classList).toContain('ant-input-suffix');
+        expect(inputGroupElement.lastElementChild!.classList).toContain('ant-input-suffix');
         expect(inputGroupElement.children.length).toBe(2);
         expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input');
-        expect(inputGroupElement.lastElementChild.innerText).toBe('after');
+        expect((inputGroupElement.lastElementChild as HTMLElement).innerText).toBe('after');
       });
+
       it('should after content template work', () => {
         testComponent.afterContent = testComponent.afterTemplate;
         fixture.detectChanges();
-        expect(inputGroupElement.lastElementChild.classList).toContain('ant-input-suffix');
+        expect(inputGroupElement.lastElementChild!.classList).toContain('ant-input-suffix');
         expect(inputGroupElement.children.length).toBe(2);
         expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input');
-        expect(inputGroupElement.lastElementChild.innerText).toBe('afterTemplate');
+        expect((inputGroupElement.lastElementChild as HTMLElement).innerText).toBe('afterTemplate');
       });
+
       it('should size work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
@@ -129,7 +139,9 @@ describe('input-group', () => {
       });
     });
     describe('multiple', () => {
-      let inputGroupElement;
+      let fixture: ComponentFixture<NzTestInputGroupMultipleComponent>;
+      let testComponent: NzTestInputGroupMultipleComponent;
+      let inputGroupElement: HTMLElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestInputGroupMultipleComponent);
         testComponent = fixture.debugElement.componentInstance;
@@ -172,10 +184,10 @@ describe('input-group', () => {
       });
     });
     describe('col', () => {
-      let inputGroupElement;
+      let fixture: ComponentFixture<NzTestInputGroupColComponent>;
+      let inputGroupElement: HTMLElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestInputGroupColComponent);
-        testComponent = fixture.debugElement.componentInstance;
         fixture.detectChanges();
         inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
       });
@@ -184,15 +196,16 @@ describe('input-group', () => {
       });
     });
     describe('mix', () => {
-      let inputGroupElement;
+      let fixture: ComponentFixture<NzTestInputGroupMixComponent>;
+      let inputGroupElement: HTMLElement;
+
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestInputGroupMixComponent);
-        testComponent = fixture.debugElement.componentInstance;
         fixture.detectChanges();
         inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
       });
       it('should mix work', () => {
-        expect(inputGroupElement.querySelector('.ant-input-affix-wrapper').nextElementSibling.classList).toContain('ant-input-group-addon');
+        expect(inputGroupElement.querySelector('.ant-input-affix-wrapper')!.nextElementSibling!.classList).toContain('ant-input-group-addon');
       });
     });
   });
@@ -211,8 +224,8 @@ describe('input-group', () => {
 export class NzTestInputGroupAddonComponent {
   @ViewChild('beforeTemplate') beforeTemplate: TemplateRef<void>;
   @ViewChild('afterTemplate') afterTemplate: TemplateRef<void>;
-  beforeContent;
-  afterContent;
+  beforeContent: string | TemplateRef<void>;
+  afterContent: string | TemplateRef<void>;
   size = 'default';
 }
 
@@ -229,8 +242,8 @@ export class NzTestInputGroupAddonComponent {
 export class NzTestInputGroupAffixComponent {
   @ViewChild('beforeTemplate') beforeTemplate: TemplateRef<void>;
   @ViewChild('afterTemplate') afterTemplate: TemplateRef<void>;
-  beforeContent;
-  afterContent;
+  beforeContent: string | TemplateRef<void>;
+  afterContent: string | TemplateRef<void>;
   size = 'default';
 }
 
