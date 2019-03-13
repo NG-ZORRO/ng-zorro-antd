@@ -203,6 +203,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     const srv = this.cascaderService;
 
     srv.$redraw.pipe(takeUntil(this.$destroy)).subscribe(() => {
+      // These operations would not mutate data.
       this.checkChildren();
       this.buildDisplayLabel();
       this.reposition();

@@ -75,7 +75,6 @@ export class NzCascaderService implements OnDestroy {
 
   /**
    * Make sure that value matches what is displayed in the dropdown.
-   * Usually triggered when component inits, and data is reset.
    */
   syncOptions(init: boolean = false): void {
     const values = this.values;
@@ -116,10 +115,6 @@ export class NzCascaderService implements OnDestroy {
         this.loadChildren(option, columnIndex - 1, activatedOptionSetter);
       }
     };
-
-    if (!values) {
-      this.activatedOptions = [];
-    }
 
     if (init && this.cascaderComponent.nzLoadData && !hasValue) {
       return;
@@ -205,6 +200,7 @@ export class NzCascaderService implements OnDestroy {
     setTimeout(() => {
       // Reset data and tell UI only to remove input and reset dropdown width style.
       this.$quitSearching.next();
+      this.$redraw.next();
       this.inSearchingMode = false;
       this.columns = [...this.columnsSnapshot];
       this.activatedOptions = [...this.selectedOptions];
@@ -300,6 +296,7 @@ export class NzCascaderService implements OnDestroy {
       this.activatedOptions = [...this.activatedOptionsSnapshot];
       this.selectedOptions = [...this.activatedOptions];
       this.columns = [...this.columnsSnapshot];
+      this.syncOptions();
       this.$redraw.next();
     }
   }
