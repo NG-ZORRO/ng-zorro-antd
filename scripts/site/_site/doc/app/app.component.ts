@@ -95,20 +95,26 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.routerList.components.forEach(group => {
       this.componentList = this.componentList.concat([ ...group.children ]);
     });
+
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const currentDemoComponent = this.componentList.find(component => `/${component.path}` === this.router.url);
+
         if (currentDemoComponent) {
           this.title.setTitle(`${currentDemoComponent.zh} ${currentDemoComponent.label} - NG-ZORRO`);
         }
+
         const currentIntroComponent = this.routerList.intro.find(component => `/${component.path}` === this.router.url);
         if (currentIntroComponent) {
           this.title.setTitle(`${currentIntroComponent.label} - NG-ZORRO`);
         }
+
         if (this.router.url !== '/' + this.searchComponent) {
           this.searchComponent = null;
         }
+
         this.language = this.router.url.split('/')[ this.router.url.split('/').length - 1 ].split('#')[ 0 ];
+
         this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
 
         if (this.docsearch) {
@@ -118,6 +124,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         if (environment.production) {
           window.scrollTo(0, 0);
         }
+
         setTimeout(() => {
           const toc = this.router.parseUrl(this.router.url).fragment || '';
           if (toc) {
@@ -125,7 +132,13 @@ export class AppComponent implements OnInit, AfterViewInit {
           }
         }, 200);
       }
+
+      if (navigator.language === 'zh-CN') {
+        this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
+        this.router.navigate([ 'docs', 'introduce', 'zh' ]);
+      }
     });
+
     this.initColor();
   }
 
