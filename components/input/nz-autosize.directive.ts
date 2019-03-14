@@ -29,8 +29,8 @@ export function isAutoSizeType(value: string | boolean | AutoSizeType): value is
     '(input)': 'noopInputHandler()'
   }
 })
-export class NzAutoResizeDirective implements AfterViewInit, OnDestroy, DoCheck {
-  private _autosize: boolean | AutoSizeType = false;
+export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
+  private autosize: boolean | AutoSizeType = false;
   private el: HTMLTextAreaElement | HTMLInputElement = this.elementRef.nativeElement;
   private cachedLineHeight: number;
   private previousValue: string;
@@ -43,9 +43,9 @@ export class NzAutoResizeDirective implements AfterViewInit, OnDestroy, DoCheck 
   @Input()
   set nzAutosize(value: string | boolean | AutoSizeType) {
     if (typeof value === 'string') {
-      this._autosize = true;
+      this.autosize = true;
     } else if (isAutoSizeType(value)) {
-      this._autosize = value;
+      this.autosize = value;
       this.minRows = value.minRows;
       this.maxRows = value.maxRows;
       this.setMaxHeight();
@@ -54,7 +54,7 @@ export class NzAutoResizeDirective implements AfterViewInit, OnDestroy, DoCheck 
   }
 
   get nzAutosize(): string | boolean | AutoSizeType {
-    return this._autosize;
+    return this.autosize;
   }
 
   resizeToFitContent(force: boolean = false): void {
