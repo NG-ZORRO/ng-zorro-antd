@@ -82,6 +82,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   triggerWidth: number;
   private _disabled = false;
   private _autoFocus = false;
+  private isInit = false;
   private destroy$ = new Subject();
   @ViewChild(CdkOverlayOrigin) cdkOverlayOrigin: CdkOverlayOrigin;
   @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
@@ -167,7 +168,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this._disabled = toBoolean(value);
     this.nzSelectService.disabled = this._disabled;
     this.nzSelectService.check();
-    if (this.nzDisabled) {
+    if (this.nzDisabled && this.isInit) {
       this.closeDropDown();
     }
   }
@@ -308,6 +309,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   ngAfterViewInit(): void {
     this.updateCdkConnectedOverlayStatus();
+    this.isInit = true;
   }
 
   ngAfterContentInit(): void {
