@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component } from '@angular/core';
-import { async, fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, inject, tick, TestBed, ComponentFixture } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 import { NzModalModule } from './nz-modal.module';
@@ -8,7 +8,7 @@ import { NzModalModule } from './nz-modal.module';
 describe('modal footer directive', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  let fixture;
+  let fixture: ComponentFixture<TestDirectiveFooterInTemplateComponent>;
   let testComponent: TestDirectiveFooterInTemplateComponent;
 
   beforeEach(async(() => {
@@ -44,7 +44,8 @@ describe('modal footer directive', () => {
     testComponent.showModal();
     fixture.detectChanges();
     expect(testComponent.isVisible).toBe(true);
-    const cancelBtn: HTMLButtonElement = overlayContainerElement.querySelector('.ant-modal .ant-modal-footer button.cancel-btn');
+    const cancelBtn: HTMLButtonElement = overlayContainerElement
+    .querySelector('.ant-modal .ant-modal-footer button.cancel-btn') as HTMLButtonElement;
     expect(cancelBtn).toBeTruthy();
     cancelBtn.click();
     fixture.detectChanges();
