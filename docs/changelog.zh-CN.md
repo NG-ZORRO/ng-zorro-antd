@@ -13,6 +13,18 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 7.0.3
+`2019-03-14`
+
+### Bug Fixes
+
+* **select:** 修复 disabled 状态时 touched 初始状态错误的问题 ([#3084](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3084)) ([ba9d454](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ba9d454)), closes [#3059](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3059)
+
+### Build
+
+* **build:** 增加 strictNullCheck 等更严格的 ts 校验措施 ([#2126](https://github.com/NG-ZORRO/ng-zorro-antd/pull/2977))
+* **build:** icon 依赖包升级至 2.0.2 ([#3085](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3085)) ([fc72d7d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fc72d7d))
+
 ## 7.0.2
 `2019-03-11`
 
