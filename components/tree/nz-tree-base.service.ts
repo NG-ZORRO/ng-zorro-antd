@@ -544,8 +544,6 @@ export class NzTreeBaseService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.triggerEventChange$.next();
     this.triggerEventChange$.complete();
   }
-
 }

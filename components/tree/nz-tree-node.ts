@@ -19,7 +19,7 @@ export interface NzTreeNodeOptions {
 }
 
 export class NzTreeNode {
-  title: string;
+  private _title: string;
   key: string;
   level: number = 0;
   origin: NzTreeNodeOptions;
@@ -46,24 +46,18 @@ export class NzTreeNode {
   component: NzTreeNodeComponent;
 
   get treeService(): NzTreeBaseService | null {
-    if (this.service) {
-      return this.service;
-    } else if (this.parentNode) {
-      return this.parentNode.treeService;
-    } else {
-      return null;
-    }
+    return this.service || (this.parentNode && this.parentNode.treeService);
   }
 
-  constructor(option: NzTreeNodeOptions | NzTreeNode, parent: NzTreeNode | null = null, service?: NzTreeBaseService) {
+  constructor(option: NzTreeNodeOptions | NzTreeNode, parent: NzTreeNode | null = null, service: NzTreeBaseService | null = null) {
     if (option instanceof NzTreeNode) {
       return option;
     }
     this.service = service || null;
     this.origin = option;
-    this.title = option.title || '---';
     this.key = option.key || '';
     this.parentNode = parent;
+    this._title = option.title || '---';
     this._icon = option.icon || '';
     this._isLeaf = option.isLeaf || false;
     this._children = [];
@@ -109,6 +103,14 @@ export class NzTreeNode {
    * get
    * set
    */
+  get title(): string {
+    return this._title;
+  }
+
+  set title(value: string) {
+    this._title = value;
+    this.update();
+  }
 
   get icon(): string {
     return this._icon;

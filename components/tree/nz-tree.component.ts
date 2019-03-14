@@ -190,23 +190,18 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
   }
 
   getTreeNodeByKey(key: string): NzTreeNode | null {
-    let targetNode: NzTreeNode | null = null;
-    const getNode = (node: NzTreeNode): boolean => {
-      if (node.key === key) {
-        targetNode = node;
-        // break every
-        return false;
-      } else {
-        node.getChildren().every(n => {
-          return getNode(n);
-        });
-      }
-      return true;
+    // flat tree nodes
+    const nodes: NzTreeNode[] = [];
+    const getNode = (node: NzTreeNode): void => {
+      nodes.push(node);
+      node.getChildren().forEach(n => {
+        getNode(n);
+      });
     };
-    this.nzNodes.every(n => {
-      return getNode(n);
+    this.nzNodes.forEach(n => {
+      getNode(n);
     });
-    return targetNode;
+    return nodes.find(n => n.key === key) || null;
   }
 
   /**
