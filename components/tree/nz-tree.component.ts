@@ -25,7 +25,7 @@ import { toBoolean, InputBoolean } from '../core/util/convert';
 import { NzTreeSelectService } from '../tree-select/nz-tree-select.service';
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from '../tree/interface';
 import { NzTreeBaseService } from './nz-tree-base.service';
-import { NzTreeNode } from './nz-tree-node';
+import { NzTreeNode, NzTreeNodeOptions } from './nz-tree-node';
 import { NzTreeService } from './nz-tree.service';
 
 export function NzTreeServiceFactory(treeSelectService: NzTreeSelectService, treeService: NzTreeService): NzTreeBaseService {
@@ -89,24 +89,7 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
   @Input()
   // tslint:disable-next-line:no-any
   set nzData(value: any[]) {
-    if (Array.isArray(value)) {
-      if (!this.nzTreeService.isArrayOfNzTreeNode(value)) {
-        // has not been new NzTreeNode
-        this.nzNodes = value.map(item => (new NzTreeNode(item, null, this.nzTreeService)));
-      } else {
-        this.nzNodes = value.map((item: NzTreeNode) => {
-          item.service = this.nzTreeService;
-          return item;
-        });
-      }
-      this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
-      this.nzTreeService.isMultiple = this.nzMultiple;
-      this.nzTreeService.initTree(this.nzNodes);
-    } else {
-      if (value !== null) {
-        console.warn('ngModel only accepts an array and must be not empty');
-      }
-    }
+    this.initNzData(value);
   }
 
   /**
@@ -260,20 +243,7 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
   }
 
   writeValue(value: NzTreeNode[]): void {
-    if (Array.isArray(value)) {
-      this.nzNodes = value.map((item: NzTreeNode) => {
-        item.service = this.nzTreeService;
-        return item;
-      });
-      this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
-      this.nzTreeService.isMultiple = this.nzMultiple;
-      this.nzTreeService.initTree(this.nzNodes);
-      this.cdr.markForCheck();
-    } else {
-      if (value !== null) {
-        console.warn('ngModel only accepts an array and should be not empty');
-      }
-    }
+    this.initNzData(value);
   }
 
   registerOnChange(fn: (_: NzTreeNode[]) => void): void {
@@ -282,6 +252,24 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
+  }
+
+  // tslint:disable-next-line:no-any
+  initNzData(value: any[]): void {
+    if (Array.isArray(value)) {
+      if (!this.nzTreeService.isArrayOfNzTreeNode(value)) {
+        // has not been new NzTreeNode
+        this.nzNodes = value.map(item => (new NzTreeNode(item, null, this.nzTreeService)));
+      } else {
+        this.nzNodes = value.map((item: NzTreeNode) => {
+          item.service = this.nzTreeService;
+          return item;
+        });
+      }
+      this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
+      this.nzTreeService.isMultiple = this.nzMultiple;
+      this.nzTreeService.initTree(this.nzNodes);
+    }
   }
 
   constructor(
