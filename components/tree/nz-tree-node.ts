@@ -24,7 +24,7 @@ export class NzTreeNode {
   level: number = 0;
   origin: NzTreeNodeOptions;
   // Parent Node
-  parentNode: NzTreeNode;
+  parentNode: NzTreeNode | null;
   private _icon: string;
   private _children: NzTreeNode[];
   private _isLeaf: boolean;
@@ -42,10 +42,10 @@ export class NzTreeNode {
   private _isLoading: boolean;
   isMatched: boolean;
 
-  service: NzTreeBaseService;
+  service: NzTreeBaseService | null;
   component: NzTreeNodeComponent;
 
-  get treeService(): NzTreeBaseService {
+  get treeService(): NzTreeBaseService | null {
     if (this.service) {
       return this.service;
     } else if (this.parentNode) {
@@ -55,14 +55,14 @@ export class NzTreeNode {
     }
   }
 
-  constructor(option: NzTreeNodeOptions | NzTreeNode, parent: NzTreeNode = null, service?: NzTreeBaseService) {
+  constructor(option: NzTreeNodeOptions | NzTreeNode, parent: NzTreeNode | null = null, service?: NzTreeBaseService) {
     if (option instanceof NzTreeNode) {
       return option;
     }
-    this.service = service;
+    this.service = service || null;
     this.origin = option;
     this.title = option.title || '---';
-    this.key = option.key || null;
+    this.key = option.key || '';
     this.parentNode = parent;
     this._icon = option.icon || '';
     this._isLeaf = option.isLeaf || false;
@@ -258,7 +258,7 @@ export class NzTreeNode {
     this.isSelected = value;
   }
 
-  public getParentNode(): NzTreeNode {
+  public getParentNode(): NzTreeNode | null {
     return this.parentNode;
   }
 
@@ -276,7 +276,7 @@ export class NzTreeNode {
         (node) => {
           const refreshLevel = (n: NzTreeNode) => {
             n.getChildren().forEach(c => {
-              c.level = c.getParentNode().level + 1;
+              c.level = c.getParentNode()!.level + 1;
               // flush origin
               c.origin.level = c.level;
               refreshLevel(c);
@@ -311,9 +311,10 @@ export class NzTreeNode {
   }
 
   public remove(): void {
-    if (this.getParentNode()) {
-      this.getParentNode().children = this.getParentNode().getChildren().filter(v => v.key !== this.key);
-      this.getParentNode().origin.children = this.getParentNode().origin.children.filter(v => v.key !== this.key);
+    const parentNode = this.getParentNode();
+    if (parentNode) {
+      parentNode.children = parentNode.getChildren().filter(v => v.key !== this.key);
+      parentNode.origin.children = parentNode.origin.children!.filter(v => v.key !== this.key);
       this.afterValueChange('remove');
     }
   }

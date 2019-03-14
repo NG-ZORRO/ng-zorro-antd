@@ -158,11 +158,8 @@ export class NzTreeBaseService implements OnDestroy {
   /**
    * set drag node
    */
-  setSelectedNode(node?: NzTreeNode): void {
-    this.selectedNode = null;
-    if (node) {
-      this.selectedNode = node;
-    }
+  setSelectedNode(node: NzTreeNode): void {
+    this.selectedNode = node;
   }
 
   /**
@@ -193,7 +190,7 @@ export class NzTreeBaseService implements OnDestroy {
       }
     } else {
       if (node.isSelected && index === -1) {
-        this.selectedNodeList = [node];
+        this.selectedNodeList = [ node ];
       }
     }
     if (!node.isSelected) {
@@ -226,7 +223,7 @@ export class NzTreeBaseService implements OnDestroy {
    * conduct checked/selected/expanded keys
    */
   conductNodeState(type: string = 'check'): NzTreeNode[] {
-    let resultNodesList = [];
+    let resultNodesList: NzTreeNode[] = [];
     switch (type) {
       case 'select':
         resultNodesList = this.selectedNodeList;
@@ -240,11 +237,12 @@ export class NzTreeBaseService implements OnDestroy {
       case 'check':
         resultNodesList = this.checkedNodeList;
         const isIgnore = (node: NzTreeNode): boolean => {
-          if (node.getParentNode()) {
-            if (this.checkedNodeList.findIndex(n => n.key === node.getParentNode().key) > -1) {
+          const parentNode = node.getParentNode();
+          if (parentNode) {
+            if (this.checkedNodeList.findIndex(n => n.key === parentNode.key) > -1) {
               return true;
             } else {
-              return isIgnore(node.getParentNode());
+              return isIgnore(parentNode);
             }
           }
           return false;
@@ -348,16 +346,17 @@ export class NzTreeBaseService implements OnDestroy {
    */
   searchExpand(value: string): void {
     this.matchedNodeList = [];
-    const expandedKeys = [];
+    const expandedKeys: string[] = [];
     if (!isNotNil(value)) {
       return;
     }
     // to reset expandedNodeList
-    const expandParent = (p: NzTreeNode) => {
+    const expandParent = (n: NzTreeNode) => {
       // expand parent node
-      if (p.getParentNode()) {
-        expandedKeys.push(p.getParentNode().key);
-        expandParent(p.getParentNode());
+      const parentNode = n.getParentNode();
+      if (parentNode) {
+        expandedKeys.push(parentNode.key);
+        expandParent(parentNode);
       }
     };
     const searchChild = (n: NzTreeNode) => {
@@ -413,7 +412,7 @@ export class NzTreeBaseService implements OnDestroy {
       // until root
       this.conductUp(node);
     } else {
-      node.children.forEach(child => {
+      node.children.forEach((child) => {
         this.refreshDragNode(child);
       });
     }
@@ -421,8 +420,9 @@ export class NzTreeBaseService implements OnDestroy {
 
   // reset node level
   resetNodeLevel(node: NzTreeNode): void {
-    if (node.getParentNode()) {
-      node.level = node.getParentNode().level + 1;
+    const parentNode = node.getParentNode();
+    if (parentNode) {
+      node.level = parentNode.level + 1;
     } else {
       node.level = 0;
     }
@@ -465,41 +465,29 @@ export class NzTreeBaseService implements OnDestroy {
     }
     switch (dragPos) {
       case 0:
-        targetNode.addChildren([this.selectedNode]);
+        targetNode.addChildren([ this.selectedNode ]);
         this.resetNodeLevel(targetNode);
         break;
       case -1:
       case 1:
         const tIndex = dragPos === 1 ? 1 : 0;
         if (targetParent) {
-<<<<<<< HEAD
-          targetParent.addChildren([this.selectedNode], targetParent.children.indexOf(targetNode) + tIndex);
-          const parent = this.selectedNode.getParentNode();
-          if (parent) {
-            this.resetNodeLevel(parent);
-=======
           targetParent.addChildren([ this.selectedNode ], targetParent.children.indexOf(targetNode) + tIndex);
-          if (this.selectedNode.getParentNode()) {
-            this.resetNodeLevel(this.selectedNode.getParentNode());
->>>>>>> fix(module: tree): fix treeService error and code merge
+          const parentNode = this.selectedNode.getParentNode();
+          if (parentNode) {
+            this.resetNodeLevel(parentNode);
           }
         } else {
           const targetIndex = this.rootNodes.indexOf(targetNode) + tIndex;
           // 根节点插入
-<<<<<<< HEAD
-          this.rootNodes.splice(targetIndex, 0, this.selectedNode!);
-          this.rootNodes[targetIndex].parentNode = undefined;
-          this.rootNodes[targetIndex].level = 0;
-=======
           this.rootNodes.splice(targetIndex, 0, this.selectedNode);
           this.rootNodes[ targetIndex ].parentNode = null;
           this.rootNodes[ targetIndex ].level = 0;
->>>>>>> fix(module: tree): fix treeService error and code merge
         }
         break;
     }
     // flush all nodes
-    this.rootNodes.forEach(child => {
+    this.rootNodes.forEach((child) => {
       if (!child.treeService) {
         child.service = treeService;
       }
@@ -514,17 +502,11 @@ export class NzTreeBaseService implements OnDestroy {
    * event: MouseEvent / DragEvent
    * dragNode
    */
-  formatEvent(eventName: string, node: NzTreeNode, event: MouseEvent | DragEvent): NzFormatEmitEvent {
-    const emitStructure = {
-<<<<<<< HEAD
-      eventName,
-      node: node || undefined,
-      event: event || undefined
-=======
+  formatEvent(eventName: string, node: NzTreeNode | null, event: MouseEvent | DragEvent | null): NzFormatEmitEvent {
+    const emitStructure: NzFormatEmitEvent = {
       'eventName': eventName,
       'node'     : node,
       'event'    : event
->>>>>>> fix(module: tree): fix treeService error and code merge
     };
     switch (eventName) {
       case 'dragstart':
@@ -533,36 +515,37 @@ export class NzTreeBaseService implements OnDestroy {
       case 'dragleave':
       case 'drop':
       case 'dragend':
-        Object.assign(emitStructure, { dragNode: this.getSelectedNode() });
+        Object.assign(emitStructure, { 'dragNode': this.getSelectedNode() });
         break;
       case 'click':
       case 'dblclick':
-        Object.assign(emitStructure, { selectedKeys: this.selectedNodeList });
-        Object.assign(emitStructure, { nodes: this.selectedNodeList });
-        Object.assign(emitStructure, { keys: this.selectedNodeList.map(n => n.key) });
+        Object.assign(emitStructure, { 'selectedKeys': this.selectedNodeList });
+        Object.assign(emitStructure, { 'nodes': this.selectedNodeList });
+        Object.assign(emitStructure, { 'keys': this.selectedNodeList.map(n => n.key) });
         break;
       case 'check':
         const checkedNodeList = this.getCheckedNodeList();
 
-        Object.assign(emitStructure, { checkedKeys: checkedNodeList });
-        Object.assign(emitStructure, { nodes: checkedNodeList });
-        Object.assign(emitStructure, { keys: checkedNodeList.map(n => n.key) });
+        Object.assign(emitStructure, { 'checkedKeys': checkedNodeList });
+        Object.assign(emitStructure, { 'nodes': checkedNodeList });
+        Object.assign(emitStructure, { 'keys': checkedNodeList.map(n => n.key) });
         break;
       case 'search':
-        Object.assign(emitStructure, { matchedKeys: this.getMatchedNodeList() });
-        Object.assign(emitStructure, { nodes: this.getMatchedNodeList() });
-        Object.assign(emitStructure, { keys: this.getMatchedNodeList().map(n => n.key) });
+        Object.assign(emitStructure, { 'matchedKeys': this.getMatchedNodeList() });
+        Object.assign(emitStructure, { 'nodes': this.getMatchedNodeList() });
+        Object.assign(emitStructure, { 'keys': this.getMatchedNodeList().map(n => n.key) });
         break;
       case 'expand':
-        Object.assign(emitStructure, { nodes: this.expandedNodeList });
-        Object.assign(emitStructure, { keys: this.expandedNodeList.map(n => n.key) });
+        Object.assign(emitStructure, { 'nodes': this.expandedNodeList });
+        Object.assign(emitStructure, { 'keys': this.expandedNodeList.map(n => n.key) });
         break;
     }
     return emitStructure;
   }
 
   ngOnDestroy(): void {
+    this.triggerEventChange$.next();
     this.triggerEventChange$.complete();
-    this.triggerEventChange$ = null;
   }
+
 }

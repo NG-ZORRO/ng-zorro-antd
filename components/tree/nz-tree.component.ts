@@ -25,7 +25,7 @@ import { toBoolean, InputBoolean } from '../core/util/convert';
 import { NzTreeSelectService } from '../tree-select/nz-tree-select.service';
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from '../tree/interface';
 import { NzTreeBaseService } from './nz-tree-base.service';
-import { NzTreeNode, NzTreeNodeOptions } from './nz-tree-node';
+import { NzTreeNode } from './nz-tree-node';
 import { NzTreeService } from './nz-tree.service';
 
 export function NzTreeServiceFactory(treeSelectService: NzTreeSelectService, treeService: NzTreeService): NzTreeBaseService {
@@ -174,7 +174,7 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
   @Output() readonly nzOnDragEnd: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
   // tslint:disable-next-line:no-any
   @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<any>;
-  _searchValue = null;
+  _searchValue: string;
   _nzMultiple: boolean = false;
   nzDefaultSubject = new ReplaySubject<{ type: string, keys: string[] }>(6);
   destroy$ = new Subject();
@@ -189,8 +189,8 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
     return this.nzTreeService.rootNodes;
   }
 
-  getTreeNodeByKey(key: string): NzTreeNode {
-    let targetNode = null;
+  getTreeNodeByKey(key: string): NzTreeNode | null {
+    let targetNode: NzTreeNode | null = null;
     const getNode = (node: NzTreeNode): boolean => {
       if (node.key === key) {
         targetNode = node;
@@ -356,6 +356,5 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    this.destroy$ = null;
   }
 }
