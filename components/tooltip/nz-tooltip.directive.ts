@@ -139,7 +139,6 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
     if (this.isDynamicTooltip && isNotNil(value)) {
       this.tooltip[ key ] = value;
     }
-    this.tooltip.cdr.markForCheck();
   }
 
   private show(): void {
