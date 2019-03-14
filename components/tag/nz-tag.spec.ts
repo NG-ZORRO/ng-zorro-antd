@@ -43,6 +43,19 @@ describe('tag', () => {
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(1);
       expect(tag.nativeElement.classList).toContain('ant-tag-checkable');
       expect(tag.nativeElement.classList).toContain('ant-tag-checkable-checked');
+      testComponent.control = true;
+      testComponent.checked = true;
+      fixture.detectChanges();
+      expect(testComponent.checked).toBe(true);
+      expect(testComponent.checkedChange).toHaveBeenCalledTimes(2);
+      expect(tag.nativeElement.classList).toContain('ant-tag-checkable');
+      expect(tag.nativeElement.classList).toContain('ant-tag-checkable-checked');
+      testComponent.checked = false;
+      fixture.detectChanges();
+      expect(testComponent.checked).toBe(false);
+      expect(testComponent.checkedChange).toHaveBeenCalledTimes(3);
+      expect(tag.nativeElement.classList).toContain('ant-tag-checkable');
+      expect(tag.nativeElement.classList).not.toContain('ant-tag-checkable-checked');
     });
     it('should closeable work', fakeAsync(() => {
       fixture.detectChanges();
@@ -114,6 +127,7 @@ describe('tag', () => {
       [nzMode]="mode"
       [(nzChecked)]="checked"
       [nzColor]="color"
+      [nzControl]="control"
       (nzCheckedChange)="checkedChange($event)"
       (nzAfterClose)="afterClose()"
       (nzOnClose)="onClose()">
@@ -125,6 +139,7 @@ export class NzTestTagBasicComponent {
   mode = 'default';
   color: string | undefined;
   checked = false;
+  control = false;
   onClose = jasmine.createSpy('on close');
   afterClose = jasmine.createSpy('after close');
   checkedChange = jasmine.createSpy('after close');
