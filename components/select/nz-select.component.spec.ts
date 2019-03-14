@@ -1,7 +1,7 @@
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { Component, DebugElement } from '@angular/core';
 import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { dispatchKeyboardEvent } from '../core/testing';
@@ -18,7 +18,7 @@ describe('nz-select component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports     : [ NzSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestSelectDefaultComponent, NzTestSelectTagsComponent, NzTestSelectFormComponent, NzTestOptionChangeComponent ]
+      declarations: [ NzTestSelectDefaultComponent, NzTestSelectTagsComponent, NzTestSelectFormComponent, NzTestOptionChangeComponent, NzTestSelectFormDisabledTouchedComponent ]
     });
     TestBed.compileComponents();
     inject([ OverlayContainer ], (oc: OverlayContainer) => {
@@ -361,6 +361,24 @@ describe('nz-select component', () => {
       expect(changeSpy).toHaveBeenCalledTimes(4);
     });
   });
+
+  describe('form init state', () => {
+    let fixture: ComponentFixture<NzTestSelectFormDisabledTouchedComponent>;
+    let testComponent: NzTestSelectFormDisabledTouchedComponent;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestSelectFormDisabledTouchedComponent);
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+    });
+    /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/3059 **/
+    it('should init disabled state with touched false', fakeAsync(() => {
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.formGroup.controls.select.touched).toBe(false);
+    }));
+  });
+
 });
 
 @Component({
@@ -462,6 +480,25 @@ export class NzTestSelectFormComponent {
 
   reset(): void {
     this.formGroup.reset();
+  }
+}
+
+@Component({
+  template: `
+    <form [formGroup]="formGroup">
+      <nz-select
+        formControlName="select">
+        <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
+        <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
+      </nz-select>
+    </form>
+  `
+})
+export class NzTestSelectFormDisabledTouchedComponent {
+  formGroup: FormGroup;
+
+  constructor() {
+    this.formGroup = new FormGroup({ select: new FormControl({ value: 'lucy', disabled: true }) });
   }
 }
 
