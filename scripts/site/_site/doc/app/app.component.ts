@@ -132,14 +132,10 @@ export class AppComponent implements OnInit, AfterViewInit {
           }
         }, 200);
       }
-
-      if (navigator.language === 'zh-CN') {
-        this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
-        this.router.navigate([ 'docs', 'introduce', 'zh' ]);
-      }
     });
 
     this.initColor();
+    this.detectLanguage();
   }
 
   ngAfterViewInit(): void {
@@ -241,5 +237,16 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
       });
     });
+  }
+
+  private detectLanguage(): void {
+    const language = navigator.language.toLowerCase();
+    const pathname = location.pathname;
+    const hasLanguage = pathname.indexOf('en') > -1 || pathname.indexOf('cn') > -1;
+
+    if (language === 'zh-cn' && !hasLanguage) {
+      this.nzI18nService.setLocale(zh_CN);
+      this.router.navigate([ 'docs', 'introduce', 'zh' ]);
+    }
   }
 }
