@@ -30,7 +30,7 @@ import {
 export class NzMessageContainerComponent {
   messages: NzMessageDataFilled[] = [];
   config: Required<NzMessageConfig>;
-  top: string;
+  top: string | null;
 
   constructor(
     protected cdr: ChangeDetectorRef,

@@ -8,18 +8,18 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
+import { toCssPixel } from '../core/util';
 import { NzMessageContainerComponent } from '../message/nz-message-container.component';
-import { NzNotificationConfig, NZ_NOTIFICATION_CONFIG, NZ_NOTIFICATION_DEFAULT_CONFIG } from './nz-notification-config';
-import { NzNotificationDataFilled, NzNotificationDataOptions } from './nz-notification.definitions';
+
 import {
   NzNotificationConfig,
   NZ_NOTIFICATION_CONFIG,
   NZ_NOTIFICATION_DEFAULT_CONFIG
 } from './nz-notification-config';
-
-import { toCssPixel } from '../core/util';
-
-import { NzNotificationDataFilled } from './nz-notification.definitions';
+import {
+  NzNotificationDataFilled,
+  NzNotificationDataOptions
+} from './nz-notification.definitions';
 
 @Component({
   changeDetection    : ChangeDetectionStrategy.OnPush,
@@ -29,8 +29,8 @@ import { NzNotificationDataFilled } from './nz-notification.definitions';
   templateUrl        : './nz-notification-container.component.html'
 })
 export class NzNotificationContainerComponent extends NzMessageContainerComponent {
-  config: NzNotificationConfig;
-  bottom: string;
+  config: Required<NzNotificationConfig>;
+  bottom: string | null;
 
   /**
    * @override
@@ -44,12 +44,6 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
   ) {
     super(cdr, defaultConfig, config);
   }
-
-  /**
-   * A list of notifications displayed on the screen.
-   * @override
-   */
-  messages: Array<Required<NzNotificationDataFilled>> = [];
 
   /**
    * @override
