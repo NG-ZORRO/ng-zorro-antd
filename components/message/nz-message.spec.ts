@@ -76,7 +76,7 @@ describe('NzMessage', () => {
   }));
 
   it('should open a message box with loading', (() => {
-  messageService.loading('LOADING');
+    messageService.loading('LOADING');
     fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('LOADING');
