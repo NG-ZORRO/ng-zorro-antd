@@ -42,7 +42,7 @@ title: Message
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| content | 提示内容 | `string` | - |
+| content | 提示内容 | `string｜TemplateRef<void>` | - |
 | options | 支持设置针对当前提示框的参数，见下方表格 | `object` | - |
 
 `options` 支持设置的参数如下：
