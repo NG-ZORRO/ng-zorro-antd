@@ -35,6 +35,7 @@ export class NzTagComponent implements OnInit, OnChanges {
   presetColor = false;
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
   @Input() nzColor: string;
+  @Input() @InputBoolean() nzControl: boolean = false;
   @Input() @InputBoolean() nzChecked: boolean = false;
   @Input() @InputBoolean() nzNoAnimation: boolean = false;
   @Output() readonly nzAfterClose = new EventEmitter<void>();
@@ -64,7 +65,7 @@ export class NzTagComponent implements OnInit, OnChanges {
   }
 
   updateCheckedStatus(): void {
-    if (this.nzMode === 'checkable') {
+    if (this.nzMode === 'checkable' && !this.nzControl) {
       this.nzChecked = !this.nzChecked;
       this.nzCheckedChange.emit(this.nzChecked);
       this.updateClassMap();
