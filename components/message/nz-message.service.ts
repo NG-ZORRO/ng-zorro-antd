@@ -9,7 +9,7 @@ let globalCounter = 0;
 
 export class NzMessageBaseService<
   ContainerClass extends NzMessageContainerComponent,
-  MessageData extends NzMessageData,
+  MessageData,
   MessageConfig extends NzMessageConfig
 > {
   protected _container: ContainerClass;
@@ -35,11 +35,12 @@ export class NzMessageBaseService<
 
   createMessage(message: MessageData, options?: NzMessageDataOptions): NzMessageDataFilled {
     const resultMessage: NzMessageDataFilled = {
-      type: message.type,
-      content: message.content,
-      messageId: this._generateMessageId(),
-      options,
-      createdAt: new Date()
+      ...(message as NzMessageData),
+      ...{
+        createdAt: new Date(),
+        messageId: this._generateMessageId(),
+        options
+      }
     };
     this._container.createMessage(resultMessage);
 
