@@ -19,9 +19,9 @@
   </div>
   <ul class="ant-transfer-list-content">
     <ng-container *ngFor="let item of dataSource">
-      <li *ngIf="!item._hiden" (click)="_handleSelect(item)"
+      <li *ngIf="!item._hiden"
         class="ant-transfer-list-content-item" [ngClass]="{'ant-transfer-list-content-item-disabled': disabled || item.disabled}">
-        <label nz-checkbox [nzChecked]="item.checked" [nzDisabled]="disabled || item.disabled">
+        <label nz-checkbox [nzChecked]="item.checked" (nzCheckedChange)="_handleSelect(item)" [nzDisabled]="disabled || item.disabled">
           <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
           <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
         </label>

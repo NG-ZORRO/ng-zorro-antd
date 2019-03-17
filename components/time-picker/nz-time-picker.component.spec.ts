@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { async, fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,8 +14,6 @@ registerLocaleData(zh);
 
 describe('time-picker', () => {
   let overlayContainer: OverlayContainer;
-  let testComponent;
-  let fixture;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports     : [ NoopAnimationsModule, FormsModule, NzI18nModule, NzTimePickerModule ],
@@ -32,7 +30,9 @@ describe('time-picker', () => {
     overlayContainer.ngOnDestroy();
   }));
   describe('basic time-picker', () => {
-    let timeElement;
+    let testComponent: NzTestTimePickerComponent;
+    let fixture: ComponentFixture<NzTestTimePickerComponent>;
+    let timeElement: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimePickerComponent);
       testComponent = fixture.debugElement.componentInstance;

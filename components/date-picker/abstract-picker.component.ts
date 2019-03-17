@@ -40,11 +40,10 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   @Input() nzDropdownClassName: string;
   @Input() nzSize: 'large' | 'small';
   @Input() nzStyle: object;
-  @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
-
   @Input() nzFormat: string;
+  @Input() nzValue: CompatibleValue | null;
 
-  @Input() nzValue: CompatibleValue;
+  @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
 
   @ViewChild(NzPickerComponent) protected picker: NzPickerComponent;
 
@@ -106,8 +105,9 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   onValueChange(value: CompatibleValue): void {
     this.nzValue = value;
     if (this.isRange) {
-      if ((this.nzValue as CandyDate[]).length) {
-        this.onChangeFn([ this.nzValue[ 0 ].nativeDate, this.nzValue[ 1 ].nativeDate ]);
+      const vAsRange = this.nzValue as CandyDate[];
+      if (vAsRange.length) {
+        this.onChangeFn([ vAsRange[ 0 ].nativeDate, vAsRange[ 1 ].nativeDate ]);
       } else {
         this.onChangeFn([]);
       }
@@ -134,7 +134,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   // ------------------------------------------------------------------------
 
   // NOTE: onChangeFn/onTouchedFn will not be assigned if user not use as ngModel
-  onChangeFn: (val: CompatibleDate) => void = () => void 0;
+  onChangeFn: (val: CompatibleDate | null) => void = () => void 0;
   onTouchedFn: () => void = () => void 0;
 
   writeValue(value: CompatibleDate): void {

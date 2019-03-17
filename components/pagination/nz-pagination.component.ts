@@ -57,6 +57,12 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  updatePageIndexValue(page: number): void {
+    this.nzPageIndex = page;
+    this.nzPageIndexChange.emit(this.nzPageIndex);
+    this.buildIndexes();
+  }
+
   isPageIndexValid(value: number): boolean {
     return this.validatePageIndex(value) === value;
   }
@@ -65,8 +71,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     if (index !== this.nzPageIndex) {
       const pageIndex = this.validatePageIndex(index);
       if (pageIndex !== this.nzPageIndex) {
-        this.nzPageIndex = pageIndex;
-        this.nzPageIndexChange.emit(this.nzPageIndex);
+        this.updatePageIndexValue(pageIndex);
       }
     }
   }
@@ -80,8 +85,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     this.nzPageSizeChange.emit($event);
     this.buildIndexes();
     if (this.nzPageIndex > this.lastIndex) {
-      this.nzPageIndex = this.lastIndex;
-      this.nzPageIndexChange.emit(this.lastIndex);
+      this.updatePageIndexValue(this.lastIndex);
     }
   }
 
@@ -89,11 +93,10 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     const target = input;
     const page = toNumber(target.value, this.nzPageIndex);
     if (isInteger(page) && this.isPageIndexValid(page) && page !== this.nzPageIndex) {
-      this.nzPageIndex = page;
-      this.nzPageIndexChange.emit(this.nzPageIndex);
+      this.updatePageIndexValue(page);
     }
     if (clearInputValue) {
-      target.value = null;
+      target.value = '';
     } else {
       target.value = `${this.nzPageIndex}`;
     }
@@ -101,7 +104,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
 
   /** generate indexes list */
   buildIndexes(): void {
-    const pages = [];
+    const pages: number[] = [];
     if (this.lastIndex <= 9) {
       for (let i = 2; i <= this.lastIndex - 1; i++) {
         pages.push(i);
@@ -121,6 +124,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
       }
     }
     this.pages = pages;
+    this.cdr.markForCheck();
   }
 
   get lastIndex(): number {

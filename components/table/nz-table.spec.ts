@@ -1,5 +1,5 @@
-import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -8,6 +8,7 @@ import { NzTableModule } from './nz-table.module';
 
 describe('nz-table', () => {
   let injector: Injector;
+
   beforeEach(async(() => {
     injector = TestBed.configureTestingModule({
       imports     : [ NzTableModule ],
@@ -15,10 +16,12 @@ describe('nz-table', () => {
     });
     TestBed.compileComponents();
   }));
+
   describe('basic nz-table', () => {
-    let fixture;
-    let testComponent;
-    let table;
+    let fixture: ComponentFixture<NzTestTableBasicComponent>;
+    let testComponent: NzTestTableBasicComponent;
+    let table: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTableBasicComponent);
       fixture.detectChanges();
@@ -172,7 +175,7 @@ describe('nz-table', () => {
     it('should fixed header work', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-table-scroll')).toBe(null);
-      testComponent.fixedHeader = true;
+      testComponent.fixHeader = true;
       expect(table.nativeElement.querySelector('.ant-table-scroll')).toBeDefined();
     });
     it('should width config', () => {
@@ -210,9 +213,10 @@ describe('nz-table', () => {
     });
   });
   describe('scroll nz-table', () => {
-    let fixture;
-    let testComponent;
-    let table;
+    let fixture: ComponentFixture<NzTestTableScrollComponent>;
+    let testComponent: NzTestTableScrollComponent;
+    let table: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTableScrollComponent);
       fixture.detectChanges();
@@ -295,13 +299,15 @@ describe('nz-table', () => {
     });
   });
   describe('double binding nz-table', () => {
-    let fixture;
-    let testComponent;
+    let fixture: ComponentFixture<NzTableSpecCrashComponent>;
+    let testComponent: NzTableSpecCrashComponent;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTableSpecCrashComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
     });
+
     it('should not crash when double binding pageSize and pageIndex', () => {
       fixture.detectChanges();
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
@@ -334,25 +340,25 @@ describe('nz-table', () => {
       [nzTitle]="title?'Here is Title':null"
       [nzSize]="size">
       <thead *ngIf="header">
-        <tr>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Address</th>
-          <th>Action</th>
-        </tr>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Address</th>
+        <th>Action</th>
+      </tr>
       </thead>
       <tbody>
-        <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
-          <tr>
-            <td>{{data.name}}</td>
-            <td>{{data.age}}</td>
-            <td>{{data.address}}</td>
-            <td>
-              <a href="#">Action 一 {{data.name}}</a>
-              <a href="#">Delete</a>
-            </td>
-          </tr>
-        </ng-template>
+      <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
+        <tr>
+          <td>{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
+          <td>
+            <a href="#">Action 一 {{data.name}}</a>
+            <a href="#">Delete</a>
+          </td>
+        </tr>
+      </ng-template>
       </tbody>
     </nz-table>
   `
@@ -363,7 +369,7 @@ export class NzTestTableBasicComponent implements OnInit {
   pageIndexChange = jasmine.createSpy('pageIndex callback');
   pageSize = 10;
   pageSizeChange = jasmine.createSpy('pageSize callback');
-  dataSet = [];
+  dataSet: Array<{ name?: string, age?: string, address?: string, description?: string, checked?: boolean, expand?: boolean }> = [];
   noResult = '';
   showSizeChanger = false;
   showQuickJumper = false;
@@ -377,7 +383,7 @@ export class NzTestTableBasicComponent implements OnInit {
   fixHeader = false;
   simple = false;
   size = 'small';
-  widthConfig = [];
+  widthConfig: string[] = [];
 
   ngOnInit(): void {
     for (let i = 1; i <= 20; i++) {
@@ -399,36 +405,36 @@ export class NzTestTableBasicComponent implements OnInit {
     <div style="display: block;" [style.width.px]="width">
       <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" [nzScroll]="{ x:'600px',y: '240px' }">
         <thead>
-          <tr>
-            <th>Full Name</th>
-            <th>Age</th>
-            <th>Column 1</th>
-            <th>Column 2</th>
-            <th>Column 3</th>
-            <th>Column 4</th>
-            <th>Column 5</th>
-            <th>Column 6</th>
-            <th>Column 7</th>
-            <th>Column 8</th>
-            <th>Action</th>
-          </tr>
+        <tr>
+          <th>Full Name</th>
+          <th>Age</th>
+          <th>Column 1</th>
+          <th>Column 2</th>
+          <th>Column 3</th>
+          <th>Column 4</th>
+          <th>Column 5</th>
+          <th>Column 6</th>
+          <th>Column 7</th>
+          <th>Column 8</th>
+          <th>Action</th>
+        </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of nzTable.data">
-            <td>{{data.name}}</td>
-            <td>{{data.age}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>
-              <a>action</a>
-            </td>
-          </tr>
+        <tr *ngFor="let data of nzTable.data">
+          <td>{{data.name}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.address}}</td>
+          <td>
+            <a>action</a>
+          </td>
+        </tr>
         </tbody>
       </nz-table>
     </div>`,
@@ -441,7 +447,7 @@ export class NzTestTableBasicComponent implements OnInit {
 })
 export class NzTestTableScrollComponent implements OnInit {
   @ViewChild(NzTableComponent) nzTableComponent: NzTableComponent;
-  dataSet = [];
+  dataSet: Array<{ name: string, age: number, address: string }> = [];
   width = 300;
 
   ngOnInit(): void {
@@ -458,26 +464,27 @@ export class NzTestTableScrollComponent implements OnInit {
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/3004 **/
 @Component({
   template: `
-    <nz-table #nzTable [nzData]="data" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="pageIndexChange">
+    <nz-table #nzTable [nzData]="data" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+              (nzPageIndexChange)="pageIndexChange">
       <thead>
-        <tr>
-          <th>ID</th>
-          <th>NAME</th>
-        </tr>
+      <tr>
+        <th>ID</th>
+        <th>NAME</th>
+      </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let item of nzTable.data">
-          <tr>
-            <td>{{item.id}}</td>
-            <td>{{item.name}}</td>
-          </tr>
-        </ng-container>
+      <ng-container *ngFor="let item of nzTable.data">
+        <tr>
+          <td>{{item.id}}</td>
+          <td>{{item.name}}</td>
+        </tr>
+      </ng-container>
       </tbody>
     </nz-table>
   `
 })
 export class NzTableSpecCrashComponent {
-  data = [];
+  data: Array<{ id: number, name: string }> = [];
   pageIndex = 1;
   pageSize = 10;
   pageIndexChange = jasmine.createSpy('pageSize callback');

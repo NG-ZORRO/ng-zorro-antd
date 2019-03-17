@@ -86,20 +86,16 @@ const otherOptions = [ {
   ]
 })
 export class NzDemoCascaderSearchComponent implements OnInit {
-  /** init data */
-  public nzOptions = null;
-
-  /** ngModel value */
-  public values: any[] = null;
+  nzOptions: any = null;
+  values: any[] | null = null;
 
   ngOnInit(): void {
-    // let's set nzOptions in a asynchronous way
     setTimeout(() => {
       this.nzOptions = options;
     }, 100);
   }
 
-  public changeNzOptions(): void {
+  changeNzOptions(): void {
     if (this.nzOptions === options) {
       this.nzOptions = otherOptions;
     } else {
@@ -107,7 +103,7 @@ export class NzDemoCascaderSearchComponent implements OnInit {
     }
   }
 
-  public onChanges(values: any): void {
+  onChanges(values: any): void {
     console.log(values, this.values);
   }
 }

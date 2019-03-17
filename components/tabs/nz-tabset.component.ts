@@ -84,7 +84,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
 
   @Input()
   set nzSelectedIndex(value: number | null) {
-    this.indexToSelect = toNumber(value, null);
+    this.indexToSelect = value ? toNumber(value, null) : null;
   }
 
   get nzSelectedIndex(): number | null {

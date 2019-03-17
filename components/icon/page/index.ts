@@ -4,7 +4,7 @@ import { manifest } from '@ant-design/icons-angular';
 import { AccountBookFill } from '@ant-design/icons-angular/icons';
 import { NzIconService } from 'ng-zorro-antd';
 
-const categories = {
+const categories: { [ key: string ]: string[] } = {
   direction: [
     'step-backward',
     'step-forward',
@@ -428,16 +428,16 @@ const newIconNames: string[] = [
   ]
 })
 export class NzPageDemoIconComponent implements OnInit {
-  displayedNames = {};
-  categoryNames = [];
+  displayedNames: Array<{ name: string, icons: string[] }> = [];
+  categoryNames: string[] = [];
   currentTheme = 'outline';
-  localeObj = locale;
+  localeObj: { [ key: string ]: string } = locale;
 
   trackByFn = (_index: number, item: string) => {
     return `${item}-${this.currentTheme}`;
   }
 
-  isNewIcon = (name) => {
+  isNewIcon = (name: string) => {
     return newIconNames.indexOf(name) > -1;
   }
 
@@ -454,7 +454,7 @@ export class NzPageDemoIconComponent implements OnInit {
 
   private _copy(value: string): Promise<string> {
     const promise = new Promise<string>((resolve): void => {
-        let copyTextArea = null as HTMLTextAreaElement;
+        let copyTextArea = null as any as HTMLTextAreaElement; // tslint:disable-line:no-any
         try {
           copyTextArea = this.dom.createElement('textarea');
           copyTextArea.style.height = '0px';
@@ -482,6 +482,7 @@ export class NzPageDemoIconComponent implements OnInit {
     const names = Object.keys(categories)
     .map(category => ({
       name : category,
+      // @ts-ignore
       icons: categories[ category ].filter(name => manifest[ value ].indexOf(name) > -1)
     }))
     .filter(({ icons }) => Boolean(icons.length));

@@ -103,7 +103,7 @@ export class NzCodeBoxComponent {
     });
   }
 
-  copyGenerateCommand(command) {
+  copyGenerateCommand(command: string): void {
     this.copy(command).then(() => {
       this.commandCopied = true;
       setTimeout(() => {
@@ -116,6 +116,7 @@ export class NzCodeBoxComponent {
 
     const promise = new Promise<string>(
       (resolve): void => {
+        // @ts-ignore
         let copyTextArea = null as HTMLTextAreaElement;
         try {
           copyTextArea = this.dom.createElement('textarea');
@@ -398,11 +399,11 @@ export class AppModule { }
         '@angular/common'                  : '^7.0.0',
         '@angular/router'                  : '^7.0.0',
         '@angular/animations'              : '^7.0.0',
-        '@ant-design/icons-angular'        : '^2.0.1',
+        '@ant-design/icons-angular'        : '^2.0.2',
         'date-fns'                         : '^1.29.0',
         'tslib'                            : '^1.9.3',
         'typescript'                       : '~3.1.1',
-        'ng-zorro-antd'                    : '^7.0.1'
+        'ng-zorro-antd'                    : '^7.0.3'
       },
       tags        : [ 'stackblitz', 'sdk' ]
     });

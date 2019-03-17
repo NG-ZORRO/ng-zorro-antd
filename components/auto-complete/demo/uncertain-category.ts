@@ -34,14 +34,14 @@ import { Component, ViewEncapsulation } from '@angular/core';
 })
 export class NzDemoAutoCompleteUncertainCategoryComponent {
   inputValue: string;
-  options = [];
+  options: Array<{ value: string; category: string; count: number; }> = [];
 
   onChange(value: string): void {
     this.options = new Array(this.getRandomInt(15, 5)).join('.').split('.')
     .map((_item, idx) => ({
       value,
       category: `${value}${idx}`,
-      count: this.getRandomInt(200, 100),
+      count: this.getRandomInt(200, 100)
     }));
   }
 

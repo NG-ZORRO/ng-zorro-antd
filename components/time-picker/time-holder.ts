@@ -1,12 +1,13 @@
 import { Observable, Subject } from 'rxjs';
+
 import { isNotNil } from '../core/util/check';
 
 export class TimeHolder {
-  private _seconds = undefined;
-  private _hours = undefined;
-  private _minutes = undefined;
+  private _seconds: number | undefined = undefined;
+  private _hours: number | undefined = undefined;
+  private _minutes: number | undefined = undefined;
   private _defaultOpenValue: Date = new Date();
-  private _value: Date;
+  private _value: Date | undefined;
   private _changes = new Subject<Date>();
 
   setDefaultValueIfNil(): void {
@@ -46,24 +47,24 @@ export class TimeHolder {
     return this._changes.asObservable();
   }
 
-  get value(): Date {
+  get value(): Date | undefined {
     return this._value;
   }
 
-  set value(value: Date) {
+  set value(value: Date | undefined) {
     if (value !== this._value) {
       this._value = value;
       if (isNotNil(this._value)) {
-        this._hours = this._value.getHours();
-        this._minutes = this._value.getMinutes();
-        this._seconds = this._value.getSeconds();
+        this._hours = this._value!.getHours();
+        this._minutes = this._value!.getMinutes();
+        this._seconds = this._value!.getSeconds();
       } else {
         this._clear();
       }
     }
   }
 
-  setValue(value: Date): this {
+  setValue(value: Date | undefined): this {
     this.value = value;
     return this;
   }
@@ -90,22 +91,22 @@ export class TimeHolder {
       if (!isNotNil(this._hours)) {
         this._hours = this.defaultHours;
       } else {
-        this._value.setHours(this.hours);
+        this._value!.setHours(this.hours!);
       }
 
       if (!isNotNil(this._minutes)) {
         this._minutes = this.defaultMinutes;
       } else {
-        this._value.setMinutes(this.minutes);
+        this._value!.setMinutes(this.minutes!);
       }
 
       if (!isNotNil(this._seconds)) {
         this._seconds = this.defaultSeconds;
       } else {
-        this._value.setSeconds(this.seconds);
+        this._value!.setSeconds(this.seconds!);
       }
 
-      this._value = new Date(this._value);
+      this._value = new Date(this._value!);
     }
     this.changed();
   }
@@ -114,33 +115,33 @@ export class TimeHolder {
     this._changes.next(this._value);
   }
 
-  get hours(): number {
+  get hours(): number | undefined {
     return this._hours;
   }
 
-  set hours(value: number) {
+  set hours(value: number | undefined) {
     if (value !== this._hours) {
       this._hours = value;
       this.update();
     }
   }
 
-  get minutes(): number {
+  get minutes(): number | undefined {
     return this._minutes;
   }
 
-  set minutes(value: number) {
+  set minutes(value: number | undefined) {
     if (value !== this._minutes) {
       this._minutes = value;
       this.update();
     }
   }
 
-  get seconds(): number {
+  get seconds(): number | undefined {
     return this._seconds;
   }
 
-  set seconds(value: number) {
+  set seconds(value: number | undefined) {
     if (value !== this._seconds) {
       this._seconds = value;
       this.update();

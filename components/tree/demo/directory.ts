@@ -100,7 +100,7 @@ export class NzDemoTreeDirectoryComponent {
     ]
   }];
 
-  openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
+  openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
     // do something if u want
     if (data instanceof NzTreeNode) {
       data.isExpanded = !data.isExpanded;
@@ -110,7 +110,7 @@ export class NzDemoTreeDirectoryComponent {
   }
 
   activeNode(data: NzFormatEmitEvent): void {
-    this.activedNode = data.node;
+    this.activedNode = data.node!;
   }
 
   contextMenu($event: MouseEvent, template: TemplateRef<void>): void {

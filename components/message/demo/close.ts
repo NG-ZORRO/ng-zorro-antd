@@ -14,9 +14,9 @@ export class NzDemoMessageCloseComponent {
   }
 
   startShowMessages(): void {
-    this.message.loading('Action in progress', { nzDuration: 2500 }).onClose.pipe(
-      concatMap(() => this.message.success('Loading finished', { nzDuration: 2500 }).onClose),
-      concatMap(() => this.message.info('Loading finished is finished', { nzDuration: 2500 }).onClose)
+    this.message.loading('Action in progress', { nzDuration: 2500 }).onClose!.pipe(
+      concatMap(() => this.message.success('Loading finished', { nzDuration: 2500 }).onClose!),
+      concatMap(() => this.message.info('Loading finished is finished', { nzDuration: 2500 }).onClose!)
     ).subscribe(() => {
       console.log('All completed!');
     });

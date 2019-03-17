@@ -14,7 +14,7 @@ import {
           <nz-input-group [nzPrefix]="prefixUser">
             <input type="text" nz-input formControlName="userName" placeholder="Username">
           </nz-input-group>
-          <nz-form-explain *ngIf="validateForm.get('userName').dirty && validateForm.get('userName').errors">Please input your username!</nz-form-explain>
+          <nz-form-explain *ngIf="validateForm.get('userName')?.dirty && validateForm.get('userName')?.errors">Please input your username!</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -22,7 +22,7 @@ import {
           <nz-input-group [nzPrefix]="prefixLock">
             <input type="password" nz-input formControlName="password" placeholder="Password">
           </nz-input-group>
-          <nz-form-explain *ngIf="validateForm.get('password').dirty && validateForm.get('password').errors">Please input your Password!</nz-form-explain>
+          <nz-form-explain *ngIf="validateForm.get('password')?.dirty && validateForm.get('password')?.errors">Please input your Password!</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>

@@ -18,6 +18,10 @@ export interface AutoSizeType {
   maxRows?: number;
 }
 
+export function isAutoSizeType(value: string | boolean | AutoSizeType): value is AutoSizeType {
+  return typeof value !== 'string' && typeof value !== 'boolean' && (!!value.maxRows || !!value.minRows);
+}
+
 @Directive({
   selector: 'textarea[nzAutosize]',
   host    : {
@@ -31,9 +35,9 @@ export class NzAutoResizeDirective implements AfterViewInit, OnDestroy {
   private el: HTMLTextAreaElement | HTMLInputElement = this.elementRef.nativeElement;
   private cachedLineHeight: number;
   private previousValue: string;
-  private previousMinRows: number;
-  private minRows: number;
-  private maxRows: number;
+  private previousMinRows: number | undefined;
+  private minRows: number | undefined;
+  private maxRows: number | undefined;
   private destroy$ = new Subject();
   private inputGap = 10;
 
@@ -41,7 +45,7 @@ export class NzAutoResizeDirective implements AfterViewInit, OnDestroy {
   set nzAutosize(value: string | boolean | AutoSizeType) {
     if (typeof value === 'string') {
       this._autosize = true;
-    } else if (typeof value !== 'boolean') {
+    } else if (isAutoSizeType(value)) {
       this._autosize = value;
       this.minRows = value.minRows;
       this.maxRows = value.maxRows;
@@ -136,9 +140,9 @@ export class NzAutoResizeDirective implements AfterViewInit, OnDestroy {
     // See Firefox bug report: https://bugzilla.mozilla.org/show_bug.cgi?id=33654
     textareaClone.style.overflow = 'hidden';
 
-    this.el.parentNode.appendChild(textareaClone);
+    this.el.parentNode!.appendChild(textareaClone);
     this.cachedLineHeight = textareaClone.clientHeight - this.inputGap - 1;
-    this.el.parentNode.removeChild(textareaClone);
+    this.el.parentNode!.removeChild(textareaClone);
 
     // Min and max heights have to be re-calculated if the cached line height changes
     this.setMinHeight();
@@ -163,7 +167,12 @@ export class NzAutoResizeDirective implements AfterViewInit, OnDestroy {
     }
   }
 
-  constructor(private elementRef: ElementRef, private ngZone: NgZone, @Optional() @Self() public ngControl: NgControl, private platform: Platform) {
+  constructor(
+    private elementRef: ElementRef,
+    private ngZone: NgZone,
+    @Optional() @Self() public ngControl: NgControl,
+    private platform: Platform
+  ) {
   }
 
   ngAfterViewInit(): void {
@@ -175,7 +184,7 @@ export class NzAutoResizeDirective implements AfterViewInit, OnDestroy {
           .pipe(auditTime(16), takeUntil(this.destroy$))
           .subscribe(() => this.resizeToFitContent(true));
         });
-        this.ngControl.control.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.resizeToFitContent());
+        this.ngControl.control!.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.resizeToFitContent());
       } else {
         console.warn('nzAutosize must work with ngModel or ReactiveForm');
       }

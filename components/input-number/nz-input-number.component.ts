@@ -59,13 +59,15 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzMin: number = -Infinity;
   @Input() nzMax: number = Infinity;
-  @Input() nzParser = (value) => value;
+  @Input() nzParser = (value: any) => value; // tslint:disable-line:no-any
   @Input() nzPrecision: number;
   @Input() nzPlaceHolder = '';
   @Input() nzStep = 1;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
   @Input() nzFormatter: (value: number) => string | number = (value) => value;
+
+  [ property: string ]: any // tslint:disable-line:no-any
 
   updateAutoFocus(): void {
     if (this.nzAutoFocus) {
@@ -98,11 +100,11 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
       isNaN(num as number) ||
       num === '' ||
       num === null ||
-      (num && num.toString().indexOf('.') === num.toString().length - 1)
+      !!(num && num.toString().indexOf('.') === num.toString().length - 1)
     );
   }
 
-  getValidValue(value: string | number): string | number {
+  getValidValue(value?: string | number): string | number | undefined {
     let val = parseFloat(value as string);
     // https://github.com/ant-design/ant-design/issues/7358
     if (isNaN(val)) {
@@ -235,7 +237,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
       return;
     }
     const value = this.getCurrentValidValue(this.actualValue) || 0;
-    let val;
+    let val = 0;
     if (type === 'up') {
       val = this.upStep(value, ratio);
     } else if (type === 'down') {

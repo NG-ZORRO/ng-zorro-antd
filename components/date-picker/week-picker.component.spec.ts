@@ -38,7 +38,7 @@ describe('NzWeekPickerComponent', () => {
     overlayContainer.ngOnDestroy();
   });
   it('should show week num', fakeAsync(() => {
-    fixtureInstance.nzFormat = null; // cover branch
+    fixtureInstance.nzFormat = undefined; // cover branch
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();
@@ -71,5 +71,5 @@ describe('NzWeekPickerComponent', () => {
   `
 })
 export class NzTestWeekPickerComponent {
-  nzFormat;
+  nzFormat?: string;
 }

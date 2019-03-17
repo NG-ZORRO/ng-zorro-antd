@@ -30,7 +30,7 @@ import { Component } from '@angular/core';
   styles  : []
 })
 export class NzDemoTableExpandComponent {
-  mapOfExpandData = {};
+  mapOfExpandData: { [ key: string ]: boolean } = {};
   listOfData = [
     {
       id         : 1,

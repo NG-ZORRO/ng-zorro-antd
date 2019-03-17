@@ -83,7 +83,7 @@ describe('nz-wave', () => {
       fixture.componentInstance.backgroundColor = 'rgb(255, 0, 0)';
       fixture.detectChanges();
       dispatchMouseEvent(waveTarget, 'click');
-      const style: string = document.body.querySelector('style').innerText;
+      const style: string = document.body.querySelector('style')!.innerText;
       expect(style.includes(fixture.componentInstance.borderColor)).toBe(true);
     });
 
@@ -151,7 +151,7 @@ describe('nz-wave', () => {
       fixture.componentInstance.backgroundColor = 'rgb(255, 0, 0)';
       fixture.detectChanges();
       dispatchMouseEvent(waveTarget, 'click');
-      const style: string = document.body.querySelector('style').innerText;
+      const style: string = document.body.querySelector('style')!.innerText;
       expect(style.includes(fixture.componentInstance.borderColor)).toBe(true);
     });
 

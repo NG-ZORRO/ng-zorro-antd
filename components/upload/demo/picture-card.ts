@@ -49,7 +49,7 @@ export class NzDemoUploadPictureCardComponent {
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
     }
   ];
-  previewImage = '';
+  previewImage: string | undefined = '';
   previewVisible = false;
 
   constructor() {}

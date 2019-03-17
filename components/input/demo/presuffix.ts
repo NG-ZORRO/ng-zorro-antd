@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
       <input type="text" nz-input placeholder="Enter your username" [(ngModel)]="username">
     </nz-input-group>
     <ng-template #prefixTemplate><i nz-icon type="user"></i></ng-template>
-    <ng-template #suffixTemplate><i nz-icon type="close-circle" (click)="username=null" *ngIf="username"></i></ng-template>
+    <ng-template #suffixTemplate><i nz-icon type="close-circle" (click)="username = ''" *ngIf="username"></i></ng-template>
   `,
   styles  : [
       `

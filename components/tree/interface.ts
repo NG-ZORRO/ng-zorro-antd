@@ -2,7 +2,7 @@ import { NzTreeNode } from './nz-tree-node';
 
 export interface NzFormatEmitEvent {
   eventName: string;
-  node: NzTreeNode;
+  node?: NzTreeNode;
   event?: MouseEvent | DragEvent;
   dragNode?: NzTreeNode;
   selectedKeys?: NzTreeNode[];

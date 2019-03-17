@@ -20,11 +20,11 @@ export class NzDemoTreeDynamicComponent implements OnInit {
     { title: 'Tree Node', key: '2', isLeaf: true }
   ];
 
-  nzEvent(event: NzFormatEmitEvent): void {
+  nzEvent(event: Required<NzFormatEmitEvent>): void {
     console.log(event);
     // load child async
     if (event.eventName === 'expand') {
-      setTimeout(_ => {
+      setTimeout(() => {
         if (event.node.getChildren().length === 0 && event.node.isExpanded) {
           event.node.addChildren([
             { title: 'Child Node', key: `${event.node.key}-0` },

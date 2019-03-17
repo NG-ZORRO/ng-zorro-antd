@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, NgModule, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, Inject, NgModule, TemplateRef, ViewChild } from '@angular/core';
+import { fakeAsync, tick, ComponentFixture, TestBed, TestBedStatic } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzI18nService } from '../i18n';
@@ -14,13 +14,12 @@ import { NzEmptyModule } from './nz-empty.module';
 import { NzEmptyService } from './nz-empty.service';
 
 describe('nz-empty', () => {
-  let fixture;
-  let testBed;
-  let testComponent;
-  let emptyComponent;
-  let embedComponent;
-
   describe('basic', () => {
+    let testBed: TestBedStatic;
+    let fixture: ComponentFixture<NzEmptyTestBasicComponent>;
+    let testComponent: NzEmptyTestBasicComponent;
+    let emptyComponent: DebugElement;
+
     beforeEach(() => {
       testBed = TestBed.configureTestingModule({
         imports     : [ CommonModule, NzEmptyModule ],
@@ -126,6 +125,11 @@ describe('nz-empty', () => {
    * Config default empty content via `NzEmptyService`'s `setDefaultEmptyContent` method.
    */
   describe('embed', () => {
+    let fixture: ComponentFixture<NzEmptyTestServiceComponent>;
+    let testComponent: NzEmptyTestServiceComponent;
+    let embedComponent: DebugElement;
+    let emptyComponent: DebugElement;
+
     describe('service method', () => {
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -302,9 +306,9 @@ export class NzEmptyTestBasicComponent {
   @ViewChild('contentTpl') contentTpl: TemplateRef<void>;
   @ViewChild('footerTpl') footerTpl: TemplateRef<void>;
 
-  image = undefined;
-  content = undefined;
-  footer = undefined;
+  image?: TemplateRef<void> | string;
+  content?: TemplateRef<void> | string;
+  footer?: TemplateRef<void> | string;
 }
 
 @Component({
@@ -319,7 +323,7 @@ export class NzEmptyTestBasicComponent {
 export class NzEmptyTestServiceComponent {
   @ViewChild('tpl') template: TemplateRef<void>;
 
-  noResult = undefined;
+  noResult?: string | null;
 
   constructor(public emptyService: NzEmptyService) {
   }

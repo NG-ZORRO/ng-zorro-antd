@@ -25,7 +25,7 @@ import { Component, OnInit } from '@angular/core';
   styles  : []
 })
 export class NzDemoTabsSlideComponent implements OnInit {
-  tabs = [];
+  tabs: any[] = [];
   nzTabPosition = 'top';
   selectedIndex = 0;
 

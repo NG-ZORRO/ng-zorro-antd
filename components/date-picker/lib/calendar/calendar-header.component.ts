@@ -160,9 +160,9 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
     let result: YearMonthDaySelector[];
 
     if (this.locale.monthBeforeYear) {
-      result = [ month, day, year ];
+      result = [ month, day!, year ];
     } else {
-      result = [ year, month, day ];
+      result = [ year, month, day! ];
     }
 
     return result.filter(selector => !!selector);

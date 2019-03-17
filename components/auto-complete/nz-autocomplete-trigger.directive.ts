@@ -59,19 +59,20 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   /** Bind nzAutocomplete component */
   @Input() nzAutocomplete: NzAutocompleteComponent;
 
-  _onChange: (value: {}) => void = () => {};
+  // tslint:disable-next-line:no-any
+  _onChange: (value: any) => void = () => {};
   _onTouched = () => {};
   panelOpen: boolean = false;
 
   /** Current active option */
-  get activeOption(): NzAutocompleteOptionComponent {
+  get activeOption(): NzAutocompleteOptionComponent | undefined {
     if (this.nzAutocomplete && this.nzAutocomplete.options.length) {
       return this.nzAutocomplete.activeItem;
     }
   }
 
   private overlayRef: OverlayRef | null;
-  private portal: TemplatePortal<{}>;
+  private portal: TemplatePortal<{}> | null;
   private positionStrategy: FlexibleConnectedPositionStrategy;
   private previousValue: string | number | null;
   private selectionChangeSubscription: Subscription;
@@ -205,9 +206,9 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
    */
   private subscribeSelectionChange(): Subscription {
     return this.nzAutocomplete.selectionChange
-    .subscribe((option: NzAutocompleteOptionComponent) => {
-      this.setValueAndClose(option);
-    });
+      .subscribe((option: NzAutocompleteOptionComponent) => {
+        this.setValueAndClose(option);
+      });
   }
 
   /**
@@ -218,14 +219,14 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       fromEvent<MouseEvent>(this.document, 'click'),
       fromEvent<TouchEvent>(this.document, 'touchend')
     )
-    .subscribe((event: MouseEvent | TouchEvent) => {
-      const clickTarget = event.target as HTMLElement;
+      .subscribe((event: MouseEvent | TouchEvent) => {
+        const clickTarget = event.target as HTMLElement;
 
-      // Make sure is not self
-      if (clickTarget !== this.elementRef.nativeElement && !this.overlayRef.overlayElement.contains(clickTarget) && this.panelOpen) {
-        this.closePanel();
-      }
-    });
+        // Make sure is not self
+        if (clickTarget !== this.elementRef.nativeElement && !this.overlayRef!.overlayElement.contains(clickTarget) && this.panelOpen) {
+          this.closePanel();
+        }
+      });
   }
 
   /**
@@ -233,13 +234,13 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
    */
   private subscribeOverlayPositionChange(): Subscription {
     return this.positionStrategy.positionChanges
-    .pipe(
-      map((position: ConnectedOverlayPositionChange) => position.connectionPair.originY),
-      distinct()
-    )
-    .subscribe((position: VerticalConnectionPos) => {
-      this.nzAutocomplete.dropDownPosition = position;
-    });
+      .pipe(
+        map((position: ConnectedOverlayPositionChange) => position.connectionPair.originY),
+        distinct()
+      )
+      .subscribe((position: VerticalConnectionPos) => {
+        this.nzAutocomplete.dropDownPosition = position;
+      });
   }
 
   private attachOverlay(): void {
@@ -306,16 +307,17 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
     ];
     this.positionStrategy = this._overlay.position()
-    .flexibleConnectedTo(this.getConnectedElement())
-    .withPositions(positions)
-    .withFlexibleDimensions(false)
-    .withPush(false);
+      .flexibleConnectedTo(this.getConnectedElement())
+      .withPositions(positions)
+      .withFlexibleDimensions(false)
+      .withPush(false);
     return this.positionStrategy;
   }
 
   private resetActiveItem(): void {
-    if (this.nzAutocomplete.activeItem && this.nzAutocomplete.getOptionIndex(this.nzAutocomplete.activeItem)) {
-      this.nzAutocomplete.setActiveItem(this.nzAutocomplete.getOptionIndex(this.nzAutocomplete.activeItem));
+    const index = this.nzAutocomplete.getOptionIndex(this.nzAutocomplete.activeItem);
+    if (this.nzAutocomplete.activeItem && index !== -1) {
+      this.nzAutocomplete.setActiveItem(index);
     } else {
       this.nzAutocomplete.setActiveItem(this.nzAutocomplete.nzDefaultActiveFirstOption ? 0 : -1);
     }

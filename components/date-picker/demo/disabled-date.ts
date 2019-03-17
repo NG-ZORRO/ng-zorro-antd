@@ -35,7 +35,7 @@ export class NzDemoDatePickerDisabledDateComponent {
   timeDefaultValue = setHours(new Date(), 0);
 
   range(start: number, end: number): number[] {
-    const result = [];
+    const result: number[] = [];
     for (let i = start; i < end; i++) {
       result.push(i);
     }
@@ -45,7 +45,7 @@ export class NzDemoDatePickerDisabledDateComponent {
   disabledDate = (current: Date): boolean => {
     // Can not select days before today and today
     return differenceInCalendarDays(current, this.today) > 0;
-  };
+  }
 
   disabledDateTime = (): object => {
     return {
@@ -53,7 +53,7 @@ export class NzDemoDatePickerDisabledDateComponent {
       nzDisabledMinutes: () => this.range(30, 60),
       nzDisabledSeconds: () => [ 55, 56 ]
     };
-  };
+  }
 
   disabledRangeTime = (_value: Date[], type: 'start' | 'end'): object => {
     if (type === 'start') {
@@ -68,5 +68,5 @@ export class NzDemoDatePickerDisabledDateComponent {
       nzDisabledMinutes: () => this.range(0, 31),
       nzDisabledSeconds: () => [ 55, 56 ]
     };
-  };
+  }
 }

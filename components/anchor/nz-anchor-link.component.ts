@@ -32,7 +32,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
 
   @Input() nzHref = '#';
 
-  titleStr = '';
+  titleStr: string | null = '';
   titleTpl: TemplateRef<void>;
   active: boolean = false;
 

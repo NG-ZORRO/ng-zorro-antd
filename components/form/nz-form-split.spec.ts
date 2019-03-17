@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzFormSplitComponent } from './nz-form-split.component';
@@ -13,8 +13,8 @@ describe('nz-form-split', () => {
     TestBed.compileComponents();
   }));
   describe('default', () => {
-    let fixture;
-    let split;
+    let fixture: ComponentFixture<NzTestFormSplitComponent>;
+    let split: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestFormSplitComponent);
       fixture.detectChanges();

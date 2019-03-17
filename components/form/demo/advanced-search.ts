@@ -66,7 +66,7 @@ import {
 })
 export class NzDemoFormAdvancedSearchComponent implements OnInit {
   validateForm: FormGroup;
-  controlArray = [];
+  controlArray: any[] = [];
   isCollapse = true;
 
   toggleCollapse(): void {

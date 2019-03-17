@@ -3,7 +3,7 @@ import { InjectionToken } from '@angular/core';
 export const NZ_DATE_CONFIG = new InjectionToken<NzDateConfig>('date-config');
 
 export const NZ_DATE_CONFIG_DEFAULT: NzDateConfig = {
-  firstDayOfWeek: null
+  firstDayOfWeek: undefined
 };
 
 export function mergeDateConfig(config: NzDateConfig): NzDateConfig {

@@ -92,7 +92,7 @@ export class NzStepComponent {
     renderer.addClass(elementRef.nativeElement, 'ant-steps-item');
   }
 
-  detectChanges(): void {
-    this.cdr.detectChanges();
+  markForCheck(): void {
+    this.cdr.markForCheck();
   }
 }

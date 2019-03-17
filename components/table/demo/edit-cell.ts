@@ -29,7 +29,7 @@ import { NzInputDirective } from 'ng-zorro-antd';
           <td>{{data.age}}</td>
           <td>{{data.address}}</td>
           <td>
-            <a nz-popconfirm nzTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.key)">Delete</a>
+            <a nz-popconfirm nzTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.id)">Delete</a>
           </td>
         </tr>
       </tbody>
@@ -60,8 +60,8 @@ import { NzInputDirective } from 'ng-zorro-antd';
 })
 export class NzDemoTableEditCellComponent implements OnInit {
   i = 0;
-  editId: string;
-  listOfData = [];
+  editId: string | null;
+  listOfData: any[] = [];
   @ViewChild(NzInputDirective, { read: ElementRef }) inputElement: ElementRef;
 
   @HostListener('window:click', [ '$event' ])

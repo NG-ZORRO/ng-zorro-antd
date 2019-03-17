@@ -25,7 +25,7 @@ import {
             nzMentionTrigger
             nz-input>
         </nz-mention>
-        <nz-form-explain *ngIf="validateForm.get('mention').dirty && validateForm.get('mention').errors">
+        <nz-form-explain *ngIf="validateForm.get('mention')?.dirty && validateForm.get('mention')?.errors">
           More than one must be selected!
         </nz-form-explain>
       </nz-form-control>
@@ -44,9 +44,9 @@ export class NzDemoMentionControlledComponent implements OnInit {
 
   suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
   validateForm: FormGroup;
-  @ViewChild('mentions') mentionChild;
+  @ViewChild('mentions') mentionChild: any;
 
-  get mention(): AbstractControl { return  this.validateForm.get('mention'); }
+  get mention(): AbstractControl { return  this.validateForm.get('mention')!; }
 
   constructor(private fb: FormBuilder) {
 
@@ -64,7 +64,8 @@ export class NzDemoMentionControlledComponent implements OnInit {
     } else if (this.mentionChild.getMentions().length < 2) {
       return { confirm: true, error: true };
     }
-  };
+    return {};
+  }
 
   submitForm(): void {
     this.mention.markAsDirty();
