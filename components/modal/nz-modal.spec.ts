@@ -509,6 +509,30 @@ describe('NzModal', () => {
       expect(modalService.openModals.length).toBe(0);
     }));
 
+    it('should only a confirm button when the type is "info"|"success"|"error"|"warning"', fakeAsync(() => {
+      const modalMethods = [ 'info', 'success', 'error', 'warning' ];
+      const uniqueId = (name: string) => `__${name}_ID_SUFFIX__`;
+      const queryOverlayElement = (name: string) => overlayContainerElement.querySelectorAll(`.${uniqueId(name)} .ant-modal-confirm-btns > button`) as NodeListOf<HTMLButtonElement>;
+
+      fixture.componentInstance.nonServiceModalVisible = false; // Show non-service modal
+      // @ts-ignore
+      modalMethods.forEach(method => modalService[ method ]({ nzWrapClassName: uniqueId(method) })); // Service modals
+
+      fixture.detectChanges();
+      tick(600);
+      modalMethods.forEach(method => {
+        const buttons = queryOverlayElement(method);
+        expect(buttons.length).toBe(1);
+        expect(buttons[0]!.classList).toContain('ant-btn-primary');
+      }); // Cover non-service modal for later checking
+      expect(modalService.openModals.length).toBe(4);
+
+      modalService.closeAll();
+      fixture.detectChanges();
+      tick(600);
+      expect(modalService.openModals.length).toBe(0);
+    }));
+
     it('should modal not be registered twice', fakeAsync(() => {
       const modalRef = modalService.create();
 
@@ -596,7 +620,7 @@ class NzDemoModalBasicComponent {
       <span>show modal</span>
     </button>
     <nz-modal [(nzVisible)]="isVisible" nzTitle="title" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
-              [nzOkLoading]="isOkLoading">
+      [nzOkLoading]="isOkLoading">
       <p>content</p>
     </nz-modal>
   `,
@@ -633,7 +657,8 @@ class NzDemoModalAsyncComponent {
 class NzDemoModalConfirmPromiseComponent {
   confirmModal: NzModalRef; // For testing by now
 
-  constructor(private modal: NzModalService) { }
+  constructor(private modal: NzModalService) {
+  }
 
   showConfirm(): void {
     this.confirmModal = this.modal.confirm({
@@ -692,7 +717,8 @@ class TestBasicServiceComponent {
   template: ``
 })
 class TestVaryServiceComponent {
-  constructor(private modalService: NzModalService) {}
+  constructor(private modalService: NzModalService) {
+  }
 
   createWithVary(): NzModalRef<TestVaryServiceCustomComponent> {
     const modal = this.modalService.create({
@@ -727,7 +753,8 @@ export class TestVaryServiceCustomComponent {
   @Input() title: string;
   @Input() subtitle: string;
 
-  constructor(private modal: NzModalRef, public elementRef: ElementRef) { }
+  constructor(private modal: NzModalRef, public elementRef: ElementRef) {
+  }
 
   destroyModal(): void {
     this.modal.destroy();
@@ -738,7 +765,8 @@ export class TestVaryServiceCustomComponent {
   template: ``
 })
 export class TestConfirmModalComponent {
-  constructor(public modalService: NzModalService) { }
+  constructor(public modalService: NzModalService) {
+  }
 
   createConfirm(): NzModalRef {
     this.modalService.confirm(); // [Testing Required] Only for coverage temporarily
@@ -767,7 +795,8 @@ export class TestConfirmModalComponent {
   template: `
     <div [style.width]="100 | toCssUnit" [style.height]="'100px' | toCssUnit" [style.top]="100 | toCssUnit:'pt'"></div>`
 })
-class TestCssUnitPipeComponent {}
+class TestCssUnitPipeComponent {
+}
 
 @Component({
   selector : 'nz-modal-by-service',

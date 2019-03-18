@@ -32,13 +32,13 @@ export interface ModalOptions<T = any, R = any> { // tslint:disable-line:no-any
   nzAfterClose?: EventEmitter<R>;
 
   // --- Predefined OK & Cancel buttons
-  nzOkText?: string;
+  nzOkText?: string | null;
   nzOkType?: string;
   nzOkLoading?: boolean;
   nzOkDisabled?: boolean;
   nzCancelDisabled?: boolean;
   nzOnOk?: EventEmitter<T> | OnClickCallback<T>; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
-  nzCancelText?: string;
+  nzCancelText?: string | null;
   nzCancelLoading?: boolean;
   nzNoAnimation?: boolean;
   nzOnCancel?: EventEmitter<T> | OnClickCallback<T>; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
