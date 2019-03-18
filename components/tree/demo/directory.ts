@@ -1,9 +1,8 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
 import {
   NzDropdownContextComponent,
   NzDropdownService,
   NzFormatEmitEvent,
-  NzTreeComponent,
   NzTreeNode
 } from 'ng-zorro-antd';
 
@@ -11,7 +10,6 @@ import {
   selector: 'nz-demo-tree-directory',
   template: `
     <nz-tree
-      #treeCom
       [nzData]="nodes"
       (nzClick)="activeNode($event)"
       (nzDblClick)="openFolder($event)">
@@ -77,7 +75,6 @@ import {
 })
 
 export class NzDemoTreeDirectoryComponent {
-  @ViewChild('treeCom') treeCom: NzTreeComponent;
   dropdown: NzDropdownContextComponent;
   // actived node
   activedNode: NzTreeNode;
