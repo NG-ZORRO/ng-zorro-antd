@@ -234,7 +234,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       openPickerByClickTrigger();
       const left = getFirstCell('left');
-      const leftText = left.textContent.trim();
+      const leftText = left.textContent!.trim();
       dispatchMouseEvent(left, 'click');
       fixture.detectChanges();
       tick(500);
@@ -243,7 +243,7 @@ describe('NzRangePickerComponent', () => {
       let result = nzOnCalendarChange.calls.allArgs()[0][0];
       expect(result[0].getDate()).toBe(+leftText);
       const right = getFirstCell('right');
-      const rightText = right.textContent.trim();
+      const rightText = right.textContent!.trim();
       dispatchMouseEvent(right, 'click');
       fixture.detectChanges();
       tick(500);
