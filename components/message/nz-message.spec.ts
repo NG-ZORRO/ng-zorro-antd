@@ -14,8 +14,8 @@ describe('NzMessage', () => {
   let messageService: NzMessageService;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  let fixture: ComponentFixture<DemoAppComponent>;
-  let testComponent: DemoAppComponent;
+  let fixture: ComponentFixture<NzTestMessageBasicComponent>;
+  let testComponent: NzTestMessageBasicComponent;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -38,7 +38,7 @@ describe('NzMessage', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DemoAppComponent);
+    fixture = TestBed.createComponent(NzTestMessageBasicComponent);
     testComponent = fixture.debugElement.componentInstance;
   });
 
@@ -177,7 +177,7 @@ describe('NzMessage', () => {
 
   it('should container top to configured', fakeAsync(() => {
     messageService.create('top', 'CHANGE');
-    demoAppFixture.detectChanges();
+    fixture.detectChanges();
 
     const messageContainerElement = overlayContainerElement.querySelector('.ant-message') as HTMLElement;
     expect(messageContainerElement.style.top).toBe('24px');
@@ -194,6 +194,6 @@ describe('NzMessage', () => {
     </ng-template>
   `
 })
-export class NzTestMessageBasicComponent {}
+export class NzTestMessageBasicComponent {
   @ViewChild('contentTemplate') template: TemplateRef<void>;
 }
