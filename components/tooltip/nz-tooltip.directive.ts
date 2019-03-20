@@ -182,6 +182,8 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
         this.nzTitle = changes.setTitle.currentValue;
         this.updateCompValue('nzTitle', changes.setTitle.currentValue);
       }
+
+      this.tooltip.cdr.markForCheck(); // Manually trigger change detection of component.
     }
   }
 }
