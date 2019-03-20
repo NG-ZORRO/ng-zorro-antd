@@ -1,3 +1,3 @@
-<div class="ant-message">
+<div class="ant-message" [style.top]="top">
   <nz-message *ngFor="let message of messages; let i = index" [nzMessage]="message" [nzIndex]="i"></nz-message>
 </div>

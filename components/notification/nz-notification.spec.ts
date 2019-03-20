@@ -9,11 +9,21 @@ import { NZ_NOTIFICATION_CONFIG } from './nz-notification-config';
 import { NzNotificationModule } from './nz-notification.module';
 import { NzNotificationService } from './nz-notification.service';
 
+@Component({
+  selector: 'nz-demo-app-component',
+  template: `
+    <ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template>
+  `
+})
+export class DemoAppComponent {
+  @ViewChild(TemplateRef) demoTemplateRef: TemplateRef<{}>;
+}
+
 describe('NzNotification', () => {
-  let messageService: NzNotificationService;
+  let notificationService: NzNotificationService;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  let demoAppFixture: ComponentFixture<DemoAppComponent>;
+  let fixture: ComponentFixture<DemoAppComponent>;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -25,8 +35,8 @@ describe('NzNotification', () => {
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([ NzNotificationService, OverlayContainer ], (m: NzNotificationService, oc: OverlayContainer) => {
-    messageService = m;
+  beforeEach(inject([ NzNotificationService, OverlayContainer ], (n: NzNotificationService, oc: OverlayContainer) => {
+    notificationService = n;
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
@@ -36,52 +46,52 @@ describe('NzNotification', () => {
   });
 
   beforeEach(() => {
-    demoAppFixture = TestBed.createComponent(DemoAppComponent);
+    fixture = TestBed.createComponent(DemoAppComponent);
   });
 
   it('should open a message box with success', (() => {
-    messageService.success('test-title', 'SUCCESS');
-    demoAppFixture.detectChanges();
+    notificationService.success('test-title', 'SUCCESS');
+    fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-success')).not.toBeNull();
   }));
 
   it('should open a message box with error', (() => {
-    messageService.error('test-title', 'ERROR');
-    demoAppFixture.detectChanges();
+    notificationService.error('test-title', 'ERROR');
+    fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('ERROR');
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-error')).not.toBeNull();
   }));
 
   it('should open a message box with warning', (() => {
-    messageService.warning('test-title', 'WARNING');
-    demoAppFixture.detectChanges();
+    notificationService.warning('test-title', 'WARNING');
+    fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('WARNING');
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-warning')).not.toBeNull();
   }));
 
   it('should open a message box with info', (() => {
-    messageService.info('test-title', 'INFO');
-    demoAppFixture.detectChanges();
+    notificationService.info('test-title', 'INFO');
+    fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('INFO');
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-info')).not.toBeNull();
   }));
 
   it('should open a message box with blank', (() => {
-    messageService.blank('test-title', 'BLANK');
-    demoAppFixture.detectChanges();
+    notificationService.blank('test-title', 'BLANK');
+    fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('BLANK');
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon')).toBeNull();
   }));
 
   it('should auto closed by 1s', fakeAsync(() => {
-    messageService.create('', '', 'EXISTS', { nzDuration: 1000 });
-    demoAppFixture.detectChanges();
+    notificationService.create('', '', 'EXISTS', { nzDuration: 1000 });
+    fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('EXISTS');
 
@@ -90,8 +100,8 @@ describe('NzNotification', () => {
   }));
 
   it('should not destroy when hovered', fakeAsync(() => {
-    messageService.create('', '', 'EXISTS', { nzDuration: 3000 });
-    demoAppFixture.detectChanges();
+    notificationService.create('', '', 'EXISTS', { nzDuration: 3000 });
+    fixture.detectChanges();
 
     const messageElement = overlayContainerElement.querySelector('.ant-notification-notice')!;
     dispatchMouseEvent(messageElement, 'mouseenter');
@@ -104,72 +114,72 @@ describe('NzNotification', () => {
   }));
 
   it('should not destroyed automatically but manually', fakeAsync(() => {
-    const filledMessage = messageService.success('title', 'SUCCESS', { nzDuration: 0 });
-    demoAppFixture.detectChanges();
+    const filledMessage = notificationService.success('title', 'SUCCESS', { nzDuration: 0 });
+    fixture.detectChanges();
 
     tick(50000);
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
 
-    messageService.remove(filledMessage.messageId);
-    demoAppFixture.detectChanges();
+    notificationService.remove(filledMessage.messageId);
+    fixture.detectChanges();
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS');
   }));
 
   it('should keep the balance of messages length and then remove all', fakeAsync(() => {
     [ 1, 2, 3 ].forEach(id => {
       const content = `SUCCESS-${id}`;
-      messageService.success('', content);
-      demoAppFixture.detectChanges();
+      notificationService.success('', content);
+      fixture.detectChanges();
       tick();
-      demoAppFixture.detectChanges();
+      fixture.detectChanges();
 
       expect(overlayContainerElement.textContent).toContain(content);
       if (id === 3) {
         expect(overlayContainerElement.textContent).not.toContain('SUCCESS-1');
-        expect((messageService as any)._container.messages.length).toBe(2); // tslint:disable-line:no-any
+        expect((notificationService as any)._container.messages.length).toBe(2); // tslint:disable-line:no-any
       }
     });
 
-    messageService.remove();
-    demoAppFixture.detectChanges();
+    notificationService.remove();
+    fixture.detectChanges();
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS-3');
-    expect((messageService as any)._container.messages.length).toBe(0); // tslint:disable-line:no-any
+    expect((notificationService as any)._container.messages.length).toBe(0); // tslint:disable-line:no-any
   }));
 
   it('should destroy without animation', fakeAsync(() => {
-    messageService.error('', 'EXISTS', { nzDuration: 1000, nzAnimate: false });
-    demoAppFixture.detectChanges();
+    notificationService.error('', 'EXISTS', { nzDuration: 1000, nzAnimate: false });
+    fixture.detectChanges();
     tick(1000 + 10);
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   }));
 
   it('should reset default config dynamically', fakeAsync(() => {
-    messageService.config({ nzDuration: 0 });
-    messageService.create('', 'loading', 'EXISTS');
-    demoAppFixture.detectChanges();
+    notificationService.config({ nzDuration: 0 });
+    notificationService.create('', 'loading', 'EXISTS');
+    fixture.detectChanges();
     tick(50000);
     expect(overlayContainerElement.textContent).toContain('EXISTS');
   }));
 
   it('should show with placement of topLeft', () => {
-    messageService.config({ nzPlacement: 'topLeft' });
-    messageService.create('', '', 'EXISTS');
-    demoAppFixture.detectChanges();
+    notificationService.config({ nzPlacement: 'topLeft' });
+    notificationService.create('', '', 'EXISTS');
+    fixture.detectChanges();
     expect(overlayContainerElement.textContent).toContain('EXISTS');
     expect(overlayContainerElement.querySelector('.ant-notification-topLeft')).not.toBeNull();
   });
 
   // Should support nzData as context.
   it('should open a message box with template ref', () => {
-    messageService.template(demoAppFixture.componentInstance.demoTemplateRef, { nzData: 'data' });
-    demoAppFixture.detectChanges();
+    notificationService.template(fixture.componentInstance.demoTemplateRef, { nzData: 'data' });
+    fixture.detectChanges();
     expect(overlayContainerElement.textContent).toContain('test template contentdata');
   });
 
   it('should update an existing notification when keys are matched', () => {
-    messageService.create('', '', 'EXISTS', { nzKey: 'exists' });
+    notificationService.create('', '', 'EXISTS', { nzKey: 'exists' });
     expect(overlayContainerElement.textContent).toContain('EXISTS');
-    messageService.create('success', 'Title', 'SHOULD NOT CHANGE', { nzKey: 'exists' });
+    notificationService.create('success', 'Title', 'SHOULD NOT CHANGE', { nzKey: 'exists' });
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
     expect(overlayContainerElement.textContent).toContain('Title');
     expect(overlayContainerElement.textContent).toContain('SHOULD NOT CHANGE');
@@ -179,28 +189,46 @@ describe('NzNotification', () => {
   it('should receive `true` when it is closed by user', fakeAsync(() => {
     let onCloseFlag = false;
 
-    messageService.create('', '', 'close').onClose!.subscribe(user => {
+    notificationService.create('', '', 'close').onClose!.subscribe(user => {
       if (user) {
         onCloseFlag = true;
       }
     });
 
-    demoAppFixture.detectChanges();
+    fixture.detectChanges();
     tick(1000);
     const closeEl = overlayContainerElement.querySelector('.ant-notification-notice-close')!;
     dispatchMouseEvent(closeEl, 'click');
     tick(1000);
     expect(onCloseFlag).toBeTruthy();
-    tick(50000);
+
+    waitForNotificationsToClose();
+  }));
+
+  it('should support configurable nzTop & nzBottom', fakeAsync(() => {
+    notificationService.config({ nzTop: 48 });
+    notificationService.create('', '', 'TEST TOP', { nzDuration: 3000 });
+    waitForNotificationToggling(fixture);
+    const notificationContainer = overlayContainerElement.querySelector('.ant-notification') as HTMLElement;
+    expect(notificationContainer.style.top).toBe('48px');
+    expect(notificationContainer.style.bottom).toBeFalsy();
+
+    notificationService.config({ nzPlacement: 'bottomLeft', nzBottom: '48px' });
+    notificationService.create('', '', 'TEST BOTTOM');
+    waitForNotificationToggling(fixture);
+    expect(notificationContainer.style.top).toBeFalsy();
+    expect(notificationContainer.style.bottom).toBe('48px');
+
+    waitForNotificationsToClose();
   }));
 });
 
-@Component({
-  selector: 'nz-demo-app-component',
-  template: `
-    <ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template>
-  `
-})
-export class DemoAppComponent {
-  @ViewChild(TemplateRef) demoTemplateRef: TemplateRef<{}>;
+function waitForNotificationToggling<T>(fixture: ComponentFixture<T>): void {
+  fixture.detectChanges();
+  tick(2000);
+  fixture.detectChanges();
+}
+
+function waitForNotificationsToClose(): void {
+  tick(10000);
 }
