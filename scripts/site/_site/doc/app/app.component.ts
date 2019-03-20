@@ -14,6 +14,7 @@ import { fromEvent } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { ROUTER_LIST } from './router';
+import { path } from '@angular-devkit/core';
 
 declare const docsearch: any;
 
@@ -242,8 +243,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   private detectLanguage(): void {
     const language = navigator.language.toLowerCase();
     const pathname = location.pathname;
-    const hasLanguage = pathname.indexOf('en') > -1 || pathname.indexOf('cn') > -1;
-
+    const hasLanguage = pathname.match(/en$/) || pathname.match(/zh$/);
     if (language === 'zh-cn' && !hasLanguage) {
       this.nzI18nService.setLocale(zh_CN);
       this.router.navigate([ 'docs', 'introduce', 'zh' ]);
