@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { ApplicationRef, ComponentFactoryResolver, EmbeddedViewRef, Injectable, Injector, Type } from '@angular/core';
+import { ApplicationRef, ComponentFactoryResolver, EmbeddedViewRef, Injectable, Injector, TemplateRef, Type } from '@angular/core';
 
 import { NzMessageConfig } from './nz-message-config';
 import { NzMessageContainerComponent } from './nz-message-container.component';
@@ -7,7 +7,11 @@ import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-m
 
 let globalCounter = 0;
 
-export class NzMessageBaseService<ContainerClass extends NzMessageContainerComponent, MessageData, MessageConfig extends NzMessageConfig> {
+export class NzMessageBaseService<
+  ContainerClass extends NzMessageContainerComponent,
+  MessageData,
+  MessageConfig extends NzMessageConfig
+> {
   protected _container: ContainerClass;
 
   constructor(
@@ -31,11 +35,11 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
 
   createMessage(message: MessageData, options?: NzMessageDataOptions): NzMessageDataFilled {
     const resultMessage: NzMessageDataFilled = {
-      ...(message as {}),
+      ...(message as NzMessageData),
       ...{
+        createdAt: new Date(),
         messageId: this._generateMessageId(),
-        options,
-        createdAt: new Date()
+        options
       }
     };
     this._container.createMessage(resultMessage);
@@ -81,27 +85,31 @@ export class NzMessageService extends NzMessageBaseService<NzMessageContainerCom
   }
 
   // Shortcut methods
-  success(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+  success(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
     return this.createMessage({ type: 'success', content }, options);
   }
 
-  error(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+  error(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
     return this.createMessage({ type: 'error', content }, options);
   }
 
-  info(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+  info(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
     return this.createMessage({ type: 'info', content }, options);
   }
 
-  warning(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+  warning(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
     return this.createMessage({ type: 'warning', content }, options);
   }
 
-  loading(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+  loading(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
     return this.createMessage({ type: 'loading', content }, options);
   }
 
-  create(type: 'success' | 'info' | 'warning' | 'error' | 'loading' | string, content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+  create(
+    type: 'success' | 'info' | 'warning' | 'error' | 'loading' | string,
+    content: string | TemplateRef<void>,
+    options?: NzMessageDataOptions
+  ): NzMessageDataFilled {
     return this.createMessage({ type, content }, options);
   }
 }

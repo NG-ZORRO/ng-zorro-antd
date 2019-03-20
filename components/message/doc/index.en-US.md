@@ -41,7 +41,7 @@ This components provides some service methods, with usage and arguments as follo
 
 | Argument | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| content | The content of message | `string` | - |
+| content | The content of message | `string｜TemplateRef<void>` | - |
 | options | Support setting the parameters for the current message box, see the table below | `object` | - |
 
 The parameters that are set by the `options` support are as follows:

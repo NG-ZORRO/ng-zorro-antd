@@ -11,7 +11,9 @@
         <i *ngSwitchCase="'error'" nz-icon type="close-circle"></i>
         <i *ngSwitchCase="'loading'" nz-icon type="loading"></i>
       </ng-container>
-      <span [innerHTML]="nzMessage.content"></span>
+      <ng-container *nzStringTemplateOutlet="nzMessage.content">
+        <span [innerHTML]="nzMessage.content"></span>
+      </ng-container>
     </div>
   </div>
 </div>
