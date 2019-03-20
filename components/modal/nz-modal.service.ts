@@ -131,7 +131,7 @@ export class NzModalService {
       options.nzIconType = iconMap[ confirmType ];
     }
     if (!('nzCancelText' in options)) { // Remove the Cancel button if the user not specify a Cancel button
-      options.nzCancelText = undefined;
+      options.nzCancelText = null;
     }
     return this.confirm(options, confirmType);
   }
