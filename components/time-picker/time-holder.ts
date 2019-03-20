@@ -85,7 +85,9 @@ export class TimeHolder {
   }
 
   setValue(value: Date | undefined, use12Hours?: boolean): this {
-    this._use12Hours = use12Hours;
+    if (isNotNil(use12Hours)) {
+      this._use12Hours = use12Hours;
+    }
     this.value = value;
     return this;
   }
