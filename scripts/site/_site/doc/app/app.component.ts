@@ -14,7 +14,6 @@ import { fromEvent } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { ROUTER_LIST } from './router';
-import { path } from '@angular-devkit/core';
 
 declare const docsearch: any;
 
