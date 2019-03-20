@@ -110,7 +110,6 @@ Almost anything can be represented in a tree structure. Examples include directo
 | isDisableCheckbox | Whether treeNode's checkbox can not be clicked | `boolean` | `true` / `false` |
 | isSelectable | Set whether the treeNode can be selected | `boolean` | `true` 或 `false` |
 | isChecked | Whether treeNode is checked | `boolean` | `true` / `false` |
-| isAllChecked | Whether all treeNode's children are checked | `boolean` | `true` / `false` |
 | isHalfChecked | Part of treeNode's children are checked  | `boolean` | `true` / `false` |
 | isSelected | Whether treeNode is selected | `boolean` | `true` / `false` |
 | isLoading | Whether treeNode is loading(when nzAsyncData is true) | `boolean` | `true` / `false` |
@@ -119,10 +118,6 @@ Almost anything can be represented in a tree structure. Examples include directo
 | addChildren | Add child nodes, receive NzTreeNode or NzTreeNodeOptions array, the second parameter is the inserted index position | (children: array, index?: number )=>{} | void |
 | clearChildren | Clear the treeNode's children | function | void |
 | remove | Clear current node(not root node) | function | void |
-| setSyncChecked | set isChecked & isHalfChecked state，params: checked , halfChecked.(will affect other nodes checked state) | (checked: boolean, halfChecked: boolean=false)=>{} | void |
-| setChecked | set isChecked & isHalfChecked state，params: checked , halfChecked | (checked: boolean, halfChecked: boolean=false)=>{} | void |
-| setExpanded | set isExpanded state | (value: boolean)=>{} | void |
-| setSelected | set isSelected state | (value: boolean)=>{} | void |
 
 ## Note
 `NzTreeNodeOptions` accepts your customized properties，use NzTreeNode.origin to get them.

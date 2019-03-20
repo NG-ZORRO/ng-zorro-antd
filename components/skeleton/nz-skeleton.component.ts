@@ -47,7 +47,7 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   private getTitleProps(): NzSkeletonTitle {
     const hasAvatar: boolean = !!this.nzAvatar;
     const hasParagraph: boolean = !!this.nzParagraph;
-    let width: string;
+    let width = '';
     if (!hasAvatar && hasParagraph) {
       width = '38%';
     } else if (hasAvatar && hasParagraph) {
@@ -85,12 +85,12 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
 
   private getWidthList(): Array<number | string> {
     const { width, rows } = this.paragraph;
-    let widthList = [];
+    let widthList: Array<string | number> = [];
     if (width && Array.isArray(width)) {
       widthList = width;
     } else if (width && !Array.isArray(width)) {
       widthList = [];
-      widthList[ rows - 1 ] = width;
+      widthList[ rows! - 1 ] = width;
     }
     return widthList;
   }

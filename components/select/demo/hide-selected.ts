@@ -12,7 +12,7 @@ import { Component } from '@angular/core';
 })
 export class NzDemoSelectHideSelectedComponent {
   listOfOption = [ 'Apples', 'Nails', 'Bananas', 'Helicopters' ];
-  listOfSelectedValue = [];
+  listOfSelectedValue: string[] = [];
 
   isNotSelected(value: string): boolean {
     return this.listOfSelectedValue.indexOf(value) === -1;

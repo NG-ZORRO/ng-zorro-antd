@@ -98,7 +98,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    this.placement = getPlacementName(position);
+    this.placement = getPlacementName(position)!;
     this.cdr.markForCheck();
   }
 
@@ -118,7 +118,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
               private cdr: ChangeDetectorRef,
               public nzSubmenuService: NzSubmenuService,
               private nzUpdateHostClassService: NzUpdateHostClassService,
-              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
   }
 
   ngOnInit(): void {

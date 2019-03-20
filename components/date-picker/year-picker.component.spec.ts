@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
+import { NGStyleInterface } from '../core/types/ng-class';
 import { NzInputModule } from '../input/nz-input.module';
 import { NzDatePickerModule } from './date-picker.module';
 
@@ -165,7 +166,7 @@ describe('NzYearPickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      const disabledCell = overlayContainerElement.querySelector('tbody.ant-calendar-year-panel-tbody tr td.ant-calendar-year-panel-cell-disabled');
+      const disabledCell = overlayContainerElement.querySelector('tbody.ant-calendar-year-panel-tbody tr td.ant-calendar-year-panel-cell-disabled')!;
       expect(disabledCell.textContent).toContain('2013');
     }));
 
@@ -252,7 +253,7 @@ describe('NzYearPickerComponent', () => {
       fixture.detectChanges();
 
       const cell = getSecondYearCell(); // Use the second cell
-      const cellText = cell.textContent.trim();
+      const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
       fixture.detectChanges();
       tick(500);
@@ -307,11 +308,11 @@ describe('NzYearPickerComponent', () => {
       fixture.detectChanges();
 
       openPickerByClickTrigger();
-      expect(overlayContainerElement.textContent.indexOf('TEST_EXTRA_FOOTER') > -1).toBeTruthy();
+      expect(overlayContainerElement.textContent!.indexOf('TEST_EXTRA_FOOTER') > -1).toBeTruthy();
 
       fixtureInstance.nzRenderExtraFooter = 'TEST_EXTRA_FOOTER_STRING';
       fixture.detectChanges();
-      expect(overlayContainerElement.textContent.indexOf(fixtureInstance.nzRenderExtraFooter) > -1).toBeTruthy();
+      expect(overlayContainerElement.textContent!.indexOf(fixtureInstance.nzRenderExtraFooter) > -1).toBeTruthy();
     }));
 
   }); // /specified date picker testing
@@ -328,7 +329,7 @@ describe('NzYearPickerComponent', () => {
 
       // Click the first cell to change ngModel
       const cell = getSecondYearCell();
-      const cellText = cell.textContent.trim();
+      const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
       fixture.detectChanges();
       tick(500);
@@ -425,17 +426,17 @@ class NzTestYearPickerComponent {
   @ViewChild('tplExtraFooter') tplExtraFooter: TemplateRef<void>;
 
   // --- Suite 1
-  nzAllowClear;
-  nzAutoFocus;
-  nzDisabled;
-  nzDisabledDate;
-  nzClassName;
-  nzLocale;
-  nzPlaceHolder;
-  nzPopupStyle;
-  nzDropdownClassName;
-  nzSize;
-  nzStyle;
+  nzAllowClear: boolean;
+  nzAutoFocus: boolean;
+  nzDisabled: boolean;
+  nzClassName: string;
+  nzDisabledDate: (d: Date) => boolean;
+  nzLocale: any; // tslint:disable-line:no-any
+  nzPlaceHolder: string;
+  nzPopupStyle: NGStyleInterface;
+  nzDropdownClassName: string;
+  nzSize: string;
+  nzStyle: NGStyleInterface;
 
   nzOnOpenChange(): void {
   }
@@ -443,13 +444,13 @@ class NzTestYearPickerComponent {
   nzOnChange(): void {
   }
 
-  nzValue;
+  nzValue: Date | null;
 
-  nzRenderExtraFooter;
+  nzRenderExtraFooter: string | (() => TemplateRef<void> | string);
 
   // --- Suite 2
-  nzOpen;
+  nzOpen: boolean;
 
   // --- Suite 3
-  modelValue;
+  modelValue: Date;
 }

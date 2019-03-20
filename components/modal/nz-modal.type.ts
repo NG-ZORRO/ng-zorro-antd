@@ -32,13 +32,13 @@ export interface ModalOptions<T = any, R = any> { // tslint:disable-line:no-any
   nzAfterClose?: EventEmitter<R>;
 
   // --- Predefined OK & Cancel buttons
-  nzOkText?: string;
+  nzOkText?: string | null;
   nzOkType?: string;
   nzOkLoading?: boolean;
   nzOkDisabled?: boolean;
   nzCancelDisabled?: boolean;
   nzOnOk?: EventEmitter<T> | OnClickCallback<T>; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
-  nzCancelText?: string;
+  nzCancelText?: string | null;
   nzCancelLoading?: boolean;
   nzNoAnimation?: boolean;
   nzOnCancel?: EventEmitter<T> | OnClickCallback<T>; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
@@ -63,4 +63,7 @@ export interface ModalButtonOptions<T = any> { // tslint:disable-line:no-any
   loading?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean); // This prop CAN'T use with autoLoading=true
   disabled?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean);
   onClick?(this: ModalButtonOptions<T>, contentComponentInstance?: T): (void | {}) | Promise<(void | {})>;
+
+  // tslint:disable-next-line:no-any
+  [ key: string ]: any;
 }

@@ -16,6 +16,7 @@ import { Platform } from '@angular/cdk/platform';
 import { fromEvent, Subject } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { IndexableObject } from '../core/types/indexable';
 
 export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between';
 export type NzAlign = 'top' | 'middle' | 'bottom';
@@ -49,7 +50,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   @Input() nzType: NzType;
   @Input() nzAlign: NzAlign = 'top';
   @Input() nzJustify: NzJustify = 'start';
-  @Input() nzGutter: number | object;
+  @Input() nzGutter: number | IndexableObject;
   private el: HTMLElement = this.elementRef.nativeElement;
   private prefixCls = 'ant-row';
   private breakPoint: Breakpoint;
@@ -63,7 +64,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     } else if (this.breakPoint && this.nzGutter[ this.breakPoint ]) {
       return this.nzGutter[ this.breakPoint ];
     } else {
-      return;
+      return 0;
     }
   }
 

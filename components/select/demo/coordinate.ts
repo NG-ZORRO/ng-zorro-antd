@@ -24,7 +24,7 @@ export class NzDemoSelectCoordinateComponent {
   selectedProvince = 'Zhejiang';
   selectedCity = 'Hangzhou';
   provinceData = [ 'Zhejiang', 'Jiangsu' ];
-  cityData = {
+  cityData: { [ place: string]: string[] } = {
     Zhejiang: [ 'Hangzhou', 'Ningbo', 'Wenzhou' ],
     Jiangsu : [ 'Nanjing', 'Suzhou', 'Zhenjiang' ]
   };

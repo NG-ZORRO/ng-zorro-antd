@@ -39,7 +39,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-table>`
 })
 export class NzDemoTableFixedColumnsHeaderComponent implements OnInit {
-  listOfData = [];
+  listOfData: any[] = [];
 
   ngOnInit(): void {
     for (let i = 0; i < 100; i++) {

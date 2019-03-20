@@ -107,7 +107,7 @@ export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
   });
 
   constructor(private changeDetectorRef: ChangeDetectorRef, private ngZone: NgZone,
-              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
   }
 
   ngAfterViewInit(): void {
@@ -145,10 +145,10 @@ export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
     this.setActiveItem(previousIndex);
   }
 
-  getOptionIndex(option: NzAutocompleteOptionComponent): number | undefined {
+  getOptionIndex(option?: NzAutocompleteOptionComponent): number {
     return this.options.reduce((result: number, current: NzAutocompleteOptionComponent, index: number) => {
-      return result === undefined ? (option === current ? index : undefined) : result;
-    }, undefined);
+      return result === -1 ? (option === current ? index : -1) : result;
+    }, -1)!;
   }
 
   private optionsInit(): void {

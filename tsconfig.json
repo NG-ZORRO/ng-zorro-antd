@@ -18,6 +18,10 @@
     ],
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "skipLibCheck": true
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "skipLibCheck": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true
   }
 }

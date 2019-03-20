@@ -1,12 +1,13 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 @Component({
   selector: 'nz-highlight',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <pre class="language-angular"><code [innerHTML]="nzCode"></code></pre>
   `
 })
 export class NzHighlightComponent implements OnInit {
-  _code;
+  _code: string;
   @ViewChild('code') codeElement: ElementRef;
   @Input() nzLanguage: string;
 

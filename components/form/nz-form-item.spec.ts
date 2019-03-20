@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzFormExplainComponent } from './nz-form-explain.component';
@@ -15,10 +15,10 @@ describe('nz-form-item', () => {
     TestBed.compileComponents();
   }));
   describe('default', () => {
-    let fixture;
-    let testComponent;
-    let item;
-    let explain;
+    let fixture: ComponentFixture<NzTestFormItemComponent>;
+    let testComponent: NzTestFormItemComponent;
+    let item: DebugElement;
+    let explain: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestFormItemComponent);
       fixture.detectChanges();

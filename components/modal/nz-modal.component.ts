@@ -43,8 +43,8 @@ export const MODAL_ANIMATE_DURATION = 200; // Duration when perform animations (
 type AnimationState = 'enter' | 'leave' | null;
 
 @Component({
-  selector   : 'nz-modal',
-  templateUrl: './nz-modal.component.html',
+  selector       : 'nz-modal',
+  templateUrl    : './nz-modal.component.html',
   // Using OnPush for modal caused footer can not to detect changes. we can fix it when 8.x.
   changeDetection: ChangeDetectionStrategy.Default
 })
@@ -74,8 +74,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Input() nzTitle: string | TemplateRef<{}>;
   @Input() nzMaskStyle: object;
   @Input() nzBodyStyle: object;
-  @Input() nzOkText: string;
-  @Input() nzCancelText: string;
+  @Input() nzOkText: string | null;
+  @Input() nzCancelText: string | null;
   @Input() nzOkType = 'primary';
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzModalType: ModalType = 'default';
@@ -100,11 +100,11 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   get cancelText(): string {
-    return this.nzCancelText || this.locale.cancelText;
+    return this.nzCancelText || this.locale.cancelText!;
   }
 
   get okText(): string {
-    return this.nzOkText || this.locale.okText;
+    return this.nzOkText || this.locale.okText!;
   }
 
   get hidden(): boolean {
@@ -112,8 +112,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   } // Indicate whether this dialog should hidden
 
   locale: { okText?: string, cancelText?: string } = {};
-  maskAnimationClassMap: object;
-  modalAnimationClassMap: object;
+  maskAnimationClassMap: object | null;
+  modalAnimationClassMap: object | null;
   transformOrigin = '0px 0px 0px'; // The origin point that animation based on
 
   private contentComponentRef: ComponentRef<T>; // Handle the reference when using nzContent as Component
@@ -123,6 +123,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   private previouslyFocusedElement: HTMLElement;
   private focusTrap: FocusTrap;
   private scrollStrategy: BlockScrollStrategy;
+
+  [ key: string ]: any // tslint:disable-line:no-any
 
   constructor(
     private overlay: Overlay,
@@ -134,10 +136,9 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     private focusTrapFactory: FocusTrapFactory,
     private cdr: ChangeDetectorRef,
     @Inject(NZ_MODAL_CONFIG) private config: NzModalConfig,
-    @Inject(DOCUMENT) private document: any) { // tslint:disable-line:no-any
-
+    @Inject(DOCUMENT) private document: any // tslint:disable-line:no-any
+  ) {
     super();
-
     this.config = this.mergeDefaultConfig(this.config);
     this.scrollStrategy = this.overlay.scrollStrategies.block();
   }
@@ -277,7 +278,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
       const caseClose = (doClose: boolean | void | {}) => (doClose !== false) && this.close(doClose as R); // Users can return "false" to prevent closing by default
       if (isPromise(result)) {
         this[ loadingKey ] = true;
-        const handleThen = (doClose) => {
+        const handleThen = (doClose: boolean | void | {}) => {
           this[ loadingKey ] = false;
           caseClose(doClose);
         };
@@ -313,24 +314,24 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     }
 
     return Promise
-    .resolve(animation && this.animateTo(visible))
-    .then(() => { // Emit open/close event after animations over
-      if (visible) {
-        this.nzAfterOpen.emit();
-      } else {
-        this.nzAfterClose.emit(closeResult);
-        this.restoreFocus();
-        this.scrollStrategy.disable();
-        // Mark the for check so it can react if the view container is using OnPush change detection.
-        this.cdr.markForCheck();
-      }
-    });
+      .resolve(animation ? this.animateTo(visible) : undefined)
+      .then(() => { // Emit open/close event after animations over
+        if (visible) {
+          this.nzAfterOpen.emit();
+        } else {
+          this.nzAfterClose.emit(closeResult);
+          this.restoreFocus();
+          this.scrollStrategy.disable();
+          // Mark the for check so it can react if the view container is using OnPush change detection.
+          this.cdr.markForCheck();
+        }
+      });
   }
 
   // Lookup a button's property, if the prop is a function, call & then return the result, otherwise, return itself.
   public getButtonCallableProp(options: ModalButtonOptions<T>, prop: string): {} {
     const value = options[ prop ];
-    const args = [];
+    const args: T[] = [];
     if (this.contentComponentRef) {
       args.push(this.contentComponentRef.instance);
     }
@@ -389,12 +390,12 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     return buttons.map((button) => {
       return {
         ...{
-          type: 'default',
-          size: 'default',
+          type       : 'default',
+          size       : 'default',
           autoLoading: true,
-          show: true,
-          loading: false,
-          disabled: false
+          show       : true,
+          loading    : false,
+          disabled   : false
         },
         ...button
       };

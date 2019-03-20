@@ -50,7 +50,7 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
   @ViewChild(NzDropDownDirective) nzDropDownDirective: NzDropDownDirective;
 
   constructor(cdr: ChangeDetectorRef, nzMenuDropdownService: NzMenuDropdownService,
-              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr, nzMenuDropdownService, noAnimation);
   }
 

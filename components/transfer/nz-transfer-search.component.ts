@@ -16,7 +16,7 @@ export class NzTransferSearchComponent implements OnChanges {
   @Input() disabled: boolean;
 
   @Output() readonly valueChanged = new EventEmitter<string>();
-  @Output() readonly valueClear = new EventEmitter();
+  @Output() readonly valueClear = new EventEmitter<void>();
 
   // endregion
 

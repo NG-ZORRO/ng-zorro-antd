@@ -72,14 +72,18 @@ describe('avatar', () => {
       context.nzText = 'a';
       fixture.detectChanges();
       tick();
-      const scale = +/(\w+)\(([^)]*)\)/g.exec(dl.nativeElement.querySelector('.ant-avatar-string').style.transform)[2];
+      const scale = +/(\w+)\(([^)]*)\)/g.exec(
+        dl.nativeElement.querySelector('.ant-avatar-string')!.style.transform!
+      )![2];
       expect(scale).toBe(1);
     }));
     it('should be autoset font-size', fakeAsync(() => {
       context.nzText = 'LongUsername';
       fixture.detectChanges();
       tick();
-      const scale = +/(\w+)\(([^)]*)\)/g.exec(dl.nativeElement.querySelector('.ant-avatar-string').style.transform)[2];
+      const scale = +/(\w+)\(([^)]*)\)/g.exec(
+        dl.nativeElement.querySelector('.ant-avatar-string')!.style.transform!
+      )![2];
       expect(scale).toBeLessThan(1);
     }));
   });
@@ -170,7 +174,7 @@ class TestAvatarComponent {
   @ViewChild('comp') comp: NzAvatarComponent;
   nzShape = 'square';
   nzSize: string | number = 'large';
-  nzIcon = 'anticon anticon-user';
-  nzText = 'A';
-  nzSrc = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==`;
+  nzIcon: string | null = 'anticon anticon-user';
+  nzText: string | null = 'A';
+  nzSrc: string | null = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==`;
 }

@@ -27,7 +27,7 @@ export class NzTimeValueAccessorDirective implements ControlValueAccessor {
   changed(): void {
     if (this._onChange) {
       const value = this.dateHelper.parseTime(this.elementRef.nativeElement.value);
-      this._onChange(value);
+      this._onChange(value!);
     }
   }
 

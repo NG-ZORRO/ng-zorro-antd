@@ -1,5 +1,5 @@
-import { Component, Injector, ViewChild } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, Injector, ViewChild } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -20,10 +20,10 @@ describe('pagination', () => {
   }));
 
   describe('pagination complex', () => {
-    let fixture;
-    let testComponent;
-    let pagination;
-    let paginationElement;
+    let fixture: ComponentFixture<NzTestPaginationComponent>;
+    let testComponent: NzTestPaginationComponent;
+    let pagination: DebugElement;
+    let paginationElement: HTMLElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestPaginationComponent);
       testComponent = fixture.debugElement.componentInstance;
@@ -35,13 +35,13 @@ describe('pagination', () => {
       it('should className correct', () => {
         fixture.detectChanges();
         expect(paginationElement.classList.contains('ant-pagination')).toBe(true);
-        expect(paginationElement.firstElementChild.classList.contains('ant-pagination-prev')).toBe(true);
-        expect(paginationElement.firstElementChild.classList.contains('ant-pagination-disabled')).toBe(true);
-        expect(paginationElement.lastElementChild.classList.contains('ant-pagination-next')).toBe(true);
+        expect(paginationElement.firstElementChild!.classList.contains('ant-pagination-prev')).toBe(true);
+        expect(paginationElement.firstElementChild!.classList.contains('ant-pagination-disabled')).toBe(true);
+        expect(paginationElement.lastElementChild!.classList.contains('ant-pagination-next')).toBe(true);
         const length = paginationElement.children.length;
         const array = Array.prototype.slice.call(paginationElement.children).slice(1, length - 1);
         expect(array[ 0 ].classList.contains('ant-pagination-item-active')).toBe(true);
-        expect(array.every(node => node.classList.contains('ant-pagination-item'))).toBe(true);
+        expect(array.every((node: HTMLElement) => node.classList.contains('ant-pagination-item'))).toBe(true);
       });
       it('should small size className correct', () => {
         testComponent.size = 'small';
@@ -66,10 +66,19 @@ describe('pagination', () => {
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
       });
+      it('should change pageIndex change pages list', () => {
+        fixture.detectChanges();
+        testComponent.total = 500;
+        fixture.detectChanges();
+        expect(paginationElement.children.length).toBe(9);
+        testComponent.pageIndex = 5;
+        fixture.detectChanges();
+        expect(paginationElement.children.length).toBe(11);
+      });
       it('should pre button disabled', () => {
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
-        paginationElement.children[ 0 ].click();
+        (paginationElement.children[ 0 ] as HTMLElement).click();
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
         expect(testComponent.pageIndex).toBe(1);
@@ -78,7 +87,7 @@ describe('pagination', () => {
         testComponent.pageIndex = 5;
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
-        paginationElement.children[ 0 ].click();
+        (paginationElement.children[ 0 ] as HTMLElement).click();
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(testComponent.pageIndex).toBe(4);
@@ -87,7 +96,7 @@ describe('pagination', () => {
         testComponent.pageIndex = 5;
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
-        paginationElement.lastElementChild.click();
+        (paginationElement.lastElementChild as HTMLElement).click();
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
         expect(testComponent.pageIndex).toBe(5);
@@ -95,7 +104,7 @@ describe('pagination', () => {
       it('should next button work', () => {
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
-        paginationElement.lastElementChild.click();
+        (paginationElement.lastElementChild as HTMLElement).click();
         fixture.detectChanges();
         expect(testComponent.pageIndex).toBe(2);
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
@@ -103,7 +112,7 @@ describe('pagination', () => {
       it('should click pageIndex work', () => {
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
-        paginationElement.children[ 3 ].click();
+        (paginationElement.children[ 3 ] as HTMLElement).click();
         fixture.detectChanges();
         expect(testComponent.pageIndex).toBe(3);
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
@@ -118,7 +127,7 @@ describe('pagination', () => {
         fixture.detectChanges();
         testComponent.pageIndex = 46;
         fixture.detectChanges();
-        paginationElement.children[ 8 ].click();
+        (paginationElement.children[ 8 ] as HTMLElement).click();
         fixture.detectChanges();
         expect(testComponent.pageIndex).toBe(50);
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
@@ -130,7 +139,7 @@ describe('pagination', () => {
         testComponent.pageIndex = 5;
         fixture.detectChanges();
         expect(paginationElement.children.length).toBe(11);
-        paginationElement.children[ 2 ].click();
+        (paginationElement.children[ 2 ] as HTMLElement).click();
         fixture.detectChanges();
         expect(testComponent.pageIndex).toBe(1);
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
@@ -143,7 +152,7 @@ describe('pagination', () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
           expect(paginationElement.children.length).toBe(10);
-          expect(paginationElement.lastElementChild.classList.contains('ant-pagination-options')).toBe(true);
+          expect(paginationElement.lastElementChild!.classList.contains('ant-pagination-options')).toBe(true);
         });
       }));
       it('should change pageSize correct', () => {
@@ -198,8 +207,8 @@ describe('pagination', () => {
       });
       it('should simple className work', () => {
         expect(paginationElement.classList.contains('ant-pagination-simple')).toBe(true);
-        expect(paginationElement.firstElementChild.classList.contains('ant-pagination-prev')).toBe(true);
-        expect(paginationElement.lastElementChild.classList.contains('ant-pagination-next')).toBe(true);
+        expect(paginationElement.firstElementChild!.classList.contains('ant-pagination-prev')).toBe(true);
+        expect(paginationElement.lastElementChild!.classList.contains('ant-pagination-next')).toBe(true);
       });
       it('should simple pager jump', () => {
         fixture.detectChanges();
@@ -235,9 +244,9 @@ describe('pagination', () => {
     });
   });
   describe('pagination render items', () => {
-    let fixture;
-    let pagination;
-    let paginationElement;
+    let fixture: ComponentFixture<NzTestPaginationRenderComponent>;
+    let pagination: DebugElement;
+    let paginationElement: HTMLElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestPaginationRenderComponent);
       pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
@@ -246,16 +255,16 @@ describe('pagination', () => {
     });
     it('should render correct', () => {
       fixture.detectChanges();
-      expect(paginationElement.firstElementChild.innerText).toBe('Previous');
-      expect(paginationElement.lastElementChild.innerText).toBe('Next');
-      expect(paginationElement.children[ 1 ].innerText).toBe('2');
+      expect((paginationElement.firstElementChild as HTMLElement).innerText).toBe('Previous');
+      expect((paginationElement.lastElementChild as HTMLElement).innerText).toBe('Next');
+      expect((paginationElement.children[ 1 ] as HTMLElement).innerText).toBe('2');
     });
   });
   describe('pagination total items', () => {
-    let fixture;
-    let testComponent;
-    let pagination;
-    let paginationElement;
+    let fixture: ComponentFixture<NzTestPaginationTotalComponent>;
+    let testComponent: NzTestPaginationTotalComponent;
+    let pagination: DebugElement;
+    let paginationElement: HTMLElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestPaginationTotalComponent);
       testComponent = fixture.debugElement.componentInstance;
@@ -265,13 +274,13 @@ describe('pagination', () => {
     });
     it('should render correct', () => {
       fixture.detectChanges();
-      expect(paginationElement.firstElementChild.innerText.trim()).toBe('1-20 of 85 items');
+      expect((paginationElement.firstElementChild as HTMLElement).innerText.trim()).toBe('1-20 of 85 items');
       testComponent.pageIndex = 2;
       fixture.detectChanges();
-      expect(paginationElement.firstElementChild.innerText.trim()).toBe('21-40 of 85 items');
+      expect((paginationElement.firstElementChild as HTMLElement).innerText.trim()).toBe('21-40 of 85 items');
       testComponent.pageIndex = 5;
       fixture.detectChanges();
-      expect(paginationElement.firstElementChild.innerText.trim()).toBe('81-85 of 85 items');
+      expect((paginationElement.firstElementChild as HTMLElement).innerText.trim()).toBe('81-85 of 85 items');
     });
   });
 

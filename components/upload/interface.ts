@@ -1,5 +1,6 @@
 // tslint:disable:no-any prefer-method-signature
 import { Observable, Subscription } from 'rxjs';
+import { IndexableObject } from '../core/types/indexable';
 
 /** 状态 */
 export type UploadFileStatus = 'error' | 'success' | 'done' | 'uploading' | 'removed';
@@ -73,9 +74,9 @@ export interface UploadFilter {
 export interface UploadXHRArgs {
   action?: string;
   name?: string;
-  headers?: {};
+  headers?: IndexableObject;
   file: UploadFile;
-  data?: {};
+  data?: IndexableObject;
   withCredentials?: boolean;
   onProgress?: (e: any, file: UploadFile) => void;
   onSuccess?: (ret: any, file: UploadFile, xhr: any) => void;

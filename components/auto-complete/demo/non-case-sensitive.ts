@@ -13,7 +13,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 })
 export class NzDemoAutoCompleteNonCaseSensitiveComponent {
   inputValue: string;
-  filteredOptions = [];
+  filteredOptions: string[] = [];
   options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
 
   constructor() {

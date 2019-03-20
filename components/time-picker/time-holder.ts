@@ -1,4 +1,5 @@
 import { Observable, Subject } from 'rxjs';
+
 import { isNotNil } from '../core/util/check';
 
 /**
@@ -12,13 +13,13 @@ export const enum HourTypes {
 }
 
 export class TimeHolder {
-  private _seconds = undefined;
-  private _hours = undefined;
-  private _minutes = undefined;
-  private _selected12Hours = undefined;
-  private _use12Hours = false;
+  private _seconds: number | undefined = undefined;
+  private _hours: number | undefined = undefined;
+  private _minutes: number | undefined = undefined;
+  private _selected12Hours: string | undefined = undefined;
+  private _use12Hours: boolean = false;
   private _defaultOpenValue: Date = new Date();
-  private _value: Date;
+  private _value: Date | undefined;
   private _changes = new Subject<Date>();
 
   setDefaultValueIfNil(): void {
@@ -63,17 +64,17 @@ export class TimeHolder {
     return this._changes.asObservable();
   }
 
-  get value(): Date {
+  get value(): Date | undefined {
     return this._value;
   }
 
-  set value(value: Date) {
+  set value(value: Date | undefined) {
     if (value !== this._value) {
       this._value = value;
       if (isNotNil(this._value)) {
-        this._hours = this._value.getHours();
-        this._minutes = this._value.getMinutes();
-        this._seconds = this._value.getSeconds();
+        this._hours = this._value!.getHours();
+        this._minutes = this._value!.getMinutes();
+        this._seconds = this._value!.getSeconds();
         if (this._use12Hours) {
           this._selected12Hours = this._hours >= 12 ? 'PM' : 'AM';
         }
@@ -83,7 +84,7 @@ export class TimeHolder {
     }
   }
 
-  setValue(value: Date, use12Hours?: boolean): this {
+  setValue(value: Date | undefined, use12Hours?: boolean): this {
     this._use12Hours = use12Hours;
     this.value = value;
     return this;
@@ -112,19 +113,19 @@ export class TimeHolder {
       if (!isNotNil(this._hours)) {
         this._hours = this.defaultHours;
       } else {
-        this._value.setHours(this.hours);
+        this._value!.setHours(this.hours!);
       }
 
       if (!isNotNil(this._minutes)) {
         this._minutes = this.defaultMinutes;
       } else {
-        this._value.setMinutes(this.minutes);
+        this._value!.setMinutes(this.minutes!);
       }
 
       if (!isNotNil(this._seconds)) {
         this._seconds = this.defaultSeconds;
       } else {
-        this._value.setSeconds(this.seconds);
+        this._value!.setSeconds(this.seconds!);
       }
 
       if (this._use12Hours) {
@@ -141,7 +142,7 @@ export class TimeHolder {
         }
       }
 
-      this._value = new Date(this._value);
+      this._value = new Date(this._value!);
     }
     this.changed();
   }
@@ -154,10 +155,10 @@ export class TimeHolder {
    *  get ViewHour or DataHour depeond on the `type` param
    *  the transformed value which from DataHour to ViewHour is `value` param and this._hours is default `value`
    */
-  getHours(type: HourTypes, defaulValue?: number): number {
+  getHours(type: HourTypes, defaulValue?: number): number | undefined {
     const transformedValue = isNotNil(defaulValue) ? defaulValue : this._hours;
     if (!isNotNil(transformedValue)) {
-      return null;
+      return undefined;
     }
     if (type === HourTypes.ViewHour) {
       return this.getViewHours(transformedValue, this._selected12Hours || this.default12Hours);
@@ -166,7 +167,7 @@ export class TimeHolder {
     }
   }
 
-  get hours(): number {
+  get hours(): number | undefined {
     return this._hours;
   }
 
@@ -174,7 +175,7 @@ export class TimeHolder {
    *  this._hours stands for DataHour.
    *  ViewHour can be accessed by getHours()
    */
-  set hours(value: number) {
+  set hours(value: number | undefined) {
     if (value !== this._hours) {
       if (this._use12Hours) {
         if (this.selected12Hours === 'PM' && value !== 12 ) {
@@ -188,22 +189,22 @@ export class TimeHolder {
     }
   }
 
-  get minutes(): number {
+  get minutes(): number | undefined {
     return this._minutes;
   }
 
-  set minutes(value: number) {
+  set minutes(value: number | undefined) {
     if (value !== this._minutes) {
       this._minutes = value;
       this.update();
     }
   }
 
-  get seconds(): number {
+  get seconds(): number | undefined {
     return this._seconds;
   }
 
-  set seconds(value: number) {
+  set seconds(value: number | undefined) {
     if (value !== this._seconds) {
       this._seconds = value;
       this.update();

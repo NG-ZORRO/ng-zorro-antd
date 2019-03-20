@@ -70,7 +70,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 })
 export class NzDemoLayoutCustomTriggerComponent {
   isCollapsed = false;
-  triggerTemplate = null;
+  triggerTemplate: TemplateRef<void> | null = null;
   @ViewChild('trigger') customTrigger: TemplateRef<void>;
 
   /** custom trigger can be TemplateRef **/

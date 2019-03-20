@@ -23,6 +23,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 
 import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { isNotNil } from '../core/util/check';
+
 import { NzToolTipComponent } from './nz-tooltip.component';
 
 @Directive({
@@ -35,7 +36,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   // [NOTE] Here hard coded, and nzTitle used only under NzTooltipDirective currently.
   isTooltipOpen: boolean = false;
   isDynamicTooltip = false; // Indicate whether current tooltip is dynamic created
-  delayTimer: number; // Timer for delay enter/leave
+  delayTimer: number | null; // Timer for delay enter/leave
   visible: boolean;
   factory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
 
@@ -71,13 +72,15 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   @Input() nzVisible: boolean;
   @Input() nzPlacement: string;
 
+  [ property: string ]: any // tslint:disable-line:no-any
+
   constructor(
     public elementRef: ElementRef,
     public hostView: ViewContainerRef,
     public resolver: ComponentFactoryResolver,
     public renderer: Renderer2,
     @Optional() public tooltip: NzToolTipComponent,
-    @Host() @Optional() public noAnimation: NzNoAnimationDirective
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
   }
 
@@ -106,7 +109,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
 
   ngAfterViewInit(): void {
     if (this.tooltip.nzTrigger === 'hover') {
-      let overlayElement;
+      let overlayElement: HTMLElement;
       this.renderer.listen(this.elementRef.nativeElement, 'mouseenter', () => this.delayEnterLeave(true, true, this.tooltip.nzMouseEnterDelay));
       this.renderer.listen(this.elementRef.nativeElement, 'mouseleave', () => {
         this.delayEnterLeave(true, false, this.tooltip.nzMouseLeaveDelay);
@@ -179,6 +182,8 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
         this.nzTitle = changes.setTitle.currentValue;
         this.updateCompValue('nzTitle', changes.setTitle.currentValue);
       }
+
+      this.tooltip.cdr.markForCheck(); // Manually trigger change detection of component.
     }
   }
 }

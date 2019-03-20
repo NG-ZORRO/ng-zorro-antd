@@ -9,7 +9,7 @@ const provinces = [{
   label: 'Jiangsu'
 }];
 
-const cities = {
+const cities: { [ key: string ]: Array<{ value: string, label: string, isLeaf?: boolean }> }  = {
   zhejiang: [{
     value: 'hangzhou',
     label: 'Hangzhou'
@@ -24,7 +24,7 @@ const cities = {
   }]
 };
 
-const scenicspots = {
+const scenicspots: { [ key: string ]: Array<{ value: string, label: string, isLeaf?: boolean }> } = {
   hangzhou: [{
     value: 'xihu',
     label: 'West Lake',
@@ -55,16 +55,14 @@ const scenicspots = {
   ]
 })
 export class NzDemoCascaderLazyComponent {
+  values: any[] | null = null;
 
-  /** ngModel value */
-  public values: any[] = null;
-
-  public onChanges(values: any): void {
+  onChanges(values: any): void {
     console.log(values);
   }
 
   /** load data async execute by `nzLoadData` method */
-  public loadData(node: any, index: number): PromiseLike<any> {
+  loadData(node: any, index: number): PromiseLike<any> {
     return new Promise((resolve) => {
       setTimeout(() => {
         if (index < 0) { // if index less than 0 it is root node
@@ -78,5 +76,4 @@ export class NzDemoCascaderLazyComponent {
       }, 1000);
     });
   }
-
 }

@@ -1,6 +1,6 @@
 /* entryComponents: NzDrawerCustomComponent */
 
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 import { NzDrawerRef, NzDrawerService } from 'ng-zorro-antd';
 
 @Component({
@@ -22,8 +22,7 @@ import { NzDrawerRef, NzDrawerService } from 'ng-zorro-antd';
 })
 
 export class NzDemoDrawerServiceComponent {
-
-  @ViewChild('drawerTemplate') drawerTemplate;
+  @ViewChild('drawerTemplate') drawerTemplate: TemplateRef<{ $implicit: { value: string; }; drawerRef: NzDrawerRef<any>; }> ;
   value = 'ng';
 
   constructor(

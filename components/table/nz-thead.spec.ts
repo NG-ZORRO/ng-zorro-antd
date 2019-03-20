@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
@@ -16,9 +16,9 @@ describe('nz-thead', () => {
     TestBed.compileComponents();
   }));
   describe('nz-thead in nz-table', () => {
-    let fixture;
-    let testComponent;
-    let table;
+    let fixture: ComponentFixture<NzTheadTestNzTableComponent>;
+    let testComponent: NzTheadTestNzTableComponent;
+    let table: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTheadTestNzTableComponent);
       fixture.detectChanges();

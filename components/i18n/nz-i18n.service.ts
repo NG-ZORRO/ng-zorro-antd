@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { IndexableObject } from '../core/types/indexable';
 
 import zh_CN from './languages/zh_CN';
 import { DateLocale, NzI18nInterface } from './nz-i18n.interface';
@@ -79,7 +80,7 @@ export class NzI18nService {
     return result || defaultValue;
   }
 
-  private _getObjectPath(obj: object, path: string): string | object | any { // tslint:disable-line:no-any
+  private _getObjectPath(obj: IndexableObject, path: string): string | object | any { // tslint:disable-line:no-any
     let res = obj;
     const paths = path.split('.');
     const depth = paths.length;

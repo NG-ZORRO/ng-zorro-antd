@@ -14,6 +14,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
 /**
  * Include this module in every testing spec, except `nz-icon.spec.ts`.
  */
+// @dynamic
 @NgModule({
   exports: [
     NzIconModule

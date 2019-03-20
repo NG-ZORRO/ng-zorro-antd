@@ -13,7 +13,7 @@ import {
         <nz-form-label [nzSpan]="5" nzRequired nzFor="note">Note</nz-form-label>
         <nz-form-control [nzSpan]="12">
           <input id="note" type="text" nz-input formControlName="note">
-          <nz-form-explain *ngIf="validateForm.get('note').dirty && validateForm.get('note').errors">Please input your username!</nz-form-explain>
+          <nz-form-explain *ngIf="validateForm.get('note')?.dirty && validateForm.get('note')?.errors">Please input your username!</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -23,7 +23,7 @@ import {
             <nz-option nzValue="male" nzLabel="male"></nz-option>
             <nz-option nzValue="female" nzLabel="female"></nz-option>
           </nz-select>
-          <nz-form-explain *ngIf="validateForm.get('gender').dirty && validateForm.get('gender').errors">Please select your gender!</nz-form-explain>
+          <nz-form-explain *ngIf="validateForm.get('gender')?.dirty && validateForm.get('gender')?.errors">Please select your gender!</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -50,7 +50,7 @@ export class NzDemoFormCoordinatedComponent implements OnInit {
   }
 
   genderChange(value: string): void {
-    this.validateForm.get('note').setValue(value === 'male' ? 'Hi, man!' : 'Hi, lady!');
+    this.validateForm.get('note')!.setValue(value === 'male' ? 'Hi, man!' : 'Hi, lady!');
   }
 
   constructor(private fb: FormBuilder) {

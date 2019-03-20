@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ROUTER_LIST } from '../../router';
 
 @Component({
   selector: 'nz-nav-bottom',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="prev-next-nav">
       <a class="prev-page" *ngIf="index-1>=0" [routerLink]="list[index-1]?.path">
@@ -16,7 +17,7 @@ import { ROUTER_LIST } from '../../router';
   `
 })
 export class NzNavBottomComponent implements OnInit {
-  list = [];
+  list: any[] = []; // tslint:disable-line:no-any
   index = 0;
   language = 'en';
 
@@ -31,7 +32,7 @@ export class NzNavBottomComponent implements OnInit {
         this.language = this.router.url.split('/')[ this.router.url.split('/').length - 1 ].split('#')[ 0 ];
         const componentsList = ROUTER_LIST.components.reduce((pre, cur) => {
           return pre.concat(cur.children);
-        }, []);
+        }, [] as any[]);
         this.list = [ ...ROUTER_LIST.intro.filter(item => item.language === this.language), ...componentsList.filter(item => item.language === this.language) ];
         this.index = this.list.findIndex(item => item.path === url);
       }

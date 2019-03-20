@@ -17,6 +17,6 @@ import {Component} from '@angular/core';
   ]
 })
 export class NzDemoProgressFormatComponent {
-  formatOne = percent => `${percent} Days`;
+  formatOne = (percent: number) => `${percent} Days`;
   formatTwo = () => `Done`;
 }

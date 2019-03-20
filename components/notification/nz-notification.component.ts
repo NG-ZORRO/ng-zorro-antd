@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, Input, ViewEncapsulation } from '@angular/core';
+
 import { notificationMotion } from '../core/animation/notification';
 import { NzMessageComponent } from '../message/nz-message.component';
+
 import { NzNotificationContainerComponent } from './nz-notification-container.component';
 import { NzNotificationDataFilled } from './nz-notification.definitions';
 
@@ -22,7 +24,7 @@ export class NzNotificationComponent extends NzMessageComponent {
     this._destroy(true);
   }
 
-  get state(): string {
+  get state(): string | undefined {
     if (this.nzMessage.state === 'enter') {
       if ((this.container.config.nzPlacement === 'topLeft') || (this.container.config.nzPlacement === 'bottomLeft')) {
         return 'enterLeft';

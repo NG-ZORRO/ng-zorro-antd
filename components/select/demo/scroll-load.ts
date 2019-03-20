@@ -21,13 +21,14 @@ import { map } from 'rxjs/operators';
 })
 export class NzDemoSelectScrollLoadComponent implements OnInit {
   randomUserUrl = 'https://api.randomuser.me/?results=10';
-  optionList = [];
-  selectedUser;
+  optionList: string[] = [];
+  selectedUser = '';
   isLoading = false;
-  // tslint:disable-next-line:no-any
+  // tslint:disable:no-any
   getRandomNameList: Observable<string[]> = this.http.get(`${this.randomUserUrl}`).pipe(map((res: any) => res.results)).pipe(map((list: any) => {
-    return list.map(item => `${item.name.first}`);
+    return list.map((item: any) => `${item.name.first}`);
   }));
+  // tslint:enable:no-any
 
   loadMore(): void {
     this.isLoading = true;

@@ -9,6 +9,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import isBefore from 'date-fns/is_before';
 import { dispatchMouseEvent } from '../core/testing';
+import { NGStyleInterface } from '../core/types/ng-class';
 import { NzInputModule } from '../input/nz-input.module';
 import { NzDatePickerModule } from './date-picker.module';
 
@@ -259,7 +260,7 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
 
       const cell = getFirstMonthCell(); // Use the first cell
-      const cellText = cell.textContent.trim();
+      const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
       fixture.detectChanges();
       tick(500);
@@ -350,11 +351,11 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
 
       openPickerByClickTrigger();
-      expect(overlayContainerElement.textContent.indexOf('TEST_EXTRA_FOOTER') > -1).toBeTruthy();
+      expect(overlayContainerElement.textContent!.indexOf('TEST_EXTRA_FOOTER') > -1).toBeTruthy();
 
       fixtureInstance.nzRenderExtraFooter = 'TEST_EXTRA_FOOTER_STRING';
       fixture.detectChanges();
-      expect(overlayContainerElement.textContent.indexOf(fixtureInstance.nzRenderExtraFooter) > -1).toBeTruthy();
+      expect(overlayContainerElement.textContent!.indexOf(fixtureInstance.nzRenderExtraFooter) > -1).toBeTruthy();
     }));
 
   }); // /specified date picker testing
@@ -371,7 +372,7 @@ describe('NzMonthPickerComponent', () => {
 
       // Click the first cell to change ngModel
       const cell = getFirstMonthCell();
-      const cellText = cell.textContent.trim();
+      const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
       fixture.detectChanges();
       tick(500);
@@ -467,17 +468,17 @@ class NzTestMonthPickerComponent {
   @ViewChild('tplExtraFooter') tplExtraFooter: TemplateRef<void>;
 
   // --- Suite 1
-  nzAllowClear;
-  nzAutoFocus;
-  nzDisabled;
-  nzClassName;
-  nzDisabledDate;
-  nzLocale;
-  nzPlaceHolder;
-  nzPopupStyle;
-  nzDropdownClassName;
-  nzSize;
-  nzStyle;
+  nzAllowClear: boolean;
+  nzAutoFocus: boolean;
+  nzDisabled: boolean;
+  nzClassName: string;
+  nzDisabledDate: (d: Date) => boolean;
+  nzLocale: any; // tslint:disable-line:no-any
+  nzPlaceHolder: string;
+  nzPopupStyle: NGStyleInterface;
+  nzDropdownClassName: string;
+  nzSize: string;
+  nzStyle: NGStyleInterface;
 
   nzOnOpenChange(): void {
   }
@@ -485,13 +486,13 @@ class NzTestMonthPickerComponent {
   nzOnChange(): void {
   }
 
-  nzValue;
+  nzValue: Date | null;
 
-  nzRenderExtraFooter;
+  nzRenderExtraFooter: string | (() => TemplateRef<void> | string);
 
   // --- Suite 2
-  nzOpen;
+  nzOpen: boolean;
 
   // --- Suite 3
-  modelValue;
+  modelValue: Date;
 }

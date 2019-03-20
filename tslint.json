@@ -137,7 +137,7 @@
     "no-empty": false,
     "no-empty-interface": true,
     "no-eval": true,
-    "no-floating-promises": true,
+    "no-floating-promises": false,
     "no-for-in-array": true,
     "no-import-side-effect": true,
     "no-inferrable-types": [
@@ -154,7 +154,7 @@
       true,
       "allow-declarations"
     ],
-    "no-non-null-assertion": true,
+    "no-non-null-assertion": false,
     "no-shadowed-variable": true,
     "no-sparse-arrays": true,
     "no-string-literal": true,

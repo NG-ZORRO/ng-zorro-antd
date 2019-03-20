@@ -18,7 +18,7 @@ describe('time holder', () => {
     date.setHours(23);
     date.setMinutes(10);
     date.setSeconds(20);
-    expect(mathSecondRound(holder.value)).toEqual(mathSecondRound(date));
+    expect(mathSecondRound(holder.value!)).toEqual(mathSecondRound(date));
   });
 
   it('should ignore disabled', () => {
@@ -28,7 +28,7 @@ describe('time holder', () => {
     date.setHours(23);
     date.setMinutes(10);
     date.setSeconds(20);
-    expect(mathSecondRound(holder.value)).toEqual(mathSecondRound(date));
+    expect(mathSecondRound(holder.value!)).toEqual(mathSecondRound(date));
   });
 
   it('should ignore date part', () => {

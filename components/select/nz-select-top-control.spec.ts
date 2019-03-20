@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
@@ -38,11 +38,11 @@ describe('nz-select top control', () => {
     TestBed.compileComponents();
   }));
   describe('default', () => {
-    let fixture;
-    let testComponent;
-    let tc;
-    let tcComponent;
-    let nzSelectService;
+    let fixture: ComponentFixture<NzTestSelectTopControlComponent>;
+    let testComponent: NzTestSelectTopControlComponent;
+    let tc: DebugElement;
+    let tcComponent: NzSelectTopControlComponent;
+    let nzSelectService: NzSelectService;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSelectTopControlComponent);
       fixture.detectChanges();
@@ -99,6 +99,7 @@ describe('nz-select top control', () => {
       expect(tcComponent.selectedValueStyle.opacity).toBe('1');
       tcComponent.nzShowSearch = true;
       tcComponent.nzOpen = true;
+      // @ts-ignore
       tcComponent.inputValue = true;
       tcComponent.isComposing = true;
       fixture.detectChanges();
@@ -106,6 +107,7 @@ describe('nz-select top control', () => {
       expect(tcComponent.selectedValueStyle.opacity).toBe('1');
       tcComponent.nzShowSearch = true;
       tcComponent.nzOpen = true;
+      // @ts-ignore
       tcComponent.inputValue = true;
       tcComponent.isComposing = false;
       fixture.detectChanges();
@@ -113,6 +115,7 @@ describe('nz-select top control', () => {
       expect(tcComponent.selectedValueStyle.opacity).toBe('1');
       tcComponent.nzShowSearch = true;
       tcComponent.nzOpen = true;
+      // @ts-ignore
       tcComponent.inputValue = false;
       tcComponent.isComposing = true;
       fixture.detectChanges();
@@ -120,6 +123,7 @@ describe('nz-select top control', () => {
       expect(tcComponent.selectedValueStyle.opacity).toBe('1');
       tcComponent.nzShowSearch = true;
       tcComponent.nzOpen = true;
+      // @ts-ignore
       tcComponent.inputValue = false;
       tcComponent.isComposing = false;
       fixture.detectChanges();
@@ -129,23 +133,28 @@ describe('nz-select top control', () => {
     it('should open focus', () => {
       fixture.detectChanges();
       expect(tc.nativeElement.querySelector('.ant-select-search__field') === document.activeElement).toBeFalsy();
+      // @ts-ignore
       nzSelectService.open$.next(false);
       fixture.detectChanges();
       expect(tc.nativeElement.querySelector('.ant-select-search__field') === document.activeElement).toBeFalsy();
+      // @ts-ignore
       nzSelectService.open$.next(true);
       fixture.detectChanges();
       expect(tc.nativeElement.querySelector('.ant-select-search__field') === document.activeElement).toBeTruthy();
     });
     it('should destroy piped', () => {
       fixture.detectChanges();
+      // @ts-ignore
       const checkSpy = spyOn(tcComponent.cdr, 'markForCheck');
       fixture.detectChanges();
       expect(checkSpy).toHaveBeenCalledTimes(0);
+      // @ts-ignore
       nzSelectService.check$.next();
       fixture.detectChanges();
       expect(checkSpy).toHaveBeenCalledTimes(1);
       testComponent.destroy = true;
       fixture.detectChanges();
+      // @ts-ignore
       nzSelectService.check$.next();
       fixture.detectChanges();
       expect(checkSpy).toHaveBeenCalledTimes(1);

@@ -82,6 +82,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   triggerWidth: number;
   private _disabled = false;
   private _autoFocus = false;
+  private isInit = false;
   private destroy$ = new Subject();
   @ViewChild(CdkOverlayOrigin) cdkOverlayOrigin: CdkOverlayOrigin;
   @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
@@ -167,7 +168,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this._disabled = toBoolean(value);
     this.nzSelectService.disabled = this._disabled;
     this.nzSelectService.check();
-    if (this.nzDisabled) {
+    if (this.nzDisabled && this.isInit) {
       this.closeDropDown();
     }
   }
@@ -235,7 +236,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
               private cdr: ChangeDetectorRef,
               private focusMonitor: FocusMonitor,
               elementRef: ElementRef,
-              @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     renderer.addClass(elementRef.nativeElement, 'ant-select');
   }
 
@@ -243,7 +244,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   // tslint:disable-next-line:no-any
   writeValue(value: any | any[]): void {
     this.value = value;
-    let listValue = [];
+    let listValue: any[] = []; // tslint:disable-line:no-any
     if (isNotNil(value)) {
       if (Array.isArray(value)) {
         listValue = value;
@@ -278,9 +279,11 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this.nzSelectService.modelChange$.pipe(
       takeUntil(this.destroy$)
     ).subscribe(modelValue => {
-      this.value = modelValue;
-      this.onChange(this.value);
-      this.updateCdkConnectedOverlayPositions();
+      if (this.value !== modelValue) {
+        this.value = modelValue;
+        this.onChange(this.value);
+        this.updateCdkConnectedOverlayPositions();
+      }
     });
     this.nzSelectService.open$.pipe(
       takeUntil(this.destroy$)
@@ -306,6 +309,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   ngAfterViewInit(): void {
     this.updateCdkConnectedOverlayStatus();
+    this.isInit = true;
   }
 
   ngAfterContentInit(): void {

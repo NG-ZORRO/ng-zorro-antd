@@ -16,7 +16,6 @@ To input a value in a range.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzDefaultValue]` | The default value of slider. When `range` is `false`, use `number`, otherwise, use `[number, number]` | `number｜number[]` | `0｜[0, 0]` |
 | `[nzDisabled]` | If true, the slider will not be interactable. | `boolean` | `false` |
 | `[nzDots]` | Whether the thumb can drag over tick only. | `boolean` | `false` |
 | `[nzIncluded]` | Make effect when `marks` not null，`true` means containment and `false` means coordinative | `boolean` | `true` |

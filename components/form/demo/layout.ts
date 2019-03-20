@@ -23,14 +23,14 @@ import {
         <nz-form-label [nzSpan]="isHorizontal? 4:null">Field A</nz-form-label>
         <nz-form-control [nzSpan]="isHorizontal? 14:null">
           <input nz-input formControlName="fieldA" placeholder="input placeholder">
-          <nz-form-explain *ngIf="validateForm.get('fieldA').dirty && validateForm.get('fieldA').errors">Please input your username!</nz-form-explain>
+          <nz-form-explain *ngIf="validateForm.get('fieldA')?.dirty && validateForm.get('fieldA')?.errors">Please input your username!</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="isHorizontal? 4:null">Field B</nz-form-label>
         <nz-form-control [nzSpan]="isHorizontal? 14:null">
           <input nz-input formControlName="filedB" placeholder="input placeholder">
-          <nz-form-explain *ngIf="validateForm.get('filedB').dirty && validateForm.get('filedB').errors">Please input your Password!</nz-form-explain>
+          <nz-form-explain *ngIf="validateForm.get('filedB')?.dirty && validateForm.get('filedB')?.errors">Please input your Password!</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>

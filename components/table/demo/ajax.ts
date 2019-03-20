@@ -61,8 +61,8 @@ export class NzDemoTableAjaxComponent implements OnInit {
   total = 1;
   listOfData = [];
   loading = true;
-  sortValue = null;
-  sortKey = null;
+  sortValue: string | null = null;
+  sortKey: string | null = null;
   filterGender = [
     { text: 'male', value: 'male' },
     { text: 'female', value: 'female' }
@@ -83,7 +83,7 @@ export class NzDemoTableAjaxComponent implements OnInit {
       this.pageIndex = 1;
     }
     this.loading = true;
-    this.randomUserService.getUsers(this.pageIndex, this.pageSize, this.sortKey, this.sortValue, this.searchGenderList).subscribe((data: any) => {
+    this.randomUserService.getUsers(this.pageIndex, this.pageSize, this.sortKey!, this.sortValue!, this.searchGenderList).subscribe((data: any) => {
       this.loading = false;
       this.total = 200;
       this.listOfData = data.results;

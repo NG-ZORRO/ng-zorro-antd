@@ -123,7 +123,7 @@ export class NzUploadListComponent implements OnChanges {
       .filter(file => file.originFileObj instanceof File && file.thumbUrl === undefined)
       .forEach(file => {
         file.thumbUrl = '';
-        this.previewFile(file.originFileObj, (previewDataUrl: string) => {
+        this.previewFile(file.originFileObj!, (previewDataUrl: string) => {
           file.thumbUrl = previewDataUrl;
           this.detectChanges();
         });

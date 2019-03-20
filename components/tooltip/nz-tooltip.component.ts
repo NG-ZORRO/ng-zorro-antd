@@ -94,7 +94,9 @@ export class NzToolTipComponent implements OnChanges {
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  constructor(public cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation: NzNoAnimationDirective) {
+  [ property: string ]: any // tslint:disable-line:no-any
+
+  constructor(public cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
   }
 
   ngOnChanges(): void {
@@ -111,7 +113,7 @@ export class NzToolTipComponent implements OnChanges {
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    this.nzPlacement = getPlacementName(position);
+    this.nzPlacement = getPlacementName(position)!;
     this.setClassMap();
     this.cdr.detectChanges(); // TODO: performance?
   }
