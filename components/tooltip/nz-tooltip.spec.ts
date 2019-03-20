@@ -5,9 +5,68 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
-import { NzToolTipComponent } from './nz-tooltip.component';
+
 import { NzTooltipDirective } from './nz-tooltip.directive';
 import { NzToolTipModule } from './nz-tooltip.module';
+
+@Component({
+  selector: 'nz-tooltip-test-directive',
+  template: `
+    <a #titleString
+       nz-tooltip
+       [nzTitle]="title"
+       nzTrigger="hover"
+       nzPlacement="topLeft"
+       nzOverlayClassName="testClass"
+       [nzOverlayStyle]="{ color: '#000' }"
+       [nzMouseEnterDelay]="0.15"
+       [nzMouseLeaveDelay]="0.1">
+      Show
+    </a>
+    <a #titleTemplate nz-tooltip [nzTitle]="template">Show</a>
+    <ng-template #template>
+      title-template
+    </ng-template>
+    <div>
+      <button>A</button>
+      <button #inBtnGroup nz-tooltip nzTitle="title-string">B</button>
+      <button>C</button>
+    </div>
+  `
+})
+export class NzTooltipTestDirectiveComponent {
+  @ViewChild('titleString') titleString: ElementRef;
+  @ViewChild('titleString', { read: NzTooltipDirective }) titleStringNzTooltipDirective: NzTooltipDirective;
+  @ViewChild('titleTemplate') titleTemplate: ElementRef;
+  @ViewChild('titleTemplate', { read: NzTooltipDirective }) titleTemplateNzTooltipDirective: NzTooltipDirective;
+  @ViewChild('inBtnGroup') inBtnGroup: ElementRef;
+  title = 'title-string';
+}
+
+@Component({
+  selector: 'nz-tooltip-test-wrapper',
+  template: `
+    <a #mostSimpleTrigger nz-tooltip="MOST-SIMPLE">Show</a>
+    <nz-tooltip [nzTitle]="'NORMAL'" [nzTrigger]="'hover'"><span #normalTrigger nz-tooltip>Show</span></nz-tooltip>
+    <nz-tooltip>
+      <button #templateTrigger nz-tooltip>Show</button>
+      <ng-template #nzTemplate><i nz-icon type="file"></i> <span>Show with icon</span></ng-template>
+    </nz-tooltip>
+    <nz-tooltip nzTitle="FOCUS" [nzTrigger]="'focus'"><span #focusTrigger nz-tooltip>Show</span></nz-tooltip>
+    <nz-tooltip nzTitle="CLICK" nzTrigger="click"><span #clickTrigger nz-tooltip>Show</span></nz-tooltip>
+    <nz-tooltip nzTitle="VISIBLE" [(nzVisible)]="visible"><span #visibleTrigger nz-tooltip>Show</span></nz-tooltip>
+  `
+})
+export class NzTooltipTestWrapperComponent {
+  @ViewChild('clickTrigger') clickTrigger: ElementRef;
+  @ViewChild('focusTrigger') focusTrigger: ElementRef;
+  @ViewChild('mostSimpleTrigger', { read: NzTooltipDirective }) mostSimpleDirective: NzTooltipDirective;
+  @ViewChild('mostSimpleTrigger') mostSimpleTrigger: ElementRef;
+  @ViewChild('normalTrigger') normalTrigger: ElementRef;
+  @ViewChild('templateTrigger') templateTrigger: ElementRef;
+  @ViewChild('visibleTrigger') visibleTrigger: ElementRef;
+  visible: boolean;
+}
 
 describe('NzTooltip', () => {
   let overlayContainer: OverlayContainer;
@@ -16,9 +75,8 @@ describe('NzTooltip', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports     : [ NzToolTipModule, NoopAnimationsModule, NzIconTestModule ],
-      declarations: [ NzTooltipTestWrapperComponent, NzTooltipTestNewComponent ]
+      declarations: [ NzTooltipTestWrapperComponent, NzTooltipTestDirectiveComponent ]
     });
-
     TestBed.compileComponents();
   }));
 
@@ -31,7 +89,7 @@ describe('NzTooltip', () => {
     overlayContainer.ngOnDestroy();
   });
 
-  describe('should bring no break change', () => {
+  describe('should support component usage', () => {
     let fixture: ComponentFixture<NzTooltipTestWrapperComponent>;
     let component: NzTooltipTestWrapperComponent;
 
@@ -40,73 +98,52 @@ describe('NzTooltip', () => {
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
+
     it('should show/hide most simple tooltip with moving through all around', fakeAsync(() => {
-      const featureKey = 'MOST-SIMPLE';
+      const title = 'MOST-SIMPLE';
       const triggerElement = component.mostSimpleTrigger.nativeElement;
-      const tooltipComponent = (component.mostSimpleDirective as any).tooltip as NzToolTipComponent; // tslint:disable-line:no-any
 
-      expect(overlayContainerElement.textContent).not.toContain(featureKey);
+      expect(overlayContainerElement.textContent).not.toContain(title);
 
-      // Move inside to trigger tooltip shown up
       dispatchMouseEvent(triggerElement, 'mouseenter');
-      fixture.detectChanges();
-      tick(150); // wait for the default 150ms delay
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      expect(overlayContainerElement.textContent).toContain(featureKey);
+      waitingForTooltipToggling(fixture);
+      expect(overlayContainerElement.textContent).toContain(title);
 
-      // NOTE: the overlayElement is only available after tooltip shown up
-      const overlayElement = (component.mostSimpleDirective as any).tooltip.overlay.overlayRef.overlayElement; // tslint:disable-line:no-any
-      tooltipComponent.updatePosition(); // This line is temporarily for coverage
+      const overlayElement = component.mostSimpleDirective.tooltip.overlay.overlayRef.overlayElement;
 
-      // Move out from the trigger element, then move into the tooltip element
       dispatchMouseEvent(triggerElement, 'mouseleave');
       fixture.detectChanges();
       dispatchMouseEvent(overlayElement, 'mouseenter');
       fixture.detectChanges();
-      expect(overlayContainerElement.textContent).toContain(featureKey);
+      expect(overlayContainerElement.textContent).toContain(title);
 
-      // Move out from the tooltip element to hide it
       dispatchMouseEvent(overlayElement, 'mouseleave');
-      tick(100); // wait for the default 100ms delay
-      fixture.detectChanges();
-      tick(); // wait for next tick to hide
-      expect(overlayContainerElement.textContent).not.toContain(featureKey);
+      waitingForTooltipToggling(fixture);
+      expect(overlayContainerElement.textContent).not.toContain(title);
     }));
 
     it('should show/hide normal tooltip', fakeAsync(() => {
-      const featureKey = 'NORMAL';
+      const title = 'NORMAL';
       const triggerElement = component.normalTrigger.nativeElement;
 
-      expect(overlayContainerElement.textContent).not.toContain(featureKey);
+      expect(overlayContainerElement.textContent).not.toContain(title);
       fixture.detectChanges();
-      // Move inside to trigger tooltip shown up
-      dispatchMouseEvent(triggerElement, 'mouseenter');
-      fixture.detectChanges();
-      tick(150); // wait for the default 150ms delay
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      expect(overlayContainerElement.textContent).toContain(featureKey);
 
-      // Move out from the trigger element to hide it
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling(fixture);
+      expect(overlayContainerElement.textContent).toContain(title);
+
       dispatchMouseEvent(triggerElement, 'mouseleave');
-      tick(100); // wait for the default 100ms delay
-      fixture.detectChanges();
-      tick(); // wait for next tick to hide
-      expect(overlayContainerElement.textContent).not.toContain(featureKey);
+      waitingForTooltipToggling(fixture);
+      tick();
+      expect(overlayContainerElement.textContent).not.toContain(title);
     }));
 
     it('should show tooltip with custom template', fakeAsync(() => {
       const triggerElement = component.templateTrigger.nativeElement;
 
       dispatchMouseEvent(triggerElement, 'mouseenter');
-      fixture.detectChanges();
-      tick(150); // wait for the default 150ms delay
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      waitingForTooltipToggling(fixture);
       expect(overlayContainerElement.querySelector('.anticon-file')).not.toBeNull();
     }));
 
@@ -119,9 +156,7 @@ describe('NzTooltip', () => {
       expect(overlayContainerElement.textContent).toContain(featureKey);
 
       dispatchMouseEvent(triggerElement, 'blur');
-      tick(100); // wait for the default 100ms delay
-      fixture.detectChanges();
-      tick(); // wait for next tick to hide
+      waitingForTooltipToggling(fixture);
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
     }));
 
@@ -134,32 +169,29 @@ describe('NzTooltip', () => {
       expect(overlayContainerElement.textContent).toContain(featureKey);
 
       dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop')!, 'click');
-      tick();
-      fixture.detectChanges();
-      tick(500); // Wait for animations
-      fixture.detectChanges();
-      tick();
+      waitingForTooltipToggling(fixture);
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
     }));
 
     it('should show/hide by nzVisible change', fakeAsync(() => {
       const featureKey = 'VISIBLE';
+
       component.visible = true;
-      fixture.detectChanges();
+      waitingForTooltipToggling(fixture);
       expect(overlayContainerElement.textContent).toContain(featureKey);
 
       component.visible = false;
-      fixture.detectChanges();
-      tick(100);
+      waitingForTooltipToggling(fixture);
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
     }));
   });
+
   describe('should support directive usage', () => {
-    let fixture: ComponentFixture<NzTooltipTestNewComponent>;
-    let component: NzTooltipTestNewComponent;
+    let fixture: ComponentFixture<NzTooltipTestDirectiveComponent>;
+    let component: NzTooltipTestDirectiveComponent;
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTooltipTestNewComponent);
+      fixture = TestBed.createComponent(NzTooltipTestDirectiveComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -167,71 +199,51 @@ describe('NzTooltip', () => {
     it('should nzTitle support string', fakeAsync(() => {
       const featureKey = 'title-string';
       const triggerElement = component.titleString.nativeElement;
-      const tooltipComponent = (component.titleStringNzTooltipDirective as any).tooltip as NzToolTipComponent; // tslint:disable-line:no-any
+      const tooltipComponent = component.titleStringNzTooltipDirective.tooltip;
 
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
 
-      // Move inside to trigger tooltip shown up
       dispatchMouseEvent(triggerElement, 'mouseenter');
-      fixture.detectChanges();
-      tick(150); // wait for the default 150ms delay
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      waitingForTooltipToggling(fixture);
       expect(overlayContainerElement.textContent).toContain(featureKey);
       expect(overlayContainerElement.querySelector('.ant-tooltip')!.classList).toContain('testClass');
 
-      // NOTE: the overlayElement is only available after tooltip shown up
-      const overlayElement = (component.titleStringNzTooltipDirective as any).tooltip.overlay.overlayRef.overlayElement; // tslint:disable-line:no-any
-      tooltipComponent.updatePosition(); // This line is temporarily for coverage
+      const overlayElement = component.titleStringNzTooltipDirective.tooltip.overlay.overlayRef.overlayElement;
+      tooltipComponent.updatePosition();
 
-      // Move out from the trigger element, then move into the tooltip element
       dispatchMouseEvent(triggerElement, 'mouseleave');
       fixture.detectChanges();
       dispatchMouseEvent(overlayElement, 'mouseenter');
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain(featureKey);
 
-      // Move out from the tooltip element to hide it
       dispatchMouseEvent(overlayElement, 'mouseleave');
-      tick(100); // wait for the default 100ms delay
-      fixture.detectChanges();
-      tick(); // wait for next tick to hide
+      waitingForTooltipToggling(fixture);
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
     }));
 
     it('should nzTitle support template', fakeAsync(() => {
       const featureKey = 'title-template';
       const triggerElement = component.titleTemplate.nativeElement;
-      const tooltipComponent = (component.titleTemplateNzTooltipDirective as any).tooltip as NzToolTipComponent; // tslint:disable-line:no-any
+      const tooltipComponent = component.titleTemplateNzTooltipDirective.tooltip;
 
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
 
-      // Move inside to trigger tooltip shown up
       dispatchMouseEvent(triggerElement, 'mouseenter');
-      fixture.detectChanges();
-      tick(150); // wait for the default 150ms delay
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      waitingForTooltipToggling(fixture);
       expect(overlayContainerElement.textContent).toContain(featureKey);
 
-      // NOTE: the overlayElement is only available after tooltip shown up
-      const overlayElement = (component.titleTemplateNzTooltipDirective as any).tooltip.overlay.overlayRef.overlayElement; // tslint:disable-line:no-any
-      tooltipComponent.updatePosition(); // This line is temporarily for coverage
+      const overlayElement = component.titleTemplateNzTooltipDirective.tooltip.overlay.overlayRef.overlayElement;
+      tooltipComponent.updatePosition();
 
-      // Move out from the trigger element, then move into the tooltip element
       dispatchMouseEvent(triggerElement, 'mouseleave');
       fixture.detectChanges();
       dispatchMouseEvent(overlayElement, 'mouseenter');
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain(featureKey);
 
-      // Move out from the tooltip element to hide it
       dispatchMouseEvent(overlayElement, 'mouseleave');
-      tick(100); // wait for the default 100ms delay
-      fixture.detectChanges();
-      tick(); // wait for next tick to hide
+      waitingForTooltipToggling(fixture);
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
     }));
 
@@ -241,79 +253,25 @@ describe('NzTooltip', () => {
       expect(triggerElement.nextSibling.tagName).toBe('BUTTON');
     }));
 
-    it('should set `setTitle` proxy to `nzTitle`', () => {
-      fixture.detectChanges();
-      const tooltipComponent = (component.titleStringNzTooltipDirective as any).tooltip as NzToolTipComponent; // tslint:disable-line:no-any
+    it('should set `setTitle` proxy to `nzTitle`', fakeAsync(() => {
+      const triggerElement = component.titleString.nativeElement;
+      const tooltipComponent = component.titleStringNzTooltipDirective.tooltip;
+
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling(fixture);
       expect(tooltipComponent.nzTitle).toBe('title-string');
+      expect(overlayContainerElement.textContent).toContain('title-string');
 
       component.title = 'changed!';
       fixture.detectChanges();
       expect(tooltipComponent.nzTitle).toBe('changed!');
-    });
-
+      expect(overlayContainerElement.textContent).toContain('changed!');
+    }));
   });
-
 });
 
-@Component({
-  selector: 'nz-tooltip-test-new',
-  template: `
-    <a #titleString nz-tooltip [nzTitle]="title" nzTrigger="hover" nzPlacement="topLeft" nzOverlayClassName="testClass"
-       [nzOverlayStyle]="{color:'#000'}"
-       [nzMouseEnterDelay]="0.15" [nzMouseLeaveDelay]="0.1">Show</a>
-    <a #titleTemplate nz-tooltip [nzTitle]="template">Show</a>
-    <ng-template #template>
-      title-template
-    </ng-template>
-    <div>
-      <button>A</button>
-      <button #inBtnGroup nz-tooltip nzTitle="title-string">B</button>
-      <button>C</button>
-    </div>
-  `
-})
-export class NzTooltipTestNewComponent {
-  @ViewChild('titleString') titleString: ElementRef;
-  @ViewChild('titleString', { read: NzTooltipDirective }) titleStringNzTooltipDirective: NzTooltipDirective;
-  @ViewChild('titleTemplate') titleTemplate: ElementRef;
-  @ViewChild('titleTemplate', { read: NzTooltipDirective }) titleTemplateNzTooltipDirective: NzTooltipDirective;
-  @ViewChild('inBtnGroup') inBtnGroup: ElementRef;
-
-  title = 'title-string';
-}
-
-@Component({
-  selector: 'nz-tooltip-test-wrapper',
-  template: `
-    <a #mostSimpleTrigger nz-tooltip="MOST-SIMPLE">Show</a>
-
-    <nz-tooltip [nzTitle]="'NORMAL'" [nzTrigger]="'hover'"><span #normalTrigger nz-tooltip>Show</span></nz-tooltip>
-
-    <nz-tooltip>
-      <button #templateTrigger nz-tooltip>Show</button>
-      <ng-template #nzTemplate>
-        <i nz-icon type="file"></i> <span>Show with icon</span>
-      </ng-template>
-    </nz-tooltip>
-
-    <nz-tooltip nzTitle="FOCUS" [nzTrigger]="'focus'"><span #focusTrigger nz-tooltip>Show</span></nz-tooltip>
-
-    <nz-tooltip nzTitle="CLICK" nzTrigger="click"><span #clickTrigger nz-tooltip>Show</span></nz-tooltip>
-
-    <nz-tooltip nzTitle="VISIBLE" [(nzVisible)]="visible"><span #visibleTrigger nz-tooltip>Show</span></nz-tooltip>
-  `
-})
-export class NzTooltipTestWrapperComponent {
-  @ViewChild('normalTrigger') normalTrigger: ElementRef;
-
-  @ViewChild('templateTrigger') templateTrigger: ElementRef;
-
-  @ViewChild('focusTrigger') focusTrigger: ElementRef;
-
-  @ViewChild('clickTrigger') clickTrigger: ElementRef;
-  visible: boolean;
-  @ViewChild('visibleTrigger') visibleTrigger: ElementRef;
-
-  @ViewChild('mostSimpleTrigger') mostSimpleTrigger: ElementRef;
-  @ViewChild('mostSimpleTrigger', { read: NzTooltipDirective }) mostSimpleDirective: NzTooltipDirective;
+function waitingForTooltipToggling<T>(fixture: ComponentFixture<T>): void {
+  fixture.detectChanges();
+  tick(500);
+  fixture.detectChanges();
 }
