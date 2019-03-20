@@ -814,11 +814,11 @@ export class ModalByServiceComponent {
 // -------------------------------------------
 
 function expectModalHidden(modalElement: HTMLElement, hidden: boolean): void {
-  const display = (modalElement.querySelector('.ant-modal-wrap') as HTMLElement).style.display;
+  const display = (modalElement.querySelector('.ant-modal-wrap') as HTMLElement).style.visibility;
   if (hidden) {
-    expect(display).toBe('none');
+    expect(display).toBe('hidden');
   } else {
-    expect(display).not.toBe('none');
+    expect(display).not.toBe('hidden');
   }
   expect(modalElement.querySelector('.ant-modal-mask')!.classList.contains('ant-modal-mask-hidden')).toBe(hidden);
 }

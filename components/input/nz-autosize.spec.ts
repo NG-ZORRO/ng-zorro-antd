@@ -1,8 +1,9 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { async, fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NzAutoResizeDirective } from './nz-autoresize.directive';
+import { dispatchFakeEvent } from '../core/testing';
+import { NzAutosizeDirective } from './nz-autosize.directive';
 import { NzInputModule } from './nz-input.module';
 
 describe('autoresize', () => {
@@ -19,14 +20,14 @@ describe('autoresize', () => {
       let fixture: ComponentFixture<NzTestInputWithTextAreaAutoSizeStringComponent>;
       let testComponent: NzTestInputWithTextAreaAutoSizeStringComponent;
       let textarea: HTMLTextAreaElement;
-      let autosize: NzAutoResizeDirective;
+      let autosize: NzAutosizeDirective;
 
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestInputWithTextAreaAutoSizeStringComponent);
         testComponent = fixture.debugElement.componentInstance;
         fixture.detectChanges();
-        textarea = fixture.debugElement.query(By.directive(NzAutoResizeDirective)).nativeElement;
-        autosize = fixture.debugElement.query(By.directive(NzAutoResizeDirective)).injector.get(NzAutoResizeDirective);
+        textarea = fixture.debugElement.query(By.directive(NzAutosizeDirective)).nativeElement;
+        autosize = fixture.debugElement.query(By.directive(NzAutosizeDirective)).injector.get(NzAutosizeDirective);
       });
       it('should resize the textarea based on its ngModel', fakeAsync(() => {
         let previousHeight = textarea.clientHeight;
@@ -65,19 +66,28 @@ describe('autoresize', () => {
         expect(textarea.clientHeight)
           .toBe(textarea.scrollHeight, 'Expected textarea height to match its scrollHeight');
       }));
+
+      it('should trigger a resize when the window is resized', fakeAsync(() => {
+        spyOn(autosize, 'resizeToFitContent');
+
+        dispatchFakeEvent(window, 'resize');
+        tick(16);
+
+        expect(autosize.resizeToFitContent).toHaveBeenCalled();
+      }));
     });
     describe('textarea autosize object', () => {
       let fixture: ComponentFixture<NzTestInputWithTextAreaAutoSizeObjectComponent>;
       let testComponent: NzTestInputWithTextAreaAutoSizeObjectComponent;
       let textarea: HTMLTextAreaElement;
-      let autosize: NzAutoResizeDirective;
+      let autosize: NzAutosizeDirective;
 
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestInputWithTextAreaAutoSizeObjectComponent);
         testComponent = fixture.debugElement.componentInstance;
         fixture.detectChanges();
-        textarea = fixture.debugElement.query(By.directive(NzAutoResizeDirective)).nativeElement;
-        autosize = fixture.debugElement.query(By.directive(NzAutoResizeDirective)).injector.get(NzAutoResizeDirective);
+        textarea = fixture.debugElement.query(By.directive(NzAutosizeDirective)).nativeElement;
+        autosize = fixture.debugElement.query(By.directive(NzAutosizeDirective)).injector.get(NzAutosizeDirective);
       });
       it('should set a min-height based on minRows', fakeAsync(() => {
 
