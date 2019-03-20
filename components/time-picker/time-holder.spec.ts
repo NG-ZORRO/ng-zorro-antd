@@ -1,4 +1,4 @@
-import { TimeHolder } from './time-holder';
+import { HourTypes, TimeHolder } from './time-holder';
 
 function mathSecondRound(value: Date): number {
   return Math.round(value.getTime() / 1000);
@@ -65,5 +65,18 @@ describe('time holder', () => {
     holder.setMinutes(23, false);
     expect(holder.value).toEqual(new Date(2001, 10, 1, 23, 23, 20));
   });
-
+  it('should 12-hour worked', () => {
+    const holder = new TimeHolder().setValue(new Date(0, 0, 0, 0, 0, 0));
+    holder.setUse12Hours(true);
+    holder.selected12Hours = 'pm';
+    holder.setHours(3, false);
+    expect(holder.getHours(HourTypes.ViewHour)).toBe(3);
+    expect(holder.getHours(HourTypes.DataHour)).toBe(15);
+    const date = new Date(0, 0, 0, 15, 0, 0, 0);
+    expect(mathSecondRound(holder.value)).toEqual(mathSecondRound(date));
+  });
+  it('should set default selected 12-hours with value', () => {
+    const holder = new TimeHolder().setValue(new Date(0, 0, 0, 15, 2, 3), true);
+    expect(holder.selected12Hours).toBe('PM');
+  });
 });

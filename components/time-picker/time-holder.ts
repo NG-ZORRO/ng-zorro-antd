@@ -83,7 +83,7 @@ export class TimeHolder {
     }
   }
 
-  setValue(value: Date, use12Hours: boolean): this {
+  setValue(value: Date, use12Hours?: boolean): this {
     this._use12Hours = use12Hours;
     this.value = value;
     return this;
@@ -154,13 +154,8 @@ export class TimeHolder {
    *  get ViewHour or DataHour depeond on the `type` param
    *  the transformed value which from DataHour to ViewHour is `value` param and this._hours is default `value`
    */
-  getHours(type: HourTypes, value?: number): number {
-    let transformedValue;
-    if (isNotNil(value)) {
-      transformedValue = value;
-    } else {
-      transformedValue = this._hours;
-    }
+  getHours(type: HourTypes, defaulValue?: number): number {
+    const transformedValue = isNotNil(defaulValue) ? defaulValue : this._hours;
     if (!isNotNil(transformedValue)) {
       return null;
     }
@@ -262,6 +257,9 @@ export class TimeHolder {
   }
 
   private getViewHours(value: number, selecte12Hours: string): number {
+    if (!this._use12Hours) {
+      return value;
+    }
     if (selecte12Hours === 'PM' && value > 12) {
       return value - 12;
     }
