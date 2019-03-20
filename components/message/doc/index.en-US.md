@@ -64,6 +64,7 @@ Methods for destruction are also provided:
 | nzMaxStack | The maximum number of messages that can be displayed at the same time | `number` | `8` |
 | nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | `boolean` | `true` |
 | nzAnimate | Whether to turn on animation | `boolean` | `true` |
+| nzTop | Distance from top | `number｜string` | `24` |
 
 ### NzMessageDataFilled
 
