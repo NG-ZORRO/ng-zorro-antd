@@ -1,13 +1,5 @@
 import { Platform } from '@angular/cdk/platform';
-import {
-  AfterViewInit,
-  Directive,
-  DoCheck,
-  ElementRef,
-  Input,
-  NgZone,
-  OnDestroy
-} from '@angular/core';
+import { AfterViewInit, Directive, DoCheck, ElementRef, Input, NgZone, OnDestroy } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
 
@@ -25,7 +17,7 @@ export function isAutoSizeType(value: string | boolean | AutoSizeType): value is
   host: {
     // Textarea elements that have the directive applied should have a single row by default.
     // Browsers normally show two rows by default and therefore this limits the minRows binding.
-    'rows'   : '1',
+    rows: '1',
     '(input)': 'noopInputHandler()'
   }
 })
@@ -169,49 +161,23 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
     }
   }
 
-<<<<<<< HEAD:components/input/nz-autosize.directive.ts
   noopInputHandler(): void {
     // no-op handler that ensures we're running change detection on input events.
   }
 
-  constructor(private elementRef: ElementRef,
-              private ngZone: NgZone,
-              private platform: Platform) {
-  }
+  constructor(private elementRef: ElementRef, private ngZone: NgZone, private platform: Platform) {}
 
   ngAfterViewInit(): void {
     if (this.nzAutosize && this.platform.isBrowser) {
       this.resizeToFitContent();
       this.ngZone.runOutsideAngular(() => {
         fromEvent(window, 'resize')
-        .pipe(auditTime(16), takeUntil(this.destroy$))
-        .subscribe(() => this.resizeToFitContent(true));
+          .pipe(
+            auditTime(16),
+            takeUntil(this.destroy$)
+          )
+          .subscribe(() => this.resizeToFitContent(true));
       });
-=======
-  constructor(
-    private elementRef: ElementRef,
-    private ngZone: NgZone,
-    @Optional() @Self() public ngControl: NgControl,
-    private platform: Platform
-  ) {}
-
-  ngAfterViewInit(): void {
-    if (this.nzAutosize && this.platform.isBrowser) {
-      if (this.ngControl) {
-        this.resizeToFitContent();
-        this.ngZone.runOutsideAngular(() => {
-          fromEvent(window, 'resize')
-            .pipe(
-              auditTime(16),
-              takeUntil(this.destroy$)
-            )
-            .subscribe(() => this.resizeToFitContent(true));
-        });
-        this.ngControl.control!.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.resizeToFitContent());
-      } else {
-        console.warn('nzAutosize must work with ngModel or ReactiveForm');
-      }
->>>>>>> chore: adopt prettier code formatter:components/input/nz-autoresize.directive.ts
     }
   }
 
