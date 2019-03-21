@@ -149,6 +149,7 @@ describe('time-picker-panel', () => {
   describe('12-hour time-picker-panel', () => {
     let panelElement: DebugElement;
     let fixture12Hour: ComponentFixture<NzTest12HourTimePanelComponent>;
+    let testComponent: NzTest12HourTimePanelComponent;
     beforeEach(() => {
       fixture12Hour = TestBed.createComponent(NzTest12HourTimePanelComponent);
       testComponent = fixture12Hour.debugElement.componentInstance;
@@ -187,7 +188,7 @@ describe('time-picker-panel', () => {
     }));
     it('disabled hour in 12-hour-time-picker-panel', fakeAsync(() => {
       fixture12Hour.detectChanges();
-      testComponent.disabledHours = () => [1, 3, 4, 5, 18, 19, 20];
+      testComponent.disabledHours = (): number[] => [1, 3, 4, 5, 18, 19, 20];
       fixture12Hour.detectChanges();
       let listHourLi = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select')[0].querySelectorAll('li');
       expect(listHourLi[ 1 ].classList).toContain('ant-time-picker-panel-select-option-disabled');
@@ -305,7 +306,7 @@ export class NzTest12HourTimePanelComponent {
   @ViewChild(NzTimePickerPanelComponent) nzTimePickerPanelComponent: NzTimePickerPanelComponent;
   format = 'hh:mm:ss a';
   hourStep = 1;
-  value;
-  disabledHours = () => [];
+  value: Date;
+  disabledHours = (): number[] => [];
   openValue = new Date(0, 0, 0, 0, 0, 0);
 }

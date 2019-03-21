@@ -86,7 +86,7 @@ export class TimeHolder {
 
   setValue(value: Date | undefined, use12Hours?: boolean): this {
     if (isNotNil(use12Hours)) {
-      this._use12Hours = use12Hours;
+      this._use12Hours = use12Hours as boolean;
     }
     this.value = value;
     return this;
@@ -134,13 +134,13 @@ export class TimeHolder {
         if (!isNotNil(this._selected12Hours)) {
           this._selected12Hours = this.default12Hours;
         }
-        if (this.selected12Hours === 'PM' && this._hours < 12) {
-          this._hours += 12;
-          this._value.setHours(this._hours);
+        if (this.selected12Hours === 'PM' && this._hours! < 12) {
+          this._hours! += 12;
+          this._value!.setHours(this._hours!);
         }
-        if (this.selected12Hours === 'AM' && this._hours >= 12) {
-          this._hours -= 12;
-          this._value.setHours(this._hours);
+        if (this.selected12Hours === 'AM' && this._hours! >= 12) {
+          this._hours! -= 12;
+          this._value!.setHours(this._hours as number);
         }
       }
 
@@ -163,7 +163,7 @@ export class TimeHolder {
       return undefined;
     }
     if (type === HourTypes.ViewHour) {
-      return this.getViewHours(transformedValue, this._selected12Hours || this.default12Hours);
+      return this.getViewHours(transformedValue as number, this._selected12Hours || this.default12Hours);
     } else {
       return this._hours;
     }
@@ -181,7 +181,7 @@ export class TimeHolder {
     if (value !== this._hours) {
       if (this._use12Hours) {
         if (this.selected12Hours === 'PM' && value !== 12 ) {
-          this._hours = value + 12;
+          this._hours! = value as number + 12;
         } else if (this.selected12Hours === 'AM' && value === 12) {
           this._hours = 0;
         }
@@ -213,13 +213,13 @@ export class TimeHolder {
     }
   }
 
-  get selected12Hours(): string {
+  get selected12Hours(): string | undefined {
     return this._selected12Hours;
   }
 
-  set selected12Hours(value: string) {
-    if (value.toUpperCase() !== this._selected12Hours) {
-      this._selected12Hours = value.toUpperCase();
+  set selected12Hours(value: string | undefined) {
+    if (value!.toUpperCase() !== this._selected12Hours) {
+      this._selected12Hours = value!.toUpperCase();
       this.update();
     }
   }
@@ -259,7 +259,7 @@ export class TimeHolder {
   constructor() {
   }
 
-  private getViewHours(value: number, selecte12Hours: string): number {
+  private getViewHours(value: number, selecte12Hours: string | undefined): number {
     if (!this._use12Hours) {
       return value;
     }

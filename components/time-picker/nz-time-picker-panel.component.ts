@@ -353,7 +353,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     } else if (unit === 'second') { // second
       const disabledSeconds = this.nzDisabledSeconds && this.nzDisabledSeconds(this.time.hours!, this.time.minutes!);
       return this.calcIndex(disabledSeconds, this.secondRange.map(item => item.index).indexOf(index));
-    } else if (unit === '12-hour') {
+    } else { // 12-hour
       return this.calcIndex([], this.use12HoursRange.map(item => item.index).indexOf(index));
     }
   }
@@ -431,7 +431,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
         if (isNotNil(this.time.getHours(HourTypes.ViewHour))) {
           this.scrollToSelected(this.hourListElement.nativeElement, this.time.getHours(HourTypes.ViewHour)!, 0, 'hour');
         } else {
-          this.scrollToSelected(this.hourListElement.nativeElement, this.time.getHours(HourTypes.ViewHour, this.time.defaultHours), 0, 'hour');
+          this.scrollToSelected(this.hourListElement.nativeElement, this.time.getHours(HourTypes.ViewHour, this.time.defaultHours)!, 0, 'hour');
         }
       }
       if (this.minuteEnabled && this.minuteListElement) {
