@@ -165,7 +165,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
 
   onModeChange(mode: ModeType): void {
     this.nzModeChange.emit(mode);
-    this.nzPanelChange.emit({ date: this.activeDate, mode: mode });
+    this.nzPanelChange.emit({ date: this.activeDate, mode });
   }
 
   onDateSelect(date: Date): void {

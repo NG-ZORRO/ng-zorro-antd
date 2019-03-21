@@ -6,8 +6,8 @@ import { getEmptyContentTypeError } from './nz-empty-error';
 @Injectable({
   providedIn: 'root'
 })
+// tslint:disable-next-line:no-any
 export class NzEmptyService<T = any> {
-  // tslint:disable-line:no-any
   userDefaultContent$ = new BehaviorSubject<NzEmptyCustomContent | undefined>(undefined);
 
   constructor(@Inject(NZ_DEFAULT_EMPTY_CONTENT) @Optional() private defaultEmptyContent: Type<T>) {

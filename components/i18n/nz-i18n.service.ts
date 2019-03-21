@@ -72,14 +72,14 @@ export class NzI18nService {
    * @param path dot paths for finding exist value from locale data, eg. "a.b.c"
    * @param defaultValue default value if the result is not "truthy"
    */
+  // tslint:disable-next-line:no-any
   getLocaleData(path?: string, defaultValue?: any): any {
-    // tslint:disable-line:no-any
     const result = path ? this._getObjectPath(this._locale, path) : this._locale;
     return result || defaultValue;
   }
 
+  // tslint:disable-next-line:no-any
   private _getObjectPath(obj: IndexableObject, path: string): string | object | any {
-    // tslint:disable-line:no-any
     let res = obj;
     const paths = path.split('.');
     const depth = paths.length;

@@ -8,8 +8,8 @@ export type ModalType = 'default' | 'confirm'; // Different modal styles we have
 export type ConfirmType = 'confirm' | 'info' | 'success' | 'error' | 'warning'; // Subtypes of Confirm Modal
 
 // Public options for using by service
+// tslint:disable-next-line:no-any
 export interface ModalOptions<T = any, R = any> {
-  // tslint:disable-line:no-any
   nzModalType?: ModalType;
   nzVisible?: boolean;
   nzZIndex?: number;
@@ -52,8 +52,8 @@ export interface ModalOptionsForService<T = any> extends ModalOptions<T> {
   nzOnCancel?: OnClickCallback<T>;
 }
 
+// tslint:disable-next-line:no-any
 export interface ModalButtonOptions<T = any> {
-  // tslint:disable-line:no-any
   label: string;
   type?: string;
   shape?: string;

@@ -521,7 +521,7 @@ export class NzTreeBaseService implements OnDestroy {
    */
   formatEvent(eventName: string, node?: NzTreeNode, event?: MouseEvent | DragEvent): NzFormatEmitEvent {
     const emitStructure = {
-      eventName: eventName,
+      eventName,
       node: node || undefined,
       event: event || undefined
     };

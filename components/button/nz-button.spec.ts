@@ -66,8 +66,8 @@ describe('button', () => {
     });
     it('should have no white space', () => {
       fixture.detectChanges();
-      // @ts-ignore
       expect(
+        // @ts-ignore
         Array.from(buttonGroup.nativeElement.firstElementChild).some((node: HTMLElement) => node.nodeType === 3)
       ).toBe(false);
     });

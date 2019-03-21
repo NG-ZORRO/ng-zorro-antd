@@ -147,13 +147,13 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     this.cdr.markForCheck();
   }
 
+  // tslint:disable-next-line:no-any
   registerOnChange(fn: any): void {
-    // tslint:disable-line:no-any
     this.onChangeFn = fn;
   }
 
+  // tslint:disable-next-line:no-any
   registerOnTouched(fn: any): void {
-    // tslint:disable-line:no-any
     this.onTouchedFn = fn;
   }
 

@@ -160,8 +160,8 @@ export class NzDemoModalServiceComponent {
   openAndCloseAll(): void {
     let pos = 0;
 
-    // @ts-ignore
     ['create', 'info', 'success', 'error'].forEach(method =>
+      // @ts-ignore
       this.modalService[method]({
         nzMask: false,
         nzTitle: `Test ${method} title`,

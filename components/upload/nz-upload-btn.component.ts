@@ -103,8 +103,8 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
       } else if (item.isDirectory) {
         const dirReader = item.createReader();
 
+        // tslint:disable-next-line:no-any
         dirReader.readEntries((entries: any) => {
-          // tslint:disable-line:no-any
           for (const entrieItem of entries) {
             _traverseFileTree(entrieItem, `${path}${item.name}/`);
           }
