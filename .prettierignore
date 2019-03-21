@@ -2,6 +2,7 @@
 **/*.svg
 **/*.html
 **/test.ts
+**/*.less
 coverage/
 publish/
 site/
