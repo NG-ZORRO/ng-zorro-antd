@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { NzNoAnimationModule } from '../core/no-animation/nz-no-animation.module';
 
 import { NzButtonModule } from '../button/nz-button.module';
+import { NzOverlayModule } from '../core/overlay/nz-overlay.module';
 import { NzIconModule } from '../icon/nz-icon.module';
 import { NzMenuModule } from '../menu/nz-menu.module';
 import { NzDropDownADirective } from './nz-dropdown-a.directive';
@@ -15,7 +16,16 @@ import { NzDropDownComponent } from './nz-dropdown.component';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 
 @NgModule({
-  imports: [CommonModule, OverlayModule, FormsModule, NzButtonModule, NzMenuModule, NzIconModule, NzNoAnimationModule],
+  imports: [
+    CommonModule,
+    OverlayModule,
+    FormsModule,
+    NzButtonModule,
+    NzMenuModule,
+    NzIconModule,
+    NzNoAnimationModule,
+    NzOverlayModule
+  ],
   entryComponents: [NzDropdownContextComponent],
   declarations: [
     NzDropDownComponent,
