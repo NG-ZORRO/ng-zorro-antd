@@ -10,8 +10,8 @@ describe('nz time range pipeline', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports     : [ CommonModule, NzStatisticModule ],
-      declarations: [ NzTestTimeRangeComponent ]
+      imports: [CommonModule, NzStatisticModule],
+      declarations: [NzTestTimeRangeComponent]
     }).compileComponents();
   });
 
@@ -40,7 +40,7 @@ describe('nz time range pipeline', () => {
       fixture.detectChanges();
       expect(element.innerText).toBe('00:00:00');
 
-      testComponent.diff = - 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
+      testComponent.diff = -1000 * 60 * 60 * 24 * 2 + 1000 * 30;
       fixture.detectChanges();
       expect(element.innerText).toBe('-48:00:30');
     });
@@ -49,7 +49,9 @@ describe('nz time range pipeline', () => {
 
 @Component({
   selector: 'nz-test-statistic',
-  template: `{{ diff | nzTimeRange: format }}`
+  template: `
+    {{ diff | nzTimeRange: format }}
+  `
 })
 export class NzTestTimeRangeComponent {
   diff = 1000 * 60 * 60 * 24 * 2 + 1000 * 30;

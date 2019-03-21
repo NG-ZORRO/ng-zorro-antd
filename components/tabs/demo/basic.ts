@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
       <nz-tab nzTitle="Tab 3">
         Content of Tab Pane 3
       </nz-tab>
-    </nz-tabset>`
+    </nz-tabset>
+  `
 })
-export class NzDemoTabsBasicComponent {
-}
+export class NzDemoTabsBasicComponent {}

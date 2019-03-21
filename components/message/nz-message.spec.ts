@@ -1,4 +1,3 @@
-
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -19,15 +18,15 @@ describe('NzMessage', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ NzMessageModule, NoopAnimationsModule ],
-      declarations: [ NzTestMessageBasicComponent ],
-      providers: [ { provide: NZ_MESSAGE_CONFIG, useValue: { nzMaxStack: 2, nzTop: 24 } } ]
+      imports: [NzMessageModule, NoopAnimationsModule],
+      declarations: [NzTestMessageBasicComponent],
+      providers: [{ provide: NZ_MESSAGE_CONFIG, useValue: { nzMaxStack: 2, nzTop: 24 } }]
     });
 
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([ NzMessageService, OverlayContainer ], (m: NzMessageService, oc: OverlayContainer) => {
+  beforeEach(inject([NzMessageService, OverlayContainer], (m: NzMessageService, oc: OverlayContainer) => {
     messageService = m;
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
@@ -42,46 +41,46 @@ describe('NzMessage', () => {
     testComponent = fixture.debugElement.componentInstance;
   });
 
-  it('should open a message box with success', (() => {
+  it('should open a message box with success', () => {
     messageService.success('SUCCESS');
     fixture.detectChanges();
 
     expect((overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement).style.zIndex).toBe('1010');
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
     expect(overlayContainerElement.querySelector('.anticon-check-circle')).not.toBeNull();
-  }));
+  });
 
-  it('should open a message box with error', (() => {
+  it('should open a message box with error', () => {
     messageService.error('ERROR');
     fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('ERROR');
     expect(overlayContainerElement.querySelector('.anticon-close-circle')).not.toBeNull();
-  }));
+  });
 
-  it('should open a message box with warning', (() => {
+  it('should open a message box with warning', () => {
     messageService.warning('WARNING');
     fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('WARNING');
     expect(overlayContainerElement.querySelector('.anticon-exclamation-circle')).not.toBeNull();
-  }));
+  });
 
-  it('should open a message box with info', (() => {
+  it('should open a message box with info', () => {
     messageService.info('INFO');
     fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('INFO');
     expect(overlayContainerElement.querySelector('.anticon-info-circle')).not.toBeNull();
-  }));
+  });
 
-  it('should open a message box with loading', (() => {
+  it('should open a message box with loading', () => {
     messageService.loading('LOADING');
     fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('LOADING');
     expect(overlayContainerElement.querySelector('.anticon-loading')).not.toBeNull();
-  }));
+  });
 
   it('should support template', fakeAsync(() => {
     messageService.info(testComponent.template);
@@ -128,7 +127,7 @@ describe('NzMessage', () => {
   }));
 
   it('should keep the balance of messages length and then remove all', fakeAsync(() => {
-    [ 1, 2, 3 ].forEach(id => {
+    [1, 2, 3].forEach(id => {
       const content = `SUCCESS-${id}`;
       messageService.success(content);
       fixture.detectChanges();

@@ -1,11 +1,5 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import {
-  discardPeriodicTasks,
-  fakeAsync,
-  tick,
-  ComponentFixture,
-  TestBed
-} from '@angular/core/testing';
+import { discardPeriodicTasks, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
@@ -373,8 +367,8 @@ describe('affix', () => {
     constructor() {
       spyOn(component, 'getOffset').and.callFake(this.getOffset.bind(this));
       spyOn(scrollService, 'getScroll').and.callFake(this.getScroll.bind(this));
-      this.offsets = { 'undefined': { top: 10, left: 0, height: 0, width: 0 } };
-      this.scrolls = { 'undefined': { top: 10, left: 0 } };
+      this.offsets = { undefined: { top: 10, left: 0, height: 0, width: 0 } };
+      this.scrolls = { undefined: { top: 10, left: 0 } };
     }
 
     getScroll(el?: Element | Window, top: boolean = true): number {
@@ -392,7 +386,7 @@ describe('affix', () => {
 
     emitScroll(el: Element | Window, top: number, left: number = 0): void {
       this.scrolls[this.getKey(el)] = { top, left };
-      this.emitEvent((el || window), scrollEvent);
+      this.emitEvent(el || window, scrollEvent);
     }
 
     offsetTo(el: Element, offset: Offset): void {
@@ -405,15 +399,12 @@ describe('affix', () => {
     }
 
     offsetYTo(el: Element, offsetTop: number): void {
-      this.offsetTo(
-        el,
-        {
-          top: offsetTop,
-          left: 0,
-          height,
-          width
-        }
-      );
+      this.offsetTo(el, {
+        top: offsetTop,
+        left: 0,
+        height,
+        width
+      });
     }
 
     content(): HTMLElement {
@@ -476,7 +467,10 @@ describe('affix-extra', () => {
     dl = fixture.debugElement;
   });
   it('#getOffset', () => {
-    const ret = fixture.componentInstance.nzAffixComponent.getOffset(fixture.debugElement.query(By.css('#affix')).nativeElement, window);
+    const ret = fixture.componentInstance.nzAffixComponent.getOffset(
+      fixture.debugElement.query(By.css('#affix')).nativeElement,
+      window
+    );
     expect(ret).not.toBeUndefined();
   });
   it('with window when scrolled below the bottom offset', fakeAsync(() => {
@@ -504,13 +498,10 @@ describe('affix-extra', () => {
 
 @Component({
   template: `
-  <nz-affix id="affix"
-    [nzTarget]="fakeTarget"
-    [nzOffsetTop]="newOffset"
-    [nzOffsetBottom]="newOffsetBottom">
-    <button id="content">Affix Button</button>
-  </nz-affix>
-  <div id="target"></div>
+    <nz-affix id="affix" [nzTarget]="fakeTarget" [nzOffsetTop]="newOffset" [nzOffsetBottom]="newOffsetBottom">
+      <button id="content">Affix Button</button>
+    </nz-affix>
+    <div id="target"></div>
   `
 })
 class TestAffixComponent {

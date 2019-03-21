@@ -8,9 +8,8 @@ import { NzRateItemComponent } from './nz-rate-item.component';
 import { NzRateComponent } from './nz-rate.component';
 
 @NgModule({
-  exports     : [ NzRateComponent ],
-  declarations: [ NzRateComponent, NzRateItemComponent ],
-  imports     : [ CommonModule, NzIconModule, NzToolTipModule ]
+  exports: [NzRateComponent],
+  declarations: [NzRateComponent, NzRateItemComponent],
+  imports: [CommonModule, NzIconModule, NzToolTipModule]
 })
-export class NzRateModule {
-}
+export class NzRateModule {}

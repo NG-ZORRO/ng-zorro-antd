@@ -13,4 +13,4 @@ import { Component } from '@angular/core';
     </nz-anchor>
   `
 })
-export class NzDemoAnchorBasicComponent { }
+export class NzDemoAnchorBasicComponent {}

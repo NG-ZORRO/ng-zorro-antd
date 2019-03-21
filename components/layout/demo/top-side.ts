@@ -56,14 +56,16 @@ import { Component } from '@angular/core';
       </nz-content>
     </nz-layout>
   `,
-  styles  : [
-      `.logo {
-      width: 120px;
-      height: 31px;
-      background: rgba(255,255,255,.2);
-      margin: 16px 28px 16px 0;
-      float: left;
-    }`
+  styles: [
+    `
+      .logo {
+        width: 120px;
+        height: 31px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 16px 28px 16px 0;
+        float: left;
+      }
+    `
   ]
 })
-export class NzDemoLayoutTopSideComponent { }
+export class NzDemoLayoutTopSideComponent {}

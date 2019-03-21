@@ -15,7 +15,7 @@ export interface NzTreeNodeOptions {
   children?: NzTreeNodeOptions[];
 
   // tslint:disable-next-line:no-any
-  [ key: string ]: any;
+  [key: string]: any;
 }
 
 export class NzTreeNode {
@@ -68,7 +68,7 @@ export class NzTreeNode {
     this._isSelectable = option.disabled || (option.selectable === false ? false : true);
     this._isDisabled = option.disabled || false;
     this._isDisableCheckbox = option.disableCheckbox || false;
-    this._isExpanded = option.isLeaf ? false : (option.expanded || false);
+    this._isExpanded = option.isLeaf ? false : option.expanded || false;
     this._isHalfChecked = false;
     this._isSelected = (!option.disabled && option.selected) || false;
     this._isLoading = false;
@@ -82,16 +82,21 @@ export class NzTreeNode {
     } else {
       this.level = 0;
     }
-    if (typeof (option.children) !== 'undefined' && option.children !== null) {
-      option.children.forEach(
-        (nodeOptions) => {
-          const s = this.treeService;
-          if ((s && !s.isCheckStrictly) && option.checked && !option.disabled && !nodeOptions.disabled && !nodeOptions.disableCheckbox) {
-            nodeOptions.checked = option.checked;
-          }
-          this._children.push(new NzTreeNode(nodeOptions, this));
+    if (typeof option.children !== 'undefined' && option.children !== null) {
+      option.children.forEach(nodeOptions => {
+        const s = this.treeService;
+        if (
+          s &&
+          !s.isCheckStrictly &&
+          option.checked &&
+          !option.disabled &&
+          !nodeOptions.disabled &&
+          !nodeOptions.disableCheckbox
+        ) {
+          nodeOptions.checked = option.checked;
         }
-      );
+        this._children.push(new NzTreeNode(nodeOptions, this));
+      });
     }
   }
 
@@ -243,49 +248,51 @@ export class NzTreeNode {
   // tslint:disable-next-line:no-any
   public addChildren(children: any[], childPos: number = -1): void {
     if (!this.isLeaf) {
-      children.forEach(
-        (node) => {
-          const refreshLevel = (n: NzTreeNode) => {
-            n.getChildren().forEach(c => {
-              c.level = c.getParentNode()!.level + 1;
-              // flush origin
-              c.origin.level = c.level;
-              refreshLevel(c);
-            });
-          };
-          let child = node;
-          if (child instanceof NzTreeNode) {
-            child.parentNode = this;
-          } else {
-            child = new NzTreeNode(node, this);
-          }
-          child.level = this.level + 1;
-          child.origin.level = child.level;
-          refreshLevel(child);
-          try {
-            childPos === -1 ? this.children.push(child) : this.children.splice(childPos, 0, child);
+      children.forEach(node => {
+        const refreshLevel = (n: NzTreeNode) => {
+          n.getChildren().forEach(c => {
+            c.level = c.getParentNode()!.level + 1;
             // flush origin
-          } catch (e) {
-          }
-        });
+            c.origin.level = c.level;
+            refreshLevel(c);
+          });
+        };
+        let child = node;
+        if (child instanceof NzTreeNode) {
+          child.parentNode = this;
+        } else {
+          child = new NzTreeNode(node, this);
+        }
+        child.level = this.level + 1;
+        child.origin.level = child.level;
+        refreshLevel(child);
+        try {
+          childPos === -1 ? this.children.push(child) : this.children.splice(childPos, 0, child);
+          // flush origin
+        } catch (e) {}
+      });
       this.origin.children = this.getChildren().map(v => v.origin);
       // remove loading state
       this.isLoading = false;
       this.treeService!.triggerEventChange$!.next({
-        'eventName': 'addChildren',
-        'node'     : this
+        eventName: 'addChildren',
+        node: this
       });
     }
   }
 
   public clearChildren(): void {
-    this.getChildren().forEach((n) => {
+    this.getChildren().forEach(n => {
       this.treeService!.afterRemove(n, false);
     });
     this.getChildren().splice(0, this.getChildren().length);
     this.origin.children = [];
     // refresh checked state
-    this.treeService!.calcCheckedKeys(this.treeService!.checkedNodeList.map(v => v.key!), this.treeService!.rootNodes, this.treeService!.isCheckStrictly);
+    this.treeService!.calcCheckedKeys(
+      this.treeService!.checkedNodeList.map(v => v.key!),
+      this.treeService!.rootNodes,
+      this.treeService!.isCheckStrictly
+    );
     this.update();
   }
 

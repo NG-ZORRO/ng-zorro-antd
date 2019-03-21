@@ -30,16 +30,16 @@ export type NzCarouselEffects = 'fade' | 'scrollx';
 export type SwipeDirection = 'swipeleft' | 'swiperight';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-carousel',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-carousel',
   preserveWhitespaces: false,
-  templateUrl        : './nz-carousel.component.html',
-  host               : {
+  templateUrl: './nz-carousel.component.html',
+  host: {
     '[class.ant-carousel-vertical]': 'nzVertical'
   },
-  styles             : [
-      `
+  styles: [
+    `
       nz-carousel {
         display: block;
         position: relative;
@@ -88,14 +88,19 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
   private subs_ = new Subscription();
 
   get nextIndex(): number {
-    return this.activeIndex < this.slideContents.length - 1 ? (this.activeIndex + 1) : 0;
+    return this.activeIndex < this.slideContents.length - 1 ? this.activeIndex + 1 : 0;
   }
 
   get prevIndex(): number {
-    return this.activeIndex > 0 ? (this.activeIndex - 1) : (this.slideContents.length - 1);
+    return this.activeIndex > 0 ? this.activeIndex - 1 : this.slideContents.length - 1;
   }
 
-  constructor(public elementRef: ElementRef, private renderer: Renderer2, private cdr: ChangeDetectorRef, private ngZone: NgZone) {
+  constructor(
+    public elementRef: ElementRef,
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-carousel');
   }
 
@@ -107,15 +112,21 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
 
   ngAfterViewInit(): void {
     // Re-render when content changes.
-    this.subs_.add(this.slideContents.changes.subscribe(() => {
-      this.renderContent();
-    }));
+    this.subs_.add(
+      this.slideContents.changes.subscribe(() => {
+        this.renderContent();
+      })
+    );
 
     this.ngZone.runOutsideAngular(() => {
-      this.subs_.add(fromEvent(window, 'resize').pipe(debounceTime(50)).subscribe(() => {
-        this.renderContent();
-        this.setTransition();
-      }));
+      this.subs_.add(
+        fromEvent(window, 'resize')
+          .pipe(debounceTime(50))
+          .subscribe(() => {
+            this.renderContent();
+            this.setTransition();
+          })
+      );
     });
 
     // When used in modals (drawers maybe too), it should render itself asynchronously.
@@ -144,7 +155,7 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
       this.nzBeforeChange.emit({ from: this.slideContents.toArray().findIndex(slide => slide.isActive), to: index });
       this.activeIndex = index;
       this.setTransition();
-      this.slideContents.forEach((slide, i) => slide.isActive = index === i);
+      this.slideContents.forEach((slide, i) => (slide.isActive = index === i));
       this.setUpNextScroll();
       this.cdr.markForCheck();
       // Should trigger the following when animation is done. The transition takes 0.5 seconds according to the CSS.
@@ -153,11 +164,12 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
   }
 
   private setTransition(): void {
-    this.transform = this.nzEffect === 'fade'
-      ? 'translate3d(0px, 0px, 0px)'
-      : this.nzVertical
-        // `Scrollx` mode.
-        ? `translate3d(0px, ${-this.activeIndex * this.el.offsetHeight}px, 0px)`
+    this.transform =
+      this.nzEffect === 'fade'
+        ? 'translate3d(0px, 0px, 0px)'
+        : this.nzVertical
+        ? // `Scrollx` mode.
+          `translate3d(0px, ${-this.activeIndex * this.el.offsetHeight}px, 0px)`
         : `translate3d(${-this.activeIndex * this.el.offsetWidth}px, 0px, 0px)`;
     if (this.slickTrack) {
       this.renderer.setStyle(this.slickTrack.nativeElement, 'transform', this.transform);
@@ -179,10 +191,12 @@ export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnD
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    if (e.keyCode === LEFT_ARROW) { // Left
+    if (e.keyCode === LEFT_ARROW) {
+      // Left
       this.pre();
       e.preventDefault();
-    } else if (e.keyCode === RIGHT_ARROW) { // Right
+    } else if (e.keyCode === RIGHT_ARROW) {
+      // Right
       this.next();
       e.preventDefault();
     }

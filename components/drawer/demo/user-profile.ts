@@ -12,9 +12,10 @@ import { Component } from '@angular/core';
           <nz-list-item-meta
             [nzTitle]="nzTitle"
             nzAvatar="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
-            nzDescription="Progresser AFX">
+            nzDescription="Progresser AFX"
+          >
             <ng-template #nzTitle>
-              <a href="https://ng.ant.design">{{item.name}}</a>
+              <a href="https://ng.ant.design">{{ item.name }}</a>
             </ng-template>
           </nz-list-item-meta>
         </nz-list-item>
@@ -26,43 +27,50 @@ import { Component } from '@angular/core';
       <div nz-row>
         <div nz-col nzSpan="12">
           <div class="item-wrap">
-            <p class="label">Full Name:</p>Lily
+            <p class="label">Full Name:</p>
+            Lily
           </div>
         </div>
         <div nz-col nzSpan="12">
           <div class="item-wrap">
-            <p class="label">Account:</p>AntDesign@example.com
-          </div>
-        </div>
-      </div>
-      <div nz-row>
-        <div nz-col nzSpan="12">
-          <div class="item-wrap">
-            <p class="label">City:</p>HangZhou
-          </div>
-        </div>
-        <div nz-col nzSpan="12">
-          <div class="item-wrap">
-            <p class="label">Country:</p>China🇨🇳
+            <p class="label">Account:</p>
+            AntDesign@example.com
           </div>
         </div>
       </div>
       <div nz-row>
         <div nz-col nzSpan="12">
           <div class="item-wrap">
-            <p class="label">Birthday:</p>February 2,1900
+            <p class="label">City:</p>
+            HangZhou
           </div>
         </div>
         <div nz-col nzSpan="12">
           <div class="item-wrap">
-            <p class="label">Website:</p>-
+            <p class="label">Country:</p>
+            China🇨🇳
+          </div>
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-col nzSpan="12">
+          <div class="item-wrap">
+            <p class="label">Birthday:</p>
+            February 2,1900
+          </div>
+        </div>
+        <div nz-col nzSpan="12">
+          <div class="item-wrap">
+            <p class="label">Website:</p>
+            -
           </div>
         </div>
       </div>
       <div nz-row>
         <div nz-col nzSpan="24">
           <div class="item-wrap">
-            <p class="label">Message:</p>Make things as simple as possible but no simpler.
+            <p class="label">Message:</p>
+            Make things as simple as possible but no simpler.
           </div>
         </div>
       </div>
@@ -71,19 +79,22 @@ import { Component } from '@angular/core';
       <div nz-row>
         <div nz-col nzSpan="12">
           <div class="item-wrap">
-            <p class="label">Position:</p>Programmer
+            <p class="label">Position:</p>
+            Programmer
           </div>
         </div>
         <div nz-col nzSpan="12">
           <div class="item-wrap">
-            <p class="label">Responsibilities:</p>Coding
+            <p class="label">Responsibilities:</p>
+            Coding
           </div>
         </div>
       </div>
       <div nz-row>
         <div nz-col nzSpan="12">
           <div class="item-wrap">
-            <p class="label">Department:</p>AFX
+            <p class="label">Department:</p>
+            AFX
           </div>
         </div>
         <div nz-col nzSpan="12">
@@ -96,7 +107,10 @@ import { Component } from '@angular/core';
       <div nz-row>
         <div nz-col nzSpan="24">
           <div class="item-wrap">
-            <p class="label">Skills:</p>C / C + +, data structures, software engineering, operating systems, computer networks, databases, compiler theory, computer architecture, Microcomputer Principle and Interface Technology, Computer English, Java, ASP, etc.
+            <p class="label">Skills:</p>
+            C / C + +, data structures, software engineering, operating systems, computer networks, databases, compiler
+            theory, computer architecture, Microcomputer Principle and Interface Technology, Computer English, Java,
+            ASP, etc.
           </div>
         </div>
       </div>
@@ -105,12 +119,14 @@ import { Component } from '@angular/core';
       <div nz-row>
         <div nz-col nzSpan="12">
           <div class="item-wrap">
-            <p class="label">Email:</p>AntDesign@example.com
+            <p class="label">Email:</p>
+            AntDesign@example.com
           </div>
         </div>
         <div nz-col nzSpan="12">
           <div class="item-wrap">
-            <p class="label">Phone Number:</p>+86 181 0000 0000
+            <p class="label">Phone Number:</p>
+            +86 181 0000 0000
           </div>
         </div>
       </div>
@@ -126,30 +142,28 @@ import { Component } from '@angular/core';
   `,
   styles: [
     `
-    .title {
-      font-size: 16px;
-      color: rgba(0, 0, 0, 0.85);
-      line-height: 24px;
-      display: block;
-      margin-bottom: 16px;
-    }
-    .item-wrap {
-      font-size: 14px;
-      line-height: 22px;
-      margin-bottom: 7px;
-      color: rgba(0, 0, 0, 0.65);
-    }
-    .label {
-      margin-right: 8px;
-      display: inline-block;
-      color: rgba(0, 0, 0, 0.85);
-    }
+      .title {
+        font-size: 16px;
+        color: rgba(0, 0, 0, 0.85);
+        line-height: 24px;
+        display: block;
+        margin-bottom: 16px;
+      }
+      .item-wrap {
+        font-size: 14px;
+        line-height: 22px;
+        margin-bottom: 7px;
+        color: rgba(0, 0, 0, 0.65);
+      }
+      .label {
+        margin-right: 8px;
+        display: inline-block;
+        color: rgba(0, 0, 0, 0.85);
+      }
     `
   ]
 })
-
 export class NzDemoDrawerUserProfileComponent {
-
   data = [
     {
       name: 'Lily'

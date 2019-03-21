@@ -10,27 +10,30 @@ import { delay } from 'rxjs/operators';
       [nzDataSource]="list"
       [nzCanMove]="canMove"
       (nzSelectChange)="select($event)"
-      (nzChange)="change($event)">
+      (nzChange)="change($event)"
+    >
     </nz-transfer>
   `
 })
 export class NzDemoTransferCanMoveComponent implements OnInit {
-  list: Array<{ key: string, title: string, disabled: boolean, direction?: string }> = [];
+  list: Array<{ key: string; title: string; disabled: boolean; direction?: string }> = [];
 
   ngOnInit(): void {
     for (let i = 0; i < 20; i++) {
       this.list.push({
-        key     : i.toString(),
-        title   : `content${i + 1}`,
+        key: i.toString(),
+        title: `content${i + 1}`,
         disabled: i % 3 < 1
       });
     }
 
-    [ 2, 3 ].forEach(idx => this.list[ idx ].direction = 'right');
+    [2, 3].forEach(idx => (this.list[idx].direction = 'right'));
   }
 
   canMove(arg: TransferCanMove): Observable<TransferItem[]> {
-    if (arg.direction === 'right' && arg.list.length > 0) { arg.list.splice(0, 1); }
+    if (arg.direction === 'right' && arg.list.length > 0) {
+      arg.list.splice(0, 1);
+    }
     // or
     // if (arg.direction === 'right' && arg.list.length > 0) delete arg.list[0];
     return of(arg.list).pipe(delay(1000));

@@ -16,13 +16,7 @@ registerLocaleData(zh);
 describe('Calendar Header', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        NzI18nModule,
-        NzRadioModule,
-        NzSelectModule,
-        NoopAnimationsModule
-      ],
+      imports: [FormsModule, NzI18nModule, NzRadioModule, NzSelectModule, NoopAnimationsModule],
       declarations: [
         CalendarHeader,
         NzTestCalendarHeaderModeComponent,
@@ -45,8 +39,10 @@ describe('Calendar Header', () => {
     it('should be month by default', () => {
       fixture.detectChanges();
 
-      const modeNgModel = fixture.debugElement.queryAll(By.directive(CalendarHeader))[0]
-        .query(By.directive(RadioGroup)).injector.get(NgModel);
+      const modeNgModel = fixture.debugElement
+        .queryAll(By.directive(CalendarHeader))[0]
+        .query(By.directive(RadioGroup))
+        .injector.get(NgModel);
       expect(modeNgModel.model).toBe('month');
     });
 
@@ -55,14 +51,18 @@ describe('Calendar Header', () => {
 
       fixture.detectChanges();
 
-      const modeNgModel = fixture.debugElement.queryAll(By.directive(CalendarHeader))[1]
-        .query(By.directive(RadioGroup)).injector.get(NgModel);
+      const modeNgModel = fixture.debugElement
+        .queryAll(By.directive(CalendarHeader))[1]
+        .query(By.directive(RadioGroup))
+        .injector.get(NgModel);
       expect(modeNgModel.model).toBe('year');
     });
 
     it('should emit change event for mode selection', () => {
-      const modeNgModel = fixture.debugElement.queryAll(By.directive(CalendarHeader))[1]
-        .query(By.directive(RadioGroup)).injector.get(NgModel);
+      const modeNgModel = fixture.debugElement
+        .queryAll(By.directive(CalendarHeader))[1]
+        .query(By.directive(RadioGroup))
+        .injector.get(NgModel);
       modeNgModel.viewToModelUpdate('year');
 
       fixture.detectChanges();
@@ -186,7 +186,7 @@ describe('Calendar Header', () => {
   `
 })
 class NzTestCalendarHeaderModeComponent {
-  mode: 'month'|'year' = 'month';
+  mode: 'month' | 'year' = 'month';
 }
 
 @Component({
@@ -211,13 +211,10 @@ class NzTestCalendarHeaderActiveDateComponent {
 
 @Component({
   template: `
-    <nz-calendar-header
-      (yearChange)="year = $event"
-      (monthChange)="month = $event">
-    </nz-calendar-header>
+    <nz-calendar-header (yearChange)="year = $event" (monthChange)="month = $event"> </nz-calendar-header>
   `
 })
 class NzTestCalendarHeaderChangesComponent {
-  year: number|null = null;
-  month: number|null = null;
+  year: number | null = null;
+  month: number | null = null;
 }

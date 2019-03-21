@@ -15,5 +15,4 @@ import { NzInputDirective } from './nz-input.directive';
   exports     : [ NzInputDirective, NzInputGroupComponent, NzAutosizeDirective ],
   imports     : [ CommonModule, FormsModule, NzIconModule, PlatformModule, NzAddOnModule ]
 })
-export class NzInputModule {
-}
+export class NzInputModule {}

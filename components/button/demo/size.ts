@@ -8,24 +8,24 @@ import { Component } from '@angular/core';
       <label nz-radio-button nzValue="default">Default</label>
       <label nz-radio-button nzValue="small">Small</label>
     </nz-radio-group>
-    <br>
-    <br>
+    <br />
+    <br />
     <button nz-button [nzSize]="size" nzType="primary">Primary</button>
     <button nz-button [nzSize]="size" nzType="default">Default</button>
     <button nz-button [nzSize]="size" nzType="dashed">Dashed</button>
     <button nz-button [nzSize]="size" nzType="danger">Danger</button>
-    <br>
+    <br />
     <button nz-button nzType="primary" [nzSize]="size" nzShape="circle"><i nz-icon type="download"></i></button>
     <button nz-button nzType="primary" [nzSize]="size" nzShape="round"><i nz-icon type="download"></i>Download</button>
     <button nz-button nzType="primary" [nzSize]="size"><i nz-icon type="download"></i>Download</button>
-    <br>
+    <br />
     <nz-button-group [nzSize]="size">
       <button nz-button nzType="primary"><i nz-icon type="left"></i>Backward</button>
       <button nz-button nzType="primary">Forward<i nz-icon type="right"></i></button>
     </nz-button-group>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       [nz-button] {
         margin-right: 8px;
         margin-bottom: 12px;

@@ -23,16 +23,16 @@ import { NgClassType } from '../core/types/ng-class';
 import { InputBoolean } from '../core/util/convert';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-rate',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-rate',
   preserveWhitespaces: false,
-  templateUrl        : './nz-rate.component.html',
-  providers          : [
+  templateUrl: './nz-rate.component.html',
+  providers: [
     {
-      provide    : NG_VALUE_ACCESSOR,
+      provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzRateComponent),
-      multi      : true
+      multi: true
     }
   ]
 })
@@ -75,7 +75,9 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
     return this._count;
   }
 
-  get nzValue(): number { return this._value; }
+  get nzValue(): number {
+    return this._value;
+  }
 
   set nzValue(input: number) {
     if (this._value === input) {
@@ -87,8 +89,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
     this.hoverValue = Math.ceil(input);
   }
 
-  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {
-  }
+  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzAutoFocus && !changes.nzAutoFocus.isFirstChange()) {
@@ -129,8 +130,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
   }
 
   onItemHover(index: number, isHalf: boolean): void {
-    if (this.nzDisabled ||
-       (this.hoverValue === index + 1 && isHalf === this.hasHalf)) {
+    if (this.nzDisabled || (this.hoverValue === index + 1 && isHalf === this.hasHalf)) {
       return;
     }
 
@@ -165,9 +165,9 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
   onKeyDown(e: KeyboardEvent): void {
     const oldVal = this.nzValue;
 
-    if (e.keyCode === RIGHT_ARROW && (this.nzValue < this.nzCount)) {
+    if (e.keyCode === RIGHT_ARROW && this.nzValue < this.nzCount) {
       this.nzValue += this.nzAllowHalf ? 0.5 : 1;
-    } else if (e.keyCode === LEFT_ARROW && (this.nzValue > 0)) {
+    } else if (e.keyCode === LEFT_ARROW && this.nzValue > 0) {
       this.nzValue -= this.nzAllowHalf ? 0.5 : 1;
     }
 
@@ -180,16 +180,18 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
 
   setClasses(i: number): object {
     return {
-      [ `${this.innerPrefixCls}-full` ]   : (i + 1 < this.hoverValue) || (!this.hasHalf) && (i + 1 === this.hoverValue),
-      [ `${this.innerPrefixCls}-half` ]   : (this.hasHalf) && (i + 1 === this.hoverValue),
-      [ `${this.innerPrefixCls}-active` ] : (this.hasHalf) && (i + 1 === this.hoverValue),
-      [ `${this.innerPrefixCls}-zero` ]   : (i + 1 > this.hoverValue),
-      [ `${this.innerPrefixCls}-focused` ]: (this.hasHalf) && (i + 1 === this.hoverValue) && this.isFocused
+      [`${this.innerPrefixCls}-full`]: i + 1 < this.hoverValue || (!this.hasHalf && i + 1 === this.hoverValue),
+      [`${this.innerPrefixCls}-half`]: this.hasHalf && i + 1 === this.hoverValue,
+      [`${this.innerPrefixCls}-active`]: this.hasHalf && i + 1 === this.hoverValue,
+      [`${this.innerPrefixCls}-zero`]: i + 1 > this.hoverValue,
+      [`${this.innerPrefixCls}-focused`]: this.hasHalf && i + 1 === this.hoverValue && this.isFocused
     };
   }
 
   private updateStarArray(): void {
-    this.starArray = Array(this.nzCount).fill(0).map((_, i) => i);
+    this.starArray = Array(this.nzCount)
+      .fill(0)
+      .map((_, i) => i);
   }
 
   // #region Implement `ControlValueAccessor`

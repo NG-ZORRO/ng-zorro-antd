@@ -13,8 +13,8 @@ describe('list', () => {
   let dl: DebugElement;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ NzListModule, NzIconTestModule ],
-      declarations: [ TestListComponent, TestListWithTemplateComponent, TestListItemComponent ]
+      imports: [NzListModule, NzIconTestModule],
+      declarations: [TestListComponent, TestListWithTemplateComponent, TestListItemComponent]
     }).compileComponents();
     fixture = TestBed.createComponent(TestListComponent);
     context = fixture.componentInstance;
@@ -23,9 +23,8 @@ describe('list', () => {
   });
 
   describe('[fields]', () => {
-
     describe('#nzItemLayout', () => {
-      for (const item of [ { type: 'default', ret: false }, { type: 'vertical', ret: true } ]) {
+      for (const item of [{ type: 'default', ret: false }, { type: 'vertical', ret: true }]) {
         it(`[${item.type}]`, () => {
           context.nzItemLayout = item.type;
           fixture.detectChanges();
@@ -35,7 +34,7 @@ describe('list', () => {
     });
 
     describe('#nzBordered', () => {
-      for (const value of [ true, false ]) {
+      for (const value of [true, false]) {
         it(`[${value}]`, () => {
           context.nzBordered = value;
           fixture.detectChanges();
@@ -63,13 +62,15 @@ describe('list', () => {
         const fixtureTemp = TestBed.createComponent(TestListWithTemplateComponent);
         fixtureTemp.detectChanges();
         const footerEl = fixtureTemp.debugElement.query(By.css('.ant-list-footer'));
-        expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(fixtureTemp.componentInstance.footer as string);
+        expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(fixtureTemp.componentInstance
+          .footer as string);
       });
       it('change string to template', () => {
         const fixtureTemp = TestBed.createComponent(TestListWithTemplateComponent);
         fixtureTemp.detectChanges();
         const footerEl = fixtureTemp.debugElement.query(By.css('.ant-list-footer'));
-        expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(fixtureTemp.componentInstance.footer as string);
+        expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(fixtureTemp.componentInstance
+          .footer as string);
         (fixtureTemp.debugElement.query(By.css('#change')).nativeElement as HTMLButtonElement).click();
         fixtureTemp.detectChanges();
         expect(fixtureTemp.debugElement.query(By.css('.list-footer')) != null).toBe(true);
@@ -91,7 +92,7 @@ describe('list', () => {
     });
 
     describe('#nzSplit', () => {
-      for (const value of [ true, false ]) {
+      for (const value of [true, false]) {
         it(`[${value}]`, () => {
           context.nzSplit = value;
           fixture.detectChanges();
@@ -101,7 +102,7 @@ describe('list', () => {
     });
 
     describe('#nzLoading', () => {
-      for (const value of [ true, false ]) {
+      for (const value of [true, false]) {
         it(`[${value}]`, () => {
           context.nzLoading = value;
           fixture.detectChanges();
@@ -162,7 +163,9 @@ describe('list', () => {
       expect(fixtureTemp.debugElement.query(By.css('#item-string .ant-list-item-extra')) != null).toBe(true);
     });
     it('with custom template of [nzContent]', () => {
-      expect(fixtureTemp.debugElement.query(By.css('#item-template .ant-list-item-content .item-content')) != null).toBe(true);
+      expect(
+        fixtureTemp.debugElement.query(By.css('#item-template .ant-list-item-content .item-content')) != null
+      ).toBe(true);
     });
   });
 
@@ -183,40 +186,42 @@ describe('list', () => {
       expect(fixtureTemp.debugElement.query(By.css('#item-template .item-avatar')) != null).toBe(true);
     });
   });
-
 });
 
 @Component({
   template: `
-  <nz-list #comp
-    [nzDataSource]="data"
-    [nzItemLayout]="nzItemLayout"
-    [nzBordered]="nzBordered"
-    [nzFooter]="nzFooter"
-    [nzHeader]="nzHeader"
-    [nzLoading]="nzLoading"
-    [nzSize]="nzSize"
-    [nzSplit]="nzSplit"
-    [nzGrid]="nzGrid"
-    [nzRenderItem]="item"
-    [nzLoadMore]="loadMore"
-    [nzPagination]="pagination">
-    <ng-template #item let-item>
-      <nz-list-item>
-        <nz-list-item-meta
-          nzTitle="title"
-          nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-          nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team">
-        </nz-list-item-meta>
-      </nz-list-item>
-    </ng-template>
-    <ng-template #loadMore>
-      <div class="loadmore">loadmore</div>
-    </ng-template>
-    <ng-template #pagination>
-      <div class="pagination">pagination</div>
-    </ng-template>
-  </nz-list>
+    <nz-list
+      #comp
+      [nzDataSource]="data"
+      [nzItemLayout]="nzItemLayout"
+      [nzBordered]="nzBordered"
+      [nzFooter]="nzFooter"
+      [nzHeader]="nzHeader"
+      [nzLoading]="nzLoading"
+      [nzSize]="nzSize"
+      [nzSplit]="nzSplit"
+      [nzGrid]="nzGrid"
+      [nzRenderItem]="item"
+      [nzLoadMore]="loadMore"
+      [nzPagination]="pagination"
+    >
+      <ng-template #item let-item>
+        <nz-list-item>
+          <nz-list-item-meta
+            nzTitle="title"
+            nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+            nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
+          >
+          </nz-list-item-meta>
+        </nz-list-item>
+      </ng-template>
+      <ng-template #loadMore>
+        <div class="loadmore">loadmore</div>
+      </ng-template>
+      <ng-template #pagination>
+        <div class="pagination">pagination</div>
+      </ng-template>
+    </nz-list>
   `
 })
 class TestListComponent {
@@ -235,57 +240,50 @@ class TestListComponent {
     'Japanese princess to wed commoner.'
   ];
   // tslint:disable-next-line:no-any
-  nzGrid: any = {gutter: 16, span: 12};
+  nzGrid: any = { gutter: 16, span: 12 };
 }
 
 @Component({
   template: `
-  <button (click)="footer = nzFooter" id="change">change</button>
-  <nz-list
-    [nzFooter]="footer"
-    [nzHeader]="nzHeader">
-    <ng-template #nzFooter><p class="list-footer">footer</p></ng-template>
-    <ng-template #nzHeader><p class="list-header">header</p></ng-template>
-  </nz-list>
+    <button (click)="footer = nzFooter" id="change">change</button>
+    <nz-list [nzFooter]="footer" [nzHeader]="nzHeader">
+      <ng-template #nzFooter><p class="list-footer">footer</p></ng-template>
+      <ng-template #nzHeader><p class="list-header">header</p></ng-template>
+    </nz-list>
   `
 })
 class TestListWithTemplateComponent {
-
   @ViewChild('nzFooter') nzFooter: TemplateRef<void>;
 
   footer: string | TemplateRef<void> = 'footer with string';
-
 }
 
 @Component({
   template: `
-  <nz-list id="item-string">
-    <nz-list-item [nzContent]="'content'" [nzActions]="[action]" [nzExtra]="extra">
-      <ng-template #action><i nz-icon type="star-o" style="margin-right: 8px;"></i> 156</ng-template>
-      <ng-template #extra>
-        <img width="272" alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png">
-      </ng-template>
-      <nz-list-item-meta
-        nzTitle="title"
-        nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-        nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team">
-      </nz-list-item-meta>
-    </nz-list-item>
-  </nz-list>
-  <nz-list id="item-template">
-    <nz-list-item [nzContent]="nzContent">
-      <ng-template #nzContent><p class="item-content">nzContent</p></ng-template>
-      <nz-list-item-meta
-        [nzTitle]="nzTitle"
-        [nzAvatar]="nzAvatar"
-        [nzDescription]="nzDescription">
-        <ng-template #nzTitle><p class="item-title">nzTitle</p></ng-template>
-        <ng-template #nzAvatar><p class="item-avatar">nzAvatar</p></ng-template>
-        <ng-template #nzDescription><p class="item-desc">nzDescription</p></ng-template>
-      </nz-list-item-meta>
-    </nz-list-item>
-  </nz-list>
+    <nz-list id="item-string">
+      <nz-list-item [nzContent]="'content'" [nzActions]="[action]" [nzExtra]="extra">
+        <ng-template #action><i nz-icon type="star-o" style="margin-right: 8px;"></i> 156</ng-template>
+        <ng-template #extra>
+          <img width="272" alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" />
+        </ng-template>
+        <nz-list-item-meta
+          nzTitle="title"
+          nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+          nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
+        >
+        </nz-list-item-meta>
+      </nz-list-item>
+    </nz-list>
+    <nz-list id="item-template">
+      <nz-list-item [nzContent]="nzContent">
+        <ng-template #nzContent><p class="item-content">nzContent</p></ng-template>
+        <nz-list-item-meta [nzTitle]="nzTitle" [nzAvatar]="nzAvatar" [nzDescription]="nzDescription">
+          <ng-template #nzTitle><p class="item-title">nzTitle</p></ng-template>
+          <ng-template #nzAvatar><p class="item-avatar">nzAvatar</p></ng-template>
+          <ng-template #nzDescription><p class="item-desc">nzDescription</p></ng-template>
+        </nz-list-item-meta>
+      </nz-list-item>
+    </nz-list>
   `
 })
-class TestListItemComponent {
-}
+class TestListItemComponent {}

@@ -7,9 +7,8 @@ import { NzIconModule } from '../icon/nz-icon.module';
 import { NzSwitchComponent } from './nz-switch.component';
 
 @NgModule({
-  exports     : [ NzSwitchComponent ],
-  declarations: [ NzSwitchComponent ],
-  imports     : [ CommonModule, NzWaveModule, NzIconModule, NzAddOnModule ]
+  exports: [NzSwitchComponent],
+  declarations: [NzSwitchComponent],
+  imports: [CommonModule, NzWaveModule, NzIconModule, NzAddOnModule]
 })
-export class NzSwitchModule {
-}
+export class NzSwitchModule {}

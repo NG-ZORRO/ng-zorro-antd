@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 import setMonth from 'date-fns/set_month';
 import { DateHelperService } from '../i18n/date-helper.service';
 import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
@@ -6,10 +14,10 @@ import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector   : 'nz-calendar-header',
+  selector: 'nz-calendar-header',
   templateUrl: './nz-calendar-header.component.html',
-  host       : {
-    '[style.display]'                : `'block'`,
+  host: {
+    '[style.display]': `'block'`,
     '[class.ant-fullcalendar-header]': `true`
   }
 })
@@ -35,8 +43,8 @@ export class NzCalendarHeaderComponent implements OnInit {
   _activeDate = new Date();
   yearOffset: number = 10;
   yearTotal: number = 20;
-  years: Array<{ label: string, value: number }>;
-  months: Array<{ label: string, value: number }>;
+  years: Array<{ label: string; value: number }>;
+  months: Array<{ label: string; value: number }>;
 
   get activeYear(): number {
     return this.activeDate.getFullYear();
@@ -58,8 +66,7 @@ export class NzCalendarHeaderComponent implements OnInit {
     return this.i18n.getLocale().Calendar.month;
   }
 
-  constructor(private i18n: I18n, private dateHelper: DateHelperService) {
-  }
+  constructor(private i18n: I18n, private dateHelper: DateHelperService) {}
 
   ngOnInit(): void {
     this.setUpYears();

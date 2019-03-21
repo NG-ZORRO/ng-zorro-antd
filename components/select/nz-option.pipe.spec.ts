@@ -33,7 +33,7 @@ describe('nz-option pipe', () => {
     });
     it('should return correct value with inputValue', () => {
       const result = pipe.transform(listOfOption, '9', defaultFilterOption, false);
-      expect(result[ 0 ].nzLabel).toBe('label9');
+      expect(result[0].nzLabel).toBe('label9');
       expect(result.length).toBe(1);
     });
     it('should return correct value with null option', () => {
@@ -49,7 +49,7 @@ describe('nz-option pipe', () => {
         }
       };
       const result = pipe.transform(listOfOption, '9', filterOption, false);
-      expect(result[ 0 ].nzLabel).toBe('label8');
+      expect(result[0].nzLabel).toBe('label8');
       expect(result.length).toBe(1);
     });
     it('should return correct value without inputValue', () => {
@@ -67,13 +67,13 @@ describe('nz-option pipe', () => {
     beforeEach(() => {
       pipe = new NzFilterGroupOptionPipe();
       listOfGroupOption = [
-        generateGroupOption('g1', [ generateOption('a', 'a'), generateOption('b', 'b') ]),
-        generateGroupOption('g2', [ generateOption('b', 'b'), generateOption('c', 'c') ])
+        generateGroupOption('g1', [generateOption('a', 'a'), generateOption('b', 'b')]),
+        generateGroupOption('g2', [generateOption('b', 'b'), generateOption('c', 'c')])
       ];
     });
     it('should return correct value with inputValue', () => {
       const result01 = pipe.transform(listOfGroupOption, 'a', defaultFilterOption, false);
-      expect(result01[ 0 ].nzLabel).toBe('g1');
+      expect(result01[0].nzLabel).toBe('g1');
       expect(result01.length).toBe(1);
       const result02 = pipe.transform(listOfGroupOption, 'b', defaultFilterOption, false);
       expect(result02.length).toBe(2);
@@ -87,7 +87,7 @@ describe('nz-option pipe', () => {
         }
       };
       const result = pipe.transform(listOfGroupOption, 'a', filterOption, false);
-      expect(result[ 0 ].nzLabel).toBe('g2');
+      expect(result[0].nzLabel).toBe('g2');
       expect(result.length).toBe(1);
     });
     it('should return correct value without inputValue', () => {

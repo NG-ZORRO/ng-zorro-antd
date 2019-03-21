@@ -14,6 +14,4 @@ import { Component } from '@angular/core';
     </ng-template>
   `
 })
-
-export class NzDemoTimelineCustomComponent {
-}
+export class NzDemoTimelineCustomComponent {}

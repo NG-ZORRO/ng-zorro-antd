@@ -48,8 +48,8 @@ import { Component } from '@angular/core';
       </nz-dropdown>
     </div>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       nz-dropdown-button {
         margin-right: 8px;
       }

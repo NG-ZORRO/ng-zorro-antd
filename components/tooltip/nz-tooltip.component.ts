@@ -28,22 +28,24 @@ import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
-  selector           : 'nz-tooltip',
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  animations         : [ zoomBigMotion ],
-  templateUrl        : './nz-tooltip.component.html',
+  selector: 'nz-tooltip',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  animations: [zoomBigMotion],
+  templateUrl: './nz-tooltip.component.html',
   preserveWhitespaces: false,
-  styles             : [ `
-    .ant-tooltip {
-      position: relative;
-    }
-  ` ]
+  styles: [
+    `
+      .ant-tooltip {
+        position: relative;
+      }
+    `
+  ]
 })
 export class NzToolTipComponent implements OnChanges {
   _hasBackdrop = false;
   _prefix = 'ant-tooltip-placement';
-  _positions: ConnectionPositionPair[] = [ ...DEFAULT_TOOLTIP_POSITIONS ];
+  _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
   _classMap = {};
   _placement = 'top';
   _trigger = 'hover';
@@ -53,7 +55,7 @@ export class NzToolTipComponent implements OnChanges {
   @ViewChild('overlay') overlay: CdkConnectedOverlay;
   @Input() @ContentChild('nzTemplate') nzTitle: string | TemplateRef<void>;
   @Input() nzOverlayClassName = '';
-  @Input() nzOverlayStyle: { [ key: string ]: string } = {};
+  @Input() nzOverlayStyle: { [key: string]: string } = {};
   @Input() nzMouseEnterDelay = 0.15; // second
   @Input() nzMouseLeaveDelay = 0.1; // second
 
@@ -84,7 +86,7 @@ export class NzToolTipComponent implements OnChanges {
   set nzPlacement(value: string) {
     if (value !== this._placement) {
       this._placement = value;
-      this._positions = [ POSITION_MAP[ this.nzPlacement ], ...this._positions ];
+      this._positions = [POSITION_MAP[this.nzPlacement], ...this._positions];
     }
   }
 
@@ -94,10 +96,9 @@ export class NzToolTipComponent implements OnChanges {
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  [ property: string ]: any // tslint:disable-line:no-any
+  [property: string]: any; // tslint:disable-line:no-any
 
-  constructor(public cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
-  }
+  constructor(public cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {}
 
   ngOnChanges(): void {
     Promise.resolve().then(() => {
@@ -139,8 +140,8 @@ export class NzToolTipComponent implements OnChanges {
 
   setClassMap(): void {
     this._classMap = {
-      [ this.nzOverlayClassName ]             : true,
-      [ `${this._prefix}-${this._placement}` ]: true
+      [this.nzOverlayClassName]: true,
+      [`${this._prefix}-${this._placement}`]: true
     };
   }
 
@@ -149,6 +150,6 @@ export class NzToolTipComponent implements OnChanges {
   }
 
   protected isContentEmpty(): boolean {
-    return this.nzTitle instanceof TemplateRef ? false : (this.nzTitle === '' || !isNotNil(this.nzTitle));
+    return this.nzTitle instanceof TemplateRef ? false : this.nzTitle === '' || !isNotNil(this.nzTitle);
   }
 }

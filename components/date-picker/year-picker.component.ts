@@ -19,24 +19,31 @@ import { DateHelperService } from '../i18n/date-helper.service';
 import { HeaderPickerComponent, SupportHeaderPanel } from './header-picker.component';
 
 @Component({
-  encapsulation  : ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector       : 'nz-year-picker',
-  templateUrl    : './header-picker.component.html',
-  providers      : [ {
-    provide    : NG_VALUE_ACCESSOR,
-    multi      : true,
-    useExisting: forwardRef(() => NzYearPickerComponent)
-  } ]
+  selector: 'nz-year-picker',
+  templateUrl: './header-picker.component.html',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: forwardRef(() => NzYearPickerComponent)
+    }
+  ]
 })
-
 export class NzYearPickerComponent extends HeaderPickerComponent {
   @Input() nzFormat: string = 'yyyy';
 
   endPanelMode: SupportHeaderPanel = 'year';
 
-  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, dateHelper: DateHelperService, renderer: Renderer2, elementRef: ElementRef,
-              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+  constructor(
+    i18n: NzI18nService,
+    cdr: ChangeDetectorRef,
+    dateHelper: DateHelperService,
+    renderer: Renderer2,
+    elementRef: ElementRef,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+  ) {
     super(i18n, cdr, dateHelper, noAnimation);
     renderer.addClass(elementRef.nativeElement, 'ant-calendar-picker');
   }

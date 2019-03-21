@@ -1,7 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component } from '@angular/core';
-import { async, fakeAsync, flush, ComponentFixture , TestBed } from '@angular/core/testing';
+import { async, fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,11 +15,7 @@ registerLocaleData(zh);
 describe('Calendar', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        NzCalendarModule,
-        NoopAnimationsModule
-      ],
+      imports: [FormsModule, NzCalendarModule, NoopAnimationsModule],
       declarations: [
         NzTestCalendarModeComponent,
         NzTestCalendarValueComponent,
@@ -30,7 +26,7 @@ describe('Calendar', () => {
         NzTestCalendarMonthFullCellComponent,
         NzTestCalendarChangesComponent
       ],
-      providers: [ { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } } ]
+      providers: [{ provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } }]
     }).compileComponents();
   }));
 
@@ -46,8 +42,10 @@ describe('Calendar', () => {
     it('should be month by default', () => {
       fixture.detectChanges();
 
-      const header = fixture.debugElement.queryAll(By.directive(Calendar))[0]
-        .query(By.directive(CalendarHeader)).injector.get(CalendarHeader);
+      const header = fixture.debugElement
+        .queryAll(By.directive(Calendar))[0]
+        .query(By.directive(CalendarHeader))
+        .injector.get(CalendarHeader);
       expect(header.mode).toBe('month');
     });
 
@@ -56,14 +54,18 @@ describe('Calendar', () => {
 
       fixture.detectChanges();
 
-      const header = fixture.debugElement.queryAll(By.directive(Calendar))[1]
-        .query(By.directive(CalendarHeader)).injector.get(CalendarHeader);
+      const header = fixture.debugElement
+        .queryAll(By.directive(Calendar))[1]
+        .query(By.directive(CalendarHeader))
+        .injector.get(CalendarHeader);
       expect(header.mode).toBe('year');
     });
 
     it('should emit change event for mode selection', () => {
-      const header = fixture.debugElement.queryAll(By.directive(Calendar))[1]
-        .query(By.directive(CalendarHeader)).injector.get(CalendarHeader);
+      const header = fixture.debugElement
+        .queryAll(By.directive(Calendar))[1]
+        .query(By.directive(CalendarHeader))
+        .injector.get(CalendarHeader);
       header.modeChange.emit('year');
 
       fixture.detectChanges();
@@ -418,7 +420,6 @@ describe('Calendar', () => {
       expect(component.selectChange).toHaveBeenCalledTimes(2);
     });
   });
-
 });
 
 @Component({
@@ -428,7 +429,7 @@ describe('Calendar', () => {
   `
 })
 class NzTestCalendarModeComponent {
-  mode: 'month'|'year' = 'month';
+  mode: 'month' | 'year' = 'month';
 }
 
 @Component({
@@ -467,7 +468,7 @@ class NzTestCalendarFullscreenComponent {
     </nz-calendar>
   `
 })
-class NzTestCalendarDateCellComponent { }
+class NzTestCalendarDateCellComponent {}
 
 @Component({
   template: `
@@ -478,7 +479,7 @@ class NzTestCalendarDateCellComponent { }
     </nz-calendar>
   `
 })
-class NzTestCalendarDateFullCellComponent { }
+class NzTestCalendarDateFullCellComponent {}
 
 @Component({
   template: `
@@ -489,7 +490,7 @@ class NzTestCalendarDateFullCellComponent { }
     </nz-calendar>
   `
 })
-class NzTestCalendarMonthCellComponent { }
+class NzTestCalendarMonthCellComponent {}
 
 @Component({
   template: `
@@ -500,7 +501,7 @@ class NzTestCalendarMonthCellComponent { }
     </nz-calendar>
   `
 })
-class NzTestCalendarMonthFullCellComponent { }
+class NzTestCalendarMonthFullCellComponent {}
 
 @Component({
   template: `
@@ -508,12 +509,13 @@ class NzTestCalendarMonthFullCellComponent { }
       [(nzMode)]="mode"
       [(ngModel)]="date0"
       (nzPanelChange)="panelChange($event)"
-      (nzSelectChange)="selectChange($event)">
+      (nzSelectChange)="selectChange($event)"
+    >
     </nz-calendar>
   `
 })
 class NzTestCalendarChangesComponent {
-  mode: 'month'|'year' = 'month';
+  mode: 'month' | 'year' = 'month';
   date0 = new Date(2014, 3, 14);
   panelChange = jasmine.createSpy('panelChange callback');
   selectChange = jasmine.createSpy('selectChange callback');

@@ -5,9 +5,10 @@ import { Component } from '@angular/core';
   template: `
     <nz-spin nzSimple [nzSize]="'small'"></nz-spin>
     <nz-spin nzSimple></nz-spin>
-    <nz-spin nzSimple [nzSize]="'large'"></nz-spin>`,
-  styles  : [
-      `
+    <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+  `,
+  styles: [
+    `
       nz-spin {
         display: inline-block;
         margin-right: 16px;
@@ -15,5 +16,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoSpinSizeComponent {
-}
+export class NzDemoSpinSizeComponent {}

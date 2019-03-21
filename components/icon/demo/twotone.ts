@@ -9,12 +9,13 @@ import { Component } from '@angular/core';
       <i nz-icon [nzType]="'check-circle'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#52c41a'"></i>
     </div>
   `,
-  styles  : [ `
-    .icons-list > .anticon {
-      margin-right: 6px;
-      font-size: 24px;
-    }
-  ` ]
+  styles: [
+    `
+      .icons-list > .anticon {
+        margin-right: 6px;
+        font-size: 24px;
+      }
+    `
+  ]
 })
-export class NzDemoIconTwotoneComponent {
-}
+export class NzDemoIconTwotoneComponent {}

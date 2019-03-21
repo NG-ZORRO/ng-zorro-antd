@@ -15,10 +15,15 @@ import { NzDropDownComponent } from './nz-dropdown.component';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 
 @NgModule({
-  imports        : [ CommonModule, OverlayModule, FormsModule, NzButtonModule, NzMenuModule, NzIconModule, NzNoAnimationModule ],
-  entryComponents: [ NzDropdownContextComponent ],
-  declarations   : [ NzDropDownComponent, NzDropDownButtonComponent, NzDropDownDirective, NzDropDownADirective, NzDropdownContextComponent ],
-  exports        : [ NzDropDownComponent, NzDropDownButtonComponent, NzDropDownDirective, NzDropDownADirective ]
+  imports: [CommonModule, OverlayModule, FormsModule, NzButtonModule, NzMenuModule, NzIconModule, NzNoAnimationModule],
+  entryComponents: [NzDropdownContextComponent],
+  declarations: [
+    NzDropDownComponent,
+    NzDropDownButtonComponent,
+    NzDropDownDirective,
+    NzDropDownADirective,
+    NzDropdownContextComponent
+  ],
+  exports: [NzDropDownComponent, NzDropDownButtonComponent, NzDropDownDirective, NzDropDownADirective]
 })
-export class NzDropDownModule {
-}
+export class NzDropDownModule {}

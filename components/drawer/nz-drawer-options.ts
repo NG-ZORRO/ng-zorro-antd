@@ -10,7 +10,7 @@ export interface NzDrawerOptions<T = any, D = any> {
   nzMask?: boolean;
   nzNoAnimation?: boolean;
   nzTitle?: string | TemplateRef<{}>;
-  nzContent?: TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef }> | Type<T>;
+  nzContent?: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef }> | Type<T>;
   nzContentParams?: D;
   nzMaskStyle?: object;
   nzBodyStyle?: object;

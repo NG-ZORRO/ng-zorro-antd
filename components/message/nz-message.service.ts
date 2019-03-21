@@ -1,5 +1,13 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { ApplicationRef, ComponentFactoryResolver, EmbeddedViewRef, Injectable, Injector, TemplateRef, Type } from '@angular/core';
+import {
+  ApplicationRef,
+  ComponentFactoryResolver,
+  EmbeddedViewRef,
+  Injectable,
+  Injector,
+  TemplateRef,
+  Type
+} from '@angular/core';
 
 import { NzMessageConfig } from './nz-message-config';
 import { NzMessageContainerComponent } from './nz-message-container.component';
@@ -64,7 +72,7 @@ export class NzMessageBaseService<
     this.appRef.attachView(componentRef.hostView); // Load view into app root
     const overlayPane = this.overlay.create().overlayElement;
     overlayPane.style.zIndex = '1010'; // Patching: assign the same zIndex of ant-message to it's parent overlay panel, to the ant-message's zindex work.
-    overlayPane.appendChild((componentRef.hostView as EmbeddedViewRef<{}>).rootNodes[ 0 ] as HTMLElement);
+    overlayPane.appendChild((componentRef.hostView as EmbeddedViewRef<{}>).rootNodes[0] as HTMLElement);
 
     return componentRef.instance;
   }
@@ -73,14 +81,12 @@ export class NzMessageBaseService<
 @Injectable({
   providedIn: 'root'
 })
-export class NzMessageService extends NzMessageBaseService<NzMessageContainerComponent, NzMessageData, NzMessageConfig> {
-
-  constructor(
-    overlay: Overlay,
-    injector: Injector,
-    cfr: ComponentFactoryResolver,
-    appRef: ApplicationRef) {
-
+export class NzMessageService extends NzMessageBaseService<
+  NzMessageContainerComponent,
+  NzMessageData,
+  NzMessageConfig
+> {
+  constructor(overlay: Overlay, injector: Injector, cfr: ComponentFactoryResolver, appRef: ApplicationRef) {
     super(overlay, NzMessageContainerComponent, injector, cfr, appRef, 'message-');
   }
 

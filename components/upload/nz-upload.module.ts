@@ -12,8 +12,8 @@ import { NzUploadListComponent } from './nz-upload-list.component';
 import { NzUploadComponent } from './nz-upload.component';
 
 @NgModule({
-  imports:      [CommonModule, FormsModule, NzToolTipModule, NzProgressModule, NzI18nModule, NzIconModule],
+  imports: [CommonModule, FormsModule, NzToolTipModule, NzProgressModule, NzI18nModule, NzIconModule],
   declarations: [NzUploadComponent, NzUploadBtnComponent, NzUploadListComponent],
-  exports:      [NzUploadComponent]
+  exports: [NzUploadComponent]
 })
-export class NzUploadModule { }
+export class NzUploadModule {}

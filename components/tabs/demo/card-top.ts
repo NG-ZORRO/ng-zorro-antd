@@ -13,10 +13,10 @@ import { Component } from '@angular/core';
       </nz-tabset>
     </div>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       :host {
-        background: #F5F5F5;
+        background: #f5f5f5;
         overflow: hidden;
         padding: 24px;
         display: block;
@@ -49,5 +49,5 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoTabsCardTopComponent {
-  tabs = [ 1, 2, 3 ];
+  tabs = [1, 2, 3];
 }

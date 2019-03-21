@@ -193,7 +193,7 @@ export class NzTreeBaseService implements OnDestroy {
       }
     } else {
       if (node.isSelected && index === -1) {
-        this.selectedNodeList = [ node ];
+        this.selectedNodeList = [node];
       }
     }
     index = this.selectedNodeList.findIndex(n => node.key === n.key);
@@ -427,7 +427,7 @@ export class NzTreeBaseService implements OnDestroy {
       // until root
       this.conductUp(node);
     } else {
-      node.children.forEach((child) => {
+      node.children.forEach(child => {
         this.refreshDragNode(child);
       });
     }
@@ -482,14 +482,14 @@ export class NzTreeBaseService implements OnDestroy {
     }
     switch (dragPos) {
       case 0:
-        targetNode.addChildren([ this.selectedNode ]);
+        targetNode.addChildren([this.selectedNode]);
         this.resetNodeLevel(targetNode);
         break;
       case -1:
       case 1:
         const tIndex = dragPos === 1 ? 1 : 0;
         if (targetParent) {
-          targetParent.addChildren([ this.selectedNode ], targetParent.children.indexOf(targetNode) + tIndex);
+          targetParent.addChildren([this.selectedNode], targetParent.children.indexOf(targetNode) + tIndex);
           const parent = this.selectedNode.getParentNode();
           if (parent) {
             this.resetNodeLevel(parent);
@@ -498,13 +498,13 @@ export class NzTreeBaseService implements OnDestroy {
           const targetIndex = this.rootNodes.indexOf(targetNode) + tIndex;
           // 根节点插入
           this.rootNodes.splice(targetIndex, 0, this.selectedNode!);
-          this.rootNodes[ targetIndex ].parentNode = undefined;
-          this.rootNodes[ targetIndex ].level = 0;
+          this.rootNodes[targetIndex].parentNode = undefined;
+          this.rootNodes[targetIndex].level = 0;
         }
         break;
     }
     // flush all nodes
-    this.rootNodes.forEach((child) => {
+    this.rootNodes.forEach(child => {
       if (!child.treeService) {
         child.service = treeService || undefined;
       }
@@ -521,9 +521,9 @@ export class NzTreeBaseService implements OnDestroy {
    */
   formatEvent(eventName: string, node?: NzTreeNode, event?: MouseEvent | DragEvent): NzFormatEmitEvent {
     const emitStructure = {
-      'eventName': eventName,
-      'node'     : node || undefined,
-      'event'    : event || undefined
+      eventName,
+      node: node || undefined,
+      event: event || undefined
     };
     switch (eventName) {
       case 'dragstart':
@@ -532,29 +532,29 @@ export class NzTreeBaseService implements OnDestroy {
       case 'dragleave':
       case 'drop':
       case 'dragend':
-        Object.assign(emitStructure, { 'dragNode': this.getSelectedNode() });
+        Object.assign(emitStructure, { dragNode: this.getSelectedNode() });
         break;
       case 'click':
       case 'dblclick':
-        Object.assign(emitStructure, { 'selectedKeys': this.selectedNodeList });
-        Object.assign(emitStructure, { 'nodes': this.selectedNodeList });
-        Object.assign(emitStructure, { 'keys': this.selectedNodeList.map(n => n.key) });
+        Object.assign(emitStructure, { selectedKeys: this.selectedNodeList });
+        Object.assign(emitStructure, { nodes: this.selectedNodeList });
+        Object.assign(emitStructure, { keys: this.selectedNodeList.map(n => n.key) });
         break;
       case 'check':
         const checkedNodeList = this.getCheckedNodeList();
 
-        Object.assign(emitStructure, { 'checkedKeys': checkedNodeList });
-        Object.assign(emitStructure, { 'nodes': checkedNodeList });
-        Object.assign(emitStructure, { 'keys': checkedNodeList.map(n => n.key) });
+        Object.assign(emitStructure, { checkedKeys: checkedNodeList });
+        Object.assign(emitStructure, { nodes: checkedNodeList });
+        Object.assign(emitStructure, { keys: checkedNodeList.map(n => n.key) });
         break;
       case 'search':
-        Object.assign(emitStructure, { 'matchedKeys': this.getMatchedNodeList() });
-        Object.assign(emitStructure, { 'nodes': this.getMatchedNodeList() });
-        Object.assign(emitStructure, { 'keys': this.getMatchedNodeList().map(n => n.key) });
+        Object.assign(emitStructure, { matchedKeys: this.getMatchedNodeList() });
+        Object.assign(emitStructure, { nodes: this.getMatchedNodeList() });
+        Object.assign(emitStructure, { keys: this.getMatchedNodeList().map(n => n.key) });
         break;
       case 'expand':
-        Object.assign(emitStructure, { 'nodes': this.expandedNodeList });
-        Object.assign(emitStructure, { 'keys': this.expandedNodeList.map(n => n.key) });
+        Object.assign(emitStructure, { nodes: this.expandedNodeList });
+        Object.assign(emitStructure, { keys: this.expandedNodeList.map(n => n.key) });
         break;
     }
     return emitStructure;
@@ -564,5 +564,4 @@ export class NzTreeBaseService implements OnDestroy {
     this.triggerEventChange$!.complete();
     this.triggerEventChange$ = null;
   }
-
 }

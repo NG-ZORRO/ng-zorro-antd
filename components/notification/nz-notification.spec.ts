@@ -27,15 +27,15 @@ describe('NzNotification', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzNotificationModule, NoopAnimationsModule ],
-      declarations: [ DemoAppComponent ],
-      providers   : [ { provide: NZ_NOTIFICATION_CONFIG, useValue: { nzMaxStack: 2 } } ] // Override default config
+      imports: [NzNotificationModule, NoopAnimationsModule],
+      declarations: [DemoAppComponent],
+      providers: [{ provide: NZ_NOTIFICATION_CONFIG, useValue: { nzMaxStack: 2 } }] // Override default config
     });
 
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([ NzNotificationService, OverlayContainer ], (n: NzNotificationService, oc: OverlayContainer) => {
+  beforeEach(inject([NzNotificationService, OverlayContainer], (n: NzNotificationService, oc: OverlayContainer) => {
     notificationService = n;
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
@@ -49,45 +49,45 @@ describe('NzNotification', () => {
     fixture = TestBed.createComponent(DemoAppComponent);
   });
 
-  it('should open a message box with success', (() => {
+  it('should open a message box with success', () => {
     notificationService.success('test-title', 'SUCCESS');
     fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-success')).not.toBeNull();
-  }));
+  });
 
-  it('should open a message box with error', (() => {
+  it('should open a message box with error', () => {
     notificationService.error('test-title', 'ERROR');
     fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('ERROR');
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-error')).not.toBeNull();
-  }));
+  });
 
-  it('should open a message box with warning', (() => {
+  it('should open a message box with warning', () => {
     notificationService.warning('test-title', 'WARNING');
     fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('WARNING');
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-warning')).not.toBeNull();
-  }));
+  });
 
-  it('should open a message box with info', (() => {
+  it('should open a message box with info', () => {
     notificationService.info('test-title', 'INFO');
     fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('INFO');
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-info')).not.toBeNull();
-  }));
+  });
 
-  it('should open a message box with blank', (() => {
+  it('should open a message box with blank', () => {
     notificationService.blank('test-title', 'BLANK');
     fixture.detectChanges();
 
     expect(overlayContainerElement.textContent).toContain('BLANK');
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon')).toBeNull();
-  }));
+  });
 
   it('should auto closed by 1s', fakeAsync(() => {
     notificationService.create('', '', 'EXISTS', { nzDuration: 1000 });
@@ -126,7 +126,7 @@ describe('NzNotification', () => {
   }));
 
   it('should keep the balance of messages length and then remove all', fakeAsync(() => {
-    [ 1, 2, 3 ].forEach(id => {
+    [1, 2, 3].forEach(id => {
       const content = `SUCCESS-${id}`;
       notificationService.success('', content);
       fixture.detectChanges();

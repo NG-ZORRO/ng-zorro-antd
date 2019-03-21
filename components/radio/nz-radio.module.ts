@@ -7,9 +7,8 @@ import { NzRadioGroupComponent } from './nz-radio-group.component';
 import { NzRadioComponent } from './nz-radio.component';
 
 @NgModule({
-  imports     : [ CommonModule, FormsModule ],
-  exports     : [ NzRadioComponent, NzRadioButtonComponent, NzRadioGroupComponent ],
-  declarations: [ NzRadioComponent, NzRadioButtonComponent, NzRadioGroupComponent ]
+  imports: [CommonModule, FormsModule],
+  exports: [NzRadioComponent, NzRadioButtonComponent, NzRadioGroupComponent],
+  declarations: [NzRadioComponent, NzRadioButtonComponent, NzRadioGroupComponent]
 })
-export class NzRadioModule {
-}
+export class NzRadioModule {}
