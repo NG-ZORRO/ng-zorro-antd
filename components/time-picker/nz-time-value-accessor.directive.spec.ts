@@ -15,8 +15,8 @@ registerLocaleData(zh);
 describe('input-time', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ FormsModule, NzI18nModule ],
-      declarations: [ NzTimeValueAccessorDirective, NzTestTimeInputComponent ]
+      imports: [FormsModule, NzI18nModule],
+      declarations: [NzTimeValueAccessorDirective, NzTestTimeInputComponent]
     });
     TestBed.compileComponents();
   }));
@@ -66,7 +66,9 @@ describe('input-time', () => {
 
 @Component({
   selector: 'nz-test-time-input',
-  template: `<input [(ngModel)]="value" [nzTime]="'HH:mm:ss'">`
+  template: `
+    <input [(ngModel)]="value" [nzTime]="'HH:mm:ss'" />
+  `
 })
 export class NzTestTimeInputComponent {
   @ViewChild(NzTimeValueAccessorDirective) nzTimeValueAccessorDirective: NzTimeValueAccessorDirective;

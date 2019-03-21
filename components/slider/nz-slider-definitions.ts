@@ -6,7 +6,7 @@ export interface MarkObj {
 }
 
 export class Marks {
-  [ key: number ]: Mark;
+  [key: number]: Mark;
 }
 
 /**

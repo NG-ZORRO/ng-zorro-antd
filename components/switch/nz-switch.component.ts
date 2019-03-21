@@ -18,25 +18,27 @@ import { NzSizeDSType } from '../core/types/size';
 import { InputBoolean } from '../core/util/convert';
 
 @Component({
-  selector           : 'nz-switch',
+  selector: 'nz-switch',
   preserveWhitespaces: false,
-  templateUrl        : './nz-switch.component.html',
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  providers          : [
+  templateUrl: './nz-switch.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  providers: [
     {
-      provide    : NG_VALUE_ACCESSOR,
+      provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzSwitchComponent),
-      multi      : true
+      multi: true
     }
   ],
-  host               : {
+  host: {
     '(click)': 'hostClick($event)'
   },
-  styles             : [ `
-    nz-switch {
-      display: inline-block;
-    }`
+  styles: [
+    `
+      nz-switch {
+        display: inline-block;
+      }
+    `
   ]
 })
 export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit {
@@ -88,8 +90,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit {
     this.switchElement.nativeElement.blur();
   }
 
-  constructor(private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
-  }
+  constructor(private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {}
 
   ngAfterViewInit(): void {
     this.focusMonitor.monitor(this.switchElement.nativeElement, true).subscribe(focusOrigin => {

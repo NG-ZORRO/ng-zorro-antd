@@ -29,11 +29,11 @@ interface Section {
 const sharpMatcherRegx = /#([^#]+)$/;
 
 @Component({
-  selector           : 'nz-anchor',
+  selector: 'nz-anchor',
   preserveWhitespaces: false,
-  templateUrl        : './nz-anchor.component.html',
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush
+  templateUrl: './nz-anchor.component.html',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   @ViewChild('ink') private ink: ElementRef;
@@ -75,8 +75,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   private destroyed = false;
 
   /* tslint:disable-next-line:no-any */
-  constructor(private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any, private cdr: ChangeDetectorRef) {
-  }
+  constructor(private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any, private cdr: ChangeDetectorRef) {}
 
   registerLink(link: NzAnchorLinkComponent): void {
     this.links.push(link);
@@ -102,7 +101,10 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   private registerScrollEvent(): void {
     this.removeListen();
     this.scroll$ = fromEvent(this.getTarget(), 'scroll')
-      .pipe(throttleTime(50), distinctUntilChanged())
+      .pipe(
+        throttleTime(50),
+        distinctUntilChanged()
+      )
       .subscribe(() => this.handleScroll());
     // 浏览器在刷新时保持滚动位置，会倒置在dom未渲染完成时计算不正确，因此延迟重新计算
     // 与之相对应可能会引起组件移除后依然触发 `handleScroll` 的 `detectChanges`
@@ -138,7 +140,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
       if (!sharpLinkMatch) {
         return;
       }
-      const target = this.doc.getElementById(sharpLinkMatch[ 1 ]);
+      const target = this.doc.getElementById(sharpLinkMatch[1]);
       if (target && this.getOffsetTop(target) < scope) {
         const top = this.getOffsetTop(target);
         sections.push({
@@ -153,7 +155,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
       this.clearActive();
       this.cdr.detectChanges();
     } else {
-      const maxSection = sections.reduce((prev, curr) => curr.top > prev.top ? curr : prev);
+      const maxSection = sections.reduce((prev, curr) => (curr.top > prev.top ? curr : prev));
       this.handleActive(maxSection.comp);
     }
   }
@@ -171,7 +173,9 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
     comp.active = true;
     comp.markForCheck();
 
-    const linkNode = (comp.elementRef.nativeElement as HTMLDivElement).querySelector('.ant-anchor-link-title') as HTMLElement;
+    const linkNode = (comp.elementRef.nativeElement as HTMLDivElement).querySelector(
+      '.ant-anchor-link-title'
+    ) as HTMLElement;
     this.ink.nativeElement.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
     this.cdr.detectChanges();
 
@@ -194,5 +198,4 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
     });
     this.nzClick.emit(linkComp.nzHref);
   }
-
 }

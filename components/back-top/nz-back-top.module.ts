@@ -6,10 +6,9 @@ import { SCROLL_SERVICE_PROVIDER } from '../core/scroll/nz-scroll.service';
 import { NzBackTopComponent } from './nz-back-top.component';
 
 @NgModule({
-  declarations: [ NzBackTopComponent ],
-  exports     : [ NzBackTopComponent ],
-  imports     : [ CommonModule ],
-  providers   : [ SCROLL_SERVICE_PROVIDER ]
+  declarations: [NzBackTopComponent],
+  exports: [NzBackTopComponent],
+  imports: [CommonModule],
+  providers: [SCROLL_SERVICE_PROVIDER]
 })
-export class NzBackTopModule {
-}
+export class NzBackTopModule {}

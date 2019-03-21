@@ -13,33 +13,28 @@ import { InputBoolean } from '../core/util/convert';
 import { scrollIntoView } from '../core/util/scroll-into-view-if-needed';
 
 export class NzOptionSelectionChange {
-  constructor(
-    public source: NzAutocompleteOptionComponent,
-    public isUserInput: boolean = false
-  ) {
-  }
+  constructor(public source: NzAutocompleteOptionComponent, public isUserInput: boolean = false) {}
 }
 
 @Component({
-  selector           : 'nz-auto-option',
+  selector: 'nz-auto-option',
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  templateUrl        : './nz-autocomplete-option.component.html',
-  host               : {
-    'role'                                          : 'menuitem',
-    'class'                                         : 'ant-select-dropdown-menu-item',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './nz-autocomplete-option.component.html',
+  host: {
+    role: 'menuitem',
+    class: 'ant-select-dropdown-menu-item',
     '[class.ant-select-dropdown-menu-item-selected]': 'selected',
-    '[class.ant-select-dropdown-menu-item-active]'  : 'active',
+    '[class.ant-select-dropdown-menu-item-active]': 'active',
     '[class.ant-select-dropdown-menu-item-disabled]': 'nzDisabled',
-    '[attr.aria-selected]'                          : 'selected.toString()',
-    '[attr.aria-disabled]'                          : 'nzDisabled.toString()',
-    '(click)'                                       : 'selectViaInteraction()',
-    '(mousedown)'                                   : '$event.preventDefault()'
+    '[attr.aria-selected]': 'selected.toString()',
+    '[attr.aria-disabled]': 'nzDisabled.toString()',
+    '(click)': 'selectViaInteraction()',
+    '(mousedown)': '$event.preventDefault()'
   }
 })
 export class NzAutocompleteOptionComponent {
-
   /* tslint:disable-next-line:no-any */
   @Input() nzValue: any;
   @Input() nzLabel: string;
@@ -49,8 +44,7 @@ export class NzAutocompleteOptionComponent {
   active = false;
   selected = false;
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private element: ElementRef) {
-  }
+  constructor(private changeDetectorRef: ChangeDetectorRef, private element: ElementRef) {}
 
   select(): void {
     this.selected = true;
@@ -105,5 +99,4 @@ export class NzAutocompleteOptionComponent {
   private emitSelectionChangeEvent(isUserInput: boolean = false): void {
     this.selectionChange.emit(new NzOptionSelectionChange(this, isUserInput));
   }
-
 }

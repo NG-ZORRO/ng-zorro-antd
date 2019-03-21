@@ -13,27 +13,23 @@ describe('nz-select top control', () => {
   beforeEach(fakeAsync(() => {
     let nzSelectServiceStub: Partial<NzSelectService>;
     nzSelectServiceStub = {
-      check$                    : new Subject(),
-      listOfSelectedValue$      : new Subject(),
-      open$                     : new Subject(),
-      clearInput$               : new Subject(),
-      listOfSelectedValue       : [ 1, 2, 3 ],
+      check$: new Subject(),
+      listOfSelectedValue$: new Subject(),
+      open$: new Subject(),
+      clearInput$: new Subject(),
+      listOfSelectedValue: [1, 2, 3],
       listOfCachedSelectedOption: createListOfOption(10),
-      isMultipleOrTags          : true,
-      removeValueFormSelected   : () => {
-      },
-      tokenSeparate             : () => {
-      },
-      updateSearchValue         : () => {
-      },
-      updateListOfSelectedValue : () => {
-      },
-      compareWith               : (o1, o2) => o1 === o2
+      isMultipleOrTags: true,
+      removeValueFormSelected: () => {},
+      tokenSeparate: () => {},
+      updateSearchValue: () => {},
+      updateListOfSelectedValue: () => {},
+      compareWith: (o1, o2) => o1 === o2
     };
     TestBed.configureTestingModule({
-      providers   : [ { provide: NzSelectService, useValue: nzSelectServiceStub } ],
-      imports     : [ NzSelectModule, NoopAnimationsModule ],
-      declarations: [ NzTestSelectTopControlComponent ]
+      providers: [{ provide: NzSelectService, useValue: nzSelectServiceStub }],
+      imports: [NzSelectModule, NoopAnimationsModule],
+      declarations: [NzTestSelectTopControlComponent]
     });
     TestBed.compileComponents();
   }));
@@ -169,12 +165,12 @@ describe('nz-select top control', () => {
       expect(removeSpy).toHaveBeenCalledTimes(1);
     });
   });
-
 });
 
 @Component({
   template: `
-    <div nz-select-top-control
+    <div
+      nz-select-top-control
       *ngIf="!destroy"
       [nzOpen]="open"
       [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
@@ -187,8 +183,8 @@ describe('nz-select top control', () => {
       [nzClearIcon]="nzClearIcon"
       [nzRemoveIcon]="nzRemoveIcon"
       [nzShowSearch]="nzShowSearch"
-      [nzTokenSeparators]="nzTokenSeparators">
-    </div>
+      [nzTokenSeparators]="nzTokenSeparators"
+    ></div>
     <ng-template #nzMaxTagPlaceholder>nzMaxTagPlaceholder</ng-template>
     <ng-template #nzSuffixIcon>nzSuffixIcon</ng-template>
     <ng-template #nzClearIcon>nzClearIcon</ng-template>
@@ -204,5 +200,5 @@ export class NzTestSelectTopControlComponent {
   nzShowArrow = true;
   nzLoading = false;
   nzShowSearch = false;
-  nzTokenSeparators = [ ',' ];
+  nzTokenSeparators = [','];
 }

@@ -16,26 +16,26 @@ import { Component, OnInit } from '@angular/core';
         <tr *ngFor="let data of editRowTable.data">
           <td>
             <ng-container *ngIf="!editCache[data.id].edit; else nameInputTpl">
-              {{data.name}}
+              {{ data.name }}
             </ng-container>
             <ng-template #nameInputTpl>
-              <input type="text" nz-input [(ngModel)]="editCache[data.id].data.name">
+              <input type="text" nz-input [(ngModel)]="editCache[data.id].data.name" />
             </ng-template>
           </td>
           <td>
             <ng-container *ngIf="!editCache[data.id].edit; else ageInputTpl">
-              {{data.age}}
+              {{ data.age }}
             </ng-container>
             <ng-template #ageInputTpl>
-              <input type="text" nz-input [(ngModel)]="editCache[data.id].data.age">
+              <input type="text" nz-input [(ngModel)]="editCache[data.id].data.age" />
             </ng-template>
           </td>
           <td>
             <ng-container *ngIf="!editCache[data.id].edit; else addressInputTpl">
-              {{data.address}}
+              {{ data.address }}
             </ng-container>
             <ng-template #addressInputTpl>
-              <input type="text" nz-input [(ngModel)]="editCache[data.id].data.address">
+              <input type="text" nz-input [(ngModel)]="editCache[data.id].data.address" />
             </ng-template>
           </td>
           <td>
@@ -53,8 +53,8 @@ import { Component, OnInit } from '@angular/core';
       </tbody>
     </nz-table>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       .editable-row-operations a {
         margin-right: 8px;
       }
@@ -62,30 +62,30 @@ import { Component, OnInit } from '@angular/core';
   ]
 })
 export class NzDemoTableEditRowComponent implements OnInit {
-  editCache: { [ key: string ]: any } = {};
+  editCache: { [key: string]: any } = {};
   listOfData: any[] = [];
 
   startEdit(id: string): void {
-    this.editCache[ id ].edit = true;
+    this.editCache[id].edit = true;
   }
 
   cancelEdit(id: string): void {
     const index = this.listOfData.findIndex(item => item.id === id);
-    this.editCache[ id ] = {
-      data: { ...this.listOfData[ index ] },
+    this.editCache[id] = {
+      data: { ...this.listOfData[index] },
       edit: false
     };
   }
 
   saveEdit(id: string): void {
     const index = this.listOfData.findIndex(item => item.id === id);
-    Object.assign(this.listOfData[ index ], this.editCache[ id ].data);
-    this.editCache[ id ].edit = false;
+    Object.assign(this.listOfData[index], this.editCache[id].data);
+    this.editCache[id].edit = false;
   }
 
   updateEditCache(): void {
     this.listOfData.forEach(item => {
-      this.editCache[ item.id ] = {
+      this.editCache[item.id] = {
         edit: false,
         data: { ...item }
       };
@@ -95,9 +95,9 @@ export class NzDemoTableEditRowComponent implements OnInit {
   ngOnInit(): void {
     for (let i = 0; i < 100; i++) {
       this.listOfData.push({
-        id     : `${i}`,
-        name   : `Edrward ${i}`,
-        age    : 32,
+        id: `${i}`,
+        name: `Edrward ${i}`,
+        age: 32,
         address: `London Park no. ${i}`
       });
     }

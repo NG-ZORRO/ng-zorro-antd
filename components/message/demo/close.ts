@@ -7,18 +7,20 @@ import { concatMap } from 'rxjs/operators';
   template: `
     <button nz-button [nzType]="'default'" (click)="startShowMessages()">Display a sequence of messages</button>
   `,
-  styles  : []
+  styles: []
 })
 export class NzDemoMessageCloseComponent {
-  constructor(private message: NzMessageService) {
-  }
+  constructor(private message: NzMessageService) {}
 
   startShowMessages(): void {
-    this.message.loading('Action in progress', { nzDuration: 2500 }).onClose!.pipe(
-      concatMap(() => this.message.success('Loading finished', { nzDuration: 2500 }).onClose!),
-      concatMap(() => this.message.info('Loading finished is finished', { nzDuration: 2500 }).onClose!)
-    ).subscribe(() => {
-      console.log('All completed!');
-    });
+    this.message
+      .loading('Action in progress', { nzDuration: 2500 })
+      .onClose!.pipe(
+        concatMap(() => this.message.success('Loading finished', { nzDuration: 2500 }).onClose!),
+        concatMap(() => this.message.info('Loading finished is finished', { nzDuration: 2500 }).onClose!)
+      )
+      .subscribe(() => {
+        console.log('All completed!');
+      });
   }
 }

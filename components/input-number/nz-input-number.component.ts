@@ -25,21 +25,21 @@ import { isNotNil } from '../core/util/check';
 import { InputBoolean } from '../core/util/convert';
 
 @Component({
-  selector       : 'nz-input-number',
-  templateUrl    : './nz-input-number.component.html',
-  providers      : [
+  selector: 'nz-input-number',
+  templateUrl: './nz-input-number.component.html',
+  providers: [
     {
-      provide    : NG_VALUE_ACCESSOR,
+      provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzInputNumberComponent),
-      multi      : true
+      multi: true
     }
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation  : ViewEncapsulation.None,
-  host           : {
-    '[class.ant-input-number-focused]' : 'isFocused',
-    '[class.ant-input-number-lg]'      : `nzSize === 'large'`,
-    '[class.ant-input-number-sm]'      : `nzSize === 'small'`,
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    '[class.ant-input-number-focused]': 'isFocused',
+    '[class.ant-input-number-lg]': `nzSize === 'large'`,
+    '[class.ant-input-number-sm]': `nzSize === 'small'`,
     '[class.ant-input-number-disabled]': 'nzDisabled'
   }
 })
@@ -65,9 +65,9 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzStep = 1;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
-  @Input() nzFormatter: (value: number) => string | number = (value) => value;
+  @Input() nzFormatter: (value: number) => string | number = value => value;
 
-  [ property: string ]: any // tslint:disable-line:no-any
+  [property: string]: any; // tslint:disable-line:no-any
 
   updateAutoFocus(): void {
     if (this.nzAutoFocus) {
@@ -78,7 +78,12 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   onModelChange(value: string): void {
-    this.actualValue = this.nzParser(value.trim().replace(/。/g, '.').replace(/[^\w\.-]+/g, ''));
+    this.actualValue = this.nzParser(
+      value
+        .trim()
+        .replace(/。/g, '.')
+        .replace(/[^\w\.-]+/g, '')
+    );
     this.inputElement.nativeElement.value = this.actualValue;
   }
 
@@ -207,9 +212,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     const precision = Math.abs(this.getMaxPrecision(val, rat));
     let result;
     if (typeof val === 'number') {
-      result =
-        ((precisionFactor * val + precisionFactor * this.nzStep * rat) /
-          precisionFactor).toFixed(precision);
+      result = ((precisionFactor * val + precisionFactor * this.nzStep * rat) / precisionFactor).toFixed(precision);
     } else {
       result = this.nzMin === -Infinity ? this.nzStep : this.nzMin;
     }
@@ -221,9 +224,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     const precision = Math.abs(this.getMaxPrecision(val, rat));
     let result;
     if (typeof val === 'number') {
-      result =
-        ((precisionFactor * val - precisionFactor * this.nzStep * rat) /
-          precisionFactor).toFixed(precision);
+      result = ((precisionFactor * val - precisionFactor * this.nzStep * rat) / precisionFactor).toFixed(precision);
     } else {
       result = this.nzMin === -Infinity ? -this.nzStep : this.nzMin;
     }
@@ -255,7 +256,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
       return;
     }
     this.autoStepTimer = setTimeout(() => {
-      this[ type ](e, ratio, true);
+      this[type](e, ratio, true);
     }, 600);
   }
 
@@ -266,7 +267,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   setValue(value: number, emit: boolean): void {
-    if (emit && (`${this.value}` !== `${value}`)) {
+    if (emit && `${this.value}` !== `${value}`) {
       this.onChange(value);
     }
     this.value = value;
@@ -284,7 +285,6 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
         this.disabledDown = true;
       }
     }
-
   }
 
   onKeyDown(e: KeyboardEvent): void {
@@ -331,7 +331,12 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     this.inputElement.nativeElement.blur();
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    private focusMonitor: FocusMonitor
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-input-number');
   }
 

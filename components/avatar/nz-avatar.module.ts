@@ -5,9 +5,8 @@ import { NzIconModule } from '../icon/nz-icon.module';
 import { NzAvatarComponent } from './nz-avatar.component';
 
 @NgModule({
-  declarations: [ NzAvatarComponent ],
-  exports     : [ NzAvatarComponent ],
-  imports     : [ CommonModule, NzIconModule ]
+  declarations: [NzAvatarComponent],
+  exports: [NzAvatarComponent],
+  imports: [CommonModule, NzIconModule]
 })
-export class NzAvatarModule {
-}
+export class NzAvatarModule {}

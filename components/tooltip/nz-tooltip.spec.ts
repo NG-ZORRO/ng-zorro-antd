@@ -12,15 +12,17 @@ import { NzToolTipModule } from './nz-tooltip.module';
 @Component({
   selector: 'nz-tooltip-test-directive',
   template: `
-    <a #titleString
-       nz-tooltip
-       [nzTitle]="title"
-       nzTrigger="hover"
-       nzPlacement="topLeft"
-       nzOverlayClassName="testClass"
-       [nzOverlayStyle]="{ color: '#000' }"
-       [nzMouseEnterDelay]="0.15"
-       [nzMouseLeaveDelay]="0.1">
+    <a
+      #titleString
+      nz-tooltip
+      [nzTitle]="title"
+      nzTrigger="hover"
+      nzPlacement="topLeft"
+      nzOverlayClassName="testClass"
+      [nzOverlayStyle]="{ color: '#000' }"
+      [nzMouseEnterDelay]="0.15"
+      [nzMouseLeaveDelay]="0.1"
+    >
       Show
     </a>
     <a #titleTemplate nz-tooltip [nzTitle]="template">Show</a>
@@ -74,13 +76,13 @@ describe('NzTooltip', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzToolTipModule, NoopAnimationsModule, NzIconTestModule ],
-      declarations: [ NzTooltipTestWrapperComponent, NzTooltipTestDirectiveComponent ]
+      imports: [NzToolTipModule, NoopAnimationsModule, NzIconTestModule],
+      declarations: [NzTooltipTestWrapperComponent, NzTooltipTestDirectiveComponent]
     });
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([ OverlayContainer ], (oc: OverlayContainer) => {
+  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));

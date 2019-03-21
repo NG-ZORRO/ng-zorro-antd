@@ -7,6 +7,4 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-COMPONENTNAME-basic',
   template: ``
 })
-export class DEMOComponent {
-
-}
+export class DEMOComponent {}

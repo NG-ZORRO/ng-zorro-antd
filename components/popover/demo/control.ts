@@ -11,11 +11,12 @@ import { Component } from '@angular/core';
       [(nzVisible)]="visible"
       (nzVisibleChange)="change($event)"
       nzTrigger="click"
-      [nzContent]="contentTemplate">
+      [nzContent]="contentTemplate"
+    >
       Click me
     </button>
     <ng-template #contentTemplate>
-      <a (click)='clickMe()'>Close</a>
+      <a (click)="clickMe()">Close</a>
     </ng-template>
   `
 })

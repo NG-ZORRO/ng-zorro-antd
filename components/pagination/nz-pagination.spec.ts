@@ -13,8 +13,8 @@ describe('pagination', () => {
 
   beforeEach(async(() => {
     injector = TestBed.configureTestingModule({
-      imports     : [ NzPaginationModule, NoopAnimationsModule ],
-      declarations: [ NzTestPaginationComponent, NzTestPaginationRenderComponent, NzTestPaginationTotalComponent ]
+      imports: [NzPaginationModule, NoopAnimationsModule],
+      declarations: [NzTestPaginationComponent, NzTestPaginationRenderComponent, NzTestPaginationTotalComponent]
     });
     TestBed.compileComponents();
   }));
@@ -40,7 +40,7 @@ describe('pagination', () => {
         expect(paginationElement.lastElementChild!.classList.contains('ant-pagination-next')).toBe(true);
         const length = paginationElement.children.length;
         const array = Array.prototype.slice.call(paginationElement.children).slice(1, length - 1);
-        expect(array[ 0 ].classList.contains('ant-pagination-item-active')).toBe(true);
+        expect(array[0].classList.contains('ant-pagination-item-active')).toBe(true);
         expect(array.every((node: HTMLElement) => node.classList.contains('ant-pagination-item'))).toBe(true);
       });
       it('should small size className correct', () => {
@@ -54,15 +54,15 @@ describe('pagination', () => {
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
         const length = paginationElement.children.length;
         const array = Array.prototype.slice.call(paginationElement.children).slice(1, length - 1);
-        expect(array[ 1 ].classList.contains('ant-pagination-item-active')).toBe(true);
+        expect(array[1].classList.contains('ant-pagination-item-active')).toBe(true);
       });
       it('should pageIndex change not trigger when same', () => {
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
         const length = paginationElement.children.length;
         const array = Array.prototype.slice.call(paginationElement.children).slice(1, length - 1);
-        expect(array[ 0 ].classList.contains('ant-pagination-item-active')).toBe(true);
-        array[ 0 ].click();
+        expect(array[0].classList.contains('ant-pagination-item-active')).toBe(true);
+        array[0].click();
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
       });
@@ -78,7 +78,7 @@ describe('pagination', () => {
       it('should pre button disabled', () => {
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
-        (paginationElement.children[ 0 ] as HTMLElement).click();
+        (paginationElement.children[0] as HTMLElement).click();
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
         expect(testComponent.pageIndex).toBe(1);
@@ -87,7 +87,7 @@ describe('pagination', () => {
         testComponent.pageIndex = 5;
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
-        (paginationElement.children[ 0 ] as HTMLElement).click();
+        (paginationElement.children[0] as HTMLElement).click();
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(testComponent.pageIndex).toBe(4);
@@ -112,7 +112,7 @@ describe('pagination', () => {
       it('should click pageIndex work', () => {
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
-        (paginationElement.children[ 3 ] as HTMLElement).click();
+        (paginationElement.children[3] as HTMLElement).click();
         fixture.detectChanges();
         expect(testComponent.pageIndex).toBe(3);
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
@@ -127,7 +127,7 @@ describe('pagination', () => {
         fixture.detectChanges();
         testComponent.pageIndex = 46;
         fixture.detectChanges();
-        (paginationElement.children[ 8 ] as HTMLElement).click();
+        (paginationElement.children[8] as HTMLElement).click();
         fixture.detectChanges();
         expect(testComponent.pageIndex).toBe(50);
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
@@ -139,7 +139,7 @@ describe('pagination', () => {
         testComponent.pageIndex = 5;
         fixture.detectChanges();
         expect(paginationElement.children.length).toBe(11);
-        (paginationElement.children[ 2 ] as HTMLElement).click();
+        (paginationElement.children[2] as HTMLElement).click();
         fixture.detectChanges();
         expect(testComponent.pageIndex).toBe(1);
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
@@ -257,7 +257,7 @@ describe('pagination', () => {
       fixture.detectChanges();
       expect((paginationElement.firstElementChild as HTMLElement).innerText).toBe('Previous');
       expect((paginationElement.lastElementChild as HTMLElement).innerText).toBe('Next');
-      expect((paginationElement.children[ 1 ] as HTMLElement).innerText).toBe('2');
+      expect((paginationElement.children[1] as HTMLElement).innerText).toBe('2');
     });
   });
   describe('pagination total items', () => {
@@ -311,8 +311,10 @@ describe('pagination', () => {
       [nzHideOnSinglePage]="hideOnSinglePage"
       [nzPageSizeOptions]="pageSizeOptions"
       [nzShowSizeChanger]="showSizeChanger"
-      [nzShowQuickJumper]="showQuickJumper">
-    </nz-pagination>`
+      [nzShowQuickJumper]="showQuickJumper"
+    >
+    </nz-pagination>
+  `
 })
 export class NzTestPaginationComponent {
   @ViewChild(NzPaginationComponent) nzPaginationComponent: NzPaginationComponent;
@@ -324,7 +326,7 @@ export class NzTestPaginationComponent {
   showQuickJumper = false;
   showSizeChanger = false;
   hideOnSinglePage = false;
-  pageSizeOptions = [ 10, 20, 30, 40 ];
+  pageSizeOptions = [10, 20, 30, 40];
   simple = false;
   size = '';
 }
@@ -334,21 +336,25 @@ export class NzTestPaginationComponent {
   template: `
     <nz-pagination [nzPageIndex]="1" [nzTotal]="50" [nzItemRender]="renderItemTemplate"></nz-pagination>
     <ng-template #renderItemTemplate let-type let-page="page">
-      <a *ngIf="type==='pre'">Previous</a>
-      <a *ngIf="type==='next'">Next</a>
-      <a *ngIf="type==='page'">{{page * 2}}</a>
+      <a *ngIf="type === 'pre'">Previous</a>
+      <a *ngIf="type === 'next'">Next</a>
+      <a *ngIf="type === 'page'">{{ page * 2 }}</a>
     </ng-template>
   `
 })
-export class NzTestPaginationRenderComponent {
-}
+export class NzTestPaginationRenderComponent {}
 
 @Component({
   selector: `nz-test-pagination-total`,
   template: `
-    <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="85" [nzPageSize]="20" [nzShowTotal]="rangeTemplate"></nz-pagination>
+    <nz-pagination
+      [(nzPageIndex)]="pageIndex"
+      [nzTotal]="85"
+      [nzPageSize]="20"
+      [nzShowTotal]="rangeTemplate"
+    ></nz-pagination>
     <ng-template #rangeTemplate let-range="range" let-total>
-      {{range[0]}}-{{range[1]}} of {{total}} items
+      {{ range[0] }}-{{ range[1] }} of {{ total }} items
     </ng-template>
   `
 })

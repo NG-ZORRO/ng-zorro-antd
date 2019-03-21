@@ -1,10 +1,18 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import { InputBoolean } from '../core/util';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  selector   : '[nz-rate-item]',
+  selector: '[nz-rate-item]',
   templateUrl: './nz-rate-item.component.html'
 })
 export class NzRateItemComponent {

@@ -10,8 +10,8 @@ import { Component } from '@angular/core';
       <button nz-button nzType="danger" nzGhost>Danger</button>
     </div>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       [nz-button] {
         margin-right: 8px;
         margin-bottom: 12px;
@@ -19,5 +19,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoButtonGhostComponent {
-}
+export class NzDemoButtonGhostComponent {}

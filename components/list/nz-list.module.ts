@@ -12,24 +12,8 @@ import { NzListItemComponent } from './nz-list-item.component';
 import { NzListComponent } from './nz-list.component';
 
 @NgModule({
-  imports     : [
-    CommonModule,
-    NzSpinModule,
-    NzGridModule,
-    NzAvatarModule,
-    NzAddOnModule,
-    NzEmptyModule
-  ],
-  declarations: [
-    NzListComponent,
-    NzListItemComponent,
-    NzListItemMetaComponent
-  ],
-  exports     : [
-    NzListComponent,
-    NzListItemComponent,
-    NzListItemMetaComponent
-  ]
+  imports: [CommonModule, NzSpinModule, NzGridModule, NzAvatarModule, NzAddOnModule, NzEmptyModule],
+  declarations: [NzListComponent, NzListItemComponent, NzListItemMetaComponent],
+  exports: [NzListComponent, NzListItemComponent, NzListItemMetaComponent]
 })
-export class NzListModule {
-}
+export class NzListModule {}

@@ -9,7 +9,7 @@ import { NzModalService } from 'ng-zorro-antd';
   styles: []
 })
 export class NzDemoModalManualComponent {
-  constructor(private modalService: NzModalService) { }
+  constructor(private modalService: NzModalService) {}
 
   success(): void {
     const modal = this.modalService.success({

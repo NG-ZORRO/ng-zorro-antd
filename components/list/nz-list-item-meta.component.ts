@@ -9,14 +9,13 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector           : 'nz-list-item-meta',
-  templateUrl        : './nz-list-item-meta.component.html',
+  selector: 'nz-list-item-meta',
+  templateUrl: './nz-list-item-meta.component.html',
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class NzListItemMetaComponent {
-
   avatarStr = '';
   avatarTpl: TemplateRef<void>;
 

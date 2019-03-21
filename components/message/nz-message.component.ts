@@ -12,12 +12,12 @@ import { NzMessageContainerComponent } from './nz-message-container.component';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-message',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-message',
   preserveWhitespaces: false,
-  animations         : [ moveUpMotion ],
-  templateUrl        : './nz-message.component.html'
+  animations: [moveUpMotion],
+  templateUrl: './nz-message.component.html'
 })
 export class NzMessageComponent implements OnInit, OnDestroy {
   @Input() nzMessage: NzMessageDataFilled;
@@ -30,11 +30,7 @@ export class NzMessageComponent implements OnInit, OnDestroy {
   private _eraseTimingStart: number;
   private _eraseTTL: number; // Time to live.
 
-  constructor(
-    private _messageContainer: NzMessageContainerComponent,
-    protected cdr: ChangeDetectorRef
-  ) {
-  }
+  constructor(private _messageContainer: NzMessageContainerComponent, protected cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     // `NzMessageContainer` does its job so all properties cannot be undefined.

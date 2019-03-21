@@ -3,11 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-bordered',
   template: `
-    <nz-table #borderedTable
-      nzBordered
-      nzFooter="Footer"
-      nzTitle="Header"
-      [nzData]="dataSet">
+    <nz-table #borderedTable nzBordered nzFooter="Footer" nzTitle="Header" [nzData]="dataSet">
       <thead>
         <tr>
           <th>Name</th>
@@ -17,9 +13,9 @@ import { Component } from '@angular/core';
       </thead>
       <tbody>
         <tr *ngFor="let data of borderedTable.data">
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
+          <td>{{ data.name }}</td>
+          <td>{{ data.age }}</td>
+          <td>{{ data.address }}</td>
         </tr>
       </tbody>
     </nz-table>
@@ -28,21 +24,21 @@ import { Component } from '@angular/core';
 export class NzDemoTableBorderedComponent {
   dataSet = [
     {
-      key    : '1',
-      name   : 'John Brown',
-      age    : 32,
+      key: '1',
+      name: 'John Brown',
+      age: 32,
       address: 'New York No. 1 Lake Park'
     },
     {
-      key    : '2',
-      name   : 'Jim Green',
-      age    : 42,
+      key: '2',
+      name: 'Jim Green',
+      age: 42,
       address: 'London No. 1 Lake Park'
     },
     {
-      key    : '3',
-      name   : 'Joe Black',
-      age    : 32,
+      key: '3',
+      name: 'Joe Black',
+      age: 32,
       address: 'Sidney No. 1 Lake Park'
     }
   ];

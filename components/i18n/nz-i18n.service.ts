@@ -18,10 +18,7 @@ export class NzI18nService {
     return this._change.asObservable();
   }
 
-  constructor(
-    @Inject(NZ_I18N) locale: NzI18nInterface,
-    @Inject(NZ_DATE_LOCALE) dateLocale: DateLocale) {
-
+  constructor(@Inject(NZ_I18N) locale: NzI18nInterface, @Inject(NZ_DATE_LOCALE) dateLocale: DateLocale) {
     this.setLocale(locale || zh_CN);
     this.setDateLocale(dateLocale || null);
   }
@@ -34,7 +31,7 @@ export class NzI18nService {
     let content = this._getObjectPath(this._locale, path) as string;
     if (typeof content === 'string') {
       if (data) {
-        Object.keys(data).forEach((key) => content = content.replace(new RegExp(`%${key}%`, 'g'), data[ key ]));
+        Object.keys(data).forEach(key => (content = content.replace(new RegExp(`%${key}%`, 'g'), data[key])));
       }
       return content;
     }
@@ -75,18 +72,20 @@ export class NzI18nService {
    * @param path dot paths for finding exist value from locale data, eg. "a.b.c"
    * @param defaultValue default value if the result is not "truthy"
    */
-  getLocaleData(path?: string, defaultValue?: any): any { // tslint:disable-line:no-any
+  // tslint:disable-next-line:no-any
+  getLocaleData(path?: string, defaultValue?: any): any {
     const result = path ? this._getObjectPath(this._locale, path) : this._locale;
     return result || defaultValue;
   }
 
-  private _getObjectPath(obj: IndexableObject, path: string): string | object | any { // tslint:disable-line:no-any
+  // tslint:disable-next-line:no-any
+  private _getObjectPath(obj: IndexableObject, path: string): string | object | any {
     let res = obj;
     const paths = path.split('.');
     const depth = paths.length;
     let index = 0;
     while (res && index < depth) {
-      res = res[ paths[ index++ ] ];
+      res = res[paths[index++]];
     }
     return index === depth ? res : null;
   }

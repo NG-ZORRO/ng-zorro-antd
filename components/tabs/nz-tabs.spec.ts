@@ -9,8 +9,8 @@ import { NzAnimatedInterface, NzTabSetComponent } from './nz-tabset.component';
 describe('tabs', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzTabsModule ],
-      declarations: [ NzTestTabsBasicComponent, NzTestTabsTabPositionLeftComponent ]
+      imports: [NzTabsModule],
+      declarations: [NzTestTabsBasicComponent, NzTestTabsTabPositionLeftComponent]
     });
     TestBed.compileComponents();
   }));
@@ -112,21 +112,23 @@ describe('tabs', () => {
       testComponent.hideAll = true;
       fixture.detectChanges();
       expect(tabs.nativeElement.querySelector('.ant-tabs-tabpane').classList).toContain('ant-tabs-tabpane-inactive');
-      expect(tabs.nativeElement.querySelector('.ant-tabs-ink-bar').attributes.getNamedItem('hidden').name).toBe('hidden');
+      expect(tabs.nativeElement.querySelector('.ant-tabs-ink-bar').attributes.getNamedItem('hidden').name).toBe(
+        'hidden'
+      );
     });
 
     it('should title work', () => {
       fixture.detectChanges();
       const titles = tabs.nativeElement.querySelectorAll('.ant-tabs-tab');
-      expect(titles[ 0 ].innerText).toBe('title');
-      expect(titles[ 1 ].innerText).toBe('template');
+      expect(titles[0].innerText).toBe('title');
+      expect(titles[1].innerText).toBe('template');
     });
 
     it('should content work', () => {
       fixture.detectChanges();
       const contents = tabs.nativeElement.querySelectorAll('.ant-tabs-tabpane');
-      expect(contents[ 0 ].innerText).toBe('Content 1');
-      expect(contents[ 1 ].innerText).toBe('Content 2');
+      expect(contents[0].innerText).toBe('Content 1');
+      expect(contents[1].innerText).toBe('Content 2');
     });
 
     it('should selectedIndex work', fakeAsync(() => {
@@ -135,10 +137,10 @@ describe('tabs', () => {
       fixture.detectChanges();
       const titles = tabs.nativeElement.querySelectorAll('.ant-tabs-tab');
       const contents = tabs.nativeElement.querySelectorAll('.ant-tabs-tabpane');
-      expect(titles[ 0 ].classList).toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).not.toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).not.toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(0);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(0);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(0);
@@ -153,10 +155,10 @@ describe('tabs', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(titles[ 0 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).not.toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).not.toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(1);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(1);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(1);
@@ -171,10 +173,10 @@ describe('tabs', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(titles[ 0 ].classList).toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).not.toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).not.toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(0);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(2);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(2);
@@ -192,10 +194,10 @@ describe('tabs', () => {
       fixture.detectChanges();
       const titles = tabs.nativeElement.querySelectorAll('.ant-tabs-tab');
       const contents = tabs.nativeElement.querySelectorAll('.ant-tabs-tabpane');
-      expect(titles[ 0 ].classList).toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).not.toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).not.toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(0);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(0);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(0);
@@ -206,14 +208,14 @@ describe('tabs', () => {
       expect(testComponent.select01).toHaveBeenCalledTimes(0);
       expect(testComponent.deselect01).toHaveBeenCalledTimes(0);
 
-      titles[ 0 ].click();
+      titles[0].click();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(titles[ 0 ].classList).toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).not.toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).not.toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(0);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(0);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(0);
@@ -224,14 +226,14 @@ describe('tabs', () => {
       expect(testComponent.select01).toHaveBeenCalledTimes(0);
       expect(testComponent.deselect01).toHaveBeenCalledTimes(0);
 
-      titles[ 1 ].click();
+      titles[1].click();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(titles[ 0 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).not.toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).not.toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(1);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(1);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(1);
@@ -242,14 +244,14 @@ describe('tabs', () => {
       expect(testComponent.select01).toHaveBeenCalledTimes(1);
       expect(testComponent.deselect01).toHaveBeenCalledTimes(0);
 
-      titles[ 0 ].click();
+      titles[0].click();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(titles[ 0 ].classList).toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).not.toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).not.toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(0);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(2);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(2);
@@ -268,10 +270,10 @@ describe('tabs', () => {
       fixture.detectChanges();
       const titles = tabs.nativeElement.querySelectorAll('.ant-tabs-tab');
       const contents = tabs.nativeElement.querySelectorAll('.ant-tabs-tabpane');
-      expect(titles[ 0 ].classList).toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).not.toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).not.toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(0);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(0);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(0);
@@ -282,14 +284,14 @@ describe('tabs', () => {
       expect(testComponent.select01).toHaveBeenCalledTimes(0);
       expect(testComponent.deselect01).toHaveBeenCalledTimes(0);
 
-      titles[ 0 ].click();
+      titles[0].click();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(titles[ 0 ].classList).toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).not.toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).not.toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(0);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(0);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(0);
@@ -300,14 +302,14 @@ describe('tabs', () => {
       expect(testComponent.select01).toHaveBeenCalledTimes(0);
       expect(testComponent.deselect01).toHaveBeenCalledTimes(0);
 
-      titles[ 1 ].click();
+      titles[1].click();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(titles[ 0 ].classList).toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).not.toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).not.toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(0);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(0);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(0);
@@ -318,14 +320,14 @@ describe('tabs', () => {
       expect(testComponent.select01).toHaveBeenCalledTimes(0);
       expect(testComponent.deselect01).toHaveBeenCalledTimes(0);
 
-      titles[ 0 ].click();
+      titles[0].click();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(titles[ 0 ].classList).toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).not.toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).not.toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(0);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(0);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(0);
@@ -343,10 +345,10 @@ describe('tabs', () => {
       fixture.detectChanges();
       const titles = tabs.nativeElement.querySelectorAll('.ant-tabs-tab');
       const contents = tabs.nativeElement.querySelectorAll('.ant-tabs-tabpane');
-      expect(titles[ 0 ].classList).toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).not.toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).not.toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(0);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(0);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(0);
@@ -357,14 +359,14 @@ describe('tabs', () => {
       expect(testComponent.select01).toHaveBeenCalledTimes(0);
       expect(testComponent.deselect01).toHaveBeenCalledTimes(0);
 
-      titles[ 0 ].click();
+      titles[0].click();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(titles[ 0 ].classList).toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).not.toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).not.toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(0);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(0);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(0);
@@ -375,14 +377,14 @@ describe('tabs', () => {
       expect(testComponent.select01).toHaveBeenCalledTimes(0);
       expect(testComponent.deselect01).toHaveBeenCalledTimes(0);
 
-      titles[ 1 ].click();
+      titles[1].click();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(titles[ 0 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).not.toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).not.toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(1);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(1);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(1);
@@ -393,14 +395,14 @@ describe('tabs', () => {
       expect(testComponent.select01).toHaveBeenCalledTimes(1);
       expect(testComponent.deselect01).toHaveBeenCalledTimes(0);
 
-      titles[ 0 ].click();
+      titles[0].click();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(titles[ 0 ].classList).toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).not.toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).not.toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(0);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(2);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(2);
@@ -422,10 +424,10 @@ describe('tabs', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(titles[ 0 ].classList).toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).not.toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).not.toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(0);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(0);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(0);
@@ -443,12 +445,12 @@ describe('tabs', () => {
       contents = tabs.nativeElement.querySelectorAll('.ant-tabs-tabpane');
       expect(titles.length).toBe(3);
       expect(contents.length).toBe(3);
-      expect(titles[ 0 ].classList).toContain('ant-tabs-tab-active');
-      expect(titles[ 1 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(titles[ 2 ].classList).not.toContain('ant-tabs-tab-active');
-      expect(contents[ 0 ].classList).toContain('ant-tabs-tabpane-active');
-      expect(contents[ 1 ].classList).not.toContain('ant-tabs-tabpane-active');
-      expect(contents[ 2 ].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(titles[0].classList).toContain('ant-tabs-tab-active');
+      expect(titles[1].classList).not.toContain('ant-tabs-tab-active');
+      expect(titles[2].classList).not.toContain('ant-tabs-tab-active');
+      expect(contents[0].classList).toContain('ant-tabs-tabpane-active');
+      expect(contents[1].classList).not.toContain('ant-tabs-tabpane-active');
+      expect(contents[2].classList).not.toContain('ant-tabs-tabpane-active');
       expect(testComponent.selectedIndex).toBe(0);
       expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(0);
       expect(testComponent.selectChange).toHaveBeenCalledTimes(0);
@@ -471,19 +473,18 @@ describe('tabs', () => {
       tick();
       fixture.detectChanges();
       const tabs = fixture.debugElement.query(By.directive(NzTabSetComponent));
-      expect(tabs.nativeElement.querySelector('.ant-tabs-nav-container').classList).not.toContain('ant-tabs-nav-container-scrolling');
+      expect(tabs.nativeElement.querySelector('.ant-tabs-nav-container').classList).not.toContain(
+        'ant-tabs-nav-container-scrolling'
+      );
     }));
   });
 });
 
 @Component({
-  selector     : 'nz-test-tabs-basic',
+  selector: 'nz-test-tabs-basic',
   encapsulation: ViewEncapsulation.None,
-  styleUrls    : [
-    '../style/index.less',
-    './style/index.less'
-  ],
-  template     : `
+  styleUrls: ['../style/index.less', './style/index.less'],
+  template: `
     <ng-template #titleTemplate>template</ng-template>
     <ng-template #extraTemplate>extra</ng-template>
     <div>
@@ -498,20 +499,24 @@ describe('tabs', () => {
         [nzTabPosition]="tabPosition"
         [nzType]="type"
         [nzTabBarGutter]="tabBarGutter"
-        [nzHideAll]="hideAll">
+        [nzHideAll]="hideAll"
+      >
         <nz-tab
           nzTitle="title"
           [nzForceRender]="true"
           (nzDeselect)="deselect00()"
           (nzSelect)="select00()"
-          (nzClick)="click00()">Content 1<!----></nz-tab>
+          (nzClick)="click00()"
+          >Content 1<!----></nz-tab
+        >
         <nz-tab
           [nzForceRender]="true"
           [nzTitle]="titleTemplate"
           (nzDeselect)="deselect01()"
           (nzSelect)="select01()"
           (nzClick)="click01()"
-          [nzDisabled]="disabled">
+          [nzDisabled]="disabled"
+        >
           Content 2<!---->
           <button></button>
         </nz-tab>
@@ -521,7 +526,8 @@ describe('tabs', () => {
           *ngIf="add"
           (nzDeselect)="deselect02()"
           (nzSelect)="select02()"
-          (nzClick)="click02()">add
+          (nzClick)="click02()"
+          >add
         </nz-tab>
         <nz-tab *ngFor="let i of array" [nzTitle]="i"></nz-tab>
       </nz-tabset>
@@ -563,12 +569,10 @@ export class NzTestTabsBasicComponent {
   selector: 'nz-test-tabs-tab-position-left',
   template: `
     <nz-tabset nzTabPosition="left">
-      <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab'+ tab">
-        Content of tab {{ tab }}
-      </nz-tab>
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab' + tab"> Content of tab {{ tab }} </nz-tab>
     </nz-tabset>
   `
 })
 export class NzTestTabsTabPositionLeftComponent {
-  tabs = [ 1, 2, 3 ];
+  tabs = [1, 2, 3];
 }

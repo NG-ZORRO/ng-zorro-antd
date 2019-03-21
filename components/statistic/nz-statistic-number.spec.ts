@@ -12,8 +12,8 @@ describe('nz-number', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports     : [ CommonModule, NzStatisticModule ],
-      declarations: [ NzTestNumberComponent ]
+      imports: [CommonModule, NzStatisticModule],
+      declarations: [NzTestNumberComponent]
     }).compileComponents();
   });
 
@@ -43,7 +43,7 @@ describe('nz-number', () => {
       fixture.detectChanges();
       expect(numberEl.nativeElement.querySelector('.ant-statistic-content-value-int')).toBeFalsy();
       expect(numberEl.nativeElement.querySelector('.ant-statistic-content-value-decimal')).toBeFalsy();
-      expect(numberEl.nativeElement.innerText).toBe('It\'s 12,345.012');
+      expect(numberEl.nativeElement.innerText).toBe("It's 12,345.012");
     });
   });
 });

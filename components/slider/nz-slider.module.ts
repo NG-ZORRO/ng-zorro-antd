@@ -24,6 +24,6 @@ import { NzSliderComponent } from './nz-slider.component';
     NzSliderStepComponent,
     NzSliderMarksComponent
   ],
-  imports: [ CommonModule, NzToolTipModule ]
+  imports: [CommonModule, NzToolTipModule]
 })
-export class NzSliderModule { }
+export class NzSliderModule {}

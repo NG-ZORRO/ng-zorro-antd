@@ -8,35 +8,36 @@ import { NzMessageService } from 'ng-zorro-antd';
       [nzDataSource]="list"
       nzShowSearch
       [nzOperations]="['to right', 'to left']"
-      [nzListStyle]="{'width.px': 250, 'height.px': 300}"
+      [nzListStyle]="{ 'width.px': 250, 'height.px': 300 }"
       [nzRender]="render"
       [nzFooter]="footer"
       (nzSelectChange)="select($event)"
-      (nzChange)="change($event)">
-      <ng-template #render let-item>
-        {{ item.title }}-{{ item.description }}
-      </ng-template>
+      (nzChange)="change($event)"
+    >
+      <ng-template #render let-item> {{ item.title }}-{{ item.description }} </ng-template>
       <ng-template #footer let-direction>
-        <button nz-button (click)="reload(direction)" [nzSize]="'small'" style="float: right; margin: 5px;">reload</button>
+        <button nz-button (click)="reload(direction)" [nzSize]="'small'" style="float: right; margin: 5px;">
+          reload
+        </button>
       </ng-template>
     </nz-transfer>
   `
 })
 export class NzDemoTransferAdvancedComponent implements OnInit {
-  list: Array<{ key: string, title: string, description: string, direction: string }> = [];
+  list: Array<{ key: string; title: string; description: string; direction: string }> = [];
 
   ngOnInit(): void {
     this.getData();
   }
 
   getData(): void {
-    const ret: Array<{ key: string, title: string, description: string, direction: string }> = [];
+    const ret: Array<{ key: string; title: string; description: string; direction: string }> = [];
     for (let i = 0; i < 20; i++) {
       ret.push({
-        key        : i.toString(),
-        title      : `content${i + 1}`,
+        key: i.toString(),
+        title: `content${i + 1}`,
         description: `description of content${i + 1}`,
-        direction  : Math.random() * 2 > 1 ? 'right' : ''
+        direction: Math.random() * 2 > 1 ? 'right' : ''
       });
     }
     this.list = ret;
@@ -55,6 +56,5 @@ export class NzDemoTransferAdvancedComponent implements OnInit {
     console.log('nzChange', ret);
   }
 
-  constructor(public msg: NzMessageService) {
-  }
+  constructor(public msg: NzMessageService) {}
 }

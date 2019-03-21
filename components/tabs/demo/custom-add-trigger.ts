@@ -13,12 +13,13 @@ import { Component } from '@angular/core';
         </ng-template>
         Content of {{ tab }}
       </nz-tab>
-    </nz-tabset>`,
-  styles  : []
+    </nz-tabset>
+  `,
+  styles: []
 })
 export class NzDemoTabsCustomAddTriggerComponent {
   index = 0;
-  tabs = [ 'Tab 1', 'Tab 2' ];
+  tabs = ['Tab 1', 'Tab 2'];
 
   closeTab(tab: string): void {
     this.tabs.splice(this.tabs.indexOf(tab), 1);

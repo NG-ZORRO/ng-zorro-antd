@@ -2,29 +2,23 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { MentionOnSearchTypes } from 'ng-zorro-antd';
 
 @Component({
-  selector     : 'nz-demo-mention-async',
+  selector: 'nz-demo-mention-async',
   encapsulation: ViewEncapsulation.None,
-  template     : `
-  <nz-mention
-    [nzSuggestions]="suggestions"
-    [nzLoading]="loading"
-    (nzOnSearchChange)="onSearchChange($event)">
-    <input
-      nzMentionTrigger
-      nz-input
-      [(ngModel)]="inputValue">
-  </nz-mention>
-`
+  template: `
+    <nz-mention [nzSuggestions]="suggestions" [nzLoading]="loading" (nzOnSearchChange)="onSearchChange($event)">
+      <input nzMentionTrigger nz-input [(ngModel)]="inputValue" />
+    </nz-mention>
+  `
 })
 export class NzDemoMentionAsyncComponent {
   inputValue: string;
   loading = false;
   suggestions: string[] = [];
 
-  onSearchChange({value}: MentionOnSearchTypes): void {
+  onSearchChange({ value }: MentionOnSearchTypes): void {
     console.log(`search: ${value}`);
     this.loading = true;
-    this.fetchSuggestions(value, (suggestions) => {
+    this.fetchSuggestions(value, suggestions => {
       console.log(suggestions);
       this.suggestions = suggestions;
       this.loading = false;
