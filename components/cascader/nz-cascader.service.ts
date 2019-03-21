@@ -76,7 +76,7 @@ export class NzCascaderService implements OnDestroy {
   /**
    * Make sure that value matches what is displayed in the dropdown.
    */
-  syncOptions(init: boolean = false): void {
+  syncOptions(first: boolean = false): void {
     const values = this.values;
     const hasValue = values && values.length;
     const lastColumnIndex = values.length - 1;
@@ -85,6 +85,7 @@ export class NzCascaderService implements OnDestroy {
         const currentValue = values[columnIndex];
 
         if (!currentValue) {
+          this.$redraw.next();
           return;
         }
 
@@ -116,7 +117,10 @@ export class NzCascaderService implements OnDestroy {
       }
     };
 
-    if (init && this.cascaderComponent.nzLoadData && !hasValue) {
+    this.activatedOptions = [];
+    this.selectedOptions = [];
+
+    if (first && this.cascaderComponent.nzLoadData && !hasValue) {
       return;
     } else {
       initColumnWithIndex(0);
@@ -134,8 +138,7 @@ export class NzCascaderService implements OnDestroy {
    * Reset all options. Rebuild searching options if in searching mode.
    */
   withOptions(options: CascaderOption[] | null): void {
-    this.columnsSnapshot = this.columns =
-      options && options.length ? [options] : [];
+    this.columnsSnapshot = this.columns = options && options.length ? [options] : [];
 
     if (this.inSearchingMode) {
       this.prepareSearchOptions(this.cascaderComponent.inputValue);
@@ -173,7 +176,7 @@ export class NzCascaderService implements OnDestroy {
     } else if (!option.isLeaf && loadingChildren) {
       // Parent option that should try to load children asynchronously.
       this.loadChildren(option, columnIndex);
-    } else if (!option.isLeaf) {
+    } else if (option.isLeaf) {
       // Leaf option.
       this.dropBehindColumns(columnIndex);
     }
@@ -221,14 +224,8 @@ export class NzCascaderService implements OnDestroy {
       });
     };
     const showSearch = this.cascaderComponent.nzShowSearch;
-    const filter =
-      isShowSearchObject(showSearch) && showSearch.filter
-        ? showSearch.filter
-        : defaultFilter;
-    const sorter =
-      isShowSearchObject(showSearch) && showSearch.sorter
-        ? showSearch.sorter
-        : null;
+    const filter = isShowSearchObject(showSearch) && showSearch.filter ? showSearch.filter : defaultFilter;
+    const sorter = isShowSearchObject(showSearch) && showSearch.sorter ? showSearch.sorter : null;
     const loopChild = (node: CascaderOption, forceDisabled = false) => {
       path.push(node);
       const cPath = Array.from(path);
@@ -238,9 +235,7 @@ export class NzCascaderService implements OnDestroy {
           disabled,
           isLeaf: true,
           path: cPath,
-          [this.cascaderComponent.nzLabelProperty]: cPath
-            .map(p => this.getOptionLabel(p))
-            .join(' / ')
+          [this.cascaderComponent.nzLabelProperty]: cPath.map(p => this.getOptionLabel(p)).join(' / ')
         };
         results.push(option);
       }
@@ -268,9 +263,7 @@ export class NzCascaderService implements OnDestroy {
       return;
     }
 
-    this.columnsSnapshot[0].forEach(o =>
-      isChildOption(o) ? loopChild(o) : loopParent(o)
-    );
+    this.columnsSnapshot[0].forEach(o => (isChildOption(o) ? loopChild(o) : loopParent(o)));
 
     if (sorter) {
       results.sort((a, b) => sorter(a.path, b.path, searchValue));
@@ -307,11 +300,7 @@ export class NzCascaderService implements OnDestroy {
       return typeof changeOn === 'function' ? changeOn(o, i) : false;
     };
 
-    if (
-      option.isLeaf ||
-      this.cascaderComponent.nzChangeOnSelect ||
-      shouldPerformSelection(option, index)
-    ) {
+    if (option.isLeaf || this.cascaderComponent.nzChangeOnSelect || shouldPerformSelection(option, index)) {
       this.selectedOptions = [...this.activatedOptions];
       this.prepareEmitValue();
       this.$redraw.next();
@@ -346,11 +335,7 @@ export class NzCascaderService implements OnDestroy {
    * @param options Options to insert
    * @param columnIndex Position
    */
-  private setColumnData(
-    options: CascaderOption[],
-    columnIndex: number,
-    parent: CascaderOption
-  ): void {
+  private setColumnData(options: CascaderOption[], columnIndex: number, parent: CascaderOption): void {
     const existingOptions = this.columns[columnIndex];
     if (!arraysEqual(existingOptions, options)) {
       options.forEach(o => (o.parent = parent));
@@ -371,10 +356,7 @@ export class NzCascaderService implements OnDestroy {
   }
 
   private dropBehindActivatedOptions(lastReserveIndex: number): void {
-    this.activatedOptions = this.activatedOptions.splice(
-      0,
-      lastReserveIndex + 1
-    );
+    this.activatedOptions = this.activatedOptions.splice(0, lastReserveIndex + 1);
   }
 
   private dropBehindColumns(lastReserveIndex: number): void {
