@@ -66,7 +66,7 @@ export class NzDemoTableCustomFilterPanelComponent {
   sortValue: string | null = null;
   listOfFilterAddress = [{ text: 'London', value: 'London' }, { text: 'Sidney', value: 'Sidney' }];
   listOfSearchAddress: string[] = [];
-  listOfData = [
+  listOfData: Array<{ name: string; age: number; address: string; [key: string]: string | number }> = [
     {
       name: 'John Brown',
       age: 32,
@@ -117,12 +117,10 @@ export class NzDemoTableCustomFilterPanelComponent {
     const data = this.listOfData.filter((item: { name: string; age: number; address: string }) => filterFunc(item));
     this.listOfDisplayData = data.sort((a, b) =>
       this.sortValue === 'ascend'
-        ? // @ts-ignore
-          a[this.sortName!] > b[this.sortName!]
+        ? a[this.sortName!] > b[this.sortName!]
           ? 1
           : -1
-        : // @ts-ignore
-        b[this.sortName!] > a[this.sortName!]
+        : b[this.sortName!] > a[this.sortName!]
         ? 1
         : -1
     );

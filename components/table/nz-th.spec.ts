@@ -406,7 +406,7 @@ export class NzThTestTableDefaultFilterComponent {
   sortValue: string | null = null;
   listOfSearchName = ['Joe', 'London'];
   searchAddress: string;
-  data = [
+  data: Array<{ name: string; age: number; address: string; [key: string]: string | number }> = [
     {
       name: 'John Brown',
       age: 32,
@@ -428,7 +428,7 @@ export class NzThTestTableDefaultFilterComponent {
       address: 'London No. 2 Lake Park'
     }
   ];
-  displayData: Array<{ name: string; age: number; address: string }> = [];
+  displayData: Array<{ name: string; age: number; address: string; [key: string]: string | number }> = [];
 
   @ViewChild(NzThComponent) nzThComponent: NzThComponent;
 
@@ -454,12 +454,10 @@ export class NzThTestTableDefaultFilterComponent {
     if (this.sortName && this.sortValue) {
       this.displayData = data.sort((a, b) =>
         this.sortValue === 'ascend'
-          ? // @ts-ignore
-            a[this.sortName!] > b[this.sortName!]
+          ? a[this.sortName!] > b[this.sortName!]
             ? 1
             : -1
-          : // @ts-ignore
-          b[this.sortName!] > a[this.sortName!]
+          : b[this.sortName!] > a[this.sortName!]
           ? 1
           : -1
       );

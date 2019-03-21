@@ -45,7 +45,7 @@ export class NzDemoTableHeadComponent {
   listOfName = [{ text: 'Joe', value: 'Joe' }, { text: 'Jim', value: 'Jim' }];
   listOfAddress = [{ text: 'London', value: 'London' }, { text: 'Sidney', value: 'Sidney' }];
   listOfSearchName: string[] = [];
-  listOfData = [
+  listOfData: Array<{ name: string; age: number; address: string; [key: string]: string | number }> = [
     {
       name: 'John Brown',
       age: 32,
@@ -67,7 +67,9 @@ export class NzDemoTableHeadComponent {
       address: 'London No. 2 Lake Park'
     }
   ];
-  listOfDisplayData: any[] = [...this.listOfData];
+  listOfDisplayData: Array<{ name: string; age: number; address: string; [key: string]: string | number }> = [
+    ...this.listOfData
+  ];
 
   sort(sort: { key: string; value: string }): void {
     this.sortName = sort.key;
@@ -91,12 +93,10 @@ export class NzDemoTableHeadComponent {
     if (this.sortName && this.sortValue) {
       this.listOfDisplayData = data.sort((a, b) =>
         this.sortValue === 'ascend'
-          ? // @ts-ignore
-            a[this.sortName!] > b[this.sortName!]
+          ? a[this.sortName!] > b[this.sortName!]
             ? 1
             : -1
-          : // @ts-ignore
-          b[this.sortName!] > a[this.sortName!]
+          : b[this.sortName!] > a[this.sortName!]
           ? 1
           : -1
       );

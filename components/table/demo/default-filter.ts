@@ -45,7 +45,7 @@ export class NzDemoTableDefaultFilterComponent {
   sortName: string | null = null;
   sortValue: string | null = null;
   searchAddress = 'London';
-  listOfData = [
+  listOfData: Array<{ name: string; age: number; address: string; [key: string]: string | number }> = [
     {
       name: 'John Brown',
       age: 32,
@@ -67,7 +67,8 @@ export class NzDemoTableDefaultFilterComponent {
       address: 'London No. 2 Lake Park'
     }
   ];
-  listOfDisplayData: any[] = []; // You need to change it as well!
+  // You need to change it as well!
+  listOfDisplayData: Array<{ name: string; age: number; address: string; [key: string]: string | number }> = [];
 
   sort(sort: { key: string; value: string }): void {
     this.sortName = sort.key;
@@ -92,12 +93,10 @@ export class NzDemoTableDefaultFilterComponent {
     if (this.sortName && this.sortValue) {
       this.listOfDisplayData = data.sort((a, b) =>
         this.sortValue === 'ascend'
-          ? // @ts-ignore
-            a[this.sortName!] > b[this.sortName!]
+          ? a[this.sortName!] > b[this.sortName!]
             ? 1
             : -1
-          : // @ts-ignore
-          b[this.sortName!] > a[this.sortName!]
+          : b[this.sortName!] > a[this.sortName!]
           ? 1
           : -1
       );
