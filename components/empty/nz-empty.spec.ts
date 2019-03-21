@@ -22,8 +22,8 @@ describe('nz-empty', () => {
 
     beforeEach(() => {
       testBed = TestBed.configureTestingModule({
-        imports     : [ CommonModule, NzEmptyModule ],
-        declarations: [ NzEmptyTestBasicComponent ]
+        imports: [CommonModule, NzEmptyModule],
+        declarations: [NzEmptyTestBasicComponent]
       });
 
       TestBed.compileComponents();
@@ -133,14 +133,14 @@ describe('nz-empty', () => {
     describe('service method', () => {
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ NzEmptyTestServiceModule ]
+          imports: [NzEmptyTestServiceModule]
         }).compileComponents();
 
         fixture = TestBed.createComponent(NzEmptyTestServiceComponent);
         testComponent = fixture.debugElement.componentInstance;
       });
 
-      it('should components\' prop has priority', fakeAsync(() => {
+      it("should components' prop has priority", fakeAsync(() => {
         const refresh = () => {
           fixture.detectChanges();
           tick();
@@ -180,7 +180,6 @@ describe('nz-empty', () => {
       }));
 
       it('should raise error when set a invalid default value', () => {
-
         expect(() => {
           // tslint:disable-next-line:no-any
           testComponent.emptyService.setDefaultContent(false as any);
@@ -260,7 +259,7 @@ describe('nz-empty', () => {
     describe('service injection', () => {
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ NzEmptyTestInjectionModule ]
+          imports: [NzEmptyTestInjectionModule]
         }).compileComponents();
 
         fixture = TestBed.createComponent(NzEmptyTestServiceComponent);
@@ -325,8 +324,7 @@ export class NzEmptyTestServiceComponent {
 
   noResult?: string | null;
 
-  constructor(public emptyService: NzEmptyService) {
-  }
+  constructor(public emptyService: NzEmptyService) {}
 
   reset(): void {
     this.emptyService.resetDefault();
@@ -344,30 +342,27 @@ export class NzEmptyTestServiceComponent {
   `
 })
 export class NzEmptyTestCustomComponent {
-  constructor(@Inject(NZ_EMPTY_COMPONENT_NAME) public name: string) {
-  }
+  constructor(@Inject(NZ_EMPTY_COMPONENT_NAME) public name: string) {}
 }
 
 @NgModule({
-  imports        : [ CommonModule, NzEmptyModule, NzListModule ],
-  declarations   : [ NzEmptyTestServiceComponent, NzEmptyTestCustomComponent ],
-  entryComponents: [ NzEmptyTestCustomComponent ],
-  exports        : [ NzEmptyTestServiceComponent, NzEmptyTestCustomComponent ]
+  imports: [CommonModule, NzEmptyModule, NzListModule],
+  declarations: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent],
+  entryComponents: [NzEmptyTestCustomComponent],
+  exports: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent]
 })
-export class NzEmptyTestServiceModule {
-}
+export class NzEmptyTestServiceModule {}
 
 @NgModule({
-  imports        : [ CommonModule, NzEmptyModule, NzListModule ],
-  declarations   : [ NzEmptyTestServiceComponent, NzEmptyTestCustomComponent ],
-  entryComponents: [ NzEmptyTestCustomComponent ],
-  exports        : [ NzEmptyTestServiceComponent, NzEmptyTestCustomComponent ],
-  providers      : [
+  imports: [CommonModule, NzEmptyModule, NzListModule],
+  declarations: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent],
+  entryComponents: [NzEmptyTestCustomComponent],
+  exports: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent],
+  providers: [
     {
-      provide : NZ_DEFAULT_EMPTY_CONTENT,
+      provide: NZ_DEFAULT_EMPTY_CONTENT,
       useValue: NzEmptyTestCustomComponent
     }
   ]
 })
-export class NzEmptyTestInjectionModule {
-}
+export class NzEmptyTestInjectionModule {}

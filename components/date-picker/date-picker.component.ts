@@ -18,17 +18,18 @@ import { NzI18nService } from '../i18n/nz-i18n.service';
 import { DateRangePickerComponent } from './date-range-picker.component';
 
 @Component({
-  encapsulation  : ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector       : 'nz-date-picker',
-  templateUrl    : './date-range-picker.component.html',
-  providers      : [ {
-    provide    : NG_VALUE_ACCESSOR,
-    multi      : true,
-    useExisting: forwardRef(() => NzDatePickerComponent)
-  } ]
+  selector: 'nz-date-picker',
+  templateUrl: './date-range-picker.component.html',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: forwardRef(() => NzDatePickerComponent)
+    }
+  ]
 })
-
 export class NzDatePickerComponent extends DateRangePickerComponent {
   isRange: boolean = false;
 

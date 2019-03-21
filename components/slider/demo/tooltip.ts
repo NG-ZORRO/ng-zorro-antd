@@ -7,5 +7,4 @@ import { Component } from '@angular/core';
     <nz-slider [nzTooltipVisible]="'never'"></nz-slider>
   `
 })
-export class NzDemoSliderTooltipComponent {
-}
+export class NzDemoSliderTooltipComponent {}

@@ -12,5 +12,5 @@ import { Component } from '@angular/core';
 export class NzDemoSliderBasicComponent {
   disabled = false;
   value1 = 30;
-  value2 = [ 20, 50 ];
+  value2 = [20, 50];
 }

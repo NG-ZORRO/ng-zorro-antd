@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-switch-control',
-  template: `<nz-switch [(ngModel)]="switchValue" [nzControl]="true" (click)="clickSwitch()" [nzLoading]="loading"></nz-switch>`
+  template: `
+    <nz-switch [(ngModel)]="switchValue" [nzControl]="true" (click)="clickSwitch()" [nzLoading]="loading"></nz-switch>
+  `
 })
 export class NzDemoSwitchControlComponent {
   switchValue = false;
@@ -16,6 +18,5 @@ export class NzDemoSwitchControlComponent {
         this.loading = false;
       }, 3000);
     }
-
   }
 }

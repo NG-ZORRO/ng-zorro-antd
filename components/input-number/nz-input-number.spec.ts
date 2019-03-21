@@ -11,8 +11,8 @@ import { NzInputNumberModule } from './nz-input-number.module';
 describe('input number', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzInputNumberModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestInputNumberBasicComponent, NzTestInputNumberFormComponent ]
+      imports: [NzInputNumberModule, FormsModule, ReactiveFormsModule],
+      declarations: [NzTestInputNumberBasicComponent, NzTestInputNumberFormComponent]
     });
     TestBed.compileComponents();
   }));
@@ -314,11 +314,11 @@ describe('input number', () => {
     });
     it('should key up and down work with ctrl key', () => {
       const upArrowEvent = new KeyboardEvent('keydown', {
-        code   : 'ArrowUp',
+        code: 'ArrowUp',
         ctrlKey: true
       });
       const downArrowEvent = new KeyboardEvent('keydown', {
-        code   : 'ArrowDown',
+        code: 'ArrowDown',
         ctrlKey: true
       });
       fixture.detectChanges();
@@ -335,11 +335,11 @@ describe('input number', () => {
     });
     it('should key up and down work with meta key', () => {
       const upArrowEvent = new KeyboardEvent('keydown', {
-        code   : 'ArrowUp',
+        code: 'ArrowUp',
         metaKey: true
       });
       const downArrowEvent = new KeyboardEvent('keydown', {
-        code   : 'ArrowDown',
+        code: 'ArrowDown',
         metaKey: true
       });
       fixture.detectChanges();
@@ -358,11 +358,11 @@ describe('input number', () => {
       testComponent.max = 100;
       testComponent.min = -100;
       const upArrowEvent = new KeyboardEvent('keydown', {
-        code    : 'ArrowUp',
+        code: 'ArrowUp',
         shiftKey: true
       });
       const downArrowEvent = new KeyboardEvent('keydown', {
-        code    : 'ArrowDown',
+        code: 'ArrowDown',
         shiftKey: true
       });
       fixture.detectChanges();
@@ -378,7 +378,7 @@ describe('input number', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(-10);
     });
-    it('should update value immediately after formatter changed', (() => {
+    it('should update value immediately after formatter changed', () => {
       const newFormatter = (v: number) => `${v} %`;
       const initValue = 1;
       testComponent.nzInputNumberComponent.onModelChange(`${initValue}`);
@@ -386,9 +386,9 @@ describe('input number', () => {
       testComponent.formatter = newFormatter;
       fixture.detectChanges();
       expect(inputElement.value).toBe(newFormatter(initValue));
-    }));
+    });
     // #1449
-    it('should up and down focus input', (() => {
+    it('should up and down focus input', () => {
       dispatchFakeEvent(upHandler, 'mousedown');
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number-focused');
@@ -401,7 +401,7 @@ describe('input number', () => {
       dispatchFakeEvent(inputElement, 'blur');
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
-    }));
+    });
   });
 
   describe('input number form', () => {
@@ -460,7 +460,8 @@ describe('input number', () => {
       [nzStep]="step"
       [nzFormatter]="formatter"
       [nzParser]="parser"
-      [nzPrecision]="precision">
+      [nzPrecision]="precision"
+    >
     </nz-input-number>
   `
 })
@@ -475,7 +476,7 @@ export class NzTestInputNumberBasicComponent {
   placeholder = 'placeholder';
   step = 1;
   precision?: number = 2;
-  formatter = (value: number) => value !== null ? `${value}` : '';
+  formatter = (value: number) => (value !== null ? `${value}` : '');
   parser = (value: number) => value;
   modelChange = jasmine.createSpy('change callback');
 }
@@ -493,7 +494,7 @@ export class NzTestInputNumberFormComponent {
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
-      inputNumber: [ 1 ]
+      inputNumber: [1]
     });
   }
 

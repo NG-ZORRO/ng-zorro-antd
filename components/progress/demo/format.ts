@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-progress-format',
@@ -6,7 +6,7 @@ import {Component} from '@angular/core';
     <nz-progress [nzPercent]="75" nzType="circle" [nzFormat]="formatOne"></nz-progress>
     <nz-progress [nzPercent]="100" nzType="circle" [nzFormat]="formatTwo"></nz-progress>
   `,
-  styles  : [
+  styles: [
     `
       nz-progress {
         margin-right: 8px;

@@ -11,11 +11,11 @@ import {
 import { NzCheckboxComponent } from './nz-checkbox.component';
 
 @Component({
-  selector           : 'nz-checkbox-wrapper',
+  selector: 'nz-checkbox-wrapper',
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  templateUrl        : './nz-checkbox-wrapper.component.html'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './nz-checkbox-wrapper.component.html'
 })
 export class NzCheckboxWrapperComponent {
   @Output() readonly nzOnChange = new EventEmitter<string[]>();

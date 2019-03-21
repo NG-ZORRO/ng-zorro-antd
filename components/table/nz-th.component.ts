@@ -4,7 +4,9 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges, OnDestroy, OnInit,
+  OnChanges,
+  OnDestroy,
+  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
@@ -30,24 +32,24 @@ export interface NzThItemInterface {
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector           : 'th:not(.nz-disable-th)',
+  selector: 'th:not(.nz-disable-th)',
   preserveWhitespaces: false,
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  templateUrl        : './nz-th.component.html',
-  host               : {
-    '[class.ant-table-column-has-actions]'     : 'nzShowFilter || nzShowSort || nzCustomFilter',
-    '[class.ant-table-column-has-filters]'     : 'nzShowFilter || nzCustomFilter',
-    '[class.ant-table-column-has-sorters]'     : 'nzShowSort',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './nz-th.component.html',
+  host: {
+    '[class.ant-table-column-has-actions]': 'nzShowFilter || nzShowSort || nzCustomFilter',
+    '[class.ant-table-column-has-filters]': 'nzShowFilter || nzCustomFilter',
+    '[class.ant-table-column-has-sorters]': 'nzShowSort',
     '[class.ant-table-selection-column-custom]': 'nzShowRowSelection',
-    '[class.ant-table-selection-column]'       : 'nzShowCheckbox',
-    '[class.ant-table-expand-icon-th]'         : 'nzExpand',
-    '[class.ant-table-th-left-sticky]'         : 'nzLeft',
-    '[class.ant-table-th-right-sticky]'        : 'nzRight',
-    '[class.ant-table-column-sort]'            : `nzSort === 'descend' || nzSort === 'ascend'`,
-    '[style.left]'                             : 'nzLeft',
-    '[style.right]'                            : 'nzRight',
-    '[style.text-align]'                       : 'nzAlign'
+    '[class.ant-table-selection-column]': 'nzShowCheckbox',
+    '[class.ant-table-expand-icon-th]': 'nzExpand',
+    '[class.ant-table-th-left-sticky]': 'nzLeft',
+    '[class.ant-table-th-right-sticky]': 'nzRight',
+    '[class.ant-table-column-sort]': `nzSort === 'descend' || nzSort === 'ascend'`,
+    '[style.left]': 'nzLeft',
+    '[style.right]': 'nzRight',
+    '[style.text-align]': 'nzAlign'
   }
 })
 export class NzThComponent implements OnChanges, OnInit, OnDestroy {
@@ -62,7 +64,7 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   private hasDefaultFilter = false;
   @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
   /* tslint:disable-next-line:no-any */
-  @Input() nzSelections: Array<{ text: string, onSelect(...args: any[]): any; }> = [];
+  @Input() nzSelections: Array<{ text: string; onSelect(...args: any[]): any }> = [];
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
@@ -72,7 +74,7 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzLeft: string;
   @Input() nzRight: string;
   @Input() nzAlign: 'left' | 'right' | 'center';
-  @Input() nzSort: 'ascend' | 'descend'| null = null;
+  @Input() nzSort: 'ascend' | 'descend' | null = null;
   @Input() nzFilters: NzThFilterType = [];
   @Input() @InputBoolean() nzExpand = false;
   @Input() @InputBoolean() nzShowCheckbox = false;
@@ -82,7 +84,7 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   @Input() @InputBoolean() nzShowRowSelection = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Output() readonly nzSortChange = new EventEmitter<string | null>();
-  @Output() readonly nzSortChangeWithKey = new EventEmitter<{ key: string, value: string | null }>();
+  @Output() readonly nzSortChangeWithKey = new EventEmitter<{ key: string; value: string | null }>();
   /* tslint:disable-next-line:no-any */
   @Output() readonly nzFilterChange = new EventEmitter<any[] | any>();
 
@@ -142,7 +144,7 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   checkSingle(filter: NzThItemInterface): void {
-    this.singleFilterList.forEach(item => item.checked = item === filter);
+    this.singleFilterList.forEach(item => (item.checked = item === filter));
   }
 
   hideDropDown(): void {
@@ -190,8 +192,7 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService) {
-  }
+  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {

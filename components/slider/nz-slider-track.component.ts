@@ -11,11 +11,11 @@ export interface NzSliderTrackStyle {
 }
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-slider-track',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-slider-track',
   preserveWhitespaces: false,
-  templateUrl        : './nz-slider-track.component.html'
+  templateUrl: './nz-slider-track.component.html'
 })
 export class NzSliderTrackComponent implements OnChanges {
   @Input() @InputNumber() nzOffset: number;

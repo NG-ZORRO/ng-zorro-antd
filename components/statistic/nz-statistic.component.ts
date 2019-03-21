@@ -1,21 +1,15 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  TemplateRef,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { NzStatisticValueType } from './nz-statistic-definitions';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation  : ViewEncapsulation.None,
-  selector       : 'nz-statistic',
-  templateUrl    : './nz-statistic.component.html',
-  host           : {
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-statistic',
+  templateUrl: './nz-statistic.component.html',
+  host: {
     class: 'ant-statistic'
   },
-  styles         : [ 'nz-statistic { display: block; }' ]
+  styles: ['nz-statistic { display: block; }']
 })
 export class NzStatisticComponent {
   @Input() nzPrefix: string | TemplateRef<void>;

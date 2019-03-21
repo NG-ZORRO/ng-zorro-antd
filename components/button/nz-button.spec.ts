@@ -23,9 +23,9 @@ describe('button', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule ],
-        declarations: [ NzDemoButtonBasicComponent ],
-        providers   : []
+        imports: [NzButtonModule],
+        declarations: [NzDemoButtonBasicComponent],
+        providers: []
       }).compileComponents();
     }));
 
@@ -36,10 +36,10 @@ describe('button', () => {
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-primary')).toBe(true);
-      expect(buttons[ 1 ].nativeElement.classList.contains('ant-btn-default')).toBe(true);
-      expect(buttons[ 2 ].nativeElement.classList.contains('ant-btn-dashed')).toBe(true);
-      expect(buttons[ 3 ].nativeElement.classList.contains('ant-btn-danger')).toBe(true);
+      expect(buttons[0].nativeElement.classList.contains('ant-btn-primary')).toBe(true);
+      expect(buttons[1].nativeElement.classList.contains('ant-btn-default')).toBe(true);
+      expect(buttons[2].nativeElement.classList.contains('ant-btn-dashed')).toBe(true);
+      expect(buttons[3].nativeElement.classList.contains('ant-btn-danger')).toBe(true);
     });
   });
 
@@ -49,9 +49,9 @@ describe('button', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule ],
-        declarations: [ NzDemoButtonButtonGroupComponent ],
-        providers   : []
+        imports: [NzButtonModule],
+        declarations: [NzDemoButtonButtonGroupComponent],
+        providers: []
       }).compileComponents();
     }));
 
@@ -66,8 +66,10 @@ describe('button', () => {
     });
     it('should have no white space', () => {
       fixture.detectChanges();
-      // @ts-ignore
-      expect(Array.from(buttonGroup.nativeElement.firstElementChild).some((node: HTMLElement) => node.nodeType === 3)).toBe(false);
+      expect(
+        // @ts-ignore
+        Array.from(buttonGroup.nativeElement.firstElementChild).some((node: HTMLElement) => node.nodeType === 3)
+      ).toBe(false);
     });
   });
 
@@ -77,9 +79,9 @@ describe('button', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule ],
-        declarations: [ NzDemoButtonDisabledComponent ],
-        providers   : []
+        imports: [NzButtonModule],
+        declarations: [NzDemoButtonDisabledComponent],
+        providers: []
       }).compileComponents();
     }));
 
@@ -90,7 +92,7 @@ describe('button', () => {
 
     it('should have correct attribute', () => {
       fixture.detectChanges();
-      expect(!!buttons[ 1 ].nativeElement.attributes.getNamedItem('disabled')).toBe(true);
+      expect(!!buttons[1].nativeElement.attributes.getNamedItem('disabled')).toBe(true);
     });
   });
 
@@ -100,9 +102,9 @@ describe('button', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule ],
-        declarations: [ NzDemoButtonGhostComponent ],
-        providers   : []
+        imports: [NzButtonModule],
+        declarations: [NzDemoButtonGhostComponent],
+        providers: []
       }).compileComponents();
     }));
 
@@ -113,10 +115,10 @@ describe('button', () => {
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
-      expect(buttons[ 1 ].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
-      expect(buttons[ 2 ].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
-      expect(buttons[ 3 ].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
+      expect(buttons[0].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
+      expect(buttons[1].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
+      expect(buttons[2].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
+      expect(buttons[3].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
     });
   });
 
@@ -126,9 +128,9 @@ describe('button', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule, NzIconTestModule ],
-        declarations: [ NzDemoButtonIconComponent ],
-        providers   : []
+        imports: [NzButtonModule, NzIconTestModule],
+        declarations: [NzDemoButtonIconComponent],
+        providers: []
       }).compileComponents();
     }));
 
@@ -139,11 +141,11 @@ describe('button', () => {
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-icon-only')).toBe(true);
-      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-circle')).toBe(true);
-      expect(buttons[ 1 ].nativeElement.classList.contains('ant-btn-icon-only')).toBe(false);
-      expect(buttons[ 1 ].nativeElement.firstElementChild!.classList.contains('anticon-search')).toBe(true);
-      expect(buttons[ 1 ].nativeElement.firstElementChild.style.cssText).toBe('display: inline-block;');
+      expect(buttons[0].nativeElement.classList.contains('ant-btn-icon-only')).toBe(true);
+      expect(buttons[0].nativeElement.classList.contains('ant-btn-circle')).toBe(true);
+      expect(buttons[1].nativeElement.classList.contains('ant-btn-icon-only')).toBe(false);
+      expect(buttons[1].nativeElement.firstElementChild!.classList.contains('anticon-search')).toBe(true);
+      expect(buttons[1].nativeElement.firstElementChild.style.cssText).toBe('display: inline-block;');
     });
   });
 
@@ -153,9 +155,9 @@ describe('button', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule, NzIconTestModule ],
-        declarations: [ NzDemoButtonLoadingComponent ],
-        providers   : []
+        imports: [NzButtonModule, NzIconTestModule],
+        declarations: [NzDemoButtonLoadingComponent],
+        providers: []
       }).compileComponents();
     }));
 
@@ -166,11 +168,11 @@ describe('button', () => {
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-loading')).toBe(true);
+      expect(buttons[0].nativeElement.classList.contains('ant-btn-loading')).toBe(true);
     });
 
     it('should loading when click without icon', fakeAsync(() => {
-      const button = buttons[ 2 ];
+      const button = buttons[2];
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
       expect(button.nativeElement.firstElementChild.localName).toBe('span');
@@ -189,7 +191,7 @@ describe('button', () => {
     }));
 
     it('should loading when click with icon', fakeAsync(() => {
-      const button = buttons[ 3 ];
+      const button = buttons[3];
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
       expect(button.nativeElement.firstElementChild.querySelector('svg')).not.toBe(null);
@@ -222,10 +224,10 @@ describe('button', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule ],
-        declarations: [ NzDemoButtonSizeComponent ],
-        schemas     : [ NO_ERRORS_SCHEMA ],
-        providers   : []
+        imports: [NzButtonModule],
+        declarations: [NzDemoButtonSizeComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: []
       }).compileComponents();
     }));
 
@@ -257,9 +259,9 @@ describe('button', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule ],
-        declarations: [ NzTestButtonSearchComponent ],
-        providers   : []
+        imports: [NzButtonModule],
+        declarations: [NzTestButtonSearchComponent],
+        providers: []
       }).compileComponents();
     }));
 
@@ -280,9 +282,9 @@ describe('button', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule ],
-        declarations: [ NzDemoButtonBlockComponent ],
-        providers   : []
+        imports: [NzButtonModule],
+        declarations: [NzDemoButtonBlockComponent],
+        providers: []
       }).compileComponents();
     }));
 
@@ -293,15 +295,15 @@ describe('button', () => {
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-primary')).toBe(true);
-      expect(buttons[ 1 ].nativeElement.classList.contains('ant-btn-default')).toBe(true);
-      expect(buttons[ 2 ].nativeElement.classList.contains('ant-btn-dashed')).toBe(true);
-      expect(buttons[ 3 ].nativeElement.classList.contains('ant-btn-danger')).toBe(true);
+      expect(buttons[0].nativeElement.classList.contains('ant-btn-primary')).toBe(true);
+      expect(buttons[1].nativeElement.classList.contains('ant-btn-default')).toBe(true);
+      expect(buttons[2].nativeElement.classList.contains('ant-btn-dashed')).toBe(true);
+      expect(buttons[3].nativeElement.classList.contains('ant-btn-danger')).toBe(true);
 
-      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-block')).toBe(true);
-      expect(buttons[ 1 ].nativeElement.classList.contains('ant-btn-block')).toBe(true);
-      expect(buttons[ 2 ].nativeElement.classList.contains('ant-btn-block')).toBe(true);
-      expect(buttons[ 3 ].nativeElement.classList.contains('ant-btn-block')).toBe(true);
+      expect(buttons[0].nativeElement.classList.contains('ant-btn-block')).toBe(true);
+      expect(buttons[1].nativeElement.classList.contains('ant-btn-block')).toBe(true);
+      expect(buttons[2].nativeElement.classList.contains('ant-btn-block')).toBe(true);
+      expect(buttons[3].nativeElement.classList.contains('ant-btn-block')).toBe(true);
     });
   });
 
@@ -311,9 +313,9 @@ describe('button', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule, NzIconTestModule ],
-        declarations: [ NzTestButtonBindingComponent ],
-        providers   : []
+        imports: [NzButtonModule, NzIconTestModule],
+        declarations: [NzTestButtonBindingComponent],
+        providers: []
       }).compileComponents();
     }));
 
@@ -349,21 +351,25 @@ describe('button', () => {
 @Component({
   selector: 'nz-test-button-search',
   template: `
-    <button nz-button nzSearch></button>`
+    <button nz-button nzSearch></button>
+  `
 })
-export class NzTestButtonSearchComponent {
-}
+export class NzTestButtonSearchComponent {}
 
 // https://github.com/NG-ZORRO/ng-zorro-antd/issues/2191
 @Component({
   selector: 'nz-test-button-binding',
-  template: `<button nz-button nzType="primary" (click)="load()" [nzLoading]="loading"><i nz-icon type="poweroff"></i> {{'Click me!'}}</button>`
+  template: `
+    <button nz-button nzType="primary" (click)="load()" [nzLoading]="loading">
+      <i nz-icon type="poweroff"></i> {{ 'Click me!' }}
+    </button>
+  `
 })
 export class NzTestButtonBindingComponent {
   loading = false;
 
   load(): void {
     this.loading = true;
-    setTimeout(() => this.loading = false, 5000);
+    setTimeout(() => (this.loading = false), 5000);
   }
 }

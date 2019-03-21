@@ -2,7 +2,7 @@ export type NzCascaderExpandTrigger = 'click' | 'hover';
 
 export type NzCascaderTriggerType = 'click' | 'hover';
 
-export type NzCascaderSize = 'small' | 'large' | 'default' ;
+export type NzCascaderSize = 'small' | 'large' | 'default';
 
 export interface CascaderOption {
   value?: any; // tslint:disable-line:no-any
@@ -14,7 +14,7 @@ export interface CascaderOption {
   parent?: CascaderOption;
   children?: CascaderOption[];
 
-  [ key: string ]: any; // tslint:disable-line:no-any
+  [key: string]: any; // tslint:disable-line:no-any
 }
 
 export interface CascaderSearchOption extends CascaderOption {

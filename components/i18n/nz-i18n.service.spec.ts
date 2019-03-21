@@ -36,5 +36,4 @@ describe('nz-i18n.service', () => {
       expect(srv['_change'].next).not.toHaveBeenCalled();
     });
   });
-
 });

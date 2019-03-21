@@ -10,9 +10,17 @@ import { NzTreeModule } from '../tree/nz-tree.module';
 import { NzTreeSelectComponent } from './nz-tree-select.component';
 
 @NgModule({
-  imports     : [ CommonModule, OverlayModule, FormsModule, NzTreeModule, NzIconModule, NzEmptyModule, NzOverlayModule, NzNoAnimationModule ],
-  declarations: [ NzTreeSelectComponent ],
-  exports     : [ NzTreeSelectComponent ]
+  imports: [
+    CommonModule,
+    OverlayModule,
+    FormsModule,
+    NzTreeModule,
+    NzIconModule,
+    NzEmptyModule,
+    NzOverlayModule,
+    NzNoAnimationModule
+  ],
+  declarations: [NzTreeSelectComponent],
+  exports: [NzTreeSelectComponent]
 })
-export class NzTreeSelectModule {
-}
+export class NzTreeSelectModule {}

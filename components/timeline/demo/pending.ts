@@ -11,7 +11,6 @@ import { Component } from '@angular/core';
     <button nz-button style="margin-top: 16px" nzType="primary" (click)="toggleReverse()">Toggle Reverse</button>
   `
 })
-
 export class NzDemoTimelinePendingComponent {
   reverse = false;
 

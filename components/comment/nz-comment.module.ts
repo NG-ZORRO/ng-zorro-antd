@@ -17,12 +17,8 @@ const NZ_COMMENT_CELLS = [
 ];
 
 @NgModule({
-  imports     : [
-    CommonModule,
-    NzAddOnModule
-  ],
-  exports     : [ NzCommentComponent, ...NZ_COMMENT_CELLS ],
-  declarations: [ NzCommentComponent, ...NZ_COMMENT_CELLS ]
+  imports: [CommonModule, NzAddOnModule],
+  exports: [NzCommentComponent, ...NZ_COMMENT_CELLS],
+  declarations: [NzCommentComponent, ...NZ_COMMENT_CELLS]
 })
-export class NzCommentModule {
-}
+export class NzCommentModule {}

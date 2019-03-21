@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DebugElement,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -11,8 +18,13 @@ import { NzStepsModule } from './nz-steps.module';
 describe('steps', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzStepsModule, NzIconTestModule ],
-      declarations: [ NzTestOuterStepsComponent, NzTestInnerStepStringComponent, NzTestInnerStepTemplateComponent, NzTestStepForComponent ]
+      imports: [NzStepsModule, NzIconTestModule],
+      declarations: [
+        NzTestOuterStepsComponent,
+        NzTestInnerStepStringComponent,
+        NzTestInnerStepTemplateComponent,
+        NzTestStepForComponent
+      ]
     });
     TestBed.compileComponents();
   }));
@@ -32,10 +44,12 @@ describe('steps', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(outStep.nativeElement.firstElementChild.className).toBe('ant-steps ant-steps-horizontal ant-steps-label-horizontal');
-      expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-process');
-      expect(innerSteps[ 1 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
-      expect(innerSteps[ 2 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
+      expect(outStep.nativeElement.firstElementChild.className).toBe(
+        'ant-steps ant-steps-horizontal ant-steps-label-horizontal'
+      );
+      expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-item-process');
+      expect(innerSteps[1].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
+      expect(innerSteps[2].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
     }));
     it('should current change correct', fakeAsync(() => {
       fixture.detectChanges();
@@ -46,42 +60,62 @@ describe('steps', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-finish');
-      expect(innerSteps[ 1 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-process');
-      expect(innerSteps[ 2 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
+      expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-item-finish');
+      expect(innerSteps[1].nativeElement.className).toBe('ant-steps-item ant-steps-item-process');
+      expect(innerSteps[2].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
     }));
     it('should tail display correct', fakeAsync(() => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.firstElementChild!.classList.contains('ant-steps-item-tail')).toBe(true);
-      expect(innerSteps[ 1 ].nativeElement.firstElementChild!.classList.contains('ant-steps-item-tail')).toBe(true);
-      expect(innerSteps[ 2 ].nativeElement.firstElementChild!.classList.contains('ant-steps-item-tail')).toBe(false);
+      expect(innerSteps[0].nativeElement.firstElementChild!.classList.contains('ant-steps-item-tail')).toBe(true);
+      expect(innerSteps[1].nativeElement.firstElementChild!.classList.contains('ant-steps-item-tail')).toBe(true);
+      expect(innerSteps[2].nativeElement.firstElementChild!.classList.contains('ant-steps-item-tail')).toBe(false);
     }));
     it('should title correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('0title');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('1title');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('2title');
+      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('0title');
+      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('1title');
+      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('2title');
     });
     it('should description correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('0description');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('1description');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('2description');
+      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
+        '0description'
+      );
+      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
+        '1description'
+      );
+      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
+        '2description'
+      );
     });
     it('should icon display correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-icon').firstElementChild!.classList.contains('ant-steps-icon')).toBe(true);
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-icon').firstElementChild!.classList.contains('ant-steps-icon')).toBe(true);
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-icon').firstElementChild!.classList.contains('ant-steps-icon')).toBe(true);
+      expect(
+        innerSteps[0].nativeElement
+          .querySelector('.ant-steps-item-icon')
+          .firstElementChild!.classList.contains('ant-steps-icon')
+      ).toBe(true);
+      expect(
+        innerSteps[1].nativeElement
+          .querySelector('.ant-steps-item-icon')
+          .firstElementChild!.classList.contains('ant-steps-icon')
+      ).toBe(true);
+      expect(
+        innerSteps[2].nativeElement
+          .querySelector('.ant-steps-item-icon')
+          .firstElementChild!.classList.contains('ant-steps-icon')
+      ).toBe(true);
     });
     it('should size display correct', () => {
       fixture.detectChanges();
       testComponent.size = 'small';
       testComponent.cdr.markForCheck();
       fixture.detectChanges();
-      expect(outStep.nativeElement.firstElementChild.className).toBe('ant-steps ant-steps-horizontal ant-steps-label-horizontal ant-steps-small');
+      expect(outStep.nativeElement.firstElementChild.className).toBe(
+        'ant-steps ant-steps-horizontal ant-steps-label-horizontal ant-steps-small'
+      );
     });
     it('should direction display correct', () => {
       fixture.detectChanges();
@@ -106,21 +140,21 @@ describe('steps', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
+      expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
       testComponent.status = 'finish';
       testComponent.cdr.markForCheck();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-finish');
+      expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-item-finish');
       testComponent.status = 'error';
       testComponent.current = 1;
       testComponent.cdr.markForCheck();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(innerSteps[ 1 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-error');
-      expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-finish ant-steps-next-error');
+      expect(innerSteps[1].nativeElement.className).toBe('ant-steps-item ant-steps-item-error');
+      expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-item-finish ant-steps-next-error');
     }));
     it('should processDot display correct', fakeAsync(() => {
       fixture.detectChanges();
@@ -132,9 +166,21 @@ describe('steps', () => {
       tick();
       fixture.detectChanges();
       expect(outStep.nativeElement.firstElementChild!.classList.contains('ant-steps-dot')).toBe(true);
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild!.classList.contains('ant-steps-icon-dot')).toBe(true);
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild!.classList.contains('ant-steps-icon-dot')).toBe(true);
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild!.classList.contains('ant-steps-icon-dot')).toBe(true);
+      expect(
+        innerSteps[0].nativeElement
+          .querySelector('.ant-steps-icon')
+          .firstElementChild!.classList.contains('ant-steps-icon-dot')
+      ).toBe(true);
+      expect(
+        innerSteps[1].nativeElement
+          .querySelector('.ant-steps-icon')
+          .firstElementChild!.classList.contains('ant-steps-icon-dot')
+      ).toBe(true);
+      expect(
+        innerSteps[2].nativeElement
+          .querySelector('.ant-steps-icon')
+          .firstElementChild!.classList.contains('ant-steps-icon-dot')
+      ).toBe(true);
     }));
     it('should processDot template display correct', fakeAsync(() => {
       fixture.detectChanges();
@@ -146,12 +192,30 @@ describe('steps', () => {
       tick();
       fixture.detectChanges();
       expect(outStep.nativeElement.firstElementChild!.classList.contains('ant-steps-dot')).toBe(true);
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.innerText.trim()).toBe('process0');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.innerText.trim()).toBe('wait1');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.innerText.trim()).toBe('wait2');
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').lastElementChild.classList.contains('ant-steps-icon-dot')).toBe(true);
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').lastElementChild.classList.contains('ant-steps-icon-dot')).toBe(true);
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').lastElementChild.classList.contains('ant-steps-icon-dot')).toBe(true);
+      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-icon').firstElementChild.innerText.trim()).toBe(
+        'process0'
+      );
+      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-icon').firstElementChild.innerText.trim()).toBe(
+        'wait1'
+      );
+      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-icon').firstElementChild.innerText.trim()).toBe(
+        'wait2'
+      );
+      expect(
+        innerSteps[0].nativeElement
+          .querySelector('.ant-steps-icon')
+          .lastElementChild.classList.contains('ant-steps-icon-dot')
+      ).toBe(true);
+      expect(
+        innerSteps[1].nativeElement
+          .querySelector('.ant-steps-icon')
+          .lastElementChild.classList.contains('ant-steps-icon-dot')
+      ).toBe(true);
+      expect(
+        innerSteps[2].nativeElement
+          .querySelector('.ant-steps-icon')
+          .lastElementChild.classList.contains('ant-steps-icon-dot')
+      ).toBe(true);
     }));
     it('should support custom starting index', fakeAsync(() => {
       fixture.detectChanges();
@@ -163,12 +227,12 @@ describe('steps', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-process');
-      expect(innerSteps[ 1 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
-      expect(innerSteps[ 2 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('4');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('5');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('6');
+      expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-item-process');
+      expect(innerSteps[1].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
+      expect(innerSteps[2].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
+      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('4');
+      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('5');
+      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('6');
     }));
   });
   describe('inner step string', () => {
@@ -183,32 +247,44 @@ describe('steps', () => {
     });
     it('should status display correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-process ant-steps-custom');
-      expect(innerSteps[ 1 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-process ant-steps-custom');
-      expect(innerSteps[ 2 ].nativeElement.className).toBe('ant-steps-item ant-steps-item-process ant-steps-custom');
+      expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-item-process ant-steps-custom');
+      expect(innerSteps[1].nativeElement.className).toBe('ant-steps-item ant-steps-item-process ant-steps-custom');
+      expect(innerSteps[2].nativeElement.className).toBe('ant-steps-item ant-steps-item-process ant-steps-custom');
       testComponent.status = 'wait';
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.className).toBe('ant-steps-item ant-steps-custom ant-steps-item-wait');
-      expect(innerSteps[ 1 ].nativeElement.className).toBe('ant-steps-item ant-steps-custom ant-steps-item-wait');
-      expect(innerSteps[ 2 ].nativeElement.className).toBe('ant-steps-item ant-steps-custom ant-steps-item-wait');
+      expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-custom ant-steps-item-wait');
+      expect(innerSteps[1].nativeElement.className).toBe('ant-steps-item ant-steps-custom ant-steps-item-wait');
+      expect(innerSteps[2].nativeElement.className).toBe('ant-steps-item ant-steps-custom ant-steps-item-wait');
     });
     it('should title display correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('title');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('title');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('title');
+      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('title');
+      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('title');
+      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('title');
     });
     it('should description display correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('description');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('description');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('description');
+      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
+        'description'
+      );
+      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
+        'description'
+      );
+      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
+        'description'
+      );
     });
     it('should icon display correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toBe('anticon anticon-user');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toBe('anticon anticon-user');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toBe('anticon anticon-user');
+      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toBe(
+        'anticon anticon-user'
+      );
+      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toBe(
+        'anticon anticon-user'
+      );
+      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toBe(
+        'anticon anticon-user'
+      );
     });
   });
   describe('inner step template', () => {
@@ -221,21 +297,33 @@ describe('steps', () => {
     });
     it('should title display correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('titleTemplate');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('titleTemplate');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('titleTemplate');
+      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('titleTemplate');
+      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('titleTemplate');
+      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-title').innerText.trim()).toBe('titleTemplate');
     });
     it('should description display correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('descriptionTemplate');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('descriptionTemplate');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe('descriptionTemplate');
+      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
+        'descriptionTemplate'
+      );
+      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
+        'descriptionTemplate'
+      );
+      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
+        'descriptionTemplate'
+      );
     });
     it('should icon display correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[ 0 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toContain('anticon-smile-o');
-      expect(innerSteps[ 1 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toContain('anticon-smile-o');
-      expect(innerSteps[ 2 ].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toContain('anticon-smile-o');
+      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toContain(
+        'anticon-smile-o'
+      );
+      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toContain(
+        'anticon-smile-o'
+      );
+      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-icon').firstElementChild.className).toContain(
+        'anticon-smile-o'
+      );
     });
   });
   describe('step ng for', () => {
@@ -254,14 +342,21 @@ describe('steps', () => {
 @Component({
   selector: 'nz-test-outer-steps',
   template: `
-    <nz-steps [nzCurrent]="current" [nzDirection]="direction" [nzLabelPlacement]="labelPlacement" [nzSize]="size"
-              [nzStatus]="status" [nzProgressDot]="progressDot" [nzStartIndex]="startIndex">
+    <nz-steps
+      [nzCurrent]="current"
+      [nzDirection]="direction"
+      [nzLabelPlacement]="labelPlacement"
+      [nzSize]="size"
+      [nzStatus]="status"
+      [nzProgressDot]="progressDot"
+      [nzStartIndex]="startIndex"
+    >
       <nz-step nzTitle="0title" nzDescription="0description"></nz-step>
       <nz-step nzTitle="1title" nzDescription="1description"></nz-step>
       <nz-step nzTitle="2title" nzDescription="2description"></nz-step>
     </nz-steps>
     <ng-template #progressTemplate let-dot let-status="status" let-index="index">
-      <span class="insert-span">{{status}}{{index}}</span>
+      <span class="insert-span">{{ status }}{{ index }}</span>
       <ng-template [ngTemplateOutlet]="dot"></ng-template>
     </ng-template>
   `,
@@ -276,7 +371,7 @@ export class NzTestOuterStepsComponent {
   status = 'process';
   progressDot: boolean | TemplateRef<void> = false;
   startIndex = 0;
-  constructor (public cdr: ChangeDetectorRef) {}
+  constructor(public cdr: ChangeDetectorRef) {}
 }
 
 @Component({
@@ -316,19 +411,18 @@ export class NzTestInnerStepStringComponent {
     <ng-template #iconTemplate><i nz-icon type="smile-o"></i></ng-template>
   `
 })
-export class NzTestInnerStepTemplateComponent {
-}
+export class NzTestInnerStepTemplateComponent {}
 
 @Component({
   selector: 'nz-test-step-for',
   template: `
     <nz-steps>
-      <nz-step *ngFor="let step of steps;trackBy: trackById"></nz-step>
+      <nz-step *ngFor="let step of steps; trackBy: trackById"></nz-step>
     </nz-steps>
   `
 })
 export class NzTestStepForComponent {
-  steps = [ 1, 2, 3 ];
+  steps = [1, 2, 3];
 
   trackById(index: number): number {
     return index;

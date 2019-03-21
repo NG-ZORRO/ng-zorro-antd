@@ -8,11 +8,13 @@ import { Component, OnInit } from '@angular/core';
       [nzDisabled]="disabled"
       [nzTitles]="['Source', 'Target']"
       (nzSelectChange)="select($event)"
-      (nzChange)="change($event)">
+      (nzChange)="change($event)"
+    >
     </nz-transfer>
-  <div style="margin-top: 8px;">
-    <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled"></nz-switch>
-  <div>
+    <div style="margin-top: 8px;">
+      <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled"></nz-switch>
+      <div></div>
+    </div>
   `
 })
 export class NzDemoTransferBasicComponent implements OnInit {
@@ -23,13 +25,13 @@ export class NzDemoTransferBasicComponent implements OnInit {
   ngOnInit(): void {
     for (let i = 0; i < 20; i++) {
       this.list.push({
-        key     : i.toString(),
-        title   : `content${i + 1}`,
-        disabled: i % 3 < 1,
+        key: i.toString(),
+        title: `content${i + 1}`,
+        disabled: i % 3 < 1
       });
     }
 
-    [ 2, 3 ].forEach(idx => this.list[ idx ].direction = 'right');
+    [2, 3].forEach(idx => (this.list[idx].direction = 'right'));
   }
 
   select(ret: {}): void {

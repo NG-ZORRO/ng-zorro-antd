@@ -16,8 +16,8 @@ import { Component } from '@angular/core';
         <p>Technical testing 2</p>
         <p>Technical testing 3 2015-09-01</p>
       </nz-timeline-item>
-    </nz-timeline>`,
-  styles  : []
+    </nz-timeline>
+  `,
+  styles: []
 })
-export class NzDemoTimelineColorComponent {
-}
+export class NzDemoTimelineColorComponent {}

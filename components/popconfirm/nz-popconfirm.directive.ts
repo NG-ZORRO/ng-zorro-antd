@@ -3,12 +3,14 @@ import {
   ComponentFactoryResolver,
   Directive,
   ElementRef,
-  EventEmitter, Host,
+  EventEmitter,
+  Host,
   Input,
   OnInit,
   Optional,
   Output,
-  Renderer2, TemplateRef,
+  Renderer2,
+  TemplateRef,
   ViewContainerRef
 } from '@angular/core';
 
@@ -70,9 +72,12 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit 
       this.tooltip = tooltipComponent.instance;
       this.tooltip.noAnimation = this.noAnimation;
       // Remove element when use directive https://github.com/NG-ZORRO/ng-zorro-antd/issues/1967
-      this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), tooltipComponent.location.nativeElement);
+      this.renderer.removeChild(
+        this.renderer.parentNode(this.elementRef.nativeElement),
+        tooltipComponent.location.nativeElement
+      );
       this.isDynamicTooltip = true;
-      this.needProxyProperties.forEach(property => this.updateCompValue(property, this[ property ]));
+      this.needProxyProperties.forEach(property => this.updateCompValue(property, this[property]));
       const visible_ = this.tooltip.nzVisibleChange.pipe(distinctUntilChanged()).subscribe(data => {
         this.visible = data;
         this.nzVisibleChange.emit(data);

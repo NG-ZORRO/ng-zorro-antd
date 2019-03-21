@@ -13,9 +13,24 @@ import { NzTabsNavComponent } from './nz-tabs-nav.component';
 import { NzTabSetComponent } from './nz-tabset.component';
 
 @NgModule({
-  declarations: [ NzTabComponent, NzTabDirective, NzTabSetComponent, NzTabsNavComponent, NzTabLabelDirective, NzTabsInkBarDirective, NzTabBodyComponent ],
-  exports     : [ NzTabComponent, NzTabDirective, NzTabSetComponent, NzTabsNavComponent, NzTabLabelDirective, NzTabsInkBarDirective, NzTabBodyComponent ],
-  imports     : [ CommonModule, ObserversModule, NzIconModule, NzAddOnModule ]
+  declarations: [
+    NzTabComponent,
+    NzTabDirective,
+    NzTabSetComponent,
+    NzTabsNavComponent,
+    NzTabLabelDirective,
+    NzTabsInkBarDirective,
+    NzTabBodyComponent
+  ],
+  exports: [
+    NzTabComponent,
+    NzTabDirective,
+    NzTabSetComponent,
+    NzTabsNavComponent,
+    NzTabLabelDirective,
+    NzTabsInkBarDirective,
+    NzTabBodyComponent
+  ],
+  imports: [CommonModule, ObserversModule, NzIconModule, NzAddOnModule]
 })
-export class NzTabsModule {
-}
+export class NzTabsModule {}

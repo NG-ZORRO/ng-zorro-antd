@@ -12,14 +12,17 @@ import { NzCascaderOptionComponent } from './nz-cascader-li.component';
 import { NzCascaderComponent } from './nz-cascader.component';
 
 @NgModule({
-  imports     : [ CommonModule, FormsModule, OverlayModule, NzInputModule, NzIconModule, NzEmptyModule, NzOverlayModule, NzNoAnimationModule ],
-  declarations: [
-    NzCascaderComponent,
-    NzCascaderOptionComponent
+  imports: [
+    CommonModule,
+    FormsModule,
+    OverlayModule,
+    NzInputModule,
+    NzIconModule,
+    NzEmptyModule,
+    NzOverlayModule,
+    NzNoAnimationModule
   ],
-  exports     : [
-    NzCascaderComponent
-  ]
+  declarations: [NzCascaderComponent, NzCascaderOptionComponent],
+  exports: [NzCascaderComponent]
 })
-export class NzCascaderModule {
-}
+export class NzCascaderModule {}

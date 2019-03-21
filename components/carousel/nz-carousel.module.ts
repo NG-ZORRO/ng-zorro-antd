@@ -5,9 +5,8 @@ import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 import { NzCarouselComponent } from './nz-carousel.component';
 
 @NgModule({
-  declarations: [ NzCarouselComponent, NzCarouselContentDirective ],
-  exports     : [ NzCarouselComponent, NzCarouselContentDirective ],
-  imports     : [ CommonModule ]
+  declarations: [NzCarouselComponent, NzCarouselContentDirective],
+  exports: [NzCarouselComponent, NzCarouselContentDirective],
+  imports: [CommonModule]
 })
-export class NzCarouselModule {
-}
+export class NzCarouselModule {}
