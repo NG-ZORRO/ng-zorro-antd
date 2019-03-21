@@ -142,8 +142,8 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   private $destroy = new Subject<void>();
   private inputString = '';
   private isOpening = false;
-  private delayMenuTimer: number;
-  private delaySelectTimer: number;
+  private delayMenuTimer: number | null;
+  private delaySelectTimer: number | null;
 
   get inSearchingMode(): boolean {
     return this.cascaderService.inSearchingMode;
@@ -293,7 +293,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   private clearDelayMenuTimer(): void {
     if (this.delayMenuTimer) {
       clearTimeout(this.delayMenuTimer);
-      this.delayMenuTimer = 0;
+      this.delayMenuTimer = null;
     }
   }
 
@@ -515,7 +515,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   private clearDelaySelectTimer(): void {
     if (this.delaySelectTimer) {
       clearTimeout(this.delaySelectTimer);
-      this.delaySelectTimer = 0;
+      this.delaySelectTimer = null;
     }
   }
 
@@ -524,7 +524,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     if (doSelect) {
       this.delaySelectTimer = setTimeout(() => {
         this.cascaderService.setOptionActivated(option, index);
-        this.delaySelectTimer = 0;
+        this.delaySelectTimer = null;
       }, 150);
     }
   }
