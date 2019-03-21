@@ -85,7 +85,17 @@ describe('time holder', () => {
     expect(mathSecondRound(holder.value!)).toEqual(mathSecondRound(date));
   });
   it('should set default selected 12-hours with value', () => {
-    const holder = new TimeHolder().setValue(new Date(0, 0, 0, 15, 2, 3), true);
-    expect(holder.selected12Hours).toBe('PM');
+    const holderPM = new TimeHolder().setValue(new Date(0, 0, 0, 15, 2, 3), true);
+    expect(holderPM.selected12Hours).toBe('PM');
+    const holderAM = new TimeHolder().setValue(new Date(0, 0, 0, 0, 2, 3), true);
+    expect(holderAM.selected12Hours).toBe('AM');
+  });
+  it('should transform special value in 12-hour', () => {
+    const holder = new TimeHolder().setValue(new Date(), true);
+    holder.selected12Hours = 'am';
+    holder.setHours(12, false);
+    expect(holder.getHours(HourTypes.DataHour)).toBe(0);
+    holder.selected12Hours = 'pm';
+    expect(holder.getHours(HourTypes.DataHour)).toBe(12);
   });
 });

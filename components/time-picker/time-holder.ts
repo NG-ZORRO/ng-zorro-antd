@@ -140,7 +140,7 @@ export class TimeHolder {
         }
         if (this.selected12Hours === 'AM' && this._hours! >= 12) {
           this._hours! -= 12;
-          this._value!.setHours(this._hours as number);
+          this._value!.setHours(this._hours!);
         }
       }
 
@@ -180,8 +180,8 @@ export class TimeHolder {
   set hours(value: number | undefined) {
     if (value !== this._hours) {
       if (this._use12Hours) {
-        if (this.selected12Hours === 'PM' && value !== 12 ) {
-          this._hours! = value as number + 12;
+        if (this.selected12Hours === 'PM' && value !== 12) {
+          this._hours! = (value as number) + 12;
         } else if (this.selected12Hours === 'AM' && value === 12) {
           this._hours = 0;
         }
@@ -256,8 +256,7 @@ export class TimeHolder {
     return this._defaultOpenValue.getHours() >= 12 ? 'PM' : 'AM';
   }
 
-  constructor() {
-  }
+  constructor() {}
 
   private getViewHours(value: number, selecte12Hours: string | undefined): number {
     if (!this._use12Hours) {
@@ -266,7 +265,7 @@ export class TimeHolder {
     if (selecte12Hours === 'PM' && value > 12) {
       return value - 12;
     }
-    if (selecte12Hours === 'AM' && value === 0 ) {
+    if (selecte12Hours === 'AM' && value === 0) {
       return 12;
     }
     return value;
