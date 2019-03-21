@@ -6,16 +6,18 @@ import { NzIconService } from 'ng-zorro-antd';
   template: `
     <div class="icons-list">
       <i nz-icon [nzIconfont]="'icon-tuichu'"></i>
-      <i nz-icon [nzIconfont]="'icon-facebook'" ></i>
+      <i nz-icon [nzIconfont]="'icon-facebook'"></i>
       <i nz-icon [nzIconfont]="'icon-twitter'"></i>
     </div>
   `,
-  styles  : [ `
-    [nz-icon] {
-      margin-right: 6px;
-      font-size: 24px;
-    }
-  ` ]
+  styles: [
+    `
+      [nz-icon] {
+        margin-right: 6px;
+        font-size: 24px;
+      }
+    `
+  ]
 })
 export class NzDemoIconIconfontComponent {
   constructor(private _iconService: NzIconService) {

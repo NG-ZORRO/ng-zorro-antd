@@ -12,8 +12,8 @@ describe('nz-countdown', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports     : [ CommonModule, NzStatisticModule ],
-      declarations: [ NzTestCountdownComponent ]
+      imports: [CommonModule, NzStatisticModule],
+      declarations: [NzTestCountdownComponent]
     }).compileComponents();
   });
 
@@ -60,11 +60,7 @@ describe('nz-countdown', () => {
 @Component({
   selector: 'nz-test',
   template: `
-    <nz-countdown
-      [nzTitle]="'Countdown'"
-      [nzValue]="value"
-      [nzFormat]="format"
-      [nzValueTemplate]="template">
+    <nz-countdown [nzTitle]="'Countdown'" [nzValue]="value" [nzFormat]="format" [nzValueTemplate]="template">
     </nz-countdown>
     <ng-template #tpl let-diff>
       {{ diff }}

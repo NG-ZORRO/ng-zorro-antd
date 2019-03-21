@@ -6,8 +6,8 @@ import { NzSelectUnselectableDirective } from './nz-select-unselectable.directiv
 describe('select unselectable', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [],
-      declarations: [ NzTestSelectUnselectableComponent, NzSelectUnselectableDirective ]
+      imports: [],
+      declarations: [NzTestSelectUnselectableComponent, NzSelectUnselectableDirective]
     });
     TestBed.compileComponents();
   }));
@@ -30,7 +30,7 @@ describe('select unselectable', () => {
 @Component({
   selector: 'nz-test-select-unselectable',
   template: `
-    <div nz-select-unselectable></div>`
+    <div nz-select-unselectable></div>
+  `
 })
-export class NzTestSelectUnselectableComponent {
-}
+export class NzTestSelectUnselectableComponent {}

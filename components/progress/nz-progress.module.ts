@@ -5,9 +5,8 @@ import { NzIconModule } from '../icon/nz-icon.module';
 import { NzProgressComponent } from './nz-progress.component';
 
 @NgModule({
-  exports     : [ NzProgressComponent ],
-  declarations: [ NzProgressComponent ],
-  imports     : [ CommonModule, NzIconModule ]
+  exports: [NzProgressComponent],
+  declarations: [NzProgressComponent],
+  imports: [CommonModule, NzIconModule]
 })
-export class NzProgressModule {
-}
+export class NzProgressModule {}

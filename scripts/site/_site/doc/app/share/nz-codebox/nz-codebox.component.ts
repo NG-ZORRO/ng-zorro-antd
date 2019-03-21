@@ -5,14 +5,19 @@ import sdk from '@stackblitz/sdk';
 import { environment } from '../../../environments/environment';
 
 @Component({
-  selector     : 'nz-code-box',
+  selector: 'nz-code-box',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template     : `
-    <section class="code-box" [ngClass]="{'expand':nzExpanded}" [attr.id]="nzId">
+  template: `
+    <section class="code-box" [ngClass]="{ expand: nzExpanded }" [attr.id]="nzId">
       <section class="code-box-demo">
-        <div *ngIf="!showIframe" [class.simulate-iframe]="simulateIFrame" [class.browser-mockup]="simulateIFrame" [class.with-url]="simulateIFrame"
-          [style.height.px]="simulateIFrame&&nzIframeHeight">
+        <div
+          *ngIf="!showIframe"
+          [class.simulate-iframe]="simulateIFrame"
+          [class.browser-mockup]="simulateIFrame"
+          [class.with-url]="simulateIFrame"
+          [style.height.px]="simulateIFrame && nzIframeHeight"
+        >
           <ng-content select="[demo]"></ng-content>
         </div>
         <div class="browser-mockup with-url" *ngIf="showIframe">
@@ -21,30 +26,61 @@ import { environment } from '../../../environments/environment';
       </section>
       <section class="code-box-meta markdown">
         <div class="code-box-title">
-          <a (click)="navigateToFragment()">{{ nzTitle }}
+          <a (click)="navigateToFragment()"
+            >{{ nzTitle }}
             <a class="edit-button" [attr.href]="nzHref" target="_blank" style="">
               <i nz-icon type="edit"></i>
             </a>
           </a>
         </div>
         <ng-content select="[intro]"></ng-content>
-        <nz-tooltip [nzTitle]="nzExpanded?'Hide Code':'Show Code'">
-        <span class="code-expand-icon" nz-tooltip (click)="nzExpanded=!nzExpanded">
-            <img alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/wSAkBuJFbdxsosKKpqyq.svg" [class.code-expand-icon-show]="nzExpanded"
-              [class.code-expand-icon-hide]="!nzExpanded">
-            <img alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/OpROPHYqWmrMDBFMZtKF.svg" [class.code-expand-icon-show]="!nzExpanded"
-              [class.code-expand-icon-hide]="nzExpanded">
+        <nz-tooltip [nzTitle]="nzExpanded ? 'Hide Code' : 'Show Code'">
+          <span class="code-expand-icon" nz-tooltip (click)="nzExpanded = !nzExpanded">
+            <img
+              alt="expand code"
+              src="https://gw.alipayobjects.com/zos/rmsportal/wSAkBuJFbdxsosKKpqyq.svg"
+              [class.code-expand-icon-show]="nzExpanded"
+              [class.code-expand-icon-hide]="!nzExpanded"
+            />
+            <img
+              alt="expand code"
+              src="https://gw.alipayobjects.com/zos/rmsportal/OpROPHYqWmrMDBFMZtKF.svg"
+              [class.code-expand-icon-show]="!nzExpanded"
+              [class.code-expand-icon-hide]="nzExpanded"
+            />
           </span>
         </nz-tooltip>
       </section>
-      <section class="highlight-wrapper" [ngClass]="{'highlight-wrapper-expand':nzExpanded}">
+      <section class="highlight-wrapper" [ngClass]="{ 'highlight-wrapper-expand': nzExpanded }">
         <div class="highlight">
           <div class="code-box-actions">
-            <i [nzTitle]="'Edit On StackBlitz'" nz-tooltip nz-icon type="form" class="code-box-code-copy" (click)="openOnStackBlitz()"></i>
-            <i [nzTitle]="'Copy Code'" nz-tooltip nz-icon [type]="copied?'check':'copy'" class="code-box-code-copy" [class.ant-tooltip-open]="copied"
-              (click)="copyCode(nzRawCode)"></i>
-            <i [nzTitle]="'Copy Generate Command'" *ngIf="nzGenerateCommand" nz-tooltip nz-icon [type]="commandCopied?'check':'code'"
-              class="code-box-code-copy" [class.ant-tooltip-open]="commandCopied" (click)="copyGenerateCommand(nzGenerateCommand)"></i>
+            <i
+              [nzTitle]="'Edit On StackBlitz'"
+              nz-tooltip
+              nz-icon
+              type="form"
+              class="code-box-code-copy"
+              (click)="openOnStackBlitz()"
+            ></i>
+            <i
+              [nzTitle]="'Copy Code'"
+              nz-tooltip
+              nz-icon
+              [type]="copied ? 'check' : 'copy'"
+              class="code-box-code-copy"
+              [class.ant-tooltip-open]="copied"
+              (click)="copyCode(nzRawCode)"
+            ></i>
+            <i
+              [nzTitle]="'Copy Generate Command'"
+              *ngIf="nzGenerateCommand"
+              nz-tooltip
+              nz-icon
+              [type]="commandCopied ? 'check' : 'code'"
+              class="code-box-code-copy"
+              [class.ant-tooltip-open]="commandCopied"
+              (click)="copyGenerateCommand(nzGenerateCommand)"
+            ></i>
           </div>
           <ng-content select="[code]"></ng-content>
           <nz-highlight [nzCode]="nzCode" [nzLanguage]="'typescript'"></nz-highlight>
@@ -52,9 +88,7 @@ import { environment } from '../../../environments/environment';
       </section>
     </section>
   `,
-  styleUrls    : [
-    './nz-codebox.less'
-  ]
+  styleUrls: ['./nz-codebox.less']
 })
 export class NzCodeBoxComponent {
   rawCode: string;
@@ -76,8 +110,8 @@ export class NzCodeBoxComponent {
 
   @Input()
   set nzIframeSource(value: string) {
-    this.showIframe = (value !== 'null') && environment.production;
-    this.simulateIFrame = (value !== 'null') && !environment.production;
+    this.showIframe = value !== 'null' && environment.production;
+    this.simulateIFrame = value !== 'null' && !environment.production;
     this.iframe = this.sanitizer.bypassSecurityTrustResourceUrl(value);
   }
 
@@ -113,7 +147,6 @@ export class NzCodeBoxComponent {
   }
 
   copy(value: string): Promise<string> {
-
     const promise = new Promise<string>(
       (resolve): void => {
         // @ts-ignore
@@ -136,15 +169,14 @@ export class NzCodeBoxComponent {
       }
     );
 
-    return (promise);
-
+    return promise;
   }
 
   /** bug here https://github.com/stackblitz/core/issues/311 **/
   openOnStackBlitz() {
     sdk.openProject({
       files: {
-        'angular.json'            : `{
+        'angular.json': `{
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
@@ -267,8 +299,8 @@ export class NzCodeBoxComponent {
   },
   "defaultProject": "demo"
 }`,
-        'src/index.html'          : `<${this.nzSelector}>loading</${this.nzSelector}>`,
-        'src/main.ts'             : `import './polyfills';
+        'src/index.html': `<${this.nzSelector}>loading</${this.nzSelector}>`,
+        'src/main.ts': `import './polyfills';
 
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
@@ -284,7 +316,7 @@ platformBrowserDynamic().bootstrapModule(AppModule).then(ref => {
 
   // Otherwise, log the boot error
 }).catch(err => console.error(err));`,
-        'src/polyfills.ts'        : `/**
+        'src/polyfills.ts': `/**
  * This file includes polyfills needed by Angular and is loaded before the app.
  * You can add your own extra polyfills to this file.
  *
@@ -352,7 +384,7 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  */
 // import 'intl';  // Run \`npm install --save intl\`.`,
         'src/app/app.component.ts': this.nzRawCode,
-        'src/app/app.module.ts'   : `import { NgModule } from '@angular/core';
+        'src/app/app.module.ts': `import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -381,34 +413,33 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
 })
 export class AppModule { }
 `,
-        'src/styles.css'          : `/* Add application styles & imports to this file! */;`
+        'src/styles.css': `/* Add application styles & imports to this file! */;`
       },
 
-      title       : 'Dynamically Generated Project',
-      description : 'Created with <3 by the StackBlitz SDK!',
-      template    : 'angular-cli',
+      title: 'Dynamically Generated Project',
+      description: 'Created with <3 by the StackBlitz SDK!',
+      template: 'angular-cli',
       dependencies: {
-        'rxjs'                             : '^6.3.3',
-        '@angular/cdk'                     : '^7.0.0',
-        '@angular/core'                    : '^7.0.0',
-        '@angular/forms'                   : '^7.0.0',
-        '@angular/http'                    : '^7.0.0',
-        '@angular/language-service'        : '^7.0.0',
-        '@angular/platform-browser'        : '^7.0.0',
+        rxjs: '^6.3.3',
+        '@angular/cdk': '^7.0.0',
+        '@angular/core': '^7.0.0',
+        '@angular/forms': '^7.0.0',
+        '@angular/http': '^7.0.0',
+        '@angular/language-service': '^7.0.0',
+        '@angular/platform-browser': '^7.0.0',
         '@angular/platform-browser-dynamic': '^7.0.0',
-        '@angular/common'                  : '^7.0.0',
-        '@angular/router'                  : '^7.0.0',
-        '@angular/animations'              : '^7.0.0',
-        '@ant-design/icons-angular'        : '^2.0.2',
-        'date-fns'                         : '^1.29.0',
-        'tslib'                            : '^1.9.3',
-        'typescript'                       : '~3.1.1',
-        'ng-zorro-antd'                    : '^7.0.3'
+        '@angular/common': '^7.0.0',
+        '@angular/router': '^7.0.0',
+        '@angular/animations': '^7.0.0',
+        '@ant-design/icons-angular': '^2.0.2',
+        'date-fns': '^1.29.0',
+        tslib: '^1.9.3',
+        typescript: '~3.1.1',
+        'ng-zorro-antd': '^7.0.3'
       },
-      tags        : [ 'stackblitz', 'sdk' ]
+      tags: ['stackblitz', 'sdk']
     });
   }
 
-  constructor(@Inject(DOCUMENT) private dom: any, private sanitizer: DomSanitizer) {
-  }
+  constructor(@Inject(DOCUMENT) private dom: any, private sanitizer: DomSanitizer) {}
 }

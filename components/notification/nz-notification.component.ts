@@ -7,11 +7,11 @@ import { NzNotificationContainerComponent } from './nz-notification-container.co
 import { NzNotificationDataFilled } from './nz-notification.definitions';
 
 @Component({
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-notification',
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-notification',
   preserveWhitespaces: false,
-  animations         : [ notificationMotion ],
-  templateUrl        : './nz-notification.component.html'
+  animations: [notificationMotion],
+  templateUrl: './nz-notification.component.html'
 })
 export class NzNotificationComponent extends NzMessageComponent {
   @Input() nzMessage: NzNotificationDataFilled;
@@ -26,7 +26,7 @@ export class NzNotificationComponent extends NzMessageComponent {
 
   get state(): string | undefined {
     if (this.nzMessage.state === 'enter') {
-      if ((this.container.config.nzPlacement === 'topLeft') || (this.container.config.nzPlacement === 'bottomLeft')) {
+      if (this.container.config.nzPlacement === 'topLeft' || this.container.config.nzPlacement === 'bottomLeft') {
         return 'enterLeft';
       } else {
         return 'enterRight';

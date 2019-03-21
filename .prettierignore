@@ -1,0 +1,9 @@
+**/*.md
+**/*.svg
+**/*.html
+**/test.ts
+coverage/
+publish/
+site/
+package.json
+**/template/*

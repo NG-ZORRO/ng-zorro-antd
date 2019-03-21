@@ -9,16 +9,18 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector           : 'nz-card-meta',
+  selector: 'nz-card-meta',
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  templateUrl        : './nz-card-meta.component.html',
-  styles             : [ `
-    nz-card-meta {
-      display: block;
-    }
-  ` ]
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './nz-card-meta.component.html',
+  styles: [
+    `
+      nz-card-meta {
+        display: block;
+      }
+    `
+  ]
 })
 export class NzCardMetaComponent {
   @Input() nzTitle: string | TemplateRef<void>;

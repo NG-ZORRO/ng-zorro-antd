@@ -22,7 +22,7 @@ export function isAutoSizeType(value: string | boolean | AutoSizeType): value is
 
 @Directive({
   selector: 'textarea[nzAutosize]',
-  host    : {
+  host: {
     // Textarea elements that have the directive applied should have a single row by default.
     // Browsers normally show two rows by default and therefore this limits the minRows binding.
     'rows'   : '1',
@@ -82,7 +82,9 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
     // need to be removed temporarily.
     textarea.classList.add('cdk-textarea-autosize-measuring');
     textarea.placeholder = '';
-    const height = Math.round((textarea.scrollHeight - this.inputGap) / this.cachedLineHeight) * this.cachedLineHeight + this.inputGap;
+    const height =
+      Math.round((textarea.scrollHeight - this.inputGap) / this.cachedLineHeight) * this.cachedLineHeight +
+      this.inputGap;
 
     // Use the scrollHeight to know how large the textarea *would* be if fit its entire value.
     textarea.style.height = `${height}px`;
@@ -92,19 +94,21 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
     // On Firefox resizing the textarea will prevent it from scrolling to the caret position.
     // We need to re-set the selection in order for it to scroll to the proper position.
     if (typeof requestAnimationFrame !== 'undefined') {
-      this.ngZone.runOutsideAngular(() => requestAnimationFrame(() => {
-        const { selectionStart, selectionEnd } = textarea;
+      this.ngZone.runOutsideAngular(() =>
+        requestAnimationFrame(() => {
+          const { selectionStart, selectionEnd } = textarea;
 
-        // IE will throw an "Unspecified error" if we try to set the selection range after the
-        // element has been removed from the DOM. Assert that the directive hasn't been destroyed
-        // between the time we requested the animation frame and when it was executed.
-        // Also note that we have to assert that the textarea is focused before we set the
-        // selection range. Setting the selection range on a non-focused textarea will cause
-        // it to receive focus on IE and Edge.
-        if (!this.destroy$.isStopped && document.activeElement === textarea) {
-          textarea.setSelectionRange(selectionStart, selectionEnd);
-        }
-      }));
+          // IE will throw an "Unspecified error" if we try to set the selection range after the
+          // element has been removed from the DOM. Assert that the directive hasn't been destroyed
+          // between the time we requested the animation frame and when it was executed.
+          // Also note that we have to assert that the textarea is focused before we set the
+          // selection range. Setting the selection range on a non-focused textarea will cause
+          // it to receive focus on IE and Edge.
+          if (!this.destroy$.isStopped && document.activeElement === textarea) {
+            textarea.setSelectionRange(selectionStart, selectionEnd);
+          }
+        })
+      );
     }
 
     this.previousValue = value;
@@ -148,8 +152,8 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   }
 
   setMinHeight(): void {
-    const minHeight = this.minRows && this.cachedLineHeight ?
-      `${this.minRows * this.cachedLineHeight + this.inputGap}px` : null;
+    const minHeight =
+      this.minRows && this.cachedLineHeight ? `${this.minRows * this.cachedLineHeight + this.inputGap}px` : null;
 
     if (minHeight) {
       this.el.style.minHeight = minHeight;
@@ -157,14 +161,15 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   }
 
   setMaxHeight(): void {
-    const maxHeight = this.maxRows && this.cachedLineHeight ?
-      `${this.maxRows * this.cachedLineHeight + this.inputGap}px` : null;
+    const maxHeight =
+      this.maxRows && this.cachedLineHeight ? `${this.maxRows * this.cachedLineHeight + this.inputGap}px` : null;
 
     if (maxHeight) {
       this.el.style.maxHeight = maxHeight;
     }
   }
 
+<<<<<<< HEAD:components/input/nz-autosize.directive.ts
   noopInputHandler(): void {
     // no-op handler that ensures we're running change detection on input events.
   }
@@ -182,6 +187,31 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
         .pipe(auditTime(16), takeUntil(this.destroy$))
         .subscribe(() => this.resizeToFitContent(true));
       });
+=======
+  constructor(
+    private elementRef: ElementRef,
+    private ngZone: NgZone,
+    @Optional() @Self() public ngControl: NgControl,
+    private platform: Platform
+  ) {}
+
+  ngAfterViewInit(): void {
+    if (this.nzAutosize && this.platform.isBrowser) {
+      if (this.ngControl) {
+        this.resizeToFitContent();
+        this.ngZone.runOutsideAngular(() => {
+          fromEvent(window, 'resize')
+            .pipe(
+              auditTime(16),
+              takeUntil(this.destroy$)
+            )
+            .subscribe(() => this.resizeToFitContent(true));
+        });
+        this.ngControl.control!.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.resizeToFitContent());
+      } else {
+        console.warn('nzAutosize must work with ngModel or ReactiveForm');
+      }
+>>>>>>> chore: adopt prettier code formatter:components/input/nz-autoresize.directive.ts
     }
   }
 

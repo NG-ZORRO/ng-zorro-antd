@@ -7,8 +7,8 @@ import { NzFormDirective } from './nz-form.directive';
 describe('nz-form', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NoopAnimationsModule ],
-      declarations: [ NzFormDirective, NzTestFormDirectiveComponent ]
+      imports: [NoopAnimationsModule],
+      declarations: [NzFormDirective, NzTestFormDirectiveComponent]
     });
     TestBed.compileComponents();
   }));
@@ -44,7 +44,8 @@ describe('nz-form', () => {
 
 @Component({
   template: `
-    <form nz-form [nzLayout]="layout"></form>`
+    <form nz-form [nzLayout]="layout"></form>
+  `
 })
 export class NzTestFormDirectiveComponent {
   layout = 'horizontal';

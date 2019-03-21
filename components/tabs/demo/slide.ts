@@ -12,17 +12,20 @@ import { Component, OnInit } from '@angular/core';
       style="height:220px;"
       [nzTabPosition]="nzTabPosition"
       [(nzSelectedIndex)]="selectedIndex"
-      (nzSelectChange)="log([$event])">
+      (nzSelectChange)="log([$event])"
+    >
       <nz-tab
         *ngFor="let tab of tabs"
         [nzTitle]="tab.name"
-        (nzSelect)="log(['select',tab])"
-        (nzClick)="log(['click',tab])"
-        (nzDeselect)="log(['deselect',tab])">
+        (nzSelect)="log(['select', tab])"
+        (nzClick)="log(['click', tab])"
+        (nzDeselect)="log(['deselect', tab])"
+      >
         {{ tab.content }}
       </nz-tab>
-    </nz-tabset>`,
-  styles  : []
+    </nz-tabset>
+  `,
+  styles: []
 })
 export class NzDemoTabsSlideComponent implements OnInit {
   tabs: any[] = [];
@@ -37,7 +40,7 @@ export class NzDemoTabsSlideComponent implements OnInit {
   ngOnInit(): void {
     for (let i = 0; i < 11; i++) {
       this.tabs.push({
-        name   : `Tab ${i}`,
+        name: `Tab ${i}`,
         content: `Content of tab ${i}`
       });
     }

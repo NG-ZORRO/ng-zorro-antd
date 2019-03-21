@@ -25,9 +25,14 @@ describe('dropdown', () => {
   beforeEach(async(() => {
     const dir = 'ltr';
     TestBed.configureTestingModule({
-      imports     : [ NzMenuModule, NoopAnimationsModule, NzDropDownModule, NoopAnimationsModule, NzIconTestModule ],
-      declarations: [ NzTestDropdownComponent, NzTestDropdownButtonComponent, NzTestDropdownWithButtonComponent, NzTestDropdownContextmenuComponent ],
-      providers   : [
+      imports: [NzMenuModule, NoopAnimationsModule, NzDropDownModule, NoopAnimationsModule, NzIconTestModule],
+      declarations: [
+        NzTestDropdownComponent,
+        NzTestDropdownButtonComponent,
+        NzTestDropdownWithButtonComponent,
+        NzTestDropdownContextmenuComponent
+      ],
+      providers: [
         NzDropdownService,
         { provide: Directionality, useFactory: () => ({ value: dir }) },
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) }
@@ -36,13 +41,13 @@ describe('dropdown', () => {
 
     TestBed.compileComponents();
 
-    inject([ OverlayContainer ], (oc: OverlayContainer) => {
+    inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
       overlayContainerElement = oc.getContainerElement();
     })();
   }));
 
-  afterEach(inject([ OverlayContainer ], (currentOverlayContainer: OverlayContainer) => {
+  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
@@ -89,7 +94,11 @@ describe('dropdown', () => {
     it('should className not add in button', () => {
       const buttonFixture = TestBed.createComponent(NzTestDropdownWithButtonComponent);
       buttonFixture.detectChanges();
-      expect(buttonFixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement.classList.contains('ant-dropdown-link')).toBe(false);
+      expect(
+        buttonFixture.debugElement
+          .query(By.directive(NzDropDownDirective))
+          .nativeElement.classList.contains('ant-dropdown-link')
+      ).toBe(false);
     });
   });
   describe('nz-dropdown-component', () => {
@@ -117,36 +126,36 @@ describe('dropdown', () => {
       testComponent.visible = true;
       fixture.detectChanges();
       let items = overlayContainerElement.querySelectorAll('.ant-dropdown-menu-item') as NodeListOf<HTMLElement>;
-      items[ 0 ].click();
+      items[0].click();
       testComponent.visible = false;
       fixture.detectChanges();
       testComponent.visible = true;
       fixture.detectChanges();
       items = overlayContainerElement.querySelectorAll('.ant-dropdown-menu-item') as NodeListOf<HTMLElement>;
-      expect(items[ 0 ].classList.contains('ant-dropdown-menu-item')).toBe(true);
-      expect(items[ 0 ].classList.contains('ant-dropdown-menu-item-selected')).toBe(true);
+      expect(items[0].classList.contains('ant-dropdown-menu-item')).toBe(true);
+      expect(items[0].classList.contains('ant-dropdown-menu-item-selected')).toBe(true);
     });
     it('should selectable false work', () => {
       testComponent.visible = true;
       testComponent.selectable = false;
       fixture.detectChanges();
       let items = overlayContainerElement.querySelectorAll('.ant-dropdown-menu-item') as NodeListOf<HTMLElement>;
-      items[ 0 ].click();
+      items[0].click();
       testComponent.visible = false;
       fixture.detectChanges();
       testComponent.visible = true;
       fixture.detectChanges();
       items = overlayContainerElement.querySelectorAll('.ant-dropdown-menu-item') as NodeListOf<HTMLElement>;
-      expect(items[ 0 ].classList.contains('ant-dropdown-menu-item')).toBe(true);
-      expect(items[ 0 ].classList.contains('ant-dropdown-menu-item-selected')).toBe(false);
+      expect(items[0].classList.contains('ant-dropdown-menu-item')).toBe(true);
+      expect(items[0].classList.contains('ant-dropdown-menu-item-selected')).toBe(false);
     });
     it('should append the correct className', () => {
       testComponent.visible = true;
       testComponent.itemSelected = true;
       fixture.detectChanges();
       const items = overlayContainerElement.querySelectorAll('.ant-dropdown-menu-item') as NodeListOf<HTMLElement>;
-      expect(items[ 0 ].classList.contains('.ant-menu-item-selected')).toBe(false);
-      expect(items[ 0 ].classList.contains('ant-dropdown-menu-item-selected')).toBe(true);
+      expect(items[0].classList.contains('.ant-menu-item-selected')).toBe(false);
+      expect(items[0].classList.contains('ant-dropdown-menu-item-selected')).toBe(true);
     });
     it('should backdrop work with click', () => {
       testComponent.trigger = 'click';
@@ -171,7 +180,7 @@ describe('dropdown', () => {
       expect(!!link.nativeElement.attributes.getNamedItem('disabled')).toBe(true);
     });
     it('should placement work', () => {
-      const placementArray = [ 'bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight' ];
+      const placementArray = ['bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight'];
       testComponent.visible = true;
       placementArray.forEach(placement => {
         testComponent.placement = placement;
@@ -306,7 +315,7 @@ describe('dropdown', () => {
       expect(testComponent.visibleChange).toHaveBeenCalledTimes(1);
     }));
     it('should placement work', () => {
-      const placementArray = [ 'bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight' ];
+      const placementArray = ['bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight'];
       testComponent.visible = true;
       placementArray.forEach(placement => {
         testComponent.placement = placement;
@@ -408,12 +417,17 @@ describe('dropdown', () => {
 @Component({
   selector: 'nz-test-dropdown',
   template: `
-    <nz-dropdown [(nzVisible)]="visible" [nzClickHide]="clickHide" [nzPlacement]="placement"
-                 (nzVisibleChange)="visibleChange($event)" [nzTrigger]="trigger" [nzDisabled]="disabled"
-                 [nzOverlayClassName]="overlayClassName" [nzOverlayStyle]="overlayStyle">
-      <a nz-dropdown>
-        Hover me <i nz-icon type="down"></i>
-      </a>
+    <nz-dropdown
+      [(nzVisible)]="visible"
+      [nzClickHide]="clickHide"
+      [nzPlacement]="placement"
+      (nzVisibleChange)="visibleChange($event)"
+      [nzTrigger]="trigger"
+      [nzDisabled]="disabled"
+      [nzOverlayClassName]="overlayClassName"
+      [nzOverlayStyle]="overlayStyle"
+    >
+      <a nz-dropdown> Hover me <i nz-icon type="down"></i> </a>
       <ul nz-menu [nzSelectable]="selectable">
         <li nz-menu-item [nzSelected]="itemSelected">
           <a>1st menu item</a>
@@ -429,8 +443,9 @@ describe('dropdown', () => {
           </ul>
         </li>
       </ul>
-    </nz-dropdown>`,
-  styles  : []
+    </nz-dropdown>
+  `,
+  styles: []
 })
 export class NzTestDropdownComponent {
   @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
@@ -451,8 +466,14 @@ export class NzTestDropdownComponent {
 @Component({
   selector: 'nz-test-dropdown-button',
   template: `
-    <nz-dropdown-button (nzClick)="click($event)" [nzVisible]="visible" [nzPlacement]="placement"
-                        [nzDisabled]="disabled" [nzTrigger]="'click'" (nzVisibleChange)="visibleChange($event)">
+    <nz-dropdown-button
+      (nzClick)="click($event)"
+      [nzVisible]="visible"
+      [nzPlacement]="placement"
+      [nzDisabled]="disabled"
+      [nzTrigger]="'click'"
+      (nzVisibleChange)="visibleChange($event)"
+    >
       DropDown
       <ul nz-menu>
         <li nz-menu-item>1st menu item</li>
@@ -465,8 +486,9 @@ export class NzTestDropdownComponent {
           </ul>
         </li>
       </ul>
-    </nz-dropdown-button>`,
-  styles  : []
+    </nz-dropdown-button>
+  `,
+  styles: []
 })
 export class NzTestDropdownButtonComponent {
   @ViewChild(NzDropDownButtonComponent) nzDropDownButtonComponent: NzDropDownButtonComponent;
@@ -495,11 +517,11 @@ export class NzTestDropdownButtonComponent {
           <a>3rd menu item</a>
         </li>
       </ul>
-    </nz-dropdown>`,
-  styles  : []
+    </nz-dropdown>
+  `,
+  styles: []
 })
-export class NzTestDropdownWithButtonComponent {
-}
+export class NzTestDropdownWithButtonComponent {}
 
 @Component({
   selector: 'nz-test-dropdown-contextmenu',
@@ -524,11 +546,11 @@ export class NzTestDropdownWithButtonComponent {
           </ul>
         </li>
       </ul>
-    </ng-template>`
+    </ng-template>
+  `
 })
 export class NzTestDropdownContextmenuComponent {
   @ViewChild('template') template: TemplateRef<void>;
 
-  constructor(public nzDropdownService: NzDropdownService) {
-  }
+  constructor(public nzDropdownService: NzDropdownService) {}
 }

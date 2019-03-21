@@ -21,15 +21,14 @@ import { NzScrollService } from '../core/scroll/nz-scroll.service';
 import { toNumber } from '../core/util/convert';
 
 @Component({
-  selector           : 'nz-back-top',
-  animations         : [ fadeMotion ],
-  templateUrl        : './nz-back-top.component.html',
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
+  selector: 'nz-back-top',
+  animations: [fadeMotion],
+  templateUrl: './nz-back-top.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false
 })
 export class NzBackTopComponent implements OnInit, OnDestroy {
-
   private scroll$: Subscription | null = null;
   private target: HTMLElement | null = null;
 
@@ -57,8 +56,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
   @Output() readonly nzClick: EventEmitter<boolean> = new EventEmitter();
 
   // tslint:disable-next-line:no-any
-  constructor(private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any, private cd: ChangeDetectorRef) {
-  }
+  constructor(private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any, private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     if (!this.scroll$) {
@@ -92,14 +90,15 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
   private registerScrollEvent(): void {
     this.removeListen();
     this.handleScroll();
-    this.scroll$ = fromEvent(this.getTarget(), 'scroll').pipe(
-      throttleTime(50),
-      distinctUntilChanged()
-    ).subscribe(() => this.handleScroll());
+    this.scroll$ = fromEvent(this.getTarget(), 'scroll')
+      .pipe(
+        throttleTime(50),
+        distinctUntilChanged()
+      )
+      .subscribe(() => this.handleScroll());
   }
 
   ngOnDestroy(): void {
     this.removeListen();
   }
-
 }

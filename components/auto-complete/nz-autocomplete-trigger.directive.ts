@@ -31,31 +31,32 @@ import { NzAutocompleteOptionComponent } from './nz-autocomplete-option.componen
 import { NzAutocompleteComponent } from './nz-autocomplete.component';
 
 export const NZ_AUTOCOMPLETE_VALUE_ACCESSOR: ExistingProvider = {
-  provide    : NG_VALUE_ACCESSOR,
+  provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => NzAutocompleteTriggerDirective),
-  multi      : true
+  multi: true
 };
 
 export function getNzAutocompleteMissingPanelError(): Error {
-  return Error('Attempting to open an undefined instance of `nz-autocomplete`. ' +
-    'Make sure that the id passed to the `nzAutocomplete` is correct and that ' +
-    'you\'re attempting to open it after the ngAfterContentInit hook.');
+  return Error(
+    'Attempting to open an undefined instance of `nz-autocomplete`. ' +
+      'Make sure that the id passed to the `nzAutocomplete` is correct and that ' +
+      "you're attempting to open it after the ngAfterContentInit hook."
+  );
 }
 
 @Directive({
-  selector : `input[nzAutocomplete], textarea[nzAutocomplete]`,
-  providers: [ NZ_AUTOCOMPLETE_VALUE_ACCESSOR ],
-  host     : {
-    'autocomplete'     : 'off',
+  selector: `input[nzAutocomplete], textarea[nzAutocomplete]`,
+  providers: [NZ_AUTOCOMPLETE_VALUE_ACCESSOR],
+  host: {
+    autocomplete: 'off',
     'aria-autocomplete': 'list',
-    '(focusin)'        : 'handleFocus()',
-    '(blur)'           : 'handleBlur()',
-    '(input)'          : 'handleInput($event)',
-    '(keydown)'        : 'handleKeydown($event)'
+    '(focusin)': 'handleFocus()',
+    '(blur)': 'handleBlur()',
+    '(input)': 'handleInput($event)',
+    '(keydown)': 'handleKeydown($event)'
   }
 })
 export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnDestroy {
-
   /** Bind nzAutocomplete component */
   @Input() nzAutocomplete: NzAutocompleteComponent;
 
@@ -85,8 +86,8 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     private _overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     // tslint:disable-next-line:no-any
-    @Optional() @Inject(DOCUMENT) private document: any) {
-  }
+    @Optional() @Inject(DOCUMENT) private document: any
+  ) {}
 
   ngOnDestroy(): void {
     this.destroyPanel();
@@ -170,8 +171,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     if (target.type === 'number') {
       value = value === '' ? null : parseFloat(value);
     }
-    if (this.canOpen() && document.activeElement === event.target &&
-      this.previousValue !== value) {
+    if (this.canOpen() && document.activeElement === event.target && this.previousValue !== value) {
       this.previousValue = value;
       this._onChange(value);
       this.openPanel();
@@ -194,9 +194,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
    * Subscription data source changes event
    */
   private subscribeOptionsChange(): Subscription {
-    return this.nzAutocomplete.options.changes.pipe(
-      delay(0)
-    ).subscribe(() => {
+    return this.nzAutocomplete.options.changes.pipe(delay(0)).subscribe(() => {
       this.resetActiveItem();
     });
   }
@@ -205,10 +203,9 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
    * Subscription option changes event and set the value
    */
   private subscribeSelectionChange(): Subscription {
-    return this.nzAutocomplete.selectionChange
-      .subscribe((option: NzAutocompleteOptionComponent) => {
-        this.setValueAndClose(option);
-      });
+    return this.nzAutocomplete.selectionChange.subscribe((option: NzAutocompleteOptionComponent) => {
+      this.setValueAndClose(option);
+    });
   }
 
   /**
@@ -218,15 +215,18 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     return merge<MouseEvent | TouchEvent>(
       fromEvent<MouseEvent>(this.document, 'click'),
       fromEvent<TouchEvent>(this.document, 'touchend')
-    )
-      .subscribe((event: MouseEvent | TouchEvent) => {
-        const clickTarget = event.target as HTMLElement;
+    ).subscribe((event: MouseEvent | TouchEvent) => {
+      const clickTarget = event.target as HTMLElement;
 
-        // Make sure is not self
-        if (clickTarget !== this.elementRef.nativeElement && !this.overlayRef!.overlayElement.contains(clickTarget) && this.panelOpen) {
-          this.closePanel();
-        }
-      });
+      // Make sure is not self
+      if (
+        clickTarget !== this.elementRef.nativeElement &&
+        !this.overlayRef!.overlayElement.contains(clickTarget) &&
+        this.panelOpen
+      ) {
+        this.closePanel();
+      }
+    });
   }
 
   /**
@@ -287,9 +287,9 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   private getOverlayConfig(): OverlayConfig {
     return new OverlayConfig({
       positionStrategy: this.getOverlayPosition(),
-      scrollStrategy  : this._overlay.scrollStrategies.reposition(),
+      scrollStrategy: this._overlay.scrollStrategies.reposition(),
       // default host element width
-      width           : this.nzAutocomplete.nzWidth || this.getHostWidth()
+      width: this.nzAutocomplete.nzWidth || this.getHostWidth()
     });
   }
 
@@ -306,7 +306,8 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
       new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
     ];
-    this.positionStrategy = this._overlay.position()
+    this.positionStrategy = this._overlay
+      .position()
       .flexibleConnectedTo(this.getConnectedElement())
       .withPositions(positions)
       .withFlexibleDimensions(false)

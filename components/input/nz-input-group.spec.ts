@@ -9,9 +9,15 @@ import { NzInputModule } from './nz-input.module';
 describe('input-group', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
-      declarations: [ NzTestInputGroupAddonComponent, NzTestInputGroupAffixComponent, NzTestInputGroupMultipleComponent, NzTestInputGroupColComponent, NzTestInputGroupMixComponent ],
-      providers   : []
+      imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+      declarations: [
+        NzTestInputGroupAddonComponent,
+        NzTestInputGroupAffixComponent,
+        NzTestInputGroupMultipleComponent,
+        NzTestInputGroupColComponent,
+        NzTestInputGroupMixComponent
+      ],
+      providers: []
     }).compileComponents();
   }));
   describe('input group', () => {
@@ -44,7 +50,9 @@ describe('input-group', () => {
         expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input-group');
         expect(inputGroupElement.firstElementChild!.children.length).toBe(2);
         expect(inputGroupElement.firstElementChild!.lastElementChild!.classList).toContain('ant-input');
-        expect((inputGroupElement.firstElementChild!.firstElementChild as HTMLElement).innerText).toBe('beforeTemplate');
+        expect((inputGroupElement.firstElementChild!.firstElementChild as HTMLElement).innerText).toBe(
+          'beforeTemplate'
+        );
       });
       it('should after content string work', () => {
         testComponent.afterContent = 'after';
@@ -205,7 +213,9 @@ describe('input-group', () => {
         inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
       });
       it('should mix work', () => {
-        expect(inputGroupElement.querySelector('.ant-input-affix-wrapper')!.nextElementSibling!.classList).toContain('ant-input-group-addon');
+        expect(inputGroupElement.querySelector('.ant-input-affix-wrapper')!.nextElementSibling!.classList).toContain(
+          'ant-input-group-addon'
+        );
       });
     });
   });
@@ -215,7 +225,7 @@ describe('input-group', () => {
   selector: 'nz-test-input-group-addon',
   template: `
     <nz-input-group [nzAddOnBefore]="beforeContent" [nzAddOnAfter]="afterContent" [nzSize]="size">
-      <input type="text" nz-input>
+      <input type="text" nz-input />
     </nz-input-group>
     <ng-template #beforeTemplate>beforeTemplate</ng-template>
     <ng-template #afterTemplate>afterTemplate</ng-template>
@@ -233,7 +243,7 @@ export class NzTestInputGroupAddonComponent {
   selector: 'nz-test-input-group-affix',
   template: `
     <nz-input-group [nzPrefix]="beforeContent" [nzSuffix]="afterContent" [nzSize]="size">
-      <input type="text" nz-input>
+      <input type="text" nz-input />
     </nz-input-group>
     <ng-template #beforeTemplate>beforeTemplate</ng-template>
     <ng-template #afterTemplate>afterTemplate</ng-template>
@@ -251,8 +261,8 @@ export class NzTestInputGroupAffixComponent {
   selector: 'nz-test-input-group-multiple',
   template: `
     <nz-input-group [nzCompact]="compact" [nzSearch]="search" [nzSize]="size">
-      <input type="text" nz-input>
-      <input type="text" nz-input>
+      <input type="text" nz-input />
+      <input type="text" nz-input />
     </nz-input-group>
   `
 })
@@ -267,25 +277,23 @@ export class NzTestInputGroupMultipleComponent {
   selector: 'nz-test-input-group-mix',
   template: `
     <nz-input-group nzPrefixIcon="anticon anticon-user" nzAddOnAfter="@example.com">
-      <input type="text" nz-input placeholder="邮箱地址">
+      <input type="text" nz-input placeholder="邮箱地址" />
     </nz-input-group>
   `
 })
-export class NzTestInputGroupMixComponent {
-}
+export class NzTestInputGroupMixComponent {}
 
 @Component({
   selector: 'nz-test-input-group-col',
   template: `
     <nz-input-group>
       <div nz-col nzSpan="4">
-        <input type="text" nz-input [ngModel]="'0571'">
+        <input type="text" nz-input [ngModel]="'0571'" />
       </div>
       <div nz-col nzSpan="8">
-        <input type="text" nz-input [ngModel]="'26888888'">
+        <input type="text" nz-input [ngModel]="'26888888'" />
       </div>
     </nz-input-group>
   `
 })
-export class NzTestInputGroupColComponent {
-}
+export class NzTestInputGroupColComponent {}

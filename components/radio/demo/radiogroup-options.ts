@@ -5,13 +5,13 @@ import { Component } from '@angular/core';
   template: `
     <div>
       <nz-radio-group [(ngModel)]="radioValue">
-        <label nz-radio [nzValue]="o.value" *ngFor="let o of options">{{o.label}}</label>
+        <label nz-radio [nzValue]="o.value" *ngFor="let o of options">{{ o.label }}</label>
       </nz-radio-group>
       <nz-radio-group [(ngModel)]="radioValue">
-        <label nz-radio [nzValue]="o.value" *ngFor="let o of options">{{o.label}}</label>
+        <label nz-radio [nzValue]="o.value" *ngFor="let o of options">{{ o.label }}</label>
       </nz-radio-group>
       <nz-radio-group [(ngModel)]="radioValue">
-        <label nz-radio [nzValue]="o.value" *ngFor="let o of options">{{o.label}}</label>
+        <label nz-radio [nzValue]="o.value" *ngFor="let o of options">{{ o.label }}</label>
       </nz-radio-group>
     </div>
   `
@@ -21,6 +21,6 @@ export class NzDemoRadioRadiogroupOptionsComponent {
   options = [
     { label: 'Apple', value: 'Apple' },
     { label: 'Pear', value: 'Pear' },
-    { label: 'Orange', value: 'Orange' },
+    { label: 'Orange', value: 'Orange' }
   ];
 }

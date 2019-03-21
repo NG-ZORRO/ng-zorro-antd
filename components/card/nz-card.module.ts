@@ -9,9 +9,8 @@ import { NzCardTabComponent } from './nz-card-tab.component';
 import { NzCardComponent } from './nz-card.component';
 
 @NgModule({
-  imports     : [ CommonModule, NzAddOnModule ],
-  declarations: [ NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardLoadingComponent, NzCardTabComponent ],
-  exports     : [ NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardLoadingComponent, NzCardTabComponent ]
+  imports: [CommonModule, NzAddOnModule],
+  declarations: [NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardLoadingComponent, NzCardTabComponent],
+  exports: [NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardLoadingComponent, NzCardTabComponent]
 })
-export class NzCardModule {
-}
+export class NzCardModule {}

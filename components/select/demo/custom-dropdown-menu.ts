@@ -9,11 +9,8 @@ import { Component } from '@angular/core';
     </nz-select>
     <ng-template #render>
       <nz-divider style="margin: 4px 0;"></nz-divider>
-      <div style="padding: 8px; cursor: pointer">
-        <i nz-icon type="plus"></i> Add item
-      </div>
+      <div style="padding: 8px; cursor: pointer"><i nz-icon type="plus"></i> Add item</div>
     </ng-template>
   `
 })
-export class NzDemoSelectCustomDropdownMenuComponent {
-}
+export class NzDemoSelectCustomDropdownMenuComponent {}

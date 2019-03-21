@@ -18,22 +18,29 @@ import { DateHelperService } from '../i18n/date-helper.service';
 import { DateRangePickerComponent } from './date-range-picker.component';
 
 @Component({
-  encapsulation  : ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector       : 'nz-range-picker',
-  templateUrl    : './date-range-picker.component.html',
-  providers      : [ {
-    provide    : NG_VALUE_ACCESSOR,
-    multi      : true,
-    useExisting: forwardRef(() => NzRangePickerComponent)
-  } ]
+  selector: 'nz-range-picker',
+  templateUrl: './date-range-picker.component.html',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: forwardRef(() => NzRangePickerComponent)
+    }
+  ]
 })
-
 export class NzRangePickerComponent extends DateRangePickerComponent {
   isRange: boolean = true;
 
-  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, dateHelper: DateHelperService, renderer: Renderer2, elementRef: ElementRef,
-              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+  constructor(
+    i18n: NzI18nService,
+    cdr: ChangeDetectorRef,
+    dateHelper: DateHelperService,
+    renderer: Renderer2,
+    elementRef: ElementRef,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+  ) {
     super(i18n, cdr, dateHelper, noAnimation);
     renderer.addClass(elementRef.nativeElement, 'ant-calendar-picker');
   }

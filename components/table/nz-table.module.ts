@@ -22,9 +22,25 @@ import { NzTrDirective } from './nz-tr.directive';
 import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
 
 @NgModule({
-  declarations: [ NzTableComponent, NzThComponent, NzTdComponent, NzTheadComponent, NzTbodyDirective, NzTrDirective, NzVirtualScrollDirective ],
-  exports     : [ NzTableComponent, NzThComponent, NzTdComponent, NzTheadComponent, NzTbodyDirective, NzTrDirective, NzVirtualScrollDirective ],
-  imports     : [
+  declarations: [
+    NzTableComponent,
+    NzThComponent,
+    NzTdComponent,
+    NzTheadComponent,
+    NzTbodyDirective,
+    NzTrDirective,
+    NzVirtualScrollDirective
+  ],
+  exports: [
+    NzTableComponent,
+    NzThComponent,
+    NzTdComponent,
+    NzTheadComponent,
+    NzTbodyDirective,
+    NzTrDirective,
+    NzVirtualScrollDirective
+  ],
+  imports: [
     NzMenuModule,
     FormsModule,
     NzAddOnModule,
@@ -40,5 +56,4 @@ import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
     ScrollingModule
   ]
 })
-export class NzTableModule {
-}
+export class NzTableModule {}

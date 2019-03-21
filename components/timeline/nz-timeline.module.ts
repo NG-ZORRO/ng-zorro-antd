@@ -8,9 +8,8 @@ import { NzTimelineItemComponent } from './nz-timeline-item.component';
 import { NzTimelineComponent } from './nz-timeline.component';
 
 @NgModule({
-  declarations: [ NzTimelineItemComponent, NzTimelineComponent ],
-  exports     : [ NzTimelineItemComponent, NzTimelineComponent ],
-  imports     : [ CommonModule, NzIconModule, NzAddOnModule ]
+  declarations: [NzTimelineItemComponent, NzTimelineComponent],
+  exports: [NzTimelineItemComponent, NzTimelineComponent],
+  imports: [CommonModule, NzIconModule, NzAddOnModule]
 })
-export class NzTimelineModule {
-}
+export class NzTimelineModule {}

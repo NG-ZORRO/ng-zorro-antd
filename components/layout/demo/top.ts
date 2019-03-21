@@ -23,15 +23,16 @@ import { Component } from '@angular/core';
       <nz-footer style="text-align: center;">Ant Design ©2019 Implement By Angular</nz-footer>
     </nz-layout>
   `,
-  styles  : [
-      `.logo {
-      width: 120px;
-      height: 31px;
-      background: rgba(255,255,255,.2);
-      margin: 16px 24px 16px 0;
-      float: left;
-    }
+  styles: [
+    `
+      .logo {
+        width: 120px;
+        height: 31px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 16px 24px 16px 0;
+        float: left;
+      }
     `
   ]
 })
-export class NzDemoLayoutTopComponent { }
+export class NzDemoLayoutTopComponent {}

@@ -4,7 +4,8 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component, ContentChild,
+  Component,
+  ContentChild,
   ContentChildren,
   ElementRef,
   EventEmitter,
@@ -32,18 +33,18 @@ import { NzTheadComponent } from './nz-thead.component';
 import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
 
 @Component({
-  selector           : 'nz-table',
+  selector: 'nz-table',
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  templateUrl        : './nz-table.component.html',
-  host               : {
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './nz-table.component.html',
+  host: {
     '[class.ant-table-empty]': 'data.length === 0'
   },
-  styles             : [
-      `
+  styles: [
+    `
       nz-table {
-        display: block
+        display: block;
       }
     `
   ]
@@ -64,8 +65,8 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   @ViewChild(CdkVirtualScrollViewport, { read: ElementRef }) cdkVirtualScrollElement: ElementRef;
   @ContentChild(NzVirtualScrollDirective) nzVirtualScrollDirective: NzVirtualScrollDirective;
   @Input() nzSize: NzSizeMDSType = 'default';
-  @Input() nzShowTotal: TemplateRef<{ $implicit: number, range: [ number, number ] }>;
-  @Input() nzPageSizeOptions = [ 10, 20, 30, 40, 50 ];
+  @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }>;
+  @Input() nzPageSizeOptions = [10, 20, 30, 40, 50];
   @Input() @InputBoolean() nzVirtualScroll = false;
   @Input() @InputNumber() nzVirtualItemSize = 0;
   @Input() @InputNumber() nzVirtualMaxBufferPx = 200;
@@ -81,7 +82,10 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   @Input() nzData = [];
   @Input() nzPaginationPosition: 'top' | 'bottom' | 'both' = 'bottom';
   @Input() nzScroll: { x: string | null; y: string | null } = { x: null, y: null };
-  @Input() @ViewChild('renderItemTemplate') nzItemRender: TemplateRef<{ $implicit: 'page' | 'prev' | 'next', page: number }>;
+  @Input() @ViewChild('renderItemTemplate') nzItemRender: TemplateRef<{
+    $implicit: 'page' | 'prev' | 'next';
+    page: number;
+  }>;
   @Input() @InputBoolean() nzFrontPagination = true;
   @Input() @InputBoolean() nzTemplateMode = false;
   @Input() @InputBoolean() nzBordered = false;
@@ -143,11 +147,17 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
 
   setScrollPositionClassName(): void {
     if (this.mixTableBodyNativeElement && this.nzScroll && this.nzScroll.x) {
-      if ((this.mixTableBodyNativeElement.scrollWidth === this.mixTableBodyNativeElement.clientWidth) && (this.mixTableBodyNativeElement.scrollWidth !== 0)) {
+      if (
+        this.mixTableBodyNativeElement.scrollWidth === this.mixTableBodyNativeElement.clientWidth &&
+        this.mixTableBodyNativeElement.scrollWidth !== 0
+      ) {
         this.setScrollName();
       } else if (this.mixTableBodyNativeElement.scrollLeft === 0) {
         this.setScrollName('left');
-      } else if (this.mixTableBodyNativeElement.scrollWidth === (this.mixTableBodyNativeElement.scrollLeft + this.mixTableBodyNativeElement.clientWidth)) {
+      } else if (
+        this.mixTableBodyNativeElement.scrollWidth ===
+        this.mixTableBodyNativeElement.scrollLeft + this.mixTableBodyNativeElement.clientWidth
+      ) {
         this.setScrollName('right');
       } else {
         this.setScrollName('middle');
@@ -157,7 +167,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
 
   setScrollName(position?: string): void {
     const prefix = 'ant-table-scroll-position';
-    const classList = [ 'left', 'right', 'middle' ];
+    const classList = ['left', 'right', 'middle'];
     classList.forEach(name => {
       this.renderer.removeClass(this.tableMainElement.nativeElement, `${prefix}-${name}`);
     });
@@ -170,7 +180,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     const scrollbarWidth = this.nzMeasureScrollbarService.scrollBarWidth;
     if (scrollbarWidth) {
       this.headerBottomStyle = {
-        marginBottom : `-${scrollbarWidth}px`,
+        marginBottom: `-${scrollbarWidth}px`,
         paddingBottom: `0px`
       };
       this.cdr.markForCheck();
@@ -193,11 +203,18 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     } else {
       data = this.nzData;
     }
-    this.data = [ ...data ];
+    this.data = [...data];
     this.nzCurrentPageDataChange.next(this.data);
   }
 
-  constructor(private renderer: Renderer2, private ngZone: NgZone, private cdr: ChangeDetectorRef, private nzMeasureScrollbarService: NzMeasureScrollbarService, private i18n: NzI18nService, elementRef: ElementRef) {
+  constructor(
+    private renderer: Renderer2,
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef,
+    private nzMeasureScrollbarService: NzMeasureScrollbarService,
+    private i18n: NzI18nService,
+    elementRef: ElementRef
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-table-wrapper');
   }
 
@@ -220,7 +237,6 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     if (changes.nzPageIndex || changes.nzPageSize || changes.nzFrontPagination || changes.nzData) {
       this.updateFrontPaginationDataIfNeeded(!!(changes.nzPageSize || changes.nzData));
     }
-
   }
 
   ngAfterViewInit(): void {
@@ -229,24 +245,35 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
       merge<MouseEvent>(
         this.tableHeaderNativeElement ? fromEvent<MouseEvent>(this.tableHeaderNativeElement, 'scroll') : EMPTY,
         this.mixTableBodyNativeElement ? fromEvent<MouseEvent>(this.mixTableBodyNativeElement, 'scroll') : EMPTY
-      ).pipe(takeUntil(this.destroy$)).subscribe((data: MouseEvent) => {
-        this.syncScrollTable(data);
-      });
-      fromEvent<UIEvent>(window, 'resize').pipe(startWith(true), takeUntil(this.destroy$)).subscribe(() => {
-        this.fitScrollBar();
-        this.setScrollPositionClassName();
-      });
+      )
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((data: MouseEvent) => {
+          this.syncScrollTable(data);
+        });
+      fromEvent<UIEvent>(window, 'resize')
+        .pipe(
+          startWith(true),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => {
+          this.fitScrollBar();
+          this.setScrollPositionClassName();
+        });
     });
   }
 
   ngAfterContentInit(): void {
-    this.listOfNzThComponent.changes.pipe(
-      startWith(true),
-      flatMap(() => merge(this.listOfNzThComponent.changes, ...this.listOfNzThComponent.map(th => th.nzWidthChange$))),
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
-      this.cdr.markForCheck();
-    });
+    this.listOfNzThComponent.changes
+      .pipe(
+        startWith(true),
+        flatMap(() =>
+          merge(this.listOfNzThComponent.changes, ...this.listOfNzThComponent.map(th => th.nzWidthChange$))
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.cdr.markForCheck();
+      });
   }
 
   ngOnDestroy(): void {

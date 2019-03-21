@@ -1,9 +1,13 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component, ElementRef,
-  Input, OnDestroy,
-  OnInit, Renderer2, TemplateRef,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -13,18 +17,18 @@ import { NzOptionComponent } from './nz-option.component';
 import { NzSelectService } from './nz-select.service';
 
 @Component({
-  selector       : '[nz-option-li]',
-  templateUrl    : './nz-option-li.component.html',
+  selector: '[nz-option-li]',
+  templateUrl: './nz-option-li.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation  : ViewEncapsulation.None,
-  host           : {
+  encapsulation: ViewEncapsulation.None,
+  host: {
     '[class.ant-select-dropdown-menu-item-selected]': 'selected && !nzOption.nzDisabled',
     '[class.ant-select-dropdown-menu-item-disabled]': 'nzOption.nzDisabled',
-    '[class.ant-select-dropdown-menu-item-active]'  : 'active && !nzOption.nzDisabled',
-    '[attr.unselectable]'                           : '"unselectable"',
-    '[style.user-select]'                           : '"none"',
-    '(click)'                                       : 'clickOption()',
-    '(mousedown)'                                   : '$event.preventDefault()'
+    '[class.ant-select-dropdown-menu-item-active]': 'active && !nzOption.nzDisabled',
+    '[attr.unselectable]': '"unselectable"',
+    '[style.user-select]': '"none"',
+    '(click)': 'clickOption()',
+    '(mousedown)': '$event.preventDefault()'
   }
 })
 export class NzOptionLiComponent implements OnInit, OnDestroy {
@@ -39,20 +43,21 @@ export class NzOptionLiComponent implements OnInit, OnDestroy {
     this.nzSelectService.clickOption(this.nzOption);
   }
 
-  constructor(private elementRef: ElementRef, public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef, renderer: Renderer2) {
+  constructor(
+    private elementRef: ElementRef,
+    public nzSelectService: NzSelectService,
+    private cdr: ChangeDetectorRef,
+    renderer: Renderer2
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-select-dropdown-menu-item');
   }
 
   ngOnInit(): void {
-    this.nzSelectService.listOfSelectedValue$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(list => {
+    this.nzSelectService.listOfSelectedValue$.pipe(takeUntil(this.destroy$)).subscribe(list => {
       this.selected = isNotNil(list.find(v => this.nzSelectService.compareWith(v, this.nzOption.nzValue)));
       this.cdr.markForCheck();
     });
-    this.nzSelectService.activatedOption$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(option => {
+    this.nzSelectService.activatedOption$.pipe(takeUntil(this.destroy$)).subscribe(option => {
       if (option) {
         this.active = this.nzSelectService.compareWith(option.nzValue, this.nzOption.nzValue);
       } else {

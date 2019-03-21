@@ -11,11 +11,10 @@ import { NzDrawerComponent } from './nz-drawer.component';
 import { NzDrawerService } from './nz-drawer.service';
 
 @NgModule({
-  imports        : [ CommonModule, OverlayModule, PortalModule, NzIconModule, NzAddOnModule, NzNoAnimationModule ],
-  exports        : [ NzDrawerComponent ],
-  declarations   : [ NzDrawerComponent ],
-  entryComponents: [ NzDrawerComponent ],
-  providers      : [ NzDrawerService ]
+  imports: [CommonModule, OverlayModule, PortalModule, NzIconModule, NzAddOnModule, NzNoAnimationModule],
+  exports: [NzDrawerComponent],
+  declarations: [NzDrawerComponent],
+  entryComponents: [NzDrawerComponent],
+  providers: [NzDrawerService]
 })
-export class NzDrawerModule {
-}
+export class NzDrawerModule {}

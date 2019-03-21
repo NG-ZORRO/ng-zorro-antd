@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-fixed-columns',
   template: `
-    <nz-table #columnTable [nzData]="listOfData" [nzScroll]="{x:'1100px'}">
+    <nz-table #columnTable [nzData]="listOfData" [nzScroll]="{ x: '1100px' }">
       <thead>
         <tr>
           <th nzWidth="100px" nzLeft="0px">Full Name</th>
@@ -21,35 +21,36 @@ import { Component } from '@angular/core';
       </thead>
       <tbody>
         <tr *ngFor="let data of columnTable.data">
-          <td nzLeft="0px">{{data.name}}</td>
-          <td nzLeft="100px">{{data.age}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td nzRight="100px">{{data.address}}</td>
+          <td nzLeft="0px">{{ data.name }}</td>
+          <td nzLeft="100px">{{ data.age }}</td>
+          <td>{{ data.address }}</td>
+          <td>{{ data.address }}</td>
+          <td>{{ data.address }}</td>
+          <td>{{ data.address }}</td>
+          <td>{{ data.address }}</td>
+          <td>{{ data.address }}</td>
+          <td>{{ data.address }}</td>
+          <td nzRight="100px">{{ data.address }}</td>
           <td nzRight="0px">
             <a>action</a>
           </td>
         </tr>
       </tbody>
-    </nz-table>`
+    </nz-table>
+  `
 })
 export class NzDemoTableFixedColumnsComponent {
   listOfData = [
     {
-      key    : '1',
-      name   : 'John Brown',
-      age    : 32,
+      key: '1',
+      name: 'John Brown',
+      age: 32,
       address: 'New York'
     },
     {
-      key    : '2',
-      name   : 'Jim Green',
-      age    : 40,
+      key: '2',
+      name: 'Jim Green',
+      age: 40,
       address: 'London'
     }
   ];

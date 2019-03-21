@@ -9,6 +9,4 @@ import { Component } from '@angular/core';
     </ng-template>
   `
 })
-
-export class NzDemoPopconfirmCustomIconComponent {
-}
+export class NzDemoPopconfirmCustomIconComponent {}
