@@ -5,6 +5,7 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeNodeOptions } from 'ng-zorro-
   selector: 'nz-demo-tree-basic',
   template: `
     <nz-tree
+      #nzTreeComponent
       [nzData]="nodes"
       nzCheckable
       [nzCheckedKeys]="defaultCheckedKeys"
@@ -12,37 +13,42 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeNodeOptions } from 'ng-zorro-
       [nzSelectedKeys]="defaultSelectedKeys"
       (nzClick)="nzClick($event)"
       (nzCheckBoxChange)="nzCheck($event)"
-      (nzExpandChange)="nzCheck($event)">
+      (nzExpandChange)="nzCheck($event)"
+    >
     </nz-tree>
   `
 })
-
 export class NzDemoTreeBasicComponent implements OnInit, AfterViewInit {
-  @ViewChild(NzTreeComponent) nzTreeComponent: NzTreeComponent;
-  defaultCheckedKeys = [ '10020' ];
-  defaultSelectedKeys = [ '10010' ];
-  defaultExpandedKeys = [ '100', '1001' ];
+  @ViewChild('nzTreeComponent') nzTreeComponent: NzTreeComponent;
+  defaultCheckedKeys = ['10020'];
+  defaultSelectedKeys = ['10010'];
+  defaultExpandedKeys = ['100', '1001'];
 
-  nodes: NzTreeNodeOptions[] = [ {
-    title   : 'parent 1',
-    key     : '100',
-    children: [ {
-      title   : 'parent 1-0',
-      key     : '1001',
-      disabled: true,
+  nodes: NzTreeNodeOptions[] = [
+    {
+      title: 'parent 1',
+      key: '100',
       children: [
-        { title: 'leaf 1-0-0', key: '10010', disableCheckbox: true, isLeaf: true },
-        { title: 'leaf 1-0-1', key: '10011', isLeaf: true }
+        {
+          title: 'parent 1-0',
+          key: '1001',
+          disabled: true,
+          children: [
+            { title: 'leaf 1-0-0', key: '10010', disableCheckbox: true, isLeaf: true },
+            { title: 'leaf 1-0-1', key: '10011', isLeaf: true }
+          ]
+        },
+        {
+          title: 'parent 1-1',
+          key: '1002',
+          children: [
+            { title: 'leaf 1-1-0', key: '10020', isLeaf: true },
+            { title: 'leaf 1-1-1', key: '10021', isLeaf: true }
+          ]
+        }
       ]
-    }, {
-      title   : 'parent 1-1',
-      key     : '1002',
-      children: [
-        { title: 'leaf 1-1-0', key: '10020', isLeaf: true },
-        { title: 'leaf 1-1-1', key: '10021', isLeaf: true }
-      ]
-    } ]
-  } ];
+    }
+  ];
 
   nzClick(event: NzFormatEmitEvent): void {
     console.log(event);
@@ -65,6 +71,11 @@ export class NzDemoTreeBasicComponent implements OnInit, AfterViewInit {
     // get node by key: '10011'
     console.log(this.nzTreeComponent.getTreeNodeByKey('10011'));
     // use tree methods
-    console.log(this.nzTreeComponent.getTreeNodes(), this.nzTreeComponent.getCheckedNodeList(), this.nzTreeComponent.getSelectedNodeList(), this.nzTreeComponent.getExpandedNodeList());
+    console.log(
+      this.nzTreeComponent.getTreeNodes(),
+      this.nzTreeComponent.getCheckedNodeList(),
+      this.nzTreeComponent.getSelectedNodeList(),
+      this.nzTreeComponent.getExpandedNodeList()
+    );
   }
 }
