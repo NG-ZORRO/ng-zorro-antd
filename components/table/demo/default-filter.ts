@@ -90,13 +90,14 @@ export class NzDemoTableDefaultFilterComponent {
     const data = this.listOfData.filter(item => filterFunc(item));
     /** sort data **/
     if (this.sortName && this.sortValue) {
-      // @ts-ignore
       this.listOfDisplayData = data.sort((a, b) =>
         this.sortValue === 'ascend'
-          ? a[this.sortName!] > b[this.sortName!]
+          ? // @ts-ignore
+            a[this.sortName!] > b[this.sortName!]
             ? 1
             : -1
-          : b[this.sortName!] > a[this.sortName!]
+          : // @ts-ignore
+          b[this.sortName!] > a[this.sortName!]
           ? 1
           : -1
       );

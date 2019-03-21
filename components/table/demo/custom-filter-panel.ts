@@ -115,13 +115,14 @@ export class NzDemoTableCustomFilterPanelComponent {
       );
     };
     const data = this.listOfData.filter((item: { name: string; age: number; address: string }) => filterFunc(item));
-    // @ts-ignore
     this.listOfDisplayData = data.sort((a, b) =>
       this.sortValue === 'ascend'
-        ? a[this.sortName!] > b[this.sortName!]
+        ? // @ts-ignore
+          a[this.sortName!] > b[this.sortName!]
           ? 1
           : -1
-        : b[this.sortName!] > a[this.sortName!]
+        : // @ts-ignore
+        b[this.sortName!] > a[this.sortName!]
         ? 1
         : -1
     );
