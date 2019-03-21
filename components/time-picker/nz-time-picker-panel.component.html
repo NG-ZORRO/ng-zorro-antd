@@ -76,7 +76,7 @@
         <ul>
           <ng-container *ngFor="let range of use12HoursRange ">
             <li
-              *ngIf="!nzHideDisabledOption"
+              *ngIf="!nzHideDisabledOptions"
               (click)="select12Hours(range)"
               class="
                 {{ isSelected12Hours(range) ? prefixCls + '-select-option-selected' : '' }}
