@@ -123,3 +123,4 @@ Almost anything can be represented in a tree structure. Examples include directo
 ## Note
 * `NzTreeNodeOptions` accepts your customized properties，use NzTreeNode.origin to get them.
 * If Tree Methods used with ViewChild, should be used in ngAfterViewInit.
+* Setting NzData with NzTreeNodeOptions[] is better，if you set nzData with NzTreeNode[], it will be deprecated in next major version(8.x).

@@ -127,3 +127,4 @@ subtitle: 树形控件
 ## 注意
 * `NzTreeNodeOptions` 可以接受用户自定义属性，可通过 `NzTreeNode` 的 `origin` 属性取得。
 * 使用 ViewChild 时，Tree 方法需要在 ngAfterViewInit 中调用。
+* nzData 属性请传递 NzTreeNodeOptions 数组，传递 NzTreeNode 数组模式将在 8.x 版本取消兼容。
