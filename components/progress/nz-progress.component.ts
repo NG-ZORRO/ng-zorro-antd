@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { InputNumber } from '../core/util';
 import { isNotNil } from '../core/util/check';
@@ -10,6 +18,7 @@ export type NzProgressStrokeLinecapType = 'round' | 'square';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   selector: 'nz-progress',
   preserveWhitespaces: false,
   templateUrl: './nz-progress.component.html'
