@@ -1,4 +1,5 @@
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
+import { DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -8,6 +9,7 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   NgZone,
   OnChanges,
@@ -21,11 +23,11 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
-
 import { take, takeUntil, throttleTime } from 'rxjs/operators';
-import { InputBoolean, InputNumber } from '../core/util/convert';
 
+import { InputBoolean, InputNumber } from '../core/util/convert';
 import { isTouchEvent } from '../core/util/dom';
+
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 import { FromToInterface, NzCarouselEffects, PointerVector } from './nz-carousel-definitions';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
@@ -33,16 +35,16 @@ import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-carousel',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-carousel',
   preserveWhitespaces: false,
-  templateUrl        : './nz-carousel.component.html',
-  host               : {
+  templateUrl: './nz-carousel.component.html',
+  host: {
     '[class.ant-carousel-vertical]': 'nzVertical'
   },
-  styles             : [
-      `
+  styles: [
+    `
       nz-carousel {
         display: block;
         position: relative;
@@ -53,11 +55,6 @@ import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
 
       .slick-dots {
         display: block;
-      }
-
-      .slick-track,
-      .slick-slide {
-        transition: opacity 500ms ease;
       }
 
       .slick-track {
@@ -92,6 +89,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   transitionInProgress: number | null;
 
   private destroy$ = new Subject<void>();
+  private document: Document;
   private gestureRect: ClientRect | null = null;
   private pointerDelta: PointerVector | null = null;
   private pointerPosition: PointerVector | null = null;
@@ -100,10 +98,12 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
   constructor(
     elementRef: ElementRef,
+    @Inject(DOCUMENT) document: any, // tslint:disable-line:no-any
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone
   ) {
+    this.document = document;
     this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
     this.el = elementRef.nativeElement;
   }
@@ -116,9 +116,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     this.slickListEl = this.slickList.nativeElement;
     this.slickTrackEl = this.slickTrack.nativeElement;
 
-    this.carouselContents.changes.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
+    this.carouselContents.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.strategy.withCarouselContents(this.carouselContents);
     });
 
@@ -155,6 +153,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
   ngOnDestroy(): void {
     this.clearScheduledTransition();
+    this.dispose();
 
     this.destroy$.next();
     this.destroy$.complete();
@@ -200,9 +199,10 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.strategy.dispose();
     }
 
-    this.strategy = this.nzEffect === 'scrollx'
-      ? new NzCarouselTransformStrategy(this, this.cdr, this.renderer)
-      : new NzCarouselOpacityStrategy(this, this.cdr, this.renderer);
+    this.strategy =
+      this.nzEffect === 'scrollx'
+        ? new NzCarouselTransformStrategy(this, this.cdr, this.renderer)
+        : new NzCarouselOpacityStrategy(this, this.cdr, this.renderer);
 
     this.markContentActive(0);
     this.strategy.withCarouselContents(this.carouselContents);
@@ -238,28 +238,35 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
   pointerDown = (event: TouchEvent | MouseEvent) => {
     if (!this.isDragging && !this.isTransiting && this.nzEnableSwipe) {
-      const point = isTouchEvent(event) ? (event.touches[ 0 ] || event.changedTouches[ 0 ]) : event;
+      const point = isTouchEvent(event) ? event.touches[0] || event.changedTouches[0] : event;
       this.isDragging = true;
       this.clearScheduledTransition();
       this.gestureRect = this.slickListEl.getBoundingClientRect();
       this.pointerPosition = { x: point.clientX, y: point.clientY };
+
+      this.document.addEventListener('mousemove', this.pointerMove);
+      this.document.addEventListener('touchmove', this.pointerMove);
+      this.document.addEventListener('mouseup', this.pointerUp);
+      this.document.addEventListener('touchend', this.pointerUp);
     }
-  }
+  };
 
   pointerMove = (event: TouchEvent | MouseEvent) => {
     if (this.isDragging) {
-      const point = isTouchEvent(event) ? (event.touches[ 0 ] || event.changedTouches[ 0 ]) : event;
+      const point = isTouchEvent(event) ? event.touches[0] || event.changedTouches[0] : event;
       this.pointerDelta = { x: point.clientX - this.pointerPosition!.x, y: point.clientY - this.pointerPosition!.y };
       if (Math.abs(this.pointerDelta.x) > 5) {
         this.strategy.dragging(this.pointerDelta);
       }
     }
-  }
+  };
 
   pointerUp = () => {
     if (this.isDragging && this.nzEnableSwipe) {
       const delta = this.pointerDelta ? this.pointerDelta.x : 0;
-      if (Math.abs(delta) > this.gestureRect!.width / 2) {
+
+      // Switch to another slide if delta is third of the width.
+      if (Math.abs(delta) > this.gestureRect!.width / 3) {
         this.goTo(delta > 0 ? this.activeIndex - 1 : this.activeIndex + 1);
       } else {
         this.goTo(this.activeIndex);
@@ -268,6 +275,14 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.gestureRect = null;
       this.pointerDelta = null;
       this.isDragging = false;
+      this.dispose();
     }
+  };
+
+  private dispose(): void {
+    this.document.removeEventListener('mousemove', this.pointerMove);
+    this.document.removeEventListener('touchmove', this.pointerMove);
+    this.document.removeEventListener('touchend', this.pointerMove);
+    this.document.removeEventListener('mouseup', this.pointerMove);
   }
 }

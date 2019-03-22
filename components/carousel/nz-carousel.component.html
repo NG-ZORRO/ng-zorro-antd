@@ -1,12 +1,12 @@
 <div class="slick-initialized slick-slider" [class.slick-vertical]="nzVertical">
-  <div #slickList class="slick-list" tabindex="-1"
-       (keydown)="onKeyDown($event)"
-       (mousedown)="pointerDown($event)"
-       (touchstart)="pointerDown($event)"
-       (mousemove)="pointerMove($event)"
-       (touchmove)="pointerMove($event)"
-       (mouseup)="pointerUp()"
-       (touchend)="pointerUp()">
+  <div
+    #slickList
+    class="slick-list"
+    tabindex="-1"
+    (keydown)="onKeyDown($event)"
+    (mousedown)="pointerDown($event)"
+    (touchstart)="pointerDown($event)"
+  >
     <!-- Render carousel items. -->
     <div class="slick-track" #slickTrack>
       <ng-content></ng-content>
@@ -14,12 +14,12 @@
   </div>
   <!-- Render dots. -->
   <ul class="slick-dots" *ngIf="nzDots">
-    <li *ngFor="let content of carouselContents; let i = index"
-        [class.slick-active]="content.isActive"
-        (click)="goTo(i)">
-      <ng-template
-        [ngTemplateOutlet]="nzDotRender || renderDotTemplate"
-        [ngTemplateOutletContext]="{ $implicit: i }">
+    <li
+      *ngFor="let content of carouselContents; let i = index"
+      [class.slick-active]="content.isActive"
+      (click)="goTo(i)"
+    >
+      <ng-template [ngTemplateOutlet]="nzDotRender || renderDotTemplate" [ngTemplateOutletContext]="{ $implicit: i }">
       </ng-template>
     </li>
   </ul>
