@@ -6,7 +6,8 @@
   [placeholder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
   [(ngModel)]="value"
   readonly="readonly"
-  (click)="open()">
+  (click)="open()"
+  (keyup.enter)="open()">
 <span class="ant-time-picker-icon">
   <i nz-icon nzType="clock-circle"></i>
 </span>
@@ -50,7 +51,9 @@
     [opened]="nzOpen"
     [nzClearText]="nzClearText"
     [nzAllowEmpty]="nzAllowEmpty"
+    (keyup.enter)="close()"
     [(ngModel)]="value">
   </nz-time-picker-panel>
+  <span tabindex="0" (focus)="close()" class="nz-tab-catching-span"></span>
 </ng-template>
 

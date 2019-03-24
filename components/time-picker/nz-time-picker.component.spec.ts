@@ -10,6 +10,7 @@ import { NzTimePickerModule } from './nz-time-picker.module';
 
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
+import { dispatchFakeEvent } from 'ng-zorro-antd/core';
 registerLocaleData(zh);
 
 describe('time-picker', () => {
@@ -87,6 +88,27 @@ describe('time-picker', () => {
       expect(testComponent.openChange).toHaveBeenCalledTimes(3);
       expect(testComponent.open).toBe(true);
     });
+    it('should open and close on enter', fakeAsync(() => {
+      testComponent.date = new Date('2018-11-11 11:11:11');
+      testComponent.open = false;
+      fixture.detectChanges();
+      testComponent.nzTimePickerComponent.inputRef.nativeElement.dispatchEvent(
+        new KeyboardEvent('keyup', { key: 'enter' })
+      );
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(testComponent.open).toBe(true);
+      const panel = overlayContainer.getContainerElement().querySelector('nz-time-picker-panel');
+      expect(panel).toBeTruthy();
+      if (panel) {
+        panel.dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      }
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(testComponent.open).toBe(false);
+    }));
     it('should clear work', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.date = new Date('2018-11-11 11:11:11');
@@ -102,6 +124,26 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(testComponent.nzTimePickerComponent.nzFormat).toBe('h:mm:ss a');
     });
+    it('should be tabbable back to trigger wrapper', fakeAsync(() => {
+      testComponent.date = new Date('2018-11-11 11:11:11');
+      testComponent.open = true;
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(testComponent.open).toBe(true);
+
+      // It is impossible to simulate actual TAB behaviour using events.
+      // This is the next best thing.
+      dispatchFakeEvent(
+        overlayContainer.getContainerElement().querySelector('span.nz-tab-catching-span') as HTMLElement,
+        'focus'
+      );
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(testComponent.open).toBe(false);
+      expect(document.activeElement).toEqual(testComponent.nzTimePickerComponent.inputRef.nativeElement);
+    }));
   });
 });
 
