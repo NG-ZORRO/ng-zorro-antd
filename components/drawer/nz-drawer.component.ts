@@ -34,14 +34,15 @@ import { NzDrawerRef } from './nz-drawer-ref';
 export const DRAWER_ANIMATE_DURATION = 300;
 
 @Component({
-  selector           : 'nz-drawer',
-  templateUrl        : './nz-drawer.component.html',
+  selector: 'nz-drawer',
+  templateUrl: './nz-drawer.component.html',
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 // tslint:disable-next-line:no-any
-export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R> implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptions {
-  @Input() nzContent: TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef<R> }> | Type<T>;
+export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
+  implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptions {
+  @Input() nzContent: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
   @Input() @InputBoolean() nzClosable = true;
   @Input() @InputBoolean() nzMaskClosable = true;
   @Input() @InputBoolean() nzMask = true;
@@ -75,17 +76,17 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
 
   previouslyFocusedElement: HTMLElement;
   nzContentParams: D; // only service
-  overlayRef: OverlayRef;
+  overlayRef: OverlayRef | null;
   portal: TemplatePortal;
   focusTrap: FocusTrap;
   isOpen = false;
-  templateContext: { $implicit: D; drawerRef: NzDrawerRef<R> } = {
+  templateContext: { $implicit: D | undefined; drawerRef: NzDrawerRef<R> } = {
     $implicit: undefined,
     drawerRef: this as NzDrawerRef<R>
   };
 
-  get offsetTransform(): string {
-    if (!this.isOpen || (this.nzOffsetX + this.nzOffsetY) === 0) {
+  get offsetTransform(): string | null {
+    if (!this.isOpen || this.nzOffsetX + this.nzOffsetY === 0) {
       return null;
     }
     switch (this.nzPlacement) {
@@ -100,8 +101,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     }
   }
 
-  get transform(): string {
-
+  get transform(): string | null {
     if (this.isOpen) {
       return null;
     }
@@ -118,11 +118,11 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     }
   }
 
-  get width(): string {
+  get width(): string | null {
     return this.isLeftOrRight ? toCssPixel(this.nzWidth) : null;
   }
 
-  get height(): string {
+  get height(): string | null {
     return !this.isLeftOrRight ? toCssPixel(this.nzHeight) : null;
   }
 
@@ -153,7 +153,8 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     private injector: Injector,
     private changeDetectorRef: ChangeDetectorRef,
     private focusTrapFactory: FocusTrapFactory,
-    private viewContainerRef: ViewContainerRef) {
+    private viewContainerRef: ViewContainerRef
+  ) {
     super();
   }
 
@@ -235,7 +236,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     this.bodyPortalOutlet.dispose();
 
     if (this.nzContent instanceof Type) {
-      const childInjector = new PortalInjector(this.injector, new WeakMap([ [ NzDrawerRef, this ] ]));
+      const childInjector = new PortalInjector(this.injector, new WeakMap([[NzDrawerRef, this]]));
       const componentPortal = new ComponentPortal<T>(this.nzContent, null, childInjector);
       const componentRef = this.bodyPortalOutlet.attachComponentPortal(componentPortal);
       Object.assign(componentRef.instance, this.nzContentParams);
@@ -277,9 +278,9 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   private updateBodyOverflow(): void {
     if (this.overlayRef) {
       if (this.isOpen) {
-        this.overlayRef.getConfig().scrollStrategy.enable();
+        this.overlayRef.getConfig().scrollStrategy!.enable();
       } else {
-        this.overlayRef.getConfig().scrollStrategy.disable();
+        this.overlayRef.getConfig().scrollStrategy!.disable();
       }
     }
   }
@@ -296,7 +297,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
 
   private trapFocus(): void {
     if (!this.focusTrap) {
-      this.focusTrap = this.focusTrapFactory.create(this.overlayRef.overlayElement);
+      this.focusTrap = this.focusTrapFactory.create(this.overlayRef!.overlayElement);
     }
     this.focusTrap.focusInitialElement();
   }

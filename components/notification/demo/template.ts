@@ -10,10 +10,12 @@ import { NzNotificationService } from 'ng-zorro-antd';
       <button nz-button nzType="small">Cut It!</button>
     </ng-template>
   `,
-  styles  : [
-    `button {
-      margin-top: 8px;
-    }`
+  styles: [
+    `
+      button {
+        margin-top: 8px;
+      }
+    `
   ]
 })
 export class NzDemoNotificationTemplateComponent {
@@ -31,6 +33,5 @@ export class NzDemoNotificationTemplateComponent {
     });
   }
 
-  constructor(private notificationService: NzNotificationService) {
-  }
+  constructor(private notificationService: NzNotificationService) {}
 }

@@ -1,5 +1,5 @@
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
@@ -17,45 +17,46 @@ import { NzButtonComponent } from './nz-button.component';
 import { NzButtonModule } from './nz-button.module';
 
 describe('button', () => {
-  let testComponent;
-  let fixture;
   describe('basic', () => {
-    let buttons;
+    let fixture: ComponentFixture<NzDemoButtonBasicComponent>;
+    let buttons: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule ],
-        declarations: [ NzDemoButtonBasicComponent ],
-        providers   : []
+        imports: [NzButtonModule],
+        declarations: [NzDemoButtonBasicComponent],
+        providers: []
       }).compileComponents();
     }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoButtonBasicComponent);
-      testComponent = fixture.debugElement.componentInstance;
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-primary')).toBe(true);
-      expect(buttons[ 1 ].nativeElement.classList.contains('ant-btn-default')).toBe(true);
-      expect(buttons[ 2 ].nativeElement.classList.contains('ant-btn-dashed')).toBe(true);
-      expect(buttons[ 3 ].nativeElement.classList.contains('ant-btn-danger')).toBe(true);
+      expect(buttons[0].nativeElement.classList.contains('ant-btn-primary')).toBe(true);
+      expect(buttons[1].nativeElement.classList.contains('ant-btn-default')).toBe(true);
+      expect(buttons[2].nativeElement.classList.contains('ant-btn-dashed')).toBe(true);
+      expect(buttons[3].nativeElement.classList.contains('ant-btn-danger')).toBe(true);
     });
   });
+
   describe('button-group', () => {
-    let buttonGroup;
+    let fixture: ComponentFixture<NzDemoButtonButtonGroupComponent>;
+    let buttonGroup: DebugElement;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule ],
-        declarations: [ NzDemoButtonButtonGroupComponent ],
-        providers   : []
+        imports: [NzButtonModule],
+        declarations: [NzDemoButtonButtonGroupComponent],
+        providers: []
       }).compileComponents();
     }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoButtonButtonGroupComponent);
-      testComponent = fixture.debugElement.componentInstance;
       buttonGroup = fixture.debugElement.query(By.directive(NzButtonGroupComponent));
     });
 
@@ -65,101 +66,113 @@ describe('button', () => {
     });
     it('should have no white space', () => {
       fixture.detectChanges();
-      expect(Array.from(buttonGroup.nativeElement.firstElementChild).some((node: HTMLElement) => node.nodeType === 3)).toBe(false);
+      expect(
+        // @ts-ignore
+        Array.from(buttonGroup.nativeElement.firstElementChild).some((node: HTMLElement) => node.nodeType === 3)
+      ).toBe(false);
     });
   });
+
   describe('disabled', () => {
-    let buttons;
+    let fixture: ComponentFixture<NzDemoButtonDisabledComponent>;
+    let buttons: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule ],
-        declarations: [ NzDemoButtonDisabledComponent ],
-        providers   : []
+        imports: [NzButtonModule],
+        declarations: [NzDemoButtonDisabledComponent],
+        providers: []
       }).compileComponents();
     }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoButtonDisabledComponent);
-      testComponent = fixture.debugElement.componentInstance;
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
     it('should have correct attribute', () => {
       fixture.detectChanges();
-      expect(!!buttons[ 1 ].nativeElement.attributes.getNamedItem('disabled')).toBe(true);
+      expect(!!buttons[1].nativeElement.attributes.getNamedItem('disabled')).toBe(true);
     });
   });
+
   describe('ghost', () => {
-    let buttons;
+    let fixture: ComponentFixture<NzDemoButtonGhostComponent>;
+    let buttons: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule ],
-        declarations: [ NzDemoButtonGhostComponent ],
-        providers   : []
+        imports: [NzButtonModule],
+        declarations: [NzDemoButtonGhostComponent],
+        providers: []
       }).compileComponents();
     }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoButtonGhostComponent);
-      testComponent = fixture.debugElement.componentInstance;
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
-      expect(buttons[ 1 ].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
-      expect(buttons[ 2 ].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
-      expect(buttons[ 3 ].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
+      expect(buttons[0].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
+      expect(buttons[1].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
+      expect(buttons[2].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
+      expect(buttons[3].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
     });
   });
+
   describe('icon', () => {
-    let buttons;
+    let fixture: ComponentFixture<NzDemoButtonIconComponent>;
+    let buttons: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule, NzIconTestModule ],
-        declarations: [ NzDemoButtonIconComponent ],
-        providers   : []
+        imports: [NzButtonModule, NzIconTestModule],
+        declarations: [NzDemoButtonIconComponent],
+        providers: []
       }).compileComponents();
     }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoButtonIconComponent);
-      testComponent = fixture.debugElement.componentInstance;
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-icon-only')).toBe(true);
-      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-circle')).toBe(true);
-      expect(buttons[ 1 ].nativeElement.classList.contains('ant-btn-icon-only')).toBe(false);
-      expect(buttons[ 1 ].nativeElement.firstElementChild.classList.contains('anticon-search')).toBe(true);
-      expect(buttons[ 1 ].nativeElement.firstElementChild.style.cssText).toBe('display: inline-block;');
+      expect(buttons[0].nativeElement.classList.contains('ant-btn-icon-only')).toBe(true);
+      expect(buttons[0].nativeElement.classList.contains('ant-btn-circle')).toBe(true);
+      expect(buttons[1].nativeElement.classList.contains('ant-btn-icon-only')).toBe(false);
+      expect(buttons[1].nativeElement.firstElementChild!.classList.contains('anticon-search')).toBe(true);
+      expect(buttons[1].nativeElement.firstElementChild.style.cssText).toBe('display: inline-block;');
     });
   });
+
   describe('loading', () => {
-    let buttons;
+    let fixture: ComponentFixture<NzDemoButtonLoadingComponent>;
+    let buttons: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule, NzIconTestModule ],
-        declarations: [ NzDemoButtonLoadingComponent ],
-        providers   : []
+        imports: [NzButtonModule, NzIconTestModule],
+        declarations: [NzDemoButtonLoadingComponent],
+        providers: []
       }).compileComponents();
     }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoButtonLoadingComponent);
-      testComponent = fixture.debugElement.componentInstance;
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-loading')).toBe(true);
+      expect(buttons[0].nativeElement.classList.contains('ant-btn-loading')).toBe(true);
     });
+
     it('should loading when click without icon', fakeAsync(() => {
-      const button = buttons[ 2 ];
+      const button = buttons[2];
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
       expect(button.nativeElement.firstElementChild.localName).toBe('span');
@@ -168,48 +181,53 @@ describe('button', () => {
       tick();
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(true);
-      expect(button.nativeElement.firstElementChild.firstElementChild.classList.contains('anticon-spin')).toBe(true);
-      expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(true);
+      expect(button.nativeElement.firstElementChild.firstElementChild!.classList.contains('anticon-spin')).toBe(true);
+      expect(button.nativeElement.firstElementChild!.classList.contains('anticon-loading')).toBe(true);
       expect(button.nativeElement.firstElementChild.localName).toBe('i');
       tick(5000);
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
       expect(button.nativeElement.firstElementChild.localName).toBe('span');
     }));
+
     it('should loading when click with icon', fakeAsync(() => {
-      const button = buttons[ 3 ];
+      const button = buttons[3];
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
       expect(button.nativeElement.firstElementChild.querySelector('svg')).not.toBe(null);
-      expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(false);
-      expect(button.nativeElement.firstElementChild.classList.contains('anticon-poweroff')).toBe(true);
+      expect(button.nativeElement.firstElementChild!.classList.contains('anticon-loading')).toBe(false);
+      expect(button.nativeElement.firstElementChild!.classList.contains('anticon-poweroff')).toBe(true);
       expect(button.nativeElement.firstElementChild.localName).toBe('i');
       button.nativeElement.click();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(true);
-      expect(button.nativeElement.firstElementChild.firstElementChild.classList.contains('anticon-spin')).toBe(true);
-      expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(true);
+      expect(button.nativeElement.firstElementChild.firstElementChild!.classList.contains('anticon-spin')).toBe(true);
+      expect(button.nativeElement.firstElementChild!.classList.contains('anticon-loading')).toBe(true);
       expect(button.nativeElement.firstElementChild.localName).toBe('i');
       tick(5000);
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
       expect(button.nativeElement.firstElementChild.querySelector('svg')).not.toBe(null);
-      expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(false);
-      expect(button.nativeElement.firstElementChild.classList.contains('anticon-poweroff')).toBe(true);
+      expect(button.nativeElement.firstElementChild!.classList.contains('anticon-loading')).toBe(false);
+      expect(button.nativeElement.firstElementChild!.classList.contains('anticon-poweroff')).toBe(true);
       expect(button.nativeElement.firstElementChild.localName).toBe('i');
     }));
   });
+
   describe('size', () => {
-    let buttons;
-    let buttonGroup;
+    let fixture: ComponentFixture<NzDemoButtonSizeComponent>;
+    let testComponent: NzDemoButtonSizeComponent;
+    let buttons: DebugElement[];
+    let buttonGroup: DebugElement;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule ],
-        declarations: [ NzDemoButtonSizeComponent ],
-        schemas     : [ NO_ERRORS_SCHEMA ],
-        providers   : []
+        imports: [NzButtonModule],
+        declarations: [NzDemoButtonSizeComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: []
       }).compileComponents();
     }));
 
@@ -234,19 +252,21 @@ describe('button', () => {
       expect(buttonGroup.nativeElement.classList.contains('ant-btn-group-sm')).toBe(true);
     });
   });
+
   describe('icon', () => {
-    let button;
+    let fixture: ComponentFixture<NzTestButtonSearchComponent>;
+    let button: DebugElement;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule ],
-        declarations: [ NzTestButtonSearchComponent ],
-        providers   : []
+        imports: [NzButtonModule],
+        declarations: [NzTestButtonSearchComponent],
+        providers: []
       }).compileComponents();
     }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestButtonSearchComponent);
-      testComponent = fixture.debugElement.componentInstance;
       button = fixture.debugElement.query(By.directive(NzButtonComponent));
     });
 
@@ -255,48 +275,52 @@ describe('button', () => {
       expect(button.nativeElement.classList.contains('ant-input-search-button')).toBe(true);
     });
   });
+
   describe('block', () => {
-    let buttons;
+    let fixture: ComponentFixture<NzDemoButtonBlockComponent>;
+    let buttons: DebugElement[];
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule ],
-        declarations: [ NzDemoButtonBlockComponent ],
-        providers   : []
+        imports: [NzButtonModule],
+        declarations: [NzDemoButtonBlockComponent],
+        providers: []
       }).compileComponents();
     }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoButtonBlockComponent);
-      testComponent = fixture.debugElement.componentInstance;
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-primary')).toBe(true);
-      expect(buttons[ 1 ].nativeElement.classList.contains('ant-btn-default')).toBe(true);
-      expect(buttons[ 2 ].nativeElement.classList.contains('ant-btn-dashed')).toBe(true);
-      expect(buttons[ 3 ].nativeElement.classList.contains('ant-btn-danger')).toBe(true);
+      expect(buttons[0].nativeElement.classList.contains('ant-btn-primary')).toBe(true);
+      expect(buttons[1].nativeElement.classList.contains('ant-btn-default')).toBe(true);
+      expect(buttons[2].nativeElement.classList.contains('ant-btn-dashed')).toBe(true);
+      expect(buttons[3].nativeElement.classList.contains('ant-btn-danger')).toBe(true);
 
-      expect(buttons[ 0 ].nativeElement.classList.contains('ant-btn-block')).toBe(true);
-      expect(buttons[ 1 ].nativeElement.classList.contains('ant-btn-block')).toBe(true);
-      expect(buttons[ 2 ].nativeElement.classList.contains('ant-btn-block')).toBe(true);
-      expect(buttons[ 3 ].nativeElement.classList.contains('ant-btn-block')).toBe(true);
+      expect(buttons[0].nativeElement.classList.contains('ant-btn-block')).toBe(true);
+      expect(buttons[1].nativeElement.classList.contains('ant-btn-block')).toBe(true);
+      expect(buttons[2].nativeElement.classList.contains('ant-btn-block')).toBe(true);
+      expect(buttons[3].nativeElement.classList.contains('ant-btn-block')).toBe(true);
     });
   });
+
   describe('binding', () => {
-    let button;
+    let fixture: ComponentFixture<NzTestButtonBindingComponent>;
+    let button: DebugElement;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzButtonModule, NzIconTestModule ],
-        declarations: [ NzTestButtonBindingComponent ],
-        providers   : []
+        imports: [NzButtonModule, NzIconTestModule],
+        declarations: [NzTestButtonBindingComponent],
+        providers: []
       }).compileComponents();
     }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestButtonBindingComponent);
-      testComponent = fixture.debugElement.componentInstance;
       button = fixture.debugElement.query(By.directive(NzButtonComponent));
     });
 
@@ -306,46 +330,46 @@ describe('button', () => {
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
       expect(button.nativeElement.firstElementChild.querySelector('svg')).not.toBe(null);
-      expect(button.nativeElement.firstElementChild.classList.contains('anticon-poweroff')).toBe(true);
-      expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(false);
+      expect(button.nativeElement.firstElementChild!.classList.contains('anticon-poweroff')).toBe(true);
+      expect(button.nativeElement.firstElementChild!.classList.contains('anticon-loading')).toBe(false);
       button.nativeElement.click();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(true);
-      expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(true);
+      expect(button.nativeElement.firstElementChild!.classList.contains('anticon-loading')).toBe(true);
       expect(button.nativeElement.querySelector('.anticon-poweroff').style.cssText).toBe('display: none;');
       tick(5000);
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
-      expect(button.nativeElement.firstElementChild.classList.contains('anticon-loading')).toBe(false);
+      expect(button.nativeElement.firstElementChild!.classList.contains('anticon-loading')).toBe(false);
       expect(button.nativeElement.querySelector('.anticon-poweroff').style.cssText).toBe('display: inline-block;');
     }));
   });
-
 });
 
 @Component({
   selector: 'nz-test-button-search',
   template: `
-    <button nz-button nzSearch></button>`
+    <button nz-button nzSearch></button>
+  `
 })
-export class NzTestButtonSearchComponent {
-}
+export class NzTestButtonSearchComponent {}
 
-/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/2191 **/
+// https://github.com/NG-ZORRO/ng-zorro-antd/issues/2191
 @Component({
   selector: 'nz-test-button-binding',
-  template: `<button nz-button nzType="primary" (click)="load()" [nzLoading]="loading"><i nz-icon type="poweroff"></i> {{'Click me!'}}</button>`
+  template: `
+    <button nz-button nzType="primary" (click)="load()" [nzLoading]="loading">
+      <i nz-icon type="poweroff"></i> {{ 'Click me!' }}
+    </button>
+  `
 })
 export class NzTestButtonBindingComponent {
   loading = false;
 
   load(): void {
     this.loading = true;
-    setTimeout(_ => {
-      this.loading = false;
-    }, 5000);
+    setTimeout(() => (this.loading = false), 5000);
   }
-
 }

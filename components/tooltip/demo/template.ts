@@ -9,5 +9,4 @@ import { Component } from '@angular/core';
     </ng-template>
   `
 })
-export class NzDemoTooltipTemplateComponent {
-}
+export class NzDemoTooltipTemplateComponent {}

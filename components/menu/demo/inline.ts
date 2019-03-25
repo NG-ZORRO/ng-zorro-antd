@@ -54,7 +54,6 @@ import { Component } from '@angular/core';
       </li>
     </ul>
   `,
-  styles  : []
+  styles: []
 })
-export class NzDemoMenuInlineComponent {
-}
+export class NzDemoMenuInlineComponent {}

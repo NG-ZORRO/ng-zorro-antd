@@ -11,7 +11,10 @@ export class NzDropDownDirective {
     fromEvent(this.el, 'mouseenter').pipe(mapTo(true)),
     fromEvent(this.el, 'mouseleave').pipe(mapTo(false))
   );
-  $click: Observable<boolean> = fromEvent(this.el, 'click').pipe(tap(e => e.stopPropagation()), mapTo(true));
+  $click: Observable<boolean> = fromEvent(this.el, 'click').pipe(
+    tap(e => e.stopPropagation()),
+    mapTo(true)
+  );
 
   setDisabled(disabled: boolean): void {
     if (disabled) {

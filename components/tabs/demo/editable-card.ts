@@ -20,7 +20,7 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoTabsEditableCardComponent {
-  tabs = [ 'Tab 1', 'Tab 2' ];
+  tabs = ['Tab 1', 'Tab 2'];
 
   closeTab(tab: string): void {
     this.tabs.splice(this.tabs.indexOf(tab), 1);

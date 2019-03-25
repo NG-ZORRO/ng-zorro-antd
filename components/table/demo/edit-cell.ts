@@ -18,25 +18,25 @@ import { NzInputDirective } from 'ng-zorro-antd';
         <tr *ngFor="let data of editRowTable.data" class="editable-row">
           <td>
             <div class="editable-cell" *ngIf="editId !== data.id; else editTpl">
-              <div class="editable-cell-value-wrap" (click)="startEdit(data.id,$event)">
-                {{data.name}}
+              <div class="editable-cell-value-wrap" (click)="startEdit(data.id, $event)">
+                {{ data.name }}
               </div>
             </div>
             <ng-template #editTpl>
-              <input type="text" nz-input [(ngModel)]="data.name">
+              <input type="text" nz-input [(ngModel)]="data.name" />
             </ng-template>
           </td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
+          <td>{{ data.age }}</td>
+          <td>{{ data.address }}</td>
           <td>
-            <a nz-popconfirm nzTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.key)">Delete</a>
+            <a nz-popconfirm nzTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.id)">Delete</a>
           </td>
         </tr>
       </tbody>
     </nz-table>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       button {
         margin-bottom: 16px;
       }
@@ -60,11 +60,11 @@ import { NzInputDirective } from 'ng-zorro-antd';
 })
 export class NzDemoTableEditCellComponent implements OnInit {
   i = 0;
-  editId: string;
-  listOfData = [];
+  editId: string | null;
+  listOfData: any[] = [];
   @ViewChild(NzInputDirective, { read: ElementRef }) inputElement: ElementRef;
 
-  @HostListener('window:click', [ '$event' ])
+  @HostListener('window:click', ['$event'])
   handleClick(e: MouseEvent): void {
     if (this.editId && this.inputElement && this.inputElement.nativeElement !== e.target) {
       this.editId = null;
@@ -72,12 +72,15 @@ export class NzDemoTableEditCellComponent implements OnInit {
   }
 
   addRow(): void {
-    this.listOfData = [ ...this.listOfData, {
-      id     : `${this.i}`,
-      name   : `Edward King ${this.i}`,
-      age    : '32',
-      address: `London, Park Lane no. ${this.i}`
-    } ];
+    this.listOfData = [
+      ...this.listOfData,
+      {
+        id: `${this.i}`,
+        name: `Edward King ${this.i}`,
+        age: '32',
+        address: `London, Park Lane no. ${this.i}`
+      }
+    ];
     this.i++;
   }
 

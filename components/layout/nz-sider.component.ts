@@ -28,30 +28,30 @@ import { NzLayoutComponent } from './nz-layout.component';
 export type NzBreakPoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 @Component({
-  selector           : 'nz-sider',
+  selector: 'nz-sider',
   preserveWhitespaces: false,
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  templateUrl        : './nz-sider.component.html',
-  host               : {
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './nz-sider.component.html',
+  host: {
     '[class.ant-layout-sider-zero-width]': 'nzCollapsed && nzCollapsedWidth === 0',
-    '[class.ant-layout-sider-light]'     : `nzTheme === 'light'`,
-    '[class.ant-layout-sider-collapsed]' : 'nzCollapsed',
-    '[style.flex]'                       : 'flexSetting',
-    '[style.max-width.px]'               : 'widthSetting',
-    '[style.min-width.px]'               : 'widthSetting',
-    '[style.width.px]'                   : 'widthSetting'
+    '[class.ant-layout-sider-light]': `nzTheme === 'light'`,
+    '[class.ant-layout-sider-collapsed]': 'nzCollapsed',
+    '[style.flex]': 'flexSetting',
+    '[style.max-width.px]': 'widthSetting',
+    '[style.min-width.px]': 'widthSetting',
+    '[style.width.px]': 'widthSetting'
   }
 })
 export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
   private below = false;
   private destroy$ = new Subject();
   private dimensionMap = {
-    xs : '480px',
-    sm : '576px',
-    md : '768px',
-    lg : '992px',
-    xl : '1200px',
+    xs: '480px',
+    sm: '576px',
+    md: '768px',
+    lg: '992px',
+    xl: '1200px',
     xxl: '1600px'
   };
   @Input() nzWidth = 200;
@@ -83,7 +83,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   watchMatchMedia(): void {
     if (this.nzBreakpoint) {
-      const matchBelow = this.mediaMatcher.matchMedia(`(max-width: ${this.dimensionMap[ this.nzBreakpoint ]})`).matches;
+      const matchBelow = this.mediaMatcher.matchMedia(`(max-width: ${this.dimensionMap[this.nzBreakpoint]})`).matches;
       this.below = matchBelow;
       this.nzCollapsed = matchBelow;
       this.nzCollapsedChange.emit(matchBelow);
@@ -99,14 +99,27 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get isZeroTrigger(): boolean {
-    return this.nzCollapsible && this.nzTrigger && this.nzCollapsedWidth === 0 && ((this.nzBreakpoint && this.below) || (!this.nzBreakpoint));
+    return (
+      this.nzCollapsible &&
+      this.nzTrigger &&
+      this.nzCollapsedWidth === 0 &&
+      ((this.nzBreakpoint && this.below) || !this.nzBreakpoint)
+    );
   }
 
   get isSiderTrigger(): boolean {
     return this.nzCollapsible && this.nzTrigger && this.nzCollapsedWidth !== 0;
   }
 
-  constructor(@Optional() @Host() private nzLayoutComponent: NzLayoutComponent, private mediaMatcher: MediaMatcher, private ngZone: NgZone, private platform: Platform, private cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef) {
+  constructor(
+    @Optional() @Host() private nzLayoutComponent: NzLayoutComponent,
+    private mediaMatcher: MediaMatcher,
+    private ngZone: NgZone,
+    private platform: Platform,
+    private cdr: ChangeDetectorRef,
+    renderer: Renderer2,
+    elementRef: ElementRef
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-layout-sider');
   }
 
@@ -121,8 +134,11 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
       Promise.resolve().then(() => this.watchMatchMedia());
       this.ngZone.runOutsideAngular(() => {
         fromEvent(window, 'resize')
-        .pipe(auditTime(16), takeUntil(this.destroy$))
-        .subscribe(() => this.watchMatchMedia());
+          .pipe(
+            auditTime(16),
+            takeUntil(this.destroy$)
+          )
+          .subscribe(() => this.watchMatchMedia());
       });
     }
   }
@@ -134,5 +150,4 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.nzLayoutComponent.destroySider();
     }
   }
-
 }

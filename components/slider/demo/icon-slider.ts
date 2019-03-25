@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
       <i nz-icon type="smile" [class.icon-highlight]="nextHighLight"></i>
     </div>
   `,
-  styles  : [
+  styles: [
     `
       .icon-wrapper {
         position: relative;
@@ -23,7 +23,7 @@ import { Component, OnInit } from '@angular/core';
         height: 16px;
         line-height: 1;
         font-size: 16px;
-        color: rgba(0, 0, 0, .25);
+        color: rgba(0, 0, 0, 0.25);
       }
 
       [nz-icon]:first-child {
@@ -34,30 +34,30 @@ import { Component, OnInit } from '@angular/core';
         right: 0;
       }
 
-      .icon-highlight{
+      .icon-highlight {
         color: rgba(0, 0, 0, 0.45);
       }
     `
   ]
 })
 export class NzDemoSliderIconSliderComponent implements OnInit {
-
   min = 0;
   max = 20;
   mid = parseFloat(((this.max - this.min) / 2).toFixed(5));
   preHighLight = false;
   nextHighLight = false;
-  _sliderValue;
+  _sliderValue = 0;
+
   set sliderValue(value: number) {
     this._sliderValue = value;
     this.highlightIcon();
   }
 
-  get sliderValue() {
+  get sliderValue(): number {
     return this._sliderValue;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.sliderValue = 0;
   }
 
@@ -66,5 +66,4 @@ export class NzDemoSliderIconSliderComponent implements OnInit {
     this.preHighLight = !lower;
     this.nextHighLight = lower;
   }
-
 }

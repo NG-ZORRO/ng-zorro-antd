@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
+import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
@@ -12,19 +12,17 @@ import { NzPopoverModule } from './nz-popover.module';
 describe('NzPopover', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  let fixture;
-  let component;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzPopoverModule, NoopAnimationsModule, NzToolTipModule, NzIconTestModule ],
-      declarations: [ NzPopoverTestWrapperComponent, NzPopoverTestNewComponent ]
+      imports: [NzPopoverModule, NoopAnimationsModule, NzToolTipModule, NzIconTestModule],
+      declarations: [NzPopoverTestWrapperComponent, NzPopoverTestNewComponent]
     });
 
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([ OverlayContainer ], (oc: OverlayContainer) => {
+  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
@@ -34,6 +32,9 @@ describe('NzPopover', () => {
   });
 
   describe('should not bring break changes', () => {
+    let fixture: ComponentFixture<NzPopoverTestWrapperComponent>;
+    let component: NzPopoverTestWrapperComponent;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzPopoverTestWrapperComponent);
       component = fixture.componentInstance;
@@ -98,7 +99,7 @@ describe('NzPopover', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain(featureKey);
 
-      dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop')!, 'click');
       tick();
       fixture.detectChanges();
       tick(500); // Wait for animations
@@ -120,6 +121,9 @@ describe('NzPopover', () => {
     }));
   });
   describe('should support directive usage', () => {
+    let fixture: ComponentFixture<NzPopoverTestNewComponent>;
+    let component: NzPopoverTestNewComponent;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzPopoverTestNewComponent);
       component = fixture.componentInstance;
@@ -138,8 +142,10 @@ describe('NzPopover', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-popover-title').textContent).toContain('title-string');
-      expect(overlayContainerElement.querySelector('.ant-popover-inner-content').textContent).toContain('content-string');
+      expect(overlayContainerElement.querySelector('.ant-popover-title')!.textContent).toContain('title-string');
+      expect(overlayContainerElement.querySelector('.ant-popover-inner-content')!.textContent).toContain(
+        'content-string'
+      );
 
       // Move out from the trigger element to hide it
       dispatchMouseEvent(triggerElement, 'mouseleave');
@@ -162,8 +168,10 @@ describe('NzPopover', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-popover-title').textContent).toContain('title-template');
-      expect(overlayContainerElement.querySelector('.ant-popover-inner-content').textContent).toContain('content-template');
+      expect(overlayContainerElement.querySelector('.ant-popover-title')!.textContent).toContain('title-template');
+      expect(overlayContainerElement.querySelector('.ant-popover-inner-content')!.textContent).toContain(
+        'content-template'
+      );
 
       // Move out from the trigger element to hide it
       dispatchMouseEvent(triggerElement, 'mouseleave');
@@ -215,9 +223,7 @@ export class NzPopoverTestNewComponent {
 
     <nz-popover>
       <button #templateTrigger nz-popover>Show</button>
-      <ng-template #nzTemplate>
-        <i nz-icon type="file"></i> <span>Show with icon</span>
-      </ng-template>
+      <ng-template #nzTemplate> <i nz-icon type="file"></i> <span>Show with icon</span> </ng-template>
     </nz-popover>
 
     <nz-popover nzTitle="FOCUS" [nzTrigger]="'focus'"><span #focusTrigger nz-popover>Show</span></nz-popover>

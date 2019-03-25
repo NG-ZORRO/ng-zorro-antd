@@ -1,4 +1,14 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef
+} from '@angular/core';
 
 import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { FunctionProp } from '../core/types/common-wrap';
@@ -13,7 +23,6 @@ import { DisabledTimeFn, PanelMode, PresetRanges } from './standard-types';
 @Component({
   template: `` // Just for rollup
 })
-
 export class DateRangePickerComponent extends AbstractPickerComponent implements OnInit, OnChanges {
   showWeek: boolean = false; // Should show as week picker
 
@@ -26,21 +35,29 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
 
   private _showTime: object | boolean;
-  @Input() get nzShowTime(): object | boolean { return this._showTime; }
+  @Input() get nzShowTime(): object | boolean {
+    return this._showTime;
+  }
   set nzShowTime(value: object | boolean) {
     this._showTime = typeof value === 'object' ? value : toBoolean(value);
   }
 
-  @Output() readonly nzOnOk = new EventEmitter<CompatibleDate>();
+  @Output() readonly nzOnOk = new EventEmitter<CompatibleDate | null>();
 
-  get realShowToday(): boolean { // Range not support nzShowToday currently
+  get realShowToday(): boolean {
+    // Range not support nzShowToday currently
     return !this.isRange && this.nzShowToday;
   }
 
   pickerStyle: object; // Final picker style that contains width fix corrections etc.
   extraFooter: TemplateRef<void> | string;
 
-  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, dateHelper: DateHelperService, noAnimation?: NzNoAnimationDirective) {
+  constructor(
+    i18n: NzI18nService,
+    cdr: ChangeDetectorRef,
+    dateHelper: DateHelperService,
+    noAnimation?: NzNoAnimationDirective
+  ) {
     super(i18n, cdr, dateHelper, noAnimation);
   }
 
@@ -85,8 +102,9 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   // Emitted when done with date selecting
   onResultOk(): void {
     if (this.isRange) {
-      if ((this.nzValue as CandyDate[]).length) {
-        this.nzOnOk.emit([ this.nzValue[ 0 ].nativeDate, this.nzValue[ 1 ].nativeDate ]);
+      const value = this.nzValue as CandyDate[];
+      if (value.length) {
+        this.nzOnOk.emit([value[0].nativeDate, value[1].nativeDate]);
       } else {
         this.nzOnOk.emit([]);
       }

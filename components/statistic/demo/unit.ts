@@ -14,5 +14,4 @@ import { Component } from '@angular/core';
     </nz-row>
   `
 })
-export class NzDemoStatisticUnitComponent {
-}
+export class NzDemoStatisticUnitComponent {}

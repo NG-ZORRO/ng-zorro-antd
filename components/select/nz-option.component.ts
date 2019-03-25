@@ -3,10 +3,10 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewChild, View
 import { InputBoolean } from '../core/util/convert';
 
 @Component({
-  selector       : 'nz-option',
-  encapsulation  : ViewEncapsulation.None,
+  selector: 'nz-option',
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl    : './nz-option.component.html'
+  templateUrl: './nz-option.component.html'
 })
 export class NzOptionComponent {
   @ViewChild(TemplateRef) template: TemplateRef<void>;

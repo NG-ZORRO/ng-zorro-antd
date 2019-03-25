@@ -4,14 +4,21 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-drawer-from-drawer',
   template: `
     <button nz-button nzType="primary" (click)="open()">Create</button>
-    <nz-drawer [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"[nzMaskClosable]="false" [nzWidth]="720" [nzVisible]="visible" nzTitle="Create" (nzOnClose)="close()">
+    <nz-drawer
+      [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom': '53px' }"
+      [nzMaskClosable]="false"
+      [nzWidth]="720"
+      [nzVisible]="visible"
+      nzTitle="Create"
+      (nzOnClose)="close()"
+    >
       <form nz-form>
         <div nz-row nzGutter="8">
           <div nz-col nzSpan="12">
             <nz-form-item>
               <nz-form-label>Name</nz-form-label>
               <nz-form-control>
-                <input nz-input placeholder="please enter user name">
+                <input nz-input placeholder="please enter user name" />
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -20,7 +27,7 @@ import { Component } from '@angular/core';
               <nz-form-label>Url</nz-form-label>
               <nz-form-control>
                 <nz-input-group nzAddOnBefore="http://" nzAddOnAfter=".com">
-                  <input type="text" nz-input placeholder="please enter url">
+                  <input type="text" nz-input placeholder="please enter url" />
                 </nz-input-group>
               </nz-form-control>
             </nz-form-item>
@@ -67,7 +74,11 @@ import { Component } from '@angular/core';
             <nz-form-item>
               <nz-form-label>Description</nz-form-label>
               <nz-form-control>
-                <textarea nz-input placeholder="please enter url description" [nzAutosize]="{ minRows: 4, maxRows: 4 }"></textarea>
+                <textarea
+                  nz-input
+                  placeholder="please enter url description"
+                  [nzAutosize]="{ minRows: 4, maxRows: 4 }"
+                ></textarea>
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -79,20 +90,21 @@ import { Component } from '@angular/core';
       </div>
     </nz-drawer>
   `,
-  styles: [`
-    .footer {
-      position: absolute;
-      bottom: 0px;
-      width: 100%;
-      border-top: 1px solid rgb(232, 232, 232);
-      padding: 10px 16px;
-      text-align: right;
-      left: 0px;
-      background: #fff;
-    }
-  `]
+  styles: [
+    `
+      .footer {
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        border-top: 1px solid rgb(232, 232, 232);
+        padding: 10px 16px;
+        text-align: right;
+        left: 0px;
+        background: #fff;
+      }
+    `
+  ]
 })
-
 export class NzDemoDrawerFromDrawerComponent {
   visible = false;
 

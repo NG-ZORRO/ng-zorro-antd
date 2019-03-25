@@ -2,11 +2,16 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
 
-export type TFilterOption = (input?: string, option?: NzOptionComponent) => boolean;
+export type TFilterOption = (input: string, option: NzOptionComponent) => boolean;
 
 @Pipe({ name: 'nzFilterOption' })
 export class NzFilterOptionPipe implements PipeTransform {
-  transform(options: NzOptionComponent[], searchValue: string, filterOption: TFilterOption, serverSearch: boolean): NzOptionComponent[] {
+  transform(
+    options: NzOptionComponent[],
+    searchValue: string,
+    filterOption: TFilterOption,
+    serverSearch: boolean
+  ): NzOptionComponent[] {
     if (serverSearch || !searchValue) {
       return options;
     } else {
@@ -17,7 +22,12 @@ export class NzFilterOptionPipe implements PipeTransform {
 
 @Pipe({ name: 'nzFilterGroupOption' })
 export class NzFilterGroupOptionPipe implements PipeTransform {
-  transform(groups: NzOptionGroupComponent[], searchValue: string, filterOption: TFilterOption, serverSearch: boolean): NzOptionGroupComponent[] {
+  transform(
+    groups: NzOptionGroupComponent[],
+    searchValue: string,
+    filterOption: TFilterOption,
+    serverSearch: boolean
+  ): NzOptionGroupComponent[] {
     if (serverSearch || !searchValue) {
       return groups;
     } else {

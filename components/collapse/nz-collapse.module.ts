@@ -7,10 +7,8 @@ import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
 import { NzCollapseComponent } from './nz-collapse.component';
 
 @NgModule({
-  declarations: [ NzCollapsePanelComponent, NzCollapseComponent ],
-  exports     : [ NzCollapsePanelComponent, NzCollapseComponent ],
-  imports     : [ CommonModule, NzIconModule, NzAddOnModule ]
+  declarations: [NzCollapsePanelComponent, NzCollapseComponent],
+  exports: [NzCollapsePanelComponent, NzCollapseComponent],
+  imports: [CommonModule, NzIconModule, NzAddOnModule]
 })
-
-export class NzCollapseModule {
-}
+export class NzCollapseModule {}

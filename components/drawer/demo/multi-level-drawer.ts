@@ -4,14 +4,21 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-drawer-multi-level-drawer',
   template: `
     <button nz-button nzType="primary" (click)="open()">New Cookbook</button>
-    <nz-drawer [nzClosable]="false" [nzOffsetX]="childrenVisible ? 180 : 0" [nzWidth]="320" [nzVisible]="visible" nzTitle="Cookbook" (nzOnClose)="close()">
+    <nz-drawer
+      [nzClosable]="false"
+      [nzOffsetX]="childrenVisible ? 180 : 0"
+      [nzWidth]="320"
+      [nzVisible]="visible"
+      nzTitle="Cookbook"
+      (nzOnClose)="close()"
+    >
       <form nz-form>
         <div nz-row>
           <div nz-col nzSpan="24">
             <nz-form-item>
               <nz-form-label>Name</nz-form-label>
               <nz-form-control>
-                <input nz-input placeholder="please enter cookbook name">
+                <input nz-input placeholder="please enter cookbook name" />
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -42,20 +49,21 @@ import { Component } from '@angular/core';
       </nz-drawer>
     </nz-drawer>
   `,
-  styles: [`
-    .footer {
-      position: absolute;
-      bottom: 0px;
-      width: 100%;
-      border-top: 1px solid rgb(232, 232, 232);
-      padding: 10px 16px;
-      text-align: right;
-      left: 0px;
-      background: #fff;
-    }
-  `]
+  styles: [
+    `
+      .footer {
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        border-top: 1px solid rgb(232, 232, 232);
+        padding: 10px 16px;
+        text-align: right;
+        left: 0px;
+        background: #fff;
+      }
+    `
+  ]
 })
-
 export class NzDemoDrawerMultiLevelDrawerComponent {
   visible = false;
   childrenVisible = false;

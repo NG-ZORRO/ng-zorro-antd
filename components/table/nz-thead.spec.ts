@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
@@ -9,16 +9,16 @@ import { NzTableModule } from './nz-table.module';
 describe('nz-thead', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzTableModule, NzIconTestModule ],
-      declarations: [ NzTheadTestNzTableComponent ],
-      providers   : [ NzMeasureScrollbarService ]
+      imports: [NzTableModule, NzIconTestModule],
+      declarations: [NzTheadTestNzTableComponent],
+      providers: [NzMeasureScrollbarService]
     });
     TestBed.compileComponents();
   }));
   describe('nz-thead in nz-table', () => {
-    let fixture;
-    let testComponent;
-    let table;
+    let fixture: ComponentFixture<NzTheadTestNzTableComponent>;
+    let testComponent: NzTheadTestNzTableComponent;
+    let table: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTheadTestNzTableComponent);
       fixture.detectChanges();
@@ -29,11 +29,11 @@ describe('nz-thead', () => {
       fixture.detectChanges();
       expect(testComponent.sortChange).toHaveBeenCalledTimes(0);
       const upButtons = table.nativeElement.querySelectorAll('.ant-table-column-sorters');
-      upButtons[ 0 ].click();
+      upButtons[0].click();
       fixture.detectChanges();
       expect(testComponent.sortChange).toHaveBeenCalledTimes(1);
       expect(upButtons[0].firstElementChild.lastElementChild.classList).toContain('on');
-      upButtons[ 1 ].click();
+      upButtons[1].click();
       fixture.detectChanges();
       expect(upButtons[0].firstElementChild.lastElementChild.classList).toContain('on');
       expect(upButtons[1].firstElementChild.lastElementChild.classList).toContain('on');
@@ -44,11 +44,11 @@ describe('nz-thead', () => {
       fixture.detectChanges();
       expect(testComponent.sortChange).toHaveBeenCalledTimes(0);
       const upButtons = table.nativeElement.querySelectorAll('.ant-table-column-sorters');
-      upButtons[ 0 ].click();
+      upButtons[0].click();
       fixture.detectChanges();
       expect(testComponent.sortChange).toHaveBeenCalledTimes(1);
       expect(upButtons[0].firstElementChild.lastElementChild.classList).toContain('on');
-      upButtons[ 1 ].click();
+      upButtons[1].click();
       fixture.detectChanges();
       expect(upButtons[0].firstElementChild.lastElementChild.classList).toContain('off');
       expect(upButtons[1].firstElementChild.lastElementChild.classList).toContain('on');

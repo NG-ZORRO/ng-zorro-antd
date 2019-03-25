@@ -4,15 +4,27 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-layout-responsive',
   template: `
     <nz-layout>
-      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzBreakpoint]="'lg'" [nzCollapsedWidth]="0" [nzZeroTrigger]="zeroTrigger">
-        <div class="logo">
-        </div>
+      <nz-sider
+        nzCollapsible
+        [(nzCollapsed)]="isCollapsed"
+        [nzBreakpoint]="'lg'"
+        [nzCollapsedWidth]="0"
+        [nzZeroTrigger]="zeroTrigger"
+      >
+        <div class="logo"></div>
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
-          <li nz-menu-item><span><i nz-icon type="user"></i><span class="nav-text">nav 1</span></span></li>
-          <li nz-menu-item><span><i nz-icon type="video-camera"></i><span class="nav-text">nav 2</span></span>
+          <li nz-menu-item>
+            <span><i nz-icon type="user"></i><span class="nav-text">nav 1</span></span>
           </li>
-          <li nz-menu-item><span><i nz-icon type="upload"></i><span class="nav-text">nav 3</span></span></li>
-          <li nz-menu-item><span><i nz-icon type="user"></i><span class="nav-text">nav 4</span></span></li>
+          <li nz-menu-item>
+            <span><i nz-icon type="video-camera"></i><span class="nav-text">nav 2</span></span>
+          </li>
+          <li nz-menu-item>
+            <span><i nz-icon type="upload"></i><span class="nav-text">nav 3</span></span>
+          </li>
+          <li nz-menu-item>
+            <span><i nz-icon type="user"></i><span class="nav-text">nav 4</span></span>
+          </li>
         </ul>
       </nz-sider>
       <nz-layout>
@@ -29,11 +41,11 @@ import { Component } from '@angular/core';
       <i nz-icon type="menu-fold" theme="outline"></i>
     </ng-template>
   `,
-  styles  : [
+  styles: [
     `
       .logo {
         height: 32px;
-        background: rgba(255,255,255,.2);
+        background: rgba(255, 255, 255, 0.2);
         margin: 16px;
       }
     `

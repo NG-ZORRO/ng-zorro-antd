@@ -15,62 +15,61 @@ export interface NzTreeNodeOptions {
   children?: NzTreeNodeOptions[];
 
   // tslint:disable-next-line:no-any
-  [ key: string ]: any;
+  [key: string]: any;
 }
 
 export class NzTreeNode {
-  title?: string;
+  private _title: string;
   key: string;
   level: number = 0;
-  children: NzTreeNode[];
-  isLeaf: boolean;
-  // tslint:disable-next-line:no-any
-  origin: any;
+  origin: NzTreeNodeOptions;
   // Parent Node
-  parentNode: NzTreeNode;
-  isChecked: boolean;
-  isSelectable: boolean;
-  isDisabled: boolean;
-  isDisableCheckbox: boolean;
-  isExpanded: boolean;
-  isHalfChecked: boolean;
-  isAllChecked: boolean;
-  isSelected: boolean;
-  isLoading: boolean;
+  parentNode: NzTreeNode | null;
+  private _icon: string;
+  private _children: NzTreeNode[];
+  private _isLeaf: boolean;
+  private _isChecked: boolean;
+  /**
+   * @deprecated Maybe removed in next major version, use isChecked instead
+   */
+  private _isAllChecked: boolean;
+  private _isSelectable: boolean;
+  private _isDisabled: boolean;
+  private _isDisableCheckbox: boolean;
+  private _isExpanded: boolean;
+  private _isHalfChecked: boolean;
+  private _isSelected: boolean;
+  private _isLoading: boolean;
   isMatched: boolean;
 
-  private readonly service: NzTreeBaseService;
-  private component: NzTreeNodeComponent;
+  service: NzTreeBaseService | null;
+  component: NzTreeNodeComponent;
 
-  get treeService(): NzTreeBaseService {
-    if (this.service) {
-      return this.service;
-    } else if (this.parentNode) {
-      return this.parentNode.treeService;
-    }
+  get treeService(): NzTreeBaseService | null {
+    return this.service || (this.parentNode && this.parentNode.treeService);
   }
 
-  constructor(option: NzTreeNodeOptions | NzTreeNode, parent: NzTreeNode = null, service?: NzTreeBaseService) {
+  constructor(option: NzTreeNodeOptions | NzTreeNode, parent: NzTreeNode | null = null, service: NzTreeBaseService | null = null) {
     if (option instanceof NzTreeNode) {
       return option;
     }
-    this.service = service;
-    this.title = option.title || '---';
-    this.key = option.key || null;
-    this.isLeaf = option.isLeaf || false;
+    this.service = service || null;
     this.origin = option;
-    this.children = [];
+    this.key = option.key || '';
     this.parentNode = parent;
+    this._title = option.title || '---';
+    this._icon = option.icon || '';
+    this._isLeaf = option.isLeaf || false;
+    this._children = [];
     // option params
-    this.isChecked = option.checked || false;
-    this.isSelectable = option.disabled || (option.selectable === false ? false : true);
-    this.isDisabled = option.disabled || false;
-    this.isDisableCheckbox = option.disableCheckbox || false;
-    this.isExpanded = option.isLeaf ? false : (option.expanded || false);
-    this.isAllChecked = option.checked || false;
-    this.isHalfChecked = false;
-    this.isSelected = (!option.disabled && option.selected) || false;
-    this.isLoading = false;
+    this._isChecked = option.checked || false;
+    this._isSelectable = option.disabled || (option.selectable === false ? false : true);
+    this._isDisabled = option.disabled || false;
+    this._isDisableCheckbox = option.disableCheckbox || false;
+    this._isExpanded = option.isLeaf ? false : option.expanded || false;
+    this._isHalfChecked = false;
+    this._isSelected = (!option.disabled && option.selected) || false;
+    this._isLoading = false;
     this.isMatched = false;
 
     /**
@@ -81,66 +80,187 @@ export class NzTreeNode {
     } else {
       this.level = 0;
     }
-    if (typeof (option.children) !== 'undefined' && option.children !== null) {
-      option.children.forEach(
-        (nodeOptions) => {
-          if ((this.treeService && !this.treeService.isCheckStrictly) && option.checked && !option.disabled && !nodeOptions.disabled && !nodeOptions.disableCheckbox) {
-            nodeOptions.checked = option.checked;
-          }
-          this.children.push(new NzTreeNode(nodeOptions, this));
+    if (typeof option.children !== 'undefined' && option.children !== null) {
+      option.children.forEach(nodeOptions => {
+        const s = this.treeService;
+        if (
+          s &&
+          !s.isCheckStrictly &&
+          option.checked &&
+          !option.disabled &&
+          !nodeOptions.disabled &&
+          !nodeOptions.disableCheckbox
+        ) {
+          nodeOptions.checked = option.checked;
         }
-      );
+        this._children.push(new NzTreeNode(nodeOptions, this));
+      });
     }
   }
 
-  public setComponent(component: NzTreeNodeComponent): void {
-    this.component = component;
+  /**
+   * auto generate
+   * get
+   * set
+   */
+  get title(): string {
+    return this._title;
+  }
+
+  set title(value: string) {
+    this._title = value;
+    this.update();
+  }
+
+  get icon(): string {
+    return this._icon;
+  }
+
+  set icon(value: string) {
+    this._icon = value;
+    this.update();
+  }
+
+  get children(): NzTreeNode[] {
+    return this._children;
+  }
+
+  set children(value: NzTreeNode[]) {
+    this._children = value;
+    this.update();
+  }
+
+  get isLeaf(): boolean {
+    return this._isLeaf;
+  }
+
+  set isLeaf(value: boolean) {
+    this._isLeaf = value;
+    // this.update();
+  }
+
+  get isChecked(): boolean {
+    return this._isChecked;
+  }
+
+  set isChecked(value: boolean) {
+    this._isChecked = value;
+    this._isAllChecked = value;
+    this.origin.checked = value;
+    this.afterValueChange('isChecked');
+  }
+
+  get isAllChecked(): boolean {
+    return this._isAllChecked;
+  }
+
+  /**
+   * @deprecated Maybe removed in next major version, use isChecked instead
+   */
+  set isAllChecked(value: boolean) {
+    this._isAllChecked = value;
+  }
+
+  get isHalfChecked(): boolean {
+    return this._isHalfChecked;
+  }
+
+  set isHalfChecked(value: boolean) {
+    this._isHalfChecked = value;
+    this.afterValueChange('isHalfChecked');
+  }
+
+  get isSelectable(): boolean {
+    return this._isSelectable;
+  }
+
+  set isSelectable(value: boolean) {
+    this._isSelectable = value;
+    this.update();
+  }
+
+  get isDisabled(): boolean {
+    return this._isDisabled;
+  }
+
+  set isDisabled(value: boolean) {
+    this._isDisabled = value;
+    this.update();
+  }
+
+  get isDisableCheckbox(): boolean {
+    return this._isDisableCheckbox;
+  }
+
+  set isDisableCheckbox(value: boolean) {
+    this._isDisableCheckbox = value;
+    this.update();
+  }
+
+  get isExpanded(): boolean {
+    return this._isExpanded;
+  }
+
+  set isExpanded(value: boolean) {
+    this._isExpanded = value;
+    this.origin.expanded = value;
+    this.afterValueChange('isExpanded');
+  }
+
+  get isSelected(): boolean {
+    return this._isSelected;
+  }
+
+  set isSelected(value: boolean) {
+    this._isSelected = value;
+    this.origin.selected = value;
+    this.afterValueChange('isSelected');
+  }
+
+  get isLoading(): boolean {
+    return this._isLoading;
+  }
+
+  set isLoading(value: boolean) {
+    this._isLoading = value;
+    this.update();
   }
 
   public setSyncChecked(checked: boolean = false, halfChecked: boolean = false): void {
     this.setChecked(checked, halfChecked);
-    if (!this.treeService.isCheckStrictly) {
+    if (this.treeService && !this.treeService.isCheckStrictly) {
       this.treeService.conduct(this);
     }
   }
 
+  /**
+   * @deprecated Maybe removed in next major version, use isChecked instead
+   */
   public setChecked(checked: boolean = false, halfChecked: boolean = false): void {
     this.origin.checked = checked;
     this.isChecked = checked;
     this.isAllChecked = checked;
     this.isHalfChecked = halfChecked;
-    if (this.treeService) {
-      this.treeService.setCheckedNodeList(this);
-      this.treeService.setHalfCheckedNodeList(this);
-      this.treeService.$statusChange.next({
-        'eventName': 'setChecked',
-        'node'     : this
-      });
-    }
   }
 
+  /**
+   * @deprecated Maybe removed in next major version, use isExpanded instead
+   */
   public setExpanded(value: boolean): void {
-    this.origin.expanded = value;
     this.isExpanded = value;
-    this.treeService.setExpandedNodeList(this);
-    if (this.component) {
-      this.component.markForCheck();
-    }
   }
 
-  public setSelected(value: boolean, isMultiple: boolean = this.treeService.isMultiple): void {
+  /**
+   * @deprecated Maybe removed in next major version, use isSelected instead
+   */
+  public setSelected(value: boolean): void {
     if (this.isDisabled) {
       return;
     }
-    this.origin.selected = value;
     this.isSelected = value;
-    this.treeService.setNodeActive(this, isMultiple);
-    if (this.component) {
-      this.component.markForCheck();
-    }
   }
 
-  public getParentNode(): NzTreeNode {
+  public getParentNode(): NzTreeNode | null {
     return this.parentNode;
   }
 
@@ -158,7 +278,7 @@ export class NzTreeNode {
         (node) => {
           const refreshLevel = (n: NzTreeNode) => {
             n.getChildren().forEach(c => {
-              c.level = c.getParentNode().level + 1;
+              c.level = c.getParentNode()!.level + 1;
               // flush origin
               c.origin.level = c.level;
               refreshLevel(c);
@@ -182,35 +302,55 @@ export class NzTreeNode {
       this.origin.children = this.getChildren().map(v => v.origin);
       // remove loading state
       this.isLoading = false;
-      this.treeService.$statusChange.next({
-        'eventName': 'addChildren',
-        'node'     : this
-      });
     }
   }
 
   public clearChildren(): void {
-    this.getChildren().forEach((n) => {
-      this.treeService.afterRemove(n, false);
-    });
-    this.getChildren().splice(0, this.getChildren().length);
-    this.origin.children = [];
     // refresh checked state
-    this.treeService.calcCheckedKeys(this.treeService.checkedNodeList.map(v => v.key), this.treeService.rootNodes, this.treeService.isCheckStrictly);
-    if (this.component) {
-      this.component.markForCheck();
-    }
+    this.afterValueChange('clearChildren');
+    this.children = [];
+    this.origin.children = [];
   }
 
   public remove(): void {
-    if (this.getParentNode()) {
-      const index = this.getParentNode().getChildren().findIndex(n => n.key === this.key);
-      this.getParentNode().getChildren().splice(index, 1);
-      this.getParentNode().origin.children.splice(index, 1);
-      this.treeService.afterRemove(this);
-      if (this.component) {
-        this.component.markForCheck();
+    const parentNode = this.getParentNode();
+    if (parentNode) {
+      parentNode.children = parentNode.getChildren().filter(v => v.key !== this.key);
+      parentNode.origin.children = parentNode.origin.children!.filter(v => v.key !== this.key);
+      this.afterValueChange('remove');
+    }
+  }
+
+  public afterValueChange(key: string): void {
+    if (this.treeService) {
+      switch (key) {
+        case 'isChecked':
+          this.treeService.setCheckedNodeList(this);
+          break;
+        case 'isHalfChecked':
+          this.treeService.setHalfCheckedNodeList(this);
+          break;
+        case 'isExpanded':
+          this.treeService.setExpandedNodeList(this);
+          break;
+        case 'isSelected':
+          this.treeService.setNodeActive(this);
+          break;
+        case 'clearChildren':
+          this.treeService.afterRemove(this.getChildren());
+          break;
+        case 'remove':
+          this.treeService.afterRemove([ this ]);
+          break;
       }
+    }
+    this.update();
+  }
+
+  public update(): void {
+    if (this.component) {
+      this.component.setClassMap();
+      this.component.markForCheck();
     }
   }
 }
