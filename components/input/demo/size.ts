@@ -4,13 +4,13 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-input-size',
   template: `
     <div class="example-input">
-      <input nz-input placeholder="large size" nzSize="large">
-      <input nz-input placeholder="default size" nzSize="default">
-      <input nz-input placeholder="small size" nzSize="small">
+      <input nz-input placeholder="large size" nzSize="large" />
+      <input nz-input placeholder="default size" nzSize="default" />
+      <input nz-input placeholder="small size" nzSize="small" />
     </div>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       .example-input .ant-input {
         width: 200px;
         margin: 0 8px 8px 0;
@@ -18,5 +18,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoInputSizeComponent {
-}
+export class NzDemoInputSizeComponent {}

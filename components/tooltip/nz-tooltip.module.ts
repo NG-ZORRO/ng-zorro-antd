@@ -10,10 +10,9 @@ import { NzToolTipComponent } from './nz-tooltip.component';
 import { NzTooltipDirective } from './nz-tooltip.directive';
 
 @NgModule({
-  declarations   : [ NzToolTipComponent, NzTooltipDirective ],
-  exports        : [ NzToolTipComponent, NzTooltipDirective ],
-  imports        : [ CommonModule, OverlayModule, NzAddOnModule, NzOverlayModule, NzNoAnimationModule ],
-  entryComponents: [ NzToolTipComponent ]
+  declarations: [NzToolTipComponent, NzTooltipDirective],
+  exports: [NzToolTipComponent, NzTooltipDirective],
+  imports: [CommonModule, OverlayModule, NzAddOnModule, NzOverlayModule, NzNoAnimationModule],
+  entryComponents: [NzToolTipComponent]
 })
-export class NzToolTipModule {
-}
+export class NzToolTipModule {}

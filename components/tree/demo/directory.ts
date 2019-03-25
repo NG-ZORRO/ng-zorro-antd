@@ -1,9 +1,8 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
 import {
   NzDropdownContextComponent,
   NzDropdownService,
   NzFormatEmitEvent,
-  NzTreeComponent,
   NzTreeNode
 } from 'ng-zorro-antd';
 
@@ -11,7 +10,6 @@ import {
   selector: 'nz-demo-tree-directory',
   template: `
     <nz-tree
-      #treeCom
       [nzData]="nodes"
       (nzClick)="activeNode($event)"
       (nzDblClick)="openFolder($event)">
@@ -36,7 +34,7 @@ import {
         </span>
       </ng-template>
     </nz-tree>`,
-  styles: [`
+  styles  : [ `
     :host ::ng-deep .ant-tree {
       overflow: hidden;
       margin: 0 -24px;
@@ -73,39 +71,41 @@ import {
       position: relative;
       left: 12px;
     }
-  `]
+  ` ]
 })
 
 export class NzDemoTreeDirectoryComponent {
-  @ViewChild('treeCom') treeCom: NzTreeComponent;
   dropdown: NzDropdownContextComponent;
   // actived node
   activedNode: NzTreeNode;
-  nodes = [{
-    title: 'parent 0',
-    key: '100',
-    author: 'NG ZORRO',
+  nodes = [ {
+    title   : 'parent 0',
+    key     : '100',
+    author  : 'NG ZORRO',
     expanded: true,
     children: [
-      {title: 'leaf 0-0', key: '1000', author: 'NG ZORRO', isLeaf: true},
-      {title: 'leaf 0-1', key: '1001', author: 'NG ZORRO', isLeaf: true}
+      { title: 'leaf 0-0', key: '1000', author: 'NG ZORRO', isLeaf: true },
+      { title: 'leaf 0-1', key: '1001', author: 'NG ZORRO', isLeaf: true }
     ]
   }, {
-    title: 'parent 1',
-    key: '101',
-    author: 'NG ZORRO',
+    title   : 'parent 1',
+    key     : '101',
+    author  : 'NG ZORRO',
     children: [
-      {title: 'leaf 1-0', key: '1010', author: 'NG ZORRO', isLeaf: true},
-      {title: 'leaf 1-1', key: '1011', author: 'NG ZORRO', isLeaf: true}
+      { title: 'leaf 1-0', key: '1010', author: 'NG ZORRO', isLeaf: true },
+      { title: 'leaf 1-1', key: '1011', author: 'NG ZORRO', isLeaf: true }
     ]
-  }];
+  } ];
 
   openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
     // do something if u want
     if (data instanceof NzTreeNode) {
       data.isExpanded = !data.isExpanded;
     } else {
-      data.node.isExpanded = !data.node.isExpanded;
+      const node = data.node;
+      if (node) {
+        node.isExpanded = !node.isExpanded;
+      }
     }
   }
 

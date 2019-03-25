@@ -1,9 +1,9 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  selector     : 'nz-demo-tag-colorful',
+  selector: 'nz-demo-tag-colorful',
   encapsulation: ViewEncapsulation.None,
-  template     : `
+  template: `
     <h4 style="margin-bottom: 16px;">Presets:</h4>
     <div>
       <nz-tag [nzColor]="'magenta'">magenta</nz-tag>
@@ -26,11 +26,12 @@ import { Component, ViewEncapsulation } from '@angular/core';
       <nz-tag [nzColor]="'#108ee9'">#108ee9</nz-tag>
     </div>
   `,
-  styles       : [ `
-    .ant-tag {
-      margin-bottom: 8px;
-    }
-  ` ]
+  styles: [
+    `
+      .ant-tag {
+        margin-bottom: 8px;
+      }
+    `
+  ]
 })
-export class NzDemoTagColorfulComponent {
-}
+export class NzDemoTagColorfulComponent {}

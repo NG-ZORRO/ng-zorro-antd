@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
@@ -13,36 +13,32 @@ describe('nz-select top control', () => {
   beforeEach(fakeAsync(() => {
     let nzSelectServiceStub: Partial<NzSelectService>;
     nzSelectServiceStub = {
-      check$                    : new Subject(),
-      listOfSelectedValue$      : new Subject(),
-      open$                     : new Subject(),
-      clearInput$               : new Subject(),
-      listOfSelectedValue       : [ 1, 2, 3 ],
+      check$: new Subject(),
+      listOfSelectedValue$: new Subject(),
+      open$: new Subject(),
+      clearInput$: new Subject(),
+      listOfSelectedValue: [1, 2, 3],
       listOfCachedSelectedOption: createListOfOption(10),
-      isMultipleOrTags          : true,
-      removeValueFormSelected   : () => {
-      },
-      tokenSeparate             : () => {
-      },
-      updateSearchValue         : () => {
-      },
-      updateListOfSelectedValue : () => {
-      },
-      compareWith               : (o1, o2) => o1 === o2
+      isMultipleOrTags: true,
+      removeValueFormSelected: () => {},
+      tokenSeparate: () => {},
+      updateSearchValue: () => {},
+      updateListOfSelectedValue: () => {},
+      compareWith: (o1, o2) => o1 === o2
     };
     TestBed.configureTestingModule({
-      providers   : [ { provide: NzSelectService, useValue: nzSelectServiceStub } ],
-      imports     : [ NzSelectModule, NoopAnimationsModule ],
-      declarations: [ NzTestSelectTopControlComponent ]
+      providers: [{ provide: NzSelectService, useValue: nzSelectServiceStub }],
+      imports: [NzSelectModule, NoopAnimationsModule],
+      declarations: [NzTestSelectTopControlComponent]
     });
     TestBed.compileComponents();
   }));
   describe('default', () => {
-    let fixture;
-    let testComponent;
-    let tc;
-    let tcComponent;
-    let nzSelectService;
+    let fixture: ComponentFixture<NzTestSelectTopControlComponent>;
+    let testComponent: NzTestSelectTopControlComponent;
+    let tc: DebugElement;
+    let tcComponent: NzSelectTopControlComponent;
+    let nzSelectService: NzSelectService;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSelectTopControlComponent);
       fixture.detectChanges();
@@ -99,6 +95,7 @@ describe('nz-select top control', () => {
       expect(tcComponent.selectedValueStyle.opacity).toBe('1');
       tcComponent.nzShowSearch = true;
       tcComponent.nzOpen = true;
+      // @ts-ignore
       tcComponent.inputValue = true;
       tcComponent.isComposing = true;
       fixture.detectChanges();
@@ -106,6 +103,7 @@ describe('nz-select top control', () => {
       expect(tcComponent.selectedValueStyle.opacity).toBe('1');
       tcComponent.nzShowSearch = true;
       tcComponent.nzOpen = true;
+      // @ts-ignore
       tcComponent.inputValue = true;
       tcComponent.isComposing = false;
       fixture.detectChanges();
@@ -113,6 +111,7 @@ describe('nz-select top control', () => {
       expect(tcComponent.selectedValueStyle.opacity).toBe('1');
       tcComponent.nzShowSearch = true;
       tcComponent.nzOpen = true;
+      // @ts-ignore
       tcComponent.inputValue = false;
       tcComponent.isComposing = true;
       fixture.detectChanges();
@@ -120,6 +119,7 @@ describe('nz-select top control', () => {
       expect(tcComponent.selectedValueStyle.opacity).toBe('1');
       tcComponent.nzShowSearch = true;
       tcComponent.nzOpen = true;
+      // @ts-ignore
       tcComponent.inputValue = false;
       tcComponent.isComposing = false;
       fixture.detectChanges();
@@ -129,23 +129,28 @@ describe('nz-select top control', () => {
     it('should open focus', () => {
       fixture.detectChanges();
       expect(tc.nativeElement.querySelector('.ant-select-search__field') === document.activeElement).toBeFalsy();
+      // @ts-ignore
       nzSelectService.open$.next(false);
       fixture.detectChanges();
       expect(tc.nativeElement.querySelector('.ant-select-search__field') === document.activeElement).toBeFalsy();
+      // @ts-ignore
       nzSelectService.open$.next(true);
       fixture.detectChanges();
       expect(tc.nativeElement.querySelector('.ant-select-search__field') === document.activeElement).toBeTruthy();
     });
     it('should destroy piped', () => {
       fixture.detectChanges();
+      // @ts-ignore
       const checkSpy = spyOn(tcComponent.cdr, 'markForCheck');
       fixture.detectChanges();
       expect(checkSpy).toHaveBeenCalledTimes(0);
+      // @ts-ignore
       nzSelectService.check$.next();
       fixture.detectChanges();
       expect(checkSpy).toHaveBeenCalledTimes(1);
       testComponent.destroy = true;
       fixture.detectChanges();
+      // @ts-ignore
       nzSelectService.check$.next();
       fixture.detectChanges();
       expect(checkSpy).toHaveBeenCalledTimes(1);
@@ -160,12 +165,12 @@ describe('nz-select top control', () => {
       expect(removeSpy).toHaveBeenCalledTimes(1);
     });
   });
-
 });
 
 @Component({
   template: `
-    <div nz-select-top-control
+    <div
+      nz-select-top-control
       *ngIf="!destroy"
       [nzOpen]="open"
       [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
@@ -178,8 +183,8 @@ describe('nz-select top control', () => {
       [nzClearIcon]="nzClearIcon"
       [nzRemoveIcon]="nzRemoveIcon"
       [nzShowSearch]="nzShowSearch"
-      [nzTokenSeparators]="nzTokenSeparators">
-    </div>
+      [nzTokenSeparators]="nzTokenSeparators"
+    ></div>
     <ng-template #nzMaxTagPlaceholder>nzMaxTagPlaceholder</ng-template>
     <ng-template #nzSuffixIcon>nzSuffixIcon</ng-template>
     <ng-template #nzClearIcon>nzClearIcon</ng-template>
@@ -195,5 +200,5 @@ export class NzTestSelectTopControlComponent {
   nzShowArrow = true;
   nzLoading = false;
   nzShowSearch = false;
-  nzTokenSeparators = [ ',' ];
+  nzTokenSeparators = [','];
 }

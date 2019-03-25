@@ -7,16 +7,21 @@ import { Component } from '@angular/core';
       [nzMode]="dateMode"
       nzShowTime
       (nzOnOpenChange)="handleDateOpenChange($event)"
-      (nzOnPanelChange)="handleDatePanelChange($event)">
+      (nzOnPanelChange)="handleDatePanelChange($event)"
+    >
     </nz-date-picker>
   `,
-  styles: [`
-    nz-date-picker, nz-month-picker, nz-range-picker, nz-week-picker {
-      margin: 0 8px 12px 0;
-    }
-  `]
+  styles: [
+    `
+      nz-date-picker,
+      nz-month-picker,
+      nz-range-picker,
+      nz-week-picker {
+        margin: 0 8px 12px 0;
+      }
+    `
+  ]
 })
-
 export class NzDemoDatePickerModeComponent {
   dateMode = 'time';
 

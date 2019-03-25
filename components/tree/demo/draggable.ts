@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NzFormatEmitEvent, NzTreeComponent } from 'ng-zorro-antd';
+import { Component, OnInit } from '@angular/core';
+import { NzFormatEmitEvent } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-tree-draggable',
   template: `
     <nz-tree
-      #treeCom
       [nzData]="nodes"
       nzDraggable
       (nzOnDrop)="nzEvent($event)">
@@ -19,7 +18,6 @@ import { NzFormatEmitEvent, NzTreeComponent } from 'ng-zorro-antd';
 })
 
 export class NzDemoTreeDraggableComponent implements OnInit {
-  @ViewChild('treeCom') treeCom: NzTreeComponent;
   nodes = [ {
     title   : '0-0',
     key     : '00',

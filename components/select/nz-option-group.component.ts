@@ -10,10 +10,10 @@ import {
 import { NzOptionComponent } from './nz-option.component';
 
 @Component({
-  selector       : 'nz-option-group',
-  encapsulation  : ViewEncapsulation.None,
+  selector: 'nz-option-group',
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl    : './nz-option-group.component.html'
+  templateUrl: './nz-option-group.component.html'
 })
 export class NzOptionGroupComponent {
   isLabelString = false;

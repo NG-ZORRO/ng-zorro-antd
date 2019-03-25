@@ -3,6 +3,7 @@ import addYears from 'date-fns/add_years';
 import endOfMonth from 'date-fns/end_of_month';
 import setDay from 'date-fns/set_day';
 import setMonth from 'date-fns/set_month';
+import { IndexableObject } from '../../../core/types/indexable';
 
 /**
  * Wrapping kind APIs for date operating and unify
@@ -10,7 +11,7 @@ import setMonth from 'date-fns/set_month';
  * NOTE: most APIs are based on local time other than customized locale id (this needs tobe support in future)
  * TODO: support format() against to angular's core API
  */
-export class CandyDate {
+export class CandyDate implements IndexableObject {
   nativeDate: Date;
   // locale: string; // Custom specified locale ID
 

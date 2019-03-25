@@ -13,12 +13,13 @@ import { Component, OnInit } from '@angular/core';
       </thead>
       <tbody>
         <tr *ngFor="let data of headerTable.data">
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
+          <td>{{ data.name }}</td>
+          <td>{{ data.age }}</td>
+          <td>{{ data.address }}</td>
         </tr>
       </tbody>
-    </nz-table>`
+    </nz-table>
+  `
 })
 export class NzDemoTableFixedHeaderComponent implements OnInit {
   listOfData: any[] = [];
@@ -26,8 +27,8 @@ export class NzDemoTableFixedHeaderComponent implements OnInit {
   ngOnInit(): void {
     for (let i = 0; i < 100; i++) {
       this.listOfData.push({
-        name   : `Edward King ${i}`,
-        age    : 32,
+        name: `Edward King ${i}`,
+        age: 32,
         address: `London, Park Lane no. ${i}`
       });
     }

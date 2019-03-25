@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-normal-login',
@@ -12,17 +8,21 @@ import {
       <nz-form-item>
         <nz-form-control>
           <nz-input-group [nzPrefix]="prefixUser">
-            <input type="text" nz-input formControlName="userName" placeholder="Username">
+            <input type="text" nz-input formControlName="userName" placeholder="Username" />
           </nz-input-group>
-          <nz-form-explain *ngIf="validateForm.get('userName')?.dirty && validateForm.get('userName')?.errors">Please input your username!</nz-form-explain>
+          <nz-form-explain *ngIf="validateForm.get('userName')?.dirty && validateForm.get('userName')?.errors"
+            >Please input your username!</nz-form-explain
+          >
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-control>
           <nz-input-group [nzPrefix]="prefixLock">
-            <input type="password" nz-input formControlName="password" placeholder="Password">
+            <input type="password" nz-input formControlName="password" placeholder="Password" />
           </nz-input-group>
-          <nz-form-explain *ngIf="validateForm.get('password')?.dirty && validateForm.get('password')?.errors">Please input your Password!</nz-form-explain>
+          <nz-form-explain *ngIf="validateForm.get('password')?.dirty && validateForm.get('password')?.errors"
+            >Please input your Password!</nz-form-explain
+          >
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -40,19 +40,20 @@ import {
     <ng-template #prefixUser><i nz-icon type="user"></i></ng-template>
     <ng-template #prefixLock><i nz-icon type="lock"></i></ng-template>
   `,
-  styles: [ `
-    .login-form {
-      max-width: 300px;
-    }
+  styles: [
+    `
+      .login-form {
+        max-width: 300px;
+      }
 
-    .login-form-forgot {
-      float: right;
-    }
+      .login-form-forgot {
+        float: right;
+      }
 
-    .login-form-button {
-      width: 100%;
-    }
-  `
+      .login-form-button {
+        width: 100%;
+      }
+    `
   ]
 })
 export class NzDemoFormNormalLoginComponent implements OnInit {
@@ -60,19 +61,18 @@ export class NzDemoFormNormalLoginComponent implements OnInit {
 
   submitForm(): void {
     for (const i in this.validateForm.controls) {
-      this.validateForm.controls[ i ].markAsDirty();
-      this.validateForm.controls[ i ].updateValueAndValidity();
+      this.validateForm.controls[i].markAsDirty();
+      this.validateForm.controls[i].updateValueAndValidity();
     }
   }
 
-  constructor(private fb: FormBuilder) {
-  }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      userName: [ null, [ Validators.required ] ],
-      password: [ null, [ Validators.required ] ],
-      remember: [ true ]
+      userName: [null, [Validators.required]],
+      password: [null, [Validators.required]],
+      remember: [true]
     });
   }
 }

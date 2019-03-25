@@ -5,10 +5,12 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
-  EventEmitter, Host,
+  EventEmitter,
+  Host,
   Input,
   OnChanges,
-  OnDestroy, Optional,
+  OnDestroy,
+  Optional,
   Output,
   SimpleChanges,
   ViewChild,
@@ -27,15 +29,15 @@ import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 
 @Component({
-  selector           : 'nz-dropdown',
+  selector: 'nz-dropdown',
   preserveWhitespaces: false,
-  providers          : [ NzMenuDropdownService ],
-  animations         : [ slideMotion ],
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  templateUrl        : './nz-dropdown.component.html',
-  styles             : [
-      `
+  providers: [NzMenuDropdownService],
+  animations: [slideMotion],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './nz-dropdown.component.html',
+  styles: [
+    `
       .ant-dropdown {
         top: 100%;
         left: 0;
@@ -47,11 +49,10 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
     `
   ]
 })
-
 export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChanges {
   triggerWidth = 0;
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
-  positions: ConnectionPositionPair[] = [ ...DEFAULT_DROPDOWN_POSITIONS ];
+  positions: ConnectionPositionPair[] = [...DEFAULT_DROPDOWN_POSITIONS];
   visible$ = new Subject<boolean>();
   private destroy$ = new Subject<void>();
   @ContentChild(NzDropDownDirective) nzDropDownDirective: NzDropDownDirective;
@@ -59,7 +60,7 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
   @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzOverlayClassName = '';
-  @Input() nzOverlayStyle: { [ key: string ]: string } = {};
+  @Input() nzOverlayStyle: { [key: string]: string } = {};
   @Input() nzPlacement: NzPlacement = 'bottomLeft';
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
@@ -80,22 +81,21 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
 
   startSubscribe(observable$: Observable<boolean>): void {
     const click$ = this.nzClickHide ? this.nzMenuDropdownService.menuItemClick$.pipe(mapTo(false)) : EMPTY;
-    combineLatest(
-      merge(observable$, click$),
-      this.nzMenuDropdownService.menuOpen$
-    ).pipe(
-      map(value => value[ 0 ] || value[ 1 ]),
-      debounceTime(50),
-      distinctUntilChanged(),
-      takeUntil(this.destroy$)
-    ).subscribe((visible) => {
-      if (!this.nzDisabled && this.nzVisible !== visible) {
-        this.nzVisible = visible;
-        this.nzVisibleChange.emit(this.nzVisible);
-        this.triggerWidth = this.nzDropDownDirective.elementRef.nativeElement.getBoundingClientRect().width;
-        this.cdr.markForCheck();
-      }
-    });
+    combineLatest(merge(observable$, click$), this.nzMenuDropdownService.menuOpen$)
+      .pipe(
+        map(value => value[0] || value[1]),
+        debounceTime(50),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(visible => {
+        if (!this.nzDisabled && this.nzVisible !== visible) {
+          this.nzVisible = visible;
+          this.nzVisibleChange.emit(this.nzVisible);
+          this.triggerWidth = this.nzDropDownDirective.elementRef.nativeElement.getBoundingClientRect().width;
+          this.cdr.markForCheck();
+        }
+      });
   }
 
   updateDisabledState(): void {
@@ -104,9 +104,11 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
     }
   }
 
-  constructor(protected cdr: ChangeDetectorRef, private nzMenuDropdownService: NzMenuDropdownService,
-              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
-  }
+  constructor(
+    protected cdr: ChangeDetectorRef,
+    private nzMenuDropdownService: NzMenuDropdownService,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+  ) {}
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -114,7 +116,12 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
   }
 
   ngAfterContentInit(): void {
-    this.startSubscribe(merge(this.visible$, this.nzTrigger === 'hover' ? this.nzDropDownDirective.hover$ : this.nzDropDownDirective.$click));
+    this.startSubscribe(
+      merge(
+        this.visible$,
+        this.nzTrigger === 'hover' ? this.nzDropDownDirective.hover$ : this.nzDropDownDirective.$click
+      )
+    );
     this.updateDisabledState();
   }
 
@@ -127,7 +134,7 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
     }
     if (changes.nzPlacement) {
       this.dropDownPosition = this.nzPlacement.indexOf('top') !== -1 ? 'top' : 'bottom';
-      this.positions = [ POSITION_MAP[ this.nzPlacement ], ...this.positions ];
+      this.positions = [POSITION_MAP[this.nzPlacement], ...this.positions];
     }
   }
 }

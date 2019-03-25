@@ -15,17 +15,17 @@ import { NzIconService } from './nz-icon.service';
 
 const iconTypeRE = /^anticon\-\w/;
 
-const getIconTypeClass = (className: string): { name: string, index: number } | undefined => {
+const getIconTypeClass = (className: string): { name: string; index: number } | undefined => {
   if (!className) {
     return undefined;
   } else {
     const classArr = className.split(/\s/);
-    const index = classArr.findIndex((cls => cls !== 'anticon' && cls !== 'anticon-spin' && !!cls.match(iconTypeRE)));
-    return index === -1 ? undefined : { name: classArr[ index ], index };
+    const index = classArr.findIndex(cls => cls !== 'anticon' && cls !== 'anticon-spin' && !!cls.match(iconTypeRE));
+    return index === -1 ? undefined : { name: classArr[index], index };
   }
 };
 
-const normalizeType = (rawType: string): { type: string, crossError: boolean, verticalError: boolean } => {
+const normalizeType = (rawType: string): { type: string; crossError: boolean; verticalError: boolean } => {
   const ret = { type: rawType, crossError: false, verticalError: false };
   ret.type = rawType ? rawType.replace('anticon-', '') : '';
   if (ret.type.includes('verticle')) {
@@ -56,12 +56,22 @@ const normalizeType = (rawType: string): { type: string, crossError: boolean, ve
 })
 export class NzIconDirective extends IconDirective implements OnInit, OnChanges, OnDestroy, AfterContentChecked {
   /** Properties with `nz` prefix. */
-  @Input() @InputBoolean() set nzSpin(value: boolean) { this.spin = value; }
+  @Input() @InputBoolean() set nzSpin(value: boolean) {
+    this.spin = value;
+  }
   @Input() nzRotate: number = 0;
-  @Input() set nzType(value: string) { this.type = value; }
-  @Input() set nzTheme(value: ThemeType) { this.theme = value; }
-  @Input() set nzTwotoneColor(value: string) { this.twoToneColor = value; }
-  @Input() set nzIconfont(value: string) { this.iconfont = value; }
+  @Input() set nzType(value: string) {
+    this.type = value;
+  }
+  @Input() set nzTheme(value: ThemeType) {
+    this.theme = value;
+  }
+  @Input() set nzTwotoneColor(value: string) {
+    this.twoToneColor = value;
+  }
+  @Input() set nzIconfont(value: string) {
+    this.iconfont = value;
+  }
 
   /** @deprecated 8.0.0 avoid exposing low layer API. */
   @Input() spin = false;
@@ -98,14 +108,13 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     if (!oldAPI) {
       this.setClassName();
     }
-    this._changeIcon()
-      .then(svg => {
-        this.setSVGData(svg);
-        if (!oldAPI && svg) {
-          this.handleSpin(svg);
-          this.handleRotate(svg);
-        }
-      });
+    this._changeIcon().then(svg => {
+      this.setSVGData(svg);
+      if (!oldAPI && svg) {
+        this.handleSpin(svg);
+        this.handleRotate(svg);
+      }
+    });
   }
 
   private classChangeHandler(className: string): void {
@@ -211,7 +220,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     let length = children.length;
     if (!this.type && children.length) {
       while (length--) {
-        const child = children[ length ];
+        const child = children[length];
         if (child.tagName.toLowerCase() === 'svg') {
           this.iconService.normalizeSvgElement(child as SVGElement);
         }

@@ -17,11 +17,11 @@ import {
   TemplateRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { isNotNil } from '../core/util/check';
-import { InputBoolean } from '../core/util/convert';
+import { toBoolean, InputBoolean } from '../core/util/convert';
 import { NzTreeSelectService } from '../tree-select/nz-tree-select.service';
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from '../tree/interface';
 import { NzTreeBaseService } from './nz-tree-base.service';
@@ -58,10 +58,9 @@ export function NzTreeServiceFactory(treeSelectService: NzTreeSelectService, tre
   ]
 })
 
-export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
+export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
   @Input() @InputBoolean() nzShowIcon = false;
   @Input() @InputBoolean() nzShowLine = false;
-  @Input() @InputBoolean() nzCheckStrictly = false;
   @Input() @InputBoolean() nzCheckable = false;
   @Input() @InputBoolean() nzShowExpand = true;
   @Input() @InputBoolean() nzAsyncData = false;
@@ -69,6 +68,7 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
   @Input() @InputBoolean() nzExpandAll = false;
   @Input() @InputBoolean() nzHideUnMatched = false;
   @Input() @InputBoolean() nzSelectMode = false;
+  @Input() @InputBoolean() nzCheckStrictly = false;
   /**
    * @deprecated use
    * nzExpandAll instead
@@ -78,8 +78,8 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
 
   @Input() @InputBoolean()
   set nzMultiple(value: boolean) {
-    this._nzMultiple = value;
-    this.nzTreeService.isMultiple = value;
+    this._nzMultiple = toBoolean(value);
+    this.nzTreeService.isMultiple = toBoolean(value);
   }
 
   get nzMultiple(): boolean {
@@ -89,24 +89,7 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
   @Input()
   // tslint:disable-next-line:no-any
   set nzData(value: any[]) {
-    if (Array.isArray(value)) {
-      if (!this.nzTreeService.isArrayOfNzTreeNode(value)) {
-        // has not been new NzTreeNode
-        this.nzNodes = value.map(item => (new NzTreeNode(item, undefined, this.nzTreeService)));
-      } else {
-        this.nzNodes = value.map((item: NzTreeNode) => {
-          item.service = this.nzTreeService;
-          return item;
-        });
-      }
-      this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
-      this.nzTreeService.isMultiple = this.nzMultiple;
-      this.nzTreeService.initTree(this.nzNodes);
-    } else {
-      if (value !== null) {
-        console.warn('ngModel only accepts an array and must be not empty');
-      }
-    }
+    this.initNzData(value);
   }
 
   /**
@@ -156,8 +139,8 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
     this._searchValue = value;
     this.nzTreeService.searchExpand(value);
     if (isNotNil(value)) {
-      this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search'));
-      this.nzOnSearchNode.emit(this.nzTreeService.formatEvent('search'));
+      this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search', null, null));
+      this.nzOnSearchNode.emit(this.nzTreeService.formatEvent('search', null, null));
     }
   }
 
@@ -191,11 +174,10 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
   @Output() readonly nzOnDragEnd: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
   // tslint:disable-next-line:no-any
   @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<any>;
-  _searchValue = '';
+  _searchValue: string;
   _nzMultiple: boolean = false;
   nzDefaultSubject = new ReplaySubject<{ type: string, keys: string[] }>(6);
-  destroy$: Subject<void> | null = new Subject();
-  nzDefaultSubscription: Subscription | null;
+  destroy$ = new Subject();
   nzNodes: NzTreeNode[] = [];
   prefixCls = 'ant-tree';
   classMap = {};
@@ -208,23 +190,18 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
   }
 
   getTreeNodeByKey(key: string): NzTreeNode | null {
-    let targetNode: NzTreeNode | null = null;
-    const getNode = (node: NzTreeNode): boolean => {
-      if (node.key === key) {
-        targetNode = node;
-        // break every
-        return false;
-      } else {
-        node.getChildren().every(n => {
-          return getNode(n);
-        });
-      }
-      return true;
+    // flat tree nodes
+    const nodes: NzTreeNode[] = [];
+    const getNode = (node: NzTreeNode): void => {
+      nodes.push(node);
+      node.getChildren().forEach(n => {
+        getNode(n);
+      });
     };
-    this.nzNodes.every(n => {
-      return getNode(n);
+    this.nzNodes.forEach(n => {
+      getNode(n);
     });
-    return targetNode;
+    return nodes.find(n => n.key === key) || null;
   }
 
   /**
@@ -261,20 +238,7 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
   }
 
   writeValue(value: NzTreeNode[]): void {
-    if (Array.isArray(value)) {
-      this.nzNodes = value.map((item: NzTreeNode) => {
-        item.service = this.nzTreeService;
-        return item;
-      });
-      this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
-      this.nzTreeService.isMultiple = this.nzMultiple;
-      this.nzTreeService.initTree(this.nzNodes);
-      this.cdr.markForCheck();
-    } else {
-      if (value !== null) {
-        console.warn('ngModel only accepts an array and should be not empty');
-      }
-    }
+    this.initNzData(value);
   }
 
   registerOnChange(fn: (_: NzTreeNode[]) => void): void {
@@ -285,6 +249,24 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
     this.onTouched = fn;
   }
 
+  // tslint:disable-next-line:no-any
+  initNzData(value: any[]): void {
+    if (Array.isArray(value)) {
+      if (!this.nzTreeService.isArrayOfNzTreeNode(value)) {
+        // has not been new NzTreeNode
+        this.nzNodes = value.map(item => (new NzTreeNode(item, null, this.nzTreeService)));
+      } else {
+        this.nzNodes = value.map((item: NzTreeNode) => {
+          item.service = this.nzTreeService;
+          return item;
+        });
+      }
+      this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
+      this.nzTreeService.isMultiple = this.nzMultiple;
+      this.nzTreeService.initTree(this.nzNodes);
+    }
+  }
+
   constructor(
     public nzTreeService: NzTreeBaseService,
     private cdr: ChangeDetectorRef,
@@ -293,7 +275,9 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
 
   ngOnInit(): void {
     this.setClassMap();
-    this.nzDefaultSubscription = this.nzDefaultSubject.subscribe((data: { type: string, keys: string[] }) => {
+    this.nzDefaultSubject.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe((data: { type: string, keys: string[] }) => {
       if (!data || !data.keys) {
         return;
       }
@@ -314,7 +298,7 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
       this.cdr.markForCheck();
     });
     this.nzTreeService.eventTriggerChanged().pipe(
-      takeUntil(this.destroy$!)
+      takeUntil(this.destroy$)
     ).subscribe(data => {
       switch (data.eventName) {
         case 'expand':
@@ -357,20 +341,15 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
 
   ngOnChanges(changes: { [ propertyName: string ]: SimpleChange }): void {
     if (changes.nzCheckStrictly) {
-      this.nzTreeService.isCheckStrictly = changes.nzCheckStrictly.currentValue;
+      this.nzTreeService.isCheckStrictly = toBoolean(changes.nzCheckStrictly.currentValue);
     }
     if (changes.nzMultiple) {
-      this.nzTreeService.isMultiple = changes.nzMultiple.currentValue;
+      this.nzTreeService.isMultiple = toBoolean(changes.nzMultiple.currentValue);
     }
   }
 
   ngOnDestroy(): void {
-    this.destroy$!.next();
-    this.destroy$!.complete();
-    this.destroy$ = null;
-    if (this.nzDefaultSubscription) {
-      this.nzDefaultSubscription.unsubscribe();
-      this.nzDefaultSubscription = null;
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

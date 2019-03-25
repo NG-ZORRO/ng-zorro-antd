@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { fakeAsync, flush, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, ViewChild } from '@angular/core';
+import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -11,18 +11,19 @@ import { NzInputNumberModule } from './nz-input-number.module';
 describe('input number', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [NzInputNumberModule, FormsModule, ReactiveFormsModule],
+      imports: [NzInputNumberModule, FormsModule, ReactiveFormsModule],
       declarations: [NzTestInputNumberBasicComponent, NzTestInputNumberFormComponent]
     });
     TestBed.compileComponents();
   }));
   describe('input number basic', () => {
-    let fixture;
-    let testComponent;
-    let inputNumber;
-    let inputElement;
-    let upHandler;
-    let downHandler;
+    let fixture: ComponentFixture<NzTestInputNumberBasicComponent>;
+    let testComponent: NzTestInputNumberBasicComponent;
+    let inputNumber: DebugElement;
+    let inputElement: HTMLInputElement;
+    let upHandler: HTMLElement;
+    let downHandler: HTMLElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestInputNumberBasicComponent);
       fixture.detectChanges();
@@ -68,7 +69,7 @@ describe('input number', () => {
       testComponent.nzInputNumberComponent.ngAfterViewInit();
       fixture.detectChanges();
       expect(inputElement === document.activeElement).toBe(true);
-      expect(inputElement.attributes.getNamedItem('autofocus').name).toBe('autofocus');
+      expect(inputElement.attributes.getNamedItem('autofocus')!.name).toBe('autofocus');
       testComponent.autofocus = false;
       fixture.detectChanges();
       expect(inputElement.attributes.getNamedItem('autofocus')).toBe(null);
@@ -313,11 +314,11 @@ describe('input number', () => {
     });
     it('should key up and down work with ctrl key', () => {
       const upArrowEvent = new KeyboardEvent('keydown', {
-        code   : 'ArrowUp',
+        code: 'ArrowUp',
         ctrlKey: true
       });
       const downArrowEvent = new KeyboardEvent('keydown', {
-        code   : 'ArrowDown',
+        code: 'ArrowDown',
         ctrlKey: true
       });
       fixture.detectChanges();
@@ -334,11 +335,11 @@ describe('input number', () => {
     });
     it('should key up and down work with meta key', () => {
       const upArrowEvent = new KeyboardEvent('keydown', {
-        code   : 'ArrowUp',
+        code: 'ArrowUp',
         metaKey: true
       });
       const downArrowEvent = new KeyboardEvent('keydown', {
-        code   : 'ArrowDown',
+        code: 'ArrowDown',
         metaKey: true
       });
       fixture.detectChanges();
@@ -357,11 +358,11 @@ describe('input number', () => {
       testComponent.max = 100;
       testComponent.min = -100;
       const upArrowEvent = new KeyboardEvent('keydown', {
-        code    : 'ArrowUp',
+        code: 'ArrowUp',
         shiftKey: true
       });
       const downArrowEvent = new KeyboardEvent('keydown', {
-        code    : 'ArrowDown',
+        code: 'ArrowDown',
         shiftKey: true
       });
       fixture.detectChanges();
@@ -377,17 +378,17 @@ describe('input number', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(-10);
     });
-    it('should update value immediatelly after formatter changed', (() => {
-      const newFormatter = v => `${v} %`;
-      const initValue = '1';
-      testComponent.nzInputNumberComponent.onModelChange(initValue);
+    it('should update value immediately after formatter changed', () => {
+      const newFormatter = (v: number) => `${v} %`;
+      const initValue = 1;
+      testComponent.nzInputNumberComponent.onModelChange(`${initValue}`);
       fixture.detectChanges();
       testComponent.formatter = newFormatter;
       fixture.detectChanges();
       expect(inputElement.value).toBe(newFormatter(initValue));
-    }));
+    });
     // #1449
-    it('should up and down focus input', (() => {
+    it('should up and down focus input', () => {
       dispatchFakeEvent(upHandler, 'mousedown');
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number-focused');
@@ -400,13 +401,15 @@ describe('input number', () => {
       dispatchFakeEvent(inputElement, 'blur');
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
-    }));
+    });
   });
+
   describe('input number form', () => {
-    let fixture;
-    let testComponent;
-    let inputNumber;
-    let upHandler;
+    let fixture: ComponentFixture<NzTestInputNumberFormComponent>;
+    let testComponent: NzTestInputNumberFormComponent;
+    let inputNumber: DebugElement;
+    let upHandler: HTMLElement;
+
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestInputNumberFormComponent);
       fixture.detectChanges();
@@ -426,18 +429,18 @@ describe('input number', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('inputNumber').value).toBe(1);
+      expect(testComponent.formGroup.get('inputNumber')!.value).toBe(1);
       dispatchFakeEvent(upHandler, 'mousedown');
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('inputNumber').value).toBe(10);
+      expect(testComponent.formGroup.get('inputNumber')!.value).toBe(10);
       testComponent.disable();
       dispatchFakeEvent(upHandler, 'mousedown');
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('inputNumber').value).toBe(10);
+      expect(testComponent.formGroup.get('inputNumber')!.value).toBe(10);
     }));
   });
 });
@@ -457,13 +460,14 @@ describe('input number', () => {
       [nzStep]="step"
       [nzFormatter]="formatter"
       [nzParser]="parser"
-      [nzPrecision]="precision">
+      [nzPrecision]="precision"
+    >
     </nz-input-number>
   `
 })
 export class NzTestInputNumberBasicComponent {
   @ViewChild(NzInputNumberComponent) nzInputNumberComponent: NzInputNumberComponent;
-  value;
+  value?: number | string;
   autofocus = false;
   disabled = false;
   min = -1;
@@ -471,9 +475,9 @@ export class NzTestInputNumberBasicComponent {
   size = 'default';
   placeholder = 'placeholder';
   step = 1;
-  precision = 2;
-  formatter = (value) => value;
-  parser = (value) => value;
+  precision?: number = 2;
+  formatter = (value: number) => (value !== null ? `${value}` : '');
+  parser = (value: number) => value;
   modelChange = jasmine.createSpy('change callback');
 }
 

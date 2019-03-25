@@ -10,6 +10,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { NGStyleInterface } from '../core/types/ng-class';
 
 import { InputBoolean } from '../core/util/convert';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
@@ -18,12 +19,12 @@ import { SliderShowTooltip } from './nz-slider-definitions';
 import { NzSliderComponent } from './nz-slider.component';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-slider-handle',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-slider-handle',
   preserveWhitespaces: false,
-  templateUrl        : './nz-slider-handle.component.html',
-  host               : {
+  templateUrl: './nz-slider-handle.component.html',
+  host: {
     '(mouseenter)': 'enterHandle()',
     '(mouseleave)': 'leaveHandle()'
   }
@@ -39,15 +40,11 @@ export class NzSliderHandleComponent implements OnChanges, OnDestroy {
   @Input() @InputBoolean() nzActive = false;
 
   tooltipTitle: string;
-  style: object = {};
+  style: NGStyleInterface = {};
 
   private hovers_ = new Subscription();
 
-  constructor(
-    private sliderComponent: NzSliderComponent,
-    private cdr: ChangeDetectorRef
-  ) {
-  }
+  constructor(private sliderComponent: NzSliderComponent, private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzOffset, nzValue, nzActive, nzTooltipVisible } = changes;
@@ -81,14 +78,14 @@ export class NzSliderHandleComponent implements OnChanges, OnDestroy {
       this.updateTooltipPosition();
       this.cdr.detectChanges();
     }
-  }
+  };
 
   leaveHandle = () => {
     if (!this.sliderComponent.isDragging) {
       this.toggleTooltip(false);
       this.cdr.detectChanges();
     }
-  }
+  };
 
   private toggleTooltip(show: boolean, force: boolean = false): void {
     if (!force && (this.nzTooltipVisible !== 'default' || !this.tooltip)) {
@@ -113,6 +110,6 @@ export class NzSliderHandleComponent implements OnChanges, OnDestroy {
   }
 
   private updateStyle(): void {
-    this.style[ this.nzVertical ? 'bottom' : 'left' ] = `${this.nzOffset}%`;
+    this.style[this.nzVertical ? 'bottom' : 'left'] = `${this.nzOffset}%`;
   }
 }

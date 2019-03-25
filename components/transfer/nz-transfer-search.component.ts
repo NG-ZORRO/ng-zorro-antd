@@ -1,14 +1,22 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 
 @Component({
-  selector           : '[nz-transfer-search]',
+  selector: '[nz-transfer-search]',
   preserveWhitespaces: false,
-  templateUrl        : './nz-transfer-search.component.html',
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush
+  templateUrl: './nz-transfer-search.component.html',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzTransferSearchComponent implements OnChanges {
-
   // region: fields
 
   @Input() placeholder: string;
@@ -28,7 +36,7 @@ export class NzTransferSearchComponent implements OnChanges {
 
   _clear(): void {
     if (this.disabled) {
-      return ;
+      return;
     }
     this.value = '';
     this.valueClear.emit();
@@ -37,5 +45,4 @@ export class NzTransferSearchComponent implements OnChanges {
   ngOnChanges(): void {
     this.cdr.detectChanges();
   }
-
 }

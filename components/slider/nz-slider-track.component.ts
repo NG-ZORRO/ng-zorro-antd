@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean, InputNumber } from '../core/util/convert';
 
 export interface NzSliderTrackStyle {
   bottom?: string | null;
@@ -11,15 +11,15 @@ export interface NzSliderTrackStyle {
 }
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-slider-track',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-slider-track',
   preserveWhitespaces: false,
-  templateUrl        : './nz-slider-track.component.html'
+  templateUrl: './nz-slider-track.component.html'
 })
 export class NzSliderTrackComponent implements OnChanges {
-  @Input() nzOffset;
-  @Input() nzLength;
+  @Input() @InputNumber() nzOffset: number;
+  @Input() @InputNumber() nzLength: number;
   @Input() @InputBoolean() nzVertical = false;
   @Input() @InputBoolean() nzIncluded = false;
 

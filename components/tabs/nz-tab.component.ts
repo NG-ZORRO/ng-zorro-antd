@@ -1,10 +1,14 @@
 import {
   ChangeDetectionStrategy,
-  Component, ContentChild, ElementRef,
+  Component,
+  ContentChild,
+  ElementRef,
   EventEmitter,
   Input,
-  OnChanges, OnDestroy,
-  Output, Renderer2,
+  OnChanges,
+  OnDestroy,
+  Output,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -16,11 +20,11 @@ import { InputBoolean } from '../core/util/convert';
 import { NzTabDirective } from './nz-tab.directive';
 
 @Component({
-  selector           : 'nz-tab',
+  selector: 'nz-tab',
   preserveWhitespaces: false,
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  templateUrl        : './nz-tab.component.html'
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './nz-tab.component.html'
 })
 export class NzTabComponent implements OnChanges, OnDestroy {
   position: number | null = null;

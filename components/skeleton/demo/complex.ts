@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
     <nz-skeleton [nzAvatar]="true" [nzParagraph]="{ rows: 4 }"></nz-skeleton>
   `
 })
-export class NzDemoSkeletonComplexComponent { }
+export class NzDemoSkeletonComplexComponent {}

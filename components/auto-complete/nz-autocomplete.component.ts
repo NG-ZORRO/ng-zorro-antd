@@ -35,15 +35,13 @@ export interface AutocompleteDataSourceItem {
 export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | number[];
 
 @Component({
-  selector           : 'nz-autocomplete',
+  selector: 'nz-autocomplete',
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  templateUrl        : './nz-autocomplete.component.html',
-  animations         : [
-    slideMotion
-  ],
-  styles             : [
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './nz-autocomplete.component.html',
+  animations: [slideMotion],
+  styles: [
     `
       .ant-select-dropdown {
         top: 100%;
@@ -57,14 +55,15 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
   ]
 })
 export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
-
   @Input() nzWidth: number;
   @Input() nzOverlayClassName = '';
-  @Input() nzOverlayStyle: { [ key: string ]: string } = {};
+  @Input() nzOverlayStyle: { [key: string]: string } = {};
   @Input() @InputBoolean() nzDefaultActiveFirstOption = true;
   @Input() @InputBoolean() nzBackfill = false;
   @Input() nzDataSource: AutocompleteDataSource;
-  @Output() readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<NzAutocompleteOptionComponent>();
+  @Output() readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<
+    NzAutocompleteOptionComponent
+  >();
 
   showPanel: boolean = false;
   isOpen: boolean = false;
@@ -84,7 +83,9 @@ export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
   }
 
   /** Provided by content */
-  @ContentChildren(NzAutocompleteOptionComponent, { descendants: true }) fromContentOptions: QueryList<NzAutocompleteOptionComponent>;
+  @ContentChildren(NzAutocompleteOptionComponent, { descendants: true }) fromContentOptions: QueryList<
+    NzAutocompleteOptionComponent
+  >;
   /** Provided by dataSource */
   @ViewChildren(NzAutocompleteOptionComponent) fromDataSourceOptions: QueryList<NzAutocompleteOptionComponent>;
 
@@ -101,14 +102,17 @@ export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
     if (this.options) {
       return merge(...this.options.map(option => option.selectionChange));
     }
-    return this.ngZone.onStable
-    .asObservable()
-    .pipe(take(1), switchMap(() => this.optionSelectionChanges));
+    return this.ngZone.onStable.asObservable().pipe(
+      take(1),
+      switchMap(() => this.optionSelectionChanges)
+    );
   });
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private ngZone: NgZone,
-              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
-  }
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private ngZone: NgZone,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+  ) {}
 
   ngAfterViewInit(): void {
     this.optionsInit();
@@ -125,7 +129,7 @@ export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
   }
 
   setActiveItem(index: number): void {
-    const activeItem = this.options.toArray()[ index ];
+    const activeItem = this.options.toArray()[index];
     if (activeItem && !activeItem.active) {
       this.activeItem = activeItem;
       this.activeItemIndex = index;
@@ -182,14 +186,14 @@ export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
   private subscribeOptionChanges(): void {
     this.selectionChangeSubscription.unsubscribe();
     this.selectionChangeSubscription = this.optionSelectionChanges
-    .pipe(filter((event: NzOptionSelectionChange) => event.isUserInput))
-    .subscribe((event: NzOptionSelectionChange) => {
-      event.source.select();
-      event.source.setActiveStyles();
-      this.activeItem = event.source;
-      this.activeItemIndex = this.getOptionIndex(this.activeItem);
-      this.clearSelectedOptions(event.source, true);
-      this.selectionChange.emit(event.source);
-    });
+      .pipe(filter((event: NzOptionSelectionChange) => event.isUserInput))
+      .subscribe((event: NzOptionSelectionChange) => {
+        event.source.select();
+        event.source.setActiveStyles();
+        this.activeItem = event.source;
+        this.activeItemIndex = this.getOptionIndex(this.activeItem);
+        this.clearSelectedOptions(event.source, true);
+        this.selectionChange.emit(event.source);
+      });
   }
 }

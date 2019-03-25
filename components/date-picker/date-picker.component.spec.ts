@@ -10,6 +10,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import isSameDay from 'date-fns/is_same_day';
 
 import { dispatchKeyboardEvent, dispatchMouseEvent } from '../core/testing';
+import { NGStyleInterface } from '../core/types/ng-class';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -27,13 +28,11 @@ describe('NzDatePickerComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule ],
-      providers   : [
+      imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule],
+      providers: [
         // { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 1 } }
       ],
-      declarations: [
-        NzTestDatePickerComponent
-      ]
+      declarations: [NzTestDatePickerComponent]
     });
 
     TestBed.compileComponents();
@@ -45,7 +44,7 @@ describe('NzDatePickerComponent', () => {
     debugElement = fixture.debugElement;
   });
 
-  beforeEach(inject([ OverlayContainer, NzI18nService ], (oc: OverlayContainer, i18n: NzI18nService) => {
+  beforeEach(inject([OverlayContainer, NzI18nService], (oc: OverlayContainer, i18n: NzI18nService) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
     i18nService = i18n;
@@ -56,7 +55,7 @@ describe('NzDatePickerComponent', () => {
   });
 
   describe('general api testing', () => {
-    beforeEach(() => fixtureInstance.useSuite = 1);
+    beforeEach(() => (fixtureInstance.useSuite = 1));
 
     it('should open by click and close by click at outside', fakeAsync(() => {
       fixture.detectChanges();
@@ -85,7 +84,9 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect((queryFromOverlay('.ant-calendar-date-input-wrap input.ant-calendar-input') as HTMLInputElement).placeholder).toBe('Select date');
+      expect(
+        (queryFromOverlay('.ant-calendar-date-input-wrap input.ant-calendar-input') as HTMLInputElement).placeholder
+      ).toBe('Select date');
       expect(queryFromOverlay('.ant-calendar-table .ant-calendar-column-header-inner').textContent).toContain('Su');
     }));
 
@@ -113,7 +114,7 @@ describe('NzDatePickerComponent', () => {
 
     it('should support nzAllowClear and work properly', fakeAsync(() => {
       const clearBtnSelector = By.css('nz-picker i.ant-calendar-picker-clear');
-      const initial = fixtureInstance.nzValue = new Date();
+      const initial = (fixtureInstance.nzValue = new Date());
       fixtureInstance.nzAllowClear = false;
       fixture.detectChanges();
       expect(debugElement.query(clearBtnSelector)).toBeFalsy();
@@ -179,7 +180,7 @@ describe('NzDatePickerComponent', () => {
     }));
 
     it('should support nzClassName', () => {
-      const className = fixtureInstance.nzClassName = 'my-test-class';
+      const className = (fixtureInstance.nzClassName = 'my-test-class');
       fixture.detectChanges();
       const picker = debugElement.queryAll(By.css('.ant-calendar-picker'))[1].nativeElement as HTMLElement;
       expect(picker.classList.contains(className)).toBeTruthy();
@@ -207,7 +208,7 @@ describe('NzDatePickerComponent', () => {
     });
 
     it('should support nzPlaceHolder', () => {
-      const featureKey = fixtureInstance.nzPlaceHolder = 'TEST_PLACEHOLDER';
+      const featureKey = (fixtureInstance.nzPlaceHolder = 'TEST_PLACEHOLDER');
       fixture.detectChanges();
       expect(getPickerTrigger().getAttribute('placeholder')).toBe(featureKey);
     });
@@ -223,7 +224,7 @@ describe('NzDatePickerComponent', () => {
     }));
 
     it('should support nzDropdownClassName', fakeAsync(() => {
-      const keyCls = fixtureInstance.nzDropdownClassName = 'my-test-class';
+      const keyCls = (fixtureInstance.nzDropdownClassName = 'my-test-class');
       fixture.detectChanges();
       dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
@@ -316,11 +317,10 @@ describe('NzDatePickerComponent', () => {
       const result = nzOnChange.calls.allArgs()[ 0 ][ 0 ];
       expect(result.getDate()).toBe(+cellText);
     }));
-
   });
 
   describe('panel switch and move forward/afterward', () => {
-    beforeEach(() => fixtureInstance.useSuite = 1);
+    beforeEach(() => (fixtureInstance.useSuite = 1));
 
     it('should support date panel changes', fakeAsync(() => {
       fixtureInstance.nzValue = new Date('2018-11-11');
@@ -374,13 +374,17 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-calendar-header .ant-calendar-month-panel')).toBeDefined();
-      expect(queryFromOverlay('.ant-calendar-month-panel-year-select-content').textContent!.indexOf('2018') > -1).toBeTruthy();
+      expect(
+        queryFromOverlay('.ant-calendar-month-panel-year-select-content').textContent!.indexOf('2018') > -1
+      ).toBeTruthy();
       // Goto previous year
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-month-panel-prev-year-btn'), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-month-panel-year-select-content').textContent!.indexOf('2017') > -1).toBeTruthy();
+      expect(
+        queryFromOverlay('.ant-calendar-month-panel-year-select-content').textContent!.indexOf('2017') > -1
+      ).toBeTruthy();
       // Goto next year * 2
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-month-panel-next-year-btn'), 'click');
       fixture.detectChanges();
@@ -390,7 +394,9 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-month-panel-year-select-content').textContent!.indexOf('2019') > -1).toBeTruthy();
+      expect(
+        queryFromOverlay('.ant-calendar-month-panel-year-select-content').textContent!.indexOf('2019') > -1
+      ).toBeTruthy();
       // Click to choose a year to change panel
       dispatchMouseEvent(queryFromOverlay('td.ant-calendar-month-panel-selected-cell'), 'click');
       fixture.detectChanges();
@@ -411,8 +417,12 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-calendar-header .ant-calendar-year-panel')).toBeDefined();
-      expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent!.indexOf('2010') > -1).toBeTruthy();
-      expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent!.indexOf('2019') > -1).toBeTruthy();
+      expect(
+        queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent!.indexOf('2010') > -1
+      ).toBeTruthy();
+      expect(
+        queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent!.indexOf('2019') > -1
+      ).toBeTruthy();
       // Coverage for last/next cell
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-year-panel-last-decade-cell'), 'click');
       fixture.detectChanges();
@@ -427,8 +437,12 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent!.indexOf('2000') > -1).toBeTruthy();
-      expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent!.indexOf('2009') > -1).toBeTruthy();
+      expect(
+        queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent!.indexOf('2000') > -1
+      ).toBeTruthy();
+      expect(
+        queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent!.indexOf('2009') > -1
+      ).toBeTruthy();
       // Goto next decade * 2
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-year-panel-next-decade-btn'), 'click');
       fixture.detectChanges();
@@ -438,8 +452,12 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent!.indexOf('2020') > -1).toBeTruthy();
-      expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent!.indexOf('2029') > -1).toBeTruthy();
+      expect(
+        queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent!.indexOf('2020') > -1
+      ).toBeTruthy();
+      expect(
+        queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent!.indexOf('2029') > -1
+      ).toBeTruthy();
       // Click to choose a year to change panel
       dispatchMouseEvent(queryFromOverlay('td.ant-calendar-year-panel-selected-cell'), 'click');
       fixture.detectChanges();
@@ -498,11 +516,10 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-calendar-header .ant-calendar-year-panel')).toBeDefined();
     }));
-
   }); // /panel switch and move forward/afterward
 
   describe('specified date picker testing', () => {
-    beforeEach(() => fixtureInstance.useSuite = 1);
+    beforeEach(() => (fixtureInstance.useSuite = 1));
 
     it('should support nzDateRender', fakeAsync(() => {
       fixtureInstance.nzDateRender = fixtureInstance.tplDateRender;
@@ -516,7 +533,7 @@ describe('NzDatePickerComponent', () => {
 
     it('should support nzDateRender with typeof function', fakeAsync(() => {
       const featureKey = 'TEST_FIRST_DAY';
-      fixtureInstance.nzDateRender = (d: Date) => d.getDate() === 1 ? featureKey : d.getDate();
+      fixtureInstance.nzDateRender = (d: Date) => (d.getDate() === 1 ? featureKey : d.getDate());
       fixture.detectChanges();
       dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
@@ -541,7 +558,11 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-calendar-time-picker-inner.ant-calendar-time-picker-column-3')).toBeDefined();
-      expect(queryFromOverlay('.ant-calendar-time-picker-select:first-child li.ant-calendar-time-picker-select-option-selected').textContent!.trim()).toBe('11');
+      expect(
+        queryFromOverlay(
+          '.ant-calendar-time-picker-select:first-child li.ant-calendar-time-picker-select-option-selected'
+        ).textContent!.trim()
+      ).toBe('11');
 
       // Click to choose a hour
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-time-picker-select:first-child li:first-child'), 'click');
@@ -568,9 +589,9 @@ describe('NzDatePickerComponent', () => {
       fixtureInstance.nzShowTime = true;
       fixtureInstance.nzDisabledTime = () => {
         return {
-          nzDisabledHours  : () => [ 0, 1, 2 ],
-          nzDisabledMinutes: () => [ 0, 1 ],
-          nzDisabledSeconds: () => [ 0 ]
+          nzDisabledHours: () => [0, 1, 2],
+          nzDisabledMinutes: () => [0, 1],
+          nzDisabledSeconds: () => [0]
         };
       };
       fixture.detectChanges();
@@ -581,16 +602,34 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-time-picker-select:nth-child(1) li:nth-child(3)').classList.contains('ant-calendar-time-picker-select-option-disabled')).toBeTruthy();
-      expect(queryFromOverlay('.ant-calendar-time-picker-select:nth-child(2) li:nth-child(2)').classList.contains('ant-calendar-time-picker-select-option-disabled')).toBeTruthy();
-      expect(queryFromOverlay('.ant-calendar-time-picker-select:nth-child(3) li:nth-child(1)').classList.contains('ant-calendar-time-picker-select-option-disabled')).toBeTruthy();
+      expect(
+        queryFromOverlay('.ant-calendar-time-picker-select:nth-child(1) li:nth-child(3)').classList.contains(
+          'ant-calendar-time-picker-select-option-disabled'
+        )
+      ).toBeTruthy();
+      expect(
+        queryFromOverlay('.ant-calendar-time-picker-select:nth-child(2) li:nth-child(2)').classList.contains(
+          'ant-calendar-time-picker-select-option-disabled'
+        )
+      ).toBeTruthy();
+      expect(
+        queryFromOverlay('.ant-calendar-time-picker-select:nth-child(3) li:nth-child(1)').classList.contains(
+          'ant-calendar-time-picker-select-option-disabled'
+        )
+      ).toBeTruthy();
 
       // Use nzHideDisabledOptions to hide disabled times
       fixtureInstance.nzShowTime = { nzHideDisabledOptions: true };
       fixture.detectChanges();
-      expect(+queryFromOverlay('.ant-calendar-time-picker-select:nth-child(1) li:first-child').textContent!.trim()).toBe(3);
-      expect(+queryFromOverlay('.ant-calendar-time-picker-select:nth-child(2) li:first-child').textContent!.trim()).toBe(2);
-      expect(+queryFromOverlay('.ant-calendar-time-picker-select:nth-child(3) li:first-child').textContent!.trim()).toBe(1);
+      expect(
+        +queryFromOverlay('.ant-calendar-time-picker-select:nth-child(1) li:first-child').textContent!.trim()
+      ).toBe(3);
+      expect(
+        +queryFromOverlay('.ant-calendar-time-picker-select:nth-child(2) li:first-child').textContent!.trim()
+      ).toBe(2);
+      expect(
+        +queryFromOverlay('.ant-calendar-time-picker-select:nth-child(3) li:first-child').textContent!.trim()
+      ).toBe(1);
     }));
 
     it('should support nzRenderExtraFooter', fakeAsync(() => {
@@ -620,7 +659,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      const result = nzOnChange.calls.allArgs()[ 0 ][ 0 ];
+      const result = nzOnChange.calls.allArgs()[0][0];
       expect(isSameDay(new Date(), result)).toBeTruthy();
       expect(queryFromOverlay('.ant-calendar-picker-container')).toBeFalsy(); // Should closed
     }));
@@ -638,7 +677,10 @@ describe('NzDatePickerComponent', () => {
       openPickerByClickTrigger();
 
       // Click header to month panel
-      dispatchMouseEvent(overlayContainerElement.querySelector('.ant-calendar-header .ant-calendar-month-select')!, 'click');
+      dispatchMouseEvent(
+        overlayContainerElement.querySelector('.ant-calendar-header .ant-calendar-month-select')!,
+        'click'
+      );
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -684,14 +726,13 @@ describe('NzDatePickerComponent', () => {
       flush();
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
-      const result = nzOnChange.calls.allArgs()[ 0 ][ 0 ];
+      const result = nzOnChange.calls.allArgs()[0][0];
       expect(result.getDate()).toBe(22);
     }));
-
   }); // /specified date picker testing
 
   describe('ngModel value accesors', () => {
-    beforeEach(() => fixtureInstance.useSuite = 3);
+    beforeEach(() => (fixtureInstance.useSuite = 3));
 
     it('should specified date provide by "modelValue" be choosed', fakeAsync(() => {
       fixtureInstance.modelValue = new Date('2018-11-11');
@@ -745,14 +786,14 @@ describe('NzDatePickerComponent', () => {
     tick(500);
     fixture.detectChanges();
   }
-
 });
 
 @Component({
   template: `
     <ng-container [ngSwitch]="useSuite">
       <!-- Suite 1 -->
-      <nz-date-picker *ngSwitchCase="1"
+      <nz-date-picker
+        *ngSwitchCase="1"
         [nzAllowClear]="nzAllowClear"
         [nzAutoFocus]="nzAutoFocus"
         [nzDisabled]="nzDisabled"
@@ -765,10 +806,8 @@ describe('NzDatePickerComponent', () => {
         [nzSize]="nzSize"
         [nzStyle]="nzStyle"
         (nzOnOpenChange)="nzOnOpenChange($event)"
-
         [ngModel]="nzValue"
         (ngModelChange)="nzOnChange($event)"
-
         [nzDateRender]="nzDateRender"
         [nzDisabledTime]="nzDisabledTime"
         [nzRenderExtraFooter]="nzRenderExtraFooter"
@@ -788,10 +827,7 @@ describe('NzDatePickerComponent', () => {
 
       <!-- Suite 2 -->
       <!-- use another picker to avoid nzOpen's side-effects beacuse nzOpen act as "true" if used -->
-      <nz-date-picker *ngSwitchCase="2"
-        [nzOpen]="nzOpen"
-        (nzOnOpenChange)="nzOnOpenChange($event)"
-      ></nz-date-picker>
+      <nz-date-picker *ngSwitchCase="2" [nzOpen]="nzOpen" (nzOnOpenChange)="nzOnOpenChange($event)"></nz-date-picker>
 
       <!-- Suite 3 -->
       <nz-date-picker *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-date-picker>
@@ -804,43 +840,39 @@ class NzTestDatePickerComponent {
   @ViewChild('tplExtraFooter') tplExtraFooter: TemplateRef<void>;
 
   // --- Suite 1
-  nzAllowClear;
-  nzAutoFocus;
-  nzDisabled;
-  nzClassName;
-  nzDisabledDate;
-  nzLocale;
-  nzPlaceHolder;
-  nzPopupStyle;
-  nzDropdownClassName;
-  nzSize;
-  nzStyle;
+  nzAllowClear: boolean;
+  nzAutoFocus: boolean;
+  nzDisabled: boolean;
+  nzClassName: string;
+  nzDisabledDate: (d: Date) => boolean;
+  nzLocale: any; // tslint:disable-line:no-any
+  nzPlaceHolder: string;
+  nzPopupStyle: NGStyleInterface;
+  nzDropdownClassName: string;
+  nzSize: string;
+  nzStyle: NGStyleInterface;
 
-  nzOnOpenChange(): void {
-  }
-
-  nzOnChange(): void {
-  }
+  nzOnChange(): void {}
   nzOnCalendarChange(): void {}
-  nzValue;
+  nzOnOpenChange(): void {}
 
-  nzDateRender;
+  nzValue: Date | null;
+
+  nzDateRender: any; // tslint:disable-line:no-any
   nzShowTime: boolean | object = false;
-  nzDisabledTime;
-  nzRenderExtraFooter;
+  nzDisabledTime: any; // tslint:disable-line:no-any
+  nzRenderExtraFooter: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
-  nzMode;
+  nzMode: string;
 
   // nzRanges;
-  nzOnPanelChange(): void {
-  }
+  nzOnPanelChange(): void {}
 
-  nzOnOk(): void {
-  }
+  nzOnOk(): void {}
 
   // --- Suite 2
-  nzOpen;
+  nzOpen: boolean;
 
   // --- Suite 3
-  modelValue;
+  modelValue: Date;
 }

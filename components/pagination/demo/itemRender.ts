@@ -5,12 +5,11 @@ import { Component } from '@angular/core';
   template: `
     <nz-pagination [nzPageIndex]="1" [nzTotal]="500" [nzItemRender]="renderItemTemplate"></nz-pagination>
     <ng-template #renderItemTemplate let-type let-page="page">
-      <a *ngIf="type==='pre'">Previous</a>
-      <a *ngIf="type==='next'">Next</a>
-      <a *ngIf="type==='page'">{{page}}</a>
+      <a *ngIf="type === 'pre'">Previous</a>
+      <a *ngIf="type === 'next'">Next</a>
+      <a *ngIf="type === 'page'">{{ page }}</a>
     </ng-template>
   `,
-  styles  : []
+  styles: []
 })
-export class NzDemoPaginationItemRenderComponent {
-}
+export class NzDemoPaginationItemRenderComponent {}
