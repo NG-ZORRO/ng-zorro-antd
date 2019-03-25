@@ -71,6 +71,13 @@ describe('transfer', () => {
       expect(pageObject.rightList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(DISABLED);
     });
 
+    it('should be forced to display when the original item is hidden', () => {
+      pageObject.checkItem('left', 0).search('left', '1');
+      pageObject.rightBtn.click();
+      fixture.detectChanges();
+      expect(instance.comp.rightDataSource.filter(w => !w._hiden).length).toBe(COUNT - LEFTCOUNT + 1);
+    });
+
     it('should be custom filter option', () => {
       instance.nzFilterOption = (inputValue: string, item: any): boolean => {
         return item.description.indexOf(inputValue) > -1;
