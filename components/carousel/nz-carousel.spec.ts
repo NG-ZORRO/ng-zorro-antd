@@ -12,8 +12,8 @@ import { NzCarouselModule } from './nz-carousel.module';
 describe('carousel', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzCarouselModule ],
-      declarations: [ NzTestCarouselBasicComponent ]
+      imports: [NzCarouselModule],
+      declarations: [NzTestCarouselBasicComponent]
     });
     TestBed.compileComponents();
   }));
@@ -33,7 +33,7 @@ describe('carousel', () => {
       fixture.detectChanges();
       expect(carouselWrapper.nativeElement.classList).toContain('ant-carousel');
       expect(carouselContents.every(content => content.nativeElement.classList.contains('slick-slide'))).toBe(true);
-      expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
     });
     it('should dynamic change content work', fakeAsync(() => {
       fixture.detectChanges();
@@ -61,31 +61,33 @@ describe('carousel', () => {
       expect(carouselWrapper.nativeElement.querySelector('.slick-dots').children.length).toBe(4);
       expect(carouselWrapper.nativeElement.querySelector('.slick-dots').firstElementChild.innerText).toBe('1');
       expect(carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.innerText).toBe('4');
-      expect(carouselWrapper.nativeElement.querySelector('.slick-dots').firstElementChild.firstElementChild.tagName).toBe('A');
+      expect(
+        carouselWrapper.nativeElement.querySelector('.slick-dots').firstElementChild.firstElementChild.tagName
+      ).toBe('A');
     });
     it('should click content change', () => {
       fixture.detectChanges();
-      expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
       fixture.detectChanges();
-      expect(carouselContents[ 3 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
     });
     it('should keydown change content work', () => {
       fixture.detectChanges();
-      expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
       const list = carouselWrapper.nativeElement.querySelector('.slick-list');
       dispatchKeyboardEvent(list, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
-      expect(carouselContents[ 3 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
       dispatchKeyboardEvent(list, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
-      expect(carouselContents[ 2 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[2].nativeElement.classList).toContain('slick-active');
       dispatchKeyboardEvent(list, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
-      expect(carouselContents[ 3 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
       dispatchKeyboardEvent(list, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
-      expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
     });
     it('should vertical work', () => {
       fixture.detectChanges();
@@ -107,59 +109,63 @@ describe('carousel', () => {
       testComponent.effect = 'fade';
       testComponent.vertical = true;
       fixture.detectChanges();
-      expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
       fixture.detectChanges();
-      expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).toBe('translate3d(0px, 0px, 0px)');
+      expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).toBe(
+        'translate3d(0px, 0px, 0px)'
+      );
       testComponent.effect = 'scrollx';
       fixture.detectChanges();
-      expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
       fixture.detectChanges();
-      expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe('translate3d(0px, 0px, 0px)');
+      expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe(
+        'translate3d(0px, 0px, 0px)'
+      );
     });
     it('should autoplay work', fakeAsync(() => {
       testComponent.autoPlay = true;
       fixture.detectChanges();
-      expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
       fixture.detectChanges();
       tick(5000);
       fixture.detectChanges();
-      expect(carouselContents[ 1 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
       fixture.detectChanges();
       tick(5000);
       fixture.detectChanges();
       testComponent.nzCarouselComponent.clearTimeout(); // Manually stop the auto play to quit this test.
-      expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
     }));
     it('should autoplay speed work', fakeAsync(() => {
       testComponent.autoPlay = true;
       testComponent.autoPlaySpeed = 1000;
       fixture.detectChanges();
-      expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
       fixture.detectChanges();
       tick(1000 + 10);
       fixture.detectChanges();
-      expect(carouselContents[ 1 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
       testComponent.autoPlaySpeed = 0;
       fixture.detectChanges();
       tick(2000 + 10);
       fixture.detectChanges();
-      expect(carouselContents[ 1 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
     }));
     it('should func work', () => {
       fixture.detectChanges();
-      expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
       testComponent.nzCarouselComponent.next();
       fixture.detectChanges();
-      expect(carouselContents[ 1 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
       testComponent.nzCarouselComponent.pre();
       fixture.detectChanges();
-      expect(carouselContents[ 0 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
       testComponent.nzCarouselComponent.goTo(2);
       fixture.detectChanges();
-      expect(carouselContents[ 2 ].nativeElement.classList).toContain('slick-active');
+      expect(carouselContents[2].nativeElement.classList).toContain('slick-active');
     });
     it('should resize content after window resized', fakeAsync(() => {
       // @ts-ignore
@@ -198,20 +204,25 @@ describe('carousel', () => {
       [nzAutoPlay]="autoPlay"
       [nzAutoPlaySpeed]="autoPlaySpeed"
       (nzAfterChange)="afterChange($event)"
-      (nzBeforeChange)="beforeChange($event)">
-      <div nz-carousel-content *ngFor="let index of array"><h3>{{index}}</h3></div>
-      <ng-template #dotRender let-index><a>{{index+1}}</a></ng-template>
-    </nz-carousel>`
+      (nzBeforeChange)="beforeChange($event)"
+    >
+      <div nz-carousel-content *ngFor="let index of array">
+        <h3>{{ index }}</h3>
+      </div>
+      <ng-template #dotRender let-index
+        ><a>{{ index + 1 }}</a></ng-template
+      >
+    </nz-carousel>
+  `
 })
 export class NzTestCarouselBasicComponent {
   @ViewChild(NzCarouselComponent) nzCarouselComponent: NzCarouselComponent;
   dots = true;
   vertical = false;
   effect = 'scrollx';
-  array = [ 1, 2, 3, 4 ];
+  array = [1, 2, 3, 4];
   autoPlay = false;
   autoPlaySpeed = 3000;
   afterChange = jasmine.createSpy('afterChange callback');
   beforeChange = jasmine.createSpy('beforeChange callback');
-
 }

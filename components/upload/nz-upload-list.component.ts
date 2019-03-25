@@ -1,28 +1,34 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
 import { ShowUploadListInterface, UploadFile, UploadListType } from './interface';
 
 @Component({
-  selector           : 'nz-upload-list',
-  templateUrl        : './nz-upload-list.component.html',
-  providers          : [ NzUpdateHostClassService ],
-  animations         : [
+  selector: 'nz-upload-list',
+  templateUrl: './nz-upload-list.component.html',
+  providers: [NzUpdateHostClassService],
+  animations: [
     trigger('itemState', [
       transition(':enter', [
         style({ height: '0', width: '0', opacity: 0 }),
         animate(150, style({ height: '*', width: '*', opacity: 1 }))
       ]),
-      transition(':leave', [
-        animate(150, style({ height: '0', width: '0', opacity: 0 }))
-      ])
+      transition(':leave', [animate(150, style({ height: '0', width: '0', opacity: 0 }))])
     ])
   ],
   preserveWhitespaces: false,
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzUploadListComponent implements OnChanges {
   private imageTypes = ['image', 'webp', 'png', 'svg', 'gif', 'jpg', 'jpeg', 'bmp'];
@@ -59,8 +65,8 @@ export class NzUploadListComponent implements OnChanges {
 
   private setClassMap(): void {
     const classMap = {
-      [ this.prefixCls ]                      : true,
-      [ `${this.prefixCls}-${this.listType}` ]: true
+      [this.prefixCls]: true,
+      [`${this.prefixCls}-${this.listType}`]: true
     };
     this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
   }
@@ -117,7 +123,7 @@ export class NzUploadListComponent implements OnChanges {
       !win.FileReader ||
       !win.File
     ) {
-      return ;
+      return;
     }
     this.items
       .filter(file => file.originFileObj instanceof File && file.thumbUrl === undefined)
@@ -157,8 +163,11 @@ export class NzUploadListComponent implements OnChanges {
 
   // #endregion
 
-  constructor(private el: ElementRef, private cdr: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {
-  }
+  constructor(
+    private el: ElementRef,
+    private cdr: ChangeDetectorRef,
+    private updateHostClassService: NzUpdateHostClassService
+  ) {}
 
   detectChanges(): void {
     this.cdr.detectChanges();

@@ -13,8 +13,8 @@ import { Component } from '@angular/core';
       <div nz-col nzXs="2" nzSm="4" nzMd="6" nzLg="8" nzXl="10">
         Col
       </div>
-    </div>`,
-  styles  : []
+    </div>
+  `,
+  styles: []
 })
-export class NzDemoGridResponsiveComponent {
-}
+export class NzDemoGridResponsiveComponent {}

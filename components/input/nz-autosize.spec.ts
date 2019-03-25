@@ -1,16 +1,17 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { async, fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NzAutoResizeDirective } from './nz-autoresize.directive';
+import { dispatchFakeEvent } from '../core/testing';
+import { NzAutosizeDirective } from './nz-autosize.directive';
 import { NzInputModule } from './nz-input.module';
 
 describe('autoresize', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzInputModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestInputWithTextAreaAutoSizeStringComponent, NzTestInputWithTextAreaAutoSizeObjectComponent ],
-      providers   : []
+      imports: [NzInputModule, FormsModule, ReactiveFormsModule],
+      declarations: [NzTestInputWithTextAreaAutoSizeStringComponent, NzTestInputWithTextAreaAutoSizeObjectComponent],
+      providers: []
     }).compileComponents();
   }));
 
@@ -19,14 +20,14 @@ describe('autoresize', () => {
       let fixture: ComponentFixture<NzTestInputWithTextAreaAutoSizeStringComponent>;
       let testComponent: NzTestInputWithTextAreaAutoSizeStringComponent;
       let textarea: HTMLTextAreaElement;
-      let autosize: NzAutoResizeDirective;
+      let autosize: NzAutosizeDirective;
 
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestInputWithTextAreaAutoSizeStringComponent);
         testComponent = fixture.debugElement.componentInstance;
         fixture.detectChanges();
-        textarea = fixture.debugElement.query(By.directive(NzAutoResizeDirective)).nativeElement;
-        autosize = fixture.debugElement.query(By.directive(NzAutoResizeDirective)).injector.get(NzAutoResizeDirective);
+        textarea = fixture.debugElement.query(By.directive(NzAutosizeDirective)).nativeElement;
+        autosize = fixture.debugElement.query(By.directive(NzAutosizeDirective)).injector.get(NzAutosizeDirective);
       });
       it('should resize the textarea based on its ngModel', fakeAsync(() => {
         let previousHeight = textarea.clientHeight;
@@ -43,10 +44,11 @@ describe('autoresize', () => {
         flush();
         autosize.resizeToFitContent();
 
-        expect(textarea.clientHeight)
-          .toBeGreaterThan(previousHeight, 'Expected textarea to have grown with added content.');
-        expect(textarea.clientHeight)
-          .toBe(textarea.scrollHeight, 'Expected textarea height to match its scrollHeight');
+        expect(textarea.clientHeight).toBeGreaterThan(
+          previousHeight,
+          'Expected textarea to have grown with added content.'
+        );
+        expect(textarea.clientHeight).toBe(textarea.scrollHeight, 'Expected textarea height to match its scrollHeight');
 
         previousHeight = textarea.clientHeight;
         testComponent.value += `
@@ -60,27 +62,36 @@ describe('autoresize', () => {
         flush();
         fixture.detectChanges();
         autosize.resizeToFitContent(true);
-        expect(textarea.clientHeight)
-          .toBeGreaterThan(previousHeight, 'Expected textarea to have grown with added content.');
-        expect(textarea.clientHeight)
-          .toBe(textarea.scrollHeight, 'Expected textarea height to match its scrollHeight');
+        expect(textarea.clientHeight).toBeGreaterThan(
+          previousHeight,
+          'Expected textarea to have grown with added content.'
+        );
+        expect(textarea.clientHeight).toBe(textarea.scrollHeight, 'Expected textarea height to match its scrollHeight');
+      }));
+
+      it('should trigger a resize when the window is resized', fakeAsync(() => {
+        spyOn(autosize, 'resizeToFitContent');
+
+        dispatchFakeEvent(window, 'resize');
+        tick(16);
+
+        expect(autosize.resizeToFitContent).toHaveBeenCalled();
       }));
     });
     describe('textarea autosize object', () => {
       let fixture: ComponentFixture<NzTestInputWithTextAreaAutoSizeObjectComponent>;
       let testComponent: NzTestInputWithTextAreaAutoSizeObjectComponent;
       let textarea: HTMLTextAreaElement;
-      let autosize: NzAutoResizeDirective;
+      let autosize: NzAutosizeDirective;
 
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestInputWithTextAreaAutoSizeObjectComponent);
         testComponent = fixture.debugElement.componentInstance;
         fixture.detectChanges();
-        textarea = fixture.debugElement.query(By.directive(NzAutoResizeDirective)).nativeElement;
-        autosize = fixture.debugElement.query(By.directive(NzAutoResizeDirective)).injector.get(NzAutoResizeDirective);
+        textarea = fixture.debugElement.query(By.directive(NzAutosizeDirective)).nativeElement;
+        autosize = fixture.debugElement.query(By.directive(NzAutosizeDirective)).injector.get(NzAutosizeDirective);
       });
       it('should set a min-height based on minRows', fakeAsync(() => {
-
         autosize.resizeToFitContent(true);
         fixture.detectChanges();
         flush();
@@ -91,8 +102,10 @@ describe('autoresize', () => {
         flush();
         fixture.detectChanges();
         autosize.resizeToFitContent(true);
-        expect(parseInt(textarea.style.minHeight as string, 10))
-          .toBeGreaterThan(previousMinHeight, 'Expected increased min-height with minRows increase.');
+        expect(parseInt(textarea.style.minHeight as string, 10)).toBeGreaterThan(
+          previousMinHeight,
+          'Expected increased min-height with minRows increase.'
+        );
       }));
 
       it('should set a max-height based on maxRows', fakeAsync(() => {
@@ -106,19 +119,23 @@ describe('autoresize', () => {
         flush();
         fixture.detectChanges();
         autosize.resizeToFitContent(true);
-        expect(parseInt(textarea.style.maxHeight as string, 10))
-          .toBeGreaterThan(previousMaxHeight, 'Expected increased max-height with maxRows increase.');
+        expect(parseInt(textarea.style.maxHeight as string, 10)).toBeGreaterThan(
+          previousMaxHeight,
+          'Expected increased max-height with maxRows increase.'
+        );
       }));
     });
   });
 });
 
 @Component({
-  selector     : 'nz-test-input-with-textarea-autosize-string',
-  template     : `<textarea nz-input nzAutosize [ngModel]="value"></textarea>`,
+  selector: 'nz-test-input-with-textarea-autosize-string',
+  template: `
+    <textarea nz-input nzAutosize [ngModel]="value"></textarea>
+  `,
   encapsulation: ViewEncapsulation.None,
-  styles       : [
-      `
+  styles: [
+    `
       textarea.cdk-textarea-autosize-measuring {
         height: auto !important;
         overflow: hidden !important;
@@ -133,11 +150,13 @@ export class NzTestInputWithTextAreaAutoSizeStringComponent {
 }
 
 @Component({
-  selector     : 'nz-test-input-with-textarea-autosize-object',
-  template     : `<textarea nz-input ngModel [nzAutosize]="{ minRows: minRows, maxRows: maxRows }"></textarea>`,
+  selector: 'nz-test-input-with-textarea-autosize-object',
+  template: `
+    <textarea nz-input ngModel [nzAutosize]="{ minRows: minRows, maxRows: maxRows }"></textarea>
+  `,
   encapsulation: ViewEncapsulation.None,
-  styles       : [
-      `
+  styles: [
+    `
       textarea.cdk-textarea-autosize-measuring {
         height: auto !important;
         overflow: hidden !important;

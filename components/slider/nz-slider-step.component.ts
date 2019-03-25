@@ -5,11 +5,11 @@ import { InputBoolean } from '../core/util/convert';
 import { DisplayedStep, ExtendedMark } from './nz-slider-definitions';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-slider-step',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-slider-step',
   preserveWhitespaces: false,
-  templateUrl        : './nz-slider-step.component.html'
+  templateUrl: './nz-slider-step.component.html'
 })
 export class NzSliderStepComponent implements OnChanges {
   @Input() nzLowerBound: number | null = null;
@@ -44,8 +44,8 @@ export class NzSliderStepComponent implements OnChanges {
         offset,
         config,
         active: false,
-        style : {
-          [ orient ]: `${offset}%`
+        style: {
+          [orient]: `${offset}%`
         }
       };
     });

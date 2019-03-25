@@ -5,8 +5,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
   template: `
     <nz-layout>
       <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate">
-        <div class="logo">
-        </div>
+        <div class="logo"></div>
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
           <li nz-submenu>
             <span title><i nz-icon type="user"></i><span class="nav-text">User</span></span>
@@ -23,12 +22,19 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
               <li nz-menu-item>Team 2</li>
             </ul>
           </li>
-          <li nz-menu-item><span><i nz-icon type="file"></i><span class="nav-text">File</span></span></li>
+          <li nz-menu-item>
+            <span><i nz-icon type="file"></i><span class="nav-text">File</span></span>
+          </li>
         </ul>
       </nz-sider>
       <nz-layout>
         <nz-header style="background: #fff; padding:0;">
-          <i class="trigger" nz-icon [type]="isCollapsed?'menu-unfold':'menu-fold'" (click)="isCollapsed=!isCollapsed"></i>
+          <i
+            class="trigger"
+            nz-icon
+            [type]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            (click)="isCollapsed = !isCollapsed"
+          ></i>
         </nz-header>
         <nz-content style="margin:0 16px;">
           <nz-breadcrumb style="margin:16px 0;">
@@ -46,14 +52,14 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
       <i nz-icon type="up"></i>
     </ng-template>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       .trigger {
         font-size: 18px;
         line-height: 64px;
         padding: 0 24px;
         cursor: pointer;
-        transition: color .3s;
+        transition: color 0.3s;
       }
 
       .trigger:hover {
@@ -62,7 +68,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 
       .logo {
         height: 32px;
-        background: rgba(255, 255, 255, .2);
+        background: rgba(255, 255, 255, 0.2);
         margin: 16px;
       }
     `

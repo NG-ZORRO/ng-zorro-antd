@@ -5,35 +5,35 @@ import { Component } from '@angular/core';
   template: `
     <nz-collapse [nzBordered]="false">
       <nz-collapse-panel *ngFor="let panel of panels" [nzHeader]="panel.name" [nzActive]="panel.active">
-        <p>{{panel.name}} content</p>
+        <p>{{ panel.name }} content</p>
       </nz-collapse-panel>
     </nz-collapse>
   `,
-  styles  : []
+  styles: []
 })
 export class NzDemoCollapseBorderlessComponent {
   panels = [
     {
-      active     : true,
-      disabled   : false,
-      name       : 'This is panel header 1',
+      active: true,
+      disabled: false,
+      name: 'This is panel header 1',
       childPannel: [
         {
-          active  : false,
+          active: false,
           disabled: true,
-          name    : 'This is panel header 1-1'
+          name: 'This is panel header 1-1'
         }
       ]
     },
     {
-      active  : false,
+      active: false,
       disabled: true,
-      name    : 'This is panel header 2'
+      name: 'This is panel header 2'
     },
     {
-      active  : false,
+      active: false,
       disabled: false,
-      name    : 'This is panel header 3'
+      name: 'This is panel header 3'
     }
   ];
 }

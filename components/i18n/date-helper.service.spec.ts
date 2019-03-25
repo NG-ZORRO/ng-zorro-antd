@@ -15,10 +15,8 @@ describe('DateHelperService', () => {
   describe('Formatting with DatePipe', () => {
     beforeEach(() => {
       injector = TestBed.configureTestingModule({
-        imports: [ NzI18nModule ],
-        providers: [
-          { provide: NZ_I18N, useValue: en_US }
-        ]
+        imports: [NzI18nModule],
+        providers: [{ provide: NZ_I18N, useValue: en_US }]
       });
 
       dateHelper = injector.get(DateHelperService);
@@ -42,10 +40,8 @@ describe('DateHelperService', () => {
   describe('Formatting with Data-fns', () => {
     beforeEach(() => {
       injector = TestBed.configureTestingModule({
-        imports: [ NzI18nModule ],
-        providers: [
-          { provide: NZ_DATE_LOCALE, useValue: enDateLocale }
-        ]
+        imports: [NzI18nModule],
+        providers: [{ provide: NZ_DATE_LOCALE, useValue: enDateLocale }]
       });
 
       dateHelper = injector.get(DateHelperService);
@@ -65,10 +61,8 @@ describe('DateHelperService', () => {
   describe('Custom firstDayOfWeek', () => {
     beforeEach(() => {
       injector = TestBed.configureTestingModule({
-        imports: [ NzI18nModule ],
-        providers: [
-          { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 4 } }
-        ]
+        imports: [NzI18nModule],
+        providers: [{ provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 4 } }]
       });
 
       dateHelper = injector.get(DateHelperService);
@@ -78,5 +72,4 @@ describe('DateHelperService', () => {
       expect(dateHelper.getFirstDayOfWeek()).toBe(4);
     });
   });
-
 });

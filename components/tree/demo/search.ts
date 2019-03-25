@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NzFormatEmitEvent, NzTreeComponent } from 'ng-zorro-antd';
+import { Component, OnInit } from '@angular/core';
+import { NzFormatEmitEvent } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-tree-search',
@@ -11,7 +11,6 @@ import { NzFormatEmitEvent, NzTreeComponent } from 'ng-zorro-antd';
       <i nz-icon type="search"></i>
     </ng-template>
     <nz-tree
-      #treeCom
       [nzData]="nodes"
       [nzSearchValue]="searchValue"
       (nzClick)="nzEvent($event)"
@@ -27,7 +26,6 @@ import { NzFormatEmitEvent, NzTreeComponent } from 'ng-zorro-antd';
 })
 
 export class NzDemoTreeSearchComponent implements OnInit {
-  @ViewChild('treeCom') treeCom: NzTreeComponent;
   searchValue = '';
 
   nodes = [ {
@@ -69,11 +67,7 @@ export class NzDemoTreeSearchComponent implements OnInit {
   } ];
 
   nzEvent(event: NzFormatEmitEvent): void {
-    console.log(event,
-      // tslint:disable-next-line:no-any
-      this.treeCom.getMatchedNodeList().map((v: any) => v.title),
-      this.treeCom.getExpandedNodeList()
-    );
+    console.log(event);
   }
 
   ngOnInit(): void {

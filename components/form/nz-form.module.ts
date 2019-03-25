@@ -23,8 +23,9 @@ import { NzFormDirective } from './nz-form.directive';
     NzFormControlComponent,
     NzFormExplainComponent,
     NzFormTextComponent,
-    NzFormSplitComponent ],
-  exports     : [
+    NzFormSplitComponent
+  ],
+  exports: [
     NzFormExtraComponent,
     NzFormLabelComponent,
     NzFormDirective,
@@ -34,7 +35,6 @@ import { NzFormDirective } from './nz-form.directive';
     NzFormTextComponent,
     NzFormSplitComponent
   ],
-  imports     : [ CommonModule, NzGridModule, NzIconModule, LayoutModule, PlatformModule ]
+  imports: [CommonModule, NzGridModule, NzIconModule, LayoutModule, PlatformModule]
 })
-export class NzFormModule {
-}
+export class NzFormModule {}

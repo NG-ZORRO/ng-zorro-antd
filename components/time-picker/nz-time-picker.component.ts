@@ -21,15 +21,12 @@ import { isNotNil } from '../core/util/check';
 import { toBoolean } from '../core/util/convert';
 
 @Component({
-  encapsulation  : ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector       : 'nz-time-picker',
-  templateUrl    : './nz-time-picker.component.html',
-  animations     : [ slideMotion ],
-  providers      : [
-    UpdateCls,
-    { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }
-  ]
+  selector: 'nz-time-picker',
+  templateUrl: './nz-time-picker.component.html',
+  animations: [slideMotion],
+  providers: [UpdateCls, { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
 })
 export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit {
   private _disabled = false;
@@ -41,14 +38,16 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   private _hideDisabledOptions = false;
   isInit = false;
   origin: CdkOverlayOrigin;
-  overlayPositions: ConnectionPositionPair[] = [ {
-    originX : 'start',
-    originY : 'top',
-    overlayX: 'end',
-    overlayY: 'top',
-    offsetX : 0,
-    offsetY : 0
-  } ];
+  overlayPositions: ConnectionPositionPair[] = [
+    {
+      originX: 'start',
+      originY: 'top',
+      overlayX: 'end',
+      overlayY: 'top',
+      offsetX: 0,
+      offsetY: 0
+    }
+  ];
   @ViewChild('inputElement') inputRef: ElementRef;
   @Input() nzSize: string | null = null;
   @Input() nzHourStep = 1;
@@ -152,8 +151,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   private setClassMap(): void {
     this.updateCls.updateHostClass(this.element.nativeElement, {
-      [ `ant-time-picker` ]               : true,
-      [ `ant-time-picker-${this.nzSize}` ]: isNotNil(this.nzSize)
+      [`ant-time-picker`]: true,
+      [`ant-time-picker-${this.nzSize}`]: isNotNil(this.nzSize)
     });
   }
 
@@ -169,11 +168,12 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
   }
 
-  constructor(private element: ElementRef,
-              private renderer: Renderer2,
-              private updateCls: UpdateCls,
-              public cdr: ChangeDetectorRef) {
-  }
+  constructor(
+    private element: ElementRef,
+    private renderer: Renderer2,
+    private updateCls: UpdateCls,
+    public cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.setClassMap();

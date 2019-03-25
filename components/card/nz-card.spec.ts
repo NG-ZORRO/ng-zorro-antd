@@ -19,8 +19,8 @@ import { NzCardModule } from './nz-card.module';
 describe('card', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzCardModule ],
-      schemas     : [ NO_ERRORS_SCHEMA ],
+      imports: [NzCardModule],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [
         NzDemoCardBasicComponent,
         NzDemoCardBorderLessComponent,
@@ -97,10 +97,10 @@ describe('card', () => {
     const fixture = TestBed.createComponent(NzDemoCardTabsComponent);
     const cards = fixture.debugElement.queryAll(By.directive(NzCardComponent));
     fixture.detectChanges();
-    expect(cards[ 0 ].nativeElement.classList).toContain('ant-card-contain-tabs');
-    expect(cards[ 0 ].nativeElement.firstElementChild.firstElementChild!.classList).toContain('ant-card-head-wrapper');
-    expect(cards[ 1 ].nativeElement.classList).toContain('ant-card-contain-tabs');
-    expect(cards[ 1 ].nativeElement.firstElementChild.firstElementChild!.classList).toContain('ant-card-head-wrapper');
+    expect(cards[0].nativeElement.classList).toContain('ant-card-contain-tabs');
+    expect(cards[0].nativeElement.firstElementChild.firstElementChild!.classList).toContain('ant-card-head-wrapper');
+    expect(cards[1].nativeElement.classList).toContain('ant-card-contain-tabs');
+    expect(cards[1].nativeElement.firstElementChild.firstElementChild!.classList).toContain('ant-card-head-wrapper');
   });
   it('should meta work', () => {
     const fixture = TestBed.createComponent(NzDemoCardMetaComponent);

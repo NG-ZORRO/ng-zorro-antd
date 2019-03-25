@@ -1,8 +1,11 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
-  OnChanges, OnDestroy, OnInit,
+  OnChanges,
+  OnDestroy,
+  OnInit,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
@@ -16,12 +19,12 @@ import { emptyImage } from './nz-empty-config';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation  : ViewEncapsulation.None,
-  selector       : 'nz-empty',
-  templateUrl    : './nz-empty.component.html',
-  styles         : [ 'nz-empty { display: block; }' ],
-  host           : {
-    'class': 'ant-empty'
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-empty',
+  templateUrl: './nz-empty.component.html',
+  styles: ['nz-empty { display: block; }'],
+  host: {
+    class: 'ant-empty'
   }
 })
 export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
@@ -37,7 +40,7 @@ export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
 
   defaultSvg = this.sanitizer.bypassSecurityTrustResourceUrl(emptyImage);
   isContentString = false;
-  locale: { [ key: string ]: string } = {};
+  locale: { [key: string]: string } = {};
 
   get shouldRenderContent(): boolean {
     const content = this.nzNotFoundContent;
@@ -46,12 +49,7 @@ export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private sanitizer: DomSanitizer,
-    private i18n: NzI18nService,
-    private cdr: ChangeDetectorRef
-  ) {
-  }
+  constructor(private sanitizer: DomSanitizer, private i18n: NzI18nService, private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzNotFoundContent } = changes;
@@ -61,9 +59,7 @@ export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Empty');
       this.cdr.markForCheck();
     });

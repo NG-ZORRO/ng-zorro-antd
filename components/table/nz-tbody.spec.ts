@@ -8,9 +8,9 @@ import { NzTbodyDirective } from './nz-tbody.directive';
 describe('nz-tbody', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzTableModule ],
-      declarations: [ NzTbodyTestTableComponent, NzTbodyTestNzTableComponent ],
-      providers   : [ NzMeasureScrollbarService ]
+      imports: [NzTableModule],
+      declarations: [NzTbodyTestTableComponent, NzTbodyTestNzTableComponent],
+      providers: [NzMeasureScrollbarService]
     });
     TestBed.compileComponents();
   }));
@@ -51,17 +51,18 @@ describe('nz-tbody', () => {
   template: `
     <table>
       <tbody></tbody>
-    </table>`
+    </table>
+  `
 })
-export class NzTbodyTestTableComponent {
-}
+export class NzTbodyTestTableComponent {}
 
 @Component({
   selector: 'nz-tbody-test-nz-table',
   template: `
     <nz-table>
       <tbody></tbody>
-    </nz-table>`
+    </nz-table>
+  `
 })
 export class NzTbodyTestNzTableComponent {
   expand = false;

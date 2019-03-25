@@ -10,14 +10,12 @@ import { NzNotificationData, NzNotificationDataFilled, NzNotificationDataOptions
 @Injectable({
   providedIn: 'root'
 })
-export class NzNotificationService extends NzMessageBaseService<NzNotificationContainerComponent, NzNotificationData, NzNotificationConfig> {
-
-  constructor(
-    overlay: Overlay,
-    injector: Injector,
-    cfr: ComponentFactoryResolver,
-    appRef: ApplicationRef
-  ) {
+export class NzNotificationService extends NzMessageBaseService<
+  NzNotificationContainerComponent,
+  NzNotificationData,
+  NzNotificationConfig
+> {
+  constructor(overlay: Overlay, injector: Injector, cfr: ComponentFactoryResolver, appRef: ApplicationRef) {
     super(overlay, NzNotificationContainerComponent, injector, cfr, appRef, 'notification-');
   }
 
@@ -42,7 +40,12 @@ export class NzNotificationService extends NzMessageBaseService<NzNotificationCo
     return this.createMessage({ type: 'blank', title, content }, options) as NzNotificationDataFilled;
   }
 
-  create(type: 'success' | 'info' | 'warning' | 'error' | 'blank' | string, title: string, content: string, options?: NzNotificationDataOptions): NzNotificationDataFilled {
+  create(
+    type: 'success' | 'info' | 'warning' | 'error' | 'blank' | string,
+    title: string,
+    content: string,
+    options?: NzNotificationDataOptions
+  ): NzNotificationDataFilled {
     return this.createMessage({ type, title, content }, options) as NzNotificationDataFilled;
   }
 

@@ -9,10 +9,9 @@ import { NzNotificationComponent } from './nz-notification.component';
 import { NzNotificationService } from './nz-notification.service';
 
 @NgModule({
-  imports        : [ CommonModule, OverlayModule, NzIconModule ],
-  declarations   : [ NzNotificationComponent, NzNotificationContainerComponent ],
-  providers      : [ NZ_NOTIFICATION_DEFAULT_CONFIG_PROVIDER, NzNotificationService ],
-  entryComponents: [ NzNotificationContainerComponent ]
+  imports: [CommonModule, OverlayModule, NzIconModule],
+  declarations: [NzNotificationComponent, NzNotificationContainerComponent],
+  providers: [NZ_NOTIFICATION_DEFAULT_CONFIG_PROVIDER, NzNotificationService],
+  entryComponents: [NzNotificationContainerComponent]
 })
-export class NzNotificationModule {
-}
+export class NzNotificationModule {}

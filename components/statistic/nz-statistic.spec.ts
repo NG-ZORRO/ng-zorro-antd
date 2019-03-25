@@ -12,8 +12,8 @@ describe('nz-statistic', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports     : [ CommonModule, NzStatisticModule ],
-      declarations: [ NzTestStatisticComponent ]
+      imports: [CommonModule, NzStatisticModule],
+      declarations: [NzTestStatisticComponent]
     }).compileComponents();
   });
 
@@ -42,12 +42,7 @@ describe('nz-statistic', () => {
 @Component({
   selector: 'nz-test-statistic',
   template: `
-    <nz-statistic
-      [nzValue]="123.45"
-      [nzTitle]="title"
-      [nzSuffix]="suffix"
-      [nzPrefix]="prefix">
-    </nz-statistic>
+    <nz-statistic [nzValue]="123.45" [nzTitle]="title" [nzSuffix]="suffix" [nzPrefix]="prefix"> </nz-statistic>
   `
 })
 export class NzTestStatisticComponent {

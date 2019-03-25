@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-dynamic-rule',
@@ -12,20 +8,28 @@ import {
       <nz-form-item>
         <nz-form-label [nzSpan]="4" nzRequired nzFor="name">Name</nz-form-label>
         <nz-form-control [nzSpan]="8">
-          <input type="text" nz-input formControlName="name" placeholder="Please input your name">
-          <nz-form-explain *ngIf="validateForm.get('name')?.dirty && validateForm.get('name')?.errors">Please input your name</nz-form-explain>
+          <input type="text" nz-input formControlName="name" placeholder="Please input your name" />
+          <nz-form-explain *ngIf="validateForm.get('name')?.dirty && validateForm.get('name')?.errors"
+            >Please input your name</nz-form-explain
+          >
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSpan]="4" nzFor="nickname" [nzRequired]="validateForm.get('required')?.value">Nickname</nz-form-label>
+        <nz-form-label [nzSpan]="4" nzFor="nickname" [nzRequired]="validateForm.get('required')?.value"
+          >Nickname</nz-form-label
+        >
         <nz-form-control [nzSpan]="8">
-          <input type="text" nz-input formControlName="nickname" placeholder="Please input your nickname">
-          <nz-form-explain *ngIf="validateForm.get('nickname')?.dirty && validateForm.get('nickname')?.errors">Please input your nickname</nz-form-explain>
+          <input type="text" nz-input formControlName="nickname" placeholder="Please input your nickname" />
+          <nz-form-explain *ngIf="validateForm.get('nickname')?.dirty && validateForm.get('nickname')?.errors"
+            >Please input your nickname</nz-form-explain
+          >
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-control [nzSpan]="8" [nzOffset]="4">
-          <label nz-checkbox formControlName="required" (ngModelChange)="requiredChange($event)">Nickname is required</label>
+          <label nz-checkbox formControlName="required" (ngModelChange)="requiredChange($event)"
+            >Nickname is required</label
+          >
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -41,8 +45,8 @@ export class NzDemoFormDynamicRuleComponent implements OnInit {
 
   submitForm(): void {
     for (const i in this.validateForm.controls) {
-      this.validateForm.controls[ i ].markAsDirty();
-      this.validateForm.controls[ i ].updateValueAndValidity();
+      this.validateForm.controls[i].markAsDirty();
+      this.validateForm.controls[i].updateValueAndValidity();
     }
   }
 
@@ -57,14 +61,13 @@ export class NzDemoFormDynamicRuleComponent implements OnInit {
     this.validateForm.get('nickname')!.updateValueAndValidity();
   }
 
-  constructor(private fb: FormBuilder) {
-  }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      name    : [ null, [ Validators.required ] ],
-      nickname: [ null ],
-      required: [ false ]
+      name: [null, [Validators.required]],
+      nickname: [null],
+      required: [false]
     });
   }
 }

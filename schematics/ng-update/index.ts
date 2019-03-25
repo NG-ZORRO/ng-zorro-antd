@@ -8,7 +8,7 @@ const ruleDirectories = globSync('upgrade-rules/**/', { cwd: __dirname, absolute
 
 /** TSLint upgrade configuration that will be passed to the CDK ng-update rule. */
 const tslintUpgradeConfig: UpgradeTSLintConfig = {
-  upgradeData         : materialUpgradeData,
+  upgradeData: materialUpgradeData,
   extraRuleDirectories: ruleDirectories
 };
 
@@ -23,7 +23,11 @@ export function postUpdate(): Rule {
     console.log();
     console.log(chalk.green('  ✓  NG-ZORRO update complete'));
     console.log();
-    console.log(chalk.yellow('  ⚠  Please check the output above for any issues that were detected ' +
-      'but could not be automatically fixed.'));
+    console.log(
+      chalk.yellow(
+        '  ⚠  Please check the output above for any issues that were detected ' +
+          'but could not be automatically fixed.'
+      )
+    );
   };
 }

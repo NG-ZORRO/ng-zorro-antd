@@ -10,22 +10,26 @@ import { Component } from '@angular/core';
       (ngModelChange)="onChange($event)"
       (nzOnOk)="onOk($event)"
     ></nz-date-picker>
-    <br>
+    <br />
     <nz-range-picker
       [nzShowTime]="{ nzFormat: 'HH:mm' }"
       nzFormat="yyyy-MM-dd HH:mm"
-      [nzPlaceHolder]="[ 'Start Time', 'End Time' ]"
+      [nzPlaceHolder]="['Start Time', 'End Time']"
       (ngModelChange)="onChange($event)"
       (nzOnOk)="onOk($event)"
     ></nz-range-picker>
   `,
-  styles  : [ `
-    nz-date-picker, nz-month-picker, nz-range-picker, nz-week-picker {
-      margin: 0 8px 12px 0;
-    }
-  ` ]
+  styles: [
+    `
+      nz-date-picker,
+      nz-month-picker,
+      nz-range-picker,
+      nz-week-picker {
+        margin: 0 8px 12px 0;
+      }
+    `
+  ]
 })
-
 export class NzDemoDatePickerTimeComponent {
   onChange(result: Date): void {
     console.log('Selected Time: ', result);

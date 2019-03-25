@@ -176,7 +176,5 @@ export class TimeHolder {
     return this._defaultOpenValue.getSeconds();
   }
 
-  constructor() {
-  }
-
+  constructor() {}
 }

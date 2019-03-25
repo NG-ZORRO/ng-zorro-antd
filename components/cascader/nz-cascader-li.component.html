@@ -1,5 +1,9 @@
-<ng-container *ngIf="highlightText"><span [innerHTML]="renderHighlightString(getOptionLabel())"></span></ng-container>
+<ng-container *ngIf="highlightText">
+  <span [innerHTML]="renderHighlightString(getOptionLabel())"></span>
+</ng-container>
 <ng-container *ngIf="!highlightText">{{ getOptionLabel() }}</ng-container>
-<span *ngIf="!option.isLeaf || option.children && option.children.length || option.loading" class="ant-cascader-menu-item-expand-icon">
+<span
+  *ngIf="!option.isLeaf || option.children && option.children.length || option.loading"
+  class="ant-cascader-menu-item-expand-icon">
   <i nz-icon [type]="option.loading ? 'loading' : 'right'"></i>
 </span>

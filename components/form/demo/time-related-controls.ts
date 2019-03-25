@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-} from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-time-related-controls',
@@ -49,12 +46,15 @@ import {
           <button nz-button nzType="primary">Submit</button>
         </nz-form-control>
       </nz-form-item>
-    </form>`,
-  styles  : [ `
-    form {
+    </form>
+  `,
+  styles: [
+    `
+      form {
         max-width: 600px;
-    }
-  ` ]
+      }
+    `
+  ]
 })
 export class NzDemoFormTimeRelatedControlsComponent implements OnInit {
   validateForm: FormGroup;
@@ -63,17 +63,16 @@ export class NzDemoFormTimeRelatedControlsComponent implements OnInit {
     console.log(this.validateForm.value);
   }
 
-  constructor(private fb: FormBuilder) {
-  }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      datePicker     : [ null ],
-      datePickerTime : [ null ],
-      monthPicker    : [ null ],
-      rangePicker    : [ [] ],
-      rangePickerTime: [ [] ],
-      timePicker     : [ null ]
+      datePicker: [null],
+      datePickerTime: [null],
+      monthPicker: [null],
+      rangePicker: [[]],
+      rangePickerTime: [[]],
+      timePicker: [null]
     });
   }
 }

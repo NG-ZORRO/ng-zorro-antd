@@ -15,79 +15,83 @@ export interface TreeNodeInterface {
   template: `
     <nz-table #expandTable [nzData]="listOfMapData">
       <thead>
-      <tr>
-        <th nzWidth="40%">Name</th>
-        <th nzWidth="30%">Age</th>
-        <th>Address</th>
-      </tr>
+        <tr>
+          <th nzWidth="40%">Name</th>
+          <th nzWidth="30%">Age</th>
+          <th>Address</th>
+        </tr>
       </thead>
       <tbody>
-      <ng-container *ngFor="let data of expandTable.data">
-        <ng-container *ngFor="let item of mapOfExpandedData[data.key]">
-          <tr *ngIf="item.parent && item.parent.expand || !item.parent">
-            <td
-              [nzIndentSize]="item.level * 20"
-              [nzShowExpand]="!!item.children"
-              [(nzExpand)]="item.expand"
-              (nzExpandChange)="collapse(mapOfExpandedData[data.key],item,$event)">
-              {{item.name}}
-            </td>
-            <td>{{item.age}}</td>
-            <td>{{item.address}}</td>
-          </tr>
+        <ng-container *ngFor="let data of expandTable.data">
+          <ng-container *ngFor="let item of mapOfExpandedData[data.key]">
+            <tr *ngIf="(item.parent && item.parent.expand) || !item.parent">
+              <td
+                [nzIndentSize]="item.level * 20"
+                [nzShowExpand]="!!item.children"
+                [(nzExpand)]="item.expand"
+                (nzExpandChange)="collapse(mapOfExpandedData[data.key], item, $event)"
+              >
+                {{ item.name }}
+              </td>
+              <td>{{ item.age }}</td>
+              <td>{{ item.address }}</td>
+            </tr>
+          </ng-container>
         </ng-container>
-      </ng-container>
       </tbody>
-    </nz-table>`
+    </nz-table>
+  `
 })
 export class NzDemoTableExpandChildrenComponent implements OnInit {
   listOfMapData = [
     {
-      key     : 1,
-      name    : 'John Brown sr.',
-      age     : 60,
-      address : 'New York No. 1 Lake Park',
+      key: 1,
+      name: 'John Brown sr.',
+      age: 60,
+      address: 'New York No. 1 Lake Park',
       children: [
         {
-          key    : 11,
-          name   : 'John Brown',
-          age    : 42,
+          key: 11,
+          name: 'John Brown',
+          age: 42,
           address: 'New York No. 2 Lake Park'
         },
         {
-          key     : 12,
-          name    : 'John Brown jr.',
-          age     : 30,
-          address : 'New York No. 3 Lake Park',
-          children: [ {
-            key    : 121,
-            name   : 'Jimmy Brown',
-            age    : 16,
-            address: 'New York No. 3 Lake Park'
-          } ]
-        },
-        {
-          key     : 13,
-          name    : 'Jim Green sr.',
-          age     : 72,
-          address : 'London No. 1 Lake Park',
+          key: 12,
+          name: 'John Brown jr.',
+          age: 30,
+          address: 'New York No. 3 Lake Park',
           children: [
             {
-              key     : 131,
-              name    : 'Jim Green',
-              age     : 42,
-              address : 'London No. 2 Lake Park',
+              key: 121,
+              name: 'Jimmy Brown',
+              age: 16,
+              address: 'New York No. 3 Lake Park'
+            }
+          ]
+        },
+        {
+          key: 13,
+          name: 'Jim Green sr.',
+          age: 72,
+          address: 'London No. 1 Lake Park',
+          children: [
+            {
+              key: 131,
+              name: 'Jim Green',
+              age: 42,
+              address: 'London No. 2 Lake Park',
               children: [
                 {
-                  key    : 1311,
-                  name   : 'Jim Green jr.',
-                  age    : 25,
+                  key: 1311,
+                  name: 'Jim Green jr.',
+                  age: 25,
                   address: 'London No. 3 Lake Park'
                 },
                 {
-                  key    : 1312,
-                  name   : 'Jimmy Green sr.',
-                  age    : 18,
+                  key: 1312,
+                  name: 'Jimmy Green sr.',
+                  age: 18,
                   address: 'London No. 4 Lake Park'
                 }
               ]
@@ -97,13 +101,13 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
       ]
     },
     {
-      key    : 2,
-      name   : 'Joe Black',
-      age    : 32,
+      key: 2,
+      name: 'Joe Black',
+      age: 32,
       address: 'Sidney No. 1 Lake Park'
     }
   ];
-  mapOfExpandedData: { [ key: string ]: TreeNodeInterface[] } = {};
+  mapOfExpandedData: { [key: string]: TreeNodeInterface[] } = {};
 
   collapse(array: TreeNodeInterface[], data: TreeNodeInterface, $event: boolean): void {
     if ($event === false) {
@@ -130,7 +134,7 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
       this.visitNode(node, hashMap, array);
       if (node.children) {
         for (let i = node.children.length - 1; i >= 0; i--) {
-          stack.push({ ...node.children[ i ], level: node.level + 1, expand: false, parent: node });
+          stack.push({ ...node.children[i], level: node.level + 1, expand: false, parent: node });
         }
       }
     }
@@ -138,16 +142,16 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
     return array;
   }
 
-  visitNode(node: TreeNodeInterface, hashMap: { [ key: string ]: any }, array: TreeNodeInterface[]): void {
-    if (!hashMap[ node.key ]) {
-      hashMap[ node.key ] = true;
+  visitNode(node: TreeNodeInterface, hashMap: { [key: string]: any }, array: TreeNodeInterface[]): void {
+    if (!hashMap[node.key]) {
+      hashMap[node.key] = true;
       array.push(node);
     }
   }
 
   ngOnInit(): void {
     this.listOfMapData.forEach(item => {
-      this.mapOfExpandedData[ item.key ] = this.convertTreeToList(item);
+      this.mapOfExpandedData[item.key] = this.convertTreeToList(item);
     });
   }
 }

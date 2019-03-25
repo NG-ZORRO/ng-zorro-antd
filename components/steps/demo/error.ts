@@ -10,5 +10,4 @@ import { Component } from '@angular/core';
     </nz-steps>
   `
 })
-export class NzDemoStepsErrorComponent {
-}
+export class NzDemoStepsErrorComponent {}

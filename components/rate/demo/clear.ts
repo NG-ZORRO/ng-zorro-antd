@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <nz-rate [(ngModel)]="value" nzAllowHalf></nz-rate>
     <span class="ant-rate-text">allowClear: true</span>
-    <br>
+    <br />
     <nz-rate [(ngModel)]="value" nzAllowHalf [nzAllowClear]="false"></nz-rate>
     <span class="ant-rate-text">allowClear: false</span>
   `

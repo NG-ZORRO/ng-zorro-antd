@@ -12,7 +12,7 @@
     (click)="onClickMask($event)"
     class="ant-modal-wrap {{ nzWrapClassName }}"
     [style.zIndex]="nzZIndex"
-    [style.display]="hidden ? 'none' : ''"
+    [style.visibility]="hidden ? 'hidden' : null"
     tabindex="-1"
     role="dialog"
   >
@@ -30,13 +30,12 @@
             <i nz-icon type="close" class="ant-modal-close-icon"></i>
           </span>
         </button>
-        <ng-container [ngSwitch]="true">
+        <ng-container [ngSwitch]="!hidden">
           <ng-container *ngSwitchCase="isModalType('default')" [ngTemplateOutlet]="tplContentDefault"></ng-container>
           <ng-container *ngSwitchCase="isModalType('confirm')" [ngTemplateOutlet]="tplContentConfirm"></ng-container>
         </ng-container>
       </div>
     </div>
-    <div tabindex="0" style="width: 0px; height: 0px; overflow: hidden;">sentinel</div>
   </div>
 </div>
 

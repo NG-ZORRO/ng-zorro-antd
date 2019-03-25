@@ -1,0 +1,10 @@
+**/*.md
+**/*.svg
+**/*.html
+**/test.ts
+**/*.less
+coverage/
+publish/
+site/
+package.json
+**/template/*

@@ -29,20 +29,26 @@ import { NzUploadBtnComponent } from './nz-upload-btn.component';
 import { NzUploadListComponent } from './nz-upload-list.component';
 import { NzUploadComponent } from './nz-upload.component';
 
-const FILECONTENT = [ `iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==` ];
+const FILECONTENT = [
+  `iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`
+];
 const FILE = new File(FILECONTENT, '');
 const PNGSMALL = {
   target: {
-    files: [ new File(FILECONTENT, 'test.png', {
-      type: 'image/png'
-    }) ]
+    files: [
+      new File(FILECONTENT, 'test.png', {
+        type: 'image/png'
+      })
+    ]
   }
 };
 const JPGSMALL = {
   target: {
-    files: [ new File(FILECONTENT, 'test.jpg', {
-      type: 'image/jpg'
-    }) ]
+    files: [
+      new File(FILECONTENT, 'test.jpg', {
+        type: 'image/jpg'
+      })
+    ]
   }
 };
 const LARGEFILE = {
@@ -59,11 +65,10 @@ class Item {
 }
 
 describe('upload', () => {
-
   it('should be throw error when not import HttpClient module', () => {
     expect(() => {
       TestBed.configureTestingModule({
-        declarations: [ NzUploadBtnComponent, TestUploadBtnComponent ]
+        declarations: [NzUploadBtnComponent, TestUploadBtnComponent]
       }).createComponent(TestUploadBtnComponent);
     }).toThrow();
   });
@@ -77,8 +82,17 @@ describe('upload', () => {
     let httpMock: HttpTestingController;
     beforeEach(() => {
       injector = TestBed.configureTestingModule({
-        imports     : [ NoopAnimationsModule, HttpClientTestingModule, CommonModule, FormsModule, NzToolTipModule, NzProgressModule, NzI18nModule, NzIconTestModule ],
-        declarations: [ NzUploadComponent, NzUploadListComponent, TestUploadComponent, NzUploadBtnComponent ]
+        imports: [
+          NoopAnimationsModule,
+          HttpClientTestingModule,
+          CommonModule,
+          FormsModule,
+          NzToolTipModule,
+          NzProgressModule,
+          NzI18nModule,
+          NzIconTestModule
+        ],
+        declarations: [NzUploadComponent, NzUploadListComponent, TestUploadComponent, NzUploadBtnComponent]
       });
       fixture = TestBed.createComponent(TestUploadComponent);
       dl = fixture.debugElement;
@@ -89,7 +103,6 @@ describe('upload', () => {
     });
 
     describe('[default]', () => {
-
       it('should be upload a file', () => {
         expect(instance._nzChange).toBeUndefined();
         pageObject.postFile(FILE);
@@ -127,11 +140,7 @@ describe('upload', () => {
         instance.nzMultiple = true;
         fixture.detectChanges();
         expect(instance._beforeUploadList.length).toBe(0);
-        pageObject.postFile([
-          ...PNGSMALL.target.files,
-          ...PNGSMALL.target.files,
-          ...PNGSMALL.target.files
-        ]);
+        pageObject.postFile([...PNGSMALL.target.files, ...PNGSMALL.target.files, ...PNGSMALL.target.files]);
         expect(instance._beforeUploadList.length).toBe(instance.nzLimit);
       });
 
@@ -163,13 +172,15 @@ describe('upload', () => {
       });
 
       it('should be removed via list', () => {
-        instance.nzFileList = [ {
-          uid     : 1,
-          name    : 'xxx.png',
-          status  : 'done',
-          response: 'Server Error 500', // custom error message to show
-          url     : 'http://www.baidu.com/xxx.png'
-        } as any ];
+        instance.nzFileList = [
+          {
+            uid: 1,
+            name: 'xxx.png',
+            status: 'done',
+            response: 'Server Error 500', // custom error message to show
+            url: 'http://www.baidu.com/xxx.png'
+          } as any
+        ];
         fixture.detectChanges();
         pageObject.expectLength(1);
         pageObject.getByCss('.anticon-close').nativeElement.click();
@@ -188,23 +199,27 @@ describe('upload', () => {
 
       it('should be show uploading status when via drag', () => {
         instance.nzType = 'drag';
-        instance.nzFileList = [ {
-          uid   : 1,
-          name  : 'xxx.png',
-          status: 'uploading'
-        } as any ];
+        instance.nzFileList = [
+          {
+            uid: 1,
+            name: 'xxx.png',
+            status: 'uploading'
+          } as any
+        ];
         fixture.detectChanges();
         expect(pageObject.getByCss('.ant-upload-drag-uploading') != null).toBe(true);
       });
 
       it('#i18n', () => {
-        instance.nzFileList = [ {
-          uid     : 1,
-          name    : 'xxx.png',
-          status  : 'done',
-          response: 'Server Error 500', // custom error message to show
-          url     : 'http://www.baidu.com/xxx.png'
-        } as any ];
+        instance.nzFileList = [
+          {
+            uid: 1,
+            name: 'xxx.png',
+            status: 'done',
+            response: 'Server Error 500', // custom error message to show
+            url: 'http://www.baidu.com/xxx.png'
+          } as any
+        ];
         fixture.detectChanges();
         injector.get(NzI18nService).setLocale(en_US);
         fixture.detectChanges();
@@ -238,9 +253,7 @@ describe('upload', () => {
         });
 
         it('should comst fileter', () => {
-          instance.nzFilter = [
-            { name: 'custom', fn: () => [] }
-          ];
+          instance.nzFilter = [{ name: 'custom', fn: () => [] }];
           fixture.detectChanges();
           expect(instance._beforeUploadList.length).toBe(0);
           pageObject.postLarge();
@@ -347,7 +360,7 @@ describe('upload', () => {
             let ret = false;
             instance.beforeUpload = (): Observable<any> => {
               ret = true;
-              return of(new Blob([ JSON.stringify(1, null, 2) ], { type: 'application/json' }));
+              return of(new Blob([JSON.stringify(1, null, 2)], { type: 'application/json' }));
             };
             fixture.detectChanges();
             pageObject.postSmall();
@@ -364,7 +377,7 @@ describe('upload', () => {
           });
           it('should be console.warn error', () => {
             let warnMsg = '';
-            console.warn = jasmine.createSpy().and.callFake((res: string) => warnMsg = res);
+            console.warn = jasmine.createSpy().and.callFake((res: string) => (warnMsg = res));
             expect(instance._nzChange).toBeUndefined();
             instance.beforeUpload = (): Observable<any> => {
               return throwError('');
@@ -383,16 +396,12 @@ describe('upload', () => {
           instance.nzFilter = [
             {
               name: 'limit',
-              fn  : (fileList: UploadFile[]) => fileList.slice(-instance.nzLimit)
+              fn: (fileList: UploadFile[]) => fileList.slice(-instance.nzLimit)
             }
           ];
           fixture.detectChanges();
           expect(instance._beforeUploadList.length).toBe(0);
-          pageObject.postFile([
-            ...PNGSMALL.target.files,
-            ...PNGSMALL.target.files,
-            ...PNGSMALL.target.files
-          ]);
+          pageObject.postFile([...PNGSMALL.target.files, ...PNGSMALL.target.files, ...PNGSMALL.target.files]);
           expect(instance._beforeUploadList.length).toBe(instance.nzLimit);
         });
         it('shoule be custom size', () => {
@@ -400,7 +409,7 @@ describe('upload', () => {
           instance.nzFilter = [
             {
               name: 'size',
-              fn  : (fileList: UploadFile[]) => fileList.filter(w => (w.size / 1024) <= instance.nzSize)
+              fn: (fileList: UploadFile[]) => fileList.filter(w => w.size / 1024 <= instance.nzSize)
             }
           ];
           fixture.detectChanges();
@@ -413,7 +422,7 @@ describe('upload', () => {
           instance.nzFilter = [
             {
               name: 'type',
-              fn  : (fileList: UploadFile[]) => fileList.filter(w => ~[ instance.nzFileType ].indexOf(w.type))
+              fn: (fileList: UploadFile[]) => fileList.filter(w => ~[instance.nzFileType].indexOf(w.type))
             }
           ];
           fixture.detectChanges();
@@ -426,7 +435,7 @@ describe('upload', () => {
             instance.nzFilter = [
               {
                 name: 'f1',
-                fn  : (fileList: UploadFile[]) => {
+                fn: (fileList: UploadFile[]) => {
                   return new Observable((observer: Observer<UploadFile[]>) => {
                     observer.next(fileList.slice(1));
                     observer.complete();
@@ -435,7 +444,7 @@ describe('upload', () => {
               },
               {
                 name: 'f2',
-                fn  : (fileList: UploadFile[]) => {
+                fn: (fileList: UploadFile[]) => {
                   return new Observable((observer: Observer<UploadFile[]>) => {
                     observer.next(fileList.slice(1));
                     observer.complete();
@@ -445,20 +454,16 @@ describe('upload', () => {
             ];
             fixture.detectChanges();
             expect(instance._beforeUploadList.length).toBe(0);
-            pageObject.postFile([
-              ...PNGSMALL.target.files,
-              ...PNGSMALL.target.files,
-              ...PNGSMALL.target.files
-            ]);
+            pageObject.postFile([...PNGSMALL.target.files, ...PNGSMALL.target.files, ...PNGSMALL.target.files]);
             expect(instance._beforeUploadList.length).toBe(1);
           });
           it('should be console.warn error', () => {
             let warnMsg = '';
-            console.warn = jasmine.createSpy().and.callFake((res: string) => warnMsg = res);
+            console.warn = jasmine.createSpy().and.callFake((res: string) => (warnMsg = res));
             instance.nzFilter = [
               {
                 name: 'f1',
-                fn  : () => {
+                fn: () => {
                   return new Observable((observer: Observer<UploadFile[]>) => {
                     observer.error('filter error');
                   });
@@ -489,24 +494,24 @@ describe('upload', () => {
         beforeEach(() => {
           instance.nzFileList = [
             {
-              uid     : 1,
-              name    : 'xxx.png',
-              status  : 'done',
-              response: 'Server Error 500', // custom error message to show
-              url     : 'http://www.baidu.com/xxx.png'
-            },
-            {
-              uid   : 2,
-              name  : 'yyy.png',
+              uid: 1,
+              name: 'xxx.png',
               status: 'done',
-              url   : 'http://www.baidu.com/yyy.png'
+              response: 'Server Error 500', // custom error message to show
+              url: 'http://www.baidu.com/xxx.png'
             },
             {
-              uid     : 3,
-              name    : 'zzz.png',
-              status  : 'error',
+              uid: 2,
+              name: 'yyy.png',
+              status: 'done',
+              url: 'http://www.baidu.com/yyy.png'
+            },
+            {
+              uid: 3,
+              name: 'zzz.png',
+              status: 'error',
               response: 'Server Error 500', // custom error message to show
-              url     : 'http://www.baidu.com/zzz.png'
+              url: 'http://www.baidu.com/zzz.png'
             }
           ] as any[];
           fixture.detectChanges();
@@ -559,14 +564,14 @@ describe('upload', () => {
             fixture.detectChanges();
             pageObject.postSmall();
             fixture.detectChanges();
-            expect(instance.comp.nzFileList[ 0 ].thumbUrl).toBeUndefined();
+            expect(instance.comp.nzFileList[0].thumbUrl).toBeUndefined();
           });
           it('with picture', () => {
             instance.nzListType = 'picture';
             fixture.detectChanges();
             pageObject.postSmall();
             fixture.detectChanges();
-            expect(instance.comp.nzFileList[ 0 ].thumbUrl).not.toBeUndefined();
+            expect(instance.comp.nzFileList[0].thumbUrl).not.toBeUndefined();
           });
         });
       });
@@ -606,7 +611,9 @@ describe('upload', () => {
       private files: any;
 
       constructor() {
-        spyOn(this.btnComp, 'onClick').and.callFake(() => this.btnComp.onChange({ target: { files: this.files } } as any));
+        spyOn(this.btnComp, 'onClick').and.callFake(() =>
+          this.btnComp.onChange({ target: { files: this.files } } as any)
+        );
       }
 
       get btnEl(): DebugElement {
@@ -622,7 +629,7 @@ describe('upload', () => {
       }
 
       postFile(files: any): this {
-        this.files = Array.isArray(files) ? files : [ files ];
+        this.files = Array.isArray(files) ? files : [files];
         this.btnEl.nativeElement.click();
         return this;
       }
@@ -655,8 +662,16 @@ describe('upload', () => {
     let instance: TestUploadListComponent;
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports     : [ CommonModule, FormsModule, NzToolTipModule, NzProgressModule, NzI18nModule, NoopAnimationsModule, NzIconTestModule ],
-        declarations: [ NzUploadListComponent, TestUploadListComponent ]
+        imports: [
+          CommonModule,
+          FormsModule,
+          NzToolTipModule,
+          NzProgressModule,
+          NzI18nModule,
+          NoopAnimationsModule,
+          NzIconTestModule
+        ],
+        declarations: [NzUploadListComponent, TestUploadListComponent]
       });
       fixture = TestBed.createComponent(TestUploadListComponent);
       dl = fixture.debugElement;
@@ -665,7 +680,7 @@ describe('upload', () => {
     });
 
     describe('[listType]', () => {
-      for (const type of [ 'text', 'picture', 'picture-card' ]) {
+      for (const type of ['text', 'picture', 'picture-card']) {
         it(`with [${type}]`, () => {
           instance.listType = type as UploadListType;
           fixture.detectChanges();
@@ -683,14 +698,14 @@ describe('upload', () => {
         expect(instance._onPreview).toBe(false);
         const actions = dl.queryAll(By.css('.ant-upload-list-item-actions'));
         expect(actions.length).toBe(instance.items.length);
-        actions[ 0 ].query(By.css('a')).nativeElement.click();
+        actions[0].query(By.css('a')).nativeElement.click();
         fixture.detectChanges();
         expect(instance._onPreview).toBe(true);
       });
       it('should be hide preview', () => {
         instance.icons = {
           showPreviewIcon: false,
-          showRemoveIcon : true
+          showRemoveIcon: true
         };
         fixture.detectChanges();
         const actions = dl.queryAll(By.css('.ant-upload-list-item-actions a'));
@@ -701,14 +716,14 @@ describe('upload', () => {
         expect(instance._onRemove).toBe(false);
         const actions = dl.queryAll(By.css('.ant-upload-list-item-actions'));
         expect(actions.length).toBe(instance.items.length);
-        actions[ 0 ].query(By.css('.anticon-delete')).nativeElement.click();
+        actions[0].query(By.css('.anticon-delete')).nativeElement.click();
         fixture.detectChanges();
         expect(instance._onRemove).toBe(true);
       });
       it('should be hide remove', () => {
         instance.icons = {
           showPreviewIcon: true,
-          showRemoveIcon : false
+          showRemoveIcon: false
         };
         fixture.detectChanges();
         const actions = dl.queryAll(By.css('.ant-upload-list-item-actions .anticon-delete'));
@@ -717,13 +732,11 @@ describe('upload', () => {
       });
       it('should be hide preview when is invalid image url', fakeAsync(() => {
         instance.icons = {
-          showPreviewIcon          : true,
-          showRemoveIcon           : true,
+          showPreviewIcon: true,
+          showRemoveIcon: true,
           hidePreviewIconInNonImage: false
         };
-        instance.items = [
-          { url: '1.pdf' }
-        ];
+        instance.items = [{ url: '1.pdf' }];
         fixture.detectChanges();
         tick();
         fixture.detectChanges();
@@ -732,13 +745,11 @@ describe('upload', () => {
       }));
       it('should be hide preview when is invalid image url', fakeAsync(() => {
         instance.icons = {
-          showPreviewIcon          : true,
-          showRemoveIcon           : true,
+          showPreviewIcon: true,
+          showRemoveIcon: true,
           hidePreviewIconInNonImage: true
         };
-        instance.items = [
-          { url: '1.pdf' }
-        ];
+        instance.items = [{ url: '1.pdf' }];
         fixture.detectChanges();
         tick();
         fixture.detectChanges();
@@ -763,10 +774,10 @@ describe('upload', () => {
       it('should support linkProps as object', fakeAsync(() => {
         instance.items = [
           {
-            uid      : '-1',
-            name     : 'foo.png',
-            status   : 'done',
-            url      : 'http://www.baidu.com/xxx.png',
+            uid: '-1',
+            name: 'foo.png',
+            status: 'done',
+            url: 'http://www.baidu.com/xxx.png',
             linkProps: {
               download: 'image'
             }
@@ -782,10 +793,10 @@ describe('upload', () => {
         const linkPropsString = JSON.stringify({ download: 'image' });
         instance.items = [
           {
-            uid      : '-1',
-            name     : 'foo.png',
-            status   : 'done',
-            url      : 'http://www.baidu.com/xxx.png',
+            uid: '-1',
+            name: 'foo.png',
+            status: 'done',
+            url: 'http://www.baidu.com/xxx.png',
             linkProps: linkPropsString
           }
         ];
@@ -845,7 +856,7 @@ describe('upload', () => {
       class MockFR {
         result = '1';
 
-        onloadend(): void { }
+        onloadend(): void {}
 
         readAsDataURL(): void {
           this.onloadend();
@@ -855,18 +866,18 @@ describe('upload', () => {
       it('should be generate thumb when is valid image data', () => {
         spyOn(window as any, 'FileReader').and.returnValue(new MockFR());
         instance.listType = 'picture';
-        instance.items = [ { originFileObj: new File([ '' ], '1.png', { type: 'image' }), thgitumbUrl: undefined } ];
+        instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image' }), thgitumbUrl: undefined }];
         fixture.detectChanges();
-        expect(instance.items[ 0 ].thumbUrl).toBe('1');
+        expect(instance.items[0].thumbUrl).toBe('1');
       });
       it('should be ingore thumb when is invalid image data', () => {
         const mockFR = new MockFR();
         mockFR.result = '';
         spyOn(window as any, 'FileReader').and.returnValue(mockFR);
         instance.listType = 'picture';
-        instance.items = [ { originFileObj: new File([ '' ], '1.pdf', { type: 'pdf' }), thumbUrl: undefined } ];
+        instance.items = [{ originFileObj: new File([''], '1.pdf', { type: 'pdf' }), thumbUrl: undefined }];
         fixture.detectChanges();
-        expect(instance.items[ 0 ].thumbUrl).toBe('');
+        expect(instance.items[0].thumbUrl).toBe('');
       });
     });
   });
@@ -878,8 +889,8 @@ describe('upload', () => {
       let instance: TestUploadBtnComponent;
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports     : [ HttpClientTestingModule, NzIconTestModule ],
-          declarations: [ NzUploadBtnComponent, TestUploadBtnComponent ]
+          imports: [HttpClientTestingModule, NzIconTestModule],
+          declarations: [NzUploadBtnComponent, TestUploadBtnComponent]
         });
         fixture = TestBed.createComponent(TestUploadBtnComponent);
         dl = fixture.debugElement;
@@ -922,8 +933,8 @@ describe('upload', () => {
             spyOn(instance.comp, 'uploadFiles');
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
-              type          : 'dragend',
-              dataTransfer  : { files: [ FILE ] },
+              type: 'dragend',
+              dataTransfer: { files: [FILE] },
               preventDefault: () => {}
             } as any);
             expect(instance.comp.uploadFiles).toHaveBeenCalled();
@@ -940,8 +951,8 @@ describe('upload', () => {
             spyOn(instance.comp, 'uploadFiles');
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
-              type          : 'dragend',
-              dataTransfer  : { files: PNGSMALL.target.files },
+              type: 'dragend',
+              dataTransfer: { files: PNGSMALL.target.files },
               preventDefault: () => {}
             } as any);
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
@@ -952,8 +963,8 @@ describe('upload', () => {
             spyOn(instance.comp, 'uploadFiles');
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
-              type          : 'dragend',
-              dataTransfer  : { files: PNGSMALL.target.files },
+              type: 'dragend',
+              dataTransfer: { files: PNGSMALL.target.files },
               preventDefault: () => {}
             } as any);
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
@@ -964,20 +975,20 @@ describe('upload', () => {
             spyOn(instance.comp, 'uploadFiles');
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
-              type          : 'dragend',
-              dataTransfer  : { files: PNGSMALL.target.files },
+              type: 'dragend',
+              dataTransfer: { files: PNGSMALL.target.files },
               preventDefault: () => {}
             } as any);
             expect(instance.comp.uploadFiles).toHaveBeenCalled();
           });
           it(`allow type [ 'image/png', 'image/jpg' ]`, () => {
-            instance.options.accept = [ 'image/png', 'image/jpg' ];
+            instance.options.accept = ['image/png', 'image/jpg'];
             fixture.detectChanges();
             spyOn(instance.comp, 'uploadFiles');
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
-              type          : 'dragend',
-              dataTransfer  : { files: PNGSMALL.target.files },
+              type: 'dragend',
+              dataTransfer: { files: PNGSMALL.target.files },
               preventDefault: () => {}
             } as any);
             expect(instance.comp.uploadFiles).toHaveBeenCalled();
@@ -994,8 +1005,8 @@ describe('upload', () => {
             const isDirectory = Array.isArray(item.children);
             const ret = {
               isDirectory,
-              isFile      : !isDirectory,
-              file        : (handle: any) => {
+              isFile: !isDirectory,
+              file: (handle: any) => {
                 handle(new Item(item.name));
               },
               createReader: () => {
@@ -1007,14 +1018,14 @@ describe('upload', () => {
             return ret;
           };
           const makeDataTransferItem = (item: Item) => ({ webkitGetAsEntry: () => makeFileSystemEntry(item) });
-          beforeEach(() => instance.options.directory = true);
+          beforeEach(() => (instance.options.directory = true));
           it('should working', () => {
             spyOn(instance.comp, 'uploadFiles');
             const files = {
-              name    : 'foo',
+              name: 'foo',
               children: [
                 {
-                  name    : 'bar',
+                  name: 'bar',
                   children: [
                     {
                       name: 'is.webp'
@@ -1024,19 +1035,19 @@ describe('upload', () => {
               ]
             };
             instance.comp.onFileDrop({
-              type          : 'dragend',
-              dataTransfer  : {
-                items: [ makeDataTransferItem(files) ]
+              type: 'dragend',
+              dataTransfer: {
+                items: [makeDataTransferItem(files)]
               },
               preventDefault: () => {}
             } as any);
             expect(instance.comp.uploadFiles).toHaveBeenCalled();
           });
           it('should be ingore invalid extension', () => {
-            instance.options.accept = [ '.webp' ];
+            instance.options.accept = ['.webp'];
             spyOn(instance.comp, 'uploadFiles');
             const files = {
-              name    : 'foo',
+              name: 'foo',
               children: [
                 {
                   name: 'is.jpg'
@@ -1044,9 +1055,9 @@ describe('upload', () => {
               ]
             };
             instance.comp.onFileDrop({
-              type          : 'dragend',
-              dataTransfer  : {
-                items: [ makeDataTransferItem(files) ]
+              type: 'dragend',
+              dataTransfer: {
+                items: [makeDataTransferItem(files)]
               },
               preventDefault: () => {}
             } as any);
@@ -1090,10 +1101,7 @@ describe('upload', () => {
         it('should be abort all uploading file', () => {
           instance.comp.onChange({
             target: {
-              files: [
-                ...PNGSMALL.target.files,
-                ...JPGSMALL.target.files
-              ]
+              files: [...PNGSMALL.target.files, ...JPGSMALL.target.files]
             }
           } as any);
           expect(Object.keys(instance.comp.reqs).length).toBe(2);
@@ -1117,64 +1125,62 @@ describe('upload', () => {
       let http: HttpTestingController;
       beforeEach(() => {
         injector = TestBed.configureTestingModule({
-          imports     : [ HttpClientTestingModule ],
-          declarations: [ NzUploadBtnComponent ]
+          imports: [HttpClientTestingModule],
+          declarations: [NzUploadBtnComponent]
         });
         (injector as TestBed).compileComponents();
         fixture = TestBed.createComponent(NzUploadBtnComponent);
         comp = fixture.debugElement.componentInstance;
         comp.options = {
-          action         : '/test',
-          accept         : 'image/png',
-          filters        : [],
-          data           : { a: 1 },
-          headers        : { token: 'asdf' },
-          name           : 'avatar',
-          multiple       : true,
+          action: '/test',
+          accept: 'image/png',
+          filters: [],
+          data: { a: 1 },
+          headers: { token: 'asdf' },
+          name: 'avatar',
+          multiple: true,
           withCredentials: true,
-          beforeUpload   : () => true,
-          onStart        : () => {},
-          onProgress     : () => {},
-          onSuccess      : () => {},
-          onError        : () => {}
+          beforeUpload: () => true,
+          onStart: () => {},
+          onProgress: () => {},
+          onSuccess: () => {},
+          onError: () => {}
         } as ZipButtonOptions;
         http = injector.get(HttpTestingController);
       });
 
       it('should uploading a png file', fakeAsync(() => {
-          spyOn(comp.options, 'onStart');
-          spyOn(comp.options, 'onProgress');
-          spyOn(comp.options, 'onSuccess');
-          comp.onChange(PNGSMALL as any);
-          tick(1);
-          const req = http.expectOne('/test');
-          req.event({ type: 1, loaded: 10, total: 100 });
-          req.flush('ok');
-          expect(comp.options.onProgress).toHaveBeenCalled();
-          expect(comp.options.onStart).toHaveBeenCalled();
-          expect(comp.options.onSuccess).toHaveBeenCalled();
-        })
-      );
+        spyOn(comp.options, 'onStart');
+        spyOn(comp.options, 'onProgress');
+        spyOn(comp.options, 'onSuccess');
+        comp.onChange(PNGSMALL as any);
+        tick(1);
+        const req = http.expectOne('/test');
+        req.event({ type: 1, loaded: 10, total: 100 });
+        req.flush('ok');
+        expect(comp.options.onProgress).toHaveBeenCalled();
+        expect(comp.options.onStart).toHaveBeenCalled();
+        expect(comp.options.onSuccess).toHaveBeenCalled();
+      }));
 
       it('should contain the parameters of http request', fakeAsync(() => {
-          comp.onChange(PNGSMALL as any);
-          tick(1);
-          const req = http.expectOne('/test');
-          expect(req.request.withCredentials).toBe(true);
-          expect(req.request.headers.get('token')).toBe('asdf');
-          const body = req.request.body as FormData;
-          expect(body.has('avatar')).toBe(true);
-          expect(body.has('a')).toBe(true);
-          req.flush('ok');
-        })
-      );
+        comp.onChange(PNGSMALL as any);
+        tick(1);
+        const req = http.expectOne('/test');
+        expect(req.request.withCredentials).toBe(true);
+        expect(req.request.headers.get('token')).toBe('asdf');
+        const body = req.request.body as FormData;
+        expect(body.has('avatar')).toBe(true);
+        expect(body.has('a')).toBe(true);
+        req.flush('ok');
+      }));
 
       it('should filter size', () => {
         spyOn(comp.options, 'onStart');
         comp.options.filters = [
           {
             name: '',
-            fn  : (fileList: UploadFile[]) => fileList.filter(w => w.size / 1024 <= 0)
+            fn: (fileList: UploadFile[]) => fileList.filter(w => w.size / 1024 <= 0)
           }
         ];
         comp.onChange(PNGBIG as any);
@@ -1190,17 +1196,16 @@ describe('upload', () => {
       });
 
       it('should error when request error', fakeAsync(() => {
-          spyOn(comp.options, 'onStart');
-          spyOn(comp.options, 'onSuccess');
-          spyOn(comp.options, 'onError');
-          comp.onChange(PNGSMALL as any);
-          tick(1);
-          http.expectOne('/test').error({ status: 403 } as any);
-          expect(comp.options.onStart).toHaveBeenCalled();
-          expect(comp.options.onError).toHaveBeenCalled();
-          expect(comp.options.onSuccess).not.toHaveBeenCalled();
-        })
-      );
+        spyOn(comp.options, 'onStart');
+        spyOn(comp.options, 'onSuccess');
+        spyOn(comp.options, 'onError');
+        comp.onChange(PNGSMALL as any);
+        tick(1);
+        http.expectOne('/test').error({ status: 403 } as any);
+        expect(comp.options.onStart).toHaveBeenCalled();
+        expect(comp.options.onError).toHaveBeenCalled();
+        expect(comp.options.onSuccess).not.toHaveBeenCalled();
+      }));
 
       it('should custom request', () => {
         comp.options.customRequest = () => of(true).subscribe(() => {});
@@ -1211,7 +1216,7 @@ describe('upload', () => {
 
       it('should be warn "Must return Subscription type in [nzCustomRequest] property"', () => {
         let warnMsg = '';
-        console.warn = jasmine.createSpy().and.callFake((res: string) => warnMsg = res);
+        console.warn = jasmine.createSpy().and.callFake((res: string) => (warnMsg = res));
         comp.options.customRequest = (() => {}) as any;
         comp.onChange(PNGSMALL as any);
         expect(warnMsg).toContain(`Must return Subscription type`);
@@ -1222,34 +1227,35 @@ describe('upload', () => {
 
 @Component({
   template: `
-    <nz-upload #upload *ngIf="show"
-               [nzType]="nzType"
-               [nzLimit]="nzLimit"
-               [nzSize]="nzSize"
-               [nzFileType]="nzFileType"
-               [nzAccept]="nzAccept"
-               [nzAction]="nzAction"
-               [nzBeforeUpload]="beforeUpload"
-               [nzCustomRequest]="nzCustomRequest"
-               [nzData]="nzData"
-               [nzFilter]="nzFilter"
-               [(nzFileList)]="nzFileList"
-               [nzDisabled]="nzDisabled"
-               [nzHeaders]="nzHeaders"
-               [nzListType]="nzListType"
-               [nzMultiple]="nzMultiple"
-               [nzName]="nzName"
-               [nzShowUploadList]="nzShowUploadList"
-               [nzShowButton]="nzShowButton"
-               [nzWithCredentials]="nzWithCredentials"
-               [nzPreview]="onPreview"
-               [nzRemove]="onRemove"
-               [nzDirectory]="directory"
-               (nzFileListChange)="nzFileListChange($event)"
-               (nzChange)="nzChange($event)">
-      <button nz-button>
-        <i nz-icon type="upload"></i><span>Click to Upload</span>
-      </button>
+    <nz-upload
+      #upload
+      *ngIf="show"
+      [nzType]="nzType"
+      [nzLimit]="nzLimit"
+      [nzSize]="nzSize"
+      [nzFileType]="nzFileType"
+      [nzAccept]="nzAccept"
+      [nzAction]="nzAction"
+      [nzBeforeUpload]="beforeUpload"
+      [nzCustomRequest]="nzCustomRequest"
+      [nzData]="nzData"
+      [nzFilter]="nzFilter"
+      [(nzFileList)]="nzFileList"
+      [nzDisabled]="nzDisabled"
+      [nzHeaders]="nzHeaders"
+      [nzListType]="nzListType"
+      [nzMultiple]="nzMultiple"
+      [nzName]="nzName"
+      [nzShowUploadList]="nzShowUploadList"
+      [nzShowButton]="nzShowButton"
+      [nzWithCredentials]="nzWithCredentials"
+      [nzPreview]="onPreview"
+      [nzRemove]="onRemove"
+      [nzDirectory]="directory"
+      (nzFileListChange)="nzFileListChange($event)"
+      (nzChange)="nzChange($event)"
+    >
+      <button nz-button><i nz-icon type="upload"></i><span>Click to Upload</span></button>
     </nz-upload>
   `
 })
@@ -1268,7 +1274,7 @@ class TestUploadComponent {
     this._beforeUpload = true;
     this._beforeUploadList = fileList;
     return true;
-  }
+  };
   nzCustomRequest: any;
   nzData: any;
   nzFilter: UploadFilter[] = [];
@@ -1284,31 +1290,38 @@ class TestUploadComponent {
   _onPreview = false;
   onPreview = (): void => {
     this._onPreview = true;
-  }
+  };
   _onRemove = false;
   onRemove: null | ((file: UploadFile) => boolean | Observable<boolean>) = (): boolean => {
     this._onRemove = true;
     return true;
-  }
+  };
   _nzChange: UploadChangeParam;
 
-  nzChange(value: UploadChangeParam): void { this._nzChange = value; }
+  nzChange(value: UploadChangeParam): void {
+    this._nzChange = value;
+  }
 
   _nzFileListChange: any;
 
-  nzFileListChange(value: any): void { this._nzChange = value; }
+  nzFileListChange(value: any): void {
+    this._nzChange = value;
+  }
 
   directory = false;
 }
 
 @Component({
-  template     : `
-    <nz-upload-list #list
-                    [listType]="listType"
-                    [items]="items"
-                    [icons]="icons"
-                    [onPreview]="onPreview"
-                    [onRemove]="onRemove"></nz-upload-list>`,
+  template: `
+    <nz-upload-list
+      #list
+      [listType]="listType"
+      [items]="items"
+      [icons]="icons"
+      [onPreview]="onPreview"
+      [onRemove]="onRemove"
+    ></nz-upload-list>
+  `,
   encapsulation: ViewEncapsulation.None
 })
 class TestUploadListComponent {
@@ -1316,53 +1329,54 @@ class TestUploadListComponent {
   listType: UploadListType = 'picture-card';
   items: any[] = [
     {
-      uid     : 1,
-      name    : 'xxx.png',
-      status  : 'done',
-      response: 'Server Error 500', // custom error message to show
-      url     : 'http://www.baidu.com/xxx.png'
-    },
-    {
-      uid   : 2,
-      name  : 'yyy.png',
+      uid: 1,
+      name: 'xxx.png',
       status: 'done',
-      url   : 'http://www.baidu.com/yyy.png'
+      response: 'Server Error 500', // custom error message to show
+      url: 'http://www.baidu.com/xxx.png'
     },
     {
-      uid     : 3,
-      name    : 'zzz.png',
-      status  : 'error',
+      uid: 2,
+      name: 'yyy.png',
+      status: 'done',
+      url: 'http://www.baidu.com/yyy.png'
+    },
+    {
+      uid: 3,
+      name: 'zzz.png',
+      status: 'error',
       response: 'Server Error 500', // custom error message to show
-      url     : 'http://www.baidu.com/zzz.png'
+      url: 'http://www.baidu.com/zzz.png'
     }
   ];
   icons: ShowUploadListInterface = {
     showPreviewIcon: true,
-    showRemoveIcon : true
+    showRemoveIcon: true
   };
   _onPreview = false;
   onPreview: VoidFunction | null = (): void => {
     this._onPreview = true;
-  }
+  };
   _onRemove = false;
   onRemove: any = (): void => {
     this._onRemove = true;
-  }
+  };
 }
 
 @Component({
   template: `
-    <div nz-upload-btn #btn [options]="options" [classes]="classes">UPLAOD</div>`
+    <div nz-upload-btn #btn [options]="options" [classes]="classes">UPLAOD</div>
+  `
 })
 class TestUploadBtnComponent {
   @ViewChild('btn') comp: NzUploadBtnComponent;
-  classes: string[] = [ 'test' ];
+  classes: string[] = ['test'];
   options: ZipButtonOptions = {
-    disabled             : false,
+    disabled: false,
     openFileDialogOnClick: true,
-    filters              : [],
-    customRequest        : undefined,
-    onStart              : () => {},
-    onError              : () => {}
+    filters: [],
+    customRequest: undefined,
+    onStart: () => {},
+    onError: () => {}
   };
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NzFormatEmitEvent } from 'ng-zorro-antd';
+import { NzFormatEmitEvent, NzTreeNodeOptions } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-tree-dynamic',
@@ -24,14 +24,22 @@ export class NzDemoTreeDynamicComponent implements OnInit {
     console.log(event);
     // load child async
     if (event.eventName === 'expand') {
-      setTimeout(() => {
-        if (event.node.getChildren().length === 0 && event.node.isExpanded) {
-          event.node.addChildren([
-            { title: 'Child Node', key: `${event.node.key}-0` },
-            { title: 'Child Node', key: `${event.node.key}-1` } ]);
-        }
-      }, 1000);
+      const node = event.node;
+      if (node && node.getChildren().length === 0 && node.isExpanded) {
+        this.loadNode().then(data => {
+          node.addChildren(data);
+        });
+      }
     }
+  }
+
+  loadNode(): Promise<NzTreeNodeOptions[]> {
+    return new Promise(resolve => {
+      setTimeout(() => resolve([
+          { title: 'Child Node', key: `${(new Date()).getTime()}-0` },
+          { title: 'Child Node', key: `${(new Date()).getTime()}-1` } ]),
+        1000);
+    });
   }
 
   ngOnInit(): void {

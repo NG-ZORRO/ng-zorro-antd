@@ -10,15 +10,15 @@ import {
 import { NzCommentActionComponent as CommentAction } from './nz-comment-cells';
 
 @Component({
-  selector       : 'nz-comment',
-  templateUrl    : './nz-comment.component.html',
-  encapsulation  : ViewEncapsulation.None,
+  selector: 'nz-comment',
+  templateUrl: './nz-comment.component.html',
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host           : {
-    'class': 'ant-comment'
+  host: {
+    class: 'ant-comment'
   },
-  styles         : [
-      `
+  styles: [
+    `
       nz-comment {
         display: block;
       }
@@ -30,12 +30,9 @@ import { NzCommentActionComponent as CommentAction } from './nz-comment-cells';
   ]
 })
 export class NzCommentComponent {
-
   @Input() nzAuthor: string | TemplateRef<void>;
   @Input() nzDatetime: string | TemplateRef<void>;
 
   @ContentChildren(CommentAction) actions: QueryList<CommentAction>;
-  constructor() {
-  }
-
+  constructor() {}
 }

@@ -16,16 +16,16 @@ describe('time-picker', () => {
   let overlayContainer: OverlayContainer;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NoopAnimationsModule, FormsModule, NzI18nModule, NzTimePickerModule ],
-      schemas     : [ NO_ERRORS_SCHEMA ],
-      declarations: [ NzTestTimePickerComponent ]
+      imports: [NoopAnimationsModule, FormsModule, NzI18nModule, NzTimePickerModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [NzTestTimePickerComponent]
     });
     TestBed.compileComponents();
-    inject([ OverlayContainer ], (oc: OverlayContainer) => {
+    inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
     })();
   }));
-  afterEach(inject([ OverlayContainer ], (currentOverlayContainer: OverlayContainer) => {
+  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
@@ -47,7 +47,9 @@ describe('time-picker', () => {
       fixture.detectChanges();
       testComponent.autoFocus = true;
       fixture.detectChanges();
-      expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('autofocus').name).toBe('autofocus');
+      expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('autofocus').name).toBe(
+        'autofocus'
+      );
       testComponent.autoFocus = false;
       fixture.detectChanges();
       expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('autofocus')).toBe(null);
@@ -101,7 +103,14 @@ describe('time-picker', () => {
 @Component({
   selector: 'nz-test-time-picker',
   template: `
-    <nz-time-picker [nzAutoFocus]="autoFocus" [(ngModel)]="date" [(nzOpen)]="open" (nzOpenChange)="openChange($event)" [nzDisabled]="disabled"></nz-time-picker>`
+    <nz-time-picker
+      [nzAutoFocus]="autoFocus"
+      [(ngModel)]="date"
+      [(nzOpen)]="open"
+      (nzOpenChange)="openChange($event)"
+      [nzDisabled]="disabled"
+    ></nz-time-picker>
+  `
 })
 export class NzTestTimePickerComponent {
   open = false;

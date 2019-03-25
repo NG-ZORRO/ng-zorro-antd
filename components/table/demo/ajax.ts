@@ -6,12 +6,18 @@ import { Observable } from 'rxjs';
 export class RandomUserService {
   randomUserUrl = 'https://api.randomuser.me/';
 
-  getUsers(pageIndex: number = 1, pageSize: number = 10, sortField: string, sortOrder: string, genders: string[]): Observable<{}> {
+  getUsers(
+    pageIndex: number = 1,
+    pageSize: number = 10,
+    sortField: string,
+    sortOrder: string,
+    genders: string[]
+  ): Observable<{}> {
     let params = new HttpParams()
-    .append('page', `${pageIndex}`)
-    .append('results', `${pageSize}`)
-    .append('sortField', sortField)
-    .append('sortOrder', sortOrder);
+      .append('page', `${pageIndex}`)
+      .append('results', `${pageSize}`)
+      .append('sortField', sortField)
+      .append('sortOrder', sortOrder);
     genders.forEach(gender => {
       params = params.append('gender', gender);
     });
@@ -20,14 +26,13 @@ export class RandomUserService {
     });
   }
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 }
 
 @Component({
-  selector : 'nz-demo-table-ajax',
-  providers: [ RandomUserService ],
-  template : `
+  selector: 'nz-demo-table-ajax',
+  providers: [RandomUserService],
+  template: `
     <nz-table
       #ajaxTable
       nzShowSizeChanger
@@ -38,7 +43,8 @@ export class RandomUserService {
       [(nzPageIndex)]="pageIndex"
       [(nzPageSize)]="pageSize"
       (nzPageIndexChange)="searchData()"
-      (nzPageSizeChange)="searchData(true)">
+      (nzPageSizeChange)="searchData(true)"
+    >
       <thead (nzSortChange)="sort($event)" nzSingleSort>
         <tr>
           <th nzShowSort nzSortKey="name">Name</th>
@@ -48,12 +54,13 @@ export class RandomUserService {
       </thead>
       <tbody>
         <tr *ngFor="let data of ajaxTable.data">
-          <td>{{data.name.first}} {{data.name.last}}</td>
-          <td>{{data.gender}}</td>
-          <td>{{data.email}}</td>
+          <td>{{ data.name.first }} {{ data.name.last }}</td>
+          <td>{{ data.gender }}</td>
+          <td>{{ data.email }}</td>
         </tr>
       </tbody>
-    </nz-table>`
+    </nz-table>
+  `
 })
 export class NzDemoTableAjaxComponent implements OnInit {
   pageIndex = 1;
@@ -63,31 +70,29 @@ export class NzDemoTableAjaxComponent implements OnInit {
   loading = true;
   sortValue: string | null = null;
   sortKey: string | null = null;
-  filterGender = [
-    { text: 'male', value: 'male' },
-    { text: 'female', value: 'female' }
-  ];
+  filterGender = [{ text: 'male', value: 'male' }, { text: 'female', value: 'female' }];
   searchGenderList: string[] = [];
 
-  sort(sort: { key: string, value: string }): void {
+  sort(sort: { key: string; value: string }): void {
     this.sortKey = sort.key;
     this.sortValue = sort.value;
     this.searchData();
   }
 
-  constructor(private randomUserService: RandomUserService) {
-  }
+  constructor(private randomUserService: RandomUserService) {}
 
   searchData(reset: boolean = false): void {
     if (reset) {
       this.pageIndex = 1;
     }
     this.loading = true;
-    this.randomUserService.getUsers(this.pageIndex, this.pageSize, this.sortKey!, this.sortValue!, this.searchGenderList).subscribe((data: any) => {
-      this.loading = false;
-      this.total = 200;
-      this.listOfData = data.results;
-    });
+    this.randomUserService
+      .getUsers(this.pageIndex, this.pageSize, this.sortKey!, this.sortValue!, this.searchGenderList)
+      .subscribe((data: any) => {
+        this.loading = false;
+        this.total = 200;
+        this.listOfData = data.results;
+      });
   }
 
   updateFilter(value: string[]): void {

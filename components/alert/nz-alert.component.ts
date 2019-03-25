@@ -14,16 +14,18 @@ import { NgClassType } from '../core/types/ng-class';
 import { InputBoolean } from '../core/util/convert';
 
 @Component({
-  selector           : 'nz-alert',
-  animations         : [ slideAlertMotion ],
-  templateUrl        : './nz-alert.component.html',
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
+  selector: 'nz-alert',
+  animations: [slideAlertMotion],
+  templateUrl: './nz-alert.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
-  styles             : [
-      `nz-alert {
-      display: block;
-    }`
+  styles: [
+    `
+      nz-alert {
+        display: block;
+      }
+    `
   ]
 })
 export class NzAlertComponent implements OnChanges {

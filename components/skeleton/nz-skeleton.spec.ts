@@ -134,12 +134,7 @@ describe('skeleton', () => {
 @Component({
   selector: 'nz-test-skeleton',
   template: `
-    <nz-skeleton
-      [nzActive]="nzActive"
-      [nzAvatar]="nzAvatar"
-      [nzTitle]="nzTitle"
-      [nzParagraph]="nzParagraph"
-    >
+    <nz-skeleton [nzActive]="nzActive" [nzAvatar]="nzAvatar" [nzTitle]="nzTitle" [nzParagraph]="nzParagraph">
     </nz-skeleton>
   `
 })
@@ -147,5 +142,5 @@ export class NzTestSkeletonComponent {
   nzActive: boolean;
   nzAvatar: NzSkeletonAvatar | boolean;
   nzTitle: NzSkeletonTitle | boolean;
-  nzParagraph: NzSkeletonParagraph | boolean ;
+  nzParagraph: NzSkeletonParagraph | boolean;
 }

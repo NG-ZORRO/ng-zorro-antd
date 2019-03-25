@@ -20,9 +20,7 @@ export class NzHighlightComponent implements OnInit {
     this._code = decodeURIComponent(value).trim();
   }
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

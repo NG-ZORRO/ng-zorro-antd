@@ -12,7 +12,8 @@ import { Component } from '@angular/core';
               [nzTitle]="'Active'"
               [nzPrefix]="prefixTplOne"
               [nzSuffix]="'%'"
-              [nzValueStyle]="{ color: '#3F8600' }">
+              [nzValueStyle]="{ color: '#3F8600' }"
+            >
             </nz-statistic>
             <ng-template #prefixTplOne><i nz-icon type="arrow-up"></i></ng-template>
           </nz-card>
@@ -24,7 +25,8 @@ import { Component } from '@angular/core';
               [nzTitle]="'Idle'"
               [nzPrefix]="prefixTplTwo"
               [nzSuffix]="'%'"
-              [nzValueStyle]="{ color: '#CF1322' }">
+              [nzValueStyle]="{ color: '#CF1322' }"
+            >
             </nz-statistic>
             <ng-template #prefixTplTwo><i nz-icon type="arrow-down"></i></ng-template>
           </nz-card>
@@ -33,5 +35,4 @@ import { Component } from '@angular/core';
     </div>
   `
 })
-export class NzDemoStatisticCardComponent {
-}
+export class NzDemoStatisticCardComponent {}

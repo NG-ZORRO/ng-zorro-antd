@@ -5,10 +5,8 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { NzNavBottomComponent } from './nz-nav-bottom.component';
 
 @NgModule({
-  imports     : [ CommonModule, RouterModule, NgZorroAntdModule ],
-  declarations: [ NzNavBottomComponent ],
-  exports     : [ NzNavBottomComponent ]
+  imports: [CommonModule, RouterModule, NgZorroAntdModule],
+  declarations: [NzNavBottomComponent],
+  exports: [NzNavBottomComponent]
 })
-export class NzNavBottomModule {
-
-}
+export class NzNavBottomModule {}

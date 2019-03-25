@@ -30,15 +30,15 @@ import { NzWaveConfig, NzWaveDirective, NZ_WAVE_GLOBAL_CONFIG } from '../core/wa
 import { NzIconDirective } from '../icon/nz-icon.directive';
 
 export type NzButtonType = 'primary' | 'dashed' | 'danger' | 'default';
-export type NzButtonShape = 'circle' | 'round' | null ;
+export type NzButtonShape = 'circle' | 'round' | null;
 
 @Component({
-  selector           : '[nz-button]',
-  providers          : [ NzUpdateHostClassService ],
+  selector: '[nz-button]',
+  providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  templateUrl        : './nz-button.component.html'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './nz-button.component.html'
 })
 export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, OnChanges {
   readonly el: HTMLElement = this.elementRef.nativeElement;
@@ -46,7 +46,12 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
   private iconOnly = false;
   @ViewChild('contentElement') contentElement: ElementRef;
   @ContentChildren(NzIconDirective, { read: ElementRef }) listOfIconElement: QueryList<ElementRef>;
-  @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(this.ngZone, this.elementRef, this.waveConfig, this.animationType);
+  @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(
+    this.ngZone,
+    this.elementRef,
+    this.waveConfig,
+    this.animationType
+  );
   @Input() @InputBoolean() nzBlock = false;
   @Input() @InputBoolean() nzGhost = false;
   @Input() @InputBoolean() nzSearch = false;
@@ -60,15 +65,15 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
     const prefixCls = 'ant-btn';
     const sizeMap: NzSizeMap = { large: 'lg', small: 'sm' };
     this.nzUpdateHostClassService.updateHostClass(this.el, {
-      [ `${prefixCls}` ]                          : true,
-      [ `${prefixCls}-${this.nzType}` ]           : this.nzType,
-      [ `${prefixCls}-${this.nzShape}` ]          : this.nzShape,
-      [ `${prefixCls}-${sizeMap[ this.nzSize ]}` ]: sizeMap[ this.nzSize ],
-      [ `${prefixCls}-loading` ]                  : this.nzLoading,
-      [ `${prefixCls}-icon-only` ]                : this.iconOnly,
-      [ `${prefixCls}-background-ghost` ]         : this.nzGhost,
-      [ `${prefixCls}-block` ]                    : this.nzBlock,
-      [ `ant-input-search-button` ]               : this.nzSearch
+      [`${prefixCls}`]: true,
+      [`${prefixCls}-${this.nzType}`]: this.nzType,
+      [`${prefixCls}-${this.nzShape}`]: this.nzShape,
+      [`${prefixCls}-${sizeMap[this.nzSize]}`]: sizeMap[this.nzSize],
+      [`${prefixCls}-loading`]: this.nzLoading,
+      [`${prefixCls}-icon-only`]: this.iconOnly,
+      [`${prefixCls}-background-ghost`]: this.nzGhost,
+      [`${prefixCls}-block`]: this.nzBlock,
+      [`ant-input-search-button`]: this.nzSearch
     });
   }
 
@@ -101,23 +106,24 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
     if (this.listOfIconElement && this.listOfIconElement.length) {
       const firstChildElement = findFirstNotEmptyNode(this.contentElement.nativeElement);
       const lastChildElement = findLastNotEmptyNode(this.contentElement.nativeElement);
-      if (firstChildElement && (firstChildElement === this.listOfIconElement.first.nativeElement)) {
+      if (firstChildElement && firstChildElement === this.listOfIconElement.first.nativeElement) {
         this.renderer.insertBefore(this.el, firstChildElement, this.contentElement.nativeElement);
         this.iconElement = firstChildElement as HTMLElement;
-      } else if (lastChildElement && (lastChildElement === this.listOfIconElement.last.nativeElement)) {
+      } else if (lastChildElement && lastChildElement === this.listOfIconElement.last.nativeElement) {
         this.renderer.appendChild(this.el, lastChildElement);
       }
     }
   }
 
-  constructor(private elementRef: ElementRef,
-              private cdr: ChangeDetectorRef,
-              private renderer: Renderer2,
-              private nzUpdateHostClassService: NzUpdateHostClassService,
-              private ngZone: NgZone,
-              @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private waveConfig: NzWaveConfig,
-              @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string) {
-  }
+  constructor(
+    private elementRef: ElementRef,
+    private cdr: ChangeDetectorRef,
+    private renderer: Renderer2,
+    private nzUpdateHostClassService: NzUpdateHostClassService,
+    private ngZone: NgZone,
+    @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private waveConfig: NzWaveConfig,
+    @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string
+  ) {}
 
   ngAfterContentInit(): void {
     this.checkContent();
@@ -133,7 +139,15 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzBlock || changes.nzGhost || changes.nzSearch || changes.nzType || changes.nzShape || changes.nzSize || changes.nzLoading) {
+    if (
+      changes.nzBlock ||
+      changes.nzGhost ||
+      changes.nzSearch ||
+      changes.nzType ||
+      changes.nzShape ||
+      changes.nzSize ||
+      changes.nzLoading
+    ) {
       this.setClassMap();
     }
     if (changes.nzLoading) {
