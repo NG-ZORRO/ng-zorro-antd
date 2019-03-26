@@ -10,19 +10,17 @@ import { NzPageHeaderComponent } from './nz-page-header.component';
 import { NzPageHeaderModule } from './nz-page-header.module';
 
 describe('NzPageHeaderComponent', () => {
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzPageHeaderModule ],
-      schemas     : [ NO_ERRORS_SCHEMA ],
+      imports: [NzPageHeaderModule],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [
         NzDemoPageHeaderBasicComponent,
         NzDemoPageHeaderBreadcrumbComponent,
         NzDemoPageHeaderContentComponent,
         NzDemoPageHeaderActionsComponent
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   it('should basic work', () => {
@@ -30,8 +28,8 @@ describe('NzPageHeaderComponent', () => {
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
     fixture.detectChanges();
     expect(pageHeader.nativeElement.classList).toContain('ant-page-header');
-    expect(pageHeader.nativeElement.querySelector('.ant-page-header-title')).toBeTruthy();
-    expect(pageHeader.nativeElement.querySelector('.ant-page-header-sub-title')).toBeTruthy();
+    expect(pageHeader.nativeElement.querySelector('.ant-page-header-title-view-title')).toBeTruthy();
+    expect(pageHeader.nativeElement.querySelector('.ant-page-header-title-view-sub-title')).toBeTruthy();
   });
 
   it('should breadcrumb work', () => {
@@ -55,8 +53,10 @@ describe('NzPageHeaderComponent', () => {
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
     fixture.detectChanges();
     expect(pageHeader.nativeElement.classList).toContain('ant-page-header-have-footer');
-    expect(pageHeader.nativeElement.querySelector('nz-page-header-extra.ant-page-header-extra')).toBeTruthy();
-    expect(pageHeader.nativeElement.querySelector('nz-page-header-tags.ant-page-header-tags')).toBeTruthy();
+    expect(
+      pageHeader.nativeElement.querySelector('nz-page-header-extra.ant-page-header-title-view-extra')
+    ).toBeTruthy();
+    expect(pageHeader.nativeElement.querySelector('nz-page-header-tags.ant-page-header-title-view-tags')).toBeTruthy();
     expect(pageHeader.nativeElement.querySelector('nz-page-header-footer.ant-page-header-footer')).toBeTruthy();
   });
 
@@ -86,5 +86,4 @@ describe('NzPageHeaderComponent', () => {
     fixture.detectChanges();
     expect(context.onBack).toHaveBeenCalled();
   });
-
 });
