@@ -51,9 +51,8 @@ import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
 })
 export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges, AfterContentInit {
   /** public data for ngFor tr */
-  data = [];
-  /* tslint:disable-next-line:no-any */
-  locale: any = {};
+  data: any[] = []; // tslint:disable-line:no-any
+  locale: any = {}; // tslint:disable-line:no-any
   nzTheadComponent: NzTheadComponent;
   lastScrollLeft = 0;
   headerBottomStyle = {};
@@ -188,7 +187,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   }
 
   updateFrontPaginationDataIfNeeded(isPageSizeOrDataChange: boolean = false): void {
-    let data = [];
+    let data: any[] = []; // tslint:disable-line:no-any
     if (this.nzFrontPagination) {
       this.nzTotal = this.nzData.length;
       if (isPageSizeOrDataChange) {
