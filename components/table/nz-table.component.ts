@@ -79,7 +79,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   @Input() nzWidthConfig: string[] = [];
   @Input() nzPageIndex = 1;
   @Input() nzPageSize = 10;
-  @Input() nzData = [];
+  @Input() nzData: any[] = []; // tslint:disable-line:no-any
   @Input() nzPaginationPosition: 'top' | 'bottom' | 'both' = 'bottom';
   @Input() nzScroll: { x: string | null; y: string | null } = { x: null, y: null };
   @Input() @ViewChild('renderItemTemplate') nzItemRender: TemplateRef<{
