@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzDemoPageHeaderActionsComponent } from './demo/actions';
 import { NzDemoPageHeaderBasicComponent } from './demo/basic';
 import { NzDemoPageHeaderBreadcrumbComponent } from './demo/breadcrumb';
@@ -12,7 +13,7 @@ import { NzPageHeaderModule } from './nz-page-header.module';
 describe('NzPageHeaderComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NzPageHeaderModule],
+      imports: [NzPageHeaderModule, NzIconTestModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [
         NzDemoPageHeaderBasicComponent,
@@ -52,7 +53,7 @@ describe('NzPageHeaderComponent', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderActionsComponent);
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
     fixture.detectChanges();
-    expect(pageHeader.nativeElement.classList).toContain('ant-page-header-have-footer');
+    expect(pageHeader.nativeElement.classList).toContain('ant-page-header-has-footer');
     expect(
       pageHeader.nativeElement.querySelector('nz-page-header-extra.ant-page-header-title-view-extra')
     ).toBeTruthy();
