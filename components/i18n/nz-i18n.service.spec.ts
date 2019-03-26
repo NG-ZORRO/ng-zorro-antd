@@ -23,6 +23,9 @@ describe('nz-i18n.service', () => {
     it('should be auto default zh_CN', () => {
       expect(srv.getLocale().locale).toBe(DEFAULT_LAN.locale);
     });
+    it('ng locale id should equal default locale', () => {
+      expect(srv.getNgLocaleId()).toBe(DEFAULT_LAN.locale);
+    });
     it('should trigger changed when set different lang', () => {
       spyOn(srv['_change'], 'next');
       expect(srv['_change'].next).not.toHaveBeenCalled();

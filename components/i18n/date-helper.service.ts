@@ -105,7 +105,7 @@ export class DateHelperByDatePipe extends DateHelperService {
   }
 
   format(date: Date, formatStr: string): string {
-    return date ? this.datePipe.transform(date, formatStr, undefined, this.i18n.getLocaleId())! : '';
+    return date ? this.datePipe.transform(date, formatStr, undefined, this.i18n.getNgLocaleId())! : '';
   }
 
   /**

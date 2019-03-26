@@ -4,7 +4,7 @@ import { IndexableObject } from '../core/types/indexable';
 
 import zh_CN from './languages/zh_CN';
 import { DateLocale, NzI18nInterface } from './nz-i18n.interface';
-import { NZ_DATE_LOCALE, NZ_I18N } from './nz-i18n.token';
+import { NZ_DATE_LOCALE, NZ_I18N, NZ_I18N_LOCALEID } from './nz-i18n.token';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +13,18 @@ export class NzI18nService {
   private _locale: NzI18nInterface;
   private _change = new BehaviorSubject<NzI18nInterface>(this._locale);
   private dateLocale: DateLocale;
+  private _ngLocaleId: string;
 
   get localeChange(): Observable<NzI18nInterface> {
     return this._change.asObservable();
   }
 
-  constructor(@Inject(NZ_I18N) locale: NzI18nInterface, @Inject(NZ_DATE_LOCALE) dateLocale: DateLocale) {
-    this.setLocale(locale || zh_CN);
+  constructor(
+    @Inject(NZ_I18N) locale: NzI18nInterface,
+    @Inject(NZ_I18N_LOCALEID) localeId: string,
+    @Inject(NZ_DATE_LOCALE) dateLocale: DateLocale
+  ) {
+    this.setLocale(locale || zh_CN, localeId);
     this.setDateLocale(dateLocale || null);
   }
 
@@ -43,16 +48,21 @@ export class NzI18nService {
    * [NOTE] If called at runtime, rendered interface may not change along with the locale change (because this do not trigger another render schedule)
    * @param locale The translating letters
    */
-  setLocale(locale: NzI18nInterface): void {
+  setLocale(locale: NzI18nInterface, ngLocaleId: string = ''): void {
     if (this._locale && this._locale.locale === locale.locale) {
       return;
     }
+    this._ngLocaleId = ngLocaleId || locale.locale;
     this._locale = locale;
     this._change.next(locale);
   }
 
   getLocale(): NzI18nInterface {
     return this._locale;
+  }
+
+  getNgLocaleId(): string {
+    return this._ngLocaleId ? this._ngLocaleId : this.getLocaleId();
   }
 
   getLocaleId(): string {
