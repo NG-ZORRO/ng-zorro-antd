@@ -105,7 +105,11 @@ export class DateHelperByDatePipe extends DateHelperService {
   }
 
   format(date: Date, formatStr: string): string {
-    return date ? this.datePipe.transform(date, formatStr, undefined, this.i18n.getLocaleId())! : '';
+    let locale = this.i18n.getLocaleId();
+    if (locale === 'zh-tw') {
+      locale = 'zh-Hant';
+    }
+    return date ? this.datePipe.transform(date, formatStr, undefined, locale)! : '';
   }
 
   /**
