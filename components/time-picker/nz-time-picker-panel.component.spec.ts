@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzTimePickerPanelComponent } from './nz-time-picker-panel.component';
-
 describe('time-picker-panel', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -168,7 +167,7 @@ describe('time-picker-panel', () => {
     it('basic 12-hour time-picker-panel', fakeAsync(() => {
       fixture12Hour.detectChanges();
       expect(testComponent.nzTimePickerPanelComponent.enabledColumns).toBe(4);
-      const listColumns: HTMLElement[] = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select');
+      let listColumns: HTMLElement[] = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select');
       expect(listColumns[0].querySelectorAll('li')[0].innerText).toBe('12');
       const hour12labels = listColumns[3].querySelectorAll('li');
       expect(hour12labels[0].innerText).toBe('am');
@@ -179,13 +178,29 @@ describe('time-picker-panel', () => {
       fixture12Hour.detectChanges();
       tick(1000);
       fixture12Hour.detectChanges();
-      const listOfSelectedLi = panelElement.nativeElement.querySelectorAll(
+      let listOfSelectedLi = panelElement.nativeElement.querySelectorAll(
         '.ant-time-picker-panel-select-option-selected'
       );
       expect(listOfSelectedLi[0].innerText).toBe('12');
       expect(listOfSelectedLi[1].innerText).toBe('00');
       expect(listOfSelectedLi[2].innerText).toBe('00');
       expect(listOfSelectedLi[3].innerText).toBe('am');
+      fixture12Hour.componentInstance.nzTimePickerPanelComponent.select12Hours({ index: 1, value: 'pm' });
+      fixture12Hour.componentInstance.openValue = new Date(0, 0, 0, 5, 6, 7);
+      fixture12Hour.detectChanges();
+      fixture12Hour.componentInstance.nzTimePickerPanelComponent.opened = false;
+      fixture12Hour.detectChanges();
+      tick(1000);
+      fixture12Hour.detectChanges();
+      fixture12Hour.componentInstance.nzTimePickerPanelComponent.opened = true;
+      fixture12Hour.detectChanges();
+      tick(1000);
+      fixture12Hour.detectChanges();
+      listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select-option-selected');
+      expect(listOfSelectedLi[0].innerText).toBe('05');
+      expect(listOfSelectedLi[1].innerText).toBe('06');
+      expect(listOfSelectedLi[2].innerText).toBe('07');
+      expect(listOfSelectedLi[3].innerText).toBe('pm');
     }));
     it('select hour and 12-hour in 12-hour-time-picker-panel', fakeAsync(() => {
       fixture12Hour.detectChanges();
