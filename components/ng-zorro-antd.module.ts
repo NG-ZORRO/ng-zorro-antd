@@ -36,6 +36,7 @@ import { NzMenuModule } from './menu/nz-menu.module';
 import { NzMessageModule } from './message/nz-message.module';
 import { NzModalModule } from './modal/nz-modal.module';
 import { NzNotificationModule } from './notification/nz-notification.module';
+import { NzPageHeaderModule } from './page-header/nz-page-header.module';
 import { NzPaginationModule } from './pagination/nz-pagination.module';
 import { NzPopconfirmModule } from './popconfirm/nz-popconfirm.module';
 import { NzPopoverModule } from './popover/nz-popover.module';
@@ -90,6 +91,7 @@ export * from './layout';
 export * from './list';
 export * from './mention';
 export * from './menu';
+export * from './page-header';
 export * from './pagination';
 export * from './progress';
 export * from './radio';
@@ -149,6 +151,7 @@ export * from './core/no-animation';
     NzRadioModule,
     NzAlertModule,
     NzSpinModule,
+    NzPageHeaderModule,
     NzProgressModule,
     NzTabsModule,
     NzIconModule,
