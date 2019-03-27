@@ -81,6 +81,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
 
   private destroy$ = new Subject<void>();
   private isChildMenuSelected = false;
+  private isMouseHover = false;
 
   setOpenState(open: boolean): void {
     this.nzSubmenuService.setOpenState(open);
@@ -93,6 +94,8 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   }
 
   setMouseEnterState(value: boolean): void {
+    this.isMouseHover = value;
+    this.setClassMap();
     this.nzSubmenuService.setMouseEnterState(value);
   }
 
@@ -114,7 +117,8 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
       [`${prefixName}-disabled`]: this.nzDisabled,
       [`${prefixName}-open`]: this.nzOpen,
       [`${prefixName}-selected`]: this.isChildMenuSelected,
-      [`${prefixName}-${this.nzSubmenuService.mode}`]: true
+      [`${prefixName}-${this.nzSubmenuService.mode}`]: true,
+      [`${prefixName}-active`]: this.isMouseHover && !this.nzDisabled
     });
   }
 
