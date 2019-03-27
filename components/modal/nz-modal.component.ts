@@ -30,7 +30,6 @@ import {
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { isNotNil } from '../core/util';
 import { InputBoolean } from '../core/util/convert';
 import { isPromise } from '../core/util/is-promise';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -80,36 +79,24 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzModalType: ModalType = 'default';
 
-  @Input() @InputBoolean()
+  @Input()
+  @InputBoolean()
   get nzMask(): boolean {
-    if (this.nzMaskDetect.dirty) {
-      return this.nzMaskDetect.value;
-    } else if (isNotNil(this.globalConfig) && isNotNil(this.globalConfig.nzMask)) {
-      return this.globalConfig.nzMask;
-    } else {
-      return true;
-    }
+    return this._nzMask;
   }
 
   set nzMask(value: boolean) {
-    this.nzMaskDetect.value = value;
-    this.nzMaskDetect.dirty = true;
+    this._nzMask = value;
   }
 
-  @Input() @InputBoolean()
+  @Input()
+  @InputBoolean()
   get nzMaskClosable(): boolean {
-    if (this.nzMaskClosableDetect.dirty) {
-      return this.nzMaskClosableDetect.value;
-    } else if (isNotNil(this.globalConfig) && isNotNil(this.globalConfig.nzMaskClosable)) {
-      return this.globalConfig.nzMaskClosable;
-    } else {
-      return true;
-    }
+    return this._nzMaskClosable;
   }
 
   set nzMaskClosable(value: boolean) {
-    this.nzMaskClosableDetect.value = value;
-    this.nzMaskClosableDetect.dirty = true;
+    this._nzMaskClosable = value;
   }
 
   @Input() @Output() readonly nzOnOk: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
@@ -145,6 +132,34 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     return !this.nzVisible && !this.animationState;
   } // Indicate whether this dialog should hidden
 
+  /** the calculated highest weight of mask value
+   * weight of mask:
+   * component default value < global configuration < component input value
+   */
+  get mask(): boolean {
+    if (this.nzMask != null) {
+      return this.nzMask;
+    } else if (this.nzModalGlobalConfig && this.nzModalGlobalConfig.nzMask != null) {
+      return this.nzModalGlobalConfig.nzMask;
+    } else {
+      return true;
+    }
+  }
+
+  /** the calculated highest weight of maskClosable value
+   *  weight of maskClosable:
+   *  component default value < global configuration < component input value
+   */
+  get maskClosable(): boolean {
+    if (this.nzMaskClosable != null) {
+      return this.nzMaskClosable;
+    } else if (this.nzModalGlobalConfig && this.nzModalGlobalConfig.nzMaskClosable != null) {
+      return this.nzModalGlobalConfig.nzMaskClosable;
+    } else {
+      return true;
+    }
+  }
+
   locale: { okText?: string; cancelText?: string } = {};
   maskAnimationClassMap: object | null;
   modalAnimationClassMap: object | null;
@@ -157,14 +172,9 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   private previouslyFocusedElement: HTMLElement;
   private focusTrap: FocusTrap;
   private scrollStrategy: BlockScrollStrategy;
-  private globalConfig: NzModalConfig;
-  private nzMaskDetect: { dirty: boolean, value?: boolean } = {
-    dirty: false
-  };
-
-  private nzMaskClosableDetect: { dirty: boolean, value?: boolean } = {
-    dirty: false
-  };
+  private nzModalGlobalConfig: NzModalConfig;
+  private _nzMask: boolean;
+  private _nzMaskClosable: boolean;
 
   [key: string]: any; // tslint:disable-line:no-any
 
@@ -177,11 +187,13 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     private modalControl: NzModalControlService,
     private focusTrapFactory: FocusTrapFactory,
     private cdr: ChangeDetectorRef,
-    @Optional() @Inject(NZ_MODAL_CONFIG) globalConfig: NzModalConfig,
-    @Inject(DOCUMENT) private document: any) { // tslint:disable-line:no-any
+    @Optional() @Inject(NZ_MODAL_CONFIG) nzModalGlobalConfig: NzModalConfig,
+    @Inject(DOCUMENT) private document: any
+  ) {
+    // tslint:disable-line:no-any
 
     super();
-    this.globalConfig = globalConfig;
+    this.nzModalGlobalConfig = nzModalGlobalConfig;
     this.scrollStrategy = this.overlay.scrollStrategies.block();
   }
 
@@ -296,8 +308,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
 
   onClickMask($event: MouseEvent): void {
     if (
-      this.nzMask &&
-      this.nzMaskClosable &&
+      this.mask &&
+      this.maskClosable &&
       ($event.target as HTMLElement).classList.contains('ant-modal-wrap') &&
       this.nzVisible
     ) {

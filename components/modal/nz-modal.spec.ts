@@ -377,27 +377,26 @@ describe('global config', () => {
   let nativeElement: HTMLElement;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ NoopAnimationsModule, NzModalModule ],
-      providers: [{
-        provide: NZ_MODAL_CONFIG,
-        useValue: {
-          nzMask: false,
-          nzMaskClosable: false
+      imports: [NoopAnimationsModule, NzModalModule],
+      providers: [
+        {
+          provide: NZ_MODAL_CONFIG,
+          useValue: {
+            nzMask: false,
+            nzMaskClosable: false
+          }
         }
-      }],
-      declarations: [
-        NzDemoModalBasicComponent,
-        NzDemoModalWithInputComponent
-      ]
+      ],
+      declarations: [NzDemoModalBasicComponent, NzDemoModalWithInputComponent]
     }).compileComponents();
     basicFixture = TestBed.createComponent<NzDemoModalBasicComponent>(NzDemoModalBasicComponent);
     inputFixture = TestBed.createComponent<NzDemoModalWithInputComponent>(NzDemoModalWithInputComponent);
   });
 
-  it('nzMask be global config value', fakeAsync(() => {
+  it('nzMask should be global config value', fakeAsync(() => {
     const debugElement = basicFixture.debugElement.query(By.css('.ant-modal-mask'));
     basicFixture.detectChanges();
-    expect(debugElement).toBe(null);
+    expect(debugElement).toBeNull();
   }));
 
   it('nzMask should be input value', fakeAsync(() => {
@@ -405,7 +404,7 @@ describe('global config', () => {
     inputFixture.detectChanges();
     nativeElement = inputFixture.debugElement.query(By.css('.ant-modal-mask')).nativeElement;
     inputFixture.detectChanges();
-    expect(nativeElement).not.toBe(null);
+    expect(nativeElement).not.toBeNull();
   }));
 
   it('nzMaskClosable should be global config value', fakeAsync(() => {
@@ -413,7 +412,7 @@ describe('global config', () => {
     inputFixture.detectChanges();
     nativeElement = inputFixture.debugElement.query(By.css('.ant-modal-wrap')).nativeElement;
     inputFixture.detectChanges();
-    nativeElement.click();
+    nativeElement!.click();
     inputFixture.detectChanges();
     console.log(inputFixture.debugElement.nativeElement);
     expectModalHidden(inputFixture.debugElement.query(By.css('nz-modal')).nativeElement, true);
