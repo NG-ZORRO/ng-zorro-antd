@@ -61,6 +61,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   @Input() @InputBoolean() nzCancelLoading: boolean = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() @InputBoolean() nzNoAnimation = false;
+  @Input() @InputBoolean() nzMask: boolean;
+  @Input() @InputBoolean() nzMaskClosable: boolean;
   @Input() nzContent: string | TemplateRef<{}> | Type<T>; // [STATIC] If not specified, will use <ng-content>
   @Input() nzComponentParams: T; // [STATIC] ONLY avaliable when nzContent is a component
   @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>>; // [STATIC] Default Modal ONLY
@@ -78,26 +80,6 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   @Input() nzOkType = 'primary';
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzModalType: ModalType = 'default';
-
-  @Input()
-  @InputBoolean()
-  get nzMask(): boolean {
-    return this._nzMask;
-  }
-
-  set nzMask(value: boolean) {
-    this._nzMask = value;
-  }
-
-  @Input()
-  @InputBoolean()
-  get nzMaskClosable(): boolean {
-    return this._nzMaskClosable;
-  }
-
-  set nzMaskClosable(value: boolean) {
-    this._nzMaskClosable = value;
-  }
 
   @Input() @Output() readonly nzOnOk: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
   @Input() @Output() readonly nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
@@ -132,9 +114,12 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     return !this.nzVisible && !this.animationState;
   } // Indicate whether this dialog should hidden
 
-  /** the calculated highest weight of mask value
-   * weight of mask:
-   * component default value < global configuration < component input value
+  /**
+   * @description
+   * The calculated highest weight of mask value
+   *
+   *  Weight of different mask input:
+   *  component default value < global configuration < component input value
    */
   get mask(): boolean {
     if (this.nzMask != null) {
@@ -146,8 +131,11 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     }
   }
 
-  /** the calculated highest weight of maskClosable value
-   *  weight of maskClosable:
+  /**
+   * @description
+   * The calculated highest weight of maskClosable value
+   *
+   *  Weight of different maskClosable input:
    *  component default value < global configuration < component input value
    */
   get maskClosable(): boolean {
@@ -173,8 +161,6 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   private focusTrap: FocusTrap;
   private scrollStrategy: BlockScrollStrategy;
   private nzModalGlobalConfig: NzModalConfig;
-  private _nzMask: boolean;
-  private _nzMaskClosable: boolean;
 
   [key: string]: any; // tslint:disable-line:no-any
 
@@ -188,7 +174,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     private focusTrapFactory: FocusTrapFactory,
     private cdr: ChangeDetectorRef,
     @Optional() @Inject(NZ_MODAL_CONFIG) nzModalGlobalConfig: NzModalConfig,
-    @Inject(DOCUMENT) private document: any
+    @Inject(DOCUMENT) private document: Document
   ) {
     // tslint:disable-line:no-any
 
