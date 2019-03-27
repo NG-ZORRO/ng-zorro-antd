@@ -70,6 +70,11 @@ export class NzProgressComponent implements OnInit, OnChanges {
     return this.nzType === 'circle' || this.nzType === 'dashboard';
   }
 
+  ngOnInit(): void {
+    this.updatePathStyles();
+    this.updateIcon();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     const {
       nzGapPosition,
@@ -172,21 +177,8 @@ export class NzProgressComponent implements OnInit, OnChanges {
 
   updateIcon(): void {
     const isCircle = this.nzType === 'circle' || this.nzType === 'dashboard';
-    let ret = '';
-
-    if (this.status === 'success') {
-      ret = 'check';
-    } else if (this.status === 'exception') {
-      ret = 'close';
-    } else {
-      return;
-    }
+    const ret = this.status === 'success' ? 'check' : this.status === 'exception' ? 'close' : '';
 
     this.icon = ret ? ret + (isCircle ? '-o' : '-circle-fill') : '';
-  }
-
-  ngOnInit(): void {
-    this.updatePathStyles();
-    this.updateIcon();
   }
 }
