@@ -30,7 +30,7 @@ import { map } from 'rxjs/operators';
 export class NzDemoSelectScrollLoadComponent implements OnInit {
   randomUserUrl = 'https://api.randomuser.me/?results=10';
   optionList: string[] = [];
-  selectedUser = '';
+  selectedUser = null;
   isLoading = false;
   // tslint:disable:no-any
   getRandomNameList: Observable<string[]> = this.http

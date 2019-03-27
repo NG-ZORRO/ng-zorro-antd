@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NzDemoSelectAutomaticTokenizationComponent implements OnInit {
   listOfOption: Array<{ label: string; value: string }> = [];
-  listOfTagOptions = [];
+  listOfTagOptions = null;
 
   ngOnInit(): void {
     const children: Array<{ label: string; value: string }> = [];
