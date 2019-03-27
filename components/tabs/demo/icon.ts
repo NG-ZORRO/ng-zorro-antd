@@ -5,24 +5,23 @@ import { Component } from '@angular/core';
   template: `
     <nz-tabset>
       <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
-        <ng-template #titleTemplate>
-          <i nz-icon [type]="tab.icon"></i>{{ tab.name }}
-        </ng-template>
+        <ng-template #titleTemplate> <i nz-icon [type]="tab.icon"></i>{{ tab.name }} </ng-template>
         {{ tab.name }}
       </nz-tab>
-    </nz-tabset>`
+    </nz-tabset>
+  `
 })
 export class NzDemoTabsIconComponent {
   tabs = [
     {
       active: true,
-      name  : 'Tab 1',
-      icon  : 'apple'
+      name: 'Tab 1',
+      icon: 'apple'
     },
     {
       active: false,
-      name  : 'Tab 2',
-      icon  : 'android'
+      name: 'Tab 2',
+      icon: 'android'
     }
   ];
 }

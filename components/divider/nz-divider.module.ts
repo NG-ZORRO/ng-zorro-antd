@@ -4,9 +4,8 @@ import { NzAddOnModule } from '../core/addon/addon.module';
 import { NzDividerComponent } from './nz-divider.component';
 
 @NgModule({
-  imports     : [ CommonModule, NzAddOnModule ],
-  declarations: [ NzDividerComponent ],
-  exports     : [ NzDividerComponent ]
+  imports: [CommonModule, NzAddOnModule],
+  declarations: [NzDividerComponent],
+  exports: [NzDividerComponent]
 })
-export class NzDividerModule {
-}
+export class NzDividerModule {}

@@ -11,19 +11,17 @@ import { NzCommentComponent } from './nz-comment.component';
 import { NzCommentModule } from './nz-comment.module';
 
 describe('NzCommentComponent', () => {
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzCommentModule, NzListModule ],
-      schemas     : [ NO_ERRORS_SCHEMA ],
+      imports: [NzCommentModule, NzListModule],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [
         NzDemoCommentBasicComponent,
         NzDemoCommentEditorComponent,
         NzDemoCommentListComponent,
         NzDemoCommentNestedComponent
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   it('should basic work', () => {
@@ -51,24 +49,36 @@ describe('NzCommentComponent', () => {
     expect(component.dislikes).toBe(0);
     expect(comment.nativeElement.classList).toContain('ant-comment');
     expect(comment.nativeElement.querySelectorAll('.ant-comment-actions li>span').length).toBe(3);
-    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .like').innerText).toBe(component.likes.toString());
-    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .dislike').innerText).toBe(component.dislikes.toString());
+    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .like').innerText).toBe(
+      component.likes.toString()
+    );
+    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .dislike').innerText).toBe(
+      component.dislikes.toString()
+    );
 
     component.like();
     fixture.detectChanges();
 
     expect(component.likes).toBe(1);
     expect(component.dislikes).toBe(0);
-    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .like').innerText).toBe(component.likes.toString());
-    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .dislike').innerText).toBe(component.dislikes.toString());
+    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .like').innerText).toBe(
+      component.likes.toString()
+    );
+    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .dislike').innerText).toBe(
+      component.dislikes.toString()
+    );
 
     component.dislike();
     fixture.detectChanges();
 
     expect(component.likes).toBe(0);
     expect(component.dislikes).toBe(1);
-    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .like').innerText).toBe(component.likes.toString());
-    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .dislike').innerText).toBe(component.dislikes.toString());
+    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .like').innerText).toBe(
+      component.likes.toString()
+    );
+    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .dislike').innerText).toBe(
+      component.dislikes.toString()
+    );
   });
 
   it('should list work', () => {
@@ -80,18 +90,17 @@ describe('NzCommentComponent', () => {
     expect(component.data.length === comments.length).toBeTruthy();
 
     component.data.forEach((e, i) => {
-      const comment = comments[ i ];
+      const comment = comments[i];
       expect(comment.nativeElement.querySelector('nz-avatar[nz-comment-avatar]')).toBeTruthy();
       expect(comment.nativeElement.querySelector('.ant-comment-content-author-name').innerText).toBe(e.author);
       expect(comment.nativeElement.querySelector('.ant-comment-content-detail p').innerText).toBe(e.content);
       expect(comment.nativeElement.querySelector('.ant-comment-content-author-time').innerText).toBe(e.datetime);
     });
 
-    component.data = [ { ...component.data[ 0 ] } ];
+    component.data = [{ ...component.data[0] }];
     fixture.detectChanges();
     comments = fixture.debugElement.queryAll(By.directive(NzCommentComponent));
     expect(component.data.length === comments.length).toBeTruthy();
-
   });
 
   it('should editor work', fakeAsync(() => {
@@ -116,13 +125,12 @@ describe('NzCommentComponent', () => {
     comments = fixture.debugElement.queryAll(By.css('nz-list nz-comment'));
 
     component.data.forEach((e, i) => {
-      const comment = comments[ i ];
+      const comment = comments[i];
       expect(comment.nativeElement.querySelector('nz-avatar[nz-comment-avatar]')).toBeTruthy();
       expect(comment.nativeElement.querySelector('.ant-comment-content-author-name').innerText).toBe(e.author);
       expect(comment.nativeElement.querySelector('.ant-comment-content-detail p').innerText).toBe(e.content);
       expect(comment.nativeElement.querySelector('.ant-comment-content-author-time').innerText).toBe(e.displayTime);
     });
-
   }));
 
   it('should nested work', () => {
@@ -137,7 +145,5 @@ describe('NzCommentComponent', () => {
 
     const levelThreeComments = levelTwoComment.queryAll(By.directive(NzCommentComponent));
     expect(levelThreeComments.length).toBe(2);
-
   });
-
 });

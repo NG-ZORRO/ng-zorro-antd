@@ -4,11 +4,11 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-checkbox-group',
   template: `
     <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="log(checkOptionsOne)"></nz-checkbox-group>
-    <br>
-    <br>
+    <br />
+    <br />
     <nz-checkbox-group [(ngModel)]="checkOptionsTwo" (ngModelChange)="log(checkOptionsTwo)"></nz-checkbox-group>
-    <br>
-    <br>
+    <br />
+    <br />
     <nz-checkbox-group [(ngModel)]="checkOptionsThree" (ngModelChange)="log(checkOptionsThree)"></nz-checkbox-group>
   `
 })

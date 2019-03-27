@@ -1,5 +1,18 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { forwardRef, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, EventEmitter, HostBinding, Input, OnInit, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  forwardRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChild,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import addDays from 'date-fns/add_days';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
@@ -18,7 +31,12 @@ import startOfWeek from 'date-fns/start_of_week';
 import startOfYear from 'date-fns/start_of_year';
 import { DateHelperService } from '../i18n/date-helper.service';
 import { NzI18nService } from '../i18n/nz-i18n.service';
-import { NzDateCellDirective as DateCell, NzDateFullCellDirective as DateFullCell, NzMonthCellDirective as MonthCell, NzMonthFullCellDirective as MonthFullCell } from './nz-calendar-cells';
+import {
+  NzDateCellDirective as DateCell,
+  NzDateFullCellDirective as DateFullCell,
+  NzMonthCellDirective as MonthCell,
+  NzMonthFullCellDirective as MonthFullCell
+} from './nz-calendar-cells';
 
 export type ModeType = 'month' | 'year';
 
@@ -27,51 +45,83 @@ export type ModeType = 'month' | 'year';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-calendar',
   templateUrl: './nz-calendar.component.html',
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }
-  ]
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }]
 })
 export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   @Input() nzMode: ModeType = 'month';
   @Output() readonly nzModeChange: EventEmitter<ModeType> = new EventEmitter();
-  @Output() readonly nzPanelChange: EventEmitter<{date: Date, mode: ModeType}> = new EventEmitter();
+  @Output() readonly nzPanelChange: EventEmitter<{ date: Date; mode: ModeType }> = new EventEmitter();
 
   @Output() readonly nzSelectChange: EventEmitter<Date> = new EventEmitter();
 
-  @Input() set nzValue(value: Date) { this.updateDate(value, false); }
+  @Input() set nzValue(value: Date) {
+    this.updateDate(value, false);
+  }
   @Output() readonly nzValueChange: EventEmitter<Date> = new EventEmitter();
 
   @Input()
-  set nzDateCell(value: TemplateRef<{$implicit: Date}>) { this.dateCell = value; }
+  set nzDateCell(value: TemplateRef<{ $implicit: Date }>) {
+    this.dateCell = value;
+  }
 
   @Input()
-  set nzDateFullCell(value: TemplateRef<{$implicit: Date}>) { this.dateFullCell = value; }
+  set nzDateFullCell(value: TemplateRef<{ $implicit: Date }>) {
+    this.dateFullCell = value;
+  }
 
   @Input()
-  set nzMonthCell(value: TemplateRef<{$implicit: Date}>) { this.monthCell = value; }
+  set nzMonthCell(value: TemplateRef<{ $implicit: Date }>) {
+    this.monthCell = value;
+  }
 
   @Input()
-  set nzMonthFullCell(value: TemplateRef<{$implicit: Date}>) { this.monthFullCell = value; }
+  set nzMonthFullCell(value: TemplateRef<{ $implicit: Date }>) {
+    this.monthFullCell = value;
+  }
 
   @Input()
-  set nzFullscreen(value: boolean) { this.fullscreen = coerceBooleanProperty(value); }
-  get nzFullscreen(): boolean { return this.fullscreen; }
+  set nzFullscreen(value: boolean) {
+    this.fullscreen = coerceBooleanProperty(value);
+  }
+  get nzFullscreen(): boolean {
+    return this.fullscreen;
+  }
 
   @Input()
-  set nzCard(value: boolean) { this.fullscreen = !coerceBooleanProperty(value); }
-  get nzCard(): boolean { return !this.fullscreen; }
+  set nzCard(value: boolean) {
+    this.fullscreen = !coerceBooleanProperty(value);
+  }
+  get nzCard(): boolean {
+    return !this.fullscreen;
+  }
 
-  @ContentChild(DateCell, {read: TemplateRef})
-  set dateCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.dateCell = value; } }
+  @ContentChild(DateCell, { read: TemplateRef })
+  set dateCellChild(value: TemplateRef<{ $implicit: Date }>) {
+    if (value) {
+      this.dateCell = value;
+    }
+  }
 
-  @ContentChild(DateFullCell, {read: TemplateRef})
-  set dateFullCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.dateFullCell = value; } }
+  @ContentChild(DateFullCell, { read: TemplateRef })
+  set dateFullCellChild(value: TemplateRef<{ $implicit: Date }>) {
+    if (value) {
+      this.dateFullCell = value;
+    }
+  }
 
-  @ContentChild(MonthCell, {read: TemplateRef})
-  set monthCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.monthCell = value; } }
+  @ContentChild(MonthCell, { read: TemplateRef })
+  set monthCellChild(value: TemplateRef<{ $implicit: Date }>) {
+    if (value) {
+      this.monthCell = value;
+    }
+  }
 
-  @ContentChild(MonthFullCell, {read: TemplateRef})
-  set monthFullCellChild(value: TemplateRef<{$implicit: Date}>) { if (value) { this.monthFullCell = value; } }
+  @ContentChild(MonthFullCell, { read: TemplateRef })
+  set monthFullCellChild(value: TemplateRef<{ $implicit: Date }>) {
+    if (value) {
+      this.monthFullCell = value;
+    }
+  }
 
   @HostBinding('class.ant-fullcalendar--fullscreen')
   fullscreen = true;
@@ -88,10 +138,10 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   currentMonthCol: number = -1;
   activeMonthRow: number = -1;
   activeMonthCol: number = -1;
-  dateCell: TemplateRef<{$implicit: Date}>|null = null;
-  dateFullCell: TemplateRef<{$implicit: Date}>|null = null;
-  monthCell: TemplateRef<{$implicit: Date}>|null = null;
-  monthFullCell: TemplateRef<{$implicit: Date}>|null = null;
+  dateCell: TemplateRef<{ $implicit: Date }> | null = null;
+  dateFullCell: TemplateRef<{ $implicit: Date }> | null = null;
+  monthCell: TemplateRef<{ $implicit: Date }> | null = null;
+  monthFullCell: TemplateRef<{ $implicit: Date }> | null = null;
 
   private currentDate = new Date();
   private onChangeFn: (date: Date) => void = () => {};
@@ -101,7 +151,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     return startOfWeek(startOfMonth(this.activeDate), { weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
   }
 
-  constructor(private i18n: NzI18nService, private cdr: ChangeDetectorRef, private dateHelper: DateHelperService) { }
+  constructor(private i18n: NzI18nService, private cdr: ChangeDetectorRef, private dateHelper: DateHelperService) {}
 
   ngOnInit(): void {
     this.setUpDaysInWeek();
@@ -115,7 +165,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
 
   onModeChange(mode: ModeType): void {
     this.nzModeChange.emit(mode);
-    this.nzPanelChange.emit({'date': this.activeDate, 'mode': mode});
+    this.nzPanelChange.emit({ date: this.activeDate, mode });
   }
 
   onDateSelect(date: Date): void {
@@ -135,7 +185,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     this.nzSelectChange.emit(date);
   }
 
-  writeValue(value: Date|null): void {
+  writeValue(value: Date | null): void {
     this.updateDate(value || new Date(), false);
     this.cdr.markForCheck();
   }
@@ -181,7 +231,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
       const date = addDays(weekStart, i);
       const title = this.dateHelper.format(date, this.dateHelper.relyOnDatePipe ? 'E' : 'ddd');
       const label = this.dateHelper.format(date, this.dateHelper.relyOnDatePipe ? 'EEEEEE' : 'dd');
-      this.daysInWeek.push({title, label});
+      this.daysInWeek.push({ title, label });
     }
   }
 
@@ -192,7 +242,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
       const title = this.dateHelper.format(date, 'MMM');
       const label = this.dateHelper.format(date, 'MMM');
       const start = startOfMonth(date);
-      this.monthsInYear.push({title, label, start});
+      this.monthsInYear.push({ title, label, start });
     }
   }
 
@@ -200,7 +250,8 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     this.dateMatrix = [];
     const monthStart = startOfMonth(this.activeDate);
     const monthEnd = endOfMonth(this.activeDate);
-    const weekDiff = differenceInCalendarWeeks(monthEnd, monthStart, { weekStartsOn: this.dateHelper.getFirstDayOfWeek() }) + 2;
+    const weekDiff =
+      differenceInCalendarWeeks(monthEnd, monthStart, { weekStartsOn: this.dateHelper.getFirstDayOfWeek() }) + 2;
 
     for (let week = 0; week < weekDiff; week++) {
       const row: DateCellContext[] = [];
@@ -209,11 +260,13 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
       for (let day = 0; day < 7; day++) {
         const date = addDays(weekStart, day);
         const monthDiff = differenceInCalendarMonths(date, this.activeDate);
-        const dateFormat = this.dateHelper.relyOnDatePipe ? 'longDate' : this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD');
+        const dateFormat = this.dateHelper.relyOnDatePipe
+          ? 'longDate'
+          : this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD');
         const title = this.dateHelper.format(date, dateFormat);
         const label = this.dateHelper.format(date, this.dateHelper.relyOnDatePipe ? 'dd' : 'DD');
         const rel = monthDiff === 0 ? 'current' : monthDiff < 0 ? 'last' : 'next';
-        row.push({title, label, rel, value: date});
+        row.push({ title, label, rel, value: date });
       }
       this.dateMatrix.push(row);
     }
@@ -221,8 +274,13 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
 
   private calculateCurrentDate(): void {
     if (isThisMonth(this.activeDate)) {
-      this.currentDateRow = differenceInCalendarWeeks(this.currentDate, this.calendarStart, { weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
-      this.currentDateCol = differenceInCalendarDays(this.currentDate, addDays(this.calendarStart, this.currentDateRow * 7));
+      this.currentDateRow = differenceInCalendarWeeks(this.currentDate, this.calendarStart, {
+        weekStartsOn: this.dateHelper.getFirstDayOfWeek()
+      });
+      this.currentDateCol = differenceInCalendarDays(
+        this.currentDate,
+        addDays(this.calendarStart, this.currentDateRow * 7)
+      );
     } else {
       this.currentDateRow = -1;
       this.currentDateCol = -1;
@@ -230,7 +288,9 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   private calculateActiveDate(): void {
-    this.activeDateRow = differenceInCalendarWeeks(this.activeDate, this.calendarStart, { weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
+    this.activeDateRow = differenceInCalendarWeeks(this.activeDate, this.calendarStart, {
+      weekStartsOn: this.dateHelper.getFirstDayOfWeek()
+    });
     this.activeDateCol = differenceInCalendarDays(this.activeDate, addDays(this.calendarStart, this.activeDateRow * 7));
   }
 
@@ -266,6 +326,6 @@ export interface MonthCellContext {
 export interface DateCellContext {
   title: string;
   label: string;
-  rel: 'last'|'current'|'next';
+  rel: 'last' | 'current' | 'next';
   value: Date;
 }

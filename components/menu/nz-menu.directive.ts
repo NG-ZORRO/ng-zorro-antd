@@ -30,30 +30,24 @@ export function NzMenuFactory(dropService: NzMenuDropdownService, menuService: N
 }
 
 @Directive({
-  selector : '[nz-menu]',
+  selector: '[nz-menu]',
   providers: [
     NzUpdateHostClassService,
     NzMenuMenuService,
     {
-      provide   : NzMenuService,
+      provide: NzMenuService,
       useFactory: NzMenuFactory,
-      deps      : [
-        [
-          new SkipSelf(),
-          new Optional(),
-          NzMenuDropdownService
-        ],
-        NzMenuMenuService
-      ]
+      deps: [[new SkipSelf(), new Optional(), NzMenuDropdownService], NzMenuMenuService]
     }
   ]
 })
-
 export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject();
   private cacheMode: NzDirectionVHIType;
   private listOfOpenedNzSubMenuComponent: NzSubMenuComponent[] = [];
-  @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective: QueryList<NzMenuItemDirective>;
+  @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective: QueryList<
+    NzMenuItemDirective
+  >;
   @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent: QueryList<NzSubMenuComponent>;
   @Input() nzInlineIndent = 24;
   @Input() nzTheme: 'light' | 'dark' = 'light';
@@ -81,25 +75,23 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   setClassMap(): void {
     const prefixName = this.nzMenuService.isInDropDown ? 'ant-dropdown-menu' : 'ant-menu';
     this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
-      [ `${prefixName}` ]                 : true,
-      [ `${prefixName}-root` ]            : true,
-      [ `${prefixName}-${this.nzTheme}` ] : true,
-      [ `${prefixName}-${this.nzMode}` ]  : true,
-      [ `${prefixName}-inline-collapsed` ]: this.nzInlineCollapsed
+      [`${prefixName}`]: true,
+      [`${prefixName}-root`]: true,
+      [`${prefixName}-${this.nzTheme}`]: true,
+      [`${prefixName}-${this.nzMode}`]: true,
+      [`${prefixName}-inline-collapsed`]: this.nzInlineCollapsed
     });
   }
 
-  constructor(public elementRef: ElementRef,
-              private nzMenuService: NzMenuService,
-              private nzUpdateHostClassService: NzUpdateHostClassService) {
-
-  }
+  constructor(
+    public elementRef: ElementRef,
+    private nzMenuService: NzMenuService,
+    private nzUpdateHostClassService: NzUpdateHostClassService
+  ) {}
 
   ngOnInit(): void {
     this.setClassMap();
-    this.nzMenuService.menuItemClick$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(menu => {
+    this.nzMenuService.menuItemClick$.pipe(takeUntil(this.destroy$)).subscribe(menu => {
       this.nzClick.emit(menu);
       if (this.nzSelectable) {
         this.listOfNzMenuItemDirective.forEach(item => item.setSelectedState(item === menu));

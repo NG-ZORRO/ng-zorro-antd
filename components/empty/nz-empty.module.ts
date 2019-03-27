@@ -7,9 +7,8 @@ import { NzEmbedEmptyComponent } from './nz-embed-empty.component';
 import { NzEmptyComponent } from './nz-empty.component';
 
 @NgModule({
-  imports     : [ CommonModule, PortalModule, NzAddOnModule, NzI18nModule ],
-  declarations: [ NzEmptyComponent, NzEmbedEmptyComponent ],
-  exports     : [ NzEmptyComponent, NzEmbedEmptyComponent ]
+  imports: [CommonModule, PortalModule, NzAddOnModule, NzI18nModule],
+  declarations: [NzEmptyComponent, NzEmbedEmptyComponent],
+  exports: [NzEmptyComponent, NzEmbedEmptyComponent]
 })
-export class NzEmptyModule {
-}
+export class NzEmptyModule {}

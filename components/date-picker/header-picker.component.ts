@@ -29,7 +29,12 @@ export class HeaderPickerComponent extends AbstractPickerComponent implements On
 
   private supportPanels: PanelMode[];
 
-  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, dateHelper: DateHelperService, noAnimation?: NzNoAnimationDirective) {
+  constructor(
+    i18n: NzI18nService,
+    cdr: ChangeDetectorRef,
+    dateHelper: DateHelperService,
+    noAnimation?: NzNoAnimationDirective
+  ) {
     super(i18n, cdr, dateHelper, noAnimation);
   }
 
@@ -38,7 +43,7 @@ export class HeaderPickerComponent extends AbstractPickerComponent implements On
 
     this.panelMode = this.endPanelMode;
 
-    const allHeaderPanels: PanelMode[] = [ 'decade', 'year', 'month' ];
+    const allHeaderPanels: PanelMode[] = ['decade', 'year', 'month'];
     this.supportPanels = allHeaderPanels.slice(0, allHeaderPanels.indexOf(this.endPanelMode) + 1);
   }
 
@@ -53,7 +58,8 @@ export class HeaderPickerComponent extends AbstractPickerComponent implements On
   onPanelModeChange(mode: PanelMode): void {
     if (this.supportPanels.indexOf(mode) > -1) {
       this.panelMode = mode;
-    } else { // Since the default "click year" logic can be "year panel" -> "date panel", we need force to the end panel otherwise
+    } else {
+      // Since the default "click year" logic can be "year panel" -> "date panel", we need force to the end panel otherwise
       this.panelMode = this.endPanelMode;
     }
   }

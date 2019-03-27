@@ -5,42 +5,44 @@ import { Observable, Observer } from 'rxjs';
 @Component({
   selector: 'nz-demo-upload-avatar',
   template: `
-  <nz-upload class="avatar-uploader"
-    nzAction="https://jsonplaceholder.typicode.com/posts/"
-    nzName="avatar"
-    nzListType="picture-card"
-    [nzShowUploadList]="false"
-    [nzBeforeUpload]="beforeUpload"
-    (nzChange)="handleChange($event)">
-    <ng-container *ngIf="!avatarUrl">
-      <i class="upload-icon" nz-icon [type]="loading ? 'loading' : 'plus'"></i>
-      <div class="ant-upload-text">Upload</div>
-    </ng-container>
-    <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar">
-  </nz-upload>
+    <nz-upload
+      class="avatar-uploader"
+      nzAction="https://jsonplaceholder.typicode.com/posts/"
+      nzName="avatar"
+      nzListType="picture-card"
+      [nzShowUploadList]="false"
+      [nzBeforeUpload]="beforeUpload"
+      (nzChange)="handleChange($event)"
+    >
+      <ng-container *ngIf="!avatarUrl">
+        <i class="upload-icon" nz-icon [type]="loading ? 'loading' : 'plus'"></i>
+        <div class="ant-upload-text">Upload</div>
+      </ng-container>
+      <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar" />
+    </nz-upload>
   `,
   styles: [
     `
-    .avatar {
-      width: 128px;
-      height: 128px;
-    }
-    .upload-icon {
-      font-size: 32px;
-      color: #999;
-    }
-    .ant-upload-text {
-      margin-top: 8px;
-      color: #666;
-    }
-  `
+      .avatar {
+        width: 128px;
+        height: 128px;
+      }
+      .upload-icon {
+        font-size: 32px;
+        color: #999;
+      }
+      .ant-upload-text {
+        margin-top: 8px;
+        color: #666;
+      }
+    `
   ]
 })
 export class NzDemoUploadAvatarComponent {
   loading = false;
   avatarUrl: string;
 
-  constructor(private msg: NzMessageService) { }
+  constructor(private msg: NzMessageService) {}
 
   beforeUpload = (file: File) => {
     return new Observable((observer: Observer<boolean>) => {
@@ -68,7 +70,7 @@ export class NzDemoUploadAvatarComponent {
         observer.complete();
       });
     });
-  }
+  };
 
   private getBase64(img: File, callback: (img: string) => void): void {
     const reader = new FileReader();

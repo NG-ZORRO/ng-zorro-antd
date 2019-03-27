@@ -17,16 +17,22 @@ describe('nz-select component', () => {
   let overlayContainerElement: HTMLElement;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestSelectDefaultComponent, NzTestSelectTagsComponent, NzTestSelectFormComponent, NzTestOptionChangeComponent, NzTestSelectFormDisabledTouchedComponent ]
+      imports: [NzSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule],
+      declarations: [
+        NzTestSelectDefaultComponent,
+        NzTestSelectTagsComponent,
+        NzTestSelectFormComponent,
+        NzTestOptionChangeComponent,
+        NzTestSelectFormDisabledTouchedComponent
+      ]
     });
     TestBed.compileComponents();
-    inject([ OverlayContainer ], (oc: OverlayContainer) => {
+    inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
       overlayContainerElement = oc.getContainerElement();
     })();
   }));
-  afterEach(inject([ OverlayContainer ], (currentOverlayContainer: OverlayContainer) => {
+  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
@@ -254,16 +260,16 @@ describe('nz-select component', () => {
       flush();
       fixture.detectChanges();
       expect(testComponent.selectedValue.length).toBe(1);
-      expect(testComponent.selectedValue[ 0 ]).toBe('jack');
+      expect(testComponent.selectedValue[0]).toBe('jack');
     }));
     it('should remove from top control work', fakeAsync(() => {
       fixture.detectChanges();
-      selectComponent.nzSelectService.updateListOfSelectedValue([ 'jack' ], true);
+      selectComponent.nzSelectService.updateListOfSelectedValue(['jack'], true);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
       expect(testComponent.selectedValue.length).toBe(1);
-      expect(testComponent.selectedValue[ 0 ]).toBe('jack');
+      expect(testComponent.selectedValue[0]).toBe('jack');
     }));
     it('should clear work', fakeAsync(() => {
       fixture.detectChanges();
@@ -273,7 +279,6 @@ describe('nz-select component', () => {
       fixture.detectChanges();
       expect(testComponent.selectedValue.length).toBe(0);
     }));
-
   });
 
   describe('form', () => {
@@ -378,7 +383,6 @@ describe('nz-select component', () => {
       expect(testComponent.formGroup.controls.select.touched).toBe(false);
     }));
   });
-
 });
 
 @Component({
@@ -403,7 +407,8 @@ describe('nz-select component', () => {
       [nzDropdownStyle]="dropdownStyle"
       [nzDropdownClassName]="'test-class'"
       (nzOnSearch)="onSearch($event)"
-      [nzPlaceHolder]="placeholder">
+      [nzPlaceHolder]="placeholder"
+    >
       <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
       <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
       <nz-option nzValue="disabled" nzLabel="Disabled" nzDisabled></nz-option>
@@ -432,15 +437,12 @@ export class NzTestSelectDefaultComponent {
     } else {
       return false;
     }
-  }
+  };
 }
 
 @Component({
   template: `
-    <nz-select
-      [(ngModel)]="selectedValue"
-      [nzAllowClear]="true"
-      [nzMode]="'tags'">
+    <nz-select [(ngModel)]="selectedValue" [nzAllowClear]="true" [nzMode]="'tags'">
       <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
       <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
       <nz-option nzValue="disabled" nzLabel="Disabled" nzDisabled nzCustomContent>Disabled</nz-option>
@@ -448,16 +450,14 @@ export class NzTestSelectDefaultComponent {
   `
 })
 export class NzTestSelectTagsComponent {
-  selectedValue = [ 'lucy', 'jack' ];
+  selectedValue = ['lucy', 'jack'];
   allowClear = false;
 }
 
 @Component({
   template: `
     <form [formGroup]="formGroup">
-      <nz-select
-        nzShowSearch
-        formControlName="select">
+      <nz-select nzShowSearch formControlName="select">
         <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
         <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
         <nz-option nzValue="disabled" nzLabel="Disabled" nzDisabled></nz-option>
@@ -470,7 +470,7 @@ export class NzTestSelectFormComponent {
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
-      select: [ 'jack' ]
+      select: ['jack']
     });
   }
 
@@ -486,8 +486,7 @@ export class NzTestSelectFormComponent {
 @Component({
   template: `
     <form [formGroup]="formGroup">
-      <nz-select
-        formControlName="select">
+      <nz-select formControlName="select">
         <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
         <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
       </nz-select>

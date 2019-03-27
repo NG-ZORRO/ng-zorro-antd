@@ -12,7 +12,8 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChild,
   EventEmitter,
@@ -51,24 +52,24 @@ export interface Mention {
 export type MentionPlacement = 'top' | 'bottom';
 
 @Component({
-  selector           : 'nz-mention',
-  templateUrl        : './nz-mention.component.html',
+  selector: 'nz-mention',
+  templateUrl: './nz-mention.component.html',
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  styles             : [ `
-    .ant-mention-dropdown {
-      top: 100%;
-      left: 0;
-      position: relative;
-      width: 100%;
-      margin-top: 4px;
-      margin-bottom: 4px;
-    }
-  ` ]
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      .ant-mention-dropdown {
+        top: 100%;
+        left: 0;
+        position: relative;
+        width: 100%;
+        margin-top: 4px;
+        margin-bottom: 4px;
+      }
+    `
+  ]
 })
-
 export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChanges {
-
   @Input() nzValueWith: (value: any) => string = value => value; // tslint:disable-line:no-any
   @Input() nzPrefix: string | string[] = '@';
   @Input() @InputBoolean() nzLoading = false;
@@ -107,11 +108,12 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
     return this.trigger.el.nativeElement;
   }
 
-  constructor(@Optional() @Inject(DOCUMENT) private ngDocument: any, // tslint:disable-line:no-any
-              private changeDetectorRef: ChangeDetectorRef,
-              private overlay: Overlay,
-              private viewContainerRef: ViewContainerRef) {
-  }
+  constructor(
+    @Optional() @Inject(DOCUMENT) private ngDocument: any, // tslint:disable-line:no-any
+    private changeDetectorRef: ChangeDetectorRef,
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('nzSuggestions')) {
@@ -153,9 +155,9 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
   selectSuggestion(suggestion: string | {}): void {
     const value = this.nzValueWith(suggestion);
     this.trigger.insertMention({
-      mention : value,
+      mention: value,
       startPos: this.cursorMentionStart,
-      endPos  : this.cursorMentionEnd
+      endPos: this.cursorMentionEnd
     });
     this.nzOnSelect.emit(suggestion);
     this.closeDropdown();
@@ -172,25 +174,24 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
   private handleKeydown(event: KeyboardEvent): void {
     const keyCode = event.keyCode;
     if (this.isOpen && keyCode === ENTER && this.activeIndex !== -1 && this.filteredSuggestions.length) {
-      this.selectSuggestion(this.filteredSuggestions[ this.activeIndex ]);
+      this.selectSuggestion(this.filteredSuggestions[this.activeIndex]);
       event.preventDefault();
     } else if (keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
       this.resetDropdown();
       event.stopPropagation();
     } else {
-
       if (this.isOpen && (keyCode === TAB || keyCode === ESCAPE)) {
         this.closeDropdown();
         return;
       }
 
-      if (this.isOpen && (keyCode === UP_ARROW)) {
+      if (this.isOpen && keyCode === UP_ARROW) {
         this.setPreviousItemActive();
         event.preventDefault();
         event.stopPropagation();
       }
 
-      if (this.isOpen && (keyCode === DOWN_ARROW)) {
+      if (this.isOpen && keyCode === DOWN_ARROW) {
         this.setNextItemActive();
         event.preventDefault();
         event.stopPropagation();
@@ -216,13 +217,16 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
     this.previousValue = value;
     if (emit) {
       this.nzOnSearchChange.emit({
-        value : this.cursorMention!.substring(1),
-        prefix: this.cursorMention![ 0 ]
+        value: this.cursorMention!.substring(1),
+        prefix: this.cursorMention![0]
       });
     }
     const searchValue = suggestions.toLowerCase();
-    this.filteredSuggestions = this.nzSuggestions
-    .filter(suggestion => this.nzValueWith(suggestion).toLowerCase().includes(searchValue));
+    this.filteredSuggestions = this.nzSuggestions.filter(suggestion =>
+      this.nzValueWith(suggestion)
+        .toLowerCase()
+        .includes(searchValue)
+    );
   }
 
   private resetDropdown(emit: boolean = true): void {
@@ -238,16 +242,12 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
   }
 
   private setNextItemActive(): void {
-    this.activeIndex = this.activeIndex + 1 <= this.filteredSuggestions.length - 1
-      ? this.activeIndex + 1
-      : 0;
+    this.activeIndex = this.activeIndex + 1 <= this.filteredSuggestions.length - 1 ? this.activeIndex + 1 : 0;
     this.changeDetectorRef.markForCheck();
   }
 
   private setPreviousItemActive(): void {
-    this.activeIndex = this.activeIndex - 1 < 0
-      ? this.filteredSuggestions.length - 1
-      : this.activeIndex - 1;
+    this.activeIndex = this.activeIndex - 1 < 0 ? this.filteredSuggestions.length - 1 : this.activeIndex - 1;
     this.changeDetectorRef.markForCheck();
   }
 
@@ -259,16 +259,18 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
   private resetCursorMention(): void {
     const value = this.triggerNativeElement.value.replace(/[\r\n]/g, ' ') || '';
     const selectionStart = this.triggerNativeElement.selectionStart!;
-    const prefix = typeof this.nzPrefix === 'string' ? [ this.nzPrefix ] : this.nzPrefix;
+    const prefix = typeof this.nzPrefix === 'string' ? [this.nzPrefix] : this.nzPrefix;
     let i = prefix.length;
     while (i >= 0) {
-      const startPos = value.lastIndexOf(prefix[ i ], selectionStart);
+      const startPos = value.lastIndexOf(prefix[i], selectionStart);
       const endPos = value.indexOf(' ', selectionStart) > -1 ? value.indexOf(' ', selectionStart) : value.length;
       const mention = value.substring(startPos, endPos);
-      if ((startPos > 0 && value[ startPos - 1 ] !== ' ')
-        || startPos < 0
-        || mention.includes(prefix[ i ], 1)
-        || mention.includes(' ')) {
+      if (
+        (startPos > 0 && value[startPos - 1] !== ' ') ||
+        startPos < 0 ||
+        mention.includes(prefix[i], 1) ||
+        mention.includes(' ')
+      ) {
         this.cursorMention = null;
         this.cursorMentionStart = -1;
         this.cursorMentionEnd = -1;
@@ -284,17 +286,18 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
 
   private updatePositions(): void {
     const coordinates = getCaretCoordinates(this.triggerNativeElement, this.cursorMentionStart);
-    const top = coordinates.top
-      - this.triggerNativeElement.getBoundingClientRect().height
-      - this.triggerNativeElement.scrollTop
-      + (this.nzPlacement === 'bottom' ? coordinates.height : 0);
+    const top =
+      coordinates.top -
+      this.triggerNativeElement.getBoundingClientRect().height -
+      this.triggerNativeElement.scrollTop +
+      (this.nzPlacement === 'bottom' ? coordinates.height : 0);
     const left = coordinates.left - this.triggerNativeElement.scrollLeft;
     this.positionStrategy.withDefaultOffsetX(left).withDefaultOffsetY(top);
     if (this.nzPlacement === 'bottom') {
-      this.positionStrategy.withPositions([ DEFAULT_MENTION_POSITIONS[ 0 ] ]);
+      this.positionStrategy.withPositions([DEFAULT_MENTION_POSITIONS[0]]);
     }
     if (this.nzPlacement === 'top') {
-      this.positionStrategy.withPositions([ DEFAULT_MENTION_POSITIONS[ 1 ] ]);
+      this.positionStrategy.withPositions([DEFAULT_MENTION_POSITIONS[1]]);
     }
     this.positionStrategy.apply();
   }
@@ -303,8 +306,7 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
     return merge<MouseEvent | TouchEvent>(
       fromEvent<MouseEvent>(this.ngDocument, 'click'),
       fromEvent<TouchEvent>(this.ngDocument, 'touchend')
-    )
-    .subscribe((event: MouseEvent | TouchEvent) => {
+    ).subscribe((event: MouseEvent | TouchEvent) => {
       const clickTarget = event.target as HTMLElement;
       if (clickTarget !== this.trigger.el.nativeElement && this.isOpen) {
         this.closeDropdown();
@@ -327,7 +329,7 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
   private getOverlayConfig(): OverlayConfig {
     return new OverlayConfig({
       positionStrategy: this.getOverlayPosition(),
-      scrollStrategy  : this.overlay.scrollStrategies.reposition()
+      scrollStrategy: this.overlay.scrollStrategies.reposition()
     });
   }
 
@@ -336,12 +338,12 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
       new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
       new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
     ];
-    this.positionStrategy = this.overlay.position()
-    .flexibleConnectedTo(this.trigger.el)
-    .withPositions(positions)
-    .withFlexibleDimensions(false)
-    .withPush(false);
+    this.positionStrategy = this.overlay
+      .position()
+      .flexibleConnectedTo(this.trigger.el)
+      .withPositions(positions)
+      .withFlexibleDimensions(false)
+      .withPush(false);
     return this.positionStrategy;
   }
-
 }

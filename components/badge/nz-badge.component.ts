@@ -3,9 +3,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  Input, OnChanges,
+  Input,
+  OnChanges,
   OnInit,
-  Renderer2, SimpleChanges, TemplateRef,
+  Renderer2,
+  SimpleChanges,
+  TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -16,20 +19,20 @@ import { InputBoolean } from '../core/util/convert';
 export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' | 'warning';
 
 @Component({
-  selector           : 'nz-badge',
+  selector: 'nz-badge',
   preserveWhitespaces: false,
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  animations         : [ zoomBadgeMotion ],
-  templateUrl        : './nz-badge.component.html',
-  host               : {
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [zoomBadgeMotion],
+  templateUrl: './nz-badge.component.html',
+  host: {
     '[class.ant-badge-status]': 'nzStatus'
   }
 })
 export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges {
   maxNumberArray: string[] = [];
   countArray: number[] = [];
-  countSingleArray = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
+  countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   count: number;
   @ViewChild('contentElement') contentElement: ElementRef;
   @Input() @InputBoolean() nzShowZero = false;
@@ -37,7 +40,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() @InputBoolean() nzDot = false;
   @Input() nzOverflowCount = 99;
   @Input() nzText: string;
-  @Input() nzStyle: { [ key: string ]: string };
+  @Input() nzStyle: { [key: string]: string };
   @Input() nzStatus: NzBadgeStatusType;
   @Input() nzCount: number | TemplateRef<void>;
 
@@ -73,7 +76,10 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges {
     const { nzOverflowCount, nzCount } = changes;
     if (nzCount && !(nzCount.currentValue instanceof TemplateRef)) {
       this.count = Math.max(0, nzCount.currentValue);
-      this.countArray = this.count.toString().split('').map(item => +item);
+      this.countArray = this.count
+        .toString()
+        .split('')
+        .map(item => +item);
     }
     if (nzOverflowCount) {
       this.generateMaxNumberArray();

@@ -24,14 +24,11 @@ import { CandyDate } from './lib/candy-date';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
-  selector       : 'nz-picker',
-  templateUrl    : './picker.component.html',
-  animations     : [
-    slideMotion
-  ],
+  selector: 'nz-picker',
+  templateUrl: './picker.component.html',
+  animations: [slideMotion],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class NzPickerComponent implements OnInit, AfterViewInit {
   @Input() noAnimation: boolean = false;
   @Input() isRange: boolean = false;
@@ -61,26 +58,26 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
     {
       // offsetX: -10, // TODO: What a pity, cdk/overlay current not support offset configs even though it already provide these properties
       // offsetY: -10,
-      originX : 'start',
-      originY : 'top',
+      originX: 'start',
+      originY: 'top',
       overlayX: 'start',
       overlayY: 'top'
     },
     {
-      originX : 'start',
-      originY : 'bottom',
+      originX: 'start',
+      originY: 'bottom',
       overlayX: 'start',
       overlayY: 'bottom'
     },
     {
-      originX : 'end',
-      originY : 'top',
+      originX: 'end',
+      originY: 'top',
       overlayX: 'end',
       overlayY: 'top'
     },
     {
-      originX : 'end',
-      originY : 'bottom',
+      originX: 'end',
+      originY: 'bottom',
       overlayX: 'end',
       overlayY: 'bottom'
     }
@@ -89,20 +86,21 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
   currentPositionX: 'start' | 'end' = 'start';
   currentPositionY: 'top' | 'bottom' = 'top';
 
-  get realOpenState(): boolean { // The value that really decide the open state of overlay
+  get realOpenState(): boolean {
+    // The value that really decide the open state of overlay
     return this.isOpenHandledByUser() ? !!this.open : this.overlayOpen;
   }
 
-  constructor(private dateHelper: DateHelperService, private changeDetector: ChangeDetectorRef) {
-  }
+  constructor(private dateHelper: DateHelperService, private changeDetector: ChangeDetectorRef) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     if (this.autoFocus) {
       if (this.isRange) {
-        const firstInput = (this.pickerInput.nativeElement as HTMLElement).querySelector('input:first-child') as HTMLInputElement;
+        const firstInput = (this.pickerInput.nativeElement as HTMLElement).querySelector(
+          'input:first-child'
+        ) as HTMLInputElement;
         firstInput.focus(); // Focus on the first input
       } else {
         this.pickerInput.nativeElement.focus();
@@ -166,7 +164,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
   getReadableValue(partType?: RangePartType): string | null {
     let value: CandyDate;
     if (this.isRange) {
-      value = (this.value as CandyDate[])[ this.getPartTypeIndex(partType as RangePartType) ];
+      value = (this.value as CandyDate[])[this.getPartTypeIndex(partType as RangePartType)];
     } else {
       value = this.value as CandyDate;
     }
@@ -174,20 +172,18 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
   }
 
   getPartTypeIndex(partType: RangePartType): number {
-    return { 'left': 0, 'right': 1 }[ partType ];
+    return { left: 0, right: 1 }[partType];
   }
 
   getPlaceholder(partType?: RangePartType): string {
-    return this.isRange
-      ? this.placeholder[ this.getPartTypeIndex(partType!) ]
-      : this.placeholder as string;
+    return this.isRange ? this.placeholder[this.getPartTypeIndex(partType!)] : (this.placeholder as string);
   }
 
   isEmptyValue(value: CandyDate[] | CandyDate | null): boolean {
     if (value === null) {
       return true;
     } else if (this.isRange) {
-      return !value || !Array.isArray(value) || value.every((val) => !val);
+      return !value || !Array.isArray(value) || value.every(val => !val);
     } else {
       return !value;
     }

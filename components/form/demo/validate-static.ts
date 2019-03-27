@@ -7,40 +7,40 @@ import { Component } from '@angular/core';
       <nz-form-item>
         <nz-form-label [nzSpan]="5">Fail</nz-form-label>
         <nz-form-control nzValidateStatus="error" [nzSpan]="12">
-          <input nz-input [ngModel]="'unavailable choice'" name="errorValid">
+          <input nz-input [ngModel]="'unavailable choice'" name="errorValid" />
           <nz-form-explain>Should be combination of numbers & alphabets</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="5">Warning</nz-form-label>
         <nz-form-control nzValidateStatus="warning" [nzSpan]="12">
-          <input nz-input [ngModel]="'Warning'" name="warningValid">
+          <input nz-input [ngModel]="'Warning'" name="warningValid" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="5">Validating</nz-form-label>
         <nz-form-control [nzSpan]="12" nzValidateStatus="validating" nzHasFeedback>
-          <input nz-input [ngModel]="'The content is being validated'" name="validating">
+          <input nz-input [ngModel]="'The content is being validated'" name="validating" />
           <nz-form-explain>I'm validating the content</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="5">Success</nz-form-label>
         <nz-form-control [nzSpan]="12" nzValidateStatus="success" nzHasFeedback>
-          <input nz-input [ngModel]="'The content'" name="successValid">
+          <input nz-input [ngModel]="'The content'" name="successValid" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="5">Warning</nz-form-label>
         <nz-form-control [nzSpan]="12" nzValidateStatus="warning" nzHasFeedback>
-          <input nz-input [ngModel]="'Warning'" name="warningHighValid">
+          <input nz-input [ngModel]="'Warning'" name="warningHighValid" />
           <nz-form-explain>Should be combination of numbers & alphabets</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="5">Fail</nz-form-label>
         <nz-form-control [nzSpan]="12" nzValidateStatus="error" nzHasFeedback>
-          <input nz-input [ngModel]="'unavailable choice'" name="invalidValid">
+          <input nz-input [ngModel]="'unavailable choice'" name="invalidValid" />
           <nz-form-explain>Should be combination of numbers & alphabets</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
@@ -80,17 +80,17 @@ import { Component } from '@angular/core';
           <nz-input-number name="inputnumber-success" style="width:100%"></nz-input-number>
         </nz-form-control>
       </nz-form-item>
-    </form>`,
-  styles  : [
+    </form>
+  `,
+  styles: [
     `
       [nz-form] {
         max-width: 600px;
       }
-      nz-date-picker ::ng-deep .ant-calendar-picker{
+      nz-date-picker ::ng-deep .ant-calendar-picker {
         width: 100%;
       }
     `
   ]
 })
-export class NzDemoFormValidateStaticComponent {
-}
+export class NzDemoFormValidateStaticComponent {}

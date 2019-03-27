@@ -10,8 +10,8 @@ import { NzSpinModule } from './nz-spin.module';
 describe('spin', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzSpinModule, NzIconTestModule ],
-      declarations: [ NzTestSpinBasicComponent ]
+      imports: [NzSpinModule, NzIconTestModule],
+      declarations: [NzTestSpinBasicComponent]
     });
     TestBed.compileComponents();
   }));
@@ -106,17 +106,18 @@ describe('spin', () => {
 @Component({
   selector: 'nz-test-spin-basic',
   template: `
-    <ng-template #indicatorTemplate><i nz-icon type="loading" style="font-size: 24px;"></i>
-    </ng-template>
+    <ng-template #indicatorTemplate><i nz-icon type="loading" style="font-size: 24px;"></i> </ng-template>
     <nz-spin
       [nzTip]="tip"
       [nzSize]="size"
       [nzDelay]="delay"
       [nzSpinning]="spinning"
       [nzSimple]="simple"
-      [nzIndicator]="indicator">
+      [nzIndicator]="indicator"
+    >
       <div>test</div>
-    </nz-spin>`
+    </nz-spin>
+  `
 })
 export class NzTestSpinBasicComponent {
   @ViewChild('indicatorTemplate') indicatorTemplate: TemplateRef<void>;

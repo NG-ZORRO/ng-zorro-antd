@@ -13,12 +13,13 @@ import { Component } from '@angular/core';
       <i nz-icon [nzType]="'loading'"></i>
     </div>
   `,
-  styles: [ `
-    [nz-icon] {
-      margin-right: 6px;
-      font-size: 24px;
-    }
-  `]
+  styles: [
+    `
+      [nz-icon] {
+        margin-right: 6px;
+        font-size: 24px;
+      }
+    `
+  ]
 })
-export class NzDemoIconBasicComponent {
-}
+export class NzDemoIconBasicComponent {}

@@ -10,9 +10,8 @@ import { NzMentionComponent } from './nz-mention.component';
 const COMPONENTS = [NzMentionComponent, NzMentionTriggerDirective, NzMentionSuggestionDirective];
 
 @NgModule({
-  imports     : [ CommonModule, FormsModule, OverlayModule, NzIconModule ],
-  declarations: [ ...COMPONENTS ],
-  exports     : [ ...COMPONENTS ]
+  imports: [CommonModule, FormsModule, OverlayModule, NzIconModule],
+  declarations: [...COMPONENTS],
+  exports: [...COMPONENTS]
 })
-export class NzMentionModule {
-}
+export class NzMentionModule {}

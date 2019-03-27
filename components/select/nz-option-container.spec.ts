@@ -39,20 +39,20 @@ describe('nz-select option container', () => {
   beforeEach(fakeAsync(() => {
     let nzSelectServiceStub: Partial<NzSelectService>;
     nzSelectServiceStub = {
-      searchValue                 : '',
-      filterOption                : defaultFilterOption,
-      serverSearch                : false,
-      listOfNzOptionComponent     : createListOfOption(20),
-      check$                      : new Subject(),
-      activatedOption$            : new ReplaySubject(1),
+      searchValue: '',
+      filterOption: defaultFilterOption,
+      serverSearch: false,
+      listOfNzOptionComponent: createListOfOption(20),
+      check$: new Subject(),
+      activatedOption$: new ReplaySubject(1),
       listOfNzOptionGroupComponent: createListOfGroupOption(10, 10),
-      listOfSelectedValue$        : new Subject(),
-      compareWith                 : (o1, o2) => o1 === o2
+      listOfSelectedValue$: new Subject(),
+      compareWith: (o1, o2) => o1 === o2
     };
     TestBed.configureTestingModule({
-      imports     : [ NzSelectModule, NoopAnimationsModule ],
-      providers   : [ { provide: NzSelectService, useValue: nzSelectServiceStub } ],
-      declarations: [ NzOptionContainerSpecComponent ]
+      imports: [NzSelectModule, NoopAnimationsModule],
+      providers: [{ provide: NzSelectService, useValue: nzSelectServiceStub }],
+      declarations: [NzOptionContainerSpecComponent]
     });
     TestBed.compileComponents();
   }));
@@ -79,7 +79,9 @@ describe('nz-select option container', () => {
     it('should scrollIntoViewIfNeeded', fakeAsync(() => {
       fixture.detectChanges();
       const nzSelectService = fixture.debugElement.injector.get(NzSelectService);
-      nzSelectService.activatedOption$.next(nzSelectService.listOfNzOptionComponent[ nzSelectService.listOfNzOptionComponent.length - 1 ]);
+      nzSelectService.activatedOption$.next(
+        nzSelectService.listOfNzOptionComponent[nzSelectService.listOfNzOptionComponent.length - 1]
+      );
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
@@ -106,20 +108,18 @@ describe('nz-select option container', () => {
 });
 
 @Component({
-  template     : `
-    <div nz-option-container
-         *ngIf="!destroy"
-         [nzMenuItemSelectedIcon]="iconTemplate"
-         [nzNotFoundContent]="notFoundContent"
-         (nzScrollToBottom)="scrollToBottom($event)">
-    </div>
+  template: `
+    <div
+      nz-option-container
+      *ngIf="!destroy"
+      [nzMenuItemSelectedIcon]="iconTemplate"
+      [nzNotFoundContent]="notFoundContent"
+      (nzScrollToBottom)="scrollToBottom($event)"
+    ></div>
     <ng-template #iconTemplate>icon</ng-template>
   `,
   encapsulation: ViewEncapsulation.None,
-  styleUrls    : [
-    '../style/index.less',
-    './style/index.less'
-  ]
+  styleUrls: ['../style/index.less', './style/index.less']
 })
 export class NzOptionContainerSpecComponent {
   destroy = false;

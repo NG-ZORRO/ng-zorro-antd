@@ -18,14 +18,7 @@ import { NzWeekPickerComponent } from './week-picker.component';
 import { NzYearPickerComponent } from './year-picker.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    OverlayModule,
-    LibPackerModule,
-    NzIconModule,
-    NzOverlayModule,
-    NzNoAnimationModule
-  ],
+  imports: [CommonModule, OverlayModule, LibPackerModule, NzIconModule, NzOverlayModule, NzNoAnimationModule],
   exports: [
     NzDatePickerComponent,
     NzRangePickerComponent,
@@ -45,4 +38,4 @@ import { NzYearPickerComponent } from './year-picker.component';
     NzRangePickerComponent
   ]
 })
-export class NzDatePickerModule { }
+export class NzDatePickerModule {}

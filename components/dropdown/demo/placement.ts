@@ -88,9 +88,10 @@ import { Component } from '@angular/core';
           </li>
         </ul>
       </nz-dropdown>
-    </div>`,
-  styles  : [
-      `
+    </div>
+  `,
+  styles: [
+    `
       [nz-button] {
         margin-right: 8px;
         margin-bottom: 8px;
@@ -98,5 +99,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoDropdownPlacementComponent {
-}
+export class NzDemoDropdownPlacementComponent {}

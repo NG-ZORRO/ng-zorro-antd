@@ -13,13 +13,12 @@ import { Component } from '@angular/core';
     <button nz-button nz-popover nzTitle="Title" [nzContent]="contentTemplate" nzTrigger="hover">Hover me</button>
     <button nz-button nz-popover nzTitle="Title" [nzContent]="contentTemplate" nzTrigger="focus">Focus me</button>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       button {
         margin-right: 8px;
       }
     `
   ]
 })
-export class NzDemoPopoverTriggerTypeComponent {
-}
+export class NzDemoPopoverTriggerTypeComponent {}

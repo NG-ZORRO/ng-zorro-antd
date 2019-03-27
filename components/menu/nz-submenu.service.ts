@@ -18,18 +18,15 @@ export class NzSubmenuService {
         return 'horizontal';
       }
     }),
-    tap(mode => this.mode = mode as NzDirectionVHIType)
+    tap(mode => (this.mode = mode as NzDirectionVHIType))
   );
   level = 1;
   level$ = new BehaviorSubject<number>(1);
   subMenuOpen$ = new BehaviorSubject<boolean>(false);
   open$ = new BehaviorSubject<boolean>(false);
   mouseEnterLeave$ = new Subject<boolean>();
-  menuOpen$ = combineLatest(
-    this.subMenuOpen$,
-    this.mouseEnterLeave$
-  ).pipe(
-    map(value => value[ 0 ] || value[ 1 ]),
+  menuOpen$ = combineLatest(this.subMenuOpen$, this.mouseEnterLeave$).pipe(
+    map(value => value[0] || value[1]),
     auditTime(150),
     distinctUntilChanged(),
     tap(data => {
@@ -59,7 +56,10 @@ export class NzSubmenuService {
     }
   }
 
-  constructor(@SkipSelf() @Optional() private nzHostSubmenuService: NzSubmenuService, public nzMenuService: NzMenuService) {
+  constructor(
+    @SkipSelf() @Optional() private nzHostSubmenuService: NzSubmenuService,
+    public nzMenuService: NzMenuService
+  ) {
     if (this.nzHostSubmenuService) {
       this.setLevel(this.nzHostSubmenuService.level + 1);
     }

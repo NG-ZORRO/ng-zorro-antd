@@ -1,19 +1,29 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Optional, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  Optional,
+  ViewEncapsulation
+} from '@angular/core';
 import { Subject } from 'rxjs';
+
+import { toCssPixel } from '../core/util';
 
 import { NzMessageConfig, NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG } from './nz-message-config';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-message-container',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-message-container',
   preserveWhitespaces: false,
-  templateUrl        : './nz-message-container.component.html'
+  templateUrl: './nz-message-container.component.html'
 })
 export class NzMessageContainerComponent {
   messages: NzMessageDataFilled[] = [];
   config: Required<NzMessageConfig>;
+  top: string | null;
 
   constructor(
     protected cdr: ChangeDetectorRef,
@@ -25,6 +35,8 @@ export class NzMessageContainerComponent {
 
   setConfig(config: NzMessageConfig): void {
     this.config = { ...this.config, ...config };
+    this.top = toCssPixel(this.config.nzTop);
+    this.cdr.markForCheck();
   }
 
   /**
@@ -73,10 +85,10 @@ export class NzMessageContainerComponent {
    */
   protected _mergeMessageOptions(options?: NzMessageDataOptions): NzMessageDataOptions {
     const defaultOptions: NzMessageDataOptions = {
-      nzDuration    : this.config.nzDuration,
-      nzAnimate     : this.config.nzAnimate,
+      nzDuration: this.config.nzDuration,
+      nzAnimate: this.config.nzAnimate,
       nzPauseOnHover: this.config.nzPauseOnHover
     };
-    return { ...defaultOptions, ...options};
+    return { ...defaultOptions, ...options };
   }
 }

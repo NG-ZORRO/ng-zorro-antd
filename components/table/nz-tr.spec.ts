@@ -8,9 +8,9 @@ import { NzTrDirective } from './nz-tr.directive';
 describe('nz-tr', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzTableModule ],
-      declarations: [ NzTrTestTableComponent, NzTrTestNzTableComponent ],
-      providers   : [ NzMeasureScrollbarService ]
+      imports: [NzTableModule],
+      declarations: [NzTrTestTableComponent, NzTrTestNzTableComponent],
+      providers: [NzMeasureScrollbarService]
     });
     TestBed.compileComponents();
   }));
@@ -67,10 +67,10 @@ describe('nz-tr', () => {
   template: `
     <table>
       <tr></tr>
-    </table>`
+    </table>
+  `
 })
-export class NzTrTestTableComponent {
-}
+export class NzTrTestTableComponent {}
 
 @Component({
   selector: 'nz-tr-test-nz-table',

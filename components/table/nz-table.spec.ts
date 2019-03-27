@@ -11,8 +11,8 @@ describe('nz-table', () => {
 
   beforeEach(async(() => {
     injector = TestBed.configureTestingModule({
-      imports     : [ NzTableModule ],
-      declarations: [ NzTestTableBasicComponent, NzTestTableScrollComponent, NzTableSpecCrashComponent ]
+      imports: [NzTableModule],
+      declarations: [NzTestTableBasicComponent, NzTestTableScrollComponent, NzTableSpecCrashComponent]
     });
     TestBed.compileComponents();
   }));
@@ -46,7 +46,7 @@ describe('nz-table', () => {
       fixture.detectChanges();
       expect(testComponent.pageIndex).toBe(1);
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
-      table.nativeElement.querySelectorAll('.ant-pagination-item')[ 1 ].click();
+      table.nativeElement.querySelectorAll('.ant-pagination-item')[1].click();
       fixture.detectChanges();
       expect(testComponent.pageIndex).toBe(2);
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
@@ -99,7 +99,7 @@ describe('nz-table', () => {
       fixture.detectChanges();
       expect(testComponent.pageSizeChange).toHaveBeenCalledTimes(0);
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
-      testComponent.dataSet = [ ...testComponent.dataSet, ...testComponent.dataSet ];
+      testComponent.dataSet = [...testComponent.dataSet, ...testComponent.dataSet];
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
@@ -181,10 +181,10 @@ describe('nz-table', () => {
     it('should width config', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelectorAll('col').length).toBe(4);
-      testComponent.widthConfig = [ '100px', '50px' ];
+      testComponent.widthConfig = ['100px', '50px'];
       fixture.detectChanges();
-      expect(table.nativeElement.querySelectorAll('col')[ 0 ].style.width).toBe('100px');
-      expect(table.nativeElement.querySelectorAll('col')[ 1 ].style.width).toBe('50px');
+      expect(table.nativeElement.querySelectorAll('col')[0].style.width).toBe('100px');
+      expect(table.nativeElement.querySelectorAll('col')[1].style.width).toBe('50px');
     });
     it('should showQuickJumper & showSizeChanger work', () => {
       fixture.detectChanges();
@@ -199,7 +199,7 @@ describe('nz-table', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-pagination')).not.toBe(null);
       testComponent.hideOnSinglePage = true;
-      testComponent.dataSet = [ {} ];
+      testComponent.dataSet = [{}];
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-pagination')).toBe(null);
     });
@@ -320,7 +320,7 @@ describe('nz-table', () => {
   template: `
     <nz-table
       #dynamicTable
-      [nzScroll]="fixHeader?{ y: '240px' }:null"
+      [nzScroll]="fixHeader ? { y: '240px' } : null"
       [(nzPageIndex)]="pageIndex"
       (nzPageIndexChange)="pageIndexChange($event)"
       [(nzPageSize)]="pageSize"
@@ -335,30 +335,31 @@ describe('nz-table', () => {
       [nzWidthConfig]="widthConfig"
       [nzShowPagination]="pagination"
       [nzFrontPagination]="pagination"
-      [nzFooter]="footer?'Here is Footer':null"
+      [nzFooter]="footer ? 'Here is Footer' : null"
       [nzNoResult]="noResult"
-      [nzTitle]="title?'Here is Title':null"
-      [nzSize]="size">
+      [nzTitle]="title ? 'Here is Title' : null"
+      [nzSize]="size"
+    >
       <thead *ngIf="header">
-      <tr>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Address</th>
-        <th>Action</th>
-      </tr>
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Address</th>
+          <th>Action</th>
+        </tr>
       </thead>
       <tbody>
-      <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
-        <tr>
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
-          <td>
-            <a href="#">Action 一 {{data.name}}</a>
-            <a href="#">Delete</a>
-          </td>
-        </tr>
-      </ng-template>
+        <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
+          <tr>
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+            <td>
+              <a href="#">Action 一 {{ data.name }}</a>
+              <a href="#">Delete</a>
+            </td>
+          </tr>
+        </ng-template>
       </tbody>
     </nz-table>
   `
@@ -369,7 +370,14 @@ export class NzTestTableBasicComponent implements OnInit {
   pageIndexChange = jasmine.createSpy('pageIndex callback');
   pageSize = 10;
   pageSizeChange = jasmine.createSpy('pageSize callback');
-  dataSet: Array<{ name?: string, age?: string, address?: string, description?: string, checked?: boolean, expand?: boolean }> = [];
+  dataSet: Array<{
+    name?: string;
+    age?: string;
+    address?: string;
+    description?: string;
+    checked?: boolean;
+    expand?: boolean;
+  }> = [];
   noResult = '';
   showSizeChanger = false;
   showQuickJumper = false;
@@ -388,73 +396,70 @@ export class NzTestTableBasicComponent implements OnInit {
   ngOnInit(): void {
     for (let i = 1; i <= 20; i++) {
       this.dataSet.push({
-        name       : 'John Brown',
-        age        : `${i}2`,
-        address    : `New York No. ${i} Lake Park`,
+        name: 'John Brown',
+        age: `${i}2`,
+        address: `New York No. ${i} Lake Park`,
         description: `My name is John Brown, I am ${i}2 years old, living in New York No. ${i} Lake Park.`,
-        checked    : false,
-        expand     : false
+        checked: false,
+        expand: false
       });
     }
   }
 }
 
 @Component({
-  selector     : 'nz-test-table-scroll',
-  template     : `
+  selector: 'nz-test-table-scroll',
+  template: `
     <div style="display: block;" [style.width.px]="width">
-      <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" [nzScroll]="{ x:'600px',y: '240px' }">
+      <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" [nzScroll]="{ x: '600px', y: '240px' }">
         <thead>
-        <tr>
-          <th>Full Name</th>
-          <th>Age</th>
-          <th>Column 1</th>
-          <th>Column 2</th>
-          <th>Column 3</th>
-          <th>Column 4</th>
-          <th>Column 5</th>
-          <th>Column 6</th>
-          <th>Column 7</th>
-          <th>Column 8</th>
-          <th>Action</th>
-        </tr>
+          <tr>
+            <th>Full Name</th>
+            <th>Age</th>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+            <th>Column 4</th>
+            <th>Column 5</th>
+            <th>Column 6</th>
+            <th>Column 7</th>
+            <th>Column 8</th>
+            <th>Action</th>
+          </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let data of nzTable.data">
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>
-            <a>action</a>
-          </td>
-        </tr>
+          <tr *ngFor="let data of nzTable.data">
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>
+              <a>action</a>
+            </td>
+          </tr>
         </tbody>
       </nz-table>
-    </div>`,
+    </div>
+  `,
   encapsulation: ViewEncapsulation.None,
-  styleUrls    : [
-    '../style/index.less',
-    '../spin/style/index.less',
-    './style/index.less'
-  ]
+  styleUrls: ['../style/index.less', '../spin/style/index.less', './style/index.less']
 })
 export class NzTestTableScrollComponent implements OnInit {
   @ViewChild(NzTableComponent) nzTableComponent: NzTableComponent;
-  dataSet: Array<{ name: string, age: number, address: string }> = [];
+  dataSet: Array<{ name: string; age: number; address: string }> = [];
   width = 300;
 
   ngOnInit(): void {
     for (let i = 0; i < 100; i++) {
       this.dataSet.push({
-        name   : `Edward King ${i}`,
-        age    : 32,
+        name: `Edward King ${i}`,
+        age: 32,
         address: `London, Park Lane no. ${i}`
       });
     }
@@ -464,27 +469,32 @@ export class NzTestTableScrollComponent implements OnInit {
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/3004 **/
 @Component({
   template: `
-    <nz-table #nzTable [nzData]="data" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
-              (nzPageIndexChange)="pageIndexChange">
+    <nz-table
+      #nzTable
+      [nzData]="data"
+      [(nzPageIndex)]="pageIndex"
+      [(nzPageSize)]="pageSize"
+      (nzPageIndexChange)="(pageIndexChange)"
+    >
       <thead>
-      <tr>
-        <th>ID</th>
-        <th>NAME</th>
-      </tr>
+        <tr>
+          <th>ID</th>
+          <th>NAME</th>
+        </tr>
       </thead>
       <tbody>
-      <ng-container *ngFor="let item of nzTable.data">
-        <tr>
-          <td>{{item.id}}</td>
-          <td>{{item.name}}</td>
-        </tr>
-      </ng-container>
+        <ng-container *ngFor="let item of nzTable.data">
+          <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+          </tr>
+        </ng-container>
       </tbody>
     </nz-table>
   `
 })
 export class NzTableSpecCrashComponent {
-  data: Array<{ id: number, name: string }> = [];
+  data: Array<{ id: number; name: string }> = [];
   pageIndex = 1;
   pageSize = 10;
   pageIndexChange = jasmine.createSpy('pageSize callback');
@@ -492,10 +502,9 @@ export class NzTableSpecCrashComponent {
   constructor() {
     setTimeout(() => {
       this.data = new Array(100).fill(1).map((_, i) => ({
-        id  : i + 1,
+        id: i + 1,
         name: `name ${i + 1}`
       }));
     }, 1000);
-
   }
 }

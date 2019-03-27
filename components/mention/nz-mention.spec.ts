@@ -2,11 +2,7 @@ import { Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import {
-  Component,
-  NgZone,
-  ViewChild
-} from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -36,29 +32,36 @@ describe('mention', () => {
   beforeEach(async(() => {
     const dir = 'ltr';
     TestBed.configureTestingModule({
-      imports     : [ NzMentionModule, NzInputModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
-      declarations: [
-        NzTestSimpleMentionComponent,
-        NzTestPropertyMentionComponent
+      imports: [
+        NzMentionModule,
+        NzInputModule,
+        NoopAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NzIconTestModule
       ],
-      providers   : [
+      declarations: [NzTestSimpleMentionComponent, NzTestPropertyMentionComponent],
+      providers: [
         { provide: Directionality, useFactory: () => ({ value: dir }) },
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
-        {provide: NgZone, useFactory: () => {
+        {
+          provide: NgZone,
+          useFactory: () => {
             zone = new MockNgZone();
             return zone;
-          }}
+          }
+        }
       ]
     });
 
     TestBed.compileComponents();
 
-    inject([ OverlayContainer ], (oc: OverlayContainer) => {
+    inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
       overlayContainerElement = oc.getContainerElement();
     })();
   }));
-  afterEach(inject([ OverlayContainer ], (currentOverlayContainer: OverlayContainer) => {
+  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
@@ -120,11 +123,9 @@ describe('mention', () => {
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
       flush();
-      expect(mention.isOpen)
-      .toBe(true);
+      expect(mention.isOpen).toBe(true);
       dispatchFakeEvent(document, 'click');
-      expect(mention.isOpen)
-      .toBe(false);
+      expect(mention.isOpen).toBe(false);
     }));
 
     it('should close the dropdown when the user taps away on a touch device', fakeAsync(() => {
@@ -133,8 +134,7 @@ describe('mention', () => {
       fixture.detectChanges();
       flush();
       dispatchFakeEvent(document, 'touchend');
-      expect(mention.isOpen)
-      .toBe(false);
+      expect(mention.isOpen).toBe(false);
     }));
 
     it('should close the dropdown when an option is clicked', fakeAsync(() => {
@@ -150,14 +150,10 @@ describe('mention', () => {
       fixture.detectChanges();
 
       tick(500);
-      expect(mention.isOpen)
-      .toBe(false);
-      expect(overlayContainerElement.textContent)
-      .toEqual('');
-      expect(textarea.value)
-      .toEqual('@angular ');
+      expect(mention.isOpen).toBe(false);
+      expect(overlayContainerElement.textContent).toEqual('');
+      expect(textarea.value).toEqual('@angular ');
     }));
-
   });
 
   describe('keyboard events', () => {
@@ -191,11 +187,11 @@ describe('mention', () => {
       fixture.detectChanges();
 
       const mention = fixture.componentInstance.mention;
-      const optionEls =
-        overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<
+        HTMLElement
+      >;
 
-      expect(mention.isOpen)
-      .toBe(true);
+      expect(mention.isOpen).toBe(true);
       fixture.componentInstance.trigger.onKeydown.emit(DOWN_ARROW_EVENT);
       fixture.detectChanges();
 
@@ -209,11 +205,11 @@ describe('mention', () => {
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
       const mention = fixture.componentInstance.mention;
-      const optionEls =
-        overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<
+        HTMLElement
+      >;
 
-      expect(mention.isOpen)
-      .toBe(true);
+      expect(mention.isOpen).toBe(true);
 
       [1, 2, 3, 4, 5].forEach(() => fixture.componentInstance.trigger.onKeydown.emit(DOWN_ARROW_EVENT));
       fixture.detectChanges();
@@ -221,7 +217,6 @@ describe('mention', () => {
       expect(optionEls[1].classList).not.toContain('focus');
       expect(optionEls[4].classList).not.toContain('focus');
       expect(optionEls[0].classList).toContain('focus');
-
     });
 
     it('should set the active item to the last option when UP key is pressed', () => {
@@ -230,18 +225,17 @@ describe('mention', () => {
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
       const mention = fixture.componentInstance.mention;
-      const optionEls =
-        overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<
+        HTMLElement
+      >;
 
-      expect(mention.isOpen)
-      .toBe(true);
+      expect(mention.isOpen).toBe(true);
 
       fixture.componentInstance.trigger.onKeydown.emit(UP_ARROW_EVENT);
       fixture.detectChanges();
 
       expect(optionEls[0].classList).not.toContain('focus');
       expect(optionEls[4].classList).toContain('focus');
-
     });
 
     it('should set the active item to the previous option when UP key is pressed', () => {
@@ -250,11 +244,11 @@ describe('mention', () => {
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
       const mention = fixture.componentInstance.mention;
-      const optionEls =
-        overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<
+        HTMLElement
+      >;
 
-      expect(mention.isOpen)
-      .toBe(true);
+      expect(mention.isOpen).toBe(true);
 
       [1, 2, 3].forEach(() => fixture.componentInstance.trigger.onKeydown.emit(UP_ARROW_EVENT));
       fixture.detectChanges();
@@ -272,13 +266,13 @@ describe('mention', () => {
       componentInstance.trigger.onKeydown.emit(DOWN_ARROW_EVENT);
       fixture.detectChanges();
 
-      const optionEls =
-        overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<
+        HTMLElement
+      >;
 
       expect(optionEls[0].classList).not.toContain('focus');
       expect(optionEls[1].classList).toContain('focus');
       expect(optionEls[1].innerText).toEqual('ant-design');
-
     });
 
     it('should set the active after filtering item when RIGHT/LEFT key is pressed', () => {
@@ -290,14 +284,14 @@ describe('mention', () => {
       [1, 2, 3, 4].forEach(() => componentInstance.trigger.onKeydown.emit(RIGHT_EVENT));
       fixture.detectChanges();
 
-      const optionEls =
-        overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<
+        HTMLElement
+      >;
 
       expect(optionEls[0].classList).toContain('focus');
       expect(optionEls[1].classList).not.toContain('focus');
       expect(optionEls[0].innerText).toEqual('ant-design');
       expect(optionEls[1].innerText).toEqual('mention');
-
     });
 
     it('should fill the text field when an option is selected with ENTER', fakeAsync(() => {
@@ -312,12 +306,9 @@ describe('mention', () => {
       componentInstance.trigger.onKeydown.emit(ENTER_EVENT);
       fixture.detectChanges();
 
-      expect(componentInstance.inputValue)
-      .toContain('@ant-design ');
+      expect(componentInstance.inputValue).toContain('@ant-design ');
 
-      expect(textarea.value)
-      .toContain('@ant-design ');
-
+      expect(textarea.value).toContain('@ant-design ');
     }));
 
     it('should prevent the default enter key action', fakeAsync(() => {
@@ -328,8 +319,7 @@ describe('mention', () => {
       flush();
 
       fixture.componentInstance.trigger.onKeydown.emit(ENTER_EVENT);
-      expect(ENTER_EVENT.defaultPrevented)
-      .toBe(true);
+      expect(ENTER_EVENT.defaultPrevented).toBe(true);
     }));
 
     it('should not prevent the default enter action for a closed dropdown', () => {
@@ -346,15 +336,13 @@ describe('mention', () => {
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
 
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown'))
-      .toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-mention-dropdown')).toBeTruthy();
 
       dispatchKeyboardEvent(textarea, 'keydown', TAB);
       fixture.detectChanges();
 
       tick(500);
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown'))
-      .toBeFalsy();
+      expect(overlayContainerElement.querySelector('.ant-mention-dropdown')).toBeFalsy();
     }));
 
     it('should close the dropdown when pressing escape', fakeAsync(() => {
@@ -362,17 +350,14 @@ describe('mention', () => {
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
 
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown'))
-      .toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-mention-dropdown')).toBeTruthy();
 
       dispatchKeyboardEvent(textarea, 'keydown', ESCAPE);
       fixture.detectChanges();
 
       tick(500);
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown'))
-      .toBeFalsy();
+      expect(overlayContainerElement.querySelector('.ant-mention-dropdown')).toBeFalsy();
     }));
-
   });
 
   describe('property', () => {
@@ -395,13 +380,11 @@ describe('mention', () => {
 
       tick();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown .anticon-loading'))
-      .toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-mention-dropdown .anticon-loading')).toBeTruthy();
       fixture.detectChanges();
       flush(500);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown .anticon-loading'))
-      .toBeFalsy();
+      expect(overlayContainerElement.querySelector('.ant-mention-dropdown .anticon-loading')).toBeFalsy();
     }));
 
     it('should open the dropdown when the type in @ prefix', () => {
@@ -413,8 +396,7 @@ describe('mention', () => {
 
       const mention = fixture.componentInstance.mention;
 
-      expect(mention.isOpen)
-      .toBe(true);
+      expect(mention.isOpen).toBe(true);
     });
 
     it('should open the dropdown when the type in # prefix', () => {
@@ -426,8 +408,7 @@ describe('mention', () => {
 
       const mention = fixture.componentInstance.mention;
 
-      expect(mention.isOpen)
-      .toBe(true);
+      expect(mention.isOpen).toBe(true);
     });
 
     it('should has the custom template in the dropdown', () => {
@@ -435,33 +416,27 @@ describe('mention', () => {
       fixture.detectChanges();
       typeInElement('@', textarea);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown .custom'))
-      .toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-mention-dropdown .custom')).toBeTruthy();
     });
 
     it('should correct parsing the trigger content', () => {
       fixture.componentInstance.setArrayPrefix();
-      typeInElement('ABC @Angular 123 @ant-design @你好 foo ant@gmail.com @@ng 123 .@.@ /@hello \\@hello #ng', textarea);
+      typeInElement(
+        'ABC @Angular 123 @ant-design @你好 foo ant@gmail.com @@ng 123 .@.@ /@hello \\@hello #ng',
+        textarea
+      );
       fixture.detectChanges();
-      expect(fixture.componentInstance.mention.getMentions().join(','))
-      .toBe('@Angular,@ant-design,@你好,@@ng,#ng');
+      expect(fixture.componentInstance.mention.getMentions().join(',')).toBe('@Angular,@ant-design,@你好,@@ng,#ng');
     });
-
   });
-
 });
 
 @Component({
   template: `
-  <nz-mention
-    [nzSuggestions]="suggestions">
-     <textarea
-        nz-input
-        [nzAutosize]="{minRows: 4, maxRows: 4}"
-        [(ngModel)]="inputValue"
-        nzMentionTrigger>
+    <nz-mention [nzSuggestions]="suggestions">
+      <textarea nz-input [nzAutosize]="{ minRows: 4, maxRows: 4 }" [(ngModel)]="inputValue" nzMentionTrigger>
       </textarea>
-  </nz-mention>
+    </nz-mention>
   `
 })
 class NzTestSimpleMentionComponent {
@@ -473,22 +448,19 @@ class NzTestSimpleMentionComponent {
 
 @Component({
   template: `
-  <nz-mention
-    [nzSuggestions]="webFrameworks"
-    [nzValueWith]="valueWith"
-    [nzPrefix]="prefix"
-    [nzPlacement]="'top'"
-    [nzLoading]="loading">
-     <textarea
-        nz-input
-        [nzAutosize]="{minRows: 4, maxRows: 4}"
-        [(ngModel)]="inputValue"
-        nzMentionTrigger>
-     </textarea>
-     <ng-container *nzMentionSuggestion="let framework">
+    <nz-mention
+      [nzSuggestions]="webFrameworks"
+      [nzValueWith]="valueWith"
+      [nzPrefix]="prefix"
+      [nzPlacement]="'top'"
+      [nzLoading]="loading"
+    >
+      <textarea nz-input [nzAutosize]="{ minRows: 4, maxRows: 4 }" [(ngModel)]="inputValue" nzMentionTrigger>
+      </textarea>
+      <ng-container *nzMentionSuggestion="let framework">
         <span class="custom">{{ framework.name }} - {{ framework.type }}</span>
-     </ng-container>
-  </nz-mention>
+      </ng-container>
+    </nz-mention>
   `
 })
 class NzTestPropertyMentionComponent {
@@ -501,7 +473,7 @@ class NzTestPropertyMentionComponent {
     { name: 'Django', type: 'Python' }
   ];
   loading = false;
-  prefix: string | string[]  = '@';
+  prefix: string | string[] = '@';
   valueWith = (data: { name: string; type: string }) => data.name;
   @ViewChild(NzMentionComponent) mention: NzMentionComponent;
   @ViewChild(NzMentionTriggerDirective) trigger: NzMentionTriggerDirective;

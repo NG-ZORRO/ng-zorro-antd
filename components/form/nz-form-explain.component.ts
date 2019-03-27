@@ -2,16 +2,18 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 import { helpMotion } from '../core/animation/help';
 
 @Component({
-  selector           : 'nz-form-explain',
+  selector: 'nz-form-explain',
   preserveWhitespaces: false,
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  animations         : [ helpMotion ],
-  templateUrl        : './nz-form-explain.component.html',
-  styles             : [
-      `nz-form-explain {
-      display: block;
-    }`
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [helpMotion],
+  templateUrl: './nz-form-explain.component.html',
+  styles: [
+    `
+      nz-form-explain {
+        display: block;
+      }
+    `
   ]
 })
 export class NzFormExplainComponent {

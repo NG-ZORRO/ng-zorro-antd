@@ -3,10 +3,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter, Host,
+  EventEmitter,
+  Host,
   Input,
   OnChanges,
-  OnDestroy, Optional,
+  OnDestroy,
+  Optional,
   Output,
   ViewChild,
   ViewEncapsulation
@@ -19,38 +21,42 @@ import { NzDropDownDirective } from './nz-dropdown.directive';
 import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 
 @Component({
-  selector           : 'nz-dropdown-button',
+  selector: 'nz-dropdown-button',
   preserveWhitespaces: false,
-  animations         : [ slideMotion ],
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  providers          : [ NzMenuDropdownService ],
-  templateUrl        : './nz-dropdown-button.component.html',
-  styles             : [ `
-    nz-dropdown-button {
-      position: relative;
-      display: inline-block;
-    }
+  animations: [slideMotion],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [NzMenuDropdownService],
+  templateUrl: './nz-dropdown-button.component.html',
+  styles: [
+    `
+      nz-dropdown-button {
+        position: relative;
+        display: inline-block;
+      }
 
-    .ant-dropdown {
-      top: 100%;
-      left: 0;
-      position: relative;
-      width: 100%;
-      margin-top: 4px;
-      margin-bottom: 4px;
-    }
-  ` ]
+      .ant-dropdown {
+        top: 100%;
+        left: 0;
+        position: relative;
+        width: 100%;
+        margin-top: 4px;
+        margin-bottom: 4px;
+      }
+    `
+  ]
 })
-
 export class NzDropDownButtonComponent extends NzDropDownComponent implements OnDestroy, AfterContentInit, OnChanges {
   @Input() nzSize = 'default';
   @Input() nzType = 'default';
   @Output() readonly nzClick = new EventEmitter<MouseEvent>();
   @ViewChild(NzDropDownDirective) nzDropDownDirective: NzDropDownDirective;
 
-  constructor(cdr: ChangeDetectorRef, nzMenuDropdownService: NzMenuDropdownService,
-              @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+  constructor(
+    cdr: ChangeDetectorRef,
+    nzMenuDropdownService: NzMenuDropdownService,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+  ) {
     super(cdr, nzMenuDropdownService, noAnimation);
   }
 

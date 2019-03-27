@@ -7,8 +7,8 @@ import { NzFormTextComponent } from './nz-form-text.component';
 describe('nz-form-text', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NoopAnimationsModule ],
-      declarations: [ NzFormTextComponent, NzTestFormTextComponent ]
+      imports: [NoopAnimationsModule],
+      declarations: [NzFormTextComponent, NzTestFormTextComponent]
     });
     TestBed.compileComponents();
   }));
@@ -28,7 +28,8 @@ describe('nz-form-text', () => {
 });
 
 @Component({
-  template: `<nz-form-text></nz-form-text>`
+  template: `
+    <nz-form-text></nz-form-text>
+  `
 })
-export class NzTestFormTextComponent {
-}
+export class NzTestFormTextComponent {}

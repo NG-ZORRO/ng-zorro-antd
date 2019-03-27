@@ -14,9 +14,17 @@ import { NzTransferSearchComponent } from './nz-transfer-search.component';
 import { NzTransferComponent } from './nz-transfer.component';
 
 @NgModule({
-  imports     : [ CommonModule, FormsModule, NzCheckboxModule, NzButtonModule, NzInputModule, NzI18nModule, NzIconModule, NzEmptyModule ],
-  declarations: [ NzTransferComponent, NzTransferListComponent, NzTransferSearchComponent ],
-  exports     : [ NzTransferComponent ]
+  imports: [
+    CommonModule,
+    FormsModule,
+    NzCheckboxModule,
+    NzButtonModule,
+    NzInputModule,
+    NzI18nModule,
+    NzIconModule,
+    NzEmptyModule
+  ],
+  declarations: [NzTransferComponent, NzTransferListComponent, NzTransferSearchComponent],
+  exports: [NzTransferComponent]
 })
-export class NzTransferModule {
-}
+export class NzTransferModule {}

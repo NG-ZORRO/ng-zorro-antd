@@ -9,8 +9,8 @@ import { NzAlertModule } from './nz-alert.module';
 describe('alert', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzAlertModule, NoopAnimationsModule ],
-      declarations: [ NzDemoTestBasicComponent, NzDemoTestBannerComponent ]
+      imports: [NzAlertModule, NoopAnimationsModule],
+      declarations: [NzDemoTestBasicComponent, NzDemoTestBannerComponent]
     });
     TestBed.compileComponents();
   }));
@@ -91,7 +91,7 @@ describe('alert', () => {
       expect(alert.nativeElement.querySelector('.ant-alert-icon').classList).toContain('anticon-lock');
     });
     it('should type work', () => {
-      const listOfType = [ 'success', 'info', 'warning', 'error' ];
+      const listOfType = ['success', 'info', 'warning', 'error'];
       listOfType.forEach(type => {
         testComponent.type = type;
         fixture.detectChanges();
@@ -130,7 +130,8 @@ describe('alert', () => {
       [nzShowIcon]="showIcon"
       [nzIconType]="iconType"
       [nzType]="type"
-      (nzOnClose)="onClose($event)">
+      (nzOnClose)="onClose($event)"
+    >
     </nz-alert>
   `
 })
@@ -150,9 +151,7 @@ export class NzDemoTestBasicComponent {
 @Component({
   selector: 'nz-test-alert-banner',
   template: `
-    <nz-alert nzBanner>
-    </nz-alert>
+    <nz-alert nzBanner> </nz-alert>
   `
 })
-export class NzDemoTestBannerComponent {
-}
+export class NzDemoTestBannerComponent {}

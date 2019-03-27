@@ -9,9 +9,9 @@ import { NzInputModule } from './nz-input.module';
 describe('input', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
-      declarations: [ NzTestInputWithInputComponent, NzTestInputWithTextAreaComponent, NzTestInputFormComponent ],
-      providers   : []
+      imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+      declarations: [NzTestInputWithInputComponent, NzTestInputWithTextAreaComponent, NzTestInputFormComponent],
+      providers: []
     }).compileComponents();
   }));
   describe('single input', () => {
@@ -92,7 +92,9 @@ describe('input', () => {
 
 @Component({
   selector: 'nz-test-input-with-input',
-  template: `<input nz-input [nzSize]="size" [disabled]="disabled">`
+  template: `
+    <input nz-input [nzSize]="size" [disabled]="disabled" />
+  `
 })
 export class NzTestInputWithInputComponent {
   size = 'default';
@@ -101,16 +103,17 @@ export class NzTestInputWithInputComponent {
 
 @Component({
   selector: 'nz-test-input-with-textarea',
-  template: `<textarea nz-input></textarea>`
+  template: `
+    <textarea nz-input></textarea>
+  `
 })
-export class NzTestInputWithTextAreaComponent {
-}
+export class NzTestInputWithTextAreaComponent {}
 
 @Component({
   selector: 'nz-test-input-form',
   template: `
     <form [formGroup]="formGroup">
-      <input nz-input formControlName="input">
+      <input nz-input formControlName="input" />
     </form>
   `
 })
@@ -119,7 +122,7 @@ export class NzTestInputFormComponent {
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
-      input: [ 'abc' ]
+      input: ['abc']
     });
   }
 

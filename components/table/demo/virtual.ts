@@ -3,12 +3,14 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-virtual',
   template: `
-    <nz-table nzVirtualScroll
+    <nz-table
+      nzVirtualScroll
       [nzVirtualItemSize]="54"
       [nzData]="listOfData"
       [nzFrontPagination]="false"
       [nzShowPagination]="false"
-      [nzScroll]="{ x:'1200px',y: '240px' }">
+      [nzScroll]="{ x: '1200px', y: '240px' }"
+    >
       <thead>
         <tr>
           <th nzWidth="200px" nzLeft="0px">Full Name</th>
@@ -27,16 +29,16 @@ import { Component, OnInit } from '@angular/core';
       <tbody>
         <ng-template nz-virtual-scroll let-data let-index="index">
           <tr>
-            <td nzLeft="0px">{{data.name}} {{index}}</td>
-            <td nzLeft="200px">{{data.age}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.address}}</td>
+            <td nzLeft="0px">{{ data.name }} {{ index }}</td>
+            <td nzLeft="200px">{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
             <td nzRight="0px">
               <a>action</a>
             </td>
@@ -52,8 +54,8 @@ export class NzDemoTableVirtualComponent implements OnInit {
   ngOnInit(): void {
     for (let i = 0; i < 20000; i++) {
       this.listOfData.push({
-        name   : `Edward King`,
-        age    : 32,
+        name: `Edward King`,
+        age: 32,
         address: `London`
       });
     }

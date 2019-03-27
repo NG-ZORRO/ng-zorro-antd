@@ -24,7 +24,9 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd';
       <p>some contents...</p>
     </ng-template>
     <ng-template #tplFooter>
-      <button nz-button nzType="primary" (click)="destroyTplModal()" [nzLoading]="tplModalButtonLoading">Close after submit</button>
+      <button nz-button nzType="primary" (click)="destroyTplModal()" [nzLoading]="tplModalButtonLoading">
+        Close after submit
+      </button>
     </ng-template>
 
     <br /><br />
@@ -38,12 +40,16 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd';
     <br /><br />
 
     <button nz-button nzType="primary" (click)="openAndCloseAll()">Open more modals then close all after 2s</button>
-    <nz-modal [(nzVisible)]="htmlModalVisible" nzMask="false" nzZIndex="1001" nzTitle="Non-service html modal">This is a non-service html modal</nz-modal>
+    <nz-modal [(nzVisible)]="htmlModalVisible" nzMask="false" nzZIndex="1001" nzTitle="Non-service html modal"
+      >This is a non-service html modal</nz-modal
+    >
   `,
-  styles  : [
-    `button {
-      margin-right: 8px;
-    }`
+  styles: [
+    `
+      button {
+        margin-right: 8px;
+      }
+    `
   ]
 })
 export class NzDemoModalServiceComponent {
@@ -52,14 +58,14 @@ export class NzDemoModalServiceComponent {
   htmlModalVisible = false;
   disabled = false;
 
-  constructor(private modalService: NzModalService) { }
+  constructor(private modalService: NzModalService) {}
 
   createModal(): void {
     this.modalService.create({
       nzTitle: 'Modal Title',
       nzContent: 'string, will close after 1 sec',
       nzClosable: false,
-      nzOnOk: () => new Promise((resolve) => setTimeout(resolve, 1000))
+      nzOnOk: () => new Promise(resolve => setTimeout(resolve, 1000))
     });
   }
 
@@ -90,18 +96,20 @@ export class NzDemoModalServiceComponent {
         title: 'title in component',
         subtitle: 'component sub title，will be changed after 2 sec'
       },
-      nzFooter: [{
-        label: 'change component tilte from outside',
-        onClick: (componentInstance) => {
-          componentInstance!.title = 'title in inner component is changed';
+      nzFooter: [
+        {
+          label: 'change component tilte from outside',
+          onClick: componentInstance => {
+            componentInstance!.title = 'title in inner component is changed';
+          }
         }
-      }]
+      ]
     });
 
     modal.afterOpen.subscribe(() => console.log('[afterOpen] emitted!'));
 
     // Return a result when closed
-    modal.afterClose.subscribe((result) => console.log('[afterClose] The result is:', result));
+    modal.afterClose.subscribe(result => console.log('[afterClose] The result is:', result));
 
     // delay until modal instance created
     setTimeout(() => {
@@ -123,7 +131,8 @@ export class NzDemoModalServiceComponent {
         {
           label: 'Confirm',
           type: 'primary',
-          onClick: () => this.modalService.confirm({ nzTitle: 'Confirm Modal Title', nzContent: 'Confirm Modal Content' })
+          onClick: () =>
+            this.modalService.confirm({ nzTitle: 'Confirm Modal Title', nzContent: 'Confirm Modal Content' })
         },
         {
           label: 'Change Button Status',
@@ -131,7 +140,7 @@ export class NzDemoModalServiceComponent {
           loading: false,
           onClick(): void {
             this.loading = true;
-            setTimeout(() => this.loading = false, 1000);
+            setTimeout(() => (this.loading = false), 1000);
             setTimeout(() => {
               this.loading = false;
               this.disabled = true;
@@ -151,13 +160,15 @@ export class NzDemoModalServiceComponent {
   openAndCloseAll(): void {
     let pos = 0;
 
-    // @ts-ignore
-    [ 'create', 'info', 'success', 'error' ].forEach((method) => this.modalService[method]({
-      nzMask: false,
-      nzTitle: `Test ${method} title`,
-      nzContent: `Test content: <b>${method}</b>`,
-      nzStyle: { position: 'absolute', top: `${pos * 70}px`, left: `${(pos++) * 300}px` }
-    }));
+    ['create', 'info', 'success', 'error'].forEach(method =>
+      // @ts-ignore
+      this.modalService[method]({
+        nzMask: false,
+        nzTitle: `Test ${method} title`,
+        nzContent: `Test content: <b>${method}</b>`,
+        nzStyle: { position: 'absolute', top: `${pos * 70}px`, left: `${pos++ * 300}px` }
+      })
+    );
 
     this.htmlModalVisible = true;
 
@@ -184,7 +195,7 @@ export class NzModalCustomComponent {
   @Input() title: string;
   @Input() subtitle: string;
 
-  constructor(private modal: NzModalRef) { }
+  constructor(private modal: NzModalRef) {}
 
   destroyModal(): void {
     this.modal.destroy({ data: 'this the result data' });

@@ -9,8 +9,8 @@ import { Component } from '@angular/core';
       <a>Link something</a>
     </nz-badge>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       nz-badge {
         margin-right: 20px;
       }
@@ -20,8 +20,8 @@ import { Component } from '@angular/core';
         height: 16px;
         line-height: 16px;
         font-size: 16px;
-      }`
+      }
+    `
   ]
 })
-export class NzDemoBadgeDotComponent {
-}
+export class NzDemoBadgeDotComponent {}

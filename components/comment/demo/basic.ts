@@ -5,29 +5,50 @@ import { distanceInWords } from 'date-fns';
   selector: 'nz-demo-comment-basic',
   template: `
     <nz-comment nzAuthor="Han Solo" [nzDatetime]="time">
-      <nz-avatar nz-comment-avatar nzIcon="user" nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+      <nz-avatar
+        nz-comment-avatar
+        nzIcon="user"
+        nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+      ></nz-avatar>
       <nz-comment-content>
-        <p>We supply a series of design principles, practical patterns and high quality design resources
-          (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.
+        <p>
+          We supply a series of design principles, practical patterns and high quality design resources (Sketch and
+          Axure), to help people create their product prototypes beautifully and efficiently.
         </p>
       </nz-comment-content>
       <nz-comment-action>
-        <i nz-tooltip nzTitle="Like" nz-icon type="like" [theme]="likes > 0 ? 'twotone' : 'outline'" (click)="like()"></i>
-        <span class="count like">{{likes}}</span>
+        <i
+          nz-tooltip
+          nzTitle="Like"
+          nz-icon
+          type="like"
+          [theme]="likes > 0 ? 'twotone' : 'outline'"
+          (click)="like()"
+        ></i>
+        <span class="count like">{{ likes }}</span>
       </nz-comment-action>
       <nz-comment-action>
-        <i nz-tooltip nzTitle="Dislike" nz-icon type="dislike" [theme]="dislikes > 0 ? 'twotone' : 'outline'" (click)="dislike()"></i>
-        <span class="count dislike">{{dislikes}}</span>
+        <i
+          nz-tooltip
+          nzTitle="Dislike"
+          nz-icon
+          type="dislike"
+          [theme]="dislikes > 0 ? 'twotone' : 'outline'"
+          (click)="dislike()"
+        ></i>
+        <span class="count dislike">{{ dislikes }}</span>
       </nz-comment-action>
       <nz-comment-action>Reply to</nz-comment-action>
     </nz-comment>
   `,
-  styles  : [`
-    .count {
-      padding-left: 8px;
-      cursor: auto;
-    }
-  `]
+  styles: [
+    `
+      .count {
+        padding-left: 8px;
+        cursor: auto;
+      }
+    `
+  ]
 })
 export class NzDemoCommentBasicComponent {
   likes = 0;
