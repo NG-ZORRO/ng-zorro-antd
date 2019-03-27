@@ -402,6 +402,25 @@ describe('menu', () => {
         fixture.detectChanges();
         expect(subs[1].placement).toBe('rightTop');
       });
+      it('should `nzMenuClassName` work', fakeAsync(() => {
+        fixture.detectChanges();
+        testComponent.open = true;
+        fixture.detectChanges();
+        expect((overlayContainerElement.querySelector('ul.submenu') as HTMLUListElement).classList).toContain(
+          'ant-menu-sub'
+        );
+      }));
+      it('should nested submenu `nzMenuClassName` work', () => {
+        testComponent.open = true;
+        fixture.detectChanges();
+        const subs = testComponent.subs.toArray();
+        subs[1].nzOpen = true;
+        subs[1].nzSubmenuService.open$.next(true);
+        fixture.detectChanges();
+        expect((overlayContainerElement.querySelector('ul.nested-submenu') as HTMLUListElement).classList).toContain(
+          'ant-menu-sub'
+        );
+      });
     });
     describe('inline submenu', () => {
       let fixture: ComponentFixture<NzTestMenuInlineComponent>;
@@ -422,6 +441,17 @@ describe('menu', () => {
         tick(500);
         expect(ul.style.height).not.toBe('0px');
         expect(submenu.nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
+      }));
+      it('should `nzMenuClassName` work', fakeAsync(() => {
+        fixture.detectChanges();
+        expect(submenu.nativeElement.querySelector('.ant-menu-sub').className).toContain('submenu');
+      }));
+      it('should `nzMenuClassName` multi class names work', fakeAsync(() => {
+        fixture.detectChanges();
+        testComponent.submenuClassName = 'submenu submenu-1';
+        fixture.detectChanges();
+        expect(submenu.nativeElement.querySelector('.ant-menu-sub').className).toContain('submenu');
+        expect(submenu.nativeElement.querySelector('.ant-menu-sub').className).toContain('submenu-1');
       }));
       it('should disabled work', fakeAsync(() => {
         testComponent.disabled = true;
@@ -448,7 +478,7 @@ describe('menu', () => {
   selector: 'nz-test-menu-horizontal',
   template: `
     <ul nz-menu [nzMode]="'horizontal'">
-      <li nz-submenu [nzOpen]="open" [style.width.px]="width">
+      <li nz-submenu nzMenuClassName="submenu" [nzOpen]="open" [style.width.px]="width">
         <span title><i nz-icon type="setting"></i> Navigation Three - Submenu</span>
         <ul>
           <li nz-menu-group>
@@ -463,7 +493,7 @@ describe('menu', () => {
             <ul>
               <li nz-menu-item>Option 3</li>
               <li nz-menu-item>Option 4</li>
-              <li nz-submenu [nzDisabled]="disabled">
+              <li nz-submenu nzMenuClassName="nested-submenu" [nzDisabled]="disabled">
                 <span title>Sub Menu</span>
                 <ul>
                   <li nz-menu-item #menuitem>Option 5</li>
@@ -497,7 +527,7 @@ export class NzTestMenuHorizontalComponent {
   selector: 'nz-test-menu-inline',
   template: `
     <ul nz-menu [nzMode]="'inline'" [nzInlineCollapsed]="collapse">
-      <li nz-submenu [nzDisabled]="disabled">
+      <li nz-submenu [nzMenuClassName]="submenuClassName" [nzDisabled]="disabled">
         <span title><i nz-icon type="mail"></i> Navigation One</span>
         <ul>
           <li nz-menu-item style="padding-left:0px;">Option 1</li>
@@ -511,6 +541,7 @@ export class NzTestMenuHorizontalComponent {
 export class NzTestMenuInlineComponent {
   disabled = false;
   collapse = false;
+  submenuClassName = 'submenu';
   @ViewChild(NzSubMenuComponent) subsmenu: NzSubMenuComponent;
   @ViewChild('menuitem', { read: ElementRef }) menuitem: ElementRef;
 }
