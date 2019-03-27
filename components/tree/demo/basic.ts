@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NzFormatEmitEvent, NzTreeNodeOptions, NzTreeComponent } from 'ng-zorro-antd';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { NzFormatEmitEvent, NzTreeComponent, NzTreeNodeOptions } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-tree-basic',
   template: `
     <nz-tree
-      #treeCom
+      #nzTreeComponent
       [nzData]="nodes"
       nzCheckable
       [nzCheckedKeys]="defaultCheckedKeys"
@@ -18,8 +18,8 @@ import { NzFormatEmitEvent, NzTreeNodeOptions, NzTreeComponent } from 'ng-zorro-
     </nz-tree>
   `
 })
-export class NzDemoTreeBasicComponent implements OnInit {
-  @ViewChild('treeCom') treeCom: NzTreeComponent;
+export class NzDemoTreeBasicComponent implements OnInit, AfterViewInit {
+  @ViewChild('nzTreeComponent') nzTreeComponent: NzTreeComponent;
   defaultCheckedKeys = ['10020'];
   defaultSelectedKeys = ['10010'];
   defaultExpandedKeys = ['100', '1001'];
@@ -60,18 +60,22 @@ export class NzDemoTreeBasicComponent implements OnInit {
 
   // nzSelectedKeys change
   nzSelect(keys: string[]): void {
-    console.log(keys, this.treeCom.getSelectedNodeList());
+    console.log(keys, this.nzTreeComponent.getSelectedNodeList());
   }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      console.log(this.treeCom.getTreeNodeByKey('10011'), 'get nzTreeNode with key');
-      console.log(
-        this.treeCom.getTreeNodes(),
-        this.treeCom.getCheckedNodeList(),
-        this.treeCom.getSelectedNodeList(),
-        this.treeCom.getExpandedNodeList()
-      );
-    }, 1500);
+    // TODO something
+  }
+
+  ngAfterViewInit(): void {
+    // get node by key: '10011'
+    console.log(this.nzTreeComponent.getTreeNodeByKey('10011'));
+    // use tree methods
+    console.log(
+      this.nzTreeComponent.getTreeNodes(),
+      this.nzTreeComponent.getCheckedNodeList(),
+      this.nzTreeComponent.getSelectedNodeList(),
+      this.nzTreeComponent.getExpandedNodeList()
+    );
   }
 }

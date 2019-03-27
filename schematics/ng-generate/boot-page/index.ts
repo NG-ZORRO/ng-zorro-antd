@@ -2,6 +2,7 @@ import { Rule, Tree } from '@angular-devkit/schematics';
 import { getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { getWorkspace } from '@schematics/angular/utility/config';
 import chalk from 'chalk';
+import { statSync as fsStatSync } from 'fs';
 import { Schema } from './schema';
 
 const bootPageHTML = `<!-- NG-ZORRO -->
@@ -9,7 +10,7 @@ const bootPageHTML = `<!-- NG-ZORRO -->
   <img height="300" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
 </a>`;
 
-export default function (options: Schema): Rule {
+export default function(options: Schema): Rule {
   return (host: Tree) => {
     const workspace = getWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
@@ -18,11 +19,16 @@ export default function (options: Schema): Rule {
 
     if (!buffer) {
       console.log();
-      console.error(chalk.red(`Could not find the project ${chalk.blue(appHTMLFile)} file inside of the ` +
-        `workspace config`));
+      console.error(
+        chalk.red(`Could not find the project ${chalk.blue(appHTMLFile)} file inside of the ` + `workspace config`)
+      );
       return;
     }
-    host.overwrite(appHTMLFile, bootPageHTML);
+    const stat = fsStatSync(appHTMLFile);
+    if (stat.mtimeMs === stat.ctimeMs) {
+      host.overwrite(appHTMLFile, bootPageHTML);
+    }
+
     return host;
   };
 }

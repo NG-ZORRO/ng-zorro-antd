@@ -13,9 +13,9 @@ import {
   dispatchMouseEvent
 } from '../core/testing';
 
+import { CascaderOption, NzShowSearchOptions } from './nz-cascader-definitions';
 import { NzCascaderComponent } from './nz-cascader.component';
 import { NzCascaderModule } from './nz-cascader.module';
-import { CascaderOption, NzShowSearchOptions } from './types';
 
 describe('cascader', () => {
   let overlayContainer: OverlayContainer;
@@ -553,9 +553,8 @@ describe('cascader', () => {
       expect(control.getSubmitValue().length).toBe(0);
       control.writeValue('');
       fixture.detectChanges();
-      expect(control.getSubmitValue().length).toBe(1);
-      expect(control.getSubmitValue()[0]).toBe('');
-      control.writeValue(['zhejiang']);
+      expect(control.getSubmitValue().length).toBe(0);
+      control.writeValue([ 'zhejiang' ]);
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(1);
       expect(control.getSubmitValue()[0]).toBe('zhejiang');
@@ -619,10 +618,8 @@ describe('cascader', () => {
       expect(control.getSubmitValue().length).toBe(0);
       control.writeValue('');
       fixture.detectChanges();
-      expect(control.getSubmitValue().length).toBe(1);
-      expect(control.getSubmitValue()[0]).toBe('');
-
-      control.writeValue(['zhejiang']);
+      expect(control.getSubmitValue().length).toBe(0);
+      control.writeValue([ 'zhejiang' ]);
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(1);
       expect(control.getSubmitValue()[0]).toBe('zhejiang');
@@ -1359,12 +1356,8 @@ describe('cascader', () => {
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(1); // 1列
       expect(testComponent.values).toBeNull(); // not select yet
 
-      let itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第1列第1个
-      let itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement; // 第1列第2个
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement; // 第1列第1个
+      const itemEl2 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)') as HTMLElement; // 第1列第2个
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       itemEl2.click();
@@ -1372,19 +1365,12 @@ describe('cascader', () => {
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(testComponent.values).toBeNull(); // not select yet
-
       itemEl1.click();
       fixture.detectChanges();
       tick(200);
+      flush();
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(true);
-
-      itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第1列第1个
-      itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement; // 第1列第2个
       expect(testComponent.values).toBeDefined();
       expect(testComponent.values!.length).toBe(1);
       expect(testComponent.values![0]).toBe('zhejiang');
@@ -1428,20 +1414,42 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
-      expect(testComponent.cascader.isSearching).toBe(true);
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearchingMode).toBe(true);
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
       itemEl1.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.isSearching).toBe(false);
+      expect(testComponent.cascader.inSearchingMode).toBe(false);
       expect(testComponent.cascader.menuVisible).toBe(false);
       expect(testComponent.cascader.inputValue).toBe('');
       expect(testComponent.values!.join(',')).toBe('zhejiang,hangzhou,xihu');
     }));
+
+    it('should searching could be aborted', fakeAsync(() => {
+      testComponent.values = [ 'zhengjiang', 'hangzhou', 'xihu' ];
+      testComponent.nzShowSearch = true;
+      fixture.detectChanges();
+      cascader.nativeElement.click();
+      testComponent.cascader.inputValue = 'o';
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.cascader.menuVisible).toBe(true);
+      expect(testComponent.cascader.inSearchingMode).toBe(true);
+      let itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+      testComponent.cascader.inputValue = '';
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.cascader.menuVisible).toBe(true);
+      expect(testComponent.cascader.inSearchingMode).toBe(false);
+      itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(itemEl1.innerText).toBe('Zhejiang');
+    }));
+
     it('should support nzLabelProperty', fakeAsync(() => {
       testComponent.nzShowSearch = true;
       testComponent.nzLabelProperty = 'l';
@@ -1451,16 +1459,14 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
-      expect(testComponent.cascader.isSearching).toBe(true);
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearchingMode).toBe(true);
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
       itemEl1.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.isSearching).toBe(false);
+      expect(testComponent.cascader.inSearchingMode).toBe(false);
       expect(testComponent.cascader.menuVisible).toBe(false);
       expect(testComponent.cascader.inputValue).toBe('');
       expect(testComponent.values!.join(',')).toBe('zhejiang,hangzhou,xihu');
@@ -1475,16 +1481,14 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
-      expect(testComponent.cascader.isSearching).toBe(true);
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearchingMode).toBe(true);
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
       itemEl1.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.isSearching).toBe(false);
+      expect(testComponent.cascader.inSearchingMode).toBe(false);
       expect(testComponent.cascader.menuVisible).toBe(false);
       expect(testComponent.cascader.inputValue).toBe('');
       expect(testComponent.values!.join(',')).toBe('zhejiang,hangzhou,xihu');
@@ -1501,16 +1505,14 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
-      expect(testComponent.cascader.isSearching).toBe(true);
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearchingMode).toBe(true);
       expect(itemEl1.innerText).toBe('Jiangsu / Nanjing / Zhong Hua Men');
       itemEl1.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.isSearching).toBe(false);
+      expect(testComponent.cascader.inSearchingMode).toBe(false);
       expect(testComponent.cascader.menuVisible).toBe(false);
       expect(testComponent.cascader.inputValue).toBe('');
       expect(testComponent.values!.join(',')).toBe('jiangsu,nanjing,zhonghuamen');
@@ -1525,11 +1527,11 @@ describe('cascader', () => {
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
       ) as HTMLElement;
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
-      expect(testComponent.cascader.columns[0][0].disabled).toBe(true);
+      expect(testComponent.cascader.cascaderService.columns[ 0 ][ 0 ].disabled).toBe(true);
       itemEl1.click();
       tick(300);
       fixture.detectChanges();
-      expect(testComponent.cascader.isSearching).toBe(true);
+      expect(testComponent.cascader.inSearchingMode).toBe(true);
       expect(testComponent.cascader.menuVisible).toBe(true);
       expect(testComponent.cascader.inputValue).toBe('o');
       // expect(testComponent.values).toBe(null);
@@ -1540,9 +1542,9 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(testComponent.cascader.columns[0][0].disabled).toBe(true);
-      expect(testComponent.cascader.columns[0][1].disabled).toBe(undefined);
-      expect(testComponent.cascader.columns[0][2].disabled).toBe(true);
+      expect(testComponent.cascader.cascaderService.columns[ 0 ][ 0 ].disabled).toBe(true);
+      expect(testComponent.cascader.cascaderService.columns[ 0 ][ 1 ].disabled).toBe(undefined);
+      expect(testComponent.cascader.cascaderService.columns[ 0 ][ 2 ].disabled).toBe(true);
     });
     it('should support arrow in search mode', done => {
       const DOWN_ARROW = 40;
@@ -1602,10 +1604,8 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'Roo';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
-      expect(testComponent.cascader.isSearching).toBe(true);
+      const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearchingMode).toBe(true);
       expect(itemEl1.innerText.trim()).toBe('暂无数据');
       flush();
     }));
@@ -1616,17 +1616,13 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      let itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
-      expect(testComponent.cascader.isSearching).toBe(true);
+      let itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
+      expect(testComponent.cascader.inSearchingMode).toBe(true);
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
       testComponent.nzOptions = options2;
       fixture.detectChanges();
-      expect(testComponent.cascader.isSearching).toBe(true);
-      itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      expect(testComponent.cascader.inSearchingMode).toBe(true);
+      itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)') as HTMLElement;
       expect(itemEl1.innerText).toBe('Option1 / Option11');
     });
   });
@@ -1738,8 +1734,8 @@ describe('cascader', () => {
       tick(3000);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(3);
-      expect(testComponent.cascader.columns.length).toBe(3);
-      expect(testComponent.values!.join(',')).toBe('zhejiang,hangzhou,xihu');
+      expect(testComponent.cascader.cascaderService.columns.length).toBe(3);
+      expect(testComponent.values.join(',')).toBe('zhejiang,hangzhou,xihu');
     }));
 
     it('should not emit error after clear search and reopen it', fakeAsync(() => {

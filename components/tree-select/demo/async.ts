@@ -47,9 +47,10 @@ export class NzDemoTreeSelectAsyncComponent implements OnInit {
   ];
 
   onExpandChange(e: Required<NzFormatEmitEvent>): void {
-    if (e.node.getChildren().length === 0 && e.node.isExpanded) {
+    const node = e.node;
+    if (node && node.getChildren().length === 0 && node.isExpanded) {
       this.loadNode().then(data => {
-        e.node.addChildren(data);
+        node.addChildren(data);
       });
     }
   }

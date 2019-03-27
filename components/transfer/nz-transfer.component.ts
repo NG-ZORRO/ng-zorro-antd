@@ -142,9 +142,10 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     const targetDatasource = direction === 'left' ? this.leftDataSource : this.rightDataSource;
     for (const item of list) {
       item.checked = false;
-      targetDatasource.push(item);
+      item._hiden = false;
       datasource.splice(datasource.indexOf(item), 1);
     }
+    targetDatasource.splice(0, 0, ...list);
     this.updateOperationStatus(oppositeDirection);
     this.nzChange.emit({
       from: oppositeDirection,

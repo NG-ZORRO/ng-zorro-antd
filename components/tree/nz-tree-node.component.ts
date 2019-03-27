@@ -42,7 +42,6 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzShowExpand: boolean;
   @Input() @InputBoolean() nzCheckable: boolean;
   @Input() @InputBoolean() nzAsyncData: boolean;
-  @Input() @InputBoolean() nzCheckStrictly: boolean;
   @Input() @InputBoolean() nzHideUnMatched = false;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzSelectMode = false;
@@ -389,7 +388,6 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     this.ngZone.run(() => {
       // if user do not custom beforeDrop
       if (!this.nzBeforeDrop) {
-        this.nzTreeService.setSelectedNode(undefined);
         const eventNext = this.nzTreeService.formatEvent('dragend', this.nzTreeNode, e);
         this.nzTreeService!.triggerEventChange$!.next(eventNext);
       }

@@ -57,9 +57,9 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  @Input('nz-tooltip') nzTitle: string | TemplateRef<void>;
+  @Input('nz-tooltip') nzTitle: string | TemplateRef<void> | null;
 
-  @Input('nzTitle') set setTitle(title: string | TemplateRef<void>) {
+  @Input('nzTitle') set setTitle(title: string | TemplateRef<void> | null) {
     this.nzTitle = title;
   }
 

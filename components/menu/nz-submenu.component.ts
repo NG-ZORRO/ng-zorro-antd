@@ -61,22 +61,26 @@ import { NzSubmenuService } from './nz-submenu.service';
   ]
 })
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, OnChanges {
-  placement = 'rightTop';
-  triggerWidth: number;
-  expandState = 'collapsed';
-  overlayPositions = [...DEFAULT_SUBMENU_POSITIONS];
-  private destroy$ = new Subject<void>();
-  private isChildMenuSelected = false;
-  @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent: QueryList<NzSubMenuComponent>;
-  @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective: QueryList<
-    NzMenuItemDirective
-  >;
-  @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
-  @ViewChild(CdkOverlayOrigin, { read: ElementRef }) cdkOverlayOrigin: ElementRef;
+  @Input() nzMenuClassName: string;
   @Input() nzPaddingLeft: number;
   @Input() @InputBoolean() nzOpen = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Output() readonly nzOpenChange: EventEmitter<boolean> = new EventEmitter();
+
+  @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
+  @ViewChild(CdkOverlayOrigin, { read: ElementRef }) cdkOverlayOrigin: ElementRef;
+  @ContentChildren(NzSubMenuComponent, { descendants: true })
+  listOfNzSubMenuComponent: QueryList<NzSubMenuComponent>;
+  @ContentChildren(NzMenuItemDirective, { descendants: true })
+  listOfNzMenuItemDirective: QueryList<NzMenuItemDirective>;
+
+  placement = 'rightTop';
+  triggerWidth: number;
+  expandState = 'collapsed';
+  overlayPositions = [...DEFAULT_SUBMENU_POSITIONS];
+
+  private destroy$ = new Subject<void>();
+  private isChildMenuSelected = false;
 
   setOpenState(open: boolean): void {
     this.nzSubmenuService.setOpenState(open);
