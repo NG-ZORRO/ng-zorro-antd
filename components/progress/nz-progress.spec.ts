@@ -41,6 +41,7 @@ describe('progress', () => {
       expect(progress.nativeElement.querySelector('.ant-progress-bg').style.height).toBe('8px');
       expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('50%');
       testComponent.percent = 100;
+      testComponent.successPercent = 100;
       fixture.detectChanges();
       expect(progress.nativeElement.querySelector('.ant-progress-bg').style.width).toBe('100%');
       expect(progress.nativeElement.querySelector('.ant-progress-bg').style.height).toBe('8px');
@@ -55,6 +56,15 @@ describe('progress', () => {
       fixture.detectChanges();
       expect(progress.nativeElement.querySelector('.ant-progress-success-bg').style.width).toBe('50%');
       expect(progress.nativeElement.querySelector('.ant-progress-success-bg').style.height).toBe('8px');
+    });
+    it('should successPercent forbidden inferred success', () => {
+      fixture.detectChanges();
+      testComponent.successPercent = 50;
+      testComponent.percent = 100;
+      fixture.detectChanges();
+      expect(progress.nativeElement.querySelector('.ant-progress')!.classList).not.toContain(
+        'ant-progress-status-success'
+      );
     });
     it('should format work', () => {
       testComponent.format = (percent: number) => `${percent} percent`;
