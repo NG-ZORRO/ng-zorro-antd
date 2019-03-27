@@ -29,7 +29,11 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
       if (this.vertical) {
         this.renderer.setStyle(this.slickListEl, 'height', `${this.unitHeight}px`);
         this.renderer.setStyle(this.slickTrackEl, 'height', `${this.length * this.unitHeight}px`);
-        this.renderer.setStyle(this.slickTrackEl, 'transform', `translate3d(0, ${-activeIndex * this.unitHeight}px, 0)`);
+        this.renderer.setStyle(
+          this.slickTrackEl,
+          'transform',
+          `translate3d(0, ${-activeIndex * this.unitHeight}px, 0)`
+        );
       } else {
         this.renderer.setStyle(this.slickTrackEl, 'width', `${this.length * this.unitWidth}px`);
         this.renderer.setStyle(this.slickTrackEl, 'transform', `translate3d(${-activeIndex * this.unitWidth}px, 0, 0)`);
@@ -92,7 +96,6 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
         } else if (activeIndex === 0) {
           this.prepareVerticalContext(false);
         }
-        this.prepareVerticalContext(false);
       }
       this.renderer.setStyle(
         this.slickTrackEl,
@@ -127,7 +130,6 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
     } else {
       this.renderer.setStyle(this.slickTrackEl, 'transform', `translate3d(0, ${-t * this.unitHeight}px, 0`);
     }
-
   }
 
   private horizontalTransform(_f: number, _t: number): void {
@@ -147,8 +149,8 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
       this.renderer.setStyle(this.firstEl, 'top', `${this.length * this.unitHeight}px`);
       this.renderer.setStyle(this.lastEl, 'top', null);
     } else {
+      this.renderer.setStyle(this.firstEl, 'top', null);
       this.renderer.setStyle(this.lastEl, 'top', `${-this.unitHeight * this.length}px`);
-      this.renderer.setStyle(this.lastEl, 'top', null);
     }
   }
 
