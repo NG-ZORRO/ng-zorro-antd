@@ -21,8 +21,8 @@ export class NzI18nService {
 
   constructor(
     @Inject(NZ_I18N) locale: NzI18nInterface,
-    @Inject(NZ_I18N_LOCALEID) localeId: string,
-    @Inject(NZ_DATE_LOCALE) dateLocale: DateLocale
+    @Inject(NZ_DATE_LOCALE) dateLocale: DateLocale,
+    @Inject(NZ_I18N_LOCALEID) localeId: string
   ) {
     this.setLocale(locale || zh_CN, localeId);
     this.setDateLocale(dateLocale || null);
