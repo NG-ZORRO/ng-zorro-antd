@@ -49,11 +49,11 @@ import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
     `
   ]
 })
-export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges, AfterContentInit {
+// tslint:disable-next-line no-any
+export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestroy, OnChanges, AfterContentInit {
   /** public data for ngFor tr */
-  data = [];
-  /* tslint:disable-next-line:no-any */
-  locale: any = {};
+  data: T[] = [];
+  locale: any = {}; // tslint:disable-line:no-any
   nzTheadComponent: NzTheadComponent;
   lastScrollLeft = 0;
   headerBottomStyle = {};
@@ -79,9 +79,9 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   @Input() nzWidthConfig: string[] = [];
   @Input() nzPageIndex = 1;
   @Input() nzPageSize = 10;
-  @Input() nzData = [];
+  @Input() nzData: T[] = [];
   @Input() nzPaginationPosition: 'top' | 'bottom' | 'both' = 'bottom';
-  @Input() nzScroll: { x: string | null; y: string | null } = { x: null, y: null };
+  @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
   @Input() @ViewChild('renderItemTemplate') nzItemRender: TemplateRef<{
     $implicit: 'page' | 'prev' | 'next';
     page: number;
@@ -188,7 +188,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   }
 
   updateFrontPaginationDataIfNeeded(isPageSizeOrDataChange: boolean = false): void {
-    let data = [];
+    let data: any[] = []; // tslint:disable-line:no-any
     if (this.nzFrontPagination) {
       this.nzTotal = this.nzData.length;
       if (isPageSizeOrDataChange) {
