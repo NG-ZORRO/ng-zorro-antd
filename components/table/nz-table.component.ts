@@ -1,305 +1,143 @@
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
+  AfterContentInit,
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChild,
   ContentChildren,
   ElementRef,
   EventEmitter,
-  HostListener,
   Input,
   NgZone,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
   QueryList,
   Renderer2,
+  SimpleChanges,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
-
-import { fromEvent, merge, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
+import { fromEvent, merge, EMPTY, Subject } from 'rxjs';
+import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
-import { isNotNil } from '../core/util/check';
-import { toBoolean } from '../core/util/convert';
+import { NzSizeMDSType } from '../core/types/size';
+import { InputBoolean, InputNumber } from '../core/util/convert';
 import { NzI18nService } from '../i18n/nz-i18n.service';
-
 import { NzThComponent } from './nz-th.component';
 import { NzTheadComponent } from './nz-thead.component';
+import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
 
 @Component({
-  selector           : 'nz-table',
+  selector: 'nz-table',
   preserveWhitespaces: false,
-  templateUrl        : './nz-table.component.html'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './nz-table.component.html',
+  host: {
+    '[class.ant-table-empty]': 'data.length === 0'
+  },
+  styles: [
+    `
+      nz-table {
+        display: block;
+      }
+    `
+  ]
 })
-export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
-  private unsubscribe$ = new Subject<void>();
-  private _bordered = false;
-  private _showPagination = true;
-  private _loading = false;
-  private _showSizeChanger = false;
-  private _showQuickJumper = false;
-  private _hideOnSinglePage = false;
-  private _scroll: { x: string; y: string } = { x: null, y: null };
-  private _footer: string | TemplateRef<void>;
-  private _title: string | TemplateRef<void>;
-  private _noResult: string | TemplateRef<void>;
-  private _pageIndex = 1;
-  private _pageSize = 10;
-  private _widthConfig: string[] = [];
-  private _frontPagination = true;
-  private _simple = false;
+export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges, AfterContentInit {
+  /** public data for ngFor tr */
+  data = [];
   /* tslint:disable-next-line:no-any */
   locale: any = {};
   nzTheadComponent: NzTheadComponent;
-  isFooterString: boolean;
-  isTitleString: boolean;
-  isNoResultString: boolean;
-  el: HTMLElement = this.elementRef.nativeElement;
   lastScrollLeft = 0;
-  /* tslint:disable-next-line:no-any */
-  rawData: any[] = [];
-  /* tslint:disable-next-line:no-any */
-  syncData: any[] = [];
-  /** public data for ngFor tr */
-  /* tslint:disable-next-line:no-any */
-  data: any[] = [];
-  headerBottomStyle;
-  isWidthConfigSet = false;
-  @ViewChild('tableHeaderElement') tableHeaderElement: ElementRef;
-  @ViewChild('tableBodyElement') tableBodyElement: ElementRef;
-  @ViewChild('tableMainElement') tableMainElement: ElementRef;
+  headerBottomStyle = {};
+  private destroy$ = new Subject<void>();
   @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
-
+  @ViewChild('tableHeaderElement', { read: ElementRef }) tableHeaderElement: ElementRef;
+  @ViewChild('tableBodyElement', { read: ElementRef }) tableBodyElement: ElementRef;
+  @ViewChild('tableMainElement', { read: ElementRef }) tableMainElement: ElementRef;
+  @ViewChild(CdkVirtualScrollViewport, { read: ElementRef }) cdkVirtualScrollElement: ElementRef;
+  @ContentChild(NzVirtualScrollDirective) nzVirtualScrollDirective: NzVirtualScrollDirective;
+  @Input() nzSize: NzSizeMDSType = 'default';
+  @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }>;
+  @Input() nzPageSizeOptions = [10, 20, 30, 40, 50];
+  @Input() @InputBoolean() nzVirtualScroll = false;
+  @Input() @InputNumber() nzVirtualItemSize = 0;
+  @Input() @InputNumber() nzVirtualMaxBufferPx = 200;
+  @Input() @InputNumber() nzVirtualMinBufferPx = 100;
+  @Input() nzLoadingDelay = 0;
+  @Input() nzTotal = 0;
+  @Input() nzTitle: string | TemplateRef<void>;
+  @Input() nzFooter: string | TemplateRef<void>;
+  @Input() nzNoResult: string | TemplateRef<void>;
+  @Input() nzWidthConfig: string[] = [];
+  @Input() nzPageIndex = 1;
+  @Input() nzPageSize = 10;
+  @Input() nzData = [];
+  @Input() nzPaginationPosition: 'top' | 'bottom' | 'both' = 'bottom';
+  @Input() nzScroll: { x: string | null; y: string | null } = { x: null, y: null };
+  @Input() @ViewChild('renderItemTemplate') nzItemRender: TemplateRef<{
+    $implicit: 'page' | 'prev' | 'next';
+    page: number;
+  }>;
+  @Input() @InputBoolean() nzFrontPagination = true;
+  @Input() @InputBoolean() nzTemplateMode = false;
+  @Input() @InputBoolean() nzBordered = false;
+  @Input() @InputBoolean() nzShowPagination = true;
+  @Input() @InputBoolean() nzLoading = false;
+  @Input() @InputBoolean() nzShowSizeChanger = false;
+  @Input() @InputBoolean() nzHideOnSinglePage = false;
+  @Input() @InputBoolean() nzShowQuickJumper = false;
+  @Input() @InputBoolean() nzSimple = false;
   @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
   @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
-  @Input() nzShowTotal: TemplateRef<{ $implicit: number, range: [ number, number ] }>;
-
   /* tslint:disable-next-line:no-any */
   @Output() readonly nzCurrentPageDataChange: EventEmitter<any[]> = new EventEmitter();
-  @Input() nzSize: string = 'default';
-  /** page size changer select values */
-  @Input() nzPageSizeOptions = [ 10, 20, 30, 40, 50 ];
-  @Input() nzLoadingDelay = 0;
-  @Input() nzTotal: number;
 
-  @Input()
-  set nzSimple(value: boolean) {
-    this._simple = toBoolean(value);
+  get tableBodyNativeElement(): HTMLElement {
+    return this.tableBodyElement && this.tableBodyElement.nativeElement;
   }
 
-  get nzSimple(): boolean {
-    return this._simple;
+  get tableHeaderNativeElement(): HTMLElement {
+    return this.tableHeaderElement && this.tableHeaderElement.nativeElement;
   }
 
-  @Input()
-  set nzFrontPagination(value: boolean) {
-    this._frontPagination = toBoolean(value);
-    this.parseInputData();
+  get cdkVirtualScrollNativeElement(): HTMLElement {
+    return this.cdkVirtualScrollElement && this.cdkVirtualScrollElement.nativeElement;
   }
 
-  get nzFrontPagination(): boolean {
-    return this._frontPagination;
+  get mixTableBodyNativeElement(): HTMLElement {
+    return this.tableBodyNativeElement || this.cdkVirtualScrollNativeElement;
   }
 
-  @Input()
-  set nzWidthConfig(value: string[]) {
-    this.isWidthConfigSet = true;
-    this._widthConfig = value;
-  }
-
-  get nzWidthConfig(): string[] {
-    return this._widthConfig;
-  }
-
-  @Input()
-  set nzTitle(value: string | TemplateRef<void>) {
-    this.isTitleString = !(value instanceof TemplateRef);
-    this._title = value;
-  }
-
-  get nzTitle(): string | TemplateRef<void> {
-    return this._title;
-  }
-
-  @Input()
-  set nzFooter(value: string | TemplateRef<void>) {
-    this.isFooterString = !(value instanceof TemplateRef);
-    this._footer = value;
-  }
-
-  get nzFooter(): string | TemplateRef<void> {
-    return this._footer;
-  }
-
-  @Input()
-  set nzNoResult(value: string | TemplateRef<void>) {
-    this.isNoResultString = !(value instanceof TemplateRef);
-    this._noResult = value;
-  }
-
-  get nzNoResult(): string | TemplateRef<void> {
-    return this._noResult;
-  }
-
-  @Input()
-  set nzBordered(value: boolean) {
-    this._bordered = toBoolean(value);
-  }
-
-  get nzBordered(): boolean {
-    return this._bordered;
-  }
-
-  @Input()
-  set nzShowPagination(value: boolean) {
-    this._showPagination = toBoolean(value);
-  }
-
-  get nzShowPagination(): boolean {
-    return this._showPagination;
-  }
-
-  @Input()
-  set nzLoading(value: boolean) {
-    this._loading = toBoolean(value);
-  }
-
-  get nzLoading(): boolean {
-    return this._loading;
-  }
-
-  @Input()
-  set nzShowSizeChanger(value: boolean) {
-    this._showSizeChanger = toBoolean(value);
-  }
-
-  get nzShowSizeChanger(): boolean {
-    return this._showSizeChanger;
-  }
-
-  @Input()
-  set nzHideOnSinglePage(value: boolean) {
-    this._hideOnSinglePage = toBoolean(value);
-  }
-
-  get nzHideOnSinglePage(): boolean {
-    return this._hideOnSinglePage;
-  }
-
-  @Input()
-  set nzShowQuickJumper(value: boolean) {
-    this._showQuickJumper = toBoolean(value);
-  }
-
-  get nzShowQuickJumper(): boolean {
-    return this._showQuickJumper;
-  }
-
-  @Input()
-  set nzScroll(value: { x: string; y: string }) {
-    if (isNotNil(value)) {
-      this._scroll = value;
-    } else {
-      this._scroll = { x: null, y: null };
-    }
-    this.cdr.detectChanges();
-    this.setScrollPositionClassName();
-  }
-
-  get nzScroll(): { x: string; y: string } {
-    return this._scroll;
-  }
-
-  @Input()
-  /* tslint:disable-next-line:no-any */
-  set nzData(data: any[]) {
-    if (Array.isArray(data)) {
-      this.rawData = data;
-      this.parseInputData();
-    } else {
-      console.warn('nzData only accept array');
-    }
-  }
-
-  parseInputData(): void {
-    if (this.nzFrontPagination) {
-      this.syncData = this.rawData;
-      this.nzTotal = this.syncData.length;
-      this.checkPageIndexBounding();
-      this.generateSyncDisplayData();
-    } else {
-      this.data = this.rawData;
-      this.nzCurrentPageDataChange.emit(this.data);
-    }
-  }
-
-  @Input()
-  set nzPageIndex(value: number) {
-    if (this._pageIndex === value) {
-      return;
-    }
-    this._pageIndex = value;
-    if (this.nzFrontPagination) {
-      this.generateSyncDisplayData();
-    }
-  }
-
-  get nzPageIndex(): number {
-    return this._pageIndex;
-  }
-
-  emitPageIndex(index: number): void {
-    this.nzPageIndex = index;
-    this.nzPageIndexChange.emit(this.nzPageIndex);
-  }
-
-  emitPageSize(size: number): void {
-    this.nzPageSize = size;
-    this.nzPageSizeChange.emit(this.nzPageSize);
-  }
-
-  @Input()
-  set nzPageSize(value: number) {
-    if (this._pageSize === value) {
-      return;
-    }
-    this._pageSize = value;
-    if (this.nzFrontPagination) {
-      this.checkPageIndexBounding();
-      this.generateSyncDisplayData();
-    }
-  }
-
-  get nzPageSize(): number {
-    return this._pageSize;
-  }
-
-  checkPageIndexBounding(): void {
-    if (this.nzFrontPagination) {
-      const maxPageIndex = Math.ceil(this.syncData.length / this.nzPageSize);
-      const pageIndex = !this.nzPageIndex ? 1 : (this.nzPageIndex > maxPageIndex ? maxPageIndex : this.nzPageIndex);
-      if (pageIndex !== this.nzPageIndex) {
-        this._pageIndex = pageIndex;
-        Promise.resolve().then(() => this.nzPageIndexChange.emit(pageIndex));
+  emitPageSizeOrIndex(size: number, index: number): void {
+    if (this.nzPageSize !== size || this.nzPageIndex !== index) {
+      if (this.nzPageSize !== size) {
+        this.nzPageSize = size;
+        this.nzPageSizeChange.emit(this.nzPageSize);
       }
+      if (this.nzPageIndex !== index) {
+        this.nzPageIndex = index;
+        this.nzPageIndexChange.emit(this.nzPageIndex);
+      }
+      this.updateFrontPaginationDataIfNeeded(this.nzPageSize !== size);
     }
-  }
-
-  generateSyncDisplayData(): void {
-    this.data = this.syncData.slice((this.nzPageIndex - 1) * this.nzPageSize, this.nzPageIndex * this.nzPageSize);
-    this.nzCurrentPageDataChange.emit(this.data);
   }
 
   syncScrollTable(e: MouseEvent): void {
     if (e.currentTarget === e.target) {
       const target = e.target as HTMLElement;
       if (target.scrollLeft !== this.lastScrollLeft && this.nzScroll && this.nzScroll.x) {
-        if (target === this.tableBodyElement.nativeElement && this.tableHeaderElement) {
-          this.tableHeaderElement.nativeElement.scrollLeft = target.scrollLeft;
-        } else if (target === this.tableHeaderElement.nativeElement && this.tableBodyElement) {
-          this.tableBodyElement.nativeElement.scrollLeft = target.scrollLeft;
+        if (target === this.mixTableBodyNativeElement && this.tableHeaderNativeElement) {
+          this.tableHeaderNativeElement.scrollLeft = target.scrollLeft;
+        } else if (target === this.tableHeaderNativeElement && this.mixTableBodyNativeElement) {
+          this.mixTableBodyNativeElement.scrollLeft = target.scrollLeft;
         }
         this.setScrollPositionClassName();
       }
@@ -308,12 +146,18 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setScrollPositionClassName(): void {
-    if (this.tableBodyElement && this.nzScroll && this.nzScroll.x) {
-      if ((this.tableBodyElement.nativeElement.scrollWidth === this.tableBodyElement.nativeElement.clientWidth) && (this.tableBodyElement.nativeElement.scrollWidth !== 0)) {
+    if (this.mixTableBodyNativeElement && this.nzScroll && this.nzScroll.x) {
+      if (
+        this.mixTableBodyNativeElement.scrollWidth === this.mixTableBodyNativeElement.clientWidth &&
+        this.mixTableBodyNativeElement.scrollWidth !== 0
+      ) {
         this.setScrollName();
-      } else if (this.tableBodyElement.nativeElement.scrollLeft === 0) {
+      } else if (this.mixTableBodyNativeElement.scrollLeft === 0) {
         this.setScrollName('left');
-      } else if (this.tableBodyElement.nativeElement.scrollWidth === (this.tableBodyElement.nativeElement.scrollLeft + this.tableBodyElement.nativeElement.clientWidth)) {
+      } else if (
+        this.mixTableBodyNativeElement.scrollWidth ===
+        this.mixTableBodyNativeElement.scrollLeft + this.mixTableBodyNativeElement.clientWidth
+      ) {
         this.setScrollName('right');
       } else {
         this.setScrollName('middle');
@@ -323,7 +167,7 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   setScrollName(position?: string): void {
     const prefix = 'ant-table-scroll-position';
-    const classList = [ 'left', 'right', 'middle' ];
+    const classList = ['left', 'right', 'middle'];
     classList.forEach(name => {
       this.renderer.removeClass(this.tableMainElement.nativeElement, `${prefix}-${name}`);
     });
@@ -336,45 +180,104 @@ export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy {
     const scrollbarWidth = this.nzMeasureScrollbarService.scrollBarWidth;
     if (scrollbarWidth) {
       this.headerBottomStyle = {
-        marginBottom : `-${scrollbarWidth}px`,
+        marginBottom: `-${scrollbarWidth}px`,
         paddingBottom: `0px`
       };
+      this.cdr.markForCheck();
     }
   }
 
-  @HostListener('window:resize')
-  onWindowResize(): void {
-    this.fitScrollBar();
-    this.setScrollPositionClassName();
+  updateFrontPaginationDataIfNeeded(isPageSizeOrDataChange: boolean = false): void {
+    let data = [];
+    if (this.nzFrontPagination) {
+      this.nzTotal = this.nzData.length;
+      if (isPageSizeOrDataChange) {
+        const maxPageIndex = Math.ceil(this.nzData.length / this.nzPageSize) || 1;
+        const pageIndex = this.nzPageIndex > maxPageIndex ? maxPageIndex : this.nzPageIndex;
+        if (pageIndex !== this.nzPageIndex) {
+          this.nzPageIndex = pageIndex;
+          Promise.resolve().then(() => this.nzPageIndexChange.emit(pageIndex));
+        }
+      }
+      data = this.nzData.slice((this.nzPageIndex - 1) * this.nzPageSize, this.nzPageIndex * this.nzPageSize);
+    } else {
+      data = this.nzData;
+    }
+    this.data = [...data];
+    this.nzCurrentPageDataChange.next(this.data);
+  }
+
+  constructor(
+    private renderer: Renderer2,
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef,
+    private nzMeasureScrollbarService: NzMeasureScrollbarService,
+    private i18n: NzI18nService,
+    elementRef: ElementRef
+  ) {
+    renderer.addClass(elementRef.nativeElement, 'ant-table-wrapper');
   }
 
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => this.locale = this.i18n.getLocaleData('Table'));
-    this.fitScrollBar();
+    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.locale = this.i18n.getLocaleData('Table');
+      this.cdr.markForCheck();
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzScroll) {
+      if (changes.nzScroll.currentValue) {
+        this.nzScroll = changes.nzScroll.currentValue;
+      } else {
+        this.nzScroll = { x: null, y: null };
+      }
+      this.setScrollPositionClassName();
+    }
+    if (changes.nzPageIndex || changes.nzPageSize || changes.nzFrontPagination || changes.nzData) {
+      this.updateFrontPaginationDataIfNeeded(!!(changes.nzPageSize || changes.nzData));
+    }
   }
 
   ngAfterViewInit(): void {
     setTimeout(() => this.setScrollPositionClassName());
     this.ngZone.runOutsideAngular(() => {
-      if (this.tableHeaderElement
-        && this.tableHeaderElement.nativeElement
-        && this.tableBodyElement
-        && this.tableBodyElement.nativeElement) {
-        merge<MouseEvent>(
-          fromEvent<MouseEvent>(this.tableHeaderElement.nativeElement, 'scroll'),
-          fromEvent<MouseEvent>(this.tableBodyElement.nativeElement, 'scroll')
-        ).pipe(takeUntil(this.unsubscribe$)).subscribe((data: MouseEvent) => {
+      merge<MouseEvent>(
+        this.tableHeaderNativeElement ? fromEvent<MouseEvent>(this.tableHeaderNativeElement, 'scroll') : EMPTY,
+        this.mixTableBodyNativeElement ? fromEvent<MouseEvent>(this.mixTableBodyNativeElement, 'scroll') : EMPTY
+      )
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((data: MouseEvent) => {
           this.syncScrollTable(data);
         });
-      }
+      fromEvent<UIEvent>(window, 'resize')
+        .pipe(
+          startWith(true),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => {
+          this.fitScrollBar();
+          this.setScrollPositionClassName();
+        });
     });
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+  ngAfterContentInit(): void {
+    this.listOfNzThComponent.changes
+      .pipe(
+        startWith(true),
+        flatMap(() =>
+          merge(this.listOfNzThComponent.changes, ...this.listOfNzThComponent.map(th => th.nzWidthChange$))
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.cdr.markForCheck();
+      });
   }
 
-  constructor(private renderer: Renderer2, private ngZone: NgZone, private elementRef: ElementRef, private cdr: ChangeDetectorRef, private nzMeasureScrollbarService: NzMeasureScrollbarService, private i18n: NzI18nService) {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

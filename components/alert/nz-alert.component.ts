@@ -9,45 +9,47 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { fadeAnimation } from '../core/animation/fade-animations';
+import { slideAlertMotion } from '../core/animation/slide';
 import { NgClassType } from '../core/types/ng-class';
 import { InputBoolean } from '../core/util/convert';
 
 @Component({
-  selector           : 'nz-alert',
-  animations         : [ fadeAnimation ],
-  templateUrl        : './nz-alert.component.html',
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
+  selector: 'nz-alert',
+  animations: [slideAlertMotion],
+  templateUrl: './nz-alert.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
-  styles             : [
-      `nz-alert {
-      display: block;
-    }`
+  styles: [
+    `
+      nz-alert {
+        display: block;
+      }
+    `
   ]
 })
 export class NzAlertComponent implements OnChanges {
-  display = true;
-  isTypeSet = false;
-  isShowIconSet = false;
+  destroy = false;
   iconType = 'info-circle';
   iconTheme = 'fill';
-  @Output() readonly nzOnClose: EventEmitter<boolean> = new EventEmitter();
-  @Input() @InputBoolean() nzCloseable = false;
-  @Input() @InputBoolean() nzShowIcon = false;
-  @Input() @InputBoolean() nzBanner = false;
+  private isTypeSet = false;
+  private isShowIconSet = false;
   @Input() nzCloseText: string | TemplateRef<void>;
   @Input() nzIconType: NgClassType;
   @Input() nzMessage: string | TemplateRef<void>;
   @Input() nzDescription: string | TemplateRef<void>;
-  @Input() nzType = 'info';
+  @Input() nzType: 'success' | 'info' | 'warning' | 'error' = 'info';
+  @Input() @InputBoolean() nzCloseable = false;
+  @Input() @InputBoolean() nzShowIcon = false;
+  @Input() @InputBoolean() nzBanner = false;
+  @Output() readonly nzOnClose = new EventEmitter<boolean>();
 
   closeAlert(): void {
-    this.display = false;
+    this.destroy = true;
   }
 
   onFadeAnimationDone(): void {
-    if (!this.display) {
+    if (this.destroy) {
       this.nzOnClose.emit(true);
     }
   }
@@ -67,24 +69,21 @@ export class NzAlertComponent implements OnChanges {
         this.iconType = 'exclamation-circle';
         break;
     }
-    if (this.nzDescription) {
-      this.iconTheme = 'outline';
-    } else {
-      this.iconTheme = `fill`;
-    }
+    this.iconTheme = this.nzDescription ? 'outline' : 'fill';
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzShowIcon) {
+    const { nzShowIcon, nzDescription, nzType, nzBanner } = changes;
+    if (nzShowIcon) {
       this.isShowIconSet = true;
     }
-    if (changes.nzDescription || changes.nzType) {
+    if (nzDescription || nzType) {
       this.updateIconClassMap();
     }
-    if (changes.nzType) {
+    if (nzType) {
       this.isTypeSet = true;
     }
-    if (changes.nzBanner) {
+    if (nzBanner) {
       if (!this.isTypeSet) {
         this.nzType = 'warning';
       }

@@ -1,5 +1,7 @@
 @import "../../style/themes/default";
 
+// cdk overlay
+
 .cdk-overlay-container {
   pointer-events: none;
   top: 0;
@@ -38,72 +40,173 @@
   min-height: 1px;
 }
 
+// Used when disabling global scrolling.
+.cdk-global-scrollblock {
+  position: fixed;
+
+  // Necessary for the content not to lose its width. Note that we're using 100%, instead of
+  // 100vw, because 100vw includes the width plus the scrollbar, whereas 100% is the width
+  // that the element had before we made it `fixed`.
+  width: 100%;
+
+  // Note: this will always add a scrollbar to whatever element it is on, which can
+  // potentially result in double scrollbars. It shouldn't be an issue, because we won't
+  // block scrolling on a page that doesn't have a scrollbar in the first place.
+  overflow-y: scroll;
+
+  // https://github.com/angular/material2/issues/15051
+  body {
+    overflow-x: visible;
+  }
+}
+
+.nz-overlay-transparent-backdrop {
+  &, &.cdk-overlay-backdrop-showing {
+    opacity: 0;
+  }
+}
+
+
+@table-prefix-cls: ~'@{ant-prefix}-table';
+@table-td-cls: ~'@{table-prefix-cls}-td';
+@table-th-cls: ~'@{table-prefix-cls}-th';
+@table-th-left-cls: ~'@{table-th-cls}-left';
+@table-th-right-cls: ~'@{table-th-cls}-right';
+@table-td-left-cls: ~'@{table-td-cls}-left';
+@table-td-right-cls: ~'@{table-td-cls}-right';
+
 .box-shadow-left() {
-  .ant-table-th-right-sticky, .ant-table-td-right-sticky {
+  .@{table-th-right-cls}-sticky,
+  .@{table-td-right-cls}-sticky {
     box-shadow: -6px 0 6px 0px rgba(0, 0, 0, .05);
   }
 }
 
 .box-shadow-right() {
-  .ant-table-th-left-sticky, .ant-table-td-left-sticky {
+  .@{table-th-left-cls}-sticky,
+  .@{table-td-left-cls}-sticky {
     box-shadow: 6px 0 6px 0px rgba(0, 0, 0, .05);
   }
 }
 
 .border-left() {
-  .ant-table-th-right-sticky, .ant-table-td-right-sticky {
+  .@{table-th-right-cls}-sticky,
+  .@{table-td-right-cls}-sticky {
     border-right: @border-width-base @border-style-base @border-color-split;
   }
 }
 
 .border-right() {
-  .ant-table-th-left-sticky, .ant-table-td-left-sticky {
+  .@{table-th-left-cls}-sticky,
+  .@{table-td-left-cls}-sticky {
     border-left: @border-width-base @border-style-base @border-color-split;
   }
 }
 
-.ant-table-td-right-sticky + .ant-table-td-right-sticky {
-  box-shadow: none;
+.@{table-prefix-cls}-scroll-position-middle,
+.@{table-prefix-cls}-scroll-position-left {
+  .@{table-td-right-cls}-sticky + .@{table-td-right-cls}-sticky {
+    box-shadow: none;
+  }
+
+  .@{table-th-right-cls}-sticky + .@{table-th-right-cls}-sticky {
+    box-shadow: none;
+  }
 }
 
-.ant-table-th-right-sticky + .ant-table-th-right-sticky {
-  box-shadow: none;
-}
 
-.ant-table-th-left-sticky, .ant-table-th-right-sticky, .ant-table-td-right-sticky, .ant-table-td-left-sticky {
+.@{table-th-left-cls}-sticky,
+.@{table-th-right-cls}-sticky,
+.@{table-td-right-cls}-sticky,
+.@{table-td-left-cls}-sticky {
   position: sticky !important;
   z-index: 1;
 }
 
-.ant-table-td-left-sticky, .ant-table-td-right-sticky {
+.@{table-td-left-cls}-sticky,
+.@{table-td-right-cls}-sticky {
   background: @component-background;
 }
 
-.ant-table-scroll-position-middle {
+.@{table-prefix-cls}-tbody {
+  & > tr {
+    &:hover {
+      & > td {
+        &.@{table-td-left-cls}-sticky {
+          background: @table-row-hover-bg;
+        }
+
+        &.@{table-td-right-cls}-sticky {
+          background: @table-row-hover-bg;
+        }
+      }
+    }
+  }
+}
+
+.@{table-prefix-cls}-thead > tr > th .@{table-prefix-cls}-column-sorters > nz-dropdown {
+  position: static !important;
+}
+
+.@{table-prefix-cls}-scroll-position-middle {
   .box-shadow-right;
   .box-shadow-left;
 }
 
-.ant-table-scroll-position-left {
+.@{table-prefix-cls}-scroll-position-left {
   .box-shadow-left;
 }
 
-.ant-table-scroll-position-right {
+.@{table-prefix-cls}-scroll-position-right {
   .box-shadow-right;
 }
 
-.ant-table-bordered {
-  &.ant-table-scroll-position-middle {
+.@{table-prefix-cls}-bordered {
+  &.@{table-prefix-cls}-scroll-position-middle {
     .border-right;
     .border-left;
   }
 
-  &.ant-table-scroll-position-left {
+  &.@{table-prefix-cls}-scroll-position-left {
     .border-left;
   }
 
-  &.ant-table-scroll-position-right {
+  &.@{table-prefix-cls}-scroll-position-right {
     .border-right;
+  }
+}
+
+
+.@{table-prefix-cls}-middle {
+  > .@{table-prefix-cls}-content {
+    > .@{table-prefix-cls}-scroll > .@{table-prefix-cls}-body > .cdk-virtual-scroll-content-wrapper > table {
+      > .@{table-prefix-cls}-thead > tr > th,
+      > .@{table-prefix-cls}-tbody > tr > td {
+        padding: @table-padding-vertical-md @table-padding-horizontal-md;
+      }
+    }
+  }
+}
+
+.@{table-prefix-cls}-small {
+  > .@{table-prefix-cls}-content {
+    > .@{table-prefix-cls}-scroll > .@{table-prefix-cls}-header > table,
+    > .@{table-prefix-cls}-scroll > .@{table-prefix-cls}-body > table,
+    > .@{table-prefix-cls}-scroll > .@{table-prefix-cls}-body > .cdk-virtual-scroll-content-wrapper > table {
+      border: 0;
+
+      > .@{table-prefix-cls}-thead > tr > th {
+        &.@{table-th-left-cls}-sticky,
+        &.@{table-th-right-cls}-sticky {
+          background: @component-background;
+        }
+      }
+
+      > .@{table-prefix-cls}-thead > tr > th,
+      > .@{table-prefix-cls}-tbody > tr > td {
+        padding: @table-padding-vertical-sm @table-padding-horizontal-sm;
+      }
+    }
   }
 }
 
@@ -121,6 +224,7 @@
         margin: 22px 0;
       }
     }
+
     .ant-tree-child-tree > nz-tree-node:last-child {
       > li:before {
         content: ' ';
@@ -133,6 +237,7 @@
       }
     }
   }
+
   .font-highlight {
     color: @highlight-color;
   }
@@ -145,4 +250,65 @@ textarea.cdk-textarea-autosize-measuring {
   // measurement. We just have to account for it later and subtract it off the final result.
   padding: 2px 0 !important;
   box-sizing: content-box !important;
+}
+
+
+.nz-animate-disabled {
+
+  // drawer
+  &.ant-drawer {
+    &.ant-drawer-open .ant-drawer-mask {
+      animation: none;
+      transition: none;
+    }
+
+    & > * {
+      transition: none;
+    }
+  }
+
+  // modal
+  .ant-modal-mask, .ant-modal {
+    animation: none;
+    transition: none;
+
+    &.zoom-enter, &.zoom-leave,
+    &.zoom-enter-active, &.zoom-leave-active {
+      animation: none;
+      transition: none;
+    }
+  }
+
+  // menu
+  &.ant-menu {
+    transition: none;
+
+    .ant-menu-item, .ant-menu-submenu-title {
+      transition: none;
+    }
+
+    .ant-menu-item .anticon, .ant-menu-submenu-title .anticon {
+      transition: none;
+
+      & + span {
+        transition: none;
+      }
+    }
+  }
+
+  // tabs
+  &.ant-tabs {
+    .ant-tabs-top-content.ant-tabs-content-animated,
+    .ant-tabs-bottom-content.ant-tabs-content-animated,
+    .ant-tabs-top-content > .ant-tabs-tabpane,
+    .ant-tabs-bottom-content > .ant-tabs-tabpane,
+    &.ant-tabs-left .ant-tabs-ink-bar-animated,
+    &.ant-tabs-right .ant-tabs-ink-bar-animated,
+    &.ant-tabs-top .ant-tabs-ink-bar-animated,
+    &.ant-tabs-bottom .ant-tabs-ink-bar-animated {
+      transition: none;
+    }
+  }
+
+
 }

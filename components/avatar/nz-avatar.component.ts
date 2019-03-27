@@ -12,22 +12,24 @@ import {
 } from '@angular/core';
 
 import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { NzSizeLDSType } from '../core/types/size';
+import { NzSizeLDSType, NzSizeMap } from '../core/types/size';
 
 export type NzAvatarShape = 'square' | 'circle';
 export type NzAvatarSize = NzSizeLDSType | number;
 
-@Component({
-  selector           : 'nz-avatar',
-  templateUrl        : './nz-avatar.component.html',
-  providers          : [ NzUpdateHostClassService ],
-  preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None
+export interface NzAvatarSizeMap {
+  [size: string]: string;
+}
 
+@Component({
+  selector: 'nz-avatar',
+  templateUrl: './nz-avatar.component.html',
+  providers: [NzUpdateHostClassService],
+  preserveWhitespaces: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class NzAvatarComponent implements OnChanges {
-
   @Input() nzShape: NzAvatarShape = 'circle';
   @Input() nzSize: NzAvatarSize = 'default';
   @Input() nzText: string;
@@ -44,22 +46,22 @@ export class NzAvatarComponent implements OnChanges {
 
   private el: HTMLElement = this.elementRef.nativeElement;
   private prefixCls = 'ant-avatar';
-  private sizeMap = { large: 'lg', small: 'sm' };
+  private sizeMap: NzSizeMap = { large: 'lg', small: 'sm' };
 
   constructor(
     private elementRef: ElementRef,
     private cd: ChangeDetectorRef,
     private updateHostClassService: NzUpdateHostClassService,
-    private renderer: Renderer2) {
-  }
+    private renderer: Renderer2
+  ) {}
 
   setClass(): this {
     const classMap = {
-      [ this.prefixCls ]                                    : true,
-      [ `${this.prefixCls}-${this.sizeMap[ this.nzSize ]}` ]: this.sizeMap[ this.nzSize ],
-      [ `${this.prefixCls}-${this.nzShape}` ]               : this.nzShape,
-      [ `${this.prefixCls}-icon` ]                          : this.nzIcon,
-      [ `${this.prefixCls}-image` ]                         : this.hasSrc // downgrade after image error
+      [this.prefixCls]: true,
+      [`${this.prefixCls}-${this.sizeMap[this.nzSize]}`]: this.sizeMap[this.nzSize],
+      [`${this.prefixCls}-${this.nzShape}`]: this.nzShape,
+      [`${this.prefixCls}-icon`]: this.nzIcon,
+      [`${this.prefixCls}-image`]: this.hasSrc // downgrade after image error
     };
     this.updateHostClassService.updateHostClass(this.el, classMap);
     this.cd.detectChanges();

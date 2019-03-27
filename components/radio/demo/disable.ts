@@ -5,10 +5,10 @@ import { Component } from '@angular/core';
   template: `
     <div>
       <label nz-radio [nzDisabled]="disabled">Disabled</label>
-      <br>
+      <br />
       <label nz-radio [nzDisabled]="disabled" [ngModel]="true">Disabled</label>
       <div style="margin-top:20px;">
-        <button nz-button nzType="primary" (click)="disabled=!disabled">Toggle disabled</button>
+        <button nz-button nzType="primary" (click)="disabled = !disabled">Toggle disabled</button>
       </div>
     </div>
   `

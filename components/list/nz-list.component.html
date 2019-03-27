@@ -16,7 +16,7 @@
       </div>
     </div>
     <div *ngIf="!nzLoading && nzDataSource.length === 0" class="ant-list-empty-text">
-      {{locale.emptyText}}
+      <nz-embed-empty [nzComponentName]="'list'" [specificContent]="nzNoResult"></nz-embed-empty>
     </div>
   </ng-container>
   <ng-content></ng-content>

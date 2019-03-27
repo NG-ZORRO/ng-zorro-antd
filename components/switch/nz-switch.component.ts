@@ -7,7 +7,6 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  HostListener,
   Input,
   TemplateRef,
   ViewChild,
@@ -19,29 +18,34 @@ import { NzSizeDSType } from '../core/types/size';
 import { InputBoolean } from '../core/util/convert';
 
 @Component({
-  selector           : 'nz-switch',
+  selector: 'nz-switch',
   preserveWhitespaces: false,
-  templateUrl        : './nz-switch.component.html',
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  providers          : [
+  templateUrl: './nz-switch.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  providers: [
     {
-      provide    : NG_VALUE_ACCESSOR,
+      provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzSwitchComponent),
-      multi      : true
+      multi: true
     }
   ],
-  styles             : [ `
-    nz-switch {
-      display: inline-block;
-    }`
+  host: {
+    '(click)': 'hostClick($event)'
+  },
+  styles: [
+    `
+      nz-switch {
+        display: inline-block;
+      }
+    `
   ]
 })
 export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit {
   checked = false;
-  @ViewChild('switchElement') private switchElement: ElementRef;
   onChange: (value: boolean) => void = () => null;
   onTouched: () => void = () => null;
+  @ViewChild('switchElement') private switchElement: ElementRef;
   @Input() @InputBoolean() nzLoading = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzControl = false;
@@ -49,10 +53,9 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit {
   @Input() nzUnCheckedChildren: string | TemplateRef<void>;
   @Input() nzSize: NzSizeDSType;
 
-  @HostListener('click', [ '$event' ])
-  onClick(e: MouseEvent): void {
+  hostClick(e: MouseEvent): void {
     e.preventDefault();
-    if ((!this.nzDisabled) && (!this.nzLoading) && (!this.nzControl)) {
+    if (!this.nzDisabled && !this.nzLoading && !this.nzControl) {
       this.updateValue(!this.checked);
     }
   }
@@ -65,14 +68,14 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit {
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    if (!this.nzControl) {
-      if (e.keyCode === LEFT_ARROW) { // Left
+    if (!this.nzControl && !this.nzDisabled && !this.nzLoading) {
+      if (e.keyCode === LEFT_ARROW) {
         this.updateValue(false);
         e.preventDefault();
-      } else if (e.keyCode === RIGHT_ARROW) { // Right
+      } else if (e.keyCode === RIGHT_ARROW) {
         this.updateValue(true);
         e.preventDefault();
-      } else if (e.keyCode === SPACE || e.keyCode === ENTER) { // Space, Enter
+      } else if (e.keyCode === SPACE || e.keyCode === ENTER) {
         this.updateValue(!this.checked);
         e.preventDefault();
       }
@@ -87,8 +90,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit {
     this.switchElement.nativeElement.blur();
   }
 
-  constructor(private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
-  }
+  constructor(private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {}
 
   ngAfterViewInit(): void {
     this.focusMonitor.monitor(this.switchElement.nativeElement, true).subscribe(focusOrigin => {

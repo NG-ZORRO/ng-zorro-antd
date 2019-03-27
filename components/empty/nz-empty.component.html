@@ -1,0 +1,15 @@
+<div class="ant-empty-image">
+  <ng-container *nzStringTemplateOutlet="nzNotFoundImage">
+    <img [src]="nzNotFoundImage || defaultSvg" [alt]="isContentString ? nzNotFoundContent : 'empty'">
+  </ng-container>
+</div>
+<p class="ant-empty-description">
+  <ng-container *nzStringTemplateOutlet="nzNotFoundContent">
+    {{ shouldRenderContent ? nzNotFoundContent : locale['description'] }}
+  </ng-container>
+</p>
+<div class="ant-empty-footer" *ngIf="nzNotFoundFooter">
+  <ng-container *nzStringTemplateOutlet="nzNotFoundFooter">
+    {{ nzNotFoundFooter }}
+  </ng-container>
+</div>

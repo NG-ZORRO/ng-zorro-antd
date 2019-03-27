@@ -80,8 +80,8 @@ function generateDemoComponent(content) {
   let rawCode = '';
   for (const key in demoMap) {
     const angularCode = encodeURIComponent(PrismAngular.highlight(demoMap[key].ts, Prism.languages['angular']));
-    code += `\t${camelCase(key)} = \`${angularCode}\`\n`;
-    rawCode += `\t${camelCase(key)}Raw = require('!!raw-loader!./${key}.ts');\n`;
+    code += `\t${camelCase(key)} = \`${angularCode}\`;\n`;
+    rawCode += `\t${camelCase(key)}Raw = \`${encodeURIComponent(demoMap[key].ts)}\`;\n`;
   }
   let output = demoComponentTemplate;
   output = output.replace(/{{component}}/g, component);
@@ -201,7 +201,7 @@ function generateExample(result) {
 }
 
 function retrieveEntryComponents(plainCode) {
-  var matches = (plainCode + '').match(/^\/\*\s*?entryComponents:\s*([^\n]+?)\*\//) || [];
+  const matches = (plainCode + '').match(/^\/\*\s*?entryComponents:\s*([^\n]+?)\*\//) || [];
   if (matches[1]) {
     return matches[1].split(',').map(className => className.trim()).filter((value, index, self) => value && self.indexOf(value) === index);
   }

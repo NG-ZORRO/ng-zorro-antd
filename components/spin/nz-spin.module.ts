@@ -5,9 +5,8 @@ import { NgModule } from '@angular/core';
 import { NzSpinComponent } from './nz-spin.component';
 
 @NgModule({
-  exports     : [ NzSpinComponent ],
-  declarations: [ NzSpinComponent ],
-  imports     : [ CommonModule, ObserversModule ]
+  exports: [NzSpinComponent],
+  declarations: [NzSpinComponent],
+  imports: [CommonModule, ObserversModule]
 })
-export class NzSpinModule {
-}
+export class NzSpinModule {}

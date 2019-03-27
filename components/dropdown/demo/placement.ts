@@ -88,15 +88,15 @@ import { Component } from '@angular/core';
           </li>
         </ul>
       </nz-dropdown>
-    </div>`,
-  styles  : [
-      `
-      :host ::ng-deep .ant-btn {
+    </div>
+  `,
+  styles: [
+    `
+      [nz-button] {
         margin-right: 8px;
         margin-bottom: 8px;
       }
     `
   ]
 })
-export class NzDemoDropdownPlacementComponent {
-}
+export class NzDemoDropdownPlacementComponent {}

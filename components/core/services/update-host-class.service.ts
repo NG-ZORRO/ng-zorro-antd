@@ -1,8 +1,11 @@
-import { Injectable, Renderer2 } from '@angular/core';
+import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+
+import { NgClassInterface } from '../types/ng-class';
 
 @Injectable()
 export class NzUpdateHostClassService {
   private classMap = {};
+  private renderer: Renderer2;
 
   updateHostClass(el: HTMLElement, classMap: object): void {
     this.removeClass(el, this.classMap, this.renderer);
@@ -18,7 +21,7 @@ export class NzUpdateHostClassService {
     }
   }
 
-  private addClass(el: HTMLElement, classMap: object, renderer: Renderer2): void {
+  private addClass(el: HTMLElement, classMap: NgClassInterface, renderer: Renderer2): void {
     for (const i in classMap) {
       if (classMap.hasOwnProperty(i)) {
         if (classMap[ i ]) {
@@ -28,7 +31,7 @@ export class NzUpdateHostClassService {
     }
   }
 
-  constructor(private renderer: Renderer2) {
-
+  constructor(rendererFactory2: RendererFactory2) {
+    this.renderer = rendererFactory2.createRenderer(null, null);
   }
 }

@@ -1,8 +1,5 @@
-import {
-  Component,
-  Input,
-  OnInit
-} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ThemeType } from '@ant-design/icons-angular';
 
 export type NzProgressGapPositionType = 'top' | 'bottom' | 'left' | 'right';
 export type NzProgressStatusType = 'success' | 'exception' | 'active' | 'normal';
@@ -11,9 +8,9 @@ export type NzProgressStrokeLinecapType = 'round' | 'square';
 import { isNotNil } from '../core/util/check';
 
 @Component({
-  selector           : 'nz-progress',
+  selector: 'nz-progress',
   preserveWhitespaces: false,
-  templateUrl        : './nz-progress.component.html'
+  templateUrl: './nz-progress.component.html'
 })
 export class NzProgressComponent implements OnInit {
   private _gapDegree = 0;
@@ -26,20 +23,20 @@ export class NzProgressComponent implements OnInit {
   private _size = 'default';
   private _type: NzProgressTypeType = 'line';
   private _format = (percent: number): string => `${percent}%`;
-  trailPathStyle: { [ key: string ]: string };
-  strokePathStyle: { [ key: string ]: string };
+  trailPathStyle: { [key: string]: string };
+  strokePathStyle: { [key: string]: string };
   pathString: string;
-  icon;
-  iconTheme;
+  icon: string;
+  iconTheme: ThemeType;
   isStatusSet = false;
   isStrokeWidthSet = false;
   isFormatSet = false;
   isGapDegreeSet = false;
   isGapPositionSet = false;
-  statusColorMap = {
-    normal   : '#108ee9',
+  statusColorMap: { [key: string]: string } = {
+    normal: '#108ee9',
     exception: '#ff5500',
-    success  : '#87d068'
+    success: '#87d068'
   };
   @Input() nzShowInfo = true;
   @Input() nzWidth = 132;
@@ -147,7 +144,6 @@ export class NzProgressComponent implements OnInit {
       this.isGapDegreeSet = true;
       this.updatePathStyles();
     }
-
   }
 
   get nzGapDegree(): number {
@@ -182,7 +178,7 @@ export class NzProgressComponent implements OnInit {
   }
 
   updatePathStyles(): void {
-    const radius = 50 - (this.nzStrokeWidth / 2);
+    const radius = 50 - this.nzStrokeWidth / 2;
     let beginPositionX = 0;
     let beginPositionY = -radius;
     let endPositionX = 0;
@@ -211,19 +207,19 @@ export class NzProgressComponent implements OnInit {
      a ${radius},${radius} 0 1 1 ${-endPositionX},${endPositionY}`;
     const len = Math.PI * 2 * radius;
     this.trailPathStyle = {
-      strokeDasharray : `${len - this.nzGapDegree}px ${len}px`,
+      strokeDasharray: `${len - this.nzGapDegree}px ${len}px`,
       strokeDashoffset: `-${this.nzGapDegree / 2}px`,
-      transition      : 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s'
+      transition: 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s'
     };
     this.strokePathStyle = {
-      strokeDasharray : `${(this.nzPercent / 100) * (len - this.nzGapDegree)}px ${len}px`,
+      strokeDasharray: `${(this.nzPercent / 100) * (len - this.nzGapDegree)}px ${len}px`,
       strokeDashoffset: `-${this.nzGapDegree / 2}px`,
-      transition      : 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s, stroke-width .06s ease .3s' // eslint-disable-line
+      transition: 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s, stroke-width .06s ease .3s' // eslint-disable-line
     };
   }
 
   updateIcon(): void {
-    const isCircle = (this.nzType === 'circle' || this.nzType === 'dashboard');
+    const isCircle = this.nzType === 'circle' || this.nzType === 'dashboard';
     let ret = '';
     if (this.nzStatus === 'success') {
       ret = 'check';
@@ -246,5 +242,4 @@ export class NzProgressComponent implements OnInit {
     this.updatePathStyles();
     this.updateIcon();
   }
-
 }

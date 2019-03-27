@@ -1,25 +1,18 @@
-import {
-  Directive,
-  ElementRef,
-  OnInit,
-  Renderer2
-} from '@angular/core';
+import { Directive, ElementRef, OnInit, Renderer2 } from '@angular/core';
 
 import { isNotNil } from '../core/util/check';
 
 @Directive({
-  selector: '[nz-carousel-content]',
-  host    : {
-    '[class.slick-slide]': 'true'
-  }
+  selector: '[nz-carousel-content]'
 })
 export class NzCarouselContentDirective implements OnInit {
+  el: HTMLElement = this.elementRef.nativeElement;
+
   private _active = false;
   private _width: number = 0;
-  private _left: number;
-  private _top: number;
+  private _left: number | null;
+  private _top: number | null;
   private _fadeMode = false;
-  el: HTMLElement = this.elementRef.nativeElement;
 
   set width(value: number) {
     this._width = value;
@@ -30,7 +23,7 @@ export class NzCarouselContentDirective implements OnInit {
     return this._width;
   }
 
-  set left(value: number) {
+  set left(value: number | null) {
     this._left = value;
     if (isNotNil(this.left)) {
       this.renderer.setStyle(this.el, 'left', `${this.left}px`);
@@ -39,11 +32,11 @@ export class NzCarouselContentDirective implements OnInit {
     }
   }
 
-  get left(): number {
+  get left(): number | null {
     return this._left;
   }
 
-  set top(value: number) {
+  set top(value: number | null) {
     this._top = value;
     if (isNotNil(this.top)) {
       this.renderer.setStyle(this.el, 'top', `${this.top}px`);
@@ -52,7 +45,7 @@ export class NzCarouselContentDirective implements OnInit {
     }
   }
 
-  get top(): number {
+  get top(): number | null {
     return this._top;
   }
 
@@ -84,17 +77,17 @@ export class NzCarouselContentDirective implements OnInit {
     return this._fadeMode;
   }
 
-  updateOpacity(): void {
-    if (this.fadeMode) {
-      this.renderer.setStyle(this.el, 'opacity', this.isActive ? 1 : 0);
-    }
-  }
-
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'slick-slide');
   }
 
   ngOnInit(): void {
     this.renderer.setStyle(this.el, 'transition', 'opacity 500ms ease');
   }
 
+  private updateOpacity(): void {
+    if (this.fadeMode) {
+      this.renderer.setStyle(this.el, 'opacity', this.isActive ? 1 : 0);
+    }
+  }
 }

@@ -1,5 +1,4 @@
 import {
-  isDevMode,
   AfterContentChecked,
   Directive,
   ElementRef,
@@ -7,21 +6,37 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Renderer2
+  Renderer2,
+  SimpleChanges
 } from '@angular/core';
-import { IconDirective } from '@ant-design/icons-angular';
+import { IconDirective, ThemeType } from '@ant-design/icons-angular';
+import { InputBoolean } from '../core/util';
 import { NzIconService } from './nz-icon.service';
 
 const iconTypeRE = /^anticon\-\w/;
 
-const getIconTypeClass = (className: string): { name: string, index: number } => {
+const getIconTypeClass = (className: string): { name: string; index: number } | undefined => {
   if (!className) {
     return undefined;
   } else {
     const classArr = className.split(/\s/);
-    const index = classArr.findIndex((cls => cls !== 'anticon' && cls !== 'anticon-spin' && !!cls.match(iconTypeRE)));
+    const index = classArr.findIndex(cls => cls !== 'anticon' && cls !== 'anticon-spin' && !!cls.match(iconTypeRE));
     return index === -1 ? undefined : { name: classArr[index], index };
   }
+};
+
+const normalizeType = (rawType: string): { type: string; crossError: boolean; verticalError: boolean } => {
+  const ret = { type: rawType, crossError: false, verticalError: false };
+  ret.type = rawType ? rawType.replace('anticon-', '') : '';
+  if (ret.type.includes('verticle')) {
+    ret.type = 'up';
+    ret.verticalError = true;
+  }
+  if (ret.type.startsWith('cross')) {
+    ret.type = 'close';
+    ret.crossError = true;
+  }
+  return ret;
 };
 
 /**
@@ -30,32 +45,74 @@ const getIconTypeClass = (className: string): { name: string, index: number } =>
  * - IconFont support
  * - spinning
  * - old API compatibility
+ *
+ * @break-changes
+ *
+ * - old API compatibility, icon class names would not be supported.
+ * - properties that not started with `nz`.
  */
 @Directive({
   selector: 'i.anticon, [nz-icon]'
 })
 export class NzIconDirective extends IconDirective implements OnInit, OnChanges, OnDestroy, AfterContentChecked {
+  /** Properties with `nz` prefix. */
+  @Input() @InputBoolean() set nzSpin(value: boolean) {
+    this.spin = value;
+  }
+  @Input() nzRotate: number = 0;
+  @Input() set nzType(value: string) {
+    this.type = value;
+  }
+  @Input() set nzTheme(value: ThemeType) {
+    this.theme = value;
+  }
+  @Input() set nzTwotoneColor(value: string) {
+    this.twoToneColor = value;
+  }
+  @Input() set nzIconfont(value: string) {
+    this.iconfont = value;
+  }
+
+  /** @deprecated 8.0.0 avoid exposing low layer API. */
   @Input() spin = false;
+
+  /** @deprecated 8.0.0 avoid exposing low layer API. */
   @Input() iconfont: string;
+
+  @Input()
+  set type(value: string) {
+    if (value && value.startsWith('anticon')) {
+      const rawClass = getIconTypeClass(value);
+      const type = rawClass ? normalizeType(rawClass.name).type : '';
+      if (type && this.type !== type) {
+        this._type = type;
+      }
+    } else {
+      this._type = value;
+    }
+  }
+
+  get type(): string {
+    return this._type;
+  }
 
   private classNameObserver: MutationObserver;
   private el = this.elementRef.nativeElement;
+  private _type: string;
 
   /**
    * Replacement of `changeIcon` for more modifications.
    * @param oldAPI
    */
   private changeIcon2(oldAPI: boolean = false): void {
-    if (!oldAPI) { this.setClassName(); }
+    if (!oldAPI) {
+      this.setClassName();
+    }
     this._changeIcon().then(svg => {
       this.setSVGData(svg);
-      if (!oldAPI) {
-        this.toggleSpin(svg);
-      }
-    }).catch((err) => {
-      if (err) {
-        console.error(err);
-        console.warn('[NG-ZORRO]', `You can find more about this error on http://ng.ant.design/components/icon/en`);
+      if (!oldAPI && svg) {
+        this.handleSpin(svg);
+        this.handleRotate(svg);
       }
     });
   }
@@ -63,27 +120,33 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   private classChangeHandler(className: string): void {
     const ret = getIconTypeClass(className);
     if (ret) {
-      let type = ret.name.replace('anticon-', '');
-      if (type.includes('verticle')) {
-        type = type.replace('verticle', 'vertical');
+      const { type, crossError, verticalError } = normalizeType(ret.name);
+      if (crossError) {
         this.iconService.warnAPI('cross');
       }
-      if (type.startsWith('cross')) {
-        type = type.replace('cross', 'close');
+      if (verticalError) {
         this.iconService.warnAPI('vertical');
       }
       if (this.type !== type) {
-        this.type = type;
+        this._type = type;
         this.changeIcon2(true);
       }
     }
   }
 
-  private toggleSpin(svg: SVGElement): void {
+  private handleSpin(svg: SVGElement): void {
     if ((this.spin || this.type === 'loading') && !this.elementRef.nativeElement.classList.contains('anticon-spin')) {
       this.renderer.addClass(svg, 'anticon-spin');
     } else {
       this.renderer.removeClass(svg, 'anticon-spin');
+    }
+  }
+
+  private handleRotate(svg: SVGElement): void {
+    if (this.nzRotate) {
+      this.renderer.setAttribute(svg, 'style', `transform: rotate(${this.nzRotate}deg)`);
+    } else {
+      this.renderer.removeAttribute(svg, 'style');
     }
   }
 
@@ -100,8 +163,8 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     }
   }
 
-  private setSVGData(svg: SVGElement): void {
-    if (typeof this.type === 'string') {
+  private setSVGData(svg: SVGElement | null): void {
+    if (typeof this.type === 'string' && svg) {
       this.renderer.setAttribute(svg, 'data-icon', this.type);
       this.renderer.setAttribute(svg, 'aria-hidden', 'true');
     }
@@ -111,9 +174,13 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     super(iconService, elementRef, renderer);
   }
 
-  ngOnChanges(): void {
-    if (!this.iconfont) {
+  ngOnChanges(changes: SimpleChanges): void {
+    const { type, nzType, nzTwotoneColor, twoToneColor, spin, nzSpin, theme, nzTheme, nzRotate } = changes;
+
+    if (type || nzType || nzTwotoneColor || twoToneColor || spin || nzSpin || theme || nzTheme) {
       this.changeIcon2();
+    } else if (nzRotate) {
+      this.handleRotate(this.el.firstChild);
     } else {
       this._setSVGElement(this.iconService.createIconfontIcon(`#${this.iconfont}`));
     }

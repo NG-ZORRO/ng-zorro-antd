@@ -1,14 +1,14 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { async, fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
 import { createMouseEvent, dispatchFakeEvent } from '../core/testing';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzMenuModule } from '../menu/nz-menu.module';
 import { NzSubMenuComponent } from '../menu/nz-submenu.component';
 
@@ -25,9 +25,14 @@ describe('dropdown', () => {
   beforeEach(async(() => {
     const dir = 'ltr';
     TestBed.configureTestingModule({
-      imports     : [ NzMenuModule, NoopAnimationsModule, NzDropDownModule, NoopAnimationsModule, NzIconModule ],
-      declarations: [ NzTestDropdownComponent, NzTestDropdownButtonComponent, NzTestDropdownWithButtonComponent, NzTestDropdownContextmenuComponent ],
-      providers   : [
+      imports: [NzMenuModule, NoopAnimationsModule, NzDropDownModule, NoopAnimationsModule, NzIconTestModule],
+      declarations: [
+        NzTestDropdownComponent,
+        NzTestDropdownButtonComponent,
+        NzTestDropdownWithButtonComponent,
+        NzTestDropdownContextmenuComponent
+      ],
+      providers: [
         NzDropdownService,
         { provide: Directionality, useFactory: () => ({ value: dir }) },
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) }
@@ -36,39 +41,43 @@ describe('dropdown', () => {
 
     TestBed.compileComponents();
 
-    inject([ OverlayContainer ], (oc: OverlayContainer) => {
+    inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
       overlayContainerElement = oc.getContainerElement();
     })();
   }));
 
-  afterEach(inject([ OverlayContainer ], (currentOverlayContainer: OverlayContainer) => {
+  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
   describe('nz-dropdown-directive', () => {
-    let fixture;
-    let testComponent;
-    let link;
+    let fixture: ComponentFixture<NzTestDropdownComponent>;
+    let testComponent: NzTestDropdownComponent;
+    let link: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestDropdownComponent);
       testComponent = fixture.debugElement.componentInstance;
       link = fixture.debugElement.query(By.directive(NzDropDownDirective));
     });
+
     it('should mouseenter event trigger', fakeAsync(() => {
       const mouseenterCallback = jasmine.createSpy('mouseenter callback');
-      testComponent.nzDropDownDirective.$mouseenter.subscribe(mouseenterCallback);
+      testComponent.nzDropDownDirective.hover$.subscribe(mouseenterCallback);
       dispatchFakeEvent(link.nativeElement, 'mouseenter');
       fixture.detectChanges();
       expect(mouseenterCallback).toHaveBeenCalledTimes(1);
     }));
+
     it('should mouseleave event trigger', fakeAsync(() => {
       const mouseleaveCallback = jasmine.createSpy('mouseleave callback');
-      testComponent.nzDropDownDirective.$mouseleave.subscribe(mouseleaveCallback);
+      testComponent.nzDropDownDirective.hover$.subscribe(mouseleaveCallback);
       dispatchFakeEvent(link.nativeElement, 'mouseleave');
       fixture.detectChanges();
       expect(mouseleaveCallback).toHaveBeenCalledTimes(1);
     }));
+
     it('should click event trigger', fakeAsync(() => {
       const clickCallback = jasmine.createSpy('click callback');
       testComponent.nzDropDownDirective.$click.subscribe(clickCallback);
@@ -76,20 +85,27 @@ describe('dropdown', () => {
       fixture.detectChanges();
       expect(clickCallback).toHaveBeenCalledTimes(1);
     }));
+
     it('should className add in a', () => {
       fixture.detectChanges();
       expect(link.nativeElement.classList.contains('ant-dropdown-link')).toBe(true);
     });
+
     it('should className not add in button', () => {
       const buttonFixture = TestBed.createComponent(NzTestDropdownWithButtonComponent);
       buttonFixture.detectChanges();
-      expect(buttonFixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement.classList.contains('ant-dropdown-link')).toBe(false);
+      expect(
+        buttonFixture.debugElement
+          .query(By.directive(NzDropDownDirective))
+          .nativeElement.classList.contains('ant-dropdown-link')
+      ).toBe(false);
     });
   });
   describe('nz-dropdown-component', () => {
-    let fixture;
-    let testComponent;
-    let link;
+    let fixture: ComponentFixture<NzTestDropdownComponent>;
+    let testComponent: NzTestDropdownComponent;
+    let link: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestDropdownComponent);
       testComponent = fixture.debugElement.componentInstance;
@@ -110,36 +126,36 @@ describe('dropdown', () => {
       testComponent.visible = true;
       fixture.detectChanges();
       let items = overlayContainerElement.querySelectorAll('.ant-dropdown-menu-item') as NodeListOf<HTMLElement>;
-      items[ 0 ].click();
+      items[0].click();
       testComponent.visible = false;
       fixture.detectChanges();
       testComponent.visible = true;
       fixture.detectChanges();
       items = overlayContainerElement.querySelectorAll('.ant-dropdown-menu-item') as NodeListOf<HTMLElement>;
-      expect(items[ 0 ].classList.contains('ant-dropdown-menu-item')).toBe(true);
-      expect(items[ 0 ].classList.contains('ant-dropdown-menu-item-selected')).toBe(true);
+      expect(items[0].classList.contains('ant-dropdown-menu-item')).toBe(true);
+      expect(items[0].classList.contains('ant-dropdown-menu-item-selected')).toBe(true);
     });
     it('should selectable false work', () => {
       testComponent.visible = true;
       testComponent.selectable = false;
       fixture.detectChanges();
       let items = overlayContainerElement.querySelectorAll('.ant-dropdown-menu-item') as NodeListOf<HTMLElement>;
-      items[ 0 ].click();
+      items[0].click();
       testComponent.visible = false;
       fixture.detectChanges();
       testComponent.visible = true;
       fixture.detectChanges();
       items = overlayContainerElement.querySelectorAll('.ant-dropdown-menu-item') as NodeListOf<HTMLElement>;
-      expect(items[ 0 ].classList.contains('ant-dropdown-menu-item')).toBe(true);
-      expect(items[ 0 ].classList.contains('ant-dropdown-menu-item-selected')).toBe(false);
+      expect(items[0].classList.contains('ant-dropdown-menu-item')).toBe(true);
+      expect(items[0].classList.contains('ant-dropdown-menu-item-selected')).toBe(false);
     });
     it('should append the correct className', () => {
       testComponent.visible = true;
       testComponent.itemSelected = true;
       fixture.detectChanges();
       const items = overlayContainerElement.querySelectorAll('.ant-dropdown-menu-item') as NodeListOf<HTMLElement>;
-      expect(items[ 0 ].classList.contains('.ant-menu-item-selected')).toBe(false);
-      expect(items[ 0 ].classList.contains('ant-dropdown-menu-item-selected')).toBe(true);
+      expect(items[0].classList.contains('.ant-menu-item-selected')).toBe(false);
+      expect(items[0].classList.contains('ant-dropdown-menu-item-selected')).toBe(true);
     });
     it('should backdrop work with click', () => {
       testComponent.trigger = 'click';
@@ -150,7 +166,7 @@ describe('dropdown', () => {
       expect(overlayContainerElement.textContent).not.toBe('');
       fixture.detectChanges();
       const backdropCallback = jasmine.createSpy('backdrop callback');
-      testComponent.nzDropDownComponent.$visibleChange.subscribe(backdropCallback);
+      testComponent.nzDropDownComponent.visible$.subscribe(backdropCallback);
       const backdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop') as HTMLElement;
       backdrop.click();
       fixture.detectChanges();
@@ -164,7 +180,7 @@ describe('dropdown', () => {
       expect(!!link.nativeElement.attributes.getNamedItem('disabled')).toBe(true);
     });
     it('should placement work', () => {
-      const placementArray = [ 'bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight' ];
+      const placementArray = ['bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight'];
       testComponent.visible = true;
       placementArray.forEach(placement => {
         testComponent.placement = placement;
@@ -178,7 +194,7 @@ describe('dropdown', () => {
       fixture.detectChanges();
       const dropdown = overlayContainerElement.querySelector('.ant-dropdown') as HTMLElement;
       const mouseenterCallback = jasmine.createSpy('mouseenter callback');
-      testComponent.nzDropDownComponent.$visibleChange.subscribe(mouseenterCallback);
+      testComponent.nzDropDownComponent.visible$.subscribe(mouseenterCallback);
       dispatchFakeEvent(dropdown, 'mouseenter');
       fixture.detectChanges();
       expect(mouseenterCallback).toHaveBeenCalledWith(true);
@@ -189,38 +205,39 @@ describe('dropdown', () => {
       fixture.detectChanges();
       const dropdown = overlayContainerElement.querySelector('.ant-dropdown') as HTMLElement;
       const mouseleaveCallback = jasmine.createSpy('mouseleave callback');
-      testComponent.nzDropDownComponent.$visibleChange.subscribe(mouseleaveCallback);
+      testComponent.nzDropDownComponent.visible$.subscribe(mouseleaveCallback);
       dispatchFakeEvent(dropdown, 'mouseleave');
       fixture.detectChanges();
       expect(mouseleaveCallback).toHaveBeenCalledWith(false);
       expect(mouseleaveCallback).toHaveBeenCalledTimes(1);
     });
-    it('should nzVisibleChange event trigger correct', () => {
+    it('should nzVisibleChange event trigger correct', fakeAsync(() => {
+      fixture.detectChanges();
       testComponent.visible = true;
       fixture.detectChanges();
       expect(testComponent.visibleChange).toHaveBeenCalledTimes(0);
       testComponent.visible = false;
       fixture.detectChanges();
       expect(testComponent.visibleChange).toHaveBeenCalledTimes(0);
-      testComponent.nzDropDownComponent.onVisibleChange(true);
+      // @ts-ignore
+      testComponent.nzDropDownComponent.nzMenuDropdownService.menuOpen$.next(true);
+      fixture.detectChanges();
+      tick(100);
       fixture.detectChanges();
       expect(testComponent.visibleChange).toHaveBeenCalledTimes(1);
-      testComponent.nzDropDownComponent.onVisibleChange(false);
       fixture.detectChanges();
-      expect(testComponent.visibleChange).toHaveBeenCalledTimes(2);
-      testComponent.visible = true;
-      testComponent.nzDropDownComponent.onVisibleChange(false);
+      tick(100);
       fixture.detectChanges();
-      expect(testComponent.visibleChange).toHaveBeenCalledTimes(2);
-    });
+    }));
     it('should submenu event trigger', () => {
       testComponent.visible = true;
       fixture.detectChanges();
       const nestedCallback = jasmine.createSpy('nested callback');
       const submenu = testComponent.nzSubMenuComponent;
       submenu.nzOpen = true;
-      submenu.handleOpenEvent(false);
-      testComponent.nzDropDownComponent.$subOpen.subscribe(nestedCallback);
+      submenu.nzSubmenuService.open$.next(false);
+      // @ts-ignore
+      testComponent.nzDropDownComponent.nzMenuDropdownService.menuOpen$.subscribe(nestedCallback);
       fixture.detectChanges();
       expect(nestedCallback).toHaveBeenCalledWith(false);
       expect(nestedCallback).toHaveBeenCalledTimes(1);
@@ -236,9 +253,10 @@ describe('dropdown', () => {
     });
   });
   describe('nz-dropdown-component-button', () => {
-    let fixture;
-    let testComponent;
-    let button;
+    let fixture: ComponentFixture<NzTestDropdownButtonComponent>;
+    let testComponent: NzTestDropdownButtonComponent;
+    let button: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestDropdownButtonComponent);
       testComponent = fixture.debugElement.componentInstance;
@@ -257,7 +275,7 @@ describe('dropdown', () => {
       const buttonItem = button.nativeElement.querySelector('.ant-btn-icon-only');
       expect(!!buttonItem.attributes.getNamedItem('disabled')).toBe(false);
       const clickCallback = jasmine.createSpy('click callback');
-      testComponent.nzDropDownButtonComponent.$visibleChange.subscribe(clickCallback);
+      testComponent.nzDropDownButtonComponent.visible$.subscribe(clickCallback);
       buttonItem.click();
       fixture.detectChanges();
       expect(testComponent.click).toHaveBeenCalledTimes(0);
@@ -270,35 +288,34 @@ describe('dropdown', () => {
       const buttonItem = button.nativeElement.querySelector('.ant-btn');
       expect(!!buttonItem.attributes.getNamedItem('disabled')).toBe(true);
       const clickCallback = jasmine.createSpy('click callback');
-      testComponent.nzDropDownButtonComponent.$visibleChange.subscribe(clickCallback);
+      testComponent.nzDropDownButtonComponent.visible$.subscribe(clickCallback);
       buttonItem.click();
       fixture.detectChanges();
       expect(testComponent.click).toHaveBeenCalledTimes(0);
       expect(clickCallback).toHaveBeenCalledTimes(0);
-      testComponent.nzDropDownButtonComponent.onVisibleChange(true);
+      // @ts-ignore
+      testComponent.nzDropDownButtonComponent.nzMenuDropdownService.menuOpen$.next(true);
       fixture.detectChanges();
       expect(testComponent.visibleChange).toHaveBeenCalledTimes(0);
     });
-    it('should nzVisibleChange event trigger correct', () => {
+    it('should nzVisibleChange event trigger correct', fakeAsync(() => {
+      fixture.detectChanges();
       testComponent.visible = true;
       fixture.detectChanges();
       expect(testComponent.visibleChange).toHaveBeenCalledTimes(0);
       testComponent.visible = false;
       fixture.detectChanges();
       expect(testComponent.visibleChange).toHaveBeenCalledTimes(0);
-      testComponent.nzDropDownButtonComponent.onVisibleChange(true);
+      // @ts-ignore
+      testComponent.nzDropDownButtonComponent.nzMenuDropdownService.menuOpen$.next(true);
       fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
+      flush();
       expect(testComponent.visibleChange).toHaveBeenCalledTimes(1);
-      testComponent.nzDropDownButtonComponent.onVisibleChange(false);
-      fixture.detectChanges();
-      expect(testComponent.visibleChange).toHaveBeenCalledTimes(2);
-      testComponent.visible = true;
-      testComponent.nzDropDownButtonComponent.onVisibleChange(false);
-      fixture.detectChanges();
-      expect(testComponent.visibleChange).toHaveBeenCalledTimes(2);
-    });
+    }));
     it('should placement work', () => {
-      const placementArray = [ 'bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight' ];
+      const placementArray = ['bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight'];
       testComponent.visible = true;
       placementArray.forEach(placement => {
         testComponent.placement = placement;
@@ -313,16 +330,17 @@ describe('dropdown', () => {
       const nestedCallback = jasmine.createSpy('nested callback');
       const submenu = testComponent.nzSubMenuComponent;
       submenu.nzOpen = true;
-      submenu.handleOpenEvent(false);
-      testComponent.nzDropDownButtonComponent.$subOpen.subscribe(nestedCallback);
+      submenu.nzSubmenuService.open$.next(false);
+      // @ts-ignore
+      testComponent.nzDropDownButtonComponent.nzMenuDropdownService.menuOpen$.subscribe(nestedCallback);
       fixture.detectChanges();
       expect(nestedCallback).toHaveBeenCalledWith(false);
       expect(nestedCallback).toHaveBeenCalledTimes(1);
     });
   });
   describe('nz-dropdown-service', () => {
-    let fixture;
-    let testComponent;
+    let fixture: ComponentFixture<NzTestDropdownContextmenuComponent>;
+    let testComponent: NzTestDropdownContextmenuComponent;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestDropdownContextmenuComponent);
       testComponent = fixture.debugElement.componentInstance;
@@ -332,11 +350,10 @@ describe('dropdown', () => {
       testComponent.nzDropdownService.create(fakeEvent, testComponent.template);
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).not.toBe('');
-      const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
       // https://github.com/angular/material2/pull/12119
       // TODO: fix
       // expect(window.getComputedStyle(overlayPane, null).top).toBe(`${300 - overlayContainerElement.getBoundingClientRect().top}px`);
-      testComponent.nzDropdownService.close();
+      testComponent.nzDropdownService.dispose();
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toBe('');
     });
@@ -374,27 +391,25 @@ describe('dropdown', () => {
       testComponent.nzDropdownService.create(fakeEvent, testComponent.template);
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).not.toBe('');
-      const backdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop') as HTMLElement;
-      backdrop.click();
+      document.body.click();
       tick(500);
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toBe('');
     }));
-    it('should prevent contextmenu after create', fakeAsync(() => {
+    it('should change contextmenu after create', fakeAsync(() => {
       const fakeEvent = createMouseEvent('contextmenu', 100, 100);
       testComponent.nzDropdownService.create(fakeEvent, testComponent.template);
+      fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      const backdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop') as HTMLElement;
       const fakeContextEvent = createMouseEvent('contextmenu', 200, 200);
-      spyOn(fakeContextEvent, 'preventDefault');
-      backdrop.dispatchEvent(fakeContextEvent);
-      tick(500);
+      testComponent.nzDropdownService.create(fakeContextEvent, testComponent.template);
       fixture.detectChanges();
-      expect(fakeContextEvent.preventDefault).toHaveBeenCalled();
-      tick(500);
+      tick(1000);
       fixture.detectChanges();
-      expect(overlayContainerElement.textContent).not.toBe('');
+      // @ts-ignore
+      const overlayElement = testComponent.nzDropdownService.overlayRef.overlayElement;
+      expect(overlayElement.textContent).not.toBe('');
     }));
   });
 });
@@ -402,11 +417,17 @@ describe('dropdown', () => {
 @Component({
   selector: 'nz-test-dropdown',
   template: `
-    <nz-dropdown [(nzVisible)]="visible" [nzClickHide]="clickHide" [nzPlacement]="placement" (nzVisibleChange)="visibleChange($event)" [nzTrigger]="trigger" [nzDisabled]="disabled"
-      [nzOverlayClassName]="overlayClassName" [nzOverlayStyle]="overlayStyle">
-      <a nz-dropdown>
-        Hover me <i nz-icon type="down"></i>
-      </a>
+    <nz-dropdown
+      [(nzVisible)]="visible"
+      [nzClickHide]="clickHide"
+      [nzPlacement]="placement"
+      (nzVisibleChange)="visibleChange($event)"
+      [nzTrigger]="trigger"
+      [nzDisabled]="disabled"
+      [nzOverlayClassName]="overlayClassName"
+      [nzOverlayStyle]="overlayStyle"
+    >
+      <a nz-dropdown> Hover me <i nz-icon type="down"></i> </a>
       <ul nz-menu [nzSelectable]="selectable">
         <li nz-menu-item [nzSelected]="itemSelected">
           <a>1st menu item</a>
@@ -422,8 +443,9 @@ describe('dropdown', () => {
           </ul>
         </li>
       </ul>
-    </nz-dropdown>`,
-  styles  : []
+    </nz-dropdown>
+  `,
+  styles: []
 })
 export class NzTestDropdownComponent {
   @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
@@ -444,7 +466,14 @@ export class NzTestDropdownComponent {
 @Component({
   selector: 'nz-test-dropdown-button',
   template: `
-    <nz-dropdown-button (nzClick)="click($event)" [nzVisible]="visible" [nzPlacement]="placement" [nzDisabled]="disabled" [nzTrigger]="'click'" (nzVisibleChange)="visibleChange($event)">
+    <nz-dropdown-button
+      (nzClick)="click($event)"
+      [nzVisible]="visible"
+      [nzPlacement]="placement"
+      [nzDisabled]="disabled"
+      [nzTrigger]="'click'"
+      (nzVisibleChange)="visibleChange($event)"
+    >
       DropDown
       <ul nz-menu>
         <li nz-menu-item>1st menu item</li>
@@ -457,8 +486,9 @@ export class NzTestDropdownComponent {
           </ul>
         </li>
       </ul>
-    </nz-dropdown-button>`,
-  styles  : []
+    </nz-dropdown-button>
+  `,
+  styles: []
 })
 export class NzTestDropdownButtonComponent {
   @ViewChild(NzDropDownButtonComponent) nzDropDownButtonComponent: NzDropDownButtonComponent;
@@ -487,11 +517,11 @@ export class NzTestDropdownButtonComponent {
           <a>3rd menu item</a>
         </li>
       </ul>
-    </nz-dropdown>`,
-  styles  : []
+    </nz-dropdown>
+  `,
+  styles: []
 })
-export class NzTestDropdownWithButtonComponent {
-}
+export class NzTestDropdownWithButtonComponent {}
 
 @Component({
   selector: 'nz-test-dropdown-contextmenu',
@@ -516,11 +546,11 @@ export class NzTestDropdownWithButtonComponent {
           </ul>
         </li>
       </ul>
-    </ng-template>`
+    </ng-template>
+  `
 })
 export class NzTestDropdownContextmenuComponent {
   @ViewChild('template') template: TemplateRef<void>;
 
-  constructor(public nzDropdownService: NzDropdownService) {
-  }
+  constructor(public nzDropdownService: NzDropdownService) {}
 }

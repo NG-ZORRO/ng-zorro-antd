@@ -8,7 +8,18 @@ import { Component } from '@angular/core';
         <a class="head-example"></a>
       </nz-badge>
     </a>
-  `
+  `,
+  styles: [
+    `
+      .head-example {
+        width: 42px;
+        height: 42px;
+        border-radius: 4px;
+        background: #eee;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    `
+  ]
 })
-export class NzDemoBadgeLinkComponent {
-}
+export class NzDemoBadgeLinkComponent {}

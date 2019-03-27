@@ -1,5 +1,4 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { DOCUMENT } from '@angular/common';
 import {
   forwardRef,
   AfterViewInit,
@@ -8,7 +7,6 @@ import {
   Component,
   ElementRef,
   HostListener,
-  Inject,
   Input,
   OnChanges,
   Renderer2,
@@ -21,21 +19,20 @@ import { Subject } from 'rxjs';
 import { InputBoolean } from '../core/util/convert';
 
 @Component({
-  selector           : '[nz-radio]',
+  selector: '[nz-radio]',
   preserveWhitespaces: false,
-  templateUrl        : './nz-radio.component.html',
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  providers          : [
+  templateUrl: './nz-radio.component.html',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
     {
-      provide    : NG_VALUE_ACCESSOR,
+      provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzRadioComponent),
-      multi      : true
+      multi: true
     }
   ],
-  host               : {
-    '[class.ant-radio-wrapper]'         : 'true',
-    '[class.ant-radio-wrapper-checked]' : 'checked',
+  host: {
+    '[class.ant-radio-wrapper-checked]': 'checked',
     '[class.ant-radio-wrapper-disabled]': 'nzDisabled'
   }
 })
@@ -63,9 +60,11 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     }
   }
 
-  @HostListener('click')
-  onClick(): void {
-    this.focus();
+  @HostListener('click', ['$event'])
+  onClick(event: MouseEvent): void {
+    // Prevent label click triggered twice.
+    event.stopPropagation();
+    event.preventDefault();
     if (!this.nzDisabled && !this.checked) {
       this.select$.next(this);
       if (this.isNgModel) {
@@ -88,7 +87,13 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   }
 
   /* tslint:disable-next-line:no-any */
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Inject(DOCUMENT) private document: any, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    private focusMonitor: FocusMonitor
+  ) {
+    this.renderer.addClass(elementRef.nativeElement, 'ant-radio-wrapper');
   }
 
   setDisabledState(isDisabled: boolean): void {

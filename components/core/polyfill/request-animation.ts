@@ -6,7 +6,7 @@ function requestAnimationFramePolyfill(): typeof requestAnimationFrame {
   return function (callback: FrameRequestCallback): number {
     const currTime = new Date().getTime();
     const timeToCall = Math.max(0, 16 - (currTime - lastTime));
-    const id = window.setTimeout(() => {
+    const id = setTimeout(() => {
       callback(currTime + timeToCall);
     }, timeToCall);
     lastTime = currTime + timeToCall;
@@ -16,7 +16,7 @@ function requestAnimationFramePolyfill(): typeof requestAnimationFrame {
 
 function getRequestAnimationFrame(): typeof requestAnimationFrame {
   if (typeof window === 'undefined') {
-    return () => null;
+    return () => 0;
   }
   if (window.requestAnimationFrame) {
     // https://github.com/vuejs/vue/issues/4465
@@ -26,6 +26,7 @@ function getRequestAnimationFrame(): typeof requestAnimationFrame {
   const prefix = availablePrefixs.filter(key => `${key}RequestAnimationFrame` in window)[ 0 ];
 
   return prefix
+    // @ts-ignore
     ? window[ `${prefix}RequestAnimationFrame` ]
     : requestAnimationFramePolyfill();
 }
@@ -45,6 +46,7 @@ export function cancelRequestAnimationFrame(id: number): any {
     (
       (window as any)[ `${prefix}CancelAnimationFrame` ] ||
       (window as any)[ `${prefix}CancelRequestAnimationFrame` ]
+      // @ts-ignore
     ).call(this, id) : clearTimeout(id);
 }
 

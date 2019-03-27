@@ -27,9 +27,10 @@ import { Component } from '@angular/core';
     <nz-button-group>
       <button nz-button nzType="primary"><i nz-icon type="cloud"></i></button>
       <button nz-button nzType="primary"><i nz-icon type="cloud-download"></i></button>
-    </nz-button-group>`,
-  styles  : [
-      `
+    </nz-button-group>
+  `,
+  styles: [
+    `
       h4 {
         margin: 16px 0;
         font-size: 14px;
@@ -52,5 +53,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoButtonButtonGroupComponent {
-}
+export class NzDemoButtonButtonGroupComponent {}

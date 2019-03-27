@@ -2,11 +2,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Injector,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
+  Renderer2,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -23,29 +25,36 @@ export interface BreadcrumbOption {
 }
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-breadcrumb',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-breadcrumb',
   preserveWhitespaces: false,
-  templateUrl        : './nz-breadcrumb.component.html',
-  host               : {
-    '[class.ant-breadcrumb]': 'true'
-  },
-  styles             : [ `
-    nz-breadcrumb {
-      display: block;
-    }
-  ` ]
+  templateUrl: './nz-breadcrumb.component.html',
+  styles: [
+    `
+      nz-breadcrumb {
+        display: block;
+      }
+    `
+  ]
 })
 export class NzBreadCrumbComponent implements OnInit, OnDestroy {
   @Input() nzAutoGenerate = false;
   @Input() nzSeparator: string | TemplateRef<void> = '/';
 
-  breadcrumbs: BreadcrumbOption[] = [];
+  breadcrumbs: BreadcrumbOption[] | undefined = [];
 
   private destroy$ = new Subject<void>();
 
-  constructor(private injector: Injector, private ngZone: NgZone, private cd: ChangeDetectorRef) {}
+  constructor(
+    private injector: Injector,
+    private ngZone: NgZone,
+    private cd: ChangeDetectorRef,
+    elementRef: ElementRef,
+    renderer: Renderer2
+  ) {
+    renderer.addClass(elementRef.nativeElement, 'ant-breadcrumb');
+  }
 
   ngOnInit(): void {
     if (this.nzAutoGenerate) {
@@ -68,10 +77,21 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
 
   navigate(url: string, e: MouseEvent): void {
     e.preventDefault();
-    this.ngZone.run(() => this.injector.get(Router).navigateByUrl(url).then()).then();
+    this.ngZone
+      .run(() =>
+        this.injector
+          .get(Router)
+          .navigateByUrl(url)
+          .then()
+      )
+      .then();
   }
 
-  private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: BreadcrumbOption[] = []): BreadcrumbOption[] {
+  private getBreadcrumbs(
+    route: ActivatedRoute,
+    url: string = '',
+    breadcrumbs: BreadcrumbOption[] = []
+  ): BreadcrumbOption[] | undefined {
     const children: ActivatedRoute[] = route.children;
     // If there's no sub root, then stop the recurse and returns the generated breadcrumbs.
     if (children.length === 0) {
@@ -86,9 +106,9 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
         // If have data, go to generate a breadcrumb for it.
         if (child.snapshot.data.hasOwnProperty(NZ_ROUTE_DATA_BREADCRUMB)) {
           const breadcrumb: BreadcrumbOption = {
-            label : child.snapshot.data[ NZ_ROUTE_DATA_BREADCRUMB ] || 'Breadcrumb',
+            label: child.snapshot.data[NZ_ROUTE_DATA_BREADCRUMB] || 'Breadcrumb',
             params: child.snapshot.params,
-            url   : nextUrl
+            url: nextUrl
           };
           breadcrumbs.push(breadcrumb);
         }

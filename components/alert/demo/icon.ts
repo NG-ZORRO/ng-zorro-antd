@@ -11,28 +11,27 @@ import { Component } from '@angular/core';
       nzType="success"
       nzMessage="Success Tips"
       nzDescription="Detailed description and advices about successful copywriting."
-      nzShowIcon>
+      nzShowIcon
+    >
     </nz-alert>
     <nz-alert
       nzType="info"
       nzMessage="Informational Notes"
       nzDescription="Additional description and informations about copywriting."
-      nzShowIcon>
+      nzShowIcon
+    >
     </nz-alert>
     <nz-alert
       nzType="warning"
       nzMessage="Warning"
       nzDescription="This is a warning notice about copywriting."
-      nzShowIcon>
+      nzShowIcon
+    >
     </nz-alert>
-    <nz-alert
-      nzType="error"
-      nzMessage="Error"
-      nzDescription="This is an error message about copywriting."
-      nzShowIcon>
+    <nz-alert nzType="error" nzMessage="Error" nzDescription="This is an error message about copywriting." nzShowIcon>
     </nz-alert>
   `,
-  styles  : [
+  styles: [
     `
       nz-alert {
         margin-bottom: 16px;
@@ -40,5 +39,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoAlertIconComponent {
-}
+export class NzDemoAlertIconComponent {}

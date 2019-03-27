@@ -1,25 +1,25 @@
 <div *ngFor="let file of items" class="ant-upload-list-item ant-upload-list-item-{{file.status}}" @itemState>
   <ng-template #icon>
-    <ng-container *ngIf="listType === 'picture' || listType === 'picture-card'; else defIcon">
-      <ng-container *ngIf="file.status === 'uploading' || (!file.thumbUrl && !file.url); else thumbIcon">
-        <div *ngIf="listType === 'picture-card'" class="ant-upload-list-item-uploading-text">{{ locale.uploading }}</div>
-        <i *ngIf="listType !== 'picture-card'" class="anticon anticon-picture ant-upload-list-item-thumbnail"></i>
-      </ng-container>
+    <ng-container *ngIf="showPic; else noPicTpl">
+      <div *ngIf="listType === 'picture-card' && file.status === 'uploading'; else thumbUrlCheck" class="ant-upload-list-item-uploading-text">{{ locale.uploading }}</div>
     </ng-container>
-    <ng-template #defIcon>
-      <i nz-icon [type]="file.status === 'uploading' ? 'loading' : 'paper-clip'"></i>
+    <ng-template #thumbUrlCheck>
+      <i *ngIf="!file.thumbUrl && !file.url; else thumbTpl"
+        class="ant-upload-list-item-thumbnail" nz-icon type="picture" theme="twotone"></i>
     </ng-template>
-    <ng-template #thumbIcon>
+    <ng-template #thumbTpl>
       <a class="ant-upload-list-item-thumbnail" target="_blank" rel="noopener noreferrer"
         [href]="file.thumbUrl || file.url"
         (click)="handlePreview(file, $event)">
-        <img [src]="file.thumbUrl || file.url" [attr.alt]="file.name" />
+        <img *ngIf="isImageUrl(file); else noThumbTpl" [src]="file.thumbUrl || file.url" [attr.alt]="file.name" />
       </a>
     </ng-template>
+    <ng-template #noThumbTpl><i class="ant-upload-list-item-icon" nz-icon type="file" theme="twotone"></i></ng-template>
+    <ng-template #noPicTpl><i nz-icon [type]="file.status === 'uploading' ? 'loading' : 'paper-clip'"></i></ng-template>
   </ng-template>
   <ng-template #preview>
     <ng-container *ngIf="file.url; else prevText">
-      <a [href]="file.thumbUrl || file.url" target="_blank" rel="noopener noreferrer"
+      <a [href]="file.thumbUrl || file.url" target="_blank" rel="noopener noreferrer" [attr.download]="file.linkProps && file.linkProps.download"
         (click)="handlePreview(file, $event)" class="ant-upload-list-item-name" title="{{ file.name }}">{{ file.name }}</a>
     </ng-container>
     <ng-template #prevText>
@@ -27,28 +27,26 @@
     </ng-template>
   </ng-template>
   <div class="ant-upload-list-item-info">
-    <nz-tooltip *ngIf="file.status === 'error'" [nzTitle]="file.message">
-        <span nz-tooltip>
-          <ng-template [ngTemplateOutlet]="icon"></ng-template>
-          <ng-template [ngTemplateOutlet]="preview"></ng-template>
-        </span>
-    </nz-tooltip>
+    <span *ngIf="file.status === 'error'" nz-tooltip [nzTitle]="file.message">
+      <ng-template [ngTemplateOutlet]="icon"></ng-template>
+      <ng-template [ngTemplateOutlet]="preview"></ng-template>
+    </span>
     <span *ngIf="file.status !== 'error'">
-        <ng-template [ngTemplateOutlet]="icon"></ng-template>
-        <ng-template [ngTemplateOutlet]="preview"></ng-template>
-      </span>
+      <ng-template [ngTemplateOutlet]="icon"></ng-template>
+      <ng-template [ngTemplateOutlet]="preview"></ng-template>
+    </span>
   </div>
   <ng-container *ngIf="listType === 'picture-card' && file.status !== 'uploading'; else close">
-      <span class="ant-upload-list-item-actions">
-        <a *ngIf="icons.showPreviewIcon" [href]="file.thumbUrl || file.url"
-          target="_blank" rel="noopener noreferrer"
-          title="{{ locale.previewFile }}"
-          [ngStyle]="!(file.url || file.thumbUrl) && {'opacity': .5, 'pointer-events': 'none'}"
-          (click)="handlePreview(file, $event)">
-            <i nz-icon type="eye-o"></i>
-        </a>
-        <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" class="anticon anticon-delete" title="{{ locale.removeFile }}"></i>
-      </span>
+    <span class="ant-upload-list-item-actions">
+      <a *ngIf="showPreview(file)" [href]="file.thumbUrl || file.url"
+        target="_blank" rel="noopener noreferrer"
+        title="{{ locale.previewFile }}"
+        [ngStyle]="!(file.url || file.thumbUrl) && {'opacity': .5, 'pointer-events': 'none'}"
+        (click)="handlePreview(file, $event)">
+          <i nz-icon type="eye-o"></i>
+      </a>
+      <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" class="anticon anticon-delete" title="{{ locale.removeFile }}"></i>
+    </span>
   </ng-container>
   <ng-template #close>
     <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" nz-icon type="close" title="{{ locale.removeFile }}"></i>

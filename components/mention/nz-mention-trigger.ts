@@ -13,17 +13,15 @@ export const NZ_MENTION_TRIGGER_ACCESSOR: ExistingProvider = {
   selector: 'input[nzMentionTrigger], textarea[nzMentionTrigger]',
   providers: [NZ_MENTION_TRIGGER_ACCESSOR],
   host: {
-    'autocomplete': 'off',
-    '(focusin)'   : 'onFocusin.emit()',
-    '(blur)'      : 'onBlur.emit()',
-    '(input)'     : 'onInput.emit($event)',
-    '(keydown)'   : 'onKeydown.emit($event)',
-    '(click)'     : 'onClick.emit($event)'
+    autocomplete: 'off',
+    '(focusin)': 'onFocusin.emit()',
+    '(blur)': 'onBlur.emit()',
+    '(input)': 'onInput.emit($event)',
+    '(keydown)': 'onKeydown.emit($event)',
+    '(click)': 'onClick.emit($event)'
   }
 })
-
 export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestroy {
-
   onChange: (value: string) => void;
   onTouched: () => void;
 
@@ -34,8 +32,7 @@ export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestro
   readonly onClick: EventEmitter<MouseEvent> = new EventEmitter();
   value: string;
 
-  constructor(public el: ElementRef) {
-  }
+  constructor(public el: ElementRef) {}
 
   ngOnDestroy(): void {
     this.completeEvents();
@@ -84,5 +81,4 @@ export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestro
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
-
 }

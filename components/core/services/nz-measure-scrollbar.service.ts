@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
+import { IndexableObject } from '../types/indexable';
 import { isNotNil } from '../util/check';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { isNotNil } from '../util/check';
 })
 export class NzMeasureScrollbarService {
   private _scrollbarWidth: number;
-  private scrollbarMeasure = {
+  private scrollbarMeasure: IndexableObject = {
     position: 'absolute',
     top     : '-9999px',
     width   : '50px',

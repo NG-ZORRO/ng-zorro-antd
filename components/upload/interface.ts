@@ -1,5 +1,6 @@
 // tslint:disable:no-any prefer-method-signature
 import { Observable, Subscription } from 'rxjs';
+import { IndexableObject } from '../core/types/indexable';
 
 /** 状态 */
 export type UploadFileStatus = 'error' | 'success' | 'done' | 'uploading' | 'removed';
@@ -25,10 +26,10 @@ export interface UploadFile {
   thumbUrl?: string;
   response?: any;
   error?: any;
-  linkProps?: any;
+  linkProps?: { download: string };
   type: string;
 
-  [ key: string ]: any;
+  [key: string]: any;
 }
 
 export interface UploadChangeParam {
@@ -42,6 +43,7 @@ export interface UploadChangeParam {
 export interface ShowUploadListInterface {
   showRemoveIcon?: boolean;
   showPreviewIcon?: boolean;
+  hidePreviewIconInNonImage?: boolean;
 }
 
 export interface ZipButtonOptions {
@@ -72,9 +74,9 @@ export interface UploadFilter {
 export interface UploadXHRArgs {
   action?: string;
   name?: string;
-  headers?: {};
+  headers?: IndexableObject;
   file: UploadFile;
-  data?: {};
+  data?: IndexableObject;
   withCredentials?: boolean;
   onProgress?: (e: any, file: UploadFile) => void;
   onSuccess?: (ret: any, file: UploadFile, xhr: any) => void;

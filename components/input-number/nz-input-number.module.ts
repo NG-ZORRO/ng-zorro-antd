@@ -6,9 +6,8 @@ import { NzIconModule } from '../icon/nz-icon.module';
 import { NzInputNumberComponent } from './nz-input-number.component';
 
 @NgModule({
-  imports     : [ CommonModule, FormsModule, NzIconModule ],
-  declarations: [ NzInputNumberComponent ],
-  exports     : [ NzInputNumberComponent ]
+  imports: [CommonModule, FormsModule, NzIconModule],
+  declarations: [NzInputNumberComponent],
+  exports: [NzInputNumberComponent]
 })
-export class NzInputNumberModule {
-}
+export class NzInputNumberModule {}

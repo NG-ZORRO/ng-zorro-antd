@@ -4,11 +4,11 @@ import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, Observable } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzTransferComponent, NzTransferModule } from './index';
 import { TransferCanMove, TransferItem } from './interface';
 
@@ -24,8 +24,8 @@ describe('transfer', () => {
   let pageObject: TransferPageObject;
   beforeEach(() => {
     injector = TestBed.configureTestingModule({
-      imports     : [ NoopAnimationsModule, NzTransferModule, NzIconModule ],
-      declarations: [ TestTransferComponent, TestTransferCustomRenderComponent, Test996Component ]
+      imports: [NoopAnimationsModule, NzTransferModule, NzIconTestModule],
+      declarations: [TestTransferComponent, TestTransferCustomRenderComponent, Test996Component]
     });
     fixture = TestBed.createComponent(TestTransferComponent);
     dl = fixture.debugElement;
@@ -36,34 +36,38 @@ describe('transfer', () => {
 
   describe('[default]', () => {
     it('should be from left to right', () => {
-      pageObject.expectLeft(LEFTCOUNT)
-      .transfer('right', 0)
-      .expectLeft(LEFTCOUNT - 1)
-      .expectRight(COUNT - LEFTCOUNT + 1);
+      pageObject
+        .expectLeft(LEFTCOUNT)
+        .transfer('right', 0)
+        .expectLeft(LEFTCOUNT - 1)
+        .expectRight(COUNT - LEFTCOUNT + 1);
     });
 
     it('should be from right to left', () => {
-      pageObject.expectRight(COUNT - LEFTCOUNT)
-      .transfer('left', [ 0, 1 ])
-      .expectRight(COUNT - LEFTCOUNT - 2)
-      .expectLeft(LEFTCOUNT + 2);
+      pageObject
+        .expectRight(COUNT - LEFTCOUNT)
+        .transfer('left', [0, 1])
+        .expectRight(COUNT - LEFTCOUNT - 2)
+        .expectLeft(LEFTCOUNT + 2);
     });
 
     it('should be from left to right when via search found items', () => {
-      pageObject.expectLeft(LEFTCOUNT)
-      .search('left', '1')
-      .transfer('right', 0)
-      .expectLeft(LEFTCOUNT - 1)
-      .expectRight(COUNT - LEFTCOUNT + 1);
+      pageObject
+        .expectLeft(LEFTCOUNT)
+        .search('left', '1')
+        .transfer('right', 0)
+        .expectLeft(LEFTCOUNT - 1)
+        .expectRight(COUNT - LEFTCOUNT + 1);
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(0);
     });
 
     it('should be from right to left when via search found items', () => {
-      pageObject.expectRight(COUNT - LEFTCOUNT)
-      .search('right', '2')
-      .transfer('left', [ 0, 1 ])
-      .expectLeft(LEFTCOUNT + 2)
-      .expectRight(COUNT - LEFTCOUNT - 2);
+      pageObject
+        .expectRight(COUNT - LEFTCOUNT)
+        .search('right', '2')
+        .transfer('left', [0, 1])
+        .expectLeft(LEFTCOUNT + 2)
+        .expectRight(COUNT - LEFTCOUNT - 2);
       expect(pageObject.rightList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(DISABLED);
     });
 
@@ -96,7 +100,7 @@ describe('transfer', () => {
     });
 
     it('should be checkbox is disabled toggle select when setting disabled prop', () => {
-      instance.nzDataSource = [ { title: `content`, disabled: true } ];
+      instance.nzDataSource = [{ title: `content`, disabled: true }];
       fixture.detectChanges();
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(0);
       pageObject.checkItem('left', 0);
@@ -107,7 +111,7 @@ describe('transfer', () => {
 
     it('should be checkbox is toggle select via checkbox all in left', () => {
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(0);
-      const btn = (pageObject.leftList.querySelector('.ant-transfer-list-header .ant-checkbox') as HTMLElement);
+      const btn = pageObject.leftList.querySelector('.ant-transfer-list-header .ant-checkbox') as HTMLElement;
       btn.click();
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(LEFTCOUNT);
       btn.click();
@@ -116,11 +120,38 @@ describe('transfer', () => {
 
     it('should be checkbox is toggle select via checkbox all in right', () => {
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(0);
-      const btn = (pageObject.rightList.querySelector('.ant-transfer-list-header .ant-checkbox') as HTMLElement);
+      const btn = pageObject.rightList.querySelector('.ant-transfer-list-header .ant-checkbox') as HTMLElement;
       btn.click();
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(COUNT - LEFTCOUNT - DISABLED);
       btn.click();
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(0);
+    });
+
+    describe('#notFoundContent', () => {
+      it('should be the left and right list have data', () => {
+        instance.nzDataSource = [{ title: `content0`, direction: 'right' }, { title: `content1` }];
+        fixture.detectChanges();
+        expect(pageObject.rightList.querySelector('.ant-transfer-list-body-not-found')).toBeFalsy();
+        expect(pageObject.leftList.querySelector('.ant-transfer-list-body-not-found')).toBeFalsy();
+      });
+      it('should be the right list is no data', () => {
+        instance.nzDataSource = [{ title: `content0` }, { title: `content1` }];
+        fixture.detectChanges();
+        expect(pageObject.rightList.querySelector('.ant-transfer-list-body-not-found')).toBeTruthy();
+        expect(pageObject.leftList.querySelector('.ant-transfer-list-body-not-found')).toBeFalsy();
+      });
+      it('should be the left list is no data', () => {
+        instance.nzDataSource = [{ title: `content0`, direction: 'right' }];
+        fixture.detectChanges();
+        expect(pageObject.rightList.querySelector('.ant-transfer-list-body-not-found')).toBeFalsy();
+        expect(pageObject.leftList.querySelector('.ant-transfer-list-body-not-found')).toBeTruthy();
+      });
+      it('should be the left and right list is no data', () => {
+        instance.nzDataSource = [];
+        fixture.detectChanges();
+        expect(pageObject.rightList.querySelector('.ant-transfer-list-body-not-found')).toBeTruthy();
+        expect(pageObject.leftList.querySelector('.ant-transfer-list-body-not-found')).toBeTruthy();
+      });
     });
 
     describe('#nzDisabled', () => {
@@ -155,15 +186,18 @@ describe('transfer', () => {
 
     it('should be uncheck all when two verification error', () => {
       instance.canMove = (arg: TransferCanMove): Observable<TransferItem[]> => {
-        return of(arg.list).pipe(map(() => {
-          throw new Error('error');
-        }));
+        return of(arg.list).pipe(
+          map(() => {
+            throw new Error('error');
+          })
+        );
       };
       fixture.detectChanges();
-      pageObject.expectLeft(LEFTCOUNT)
-      .transfer('right', [ 0, 1 ])
-      .expectLeft(LEFTCOUNT)
-      .expectRight(COUNT - LEFTCOUNT);
+      pageObject
+        .expectLeft(LEFTCOUNT)
+        .transfer('right', [0, 1])
+        .expectLeft(LEFTCOUNT)
+        .expectRight(COUNT - LEFTCOUNT);
     });
 
     it('should be custom render item', () => {
@@ -182,7 +216,8 @@ describe('transfer', () => {
       tempFixture.detectChanges();
       injector.get(NzI18nService).setLocale(en_US);
       tempFixture.detectChanges();
-      const searchPhText = (tempFixture.debugElement.query(By.css('.ant-transfer-list-search')).nativeElement as HTMLElement).attributes.getNamedItem('placeholder').textContent;
+      const searchPhText = (tempFixture.debugElement.query(By.css('.ant-transfer-list-search'))
+        .nativeElement as HTMLElement).attributes.getNamedItem('placeholder')!.textContent;
       expect(searchPhText).toBe(en_US.Transfer.searchPlaceholder);
     });
   });
@@ -194,10 +229,11 @@ describe('transfer', () => {
       instance = dl.componentInstance;
       pageObject = new TransferPageObject();
       fixture.detectChanges();
-      pageObject.expectLeft(LEFTCOUNT)
-      .transfer('right', 0)
-      .expectLeft(LEFTCOUNT - 1)
-      .expectRight(COUNT - LEFTCOUNT + 1);
+      pageObject
+        .expectLeft(LEFTCOUNT)
+        .transfer('right', 0)
+        .expectLeft(LEFTCOUNT - 1)
+        .expectRight(COUNT - LEFTCOUNT + 1);
     });
     it('should be from left to right when two verification', () => {
       instance.canMove = (arg: TransferCanMove): Observable<TransferItem[]> => {
@@ -207,10 +243,11 @@ describe('transfer', () => {
         return of(arg.list);
       };
       fixture.detectChanges();
-      pageObject.expectLeft(LEFTCOUNT)
-      .transfer('right', [ 0, 1 ])
-      .expectLeft(LEFTCOUNT - 1)
-      .expectRight(COUNT - LEFTCOUNT + 1);
+      pageObject
+        .expectLeft(LEFTCOUNT)
+        .transfer('right', [0, 1])
+        .expectLeft(LEFTCOUNT - 1)
+        .expectRight(COUNT - LEFTCOUNT + 1);
     });
   });
 
@@ -221,16 +258,20 @@ describe('transfer', () => {
       instance = dl.componentInstance;
       pageObject = new TransferPageObject();
       fixture.detectChanges();
-      expect(pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList).not.toContain('ant-checkbox-checked');
+      expect(
+        pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList
+      ).not.toContain('ant-checkbox-checked');
       pageObject.checkItem('right', 1);
-      tick();
+      tick(50);
       fixture.detectChanges();
-      expect(pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList).toContain('ant-checkbox-checked');
+      expect(pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList).toContain(
+        'ant-checkbox-checked'
+      );
     }));
   });
 
   class TransferPageObject {
-    [ key: string ]: any;
+    [key: string]: any;
 
     getEl(cls: string): HTMLElement {
       return dl.query(By.css(cls)).nativeElement as HTMLElement;
@@ -254,7 +295,7 @@ describe('transfer', () => {
 
     transfer(direction: 'left' | 'right', index: number | number[]): this {
       if (!Array.isArray(index)) {
-        index = [ index ];
+        index = [index];
       }
       this.checkItem(direction === 'left' ? 'right' : 'left', index);
       (direction === 'left' ? this.leftBtn : this.rightBtn).click();
@@ -264,11 +305,13 @@ describe('transfer', () => {
 
     checkItem(direction: 'left' | 'right', index: number | number[]): this {
       if (!Array.isArray(index)) {
-        index = [ index ];
+        index = [index];
       }
-      const items = (direction === 'left' ? this.leftList : this.rightList).querySelectorAll('.ant-transfer-list-content-item');
+      const items = (direction === 'left' ? this.leftList : this.rightList).querySelectorAll(
+        '.ant-transfer-list-content-item label'
+      );
       for (const idx of index) {
-        (items[ idx ] as HTMLElement).click();
+        (items[idx] as HTMLElement).click();
         fixture.detectChanges();
       }
       fixture.detectChanges();
@@ -276,7 +319,9 @@ describe('transfer', () => {
     }
 
     search(direction: 'left' | 'right', value: string): this {
-      const ipt = ((direction === 'left' ? this.leftList : this.rightList).querySelector('.ant-transfer-list-search') as HTMLInputElement);
+      const ipt = (direction === 'left' ? this.leftList : this.rightList).querySelector(
+        '.ant-transfer-list-search'
+      ) as HTMLInputElement;
       ipt.value = value;
       ipt.dispatchEvent(new Event('input'));
       fixture.detectChanges();
@@ -296,8 +341,9 @@ describe('transfer', () => {
 });
 
 @Component({
-  template     : `
-    <nz-transfer #comp
+  template: `
+    <nz-transfer
+      #comp
       [nzDataSource]="nzDataSource"
       [nzDisabled]="nzDisabled"
       [nzTitles]="['Source', 'Target']"
@@ -313,26 +359,27 @@ describe('transfer', () => {
       [nzFooter]="footer"
       (nzSearchChange)="search($event)"
       (nzSelectChange)="select($event)"
-      (nzChange)="change($event)">
+      (nzChange)="change($event)"
+    >
       <ng-template #footer>
         <p id="transfer-footer">footer</p>
       </ng-template>
     </nz-transfer>
   `,
-  styleUrls    : [ './style/index.less' ],
+  styleUrls: ['./style/index.less'],
   encapsulation: ViewEncapsulation.None
 })
 class TestTransferComponent implements OnInit {
   @ViewChild('comp') comp: NzTransferComponent;
   nzDataSource: any[] = [];
   nzDisabled = false;
-  nzTitles = [ 'Source', 'Target' ];
-  nzOperations = [ 'to right', 'to left' ];
+  nzTitles = ['Source', 'Target'];
+  nzOperations = ['to right', 'to left'];
   nzItemUnit = 'item';
   nzItemsUnit = 'items';
   nzListStyle = { 'width.px': 300, 'height.px': 300 };
   nzShowSearch = true;
-  nzFilterOption = null;
+  nzFilterOption: null | ((inputValue: string, item: any) => boolean) = null;
   nzSearchPlaceholder = '请输入搜索内容';
   nzNotFoundContent = '列表为空';
 
@@ -344,55 +391,54 @@ class TestTransferComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const ret = [];
+    const ret: Array<{
+      key: string;
+      title: string;
+      description: string;
+      direction: string;
+      icon: string;
+      disabled: boolean;
+    }> = [];
     for (let i = 0; i < COUNT; i++) {
       ret.push({
-        key        : i.toString(),
-        title      : `content${i + 1}`,
+        key: i.toString(),
+        title: `content${i + 1}`,
         description: `description of content${i + 1}`,
-        direction  : i >= LEFTCOUNT ? 'right' : '',
-        icon       : `frown-o`,
-        disabled   : i === 20
+        direction: i >= LEFTCOUNT ? 'right' : '',
+        icon: `frown-o`,
+        disabled: i === 20
       });
     }
     this.nzDataSource = ret;
   }
 
-  search(ret: {}): void {
-  }
+  search(): void {}
 
-  select(ret: {}): void {
-  }
+  select(): void {}
 
-  change(ret: {}): void {
-  }
+  change(): void {}
 }
 
 @Component({
   template: `
-    <nz-transfer #comp
-      nzShowSearch
-      [nzRender]="render"
-      [nzDataSource]="nzDataSource">
-      <ng-template #render let-item>
-        <i nz-icon type="{{item.icon}}"></i> {{ item.title }}
-      </ng-template>
+    <nz-transfer #comp nzShowSearch [nzRender]="render" [nzDataSource]="nzDataSource">
+      <ng-template #render let-item> <i nz-icon type="{{ item.icon }}"></i> {{ item.title }} </ng-template>
     </nz-transfer>
   `
 })
 class TestTransferCustomRenderComponent implements OnInit {
   @ViewChild('comp') comp: NzTransferComponent;
-  nzDataSource: any[] = [];
+  nzDataSource: Array<{ key: string; title: string; description: string; direction: string; icon: string }> = [];
 
   ngOnInit(): void {
-    const ret = [];
+    const ret: Array<{ key: string; title: string; description: string; direction: string; icon: string }> = [];
     for (let i = 0; i < COUNT; i++) {
       ret.push({
-        key        : i.toString(),
-        title      : `content${i + 1}`,
+        key: i.toString(),
+        title: `content${i + 1}`,
         description: `description of content${i + 1}`,
-        direction  : i >= LEFTCOUNT ? 'right' : '',
-        icon       : `frown-o`
+        direction: i >= LEFTCOUNT ? 'right' : '',
+        icon: `frown-o`
       });
     }
     this.nzDataSource = ret;
@@ -400,7 +446,9 @@ class TestTransferCustomRenderComponent implements OnInit {
 }
 
 @Component({
-  template: `<nz-transfer [nzDataSource]="list"></nz-transfer>`
+  template: `
+    <nz-transfer [nzDataSource]="list"></nz-transfer>
+  `
 })
 class Test996Component implements OnInit {
   // tslint:disable-next-line:no-any
@@ -409,12 +457,12 @@ class Test996Component implements OnInit {
   ngOnInit(): void {
     for (let i = 0; i < 2; i++) {
       this.list.push({
-        key     : i.toString(),
-        title   : `content${i + 1}`,
+        key: i.toString(),
+        title: `content${i + 1}`,
         disabled: i % 3 < 1
       });
     }
 
-    [ 0, 1 ].forEach(idx => this.list[ idx ].direction = 'right');
+    [0, 1].forEach(idx => (this.list[idx].direction = 'right'));
   }
 }

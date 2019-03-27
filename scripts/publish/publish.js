@@ -43,8 +43,9 @@ function changeVersion() {
   log.info('Updating version number...');
 
   const packageJsonPath = path.join(__dirname, '../../components/package.json');
-  const appComponentPath = path.join(__dirname, '../site/_site/src/app/app.component.ts');
-  const codeBoxPath = path.join(__dirname, '../site/_site/src/app/share/nz-codebox/nz-codebox.component.ts');
+  const appComponentPath = path.join(__dirname, '../site/_site/doc/app/app.component.ts');
+  const codeBoxPath = path.join(__dirname, '../site/_site/doc/app/share/nz-codebox/nz-codebox.component.ts');
+  const zorroVersionPath = path.join(__dirname, '../../components/version.ts');
 
   const packageJson = fs.readJsonSync(packageJsonPath);
   const currentVersion = packageJson.version;
@@ -109,7 +110,11 @@ function changeVersion() {
       .replace(/currentVersion = '.+';/g, `currentVersion = '${version}';`)
   );
   fs.writeFileSync(codeBoxPath,
-    fs.readFileSync(codeBoxPath, 'utf-8').replace(/'ng-zorro-antd' +: '.+'/g, `'ng-zorro-antd'                    : '^${version}'`)
+    fs.readFileSync(codeBoxPath, 'utf-8').replace(/'ng-zorro-antd'\s*: '.+'/g, `'ng-zorro-antd': '^${version}'`)
+  );
+  fs.writeFileSync(zorroVersionPath,
+    fs.readFileSync(zorroVersionPath, 'utf-8')
+      .replace(/Version\('.+'\);/g, `Version('${version}');`)
   );
   log.success('Version updated!');
 }

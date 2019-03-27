@@ -1,9 +1,8 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector     : 'nz-demo-badge-change',
-  encapsulation: ViewEncapsulation.None,
-  template     : `
+  selector: 'nz-demo-badge-change',
+  template: `
     <div>
       <nz-badge [nzCount]="count">
         <a class="head-example"></a>
@@ -21,23 +20,24 @@ import { Component, ViewEncapsulation } from '@angular/core';
       <nz-switch [(ngModel)]="dot"></nz-switch>
     </div>
   `,
-  styles       : [ `
-    .ant-badge:not(.ant-badge-status) {
-      margin-right: 20px;
-    }
+  styles: [
+    `
+      nz-badge {
+        margin-right: 20px;
+      }
 
-    .head-example {
-      width: 42px;
-      height: 42px;
-      border-radius: 4px;
-      background: #eee;
-      display: inline-block;
-      vertical-align: middle;
-    }
-  ` ]
+      .head-example {
+        width: 42px;
+        height: 42px;
+        border-radius: 4px;
+        background: #eee;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    `
+  ]
 })
 export class NzDemoBadgeChangeComponent {
-
   count = 5;
   dot = true;
 

@@ -11,11 +11,10 @@ export default {
   Calendar,
   Table: {
     filterTitle: 'Filter',
-    filterConfirm: 'Potrdi',
-    filterReset: 'Ponastavi',
-    emptyText: 'Ni podataka',
-    selectAll: 'Izberi trenutno stran',
-    selectInvert: 'Obrni vrstni red izbora',
+    filterConfirm: 'Filtriraj',
+    filterReset: 'Pobriši filter',
+    selectAll: 'Izberi vse na trenutni strani',
+    selectInvert: 'Obrni izbor na trenutni strani',
   },
   Modal: {
     okText: 'V redu',
@@ -23,22 +22,21 @@ export default {
     justOkText: 'V redu',
   },
   Popconfirm: {
-    okText: 'V redu',
+    okText: 'v redu',
     cancelText: 'Prekliči',
   },
   Transfer: {
-    notFoundContent: 'Ni zadetkov',
     searchPlaceholder: 'Išči tukaj',
-    itemUnit: 'vnos',
-    itemsUnit: 'vnosi',
-  },
-  Select: {
-    notFoundContent: 'Ni zadetkov',
+    itemUnit: 'Objekt',
+    itemsUnit: 'Objektov',
   },
   Upload: {
     uploading: 'Nalaganje...',
     removeFile: 'Odstrani datoteko',
     uploadError: 'Napaka pri nalaganju',
     previewFile: 'Predogled datoteke',
+  },
+  Empty: {
+    description: 'Ni podatkov',
   },
 };

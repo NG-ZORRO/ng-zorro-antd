@@ -1,26 +1,29 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { NzI18nService } from '../../../i18n/nz-i18n.service';
+import { DateHelperService } from '../../../i18n/date-helper.service';
 import { CandyDate } from '../candy-date';
 
 const MAX_ROW = 4;
 const MAX_COL = 3;
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // tslint:disable-next-line:component-selector
   selector: 'month-table',
   templateUrl: 'month-table.component.html'
 })
 
 export class MonthTableComponent implements OnInit, OnChanges {
   @Input() value: CandyDate;
-  @Output() valueChange = new EventEmitter<CandyDate>();
+  @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   @Input() disabledDate: (date: Date) => boolean;
 
   prefixCls: string = 'ant-calendar-month-panel';
   panelMonths: PanelMonthData[][];
 
-  constructor(private i18n: NzI18nService) { }
+  constructor(private dateHelper: DateHelperService) { }
 
   ngOnInit(): void { }
 
@@ -30,7 +33,7 @@ export class MonthTableComponent implements OnInit, OnChanges {
     }
   }
 
-  trackPanelMonth(index: number, monthData: PanelMonthData): number {
+  trackPanelMonth(_index: number, monthData: PanelMonthData): number {
     return monthData.month;
   }
 
@@ -51,9 +54,9 @@ export class MonthTableComponent implements OnInit, OnChanges {
       for (let colIndex = 0; colIndex < MAX_COL; colIndex ++) {
         const month = this.value.setMonth(monthValue);
         const disabled = this.disabledDate ? this.disabledDate(this.value.setMonth(monthValue).nativeDate) : false;
-        const content = this.i18n.formatDateCompatible(month.nativeDate, 'MMM');
+        const content = this.dateHelper.format(month.nativeDate, 'MMM');
 
-        const cell = months[rowIndex][colIndex] = {
+        const cell: PanelMonthData = months[rowIndex][colIndex] = {
           disabled,
           content,
           month: monthValue,
@@ -87,6 +90,6 @@ export interface PanelMonthData {
   content: string;
   month: number;
   title: string;
-  classMap: object;
-  onClick(): void;
+  classMap: object | null;
+  onClick: VoidFunction | null;
 }

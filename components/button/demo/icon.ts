@@ -7,13 +7,13 @@ import { Component } from '@angular/core';
     <button nz-button nzType="primary"><i nz-icon type="search"></i>Search</button>
     <button nz-button nzType="default" nzShape="circle"><i nz-icon type="search"></i></button>
     <button nz-button nzType="default"><i nz-icon type="search"></i>Search</button>
-    <br>
+    <br />
     <button nz-button nzType="default" nzShape="circle"><i nz-icon type="search"></i></button>
     <button nz-button nzType="default"><i nz-icon type="search"></i>Search</button>
     <button nz-button nzType="dashed" nzShape="circle"><i nz-icon type="search"></i></button>
     <button nz-button nzType="dashed"><i nz-icon type="search"></i>Search</button>
   `,
-  styles  : [
+  styles: [
     `
       [nz-button] {
         margin-right: 8px;
@@ -22,5 +22,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoButtonIconComponent {
-}
+export class NzDemoButtonIconComponent {}

@@ -7,10 +7,10 @@ title:
 
 ## zh-CN
 
-自定义各个面板的背景色、圆角和边距。
+自定义各个面板的背景色、圆角、边距和图标。
 
 ## en-US
 
-Customize the background, border and margin styles for each panel.
+Customize the background, border, margin and icon styles for each panel.
 
 

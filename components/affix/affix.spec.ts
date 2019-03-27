@@ -1,11 +1,5 @@
-import { Component, DebugElement, ViewChild, ViewEncapsulation } from '@angular/core';
-import {
-  discardPeriodicTasks,
-  fakeAsync,
-  tick,
-  ComponentFixture,
-  TestBed
-} from '@angular/core/testing';
+import { Component, DebugElement, ViewChild } from '@angular/core';
+import { discardPeriodicTasks, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
@@ -148,9 +142,46 @@ describe('affix', () => {
     }));
   });
 
+  describe('resize', () => {
+    it('should be reset placeholder size', fakeAsync(() => {
+      const offsetTop = 150;
+      context.newOffset = offsetTop;
+      setupInitialState({ offsetTop: offsetTop + 1 });
+      const offsetWidthSpy = spyOnProperty(componentObject.elementRef(), 'offsetWidth', 'get');
+      emitScroll(window, 2);
+      expect(componentObject.elementRef().style.width).toBe(`${width}px`);
+      componentObject.offsetYTo(componentObject.elementRef(), offsetTop + 2);
+      tick(20);
+      fixture.detectChanges();
+      offsetWidthSpy.and.returnValue(100);
+      componentObject.emitEvent(window, new Event('resize'));
+      tick(20);
+      fixture.detectChanges();
+
+      expect(componentObject.elementRef().style.width).toBe(`100px`);
+
+      discardPeriodicTasks();
+    }));
+
+    it('should be reset placeholder size when container becomes greater', fakeAsync(() => {
+      const target = componentObject.target();
+      const clientHeightSpy = spyOnProperty(target, 'clientHeight', 'get');
+      context.fakeTarget = target;
+      context.newOffsetBottom = 10;
+      clientHeightSpy.and.returnValue(10);
+      setupInitialState();
+      emitScroll(target, 11);
+      clientHeightSpy.and.returnValue(100);
+      componentObject.emitEvent(target, new Event('resize'));
+      tick(20);
+      fixture.detectChanges();
+      expect(componentObject.elementRef().style.width).toBe(`${componentObject.elementRef().offsetWidth}px`);
+      discardPeriodicTasks();
+    }));
+  });
+
   describe('[nzOffsetTop]', () => {
     const offsetTop = 150;
-    const componentOffset = 160;
 
     beforeEach(() => {
       context.newOffset = offsetTop;
@@ -204,7 +235,7 @@ describe('affix', () => {
           setupInitialState();
           emitScroll(target, 5000);
           const wrapEl = componentObject.wrap();
-          expect(+wrapEl.style.bottom.replace('px', '')).toBe(0);
+          expect(+wrapEl.style.bottom!.replace('px', '')).toBe(0);
 
           discardPeriodicTasks();
         }));
@@ -222,7 +253,7 @@ describe('affix', () => {
           setupInitialState();
           emitScroll(target, 0);
           const wrapEl = componentObject.wrap();
-          expect(+wrapEl.style.bottom.replace('px', '')).toBeGreaterThan(0);
+          expect(+wrapEl.style.bottom!.replace('px', '')).toBeGreaterThan(0);
 
           discardPeriodicTasks();
         }));
@@ -233,7 +264,7 @@ describe('affix', () => {
           setupInitialState();
           emitScroll(target, 5000);
           const wrapEl = componentObject.wrap();
-          expect(+wrapEl.style.bottom.replace('px', '')).toBe(0);
+          expect(+wrapEl.style.bottom!.replace('px', '')).toBe(0);
 
           discardPeriodicTasks();
         }));
@@ -302,14 +333,14 @@ describe('affix', () => {
   });
 
   describe('(nzChange)', () => {
-    let changeValue;
+    let changeValue: boolean;
     beforeEach(() => {
-      component.nzChange.subscribe((returnValue) => {
+      component.nzChange.subscribe((returnValue: boolean) => {
         changeValue = returnValue;
       });
     });
 
-    it(`emit true when is affixed`, fakeAsync((done) => {
+    it(`emit true when is affixed`, fakeAsync(() => {
       setupInitialState();
       emitScroll(window, defaultOffsetTop + startOffset + 1);
 
@@ -318,7 +349,7 @@ describe('affix', () => {
       discardPeriodicTasks();
     }));
 
-    it(`emit false when is unaffixed`, fakeAsync((done) => {
+    it(`emit false when is unaffixed`, fakeAsync(() => {
       setupInitialState();
       emitScroll(window, defaultOffsetTop + startOffset + 1);
       emitScroll(window, defaultOffsetTop + startOffset - 1);
@@ -329,24 +360,6 @@ describe('affix', () => {
     }));
   });
 
-  it('should adjust placeholder width when resize', fakeAsync(() => {
-    const offsetTop = 150;
-    context.newOffset = offsetTop;
-    setupInitialState({ offsetTop: offsetTop + 1 });
-    emitScroll(window, 2);
-    expect(componentObject.elementRef().style.width).toBe(`${width}px`);
-    componentObject.offsetYTo(componentObject.elementRef(), offsetTop + 2);
-    tick(20);
-    fixture.detectChanges();
-    componentObject.emitEvent(window, new Event('resize'));
-    tick(20);
-    fixture.detectChanges();
-
-    expect(componentObject.elementRef().style.width).toBe(``);
-
-    discardPeriodicTasks();
-  }));
-
   class NzAffixPageObject {
     offsets: { [key: string]: Offset };
     scrolls: { [key: string]: Scroll };
@@ -354,8 +367,8 @@ describe('affix', () => {
     constructor() {
       spyOn(component, 'getOffset').and.callFake(this.getOffset.bind(this));
       spyOn(scrollService, 'getScroll').and.callFake(this.getScroll.bind(this));
-      this.offsets = { 'undefined': { top: 10, left: 0, height: 0, width: 0 } };
-      this.scrolls = { 'undefined': { top: 10, left: 0 } };
+      this.offsets = { undefined: { top: 10, left: 0, height: 0, width: 0 } };
+      this.scrolls = { undefined: { top: 10, left: 0 } };
     }
 
     getScroll(el?: Element | Window, top: boolean = true): number {
@@ -373,7 +386,7 @@ describe('affix', () => {
 
     emitScroll(el: Element | Window, top: number, left: number = 0): void {
       this.scrolls[this.getKey(el)] = { top, left };
-      this.emitEvent((el || window), scrollEvent);
+      this.emitEvent(el || window, scrollEvent);
     }
 
     offsetTo(el: Element, offset: Offset): void {
@@ -386,15 +399,12 @@ describe('affix', () => {
     }
 
     offsetYTo(el: Element, offsetTop: number): void {
-      this.offsetTo(
-        el,
-        {
-          top: offsetTop,
-          left: 0,
-          height,
-          width
-        }
-      );
+      this.offsetTo(el, {
+        top: offsetTop,
+        left: 0,
+        height,
+        width
+      });
     }
 
     content(): HTMLElement {
@@ -413,7 +423,7 @@ describe('affix', () => {
       return debugElement.query(By.css('#target')).nativeElement;
     }
 
-    private getKey(el: Element | Window): string {
+    private getKey(el?: Element | Window): string {
       let key: string;
       if (el instanceof Window) {
         key = 'window';
@@ -446,8 +456,7 @@ describe('affix-extra', () => {
   let fixture: ComponentFixture<TestAffixComponent>;
   let context: TestAffixComponent;
   let dl: DebugElement;
-  let component: NzAffixComponent;
-  let page: PageObject;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NzAffixModule],
@@ -455,12 +464,13 @@ describe('affix-extra', () => {
     }).compileComponents();
     fixture = TestBed.createComponent(TestAffixComponent);
     context = fixture.componentInstance;
-    component = context.nzAffixComponent;
     dl = fixture.debugElement;
-    page = new PageObject();
   });
   it('#getOffset', () => {
-    const ret = fixture.componentInstance.nzAffixComponent.getOffset(fixture.debugElement.query(By.css('#affix')).nativeElement, window);
+    const ret = fixture.componentInstance.nzAffixComponent.getOffset(
+      fixture.debugElement.query(By.css('#affix')).nativeElement,
+      window
+    );
     expect(ret).not.toBeUndefined();
   });
   it('with window when scrolled below the bottom offset', fakeAsync(() => {
@@ -481,29 +491,23 @@ describe('affix-extra', () => {
     window.dispatchEvent(new Event('scroll'));
     tick(30);
     fixture.detectChanges();
-    const ret = +(el.querySelector('.ant-affix') as HTMLElement).style.bottom.replace('px', '');
+    const ret = +(el.querySelector('.ant-affix') as HTMLElement).style.bottom!.replace('px', '');
     expect(ret).toBe(value);
   }));
-  class PageObject {
-
-  }
 });
 
 @Component({
   template: `
-  <nz-affix id="affix"
-    [nzTarget]="fakeTarget"
-    [nzOffsetTop]="newOffset"
-    [nzOffsetBottom]="newOffsetBottom">
-    <button id="content">Affix Button</button>
-  </nz-affix>
-  <div id="target"></div>
+    <nz-affix id="affix" [nzTarget]="fakeTarget" [nzOffsetTop]="newOffset" [nzOffsetBottom]="newOffsetBottom">
+      <button id="content">Affix Button</button>
+    </nz-affix>
+    <div id="target"></div>
   `
 })
 class TestAffixComponent {
   @ViewChild(NzAffixComponent)
   nzAffixComponent: NzAffixComponent;
-  fakeTarget: string | Element | Window = null;
+  fakeTarget: string | Element | Window | null = null;
   newOffset: {};
   newOffsetBottom: {};
 }

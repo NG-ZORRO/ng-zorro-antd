@@ -1,7 +1,7 @@
 <div class="ant-notification-notice ant-notification-notice-closable"
-  [ngStyle]="nzMessage.options.nzStyle"
-  [ngClass]="nzMessage.options.nzClass"
-  [@enterLeave]="state"
+  [ngStyle]="nzMessage.options?.nzStyle"
+  [ngClass]="nzMessage.options?.nzClass"
+  [@notificationMotion]="state"
   (mouseenter)="onEnter()"
   (mouseleave)="onLeave()">
   <div *ngIf="!nzMessage.template" class="ant-notification-notice-content">
@@ -18,7 +18,11 @@
       </div>
     </div>
   </div>
-  <ng-template [ngIf]="nzMessage.template" [ngTemplateOutlet]="nzMessage.template" [ngTemplateOutletContext]="{ $implicit: this }"></ng-template>
+  <ng-template
+    [ngIf]="nzMessage.template"
+    [ngTemplateOutlet]="nzMessage.template"
+    [ngTemplateOutletContext]="{ $implicit: this, data: nzMessage.options?.nzData }">
+  </ng-template>
   <a tabindex="0" class="ant-notification-notice-close" (click)="close()">
     <span class="ant-notification-notice-close-x">
       <i nz-icon type="close" class="ant-notification-close-icon"></i>

@@ -20,7 +20,7 @@ import { Component } from '@angular/core';
       </ul>
     </nz-dropdown>
   `,
-  styles  : [
+  styles: [
     `
       [nz-button] {
         margin-right: 8px;
@@ -29,5 +29,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoButtonMultipleComponent {
-}
+export class NzDemoButtonMultipleComponent {}

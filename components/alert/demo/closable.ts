@@ -7,18 +7,20 @@ import { Component } from '@angular/core';
       nzType="warning"
       nzCloseable
       nzMessage="Warning Text Warning Text Warning Text Warning Text Warning Text Warning Text Warning Text"
-      (nzOnClose)="afterClose()">
+      (nzOnClose)="afterClose()"
+    >
     </nz-alert>
     <nz-alert
       nzType="error"
       nzCloseable
       nzMessage="Error Text"
       nzDescription="Error Description Error Description Error Description Error Description Error Description Error Description"
-      (nzOnClose)="afterClose()">
+      (nzOnClose)="afterClose()"
+    >
     </nz-alert>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       nz-alert {
         margin-bottom: 16px;
       }

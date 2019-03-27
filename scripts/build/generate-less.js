@@ -27,15 +27,15 @@ const targetFolder = fs.readdirSync(targetPath);
 let componentsLessContent = '';
 targetFolder.forEach(dir => {
     if (fs.existsSync(`${sourcePath}/${dir}/style/index.less`)) {
-      componentsLessContent += `@import "./${path.join(dir, 'style', 'index.less')}";\n`
+      componentsLessContent += `@import "./${path.posix.join(dir, 'style', 'index.less')}";\n`;
       fs.copySync(`${sourcePath}/${dir}/style`, `${targetPath}/${dir}/style`);
     }
   }
-)
+);
 fs.copySync(path.resolve(sourcePath, 'style'), path.resolve(targetPath, 'style'));
 fs.writeFileSync(`${targetPath}/components.less`, componentsLessContent);
 fs.writeFileSync(`${targetPath}/ng-zorro-antd.less`, fs.readFileSync(`${sourcePath}/ng-zorro-antd.less`));
 
-const lessContent = `@import "${path.join(targetPath, 'ng-zorro-antd.less')}";`;
+const lessContent = `@import "${path.posix.join(targetPath, 'ng-zorro-antd.less')}";`;
 compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.css'), false);
 compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.min.css'), true);

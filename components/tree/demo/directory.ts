@@ -1,9 +1,8 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
 import {
   NzDropdownContextComponent,
   NzDropdownService,
   NzFormatEmitEvent,
-  NzTreeComponent,
   NzTreeNode
 } from 'ng-zorro-antd';
 
@@ -11,15 +10,13 @@ import {
   selector: 'nz-demo-tree-directory',
   template: `
     <nz-tree
-      #treeCom
       [nzData]="nodes"
-      nzMultiple="true"
       (nzClick)="activeNode($event)"
       (nzDblClick)="openFolder($event)">
       <ng-template #contextTemplate>
         <ul nz-menu nzInDropDown>
-          <li nz-menu-item (click)="selectDropdown('file')">新建文件</li>
-          <li nz-menu-item (click)="selectDropdown('folder')">新建文件夹</li>
+          <li nz-menu-item (click)="selectDropdown()">Action 1</li>
+          <li nz-menu-item (click)="selectDropdown()">Action 2</li>
         </ul>
       </ng-template>
       <ng-template #nzTreeTemplate let-node>
@@ -29,7 +26,7 @@ import {
             <span class="folder-name">{{node.title}}</span>
             <span class="folder-desc">created by {{node?.origin?.author | lowercase}}</span>
           </span>
-          <span *ngIf="node.isLeaf">
+          <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event,contextTemplate)">
             <i nz-icon type="file"></i>
             <span class="file-name">{{node.title}}</span>
             <span class="file-desc">modified by {{node?.origin?.author | lowercase}}</span>
@@ -78,7 +75,6 @@ import {
 })
 
 export class NzDemoTreeDirectoryComponent {
-  @ViewChild('treeCom') treeCom: NzTreeComponent;
   dropdown: NzDropdownContextComponent;
   // actived node
   activedNode: NzTreeNode;
@@ -101,31 +97,27 @@ export class NzDemoTreeDirectoryComponent {
     ]
   } ];
 
-  openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
+  openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
     // do something if u want
     if (data instanceof NzTreeNode) {
       data.isExpanded = !data.isExpanded;
     } else {
-      data.node.isExpanded = !data.node.isExpanded;
+      const node = data.node;
+      if (node) {
+        node.isExpanded = !node.isExpanded;
+      }
     }
   }
 
   activeNode(data: NzFormatEmitEvent): void {
-    if (this.activedNode) {
-      // delete selectedNodeList(u can do anything u want)
-      this.treeCom.nzTreeService.setSelectedNodeList(this.activedNode);
-    }
-    data.node.isSelected = true;
-    this.activedNode = data.node;
-    // add selectedNodeList
-    this.treeCom.nzTreeService.setSelectedNodeList(this.activedNode);
+    this.activedNode = data.node!;
   }
 
   contextMenu($event: MouseEvent, template: TemplateRef<void>): void {
     this.dropdown = this.nzDropdownService.create($event, template);
   }
 
-  selectDropdown(type: string): void {
+  selectDropdown(): void {
     this.dropdown.close();
     // do something
   }

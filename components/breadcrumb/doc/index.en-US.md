@@ -17,10 +17,10 @@ A breadcrumb displays the current location within a hierarchy. It allows going b
 
 ### nz-breadcrumb
 
-| Property | Description | Type | Optional | Default |
-| -------- | ----------- | ---- | -------- | ------- |
-| `[nzSeparator]` | Custom separator | string丨`TemplateRef<void>` |  | `/` |
-| `[nzAutoGenerate]` | Auto generate breadcrumb | boolean |  | `false` |
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| `[nzSeparator]` | Custom separator | `string｜TemplateRef<void>` | `'/'` |
+| `[nzAutoGenerate]` | Auto generate breadcrumb | `boolean` | `false` |
 
 Using `[nzAutoGenerate]` by configuring `data` like this:
 

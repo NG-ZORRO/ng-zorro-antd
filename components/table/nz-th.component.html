@@ -1,7 +1,6 @@
 <ng-template #checkboxTemplate>
-  <label
+  <label nz-checkbox
     [class.ant-table-selection-select-all-custom]="nzShowRowSelection"
-    nz-checkbox
     [(ngModel)]="nzChecked"
     [nzDisabled]="nzDisabled"
     [nzIndeterminate]="nzIndeterminate"
@@ -39,26 +38,26 @@
       [class.off]="nzSort != 'descend'"></i>
   </div>
 </div>
-<nz-dropdown nzTrigger="click" *ngIf="nzShowFilter" [nzClickHide]="false" [hasFilterButton]="true" (nzVisibleChange)="dropDownVisibleChange($event)">
+<nz-dropdown nzTrigger="click" *ngIf="nzShowFilter" [nzClickHide]="false" nzTableFilter (nzVisibleChange)="dropDownVisibleChange($event)">
   <i nz-icon type="filter" theme="fill" [class.ant-table-filter-selected]="hasFilterValue" [class.ant-table-filter-open]="filterVisible" nz-dropdown></i>
   <ul nz-menu>
     <ng-container *ngIf="nzFilterMultiple">
       <li nz-menu-item *ngFor="let filter of multipleFilterList" (click)="checkMultiple(filter)">
-        <label nz-checkbox [ngModel]="filter.checked"></label><span>{{filter.text}}</span>
+        <label nz-checkbox [ngModel]="filter.checked" (ngModelChange)="checkMultiple(filter)"></label><span>{{filter.text}}</span>
       </li>
     </ng-container>
     <ng-container *ngIf="!nzFilterMultiple">
       <li nz-menu-item *ngFor="let filter of singleFilterList" (click)="checkSingle(filter)">
-        <label nz-radio [ngModel]="filter.checked">{{filter.text}}</label>
+        <label nz-radio [ngModel]="filter.checked" (ngModelChange)="checkSingle(filter)">{{filter.text}}</label>
       </li>
     </ng-container>
   </ul>
   <div class="ant-table-filter-dropdown-btns">
     <a class="ant-table-filter-dropdown-link confirm" (click)="hideDropDown()">
-      <span (click)="search()">{{'Table.filterConfirm' | nzI18n}}</span>
+      <span>{{ locale.filterConfirm }}</span>
     </a>
-    <a class="ant-table-filter-dropdown-link clear" (click)="hideDropDown()">
-      <span (click)="reset()">{{'Table.filterReset' | nzI18n}}</span>
+    <a class="ant-table-filter-dropdown-link clear" (click)="reset();hideDropDown()">
+      <span>{{ locale.filterReset }}</span>
     </a>
   </div>
 </nz-dropdown>

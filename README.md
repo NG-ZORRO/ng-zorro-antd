@@ -1,6 +1,6 @@
 <p align="center">
   <a href="http://ng.ant.design">
-    <img width="230" src="https://img.alicdn.com/tfs/TB1FVMDosrI8KJjy0FhXXbfnpXa-200-200.svg">
+    <img width="230" src="https://img.alicdn.com/tfs/TB1TFFaHAvoK1RjSZFwXXciCFXa-106-120.svg">
   </a>
 </p>
 
@@ -14,7 +14,6 @@ An enterprise-class UI components based on Ant Design and Angular.
 
 [![Travis branch](https://img.shields.io/travis/NG-ZORRO/ng-zorro-antd/master.svg?style=flat-square)](https://travis-ci.org/NG-ZORRO/ng-zorro-antd)
 [![Codecov](https://img.shields.io/codecov/c/github/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://codecov.io/gh/NG-ZORRO/ng-zorro-antd)
-[![Dependencies](https://img.shields.io/david/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://david-dm.org/NG-ZORRO/ng-zorro-antd)
 [![GitHub Release Date](https://img.shields.io/github/release-date/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/releases)
 [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 [![NPM downloads](http://img.shields.io/npm/dm/ng-zorro-antd.svg?style=flat-square)](https://npmjs.org/package/ng-zorro-antd)
@@ -60,7 +59,7 @@ English | [简体中文](README-zh_CN.md)
 ```bash
 $ ng new PROJECT_NAME
 $ cd PROJECT_NAME
-$ ng add ng-zorro-antd --i18n=en_US
+$ ng add ng-zorro-antd
 ```
 
 > More information about `@angular/cli` [here](https://github.com/angular/angular-cli).
@@ -85,7 +84,7 @@ export class AppModule {
 }
 ```
 
-> `@angular/cli` users won't have to worried about things below but it's good to know.
+> `@angular/cli` users won't have to worry about the things below but it's good to know.
 
 And import style and SVG icon assets file link in `angular.json`.
 
@@ -139,7 +138,7 @@ We welcome all contributions. Please read our [CONTRIBUTING.md](https://github.c
 
 ## ❓ Help from the Community
 
-For questions on how to use ng-zorro-antd, please post questions to [<img alt="Stack Overflow" src="https://cdn.sstatic.net/Sites/stackoverflow/company/img/logos/so/so-logo.svg?v=2bb144720a66" width="140" />](http://stackoverflow.com/questions/tagged/ng-zorro) using the `ng-zorro` tag. If you're not finding what you need on stackoverflow, you can find us on [![Gitter](https://img.shields.io/gitter/room/ng-zorro/ng-zorro-antd.svg?style=flat-square)](https://gitter.im/ng-zorro/ng-zorro-antd) as well.
+For questions on how to use ng-zorro-antd, please post questions to [<img alt="Stack Overflow" src="https://cdn.sstatic.net/Sites/stackoverflow/company/img/logos/so/so-logo.svg?v=2bb144720a66" width="140" />](http://stackoverflow.com/questions/tagged/ng-zorro-antd) using the `ng-zorro-antd` tag. If you're not finding what you need on stackoverflow, you can find us on [![Gitter](https://img.shields.io/gitter/room/ng-zorro/ng-zorro-antd.svg?style=flat-square)](https://gitter.im/ng-zorro/ng-zorro-antd) as well.
 
 As always, we encourage experienced users to help those who are not familiar with `ng-zorro-antd`!
 

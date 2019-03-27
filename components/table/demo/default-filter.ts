@@ -3,37 +3,49 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-default-filter',
   template: `
-    <nz-table #filterTable [nzData]="displayData">
+    <nz-table #filterTable [nzData]="listOfDisplayData">
       <thead (nzSortChange)="sort($event)" nzSingleSort>
         <tr>
-          <th nzShowSort nzSortKey="name" nzShowFilter [nzFilters]="nameList" (nzFilterChange)="filter($event,searchAddress)">Name</th>
+          <th
+            nzShowSort
+            nzSortKey="name"
+            nzShowFilter
+            [nzFilters]="listOfName"
+            (nzFilterChange)="filter($event, searchAddress)"
+          >
+            Name
+          </th>
           <th nzShowSort nzSortKey="age">Age</th>
-          <th nzShowSort nzSortKey="address" nzShowFilter [nzFilterMultiple]="false" [nzFilters]="addressList" (nzFilterChange)="filter(listOfSearchName,$event)">Address</th>
+          <th
+            nzShowSort
+            nzSortKey="address"
+            nzShowFilter
+            [nzFilterMultiple]="false"
+            [nzFilters]="listOfAddress"
+            (nzFilterChange)="filter(listOfSearchName, $event)"
+          >
+            Address
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of filterTable.data">
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
+          <td>{{ data.name }}</td>
+          <td>{{ data.age }}</td>
+          <td>{{ data.address }}</td>
         </tr>
       </tbody>
-    </nz-table>`
+    </nz-table>
+  `
 })
 export class NzDemoTableDefaultFilterComponent {
-  nameList = [
-    { text: 'Joe', value: 'Joe', byDefault: true },
-    { text: 'Jim', value: 'Jim' }
-  ];
-  addressList = [
-    { text: 'London', value: 'London', byDefault: true },
-    { text: 'Sidney', value: 'Sidney' }
-  ];
-  sortName = null;
-  sortValue = null;
-  listOfSearchName = [ 'Joe' ];  // You need to change it as well!
+  listOfName = [{ text: 'Joe', value: 'Joe', byDefault: true }, { text: 'Jim', value: 'Jim' }];
+  listOfAddress = [{ text: 'London', value: 'London', byDefault: true }, { text: 'Sidney', value: 'Sidney' }];
+  listOfSearchName = ['Joe']; // You need to change it as well!
+  sortName: string | null = null;
+  sortValue: string | null = null;
   searchAddress = 'London';
-  data = [
+  listOfData: Array<{ name: string; age: number; address: string; [key: string]: string | number }> = [
     {
       name: 'John Brown',
       age: 32,
@@ -55,15 +67,17 @@ export class NzDemoTableDefaultFilterComponent {
       address: 'London No. 2 Lake Park'
     }
   ];
-  displayData = [ ]; // You need to change it as well!
+  // You need to change it as well!
+  listOfDisplayData: Array<{ name: string; age: number; address: string; [key: string]: string | number }> = [];
 
-  sort(sort: { key: string, value: string }): void {
+  sort(sort: { key: string; value: string }): void {
     this.sortName = sort.key;
     this.sortValue = sort.value;
     this.search();
   }
 
   filter(listOfSearchName: string[], searchAddress: string): void {
+    console.log(listOfSearchName, searchAddress);
     this.listOfSearchName = listOfSearchName;
     this.searchAddress = searchAddress;
     this.search();
@@ -71,13 +85,23 @@ export class NzDemoTableDefaultFilterComponent {
 
   search(): void {
     /** filter data **/
-    const filterFunc = item => (this.searchAddress ? item.address.indexOf(this.searchAddress) !== -1 : true) && (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
-    const data = this.data.filter(item => filterFunc(item));
+    const filterFunc = (item: { name: string; age: number; address: string }) =>
+      (this.searchAddress ? item.address.indexOf(this.searchAddress) !== -1 : true) &&
+      (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
+    const data = this.listOfData.filter(item => filterFunc(item));
     /** sort data **/
     if (this.sortName && this.sortValue) {
-      this.displayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] > b[ this.sortName ] ? 1 : -1) : (b[ this.sortName ] > a[ this.sortName ] ? 1 : -1));
+      this.listOfDisplayData = data.sort((a, b) =>
+        this.sortValue === 'ascend'
+          ? a[this.sortName!] > b[this.sortName!]
+            ? 1
+            : -1
+          : b[this.sortName!] > a[this.sortName!]
+          ? 1
+          : -1
+      );
     } else {
-      this.displayData = data;
+      this.listOfDisplayData = data;
     }
   }
 }
