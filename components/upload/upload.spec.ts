@@ -297,10 +297,29 @@ describe('upload', () => {
         });
       });
 
-      it('[nzType]', () => {
-        instance.nzType = 'drag';
-        fixture.detectChanges();
-        expect(pageObject.getByCss('.ant-upload-drag') != null).toBe(true);
+      describe('when nzType is drag', () => {
+        it('should working', () => {
+          instance.nzType = 'drag';
+          fixture.detectChanges();
+          expect(pageObject.getByCss('.ant-upload-drag') != null).toBe(true);
+        });
+
+        it('shoule be remove item', () => {
+          instance.nzType = 'drag';
+          instance.nzFileList = [
+            {
+              uid     : 1,
+              name    : 'xxx.png',
+              status  : 'done',
+              response: 'Server Error 500', // custom error message to show
+              url     : 'http://www.baidu.com/xxx.png'
+            }
+          ] as any[];
+          fixture.detectChanges();
+          expect(instance._onRemove).toBe(false);
+          dl.query(By.css('.anticon-close')).nativeElement.click();
+          expect(instance._onRemove).toBe(true);
+        });
       });
 
       it('[nzShowButton]', () => {
