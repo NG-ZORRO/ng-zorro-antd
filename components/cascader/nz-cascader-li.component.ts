@@ -5,11 +5,10 @@ import {
   ElementRef,
   Input,
   Renderer2,
-  SecurityContext,
   ViewEncapsulation
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { CascaderOption } from './types';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { CascaderOption } from './nz-cascader-definitions';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,15 +41,13 @@ export class NzCascaderOptionComponent {
     return this.option ? this.option[this.nzLabelProperty] : '';
   }
 
-  renderHighlightString(str: string): string {
-    const safeHtml = this.sanitizer.sanitize(
-      SecurityContext.HTML,
+  renderHighlightString(str: string): SafeHtml {
+    const replaceStr = str.replace(
+      new RegExp(this.highlightText, 'g'),
       `<span class="ant-cascader-menu-item-keyword">${this.highlightText}</span>`
     );
-    if (!safeHtml) {
-      throw new Error(`[NG-ZORRO] Input value "${this.highlightText}" is not considered security.`);
-    }
-    return str.replace(new RegExp(this.highlightText, 'g'), safeHtml);
+
+    return this.sanitizer.bypassSecurityTrustHtml(replaceStr);
   }
 
   markForCheck(): void {

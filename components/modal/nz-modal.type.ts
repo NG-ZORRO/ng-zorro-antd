@@ -27,7 +27,7 @@ export interface ModalOptions<T = any, R = any> {
   nzMaskClosable?: boolean;
   nzMaskStyle?: object;
   nzBodyStyle?: object;
-  nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>>; // Default Modal ONLY
+  nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null; // Default Modal ONLY
   nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef); // STATIC
   nzAfterOpen?: EventEmitter<void>;
   nzAfterClose?: EventEmitter<R>;
