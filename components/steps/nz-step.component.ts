@@ -19,6 +19,7 @@ import { NgClassType } from '../core/types/ng-class';
   preserveWhitespaces: false,
   templateUrl: './nz-step.component.html',
   host: {
+    '[class.ant-steps-item]': 'true',
     '[class.ant-steps-item-wait]': 'nzStatus === "wait"',
     '[class.ant-steps-item-process]': 'nzStatus === "process"',
     '[class.ant-steps-item-finish]': 'nzStatus === "finish"',
@@ -37,7 +38,6 @@ export class NzStepComponent {
   get nzStatus(): string {
     return this._status;
   }
-
   set nzStatus(status: string) {
     this._status = status;
     this.isCustomStatus = true;
@@ -47,10 +47,12 @@ export class NzStepComponent {
   private _status = 'wait';
 
   @Input()
+  nzCtx: any;
+
+  @Input()
   get nzIcon(): NgClassType | TemplateRef<void> {
     return this._icon;
   }
-
   set nzIcon(value: NgClassType | TemplateRef<void>) {
     if (!(value instanceof TemplateRef)) {
       this.isIconString = true;
@@ -75,7 +77,6 @@ export class NzStepComponent {
   get currentIndex(): number {
     return this._currentIndex;
   }
-
   set currentIndex(current: number) {
     this._currentIndex = current;
     if (!this.isCustomStatus) {
