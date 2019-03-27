@@ -64,7 +64,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() nzContent: string | TemplateRef<{}> | Type<T>; // [STATIC] If not specified, will use <ng-content>
   @Input() nzComponentParams: T; // [STATIC] ONLY avaliable when nzContent is a component
-  @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>>; // [STATIC] Default Modal ONLY
+  @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null; // [STATIC] Default Modal ONLY
   @Input() nzGetContainer: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef) = () => this.overlay.create(); // [STATIC]
   @Input() nzZIndex: number = 1000;
   @Input() nzWidth: number | string = 520;
@@ -308,7 +308,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     return value instanceof Type;
   }
 
-  public isModalButtons(value: {}): boolean {
+  public isModalButtons(value: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null): boolean {
     return Array.isArray(value) && value.length > 0;
   }
 
