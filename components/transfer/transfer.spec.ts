@@ -71,6 +71,13 @@ describe('transfer', () => {
       expect(pageObject.rightList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(DISABLED);
     });
 
+    it('should be forced to display when the original item is hidden', () => {
+      pageObject.checkItem('left', 0).search('left', '1');
+      pageObject.rightBtn.click();
+      fixture.detectChanges();
+      expect(instance.comp.rightDataSource.filter(w => !w._hiden).length).toBe(COUNT - LEFTCOUNT + 1);
+    });
+
     it('should be custom filter option', () => {
       instance.nzFilterOption = (inputValue: string, item: any): boolean => {
         return item.description.indexOf(inputValue) > -1;
@@ -97,6 +104,12 @@ describe('transfer', () => {
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(1);
       pageObject.checkItem('left', 0);
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(0);
+    });
+
+    it('should be checkbox is toggle select by blank area', () => {
+      expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(0);
+      pageObject.checkItem('left', 0, '.ant-transfer-list-content-item');
+      expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(1);
     });
 
     it('should be checkbox is disabled toggle select when setting disabled prop', () => {
@@ -131,26 +144,26 @@ describe('transfer', () => {
       it('should be the left and right list have data', () => {
         instance.nzDataSource = [{ title: `content0`, direction: 'right' }, { title: `content1` }];
         fixture.detectChanges();
-        expect(pageObject.rightList.querySelector('.ant-transfer-list-body-not-found')).toBeFalsy();
-        expect(pageObject.leftList.querySelector('.ant-transfer-list-body-not-found')).toBeFalsy();
+        expect(pageObject.rightList.querySelector('nz-embed-empty')).toBeFalsy();
+        expect(pageObject.leftList.querySelector('nz-embed-empty')).toBeFalsy();
       });
       it('should be the right list is no data', () => {
         instance.nzDataSource = [{ title: `content0` }, { title: `content1` }];
         fixture.detectChanges();
-        expect(pageObject.rightList.querySelector('.ant-transfer-list-body-not-found')).toBeTruthy();
-        expect(pageObject.leftList.querySelector('.ant-transfer-list-body-not-found')).toBeFalsy();
+        expect(pageObject.rightList.querySelector('nz-embed-empty')).toBeTruthy();
+        expect(pageObject.leftList.querySelector('nz-embed-empty')).toBeFalsy();
       });
       it('should be the left list is no data', () => {
         instance.nzDataSource = [{ title: `content0`, direction: 'right' }];
         fixture.detectChanges();
-        expect(pageObject.rightList.querySelector('.ant-transfer-list-body-not-found')).toBeFalsy();
-        expect(pageObject.leftList.querySelector('.ant-transfer-list-body-not-found')).toBeTruthy();
+        expect(pageObject.rightList.querySelector('nz-embed-empty')).toBeFalsy();
+        expect(pageObject.leftList.querySelector('nz-embed-empty')).toBeTruthy();
       });
       it('should be the left and right list is no data', () => {
         instance.nzDataSource = [];
         fixture.detectChanges();
-        expect(pageObject.rightList.querySelector('.ant-transfer-list-body-not-found')).toBeTruthy();
-        expect(pageObject.leftList.querySelector('.ant-transfer-list-body-not-found')).toBeTruthy();
+        expect(pageObject.rightList.querySelector('nz-embed-empty')).toBeTruthy();
+        expect(pageObject.leftList.querySelector('nz-embed-empty')).toBeTruthy();
       });
     });
 
@@ -303,13 +316,15 @@ describe('transfer', () => {
       return this;
     }
 
-    checkItem(direction: 'left' | 'right', index: number | number[]): this {
+    checkItem(
+      direction: 'left' | 'right',
+      index: number | number[],
+      cls: string = '.ant-transfer-list-content-item label'
+    ): this {
       if (!Array.isArray(index)) {
         index = [index];
       }
-      const items = (direction === 'left' ? this.leftList : this.rightList).querySelectorAll(
-        '.ant-transfer-list-content-item label'
-      );
+      const items = (direction === 'left' ? this.leftList : this.rightList).querySelectorAll(cls);
       for (const idx of index) {
         (items[idx] as HTMLElement).click();
         fixture.detectChanges();
