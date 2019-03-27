@@ -1,12 +1,15 @@
 import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import ngZhHantHK from '@angular/common/locales/zh-Hant-HK';
+
 import enDateLocale from 'date-fns/locale/en';
 import { NZ_DATE_CONFIG } from './date-config';
 import { DateHelperByDatePipe, DateHelperService } from './date-helper.service';
 import en_US from './languages/en_US';
+import zh_TW from './languages/zh_TW';
 import { NzI18nModule } from './nz-i18n.module';
-import { NZ_DATE_LOCALE, NZ_I18N } from './nz-i18n.token';
+import { NZ_DATE_LOCALE, NZ_I18N, NZ_I18N_LOCALEID } from './nz-i18n.token';
 
 describe('DateHelperService', () => {
   let injector: Injector;
@@ -34,6 +37,27 @@ describe('DateHelperService', () => {
 
     it('should get first day of week with 0 by en_US', () => {
       expect(dateHelper.getFirstDayOfWeek()).toBe(0);
+    });
+  });
+
+  describe('Formatting with DatePipe (use zh_TW)', () => {
+    beforeEach(() => {
+      injector = TestBed.configureTestingModule({
+        imports: [NzI18nModule],
+        providers: [{ provide: NZ_I18N, useValue: zh_TW }, { provide: NZ_I18N_LOCALEID, useValue: ngZhHantHK[0] }]
+      });
+
+      dateHelper = injector.get(DateHelperService);
+    });
+
+    it('should do formatting by DatePipe', () => {
+      expect(dateHelper instanceof DateHelperByDatePipe).toBeTruthy();
+    });
+
+    it('should do formatting correctly', () => {
+      const date = new Date('2018-12-31 12:11:10');
+      expect(dateHelper.format(date, 'yyyy-MM-dd')).toBe('2018-12-31');
+      expect(dateHelper.format(date, 'yyyy-ww')).toBe('2018-53');
     });
   });
 

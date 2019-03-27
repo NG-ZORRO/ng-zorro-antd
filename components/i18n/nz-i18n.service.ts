@@ -52,7 +52,7 @@ export class NzI18nService {
     if (this._locale && this._locale.locale === locale.locale) {
       return;
     }
-    this._ngLocaleId = ngLocaleId || locale.locale;
+    this._ngLocaleId = ngLocaleId;
     this._locale = locale;
     this._change.next(locale);
   }
