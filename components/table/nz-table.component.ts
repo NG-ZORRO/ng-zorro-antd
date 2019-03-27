@@ -49,9 +49,10 @@ import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
     `
   ]
 })
-export class NzTableComponent<T> implements OnInit, AfterViewInit, OnDestroy, OnChanges, AfterContentInit {
+// tslint:disable-next-line no-any
+export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestroy, OnChanges, AfterContentInit {
   /** public data for ngFor tr */
-  data: T[] = []; // tslint:disable-line:no-any
+  data: T[] = [];
   locale: any = {}; // tslint:disable-line:no-any
   nzTheadComponent: NzTheadComponent;
   lastScrollLeft = 0;
@@ -80,7 +81,7 @@ export class NzTableComponent<T> implements OnInit, AfterViewInit, OnDestroy, On
   @Input() nzPageSize = 10;
   @Input() nzData: T[] = [];
   @Input() nzPaginationPosition: 'top' | 'bottom' | 'both' = 'bottom';
-  @Input() nzScroll: { x: string | null; y: string | null } = { x: null, y: null };
+  @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
   @Input() @ViewChild('renderItemTemplate') nzItemRender: TemplateRef<{
     $implicit: 'page' | 'prev' | 'next';
     page: number;
