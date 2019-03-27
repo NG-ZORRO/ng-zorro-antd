@@ -19,7 +19,7 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoSelectSearchBoxComponent {
-  selectedValue = '';
+  selectedValue = null;
   listOfOption: Array<{ value: string; text: string }> = [];
   nzFilterOption = () => true;
 
