@@ -10,21 +10,23 @@
 export function createMouseEvent(type: string, x = 0, y = 0): MouseEvent {
   const event = document.createEvent('MouseEvent');
 
-  event.initMouseEvent(type,
-    false, /* canBubble */
-    false, /* cancelable */
-    window, /* view */
-    0, /* detail */
-    x, /* screenX */
-    y, /* screenY */
-    x, /* clientX */
-    y, /* clientY */
-    false, /* ctrlKey */
-    false, /* altKey */
-    false, /* shiftKey */
-    false, /* metaKey */
-    0, /* button */
-    null /* relatedTarget */);
+  event.initMouseEvent(
+    type,
+    false /* canBubble */,
+    false /* cancelable */,
+    window /* view */,
+    0 /* detail */,
+    x /* screenX */,
+    y /* screenY */,
+    x /* clientX */,
+    y /* clientY */,
+    false /* ctrlKey */,
+    false /* altKey */,
+    false /* shiftKey */,
+    false /* metaKey */,
+    0 /* button */,
+    null /* relatedTarget */
+  );
 
   return event;
 }
@@ -41,7 +43,7 @@ export function createTouchEvent(type: string, pageX: number = 0, pageY: number 
   // Most of the browsers don't have a "initTouchEvent" method that can be used to define
   // the touch details.
   Object.defineProperties(event, {
-    touches: { value: [ touchDetails ] }
+    touches: { value: [touchDetails] }
   });
 
   return event as UIEvent;
@@ -60,12 +62,12 @@ export function createKeyboardEvent(type: string, keyCode: number, target?: Elem
   // See related bug https://bugs.webkit.org/show_bug.cgi?id=16735
   Object.defineProperties(event, {
     keyCode: { get: () => keyCode },
-    key    : { get: () => key },
-    target : { get: () => target }
+    key: { get: () => key },
+    target: { get: () => target }
   });
 
   // IE won't set `defaultPrevented` on synthetic events so we need to do it manually.
-  event.preventDefault = function () {
+  event.preventDefault = function() {
     Object.defineProperty(event, 'defaultPrevented', { get: () => true });
     return originalPreventDefault.apply(this, arguments);
   };
