@@ -20,7 +20,7 @@ import { reqAnimFrame } from '../core/polyfill/request-animation';
 import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
 import { isNotNil } from '../core/util/check';
 import { NzTimeValueAccessorDirective } from './nz-time-value-accessor.directive';
-import { HourTypes, TimeHolder } from './time-holder';
+import { TimeHolder } from './time-holder';
 
 function makeRange(length: number, step: number = 1, start: number = 0): number[] {
   return new Array(Math.ceil(length / step)).fill(0).map((_, i) => (i + start) * step);
@@ -240,8 +240,16 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
       hourRanges = 12;
       if (disabledHours) {
         if (this.time.selected12Hours === 'PM') {
+          /**
+           * Filter and transform hours which greater or equal to 12
+           * [0, 1, 2, ..., 12, 13, 14, 15, ..., 23] => [12, 1, 2, 3, ..., 11]
+           */
           disabledHours = disabledHours.filter(i => i >= 12).map(i => (i > 12 ? i - 12 : i));
         } else {
+          /**
+           * Filter and transform hours which less than 12
+           * [0, 1, 2,..., 12, 13, 14, 15, ...23] => [12, 1, 2, 3, ..., 11]
+           */
           disabledHours = disabledHours.filter(i => i < 12 || i === 24).map(i => (i === 24 || i === 0 ? 12 : i));
         }
       }
@@ -417,9 +425,8 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   isSelectedHour(hour: { index: number; disabled: boolean }): boolean {
     return (
-      hour.index === this.time.getHours(HourTypes.ViewHour) ||
-      (!isNotNil(this.time.getHours(HourTypes.ViewHour)) &&
-        hour.index === this.time.getHours(HourTypes.ViewHour, this.time.defaultHours))
+      hour.index === this.time.viewHours ||
+      (!isNotNil(this.time.viewHours) && hour.index === this.time.defaultViewHours)
     );
   }
 
@@ -445,15 +452,10 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   initPosition(): void {
     setTimeout(() => {
       if (this.hourEnabled && this.hourListElement) {
-        if (isNotNil(this.time.getHours(HourTypes.ViewHour))) {
-          this.scrollToSelected(this.hourListElement.nativeElement, this.time.getHours(HourTypes.ViewHour)!, 0, 'hour');
+        if (isNotNil(this.time.viewHours)) {
+          this.scrollToSelected(this.hourListElement.nativeElement, this.time.viewHours!, 0, 'hour');
         } else {
-          this.scrollToSelected(
-            this.hourListElement.nativeElement,
-            this.time.getHours(HourTypes.ViewHour, this.time.defaultHours)!,
-            0,
-            'hour'
-          );
+          this.scrollToSelected(this.hourListElement.nativeElement, this.time.defaultViewHours, 0, 'hour');
         }
       }
       if (this.minuteEnabled && this.minuteListElement) {

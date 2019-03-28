@@ -2,16 +2,6 @@ import { Observable, Subject } from 'rxjs';
 
 import { isNotNil } from '../core/util/check';
 
-/**
- * use for 12-hour to distinguish DataHour and View Hour when `nzUse12Hours` is true
- * ViewHour is used for UI view and its range is [0 - 12]
- * DataHour is actullay hour value and its rangs is [0 - 23]
- */
-export const enum HourTypes {
-  DataHour,
-  ViewHour
-}
-
 export class TimeHolder {
   private _seconds: number | undefined = undefined;
   private _hours: number | undefined = undefined;
@@ -154,28 +144,35 @@ export class TimeHolder {
   }
 
   /**
-   *  get ViewHour or DataHour depeond on the `type` param
-   *  the transformed value which from DataHour to ViewHour is `value` param and this._hours is default `value`
+   * @description
+   * UI view hours
+   * Get viewHours which is selected in `time-picker-panel` and its range is [12, 1, 2, ..., 11]
    */
-  getHours(type: HourTypes, defaulValue?: number): number | undefined {
-    const transformedValue = isNotNil(defaulValue) ? defaulValue : this._hours;
-    if (!isNotNil(transformedValue)) {
-      return undefined;
-    }
-    if (type === HourTypes.ViewHour) {
-      return this.getViewHours(transformedValue as number, this._selected12Hours || this.default12Hours);
-    } else {
-      return this._hours;
-    }
+  get viewHours(): number | undefined {
+    return this._use12Hours && isNotNil(this._hours) ? this.calculateViewHour(this._hours!) : this._hours;
   }
 
+  /**
+   * @description
+   * Value hours
+   * Get realHours and its range is [0, 1, 2, ..., 22, 23]
+   */
+  get realHours(): number | undefined {
+    return this._hours;
+  }
+
+  /**
+   * @description
+   * Same as realHours
+   * @see realHours
+   */
   get hours(): number | undefined {
     return this._hours;
   }
 
   /**
-   *  this._hours stands for DataHour.
-   *  ViewHour can be accessed by getHours()
+   * @description
+   * Set viewHours to realHours
    */
   set hours(value: number | undefined) {
     if (value !== this._hours) {
@@ -184,9 +181,12 @@ export class TimeHolder {
           this._hours! = (value as number) + 12;
         } else if (this.selected12Hours === 'AM' && value === 12) {
           this._hours = 0;
+        } else {
+          this._hours = value;
         }
+      } else {
+        this._hours = value;
       }
-      this._hours = value;
       this.update();
     }
   }
@@ -240,6 +240,29 @@ export class TimeHolder {
     return this;
   }
 
+  /**
+   * @description
+   * Get deafultViewHours when defaultOpenValue is setted
+   * @see viewHours
+   */
+  get defaultViewHours(): number {
+    const hours = this._defaultOpenValue.getHours();
+    return this._use12Hours && isNotNil(hours) ? this.calculateViewHour(hours) : hours;
+  }
+
+  /**
+   * @description
+   * Get defaultRealHours when defaultOpenValue is setted
+   * @see realHours
+   */
+  get defaultRealHours(): number {
+    return this._defaultOpenValue.getHours();
+  }
+
+  /**
+   * @description
+   * Same as defaultRealHours
+   */
   get defaultHours(): number {
     return this._defaultOpenValue.getHours();
   }
@@ -258,14 +281,12 @@ export class TimeHolder {
 
   constructor() {}
 
-  private getViewHours(value: number, selecte12Hours: string | undefined): number {
-    if (!this._use12Hours) {
-      return value;
-    }
-    if (selecte12Hours === 'PM' && value > 12) {
+  private calculateViewHour(value: number): number {
+    const selected12Hours = this._selected12Hours || this.default12Hours;
+    if (selected12Hours === 'PM' && value > 12) {
       return value - 12;
     }
-    if (selecte12Hours === 'AM' && value === 0) {
+    if (selected12Hours === 'AM' && value === 0) {
       return 12;
     }
     return value;

@@ -167,7 +167,7 @@ describe('time-picker-panel', () => {
     it('basic 12-hour time-picker-panel', fakeAsync(() => {
       fixture12Hour.detectChanges();
       expect(testComponent.nzTimePickerPanelComponent.enabledColumns).toBe(4);
-      let listColumns: HTMLElement[] = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select');
+      const listColumns: HTMLElement[] = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select');
       expect(listColumns[0].querySelectorAll('li')[0].innerText).toBe('12');
       const hour12labels = listColumns[3].querySelectorAll('li');
       expect(hour12labels[0].innerText).toBe('am');
