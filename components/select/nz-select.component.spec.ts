@@ -167,7 +167,7 @@ describe('nz-select component', () => {
       fixture.detectChanges();
       expect(testComponent.open).toBe(true);
       fixture.detectChanges();
-      overlayContainerElement.querySelector('li').click();
+      overlayContainerElement.querySelector('li')!.click();
       fixture.detectChanges();
       const selection = select.nativeElement.querySelector('.ant-select-selection') as HTMLElement;
       expect(selection.textContent).toContain('Label: Jack  Value: jack');
@@ -425,12 +425,8 @@ describe('nz-select component', () => {
       <nz-option nzValue="disabled" nzLabel="Disabled" nzDisabled></nz-option>
     </nz-select>
     <ng-template #custom let-selected>
-      <div>
-        Label: {{selected.nzLabel}}
-      </div>
-      <div>
-        Value: {{ selected.nzValue }}
-      </div>
+      <div>Label: {{ selected.nzLabel }}</div>
+      <div>Value: {{ selected.nzValue }}</div>
     </ng-template>
   `
 })
