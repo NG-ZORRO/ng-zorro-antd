@@ -16,5 +16,7 @@ export function padEnd(toPad: string, length: number, element: string): string {
 }
 
 export function getRepeatedElement(length: number, element: string): string {
-  return Array(length).fill(element).join('');
+  return Array(length)
+    .fill(element)
+    .join('');
 }

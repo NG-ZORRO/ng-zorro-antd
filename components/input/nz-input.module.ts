@@ -11,8 +11,8 @@ import { NzInputGroupComponent } from './nz-input-group.component';
 import { NzInputDirective } from './nz-input.directive';
 
 @NgModule({
-  declarations: [ NzInputDirective, NzInputGroupComponent, NzAutosizeDirective ],
-  exports     : [ NzInputDirective, NzInputGroupComponent, NzAutosizeDirective ],
-  imports     : [ CommonModule, FormsModule, NzIconModule, PlatformModule, NzAddOnModule ]
+  declarations: [NzInputDirective, NzInputGroupComponent, NzAutosizeDirective],
+  exports: [NzInputDirective, NzInputGroupComponent, NzAutosizeDirective],
+  imports: [CommonModule, FormsModule, NzIconModule, PlatformModule, NzAddOnModule]
 })
 export class NzInputModule {}

@@ -17,6 +17,5 @@ export class NzClassListAddDirective {
     this.classList = list;
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-  }
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
 }

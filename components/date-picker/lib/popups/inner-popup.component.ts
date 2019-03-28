@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { FunctionProp } from '../../../core/types/common-wrap';
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
@@ -12,7 +23,6 @@ import { CandyDate } from '../candy-date';
   selector: 'inner-popup',
   templateUrl: 'inner-popup.component.html'
 })
-
 export class InnerPopupComponent implements OnInit, OnChanges {
   @Input() showWeek: boolean;
 
@@ -39,9 +49,9 @@ export class InnerPopupComponent implements OnInit, OnChanges {
 
   prefixCls: string = 'ant-calendar';
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value && !this.value) {
@@ -55,7 +65,7 @@ export class InnerPopupComponent implements OnInit, OnChanges {
 
   // The value real changed to outside
   onSelectDate(date: CandyDate | Date): void {
-    const value  = date instanceof CandyDate ? date : new CandyDate(date);
+    const value = date instanceof CandyDate ? date : new CandyDate(date);
     this.selectDate.emit(value);
   }
 }
