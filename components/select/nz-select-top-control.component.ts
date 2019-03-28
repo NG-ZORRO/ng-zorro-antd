@@ -37,10 +37,10 @@ import { NzSelectService } from './nz-select.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   templateUrl: './nz-select-top-control.component.html',
-  host               : {
-    '[class.ant-select-selection--single]'         : '!nzCustomTemplate && nzSelectService.isSingleMode',
-    '[class.ant-select-selection--multiple]'       : 'nzCustomTemplate || nzSelectService.isMultipleOrTags',
-    '[style.cursor]'                               : 'nzShowSearch ? "inherit" : "pointer"'
+  host: {
+    '[class.ant-select-selection--single]': '!nzCustomTemplate && nzSelectService.isSingleMode',
+    '[class.ant-select-selection--multiple]': 'nzCustomTemplate || nzSelectService.isMultipleOrTags',
+    '[style.cursor]': 'nzShowSearch ? "inherit" : "pointer"'
   }
 })
 export class NzSelectTopControlComponent implements OnInit, OnDestroy {
