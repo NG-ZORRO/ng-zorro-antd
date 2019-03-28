@@ -194,12 +194,13 @@ export class NzAffixComponent implements OnInit, OnDestroy {
       return;
     }
     this.placeholderNode.style.cssText = '';
-    const widthObj = { width: this.placeholderNode.offsetWidth };
+    this.placeholderStyle = undefined;
+    const styleObj = { width: this.placeholderNode.offsetWidth, height: this.fixedEl.nativeElement.offsetHeight };
     this.setAffixStyle(e, {
       ...this.affixStyle,
-      ...widthObj
+      ...styleObj
     });
-    this.setPlaceholderStyle(widthObj);
+    this.setPlaceholderStyle(styleObj);
   }
 
   @throttleByAnimationFrameDecorator()

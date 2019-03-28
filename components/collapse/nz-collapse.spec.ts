@@ -129,6 +129,16 @@ describe('collapse', () => {
       fixture.detectChanges();
       expect(panels[0].nativeElement.querySelector('.ant-collapse-header').innerText).toBe('string');
     });
+    it('should extra work', () => {
+      fixture.detectChanges();
+      expect(panels[0].nativeElement.querySelector('.ant-collapse-extra')).toBeFalsy();
+
+      testComponent.showExtra = 'Extra';
+      fixture.detectChanges();
+      const extraEl = panels[0].nativeElement.querySelector('.ant-collapse-extra');
+      expect(extraEl!).not.toBeFalsy();
+      expect(extraEl!.innerText).toBe('Extra');
+    });
   });
   describe('collapse template', () => {
     let fixture: ComponentFixture<NzTestCollapseTemplateComponent>;
@@ -171,6 +181,7 @@ describe('collapse', () => {
         (nzActiveChange)="active01Change($event)"
         [nzHeader]="header"
         [nzShowArrow]="showArrow"
+        [nzExtra]="showExtra"
       >
         <p>Panel01</p>
       </nz-collapse-panel>
@@ -188,7 +199,7 @@ export class NzTestCollapseBasicComponent {
   active01 = false;
   active02 = false;
   showArrow = true;
-  // showExtra = '';
+  showExtra = '';
   header = 'string';
   active01Change = jasmine.createSpy('active01 callback');
   active02Change = jasmine.createSpy('active02 callback');

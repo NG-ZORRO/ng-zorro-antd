@@ -5,6 +5,9 @@
     </ng-container>
   </ng-container>
   <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
+  <div class="ant-collapse-extra" *ngIf="nzExtra">
+    <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
+  </div>
 </div>
 <div class="ant-collapse-content"
   [class.ant-collapse-content-active]="nzActive"
