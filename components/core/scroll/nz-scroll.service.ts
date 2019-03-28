@@ -9,9 +9,9 @@ function easeInOutCubic(t: number, b: number, c: number, d: number): number {
   const cc = c - b;
   let tt = t / (d / 2);
   if (tt < 1) {
-    return cc / 2 * tt * tt * tt + b;
+    return (cc / 2) * tt * tt * tt + b;
   } else {
-    return cc / 2 * ((tt -= 2) * tt * tt + 2) + b;
+    return (cc / 2) * ((tt -= 2) * tt * tt + 2) + b;
   }
 }
 
@@ -35,12 +35,14 @@ export class NzScrollService {
   }
 
   /** 获取 `el` 相对于视窗距离 */
-  getOffset(el: Element): { top: number, left: number } {
+  getOffset(el: Element): { top: number; left: number } {
     const ret = {
-      top : 0,
+      top: 0,
       left: 0
     };
-    if (!el || !el.getClientRects().length) { return ret; }
+    if (!el || !el.getClientRects().length) {
+      return ret;
+    }
 
     const rect = el.getBoundingClientRect();
     if (rect.width || rect.height) {
@@ -63,9 +65,9 @@ export class NzScrollService {
     const method = top ? 'scrollTop' : 'scrollLeft';
     const isWindow = target === window;
     // @ts-ignore
-    let ret = isWindow ? target[ prop ] : target[ method ];
+    let ret = isWindow ? target[prop] : target[method];
     if (isWindow && typeof ret !== 'number') {
-      ret = this.doc.documentElement![ method ];
+      ret = this.doc.documentElement![method];
     }
     return ret;
   }
@@ -78,12 +80,7 @@ export class NzScrollService {
    * @param easing 动作算法，默认：`easeInOutCubic`
    * @param callback 动画结束后回调
    */
-  scrollTo(
-    containerEl: Element | Window,
-    targetTopValue: number = 0,
-    easing?: EasyingFn,
-    callback?: () => void
-  ): void {
+  scrollTo(containerEl: Element | Window, targetTopValue: number = 0, easing?: EasyingFn, callback?: () => void): void {
     const target = containerEl ? containerEl : window;
     const scrollTop = this.getScroll(target);
     const startTime = Date.now();
@@ -94,12 +91,13 @@ export class NzScrollService {
       if (time < 450) {
         reqAnimFrame(frameFunc);
       } else {
-        if (callback) { callback(); }
+        if (callback) {
+          callback();
+        }
       }
     };
     reqAnimFrame(frameFunc);
   }
-
 }
 
 export function SCROLL_SERVICE_PROVIDER_FACTORY(doc: Document, scrollService: NzScrollService): NzScrollService {
@@ -107,7 +105,7 @@ export function SCROLL_SERVICE_PROVIDER_FACTORY(doc: Document, scrollService: Nz
 }
 
 export const SCROLL_SERVICE_PROVIDER: Provider = {
-  provide   : NzScrollService,
+  provide: NzScrollService,
   useFactory: SCROLL_SERVICE_PROVIDER_FACTORY,
-  deps      : [ DOCUMENT, [ new Optional(), new SkipSelf(), NzScrollService ] ]
+  deps: [DOCUMENT, [new Optional(), new SkipSelf(), NzScrollService]]
 };

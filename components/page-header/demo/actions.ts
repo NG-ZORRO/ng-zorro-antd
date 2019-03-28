@@ -68,12 +68,12 @@ import { Component } from '@angular/core';
       </nz-page-header-footer>
     </nz-page-header>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       nz-page-header {
         border: 1px solid rgb(235, 237, 240);
       }
-      
+
       .wrap {
         display: flex;
       }
@@ -106,7 +106,7 @@ import { Component } from '@angular/core';
         position: relative;
         top: -0.5px;
         margin: 0 8px 0 2px;
-        content: ":";
+        content: ':';
       }
 
       .description .detail {
@@ -135,5 +135,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoPageHeaderActionsComponent {
-}
+export class NzDemoPageHeaderActionsComponent {}

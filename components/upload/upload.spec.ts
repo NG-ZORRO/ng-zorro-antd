@@ -308,11 +308,11 @@ describe('upload', () => {
           instance.nzType = 'drag';
           instance.nzFileList = [
             {
-              uid     : 1,
-              name    : 'xxx.png',
-              status  : 'done',
+              uid: 1,
+              name: 'xxx.png',
+              status: 'done',
               response: 'Server Error 500', // custom error message to show
-              url     : 'http://www.baidu.com/xxx.png'
+              url: 'http://www.baidu.com/xxx.png'
             }
           ] as any[];
           fixture.detectChanges();

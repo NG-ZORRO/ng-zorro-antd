@@ -5,8 +5,11 @@ import { NzDividerModule } from '../divider/nz-divider.module';
 import { NzIconModule } from '../icon/nz-icon.module';
 import {
   NzPageHeaderBreadcrumbDirective,
-  NzPageHeaderContentDirective, NzPageHeaderExtraDirective, NzPageHeaderFooterDirective,
-  NzPageHeaderSubtitleDirective, NzPageHeaderTagDirective,
+  NzPageHeaderContentDirective,
+  NzPageHeaderExtraDirective,
+  NzPageHeaderFooterDirective,
+  NzPageHeaderSubtitleDirective,
+  NzPageHeaderTagDirective,
   NzPageHeaderTitleDirective
 } from './nz-page-header-cells';
 import { NzPageHeaderComponent } from './nz-page-header.component';
@@ -22,9 +25,8 @@ const NzPageHeaderCells = [
 ];
 
 @NgModule({
-  imports     : [ CommonModule, NzAddOnModule, NzIconModule, NzDividerModule ],
-  exports     : [ NzPageHeaderComponent, ...NzPageHeaderCells ],
-  declarations: [ NzPageHeaderComponent, ...NzPageHeaderCells ]
+  imports: [CommonModule, NzAddOnModule, NzIconModule, NzDividerModule],
+  exports: [NzPageHeaderComponent, ...NzPageHeaderCells],
+  declarations: [NzPageHeaderComponent, ...NzPageHeaderCells]
 })
-export class NzPageHeaderModule {
-}
+export class NzPageHeaderModule {}

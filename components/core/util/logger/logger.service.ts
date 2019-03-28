@@ -42,10 +42,12 @@ export class LoggerService {
   }
 }
 
-export function LOGGER_SERVICE_PROVIDER_FACTORY(exist: LoggerService, loggerState: boolean): LoggerService { return exist || new LoggerService(loggerState); }
+export function LOGGER_SERVICE_PROVIDER_FACTORY(exist: LoggerService, loggerState: boolean): LoggerService {
+  return exist || new LoggerService(loggerState);
+}
 
 export const LOGGER_SERVICE_PROVIDER: Provider = {
   provide: LoggerService,
   useFactory: LOGGER_SERVICE_PROVIDER_FACTORY,
-  deps: [ [ new Optional(), new SkipSelf(), LoggerService ], NZ_LOGGER_STATE ]
+  deps: [[new Optional(), new SkipSelf(), LoggerService], NZ_LOGGER_STATE]
 };
