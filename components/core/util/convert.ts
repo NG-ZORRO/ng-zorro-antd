@@ -16,13 +16,13 @@ export function toCssPixel(value: number | string): string {
 }
 
 // Get the function-property type's value
-export function valueFunctionProp<T>(prop: FunctionProp<T>, ...args: any[]): T { // tslint:disable-line: no-any
+export function valueFunctionProp<T>(prop: FunctionProp<T>, ...args: any[]): T {
+  // tslint:disable-line: no-any
   return typeof prop === 'function' ? prop(...args) : prop;
 }
 
 // tslint:disable-next-line: no-any
 function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (target: any, propName: string) => void {
-
   // tslint:disable-next-line: no-any
   function propDecorator(target: any, propName: string): void {
     const privatePropName = `$$__${propName}`;
@@ -33,21 +33,20 @@ function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (targe
 
     Object.defineProperty(target, privatePropName, {
       configurable: true,
-      writable    : true
+      writable: true
     });
 
     Object.defineProperty(target, propName, {
       get(): string {
-        return this[ privatePropName ]; // tslint:disable-line:no-invalid-this
+        return this[privatePropName]; // tslint:disable-line:no-invalid-this
       },
       set(value: T): void {
-        this[ privatePropName ] = fallback(value); // tslint:disable-line:no-invalid-this
+        this[privatePropName] = fallback(value); // tslint:disable-line:no-invalid-this
       }
     });
   }
 
   return propDecorator;
-
 }
 
 /**
@@ -66,14 +65,17 @@ function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (targe
  * // __visible = false;
  * ```
  */
-export function InputBoolean(): any { // tslint:disable-line: no-any
+export function InputBoolean(): any {
+  // tslint:disable-line: no-any
   return propDecoratorFactory('InputBoolean', toBoolean);
 }
 
-export function InputCssPixel(): any { // tslint:disable-line: no-any
+export function InputCssPixel(): any {
+  // tslint:disable-line: no-any
   return propDecoratorFactory('InputCssPixel', toCssPixel);
 }
 
-export function InputNumber(): any { // tslint:disable-line: no-any
+export function InputNumber(): any {
+  // tslint:disable-line: no-any
   return propDecoratorFactory('InputNumber', toNumber);
 }

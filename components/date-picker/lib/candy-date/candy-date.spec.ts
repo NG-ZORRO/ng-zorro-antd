@@ -83,5 +83,4 @@ describe('candy-date coverage supplements', () => {
     const errorMessage = 'The input date type is not supported ("Date" and "string" is now recommended)';
     expect(() => new CandyDate({} as any)).toThrowError(errorMessage); // tslint:disable-line:no-any
   });
-
 }); // /candy-date coverage supplements

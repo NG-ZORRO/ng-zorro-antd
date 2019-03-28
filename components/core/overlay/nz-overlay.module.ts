@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { NzConnectedOverlayDirective } from './nz-connected-overlay';
 
 @NgModule({
-  declarations   : [ NzConnectedOverlayDirective ],
-  exports        : [ NzConnectedOverlayDirective ]
+  declarations: [NzConnectedOverlayDirective],
+  exports: [NzConnectedOverlayDirective]
 })
-export class NzOverlayModule {
-
-}
+export class NzOverlayModule {}
