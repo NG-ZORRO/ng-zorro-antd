@@ -41,3 +41,15 @@ Using `[nzAutoGenerate]` by configuring `data` like this:
   }
 }
 ```
+
+For lazy loading moduels, you should write `data` in parent module like this:
+
+```ts
+{
+  path: 'first',
+  loadChildren: './first/first.module#FirstModule',
+  data: {
+    breadcrumb: 'First'
+  },
+}
+```
