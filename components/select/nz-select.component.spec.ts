@@ -170,7 +170,7 @@ describe('nz-select component', () => {
       overlayContainerElement.querySelector('li')!.click();
       fixture.detectChanges();
       const selection = select.nativeElement.querySelector('.ant-select-selection') as HTMLElement;
-      expect(selection.textContent).toContain('Label: Jack  Value: jack');
+      expect(selection.innerText).toContain('Label: Jack\nValue: jack');
     });
     it('should click option close dropdown', () => {
       testComponent.showSearch = true;
