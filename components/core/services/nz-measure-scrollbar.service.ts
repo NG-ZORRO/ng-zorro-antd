@@ -10,9 +10,9 @@ export class NzMeasureScrollbarService {
   private _scrollbarWidth: number;
   private scrollbarMeasure: IndexableObject = {
     position: 'absolute',
-    top     : '-9999px',
-    width   : '50px',
-    height  : '50px',
+    top: '-9999px',
+    width: '50px',
+    height: '50px',
     overflow: 'scroll'
   };
 
@@ -28,7 +28,7 @@ export class NzMeasureScrollbarService {
     const scrollDiv = this.document.createElement('div');
     for (const scrollProp in this.scrollbarMeasure) {
       if (this.scrollbarMeasure.hasOwnProperty(scrollProp)) {
-        scrollDiv.style[ scrollProp ] = this.scrollbarMeasure[ scrollProp ];
+        scrollDiv.style[scrollProp] = this.scrollbarMeasure[scrollProp];
       }
     }
     this.document.body.appendChild(scrollDiv);

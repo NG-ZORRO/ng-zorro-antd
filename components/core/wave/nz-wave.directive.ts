@@ -38,10 +38,12 @@ export class NzWaveDirective implements OnInit, OnDestroy {
   private waveRenderer: NzWaveRenderer;
   private waveDisabled: boolean = false;
 
-  constructor(private ngZone: NgZone,
-              private elementRef: ElementRef,
-              @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) config: NzWaveConfig,
-              @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string) {
+  constructor(
+    private ngZone: NgZone,
+    private elementRef: ElementRef,
+    @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) config: NzWaveConfig,
+    @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string
+  ) {
     if (config && typeof config.disabled === 'boolean') {
       this.waveDisabled = config.disabled;
     }

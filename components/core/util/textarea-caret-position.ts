@@ -5,12 +5,12 @@
 // into their shorthand (e.g. padding-top, padding-bottom etc. -> padding),
 // so we have to list every single property explicitly.
 export const properties = [
-  'direction',  // RTL support
+  'direction', // RTL support
   'boxSizing',
-  'width',  // on Chrome and IE, exclude the scrollbar, so the mirror div wraps exactly as the textarea does
+  'width', // on Chrome and IE, exclude the scrollbar, so the mirror div wraps exactly as the textarea does
   'height',
   'overflowX',
-  'overflowY',  // copy the scrollbar for IE
+  'overflowY', // copy the scrollbar for IE
 
   'borderTopWidth',
   'borderRightWidth',
@@ -36,20 +36,19 @@ export const properties = [
   'textAlign',
   'textTransform',
   'textIndent',
-  'textDecoration',  // might not make a difference, but better be safe
+  'textDecoration', // might not make a difference, but better be safe
 
   'letterSpacing',
   'wordSpacing',
 
   'tabSize',
   'MozTabSize'
-
 ];
 
-const isBrowser = (typeof window !== 'undefined');
+const isBrowser = typeof window !== 'undefined';
 
 // tslint:disable-next-line:no-any
-const isFirefox = (isBrowser && (window as any).mozInnerScreenX != null);
+const isFirefox = isBrowser && (window as any).mozInnerScreenX != null;
 
 const _parseInt = (str: string) => parseInt(str, 10);
 
@@ -59,15 +58,21 @@ export interface Coordinates {
   height: number;
 }
 
-export function getCaretCoordinates(element: HTMLInputElement | HTMLTextAreaElement, position: number, options?: { debug?: boolean }): Coordinates {
+export function getCaretCoordinates(
+  element: HTMLInputElement | HTMLTextAreaElement,
+  position: number,
+  options?: { debug?: boolean }
+): Coordinates {
   if (!isBrowser) {
     throw new Error('textarea-caret-position#getCaretCoordinates should only be called in a browser');
   }
 
-  const debug = options && options.debug || false;
+  const debug = (options && options.debug) || false;
   if (debug) {
     const el = document.querySelector('#input-textarea-caret-position-mirror-div');
-    if (el) { el.parentNode!.removeChild(el); }
+    if (el) {
+      el.parentNode!.removeChild(el);
+    }
   }
 
   // The mirror div will replicate the textarea's style
@@ -78,7 +83,7 @@ export function getCaretCoordinates(element: HTMLInputElement | HTMLTextAreaElem
   const style = div.style;
 
   // tslint:disable-next-line:no-any
-  const computed = window.getComputedStyle ? window.getComputedStyle(element) : (element as any).currentStyle;  // currentStyle for IE < 9
+  const computed = window.getComputedStyle ? window.getComputedStyle(element) : (element as any).currentStyle; // currentStyle for IE < 9
   const isInput = element.nodeName === 'INPUT';
 
   // Default textarea styles
@@ -88,10 +93,10 @@ export function getCaretCoordinates(element: HTMLInputElement | HTMLTextAreaElem
   }
 
   // Position off-screen
-  style.position = 'absolute';  // required to return coordinates properly
+  style.position = 'absolute'; // required to return coordinates properly
   if (!debug) {
     style.visibility = 'hidden';
-  }  // not 'display: none' because we want rendering
+  } // not 'display: none' because we want rendering
 
   // Transfer the element's properties to the div
   properties.forEach((prop: string) => {
@@ -110,7 +115,7 @@ export function getCaretCoordinates(element: HTMLInputElement | HTMLTextAreaElem
       style.overflowY = 'scroll';
     }
   } else {
-    style.overflow = 'hidden';  // for Chrome to not render a scrollbar; IE keeps overflowY = 'scroll'
+    style.overflow = 'hidden'; // for Chrome to not render a scrollbar; IE keeps overflowY = 'scroll'
   }
 
   div.textContent = element.value.substring(0, position);
@@ -126,7 +131,7 @@ export function getCaretCoordinates(element: HTMLInputElement | HTMLTextAreaElem
   // The  *only* reliable way to do that is to copy the *entire* rest of the
   // textarea's content into the <span> created at the caret position.
   // For inputs, just '.' would be enough, but no need to bother.
-  span.textContent = element.value.substring(position) || '.';  // || because a completely empty faux span doesn't render at all
+  span.textContent = element.value.substring(position) || '.'; // || because a completely empty faux span doesn't render at all
   div.appendChild(span);
 
   const coordinates = {
@@ -147,16 +152,21 @@ export function getCaretCoordinates(element: HTMLInputElement | HTMLTextAreaElem
 
 export function createDebugEle(element: HTMLInputElement | HTMLTextAreaElement, coordinates: Coordinates): void {
   const fontSize = getComputedStyle(element).getPropertyValue('font-size');
-  const rect: HTMLSpanElement = (document.querySelector('#DEBUG') as HTMLSpanElement)
-    || document.createElement('div');
+  const rect: HTMLSpanElement = (document.querySelector('#DEBUG') as HTMLSpanElement) || document.createElement('div');
   document.body.appendChild(rect);
   rect.id = 'DEBUG';
   rect.style.position = 'absolute';
   rect.style.backgroundColor = 'red';
   rect.style.height = fontSize;
   rect.style.width = '1px';
-  rect.style.top = `${element.getBoundingClientRect().top - element.scrollTop + window.pageYOffset + coordinates.top}px`;
-  rect.style.left = `${element.getBoundingClientRect().left - element.scrollLeft + window.pageXOffset + coordinates.left}px`;
+  rect.style.top = `${element.getBoundingClientRect().top -
+    element.scrollTop +
+    window.pageYOffset +
+    coordinates.top}px`;
+  rect.style.left = `${element.getBoundingClientRect().left -
+    element.scrollLeft +
+    window.pageXOffset +
+    coordinates.left}px`;
   console.log(rect.style.top);
   console.log(rect.style.left);
 }

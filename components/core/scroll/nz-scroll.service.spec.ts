@@ -5,7 +5,6 @@ import { ReflectiveInjector } from '@angular/core';
 import { NzScrollService } from './nz-scroll.service';
 
 describe('NzScrollService', () => {
-
   const TOP: number = 10;
   let injector: ReflectiveInjector;
   let document: MockDocument;
@@ -54,5 +53,4 @@ describe('NzScrollService', () => {
       expect(el.scrollTop).toBe(TOP);
     });
   });
-
 });

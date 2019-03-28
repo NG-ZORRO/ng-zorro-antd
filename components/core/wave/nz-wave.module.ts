@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { NzWaveDirective } from './nz-wave.directive';
 
 @NgModule({
-  imports     : [ PlatformModule ],
-  exports     : [ NzWaveDirective ],
-  declarations: [ NzWaveDirective ]
+  imports: [PlatformModule],
+  exports: [NzWaveDirective],
+  declarations: [NzWaveDirective]
 })
-export class NzWaveModule { }
+export class NzWaveModule {}

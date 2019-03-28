@@ -15,33 +15,42 @@ import { Component } from '@angular/core';
         <div class="wrap">
           <div class="content">
             <div class="content">
-              <p>Ant Design interprets the color system into two levels: a system-level color system and a product-level
-                color system.</p>
-              <p>Ant Design's design team preferred to design with the HSB color model, which makes it easier for
+              <p>
+                Ant Design interprets the color system into two levels: a system-level color system and a product-level
+                color system.
+              </p>
+              <p>
+                Ant Design's design team preferred to design with the HSB color model, which makes it easier for
                 designers to have a clear psychological expectation of color when adjusting colors, as well as
-                facilitate communication in teams.</p>
+                facilitate communication in teams.
+              </p>
               <p class="content-link">
                 <a>
-                  <img src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" alt="start">Quick Start
+                  <img src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" alt="start" />Quick
+                  Start
                 </a>
                 <a>
-                  <img src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" alt="info">Product Info
+                  <img src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" alt="info" />Product
+                  Info
                 </a>
                 <a>
-                  <img src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" alt="doc">Product Doc
+                  <img src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" alt="doc" />Product Doc
                 </a>
               </p>
             </div>
           </div>
           <div class="extra-content">
-            <img src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original" alt="content">
+            <img
+              src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original"
+              alt="content"
+            />
           </div>
         </div>
       </nz-page-header-content>
     </nz-page-header>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       nz-page-header {
         border: 1px solid rgb(235, 237, 240);
       }
@@ -79,5 +88,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoPageHeaderContentComponent {
-}
+export class NzDemoPageHeaderContentComponent {}

@@ -12,13 +12,13 @@ import { Component } from '@angular/core';
         <nz-breadcrumb-item>Third-level Menu</nz-breadcrumb-item>
       </nz-breadcrumb>
     </nz-page-header>
-
   `,
-  styles  : [ `
-    nz-page-header {
-      border: 1px solid rgb(235, 237, 240);
-    }
-  ` ]
+  styles: [
+    `
+      nz-page-header {
+        border: 1px solid rgb(235, 237, 240);
+      }
+    `
+  ]
 })
-export class NzDemoPageHeaderBreadcrumbComponent {
-}
+export class NzDemoPageHeaderBreadcrumbComponent {}
