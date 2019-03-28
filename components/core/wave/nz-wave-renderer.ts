@@ -2,7 +2,6 @@ import { Platform } from '@angular/cdk/platform';
 import { NgZone } from '@angular/core';
 
 export class NzWaveRenderer {
-
   private waveTransitionDuration = 400;
   private styleForPseudo: HTMLStyleElement | null;
   private extraNode: HTMLDivElement | null;
@@ -25,11 +24,12 @@ export class NzWaveRenderer {
       !this.triggerElement.getAttribute ||
       this.triggerElement.getAttribute('disabled') ||
       (event.target as HTMLElement).tagName === 'INPUT' ||
-      this.triggerElement.className.indexOf('disabled') >= 0) {
+      this.triggerElement.className.indexOf('disabled') >= 0
+    ) {
       return;
     }
     this.fadeOutWave();
-  }
+  };
 
   bindTriggerEvent(): void {
     this.ngZone.runOutsideAngular(() => {
@@ -56,8 +56,8 @@ export class NzWaveRenderer {
   }
 
   destroy(): void {
-   this.removeTriggerEvent();
-   this.removeStyleAndExtraNode();
+    this.removeTriggerEvent();
+    this.removeStyleAndExtraNode();
   }
 
   private fadeOutWave(): void {
@@ -73,8 +73,7 @@ export class NzWaveRenderer {
         this.styleForPseudo = document.createElement('style');
       }
 
-      this.styleForPseudo.innerHTML =
-        `[ant-click-animating-without-extra-node]:after { border-color: ${waveColor}; }`;
+      this.styleForPseudo.innerHTML = `[ant-click-animating-without-extra-node]:after { border-color: ${waveColor}; }`;
       document.body.appendChild(this.styleForPseudo);
     }
 
@@ -95,27 +94,31 @@ export class NzWaveRenderer {
   }
 
   private isValidColor(color: string): boolean {
-    return !!color
-      && color !== '#ffffff'
-      && color !== 'rgb(255, 255, 255)'
-      && this.isNotGrey(color)
-      && !/rgba\(\d*, \d*, \d*, 0\)/.test(color)
-      && color !== 'transparent';
+    return (
+      !!color &&
+      color !== '#ffffff' &&
+      color !== 'rgb(255, 255, 255)' &&
+      this.isNotGrey(color) &&
+      !/rgba\(\d*, \d*, \d*, 0\)/.test(color) &&
+      color !== 'transparent'
+    );
   }
 
   private isNotGrey(color: string): boolean {
     const match = color.match(/rgba?\((\d*), (\d*), (\d*)(, [\.\d]*)?\)/);
-    if (match && match[ 1 ] && match[ 2 ] && match[ 3 ]) {
-      return !(match[ 1 ] === match[ 2 ] && match[ 2 ] === match[ 3 ]);
+    if (match && match[1] && match[2] && match[3]) {
+      return !(match[1] === match[2] && match[2] === match[3]);
     }
     return true;
   }
 
   private getWaveColor(node: HTMLElement): string {
     const nodeStyle = getComputedStyle(node);
-    return nodeStyle.getPropertyValue('border-top-color') || // Firefox Compatible
+    return (
+      nodeStyle.getPropertyValue('border-top-color') || // Firefox Compatible
       nodeStyle.getPropertyValue('border-color') ||
-      nodeStyle.getPropertyValue('background-color');
+      nodeStyle.getPropertyValue('background-color')
+    );
   }
 
   private runTimeoutOutsideZone(fn: () => void, delay: number): void {

@@ -9,7 +9,6 @@ import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
   selector: 'time-picker-button',
   templateUrl: 'time-picker-button.component.html'
 })
-
 export class TimePickerButtonComponent {
   @Input() locale: NzCalendarI18nInterface;
   @Input() timePickerDisabled: boolean = false;
