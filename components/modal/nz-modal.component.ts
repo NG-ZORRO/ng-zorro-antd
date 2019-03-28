@@ -174,10 +174,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     private focusTrapFactory: FocusTrapFactory,
     private cdr: ChangeDetectorRef,
     @Optional() @Inject(NZ_MODAL_CONFIG) nzModalGlobalConfig: NzModalConfig,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: any // tslint:disable-line:no-any
   ) {
-    // tslint:disable-line:no-any
-
     super();
     this.nzModalGlobalConfig = nzModalGlobalConfig;
     this.scrollStrategy = this.overlay.scrollStrategies.block();
