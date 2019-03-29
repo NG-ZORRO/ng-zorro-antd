@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { DateHelperByDatePipe, DateHelperService } from '../../../i18n/date-helper.service';
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
@@ -11,7 +21,6 @@ import { CandyDate } from '../candy-date';
   selector: 'today-button',
   templateUrl: 'today-button.component.html'
 })
-
 export class TodayButtonComponent implements OnInit, OnChanges {
   @Input() locale: NzCalendarI18nInterface;
   @Input() hasTimePicker: boolean = false;
@@ -25,9 +34,9 @@ export class TodayButtonComponent implements OnInit, OnChanges {
 
   private now: CandyDate = new CandyDate();
 
-  constructor(private dateHelper: DateHelperService) { }
+  constructor(private dateHelper: DateHelperService) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabledDate) {

@@ -31,38 +31,40 @@ import { Component } from '@angular/core';
       </ng-container>
     </nz-calendar>
   `,
-  styles  : [ `
-    .events {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
+  styles: [
+    `
+      .events {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
 
-    .events .ant-badge-status {
-      overflow: hidden;
-      white-space: nowrap;
-      width: 100%;
-      text-overflow: ellipsis;
-      font-size: 12px;
-    }
+      .events .ant-badge-status {
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+        text-overflow: ellipsis;
+        font-size: 12px;
+      }
 
-    .notes-month {
-      text-align: center;
-      font-size: 28px;
-    }
+      .notes-month {
+        text-align: center;
+        font-size: 28px;
+      }
 
-    .notes-month section {
-      font-size: 28px;
-    }
-  ` ]
+      .notes-month section {
+        font-size: 28px;
+      }
+    `
+  ]
 })
 export class NzDemoCalendarNoticeCalendarComponent {
   listDataMap = {
-    eight : [
+    eight: [
       { type: 'warning', content: 'This is warning event.' },
       { type: 'success', content: 'This is usual event.' }
     ],
-    ten   : [
+    ten: [
       { type: 'warning', content: 'This is warning event.' },
       { type: 'success', content: 'This is usual event.' },
       { type: 'error', content: 'This is error event.' }

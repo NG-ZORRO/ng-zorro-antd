@@ -8,17 +8,8 @@ import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
 import { NzCheckboxComponent } from './nz-checkbox.component';
 
 @NgModule({
-  imports     : [ CommonModule, FormsModule, ObserversModule ],
-  declarations: [
-    NzCheckboxComponent,
-    NzCheckboxGroupComponent,
-    NzCheckboxWrapperComponent
-  ],
-  exports     : [
-    NzCheckboxComponent,
-    NzCheckboxGroupComponent,
-    NzCheckboxWrapperComponent
-  ]
+  imports: [CommonModule, FormsModule, ObserversModule],
+  declarations: [NzCheckboxComponent, NzCheckboxGroupComponent, NzCheckboxWrapperComponent],
+  exports: [NzCheckboxComponent, NzCheckboxGroupComponent, NzCheckboxWrapperComponent]
 })
-export class NzCheckboxModule {
-}
+export class NzCheckboxModule {}

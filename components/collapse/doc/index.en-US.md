@@ -27,7 +27,8 @@ A content area which can be collapsed and expanded.
 | -------- | ----------- | ---- | ------- |
 | `[nzDisabled]` | If `true`, panel cannot be opened or closed | `boolean` | `false` |
 | `[nzHeader]` | Title of the panel | `string｜TemplateRef<void>` | - |
+| `[nzExpandedIcon]` | Customize an icon for toggle | `string｜TemplateRef<void>` | - |
+| `[nzExtra]` | Extra element in the corner | `string｜TemplateRef<void>` | - |
 | `[nzShowArrow]` | Display arrow or not | `boolean` | `true` |
 | `[nzActive]` | Active status of panel, double binding | `boolean` | - |
 | `(nzActiveChange)` | Callback function of the active status | `EventEmitter<boolean>` | - |
-| `[nzExpandedIcon]` | Customize an icon for toggle | `string｜TemplateRef<void>` | - |

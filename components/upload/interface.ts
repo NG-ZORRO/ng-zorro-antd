@@ -29,7 +29,7 @@ export interface UploadFile {
   linkProps?: { download: string };
   type: string;
 
-  [ key: string ]: any;
+  [key: string]: any;
 }
 
 export interface UploadChangeParam {

@@ -8,7 +8,8 @@ import { NzEmptyService } from 'ng-zorro-antd';
       [nzUnCheckedChildren]="'default'"
       [nzCheckedChildren]="'customize'"
       [(ngModel)]="customize"
-      (ngModelChange)="onConfigChange()">
+      (ngModelChange)="onConfigChange()"
+    >
     </nz-switch>
 
     <nz-divider></nz-divider>
@@ -28,10 +29,10 @@ import { NzEmptyService } from 'ng-zorro-antd';
     <h3>Table</h3>
     <nz-table>
       <thead>
-      <tr>
-        <th>Title</th>
-        <th>Age</th>
-      </tr>
+        <tr>
+          <th>Title</th>
+          <th>Age</th>
+        </tr>
       </thead>
     </nz-table>
 
@@ -45,10 +46,13 @@ import { NzEmptyService } from 'ng-zorro-antd';
       </div>
     </ng-template>
   `,
-  styles  : [ `h3 {
-    font-size: inherit;
-    margin: 16px 0 8px 0;
-  }`
+  styles: [
+    `
+      h3 {
+        font-size: inherit;
+        margin: 16px 0 8px 0;
+      }
+    `
   ]
 })
 export class NzDemoEmptyConfigComponent {
@@ -56,8 +60,7 @@ export class NzDemoEmptyConfigComponent {
 
   customize = false;
 
-  constructor(private nzEmptyService: NzEmptyService) {
-  }
+  constructor(private nzEmptyService: NzEmptyService) {}
 
   onConfigChange(): void {
     if (this.customize) {

@@ -19,20 +19,20 @@ import { Subject } from 'rxjs';
 import { InputBoolean } from '../core/util/convert';
 
 @Component({
-  selector           : '[nz-radio]',
+  selector: '[nz-radio]',
   preserveWhitespaces: false,
-  templateUrl        : './nz-radio.component.html',
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  providers          : [
+  templateUrl: './nz-radio.component.html',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
     {
-      provide    : NG_VALUE_ACCESSOR,
+      provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzRadioComponent),
-      multi      : true
+      multi: true
     }
   ],
-  host               : {
-    '[class.ant-radio-wrapper-checked]' : 'checked',
+  host: {
+    '[class.ant-radio-wrapper-checked]': 'checked',
     '[class.ant-radio-wrapper-disabled]': 'nzDisabled'
   }
 })
@@ -87,7 +87,12 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   }
 
   /* tslint:disable-next-line:no-any */
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    private focusMonitor: FocusMonitor
+  ) {
     this.renderer.addClass(elementRef.nativeElement, 'ant-radio-wrapper');
   }
 

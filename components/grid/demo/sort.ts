@@ -12,7 +12,6 @@ import { Component } from '@angular/core';
       </div>
     </div>
   `,
-  styles  : []
+  styles: []
 })
-export class NzDemoGridSortComponent {
-}
+export class NzDemoGridSortComponent {}

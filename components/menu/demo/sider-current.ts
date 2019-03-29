@@ -45,11 +45,12 @@ import { Component } from '@angular/core';
           <li nz-menu-item>Option 11</li>
         </ul>
       </li>
-    </ul>`,
-  styles  : []
+    </ul>
+  `,
+  styles: []
 })
 export class NzDemoMenuSiderCurrentComponent {
-  openMap: { [ name: string ]: boolean } = {
+  openMap: { [name: string]: boolean } = {
     sub1: true,
     sub2: false,
     sub3: false
@@ -58,7 +59,7 @@ export class NzDemoMenuSiderCurrentComponent {
   openHandler(value: string): void {
     for (const key in this.openMap) {
       if (key !== value) {
-        this.openMap[ key ] = false;
+        this.openMap[key] = false;
       }
     }
   }

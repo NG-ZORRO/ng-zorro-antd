@@ -7,8 +7,8 @@ import { NzFormLabelComponent } from './nz-form-label.component';
 describe('nz-form-label', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NoopAnimationsModule ],
-      declarations: [ NzFormLabelComponent, NzTestFormLabelComponent ]
+      imports: [NoopAnimationsModule],
+      declarations: [NzFormLabelComponent, NzTestFormLabelComponent]
     });
     TestBed.compileComponents();
   }));
@@ -42,7 +42,8 @@ describe('nz-form-label', () => {
 
 @Component({
   template: `
-    <nz-form-label [nzFor]="forValue" [nzRequired]="required"></nz-form-label>`
+    <nz-form-label [nzFor]="forValue" [nzRequired]="required"></nz-form-label>
+  `
 })
 export class NzTestFormLabelComponent {
   forValue = 'test';

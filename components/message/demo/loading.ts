@@ -6,12 +6,10 @@ import { NzMessageService } from 'ng-zorro-antd';
   template: `
     <button nz-button [nzType]="'default'" (click)="createBasicMessage()">Display a loading indicator</button>
   `,
-  styles  : []
+  styles: []
 })
 export class NzDemoMessageLoadingComponent {
-
-  constructor(private message: NzMessageService) {
-  }
+  constructor(private message: NzMessageService) {}
 
   createBasicMessage(): void {
     const id = this.message.loading('Action in progress..', { nzDuration: 0 }).messageId;

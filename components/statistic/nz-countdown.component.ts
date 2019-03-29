@@ -17,9 +17,9 @@ import { NzStatisticComponent } from './nz-statistic.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation  : ViewEncapsulation.None,
-  selector       : 'nz-countdown',
-  templateUrl    : './nz-countdown.component.html'
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-countdown',
+  templateUrl: './nz-countdown.component.html'
 })
 export class NzCountdownComponent extends NzStatisticComponent implements OnInit, OnChanges, OnDestroy {
   /** @override */

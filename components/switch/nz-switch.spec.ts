@@ -13,8 +13,8 @@ import { NzSwitchModule } from './nz-switch.module';
 describe('switch', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzSwitchModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
-      declarations: [ NzTestSwitchBasicComponent, NzTestSwitchFormComponent, NzTestSwitchTemplateComponent ]
+      imports: [NzSwitchModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+      declarations: [NzTestSwitchBasicComponent, NzTestSwitchFormComponent, NzTestSwitchTemplateComponent]
     });
     TestBed.compileComponents();
   }));
@@ -177,12 +177,16 @@ describe('switch', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild!.classList).toContain('anticon-close');
+      expect(
+        switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild!.classList
+      ).toContain('anticon-close');
       switchElement.nativeElement.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild!.classList).toContain('anticon-check');
+      expect(
+        switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild!.classList
+      ).toContain('anticon-check');
     }));
   });
   describe('switch form', () => {
@@ -238,8 +242,10 @@ describe('switch', () => {
       [nzSize]="size"
       [nzControl]="control"
       [nzCheckedChildren]="checkedChildren"
-      [nzUnCheckedChildren]="unCheckedChildren">
-    </nz-switch>`
+      [nzUnCheckedChildren]="unCheckedChildren"
+    >
+    </nz-switch>
+  `
 })
 export class NzTestSwitchBasicComponent {
   @ViewChild(NzSwitchComponent) nzSwitchComponent: NzSwitchComponent;
@@ -260,13 +266,11 @@ export class NzTestSwitchBasicComponent {
   template: `
     <ng-template #checkedChildrenTemplate><i nz-icon type="check"></i></ng-template>
     <ng-template #unCheckedChildrenTemplate><i nz-icon type="close"></i></ng-template>
-    <nz-switch
-      [nzCheckedChildren]="checkedChildrenTemplate"
-      [nzUnCheckedChildren]="unCheckedChildrenTemplate">
-    </nz-switch>`
+    <nz-switch [nzCheckedChildren]="checkedChildrenTemplate" [nzUnCheckedChildren]="unCheckedChildrenTemplate">
+    </nz-switch>
+  `
 })
-export class NzTestSwitchTemplateComponent {
-}
+export class NzTestSwitchTemplateComponent {}
 
 @Component({
   selector: 'nz-test-switch-form',
@@ -281,7 +285,7 @@ export class NzTestSwitchFormComponent {
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
-      switchValue: [ true ]
+      switchValue: [true]
     });
   }
 

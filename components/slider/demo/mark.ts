@@ -17,35 +17,35 @@ import { Component } from '@angular/core';
       Change nzMarks dynamically: <button nz-button (click)="changeMarks()">Change nzMarks</button>
     </div>
   `,
-  styles  : [ `
-    h4 {
-      margin: 0 0 16px;
-    }
+  styles: [
+    `
+      h4 {
+        margin: 0 0 16px;
+      }
 
-    .ant-slider-with-marks {
-      margin-bottom: 44px;
-    }
-  ` ]
+      .ant-slider-with-marks {
+        margin-bottom: 44px;
+      }
+    `
+  ]
 })
 export class NzDemoSliderMarkComponent {
-
   marks: any = {
-    0  : '0°C',
-    26 : '26°C',
-    37 : '37°C',
+    0: '0°C',
+    26: '26°C',
+    37: '37°C',
     100: {
       style: {
-        color: '#f50',
+        color: '#f50'
       },
-      label: '<strong>100°C</strong>',
+      label: '<strong>100°C</strong>'
     }
   };
 
   changeMarks() {
     this.marks = {
       20: '20%',
-      99: '99%',
+      99: '99%'
     };
   }
-
 }

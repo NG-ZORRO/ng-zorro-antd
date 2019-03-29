@@ -4,24 +4,27 @@ import { NzMessageService } from 'ng-zorro-antd';
 @Component({
   selector: 'nz-demo-upload-drag',
   template: `
-  <nz-upload
-    nzType="drag"
-    [nzMultiple]="true"
-    [nzLimit]="2"
-    nzAction="https://jsonplaceholder.typicode.com/posts/"
-    (nzChange)="handleChange($event)">
-    <p class="ant-upload-drag-icon">
-      <i nz-icon type="inbox"></i>
-    </p>
-    <p class="ant-upload-text">Click or drag file to this area to upload</p>
-    <p class="ant-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files</p>
-  </nz-upload>
+    <nz-upload
+      nzType="drag"
+      [nzMultiple]="true"
+      [nzLimit]="2"
+      nzAction="https://jsonplaceholder.typicode.com/posts/"
+      (nzChange)="handleChange($event)"
+    >
+      <p class="ant-upload-drag-icon">
+        <i nz-icon type="inbox"></i>
+      </p>
+      <p class="ant-upload-text">Click or drag file to this area to upload</p>
+      <p class="ant-upload-hint">
+        Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files
+      </p>
+    </nz-upload>
   `
 })
 export class NzDemoUploadDragComponent {
   constructor(private msg: NzMessageService) {}
   // tslint:disable-next-line:no-any
-  handleChange({ file, fileList }: { [ key: string ]: any }): void {
+  handleChange({ file, fileList }: { [key: string]: any }): void {
     const status = file.status;
     if (status !== 'uploading') {
       console.log(file, fileList);

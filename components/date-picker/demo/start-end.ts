@@ -10,7 +10,8 @@ import { Component } from '@angular/core';
       [(ngModel)]="startValue"
       nzPlaceHolder="Start"
       (ngModelChange)="onStartChange($event)"
-      (nzOnOpenChange)="handleStartOpenChange($event)">
+      (nzOnOpenChange)="handleStartOpenChange($event)"
+    >
     </nz-date-picker>
     <nz-date-picker
       [nzDisabledDate]="disabledEndDate"
@@ -20,16 +21,18 @@ import { Component } from '@angular/core';
       nzPlaceHolder="End"
       [nzOpen]="endOpen"
       (ngModelChange)="onEndChange($event)"
-      (nzOnOpenChange)="handleEndOpenChange($event)">
+      (nzOnOpenChange)="handleEndOpenChange($event)"
+    >
     </nz-date-picker>
   `,
-  styles  : [
-      `nz-date-picker {
-      margin: 0 8px 12px 0;
-    }`
+  styles: [
+    `
+      nz-date-picker {
+        margin: 0 8px 12px 0;
+      }
+    `
   ]
 })
-
 export class NzDemoDatePickerStartEndComponent {
   startValue: Date | null = null;
   endValue: Date | null = null;
@@ -40,14 +43,14 @@ export class NzDemoDatePickerStartEndComponent {
       return false;
     }
     return startValue.getTime() > this.endValue.getTime();
-  }
+  };
 
   disabledEndDate = (endValue: Date): boolean => {
     if (!endValue || !this.startValue) {
       return false;
     }
     return endValue.getTime() <= this.startValue.getTime();
-  }
+  };
 
   onStartChange(date: Date): void {
     this.startValue = date;

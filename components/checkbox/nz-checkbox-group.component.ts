@@ -20,15 +20,15 @@ export interface NzCheckBoxOptionInterface {
 }
 
 @Component({
-  selector           : 'nz-checkbox-group',
+  selector: 'nz-checkbox-group',
   preserveWhitespaces: false,
-  encapsulation      : ViewEncapsulation.None,
-  templateUrl        : './nz-checkbox-group.component.html',
-  providers          : [
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './nz-checkbox-group.component.html',
+  providers: [
     {
-      provide    : NG_VALUE_ACCESSOR,
+      provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzCheckboxGroupComponent),
-      multi      : true
+      multi: true
     }
   ]
 })
@@ -48,7 +48,12 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
     return option.value;
   }
 
-  constructor(private elementRef: ElementRef, private focusMonitor: FocusMonitor, private cdr: ChangeDetectorRef, renderer: Renderer2) {
+  constructor(
+    private elementRef: ElementRef,
+    private focusMonitor: FocusMonitor,
+    private cdr: ChangeDetectorRef,
+    renderer: Renderer2
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-checkbox-group');
   }
 

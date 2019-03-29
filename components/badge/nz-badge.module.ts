@@ -6,9 +6,8 @@ import { NzAddOnModule } from '../core/addon/addon.module';
 import { NzBadgeComponent } from './nz-badge.component';
 
 @NgModule({
-  declarations: [ NzBadgeComponent ],
-  exports     : [ NzBadgeComponent ],
-  imports     : [ CommonModule, ObserversModule, NzAddOnModule ]
+  declarations: [NzBadgeComponent],
+  exports: [NzBadgeComponent],
+  imports: [CommonModule, ObserversModule, NzAddOnModule]
 })
-export class NzBadgeModule {
-}
+export class NzBadgeModule {}

@@ -6,7 +6,8 @@ import {
   ElementRef,
   Input,
   OnDestroy,
-  OnInit, Renderer2,
+  OnInit,
+  Renderer2,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -14,22 +15,23 @@ import {
 import { NzAnchorComponent } from './nz-anchor.component';
 
 @Component({
-  selector           : 'nz-link',
+  selector: 'nz-link',
   preserveWhitespaces: false,
-  templateUrl        : './nz-anchor-link.component.html',
-  host               : {
+  templateUrl: './nz-anchor-link.component.html',
+  host: {
     '[class.ant-anchor-link-active]': 'active'
   },
-  styles             : [ `
-    nz-link {
-      display: block;
-    }
-  ` ],
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush
+  styles: [
+    `
+      nz-link {
+        display: block;
+      }
+    `
+  ],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzAnchorLinkComponent implements OnInit, OnDestroy {
-
   @Input() nzHref = '#';
 
   titleStr: string | null = '';
@@ -48,7 +50,12 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
 
   @ContentChild('nzTemplate') nzTemplate: TemplateRef<void>;
 
-  constructor(public elementRef: ElementRef, private anchorComp: NzAnchorComponent, private cdr: ChangeDetectorRef, renderer: Renderer2) {
+  constructor(
+    public elementRef: ElementRef,
+    private anchorComp: NzAnchorComponent,
+    private cdr: ChangeDetectorRef,
+    renderer: Renderer2
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-anchor-link');
   }
 
@@ -69,5 +76,4 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.anchorComp.unregisterLink(this);
   }
-
 }

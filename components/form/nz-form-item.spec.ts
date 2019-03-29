@@ -9,8 +9,8 @@ import { NzFormModule } from './nz-form.module';
 describe('nz-form-item', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzFormModule, NoopAnimationsModule ],
-      declarations: [ NzTestFormItemComponent ]
+      imports: [NzFormModule, NoopAnimationsModule],
+      declarations: [NzTestFormItemComponent]
     });
     TestBed.compileComponents();
   }));
@@ -60,7 +60,8 @@ describe('nz-form-item', () => {
     <nz-form-item [nzFlex]="flex">
       <nz-form-explain *ngIf="first"></nz-form-explain>
       <nz-form-explain *ngIf="second"></nz-form-explain>
-    </nz-form-item>`
+    </nz-form-item>
+  `
 })
 export class NzTestFormItemComponent {
   first = true;

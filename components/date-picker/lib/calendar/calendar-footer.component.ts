@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { isNonEmptyString, isTemplateRef } from '../../../core/util/check';
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';

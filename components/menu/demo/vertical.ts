@@ -44,8 +44,9 @@ import { Component } from '@angular/core';
           <li nz-menu-item>Option 11</li>
         </ul>
       </li>
-    </ul>`,
-  styles  : []
+    </ul>
+  `,
+  styles: []
 })
 export class NzDemoMenuVerticalComponent {
   change(value: boolean): void {

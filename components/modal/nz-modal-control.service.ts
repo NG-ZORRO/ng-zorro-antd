@@ -25,7 +25,8 @@ export class NzModalControlService {
   private rootAfterAllClose: Subject<void> | null = this.parentService ? null : new Subject<void>();
   private rootRegisteredMetaMap: Map<NzModalRef, RegisteredMeta> | null = this.parentService ? null : new Map();
 
-  private get registeredMetaMap(): Map<NzModalRef, RegisteredMeta> { // Registered modal for later usage
+  private get registeredMetaMap(): Map<NzModalRef, RegisteredMeta> {
+    // Registered modal for later usage
     return this.parentService ? this.parentService.registeredMetaMap : this.rootRegisteredMetaMap!;
   }
 
@@ -62,7 +63,7 @@ export class NzModalControlService {
     let i = this.openModals.length;
 
     while (i--) {
-      this.openModals[ i ].close();
+      this.openModals[i].close();
     }
   }
 

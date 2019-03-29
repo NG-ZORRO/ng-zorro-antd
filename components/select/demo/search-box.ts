@@ -12,32 +12,31 @@ import { Component } from '@angular/core';
       [nzShowArrow]="false"
       [nzFilterOption]="nzFilterOption"
       [(ngModel)]="selectedValue"
-      (nzOnSearch)="search($event)">
-      <nz-option *ngFor="let o of listOfOption"
-        [nzLabel]="o.text"
-        [nzValue]="o.value">
-      </nz-option>
+      (nzOnSearch)="search($event)"
+    >
+      <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
     </nz-select>
   `
 })
 export class NzDemoSelectSearchBoxComponent {
-  selectedValue = '';
-  listOfOption: Array<{ value: string, text: string  }> = [];
+  selectedValue = null;
+  listOfOption: Array<{ value: string; text: string }> = [];
   nzFilterOption = () => true;
 
-  constructor(private httpClient: HttpClient) {
-  }
+  constructor(private httpClient: HttpClient) {}
 
   search(value: string): void {
-    this.httpClient.jsonp<{ result: Array<[ string, string ]> }>(`https://suggest.taobao.com/sug?code=utf-8&q=${value}`, 'callback').subscribe(data => {
-      const listOfOption: Array<{ value: string, text: string  }> = [];
-      data.result.forEach(item => {
-        listOfOption.push({
-          value: item[ 0 ],
-          text : item[ 0 ]
+    this.httpClient
+      .jsonp<{ result: Array<[string, string]> }>(`https://suggest.taobao.com/sug?code=utf-8&q=${value}`, 'callback')
+      .subscribe(data => {
+        const listOfOption: Array<{ value: string; text: string }> = [];
+        data.result.forEach(item => {
+          listOfOption.push({
+            value: item[0],
+            text: item[0]
+          });
         });
+        this.listOfOption = listOfOption;
       });
-      this.listOfOption = listOfOption;
-    });
   }
 }

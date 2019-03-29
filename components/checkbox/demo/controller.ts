@@ -17,10 +17,12 @@ import { Component } from '@angular/core';
       </button>
     </p>
   `,
-  styles  : [
-      `button {
-      margin-right: 8px;
-    }`
+  styles: [
+    `
+      button {
+        margin-right: 8px;
+      }
+    `
   ]
 })
 export class NzDemoCheckboxControllerComponent {

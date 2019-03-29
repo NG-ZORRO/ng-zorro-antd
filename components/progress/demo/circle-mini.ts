@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
     <nz-progress [nzPercent]="70" nzType="circle" [nzWidth]="80" nzStatus="exception"></nz-progress>
     <nz-progress [nzPercent]="100" nzType="circle" [nzWidth]="80"></nz-progress>
   `,
-  styles  : [
+  styles: [
     `
       nz-progress {
         margin-right: 8px;
@@ -17,4 +17,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoProgressCircleMiniComponent { }
+export class NzDemoProgressCircleMiniComponent {}

@@ -14,15 +14,15 @@ import { NzDropdownService } from './nz-dropdown.service';
 import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 
 @Component({
-  selector           : 'nz-dropdown-context',
-  animations         : [ slideMotion ],
+  selector: 'nz-dropdown-context',
+  animations: [slideMotion],
   preserveWhitespaces: false,
-  templateUrl        : './nz-dropdown-context.component.html',
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  providers          : [ NzMenuDropdownService ],
-  styles             : [
-      `
+  templateUrl: './nz-dropdown-context.component.html',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [NzMenuDropdownService],
+  styles: [
+    `
       nz-dropdown-context {
         display: block;
       }
@@ -45,13 +45,16 @@ export class NzDropdownContextComponent implements OnDestroy {
   private control: NzDropdownService;
   private destroy$ = new Subject();
 
-  init(open: boolean, templateRef: TemplateRef<void>, positionChanges: Observable<ConnectedOverlayPositionChange>, control: NzDropdownService): void {
+  init(
+    open: boolean,
+    templateRef: TemplateRef<void>,
+    positionChanges: Observable<ConnectedOverlayPositionChange>,
+    control: NzDropdownService
+  ): void {
     this.open = open;
     this.templateRef = templateRef;
     this.control = control;
-    positionChanges.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(data => {
+    positionChanges.pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.dropDownPosition = data.connectionPair.overlayY === 'bottom' ? 'top' : 'bottom';
       this.cdr.markForCheck();
     });
@@ -68,8 +71,7 @@ export class NzDropdownContextComponent implements OnDestroy {
     }
   }
 
-  constructor(private cdr: ChangeDetectorRef) {
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   // TODO auto set dropdown class after the bug resolved
   /** https://github.com/angular/angular/issues/14842 **/

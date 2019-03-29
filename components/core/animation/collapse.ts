@@ -1,11 +1,4 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-  AnimationTriggerMetadata
-} from '@angular/animations';
+import { animate, state, style, transition, trigger, AnimationTriggerMetadata } from '@angular/animations';
 import { AnimationCurves } from './animation';
 
 export const collapseMotion: AnimationTriggerMetadata = trigger('collapseMotion', [

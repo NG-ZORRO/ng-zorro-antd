@@ -16,9 +16,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
  */
 // @dynamic
 @NgModule({
-  exports: [
-    NzIconModule
-  ],
+  exports: [NzIconModule],
   providers: [
     {
       provide: NZ_ICONS,

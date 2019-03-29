@@ -8,9 +8,8 @@ import { NzStatisticComponent } from './nz-statistic.component';
 import { NzTimeRangePipe } from './nz-time-range.pipe';
 
 @NgModule({
-  imports     : [ CommonModule, NzAddOnModule ],
-  declarations: [ NzStatisticComponent, NzCountdownComponent, NzStatisticNumberComponent, NzTimeRangePipe ],
-  exports     : [ NzStatisticComponent, NzCountdownComponent, NzStatisticNumberComponent, NzTimeRangePipe ]
+  imports: [CommonModule, NzAddOnModule],
+  declarations: [NzStatisticComponent, NzCountdownComponent, NzStatisticNumberComponent, NzTimeRangePipe],
+  exports: [NzStatisticComponent, NzCountdownComponent, NzStatisticNumberComponent, NzTimeRangePipe]
 })
-export class NzStatisticModule {
-}
+export class NzStatisticModule {}

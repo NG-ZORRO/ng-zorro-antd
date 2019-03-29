@@ -54,6 +54,7 @@ subtitle: 导航菜单
 | --- | --- | --- | --- |
 | `[nzOpen]` | 是否展开，可双向绑定 | `boolean` | `false` |
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
+| `[nzMenuClassName]` | 自定义子菜单容器类名 | `string` | - |
 | `(nzOpenChange)` | 展开回调 | `EventEmitter<boolean>` | - |
 
 

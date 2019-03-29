@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
     <label nz-radio>Radio</label>
   `
 })
-export class NzDemoRadioBasicComponent {
-}
+export class NzDemoRadioBasicComponent {}

@@ -25,7 +25,6 @@ import { Component } from '@angular/core';
       </div>
     </div>
   `,
-  styles  : []
+  styles: []
 })
-export class NzDemoGridOffsetComponent {
-}
+export class NzDemoGridOffsetComponent {}

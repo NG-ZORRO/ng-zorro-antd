@@ -7,8 +7,8 @@ import { NzFormSplitComponent } from './nz-form-split.component';
 describe('nz-form-split', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NoopAnimationsModule ],
-      declarations: [ NzFormSplitComponent, NzTestFormSplitComponent ]
+      imports: [NoopAnimationsModule],
+      declarations: [NzFormSplitComponent, NzTestFormSplitComponent]
     });
     TestBed.compileComponents();
   }));
@@ -28,7 +28,8 @@ describe('nz-form-split', () => {
 });
 
 @Component({
-  template: `<nz-form-split></nz-form-split>`
+  template: `
+    <nz-form-split></nz-form-split>
+  `
 })
-export class NzTestFormSplitComponent {
-}
+export class NzTestFormSplitComponent {}

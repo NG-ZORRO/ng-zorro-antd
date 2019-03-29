@@ -26,9 +26,9 @@ describe('layout', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzLayoutModule ],
-        declarations: [ NzDemoLayoutBasicComponent ],
-        providers   : []
+        imports: [NzLayoutModule],
+        declarations: [NzDemoLayoutBasicComponent],
+        providers: []
       }).compileComponents();
     }));
 
@@ -48,10 +48,15 @@ describe('layout', () => {
       expect(contents.every(content => content.nativeElement.classList.contains('ant-layout-content'))).toBe(true);
       expect(footers.every(footer => footer.nativeElement.classList.contains('ant-layout-footer'))).toBe(true);
       expect(siders.every(sider => sider.nativeElement.classList.contains('ant-layout-sider'))).toBe(true);
-      expect(siders.every(sider => sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;')).toBe(true);
-      expect(layouts[ 2 ].nativeElement.classList.contains('ant-layout-has-sider')).toBe(true);
-      expect(layouts[ 4 ].nativeElement.classList.contains('ant-layout-has-sider')).toBe(true);
-      expect(layouts[ 5 ].nativeElement.classList.contains('ant-layout-has-sider')).toBe(true);
+      expect(
+        siders.every(
+          sider =>
+            sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;'
+        )
+      ).toBe(true);
+      expect(layouts[2].nativeElement.classList.contains('ant-layout-has-sider')).toBe(true);
+      expect(layouts[4].nativeElement.classList.contains('ant-layout-has-sider')).toBe(true);
+      expect(layouts[5].nativeElement.classList.contains('ant-layout-has-sider')).toBe(true);
     });
   });
   describe('side', () => {
@@ -62,10 +67,10 @@ describe('layout', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzLayoutModule ],
-        declarations: [ NzDemoLayoutSideComponent ],
-        providers   : [],
-        schemas     : [ NO_ERRORS_SCHEMA ]
+        imports: [NzLayoutModule],
+        declarations: [NzDemoLayoutSideComponent],
+        providers: [],
+        schemas: [NO_ERRORS_SCHEMA]
       }).compileComponents();
     }));
 
@@ -79,25 +84,35 @@ describe('layout', () => {
       testComponent.isCollapsed = false;
       fixture.detectChanges();
       trigger = fixture.debugElement.query(By.css('.ant-layout-sider-trigger'));
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;').toBe(true);
+      expect(
+        sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;'
+      ).toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 200px;').toBe(true);
       trigger.nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.isCollapsed).toBe(true);
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;').toBe(true);
+      expect(
+        sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;'
+      ).toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 80px;').toBe(true);
       trigger.nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.isCollapsed).toBe(false);
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;').toBe(true);
+      expect(
+        sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;'
+      ).toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 200px;').toBe(true);
       testComponent.isCollapsed = true;
       fixture.detectChanges();
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;').toBe(true);
+      expect(
+        sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;'
+      ).toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 80px;').toBe(true);
       testComponent.isCollapsed = false;
       fixture.detectChanges();
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;').toBe(true);
+      expect(
+        sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;'
+      ).toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 200px;').toBe(true);
     });
     it('should nzWidth work', () => {
@@ -105,25 +120,35 @@ describe('layout', () => {
       testComponent.width = 300;
       fixture.detectChanges();
       trigger = fixture.debugElement.query(By.css('.ant-layout-sider-trigger'));
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;').toBe(true);
+      expect(
+        sider.nativeElement.style.cssText === 'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;'
+      ).toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 300px;').toBe(true);
       trigger.nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.isCollapsed).toBe(true);
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;').toBe(true);
+      expect(
+        sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;'
+      ).toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 80px;').toBe(true);
       trigger.nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.isCollapsed).toBe(false);
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;').toBe(true);
+      expect(
+        sider.nativeElement.style.cssText === 'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;'
+      ).toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 300px;').toBe(true);
       testComponent.isCollapsed = true;
       fixture.detectChanges();
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;').toBe(true);
+      expect(
+        sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;'
+      ).toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 80px;').toBe(true);
       testComponent.isCollapsed = false;
       fixture.detectChanges();
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;').toBe(true);
+      expect(
+        sider.nativeElement.style.cssText === 'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;'
+      ).toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 300px;').toBe(true);
     });
 
@@ -142,7 +167,6 @@ describe('layout', () => {
       testComponent.isCollapsed = true;
       fixture.detectChanges();
       expect(trigger.nativeElement.firstElementChild!.classList.contains('anticon-left')).toBe(true);
-
     });
   });
   describe('custom-trigger', () => {
@@ -151,10 +175,10 @@ describe('layout', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzLayoutModule, NzIconTestModule ],
-        declarations: [ NzDemoLayoutCustomTriggerComponent ],
-        providers   : [],
-        schemas     : [ NO_ERRORS_SCHEMA ]
+        imports: [NzLayoutModule, NzIconTestModule],
+        declarations: [NzDemoLayoutCustomTriggerComponent],
+        providers: [],
+        schemas: [NO_ERRORS_SCHEMA]
       }).compileComponents();
     }));
 
@@ -187,16 +211,16 @@ describe('layout', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports     : [ NzLayoutModule ],
-        declarations: [ NzDemoLayoutResponsiveComponent ],
-        schemas     : [ NO_ERRORS_SCHEMA ]
-      }).overrideComponent(NzSiderComponent, {
-        set: {
-          providers: [
-            { provide: MediaMatcher, useClass: MatchMediaServiceSpy }
-          ]
-        }
-      }).compileComponents();
+        imports: [NzLayoutModule],
+        declarations: [NzDemoLayoutResponsiveComponent],
+        schemas: [NO_ERRORS_SCHEMA]
+      })
+        .overrideComponent(NzSiderComponent, {
+          set: {
+            providers: [{ provide: MediaMatcher, useClass: MatchMediaServiceSpy }]
+          }
+        })
+        .compileComponents();
     }));
 
     beforeEach(() => {
@@ -211,8 +235,12 @@ describe('layout', () => {
       discardPeriodicTasks();
       fixture.detectChanges();
       console.log(sider.nativeElement.style.cssText);
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 0px; max-width: 0px; min-width: 0px; width: 0px;').toBe(true);
-      expect(sider.nativeElement.querySelector('.ant-layout-sider-zero-width-trigger').firstElementChild.getAttribute('type')).toBe('menu-fold');
+      expect(sider.nativeElement.style.cssText === 'flex: 0 0 0px; max-width: 0px; min-width: 0px; width: 0px;').toBe(
+        true
+      );
+      expect(
+        sider.nativeElement.querySelector('.ant-layout-sider-zero-width-trigger').firstElementChild.getAttribute('type')
+      ).toBe('menu-fold');
     }));
   });
 });

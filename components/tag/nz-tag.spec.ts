@@ -8,8 +8,8 @@ import { NzTagModule } from './nz-tag.module';
 describe('tag', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzTagModule, NoopAnimationsModule ],
-      declarations: [ NzTestTagBasicComponent, NzTestTagPreventComponent ]
+      imports: [NzTagModule, NoopAnimationsModule],
+      declarations: [NzTestTagBasicComponent, NzTestTagPreventComponent]
     });
     TestBed.compileComponents();
   }));
@@ -130,7 +130,8 @@ describe('tag', () => {
       [nzControl]="control"
       (nzCheckedChange)="checkedChange($event)"
       (nzAfterClose)="afterClose()"
-      (nzOnClose)="onClose()">
+      (nzOnClose)="onClose()"
+    >
       Tag 1
     </nz-tag>
   `

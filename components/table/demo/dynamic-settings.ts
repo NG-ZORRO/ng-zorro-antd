@@ -47,7 +47,9 @@ import { Component, OnInit } from '@angular/core';
         </nz-form-item>
         <nz-form-item>
           <nz-form-label><label>No Result</label></nz-form-label>
-          <nz-form-control><nz-switch [(ngModel)]="noResult" (ngModelChange)="noResultChange($event)" name="noResult"></nz-switch></nz-form-control>
+          <nz-form-control
+            ><nz-switch [(ngModel)]="noResult" (ngModelChange)="noResultChange($event)" name="noResult"></nz-switch
+          ></nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label><label>Simple Pagination</label></nz-form-label>
@@ -75,7 +77,8 @@ import { Component, OnInit } from '@angular/core';
         </nz-form-item>
       </form>
     </div>
-    <nz-table #dynamicTable
+    <nz-table
+      #dynamicTable
       [nzScroll]="fixHeader ? { y: '240px' } : null"
       [nzData]="listOfData"
       [nzBordered]="bordered"
@@ -85,14 +88,22 @@ import { Component, OnInit } from '@angular/core';
       [nzShowSizeChanger]="sizeChanger"
       [nzFrontPagination]="pagination"
       [nzShowPagination]="pagination"
-      [nzFooter]="footer?'Here is Footer':null"
-      [nzTitle]="title?'Here is Title':null"
+      [nzFooter]="footer ? 'Here is Footer' : null"
+      [nzTitle]="title ? 'Here is Title' : null"
       [nzSize]="size"
-      (nzCurrentPageDataChange)="currentPageDataChange($event)">
+      (nzCurrentPageDataChange)="currentPageDataChange($event)"
+    >
       <thead>
         <tr *ngIf="header">
           <th nzWidth="50px" nzShowExpand *ngIf="expandable"></th>
-          <th nzWidth="62px" nzShowCheckbox *ngIf="checkbox" [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
+          <th
+            nzWidth="62px"
+            nzShowCheckbox
+            *ngIf="checkbox"
+            [(nzChecked)]="allChecked"
+            [nzIndeterminate]="indeterminate"
+            (nzCheckedChange)="checkAll($event)"
+          ></th>
           <th nzWidth="150px">Name</th>
           <th nzWidth="70px">Age</th>
           <th>Address</th>
@@ -104,24 +115,25 @@ import { Component, OnInit } from '@angular/core';
           <tr>
             <td nzShowExpand *ngIf="expandable" [(nzExpand)]="data.expand"></td>
             <td nzShowCheckbox *ngIf="checkbox" [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
-            <td>{{data.name}}</td>
-            <td>{{data.age}}</td>
-            <td>{{data.address}}</td>
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
             <td>
-              <a href="#">Action 一 {{data.name}}</a>
+              <a href="#">Action 一 {{ data.name }}</a>
               <nz-divider nzType="vertical"></nz-divider>
               <a href="#">Delete</a>
             </td>
           </tr>
-          <tr [nzExpand]="data.expand&&expandable">
+          <tr [nzExpand]="data.expand && expandable">
             <td></td>
-            <td [attr.colspan]="checkbox?5:4">{{data.description}}</td>
+            <td [attr.colspan]="checkbox ? 5 : 4">{{ data.description }}</td>
           </tr>
         </ng-template>
       </tbody>
-    </nz-table>`,
-  styles  : [
-      `
+    </nz-table>
+  `,
+  styles: [
+    `
       .components-table-demo-control-bar {
         margin-bottom: 12px;
       }
@@ -153,7 +165,16 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   noResult = false;
   position = 'bottom';
 
-  currentPageDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean; expand: boolean; description: string; }>): void {
+  currentPageDataChange(
+    $event: Array<{
+      name: string;
+      age: number;
+      address: string;
+      checked: boolean;
+      expand: boolean;
+      description: string;
+    }>
+  ): void {
     this.displayData = $event;
     this.refreshStatus();
   }
@@ -163,7 +184,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
     const allChecked = validData.length > 0 && validData.every(value => value.checked === true);
     const allUnChecked = validData.every(value => !value.checked);
     this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
+    this.indeterminate = !allChecked && !allUnChecked;
   }
 
   checkAll(value: boolean): void {
@@ -178,12 +199,12 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   ngOnInit(): void {
     for (let i = 1; i <= 100; i++) {
       this.listOfData.push({
-        name       : 'John Brown',
-        age        : `${i}2`,
-        address    : `New York No. ${i} Lake Park`,
+        name: 'John Brown',
+        age: `${i}2`,
+        address: `New York No. ${i} Lake Park`,
         description: `My name is John Brown, I am ${i}2 years old, living in New York No. ${i} Lake Park.`,
-        checked    : false,
-        expand     : false
+        checked: false,
+        expand: false
       });
     }
   }
