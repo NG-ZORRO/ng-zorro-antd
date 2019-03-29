@@ -609,7 +609,6 @@ describe('nz-tree', () => {
   });
 
   describe('test older node property', () => {
-    let treeInstance: NzTestTreeCustomizedIconComponent;
     let treeElement: HTMLElement;
     let fixture: ComponentFixture<NzTestTreeCustomizedIconComponent>;
     beforeEach(async(() => {
@@ -621,7 +620,6 @@ describe('nz-tree', () => {
       fixture = TestBed.createComponent(NzTestTreeCustomizedIconComponent);
       treeService = fixture.componentInstance.treeComponent.nzTreeService;
       fixture.detectChanges();
-      treeInstance = fixture.debugElement.componentInstance;
       treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
     }));
 
