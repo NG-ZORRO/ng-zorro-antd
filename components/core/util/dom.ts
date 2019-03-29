@@ -10,7 +10,7 @@ export function silentEvent(e: Event): void {
   e.preventDefault();
 }
 
-export function getElementOffset(elem: HTMLElement): { top: number, left: number } {
+export function getElementOffset(elem: HTMLElement): { top: number; left: number } {
   if (!elem.getClientRects().length) {
     return { top: 0, left: 0 };
   }
@@ -18,7 +18,7 @@ export function getElementOffset(elem: HTMLElement): { top: number, left: number
   const rect = elem.getBoundingClientRect();
   const win = elem.ownerDocument!.defaultView;
   return {
-    top : rect.top + win!.pageYOffset,
+    top: rect.top + win!.pageYOffset,
     left: rect.left + win!.pageXOffset
   };
 }
@@ -50,9 +50,9 @@ export function reverseChildNodes(parent: HTMLElement): void {
   let length = children.length;
   if (length) {
     const nodes: Node[] = [];
-    children.forEach((node, i) => nodes[ i ] = node);
+    children.forEach((node, i) => (nodes[i] = node));
     while (length--) {
-      parent.appendChild(nodes[ length ]);
+      parent.appendChild(nodes[length]);
     }
   }
 }

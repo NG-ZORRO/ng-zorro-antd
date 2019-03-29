@@ -2,16 +2,9 @@ export type NzCascaderExpandTrigger = 'click' | 'hover';
 export type NzCascaderTriggerType = 'click' | 'hover';
 export type NzCascaderSize = 'small' | 'large' | 'default';
 
-export type NzCascaderFilter = (
-  searchValue: string,
-  path: CascaderOption[]
-) => boolean;
+export type NzCascaderFilter = (searchValue: string, path: CascaderOption[]) => boolean;
 
-export type NzCascaderSorter = (
-  a: CascaderOption[],
-  b: CascaderOption[],
-  inputValue: string
-) => number;
+export type NzCascaderSorter = (a: CascaderOption[], b: CascaderOption[], inputValue: string) => number;
 
 export interface CascaderOption {
   value?: any; // tslint:disable-line:no-any
@@ -35,9 +28,7 @@ export interface NzShowSearchOptions {
   sorter?: NzCascaderSorter;
 }
 
-export function isShowSearchObject(
-  options: NzShowSearchOptions | boolean
-): options is NzShowSearchOptions {
+export function isShowSearchObject(options: NzShowSearchOptions | boolean): options is NzShowSearchOptions {
   return typeof options !== 'boolean';
 }
 

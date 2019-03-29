@@ -12,9 +12,9 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@angular/router';
+import { ActivatedRoute, Params, PRIMARY_OUTLET, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 export const NZ_ROUTE_DATA_BREADCRUMB = 'breadcrumb';
 
@@ -60,16 +60,10 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
     if (this.nzAutoGenerate) {
       try {
         const activatedRoute = this.injector.get(ActivatedRoute);
-        const router = this.injector.get(Router);
-        router.events
-          .pipe(
-            filter(e => e instanceof NavigationEnd),
-            takeUntil(this.destroy$)
-          )
-          .subscribe(() => {
-            this.breadcrumbs = this.getBreadcrumbs(activatedRoute.root);
-            this.cd.markForCheck();
-          });
+        activatedRoute.url.pipe(takeUntil(this.destroy$)).subscribe(() => {
+          this.breadcrumbs = this.getBreadcrumbs(activatedRoute.root);
+          this.cd.markForCheck();
+        });
       } catch (e) {
         throw new Error('[NG-ZORRO] You should import RouterModule if you want to use NzAutoGenerate');
       }

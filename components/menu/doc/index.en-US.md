@@ -53,6 +53,7 @@ use `title` to mark the title of submenu
 | ----- | ----------- | ---- | ------------- |
 | `[nzOpen]` | whether sub menu is open or not, double binding | `boolean` | `false` |
 | `[nzDisabled]` | whether sub menu is disabled or not | `boolean` | `false` |
+| `[nzMenuClassName]` | Custom the submenu container's class name | `string` | - |
 | `(nzOpenChange)` | nzOpen callback | `EventEmitter<boolean>` | - |
 
 ### [nz-menu-group]
