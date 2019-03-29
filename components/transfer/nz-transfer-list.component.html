@@ -17,18 +17,19 @@
       [disabled]="disabled"
       [value]="filter"></div>
   </div>
-  <ul class="ant-transfer-list-content">
-    <ng-container *ngFor="let item of dataSource">
-      <li *ngIf="!item._hiden"
+  <ul *ngIf="stat.shownCount > 0" class="ant-transfer-list-content">
+    <div class="LazyLoad" *ngFor="let item of dataSource">
+      <li *ngIf="!item._hiden" (click)="_handleSelect(item)"
         class="ant-transfer-list-content-item" [ngClass]="{'ant-transfer-list-content-item-disabled': disabled || item.disabled}">
-        <label nz-checkbox [nzChecked]="item.checked" (nzCheckedChange)="_handleSelect(item)" [nzDisabled]="disabled || item.disabled">
+        <label nz-checkbox [nzChecked]="item.checked" (nzCheckedChange)="_handleSelect(item)"
+          (click)="$event.stopPropagation()" [nzDisabled]="disabled || item.disabled">
           <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
           <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
         </label>
       </li>
-    </ng-container>
+    </div>
   </ul>
-  <div *ngIf="dataSource.length === 0" class="ant-transfer-list-body-not-found">
+  <div *ngIf="stat.shownCount === 0" class="ant-transfer-list-body-not-found">
     <nz-embed-empty [nzComponentName]="'transfer'" [specificContent]="notFoundContent"></nz-embed-empty>
   </div>
 </div>

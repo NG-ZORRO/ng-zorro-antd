@@ -18,12 +18,12 @@ import { NzUpdateHostClassService } from '../core/services/update-host-class.ser
 import { TransferItem } from './interface';
 
 @Component({
-  selector           : 'nz-transfer-list',
+  selector: 'nz-transfer-list',
   preserveWhitespaces: false,
-  providers          : [ NzUpdateHostClassService ],
-  templateUrl        : './nz-transfer-list.component.html',
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush
+  providers: [NzUpdateHostClassService],
+  templateUrl: './nz-transfer-list.component.html',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzTransferListComponent implements OnChanges, OnInit {
   // #region fields
@@ -48,7 +48,7 @@ export class NzTransferListComponent implements OnChanges, OnInit {
   // events
   @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() readonly handleSelect: EventEmitter<TransferItem> = new EventEmitter();
-  @Output() readonly filterChange: EventEmitter<{ direction: string, value: string }> = new EventEmitter();
+  @Output() readonly filterChange: EventEmitter<{ direction: string; value: string }> = new EventEmitter();
 
   // #endregion
 
@@ -58,8 +58,8 @@ export class NzTransferListComponent implements OnChanges, OnInit {
 
   setClassMap(): void {
     const classMap = {
-      [ this.prefixCls ]                 : true,
-      [ `${this.prefixCls}-with-footer` ]: !!this.footer
+      [this.prefixCls]: true,
+      [`${this.prefixCls}-with-footer`]: !!this.footer
     };
     this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
   }
@@ -69,8 +69,8 @@ export class NzTransferListComponent implements OnChanges, OnInit {
   // #region select all
 
   stat = {
-    checkAll  : false,
-    checkHalf : false,
+    checkAll: false,
+    checkHalf: false,
     checkCount: 0,
     shownCount: 0
   };
@@ -120,8 +120,11 @@ export class NzTransferListComponent implements OnChanges, OnInit {
 
   // #endregion
 
-  constructor(private el: ElementRef, private updateHostClassService: NzUpdateHostClassService, private cdr: ChangeDetectorRef) {
-  }
+  constructor(
+    private el: ElementRef,
+    private updateHostClassService: NzUpdateHostClassService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('footer' in changes) {

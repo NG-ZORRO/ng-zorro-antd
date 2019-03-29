@@ -6,3 +6,4 @@ export { NzDatePickerComponent } from './date-picker.component';
 export { NzRangePickerComponent } from './range-picker.component';
 export { NzMonthPickerComponent } from './month-picker.component';
 export { NzWeekPickerComponent } from './week-picker.component';
+export { NzYearPickerComponent } from './year-picker.component';

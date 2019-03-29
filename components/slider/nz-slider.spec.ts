@@ -13,7 +13,7 @@ import { NzSliderModule } from './nz-slider.module';
 describe('NzSlider', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule ],
+      imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule],
       declarations: [
         StandardSliderComponent,
         DisableSliderComponent,
@@ -124,7 +124,6 @@ describe('NzSlider', () => {
 
       expect(onChangeSpy).toHaveBeenCalledTimes(1);
     });
-
   });
 
   describe('show tooltip', () => {
@@ -135,7 +134,7 @@ describe('NzSlider', () => {
     let testComponent: SliderShowTooltipComponent;
     let overlayContainerElement: HTMLElement;
 
-    beforeEach(inject([ OverlayContainer ], (oc: OverlayContainer) => {
+    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainerElement = oc.getContainerElement();
     }));
 
@@ -168,7 +167,7 @@ describe('NzSlider', () => {
     }));
 
     it('should never display tooltips if set to `never`', fakeAsync(() => {
-      const handlerHost = sliderNativeElement.querySelector('nz-slider-handle');
+      const handlerHost = sliderNativeElement.querySelector('nz-slider-handle')!;
 
       testComponent.show = 'never';
       tick(400);
@@ -202,7 +201,7 @@ describe('NzSlider', () => {
       sliderNativeElement = sliderInstance.sliderDOM;
     });
 
-    it('should/shouldn\'t be disabled', () => {
+    it("should/shouldn't be disabled", () => {
       expect(sliderInstance.nzDisabled).toBeTruthy();
 
       testComponent.disable = false;
@@ -270,7 +269,7 @@ describe('NzSlider', () => {
 
       // Computed by multiplying the difference between the min and the max by the percentage from
       // the click and adding that to the minimum.
-      const value = Math.round(((6 - 4) * 0.09) + 4);
+      const value = Math.round((6 - 4) * 0.09 + 4);
       expect(sliderInstance.value).toBe(value);
     });
 
@@ -280,7 +279,7 @@ describe('NzSlider', () => {
 
       // Computed by multiplying the difference between the min and the max by the percentage from
       // the click and adding that to the minimum.
-      const value = Math.round(((6 - 4) * 0.62) + 4);
+      const value = Math.round((6 - 4) * 0.62 + 4);
       expect(sliderInstance.value).toBe(value);
     });
 
@@ -393,7 +392,7 @@ describe('NzSlider', () => {
         fixture.detectChanges();
         dispatchSlideEventSequence(sliderNativeElement, 0, 0.333333);
 
-        expect(sliderInstance.value.toString()).toBe(expected);
+        expect(sliderInstance.value!.toString()).toBe(expected);
       };
 
       testStep(1, '33');
@@ -504,7 +503,7 @@ describe('NzSlider', () => {
       dispatchClickEventSequence(sliderNativeElement, 0.39);
       fixture.detectChanges();
 
-      expect(parseInt(trackFillElement.style.height, 10)).toBeCloseTo(62, -1);
+      expect(parseInt(trackFillElement.style.height!, 10)).toBeCloseTo(62, -1);
     });
 
     it('should have ant-slider-vertical class', () => {
@@ -532,7 +531,7 @@ describe('NzSlider', () => {
       trackFillElement = sliderNativeElement.querySelector('.ant-slider-track') as HTMLElement;
     });
 
-    beforeEach(inject([ OverlayContainer ], (oc: OverlayContainer) => {
+    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainerElement = oc.getContainerElement();
     }));
 
@@ -547,10 +546,10 @@ describe('NzSlider', () => {
       dispatchClickEventSequence(sliderNativeElement, 0.6);
       fixture.detectChanges();
 
-      expect(sliderInstance.value).toEqual([ 10, 60 ]);
+      expect(sliderInstance.value).toEqual([10, 60]);
     });
 
-    it('should/shouldn\'t be included', () => {
+    it("should/shouldn't be included", () => {
       dispatchClickEventSequence(sliderNativeElement, 0.33);
       fixture.detectChanges();
       expect(trackFillElement.style.left).toBe('0%');
@@ -573,7 +572,7 @@ describe('NzSlider', () => {
     });
 
     it('should stop at new steps when step=null or dots=true', () => {
-      testComponent.marks = { 15: { style: { 'color': 'red' }, label: '15' }, 33: '33' } as any; // tslint:disable-line:no-any
+      testComponent.marks = { 15: { style: { color: 'red' }, label: '15' }, 33: '33' } as any; // tslint:disable-line:no-any
       testComponent.step = null;
       fixture.detectChanges();
 
@@ -591,7 +590,7 @@ describe('NzSlider', () => {
     });
 
     it('should show/hide tooltip when enter/leave a handler', fakeAsync(() => {
-      const handlerHost = sliderNativeElement.querySelector('nz-slider-handle');
+      const handlerHost = sliderNativeElement.querySelector('nz-slider-handle')!;
 
       dispatchClickEventSequence(sliderNativeElement, 0.13);
       fixture.detectChanges();
@@ -724,16 +723,17 @@ const styles = `
 
 @Component({
   template: `
-    <nz-slider></nz-slider>`,
-  styles  : [ styles ]
+    <nz-slider></nz-slider>
+  `,
+  styles: [styles]
 })
-class StandardSliderComponent {
-}
+class StandardSliderComponent {}
 
 @Component({
   template: `
-    <nz-slider [nzDisabled]="disable"></nz-slider>`,
-  styles  : [ styles ]
+    <nz-slider [nzDisabled]="disable"></nz-slider>
+  `,
+  styles: [styles]
 })
 class DisableSliderComponent {
   disable = true;
@@ -741,8 +741,9 @@ class DisableSliderComponent {
 
 @Component({
   template: `
-    <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider>`,
-  styles  : [ styles ]
+    <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider>
+  `,
+  styles: [styles]
 })
 class SliderWithMinAndMaxComponent {
   min = 4;
@@ -751,16 +752,17 @@ class SliderWithMinAndMaxComponent {
 
 @Component({
   template: `
-    <nz-slider [ngModel]="26"></nz-slider>`,
-  styles  : [ styles ]
+    <nz-slider [ngModel]="26"></nz-slider>
+  `,
+  styles: [styles]
 })
-class SliderWithValueComponent {
-}
+class SliderWithValueComponent {}
 
 @Component({
   template: `
-    <nz-slider [nzStep]="step"></nz-slider>`,
-  styles  : [ styles ]
+    <nz-slider [nzStep]="step"></nz-slider>
+  `,
+  styles: [styles]
 })
 class SliderWithStepComponent {
   step = 25;
@@ -768,37 +770,44 @@ class SliderWithStepComponent {
 
 @Component({
   template: `
-    <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider>`,
-  styles  : [ styles ]
+    <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider>
+  `,
+  styles: [styles]
 })
-class SliderWithValueSmallerThanMinComponent {
-}
+class SliderWithValueSmallerThanMinComponent {}
 
 @Component({
   template: `
-    <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider>`,
-  styles  : [ styles ]
+    <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider>
+  `,
+  styles: [styles]
 })
-class SliderWithValueGreaterThanMaxComponent {
-}
+class SliderWithValueGreaterThanMaxComponent {}
 
 @Component({
   template: `
-    <nz-slider nzVertical></nz-slider>`,
-  styles  : [ styles ]
+    <nz-slider nzVertical></nz-slider>
+  `,
+  styles: [styles]
 })
-class VerticalSliderComponent {
-}
+class VerticalSliderComponent {}
 
 @Component({
   template: `
-    <nz-slider [nzRange]="range" [nzStep]="step" [nzMarks]="marks" [nzDots]="dots" [nzIncluded]="included"
-               [nzTipFormatter]="tipFormatter"></nz-slider>`,
-  styles  : [ styles ]
+    <nz-slider
+      [nzRange]="range"
+      [nzStep]="step"
+      [nzMarks]="marks"
+      [nzDots]="dots"
+      [nzIncluded]="included"
+      [nzTipFormatter]="tipFormatter"
+    ></nz-slider>
+  `,
+  styles: [styles]
 })
 class MixedSliderComponent {
   range = false;
-  step = 1;
+  step: number | null = 1;
   marks = { 22: '(22%)', 36: '(36%)' };
   dots = false;
   included = true;
@@ -814,17 +823,16 @@ class MixedSliderComponent {
       <nz-slider formControlName="slider"></nz-slider>
     </form>
   `,
-  styles  : [ styles ]
+  styles: [styles]
 })
 class SliderWithFormControlComponent implements OnInit {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
-  }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      slider: [ 42 ]
+      slider: [42]
     });
   }
 }
@@ -847,10 +855,10 @@ class SliderShowTooltipComponent {
  * physical location of the click.
  */
 function dispatchClickEventSequence(sliderElement: HTMLElement, percentage: number): void {
-  const trackElement = sliderElement.querySelector('.ant-slider-rail');
+  const trackElement = sliderElement.querySelector('.ant-slider-rail')!;
   const dimensions = trackElement.getBoundingClientRect();
-  const x = dimensions.left + (dimensions.width * percentage);
-  const y = dimensions.top + (dimensions.height * percentage);
+  const x = dimensions.left + dimensions.width * percentage;
+  const y = dimensions.top + dimensions.height * percentage;
 
   dispatchMouseenterEvent(sliderElement);
   dispatchMouseEvent(sliderElement, 'mousedown', x, y);
@@ -864,8 +872,12 @@ function dispatchClickEventSequence(sliderElement: HTMLElement, percentage: numb
  * @param endPercent The percentage of the slider where the slide will end.
  * @param stick Whether stick on and not mouseup when move at the end
  */
-function dispatchSlideEventSequence(sliderElement: HTMLElement, startPercent: number,
-                                    endPercent: number, stick: boolean = false): void {
+function dispatchSlideEventSequence(
+  sliderElement: HTMLElement,
+  startPercent: number,
+  endPercent: number,
+  stick: boolean = false
+): void {
   dispatchMouseenterEvent(sliderElement);
   dispatchSlideStartEvent(sliderElement, startPercent);
   dispatchSlideEvent(sliderElement, startPercent);
@@ -881,10 +893,10 @@ function dispatchSlideEventSequence(sliderElement: HTMLElement, startPercent: nu
  * @param percent The percentage of the slider where the slide will happen.
  */
 function dispatchSlideEvent(sliderElement: HTMLElement, percent: number): void {
-  const trackElement = sliderElement.querySelector('.ant-slider-rail');
+  const trackElement = sliderElement.querySelector('.ant-slider-rail')!;
   const dimensions = trackElement.getBoundingClientRect();
-  const x = dimensions.left + (dimensions.width * percent);
-  const y = dimensions.top + (dimensions.height * percent);
+  const x = dimensions.left + dimensions.width * percent;
+  const y = dimensions.top + dimensions.height * percent;
 
   dispatchMouseEvent(document, 'mousemove', x, y);
 }
@@ -895,10 +907,10 @@ function dispatchSlideEvent(sliderElement: HTMLElement, percent: number): void {
  * @param percent The percentage of the slider where the slide will begin.
  */
 function dispatchSlideStartEvent(sliderElement: HTMLElement, percent: number): void {
-  const trackElement = sliderElement.querySelector('.ant-slider-rail');
+  const trackElement = sliderElement.querySelector('.ant-slider-rail')!;
   const dimensions = trackElement.getBoundingClientRect();
-  const x = dimensions.left + (dimensions.width * percent);
-  const y = dimensions.top + (dimensions.height * percent);
+  const x = dimensions.left + dimensions.width * percent;
+  const y = dimensions.top + dimensions.height * percent;
 
   dispatchMouseenterEvent(sliderElement);
 
@@ -911,10 +923,10 @@ function dispatchSlideStartEvent(sliderElement: HTMLElement, percent: number): v
  * @param percent The percentage of the slider where the slide will end.
  */
 function dispatchSlideEndEvent(sliderElement: HTMLElement, percent: number): void {
-  const trackElement = sliderElement.querySelector('.ant-slider-rail');
+  const trackElement = sliderElement.querySelector('.ant-slider-rail')!;
   const dimensions = trackElement.getBoundingClientRect();
-  const x = dimensions.left + (dimensions.width * percent);
-  const y = dimensions.top + (dimensions.height * percent);
+  const x = dimensions.left + dimensions.width * percent;
+  const y = dimensions.top + dimensions.height * percent;
 
   dispatchMouseEvent(document, 'mouseup', x, y);
 }

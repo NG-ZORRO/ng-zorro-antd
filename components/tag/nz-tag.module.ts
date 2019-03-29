@@ -6,13 +6,8 @@ import { NzIconModule } from '../icon/nz-icon.module';
 import { NzTagComponent } from './nz-tag.component';
 
 @NgModule({
-  imports     : [ CommonModule, FormsModule, NzIconModule ],
-  declarations: [
-    NzTagComponent
-  ],
-  exports     : [
-    NzTagComponent
-  ]
+  imports: [CommonModule, FormsModule, NzIconModule],
+  declarations: [NzTagComponent],
+  exports: [NzTagComponent]
 })
-export class NzTagModule {
-}
+export class NzTagModule {}

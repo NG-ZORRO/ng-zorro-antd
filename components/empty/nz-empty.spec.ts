@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, NgModule, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, Inject, NgModule, TemplateRef, ViewChild } from '@angular/core';
+import { fakeAsync, tick, ComponentFixture, TestBed, TestBedStatic } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzI18nService } from '../i18n';
@@ -14,17 +14,16 @@ import { NzEmptyModule } from './nz-empty.module';
 import { NzEmptyService } from './nz-empty.service';
 
 describe('nz-empty', () => {
-  let fixture;
-  let testBed;
-  let testComponent;
-  let emptyComponent;
-  let embedComponent;
-
   describe('basic', () => {
+    let testBed: TestBedStatic;
+    let fixture: ComponentFixture<NzEmptyTestBasicComponent>;
+    let testComponent: NzEmptyTestBasicComponent;
+    let emptyComponent: DebugElement;
+
     beforeEach(() => {
       testBed = TestBed.configureTestingModule({
-        imports     : [ CommonModule, NzEmptyModule ],
-        declarations: [ NzEmptyTestBasicComponent ]
+        imports: [CommonModule, NzEmptyModule],
+        declarations: [NzEmptyTestBasicComponent]
       });
 
       TestBed.compileComponents();
@@ -126,17 +125,22 @@ describe('nz-empty', () => {
    * Config default empty content via `NzEmptyService`'s `setDefaultEmptyContent` method.
    */
   describe('embed', () => {
+    let fixture: ComponentFixture<NzEmptyTestServiceComponent>;
+    let testComponent: NzEmptyTestServiceComponent;
+    let embedComponent: DebugElement;
+    let emptyComponent: DebugElement;
+
     describe('service method', () => {
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ NzEmptyTestServiceModule ]
+          imports: [NzEmptyTestServiceModule]
         }).compileComponents();
 
         fixture = TestBed.createComponent(NzEmptyTestServiceComponent);
         testComponent = fixture.debugElement.componentInstance;
       });
 
-      it('should components\' prop has priority', fakeAsync(() => {
+      it("should components' prop has priority", fakeAsync(() => {
         const refresh = () => {
           fixture.detectChanges();
           tick();
@@ -176,7 +180,6 @@ describe('nz-empty', () => {
       }));
 
       it('should raise error when set a invalid default value', () => {
-
         expect(() => {
           // tslint:disable-next-line:no-any
           testComponent.emptyService.setDefaultContent(false as any);
@@ -256,7 +259,7 @@ describe('nz-empty', () => {
     describe('service injection', () => {
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ NzEmptyTestInjectionModule ]
+          imports: [NzEmptyTestInjectionModule]
         }).compileComponents();
 
         fixture = TestBed.createComponent(NzEmptyTestServiceComponent);
@@ -302,9 +305,9 @@ export class NzEmptyTestBasicComponent {
   @ViewChild('contentTpl') contentTpl: TemplateRef<void>;
   @ViewChild('footerTpl') footerTpl: TemplateRef<void>;
 
-  image = undefined;
-  content = undefined;
-  footer = undefined;
+  image?: TemplateRef<void> | string;
+  content?: TemplateRef<void> | string;
+  footer?: TemplateRef<void> | string;
 }
 
 @Component({
@@ -319,10 +322,9 @@ export class NzEmptyTestBasicComponent {
 export class NzEmptyTestServiceComponent {
   @ViewChild('tpl') template: TemplateRef<void>;
 
-  noResult = undefined;
+  noResult?: string | null;
 
-  constructor(public emptyService: NzEmptyService) {
-  }
+  constructor(public emptyService: NzEmptyService) {}
 
   reset(): void {
     this.emptyService.resetDefault();
@@ -340,30 +342,27 @@ export class NzEmptyTestServiceComponent {
   `
 })
 export class NzEmptyTestCustomComponent {
-  constructor(@Inject(NZ_EMPTY_COMPONENT_NAME) public name: string) {
-  }
+  constructor(@Inject(NZ_EMPTY_COMPONENT_NAME) public name: string) {}
 }
 
 @NgModule({
-  imports        : [ CommonModule, NzEmptyModule, NzListModule ],
-  declarations   : [ NzEmptyTestServiceComponent, NzEmptyTestCustomComponent ],
-  entryComponents: [ NzEmptyTestCustomComponent ],
-  exports        : [ NzEmptyTestServiceComponent, NzEmptyTestCustomComponent ]
+  imports: [CommonModule, NzEmptyModule, NzListModule],
+  declarations: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent],
+  entryComponents: [NzEmptyTestCustomComponent],
+  exports: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent]
 })
-export class NzEmptyTestServiceModule {
-}
+export class NzEmptyTestServiceModule {}
 
 @NgModule({
-  imports        : [ CommonModule, NzEmptyModule, NzListModule ],
-  declarations   : [ NzEmptyTestServiceComponent, NzEmptyTestCustomComponent ],
-  entryComponents: [ NzEmptyTestCustomComponent ],
-  exports        : [ NzEmptyTestServiceComponent, NzEmptyTestCustomComponent ],
-  providers      : [
+  imports: [CommonModule, NzEmptyModule, NzListModule],
+  declarations: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent],
+  entryComponents: [NzEmptyTestCustomComponent],
+  exports: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent],
+  providers: [
     {
-      provide : NZ_DEFAULT_EMPTY_CONTENT,
+      provide: NZ_DEFAULT_EMPTY_CONTENT,
       useValue: NzEmptyTestCustomComponent
     }
   ]
 })
-export class NzEmptyTestInjectionModule {
-}
+export class NzEmptyTestInjectionModule {}

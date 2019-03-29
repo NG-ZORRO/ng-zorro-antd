@@ -26,24 +26,21 @@ import { NzModalService } from './nz-modal.service';
 let counter = 0;
 
 describe('modal testing (legacy)', () => {
-  let instance;
-  let fixture: ComponentFixture<{}>;
-
   describe('demo-async', () => {
+    let fixture: ComponentFixture<NzDemoModalAsyncComponent>;
     let modalElement: HTMLElement;
     let buttonShow: HTMLButtonElement;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [ NoopAnimationsModule, NzButtonModule, NzModalModule ],
-        declarations: [ NzDemoModalAsyncComponent ],
-        providers   : [ NzMeasureScrollbarService ]
+        imports: [NoopAnimationsModule, NzButtonModule, NzModalModule],
+        declarations: [NzDemoModalAsyncComponent],
+        providers: [NzMeasureScrollbarService]
       }).compileComponents();
     }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoModalAsyncComponent);
-      instance = fixture.debugElement.componentInstance;
       modalElement = fixture.debugElement.query(By.directive(NzModalComponent)).nativeElement;
       buttonShow = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
     });
@@ -69,14 +66,16 @@ describe('modal testing (legacy)', () => {
 
   describe('demo-confirm-promise', () => {
     const tempModalId = generateUniqueId(); // Temp unique id to mark the confirm modal that created by service
+    let fixture: ComponentFixture<NzDemoModalConfirmPromiseComponent>;
+    let instance: NzDemoModalConfirmPromiseComponent;
     let modalAgent: NzModalRef;
     let buttonShow: HTMLButtonElement;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [ NoopAnimationsModule, NzButtonModule, NzModalModule ],
-        declarations: [ NzDemoModalConfirmPromiseComponent ],
-        providers   : [ NzMeasureScrollbarService ]
+        imports: [NoopAnimationsModule, NzButtonModule, NzModalModule],
+        declarations: [NzDemoModalConfirmPromiseComponent],
+        providers: [NzMeasureScrollbarService]
       }).compileComponents();
     }));
 
@@ -115,16 +114,18 @@ describe('modal testing (legacy)', () => {
   }); // /confirm-promise
 
   describe('NormalModal: created by service with most APIs', () => {
-    let tempModalId; // Temp unique id to mark the confirm modal that created by service
+    let tempModalId: string; // Temp unique id to mark the confirm modal that created by service
+    let fixture: ComponentFixture<TestBasicServiceComponent>;
+    let instance: TestBasicServiceComponent;
     let modalAgent: NzModalRef;
     let modalElement: HTMLElement;
-    let modalInstance;
+    let modalInstance: NzModalComponent;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [ NoopAnimationsModule, NzModalModule, NzIconTestModule ],
-        declarations: [ TestBasicServiceComponent ],
-        providers   : [ NzMeasureScrollbarService ]
+        imports: [NoopAnimationsModule, NzModalModule, NzIconTestModule],
+        declarations: [TestBasicServiceComponent],
+        providers: [NzMeasureScrollbarService]
       }).compileComponents();
     }));
 
@@ -140,18 +141,27 @@ describe('modal testing (legacy)', () => {
 
     it('should correctly render all basic props', fakeAsync(() => {
       spyOn(console, 'log');
+
       // [Hack] Codes that can't be covered by normal operations
-      // tslint:disable-next-line:no-any
-      expect((modalInstance as any).changeVisibleFromInside(true) instanceof Promise).toBe(true);
+      // @ts-ignore
+      expect(modalInstance.changeVisibleFromInside(true) instanceof Promise).toBe(true);
 
       expect((modalElement.querySelector('.ant-modal-wrap') as HTMLElement).style.zIndex).toBe('1888');
-      expect((modalElement.querySelector('.ant-modal-wrap') as HTMLElement).classList.contains('test-wrap-class-name')).toBe(true);
+      expect(
+        (modalElement.querySelector('.ant-modal-wrap') as HTMLElement).classList.contains('test-wrap-class-name')
+      ).toBe(true);
       expect((modalElement.querySelector('.ant-modal') as HTMLElement).style.width).toBe('250px');
-      expect((modalElement.querySelector('.ant-modal') as HTMLElement).classList.contains('test-class-name')).toBe(true);
+      expect((modalElement.querySelector('.ant-modal') as HTMLElement).classList.contains('test-class-name')).toBe(
+        true
+      );
       expect((modalElement.querySelector('.ant-modal') as HTMLElement).style.top).toBe('20pt');
-      expect((modalElement.querySelector('.ant-modal-title') as HTMLElement).innerHTML.indexOf('<b>TEST BOLD TITLE</b>')).toBeGreaterThan(-1);
+      expect(
+        (modalElement.querySelector('.ant-modal-title') as HTMLElement).innerHTML.indexOf('<b>TEST BOLD TITLE</b>')
+      ).toBeGreaterThan(-1);
       // expect((modalElement.querySelector('.ant-modal-footer') as HTMLElement).innerHTML.indexOf('<div>custom html footer: <i>OK</i></div>')).toBeGreaterThan(-1);
-      expect((modalElement.querySelector('.ant-modal-body') as HTMLElement).innerHTML.indexOf('<p>test html content</p>')).toBeGreaterThan(-1);
+      expect(
+        (modalElement.querySelector('.ant-modal-body') as HTMLElement).innerHTML.indexOf('<p>test html content</p>')
+      ).toBeGreaterThan(-1);
       expect((modalElement.querySelector('.ant-modal-body') as HTMLElement).style.background).toBe('gray');
       expect(getButtonOk(modalElement).innerHTML.indexOf('custom ok')).toBeGreaterThan(-1);
       expect(getButtonOk(modalElement).classList.contains('ant-btn-success')).toBe(true);
@@ -209,17 +219,19 @@ describe('modal testing (legacy)', () => {
 
   describe('NormalModal: created by service with vary nzContent and nzFooter', () => {
     const tempModalId = generateUniqueId(); // Temp unique id to mark the confirm modal that created by service
+    let fixture: ComponentFixture<TestVaryServiceComponent>;
+    let instance: TestVaryServiceComponent;
     let modalAgent: NzModalRef<TestVaryServiceCustomComponent>;
     let modalElement: HTMLElement;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [ NoopAnimationsModule, NzModalModule ],
-        declarations: [ TestVaryServiceComponent, TestVaryServiceCustomComponent ],
-        providers   : [ NzMeasureScrollbarService ]
+        imports: [NoopAnimationsModule, NzModalModule],
+        declarations: [TestVaryServiceComponent, TestVaryServiceCustomComponent],
+        providers: [NzMeasureScrollbarService]
       });
       TestBed.overrideModule(BrowserDynamicTestingModule, {
-        set: { entryComponents: [ TestVaryServiceCustomComponent ] }
+        set: { entryComponents: [TestVaryServiceCustomComponent] }
       }).compileComponents();
     }));
 
@@ -252,7 +264,7 @@ describe('modal testing (legacy)', () => {
       expect(isButtonLoading(lastButton)).toBe(false); // stopped immediately
 
       // destroy from inside
-      contentElement.querySelector('button').click();
+      contentElement.querySelector('button')!.click();
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
@@ -261,11 +273,14 @@ describe('modal testing (legacy)', () => {
   });
 
   describe('ConfirmModal: should apply options correctly', () => {
+    let fixture: ComponentFixture<TestConfirmModalComponent>;
+    let instance: TestConfirmModalComponent;
+
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [ NoopAnimationsModule, NzModalModule ],
-        declarations: [ TestConfirmModalComponent ],
-        providers   : [ NzMeasureScrollbarService ]
+        imports: [NoopAnimationsModule, NzModalModule],
+        declarations: [TestConfirmModalComponent],
+        providers: [NzMeasureScrollbarService]
       }).compileComponents();
     }));
 
@@ -275,6 +290,7 @@ describe('modal testing (legacy)', () => {
     });
 
     it('boundary detection for options', fakeAsync(() => {
+      // @ts-ignore
       const logger = instance.modalService.logger;
       spyOn(logger, 'warn');
 
@@ -303,12 +319,13 @@ describe('modal testing (legacy)', () => {
   });
 
   describe('css-unit.pipe', () => {
+    let fixture: ComponentFixture<TestCssUnitPipeComponent>;
     let testElement: HTMLDivElement;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [ NoopAnimationsModule ],
-        declarations: [ CssUnitPipe, TestCssUnitPipeComponent ]
+        imports: [NoopAnimationsModule],
+        declarations: [CssUnitPipe, TestCssUnitPipeComponent]
       }).compileComponents();
     }));
 
@@ -331,10 +348,12 @@ describe('modal testing (legacy)', () => {
   });
 
   it('#i18n', () => {
+    let fixture: ComponentFixture<NzDemoModalAsyncComponent>;
+
     const injector = TestBed.configureTestingModule({
-      imports: [ NoopAnimationsModule, NzButtonModule, NzModalModule ],
-      declarations: [ NzDemoModalAsyncComponent ],
-      providers   : [ NzMeasureScrollbarService ]
+      imports: [NoopAnimationsModule, NzButtonModule, NzModalModule],
+      declarations: [NzDemoModalAsyncComponent],
+      providers: [NzMeasureScrollbarService]
     });
     fixture = TestBed.createComponent(NzDemoModalAsyncComponent);
     const comp = fixture.componentInstance as NzDemoModalAsyncComponent;
@@ -342,9 +361,11 @@ describe('modal testing (legacy)', () => {
     fixture.detectChanges();
     injector.get(NzI18nService).setLocale(en_US);
     fixture.detectChanges();
-    const cancelText = (fixture.debugElement.query(By.css('nz-modal .ant-btn')).nativeElement as HTMLElement).textContent.trim();
+    const cancelText = (fixture.debugElement.query(By.css('nz-modal .ant-btn'))
+      .nativeElement as HTMLElement).textContent!.trim();
     expect(cancelText).toBe(en_US.Modal.cancelText);
-    const okText = (fixture.debugElement.query(By.css('nz-modal .ant-btn-primary')).nativeElement as HTMLElement).textContent.trim();
+    const okText = (fixture.debugElement.query(By.css('nz-modal .ant-btn-primary'))
+      .nativeElement as HTMLElement).textContent!.trim();
     expect(okText).toBe(en_US.Modal.okText);
   });
 });
@@ -356,18 +377,15 @@ describe('NzModal', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ NoopAnimationsModule, NzModalModule ],
-      providers: [ NzMeasureScrollbarService ],
-      declarations: [
-        NzDemoModalBasicComponent,
-        ModalByServiceComponent
-      ]
+      imports: [NoopAnimationsModule, NzModalModule],
+      providers: [NzMeasureScrollbarService],
+      declarations: [NzDemoModalBasicComponent, ModalByServiceComponent]
     });
 
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([ NzModalService, OverlayContainer ], (ms: NzModalService, oc: OverlayContainer) => {
+  beforeEach(inject([NzModalService, OverlayContainer], (ms: NzModalService, oc: OverlayContainer) => {
     modalService = ms;
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
@@ -402,8 +420,9 @@ describe('NzModal', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(ModalByServiceComponent);
     });
-    afterEach(fakeAsync(() => { // wait all openModals tobe closed to clean up the ModalManager as it is globally static
-      document.documentElement.classList.remove('cdk-global-scrollblock');
+    afterEach(fakeAsync(() => {
+      // wait all openModals tobe closed to clean up the ModalManager as it is globally static
+      document.documentElement!.classList.remove('cdk-global-scrollblock');
       modalService.closeAll();
       fixture.detectChanges();
       tick(1000);
@@ -475,18 +494,22 @@ describe('NzModal', () => {
 
     it('should close all opened modals (include non-service modals)', fakeAsync(() => {
       const spy = jasmine.createSpy('afterAllClose spy');
-      const modalMethods = [ 'create', 'info', 'success', 'error', 'confirm' ];
+      const modalMethods = ['create', 'info', 'success', 'error', 'confirm'];
       const uniqueId = (name: string) => `__${name}_ID_SUFFIX__`;
-      const queryOverlayElement = (name: string) => overlayContainerElement.querySelector(`.${uniqueId(name)}`) as HTMLElement;
+      const queryOverlayElement = (name: string) =>
+        overlayContainerElement.querySelector(`.${uniqueId(name)}`) as HTMLElement;
 
       modalService.afterAllClose.subscribe(spy);
 
       fixture.componentInstance.nonServiceModalVisible = true; // Show non-service modal
+      // @ts-ignore
       modalMethods.forEach(method => modalService[method]({ nzWrapClassName: uniqueId(method) })); // Service modals
 
       fixture.detectChanges();
       tick(600);
-      (modalMethods.concat('NON_SERVICE')).forEach(method => expect(queryOverlayElement(method).style.display).not.toBe('none')); // Cover non-service modal for later checking
+      modalMethods
+        .concat('NON_SERVICE')
+        .forEach(method => expect(queryOverlayElement(method).style.display).not.toBe('none')); // Cover non-service modal for later checking
       expect(modalService.openModals.length).toBe(6);
 
       modalService.closeAll();
@@ -494,6 +517,33 @@ describe('NzModal', () => {
       expect(spy).not.toHaveBeenCalled();
       tick(600);
       expect(spy).toHaveBeenCalled();
+      expect(modalService.openModals.length).toBe(0);
+    }));
+
+    it('should only a confirm button when the type is "info"|"success"|"error"|"warning"', fakeAsync(() => {
+      const modalMethods = ['info', 'success', 'error', 'warning'];
+      const uniqueId = (name: string) => `__${name}_ID_SUFFIX__`;
+      const queryOverlayElement = (name: string) =>
+        overlayContainerElement.querySelectorAll(`.${uniqueId(name)} .ant-modal-confirm-btns > button`) as NodeListOf<
+          HTMLButtonElement
+        >;
+
+      fixture.componentInstance.nonServiceModalVisible = false; // Show non-service modal
+      // @ts-ignore
+      modalMethods.forEach(method => modalService[method]({ nzWrapClassName: uniqueId(method) })); // Service modals
+
+      fixture.detectChanges();
+      tick(600);
+      modalMethods.forEach(method => {
+        const buttons = queryOverlayElement(method);
+        expect(buttons.length).toBe(1);
+        expect(buttons[0]!.classList).toContain('ant-btn-primary');
+      }); // Cover non-service modal for later checking
+      expect(modalService.openModals.length).toBe(4);
+
+      modalService.closeAll();
+      fixture.detectChanges();
+      tick(600);
       expect(modalService.openModals.length).toBe(0);
     }));
 
@@ -540,7 +590,6 @@ describe('NzModal', () => {
     });
 
     it('should block body scroll', fakeAsync(() => {
-      console.log(document.documentElement.classList);
       const forceScrollElement = document.createElement('div');
       document.body.appendChild(forceScrollElement);
       forceScrollElement.style.width = '100px';
@@ -551,13 +600,13 @@ describe('NzModal', () => {
       tick(600);
       fixture.detectChanges();
 
-      expect(document.documentElement.classList).toContain('cdk-global-scrollblock');
+      expect(document.documentElement!.classList).toContain('cdk-global-scrollblock');
 
       modalRef.close();
       tick(600);
       fixture.detectChanges();
 
-      expect(document.documentElement.classList).not.toContain('cdk-global-scrollblock');
+      expect(document.documentElement!.classList).not.toContain('cdk-global-scrollblock');
       document.body.removeChild(forceScrollElement);
     }));
   });
@@ -584,7 +633,13 @@ class NzDemoModalBasicComponent {
     <button nz-button nzType="primary" (click)="showModal()">
       <span>show modal</span>
     </button>
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="title" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" [nzOkLoading]="isOkLoading">
+    <nz-modal
+      [(nzVisible)]="isVisible"
+      nzTitle="title"
+      (nzOnCancel)="handleCancel()"
+      (nzOnOk)="handleOk()"
+      [nzOkLoading]="isOkLoading"
+    >
       <p>content</p>
     </nz-modal>
   `,
@@ -616,20 +671,21 @@ class NzDemoModalAsyncComponent {
   template: `
     <button nz-button nzType="info" (click)="showConfirm()">Confirm</button>
   `,
-  styles  : []
+  styles: []
 })
 class NzDemoModalConfirmPromiseComponent {
   confirmModal: NzModalRef; // For testing by now
 
-  constructor(private modal: NzModalService) { }
+  constructor(private modal: NzModalService) {}
 
   showConfirm(): void {
     this.confirmModal = this.modal.confirm({
       nzTitle: 'Do you Want to delete these items?',
       nzContent: 'When clicked the OK button, this dialog will be closed after 1 second',
-      nzOnOk: () => new Promise((resolve, reject) => {
-        setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-      }).catch(() => console.log('Oops errors!'))
+      nzOnOk: () =>
+        new Promise((resolve, reject) => {
+          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+        }).catch(() => console.log('Oops errors!'))
     });
   }
 }
@@ -665,7 +721,10 @@ class TestBasicServiceComponent {
       nzOkLoading: false,
       nzOkDisabled: false,
       nzCancelDisabled: false,
-      nzOnOk: () => { console.log('click ok'); return false; },
+      nzOnOk: () => {
+        console.log('click ok');
+        return false;
+      },
       nzCancelText: 'custom cancel',
       nzCancelLoading: true,
       nzOnCancel: () => console.log('click cancel')
@@ -686,8 +745,8 @@ class TestVaryServiceComponent {
       nzFooter: [
         {
           label: 'change title from outside',
-          onClick: (componentInstance) => {
-            componentInstance.title = 'internal title changed';
+          onClick: componentInstance => {
+            componentInstance!.title = 'internal title changed';
             return Promise.resolve();
           }
         },
@@ -701,9 +760,11 @@ class TestVaryServiceComponent {
     return modal;
   }
 }
+
 @Component({
   template: `
-    <h2>{{ title }}</h2><h4>{{ subtitle }}</h4>
+    <h2>{{ title }}</h2>
+    <h4>{{ subtitle }}</h4>
     <button (click)="destroyModal()">destroy</button>
   `
 })
@@ -711,7 +772,7 @@ export class TestVaryServiceCustomComponent {
   @Input() title: string;
   @Input() subtitle: string;
 
-  constructor(private modal: NzModalRef, public elementRef: ElementRef) { }
+  constructor(private modal: NzModalRef, public elementRef: ElementRef) {}
 
   destroyModal(): void {
     this.modal.destroy();
@@ -722,7 +783,7 @@ export class TestVaryServiceCustomComponent {
   template: ``
 })
 export class TestConfirmModalComponent {
-  constructor(public modalService: NzModalService) { }
+  constructor(public modalService: NzModalService) {}
 
   createConfirm(): NzModalRef {
     this.modalService.confirm(); // [Testing Required] Only for coverage temporarily
@@ -736,26 +797,30 @@ export class TestConfirmModalComponent {
   }
 
   createOtherModals(): string[] {
-    return [ 'info', 'success', 'error', 'warning' ].map(type => {
+    return ['info', 'success', 'error', 'warning'].map(type => {
       const modalId = generateUniqueId();
+      // @ts-ignore
       this.modalService[type]({ nzClassName: modalId });
-      this.modalService[type]();  // [Testing Required] Only for coverage temporarily
+      // @ts-ignore
+      this.modalService[type](); // [Testing Required] Only for coverage temporarily
       return modalId;
     });
   }
 }
 
 @Component({
-  template: `<div [style.width]="100 | toCssUnit" [style.height]="'100px' | toCssUnit" [style.top]="100 | toCssUnit:'pt'"></div>`
+  template: `
+    <div [style.width]="100 | toCssUnit" [style.height]="'100px' | toCssUnit" [style.top]="100 | toCssUnit: 'pt'"></div>
+  `
 })
-class TestCssUnitPipeComponent { }
+class TestCssUnitPipeComponent {}
 
 @Component({
   selector: 'nz-modal-by-service',
   template: `
     <nz-modal [(nzVisible)]="nonServiceModalVisible" nzWrapClassName="__NON_SERVICE_ID_SUFFIX__"></nz-modal>
   `,
-  providers: [ NzModalControlService ] // Testing for service with parent service
+  providers: [NzModalControlService] // Testing for service with parent service
 })
 export class ModalByServiceComponent {
   nonServiceModalVisible = false;
@@ -766,13 +831,13 @@ export class ModalByServiceComponent {
 // -------------------------------------------
 
 function expectModalHidden(modalElement: HTMLElement, hidden: boolean): void {
-  const display = (modalElement.querySelector('.ant-modal-wrap') as HTMLElement).style.display;
+  const display = (modalElement.querySelector('.ant-modal-wrap') as HTMLElement).style.visibility;
   if (hidden) {
-    expect(display).toBe('none');
+    expect(display).toBe('hidden');
   } else {
-    expect(display).not.toBe('none');
+    expect(display).not.toBe('hidden');
   }
-  expect(modalElement.querySelector('.ant-modal-mask').classList.contains('ant-modal-mask-hidden')).toBe(hidden);
+  expect(modalElement.querySelector('.ant-modal-mask')!.classList.contains('ant-modal-mask-hidden')).toBe(hidden);
 }
 
 function expectModalDestroyed(classId: string, destroyed: boolean): void {
@@ -789,14 +854,19 @@ function generateUniqueId(): string {
 }
 
 function getButtonOk(modalElement: HTMLElement): HTMLButtonElement {
-  return isConfirmModal(modalElement) ? modalElement.querySelector('.ant-modal-confirm-btns button:last-child') as HTMLButtonElement : modalElement.querySelector('.ant-modal-footer button:last-child') as HTMLButtonElement;
+  return isConfirmModal(modalElement)
+    ? (modalElement.querySelector('.ant-modal-confirm-btns button:last-child') as HTMLButtonElement)
+    : (modalElement.querySelector('.ant-modal-footer button:last-child') as HTMLButtonElement);
 }
 
 function getButtonCancel(modalElement: HTMLElement): HTMLButtonElement {
-  return isConfirmModal(modalElement) ? modalElement.querySelector('.ant-modal-confirm-btns button:first-child') as HTMLButtonElement : modalElement.querySelector('.ant-modal-footer button:first-child') as HTMLButtonElement;
+  return isConfirmModal(modalElement)
+    ? (modalElement.querySelector('.ant-modal-confirm-btns button:first-child') as HTMLButtonElement)
+    : (modalElement.querySelector('.ant-modal-footer button:first-child') as HTMLButtonElement);
 }
 
-function getButtonClose(modalElement: HTMLElement): HTMLButtonElement { // For normal modal only
+function getButtonClose(modalElement: HTMLElement): HTMLButtonElement {
+  // For normal modal only
   return modalElement.querySelector('.ant-modal-close') as HTMLButtonElement;
 }
 

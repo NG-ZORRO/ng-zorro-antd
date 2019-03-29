@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { async, fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,25 +14,25 @@ registerLocaleData(zh);
 
 describe('time-picker', () => {
   let overlayContainer: OverlayContainer;
-  let testComponent;
-  let fixture;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NoopAnimationsModule, FormsModule, NzI18nModule, NzTimePickerModule ],
-      schemas     : [ NO_ERRORS_SCHEMA ],
-      declarations: [ NzTestTimePickerComponent ]
+      imports: [NoopAnimationsModule, FormsModule, NzI18nModule, NzTimePickerModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [NzTestTimePickerComponent]
     });
     TestBed.compileComponents();
-    inject([ OverlayContainer ], (oc: OverlayContainer) => {
+    inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
     })();
   }));
-  afterEach(inject([ OverlayContainer ], (currentOverlayContainer: OverlayContainer) => {
+  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
   describe('basic time-picker', () => {
-    let timeElement;
+    let testComponent: NzTestTimePickerComponent;
+    let fixture: ComponentFixture<NzTestTimePickerComponent>;
+    let timeElement: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimePickerComponent);
       testComponent = fixture.debugElement.componentInstance;
@@ -47,7 +47,9 @@ describe('time-picker', () => {
       fixture.detectChanges();
       testComponent.autoFocus = true;
       fixture.detectChanges();
-      expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('autofocus').name).toBe('autofocus');
+      expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('autofocus').name).toBe(
+        'autofocus'
+      );
       testComponent.autoFocus = false;
       fixture.detectChanges();
       expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('autofocus')).toBe(null);
@@ -101,7 +103,14 @@ describe('time-picker', () => {
 @Component({
   selector: 'nz-test-time-picker',
   template: `
-    <nz-time-picker [nzAutoFocus]="autoFocus" [(ngModel)]="date" [(nzOpen)]="open" (nzOpenChange)="openChange($event)" [nzDisabled]="disabled"></nz-time-picker>`
+    <nz-time-picker
+      [nzAutoFocus]="autoFocus"
+      [(ngModel)]="date"
+      [(nzOpen)]="open"
+      (nzOpenChange)="openChange($event)"
+      [nzDisabled]="disabled"
+    ></nz-time-picker>
+  `
 })
 export class NzTestTimePickerComponent {
   open = false;

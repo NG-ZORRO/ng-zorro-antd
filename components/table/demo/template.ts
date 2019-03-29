@@ -46,5 +46,4 @@ import { Component } from '@angular/core';
     </nz-table>
   `
 })
-export class NzDemoTableTemplateComponent {
-}
+export class NzDemoTableTemplateComponent {}

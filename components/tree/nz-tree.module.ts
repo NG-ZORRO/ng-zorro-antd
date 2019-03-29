@@ -7,23 +7,8 @@ import { NzTreeNodeComponent } from './nz-tree-node.component';
 import { NzTreeComponent } from './nz-tree.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    NzAddOnModule,
-    NzIconModule,
-    NzNoAnimationModule,
-    NzAddOnModule
-  ],
-  declarations: [
-    NzTreeComponent,
-    NzTreeNodeComponent
-  ],
-  exports: [
-    NzTreeComponent,
-    NzTreeNodeComponent
-  ]
+  imports: [CommonModule, NzAddOnModule, NzIconModule, NzNoAnimationModule, NzAddOnModule],
+  declarations: [NzTreeComponent, NzTreeNodeComponent],
+  exports: [NzTreeComponent, NzTreeNodeComponent]
 })
-
-export class NzTreeModule {
-
-}
+export class NzTreeModule {}

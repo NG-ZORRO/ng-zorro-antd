@@ -19,16 +19,16 @@ import { NzMenuService } from './nz-menu.service';
 import { NzSubmenuService } from './nz-submenu.service';
 
 @Directive({
-  selector : '[nz-menu-item]',
-  providers: [ NzUpdateHostClassService ],
-  host     : {
+  selector: '[nz-menu-item]',
+  providers: [NzUpdateHostClassService],
+  host: {
     '(click)': 'clickMenuItem($event)'
   }
 })
 export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy {
   private el: HTMLElement = this.elementRef.nativeElement;
   private destroy$ = new Subject();
-  private originalPadding = null;
+  private originalPadding: number | null = null;
   selected$ = new Subject<boolean>();
   @Input() nzPaddingLeft: number;
   @Input() @InputBoolean() nzDisabled = false;
@@ -50,9 +50,9 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy {
   setClassMap(): void {
     const prefixName = this.nzMenuService.isInDropDown ? 'ant-dropdown-menu-item' : 'ant-menu-item';
     this.nzUpdateHostClassService.updateHostClass(this.el, {
-      [ `${prefixName}` ]         : true,
-      [ `${prefixName}-selected` ]: this.nzSelected,
-      [ `${prefixName}-disabled` ]: this.nzDisabled
+      [`${prefixName}`]: true,
+      [`${prefixName}-selected`]: this.nzSelected,
+      [`${prefixName}-disabled`]: this.nzDisabled
     });
   }
 
@@ -62,42 +62,44 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy {
     this.setClassMap();
   }
 
-  constructor(private nzUpdateHostClassService: NzUpdateHostClassService,
-              private nzMenuService: NzMenuService,
-              @Optional() private nzSubmenuService: NzSubmenuService,
-              private renderer: Renderer2,
-              private elementRef: ElementRef) {
-  }
+  constructor(
+    private nzUpdateHostClassService: NzUpdateHostClassService,
+    private nzMenuService: NzMenuService,
+    @Optional() private nzSubmenuService: NzSubmenuService,
+    private renderer: Renderer2,
+    private elementRef: ElementRef
+  ) {}
 
   ngOnInit(): void {
     /** store origin padding in padding */
-    if (this.el.style[ 'padding-left' ]) {
-      this.originalPadding = parseInt(this.el.style[ 'padding-left' ], 10);
+    const paddingLeft = this.el.style.paddingLeft;
+    if (paddingLeft) {
+      this.originalPadding = parseInt(paddingLeft, 10);
     }
     merge(
       this.nzMenuService.mode$,
       this.nzMenuService.inlineIndent$,
       this.nzSubmenuService ? this.nzSubmenuService.level$ : EMPTY
-    ).pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
-      let padding = null;
-      if (this.nzMenuService.mode === 'inline') {
-        if (isNotNil(this.nzPaddingLeft)) {
-          padding = this.nzPaddingLeft;
+    )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        let padding: number | null = null;
+        if (this.nzMenuService.mode === 'inline') {
+          if (isNotNil(this.nzPaddingLeft)) {
+            padding = this.nzPaddingLeft;
+          } else {
+            const level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
+            padding = level * this.nzMenuService.inlineIndent;
+          }
         } else {
-          const level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
-          padding = level * this.nzMenuService.inlineIndent;
+          padding = this.originalPadding;
         }
-      } else {
-        padding = this.originalPadding;
-      }
-      if (padding) {
-        this.renderer.setStyle(this.el, 'padding-left', `${padding}px`);
-      } else {
-        this.renderer.removeStyle(this.el, 'padding-left');
-      }
-    });
+        if (padding) {
+          this.renderer.setStyle(this.el, 'padding-left', `${padding}px`);
+        } else {
+          this.renderer.removeStyle(this.el, 'padding-left');
+        }
+      });
     this.setClassMap();
   }
 
@@ -114,5 +116,4 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }

@@ -1,14 +1,20 @@
 import { TemplateRef, Type } from '@angular/core';
+import { IndexableObject } from '../types/indexable';
 
 // tslint:disable-next-line:no-any
 export function isNotNil(value: any): boolean {
-  return (typeof(value) !== 'undefined') && value !== null;
+  return typeof value !== 'undefined' && value !== null;
+}
+
+// tslint:disable-next-line:no-any
+export function isNil(value: any): value is null | undefined {
+  return typeof value === 'undefined' || value === null;
 }
 
 /**
  * Examine if two objects are shallowly equaled.
  */
-export function shallowEqual(objA: {}, objB: {}): boolean {
+export function shallowEqual(objA?: IndexableObject, objB?: IndexableObject): boolean {
   if (objA === objB) {
     return true;
   }
@@ -28,11 +34,11 @@ export function shallowEqual(objA: {}, objB: {}): boolean {
 
   // tslint:disable-next-line:prefer-for-of
   for (let idx = 0; idx < keysA.length; idx++) {
-    const key = keysA[ idx ];
+    const key = keysA[idx];
     if (!bHasOwnProperty(key)) {
       return false;
     }
-    if (objA[ key ] !== objB[ key ]) {
+    if (objA[key] !== objB[key]) {
       return false;
     }
   }
@@ -41,9 +47,7 @@ export function shallowEqual(objA: {}, objB: {}): boolean {
 }
 
 export function isInteger(value: string | number): boolean {
-  return typeof value === 'number' &&
-    isFinite(value) &&
-    Math.floor(value) === value;
+  return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
 }
 
 export function isEmpty(element: HTMLElement): boolean {
@@ -56,12 +60,12 @@ export function isEmpty(element: HTMLElement): boolean {
   return true;
 }
 
-export function filterNotEmptyNode(node: Node): Node {
+export function filterNotEmptyNode(node: Node): Node | null {
   if (node) {
-    if ((node.nodeType === 1) && ((node as HTMLElement).outerHTML.toString().trim().length !== 0)) {
+    if (node.nodeType === 1 && (node as HTMLElement).outerHTML.toString().trim().length !== 0) {
       // ELEMENT_NODE
       return node;
-    } else if ((node.nodeType === 3) && (node.textContent.toString().trim().length !== 0)) {
+    } else if (node.nodeType === 3 && node.textContent!.toString().trim().length !== 0) {
       // TEXT_NODE
       return node;
     }
@@ -70,14 +74,17 @@ export function filterNotEmptyNode(node: Node): Node {
   return null;
 }
 
-export function isNonEmptyString(value: any): boolean { // tslint:disable-line:no-any
+export function isNonEmptyString(value: any): boolean {
+  // tslint:disable-line:no-any
   return typeof value === 'string' && value !== '';
 }
 
-export function isTemplateRef(value: any): boolean { // tslint:disable-line:no-any
+export function isTemplateRef(value: any): boolean {
+  // tslint:disable-line:no-any
   return value instanceof TemplateRef;
 }
 
-export function isComponent(value: any): boolean { // tslint:disable-line:no-any
+export function isComponent(value: any): boolean {
+  // tslint:disable-line:no-any
   return value instanceof Type;
 }

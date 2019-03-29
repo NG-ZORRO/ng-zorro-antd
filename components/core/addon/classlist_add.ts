@@ -4,7 +4,7 @@ import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
   selector: '[nzClassListAdd]'
 })
 export class NzClassListAddDirective {
-  classList = [];
+  classList: string[] = [];
 
   @Input()
   set nzClassListAdd(list: string[]) {
@@ -17,7 +17,5 @@ export class NzClassListAddDirective {
     this.classList = list;
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-
-  }
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
 }

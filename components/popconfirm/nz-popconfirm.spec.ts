@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
+import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from '../core/testing';
@@ -11,27 +11,29 @@ import { NzPopconfirmModule } from './nz-popconfirm.module';
 describe('NzPopconfirm', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  let fixture;
-  let component;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzPopconfirmModule, NoopAnimationsModule, NzToolTipModule, NzIconTestModule ],
-      declarations: [ NzpopconfirmTestWrapperComponent, NzpopconfirmTestNewComponent ]
+      imports: [NzPopconfirmModule, NoopAnimationsModule, NzToolTipModule, NzIconTestModule],
+      declarations: [NzpopconfirmTestWrapperComponent, NzpopconfirmTestNewComponent]
     });
 
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([ OverlayContainer ], (oc: OverlayContainer) => {
+  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
+
   afterEach(() => {
     overlayContainer.ngOnDestroy();
   });
 
   describe('should not bring break changes', () => {
+    let fixture: ComponentFixture<NzpopconfirmTestWrapperComponent>;
+    let component: NzpopconfirmTestWrapperComponent;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzpopconfirmTestWrapperComponent);
       component = fixture.componentInstance;
@@ -106,7 +108,7 @@ describe('NzPopconfirm', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain(featureKey);
 
-      dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop')!, 'click');
       tick();
       fixture.detectChanges();
       tick(500); // Wait for animations
@@ -147,7 +149,7 @@ describe('NzPopconfirm', () => {
       expect(overlayContainerElement.textContent).toContain(featureKey);
       expect(onConfirm).toHaveBeenCalledTimes(1);
 
-      dispatchMouseEvent(overlayContainerElement.querySelector('.ant-popover-buttons button:first-child'), 'click');
+      dispatchMouseEvent(overlayContainerElement.querySelector('.ant-popover-buttons button:first-child')!, 'click');
       fixture.detectChanges();
       tick(600);
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
@@ -155,17 +157,23 @@ describe('NzPopconfirm', () => {
     }));
   });
   describe('should support directive usage', () => {
+    let fixture: ComponentFixture<NzpopconfirmTestNewComponent>;
+    let component: NzpopconfirmTestNewComponent;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzpopconfirmTestNewComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
+
     it('should show/hide with title string', fakeAsync(() => {
       const triggerElement = component.stringTemplate.nativeElement;
       dispatchMouseEvent(triggerElement, 'click');
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-popover-message-title').textContent).toContain('title-string');
-      dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop'), 'click');
+      expect(overlayContainerElement.querySelector('.ant-popover-message-title')!.textContent).toContain(
+        'title-string'
+      );
+      dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop')!, 'click');
       tick();
       fixture.detectChanges();
       tick(500); // Wait for animations
@@ -177,18 +185,26 @@ describe('NzPopconfirm', () => {
       const triggerElement = component.stringTemplate.nativeElement;
       dispatchMouseEvent(triggerElement, 'click');
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-popover-buttons button')[ 0 ].textContent).toContain('cancel-text');
-      expect(overlayContainerElement.querySelectorAll('.ant-popover-buttons button')[ 1 ].textContent).toContain('ok-text');
-      expect(overlayContainerElement.querySelectorAll('.ant-popover-buttons button')[ 1 ].classList).not.toContain('ant-btn-primary');
+      expect(overlayContainerElement.querySelectorAll('.ant-popover-buttons button')[0].textContent).toContain(
+        'cancel-text'
+      );
+      expect(overlayContainerElement.querySelectorAll('.ant-popover-buttons button')[1].textContent).toContain(
+        'ok-text'
+      );
+      expect(overlayContainerElement.querySelectorAll('.ant-popover-buttons button')[1].classList).not.toContain(
+        'ant-btn-primary'
+      );
     });
     it('should cancel work', fakeAsync(() => {
       const triggerElement = component.stringTemplate.nativeElement;
       dispatchMouseEvent(triggerElement, 'click');
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-popover-message-title').textContent).toContain('title-string');
+      expect(overlayContainerElement.querySelector('.ant-popover-message-title')!.textContent).toContain(
+        'title-string'
+      );
       expect(component.confirm).toHaveBeenCalledTimes(0);
       expect(component.cancel).toHaveBeenCalledTimes(0);
-      dispatchMouseEvent(overlayContainerElement.querySelectorAll('.ant-popover-buttons button')[ 0 ], 'click');
+      dispatchMouseEvent(overlayContainerElement.querySelectorAll('.ant-popover-buttons button')[0], 'click');
       tick();
       fixture.detectChanges();
       tick(500); // Wait for animations
@@ -202,10 +218,12 @@ describe('NzPopconfirm', () => {
       const triggerElement = component.stringTemplate.nativeElement;
       dispatchMouseEvent(triggerElement, 'click');
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-popover-message-title').textContent).toContain('title-string');
+      expect(overlayContainerElement.querySelector('.ant-popover-message-title')!.textContent).toContain(
+        'title-string'
+      );
       expect(component.confirm).toHaveBeenCalledTimes(0);
       expect(component.cancel).toHaveBeenCalledTimes(0);
-      dispatchMouseEvent(overlayContainerElement.querySelectorAll('.ant-popover-buttons button')[ 1 ], 'click');
+      dispatchMouseEvent(overlayContainerElement.querySelectorAll('.ant-popover-buttons button')[1], 'click');
       tick();
       fixture.detectChanges();
       tick(500); // Wait for animations
@@ -231,8 +249,8 @@ describe('NzPopconfirm', () => {
       const triggerElement = component.templateTemplate.nativeElement;
       dispatchMouseEvent(triggerElement, 'click');
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-popover-message').textContent).toContain('title-template');
-      dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop'), 'click');
+      expect(overlayContainerElement.querySelector('.ant-popover-message')!.textContent).toContain('title-template');
+      dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop')!, 'click');
       tick();
       fixture.detectChanges();
       tick(500); // Wait for animations
@@ -261,28 +279,30 @@ describe('NzPopconfirm', () => {
 @Component({
   selector: 'nz-popconfirm-test-new',
   template: `
-    <a nz-popconfirm
-       #stringTemplate
-       nzTitle="title-string"
-       nzOkText="ok-text"
-       nzCancelText="cancel-text"
-       nzOkType="default"
-       [nzCondition]="condition"
-       (nzOnConfirm)="confirm()"
-       (nzOnCancel)="cancel()">
+    <a
+      nz-popconfirm
+      #stringTemplate
+      nzTitle="title-string"
+      nzOkText="ok-text"
+      nzCancelText="cancel-text"
+      nzOkType="default"
+      [nzCondition]="condition"
+      (nzOnConfirm)="confirm()"
+      (nzOnCancel)="cancel()"
+    >
       Delete
     </a>
-    <a nz-popconfirm
-       #templateTemplate
-       [nzIcon]="icon"
-       [nzTitle]="titleTemplate"
-       (nzOnConfirm)="confirm()"
-       (nzOnCancel)="cancel()">
+    <a
+      nz-popconfirm
+      #templateTemplate
+      [nzIcon]="icon"
+      [nzTitle]="titleTemplate"
+      (nzOnConfirm)="confirm()"
+      (nzOnCancel)="cancel()"
+    >
       Delete
     </a>
-    <a nz-popconfirm
-       #iconTemplate
-       [nzIcon]="icon">
+    <a nz-popconfirm #iconTemplate [nzIcon]="icon">
       Delete
     </a>
     <ng-template #titleTemplate>title-template</ng-template>
@@ -297,11 +317,11 @@ export class NzpopconfirmTestNewComponent {
   confirm = jasmine.createSpy('confirm');
   cancel = jasmine.createSpy('cancel');
   condition = false;
-  icon: string = undefined;
+  icon: string | undefined = undefined;
   @ViewChild('stringTemplate') stringTemplate: ElementRef;
   @ViewChild('templateTemplate') templateTemplate: ElementRef;
   @ViewChild('inBtnGroup') inBtnGroup: ElementRef;
-  @ViewChild('iconTemplate') iconTemplate: ElementRef<void>;
+  @ViewChild('iconTemplate') iconTemplate: ElementRef;
 }
 
 @Component({
@@ -313,20 +333,23 @@ export class NzpopconfirmTestNewComponent {
 
     <nz-popconfirm [nzTrigger]="'hover'">
       <button #templateTrigger nz-popconfirm>Show</button>
-      <ng-template #nzTemplate>
-        <i nz-icon type="file"></i> <span>Show with icon</span>
-      </ng-template>
+      <ng-template #nzTemplate> <i nz-icon type="file"></i> <span>Show with icon</span> </ng-template>
     </nz-popconfirm>
 
     <nz-popconfirm nzTitle="FOCUS" [nzTrigger]="'focus'"><span #focusTrigger nz-popconfirm>Show</span></nz-popconfirm>
 
     <nz-popconfirm nzTitle="CLICK" nzTrigger="click"><span #clickTrigger nz-popconfirm>Show</span></nz-popconfirm>
 
-    <nz-popconfirm nzTitle="VISIBLE" [(nzVisible)]="visible"><span #visibleTrigger nz-popconfirm>Show</span>
+    <nz-popconfirm nzTitle="VISIBLE" [(nzVisible)]="visible"
+      ><span #visibleTrigger nz-popconfirm>Show</span>
     </nz-popconfirm>
 
-    <nz-popconfirm nzTitle="EXECUTE" [nzCondition]="executeCondition" (nzOnConfirm)="onConfirm()"
-                   (nzOnCancel)="onCancel()">
+    <nz-popconfirm
+      nzTitle="EXECUTE"
+      [nzCondition]="executeCondition"
+      (nzOnConfirm)="onConfirm()"
+      (nzOnCancel)="onCancel()"
+    >
       <span #executeTrigger nz-popconfirm>Show</span>
     </nz-popconfirm>
   `
@@ -348,9 +371,7 @@ export class NzpopconfirmTestWrapperComponent {
   executeCondition: boolean;
   @ViewChild('executeTrigger') executeTrigger: ElementRef;
 
-  onConfirm(): void {
-  }
+  onConfirm(): void {}
 
-  onCancel(): void {
-  }
+  onCancel(): void {}
 }

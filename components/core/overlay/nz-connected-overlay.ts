@@ -5,9 +5,7 @@ import { Directive } from '@angular/core';
   selector: '[cdkConnectedOverlay][nzConnectedOverlay]'
 })
 export class NzConnectedOverlayDirective {
-
   constructor(private cdkConnectedOverlay: CdkConnectedOverlay) {
     this.cdkConnectedOverlay.backdropClass = 'nz-overlay-transparent-backdrop';
   }
-
 }

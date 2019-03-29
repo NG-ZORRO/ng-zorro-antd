@@ -10,16 +10,20 @@ import { Component } from '@angular/core';
       <label nz-radio nzValue="left">left</label>
     </nz-radio-group>
     <button nz-button nzType="primary" (click)="open()">Open</button>
-    <nz-drawer [nzClosable]="false" [nzVisible]="visible" [nzPlacement]="placement" nzTitle="Basic Drawer" (nzOnClose)="close()">
+    <nz-drawer
+      [nzClosable]="false"
+      [nzVisible]="visible"
+      [nzPlacement]="placement"
+      nzTitle="Basic Drawer"
+      (nzOnClose)="close()"
+    >
       <p>Some contents...</p>
       <p>Some contents...</p>
       <p>Some contents...</p>
     </nz-drawer>
   `
 })
-
 export class NzDemoDrawerPlacementComponent {
-
   visible = false;
   placement = 'left';
   open(): void {

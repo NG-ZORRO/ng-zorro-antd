@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
     <nz-skeleton [nzActive]="true"></nz-skeleton>
   `
 })
-export class NzDemoSkeletonActiveComponent { }
+export class NzDemoSkeletonActiveComponent {}

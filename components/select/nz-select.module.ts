@@ -18,7 +18,7 @@ import { NzSelectUnselectableDirective } from './nz-select-unselectable.directiv
 import { NzSelectComponent } from './nz-select.component';
 
 @NgModule({
-  imports     : [
+  imports: [
     CommonModule,
     NzI18nModule,
     FormsModule,
@@ -40,7 +40,7 @@ import { NzSelectComponent } from './nz-select.component';
     NzSelectTopControlComponent,
     NzSelectUnselectableDirective
   ],
-  exports     : [
+  exports: [
     NzOptionComponent,
     NzSelectComponent,
     NzOptionContainerComponent,
@@ -48,5 +48,4 @@ import { NzSelectComponent } from './nz-select.component';
     NzSelectTopControlComponent
   ]
 })
-export class NzSelectModule {
-}
+export class NzSelectModule {}

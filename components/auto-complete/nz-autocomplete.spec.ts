@@ -2,16 +2,8 @@ import { Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  NgZone,
-  OnInit,
-  QueryList,
-  ViewChild,
-  ViewChildren
-} from '@angular/core';
-import { async, fakeAsync, flush, inject, tick, TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, NgZone, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -42,7 +34,7 @@ describe('auto-complete', () => {
   beforeEach(async(() => {
     const dir = 'ltr';
     TestBed.configureTestingModule({
-      imports     : [ NzAutocompleteModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule ],
+      imports: [NzAutocompleteModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule],
       declarations: [
         NzTestSimpleAutocompleteComponent,
         NzTestAutocompletePropertyComponent,
@@ -51,31 +43,34 @@ describe('auto-complete', () => {
         NzTestAutocompleteWithOnPushDelayComponent,
         NzTestAutocompleteWithFormComponent
       ],
-      providers   : [
+      providers: [
         { provide: Directionality, useFactory: () => ({ value: dir }) },
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
-        {provide: NgZone, useFactory: () => {
+        {
+          provide: NgZone,
+          useFactory: () => {
             zone = new MockNgZone();
             return zone;
-          }}
+          }
+        }
       ]
     });
 
     TestBed.compileComponents();
 
-    inject([ OverlayContainer ], (oc: OverlayContainer) => {
+    inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
       overlayContainerElement = oc.getContainerElement();
     })();
   }));
-  afterEach(inject([ OverlayContainer ], (currentOverlayContainer: OverlayContainer) => {
+  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
 
   describe('toggling', () => {
-    let fixture;
-    let input;
+    let fixture: ComponentFixture<NzTestSimpleAutocompleteComponent>;
+    let input: HTMLInputElement;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSimpleAutocompleteComponent);
@@ -84,16 +79,13 @@ describe('auto-complete', () => {
     });
 
     it('should open the panel when the input is focused', () => {
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(false);
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
 
       dispatchFakeEvent(input, 'focusin');
       fixture.detectChanges();
 
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(true);
-      expect(overlayContainerElement.textContent)
-      .toContain('Burns Bay Road');
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
+      expect(overlayContainerElement.textContent).toContain('Burns Bay Road');
     });
 
     it('should not open the panel on focus if the input is readonly', fakeAsync(() => {
@@ -123,16 +115,13 @@ describe('auto-complete', () => {
     }));
 
     it('should open the panel programmatically', () => {
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(false);
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
 
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
 
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(true);
-      expect(overlayContainerElement.textContent)
-      .toContain('Burns Bay Road');
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
+      expect(overlayContainerElement.textContent).toContain('Burns Bay Road');
     });
 
     it('should close the panel programmatically', fakeAsync(() => {
@@ -143,10 +132,8 @@ describe('auto-complete', () => {
       fixture.detectChanges();
 
       tick(500);
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(false);
-      expect(overlayContainerElement.textContent)
-      .toEqual('');
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
+      expect(overlayContainerElement.textContent).toEqual('');
     }));
 
     it('should close the panel when the user clicks away', fakeAsync(() => {
@@ -154,13 +141,11 @@ describe('auto-complete', () => {
       fixture.detectChanges();
       flush();
 
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(true);
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
 
       dispatchFakeEvent(document, 'click');
 
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(false);
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
     }));
 
     it('should close the panel when the trigger blur', fakeAsync(() => {
@@ -168,13 +153,11 @@ describe('auto-complete', () => {
       fixture.detectChanges();
       flush();
 
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(true);
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
 
       dispatchFakeEvent(input, 'blur');
 
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(false);
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
     }));
 
     it('should not close the panel when the user clicks this input', fakeAsync(() => {
@@ -182,13 +165,11 @@ describe('auto-complete', () => {
       fixture.detectChanges();
       flush();
 
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(true);
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
 
       dispatchFakeEvent(input, 'click');
 
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(true);
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
     }));
 
     it('should not throw when attempting to close the panel of a destroyed autocomplete', () => {
@@ -196,6 +177,7 @@ describe('auto-complete', () => {
 
       trigger.openPanel();
       fixture.detectChanges();
+      // @ts-ignore
       trigger.destroyPanel();
 
       expect(() => trigger.closePanel()).not.toThrow();
@@ -207,8 +189,7 @@ describe('auto-complete', () => {
       flush();
       dispatchFakeEvent(document, 'touchend');
 
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(false);
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
     }));
 
     it('should close the panel when an option is clicked', fakeAsync(() => {
@@ -221,10 +202,8 @@ describe('auto-complete', () => {
       fixture.detectChanges();
 
       tick(500);
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(false);
-      expect(overlayContainerElement.textContent)
-      .toEqual('');
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
+      expect(overlayContainerElement.textContent).toEqual('');
     }));
 
     it('should close the panel when an option is tap', fakeAsync(() => {
@@ -238,10 +217,8 @@ describe('auto-complete', () => {
       fixture.detectChanges();
 
       tick(500);
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(false);
-      expect(overlayContainerElement.textContent)
-      .toEqual('');
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
+      expect(overlayContainerElement.textContent).toEqual('');
     }));
 
     it('should hide the panel when the options list is empty', fakeAsync(() => {
@@ -255,24 +232,20 @@ describe('auto-complete', () => {
       tick(150);
       fixture.detectChanges();
 
-      expect(panel.classList)
-      .not
-      .toContain('ant-select-dropdown-hidden');
+      expect(panel.classList).not.toContain('ant-select-dropdown-hidden');
 
       typeInElement('x', input);
       fixture.detectChanges();
       tick(150);
       fixture.detectChanges();
 
-      expect(panel.classList)
-      .toContain('ant-select-dropdown-hidden');
+      expect(panel.classList).toContain('ant-select-dropdown-hidden');
     }));
-
   });
 
   describe('property', () => {
-    let fixture;
-    let input;
+    let fixture: ComponentFixture<NzTestAutocompletePropertyComponent>;
+    let input: HTMLInputElement;
     let DOWN_ARROW_EVENT: KeyboardEvent;
     let ENTER_EVENT: KeyboardEvent;
     let TAB_EVENT: KeyboardEvent;
@@ -284,20 +257,16 @@ describe('auto-complete', () => {
       DOWN_ARROW_EVENT = createKeyboardEvent('keydown', DOWN_ARROW);
       ENTER_EVENT = createKeyboardEvent('keydown', ENTER);
       TAB_EVENT = createKeyboardEvent('keydown', TAB);
-
     });
 
     it('should open the panel when the input is focused', () => {
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(false);
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
 
       dispatchFakeEvent(input, 'focusin');
       fixture.detectChanges();
 
-      expect(fixture.componentInstance.trigger.panelOpen)
-      .toBe(true);
-      expect(overlayContainerElement.textContent)
-      .toContain('Burns Bay Road');
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
+      expect(overlayContainerElement.textContent).toContain('Burns Bay Road');
     });
 
     it('should have correct width when setting', () => {
@@ -318,16 +287,13 @@ describe('auto-complete', () => {
       fixture.detectChanges();
       flush();
 
-      expect(componentInstance.trigger.panelOpen)
-      .toBe(true);
+      expect(componentInstance.trigger.panelOpen).toBe(true);
 
       componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
       fixture.detectChanges();
       flush();
 
-      expect(input.value)
-      .toBe('Burns Bay Road');
-
+      expect(input.value).toBe('Burns Bay Road');
     }));
 
     it('should reset the backfilled value display when pressing tabbing', fakeAsync(() => {
@@ -336,20 +302,17 @@ describe('auto-complete', () => {
       fixture.detectChanges();
       flush();
 
-      expect(componentInstance.trigger.panelOpen)
-      .toBe(true);
+      expect(componentInstance.trigger.panelOpen).toBe(true);
 
       componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
       fixture.detectChanges();
 
-      expect(input.value)
-      .toBe('Burns Bay Road');
+      expect(input.value).toBe('Burns Bay Road');
 
       componentInstance.trigger.handleKeydown(TAB_EVENT);
       fixture.detectChanges();
 
-      expect(input.value)
-      .not.toBe('Burns Bay Road');
+      expect(input.value).not.toBe('Burns Bay Road');
 
       componentInstance.trigger.openPanel();
       fixture.detectChanges();
@@ -360,8 +323,7 @@ describe('auto-complete', () => {
       fixture.detectChanges();
       flush();
 
-      expect(input.value)
-      .toBe('Downing Street');
+      expect(input.value).toBe('Downing Street');
 
       componentInstance.trigger.openPanel();
       fixture.detectChanges();
@@ -373,9 +335,7 @@ describe('auto-complete', () => {
       tick(500);
       flush();
       fixture.detectChanges();
-      expect(input.value)
-      .toBe('Downing Street');
-
+      expect(input.value).toBe('Downing Street');
     }));
 
     it('should overlayClassName & overlayStyle work', () => {
@@ -390,12 +350,11 @@ describe('auto-complete', () => {
       expect(dropdown.classList.contains(`testClass`)).toBe(true);
       expect(dropdown.style.color).toBe(`rgb(1, 2, 3)`);
     });
-
   });
 
   describe('value', () => {
-    let fixture;
-    let input;
+    let fixture: ComponentFixture<NzTestSimpleAutocompleteComponent>;
+    let input: HTMLInputElement;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSimpleAutocompleteComponent);
@@ -409,14 +368,12 @@ describe('auto-complete', () => {
       flush();
 
       fixture.detectChanges();
-      const options =
-        overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
+      const options = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
       options[1].click();
       flush();
       fixture.detectChanges();
 
-      expect(fixture.componentInstance.inputControl.value)
-      .toEqual('Downing Street');
+      expect(fixture.componentInstance.inputControl.value).toEqual('Downing Street');
     }));
 
     it('should update number-input value when option is selected with option value', fakeAsync(() => {
@@ -428,14 +385,12 @@ describe('auto-complete', () => {
       fixture.detectChanges();
       flush();
 
-      const options =
-        overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
+      const options = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
       options[1].click();
       fixture.detectChanges();
       flush();
 
-      expect(input.value)
-      .toBe('200');
+      expect(input.value).toBe('200');
     }));
 
     it('should handle autocomplete being attached to number inputs', fakeAsync(() => {
@@ -453,19 +408,16 @@ describe('auto-complete', () => {
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
 
-      expect(fixture.componentInstance.inputControl.touched)
-      .toBe(false);
+      expect(fixture.componentInstance.inputControl.touched).toBe(false);
       dispatchFakeEvent(input, 'blur');
       fixture.detectChanges();
       flush();
-      expect(fixture.componentInstance.inputControl.touched)
-      .toBe(true);
+      expect(fixture.componentInstance.inputControl.touched).toBe(true);
     }));
-
   });
 
   describe('form', () => {
-    let fixture;
+    let fixture: ComponentFixture<NzTestAutocompleteWithFormComponent>;
     let input: HTMLInputElement;
 
     beforeEach(() => {
@@ -477,15 +429,13 @@ describe('auto-complete', () => {
     it('should set the value with form', () => {
       const componentInstance = fixture.componentInstance;
       fixture.detectChanges();
-      expect(componentInstance.form.get('formControl').value)
-        .toContain('Burns');
-      expect(input.value)
-        .toContain('Burns');
+      expect(componentInstance.form.get('formControl')!.value).toContain('Burns');
+      expect(input.value).toContain('Burns');
     });
 
     it('should set disabled work', () => {
       const componentInstance = fixture.componentInstance;
-      const formControl = (componentInstance.form as FormGroup).get('formControl');
+      const formControl = (componentInstance.form as FormGroup).get('formControl')!;
       fixture.detectChanges();
 
       expect(input.disabled).toBe(false);
@@ -494,12 +444,11 @@ describe('auto-complete', () => {
       fixture.detectChanges();
 
       expect(input.disabled).toBe(true);
-
     });
 
     it('should close the panel when the input is disabled', () => {
       const componentInstance = fixture.componentInstance;
-      const formControl = (componentInstance.form as FormGroup).get('formControl');
+      const formControl = (componentInstance.form as FormGroup).get('formControl')!;
       fixture.detectChanges();
 
       componentInstance.trigger.openPanel();
@@ -512,13 +461,12 @@ describe('auto-complete', () => {
 
       expect(input.disabled).toBe(true);
       expect(componentInstance.trigger.panelOpen).toBe(false);
-
     });
   });
 
   describe('option groups', () => {
-    let fixture;
-    let input;
+    let fixture: ComponentFixture<NzTestAutocompleteGroupComponent>;
+    let input: HTMLInputElement;
     let DOWN_ARROW_EVENT: KeyboardEvent;
     let ENTER_EVENT: KeyboardEvent;
 
@@ -539,8 +487,7 @@ describe('auto-complete', () => {
     it('should fill the text field when an option is selected with ENTER', fakeAsync(() => {
       const componentInstance = fixture.componentInstance;
 
-      expect(componentInstance.trigger.panelOpen)
-      .toBe(true);
+      expect(componentInstance.trigger.panelOpen).toBe(true);
 
       [1, 2, 3].forEach(() => {
         componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
@@ -550,52 +497,43 @@ describe('auto-complete', () => {
       componentInstance.trigger.handleKeydown(ENTER_EVENT);
       fixture.detectChanges();
       flush();
-      expect(componentInstance.inputValue)
-      .toContain('AntDesign four');
+      expect(componentInstance.inputValue).toContain('AntDesign four');
 
-      expect(input.value)
-      .toContain('AntDesign four');
-
+      expect(input.value).toContain('AntDesign four');
     }));
-
   });
 
   describe('Option selection', () => {
-    let fixture;
+    let fixture: ComponentFixture<NzTestSimpleAutocompleteComponent>;
 
-    beforeEach((() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSimpleAutocompleteComponent);
       fixture.detectChanges();
-    }));
+    });
 
     it('should deselect any other selected option', fakeAsync(() => {
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
 
-      let options =
-        overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
+      let options = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
       options[0].click();
       fixture.detectChanges();
       zone.simulateZoneExit();
       fixture.detectChanges();
 
       const componentOptions = fixture.componentInstance.optionComponents.toArray();
-      expect(componentOptions[0].selected)
-      .toBe(true);
+      expect(componentOptions[0].selected).toBe(true);
 
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
 
-      options =
-        overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
+      options = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
       options[1].click();
       fixture.detectChanges();
       flush();
 
-      expect(componentOptions[0].selected)
-      .toBe(false);
-      expect(componentOptions[1].selected)
-      .toBe(true);
+      expect(componentOptions[0].selected).toBe(false);
+      expect(componentOptions[1].selected).toBe(true);
     }));
 
     it('should not deselect when repeat selected option', fakeAsync(() => {
@@ -609,26 +547,22 @@ describe('auto-complete', () => {
       fixture.detectChanges();
 
       const componentOptions = fixture.componentInstance.optionComponents.toArray();
-      expect(componentOptions[0].selected)
-      .toBe(true);
+      expect(componentOptions[0].selected).toBe(true);
 
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
 
-      options =
-        overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
+      options = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
       options[0].click();
       fixture.detectChanges();
       flush();
-      expect(componentOptions[0].selected)
-      .toBe(true);
+      expect(componentOptions[0].selected).toBe(true);
     }));
-
   });
 
   describe('keyboard events', () => {
-    let fixture;
-    let input;
+    let fixture: ComponentFixture<NzTestSimpleAutocompleteComponent>;
+    let input: HTMLInputElement;
     let DOWN_ARROW_EVENT: KeyboardEvent;
     let UP_ARROW_EVENT: KeyboardEvent;
     let ENTER_EVENT: KeyboardEvent;
@@ -645,48 +579,39 @@ describe('auto-complete', () => {
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
       flush();
-
     }));
 
     it('should set the active item to the second option when DOWN key is pressed', () => {
       const componentInstance = fixture.componentInstance;
-      const optionEls =
-        overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
 
-      expect(componentInstance.trigger.panelOpen)
-      .toBe(true);
+      expect(componentInstance.trigger.panelOpen).toBe(true);
 
       componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
       fixture.detectChanges();
 
       expect(optionEls[0].classList).not.toContain('ant-select-dropdown-menu-item-active');
       expect(optionEls[1].classList).toContain('ant-select-dropdown-menu-item-active');
-
     });
 
     it('should set the active item to the first option when DOWN key is pressed in last item', () => {
       const componentInstance = fixture.componentInstance;
-      const optionEls =
-        overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
 
-      expect(componentInstance.trigger.panelOpen)
-      .toBe(true);
+      expect(componentInstance.trigger.panelOpen).toBe(true);
 
       [1, 2, 3].forEach(() => componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT));
       fixture.detectChanges();
 
       expect(optionEls[1].classList).not.toContain('ant-select-dropdown-menu-item-active');
       expect(optionEls[0].classList).toContain('ant-select-dropdown-menu-item-active');
-
     });
 
     it('should set the active item to the last option when UP key is pressed', () => {
       const componentInstance = fixture.componentInstance;
-      const optionEls =
-        overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
 
-      expect(componentInstance.trigger.panelOpen)
-      .toBe(true);
+      expect(componentInstance.trigger.panelOpen).toBe(true);
 
       componentInstance.trigger.handleKeydown(UP_ARROW_EVENT);
       fixture.detectChanges();
@@ -694,16 +619,13 @@ describe('auto-complete', () => {
       expect(optionEls[0].classList).not.toContain('ant-select-dropdown-menu-item-active');
       expect(optionEls[1].classList).not.toContain('ant-select-dropdown-menu-item-active');
       expect(optionEls[2].classList).toContain('ant-select-dropdown-menu-item-active');
-
     });
 
     it('should set the active item to the previous option when UP key is pressed', () => {
       const componentInstance = fixture.componentInstance;
-      const optionEls =
-        overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
 
-      expect(componentInstance.trigger.panelOpen)
-      .toBe(true);
+      expect(componentInstance.trigger.panelOpen).toBe(true);
 
       [1, 2].forEach(() => componentInstance.trigger.handleKeydown(UP_ARROW_EVENT));
       fixture.detectChanges();
@@ -711,7 +633,6 @@ describe('auto-complete', () => {
       expect(optionEls[0].classList).not.toContain('ant-select-dropdown-menu-item-active');
       expect(optionEls[1].classList).toContain('ant-select-dropdown-menu-item-active');
       expect(optionEls[2].classList).not.toContain('ant-select-dropdown-menu-item-active');
-
     });
 
     it('should set the active item properly after filtering', () => {
@@ -723,36 +644,33 @@ describe('auto-complete', () => {
       componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
       fixture.detectChanges();
 
-      const optionEls =
-        overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
 
       expect(optionEls[0].classList).not.toContain('ant-select-dropdown-menu-item-active');
       expect(optionEls[1].classList).toContain('ant-select-dropdown-menu-item-active');
       expect(optionEls[1].innerText).toEqual('Wall Street');
-
     });
 
-    it('should not open the panel if the `input` event was dispatched with changing the value',
-      fakeAsync(() => {
-        const trigger = fixture.componentInstance.trigger;
+    it('should not open the panel if the `input` event was dispatched with changing the value', fakeAsync(() => {
+      const trigger = fixture.componentInstance.trigger;
 
-        dispatchFakeEvent(input, 'focusin');
-        typeInElement('A', input);
-        fixture.detectChanges();
+      dispatchFakeEvent(input, 'focusin');
+      typeInElement('A', input);
+      fixture.detectChanges();
 
-        expect(trigger.panelOpen).toBe(true);
+      expect(trigger.panelOpen).toBe(true);
 
-        trigger.closePanel();
-        fixture.detectChanges();
+      trigger.closePanel();
+      fixture.detectChanges();
 
-        expect(trigger.panelOpen).toBe(false);
+      expect(trigger.panelOpen).toBe(false);
 
-        dispatchFakeEvent(input, 'input');
-        fixture.detectChanges();
-        flush();
+      dispatchFakeEvent(input, 'input');
+      fixture.detectChanges();
+      flush();
 
-        expect(trigger.panelOpen).toBe(false);
-      }));
+      expect(trigger.panelOpen).toBe(false);
+    }));
 
     it('should fill the text field when an option is selected with ENTER', fakeAsync(() => {
       const componentInstance = fixture.componentInstance;
@@ -764,12 +682,9 @@ describe('auto-complete', () => {
       fixture.detectChanges();
       flush();
 
-      expect(componentInstance.inputControl.value)
-      .toContain('Downing Street');
+      expect(componentInstance.inputControl.value).toContain('Downing Street');
 
-      expect(input.value)
-      .toContain('Downing Street');
-
+      expect(input.value).toContain('Downing Street');
     }));
 
     it('should prevent the default enter key action', fakeAsync(() => {
@@ -780,8 +695,7 @@ describe('auto-complete', () => {
       fixture.detectChanges();
       flush();
 
-      expect(ENTER_EVENT.defaultPrevented)
-      .toBe(true);
+      expect(ENTER_EVENT.defaultPrevented).toBe(true);
     }));
 
     it('should not prevent the default enter action for a closed panel after a user action', () => {
@@ -800,15 +714,13 @@ describe('auto-complete', () => {
       input.focus();
       flush();
 
-      expect(overlayContainerElement.querySelector('.ant-select-dropdown'))
-      .toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-select-dropdown')).toBeTruthy();
 
       dispatchKeyboardEvent(input, 'keydown', TAB);
       fixture.detectChanges();
 
       tick(500);
-      expect(overlayContainerElement.querySelector('.ant-select-dropdown'))
-      .toBeFalsy();
+      expect(overlayContainerElement.querySelector('.ant-select-dropdown')).toBeFalsy();
     }));
 
     it('should close the panel when pressing escape', fakeAsync(() => {
@@ -816,21 +728,18 @@ describe('auto-complete', () => {
       input.focus();
       flush();
 
-      expect(overlayContainerElement.querySelector('.ant-select-dropdown'))
-      .toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-select-dropdown')).toBeTruthy();
 
       dispatchKeyboardEvent(input, 'keydown', ESCAPE);
       fixture.detectChanges();
 
       tick(500);
-      expect(overlayContainerElement.querySelector('.ant-select-dropdown'))
-      .toBeFalsy();
+      expect(overlayContainerElement.querySelector('.ant-select-dropdown')).toBeFalsy();
     }));
-
   });
 
   describe('Fallback positions', () => {
-    let fixture;
+    let fixture: ComponentFixture<NzTestSimpleAutocompleteComponent>;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSimpleAutocompleteComponent);
@@ -843,8 +752,7 @@ describe('auto-complete', () => {
       flush();
 
       const position = fixture.componentInstance.trigger.nzAutocomplete.dropDownPosition;
-      expect(position)
-      .toEqual('bottom');
+      expect(position).toEqual('bottom');
     }));
 
     it('should reposition the panel on scroll', () => {
@@ -861,23 +769,20 @@ describe('auto-complete', () => {
       autocomplete.dropDownPosition = 'top';
       fixture.detectChanges();
 
-      expect(autocomplete.dropDownPosition)
-      .toEqual('top');
+      expect(autocomplete.dropDownPosition).toEqual('top');
 
       window.scroll(0, 100);
       scrolledSubject.next();
       fixture.detectChanges();
 
-      expect(autocomplete.dropDownPosition)
-      .toEqual('bottom');
+      expect(autocomplete.dropDownPosition).toEqual('bottom');
 
       document.body.removeChild(spacer);
     });
-
   });
 
   describe('misc', () => {
-    let fixture;
+    let fixture: ComponentFixture<NzTestAutocompleteWithoutPanelComponent>;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestAutocompleteWithoutPanelComponent);
@@ -892,49 +797,52 @@ describe('auto-complete', () => {
       }).toThrow(getNzAutocompleteMissingPanelError());
     }));
 
-    it('should show the panel when the options are initialized later within a component with ' +
-      'OnPush change detection', fakeAsync(() => {
-      fixture = TestBed.createComponent(NzTestAutocompleteWithOnPushDelayComponent);
-      fixture.detectChanges();
-
-      dispatchFakeEvent(fixture.debugElement.query(By.css('input')).nativeElement, 'focusin');
-      fixture.detectChanges();
-      tick(1000);
-
-      fixture.detectChanges();
-      tick();
-
-      Promise.resolve().then(() => {
+    it(
+      'should show the panel when the options are initialized later within a component with ' +
+        'OnPush change detection',
+      fakeAsync(() => {
+        fixture = TestBed.createComponent(NzTestAutocompleteWithOnPushDelayComponent);
         fixture.detectChanges();
-        flush();
-        const panel = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
-        expect(panel.classList).not.toContain('ant-select-dropdown-hidden');
-      });
-    }));
 
+        dispatchFakeEvent(fixture.debugElement.query(By.css('input')).nativeElement, 'focusin');
+        fixture.detectChanges();
+        tick(1000);
+
+        fixture.detectChanges();
+        tick();
+
+        Promise.resolve().then(() => {
+          fixture.detectChanges();
+          flush();
+          const panel = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+          expect(panel.classList).not.toContain('ant-select-dropdown-hidden');
+        });
+      })
+    );
   });
-
 });
 
 @Component({
   template: `
-  <div>
-      <input class="input"
-             nz-input
-             [formControl]="inputControl"
-             [nzAutocomplete]="auto"
-             (input)="onInput($event.target?.value)">
+    <div>
+      <input
+        class="input"
+        nz-input
+        [formControl]="inputControl"
+        [nzAutocomplete]="auto"
+        (input)="onInput($event.target?.value)"
+      />
       <nz-autocomplete #auto>
-        <nz-auto-option *ngFor="let option of filteredOptions" [nzValue]="option">{{option}}</nz-auto-option>
+        <nz-auto-option *ngFor="let option of filteredOptions" [nzValue]="option">{{ option }}</nz-auto-option>
       </nz-autocomplete>
     </div>
   `
 })
 class NzTestSimpleAutocompleteComponent {
   inputValue: string;
-  filteredOptions: string[];
+  filteredOptions: Array<string | number>;
   inputControl = new FormControl();
-  options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
+  options: Array<string | number> = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
 
   @ViewChild(NzAutocompleteComponent) panel: NzAutocompleteComponent;
   @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
@@ -945,18 +853,25 @@ class NzTestSimpleAutocompleteComponent {
   }
 
   onInput(value: string): void {
-    this.filteredOptions = this.options.filter(s => new RegExp(value, 'gi').test(s));
+    this.filteredOptions = this.options.filter(s => new RegExp(value, 'gi').test(`${s}`));
   }
 }
 
 @Component({
   template: `
-  <div>
-      <input [(ngModel)]="inputValue"
-             [nzAutocomplete]="auto">
-      <nz-autocomplete [nzWidth]="width" [nzOverlayClassName]="overlayClassName" [nzOverlayStyle]="overlayStyle" [nzDataSource]="options" [nzDefaultActiveFirstOption]="false" nzBackfill #auto>
+    <div>
+      <input [(ngModel)]="inputValue" [nzAutocomplete]="auto" />
+      <nz-autocomplete
+        [nzWidth]="width"
+        [nzOverlayClassName]="overlayClassName"
+        [nzOverlayStyle]="overlayStyle"
+        [nzDataSource]="options"
+        [nzDefaultActiveFirstOption]="false"
+        nzBackfill
+        #auto
+      >
       </nz-autocomplete>
-  </div>
+    </div>
   `
 })
 class NzTestAutocompletePropertyComponent {
@@ -968,13 +883,13 @@ class NzTestAutocompletePropertyComponent {
   @ViewChild(NzAutocompleteComponent) panel: NzAutocompleteComponent;
   @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
 
-  constructor() {
-  }
-
+  constructor() {}
 }
 
 @Component({
-  template: `<input [nzAutocomplete]="auto">`
+  template: `
+    <input [nzAutocomplete]="auto" />
+  `
 })
 class NzTestAutocompleteWithoutPanelComponent {
   @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
@@ -983,11 +898,10 @@ class NzTestAutocompleteWithoutPanelComponent {
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-  <div>
-      <input [nzAutocomplete]="auto">
-      <nz-autocomplete [nzDataSource]="options" #auto>
-      </nz-autocomplete>
-  </div>
+    <div>
+      <input [nzAutocomplete]="auto" />
+      <nz-autocomplete [nzDataSource]="options" #auto> </nz-autocomplete>
+    </div>
   `
 })
 class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
@@ -1003,60 +917,73 @@ class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
 
 @Component({
   template: `
-  <input [nzAutocomplete]="auto" [(ngModel)]="inputValue">
-  <nz-autocomplete #auto>
-    <nz-auto-optgroup *ngFor="let group of optionGroups" [nzLabel]="groupTitle">
-      <ng-template #groupTitle>
-        <span>{{group.title}}
-          <a class="more-link" href="https://www.google.com/search?q=ng+zorro" target="_blank">更多</a>
-        </span>
-      </ng-template>
-      <nz-auto-option *ngFor="let option of group.children" [nzValue]="option.title" [nzDisabled]="option.disabled">
-        {{option.title}}
-        <span class="certain-search-item-count">{{option.count}} 人  关注</span>
-      </nz-auto-option>
-    </nz-auto-optgroup>
-  </nz-autocomplete>
-`
+    <input [nzAutocomplete]="auto" [(ngModel)]="inputValue" />
+    <nz-autocomplete #auto>
+      <nz-auto-optgroup *ngFor="let group of optionGroups" [nzLabel]="groupTitle">
+        <ng-template #groupTitle>
+          <span
+            >{{ group.title }}
+            <a class="more-link" href="https://www.google.com/search?q=ng+zorro" target="_blank">更多</a>
+          </span>
+        </ng-template>
+        <nz-auto-option *ngFor="let option of group.children" [nzValue]="option.title" [nzDisabled]="option.disabled">
+          {{ option.title }}
+          <span class="certain-search-item-count">{{ option.count }} 人 关注</span>
+        </nz-auto-option>
+      </nz-auto-optgroup>
+    </nz-autocomplete>
+  `
 })
 class NzTestAutocompleteGroupComponent {
   inputValue: string;
-  optionGroups = [{
-    title: '话题',
-    children: [{
-      title: 'AntDesign one',
-      count: 10000
-    },         {
-      title: 'AntDesign two',
-      count: 10600
-    }]
-  },              {
-    title: '问题',
-    children: [{
-      title: 'AntDesign three',
-      count: 60100
-    },         {
-      title: 'AntDesign four',
-      count: 30010
-    }]
-  },              {
-    title: '文章',
-    children: [{
-      title: 'AntDesign five',
-      disabled: true,
-      count: 100000
-    }]
-  }];
+  optionGroups = [
+    {
+      title: '话题',
+      children: [
+        {
+          title: 'AntDesign one',
+          count: 10000
+        },
+        {
+          title: 'AntDesign two',
+          count: 10600
+        }
+      ]
+    },
+    {
+      title: '问题',
+      children: [
+        {
+          title: 'AntDesign three',
+          count: 60100
+        },
+        {
+          title: 'AntDesign four',
+          count: 30010
+        }
+      ]
+    },
+    {
+      title: '文章',
+      children: [
+        {
+          title: 'AntDesign five',
+          disabled: true,
+          count: 100000
+        }
+      ]
+    }
+  ];
 
   @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
 }
 
 @Component({
   template: `
-    <form [formGroup]='form'>
-      <input formControlName="formControl" [nzAutocomplete]="auto"/>
+    <form [formGroup]="form">
+      <input formControlName="formControl" [nzAutocomplete]="auto" />
       <nz-autocomplete #auto>
-        <nz-auto-option *ngFor="let option of options" [nzValue]="option">{{option}}</nz-auto-option>
+        <nz-auto-option *ngFor="let option of options" [nzValue]="option">{{ option }}</nz-auto-option>
       </nz-autocomplete>
     </form>
   `

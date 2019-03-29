@@ -1,15 +1,17 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  selector           : 'nz-header',
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
+  selector: 'nz-header',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
-  templateUrl        : './nz-header.component.html',
-  styles             : [
-      `nz-header {
-      display: block;
-    }`
+  templateUrl: './nz-header.component.html',
+  styles: [
+    `
+      nz-header {
+        display: block;
+      }
+    `
   ]
 })
 export class NzHeaderComponent {

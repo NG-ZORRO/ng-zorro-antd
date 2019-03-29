@@ -5,42 +5,44 @@ import { Observable, Observer } from 'rxjs';
 @Component({
   selector: 'nz-demo-upload-avatar',
   template: `
-  <nz-upload class="avatar-uploader"
-    nzAction="https://jsonplaceholder.typicode.com/posts/"
-    nzName="avatar"
-    nzListType="picture-card"
-    [nzShowUploadList]="false"
-    [nzBeforeUpload]="beforeUpload"
-    (nzChange)="handleChange($event)">
-    <ng-container *ngIf="!avatarUrl">
-      <i class="upload-icon" nz-icon [type]="loading ? 'loading' : 'plus'"></i>
-      <div class="ant-upload-text">Upload</div>
-    </ng-container>
-    <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar">
-  </nz-upload>
+    <nz-upload
+      class="avatar-uploader"
+      nzAction="https://jsonplaceholder.typicode.com/posts/"
+      nzName="avatar"
+      nzListType="picture-card"
+      [nzShowUploadList]="false"
+      [nzBeforeUpload]="beforeUpload"
+      (nzChange)="handleChange($event)"
+    >
+      <ng-container *ngIf="!avatarUrl">
+        <i class="upload-icon" nz-icon [type]="loading ? 'loading' : 'plus'"></i>
+        <div class="ant-upload-text">Upload</div>
+      </ng-container>
+      <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar" />
+    </nz-upload>
   `,
   styles: [
     `
-    .avatar {
-      width: 128px;
-      height: 128px;
-    }
-    .upload-icon {
-      font-size: 32px;
-      color: #999;
-    }
-    .ant-upload-text {
-      margin-top: 8px;
-      color: #666;
-    }
-  `
+      .avatar {
+        width: 128px;
+        height: 128px;
+      }
+      .upload-icon {
+        font-size: 32px;
+        color: #999;
+      }
+      .ant-upload-text {
+        margin-top: 8px;
+        color: #666;
+      }
+    `
   ]
 })
 export class NzDemoUploadAvatarComponent {
   loading = false;
   avatarUrl: string;
 
-  constructor(private msg: NzMessageService) { }
+  constructor(private msg: NzMessageService) {}
 
   beforeUpload = (file: File) => {
     return new Observable((observer: Observer<boolean>) => {
@@ -68,11 +70,11 @@ export class NzDemoUploadAvatarComponent {
         observer.complete();
       });
     });
-  }
+  };
 
   private getBase64(img: File, callback: (img: string) => void): void {
     const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result.toString()));
+    reader.addEventListener('load', () => callback(reader.result!.toString()));
     reader.readAsDataURL(img);
   }
 
@@ -83,7 +85,7 @@ export class NzDemoUploadAvatarComponent {
       img.onload = () => {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
-        window.URL.revokeObjectURL(img.src);
+        window.URL.revokeObjectURL(img.src!);
         resolve(width === height && width >= 300);
       };
     });
@@ -96,7 +98,7 @@ export class NzDemoUploadAvatarComponent {
         break;
       case 'done':
         // Get this url from response in real world.
-        this.getBase64(info.file.originFileObj, (img: string) => {
+        this.getBase64(info.file!.originFileObj!, (img: string) => {
           this.loading = false;
           this.avatarUrl = img;
         });

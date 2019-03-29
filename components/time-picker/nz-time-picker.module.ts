@@ -10,17 +10,9 @@ import { NzTimePickerComponent } from './nz-time-picker.component';
 import { NzTimeValueAccessorDirective } from './nz-time-value-accessor.directive';
 
 @NgModule({
-  declarations   : [
-    NzTimePickerComponent,
-    NzTimePickerPanelComponent,
-    NzTimeValueAccessorDirective
-  ],
-  exports        : [
-    NzTimePickerPanelComponent,
-    NzTimePickerComponent
-  ],
-  imports        : [ CommonModule, FormsModule, NzI18nModule, OverlayModule, NzIconModule, NzOverlayModule ],
+  declarations: [NzTimePickerComponent, NzTimePickerPanelComponent, NzTimeValueAccessorDirective],
+  exports: [NzTimePickerPanelComponent, NzTimePickerComponent],
+  imports: [CommonModule, FormsModule, NzI18nModule, OverlayModule, NzIconModule, NzOverlayModule],
   entryComponents: []
 })
-export class NzTimePickerModule {
-}
+export class NzTimePickerModule {}

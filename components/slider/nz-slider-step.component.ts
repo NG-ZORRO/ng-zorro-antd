@@ -5,15 +5,15 @@ import { InputBoolean } from '../core/util/convert';
 import { DisplayedStep, ExtendedMark } from './nz-slider-definitions';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-slider-step',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-slider-step',
   preserveWhitespaces: false,
-  templateUrl        : './nz-slider-step.component.html'
+  templateUrl: './nz-slider-step.component.html'
 })
 export class NzSliderStepComponent implements OnChanges {
-  @Input() nzLowerBound: number = null;
-  @Input() nzUpperBound: number = null;
+  @Input() nzLowerBound: number | null = null;
+  @Input() nzUpperBound: number | null = null;
   @Input() nzMarksArray: ExtendedMark[];
   @Input() @InputBoolean() nzVertical = false;
   @Input() @InputBoolean() nzIncluded = false;
@@ -44,8 +44,8 @@ export class NzSliderStepComponent implements OnChanges {
         offset,
         config,
         active: false,
-        style : {
-          [ orient ]: `${offset}%`
+        style: {
+          [orient]: `${offset}%`
         }
       };
     });
@@ -57,8 +57,7 @@ export class NzSliderStepComponent implements OnChanges {
         const value = step.value;
         const isActive =
           (!this.nzIncluded && value === this.nzUpperBound) ||
-          (this.nzIncluded && value <= this.nzUpperBound && value >= this.nzLowerBound);
-
+          (this.nzIncluded && value <= this.nzUpperBound! && value >= this.nzLowerBound!);
         step.active = isActive;
       });
     }

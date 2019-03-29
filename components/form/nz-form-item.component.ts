@@ -22,17 +22,17 @@ import { NzFormExplainComponent } from './nz-form-explain.component';
 
 /** should add nz-row directive to host, track https://github.com/angular/angular/issues/8785 **/
 @Component({
-  selector           : 'nz-form-item',
+  selector: 'nz-form-item',
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  providers          : [ NzUpdateHostClassService ],
-  templateUrl        : './nz-form-item.component.html',
-  host               : {
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  providers: [NzUpdateHostClassService],
+  templateUrl: './nz-form-item.component.html',
+  host: {
     '[class.ant-form-item-with-help]': 'listOfNzFormExplainComponent && (listOfNzFormExplainComponent.length>0)'
   },
-  styles             : [
-      `
+  styles: [
+    `
       nz-form-item {
         display: block;
       }
@@ -41,7 +41,9 @@ import { NzFormExplainComponent } from './nz-form-explain.component';
 })
 export class NzFormItemComponent extends NzRowDirective implements AfterContentInit, OnDestroy {
   private _flex = false;
-  @ContentChildren(NzFormExplainComponent, { descendants: true }) listOfNzFormExplainComponent: QueryList<NzFormExplainComponent>;
+  @ContentChildren(NzFormExplainComponent, { descendants: true }) listOfNzFormExplainComponent: QueryList<
+    NzFormExplainComponent
+  >;
 
   @Input()
   set nzFlex(value: boolean) {
@@ -53,7 +55,15 @@ export class NzFormItemComponent extends NzRowDirective implements AfterContentI
     }
   }
 
-  constructor(elementRef: ElementRef, renderer: Renderer2, nzUpdateHostClassService: NzUpdateHostClassService, mediaMatcher: MediaMatcher, ngZone: NgZone, platform: Platform, private cdr: ChangeDetectorRef) {
+  constructor(
+    elementRef: ElementRef,
+    renderer: Renderer2,
+    nzUpdateHostClassService: NzUpdateHostClassService,
+    mediaMatcher: MediaMatcher,
+    ngZone: NgZone,
+    platform: Platform,
+    private cdr: ChangeDetectorRef
+  ) {
     super(elementRef, renderer, nzUpdateHostClassService, mediaMatcher, ngZone, platform);
     renderer.addClass(elementRef.nativeElement, 'ant-form-item');
   }

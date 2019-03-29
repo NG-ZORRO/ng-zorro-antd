@@ -16,7 +16,7 @@ import { Component } from '@angular/core';
 })
 export class NzDemoCardGridCardComponent {
   gridStyle = {
-    width    : '25%',
+    width: '25%',
     textAlign: 'center'
   };
 }

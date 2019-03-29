@@ -24,8 +24,8 @@ import { Component } from '@angular/core';
       <button nzTitle="prompt text" nzPlacement="bottomRight" nz-button nz-tooltip>BR</button>
     </div>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       button {
         width: 70px;
         text-align: center;
@@ -36,5 +36,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoTooltipPlacementComponent {
-}
+export class NzDemoTooltipPlacementComponent {}

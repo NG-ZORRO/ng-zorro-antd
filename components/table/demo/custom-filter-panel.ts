@@ -9,10 +9,18 @@ import { Component } from '@angular/core';
           <th nzCustomFilter>
             Name
             <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-              <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+              <i
+                nz-icon
+                nzType="search"
+                class="ant-table-filter-icon"
+                [class.ant-table-filter-open]="dropdown.nzVisible"
+                nz-dropdown
+              ></i>
               <div class="search-box">
-                <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue">
-                <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">Search</button>
+                <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
+                <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                  Search
+                </button>
                 <button nz-button nzSize="small" (click)="reset()">Reset</button>
               </div>
             </nz-dropdown>
@@ -23,14 +31,15 @@ import { Component } from '@angular/core';
       </thead>
       <tbody>
         <tr *ngFor="let data of nzTable.data">
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
+          <td>{{ data.name }}</td>
+          <td>{{ data.age }}</td>
+          <td>{{ data.address }}</td>
         </tr>
       </tbody>
-    </nz-table>`,
-  styles  : [
-      `
+    </nz-table>
+  `,
+  styles: [
+    `
       .search-box {
         padding: 8px;
       }
@@ -53,43 +62,40 @@ import { Component } from '@angular/core';
 })
 export class NzDemoTableCustomFilterPanelComponent {
   searchValue = '';
-  sortName = null;
-  sortValue = null;
-  listOfFilterAddress = [
-    { text: 'London', value: 'London' },
-    { text: 'Sidney', value: 'Sidney' }
-  ];
-  listOfSearchAddress = [];
-  listOfData = [
+  sortName: string | null = null;
+  sortValue: string | null = null;
+  listOfFilterAddress = [{ text: 'London', value: 'London' }, { text: 'Sidney', value: 'Sidney' }];
+  listOfSearchAddress: string[] = [];
+  listOfData: Array<{ name: string; age: number; address: string; [key: string]: string | number }> = [
     {
-      name   : 'John Brown',
-      age    : 32,
+      name: 'John Brown',
+      age: 32,
       address: 'New York No. 1 Lake Park'
     },
     {
-      name   : 'Jim Green',
-      age    : 42,
+      name: 'Jim Green',
+      age: 42,
       address: 'London No. 1 Lake Park'
     },
     {
-      name   : 'Joe Black',
-      age    : 32,
+      name: 'Joe Black',
+      age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      name   : 'Jim Red',
-      age    : 32,
+      name: 'Jim Red',
+      age: 32,
       address: 'London No. 2 Lake Park'
     }
   ];
-  listOfDisplayData = [ ...this.listOfData ];
+  listOfDisplayData = [...this.listOfData];
 
   reset(): void {
     this.searchValue = '';
     this.search();
   }
 
-  sort(sortName: string, value: boolean): void {
+  sort(sortName: string, value: string): void {
     this.sortName = sortName;
     this.sortValue = value;
     this.search();
@@ -101,11 +107,22 @@ export class NzDemoTableCustomFilterPanelComponent {
   }
 
   search(): void {
-    const filterFunc = (item) => {
-      return (this.listOfSearchAddress.length ? this.listOfSearchAddress.some(address => item.address.indexOf(address) !== -1) : true) &&
-        (item.name.indexOf(this.searchValue) !== -1);
+    const filterFunc = (item: { name: string; age: number; address: string }) => {
+      return (
+        (this.listOfSearchAddress.length
+          ? this.listOfSearchAddress.some(address => item.address.indexOf(address) !== -1)
+          : true) && item.name.indexOf(this.searchValue) !== -1
+      );
     };
-    const data = this.listOfData.filter(item => filterFunc(item));
-    this.listOfDisplayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] > b[ this.sortName ] ? 1 : -1) : (b[ this.sortName ] > a[ this.sortName ] ? 1 : -1));
+    const data = this.listOfData.filter((item: { name: string; age: number; address: string }) => filterFunc(item));
+    this.listOfDisplayData = data.sort((a, b) =>
+      this.sortValue === 'ascend'
+        ? a[this.sortName!] > b[this.sortName!]
+          ? 1
+          : -1
+        : b[this.sortName!] > a[this.sortName!]
+        ? 1
+        : -1
+    );
   }
 }

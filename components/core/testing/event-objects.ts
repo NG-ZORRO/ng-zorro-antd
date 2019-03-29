@@ -7,52 +7,54 @@
  */
 
 /** Creates a browser MouseEvent with the specified options. */
-export function createMouseEvent(type: string, x = 0, y = 0) {
+export function createMouseEvent(type: string, x = 0, y = 0): MouseEvent {
   const event = document.createEvent('MouseEvent');
 
-  event.initMouseEvent(type,
-    false, /* canBubble */
-    false, /* cancelable */
-    window, /* view */
-    0, /* detail */
-    x, /* screenX */
-    y, /* screenY */
-    x, /* clientX */
-    y, /* clientY */
-    false, /* ctrlKey */
-    false, /* altKey */
-    false, /* shiftKey */
-    false, /* metaKey */
-    0, /* button */
-    null /* relatedTarget */);
+  event.initMouseEvent(
+    type,
+    false /* canBubble */,
+    false /* cancelable */,
+    window /* view */,
+    0 /* detail */,
+    x /* screenX */,
+    y /* screenY */,
+    x /* clientX */,
+    y /* clientY */,
+    false /* ctrlKey */,
+    false /* altKey */,
+    false /* shiftKey */,
+    false /* metaKey */,
+    0 /* button */,
+    null /* relatedTarget */
+  );
 
   return event;
 }
 
 /** Creates a browser TouchEvent with the specified pointer coordinates. */
-export function createTouchEvent(type: string, pageX = 0, pageY = 0) {
+export function createTouchEvent(type: string, pageX: number = 0, pageY: number = 0): UIEvent {
   // In favor of creating events that work for most of the browsers, the event is created
   // as a basic UI Event. The necessary details for the event will be set manually.
   const event = document.createEvent('UIEvent');
-  const touchDetails = {pageX, pageY};
+  const touchDetails = { pageX, pageY };
 
   event.initUIEvent(type, true, true, window, 0);
 
   // Most of the browsers don't have a "initTouchEvent" method that can be used to define
   // the touch details.
   Object.defineProperties(event, {
-    touches: {value: [touchDetails]}
+    touches: { value: [touchDetails] }
   });
 
-  return event;
+  return event as UIEvent;
 }
 
 /** Dispatches a keydown event from an element. */
-export function createKeyboardEvent(type: string, keyCode: number, target?: Element, key?: string) {
-  let event = document.createEvent('KeyboardEvent') as any;
+export function createKeyboardEvent(type: string, keyCode: number, target?: Element, key?: string): KeyboardEvent {
+  const event = document.createEvent('KeyboardEvent') as any;
   // Firefox does not support `initKeyboardEvent`, but supports `initKeyEvent`.
-  let initEventFn = (event.initKeyEvent || event.initKeyboardEvent).bind(event);
-  let originalPreventDefault = event.preventDefault;
+  const initEventFn = (event.initKeyEvent || event.initKeyboardEvent).bind(event);
+  const originalPreventDefault = event.preventDefault;
 
   initEventFn(type, true, true, window, 0, 0, 0, 0, 0, keyCode);
 
@@ -74,7 +76,7 @@ export function createKeyboardEvent(type: string, keyCode: number, target?: Elem
 }
 
 /** Creates a fake event object with any desired event type. */
-export function createFakeEvent(type: string, canBubble = true, cancelable = true) {
+export function createFakeEvent(type: string, canBubble: boolean = true, cancelable: boolean = true): Event {
   const event = document.createEvent('Event');
   event.initEvent(type, canBubble, cancelable);
   return event;
