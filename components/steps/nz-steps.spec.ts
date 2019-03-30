@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   DebugElement,
+  OnInit,
   TemplateRef,
   ViewChild
 } from '@angular/core';
@@ -23,7 +24,8 @@ describe('steps', () => {
         NzTestOuterStepsComponent,
         NzTestInnerStepStringComponent,
         NzTestInnerStepTemplateComponent,
-        NzTestStepForComponent
+        NzTestStepForComponent,
+        NzTestStepAsyncComponent
       ]
     });
     TestBed.compileComponents();
@@ -337,6 +339,28 @@ describe('steps', () => {
       comp.detectChanges();
     });
   });
+  describe('step async assign steps', () => {
+    it('should allow steps assigned asynchronously', fakeAsync(() => {
+      const fixture: ComponentFixture<NzTestStepAsyncComponent> = TestBed.createComponent(NzTestStepAsyncComponent);
+      let innerSteps: DebugElement[];
+
+      fixture.detectChanges();
+      innerSteps = fixture.debugElement.queryAll(By.directive(NzStepComponent));
+      expect(innerSteps.length).toBe(0);
+
+      tick(1000);
+      fixture.detectChanges();
+      tick();
+      innerSteps = fixture.debugElement.queryAll(By.directive(NzStepComponent));
+      fixture.detectChanges();
+      expect(innerSteps.length).toBe(3);
+      expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-item-finish');
+      expect(innerSteps[1].nativeElement.className).toBe('ant-steps-item ant-steps-item-process');
+      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('');
+      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('2');
+      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('3');
+    }));
+  });
 });
 
 @Component({
@@ -430,5 +454,27 @@ export class NzTestStepForComponent {
 
   updateSteps(): void {
     this.steps.push(4);
+  }
+}
+
+@Component({
+  selector: 'nz-test-step-async',
+  template: `
+    <nz-steps [nzCurrent]="1">
+      <nz-step *ngFor="let step of steps; trackBy: trackById"></nz-step>
+    </nz-steps>
+  `
+})
+export class NzTestStepAsyncComponent implements OnInit {
+  steps: number[] = [];
+
+  trackById(index: number): number {
+    return index;
+  }
+
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.steps = [1, 2, 3];
+    }, 1000);
   }
 }
