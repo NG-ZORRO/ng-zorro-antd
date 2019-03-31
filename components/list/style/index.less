@@ -82,24 +82,25 @@
       & > li {
         position: relative;
         display: inline-block;
-        padding: 0 8px;
+        margin: 0 8px;
         color: @text-color-secondary;
         font-size: @font-size-base;
-        line-height: 22px;
+        line-height: normal;
         text-align: center;
         cursor: pointer;
       }
       & > li:first-child {
-        padding-left: 0;
+        margin-left: 0;
       }
       &-split {
         position: absolute;
         top: 50%;
-        right: 0;
+        right: -8px;
         width: 1px;
         height: 14px;
         margin-top: -7px;
         background-color: @border-color-split;
+        cursor: default;
       }
     }
     &-main {
@@ -187,11 +188,14 @@
     }
     &-action {
       margin-left: auto;
-      > li {
-        padding: 0 16px;
+      & > li {
+        margin: 0 16px;
         &:first-child {
-          padding-left: 0;
+          margin-left: 0;
         }
+      }
+      &-split {
+        right: -16px;
       }
     }
   }
