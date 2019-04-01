@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 
 import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
 import { CandyDate } from '../candy-date';
@@ -16,7 +9,6 @@ import { CandyDate } from '../candy-date';
   selector: 'month-panel', // tslint:disable-line:component-selector
   templateUrl: 'month-panel.component.html'
 })
-
 export class MonthPanelComponent {
   @Input() locale: NzCalendarI18nInterface;
   @Input() value: CandyDate;

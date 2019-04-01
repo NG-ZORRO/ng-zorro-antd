@@ -14,7 +14,7 @@ const defaultDisabledTime: DisabledTimeConfig = {
 };
 
 export function getTimeConfig(value: CandyDate, disabledTime: DisabledTimeFn): DisabledTimeConfig {
-  let disabledTimeConfig = disabledTime ? disabledTime(value && value.nativeDate) : {} as DisabledTimeConfig;
+  let disabledTimeConfig = disabledTime ? disabledTime(value && value.nativeDate) : ({} as DisabledTimeConfig);
   disabledTimeConfig = {
     ...defaultDisabledTime,
     ...disabledTimeConfig

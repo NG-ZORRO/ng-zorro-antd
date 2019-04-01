@@ -49,7 +49,11 @@ export class NzTreeNode {
     return this.service || (this.parentNode && this.parentNode.treeService);
   }
 
-  constructor(option: NzTreeNodeOptions | NzTreeNode, parent: NzTreeNode | null = null, service: NzTreeBaseService | null = null) {
+  constructor(
+    option: NzTreeNodeOptions | NzTreeNode,
+    parent: NzTreeNode | null = null,
+    service: NzTreeBaseService | null = null
+  ) {
     if (option instanceof NzTreeNode) {
       return option;
     }
@@ -274,31 +278,29 @@ export class NzTreeNode {
   // tslint:disable-next-line:no-any
   public addChildren(children: any[], childPos: number = -1): void {
     if (!this.isLeaf) {
-      children.forEach(
-        (node) => {
-          const refreshLevel = (n: NzTreeNode) => {
-            n.getChildren().forEach(c => {
-              c.level = c.getParentNode()!.level + 1;
-              // flush origin
-              c.origin.level = c.level;
-              refreshLevel(c);
-            });
-          };
-          let child = node;
-          if (child instanceof NzTreeNode) {
-            child.parentNode = this;
-          } else {
-            child = new NzTreeNode(node, this);
-          }
-          child.level = this.level + 1;
-          child.origin.level = child.level;
-          refreshLevel(child);
-          try {
-            childPos === -1 ? this.children.push(child) : this.children.splice(childPos, 0, child);
+      children.forEach(node => {
+        const refreshLevel = (n: NzTreeNode) => {
+          n.getChildren().forEach(c => {
+            c.level = c.getParentNode()!.level + 1;
             // flush origin
-          } catch (e) {
-          }
-        });
+            c.origin.level = c.level;
+            refreshLevel(c);
+          });
+        };
+        let child = node;
+        if (child instanceof NzTreeNode) {
+          child.parentNode = this;
+        } else {
+          child = new NzTreeNode(node, this);
+        }
+        child.level = this.level + 1;
+        child.origin.level = child.level;
+        refreshLevel(child);
+        try {
+          childPos === -1 ? this.children.push(child) : this.children.splice(childPos, 0, child);
+          // flush origin
+        } catch (e) {}
+      });
       this.origin.children = this.getChildren().map(v => v.origin);
       // remove loading state
       this.isLoading = false;
@@ -340,7 +342,7 @@ export class NzTreeNode {
           this.treeService.afterRemove(this.getChildren());
           break;
         case 'remove':
-          this.treeService.afterRemove([ this ]);
+          this.treeService.afterRemove([this]);
           break;
       }
     }
