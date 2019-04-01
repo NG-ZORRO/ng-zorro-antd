@@ -5,14 +5,14 @@
     </ng-container>
   </ng-container>
   <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
-  <div class="ant-collapse-extra" *ngIf="nzExtra">
+  <div *ngIf="nzExtra" class="ant-collapse-extra" (click)="$event.stopPropagation()">
     <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
   </div>
 </div>
 <div class="ant-collapse-content"
   [class.ant-collapse-content-active]="nzActive"
   [@collapseMotion]="nzActive ? 'expanded' : 'hidden' ">
-  <div class="ant-collapse-content-box">
+  <div class="ant-collapse-content-box">g
     <ng-content></ng-content>
   </div>
 </div>
