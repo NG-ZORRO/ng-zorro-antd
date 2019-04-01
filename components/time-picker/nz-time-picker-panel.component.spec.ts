@@ -178,29 +178,42 @@ describe('time-picker-panel', () => {
       fixture12Hour.detectChanges();
       tick(1000);
       fixture12Hour.detectChanges();
-      let listOfSelectedLi = panelElement.nativeElement.querySelectorAll(
+      const listOfSelectedLi = panelElement.nativeElement.querySelectorAll(
         '.ant-time-picker-panel-select-option-selected'
       );
       expect(listOfSelectedLi[0].innerText).toBe('12');
       expect(listOfSelectedLi[1].innerText).toBe('00');
       expect(listOfSelectedLi[2].innerText).toBe('00');
       expect(listOfSelectedLi[3].innerText).toBe('am');
-      fixture12Hour.componentInstance.nzTimePickerPanelComponent.select12Hours({ index: 1, value: 'pm' });
+    }));
+    it('should scroll work in 12-hour', fakeAsync(() => {
       fixture12Hour.componentInstance.openValue = new Date(0, 0, 0, 5, 6, 7);
+      fixture12Hour.componentInstance.nzTimePickerPanelComponent.select12Hours({ index: 1, value: 'pm' });
+      fixture12Hour.componentInstance.nzTimePickerPanelComponent.opened = true;
       fixture12Hour.detectChanges();
+      tick(1000);
+      fixture12Hour.detectChanges();
+      let listOfSelectedLi = panelElement.nativeElement.querySelectorAll(
+        '.ant-time-picker-panel-select-option-selected'
+      );
+      expect(listOfSelectedLi[0].innerText).toBe('05');
+      expect(listOfSelectedLi[1].innerText).toBe('06');
+      expect(listOfSelectedLi[2].innerText).toBe('07');
+      expect(listOfSelectedLi[3].innerText).toBe('pm');
       fixture12Hour.componentInstance.nzTimePickerPanelComponent.opened = false;
       fixture12Hour.detectChanges();
       tick(1000);
+      fixture12Hour.detectChanges();
+      fixture12Hour.componentInstance.value = new Date(0, 0, 0, 6, 7, 8);
       fixture12Hour.detectChanges();
       fixture12Hour.componentInstance.nzTimePickerPanelComponent.opened = true;
       fixture12Hour.detectChanges();
       tick(1000);
       fixture12Hour.detectChanges();
       listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select-option-selected');
-      expect(listOfSelectedLi[0].innerText).toBe('05');
-      expect(listOfSelectedLi[1].innerText).toBe('06');
-      expect(listOfSelectedLi[2].innerText).toBe('07');
-      expect(listOfSelectedLi[3].innerText).toBe('pm');
+      expect(listOfSelectedLi[0].innerText).toBe('06');
+      expect(listOfSelectedLi[1].innerText).toBe('07');
+      expect(listOfSelectedLi[2].innerText).toBe('08');
     }));
     it('select hour and 12-hour in 12-hour-time-picker-panel', fakeAsync(() => {
       fixture12Hour.detectChanges();
@@ -236,7 +249,7 @@ describe('time-picker-panel', () => {
       panelElement = fixture12Hour.debugElement.query(By.directive(NzTimePickerPanelComponent));
     });
 
-    it('format in 12-hour-time-pick-panle', fakeAsync(() => {
+    it('format in 12-hour-time-pick-panel', fakeAsync(() => {
       testComponent.format = 'hh:mm:ss A';
       fixture12Hour.detectChanges();
       const list12HourLi = panelElement.nativeElement

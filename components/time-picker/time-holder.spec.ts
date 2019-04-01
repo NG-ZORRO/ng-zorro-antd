@@ -84,6 +84,11 @@ describe('time holder', () => {
     const date = new Date(0, 0, 0, 15, 0, 0, 0);
     expect(mathSecondRound(holder.value!)).toEqual(mathSecondRound(date));
   });
+  it('should set defaultRealHours and defaultViewHours correctly', () => {
+    const holder = new TimeHolder().setValue(new Date(), true).setDefaultOpenValue(new Date(0, 0, 0, 15, 2, 3));
+    expect(holder.defaultRealHours).toBe(15);
+    expect(holder.defaultViewHours).toBe(3);
+  });
   it('should set default selected 12-hours with value', () => {
     const holderPM = new TimeHolder().setValue(new Date(0, 0, 0, 15, 2, 3), true);
     expect(holderPM.selected12Hours).toBe('PM');
