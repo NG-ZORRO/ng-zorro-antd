@@ -23,7 +23,15 @@ export class NzTimeValueAccessorDirective implements ControlValueAccessor {
 
   changed(): void {
     if (this._onChange) {
-      const value = this.dateHelper.parseTime(this.elementRef.nativeElement.value);
+      let formattedVal;
+      if (this.nzTime.indexOf('HH') === -1) {
+        formattedVal = `00${this.elementRef.nativeElement.value}`;
+      } else if (this.nzTime.indexOf('mm') === -1) {
+        formattedVal = `0000${this.elementRef.nativeElement.value}`;
+      } else {
+        formattedVal = this.elementRef.nativeElement.value;
+      }
+      const value = this.dateHelper.parseTime(formattedVal);
       this._onChange(value!);
     }
   }
