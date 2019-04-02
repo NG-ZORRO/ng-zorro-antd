@@ -118,8 +118,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
    * @description
    * The calculated highest weight of mask value
    *
-   *  Weight of different mask input:
-   *  component default value < global configuration < component input value
+   * Weight of different mask input:
+   * component default value < global configuration < component input value
    */
   get mask(): boolean {
     if (this.nzMask != null) {
@@ -135,8 +135,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
    * @description
    * The calculated highest weight of maskClosable value
    *
-   *  Weight of different maskClosable input:
-   *  component default value < global configuration < component input value
+   * Weight of different maskClosable input:
+   * component default value < global configuration < component input value
    */
   get maskClosable(): boolean {
     if (this.nzMaskClosable != null) {
