@@ -100,7 +100,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
     }
   }
 
-  // Emit nzOnCalendarChange when select the first date by nz-range-picker
+  // Emit nzOnCalendarChange when select date by nz-range-picker
   onCalendarChange(value: CandyDate[]): void {
     if (this.isRange) {
       const rangeValue = value.map(x => x.nativeDate);
