@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   DebugElement,
+  OnInit,
   TemplateRef,
   ViewChild
 } from '@angular/core';
@@ -23,7 +24,8 @@ describe('steps', () => {
         NzTestOuterStepsComponent,
         NzTestInnerStepStringComponent,
         NzTestInnerStepTemplateComponent,
-        NzTestStepForComponent
+        NzTestStepForComponent,
+        NzTestStepAsyncComponent
       ]
     });
     TestBed.compileComponents();
@@ -330,12 +332,28 @@ describe('steps', () => {
     it('should title display correct', () => {
       TestBed.createComponent(NzTestStepForComponent).detectChanges();
     });
+
     it('should push works correct', () => {
       const comp = TestBed.createComponent(NzTestStepForComponent);
       comp.detectChanges();
       comp.debugElement.componentInstance.updateSteps();
       comp.detectChanges();
     });
+  });
+  describe('step async assign steps', () => {
+    it('should allow steps assigned asynchronously', fakeAsync(() => {
+      const fixture: ComponentFixture<NzTestStepAsyncComponent> = TestBed.createComponent(NzTestStepAsyncComponent);
+      let innerSteps: DebugElement[];
+
+      fixture.detectChanges();
+      innerSteps = fixture.debugElement.queryAll(By.directive(NzStepComponent));
+      expect(innerSteps.length).toBe(0);
+
+      tick(1000);
+      fixture.detectChanges();
+      innerSteps = fixture.debugElement.queryAll(By.directive(NzStepComponent));
+      expect(innerSteps.length).toBe(3);
+    }));
   });
 });
 
@@ -430,5 +448,23 @@ export class NzTestStepForComponent {
 
   updateSteps(): void {
     this.steps.push(4);
+  }
+}
+
+@Component({
+  selector: 'nz-test-step-async',
+  template: `
+    <nz-steps>
+      <nz-step *ngFor="let step of steps"></nz-step>
+    </nz-steps>
+  `
+})
+export class NzTestStepAsyncComponent implements OnInit {
+  steps: number[] = [];
+
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.steps = [1, 2, 3];
+    }, 1000);
   }
 }
