@@ -160,7 +160,6 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   private previouslyFocusedElement: HTMLElement;
   private focusTrap: FocusTrap;
   private scrollStrategy: BlockScrollStrategy;
-  private nzModalGlobalConfig: NzModalConfig;
 
   [key: string]: any; // tslint:disable-line:no-any
 
@@ -173,11 +172,10 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     private modalControl: NzModalControlService,
     private focusTrapFactory: FocusTrapFactory,
     private cdr: ChangeDetectorRef,
-    @Optional() @Inject(NZ_MODAL_CONFIG) nzModalGlobalConfig: NzModalConfig,
+    @Optional() @Inject(NZ_MODAL_CONFIG) private nzModalGlobalConfig: NzModalConfig,
     @Inject(DOCUMENT) private document: any // tslint:disable-line:no-any
   ) {
     super();
-    this.nzModalGlobalConfig = nzModalGlobalConfig;
     this.scrollStrategy = this.overlay.scrollStrategies.block();
   }
 
