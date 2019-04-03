@@ -2,7 +2,7 @@ import { animate, state, style, transition, trigger, AnimationTriggerMetadata } 
 import { AnimationCurves } from './animation';
 
 export const collapseMotion: AnimationTriggerMetadata = trigger('collapseMotion', [
-  state('expanded', style({ height: '*', display: '*' })),
+  state('expanded', style({ height: '*', display: 'block' })),
   state('collapsed', style({ height: 0, overflow: 'hidden' })),
   state('hidden', style({ height: 0, display: 'none' })),
   transition('expanded => collapsed', animate(`150ms ${AnimationCurves.EASE_IN_OUT}`)),
