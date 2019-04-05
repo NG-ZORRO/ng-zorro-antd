@@ -125,7 +125,7 @@ export class NzDemoFormValidateReactiveComponent {
   }
 
   userNameAsyncValidator = (control: FormControl) =>
-    Observable.create((observer: Observer<ValidationErrors | null>) => {
+    new Observable((observer: Observer<ValidationErrors | null>) => {
       setTimeout(() => {
         if (control.value === 'JasonWood') {
           observer.next({ error: true, duplicated: true });
