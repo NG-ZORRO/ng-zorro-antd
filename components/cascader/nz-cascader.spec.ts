@@ -14,6 +14,7 @@ import {
 } from '../core/testing';
 
 import { CascaderOption, NzShowSearchOptions } from './nz-cascader-definitions';
+import { clone, isObject } from './nz-cascader-utils';
 import { NzCascaderComponent } from './nz-cascader.component';
 import { NzCascaderModule } from './nz-cascader.module';
 
@@ -153,7 +154,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-cascader-picker-open');
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
-      expect(testComponent.cascader.nzOptions).toBe(options1);
+      expect(testComponent.cascader.nzOptions).not.toBe(options1);
     });
     it('should click toggle open', fakeAsync(() => {
       fixture.detectChanges();
@@ -311,7 +312,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       tick(400);
       fixture.detectChanges();
-      expect(optionEl.classList).toContain('ant-cascader-menu-item-active');
+      expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
     }));
     it('should disabled work', fakeAsync(() => {
       fixture.detectChanges();
@@ -492,7 +493,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.nzOptions).toBe(options1);
+      expect(testComponent.cascader.nzOptions).not.toBe(options1);
       expect(cascader.nativeElement.querySelector('.ant-cascader-input')).toBeNull();
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-clear')).toBeNull();
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label')).toBeNull();
@@ -1800,6 +1801,28 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(testComponent.values!.length).toBe(0);
     }));
+  });
+});
+
+describe('cascader utils', () => {
+  it('should predicate args type', () => {
+    const date = new Date();
+    expect(isObject(date)).toBeTruthy();
+    expect(isObject('')).toBeFalsy();
+    expect(isObject(void 0)).toBeFalsy();
+    expect(isObject(null)).toBeFalsy();
+    expect(isObject({})).toBeTruthy();
+  });
+
+  it('should deep copy target', () => {
+    expect(clone(null)).toBeNull();
+    expect(clone(void 0)).toBeUndefined();
+    expect(clone(/a/).toString()).toEqual(/a/.toString());
+    const date = new Date();
+    expect(clone(date).getTime()).toEqual(date.getTime());
+
+    expect(clone(options1)).not.toBe(options1);
+    expect(JSON.stringify(clone(options1))).toEqual(JSON.stringify(options1));
   });
 });
 

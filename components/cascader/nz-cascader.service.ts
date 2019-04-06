@@ -9,7 +9,7 @@ import {
   NzCascaderComponentAsSource,
   NzCascaderFilter
 } from './nz-cascader-definitions';
-import { isChildOption, isParentOption } from './nz-cascader-utils';
+import { clone, isChildOption, isParentOption } from './nz-cascader-utils';
 
 /**
  * All data is stored and parsed in NzCascaderService.
@@ -137,7 +137,9 @@ export class NzCascaderService implements OnDestroy {
   /**
    * Reset all options. Rebuild searching options if in searching mode.
    */
-  withOptions(options: CascaderOption[] | null): void {
+  withOptions(data: CascaderOption[] | null): void {
+    const options = clone(data);
+
     this.columnsSnapshot = this.columns = options && options.length ? [options] : [];
 
     if (this.inSearchingMode) {
@@ -246,7 +248,7 @@ export class NzCascaderService implements OnDestroy {
       path.push(node);
       node.children!.forEach(sNode => {
         if (!sNode.parent) {
-          sNode.parent = node;
+          sNode.parent = clone(node);
         }
         if (!sNode.isLeaf) {
           loopParent(sNode, disabled);
@@ -338,7 +340,7 @@ export class NzCascaderService implements OnDestroy {
   private setColumnData(options: CascaderOption[], columnIndex: number, parent: CascaderOption): void {
     const existingOptions = this.columns[columnIndex];
     if (!arraysEqual(existingOptions, options)) {
-      options.forEach(o => (o.parent = parent));
+      options.forEach(o => (o.parent = clone(parent)));
       this.columns[columnIndex] = options;
       this.dropBehindColumns(columnIndex);
     }

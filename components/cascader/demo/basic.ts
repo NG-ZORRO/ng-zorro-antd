@@ -121,6 +121,6 @@ export class NzDemoCascaderBasicComponent implements OnInit {
   }
 
   onChanges(values: any): void {
-    console.log(values, this.values);
+    console.log(values, this.values, this.nzOptions);
   }
 }
