@@ -9,7 +9,7 @@ import {
   NzCascaderComponentAsSource,
   NzCascaderFilter
 } from './nz-cascader-definitions';
-import { isChildOption, isParentOption } from './nz-cascader-utils';
+import { clone, isChildOption, isParentOption } from './nz-cascader-utils';
 
 /**
  * All data is stored and parsed in NzCascaderService.
@@ -137,7 +137,9 @@ export class NzCascaderService implements OnDestroy {
   /**
    * Reset all options. Rebuild searching options if in searching mode.
    */
-  withOptions(options: CascaderOption[] | null): void {
+  withOptions(data: CascaderOption[] | null): void {
+    const options = clone(data);
+
     this.columnsSnapshot = this.columns = options && options.length ? [options] : [];
 
     if (this.inSearchingMode) {
