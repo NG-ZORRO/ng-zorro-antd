@@ -153,7 +153,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-cascader-picker-open');
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
-      expect(testComponent.cascader.nzOptions).toBe(options1);
+      expect(testComponent.cascader.nzOptions).not.toBe(options1);
     });
     it('should click toggle open', fakeAsync(() => {
       fixture.detectChanges();
@@ -311,7 +311,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       tick(400);
       fixture.detectChanges();
-      expect(optionEl.classList).toContain('ant-cascader-menu-item-active');
+      expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
     }));
     it('should disabled work', fakeAsync(() => {
       fixture.detectChanges();
@@ -492,7 +492,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.nzOptions).toBe(options1);
+      expect(testComponent.cascader.nzOptions).not.toBe(options1);
       expect(cascader.nativeElement.querySelector('.ant-cascader-input')).toBeNull();
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-clear')).toBeNull();
       expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label')).toBeNull();
