@@ -45,7 +45,7 @@
         (click)="handlePreview(file, $event)">
           <i nz-icon type="eye-o"></i>
       </a>
-      <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" class="anticon anticon-delete" title="{{ locale.removeFile }}"></i>
+      <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" nz-icon type="delete" title="{{ locale.removeFile }}"></i>
     </span>
   </ng-container>
   <ng-template #close>
