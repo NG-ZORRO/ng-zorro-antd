@@ -25,13 +25,7 @@ import { InnerPopupComponent } from './popups/inner-popup.component';
 import { YearPanelComponent } from './year/year-panel.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-
-    NzI18nModule,
-    NzTimePickerModule
-  ],
+  imports: [CommonModule, FormsModule, NzI18nModule, NzTimePickerModule],
   exports: [
     CalendarHeaderComponent,
     CalendarInputComponent,
@@ -65,4 +59,4 @@ import { YearPanelComponent } from './year/year-panel.component';
     DateRangePopupComponent
   ]
 })
-export class LibPackerModule { }
+export class LibPackerModule {}

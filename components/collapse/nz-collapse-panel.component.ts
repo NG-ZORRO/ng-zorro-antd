@@ -40,6 +40,7 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
   @Input() @InputBoolean() @HostBinding('class.ant-collapse-item-active') nzActive = false;
   @Input() @InputBoolean() @HostBinding('class.ant-collapse-item-disabled') nzDisabled = false;
   @Input() @InputBoolean() nzShowArrow = true;
+  @Input() nzExtra: string | TemplateRef<void>;
   @Input() nzHeader: string | TemplateRef<void>;
   @Input() nzExpandedIcon: string | TemplateRef<void>;
   @Output() readonly nzActiveChange = new EventEmitter<boolean>();
