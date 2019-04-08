@@ -21,8 +21,7 @@ import {
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { isNotNil } from '../core/util/check';
+import { isNotNil, NzNoAnimationDirective } from 'ng-zorro-antd/core';
 
 import { NzToolTipComponent } from './nz-tooltip.component';
 

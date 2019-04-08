@@ -23,6 +23,14 @@ title: Badge
 <nz-badge [nzCount]="5"></nz-badge>
 ```
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+import { NzBadgeModule } from 'ng-zorro-antd';
+```
+
 ### nz-badge
 
 | 参数 | 说明 | 类型 | 默认值 |

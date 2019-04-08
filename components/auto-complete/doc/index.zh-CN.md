@@ -27,6 +27,14 @@ subtitle: 自动完成
 </nz-autocomplete>
 ```
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+import { NzAutocompleteModule } from 'ng-zorro-antd';
+```
+
 ### [nzAutocomplete]
 
 | 属性 | 说明 | 类型 | 默认值 |

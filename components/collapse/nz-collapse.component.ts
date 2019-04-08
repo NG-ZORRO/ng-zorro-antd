@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
-import { InputBoolean } from '../core/util/convert';
+
+import { InputBoolean } from 'ng-zorro-antd/core';
+
 import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
 
 @Component({

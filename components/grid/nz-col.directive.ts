@@ -13,9 +13,7 @@ import {
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { NgClassInterface } from '../core/types/ng-class';
-import { isNotNil } from '../core/util/check';
+import { isNotNil, NgClassInterface, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 import { NzRowDirective } from './nz-row.directive';
 

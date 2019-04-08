@@ -21,6 +21,14 @@ When the task is complicated or has a certain sequence in the series of subtasks
 </nz-steps>
 ```
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzStepsModule } from 'ng-zorro-antd';
+```
+
 ### nz-steps
 
 The whole of the step bar.

@@ -11,8 +11,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { NzSizeLDSType, NzSizeMap } from '../core/types/size';
+import { NzSizeLDSType, NzSizeMap, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 export type NzAvatarShape = 'square' | 'circle';
 export type NzAvatarSize = NzSizeLDSType | number;

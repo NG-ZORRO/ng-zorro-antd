@@ -13,6 +13,14 @@ Display statistic number.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzStatisticModule } from 'ng-zorro-antd';
+```
+
 ### nz-statistic
 
 | Property | Description | Type | Default |

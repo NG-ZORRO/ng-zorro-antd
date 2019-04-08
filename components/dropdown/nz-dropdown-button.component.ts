@@ -5,18 +5,20 @@ import {
   Component,
   EventEmitter,
   Host,
+  Injector,
   Input,
   OnChanges,
   OnDestroy,
   Optional,
   Output,
+  Self,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 
-import { slideMotion } from '../core/animation/slide';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { NzDropDownComponent } from './nz-dropdown.component';
+import { slideMotion, NzDropdownHigherOrderServiceToken, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+
+import { menuServiceFactory, NzDropDownComponent } from './nz-dropdown.component';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 
@@ -27,7 +29,14 @@ import { NzMenuDropdownService } from './nz-menu-dropdown.service';
   animations: [slideMotion],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NzMenuDropdownService],
+  providers: [
+    NzMenuDropdownService,
+    {
+      provide: NzDropdownHigherOrderServiceToken,
+      useFactory: menuServiceFactory,
+      deps: [[new Self(), Injector]]
+    }
+  ],
   templateUrl: './nz-dropdown-button.component.html',
   styles: [
     `

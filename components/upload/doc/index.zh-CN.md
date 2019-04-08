@@ -19,6 +19,14 @@ title: Upload
 
 > 服务端上传接口实现可以参考 [jQuery-File-Upload](https://github.com/blueimp/jQuery-File-Upload/wiki)。
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+import { NzUploadModule } from 'ng-zorro-antd';
+```
+
 ### nz-upload
 
 | 参数 | 说明 | 类型 | 默认值 |

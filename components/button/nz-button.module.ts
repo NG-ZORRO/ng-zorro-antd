@@ -1,8 +1,9 @@
 import { ObserversModule } from '@angular/cdk/observers';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzWaveModule } from '../core/wave/nz-wave.module';
-import { NzIconModule } from '../icon/nz-icon.module';
+
+import { NzWaveModule } from 'ng-zorro-antd/core';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzButtonGroupComponent } from './nz-button-group.component';
 import { NzButtonComponent } from './nz-button.component';

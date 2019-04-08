@@ -14,6 +14,14 @@ Please note that Affix should not cover other content on the page, especially wh
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzAffixModule } from 'ng-zorro-antd';
+```
+
 ### nz-affix
 
 | Property | Description | Type | Default |

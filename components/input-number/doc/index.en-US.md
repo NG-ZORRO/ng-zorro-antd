@@ -14,6 +14,14 @@ When a numeric value needs to be provided.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzInputNumberModule } from 'ng-zorro-antd';
+```
+
 ### nz-input-number
 
 | property | description | type | default |

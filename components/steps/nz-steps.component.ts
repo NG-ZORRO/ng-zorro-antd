@@ -15,9 +15,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NgClassType } from '../core/types/ng-class';
-import { NzSizeDSType } from '../core/types/size';
-import { toBoolean } from '../core/util/convert';
+import { toBoolean, NgClassType, NzSizeDSType } from 'ng-zorro-antd/core';
 
 import { NzStepComponent } from './nz-step.component';
 

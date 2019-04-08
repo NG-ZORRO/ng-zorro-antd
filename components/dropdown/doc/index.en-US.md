@@ -12,6 +12,14 @@ If there are too many operations to display, you can wrap them in a `Dropdown`. 
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzDropDownModule } from 'ng-zorro-antd';
+```
+
 ### nz-dropdown
 
 > You should add  `[nz-dropdown]` to the element that trigger dropdown

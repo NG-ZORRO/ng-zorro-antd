@@ -30,10 +30,7 @@ import {
 } from '@angular/core';
 import { fromEvent, merge, Subscription } from 'rxjs';
 
-import { DEFAULT_MENTION_POSITIONS } from '../core/overlay/overlay-position';
-import { InputBoolean } from '../core/util';
-import { getMentions } from '../core/util/getMentions';
-import { getCaretCoordinates } from '../core/util/textarea-caret-position';
+import { getCaretCoordinates, getMentions, DEFAULT_MENTION_POSITIONS, InputBoolean } from 'ng-zorro-antd/core';
 
 import { NzMentionSuggestionDirective } from './nz-mention-suggestions';
 import { NzMentionTriggerDirective } from './nz-mention-trigger';

@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { NzAddOnModule } from '../core/addon/addon.module';
-import { NzNoAnimationModule } from '../core/no-animation/nz-no-animation.module';
+import { NzAddOnModule, NzNoAnimationModule } from 'ng-zorro-antd/core';
 
 import { NzAutocompleteOptgroupComponent } from './nz-autocomplete-optgroup.component';
 import { NzAutocompleteOptionComponent } from './nz-autocomplete-option.component';

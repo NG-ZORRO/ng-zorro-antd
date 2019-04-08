@@ -13,6 +13,14 @@ Switching Selector.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzSwitchModule } from 'ng-zorro-antd';
+```
+
 ### nz-switch
 
 | Property | Description | Type | Default |

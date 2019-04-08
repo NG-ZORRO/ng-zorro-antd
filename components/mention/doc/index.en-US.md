@@ -22,6 +22,14 @@ When need to mention someone or something.
 </nz-mention>
 ```
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzMentionModule } from 'ng-zorro-antd';
+```
+
 ### nz-mention
 
 | Property | Description | Type | Default |

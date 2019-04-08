@@ -22,15 +22,21 @@ import {
 
 import { combineLatest, merge, Subject } from 'rxjs';
 import { flatMap, map, startWith, takeUntil } from 'rxjs/operators';
-import { collapseMotion } from '../core/animation/collapse';
-import { slideMotion } from '../core/animation/slide';
-import { zoomBigMotion } from '../core/animation/zoom';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { getPlacementName, DEFAULT_SUBMENU_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position';
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { InputBoolean } from '../core/util/convert';
+
+import {
+  collapseMotion,
+  getPlacementName,
+  slideMotion,
+  zoomBigMotion,
+  DEFAULT_SUBMENU_POSITIONS,
+  InputBoolean,
+  NzMenuBaseService,
+  NzNoAnimationDirective,
+  NzUpdateHostClassService,
+  POSITION_MAP
+} from 'ng-zorro-antd/core';
+
 import { NzMenuItemDirective } from './nz-menu-item.directive';
-import { NzMenuService } from './nz-menu.service';
 import { NzSubmenuService } from './nz-submenu.service';
 
 @Component({
@@ -125,7 +131,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
 
   constructor(
     private elementRef: ElementRef,
-    public nzMenuService: NzMenuService,
+    public nzMenuService: NzMenuBaseService,
     private cdr: ChangeDetectorRef,
     public nzSubmenuService: NzSubmenuService,
     private nzUpdateHostClassService: NzUpdateHostClassService,

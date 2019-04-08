@@ -17,10 +17,11 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
 import { merge, Subject } from 'rxjs';
 import { flatMap, startWith, takeUntil } from 'rxjs/operators';
-import { InputBoolean } from '../core/util/convert';
+
+import { InputBoolean } from 'ng-zorro-antd/core';
+
 import { NzTableComponent } from './nz-table.component';
 import { NzThComponent } from './nz-th.component';
 

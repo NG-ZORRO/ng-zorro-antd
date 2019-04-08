@@ -69,6 +69,14 @@ The first level navigation is inclined left near a logo, and the secondary menu 
 </nz-layout>
 ```
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzLayoutModule } from 'ng-zorro-antd';
+```
+
 ### nz-sider
 
 The sidebar.

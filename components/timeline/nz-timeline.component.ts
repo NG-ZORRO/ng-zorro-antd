@@ -18,7 +18,8 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { reverseChildNodes } from '../core/util/dom';
+import { reverseChildNodes } from 'ng-zorro-antd/core';
+
 import { NzTimelineItemComponent } from './nz-timeline-item.component';
 
 export type NzTimelineMode = 'left' | 'alternate' | 'right';

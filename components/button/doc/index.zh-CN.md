@@ -13,6 +13,14 @@ subtitle: 按钮
 
 ## API
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+import { NzButtonModule } from 'ng-zorro-antd';
+```
+
 ### [nz-button]
 
 通过设置 Button 的属性来产生不同的按钮样式，推荐顺序为：`nzType` -> `nzShape` -> `nzSize` -> `nzLoading` -> `disabled`

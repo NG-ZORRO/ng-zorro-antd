@@ -14,6 +14,14 @@ A content area which can be collapsed and expanded.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzCollapseModule } from 'ng-zorro-antd';
+```
+
 ### nz-collapse
 
 | Property | Description | Type | Default |

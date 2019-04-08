@@ -13,6 +13,14 @@ title: BackTop
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzBackTopModule } from 'ng-zorro-antd';
+```
+
 ### nz-back-top
 
 > The distance to the bottom is set to `50px` by default, which is overridable.

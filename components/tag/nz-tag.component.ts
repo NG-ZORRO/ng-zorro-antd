@@ -11,9 +11,8 @@ import {
   Renderer2,
   ViewEncapsulation
 } from '@angular/core';
-import { fadeMotion } from '../core/animation/fade';
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { InputBoolean } from '../core/util/convert';
+
+import { fadeMotion, InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-tag',

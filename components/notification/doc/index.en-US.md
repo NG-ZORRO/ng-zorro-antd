@@ -37,6 +37,14 @@ The default global configuration is:
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzNotificationModule } from 'ng-zorro-antd';
+```
+
 ### NzNotificationService
 
 The component provides a number of service methods using the following methods and parameters:

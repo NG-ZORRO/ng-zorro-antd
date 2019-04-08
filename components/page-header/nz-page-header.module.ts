@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzAddOnModule } from '../core/addon/addon.module';
-import { NzDividerModule } from '../divider/nz-divider.module';
-import { NzIconModule } from '../icon/nz-icon.module';
+
+import { NzAddOnModule } from 'ng-zorro-antd/core';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import {
   NzPageHeaderBreadcrumbDirective,
   NzPageHeaderContentDirective,

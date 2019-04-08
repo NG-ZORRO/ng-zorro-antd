@@ -13,6 +13,14 @@ subtitle: 加载中
 
 ## API
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+import { NzSpinModule } from 'ng-zorro-antd';
+```
+
 ### nz-spin
 
 | 参数 | 说明 | 类型 | 默认值 |

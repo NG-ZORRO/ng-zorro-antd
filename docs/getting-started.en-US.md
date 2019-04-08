@@ -138,3 +138,65 @@ You can get more info about how to customize styles at [customize theme](/docs/c
 ## Customization
 * [Customize Theme](/docs/customize-theme/en)
 * [Local Iconfont](/docs/customize-theme/en)
+
+## Secondary Entry Points
+
+From version 7.3.0, you can import a component's module and style files to use that component. For example, if you only want to use the `Button` component, you can import `NzButtonModule` instead of `NgZorroAntdModule`, and `Button`'s style file instead of `ng-zorro-antd.css`.
+
+In your modules:
+
+```diff
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
++ import { NzButtonModule } from 'ng-zorro-antd';
+- import { NgZorroAntdModule } from 'ng-zorro-antd';
+
+@NgModule({
+  declarations: [
+    OnlyButtonComponent
+  ],
+  imports: [
+    CommonModule,
++   NzButtonModule,
+-   NgZorroAntdModule
+  ]
+})
+export class OnlyButtonModule { }
+```
+
+In style.css:
+
+```diff
+- @import "~ng-zorro-antd/ng-zorro-antd.css";
+
++ @import "~ng-zorro-antd/style/index.min.css"; /* Import basic styles */
++ @import "~ng-zorro-antd/button/style/index.min.css"; /* Import styles of the component */
+
+/* If you use less，you should import entry.less for each component */
+/* If you want to import several components, you are highly recommended to use less instead of CSS. */
+/* @import "~ng-zorro-antd/button/style/entry.less" */
+```
+
+If you want to import several components, it is recommended to use less instead of CSS. In styles.less:
+
+```less
+@import "~ng-zorro-antd/style/index.less"; /* Import basic styles */
+@import "~ng-zorro-antd/button/style/entry.less"; /* Import styles of the component */
+```
+
+> Importing CSS files of several components may result in code redundancy because style files of components have dependency relationships like TypeScript files.
+
+### A comparison of secondary entry points and primary entry point
+
+| Primary Entry Point | Secondary Entry Points |
+| --- | --- |
+| Just import NgZorroAntdModule no matter what component you want to use | Import styles and modules of components you want |
+| Larger package size | Smaller package size |
+| ng-zorro-antd would be bundled into main.js | It may be bundled into lazy loading module according to your usage |
+
+Secondary entry points is recommended if you:
+
+* Only use a small part of the components of ng-zorro-antd (You can use a shared module to wrap those components).
+* Use ng-zorro-antd along with others component kits and get error because of conflicts.
+* Do care about package size

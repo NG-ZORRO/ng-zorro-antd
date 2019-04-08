@@ -80,6 +80,14 @@ Flex 布局是基于 24 栅格来定义每一个『盒子』的宽度，但排�
 
 ## API
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+import { NzGridModule } from 'ng-zorro-antd';
+```
+
 ### [nz-row]
 
 | 成员 | 说明 | 类型 | 默认值 |

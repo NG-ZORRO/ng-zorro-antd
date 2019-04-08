@@ -23,6 +23,14 @@ title: Mention
 </nz-mention>
 ```
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+import { NzMentionModule } from 'ng-zorro-antd';
+```
+
 ### nz-mention
 
 | 参数 | 说明 | 类型 | 默认值 |

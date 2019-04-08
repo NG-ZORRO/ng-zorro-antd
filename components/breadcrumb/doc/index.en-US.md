@@ -15,6 +15,14 @@ A breadcrumb displays the current location within a hierarchy. It allows going b
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzBreadCrumbModule } from 'ng-zorro-antd';
+```
+
 ### nz-breadcrumb
 
 | Property | Description | Type | Default |

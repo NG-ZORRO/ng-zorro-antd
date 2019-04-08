@@ -18,6 +18,16 @@ cols: 1
 <nz-card nzTitle="卡片标题">卡片内容</nz-card>
 ```
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+```ts
+import { NzCardModule } from 'ng-zorro-antd';
+```
+```
+
 ### nz-card
 
 | 参数 | 说明 | 类型 | 默认值 |

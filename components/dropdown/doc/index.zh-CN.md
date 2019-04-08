@@ -13,6 +13,13 @@ title: Dropdown
 
 ## API
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+import { NzDropDownModule } from 'ng-zorro-antd';
+```
 
 ### nz-dropdown
 

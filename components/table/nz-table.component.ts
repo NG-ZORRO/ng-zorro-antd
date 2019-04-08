@@ -24,10 +24,10 @@ import {
 } from '@angular/core';
 import { fromEvent, merge, EMPTY, Subject } from 'rxjs';
 import { flatMap, startWith, takeUntil } from 'rxjs/operators';
-import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
-import { NzSizeMDSType } from '../core/types/size';
-import { InputBoolean, InputNumber } from '../core/util/convert';
-import { NzI18nService } from '../i18n/nz-i18n.service';
+
+import { InputBoolean, InputNumber, NzMeasureScrollbarService, NzSizeMDSType } from 'ng-zorro-antd/core';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
+
 import { NzThComponent } from './nz-th.component';
 import { NzTheadComponent } from './nz-thead.component';
 import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';

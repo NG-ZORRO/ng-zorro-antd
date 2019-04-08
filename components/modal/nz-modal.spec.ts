@@ -1,21 +1,19 @@
 /* TODO: Sort out and rewrite for more standardized */
 
+import { ESCAPE } from '@angular/cdk/keycodes';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, EventEmitter, Input } from '@angular/core';
 import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { OverlayContainer } from '@angular/cdk/overlay';
-import { NzButtonComponent } from '../button/nz-button.component';
-import { NzButtonModule } from '../button/nz-button.module';
-import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
-
-import { ESCAPE } from '@angular/cdk/keycodes';
-import { dispatchKeyboardEvent } from '../core/testing';
+import { NzButtonComponent, NzButtonModule } from 'ng-zorro-antd/button';
+import { dispatchKeyboardEvent, NzMeasureScrollbarService } from 'ng-zorro-antd/core';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
 import en_US from '../i18n/languages/en_US';
-import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
+
 import { CssUnitPipe } from './css-unit.pipe';
 import { NZ_MODAL_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';

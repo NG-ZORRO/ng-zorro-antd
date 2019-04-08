@@ -19,8 +19,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { isEmpty } from '../core/util/check';
-import { InputBoolean } from '../core/util/convert';
+
+import { isEmpty, InputBoolean } from 'ng-zorro-antd/core';
+
 import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
 
 @Component({

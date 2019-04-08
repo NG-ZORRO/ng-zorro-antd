@@ -8,6 +8,14 @@ Avatars can be used to represent people or objects. It supports images, `Icon`s,
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzAvatarModule } from 'ng-zorro-antd';
+```
+
 ### nz-avatar
 
 | Property | Description | Type | Default |

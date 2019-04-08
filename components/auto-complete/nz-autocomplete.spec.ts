@@ -15,7 +15,7 @@ import {
   dispatchKeyboardEvent,
   typeInElement,
   MockNgZone
-} from '../core/testing';
+} from 'ng-zorro-antd/core';
 
 import {
   NzAutocompleteComponent,

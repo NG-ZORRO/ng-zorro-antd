@@ -18,9 +18,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NgClassType } from '../core/types/ng-class';
 
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean, NgClassType } from 'ng-zorro-antd/core';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

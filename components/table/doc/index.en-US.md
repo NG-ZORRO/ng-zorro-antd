@@ -55,6 +55,14 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzTableModule } from 'ng-zorro-antd';
+```
+
 ### nz-table
 
 | Property | Description | Type | Default |

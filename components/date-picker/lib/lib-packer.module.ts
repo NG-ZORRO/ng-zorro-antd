@@ -6,8 +6,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { NzI18nModule } from '../../i18n/nz-i18n.module';
-import { NzTimePickerModule } from '../../time-picker/nz-time-picker.module';
+import { NzI18nModule } from 'ng-zorro-antd/i18n';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
 import { CalendarFooterComponent } from './calendar/calendar-footer.component';
 import { CalendarHeaderComponent } from './calendar/calendar-header.component';

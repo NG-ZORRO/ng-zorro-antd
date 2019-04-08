@@ -16,8 +16,8 @@ import {
 import { of, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { toBoolean, InputBoolean, InputNumber } from '../core/util/convert';
-import { NzI18nService } from '../i18n/nz-i18n.service';
+import { toBoolean, InputBoolean, InputNumber } from 'ng-zorro-antd/core';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import {
   ShowUploadListInterface,

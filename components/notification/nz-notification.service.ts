@@ -1,7 +1,7 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector, TemplateRef } from '@angular/core';
 
-import { NzMessageBaseService } from '../message/nz-message.service';
+import { NzMessageBaseService } from 'ng-zorro-antd/message';
 
 import { NzNotificationConfig } from './nz-notification-config';
 import { NzNotificationContainerComponent } from './nz-notification-container.component';

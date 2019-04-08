@@ -4,7 +4,7 @@ import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from
 import { FormsModule, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { dispatchKeyboardEvent } from '../core/testing';
+import { dispatchKeyboardEvent } from 'ng-zorro-antd/core';
 import { NzOptionComponent } from './nz-option.component';
 
 import { OverlayContainer } from '@angular/cdk/overlay';

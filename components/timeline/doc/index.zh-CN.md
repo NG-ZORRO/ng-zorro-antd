@@ -23,6 +23,14 @@ title: Timeline
 </nz-timeline>
 ```
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+import { NzTimelineModule } from 'ng-zorro-antd';
+```
+
 ### nz-timeline
 
 时间轴。

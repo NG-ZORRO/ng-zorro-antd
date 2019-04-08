@@ -9,11 +9,10 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import isSameDay from 'date-fns/is_same_day';
 
-import { dispatchKeyboardEvent, dispatchMouseEvent } from '../core/testing';
-import { NGStyleInterface } from '../core/types/ng-class';
+import { dispatchKeyboardEvent, dispatchMouseEvent, NGStyleInterface } from 'ng-zorro-antd/core';
 import en_US from '../i18n/languages/en_US';
-import { NzI18nModule } from '../i18n/nz-i18n.module';
-import { NzI18nService } from '../i18n/nz-i18n.service';
+
+import { NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzDatePickerModule } from './date-picker.module';
 
 registerLocaleData(zh);

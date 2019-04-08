@@ -14,6 +14,14 @@ Tag for categorizing or markup.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzTagModule } from 'ng-zorro-antd';
+```
+
 ### Tag
 
 | Property | Description | Type | Default |

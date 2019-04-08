@@ -17,6 +17,14 @@ Ant Design has 3 types of Tabs for different situations.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzTabsModule } from 'ng-zorro-antd';
+```
+
 ### nz-tabset
 
 | Property | Description | Type | Default |

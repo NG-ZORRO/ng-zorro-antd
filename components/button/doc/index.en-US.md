@@ -12,6 +12,14 @@ A button means an operation (or a series of operations). Clicking a button will 
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzButtonModule } from 'ng-zorro-antd';
+```
+
 ### [nz-button]
 
 To get a customized button, just set `nzType`/`nzShape`/`nzSize`/`nzLoading`/`disabled`.

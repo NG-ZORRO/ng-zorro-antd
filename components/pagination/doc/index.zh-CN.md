@@ -19,6 +19,14 @@ cols: 1
 <nz-pagination [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
 ```
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+import { NzPaginationModule } from 'ng-zorro-antd';
+```
+
 ### nz-pagination
 
 | 参数 | 说明 | 类型 | 默认值 |

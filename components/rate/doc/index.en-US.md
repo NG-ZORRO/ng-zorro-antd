@@ -13,6 +13,14 @@ Rate component.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzRateModule } from 'ng-zorro-antd';
+```
+
 ### nz-rate
 
 | Property | Description | type | Default |

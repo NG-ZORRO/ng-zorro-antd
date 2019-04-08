@@ -7,6 +7,7 @@
     "types": [],
     "paths": {
       "ng-zorro-antd": [ "../components/ng-zorro-antd.module.ts" ],
+      "ng-zorro-antd/*": [ "../components/*" ],
       "ngx-color/sketch": [ "../node_modules/ngx-color/sketch" ]
     }
   },

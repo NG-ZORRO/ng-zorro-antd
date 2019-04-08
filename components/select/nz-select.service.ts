@@ -2,7 +2,9 @@ import { BACKSPACE, DOWN_ARROW, ENTER, SPACE, TAB, UP_ARROW } from '@angular/cdk
 import { Injectable } from '@angular/core';
 import { combineLatest, merge, BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, share, skip, tap } from 'rxjs/operators';
-import { isNil, isNotNil } from '../core/util';
+
+import { isNil, isNotNil } from 'ng-zorro-antd/core';
+
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
 import { defaultFilterOption, NzFilterOptionPipe, TFilterOption } from './nz-option.pipe';

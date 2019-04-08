@@ -8,8 +8,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { InputNumber } from '../core/util';
-import { isNotNil } from '../core/util/check';
+import { isNotNil, InputNumber } from 'ng-zorro-antd/core';
 
 export type NzProgressGapPositionType = 'top' | 'bottom' | 'left' | 'right';
 export type NzProgressStatusType = 'success' | 'exception' | 'active' | 'normal';

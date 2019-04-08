@@ -2,8 +2,10 @@ import { Component, DebugElement } from '@angular/core';
 import { fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NzCheckboxModule } from '../checkbox';
-import { createFakeEvent } from '../core/testing';
+
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { createFakeEvent } from 'ng-zorro-antd/core';
+
 import { NzTdComponent } from './nz-td.component';
 
 describe('nz-td', () => {

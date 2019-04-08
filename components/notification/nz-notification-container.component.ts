@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { toCssPixel } from '../core/util';
-import { NzMessageContainerComponent } from '../message/nz-message-container.component';
+import { toCssPixel } from 'ng-zorro-antd/core';
+import { NzMessageContainerComponent } from 'ng-zorro-antd/message';
 
 import { NzNotificationConfig, NZ_NOTIFICATION_CONFIG, NZ_NOTIFICATION_DEFAULT_CONFIG } from './nz-notification-config';
 import { NzNotificationDataFilled, NzNotificationDataOptions } from './nz-notification.definitions';

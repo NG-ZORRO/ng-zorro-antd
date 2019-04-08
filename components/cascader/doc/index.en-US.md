@@ -18,6 +18,14 @@ Cascade selection box.
 <nz-cascader [nzOptions]="options" [(ngModel)]="values"></nz-cascader>
 ```
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzCascaderModule } from 'ng-zorro-antd';
+```
+
 ### nz-cascader
 
 | Property | Description | Type | Default |

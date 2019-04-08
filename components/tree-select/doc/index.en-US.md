@@ -13,6 +13,14 @@ Any data whose entries are defined in a hierarchical manner is fit to use this c
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzTreeSelectModule } from 'ng-zorro-antd';
+```
+
 ### nz-tree-select
 
 | Property | Description | Type | Default |

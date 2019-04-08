@@ -30,6 +30,14 @@ title: Message
 
 ## API
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+import { NzMessageModule } from 'ng-zorro-antd';
+```
+
 ### NzMessageService
 
 组件提供了一些服务方法，使用方式和参数如下：

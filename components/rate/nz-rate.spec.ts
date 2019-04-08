@@ -3,7 +3,7 @@ import { fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testi
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { dispatchFakeEvent, dispatchKeyboardEvent } from '../core/testing';
+import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core';
 
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { NzRateComponent } from './nz-rate.component';

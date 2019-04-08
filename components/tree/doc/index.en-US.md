@@ -10,6 +10,14 @@ Almost anything can be represented in a tree structure. Examples include directo
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzTreeModule } from 'ng-zorro-antd';
+```
+
 ### nz-tree
 
 | Property | Description | Type | Default |

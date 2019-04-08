@@ -13,6 +13,14 @@ Checkbox.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzCheckboxModule } from 'ng-zorro-antd';
+```
+
 ### [nz-checkbox]
 
 | Property | Description | Type | Default |

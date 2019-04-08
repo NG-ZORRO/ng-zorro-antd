@@ -13,6 +13,14 @@ Radio.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzRadioModule } from 'ng-zorro-antd';
+```
+
 ### [nz-radio] | [nz-radio-button]
 
 | Property | Description | Type | Default |

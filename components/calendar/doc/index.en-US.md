@@ -36,6 +36,14 @@ registerLocaleData(en);
 <ng-template #dateCellTpl let-date><span>{{ date | date:'d'}}</span></ng-template>
 ```
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzCalendarModule } from 'ng-zorro-antd';
+```
+
 ### nz-calendar
 
 | Property | Description | Type | Default |

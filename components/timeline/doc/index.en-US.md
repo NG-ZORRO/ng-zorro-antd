@@ -22,6 +22,14 @@ Vertical display timeline.
 </nz-timeline>
 ```
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzTimelineModule } from 'ng-zorro-antd';
+```
+
 ### nz-timeline
 
 Timeline

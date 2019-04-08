@@ -22,6 +22,14 @@ title: Steps
 </nz-steps>
 ```
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+import { NzStepsModule } from 'ng-zorro-antd';
+```
+
 ### nz-steps
 
 整体步骤条。

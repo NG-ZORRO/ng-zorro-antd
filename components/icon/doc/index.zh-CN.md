@@ -21,6 +21,14 @@ hasPageDemo: true
 
 ## API
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+import { NzIconModule } from 'ng-zorro-antd';
+```
+
 ### [nz-icon]
 
 | 参数             | 说明                                                         | 类型                         | 默认值    |

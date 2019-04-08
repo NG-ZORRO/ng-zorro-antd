@@ -13,7 +13,13 @@ A divider line separates different content.
 
 ## API
 
-### Divider
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzDividerModule } from 'ng-zorro-antd';
+```
 
 ### nz-divider
 

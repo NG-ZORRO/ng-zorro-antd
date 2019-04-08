@@ -14,6 +14,14 @@ A carousel component. Scales with its container.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzCarouselModule } from 'ng-zorro-antd';
+```
+
 ### nz-carousel
 
 | Property | Description | Type | Default |

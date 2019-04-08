@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger, AnimationTriggerMetadata } from '@angular/animations';
-import { AnimationCurves } from './animation';
+import { AnimationCurves } from './animation-consts';
 
 export const collapseMotion: AnimationTriggerMetadata = trigger('collapseMotion', [
   state('expanded', style({ height: '*' })),

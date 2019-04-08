@@ -11,7 +11,7 @@ import {
   dispatchEvent,
   dispatchKeyboardEvent,
   dispatchMouseEvent
-} from '../core/testing';
+} from 'ng-zorro-antd/core';
 
 import { CascaderOption, NzShowSearchOptions } from './nz-cascader-definitions';
 import { NzCascaderComponent } from './nz-cascader.component';

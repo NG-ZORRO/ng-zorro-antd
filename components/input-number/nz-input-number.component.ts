@@ -19,10 +19,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NzSizeLDSType } from '../core/types/size';
 
-import { isNotNil } from '../core/util/check';
-import { InputBoolean } from '../core/util/convert';
+import { isNotNil, InputBoolean, NzSizeLDSType } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-input-number',

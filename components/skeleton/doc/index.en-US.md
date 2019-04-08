@@ -14,6 +14,14 @@ Provide a placeholder at the place which need waiting for loading.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzSkeletonModule } from 'ng-zorro-antd';
+```
+
 ### nz-skeleton
 
 | Property | Description | Type | Default |

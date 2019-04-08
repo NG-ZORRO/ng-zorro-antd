@@ -13,6 +13,14 @@ When there is no data provided, display for friendly tips.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzEmptyModule } from 'ng-zorro-antd';
+```
+
 ### nz-empty
 
 | Property | Description | Type | Default |

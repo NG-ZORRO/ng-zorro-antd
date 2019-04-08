@@ -15,6 +15,14 @@ One or more elements can be selected from either column, one click on the proper
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzTransferModule } from 'ng-zorro-antd';
+```
+
 ### nz-transfer
 
 | Property | Description | Type | Default |

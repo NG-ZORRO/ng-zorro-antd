@@ -45,6 +45,14 @@ A form consists of one or more form fields whose type includes input, textarea, 
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzFormModule } from 'ng-zorro-antd';
+```
+
 ### nz-form
 
 

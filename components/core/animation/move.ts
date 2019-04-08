@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger, AnimationTriggerMetadata } from '@angular/animations';
-import { AnimationDuration } from './animation';
+import { AnimationDuration } from './animation-consts';
 
 export const moveUpMotion: AnimationTriggerMetadata = trigger('moveUpMotion', [
   transition('* => enter', [

@@ -12,6 +12,14 @@ To input a value in a range.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzSliderModule } from 'ng-zorro-antd';
+```
+
 ### nz-slider
 
 | Property | Description | Type | Default |

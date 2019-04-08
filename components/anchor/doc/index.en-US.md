@@ -12,6 +12,14 @@ For displaying anchor hyperlinks on page and jumping between them.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzAnchorModule } from 'ng-zorro-antd';
+```
+
 ### nz-anchor
 
 | Property | Description | Type | Default |

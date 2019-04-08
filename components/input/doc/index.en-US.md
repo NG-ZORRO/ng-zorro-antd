@@ -14,6 +14,14 @@ Keyboard and mouse can be used for providing or changing data.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzInputModule } from 'ng-zorro-antd';
+```
+
 ### [nz-input]
 
 All props of input supported by [w3c standards](https://www.w3schools.com/tags/tag_input.asp) and Angular can used in `nz-input`.

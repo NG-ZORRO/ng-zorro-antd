@@ -15,9 +15,8 @@ import {
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
-import { NzScrollService } from '../core/scroll/nz-scroll.service';
-import { NGStyleInterface } from '../core/types/ng-class';
-import { toNumber, InputBoolean, InputNumber } from '../core/util/convert';
+
+import { toNumber, InputBoolean, InputNumber, NzScrollService, NGStyleInterface } from 'ng-zorro-antd/core';
 
 import { NzAnchorLinkComponent } from './nz-anchor-link.component';
 

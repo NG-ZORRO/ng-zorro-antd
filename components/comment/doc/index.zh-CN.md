@@ -19,6 +19,14 @@ cols: 1
 | [nzAuthor] | 显示评论的作者 | `string｜TemplateRef<void>` | - |
 | [nzDatetime] | 展示时间描述 | `string｜TemplateRef<void>` | - |
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+import { NzCommentModule } from 'ng-zorro-antd';
+```
+
 ### 评论组成部分
 | 元素 | 说明 |
 | ----- | ----------- |

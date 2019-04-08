@@ -26,6 +26,14 @@ When there is a need for autocomplete functionality.
 </nz-autocomplete>
 ```
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzAutocompleteModule } from 'ng-zorro-antd';
+```
+
 ### [nzAutocomplete]
 
 | Property | Description | Type | Default |

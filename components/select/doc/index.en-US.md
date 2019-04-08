@@ -19,6 +19,14 @@ Select component to select value from options.
 </nz-select>
 ```
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzSelectModule } from 'ng-zorro-antd';
+```
+
 ### nz-select
 
 | Property | Description | Type | Default |

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { toCssPixel } from '../core/util';
+import { toCssPixel } from 'ng-zorro-antd/core';
 
 import { NzMessageConfig, NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG } from './nz-message-config';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';

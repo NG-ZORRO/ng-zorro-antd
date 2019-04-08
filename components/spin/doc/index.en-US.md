@@ -12,6 +12,14 @@ When part of the page is waiting for asynchronous data or during a rendering pro
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzSpinModule } from 'ng-zorro-antd';
+```
+
 ### nz-spin
 
 | Property | Description | Type | Default Value |

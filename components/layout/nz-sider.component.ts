@@ -22,7 +22,9 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
 import { fromEvent, Subject } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
-import { InputBoolean } from '../core/util/convert';
+
+import { InputBoolean } from 'ng-zorro-antd/core';
+
 import { NzLayoutComponent } from './nz-layout.component';
 
 export type NzBreakPoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';

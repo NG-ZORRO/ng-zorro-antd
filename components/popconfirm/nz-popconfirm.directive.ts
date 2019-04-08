@@ -16,9 +16,9 @@ import {
 
 import { distinctUntilChanged } from 'rxjs/operators';
 
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { InputBoolean } from '../core/util/convert';
-import { NzTooltipDirective } from '../tooltip/nz-tooltip.directive';
+import { InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
+
 import { NzPopconfirmComponent } from './nz-popconfirm.component';
 
 @Directive({

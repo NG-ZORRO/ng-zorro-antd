@@ -13,6 +13,14 @@ A simple text popup tip.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzTooltipModule } from 'ng-zorro-antd';
+```
+
 ### nz-tooltip
 
 | Property | Description | Type | Default |

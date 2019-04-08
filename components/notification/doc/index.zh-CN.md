@@ -36,6 +36,14 @@ subtitle: 通知提醒框
 
 ## API
 
+### 二级入口
+
+[说明](/docs/getting-started/zh#二级入口)。
+
+```ts
+import { NzNotificationModule } from 'ng-zorro-antd';
+```
+
 ### NzNotificationService
 
 组件提供了一些服务方法，使用方式和参数如下：

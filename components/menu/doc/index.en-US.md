@@ -27,6 +27,14 @@ More layouts with navigation: [layout](/components/layout/en).
 </ul>
 ```
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzMenuModule } from 'ng-zorro-antd';
+```
+
 ### [nz-menu]
 
 | Param | Description | Type | Default value |

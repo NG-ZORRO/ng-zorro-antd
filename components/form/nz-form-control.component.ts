@@ -17,11 +17,10 @@ import {
 import { FormControl, FormControlName, NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { NgClassType } from '../core/types/ng-class';
-import { toBoolean } from '../core/util/convert';
-import { NzColDirective } from '../grid/nz-col.directive';
-import { NzRowDirective } from '../grid/nz-row.directive';
+
+import { toBoolean, NgClassType, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { NzColDirective, NzRowDirective } from 'ng-zorro-antd/grid';
+
 import { NzFormItemComponent } from './nz-form-item.component';
 
 @Component({

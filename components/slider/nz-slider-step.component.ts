@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean } from 'ng-zorro-antd/core';
 
 import { DisplayedStep, ExtendedMark } from './nz-slider-definitions';
 

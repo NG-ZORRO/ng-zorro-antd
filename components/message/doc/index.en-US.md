@@ -29,6 +29,14 @@ The default global configuration is:
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzMessageModule } from 'ng-zorro-antd';
+```
+
 ### NzMessageService
 
 This components provides some service methods, with usage and arguments as following:

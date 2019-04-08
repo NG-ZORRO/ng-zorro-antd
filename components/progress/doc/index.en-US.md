@@ -15,6 +15,14 @@ If it will take a long time to complete an operation, you can use `Progress` to 
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzProgressModule } from 'ng-zorro-antd';
+```
+
 ### nz-progress
 
 | Property | Description | Type | Default |

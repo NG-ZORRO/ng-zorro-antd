@@ -30,9 +30,9 @@ import {
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { InputBoolean } from '../core/util/convert';
-import { isPromise } from '../core/util/is-promise';
-import { NzI18nService } from '../i18n/nz-i18n.service';
+import { isPromise, InputBoolean } from 'ng-zorro-antd/core';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
+
 import ModalUtil from './modal-util';
 import { NzModalConfig, NZ_MODAL_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';

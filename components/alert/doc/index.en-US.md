@@ -13,6 +13,14 @@ Alert component for feedback.
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzAlertModule } from 'ng-zorro-antd';
+```
+
 ### nz-alert
 
 | Property | Description | Type | Default |

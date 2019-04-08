@@ -13,6 +13,14 @@ A list can be used to display content related to a single subject. The content c
 
 ## API
 
+### Secondary Entry Point
+
+[Note](/docs/getting-started/en#secondary-entry-points).
+
+```ts
+import { NzListModule } from 'ng-zorro-antd';
+```
+
 ### nz-list
 
 | Property | Description | Type | Default
