@@ -122,14 +122,17 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
       return 0;
     }
     const rect = element.getBoundingClientRect();
-    if (!rect.width && !rect.height) {
-      return rect.top;
+    if (rect.width || rect.height) {
+      if (this.getTarget() === window) {
+        return rect.top - element.ownerDocument!.documentElement!.clientTop;
+      }
+      return rect.top - (this.getTarget() as HTMLElement).getBoundingClientRect().top;
     }
-    return rect.top - element.ownerDocument!.documentElement!.clientTop;
+    return rect.top;
   }
 
   handleScroll(): void {
-    if (this.destroyed || this.animating) {
+    if (typeof document === 'undefined' || this.destroyed || this.animating) {
       return;
     }
 
@@ -141,12 +144,14 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
         return;
       }
       const target = this.doc.getElementById(sharpLinkMatch[1]);
-      if (target && this.getOffsetTop(target) < scope) {
+      if (target) {
         const top = this.getOffsetTop(target);
-        sections.push({
-          top,
-          comp
-        });
+        if (top < scope) {
+          sections.push({
+            top,
+            comp
+          });
+        }
       }
     });
 
@@ -177,6 +182,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
       '.ant-anchor-link-title'
     ) as HTMLElement;
     this.ink.nativeElement.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
+    this.visible = true;
     this.cdr.detectChanges();
 
     this.nzScroll.emit(comp);
@@ -190,7 +196,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
 
     this.animating = true;
     const containerScrollTop = this.scrollSrv.getScroll(this.getTarget());
-    const elOffsetTop = this.scrollSrv.getOffset(el).top;
+    const elOffsetTop = this.getOffsetTop(el);
     const targetScrollTop = containerScrollTop + elOffsetTop - (this.nzOffsetTop || 0);
     this.scrollSrv.scrollTo(this.getTarget(), targetScrollTop, undefined, () => {
       this.animating = false;

@@ -159,11 +159,14 @@ describe('anchor', () => {
         expect(window.addEventListener).toHaveBeenCalled();
       });
       it('with string', () => {
+        spyOn(context, '_click');
         const el = document.querySelector('#target')!;
         spyOn(el, 'addEventListener');
         context.nzTarget = '#target';
         fixture.detectChanges();
         expect(el.addEventListener).toHaveBeenCalled();
+        page.to('#basic-target');
+        expect(context._click).toHaveBeenCalled();
       });
     });
 
@@ -255,6 +258,7 @@ describe('anchor', () => {
       <nz-link nzHref="http://www.example.com/#id" nzTitle="complete" class="mock-complete"></nz-link>
       <nz-link nzHref="#parallel1" nzTitle="parallel1"></nz-link>
       <nz-link nzHref="#parallel2" nzTitle="parallel2"></nz-link>
+      <nz-link nzHref="#basic-target" nzTitle="basic-target"></nz-link>
     </nz-anchor>
     <h2 id="何时使用"></h2>
     <div style="height: 1000px"></div>
@@ -273,7 +277,10 @@ describe('anchor', () => {
     </table>
 
     <div style="height: 1000px"></div>
-    <div id="target"></div>
+    <div id="target">
+      <div style="height: 1000px"></div>
+      <h2 id="basic-target"></h2>
+    </div>
   `
 })
 export class TestComponent {
