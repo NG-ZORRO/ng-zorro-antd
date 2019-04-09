@@ -7,7 +7,7 @@ import { forkJoin } from 'rxjs';
   selector: 'nz-demo-upload-custom-request',
   template: `
     <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" [nzCustomRequest]="customReq">
-      <button nz-button><i nz-icon type="upload"></i><span>Click to Upload</span></button>
+      <button nz-button><i nz-icon nzType="upload"></i><span>Click to Upload</span></button>
     </nz-upload>
   `
 })

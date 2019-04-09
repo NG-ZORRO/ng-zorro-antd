@@ -12,7 +12,7 @@ import { NzMessageService } from 'ng-zorro-antd';
       (nzChange)="handleChange($event)"
     >
       <p class="ant-upload-drag-icon">
-        <i nz-icon type="inbox"></i>
+        <i nz-icon nzType="inbox"></i>
       </p>
       <p class="ant-upload-text">Click or drag file to this area to upload</p>
       <p class="ant-upload-hint">
