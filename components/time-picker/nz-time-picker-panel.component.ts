@@ -5,8 +5,10 @@ import {
   DebugElement,
   ElementRef,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -18,6 +20,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { reqAnimFrame } from '../core/polyfill/request-animation';
 import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
+import { InputBoolean } from '../core/util';
 import { isNotNil } from '../core/util/check';
 import { NzTimeValueAccessorDirective } from './nz-time-value-accessor.directive';
 import { TimeHolder } from './time-holder';
@@ -35,7 +38,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
   templateUrl: './nz-time-picker-panel.component.html',
   providers: [UpdateCls, { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerPanelComponent, multi: true }]
 })
-export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit, OnDestroy {
+export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   private _nzHourStep = 1;
   private _nzMinuteStep = 1;
   private _nzSecondStep = 1;
@@ -49,7 +52,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   private _defaultOpenValue = new Date();
   private _opened = false;
   private _allowEmpty = true;
-  private _nzUse12Hours = false;
   prefixCls: string = 'ant-time-picker-panel';
   time = new TimeHolder();
   hourEnabled = true;
@@ -72,6 +74,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   @Input() nzHideDisabledOptions = false;
   @Input() nzClearText: string;
   @Input() nzPlaceHolder: string;
+  @Input() @InputBoolean() nzUse12Hours = false;
 
   @Input()
   set nzAllowEmpty(value: boolean) {
@@ -163,7 +166,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
       if (this.secondEnabled) {
         this.enabledColumns++;
       }
-      if (this._nzUse12Hours) {
+      if (this.nzUse12Hours) {
         this.build12Hours();
       }
     }
@@ -207,21 +210,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   get nzSecondStep(): number {
     return this._nzSecondStep;
-  }
-
-  @Input()
-  set nzUse12Hours(value: boolean) {
-    if (isNotNil(value)) {
-      if (value) {
-        this.build12Hours();
-        this.enabledColumns++;
-      }
-      this._nzUse12Hours = value;
-    }
-  }
-
-  get nzUse12Hours(): boolean {
-    return this._nzUse12Hours;
   }
 
   selectInputRange(): void {
@@ -502,6 +490,15 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.unsubscribe$.complete();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzUse12Hours } = changes;
+    if (nzUse12Hours) {
+      if (isNotNil(nzUse12Hours) && nzUse12Hours) {
+        this.build12Hours();
+        this.enabledColumns++;
+      }
+    }
+  }
   writeValue(value: Date): void {
     this.time.setValue(value, this.nzUse12Hours);
     this.buildTimes();
