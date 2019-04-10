@@ -180,7 +180,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   }
 
   writeValue(value: string[] | string): void {
-    if (value) {
+    if (`${value}`) {
       if (this.isMultiple && Array.isArray(value)) {
         this.value = value;
       } else {

@@ -117,11 +117,7 @@ export class NzTreeBaseService implements OnDestroy {
     this.expandedNodeList = [];
     const calc = (nodes: NzTreeNode[]) => {
       nodes.forEach(node => {
-        if (isInArray(node.key, expandedKeys)) {
-          node.isExpanded = true;
-        } else {
-          node.isExpanded = false;
-        }
+        node.isExpanded = isInArray(node.key, expandedKeys);
         if (node.children.length > 0) {
           calc(node.children);
         }
@@ -278,7 +274,7 @@ export class NzTreeBaseService implements OnDestroy {
 
   /**
    * check state
-   * @param node
+   * @param isCheckStrictly
    */
   refreshCheckState(isCheckStrictly: boolean = false): void {
     if (isCheckStrictly) {

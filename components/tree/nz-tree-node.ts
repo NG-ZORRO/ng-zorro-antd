@@ -59,7 +59,7 @@ export class NzTreeNode {
     }
     this.service = service || null;
     this.origin = option;
-    this.key = option.key || '';
+    this.key = option.key;
     this.parentNode = parent;
     this._title = option.title || '---';
     this._icon = option.icon || '';
@@ -67,7 +67,7 @@ export class NzTreeNode {
     this._children = [];
     // option params
     this._isChecked = option.checked || false;
-    this._isSelectable = option.disabled || (option.selectable === false ? false : true);
+    this._isSelectable = option.disabled || option.selectable !== false;
     this._isDisabled = option.disabled || false;
     this._isDisableCheckbox = option.disableCheckbox || false;
     this._isExpanded = option.isLeaf ? false : option.expanded || false;
