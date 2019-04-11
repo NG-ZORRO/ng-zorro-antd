@@ -12,7 +12,11 @@
   </span>
   <ng-template #notDropdownTpl><i class="ant-menu-submenu-arrow"></i></ng-template>
 </div>
-<ul *ngIf="nzMenuService.mode === 'inline'" [@collapseMotion]="expandState" [nzNoAnimation]="noAnimation?.nzNoAnimation" class="ant-menu ant-menu-inline ant-menu-sub">
+<ul *ngIf="nzMenuService.mode === 'inline'"
+  [@collapseMotion]="expandState"
+  [nzNoAnimation]="noAnimation?.nzNoAnimation"
+  [ngClass]="nzMenuClassName"
+  class="ant-menu ant-menu-inline ant-menu-sub">
   <ng-template [ngTemplateOutlet]="subMenuTemplate"></ng-template>
 </ul>
 <ng-template cdkConnectedOverlay
@@ -37,7 +41,8 @@
       [class.ant-dropdown-menu-vertical]="nzMenuService.isInDropDown"
       [class.ant-menu-vertical]="!nzMenuService.isInDropDown"
       [class.ant-dropdown-menu-sub]="nzMenuService.isInDropDown"
-      [class.ant-menu-sub]="!nzMenuService.isInDropDown">
+      [class.ant-menu-sub]="!nzMenuService.isInDropDown"
+      [ngClass]="nzMenuClassName">
       <ng-template [ngTemplateOutlet]="subMenuTemplate"></ng-template>
     </ul>
   </div>

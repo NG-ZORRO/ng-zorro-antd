@@ -1,5 +1,5 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
@@ -10,15 +10,15 @@ import { NzSpinModule } from './nz-spin.module';
 describe('spin', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzSpinModule, NzIconTestModule ],
-      declarations: [ NzTestSpinBasicComponent ]
+      imports: [NzSpinModule, NzIconTestModule],
+      declarations: [NzTestSpinBasicComponent]
     });
     TestBed.compileComponents();
   }));
   describe('spin basic', () => {
-    let fixture;
-    let testComponent;
-    let spin;
+    let fixture: ComponentFixture<NzTestSpinBasicComponent>;
+    let testComponent: NzTestSpinBasicComponent;
+    let spin: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSpinBasicComponent);
       fixture.detectChanges();
@@ -30,7 +30,7 @@ describe('spin', () => {
       tick(1000);
       fixture.detectChanges();
       console.log(spin.nativeElement);
-      expect(spin.nativeElement.querySelector('.ant-spin').firstElementChild.classList).toContain('ant-spin-dot');
+      expect(spin.nativeElement.querySelector('.ant-spin').firstElementChild!.classList).toContain('ant-spin-dot');
     }));
     it('should size work', fakeAsync(() => {
       fixture.detectChanges();
@@ -106,24 +106,25 @@ describe('spin', () => {
 @Component({
   selector: 'nz-test-spin-basic',
   template: `
-    <ng-template #indicatorTemplate><i nz-icon type="loading" style="font-size: 24px;"></i>
-    </ng-template>
+    <ng-template #indicatorTemplate><i nz-icon type="loading" style="font-size: 24px;"></i> </ng-template>
     <nz-spin
       [nzTip]="tip"
       [nzSize]="size"
       [nzDelay]="delay"
       [nzSpinning]="spinning"
       [nzSimple]="simple"
-      [nzIndicator]="indicator">
+      [nzIndicator]="indicator"
+    >
       <div>test</div>
-    </nz-spin>`
+    </nz-spin>
+  `
 })
 export class NzTestSpinBasicComponent {
   @ViewChild('indicatorTemplate') indicatorTemplate: TemplateRef<void>;
   size = 'default';
   delay = 0;
   spinning = true;
-  indicator;
-  tip;
+  indicator: TemplateRef<void>;
+  tip: string;
   simple = false;
 }

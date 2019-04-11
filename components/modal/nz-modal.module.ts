@@ -14,11 +14,10 @@ import { NzModalComponent } from './nz-modal.component';
 import { NzModalService } from './nz-modal.service';
 
 @NgModule({
-  imports        : [ CommonModule, OverlayModule, NzI18nModule, NzButtonModule, LoggerModule, NzIconModule, NzNoAnimationModule ],
-  exports        : [ NzModalComponent ],
-  declarations   : [ NzModalComponent, CssUnitPipe ],
-  entryComponents: [ NzModalComponent ],
-  providers      : [ NzModalControlService, NzModalService ]
+  imports: [CommonModule, OverlayModule, NzI18nModule, NzButtonModule, LoggerModule, NzIconModule, NzNoAnimationModule],
+  exports: [NzModalComponent],
+  declarations: [NzModalComponent, CssUnitPipe],
+  entryComponents: [NzModalComponent],
+  providers: [NzModalControlService, NzModalService]
 })
-export class NzModalModule {
-}
+export class NzModalModule {}

@@ -3,7 +3,8 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Input, OnChanges,
+  Input,
+  OnChanges,
   OnInit,
   Renderer2,
   SimpleChanges,
@@ -15,11 +16,11 @@ import {
 import { NzTimelineMode } from './nz-timeline.component';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
-  selector           : 'nz-timeline-item, [nz-timeline-item]',
-  templateUrl        : './nz-timeline-item.component.html'
+  selector: 'nz-timeline-item, [nz-timeline-item]',
+  templateUrl: './nz-timeline-item.component.html'
 })
 export class NzTimelineItemComponent implements OnInit, OnChanges {
   @ViewChild('liTemplate') liTemplate: ElementRef;
@@ -46,7 +47,7 @@ export class NzTimelineItemComponent implements OnInit, OnChanges {
   }
 
   private tryUpdateCustomColor(): void {
-    const defaultColors = [ 'blue', 'red', 'green' ];
+    const defaultColors = ['blue', 'red', 'green'];
     const circle = this.liTemplate.nativeElement.querySelector('.ant-timeline-item-head');
     if (defaultColors.indexOf(this.nzColor) === -1) {
       this.renderer.setStyle(circle, 'border-color', this.nzColor);

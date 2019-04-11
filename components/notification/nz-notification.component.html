@@ -1,6 +1,6 @@
 <div class="ant-notification-notice ant-notification-notice-closable"
-  [ngStyle]="nzMessage.options.nzStyle"
-  [ngClass]="nzMessage.options.nzClass"
+  [ngStyle]="nzMessage.options?.nzStyle"
+  [ngClass]="nzMessage.options?.nzClass"
   [@notificationMotion]="state"
   (mouseenter)="onEnter()"
   (mouseleave)="onLeave()">

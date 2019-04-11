@@ -37,7 +37,6 @@ subtitle: 树形控件
 | `(nzCheckBoxChange)` | 点击树节点 Checkbox 触发 | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzExpandChange)` | 点击展开树节点图标触发 | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzSearchValueChange)` | 搜索节点时调用(与nzSearchValue配合使用) | `EventEmitter<NzFormatEmitEvent>` | - |
-| `(nzOnSearchNode)` | 搜索节点时调用(与nzSearchValue配合使用) <font color=red>`Deprecated`</font> | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzOnDragStart)` | 开始拖拽时调用 | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzOnDragEnter)` | dragenter 触发时调用 | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzOnDragOver)` | dragover 触发时调用 | `EventEmitter<NzFormatEmitEvent>` | - |
@@ -48,24 +47,24 @@ subtitle: 树形控件
 
 #### 方法
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| getTreeNodes | 获取组件 NzTreeNode 节点 | `NzTreeNode[]` | `[]` |
-| getTreeNodeByKey | 按 key 获取 NzTreeNode 节点 | `NzTreeNode` | `null` |
-| getCheckedNodeList | 获取组件 checkBox 被点击选中的节点 | `NzTreeNode[]` | `[]` |
-| getSelectedNodeList | 获取组件被选中的节点 | `NzTreeNode[]` | `[]` |
-| getHalfCheckedNodeList | 获取组件半选状态节点 | `NzTreeNode[]` | `[]` |
-| getExpandedNodeList | 获取组件展开状态节点 | `NzTreeNode[]` | `[]` |
-| getMatchedNodeList | 获取组搜索匹配到的节点 | `NzTreeNode[]` | `[]` |
+| 方法名 | 说明 | 返回值
+| --- | --- | --- |
+| getTreeNodes | 获取组件 NzTreeNode 节点 | `NzTreeNode[]` |
+| getTreeNodeByKey | 按 key 获取 NzTreeNode 节点 | `NzTreeNode` |
+| getCheckedNodeList | 获取组件 checkBox 被点击选中的节点 | `NzTreeNode[]` |
+| getSelectedNodeList | 获取组件被选中的节点 | `NzTreeNode[]` |
+| getHalfCheckedNodeList | 获取组件半选状态节点 | `NzTreeNode[]` |
+| getExpandedNodeList | 获取组件展开状态节点 | `NzTreeNode[]` |
+| getMatchedNodeList | 获取组搜索匹配到的节点 | `NzTreeNode[]` |
 
 #### NzTreeNodeOptions props
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| title | 标题 | `string` | `'---'` |
-| key | 整个树范围内的所有节点的 key 值不能重复且不为空！ | `string` | `null` |
-| icon | 节点前的图标，与 `nzShowIcon` 组合使用 | `string` | `null` |
-| children | 子节点 | `NzTreeNodeOptions[]` | `[]` |
+| title | 标题 | `string` | - |
+| key | 整个树范围内的所有节点的 key 值不能重复且不为空！ | `string` | - |
+| icon | 节点前的图标，与 `nzShowIcon` 组合使用 | `string` | - |
+| children | 子节点 | `NzTreeNodeOptions[]` | - |
 | isLeaf | 设置为叶子节点(叶子节点不可被拖拽模式放置) | `boolean` | `false` |
 | checked | 设置节点 Checkbox 是否选中 | `boolean` | `false` |
 | selected | 设置节点本身是否选中 | `boolean` | `false` |
@@ -77,9 +76,9 @@ subtitle: 树形控件
 
 #### NzFormatEmitEvent props
 
-| 参数 | 说明 | 类型 | 默认值 |
+| 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| eventName | 事件名 | enum: `click` `dblclick` `contextmenu` `check` `expand` `search` & `dragstart` `dragenter` `dragover` `dragleave` `drop` `dragend` | `''` |
+| eventName | 事件名 | enum: `click` `dblclick` `contextmenu` `check` `expand` `search` & `dragstart` `dragenter` `dragover` `dragleave` `drop` `dragend` | - |
 | node | 当前操作节点(拖拽时表示目标节点) | `NzTreeNode` | `null` |
 | event | 原生事件 | `'MouseEvent'｜'DragEvent'` | `null` |
 | dragNode? | 当前拖拽节点(拖拽时存在) | `NzTreeNode` | `null` |
@@ -92,7 +91,7 @@ subtitle: 树形控件
 
 #### NzFormatBeforeDropEvent props
 
-| 参数 | 说明 | 类型 | 默认值 |
+| 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | dragNode | 当前拖拽节点(拖拽时存在) | `NzTreeNode` | - |
 | node | 当前操作节点(拖拽时表示目标节点) | `NzTreeNode` | - |
@@ -100,29 +99,32 @@ subtitle: 树形控件
 
 #### NzTreeNode props
 
-| 方法 | 说明 | 类型 | 返回值类型 |
+| 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | title | 标题 | `string` | NzTreeNodeOptions.title |
 | key | key值 | `string` | NzTreeNodeOptions.key |
 | level | 层级(最顶层为0,子节点逐层加1) | `number` | `number` |
-| children | 子节点 | array | NzTreeNode[] |
+| children | 子节点 | NzTreeNode[] | `[]` |
 | origin | 原始节点树结构(用户提供,用于展示额外信息) | NzTreeNodeOptions | - |
-| getParentNode | 获取父节点 | function | `NzTreeNode` 或 `null` |
-| isLeaf | 是否为叶子节点 | `boolean` |  `true` 或 `false` |
-| isExpanded | 是否已展开 | `boolean` | `true` 或 `false` |
-| isDisabled | 是否禁用 | `boolean` | `true` 或 `false` |
-| isDisableCheckbox | 是否禁用 checkBox | `boolean` | `true` 或 `false` |
-| isSelectable | 是否可选中 | `boolean` | `true` 或 `false` |
-| isChecked | 是否选中 checkBox | `boolean` | `true` 或 `false` |
-| isHalfChecked | 子节点有选中但未全选 | `boolean` | `true` 或 `false` |
-| isSelected | 是否已选中 | `boolean` | `true` 或 `false` |
-| isLoading | 是否异步加载状态(影响展开图标展示) | `boolean` | `true` 或 `false` |
-| isMatched | title是否包含nzSearchValue(搜索使用) | `boolean` | `true` 或 `false` |
-| getChildren | 获取子节点,返回NzTreeNode数组 | function | NzTreeNode[] |
-| addChildren | 添加子节点,接收NzTreeNode或NzTreeNodeOptions数组,第二个参数为插入的索引位置,默认插入末尾 | (children: array, index?: number )=>{} | void |
-| clearChildren | 清除子节点 | function | void |
-| remove | 清除当前节点(非根节点) | function | void |
+| getParentNode | 获取父节点 | function | `null` |
+| isLeaf | 是否为叶子节点 | `boolean` |  `false` |
+| isExpanded | 是否已展开 | `boolean` | `false` |
+| isDisabled | 是否禁用 | `boolean` | `false` |
+| isDisableCheckbox | 是否禁用 checkBox | `boolean` | `false` |
+| isSelectable | 是否可选中 | `boolean` | `true` |
+| isChecked | 是否选中 checkBox | `boolean` | `false` |
+| isHalfChecked | 子节点有选中但未全选 | `boolean` | `false` |
+| isSelected | 是否已选中 | `boolean` | `false` |
+| isLoading | 是否异步加载状态(影响展开图标展示) | `boolean` | `false` |
+| isMatched | title是否包含nzSearchValue(搜索使用) | `boolean` | `false` |
+| setSyncChecked | 设置 checked 状态并同步其他节点状态 | function | - |
+| getChildren | 获取子节点,返回NzTreeNode数组 | function | - |
+| addChildren | 添加子节点,接收NzTreeNode或NzTreeNodeOptions数组,第二个参数为插入的索引位置,默认插入末尾 | (children: array, index?: number )=>{} | - |
+| clearChildren | 清除子节点 | function | - |
+| remove | 清除当前节点(非根节点) | function | - |
 
 
 ## 注意
-`NzTreeNodeOptions` 可以接受用户自定义属性，可通过 `NzTreeNode` 的 `origin` 属性取得。
+* `NzTreeNodeOptions` 可以接受用户自定义属性，可通过 `NzTreeNode` 的 `origin` 属性取得。
+* 使用 ViewChild 时，Tree 方法需要在 ngAfterViewInit 中调用。
+* nzData 属性请传递 NzTreeNodeOptions 数组，传递 NzTreeNode 数组模式将在 8.x 版本取消兼容。

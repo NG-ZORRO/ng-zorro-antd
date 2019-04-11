@@ -12,15 +12,15 @@ import {
 import { NzStatisticValueType } from './nz-statistic-definitions';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
-  selector           : 'nz-statistic-number',
-  templateUrl        : './nz-statistic-number.component.html',
-  host               : {
-    'class': 'ant-statistic-content-value'
+  selector: 'nz-statistic-number',
+  templateUrl: './nz-statistic-number.component.html',
+  host: {
+    class: 'ant-statistic-content-value'
   },
-  styles             : [ 'nz-number { display: inline }' ]
+  styles: ['nz-number { display: inline }']
 })
 export class NzStatisticNumberComponent implements OnChanges {
   @Input() nzValue: NzStatisticValueType;
@@ -36,11 +36,10 @@ export class NzStatisticNumberComponent implements OnChanges {
   }
 
   private formatNumber(): void {
-    const decimalSeparator: string = typeof this.nzValue === 'number'
-      ? '.'
-      : getLocaleNumberSymbol(this.locale_id, NumberSymbol.Decimal);
+    const decimalSeparator: string =
+      typeof this.nzValue === 'number' ? '.' : getLocaleNumberSymbol(this.locale_id, NumberSymbol.Decimal);
     const value = String(this.nzValue);
-    const [ int, decimal ] = value.split(decimalSeparator);
+    const [int, decimal] = value.split(decimalSeparator);
 
     this.displayInt = int;
     this.displayDecimal = decimal ? `${decimalSeparator}${decimal}` : '';

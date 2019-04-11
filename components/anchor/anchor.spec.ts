@@ -7,6 +7,7 @@ import { NzAnchorComponent } from './nz-anchor.component';
 import { NzScrollService } from '../core/scroll/nz-scroll.service';
 
 const throttleTime = 51;
+
 describe('anchor', () => {
   let fixture: ComponentFixture<TestComponent>;
   let dl: DebugElement;
@@ -15,8 +16,8 @@ describe('anchor', () => {
   let srv: NzScrollService;
   beforeEach(() => {
     const i = TestBed.configureTestingModule({
-        imports: [ NzAnchorModule ],
-        declarations: [ TestComponent ]
+      imports: [NzAnchorModule],
+      declarations: [TestComponent]
     });
     fixture = TestBed.createComponent(TestComponent);
     dl = fixture.debugElement;
@@ -30,24 +31,23 @@ describe('anchor', () => {
 
   describe('[default]', () => {
     it(`should scolling to target via click a link`, () => {
-      spyOn(srv, 'scrollTo').and.callFake((
-        _containerEl: Element | Window,
-        _targetTopValue: number = 0,
-        _easing?: any,
-        callback?: () => void
-      ) => {
-        callback();
-      });
+      spyOn(srv, 'scrollTo').and.callFake(
+        (_containerEl: Element | Window, _targetTopValue: number = 0, _easing?: any, callback?: () => void) => {
+          if (callback) {
+            callback();
+          }
+        }
+      );
       expect(context._scroll).not.toHaveBeenCalled();
       page.to('#何时使用');
       expect(context._scroll).toHaveBeenCalled();
     });
 
     it('should hava remove listen when the component is destroyed', () => {
-      expect(context.comp['scroll$'].closed).toBeFalsy();
+      expect(context.comp['scroll$']!.closed).toBeFalsy();
       context.comp.ngOnDestroy();
       fixture.detectChanges();
-      expect(context.comp['scroll$'].closed).toBeTruthy();
+      expect(context.comp['scroll$']!.closed).toBeTruthy();
     });
 
     it('should actived when scrolling to the anchor', (done: () => void) => {
@@ -55,7 +55,7 @@ describe('anchor', () => {
       page.scrollTo();
       setTimeout(() => {
         const inkNode = page.getEl('.ant-anchor-ink-ball');
-        expect(+inkNode.style.top.replace('px', '')).toBeGreaterThan(0);
+        expect(+inkNode.style.top!.replace('px', '')).toBeGreaterThan(0);
         expect(context._scroll).toHaveBeenCalled();
         done();
       }, throttleTime);
@@ -71,14 +71,14 @@ describe('anchor', () => {
       window.dispatchEvent(new Event('scroll'));
       tick(throttleTime);
       fixture.detectChanges();
-      expect(context.comp['clearActive']).toHaveBeenCalled();
+      expect(context.comp['clearActive']!).toHaveBeenCalled();
     }));
 
     it(`won't scolling when is not exists link`, () => {
       spyOn(srv, 'getScroll');
       expect(context._scroll).not.toHaveBeenCalled();
       expect(srv.getScroll).not.toHaveBeenCalled();
-      page.to('#invalid');
+      page!.to('#invalid');
       expect(srv.getScroll).not.toHaveBeenCalled();
     });
 
@@ -159,7 +159,7 @@ describe('anchor', () => {
         expect(window.addEventListener).toHaveBeenCalled();
       });
       it('with string', () => {
-        const el = document.querySelector('#target');
+        const el = document.querySelector('#target')!;
         spyOn(el, 'addEventListener');
         context.nzTarget = '#target';
         fixture.detectChanges();
@@ -189,9 +189,9 @@ describe('anchor', () => {
 
   describe('**boundary**', () => {
     it('#getOffsetTop', (done: () => void) => {
-      const el1 = document.getElementById('何时使用');
+      const el1 = document.getElementById('何时使用')!;
       spyOn(el1, 'getClientRects').and.returnValue([]);
-      const el2 = document.getElementById('parallel1');
+      const el2 = document.getElementById('parallel1')!;
       spyOn(el2, 'getBoundingClientRect').and.returnValue({
         top: 0
       });
@@ -222,56 +222,58 @@ describe('anchor', () => {
       return this;
     }
   }
-
 });
 
 @Component({
   template: `
-  <nz-anchor
-    [nzAffix]="nzAffix"
-    [nzBounds]="nzBounds"
-    [nzShowInkInFixed]="nzShowInkInFixed"
-    [nzOffsetTop]="nzOffsetTop"
-    [nzTarget]="nzTarget"
-    (nzClick)="_click($event)" (nzScroll)="_scroll($event)">
-    <nz-link nzHref="#何时使用" nzTitle="何时使用"></nz-link>
-    <nz-link nzHref="#basic" nzTitle="Basic demo"></nz-link>
-    <nz-link nzHref="#API-AnchorLink">
-      <ng-template #nzTemplate>
-        <span class="nzTemplate-title">tpl</span>
-      </ng-template>
-    </nz-link>
-    <nz-link nzHref="#API" nzTitle="API">
-      <nz-link nzHref="#API-Anchor" nzTitle="nz-anchor"></nz-link>
-      <nz-link nzHref="#API-AnchorLink" [nzTitle]="title">
-        <ng-template #title>
-          <span class="nzTitle-title">tpl-title</span>
+    <nz-anchor
+      [nzAffix]="nzAffix"
+      [nzBounds]="nzBounds"
+      [nzShowInkInFixed]="nzShowInkInFixed"
+      [nzOffsetTop]="nzOffsetTop"
+      [nzTarget]="nzTarget"
+      (nzClick)="_click($event)"
+      (nzScroll)="_scroll($event)"
+    >
+      <nz-link nzHref="#何时使用" nzTitle="何时使用"></nz-link>
+      <nz-link nzHref="#basic" nzTitle="Basic demo"></nz-link>
+      <nz-link nzHref="#API-AnchorLink">
+        <ng-template #nzTemplate>
+          <span class="nzTemplate-title">tpl</span>
         </ng-template>
       </nz-link>
-    </nz-link>
-    <nz-link nzHref="#invalid" nzTitle="invalid"></nz-link>
-    <nz-link nzHref="invalidLink" nzTitle="invalidLink"></nz-link>
-    <nz-link nzHref="http://www.example.com/#id" nzTitle="complete" class="mock-complete"></nz-link>
-    <nz-link nzHref="#parallel1" nzTitle="parallel1"></nz-link>
-    <nz-link nzHref="#parallel2" nzTitle="parallel2"></nz-link>
-  </nz-anchor>
-  <h2 id="何时使用"></h2>
-  <div style="height: 1000px"></div>
-  <h2 id="basic"></h2>
-  <div style="height: 100px"></div>
-  <h2 id="API"></h2>
-  <div style="height: 100px"></div>
-  <h2 id="API-Anchor"></h2>
-  <div style="height: 100px"></div>
-  <h2 id="API-AnchorLink"></h2>
-  <table>
-    <tr>
-      <td><h2 id="parallel1">parallel1</h2></td>
-      <td><h2 id="parallel2">parallel2</h2></td>
-    </tr>
-  </table>
-  <div style="height: 1000px"></div>
-  <div id="target"></div>
+      <nz-link nzHref="#API" nzTitle="API">
+        <nz-link nzHref="#API-Anchor" nzTitle="nz-anchor"></nz-link>
+        <nz-link nzHref="#API-AnchorLink" [nzTitle]="title">
+          <ng-template #title>
+            <span class="nzTitle-title">tpl-title</span>
+          </ng-template>
+        </nz-link>
+      </nz-link>
+      <nz-link nzHref="#invalid" nzTitle="invalid"></nz-link>
+      <nz-link nzHref="invalidLink" nzTitle="invalidLink"></nz-link>
+      <nz-link nzHref="http://www.example.com/#id" nzTitle="complete" class="mock-complete"></nz-link>
+      <nz-link nzHref="#parallel1" nzTitle="parallel1"></nz-link>
+      <nz-link nzHref="#parallel2" nzTitle="parallel2"></nz-link>
+    </nz-anchor>
+    <h2 id="何时使用"></h2>
+    <div style="height: 1000px"></div>
+    <h2 id="basic"></h2>
+    <div style="height: 100px"></div>
+    <h2 id="API"></h2>
+    <div style="height: 100px"></div>
+    <h2 id="API-Anchor"></h2>
+    <div style="height: 100px"></div>
+    <h2 id="API-AnchorLink"></h2>
+    <table>
+      <tr>
+        <td><h2 id="parallel1">parallel1</h2></td>
+        <td><h2 id="parallel2">parallel2</h2></td>
+      </tr>
+    </table>
+
+    <div style="height: 1000px"></div>
+    <div id="target"></div>
   `
 })
 export class TestComponent {
@@ -280,7 +282,7 @@ export class TestComponent {
   nzBounds = 5;
   nzOffsetTop = 0;
   nzShowInkInFixed = false;
-  nzTarget = null;
+  nzTarget: any = null;
   _click() {}
   _scroll() {}
 }

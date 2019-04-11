@@ -15,13 +15,11 @@ import { AppComponent } from './app.component';
 import { routes } from './app.routing.module';
 import { ShareModule } from './share/share.module';
 
-const icons: IconDefinition[] = [ LeftOutline, RightOutline ];
+const icons: IconDefinition[] = [LeftOutline, RightOutline];
 
 @NgModule({
-  declarations: [
-    AppComponent, DEMOComponent
-  ],
-  imports     : [
+  declarations: [AppComponent, DEMOComponent],
+  imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
@@ -32,12 +30,11 @@ const icons: IconDefinition[] = [ LeftOutline, RightOutline ];
     RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules } : {}),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers   : [
+  providers: [
     Title,
     { provide: NZ_ICONS, useValue: icons },
     { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '#1890ff' }
   ],
-  bootstrap   : [ AppComponent ]
+  bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}

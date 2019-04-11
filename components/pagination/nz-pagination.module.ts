@@ -9,10 +9,8 @@ import { NzSelectModule } from '../select/nz-select.module';
 import { NzPaginationComponent } from './nz-pagination.component';
 
 @NgModule({
-  declarations: [ NzPaginationComponent ],
-  exports     : [ NzPaginationComponent ],
-  imports     : [ CommonModule, FormsModule, NzSelectModule, NzI18nModule, NzIconModule ]
+  declarations: [NzPaginationComponent],
+  exports: [NzPaginationComponent],
+  imports: [CommonModule, FormsModule, NzSelectModule, NzI18nModule, NzIconModule]
 })
-
-export class NzPaginationModule {
-}
+export class NzPaginationModule {}

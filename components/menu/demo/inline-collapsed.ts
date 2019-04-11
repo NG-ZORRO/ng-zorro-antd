@@ -5,9 +5,9 @@ import { Component } from '@angular/core';
   template: `
     <div style="width: 240px;">
       <button nz-button [nzType]="'primary'" (click)="toggleCollapsed()" style="margin-bottom: 10px;">
-        <i nz-icon [type]="isCollapsed?'menu-unfold':'menu-fold'"></i>
+        <i nz-icon [type]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
       </button>
-      <ul nz-menu [nzMode]="'inline'" nzTheme='dark' [nzInlineCollapsed]="isCollapsed">
+      <ul nz-menu [nzMode]="'inline'" nzTheme="dark" [nzInlineCollapsed]="isCollapsed">
         <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="isCollapsed ? 'Navigation One' : ''">
           <span title>
             <i nz-icon type="mail"></i>

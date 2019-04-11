@@ -5,13 +5,11 @@ import { NzTableComponent } from './nz-table.component';
 @Directive({
   // tslint:disable-next-line:directive-selector
   selector: 'tr',
-  host    : {
+  host: {
     '[class.ant-table-row]': 'nzTableComponent'
   }
 })
-
 export class NzTrDirective {
-
   @Input()
   set nzExpand(value: boolean) {
     if (toBoolean(value)) {
@@ -23,7 +21,9 @@ export class NzTrDirective {
     }
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Host() @Optional() public nzTableComponent: NzTableComponent) {
-
-  }
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    @Host() @Optional() public nzTableComponent: NzTableComponent
+  ) {}
 }

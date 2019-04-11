@@ -13,22 +13,31 @@ describe('time holder', () => {
   });
 
   it('should set hours', () => {
-    const holder = new TimeHolder().setHours(23, false).setMinutes(10, false).setSeconds(20, false);
+    const holder = new TimeHolder()
+      .setHours(23, false)
+      .setMinutes(10, false)
+      .setSeconds(20, false);
     const date = new Date();
     date.setHours(23);
     date.setMinutes(10);
     date.setSeconds(20);
-    expect(mathSecondRound(holder.value)).toEqual(mathSecondRound(date));
+    expect(mathSecondRound(holder.value!)).toEqual(mathSecondRound(date));
   });
 
   it('should ignore disabled', () => {
-    const holder = new TimeHolder().setHours(23, false).setMinutes(10, false).setSeconds(20, false);
-    holder.setHours(0, true).setMinutes(0, true).setSeconds(0, true);
+    const holder = new TimeHolder()
+      .setHours(23, false)
+      .setMinutes(10, false)
+      .setSeconds(20, false);
+    holder
+      .setHours(0, true)
+      .setMinutes(0, true)
+      .setSeconds(0, true);
     const date = new Date();
     date.setHours(23);
     date.setMinutes(10);
     date.setSeconds(20);
-    expect(mathSecondRound(holder.value)).toEqual(mathSecondRound(date));
+    expect(mathSecondRound(holder.value!)).toEqual(mathSecondRound(date));
   });
 
   it('should ignore date part', () => {
@@ -65,5 +74,4 @@ describe('time holder', () => {
     holder.setMinutes(23, false);
     expect(holder.value).toEqual(new Date(2001, 10, 1, 23, 23, 20));
   });
-
 });

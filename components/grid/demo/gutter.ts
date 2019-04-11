@@ -36,14 +36,13 @@ import { Component } from '@angular/core';
       </div>
     </div>
   `,
-  styles  : [
+  styles: [
     `
       .gutter-box {
-        background: #00A0E9;
+        background: #00a0e9;
         padding: 5px 0;
       }
     `
   ]
 })
-export class NzDemoGridGutterComponent {
-}
+export class NzDemoGridGutterComponent {}

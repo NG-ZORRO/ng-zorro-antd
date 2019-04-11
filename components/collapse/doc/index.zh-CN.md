@@ -28,7 +28,8 @@ cols: 1
 | --- | --- | --- | --- |
 | `[nzDisabled]` | 禁用后的面板展开与否将无法通过用户交互改变 | `boolean` | `false` |
 | `[nzHeader]` | 面板头内容 | `string｜TemplateRef<void>` | - |
+| `[nzExpandedIcon]` | 自定义切换图标 | `string｜TemplateRef<void>` | - |
+| `[nzExtra]` | 自定义渲染每个面板右上角的内容 | `string｜TemplateRef<void>` | - |
 | `[nzShowArrow]` | 是否展示箭头 | `boolean` | `true` |
 | `[nzActive]` | 面板是否展开，可双向绑定 | `boolean` | - |
 | `(nzActiveChange)` | 面板展开回调 | `EventEmitter<boolean>` | - |
-| `[nzExpandedIcon]` | 自定义切换图标 | `string｜TemplateRef<void>` | - |

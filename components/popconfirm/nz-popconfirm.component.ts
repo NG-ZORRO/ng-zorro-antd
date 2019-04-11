@@ -16,17 +16,19 @@ import { InputBoolean } from '../core/util/convert';
 import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-popconfirm',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-popconfirm',
   preserveWhitespaces: false,
-  animations         : [ zoomBigMotion ],
-  templateUrl        : './nz-popconfirm.component.html',
-  styles             : [ `
-    .ant-popover {
-      position: relative;
-    }
-  ` ]
+  animations: [zoomBigMotion],
+  templateUrl: './nz-popconfirm.component.html',
+  styles: [
+    `
+      .ant-popover {
+        position: relative;
+      }
+    `
+  ]
 })
 export class NzPopconfirmComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';

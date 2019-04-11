@@ -1,8 +1,7 @@
-
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component } from '@angular/core';
-import { async, fakeAsync, flush, ComponentFixture , TestBed } from '@angular/core/testing';
+import { async, fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -16,11 +15,7 @@ registerLocaleData(zh);
 describe('Calendar', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        NzCalendarModule,
-        NoopAnimationsModule
-      ],
+      imports: [FormsModule, NzCalendarModule, NoopAnimationsModule],
       declarations: [
         NzTestCalendarModeComponent,
         NzTestCalendarValueComponent,
@@ -31,7 +26,7 @@ describe('Calendar', () => {
         NzTestCalendarMonthFullCellComponent,
         NzTestCalendarChangesComponent
       ],
-      providers: [ { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } } ]
+      providers: [{ provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } }]
     }).compileComponents();
   }));
 
@@ -47,8 +42,10 @@ describe('Calendar', () => {
     it('should be month by default', () => {
       fixture.detectChanges();
 
-      const header = fixture.debugElement.queryAll(By.directive(Calendar))[0]
-        .query(By.directive(CalendarHeader)).injector.get(CalendarHeader);
+      const header = fixture.debugElement
+        .queryAll(By.directive(Calendar))[0]
+        .query(By.directive(CalendarHeader))
+        .injector.get(CalendarHeader);
       expect(header.mode).toBe('month');
     });
 
@@ -57,14 +54,18 @@ describe('Calendar', () => {
 
       fixture.detectChanges();
 
-      const header = fixture.debugElement.queryAll(By.directive(Calendar))[1]
-        .query(By.directive(CalendarHeader)).injector.get(CalendarHeader);
+      const header = fixture.debugElement
+        .queryAll(By.directive(Calendar))[1]
+        .query(By.directive(CalendarHeader))
+        .injector.get(CalendarHeader);
       expect(header.mode).toBe('year');
     });
 
     it('should emit change event for mode selection', () => {
-      const header = fixture.debugElement.queryAll(By.directive(Calendar))[1]
-        .query(By.directive(CalendarHeader)).injector.get(CalendarHeader);
+      const header = fixture.debugElement
+        .queryAll(By.directive(Calendar))[1]
+        .query(By.directive(CalendarHeader))
+        .injector.get(CalendarHeader);
       header.modeChange.emit('year');
 
       fixture.detectChanges();
@@ -172,10 +173,10 @@ describe('Calendar', () => {
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[0];
       const cells = host.queryAll(By.css('td'));
-      const today = cells.find(x => x.nativeElement.className.indexOf('ant-fullcalendar-today') > 0);
+      const today = cells.find(x => x.nativeElement.className.indexOf('ant-fullcalendar-today') > 0)!;
 
       expect(today).toBeDefined();
-      expect(parseInt(today.nativeElement.textContent, 10)).toBe(now.getDate());
+      expect(parseInt(today.nativeElement.textContent!, 10)).toBe(now.getDate());
     });
 
     it('should mark active date in month mode', () => {
@@ -183,10 +184,10 @@ describe('Calendar', () => {
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
       const cells = host.queryAll(By.css('td'));
-      const active = cells.find(x => x.nativeElement.className.indexOf('ant-fullcalendar-selected-day') > 0);
+      const active = cells.find(x => x.nativeElement.className.indexOf('ant-fullcalendar-selected-day') > 0)!;
 
       expect(active).toBeDefined();
-      expect(parseInt(active.nativeElement.textContent, 10)).toBe(3);
+      expect(parseInt(active.nativeElement.textContent!, 10)).toBe(3);
     });
 
     it('should mark previous/next month date in month mode', () => {
@@ -316,7 +317,7 @@ describe('Calendar', () => {
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[0];
       const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-date'));
 
-      expect(content.nativeElement.textContent.trim()).toBe('Foo');
+      expect(content.nativeElement.textContent!.trim()).toBe('Foo');
     });
 
     it('should work when passed via content child', () => {
@@ -325,7 +326,7 @@ describe('Calendar', () => {
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
       const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-date'));
 
-      expect(content.nativeElement.textContent.trim()).toBe('Bar');
+      expect(content.nativeElement.textContent!.trim()).toBe('Bar');
     });
   });
 
@@ -368,7 +369,7 @@ describe('Calendar', () => {
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[0];
       const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-month'));
 
-      expect(content.nativeElement.textContent.trim()).toBe('Foo');
+      expect(content.nativeElement.textContent!.trim()).toBe('Foo');
     });
 
     it('should work when passed via content child', () => {
@@ -377,7 +378,7 @@ describe('Calendar', () => {
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
       const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-month'));
 
-      expect(content.nativeElement.textContent.trim()).toBe('Bar');
+      expect(content.nativeElement.textContent!.trim()).toBe('Bar');
     });
   });
 
@@ -419,7 +420,6 @@ describe('Calendar', () => {
       expect(component.selectChange).toHaveBeenCalledTimes(2);
     });
   });
-
 });
 
 @Component({
@@ -429,7 +429,7 @@ describe('Calendar', () => {
   `
 })
 class NzTestCalendarModeComponent {
-  mode: 'month'|'year' = 'month';
+  mode: 'month' | 'year' = 'month';
 }
 
 @Component({
@@ -468,7 +468,7 @@ class NzTestCalendarFullscreenComponent {
     </nz-calendar>
   `
 })
-class NzTestCalendarDateCellComponent { }
+class NzTestCalendarDateCellComponent {}
 
 @Component({
   template: `
@@ -479,7 +479,7 @@ class NzTestCalendarDateCellComponent { }
     </nz-calendar>
   `
 })
-class NzTestCalendarDateFullCellComponent { }
+class NzTestCalendarDateFullCellComponent {}
 
 @Component({
   template: `
@@ -490,7 +490,7 @@ class NzTestCalendarDateFullCellComponent { }
     </nz-calendar>
   `
 })
-class NzTestCalendarMonthCellComponent { }
+class NzTestCalendarMonthCellComponent {}
 
 @Component({
   template: `
@@ -501,7 +501,7 @@ class NzTestCalendarMonthCellComponent { }
     </nz-calendar>
   `
 })
-class NzTestCalendarMonthFullCellComponent { }
+class NzTestCalendarMonthFullCellComponent {}
 
 @Component({
   template: `
@@ -509,12 +509,13 @@ class NzTestCalendarMonthFullCellComponent { }
       [(nzMode)]="mode"
       [(ngModel)]="date0"
       (nzPanelChange)="panelChange($event)"
-      (nzSelectChange)="selectChange($event)">
+      (nzSelectChange)="selectChange($event)"
+    >
     </nz-calendar>
   `
 })
 class NzTestCalendarChangesComponent {
-  mode: 'month'|'year' = 'month';
+  mode: 'month' | 'year' = 'month';
   date0 = new Date(2014, 3, 14);
   panelChange = jasmine.createSpy('panelChange callback');
   selectChange = jasmine.createSpy('selectChange callback');

@@ -6,14 +6,15 @@ import { NzNotificationService } from 'ng-zorro-antd';
   template: `
     <button nz-button [nzType]="'primary'" (click)="createBasicNotification()">Open the notification box</button>
   `,
-  styles  : []
+  styles: []
 })
 export class NzDemoNotificationBasicComponent {
-
-  constructor(private notification: NzNotificationService) {
-  }
+  constructor(private notification: NzNotificationService) {}
 
   createBasicNotification(): void {
-    this.notification.blank( 'Notification Title', 'This is the content of the notification. This is the content of the notification. This is the content of the notification.');
+    this.notification.blank(
+      'Notification Title',
+      'This is the content of the notification. This is the content of the notification. This is the content of the notification.'
+    );
   }
 }

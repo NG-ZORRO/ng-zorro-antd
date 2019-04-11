@@ -6,10 +6,9 @@ import { SCROLL_SERVICE_PROVIDER } from '../core/scroll/nz-scroll.service';
 import { NzAffixComponent } from './nz-affix.component';
 
 @NgModule({
-  declarations: [ NzAffixComponent ],
-  exports     : [ NzAffixComponent ],
-  imports     : [ CommonModule ],
-  providers   : [ SCROLL_SERVICE_PROVIDER ]
+  declarations: [NzAffixComponent],
+  exports: [NzAffixComponent],
+  imports: [CommonModule],
+  providers: [SCROLL_SERVICE_PROVIDER]
 })
-export class NzAffixModule {
-}
+export class NzAffixModule {}

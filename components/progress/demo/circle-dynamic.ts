@@ -8,7 +8,14 @@ import { Component } from '@angular/core';
       <button nz-button (click)="decline()"><i nz-icon type="minus"></i></button>
       <button nz-button (click)="increase()"><i nz-icon type="plus"></i></button>
     </nz-button-group>
-  `
+  `,
+  styles: [
+    `
+      nz-progress {
+        margin-right: 8px;
+      }
+    `
+  ]
 })
 export class NzDemoProgressCircleDynamicComponent {
   percent = 0;
@@ -27,4 +34,3 @@ export class NzDemoProgressCircleDynamicComponent {
     }
   }
 }
-

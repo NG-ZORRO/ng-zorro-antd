@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
     <nz-alert nzType="info" nzMessage="Info Text" nzCloseText="Close Now"></nz-alert>
   `
 })
-export class NzDemoAlertCloseTextComponent {
-}
+export class NzDemoAlertCloseTextComponent {}

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ReplaySubject, Subject } from 'rxjs';
 import { dispatchFakeEvent } from '../core/testing';
@@ -11,24 +11,23 @@ describe('select option li', () => {
   beforeEach(fakeAsync(() => {
     let nzSelectServiceStub: Partial<NzSelectService>;
     nzSelectServiceStub = {
-      activatedOption$    : new ReplaySubject(1),
+      activatedOption$: new ReplaySubject(1),
       listOfSelectedValue$: new Subject(),
-      compareWith         : (o1, o2) => o1 === o2,
-      clickOption         : () => {
-      }
+      compareWith: (o1, o2) => o1 === o2,
+      clickOption: () => {}
     };
     TestBed.configureTestingModule({
-      providers   : [ { provide: NzSelectService, useValue: nzSelectServiceStub } ],
-      declarations: [ NzTestSelectOptionLiComponent, NzOptionLiComponent ]
+      providers: [{ provide: NzSelectService, useValue: nzSelectServiceStub }],
+      declarations: [NzTestSelectOptionLiComponent, NzOptionLiComponent]
     });
     TestBed.compileComponents();
   }));
   describe('default', () => {
-    let fixture;
-    let testComponent;
-    let li;
-    let liComponent;
-    let nzSelectService;
+    let fixture: ComponentFixture<NzTestSelectOptionLiComponent>;
+    let testComponent: NzTestSelectOptionLiComponent;
+    let li: DebugElement;
+    let liComponent: NzOptionLiComponent;
+    let nzSelectService: NzSelectService;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSelectOptionLiComponent);
       fixture.detectChanges();
@@ -40,10 +39,12 @@ describe('select option li', () => {
     it('should selected work', () => {
       fixture.detectChanges();
       expect(liComponent.selected).toBe(false);
-      nzSelectService.listOfSelectedValue$.next([ '01_value' ]);
+      // @ts-ignore
+      nzSelectService.listOfSelectedValue$.next(['01_value']);
       fixture.detectChanges();
       expect(liComponent.selected).toBe(true);
-      nzSelectService.listOfSelectedValue$.next([ '01_label' ]);
+      // @ts-ignore
+      nzSelectService.listOfSelectedValue$.next(['01_label']);
       fixture.detectChanges();
       expect(liComponent.selected).toBe(false);
     });
@@ -62,14 +63,17 @@ describe('select option li', () => {
     });
     it('should destroy piped', () => {
       fixture.detectChanges();
+      // @ts-ignore
       const checkSpy = spyOn(liComponent.cdr, 'markForCheck');
       expect(checkSpy).toHaveBeenCalledTimes(0);
-      nzSelectService.listOfSelectedValue$.next([ '01_value' ]);
+      // @ts-ignore
+      nzSelectService.listOfSelectedValue$.next(['01_value']);
       fixture.detectChanges();
       expect(checkSpy).toHaveBeenCalledTimes(1);
       testComponent.destroy = true;
       fixture.detectChanges();
-      nzSelectService.listOfSelectedValue$.next([ '01_value' ]);
+      // @ts-ignore
+      nzSelectService.listOfSelectedValue$.next(['01_value']);
       fixture.detectChanges();
       expect(checkSpy).toHaveBeenCalledTimes(1);
     });

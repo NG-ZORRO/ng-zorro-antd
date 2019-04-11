@@ -16,6 +16,11 @@
       "default": false,
       "description": "Do not add ng-zorro-antd dependencies to package.json (e.g., --skipPackageJson)"
     },
+    "bootPage": {
+      "type": "boolean",
+      "default": true,
+      "description": "Set up boot page."
+    },
     "dynamicIcon": {
       "type": "boolean",
       "default": false,
@@ -124,12 +129,6 @@
       "type": "boolean",
       "default": true,
       "description": "Whether Angular browser animations should be set up."
-    },
-    "bootPage": {
-      "type": "boolean",
-      "default": true,
-      "description": "Whether boot page should be set up.",
-      "x-prompt": "Set up the boot page"
     }
   },
   "required": []

@@ -10,20 +10,20 @@ export function silentEvent(e: Event): void {
   e.preventDefault();
 }
 
-export function getElementOffset(elem: HTMLElement): { top: number, left: number } {
+export function getElementOffset(elem: HTMLElement): { top: number; left: number } {
   if (!elem.getClientRects().length) {
     return { top: 0, left: 0 };
   }
 
   const rect = elem.getBoundingClientRect();
-  const win = elem.ownerDocument.defaultView;
+  const win = elem.ownerDocument!.defaultView;
   return {
-    top : rect.top + win.pageYOffset,
-    left: rect.left + win.pageXOffset
+    top: rect.top + win!.pageYOffset,
+    left: rect.left + win!.pageXOffset
   };
 }
 
-export function findFirstNotEmptyNode(element: HTMLElement): Node {
+export function findFirstNotEmptyNode(element: HTMLElement): Node | null {
   const children = element.childNodes;
   for (let i = 0; i < children.length; i++) {
     const node = children.item(i);
@@ -34,7 +34,7 @@ export function findFirstNotEmptyNode(element: HTMLElement): Node {
   return null;
 }
 
-export function findLastNotEmptyNode(element: HTMLElement): Node {
+export function findLastNotEmptyNode(element: HTMLElement): Node | null {
   const children = element.childNodes;
   for (let i = children.length - 1; i >= 0; i--) {
     const node = children.item(i);
@@ -50,9 +50,9 @@ export function reverseChildNodes(parent: HTMLElement): void {
   let length = children.length;
   if (length) {
     const nodes: Node[] = [];
-    children.forEach((node, i) => nodes[ i ] = node);
+    children.forEach((node, i) => (nodes[i] = node));
     while (length--) {
-      parent.appendChild(nodes[ length ]);
+      parent.appendChild(nodes[length]);
     }
   }
 }

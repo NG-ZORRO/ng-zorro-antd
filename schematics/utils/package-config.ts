@@ -5,12 +5,13 @@ import { Tree } from '@angular-devkit/schematics';
  * @returns A new object instance with sorted keys
  */
 function sortObjectByKeys(obj: object): object {
-  return Object.keys(obj).sort().reduce((result, key) => (result[ key ] = obj[ key ]) && result, {});
+  return Object.keys(obj)
+    .sort()
+    .reduce((result, key) => (result[key] = obj[key]) && result, {});
 }
 
 /** Adds a package to the package.json in the given host tree. */
 export function addPackageToPackageJson(host: Tree, pkg: string, version: string): Tree {
-
   if (host.exists('package.json')) {
     const sourceText = host.read('package.json').toString('utf-8');
     const json = JSON.parse(sourceText);
@@ -19,8 +20,8 @@ export function addPackageToPackageJson(host: Tree, pkg: string, version: string
       json.dependencies = {};
     }
 
-    if (!json.dependencies[ pkg ]) {
-      json.dependencies[ pkg ] = version;
+    if (!json.dependencies[pkg]) {
+      json.dependencies[pkg] = version;
       json.dependencies = sortObjectByKeys(json.dependencies);
     }
 
@@ -38,8 +39,8 @@ export function getPackageVersionFromPackageJson(tree: Tree, name: string): stri
 
   const packageJson = JSON.parse(tree.read('package.json').toString('utf8'));
 
-  if (packageJson.dependencies && packageJson.dependencies[ name ]) {
-    return packageJson.dependencies[ name ];
+  if (packageJson.dependencies && packageJson.dependencies[name]) {
+    return packageJson.dependencies[name];
   }
 
   return null;

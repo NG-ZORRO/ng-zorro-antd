@@ -17,7 +17,7 @@ import { Component } from '@angular/core';
       </nz-select>
     </div>
   `,
-  styles  : [
+  styles: [
     `
       nz-select {
         margin-right: 8px;

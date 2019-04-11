@@ -1,6 +1,6 @@
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -13,15 +13,15 @@ import { NzSwitchModule } from './nz-switch.module';
 describe('switch', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzSwitchModule, FormsModule, ReactiveFormsModule, NzIconTestModule ],
-      declarations: [ NzTestSwitchBasicComponent, NzTestSwitchFormComponent, NzTestSwitchTemplateComponent ]
+      imports: [NzSwitchModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+      declarations: [NzTestSwitchBasicComponent, NzTestSwitchFormComponent, NzTestSwitchTemplateComponent]
     });
     TestBed.compileComponents();
   }));
   describe('basic switch', () => {
-    let fixture;
-    let testComponent;
-    let switchElement;
+    let fixture: ComponentFixture<NzTestSwitchBasicComponent>;
+    let testComponent: NzTestSwitchBasicComponent;
+    let switchElement: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSwitchBasicComponent);
       fixture.detectChanges();
@@ -30,17 +30,17 @@ describe('switch', () => {
     });
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.classList).toContain('ant-switch');
+      expect(switchElement.nativeElement.firstElementChild!.classList).toContain('ant-switch');
     });
     it('should ngModel work', fakeAsync(() => {
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.classList).not.toContain('ant-switch-checked');
+      expect(switchElement.nativeElement.firstElementChild!.classList).not.toContain('ant-switch-checked');
       expect(testComponent.value).toBe(false);
       testComponent.value = true;
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.classList).toContain('ant-switch-checked');
+      expect(switchElement.nativeElement.firstElementChild!.classList).toContain('ant-switch-checked');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
     it('should click work', fakeAsync(() => {
@@ -80,7 +80,7 @@ describe('switch', () => {
     it('should loading work', fakeAsync(() => {
       testComponent.loading = true;
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.classList).toContain('ant-switch-loading');
+      expect(switchElement.nativeElement.firstElementChild!.classList).toContain('ant-switch-loading');
       expect(testComponent.value).toBe(false);
       switchElement.nativeElement.click();
       fixture.detectChanges();
@@ -92,7 +92,7 @@ describe('switch', () => {
     it('should size work', () => {
       testComponent.size = 'small';
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.classList).toContain('ant-switch-small');
+      expect(switchElement.nativeElement.firstElementChild!.classList).toContain('ant-switch-small');
     });
     it('should key down work', () => {
       expect(testComponent.value).toBe(false);
@@ -166,8 +166,8 @@ describe('switch', () => {
     });
   });
   describe('template switch', () => {
-    let fixture;
-    let switchElement;
+    let fixture: ComponentFixture<NzTestSwitchTemplateComponent>;
+    let switchElement: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSwitchTemplateComponent);
       fixture.detectChanges();
@@ -177,18 +177,23 @@ describe('switch', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList).toContain('anticon-close');
+      expect(
+        switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild!.classList
+      ).toContain('anticon-close');
       switchElement.nativeElement.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList).toContain('anticon-check');
+      expect(
+        switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild!.classList
+      ).toContain('anticon-check');
     }));
   });
   describe('switch form', () => {
-    let fixture;
-    let testComponent;
-    let switchElement;
+    let fixture: ComponentFixture<NzTestSwitchFormComponent>;
+    let testComponent: NzTestSwitchFormComponent;
+    let switchElement: DebugElement;
+
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestSwitchFormComponent);
       fixture.detectChanges();
@@ -205,21 +210,21 @@ describe('switch', () => {
     }));
     it('should set disabled work', fakeAsync(() => {
       flush();
-      expect(testComponent.formGroup.get('switchValue').value).toBe(true);
+      expect(testComponent.formGroup.get('switchValue')!.value).toBe(true);
       switchElement.nativeElement.click();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('switchValue').value).toBe(false);
+      expect(testComponent.formGroup.get('switchValue')!.value).toBe(false);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      testComponent.formGroup.get('switchValue').setValue(true);
+      testComponent.formGroup.get('switchValue')!.setValue(true);
       testComponent.disable();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
       switchElement.nativeElement.click();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('switchValue').value).toBe(true);
+      expect(testComponent.formGroup.get('switchValue')!.value).toBe(true);
     }));
   });
 });
@@ -237,8 +242,10 @@ describe('switch', () => {
       [nzSize]="size"
       [nzControl]="control"
       [nzCheckedChildren]="checkedChildren"
-      [nzUnCheckedChildren]="unCheckedChildren">
-    </nz-switch>`
+      [nzUnCheckedChildren]="unCheckedChildren"
+    >
+    </nz-switch>
+  `
 })
 export class NzTestSwitchBasicComponent {
   @ViewChild(NzSwitchComponent) nzSwitchComponent: NzSwitchComponent;
@@ -259,13 +266,11 @@ export class NzTestSwitchBasicComponent {
   template: `
     <ng-template #checkedChildrenTemplate><i nz-icon type="check"></i></ng-template>
     <ng-template #unCheckedChildrenTemplate><i nz-icon type="close"></i></ng-template>
-    <nz-switch
-      [nzCheckedChildren]="checkedChildrenTemplate"
-      [nzUnCheckedChildren]="unCheckedChildrenTemplate">
-    </nz-switch>`
+    <nz-switch [nzCheckedChildren]="checkedChildrenTemplate" [nzUnCheckedChildren]="unCheckedChildrenTemplate">
+    </nz-switch>
+  `
 })
-export class NzTestSwitchTemplateComponent {
-}
+export class NzTestSwitchTemplateComponent {}
 
 @Component({
   selector: 'nz-test-switch-form',
@@ -280,7 +285,7 @@ export class NzTestSwitchFormComponent {
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
-      switchValue: [ true ]
+      switchValue: [true]
     });
   }
 

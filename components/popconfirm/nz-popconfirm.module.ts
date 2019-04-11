@@ -13,9 +13,9 @@ import { NzPopconfirmComponent } from './nz-popconfirm.component';
 import { NzPopconfirmDirective } from './nz-popconfirm.directive';
 
 @NgModule({
-  declarations   : [ NzPopconfirmComponent, NzPopconfirmDirective ],
-  exports        : [ NzPopconfirmComponent, NzPopconfirmDirective ],
-  imports        : [
+  declarations: [NzPopconfirmComponent, NzPopconfirmDirective],
+  exports: [NzPopconfirmComponent, NzPopconfirmDirective],
+  imports: [
     CommonModule,
     NzButtonModule,
     OverlayModule,
@@ -25,8 +25,6 @@ import { NzPopconfirmDirective } from './nz-popconfirm.directive';
     NzOverlayModule,
     NzNoAnimationModule
   ],
-  entryComponents: [ NzPopconfirmComponent ]
+  entryComponents: [NzPopconfirmComponent]
 })
-
-export class NzPopconfirmModule {
-}
+export class NzPopconfirmModule {}

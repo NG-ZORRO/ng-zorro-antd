@@ -8,4 +8,4 @@ import { Component } from '@angular/core';
     </nz-tooltip>
   `
 })
-export class NzDemoProgressSegmentComponent { }
+export class NzDemoProgressSegmentComponent {}

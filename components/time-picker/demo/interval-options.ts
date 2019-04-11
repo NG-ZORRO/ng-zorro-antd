@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
     <nz-time-picker [nzMinuteStep]="15" [nzSecondStep]="10"></nz-time-picker>
   `
 })
-export class NzDemoTimePickerIntervalOptionsComponent {
-}
+export class NzDemoTimePickerIntervalOptionsComponent {}

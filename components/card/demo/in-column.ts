@@ -23,11 +23,12 @@ import { Component } from '@angular/core';
       </div>
     </div>
   `,
-  styles  : [
-    `p {
-      margin: 0;
-    }`
+  styles: [
+    `
+      p {
+        margin: 0;
+      }
+    `
   ]
 })
-export class NzDemoCardInColumnComponent {
-}
+export class NzDemoCardInColumnComponent {}
