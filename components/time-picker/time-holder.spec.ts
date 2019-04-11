@@ -85,7 +85,7 @@ describe('time holder', () => {
     expect(mathSecondRound(holder.value!)).toEqual(mathSecondRound(date));
   });
   it('should set defaultRealHours and defaultViewHours correctly', () => {
-    const holder = new TimeHolder().setValue(new Date(), true).setDefaultOpenValue(new Date(0, 0, 0, 15, 2, 3));
+    const holder = new TimeHolder().setValue(undefined, true).setDefaultOpenValue(new Date(0, 0, 0, 15, 2, 3));
     expect(holder.defaultRealHours).toBe(15);
     expect(holder.defaultViewHours).toBe(3);
   });

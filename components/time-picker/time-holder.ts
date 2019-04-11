@@ -65,7 +65,7 @@ export class TimeHolder {
         this._hours = this._value!.getHours();
         this._minutes = this._value!.getMinutes();
         this._seconds = this._value!.getSeconds();
-        if (this._use12Hours) {
+        if (this._use12Hours && isNotNil(this._hours)) {
           this._selected12Hours = this._hours >= 12 ? 'PM' : 'AM';
         }
       } else {
