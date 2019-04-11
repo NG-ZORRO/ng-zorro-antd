@@ -127,6 +127,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
       this.highlightKeys.push(this.nzTreeNode.title.slice(0, index));
       this.highlightKeys.push(this.nzTreeNode.title.slice(index + value.length, this.nzTreeNode.title.length));
     }
+    this.nzTreeNode.highlightKeys = this.highlightKeys;
     this._searchValue = value;
   }
 

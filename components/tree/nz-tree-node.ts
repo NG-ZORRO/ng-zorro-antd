@@ -12,7 +12,7 @@ export interface NzTreeNodeOptions {
   children?: NzTreeNodeOptions[];
 
   // tslint:disable-next-line:no-any
-  [ key: string ]: any;
+  [key: string]: any;
 }
 
 export class NzTreeNode {
@@ -35,6 +35,7 @@ export class NzTreeNode {
   isSelected: boolean;
   isLoading: boolean;
   isMatched: boolean;
+  highlightKeys: string[];
 
   constructor(option: NzTreeNodeOptions, parent: NzTreeNode = null) {
     this.title = option.title || '---';
@@ -54,7 +55,7 @@ export class NzTreeNode {
     this.isSelected = (!option.disabled && option.selected) || false;
     this.isLoading = false;
     this.isMatched = false;
-
+    this.highlightKeys = [];
     /**
      * parent's checked status will affect children while initializing
      */
@@ -63,7 +64,7 @@ export class NzTreeNode {
     } else {
       this.level = 0;
     }
-    if (typeof(option.children) !== 'undefined' && option.children !== null) {
+    if (typeof (option.children) !== 'undefined' && option.children !== null) {
       option.children.forEach(
         (nodeOptions) => {
           if (option.checked && !option.disabled && !nodeOptions.disabled && !nodeOptions.disableCheckbox) {
