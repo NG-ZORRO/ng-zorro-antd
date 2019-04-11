@@ -1,7 +1,8 @@
 <div *ngIf="avatarStr || avatarTpl" class="ant-list-item-meta-avatar">
-  <ng-container *ngIf="avatarStr; else avatarTpl">
+  <ng-container *ngIf="avatarStr; else avatarTemplate">
     <nz-avatar [nzSrc]="avatarStr"></nz-avatar>
   </ng-container>
+  <ng-container #avatarTemplate [ngTemplateOutlet]="avatarTpl"></ng-container>
 </div>
 <div *ngIf="nzTitle || nzDescription" class="ant-list-item-meta-content">
   <h4 *ngIf="nzTitle" class="ant-list-item-meta-title">
