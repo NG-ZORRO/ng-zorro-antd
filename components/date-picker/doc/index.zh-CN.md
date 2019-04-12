@@ -106,6 +106,7 @@ registerLocaleData(zh);
 | `[nzPlaceHolder]` | 输入框提示文字 | `string[]` | - |
 | `(nzOnOk)` | 点击确定按钮的回调 | `EventEmitter<Date[]>` | - |
 | `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date[]>` | - |
+| `(nzOnCalendarChange)` | 待选日期发生变化的回调 | `EventEmitter<Date[]>` | - |
 
 > `nzShowTime` 中当前支持的 `nz-time-picker` 参数有：`nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`
 
