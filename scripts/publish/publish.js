@@ -44,7 +44,7 @@ function changeVersion() {
 
   const packageJsonPath = path.join(__dirname, '../../components/package.json');
   const appComponentPath = path.join(__dirname, '../site/_site/doc/app/app.component.ts');
-  const codeBoxPath = path.join(__dirname, '../site/_site/doc/app/share/nz-codebox/nz-codebox.component.ts');
+  const codeBoxPath = path.join(__dirname, '../site/_site/doc/app/share/nz-codebox/stack-blitz.ts');
   const zorroVersionPath = path.join(__dirname, '../../components/version.ts');
 
   const packageJson = fs.readJsonSync(packageJsonPath);
