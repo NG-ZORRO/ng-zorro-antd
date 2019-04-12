@@ -8,7 +8,6 @@ import { Component } from '@angular/core';
     <nz-badge nzStatus="default"></nz-badge>
     <nz-badge nzStatus="processing"></nz-badge>
     <nz-badge nzStatus="warning"></nz-badge>
-    <nz-badge nzStatus="default" [nzStyle]="{ 'background-color': '#2f54eb' }"></nz-badge>
     <br />
     <nz-badge nzStatus="success" nzText="Success"></nz-badge>
     <br />
@@ -20,7 +19,6 @@ import { Component } from '@angular/core';
     <br />
     <nz-badge nzStatus="warning" nzText="Warning"></nz-badge>
     <br />
-    <nz-badge nzStatus="default" nzText="Color" [nzStyle]="{ 'background-color': '#2f54eb' }"></nz-badge>
   `
 })
 export class NzDemoBadgeStatusComponent {}

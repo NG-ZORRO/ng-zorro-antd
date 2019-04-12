@@ -1,6 +1,6 @@
 <span (cdkObserveContent)="checkContent()" #contentElement><ng-content></ng-content></span>
-<span class="ant-badge-status-dot ant-badge-status-{{nzStatus}}" *ngIf="nzStatus" [ngStyle]="nzStyle"></span>
-<span class="ant-badge-status-text" *ngIf="nzStatus">{{ nzText }}</span>
+<span class="ant-badge-status-dot ant-badge-status-{{nzStatus || presetColor}}" [style.background]="!presetColor && nzColor" *ngIf="nzStatus || nzColor" [ngStyle]="nzStyle"></span>
+<span class="ant-badge-status-text" *ngIf="nzStatus || nzColor">{{ nzText }}</span>
 <ng-container *nzStringTemplateOutlet="nzCount">
   <sup class="ant-scroll-number"
     *ngIf="showSup"
