@@ -52,6 +52,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   @Input() panelMode: PanelMode | PanelMode[];
   @Output() readonly panelModeChange = new EventEmitter<PanelMode | PanelMode[]>();
 
+  @Output() readonly calendarChange = new EventEmitter<CandyDate | CandyDate[]>();
   @Input() value: CandyDate | CandyDate[] | null;
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[]>();
 
@@ -182,15 +183,16 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
       if ((!left && !right) || (left && right)) {
         // If totally full or empty, clean up && re-assign left first
-        this.hoverValue = this.selectedValue = [value];
+        this.hoverValue = this.selectedValue = [ value ];
+        this.calendarChange.emit([value.clone()]);
       } else if (left && !right) {
         // If one of them is empty, assign the other one and sort, then set the final values
         this.clearHoverValue(); // Clean up
         this.setRangeValue('selectedValue', 'right', value);
         this.sortRangeValue('selectedValue'); // Sort
-
         this.valueForRangeShow = this.normalizeRangeValue(this.selectedValue);
         this.setValue(this.cloneRangeDate(this.selectedValue));
+        this.calendarChange.emit(this.cloneRangeDate(this.selectedValue));
       }
     } else {
       this.setValue(value);
