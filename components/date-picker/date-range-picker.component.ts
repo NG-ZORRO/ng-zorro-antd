@@ -33,6 +33,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   @Input() nzMode: PanelMode | PanelMode[];
   @Input() nzRanges: FunctionProp<PresetRanges>;
   @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
+  @Output() readonly nzOnCalendarChange = new EventEmitter<Date[]>();
 
   private _showTime: object | boolean;
   @Input() get nzShowTime(): object | boolean {
@@ -96,6 +97,14 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
 
     if (!this.nzShowTime) {
       this.closeOverlay();
+    }
+  }
+
+  // Emit nzOnCalendarChange when select date by nz-range-picker
+  onCalendarChange(value: CandyDate[]): void {
+    if (this.isRange) {
+      const rangeValue = value.map(x => x.nativeDate);
+      this.nzOnCalendarChange.emit(rangeValue);
     }
   }
 
