@@ -3,13 +3,13 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-tree-customized-icon',
   template: `
-    <nz-tree [nzData]="nodes" nzShowIcon [nzExpandedIcon]="expandedIcon1">
-      <ng-template #expandedIcon1 let-node>
+    <nz-tree [nzData]="nodes" nzShowIcon [nzExpandedIcon]="expandedIconTpl">
+      <ng-template #expandedIconTpl let-node>
         <i nz-icon [type]="node.origin.icon" class="ant-tree-switcher-icon"></i>
       </ng-template>
     </nz-tree>
-    <nz-tree [nzData]="nodes" nzShowIcon [nzExpandedIcon]="expandedIcon2">
-      <ng-template #expandedIcon2 let-node>
+    <nz-tree [nzData]="nodes" nzShowIcon [nzExpandedIcon]="mutiExpandedIconTpl">
+      <ng-template #mutiExpandedIconTpl let-node>
         <i
           *ngIf="!node.origin.isLeaf"
           nz-icon
