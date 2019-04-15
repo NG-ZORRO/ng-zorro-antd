@@ -70,6 +70,7 @@ title: Form
 | --- | --- | --- | --- |
 | `[nzRequired]`| 当前项是否为必填，仅影响样式 | `boolean` | `false` |
 | `[nzFor]`| label 标签的 for 属性	 | `string` | - |
+| `[nzColon]` | 配合 label 属性使用，表示是否显示 label 后面的冒号 | `boolean` | `true` |
 
 ### nz-form-control
 
