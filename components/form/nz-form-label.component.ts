@@ -27,6 +27,7 @@ import { NzFormItemComponent } from './nz-form-item.component';
 export class NzFormLabelComponent extends NzColDirective implements OnDestroy, AfterViewInit {
   @Input() nzFor: string;
   @Input() @InputBoolean() nzRequired = false;
+  @Input() @InputBoolean() nzColon = true;
 
   constructor(
     nzUpdateHostClassService: NzUpdateHostClassService,
