@@ -6,7 +6,7 @@ import { delay } from 'rxjs/operators';
 @Component({
   selector: 'nz-demo-tree-draggable-confirm',
   template: `
-    <nz-tree [nzData]="nodes" nzDraggable [nzBeforeDrop]="beforeDrop"> </nz-tree>
+    <nz-tree [nzData]="nodes" nzDraggable nzBlockNode [nzBeforeDrop]="beforeDrop"> </nz-tree>
   `
 })
 export class NzDemoTreeDraggableConfirmComponent implements OnInit {
