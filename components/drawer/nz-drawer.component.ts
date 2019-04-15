@@ -296,10 +296,10 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   }
 
   private trapFocus(): void {
-    if (!this.focusTrap) {
+    if (!this.focusTrap && this.overlayRef && this.overlayRef.overlayElement) {
       this.focusTrap = this.focusTrapFactory.create(this.overlayRef!.overlayElement);
+      this.focusTrap.focusInitialElement();
     }
-    this.focusTrap.focusInitialElement();
   }
 
   private restoreFocus(): void {
