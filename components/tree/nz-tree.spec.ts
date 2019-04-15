@@ -398,6 +398,12 @@ describe('nz-tree', () => {
       expect(treeInstance).toBeTruthy();
     });
 
+    it('test nzBlockNode property', () => {
+      fixture.detectChanges();
+      const tree = treeElement.querySelector('.ant-tree') as HTMLElement;
+      expect(tree!.classList).toContain('ant-tree-block-node');
+    });
+
     it('test drag event', fakeAsync(() => {
       fixture.detectChanges();
       const dragStartSpy = spyOn(treeInstance, 'onDragStart');
@@ -729,6 +735,7 @@ export class NzTestTreeBasicControlledComponent {
   selector: 'nz-demo-tree-draggable',
   template: `
     <nz-tree
+      nzBlockNode
       [nzData]="nodes"
       nzDraggable="true"
       [nzBeforeDrop]="beforeDrop"

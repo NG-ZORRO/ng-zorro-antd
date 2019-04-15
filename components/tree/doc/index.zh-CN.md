@@ -16,6 +16,7 @@ subtitle: 树形控件
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzData]` | 元数据 | `NzTreeNodeOptions[]｜NzTreeNode[]` | `[]` |
+| `[nzBlockNode]` | 是否节点占据一行 | `boolean` | `false` |
 | `[nzCheckable]` | 节点前添加 Checkbox 复选框 | `boolean` | `false` |
 | `[nzShowExpand]` | 节点前添加展开图标 | `boolean` | `true` |
 | `[nzShowLine]` | 是否展示连接线 | `boolean` | `false` |
