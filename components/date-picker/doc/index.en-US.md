@@ -106,7 +106,7 @@ The following APIs are shared by nz-date-picker, nz-month-picker, nz-range-picke
 | `[nzPlaceHolder]` | placeholder of date input | `string[]` | - |
 | `(nzOnOk)` | click ok callback | `EventEmitter<Date[]>` | - |
 | `(ngModelChange)` | Date change callback | `EventEmitter<Date[]>` | - |
-
+| `(nzOnCalendarChange)` | The start time or the end time of the range change callback | `EventEmitter<Date[]>` | - |
 > Currently supported `nz-time-picker` parameters in `nzShowTime` are: `nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`
 
 ### nzFormat special instructions

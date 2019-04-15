@@ -71,11 +71,12 @@ import { NzTreeSelectService } from './nz-tree-select.service';
 export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   @Input() @InputBoolean() nzAllowClear = true;
   @Input() @InputBoolean() nzShowExpand = true;
+  @Input() @InputBoolean() nzShowLine = false;
+  @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() @InputBoolean() nzDropdownMatchSelectWidth = true;
   @Input() @InputBoolean() nzCheckable = false;
   @Input() @InputBoolean() nzShowSearch = false;
   @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzShowLine = false;
   @Input() @InputBoolean() nzAsyncData = false;
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzDefaultExpandAll = false;
