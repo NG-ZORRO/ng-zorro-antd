@@ -314,7 +314,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
       expect(nzOnCalendarChange).not.toHaveBeenCalled();
-      const result = nzOnChange.calls.allArgs()[ 0 ][ 0 ];
+      const result = nzOnChange.calls.allArgs()[0][0];
       expect(result.getDate()).toBe(+cellText);
     }));
   });

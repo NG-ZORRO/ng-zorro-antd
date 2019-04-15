@@ -3,7 +3,22 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-tree-customized-icon',
   template: `
-    <nz-tree [nzData]="nodes" nzShowIcon> </nz-tree>
+    <nz-tree [nzData]="nodes" nzShowIcon [nzExpandedIcon]="expandedIconTpl">
+      <ng-template #expandedIconTpl let-node>
+        <i nz-icon [type]="node.origin.icon" class="ant-tree-switcher-icon"></i>
+      </ng-template>
+    </nz-tree>
+    <nz-tree [nzData]="nodes" nzShowIcon [nzExpandedIcon]="mutiExpandedIconTpl">
+      <ng-template #mutiExpandedIconTpl let-node>
+        <i
+          *ngIf="!node.origin.isLeaf"
+          nz-icon
+          [type]="node.isExpanded ? 'folder-open' : 'folder'"
+          class="ant-tree-switcher-line-icon"
+        ></i>
+        <i *ngIf="node.origin.isLeaf" nz-icon type="file" class="ant-tree-switcher-line-icon"></i>
+      </ng-template>
+    </nz-tree>
   `
 })
 export class NzDemoTreeCustomizedIconComponent implements OnInit {
