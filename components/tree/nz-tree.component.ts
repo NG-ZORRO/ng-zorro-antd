@@ -65,6 +65,7 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
   @Input() @InputBoolean() nzHideUnMatched = false;
   @Input() @InputBoolean() nzSelectMode = false;
   @Input() @InputBoolean() nzCheckStrictly = false;
+  @Input() @InputBoolean() nzBlockNode = false;
   /**
    * @deprecated use
    * nzExpandAll instead
@@ -229,6 +230,7 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
       [this.prefixCls]: true,
       [this.prefixCls + '-show-line']: this.nzShowLine,
       [`${this.prefixCls}-icon-hide`]: !this.nzShowIcon,
+      [`${this.prefixCls}-block-node`]: this.nzBlockNode,
       ['draggable-tree']: this.nzDraggable,
       ['ant-select-tree']: this.nzSelectMode
     };

@@ -15,6 +15,7 @@ Almost anything can be represented in a tree structure. Examples include directo
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzData]` | Tree data (Reference NzTreeNode) | `NzTreeNodeOptions[]｜NzTreeNode[]` | `[]` |
+| `[nzBlockNode]` | Whether treeNode fill remaining horizontal space | `boolean` | `false` |
 | `[nzCheckable]` | Adds a Checkbox before the treeNodes| `boolean` | `false` |
 | `[nzShowExpand]` | Show a Expand Icon before the treeNodes | `boolean` | `true` |
 | `[nzShowLine]` | Shows a connecting line | `boolean` | `false` |
