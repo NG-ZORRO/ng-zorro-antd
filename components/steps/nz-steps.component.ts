@@ -80,7 +80,9 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   ngAfterContentInit(): void {
     this.updateChildrenSteps();
     if (this.steps) {
-      this.steps.changes.pipe(takeUntil(this.destroy$)).subscribe(this.updateChildrenSteps);
+      this.steps.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+        this.updateChildrenSteps();
+      });
     }
   }
 
