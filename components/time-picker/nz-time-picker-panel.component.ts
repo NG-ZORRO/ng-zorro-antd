@@ -492,13 +492,12 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzUse12Hours } = changes;
-    if (nzUse12Hours) {
-      if (isNotNil(nzUse12Hours) && nzUse12Hours) {
-        this.build12Hours();
-        this.enabledColumns++;
-      }
+    if (nzUse12Hours && !nzUse12Hours.previousValue && nzUse12Hours.currentValue) {
+      this.build12Hours();
+      this.enabledColumns++;
     }
   }
+
   writeValue(value: Date): void {
     this.time.setValue(value, this.nzUse12Hours);
     this.buildTimes();

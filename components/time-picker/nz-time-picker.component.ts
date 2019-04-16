@@ -7,9 +7,11 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
   Renderer2,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -28,7 +30,7 @@ import { toBoolean } from '../core/util/convert';
   animations: [slideMotion],
   providers: [UpdateCls, { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
 })
-export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
   private _disabled = false;
   private _value: Date | null = null;
   private _allowEmpty = true;
@@ -179,6 +181,13 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   ngOnInit(): void {
     this.setClassMap();
     this.origin = new CdkOverlayOrigin(this.element);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzUse12Hours, nzFormat } = changes;
+    if (nzUse12Hours && !nzUse12Hours.previousValue && nzUse12Hours.currentValue && !nzFormat) {
+      this.nzFormat = 'h:mm:ss a';
+    }
   }
 
   ngAfterViewInit(): void {
