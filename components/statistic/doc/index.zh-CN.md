@@ -2,7 +2,7 @@
 category: Components
 title: Statistic
 subtitle: 统计
-type: Data Display
+type: 数据展示
 ---
 
 展示统计数字。
