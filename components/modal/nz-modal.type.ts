@@ -31,6 +31,7 @@ export interface ModalOptions<T = any, R = any> {
   nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef); // STATIC
   nzAfterOpen?: EventEmitter<void>;
   nzAfterClose?: EventEmitter<R>;
+  nzRestoreFocus?: boolean;
 
   // --- Predefined OK & Cancel buttons
   nzOkText?: string | null;

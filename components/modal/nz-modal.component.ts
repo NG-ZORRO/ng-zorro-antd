@@ -61,7 +61,9 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   @Input() @InputBoolean() nzCancelDisabled: boolean = false;
   @Input() @InputBoolean() nzCancelLoading: boolean = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
-  @Input() @InputBoolean() nzNoAnimation = false;
+  @Input() @InputBoolean() nzNoAnimation: boolean = false;
+  @Input() @InputBoolean() nzRestoreFocus: boolean = true;
+
   @Input() nzContent: string | TemplateRef<{}> | Type<T>; // [STATIC] If not specified, will use <ng-content>
   @Input() nzComponentParams: T; // [STATIC] ONLY avaliable when nzContent is a component
   @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null; // [STATIC] Default Modal ONLY
@@ -317,7 +319,9 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     if (visible) {
       // Hide scrollbar at the first time when shown up
       this.scrollStrategy.enable();
-      this.savePreviouslyFocusedElement();
+      if (this.nzRestoreFocus) {
+        this.savePreviouslyFocusedElement();
+      }
       this.trapFocus();
     }
 
@@ -463,7 +467,11 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
 
   private restoreFocus(): void {
     // We need the extra check, because IE can set the `activeElement` to null in some cases.
-    if (this.previouslyFocusedElement && typeof this.previouslyFocusedElement.focus === 'function') {
+    if (
+      this.nzRestoreFocus &&
+      this.previouslyFocusedElement &&
+      typeof this.previouslyFocusedElement.focus === 'function'
+    ) {
       this.previouslyFocusedElement.focus();
     }
     if (this.focusTrap) {
