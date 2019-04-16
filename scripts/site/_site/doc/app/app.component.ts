@@ -13,7 +13,6 @@ declare const docsearch: any;
 interface DocPageMeta {
   path: string;
   label: string;
-  language: string;
   order?: number;
   zh: string;
 }

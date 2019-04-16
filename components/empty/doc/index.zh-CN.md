@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Data Display
+type: 数据展示
 subtitle: 空状态
 title: Empty
 cols: 1
