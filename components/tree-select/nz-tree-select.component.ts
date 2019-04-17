@@ -27,6 +27,7 @@ import { slideMotion } from '../core/animation/slide';
 import { zoomMotion } from '../core/animation/zoom';
 import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { NzSizeLDSType } from '../core/types/size';
+import { isNotNil } from '../core/util';
 import { InputBoolean } from '../core/util/convert';
 import { NzFormatEmitEvent } from '../tree/interface';
 import { NzTreeNode, NzTreeNodeOptions } from '../tree/nz-tree-node';
@@ -181,7 +182,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   }
 
   writeValue(value: string[] | string): void {
-    if (value) {
+    if (isNotNil(value)) {
       if (this.isMultiple && Array.isArray(value)) {
         this.value = value;
       } else {
