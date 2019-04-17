@@ -13,7 +13,7 @@ import { Observable, Observer } from 'rxjs';
       [nzFilter]="filters"
       (nzChange)="handleChange($event)"
     >
-      <button nz-button><i nz-icon type="upload"></i><span>Upload</span></button>
+      <button nz-button><i nz-icon nzType="upload"></i><span>Upload</span></button>
     </nz-upload>
   `
 })

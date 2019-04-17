@@ -13,7 +13,7 @@ import { UploadFile } from 'ng-zorro-antd';
         [nzShowUploadList]="showUploadList"
         [nzPreview]="handlePreview"
       >
-        <i nz-icon type="plus"></i>
+        <i nz-icon nzType="plus"></i>
         <div class="ant-upload-text">Upload</div>
       </nz-upload>
       <nz-modal
