@@ -31,6 +31,7 @@ import { NzSelectService } from './nz-select.service';
 })
 export class NzOptionContainerComponent implements OnDestroy, OnInit {
   private destroy$ = new Subject();
+  private lastScrollTop = 0;
   @ViewChildren(NzOptionLiComponent) listOfNzOptionLiComponent: QueryList<NzOptionLiComponent>;
   @ViewChild('dropdownUl') dropdownUl: ElementRef;
   @Input() nzNotFoundContent: string;
@@ -78,7 +79,8 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
         .subscribe(e => {
           e.preventDefault();
           e.stopPropagation();
-          if (ul && ul.scrollHeight < ul.clientHeight + ul.scrollTop + 10) {
+          if (ul && ul.scrollTop > this.lastScrollTop && ul.scrollHeight < ul.clientHeight + ul.scrollTop + 10) {
+            this.lastScrollTop = ul.scrollTop;
             this.ngZone.run(() => {
               this.nzScrollToBottom.emit();
             });
