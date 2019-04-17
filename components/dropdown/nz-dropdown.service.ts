@@ -26,6 +26,7 @@ export class NzDropdownService {
     this.overlayRef = this.overlay.create(
       new OverlayConfig({
         scrollStrategy: this.overlay.scrollStrategies.close(),
+        panelClass: 'nz-dropdown-panel',
         positionStrategy: this.overlay
           .position()
           .flexibleConnectedTo({

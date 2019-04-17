@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Navigation
+type: 导航
 title: PageHeader
 cols: 1
 subtitle: 页头

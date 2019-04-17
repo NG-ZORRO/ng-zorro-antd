@@ -59,8 +59,8 @@ rootDir.forEach(componentName => {
           const demoMarkDownFile = fs.readFileSync(path.join(demoDirPath, demo));
           demoMap[nameKey] = parseDemoMdUtil(demoMarkDownFile);
           demoMap[nameKey]['name'] = `NzDemo${camelCase(capitalizeFirstLetter(componentName))}${camelCase(capitalizeFirstLetter(nameKey))}Component`;
-          demoMap[nameKey]['enCode'] = generateCodeBox(componentName, demoMap[nameKey]['name'], nameKey, demoMap[nameKey].meta.title["en-US"], demoMap[nameKey].en, demoMap[nameKey].meta.iframe);
-          demoMap[nameKey]['zhCode'] = generateCodeBox(componentName, demoMap[nameKey]['name'], nameKey, demoMap[nameKey].meta.title["zh-CN"], demoMap[nameKey].zh, demoMap[nameKey].meta.iframe);
+          demoMap[nameKey]['enCode'] = generateCodeBox(componentName, demoMap[nameKey]['name'], nameKey, demoMap[nameKey].meta.title['en-US'], demoMap[nameKey].en, demoMap[nameKey].meta.iframe);
+          demoMap[nameKey]['zhCode'] = generateCodeBox(componentName, demoMap[nameKey]['name'], nameKey, demoMap[nameKey].meta.title['zh-CN'], demoMap[nameKey].zh, demoMap[nameKey].meta.iframe);
         }
         if (/.ts$/.test(demo)) {
           const nameKey = nameWithoutSuffixUtil(demo);
@@ -102,9 +102,8 @@ rootDir.forEach(componentName => {
       demoMap,
       pageDemo
     };
-    componentsDocMap[componentName] = result.docZh.meta;
+    componentsDocMap[componentName] = { zh: result.docZh.meta, en: result.docEn.meta };
     componentsMap[componentName] = demoMap;
-
     generateDemo(showCaseComponentPath, result);
 
   }
@@ -128,7 +127,7 @@ if (!isSyncSpecific) {
     docsMeta[name] = {
       zh: getMeta(docsMap[name].zh),
       en: getMeta(docsMap[name].en)
-    }
+    };
   });
 
   generateDocs(showCaseTargetPath, docsMap);

@@ -73,6 +73,7 @@ The label of the form item, optional.
 | --- | --- | --- | --- |
 | `[nzRequired]`| add required style to current item | `boolean` | `false` |
 | `[nzFor]`| The `for` property of `label` | `string` | - |
+| `[nzColon]` | Used with `label`, whether to display `:` after label text. | `boolean` | `true` |
 
 ### nz-form-control
 > Note：Due to the lack of partial Observable in [Angular Form](https://github.com/angular/angular/issues/10887), you have to notify `nz-form-control` to update its status with `updateValueAndValidity` when you update form status using methods like `markAsDirty`.

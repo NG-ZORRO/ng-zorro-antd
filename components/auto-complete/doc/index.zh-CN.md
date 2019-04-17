@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Data Entry
+type: 数据录入
 title: Autocomplete
 subtitle: 自动完成
 ---

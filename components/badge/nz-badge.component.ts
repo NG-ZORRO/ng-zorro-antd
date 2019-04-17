@@ -33,6 +33,22 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges {
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  colorArray = [
+    'pink',
+    'red',
+    'yellow',
+    'orange',
+    'cyan',
+    'green',
+    'blue',
+    'purple',
+    'geekblue',
+    'magenta',
+    'volcano',
+    'gold',
+    'lime'
+  ];
+  presetColor: string | null = null;
   count: number;
   @ViewChild('contentElement') contentElement: ElementRef;
   @Input() @InputBoolean() nzShowZero = false;
@@ -40,6 +56,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() @InputBoolean() nzDot = false;
   @Input() nzOverflowCount = 99;
   @Input() nzText: string;
+  @Input() nzColor: string;
   @Input() nzStyle: { [key: string]: string };
   @Input() nzStatus: NzBadgeStatusType;
   @Input() nzCount: number | TemplateRef<void>;
@@ -73,7 +90,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzOverflowCount, nzCount } = changes;
+    const { nzOverflowCount, nzCount, nzColor } = changes;
     if (nzCount && !(nzCount.currentValue instanceof TemplateRef)) {
       this.count = Math.max(0, nzCount.currentValue);
       this.countArray = this.count
@@ -83,6 +100,9 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges {
     }
     if (nzOverflowCount) {
       this.generateMaxNumberArray();
+    }
+    if (nzColor) {
+      this.presetColor = this.colorArray.indexOf(this.nzColor) !== -1 ? this.nzColor : null;
     }
   }
 }

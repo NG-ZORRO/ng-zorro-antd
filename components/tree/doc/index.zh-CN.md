@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Data Display
+type: 数据展示
 title: Tree
 subtitle: 树形控件
 ---
@@ -16,9 +16,11 @@ subtitle: 树形控件
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzData]` | 元数据 | `NzTreeNodeOptions[]｜NzTreeNode[]` | `[]` |
+| `[nzBlockNode]` | 是否节点占据一行 | `boolean` | `false` |
 | `[nzCheckable]` | 节点前添加 Checkbox 复选框 | `boolean` | `false` |
 | `[nzShowExpand]` | 节点前添加展开图标 | `boolean` | `true` |
 | `[nzShowLine]` | 是否展示连接线 | `boolean` | `false` |
+| `[nzExpandedIcon]` | 自定义展开图标 | `TemplateRef<{ $implicit: NzTreeNode }>` | - |
 | `[nzShowIcon]` | 是否展示 TreeNode title 前的图标，没有默认样式 | `boolean` | `false` |
 | `[nzAsyncData]` | 是否异步加载(显示加载状态) | `boolean` | `false` |
 | `[nzDraggable]` | 设置节点可拖拽（IE>8） | `boolean` | `false` |

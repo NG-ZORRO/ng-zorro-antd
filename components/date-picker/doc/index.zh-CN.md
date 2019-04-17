@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Data Entry
+type: 数据录入
 title: DatePicker
 subtitle: 日期选择框
 ---
@@ -15,7 +15,7 @@ subtitle: 日期选择框
 
 **注意：**nz-date-picker 的部分 locale 来自于 Angular 自身的[国际化支持](https://angular.io/guide/i18n)，需要在 `app.module.ts` 文件中 引入相应的 Angular 语言包。
 例如：
-```typescript	
+```typescript
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
@@ -106,6 +106,7 @@ registerLocaleData(zh);
 | `[nzPlaceHolder]` | 输入框提示文字 | `string[]` | - |
 | `(nzOnOk)` | 点击确定按钮的回调 | `EventEmitter<Date[]>` | - |
 | `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date[]>` | - |
+| `(nzOnCalendarChange)` | 待选日期发生变化的回调 | `EventEmitter<Date[]>` | - |
 
 > `nzShowTime` 中当前支持的 `nz-time-picker` 参数有：`nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`
 

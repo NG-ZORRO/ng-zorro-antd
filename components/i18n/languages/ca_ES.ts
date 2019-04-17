@@ -13,22 +13,30 @@ export default {
     filterTitle: 'Filtrar Menu',
     filterConfirm: 'OK',
     filterReset: 'Restablir',
+    selectAll: 'Seleccionar tot',
+    selectInvert: 'Invertir selecció',
   },
   Modal: {
-    okText: 'OK',
+    okText: 'Acceptar',
     cancelText: 'Cancel·lar',
-    justOkText: 'OK',
+    justOkText: 'Acceptar',
   },
   Popconfirm: {
-    okText: 'OK',
+    okText: 'Acceptar',
     cancelText: 'Cancel·lar',
   },
   Transfer: {
     searchPlaceholder: 'Cercar aquí',
-    itemUnit: 'item',
-    itemsUnit: 'items',
+    itemUnit: 'element',
+    itemsUnit: 'elements',
+  },
+  Upload: {
+    uploading: 'Pujant...',
+    removeFile: 'Eliminar fitxer',
+    uploadError: 'Error al pujar el fitxer',
+    previewFile: 'Vista prèvia',
   },
   Empty: {
-    description: 'Sense dades',
+    description: 'No hi ha dades',
   },
 };

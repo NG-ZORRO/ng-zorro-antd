@@ -18,6 +18,7 @@ export class {{componentName}} {
     this.expanded = !this.expanded;
     this.codeBoxes.forEach(code => {
       code.nzExpanded = this.expanded;
+      code.check();
     });
   }
 {{code}}

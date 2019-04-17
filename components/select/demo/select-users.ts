@@ -36,7 +36,7 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
   randomUserUrl = 'https://api.randomuser.me/?results=5';
   searchChange$ = new BehaviorSubject('');
   optionList: string[] = [];
-  selectedUser = '';
+  selectedUser: string;
   isLoading = false;
 
   onSearch(value: string): void {

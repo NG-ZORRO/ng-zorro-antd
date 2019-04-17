@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 加载占位图
-type: Feedback
+type: 反馈
 title: Skeleton
 cols: 1
 ---

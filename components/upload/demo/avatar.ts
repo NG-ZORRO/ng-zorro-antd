@@ -15,7 +15,7 @@ import { Observable, Observer } from 'rxjs';
       (nzChange)="handleChange($event)"
     >
       <ng-container *ngIf="!avatarUrl">
-        <i class="upload-icon" nz-icon [type]="loading ? 'loading' : 'plus'"></i>
+        <i class="upload-icon" nz-icon [nzType]="loading ? 'loading' : 'plus'"></i>
         <div class="ant-upload-text">Upload</div>
       </ng-container>
       <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar" />

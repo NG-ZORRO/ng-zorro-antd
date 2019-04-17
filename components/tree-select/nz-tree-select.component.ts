@@ -27,6 +27,7 @@ import { slideMotion } from '../core/animation/slide';
 import { zoomMotion } from '../core/animation/zoom';
 import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
 import { NzSizeLDSType } from '../core/types/size';
+import { isNotNil } from '../core/util';
 import { InputBoolean } from '../core/util/convert';
 import { NzFormatEmitEvent } from '../tree/interface';
 import { NzTreeNode, NzTreeNodeOptions } from '../tree/nz-tree-node';
@@ -71,11 +72,12 @@ import { NzTreeSelectService } from './nz-tree-select.service';
 export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   @Input() @InputBoolean() nzAllowClear = true;
   @Input() @InputBoolean() nzShowExpand = true;
+  @Input() @InputBoolean() nzShowLine = false;
+  @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() @InputBoolean() nzDropdownMatchSelectWidth = true;
   @Input() @InputBoolean() nzCheckable = false;
   @Input() @InputBoolean() nzShowSearch = false;
   @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzShowLine = false;
   @Input() @InputBoolean() nzAsyncData = false;
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzDefaultExpandAll = false;
@@ -180,7 +182,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   }
 
   writeValue(value: string[] | string): void {
-    if (value) {
+    if (isNotNil(value)) {
       if (this.isMultiple && Array.isArray(value)) {
         this.value = value;
       } else {

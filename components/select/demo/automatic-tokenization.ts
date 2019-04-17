@@ -3,14 +3,20 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-select-automatic-tokenization',
   template: `
-    <nz-select nzMode="tags" [nzTokenSeparators]="[',']" style="width: 100%;" [(ngModel)]="listOfTagOptions">
+    <nz-select
+      nzMode="tags"
+      [nzTokenSeparators]="[',']"
+      style="width: 100%;"
+      [(ngModel)]="listOfTagOptions"
+      nzPlaceHolder="automatic tokenization"
+    >
       <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"> </nz-option>
     </nz-select>
   `
 })
 export class NzDemoSelectAutomaticTokenizationComponent implements OnInit {
   listOfOption: Array<{ label: string; value: string }> = [];
-  listOfTagOptions = null;
+  listOfTagOptions = [];
 
   ngOnInit(): void {
     const children: Array<{ label: string; value: string }> = [];
