@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
   selector: 'nz-demo-upload-manually',
   template: `
     <nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
-      <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+      <button nz-button><i nz-icon nzType="upload"></i><span>Select File</span></button>
     </nz-upload>
     <button
       nz-button

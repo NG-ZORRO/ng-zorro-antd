@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <div class="clearfix">
       <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzListType="picture" [(nzFileList)]="fileList1">
-        <button nz-button><i nz-icon type="upload"></i><span>Upload</span></button>
+        <button nz-button><i nz-icon nzType="upload"></i><span>Upload</span></button>
       </nz-upload>
     </div>
     <br /><br />
@@ -17,7 +17,7 @@ import { Component } from '@angular/core';
         [(nzFileList)]="fileList2"
       >
         <button nz-button>
-          <span><i nz-icon type="upload"></i> Upload</span>
+          <span><i nz-icon nzType="upload"></i> Upload</span>
         </button>
       </nz-upload>
     </div>
