@@ -33,6 +33,7 @@ import { FromToInterface, NzCarouselEffects, PointerVector } from './nz-carousel
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
 import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
+import { Platform } from '@angular/cdk/platform';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -101,7 +102,8 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     @Inject(DOCUMENT) document: any, // tslint:disable-line:no-any
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private platform: Platform
   ) {
     this.document = document;
     this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
@@ -210,7 +212,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
   private scheduleNextTransition(): void {
     this.clearScheduledTransition();
-    if (this.nzAutoPlay && this.nzAutoPlaySpeed > 0) {
+    if (this.nzAutoPlay && this.nzAutoPlaySpeed > 0 && this.platform.isBrowser) {
       this.transitionInProgress = setTimeout(() => {
         this.goTo(this.activeIndex + 1);
       }, this.nzAutoPlaySpeed);
