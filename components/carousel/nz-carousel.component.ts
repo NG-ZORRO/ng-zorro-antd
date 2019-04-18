@@ -1,4 +1,6 @@
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
+import { Platform } from '@angular/cdk/platform';
+import { DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -8,6 +10,7 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   NgZone,
   OnChanges,
@@ -20,14 +23,17 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { fromEvent, Subject } from 'rxjs';
+import { take, takeUntil, throttleTime } from 'rxjs/operators';
+
 import { InputBoolean, InputNumber } from '../core/util/convert';
+import { isTouchEvent } from '../core/util/dom';
+
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
-
-export type NzCarouselEffects = 'fade' | 'scrollx';
-
-export type SwipeDirection = 'swipeleft' | 'swiperight';
+import { FromToInterface, NzCarouselEffects, PointerVector } from './nz-carousel-definitions';
+import { NzCarouselBaseStrategy } from './strategies/base-strategy';
+import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
+import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -54,249 +60,233 @@ export type SwipeDirection = 'swipeleft' | 'swiperight';
 
       .slick-track {
         opacity: 1;
-        transition: all 0.5s ease;
-      }
-
-      .slick-slide {
-        transition: opacity 500ms ease;
       }
     `
   ]
 })
-export class NzCarouselComponent implements AfterViewInit, AfterContentInit, OnDestroy, OnChanges {
-  @ContentChildren(NzCarouselContentDirective) slideContents: QueryList<NzCarouselContentDirective>;
+export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges {
+  @ContentChildren(NzCarouselContentDirective) carouselContents: QueryList<NzCarouselContentDirective>;
+
   @ViewChild('slickList') slickList: ElementRef;
   @ViewChild('slickTrack') slickTrack: ElementRef;
 
-  @Input() nzTransitionSpeed = 500; // Not exposed.
   @Input() nzDotRender: TemplateRef<{ $implicit: number }>;
   @Input() nzEffect: NzCarouselEffects = 'scrollx';
   @Input() @InputBoolean() nzEnableSwipe = true;
   @Input() @InputBoolean() nzDots: boolean = true;
   @Input() @InputBoolean() nzVertical: boolean = false;
   @Input() @InputBoolean() nzAutoPlay = false;
-  @Input() @InputNumber() nzAutoPlaySpeed = 3000; // Should be nzAutoPlayDuration, but changing this is breaking.
+  @Input() @InputNumber() nzAutoPlaySpeed = 3000;
+  @Input() @InputNumber() nzTransitionSpeed = 500;
 
-  @Output() readonly nzAfterChange: EventEmitter<number> = new EventEmitter();
-  @Output() readonly nzBeforeChange: EventEmitter<{ from: number; to: number }> = new EventEmitter();
+  @Output() readonly nzBeforeChange = new EventEmitter<FromToInterface>();
+  @Output() readonly nzAfterChange = new EventEmitter<number>();
 
   activeIndex = 0;
-  transform = 'translate3d(0px, 0px, 0px)';
-  transitionAction: number | null;
+  el: HTMLElement;
+  slickListEl: HTMLElement;
+  slickTrackEl: HTMLElement;
+  strategy: NzCarouselBaseStrategy;
+  transitionInProgress: number | null;
 
-  private el = this.elementRef.nativeElement;
-  private subs_ = new Subscription();
-
-  get nextIndex(): number {
-    return this.activeIndex < this.slideContents.length - 1 ? this.activeIndex + 1 : 0;
-  }
-
-  get prevIndex(): number {
-    return this.activeIndex > 0 ? this.activeIndex - 1 : this.slideContents.length - 1;
-  }
+  private destroy$ = new Subject<void>();
+  private document: Document;
+  private gestureRect: ClientRect | null = null;
+  private pointerDelta: PointerVector | null = null;
+  private pointerPosition: PointerVector | null = null;
+  private isTransiting = false;
+  private isDragging = false;
 
   constructor(
-    public elementRef: ElementRef,
+    elementRef: ElementRef,
+    @Inject(DOCUMENT) document: any, // tslint:disable-line:no-any
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private platform: Platform
   ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-carousel');
+    this.document = document;
+    this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
+    this.el = elementRef.nativeElement;
   }
 
   ngAfterContentInit(): void {
-    if (this.slideContents && this.slideContents.length) {
-      this.slideContents.first.isActive = true;
-    }
+    this.markContentActive(0);
   }
 
   ngAfterViewInit(): void {
-    // Re-render when content changes.
-    this.subs_.add(
-      this.slideContents.changes.subscribe(() => {
-        this.renderContent();
-      })
-    );
+    this.slickListEl = this.slickList.nativeElement;
+    this.slickTrackEl = this.slickTrack.nativeElement;
 
-    this.ngZone.runOutsideAngular(() => {
-      this.subs_.add(
-        fromEvent(window, 'resize')
-          .pipe(debounceTime(50))
-          .subscribe(() => {
-            this.renderContent();
-            this.setTransition();
-          })
-      );
+    this.carouselContents.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.markContentActive(0);
+      this.strategy.withCarouselContents(this.carouselContents);
     });
 
-    // When used in modals (drawers maybe too), it should render itself asynchronously.
-    // Refer to https://github.com/NG-ZORRO/ng-zorro-antd/issues/2387
-    Promise.resolve().then(() => {
-      this.renderContent();
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(window, 'resize')
+        .pipe(
+          takeUntil(this.destroy$),
+          throttleTime(16)
+        )
+        .subscribe(() => {
+          this.strategy.withCarouselContents(this.carouselContents);
+        });
+    });
+
+    this.ngZone.onStable.pipe(take(1)).subscribe(() => {
+      this.switchStrategy();
+      this.strategy.withCarouselContents(this.carouselContents);
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzAutoPlay || changes.nzAutoPlaySpeed) {
-      this.setUpNextScroll();
+    const { nzEffect } = changes;
+
+    if (nzEffect && !nzEffect.isFirstChange()) {
+      this.switchStrategy();
     }
-    if (changes.nzEffect) {
-      this.updateMode();
+
+    if (!this.nzAutoPlay || !this.nzAutoPlaySpeed) {
+      this.clearScheduledTransition();
+    } else {
+      this.scheduleNextTransition();
     }
   }
 
   ngOnDestroy(): void {
-    this.subs_.unsubscribe();
-    this.clearTimeout();
-  }
+    this.clearScheduledTransition();
+    this.strategy.dispose();
+    this.dispose();
 
-  setContentActive(index: number): void {
-    if (this.slideContents && this.slideContents.length) {
-      this.nzBeforeChange.emit({ from: this.slideContents.toArray().findIndex(slide => slide.isActive), to: index });
-      this.activeIndex = index;
-      this.setTransition();
-      this.slideContents.forEach((slide, i) => (slide.isActive = index === i));
-      this.setUpNextScroll();
-      this.cdr.markForCheck();
-      // Should trigger the following when animation is done. The transition takes 0.5 seconds according to the CSS.
-      setTimeout(() => this.nzAfterChange.emit(index), this.nzTransitionSpeed);
-    }
-  }
-
-  private setTransition(): void {
-    this.transform =
-      this.nzEffect === 'fade'
-        ? 'translate3d(0px, 0px, 0px)'
-        : this.nzVertical
-        ? // `Scrollx` mode.
-          `translate3d(0px, ${-this.activeIndex * this.el.offsetHeight}px, 0px)`
-        : `translate3d(${-this.activeIndex * this.el.offsetWidth}px, 0px, 0px)`;
-    if (this.slickTrack) {
-      this.renderer.setStyle(this.slickTrack.nativeElement, 'transform', this.transform);
-    }
-  }
-
-  next(): void {
-    this.setContentActive(this.nextIndex);
-  }
-
-  pre(): void {
-    this.setContentActive(this.prevIndex);
-  }
-
-  goTo(index: number): void {
-    if (index >= 0 && index <= this.slideContents.length - 1) {
-      this.setContentActive(index);
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onKeyDown(e: KeyboardEvent): void {
     if (e.keyCode === LEFT_ARROW) {
-      // Left
-      this.pre();
       e.preventDefault();
+      this.pre();
     } else if (e.keyCode === RIGHT_ARROW) {
-      // Right
       this.next();
       e.preventDefault();
     }
   }
 
-  swipe(action: SwipeDirection = 'swipeleft'): void {
-    if (!this.nzEnableSwipe) {
-      return;
-    }
-    if (action === 'swipeleft') {
-      this.next();
-    }
-    if (action === 'swiperight') {
-      this.pre();
+  next(): void {
+    this.goTo(this.activeIndex + 1);
+  }
+
+  pre(): void {
+    this.goTo(this.activeIndex - 1);
+  }
+
+  goTo(index: number): void {
+    if (this.carouselContents && this.carouselContents.length && !this.isTransiting) {
+      const length = this.carouselContents.length;
+      const from = this.activeIndex;
+      const to = (index + length) % length;
+      this.isTransiting = true;
+      this.nzBeforeChange.emit({ from, to });
+      this.strategy.switch(this.activeIndex, index).subscribe(() => {
+        this.scheduleNextTransition();
+        this.nzAfterChange.emit(index);
+        this.isTransiting = false;
+      });
+      this.markContentActive(to);
+      this.cdr.markForCheck();
     }
   }
 
-  /* tslint:disable-next-line:no-any */
-  swipeInProgress(e: any): void {
-    if (this.nzEffect === 'scrollx') {
-      const final = e.isFinal;
-      const scrollWidth = final ? 0 : e.deltaX * 1.2;
-      const totalWidth = this.el.offsetWidth;
-      if (this.nzVertical) {
-        const totalHeight = this.el.offsetHeight;
-        const scrollPercent = scrollWidth / totalWidth;
-        const scrollHeight = scrollPercent * totalHeight;
-        this.transform = `translate3d(0px, ${-this.activeIndex * totalHeight + scrollHeight}px, 0px)`;
-      } else {
-        this.transform = `translate3d(${-this.activeIndex * totalWidth + scrollWidth}px, 0px, 0px)`;
-      }
-      if (this.slickTrack) {
-        this.renderer.setStyle(this.slickTrack.nativeElement, 'transform', this.transform);
-      }
+  private switchStrategy(): void {
+    if (this.strategy) {
+      this.strategy.dispose();
     }
-    if (e.isFinal) {
-      this.setUpNextScroll();
-    } else {
-      this.clearTimeout();
-    }
+
+    this.strategy =
+      this.nzEffect === 'scrollx'
+        ? new NzCarouselTransformStrategy(this, this.cdr, this.renderer)
+        : new NzCarouselOpacityStrategy(this, this.cdr, this.renderer);
+
+    this.markContentActive(0);
+    this.strategy.withCarouselContents(this.carouselContents);
   }
 
-  clearTimeout(): void {
-    if (this.transitionAction) {
-      clearTimeout(this.transitionAction);
-      this.transitionAction = null;
-    }
-  }
-
-  /**
-   * Make a carousel scroll to `this.nextIndex` after `this.nzAutoPlaySpeed` milliseconds.
-   */
-  private setUpNextScroll(): void {
-    this.clearTimeout();
-    if (this.nzAutoPlay && this.nzAutoPlaySpeed > 0) {
-      this.transitionAction = setTimeout(() => {
-        this.setContentActive(this.nextIndex);
+  private scheduleNextTransition(): void {
+    this.clearScheduledTransition();
+    if (this.nzAutoPlay && this.nzAutoPlaySpeed > 0 && this.platform.isBrowser) {
+      this.transitionInProgress = setTimeout(() => {
+        this.goTo(this.activeIndex + 1);
       }, this.nzAutoPlaySpeed);
     }
   }
 
-  private updateMode(): void {
-    if (this.slideContents && this.slideContents.length) {
-      this.renderContent();
-      this.setContentActive(0);
+  private clearScheduledTransition(): void {
+    if (this.transitionInProgress) {
+      clearTimeout(this.transitionInProgress);
+      this.transitionInProgress = null;
     }
   }
 
-  private renderContent(): void {
-    const slickTrackElement = this.slickTrack.nativeElement;
-    const slickListElement = this.slickList.nativeElement;
-    if (this.slideContents && this.slideContents.length) {
-      this.slideContents.forEach((content, i) => {
-        content.width = this.el.offsetWidth;
-        if (this.nzEffect === 'fade') {
-          content.fadeMode = true;
-          if (this.nzVertical) {
-            content.top = -i * this.el.offsetHeight;
-          } else {
-            content.left = -i * content.width;
-          }
-        } else {
-          content.fadeMode = false;
-          content.left = null;
-          content.top = null;
-        }
+  private markContentActive(index: number): void {
+    this.activeIndex = index;
+
+    if (this.carouselContents) {
+      this.carouselContents.forEach((slide, i) => {
+        slide.isActive = index === i;
       });
-      if (this.nzVertical) {
-        this.renderer.removeStyle(slickTrackElement, 'width');
-        this.renderer.removeStyle(slickListElement, 'width');
-        this.renderer.setStyle(slickListElement, 'height', `${this.slideContents.first.el.offsetHeight}px`);
-        this.renderer.setStyle(slickTrackElement, 'height', `${this.slideContents.length * this.el.offsetHeight}px`);
-      } else {
-        this.renderer.removeStyle(slickTrackElement, 'height');
-        this.renderer.removeStyle(slickListElement, 'height');
-        this.renderer.removeStyle(slickTrackElement, 'width'); // This is necessary to prevent carousel items to overflow.
-        this.renderer.setStyle(slickTrackElement, 'width', `${this.slideContents.length * this.el.offsetWidth}px`);
-      }
-      this.setUpNextScroll();
-      this.cdr.markForCheck();
     }
+
+    this.cdr.markForCheck();
+  }
+
+  pointerDown = (event: TouchEvent | MouseEvent) => {
+    if (!this.isDragging && !this.isTransiting && this.nzEnableSwipe) {
+      const point = isTouchEvent(event) ? event.touches[0] || event.changedTouches[0] : event;
+      this.isDragging = true;
+      this.clearScheduledTransition();
+      this.gestureRect = this.slickListEl.getBoundingClientRect();
+      this.pointerPosition = { x: point.clientX, y: point.clientY };
+
+      this.document.addEventListener('mousemove', this.pointerMove);
+      this.document.addEventListener('touchmove', this.pointerMove);
+      this.document.addEventListener('mouseup', this.pointerUp);
+      this.document.addEventListener('touchend', this.pointerUp);
+    }
+  };
+
+  pointerMove = (event: TouchEvent | MouseEvent) => {
+    if (this.isDragging) {
+      const point = isTouchEvent(event) ? event.touches[0] || event.changedTouches[0] : event;
+      this.pointerDelta = { x: point.clientX - this.pointerPosition!.x, y: point.clientY - this.pointerPosition!.y };
+      if (Math.abs(this.pointerDelta.x) > 5) {
+        this.strategy.dragging(this.pointerDelta);
+      }
+    }
+  };
+
+  pointerUp = () => {
+    if (this.isDragging && this.nzEnableSwipe) {
+      const delta = this.pointerDelta ? this.pointerDelta.x : 0;
+
+      // Switch to another slide if delta is third of the width.
+      if (Math.abs(delta) > this.gestureRect!.width / 3) {
+        this.goTo(delta > 0 ? this.activeIndex - 1 : this.activeIndex + 1);
+      } else {
+        this.goTo(this.activeIndex);
+      }
+
+      this.gestureRect = null;
+      this.pointerDelta = null;
+      this.isDragging = false;
+      this.dispose();
+    }
+  };
+
+  private dispose(): void {
+    this.document.removeEventListener('mousemove', this.pointerMove);
+    this.document.removeEventListener('touchmove', this.pointerMove);
+    this.document.removeEventListener('touchend', this.pointerMove);
+    this.document.removeEventListener('mouseup', this.pointerMove);
   }
 }

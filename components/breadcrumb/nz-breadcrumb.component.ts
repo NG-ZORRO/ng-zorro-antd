@@ -16,6 +16,8 @@ import { ActivatedRoute, Params, PRIMARY_OUTLET, Router } from '@angular/router'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { InputBoolean } from '../core/util';
+
 export const NZ_ROUTE_DATA_BREADCRUMB = 'breadcrumb';
 
 export interface BreadcrumbOption {
@@ -39,7 +41,7 @@ export interface BreadcrumbOption {
   ]
 })
 export class NzBreadCrumbComponent implements OnInit, OnDestroy {
-  @Input() nzAutoGenerate = false;
+  @Input() @InputBoolean() nzAutoGenerate = false;
   @Input() nzSeparator: string | TemplateRef<void> = '/';
 
   breadcrumbs: BreadcrumbOption[] | undefined = [];
