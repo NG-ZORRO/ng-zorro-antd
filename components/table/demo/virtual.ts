@@ -1,20 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { NzTableComponent } from 'ng-zorro-antd';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-demo-table-virtual',
   template: `
+    <button nz-button (click)="scrollToIndex(200)">Scroll To Index 200</button>
+    <br />
+    <br />
     <nz-table
       nzVirtualScroll
       [nzVirtualItemSize]="54"
       [nzData]="listOfData"
       [nzFrontPagination]="false"
       [nzShowPagination]="false"
-      [nzScroll]="{ x: '1200px', y: '240px' }"
+      [nzScroll]="{ x: '1300px', y: '240px' }"
     >
       <thead>
         <tr>
           <th nzWidth="200px" nzLeft="0px">Full Name</th>
           <th nzWidth="100px" nzLeft="200px">Age</th>
+          <th nzWidth="100px">Index</th>
           <th nzWidth="100px">Column 1</th>
           <th nzWidth="100px">Column 2</th>
           <th nzWidth="100px">Column 3</th>
@@ -31,6 +38,7 @@ import { Component, OnInit } from '@angular/core';
           <tr>
             <td nzLeft="0px">{{ data.name }} {{ index }}</td>
             <td nzLeft="200px">{{ data.age }}</td>
+            <td>{{ data.index }}</td>
             <td>{{ data.address }}</td>
             <td>{{ data.address }}</td>
             <td>{{ data.address }}</td>
@@ -48,16 +56,36 @@ import { Component, OnInit } from '@angular/core';
     </nz-table>
   `
 })
-export class NzDemoTableVirtualComponent implements OnInit {
+export class NzDemoTableVirtualComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild(NzTableComponent) nzTableComponent: NzTableComponent;
+  private destroy$ = new Subject();
   listOfData: any[] = [];
+
+  scrollToIndex(index: number): void {
+    this.nzTableComponent.cdkVirtualScrollViewport.scrollToIndex(index);
+  }
 
   ngOnInit(): void {
     for (let i = 0; i < 20000; i++) {
       this.listOfData.push({
+        index: i,
         name: `Edward King`,
         age: 32,
         address: `London`
       });
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.nzTableComponent.cdkVirtualScrollViewport.scrolledIndexChange
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data => {
+        console.log('scroll index to', data);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
