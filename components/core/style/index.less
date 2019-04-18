@@ -82,6 +82,15 @@
 @table-td-left-cls: ~'@{table-td-cls}-left';
 @table-td-right-cls: ~'@{table-td-cls}-right';
 
+nz-table {
+  .@{table-prefix-cls} {
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+  }
+}
+
 .box-shadow-left() {
   .@{table-th-right-cls}-sticky,
   .@{table-td-right-cls}-sticky {
@@ -218,7 +227,7 @@
 }
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/3241 **/
-.cdk-overlay-pane{
+.cdk-overlay-pane {
   &.nz-dropdown-panel {
     display: block;
   }
