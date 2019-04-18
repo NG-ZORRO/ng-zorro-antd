@@ -11,16 +11,19 @@ export abstract class NzCarouselBaseStrategy {
   protected slickListEl: HTMLElement;
   protected slickTrackEl: HTMLElement;
   protected length: number;
-  protected maxIndex: number;
   protected unitWidth: number;
   protected unitHeight: number;
 
-  get firstEl(): HTMLElement {
-    return this.contents[ 0 ].el;
+  protected get maxIndex(): number {
+    return this.length - 1;
   }
 
-  get lastEl(): HTMLElement {
-    return this.contents[ this.maxIndex ].el;
+  protected get firstEl(): HTMLElement {
+    return this.contents[0].el;
+  }
+
+  protected get lastEl(): HTMLElement {
+    return this.contents[this.maxIndex].el;
   }
 
   constructor(
@@ -45,7 +48,6 @@ export abstract class NzCarouselBaseStrategy {
     this.unitHeight = rect.height;
     this.contents = contents ? contents.toArray() : [];
     this.length = this.contents.length;
-    this.maxIndex = this.length - 1;
   }
 
   /**

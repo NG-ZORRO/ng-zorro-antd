@@ -119,6 +119,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     this.slickTrackEl = this.slickTrack.nativeElement;
 
     this.carouselContents.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.markContentActive(0);
       this.strategy.withCarouselContents(this.carouselContents);
     });
 
@@ -155,6 +156,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
   ngOnDestroy(): void {
     this.clearScheduledTransition();
+    this.strategy.dispose();
     this.dispose();
 
     this.destroy$.next();
@@ -184,13 +186,13 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       const length = this.carouselContents.length;
       const from = this.activeIndex;
       const to = (index + length) % length;
+      this.isTransiting = true;
       this.nzBeforeChange.emit({ from, to });
       this.strategy.switch(this.activeIndex, index).subscribe(() => {
         this.scheduleNextTransition();
         this.nzAfterChange.emit(index);
         this.isTransiting = false;
       });
-      this.isTransiting = true;
       this.markContentActive(to);
       this.cdr.markForCheck();
     }
