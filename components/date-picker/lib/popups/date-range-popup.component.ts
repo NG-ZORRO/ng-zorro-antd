@@ -19,8 +19,8 @@ import {
   DisabledTimeFn,
   DisabledTimePartial,
   PanelMode,
-  PreserRangesFunction,
   PresetRanges,
+  PresetRangesFunction,
   SupportTimeOptions
 } from '../../standard-types';
 import { CandyDate } from '../candy-date';
@@ -302,7 +302,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     return null;
   }
 
-  onClickPresetRange(val: Date[] | PreserRangesFunction): void {
+  onClickPresetRange(val: Date[] | PresetRangesFunction): void {
     const value = typeof val === 'function' ? val() : val;
     this.setValue([new CandyDate(value[0]), new CandyDate(value[1])]);
     this.resultOk.emit();
@@ -312,7 +312,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     this.clearHoverValue();
   }
 
-  onHoverPresetRange(val: Date[] | PreserRangesFunction): void {
+  onHoverPresetRange(val: Date[] | PresetRangesFunction): void {
     if (typeof val !== 'function') {
       this.hoverValue = [new CandyDate(val[0]), new CandyDate(val[1])];
     }
