@@ -74,4 +74,33 @@ describe('time holder', () => {
     holder.setMinutes(23, false);
     expect(holder.value).toEqual(new Date(2001, 10, 1, 23, 23, 20));
   });
+  it('should 12-hour worked', () => {
+    const holder = new TimeHolder().setValue(new Date(0, 0, 0, 0, 0, 0));
+    holder.setUse12Hours(true);
+    holder.selected12Hours = 'pm';
+    holder.setHours(3, false);
+    expect(holder.viewHours).toBe(3);
+    expect(holder.realHours).toBe(15);
+    const date = new Date(0, 0, 0, 15, 0, 0, 0);
+    expect(mathSecondRound(holder.value!)).toEqual(mathSecondRound(date));
+  });
+  it('should set defaultRealHours and defaultViewHours correctly', () => {
+    const holder = new TimeHolder().setValue(undefined, true).setDefaultOpenValue(new Date(0, 0, 0, 15, 2, 3));
+    expect(holder.defaultRealHours).toBe(15);
+    expect(holder.defaultViewHours).toBe(3);
+  });
+  it('should set default selected 12-hours with value', () => {
+    const holderPM = new TimeHolder().setValue(new Date(0, 0, 0, 15, 2, 3), true);
+    expect(holderPM.selected12Hours).toBe('PM');
+    const holderAM = new TimeHolder().setValue(new Date(0, 0, 0, 0, 2, 3), true);
+    expect(holderAM.selected12Hours).toBe('AM');
+  });
+  it('should transform special value in 12-hour', () => {
+    const holder = new TimeHolder().setValue(new Date(), true);
+    holder.selected12Hours = 'am';
+    holder.setHours(12, false);
+    expect(holder.realHours).toBe(0);
+    holder.selected12Hours = 'pm';
+    expect(holder.realHours).toBe(12);
+  });
 });
