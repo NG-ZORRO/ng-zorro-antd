@@ -26,6 +26,7 @@ import { NzTreeNode } from './nz-tree-node';
 
 @Component({
   selector: 'nz-tree-node',
+  exportAs: 'nzTreeNode',
   templateUrl: './nz-tree-node.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,

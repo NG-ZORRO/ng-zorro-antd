@@ -15,6 +15,7 @@ import { InputBoolean } from '../core/util/convert';
 
 @Component({
   selector: 'nz-alert',
+  exportAs: 'nzAlert',
   animations: [slideAlertMotion],
   templateUrl: './nz-alert.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

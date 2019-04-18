@@ -26,6 +26,7 @@ import { NzFormItemComponent } from './nz-form-item.component';
 
 @Component({
   selector: 'nz-form-control',
+  exportAs: 'nzFormControl',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

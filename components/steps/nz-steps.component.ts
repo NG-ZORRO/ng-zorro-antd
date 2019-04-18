@@ -29,6 +29,7 @@ export type NzStatusType = 'wait' | 'process' | 'finish' | 'error';
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   selector: 'nz-steps',
+  exportAs: 'nzSteps',
   templateUrl: './nz-steps.component.html'
 })
 export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterContentInit {

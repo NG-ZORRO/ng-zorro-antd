@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 
 @Component({
   selector: 'nz-layout',
+  exportAs: 'nzLayout',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,

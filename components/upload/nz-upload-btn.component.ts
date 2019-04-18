@@ -21,6 +21,7 @@ import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
 
 @Component({
   selector: '[nz-upload-btn]',
+  exportAs: 'nzUploadBtn',
   templateUrl: './nz-upload-btn.component.html',
   host: {
     '[attr.tabindex]': '"0"',

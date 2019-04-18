@@ -21,6 +21,7 @@ const MAX_COL = 3;
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'month-table',
+  exportAs: 'monthTable',
   templateUrl: 'month-table.component.html'
 })
 export class MonthTableComponent implements OnInit, OnChanges {

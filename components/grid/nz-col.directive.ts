@@ -29,6 +29,7 @@ export interface EmbeddedProperty {
 
 @Directive({
   selector: '[nz-col],nz-col',
+  exportAs: 'nzCol',
   providers: [NzUpdateHostClassService]
 })
 export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {

@@ -17,6 +17,7 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
 
 @Component({
   selector: 'nz-popover',
+  exportAs: 'nzPopoverComponent',
   animations: [zoomBigMotion],
   templateUrl: './nz-popover.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -14,6 +14,7 @@ import { CascaderOption } from './nz-cascader-definitions';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: '[nz-cascader-option]',
+  exportAs: 'nzCascaderOption',
   templateUrl: './nz-cascader-li.component.html',
   host: {
     '[attr.title]': 'option.title || getOptionLabel()',

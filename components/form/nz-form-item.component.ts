@@ -23,6 +23,7 @@ import { NzFormExplainComponent } from './nz-form-explain.component';
 /** should add nz-row directive to host, track https://github.com/angular/angular/issues/8785 **/
 @Component({
   selector: 'nz-form-item',
+  exportAs: 'nzFormItem',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

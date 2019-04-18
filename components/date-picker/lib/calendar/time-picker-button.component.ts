@@ -7,6 +7,7 @@ import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'time-picker-button',
+  exportAs: 'timePickerButton',
   templateUrl: 'time-picker-button.component.html'
 })
 export class TimePickerButtonComponent {

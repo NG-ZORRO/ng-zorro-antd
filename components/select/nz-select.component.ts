@@ -38,6 +38,7 @@ import { NzSelectService } from './nz-select.service';
 
 @Component({
   selector: 'nz-select',
+  exportAs: 'nzSelect',
   preserveWhitespaces: false,
   providers: [
     NzSelectService,

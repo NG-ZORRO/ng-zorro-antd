@@ -30,6 +30,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLe
 
 @Component({
   selector: 'nz-dropdown',
+  exportAs: 'nzDropdown',
   preserveWhitespaces: false,
   providers: [NzMenuDropdownService],
   animations: [slideMotion],

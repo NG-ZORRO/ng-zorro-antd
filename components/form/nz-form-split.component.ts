@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 
 @Component({
   selector: 'nz-form-split',
+  exportAs: 'nzFormSplit',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

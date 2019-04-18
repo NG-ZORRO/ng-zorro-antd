@@ -23,6 +23,7 @@ export interface NzAvatarSizeMap {
 
 @Component({
   selector: 'nz-avatar',
+  exportAs: 'nzAvatar',
   templateUrl: './nz-avatar.component.html',
   providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,

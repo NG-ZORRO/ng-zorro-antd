@@ -36,6 +36,7 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
 
 @Component({
   selector: 'nz-autocomplete',
+  exportAs: 'nzAutocomplete',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

@@ -4,6 +4,7 @@ import { InputBoolean } from '../core/util/convert';
 
 @Component({
   selector: 'nz-option',
+  exportAs: 'nzOption',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './nz-option.component.html'

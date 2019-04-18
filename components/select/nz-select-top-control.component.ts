@@ -22,6 +22,7 @@ import { NzSelectService } from './nz-select.service';
 
 @Component({
   selector: '[nz-select-top-control]',
+  exportAs: 'nzSelectTopControl',
   preserveWhitespaces: false,
   animations: [zoomMotion],
   changeDetection: ChangeDetectionStrategy.OnPush,

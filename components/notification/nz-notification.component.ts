@@ -9,6 +9,7 @@ import { NzNotificationDataFilled } from './nz-notification.definitions';
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-notification',
+  exportAs: 'nzNotification',
   preserveWhitespaces: false,
   animations: [notificationMotion],
   templateUrl: './nz-notification.component.html'

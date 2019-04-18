@@ -21,6 +21,7 @@ import { CandyDate } from '../candy-date';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'inner-popup',
+  exportAs: 'innerPopup',
   templateUrl: 'inner-popup.component.html'
 })
 export class InnerPopupComponent implements OnInit, OnChanges {

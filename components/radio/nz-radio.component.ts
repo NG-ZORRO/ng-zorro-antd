@@ -20,6 +20,7 @@ import { InputBoolean } from '../core/util/convert';
 
 @Component({
   selector: '[nz-radio]',
+  exportAs: 'nzRadio',
   preserveWhitespaces: false,
   templateUrl: './nz-radio.component.html',
   encapsulation: ViewEncapsulation.None,

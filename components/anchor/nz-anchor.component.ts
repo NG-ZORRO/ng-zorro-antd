@@ -30,6 +30,7 @@ const sharpMatcherRegx = /#([^#]+)$/;
 
 @Component({
   selector: 'nz-anchor',
+  exportAs: 'nzAnchor',
   preserveWhitespaces: false,
   templateUrl: './nz-anchor.component.html',
   encapsulation: ViewEncapsulation.None,

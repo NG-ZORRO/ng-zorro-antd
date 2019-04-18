@@ -21,6 +21,7 @@ import { NzTabDirective } from './nz-tab.directive';
 
 @Component({
   selector: 'nz-tab',
+  exportAs: 'nzTab',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

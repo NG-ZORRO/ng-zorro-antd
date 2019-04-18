@@ -20,6 +20,7 @@ import { NzSubmenuService } from './nz-submenu.service';
 
 @Directive({
   selector: '[nz-menu-item]',
+  exportAs: 'nzMenuItem',
   providers: [NzUpdateHostClassService],
   host: {
     '(click)': 'clickMenuItem($event)'

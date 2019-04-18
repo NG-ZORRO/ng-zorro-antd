@@ -22,6 +22,7 @@ import { toNumber } from '../core/util/convert';
 
 @Component({
   selector: 'nz-back-top',
+  exportAs: 'nzBackTop',
   animations: [fadeMotion],
   templateUrl: './nz-back-top.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

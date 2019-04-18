@@ -20,6 +20,7 @@ export type NzProgressStrokeLinecapType = 'round' | 'square';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-progress',
+  exportAs: 'nzProgress',
   preserveWhitespaces: false,
   templateUrl: './nz-progress.component.html'
 })

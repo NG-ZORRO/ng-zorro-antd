@@ -34,6 +34,7 @@ import { NzUploadListComponent } from './nz-upload-list.component';
 
 @Component({
   selector: 'nz-upload',
+  exportAs: 'nzUpload',
   templateUrl: './nz-upload.component.html',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,

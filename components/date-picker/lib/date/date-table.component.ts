@@ -28,6 +28,7 @@ const DATE_COL_NUM = 7;
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'date-table',
+  exportAs: 'dateTable',
   templateUrl: 'date-table.component.html'
 })
 export class DateTableComponent implements OnInit, OnChanges {

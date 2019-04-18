@@ -15,6 +15,7 @@ import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 
 @Component({
   selector: 'nz-dropdown-context',
+  exportAs: 'nzDropdownContext',
   animations: [slideMotion],
   preserveWhitespaces: false,
   templateUrl: './nz-dropdown-context.component.html',

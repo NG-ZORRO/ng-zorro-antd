@@ -21,6 +21,7 @@ import { emptyImage } from './nz-empty-config';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-empty',
+  exportAs: 'nzEmpty',
   templateUrl: './nz-empty.component.html',
   styles: ['nz-empty { display: block; }'],
   host: {

@@ -29,6 +29,7 @@ import { toBoolean } from '../core/util/convert';
 
 @Component({
   selector: 'nz-tooltip',
+  exportAs: 'nzTooltipComponent',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   animations: [zoomBigMotion],

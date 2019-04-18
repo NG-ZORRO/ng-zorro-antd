@@ -4,6 +4,7 @@ import { NzSizeLDSType } from '../core/types/size';
 
 @Component({
   selector: 'nz-button-group',
+  exportAs: 'nzButtonGroup',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,

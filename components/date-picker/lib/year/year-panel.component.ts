@@ -20,6 +20,7 @@ const MAX_COL = 3;
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'year-panel',
+  exportAs: 'yearPanel',
   templateUrl: 'year-panel.component.html',
   styles: [
     // Support disabledDate

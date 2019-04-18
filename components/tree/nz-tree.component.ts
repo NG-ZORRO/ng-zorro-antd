@@ -37,6 +37,7 @@ export function NzTreeServiceFactory(
 
 @Component({
   selector: 'nz-tree',
+  exportAs: 'nzTree',
   templateUrl: './nz-tree.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

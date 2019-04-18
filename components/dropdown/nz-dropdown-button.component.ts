@@ -22,6 +22,7 @@ import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 
 @Component({
   selector: 'nz-dropdown-button',
+  exportAs: 'nzDropdownButton',
   preserveWhitespaces: false,
   animations: [slideMotion],
   encapsulation: ViewEncapsulation.None,

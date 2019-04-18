@@ -17,6 +17,7 @@ import { NzListGrid } from './interface';
 
 @Component({
   selector: 'nz-list',
+  exportAs: 'nzList',
   templateUrl: './nz-list.component.html',
   providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,

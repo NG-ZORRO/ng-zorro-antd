@@ -7,6 +7,7 @@ import { CandyDate } from '../candy-date';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'month-panel', // tslint:disable-line:component-selector
+  exportAs: 'monthPanel',
   templateUrl: 'month-panel.component.html'
 })
 export class MonthPanelComponent {

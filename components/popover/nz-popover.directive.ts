@@ -15,6 +15,7 @@ import { NzPopoverComponent } from './nz-popover.component';
 
 @Directive({
   selector: '[nz-popover]',
+  exportAs: 'nzPopover',
   host: {
     '[class.ant-popover-open]': 'isTooltipOpen'
   }
