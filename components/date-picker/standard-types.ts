@@ -38,8 +38,10 @@ export interface SupportTimeOptions {
   nzAddOn?: TemplateRef<void>;
 }
 
+export type PreserRangesFunction = () => Date[];
+
 export interface PresetRanges {
-  [key: string]: Date[];
+  [key: string]: Date[] | PreserRangesFunction;
 }
 
 export type PanelMode = 'decade' | 'year' | 'month' | 'date' | 'time';

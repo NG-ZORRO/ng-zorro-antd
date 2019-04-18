@@ -19,6 +19,7 @@ import {
   DisabledTimeFn,
   DisabledTimePartial,
   PanelMode,
+  PreserRangesFunction,
   PresetRanges,
   SupportTimeOptions
 } from '../../standard-types';
@@ -44,7 +45,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   @Input() showToday: boolean;
   @Input() showTime: SupportTimeOptions | boolean;
   @Input() extraFooter: TemplateRef<void> | string;
-  @Input() ranges: PresetRanges;
+  @Input() ranges: FunctionProp<PresetRanges> | PresetRanges;
   @Input() dateRender: FunctionProp<TemplateRef<Date> | string>;
   @Input() popupStyle: object;
   @Input() dropdownClassName: string;
@@ -301,8 +302,13 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     return null;
   }
 
-  onClickPresetRange(val: Date[]): void {
-    const value = val;
+  onClickPresetRange(val: Date[] | PreserRangesFunction): void {
+    let value;
+    if (typeof val === 'function') {
+      value = val();
+    } else {
+      value = val;
+    }
     this.setValue([new CandyDate(value[0]), new CandyDate(value[1])]);
     this.resultOk.emit();
   }
