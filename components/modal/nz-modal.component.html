@@ -1,7 +1,7 @@
 <ng-template #tplOriginContent><ng-content></ng-content></ng-template> <!-- Compatible: the <ng-content> can appear only once -->
 
 <div [nzNoAnimation]="nzNoAnimation">
-  <div *ngIf="nzMask"
+  <div *ngIf="mask"
     class="ant-modal-mask"
     [ngClass]="maskAnimationClassMap"
     [class.ant-modal-mask-hidden]="hidden"

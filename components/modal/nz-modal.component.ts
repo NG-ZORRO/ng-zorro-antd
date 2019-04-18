@@ -18,6 +18,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -33,7 +34,7 @@ import { InputBoolean } from '../core/util/convert';
 import { isPromise } from '../core/util/is-promise';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import ModalUtil from './modal-util';
-import { NzModalConfig, NZ_MODAL_CONFIG, NZ_MODAL_DEFAULT_CONFIG } from './nz-modal-config';
+import { NzModalConfig, NZ_MODAL_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
 import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './nz-modal.type';
@@ -54,14 +55,14 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   implements OnInit, OnChanges, AfterViewInit, OnDestroy, ModalOptions<T> {
   @Input() @InputBoolean() nzVisible: boolean = false;
   @Input() @InputBoolean() nzClosable: boolean = true;
-  @Input() @InputBoolean() nzMask: boolean = true;
-  @Input() @InputBoolean() nzMaskClosable: boolean = true;
   @Input() @InputBoolean() nzOkLoading: boolean = false;
   @Input() @InputBoolean() nzOkDisabled: boolean = false;
   @Input() @InputBoolean() nzCancelDisabled: boolean = false;
   @Input() @InputBoolean() nzCancelLoading: boolean = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() @InputBoolean() nzNoAnimation = false;
+  @Input() @InputBoolean() nzMask: boolean;
+  @Input() @InputBoolean() nzMaskClosable: boolean;
   @Input() nzContent: string | TemplateRef<{}> | Type<T>; // [STATIC] If not specified, will use <ng-content>
   @Input() nzComponentParams: T; // [STATIC] ONLY avaliable when nzContent is a component
   @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null; // [STATIC] Default Modal ONLY
@@ -113,6 +114,40 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     return !this.nzVisible && !this.animationState;
   } // Indicate whether this dialog should hidden
 
+  /**
+   * @description
+   * The calculated highest weight of mask value
+   *
+   * Weight of different mask input:
+   * component default value < global configuration < component input value
+   */
+  get mask(): boolean {
+    if (this.nzMask != null) {
+      return this.nzMask;
+    } else if (this.nzModalGlobalConfig && this.nzModalGlobalConfig.nzMask != null) {
+      return this.nzModalGlobalConfig.nzMask;
+    } else {
+      return true;
+    }
+  }
+
+  /**
+   * @description
+   * The calculated highest weight of maskClosable value
+   *
+   * Weight of different maskClosable input:
+   * component default value < global configuration < component input value
+   */
+  get maskClosable(): boolean {
+    if (this.nzMaskClosable != null) {
+      return this.nzMaskClosable;
+    } else if (this.nzModalGlobalConfig && this.nzModalGlobalConfig.nzMaskClosable != null) {
+      return this.nzModalGlobalConfig.nzMaskClosable;
+    } else {
+      return true;
+    }
+  }
+
   locale: { okText?: string; cancelText?: string } = {};
   maskAnimationClassMap: object | null;
   modalAnimationClassMap: object | null;
@@ -137,11 +172,10 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     private modalControl: NzModalControlService,
     private focusTrapFactory: FocusTrapFactory,
     private cdr: ChangeDetectorRef,
-    @Inject(NZ_MODAL_CONFIG) private config: NzModalConfig,
+    @Optional() @Inject(NZ_MODAL_CONFIG) private nzModalGlobalConfig: NzModalConfig,
     @Inject(DOCUMENT) private document: any // tslint:disable-line:no-any
   ) {
     super();
-    this.config = this.mergeDefaultConfig(this.config);
     this.scrollStrategy = this.overlay.scrollStrategies.block();
   }
 
@@ -256,8 +290,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
 
   onClickMask($event: MouseEvent): void {
     if (
-      this.nzMask &&
-      this.nzMaskClosable &&
+      this.mask &&
+      this.maskClosable &&
       ($event.target as HTMLElement).classList.contains('ant-modal-wrap') &&
       this.nzVisible
     ) {
@@ -442,10 +476,6 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
       this.transformOrigin = `${lastPosition.x - modalElement.offsetLeft}px ${lastPosition.y -
         modalElement.offsetTop}px 0px`;
     }
-  }
-
-  private mergeDefaultConfig(config: NzModalConfig): NzModalConfig {
-    return { ...NZ_MODAL_DEFAULT_CONFIG, ...config };
   }
 
   private savePreviouslyFocusedElement(): void {
