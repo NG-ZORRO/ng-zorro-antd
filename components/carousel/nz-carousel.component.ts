@@ -1,4 +1,5 @@
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
+import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
@@ -33,7 +34,6 @@ import { FromToInterface, NzCarouselEffects, PointerVector } from './nz-carousel
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
 import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
-import { Platform } from '@angular/cdk/platform';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
