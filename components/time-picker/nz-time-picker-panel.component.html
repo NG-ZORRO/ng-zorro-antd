@@ -69,6 +69,24 @@
           </ng-container>
         </ul>
       </div>
+      <div
+        *ngIf="nzUse12Hours"
+        #use12HoursListElement
+        class="{{ prefixCls }}-select">
+        <ul>
+          <ng-container *ngFor="let range of use12HoursRange ">
+            <li
+              *ngIf="!nzHideDisabledOptions"
+              (click)="select12Hours(range)"
+              class="
+                {{ isSelected12Hours(range) ? prefixCls + '-select-option-selected' : '' }}
+              "
+            >
+              {{ range.value }}
+            </li>
+          </ng-container>
+        </ul>
+      </div>
     </div>
     <div class="{{ prefixCls }}-addon" *ngIf="nzAddOn">
       <ng-template [ngTemplateOutlet]="nzAddOn"></ng-template>

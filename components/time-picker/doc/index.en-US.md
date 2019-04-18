@@ -38,6 +38,7 @@ By clicking the input box, you can select a time from a popup panel.
 | `[nzOpen]` | whether to popup panel, double binding | `boolean` | `false` |
 | `[nzPlaceHolder]` | display when there's no value | `string` | `"Select a time"` |
 | `[nzPopupClassName]` | className of panel | `string` | `''` |
+| `[nzUse12Hours]` | display as 12 hours format, with default format `h:mm:ss a` | `boolean` | `false` |
 | `(ngModelChange)` | a callback function, can be executed when the selected time is changing | `EventEmitter<Date>` | - |
 | `(nzOpenChange)` | a callback function which will be called while panel opening/closing | `EventEmitter<boolean>` | - |
 
