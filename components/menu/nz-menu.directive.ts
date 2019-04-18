@@ -31,6 +31,7 @@ export function NzMenuFactory(dropService: NzMenuDropdownService, menuService: N
 
 @Directive({
   selector: '[nz-menu]',
+  exportAs: 'nzMenu',
   providers: [
     NzUpdateHostClassService,
     NzMenuMenuService,

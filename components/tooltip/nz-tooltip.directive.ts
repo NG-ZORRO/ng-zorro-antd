@@ -28,6 +28,7 @@ import { NzToolTipComponent } from './nz-tooltip.component';
 
 @Directive({
   selector: '[nz-tooltip]',
+  exportAs: 'nzTooltip',
   host: {
     '[class.ant-tooltip-open]': 'isTooltipOpen'
   }

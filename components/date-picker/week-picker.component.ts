@@ -21,6 +21,7 @@ import { DateRangePickerComponent } from './date-range-picker.component';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-week-picker',
+  exportAs: 'nzWeekPicker',
   templateUrl: './date-range-picker.component.html',
   providers: [
     {

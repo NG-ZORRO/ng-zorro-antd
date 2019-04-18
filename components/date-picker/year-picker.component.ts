@@ -22,6 +22,7 @@ import { HeaderPickerComponent, SupportHeaderPanel } from './header-picker.compo
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-year-picker',
+  exportAs: 'nzYearPicker',
   templateUrl: './header-picker.component.html',
   providers: [
     {

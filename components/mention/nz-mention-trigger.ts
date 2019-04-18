@@ -11,6 +11,7 @@ export const NZ_MENTION_TRIGGER_ACCESSOR: ExistingProvider = {
 
 @Directive({
   selector: 'input[nzMentionTrigger], textarea[nzMentionTrigger]',
+  exportAs: 'nzMentionTrigger',
   providers: [NZ_MENTION_TRIGGER_ACCESSOR],
   host: {
     autocomplete: 'off',

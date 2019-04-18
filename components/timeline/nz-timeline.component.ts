@@ -28,6 +28,7 @@ export type NzTimelineMode = 'left' | 'alternate' | 'right';
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   selector: 'nz-timeline',
+  exportAs: 'nzTimeline',
   templateUrl: './nz-timeline.component.html'
 })
 export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestroy {

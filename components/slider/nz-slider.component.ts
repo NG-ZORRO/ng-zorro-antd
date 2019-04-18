@@ -38,6 +38,7 @@ import { getValueTypeNotMatchError } from './nz-slider-error';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-slider',
+  exportAs: 'nzSlider',
   preserveWhitespaces: false,
   providers: [
     {

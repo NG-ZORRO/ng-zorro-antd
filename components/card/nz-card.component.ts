@@ -13,6 +13,7 @@ import { NzCardTabComponent } from './nz-card-tab.component';
 
 @Component({
   selector: 'nz-card',
+  exportAs: 'nzCard',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

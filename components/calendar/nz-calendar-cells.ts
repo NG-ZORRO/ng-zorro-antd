@@ -1,21 +1,25 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[nzDateCell]'
+  selector: '[nzDateCell]',
+  exportAs: 'nzDateCell'
 })
 export class NzDateCellDirective {}
 
 @Directive({
-  selector: '[nzMonthCell]'
+  selector: '[nzMonthCell]',
+  exportAs: 'nzMonthCell'
 })
 export class NzMonthCellDirective {}
 
 @Directive({
-  selector: '[nzDateFullCell]'
+  selector: '[nzDateFullCell]',
+  exportAs: 'nzDateFullCell'
 })
 export class NzDateFullCellDirective {}
 
 @Directive({
-  selector: '[nzMonthFullCell]'
+  selector: '[nzMonthFullCell]',
+  exportAs: 'nzMonthFullCell'
 })
 export class NzMonthFullCellDirective {}

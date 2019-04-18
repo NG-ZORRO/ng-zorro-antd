@@ -22,6 +22,7 @@ import { HeaderPickerComponent, SupportHeaderPanel } from './header-picker.compo
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-month-picker',
+  exportAs: 'nzMonthPicker',
   templateUrl: './header-picker.component.html',
   providers: [
     {

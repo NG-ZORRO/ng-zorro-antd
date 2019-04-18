@@ -4,6 +4,7 @@ import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
 
 @Component({
   selector: 'nz-collapse',
+  exportAs: 'nzCollapse',
   templateUrl: './nz-collapse.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

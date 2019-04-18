@@ -15,6 +15,7 @@ import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-calendar-header',
+  exportAs: 'nzCalendarHeader',
   templateUrl: './nz-calendar-header.component.html',
   host: {
     '[style.display]': `'block'`,

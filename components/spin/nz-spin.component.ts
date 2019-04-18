@@ -18,6 +18,7 @@ import { InputBoolean, InputNumber } from '../core/util/convert';
 
 @Component({
   selector: 'nz-spin',
+  exportAs: 'nzSpin',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -19,6 +19,7 @@ import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-popconfirm',
+  exportAs: 'nzPopconfirmComponent',
   preserveWhitespaces: false,
   animations: [zoomBigMotion],
   templateUrl: './nz-popconfirm.component.html',

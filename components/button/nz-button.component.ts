@@ -34,6 +34,7 @@ export type NzButtonShape = 'circle' | 'round' | null;
 
 @Component({
   selector: '[nz-button]',
+  exportAs: 'nzButton',
   providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,

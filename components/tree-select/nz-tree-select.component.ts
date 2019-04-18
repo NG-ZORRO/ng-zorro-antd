@@ -36,6 +36,7 @@ import { NzTreeSelectService } from './nz-tree-select.service';
 
 @Component({
   selector: 'nz-tree-select',
+  exportAs: 'nzTreeSelect',
   animations: [slideMotion, zoomMotion],
   templateUrl: './nz-tree-select.component.html',
   providers: [

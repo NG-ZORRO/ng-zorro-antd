@@ -26,6 +26,7 @@ import { InputBoolean } from '../core/util/convert';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-rate',
+  exportAs: 'nzRate',
   preserveWhitespaces: false,
   templateUrl: './nz-rate.component.html',
   providers: [

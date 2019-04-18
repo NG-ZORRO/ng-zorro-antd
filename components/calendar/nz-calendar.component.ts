@@ -44,6 +44,7 @@ export type ModeType = 'month' | 'year';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-calendar',
+  exportAs: 'nzCalendar',
   templateUrl: './nz-calendar.component.html',
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }]
 })

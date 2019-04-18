@@ -33,6 +33,7 @@ export type ScrollDirection = 'after' | 'before';
 
 @Component({
   selector: '[nz-tabs-nav]',
+  exportAs: 'nzTabsNav',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

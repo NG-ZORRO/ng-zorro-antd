@@ -20,6 +20,7 @@ const MAX_COL = 3;
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'decade-panel',
+  exportAs: 'decadePanel',
   templateUrl: 'decade-panel.component.html'
 })
 export class DecadePanelComponent implements OnChanges {

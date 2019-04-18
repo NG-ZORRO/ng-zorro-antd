@@ -1,7 +1,8 @@
 import { Directive, TemplateRef } from '@angular/core';
 
 @Directive({
-  selector: '[nz-virtual-scroll]'
+  selector: '[nz-virtual-scroll]',
+  exportAs: 'nzVirtualScroll'
 })
 export class NzVirtualScrollDirective {
   /* tslint:disable-next-line:no-any */

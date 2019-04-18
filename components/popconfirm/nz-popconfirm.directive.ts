@@ -23,6 +23,7 @@ import { NzPopconfirmComponent } from './nz-popconfirm.component';
 
 @Directive({
   selector: '[nz-popconfirm]',
+  exportAs: 'nzPopconfirm',
   host: {
     '[class.ant-popover-open]': 'isTooltipOpen'
   }

@@ -15,6 +15,7 @@ import { ShowUploadListInterface, UploadFile, UploadListType } from './interface
 
 @Component({
   selector: 'nz-upload-list',
+  exportAs: 'nzUploadList',
   templateUrl: './nz-upload-list.component.html',
   providers: [NzUpdateHostClassService],
   animations: [

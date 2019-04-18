@@ -34,6 +34,7 @@ import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
 
 @Component({
   selector: 'nz-table',
+  exportAs: 'nzTable',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

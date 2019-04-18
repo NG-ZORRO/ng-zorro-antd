@@ -8,6 +8,7 @@ import { DisplayedStep, ExtendedMark } from './nz-slider-definitions';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-slider-step',
+  exportAs: 'nzSliderStep',
   preserveWhitespaces: false,
   templateUrl: './nz-slider-step.component.html'
 })

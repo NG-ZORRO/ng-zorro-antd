@@ -14,6 +14,7 @@ import { InputBoolean } from '../core/util';
 
 @Component({
   selector: 'nz-divider',
+  exportAs: 'nzDivider',
   templateUrl: './nz-divider.component.html',
   preserveWhitespaces: false,
   providers: [NzUpdateHostClassService],

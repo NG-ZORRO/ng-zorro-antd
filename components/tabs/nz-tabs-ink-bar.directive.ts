@@ -6,6 +6,7 @@ import { NzTabPositionMode } from './nz-tabset.component';
 
 @Directive({
   selector: '[nz-tabs-ink-bar]',
+  exportAs: 'nzTabsInkBar',
   host: {
     '[class.ant-tabs-ink-bar-animated]': 'nzAnimated',
     '[class.ant-tabs-ink-bar-no-animated]': '!nzAnimated'

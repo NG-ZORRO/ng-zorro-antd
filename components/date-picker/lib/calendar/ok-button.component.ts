@@ -7,6 +7,7 @@ import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'ok-button',
+  exportAs: 'okButton',
   templateUrl: 'ok-button.component.html'
 })
 export class OkButtonComponent {

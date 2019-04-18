@@ -35,6 +35,7 @@ import { NzSubmenuService } from './nz-submenu.service';
 
 @Component({
   selector: '[nz-submenu]',
+  exportAs: 'nzSubmenu',
   providers: [NzSubmenuService, NzUpdateHostClassService],
   animations: [collapseMotion, zoomBigMotion, slideMotion],
   encapsulation: ViewEncapsulation.None,

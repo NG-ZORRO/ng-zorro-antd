@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 
 @Component({
   selector: 'nz-form-extra',
+  exportAs: 'nzFormExtra',
   templateUrl: './nz-form-extra.component.html',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,

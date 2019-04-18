@@ -17,6 +17,7 @@ import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definiti
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-message-container',
+  exportAs: 'nzMessageContainer',
   preserveWhitespaces: false,
   templateUrl: './nz-message-container.component.html'
 })

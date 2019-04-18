@@ -18,6 +18,7 @@ import { AvatarShape, AvatarSize, NzSkeletonAvatar, NzSkeletonParagraph, NzSkele
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-skeleton',
+  exportAs: 'nzSkeleton',
   templateUrl: './nz-skeleton.component.html',
   host: {
     '[class.ant-skeleton-with-avatar]': '!!nzAvatar',

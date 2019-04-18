@@ -1,7 +1,8 @@
 import { Directive, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[nz-carousel-content]'
+  selector: '[nz-carousel-content]',
+  exportAs: 'nzCarouselContent'
 })
 export class NzCarouselContentDirective {
   el: HTMLElement = this.elementRef.nativeElement;

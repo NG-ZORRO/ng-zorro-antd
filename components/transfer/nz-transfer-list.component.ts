@@ -19,6 +19,7 @@ import { TransferItem } from './interface';
 
 @Component({
   selector: 'nz-transfer-list',
+  exportAs: 'nzTransferList',
   preserveWhitespaces: false,
   providers: [NzUpdateHostClassService],
   templateUrl: './nz-transfer-list.component.html',

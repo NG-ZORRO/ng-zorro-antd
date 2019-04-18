@@ -18,6 +18,7 @@ import { NzSelectService } from './nz-select.service';
 
 @Component({
   selector: '[nz-option-li]',
+  exportAs: 'nzOptionLi',
   templateUrl: './nz-option-li.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

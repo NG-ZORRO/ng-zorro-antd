@@ -22,6 +22,7 @@ import { NzSliderComponent } from './nz-slider.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-slider-handle',
+  exportAs: 'nzSliderHandle',
   preserveWhitespaces: false,
   templateUrl: './nz-slider-handle.component.html',
   host: {

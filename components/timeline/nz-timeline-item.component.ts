@@ -20,6 +20,7 @@ import { NzTimelineMode } from './nz-timeline.component';
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   selector: 'nz-timeline-item, [nz-timeline-item]',
+  exportAs: 'nzTimelineItem',
   templateUrl: './nz-timeline-item.component.html'
 })
 export class NzTimelineItemComponent implements OnInit, OnChanges {

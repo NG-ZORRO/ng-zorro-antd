@@ -4,6 +4,7 @@ import { DateHelperService } from '../i18n/date-helper.service';
 
 @Directive({
   selector: 'input[nzTime]',
+  exportAs: 'nzTime',
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimeValueAccessorDirective, multi: true }]
 })
 export class NzTimeValueAccessorDirective implements ControlValueAccessor {

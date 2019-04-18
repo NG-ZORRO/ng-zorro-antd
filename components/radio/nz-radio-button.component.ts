@@ -14,6 +14,7 @@ import { NzRadioComponent } from './nz-radio.component';
 
 @Component({
   selector: '[nz-radio-button]',
+  exportAs: 'nzRadioButton',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

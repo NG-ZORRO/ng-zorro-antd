@@ -5,6 +5,7 @@ import { NzStatisticValueType } from './nz-statistic-definitions';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-statistic',
+  exportAs: 'nzStatistic',
   templateUrl: './nz-statistic.component.html',
   host: {
     class: 'ant-statistic'

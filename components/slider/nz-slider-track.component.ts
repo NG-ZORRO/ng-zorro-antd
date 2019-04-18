@@ -14,6 +14,7 @@ export interface NzSliderTrackStyle {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-slider-track',
+  exportAs: 'nzSliderTrack',
   preserveWhitespaces: false,
   templateUrl: './nz-slider-track.component.html'
 })

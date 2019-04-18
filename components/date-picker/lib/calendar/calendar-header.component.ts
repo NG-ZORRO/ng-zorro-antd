@@ -20,6 +20,7 @@ import { CandyDate } from '../candy-date';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'calendar-header',
+  exportAs: 'calendarHeader',
   templateUrl: 'calendar-header.component.html'
 })
 export class CalendarHeaderComponent implements OnInit, OnChanges {
