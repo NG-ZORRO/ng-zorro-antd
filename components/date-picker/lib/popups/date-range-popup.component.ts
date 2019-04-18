@@ -45,7 +45,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   @Input() showToday: boolean;
   @Input() showTime: SupportTimeOptions | boolean;
   @Input() extraFooter: TemplateRef<void> | string;
-  @Input() ranges: FunctionProp<PresetRanges> | PresetRanges;
+  @Input() ranges: PresetRanges;
   @Input() dateRender: FunctionProp<TemplateRef<Date> | string>;
   @Input() popupStyle: object;
   @Input() dropdownClassName: string;
@@ -312,8 +312,10 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     this.clearHoverValue();
   }
 
-  onHoverPresetRange(val: Date[]): void {
-    this.hoverValue = [new CandyDate(val[0]), new CandyDate(val[1])];
+  onHoverPresetRange(val: Date[] | PreserRangesFunction): void {
+    if (typeof val !== 'function') {
+      this.hoverValue = [new CandyDate(val[0]), new CandyDate(val[1])];
+    }
   }
 
   getObjectKeys(obj: object): string[] {
