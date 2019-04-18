@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Host,
@@ -11,7 +12,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { toBoolean, InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 import { NzColDirective, NzRowDirective } from 'ng-zorro-antd/grid';
 
 import { NzFormItemComponent } from './nz-form-item.component';
@@ -28,17 +29,32 @@ import { NzFormItemComponent } from './nz-form-item.component';
 export class NzFormLabelComponent extends NzColDirective implements OnDestroy, AfterViewInit {
   @Input() nzFor: string;
   @Input() @InputBoolean() nzRequired = false;
-  @Input() @InputBoolean() nzColon = true;
+  @Input()
+  set nzNoColon(value: boolean) {
+    this.noColon = toBoolean(value);
+  }
+  get nzNoColon(): boolean {
+    return !!this.noColon;
+  }
+
+  defaultNoColon: boolean = false;
+  noColon: boolean | string = 'default';
 
   constructor(
     nzUpdateHostClassService: NzUpdateHostClassService,
     elementRef: ElementRef,
     @Optional() @Host() nzFormItemComponent: NzFormItemComponent,
     @Optional() @Host() nzRowDirective: NzRowDirective,
-    renderer: Renderer2
+    renderer: Renderer2,
+    private cdr: ChangeDetectorRef
   ) {
     super(nzUpdateHostClassService, elementRef, nzFormItemComponent || nzRowDirective, renderer);
     renderer.addClass(elementRef.nativeElement, 'ant-form-item-label');
+  }
+
+  setDefaultNoColon(value: boolean): void {
+    this.defaultNoColon = toBoolean(value);
+    this.cdr.markForCheck();
   }
 
   ngOnDestroy(): void {
