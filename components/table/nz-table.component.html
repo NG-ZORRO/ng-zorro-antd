@@ -17,7 +17,7 @@
 </ng-template>
 <ng-template #tableInnerTemplate>
   <div #tableHeaderElement
-    *ngIf="nzScroll.x || nzScroll.y"
+    *ngIf="nzScroll.y"
     [ngStyle]="headerBottomStyle"
     class="ant-table-header">
     <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
