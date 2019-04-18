@@ -16,7 +16,7 @@ import { ActivatedRoute, Params, PRIMARY_OUTLET, Router } from '@angular/router'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { InputBoolean } from '../core/util';
+import { InputBoolean } from 'ng-zorro-antd/core';
 
 export const NZ_ROUTE_DATA_BREADCRUMB = 'breadcrumb';
 
