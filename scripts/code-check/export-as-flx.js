@@ -34,6 +34,7 @@ function fixExportAs(filePath) {
       if (match[3]) {
         selector = match[3];
       } else if (match[5]) {
+        console.log(chalk.gray(`Ignore ${match[5]}`));
       }
     }
 
