@@ -63,6 +63,8 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   @ViewChild('tableBodyElement', { read: ElementRef }) tableBodyElement: ElementRef;
   @ViewChild('tableMainElement', { read: ElementRef }) tableMainElement: ElementRef;
   @ViewChild(CdkVirtualScrollViewport, { read: ElementRef }) cdkVirtualScrollElement: ElementRef;
+  @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport })
+  cdkVirtualScrollViewport: CdkVirtualScrollViewport;
   @ContentChild(NzVirtualScrollDirective) nzVirtualScrollDirective: NzVirtualScrollDirective;
   @Input() nzSize: NzSizeMDSType = 'default';
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }>;
