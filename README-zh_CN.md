@@ -150,3 +150,5 @@ $ npm run site:start
 ## ☀️ 授权协议
 
 MIT
+
+[![Let's fund issues in this repository](https://issuehunt.io/static/embed/issuehunt-button-v1.svg)](https://issuehunt.io/r/NG-ZORRO/ng-zorro-antd)

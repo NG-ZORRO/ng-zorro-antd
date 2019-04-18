@@ -152,3 +152,5 @@ As always, we encourage experienced users to help those who are not familiar wit
 ## ☀️ License
 
 MIT
+
+[![Let's fund issues in this repository](https://issuehunt.io/static/embed/issuehunt-button-v1.svg)](https://issuehunt.io/r/NG-ZORRO/ng-zorro-antd)
