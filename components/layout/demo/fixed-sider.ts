@@ -33,7 +33,7 @@ import { Component } from '@angular/core';
           </li>
         </ul>
       </nz-sider>
-      <nz-layout style="margin-left: 200">
+      <nz-layout style="margin-left: 200px;">
         <nz-header style="background: #fff; padding:0;"></nz-header>
         <nz-content style="margin:24px 16px 0;overflow: initial">
           <div style="padding: 24px; background: #fff; text-align: center">
