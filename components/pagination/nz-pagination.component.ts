@@ -21,6 +21,7 @@ import { NzI18nService } from '../i18n/nz-i18n.service';
 
 @Component({
   selector: 'nz-pagination',
+  exportAs: 'nzPagination',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

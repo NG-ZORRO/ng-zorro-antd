@@ -52,7 +52,8 @@ const normalizeType = (rawType: string): { type: string; crossError: boolean; ve
  * - properties that not started with `nz`.
  */
 @Directive({
-  selector: 'i.anticon, [nz-icon]'
+  selector: 'i.anticon, [nz-icon]',
+  exportAs: 'nzIcon'
 })
 export class NzIconDirective extends IconDirective implements OnInit, OnChanges, OnDestroy, AfterContentChecked {
   /** Properties with `nz` prefix. */

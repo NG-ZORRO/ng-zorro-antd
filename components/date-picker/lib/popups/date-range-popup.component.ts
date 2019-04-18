@@ -30,6 +30,7 @@ import { getTimeConfig, isAllowedDate } from '../util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'date-range-popup',
+  exportAs: 'dateRangePopup',
   templateUrl: 'date-range-popup.component.html'
 })
 export class DateRangePopupComponent implements OnInit, OnChanges {

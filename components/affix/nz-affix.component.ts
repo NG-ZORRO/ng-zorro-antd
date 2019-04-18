@@ -21,6 +21,7 @@ import { throttleByAnimationFrameDecorator } from '../core/util/throttleByAnimat
 
 @Component({
   selector: 'nz-affix',
+  exportAs: 'nzAffix',
   templateUrl: './nz-affix.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [

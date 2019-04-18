@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
 
 @Component({
   selector: '[nz-tab-body]',
+  exportAs: 'nzTabBody',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

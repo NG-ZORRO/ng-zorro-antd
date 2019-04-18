@@ -18,6 +18,7 @@ import { NzNotificationDataFilled, NzNotificationDataOptions } from './nz-notifi
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-notification-container',
+  exportAs: 'nzNotificationContainer',
   preserveWhitespaces: false,
   templateUrl: './nz-notification-container.component.html'
 })

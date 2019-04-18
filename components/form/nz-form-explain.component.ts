@@ -3,6 +3,7 @@ import { helpMotion } from '../core/animation/help';
 
 @Component({
   selector: 'nz-form-explain',
+  exportAs: 'nzFormExplain',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

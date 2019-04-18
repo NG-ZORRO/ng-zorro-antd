@@ -30,6 +30,7 @@ export interface BreadcrumbOption {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-breadcrumb',
+  exportAs: 'nzBreadcrumb',
   preserveWhitespaces: false,
   templateUrl: './nz-breadcrumb.component.html',
   styles: [

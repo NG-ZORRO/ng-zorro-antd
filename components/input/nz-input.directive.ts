@@ -5,6 +5,7 @@ import { toBoolean } from '../core/util/convert';
 
 @Directive({
   selector: '[nz-input]',
+  exportAs: 'nzInput',
   host: {
     '[class.ant-input-disabled]': 'disabled',
     '[class.ant-input-lg]': `nzSize === 'large'`,

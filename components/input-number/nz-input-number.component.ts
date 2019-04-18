@@ -26,6 +26,7 @@ import { InputBoolean } from '../core/util/convert';
 
 @Component({
   selector: 'nz-input-number',
+  exportAs: 'nzInputNumber',
   templateUrl: './nz-input-number.component.html',
   providers: [
     {

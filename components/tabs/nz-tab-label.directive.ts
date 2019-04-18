@@ -4,6 +4,7 @@ import { InputBoolean } from '../core/util/convert';
 
 @Directive({
   selector: '[nz-tab-label]',
+  exportAs: 'nzTabLabel',
   host: {
     '[class.ant-tabs-tab-disabled]': 'disabled'
   }

@@ -26,6 +26,7 @@ import { toBoolean } from '../core/util/convert';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-time-picker',
+  exportAs: 'nzTimePicker',
   templateUrl: './nz-time-picker.component.html',
   animations: [slideMotion],
   providers: [UpdateCls, { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]

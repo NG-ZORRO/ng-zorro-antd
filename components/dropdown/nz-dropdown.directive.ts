@@ -3,7 +3,8 @@ import { fromEvent, merge, Observable } from 'rxjs';
 import { mapTo, tap } from 'rxjs/operators';
 
 @Directive({
-  selector: '[nz-dropdown]'
+  selector: '[nz-dropdown]',
+  exportAs: 'nzDropdown'
 })
 export class NzDropDownDirective {
   el: HTMLElement = this.elementRef.nativeElement;

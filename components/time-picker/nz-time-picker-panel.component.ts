@@ -35,6 +35,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-time-picker-panel',
+  exportAs: 'nzTimePickerPanel',
   templateUrl: './nz-time-picker-panel.component.html',
   providers: [UpdateCls, { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerPanelComponent, multi: true }]
 })

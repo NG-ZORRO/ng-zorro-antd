@@ -21,6 +21,7 @@ import { DateRangePickerComponent } from './date-range-picker.component';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-date-picker',
+  exportAs: 'nzDatePicker',
   templateUrl: './date-range-picker.component.html',
   providers: [
     {

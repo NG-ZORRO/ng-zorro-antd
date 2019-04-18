@@ -18,6 +18,7 @@ import { NzFormItemComponent } from './nz-form-item.component';
 
 @Component({
   selector: 'nz-form-label',
+  exportAs: 'nzFormLabel',
   providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,

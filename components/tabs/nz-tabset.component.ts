@@ -47,6 +47,7 @@ export type NzTabType = 'line' | 'card';
 
 @Component({
   selector: 'nz-tabset',
+  exportAs: 'nzTabset',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

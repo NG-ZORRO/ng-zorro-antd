@@ -19,6 +19,7 @@ import { CandyDate } from '../candy-date';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'today-button',
+  exportAs: 'todayButton',
   templateUrl: 'today-button.component.html'
 })
 export class TodayButtonComponent implements OnInit, OnChanges {

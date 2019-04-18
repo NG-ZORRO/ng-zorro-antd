@@ -44,6 +44,7 @@ const responsiveMap: BreakpointMap = {
 
 @Directive({
   selector: '[nz-row],nz-row',
+  exportAs: 'nzRow',
   providers: [NzUpdateHostClassService]
 })
 export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {

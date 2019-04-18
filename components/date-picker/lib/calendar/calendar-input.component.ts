@@ -17,6 +17,7 @@ import { CandyDate } from '../candy-date';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'calendar-input',
+  exportAs: 'calendarInput',
   templateUrl: 'calendar-input.component.html'
 })
 export class CalendarInputComponent implements OnInit {

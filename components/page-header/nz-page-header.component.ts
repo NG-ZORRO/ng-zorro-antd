@@ -16,6 +16,7 @@ import { NzPageHeaderFooterDirective } from './nz-page-header-cells';
 
 @Component({
   selector: 'nz-page-header',
+  exportAs: 'nzPageHeader',
   templateUrl: './nz-page-header.component.html',
   styleUrls: ['./nz-page-header.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

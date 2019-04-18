@@ -53,6 +53,7 @@ export type MentionPlacement = 'top' | 'bottom';
 
 @Component({
   selector: 'nz-mention',
+  exportAs: 'nzMention',
   templateUrl: './nz-mention.component.html',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,

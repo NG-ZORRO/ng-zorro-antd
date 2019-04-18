@@ -17,6 +17,7 @@ import { InputBoolean } from '../core/util/convert';
 
 @Component({
   selector: 'nz-tag',
+  exportAs: 'nzTag',
   preserveWhitespaces: false,
   providers: [NzUpdateHostClassService],
   animations: [fadeMotion],

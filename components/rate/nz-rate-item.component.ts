@@ -13,6 +13,7 @@ import { InputBoolean } from '../core/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: '[nz-rate-item]',
+  exportAs: 'nzRateItem',
   templateUrl: './nz-rate-item.component.html'
 })
 export class NzRateItemComponent {

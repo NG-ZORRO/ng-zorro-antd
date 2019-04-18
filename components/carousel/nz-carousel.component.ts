@@ -39,6 +39,7 @@ import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-carousel',
+  exportAs: 'nzCarousel',
   preserveWhitespaces: false,
   templateUrl: './nz-carousel.component.html',
   host: {

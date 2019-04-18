@@ -20,6 +20,7 @@ export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' |
 
 @Component({
   selector: 'nz-badge',
+  exportAs: 'nzBadge',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

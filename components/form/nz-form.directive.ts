@@ -3,6 +3,7 @@ import { NzUpdateHostClassService } from '../core/services/update-host-class.ser
 
 @Directive({
   selector: '[nz-form]',
+  exportAs: 'nzForm',
   providers: [NzUpdateHostClassService]
 })
 export class NzFormDirective implements OnInit, OnChanges {

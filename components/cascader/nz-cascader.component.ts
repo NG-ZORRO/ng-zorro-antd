@@ -50,6 +50,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-cascader,[nz-cascader]',
+  exportAs: 'nzCascader',
   preserveWhitespaces: false,
   templateUrl: './nz-cascader.component.html',
   animations: [slideMotion],

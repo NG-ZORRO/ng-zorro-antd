@@ -9,6 +9,7 @@ import { isConfigAObject, DisplayedMark, ExtendedMark, Mark } from './nz-slider-
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   selector: 'nz-slider-marks',
+  exportAs: 'nzSliderMarks',
   templateUrl: './nz-slider-marks.component.html'
 })
 export class NzSliderMarksComponent implements OnChanges {

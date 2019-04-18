@@ -25,6 +25,7 @@ import { CandyDate } from './lib/candy-date';
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-picker',
+  exportAs: 'nzPicker',
   templateUrl: './picker.component.html',
   animations: [slideMotion],
   changeDetection: ChangeDetectionStrategy.OnPush

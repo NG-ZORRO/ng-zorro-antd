@@ -16,6 +16,7 @@ import { NgClassType } from '../core/types/ng-class';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-step',
+  exportAs: 'nzStep',
   preserveWhitespaces: false,
   templateUrl: './nz-step.component.html',
   host: {

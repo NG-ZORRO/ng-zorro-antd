@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
 
 @Component({
   selector: 'nz-auto-optgroup',
+  exportAs: 'nzAutoOptgroup',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

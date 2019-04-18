@@ -10,6 +10,7 @@ import {
 
 @Component({
   selector: 'nz-list-item-meta',
+  exportAs: 'nzListItemMeta',
   templateUrl: './nz-list-item-meta.component.html',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,

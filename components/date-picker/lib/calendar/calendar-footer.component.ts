@@ -17,6 +17,7 @@ import { CandyDate } from '../candy-date';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'calendar-footer',
+  exportAs: 'calendarFooter',
   templateUrl: 'calendar-footer.component.html'
 })
 export class CalendarFooterComponent {
