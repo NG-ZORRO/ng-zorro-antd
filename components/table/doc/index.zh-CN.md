@@ -71,6 +71,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzWidthConfig]` | 表头分组时指定每列宽度，与 `th` 的 `nzWidth` 不可混用 | `string[]` | - |
 | `[nzSize]` | 正常或迷你类型 | `'middle'｜'small'｜'default'` | `'default'` |
 | `[nzLoading]` | 页面是否加载中 | `boolean` | `false` |
+| `[nzLoadingIndicator]` | 加载指示符 | `TemplateRef<void>` | - |
 | `[nzLoadingDelay]` | 延迟显示加载效果的时间（防止闪烁） | `number` | `0` |
 | `[nzScroll]` | 横向或纵向支持滚动，也可用于指定滚动区域的宽高度：`{ x: "300px", y: "300px" }` | `object` | - |
 | `[nzTitle]` | 表格标题 | `string｜TemplateRef<void>` | - |

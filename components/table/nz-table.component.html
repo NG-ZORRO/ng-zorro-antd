@@ -79,7 +79,7 @@
     (nzPageIndexChange)="emitPageSizeOrIndex(nzPageSize,$event)">
   </nz-pagination>
 </ng-template>
-<nz-spin [nzDelay]="nzLoadingDelay" [nzSpinning]="nzLoading">
+<nz-spin [nzDelay]="nzLoadingDelay" [nzSpinning]="nzLoading" [nzIndicator]="nzLoadingIndicator">
   <ng-container *ngIf="nzPaginationPosition === 'both' || nzPaginationPosition === 'top'">
     <ng-template [ngTemplateOutlet]="paginationTemplate"></ng-template>
   </ng-container>

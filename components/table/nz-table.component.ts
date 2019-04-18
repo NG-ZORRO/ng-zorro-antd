@@ -74,6 +74,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   @Input() @InputNumber() nzVirtualMaxBufferPx = 200;
   @Input() @InputNumber() nzVirtualMinBufferPx = 100;
   @Input() nzLoadingDelay = 0;
+  @Input() nzLoadingIndicator: TemplateRef<void>;
   @Input() nzTotal = 0;
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() nzFooter: string | TemplateRef<void>;
