@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const glob = require('glob').sync;
+const chalk = require('chalk');
 
 const componentsPath = path.resolve(__dirname, '../../components');
 
@@ -18,9 +19,13 @@ function toCamelCase(str) {
 function fixExportAs(filePath) {
   const fileContent = fs.readFileSync(filePath, 'utf-8');
   const whitelist = ['tbody', 'tr'];
+  const selectorRegexp = /selector\s*:\s*(('(.+)')|(`([\s\S]*?)`))/g;
+  const exportAsRegexp = /exportAs\s*:\s*(('(.+)')|(`([\s\S]*?)`))/g;
+  const componentSelectorRegexp = /^[a-z\-]{1,}$/;
+  const directiveSelectorRegexp = /^\[([a-z\-]{1,})\]$/;
   if (fileContent.search('@(Component|Directive)') !== -1) {
-    const match = /selector\s*:\s*(('(.+)')|(`([\s\S]*?)`))/g.exec(fileContent);
-    if (/exportAs\s*:\s*(('(.+)')|(`([\s\S]*?)`))/g.test(fileContent)) {
+    const match = selectorRegexp.exec(fileContent);
+    if (exportAsRegexp.test(fileContent)) {
       return;
     }
     let selector = '';
@@ -32,21 +37,19 @@ function fixExportAs(filePath) {
       }
     }
 
-    if (/^[a-z\-]{1,}$/.test(selector)) {
+    if (componentSelectorRegexp.test(selector)) {
       exportName = selector;
     }
-    if (/^\[([a-z\-]{1,})\]$/.test(selector)) {
-      exportName = /^\[([a-z\-]{1,})\]$/.exec(selector)[1];
+    if (directiveSelectorRegexp.test(selector)) {
+      exportName = directiveSelectorRegexp.exec(selector)[1];
     }
 
-    if (exportName && whitelist.indexOf(exportName) === -1) {
-      const newContent = fileContent.replace(
-        /selector\s*:\s*(('(.+)')|(`([\s\S]*?)`))/g,
-        `$&,\n exportAs: '${toCamelCase(exportName)}'`
-      );
+    if (exportName && whitelist.indexOf(exportName) === -1 && exportName.search('demo') === -1) {
+      const newContent = fileContent.replace(selectorRegexp, `$&,\n exportAs: '${toCamelCase(exportName)}'`);
       fs.writeFileSync(filePath, newContent);
+      console.log(chalk.green(`fix: ${filePath}`));
     } else {
-      console.warn(filePath);
+      console.log(chalk.yellow(`Please manually check: ${filePath}`));
     }
   }
 }
