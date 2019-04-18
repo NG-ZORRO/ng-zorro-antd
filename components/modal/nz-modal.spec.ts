@@ -17,6 +17,7 @@ import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { CssUnitPipe } from './css-unit.pipe';
+import { NZ_MODAL_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
 import { NzModalComponent } from './nz-modal.component';
@@ -370,6 +371,54 @@ describe('modal testing (legacy)', () => {
   });
 });
 
+describe('global config', () => {
+  let basicFixture: ComponentFixture<NzDemoModalBasicComponent>;
+  let inputFixture: ComponentFixture<NzDemoModalWithInputComponent>;
+  let nativeElement: HTMLElement;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NoopAnimationsModule, NzModalModule],
+      providers: [
+        {
+          provide: NZ_MODAL_CONFIG,
+          useValue: {
+            nzMask: false,
+            nzMaskClosable: false
+          }
+        }
+      ],
+      declarations: [NzDemoModalBasicComponent, NzDemoModalWithInputComponent]
+    }).compileComponents();
+    basicFixture = TestBed.createComponent<NzDemoModalBasicComponent>(NzDemoModalBasicComponent);
+    inputFixture = TestBed.createComponent<NzDemoModalWithInputComponent>(NzDemoModalWithInputComponent);
+  });
+
+  it('nzMask should be global config value', fakeAsync(() => {
+    const debugElement = basicFixture.debugElement.query(By.css('.ant-modal-mask'));
+    basicFixture.detectChanges();
+    expect(debugElement).toBeNull();
+  }));
+
+  it('nzMask should be input value', fakeAsync(() => {
+    inputFixture.componentInstance.nzMask = true;
+    inputFixture.detectChanges();
+    nativeElement = inputFixture.debugElement.query(By.css('.ant-modal-mask')).nativeElement;
+    inputFixture.detectChanges();
+    expect(nativeElement).not.toBeNull();
+  }));
+
+  it('nzMaskClosable should be global config value', fakeAsync(() => {
+    inputFixture.componentInstance.nzMask = true;
+    inputFixture.detectChanges();
+    nativeElement = inputFixture.debugElement.query(By.css('.ant-modal-wrap')).nativeElement;
+    inputFixture.detectChanges();
+    nativeElement!.click();
+    inputFixture.detectChanges();
+    console.log(inputFixture.debugElement.nativeElement);
+    expectModalHidden(inputFixture.debugElement.query(By.css('nz-modal')).nativeElement, true);
+  }));
+});
+
 describe('NzModal', () => {
   let modalService: NzModalService;
   let overlayContainer: OverlayContainer;
@@ -625,6 +674,18 @@ describe('NzModal', () => {
 })
 class NzDemoModalBasicComponent {
   modalAvailable = true;
+}
+
+@Component({
+  template: `
+    <nz-modal *ngIf="modalAvailable" [nzMask]="nzMask">
+      <p>content</p>
+    </nz-modal>
+  `
+})
+class NzDemoModalWithInputComponent {
+  modalAvailable = true;
+  nzMask = true;
 }
 
 @Component({
