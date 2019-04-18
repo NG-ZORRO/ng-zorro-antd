@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -54,7 +55,12 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
   @Output() readonly nzClick: EventEmitter<boolean> = new EventEmitter();
 
   // tslint:disable-next-line:no-any
-  constructor(private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any, private cd: ChangeDetectorRef) {}
+  constructor(
+    private scrollSrv: NzScrollService,
+    @Inject(DOCUMENT) private doc: any,
+    private platform: Platform,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     if (!this.scroll$) {
@@ -86,6 +92,9 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
   }
 
   private registerScrollEvent(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     this.removeListen();
     this.handleScroll();
     this.scroll$ = fromEvent(this.getTarget(), 'scroll')

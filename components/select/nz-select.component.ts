@@ -1,5 +1,6 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
 import {
   forwardRef,
   AfterContentInit,
@@ -232,7 +233,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   updateCdkConnectedOverlayStatus(): void {
-    this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+    if (this.platform.isBrowser) {
+      this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+    }
   }
 
   updateCdkConnectedOverlayPositions(): void {
@@ -248,6 +251,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     public nzSelectService: NzSelectService,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
+    private platform: Platform,
     elementRef: ElementRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {

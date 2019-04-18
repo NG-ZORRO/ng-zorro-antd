@@ -1,4 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
+import { Platform } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -115,6 +116,9 @@ export class NzUploadListComponent implements OnChanges {
   }
 
   private genThumb(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     // tslint:disable-next-line:no-any
     const win = window as any;
     if (
@@ -167,7 +171,8 @@ export class NzUploadListComponent implements OnChanges {
   constructor(
     private el: ElementRef,
     private cdr: ChangeDetectorRef,
-    private updateHostClassService: NzUpdateHostClassService
+    private updateHostClassService: NzUpdateHostClassService,
+    private platform: Platform
   ) {}
 
   detectChanges(): void {

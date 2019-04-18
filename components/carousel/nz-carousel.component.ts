@@ -115,6 +115,9 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
 
   ngAfterViewInit(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     this.slickListEl = this.slickList.nativeElement;
     this.slickTrackEl = this.slickTrack.nativeElement;
 
@@ -156,7 +159,9 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
   ngOnDestroy(): void {
     this.clearScheduledTransition();
-    this.strategy.dispose();
+    if (this.strategy) {
+      this.strategy.dispose();
+    }
     this.dispose();
 
     this.destroy$.next();
