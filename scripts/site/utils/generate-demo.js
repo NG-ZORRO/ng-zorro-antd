@@ -112,7 +112,7 @@ function generateTemplate(result) {
     zh: wrapperAll(generateToc('zh-CN', result.name, result.demoMap), wrapperHeader(titleMap.zh, result.docZh.whenToUse, 'zh', innerMap.zh, hasPageDemo, name) + wrapperAPI(result.docZh.api)),
     en: wrapperAll(generateToc('en-US', result.name, result.demoMap), wrapperHeader(titleMap.en, result.docEn.whenToUse, 'en', innerMap.en, hasPageDemo, name) + wrapperAPI(result.docEn.api))
   }
-};
+}
 
 function wrapperAPI(content) {
   return `<section class="markdown api-container" ngNonBindable>${content}</section>`
@@ -176,7 +176,7 @@ function generateExample(result) {
       {name: key}, demoMap[key]
     ))
   }
-  demoList = demoList.sort((pre, next) => pre.meta.order - next.meta.order);
+  demoList.sort((pre, next) => pre.meta.order - next.meta.order);
   let firstZhPart = '';
   let secondZhPart = '';
   let firstEnPart = '';
