@@ -59,6 +59,7 @@ import { NzFormModule } from 'ng-zorro-antd';
 | Property | Description | Type | Default Value |
 | -------- | ----------- | ---- | ------------- |
 | `[nzLayout]`| Form layout | `'horizontal'｜'vertical'｜'inline'` | `'horizontal'` |
+| `[nzNoColon]`| change default props `[nzNoColon]` value of `nz-form-label` | `boolean` | `false` |
 
 
 ### nz-form-item
@@ -80,6 +81,7 @@ The label of the form item, optional.
 | Property | Description | Type | Default Value |
 | --- | --- | --- | --- |
 | `[nzRequired]`| add required style to current item | `boolean` | `false` |
+| `[nzNoColon]`| whether to not display `:` after label text. | `boolean` | `false` |
 | `[nzFor]`| The `for` property of `label` | `string` | - |
 | `[nzColon]` | Used with `label`, whether to display `:` after label text. | `boolean` | `true` |
 
