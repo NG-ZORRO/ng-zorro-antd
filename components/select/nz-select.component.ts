@@ -326,6 +326,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
           merge(
             this.listOfNzOptionGroupComponent.changes,
             this.listOfNzOptionComponent.changes,
+            ...this.listOfNzOptionComponent.map(option => option.changes),
             ...this.listOfNzOptionGroupComponent.map(group =>
               group.listOfNzOptionComponent ? group.listOfNzOptionComponent.changes : EMPTY
             )
