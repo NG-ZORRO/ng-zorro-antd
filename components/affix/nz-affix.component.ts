@@ -82,10 +82,10 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   private _offsetTop: number | null;
   private _offsetBottom: number | null;
 
-  // tslint:disable-next-line:no-any
   constructor(
     _el: ElementRef,
     private scrollSrv: NzScrollService,
+    // tslint:disable-next-line:no-any
     @Inject(DOCUMENT) private doc: any,
     private platform: Platform
   ) {

@@ -54,9 +54,9 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
 
   @Output() readonly nzClick: EventEmitter<boolean> = new EventEmitter();
 
-  // tslint:disable-next-line:no-any
   constructor(
     private scrollSrv: NzScrollService,
+    // tslint:disable-next-line:no-any
     @Inject(DOCUMENT) private doc: any,
     private platform: Platform,
     private cd: ChangeDetectorRef
