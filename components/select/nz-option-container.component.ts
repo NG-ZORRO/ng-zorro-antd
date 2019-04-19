@@ -24,6 +24,7 @@ import { NzSelectService } from './nz-select.service';
 
 @Component({
   selector: '[nz-option-container]',
+  exportAs: 'nzOptionContainer',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,

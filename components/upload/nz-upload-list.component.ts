@@ -9,12 +9,13 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 import { ShowUploadListInterface, UploadFile, UploadListType } from './interface';
 
 @Component({
   selector: 'nz-upload-list',
+  exportAs: 'nzUploadList',
   templateUrl: './nz-upload-list.component.html',
   providers: [NzUpdateHostClassService],
   animations: [

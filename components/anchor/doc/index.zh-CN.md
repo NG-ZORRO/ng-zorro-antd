@@ -13,6 +13,14 @@ title: Anchor
 
 ## API
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzAnchorModule } from 'ng-zorro-antd';
+```
+
 ### nz-anchor
 
 | 成员 | 说明 | 类型 | 默认值 |

@@ -17,6 +17,14 @@ title: TimePicker
 <nz-time-picker [(ngModel)]="someTime"></nz-time-picker>
 ```
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzTimePickerModule } from 'ng-zorro-antd';
+```
+
 ### nz-time-picker
 
 | 参数 | 说明 | 类型 | 默认值 |
@@ -39,6 +47,7 @@ title: TimePicker
 | `[nzOpen]` | 面板是否打开，可双向绑定 | `boolean` | `false` |
 | `[nzPlaceHolder]` | 没有值的时候显示的内容 | `string` | `"请选择时间"` |
 | `[nzPopupClassName]` | 弹出层类名 | `string` | `''` |
+| `[nzUse12Hours]` | 使用12小时制，为true时format默认为`h:mm:ss a` | `boolean` | `false` |
 | `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | - |
 | `(nzOpenChange)` | 面板打开/关闭时的回调 | `EventEmitter<boolean>` | - |
 

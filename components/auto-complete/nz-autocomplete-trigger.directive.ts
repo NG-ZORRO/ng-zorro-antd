@@ -46,6 +46,7 @@ export function getNzAutocompleteMissingPanelError(): Error {
 
 @Directive({
   selector: `input[nzAutocomplete], textarea[nzAutocomplete]`,
+  exportAs: 'nzAutocompleteTrigger',
   providers: [NZ_AUTOCOMPLETE_VALUE_ACCESSOR],
   host: {
     autocomplete: 'off',

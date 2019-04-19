@@ -15,9 +15,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NgClassType } from '../core/types/ng-class';
-import { NzSizeDSType } from '../core/types/size';
-import { toBoolean } from '../core/util/convert';
+import { toBoolean, NgClassType, NzSizeDSType } from 'ng-zorro-antd/core';
 
 import { NzStepComponent } from './nz-step.component';
 
@@ -29,6 +27,7 @@ export type NzStatusType = 'wait' | 'process' | 'finish' | 'error';
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   selector: 'nz-steps',
+  exportAs: 'nzSteps',
   templateUrl: './nz-steps.component.html'
 })
 export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterContentInit {

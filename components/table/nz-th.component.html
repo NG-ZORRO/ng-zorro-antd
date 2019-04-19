@@ -9,23 +9,25 @@
 </ng-template>
 <span class="ant-table-header-column">
   <div [class.ant-table-column-sorters]="nzShowSort" (click)="updateSortValue()">
-    <div class="ant-table-selection" *ngIf="nzShowRowSelection">
-      <ng-container *ngIf="nzShowCheckbox">
+    <span class="ant-table-column-title">
+      <ng-container *ngIf="nzShowCheckbox && !nzShowRowSelection">
         <ng-template [ngTemplateOutlet]="checkboxTemplate"></ng-template>
       </ng-container>
-      <nz-dropdown nzPlacement="bottomLeft">
-        <div nz-dropdown class="ant-table-selection-down">
-          <i nz-icon type="down"></i>
-        </div>
-        <ul nz-menu class="ant-table-selection-menu">
-          <li nz-menu-item *ngFor="let selection of nzSelections" (click)="selection.onSelect()">{{selection.text}}</li>
-        </ul>
-      </nz-dropdown>
-    </div>
-    <ng-container *ngIf="nzShowCheckbox && !nzShowRowSelection">
-      <ng-template [ngTemplateOutlet]="checkboxTemplate"></ng-template>
-    </ng-container>
-    <span class="ant-table-column-title"><ng-content></ng-content></span>
+      <div class="ant-table-selection" *ngIf="nzShowRowSelection">
+        <ng-container *ngIf="nzShowCheckbox">
+          <ng-template [ngTemplateOutlet]="checkboxTemplate"></ng-template>
+        </ng-container>
+        <nz-dropdown nzPlacement="bottomLeft">
+          <div nz-dropdown class="ant-table-selection-down">
+            <i nz-icon type="down"></i>
+          </div>
+          <ul nz-menu class="ant-table-selection-menu">
+            <li nz-menu-item *ngFor="let selection of nzSelections" (click)="selection.onSelect()">{{selection.text}}</li>
+          </ul>
+        </nz-dropdown>
+      </div>
+      <ng-content></ng-content>
+    </span>
     <div class="ant-table-column-sorter" *ngIf="nzShowSort">
       <div class="ant-table-column-sorter-inner ant-table-column-sorter-inner-full">
         <i nz-icon

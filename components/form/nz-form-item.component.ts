@@ -15,14 +15,16 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { toBoolean } from '../core/util/convert';
-import { NzRowDirective } from '../grid/nz-row.directive';
+
+import { toBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { NzRowDirective } from 'ng-zorro-antd/grid';
+
 import { NzFormExplainComponent } from './nz-form-explain.component';
 
 /** should add nz-row directive to host, track https://github.com/angular/angular/issues/8785 **/
 @Component({
   selector: 'nz-form-item',
+  exportAs: 'nzFormItem',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

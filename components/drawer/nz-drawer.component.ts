@@ -27,7 +27,7 @@ import { CdkPortalOutlet, ComponentPortal, PortalInjector, TemplatePortal } from
 
 import { Observable, Subject } from 'rxjs';
 
-import { toCssPixel, InputBoolean } from '../core/util/convert';
+import { toCssPixel, InputBoolean } from 'ng-zorro-antd/core';
 import { NzDrawerOptions, NzDrawerPlacement } from './nz-drawer-options';
 import { NzDrawerRef } from './nz-drawer-ref';
 
@@ -35,6 +35,7 @@ export const DRAWER_ANIMATE_DURATION = 300;
 
 @Component({
   selector: 'nz-drawer',
+  exportAs: 'nzDrawer',
   templateUrl: './nz-drawer.component.html',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush

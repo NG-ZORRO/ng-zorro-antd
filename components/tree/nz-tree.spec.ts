@@ -5,11 +5,16 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, Observable } from 'rxjs';
 
-import { dispatchMouseEvent, dispatchTouchEvent } from '../core/testing';
+import {
+  dispatchMouseEvent,
+  dispatchTouchEvent,
+  NzTreeBaseService,
+  NzTreeNode,
+  NzTreeNodeOptions
+} from 'ng-zorro-antd/core';
+
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
-import { NzTreeBaseService } from './nz-tree-base.service';
-import { NzTreeNode, NzTreeNodeOptions } from './nz-tree-node';
 import { NzTreeComponent } from './nz-tree.component';
 import { NzTreeModule } from './nz-tree.module';
 
@@ -654,12 +659,12 @@ describe('nz-tree', () => {
       [nzExpandAll]="expandAll"
       [nzExpandedIcon]="expandedIcon"
       [nzAsyncData]="asyncData"
-      (nzSearchValueChange)="nzEvent($event)"
-      (nzClick)="nzEvent($event)"
-      (nzDblClick)="nzEvent($event)"
-      (nzContextMenu)="nzEvent($event)"
-      (nzExpandChange)="nzEvent($event)"
-      (nzCheckBoxChange)="nzEvent($event)"
+      (nzSearchValueChange)="nzEvent()"
+      (nzClick)="nzEvent()"
+      (nzDblClick)="nzEvent()"
+      (nzContextMenu)="nzEvent()"
+      (nzExpandChange)="nzEvent()"
+      (nzCheckBoxChange)="nzEvent()"
     >
     </nz-tree>
   `
@@ -739,12 +744,12 @@ export class NzTestTreeBasicControlledComponent {
       [nzData]="nodes"
       nzDraggable="true"
       [nzBeforeDrop]="beforeDrop"
-      (nzOnDragStart)="onDragStart($event)"
-      (nzOnDragEnter)="onDragEnter($event)"
-      (nzOnDragLeave)="onDragLeave($event)"
-      (nzOnDragOver)="onDragOver($event)"
-      (nzOnDrop)="onDrop($event)"
-      (nzOnDragEnd)="onDragEnd($event)"
+      (nzOnDragStart)="onDragStart()"
+      (nzOnDragEnter)="onDragEnter()"
+      (nzOnDragLeave)="onDragLeave()"
+      (nzOnDragOver)="onDragOver()"
+      (nzOnDrop)="onDrop()"
+      (nzOnDragEnd)="onDragEnd()"
     >
     </nz-tree>
   `
@@ -852,7 +857,6 @@ export class NzTestTreeOlderComponent implements OnInit {
   selectedKeys = ['10001', '100011'];
   multiple = true;
   expandDefault = false;
-  showExpand = true;
   searchValue = '';
   modelNodes: NzTreeNode[];
 

@@ -13,6 +13,14 @@ A list can be used to display content related to a single subject. The content c
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzListModule } from 'ng-zorro-antd';
+```
+
 ### nz-list
 
 | Property | Description | Type | Default

@@ -14,6 +14,14 @@ Please note that Affix should not cover other content on the page, especially wh
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzAffixModule } from 'ng-zorro-antd';
+```
+
 ### nz-affix
 
 | Property | Description | Type | Default |

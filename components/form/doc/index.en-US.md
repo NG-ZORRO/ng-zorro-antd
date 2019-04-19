@@ -45,6 +45,14 @@ A form consists of one or more form fields whose type includes input, textarea, 
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzFormModule } from 'ng-zorro-antd';
+```
+
 ### nz-form
 
 

@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsulation } from '@angular/core';
-import { helpMotion } from '../core/animation/help';
+import { helpMotion } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-form-explain',
+  exportAs: 'nzFormExplain',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

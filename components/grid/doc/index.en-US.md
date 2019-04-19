@@ -81,6 +81,14 @@ Flex layout uses a 24 grid layout to define the width of each "box", but does no
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzGridModule } from 'ng-zorro-antd';
+```
+
 ### [nz-row]
 
 | Property | Description | Type | Default |

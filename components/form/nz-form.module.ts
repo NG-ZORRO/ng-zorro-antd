@@ -1,10 +1,11 @@
+import { LayoutModule } from '@angular/cdk/layout';
+import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { LayoutModule } from '@angular/cdk/layout';
-import { PlatformModule } from '@angular/cdk/platform';
-import { NzGridModule } from '../grid/nz-grid.module';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import { NzFormControlComponent } from './nz-form-control.component';
 import { NzFormExplainComponent } from './nz-form-explain.component';
 import { NzFormExtraComponent } from './nz-form-extra.component';

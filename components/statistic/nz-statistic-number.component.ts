@@ -16,6 +16,7 @@ import { NzStatisticValueType } from './nz-statistic-definitions';
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   selector: 'nz-statistic-number',
+  exportAs: 'nzStatisticNumber',
   templateUrl: './nz-statistic-number.component.html',
   host: {
     class: 'ant-statistic-content-value'

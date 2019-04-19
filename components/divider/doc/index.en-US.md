@@ -13,7 +13,13 @@ A divider line separates different content.
 
 ## API
 
-### Divider
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzDividerModule } from 'ng-zorro-antd';
+```
 
 ### nz-divider
 

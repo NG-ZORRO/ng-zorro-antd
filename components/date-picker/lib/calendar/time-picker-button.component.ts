@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 
-import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'time-picker-button',
+  exportAs: 'timePickerButton',
   templateUrl: 'time-picker-button.component.html'
 })
 export class TimePickerButtonComponent {

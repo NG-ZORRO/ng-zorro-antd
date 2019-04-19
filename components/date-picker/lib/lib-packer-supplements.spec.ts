@@ -8,7 +8,7 @@ import { NzI18nService } from '../../i18n/nz-i18n.service';
 import { AbstractPickerComponent } from '../abstract-picker.component';
 import { CalendarHeaderComponent } from './calendar/calendar-header.component';
 import { TodayButtonComponent } from './calendar/today-button.component';
-import { CandyDate } from './candy-date';
+import { CandyDate } from './candy-date/candy-date';
 import { DateTableComponent } from './date/date-table.component';
 import { LibPackerModule } from './lib-packer.module';
 import { MonthTableComponent } from './month/month-table.component';

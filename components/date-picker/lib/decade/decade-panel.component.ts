@@ -9,8 +9,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
-import { CandyDate } from '../candy-date';
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import { CandyDate } from '../candy-date/candy-date';
 
 const MAX_ROW = 4;
 const MAX_COL = 3;
@@ -20,6 +20,7 @@ const MAX_COL = 3;
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'decade-panel',
+  exportAs: 'decadePanel',
   templateUrl: 'decade-panel.component.html'
 })
 export class DecadePanelComponent implements OnChanges {

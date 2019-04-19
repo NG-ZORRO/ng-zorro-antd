@@ -13,15 +13,13 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { fadeMotion, toNumber, NzScrollService } from 'ng-zorro-antd/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
-import { fadeMotion } from '../core/animation/fade';
-
-import { NzScrollService } from '../core/scroll/nz-scroll.service';
-import { toNumber } from '../core/util/convert';
 
 @Component({
   selector: 'nz-back-top',
+  exportAs: 'nzBackTop',
   animations: [fadeMotion],
   templateUrl: './nz-back-top.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

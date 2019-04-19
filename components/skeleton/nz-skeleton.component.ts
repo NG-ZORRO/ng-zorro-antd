@@ -11,13 +11,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { toCssPixel } from '../core/util';
+import { toCssPixel } from 'ng-zorro-antd/core';
 import { AvatarShape, AvatarSize, NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle } from './nz-skeleton.type';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-skeleton',
+  exportAs: 'nzSkeleton',
   templateUrl: './nz-skeleton.component.html',
   host: {
     '[class.ant-skeleton-with-avatar]': '!!nzAvatar',

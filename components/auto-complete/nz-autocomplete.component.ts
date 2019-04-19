@@ -21,10 +21,8 @@ import {
 import { defer, merge, Observable, Subscription } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 
-import { slideMotion } from '../core/animation/slide';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { NzDropDownPosition } from '../core/types/drop-down-position';
-import { InputBoolean } from '../core/util/convert';
+import { slideMotion, InputBoolean, NzDropDownPosition, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './nz-autocomplete-option.component';
 
 export interface AutocompleteDataSourceItem {
@@ -36,6 +34,7 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
 
 @Component({
   selector: 'nz-autocomplete',
+  exportAs: 'nzAutocomplete',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

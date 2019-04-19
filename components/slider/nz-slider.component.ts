@@ -18,11 +18,17 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, merge, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, map, pluck, takeUntil, tap } from 'rxjs/operators';
 
-import { InputBoolean } from '../core/util/convert';
-import { getElementOffset, silentEvent, MouseTouchObserverConfig } from '../core/util/dom';
-
-import { arraysEqual, shallowCopyArray } from '../core/util/array';
-import { ensureNumberInRange, getPercent, getPrecision } from '../core/util/number';
+import {
+  arraysEqual,
+  ensureNumberInRange,
+  getElementOffset,
+  getPercent,
+  getPrecision,
+  shallowCopyArray,
+  silentEvent,
+  InputBoolean,
+  MouseTouchObserverConfig
+} from 'ng-zorro-antd/core';
 
 import {
   isValueARange,
@@ -38,6 +44,7 @@ import { getValueTypeNotMatchError } from './nz-slider-error';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-slider',
+  exportAs: 'nzSlider',
   preserveWhitespaces: false,
   providers: [
     {

@@ -19,6 +19,14 @@ title: Modal
 
 ## API
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzModalModule } from 'ng-zorro-antd';
+```
+
 ### NzModalService
 
 对话框当前分为2种模式，`普通模式` 和 `确认框模式`（即`Confirm`对话框，通过调用`confirm/info/success/error/warning`弹出），两种模式对API的支持程度稍有不同。
@@ -119,6 +127,29 @@ constructor(modal: NzModalService) {
 | getContentComponent()     | 获取对话框内容中`nzContent`的Component实例instance。<i>注：当对话框还未初始化完毕（`ngOnInit`未执行）时，此函数将返回`undefined`</i> |
 | triggerOk()               | 手动触发nzOnOk |
 | triggerCancel()           | 手动触发nzOnCancel |
+
+
+### 全局配置
+
+全局配置（NZ_MODAL_CONFIG）
+如果要进行全局默认配置，你可以设置提供商 `NZ_MODAL_CONFIG` 的值来实现。
+（如：在你的模块的`providers`中加入 `{ provide: NZ_MODAL_CONFIG, useValue: { nzMask: false }}`，`NZ_MODAL_CONFIG` 可以从 `ng-zorro-antd` 中导入）
+
+全局配置，组件默认值，组件层级配置之间的权重如下：
+
+组件层级配置 > 全局配置 > 组件默认值
+
+当前支持的全局配置
+```ts
+{
+    provide: NZ_MODAL_CONFIG,
+    useValue: {
+        nzMask?: boolean; // 是否展示遮罩
+        nzMaskClosable?: boolean; // 点击蒙层是否允许关闭
+    }
+}
+```
+注：全局配置并无默认值，因为nzMask和nzMaskClosable默认值存在于组件中
 
 #### ModalButtonOptions（用于自定义底部按钮）
 

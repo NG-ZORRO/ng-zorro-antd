@@ -14,6 +14,14 @@ When a numeric value needs to be provided.
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzInputNumberModule } from 'ng-zorro-antd';
+```
+
 ### nz-input-number
 
 | property | description | type | default |

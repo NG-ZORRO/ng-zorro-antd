@@ -1,7 +1,8 @@
 import { Directive, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[nz-card-grid]'
+  selector: '[nz-card-grid]',
+  exportAs: 'nzCardGrid'
 })
 export class NzCardGridDirective {
   constructor(elementRef: ElementRef, renderer: Renderer2) {

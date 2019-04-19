@@ -9,14 +9,13 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { NzSizeLDSType } from '../core/types/size';
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean, NzSizeLDSType, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 import { NzListGrid } from './interface';
 
 @Component({
   selector: 'nz-list',
+  exportAs: 'nzList',
   templateUrl: './nz-list.component.html',
   providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,

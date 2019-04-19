@@ -10,8 +10,6 @@ export function mergeDateConfig(config: NzDateConfig): NzDateConfig {
   return { ...NZ_DATE_CONFIG_DEFAULT, ...config };
 }
 
-////////////
-
 export interface NzDateConfig {
   /** Customize the first day of a week */
   firstDayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6;

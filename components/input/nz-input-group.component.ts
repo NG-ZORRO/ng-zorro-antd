@@ -8,13 +8,12 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NgClassType } from '../core/types/ng-class';
-import { NzSizeLDSType } from '../core/types/size';
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean, NgClassType, NzSizeLDSType } from 'ng-zorro-antd/core';
 import { NzInputDirective } from './nz-input.directive';
 
 @Component({
   selector: 'nz-input-group',
+  exportAs: 'nzInputGroup',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

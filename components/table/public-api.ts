@@ -5,3 +5,4 @@ export * from './nz-td.component';
 export * from './nz-th.component';
 export * from './nz-thead.component';
 export * from './nz-tr.directive';
+export * from './nz-virtual-scroll.directive';

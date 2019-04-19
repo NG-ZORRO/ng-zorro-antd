@@ -14,18 +14,21 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: 'nz-avatar[nz-comment-avatar]'
+  selector: 'nz-avatar[nz-comment-avatar]',
+  exportAs: 'nzCommentAvatar'
 })
 export class NzCommentAvatarDirective {}
 
 @Directive({
   selector: 'nz-comment-content, [nz-comment-content]',
+  exportAs: 'nzCommentContent',
   host: { class: 'ant-comment-content-detail' }
 })
 export class NzCommentContentDirective {}
 
 @Directive({
-  selector: '[nzCommentActionHost]'
+  selector: '[nzCommentActionHost]',
+  exportAs: 'nzCommentActionHost'
 })
 export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnInit, OnDestroy {
   @Input() nzCommentActionHost: TemplatePortal | null;
@@ -46,6 +49,7 @@ export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnI
 
 @Component({
   selector: 'nz-comment-action',
+  exportAs: 'nzCommentAction',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-template><ng-content></ng-content></ng-template>'

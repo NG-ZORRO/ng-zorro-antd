@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger, AnimationTriggerMetadata } from '@angular/animations';
-import { AnimationCurves, AnimationDuration } from './animation';
+import { AnimationCurves, AnimationDuration } from './animation-consts';
 
 export const helpMotion: AnimationTriggerMetadata = trigger('helpMotion', [
   transition(':enter', [

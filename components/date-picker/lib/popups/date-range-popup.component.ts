@@ -11,8 +11,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { FunctionProp } from '../../../core/types/common-wrap';
-import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
+import { FunctionProp } from 'ng-zorro-antd/core';
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import {
   DisabledDateFn,
   DisabledTimeConfig,
@@ -22,7 +22,7 @@ import {
   PresetRanges,
   SupportTimeOptions
 } from '../../standard-types';
-import { CandyDate } from '../candy-date';
+import { CandyDate } from '../candy-date/candy-date';
 import { getTimeConfig, isAllowedDate } from '../util';
 
 @Component({
@@ -30,6 +30,7 @@ import { getTimeConfig, isAllowedDate } from '../util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'date-range-popup',
+  exportAs: 'dateRangePopup',
   templateUrl: 'date-range-popup.component.html'
 })
 export class DateRangePopupComponent implements OnInit, OnChanges {

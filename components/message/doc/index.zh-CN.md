@@ -30,6 +30,14 @@ title: Message
 
 ## API
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzMessageModule } from 'ng-zorro-antd';
+```
+
 ### NzMessageService
 
 组件提供了一些服务方法，使用方式和参数如下：

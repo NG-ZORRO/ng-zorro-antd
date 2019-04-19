@@ -9,12 +9,11 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { slideAlertMotion } from '../core/animation/slide';
-import { NgClassType } from '../core/types/ng-class';
-import { InputBoolean } from '../core/util/convert';
+import { slideAlertMotion, InputBoolean, NgClassType } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-alert',
+  exportAs: 'nzAlert',
   animations: [slideAlertMotion],
   templateUrl: './nz-alert.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -8,12 +8,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
 import { CascaderOption } from './nz-cascader-definitions';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: '[nz-cascader-option]',
+  exportAs: 'nzCascaderOption',
   templateUrl: './nz-cascader-li.component.html',
   host: {
     '[attr.title]': 'option.title || getOptionLabel()',

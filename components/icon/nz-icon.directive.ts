@@ -10,7 +10,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
-import { InputBoolean } from '../core/util';
+import { InputBoolean } from 'ng-zorro-antd/core';
 import { NzIconService } from './nz-icon.service';
 
 const iconTypeRE = /^anticon\-\w/;
@@ -52,7 +52,8 @@ const normalizeType = (rawType: string): { type: string; crossError: boolean; ve
  * - properties that not started with `nz`.
  */
 @Directive({
-  selector: 'i.anticon, [nz-icon]'
+  selector: 'i.anticon, [nz-icon]',
+  exportAs: 'nzIcon'
 })
 export class NzIconDirective extends IconDirective implements OnInit, OnChanges, OnDestroy, AfterContentChecked {
   /** Properties with `nz` prefix. */
