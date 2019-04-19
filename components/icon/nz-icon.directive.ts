@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentChecked,
   Directive,
@@ -171,7 +172,12 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     }
   }
 
-  constructor(public iconService: NzIconService, public elementRef: ElementRef, public renderer: Renderer2) {
+  constructor(
+    public iconService: NzIconService,
+    public elementRef: ElementRef,
+    public renderer: Renderer2,
+    private platform: Platform
+  ) {
     super(iconService, elementRef, renderer);
   }
 
@@ -193,13 +199,15 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
       this.iconService.warnAPI('old');
       // Get `type` from `className`. If not, initial rendering would be missed.
       this.classChangeHandler(this.el.className);
-      // Add `class` mutation observer.
-      this.classNameObserver = new MutationObserver((mutations: MutationRecord[]) => {
-        mutations
-          .filter((mutation: MutationRecord) => mutation.attributeName === 'class')
-          .forEach((mutation: MutationRecord) => this.classChangeHandler((mutation.target as HTMLElement).className));
-      });
-      this.classNameObserver.observe(this.el, { attributes: true });
+      if (this.platform.isBrowser) {
+        // Add `class` mutation observer.
+        this.classNameObserver = new MutationObserver((mutations: MutationRecord[]) => {
+          mutations
+            .filter((mutation: MutationRecord) => mutation.attributeName === 'class')
+            .forEach((mutation: MutationRecord) => this.classChangeHandler((mutation.target as HTMLElement).className));
+        });
+        this.classNameObserver.observe(this.el, { attributes: true });
+      }
     }
     // If `classList` does not contain `anticon`, add it before other class names.
     if (!this.el.classList.contains('anticon')) {

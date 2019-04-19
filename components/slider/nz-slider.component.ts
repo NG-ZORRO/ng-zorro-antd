@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import {
   forwardRef,
   ChangeDetectionStrategy,
@@ -91,13 +92,15 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   private dragMove_: Subscription | null;
   private dragEnd_: Subscription | null;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private platform: Platform) {}
 
   ngOnInit(): void {
     this.handles = this.generateHandles(this.nzRange ? 2 : 1);
     this.sliderDOM = this.slider.nativeElement;
     this.marksArray = this.nzMarks ? this.generateMarkItems(this.nzMarks) : null;
-    this.createDraggingObservables();
+    if (this.platform.isBrowser) {
+      this.createDraggingObservables();
+    }
     this.toggleDragDisabled(this.nzDisabled);
 
     if (this.getValue() === null) {

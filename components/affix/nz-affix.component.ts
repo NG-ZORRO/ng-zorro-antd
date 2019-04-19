@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -37,10 +38,12 @@ import {
 export class NzAffixComponent implements OnInit, OnDestroy {
   @Input()
   set nzTarget(value: string | Element | Window) {
-    this.clearEventListeners();
-    this._target = typeof value === 'string' ? this.doc.querySelector(value) : value || window;
-    this.setTargetEventListeners();
-    this.updatePosition({} as Event);
+    if (this.platform.isBrowser) {
+      this.clearEventListeners();
+      this._target = typeof value === 'string' ? this.doc.querySelector(value) : value || window;
+      this.setTargetEventListeners();
+      this.updatePosition({} as Event);
+    }
   }
 
   @Input()
@@ -75,13 +78,21 @@ export class NzAffixComponent implements OnInit, OnDestroy {
 
   private affixStyle: NGStyleInterface | undefined;
   private placeholderStyle: NGStyleInterface | undefined;
-  private _target: Element | Window = window;
+  private _target: Element | Window | null = null;
   private _offsetTop: number | null;
   private _offsetBottom: number | null;
 
-  // tslint:disable-next-line:no-any
-  constructor(_el: ElementRef, private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any) {
+  constructor(
+    _el: ElementRef,
+    private scrollSrv: NzScrollService,
+    // tslint:disable-next-line:no-any
+    @Inject(DOCUMENT) private doc: any,
+    private platform: Platform
+  ) {
     this.placeholderNode = _el.nativeElement;
+    if (this.platform.isBrowser) {
+      this._target = window;
+    }
   }
 
   ngOnInit(): void {
@@ -127,15 +138,19 @@ export class NzAffixComponent implements OnInit, OnDestroy {
 
   private setTargetEventListeners(): void {
     this.clearEventListeners();
-    this.events.forEach((eventName: string) => {
-      this._target.addEventListener(eventName, this.updatePosition, false);
-    });
+    if (this.platform.isBrowser) {
+      this.events.forEach((eventName: string) => {
+        this._target!.addEventListener(eventName, this.updatePosition, false);
+      });
+    }
   }
 
   private clearEventListeners(): void {
-    this.events.forEach(eventName => {
-      this._target.removeEventListener(eventName, this.updatePosition, false);
-    });
+    if (this.platform.isBrowser) {
+      this.events.forEach(eventName => {
+        this._target!.removeEventListener(eventName, this.updatePosition, false);
+      });
+    }
   }
 
   private getTargetRect(target: Element | Window | undefined): ClientRect {
@@ -207,11 +222,14 @@ export class NzAffixComponent implements OnInit, OnDestroy {
 
   @throttleByAnimationFrameDecorator()
   updatePosition(e: Event): void {
-    const targetNode = this._target;
+    if (!this.platform.isBrowser) {
+      return;
+    }
+    const targetNode = this._target as (HTMLElement | Window);
     // Backwards support
     let offsetTop = this.nzOffsetTop;
-    const scrollTop = this.scrollSrv.getScroll(targetNode, true);
-    const elemOffset = this.getOffset(this.placeholderNode, targetNode);
+    const scrollTop = this.scrollSrv.getScroll(targetNode!, true);
+    const elemOffset = this.getOffset(this.placeholderNode, targetNode!);
     const fixedNode = this.fixedEl.nativeElement as HTMLElement;
     const elemSize = {
       width: fixedNode.offsetWidth,
@@ -229,7 +247,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
       offsetMode.top = typeof offsetTop === 'number';
       offsetMode.bottom = typeof this._offsetBottom === 'number';
     }
-    const targetRect = this.getTargetRect(targetNode);
+    const targetRect = this.getTargetRect(targetNode as Window);
     const targetInnerHeight = (targetNode as Window).innerHeight || (targetNode as HTMLElement).clientHeight;
     if (scrollTop >= elemOffset.top - (offsetTop as number) && offsetMode.top) {
       const width = elemOffset.width;
