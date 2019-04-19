@@ -108,7 +108,7 @@ The following APIs are shared by nz-date-picker, nz-month-picker, nz-range-picke
 | `[ngModel]` | Date | `Date[]` | - |
 | `[nzDisabledTime]` | to specify the time that cannot be selected | `(current: Date, partial: 'start'｜'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
 | `[nzFormat]` | to set the date format, see `nzFormat special instructions` | `string` | `"yyyy-MM-dd"` |
-| `[nzRanges]` | preseted ranges for quick selection | `{ [ key: string ]: Date[] }` | - |
+| `[nzRanges]` | preseted ranges for quick selection | `{ [ key: string ]: Date[] } ｜ { [ key: string ]: () => Date[] }` | - |
 | `[nzRenderExtraFooter]` | render extra footer in panel | `TemplateRef｜string｜(() => TemplateRef｜string)` | - |
 | `[nzShowTime]` | to provide an additional time selection | `object｜boolean` | [TimePicker Options](/components/time-picker/en#api) |
 | `[nzPlaceHolder]` | placeholder of date input | `string[]` | - |

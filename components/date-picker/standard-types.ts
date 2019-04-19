@@ -39,7 +39,7 @@ export interface SupportTimeOptions {
 }
 
 export interface PresetRanges {
-  [key: string]: Date[];
+  [key: string]: Date[] | (() => Date[]);
 }
 
 export type PanelMode = 'decade' | 'year' | 'month' | 'date' | 'time';

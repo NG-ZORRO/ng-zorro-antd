@@ -28,7 +28,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   @Input() nzRenderExtraFooter: FunctionProp<TemplateRef<void> | string>;
   @Input() @InputBoolean() nzShowToday: boolean = true;
   @Input() nzMode: PanelMode | PanelMode[];
-  @Input() nzRanges: FunctionProp<PresetRanges>;
+  @Input() nzRanges: PresetRanges;
   @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
   @Output() readonly nzOnCalendarChange = new EventEmitter<Date[]>();
 
