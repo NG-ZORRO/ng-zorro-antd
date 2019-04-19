@@ -9,14 +9,16 @@ import {
   ElementRef,
   Input,
   NgZone,
+  OnChanges,
   OnDestroy,
   QueryList,
   Renderer2,
+  SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
-import { toBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 import { NzRowDirective } from 'ng-zorro-antd/grid';
 
 import { NzFormExplainComponent } from './nz-form-explain.component';
@@ -31,7 +33,7 @@ import { NzFormExplainComponent } from './nz-form-explain.component';
   providers: [NzUpdateHostClassService],
   templateUrl: './nz-form-item.component.html',
   host: {
-    '[class.ant-form-item-with-help]': 'listOfNzFormExplainComponent && (listOfNzFormExplainComponent.length>0)'
+    '[class.ant-form-item-with-help]': 'listOfNzFormExplainComponent && (listOfNzFormExplainComponent.length > 0)'
   },
   styles: [
     `
@@ -41,21 +43,11 @@ import { NzFormExplainComponent } from './nz-form-explain.component';
     `
   ]
 })
-export class NzFormItemComponent extends NzRowDirective implements AfterContentInit, OnDestroy {
-  private _flex = false;
-  @ContentChildren(NzFormExplainComponent, { descendants: true }) listOfNzFormExplainComponent: QueryList<
-    NzFormExplainComponent
-  >;
+export class NzFormItemComponent extends NzRowDirective implements AfterContentInit, OnDestroy, OnChanges {
+  @Input() @InputBoolean() nzFlex: boolean = false;
 
-  @Input()
-  set nzFlex(value: boolean) {
-    this._flex = toBoolean(value);
-    if (this._flex) {
-      this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'flex');
-    } else {
-      this.renderer.removeStyle(this.elementRef.nativeElement, 'display');
-    }
-  }
+  @ContentChildren(NzFormExplainComponent, { descendants: true })
+  listOfNzFormExplainComponent: QueryList<NzFormExplainComponent>;
 
   constructor(
     elementRef: ElementRef,
@@ -75,6 +67,18 @@ export class NzFormItemComponent extends NzRowDirective implements AfterContentI
       this.listOfNzFormExplainComponent.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
         this.cdr.markForCheck();
       });
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+    if (changes.hasOwnProperty('nzFlex')) {
+      const flex = changes.nzFlex.currentValue;
+      if (flex) {
+        this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'flex');
+      } else {
+        this.renderer.removeStyle(this.elementRef.nativeElement, 'display');
+      }
     }
   }
 }

@@ -57,6 +57,7 @@ import { NzFormModule } from 'ng-zorro-antd';
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzLayout]`| 表单布局 | `'horizontal'｜'vertical'｜'inline'` | `'horizontal'` |
+| `[nzNoColon]`| 配置 `nz-form-label` 的 `[nzNoColon]` 的默认值 | `boolean` | `false` |
 
 ### nz-form-item
 
@@ -77,6 +78,7 @@ import { NzFormModule } from 'ng-zorro-antd';
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzRequired]`| 当前项是否为必填，仅影响样式 | `boolean` | `false` |
+| `[nzNoColon]`| 是否不显示 label 后面的冒号 | `boolean` | `false` |
 | `[nzFor]`| label 标签的 for 属性	 | `string` | - |
 | `[nzColon]` | 配合 label 属性使用，表示是否显示 label 后面的冒号 | `boolean` | `true` |
 
