@@ -102,7 +102,7 @@ function replaceTemplate(demoComponent) {
   return demoComponent.fileContent
     .replace(/selector\s*:\s*'(.+?)'\s*/, () => `selector: '<%= selector %>'`)
     .replace(new RegExp(demoComponent.className), () => `<%= classify(name) %>Component`)
-    .replace(/styles\s*:\s*\[\s*`([\s\S]*?)`\s*\]/, () => `<% if(inlineStyle) { %>styles: [\`${demoComponent.styles}\`]<% } else { %>styleUrls: ['./<%= dasherize(name) %>.component.<%= styleext %>']<% } %>`)
+    .replace(/styles\s*:\s*\[\s*`([\s\S]*?)`\s*\]/, () => `<% if(inlineStyle) { %>styles: [\`${demoComponent.styles}\`]<% } else { %>styleUrls: ['./<%= dasherize(name) %>.component.<%= style %>']<% } %>`)
     .replace(/template\s*:\s*`([\s\S]*?)`/, () => `<% if(inlineTemplate) { %>template: \`${demoComponent.template}\`<% } else { %>templateUrl: './<%= dasherize(name) %>.component.html'<% } %>`)
 }
 
@@ -114,14 +114,17 @@ function createSchematic(demoComponent) {
   const filesPath = path.resolve(__dirname, `${demoPath}/files/__path__/__name@dasherize@if-flat__`);
   const schemaPath = `${demoPath}/schema.json`;
   fs.mkdirsSync(filesPath);
-  fs.copySync(path.resolve(__dirname, `./template`), demoPath);
+
+  fs.copySync(path.resolve(__dirname, `./template/index.ts.template`), `${demoPath}/index.ts`);
+  fs.copySync(path.resolve(__dirname, `./template/schema.json.template`), `${demoPath}/schema.json`);
+  fs.copySync(path.resolve(__dirname, `./template/schema.ts.template`), `${demoPath}/schema.ts`);
 
   const schemaJson = fs.readJsonSync(schemaPath);
   schemaJson.id = `${demoComponent.demoName}-${demoComponent.componentName}`;
   schemaJson.title = `NG-ZORRO ${demoComponent.demoName} ${demoComponent.componentName}`;
   fs.outputJsonSync(schemaPath, schemaJson);
 
-  fs.outputFileSync(`${filesPath}/__name@dasherize__.component.__styleext__`, demoComponent.styles);
+  fs.outputFileSync(`${filesPath}/__name@dasherize__.component.__style__`, demoComponent.styles);
   fs.outputFileSync(`${filesPath}/__name@dasherize__.component.html`, demoComponent.template);
   fs.outputFileSync(`${filesPath}/__name@dasherize__.component.spec.ts`, TEST_FILE_CONTENT);
   fs.outputFileSync(`${filesPath}/__name@dasherize__.component.ts`, replaceTemplate(demoComponent));

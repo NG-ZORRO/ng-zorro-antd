@@ -1,5 +1,9 @@
-import { chain, Rule } from '@angular-devkit/schematics';
-import { buildComponent } from '@angular/cdk/schematics';
+import {
+  chain,
+  Rule
+} from '@angular-devkit/schematics';
+import { buildComponent } from '../../utils/build-component';
+
 import { Schema } from './schema';
 
 export default function(options: Schema): Rule {
@@ -8,7 +12,7 @@ export default function(options: Schema): Rule {
       { ...options },
       {
         template: './__path__/__name@dasherize@if-flat__/__name@dasherize__.component.html',
-        stylesheet: './__path__/__name@dasherize@if-flat__/__name@dasherize__.component.__styleext__'
+        stylesheet: './__path__/__name@dasherize@if-flat__/__name@dasherize__.component.__style__'
       }
     )
   ]);

@@ -23,6 +23,12 @@
       "factory": "./ng-add/setup-project/add-icon-assets#addIconToAssets",
       "schema": "./ng-generate/boot-page/schema.json",
       "aliases": ["fix-icon"]
+    },
+    "component": {
+      "aliases": [ "c" ],
+      "factory": "./ng-component",
+      "description": "Create an Angular component.",
+      "schema": "./ng-component/schema.json"
     }
   }
 }
