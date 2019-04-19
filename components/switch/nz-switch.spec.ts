@@ -4,7 +4,7 @@ import { fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testi
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { dispatchKeyboardEvent } from '../core/testing';
+import { dispatchKeyboardEvent } from 'ng-zorro-antd/core';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
 import { NzSwitchComponent } from './nz-switch.component';

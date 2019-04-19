@@ -9,7 +9,9 @@ import {
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { slideMotion } from '../core/animation/slide';
+
+import { slideMotion } from 'ng-zorro-antd/core';
+
 import { NzDropdownService } from './nz-dropdown.service';
 import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 

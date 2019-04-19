@@ -1,12 +1,10 @@
 import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { FunctionProp } from '../core/types/common-wrap';
-import { valueFunctionProp } from '../core/util/convert';
-import { DateHelperService } from '../i18n/date-helper.service';
-import { NzI18nService } from '../i18n/nz-i18n.service';
+import { valueFunctionProp, FunctionProp, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
+
 import { AbstractPickerComponent } from './abstract-picker.component';
-import { CandyDate } from './lib/candy-date';
+import { CandyDate } from './lib/candy-date/candy-date';
 import { PanelMode } from './standard-types';
 
 /**

@@ -25,11 +25,16 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { merge, EMPTY, Subject } from 'rxjs';
 import { flatMap, startWith, takeUntil } from 'rxjs/operators';
-import { slideMotion } from '../core/animation/slide';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { NzSizeLDSType } from '../core/types/size';
-import { isNotNil } from '../core/util/check';
-import { toBoolean, InputBoolean } from '../core/util/convert';
+
+import {
+  isNotNil,
+  slideMotion,
+  toBoolean,
+  InputBoolean,
+  NzNoAnimationDirective,
+  NzSizeLDSType
+} from 'ng-zorro-antd/core';
+
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
 import { TFilterOption } from './nz-option.pipe';

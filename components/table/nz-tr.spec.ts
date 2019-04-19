@@ -1,7 +1,7 @@
 import { Component, DebugElement } from '@angular/core';
 import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
+import { NzMeasureScrollbarService } from 'ng-zorro-antd/core';
 import { NzTableModule } from './nz-table.module';
 import { NzTrDirective } from './nz-tr.directive';
 

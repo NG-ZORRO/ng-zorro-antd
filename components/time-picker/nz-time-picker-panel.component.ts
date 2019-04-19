@@ -18,10 +18,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { reqAnimFrame } from '../core/polyfill/request-animation';
-import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
-import { InputBoolean } from '../core/util';
-import { isNotNil } from '../core/util/check';
+import { isNotNil, reqAnimFrame, InputBoolean, NzUpdateHostClassService as UpdateCls } from 'ng-zorro-antd/core';
+
 import { NzTimeValueAccessorDirective } from './nz-time-value-accessor.directive';
 import { TimeHolder } from './time-holder';
 

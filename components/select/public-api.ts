@@ -3,3 +3,8 @@ export * from './nz-option-container.component';
 export * from './nz-option.component';
 export * from './nz-select.component';
 export * from './nz-select.module';
+export * from './nz-option-li.component';
+export * from './nz-option.pipe';
+export * from './nz-select-top-control.component';
+export * from './nz-select-unselectable.directive';
+export * from './nz-select.service';

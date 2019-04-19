@@ -5,7 +5,7 @@ import { AbstractControl, FormsModule, FormBuilder, FormGroup, ReactiveFormsModu
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchMouseEvent } from '../core/testing';
+import { dispatchMouseEvent } from 'ng-zorro-antd/core';
 import { SliderShowTooltip } from './nz-slider-definitions';
 import { NzSliderComponent } from './nz-slider.component';
 import { NzSliderModule } from './nz-slider.module';

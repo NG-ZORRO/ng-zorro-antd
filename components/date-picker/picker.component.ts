@@ -18,9 +18,10 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { slideMotion } from '../core/animation/slide';
-import { DateHelperService } from '../i18n/date-helper.service';
-import { CandyDate } from './lib/candy-date';
+import { slideMotion } from 'ng-zorro-antd/core';
+import { DateHelperService } from 'ng-zorro-antd/i18n';
+
+import { CandyDate } from './lib/candy-date/candy-date';
 
 @Component({
   encapsulation: ViewEncapsulation.None,

@@ -13,6 +13,14 @@ Alert component for feedback.
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzAlertModule } from 'ng-zorro-antd';
+```
+
 ### nz-alert
 
 | Property | Description | Type | Default |

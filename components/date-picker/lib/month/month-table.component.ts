@@ -10,8 +10,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { DateHelperService } from '../../../i18n/date-helper.service';
-import { CandyDate } from '../candy-date';
+import { DateHelperService } from 'ng-zorro-antd/i18n';
+import { CandyDate } from '../candy-date/candy-date';
 
 const MAX_ROW = 4;
 const MAX_COL = 3;

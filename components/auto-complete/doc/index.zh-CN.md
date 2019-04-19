@@ -27,6 +27,14 @@ subtitle: 自动完成
 </nz-autocomplete>
 ```
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzAutocompleteModule } from 'ng-zorro-antd';
+```
+
 ### [nzAutocomplete]
 
 | 属性 | 说明 | 类型 | 默认值 |

@@ -29,8 +29,9 @@ import setYear from 'date-fns/set_year';
 import startOfMonth from 'date-fns/start_of_month';
 import startOfWeek from 'date-fns/start_of_week';
 import startOfYear from 'date-fns/start_of_year';
-import { DateHelperService } from '../i18n/date-helper.service';
-import { NzI18nService } from '../i18n/nz-i18n.service';
+
+import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
+
 import {
   NzDateCellDirective as DateCell,
   NzDateFullCellDirective as DateFullCell,

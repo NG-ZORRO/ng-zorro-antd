@@ -7,6 +7,7 @@ import {
   ElementRef,
   EventEmitter,
   Host,
+  Injector,
   Input,
   OnChanges,
   OnDestroy,
@@ -14,6 +15,7 @@ import {
   Optional,
   Output,
   Renderer2,
+  Self,
   SimpleChanges,
   TemplateRef,
   ViewChild
@@ -23,16 +25,26 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { merge, of as observableOf, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
-import { slideMotion } from '../core/animation/slide';
-import { zoomMotion } from '../core/animation/zoom';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { NzSizeLDSType } from '../core/types/size';
-import { isNotNil } from '../core/util';
-import { InputBoolean } from '../core/util/convert';
-import { NzFormatEmitEvent } from '../tree/interface';
-import { NzTreeNode, NzTreeNodeOptions } from '../tree/nz-tree-node';
-import { NzTreeComponent } from '../tree/nz-tree.component';
+import {
+  isNotNil,
+  slideMotion,
+  zoomMotion,
+  InputBoolean,
+  NzFormatEmitEvent,
+  NzNoAnimationDirective,
+  NzSizeLDSType,
+  NzTreeBaseService,
+  NzTreeHigherOrderServiceToken,
+  NzTreeNode,
+  NzTreeNodeOptions
+} from 'ng-zorro-antd/core';
+import { NzTreeComponent } from 'ng-zorro-antd/tree';
+
 import { NzTreeSelectService } from './nz-tree-select.service';
+
+export function higherOrderServiceFactory(injector: Injector): NzTreeBaseService {
+  return injector.get(NzTreeSelectService);
+}
 
 @Component({
   selector: 'nz-tree-select',
@@ -41,6 +53,11 @@ import { NzTreeSelectService } from './nz-tree-select.service';
   templateUrl: './nz-tree-select.component.html',
   providers: [
     NzTreeSelectService,
+    {
+      provide: NzTreeHigherOrderServiceToken,
+      useFactory: higherOrderServiceFactory,
+      deps: [[new Self(), Injector]]
+    },
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzTreeSelectComponent),

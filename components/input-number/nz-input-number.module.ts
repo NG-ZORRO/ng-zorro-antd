@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NzIconModule } from '../icon/nz-icon.module';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzInputNumberComponent } from './nz-input-number.component';
 

@@ -12,9 +12,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { zoomBadgeMotion } from '../core/animation/zoom';
-import { isEmpty } from '../core/util/check';
-import { InputBoolean } from '../core/util/convert';
+import { isEmpty, zoomBadgeMotion, InputBoolean } from 'ng-zorro-antd/core';
 
 export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' | 'warning';
 

@@ -9,8 +9,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { InputBoolean } from '../core/util';
+import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-divider',

@@ -4,7 +4,7 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NzAnchorModule } from './nz-anchor.module';
 import { NzAnchorComponent } from './nz-anchor.component';
-import { NzScrollService } from '../core/scroll/nz-scroll.service';
+import { NzScrollService } from 'ng-zorro-antd/core';
 
 const throttleTime = 51;
 

@@ -17,12 +17,15 @@ import {
 } from '@angular/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { collapseMotion } from '../core/animation/collapse';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { InputBoolean } from '../core/util/convert';
-import { NzFormatBeforeDropEvent } from '../tree/interface';
-import { NzTreeBaseService } from './nz-tree-base.service';
-import { NzTreeNode } from './nz-tree-node';
+
+import {
+  collapseMotion,
+  InputBoolean,
+  NzFormatBeforeDropEvent,
+  NzNoAnimationDirective,
+  NzTreeBaseService,
+  NzTreeNode
+} from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-tree-node',

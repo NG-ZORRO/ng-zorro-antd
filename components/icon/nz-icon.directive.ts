@@ -10,7 +10,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
-import { InputBoolean } from '../core/util';
+import { InputBoolean } from 'ng-zorro-antd/core';
 import { NzIconService } from './nz-icon.service';
 
 const iconTypeRE = /^anticon\-\w/;

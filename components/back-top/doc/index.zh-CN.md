@@ -14,6 +14,14 @@ title: BackTop
 
 ## API
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzBackTopModule } from 'ng-zorro-antd';
+```
+
 ### nz-back-top
 
 > 有默认样式，距离底部 `50px`，可覆盖。

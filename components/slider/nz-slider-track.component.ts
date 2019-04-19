@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { InputBoolean, InputNumber } from '../core/util/convert';
+import { InputBoolean, InputNumber } from 'ng-zorro-antd/core';
 
 export interface NzSliderTrackStyle {
   bottom?: string | null;

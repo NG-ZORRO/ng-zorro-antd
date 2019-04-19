@@ -25,12 +25,14 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { slideMotion } from '../core/animation/slide';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { DEFAULT_CASCADER_POSITIONS } from '../core/overlay/overlay-position';
-import { NgClassType } from '../core/types/ng-class';
-import { toArray } from '../core/util/array';
-import { InputBoolean } from '../core/util/convert';
+import {
+  slideMotion,
+  toArray,
+  DEFAULT_DROPDOWN_POSITIONS,
+  InputBoolean,
+  NgClassType,
+  NzNoAnimationDirective
+} from 'ng-zorro-antd/core';
 
 import {
   CascaderOption,
@@ -136,7 +138,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   labelRenderContext = {};
   onChange = Function.prototype;
   onTouched = Function.prototype;
-  positions: ConnectionPositionPair[] = [...DEFAULT_CASCADER_POSITIONS];
+  positions: ConnectionPositionPair[] = [...DEFAULT_DROPDOWN_POSITIONS];
   dropdownWidthStyle: string;
   isFocused = false;
 

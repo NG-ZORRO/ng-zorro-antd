@@ -14,9 +14,9 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { collapseMotion } from '../core/animation/collapse';
 
-import { InputBoolean } from '../core/util/convert';
+import { collapseMotion, InputBoolean } from 'ng-zorro-antd/core';
+
 import { NzCollapseComponent } from './nz-collapse.component';
 
 @Component({

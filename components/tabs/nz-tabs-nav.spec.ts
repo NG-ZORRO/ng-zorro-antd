@@ -7,7 +7,7 @@ import { async, discardPeriodicTasks, fakeAsync, tick, ComponentFixture, TestBed
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 
-import { dispatchFakeEvent } from '../core/testing';
+import { dispatchFakeEvent } from 'ng-zorro-antd/core';
 
 import { NzTabsNavComponent } from './nz-tabs-nav.component';
 import { NzTabsModule } from './nz-tabs.module';

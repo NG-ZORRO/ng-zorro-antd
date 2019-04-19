@@ -19,6 +19,14 @@ subtitle: 级联选择
 <nz-cascader [nzOptions]="options" [(ngModel)]="values"></nz-cascader>
 ```
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzCascaderModule } from 'ng-zorro-antd';
+```
+
 ### nz-cascader
 
 | 参数 | 说明 | 类型 | 默认值 |

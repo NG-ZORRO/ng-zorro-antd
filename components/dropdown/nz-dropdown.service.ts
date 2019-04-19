@@ -12,9 +12,7 @@ import { fromEvent } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { NzDropdownContextComponent } from './nz-dropdown-context.component';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class NzDropdownService {
   private overlayRef: OverlayRef | null;
 

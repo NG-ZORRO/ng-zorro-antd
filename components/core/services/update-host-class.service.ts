@@ -13,7 +13,7 @@ export class NzUpdateHostClassService {
     this.addClass(el, this.classMap, this.renderer);
   }
 
-  private removeClass(el: HTMLElement, classMap: object, renderer: Renderer2): void {
+  private removeClass(el: HTMLElement, classMap: NgClassInterface, renderer: Renderer2): void {
     for (const i in classMap) {
       if (classMap.hasOwnProperty(i)) {
         renderer.removeClass(el, i);
@@ -23,10 +23,8 @@ export class NzUpdateHostClassService {
 
   private addClass(el: HTMLElement, classMap: NgClassInterface, renderer: Renderer2): void {
     for (const i in classMap) {
-      if (classMap.hasOwnProperty(i)) {
-        if (classMap[i]) {
-          renderer.addClass(el, i);
-        }
+      if (classMap.hasOwnProperty(i) && classMap[i]) {
+        renderer.addClass(el, i);
       }
     }
   }

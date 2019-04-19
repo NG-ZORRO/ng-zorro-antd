@@ -1,4 +1,4 @@
-export { CandyDate } from './lib/candy-date';
+export { CandyDate } from './lib/candy-date/candy-date';
 export { PickerResult, PickerResultSingle, PickerResultRange, PresetRanges, PanelMode } from './standard-types';
 
 export { NzDatePickerModule } from './date-picker.module';

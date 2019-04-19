@@ -2,7 +2,8 @@ import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { manifest } from '@ant-design/icons-angular';
 import { AccountBookFill } from '@ant-design/icons-angular/icons';
-import { NzIconService } from 'ng-zorro-antd';
+
+import { NzIconService } from 'ng-zorro-antd/icon';
 
 const categories: { [key: string]: string[] } = {
   direction: [

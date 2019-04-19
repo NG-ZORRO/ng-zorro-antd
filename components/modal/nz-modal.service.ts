@@ -2,9 +2,8 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IndexableObject } from '../core/types/indexable';
 
-import { LoggerService } from '../core/util/logger/logger.service';
+import { IndexableObject, LoggerService } from 'ng-zorro-antd/core';
 
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';

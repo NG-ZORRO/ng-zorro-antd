@@ -10,6 +10,14 @@ Almost anything can be represented in a tree structure. Examples include directo
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzTreeModule } from 'ng-zorro-antd';
+```
+
 ### nz-tree
 
 | Property | Description | Type | Default |

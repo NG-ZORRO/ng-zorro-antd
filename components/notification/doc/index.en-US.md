@@ -37,6 +37,14 @@ The default global configuration is:
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzNotificationModule } from 'ng-zorro-antd';
+```
+
 ### NzNotificationService
 
 The component provides a number of service methods using the following methods and parameters:

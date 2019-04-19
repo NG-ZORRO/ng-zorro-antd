@@ -18,6 +18,14 @@ It is recommended to use the `Component` way to pop up the Modal, so that the co
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzModalModule } from 'ng-zorro-antd';
+```
+
 ### NzModalService
 
 The dialog is currently divided into 2 modes, `normal mode` and `confirm box mode` (ie the `Confirm` dialog, which is called by calling `confirm/info/success/error/warning`). The degree of API support for the two modes is slightly different.

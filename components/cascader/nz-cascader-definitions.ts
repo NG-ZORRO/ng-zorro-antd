@@ -3,7 +3,6 @@ export type NzCascaderTriggerType = 'click' | 'hover';
 export type NzCascaderSize = 'small' | 'large' | 'default';
 
 export type NzCascaderFilter = (searchValue: string, path: CascaderOption[]) => boolean;
-
 export type NzCascaderSorter = (a: CascaderOption[], b: CascaderOption[], inputValue: string) => number;
 
 export interface CascaderOption {

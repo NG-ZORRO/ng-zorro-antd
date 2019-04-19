@@ -21,6 +21,14 @@ When the task is complicated or has a certain sequence in the series of subtasks
 </nz-steps>
 ```
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzStepsModule } from 'ng-zorro-antd';
+```
+
 ### nz-steps
 
 The whole of the step bar.

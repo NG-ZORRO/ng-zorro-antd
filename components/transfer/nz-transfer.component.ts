@@ -20,8 +20,8 @@ import {
 import { of, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { InputBoolean } from '../core/util/convert';
-import { NzI18nService } from '../i18n/nz-i18n.service';
+import { InputBoolean } from 'ng-zorro-antd/core';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { TransferCanMove, TransferChange, TransferItem, TransferSearchChange, TransferSelectChange } from './interface';
 import { NzTransferListComponent } from './nz-transfer-list.component';

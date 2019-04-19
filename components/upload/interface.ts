@@ -1,6 +1,7 @@
 // tslint:disable:no-any prefer-method-signature
 import { Observable, Subscription } from 'rxjs';
-import { IndexableObject } from '../core/types/indexable';
+
+import { IndexableObject } from 'ng-zorro-antd/core';
 
 /** 状态 */
 export type UploadFileStatus = 'error' | 'success' | 'done' | 'uploading' | 'removed';

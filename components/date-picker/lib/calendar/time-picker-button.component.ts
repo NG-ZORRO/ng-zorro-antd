@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 
-import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
 @Component({
   encapsulation: ViewEncapsulation.None,

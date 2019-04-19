@@ -10,7 +10,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NgClassType } from '../core/types/ng-class';
+import { NgClassType } from 'ng-zorro-antd/core';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

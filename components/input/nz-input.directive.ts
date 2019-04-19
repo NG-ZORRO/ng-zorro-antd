@@ -1,7 +1,6 @@
 import { Directive, ElementRef, Input, Optional, Renderer2, Self } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { NzSizeLDSType } from '../core/types/size';
-import { toBoolean } from '../core/util/convert';
+import { toBoolean, NzSizeLDSType } from 'ng-zorro-antd/core';
 
 @Directive({
   selector: '[nz-input]',

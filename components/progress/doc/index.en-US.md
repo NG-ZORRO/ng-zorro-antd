@@ -15,6 +15,14 @@ If it will take a long time to complete an operation, you can use `Progress` to 
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzProgressModule } from 'ng-zorro-antd';
+```
+
 ### nz-progress
 
 | Property | Description | Type | Default |

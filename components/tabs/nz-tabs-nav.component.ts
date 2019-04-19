@@ -22,7 +22,7 @@ import {
 import { fromEvent, merge, of as observableOf, Subscription } from 'rxjs';
 import { auditTime, startWith } from 'rxjs/operators';
 
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean } from 'ng-zorro-antd/core';
 
 import { NzTabLabelDirective } from './nz-tab-label.directive';
 import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';

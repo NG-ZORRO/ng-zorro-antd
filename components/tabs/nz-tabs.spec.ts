@@ -1,7 +1,7 @@
 import { Component, DebugElement, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NGStyleInterface } from '../core/types/ng-class';
+import { NGStyleInterface } from 'ng-zorro-antd/core';
 
 import { NzTabsModule } from './nz-tabs.module';
 import { NzAnimatedInterface, NzTabSetComponent } from './nz-tabset.component';

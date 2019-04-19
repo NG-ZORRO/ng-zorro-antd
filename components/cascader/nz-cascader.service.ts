@@ -1,6 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { arraysEqual } from '../core/util/array';
+
+import { arraysEqual } from 'ng-zorro-antd/core';
 
 import {
   isShowSearchObject,

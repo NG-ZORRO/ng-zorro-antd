@@ -15,7 +15,7 @@ import {
 import { of, Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
 

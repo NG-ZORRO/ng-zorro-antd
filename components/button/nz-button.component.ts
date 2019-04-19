@@ -21,13 +21,19 @@ import {
 } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { NzSizeLDSType, NzSizeMap } from '../core/types/size';
-import { isEmpty } from '../core/util/check';
-import { InputBoolean } from '../core/util/convert';
-import { findFirstNotEmptyNode, findLastNotEmptyNode } from '../core/util/dom';
-import { NzWaveConfig, NzWaveDirective, NZ_WAVE_GLOBAL_CONFIG } from '../core/wave/nz-wave.directive';
-import { NzIconDirective } from '../icon/nz-icon.directive';
+import {
+  findFirstNotEmptyNode,
+  findLastNotEmptyNode,
+  isEmpty,
+  InputBoolean,
+  NzSizeLDSType,
+  NzSizeMap,
+  NzUpdateHostClassService,
+  NzWaveConfig,
+  NzWaveDirective,
+  NZ_WAVE_GLOBAL_CONFIG
+} from 'ng-zorro-antd/core';
+import { NzIconDirective } from 'ng-zorro-antd/icon';
 
 export type NzButtonType = 'primary' | 'dashed' | 'danger' | 'default';
 export type NzButtonShape = 'circle' | 'round' | null;

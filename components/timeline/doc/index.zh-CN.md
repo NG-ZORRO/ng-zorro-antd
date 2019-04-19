@@ -23,6 +23,14 @@ title: Timeline
 </nz-timeline>
 ```
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzTimelineModule } from 'ng-zorro-antd';
+```
+
 ### nz-timeline
 
 时间轴。

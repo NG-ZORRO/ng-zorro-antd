@@ -13,6 +13,14 @@ Radio.
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzRadioModule } from 'ng-zorro-antd';
+```
+
 ### [nz-radio] | [nz-radio-button]
 
 | Property | Description | Type | Default |

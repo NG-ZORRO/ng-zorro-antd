@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Host, Input, Optional, Renderer2 } from '@angular/core';
-import { toBoolean } from '../core/util/convert';
+import { toBoolean } from 'ng-zorro-antd/core';
 import { NzTableComponent } from './nz-table.component';
 
 @Directive({

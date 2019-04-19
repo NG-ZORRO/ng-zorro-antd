@@ -55,6 +55,14 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzTableModule } from 'ng-zorro-antd';
+```
+
 ### nz-table
 
 | Property | Description | Type | Default |

@@ -20,6 +20,14 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 
 ## API
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzTabsModule } from 'ng-zorro-antd';
+```
+
 ### nz-tabset
 
 | 参数 | 说明 | 类型 | 默认值 |

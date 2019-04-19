@@ -7,7 +7,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { InputBoolean } from '../core/util';
+import { InputBoolean } from 'ng-zorro-antd/core';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

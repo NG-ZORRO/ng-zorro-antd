@@ -12,6 +12,14 @@ To input a value in a range.
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzSliderModule } from 'ng-zorro-antd';
+```
+
 ### nz-slider
 
 | Property | Description | Type | Default |

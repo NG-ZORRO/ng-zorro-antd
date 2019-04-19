@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 import { NzSliderHandleComponent } from './nz-slider-handle.component';
 import { NzSliderMarksComponent } from './nz-slider-marks.component';

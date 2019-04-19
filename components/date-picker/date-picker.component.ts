@@ -11,9 +11,8 @@ import {
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { DateHelperService } from '../i18n/date-helper.service';
-import { NzI18nService } from '../i18n/nz-i18n.service';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { DateRangePickerComponent } from './date-range-picker.component';
 
