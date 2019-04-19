@@ -624,6 +624,15 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       expect(queryFromOverlay('.ant-calendar-picker-container')).toBeFalsy();
+
+      fixtureInstance.nzRanges = { Today: () => [today, today] };
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      selector = queryFromOverlay('.ant-calendar-range-quick-selector > a');
+      const nzRangesSpy = spyOn(fixtureInstance.nzRanges, 'Today');
+      dispatchMouseEvent(selector, 'click');
+      fixture.detectChanges();
+      expect(nzRangesSpy).toHaveBeenCalled();
     }));
 
     it('should custom input date range', fakeAsync(() => {
