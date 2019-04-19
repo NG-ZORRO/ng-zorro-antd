@@ -95,6 +95,8 @@ import { NzFormModule } from 'ng-zorro-antd';
 | `[nzValidateStatus]` | Template-driven Forms：校验状态 | `'success'｜'warning'｜'error'｜'validating'` | - |
 | `[nzHasFeedback]`| 配合 `nzValidateStatus` 属性使用，展示校验状态图标	 | `boolean` | `false`|
 
+从 7.3.0 版本开始，`nz-form-control` 提供了 `status` 变量用于指示校验状态，`status` 会自动根据 `[nzValidateStatus]` 在 `'success'｜'warning'｜'error'｜'validating'` 中自动切换，用户可以通过模板变量导出 `status` 用于切换提示信息。
+
 ### nz-form-explain
 
 用于显示提示信息，会自动根据当前的 nzValidateStatus 显示不同的颜色

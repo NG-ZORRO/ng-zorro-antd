@@ -96,6 +96,8 @@ A form consists of one or more form fields whose type includes input, textarea, 
 | `[nzValidateStatus]` | Template-driven Forms: The validation status | `'success'｜'warning'｜'error'｜'validating'` | - |
 | `[nzHasFeedback]`| Used with `nzValidateStatus`, this option specifies the validation status icon. Recommended to be used only with `Input`. | `boolean` | `false` |
 
+From `7.3.0` version, `nz-form-control` provide `status` variable, it will switch between `'success'｜'warning'｜'error'｜'validating'` automatically according to `[nzValidateStatus]` passed in, user can get it from template reference variables.
+
 ### nz-form-explain
 
 Validation messages

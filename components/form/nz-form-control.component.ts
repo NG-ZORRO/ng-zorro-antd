@@ -14,7 +14,7 @@ import {
   Renderer2,
   ViewEncapsulation
 } from '@angular/core';
-import { FormControl, FormControlName, NgControl } from '@angular/forms';
+import { FormControl, FormControlName, NgControl, NgModel } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
@@ -44,9 +44,10 @@ export class NzFormControlComponent extends NzColDirective
   private _hasFeedback = false;
   validateChanges: Subscription | null;
   validateString: string | null;
+  status: 'warning' | 'validating' | 'error' | 'success' | 'init';
   controlClassMap: NgClassType = {};
   iconType: string;
-  validateControl: FormControl | null;
+  validateControl: FormControl | NgModel | null;
   @ContentChild(NgControl) defaultValidateControl: FormControlName;
 
   @Input()
@@ -60,8 +61,8 @@ export class NzFormControlComponent extends NzColDirective
   }
 
   @Input()
-  set nzValidateStatus(value: string | FormControl | FormControlName) {
-    if (value instanceof FormControl) {
+  set nzValidateStatus(value: string | FormControl | FormControlName | NgModel) {
+    if (value instanceof FormControl || value instanceof NgModel) {
       this.validateControl = value;
       this.validateString = null;
       this.watchControl();
@@ -95,36 +96,39 @@ export class NzFormControlComponent extends NzColDirective
   }
 
   validateControlStatus(status: string): boolean {
-    return (
-      !!this.validateControl &&
+    return (!!this.validateControl &&
       (this.validateControl.dirty || this.validateControl.touched) &&
-      this.validateControl.status === status
-    );
+      this.validateControl.status === status) as boolean;
   }
 
   setControlClassMap(): void {
-    this.controlClassMap = {
-      [`has-warning`]: this.validateString === 'warning',
-      [`is-validating`]:
-        this.validateString === 'validating' ||
-        this.validateString === 'pending' ||
-        this.validateControlStatus('PENDING'),
-      [`has-error`]: this.validateString === 'error' || this.validateControlStatus('INVALID'),
-      [`has-success`]: this.validateString === 'success' || this.validateControlStatus('VALID'),
-      [`has-feedback`]: this.nzHasFeedback
-    };
-
-    if (this.controlClassMap['has-warning']) {
+    if (this.validateString === 'warning') {
+      this.status = 'warning';
       this.iconType = 'exclamation-circle-fill';
-    } else if (this.controlClassMap['is-validating']) {
+    } else if (
+      this.validateString === 'validating' ||
+      this.validateString === 'pending' ||
+      this.validateControlStatus('PENDING')
+    ) {
+      this.status = 'validating';
       this.iconType = 'loading';
-    } else if (this.controlClassMap['has-error']) {
+    } else if (this.validateString === 'error' || this.validateControlStatus('INVALID')) {
+      this.status = 'error';
       this.iconType = 'close-circle-fill';
-    } else if (this.controlClassMap['has-success']) {
+    } else if (this.validateString === 'success' || this.validateControlStatus('VALID')) {
+      this.status = 'success';
       this.iconType = 'check-circle-fill';
     } else {
+      this.status = 'init';
       this.iconType = '';
     }
+    this.controlClassMap = {
+      [`has-warning`]: this.status === 'warning',
+      [`is-validating`]: this.status === 'validating',
+      [`has-error`]: this.status === 'error',
+      [`has-success`]: this.status === 'success',
+      [`has-feedback`]: this.nzHasFeedback
+    };
   }
 
   constructor(
