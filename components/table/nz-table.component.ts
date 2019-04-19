@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
   AfterContentInit,
@@ -217,6 +218,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
     private cdr: ChangeDetectorRef,
     private nzMeasureScrollbarService: NzMeasureScrollbarService,
     private i18n: NzI18nService,
+    private platform: Platform,
     elementRef: ElementRef
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-table-wrapper');
@@ -244,6 +246,9 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   }
 
   ngAfterViewInit(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     setTimeout(() => this.setScrollPositionClassName());
     this.ngZone.runOutsideAngular(() => {
       merge<MouseEvent>(

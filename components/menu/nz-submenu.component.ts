@@ -1,4 +1,5 @@
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -107,7 +108,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   }
 
   setTriggerWidth(): void {
-    if (this.nzSubmenuService.mode === 'horizontal') {
+    if (this.nzSubmenuService.mode === 'horizontal' && this.platform.isBrowser) {
       this.triggerWidth = this.cdkOverlayOrigin.nativeElement.getBoundingClientRect().width;
     }
   }
@@ -135,6 +136,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
     private cdr: ChangeDetectorRef,
     public nzSubmenuService: NzSubmenuService,
     private nzUpdateHostClassService: NzUpdateHostClassService,
+    private platform: Platform,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {}
 

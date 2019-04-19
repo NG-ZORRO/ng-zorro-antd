@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -46,7 +47,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
 
   private destroy$ = new Subject<void>();
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private platform: Platform) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const modeChanges = changes.nzMode;
@@ -102,7 +103,9 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   }
 
   private reverseChildTimelineDots(): void {
-    reverseChildNodes(this.timeline.nativeElement as HTMLElement);
-    this.updateChildren();
+    if (this.platform.isBrowser) {
+      reverseChildNodes(this.timeline.nativeElement as HTMLElement);
+      this.updateChildren();
+    }
   }
 }
