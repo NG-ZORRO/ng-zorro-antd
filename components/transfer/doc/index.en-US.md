@@ -15,9 +15,9 @@ One or more elements can be selected from either column, one click on the proper
 
 ## API
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzTransferModule } from 'ng-zorro-antd';

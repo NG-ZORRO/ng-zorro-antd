@@ -21,9 +21,9 @@ When the task is complicated or has a certain sequence in the series of subtasks
 </nz-steps>
 ```
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzStepsModule } from 'ng-zorro-antd';

@@ -30,9 +30,9 @@ There are four kinds of picker:
 
 **Note:** All input and output date objects are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manpulate it with [date-fns](https://date-fns.org/).
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzDatePickerModule } from 'ng-zorro-antd';

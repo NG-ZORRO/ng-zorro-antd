@@ -17,9 +17,9 @@ Use when you need the user to quickly understand what the current page is and wh
 <nz-page-header nzTitle="Page Title"></nz-page-header>
 ```
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzPageHeaderModule } from 'ng-zorro-antd';

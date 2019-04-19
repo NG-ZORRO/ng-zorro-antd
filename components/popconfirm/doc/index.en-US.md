@@ -14,9 +14,9 @@ The difference with the `confirm` modal dialog is that it's more lightweight tha
 
 ## API
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzPopconfirmModule } from 'ng-zorro-antd';

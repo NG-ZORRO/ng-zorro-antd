@@ -14,9 +14,9 @@ Keyboard and mouse can be used for providing or changing data.
 
 ## API
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzInputModule } from 'ng-zorro-antd';

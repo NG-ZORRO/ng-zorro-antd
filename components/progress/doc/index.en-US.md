@@ -15,9 +15,9 @@ If it will take a long time to complete an operation, you can use `Progress` to 
 
 ## API
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzProgressModule } from 'ng-zorro-antd';

@@ -15,9 +15,9 @@ A Drawer is a panel that is typically overlaid on top of a page and slides in fr
 
 ## API
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzDrawerModule } from 'ng-zorro-antd';

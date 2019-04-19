@@ -22,9 +22,9 @@ Badge normally appears in proximity to notifications or user avatars with eye-ca
 <nz-badge [nzCount]="5"></nz-badge>
 ```
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzBadgeModule } from 'ng-zorro-antd';

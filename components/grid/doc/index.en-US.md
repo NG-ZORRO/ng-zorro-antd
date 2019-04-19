@@ -81,9 +81,9 @@ Flex layout uses a 24 grid layout to define the width of each "box", but does no
 
 ## API
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzGridModule } from 'ng-zorro-antd';

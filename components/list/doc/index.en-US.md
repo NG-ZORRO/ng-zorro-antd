@@ -13,9 +13,9 @@ A list can be used to display content related to a single subject. The content c
 
 ## API
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzListModule } from 'ng-zorro-antd';

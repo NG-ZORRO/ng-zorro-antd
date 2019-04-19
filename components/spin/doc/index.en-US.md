@@ -12,9 +12,9 @@ When part of the page is waiting for asynchronous data or during a rendering pro
 
 ## API
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzSpinModule } from 'ng-zorro-antd';

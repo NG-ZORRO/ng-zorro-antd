@@ -12,9 +12,9 @@ If there are too many operations to display, you can wrap them in a `Dropdown`. 
 
 ## API
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzDropDownModule } from 'ng-zorro-antd';

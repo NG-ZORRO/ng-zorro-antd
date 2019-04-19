@@ -20,9 +20,9 @@ We are still adding two-tone icons right now, syncing to [antd](https://ant.desi
 
 ## API
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzIconModule } from 'ng-zorro-antd';

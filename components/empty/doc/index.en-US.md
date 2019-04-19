@@ -13,9 +13,9 @@ When there is no data provided, display for friendly tips.
 
 ## API
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzEmptyModule } from 'ng-zorro-antd';

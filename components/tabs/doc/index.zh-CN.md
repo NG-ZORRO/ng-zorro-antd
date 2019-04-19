@@ -20,9 +20,9 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 
 ## API
 
-### 二级入口
+### 单独引入此组件
 
-[说明](/docs/getting-started/zh#二级入口)。
+[说明](/docs/getting-started/zh#单独引入某个组件)。
 
 ```ts
 import { NzTabsModule } from 'ng-zorro-antd';

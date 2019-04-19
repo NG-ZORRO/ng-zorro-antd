@@ -69,9 +69,9 @@ The first level navigation is inclined left near a logo, and the secondary menu 
 </nz-layout>
 ```
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzLayoutModule } from 'ng-zorro-antd';

@@ -14,9 +14,9 @@ Comparing with `Tooltip`, besides information `Popover` card can also provide ac
 
 ## API
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzPopoverModule } from 'ng-zorro-antd';

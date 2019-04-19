@@ -13,9 +13,9 @@ Display statistic number.
 
 ## API
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzStatisticModule } from 'ng-zorro-antd';

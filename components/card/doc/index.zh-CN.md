@@ -18,9 +18,9 @@ cols: 1
 <nz-card nzTitle="卡片标题">卡片内容</nz-card>
 ```
 
-### 二级入口
+### 单独引入此组件
 
-[说明](/docs/getting-started/zh#二级入口)。
+[说明](/docs/getting-started/zh#单独引入某个组件)。
 
 ```ts
 ```ts

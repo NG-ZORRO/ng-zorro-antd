@@ -14,9 +14,9 @@ When a numeric value needs to be provided.
 
 ## API
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzInputNumberModule } from 'ng-zorro-antd';

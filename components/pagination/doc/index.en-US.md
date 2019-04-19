@@ -18,9 +18,9 @@ A long list can be divided into several pages by `Pagination`, and only one page
 <nz-pagination [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
 ```
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzPaginationModule } from 'ng-zorro-antd';

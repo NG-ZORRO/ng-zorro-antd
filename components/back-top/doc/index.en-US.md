@@ -13,9 +13,9 @@ title: BackTop
 
 ## API
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzBackTopModule } from 'ng-zorro-antd';

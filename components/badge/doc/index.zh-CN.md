@@ -23,9 +23,9 @@ title: Badge
 <nz-badge [nzCount]="5"></nz-badge>
 ```
 
-### 二级入口
+### 单独引入此组件
 
-[说明](/docs/getting-started/zh#二级入口)。
+[说明](/docs/getting-started/zh#单独引入某个组件)。
 
 ```ts
 import { NzBadgeModule } from 'ng-zorro-antd';

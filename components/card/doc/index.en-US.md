@@ -17,9 +17,9 @@ A card can be used to display content related to a single subject. The content c
 <nz-card nzTitle="卡片标题">卡片内容</nz-card>
 ```
 
-### Secondary Entry Point
+### Import this Component Individually
 
-[Note](/docs/getting-started/en#secondary-entry-points).
+[Note](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzCardModule } from 'ng-zorro-antd';
