@@ -30,7 +30,7 @@ import {
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { isPromise, InputBoolean, getElementOffset } from 'ng-zorro-antd/core';
+import { getElementOffset, isPromise, InputBoolean } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzModalConfig, NZ_MODAL_CONFIG } from './nz-modal-config';
