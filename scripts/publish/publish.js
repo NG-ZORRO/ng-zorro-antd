@@ -77,7 +77,7 @@ function changeVersion() {
     const curVersion = parseVersion(cur);
     const nextVersion = parseVersion(next);
 
-    for (k of ['major', 'minor', 'patch']) {
+    for (const k of ['major', 'minor', 'patch']) {
       if (curVersion[k] < nextVersion[k]) {
         return true;
       }
