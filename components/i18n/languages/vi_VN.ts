@@ -1,3 +1,11 @@
+/*
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import Calendar from './calendar/vi_VN';
 import DatePicker from './date-picker/vi_VN';
 import Pagination from './pagination/vi_VN';

@@ -1,3 +1,11 @@
+/*
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { MediaMatcher } from '@angular/cdk/layout';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, discardPeriodicTasks, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';

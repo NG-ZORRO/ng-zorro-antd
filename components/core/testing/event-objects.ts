@@ -1,9 +1,9 @@
-/**
+/*
  * @license
- * Copyright Google LLC All Rights Reserved.
+ * Copyright Alibaba.com All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /** Creates a browser MouseEvent with the specified options. */
