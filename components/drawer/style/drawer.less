@@ -40,6 +40,11 @@
     }
   }
   &-left {
+    .@{drawer-prefix-cls} {
+      &-content-wrapper {
+        left: 0;
+      }
+    }
     &.@{drawer-prefix-cls}-open {
       .@{drawer-prefix-cls}-content-wrapper {
         box-shadow: @shadow-1-right;
@@ -167,6 +172,7 @@
   }
 
   &-body {
+    margin-top: 54px;
     padding: @drawer-body-padding;
     font-size: @font-size-base;
     line-height: @line-height-base;
