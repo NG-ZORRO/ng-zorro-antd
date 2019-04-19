@@ -17,6 +17,14 @@ title: TimePicker
 <nz-time-picker [(ngModel)]="someTime"></nz-time-picker>
 ```
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzTimePickerModule } from 'ng-zorro-antd';
+```
+
 ### nz-time-picker
 
 | 参数 | 说明 | 类型 | 默认值 |

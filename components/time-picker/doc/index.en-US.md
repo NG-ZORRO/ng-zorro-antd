@@ -16,6 +16,14 @@ By clicking the input box, you can select a time from a popup panel.
 <nz-time-picker [(ngModel)]="someTime"></nz-time-picker>
 ```
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzTimePickerModule } from 'ng-zorro-antd';
+```
+
 ### nz-time-picker
 
 | Property | Description | Type | Default |

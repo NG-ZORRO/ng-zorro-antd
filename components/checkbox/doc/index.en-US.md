@@ -13,6 +13,14 @@ Checkbox.
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzCheckboxModule } from 'ng-zorro-antd';
+```
+
 ### [nz-checkbox]
 
 | Property | Description | Type | Default |

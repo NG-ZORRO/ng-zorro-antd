@@ -37,6 +37,14 @@ registerLocaleData(zh);
 <ng-template #dateCellTpl let-date><span>{{ date | date:'d'}}</span></ng-template>
 ```
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzCalendarModule } from 'ng-zorro-antd';
+```
+
 ### nz-calendar
 
 | 参数 | 说明 | 类型 | 默认值 |

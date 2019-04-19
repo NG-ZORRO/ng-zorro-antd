@@ -7,6 +7,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+
 import { NzCommentActionComponent as CommentAction } from './nz-comment-cells';
 
 @Component({

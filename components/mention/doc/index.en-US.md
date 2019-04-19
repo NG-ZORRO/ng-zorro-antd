@@ -22,6 +22,14 @@ When need to mention someone or something.
 </nz-mention>
 ```
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzMentionModule } from 'ng-zorro-antd';
+```
+
 ### nz-mention
 
 | Property | Description | Type | Default |

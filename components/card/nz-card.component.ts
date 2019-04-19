@@ -8,7 +8,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean } from 'ng-zorro-antd/core';
 import { NzCardTabComponent } from './nz-card-tab.component';
 
 @Component({

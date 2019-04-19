@@ -9,10 +9,10 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import differenceInDays from 'date-fns/difference_in_days';
 import isSameDay from 'date-fns/is_same_day';
 
-import { dispatchMouseEvent } from '../core/testing';
-import { NGStyleInterface } from '../core/types/ng-class';
+import { dispatchMouseEvent, NGStyleInterface } from 'ng-zorro-antd/core';
+
 import { NzDatePickerModule } from './date-picker.module';
-import { CandyDate } from './lib/candy-date';
+import { CandyDate } from './lib/candy-date/candy-date';
 
 registerLocaleData(zh);
 

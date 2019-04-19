@@ -8,8 +8,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import setMonth from 'date-fns/set_month';
-import { DateHelperService } from '../i18n/date-helper.service';
-import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
+import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
 
 @Component({
   encapsulation: ViewEncapsulation.None,

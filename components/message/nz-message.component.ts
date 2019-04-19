@@ -7,7 +7,9 @@ import {
   OnInit,
   ViewEncapsulation
 } from '@angular/core';
-import { moveUpMotion } from '../core/animation/move';
+
+import { moveUpMotion } from 'ng-zorro-antd/core';
+
 import { NzMessageContainerComponent } from './nz-message-container.component';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 

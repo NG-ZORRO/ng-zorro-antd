@@ -8,9 +8,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { DateHelperService } from '../../../i18n/date-helper.service';
-import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
-import { CandyDate } from '../candy-date';
+import { DateHelperService } from 'ng-zorro-antd/i18n';
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import { CandyDate } from '../candy-date/candy-date';
 
 @Component({
   encapsulation: ViewEncapsulation.None,

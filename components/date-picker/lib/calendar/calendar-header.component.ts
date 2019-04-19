@@ -10,10 +10,10 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { DateHelperByDatePipe, DateHelperService } from '../../../i18n/date-helper.service';
-import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
+import { DateHelperByDatePipe, DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+
 import { PanelMode } from '../../standard-types';
-import { CandyDate } from '../candy-date';
+import { CandyDate } from '../candy-date/candy-date';
 
 @Component({
   encapsulation: ViewEncapsulation.None,

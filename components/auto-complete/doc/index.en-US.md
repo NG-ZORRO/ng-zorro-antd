@@ -26,6 +26,14 @@ When there is a need for autocomplete functionality.
 </nz-autocomplete>
 ```
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzAutocompleteModule } from 'ng-zorro-antd';
+```
+
 ### [nzAutocomplete]
 
 | Property | Description | Type | Default |

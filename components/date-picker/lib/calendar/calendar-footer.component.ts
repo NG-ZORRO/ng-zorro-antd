@@ -8,9 +8,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { isNonEmptyString, isTemplateRef } from '../../../core/util/check';
-import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
-import { CandyDate } from '../candy-date';
+import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core';
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import { CandyDate } from '../candy-date/candy-date';
 
 @Component({
   encapsulation: ViewEncapsulation.None,

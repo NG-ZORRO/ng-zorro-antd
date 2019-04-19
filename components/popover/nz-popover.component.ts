@@ -10,10 +10,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { zoomBigMotion } from '../core/animation/zoom';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { isNotNil } from '../core/util';
-import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
+import { isNotNil, zoomBigMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { NzToolTipComponent } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-popover',

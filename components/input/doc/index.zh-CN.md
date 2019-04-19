@@ -14,6 +14,14 @@ title: Input
 
 ## API
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzInputModule } from 'ng-zorro-antd';
+```
+
 ### [nz-input]
 
 nz-input 可以使用所有的W3C标准下的所有 [使用方式](https://www.w3schools.com/tags/tag_input.asp) 和 Angular对 input 的全部额外功能支持。

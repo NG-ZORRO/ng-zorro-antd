@@ -9,8 +9,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { InputBoolean } from '../core/util/convert';
-import { scrollIntoView } from '../core/util/scroll-into-view-if-needed';
+import { scrollIntoView, InputBoolean } from 'ng-zorro-antd/core';
 
 export class NzOptionSelectionChange {
   constructor(public source: NzAutocompleteOptionComponent, public isUserInput: boolean = false) {}

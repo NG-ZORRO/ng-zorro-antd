@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean } from 'ng-zorro-antd/core';
 import { NzTabDirective } from './nz-tab.directive';
 
 @Component({

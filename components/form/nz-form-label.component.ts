@@ -10,10 +10,10 @@ import {
   Renderer2,
   ViewEncapsulation
 } from '@angular/core';
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { InputBoolean } from '../core/util/convert';
-import { NzColDirective } from '../grid/nz-col.directive';
-import { NzRowDirective } from '../grid/nz-row.directive';
+
+import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { NzColDirective, NzRowDirective } from 'ng-zorro-antd/grid';
+
 import { NzFormItemComponent } from './nz-form-item.component';
 
 @Component({

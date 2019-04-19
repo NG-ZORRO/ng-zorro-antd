@@ -12,12 +12,13 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
-import { NzScrollService } from '../core/scroll/nz-scroll.service';
-import { NGStyleInterface } from '../core/types/ng-class';
-import { shallowEqual } from '../core/util/check';
-import { toNumber } from '../core/util/convert';
-import { throttleByAnimationFrameDecorator } from '../core/util/throttleByAnimationFrame';
+import {
+  shallowEqual,
+  throttleByAnimationFrameDecorator,
+  toNumber,
+  NzScrollService,
+  NGStyleInterface
+} from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-affix',

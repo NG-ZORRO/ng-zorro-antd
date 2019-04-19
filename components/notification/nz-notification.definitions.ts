@@ -1,7 +1,7 @@
 import { TemplateRef } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { NzMessageData, NzMessageDataOptions } from '../message/nz-message.definitions';
+import { NzMessageData, NzMessageDataOptions } from 'ng-zorro-antd/message';
 
 export interface NzNotificationData extends NzMessageData {
   template?: TemplateRef<{}>;

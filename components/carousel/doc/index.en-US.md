@@ -14,6 +14,14 @@ A carousel component. Scales with its container.
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzCarouselModule } from 'ng-zorro-antd';
+```
+
 ### nz-carousel
 
 | Property | Description | Type | Default |

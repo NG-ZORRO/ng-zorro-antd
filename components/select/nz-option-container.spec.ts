@@ -3,7 +3,9 @@ import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ReplaySubject, Subject } from 'rxjs';
-import { dispatchFakeEvent } from '../core/testing';
+
+import { dispatchFakeEvent } from 'ng-zorro-antd/core';
+
 import { NzOptionContainerComponent } from './nz-option-container.component';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';

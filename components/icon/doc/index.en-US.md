@@ -20,6 +20,14 @@ We are still adding two-tone icons right now, syncing to [antd](https://ant.desi
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzIconModule } from 'ng-zorro-antd';
+```
+
 ### [nz-icon]
 
 | Property | Description | Type | Default |

@@ -18,6 +18,14 @@ Comments can be used to enable discussions on an entity such as a page, blog pos
 | [nzAuthor] | The element to display as the comment author | `string｜TemplateRef<void>` | - |
 | [nzDatetime] | A datetime element containing the time to be displayed | `string｜TemplateRef<void>` | - |
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzCommentModule } from 'ng-zorro-antd';
+```
+
 ### Comment sections
 | Element | Description |
 | ----- | ----------- |

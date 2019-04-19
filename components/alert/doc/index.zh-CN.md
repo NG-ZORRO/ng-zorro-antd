@@ -14,6 +14,14 @@ title: Alert
 
 ## API
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzAlertModule } from 'ng-zorro-antd';
+```
+
 ### nz-alert
 
 | 参数 | 说明 | 类型 | 默认值 |

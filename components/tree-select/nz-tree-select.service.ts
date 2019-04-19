@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { NzTreeBaseService } from '../tree/nz-tree-base.service';
+
+import { NzTreeBaseService } from 'ng-zorro-antd/core';
 
 @Injectable()
 export class NzTreeSelectService extends NzTreeBaseService {}

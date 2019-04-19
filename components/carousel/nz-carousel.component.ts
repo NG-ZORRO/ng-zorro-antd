@@ -24,10 +24,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
-import { take, takeUntil, throttleTime } from 'rxjs/operators';
 
-import { InputBoolean, InputNumber } from '../core/util/convert';
-import { isTouchEvent } from '../core/util/dom';
+import { isTouchEvent, InputBoolean, InputNumber } from 'ng-zorro-antd/core';
+import { take, takeUntil, throttleTime } from 'rxjs/operators';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 import { FromToInterface, NzCarouselEffects, PointerVector } from './nz-carousel-definitions';

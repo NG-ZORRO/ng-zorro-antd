@@ -23,6 +23,14 @@ title: Mention
 </nz-mention>
 ```
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzMentionModule } from 'ng-zorro-antd';
+```
+
 ### nz-mention
 
 | 参数 | 说明 | 类型 | 默认值 |

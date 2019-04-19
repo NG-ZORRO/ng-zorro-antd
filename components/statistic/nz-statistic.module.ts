@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzAddOnModule } from '../core/addon/addon.module';
+import { NzAddOnModule } from 'ng-zorro-antd/core';
 import { NzCountdownComponent } from './nz-countdown.component';
 import { NzStatisticNumberComponent } from './nz-statistic-number.component';
 import { NzStatisticComponent } from './nz-statistic.component';

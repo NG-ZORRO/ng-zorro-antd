@@ -13,6 +13,14 @@ title: BackTop
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzBackTopModule } from 'ng-zorro-antd';
+```
+
 ### nz-back-top
 
 > The distance to the bottom is set to `50px` by default, which is overridable.

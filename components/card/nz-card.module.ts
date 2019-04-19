@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzAddOnModule } from '../core/addon/addon.module';
+import { NzAddOnModule } from 'ng-zorro-antd/core';
 
 import { NzCardGridDirective } from './nz-card-grid.directive';
 import { NzCardLoadingComponent } from './nz-card-loading.component';

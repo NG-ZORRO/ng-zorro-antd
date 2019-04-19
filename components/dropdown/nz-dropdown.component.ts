@@ -7,32 +7,53 @@ import {
   ContentChild,
   EventEmitter,
   Host,
+  Injector,
   Input,
   OnChanges,
   OnDestroy,
   Optional,
   Output,
+  Self,
   SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+
 import { combineLatest, merge, EMPTY, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, mapTo, takeUntil } from 'rxjs/operators';
-import { slideMotion } from '../core/animation/slide';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { DEFAULT_DROPDOWN_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position';
-import { InputBoolean } from '../core/util/convert';
-import { NzMenuDirective } from '../menu/nz-menu.directive';
+
+import {
+  slideMotion,
+  DEFAULT_DROPDOWN_POSITIONS,
+  InputBoolean,
+  NzDropdownHigherOrderServiceToken,
+  NzMenuBaseService,
+  NzNoAnimationDirective,
+  POSITION_MAP
+} from 'ng-zorro-antd/core';
+import { NzMenuDirective } from 'ng-zorro-antd/menu';
+
 import { NzDropDownDirective } from './nz-dropdown.directive';
 import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 
 export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 
+export function menuServiceFactory(injector: Injector): NzMenuBaseService {
+  return injector.get(NzMenuDropdownService);
+}
+
 @Component({
   selector: 'nz-dropdown',
   exportAs: 'nzDropdown',
   preserveWhitespaces: false,
-  providers: [NzMenuDropdownService],
+  providers: [
+    NzMenuDropdownService,
+    {
+      provide: NzDropdownHigherOrderServiceToken,
+      useFactory: menuServiceFactory,
+      deps: [[new Self(), Injector]]
+    }
+  ],
   animations: [slideMotion],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

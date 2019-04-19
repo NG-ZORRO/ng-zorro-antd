@@ -70,6 +70,14 @@ title: Layout
 </nz-layout>
 ```
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzLayoutModule } from 'ng-zorro-antd';
+```
+
 ### nz-sider
 
 侧边栏。

@@ -13,7 +13,8 @@ import {
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NzI18nService } from '../i18n/nz-i18n.service';
+
+import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { emptyImage } from './nz-empty-config';
 
