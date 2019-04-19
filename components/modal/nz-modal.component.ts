@@ -30,10 +30,9 @@ import {
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { isPromise, InputBoolean } from 'ng-zorro-antd/core';
+import { getElementOffset, isPromise, InputBoolean } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
-import ModalUtil from './modal-util';
 import { NzModalConfig, NZ_MODAL_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
@@ -472,10 +471,12 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   // Update transform-origin to the last click position on document
   private updateTransformOrigin(): void {
     const modalElement = this.modalContainer.nativeElement as HTMLElement;
-    const lastPosition = ModalUtil.getLastClickPosition();
-    if (lastPosition) {
-      this.transformOrigin = `${lastPosition.x - modalElement.offsetLeft}px ${lastPosition.y -
-        modalElement.offsetTop}px 0px`;
+    if (this.previouslyFocusedElement) {
+      const previouslyDOMRect = this.previouslyFocusedElement.getBoundingClientRect();
+      const lastPosition = getElementOffset(this.previouslyFocusedElement);
+      const x = lastPosition.left + previouslyDOMRect.width / 2;
+      const y = lastPosition.top + previouslyDOMRect.height / 2;
+      this.transformOrigin = `${x - modalElement.offsetLeft}px ${y - modalElement.offsetTop}px 0px`;
     }
   }
 

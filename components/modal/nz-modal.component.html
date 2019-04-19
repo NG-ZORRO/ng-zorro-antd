@@ -30,7 +30,7 @@
             <i nz-icon type="close" class="ant-modal-close-icon"></i>
           </span>
         </button>
-        <ng-container [ngSwitch]="!hidden">
+        <ng-container *ngIf="!hidden" [ngSwitch]="true">
           <ng-container *ngSwitchCase="isModalType('default')" [ngTemplateOutlet]="tplContentDefault"></ng-container>
           <ng-container *ngSwitchCase="isModalType('confirm')" [ngTemplateOutlet]="tplContentConfirm"></ng-container>
         </ng-container>
@@ -100,7 +100,7 @@
           </ng-container>
         </span>
         <div class="ant-modal-confirm-content">
-          <ng-container #bodyContainer>
+          <ng-container>
             <ng-container *ngIf="!isComponent(nzContent)" [ngSwitch]="true">
               <ng-container *ngSwitchCase="isTemplateRef(nzContent)" [ngTemplateOutlet]="nzContent"></ng-container>
               <ng-container *ngSwitchCase="isNonEmptyString(nzContent)"><div [innerHTML]="nzContent"></div></ng-container>
