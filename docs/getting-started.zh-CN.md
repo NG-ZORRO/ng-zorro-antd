@@ -199,3 +199,5 @@ export class YourModule { }
 
 * 你的项目中仅仅用到了少数几个组件（你可以使用 ShareModule 来包装你需要用到的组件）
 * 你的项目同时使用了 ng-zorro-antd 和别的组件，而且你遇到了冲突
+
+当然，如果你已经在 module 中引入了 NgZorroAntdModule，单独引入各个组件的子 module 就没有意义了。

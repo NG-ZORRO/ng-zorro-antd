@@ -191,3 +191,5 @@ Importing individually is recommended if you:
 
 * Only use a small part of the components of ng-zorro-antd (You can use a shared module to wrap those components).
 * Use ng-zorro-antd along with others component kits and get error because of conflicts.
+
+Of course, if you import NgZorroAntdModule in your modules, you don't have to import sub modules individually.
