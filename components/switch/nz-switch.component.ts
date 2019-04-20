@@ -13,12 +13,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NzSizeDSType } from '../core/types/size';
 
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean, NzSizeDSType } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-switch',
+  exportAs: 'nzSwitch',
   preserveWhitespaces: false,
   templateUrl: './nz-switch.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

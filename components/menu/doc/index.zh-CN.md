@@ -1,7 +1,7 @@
 ---
 category: Components
 cols: 1
-type: Navigation
+type: 导航
 title: Menu
 subtitle: 导航菜单
 ---
@@ -26,6 +26,14 @@ subtitle: 导航菜单
     </ul>
   </li>
 </ul>
+```
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzMenuModule } from 'ng-zorro-antd';
 ```
 
 ### [nz-menu]

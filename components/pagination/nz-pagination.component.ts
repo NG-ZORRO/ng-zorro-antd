@@ -15,12 +15,13 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { isInteger } from '../core/util/check';
-import { toNumber, InputBoolean, InputNumber } from '../core/util/convert';
-import { NzI18nService } from '../i18n/nz-i18n.service';
+
+import { isInteger, toNumber, InputBoolean, InputNumber } from 'ng-zorro-antd/core';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 @Component({
   selector: 'nz-pagination',
+  exportAs: 'nzPagination',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

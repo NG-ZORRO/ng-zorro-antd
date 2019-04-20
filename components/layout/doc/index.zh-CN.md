@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 布局
-type: Layout
+type: 布局
 cols: 1
 title: Layout
 ---
@@ -68,6 +68,14 @@ title: Layout
   </nz-layout>
   <nz-footer>footer</nz-footer>
 </nz-layout>
+```
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzLayoutModule } from 'ng-zorro-antd';
 ```
 
 ### nz-sider

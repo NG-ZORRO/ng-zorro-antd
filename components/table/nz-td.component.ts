@@ -9,10 +9,8 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
-import { isNotNil } from '../core/util/check';
-import { InputBoolean } from '../core/util/convert';
+import { isNotNil, InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 @Component({
   // tslint:disable-next-line:component-selector

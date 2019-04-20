@@ -9,12 +9,14 @@ import {
   ViewContainerRef
 } from '@angular/core';
 
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { NzTooltipDirective } from '../tooltip/nz-tooltip.directive';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
+
 import { NzPopoverComponent } from './nz-popover.component';
 
 @Directive({
   selector: '[nz-popover]',
+  exportAs: 'nzPopover',
   host: {
     '[class.ant-popover-open]': 'isTooltipOpen'
   }

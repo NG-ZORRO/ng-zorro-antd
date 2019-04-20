@@ -9,17 +9,17 @@ import {
   Renderer2,
   SimpleChanges
 } from '@angular/core';
+
 import { merge, EMPTY, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { isNotNil } from '../core/util';
 
-import { InputBoolean } from '../core/util/convert';
-import { NzMenuService } from './nz-menu.service';
+import { isNotNil, InputBoolean, NzMenuBaseService, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+
 import { NzSubmenuService } from './nz-submenu.service';
 
 @Directive({
   selector: '[nz-menu-item]',
+  exportAs: 'nzMenuItem',
   providers: [NzUpdateHostClassService],
   host: {
     '(click)': 'clickMenuItem($event)'
@@ -64,7 +64,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private nzUpdateHostClassService: NzUpdateHostClassService,
-    private nzMenuService: NzMenuService,
+    private nzMenuService: NzMenuBaseService,
     @Optional() private nzSubmenuService: NzSubmenuService,
     private renderer: Renderer2,
     private elementRef: ElementRef

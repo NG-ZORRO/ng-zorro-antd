@@ -17,7 +17,7 @@
 </ng-template>
 <ng-template #tableInnerTemplate>
   <div #tableHeaderElement
-    *ngIf="nzScroll.x || nzScroll.y"
+    *ngIf="nzScroll.y"
     [ngStyle]="headerBottomStyle"
     class="ant-table-header">
     <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
@@ -79,7 +79,7 @@
     (nzPageIndexChange)="emitPageSizeOrIndex(nzPageSize,$event)">
   </nz-pagination>
 </ng-template>
-<nz-spin [nzDelay]="nzLoadingDelay" [nzSpinning]="nzLoading">
+<nz-spin [nzDelay]="nzLoadingDelay" [nzSpinning]="nzLoading" [nzIndicator]="nzLoadingIndicator">
   <ng-container *ngIf="nzPaginationPosition === 'both' || nzPaginationPosition === 'top'">
     <ng-template [ngTemplateOutlet]="paginationTemplate"></ng-template>
   </ng-container>

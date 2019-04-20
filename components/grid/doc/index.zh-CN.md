@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 栅格
-type: Layout
+type: 布局
 cols: 1
 title: Grid
 ---
@@ -79,6 +79,14 @@ title: Grid
 Flex 布局是基于 24 栅格来定义每一个『盒子』的宽度，但排版则不拘泥于栅格。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzGridModule } from 'ng-zorro-antd';
+```
 
 ### [nz-row]
 

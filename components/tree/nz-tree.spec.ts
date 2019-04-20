@@ -5,11 +5,16 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, Observable } from 'rxjs';
 
-import { dispatchMouseEvent, dispatchTouchEvent } from '../core/testing';
+import {
+  dispatchMouseEvent,
+  dispatchTouchEvent,
+  NzTreeBaseService,
+  NzTreeNode,
+  NzTreeNodeOptions
+} from 'ng-zorro-antd/core';
+
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
-import { NzTreeBaseService } from './nz-tree-base.service';
-import { NzTreeNode, NzTreeNodeOptions } from './nz-tree-node';
 import { NzTreeComponent } from './nz-tree.component';
 import { NzTreeModule } from './nz-tree.module';
 
@@ -398,6 +403,12 @@ describe('nz-tree', () => {
       expect(treeInstance).toBeTruthy();
     });
 
+    it('test nzBlockNode property', () => {
+      fixture.detectChanges();
+      const tree = treeElement.querySelector('.ant-tree') as HTMLElement;
+      expect(tree!.classList).toContain('ant-tree-block-node');
+    });
+
     it('test drag event', fakeAsync(() => {
       fixture.detectChanges();
       const dragStartSpy = spyOn(treeInstance, 'onDragStart');
@@ -607,6 +618,28 @@ describe('nz-tree', () => {
       expect(targetNode.querySelectorAll('.ant-tree-treenode-selected').length).toEqual(0);
     }));
   });
+
+  describe('test older node property', () => {
+    let treeElement: HTMLElement;
+    let fixture: ComponentFixture<NzTestTreeCustomizedIconComponent>;
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports: [NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+        declarations: [NzTestTreeCustomizedIconComponent],
+        providers: [NzTreeBaseService]
+      }).compileComponents();
+      fixture = TestBed.createComponent(NzTestTreeCustomizedIconComponent);
+      treeService = fixture.componentInstance.treeComponent.nzTreeService;
+      fixture.detectChanges();
+      treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
+    }));
+
+    it('test customized icon', fakeAsync(() => {
+      fixture.detectChanges();
+      // customized template icon
+      expect(treeElement.querySelectorAll('.anticon-arrow-down').length).toEqual(1);
+    }));
+  });
 });
 
 @Component({
@@ -624,13 +657,14 @@ describe('nz-tree', () => {
       [nzMultiple]="multiple"
       [nzSearchValue]="searchValue"
       [nzExpandAll]="expandAll"
+      [nzExpandedIcon]="expandedIcon"
       [nzAsyncData]="asyncData"
-      (nzSearchValueChange)="nzEvent($event)"
-      (nzClick)="nzEvent($event)"
-      (nzDblClick)="nzEvent($event)"
-      (nzContextMenu)="nzEvent($event)"
-      (nzExpandChange)="nzEvent($event)"
-      (nzCheckBoxChange)="nzEvent($event)"
+      (nzSearchValueChange)="nzEvent()"
+      (nzClick)="nzEvent()"
+      (nzDblClick)="nzEvent()"
+      (nzContextMenu)="nzEvent()"
+      (nzExpandChange)="nzEvent()"
+      (nzCheckBoxChange)="nzEvent()"
     >
     </nz-tree>
   `
@@ -706,15 +740,16 @@ export class NzTestTreeBasicControlledComponent {
   selector: 'nz-demo-tree-draggable',
   template: `
     <nz-tree
+      nzBlockNode
       [nzData]="nodes"
       nzDraggable="true"
       [nzBeforeDrop]="beforeDrop"
-      (nzOnDragStart)="onDragStart($event)"
-      (nzOnDragEnter)="onDragEnter($event)"
-      (nzOnDragLeave)="onDragLeave($event)"
-      (nzOnDragOver)="onDragOver($event)"
-      (nzOnDrop)="onDrop($event)"
-      (nzOnDragEnd)="onDragEnd($event)"
+      (nzOnDragStart)="onDragStart()"
+      (nzOnDragEnter)="onDragEnter()"
+      (nzOnDragLeave)="onDragLeave()"
+      (nzOnDragOver)="onDragOver()"
+      (nzOnDrop)="onDrop()"
+      (nzOnDragEnd)="onDragEnd()"
     >
     </nz-tree>
   `
@@ -822,7 +857,6 @@ export class NzTestTreeOlderComponent implements OnInit {
   selectedKeys = ['10001', '100011'];
   multiple = true;
   expandDefault = false;
-  showExpand = true;
   searchValue = '';
   modelNodes: NzTreeNode[];
 
@@ -907,4 +941,30 @@ export class NzTestTreeOlderComponent implements OnInit {
       return new NzTreeNode(n, null, this.treeComponent.nzTreeService);
     });
   }
+}
+
+@Component({
+  selector: 'nz-demo-tree-customized-icon',
+  template: `
+    <nz-tree #treeComponent [nzData]="nodes" nzShowIcon="true" [nzExpandedIcon]="expandedIconTpl">
+      <ng-template #expandedIconTpl let-node>
+        <i nz-icon [type]="'arrow-down'" class="ant-tree-switcher-icon"></i>
+      </ng-template>
+    </nz-tree>
+  `
+})
+class NzTestTreeCustomizedIconComponent {
+  @ViewChild('treeComponent') treeComponent: NzTreeComponent;
+  nodes = [
+    {
+      title: 'parent 1',
+      key: '100',
+      expanded: true,
+      icon: 'anticon anticon-smile-o',
+      children: [
+        { title: 'leaf', key: '1001', icon: 'anticon anticon-meh-o', isLeaf: true },
+        { title: 'leaf', key: '1002', icon: 'anticon anticon-frown-o', isLeaf: true }
+      ]
+    }
+  ];
 }

@@ -7,28 +7,29 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
   Renderer2,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { slideMotion } from '../core/animation/slide';
-import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
-import { isNotNil } from '../core/util/check';
-import { toBoolean } from '../core/util/convert';
+
+import { isNotNil, slideMotion, toBoolean, NzUpdateHostClassService as UpdateCls } from 'ng-zorro-antd/core';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-time-picker',
+  exportAs: 'nzTimePicker',
   templateUrl: './nz-time-picker.component.html',
   animations: [slideMotion],
   providers: [UpdateCls, { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
 })
-export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
   private _disabled = false;
   private _value: Date | null = null;
   private _allowEmpty = true;
@@ -63,6 +64,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() nzDisabledSeconds: (hour: number, minute: number) => number[];
   @Input() nzFormat = 'HH:mm:ss';
   @Input() nzOpen = false;
+  @Input() nzUse12Hours = false;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
 
   @Input()
@@ -178,6 +180,13 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   ngOnInit(): void {
     this.setClassMap();
     this.origin = new CdkOverlayOrigin(this.element);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzUse12Hours, nzFormat } = changes;
+    if (nzUse12Hours && !nzUse12Hours.previousValue && nzUse12Hours.currentValue && !nzFormat) {
+      this.nzFormat = 'h:mm:ss a';
+    }
   }
 
   ngAfterViewInit(): void {

@@ -12,12 +12,20 @@ When part of the page is waiting for asynchronous data or during a rendering pro
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzSpinModule } from 'ng-zorro-antd';
+```
+
 ### nz-spin
 
 | Property | Description | Type | Default Value |
 | -------- | ----------- | ---- | ------------- |
 | `[nzDelay]` | specifies a delay in milliseconds for loading state (prevent flush), unit: milliseconds | `number` | - |
-| `[nzIndicator]` | React node of the spinning indicator | `TemplateRef<void>` | - |
+| `[nzIndicator]` | the spinning indicator | `TemplateRef<void>` | - |
 | `[nzSize]` | size of Spin | `'large'｜'small'｜'default'` | `'default'` |
 | `[nzSpinning]` | whether Spin is spinning | `boolean` | `true` |
 | `[nzSimple]` | whether Spin has no children | `boolean` | `false` |

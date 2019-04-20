@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -13,15 +14,13 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { fadeMotion, toNumber, NzScrollService } from 'ng-zorro-antd/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
-import { fadeMotion } from '../core/animation/fade';
-
-import { NzScrollService } from '../core/scroll/nz-scroll.service';
-import { toNumber } from '../core/util/convert';
 
 @Component({
   selector: 'nz-back-top',
+  exportAs: 'nzBackTop',
   animations: [fadeMotion],
   templateUrl: './nz-back-top.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -55,8 +54,13 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
 
   @Output() readonly nzClick: EventEmitter<boolean> = new EventEmitter();
 
-  // tslint:disable-next-line:no-any
-  constructor(private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any, private cd: ChangeDetectorRef) {}
+  constructor(
+    private scrollSrv: NzScrollService,
+    // tslint:disable-next-line:no-any
+    @Inject(DOCUMENT) private doc: any,
+    private platform: Platform,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     if (!this.scroll$) {
@@ -88,6 +92,9 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
   }
 
   private registerScrollEvent(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     this.removeListen();
     this.handleScroll();
     this.scroll$ = fromEvent(this.getTarget(), 'scroll')

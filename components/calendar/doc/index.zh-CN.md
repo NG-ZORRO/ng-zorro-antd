@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Data Display
+type: 数据展示
 subtitle: 日历
 cols: 1
 title: Calendar
@@ -35,6 +35,14 @@ registerLocaleData(zh);
 </nz-calendar>
 <!-- 传入 TemplateRef 的方式 -->
 <ng-template #dateCellTpl let-date><span>{{ date | date:'d'}}</span></ng-template>
+```
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzCalendarModule } from 'ng-zorro-antd';
 ```
 
 ### nz-calendar

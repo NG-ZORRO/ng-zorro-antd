@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Data Display
+type: 数据展示
 title: Carousel
 subtitle: 走马灯
 ---
@@ -15,6 +15,14 @@ subtitle: 走马灯
 
 ## API
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzCarouselModule } from 'ng-zorro-antd';
+```
+
 ### nz-carousel
 
 | 参数 | 说明 | 类型 | 默认值 |
@@ -27,7 +35,7 @@ subtitle: 走马灯
 | `[nzVertical]` | 垂直显示 | `boolean` | `false` |
 | `(nzAfterChange)` | 切换面板的回调 | `EventEmitter<number>` | - |
 | `(nzBeforeChange)` | 切换面板的回调 | `EventEmitter<{ from: number; to: number }>` | - |
-| `[nzEnableSwipe]` | 是否支持手势划动切换，仅在自行引入 hammer.js 的情形下生效 | `boolean` | `true` |
+| `[nzEnableSwipe]` | 是否支持手势划动切换 | `boolean` | `true` |
 #### 方法
 
 | 名称 | 描述 |

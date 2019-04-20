@@ -1,5 +1,5 @@
 ---
-type: Feedback
+type: 反馈
 category: Components
 subtitle: 抽屉
 title: Drawer
@@ -15,6 +15,14 @@ title: Drawer
 
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzDrawerModule } from 'ng-zorro-antd';
+```
 
 ### nz-drawer
 

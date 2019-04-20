@@ -22,6 +22,14 @@ Vertical display timeline.
 </nz-timeline>
 ```
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzTimelineModule } from 'ng-zorro-antd';
+```
+
 ### nz-timeline
 
 Timeline

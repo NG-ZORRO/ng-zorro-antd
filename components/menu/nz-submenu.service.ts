@@ -1,7 +1,9 @@
 import { Injectable, Optional, SkipSelf } from '@angular/core';
 import { combineLatest, BehaviorSubject, Subject } from 'rxjs';
 import { auditTime, distinctUntilChanged, map, tap } from 'rxjs/operators';
-import { NzDirectionVHIType } from '../core/types/direction';
+
+import { NzDirectionVHIType } from 'ng-zorro-antd/core';
+
 import { NzMenuService } from './nz-menu.service';
 
 @Injectable()

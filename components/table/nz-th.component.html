@@ -7,37 +7,43 @@
     (ngModelChange)="nzCheckedChange.emit($event)">
   </label>
 </ng-template>
-<div [class.ant-table-column-sorters]="nzShowSort" (click)="updateSortValue()">
-  <div class="ant-table-selection" *ngIf="nzShowRowSelection">
-    <ng-container *ngIf="nzShowCheckbox">
-      <ng-template [ngTemplateOutlet]="checkboxTemplate"></ng-template>
-    </ng-container>
-    <nz-dropdown nzPlacement="bottomLeft">
-      <div nz-dropdown class="ant-table-selection-down">
-        <i nz-icon type="down"></i>
+<span class="ant-table-header-column">
+  <div [class.ant-table-column-sorters]="nzShowSort" (click)="updateSortValue()">
+    <span class="ant-table-column-title">
+      <ng-container *ngIf="nzShowCheckbox && !nzShowRowSelection">
+        <ng-template [ngTemplateOutlet]="checkboxTemplate"></ng-template>
+      </ng-container>
+      <div class="ant-table-selection" *ngIf="nzShowRowSelection">
+        <ng-container *ngIf="nzShowCheckbox">
+          <ng-template [ngTemplateOutlet]="checkboxTemplate"></ng-template>
+        </ng-container>
+        <nz-dropdown nzPlacement="bottomLeft">
+          <div nz-dropdown class="ant-table-selection-down">
+            <i nz-icon type="down"></i>
+          </div>
+          <ul nz-menu class="ant-table-selection-menu">
+            <li nz-menu-item *ngFor="let selection of nzSelections" (click)="selection.onSelect()">{{selection.text}}</li>
+          </ul>
+        </nz-dropdown>
       </div>
-      <ul nz-menu class="ant-table-selection-menu">
-        <li nz-menu-item *ngFor="let selection of nzSelections" (click)="selection.onSelect()">{{selection.text}}</li>
-      </ul>
-    </nz-dropdown>
+      <ng-content></ng-content>
+    </span>
+    <div class="ant-table-column-sorter" *ngIf="nzShowSort">
+      <div class="ant-table-column-sorter-inner ant-table-column-sorter-inner-full">
+        <i nz-icon
+          type="caret-up"
+          class="ant-table-column-sorter-up"
+          [class.on]="nzSort == 'ascend'"
+          [class.off]="nzSort != 'ascend'"></i>
+        <i nz-icon
+          type="caret-down"
+          class="ant-table-column-sorter-down"
+          [class.on]="nzSort == 'descend'"
+          [class.off]="nzSort != 'descend'"></i>
+      </div>
+    </div>
   </div>
-  <ng-container *ngIf="nzShowCheckbox && !nzShowRowSelection">
-    <ng-template [ngTemplateOutlet]="checkboxTemplate"></ng-template>
-  </ng-container>
-  <ng-content></ng-content>
-  <div class="ant-table-column-sorter" *ngIf="nzShowSort">
-    <i nz-icon
-      type="caret-up"
-      class="ant-table-column-sorter-up"
-      [class.on]="nzSort == 'ascend'"
-      [class.off]="nzSort != 'ascend'"></i>
-    <i nz-icon
-      type="caret-down"
-      class="ant-table-column-sorter-down"
-      [class.on]="nzSort == 'descend'"
-      [class.off]="nzSort != 'descend'"></i>
-  </div>
-</div>
+</span>
 <nz-dropdown nzTrigger="click" *ngIf="nzShowFilter" [nzClickHide]="false" nzTableFilter (nzVisibleChange)="dropDownVisibleChange($event)">
   <i nz-icon type="filter" theme="fill" [class.ant-table-filter-selected]="hasFilterValue" [class.ant-table-filter-open]="filterVisible" nz-dropdown></i>
   <ul nz-menu>

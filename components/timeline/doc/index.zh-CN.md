@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 时间轴
-type: Data Display
+type: 数据展示
 title: Timeline
 ---
 
@@ -21,6 +21,14 @@ title: Timeline
   <nz-timeline-item>技术测试异常 2015-09-01</nz-timeline-item>
   <nz-timeline-item>网络异常正在修复 2015-09-01</nz-timeline-item>
 </nz-timeline>
+```
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzTimelineModule } from 'ng-zorro-antd';
 ```
 
 ### nz-timeline

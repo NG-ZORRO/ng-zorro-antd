@@ -15,7 +15,7 @@ import {
   dispatchKeyboardEvent,
   typeInElement,
   MockNgZone
-} from '../core/testing';
+} from 'ng-zorro-antd/core';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
 import { NzInputModule } from '../input';

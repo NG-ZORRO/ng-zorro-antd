@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 气泡卡片
-type: Data Display
+type: 数据展示
 title: Popover
 ---
 
@@ -14,6 +14,14 @@ title: Popover
 和 `Tooltip` 的区别是，用户可以对浮层上的元素进行操作，因此它可以承载更复杂的内容，比如链接或按钮等。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzPopoverModule } from 'ng-zorro-antd';
+```
 
 ### [nz-popover]
 

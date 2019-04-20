@@ -3,3 +3,4 @@ export * from './nz-cascader-utils';
 export * from './nz-cascader.component';
 export * from './nz-cascader.module';
 export * from './nz-cascader.service';
+export * from './nz-cascader-li.component';

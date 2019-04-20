@@ -21,19 +21,26 @@ import {
 } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { NzSizeLDSType, NzSizeMap } from '../core/types/size';
-import { isEmpty } from '../core/util/check';
-import { InputBoolean } from '../core/util/convert';
-import { findFirstNotEmptyNode, findLastNotEmptyNode } from '../core/util/dom';
-import { NzWaveConfig, NzWaveDirective, NZ_WAVE_GLOBAL_CONFIG } from '../core/wave/nz-wave.directive';
-import { NzIconDirective } from '../icon/nz-icon.directive';
+import {
+  findFirstNotEmptyNode,
+  findLastNotEmptyNode,
+  isEmpty,
+  InputBoolean,
+  NzSizeLDSType,
+  NzSizeMap,
+  NzUpdateHostClassService,
+  NzWaveConfig,
+  NzWaveDirective,
+  NZ_WAVE_GLOBAL_CONFIG
+} from 'ng-zorro-antd/core';
+import { NzIconDirective } from 'ng-zorro-antd/icon';
 
 export type NzButtonType = 'primary' | 'dashed' | 'danger' | 'default';
 export type NzButtonShape = 'circle' | 'round' | null;
 
 @Component({
   selector: '[nz-button]',
+  exportAs: 'nzButton',
   providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -65,7 +72,6 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
     const prefixCls = 'ant-btn';
     const sizeMap: NzSizeMap = { large: 'lg', small: 'sm' };
     this.nzUpdateHostClassService.updateHostClass(this.el, {
-      [`${prefixCls}`]: true,
       [`${prefixCls}-${this.nzType}`]: this.nzType,
       [`${prefixCls}-${this.nzShape}`]: this.nzShape,
       [`${prefixCls}-${sizeMap[this.nzSize]}`]: sizeMap[this.nzSize],
@@ -123,7 +129,9 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
     private ngZone: NgZone,
     @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private waveConfig: NzWaveConfig,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string
-  ) {}
+  ) {
+    this.renderer.addClass(elementRef.nativeElement, 'ant-btn');
+  }
 
   ngAfterContentInit(): void {
     this.checkContent();

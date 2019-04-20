@@ -10,10 +10,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NGStyleInterface } from '../core/types/ng-class';
 
-import { InputBoolean } from '../core/util/convert';
-import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
+import { InputBoolean, NGStyleInterface } from 'ng-zorro-antd/core';
+import { NzToolTipComponent } from 'ng-zorro-antd/tooltip';
 
 import { SliderShowTooltip } from './nz-slider-definitions';
 import { NzSliderComponent } from './nz-slider.component';
@@ -22,6 +21,7 @@ import { NzSliderComponent } from './nz-slider.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-slider-handle',
+  exportAs: 'nzSliderHandle',
   preserveWhitespaces: false,
   templateUrl: './nz-slider-handle.component.html',
   host: {

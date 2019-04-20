@@ -1,7 +1,8 @@
 import { Directive, EmbeddedViewRef, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
-  selector: '[nzStringTemplateOutlet]'
+  selector: '[nzStringTemplateOutlet]',
+  exportAs: 'nzStringTemplateOutlet'
 })
 export class NzStringTemplateOutletDirective {
   private isTemplate: boolean;

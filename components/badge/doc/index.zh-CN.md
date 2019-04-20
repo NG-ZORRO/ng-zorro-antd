@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 徽标数
-type: Data Display
+type: 数据展示
 title: Badge
 ---
 
@@ -23,10 +23,19 @@ title: Badge
 <nz-badge [nzCount]="5"></nz-badge>
 ```
 
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzBadgeModule } from 'ng-zorro-antd';
+```
+
 ### nz-badge
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| `[nzColor]` | 自定义小圆点的颜色 | string | - |
 | `[nzCount]` | 展示的数字，大于 nzOverflowCount 时显示为 `${nzOverflowCount}+`，为 0 时隐藏 | `number｜TemplateRef<void>` | - |
 | `[nzDot]` | 不展示数字，只有一个小红点 | `boolean` | `false` |
 | `[nzShowDot]` | 是否展示小红点 | `boolean` | `true` |

@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 步骤条
-type: Navigation
+type: 导航
 cols: 1
 title: Steps
 ---
@@ -20,6 +20,14 @@ title: Steps
   <nz-step nzTitle="第二步"></nz-step>
   <nz-step nzTitle="第三步"></nz-step>
 </nz-steps>
+```
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzStepsModule } from 'ng-zorro-antd';
 ```
 
 ### nz-steps

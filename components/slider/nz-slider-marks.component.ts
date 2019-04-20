@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean } from 'ng-zorro-antd/core';
 
 import { isConfigAObject, DisplayedMark, ExtendedMark, Mark } from './nz-slider-definitions';
 
@@ -9,6 +9,7 @@ import { isConfigAObject, DisplayedMark, ExtendedMark, Mark } from './nz-slider-
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   selector: 'nz-slider-marks',
+  exportAs: 'nzSliderMarks',
   templateUrl: './nz-slider-marks.component.html'
 })
 export class NzSliderMarksComponent implements OnChanges {

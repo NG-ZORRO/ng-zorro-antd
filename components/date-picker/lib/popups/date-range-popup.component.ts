@@ -11,8 +11,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { FunctionProp } from '../../../core/types/common-wrap';
-import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
+import { FunctionProp } from 'ng-zorro-antd/core';
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import {
   DisabledDateFn,
   DisabledTimeConfig,
@@ -22,7 +22,7 @@ import {
   PresetRanges,
   SupportTimeOptions
 } from '../../standard-types';
-import { CandyDate } from '../candy-date';
+import { CandyDate } from '../candy-date/candy-date';
 import { getTimeConfig, isAllowedDate } from '../util';
 
 @Component({
@@ -30,6 +30,7 @@ import { getTimeConfig, isAllowedDate } from '../util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'date-range-popup',
+  exportAs: 'dateRangePopup',
   templateUrl: 'date-range-popup.component.html'
 })
 export class DateRangePopupComponent implements OnInit, OnChanges {
@@ -183,7 +184,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
       if ((!left && !right) || (left && right)) {
         // If totally full or empty, clean up && re-assign left first
-        this.hoverValue = this.selectedValue = [ value ];
+        this.hoverValue = this.selectedValue = [value];
         this.calendarChange.emit([value.clone()]);
       } else if (left && !right) {
         // If one of them is empty, assign the other one and sort, then set the final values
@@ -301,8 +302,8 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     return null;
   }
 
-  onClickPresetRange(val: Date[]): void {
-    const value = val;
+  onClickPresetRange(val: PresetRanges[keyof PresetRanges]): void {
+    const value = typeof val === 'function' ? val() : val;
     this.setValue([new CandyDate(value[0]), new CandyDate(value[1])]);
     this.resultOk.emit();
   }
@@ -311,8 +312,10 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     this.clearHoverValue();
   }
 
-  onHoverPresetRange(val: Date[]): void {
-    this.hoverValue = [new CandyDate(val[0]), new CandyDate(val[1])];
+  onHoverPresetRange(val: PresetRanges[keyof PresetRanges]): void {
+    if (typeof val !== 'function') {
+      this.hoverValue = [new CandyDate(val[0]), new CandyDate(val[1])];
+    }
   }
 
   getObjectKeys(obj: object): string[] {

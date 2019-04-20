@@ -12,9 +12,7 @@ import { fromEvent } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { NzDropdownContextComponent } from './nz-dropdown-context.component';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class NzDropdownService {
   private overlayRef: OverlayRef | null;
 
@@ -26,6 +24,7 @@ export class NzDropdownService {
     this.overlayRef = this.overlay.create(
       new OverlayConfig({
         scrollStrategy: this.overlay.scrollStrategies.close(),
+        panelClass: 'nz-dropdown-panel',
         positionStrategy: this.overlay
           .position()
           .flexibleConnectedTo({

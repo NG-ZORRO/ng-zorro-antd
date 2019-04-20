@@ -1,5 +1,5 @@
 import { DisabledDateFn, DisabledTimeConfig, DisabledTimeFn } from '../standard-types';
-import { CandyDate } from './candy-date';
+import { CandyDate } from './candy-date/candy-date';
 
 const defaultDisabledTime: DisabledTimeConfig = {
   nzDisabledHours(): number[] {

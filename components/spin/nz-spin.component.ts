@@ -12,12 +12,12 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { NzSizeLDSType } from '../core/types/size';
 
-import { InputBoolean, InputNumber } from '../core/util/convert';
+import { InputBoolean, InputNumber, NzSizeLDSType } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-spin',
+  exportAs: 'nzSpin',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 警告提示
-type: Feedback
+type: 反馈
 title: Alert
 ---
 
@@ -13,6 +13,14 @@ title: Alert
 - 非浮层的静态展现形式，始终展现，不会自动消失，用户可以点击关闭。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzAlertModule } from 'ng-zorro-antd';
+```
 
 ### nz-alert
 

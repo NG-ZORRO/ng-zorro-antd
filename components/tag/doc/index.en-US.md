@@ -14,6 +14,14 @@ Tag for categorizing or markup.
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzTagModule } from 'ng-zorro-antd';
+```
+
 ### Tag
 
 | Property | Description | Type | Default |

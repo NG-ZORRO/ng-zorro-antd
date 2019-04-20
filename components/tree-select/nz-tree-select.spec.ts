@@ -5,8 +5,15 @@ import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { createKeyboardEvent, dispatchFakeEvent, dispatchMouseEvent, typeInElement } from '../core/testing';
-import { NzTreeNode } from '../tree';
+
+import {
+  createKeyboardEvent,
+  dispatchFakeEvent,
+  dispatchMouseEvent,
+  typeInElement,
+  NzTreeNode
+} from 'ng-zorro-antd/core';
+
 import { NzTreeSelectComponent } from './nz-tree-select.component';
 import { NzTreeSelectModule } from './nz-tree-select.module';
 

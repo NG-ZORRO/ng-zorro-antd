@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 分页
-type: Navigation
+type: 导航
 title: Pagination
 cols: 1
 ---
@@ -17,6 +17,14 @@ cols: 1
 
 ```html
 <nz-pagination [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
+```
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzPaginationModule } from 'ng-zorro-antd';
 ```
 
 ### nz-pagination

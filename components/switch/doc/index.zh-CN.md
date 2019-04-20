@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 开关
-type: Data Entry
+type: 数据录入
 title: Switch
 ---
 
@@ -13,6 +13,14 @@ title: Switch
 - 和 `checkbox`的区别是，切换 `switch` 会直接触发状态改变，而 `checkbox` 一般用于状态标记，需要和提交操作配合。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzSwitchModule } from 'ng-zorro-antd';
+```
 
 ### nz-switch
 

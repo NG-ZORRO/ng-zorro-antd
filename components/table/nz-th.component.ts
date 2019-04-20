@@ -14,11 +14,10 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { isNotNil } from '../core/util/check';
-import { InputBoolean } from '../core/util/convert';
-import { NzDropDownComponent } from '../dropdown/nz-dropdown.component';
-import { NzI18nInterface } from '../i18n/nz-i18n.interface';
-import { NzI18nService } from '../i18n/nz-i18n.service';
+
+import { isNotNil, InputBoolean } from 'ng-zorro-antd/core';
+import { NzDropDownComponent } from 'ng-zorro-antd/dropdown';
+import { NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 /* tslint:disable-next-line:no-any */
 export type NzThFilterType = Array<{ text: string; value: any; byDefault?: boolean }>;

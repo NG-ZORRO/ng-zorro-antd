@@ -30,6 +30,14 @@ There are four kinds of picker:
 
 **Note:** All input and output date objects are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manpulate it with [date-fns](https://date-fns.org/).
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzDatePickerModule } from 'ng-zorro-antd';
+```
+
 ### Common API
 
 The following APIs are shared by nz-date-picker, nz-month-picker, nz-range-picker, nz-week-picker.
@@ -100,7 +108,7 @@ The following APIs are shared by nz-date-picker, nz-month-picker, nz-range-picke
 | `[ngModel]` | Date | `Date[]` | - |
 | `[nzDisabledTime]` | to specify the time that cannot be selected | `(current: Date, partial: 'start'｜'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
 | `[nzFormat]` | to set the date format, see `nzFormat special instructions` | `string` | `"yyyy-MM-dd"` |
-| `[nzRanges]` | preseted ranges for quick selection | `{ [ key: string ]: Date[] }` | - |
+| `[nzRanges]` | preseted ranges for quick selection | `{ [ key: string ]: Date[] } ｜ { [ key: string ]: () => Date[] }` | - |
 | `[nzRenderExtraFooter]` | render extra footer in panel | `TemplateRef｜string｜(() => TemplateRef｜string)` | - |
 | `[nzShowTime]` | to provide an additional time selection | `object｜boolean` | [TimePicker Options](/components/time-picker/en#api) |
 | `[nzPlaceHolder]` | placeholder of date input | `string[]` | - |

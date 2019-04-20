@@ -3,7 +3,7 @@ import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { dispatchEvent, dispatchFakeEvent } from '../core/testing';
+import { dispatchEvent, dispatchFakeEvent } from 'ng-zorro-antd/core';
 
 import { NzInputNumberComponent } from './nz-input-number.component';
 import { NzInputNumberModule } from './nz-input-number.module';

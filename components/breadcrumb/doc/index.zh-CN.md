@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 面包屑
-type: Navigation
+type: 导航
 title: Breadcrumb
 ---
 
@@ -14,6 +14,14 @@ title: Breadcrumb
 - 当需要向上导航的功能时。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzBreadCrumbModule } from 'ng-zorro-antd';
+```
 
 ### nz-breadcrumb
 

@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 单选框
-type: Data Entry
+type: 数据录入
 title: Radio
 ---
 
@@ -13,6 +13,14 @@ title: Radio
 - 和 Select 的区别是，Radio 所有选项默认可见，方便用户在比较中选择，因此选项不宜过多。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzRadioModule } from 'ng-zorro-antd';
+```
 
 ### [nz-radio] | [nz-radio-button]
 

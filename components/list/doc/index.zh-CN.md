@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 列表
-type: Data Display
+type: 数据展示
 title: List
 cols: 1
 ---
@@ -13,6 +13,14 @@ cols: 1
 最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzListModule } from 'ng-zorro-antd';
+```
 
 ### nz-list
 

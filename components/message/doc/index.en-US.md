@@ -29,6 +29,14 @@ The default global configuration is:
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzMessageModule } from 'ng-zorro-antd';
+```
+
 ### NzMessageService
 
 This components provides some service methods, with usage and arguments as following:

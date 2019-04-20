@@ -15,6 +15,14 @@ One or more elements can be selected from either column, one click on the proper
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzTransferModule } from 'ng-zorro-antd';
+```
+
 ### nz-transfer
 
 | Property | Description | Type | Default |

@@ -1,6 +1,7 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { IndexableObject } from '../core/types/indexable';
+
+import { IndexableObject } from 'ng-zorro-antd/core';
 
 import zh_CN from './languages/zh_CN';
 import { DateLocale, NzI18nInterface } from './nz-i18n.interface';
@@ -18,7 +19,10 @@ export class NzI18nService {
     return this._change.asObservable();
   }
 
-  constructor(@Inject(NZ_I18N) locale: NzI18nInterface, @Inject(NZ_DATE_LOCALE) dateLocale: DateLocale) {
+  constructor(
+    @Optional() @Inject(NZ_I18N) locale: NzI18nInterface,
+    @Optional() @Inject(NZ_DATE_LOCALE) dateLocale: DateLocale
+  ) {
     this.setLocale(locale || zh_CN);
     this.setDateLocale(dateLocale || null);
   }

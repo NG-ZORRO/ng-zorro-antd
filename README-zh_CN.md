@@ -37,6 +37,7 @@ Ant Design 的 Angular 实现，开发和服务于企业级后台产品。
 ## 🖥 支持环境
 
 - Angular `^7.0.0`
+- 支持服务端渲染
 - 现代浏览器，以及 Internet Explorer 11+ （使用 [polyfills](https://angular.io/guide/browser-support)）
 - [Electron](http://electron.atom.io/)
 
@@ -117,7 +118,7 @@ $ npm run site:start
 
 ## 🗺 Road Map
 
-查看 [这个 issue](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2025) 来了解我们 2018 下半年的开发计划。
+查看 [这个 issue](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2025) 来了解我们 2019 年的开发计划。
 
 ## 🤝 如何贡献
 
@@ -126,6 +127,8 @@ $ npm run site:start
 在任何形式的参与前，请先阅读 [贡献者文档](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md)。如果你希望参与贡献，欢迎 [Pull Request](https://github.com/NG-ZORRO/ng-zorro-antd/pulls)，或给我们 [报告 Bug](http://ng.ant.design/issue-helper/#/new-issue)。
 
 > 强烈推荐阅读 [《提问的智慧》](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way)(**本指南不提供此项目的实际支持服务！**)、[《如何向开源社区提问题》](https://github.com/seajs/seajs/issues/545) 和 [《如何有效地报告 Bug》](http://www.chiark.greenend.org.uk/%7Esgtatham/bugs-cn.html)、[《如何向开源项目提交无法解答的问题》](https://zhuanlan.zhihu.com/p/25795393)，更好的问题更容易获得帮助。
+
+[![Let's fund issues in this repository](https://issuehunt.io/static/embed/issuehunt-button-v1.svg)](https://issuehunt.io/r/NG-ZORRO/ng-zorro-antd)
 
 ## ❓ 社区互助
 

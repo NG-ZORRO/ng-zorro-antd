@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild, ViewEncapsu
 
 @Component({
   selector: 'nz-card-tab',
+  exportAs: 'nzCardTab',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './nz-card-tab.component.html'

@@ -17,15 +17,16 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { merge, Subject, Subscription } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
-import { NzSizeLDSType } from '../core/types/size';
-import { isNotNil } from '../core/util/check';
-import { InputBoolean } from '../core/util/convert';
+
+import { isNotNil, InputBoolean, NzSizeLDSType } from 'ng-zorro-antd/core';
+
 import { NzRadioComponent } from './nz-radio.component';
 
 export type NzRadioButtonStyle = 'outline' | 'solid';
 
 @Component({
   selector: 'nz-radio-group',
+  exportAs: 'nzRadioGroup',
   preserveWhitespaces: false,
   templateUrl: './nz-radio-group.component.html',
   encapsulation: ViewEncapsulation.None,

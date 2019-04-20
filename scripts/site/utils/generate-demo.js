@@ -112,7 +112,7 @@ function generateTemplate(result) {
     zh: wrapperAll(generateToc('zh-CN', result.name, result.demoMap), wrapperHeader(titleMap.zh, result.docZh.whenToUse, 'zh', innerMap.zh, hasPageDemo, name) + wrapperAPI(result.docZh.api)),
     en: wrapperAll(generateToc('en-US', result.name, result.demoMap), wrapperHeader(titleMap.en, result.docEn.whenToUse, 'en', innerMap.en, hasPageDemo, name) + wrapperAPI(result.docEn.api))
   }
-};
+}
 
 function wrapperAPI(content) {
   return `<section class="markdown api-container" ngNonBindable>${content}</section>`
@@ -128,7 +128,7 @@ function wrapperHeader(title, whenToUse, language, example, hasPageDemo, name) {
 	${hasPageDemo ? `<section class="page-demo"><nz-page-demo-${name}-${language}></nz-page-demo-${name}-${language}></section>` : ''}
 	<h2>
 		<span>${language === 'zh' ? '代码演示' : 'Examples'}</span>
-		<i nz-icon type="appstore" class="code-box-expand-trigger" title="${language === 'zh' ? '展开全部代码' : 'expand all code'}" (click)="expandAllCode()"></i>
+		<i nz-icon type="appstore" class="code-box-expand-trigger" nz-tooltip nzTitle="${language === 'zh' ? '展开全部代码' : 'Expand All Code'}" (click)="expandAllCode()"></i>
 	</h2>
 </section>${example}`
   } else {
@@ -176,7 +176,7 @@ function generateExample(result) {
       {name: key}, demoMap[key]
     ))
   }
-  demoList = demoList.sort((pre, next) => pre.meta.order - next.meta.order);
+  demoList.sort((pre, next) => pre.meta.order - next.meta.order);
   let firstZhPart = '';
   let secondZhPart = '';
   let firstEnPart = '';

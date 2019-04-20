@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 标签
-type: Data Display
+type: 数据展示
 title: Tag
 ---
 
@@ -13,6 +13,16 @@ title: Tag
 - 进行分类。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+```ts
+import { NzTagModule } from 'ng-zorro-antd';
+```
+```
 
 ### nz-tag
 

@@ -7,12 +7,13 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { InputBoolean } from '../core/util';
+import { InputBoolean } from 'ng-zorro-antd/core';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: '[nz-rate-item]',
+  exportAs: 'nzRateItem',
   templateUrl: './nz-rate-item.component.html'
 })
 export class NzRateItemComponent {

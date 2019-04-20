@@ -27,7 +27,7 @@ import { CdkPortalOutlet, ComponentPortal, PortalInjector, TemplatePortal } from
 
 import { Observable, Subject } from 'rxjs';
 
-import { toCssPixel, InputBoolean } from '../core/util/convert';
+import { toCssPixel, InputBoolean } from 'ng-zorro-antd/core';
 import { NzDrawerOptions, NzDrawerPlacement } from './nz-drawer-options';
 import { NzDrawerRef } from './nz-drawer-ref';
 
@@ -35,6 +35,7 @@ export const DRAWER_ANIMATE_DURATION = 300;
 
 @Component({
   selector: 'nz-drawer',
+  exportAs: 'nzDrawer',
   templateUrl: './nz-drawer.component.html',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -296,10 +297,10 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   }
 
   private trapFocus(): void {
-    if (!this.focusTrap) {
+    if (!this.focusTrap && this.overlayRef && this.overlayRef.overlayElement) {
       this.focusTrap = this.focusTrapFactory.create(this.overlayRef!.overlayElement);
+      this.focusTrap.focusInitialElement();
     }
-    this.focusTrap.focusInitialElement();
   }
 
   private restoreFocus(): void {

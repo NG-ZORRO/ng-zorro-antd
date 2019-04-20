@@ -18,6 +18,14 @@ Cascade selection box.
 <nz-cascader [nzOptions]="options" [(ngModel)]="values"></nz-cascader>
 ```
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzCascaderModule } from 'ng-zorro-antd';
+```
+
 ### nz-cascader
 
 | Property | Description | Type | Default |

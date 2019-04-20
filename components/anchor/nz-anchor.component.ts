@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -15,9 +16,8 @@ import {
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
-import { NzScrollService } from '../core/scroll/nz-scroll.service';
-import { NGStyleInterface } from '../core/types/ng-class';
-import { toNumber, InputBoolean, InputNumber } from '../core/util/convert';
+
+import { toNumber, InputBoolean, InputNumber, NzScrollService, NGStyleInterface } from 'ng-zorro-antd/core';
 
 import { NzAnchorLinkComponent } from './nz-anchor-link.component';
 
@@ -30,6 +30,7 @@ const sharpMatcherRegx = /#([^#]+)$/;
 
 @Component({
   selector: 'nz-anchor',
+  exportAs: 'nzAnchor',
   preserveWhitespaces: false,
   templateUrl: './nz-anchor.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -74,8 +75,13 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   private scroll$: Subscription | null = null;
   private destroyed = false;
 
-  /* tslint:disable-next-line:no-any */
-  constructor(private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private scrollSrv: NzScrollService,
+    /* tslint:disable-next-line:no-any */
+    @Inject(DOCUMENT) private doc: any,
+    private cdr: ChangeDetectorRef,
+    private platform: Platform
+  ) {}
 
   registerLink(link: NzAnchorLinkComponent): void {
     this.links.push(link);
@@ -99,6 +105,9 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   }
 
   private registerScrollEvent(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     this.removeListen();
     this.scroll$ = fromEvent(this.getTarget(), 'scroll')
       .pipe(
@@ -122,14 +131,17 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
       return 0;
     }
     const rect = element.getBoundingClientRect();
-    if (!rect.width && !rect.height) {
-      return rect.top;
+    if (rect.width || rect.height) {
+      if (this.getTarget() === window) {
+        return rect.top - element.ownerDocument!.documentElement!.clientTop;
+      }
+      return rect.top - (this.getTarget() as HTMLElement).getBoundingClientRect().top;
     }
-    return rect.top - element.ownerDocument!.documentElement!.clientTop;
+    return rect.top;
   }
 
   handleScroll(): void {
-    if (this.destroyed || this.animating) {
+    if (typeof document === 'undefined' || this.destroyed || this.animating) {
       return;
     }
 
@@ -141,12 +153,14 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
         return;
       }
       const target = this.doc.getElementById(sharpLinkMatch[1]);
-      if (target && this.getOffsetTop(target) < scope) {
+      if (target) {
         const top = this.getOffsetTop(target);
-        sections.push({
-          top,
-          comp
-        });
+        if (top < scope) {
+          sections.push({
+            top,
+            comp
+          });
+        }
       }
     });
 
@@ -177,6 +191,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
       '.ant-anchor-link-title'
     ) as HTMLElement;
     this.ink.nativeElement.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
+    this.visible = true;
     this.cdr.detectChanges();
 
     this.nzScroll.emit(comp);
@@ -190,7 +205,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
 
     this.animating = true;
     const containerScrollTop = this.scrollSrv.getScroll(this.getTarget());
-    const elOffsetTop = this.scrollSrv.getOffset(el).top;
+    const elOffsetTop = this.getOffsetTop(el);
     const targetScrollTop = containerScrollTop + elOffsetTop - (this.nzOffsetTop || 0);
     this.scrollSrv.scrollTo(this.getTarget(), targetScrollTop, undefined, () => {
       this.animating = false;

@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 全局提示
-type: Feedback
+type: 反馈
 noinstant: true
 title: Message
 ---
@@ -29,6 +29,14 @@ title: Message
 ```
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzMessageModule } from 'ng-zorro-antd';
+```
 
 ### NzMessageService
 

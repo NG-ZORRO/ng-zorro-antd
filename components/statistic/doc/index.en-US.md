@@ -13,6 +13,14 @@ Display statistic number.
 
 ## API
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzStatisticModule } from 'ng-zorro-antd';
+```
+
 ### nz-statistic
 
 | Property | Description | Type | Default |

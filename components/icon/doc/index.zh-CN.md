@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 图标
-type: General
+type: 通用
 title: Icon
 hasPageDemo: true
 ---
@@ -20,6 +20,14 @@ hasPageDemo: true
 新版图标可能略有缺失，我们将与 [Ant Design](https://ant.design/components/icon-cn/#components-icon-demo-iconfont) 同步保持图标的更新。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzIconModule } from 'ng-zorro-antd';
+```
 
 ### [nz-icon]
 

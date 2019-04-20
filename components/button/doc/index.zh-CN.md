@@ -1,6 +1,6 @@
 ---
 category: Components
-type: General
+type: 通用
 title: Button
 subtitle: 按钮
 ---
@@ -12,6 +12,14 @@ subtitle: 按钮
 标记了一个（或封装一组）操作命令，响应用户点击行为，触发相应的业务逻辑。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzButtonModule } from 'ng-zorro-antd';
+```
 
 ### [nz-button]
 

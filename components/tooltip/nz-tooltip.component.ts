@@ -21,14 +21,20 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { zoomBigMotion } from '../core/animation/zoom';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { getPlacementName, DEFAULT_TOOLTIP_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position';
-import { isNotNil } from '../core/util/check';
-import { toBoolean } from '../core/util/convert';
+
+import {
+  getPlacementName,
+  isNotNil,
+  toBoolean,
+  zoomBigMotion,
+  DEFAULT_TOOLTIP_POSITIONS,
+  NzNoAnimationDirective,
+  POSITION_MAP
+} from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-tooltip',
+  exportAs: 'nzTooltipComponent',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   animations: [zoomBigMotion],

@@ -10,8 +10,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { DateHelperService } from '../../../i18n/date-helper.service';
-import { CandyDate } from '../candy-date';
+import { DateHelperService } from 'ng-zorro-antd/i18n';
+import { CandyDate } from '../candy-date/candy-date';
 
 const MAX_ROW = 4;
 const MAX_COL = 3;
@@ -21,6 +21,7 @@ const MAX_COL = 3;
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'month-table',
+  exportAs: 'monthTable',
   templateUrl: 'month-table.component.html'
 })
 export class MonthTableComponent implements OnInit, OnChanges {

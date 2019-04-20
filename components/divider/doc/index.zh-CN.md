@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Other
+type: 其他
 title: Divider
 subtitle: 分割线
 ---
@@ -13,6 +13,14 @@ subtitle: 分割线
 - 对行内文字/链接进行分割，例如表格的操作列。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzDividerModule } from 'ng-zorro-antd';
+```
 
 ### nz-divider
 

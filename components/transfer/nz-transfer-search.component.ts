@@ -11,6 +11,7 @@ import {
 
 @Component({
   selector: '[nz-transfer-search]',
+  exportAs: 'nzTransferSearch',
   preserveWhitespaces: false,
   templateUrl: './nz-transfer-search.component.html',
   encapsulation: ViewEncapsulation.None,

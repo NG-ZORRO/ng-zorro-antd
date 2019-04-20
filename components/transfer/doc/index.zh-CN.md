@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 穿梭框
-type: Data Entry
+type: 数据录入
 cols: 1
 title: Transfer
 ---
@@ -16,6 +16,14 @@ title: Transfer
 其中，左边一栏为 `source`，右边一栏为 `target`，API 的设计也反映了这两个概念。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzTransferModule } from 'ng-zorro-antd';
+```
 
 ### nz-transfer
 

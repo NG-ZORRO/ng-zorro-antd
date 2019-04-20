@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 文字提示
-type: Data Display
+type: 数据展示
 title: Tooltip
 ---
 
@@ -14,6 +14,14 @@ title: Tooltip
 可用来代替系统默认的 `title` 提示，提供一个`按钮/文字/操作`的文案解释。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzTooltipModule } from 'ng-zorro-antd';
+```
 
 ### nz-tooltip
 

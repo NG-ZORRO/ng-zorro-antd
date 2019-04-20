@@ -10,15 +10,15 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { zoomBigMotion } from '../core/animation/zoom';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { InputBoolean } from '../core/util/convert';
-import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
+
+import { zoomBigMotion, InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { NzToolTipComponent } from 'ng-zorro-antd/tooltip';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-popconfirm',
+  exportAs: 'nzPopconfirmComponent',
   preserveWhitespaces: false,
   animations: [zoomBigMotion],
   templateUrl: './nz-popconfirm.component.html',

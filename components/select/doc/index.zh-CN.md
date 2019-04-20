@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 选择器
-type: Data Entry
+type: 数据录入
 title: Select
 ---
 
@@ -18,6 +18,14 @@ title: Select
 <nz-select>
   <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
 </nz-select>
+```
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzSelectModule } from 'ng-zorro-antd';
 ```
 
 ### nz-select

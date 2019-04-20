@@ -3,7 +3,9 @@ import { fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testi
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
-import { dispatchFakeEvent } from '../core/testing';
+
+import { dispatchFakeEvent } from 'ng-zorro-antd/core';
+
 import { createListOfOption } from './nz-option-container.spec';
 import { NzSelectTopControlComponent } from './nz-select-top-control.component';
 import { NzSelectModule } from './nz-select.module';

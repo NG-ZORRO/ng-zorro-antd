@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 固钉
-type: Navigation
+type: 导航
 title: Affix
 ---
 
@@ -14,6 +14,14 @@ title: Affix
 页面可视范围过小时，慎用此功能以免遮挡页面内容。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzAffixModule } from 'ng-zorro-antd';
+```
 
 ### nz-affix
 

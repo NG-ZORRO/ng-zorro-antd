@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 气泡确认框
-type: Feedback
+type: 反馈
 title: Popconfirm
 ---
 
@@ -14,6 +14,14 @@ title: Popconfirm
 和 `confirm` 弹出的全屏居中模态对话框相比，交互形式更轻量。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzPopconfirmModule } from 'ng-zorro-antd';
+```
 
 ### [nz-popconfirm]
 

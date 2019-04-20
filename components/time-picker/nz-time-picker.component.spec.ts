@@ -97,6 +97,11 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(testComponent.date).toBeNull();
     }));
+    it('should support default nzfomat in 12-hours', () => {
+      testComponent.use12Hours = true;
+      fixture.detectChanges();
+      expect(testComponent.nzTimePickerComponent.nzFormat).toBe('h:mm:ss a');
+    });
   });
 });
 
@@ -109,6 +114,7 @@ describe('time-picker', () => {
       [(nzOpen)]="open"
       (nzOpenChange)="openChange($event)"
       [nzDisabled]="disabled"
+      [nzUse12Hours]="use12Hours"
     ></nz-time-picker>
   `
 })
@@ -118,5 +124,6 @@ export class NzTestTimePickerComponent {
   autoFocus = false;
   date = new Date();
   disabled = false;
+  use12Hours = false;
   @ViewChild(NzTimePickerComponent) nzTimePickerComponent: NzTimePickerComponent;
 }

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { NzMenuService } from '../menu/nz-menu.service';
+
+import { NzMenuBaseService } from 'ng-zorro-antd/core';
 
 @Injectable()
-export class NzMenuDropdownService extends NzMenuService {
+export class NzMenuDropdownService extends NzMenuBaseService {
   isInDropDown = true;
 }

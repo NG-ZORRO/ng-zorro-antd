@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Data Display
+type: 数据展示
 title: Collapse
 subtitle: 折叠面板
 cols: 1
@@ -14,6 +14,14 @@ cols: 1
 - `手风琴` 是一种特殊的折叠面板，只允许单个内容区域展开。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzCollapseModule } from 'ng-zorro-antd';
+```
 
 ### nz-collapse
 

@@ -1,9 +1,10 @@
 import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
 
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean } from 'ng-zorro-antd/core';
 
 @Directive({
   selector: '[nz-tab-label]',
+  exportAs: 'nzTabLabel',
   host: {
     '[class.ant-tabs-tab-disabled]': 'disabled'
   }

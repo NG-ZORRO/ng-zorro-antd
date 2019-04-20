@@ -14,6 +14,7 @@ import { NzListItemMetaComponent } from './nz-list-item-meta.component';
 
 @Component({
   selector: 'nz-list-item',
+  exportAs: 'nzListItem',
   templateUrl: './nz-list-item.component.html',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,

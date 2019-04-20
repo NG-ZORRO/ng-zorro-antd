@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 输入框
-type: Data Entry
+type: 数据录入
 title: Input
 ---
 
@@ -13,6 +13,14 @@ title: Input
 - 提供组合型输入框，带搜索的输入框，还可以进行大小选择。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzInputModule } from 'ng-zorro-antd';
+```
 
 ### [nz-input]
 

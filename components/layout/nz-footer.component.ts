@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 
 @Component({
   selector: 'nz-footer',
+  exportAs: 'nzFooter',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

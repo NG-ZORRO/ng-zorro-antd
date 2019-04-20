@@ -11,16 +11,17 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { FunctionProp } from '../../../core/types/common-wrap';
-import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
+import { FunctionProp } from 'ng-zorro-antd/core';
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { DisabledDateFn, PanelMode } from '../../standard-types';
-import { CandyDate } from '../candy-date';
+import { CandyDate } from '../candy-date/candy-date';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'inner-popup',
+  exportAs: 'innerPopup',
   templateUrl: 'inner-popup.component.html'
 })
 export class InnerPopupComponent implements OnInit, OnChanges {

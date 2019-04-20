@@ -8,8 +8,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { InputNumber } from '../core/util';
-import { isNotNil } from '../core/util/check';
+import { isNotNil, InputNumber } from 'ng-zorro-antd/core';
 
 export type NzProgressGapPositionType = 'top' | 'bottom' | 'left' | 'right';
 export type NzProgressStatusType = 'success' | 'exception' | 'active' | 'normal';
@@ -20,6 +19,7 @@ export type NzProgressStrokeLinecapType = 'round' | 'square';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-progress',
+  exportAs: 'nzProgress',
   preserveWhitespaces: false,
   templateUrl: './nz-progress.component.html'
 })

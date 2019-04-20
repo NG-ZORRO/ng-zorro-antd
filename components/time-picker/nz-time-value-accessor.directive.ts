@@ -1,9 +1,11 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DateHelperService } from '../i18n/date-helper.service';
+
+import { DateHelperService } from 'ng-zorro-antd/i18n';
 
 @Directive({
   selector: 'input[nzTime]',
+  exportAs: 'nzTime',
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimeValueAccessorDirective, multi: true }]
 })
 export class NzTimeValueAccessorDirective implements ControlValueAccessor {

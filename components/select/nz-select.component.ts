@@ -1,5 +1,6 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
 import {
   forwardRef,
   AfterContentInit,
@@ -25,11 +26,16 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { merge, EMPTY, Subject } from 'rxjs';
 import { flatMap, startWith, takeUntil } from 'rxjs/operators';
-import { slideMotion } from '../core/animation/slide';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { NzSizeLDSType } from '../core/types/size';
-import { isNotNil } from '../core/util/check';
-import { toBoolean, InputBoolean } from '../core/util/convert';
+
+import {
+  isNotNil,
+  slideMotion,
+  toBoolean,
+  InputBoolean,
+  NzNoAnimationDirective,
+  NzSizeLDSType
+} from 'ng-zorro-antd/core';
+
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
 import { TFilterOption } from './nz-option.pipe';
@@ -38,6 +44,7 @@ import { NzSelectService } from './nz-select.service';
 
 @Component({
   selector: 'nz-select',
+  exportAs: 'nzSelect',
   preserveWhitespaces: false,
   providers: [
     NzSelectService,
@@ -226,7 +233,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   updateCdkConnectedOverlayStatus(): void {
-    this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+    if (this.platform.isBrowser) {
+      this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+    }
   }
 
   updateCdkConnectedOverlayPositions(): void {
@@ -242,6 +251,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     public nzSelectService: NzSelectService,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
+    private platform: Platform,
     elementRef: ElementRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
@@ -320,6 +330,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
           merge(
             this.listOfNzOptionGroupComponent.changes,
             this.listOfNzOptionComponent.changes,
+            ...this.listOfNzOptionComponent.map(option => option.changes),
             ...this.listOfNzOptionGroupComponent.map(group =>
               group.listOfNzOptionComponent ? group.listOfNzOptionComponent.changes : EMPTY
             )

@@ -15,7 +15,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
-import { dispatchFakeEvent } from '../core/testing';
+import { dispatchFakeEvent } from 'ng-zorro-antd/core';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
 import { NzDemoMenuHorizontalComponent } from './demo/horizontal';

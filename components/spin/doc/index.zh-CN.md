@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Feedback
+type: 反馈
 title: Spin
 subtitle: 加载中
 ---
@@ -12,6 +12,14 @@ subtitle: 加载中
 页面局部处于等待异步数据或正在渲染过程时，合适的加载动效会有效缓解用户的焦虑。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzSpinModule } from 'ng-zorro-antd';
+```
 
 ### nz-spin
 

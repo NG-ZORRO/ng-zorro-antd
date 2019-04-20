@@ -1,6 +1,6 @@
 import { TemplateRef } from '@angular/core';
 
-import { CandyDate } from './lib/candy-date';
+import { CandyDate } from './lib/candy-date/candy-date';
 
 // The common result data format (the range-picker's props can be result as array)
 export interface PickerResultSingle {
@@ -39,7 +39,7 @@ export interface SupportTimeOptions {
 }
 
 export interface PresetRanges {
-  [key: string]: Date[];
+  [key: string]: Date[] | (() => Date[]);
 }
 
 export type PanelMode = 'decade' | 'year' | 'month' | 'date' | 'time';

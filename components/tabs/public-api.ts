@@ -5,3 +5,4 @@ export * from './nz-tabs-ink-bar.directive';
 export * from './nz-tabs.module';
 export * from './nz-tabs-nav.component';
 export * from './nz-tabset.component';
+export * from './nz-tab.directive';

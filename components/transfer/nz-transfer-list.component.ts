@@ -13,12 +13,13 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 import { TransferItem } from './interface';
 
 @Component({
   selector: 'nz-transfer-list',
+  exportAs: 'nzTransferList',
   preserveWhitespaces: false,
   providers: [NzUpdateHostClassService],
   templateUrl: './nz-transfer-list.component.html',

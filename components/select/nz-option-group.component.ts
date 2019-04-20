@@ -11,6 +11,7 @@ import { NzOptionComponent } from './nz-option.component';
 
 @Component({
   selector: 'nz-option-group',
+  exportAs: 'nzOptionGroup',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './nz-option-group.component.html'

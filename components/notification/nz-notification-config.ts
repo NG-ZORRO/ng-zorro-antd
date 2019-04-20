@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
 
-import { NzMessageConfig } from '../message/nz-message-config';
+import { NzMessageConfig } from 'ng-zorro-antd/message';
 
 export interface NzNotificationConfig extends NzMessageConfig {
   nzTop?: string | number;

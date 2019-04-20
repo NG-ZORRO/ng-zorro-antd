@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 
 @Component({
   selector: 'nz-card-loading',
+  exportAs: 'nzCardLoading',
   templateUrl: './nz-card-loading.component.html',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,

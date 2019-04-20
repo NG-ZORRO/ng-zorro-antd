@@ -3,7 +3,7 @@ import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NGStyleInterface } from '../core/types/ng-class';
+import { NGStyleInterface } from 'ng-zorro-antd/core';
 
 import { NzBadgeComponent } from './nz-badge.component';
 import { NzBadgeModule } from './nz-badge.module';

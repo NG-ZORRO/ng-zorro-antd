@@ -1,7 +1,7 @@
 import { Component, DebugElement } from '@angular/core';
 import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
+import { NzMeasureScrollbarService } from 'ng-zorro-antd/core';
 import { NzIconTestModule } from '../icon/nz-icon-test.module';
 import { NzTableComponent } from './nz-table.component';
 import { NzTableModule } from './nz-table.module';
@@ -32,11 +32,11 @@ describe('nz-thead', () => {
       upButtons[0].click();
       fixture.detectChanges();
       expect(testComponent.sortChange).toHaveBeenCalledTimes(1);
-      expect(upButtons[0].firstElementChild.lastElementChild.classList).toContain('on');
+      expect(upButtons[0].querySelector('.ant-table-column-sorter-down').classList).toContain('on');
       upButtons[1].click();
       fixture.detectChanges();
-      expect(upButtons[0].firstElementChild.lastElementChild.classList).toContain('on');
-      expect(upButtons[1].firstElementChild.lastElementChild.classList).toContain('on');
+      expect(upButtons[0].querySelector('.ant-table-column-sorter-down').classList).toContain('on');
+      expect(upButtons[1].querySelector('.ant-table-column-sorter-down').classList).toContain('on');
       expect(testComponent.sortChange).toHaveBeenCalledTimes(2);
     });
     it('should singleSort change', () => {
@@ -47,11 +47,11 @@ describe('nz-thead', () => {
       upButtons[0].click();
       fixture.detectChanges();
       expect(testComponent.sortChange).toHaveBeenCalledTimes(1);
-      expect(upButtons[0].firstElementChild.lastElementChild.classList).toContain('on');
+      expect(upButtons[0].querySelector('.ant-table-column-sorter-down').classList).toContain('on');
       upButtons[1].click();
       fixture.detectChanges();
-      expect(upButtons[0].firstElementChild.lastElementChild.classList).toContain('off');
-      expect(upButtons[1].firstElementChild.lastElementChild.classList).toContain('on');
+      expect(upButtons[0].querySelector('.ant-table-column-sorter-down').classList).toContain('off');
+      expect(upButtons[1].querySelector('.ant-table-column-sorter-down').classList).toContain('on');
       expect(testComponent.sortChange).toHaveBeenCalledTimes(2);
     });
   });

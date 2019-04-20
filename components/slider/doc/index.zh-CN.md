@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 滑动输入条
-type: Data Entry
+type: 数据录入
 title: Slider
 ---
 
@@ -12,6 +12,14 @@ title: Slider
 当用户需要在数值区间/自定义区间内进行选择时，可为连续或离散值。
 
 ## API
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzSliderModule } from 'ng-zorro-antd';
+```
 
 ### nz-slider
 

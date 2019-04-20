@@ -1,4 +1,5 @@
 import { coerceBooleanProperty, coerceCssPixelValue, _isNumberValue } from '@angular/cdk/coercion';
+
 import { FunctionProp } from '../types/common-wrap';
 
 export function toBoolean(value: boolean | string): boolean {
@@ -15,9 +16,11 @@ export function toCssPixel(value: number | string): string {
   return coerceCssPixelValue(value);
 }
 
-// Get the function-property type's value
+/**
+ * Get the function-property type's value
+ */
+// tslint:disable-next-line: no-any
 export function valueFunctionProp<T>(prop: FunctionProp<T>, ...args: any[]): T {
-  // tslint:disable-line: no-any
   return typeof prop === 'function' ? prop(...args) : prop;
 }
 
@@ -60,21 +63,22 @@ function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (targe
  *
  * // Act as below:
  * // @Input()
- * // get visible() { return this.__visibile; }
+ * // get visible() { return this.__visible; }
  * // set visible(value) { this.__visible = value; }
  * // __visible = false;
  * ```
  */
+// tslint:disable-next-line: no-any
 export function InputBoolean(): any {
-  // tslint:disable-line: no-any
   return propDecoratorFactory('InputBoolean', toBoolean);
 }
 
+// tslint:disable-next-line: no-any
 export function InputCssPixel(): any {
-  // tslint:disable-line: no-any
   return propDecoratorFactory('InputCssPixel', toCssPixel);
 }
 
+// tslint:disable-next-line: no-any
 export function InputNumber(): any {
   // tslint:disable-line: no-any
   return propDecoratorFactory('InputNumber', toNumber);

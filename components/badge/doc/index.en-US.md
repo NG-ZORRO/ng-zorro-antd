@@ -22,10 +22,19 @@ Badge normally appears in proximity to notifications or user avatars with eye-ca
 <nz-badge [nzCount]="5"></nz-badge>
 ```
 
+### Import this Component Individually
+
+[Note](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzBadgeModule } from 'ng-zorro-antd';
+```
+
 ### nz-badge
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
+| `[nzColor]` | Customize Badge dot color | string | - |
 | `[nzCount]` | Number to show in badge | `number｜TemplateRef<void>` | - |
 | `[nzDot]` | Whether to display a red dot instead of `count` | `boolean` | `false` |
 | `[nzShowDot]` | Whether to display the red dot | `boolean` | `true` |

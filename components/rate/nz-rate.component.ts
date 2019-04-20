@@ -18,14 +18,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NgClassType } from '../core/types/ng-class';
 
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean, NgClassType } from 'ng-zorro-antd/core';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-rate',
+  exportAs: 'nzRate',
   preserveWhitespaces: false,
   templateUrl: './nz-rate.component.html',
   providers: [

@@ -12,12 +12,15 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { isNotNil } from '../core/util/check';
+
+import { isNotNil } from 'ng-zorro-antd/core';
+
 import { NzOptionComponent } from './nz-option.component';
 import { NzSelectService } from './nz-select.service';
 
 @Component({
   selector: '[nz-option-li]',
+  exportAs: 'nzOptionLi',
   templateUrl: './nz-option-li.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

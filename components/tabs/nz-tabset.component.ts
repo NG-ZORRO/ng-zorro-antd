@@ -24,9 +24,7 @@ import {
 } from '@angular/core';
 import { merge, Subscription } from 'rxjs';
 
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { NzSizeLDSType } from '../core/types/size';
-import { toNumber } from '../core/util/convert';
+import { toNumber, NzSizeLDSType, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 import { NzTabComponent } from './nz-tab.component';
 import { NzTabsNavComponent } from './nz-tabs-nav.component';
@@ -47,6 +45,7 @@ export type NzTabType = 'line' | 'card';
 
 @Component({
   selector: 'nz-tabset',
+  exportAs: 'nzTabset',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

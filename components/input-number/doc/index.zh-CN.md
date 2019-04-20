@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 数字输入框
-type: Data Entry
+type: 数据录入
 title: InputNumber
 ---
 
@@ -16,6 +16,14 @@ title: InputNumber
 ## API
 
 属性如下
+
+### 单独引入此组件
+
+[说明](/docs/getting-started/zh#单独引入某个组件)。
+
+```ts
+import { NzInputNumberModule } from 'ng-zorro-antd';
+```
 
 ### nz-input-number
 

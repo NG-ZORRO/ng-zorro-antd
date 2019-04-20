@@ -19,24 +19,31 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { isNotNil } from '../core/util/check';
-import { toBoolean, InputBoolean } from '../core/util/convert';
-import { NzTreeSelectService } from '../tree-select/nz-tree-select.service';
-import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from '../tree/interface';
-import { NzTreeBaseService } from './nz-tree-base.service';
-import { NzTreeNode } from './nz-tree-node';
+
+import {
+  isNotNil,
+  toBoolean,
+  InputBoolean,
+  NzFormatBeforeDropEvent,
+  NzFormatEmitEvent,
+  NzNoAnimationDirective,
+  NzTreeBaseService,
+  NzTreeHigherOrderServiceToken,
+  NzTreeNode
+} from 'ng-zorro-antd/core';
+
 import { NzTreeService } from './nz-tree.service';
 
 export function NzTreeServiceFactory(
-  treeSelectService: NzTreeSelectService,
+  higherOrderService: NzTreeBaseService,
   treeService: NzTreeService
 ): NzTreeBaseService {
-  return treeSelectService ? treeSelectService : treeService;
+  return higherOrderService ? higherOrderService : treeService;
 }
 
 @Component({
   selector: 'nz-tree',
+  exportAs: 'nzTree',
   templateUrl: './nz-tree.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -44,7 +51,7 @@ export function NzTreeServiceFactory(
     {
       provide: NzTreeBaseService,
       useFactory: NzTreeServiceFactory,
-      deps: [[new SkipSelf(), new Optional(), NzTreeSelectService], NzTreeService]
+      deps: [[new SkipSelf(), new Optional(), NzTreeHigherOrderServiceToken], NzTreeService]
     },
     {
       provide: NG_VALUE_ACCESSOR,
@@ -55,15 +62,18 @@ export function NzTreeServiceFactory(
 })
 export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
   @Input() @InputBoolean() nzShowIcon = false;
-  @Input() @InputBoolean() nzShowLine = false;
-  @Input() @InputBoolean() nzCheckable = false;
   @Input() @InputBoolean() nzShowExpand = true;
+  @Input() @InputBoolean() nzShowLine = false;
+  @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
+  @Input() @InputBoolean() nzCheckable = false;
   @Input() @InputBoolean() nzAsyncData = false;
   @Input() @InputBoolean() nzDraggable = false;
   @Input() @InputBoolean() nzExpandAll = false;
   @Input() @InputBoolean() nzHideUnMatched = false;
   @Input() @InputBoolean() nzSelectMode = false;
   @Input() @InputBoolean() nzCheckStrictly = false;
+  @Input() @InputBoolean() nzBlockNode = false;
+
   /**
    * @deprecated use
    * nzExpandAll instead
@@ -228,6 +238,7 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
       [this.prefixCls]: true,
       [this.prefixCls + '-show-line']: this.nzShowLine,
       [`${this.prefixCls}-icon-hide`]: !this.nzShowIcon,
+      [`${this.prefixCls}-block-node`]: this.nzBlockNode,
       ['draggable-tree']: this.nzDraggable,
       ['ant-select-tree']: this.nzSelectMode
     };
