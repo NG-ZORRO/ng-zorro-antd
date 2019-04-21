@@ -15,7 +15,7 @@ Any data whose entries are defined in a hierarchical manner is fit to use this c
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzTreeSelectModule } from 'ng-zorro-antd';

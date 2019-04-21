@@ -15,7 +15,7 @@ Switching Selector.
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzSwitchModule } from 'ng-zorro-antd';

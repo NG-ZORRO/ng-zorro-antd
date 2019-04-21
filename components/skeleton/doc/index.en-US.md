@@ -16,7 +16,7 @@ Provide a placeholder at the place which need waiting for loading.
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzSkeletonModule } from 'ng-zorro-antd';
