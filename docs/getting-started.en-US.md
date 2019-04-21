@@ -173,7 +173,7 @@ In style.css:
 If you want to import several components, it is recommended to use less instead of CSS. In styles.less:
 
 ```less
-@import "~ng-zorro-antd/style/index.less"; /* Import basic styles */
+@import "~ng-zorro-antd/style/entry.less"; /* Import basic styles */
 @import "~ng-zorro-antd/button/style/entry.less"; /* Import styles of the component */
 ```
 
