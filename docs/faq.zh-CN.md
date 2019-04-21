@@ -3,10 +3,6 @@ order: 9
 title: 常见问题
 ---
 
-### 为什么不提供模块单独引入
-
-事实上，从 `ng-zorro-antd` 的第一个版本开始，所有的 `ng-zorro-antd` 代码就完全由 TypeScript 编写，打包时会根据代码中使用的模块 Tree Shaking，未使用的模块并不会打包进生成的应用中，因此单模块引入是没有必要的，更多可以参考[这篇文章](https://blog.kevinyang.net/2018/11/20/ng-treeshaking/)。
-
 ### 有些特性为什么不会被支持
 
 `ng-zorro-antd` 是 Angular 版本 Ant Design 的实现，这意味着只有 Ant Design 支持的交互、功能 才会被 `ng-zorro-antd` 实现。
