@@ -15,7 +15,7 @@ title: BackTop
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzBackTopModule } from 'ng-zorro-antd';

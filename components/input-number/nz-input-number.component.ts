@@ -350,9 +350,11 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   ngOnInit(): void {
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
       if (!focusOrigin) {
+        this.onBlur();
         this.nzBlur.emit();
         Promise.resolve().then(() => this.onTouched());
       } else {
+        this.onFocus();
         this.nzFocus.emit();
       }
     });

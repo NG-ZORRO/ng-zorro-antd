@@ -32,7 +32,7 @@ There are four kinds of picker:
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzDatePickerModule } from 'ng-zorro-antd';

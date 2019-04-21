@@ -19,7 +19,7 @@ Use when you need the user to quickly understand what the current page is and wh
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzPageHeaderModule } from 'ng-zorro-antd';

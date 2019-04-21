@@ -24,7 +24,7 @@ Badge normally appears in proximity to notifications or user avatars with eye-ca
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzBadgeModule } from 'ng-zorro-antd';

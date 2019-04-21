@@ -16,7 +16,7 @@ A content area which can be collapsed and expanded.
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzCollapseModule } from 'ng-zorro-antd';

@@ -14,7 +14,7 @@ When part of the page is waiting for asynchronous data or during a rendering pro
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzSpinModule } from 'ng-zorro-antd';

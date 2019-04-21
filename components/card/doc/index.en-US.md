@@ -19,7 +19,7 @@ A card can be used to display content related to a single subject. The content c
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzCardModule } from 'ng-zorro-antd';
