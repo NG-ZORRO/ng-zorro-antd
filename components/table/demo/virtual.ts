@@ -10,6 +10,7 @@ import { takeUntil } from 'rxjs/operators';
     <br />
     <br />
     <nz-table
+      #virtualTable
       nzVirtualScroll
       [nzVirtualItemSize]="54"
       [nzData]="listOfData"
@@ -57,7 +58,7 @@ import { takeUntil } from 'rxjs/operators';
   `
 })
 export class NzDemoTableVirtualComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild(NzTableComponent) nzTableComponent: NzTableComponent;
+  @ViewChild('virtualTable') nzTableComponent: NzTableComponent;
   private destroy$ = new Subject();
   listOfData: any[] = [];
 
