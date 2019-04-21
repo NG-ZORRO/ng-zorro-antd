@@ -3,7 +3,7 @@ order: 5
 title: 服务端渲染
 ---
 
-<blockquote style="border-color: #faad14;"><p><strong>本指南假设你已了解关于 <a href="https://angular.cn/guide/universal">Angular Universal：服务端渲染</a> 的相关知识！</strong></p></blockquote>
+<blockquote style="border-color: #faad14;"><p><strong>本指南假设你已了解关于 <a href="https://angular.cn/guide/universal">Angular Universal：服务端渲染</a> 的相关知识。</strong></p></blockquote>
 
 本指南 Web 服务器是基于常见的 [Express](https://expressjs.com/) 框架。
 
