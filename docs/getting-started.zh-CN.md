@@ -181,7 +181,7 @@ export class YourModule { }
 另：如果你想单独引入多个组件，我们建议使用 less，在你的 style.less 里导入各个组件的 entry.less 文件：
 
 ```less
-@import "~ng-zorro-antd/style/index.less"; /* 引入基本样式 */
+@import "~ng-zorro-antd/style/entry.less"; /* 引入基本样式 */
 @import "~ng-zorro-antd/button/style/entry.less"; /* 引入组件样式 */
 ```
 
