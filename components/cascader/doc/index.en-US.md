@@ -20,7 +20,7 @@ Cascade selection box.
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzCascaderModule } from 'ng-zorro-antd';

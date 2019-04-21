@@ -20,7 +20,7 @@ Uploading is the process of publishing information (web pages, text, pictures, v
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzUploadModule } from 'ng-zorro-antd';

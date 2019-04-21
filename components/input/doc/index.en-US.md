@@ -16,7 +16,7 @@ Keyboard and mouse can be used for providing or changing data.
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzInputModule } from 'ng-zorro-antd';

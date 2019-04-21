@@ -16,7 +16,7 @@ Comparing with `Tooltip`, besides information `Popover` card can also provide ac
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzPopoverModule } from 'ng-zorro-antd';
