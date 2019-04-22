@@ -32,9 +32,9 @@ title: Ant Design of Angular
 
 ## 支持环境
 
-- 现代浏览器和 IE11 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）。
+- 现代浏览器和 IE11 及以上（需要 [polyfills](https://angular.io/guide/browser-support)。
 - 支持服务端渲染。
-- Electron
+- [Electron](http://electron.atom.io/)
 
 ## 当前版本
 
