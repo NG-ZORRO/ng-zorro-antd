@@ -31,7 +31,9 @@ Following the Ant Design specification, we developed a Angular UI library `ng-zo
 
 ## Environment Support
 
-Modern browsers and Internet Explorer 11+ (with [polyfills](https://angular.io/guide/browser-support))
+- Modern browsers and Internet Explorer 11+ (with [polyfills](https://angular.io/guide/browser-support))
+- Server-side Rendering
+- [Electron](http://electron.atom.io/)
 
 ## Version
 
