@@ -218,7 +218,7 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
         getNode(n);
       });
     };
-    this.nzTreeService.rootNodes.forEach(n => {
+    this.nzNodes.forEach(n => {
       getNode(n);
     });
     return nodes.find(n => n.key === key) || null;
