@@ -43,7 +43,7 @@ let componentsLessContent = '';
 componentFolders.forEach(dir => {
   if (fs.existsSync(`${sourcePath}/${dir}/style/index.less`)) {
     // Copy style files for each component.
-    componentsLessContent += `@import "./${path.posix.join(dir, 'style', 'index.less')}";\n`;
+    componentsLessContent += `@import "./${path.posix.join(dir, 'style', 'entry.less')}";\n`;
     fs.copySync(`${sourcePath}/${dir}/style`, `${targetPath}/${dir}/style`);
 
     // Compile less files to CSS and delete the `entry.less` file.
