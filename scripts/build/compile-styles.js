@@ -65,13 +65,13 @@ componentFolders.forEach(dir => {
 
 // Copy concentrated less files.
 fs.copySync(path.resolve(sourcePath, 'style'), path.resolve(targetPath, 'style'));
-fs.writeFileSync(`${targetPath}/components.less`, fs.readFileSync(`${sourcePath}/component.less`));
+fs.writeFileSync(`${targetPath}/components.less`, fs.readFileSync(`${sourcePath}/components.less`));
 fs.writeFileSync(`${targetPath}/ng-zorro-antd.less`, fs.readFileSync(`${sourcePath}/ng-zorro-antd.less`));
 
 // Compile concentrated less file to CSS file.
 const lessContent = `@import "${path.posix.join(targetPath, 'ng-zorro-antd.less')}";`;
-compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.css'), false);
-compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.min.css'), true);
+compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.css'), false).catch(e => console.log(e));
+compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.min.css'), true).catch(e => console.log(e));
 
 // Compile css file that doesn't have component-specific styles.
 const cssIndexPath = path.join(sourcePath, 'style', 'entry.less');
