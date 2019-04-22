@@ -303,15 +303,15 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
       }
       switch (data.type) {
         case 'nzExpandedKeys':
-          this.nzTreeService.calcExpandedKeys(data.keys, this.nzTreeService.rootNodes);
+          this.nzTreeService.calcExpandedKeys(data.keys, this.nzNodes);
           this.nzExpandedKeysChange.emit(data.keys);
           break;
         case 'nzSelectedKeys':
-          this.nzTreeService.calcSelectedKeys(data.keys, this.nzTreeService.rootNodes, this.nzMultiple);
+          this.nzTreeService.calcSelectedKeys(data.keys, this.nzNodes, this.nzMultiple);
           this.nzSelectedKeysChange.emit(data.keys);
           break;
         case 'nzCheckedKeys':
-          this.nzTreeService.calcCheckedKeys(data.keys, this.nzTreeService.rootNodes, this.nzCheckStrictly);
+          this.nzTreeService.calcCheckedKeys(data.keys, this.nzNodes, this.nzCheckStrictly);
           this.nzCheckedKeysChange.emit(data.keys);
           break;
       }
