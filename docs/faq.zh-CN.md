@@ -1,11 +1,7 @@
 ---
-order: 8
+order: 9
 title: 常见问题
 ---
-
-### 为什么不提供模块单独引入
-
-事实上，从 `ng-zorro-antd` 的第一个版本开始，所有的 `ng-zorro-antd` 代码就完全由 TypeScript 编写，打包时会根据代码中使用的模块 Tree Shaking，未使用的模块并不会打包进生成的应用中，因此单模块引入是没有必要的，更多可以参考[这篇文章](https://blog.kevinyang.net/2018/11/20/ng-treeshaking/)。
 
 ### 有些特性为什么不会被支持
 

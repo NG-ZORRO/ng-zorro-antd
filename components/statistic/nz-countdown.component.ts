@@ -1,3 +1,12 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Platform } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -31,7 +40,7 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   private target: number;
   private updater_: Subscription | null;
 
-  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone) {
+  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private platform: Platform) {
     super();
   }
 
@@ -62,13 +71,15 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   }
 
   startTimer(): void {
-    this.ngZone.runOutsideAngular(() => {
-      this.stopTimer();
-      this.updater_ = interval(REFRESH_INTERVAL).subscribe(() => {
-        this.updateValue();
-        this.cdr.detectChanges();
+    if (this.platform.isBrowser) {
+      this.ngZone.runOutsideAngular(() => {
+        this.stopTimer();
+        this.updater_ = interval(REFRESH_INTERVAL).subscribe(() => {
+          this.updateValue();
+          this.cdr.detectChanges();
+        });
       });
-    });
+    }
   }
 
   stopTimer(): void {

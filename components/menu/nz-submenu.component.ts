@@ -1,4 +1,13 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -107,7 +116,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   }
 
   setTriggerWidth(): void {
-    if (this.nzSubmenuService.mode === 'horizontal') {
+    if (this.nzSubmenuService.mode === 'horizontal' && this.platform.isBrowser) {
       this.triggerWidth = this.cdkOverlayOrigin.nativeElement.getBoundingClientRect().width;
     }
   }
@@ -135,6 +144,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
     private cdr: ChangeDetectorRef,
     public nzSubmenuService: NzSubmenuService,
     private nzUpdateHostClassService: NzUpdateHostClassService,
+    private platform: Platform,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {}
 

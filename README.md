@@ -38,6 +38,7 @@ English | [简体中文](README-zh_CN.md)
 ## 🖥 Environment Support
 
 * Angular `^7.0.0`
+* Server-side Rendering
 * Modern browsers and Internet Explorer 11+ (with [polyfills](https://angular.io/guide/browser-support))
 * [Electron](http://electron.atom.io/)
 
@@ -124,7 +125,7 @@ Browser would open automatically.
 
 ## 🗺 Road Map
 
-Check [this issue](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2025) to read our plans for later 2018.
+Check [this issue](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2025) to read our plans for 2019.
 
 ## 🤝 Contributing
 

@@ -20,7 +20,7 @@ It is recommended to use the `Component` way to pop up the Modal, so that the co
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzModalModule } from 'ng-zorro-antd';

@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import {
@@ -342,9 +350,11 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   ngOnInit(): void {
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
       if (!focusOrigin) {
+        this.onBlur();
         this.nzBlur.emit();
         Promise.resolve().then(() => this.onTouched());
       } else {
+        this.onFocus();
         this.nzFocus.emit();
       }
     });

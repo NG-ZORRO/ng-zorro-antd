@@ -15,7 +15,7 @@ When there is no data provided, display for friendly tips.
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzEmptyModule } from 'ng-zorro-antd';

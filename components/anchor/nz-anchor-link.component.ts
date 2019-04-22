@@ -1,3 +1,12 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Platform } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -55,6 +64,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
     public elementRef: ElementRef,
     private anchorComp: NzAnchorComponent,
     private cdr: ChangeDetectorRef,
+    private platform: Platform,
     renderer: Renderer2
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-anchor-link');
@@ -67,7 +77,9 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   goToClick(e: Event): void {
     e.preventDefault();
     e.stopPropagation();
-    this.anchorComp.handleScrollTo(this);
+    if (this.platform.isBrowser) {
+      this.anchorComp.handleScrollTo(this);
+    }
   }
 
   markForCheck(): void {

@@ -32,7 +32,7 @@ registerLocaleData(zh);
 
 ### 单独引入此组件
 
-[说明](/docs/getting-started/zh#单独引入某个组件)。
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
 import { NzDatePickerModule } from 'ng-zorro-antd';
@@ -108,7 +108,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd';
 | `[ngModel]` | 日期 | `Date[]` | - |
 | `[nzDisabledTime]` | 不可选择的时间 | `(current: Date, partial: 'start'｜'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
 | `[nzFormat]` | 展示的日期格式，见`nzFormat特别说明` | `string` | `"yyyy-MM-dd"` |
-| `[nzRanges]`       | 预设时间范围快捷选择 | `{ [ key: string ]: Date[] }` | - |
+| `[nzRanges]` | 预设时间范围快捷选择 | `{ [ key: string ]: Date[] } ｜ { [ key: string ]: () => Date[] }` | - |
 | `[nzRenderExtraFooter]` | 在面板中添加额外的页脚 | `TemplateRef｜string｜(() => TemplateRef｜string)` | - |
 | `[nzShowTime]` | 增加时间选择功能 | `object｜boolean` | [TimePicker Options](/components/time-picker/zh#api) |
 | `[nzPlaceHolder]` | 输入框提示文字 | `string[]` | - |

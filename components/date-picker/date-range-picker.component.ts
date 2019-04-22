@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   ChangeDetectorRef,
   Component,
@@ -28,7 +36,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   @Input() nzRenderExtraFooter: FunctionProp<TemplateRef<void> | string>;
   @Input() @InputBoolean() nzShowToday: boolean = true;
   @Input() nzMode: PanelMode | PanelMode[];
-  @Input() nzRanges: FunctionProp<PresetRanges>;
+  @Input() nzRanges: PresetRanges;
   @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
   @Output() readonly nzOnCalendarChange = new EventEmitter<Date[]>();
 

@@ -1,5 +1,14 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
 import {
   forwardRef,
   AfterContentInit,
@@ -232,7 +241,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   updateCdkConnectedOverlayStatus(): void {
-    this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+    if (this.platform.isBrowser) {
+      this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+    }
   }
 
   updateCdkConnectedOverlayPositions(): void {
@@ -248,6 +259,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     public nzSelectService: NzSelectService,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
+    private platform: Platform,
     elementRef: ElementRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
@@ -326,6 +338,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
           merge(
             this.listOfNzOptionGroupComponent.changes,
             this.listOfNzOptionComponent.changes,
+            ...this.listOfNzOptionComponent.map(option => option.changes),
             ...this.listOfNzOptionGroupComponent.map(group =>
               group.listOfNzOptionComponent ? group.listOfNzOptionComponent.changes : EMPTY
             )

@@ -1,3 +1,12 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Platform } from '@angular/cdk/platform';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
   AfterContentInit,
@@ -217,6 +226,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
     private cdr: ChangeDetectorRef,
     private nzMeasureScrollbarService: NzMeasureScrollbarService,
     private i18n: NzI18nService,
+    private platform: Platform,
     elementRef: ElementRef
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-table-wrapper');
@@ -244,6 +254,9 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   }
 
   ngAfterViewInit(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     setTimeout(() => this.setScrollPositionClassName());
     this.ngZone.runOutsideAngular(() => {
       merge<MouseEvent>(

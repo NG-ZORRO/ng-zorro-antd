@@ -37,6 +37,7 @@ Ant Design 的 Angular 实现，开发和服务于企业级后台产品。
 ## 🖥 支持环境
 
 - Angular `^7.0.0`
+- 支持服务端渲染
 - 现代浏览器，以及 Internet Explorer 11+ （使用 [polyfills](https://angular.io/guide/browser-support)）
 - [Electron](http://electron.atom.io/)
 
@@ -117,7 +118,7 @@ $ npm run site:start
 
 ## 🗺 Road Map
 
-查看 [这个 issue](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2025) 来了解我们 2018 下半年的开发计划。
+查看 [这个 issue](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2025) 来了解我们 2019 年的开发计划。
 
 ## 🤝 如何贡献
 

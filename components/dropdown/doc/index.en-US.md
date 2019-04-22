@@ -14,7 +14,7 @@ If there are too many operations to display, you can wrap them in a `Dropdown`. 
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzDropDownModule } from 'ng-zorro-antd';

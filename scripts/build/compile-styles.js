@@ -78,8 +78,8 @@ compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.css'), false);
 compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.min.css'), true);
 
 // Compile css file that doesn't have component-specific styles.
-const cssIndexPath = path.join(sourcePath, 'style', 'index.less');
-const cssIndex = fs.readFileSync(cssIndexPath, { encoding: 'utf8' }) + `@import '../core/style/index.less';\n`; // Compile patch.
+const cssIndexPath = path.join(sourcePath, 'style', 'entry.less');
+const cssIndex = fs.readFileSync(cssIndexPath, { encoding: 'utf8' });
 compileLess(cssIndex, path.join(targetPath, 'style', 'index.css'), false, true, cssIndexPath).catch(e =>
   console.log(e)
 );

@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Directive, ElementRef, Host, Input, Optional, Renderer2 } from '@angular/core';
 import { toBoolean } from 'ng-zorro-antd/core';
 import { NzTableComponent } from './nz-table.component';

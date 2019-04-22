@@ -1,3 +1,12 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -74,8 +83,13 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   private scroll$: Subscription | null = null;
   private destroyed = false;
 
-  /* tslint:disable-next-line:no-any */
-  constructor(private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private scrollSrv: NzScrollService,
+    /* tslint:disable-next-line:no-any */
+    @Inject(DOCUMENT) private doc: any,
+    private cdr: ChangeDetectorRef,
+    private platform: Platform
+  ) {}
 
   registerLink(link: NzAnchorLinkComponent): void {
     this.links.push(link);
@@ -99,6 +113,9 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   }
 
   private registerScrollEvent(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     this.removeListen();
     this.scroll$ = fromEvent(this.getTarget(), 'scroll')
       .pipe(
