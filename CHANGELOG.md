@@ -1,3 +1,10 @@
+## [7.3.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.3.1...7.3.2) (2019-04-22)
+
+### Bug Fixes
+
+* **build:** fix bundling error of components.less ([#3331](https://github.com/NG-ZORRO/ng-zorro-antd/pull/3331)) ([fb19921](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fb19921))
+
+
 ## [7.3.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.3.0...7.3.1) (2019-04-22)
 
 

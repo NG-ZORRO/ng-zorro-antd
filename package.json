@@ -23,7 +23,7 @@
     "migration-styles": "node ./scripts/build/migration-styles.js",
     "ng": "ng",
     "postgenerate": "node scripts/build/compile-styles.js && cp README.md publish/README.md && npm run migration-styles && npm run schematic:generate",
-    "pre-release": "npm run site:init && bash ./scripts/build/replace-publish.sh && npm run generate && npm run build-site && npm run build-iframe && npm run helper && npm run build-static",
+    "pre-release": "npm run site:init && bash ./scripts/build/replace-publish.sh && npm run generate && npm run build-site && npm run build-iframe && npm run helper",
     "release": "node ./scripts/publish/publish.js",
     "schematic:build": "node ./scripts/schematics/set-theme.js && node ./scripts/schematics/set-version.js && npm run schematic:tsc && node ./scripts/schematics/copy-resources",
     "schematic:demo": "node ./scripts/schematics/demo2schematics",
