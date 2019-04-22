@@ -14,6 +14,14 @@ timeline: true
 
 ---
 
+## 7.3.1
+`2019-04-22`
+
+### Bug Fixes
+
+* **tree:** 修复数据渲染问题 ([#3326](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3326)) ([6d759a8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6d759a8)), closes [#3320](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3320)
+* **select:** 修复 nzShowSearch 时搜索无效的问题 ([#3324](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3324)) ([d91af03](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d91af03)), closes [#3322](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3322)
+
 ## 7.3.0
 `2019-04-21`
 
