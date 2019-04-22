@@ -13,6 +13,7 @@ npx prerender mirror -r /tmp/doc-prerender/ http://localhost:4000/
 
 kill `lsof -t -i :4000` || true
 
+mv /tmp/doc-prerender/localhost:4000/index.html /tmp/doc-prerender/localhost:4000/index_static.html
 cp -r /tmp/doc-prerender/localhost:4000/* dist/
 
 set +x
