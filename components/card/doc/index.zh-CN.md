@@ -23,9 +23,7 @@ cols: 1
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-```ts
 import { NzCardModule } from 'ng-zorro-antd';
-```
 ```
 
 ### nz-card
