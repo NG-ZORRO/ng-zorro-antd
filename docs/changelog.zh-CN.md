@@ -13,6 +13,12 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 7.3.2
+`2019-04-22`
+
+### Bug Fixes
+
+* **build:** 修复 components.less 的打包错误 ([#3331](https://github.com/NG-ZORRO/ng-zorro-antd/pull/3331)) ([fb19921](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fb19921))
 
 ## 7.3.1
 `2019-04-22`
