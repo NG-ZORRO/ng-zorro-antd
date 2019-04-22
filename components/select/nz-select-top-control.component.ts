@@ -38,8 +38,8 @@ import { NzSelectService } from './nz-select.service';
   encapsulation: ViewEncapsulation.None,
   templateUrl: './nz-select-top-control.component.html',
   host: {
-    '[class.ant-select-selection--single]': '!nzCustomTemplate && nzSelectService.isSingleMode',
-    '[class.ant-select-selection--multiple]': 'nzCustomTemplate || nzSelectService.isMultipleOrTags',
+    '[class.ant-select-selection--single]': 'nzSelectService.isSingleMode',
+    '[class.ant-select-selection--multiple]': 'nzSelectService.isMultipleOrTags',
     '[style.cursor]': 'nzShowSearch ? "inherit" : "pointer"'
   }
 })

@@ -39,21 +39,28 @@
   </ng-container>
   <!--multiple or tags mode-->
   <ul *ngIf="nzSelectService.isMultipleOrTags">
-    <ng-container *ngFor="let option of nzSelectService.listOfCachedSelectedOption | slice: 0 : nzMaxTagCount;trackBy:trackValue;">
-      <li [@zoomMotion]
-        [nzNoAnimation]="noAnimation?.nzNoAnimation"
-        [attr.title]="option.nzLabel"
-        [class.ant-select-selection__choice__disabled]="option.nzDisabled"
-        class="ant-select-selection__choice">
-        <div class="ant-select-selection__choice__content">{{ option.nzLabel }}</div>
-        <span *ngIf="!option.nzDisabled"
-          class="ant-select-selection__choice__remove"
-          (mousedown)="$event.preventDefault()"
-          (click)="removeSelectedValue(option, $event)">
-          <i nz-icon type="close" class="ant-select-remove-icon" *ngIf="!nzRemoveIcon; else nzRemoveIcon"></i>
-        </span>
-      </li>
+    <ng-container *ngIf="nzCustomTemplate; else noTemplate">
+      <ng-container *ngIf="nzSelectService.listOfCachedSelectedOption.length">
+        <ng-template [ngTemplateOutlet]="nzCustomTemplate" [ngTemplateOutletContext]="{ $implicit: nzSelectService.listOfCachedSelectedOption }"></ng-template>
+      </ng-container>
     </ng-container>
+    <ng-template #noTemplate>
+      <ng-container *ngFor="let option of nzSelectService.listOfCachedSelectedOption | slice: 0 : nzMaxTagCount;trackBy:trackValue;">
+        <li [@zoomMotion]
+          [nzNoAnimation]="noAnimation?.nzNoAnimation"
+          [attr.title]="option.nzLabel"
+          [class.ant-select-selection__choice__disabled]="option.nzDisabled"
+          class="ant-select-selection__choice">
+          <div class="ant-select-selection__choice__content">{{ option.nzLabel }}</div>
+          <span *ngIf="!option.nzDisabled"
+            class="ant-select-selection__choice__remove"
+            (mousedown)="$event.preventDefault()"
+            (click)="removeSelectedValue(option, $event)">
+            <i nz-icon type="close" class="ant-select-remove-icon" *ngIf="!nzRemoveIcon; else nzRemoveIcon"></i>
+          </span>
+        </li>
+      </ng-container>
+    </ng-template>
     <li *ngIf="nzSelectService.listOfCachedSelectedOption.length > nzMaxTagCount"
       [@zoomMotion]
       [nzNoAnimation]="noAnimation?.nzNoAnimation"
