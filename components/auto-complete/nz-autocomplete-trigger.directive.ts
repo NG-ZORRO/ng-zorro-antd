@@ -181,7 +181,6 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     if (target.type === 'number') {
       value = value === '' ? null : parseFloat(value);
     }
-    console.log(value);
     if (this.canOpen() && document.activeElement === event.target && this.previousValue !== value) {
       this.previousValue = value;
       this._onChange(value);
