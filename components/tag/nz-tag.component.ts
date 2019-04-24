@@ -21,6 +21,7 @@ import {
 } from '@angular/core';
 
 import { fadeMotion, InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { isPresetColor } from 'ng-zorro-antd/tag/util';
 
 @Component({
   selector: 'nz-tag',
@@ -35,35 +36,50 @@ import { fadeMotion, InputBoolean, NzUpdateHostClassService } from 'ng-zorro-ant
     '[@fadeMotion]': '',
     '(@fadeMotion.done)': 'afterAnimation($event)',
     '(click)': 'updateCheckedStatus()',
-    '[style.background-color]': 'presetColor? null : nzColor'
+    '[style.background-color]': ''
   }
 })
 export class NzTagComponent implements OnInit, OnChanges {
-  presetColor = false;
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
   @Input() nzColor: string;
+  @Input() nzUncheckedColor: string;
   @Input() @InputBoolean() nzChecked: boolean = false;
   @Input() @InputBoolean() nzNoAnimation: boolean = false;
   @Output() readonly nzAfterClose = new EventEmitter<void>();
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
 
-  private isPresetColor(color?: string): boolean {
-    if (!color) {
-      return false;
-    }
-    return /^(pink|red|yellow|orange|cyan|green|blue|purple|geekblue|magenta|volcano|gold|lime)(-inverse)?$/.test(
-      color
-    );
+  isPresetColor = false;
+  backgroundColor: string | null = null;
+
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+    private nzUpdateHostClassService: NzUpdateHostClassService
+  ) {}
+
+  ngOnInit(): void {
+    this.updateClassesAndStyles();
   }
 
-  private updateClassMap(): void {
-    this.presetColor = this.isPresetColor(this.nzColor);
+  ngOnChanges(): void {
+    this.updateClassesAndStyles();
+  }
+
+  private updateClassesAndStyles(): void {
+    const isPreset = (this.isPresetColor = isPresetColor(this.nzColor));
     const prefix = 'ant-tag';
+    this.backgroundColor = isPresetColor
+      ? null
+      : this.nzMode === 'checkable'
+      ? this.nzChecked
+        ? this.nzColor
+        : this.nzUncheckedColor || null
+      : this.nzColor;
     this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
       [`${prefix}`]: true,
-      [`${prefix}-has-color`]: this.nzColor && !this.presetColor,
-      [`${prefix}-${this.nzColor}`]: this.presetColor,
+      [`${prefix}-has-color`]: this.nzColor && !isPreset,
+      [`${prefix}-${this.nzColor}`]: isPreset,
       [`${prefix}-checkable`]: this.nzMode === 'checkable',
       [`${prefix}-checkable-checked`]: this.nzChecked
     });
@@ -73,7 +89,7 @@ export class NzTagComponent implements OnInit, OnChanges {
     if (this.nzMode === 'checkable') {
       this.nzChecked = !this.nzChecked;
       this.nzCheckedChange.emit(this.nzChecked);
-      this.updateClassMap();
+      this.updateClassesAndStyles();
     }
   }
 
@@ -88,19 +104,5 @@ export class NzTagComponent implements OnInit, OnChanges {
     if (e.toState === 'void') {
       this.nzAfterClose.emit();
     }
-  }
-
-  constructor(
-    private renderer: Renderer2,
-    private elementRef: ElementRef,
-    private nzUpdateHostClassService: NzUpdateHostClassService
-  ) {}
-
-  ngOnInit(): void {
-    this.updateClassMap();
-  }
-
-  ngOnChanges(): void {
-    this.updateClassMap();
   }
 }

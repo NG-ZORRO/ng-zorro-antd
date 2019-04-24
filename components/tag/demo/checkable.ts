@@ -4,8 +4,17 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-tag-checkable',
   template: `
     <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event)">Tag1</nz-tag>
-    <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event)">Tag2</nz-tag>
-    <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event)">Tag3</nz-tag>
+    <nz-tag
+      nzMode="checkable"
+      [nzChecked]="true"
+      [nzColor]="'#f50'"
+      [nzUncheckedColor]="'#f88'"
+      (nzCheckedChange)="checkChange($event)"
+      >Tag2</nz-tag
+    >
+    <nz-tag nzMode="checkable" [nzChecked]="true" [nzColor]="'magenta'" (nzCheckedChange)="checkChange($event)"
+      >Tag3</nz-tag
+    >
   `
 })
 export class NzDemoTagCheckableComponent {
