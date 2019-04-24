@@ -162,6 +162,13 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
     return this._searchValue;
   }
 
+  /**
+   * To render nodes if root is changed
+   */
+  get nzNodes(): NzTreeNode[] {
+    return this.nzTreeService.rootNodes;
+  }
+
   // model bind
   @Output() readonly nzExpandedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() readonly nzSelectedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
@@ -192,7 +199,6 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
   _nzMultiple: boolean = false;
   nzDefaultSubject = new ReplaySubject<{ type: string; keys: string[] }>(6);
   destroy$ = new Subject();
-  nzNodes: NzTreeNode[] = [];
   prefixCls = 'ant-tree';
   classMap = {};
 
@@ -266,19 +272,20 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
 
   // tslint:disable-next-line:no-any
   initNzData(value: any[]): void {
+    let nzNodes: NzTreeNode[] = [];
     if (Array.isArray(value)) {
       if (!this.nzTreeService.isArrayOfNzTreeNode(value)) {
         // has not been new NzTreeNode
-        this.nzNodes = value.map(item => new NzTreeNode(item, null, this.nzTreeService));
+        nzNodes = value.map(item => new NzTreeNode(item, null, this.nzTreeService));
       } else {
-        this.nzNodes = value.map((item: NzTreeNode) => {
+        nzNodes = value.map((item: NzTreeNode) => {
           item.service = this.nzTreeService;
           return item;
         });
       }
       this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
       this.nzTreeService.isMultiple = this.nzMultiple;
-      this.nzTreeService.initTree(this.nzNodes);
+      this.nzTreeService.initTree(nzNodes);
     }
   }
 

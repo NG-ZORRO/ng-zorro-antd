@@ -9,6 +9,7 @@
   "scripts": {
     "build-iframe": "node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --project=ng-zorro-antd-iframe --prod --base-href ./",
     "build-site": "node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod",
+    "build-static": "bash ./scripts/build/prerender.sh",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s --pkg components/package.json && node ./scripts/site/replace-scope-prefix.js",
     "doc": "npm run site:init && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod",
     "format:check": "prettier --config ./.prettierrc --list-different \"component/**/*{.ts}\"",
