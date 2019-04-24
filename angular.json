@@ -20,6 +20,7 @@
               "site/doc/assets",
               "site/doc/favicon.ico",
               "site/doc/404.html",
+              "site/doc/google854eb8b183564acb.html",
               {
                 "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
