@@ -142,7 +142,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.focusMonitor.stopMonitoring(this.elementRef);
   }
 }
