@@ -61,8 +61,8 @@ function baseInfo(file, path) {
 }
 
 function generateTemplate(docsPath, name, zh, en) {
-  fs.writeFileSync(path.join(docsPath, `${name}-zh.html`), wrapperDocs(generateToc(zh.meta, zh.raw), generateTitle(zh.meta.title, '', zh.path), angularNonBindAble(zh.content)));
-  fs.writeFileSync(path.join(docsPath, `${name}-en.html`), wrapperDocs(generateToc(en.meta, en.raw), generateTitle(en.meta.title, '', en.path), angularNonBindAble(en.content)));
+  fs.writeFileSync(path.join(docsPath, `${name}-zh.html`), wrapperDocs(generateToc(zh.meta, zh.raw), generateTitle(zh.meta, zh.path), angularNonBindAble(zh.content)));
+  fs.writeFileSync(path.join(docsPath, `${name}-en.html`), wrapperDocs(generateToc(en.meta, en.raw), generateTitle(en.meta, en.path), angularNonBindAble(en.content)));
 }
 
 function generateComponent(docsPath, name) {
