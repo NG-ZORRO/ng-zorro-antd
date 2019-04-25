@@ -13,7 +13,7 @@ import {
   NzTreeNodeOptions
 } from 'ng-zorro-antd/core';
 
-import { NzIconTestModule } from 'ng-zorro-antd/icon-test';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzTreeComponent } from './nz-tree.component';
 import { NzTreeModule } from './nz-tree.module';

@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
-import { NzIconTestModule } from 'ng-zorro-antd/icon-test';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzTransferComponent, NzTransferModule } from './index';
 import { TransferCanMove, TransferItem } from './interface';
 

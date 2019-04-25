@@ -12,7 +12,7 @@ import { NzButtonComponent, NzButtonModule } from 'ng-zorro-antd/button';
 import { dispatchKeyboardEvent, NzMeasureScrollbarService } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import en_US from '../i18n/languages/en_US';
-import { NzIconTestModule } from 'ng-zorro-antd/icon-test';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { CssUnitPipe } from './css-unit.pipe';
 import { NZ_MODAL_CONFIG } from './nz-modal-config';

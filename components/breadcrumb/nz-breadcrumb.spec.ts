@@ -6,7 +6,7 @@ import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core';
-import { NzIconTestModule } from 'ng-zorro-antd/icon-test';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzDemoBreadcrumbBasicComponent } from './demo/basic';
 import { NzDemoBreadcrumbSeparatorComponent } from './demo/separator';
