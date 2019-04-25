@@ -2,7 +2,7 @@ import { Component, DebugElement } from '@angular/core';
 import { async, fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NzIconTestModule } from '../icon/nz-icon-test.module';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzInputDirective } from './nz-input.directive';
 import { NzInputModule } from './nz-input.module';
 
