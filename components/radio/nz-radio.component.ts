@@ -17,6 +17,7 @@ import {
   HostListener,
   Input,
   OnChanges,
+  OnDestroy,
   Renderer2,
   SimpleChanges,
   ViewChild,
@@ -46,7 +47,7 @@ import { InputBoolean } from 'ng-zorro-antd/core';
     '[class.ant-radio-wrapper-disabled]': 'nzDisabled'
   }
 })
-export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, OnChanges {
+export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnDestroy {
   select$ = new Subject<NzRadioComponent>();
   touched$ = new Subject<void>();
   checked = false;
@@ -139,5 +140,9 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     if (changes.nzAutoFocus) {
       this.updateAutoFocus();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.focusMonitor.stopMonitoring(this.elementRef);
   }
 }

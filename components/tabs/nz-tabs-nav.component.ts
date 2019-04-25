@@ -19,6 +19,7 @@ import {
   EventEmitter,
   Input,
   NgZone,
+  OnDestroy,
   Optional,
   Output,
   QueryList,
@@ -47,7 +48,7 @@ export type ScrollDirection = 'after' | 'before';
   encapsulation: ViewEncapsulation.None,
   templateUrl: './nz-tabs-nav.component.html'
 })
-export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit {
+export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit, OnDestroy {
   private _tabPositionMode: NzTabPositionMode = 'horizontal';
   private _scrollDistance = 0;
   private _selectedIndex = 0;
@@ -172,6 +173,12 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
           this.alignInkBarToSelectedTab();
         });
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.realignInkBar) {
+      this.realignInkBar.unsubscribe();
+    }
   }
 
   updateTabScrollPosition(): void {
