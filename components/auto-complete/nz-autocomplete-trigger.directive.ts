@@ -156,12 +156,13 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       }
       this.closePanel();
     } else if (this.panelOpen && keyCode === ENTER) {
-      event.preventDefault();
       if (this.nzAutocomplete.showPanel && this.activeOption) {
+        event.preventDefault();
         this.activeOption.selectViaInteraction();
       }
     } else if (this.panelOpen && isArrowKey && this.nzAutocomplete.showPanel) {
       event.stopPropagation();
+      event.preventDefault();
       if (keyCode === UP_ARROW) {
         this.nzAutocomplete.setPreviousItemActive();
       } else {
