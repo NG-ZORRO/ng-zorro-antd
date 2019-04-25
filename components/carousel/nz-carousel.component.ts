@@ -34,7 +34,7 @@ import {
 import { fromEvent, Subject } from 'rxjs';
 
 import { isTouchEvent, InputBoolean, InputNumber } from 'ng-zorro-antd/core';
-import { take, takeUntil, throttleTime } from 'rxjs/operators';
+import { takeUntil, throttleTime } from 'rxjs/operators';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 import { FromToInterface, NzCarouselEffects, PointerVector } from './nz-carousel-definitions';
@@ -145,9 +145,10 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
         });
     });
 
-    this.ngZone.onStable.pipe(take(1)).subscribe(() => {
+    // If embedded in an entry component, it may do initial render at a inappropriate time.
+    // ngZone.onStable won't do this trick
+    Promise.resolve().then(() => {
       this.switchStrategy();
-      this.strategy.withCarouselContents(this.carouselContents);
     });
   }
 
