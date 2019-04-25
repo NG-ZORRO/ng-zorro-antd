@@ -1,0 +1,90 @@
+nz-github-btn {
+  a {
+    color: #24292e;
+    text-decoration: none;
+    outline: 0;
+  }
+
+  .btn, .social-count {
+    display: inline-block;
+    height: 14px;
+    padding: 2px 5px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 14px;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid #c5c9cc;
+    border-radius: 0.25em;
+    box-sizing: initial;
+    margin-bottom: 2px;
+  }
+
+  .octicon {
+    display: inline-block;
+    vertical-align: text-top;
+    fill: currentColor;
+    margin-right: 4px;
+  }
+
+  .btn {
+    height: 16px;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 16px;
+    background-color: #eff3f6;
+    background-image: -webkit-linear-gradient(top, #fafbfc, #eff3f6 90%);
+    background-image: -moz-linear-gradient(top, #fafbfc, #eff3f6 90%);
+    background-image: linear-gradient(180deg, #fafbfc, #eff3f6 90%);
+    background-position: -1px -1px;
+    background-repeat: repeat-x;
+    background-size: 110% 110%;
+    border-color: rgba(27, 31, 35, 0.2);
+    ms-filter: "progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFFAFBFC', endColorstr='#FFEEF2F5')";
+
+    &:hover, &:focus {
+      color: #24292e;
+      background-color: #e6ebf1;
+      background-image: -webkit-linear-gradient(top, #f0f3f6, #e6ebf1 90%);
+      background-image: -moz-linear-gradient(top, #f0f3f6, #e6ebf1 90%);
+      background-image: linear-gradient(180deg, #f0f3f6, #e6ebf1 90%);
+      border-color: #a5a9ac;
+      border-color: rgba(27,31,35,0.35);
+      -ms-filter: "progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFF0F3F6', endColorstr='#FFE5EAF0')";
+    }
+  }
+
+  .social-count {
+    margin-left: 6px;
+    height: 16px;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 16px;
+    position: relative;
+    background-color: #fff;
+  }
+
+  .social-count b, .social-count i {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: block;
+    width: 0;
+    height: 0;
+    margin: -4px 0 0 -4px;
+    border: solid transparent;
+    border-width: 4px 4px 4px 0;
+  }
+
+  .social-count b {
+    border-right-color: #c5c9cc;
+    margin: -5px 0 0 -5px;
+    border-width: 5px 5px 5px 0;
+  }
+
+  .social-count i {
+    margin: -5px 0 0 -4px;
+    border-width: 5px 5px 5px 0;
+    border-right-color: #fff;
+  }
+}

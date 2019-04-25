@@ -103,8 +103,8 @@ function generateTemplate(result) {
   const generateTitle = require('./generate.title');
   const innerMap = generateExample(result);
   const titleMap = {
-    zh: generateTitle(result.docZh.meta.title, result.docZh.meta.subtitle, result.docZh.path),
-    en: generateTitle(result.docEn.meta.title, '', result.docEn.path)
+    zh: generateTitle(result.docZh.meta, result.docZh.path),
+    en: generateTitle(result.docEn.meta, result.docEn.path)
   };
   const name = result.name;
   const hasPageDemo = !!result.pageDemo;
