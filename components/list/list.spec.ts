@@ -2,7 +2,7 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzIconTestModule } from '../icon/nz-icon-test.module';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzListComponent } from './nz-list.component';
 import { NzListModule } from './nz-list.module';

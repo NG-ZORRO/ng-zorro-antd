@@ -2,7 +2,7 @@ import { Component, DebugElement } from '@angular/core';
 import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzMeasureScrollbarService } from 'ng-zorro-antd/core';
-import { NzIconTestModule } from '../icon/nz-icon-test.module';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzTableComponent } from './nz-table.component';
 import { NzTableModule } from './nz-table.module';
 
