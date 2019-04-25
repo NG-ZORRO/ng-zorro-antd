@@ -18,15 +18,16 @@
             "polyfills": "./site/doc/polyfills.ts",
             "assets": [
               "site/doc/assets",
+              "site/doc/manifest.json",
               "site/doc/favicon.ico",
               "site/doc/404.html",
               "site/doc/google854eb8b183564acb.html",
+              "site/doc/robots.txt",
               {
                 "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
                 "output": "/assets/"
-              },
-              "site/doc/manifest.json"
+              }
             ],
             "styles": ["site/doc/styles.less"],
             "es5BrowserSupport": true
