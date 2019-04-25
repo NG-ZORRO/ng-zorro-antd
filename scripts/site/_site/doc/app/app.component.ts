@@ -142,9 +142,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   initDocsearch() {
     this.loadScript('https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js').then(() => {
       this.docsearch = docsearch({
-        appId         : 'PO5D2PCS2I',
-        apiKey        : 'cda01b4d7172b1582a2911ef08519f62',
-        indexName     : 'dev_ng_zorro',
+        appId         : 'BH4D9OD16A',
+        apiKey        : '9f7d9d6527ff52ec484e90bb1f256971',
+        indexName     : 'ng_zorro',
         inputSelector : '#search-box input',
         algoliaOptions: { hitsPerPage: 5, facetFilters: [ `tags:${this.language}` ] },
         transformData(hits: any) {
