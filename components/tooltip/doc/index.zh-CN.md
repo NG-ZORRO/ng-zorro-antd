@@ -23,7 +23,7 @@ title: Tooltip
 import { NzTooltipModule } from 'ng-zorro-antd';
 ```
 
-### nz-tooltip
+### [nz-tooltip]
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
