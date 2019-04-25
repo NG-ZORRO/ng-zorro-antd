@@ -42,10 +42,7 @@
   },
   "dependencies": {
     "@angular/cdk": "^7.3.0",
-    "@angular/platform-server": "^7.2.14",
-    "@angular/pwa": "^0.12.2",
     "@ant-design/icons-angular": "^2.0.2",
-    "@nguniversal/module-map-ngfactory-loader": "^7.1.1",
     "date-fns": "^1.29.0"
   },
   "devDependencies": {
@@ -63,9 +60,12 @@
     "@angular/http": "~7.2.0",
     "@angular/language-service": "~7.2.0",
     "@angular/platform-browser": "~7.2.0",
+    "@angular/platform-server": "^7.2.14",
     "@angular/platform-browser-dynamic": "~7.2.0",
+    "@angular/pwa": "^0.12.2",
     "@angular/router": "~7.2.0",
     "@angular/service-worker": "~7.2.0",
+    "@nguniversal/module-map-ngfactory-loader": "^7.1.1",
     "@schematics/angular": "~7.2.0",
     "@stackblitz/sdk": "^1.1.1",
     "@types/fs-extra": "^5.0.4",
