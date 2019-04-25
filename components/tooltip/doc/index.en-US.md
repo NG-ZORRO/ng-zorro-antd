@@ -21,7 +21,7 @@ You can get more detail [here](/docs/getting-started/en#import-a-component-indiv
 import { NzTooltipModule } from 'ng-zorro-antd';
 ```
 
-### nz-tooltip
+### [nz-tooltip]
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
