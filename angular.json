@@ -20,6 +20,7 @@
               "site/doc/assets",
               "site/doc/favicon.ico",
               "site/doc/404.html",
+              "site/doc/google854eb8b183564acb.html",
               {
                 "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
@@ -27,9 +28,7 @@
               },
               "site/doc/manifest.json"
             ],
-            "styles": [
-              "site/doc/styles.less"
-            ],
+            "styles": ["site/doc/styles.less"],
             "es5BrowserSupport": true
           },
           "configurations": {
@@ -53,6 +52,24 @@
             }
           }
         },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/server",
+            "main": "./site/doc/main.server.ts",
+            "tsConfig": "./site/doc/tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "./site/doc/environments/environment.ts",
+                  "with": "./site/doc/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
@@ -67,12 +84,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "site/doc/tsconfig.app.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["site/doc/tsconfig.app.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -97,9 +110,7 @@
                 "output": "/assets/"
               }
             ],
-            "styles": [
-              "components/ng-zorro-antd.less"
-            ],
+            "styles": ["components/ng-zorro-antd.less"],
             "es5BrowserSupport": true
           },
           "configurations": {
@@ -137,12 +148,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "site/iframe/tsconfig.app.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["site/iframe/tsconfig.app.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
