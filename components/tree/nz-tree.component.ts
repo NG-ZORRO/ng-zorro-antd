@@ -35,6 +35,7 @@ import {
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,
   NzNoAnimationDirective,
+  NzTreeBase,
   NzTreeBaseService,
   NzTreeHigherOrderServiceToken,
   NzTreeNode
@@ -68,7 +69,7 @@ export function NzTreeServiceFactory(
     }
   ]
 })
-export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
+export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
   @Input() @InputBoolean() nzShowIcon = false;
   @Input() @InputBoolean() nzShowExpand = true;
   @Input() @InputBoolean() nzShowLine = false;
@@ -205,48 +206,6 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
   onChange: (value: NzTreeNode[]) => void = () => null;
   onTouched: () => void = () => null;
 
-  getTreeNodes(): NzTreeNode[] {
-    return this.nzTreeService.rootNodes;
-  }
-
-  getTreeNodeByKey(key: string): NzTreeNode | null {
-    // flat tree nodes
-    const nodes: NzTreeNode[] = [];
-    const getNode = (node: NzTreeNode): void => {
-      nodes.push(node);
-      node.getChildren().forEach(n => {
-        getNode(n);
-      });
-    };
-    this.nzNodes.forEach(n => {
-      getNode(n);
-    });
-    return nodes.find(n => n.key === key) || null;
-  }
-
-  /**
-   * public function
-   */
-  getCheckedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getCheckedNodeList();
-  }
-
-  getSelectedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getSelectedNodeList();
-  }
-
-  getHalfCheckedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getHalfCheckedNodeList();
-  }
-
-  getExpandedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getExpandedNodeList();
-  }
-
-  getMatchedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getMatchedNodeList();
-  }
-
   setClassMap(): void {
     this.classMap = {
       [this.prefixCls]: true,
@@ -272,28 +231,20 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
 
   // tslint:disable-next-line:no-any
   initNzData(value: any[]): void {
-    let nzNodes: NzTreeNode[] = [];
     if (Array.isArray(value)) {
-      if (!this.nzTreeService.isArrayOfNzTreeNode(value)) {
-        // has not been new NzTreeNode
-        nzNodes = value.map(item => new NzTreeNode(item, null, this.nzTreeService));
-      } else {
-        nzNodes = value.map((item: NzTreeNode) => {
-          item.service = this.nzTreeService;
-          return item;
-        });
-      }
       this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
       this.nzTreeService.isMultiple = this.nzMultiple;
-      this.nzTreeService.initTree(nzNodes);
+      this.nzTreeService.initTree(this.coerceTreeNodes(value));
     }
   }
 
   constructor(
-    public nzTreeService: NzTreeBaseService,
+    nzTreeService: NzTreeBaseService,
     private cdr: ChangeDetectorRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {}
+  ) {
+    super(nzTreeService);
+  }
 
   ngOnInit(): void {
     this.setClassMap();

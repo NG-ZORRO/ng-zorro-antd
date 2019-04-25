@@ -45,3 +45,15 @@ import { NzTreeSelectModule } from 'ng-zorro-antd';
 | `[nzMaxTagCount]` | Max tag count to show| number | - |
 | `[nzMaxTagPlaceholder]` | Placeholder for not showing tags | TemplateRef<{ $implicit: NzTreeNode[] }> | - |
 | `(nzExpandChange)` | Callback function for when a treeNode is expanded or collapsed |`EventEmitter<NzFormatEmitEvent>` | - |
+
+#### Methods
+
+| Property | Description | Type |
+| -------- | ----------- | ---- |
+| getTreeNodes | get all nodes(NzTreeNode) | `NzTreeNode[]` |
+| getTreeNodeByKey | get NzTreeNode with key | `NzTreeNode` |
+| getCheckedNodeList | get checked nodes(merged) | `NzTreeNode[]` |
+| getSelectedNodeList | get selected nodes | `NzTreeNode[]` |
+| getHalfCheckedNodeList | get half checked nodes | `NzTreeNode[]` |
+| getExpandedNodeList | get expanded nodes | `NzTreeNode[]` |
+| getMatchedNodeList | get matched nodes(if nzSearchValue is not null) | `NzTreeNode[]` |
