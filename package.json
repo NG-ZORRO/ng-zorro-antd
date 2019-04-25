@@ -15,7 +15,7 @@
     "compile:prerender": "tsc -p scripts/prerender/tsconfig.json",
     "generate:prerender": "cd dist && node prerender",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s --pkg components/package.json && node ./scripts/site/replace-scope-prefix.js",
-    "doc": "npm run site:init && build-site",
+    "doc": "npm run site:init && npm run build-site",
     "format:check": "prettier --config ./.prettierrc --list-different \"component/**/*{.ts}\"",
     "generate": "ng build ng-zorro-antd-lib",
     "helper": "bash ./scripts/release-helper.sh",
