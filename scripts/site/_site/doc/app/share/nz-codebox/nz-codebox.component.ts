@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -60,7 +61,9 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   }
 
   navigateToFragment(): void {
-    window.location.hash = this.nzLink;
+    if (this.platform.isBrowser) {
+      window.location.hash = this.nzLink;
+    }
   }
 
   copyCode(code: string): void {
@@ -117,7 +120,11 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  constructor(@Inject(DOCUMENT) private dom: any, private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef, private appService: AppService) {
+  constructor(@Inject(DOCUMENT) private dom: any,
+              private sanitizer: DomSanitizer,
+              private cdr: ChangeDetectorRef,
+              private appService: AppService,
+              private platform: Platform) {
   }
 
   ngOnInit(): void {

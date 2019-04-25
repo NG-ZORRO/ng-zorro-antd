@@ -20,7 +20,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
 @NgModule({
   declarations: [AppComponent, DEMOComponent],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'docs' }),
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,

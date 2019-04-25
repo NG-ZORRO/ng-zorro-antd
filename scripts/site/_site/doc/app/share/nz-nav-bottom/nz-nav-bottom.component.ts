@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ROUTER_LIST } from '../../router';
@@ -23,9 +24,12 @@ export class NzNavBottomComponent implements OnInit {
   index = 0;
   language = 'en';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private platform: Platform) {}
 
   ngOnInit(): void {
+    if (!this.platform.isBrowser) {
+      return
+    }
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const url = window.location.pathname.slice(1);
