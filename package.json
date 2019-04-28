@@ -38,7 +38,7 @@
     "site:start": "npm run site:init && ng serve --port 0 --open",
     "site": "node ./scripts/site/generate-site",
     "start": "ng serve --port 0",
-    "test": "ng test --watch=false --code-coverage"
+    "test": "ng test --watch=true --code-coverage"
   },
   "dependencies": {
     "@angular/cdk": "^7.3.0",

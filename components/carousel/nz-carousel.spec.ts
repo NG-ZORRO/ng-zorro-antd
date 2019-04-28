@@ -41,7 +41,7 @@ describe('carousel', () => {
 
     it('should dynamic change content work', fakeAsync(() => {
       fixture.detectChanges();
-      tick();
+      tick(3000);
       fixture.detectChanges();
       expect(carouselContents.length).toBe(4);
       testComponent.array = [];
@@ -73,7 +73,6 @@ describe('carousel', () => {
     });
 
     it('should click content change', () => {
-      fixture.detectChanges();
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
       fixture.detectChanges();
@@ -87,16 +86,16 @@ describe('carousel', () => {
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
 
       dispatchKeyboardEvent(list, 'keydown', LEFT_ARROW);
-      tickATransition(fixture);
+      tickMilliseconds(fixture, 700);
       expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
       dispatchKeyboardEvent(list, 'keydown', LEFT_ARROW);
-      tickATransition(fixture);
+      tickMilliseconds(fixture, 700);
       expect(carouselContents[2].nativeElement.classList).toContain('slick-active');
       dispatchKeyboardEvent(list, 'keydown', RIGHT_ARROW);
-      tickATransition(fixture);
+      tickMilliseconds(fixture, 700);
       expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
       dispatchKeyboardEvent(list, 'keydown', RIGHT_ARROW);
-      tickATransition(fixture);
+      tickMilliseconds(fixture, 700);
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
     }));
 
@@ -122,7 +121,7 @@ describe('carousel', () => {
         'translate3d(0px, 0px, 0px)'
       );
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
-      tickATransition(fixture);
+      tickMilliseconds(fixture, 700);
       expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe('');
 
       testComponent.effect = 'fade';
@@ -130,14 +129,14 @@ describe('carousel', () => {
       fixture.detectChanges();
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
-      tickATransition(fixture);
+      tickMilliseconds(fixture, 700);
       expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).toBe('');
 
       testComponent.effect = 'scrollx';
       fixture.detectChanges();
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
-      tickATransition(fixture);
+      tickMilliseconds(fixture, 700);
       expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe(
         'translate3d(0px, 0px, 0px)'
       );
@@ -180,13 +179,13 @@ describe('carousel', () => {
       fixture.detectChanges();
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
       testComponent.nzCarouselComponent.next();
-      tickATransition(fixture);
+      tickMilliseconds(fixture, 700);
       expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
       testComponent.nzCarouselComponent.pre();
-      tickATransition(fixture);
+      tickMilliseconds(fixture, 700);
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
       testComponent.nzCarouselComponent.goTo(2);
-      tickATransition(fixture);
+      tickMilliseconds(fixture, 700);
       expect(carouselContents[2].nativeElement.classList).toContain('slick-active');
     }));
 
@@ -199,21 +198,21 @@ describe('carousel', () => {
 
     it('should support swiping to switch', fakeAsync(() => {
       swipe(testComponent.nzCarouselComponent, 500);
-      tickATransition(fixture);
+      tickMilliseconds(fixture, 700);
       expect(carouselContents[0].nativeElement.classList).not.toContain('slick-active');
       expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
 
       swipe(testComponent.nzCarouselComponent, -500);
-      tickATransition(fixture);
+      tickMilliseconds(fixture, 700);
       swipe(testComponent.nzCarouselComponent, -500);
-      tickATransition(fixture);
+      tickMilliseconds(fixture, 700);
       expect(carouselContents[0].nativeElement.classList).not.toContain('slick-active');
       expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
     }));
 
     it('should prevent swipes that are not long enough', fakeAsync(() => {
       swipe(testComponent.nzCarouselComponent, 2);
-      tickATransition(fixture);
+      tickMilliseconds(fixture, 700);
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
     }));
   });
@@ -237,22 +236,22 @@ describe('carousel', () => {
         swipe(testComponent.nzCarouselComponent, 500);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
 
-        tickATransition(fixture);
+        tickMilliseconds(fixture, 700);
 
         swipe(testComponent.nzCarouselComponent, -500);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).toBe(`translate3d(0px, 0px, 0px)`);
-        tickATransition(fixture);
+        tickMilliseconds(fixture, 700);
 
         // From first to last.
         swipe(testComponent.nzCarouselComponent, -500);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
-        tickATransition(fixture);
+        tickMilliseconds(fixture, 700);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
 
         // From last to first.
         swipe(testComponent.nzCarouselComponent, 500);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
-        tickATransition(fixture);
+        tickMilliseconds(fixture, 700);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).toBe(`translate3d(0px, 0px, 0px)`);
       }));
 
@@ -264,29 +263,30 @@ describe('carousel', () => {
 
         swipe(testComponent.nzCarouselComponent, 500);
         expect(testComponent.nzCarouselComponent.el.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
-        tickATransition(fixture);
+        tickMilliseconds(fixture, 700);
 
         swipe(testComponent.nzCarouselComponent, -500);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).toBe(`translate3d(0px, 0px, 0px)`);
-        tickATransition(fixture);
+        tickMilliseconds(fixture, 700);
 
         // From first to last.
         swipe(testComponent.nzCarouselComponent, -500);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
-        tickATransition(fixture);
+        tickMilliseconds(fixture, 700);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
 
         // From last to first.
         swipe(testComponent.nzCarouselComponent, 500);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
-        tickATransition(fixture);
+        tickMilliseconds(fixture, 700);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).toBe(`translate3d(0px, 0px, 0px)`);
       }));
 
       it('should disable dragging during transitioning', fakeAsync(() => {
+        tickMilliseconds(fixture, 700);
         testComponent.nzCarouselComponent.goTo(1);
         swipe(testComponent.nzCarouselComponent, 500);
-        tickATransition(fixture);
+        tickMilliseconds(fixture, 700);
         expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
       }));
     });
@@ -330,9 +330,9 @@ export class NzTestCarouselBasicComponent {
   beforeChange = jasmine.createSpy('beforeChange callback');
 }
 
-function tickATransition<T>(fixture: ComponentFixture<T>): void {
+function tickMilliseconds<T>(fixture: ComponentFixture<T>, seconds: number = 1): void {
   fixture.detectChanges();
-  tick(700);
+  tick(seconds);
   fixture.detectChanges();
 }
 

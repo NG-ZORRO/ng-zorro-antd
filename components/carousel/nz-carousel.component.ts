@@ -131,7 +131,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
     this.carouselContents.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.markContentActive(0);
-      this.strategy.withCarouselContents(this.carouselContents);
+      this.syncStrategy();
     });
 
     this.ngZone.runOutsideAngular(() => {
@@ -141,14 +141,18 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
           throttleTime(16)
         )
         .subscribe(() => {
-          this.strategy.withCarouselContents(this.carouselContents);
+          this.syncStrategy();
         });
     });
+
+    this.switchStrategy();
+    this.markContentActive(0);
+    this.syncStrategy();
 
     // If embedded in an entry component, it may do initial render at a inappropriate time.
     // ngZone.onStable won't do this trick
     Promise.resolve().then(() => {
-      this.switchStrategy();
+      this.syncStrategy();
     });
   }
 
@@ -157,6 +161,8 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
     if (nzEffect && !nzEffect.isFirstChange()) {
       this.switchStrategy();
+      this.markContentActive(0);
+      this.syncStrategy();
     }
 
     if (!this.nzAutoPlay || !this.nzAutoPlaySpeed) {
@@ -221,9 +227,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.nzEffect === 'scrollx'
         ? new NzCarouselTransformStrategy(this, this.cdr, this.renderer)
         : new NzCarouselOpacityStrategy(this, this.cdr, this.renderer);
-
-    this.markContentActive(0);
-    this.strategy.withCarouselContents(this.carouselContents);
   }
 
   private scheduleNextTransition(): void {
@@ -296,6 +299,12 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.dispose();
     }
   };
+
+  private syncStrategy(): void {
+    if (this.strategy) {
+      this.strategy.withCarouselContents(this.carouselContents);
+    }
+  }
 
   private dispose(): void {
     this.document.removeEventListener('mousemove', this.pointerMove);
