@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import Calendar from './calendar/zh_TW';
 import DatePicker from './date-picker/zh_TW';
 import Pagination from './pagination/zh_TW';
@@ -14,29 +22,29 @@ export default {
     filterConfirm: '確 定',
     filterReset: '重 置',
     selectAll: '全部選取',
-    selectInvert: '反向選取',
+    selectInvert: '反向選取'
   },
   Modal: {
     okText: '確 定',
     cancelText: '取 消',
-    justOkText: 'OK',
+    justOkText: 'OK'
   },
   Popconfirm: {
     okText: '確 定',
-    cancelText: '取 消',
+    cancelText: '取 消'
   },
   Transfer: {
     searchPlaceholder: '搜尋資料',
     itemUnit: '項目',
-    itemsUnit: '項目',
+    itemsUnit: '項目'
   },
   Upload: {
     uploading: '正在上傳...',
     removeFile: '刪除檔案',
     uploadError: '上傳失敗',
-    previewFile: '檔案預覽',
+    previewFile: '檔案預覽'
   },
   Empty: {
-    description: '無此資料',
-  },
+    description: '無此資料'
+  }
 };

@@ -24,7 +24,7 @@
     "integration-rollup": "npm run generate && cd integration/rollup && npm run integration",
     "integration-webpack": "npm run generate && cd integration/webpack && npm run integration",
     "integration": "npm run generate && bash ./integration-test.sh",
-    "lint": "tslint -c tslint.json 'components/*/*.ts'",
+    "lint": "tslint -c tslint.json 'components/**/!(demo|testing)/!(polyfills).ts' --fix",
     "migration-styles": "node ./scripts/build/migration-styles.js",
     "ng": "ng",
     "postgenerate": "node scripts/build/compile-styles.js && cp README.md publish/README.md && npm run migration-styles && npm run schematic:generate",
@@ -90,12 +90,12 @@
     "karma-spec-reporter": "0.0.32",
     "less": "^3.9.0",
     "less-plugin-clean-css": "^1.5.1",
+    "lint-staged": "^8.1.5",
     "marked": "^0.5.1",
     "ng-packagr": "^4.2.0",
     "ngx-color": "^2.0.5",
     "node-prismjs": "^0.1.1",
     "prettier": "^1.16.4",
-    "pretty-quick": "^1.10.0",
     "prismjs": "^1.10.0",
     "protractor": "~5.4.0",
     "readline-sync": "^1.4.9",
@@ -111,10 +111,20 @@
     "yaml-front-matter": "^4.0.0",
     "zone.js": "~0.8.26"
   },
+  "lint-staged": {
+    "components/**/*.ts": [
+      "./node_modules/.bin/prettier --write",
+      "git add"
+    ],
+    "components/**/!(demo|testing)/!(polyfills).ts": [
+      "tslint -c tslint.json --fix",
+      "git add"
+    ]
+  },
   "husky": {
     "hooks": {
       "commit-msg": "node ./scripts/git/commit-msg.js -E HUSKY_GIT_PARAMS",
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "lint-staged"
     }
   }
 }

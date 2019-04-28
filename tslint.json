@@ -54,7 +54,10 @@
     "interface-name": [true, "never-prefix"],
     "interface-over-type-literal": true,
     "label-position": true,
-    "require-license-banner": [true, "components/!(demo|doc|style|page)/!(*.spec).ts"],
+    "require-license-banner": [
+      true,
+      "components/**/!(demo|doc|style|page|testing)/!(*.spec).ts"
+    ],
     "new-parens": true,
     "no-angle-bracket-type-assertion": true,
     "member-access": false,

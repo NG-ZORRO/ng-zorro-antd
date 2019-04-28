@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import Calendar from './calendar/fr_BE';
 import DatePicker from './date-picker/fr_BE';
 import Pagination from './pagination/fr_BE';
@@ -12,23 +20,23 @@ export default {
   Table: {
     filterTitle: 'Filtrer',
     filterConfirm: 'OK',
-    filterReset: 'Réinitialiser',
+    filterReset: 'Réinitialiser'
   },
   Modal: {
     okText: 'OK',
     cancelText: 'Annuler',
-    justOkText: 'OK',
+    justOkText: 'OK'
   },
   Popconfirm: {
     okText: 'OK',
-    cancelText: 'Annuler',
+    cancelText: 'Annuler'
   },
   Transfer: {
     searchPlaceholder: 'Recherche',
     itemUnit: 'élément',
-    itemsUnit: 'éléments',
+    itemsUnit: 'éléments'
   },
   Empty: {
-    description: 'Aucune donnée',
-  },
+    description: 'Aucune donnée'
+  }
 };
