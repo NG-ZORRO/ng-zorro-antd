@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 export default {
   // Options.jsx
   items_per_page: '/ ページ',
@@ -11,5 +19,5 @@ export default {
   prev_5: '前 5ページ',
   next_5: '次 5ページ',
   prev_3: '前 3ページ',
-  next_3: '次 3ページ',
+  next_3: '次 3ページ'
 };

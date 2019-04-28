@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import Calendar from './calendar/nb_NO';
 import DatePicker from './date-picker/nb_NO';
 import Pagination from './pagination/nb_NO';
@@ -14,29 +22,29 @@ export default {
     filterConfirm: 'OK',
     filterReset: 'Nullstill',
     selectAll: 'Velg alle',
-    selectInvert: 'Inverter valg',
+    selectInvert: 'Inverter valg'
   },
   Modal: {
     okText: 'OK',
     cancelText: 'Avbryt',
-    justOkText: 'OK',
+    justOkText: 'OK'
   },
   Popconfirm: {
     okText: 'OK',
-    cancelText: 'Avbryt',
+    cancelText: 'Avbryt'
   },
   Transfer: {
     searchPlaceholder: 'Søk her',
     itemUnit: 'element',
-    itemsUnit: 'elementer',
+    itemsUnit: 'elementer'
   },
   Upload: {
     uploading: 'Laster opp...',
     removeFile: 'Fjern fil',
     uploadError: 'Feil ved opplastning',
-    previewFile: 'Forhåndsvisning',
+    previewFile: 'Forhåndsvisning'
   },
   Empty: {
-    description: 'Ingen data',
-  },
+    description: 'Ingen data'
+  }
 };

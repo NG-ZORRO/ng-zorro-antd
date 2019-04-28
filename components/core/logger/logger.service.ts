@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Inject, Injectable, InjectionToken, Optional, Provider, SkipSelf } from '@angular/core';
 
 export const NZ_LOGGER_STATE = new InjectionToken<boolean>('nz-logger-state'); // Whether print the log
