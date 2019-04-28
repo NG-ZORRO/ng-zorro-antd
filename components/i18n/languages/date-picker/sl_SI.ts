@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import CalendarLocale from '../calendar/sl_SI';
 import TimePickerLocale from '../time-picker/sl_SI';
 
@@ -6,11 +14,11 @@ const locale = {
   lang: {
     placeholder: 'Izberite datum',
     rangePlaceholder: ['Začetni datum', 'Končni datum'],
-    ...CalendarLocale,
+    ...CalendarLocale
   },
   timePickerLocale: {
-    ...TimePickerLocale,
-  },
+    ...TimePickerLocale
+  }
 };
 
 // All settings at:
