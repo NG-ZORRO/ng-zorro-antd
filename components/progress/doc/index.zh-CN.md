@@ -33,7 +33,7 @@ import { NzProgressModule } from 'ng-zorro-antd';
 | `[nzGapPosition]` `(nzType=circle)` | 圆形进度条缺口位置 | `'top'｜'right'｜'bottom'｜'left'` | `'top'` |
 | `[nzPercent]` | 百分比 | `number` | `0` |
 | `[nzShowInfo]` | 是否显示进度数值或状态图标 | `boolean` | `true` |
-| `[nzStatus]` | 状态 | `'success'｜'exception'｜'active'` | - |
+| `[nzStatus]` | 状态 | `'success'｜'exception'｜'active'｜'normal'` | - |
 | `[nzStrokeWidth]` `(nzType=line)` | 进度条线的宽度，单位 px | `number` | `8` |
 | `[nzStrokeWidth]` `(nzType=circle)` | 圆形进度条线的宽度，单位是进度条画布宽度的百分比 | `number` | `6` |
 | `[nzType]` | 类型 | `'line'｜'circle'｜'dashboard'` | `'line'` |
