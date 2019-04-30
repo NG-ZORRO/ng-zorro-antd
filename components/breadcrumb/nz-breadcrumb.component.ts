@@ -107,7 +107,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
           this.cdr.markForCheck();
         });
     } catch (e) {
-      throw new Error('[NG-ZORRO] You should import RouterModule if you want to use NzAutoGenerate');
+      throw new Error('[NG-ZORRO] You should import RouterModule if you want to use `NzAutoGenerate`');
     }
   }
 
@@ -126,11 +126,12 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
         // Only parse components in primary router-outlet (in another word, router-outlet without a specific name).
         // Parse this layer and generate a breadcrumb item.
         const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
-        const nextUrl = url.replace(/\/$/, '') + `/${routeURL}`;
+        const nextUrl = url + `/${routeURL}`;
+        const breadcrumbLabel = child.snapshot.data[NZ_ROUTE_DATA_BREADCRUMB];
         // If have data, go to generate a breadcrumb for it.
-        if (routeURL && child.snapshot.data.hasOwnProperty(NZ_ROUTE_DATA_BREADCRUMB)) {
+        if (routeURL && breadcrumbLabel) {
           const breadcrumb: BreadcrumbOption = {
-            label: child.snapshot.data[NZ_ROUTE_DATA_BREADCRUMB] || 'Breadcrumb',
+            label: breadcrumbLabel,
             params: child.snapshot.params,
             url: nextUrl
           };
