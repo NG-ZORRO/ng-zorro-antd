@@ -103,6 +103,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() @InputBoolean() nzDropdownMatchSelectWidth = true;
   @Input() @InputBoolean() nzCheckable = false;
+  @Input() @InputBoolean() nzShowIcon = false;
   @Input() @InputBoolean() nzShowSearch = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAsyncData = false;
