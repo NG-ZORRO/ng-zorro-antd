@@ -5,6 +5,19 @@ import { Component } from '@angular/core';
   template: `
     <nz-tree-select style="width: 250px" [nzNodes]="nodes" [(ngModel)]="value" nzPlaceHolder="Please select" nzShowIcon>
     </nz-tree-select>
+
+    <nz-tree-select
+      style="width: 250px; margin-top: 20px;"
+      [nzNodes]="nodes"
+      [(ngModel)]="value"
+      nzPlaceHolder="Please select"
+    >
+      <ng-template #nzTreeTemplate let-node>
+        <span class="ant-tree-node-content-wrapper" [class.ant-tree-node-selected]="node.isSelected">
+          <span> <i nz-icon [type]="node.isExpanded ? 'folder-open' : 'folder'"></i> {{ node.title }} </span>
+        </span>
+      </ng-template>
+    </nz-tree-select>
   `
 })
 export class NzDemoTreeSelectCustomizedIconComponent {
