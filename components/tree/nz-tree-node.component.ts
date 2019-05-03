@@ -238,8 +238,14 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     if (this.nzTreeNode.isSelectable && !this.nzTreeNode.isDisabled) {
       this.nzTreeNode.isSelected = !this.nzTreeNode.isSelected;
     }
-    const eventNext = this.nzTreeService.formatEvent('click', this.nzTreeNode, event);
+    let eventNext = this.nzTreeService.formatEvent('click', this.nzTreeNode, event);
     this.nzTreeService!.triggerEventChange$!.next(eventNext);
+
+    if (!this.nzTreeNode.isDisabled && (!this.nzTreeNode.isSelectable || this.nzTreeNode.isDisableCheckbox)) {
+      this.nzTreeNode.isExpanded = !this.nzTreeNode.isExpanded;
+      eventNext = this.nzTreeService.formatEvent('expand', this.nzTreeNode, event);
+      this.nzTreeService!.triggerEventChange$!.next(eventNext);
+    }
   }
 
   @HostListener('dblclick', ['$event'])

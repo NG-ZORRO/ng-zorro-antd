@@ -332,6 +332,10 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
         filter((event: NzFormatEmitEvent) => {
           const node = event.node!;
           return this.nzCheckable ? !node.isDisabled && !node.isDisableCheckbox : !node.isDisabled;
+        }),
+        filter((event: NzFormatEmitEvent) => {
+          const node = event.node!;
+          return node.isSelectable;
         })
       ),
       this.nzCheckable ? this.nzTreeCheckBoxChange : observableOf(),
