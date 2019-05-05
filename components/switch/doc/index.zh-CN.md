@@ -33,7 +33,7 @@ import { NzSwitchModule } from 'ng-zorro-antd';
 | `[nzSize]` | 开关大小，可选值：`default` `small` | `'small'｜'default'` | `'default'` |
 | `[nzLoading]` | 加载中的开关 | `boolean` | `false` |
 | `[nzControl]` | 是否完全由用户控制状态 | `boolean` | `false` |
-| `(ngModelChange)` | 当前是否选中的回调 | `EventEmitter<boolean>` | `false` |
+| `(ngModelChange)` | 切换选中状态时的回调 | `EventEmitter<boolean>` | `false` |
 
 #### 方法
 
