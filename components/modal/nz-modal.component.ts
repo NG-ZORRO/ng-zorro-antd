@@ -169,6 +169,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   private focusTrap: FocusTrap;
   private scrollStrategy: BlockScrollStrategy;
   private overlayRef: OverlayRef;
+  private dialogMouseDown = false;
+  private timeoutId: number;
 
   [key: string]: any; // tslint:disable-line:no-any
 
@@ -260,6 +262,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
       this.unsubscribe$.next();
       this.unsubscribe$.complete();
     });
+    clearTimeout(this.timeoutId);
   }
 
   setOverlayRef(overlayRef: OverlayRef): void {
@@ -309,12 +312,25 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     return this.elementRef && this.elementRef.nativeElement;
   }
 
+  onMaskDialogDown(): void {
+    this.dialogMouseDown = true;
+  }
+
+  onDialogUp(): void {
+    if (this.dialogMouseDown) {
+      this.timeoutId = setTimeout(() => {
+        this.dialogMouseDown = false;
+      }, 0);
+    }
+  }
+
   onClickMask($event: MouseEvent): void {
     if (
       this.mask &&
       this.maskClosable &&
       ($event.target as HTMLElement).classList.contains('ant-modal-wrap') &&
-      this.nzVisible
+      this.nzVisible &&
+      !this.dialogMouseDown
     ) {
       this.onClickOkCancel('cancel');
     }

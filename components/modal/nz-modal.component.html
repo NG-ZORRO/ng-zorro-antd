@@ -10,6 +10,7 @@
   ></div>
   <div
     (click)="onClickMask($event)"
+    (mouseup)="onDialogUp()"
     class="ant-modal-wrap {{ nzWrapClassName }}"
     [style.zIndex]="nzZIndex"
     [style.visibility]="hidden ? 'hidden' : null"
@@ -18,6 +19,7 @@
   >
     <div #modalContainer
       class="ant-modal {{ nzClassName }}"
+      (mousedown)="onMaskDialogDown()"
       [ngClass]="modalAnimationClassMap"
       [ngStyle]="nzStyle"
       [style.width]="nzWidth | toCssUnit"
