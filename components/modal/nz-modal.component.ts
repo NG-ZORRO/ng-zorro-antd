@@ -49,6 +49,7 @@ import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './
 export const MODAL_ANIMATE_DURATION = 200; // Duration when perform animations (ms)
 
 type AnimationState = 'enter' | 'leave' | null;
+export const WRAP_CLASS_NAME = 'ant-modal-wrap';
 
 @Component({
   selector: 'nz-modal',
@@ -328,7 +329,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     if (
       this.mask &&
       this.maskClosable &&
-      ($event.target as HTMLElement).classList.contains('ant-modal-wrap') &&
+      ($event.target as HTMLElement).classList.contains(WRAP_CLASS_NAME) &&
       this.nzVisible &&
       !this.dialogMouseDown
     ) {
