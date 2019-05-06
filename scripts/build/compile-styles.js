@@ -37,13 +37,9 @@ const sourcePath = path.resolve(__dirname, '../../components');
 const targetPath = path.resolve(__dirname, '../../publish');
 const componentFolders = fs.readdirSync(targetPath);
 
-// Export each component's style in `component.less` and copy it to the target dir.
-let componentsLessContent = '';
-
 componentFolders.forEach(dir => {
   if (fs.existsSync(`${sourcePath}/${dir}/style/index.less`)) {
     // Copy style files for each component.
-    componentsLessContent += `@import "./${path.posix.join(dir, 'style', 'index.less')}";\n`;
     fs.copySync(`${sourcePath}/${dir}/style`, `${targetPath}/${dir}/style`);
 
     // Compile less files to CSS and delete the `entry.less` file.
@@ -69,17 +65,17 @@ componentFolders.forEach(dir => {
 
 // Copy concentrated less files.
 fs.copySync(path.resolve(sourcePath, 'style'), path.resolve(targetPath, 'style'));
-fs.writeFileSync(`${targetPath}/components.less`, componentsLessContent);
+fs.writeFileSync(`${targetPath}/components.less`, fs.readFileSync(`${sourcePath}/components.less`));
 fs.writeFileSync(`${targetPath}/ng-zorro-antd.less`, fs.readFileSync(`${sourcePath}/ng-zorro-antd.less`));
 
 // Compile concentrated less file to CSS file.
 const lessContent = `@import "${path.posix.join(targetPath, 'ng-zorro-antd.less')}";`;
-compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.css'), false);
-compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.min.css'), true);
+compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.css'), false).catch(e => console.log(e));
+compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.min.css'), true).catch(e => console.log(e));
 
 // Compile css file that doesn't have component-specific styles.
-const cssIndexPath = path.join(sourcePath, 'style', 'index.less');
-const cssIndex = fs.readFileSync(cssIndexPath, { encoding: 'utf8' }) + `@import '../core/style/index.less';\n`; // Compile patch.
+const cssIndexPath = path.join(sourcePath, 'style', 'entry.less');
+const cssIndex = fs.readFileSync(cssIndexPath, { encoding: 'utf8' });
 compileLess(cssIndex, path.join(targetPath, 'style', 'index.css'), false, true, cssIndexPath).catch(e =>
   console.log(e)
 );

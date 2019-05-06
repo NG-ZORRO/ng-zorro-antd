@@ -15,7 +15,7 @@ Rate component.
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzRateModule } from 'ng-zorro-antd';

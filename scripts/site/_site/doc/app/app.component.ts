@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
@@ -34,12 +35,15 @@ export class AppComponent implements OnInit, AfterViewInit {
   docsearch: any = null;
 
   get useDocsearch(): boolean {
+    if (!this.platform.isBrowser) {
+      return false;
+    }
     return window && window.location.href.indexOf('/version') === -1;
   }
 
   language = 'zh';
   oldVersionList = [ '0.5.x', '0.6.x', '0.7.x', '1.8.x' ];
-  currentVersion = '7.2.0';
+  currentVersion = '7.3.3';
 
   @ViewChild('searchInput') searchInput: ElementRef<HTMLInputElement>;
 
@@ -55,7 +59,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     private title: Title,
     private nzI18nService: NzI18nService,
     private msg: NzMessageService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private platform: Platform
   ) {
   }
 
@@ -66,6 +71,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   navigateToVersion(version: string): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     if (version !== this.currentVersion) {
       window.location.href = window.location.origin + `/version/` + version;
     } else {
@@ -104,14 +112,16 @@ export class AppComponent implements OnInit, AfterViewInit {
           this.docsearch!.algoliaOptions = { hitsPerPage: 5, facetFilters: [ `tags:${this.language}` ] };
         }
 
-        if (environment.production) {
+        if (environment.production && this.platform.isBrowser) {
           window.scrollTo(0, 0);
         }
 
         setTimeout(() => {
           const toc = this.router.parseUrl(this.router.url).fragment || '';
           if (toc) {
-            document.querySelector(`#${toc}`)!.scrollIntoView();
+            if (this.platform.isBrowser) {
+              document.querySelector(`#${toc}`)!.scrollIntoView();
+            }
           }
         }, 200);
       }
@@ -132,9 +142,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   initDocsearch() {
     this.loadScript('https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js').then(() => {
       this.docsearch = docsearch({
-        appId         : 'PO5D2PCS2I',
-        apiKey        : 'cda01b4d7172b1582a2911ef08519f62',
-        indexName     : 'dev_ng_zorro',
+        appId         : 'BH4D9OD16A',
+        apiKey        : '9f7d9d6527ff52ec484e90bb1f256971',
+        indexName     : 'ng_zorro',
         inputSelector : '#search-box input',
         algoliaOptions: { hitsPerPage: 5, facetFilters: [ `tags:${this.language}` ] },
         transformData(hits: any) {
@@ -162,6 +172,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   color = `#1890ff`;
 
   initColor() {
+    if (!this.platform.isBrowser) {
+      return
+    }
     const node = document.createElement('link');
     node.rel = 'stylesheet/less';
     node.type = 'text/css';
@@ -172,6 +185,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   lessLoaded = false;
 
   changeColor(res: any) {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     const changeColor = () => {
       (window as any).less
       .modifyVars({
@@ -212,6 +228,9 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   // endregion
   private addWindowWidthListener(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     this.ngZone.runOutsideAngular(() => {
       fromEvent(window, 'resize')
       .pipe(
@@ -229,9 +248,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   private detectLanguage(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     const language = navigator.language.toLowerCase();
     const pathname = location.pathname;
-    const hasLanguage = pathname.match(/en$/) || pathname.match(/zh$/);
+    const hasLanguage = pathname.match(/(en|zh)(\/?)$/);
     if (language === 'zh-cn' && !hasLanguage) {
       this.nzI18nService.setLocale(zh_CN);
       this.router.navigate([ 'docs', 'introduce', 'zh' ]);

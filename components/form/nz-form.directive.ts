@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   AfterContentInit,
   ContentChildren,
@@ -64,13 +72,13 @@ export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnD
 
   ngAfterContentInit(): void {
     this.nzFormLabelComponent.changes
-    .pipe(
-      startWith(null),
-      takeUntil(this.destroy$)
-    )
-    .subscribe(() => {
-      this.updateItemsDefaultColon();
-    });
+      .pipe(
+        startWith(null),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.updateItemsDefaultColon();
+      });
   }
 
   ngOnDestroy(): void {

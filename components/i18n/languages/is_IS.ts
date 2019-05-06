@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import Calendar from './calendar/is_IS';
 import DatePicker from './date-picker/is_IS';
 import Pagination from './pagination/is_IS';
@@ -14,29 +22,29 @@ export default {
     filterConfirm: 'Staðfesta',
     filterReset: 'Núllstilla',
     selectAll: 'Velja allt',
-    selectInvert: 'Viðsnúa vali',
+    selectInvert: 'Viðsnúa vali'
   },
   Modal: {
     okText: 'Áfram',
     cancelText: 'Hætta við',
-    justOkText: 'Í lagi',
+    justOkText: 'Í lagi'
   },
   Popconfirm: {
     okText: 'Áfram',
-    cancelText: 'Hætta við',
+    cancelText: 'Hætta við'
   },
   Transfer: {
     searchPlaceholder: 'Leita hér',
     itemUnit: 'færsla',
-    itemsUnit: 'færslur',
+    itemsUnit: 'færslur'
   },
   Upload: {
     uploading: 'Hleð upp...',
     removeFile: 'Fjarlægja skrá',
     uploadError: 'Villa við að hlaða upp',
-    previewFile: 'Forskoða skrá',
+    previewFile: 'Forskoða skrá'
   },
   Empty: {
-    description: 'Engin gögn',
-  },
+    description: 'Engin gögn'
+  }
 };

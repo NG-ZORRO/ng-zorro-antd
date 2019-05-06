@@ -20,7 +20,7 @@ A long list can be divided into several pages by `Pagination`, and only one page
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzPaginationModule } from 'ng-zorro-antd';

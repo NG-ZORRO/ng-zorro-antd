@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, NgZorroAntdModule],
+  imports: [BrowserModule.withServerTransition({ appId: 'zorroApp' }), NgZorroAntdModule],
   providers: [],
   bootstrap: [AppComponent]
 })

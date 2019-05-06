@@ -14,7 +14,7 @@ A button means an operation (or a series of operations). Clicking a button will 
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzButtonModule } from 'ng-zorro-antd';

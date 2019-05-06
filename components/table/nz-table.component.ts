@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Platform } from '@angular/cdk/platform';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
@@ -47,6 +55,10 @@ import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
     `
       nz-table {
         display: block;
+      }
+
+      cdk-virtual-scroll-viewport.ant-table-body {
+        overflow-y: scroll;
       }
     `
   ]

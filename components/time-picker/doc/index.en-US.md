@@ -18,7 +18,7 @@ By clicking the input box, you can select a time from a popup panel.
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzTimePickerModule } from 'ng-zorro-antd';

@@ -16,7 +16,7 @@ import {
   typeInElement,
   MockNgZone
 } from 'ng-zorro-antd/core';
-import { NzIconTestModule } from '../icon/nz-icon-test.module';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzInputModule } from '../input';
 import { NzMentionTriggerDirective } from './nz-mention-trigger';

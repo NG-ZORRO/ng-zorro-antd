@@ -2,7 +2,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, discardPeriodicTasks, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzIconTestModule } from '../icon/nz-icon-test.module';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzDemoLayoutBasicComponent } from './demo/basic';
 import { NzDemoLayoutCustomTriggerComponent } from './demo/custom-trigger';

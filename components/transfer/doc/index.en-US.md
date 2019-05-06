@@ -17,7 +17,7 @@ One or more elements can be selected from either column, one click on the proper
 
 ### Import this Component Individually
 
-[Note](/docs/getting-started/en#import-a-component-individually).
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
 import { NzTransferModule } from 'ng-zorro-antd';

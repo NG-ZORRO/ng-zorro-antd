@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   forwardRef,
   ChangeDetectionStrategy,
@@ -27,6 +35,7 @@ import {
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,
   NzNoAnimationDirective,
+  NzTreeBase,
   NzTreeBaseService,
   NzTreeHigherOrderServiceToken,
   NzTreeNode
@@ -60,7 +69,7 @@ export function NzTreeServiceFactory(
     }
   ]
 })
-export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
+export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
   @Input() @InputBoolean() nzShowIcon = false;
   @Input() @InputBoolean() nzShowExpand = true;
   @Input() @InputBoolean() nzShowLine = false;
@@ -154,6 +163,13 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
     return this._searchValue;
   }
 
+  /**
+   * To render nodes if root is changed
+   */
+  get nzNodes(): NzTreeNode[] {
+    return this.nzTreeService.rootNodes;
+  }
+
   // model bind
   @Output() readonly nzExpandedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() readonly nzSelectedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
@@ -184,54 +200,11 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
   _nzMultiple: boolean = false;
   nzDefaultSubject = new ReplaySubject<{ type: string; keys: string[] }>(6);
   destroy$ = new Subject();
-  nzNodes: NzTreeNode[] = [];
   prefixCls = 'ant-tree';
   classMap = {};
 
   onChange: (value: NzTreeNode[]) => void = () => null;
   onTouched: () => void = () => null;
-
-  getTreeNodes(): NzTreeNode[] {
-    return this.nzTreeService.rootNodes;
-  }
-
-  getTreeNodeByKey(key: string): NzTreeNode | null {
-    // flat tree nodes
-    const nodes: NzTreeNode[] = [];
-    const getNode = (node: NzTreeNode): void => {
-      nodes.push(node);
-      node.getChildren().forEach(n => {
-        getNode(n);
-      });
-    };
-    this.nzNodes.forEach(n => {
-      getNode(n);
-    });
-    return nodes.find(n => n.key === key) || null;
-  }
-
-  /**
-   * public function
-   */
-  getCheckedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getCheckedNodeList();
-  }
-
-  getSelectedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getSelectedNodeList();
-  }
-
-  getHalfCheckedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getHalfCheckedNodeList();
-  }
-
-  getExpandedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getExpandedNodeList();
-  }
-
-  getMatchedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getMatchedNodeList();
-  }
 
   setClassMap(): void {
     this.classMap = {
@@ -259,26 +232,19 @@ export class NzTreeComponent implements OnInit, OnDestroy, ControlValueAccessor,
   // tslint:disable-next-line:no-any
   initNzData(value: any[]): void {
     if (Array.isArray(value)) {
-      if (!this.nzTreeService.isArrayOfNzTreeNode(value)) {
-        // has not been new NzTreeNode
-        this.nzNodes = value.map(item => new NzTreeNode(item, null, this.nzTreeService));
-      } else {
-        this.nzNodes = value.map((item: NzTreeNode) => {
-          item.service = this.nzTreeService;
-          return item;
-        });
-      }
       this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
       this.nzTreeService.isMultiple = this.nzMultiple;
-      this.nzTreeService.initTree(this.nzNodes);
+      this.nzTreeService.initTree(this.coerceTreeNodes(value));
     }
   }
 
   constructor(
-    public nzTreeService: NzTreeBaseService,
+    nzTreeService: NzTreeBaseService,
     private cdr: ChangeDetectorRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {}
+  ) {
+    super(nzTreeService);
+  }
 
   ngOnInit(): void {
     this.setClassMap();

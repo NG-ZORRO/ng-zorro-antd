@@ -1,5 +1,5 @@
 import { Component, DebugElement } from '@angular/core';
-import { fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
+import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
@@ -128,7 +128,7 @@ describe('nz-select top control', () => {
       expect(tcComponent.selectedValueStyle.display).toBe('block');
       expect(tcComponent.selectedValueStyle.opacity).toBe('0.4');
     });
-    it('should open focus', () => {
+    it('should open focus', fakeAsync(() => {
       fixture.detectChanges();
       expect(tc.nativeElement.querySelector('.ant-select-search__field') === document.activeElement).toBeFalsy();
       // @ts-ignore
@@ -138,8 +138,10 @@ describe('nz-select top control', () => {
       // @ts-ignore
       nzSelectService.open$.next(true);
       fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
       expect(tc.nativeElement.querySelector('.ant-select-search__field') === document.activeElement).toBeTruthy();
-    });
+    }));
     it('should destroy piped', () => {
       fixture.detectChanges();
       // @ts-ignore

@@ -1,6 +1,7 @@
 ---
 order: 0
 title: Ant Design of Angular
+widget: <nz-github-btn></nz-github-btn>
 ---
 
 这里是 Ant Design 的 Angular 实现，开发和服务于企业级后台产品。
@@ -32,7 +33,9 @@ title: Ant Design of Angular
 
 ## 支持环境
 
-现代浏览器和 IE11 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）。
+- 现代浏览器和 IE11 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）
+- 支持服务端渲染
+- [Electron](http://electron.atom.io/)
 
 ## 当前版本
 
@@ -71,6 +74,7 @@ $ ng add ng-zorro-antd
 
 - [阿里巴巴](http://www.alibaba.com/)
 - [阿里云](http://www.aliyun.com/)
+- [Apache Flink](https://flink.apache.org/)
 
 > 如果你的公司和产品使用了 NG-ZORRO，欢迎到 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142) 留言。
 

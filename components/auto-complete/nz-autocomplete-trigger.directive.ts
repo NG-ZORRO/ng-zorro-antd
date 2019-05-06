@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   ConnectedOverlayPositionChange,
@@ -148,12 +156,13 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       }
       this.closePanel();
     } else if (this.panelOpen && keyCode === ENTER) {
-      event.preventDefault();
       if (this.nzAutocomplete.showPanel && this.activeOption) {
+        event.preventDefault();
         this.activeOption.selectViaInteraction();
       }
     } else if (this.panelOpen && isArrowKey && this.nzAutocomplete.showPanel) {
       event.stopPropagation();
+      event.preventDefault();
       if (keyCode === UP_ARROW) {
         this.nzAutocomplete.setPreviousItemActive();
       } else {

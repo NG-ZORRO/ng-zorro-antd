@@ -8,7 +8,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
 import { createMouseEvent, dispatchFakeEvent } from 'ng-zorro-antd/core';
-import { NzIconTestModule } from '../icon/nz-icon-test.module';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzMenuModule } from '../menu/nz-menu.module';
 import { NzSubMenuComponent } from '../menu/nz-submenu.component';
 

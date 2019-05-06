@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 /** code from https://github.com/angular/material2 */
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
@@ -11,6 +19,7 @@ import {
   EventEmitter,
   Input,
   NgZone,
+  OnDestroy,
   Optional,
   Output,
   QueryList,
@@ -39,7 +48,7 @@ export type ScrollDirection = 'after' | 'before';
   encapsulation: ViewEncapsulation.None,
   templateUrl: './nz-tabs-nav.component.html'
 })
-export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit {
+export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit, OnDestroy {
   private _tabPositionMode: NzTabPositionMode = 'horizontal';
   private _scrollDistance = 0;
   private _selectedIndex = 0;
@@ -164,6 +173,12 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
           this.alignInkBarToSelectedTab();
         });
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.realignInkBar) {
+      this.realignInkBar.unsubscribe();
+    }
   }
 
   updateTabScrollPosition(): void {

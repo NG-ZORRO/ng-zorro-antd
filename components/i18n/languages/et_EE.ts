@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import Calendar from './calendar/et_EE';
 import DatePicker from './date-picker/et_EE';
 import Pagination from './pagination/et_EE';
@@ -14,29 +22,29 @@ export default {
     filterConfirm: 'OK',
     filterReset: 'Nulli',
     selectAll: 'Vali kõik',
-    selectInvert: 'Inverteeri valik',
+    selectInvert: 'Inverteeri valik'
   },
   Modal: {
     okText: 'OK',
     cancelText: 'Tühista',
-    justOkText: 'OK',
+    justOkText: 'OK'
   },
   Popconfirm: {
     okText: 'OK',
-    cancelText: 'Tühista',
+    cancelText: 'Tühista'
   },
   Transfer: {
     searchPlaceholder: 'Otsi siit',
     itemUnit: 'kogus',
-    itemsUnit: 'kogus',
+    itemsUnit: 'kogus'
   },
   Upload: {
     uploading: 'Üleslaadimine...',
     removeFile: 'Eemalda fail',
     uploadError: 'Üleslaadimise tõrge',
-    previewFile: 'Faili eelvaade',
+    previewFile: 'Faili eelvaade'
   },
   Empty: {
-    description: 'Andmed puuduvad',
-  },
+    description: 'Andmed puuduvad'
+  }
 };

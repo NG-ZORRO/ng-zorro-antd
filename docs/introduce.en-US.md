@@ -1,6 +1,7 @@
 ---
 order: 0
 title: Ant Design of Angular
+widget: <nz-github-btn></nz-github-btn>
 ---
 
 Following the Ant Design specification, we developed a Angular UI library `ng-zorro-antd` that contains a set of high quality components and demos for building rich, interactive user interfaces.
@@ -31,7 +32,9 @@ Following the Ant Design specification, we developed a Angular UI library `ng-zo
 
 ## Environment Support
 
-Modern browsers and Internet Explorer 11+ (with [polyfills](https://angular.io/guide/browser-support))
+- Modern browsers and Internet Explorer 11+ (with [polyfills](https://angular.io/guide/browser-support))
+- Server-side Rendering
+- [Electron](http://electron.atom.io/)
 
 ## Version
 
@@ -68,6 +71,7 @@ $ npm install ng-zorro-antd
 
 - [Alibaba](http://www.alibaba.com/)
 - [Aliyun](http://www.aliyun.com/)
+- [Apache Flink](https://flink.apache.org/)
 
 > If your company or product uses ng-zorro-antd, let us know [here](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142)!
 

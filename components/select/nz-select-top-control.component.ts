@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -108,7 +116,7 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
     }
   }
 
-  removeSelectedValue(option: NzOptionComponent, e: KeyboardEvent): void {
+  removeSelectedValue(option: NzOptionComponent, e: MouseEvent): void {
     this.nzSelectService.removeValueFormSelected(option);
     e.stopPropagation();
   }
@@ -123,7 +131,7 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.nzSelectService.open$.pipe(takeUntil(this.destroy$)).subscribe(open => {
       if (this.inputElement && open) {
-        this.inputElement.nativeElement.focus();
+        setTimeout(() => this.inputElement.nativeElement.focus());
       }
     });
     this.nzSelectService.clearInput$.pipe(takeUntil(this.destroy$)).subscribe(() => {

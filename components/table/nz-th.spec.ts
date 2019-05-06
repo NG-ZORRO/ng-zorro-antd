@@ -2,7 +2,7 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzIconTestModule } from '../icon/nz-icon-test.module';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzTableComponent } from './nz-table.component';
 import { NzTableModule } from './nz-table.module';
 import { NzThComponent } from './nz-th.component';

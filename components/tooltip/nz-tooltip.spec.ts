@@ -4,7 +4,7 @@ import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/cor
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core';
-import { NzIconTestModule } from '../icon/nz-icon-test.module';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzTooltipDirective } from './nz-tooltip.directive';
 import { NzToolTipModule } from './nz-tooltip.module';
