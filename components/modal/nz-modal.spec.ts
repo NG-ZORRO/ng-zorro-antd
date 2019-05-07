@@ -11,8 +11,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzButtonComponent, NzButtonModule } from 'ng-zorro-antd/button';
 import { dispatchKeyboardEvent, NzMeasureScrollbarService } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import en_US from '../i18n/languages/en_US';
-import { NzIconTestModule } from '../icon/nz-icon-test.module';
 
 import { CssUnitPipe } from './css-unit.pipe';
 import { NZ_MODAL_CONFIG } from './nz-modal-config';

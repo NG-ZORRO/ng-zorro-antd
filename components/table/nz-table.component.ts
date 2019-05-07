@@ -56,6 +56,10 @@ import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
       nz-table {
         display: block;
       }
+
+      cdk-virtual-scroll-viewport.ant-table-body {
+        overflow-y: scroll;
+      }
     `
   ]
 })

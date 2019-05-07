@@ -19,6 +19,7 @@ import {
   NgZone,
   OnChanges,
   OnDestroy,
+  OnInit,
   QueryList,
   Renderer2,
   SimpleChanges,
@@ -51,11 +52,20 @@ import { NzFormExplainComponent } from './nz-form-explain.component';
     `
   ]
 })
-export class NzFormItemComponent extends NzRowDirective implements AfterContentInit, OnDestroy, OnChanges {
+export class NzFormItemComponent extends NzRowDirective
+  implements AfterContentInit, OnDestroy, OnChanges, OnInit, OnDestroy {
   @Input() @InputBoolean() nzFlex: boolean = false;
 
   @ContentChildren(NzFormExplainComponent, { descendants: true })
   listOfNzFormExplainComponent: QueryList<NzFormExplainComponent>;
+
+  updateFlexStyle(): void {
+    if (this.nzFlex) {
+      this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'flex');
+    } else {
+      this.renderer.removeStyle(this.elementRef.nativeElement, 'display');
+    }
+  }
 
   constructor(
     elementRef: ElementRef,
@@ -78,15 +88,19 @@ export class NzFormItemComponent extends NzRowDirective implements AfterContentI
     }
   }
 
+  ngOnInit(): void {
+    super.ngOnInit();
+    this.updateFlexStyle();
+  }
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);
     if (changes.hasOwnProperty('nzFlex')) {
-      const flex = changes.nzFlex.currentValue;
-      if (flex) {
-        this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'flex');
-      } else {
-        this.renderer.removeStyle(this.elementRef.nativeElement, 'display');
-      }
+      this.updateFlexStyle();
     }
   }
 }

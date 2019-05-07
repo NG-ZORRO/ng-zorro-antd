@@ -45,3 +45,15 @@ import { NzTreeSelectModule } from 'ng-zorro-antd';
 | `[nzMaxTagCount]` | 最多显示多少个 tag | number | - |
 | `[nzMaxTagPlaceholder]` | 隐藏 tag 时显示的内容 | TemplateRef<{ $implicit: NzTreeNode[] }> | - |
 | `(nzExpandChange)` | 点击展开树节点图标调用 | `EventEmitter<NzFormatEmitEvent>` | - |
+
+#### 方法
+
+| 方法名 | 说明 | 返回值
+| --- | --- | --- |
+| getTreeNodes | 获取组件 NzTreeNode 节点 | `NzTreeNode[]` |
+| getTreeNodeByKey | 按 key 获取 NzTreeNode 节点 | `NzTreeNode` |
+| getCheckedNodeList | 获取组件 checkBox 被点击选中的节点 | `NzTreeNode[]` |
+| getSelectedNodeList | 获取组件被选中的节点 | `NzTreeNode[]` |
+| getHalfCheckedNodeList | 获取组件半选状态节点 | `NzTreeNode[]` |
+| getExpandedNodeList | 获取组件展开状态节点 | `NzTreeNode[]` |
+| getMatchedNodeList | 获取组搜索匹配到的节点 | `NzTreeNode[]` |

@@ -9,9 +9,14 @@
   "scripts": {
     "build-iframe": "node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --project=ng-zorro-antd-iframe --prod --base-href ./",
     "build-site": "node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod",
-    "build-static": "bash ./scripts/build/prerender.sh",
+    "build-site-server": "node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng run ng-zorro-antd-doc:server:production",
+    "build:client-and-server-bundles": "npm run build-site && npm run build-site-server",
+    "build:docs": "npm run build:client-and-server-bundles && npm run build:prerender && npm run build-iframe && npm run helper",
+    "build:prerender": "npm run compile:prerender && npm run generate:prerender",
+    "compile:prerender": "tsc -p scripts/prerender/tsconfig.json",
+    "generate:prerender": "cd dist && node prerender && node sitemap",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s --pkg components/package.json && node ./scripts/site/replace-scope-prefix.js",
-    "doc": "npm run site:init && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod",
+    "doc": "npm run site:init && npm run build-site",
     "format:check": "prettier --config ./.prettierrc --list-different \"component/**/*{.ts}\"",
     "generate": "ng build ng-zorro-antd-lib",
     "helper": "bash ./scripts/release-helper.sh",
@@ -19,25 +24,24 @@
     "integration-rollup": "npm run generate && cd integration/rollup && npm run integration",
     "integration-webpack": "npm run generate && cd integration/webpack && npm run integration",
     "integration": "npm run generate && bash ./integration-test.sh",
-    "lint": "tslint -c tslint.json 'components/*/*.ts'",
+    "lint": "tslint -c tslint.json 'components/**/!(demo|testing)/!(polyfills).ts' --fix",
     "migration-styles": "node ./scripts/build/migration-styles.js",
     "ng": "ng",
     "postgenerate": "node scripts/build/compile-styles.js && cp README.md publish/README.md && npm run migration-styles && npm run schematic:generate",
-    "pre-release": "npm run site:init && bash ./scripts/build/replace-publish.sh && npm run generate && npm run build-site && npm run build-iframe && npm run helper",
+    "pre-release": "npm run site:init && bash ./scripts/build/replace-publish.sh && npm run generate && npm run build:docs",
     "release": "node ./scripts/publish/publish.js",
     "schematic:build": "node ./scripts/schematics/set-theme.js && node ./scripts/schematics/set-version.js && npm run schematic:tsc && node ./scripts/schematics/copy-resources",
     "schematic:demo": "node ./scripts/schematics/demo2schematics",
     "schematic:generate": "npm run schematic:demo && npm run schematic:build && rm -rf schematics/demo",
     "schematic:tsc": "tsc -p schematics/tsconfig.json",
     "site:init": "node ./scripts/site/generate-site init && node ./scripts/site/generateColorLess",
-    "site:start": "node ./scripts/site/generate-site init && node ./scripts/site/generateColorLess && ng serve --port 0 --open",
+    "site:start": "npm run site:init && ng serve --port 0 --open",
     "site": "node ./scripts/site/generate-site",
     "start": "ng serve --port 0",
     "test": "ng test --watch=false --code-coverage"
   },
   "dependencies": {
     "@angular/cdk": "^7.3.0",
-    "@angular/pwa": "^0.12.2",
     "@ant-design/icons-angular": "^2.0.2",
     "date-fns": "^1.29.0"
   },
@@ -56,10 +60,12 @@
     "@angular/http": "~7.2.0",
     "@angular/language-service": "~7.2.0",
     "@angular/platform-browser": "~7.2.0",
+    "@angular/platform-server": "^7.2.14",
     "@angular/platform-browser-dynamic": "~7.2.0",
+    "@angular/pwa": "^0.12.2",
     "@angular/router": "~7.2.0",
     "@angular/service-worker": "~7.2.0",
-    "@awesome-fe/prerender": "0.0.5",
+    "@nguniversal/module-map-ngfactory-loader": "^7.1.1",
     "@schematics/angular": "~7.2.0",
     "@stackblitz/sdk": "^1.1.1",
     "@types/fs-extra": "^5.0.4",
@@ -74,7 +80,6 @@
     "conventional-changelog-cli": "^2.0.1",
     "core-js": "^2.5.4",
     "fs-extra": "^6.0.1",
-    "http-server-spa": "^1.3.0",
     "husky": "^1.0.1",
     "jasmine-core": "~2.99.1",
     "karma": "~3.0.0",
@@ -85,17 +90,18 @@
     "karma-spec-reporter": "0.0.32",
     "less": "^3.9.0",
     "less-plugin-clean-css": "^1.5.1",
+    "lint-staged": "^8.1.5",
     "marked": "^0.5.1",
     "ng-packagr": "^4.2.0",
     "ngx-color": "^2.0.5",
     "node-prismjs": "^0.1.1",
     "prettier": "^1.16.4",
-    "pretty-quick": "^1.10.0",
     "prismjs": "^1.10.0",
     "protractor": "~5.4.0",
     "readline-sync": "^1.4.9",
     "remark": "^8.0.0",
     "rxjs": "~6.3.3",
+    "sitemap": "^2.1.0",
     "ts-node": "~7.0.0",
     "tsickle": ">=0.34.0",
     "tslib": "^1.9.0",
@@ -105,10 +111,20 @@
     "yaml-front-matter": "^4.0.0",
     "zone.js": "~0.8.26"
   },
+  "lint-staged": {
+    "components/**/*.ts": [
+      "./node_modules/.bin/prettier --write",
+      "git add"
+    ],
+    "components/**/!(demo|testing)/!(polyfills).ts": [
+      "tslint -c tslint.json --fix",
+      "git add"
+    ]
+  },
   "husky": {
     "hooks": {
       "commit-msg": "node ./scripts/git/commit-msg.js -E HUSKY_GIT_PARAMS",
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "lint-staged"
     }
   }
 }
