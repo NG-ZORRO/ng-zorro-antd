@@ -51,6 +51,7 @@ import { NzCalendarModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | `[(ngModel)]` | （可双向绑定）展示日期 | `Date` | 当前日期 |
 | `[(nzMode)]` | （可双向绑定）显示模式 | `'month'｜'year'` | `'month'` |
+| `[nzBodyTitle]` | 自定义鼠标悬停主体Title | `string` | `''` |
 | `[nzFullscreen]` | 是否全屏显示 | `boolean` | `true` |
 | `[nzCard]` | 是否不全屏显示 | `boolean` | `false` |
 | `[nzDateCell]` | （可作为内容）自定义渲染日期单元格，模版内容会被追加到单元格 | `TemplateRef<Date>` | - |
