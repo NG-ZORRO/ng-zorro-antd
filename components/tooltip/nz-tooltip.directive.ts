@@ -14,6 +14,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   AfterViewInit,
   ComponentFactory,
@@ -70,7 +78,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   ];
 
   protected subs_ = new Subscription();
-  protected listeners: Array<() => void>;
+  protected listeners: Array<() => void> = [];
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
@@ -98,9 +106,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
     public renderer: Renderer2,
     @Optional() public tooltip: NzToolTipComponent,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {
-    this.listeners = [];
-  }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.updateProxies(changes);
