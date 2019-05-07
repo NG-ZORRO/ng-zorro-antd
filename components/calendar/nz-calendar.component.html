@@ -22,7 +22,7 @@
       <tr *ngFor="let week of dateMatrix; index as row"
           [class.ant-fullcalendar-current-week]="row === currentDateRow"
           [class.ant-fullcalendar-active-week]="row === activeDateRow">
-        <td *ngFor="let day of week; index as col" role="gridcell" class="ant-fullcalendar-cell" [title]="day.title"
+        <td *ngFor="let day of week; index as col" role="gridcell" class="ant-fullcalendar-cell" [title]="nzBodyTitle || day.title"
             [class.ant-fullcalendar-today]="row === currentDateRow && col === currentDateCol"
             [class.ant-fullcalendar-selected-day]="row === activeDateRow && col === activeDateCol"
             [class.ant-fullcalendar-last-month-cell]="day.rel === 'last'"
@@ -49,7 +49,7 @@
   <table class="ant-fullcalendar-month-panel-table" cellspacing="0" role="grid">
     <tbody class="ant-fullcalendar-month-panel-tbody">
       <tr *ngFor="let row of [0, 1, 2, 3]" role="row">
-        <td *ngFor="let col of [0, 1, 2]" role="gridcell" [title]="monthsInYear[row * 3 + col].title"
+        <td *ngFor="let col of [0, 1, 2]" role="gridcell" [title]="nzBodyTitle || monthsInYear[row * 3 + col].title"
             class="ant-fullcalendar-month-panel-cell"
             [class.ant-fullcalendar-month-panel-current-cell]="row === currentMonthRow && col === currentMonthCol"
             [class.ant-fullcalendar-month-panel-selected-cell]="row === activeMonthRow && col === activeMonthCol"

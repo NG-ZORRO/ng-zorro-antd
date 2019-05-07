@@ -59,6 +59,7 @@ export type ModeType = 'month' | 'year';
 })
 export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   @Input() nzMode: ModeType = 'month';
+  @Input() nzBodyTitle: string = '';
   @Output() readonly nzModeChange: EventEmitter<ModeType> = new EventEmitter();
   @Output() readonly nzPanelChange: EventEmitter<{ date: Date; mode: ModeType }> = new EventEmitter();
 
