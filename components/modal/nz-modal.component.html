@@ -100,7 +100,7 @@
           </ng-container>
         </span>
         <div class="ant-modal-confirm-content">
-          <ng-container>
+          <ng-container #bodyContainer>
             <ng-container *ngIf="!isComponent(nzContent)" [ngSwitch]="true">
               <ng-container *ngSwitchCase="isTemplateRef(nzContent)" [ngTemplateOutlet]="nzContent"></ng-container>
               <ng-container *ngSwitchCase="isNonEmptyString(nzContent)"><div [innerHTML]="nzContent"></div></ng-container>
