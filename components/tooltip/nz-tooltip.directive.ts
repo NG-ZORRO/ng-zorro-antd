@@ -6,6 +6,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   AfterViewInit,
   ComponentFactory,
@@ -62,6 +70,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   ];
 
   protected subs_ = new Subscription();
+  protected listeners: Array<() => void>;
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
@@ -89,7 +98,9 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
     public renderer: Renderer2,
     @Optional() public tooltip: NzToolTipComponent,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {}
+  ) {
+    this.listeners = [];
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.updateProxies(changes);
@@ -120,31 +131,48 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   ngAfterViewInit(): void {
     if (this.tooltip.nzTrigger === 'hover') {
       let overlayElement: HTMLElement;
-      this.renderer.listen(this.elementRef.nativeElement, 'mouseenter', () =>
+      const listenerMouseEnter = this.renderer.listen(this.elementRef.nativeElement, 'mouseenter', () =>
         this.delayEnterLeave(true, true, this.tooltip.nzMouseEnterDelay)
       );
-      this.renderer.listen(this.elementRef.nativeElement, 'mouseleave', () => {
+      this.listeners.push(listenerMouseEnter);
+
+      const listenerMouseLeave = this.renderer.listen(this.elementRef.nativeElement, 'mouseleave', () => {
         this.delayEnterLeave(true, false, this.tooltip.nzMouseLeaveDelay);
         if (this.tooltip.overlay.overlayRef && !overlayElement) {
           // NOTE: we bind events under "mouseleave" due to the overlayRef is only created after the overlay was completely shown up
           overlayElement = this.tooltip.overlay.overlayRef.overlayElement;
-          this.renderer.listen(overlayElement, 'mouseenter', () => this.delayEnterLeave(false, true));
-          this.renderer.listen(overlayElement, 'mouseleave', () => this.delayEnterLeave(false, false));
+          const listenerOverlayMouseEnter = this.renderer.listen(overlayElement, 'mouseenter', () =>
+            this.delayEnterLeave(false, true)
+          );
+          this.listeners.push(listenerOverlayMouseEnter);
+
+          const listenerOverlayMouseLeave = this.renderer.listen(overlayElement, 'mouseleave', () =>
+            this.delayEnterLeave(false, false)
+          );
+          this.listeners.push(listenerOverlayMouseLeave);
         }
       });
+      this.listeners.push(listenerMouseLeave);
     } else if (this.tooltip.nzTrigger === 'focus') {
-      this.renderer.listen(this.elementRef.nativeElement, 'focus', () => this.show());
-      this.renderer.listen(this.elementRef.nativeElement, 'blur', () => this.hide());
+      const listenerFocus = this.renderer.listen(this.elementRef.nativeElement, 'focus', () => this.show());
+      this.listeners.push(listenerFocus);
+
+      const listenerBlur = this.renderer.listen(this.elementRef.nativeElement, 'blur', () => this.hide());
+      this.listeners.push(listenerBlur);
     } else if (this.tooltip.nzTrigger === 'click') {
-      this.renderer.listen(this.elementRef.nativeElement, 'click', e => {
+      const listenerClick = this.renderer.listen(this.elementRef.nativeElement, 'click', e => {
         e.preventDefault();
         this.show();
       });
+      this.listeners.push(listenerClick);
     }
   }
 
   ngOnDestroy(): void {
     this.subs_.unsubscribe();
+    this.listeners.forEach(listener => {
+      listener();
+    });
   }
 
   // tslint:disable-next-line:no-any
