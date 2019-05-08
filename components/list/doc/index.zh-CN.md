@@ -60,6 +60,7 @@ import { NzListModule } from 'ng-zorro-antd';
 | `[nzContent]` | 内容项 | `string｜TemplateRef<void>` | - |
 | `[nzActions]` | 列表操作组，根据 `nzItemLayout` 的不同, 位置在卡片底部或者最右侧。 | `Array<TemplateRef<void><void>>` | - |
 | `[nzExtra]` | 额外内容, 通常用在 `nzItemLayout` 为 `vertical` 的情况下, 展示右侧内容; `horizontal` 展示在列表元素最右侧 | `TemplateRef<void>` | - |
+| `[nzNoFlex]` | 是否非 `flex` 布局渲染 | `boolean` | `false` |
 
 ### nz-list-item-meta
 

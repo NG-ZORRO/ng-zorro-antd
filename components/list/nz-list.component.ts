@@ -12,17 +12,20 @@ import {
   ElementRef,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
+  SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
-import { InputBoolean, NzSizeLDSType, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { InputBoolean, NzDirectionVHType, NzSizeLDSType, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
+import { BehaviorSubject, Observable } from 'rxjs';
 import { NzListGrid } from './interface';
 
 @Component({
-  selector: 'nz-list',
+  selector: 'nz-list, [nz-list]',
   exportAs: 'nzList',
   templateUrl: './nz-list.component.html',
   providers: [NzUpdateHostClassService],
@@ -38,7 +41,7 @@ import { NzListGrid } from './interface';
     `
   ]
 })
-export class NzListComponent implements OnInit, OnChanges {
+export class NzListComponent implements OnInit, OnChanges, OnDestroy {
   // #region fields
   // tslint:disable-next-line:no-any
   @Input() nzDataSource: any[];
@@ -51,7 +54,7 @@ export class NzListComponent implements OnInit, OnChanges {
 
   @Input() nzFooter: string | TemplateRef<void>;
 
-  @Input() nzItemLayout: 'vertical' | 'horizontal' = 'horizontal';
+  @Input() nzItemLayout: NzDirectionVHType = 'horizontal';
 
   @Input() nzRenderItem: TemplateRef<void>;
 
@@ -90,13 +93,26 @@ export class NzListComponent implements OnInit, OnChanges {
 
   // #endregion
 
+  private itemLayoutNotifySource = new BehaviorSubject<NzDirectionVHType>(this.nzItemLayout);
+
+  get itemLayoutNotify$(): Observable<NzDirectionVHType> {
+    return this.itemLayoutNotifySource.asObservable();
+  }
+
   constructor(private el: ElementRef, private updateHostClassService: NzUpdateHostClassService) {}
 
   ngOnInit(): void {
     this._setClassMap();
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this._setClassMap();
+    if (changes.nzItemLayout) {
+      this.itemLayoutNotifySource.next(this.nzItemLayout);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.itemLayoutNotifySource.unsubscribe();
   }
 }
