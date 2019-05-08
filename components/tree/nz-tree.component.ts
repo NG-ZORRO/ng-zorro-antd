@@ -83,7 +83,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Input() @InputBoolean() nzCheckStrictly = false;
   @Input() @InputBoolean() nzBlockNode = false;
 
-  @Input() nzTreeSelectTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
+  @Input() @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
 
   /**
    * @deprecated use
@@ -196,8 +196,6 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Output() readonly nzOnDragLeave: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
   @Output() readonly nzOnDrop: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
   @Output() readonly nzOnDragEnd: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-
-  @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
 
   _searchValue: string;
   _nzMultiple: boolean = false;
@@ -312,11 +310,6 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
             break;
         }
       });
-
-    // Tree node template from nz-tree-select
-    if (this.nzTreeSelectTemplate) {
-      this.nzTreeTemplate = this.nzTreeSelectTemplate;
-    }
   }
 
   ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {

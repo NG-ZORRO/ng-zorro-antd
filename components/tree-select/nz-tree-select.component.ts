@@ -132,7 +132,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @ViewChild(CdkOverlayOrigin) cdkOverlayOrigin: CdkOverlayOrigin;
   @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
 
-  @ContentChild('nzTreeTemplate') nzTreeSelectTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
+  @Input() @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
 
   triggerWidth: number;
   isComposing = false;
