@@ -38,6 +38,7 @@ import { NzCardModule } from 'ng-zorro-antd';
 | `[nzLoading]` | Shows a loading indicator while the contents of the card are being fetched | `boolean` | `false` |
 | `[nzTitle]` | Card title | `string｜TemplateRef<void>` | - |
 | `[nzType]` | Card style type, can be set to `inner` or not set | `'inner'` | - |
+| `[nzSize]` | Size of card | `'default'｜'small'` | `'default'` |
 
 
 ### nz-card-meta
