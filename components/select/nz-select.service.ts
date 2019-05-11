@@ -179,15 +179,9 @@ export class NzSelectService {
 
   updateListOfTagOption(): void {
     if (this.isTagsMode) {
-      const listOfMissValue = this.listOfSelectedValue.filter(
-        value => !this.listOfTemplateOption.find(o => this.compareWith(o.nzValue, value))
+      this.listOfTagOption = this.listOfCachedSelectedOption.filter(
+        comp => !this.listOfTemplateOption.find(o => this.compareWith(o.nzValue, comp.nzValue))
       );
-      this.listOfTagOption = listOfMissValue.map(value => {
-        const nzOptionComponent = new NzOptionComponent();
-        nzOptionComponent.nzValue = value;
-        nzOptionComponent.nzLabel = value;
-        return nzOptionComponent;
-      });
       this.listOfTagAndTemplateOption = [...this.listOfTemplateOption.concat(this.listOfTagOption)];
     } else {
       this.listOfTagAndTemplateOption = [...this.listOfTemplateOption];

@@ -73,10 +73,17 @@ describe('SelectService', () => {
       service.mode = 'tags';
     });
     it('should updateListOfTagOption work', () => {
-      service.listOfSelectedValue = [`option_value_0`, `option_value_1`, `option_value_miss`];
+      service.listOfCachedSelectedOption = [
+        { nzValue: `option_value_0`, nzLabel: `option_label_0` },
+        { nzValue: `option_value_1`, nzLabel: `option_label_1` },
+        { nzValue: `option_value_miss`, nzLabel: `option_label_miss` }
+        // tslint:disable-next-line: no-any
+      ] as any;
       service.listOfTemplateOption = createListOfOption(3);
       service.updateListOfTagOption();
       expect(service.listOfTagOption.length).toEqual(1);
+      expect(service.listOfTagOption[0].nzValue).toEqual('option_value_miss');
+      expect(service.listOfTagOption[0].nzLabel).toEqual('option_label_miss');
     });
     it('should updateAddTagOption work', () => {
       service.listOfSelectedValue = [`option_value_0`, `option_value_1`];
