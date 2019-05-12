@@ -63,9 +63,9 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   }
 
   setInputValue(value: string): void {
-    if (this.inputElement) {
+    /* if (this.inputElement) {
       this.inputElement.nativeElement.value = value;
-    }
+    } */
     this.inputValue = value;
     this.updateWidth();
     this.nzSelectService.updateSearchValue(value);
