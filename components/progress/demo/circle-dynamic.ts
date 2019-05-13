@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-progress-circle-dynamic',
   template: `
-    <nz-progress [nzPercent]="percent" nzType="circle"></nz-progress>
+    <nz-progress [nzPercent]="percent" nzType="circle" nzStrokeColor="#FACC14"></nz-progress>
     <nz-button-group>
       <button nz-button (click)="decline()"><i nz-icon type="minus"></i></button>
       <button nz-button (click)="increase()"><i nz-icon type="plus"></i></button>
