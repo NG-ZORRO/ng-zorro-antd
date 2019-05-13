@@ -30,8 +30,8 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { merge, of as observableOf, Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
+import { debounceTime, filter, tap } from 'rxjs/operators';
 
 import {
   isNotNil,
@@ -118,6 +118,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() nzDisplayWith: (node: NzTreeNode) => string | undefined = (node: NzTreeNode) => node.title;
   @Input() nzMaxTagCount: number;
   @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzTreeNode[] }>;
+  @Input() nzDebounceTime: number = 0;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Output() readonly nzCleared = new EventEmitter<void>();
   @Output() readonly nzRemoved = new EventEmitter<NzTreeNode>();
@@ -139,6 +140,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   selectionChangeSubscription: Subscription;
   selectedNodes: NzTreeNode[] = [];
   value: string[] = [];
+  searchValue = '';
+  searchValue$: Subject<string> = new Subject();
+  searchValueSubscription: Subscription;
 
   onChange: (value: string[] | string | null) => void;
   onTouched: () => void = () => null;
@@ -190,12 +194,18 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   ngOnInit(): void {
     this.isDestroy = false;
     this.selectionChangeSubscription = this.subscribeSelectionChange();
+    if (this.nzDebounceTime > 0) {
+      this.searchValueSubscription = this.subscribeSearchChange();
+    }
   }
 
   ngOnDestroy(): void {
     this.isDestroy = true;
     this.closeDropDown();
     this.selectionChangeSubscription.unsubscribe();
+    if (this.searchValueSubscription) {
+      this.searchValueSubscription.unsubscribe();
+    }
   }
 
   setDisabledState(isDisabled: boolean): void {
@@ -285,6 +295,11 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
   setInputValue(value: string): void {
     this.inputValue = value;
+    if (this.nzDebounceTime > 0) {
+      this.searchValue$.next(value);
+    } else {
+      this.searchValue = value;
+    }
     this.updateInputWidth();
     this.updatePosition();
   }
@@ -343,6 +358,11 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       this.value = [...value];
       if (this.nzShowSearch || this.isMultiple) {
         this.inputValue = '';
+        if (this.nzDebounceTime > 0) {
+          this.searchValue$.next('');
+        } else {
+          this.searchValue = '';
+        }
         this.isNotFound = false;
       }
       if (this.isMultiple) {
@@ -354,6 +374,10 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
         this.onChange(value.length ? value[0] : null);
       }
     });
+  }
+
+  subscribeSearchChange(): Subscription {
+    return this.searchValue$.pipe(debounceTime(this.nzDebounceTime)).subscribe(value => (this.searchValue = value));
   }
 
   updateSelectedNodes(init: boolean = false): void {
