@@ -30,7 +30,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
+import { merge, of as observableOf, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, tap } from 'rxjs/operators';
 
 import {
@@ -142,7 +142,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   value: string[] = [];
   searchValue = '';
   searchValue$: Subject<string> = new Subject();
-  searchValueSubscription: Subscription;
+  searchValueChangeSubscription: Subscription;
 
   onChange: (value: string[] | string | null) => void;
   onTouched: () => void = () => null;
@@ -194,17 +194,14 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   ngOnInit(): void {
     this.isDestroy = false;
     this.selectionChangeSubscription = this.subscribeSelectionChange();
-    if (this.nzDebounceTime > 0) {
-      this.searchValueSubscription = this.subscribeSearchChange();
-    }
   }
 
   ngOnDestroy(): void {
     this.isDestroy = true;
     this.closeDropDown();
     this.selectionChangeSubscription.unsubscribe();
-    if (this.searchValueSubscription) {
-      this.searchValueSubscription.unsubscribe();
+    if (this.searchValueChangeSubscription) {
+      this.searchValueChangeSubscription.unsubscribe();
     }
   }
 
@@ -216,6 +213,12 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('nzNodes')) {
       this.updateSelectedNodes(true);
+    }
+    if (changes.hasOwnProperty('nzDebounceTime')) {
+      if (this.searchValueChangeSubscription) {
+        this.searchValueChangeSubscription.unsubscribe();
+      }
+      this.searchValueChangeSubscription = this.subscribeSearchValueChange();
     }
   }
 
@@ -295,11 +298,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
   setInputValue(value: string): void {
     this.inputValue = value;
-    if (this.nzDebounceTime > 0) {
-      this.searchValue$.next(value);
-    } else {
-      this.searchValue = value;
-    }
+    this.searchValue$.next(value);
     this.updateInputWidth();
     this.updatePosition();
   }
@@ -358,11 +357,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       this.value = [...value];
       if (this.nzShowSearch || this.isMultiple) {
         this.inputValue = '';
-        if (this.nzDebounceTime > 0) {
-          this.searchValue$.next('');
-        } else {
-          this.searchValue = '';
-        }
+        this.searchValue$.next('');
         this.isNotFound = false;
       }
       if (this.isMultiple) {
@@ -376,8 +371,13 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     });
   }
 
-  subscribeSearchChange(): Subscription {
-    return this.searchValue$.pipe(debounceTime(this.nzDebounceTime)).subscribe(value => (this.searchValue = value));
+  subscribeSearchValueChange(): Subscription {
+    const searchValueObservable: Observable<string> = this.searchValue$
+      .asObservable()
+      .pipe(debounceTime(this.nzDebounceTime));
+    return searchValueObservable.subscribe(value => {
+      this.searchValue = value;
+    });
   }
 
   updateSelectedNodes(init: boolean = false): void {
