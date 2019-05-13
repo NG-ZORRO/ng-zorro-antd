@@ -242,6 +242,23 @@ describe('tree-select component', () => {
         `+ ${testComponent.value.length - testComponent.maxTagCount} ...`
       );
     }));
+    it('should debounce work', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.nzSelectTreeComponent.setInputValue('abc');
+      fixture.detectChanges();
+      expect(testComponent.nzSelectTreeComponent.searchValue === 'abc');
+      tick(200);
+      fixture.detectChanges();
+      expect(testComponent.nzSelectTreeComponent.searchValue === 'abc');
+      testComponent.debounceTime = 200;
+      fixture.detectChanges();
+      testComponent.nzSelectTreeComponent.setInputValue('123');
+      fixture.detectChanges();
+      expect(testComponent.nzSelectTreeComponent.searchValue === 'abc');
+      tick(200);
+      fixture.detectChanges();
+      expect(testComponent.nzSelectTreeComponent.searchValue === '123');
+    }));
   });
 
   describe('checkable', () => {
@@ -477,6 +494,7 @@ describe('tree-select component', () => {
       [nzMultiple]="multiple"
       [nzMaxTagCount]="maxTagCount"
       [nzDropdownStyle]="{ height: '120px' }"
+      [nzDebounceTime]="debounceTime"
     >
     </nz-tree-select>
   `
@@ -489,6 +507,7 @@ export class NzTestTreeSelectBasicComponent {
   allowClear = false;
   disabled = false;
   showSearch = false;
+  debounceTime = 0;
   dropdownMatchSelectWidth = true;
   multiple = false;
   maxTagCount = Infinity;
