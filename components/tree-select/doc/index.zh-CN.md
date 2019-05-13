@@ -44,6 +44,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd';
 | `[nzDisplayWith]` | 如何在输入框显示所选的节点值的方法 | `(node: NzTreeNode) => string` | `(node: NzTreeNode) => node.title` |
 | `[nzMaxTagCount]` | 最多显示多少个 tag | number | - |
 | `[nzMaxTagPlaceholder]` | 隐藏 tag 时显示的内容 | TemplateRef<{ $implicit: NzTreeNode[] }> | - |
+| `[nzDebounceTime]` | 在输入搜索值期间的去抖动时间 | number | 0 |
 | `(nzExpandChange)` | 点击展开树节点图标调用 | `EventEmitter<NzFormatEmitEvent>` | - |
 
 #### 方法

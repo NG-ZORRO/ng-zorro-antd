@@ -44,6 +44,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd';
 | `[nzDisplayWith]` | How to display the selected node value in the trigger | `(node: NzTreeNode) => string` | `(node: NzTreeNode) => node.title` |
 | `[nzMaxTagCount]` | Max tag count to show| number | - |
 | `[nzMaxTagPlaceholder]` | Placeholder for not showing tags | TemplateRef<{ $implicit: NzTreeNode[] }> | - |
+| `[nzDebounceTime]` | time of debounce during input search value | number | 0 |
 | `(nzExpandChange)` | Callback function for when a treeNode is expanded or collapsed |`EventEmitter<NzFormatEmitEvent>` | - |
 
 #### Methods
