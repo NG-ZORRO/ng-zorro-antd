@@ -335,6 +335,18 @@ describe('menu', () => {
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledTimes(1);
       });
+      it('should click menu and other submenu menu not active', fakeAsync(() => {
+        testComponent.open = true;
+        fixture.detectChanges();
+        dispatchFakeEvent(testComponent.menuitem2.nativeElement, 'mouseenter');
+        fixture.detectChanges();
+        testComponent.menuitem2.nativeElement.click();
+        fixture.detectChanges();
+        tick(500);
+        testComponent.menuitem1.nativeElement.click();
+        fixture.detectChanges();
+        expect(submenu.nativeElement.classList).not.toContain('ant-menu-submenu-active');
+      }));
       it('should click submenu menu item close', () => {
         testComponent.open = true;
         fixture.detectChanges();
@@ -478,6 +490,7 @@ describe('menu', () => {
   selector: 'nz-test-menu-horizontal',
   template: `
     <ul nz-menu [nzMode]="'horizontal'">
+      <li nz-menu-item #menuitem1>Navigation Two</li>
       <li nz-submenu nzMenuClassName="submenu" [nzOpen]="open" [style.width.px]="width">
         <span title><i nz-icon type="setting"></i> Navigation Three - Submenu</span>
         <ul>
@@ -491,7 +504,7 @@ describe('menu', () => {
           <li nz-menu-group>
             <span title>Item 2</span>
             <ul>
-              <li nz-menu-item>Option 3</li>
+              <li nz-menu-item #menuitem2>Option 3</li>
               <li nz-menu-item>Option 4</li>
               <li nz-submenu nzMenuClassName="nested-submenu" [nzDisabled]="disabled">
                 <span title>Sub Menu</span>
@@ -520,6 +533,8 @@ export class NzTestMenuHorizontalComponent {
   disabled = false;
   @ViewChildren(NzSubMenuComponent) subs: QueryList<NzSubMenuComponent>;
   @ViewChild('menuitem', { read: ElementRef }) menuitem: ElementRef;
+  @ViewChild('menuitem1', { read: ElementRef }) menuitem1: ElementRef;
+  @ViewChild('menuitem2', { read: ElementRef }) menuitem2: ElementRef;
   @ViewChild('disableditem', { read: ElementRef }) disableditem: ElementRef;
 }
 
