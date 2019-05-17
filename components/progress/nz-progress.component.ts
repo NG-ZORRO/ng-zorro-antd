@@ -177,7 +177,7 @@ export class NzProgressComponent implements OnInit, OnChanges {
       transition: 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s'
     };
     this.strokePathStyle = {
-      stroke: this.nzStrokeColor || '',
+      stroke: this.nzStrokeColor || null,
       strokeDasharray: `${(this.nzPercent / 100) * (len - gapDegree)}px ${len}px`,
       strokeDashoffset: `-${gapDegree / 2}px`,
       transition: 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s, stroke-width .06s ease .3s' // eslint-disable-line
