@@ -14,6 +14,7 @@ describe('time-picker-panel', () => {
         NzTestTimePanelComponent,
         NzTestTimePanelDisabledComponent,
         NzTest12HourTimePanelComponent,
+        NzTest12HourBindingTimePanelComponent,
         NzTest12HourTimePanelDisabeledComponent
       ]
     });
@@ -237,6 +238,26 @@ describe('time-picker-panel', () => {
     }));
   });
 
+  describe('time-picker-panel 12-hour binding', () => {
+    let fixture12HourBinding: ComponentFixture<NzTest12HourBindingTimePanelComponent>;
+    let testComponent: NzTest12HourBindingTimePanelComponent;
+    beforeEach(() => {
+      fixture12HourBinding = TestBed.createComponent(NzTest12HourBindingTimePanelComponent);
+      testComponent = fixture12HourBinding.debugElement.componentInstance;
+      fixture12HourBinding.detectChanges();
+    });
+    it('should bind true', fakeAsync(() => {
+      fixture12HourBinding.componentInstance.use12Hours = true;
+      fixture12HourBinding.detectChanges();
+      expect(testComponent.nzTimePickerPanelComponent.enabledColumns).toBe(4);
+    }));
+    it('should bind false', fakeAsync(() => {
+      fixture12HourBinding.componentInstance.use12Hours = false;
+      fixture12HourBinding.detectChanges();
+      expect(testComponent.nzTimePickerPanelComponent.enabledColumns).toBe(3);
+    }));
+  });
+
   describe('disabled and format 12-hour time-picker-panel', () => {
     let panelElement: DebugElement;
     let fixture12Hour: ComponentFixture<NzTest12HourTimePanelDisabeledComponent>;
@@ -362,13 +383,14 @@ export class NzTestTimePanelDisabledComponent {
     }
   }
 }
+
 @Component({
   selector: 'nz-test-12-hour-time-panel',
   encapsulation: ViewEncapsulation.None,
   template: `
     <nz-time-picker-panel
       [(ngModel)]="value"
-      [nzUse12Hours]="true"
+      nzUse12Hours
       [nzDefaultOpenValue]="openValue"
       [nzHourStep]="hourStep"
       [format]="format"
@@ -384,6 +406,31 @@ export class NzTest12HourTimePanelComponent {
   value: Date;
   openValue = new Date(0, 0, 0, 0, 0, 0);
 }
+
+@Component({
+  selector: 'nz-test-12-hour-time-panel',
+  encapsulation: ViewEncapsulation.None,
+  template: `
+    <nz-time-picker-panel
+      [(ngModel)]="value"
+      [nzUse12Hours]="use12Hours"
+      [nzDefaultOpenValue]="openValue"
+      [nzHourStep]="hourStep"
+      [format]="format"
+    >
+    </nz-time-picker-panel>
+  `,
+  styleUrls: ['../style/index.less', './style/index.less']
+})
+export class NzTest12HourBindingTimePanelComponent {
+  @ViewChild(NzTimePickerPanelComponent) nzTimePickerPanelComponent: NzTimePickerPanelComponent;
+  format = 'hh:mm:ss a';
+  hourStep = 1;
+  value: Date;
+  openValue = new Date(0, 0, 0, 0, 0, 0);
+  use12Hours = false;
+}
+
 @Component({
   selector: 'nz-test-12-hour-time-panel',
   encapsulation: ViewEncapsulation.None,

@@ -26,7 +26,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { isNotNil, reqAnimFrame, InputBoolean, NzUpdateHostClassService as UpdateCls } from 'ng-zorro-antd/core';
+import { isNotNil, reqAnimFrame, toBoolean, InputBoolean, NzUpdateHostClassService as UpdateCls } from 'ng-zorro-antd/core';
 
 import { NzTimeValueAccessorDirective } from './nz-time-value-accessor.directive';
 import { TimeHolder } from './time-holder';
@@ -499,7 +499,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzUse12Hours } = changes;
-    if (nzUse12Hours && !nzUse12Hours.previousValue && nzUse12Hours.currentValue) {
+    if (nzUse12Hours && !nzUse12Hours.previousValue && toBoolean(nzUse12Hours.currentValue)) {
       this.build12Hours();
       this.enabledColumns++;
     }
