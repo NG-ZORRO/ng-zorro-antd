@@ -161,6 +161,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
         } else if (open && mode === 'vertical') {
           this.expandState = 'active';
         } else {
+          this.isMouseHover = false;
           this.expandState = 'collapsed';
         }
         this.overlayPositions =

@@ -335,6 +335,17 @@ describe('menu', () => {
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledTimes(1);
       });
+      it('should click menu and other submenu menu not active', fakeAsync(() => {
+        testComponent.open = true;
+        fixture.detectChanges();
+        dispatchFakeEvent(testComponent.menuitem1.nativeElement, 'mouseenter');
+        fixture.detectChanges();
+        testComponent.menuitem1.nativeElement.click();
+        expect(submenu.nativeElement.classList).toContain('ant-menu-submenu-active');
+        fixture.detectChanges();
+        tick(500);
+        expect(submenu.nativeElement.classList).not.toContain('ant-menu-submenu-active');
+      }));
       it('should click submenu menu item close', () => {
         testComponent.open = true;
         fixture.detectChanges();
@@ -491,7 +502,7 @@ describe('menu', () => {
           <li nz-menu-group>
             <span title>Item 2</span>
             <ul>
-              <li nz-menu-item>Option 3</li>
+              <li nz-menu-item #menuitem1>Option 3</li>
               <li nz-menu-item>Option 4</li>
               <li nz-submenu nzMenuClassName="nested-submenu" [nzDisabled]="disabled">
                 <span title>Sub Menu</span>
@@ -520,6 +531,7 @@ export class NzTestMenuHorizontalComponent {
   disabled = false;
   @ViewChildren(NzSubMenuComponent) subs: QueryList<NzSubMenuComponent>;
   @ViewChild('menuitem', { read: ElementRef }) menuitem: ElementRef;
+  @ViewChild('menuitem1', { read: ElementRef }) menuitem1: ElementRef;
   @ViewChild('disableditem', { read: ElementRef }) disableditem: ElementRef;
 }
 
