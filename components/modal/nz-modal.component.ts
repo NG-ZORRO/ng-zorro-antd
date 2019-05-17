@@ -49,6 +49,7 @@ import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './
 export const MODAL_ANIMATE_DURATION = 200; // Duration when perform animations (ms)
 
 type AnimationState = 'enter' | 'leave' | null;
+export const WRAP_CLASS_NAME = 'ant-modal-wrap';
 
 @Component({
   selector: 'nz-modal',
@@ -169,6 +170,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   private focusTrap: FocusTrap;
   private scrollStrategy: BlockScrollStrategy;
   private overlayRef: OverlayRef;
+  private dialogMouseDown = false;
+  private timeoutId: number;
 
   [key: string]: any; // tslint:disable-line:no-any
 
@@ -260,6 +263,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
       this.unsubscribe$.next();
       this.unsubscribe$.complete();
     });
+    clearTimeout(this.timeoutId);
   }
 
   setOverlayRef(overlayRef: OverlayRef): void {
@@ -309,12 +313,25 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     return this.elementRef && this.elementRef.nativeElement;
   }
 
+  onMaskDialogDown(): void {
+    this.dialogMouseDown = true;
+  }
+
+  onDialogUp(): void {
+    if (this.dialogMouseDown) {
+      this.timeoutId = setTimeout(() => {
+        this.dialogMouseDown = false;
+      }, 0);
+    }
+  }
+
   onClickMask($event: MouseEvent): void {
     if (
       this.mask &&
       this.maskClosable &&
-      ($event.target as HTMLElement).classList.contains('ant-modal-wrap') &&
-      this.nzVisible
+      ($event.target as HTMLElement).classList.contains(WRAP_CLASS_NAME) &&
+      this.nzVisible &&
+      !this.dialogMouseDown
     ) {
       this.onClickOkCancel('cancel');
     }
