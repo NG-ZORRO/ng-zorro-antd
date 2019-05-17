@@ -16,6 +16,7 @@ import {
   Component,
   ElementRef,
   Input,
+  OnDestroy,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -49,7 +50,7 @@ import { InputBoolean, NzSizeDSType } from 'ng-zorro-antd/core';
     `
   ]
 })
-export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit {
+export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, OnDestroy {
   checked = false;
   onChange: (value: boolean) => void = () => null;
   onTouched: () => void = () => null;
@@ -111,6 +112,10 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit {
         Promise.resolve().then(() => this.onTouched());
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.focusMonitor.stopMonitoring(this.switchElement.nativeElement);
   }
 
   writeValue(value: boolean): void {
