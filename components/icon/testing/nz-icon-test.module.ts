@@ -16,7 +16,10 @@ const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
 };
 
-const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key]);
+const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => {
+  const i = antDesignIcons[key];
+  return i;
+});
 
 /**
  * Include this module in every testing spec, except `nz-icon.spec.ts`.
