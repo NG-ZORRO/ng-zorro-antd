@@ -161,6 +161,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
         } else if (open && mode === 'vertical') {
           this.expandState = 'active';
         } else {
+          this.isMouseHover = false;
           this.expandState = 'collapsed';
         }
         this.overlayPositions =
@@ -200,9 +201,6 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
         takeUntil(this.destroy$)
       )
       .subscribe(selected => {
-        if (selected === false) {
-          this.isMouseHover = selected;
-        }
         this.isChildMenuSelected = selected;
         this.setClassMap();
       });
