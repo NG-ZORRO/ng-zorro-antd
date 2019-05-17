@@ -7,10 +7,10 @@
     [class.ant-drawer-bottom]="nzPlacement === 'bottom'"
     [class.ant-drawer-right]="nzPlacement === 'right'"
     [class.ant-drawer-left]="nzPlacement === 'left'"
-    [style.transform]="offsetTransform">
-    <div  class="ant-drawer-mask" (click)="maskClick()" *ngIf="nzMask" [style.zIndex]="nzZIndex" [ngStyle]="nzMaskStyle"></div>
+    [style.transform]="offsetTransform"
+    [style.zIndex]="nzZIndex">
+    <div  class="ant-drawer-mask" (click)="maskClick()" *ngIf="nzMask" [ngStyle]="nzMaskStyle"></div>
     <div class="ant-drawer-content-wrapper {{ nzWrapClassName }}"
-         [style.zIndex]="nzZIndex"
          [style.width]="width"
          [style.height]="height"
          [style.transform]="transform">
