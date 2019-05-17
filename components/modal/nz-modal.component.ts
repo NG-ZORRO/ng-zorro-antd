@@ -9,7 +9,7 @@
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 
 import { ESCAPE } from '@angular/cdk/keycodes';
-import { BlockScrollStrategy, Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { BlockScrollStrategy, Overlay, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -168,11 +168,13 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   private previouslyFocusedElement: HTMLElement;
   private focusTrap: FocusTrap;
   private scrollStrategy: BlockScrollStrategy;
+  private overlayRef: OverlayRef;
 
   [key: string]: any; // tslint:disable-line:no-any
 
   constructor(
     private overlay: Overlay,
+    private overlayKeyboardDispatcher: OverlayKeyboardDispatcher,
     private i18n: NzI18nService,
     private cfr: ComponentFactoryResolver,
     private elementRef: ElementRef,
@@ -192,10 +194,6 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
       this.locale = this.i18n.getLocaleData('Modal') as { okText: string; cancelText: string };
     });
 
-    fromEvent<KeyboardEvent>(this.document.body, 'keydown')
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(e => this.keydownListener(e));
-
     if (this.isComponent(this.nzContent)) {
       this.createDynamicComponent(this.nzContent as Type<T>); // Create component along without View
     }
@@ -209,9 +207,20 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     this.container = typeof this.nzGetContainer === 'function' ? this.nzGetContainer() : this.nzGetContainer;
     if (this.container instanceof HTMLElement) {
       this.container.appendChild(this.elementRef.nativeElement);
+      fromEvent<KeyboardEvent>(this.document.body, 'keydown')
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(e => this.keydownListener(e));
     } else if (this.container instanceof OverlayRef) {
       // NOTE: only attach the dom to overlay, the view container is not changed actually
+      this.setOverlayRef(this.container);
       this.container.overlayElement.appendChild(this.elementRef.nativeElement);
+    }
+
+    if (this.overlayRef) {
+      this.overlayRef
+        .keydownEvents()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(e => this.keydownListener(e));
     }
 
     // Register modal when afterOpen/afterClose is stable
@@ -251,6 +260,10 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
       this.unsubscribe$.next();
       this.unsubscribe$.complete();
     });
+  }
+
+  setOverlayRef(overlayRef: OverlayRef): void {
+    this.overlayRef = overlayRef;
   }
 
   keydownListener(event: KeyboardEvent): void {
@@ -361,6 +374,13 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
       this.scrollStrategy.enable();
       this.savePreviouslyFocusedElement();
       this.trapFocus();
+      if (this.container instanceof OverlayRef) {
+        this.overlayKeyboardDispatcher.add(this.overlayRef);
+      }
+    } else {
+      if (this.container instanceof OverlayRef) {
+        this.overlayKeyboardDispatcher.remove(this.overlayRef);
+      }
     }
 
     return Promise.resolve(animation ? this.animateTo(visible) : undefined).then(() => {
