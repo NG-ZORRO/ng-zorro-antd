@@ -42,7 +42,7 @@ import { NzDrawerModule } from 'ng-zorro-antd';
 | `[nzOffsetY]` | y 坐标移量(px), 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number` | `0` |
 | `[nzWrapClassName]` | 对话框外层容器的类名 | `string` | - |
 | `[nzZIndex]` | 设置 Drawer 的 `z-index` | `number` | `1000` |
-| `(nzOnClose)` | 点击遮罩层或右上角叉或取消按钮的回调 | `EventEmitter<MouseEvent>` | - |
+| `(nzOnClose)` | 点击遮罩层或右上角叉的回调 | `EventEmitter<MouseEvent>` | - |
 
 ### NzDrawerService
 
@@ -56,6 +56,7 @@ import { NzDrawerModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | nzContent | Drawer body 的内容 | `TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef }>｜ Type<T>` | - |
 | nzContentParams | 内容组件的输入参数 / Template的 context | `D` | - |
+| nzOnCancel | 点击遮罩层或右上角叉时执行,该函数可返回 promise 待执行完毕或 promise 结束时，将自动关闭对话框（返回false可阻止关闭） | `() => Promise<any>` | - |
 | nzClosable | 是否显示右上角的关闭按钮 | `boolean` | `true` |
 | nzMaskClosable | 点击蒙层是否允许关闭 | `boolean` | `true` |
 | nzMask | 是否展示遮罩 | `boolean` | `true` |
