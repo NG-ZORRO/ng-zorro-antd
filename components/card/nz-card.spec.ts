@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -31,7 +31,8 @@ describe('card', () => {
         NzDemoCardLoadingComponent,
         NzDemoCardMetaComponent,
         NzDemoCardSimpleComponent,
-        NzDemoCardTabsComponent
+        NzDemoCardTabsComponent,
+        TestCardSizeComponent
       ]
     });
     TestBed.compileComponents();
@@ -84,6 +85,7 @@ describe('card', () => {
     const fixture = TestBed.createComponent(NzDemoCardGridCardComponent);
     const card = fixture.debugElement.query(By.directive(NzCardComponent));
     fixture.detectChanges();
+    expect(card.nativeElement.classList).toContain('ant-card-contain-grid');
     expect(card.nativeElement.querySelector('.ant-card-body').firstElementChild!.classList).toContain('ant-card-grid');
   });
   it('should inner work', () => {
@@ -108,4 +110,26 @@ describe('card', () => {
     fixture.detectChanges();
     expect(card.nativeElement.querySelector('.ant-card-actions').children.length).toBe(3);
   });
+  it('should size work', () => {
+    const fixture = TestBed.createComponent(TestCardSizeComponent);
+    const card = fixture.debugElement.query(By.directive(NzCardComponent));
+    fixture.detectChanges();
+    expect(card.nativeElement.classList).not.toContain('ant-card-small');
+    fixture.componentInstance.size = 'small';
+    fixture.detectChanges();
+    expect(card.nativeElement.classList).toContain('ant-card-small');
+  });
 });
+
+@Component({
+  template: `
+    <nz-card [nzSize]="size">
+      <p>Card content</p>
+      <p>Card content</p>
+      <p>Card content</p>
+    </nz-card>
+  `
+})
+class TestCardSizeComponent {
+  size = 'default';
+}
