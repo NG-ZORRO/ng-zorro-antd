@@ -278,8 +278,12 @@ describe('modal testing (legacy)', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [NoopAnimationsModule, NzModalModule],
-        declarations: [TestConfirmModalComponent],
+        declarations: [TestConfirmModalComponent, TestConfirmCustomComponent],
         providers: [NzMeasureScrollbarService]
+      }).compileComponents();
+
+      TestBed.overrideModule(BrowserDynamicTestingModule, {
+        set: { entryComponents: [TestConfirmCustomComponent] }
       }).compileComponents();
     }));
 
@@ -314,6 +318,17 @@ describe('modal testing (legacy)', () => {
       flush();
       fixture.detectChanges();
       ids.forEach(id => expectModalDestroyed(id, false));
+    }));
+
+    it('should render content with component', fakeAsync(() => {
+      const modalRef = instance.createCustomContentWithComponent();
+      const modalElement = modalRef.getElement();
+      fixture.detectChanges();
+      expect(modalElement.querySelector('.custom-component-in-confirm')).toBeTruthy();
+      getButtonOk(modalElement).click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
     }));
   });
 
@@ -865,6 +880,23 @@ export class TestConfirmModalComponent {
       return modalId;
     });
   }
+
+  createCustomContentWithComponent(): NzModalRef {
+    return this.modalService.confirm({
+      nzContent: TestConfirmCustomComponent
+    });
+  }
+}
+
+@Component({
+  template: `
+    <span class="custom-component-in-confirm">
+      Content
+    </span>
+  `
+})
+export class TestConfirmCustomComponent {
+  constructor() {}
 }
 
 @Component({
