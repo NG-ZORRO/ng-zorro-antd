@@ -249,6 +249,8 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   }
 
   ngOnDestroy(): void {
+    this.$destroy.next();
+    this.$destroy.complete();
     this.clearDelayMenuTimer();
     this.clearDelaySelectTimer();
   }

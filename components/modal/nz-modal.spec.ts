@@ -9,7 +9,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NzButtonComponent, NzButtonModule } from 'ng-zorro-antd/button';
-import { dispatchKeyboardEvent, NzMeasureScrollbarService } from 'ng-zorro-antd/core';
+import { dispatchFakeEvent, dispatchKeyboardEvent, NzMeasureScrollbarService } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import en_US from '../i18n/languages/en_US';
@@ -278,8 +278,12 @@ describe('modal testing (legacy)', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [NoopAnimationsModule, NzModalModule],
-        declarations: [TestConfirmModalComponent],
+        declarations: [TestConfirmModalComponent, TestConfirmCustomComponent],
         providers: [NzMeasureScrollbarService]
+      }).compileComponents();
+
+      TestBed.overrideModule(BrowserDynamicTestingModule, {
+        set: { entryComponents: [TestConfirmCustomComponent] }
       }).compileComponents();
     }));
 
@@ -314,6 +318,17 @@ describe('modal testing (legacy)', () => {
       flush();
       fixture.detectChanges();
       ids.forEach(id => expectModalDestroyed(id, false));
+    }));
+
+    it('should render content with component', fakeAsync(() => {
+      const modalRef = instance.createCustomContentWithComponent();
+      const modalElement = modalRef.getElement();
+      fixture.detectChanges();
+      expect(modalElement.querySelector('.custom-component-in-confirm')).toBeTruthy();
+      getButtonOk(modalElement).click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
     }));
   });
 
@@ -426,7 +441,7 @@ describe('NzModal', () => {
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule, NzModalModule],
       providers: [NzMeasureScrollbarService],
-      declarations: [NzDemoModalBasicComponent, ModalByServiceComponent]
+      declarations: [NzDemoModalBasicComponent, NzDemoModalMaskComponent, ModalByServiceComponent]
     });
 
     TestBed.compileComponents();
@@ -657,6 +672,44 @@ describe('NzModal', () => {
       document.body.removeChild(forceScrollElement);
     }));
   });
+
+  describe('close with mask', () => {
+    let fixture: ComponentFixture<NzDemoModalMaskComponent>;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzDemoModalMaskComponent);
+    });
+
+    it('should close when mask click', fakeAsync(() => {
+      fixture.componentInstance.isVisible = true;
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      const nativeElement = fixture.debugElement.query(By.css('.ant-modal-wrap')).nativeElement;
+      fixture.detectChanges();
+      nativeElement!.click();
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      expectModalHidden(fixture.debugElement.query(By.css('nz-modal')).nativeElement, true);
+    }));
+
+    it('should not close if mouse down in dialog', fakeAsync(() => {
+      fixture.componentInstance.isVisible = true;
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      const bodyNativeElement = fixture.debugElement.query(By.css('.ant-modal-body')).nativeElement;
+      dispatchFakeEvent(bodyNativeElement, 'mousedown');
+      fixture.detectChanges();
+      const warpNativeElement = fixture.debugElement.query(By.css('.ant-modal-wrap')).nativeElement;
+      dispatchFakeEvent(warpNativeElement, 'mouseup');
+      dispatchFakeEvent(warpNativeElement, 'click');
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      expectModalHidden(fixture.debugElement.query(By.css('nz-modal')).nativeElement, false);
+    }));
+  });
 });
 
 // -------------------------------------------
@@ -672,6 +725,20 @@ describe('NzModal', () => {
 })
 class NzDemoModalBasicComponent {
   modalAvailable = true;
+}
+
+@Component({
+  template: `
+    <nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()">
+      <p>content</p>
+    </nz-modal>
+  `
+})
+class NzDemoModalMaskComponent {
+  isVisible = false;
+  handleCancel(): void {
+    this.isVisible = false;
+  }
 }
 
 @Component({
@@ -865,6 +932,23 @@ export class TestConfirmModalComponent {
       return modalId;
     });
   }
+
+  createCustomContentWithComponent(): NzModalRef {
+    return this.modalService.confirm({
+      nzContent: TestConfirmCustomComponent
+    });
+  }
+}
+
+@Component({
+  template: `
+    <span class="custom-component-in-confirm">
+      Content
+    </span>
+  `
+})
+export class TestConfirmCustomComponent {
+  constructor() {}
 }
 
 @Component({

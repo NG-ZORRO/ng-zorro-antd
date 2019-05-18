@@ -36,7 +36,7 @@ import { CdkPortalOutlet, ComponentPortal, PortalInjector, TemplatePortal } from
 import { Observable, Subject } from 'rxjs';
 
 import { toCssPixel, InputBoolean } from 'ng-zorro-antd/core';
-import { NzDrawerOptions, NzDrawerPlacement } from './nz-drawer-options';
+import { NzDrawerOptionsOfComponent, NzDrawerPlacement } from './nz-drawer-options';
 import { NzDrawerRef } from './nz-drawer-ref';
 
 export const DRAWER_ANIMATE_DURATION = 300;
@@ -50,7 +50,7 @@ export const DRAWER_ANIMATE_DURATION = 300;
 })
 // tslint:disable-next-line:no-any
 export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
-  implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptions {
+  implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent {
   @Input() nzContent: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
   @Input() @InputBoolean() nzClosable = true;
   @Input() @InputBoolean() nzMaskClosable = true;

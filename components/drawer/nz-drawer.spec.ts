@@ -233,12 +233,7 @@ describe('NzDrawerComponent', () => {
     component.open();
     fixture.detectChanges();
     expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
-    expect((overlayContainerElement.querySelector('.ant-drawer .ant-drawer-mask') as HTMLElement).style.zIndex).toBe(
-      '1001'
-    );
-    expect(
-      (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-content-wrapper') as HTMLElement).style.zIndex
-    ).toBe('1001');
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).style.zIndex).toBe('1001');
   });
 
   it('should nzPlacement work', () => {
@@ -390,7 +385,7 @@ describe('NzDrawerService', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NzDrawerModule],
+      imports: [NzDrawerModule, NoopAnimationsModule],
       providers: [NzDrawerService],
       declarations: [NzTestDrawerWithServiceComponent, NzDrawerCustomComponent]
     });
@@ -436,12 +431,40 @@ describe('NzDrawerService', () => {
       nzContentParams: { value: 1 }
     });
     drawerRef.afterOpen.subscribe(openSpy);
-    drawerRef.afterOpen.subscribe(closeSpy);
+    drawerRef.afterClose.subscribe(closeSpy);
     fixture.detectChanges();
     expect(openSpy).not.toHaveBeenCalled();
     tick(300);
     expect(openSpy).toHaveBeenCalled();
     (overlayContainerElement.querySelector('.ant-drawer .close-btn') as HTMLElement).click();
+    fixture.detectChanges();
+    tick(300);
+    expect(closeSpy).toHaveBeenCalled();
+    fixture.detectChanges();
+  }));
+
+  it('should `nzOnCancel` work', fakeAsync(() => {
+    let canClose = false;
+    const openSpy = jasmine.createSpy('afterOpen spy');
+    const closeSpy = jasmine.createSpy('afterClose spy').and.returnValue(1);
+    const drawerRef = drawerService.create({
+      nzTitle: 'Service nzOnCancel',
+      nzContent: NzDrawerCustomComponent,
+      nzOnCancel: () => Promise.resolve(canClose)
+    });
+    drawerRef.afterOpen.subscribe(openSpy);
+    drawerRef.afterClose.subscribe(closeSpy);
+    fixture.detectChanges();
+    expect(openSpy).not.toHaveBeenCalled();
+    tick(300);
+    expect(openSpy).toHaveBeenCalled();
+    (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-close') as HTMLElement).click();
+    fixture.detectChanges();
+    tick(300);
+    expect(closeSpy).not.toHaveBeenCalled();
+    fixture.detectChanges();
+    canClose = true;
+    (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-close') as HTMLElement).click();
     fixture.detectChanges();
     tick(300);
     expect(closeSpy).toHaveBeenCalled();

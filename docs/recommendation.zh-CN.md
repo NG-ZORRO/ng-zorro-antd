@@ -26,7 +26,7 @@ title: 社区推荐
 - [Angular In Depth](https://blog.angularindepth.com/)
 - [Mgechev Blog](http://blog.mgechev.com/)
 - [ThoughtRam Blog](https://blog.thoughtram.io/)
-- [30 天精通 RxJS](https://ithelp.ithome.com.tw/users/20103367/ironman/1199)
+- [30 天精通 RxJS](https://blog.jerry-hong.com/series/rxjs)
 - [RxJS 中文社区](https://github.com/RxJS-CN)
 - [Angular官方博客](https://blog.angular.io/)
 - [Angular Weekly Meeting Notes](http://g.co/ng/weekly-notes)

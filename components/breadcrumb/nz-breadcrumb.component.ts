@@ -20,9 +20,10 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { ActivatedRoute, Params, PRIMARY_OUTLET, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { startWith } from 'rxjs/internal/operators/startWith';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import { InputBoolean } from 'ng-zorro-antd/core';
 
@@ -60,7 +61,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
   constructor(
     private injector: Injector,
     private ngZone: NgZone,
-    private cd: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
     elementRef: ElementRef,
     renderer: Renderer2
   ) {
@@ -69,15 +70,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.nzAutoGenerate) {
-      try {
-        const activatedRoute = this.injector.get(ActivatedRoute);
-        activatedRoute.url.pipe(takeUntil(this.destroy$)).subscribe(() => {
-          this.breadcrumbs = this.getBreadcrumbs(activatedRoute.root);
-          this.cd.markForCheck();
-        });
-      } catch (e) {
-        throw new Error('[NG-ZORRO] You should import RouterModule if you want to use NzAutoGenerate');
-      }
+      this.registerRouterChange();
     }
   }
 
@@ -88,6 +81,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
 
   navigate(url: string, e: MouseEvent): void {
     e.preventDefault();
+
     this.ngZone
       .run(() =>
         this.injector
@@ -96,6 +90,25 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
           .then()
       )
       .then();
+  }
+
+  private registerRouterChange(): void {
+    try {
+      const router = this.injector.get(Router);
+      const activatedRoute = this.injector.get(ActivatedRoute);
+      router.events
+        .pipe(
+          filter(e => e instanceof NavigationEnd),
+          takeUntil(this.destroy$),
+          startWith(true) // Trigger initial render.
+        )
+        .subscribe(() => {
+          this.breadcrumbs = this.getBreadcrumbs(activatedRoute.root);
+          this.cdr.markForCheck();
+        });
+    } catch (e) {
+      throw new Error('[NG-ZORRO] You should import RouterModule if you want to use `NzAutoGenerate`');
+    }
   }
 
   private getBreadcrumbs(
@@ -114,10 +127,11 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
         // Parse this layer and generate a breadcrumb item.
         const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
         const nextUrl = url + `/${routeURL}`;
+        const breadcrumbLabel = child.snapshot.data[NZ_ROUTE_DATA_BREADCRUMB];
         // If have data, go to generate a breadcrumb for it.
-        if (child.snapshot.data.hasOwnProperty(NZ_ROUTE_DATA_BREADCRUMB)) {
+        if (routeURL && breadcrumbLabel) {
           const breadcrumb: BreadcrumbOption = {
-            label: child.snapshot.data[NZ_ROUTE_DATA_BREADCRUMB] || 'Breadcrumb',
+            label: breadcrumbLabel,
             params: child.snapshot.params,
             url: nextUrl
           };

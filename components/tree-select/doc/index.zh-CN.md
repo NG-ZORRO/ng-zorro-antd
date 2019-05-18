@@ -28,6 +28,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd';
 | `[nzAllowClear]` | 显示清除按钮 | `boolean` | `false` |
 | `[nzPlaceHolder]` | 选择框默认文字 | `string` | - |
 | `[nzDisabled]` | 禁用选择器 | `boolean` | `false` |
+| `[nzShowIcon]` | 是否展示 TreeNode title 前的图标，没有默认样式 | `boolean` | `false` |
 | `[nzShowSearch]` | 显示搜索框 | `boolean` | `false` |
 | `[nzNotFoundContent]` | 当下拉列表为空时显示的内容 | `string` | - |
 | `[nzDropdownMatchSelectWidth]` | 下拉菜单和选择器同宽 | `boolean` | `true` |
