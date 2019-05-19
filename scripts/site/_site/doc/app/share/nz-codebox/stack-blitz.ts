@@ -260,7 +260,7 @@ export class AppModule { }`;
       'date-fns'                         : '^1.29.0',
       tslib                              : '^1.9.3',
       typescript                         : '~3.1.1',
-      'ng-zorro-antd': '^7.3.3'
+      'ng-zorro-antd': '^7.4.0'
     },
     tags        : [ 'stackblitz', 'sdk' ]
   };
