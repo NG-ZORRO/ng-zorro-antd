@@ -31,7 +31,7 @@ import { NzPageHeaderModule } from 'ng-zorro-antd';
 | `[nzTitle]` | title string | `string｜TemplateRef<void>` | - |
 | `[nzSubtitle]` | subTitle string | `string｜TemplateRef<void>` | - |
 | `[nzBackIcon]` | custom back icon | `string｜TemplateRef<void>` | - |
-| `[nzBack]` | back icon click event | `EventEmitter<void>` | - |
+| `(nzBack)` | back icon click event | `EventEmitter<void>` | - |
 
 ### Page header sections
 | Element | Description |
