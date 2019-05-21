@@ -29,7 +29,7 @@ import { NzPageHeaderModule } from 'ng-zorro-antd';
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |
 | `[nzTitle]` | title string | `string｜TemplateRef<void>` | - |
-| `[nzSubTitle]` | subTitle string | `string｜TemplateRef<void>` | - |
+| `[nzSubtitle]` | subTitle string | `string｜TemplateRef<void>` | - |
 | `[nzBackIcon]` | custom back icon | `string｜TemplateRef<void>` | - |
 | `[nzBack]` | back icon click event | `EventEmitter<void>` | - |
 
@@ -38,7 +38,7 @@ import { NzPageHeaderModule } from 'ng-zorro-antd';
 | ----- | ----------- | ---- | ------------- |
 | `<nz-page-header-title>` | Title section |
 | `<nz-page-header-subtitle>` | Subtitle section, `[nzTitle]` has high priority |
-| `<nz-page-header-content>` | Content section, `[nzSubTitle]` has high priority |
+| `<nz-page-header-content>` | Content section, `[nzSubtitle]` has high priority |
 | `<nz-page-header-footer>` | Footer section |
 | `<nz-page-header-tags>` |  Tags container after the title |
 | `<nz-page-header-extra>` | Operating area, at the end of the line of the title line |
