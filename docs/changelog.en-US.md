@@ -14,6 +14,13 @@ timeline: true
 
 ---
 
+## 7.4.1
+`2019-05-21`
+
+### Bug Fixes
+
+* **build:** unable to build in production when importing secondary module ([#3266](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3266))
+
 ## 7.4.0
 `2019-05-19`
 
