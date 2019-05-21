@@ -13,6 +13,12 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 7.4.1
+`2019-05-21`
+
+### Bug Fixes
+
+* **build:** 修复引入二级模块的打包问题 ([#3266](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3266))
 
 ## 7.4.0
 `2019-05-19`
