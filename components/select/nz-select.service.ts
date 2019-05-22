@@ -179,8 +179,26 @@ export class NzSelectService {
 
   updateListOfTagOption(): void {
     if (this.isTagsMode) {
-      this.listOfTagOption = this.listOfCachedSelectedOption.filter(
-        comp => !this.listOfTemplateOption.find(o => this.compareWith(o.nzValue, comp.nzValue))
+      // https://github.com/NG-ZORRO/ng-zorro-antd/issues/3424
+      this.listOfTagOption = [...this.listOfCachedSelectedOption, ...this.listOfSelectedValue].reduce(
+        (options: NzOptionComponent[], componentOrValue) => {
+          if (
+            typeof componentOrValue === 'string' &&
+            !this.listOfTemplateOption.find(o => this.compareWith(o.nzValue, componentOrValue))
+          ) {
+            const nzOptionComponent = new NzOptionComponent();
+            nzOptionComponent.nzValue = componentOrValue;
+            nzOptionComponent.nzLabel = componentOrValue;
+            options.push(nzOptionComponent);
+          } else if (
+            componentOrValue.nzValue &&
+            !this.listOfTemplateOption.find(o => this.compareWith(o.nzValue, componentOrValue.nzValue))
+          ) {
+            options.push(componentOrValue);
+          }
+          return options;
+        },
+        []
       );
       this.listOfTagAndTemplateOption = [...this.listOfTemplateOption.concat(this.listOfTagOption)];
     } else {
