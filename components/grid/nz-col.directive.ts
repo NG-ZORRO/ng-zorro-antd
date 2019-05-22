@@ -26,11 +26,11 @@ import { isNotNil, NgClassInterface, NzUpdateHostClassService } from 'ng-zorro-a
 import { NzRowDirective } from './nz-row.directive';
 
 export interface EmbeddedProperty {
-  span: number;
-  pull: number;
-  push: number;
-  offset: number;
-  order: number;
+  span?: number;
+  pull?: number;
+  push?: number;
+  offset?: number;
+  order?: number;
 }
 
 @Directive({
