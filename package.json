@@ -27,6 +27,7 @@
     "lint": "tslint -c tslint.json 'components/**/!(demo|testing)/!(polyfills).ts' --fix",
     "migration-styles": "node ./scripts/build/migration-styles.js",
     "ng": "ng",
+    "now-build": "npm run build:client-and-server-bundles && npm run build:prerender && npm run build-iframe && npm run helper",
     "postgenerate": "node scripts/build/compile-styles.js && cp README.md publish/README.md && npm run migration-styles && npm run schematic:generate",
     "pre-release": "npm run site:init && bash ./scripts/build/replace-publish.sh && npm run generate && npm run build:docs",
     "release": "node ./scripts/publish/publish.js",
