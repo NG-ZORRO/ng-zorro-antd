@@ -1,8 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NzDescriptionsComponent } from './nz-descriptions.component';
 import { NzDescriptionsModule } from './nz-descriptions.module';
+
+// tslint:disable-next-line no-any
+declare const viewport: any;
 
 describe('nz descriptions', () => {
   let testComponent: NzTestDescriptionsComponent;
@@ -67,6 +70,37 @@ describe('nz descriptions', () => {
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       expect(rows.length).toBe(1);
     });
+
+    it('should responsive work', fakeAsync(() => {
+      testComponent.column = {
+        xxl: 3,
+        xl: 3,
+        lg: 3,
+        md: 3,
+        sm: 2,
+        xs: 1
+      };
+      testComponent.colspanArray = [1, 1, 1, 2, 3, 1, 5];
+
+      viewport.set(1024, 1024);
+      window.dispatchEvent(new Event('resize'));
+      fixture.autoDetectChanges();
+      tick(1000);
+      fixture.autoDetectChanges();
+      rows = componentElement.querySelectorAll('.ant-descriptions-row');
+      expect(rows.length).toBe(3);
+
+      viewport.set(320, 320);
+      window.dispatchEvent(new Event('resize'));
+      fixture.autoDetectChanges();
+      tick(1000);
+      fixture.autoDetectChanges();
+
+      rows = componentElement.querySelectorAll('.ant-descriptions-row');
+      expect(rows.length).toBe(7);
+
+      viewport.reset();
+    }));
   });
 });
 
