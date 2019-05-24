@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { ESCAPE } from '@angular/cdk/keycodes';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -30,12 +31,13 @@ import {
 } from '@angular/core';
 
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
-import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
+import { Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
 
 import { Observable, Subject } from 'rxjs';
 
 import { toCssPixel, InputBoolean } from 'ng-zorro-antd/core';
+import { takeUntil } from 'rxjs/operators';
 import { NzDrawerOptionsOfComponent, NzDrawerPlacement } from './nz-drawer-options';
 import { NzDrawerRef } from './nz-drawer-ref';
 
@@ -83,6 +85,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   @ViewChild('contentTemplate') contentTemplate: TemplateRef<{}>;
   @ViewChild(CdkPortalOutlet) bodyPortalOutlet: CdkPortalOutlet;
 
+  destroy$ = new Subject<void>();
   previouslyFocusedElement: HTMLElement;
   nzContentParams: D; // only service
   overlayRef: OverlayRef | null;
@@ -162,7 +165,8 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     private injector: Injector,
     private changeDetectorRef: ChangeDetectorRef,
     private focusTrapFactory: FocusTrapFactory,
-    private viewContainerRef: ViewContainerRef
+    private viewContainerRef: ViewContainerRef,
+    private overlayKeyboardDispatcher: OverlayKeyboardDispatcher
   ) {
     super();
   }
@@ -185,21 +189,17 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('nzVisible')) {
       const value = changes.nzVisible.currentValue;
-      this.updateOverlayStyle();
       if (value) {
-        this.updateBodyOverflow();
-        this.savePreviouslyFocusedElement();
-        this.trapFocus();
+        this.open();
       } else {
-        setTimeout(() => {
-          this.updateBodyOverflow();
-          this.restoreFocus();
-        }, this.getAnimationDuration());
+        this.close();
       }
     }
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.disposeOverlay();
   }
 
@@ -210,6 +210,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   close(result?: R): void {
     this.isOpen = false;
     this.updateOverlayStyle();
+    this.overlayKeyboardDispatcher.remove(this.overlayRef!);
     this.changeDetectorRef.detectChanges();
     setTimeout(() => {
       this.updateBodyOverflow();
@@ -221,6 +222,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
 
   open(): void {
     this.isOpen = true;
+    this.overlayKeyboardDispatcher.add(this.overlayRef!);
     this.updateOverlayStyle();
     this.updateBodyOverflow();
     this.savePreviouslyFocusedElement();
@@ -261,6 +263,13 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
 
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
       this.overlayRef.attach(this.portal);
+      this.overlayRef!.keydownEvents()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((event: KeyboardEvent) => {
+          if (event.keyCode === ESCAPE && this.isOpen) {
+            this.nzOnClose.emit();
+          }
+        });
     }
   }
 
