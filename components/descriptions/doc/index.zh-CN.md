@@ -1,6 +1,6 @@
 ---
 category: Components
-type: 数据录入
+type: 数据展示
 title: Descriptions
 subtitle: 描述列表
 cols: 1
@@ -23,6 +23,13 @@ cols: 1
 | `[nzColumn]` | 一行的 `nz-descriptions-item` 的数量，可以写成像素值或支持响应式的对象写法 `{ xs: 8, sm: 16, md: 24}` | `number\|object` | `{ xxl: 3, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }` |
 | `[nzSize]` | 设置列表的大小（只有设置 `nzBordered` 时生效） | `'default'｜'middle'｜'small'` | `'default'` |
 
+### 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzDescriptionsModule } from 'ng-zorro-antd';
+```
 
 ### nz-descriptions-item
 

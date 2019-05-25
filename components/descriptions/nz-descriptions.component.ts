@@ -8,6 +8,7 @@
 
 import { MediaMatcher } from '@angular/cdk/layout';
 import {
+  isDevMode,
   AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -43,6 +44,8 @@ const defaultColumnMap: { [size: string]: number } = {
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-descriptions',
   templateUrl: './nz-descriptions.component.html',
+  exportAs: 'nzDescriptions',
+  preserveWhitespaces: false,
   host: {
     class: 'ant-descriptions',
     '[class.bordered]': 'nzBordered',
@@ -140,7 +143,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
       // item should take all the space left. This logic is implemented in the template.
       // Warn user about that.
       if (width >= column) {
-        if (width > column) {
+        if (width > column && isDevMode()) {
           console.warn(`"nzColumn" is ${column} but we have row length ${width}`);
         }
         flushRow();
@@ -158,11 +161,10 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
     let bp: Breakpoint = Breakpoint.md;
 
     Object.keys(responsiveMap).map((breakpoint: string) => {
-      // @ts-ignore
-      const matchBelow = this.mediaMatcher.matchMedia(responsiveMap[breakpoint]).matches;
+      const castBP = breakpoint as Breakpoint;
+      const matchBelow = this.mediaMatcher.matchMedia(responsiveMap[castBP]).matches;
       if (matchBelow) {
-        // @ts-ignore
-        bp = breakpoint as Breakpoint;
+        bp = castBP;
       }
     });
 
@@ -171,9 +173,9 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
 
   private getColumn(): number {
     if (typeof this.nzColumn !== 'number') {
-      return (this.nzColumn || defaultColumnMap)[this.matchMedia()];
+      return this.nzColumn[this.matchMedia()];
     }
 
-    return this.nzColumn as number;
+    return this.nzColumn;
   }
 }
