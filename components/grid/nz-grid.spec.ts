@@ -176,7 +176,12 @@ describe('grid', () => {
     });
 
     it('should responsive work', fakeAsync(() => {
+      viewport.set(1000, 1000);
+      window.dispatchEvent(new Event('resize'));
       fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
+
       expect(rows[1].nativeElement.style.cssText).toBe('margin-left: -16px; margin-right: -16px;');
       expect(
         cols.slice(4, 8).every(col => col.nativeElement.style.cssText === 'padding-left: 16px; padding-right: 16px;')
