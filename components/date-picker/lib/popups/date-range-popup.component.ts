@@ -297,6 +297,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     }
 
     if (this.isRange) {
+      console.log(this.isAllowedSelectedValue(), this.hasSelectedValue(), this.hoverValue);
       return !this.isAllowedSelectedValue() || !this.hasSelectedValue() || !!this.hoverValue.length;
     } else {
       return this.value ? !isAllowedDate(this.value as CandyDate, this.disabledDate, this.disabledTime) : false;

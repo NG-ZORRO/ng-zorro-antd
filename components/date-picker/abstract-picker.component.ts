@@ -114,6 +114,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
    * @param value changed value
    */
   onValueChange(value: CompatibleValue): void {
+    console.log(value, this.nzValue);
     this.nzValue = value;
     if (this.isRange) {
       const vAsRange = this.nzValue as CandyDate[];
