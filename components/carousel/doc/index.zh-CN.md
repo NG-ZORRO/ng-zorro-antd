@@ -47,9 +47,9 @@ import { NzCarouselModule } from 'ng-zorro-antd';
 
 ### InjectionToken
 
-| Token | 说明 | 参数 |
-| ----- | --- | ---- |
-| `NZ_CAROUSEL_CUSTOM_STRATEGIES` | 提供用户自定义的切换效果 | `CarouselStrategyRegistryItem[]` ｜ - |
+| Token | 说明 | 参数 | 默认值 | 
+| ----- | --- | ---- | --- |
+| `NZ_CAROUSEL_CUSTOM_STRATEGIES` | 提供用户自定义的切换效果 | `CarouselStrategyRegistryItem[]` | - |
 
 ### 自定义切换效果
 

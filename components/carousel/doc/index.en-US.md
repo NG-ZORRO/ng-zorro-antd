@@ -46,9 +46,9 @@ import { NzCarouselModule } from 'ng-zorro-antd';
 
 ### InjectionToken
 
-| Token | Description | Parameters |
-| ----- | --- | ---- |
-| `NZ_CAROUSEL_CUSTOM_STRATEGIES` | Provide custom transitioning strategies | `CarouselStrategyRegistryItem[]` ｜ - |
+| Token | Description | Parameters | Default Value |
+| ----- | --- | ---- | --- |
+| `NZ_CAROUSEL_CUSTOM_STRATEGIES` | Provide custom transitioning strategies | `CarouselStrategyRegistryItem[]` | - |
 
 ### Customizing transition effects
 
