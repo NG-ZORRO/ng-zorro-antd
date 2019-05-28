@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { dispatchMouseEvent } from '../testing';
 import { NzWaveDirective } from './nz-wave.directive';
 import { NzWaveModule } from './nz-wave.module';
@@ -8,14 +9,14 @@ const WAVE_ATTRIBUTE_NAME = 'ant-click-animating-without-extra-node';
 const WAVE_ATTRIBUTE_NAME_EXTRA_NODE = 'ant-click-animating';
 const EXTRA_NODE_CLASS_NAME = '.ant-click-animating-node';
 
-describe('nz-wave', () => {
-  let fixture: ComponentFixture<WaveContainerWithButtonComponent | WaveContainerWithExtraNodeComponent>;
+describe('nz-wave base', () => {
+  let fixture: ComponentFixture<WaveContainerWithButtonComponent>;
   let waveTarget: HTMLElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NzWaveModule],
-      declarations: [WaveContainerWithButtonComponent, WaveContainerWithExtraNodeComponent]
+      declarations: [WaveContainerWithButtonComponent]
     });
   });
 
@@ -52,7 +53,7 @@ describe('nz-wave', () => {
     });
 
     it('should not create wave on click when disabled', () => {
-      (fixture.componentInstance as WaveContainerWithButtonComponent).disabled = true;
+      fixture.componentInstance.disabled = true;
       fixture.detectChanges();
       dispatchMouseEvent(waveTarget, 'click');
       expect(waveTarget.hasAttribute(WAVE_ATTRIBUTE_NAME)).toBe(false);
@@ -99,6 +100,18 @@ describe('nz-wave', () => {
       fixture.detectChanges();
 
       expect(document.body.querySelector('style') !== null).toBe(false);
+    });
+  });
+});
+
+describe('nz-wave extra', () => {
+  let fixture: ComponentFixture<WaveContainerWithExtraNodeComponent>;
+  let waveTarget: HTMLElement;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NzWaveModule],
+      declarations: [WaveContainerWithExtraNodeComponent]
     });
   });
 
@@ -168,6 +181,58 @@ describe('nz-wave', () => {
 
       expect(document.body.querySelector('style') !== null).toBe(false);
       expect(waveTarget.querySelector(EXTRA_NODE_CLASS_NAME) !== null).toBe(false);
+    });
+  });
+});
+
+describe('nz-wave disable/enable', () => {
+  let fixture: ComponentFixture<WaveContainerWithButtonComponent>;
+  let waveTarget: HTMLElement;
+  let waveRef: NzWaveDirective;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NzWaveModule, NoopAnimationsModule],
+      declarations: [WaveContainerWithButtonComponent]
+    });
+  });
+
+  describe('disable/enable', () => {
+    beforeEach(() => {
+      fixture = TestBed.createComponent(WaveContainerWithButtonComponent);
+      fixture.detectChanges();
+      waveTarget = fixture.componentInstance.trigger.nativeElement;
+      waveRef = fixture.componentInstance.wave;
+    });
+
+    it('should disable by NoopAnimationsModule ', () => {
+      expect(waveRef.disabled).toBe(true);
+      expect(waveRef.rendererRef).toBeFalsy();
+      waveRef.disable();
+      expect(waveRef.rendererRef).toBeFalsy();
+    });
+
+    it('should create waveRenderer when called enable', () => {
+      waveRef.enable();
+      expect(waveRef.disabled).toBe(false);
+      expect(waveRef.rendererRef).toBeTruthy();
+    });
+
+    it('should enable work', () => {
+      waveRef.enable();
+      expect(waveRef.disabled).toBe(false);
+      expect(waveRef.rendererRef).toBeTruthy();
+      dispatchMouseEvent(waveTarget, 'click');
+      expect(waveTarget.hasAttribute(WAVE_ATTRIBUTE_NAME)).toBe(true);
+      expect(document.body.querySelector('style') !== null).toBe(true);
+    });
+
+    it('should disable work', () => {
+      waveRef.disable();
+      expect(waveRef.disabled).toBe(true);
+      expect(waveRef.rendererRef).toBeFalsy();
+      dispatchMouseEvent(waveTarget, 'click');
+      expect(waveTarget.hasAttribute(WAVE_ATTRIBUTE_NAME)).toBe(false);
+      expect(document.body.querySelector('style') === null).toBe(true);
     });
   });
 });
