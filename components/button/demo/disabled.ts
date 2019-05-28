@@ -12,7 +12,7 @@ import { Component } from '@angular/core';
     <button nz-button nzType="dashed">Dashed</button>
     <button nz-button nzType="dashed" disabled>Dashed(disabled)</button>
     <br />
-    <button nz-button nzType="link">link</button>
+    <button nz-button nzType="link">Link</button>
     <button nz-button nzType="link" disabled>Link(disabled)</button>
     <div style="padding: 8px 8px 0px; background: rgb(190, 200, 200);">
       <button nz-button nzGhost>Ghost</button>
