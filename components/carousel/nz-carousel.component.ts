@@ -234,7 +234,8 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     // Load custom strategies first.
     const customStrategy = this.customStrategies ? this.customStrategies.find(s => s.name === this.nzEffect) : null;
     if (customStrategy) {
-      this.strategy = customStrategy.strategy;
+      // tslint:disable-next-line:no-any
+      this.strategy = new (customStrategy.strategy as any)(this, this.cdr, this.renderer);
       return;
     }
 
