@@ -40,6 +40,7 @@ describe('button', () => {
       expect(buttons[1].nativeElement.classList.contains('ant-btn-default')).toBe(true);
       expect(buttons[2].nativeElement.classList.contains('ant-btn-dashed')).toBe(true);
       expect(buttons[3].nativeElement.classList.contains('ant-btn-danger')).toBe(true);
+      expect(buttons[4].nativeElement.classList.contains('ant-btn-link')).toBe(true);
     });
   });
 
@@ -115,10 +116,7 @@ describe('button', () => {
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(buttons[0].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
-      expect(buttons[1].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
-      expect(buttons[2].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
-      expect(buttons[3].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
+      expect(buttons.every(button => button.nativeElement.classList.contains('ant-btn-background-ghost'))).toBe(true);
     });
   });
 
@@ -299,11 +297,9 @@ describe('button', () => {
       expect(buttons[1].nativeElement.classList.contains('ant-btn-default')).toBe(true);
       expect(buttons[2].nativeElement.classList.contains('ant-btn-dashed')).toBe(true);
       expect(buttons[3].nativeElement.classList.contains('ant-btn-danger')).toBe(true);
+      expect(buttons[4].nativeElement.classList.contains('ant-btn-link')).toBe(true);
 
-      expect(buttons[0].nativeElement.classList.contains('ant-btn-block')).toBe(true);
-      expect(buttons[1].nativeElement.classList.contains('ant-btn-block')).toBe(true);
-      expect(buttons[2].nativeElement.classList.contains('ant-btn-block')).toBe(true);
-      expect(buttons[3].nativeElement.classList.contains('ant-btn-block')).toBe(true);
+      expect(buttons.every(button => button.nativeElement.classList.contains('ant-btn-block'))).toBe(true);
     });
   });
 

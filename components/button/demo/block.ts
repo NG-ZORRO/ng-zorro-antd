@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
     <button nz-button nzType="default" nzBlock>Default</button>
     <button nz-button nzType="dashed" nzBlock>Dashed</button>
     <button nz-button nzType="danger" nzBlock>Danger</button>
+    <button nz-button nzType="link" nzBlock>Link</button>
   `,
   styles: [
     `
