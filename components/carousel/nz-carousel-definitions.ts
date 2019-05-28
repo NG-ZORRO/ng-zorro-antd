@@ -6,10 +6,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { QueryList } from '@angular/core';
+import { InjectionToken, QueryList } from '@angular/core';
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
+import { NzCarouselBaseStrategy } from './strategies/base-strategy';
 
-export type NzCarouselEffects = 'fade' | 'scrollx';
+// Support string for custom transition effect.
+export type NzCarouselEffects = 'fade' | 'scrollx' | string;
 
 export interface NzCarouselComponentAsSource {
   carouselContents: QueryList<NzCarouselContentDirective>;
@@ -30,3 +32,12 @@ export interface FromToInterface {
   from: number;
   to: number;
 }
+
+export interface CarouselStrategyRegistryItem {
+  name: string;
+  strategy: NzCarouselBaseStrategy;
+}
+
+export const NZ_CAROUSEL_CUSTOM_STRATEGIES = new InjectionToken<CarouselStrategyRegistryItem[]>(
+  'nz-carousel-custom-strategies'
+);
