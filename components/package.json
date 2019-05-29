@@ -29,7 +29,7 @@
   "dependencies": {
     "date-fns": "^1.29.0",
     "@angular/cdk": "^7.0.0",
-    "@ant-design/icons-angular": "^2.0.2"
+    "@ant-design/icons-angular": "^2.1.0"
   },
   "peerDependencies": {
     "@angular/animations": "^7.0.0",
