@@ -2,10 +2,20 @@ import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { manifest } from '@ant-design/icons-angular';
 import { AccountBookFill } from '@ant-design/icons-angular/icons';
-
 import { NzIconService } from 'ng-zorro-antd/icon';
 
-const categories: { [key: string]: string[] } = {
+export interface Categories {
+  direction: string[];
+  suggestion: string[];
+  logo: string[];
+  data: string[];
+  edit: string[];
+  other?: string[];
+}
+
+export type CategoriesKeys = keyof Categories;
+
+const categories: Categories = {
   direction: [
     'step-backward',
     'step-forward',
@@ -29,6 +39,9 @@ const categories: { [key: string]: string[] } = {
     'double-left',
     'vertical-left',
     'vertical-right',
+    'vertical-align-top',
+    'vertical-align-middle',
+    'vertical-align-bottom',
     'forward',
     'backward',
     'rollback',
@@ -53,7 +66,7 @@ const categories: { [key: string]: string[] } = {
     'border-bottom',
     'border-horizontal',
     'border-inner',
-    'border-outter',
+    'border-outer',
     'border-left',
     'border-right',
     'border-top',
@@ -126,7 +139,9 @@ const categories: { [key: string]: string[] } = {
     'sort-descending',
     'drag',
     'ordered-list',
-    'radius-setting'
+    'unordered-list',
+    'radius-setting',
+    'column-width'
   ],
   data: [
     'area-chart',
@@ -142,170 +157,6 @@ const categories: { [key: string]: string[] } = {
     'box-plot',
     'fund',
     'sliders'
-  ],
-  other: [
-    'lock',
-    'unlock',
-    'bars',
-    'book',
-    'calendar',
-    'cloud',
-    'cloud-download',
-    'code',
-    'copy',
-    'credit-card',
-    'delete',
-    'desktop',
-    'download',
-    'ellipsis',
-    'file',
-    'file-text',
-    'file-unknown',
-    'file-pdf',
-    'file-word',
-    'file-excel',
-    'file-jpg',
-    'file-ppt',
-    'file-markdown',
-    'file-add',
-    'folder',
-    'folder-open',
-    'folder-add',
-    'hdd',
-    'frown',
-    'meh',
-    'smile',
-    'inbox',
-    'laptop',
-    'appstore',
-    'link',
-    'mail',
-    'mobile',
-    'notification',
-    'paper-clip',
-    'picture',
-    'poweroff',
-    'reload',
-    'search',
-    'setting',
-    'share-alt',
-    'shopping-cart',
-    'tablet',
-    'tag',
-    'tags',
-    'to-top',
-    'upload',
-    'user',
-    'video-camera',
-    'home',
-    'loading',
-    'loading-3-quarters',
-    'cloud-upload',
-    'star',
-    'heart',
-    'environment',
-    'eye',
-    'eye-invisible',
-    'camera',
-    'save',
-    'team',
-    'solution',
-    'phone',
-    'filter',
-    'exception',
-    'export',
-    'customer-service',
-    'qrcode',
-    'scan',
-    'like',
-    'dislike',
-    'message',
-    'pay-circle',
-    'calculator',
-    'pushpin',
-    'bulb',
-    'select',
-    'switcher',
-    'rocket',
-    'bell',
-    'disconnect',
-    'database',
-    'compass',
-    'barcode',
-    'hourglass',
-    'key',
-    'flag',
-    'layout',
-    'printer',
-    'sound',
-    'usb',
-    'skin',
-    'tool',
-    'sync',
-    'wifi',
-    'car',
-    'schedule',
-    'user-add',
-    'user-delete',
-    'usergroup-add',
-    'usergroup-delete',
-    'man',
-    'woman',
-    'shop',
-    'gift',
-    'idcard',
-    'medicine-box',
-    'red-envelope',
-    'coffee',
-    'copyright',
-    'trademark',
-    'safety',
-    'wallet',
-    'bank',
-    'trophy',
-    'contacts',
-    'global',
-    'shake',
-    'api',
-    'fork',
-    'dashboard',
-    'table',
-    'profile',
-    'alert',
-    'audit',
-    'batch-folding',
-    'branches',
-    'build',
-    'border',
-    'crown',
-    'experiment',
-    'fire',
-    'money-collect',
-    'property-safety',
-    'read',
-    'reconciliation',
-    'rest',
-    'security-scan',
-    'insurance',
-    'interation',
-    'safety-certificate',
-    'project',
-    'thunderbolt',
-    'block',
-    'cluster',
-    'deployment-unit',
-    'dollar',
-    'euro',
-    'pound',
-    'file-done',
-    'file-exclamation',
-    'file-protect',
-    'file-search',
-    'file-sync',
-    'gateway',
-    'gold',
-    'robot',
-    'shopping'
   ],
   logo: [
     'android',
@@ -343,6 +194,7 @@ const categories: { [key: string]: string[] } = {
     'codepen-circle',
     'alipay',
     'ant-design',
+    'ant-cloud',
     'aliyun',
     'zhihu',
     'slack',
@@ -354,7 +206,9 @@ const categories: { [key: string]: string[] } = {
     'instagram',
     'yuque',
     'alibaba',
-    'yahoo'
+    'yahoo',
+    'reddit',
+    'sketch'
   ]
 };
 
@@ -378,38 +232,51 @@ const newIconNames: string[] = [
   selector: 'nz-page-demo-icon',
   template: `
     <h3>{{ localeObj.chooseTheme }}</h3>
-    <nz-radio-group [ngModel]="currentTheme" (ngModelChange)="setIconsShouldBeDisplayed($event)">
-      <label nz-radio-button nzValue="outline">
-        <i nz-icon>
-          <svg>
-            <path
-              d="M864 64H160C107 64 64 107 64 160v704c0 53 43 96 96 96h704c53 0 96-43 96-96V160c0-53-43-96-96-96z m-12 800H172c-6.6 0-12-5.4-12-12V172c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v680c0 6.6-5.4 12-12 12z"
-            ></path>
-          </svg>
-        </i>
-        Outlined
-      </label>
-      <label nz-radio-button nzValue="fill">
-        <i nz-icon>
-          <svg>
-            <path
-              d="M864 64H160C107 64 64 107 64 160v704c0 53 43 96 96 96h704c53 0 96-43 96-96V160c0-53-43-96-96-96z"
-            ></path>
-          </svg>
-        </i>
-        Filled
-      </label>
-      <label nz-radio-button nzValue="twotone">
-        <i nz-icon>
-          <svg>
-            <path
-              d="M16 512c0 273.932 222.066 496 496 496s496-222.068 496-496S785.932 16 512 16 16 238.066 16 512z m496 368V144c203.41 0 368 164.622 368 368 0 203.41-164.622 368-368 368z"
-            ></path>
-          </svg>
-        </i>
-        Two Tone
-      </label>
-    </nz-radio-group>
+    <div class="icon-selector">
+      <nz-radio-group [ngModel]="currentTheme" (ngModelChange)="setIconsShouldBeDisplayed($event)">
+        <label nz-radio-button nzValue="outline">
+          <i nz-icon>
+            <svg>
+              <path
+                d="M864 64H160C107 64 64 107 64 160v704c0 53 43 96 96 96h704c53 0 96-43 96-96V160c0-53-43-96-96-96z m-12 800H172c-6.6 0-12-5.4-12-12V172c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v680c0 6.6-5.4 12-12 12z"
+              ></path>
+            </svg>
+          </i>
+          Outlined
+        </label>
+        <label nz-radio-button nzValue="fill">
+          <i nz-icon>
+            <svg>
+              <path
+                d="M864 64H160C107 64 64 107 64 160v704c0 53 43 96 96 96h704c53 0 96-43 96-96V160c0-53-43-96-96-96z"
+              ></path>
+            </svg>
+          </i>
+          Filled
+        </label>
+        <label nz-radio-button nzValue="twotone">
+          <i nz-icon>
+            <svg>
+              <path
+                d="M16 512c0 273.932 222.066 496 496 496s496-222.068 496-496S785.932 16 512 16 16 238.066 16 512z m496 368V144c203.41 0 368 164.622 368 368 0 203.41-164.622 368-368 368z"
+              ></path>
+            </svg>
+          </i>
+          Two Tone
+        </label>
+      </nz-radio-group>
+      <nz-input-group [nzSuffix]="suffixIconSearch">
+        <input
+          nz-input
+          [placeholder]="localeObj.search"
+          [(ngModel)]="searchingString"
+          (ngModelChange)="onSearchChange()"
+        />
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <i nz-icon nzType="search"></i>
+      </ng-template>
+    </div>
     <ng-container *ngFor="let category of categoryNames; let i = index">
       <h3>{{ localeObj[category] }}</h3>
       <ul class="anticons-list">
@@ -438,6 +305,17 @@ const newIconNames: string[] = [
       ul.anticons-list li .anticon {
         font-size: 24px;
       }
+    `,
+    `
+      .icon-selector {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      nz-input-group {
+        margin-left: 10px;
+        flex: 1 1 0%;
+      }
     `
   ]
 })
@@ -446,6 +324,7 @@ export class NzPageDemoIconComponent implements OnInit {
   categoryNames: string[] = [];
   currentTheme = 'outline';
   localeObj: { [key: string]: string } = locale;
+  searchingString = '';
 
   trackByFn = (_index: number, item: string) => {
     return `${item}-${this.currentTheme}`;
@@ -491,27 +370,49 @@ export class NzPageDemoIconComponent implements OnInit {
     return promise;
   }
 
-  setIconsShouldBeDisplayed(value: string): void {
-    // tslint:disable
-    const names = Object.keys(categories)
-      .map(category => ({
-        name: category,
-        // @ts-ignore
-        icons: categories[category].filter(name => manifest[value].indexOf(name) > -1)
-      }))
-      .filter(({ icons }) => Boolean(icons.length));
+  prepareIcons(): void {
+    const theme = this.currentTheme;
+    // @ts-ignore
+    const currentThemeIcons = (manifest[theme] as string[]).filter(
+      (name: string) => !['interation', 'canlendar'].includes(name)
+    );
+    let notEmptyCategories = Object.keys(categories).map(category => ({
+      name: category,
+      // @ts-ignore
+      icons: categories[category].filter(
+        (name: string) => currentThemeIcons.indexOf(name) > -1 && name.includes(this.searchingString)
+      )
+    }));
 
-    this.displayedNames = names;
-    this.categoryNames = names.map(({ name }) => name);
-    this.currentTheme = value;
+    const otherIcons = currentThemeIcons
+      .filter(icon => {
+        return notEmptyCategories.filter(({ name }) => name !== 'all').every(item => !item.icons.includes(icon));
+      })
+      .filter(name => name.includes(this.searchingString));
+
+    notEmptyCategories.push({ name: 'other', icons: otherIcons });
+    notEmptyCategories = notEmptyCategories.filter(({ icons }) => Boolean(icons.length));
+
+    this.displayedNames = notEmptyCategories;
+    this.categoryNames = notEmptyCategories.map(({ name }) => name);
   }
 
+  setIconsShouldBeDisplayed(theme: string): void {
+    this.currentTheme = theme;
+    this.prepareIcons();
+  }
+
+  onSearchChange(): void {
+    this.prepareIcons();
+  }
+
+  // tslint:disable-next-line:no-any
   constructor(@Inject(DOCUMENT) private dom: any, private _iconService: NzIconService) {
     // This is to test that tree shake works!
     this._iconService.addIcon(AccountBookFill);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.setIconsShouldBeDisplayed('outline');
   }
 }
