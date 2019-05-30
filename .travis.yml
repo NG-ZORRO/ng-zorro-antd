@@ -25,7 +25,7 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 before_script:
-  - npx @angular/cli analytics off
+  - export NG_CLI_ANALYTICS=ci
   - npm install -g @angular/cli
   - npm install -g karma
 
