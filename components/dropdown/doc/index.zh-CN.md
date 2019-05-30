@@ -55,6 +55,7 @@ import { NzDropDownModule } from 'ng-zorro-antd';
 | `[nzTrigger]` | 触发下拉的行为 | `'click'｜'hover'` | `'hover'` |
 | `[nzClickHide]` | 点击后是否隐藏菜单 | `boolean` | `true` |
 | `[nzVisible]` | 菜单是否显示 | `boolean` | - |
+| `[nzIcon]` | 右侧的 icon  | `string｜TemplateRef<void>` | `'ellipsis'` |
 | `(nzVisibleChange)` | 菜单显示状态改变时调用，参数为 nzVisible | `EventEmitter<boolean>` | - |
 | `(nzClick)` | 点击左侧按钮的回调 | `EventEmitter<MouseEvent>` | - |
 
