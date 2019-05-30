@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@angular/cdk": "^7.3.0",
-    "@ant-design/icons-angular": "^2.0.2",
+    "@ant-design/icons-angular": "^2.1.0",
     "date-fns": "^1.29.0"
   },
   "devDependencies": {
