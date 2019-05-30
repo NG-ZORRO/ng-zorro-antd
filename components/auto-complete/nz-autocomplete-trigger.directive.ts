@@ -122,6 +122,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   }
 
   openPanel(): void {
+    this.previousValue = this.elementRef.nativeElement.value;
     this.attachOverlay();
   }
 
@@ -178,11 +179,12 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   handleInput(event: KeyboardEvent): void {
     const target = event.target as HTMLInputElement;
     let value: number | string | null = target.value;
-    if (target.type === 'number') {
-      value = value === '' ? null : parseFloat(value);
-    }
-    if (this.canOpen() && document.activeElement === event.target && this.previousValue !== value) {
-      this.previousValue = value;
+
+    if (this.canOpen() && document.activeElement === target && this.previousValue !== value) {
+      if (target.type === 'number') {
+        value = value === '' ? null : parseFloat(value);
+      }
+
       this._onChange(value);
       this.openPanel();
     }
@@ -190,7 +192,6 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
   handleFocus(): void {
     if (this.canOpen()) {
-      this.previousValue = this.elementRef.nativeElement.value;
       this.openPanel();
     }
   }
