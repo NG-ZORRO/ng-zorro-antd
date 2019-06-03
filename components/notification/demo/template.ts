@@ -19,7 +19,7 @@ import { NzNotificationService } from 'ng-zorro-antd';
   ]
 })
 export class NzDemoNotificationTemplateComponent {
-  @ViewChild(TemplateRef) template: TemplateRef<{}>;
+  @ViewChild(TemplateRef, { static: false }) template: TemplateRef<{}>;
 
   ninja(): void {
     const fruits = [

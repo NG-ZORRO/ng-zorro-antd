@@ -37,11 +37,13 @@ import { NzToolTipModule } from './nz-tooltip.module';
   `
 })
 export class NzTooltipTestDirectiveComponent {
-  @ViewChild('titleString') titleString: ElementRef;
-  @ViewChild('titleString', { read: NzTooltipDirective }) titleStringNzTooltipDirective: NzTooltipDirective;
-  @ViewChild('titleTemplate') titleTemplate: ElementRef;
-  @ViewChild('titleTemplate', { read: NzTooltipDirective }) titleTemplateNzTooltipDirective: NzTooltipDirective;
-  @ViewChild('inBtnGroup') inBtnGroup: ElementRef;
+  @ViewChild('titleString', { static: true }) titleString: ElementRef;
+  @ViewChild('titleString', { static: false, read: NzTooltipDirective })
+  titleStringNzTooltipDirective: NzTooltipDirective;
+  @ViewChild('titleTemplate', { static: true }) titleTemplate: ElementRef;
+  @ViewChild('titleTemplate', { static: false, read: NzTooltipDirective })
+  titleTemplateNzTooltipDirective: NzTooltipDirective;
+  @ViewChild('inBtnGroup', { static: true }) inBtnGroup: ElementRef;
   title = 'title-string';
 }
 
@@ -60,13 +62,13 @@ export class NzTooltipTestDirectiveComponent {
   `
 })
 export class NzTooltipTestWrapperComponent {
-  @ViewChild('clickTrigger') clickTrigger: ElementRef;
-  @ViewChild('focusTrigger') focusTrigger: ElementRef;
-  @ViewChild('mostSimpleTrigger', { read: NzTooltipDirective }) mostSimpleDirective: NzTooltipDirective;
-  @ViewChild('mostSimpleTrigger') mostSimpleTrigger: ElementRef;
-  @ViewChild('normalTrigger') normalTrigger: ElementRef;
-  @ViewChild('templateTrigger') templateTrigger: ElementRef;
-  @ViewChild('visibleTrigger') visibleTrigger: ElementRef;
+  @ViewChild('clickTrigger', { static: true }) clickTrigger: ElementRef;
+  @ViewChild('focusTrigger', { static: true }) focusTrigger: ElementRef;
+  @ViewChild('mostSimpleTrigger', { static: false, read: NzTooltipDirective }) mostSimpleDirective: NzTooltipDirective;
+  @ViewChild('mostSimpleTrigger', { static: true }) mostSimpleTrigger: ElementRef;
+  @ViewChild('normalTrigger', { static: true }) normalTrigger: ElementRef;
+  @ViewChild('templateTrigger', { static: true }) templateTrigger: ElementRef;
+  @ViewChild('visibleTrigger', { static: true }) visibleTrigger: ElementRef;
   visible: boolean;
 }
 

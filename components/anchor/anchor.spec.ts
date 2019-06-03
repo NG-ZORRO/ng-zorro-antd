@@ -284,7 +284,7 @@ describe('anchor', () => {
   `
 })
 export class TestComponent {
-  @ViewChild(NzAnchorComponent) comp: NzAnchorComponent;
+  @ViewChild(NzAnchorComponent, { static: true }) comp: NzAnchorComponent;
   nzAffix = true;
   nzBounds = 5;
   nzOffsetTop = 0;

@@ -526,9 +526,9 @@ class NzTestDrawerComponent {
   placement = 'left';
   offsetX = 0;
   offsetY = 0;
-  @ViewChild('customTitle') templateTitle: TemplateRef<void>;
+  @ViewChild('customTitle', { static: true }) templateTitle: TemplateRef<void>;
 
-  @ViewChild(NzDrawerComponent) drawerComponent: NzDrawerComponent;
+  @ViewChild(NzDrawerComponent, { static: true }) drawerComponent: NzDrawerComponent;
 
   open(): void {
     this.visible = true;
@@ -548,7 +548,10 @@ class NzTestDrawerComponent {
   `
 })
 class NzTestDrawerWithServiceComponent {
-  @ViewChild('drawerTemplate') drawerTemplate: TemplateRef<{ $implicit: number; drawerRef: NzDrawerRef }>;
+  @ViewChild('drawerTemplate', { static: true }) drawerTemplate: TemplateRef<{
+    $implicit: number;
+    drawerRef: NzDrawerRef;
+  }>;
   templateOpenSpy = jasmine.createSpy('template afterOpen spy');
   templateCloseSpy = jasmine.createSpy('template afterClose spy');
   templateDrawerRef: NzDrawerRef;

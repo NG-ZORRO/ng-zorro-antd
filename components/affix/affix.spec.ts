@@ -505,7 +505,7 @@ describe('affix-extra', () => {
   `
 })
 class TestAffixComponent {
-  @ViewChild(NzAffixComponent)
+  @ViewChild(NzAffixComponent, { static: true })
   nzAffixComponent: NzAffixComponent;
   fakeTarget: string | Element | Window | null = null;
   newOffset: {};

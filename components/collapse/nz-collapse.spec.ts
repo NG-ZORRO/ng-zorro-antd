@@ -192,7 +192,7 @@ describe('collapse', () => {
   `
 })
 export class NzTestCollapseBasicComponent {
-  @ViewChild('headerTemplate') headerTemplate: TemplateRef<void>;
+  @ViewChild('headerTemplate', { static: true }) headerTemplate: TemplateRef<void>;
   accordion = false;
   bordered = true;
   disabled = false;

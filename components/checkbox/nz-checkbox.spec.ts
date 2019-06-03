@@ -317,7 +317,7 @@ describe('checkbox', () => {
   `
 })
 export class NzTestCheckboxSingleComponent {
-  @ViewChild(NzCheckboxComponent) nzCheckboxComponent: NzCheckboxComponent;
+  @ViewChild(NzCheckboxComponent, { static: true }) nzCheckboxComponent: NzCheckboxComponent;
   disabled = false;
   autoFocus = false;
   checked = false;

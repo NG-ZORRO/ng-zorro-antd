@@ -301,9 +301,9 @@ describe('nz-empty', () => {
   `
 })
 export class NzEmptyTestBasicComponent {
-  @ViewChild('imageTpl') imageTpl: TemplateRef<void>;
-  @ViewChild('contentTpl') contentTpl: TemplateRef<void>;
-  @ViewChild('footerTpl') footerTpl: TemplateRef<void>;
+  @ViewChild('imageTpl', { static: true }) imageTpl: TemplateRef<void>;
+  @ViewChild('contentTpl', { static: true }) contentTpl: TemplateRef<void>;
+  @ViewChild('footerTpl', { static: true }) footerTpl: TemplateRef<void>;
 
   image?: TemplateRef<void> | string;
   content?: TemplateRef<void> | string;
@@ -320,7 +320,7 @@ export class NzEmptyTestBasicComponent {
   `
 })
 export class NzEmptyTestServiceComponent {
-  @ViewChild('tpl') template: TemplateRef<void>;
+  @ViewChild('tpl', { static: true }) template: TemplateRef<void>;
 
   noResult?: string | null;
 

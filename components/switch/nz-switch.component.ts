@@ -54,7 +54,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   checked = false;
   onChange: (value: boolean) => void = () => null;
   onTouched: () => void = () => null;
-  @ViewChild('switchElement') private switchElement: ElementRef;
+  @ViewChild('switchElement', { static: false }) private switchElement: ElementRef;
   @Input() @InputBoolean() nzLoading = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzControl = false;

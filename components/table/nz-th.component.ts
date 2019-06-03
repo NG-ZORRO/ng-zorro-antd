@@ -69,7 +69,7 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   nzWidthChange$ = new Subject();
   private destroy$ = new Subject();
   private hasDefaultFilter = false;
-  @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
+  @ViewChild(NzDropDownComponent, { static: false }) nzDropDownComponent: NzDropDownComponent;
   /* tslint:disable-next-line:no-any */
   @Input() nzSelections: Array<{ text: string; onSelect(...args: any[]): any }> = [];
   @Input() nzChecked = false;

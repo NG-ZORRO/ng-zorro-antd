@@ -82,7 +82,7 @@ describe('divider', () => {
   `
 })
 class TestDividerComponent {
-  @ViewChild('comp') comp: NzDividerComponent;
+  @ViewChild('comp', { static: true }) comp: NzDividerComponent;
   nzDashed = false;
   nzType = 'horizontal';
   nzText?: string = 'with text';

@@ -43,7 +43,7 @@ widget: <nz-github-btn></nz-github-btn>
 
 ## 支持 Angular 版本
 
-目前支持 Angular `^7.0.0` 版本。
+目前支持 Angular `^8.0.0` 版本。
 
 ## 设计规范
 

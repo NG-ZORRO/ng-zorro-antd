@@ -56,7 +56,7 @@ import { NzEmptyService } from 'ng-zorro-antd';
   ]
 })
 export class NzDemoEmptyConfigComponent {
-  @ViewChild('customTpl') customTpl: TemplateRef<any>; // tslint:disable-line:no-any
+  @ViewChild('customTpl', { static: false }) customTpl: TemplateRef<any>; // tslint:disable-line:no-any
 
   customize = false;
 

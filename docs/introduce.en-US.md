@@ -42,7 +42,7 @@ Following the Ant Design specification, we developed a Angular UI library `ng-zo
 
 ## Angular Support
 
-Now Supports Angular `^7.0.0`.
+Now Supports Angular `^8.0.0`.
 
 ## Design Specification
 

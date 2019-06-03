@@ -83,8 +83,8 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   @Input() @InputBoolean() nzDisabled = false;
   @Output() readonly nzOpenChange: EventEmitter<boolean> = new EventEmitter();
 
-  @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
-  @ViewChild(CdkOverlayOrigin, { read: ElementRef }) cdkOverlayOrigin: ElementRef;
+  @ViewChild(CdkConnectedOverlay, { static: true }) cdkConnectedOverlay: CdkConnectedOverlay;
+  @ViewChild(CdkOverlayOrigin, { static: true, read: ElementRef }) cdkOverlayOrigin: ElementRef;
   @ContentChildren(NzSubMenuComponent, { descendants: true })
   listOfNzSubMenuComponent: QueryList<NzSubMenuComponent>;
   @ContentChildren(NzMenuItemDirective, { descendants: true })

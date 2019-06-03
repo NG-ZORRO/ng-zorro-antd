@@ -2059,8 +2059,8 @@ const options5: any[] = []; // tslint:disable-line:no-any
   ]
 })
 export class NzDemoCascaderDefaultComponent {
-  @ViewChild(NzCascaderComponent) cascader: NzCascaderComponent;
-  @ViewChild('renderTpl') renderTpl: TemplateRef<any>;
+  @ViewChild(NzCascaderComponent, { static: true }) cascader: NzCascaderComponent;
+  @ViewChild('renderTpl', { static: true }) renderTpl: TemplateRef<any>;
 
   public nzOptions: any[] | null = options1;
   public values: string[] | number[] | null = null;
@@ -2119,7 +2119,7 @@ export class NzDemoCascaderDefaultComponent {
   ]
 })
 export class NzDemoCascaderLoadDataComponent {
-  @ViewChild(NzCascaderComponent) cascader: NzCascaderComponent;
+  @ViewChild(NzCascaderComponent, { static: true }) cascader: NzCascaderComponent;
 
   public nzOptions: any[] | null = null;
   public values: string[] | null = null;

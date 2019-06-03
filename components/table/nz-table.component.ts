@@ -73,13 +73,13 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   headerBottomStyle = {};
   private destroy$ = new Subject<void>();
   @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
-  @ViewChild('tableHeaderElement', { read: ElementRef }) tableHeaderElement: ElementRef;
-  @ViewChild('tableBodyElement', { read: ElementRef }) tableBodyElement: ElementRef;
-  @ViewChild('tableMainElement', { read: ElementRef }) tableMainElement: ElementRef;
-  @ViewChild(CdkVirtualScrollViewport, { read: ElementRef }) cdkVirtualScrollElement: ElementRef;
-  @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport })
+  @ViewChild('tableHeaderElement', { static: false, read: ElementRef }) tableHeaderElement: ElementRef;
+  @ViewChild('tableBodyElement', { static: false, read: ElementRef }) tableBodyElement: ElementRef;
+  @ViewChild('tableMainElement', { static: false, read: ElementRef }) tableMainElement: ElementRef;
+  @ViewChild(CdkVirtualScrollViewport, { static: false, read: ElementRef }) cdkVirtualScrollElement: ElementRef;
+  @ViewChild(CdkVirtualScrollViewport, { static: false, read: CdkVirtualScrollViewport })
   cdkVirtualScrollViewport: CdkVirtualScrollViewport;
-  @ContentChild(NzVirtualScrollDirective) nzVirtualScrollDirective: NzVirtualScrollDirective;
+  @ContentChild(NzVirtualScrollDirective, { static: false }) nzVirtualScrollDirective: NzVirtualScrollDirective;
   @Input() nzSize: NzSizeMDSType = 'default';
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }>;
   @Input() nzPageSizeOptions = [10, 20, 30, 40, 50];
@@ -99,7 +99,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   @Input() nzData: T[] = [];
   @Input() nzPaginationPosition: 'top' | 'bottom' | 'both' = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
-  @Input() @ViewChild('renderItemTemplate') nzItemRender: TemplateRef<{
+  @Input() @ViewChild('renderItemTemplate', { static: true }) nzItemRender: TemplateRef<{
     $implicit: 'page' | 'prev' | 'next';
     page: number;
   }>;
