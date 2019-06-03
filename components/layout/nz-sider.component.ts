@@ -31,7 +31,7 @@ import { Platform } from '@angular/cdk/platform';
 import { fromEvent, Subject } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
 
-import { InputBoolean } from 'ng-zorro-antd/core';
+import { toCssPixel, InputBoolean } from 'ng-zorro-antd/core';
 
 import { NzLayoutComponent } from './nz-layout.component';
 
@@ -49,9 +49,9 @@ export type NzBreakPoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
     '[class.ant-layout-sider-light]': `nzTheme === 'light'`,
     '[class.ant-layout-sider-collapsed]': 'nzCollapsed',
     '[style.flex]': 'flexSetting',
-    '[style.max-width.px]': 'widthSetting',
-    '[style.min-width.px]': 'widthSetting',
-    '[style.width.px]': 'widthSetting'
+    '[style.max-width]': 'widthSetting',
+    '[style.min-width]': 'widthSetting',
+    '[style.width]': 'widthSetting'
   }
 })
 export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -65,7 +65,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
     xl: '1200px',
     xxl: '1600px'
   };
-  @Input() nzWidth = 200;
+  @Input() nzWidth: string | number = 200;
   @Input() nzTheme: 'light' | 'dark' = 'dark';
   @Input() nzCollapsedWidth = 80;
   @Input() nzBreakpoint: NzBreakPoint;
@@ -77,18 +77,14 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() readonly nzCollapsedChange = new EventEmitter();
 
   get flexSetting(): string {
-    if (this.nzCollapsed) {
-      return `0 0 ${this.nzCollapsedWidth}px`;
-    } else {
-      return `0 0 ${this.nzWidth}px`;
-    }
+    return `0 0 ${this.widthSetting}`;
   }
 
-  get widthSetting(): number {
+  get widthSetting(): string {
     if (this.nzCollapsed) {
-      return this.nzCollapsedWidth;
+      return `${this.nzCollapsedWidth}px`;
     } else {
-      return this.nzWidth;
+      return toCssPixel(this.nzWidth);
     }
   }
 
